@@ -1,36 +1,35 @@
 import { z } from "zod";
 import { events } from "lib/packages/shared-types";
 
-const allBaseSchemas = Object.values(events).reduce(
-  (acc, event) => acc.merge(event.baseSchema),
-  z.object({}),
-);
+// const allBaseSchemas = Object.values(events).reduce(
+//   (acc, event) => acc.merge(event.baseSchema),
+//   z.object({}),
+// );
 
-const documentSchema = allBaseSchemas.extend({
-  makoChangedDate: z.string(),
-  changelog: z.array(z.any()).optional(),
-  appkChildren: z.array(z.any()).optional(),
-  deleted: z.boolean().optional(),
-  adminChangeType: z.string().optional(),
-  changeMade: z.string().optional(),
-  idToBeUpdated: z.string().optional(),
-  mockEvent: z.string().optional(),
-  withdrawEmailSent: z.boolean().optional(),
-});
+// const documentSchema = allBaseSchemas.extend({
+//   makoChangedDate: z.string(),
+//   changelog: z.array(z.any()).optional(),
+//   appkChildren: z.array(z.any()).optional(),
+//   deleted: z.boolean().optional(),
+//   adminChangeType: z.string().optional(),
+//   changeMade: z.string().optional(),
+//   idToBeUpdated: z.string().optional(),
+//   mockEvent: z.string().optional(),
+//   withdrawEmailSent: z.boolean().optional(),
+// });
 
-export const deleteAdminChangeSchema = documentSchema.extend({
+// export const deleteAdminChangeSchema = documentSchema.extend({
+//   adminChangeType: z.literal("delete"),
+// });
+export const deleteAdminChangeSchema = z.object({
+  id: z.string(),
+  deleted: z.boolean(),
   adminChangeType: z.literal("delete"),
+  makoChangedDate: z.number(),
+  changedDate: z.number(),
+  statusDate: z.number(),
+  timestamp: z.number(),
 });
-// export const deleteAdminChangeSchema = z
-//   .object({
-//     id: z.string(),
-//     deleted: z.boolean(),
-//     adminChangeType: z.literal("delete"),
-//     makoChangedDate: z.number(),
-//     changedDate: z.number(),
-//     statusDate: z.number(),
-//     timestamp: z.number(),
-//   })
 //   .and(z.record(z.string(), z.any()));
 
 export const updateValuesAdminChangeSchema = z
