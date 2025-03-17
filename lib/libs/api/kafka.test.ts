@@ -93,7 +93,7 @@ describe("Kafka producer functions", () => {
     const key = "test-key";
     const value = JSON.stringify({ foo: "bar" });
 
-    mockedProducer.send.mockResolvedValueOnce([]); // Simulate invalid Kafka response
+    mockedProducer.send.mockResolvedValueOnce([]);
 
     await expect(produceMessage(topic, key, value)).rejects.toThrow(
       "Kafka did not return a valid response.",
