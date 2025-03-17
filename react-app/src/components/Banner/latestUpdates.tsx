@@ -1,4 +1,5 @@
 import { FC, useState } from "react";
+
 import { cn } from "@/utils";
 
 interface LatestUpdatesProps {
