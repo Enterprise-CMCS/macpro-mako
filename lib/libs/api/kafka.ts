@@ -33,14 +33,23 @@ export async function produceMessage(topic: string, key: string, value: string) 
     "About to send the following message to kafka\n" +
       JSON.stringify({ ...message, value: JSON.parse(message.value as string) }, null, 2),
   );
+
   try {
-    await producer.send({
+    const result = await producer.send({
       topic,
       messages: [message],
     });
-    console.log("Message sent successfully");
+
+    if (!result || result.length === 0) {
+      throw new Error("Kafka did not return a valid response.");
+    }
+
+    console.log("Message sent successfully", result);
+
+    return result;
   } catch (error) {
     console.error("Error sending message:", error);
+    throw new Error("Failed to send message to Kafka");
   } finally {
     await producer.disconnect();
   }
