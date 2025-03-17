@@ -163,7 +163,7 @@ export const UploadSubsequentDocuments = () => {
       defaultValues={{ authority }}
       additionalInformation={{
         required: true,
-        title: "Reason for subsequent documents",
+        title: "Reason for Subsequent Documents",
         label: "Explain why additional documents are being submitted.",
       }}
     />
