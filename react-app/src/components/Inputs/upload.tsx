@@ -67,8 +67,8 @@ export const Upload = ({ maxFiles, files, setFiles, dataTestId }: UploadProps) =
     }
     if (file.size > MAX_FILE_SIZE) {
       return {
-        code: "file-too-large",
-        message: `Selected file(s) is too large.`,
+        code: "file-too-big",
+        message: `File "${file.name}" is too large to upload.`,
       };
     }
     // The error message by default for drop zone is really wordy so this will replace that.  We filter it on the output
@@ -158,7 +158,7 @@ export const Upload = ({ maxFiles, files, setFiles, dataTestId }: UploadProps) =
         <span className="text-red-500">
           {fileRejections.flatMap(({ file, errors }) =>
             errors
-              .filter((e) => e.code !== "file-invalid-type")
+              .filter((e) => e.code !== "file-invalid-type" && e.code !== "file-too-large")
               .map((e) => <p key={`${file.name}-${e.code}`}>{e.message}</p>),
           )}
         </span>

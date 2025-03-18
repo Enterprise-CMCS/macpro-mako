@@ -92,7 +92,23 @@ describe("Upload", () => {
       expect(screen.getByText(`File "${file.name}" has an invalid type.`)).toBeInTheDocument();
     });
   });
+  it("displays an error for a file that is too large", async () => {
+    renderWithQueryClient(<Upload {...defaultProps} />);
 
+    const dropzone = screen.getByRole("presentation");
+    const file = new File(["file contents"], "file.txt", { type: "application/x-msdownload" });
+    Object.defineProperty(file, "size", { value: 80 * 1024 * 1024 + 1 });
+    Object.defineProperty(dropzone, "files", {
+      value: [file],
+      writable: false,
+    });
+
+    fireEvent.drop(dropzone);
+
+    await waitFor(() => {
+      expect(screen.getByText(`File "file.txt" is too large to upload.`)).toBeInTheDocument();
+    });
+  });
   it("does not display the dropzone when uploading", async () => {
     renderWithQueryClient(<Upload {...defaultProps} />);
 
