@@ -6,6 +6,7 @@ import { getProducer, produceMessage } from "./kafka";
 describe("Kafka producer functions", () => {
   let brokerString: string | undefined;
   let consoleErrorSpy: ReturnType<typeof vi.spyOn>;
+  const consoleLogSpy = vi.spyOn(console, "log");
 
   beforeEach(() => {
     brokerString = process.env.brokerString;
@@ -43,6 +44,7 @@ describe("Kafka producer functions", () => {
       ],
     });
     expect(mockedProducer.disconnect).toHaveBeenCalled();
+    expect(consoleLogSpy).toHaveBeenCalledWith("Message sent successfully", expect.anything());
   });
 
   it("should handle errors when producing a message", async () => {

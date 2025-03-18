@@ -51,9 +51,9 @@ export async function produceMessage(topic: string, key: string, value: string) 
     console.error("Error sending message:", error);
     if (error instanceof Error) {
       throw error;
-    } else {
-      throw new Error("Failed to send message to Kafka");
     }
+
+    throw new Error("Failed to send message to Kafka");
   } finally {
     await producer.disconnect();
   }
