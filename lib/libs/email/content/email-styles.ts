@@ -86,6 +86,8 @@ export const styles = {
     container: {
       backgroundColor: "#0071BD",
       padding: "16px",
+      "-webkit-print-color-adjust": "exact",
+      "print-color-adjust": "exact",
     },
     link: {
       display: "block",
