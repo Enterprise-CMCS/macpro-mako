@@ -1,11 +1,16 @@
 import { getRequestContext, NOT_FOUND_ITEM_ID } from "mocks";
 import { events, uploadSubsequentDocuments } from "mocks/data/submit/base";
 import { APIGatewayEvent } from "node_modules/shared-types";
-import { describe, expect, it } from "vitest";
+import { beforeEach, describe, expect, it, vi } from "vitest";
 
 import { submit } from "./index";
 
 describe("submit Lambda function", () => {
+  beforeEach(() => {
+    vi.clearAllMocks();
+    process.env.topicName = "test-topic";
+  });
+
   it("should handle a submission with no body", async () => {
     const event = {} as APIGatewayEvent;
     const result = await submit(event);

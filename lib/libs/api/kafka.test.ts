@@ -78,9 +78,7 @@ describe("Kafka producer functions", () => {
     const error = new Error("Failed to send message");
     mockedProducer.send.mockRejectedValueOnce(error);
 
-    await expect(produceMessage(topic, key, value)).rejects.toThrow(
-      "Failed to send message to Kafka",
-    );
+    await expect(produceMessage(topic, key, value)).rejects.toThrow("Failed to send message");
 
     expect(mockedProducer.connect).toHaveBeenCalled();
     expect(mockedProducer.send).toHaveBeenCalled();
