@@ -3,10 +3,6 @@ import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 
 import { getProducer, produceMessage } from "./kafka";
 
-// vi.mock("libs/api/kafka", () => ({
-//   produceMessage: vi.fn(() => Promise.resolve([{ partition: 0, offset: "1" }])), // Return a valid response
-// }));
-
 describe("Kafka producer functions", () => {
   let brokerString: string | undefined;
   let consoleErrorSpy: ReturnType<typeof vi.spyOn>;
