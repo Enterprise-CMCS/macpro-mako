@@ -89,9 +89,7 @@ describe("Upload", () => {
     fireEvent.drop(dropzone);
 
     await waitFor(() => {
-      expect(
-        screen.getByText("Selected file(s) is too large or of a disallowed file type."),
-      ).toBeInTheDocument();
+      expect(screen.getByText(`File "${file.name}" has an invalid type.`)).toBeInTheDocument();
     });
   });
 

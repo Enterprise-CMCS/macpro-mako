@@ -10,7 +10,7 @@ import * as I from "@/components/Inputs";
 import { LoadingSpinner } from "@/components/LoadingSpinner"; // Import your LoadingSpinner component
 import { cn } from "@/utils";
 
-import { extractBucketAndKeyFromUrl, getPresignedUrl, uploadToS3 } from "./upload.utilities";
+import { extractBucketAndKeyFromUrl, getPresignedUrl, uploadToS3 } from "./uploadUtilities";
 
 type Attachment = z.infer<typeof attachmentSchema>;
 
@@ -48,12 +48,40 @@ export const Upload = ({ maxFiles, files, setFiles, dataTestId }: UploadProps) =
   const [isUploading, setIsUploading] = useState(false); // New state for tracking upload status
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
   const uniqueId = uuidv4();
+  const MAX_FILE_SIZE = 80 * 1024 * 1024;
+  const accept = FILE_TYPES.reduce(
+    (acc, { mime, extension }) => {
+      acc[mime] = acc[mime] ? [...acc[mime], extension] : [extension];
+      return acc;
+    },
+    {} as Record<string, string[]>,
+  );
+  const existingFileNames = files.map((file) => file.filename);
 
+  const validateFile = (file: File) => {
+    if (existingFileNames.includes(file.name)) {
+      return {
+        code: "file-already-exists",
+        message: `File with name "${file.name}" already exists.`,
+      };
+    }
+    if (file.size > MAX_FILE_SIZE) {
+      return {
+        code: "file-too-large",
+        message: `Selected file(s) is too large.`,
+      };
+    }
+    // The error message by default for drop zone is really wordy so this will replace that.  We filter it on the output
+    if (!Object.keys(accept).includes(file.type)) {
+      return {
+        code: "file-invalid-type-replacement",
+        message: `File "${file.name}" has an invalid type.`,
+      };
+    }
+  };
   const onDrop = useCallback(
     async (acceptedFiles: File[], fileRejections: FileRejection[]) => {
-      if (fileRejections.length > 0) {
-        setErrorMessage("Selected file(s) is too large or of a disallowed file type.");
-      } else {
+      if (fileRejections.length === 0) {
         setErrorMessage(null);
         setIsUploading(true); // Set uploading to true
 
@@ -71,11 +99,9 @@ export const Upload = ({ maxFiles, files, setFiles, dataTestId }: UploadProps) =
                 key,
                 uploadDate: Date.now(),
               };
-
               return attachment;
             } catch (error) {
               setErrorMessage("Failed to upload one or more files.");
-              console.error("Upload error:", error);
               return null;
             }
           }),
@@ -92,18 +118,12 @@ export const Upload = ({ maxFiles, files, setFiles, dataTestId }: UploadProps) =
     [files, setFiles],
   );
 
-  const accept: Accept = {};
-  FILE_TYPES.map((type) =>
-    accept[type.mime]
-      ? (accept[type.mime] = [...accept[type.mime], type.extension])
-      : (accept[type.mime] = [type.extension]),
-  );
-
-  const { getRootProps, getInputProps, isDragActive } = useDropzone({
+  const { getRootProps, getInputProps, isDragActive, fileRejections } = useDropzone({
     onDrop,
     accept,
+    validator: validateFile,
     maxFiles,
-    maxSize: 80 * 1024 * 1024, // 80MB,
+    maxSize: MAX_FILE_SIZE,
     disabled: isUploading, // Disable dropzone while uploading
   });
 
@@ -134,6 +154,15 @@ export const Upload = ({ maxFiles, files, setFiles, dataTestId }: UploadProps) =
         </div>
       )}
       {errorMessage && <span className="text-red-500">{errorMessage}</span>}
+      {fileRejections.length > 0 && (
+        <span className="text-red-500">
+          {fileRejections.flatMap(({ file, errors }) =>
+            errors
+              .filter((e) => e.code !== "file-invalid-type")
+              .map((e) => <p key={`${file.name}-${e.code}`}>{e.message}</p>),
+          )}
+        </span>
+      )}
       {isUploading ? (
         <LoadingSpinner /> // Render the loading spinner when uploading
       ) : (
