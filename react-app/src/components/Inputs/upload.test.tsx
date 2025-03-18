@@ -11,26 +11,28 @@ const defaultProps = {
   setFiles: vi.fn(),
   setErrorMessage: vi.fn(),
 };
-
+const FILE_1 = "file-1";
+const FILE_2 = "file-2";
+const FILE_REMOVE = "file-to-remove";
 const files = [
   {
-    key: "file-1",
-    title: "file-1.txt",
-    filename: "file-1.txt",
+    key: FILE_1,
+    title: `${FILE_1}.txt`,
+    filename: `${FILE_1}.txt`,
     bucket: "bucket-1",
     uploadDate: Date.now(),
   },
   {
-    key: "file-to-remove",
-    title: "file-to-remove.txt",
-    filename: "file-to-remove.txt",
+    key: FILE_REMOVE,
+    title: `${FILE_REMOVE}.txt`,
+    filename: `${FILE_REMOVE}.txt`,
     bucket: "bucket-1",
     uploadDate: Date.now(),
   },
   {
-    key: "file-2",
-    title: "file-2.txt",
-    filename: "file-2.txt",
+    key: FILE_2,
+    title: `${FILE_2}.txt`,
+    filename: `${FILE_2}.txt`,
     bucket: "bucket-1",
     uploadDate: Date.now(),
   },
@@ -96,7 +98,7 @@ describe("Upload", () => {
     renderWithQueryClient(<Upload {...defaultProps} />);
 
     const dropzone = screen.getByRole("presentation");
-    const file = new File(["file contents"], "file.txt", { type: "application/x-msdownload" });
+    const file = new File(["file contents"], "file.txt", { type: "text/plain" });
     Object.defineProperty(file, "size", { value: 80 * 1024 * 1024 + 1 });
     Object.defineProperty(dropzone, "files", {
       value: [file],
@@ -107,6 +109,25 @@ describe("Upload", () => {
 
     await waitFor(() => {
       expect(screen.getByText(`File "file.txt" is too large to upload.`)).toBeInTheDocument();
+    });
+  });
+  it("displays an error for a file that already is uploaded", async () => {
+    const mockSetFiles = vi.fn();
+    renderWithQueryClient(<Upload {...defaultProps} files={files} setFiles={mockSetFiles} />);
+
+    const dropzone = screen.getByRole("presentation");
+    const file = new File(["file contents"], `${FILE_1}.txt`, { type: "text/plain" });
+    Object.defineProperty(dropzone, "files", {
+      value: [file],
+      writable: false,
+    });
+
+    fireEvent.drop(dropzone);
+
+    await waitFor(() => {
+      expect(
+        screen.getByText(`File with name "${FILE_1}.txt" already exists.`),
+      ).toBeInTheDocument();
     });
   });
   it("does not display the dropzone when uploading", async () => {
@@ -134,12 +155,12 @@ describe("Upload", () => {
     renderWithQueryClient(<Upload {...defaultProps} files={files} setFiles={mockSetFiles} />);
 
     // Simulate the event (e.g., a click on the remove button)
-    const removeButton = screen.getByTestId("upload-component-remove-file-file-to-remove.txt"); // Ensure your component uses this testId
+    const removeButton = screen.getByTestId(`upload-component-remove-file-${FILE_REMOVE}.txt`); // Ensure your component uses this testId
     fireEvent.click(removeButton);
 
     // Assert that setFiles was called with the updated files array
     expect(mockSetFiles).toHaveBeenCalledWith(
-      files.filter((file) => file.filename !== "file-to-remove.txt"),
+      files.filter((file) => file.filename !== `${FILE_REMOVE}.txt`),
     );
   });
 });
