@@ -94,6 +94,7 @@ describe("Upload", () => {
       expect(screen.getByText(`File "${file.name}" has an invalid type.`)).toBeInTheDocument();
     });
   });
+
   it("displays an error for a file that is too large", async () => {
     renderWithQueryClient(<Upload {...defaultProps} />);
 
@@ -111,6 +112,7 @@ describe("Upload", () => {
       expect(screen.getByText(`File "file.txt" is too large to upload.`)).toBeInTheDocument();
     });
   });
+
   it("displays an error for a file that already is uploaded", async () => {
     const mockSetFiles = vi.fn();
     renderWithQueryClient(<Upload {...defaultProps} files={files} setFiles={mockSetFiles} />);
@@ -130,6 +132,7 @@ describe("Upload", () => {
       ).toBeInTheDocument();
     });
   });
+
   it("does not display the dropzone when uploading", async () => {
     renderWithQueryClient(<Upload {...defaultProps} />);
 

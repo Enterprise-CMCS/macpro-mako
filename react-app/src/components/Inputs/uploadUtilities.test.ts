@@ -44,6 +44,7 @@ describe("uploadToS3", () => {
       method: "PUT",
     });
   });
+
   it("fails to upload a file to S3", async () => {
     const file = new File(["file contents"], "file.pdf", { type: "application/pdf" });
     const url = "https://s3.us-east-1.amazonaws.com/hello/world";
