@@ -86,6 +86,19 @@ describe("Kafka producer functions", () => {
     expect(consoleErrorSpy).toHaveBeenCalledWith("Error sending message:", expect.any(Error));
   });
 
+  it("should throw an error if Kafka send fails and error not an instance of an error", async () => {
+    const topic = "test-topic";
+    const key = "test-key";
+    const value = JSON.stringify({ foo: "bar" });
+
+    const error = { message: "Failed to send message" };
+    mockedProducer.send.mockRejectedValueOnce(error);
+
+    await expect(produceMessage(topic, key, value)).rejects.toThrow(
+      "Failed to send message to Kafka",
+    );
+  });
+
   it("should throw an error if brokerString is not defined", () => {
     delete process.env.brokerString;
     expect(() => getProducer()).toThrowError();
