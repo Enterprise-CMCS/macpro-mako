@@ -1,11 +1,12 @@
 "use client";
 
-import * as React from "react";
 import { format } from "date-fns";
 import { Calendar as CalendarIcon } from "lucide-react";
+import * as React from "react";
 import { DatePickerProps } from "shared-types";
-import { cn } from "@/utils";
+
 import { Button, Calendar, Popover, PopoverContent, PopoverTrigger } from "@/components";
+import { cn } from "@/utils";
 
 export const DatePicker = ({ date, onChange, dataTestId }: DatePickerProps) => {
   const [isCalendarOpen, setIsCalendarOpen] = React.useState<boolean>(false);

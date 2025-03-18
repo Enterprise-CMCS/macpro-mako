@@ -1,13 +1,17 @@
-import config from "@/config";
 import "@fontsource/open-sans";
+import "./index.css";
+
 import { QueryClientProvider } from "@tanstack/react-query";
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 import { asyncWithLDProvider } from "launchdarkly-react-client-sdk";
 import React from "react";
 import ReactDOM from "react-dom/client";
 import { RouterProvider } from "react-router";
-import "./index.css";
-import { queryClient, router } from "./router";
+
+import config from "@/config";
+import { queryClient } from "@/utils";
+
+import { router } from "./router";
 
 const ldClientId = config.launchDarkly?.CLIENT_ID;
 if (ldClientId === undefined) {

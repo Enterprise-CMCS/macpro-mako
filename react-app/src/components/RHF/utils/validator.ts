@@ -4,10 +4,10 @@
  * - creating/saving form data
  * - retrieving form data
  */
-import { DependencyRule, FormGroup, FormSchema, RHFOption, RHFSlotProps } from "shared-types/forms";
 import { RegisterOptions } from "react-hook-form";
+import { DependencyRule, FormGroup, FormSchema, RHFOption, RHFSlotProps } from "shared-types/forms";
 
-import { isNullOrUndefined, isUndefined, isRegex, getValueAndMessage, isString, ERROR } from "./is";
+import { ERROR, getValueAndMessage, isNullOrUndefined, isRegex, isString, isUndefined } from "./is";
 
 export const validateInput = (inputValue: any, rules?: RegisterOptions) => {
   const isEmpty =

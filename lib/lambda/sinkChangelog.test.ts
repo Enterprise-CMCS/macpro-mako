@@ -1,34 +1,35 @@
-import { describe, expect, it, vi, afterEach } from "vitest";
-import { handler } from "./sinkChangelog";
 import { Context } from "aws-lambda";
 import * as os from "libs/opensearch-lib";
 import * as sink from "libs/sink-lib";
 import {
-  OPENSEARCH_DOMAIN,
-  OPENSEARCH_INDEX_NAMESPACE,
-  WITHDRAWN_CHANGELOG_ITEM_ID as TEST_ITEM_ID,
   convertObjToBase64,
   createKafkaEvent,
   createKafkaRecord,
+  OPENSEARCH_DOMAIN,
+  OPENSEARCH_INDEX_NAMESPACE,
+  WITHDRAWN_CHANGELOG_ITEM_ID as TEST_ITEM_ID,
 } from "mocks";
 import items from "mocks/data/items";
 import {
   appkBase,
-  capitatedInitial,
   capitatedAmendmentBase,
+  capitatedInitial,
   capitatedRenewal,
-  contractingInitial,
   contractingAmendment,
+  contractingInitial,
   contractingRenewal,
   newChipSubmission,
   newMedicaidSubmission,
-  uploadSubsequentDocuments,
-  temporaryExtension,
   respondToRai,
+  temporaryExtension,
   toggleWithdrawRai,
+  uploadSubsequentDocuments,
   withdrawPackage,
   withdrawRai,
 } from "mocks/data/submit/changelog";
+import { afterEach, describe, expect, it, vi } from "vitest";
+
+import { handler } from "./sinkChangelog";
 
 const OPENSEARCH_INDEX = `${OPENSEARCH_INDEX_NAMESPACE}changelog`;
 const TOPIC = "--mako--branch-name--aws.onemac.migration.cdc";
@@ -509,7 +510,7 @@ describe("syncing Changelog events", () => {
         {
           key: TEST_ITEM_KEY,
           offset: 15,
-          // @ts-expect-error - value must be undefined for this test
+          headers: [],
           value: undefined,
         },
       ],

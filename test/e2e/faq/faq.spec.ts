@@ -1,4 +1,5 @@
-import { test, expect } from "@playwright/test";
+import { expect, test } from "@playwright/test";
+
 import { FAQPage } from "../pages/faq.page";
 
 let faqPage: FAQPage;
@@ -13,7 +14,7 @@ test.describe("FAQ page", { tag: ["@e2e", "@smoke", "@faq"] }, () => {
     test.describe("header", () => {
       test("displays header", async () => {
         await expect(faqPage.header).toBeVisible();
-        await expect(faqPage.header).toHaveText("OneMAC Support");
+        await expect(faqPage.header).toHaveText("Frequently Asked Questions");
       });
     });
 

@@ -1,7 +1,8 @@
-import { describe, it, expect, vi } from "vitest";
-import { handler } from "./createTopics";
-import * as topics from "./../../../libs/topics-lib";
 import { CloudFormationCustomResourceEvent, Context } from "aws-lambda";
+import { describe, expect, it, vi } from "vitest";
+
+import * as topics from "./../../../libs/topics-lib";
+import { handler } from "./createTopics";
 
 vi.mock("./../../../libs/topics-lib");
 

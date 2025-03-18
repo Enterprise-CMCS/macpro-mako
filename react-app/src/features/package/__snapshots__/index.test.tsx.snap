@@ -242,6 +242,34 @@ exports[`package details > makes a package 1`] = `
       </section>
       <section
         class="p-4 border rounded-sm border-cardBorder"
+        id="package_activity"
+      >
+        <h1
+          class="text-3xl font-semibold mb-2"
+          data-testid="undefined-title"
+        >
+          <div
+            class="flex justify-between"
+          >
+            Package Activity (0)
+          </div>
+        </h1>
+        <hr
+          class="my-6 bg-slate-200"
+        />
+        <div
+          class="gap-8 flex flex-col"
+          data-testid="undefined-child"
+        >
+          <p
+            class="text-gray-500"
+          >
+            No package activity recorded
+          </p>
+        </div>
+      </section>
+      <section
+        class="p-4 border rounded-sm border-cardBorder"
         id="administrative_package_changes"
       >
         <h1
@@ -292,7 +320,7 @@ exports[`package details > makes a package 1`] = `
                     <strong>
                       Package Added
                     </strong>
-                     - Sun, Jan 1, 2023 12:00:00 AM
+                     - Sun, Jan 1 2023, 09:00:00 AM EST
                   </p>
                   <svg
                     class="h-4 w-4 shrink-0 transition-transform duration-200"
@@ -377,7 +405,7 @@ exports[`package details > makes a package 1`] = `
                     <strong>
                       Package Added
                     </strong>
-                     - Sun, Jan 1, 2023 12:00:00 AM
+                     - Wed, Mar 1 2023, 09:00:00 AM EST
                   </p>
                   <svg
                     class="h-4 w-4 shrink-0 transition-transform duration-200"
@@ -434,7 +462,7 @@ exports[`package details > makes a package 1`] = `
                     <strong>
                       Manual Update
                     </strong>
-                     - Sun, Jan 1, 2023 12:00:00 AM
+                     - Thu, Jun 1 2023, 09:00:00 AM EDT
                   </p>
                   <svg
                     class="h-4 w-4 shrink-0 transition-transform duration-200"
@@ -491,7 +519,7 @@ exports[`package details > makes a package 1`] = `
                     <strong>
                       -- --
                     </strong>
-                     - Sun, Jan 1, 2023 12:00:00 AM
+                     - Fri, Sep 1 2023, 09:00:00 AM EDT
                   </p>
                   <svg
                     class="h-4 w-4 shrink-0 transition-transform duration-200"
@@ -548,7 +576,7 @@ exports[`package details > makes a package 1`] = `
                     <strong>
                       Enable Formal RAI Response Withdraw
                     </strong>
-                     - Sun, Jan 1, 2023 12:00:00 AM
+                     - Sat, Dec 31 2022, 07:00:00 PM EST
                   </p>
                   <svg
                     class="h-4 w-4 shrink-0 transition-transform duration-200"
@@ -605,7 +633,7 @@ exports[`package details > makes a package 1`] = `
                     <strong>
                       Disable Formal RAI Response Withdraw
                     </strong>
-                     - Sun, Jan 1, 2023 12:00:00 AM
+                     - Fri, Dec 1 2023, 09:00:00 AM EST
                   </p>
                   <svg
                     class="h-4 w-4 shrink-0 transition-transform duration-200"

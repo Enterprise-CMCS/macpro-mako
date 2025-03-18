@@ -1,6 +1,7 @@
-import { FAQ_TAB } from "@/router";
 import { Link } from "react-router";
 import { z } from "zod";
+
+import { FAQ_TAB } from "@/consts";
 
 export const AttachmentFileFormatInstructions = () => (
   <p data-testid="accepted-files">

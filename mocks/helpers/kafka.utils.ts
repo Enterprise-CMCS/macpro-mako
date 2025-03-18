@@ -1,5 +1,5 @@
-import { vi } from "vitest";
 import { KafkaEvent, KafkaRecord } from "shared-types";
+import { vi } from "vitest";
 
 export const mockedProducer = {
   connect: vi.fn(),
@@ -108,11 +108,13 @@ export const createKafkaRecord = ({
   key,
   value,
   offset = 0,
+  headers = [],
 }: {
   topic: string;
   key: string;
   value: string;
   offset?: number;
+  headers?: { source: number[] }[];
 }): KafkaRecord => ({
   key,
   value,
@@ -121,5 +123,5 @@ export const createKafkaRecord = ({
   partition: 0,
   timestamp: Date.now(),
   timestampType: "CREATE_TIME",
-  headers: {},
+  headers,
 });

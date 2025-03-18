@@ -1,7 +1,8 @@
 import { http, HttpResponse, PathParams } from "msw";
-import { SUBMISSION_ERROR_ITEM_ID } from "../../data/items";
-import { SubmitRequestBody, AttachmentUrlRequestBody } from "../../index.d";
+
 import { REGION } from "../../consts";
+import { SUBMISSION_ERROR_ITEM_ID } from "../../data/items";
+import { AttachmentUrlRequestBody, SubmitRequestBody } from "../../index.d";
 
 const defaultApiUploadHandler = http.put(
   "https://test-domain.execute-api.us-east-1.amazonaws.com/mocked-tests/upload",

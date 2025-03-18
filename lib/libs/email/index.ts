@@ -1,7 +1,8 @@
 import { Authority, Events } from "shared-types";
+import { changelog } from "shared-types/opensearch";
+
 import { getPackageChangelog } from "../api/package";
 import * as EmailContent from "./content";
-import { changelog } from "shared-types/opensearch";
 
 export type UserType = "cms" | "state";
 

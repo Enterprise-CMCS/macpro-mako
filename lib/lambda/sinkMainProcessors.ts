@@ -1,14 +1,15 @@
-import { bulkUpdateDataWrapper, ErrorType, logError, getItems } from "libs";
-import { KafkaRecord, opensearch, SeatoolRecordWithUpdatedDate } from "shared-types";
-import { Document, transforms } from "shared-types/opensearch/main";
-import { decodeBase64WithUtf8 } from "shared-utils";
 import { isBefore } from "date-fns";
+import { bulkUpdateDataWrapper, ErrorType, getItems, logError } from "libs";
+import { KafkaRecord, opensearch, SeatoolRecordWithUpdatedDate } from "shared-types";
+import { Document, legacyTransforms, transforms } from "shared-types/opensearch/main";
+import { decodeBase64WithUtf8 } from "shared-utils";
+
 import {
   deleteAdminChangeSchema,
-  updateValuesAdminChangeSchema,
-  updateIdAdminChangeSchema,
-  splitSPAAdminChangeSchema,
   extendSubmitNOSOAdminSchema,
+  splitSPAAdminChangeSchema,
+  updateIdAdminChangeSchema,
+  updateValuesAdminChangeSchema,
 } from "./update/adminChangeSchemas";
 
 const removeDoubleQuotesSurroundingString = (str: string) => str.replace(/^"|"$/g, "");
@@ -29,6 +30,26 @@ type ParsedRecordFromKafka = Partial<{
   isAdminChange: boolean;
   adminChangeType: string;
 }>;
+
+type ParsedLegacyRecordFromKafka = Partial<{
+  componentType: string;
+  sk: string;
+  GSI1pk: string;
+}>;
+
+export const isRecordALegacyOneMacRecord = (
+  record: ParsedLegacyRecordFromKafka,
+  kafkaSource: string,
+): record is {
+  componentType: keyof typeof legacyTransforms;
+} =>
+  typeof record === "object" &&
+  record?.componentType !== undefined &&
+  record.componentType in legacyTransforms &&
+  record.sk === "Package" &&
+  record.GSI1pk !== undefined &&
+  (record.GSI1pk === "OneMAC#spa" || record.GSI1pk === "OneMAC#waiver") &&
+  kafkaSource === "onemac";
 
 const isRecordAOneMacRecord = (
   record: ParsedRecordFromKafka,
@@ -51,6 +72,8 @@ const getOneMacRecordWithAllProperties = (
   kafkaRecord: KafkaRecord,
 ): OneMacRecord | undefined => {
   const record = JSON.parse(decodeBase64WithUtf8(value));
+  console.log(`kafkaRecord: ${JSON.stringify(kafkaRecord, null, 2)}`);
+  const kafkaSource = String.fromCharCode(...(kafkaRecord.headers[0]?.source || []));
 
   if (isRecordAnAdminOneMacRecord(record)) {
     const safeRecord = adminRecordSchema.safeParse(record);
@@ -95,6 +118,32 @@ const getOneMacRecordWithAllProperties = (
 
     return oneMacRecord;
   }
+
+  if (isRecordALegacyOneMacRecord(record, kafkaSource)) {
+    console.log(`legacy event: ${JSON.stringify(record, null, 2)}`);
+    const transformForLegacyEvent = legacyTransforms[record.componentType];
+
+    const safeEvent = transformForLegacyEvent.transform().safeParse(record);
+    console.log(`safeEvent: ${JSON.stringify(safeEvent, null, 2)}`);
+    if (safeEvent.success === false) {
+      logError({
+        type: ErrorType.VALIDATION,
+        error: safeEvent.error.errors,
+        metadata: { topicPartition, kafkaRecord, record },
+      });
+
+      return;
+    }
+
+    const { data: oneMacLegacyRecord } = safeEvent;
+
+    console.log(
+      `legacy event after transformation: ${JSON.stringify(oneMacLegacyRecord, null, 2)}`,
+    );
+
+    return oneMacLegacyRecord;
+  }
+
   console.log(`No transform found for event: ${record.event}`);
 
   return;
@@ -110,7 +159,9 @@ export const insertOneMacRecordsFromKafkaIntoMako = async (
   topicPartition: string,
 ) => {
   const oneMacRecordsForMako = kafkaRecords.reduce<OneMacRecord[]>((collection, kafkaRecord) => {
-    console.log(`record: ${JSON.stringify(kafkaRecord, null, 2)}`);
+    console.log(
+      `kafka record in insertOneMacRecordsFromKafkaIntoMako: ${JSON.stringify(kafkaRecord, null, 2)}`,
+    );
 
     try {
       const { value } = kafkaRecord;

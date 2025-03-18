@@ -1,19 +1,21 @@
-import { NavLink, NavLinkProps, Outlet, Link, useNavigate } from "react-router";
-import { useMediaQuery } from "@/hooks";
-import { Bars3Icon, XMarkIcon } from "@heroicons/react/24/outline";
-import { useState } from "react";
-import { useGetUser } from "@/api";
-import { Auth } from "aws-amplify";
 import { AwsCognitoOAuthOpts } from "@aws-amplify/auth/lib-esm/types";
+import { Bars3Icon, XMarkIcon } from "@heroicons/react/24/outline";
+import * as DropdownMenu from "@radix-ui/react-dropdown-menu";
+import { Auth } from "aws-amplify";
+import { useState } from "react";
+import { Link, NavLink, NavLinkProps, Outlet, useNavigate } from "react-router";
+import { UserRoles } from "shared-types";
+
+import { useGetUser } from "@/api";
+import { Banner, ScrollToTop, SimplePageContainer, UserPrompt } from "@/components";
+import MMDLAlertBanner from "@/components/Banner/MMDLSpaBanner";
+import config from "@/config";
+import { useMediaQuery } from "@/hooks";
+import { useHideBanner } from "@/hooks/useHideBanner";
+import { isFaqPage, isProd } from "@/utils";
+
 import { Footer } from "../Footer";
 import { UsaBanner } from "../UsaBanner";
-import * as DropdownMenu from "@radix-ui/react-dropdown-menu";
-import config from "@/config";
-import { ScrollToTop, SimplePageContainer, UserPrompt, Banner } from "@/components";
-import { isFaqPage, isProd } from "@/utils";
-import MMDLAlertBanner from "@/components/Banner/MMDLSpaBanner";
-import { UserRoles } from "shared-types";
-import { useHideBanner } from "@/hooks/useHideBanner";
 /**
  * Custom hook that generates a list of navigation links based on the user's status and whether the current page is the FAQ page.
  *
@@ -383,6 +385,23 @@ export const SubNavHeader = ({ children }: { children: React.ReactNode }) => (
     <div className="max-w-screen-xl m-auto px-4 lg:px-8">
       <div className="flex items-center">
         <div className="flex align-middle py-4">{children}</div>
+      </div>
+    </div>
+  </div>
+);
+
+type SupportSubNavHeaderProps = {
+  /*
+   * The content to be displayed inside the sub-navigation header
+   */
+  children: React.ReactNode;
+};
+
+export const SupportSubNavHeader = ({ children }: SupportSubNavHeaderProps) => (
+  <div className="bg-primary-dark sticky top-0" data-testid="sub-faq-nav-header">
+    <div className="max-w-screen-lg m-auto px-4 lg:px-8">
+      <div className="flex items-center">
+        <div className="flex align-middle py-2 text-white">{children}</div>
       </div>
     </div>
   </div>

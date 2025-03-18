@@ -1,13 +1,5 @@
 import { TZDate } from "@date-fns/tz";
-import { format, add } from "date-fns";
-
-export function formatDate(date: number | null | undefined) {
-  if (!date || date === undefined) {
-    return "Pending";
-  }
-
-  return format(date, "MMMM d, yyyy");
-}
+import { add, format } from "date-fns";
 
 export const isDST = (date: Date): boolean => {
   const jan = new Date(date).getTimezoneOffset();
@@ -27,8 +19,31 @@ export function formatNinetyDaysDate(date: number | null | undefined): string {
   return format(ninetyDaysLater, `MMM d, yyyy '@ 11:59pm ${timezoneAbbreviation}'`);
 }
 
-export const formatDateToEST = (utcDateValue: string | number) => {
+export function formatDate(dateValue: string | number) {
+  const dateObj = new Date(dateValue);
+
+  return format(dateObj, "MMMM d, yyyy");
+}
+
+export const formatDateToET = (
+  utcDateValue: string | number,
+  formatValue: string = "eee, MMM d yyyy, hh:mm:ss a",
+  includeTimezone: boolean = true,
+) => {
   const utcDateObj = new TZDate(new Date(utcDateValue).toISOString(), "America/New_York");
 
-  return format(utcDateObj, "eee, MMM d yyyy, hh:mm:ss a 'EST'");
+  if (includeTimezone) {
+    const tzTag = format(utcDateObj, "z") === "GMT-5" ? "EST" : "EDT";
+    return format(utcDateObj, `${formatValue} '${tzTag}'`);
+  }
+  return format(utcDateObj, formatValue);
+};
+
+export const formatDateToUTC = (
+  utcDateValue: string | number,
+  formatValue: string = "MMMM d, yyyy",
+) => {
+  const utcDateObj = new TZDate(new Date(utcDateValue).toISOString(), "UTC");
+
+  return format(utcDateObj, formatValue);
 };

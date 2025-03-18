@@ -1,18 +1,20 @@
+import { Link } from "react-router";
+
 import {
   ActionForm,
+  DatePicker,
   FormControl,
   FormField,
   FormItem,
   FormLabel,
   FormMessage,
+  Input,
   RequiredIndicator,
   SpaIdFormattingDesc,
-  Input,
-  DatePicker,
 } from "@/components";
-import { Link } from "react-router";
+import { FAQ_TAB } from "@/consts";
 import { formSchemas } from "@/formSchemas";
-import { FAQ_TAB } from "@/router";
+
 import { getFAQLinkForAttachments } from "../faqLinks";
 
 export const ChipForm = () => (

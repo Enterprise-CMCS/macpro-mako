@@ -1,15 +1,16 @@
 import { Handler } from "aws-lambda";
-import { decodeBase64WithUtf8 } from "shared-utils";
-import { KafkaEvent, KafkaRecord, opensearch } from "shared-types";
-import { ErrorType, bulkUpdateDataWrapper, getTopic, logError } from "libs/sink-lib";
-import {
-  transformUpdateValuesSchema,
-  transformDeleteSchema,
-  transformedUpdateIdSchema,
-  transformedSplitSPASchema,
-  transformSubmitValuesSchema,
-} from "./update/adminChangeSchemas";
 import { getPackageChangelog } from "libs/api/package";
+import { bulkUpdateDataWrapper, ErrorType, getTopic, logError } from "libs/sink-lib";
+import { KafkaEvent, KafkaRecord, opensearch } from "shared-types";
+import { decodeBase64WithUtf8 } from "shared-utils";
+
+import {
+  transformDeleteSchema,
+  transformedSplitSPASchema,
+  transformedUpdateIdSchema,
+  transformSubmitValuesSchema,
+  transformUpdateValuesSchema,
+} from "./update/adminChangeSchemas";
 
 // One notable difference between this handler and sinkMain's...
 // The order in which records are processed for the changelog doesn't matter.
@@ -55,8 +56,8 @@ const processAndIndex = async ({
   const docs: Array<(typeof transforms)[keyof typeof transforms]["Schema"]> = [];
   for (const kafkaRecord of kafkaRecords) {
     console.log(JSON.stringify(kafkaRecord, null, 2));
-    const { value, offset } = kafkaRecord;
-
+    const { value, offset, headers } = kafkaRecord;
+    const kafkaSource = String.fromCharCode(...(headers[0]?.source || []));
     try {
       // If a legacy tombstone, continue
       if (!value) {
@@ -132,10 +133,12 @@ const processAndIndex = async ({
           );
         }
       }
-      // If we're not a mako event, continue
-      // TODO:  handle legacy.  for now, just continue
-      if (!record.event || record?.origin !== "mako") {
-        continue;
+
+      // If the event is a supported event, transform and push to docs array for indexing
+      if (kafkaSource === "onemac" && record.GSI1pk) {
+        // This is a onemac legacy event
+        record.event = "legacy-event";
+        record.origin = "onemac";
       }
 
       // If the event is a supported event, transform and push to docs array for indexing

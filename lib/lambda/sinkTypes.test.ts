@@ -1,8 +1,5 @@
-import { describe, expect, it, vi, afterEach } from "vitest";
-import { handler } from "./sinkTypes";
 import { Context } from "aws-lambda";
 import * as os from "libs/opensearch-lib";
-import * as sink from "../libs/sink-lib";
 import {
   convertObjToBase64,
   createKafkaEvent,
@@ -11,6 +8,10 @@ import {
   OPENSEARCH_INDEX_NAMESPACE,
 } from "mocks";
 import { types } from "mocks/data/types";
+import { afterEach, describe, expect, it, vi } from "vitest";
+
+import * as sink from "../libs/sink-lib";
+import { handler } from "./sinkTypes";
 
 const OPENSEARCH_INDEX = `${OPENSEARCH_INDEX_NAMESPACE}types`;
 const TEST_TYPE = types[0];

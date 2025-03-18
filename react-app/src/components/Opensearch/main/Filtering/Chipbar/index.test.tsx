@@ -1,9 +1,11 @@
-import { describe, expect, it, vi, afterEach } from "vitest";
-import { screen, render } from "@testing-library/react";
+import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
-import { ChipBool, ChipDate, ChipTerms, FilterChips } from "./index";
 import { opensearch } from "shared-types";
-import { renderFilterDrawer, getDashboardQueryString, DEFAULT_FILTERS } from "@/utils/test-helpers";
+import { afterEach, describe, expect, it, vi } from "vitest";
+
+import { DEFAULT_FILTERS, getDashboardQueryString, renderFilterDrawer } from "@/utils/test-helpers";
+
+import { ChipBool, ChipDate, ChipTerms, FilterChips } from "./index";
 
 describe("FilterChips", () => {
   const openDrawer = vi.fn();

@@ -1,14 +1,15 @@
 import { render, screen, waitFor } from "@testing-library/react";
 import { describe, expect, it, vi } from "vitest";
-import { NewFaq } from "./NewFaq";
-import ExpandCollapseBtn from "./content/expandCollapseBtn";
+
+import ExpandCollapseBtn from "../../components/SupportPage/expandCollapseBtn";
+import { SupportPage } from "./SupportPage";
 
 vi.mock("react-router", async () => ({
   ...(await vi.importActual<Record<string, unknown>>("react-router")),
-  useParams: vi.fn().mockReturnValue({ id: "q1" }),
+  useParams: vi.fn().mockReturnValue({ id: "q1-support" }),
 }));
 
-vi.mock("./content/oneMACFAQContent", () => ({
+vi.mock("./content/SupportMockContent", () => ({
   oneMACFAQContent: [
     {
       sectionTitle: "Section 1",
@@ -45,14 +46,14 @@ describe("ExpandCollapseBtn", () => {
   });
 });
 
-describe("NewFaq", () => {
+describe("OneMAC Support", () => {
   it("should set open items correctly when id param is passed", async () => {
     const scrollToMock = vi.fn();
     global.scrollTo = scrollToMock;
 
-    render(<NewFaq />);
+    render(<SupportPage />);
 
-    expect(screen.getByTestId("q1")).toBeInTheDocument();
+    expect(screen.getByTestId("q1-support")).toBeInTheDocument();
     expect(scrollToMock).toHaveBeenCalled();
     expect(scrollToMock).toHaveBeenCalledWith({
       top: expect.any(Number),
@@ -61,7 +62,7 @@ describe("NewFaq", () => {
   });
 
   it("should calculate if all accordions are open correctly when expanded", async () => {
-    render(<NewFaq />);
+    render(<SupportPage />);
 
     const expandAllButton = screen.getByTestId("expand-all");
 
@@ -77,7 +78,7 @@ describe("NewFaq", () => {
   });
 
   it("should calculate if all accordions are collapsed correctly", async () => {
-    render(<NewFaq />);
+    render(<SupportPage />);
 
     const expandAllButton = screen.getByTestId("expand-all");
     expect(screen.queryByText("Answer 2")).toBeNull();

@@ -9,7 +9,6 @@ import {
   setDefaultStateSubmitter,
   setMockUsername,
 } from "mocks";
-
 import { mockedApiServer as mockedServer } from "mocks/server";
 import { afterAll, afterEach, beforeAll, expect, vi } from "vitest";
 
