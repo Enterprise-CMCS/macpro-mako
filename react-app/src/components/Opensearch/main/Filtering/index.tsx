@@ -11,7 +11,8 @@ export const OsFiltering: FC<{
   columns: OsTableColumn[];
   onToggle: (field: string) => void;
   disabled?: boolean;
-}> = ({ columns, onToggle, disabled }) => {
+  count: number;
+}> = ({ columns, onToggle, disabled, count }) => {
   const url = useOsUrl();
   const context = useOsContext();
 
@@ -37,7 +38,11 @@ export const OsFiltering: FC<{
             hiddenColumns={columns.filter((COL) => COL.hidden === true)}
           />
           <OsFilterDrawer />
-          <OsExportData columns={columns} disabled={context?.data?.total.value === 0} />
+          <OsExportData
+            columns={columns}
+            disabled={context?.data?.total.value === 0}
+            count={10200}
+          />
         </div>
       </div>
     </div>

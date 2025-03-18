@@ -16,22 +16,20 @@ import {
   TooltipTrigger,
   useOsUrl,
 } from "@/components";
+import { ConfirmationDialog } from "@/components/ConfirmationDialog";
 
 import { DEFAULT_FILTERS } from "../../useOpensearch";
 
 export const OsExportData: FC<{
   columns: OsTableColumn[];
   disabled?: boolean;
-}> = ({ columns, disabled }) => {
+  count: number;
+}> = ({ columns, disabled, count }) => {
   const [loading, setLoading] = useState(false);
+  const [showAlert, setShowAlert] = useState(false);
   const url = useOsUrl();
 
-  const handleExport = async () => {
-    if (disabled) {
-      return;
-    }
-    setLoading(true);
-
+  const triggerExportDownload = async () => {
     const exportData: Record<any, any>[] = [];
     const filters = [
       ...url.state.filters,
@@ -57,38 +55,69 @@ export const OsExportData: FC<{
       filename: `${url.state.tab}-export-${format(new Date(), "MM/dd/yyyy")}`,
     });
 
-    csvExporter.generateCsv(exportData);
-
     setLoading(false);
+    setShowAlert(false);
+
+    csvExporter.generateCsv(exportData);
+  };
+
+  const handleExport = () => {
+    if (disabled) {
+      return;
+    }
+
+    if (count > 10000) {
+      setShowAlert(true);
+      return;
+    }
+
+    setLoading(true);
+
+    triggerExportDownload();
   };
 
   return (
-    <TooltipProvider>
-      <Tooltip disableHoverableContent={true}>
-        <TooltipTrigger asChild className="disabled:pointer-events-auto">
-          <Button
-            variant="outline"
-            onClick={handleExport}
-            disabled={loading || disabled}
-            className="w-full xs:w-fit hover:bg-transparent self-center h-10 flex gap-2"
-            data-testid="tooltip-trigger"
-          >
-            {loading && (
-              <motion.div
-                animate={{ rotate: "360deg" }}
-                transition={{ repeat: Infinity, duration: 0.5 }}
-              >
-                <Loader className="w-4 h-4" />
-              </motion.div>
-            )}
-            {!loading && <Download className="w-4 h-4" />}
-            <span className="prose-sm">Export</span>
-          </Button>
-        </TooltipTrigger>
-        {disabled && (
-          <TooltipContent data-testid="tooltip-content">No records available</TooltipContent>
-        )}
-      </Tooltip>
-    </TooltipProvider>
+    <>
+      <ConfirmationDialog
+        open={showAlert}
+        title={"Export limit reached"}
+        body={"Only the first 10,000 records can be exported. Try filtering to get fewer results."}
+        acceptButtonText={"Export"}
+        aria-labelledby={"Export limit confirmation dialog."}
+        onAccept={() => {
+          setLoading(true);
+          setShowAlert(false);
+          triggerExportDownload();
+        }}
+        onCancel={() => setShowAlert(false)}
+      />
+      <TooltipProvider>
+        <Tooltip disableHoverableContent={true}>
+          <TooltipTrigger asChild className="disabled:pointer-events-auto">
+            <Button
+              variant="outline"
+              onClick={handleExport}
+              disabled={loading || disabled}
+              className="w-full xs:w-fit hover:bg-transparent self-center h-10 flex gap-2"
+              data-testid="tooltip-trigger"
+            >
+              {loading && (
+                <motion.div
+                  animate={{ rotate: "360deg" }}
+                  transition={{ repeat: Infinity, duration: 0.5 }}
+                >
+                  <Loader className="w-4 h-4" />
+                </motion.div>
+              )}
+              {!loading && <Download className="w-4 h-4" />}
+              <span className="prose-sm">Export</span>
+            </Button>
+          </TooltipTrigger>
+          {disabled && (
+            <TooltipContent data-testid="tooltip-content">No records available</TooltipContent>
+          )}
+        </Tooltip>
+      </TooltipProvider>
+    </>
   );
 };

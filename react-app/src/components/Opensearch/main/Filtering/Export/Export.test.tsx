@@ -18,7 +18,7 @@ const columns: OsTableColumn[] = [...DEFAULT_COLUMNS, NO_TRANSFORM_COLUMN, HIDDE
 const setup = (disabled?: boolean) => {
   const user = userEvent.setup();
   const rendered = renderFilterDrawer(
-    <OsExportData columns={columns} disabled={disabled} />,
+    <OsExportData columns={columns} disabled={disabled} count={123} />,
     getDashboardQueryString(),
   );
   return {
