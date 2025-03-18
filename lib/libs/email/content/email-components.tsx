@@ -52,7 +52,7 @@ const Textarea = ({ children }: { children: React.ReactNode }) => (
 
 const EmailNav = ({ appEndpointUrl }: { appEndpointUrl: string }) => (
   <Section style={styles.logo.container}>
-    <Link href={appEndpointUrl} target="_blank" rel="noreferrer" style={styles.logo.link}>
+    <Link href={appEndpointUrl} target="_blank" style={styles.logo.link}>
       <img
         height={40}
         width={112}
