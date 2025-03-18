@@ -1,6 +1,6 @@
 import { X } from "lucide-react";
 import { useCallback, useState } from "react";
-import { Accept, FileRejection, useDropzone } from "react-dropzone";
+import { FileRejection, useDropzone } from "react-dropzone";
 import { attachmentSchema } from "shared-types";
 import { FILE_TYPES } from "shared-types/uploads";
 import { v4 as uuidv4 } from "uuid";
@@ -46,9 +46,9 @@ type UploadProps = {
  */
 export const Upload = ({ maxFiles, files, setFiles, dataTestId }: UploadProps) => {
   const [isUploading, setIsUploading] = useState(false); // New state for tracking upload status
-  const [errorMessage, setErrorMessage] = useState<string | null>(null);
+  const [fileUploadError, setFileUploadError] = useState<string | null>(null);
   const uniqueId = uuidv4();
-  const MAX_FILE_SIZE = 80 * 1024 * 1024;
+  const MAX_FILE_SIZE = 80 * 1024 * 1024; //80 MB
   const accept = FILE_TYPES.reduce(
     (acc, { mime, extension }) => {
       acc[mime] = acc[mime] ? [...acc[mime], extension] : [extension];
@@ -56,6 +56,7 @@ export const Upload = ({ maxFiles, files, setFiles, dataTestId }: UploadProps) =
     },
     {} as Record<string, string[]>,
   );
+
   const existingFileNames = files.map((file) => file.filename);
 
   const validateFile = (file: File) => {
@@ -82,7 +83,7 @@ export const Upload = ({ maxFiles, files, setFiles, dataTestId }: UploadProps) =
   const onDrop = useCallback(
     async (acceptedFiles: File[], fileRejections: FileRejection[]) => {
       if (fileRejections.length === 0) {
-        setErrorMessage(null);
+        setFileUploadError(null);
         setIsUploading(true); // Set uploading to true
 
         const processedFiles = await Promise.all(
@@ -100,8 +101,8 @@ export const Upload = ({ maxFiles, files, setFiles, dataTestId }: UploadProps) =
                 uploadDate: Date.now(),
               };
               return attachment;
-            } catch (error) {
-              setErrorMessage("Failed to upload one or more files.");
+            } catch {
+              setFileUploadError("Failed to upload one or more files.");
               return null;
             }
           }),
@@ -153,7 +154,7 @@ export const Upload = ({ maxFiles, files, setFiles, dataTestId }: UploadProps) =
           ))}
         </div>
       )}
-      {errorMessage && <span className="text-red-500">{errorMessage}</span>}
+      {fileUploadError && <span className="text-red-500">{fileUploadError}</span>}
       {fileRejections.length > 0 && (
         <span className="text-red-500">
           {fileRejections.flatMap(({ file, errors }) =>
