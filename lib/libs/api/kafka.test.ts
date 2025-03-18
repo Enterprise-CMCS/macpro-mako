@@ -3,9 +3,9 @@ import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 
 import { getProducer, produceMessage } from "./kafka";
 
-vi.mock("libs/api/kafka", () => ({
-  produceMessage: vi.fn(() => Promise.resolve([{ partition: 0, offset: "1" }])),
-}));
+// vi.mock("libs/api/kafka", () => ({
+//   produceMessage: vi.fn(() => Promise.resolve([{ partition: 0, offset: "1" }])), // Return a valid response
+// }));
 
 describe("Kafka producer functions", () => {
   let brokerString: string | undefined;
@@ -33,6 +33,8 @@ describe("Kafka producer functions", () => {
     const key = "test-key";
     const value = JSON.stringify({ foo: "bar" });
 
+    mockedProducer.send.mockResolvedValueOnce([{ partition: 0, offset: "1" }]);
+
     await produceMessage(topic, key, value);
 
     expect(mockedProducer.connect).toHaveBeenCalled();
@@ -49,31 +51,6 @@ describe("Kafka producer functions", () => {
     });
     expect(mockedProducer.disconnect).toHaveBeenCalled();
     expect(consoleLogSpy).toHaveBeenCalledWith("Message sent successfully", expect.anything());
-  });
-
-  it("should handle errors when producing a message", async () => {
-    const topic = "test-topic";
-    const key = "test-key";
-    const value = JSON.stringify({ foo: "bar" });
-
-    const error = new Error("Failed to send message");
-    mockedProducer.send.mockRejectedValueOnce(error);
-
-    await produceMessage(topic, key, value);
-
-    expect(mockedProducer.connect).toHaveBeenCalled();
-    expect(mockedProducer.send).toHaveBeenCalledWith({
-      topic,
-      messages: [
-        {
-          key,
-          value,
-          partition: 0,
-          headers: { source: "mako" },
-        },
-      ],
-    });
-    expect(mockedProducer.disconnect).toHaveBeenCalled();
   });
 
   it("should throw an error if Kafka send fails", async () => {
