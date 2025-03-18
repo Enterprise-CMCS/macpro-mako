@@ -122,7 +122,9 @@ const PackageActivity = ({ packageActivity }: PackageActivityProps) => {
     <AccordionItem value={packageActivity.id}>
       <AccordionTrigger className="bg-gray-100 px-3">
         <p className="flex flex-row gap-2 text-gray-600">
-          <strong>{label}</strong>
+          <strong>
+            {label} {packageActivity.submitterName ? `By ${packageActivity.submitterName}` : ""}
+          </strong>
           {" - "}
           {packageActivity.timestamp ? formatDateToET(packageActivity.timestamp) : "Unknown"}
         </p>
