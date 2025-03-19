@@ -20,6 +20,8 @@ import { ConfirmationDialog } from "@/components/ConfirmationDialog";
 
 import { DEFAULT_FILTERS } from "../../useOpensearch";
 
+const EXPORT_LIMIT = 10000;
+
 export const OsExportData: FC<{
   columns: OsTableColumn[];
   disabled?: boolean;
@@ -28,8 +30,6 @@ export const OsExportData: FC<{
   const [loading, setLoading] = useState(false);
   const [showAlert, setShowAlert] = useState(false);
   const url = useOsUrl();
-
-  const EXPORT_LIMIT = 10000;
 
   const exportToCsv = async () => {
     setLoading(true);
@@ -99,15 +99,16 @@ export const OsExportData: FC<{
               className="w-full xs:w-fit hover:bg-transparent self-center h-10 flex gap-2"
               data-testid="tooltip-trigger"
             >
-              {loading && (
+              {loading ? (
                 <motion.div
                   animate={{ rotate: "360deg" }}
                   transition={{ repeat: Infinity, duration: 0.5 }}
                 >
                   <Loader className="w-4 h-4" />
                 </motion.div>
+              ) : (
+                <Download className="w-4 h-4" />
               )}
-              {!loading && <Download className="w-4 h-4" />}
               <span className="prose-sm">Export</span>
             </Button>
           </TooltipTrigger>

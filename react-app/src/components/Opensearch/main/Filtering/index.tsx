@@ -11,7 +11,7 @@ export const OsFiltering: FC<{
   columns: OsTableColumn[];
   onToggle: (field: string) => void;
   disabled?: boolean;
-  count: number;
+  count?: number;
 }> = ({ columns, onToggle, disabled, count }) => {
   const url = useOsUrl();
   const context = useOsContext();
