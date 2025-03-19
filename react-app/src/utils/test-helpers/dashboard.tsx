@@ -58,9 +58,9 @@ export const NO_TRANSFORM_COLUMN: OsTableColumn = {
 };
 
 export const NO_FIELD_COLUMN: OsTableColumn = {
-  label: "Latest Package Activity",
-  transform: (data) => data.makoChangedDate ?? BLANK_VALUE,
-  cell: (data) => data.makoChangedDate ?? BLANK_VALUE,
+  label: "Submitted By",
+  transform: (data) => data.submitterName ?? BLANK_VALUE,
+  cell: (data) => data.submitterName ?? BLANK_VALUE,
 };
 
 export const DEFAULT_FILTERS: opensearch.Filterable<opensearch.main.Field>[] = [
