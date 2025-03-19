@@ -24,7 +24,7 @@ const setup = (
 ) => {
   const user = userEvent.setup();
   const rendered = renderDashboard(
-    <OsFiltering columns={columns} onToggle={onToggle} disabled={disabled} count={123} />,
+    <OsFiltering columns={columns} onToggle={onToggle} disabled={disabled} />,
     {
       data: hits,
       error: null,
