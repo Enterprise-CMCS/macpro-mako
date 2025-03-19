@@ -11,7 +11,6 @@ describe("Kafka producer functions", () => {
   beforeEach(() => {
     brokerString = process.env.brokerString;
     process.env.brokerString = "broker1,broker2";
-
     consoleErrorSpy = vi.spyOn(console, "error").mockImplementation(() => {});
   });
 
