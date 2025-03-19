@@ -39,10 +39,10 @@ describe("Package Activity", () => {
 
     expect(screen.getByText("Package Activity (0)"));
     expect(screen.getByText("No package activity recorded"));
-    expect(screen.queryByText("Download all documents")).not.toBeInTheDocument();
+    expect(screen.queryByText("Download all attachments")).not.toBeInTheDocument();
   });
 
-  it("displays the correct title with changelog length, a changelog entry, and the 'Download all documents' button", async () => {
+  it("displays the correct title with changelog length, a changelog entry, and the 'Download all attachments' button", async () => {
     await renderFormWithPackageSectionAsync(
       <PackageActivities
         id={WITHDRAWN_CHANGELOG_ITEM_ID}
@@ -53,11 +53,11 @@ describe("Package Activity", () => {
 
     expect(screen.getByText("Package Activity (7)"));
     expect(screen.getByText("Initial Package Submitted By Bob Smith"));
-    expect(screen.getByText("Download all documents"));
+    expect(screen.getByText("Download all attachments"));
     expect(screen.getByText("Contract Amendment"));
   });
 
-  it("calls 'Download all documents' with onZip and the correct attachment arguments", async () => {
+  it("calls 'Download all attachments' with onZip and the correct attachment arguments", async () => {
     const spiedOnZip = vi.fn();
 
     // @ts-expect-error
@@ -75,8 +75,8 @@ describe("Package Activity", () => {
       WITHDRAWN_CHANGELOG_ITEM_ID,
     );
 
-    const downloadAllDocumentsBtn = screen.getByText("Download all documents");
-    await user.click(downloadAllDocumentsBtn);
+    const downloadAllAttachmentsBtn = screen.getByText("Download all attachments");
+    await user.click(downloadAllAttachmentsBtn);
 
     expect(spiedOnZip).toBeCalledWith([
       {
@@ -124,7 +124,7 @@ describe("Package Activity", () => {
     ]);
   });
 
-  it("calls 'Download documents' with onZip and the correct attachment arguments", async () => {
+  it("calls 'Download section attachments' with onZip and the correct attachment arguments", async () => {
     const spiedOnZip = vi.fn();
 
     // @ts-expect-error
@@ -142,8 +142,8 @@ describe("Package Activity", () => {
       WITHDRAWN_CHANGELOG_ITEM_ID,
     );
 
-    const downloadDocumentsBtn = screen.getByText("Download documents");
-    await user.click(downloadDocumentsBtn);
+    const downloadAttachmentsBtn = screen.getByText("Download section attachments");
+    await user.click(downloadAttachmentsBtn);
 
     expect(spiedOnZip).toBeCalledWith([
       {
