@@ -68,7 +68,7 @@ export const Welcome = () => {
             </p>
           </CardWithTopBorder>
         </div>
-        <LatestUpdates></LatestUpdates>
+        <LatestUpdates />
         <div className="flex flex-col justify-center gap-8">
           <div>
             <h2 className="text-2xl font-bold mb-4">State Users</h2>
