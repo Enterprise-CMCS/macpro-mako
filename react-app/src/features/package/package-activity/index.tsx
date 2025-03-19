@@ -70,7 +70,7 @@ const Submission = ({ packageActivity }: SubmissionProps) => {
           loading={loading}
           onClick={() => onZip(attachments)}
         >
-          Download documents
+          Download section attachments
         </Table.Button>
       )}
 
@@ -166,7 +166,7 @@ const DownloadAllButton = ({ packageId, submissionChangelog }: DownloadAllButton
 
   return (
     <Table.Button loading={loading} onClick={onDownloadAll} variant="outline">
-      Download all documents
+      Download all attachments
     </Table.Button>
   );
 };
