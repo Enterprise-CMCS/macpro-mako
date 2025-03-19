@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useState } from "react";
-import { useParams } from "react-router";
+import { Navigate, useParams } from "react-router";
 
 import {
   Accordion,
@@ -10,14 +10,14 @@ import {
   CardWithTopBorder,
   SubNavHeader,
 } from "@/components";
-import { useHideBanner } from "@/hooks/useHideBanner";
+import { useFeatureFlag } from "@/hooks/useFeatureFlag";
 
 import { helpDeskContact, oneMACFAQContent } from "./content/oneMACFAQContent";
-interface LegacyFaqProps {
-  flagValue: boolean;
-}
 
-export const LegacyFaq: React.FC<LegacyFaqProps> = () => {
+export const Faq = () => {
+  // check if the FAQ Toggle flag is "on" and redirrect if so
+  const isFAQHidden = useFeatureFlag("TOGGLE_FAQ");
+
   const { id } = useParams<{ id: string }>();
 
   const [openItems, setOpenItems] = useState<string[]>([]);
@@ -44,7 +44,7 @@ export const LegacyFaq: React.FC<LegacyFaqProps> = () => {
   }, [id]);
 
   // Get the flag value for hiding the MMDL banner.
-  const isBannerHidden = useHideBanner();
+  const isBannerHidden = useFeatureFlag("UAT_HIDE_MMDL_BANNER");
   const anchorsToHide = [
     "spa-admendments",
     "abp-spa-templates",
@@ -64,6 +64,10 @@ export const LegacyFaq: React.FC<LegacyFaqProps> = () => {
     }
     return section;
   });
+
+  if (isFAQHidden) {
+    return <Navigate to="/" replace />;
+  }
   return (
     <>
       <SubNavHeader>

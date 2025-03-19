@@ -1,7 +1,8 @@
 import { ToggleGroup, ToggleGroupItem } from "@radix-ui/react-toggle-group";
 import { useEffect, useMemo, useState } from "react";
-import { useParams } from "react-router";
+import { Navigate, useParams } from "react-router";
 
+import { useGetUser } from "@/api/useGetUser";
 import {
   Accordion,
   AccordionContent,
@@ -9,15 +10,12 @@ import {
   AccordionTrigger,
   SupportSubNavHeader,
 } from "@/components";
+import { useFeatureFlag } from "@/hooks/useFeatureFlag";
 import { cn } from "@/utils";
 
 import ExpandCollapseBtn from "../../components/SupportPage/expandCollapseBtn";
 import LeftNavigation from "../../components/SupportPage/navigationBar";
-import {
-  oneMACCMSContent,
-  oneMACStateFAQContent,
-  QuestionAnswer,
-} from "./content/SupportMockContent";
+import { oneMACCMSContent, oneMACStateFAQContent, QuestionAnswer } from "./SupportMockContent";
 
 const FaqAccordion = ({ question }: { question: QuestionAnswer[] }) => {
   return (
@@ -45,10 +43,15 @@ const toggleGroupItemStyle =
 
 const toggleGroupItemActiveStyle =
   "data-[state=on]:border-b-primary-dark data-[state=on]:bg-blue-50 data-[state=on]:text-primary-dark data-[state=on]:font-bold";
+
 export const SupportPage = () => {
   const { id } = useParams<{ id: string }>();
+  const isSupportPageShown = useFeatureFlag("TOGGLE_FAQ");
   const [openAccordions, setOpenAccordions] = useState<string[]>([]);
-  const [tgValue, setTGValue] = useState<"cms" | "state">("cms");
+
+  const { data: userObj } = useGetUser();
+
+  const [tgValue, setTGValue] = useState<"cms" | "state">(userObj.isCms ? "cms" : "state");
 
   const supportContent = useMemo(() => {
     if (tgValue === "cms") return oneMACCMSContent;
@@ -85,40 +88,45 @@ export const SupportPage = () => {
     }
   }, [id]);
 
+  if (!isSupportPageShown || !userObj?.user) return <Navigate to="/" replace />;
+
   return (
     <div className="min-h-screen flex flex-col">
       <SupportSubNavHeader>
         <h1 className="text-4xl font-bold">OneMAC Support</h1>
       </SupportSubNavHeader>
 
-      <div className="flex max-w-screen-xl m-auto px-4 lg:px-8 pt-8 w-full border-b-2 border-b-slate-100 justify-end">
-        <div className="w-2/3 px-4 lg:px-8">
-          <ToggleGroup
-            className="ToggleGroup"
-            type="single"
-            aria-label="Text alignment"
-            value={tgValue}
-            onValueChange={(value: "cms" | "state") => {
-              if (value) setTGValue(value);
-            }}
-          >
-            <ToggleGroupItem
-              className={cn(toggleGroupItemStyle, toggleGroupItemActiveStyle)}
-              value="cms"
-              aria-label="cms"
+      {/* only display the toggle CMS/State view when the user is CMS */}
+      {userObj.isCms && (
+        <div className="flex max-w-screen-xl m-auto px-4 lg:px-8 pt-8 w-full border-b-2 border-b-slate-100 justify-end">
+          <div className="w-2/3 px-4 lg:px-8">
+            <ToggleGroup
+              className="ToggleGroup"
+              type="single"
+              aria-label="Text alignment"
+              value={tgValue}
+              onValueChange={(value: "cms" | "state") => {
+                if (value) setTGValue(value);
+              }}
             >
-              CMS
-            </ToggleGroupItem>
-            <ToggleGroupItem
-              className={cn(toggleGroupItemStyle, toggleGroupItemActiveStyle)}
-              value="state"
-              aria-label="state"
-            >
-              States
-            </ToggleGroupItem>
-          </ToggleGroup>
+              <ToggleGroupItem
+                className={cn(toggleGroupItemStyle, toggleGroupItemActiveStyle)}
+                value="cms"
+                aria-label="cms"
+              >
+                CMS
+              </ToggleGroupItem>
+              <ToggleGroupItem
+                className={cn(toggleGroupItemStyle, toggleGroupItemActiveStyle)}
+                value="state"
+                aria-label="state"
+              >
+                States
+              </ToggleGroupItem>
+            </ToggleGroup>
+          </div>
         </div>
-      </div>
+      )}
 
       {/* Main Layout Wrapper with explicit widths */}
       <div className="max-w-screen-xl m-auto px-4 lg:px-8 pt-8 w-full">

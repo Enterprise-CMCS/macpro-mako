@@ -7,7 +7,7 @@ import * as C from "@/components";
 import { Button } from "@/components";
 import { CardWithTopBorder } from "@/components";
 import { FAQ_TAB } from "@/consts";
-import { useHideBanner } from "@/hooks/useHideBanner";
+import { useFeatureFlag } from "@/hooks/useFeatureFlag";
 
 export const loader = (queryClient: QueryClient) => {
   return async () => {
@@ -32,7 +32,7 @@ export const loader = (queryClient: QueryClient) => {
 };
 
 export const Welcome = () => {
-  const isSectionHidden = useHideBanner();
+  const isSectionHidden = useFeatureFlag("UAT_HIDE_MMDL_BANNER");
 
   return (
     <>
