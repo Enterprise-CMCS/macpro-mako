@@ -34,6 +34,7 @@ export const legacyEventSchema = legacySharedSchema
 
     return {
       ...data,
+      proposedEffectiveDate: null, // blank out the value that will be transformed, we handle it below
       additionalInformation: data.additionalInformation,
       changedDate: lastEventTimestampDate.toISOString(), // eventTimestamp as ISO string
       cmsStatus, // Derived status
