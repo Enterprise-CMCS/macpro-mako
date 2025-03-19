@@ -79,10 +79,10 @@ export const OsExportData: FC<{
     <>
       <ConfirmationDialog
         open={showAlert}
-        title={"Export limit reached"}
-        body={"Only the first 10,000 records can be exported. Try filtering to get fewer results."}
-        acceptButtonText={"Export"}
-        aria-labelledby={"Export limit confirmation dialog."}
+        title="Export limit reached"
+        body="Only the first 10,000 records can be exported. Try filtering to get fewer results."
+        acceptButtonText="Export"
+        aria-labelledby="Export limit confirmation dialog."
         onAccept={() => {
           setShowAlert(false);
           exportToCsv();
