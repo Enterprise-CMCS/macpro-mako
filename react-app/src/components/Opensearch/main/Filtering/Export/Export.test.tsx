@@ -15,10 +15,10 @@ import {
 
 const columns: OsTableColumn[] = [...DEFAULT_COLUMNS, NO_TRANSFORM_COLUMN, HIDDEN_COLUMN];
 
-const setup = (disabled?: boolean) => {
+const setup = (disabled?: boolean, count: number = 123) => {
   const user = userEvent.setup();
   const rendered = renderFilterDrawer(
-    <OsExportData columns={columns} disabled={disabled} count={123} />,
+    <OsExportData columns={columns} disabled={disabled} count={count} />,
     getDashboardQueryString(),
   );
   return {
@@ -64,5 +64,18 @@ describe("Tooltip component within export button", () => {
     await user.click(screen.queryByTestId("tooltip-trigger"));
 
     expect(spy).toHaveBeenCalledWith(expected);
+  });
+
+  it("should show modal when count is greater than 10000", async () => {
+    const { user } = setup(false, 10001);
+
+    await user.click(screen.queryByTestId("tooltip-trigger"));
+
+    expect(screen.getByText("Export limit reached")).toBeVisible();
+    expect(
+      screen.getByText(
+        "Only the first 10,000 records can be exported. Try filtering to get fewer results.",
+      ),
+    ).toBeVisible();
   });
 });

@@ -29,7 +29,10 @@ export const OsExportData: FC<{
   const [showAlert, setShowAlert] = useState(false);
   const url = useOsUrl();
 
-  const triggerExportDownload = async () => {
+  const EXPORT_LIMIT = 10000;
+
+  const exportToCsv = async () => {
+    setLoading(true);
     const exportData: Record<any, any>[] = [];
     const filters = [
       ...url.state.filters,
@@ -55,25 +58,21 @@ export const OsExportData: FC<{
       filename: `${url.state.tab}-export-${format(new Date(), "MM/dd/yyyy")}`,
     });
 
-    setLoading(false);
-    setShowAlert(false);
-
     csvExporter.generateCsv(exportData);
+    setLoading(false);
   };
 
-  const handleExport = () => {
+  const handleExport = async () => {
     if (disabled) {
       return;
     }
 
-    if (count > 10000) {
+    if (count > EXPORT_LIMIT) {
       setShowAlert(true);
       return;
     }
 
-    setLoading(true);
-
-    triggerExportDownload();
+    await exportToCsv();
   };
 
   return (
@@ -85,9 +84,8 @@ export const OsExportData: FC<{
         acceptButtonText={"Export"}
         aria-labelledby={"Export limit confirmation dialog."}
         onAccept={() => {
-          setLoading(true);
           setShowAlert(false);
-          triggerExportDownload();
+          exportToCsv();
         }}
         onCancel={() => setShowAlert(false)}
       />

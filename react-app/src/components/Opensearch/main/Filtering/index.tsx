@@ -41,7 +41,7 @@ export const OsFiltering: FC<{
           <OsExportData
             columns={columns}
             disabled={context?.data?.total.value === 0}
-            count={10200}
+            count={count}
           />
         </div>
       </div>
