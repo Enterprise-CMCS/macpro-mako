@@ -1,7 +1,7 @@
 import { useMemo } from "react";
 import { opensearch } from "shared-types";
 import { ItemResult } from "shared-types/opensearch/changelog";
-import { formatDateToEST } from "shared-utils";
+import { formatDateToET } from "shared-utils";
 
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components";
 import * as Table from "@/components";
@@ -122,9 +122,11 @@ const PackageActivity = ({ packageActivity }: PackageActivityProps) => {
     <AccordionItem value={packageActivity.id}>
       <AccordionTrigger className="bg-gray-100 px-3">
         <p className="flex flex-row gap-2 text-gray-600">
-          <strong>{label}</strong>
+          <strong>
+            {label} {packageActivity.submitterName ? `By ${packageActivity.submitterName}` : ""}
+          </strong>
           {" - "}
-          {packageActivity.timestamp ? formatDateToEST(packageActivity.timestamp) : "Unknown"}
+          {packageActivity.timestamp ? formatDateToET(packageActivity.timestamp) : "Unknown"}
         </p>
       </AccordionTrigger>
       <AccordionContent className="p-4">
