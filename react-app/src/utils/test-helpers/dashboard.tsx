@@ -139,7 +139,7 @@ export const getDashboardQueryString = ({
         size: 25,
       },
       sort: sort || {
-        field: "submissionDate",
+        field: "makoChangedDate",
         order: "desc",
       },
       URL_CODE,
