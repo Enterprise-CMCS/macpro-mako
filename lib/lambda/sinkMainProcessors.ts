@@ -34,29 +34,29 @@ type ParsedLegacyRecordFromKafka = Partial<{
   GSI1pk: string;
 }>;
 
-const extendAdminSchema = async (
-  schema: z.ZodObject<Record<string, z.ZodTypeAny>>,
-  record: any,
-): Promise<z.ZodObject<Record<string, z.ZodTypeAny>>> => {
-  try {
-    console.log(record, "RECORD?");
-    const packageEvent = await getPackageType(record.id);
-    console.log(packageEvent, "package EVENT");
-    const packageSubmissionTypeSchema = events[packageEvent as keyof typeof events]?.baseSchema;
-    console.log(packageSubmissionTypeSchema.shape, "PACKAGE SUB TYPE SCHEMa shape");
+// const extendAdminSchema = async (
+//   schema: z.ZodObject<Record<string, z.ZodTypeAny>>,
+//   record: any,
+// ): Promise<z.ZodObject<Record<string, z.ZodTypeAny>>> => {
+//   try {
+//     console.log(record, "RECORD?");
+//     const packageEvent = await getPackageType(record.id);
+//     console.log(packageEvent, "package EVENT");
+//     const packageSubmissionTypeSchema = events[packageEvent as keyof typeof events]?.baseSchema;
+//     console.log(packageSubmissionTypeSchema.shape, "PACKAGE SUB TYPE SCHEMa shape");
 
-    if (!packageSubmissionTypeSchema) {
-      throw new Error(`Schema not found for package event: ${packageEvent}`);
-    }
-    if (!(packageSubmissionTypeSchema instanceof z.ZodObject)) {
-      throw new Error(`Invalid schema format`);
-    }
-    return schema.merge(packageSubmissionTypeSchema) as z.ZodObject<Record<string, z.ZodTypeAny>>;
-  } catch (error) {
-    console.log(error);
-    throw error;
-  }
-};
+//     if (!packageSubmissionTypeSchema) {
+//       throw new Error(`Schema not found for package event: ${packageEvent}`);
+//     }
+//     if (!(packageSubmissionTypeSchema instanceof z.ZodObject)) {
+//       throw new Error(`Invalid schema format`);
+//     }
+//     return schema.merge(packageSubmissionTypeSchema) as z.ZodObject<Record<string, z.ZodTypeAny>>;
+//   } catch (error) {
+//     console.log(error);
+//     throw error;
+//   }
+// };
 
 // const adminRecordSchema = deleteAdminChangeSchema
 //   .or(updateValuesAdminChangeSchema)
@@ -88,7 +88,7 @@ const isRecordAOneMacRecord = (
 
 const isRecordAnAdminOneMacRecord = (
   record: ParsedRecordFromKafka,
-): record is { adminChangeType: string; isAdminChange: boolean } =>
+): record is { id: string; adminChangeType: string; isAdminChange: boolean } =>
   typeof record === "object" &&
   record?.isAdminChange === true &&
   record?.adminChangeType !== undefined;
@@ -103,8 +103,15 @@ const getOneMacRecordWithAllProperties = async (
   const kafkaSource = String.fromCharCode(...(kafkaRecord.headers[0]?.source || []));
   console.log(record, "RECORDDDD");
   if (isRecordAnAdminOneMacRecord(record)) {
-    const extendUpdateValuesSchema = await extendAdminSchema(updateValuesAdminChangeSchema, record);
-    const extendUpdateIdSchema = await extendAdminSchema(updateIdAdminChangeSchema, record);
+    // const extendUpdateValuesSchema = await extendAdminSchema(updateValuesAdminChangeSchema, record);
+    // const extendUpdateIdSchema = await extendAdminSchema(updateIdAdminChangeSchema, record);
+    const packageEvent = await getPackageType(record.id);
+    console.log(packageEvent, "package EVENT");
+    const packageSubmissionTypeSchema = events[packageEvent as keyof typeof events]?.baseSchema;
+    const extendUpdateValuesSchema = packageSubmissionTypeSchema.merge(
+      updateValuesAdminChangeSchema,
+    );
+    const extendUpdateIdSchema = packageSubmissionTypeSchema.merge(updateIdAdminChangeSchema);
 
     const adminRecordSchema = deleteAdminChangeSchema
       .or(extendUpdateValuesSchema)
