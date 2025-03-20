@@ -52,7 +52,7 @@ const extendAdminSchema = async (
       throw new Error(`Invalid schema format`);
     }
     return schema.merge(
-      packageSubmissionTypeSchema.shape() as z.ZodObject<Record<string, z.ZodTypeAny>>,
+      packageSubmissionTypeSchema.shape as z.ZodObject<Record<string, z.ZodTypeAny>>,
     );
   } catch (error) {
     console.log(error);
