@@ -14,6 +14,10 @@ vi.mock("@/hooks/useFeatureFlag", () => ({
   useFeatureFlag: vi.fn().mockReturnValue(true),
 }));
 
+vi.mock("shared-utils", () => ({
+  isCmsUser: vi.fn().mockReturnValue(false),
+}));
+
 vi.mock("./SupportMockContent", () => ({
   oneMACStateFAQContent: [
     {
@@ -42,7 +46,7 @@ vi.mock("./SupportMockContent", () => ({
 }));
 
 vi.mock("@/api/useGetUser", () => ({
-  useGetUser: vi.fn().mockReturnValue({ data: { user: true, isCms: false } }),
+  useGetUser: vi.fn().mockReturnValue({ data: { user: true } }),
 }));
 
 describe("ExpandCollapseBtn", () => {
@@ -115,8 +119,8 @@ describe("OneMAC Support", () => {
   });
 
   it("should display the Toggle group if the user is CMS", () => {
-    vi.mock("@/api/useGetUser", () => ({
-      useGetUser: vi.fn().mockReturnValue({ data: { user: true, isCms: true } }),
+    vi.mock("shared-utils", () => ({
+      isCmsUser: vi.fn().mockReturnValue(true),
     }));
     render(<SupportPage />);
 
