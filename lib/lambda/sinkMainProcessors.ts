@@ -1,8 +1,10 @@
 import { isBefore } from "date-fns";
 import { bulkUpdateDataWrapper, ErrorType, getItems, logError } from "libs";
 import { KafkaRecord, opensearch, SeatoolRecordWithUpdatedDate } from "shared-types";
+import { events } from "shared-types";
 import { Document, legacyTransforms, transforms } from "shared-types/opensearch/main";
 import { decodeBase64WithUtf8 } from "shared-utils";
+import { z } from "zod";
 
 import {
   deleteAdminChangeSchema,
@@ -11,13 +13,8 @@ import {
   updateIdAdminChangeSchema,
   updateValuesAdminChangeSchema,
 } from "./update/adminChangeSchemas";
-
+import { getPackageType } from "./update/getPackageType";
 const removeDoubleQuotesSurroundingString = (str: string) => str.replace(/^"|"$/g, "");
-const adminRecordSchema = deleteAdminChangeSchema
-  .or(updateValuesAdminChangeSchema)
-  .or(updateIdAdminChangeSchema)
-  .or(splitSPAAdminChangeSchema)
-  .or(extendSubmitNOSOAdminSchema);
 
 type OneMacRecord = {
   id: string;
@@ -36,6 +33,33 @@ type ParsedLegacyRecordFromKafka = Partial<{
   sk: string;
   GSI1pk: string;
 }>;
+
+const extendAdminSchema = async (
+  schema: z.ZodObject<Record<string, z.ZodTypeAny>>,
+  record: any,
+): Promise<z.ZodObject<Record<string, z.ZodTypeAny>>> => {
+  try {
+    const packageEvent = await getPackageType(record.id);
+    const packageSubmissionTypeSchema = events[packageEvent as keyof typeof events]?.baseSchema;
+
+    if (!packageSubmissionTypeSchema) {
+      throw new Error(`Schema not found for package event: ${packageEvent}`);
+    }
+    if (!(packageSubmissionTypeSchema instanceof z.ZodObject)) {
+      throw new Error(`Invalid schema format`);
+    }
+    return schema.merge(packageSubmissionTypeSchema as z.ZodObject<Record<string, z.ZodTypeAny>>);
+  } catch (error) {
+    console.log(error);
+    throw error;
+  }
+};
+
+// const adminRecordSchema = deleteAdminChangeSchema
+//   .or(updateValuesAdminChangeSchema)
+//   .or(updateIdAdminChangeSchema)
+//   .or(splitSPAAdminChangeSchema)
+//   .or(extendSubmitNOSOAdminSchema);
 
 export const isRecordALegacyOneMacRecord = (
   record: ParsedLegacyRecordFromKafka,
@@ -66,16 +90,25 @@ const isRecordAnAdminOneMacRecord = (
   record?.isAdminChange === true &&
   record?.adminChangeType !== undefined;
 
-const getOneMacRecordWithAllProperties = (
+const getOneMacRecordWithAllProperties = async (
   value: string,
   topicPartition: string,
   kafkaRecord: KafkaRecord,
-): OneMacRecord | undefined => {
+): Promise<OneMacRecord | undefined> => {
   const record = JSON.parse(decodeBase64WithUtf8(value));
   console.log(`kafkaRecord: ${JSON.stringify(kafkaRecord, null, 2)}`);
   const kafkaSource = String.fromCharCode(...(kafkaRecord.headers[0]?.source || []));
 
   if (isRecordAnAdminOneMacRecord(record)) {
+    const extendUpdateValuesSchema = await extendAdminSchema(updateValuesAdminChangeSchema, record);
+    const extendUpdateIdSchema = await extendAdminSchema(updateIdAdminChangeSchema, record);
+
+    const adminRecordSchema = deleteAdminChangeSchema
+      .or(extendUpdateValuesSchema)
+      .or(extendUpdateIdSchema)
+      .or(splitSPAAdminChangeSchema)
+      .or(extendSubmitNOSOAdminSchema);
+
     const safeRecord = adminRecordSchema.safeParse(record);
 
     if (safeRecord.success === false) {

@@ -1,5 +1,8 @@
-import { z } from "zod";
 import { events } from "lib/packages/shared-types";
+import { ItemResult } from "lib/packages/shared-types/opensearch/changelog";
+import { z } from "zod";
+
+import { getPackageType } from "./getPackageType";
 
 // const allBaseSchemas = Object.values(events).reduce(
 //   (acc, event) => acc.merge(event.baseSchema),
@@ -16,7 +19,7 @@ import { events } from "lib/packages/shared-types";
 //   idToBeUpdated: z.string().optional(),
 //   mockEvent: z.string().optional(),
 //   withdrawEmailSent: z.boolean().optional(),
-// });
+// });async
 
 export const deleteAdminChangeSchema = z.object({
   id: z.string(),
@@ -28,28 +31,26 @@ export const deleteAdminChangeSchema = z.object({
   timestamp: z.number(),
 });
 
-export const updateValuesAdminChangeSchema = z
-  .object({
-    id: z.string(),
-    adminChangeType: z.literal("update-values"),
-    makoChangedDate: z.number(),
-    changedDate: z.number(),
-    statusDate: z.number(),
-    timestamp: z.number(),
-  })
-  // .and(z.record(z.string(), z.any()));
+export const updateValuesAdminChangeSchema = z.object({
+  id: z.string(),
+  adminChangeType: z.literal("update-values"),
+  makoChangedDate: z.number(),
+  changedDate: z.number(),
+  statusDate: z.number(),
+  timestamp: z.number(),
+});
+// .and(z.record(z.string(), z.any()));
 
-export const updateIdAdminChangeSchema = z
-  .object({
-    id: z.string(),
-    adminChangeType: z.literal("update-id"),
-    idToBeUpdated: z.string(),
-    makoChangedDate: z.number(),
-    changedDate: z.number(),
-    statusDate: z.number(),
-    timestamp: z.number(),
-  })
-  .and(z.record(z.string(), z.any()));
+export const updateIdAdminChangeSchema = z.object({
+  id: z.string(),
+  adminChangeType: z.literal("update-id"),
+  idToBeUpdated: z.string(),
+  makoChangedDate: z.number(),
+  changedDate: z.number(),
+  statusDate: z.number(),
+  timestamp: z.number(),
+});
+// .and(z.record(z.string(), z.any()));
 
 export const splitSPAAdminChangeSchema = z
   .object({
