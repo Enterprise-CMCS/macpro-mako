@@ -54,7 +54,7 @@ test.describe("UI - Validation", () => {
       );
 
       await expect(page.getByTestId("cmsForm179-label")).toBeVisible();
-      await expect(page.getByTestId("cmsForm179-label")).toHaveText("CMS Form 179");
+      await expect(page.getByTestId("cmsForm179-label")).toHaveText("CMS-179 Form");
 
       // TODO: Extend to all labels
     });
