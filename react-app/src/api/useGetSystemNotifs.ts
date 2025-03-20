@@ -24,8 +24,7 @@ const mapNotifications = (notifications: any): BannerNotification[] => {
 };
 export const getSystemNotifs = async (): Promise<BannerNotification[]> => {
   const notifications = await API.get("os", "/systemNotifs", {});
-  const mappedNotifications = mapNotifications(notifications);
-  return mappedNotifications;
+  return mapNotifications(notifications);
 };
 
 export const useGetSystemNotifs = () => {
