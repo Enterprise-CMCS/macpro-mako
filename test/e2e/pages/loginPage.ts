@@ -16,5 +16,6 @@ export class LoginPage {
     await this.page.getByRole("link", { name: "Dashboard" }).nth(0).waitFor();
     await this.page.getByRole("link", { name: "Dashboard" }).nth(1).waitFor();
     await this.page.getByRole("link", { name: "Dashboard" }).nth(0).isVisible();
+    await this.page.getByRole("link", { name: "Dashboard" }).nth(1).isVisible();
   }
 }
