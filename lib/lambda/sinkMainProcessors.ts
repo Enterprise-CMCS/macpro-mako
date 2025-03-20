@@ -101,7 +101,7 @@ const getOneMacRecordWithAllProperties = async (
   const record = JSON.parse(decodeBase64WithUtf8(value));
   console.log(`kafkaRecord: ${JSON.stringify(kafkaRecord, null, 2)}`);
   const kafkaSource = String.fromCharCode(...(kafkaRecord.headers[0]?.source || []));
-
+  console.log(record, "RECORDDDD");
   if (isRecordAnAdminOneMacRecord(record)) {
     const extendUpdateValuesSchema = await extendAdminSchema(updateValuesAdminChangeSchema, record);
     const extendUpdateIdSchema = await extendAdminSchema(updateIdAdminChangeSchema, record);
