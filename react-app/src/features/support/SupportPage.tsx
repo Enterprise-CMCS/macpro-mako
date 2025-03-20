@@ -96,7 +96,8 @@ export const SupportPage = () => {
           <div className="w-2/3 px-4 lg:px-8">
             <ToggleGroup
               type="single"
-              aria-label="Text alignment"
+              aria-label="CMS State Toggle"
+              data-testid="cms-toggle-group"
               value={tgValue}
               onValueChange={(value: "cms" | "state") => {
                 if (value) setTGValue(value);

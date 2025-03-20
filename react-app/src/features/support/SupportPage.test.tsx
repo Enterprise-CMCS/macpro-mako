@@ -1,16 +1,22 @@
 import { render, screen, waitFor } from "@testing-library/react";
 import { describe, expect, it, vi } from "vitest";
 
+// import { useGetUser } from "@/api/useGetUser";
 import ExpandCollapseBtn from "../../components/SupportPage/expandCollapseBtn";
 import { SupportPage } from "./SupportPage";
 
 vi.mock("react-router", async () => ({
   ...(await vi.importActual<Record<string, unknown>>("react-router")),
   useParams: vi.fn().mockReturnValue({ id: "q1-support" }),
+  Navigate: vi.fn(),
 }));
 
-vi.mock("./content/SupportMockContent", () => ({
-  oneMACFAQContent: [
+vi.mock("@/hooks/useFeatureFlag", () => ({
+  useFeatureFlag: vi.fn().mockReturnValue(true),
+}));
+
+vi.mock("./SupportMockContent", () => ({
+  oneMACStateFAQContent: [
     {
       sectionTitle: "Section 1",
       qanda: [
@@ -20,10 +26,24 @@ vi.mock("./content/SupportMockContent", () => ({
       ],
     },
   ],
+  oneMACCMSContent: [
+    {
+      sectionTitle: "CMS Section 1",
+      qanda: [
+        { anchorText: "q1", question: "What is CMS FAQ 1?", answerJSX: <p>Answer 1</p> },
+        { anchorText: "q2", question: "What is CMS FAQ 2?", answerJSX: <p>Answer 2</p> },
+        { anchorText: "q3", question: "What is CMS FAQ 3?", answerJSX: <p>Answer 3</p> },
+      ],
+    },
+  ],
   helpDeskContact: {
     phone: "123-456-7890",
     email: "help@example.com",
   },
+}));
+
+vi.mock("@/api/useGetUser", () => ({
+  useGetUser: vi.fn().mockReturnValue({ data: { user: true, isCms: false } }),
 }));
 
 describe("ExpandCollapseBtn", () => {
@@ -93,5 +113,14 @@ describe("OneMAC Support", () => {
     expect(screen.queryByText("Answer 3")).toBeNull();
 
     expect(screen.getByTestId("expand-all")).toHaveTextContent("Expand all");
+  });
+
+  it("should display the Toggle group if the user is CMS", () => {
+    vi.mock("@/api/useGetUser", () => ({
+      useGetUser: vi.fn().mockReturnValue({ data: { user: true, isCms: true } }),
+    }));
+    render(<SupportPage />);
+
+    expect(screen.getByTestId("cms-toggle-group")).toBeInTheDocument();
   });
 });
