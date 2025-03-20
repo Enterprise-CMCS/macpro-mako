@@ -12,7 +12,6 @@ export const useFeatureFlag = (flagKey: keyof typeof featureFlags): boolean => {
     featureFlags[flagKey].flag,
     featureFlags[flagKey].defaultValue,
   );
-  console.log("LD", ldClient.allFlags());
 
   return flagValue === "on" || flagValue === true;
 };
