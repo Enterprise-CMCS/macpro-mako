@@ -18,15 +18,15 @@ export const Footer = ({ email, address }: Props) => {
       <section className="bg-[#f0f0f0] text-sm">
         <div className="grid grid-cols-12 gap-4 px-10 py-4 max-w-screen-xl mx-auto">
           <div className="col-span-6 flex gap-8">
-            <Link to="/" className="underline font-bold">
-              Home
-            </Link>
-            <Link to="/dashboard" className="underline font-bold">
-              Dashboard
-            </Link>
-            <Link to="/faq" className="underline font-bold">
-              Support
-            </Link>
+            <a href="/" className="underline font-bold">
+              <p>Home</p>
+            </a>
+            <a href="/dashboard" className="underline font-bold">
+              <p>Dashboard</p>
+            </a>
+            <a href="/faq" className="underline font-bold">
+              <p>Support</p>
+            </a>
           </div>
           <div className="col-span-6 flex gap-8 justify-end">
             <p>Help Desk:</p>
