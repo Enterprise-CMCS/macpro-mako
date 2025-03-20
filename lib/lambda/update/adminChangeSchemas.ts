@@ -87,6 +87,8 @@ export const submitNOSOAdminSchema = z.object({
   mockEvent: z.string(),
   changeMade: z.string(),
   changeReason: z.string(),
+  submissionDate: z.string(),
+  proposedDate: z.string(),
 });
 
 export const extendSubmitNOSOAdminSchema = submitNOSOAdminSchema.extend({
@@ -96,6 +98,8 @@ export const extendSubmitNOSOAdminSchema = submitNOSOAdminSchema.extend({
   changedDate: z.number(),
   statusDate: z.number(),
   timestamp: z.number(),
+  submssionDate: z.number(),
+  proposedDate: z.number(),
   isAdminChange: z.boolean(),
   state: z.string(),
   event: z.string(),

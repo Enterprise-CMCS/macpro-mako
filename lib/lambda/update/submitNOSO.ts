@@ -26,10 +26,18 @@ interface submitMessageType {
   status: string;
   submitterEmail: string;
   submitterName: string;
+  submissionDate: string;
+  proposedDate: string;
   adminChangeType: string;
   stateStatus: string;
   cmsStatus: string;
 }
+
+const convertStringToTimestamp = (date: string) => {
+  const formatedDate = new Date(date + " 7:00:00 AM").getTime();
+  if (isNaN(formatedDate.valueOf())) throw new Error("Not a valid time");
+  return formatedDate;
+};
 
 const sendSubmitMessage = async (item: submitMessageType) => {
   const topicName = process.env.topicName as string;
@@ -38,6 +46,26 @@ const sendSubmitMessage = async (item: submitMessageType) => {
   }
 
   const currentTime = Date.now();
+  const formatedSubmittedDate = convertStringToTimestamp(item.submissionDate);
+  const formatedProposedDate = convertStringToTimestamp(item.proposedDate);
+
+  // ANDIE DELETE THESE
+  console.log(
+    "ANDIE - PROPOSED TIME",
+    " passed in value",
+    item.proposedDate,
+    " formated: ",
+    formatedProposedDate,
+  );
+
+  console.log(
+    "ANDIE - SUBMITTED TIME",
+    " passed in value",
+    item.submissionDate,
+    " formated: ",
+    formatedSubmittedDate,
+  );
+  // ***
 
   await produceMessage(
     topicName,
@@ -51,6 +79,8 @@ const sendSubmitMessage = async (item: submitMessageType) => {
       description: null,
       event: "NOSO",
       state: item.id.substring(0, 2),
+      submissionDate: formatedSubmittedDate,
+      proposedDate: formatedProposedDate,
       makoChangedDate: currentTime,
       changedDate: currentTime,
       statusDate: currentTime,
@@ -90,7 +120,10 @@ export const handler = async (event: APIGatewayEvent) => {
         });
       }
     }
-
+    // ANDIE DELETE THESE
+    console.log("ANDIE - OG ITEM:", item);
+    console.log("ANDIE - New StateStatus: ", stateStatus, " cms status:", cmsStatus);
+    // ***
     return await sendSubmitMessage({ ...item, stateStatus, cmsStatus });
   } catch (err) {
     console.error("Error has occured submitting package:", err);
