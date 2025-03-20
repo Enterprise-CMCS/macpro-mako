@@ -43,7 +43,7 @@ const extendAdminSchema = async (
     const packageEvent = await getPackageType(record.id);
     console.log(packageEvent, "package EVENT");
     const packageSubmissionTypeSchema = events[packageEvent as keyof typeof events]?.baseSchema;
-    console.log(packageSubmissionTypeSchema, "PACKAGE SUB TYPE SCHEMa");
+    console.log(packageSubmissionTypeSchema.shape, "PACKAGE SUB TYPE SCHEMa shape");
 
     if (!packageSubmissionTypeSchema) {
       throw new Error(`Schema not found for package event: ${packageEvent}`);
@@ -51,7 +51,9 @@ const extendAdminSchema = async (
     if (!(packageSubmissionTypeSchema instanceof z.ZodObject)) {
       throw new Error(`Invalid schema format`);
     }
-    return schema.merge(packageSubmissionTypeSchema as z.ZodObject<Record<string, z.ZodTypeAny>>);
+    return schema.merge(
+      packageSubmissionTypeSchema.shape() as z.ZodObject<Record<string, z.ZodTypeAny>>,
+    );
   } catch (error) {
     console.log(error);
     throw error;
