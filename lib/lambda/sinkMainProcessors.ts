@@ -123,7 +123,11 @@ const getOneMacRecordWithAllProperties = (
     console.log(`legacy event: ${JSON.stringify(record, null, 2)}`);
     const transformForLegacyEvent = legacyTransforms[record.componentType];
 
-    const safeEvent = transformForLegacyEvent.transform().safeParse(record);
+    const safeEvent = transformForLegacyEvent
+      .transform()
+      .transform((data) => ({ ...data, proposedEffectiveDate: null }))
+      .safeParse(record);
+
     console.log(`safeEvent: ${JSON.stringify(safeEvent, null, 2)}`);
     if (safeEvent.success === false) {
       logError({
