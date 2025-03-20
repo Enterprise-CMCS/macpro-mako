@@ -5,18 +5,7 @@ import { BannerNotification, ReactQueryApiError } from "shared-types";
 
 import { useGetUser } from "@/api";
 
-export type Notification = {
-  notifId: string;
-  body: string;
-  header: string;
-  pubDate: string;
-  expDate: string;
-  buttonLink: string;
-  buttonText: string;
-  disabled?: boolean;
-};
-
-const mapNotifications = (notifications: any): Notification[] => {
+const mapNotifications = (notifications: any): BannerNotification[] => {
   return notifications.flatMap((notification) => {
     if (Array.isArray(notification.body)) {
       return notification.body.map((entry: any, index: any) => ({
