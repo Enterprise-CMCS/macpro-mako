@@ -620,7 +620,7 @@ describe("insertOneMacRecordsFromKafkaIntoMako", () => {
         additionalInformation: "info",
         lastEventTimestamp: TIMESTAMP,
         submissionTimestamp: TIMESTAMP,
-        proposedEffectiveDate: "2025-03-10T00:00:00Z",
+        proposedEffectiveDate: null,
         currentStatus: "Submitted",
         changedDate: new Date(TIMESTAMP).toISOString(),
         description: null,

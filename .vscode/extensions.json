@@ -3,6 +3,8 @@
     "bradlc.vscode-tailwindcss",
     "dbaeumer.vscode-eslint",
     "esbenp.prettier-vscode",
+    "eamodio.gitlens",
+    "ms-vsliveshare.vsliveshare",
     "github.vscode-github-actions"
   ]
 }

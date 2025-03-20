@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
 
-import { formatDate, formatDateToEST, formatDateToUTC, formatNinetyDaysDate } from "./date-helper";
+import { formatDate, formatDateToET, formatDateToUTC, formatNinetyDaysDate } from "./date-helper";
 
 describe("date-helper", () => {
   describe("formatDate", () => {
@@ -11,27 +11,37 @@ describe("date-helper", () => {
     });
   });
 
-  describe("formatDateToEST", () => {
+  describe("formatDateToET", () => {
     it("formats a valid UTC date correctly to ET", () => {
       const utcDate = "2025-02-28T18:14:41.855Z";
-      const result = formatDateToEST(utcDate);
+      const result = formatDateToET(utcDate);
 
-      expect(result).toBe("Fri, Feb 28 2025, 01:14:41 PM ET");
+      expect(result).toBe("Fri, Feb 28 2025, 01:14:41 PM EST");
     });
 
     it("formats a UTC date in daylight saving time (DST) correctly", () => {
       const utcDate = "2025-07-15T18:00:00.000Z";
-      const result = formatDateToEST(utcDate);
+      const result = formatDateToET(utcDate);
 
-      expect(result).toBe("Tue, Jul 15 2025, 02:00:00 PM ET");
+      expect(result).toBe("Tue, Jul 15 2025, 02:00:00 PM EDT");
     });
 
-    it("should format the date to EST with a custom format", () => {
+    it("should format the date to EST with a custom format and timezone", () => {
+      const date = "2025-03-11T12:00:00Z";
+      const formatValue = "yyyy-MM-dd HH:mm:ss aaaa";
+      const expectedFormat = "2025-03-11 08:00:00 a.m. EDT";
+
+      const result = formatDateToET(date, formatValue);
+
+      expect(result).toBe(expectedFormat);
+    });
+
+    it("should format the date to EST with a custom format without timezone", () => {
       const date = "2025-03-11T12:00:00Z";
       const formatValue = "yyyy-MM-dd HH:mm:ss aaaa";
       const expectedFormat = "2025-03-11 08:00:00 a.m.";
 
-      const result = formatDateToEST(date, formatValue);
+      const result = formatDateToET(date, formatValue, false);
 
       expect(result).toBe(expectedFormat);
     });

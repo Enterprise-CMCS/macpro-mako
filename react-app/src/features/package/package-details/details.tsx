@@ -2,7 +2,7 @@ import { ReactNode, useState } from "react";
 import { Authority, opensearch } from "shared-types";
 import {
   formatActionType,
-  formatDateToEST,
+  formatDateToET,
   formatDateToUTC,
   isCmsUser,
   isStateUser,
@@ -106,15 +106,15 @@ export const getSubmissionDetails: GetLabelAndValueFromSubmission = (submission,
   },
   {
     label: "Initial Submission Date",
-    value: submission.submissionDate ? formatDateToEST(submission.submissionDate) : BLANK_VALUE,
+    value: submission.submissionDate ? formatDateToET(submission.submissionDate) : BLANK_VALUE,
   },
   {
     label: "Latest Package Activity",
-    value: submission.makoChangedDate ? formatDateToEST(submission.makoChangedDate) : BLANK_VALUE,
+    value: submission.makoChangedDate ? formatDateToET(submission.makoChangedDate) : BLANK_VALUE,
   },
   {
     label: "Formal RAI Response Date",
-    value: submission.raiReceivedDate ? formatDateToEST(submission.raiReceivedDate) : BLANK_VALUE,
+    value: submission.raiReceivedDate ? formatDateToET(submission.raiReceivedDate) : BLANK_VALUE,
     canView: submission.actionType !== "Extend",
   },
 ];
