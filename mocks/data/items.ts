@@ -201,7 +201,7 @@ const items: Record<string, TestItemResult> = {
         {
           _id: `${ADMIN_ITEM_ID}-0001`,
           _source: {
-            timestamp: 1672531200000, // Jan 1, 2023, in milliseconds
+            timestamp: 1672581600000, // Jan 1, 2023, in milliseconds
             packageId: ADMIN_ITEM_ID,
             id: `${ADMIN_ITEM_ID}-0001`,
             event: "split-spa",
@@ -222,7 +222,7 @@ const items: Record<string, TestItemResult> = {
         {
           _id: `${ADMIN_ITEM_ID}-0002`,
           _source: {
-            timestamp: 1672531200000, // Jan 1, 2023, in milliseconds
+            timestamp: 1677679200000, // Mar 1, 2023, in milliseconds
             packageId: ADMIN_ITEM_ID,
             id: `${ADMIN_ITEM_ID}-0002`,
             event: "NOSO",
@@ -243,7 +243,7 @@ const items: Record<string, TestItemResult> = {
         {
           _id: `${ADMIN_ITEM_ID}-0003`,
           _source: {
-            timestamp: 1672531200000, // Jan 1, 2023, in milliseconds
+            timestamp: 1685624400000, // Jun 1, 2023, in milliseconds
             packageId: ADMIN_ITEM_ID,
             id: `${ADMIN_ITEM_ID}-0003`,
             event: "legacy-admin-change",
@@ -264,7 +264,7 @@ const items: Record<string, TestItemResult> = {
         {
           _id: `${ADMIN_ITEM_ID}-0004`,
           _source: {
-            timestamp: 1672531200000, // Jan 1, 2023, in milliseconds
+            timestamp: 1693573200000, // Sep 1, 2023, in milliseconds
             packageId: ADMIN_ITEM_ID,
             id: `${ADMIN_ITEM_ID}-0004`,
             changeMade: "add file",
@@ -307,7 +307,7 @@ const items: Record<string, TestItemResult> = {
         {
           _id: `${ADMIN_ITEM_ID}-0006`,
           _source: {
-            timestamp: 1672531200000, // Jan 1, 2023, in milliseconds
+            timestamp: 1701439200000, // Dec 1, 2023, in milliseconds
             packageId: ADMIN_ITEM_ID,
             id: `${ADMIN_ITEM_ID}-0006`,
             submitterName: "Test person",
@@ -640,6 +640,8 @@ const items: Record<string, TestItemResult> = {
             ],
             additionalInformation: "Amendment to the capitated contract terms for 2024.",
             timestamp: 1672531200000, // Jan 1, 2023, in milliseconds
+            submitterName: "BOB SMITH",
+            submitterEmail: "BOBSMITH@MEDICAIDFAKE.gov",
           },
         },
         {
@@ -807,6 +809,8 @@ const items: Record<string, TestItemResult> = {
             ],
             additionalInformation: "Amendment to the capitated contract terms for 2024.",
             timestamp: 1672531200000, // Jan 1, 2023, in milliseconds
+            submitterName: "Bob Smith",
+            submitterEmail: "bob@mail.com",
           },
         },
         {
@@ -825,6 +829,8 @@ const items: Record<string, TestItemResult> = {
             ],
             additionalInformation: "Detailed response to the request for additional information.",
             timestamp: 1675123200000, // Feb 1, 2023
+            submitterName: "Bob Smith",
+            submitterEmail: "bob@mail.com",
           },
         },
         {
@@ -843,6 +849,8 @@ const items: Record<string, TestItemResult> = {
             ],
             additionalInformation: "Supporting documents uploaded as follow-up.",
             timestamp: 1677715200000, // Mar 1, 2023
+            submitterName: "Bob Smith",
+            submitterEmail: "bob@mail.com",
           },
         },
         {
@@ -861,6 +869,8 @@ const items: Record<string, TestItemResult> = {
             ],
             additionalInformation: "Compliance review files uploaded.",
             timestamp: 1680307200000, // Apr 1, 2023
+            submitterName: "Bob Smith",
+            submitterEmail: "bob@mail.com",
           },
         },
         {
@@ -879,6 +889,8 @@ const items: Record<string, TestItemResult> = {
             ],
             additionalInformation: "Official notice of RAI withdrawal submitted.",
             timestamp: 1682899200000, // May 1, 2023
+            submitterName: "Bob Smith",
+            submitterEmail: "bob@mail.com",
           },
         },
         {
@@ -897,6 +909,8 @@ const items: Record<string, TestItemResult> = {
             ],
             additionalInformation: "Package has been withdrawn from submission pipeline.",
             timestamp: 1685491200000, // Jun 1, 2023
+            submitterName: "Bob Smith",
+            submitterEmail: "bob@mail.com",
           },
         },
         {
@@ -915,6 +929,8 @@ const items: Record<string, TestItemResult> = {
             ],
             additionalInformation: "Uncategorized file upload.",
             isAdminChange: false,
+            submitterName: "Bob Smith",
+            submitterEmail: "bob@mail.com",
           },
         },
       ],
