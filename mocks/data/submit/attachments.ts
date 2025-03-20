@@ -181,7 +181,7 @@ export const publicNotice = {
 
 export const cmsForm = {
   cmsForm179: {
-    label: "CMS Form 179",
+    label: "CMS-179 Form",
     files: [
       {
         filename: "appendix-k-amendment.docx",

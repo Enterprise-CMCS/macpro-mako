@@ -62,7 +62,7 @@ export const testItemResult: opensearch.main.ItemResult = {
       {
         filename:
           "CMS179 TRANSMITTAL FORM - Home and Community-Based Services, Psychosocial Rehabilitation Services.docx",
-        title: "CMS Form 179",
+        title: "CMS-179 Form",
         bucket: "test-bucket",
         key: "test-key",
         uploadDate: 1709319909222,
@@ -122,7 +122,7 @@ export const testItemResult: opensearch.main.ItemResult = {
             {
               filename:
                 "CMS179 TRANSMITTAL FORM - Home and Community-Based Services, Psychosocial Rehabilitation Services.docx",
-              title: "CMS Form 179",
+              title: "CMS-179 Form",
               bucket: "test-bucket",
               key: "test-key",
               uploadDate: 1709319909222,

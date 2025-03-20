@@ -1,7 +1,7 @@
 import { useMemo } from "react";
 import { opensearch } from "shared-types";
 import { ItemResult } from "shared-types/opensearch/changelog";
-import { formatDateToEST } from "shared-utils";
+import { formatDateToET } from "shared-utils";
 
 import {
   Accordion,
@@ -82,7 +82,7 @@ export const AdminChange = ({ adminActivity }: AdminChangeProps) => {
         <p className="flex flex-row gap-2 text-gray-600">
           <strong>{label as string}</strong>
           {" - "}
-          {formatDateToEST(adminActivity.timestamp)}
+          {formatDateToET(adminActivity.timestamp)}
         </p>
       </AccordionTrigger>
       <AccordionContent className="p-4">

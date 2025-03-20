@@ -14,7 +14,7 @@ export const emailTemplateValue: Omit<Events["WithdrawRai"], "id" | "authority">
           uploadDate: 1728493782785,
         },
       ],
-      label: "CMS Form 179",
+      label: "CMS-179 Form",
     },
   },
   additionalInformation:

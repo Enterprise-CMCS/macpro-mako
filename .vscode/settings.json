@@ -1,6 +1,8 @@
 {
+  "editor.codeActionsOnSave": {
+    "source.fixAll": "always"
+  },
   "editor.formatOnSave": true,
   "tailwindCSS.experimental.classRegex": [["cva\\(([^)]*)\\)", "[\"'`]([^\"'`]*).*?[\"'`]"]],
-  "typescript.tsdk": "node_modules/typescript/lib",
-  "cSpell.words": ["Cpoc", "Cpocs", "opensearch"]
+  "typescript.tsdk": "node_modules/typescript/lib"
 }

@@ -591,7 +591,7 @@ export const oneMACFAQContent: FAQContent[] = [
                 <tr>
                   <td className="border border-gray-300 px-4 py-2">
                     <p>
-                      <span>CMS Form 179*</span>
+                      <span>CMS-179 Form*</span>
                     </p>
                   </td>
                   <td className="border border-gray-300 px-4 py-2">

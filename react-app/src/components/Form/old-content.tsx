@@ -1,5 +1,4 @@
 import { Info } from "lucide-react";
-import { Link } from "react-router";
 
 import {
   ActionFormDescription,
@@ -7,7 +6,6 @@ import {
   ProgressLossReminder,
   RequiredFieldDescription,
 } from "@/components";
-import { FAQ_TAB } from "@/consts";
 
 type FormIntroTextProps = {
   hasProgressLossReminder?: boolean;
@@ -44,52 +42,6 @@ export const SpaIdFormattingDesc = () => (
       submitted.
     </p>
   </>
-);
-
-export const AttachmentsSizeTypesDesc = ({
-  faqAttLink,
-  includeCMS179 = false,
-}: {
-  faqAttLink: string;
-  includeCMS179?: boolean;
-}) => (
-  <div className="text-gray-700 font-light">
-    <p>
-      Maximum file size of 80 MB per attachment.{" "}
-      <span className="font-bold">
-        You can add multiple files per attachment type
-        {includeCMS179 && ", except for the CMS Form 179."}.
-      </span>{" "}
-      Read the description for each of the attachment types on the{" "}
-      {
-        <Link
-          to={faqAttLink}
-          target={FAQ_TAB}
-          rel="noopener noreferrer"
-          className="text-blue-900 underline"
-        >
-          FAQ Page
-        </Link>
-      }
-      .
-    </p>
-    <br />
-    <p>
-      We accept the following file formats:{" "}
-      <strong className="bold">.doc, .docx, .pdf, .jpg, .xlsx, and more. </strong>{" "}
-      {
-        <Link
-          to={"/faq/acceptable-file-formats"}
-          target={FAQ_TAB}
-          rel="noopener noreferrer"
-          className="text-blue-900 underline"
-        >
-          See the full list
-        </Link>
-      }
-      .
-    </p>
-  </div>
 );
 
 type PreSubmissionMessageProps = {

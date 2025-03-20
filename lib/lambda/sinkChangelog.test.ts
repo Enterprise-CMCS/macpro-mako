@@ -510,7 +510,7 @@ describe("syncing Changelog events", () => {
         {
           key: TEST_ITEM_KEY,
           offset: 15,
-          // @ts-expect-error - value must be undefined for this test
+          headers: [],
           value: undefined,
         },
       ],

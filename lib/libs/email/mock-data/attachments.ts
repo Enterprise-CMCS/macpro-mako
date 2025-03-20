@@ -1,5 +1,5 @@
 export const currentStatePlan = {
-  label: "CMS Form 179",
+  label: "CMS-179 Form",
   files: [
     {
       filename: "state-plan-2024.pdf",
@@ -176,7 +176,7 @@ export const cmsForm179 = {
   files: [
     {
       filename: "cms-form-179.pdf",
-      title: "CMS Form 179 Submission Document",
+      title: "CMS-179 Form Submission Document",
       bucket: "mako-outbox-attachments-635052997545",
       key: "12fb2e5d-7d01-441c-a5b1-bbcc72a8adf1.pdf",
       get uploadDate() {
@@ -184,7 +184,7 @@ export const cmsForm179 = {
       },
     },
   ],
-  label: "CMS Form 179",
+  label: "CMS-179 Form",
 };
 
 export const appk = {
