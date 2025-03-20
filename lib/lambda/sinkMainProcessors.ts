@@ -39,7 +39,9 @@ const extendAdminSchema = async (
   record: any,
 ): Promise<z.ZodObject<Record<string, z.ZodTypeAny>>> => {
   try {
+    console.log(record, "RECORD?");
     const packageEvent = await getPackageType(record.id);
+    console.log(packageEvent, "package EVENT");
     const packageSubmissionTypeSchema = events[packageEvent as keyof typeof events]?.baseSchema;
 
     if (!packageSubmissionTypeSchema) {
