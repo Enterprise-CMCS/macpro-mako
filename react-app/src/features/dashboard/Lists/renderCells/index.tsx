@@ -8,7 +8,8 @@ import { cn, DASHBOARD_ORIGIN, mapActionLabel, ORIGIN } from "@/utils";
 
 export const renderCellDate = (key: keyof opensearch.main.Document) =>
   function Cell(data: opensearch.main.Document) {
-    if (!data[key] || data[key] === 0) return null;
+    if (!data[key]) return null;
+    if (data[key] === 0) return null;
     return formatSeatoolDate(data[key] as string);
   };
 

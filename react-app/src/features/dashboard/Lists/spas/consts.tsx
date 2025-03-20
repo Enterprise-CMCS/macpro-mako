@@ -91,9 +91,7 @@ const getColumns = (props) => {
       field: "submissionDate",
       label: "Initial Submission",
       transform: (data) =>
-        data?.submissionDate && data.submissionDate !== 0
-          ? formatSeatoolDate(data.submissionDate)
-          : BLANK_VALUE,
+        data.submissionDate ? formatSeatoolDate(data.submissionDate) : BLANK_VALUE,
       cell: renderCellDate("submissionDate"),
     },
     {
