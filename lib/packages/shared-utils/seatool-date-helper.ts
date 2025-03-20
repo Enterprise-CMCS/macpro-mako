@@ -25,6 +25,7 @@ export const seaToolFriendlyTimestamp = (date?: Date | string): number => {
  */
 export const formatSeatoolDate = (date?: Date | string): string => {
   if (!date) return "";
+  if (date === "1970-01-01T00:00:00.000Z") return "";
   return format(new UTCDate(date), "MM/dd/yyyy");
 };
 
