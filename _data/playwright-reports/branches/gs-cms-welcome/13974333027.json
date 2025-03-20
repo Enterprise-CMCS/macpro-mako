@@ -1,0 +1,82 @@
+{
+  "config": {
+    "configFile": "/home/runner/work/macpro-mako/macpro-mako/test/e2e/playwright.config.ts",
+    "rootDir": "/home/runner/work/macpro-mako/macpro-mako/test",
+    "forbidOnly": true,
+    "fullyParallel": true,
+    "globalSetup": "/home/runner/work/macpro-mako/macpro-mako/test/e2e/utils/auth.setup.ts",
+    "globalTeardown": null,
+    "globalTimeout": 0,
+    "grep": {},
+    "grepInvert": null,
+    "maxFailures": 0,
+    "metadata": {},
+    "preserveOutput": "always",
+    "reporter": [
+      [
+        "github",
+        null
+      ],
+      [
+        "html",
+        {
+          "outputFolder": "playwright-reports/html-report",
+          "open": "never"
+        }
+      ],
+      [
+        "json",
+        {
+          "outputFile": "playwright-reports/playwright-summary.json"
+        }
+      ]
+    ],
+    "reportSlowTests": {
+      "max": 5,
+      "threshold": 15000
+    },
+    "quiet": false,
+    "projects": [
+      {
+        "outputDir": "/home/runner/work/macpro-mako/macpro-mako/test/e2e/test-results",
+        "repeatEach": 1,
+        "retries": 2,
+        "metadata": {},
+        "id": "state-user-chrome",
+        "name": "state-user-chrome",
+        "testDir": "/home/runner/work/macpro-mako/macpro-mako/test",
+        "testIgnore": [],
+        "testMatch": [
+          "**/*.@(spec|test).?(c|m)[jt]s?(x)"
+        ],
+        "timeout": 30000
+      }
+    ],
+    "shard": null,
+    "updateSnapshots": "missing",
+    "version": "1.47.2",
+    "workers": 1,
+    "webServer": null
+  },
+  "suites": [],
+  "errors": [
+    {
+      "message": "Error: locator.waitFor: Error: strict mode violation: getByRole('link', { name: 'Dashboard' }) resolved to 2 elements:\n    1) <a target=\"_self\" href=\"/dashboard\" aria-current=\"page\" data-discover=\"true\" data-testid=\"Dashboard-d\" class=\"underline underline-offset-4 decoration-4 hover:text-white/70\">Dashboard</a> aka getByTestId('Dashboard-d')\n    2) <a href=\"/dashboard\" data-discover=\"true\" class=\"underline font-bold\">Dashboard</a> aka getByRole('contentinfo').getByRole('link', { name: 'Dashboard' })\n\nCall log:\n  - waiting for getByRole('link', { name: 'Dashboard' }) to be visible\n",
+      "stack": "Error: locator.waitFor: Error: strict mode violation: getByRole('link', { name: 'Dashboard' }) resolved to 2 elements:\n    1) <a target=\"_self\" href=\"/dashboard\" aria-current=\"page\" data-discover=\"true\" data-testid=\"Dashboard-d\" class=\"underline underline-offset-4 decoration-4 hover:text-white/70\">Dashboard</a> aka getByTestId('Dashboard-d')\n    2) <a href=\"/dashboard\" data-discover=\"true\" class=\"underline font-bold\">Dashboard</a> aka getByRole('contentinfo').getByRole('link', { name: 'Dashboard' })\n\nCall log:\n  - waiting for getByRole('link', { name: 'Dashboard' }) to be visible\n\n    at LoginPage.login (/home/runner/work/macpro-mako/macpro-mako/test/e2e/pages/loginPage.ts:16:62)\n    at globalSetup (/home/runner/work/macpro-mako/macpro-mako/test/e2e/utils/auth.setup.ts:36:3)",
+      "location": {
+        "file": "/home/runner/work/macpro-mako/macpro-mako/test/e2e/pages/loginPage.ts",
+        "column": 62,
+        "line": 16
+      },
+      "snippet": "   at e2e/pages/loginPage.ts:16\n\n\u001b[0m \u001b[90m 14 |\u001b[39m     \u001b[36mawait\u001b[39m \u001b[36mthis\u001b[39m\u001b[33m.\u001b[39mpage\u001b[33m.\u001b[39mgetByRole(\u001b[32m\"textbox\"\u001b[39m\u001b[33m,\u001b[39m { name\u001b[33m:\u001b[39m \u001b[32m\"Password\"\u001b[39m })\u001b[33m.\u001b[39mfill(password)\u001b[33m;\u001b[39m\n \u001b[90m 15 |\u001b[39m     \u001b[36mawait\u001b[39m \u001b[36mthis\u001b[39m\u001b[33m.\u001b[39mpage\u001b[33m.\u001b[39mgetByRole(\u001b[32m\"button\"\u001b[39m\u001b[33m,\u001b[39m { name\u001b[33m:\u001b[39m \u001b[32m\"submit\"\u001b[39m })\u001b[33m.\u001b[39mclick()\u001b[33m;\u001b[39m\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 16 |\u001b[39m     \u001b[36mawait\u001b[39m \u001b[36mthis\u001b[39m\u001b[33m.\u001b[39mpage\u001b[33m.\u001b[39mgetByRole(\u001b[32m\"link\"\u001b[39m\u001b[33m,\u001b[39m { name\u001b[33m:\u001b[39m \u001b[32m\"Dashboard\"\u001b[39m })\u001b[33m.\u001b[39mwaitFor()\u001b[33m;\u001b[39m\n \u001b[90m    |\u001b[39m                                                              \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 17 |\u001b[39m     \u001b[36mawait\u001b[39m \u001b[36mthis\u001b[39m\u001b[33m.\u001b[39mpage\u001b[33m.\u001b[39mgetByRole(\u001b[32m\"link\"\u001b[39m\u001b[33m,\u001b[39m { name\u001b[33m:\u001b[39m \u001b[32m\"Dashboard\"\u001b[39m })\u001b[33m.\u001b[39misVisible()\u001b[33m;\u001b[39m\n \u001b[90m 18 |\u001b[39m   }\n \u001b[90m 19 |\u001b[39m }\u001b[0m"
+    }
+  ],
+  "stats": {
+    "startTime": "2025-03-20T16:32:34.606Z",
+    "duration": 11700.085,
+    "expected": 0,
+    "skipped": 0,
+    "unexpected": 0,
+    "flaky": 0
+  }
+}
