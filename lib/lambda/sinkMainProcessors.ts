@@ -43,6 +43,7 @@ const extendAdminSchema = async (
     const packageEvent = await getPackageType(record.id);
     console.log(packageEvent, "package EVENT");
     const packageSubmissionTypeSchema = events[packageEvent as keyof typeof events]?.baseSchema;
+    console.log(packageSubmissionTypeSchema, "PACKAGE SUB TYPE SCHEMa");
 
     if (!packageSubmissionTypeSchema) {
       throw new Error(`Schema not found for package event: ${packageEvent}`);
