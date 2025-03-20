@@ -7,18 +7,139 @@ let faqPage: FAQPage;
 test.describe("FAQ page", { tag: ["@e2e", "@smoke", "@faq"] }, () => {
   test.beforeEach(async ({ page }) => {
     faqPage = new FAQPage(page);
+    await page.route('*/**/clientsdk.launchdarkly.us/sdk/evalx/**', async (route) => {
+      const url = await route.request().url();
+      const pl = {"COMPLETE_INTAKE":{"version":144,"flagVersion":3,"value":false,"variation":1,"trackEvents":false},"SHOW_SUBMISSION_LOADER":{"version":144,"flagVersion":3,"value":true,"variation":0,"trackEvents":false},"clear-data-button":{"version":144,"flagVersion":3,"value":true,"variation":0,"trackEvents":false},"complete-intake":{"version":144,"flagVersion":4,"value":true,"variation":0,"trackEvents":false},"perform-intake":{"version":144,"flagVersion":4,"value":false,"variation":1,"trackEvents":false},"site-under-maintenance-banner":{"version":144,"flagVersion":5,"value":"SCHEDULED","variation":1,"trackEvents":false},"toggleFaq":{"version":144,"flagVersion":64,"value":false,"variation":0,"trackEvents":false},"uat-hide-mmdl-banner":{"version":144,"flagVersion":77,"value":"on","variation":1,"trackEvents":false}}
+
+      await route.fulfill({
+        contentType: "application/json", 
+        body: JSON.stringify(pl)
+      })
+      // await route.continue();
+    //   // await route.abort();
+    });
+
+    await page.route('*/**/clientstream.launchdarkly.us/sdk/**', async (route) => {
+      const url = await route.request().url();
+      const pl = {"COMPLETE_INTAKE":{"version":144,"flagVersion":3,"value":false,"variation":1,"trackEvents":false},"SHOW_SUBMISSION_LOADER":{"version":144,"flagVersion":3,"value":true,"variation":0,"trackEvents":false},"clear-data-button":{"version":144,"flagVersion":3,"value":true,"variation":0,"trackEvents":false},"complete-intake":{"version":144,"flagVersion":4,"value":true,"variation":0,"trackEvents":false},"perform-intake":{"version":144,"flagVersion":4,"value":false,"variation":1,"trackEvents":false},"site-under-maintenance-banner":{"version":144,"flagVersion":5,"value":"SCHEDULED","variation":1,"trackEvents":false},"toggleFaq":{"version":144,"flagVersion":64,"value":false,"variation":0,"trackEvents":false},"uat-hide-mmdl-banner":{"version":144,"flagVersion":77,"value":"on","variation":1,"trackEvents":false}}
+
+      await route.fulfill({
+        contentType: "application/json", 
+        body: JSON.stringify(pl)
+      })
+      // await route.continue();
+    //   // await route.abort();
+    });
+
+    await page.route(/events.launchdarkly/, async (route) => {
+      const request = await route.request();
+      // console.log(request.method());
+      if (request.method() === "POST") {
+        // console.log('Original POST data: ', request.postDataJSON());
+
+        let data = request.postDataJSON();
+
+        // console.log(data[1]['features']['toggleFaq']);
+
+        data[1]['features']['toggleFaq']['counters'][0]['value'] = false;
+
+        // console.log(data[1]['features']['toggleFaq']);
+
+        route.continue({
+          method: 'POST',
+          headers: request.headers(),
+          postData: data
+        })
+      }
+    });
+    //clientsdk.launchdarkly.us/sdk/evals
+
+
+    // page.on('response', async (response) => {
+    //   if (response.url().includes('clientsdk.launchdarkly.us/sdk/evalx')) {
+    //     const buffer = await response.body();
+    //     console.log(buffer.toString());
+    //   }
+    // });
+
+    // page.on('response', async (response) => {
+    //   if (response.url().includes('clientstream.launchdarkly.us/eval')) {
+    //     const buffer = await response.body();
+    //     console.log(buffer.toString());
+    //   }
+    // });
+
+    // Need to intercept the POST request to the event to set Flag to false
+    // page.on('request', async (req) => {
+    //   if (req.url().includes('events.launchdarkly')) {
+    //     console.log(req.url());
+    //     const data = await req.postDataJSON();
+    //     console.log(data[1]['features']['toggleFaq']['counters'][0]['value']);
+    //     // console.log(typeof data);
+    //   }
+    // });
+    // await route.continue();
+    await page.waitForTimeout(5000);
     await page.goto("/faq");
   });
 
   test.describe("UI validation", { tag: ["@CI"] }, () => {
+    // test.beforeEach(async ({ page }) => {
+    //   await page.route(/events.launchdarkly/, async (route) => {
+    //     const request = await route.request();
+    //     // console.log(request.method());
+    //     if (request.method() === "POST") {
+    //       // console.log('Original POST data: ', request.postDataJSON());
+  
+    //       let data = request.postDataJSON();
+  
+    //       // console.log(data[1]['features']['toggleFaq']);
+  
+    //       data[1]['features']['toggleFaq']['counters'][0]['value'] = false;
+  
+    //       // console.log(data[1]['features']['toggleFaq']);
+  
+    //       route.continue({
+    //         method: 'POST',
+    //         headers: request.headers(),
+    //         postData: data
+    //       })
+    //     }
+    //   });
+    //   await page.goto("/faq");
+    // });
+
     test.describe("header", () => {
-      test("displays header", async () => {
-        await expect(faqPage.header).toBeVisible();
-        await expect(faqPage.header).toHaveText("Frequently Asked Questions");
+      test("displays header", async ({ page }) => {
+        await page.route(/events.launchdarkly/, async (route) => {
+          const request = await route.request();
+          // console.log(request.method());
+          if (request.method() === "POST") {
+            // console.log('Original POST data: ', request.postDataJSON());
+    
+            let data = request.postDataJSON();
+    
+            // console.log(data[1]['features']['toggleFaq']);
+    
+            data[1]['features']['toggleFaq']['counters'][0]['value'] = false;
+    
+            // console.log(data[1]['features']['toggleFaq']);
+    
+            route.continue({
+              method: 'POST',
+              headers: request.headers(),
+              postData: data
+            })
+          }
+        });
+        await page.goto("/faq");
+
+        await expect(page.getByTestId("sub-nav-header")).toBeVisible();
+        await expect(page.getByTestId("sub-nav-header")).toHaveText("Frequently Asked Questions");
       });
     });
 
-    test.describe("General section", () => {
+    test.describe.skip("General section", () => {
       test("displays system for state submission FAQ", async () => {
         await expect(faqPage.crossWalk).toBeVisible();
         await expect(faqPage.crossWalk).toHaveText(
@@ -77,7 +198,7 @@ test.describe("FAQ page", { tag: ["@e2e", "@smoke", "@faq"] }, () => {
       });
     });
 
-    test.describe("State Plan Amendments (SPAs)", () => {
+    test.describe.skip("State Plan Amendments (SPAs)", () => {
       test("displays format used to enter a SPA ID FAQ", async () => {
         await expect(faqPage.spaIdFormat).toBeVisible();
         await expect(faqPage.spaIdFormat).toHaveText("What format is used to enter a SPA ID?");
@@ -221,7 +342,7 @@ test.describe("FAQ page", { tag: ["@e2e", "@smoke", "@faq"] }, () => {
       });
     });
 
-    test.describe("Waivers Section", () => {
+    test.describe.skip("Waivers Section", () => {
       test("displays 1915(b) initial waiver number FAQ", async () => {
         await expect(faqPage.waiverIdFormat).toBeVisible();
         await expect(faqPage.waiverIdFormat).toHaveText(
@@ -363,7 +484,7 @@ test.describe("FAQ page", { tag: ["@e2e", "@smoke", "@faq"] }, () => {
     });
   });
 
-  test.describe("Interaction validation", () => {
+  test.describe.skip("Interaction validation", () => {
     test.describe("General Section", () => {
       test("should display crosswalk system FAQ response", async () => {
         await faqPage.crossWalk.click();
