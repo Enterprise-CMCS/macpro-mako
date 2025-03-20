@@ -1,4 +1,3 @@
-import { ToggleGroup, ToggleGroupItem } from "@radix-ui/react-toggle-group";
 import { useEffect, useMemo, useState } from "react";
 import { Navigate, useParams } from "react-router";
 
@@ -10,8 +9,9 @@ import {
   AccordionTrigger,
   SupportSubNavHeader,
 } from "@/components";
+import ToggleGroup from "@/components/ToggleGroup/ToggleGroup";
+import ToggleGroupItem from "@/components/ToggleGroup/ToggleGroupItem";
 import { useFeatureFlag } from "@/hooks/useFeatureFlag";
-import { cn } from "@/utils";
 
 import ExpandCollapseBtn from "../../components/SupportPage/expandCollapseBtn";
 import LeftNavigation from "../../components/SupportPage/navigationBar";
@@ -37,12 +37,6 @@ const FaqAccordion = ({ question }: { question: QuestionAnswer[] }) => {
     </>
   );
 };
-
-const toggleGroupItemStyle =
-  "inline-flex items-center justify-center px-3 py-1.5 text-2xl bg-neutral-100 rounded-xs ring-offset-background transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus:outline-none disabled:pointer-events-none disabled:opacity-50 border-b-4 border-b-transparent ";
-
-const toggleGroupItemActiveStyle =
-  "data-[state=on]:border-b-primary-dark data-[state=on]:bg-blue-50 data-[state=on]:text-primary-dark data-[state=on]:font-bold";
 
 export const SupportPage = () => {
   const { id } = useParams<{ id: string }>();
@@ -101,7 +95,6 @@ export const SupportPage = () => {
         <div className="flex max-w-screen-xl m-auto px-4 lg:px-8 pt-8 w-full border-b-2 border-b-slate-100 justify-end">
           <div className="w-2/3 px-4 lg:px-8">
             <ToggleGroup
-              className="ToggleGroup"
               type="single"
               aria-label="Text alignment"
               value={tgValue}
@@ -109,18 +102,10 @@ export const SupportPage = () => {
                 if (value) setTGValue(value);
               }}
             >
-              <ToggleGroupItem
-                className={cn(toggleGroupItemStyle, toggleGroupItemActiveStyle)}
-                value="cms"
-                aria-label="cms"
-              >
+              <ToggleGroupItem value="cms" aria-label="cms">
                 CMS
               </ToggleGroupItem>
-              <ToggleGroupItem
-                className={cn(toggleGroupItemStyle, toggleGroupItemActiveStyle)}
-                value="state"
-                aria-label="state"
-              >
+              <ToggleGroupItem value="state" aria-label="state">
                 States
               </ToggleGroupItem>
             </ToggleGroup>
