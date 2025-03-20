@@ -1,7 +1,6 @@
 import { render, screen, waitFor } from "@testing-library/react";
 import { describe, expect, it, vi } from "vitest";
 
-// import { useGetUser } from "@/api/useGetUser";
 import ExpandCollapseBtn from "../../components/SupportPage/expandCollapseBtn";
 import { SupportPage } from "./SupportPage";
 

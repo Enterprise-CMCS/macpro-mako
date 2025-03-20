@@ -15,7 +15,6 @@ import { useFeatureFlag } from "@/hooks/useFeatureFlag";
 import { helpDeskContact, oneMACFAQContent } from "./content/oneMACFAQContent";
 
 export const Faq = () => {
-  // check if the FAQ Toggle flag is "on" and redirrect if so
   const isFAQHidden = useFeatureFlag("TOGGLE_FAQ");
 
   const { id } = useParams<{ id: string }>();

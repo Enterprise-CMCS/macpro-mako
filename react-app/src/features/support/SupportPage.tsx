@@ -1,5 +1,6 @@
 import { useEffect, useMemo, useState } from "react";
 import { Navigate, useParams } from "react-router";
+import { isCmsUser } from "shared-utils";
 
 import { useGetUser } from "@/api/useGetUser";
 import {
@@ -7,14 +8,14 @@ import {
   AccordionContent,
   AccordionItem,
   AccordionTrigger,
+  ExpandCollapseBtn,
+  LeftNavigation,
   SupportSubNavHeader,
+  ToggleGroup,
+  ToggleGroupItem,
 } from "@/components";
-import ToggleGroup from "@/components/ToggleGroup/ToggleGroup";
-import ToggleGroupItem from "@/components/ToggleGroup/ToggleGroupItem";
 import { useFeatureFlag } from "@/hooks/useFeatureFlag";
 
-import ExpandCollapseBtn from "../../components/SupportPage/expandCollapseBtn";
-import LeftNavigation from "../../components/SupportPage/navigationBar";
 import { oneMACCMSContent, oneMACStateFAQContent, QuestionAnswer } from "./SupportMockContent";
 
 const FaqAccordion = ({ question }: { question: QuestionAnswer[] }) => {
@@ -44,8 +45,9 @@ export const SupportPage = () => {
   const [openAccordions, setOpenAccordions] = useState<string[]>([]);
 
   const { data: userObj } = useGetUser();
+  const isCmsView = isCmsUser(userObj.user);
 
-  const [tgValue, setTGValue] = useState<"cms" | "state">(userObj.isCms ? "cms" : "state");
+  const [tgValue, setTGValue] = useState<"cms" | "state">(isCmsView ? "cms" : "state");
 
   const supportContent = useMemo(() => {
     if (tgValue === "cms") return oneMACCMSContent;
@@ -91,7 +93,7 @@ export const SupportPage = () => {
       </SupportSubNavHeader>
 
       {/* only display the toggle CMS/State view when the user is CMS */}
-      {userObj.isCms && (
+      {isCmsView && (
         <div className="flex max-w-screen-xl m-auto px-4 lg:px-8 pt-8 w-full border-b-2 border-b-slate-100 justify-end">
           <div className="w-2/3 px-4 lg:px-8">
             <ToggleGroup
