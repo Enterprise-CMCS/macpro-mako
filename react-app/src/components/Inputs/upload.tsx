@@ -1,6 +1,6 @@
 import { X } from "lucide-react";
 import { useCallback, useState } from "react";
-import { Accept, FileRejection, useDropzone } from "react-dropzone";
+import { FileError, FileRejection, useDropzone } from "react-dropzone";
 import { attachmentSchema } from "shared-types";
 import { FILE_TYPES } from "shared-types/uploads";
 import { v4 as uuidv4 } from "uuid";
@@ -10,7 +10,7 @@ import * as I from "@/components/Inputs";
 import { LoadingSpinner } from "@/components/LoadingSpinner"; // Import your LoadingSpinner component
 import { cn } from "@/utils";
 
-import { extractBucketAndKeyFromUrl, getPresignedUrl, uploadToS3 } from "./upload.utilities";
+import { extractBucketAndKeyFromUrl, getPresignedUrl, uploadToS3 } from "./uploadUtilities";
 
 type Attachment = z.infer<typeof attachmentSchema>;
 
@@ -46,15 +46,44 @@ type UploadProps = {
  */
 export const Upload = ({ maxFiles, files, setFiles, dataTestId }: UploadProps) => {
   const [isUploading, setIsUploading] = useState(false); // New state for tracking upload status
-  const [errorMessage, setErrorMessage] = useState<string | null>(null);
+  const [rejectedFiles, setRejectedFiles] = useState<FileRejection[]>([]);
   const uniqueId = uuidv4();
+  const MAX_FILE_SIZE = 80 * 1024 * 1024; //80 MB
+  const accept = FILE_TYPES.reduce(
+    (acc, { mime, extension }) => {
+      acc[mime] = acc[mime] ? [...acc[mime], extension] : [extension];
+      return acc;
+    },
+    {} as Record<string, string[]>,
+  );
 
+  const existingFileNames = files.map((file) => file.filename);
+
+  const validateFile = (file: File) => {
+    if (existingFileNames.includes(file.name)) {
+      return {
+        code: "file-already-exists",
+        message: `File with name "${file.name}" already exists.`,
+      };
+    }
+    if (file.size > MAX_FILE_SIZE) {
+      return {
+        code: "file-too-big",
+        message: `File "${file.name}" is too large to upload.`,
+      };
+    }
+    // The error message by default for drop zone is really wordy so this will replace that.  We filter it on the output
+    if (!Object.keys(accept).includes(file.type)) {
+      return {
+        code: "file-invalid-type-replacement",
+        message: `File "${file.name}" has an invalid type.`,
+      };
+    }
+  };
   const onDrop = useCallback(
     async (acceptedFiles: File[], fileRejections: FileRejection[]) => {
-      if (fileRejections.length > 0) {
-        setErrorMessage("Selected file(s) is too large or of a disallowed file type.");
-      } else {
-        setErrorMessage(null);
+      setRejectedFiles(fileRejections);
+      if (fileRejections.length === 0) {
         setIsUploading(true); // Set uploading to true
 
         const processedFiles = await Promise.all(
@@ -71,12 +100,19 @@ export const Upload = ({ maxFiles, files, setFiles, dataTestId }: UploadProps) =
                 key,
                 uploadDate: Date.now(),
               };
-
               return attachment;
-            } catch (error) {
-              setErrorMessage("Failed to upload one or more files.");
-              console.error("Upload error:", error);
-              return null;
+            } catch {
+              const fileError: FileError = {
+                message: `Failed to upload ${file.name}`,
+                code: "fail-to-upload",
+              };
+
+              const uploadError: FileRejection = {
+                file: file,
+                errors: [fileError],
+              };
+
+              setRejectedFiles((prev) => [...prev, uploadError]);
             }
           }),
         );
@@ -92,18 +128,12 @@ export const Upload = ({ maxFiles, files, setFiles, dataTestId }: UploadProps) =
     [files, setFiles],
   );
 
-  const accept: Accept = {};
-  FILE_TYPES.map((type) =>
-    accept[type.mime]
-      ? (accept[type.mime] = [...accept[type.mime], type.extension])
-      : (accept[type.mime] = [type.extension]),
-  );
-
   const { getRootProps, getInputProps, isDragActive } = useDropzone({
     onDrop,
     accept,
+    validator: validateFile,
     maxFiles,
-    maxSize: 80 * 1024 * 1024, // 80MB,
+    maxSize: MAX_FILE_SIZE,
     disabled: isUploading, // Disable dropzone while uploading
   });
 
@@ -121,6 +151,7 @@ export const Upload = ({ maxFiles, files, setFiles, dataTestId }: UploadProps) =
               <I.Button
                 onClick={(e) => {
                   e.preventDefault();
+                  setRejectedFiles([]);
                   setFiles(files.filter((a) => a.filename !== file.filename));
                 }}
                 variant="ghost"
@@ -133,7 +164,7 @@ export const Upload = ({ maxFiles, files, setFiles, dataTestId }: UploadProps) =
           ))}
         </div>
       )}
-      {errorMessage && <span className="text-red-500">{errorMessage}</span>}
+
       {isUploading ? (
         <LoadingSpinner /> // Render the loading spinner when uploading
       ) : (
@@ -162,6 +193,16 @@ export const Upload = ({ maxFiles, files, setFiles, dataTestId }: UploadProps) =
             data-testid={`${dataTestId}-upload`}
           />
         </div>
+      )}
+
+      {rejectedFiles.length > 0 && (
+        <span className="text-[0.8rem] font-medium text-destructive">
+          {rejectedFiles.flatMap(({ file, errors }) =>
+            errors
+              .filter((e) => e.code !== "file-invalid-type" && e.code !== "file-too-large")
+              .map((e) => <p key={`${file.name}-${e.code}`}>{e.message}</p>),
+          )}
+        </span>
       )}
     </>
   );

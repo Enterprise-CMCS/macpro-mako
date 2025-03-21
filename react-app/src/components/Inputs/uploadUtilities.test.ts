@@ -1,10 +1,14 @@
 import { beforeEach, describe, expect, it, vi } from "vitest";
 
-import * as utilities from "@/components/Inputs/upload.utilities";
+import {
+  extractBucketAndKeyFromUrl,
+  getPresignedUrl,
+  uploadToS3,
+} from "@/components/Inputs/uploadUtilities";
 
 describe("getPresignedUrl", () => {
   beforeEach(() => {
-    vi.unmock("@/components/Inputs/upload.utilities");
+    vi.unmock("@/components/Inputs/uploadUtilities");
     vi.mock("aws-amplify", () => ({
       API: {
         post: vi.fn(async () => ({ url: "https://example.com/test-url" })),
@@ -14,26 +18,25 @@ describe("getPresignedUrl", () => {
 
   it("gets a presigned URL from the API", async () => {
     const fileName = "file.pdf";
-    const url = await utilities.getPresignedUrl(fileName);
+    const url = await getPresignedUrl(fileName);
     expect(url).toBe("https://example.com/test-url");
   });
 });
 
 describe("uploadToS3", () => {
   beforeEach(() => {
-    vi.unmock("@/components/Inputs/upload.utilities");
+    vi.unmock("@/components/Inputs/uploadUtilities");
   });
 
   it("uploads a file to S3", async () => {
     const file = new File(["file contents"], "file.pdf", { type: "application/pdf" });
     const url = "https://s3.us-east-1.amazonaws.com/hello/world";
 
-    // Mock fetch
-    const mockFetch = vi.fn().mockResolvedValue({});
+    const mockFetch = vi.fn().mockResolvedValue({ ok: true });
     global.fetch = mockFetch;
 
     // Call the function
-    await utilities.uploadToS3(file, url);
+    await uploadToS3(file, url);
 
     // Assertion
     expect(mockFetch).toHaveBeenCalledWith(url, {
@@ -42,14 +45,23 @@ describe("uploadToS3", () => {
     });
   });
 
+  it("fails to upload a file to S3", async () => {
+    const file = new File(["file contents"], "file.pdf", { type: "application/pdf" });
+    const url = "https://s3.us-east-1.amazonaws.com/hello/world";
+
+    const mockFetch = vi.fn().mockResolvedValue({ ok: false });
+    global.fetch = mockFetch;
+
+    await expect(() => uploadToS3(file, url)).rejects.toThrowError();
+  });
   describe("extractBucketAndKeyFromUrl", () => {
     beforeEach(() => {
-      vi.unmock("@/components/Inputs/upload.utilities");
+      vi.unmock("@/components/Inputs/uploadUtilities");
     });
 
     it("extracts the bucket and key from a URL", () => {
       const url = "https://hello.s3.us-east-1.amazonaws.com/world";
-      const { bucket, key } = utilities.extractBucketAndKeyFromUrl(url);
+      const { bucket, key } = extractBucketAndKeyFromUrl(url);
 
       expect(bucket).toBe("hello");
       expect(key).toBe("world");
@@ -59,10 +71,8 @@ describe("uploadToS3", () => {
       const url = "invalid-url";
       const consoleSpy = vi.spyOn(console, "error");
 
-      const { bucket, key } = utilities.extractBucketAndKeyFromUrl(url);
+      expect(() => extractBucketAndKeyFromUrl(url)).toThrowError("Invalid URL format:");
 
-      expect(bucket).toBeNull();
-      expect(key).toBeNull();
       expect(consoleSpy).toHaveBeenCalled();
       expect(consoleSpy).toHaveBeenCalledWith("Invalid URL format:", expect.any(Error));
     });
