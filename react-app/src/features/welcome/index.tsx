@@ -6,6 +6,7 @@ import { getUser } from "@/api";
 import * as C from "@/components";
 import { Button } from "@/components";
 import { CardWithTopBorder } from "@/components";
+import { LatestUpdates } from "@/components/Banner/latestUpdates";
 import { FAQ_TAB } from "@/consts";
 import { useHideBanner } from "@/hooks/useHideBanner";
 
@@ -67,6 +68,7 @@ export const Welcome = () => {
             </p>
           </CardWithTopBorder>
         </div>
+        <LatestUpdates />
         <div className="flex flex-col justify-center gap-8">
           <div>
             <h2 className="text-2xl font-bold mb-4">State Users</h2>
