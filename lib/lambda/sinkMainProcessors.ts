@@ -105,17 +105,18 @@ const getOneMacRecordWithAllProperties = async (
   if (isRecordAnAdminOneMacRecord(record)) {
     // const extendUpdateValuesSchema = await extendAdminSchema(updateValuesAdminChangeSchema, record);
     // const extendUpdateIdSchema = await extendAdminSchema(updateIdAdminChangeSchema, record);
-    const packageEvent = await getPackageType(record.id);
-    console.log(packageEvent, "package EVENT");
-    const packageSubmissionTypeSchema = events[packageEvent as keyof typeof events]?.baseSchema;
-    const extendUpdateValuesSchema = packageSubmissionTypeSchema.merge(
-      updateValuesAdminChangeSchema,
-    );
-    const extendUpdateIdSchema = packageSubmissionTypeSchema.merge(updateIdAdminChangeSchema);
+
+    // const packageEvent = await getPackageType(record.id);
+    // console.log(packageEvent, "package EVENT");
+    // const packageSubmissionTypeSchema = events[packageEvent as keyof typeof events]?.baseSchema;
+    // const extendUpdateValuesSchema = packageSubmissionTypeSchema.merge(
+    //   updateValuesAdminChangeSchema,
+    // );
+    // const extendUpdateIdSchema = packageSubmissionTypeSchema.merge(updateIdAdminChangeSchema);
 
     const adminRecordSchema = deleteAdminChangeSchema
-      .or(extendUpdateValuesSchema)
-      .or(extendUpdateIdSchema)
+      .or(updateValuesAdminChangeSchema)
+      .or(updateIdAdminChangeSchema)
       .or(splitSPAAdminChangeSchema)
       .or(extendSubmitNOSOAdminSchema);
 
