@@ -14,6 +14,11 @@ import {
 } from "./update/adminChangeSchemas";
 import { getPackageType } from "./update/getPackageType";
 const removeDoubleQuotesSurroundingString = (str: string) => str.replace(/^"|"$/g, "");
+const adminRecordSchema = deleteAdminChangeSchema
+  .or(updateValuesAdminChangeSchema)
+  .or(updateIdAdminChangeSchema)
+  .or(splitSPAAdminChangeSchema)
+  .or(extendSubmitNOSOAdminSchema);
 
 type OneMacRecord = {
   id: string;
@@ -105,19 +110,19 @@ const getOneMacRecordWithAllProperties = async (
     // const extendUpdateValuesSchema = await extendAdminSchema(updateValuesAdminChangeSchema, record);
     // const extendUpdateIdSchema = await extendAdminSchema(updateIdAdminChangeSchema, record);
 
-    const packageEvent = await getPackageType(record.id);
-    console.log(packageEvent, "package EVENT");
-    const packageSubmissionTypeSchema = events[packageEvent as keyof typeof events]?.baseSchema;
-    const extendUpdateValuesSchema = packageSubmissionTypeSchema.merge(
-      updateValuesAdminChangeSchema,
-    );
-    const extendUpdateIdSchema = packageSubmissionTypeSchema.merge(updateIdAdminChangeSchema);
+    // const packageEvent = await getPackageType(record.id);
+    // console.log(packageEvent, "package EVENT");
+    // const packageSubmissionTypeSchema = events[packageEvent as keyof typeof events]?.baseSchema;
+    // const extendUpdateValuesSchema = packageSubmissionTypeSchema.merge(
+    //   updateValuesAdminChangeSchema,
+    // );
+    // const extendUpdateIdSchema = packageSubmissionTypeSchema.merge(updateIdAdminChangeSchema);
     console.log("what");
-    const adminRecordSchema = deleteAdminChangeSchema
-      .or(extendUpdateValuesSchema)
-      .or(extendUpdateIdSchema)
-      .or(splitSPAAdminChangeSchema)
-      .or(extendSubmitNOSOAdminSchema);
+    // const adminRecordSchema = deleteAdminChangeSchema
+    //   .or(updateValuesAdminChangeSchema)
+    //   .or(updateIdAdminChangeSchema)
+    //   .or(splitSPAAdminChangeSchema)
+    //   .or(extendSubmitNOSOAdminSchema);
 
     const safeRecord = adminRecordSchema.safeParse(record);
 
