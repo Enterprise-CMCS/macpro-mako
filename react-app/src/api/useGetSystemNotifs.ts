@@ -5,8 +5,26 @@ import { BannerNotification, ReactQueryApiError } from "shared-types";
 
 import { useGetUser } from "@/api";
 
+const mapNotifications = (notifications: any): BannerNotification[] => {
+  return notifications.flatMap((notification) => {
+    if (Array.isArray(notification.body)) {
+      return notification.body.map((entry: any, index: any) => ({
+        notifId: `${notification.notifId}-${index}`,
+        body: `${entry.date}: ${entry.title} - ${entry.description}`,
+        header: notification.header,
+        pubDate: notification.pubDate,
+        expDate: notification.expDate,
+        buttonText: notification.buttonText,
+        buttonLink: notification.buttonLink || "",
+        disabled: notification.disabled ?? false,
+      }));
+    }
+    return notification;
+  });
+};
 export const getSystemNotifs = async (): Promise<BannerNotification[]> => {
-  return await API.get("os", "/systemNotifs", {});
+  const notifications = await API.get("os", "/systemNotifs", {});
+  return mapNotifications(notifications);
 };
 
 export const useGetSystemNotifs = () => {
