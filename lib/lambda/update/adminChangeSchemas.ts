@@ -1,8 +1,8 @@
-import { events } from "lib/packages/shared-types";
-import { ItemResult } from "lib/packages/shared-types/opensearch/changelog";
+// import { events } from "lib/packages/shared-types";
+// import { ItemResult } from "lib/packages/shared-types/opensearch/changelog";
 import { z } from "zod";
 
-import { getPackageType } from "./getPackageType";
+// import { getPackageType } from "./getPackageType";
 
 // const allBaseSchemas = Object.values(events).reduce(
 //   (acc, event) => acc.merge(event.baseSchema),
