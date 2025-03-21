@@ -88,16 +88,16 @@ const isRecordAOneMacRecord = (
 
 const isRecordAnAdminOneMacRecord = (
   record: ParsedRecordFromKafka,
-): record is { adminChangeType: string; isAdminChange: boolean } =>
+): record is { id: string; adminChangeType: string; isAdminChange: boolean } =>
   typeof record === "object" &&
   record?.isAdminChange === true &&
   record?.adminChangeType !== undefined;
 
-const getOneMacRecordWithAllProperties = (
+const getOneMacRecordWithAllProperties = async (
   value: string,
   topicPartition: string,
   kafkaRecord: KafkaRecord,
-): OneMacRecord | undefined => {
+): Promise<OneMacRecord | undefined> => {
   const record = JSON.parse(decodeBase64WithUtf8(value));
   console.log(`kafkaRecord: ${JSON.stringify(kafkaRecord, null, 2)}`);
   const kafkaSource = String.fromCharCode(...(kafkaRecord.headers[0]?.source || []));
@@ -106,13 +106,13 @@ const getOneMacRecordWithAllProperties = (
     // const extendUpdateValuesSchema = await extendAdminSchema(updateValuesAdminChangeSchema, record);
     // const extendUpdateIdSchema = await extendAdminSchema(updateIdAdminChangeSchema, record);
 
-    // const packageEvent = await getPackageType(record.id);
-    // console.log(packageEvent, "package EVENT");
-    // const packageSubmissionTypeSchema = events[packageEvent as keyof typeof events]?.baseSchema;
-    // const extendUpdateValuesSchema = packageSubmissionTypeSchema.merge(
-    //   updateValuesAdminChangeSchema,
-    // );
-    // const extendUpdateIdSchema = packageSubmissionTypeSchema.merge(updateIdAdminChangeSchema);
+    const packageEvent = await getPackageType(record.id);
+    console.log(packageEvent, "package EVENT");
+    const packageSubmissionTypeSchema = events[packageEvent as keyof typeof events]?.baseSchema;
+    const extendUpdateValuesSchema = packageSubmissionTypeSchema.merge(
+      updateValuesAdminChangeSchema,
+    );
+    const extendUpdateIdSchema = packageSubmissionTypeSchema.merge(updateIdAdminChangeSchema);
     console.log("what");
     const adminRecordSchema = deleteAdminChangeSchema
       .or(updateValuesAdminChangeSchema)
