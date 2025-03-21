@@ -47,6 +47,7 @@ type UploadProps = {
 export const Upload = ({ maxFiles, files, setFiles, dataTestId }: UploadProps) => {
   const [isUploading, setIsUploading] = useState(false); // New state for tracking upload status
   const [fileUploadError, setFileUploadError] = useState<string | null>(null);
+  const [rejectedFiles, setRejectedFiles] = useState<FileRejection[]>([]);
   const uniqueId = uuidv4();
   const MAX_FILE_SIZE = 80 * 1024 * 1024; //80 MB
   const accept = FILE_TYPES.reduce(
@@ -82,6 +83,7 @@ export const Upload = ({ maxFiles, files, setFiles, dataTestId }: UploadProps) =
   };
   const onDrop = useCallback(
     async (acceptedFiles: File[], fileRejections: FileRejection[]) => {
+      setRejectedFiles(fileRejections);
       if (fileRejections.length === 0) {
         setFileUploadError(null);
         setIsUploading(true); // Set uploading to true
@@ -142,6 +144,7 @@ export const Upload = ({ maxFiles, files, setFiles, dataTestId }: UploadProps) =
               <I.Button
                 onClick={(e) => {
                   e.preventDefault();
+                  setRejectedFiles([]);
                   setFiles(files.filter((a) => a.filename !== file.filename));
                 }}
                 variant="ghost"
@@ -187,9 +190,9 @@ export const Upload = ({ maxFiles, files, setFiles, dataTestId }: UploadProps) =
       {fileUploadError && (
         <span className="text-[0.8rem] font-medium text-destructive">{fileUploadError}</span>
       )}
-      {fileRejections.length > 0 && (
+      {rejectedFiles.length > 0 && (
         <span className="text-[0.8rem] font-medium text-destructive">
-          {fileRejections.flatMap(({ file, errors }) =>
+          {rejectedFiles.flatMap(({ file, errors }) =>
             errors
               .filter((e) => e.code !== "file-invalid-type" && e.code !== "file-too-large")
               .map((e) => <p key={`${file.name}-${e.code}`}>{e.message}</p>),
