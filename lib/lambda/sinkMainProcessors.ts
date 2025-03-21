@@ -115,8 +115,8 @@ const getOneMacRecordWithAllProperties = async (
     const extendUpdateIdSchema = packageSubmissionTypeSchema.merge(updateIdAdminChangeSchema);
     console.log("what");
     const adminRecordSchema = deleteAdminChangeSchema
-      .or(updateValuesAdminChangeSchema)
-      .or(updateIdAdminChangeSchema)
+      .or(extendUpdateValuesSchema)
+      .or(extendUpdateIdSchema)
       .or(splitSPAAdminChangeSchema)
       .or(extendSubmitNOSOAdminSchema);
 
