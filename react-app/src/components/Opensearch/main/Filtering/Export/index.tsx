@@ -20,7 +20,7 @@ import { ConfirmationDialog } from "@/components/ConfirmationDialog";
 
 import { DEFAULT_FILTERS } from "../../useOpensearch";
 
-const EXPORT_LIMIT = 5;
+const EXPORT_LIMIT = 10000;
 
 export const OsExportData: FC<{
   columns: OsTableColumn[];
