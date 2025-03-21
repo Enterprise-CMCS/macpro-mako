@@ -98,7 +98,7 @@ export const extendSubmitNOSOAdminSchema = submitNOSOAdminSchema.extend({
   changedDate: z.number(),
   statusDate: z.number(),
   timestamp: z.number(),
-  submssionDate: z.number(),
+  submissionDate: z.number(),
   proposedDate: z.number(),
   isAdminChange: z.boolean(),
   state: z.string(),
