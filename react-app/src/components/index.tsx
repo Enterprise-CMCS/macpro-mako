@@ -32,3 +32,4 @@ export * from "./TimeoutModal";
 export * from "./Banner";
 export * from "./ActionForm";
 export * from "./Tooltip";
+export * from "./ToggleGroup";

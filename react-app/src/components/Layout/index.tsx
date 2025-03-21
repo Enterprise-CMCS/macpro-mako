@@ -11,7 +11,7 @@ import { Banner, ScrollToTop, SimplePageContainer, UserPrompt } from "@/componen
 import MMDLAlertBanner from "@/components/Banner/MMDLSpaBanner";
 import config from "@/config";
 import { useMediaQuery } from "@/hooks";
-import { useHideBanner } from "@/hooks/useHideBanner";
+import { useFeatureFlag } from "@/hooks/useFeatureFlag";
 import { isFaqPage, isProd } from "@/utils";
 
 import { Footer } from "../Footer";
@@ -25,7 +25,9 @@ import { UsaBanner } from "../UsaBanner";
  */
 const useGetLinks = () => {
   const { isLoading, data: userObj } = useGetUser();
-  const hideTab = useHideBanner();
+  const hideWebformTab = useFeatureFlag("UAT_HIDE_MMDL_BANNER");
+  const toggleFaq = useFeatureFlag("TOGGLE_FAQ");
+  const showHome = toggleFaq ? userObj.user : true; // if toggleFAQ is on we want to hide home when not logged in
 
   const links =
     isLoading || isFaqPage
@@ -34,7 +36,7 @@ const useGetLinks = () => {
           {
             name: "Home",
             link: "/",
-            condition: true,
+            condition: showHome,
           },
           {
             name: "Dashboard",
@@ -51,12 +53,13 @@ const useGetLinks = () => {
           {
             name: "View FAQs",
             link: "/faq",
-            condition: true,
+            condition: !toggleFaq,
           },
+          { name: "Support", link: "/support", condition: userObj.user && toggleFaq },
           {
             name: "Webforms",
             link: "/webforms",
-            condition: userObj.user && !isProd && !hideTab,
+            condition: userObj.user && !isProd && !hideWebformTab,
           },
         ].filter((l) => l.condition);
 

@@ -20,10 +20,14 @@ export const featureFlags = {
     defaultValue: false,
   },
 
+  /**
+   * Toggles the legacy FAQ and oneMAC support page
+   */
   TOGGLE_FAQ: {
     flag: "toggleFaq",
-    defaultValue: true,
+    defaultValue: false,
   },
+
   /**
    * Toggles the visibility of the MMDL Alert Banner
    */

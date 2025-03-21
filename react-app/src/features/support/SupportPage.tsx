@@ -1,12 +1,22 @@
-import { useEffect, useState } from "react";
-import { useParams } from "react-router";
+import { useEffect, useMemo, useState } from "react";
+import { Navigate, useParams } from "react-router";
+import { isCmsUser } from "shared-utils";
 
-import { SupportSubNavHeader } from "@/components";
-import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components";
+import { useGetUser } from "@/api/useGetUser";
+import {
+  Accordion,
+  AccordionContent,
+  AccordionItem,
+  AccordionTrigger,
+  ExpandCollapseBtn,
+  LeftNavigation,
+  SupportSubNavHeader,
+  ToggleGroup,
+  ToggleGroupItem,
+} from "@/components";
+import { useFeatureFlag } from "@/hooks/useFeatureFlag";
 
-import ExpandCollapseBtn from "../../components/SupportPage/expandCollapseBtn";
-import LeftNavigation from "../../components/SupportPage/navigationBar";
-import { oneMACFAQContent, QuestionAnswer } from "./content/SupportMockContent";
+import { oneMACCMSContent, oneMACStateFAQContent, QuestionAnswer } from "./SupportMockContent";
 
 const FaqAccordion = ({ question }: { question: QuestionAnswer[] }) => {
   return (
@@ -31,12 +41,21 @@ const FaqAccordion = ({ question }: { question: QuestionAnswer[] }) => {
 
 export const SupportPage = () => {
   const { id } = useParams<{ id: string }>();
+  const isSupportPageShown = useFeatureFlag("TOGGLE_FAQ");
   const [openAccordions, setOpenAccordions] = useState<string[]>([]);
 
+  const { data: userObj } = useGetUser();
+  const isCmsView = isCmsUser(userObj.user);
+
+  const [tgValue, setTGValue] = useState<"cms" | "state">(isCmsView ? "cms" : "state");
+
+  const supportContent = useMemo(() => {
+    if (tgValue === "cms") return oneMACCMSContent;
+    return oneMACStateFAQContent;
+  }, [tgValue]);
+
   const expandAll = () => {
-    const allIds = oneMACFAQContent.flatMap(({ qanda }) =>
-      qanda.map(({ anchorText }) => anchorText),
-    );
+    const allIds = supportContent.flatMap(({ qanda }) => qanda.map(({ anchorText }) => anchorText));
     setOpenAccordions(allIds);
   };
 
@@ -45,7 +64,7 @@ export const SupportPage = () => {
   };
 
   const areAllAccordionsOpen = (function () {
-    const totalQandas = oneMACFAQContent.reduce((total, section) => {
+    const totalQandas = supportContent.reduce((total, section) => {
       return total + section.qanda.length;
     }, 0);
     if (openAccordions.length >= totalQandas) return true;
@@ -65,11 +84,37 @@ export const SupportPage = () => {
     }
   }, [id]);
 
+  if (!isSupportPageShown || !userObj?.user) return <Navigate to="/" replace />;
+
   return (
     <div className="min-h-screen flex flex-col">
       <SupportSubNavHeader>
         <h1 className="text-4xl font-bold">OneMAC Support</h1>
       </SupportSubNavHeader>
+
+      {/* only display the toggle CMS/State view when the user is CMS */}
+      {isCmsView && (
+        <div className="flex max-w-screen-xl m-auto px-4 lg:px-8 pt-8 w-full border-b-2 border-b-slate-100 justify-end">
+          <div className="w-2/3 px-4 lg:px-8">
+            <ToggleGroup
+              type="single"
+              aria-label="CMS State Toggle"
+              data-testid="cms-toggle-group"
+              value={tgValue}
+              onValueChange={(value: "cms" | "state") => {
+                if (value) setTGValue(value);
+              }}
+            >
+              <ToggleGroupItem value="cms" aria-label="cms">
+                CMS
+              </ToggleGroupItem>
+              <ToggleGroupItem value="state" aria-label="state">
+                States
+              </ToggleGroupItem>
+            </ToggleGroup>
+          </div>
+        </div>
+      )}
 
       {/* Main Layout Wrapper with explicit widths */}
       <div className="max-w-screen-xl m-auto px-4 lg:px-8 pt-8 w-full">
@@ -83,7 +128,7 @@ export const SupportPage = () => {
           <section className="w-2/3 block md:flex md:flex-row max-w-screen-xl m-auto px-4 lg:px-8 pt-8 gap-10">
             <div className="flex-1">
               <Accordion type="multiple" value={openAccordions} onValueChange={setOpenAccordions}>
-                {oneMACFAQContent.map(({ sectionTitle, qanda }, index) => (
+                {supportContent.map(({ sectionTitle, qanda }, index) => (
                   <article key={sectionTitle} className="mb-8">
                     {/* The first article has the expand button on the right */}
                     {index === 0 ? (
