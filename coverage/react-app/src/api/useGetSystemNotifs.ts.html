@@ -23,30 +23,30 @@
         <div class='clearfix'>
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">71.87% </span>
+                <span class="strong">71.42% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>23/32</span>
+                <span class='fraction'>25/35</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">47.05% </span>
+                <span class="strong">69.23% </span>
                 <span class="quiet">Branches</span>
-                <span class='fraction'>8/17</span>
+                <span class='fraction'>9/13</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">66.66% </span>
+                <span class="strong">75% </span>
                 <span class="quiet">Functions</span>
-                <span class='fraction'>8/12</span>
+                <span class='fraction'>9/12</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">75.86% </span>
+                <span class="strong">75% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>22/29</span>
+                <span class='fraction'>24/32</span>
             </div>
         
             
@@ -131,7 +131,12 @@
 <a name='L66'></a><a href='#L66'>66</a>
 <a name='L67'></a><a href='#L67'>67</a>
 <a name='L68'></a><a href='#L68'>68</a>
-<a name='L69'></a><a href='#L69'>69</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
+<a name='L69'></a><a href='#L69'>69</a>
+<a name='L70'></a><a href='#L70'>70</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -140,26 +145,22 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">74x</span>
 <span class="cline-any cline-yes">12x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">12x</span>
+<span class="cline-any cline-yes">24x</span>
+<span class="cline-any cline-yes">12x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">74x</span>
+<span class="cline-any cline-yes">12x</span>
+<span class="cline-any cline-yes">12x</span>
+<span class="cline-any cline-yes">12x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">12x</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">74x</span>
-<span class="cline-any cline-yes">12x</span>
-<span class="cline-any cline-yes">12x</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">74x</span>
 <span class="cline-any cline-yes">36x</span>
 <span class="cline-any cline-yes">36x</span>
@@ -171,6 +172,7 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">36x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">11x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -202,30 +204,30 @@
 <span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">import { useQuery } from "@tanstack/react-query";
 import { API } from "aws-amplify";
 import { useEffect, useState } from "react";
-import { BannerNotification, ReactQueryApiError } from "shared-types";
+import {
+  BannerNotificationSchema,
+  ReactQueryApiError,
+  ValidBannerNotification,
+} from "shared-types";
 &nbsp;
 import { useGetUser } from "@/api";
 &nbsp;
-const mapNotifications = (notifications: any): BannerNotification[] =&gt; {
-  return notifications.flatMap((notification) =&gt; {
-    <span class="missing-if-branch" title="if path not taken" >I</span>if (Array.isArray(notification.body)) {
-<span class="cstat-no" title="statement not covered" >      return notification.body.map(<span class="fstat-no" title="function not covered" >(e</span>ntry: any, index: any) =&gt; (<span class="cstat-no" title="statement not covered" >{</span></span>
-        notifId: `${notification.notifId}-${index}`,
-        body: `${entry.date}: ${entry.title} - ${entry.description}`,
-        header: notification.header,
-        pubDate: notification.pubDate,
-        expDate: notification.expDate,
-        buttonText: notification.buttonText,
-        buttonLink: notification.buttonLink || "",
-        disabled: notification.disabled ?? false,
-      }));
-    }
-    return notification;
-  });
+const mapValidNotifications = (notifications: unknown[]): ValidBannerNotification[] =&gt; {
+  <span class="missing-if-branch" title="if path not taken" >I</span>if (!Array.isArray(notifications)) <span class="cstat-no" title="statement not covered" >return [];</span>
+&nbsp;
+  return notifications
+    .filter((notification) =&gt; BannerNotificationSchema.safeParse(notification).success)
+    .map((notification) =&gt; BannerNotificationSchema.parse(notification));
 };
-export const getSystemNotifs = async (): Promise&lt;BannerNotification[]&gt; =&gt; {
-  const notifications = await API.get("os", "/systemNotifs", {});
-  return mapNotifications(notifications);
+&nbsp;
+export const getSystemNotifs = async (): Promise&lt;ValidBannerNotification[]&gt; =&gt; {
+  try {
+    const notifications = await API.get("os", "/systemNotifs", {});
+    return mapValidNotifications(notifications);
+  } catch (error) {
+<span class="cstat-no" title="statement not covered" >    console.error("Error fetching notifications:", error);</span>
+<span class="cstat-no" title="statement not covered" >    return [];</span>
+  }
 };
 &nbsp;
 export const useGetSystemNotifs = () =&gt; {
@@ -238,13 +240,14 @@ export const useGetSystemNotifs = () =&gt; {
     setDismissed(parsed);
   }, [userQuery?.data?.user?.username]);
 &nbsp;
-  const result = useQuery&lt;BannerNotification[], ReactQueryApiError&gt;(["systemBannerNotifs"], () =&gt;
-    getSystemNotifs(),
+  const result = useQuery&lt;ValidBannerNotification[], ReactQueryApiError&gt;(
+    ["systemBannerNotifs"],
+    () =&gt; getSystemNotifs(),
   );
 &nbsp;
   const notDismissed = result.data?.filter((i) =&gt; !dismissed.includes(i.notifId)) ?? []; //check dismissed
   const currentNotifs = notDismissed.filter(
-    (i) =&gt; i.expDate &amp;&amp; <span class="branch-1 cbranch-no" title="branch not covered" >new Date(i.expDate).getTime() &gt; new Date().getTime(),</span>
+    (i) =&gt; i.expDate &amp;&amp; new Date(i.expDate).getTime() &gt; new Date().getTime(),
   ); //check expired
 &nbsp;
   const clearNotif = <span class="fstat-no" title="function not covered" >(i</span>d?: string) =&gt; {
@@ -274,7 +277,7 @@ export const useGetSystemNotifs = () =&gt; {
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2025-03-21T14:46:46.699Z
+                at 2025-03-21T17:30:15.455Z
             </div>
         <script src="../../../prettify.js"></script>
         <script>
