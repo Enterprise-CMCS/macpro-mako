@@ -55,7 +55,11 @@ export const OsMainView: FC<{ columns: OsTableColumn[] }> = (props) => {
   return (
     <div className="flex flex-col">
       <div className="w-full my-2 max-w-screen-xl self-center px-4 lg:px-8">
-        <OsFiltering onToggle={onToggle} columns={osColumns[currentTab]} />
+        <OsFiltering
+          onToggle={onToggle}
+          columns={osColumns[currentTab]}
+          count={context.data?.total?.value || 0}
+        />
         <FilterChips />
       </div>
       <div className="px-4 lg:px-8">
