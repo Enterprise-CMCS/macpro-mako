@@ -154,16 +154,7 @@ export const Upload = ({ maxFiles, files, setFiles, dataTestId }: UploadProps) =
           ))}
         </div>
       )}
-      {fileUploadError && <span className="text-red-500">{fileUploadError}</span>}
-      {fileRejections.length > 0 && (
-        <span className="text-red-500">
-          {fileRejections.flatMap(({ file, errors }) =>
-            errors
-              .filter((e) => e.code !== "file-invalid-type" && e.code !== "file-too-large")
-              .map((e) => <p key={`${file.name}-${e.code}`}>{e.message}</p>),
-          )}
-        </span>
-      )}
+
       {isUploading ? (
         <LoadingSpinner /> // Render the loading spinner when uploading
       ) : (
@@ -192,6 +183,18 @@ export const Upload = ({ maxFiles, files, setFiles, dataTestId }: UploadProps) =
             data-testid={`${dataTestId}-upload`}
           />
         </div>
+      )}
+      {fileUploadError && (
+        <span className="text-[0.8rem] font-medium text-destructive">{fileUploadError}</span>
+      )}
+      {fileRejections.length > 0 && (
+        <span className="text-[0.8rem] font-medium text-destructive">
+          {fileRejections.flatMap(({ file, errors }) =>
+            errors
+              .filter((e) => e.code !== "file-invalid-type" && e.code !== "file-too-large")
+              .map((e) => <p key={`${file.name}-${e.code}`}>{e.message}</p>),
+          )}
+        </span>
       )}
     </>
   );
