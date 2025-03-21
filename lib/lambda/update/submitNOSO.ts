@@ -34,7 +34,7 @@ interface submitMessageType {
 }
 
 const convertStringToTimestamp = (date: string) => {
-  const formatedDate = new Date(date + " 7:00:00 AM").getTime();
+  const formatedDate = new Date(date).getTime();
   if (isNaN(formatedDate.valueOf())) throw new Error("Not a valid time");
   return formatedDate;
 };
