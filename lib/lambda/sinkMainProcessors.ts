@@ -88,7 +88,7 @@ const isRecordAOneMacRecord = (
 
 const isRecordAnAdminOneMacRecord = (
   record: ParsedRecordFromKafka,
-): record is { id: string; adminChangeType: string; isAdminChange: boolean } =>
+): record is { adminChangeType: string; isAdminChange: boolean } =>
   typeof record === "object" &&
   record?.isAdminChange === true &&
   record?.adminChangeType !== undefined;
