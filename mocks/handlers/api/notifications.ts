@@ -8,9 +8,22 @@ const defaultNotificationHandler = http.get<any, NotifRequestBody>(/\/systemNoti
     [
       {
         notifId: "testId",
-        body: "testBody",
         header: "testHeader",
+        body: "testBody",
+        buttonText: "button",
+        buttonLink: "link",
         pubDate: new Date().toISOString(),
+        expDate: new Date().toISOString(),
+        disabled: false,
+      },
+      {
+        header: "testHeader",
+        body: "testBody",
+        buttonText: "button",
+        buttonLink: "link",
+        pubDate: new Date().toISOString(),
+        expDate: new Date().toISOString(),
+        disabled: false,
       },
     ],
     { status: 200 },
