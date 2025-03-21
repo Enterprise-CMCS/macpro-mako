@@ -1,6 +1,6 @@
 import { X } from "lucide-react";
 import { useCallback, useState } from "react";
-import { FileRejection, useDropzone } from "react-dropzone";
+import { FileError, FileRejection, useDropzone } from "react-dropzone";
 import { attachmentSchema } from "shared-types";
 import { FILE_TYPES } from "shared-types/uploads";
 import { v4 as uuidv4 } from "uuid";
@@ -46,7 +46,6 @@ type UploadProps = {
  */
 export const Upload = ({ maxFiles, files, setFiles, dataTestId }: UploadProps) => {
   const [isUploading, setIsUploading] = useState(false); // New state for tracking upload status
-  const [fileUploadError, setFileUploadError] = useState<string | null>(null);
   const [rejectedFiles, setRejectedFiles] = useState<FileRejection[]>([]);
   const uniqueId = uuidv4();
   const MAX_FILE_SIZE = 80 * 1024 * 1024; //80 MB
@@ -85,7 +84,6 @@ export const Upload = ({ maxFiles, files, setFiles, dataTestId }: UploadProps) =
     async (acceptedFiles: File[], fileRejections: FileRejection[]) => {
       setRejectedFiles(fileRejections);
       if (fileRejections.length === 0) {
-        setFileUploadError(null);
         setIsUploading(true); // Set uploading to true
 
         const processedFiles = await Promise.all(
@@ -104,8 +102,17 @@ export const Upload = ({ maxFiles, files, setFiles, dataTestId }: UploadProps) =
               };
               return attachment;
             } catch {
-              setFileUploadError("Failed to upload one or more files.");
-              return null;
+              const fileError: FileError = {
+                message: `Failed to upload ${file.name}`,
+                code: "fail-to-upload",
+              };
+
+              const uploadError: FileRejection = {
+                file: file,
+                errors: [fileError],
+              };
+
+              setRejectedFiles((prev) => [...prev, uploadError]);
             }
           }),
         );
@@ -187,9 +194,7 @@ export const Upload = ({ maxFiles, files, setFiles, dataTestId }: UploadProps) =
           />
         </div>
       )}
-      {fileUploadError && (
-        <span className="text-[0.8rem] font-medium text-destructive">{fileUploadError}</span>
-      )}
+
       {rejectedFiles.length > 0 && (
         <span className="text-[0.8rem] font-medium text-destructive">
           {rejectedFiles.flatMap(({ file, errors }) =>
