@@ -4,6 +4,7 @@ import { beforeEach, describe, expect, it, vi } from "vitest";
 import { renderWithQueryClient } from "@/utils/test-helpers";
 
 import { Upload } from "./upload";
+import * as upUtil from "./uploadUtilities";
 
 const defaultProps = {
   dataTestId: "upload-component",
@@ -14,6 +15,7 @@ const defaultProps = {
 const FILE_1 = "file-1";
 const FILE_2 = "file-2";
 const FILE_REMOVE = "file-to-remove";
+const failUpload = "file-to-fail";
 const files = [
   {
     key: FILE_1,
@@ -130,6 +132,25 @@ describe("Upload", () => {
       expect(
         screen.getByText(`File with name "${FILE_1}.txt" already exists.`),
       ).toBeInTheDocument();
+    });
+  });
+  it("displays an error because the file failed to upload", async () => {
+    const mockSetFiles = vi.fn();
+    renderWithQueryClient(<Upload {...defaultProps} files={files} setFiles={mockSetFiles} />);
+    vi.spyOn(upUtil, "getPresignedUrl").mockImplementation(() => {
+      throw new Error();
+    });
+    const dropzone = screen.getByRole("presentation");
+    const file = new File(["file constents"], `${failUpload}.txt`, { type: "text/plain" });
+    Object.defineProperty(dropzone, "files", {
+      value: [file],
+      writable: false,
+    });
+
+    fireEvent.drop(dropzone);
+
+    await waitFor(() => {
+      expect(screen.getByText(`Failed to upload ${failUpload}.txt`)).toBeInTheDocument();
     });
   });
 
