@@ -23,7 +23,7 @@ export default defineConfig(({ mode }) => {
         analytics: [
           {
             id: env.VITE_GOOGLE_ANALYTICS_GTAG,
-            disable: env.VITE_GOOGLE_ANALYTICS_DISABLE === "true",
+            disable: env.VITE_GOOGLE_ANALYTICS_DISABLE === "false",
           },
         ],
       }),

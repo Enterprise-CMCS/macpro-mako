@@ -8,17 +8,25 @@ import React from "react";
 import ReactDOM from "react-dom/client";
 import { RouterProvider } from "react-router";
 
+
 import config from "@/config";
 import { queryClient } from "@/utils";
 
 import { router } from "./router";
 
 const ldClientId = config.launchDarkly?.CLIENT_ID;
+const googleAnalayticsGtag =config.googleAnalytics?.GOOGLE_ANALYTICS_ID;
+
 if (ldClientId === undefined) {
   throw new Error("To configure LaunchDarkly, you must set LAUNCHDARKLY_CLIENT_ID");
 }
 
+
+
 const initializeLaunchDarkly = async () => {
+  console.log("google analytics tag: "+ googleAnalayticsGtag);
+
+
   const LDProvider = await asyncWithLDProvider({
     clientSideID: ldClientId,
     options: {

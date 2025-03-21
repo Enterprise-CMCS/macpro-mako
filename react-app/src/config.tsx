@@ -18,6 +18,9 @@ const config = {
   launchDarkly: {
     CLIENT_ID: import.meta.env.VITE_LAUNCHDARKLY_CLIENT_ID,
   },
+  googleAnalytics: {
+    GOOGLE_ANALYTICS_ID: import.meta.env.VITE_GOOGLE_ANALYTICS_ID
+  }
 };
 
 export default config;
