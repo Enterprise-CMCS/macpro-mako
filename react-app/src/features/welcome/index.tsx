@@ -33,6 +33,7 @@ export const loader = (queryClient: QueryClient) => {
 
 export const Welcome = () => {
   const isSectionHidden = useFeatureFlag("UAT_HIDE_MMDL_BANNER");
+  const faqRoute = useFeatureFlag("TOGGLE_FAQ") ? "/support" : "/faq";
 
   return (
     <>
@@ -61,7 +62,11 @@ export const Welcome = () => {
               Medicaid Alternative Benefit Plan, Premium and Cost Sharing, and CHIP Eligibility SPA
               templates and implementation guides are now available in OneMAC. New submissions for
               these SPA types are submitted through the OneMAC system effective [add date].{" "}
-              <Link to="/faq/spa-admendments" target={FAQ_TAB} className="underline text-[#0071bc]">
+              <Link
+                to={`${faqRoute}/spa-admendments`}
+                target={FAQ_TAB}
+                className="underline text-[#0071bc]"
+              >
                 Learn more
               </Link>
             </p>
@@ -187,7 +192,7 @@ export const Welcome = () => {
       <section>
         <div className="flex justify-around items-center text-xl px-10 py-2 max-w-screen-xl mx-auto">
           <h4>Do you have questions or need support?</h4>
-          <Link to="/faq" target={FAQ_TAB}>
+          <Link to={faqRoute} target={FAQ_TAB}>
             <Button>View FAQs</Button>
           </Link>
         </div>
