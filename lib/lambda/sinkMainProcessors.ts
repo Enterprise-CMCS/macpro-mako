@@ -113,7 +113,7 @@ const getOneMacRecordWithAllProperties = async (
     //   updateValuesAdminChangeSchema,
     // );
     // const extendUpdateIdSchema = packageSubmissionTypeSchema.merge(updateIdAdminChangeSchema);
-
+    console.log("what");
     const adminRecordSchema = deleteAdminChangeSchema
       .or(updateValuesAdminChangeSchema)
       .or(updateIdAdminChangeSchema)
