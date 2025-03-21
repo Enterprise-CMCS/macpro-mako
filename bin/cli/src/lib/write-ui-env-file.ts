@@ -26,15 +26,15 @@ export async function writeUiEnvFile(stage, local = false) {
   );
 
 
-  // const googleAnalytics = JSON.parse(
-  //   (
-  //     await new SSMClient({ region: "us-east-1" }).send(
-  //       new GetParameterCommand({
-  //         Name: `/${project}/${stage}/google-analytics-id`,
-  //       }),
-  //     )
-  //   ).Parameter!.Value!,
-  // );
+  const googleAnalytics = JSON.parse(
+    (
+      await new SSMClient({ region: "us-east-1" }).send(
+        new GetParameterCommand({
+          Name: `/${project}/${stage}/google-analytics-id`,
+        }),
+      )
+    ).Parameter!.Value!,
+  );
 
   const envVariables = {
     VITE_API_REGION: `"${region}"`,
@@ -52,7 +52,7 @@ export async function writeUiEnvFile(stage, local = false) {
       ? `"http://localhost:5000/"`
       : deploymentOutput.applicationEndpointUrl,
     VITE_IDM_HOME_URL: deploymentOutput.idmHomeUrl,
-    VITE_GOOGLE_ANALYTICS_GTAG: `"hello"`,
+    VITE_GOOGLE_ANALYTICS_GTAG: `"${googleAnalytics}"`,
     VITE_GOOGLE_ANALYTICS_DISABLE: `"${deploymentConfig.googleAnalyticsDisable}"`,
     VITE_LAUNCHDARKLY_CLIENT_ID: `"${deploymentConfig.launchDarklyClientId}"`,
   };
