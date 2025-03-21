@@ -3,13 +3,14 @@ import { response } from "libs/handler-lib";
 import { events } from "shared-types";
 
 export const getPackageType = async (packageId: string) => {
+  console.log(packageId, "PACKAGE ID");
   // use event of current package to determine how ID should be formatted
   try {
     const packageChangelog = await getPackageChangelog(packageId);
     const packageSubmissionType = packageChangelog.hits.hits.find(
       (pkg) => pkg._source.event in events,
     );
-
+    console.log("HERE???");
     if (!packageSubmissionType) {
       throw new Error("The type of package could not be determined.");
     }
