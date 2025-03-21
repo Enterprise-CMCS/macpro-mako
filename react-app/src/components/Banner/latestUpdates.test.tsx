@@ -3,37 +3,38 @@ import { beforeEach, describe, expect, test, vi } from "vitest";
 
 import { LatestUpdates } from "./latestUpdates";
 
-// Mock useGetSystemNotifs
-vi.mock("@/api", () => ({
-  useGetSystemNotifs: () => ({
-    notifications: [
-      {
-        notifId: "9e38a211-5fd5-44ff-96cd-6d0a22a73a96",
-        header: "Latest Updates",
-        pubDate: "2025-01-07T12:20:56.160Z",
-        expDate: "2025-08-07T11:21:50.210Z",
-        body: "Body content 1",
-        buttonLink: "/link-1",
-      },
-      {
-        notifId: "9e38a211-5fd5-44ff-96cd-6d0a22a73a97",
-        header: "Latest Updates",
-        pubDate: "2025-01-06T10:00:00.000Z",
-        expDate: "2025-07-01T00:00:00.000Z",
-        body: "Body content 2",
-        buttonLink: "",
-      },
-      {
-        notifId: "9e38a211-5fd5-44ff-96cd-6d0a22a73a98",
-        header: "Latest Updates",
-        pubDate: "2025-01-05T09:00:00.000Z",
-        expDate: "2025-06-30T00:00:00.000Z",
-        body: "Body content 3",
-        buttonLink: "",
-      },
-    ],
-  }),
-}));
+vi.mock("@/api", async () => {
+  return {
+    useGetSystemNotifs: () => ({
+      allNotifications: [
+        {
+          notifId: "9e38a211-5fd5-44ff-96cd-6d0a22a73a96",
+          header: "Latest Updates",
+          pubDate: "2025-01-07T12:20:56.160Z",
+          expDate: "2025-08-07T11:21:50.210Z",
+          body: "Body content 1",
+          buttonLink: "/link-1",
+        },
+        {
+          notifId: "9e38a211-5fd5-44ff-96cd-6d0a22a73a97",
+          header: "Latest Updates",
+          pubDate: "2025-01-06T10:00:00.000Z",
+          expDate: "2025-07-01T00:00:00.000Z",
+          body: "Body content 2",
+          buttonLink: "",
+        },
+        {
+          notifId: "9e38a211-5fd5-44ff-96cd-6d0a22a73a98",
+          header: "Latest Updates",
+          pubDate: "2025-01-05T09:00:00.000Z",
+          expDate: "2025-06-30T00:00:00.000Z",
+          body: "Body content 3",
+          buttonLink: "",
+        },
+      ],
+    }),
+  };
+});
 
 describe("LatestUpdates Component", () => {
   beforeEach(() => {
