@@ -1,30 +1,30 @@
 import { useQuery } from "@tanstack/react-query";
 import { API } from "aws-amplify";
 import { useEffect, useState } from "react";
-import { BannerNotification, ReactQueryApiError } from "shared-types";
+import {
+  BannerNotificationSchema,
+  ReactQueryApiError,
+  ValidBannerNotification,
+} from "shared-types";
 
 import { useGetUser } from "@/api";
 
-const mapNotifications = (notifications: any): BannerNotification[] => {
-  return notifications.flatMap((notification) => {
-    if (Array.isArray(notification.body)) {
-      return notification.body.map((entry: any, index: any) => ({
-        notifId: `${notification.notifId}-${index}`,
-        body: `${entry.date}: ${entry.title} - ${entry.description}`,
-        header: notification.header,
-        pubDate: notification.pubDate,
-        expDate: notification.expDate,
-        buttonText: notification.buttonText,
-        buttonLink: notification.buttonLink || "",
-        disabled: notification.disabled ?? false,
-      }));
-    }
-    return notification;
-  });
+const mapValidNotifications = (notifications: unknown[]): ValidBannerNotification[] => {
+  if (!Array.isArray(notifications)) return [];
+
+  return notifications
+    .filter((notification) => BannerNotificationSchema.safeParse(notification).success)
+    .map((notification) => BannerNotificationSchema.parse(notification));
 };
-export const getSystemNotifs = async (): Promise<BannerNotification[]> => {
-  const notifications = await API.get("os", "/systemNotifs", {});
-  return mapNotifications(notifications);
+
+export const getSystemNotifs = async (): Promise<ValidBannerNotification[]> => {
+  try {
+    const notifications = await API.get("os", "/systemNotifs", {});
+    return mapValidNotifications(notifications);
+  } catch (error) {
+    console.error("Error fetching notifications:", error);
+    return [];
+  }
 };
 
 export const useGetSystemNotifs = () => {
@@ -37,8 +37,9 @@ export const useGetSystemNotifs = () => {
     setDismissed(parsed);
   }, [userQuery?.data?.user?.username]);
 
-  const result = useQuery<BannerNotification[], ReactQueryApiError>(["systemBannerNotifs"], () =>
-    getSystemNotifs(),
+  const result = useQuery<ValidBannerNotification[], ReactQueryApiError>(
+    ["systemBannerNotifs"],
+    () => getSystemNotifs(),
   );
 
   const notDismissed = result.data?.filter((i) => !dismissed.includes(i.notifId)) ?? []; //check dismissed
