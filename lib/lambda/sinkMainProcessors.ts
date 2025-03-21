@@ -1,10 +1,9 @@
 import { isBefore } from "date-fns";
 import { bulkUpdateDataWrapper, ErrorType, getItems, logError } from "libs";
 import { KafkaRecord, opensearch, SeatoolRecordWithUpdatedDate } from "shared-types";
-import { events } from "shared-types";
+// import { events } from "shared-types";
 import { Document, legacyTransforms, transforms } from "shared-types/opensearch/main";
 import { decodeBase64WithUtf8 } from "shared-utils";
-import { z } from "zod";
 
 import {
   deleteAdminChangeSchema,
@@ -13,7 +12,7 @@ import {
   updateIdAdminChangeSchema,
   updateValuesAdminChangeSchema,
 } from "./update/adminChangeSchemas";
-import { getPackageType } from "./update/getPackageType";
+// import { getPackageType } from "./update/getPackageType";
 const removeDoubleQuotesSurroundingString = (str: string) => str.replace(/^"|"$/g, "");
 
 type OneMacRecord = {
@@ -93,11 +92,11 @@ const isRecordAnAdminOneMacRecord = (
   record?.isAdminChange === true &&
   record?.adminChangeType !== undefined;
 
-const getOneMacRecordWithAllProperties = async (
+const getOneMacRecordWithAllProperties = (
   value: string,
   topicPartition: string,
   kafkaRecord: KafkaRecord,
-): Promise<OneMacRecord | undefined> => {
+): OneMacRecord | undefined => {
   const record = JSON.parse(decodeBase64WithUtf8(value));
   console.log(`kafkaRecord: ${JSON.stringify(kafkaRecord, null, 2)}`);
   const kafkaSource = String.fromCharCode(...(kafkaRecord.headers[0]?.source || []));
@@ -106,17 +105,17 @@ const getOneMacRecordWithAllProperties = async (
     // const extendUpdateValuesSchema = await extendAdminSchema(updateValuesAdminChangeSchema, record);
     // const extendUpdateIdSchema = await extendAdminSchema(updateIdAdminChangeSchema, record);
 
-    const packageEvent = await getPackageType(record.id);
-    console.log(packageEvent, "package EVENT");
-    const packageSubmissionTypeSchema = events[packageEvent as keyof typeof events]?.baseSchema;
-    const extendUpdateValuesSchema = packageSubmissionTypeSchema.merge(
-      updateValuesAdminChangeSchema,
-    );
-    const extendUpdateIdSchema = packageSubmissionTypeSchema.merge(updateIdAdminChangeSchema);
+    // const packageEvent = await getPackageType(record.id);
+    // console.log(packageEvent, "package EVENT");
+    // const packageSubmissionTypeSchema = events[packageEvent as keyof typeof events]?.baseSchema;
+    // const extendUpdateValuesSchema = packageSubmissionTypeSchema.merge(
+    //   updateValuesAdminChangeSchema,
+    // );
+    // const extendUpdateIdSchema = packageSubmissionTypeSchema.merge(updateIdAdminChangeSchema);
     console.log("what");
     const adminRecordSchema = deleteAdminChangeSchema
-      .or(extendUpdateValuesSchema)
-      .or(extendUpdateIdSchema)
+      .or(updateValuesAdminChangeSchema)
+      .or(updateIdAdminChangeSchema)
       .or(splitSPAAdminChangeSchema)
       .or(extendSubmitNOSOAdminSchema);
 
