@@ -1,14 +1,17 @@
 import { mockedProducer } from "mocks";
-import { afterEach, beforeEach, describe, expect, it } from "vitest";
+import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 
 import { getProducer, produceMessage } from "./kafka";
 
 describe("Kafka producer functions", () => {
   let brokerString: string | undefined;
+  let consoleErrorSpy: ReturnType<typeof vi.spyOn>;
+  const consoleLogSpy = vi.spyOn(console, "log");
 
   beforeEach(() => {
     brokerString = process.env.brokerString;
     process.env.brokerString = "broker1,broker2";
+    consoleErrorSpy = vi.spyOn(console, "error").mockImplementation(() => {});
   });
 
   afterEach(() => {
@@ -25,6 +28,8 @@ describe("Kafka producer functions", () => {
     const key = "test-key";
     const value = JSON.stringify({ foo: "bar" });
 
+    mockedProducer.send.mockResolvedValueOnce([{ partition: 0, offset: "1" }]);
+
     await produceMessage(topic, key, value);
 
     expect(mockedProducer.connect).toHaveBeenCalled();
@@ -40,9 +45,10 @@ describe("Kafka producer functions", () => {
       ],
     });
     expect(mockedProducer.disconnect).toHaveBeenCalled();
+    expect(consoleLogSpy).toHaveBeenCalledWith("Message sent successfully", expect.anything());
   });
 
-  it("should handle errors when producing a message", async () => {
+  it("should throw an error if Kafka send fails", async () => {
     const topic = "test-topic";
     const key = "test-key";
     const value = JSON.stringify({ foo: "bar" });
@@ -50,21 +56,42 @@ describe("Kafka producer functions", () => {
     const error = new Error("Failed to send message");
     mockedProducer.send.mockRejectedValueOnce(error);
 
-    await produceMessage(topic, key, value);
+    await expect(produceMessage(topic, key, value)).rejects.toThrow("Failed to send message");
 
     expect(mockedProducer.connect).toHaveBeenCalled();
-    expect(mockedProducer.send).toHaveBeenCalledWith({
-      topic,
-      messages: [
-        {
-          key,
-          value,
-          partition: 0,
-          headers: { source: "mako" },
-        },
-      ],
-    });
+    expect(mockedProducer.send).toHaveBeenCalled();
     expect(mockedProducer.disconnect).toHaveBeenCalled();
+    expect(consoleErrorSpy).toHaveBeenCalledWith("Error sending message:", error);
+  });
+
+  it("should throw an error if Kafka response is empty", async () => {
+    const topic = "test-topic";
+    const key = "test-key";
+    const value = JSON.stringify({ foo: "bar" });
+
+    mockedProducer.send.mockResolvedValueOnce([]);
+
+    await expect(produceMessage(topic, key, value)).rejects.toThrow(
+      "Kafka did not return a valid response.",
+    );
+
+    expect(mockedProducer.connect).toHaveBeenCalled();
+    expect(mockedProducer.send).toHaveBeenCalled();
+    expect(mockedProducer.disconnect).toHaveBeenCalled();
+    expect(consoleErrorSpy).toHaveBeenCalledWith("Error sending message:", expect.any(Error));
+  });
+
+  it("should throw an error if Kafka send fails and error not an instance of an error", async () => {
+    const topic = "test-topic";
+    const key = "test-key";
+    const value = JSON.stringify({ foo: "bar" });
+
+    const error = { message: "Failed to send message" };
+    mockedProducer.send.mockRejectedValueOnce(error);
+
+    await expect(produceMessage(topic, key, value)).rejects.toThrow(
+      "Failed to send message to Kafka",
+    );
   });
 
   it("should throw an error if brokerString is not defined", () => {
