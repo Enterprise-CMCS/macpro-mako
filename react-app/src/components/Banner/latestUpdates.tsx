@@ -9,11 +9,11 @@ interface LatestUpdatesProps {
 
 export const LatestUpdates: FC<LatestUpdatesProps> = ({ className }) => {
   const [showMore, setShowMore] = useState(false);
-  const { notifications } = useGetSystemNotifs();
+  const { allNotifications } = useGetSystemNotifs();
 
-  if (!notifications.length) return null;
+  if (!allNotifications.length) return null;
 
-  const latestUpdates = notifications.filter((notif) => notif.header === "Latest Updates");
+  const latestUpdates = allNotifications.filter((notif) => notif.header === "Latest Updates");
 
   const updateMeta: Record<string, { title: string; date: string }> = {
     "9e38a211-5fd5-44ff-96cd-6d0a22a73a96": {
