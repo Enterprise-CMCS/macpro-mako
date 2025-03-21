@@ -121,7 +121,7 @@ export const Upload = ({ maxFiles, files, setFiles, dataTestId }: UploadProps) =
     [files, setFiles],
   );
 
-  const { getRootProps, getInputProps, isDragActive, fileRejections } = useDropzone({
+  const { getRootProps, getInputProps, isDragActive } = useDropzone({
     onDrop,
     accept,
     validator: validateFile,
