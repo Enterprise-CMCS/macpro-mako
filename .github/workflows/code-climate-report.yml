@@ -1,0 +1,74 @@
+name: Code Climate Report
+
+on:
+  push:
+    branches:
+      - main
+  schedule:
+    - cron: "30 01 * * *"
+  workflow_dispatch:
+
+# ensures that currently running Code Coverage Report workflow is canceled if another job starts
+concurrency:
+  group: ${{ github.workflow }}-main
+  cancel-in-progress: true
+
+permissions:
+  actions: read
+  contents: write
+
+jobs:
+  coverage-report:
+    runs-on: ubuntu-latest
+    env:
+      JSON_ARTIFACT_ID: main-coverage
+      HTML_ARTIFACT_ID: html-main-coverage-report
+    outputs:
+      json_artifact_id: ${{ env.JSON_ARTIFACT_ID }}
+      html_artifact_id: ${{ env.HTML_ARTIFACT_ID }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          ref: main
+      - uses: ./.github/actions/setup
+      - name: Test
+        continue-on-error: true
+        run: run test --coverage
+      - name: Report coverage to Code Climate
+        if: always()
+        uses: paambaati/codeclimate-action@v9.0.0
+        env:
+          CC_TEST_REPORTER_ID: ${{ secrets.CC_TEST_REPORTER_ID }}
+        with:
+          coverageLocations: coverage/lcov.info:lcov
+      - name: Upload Coverage Summary
+        if: ${{ !cancelled() }}
+        uses: actions/upload-artifact@v4
+        id: upload-json
+        with:
+          name: ${{ env.JSON_ARTIFACT_ID }}
+          path: coverage/coverage-summary.json
+          overwrite: true
+          retention-days: 90
+      - name: Upload Coverage Report
+        if: ${{ !cancelled() }}
+        uses: actions/upload-artifact@v4
+        id: upload-html
+        with:
+          name: ${{ env.HTML_ARTIFACT_ID }}
+          path: coverage/html-report/*
+          overwrite: true
+          retention-days: 90
+
+  publish:
+    needs: [coverage-report]
+    uses: ./.github/workflows/push-to-gh-pages.yml
+    with:
+      FILE_1_ARTIFACT_ID: ${{ needs.coverage-report.outputs.json_artifact_id }}
+      FILE_1_DEPLOY_TO: _data/coverage/
+      FILE_2_ARTIFACT_ID: ${{ needs.coverage-report.outputs.html_artifact_id }}
+      FILE_2_DEPLOY_TO: coverage/
+      COMMIT_MSG: update code coverage report for main
+      URL_PATH: coverage/
+    secrets: inherit # pragma: allowlist secret

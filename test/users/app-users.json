@@ -1,0 +1,429 @@
+[
+  {
+    "username": "reviewer@example.com",
+    "attributes": [
+      {
+        "Name": "email",
+        "Value": "reviewer@example.com"
+      },
+      {
+        "Name": "given_name",
+        "Value": "CMS"
+      },
+      {
+        "Name": "family_name",
+        "Value": "Reviewer"
+      },
+      {
+        "Name": "email_verified",
+        "Value": "true"
+      },
+      {
+        "Name": "custom:state",
+        "Value": ""
+      },
+      {
+        "Name": "custom:ismemberof",
+        "Value": "ONEMAC_USER_D"
+      }
+    ]
+  },
+  {
+    "username": "george@example.com",
+    "attributes": [
+      {
+        "Name": "email",
+        "Value": "george@example.com"
+      },
+      {
+        "Name": "given_name",
+        "Value": "George"
+      },
+      {
+        "Name": "family_name",
+        "Value": "Harrison"
+      },
+      {
+        "Name": "email_verified",
+        "Value": "true"
+      },
+      {
+        "Name": "custom:state",
+        "Value": "VA,OH,SC,CO,GA,MD,CA"
+      },
+      {
+        "Name": "custom:cms-roles",
+        "Value": "onemac-state-user"
+      }
+    ]
+  },
+  {
+    "username": "nodata@example.com",
+    "attributes": [
+      {
+        "Name": "email",
+        "Value": "nodata@example.com"
+      },
+      {
+        "Name": "given_name",
+        "Value": "George"
+      },
+      {
+        "Name": "family_name",
+        "Value": "Harrison"
+      },
+      {
+        "Name": "email_verified",
+        "Value": "true"
+      },
+      {
+        "Name": "custom:state",
+        "Value": "VI"
+      },
+      {
+        "Name": "custom:cms-roles",
+        "Value": "onemac-state-user"
+      }
+    ]
+  },
+  {
+    "username": "automated-state@example.com",
+    "attributes": [
+      {
+        "Name": "email",
+        "Value": "automated-state@example.com"
+      },
+      {
+        "Name": "given_name",
+        "Value": "Otto"
+      },
+      {
+        "Name": "family_name",
+        "Value": "State"
+      },
+      {
+        "Name": "email_verified",
+        "Value": "true"
+      },
+      {
+        "Name": "custom:state",
+        "Value": "TX,CA,NY,FL"
+      },
+      {
+        "Name": "custom:cms-roles",
+        "Value": "onemac-state-user"
+      }
+    ]
+  },
+  {
+    "username": "readonly@example.com",
+    "attributes": [
+      {
+        "Name": "email",
+        "Value": "readonly@example.com"
+      },
+      {
+        "Name": "given_name",
+        "Value": "Read"
+      },
+      {
+        "Name": "family_name",
+        "Value": "Only"
+      },
+      {
+        "Name": "email_verified",
+        "Value": "true"
+      },
+      {
+        "Name": "custom:state",
+        "Value": ""
+      },
+      {
+        "Name": "custom:cms-roles",
+        "Value": "onemac-micro-readonly"
+      }
+    ]
+  },
+  {
+    "username": "automated-readonly@example.com",
+    "attributes": [
+      {
+        "Name": "email",
+        "Value": "automated-readonly@example.com"
+      },
+      {
+        "Name": "given_name",
+        "Value": "Otto"
+      },
+      {
+        "Name": "family_name",
+        "Value": "Readonly"
+      },
+      {
+        "Name": "email_verified",
+        "Value": "true"
+      },
+      {
+        "Name": "custom:state",
+        "Value": ""
+      },
+      {
+        "Name": "custom:cms-roles",
+        "Value": "onemac-micro-readonly"
+      }
+    ]
+  },
+  {
+    "username": "super@example.com",
+    "attributes": [
+      {
+        "Name": "email",
+        "Value": "super@example.com"
+      },
+      {
+        "Name": "given_name",
+        "Value": "Superduper"
+      },
+      {
+        "Name": "family_name",
+        "Value": "Paratrooper"
+      },
+      {
+        "Name": "email_verified",
+        "Value": "true"
+      },
+      {
+        "Name": "custom:state",
+        "Value": ""
+      },
+      {
+        "Name": "custom:ismemberof",
+        "Value": "ONEMAC_USER_D_SUPER"
+      }
+    ]
+  },
+  {
+    "username": "automated-reviewer@example.com",
+    "attributes": [
+      {
+        "Name": "email",
+        "Value": "automated-reviewer@example.com"
+      },
+      {
+        "Name": "given_name",
+        "Value": "Otto"
+      },
+      {
+        "Name": "family_name",
+        "Value": "Reviewer"
+      },
+      {
+        "Name": "email_verified",
+        "Value": "true"
+      },
+      {
+        "Name": "custom:state",
+        "Value": ""
+      },
+      {
+        "Name": "custom:ismemberof",
+        "Value": "ONEMAC_USER_D"
+      }
+    ]
+  },
+  {
+    "username": "helpdesk@example.com",
+    "attributes": [
+      {
+        "Name": "email",
+        "Value": "helpdesk@example.com"
+      },
+      {
+        "Name": "given_name",
+        "Value": "CMS"
+      },
+      {
+        "Name": "family_name",
+        "Value": "Helpdesk"
+      },
+      {
+        "Name": "email_verified",
+        "Value": "true"
+      },
+      {
+        "Name": "custom:state",
+        "Value": ""
+      },
+      {
+        "Name": "custom:cms-roles",
+        "Value": "onemac-helpdesk"
+      }
+    ]
+  },
+  {
+    "username": "automated-helpdesk@example.com",
+    "attributes": [
+      {
+        "Name": "email",
+        "Value": "automated-helpdesk@example.com"
+      },
+      {
+        "Name": "given_name",
+        "Value": "Otto"
+      },
+      {
+        "Name": "family_name",
+        "Value": "Helpdesk"
+      },
+      {
+        "Name": "email_verified",
+        "Value": "true"
+      },
+      {
+        "Name": "custom:state",
+        "Value": ""
+      },
+      {
+        "Name": "custom:cms-roles",
+        "Value": "onemac-helpdesk"
+      }
+    ]
+  },
+  {
+    "username": "submitter@example.com",
+    "attributes": [
+      {
+        "Name": "email",
+        "Value": "submitter@example.com"
+      },
+      {
+        "Name": "given_name",
+        "Value": "State"
+      },
+      {
+        "Name": "family_name",
+        "Value": "Submitter"
+      },
+      {
+        "Name": "email_verified",
+        "Value": "true"
+      },
+      {
+        "Name": "custom:state",
+        "Value": "CO"
+      },
+      {
+        "Name": "custom:cms-roles",
+        "Value": "onemac-state-user"
+      }
+    ]
+  },
+  {
+    "username": "statemulti@example.com",
+    "attributes": [
+      {
+        "Name": "email",
+        "Value": "statemulti@example.com"
+      },
+      {
+        "Name": "given_name",
+        "Value": "State"
+      },
+      {
+        "Name": "family_name",
+        "Value": "Multi"
+      },
+      {
+        "Name": "email_verified",
+        "Value": "true"
+      },
+      {
+        "Name": "custom:state",
+        "Value": "CA,NY,MD"
+      },
+      {
+        "Name": "custom:cms-roles",
+        "Value": "onemac-state-user"
+      }
+    ]
+  },
+  {
+    "username": "badfootball@example.com",
+    "attributes": [
+      {
+        "Name": "email",
+        "Value": "badfootball@example.com"
+      },
+      {
+        "Name": "given_name",
+        "Value": "bad"
+      },
+      {
+        "Name": "family_name",
+        "Value": "football"
+      },
+      {
+        "Name": "email_verified",
+        "Value": "true"
+      }
+    ]
+  },
+  {
+    "username": "mako.stateuser@gmail.com",
+    "attributes": [
+      {
+        "Name": "email",
+        "Value": "mako.stateuser@gmail.com"
+      },
+      {
+        "Name": "given_name",
+        "Value": "Stateuser"
+      },
+      {
+        "Name": "family_name",
+        "Value": "Tester"
+      },
+      {
+        "Name": "email_verified",
+        "Value": "true"
+      },
+      {
+        "Name": "custom:state",
+        "Value": "VA,OH,SC,CO,GA,MD"
+      },
+      {
+        "Name": "custom:cms-roles",
+        "Value": "onemac-state-user"
+      }
+    ]
+  },
+  {
+    "username": "mako.cmsuser@outlook.com",
+    "attributes": [
+      {
+        "Name": "email",
+        "Value": "mako.cmsuser@outlook.com"
+      },
+      {
+        "Name": "given_name",
+        "Value": "CMS Reviewer"
+      },
+      {
+        "Name": "family_name",
+        "Value": "Cypress"
+      },
+      {
+        "Name": "email_verified",
+        "Value": "true"
+      },
+      {
+        "Name": "custom:state",
+        "Value": ""
+      },
+      {
+        "Name": "custom:ismemberof",
+        "Value": "ONEMAC_USER_D"
+      }
+    ]
+  }
+]

@@ -1,0 +1,44 @@
+<!doctype html>
+<html lang="en" class="h-full">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="preload" href="/onemac-logo.png" as="image" />
+    <link rel="icon" href="/favicon-light.png" type="image/png" sizes="32x32" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Merriweather:wght@700&display=swap"
+      rel="stylesheet"
+    />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>OneMAC</title>
+  </head>
+
+  <body class="h-full">
+    <div id="root" class="h-full"></div>
+    <script type="module" src="/src/main.tsx"></script>
+    <script>
+      if (global === undefined) {
+        var global = window;
+      }
+
+      // Set favicon early before React app mounts
+      function setFavicon() {
+        const isDarkMode = window.matchMedia("(prefers-color-scheme: dark)").matches;
+        const favicon =
+          document.querySelector('link[rel="icon"]') || document.createElement("link");
+        favicon.rel = "icon";
+        favicon.href = isDarkMode ? "/favicon-dark.png" : "/favicon-light.png";
+        document.head.appendChild(favicon);
+      }
+
+      setFavicon();
+
+      window.matchMedia("(prefers-color-scheme: dark)").addEventListener("change", setFavicon);
+    </script>
+  </body>
+</html>
