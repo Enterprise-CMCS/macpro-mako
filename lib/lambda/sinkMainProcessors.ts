@@ -97,11 +97,11 @@ const isRecordAnAdminOneMacRecord = (
   record?.isAdminChange === true &&
   record?.adminChangeType !== undefined;
 
-const getOneMacRecordWithAllProperties = async (
+const getOneMacRecordWithAllProperties = (
   value: string,
   topicPartition: string,
   kafkaRecord: KafkaRecord,
-): Promise<OneMacRecord | undefined> => {
+): OneMacRecord | undefined => {
   const record = JSON.parse(decodeBase64WithUtf8(value));
   console.log(`kafkaRecord: ${JSON.stringify(kafkaRecord, null, 2)}`);
   const kafkaSource = String.fromCharCode(...(kafkaRecord.headers[0]?.source || []));
