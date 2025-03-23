@@ -25,16 +25,13 @@ export async function writeUiEnvFile(stage, local = false) {
     ).Parameter!.Value!,
   );
 
-
-  const googleAnalytics = JSON.parse(
-    (
-      await new SSMClient({ region: "us-east-1" }).send(
-        new GetParameterCommand({
-          Name: `/${project}/${stage}/google-analytics-id`,
-        }),
-      )
-    ).Parameter!.Value!,
-  );
+  const googleAnalytics = (
+    await new SSMClient({ region: "us-east-1" }).send(
+      new GetParameterCommand({
+        Name: `/${project}/${stage}/google-analytics-id`,
+      }),
+    )
+  ).Parameter!.Value!;
 
   const envVariables = {
     VITE_API_REGION: `"${region}"`,
