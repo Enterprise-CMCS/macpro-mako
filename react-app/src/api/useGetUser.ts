@@ -11,6 +11,8 @@ export type OneMacUser = {
 
 export const getUser = async (): Promise<OneMacUser> => {
   try {
+
+    console.log("use get user called")
     const currentAuthenticatedUser = await Auth.currentAuthenticatedUser();
 
     if (!currentAuthenticatedUser) {
@@ -31,6 +33,8 @@ export const getUser = async (): Promise<OneMacUser> => {
     );
     // Manual additions and normalizations
     userAttributesObj["custom:cms-roles"] = userAttributesObj["custom:cms-roles"] || "";
+
+    console.log("user roles" +  userAttributesObj["custom:cms-roles"])
 
     userAttributesObj.username =
       currentAuthenticatedUser.username || currentAuthenticatedUser.Username || "";
