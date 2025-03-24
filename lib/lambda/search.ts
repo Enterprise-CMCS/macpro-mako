@@ -7,7 +7,7 @@ import { validateEnvVariable } from "shared-utils";
 
 import { getStateFilter } from "../libs/api/auth/user";
 import { getAppkChildren } from "../libs/api/package";
-import * as os from "../libs/opensearch-lib";
+import { search } from "../libs/opensearch-lib";
 import { handleOpensearchError } from "./utils";
 
 // Handler function to search index
@@ -42,18 +42,27 @@ export const getSearchData = async (event: APIGatewayEvent) => {
     if (stateFilter) {
       query.query.bool.must.push(stateFilter);
     }
-
     // Return OneMAC records and NOSOs (denoted with SEATool origin)
     query.query.bool.must.push({
-      terms: {
-        "origin.keyword": ["OneMAC", "SEATool", ONEMAC_LEGACY_ORIGIN],
+      bool: {
+        should: [
+          { terms: { "origin.keyword": ["OneMAC", ONEMAC_LEGACY_ORIGIN] } },
+          {
+            bool: {
+              must: [
+                { term: { "origin.keyword": "SEATool" } },
+                { term: { "event.keyword": "NOSO" } },
+              ],
+            },
+          },
+        ],
       },
     });
 
     query.from = query.from || 0;
     query.size = query.size || 100;
 
-    const results = await os.search(domain, index, query);
+    const results = await search(domain, index, query);
 
     for (let i = 0; i < results?.hits?.hits?.length; i++) {
       if (results.hits.hits[i]._source?.appkParent) {
