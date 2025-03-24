@@ -4,14 +4,20 @@ export const getPresignedUrl = async (fileName: string): Promise<string> => {
   const response = await API.post("os", "/getUploadUrl", {
     body: { fileName },
   });
-  return response.url;
+  if (response.url) {
+    return response.url;
+  }
+  throw new Error(response);
 };
 
 export const uploadToS3 = async (file: File, url: string): Promise<void> => {
-  await fetch(url, {
+  const response = await fetch(url, {
     body: file,
     method: "PUT",
   });
+  if (!response.ok) {
+    throw new Error();
+  }
 };
 
 export const extractBucketAndKeyFromUrl = (
@@ -37,6 +43,6 @@ export const extractBucketAndKeyFromUrl = (
     return { bucket, key };
   } catch (error) {
     console.error("Invalid URL format:", error);
-    return { bucket: null, key: null };
+    throw new Error("Invalid URL format:", error);
   }
 };

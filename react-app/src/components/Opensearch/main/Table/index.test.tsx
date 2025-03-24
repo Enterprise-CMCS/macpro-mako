@@ -113,8 +113,8 @@ describe("", () => {
     const onToggle = vi.fn();
     const { user, router } = setup([...DEFAULT_COLUMNS, NO_FIELD_COLUMN], onToggle, defaultHits);
 
-    await user.click(screen.getByText("Latest Package Activity", { selector: "th>div" }));
-    const expectedQueryString = getDashboardQueryString();
+    await user.click(screen.getByText("Submitted By", { selector: "th>div" }));
+    const expectedQueryString = getDashboardQueryString().replaceAll("+", " ");
     const params = new URLSearchParams(router.state.location.search.substring(1));
     expect(params.get("os")).toEqual(expectedQueryString);
   });
