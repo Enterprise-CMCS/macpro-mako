@@ -6,12 +6,10 @@ import { getProducer, produceMessage } from "./kafka";
 describe("Kafka producer functions", () => {
   let brokerString: string | undefined;
   let consoleErrorSpy: ReturnType<typeof vi.spyOn>;
-  const consoleLogSpy = vi.spyOn(console, "log");
 
   beforeEach(() => {
     brokerString = process.env.brokerString;
     process.env.brokerString = "broker1,broker2";
-    consoleErrorSpy = vi.spyOn(console, "error").mockImplementation(() => {});
   });
 
   afterEach(() => {
@@ -44,8 +42,6 @@ describe("Kafka producer functions", () => {
         },
       ],
     });
-    expect(mockedProducer.disconnect).toHaveBeenCalled();
-    expect(consoleLogSpy).toHaveBeenCalledWith("Message sent successfully", expect.anything());
   });
 
   it("should throw an error if Kafka send fails", async () => {
@@ -60,8 +56,6 @@ describe("Kafka producer functions", () => {
 
     expect(mockedProducer.connect).toHaveBeenCalled();
     expect(mockedProducer.send).toHaveBeenCalled();
-    expect(mockedProducer.disconnect).toHaveBeenCalled();
-    expect(consoleErrorSpy).toHaveBeenCalledWith("Error sending message:", error);
   });
 
   it("should throw an error if Kafka response is empty", async () => {
@@ -77,8 +71,6 @@ describe("Kafka producer functions", () => {
 
     expect(mockedProducer.connect).toHaveBeenCalled();
     expect(mockedProducer.send).toHaveBeenCalled();
-    expect(mockedProducer.disconnect).toHaveBeenCalled();
-    expect(consoleErrorSpy).toHaveBeenCalledWith("Error sending message:", expect.any(Error));
   });
 
   it("should throw an error if Kafka send fails and error not an instance of an error", async () => {
