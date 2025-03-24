@@ -2,7 +2,7 @@ import { AwsCognitoOAuthOpts } from "@aws-amplify/auth/lib-esm/types";
 import { Bars3Icon, XMarkIcon } from "@heroicons/react/24/outline";
 import * as DropdownMenu from "@radix-ui/react-dropdown-menu";
 import { Auth } from "aws-amplify";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Link, NavLink, NavLinkProps, Outlet, useNavigate } from "react-router";
 import { UserRoles } from "shared-types";
 
@@ -34,7 +34,7 @@ const useGetLinks = () => {
           {
             name: "Home",
             link: "/",
-            condition: true,
+            condition: !!userObj.user,
           },
           {
             name: "Dashboard",
@@ -51,7 +51,7 @@ const useGetLinks = () => {
           {
             name: "View FAQs",
             link: "/faq",
-            condition: true,
+            condition: !!userObj.user,
           },
           {
             name: "Webforms",
@@ -162,7 +162,14 @@ const UserDropdownMenu = () => {
 export const Layout = () => {
   const isDesktop = useMediaQuery("(min-width: 768px)");
   const { data: user } = useGetUser();
+  const navigate = useNavigate();
   const customUserRoles = user?.user?.["custom:cms-roles"];
+
+  useEffect(() => {
+    if (!user?.user && window.location.pathname !== "/login") {
+      navigate("/login");
+    }
+  }, [user, navigate]);
 
   return (
     <div className="min-h-full flex flex-col">
