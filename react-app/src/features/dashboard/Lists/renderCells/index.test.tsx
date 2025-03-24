@@ -11,7 +11,6 @@ import {
 import { Action, CognitoUserAttributes, opensearch, SEATOOL_STATUS } from "shared-types";
 import { describe, expect, it } from "vitest";
 
-import { BLANK_VALUE } from "@/consts";
 import { renderWithMemoryRouter } from "@/utils/test-helpers";
 
 import { CellDetailsLink, renderCellActions, renderCellDate } from "./index";
