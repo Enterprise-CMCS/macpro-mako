@@ -90,7 +90,7 @@ export const handler = async (event: APIGatewayEvent) => {
     );
 
     let status: string = item.status;
-    // check if it already exsists in onemac - should exsist in SEATool
+    // check if it already exists in onemac - should exist in SEATool
     const currentPackage: ItemResult | undefined = await getPackage(item.id);
 
     if (currentPackage && currentPackage.found == true) {
