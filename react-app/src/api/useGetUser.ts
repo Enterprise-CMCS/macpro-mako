@@ -2,6 +2,10 @@ import { useQuery } from "@tanstack/react-query";
 import { Auth } from "aws-amplify";
 import { CognitoUserAttributes } from "shared-types";
 import { isCmsUser } from "shared-utils";
+import config from "@/config";
+
+import ReactGA from "react-ga4"
+
 
 export type OneMacUser = {
   isCms?: boolean;
@@ -10,9 +14,10 @@ export type OneMacUser = {
 };
 
 export const getUser = async (): Promise<OneMacUser> => {
+
   try {
 
-    console.log("use get user called")
+    const googleAnalyticsGtag = config.googleAnalytics?.GOOGLE_ANALYTICS_ID;
     const currentAuthenticatedUser = await Auth.currentAuthenticatedUser();
 
     if (!currentAuthenticatedUser) {
@@ -36,6 +41,16 @@ export const getUser = async (): Promise<OneMacUser> => {
 
     console.log("user roles" +  userAttributesObj["custom:cms-roles"])
 
+    if(userAttributesObj["custom:cms-roles"].length > 0 && ReactGA) {
+      ReactGA.set({user_roles: userAttributesObj["custom:cms-roles"]})
+    }
+
+    // gtag('config', 'YOUR_MEASUREMENT_ID', {
+    //   'user_properties': {
+    //     'user_role': 'state-user'
+    //   }
+    // });
+    
     userAttributesObj.username =
       currentAuthenticatedUser.username || currentAuthenticatedUser.Username || "";
 
@@ -54,3 +69,11 @@ export const useGetUser = () =>
     queryKey: ["user"],
     queryFn: () => getUser(),
   });
+
+
+
+
+
+
+
+  
