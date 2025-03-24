@@ -1,15 +1,14 @@
 import { EllipsisVerticalIcon } from "@heroicons/react/24/outline";
 import { Link } from "react-router";
 import { Authority, CognitoUserAttributes, opensearch } from "shared-types";
-import { formatSeatoolDate, getAvailableActions } from "shared-utils";
+import { formatSeatoolDate, getAvailableActions, isEpochStartDate } from "shared-utils";
 
 import * as POP from "@/components";
 import { cn, DASHBOARD_ORIGIN, mapActionLabel, ORIGIN } from "@/utils";
 
 export const renderCellDate = (key: keyof opensearch.main.Document) =>
   function Cell(data: opensearch.main.Document) {
-    if (!data[key]) return null;
-    if (data[key] === "1970-01-01T00:00:00.000Z") return null;
+    if (!data[key] || isEpochStartDate(data[key])) return null;
     return formatSeatoolDate(data[key] as string);
   };
 

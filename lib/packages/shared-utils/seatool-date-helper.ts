@@ -3,6 +3,8 @@ import { TZDate } from "@date-fns/tz";
 import { UTCDate } from "@date-fns/utc";
 import { addDays, format, isWeekend, startOfDay } from "date-fns";
 
+import { isEpochStartDate } from "./date-helper";
+
 /**
  * Returns the epoch timestamp for midnight UTC time for the date provided.
  * If no date is provided, it returns the timestamp of midnight UTC time today.
@@ -24,8 +26,7 @@ export const seaToolFriendlyTimestamp = (date?: Date | string): number => {
  * or an empty string if no date was provided
  */
 export const formatSeatoolDate = (date?: Date | string): string => {
-  if (!date) return "";
-  if (date === "1970-01-01T00:00:00.000Z") return "";
+  if (!date || isEpochStartDate(date)) return "";
   return format(new UTCDate(date), "MM/dd/yyyy");
 };
 
