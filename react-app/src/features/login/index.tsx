@@ -1,8 +1,10 @@
 import { AwsCognitoOAuthOpts } from "@aws-amplify/auth/lib-esm/types/Auth";
 import { Auth } from "aws-amplify";
+import { Link } from "react-router";
 
 import { Button } from "@/components";
 import config from "@/config";
+import { FAQ_TAB } from "@/consts";
 
 export const Login = () => {
   const handleLogin = () => {
@@ -31,9 +33,9 @@ export const Login = () => {
           <Button className="w-60" onClick={handleLogin}>
             {"Log in"}
           </Button>
-          <a href="/test" className="text-primary underline">
+          <Link to="/faq" target={FAQ_TAB} className="text-primary underline">
             {"How do I get access to OneMAC?"}
-          </a>
+          </Link>
         </div>
         <div className="border-gray-300 border-y-2 w-full" />
         <div className="gap-3 flex flex-col items-center">
@@ -43,7 +45,9 @@ export const Login = () => {
           </Button>
           <p>
             {"Learn how with the "}{" "}
-            <a className="text-primary underline">{"IDM for OneMAC User Guide"}</a>
+            <Link to="/faq" target={FAQ_TAB} className="text-primary underline">
+              {"IDM for OneMAC User Guide"}
+            </Link>
           </p>
         </div>
         <div className="gap-1 mt-8 flex flex-col items-center text-primary-dark">
