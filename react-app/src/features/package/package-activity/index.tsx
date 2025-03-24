@@ -48,7 +48,7 @@ const Submission = ({ packageActivity }: SubmissionProps) => {
     <div className="flex flex-col gap-6">
       <div>
         <h2 className="font-bold text-lg mb-2">Attachments</h2>
-        {attachments.length > 0 ? (
+        {attachments?.length > 0 ? (
           <Table.Table>
             <Table.TableHeader>
               <Table.TableRow>
@@ -63,7 +63,7 @@ const Submission = ({ packageActivity }: SubmissionProps) => {
         )}
       </div>
 
-      {attachments.length > 1 && (
+      {attachments?.length > 1 && (
         <Table.Button
           variant="outline"
           className="w-max"
