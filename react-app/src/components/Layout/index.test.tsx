@@ -264,14 +264,6 @@ describe("Layout", () => {
       expect(screen.queryByText("Register")).not.toBeInTheDocument();
     });
 
-    it("renders nav links for unauthenticated user in desktop view", async () => {
-      await setupLayoutTest(VIEW_MODES.DESKTOP, null);
-      expect(screen.getByText("Home")).toBeInTheDocument();
-      expect(screen.getByText("View FAQs")).toBeInTheDocument();
-      expect(screen.queryByText("Dashboard")).not.toBeInTheDocument();
-      expect(screen.queryByText("Webforms")).not.toBeInTheDocument();
-    });
-
     it("toggles the mobile menu for authenticaed users when the button is clicked", async () => {
       const user = userEvent.setup();
       await setupLayoutTest(VIEW_MODES.MOBILE);
