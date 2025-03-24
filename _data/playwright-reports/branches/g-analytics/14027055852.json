@@ -1,0 +1,82 @@
+{
+  "config": {
+    "configFile": "/home/runner/work/macpro-mako/macpro-mako/test/e2e/playwright.config.ts",
+    "rootDir": "/home/runner/work/macpro-mako/macpro-mako/test",
+    "forbidOnly": true,
+    "fullyParallel": true,
+    "globalSetup": "/home/runner/work/macpro-mako/macpro-mako/test/e2e/utils/auth.setup.ts",
+    "globalTeardown": null,
+    "globalTimeout": 0,
+    "grep": {},
+    "grepInvert": null,
+    "maxFailures": 0,
+    "metadata": {},
+    "preserveOutput": "always",
+    "reporter": [
+      [
+        "github",
+        null
+      ],
+      [
+        "html",
+        {
+          "outputFolder": "playwright-reports/html-report",
+          "open": "never"
+        }
+      ],
+      [
+        "json",
+        {
+          "outputFile": "playwright-reports/playwright-summary.json"
+        }
+      ]
+    ],
+    "reportSlowTests": {
+      "max": 5,
+      "threshold": 15000
+    },
+    "quiet": false,
+    "projects": [
+      {
+        "outputDir": "/home/runner/work/macpro-mako/macpro-mako/test/e2e/test-results",
+        "repeatEach": 1,
+        "retries": 2,
+        "metadata": {},
+        "id": "state-user-chrome",
+        "name": "state-user-chrome",
+        "testDir": "/home/runner/work/macpro-mako/macpro-mako/test",
+        "testIgnore": [],
+        "testMatch": [
+          "**/*.@(spec|test).?(c|m)[jt]s?(x)"
+        ],
+        "timeout": 30000
+      }
+    ],
+    "shard": null,
+    "updateSnapshots": "missing",
+    "version": "1.47.2",
+    "workers": 1,
+    "webServer": null
+  },
+  "suites": [],
+  "errors": [
+    {
+      "message": "TimeoutError: locator.click: Timeout 30000ms exceeded.\nCall log:\n  - waiting for getByRole('button', { name: 'Sign In' })\n",
+      "stack": "TimeoutError: locator.click: Timeout 30000ms exceeded.\nCall log:\n  - waiting for getByRole('button', { name: 'Sign In' })\n\n    at LoginPage.goto (/home/runner/work/macpro-mako/macpro-mako/test/e2e/pages/loginPage.ts:8:62)\n    at globalSetup (/home/runner/work/macpro-mako/macpro-mako/test/e2e/utils/auth.setup.ts:35:3)",
+      "location": {
+        "file": "/home/runner/work/macpro-mako/macpro-mako/test/e2e/pages/loginPage.ts",
+        "column": 62,
+        "line": 8
+      },
+      "snippet": "   at e2e/pages/loginPage.ts:8\n\n\u001b[0m \u001b[90m  6 |\u001b[39m   \u001b[36masync\u001b[39m goto() {\n \u001b[90m  7 |\u001b[39m     \u001b[36mawait\u001b[39m \u001b[36mthis\u001b[39m\u001b[33m.\u001b[39mpage\u001b[33m.\u001b[39mgoto(\u001b[32m\"/\"\u001b[39m)\u001b[33m;\u001b[39m\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m  8 |\u001b[39m     \u001b[36mawait\u001b[39m \u001b[36mthis\u001b[39m\u001b[33m.\u001b[39mpage\u001b[33m.\u001b[39mgetByRole(\u001b[32m\"button\"\u001b[39m\u001b[33m,\u001b[39m { name\u001b[33m:\u001b[39m \u001b[32m\"Sign In\"\u001b[39m })\u001b[33m.\u001b[39mclick()\u001b[33m;\u001b[39m\n \u001b[90m    |\u001b[39m                                                              \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m  9 |\u001b[39m   }\n \u001b[90m 10 |\u001b[39m\n \u001b[90m 11 |\u001b[39m   \u001b[36masync\u001b[39m login(email\u001b[33m:\u001b[39m string\u001b[33m,\u001b[39m password\u001b[33m:\u001b[39m string) {\u001b[0m"
+    }
+  ],
+  "stats": {
+    "startTime": "2025-03-24T04:12:30.572Z",
+    "duration": 31387.054,
+    "expected": 0,
+    "skipped": 0,
+    "unexpected": 0,
+    "flaky": 0
+  }
+}
