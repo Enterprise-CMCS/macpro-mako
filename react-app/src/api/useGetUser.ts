@@ -40,7 +40,7 @@ export const getUser = async (): Promise<OneMacUser> => {
     userAttributesObj["custom:cms-roles"] = userAttributesObj["custom:cms-roles"] || "";
 
     console.log("user roles" +  userAttributesObj["custom:cms-roles"])
-
+    console.log(typeof userAttributesObj["custom:cms-roles"]);
     if(userAttributesObj["custom:cms-roles"].length > 0 && ReactGA) {
       ReactGA.set({user_roles: userAttributesObj["custom:cms-roles"]})
     }
