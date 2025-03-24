@@ -175,6 +175,8 @@ export const ActionForm = <Schema extends SchemaWithEnforcableProps>({
       // Prevent stale data from displaying on formOrigins page
       await queryClient.invalidateQueries({ queryKey: ["record"] });
       navigate(formOrigins);
+      console.log("on submit clicked")
+      console.log("form data: "+ formData)
     } catch (error) {
       console.error(error);
       banner({
