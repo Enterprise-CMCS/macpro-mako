@@ -11,6 +11,7 @@ import {
 import { Action, CognitoUserAttributes, opensearch, SEATOOL_STATUS } from "shared-types";
 import { describe, expect, it } from "vitest";
 
+import { BLANK_VALUE } from "@/consts";
 import { renderWithMemoryRouter } from "@/utils/test-helpers";
 
 import { CellDetailsLink, renderCellActions, renderCellDate } from "./index";
@@ -22,6 +23,13 @@ describe("renderCells", () => {
     });
     it("should return null if the field is undefined", () => {
       expect(renderCellDate("raiRequestedDate")(TEST_MED_SPA_ITEM._source)).toBeNull();
+    });
+    it("should return null if the field is an epoch start date", () => {
+      const CUSTOM_MED_SPA_ITEM = {
+        ...TEST_MED_SPA_ITEM._source,
+        makoChangedDate: "1970-01-01T00:00:00.000Z",
+      };
+      expect(renderCellDate("makoChangedDate")(CUSTOM_MED_SPA_ITEM)).toBeNull();
     });
   });
 
