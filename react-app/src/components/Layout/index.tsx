@@ -166,7 +166,9 @@ export const Layout = () => {
   const customUserRoles = user?.user?.["custom:cms-roles"];
 
   useEffect(() => {
-    if (!user?.user && window.location.pathname !== "/login") {
+    const notLoggedOutPages =
+      window.location.pathname !== "/login" && window.location.pathname !== "/faq";
+    if (!user?.user && notLoggedOutPages) {
       navigate("/login");
     }
   }, [user, navigate]);
