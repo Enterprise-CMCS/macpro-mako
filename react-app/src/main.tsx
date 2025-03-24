@@ -27,6 +27,7 @@ const initializeApp = async () => {
   // Initialize Google Analytics
   if (googleAnalyticsGtag) {
     ReactGA.initialize(googleAnalyticsGtag);
+    ReactGA.set({user_roles: "hello-test"})
     ReactGA.send({ hitType: "pageview", page: window.location.pathname });
   } else {
     console.warn("Google Analytics Measurement ID is not set.");
