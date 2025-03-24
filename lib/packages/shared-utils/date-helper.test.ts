@@ -1,6 +1,12 @@
 import { describe, expect, it } from "vitest";
 
-import { formatDate, formatDateToET, formatDateToUTC, formatNinetyDaysDate } from "./date-helper";
+import {
+  formatDate,
+  formatDateToET,
+  formatDateToUTC,
+  formatNinetyDaysDate,
+  isEpochStartDate,
+} from "./date-helper";
 
 describe("date-helper", () => {
   describe("formatDate", () => {
@@ -90,6 +96,38 @@ describe("date-helper", () => {
       const date = new Date(2025, 10, 1); // Nov 1, 2025 (before DST ends)
       const formattedDate = formatNinetyDaysDate(date.getTime());
       expect(formattedDate).toBe("Jan 30, 2026 @ 11:59pm EST");
+    });
+  });
+
+  describe("isEpochStartDate", () => {
+    it("should return true for the epoch start date", () => {
+      const epochStartDate = "1970-01-01T00:00:00.000Z";
+      expect(isEpochStartDate(epochStartDate)).toBe(true);
+    });
+
+    it("should return false for a non-epoch date", () => {
+      const nonEpochDate = "2025-01-01T00:00:00.000Z";
+      expect(isEpochStartDate(nonEpochDate)).toBe(false);
+    });
+
+    it("should return true for the epoch start date when provided as a number", () => {
+      const epochStartDate = 0; // Epoch time in milliseconds
+      expect(isEpochStartDate(epochStartDate)).toBe(true);
+    });
+
+    it("should return false for a non-epoch date when provided as a number", () => {
+      const nonEpochDate = 1609459200000; // Jan 1, 2021 in milliseconds
+      expect(isEpochStartDate(nonEpochDate)).toBe(false);
+    });
+
+    it("should return true for the epoch start date when provided as a Date object", () => {
+      const epochStartDate = new Date(0); // Epoch start date as a Date object
+      expect(isEpochStartDate(epochStartDate)).toBe(true);
+    });
+
+    it("should return false for a non-epoch date when provided as a Date object", () => {
+      const nonEpochDate = new Date(1609459200000); // Jan 1, 2021 as a Date object
+      expect(isEpochStartDate(nonEpochDate)).toBe(false);
     });
   });
 });
