@@ -79,6 +79,15 @@ export const CMSWelcome = () => {
 
   return (
     <div className="w-full px-4 sm:px-6 lg:px-8 xl:px-[110px] 2xl:px-[110px]">
+      <div className="flex flex-row justify-center gap-8">
+        {/* Search section */}
+        <div>
+          <h1>Search Left</h1>
+        </div>
+        <div>
+          <h1>Search Right</h1>
+        </div>
+      </div>
       <div className="w-full max-w-[1439px] mx-auto">
         {/* Latest Updates Banner */}
         <div className="mt-[56px] mx-auto w-full max-w-[1440px] h-auto min-h-[228px] border-[2px] border-gray-300 rounded-[3px] bg-gray-100 px-[24px] py-[24px] flex flex-col gap-[16px]">
