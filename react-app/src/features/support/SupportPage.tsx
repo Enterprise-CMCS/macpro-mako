@@ -94,56 +94,57 @@ export const SupportPage = () => {
 
       {/* only display the toggle CMS/State view when the user is CMS */}
       {isCmsView && (
-        <div className="flex max-w-screen-xl m-auto px-4 lg:px-8 pt-8 w-full border-b-2 border-b-slate-100 justify-end">
-          <div className="w-2/3 px-4 lg:px-8">
-            <ToggleGroup
-              type="single"
-              aria-label="CMS State Toggle"
-              data-testid="cms-toggle-group"
-              value={tgValue}
-              onValueChange={(value: "cms" | "state") => {
-                if (value) setTGValue(value);
-              }}
-            >
-              <ToggleGroupItem value="cms" aria-label="cms">
-                CMS
-              </ToggleGroupItem>
-              <ToggleGroupItem value="state" aria-label="state">
-                States
-              </ToggleGroupItem>
-            </ToggleGroup>
+        <div className="max-w-screen-xl m-auto px-4 lg:px-8 w-full pt-8">
+          <div className="flex justify-end">
+            <div className="w-2/3 px-4 lg:px-8">
+              <ToggleGroup
+                type="single"
+                aria-label="CMS State Toggle"
+                data-testid="cms-toggle-group"
+                value={tgValue}
+                onValueChange={(value: "cms" | "state") => {
+                  if (value) setTGValue(value);
+                }}
+              >
+                <ToggleGroupItem value="cms" aria-label="cms">
+                  CMS
+                </ToggleGroupItem>
+                <ToggleGroupItem value="state" aria-label="state">
+                  States
+                </ToggleGroupItem>
+              </ToggleGroup>
+            </div>
           </div>
+          <hr className="bg-slate-100 h-[1.2px]" />
         </div>
       )}
 
       {/* Main Layout Wrapper with explicit widths */}
-      <div className="max-w-screen-xl m-auto px-4 lg:px-8 pt-8 w-full">
+      <div className="max-w-screen-xl m-auto px-4 lg:px-8 pt-4 w-full">
         <div className="flex">
           {/* Left Navigation - Fixed width with explicit max-width */}
           <div className="w-1/3 sticky top-20 h-[calc(100vh-5rem)] sm:-z-10">
-            <LeftNavigation />
+            <LeftNavigation topics={supportContent.flatMap(({ sectionTitle }) => sectionTitle)} />
           </div>
 
           {/* Content - Force minimum width */}
-          <section className="w-2/3 block md:flex md:flex-row max-w-screen-xl m-auto px-4 lg:px-8 pt-8 gap-10">
-            <div className="flex-1">
+          <section className="w-2/3 block max-w-screen-xl m-auto px-4 lg:px-8 gap-10">
+            <div className="">
+              <div className="flex justify-end py-4">
+                <ExpandCollapseBtn
+                  collapseAll={collapseAll}
+                  expandAll={expandAll}
+                  areAllOpen={areAllAccordionsOpen}
+                />
+              </div>
+              <hr className="bg-gray-300 h-[1.2px]" />
+            </div>
+            <div className="flex-1 mt-8">
               <Accordion type="multiple" value={openAccordions} onValueChange={setOpenAccordions}>
-                {supportContent.map(({ sectionTitle, qanda }, index) => (
+                {supportContent.map(({ sectionTitle, qanda }) => (
                   <article key={sectionTitle} className="mb-8">
-                    {/* The first article has the expand button on the right */}
-                    {index === 0 ? (
-                      <div className="flex justify-between">
-                        <h2 className="text-2xl mb-4 font-bold">{sectionTitle}</h2>
-                        <ExpandCollapseBtn
-                          collapseAll={collapseAll}
-                          expandAll={expandAll}
-                          areAllOpen={areAllAccordionsOpen}
-                        />
-                      </div>
-                    ) : (
-                      <h2 className="text-2xl font-bold mb-4">{sectionTitle}</h2>
-                    )}
-                    <hr className="bg-gray-400 h-0.5" />
+                    <h2 className="text-2xl font-bold mb-4">{sectionTitle}</h2>
+                    <hr className="bg-gray-300 h-[1.7px]" />
                     <FaqAccordion question={qanda} />
                   </article>
                 ))}
