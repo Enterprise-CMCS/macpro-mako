@@ -5,7 +5,6 @@ import { getProducer, produceMessage } from "./kafka";
 
 describe("Kafka producer functions", () => {
   let brokerString: string | undefined;
-  let consoleErrorSpy: ReturnType<typeof vi.spyOn>;
 
   beforeEach(() => {
     brokerString = process.env.brokerString;
