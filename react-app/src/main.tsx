@@ -7,7 +7,7 @@ import { asyncWithLDProvider } from "launchdarkly-react-client-sdk";
 import React from "react";
 import ReactDOM from "react-dom/client";
 import { RouterProvider } from "react-router";
-
+import ReactGA from 'react-ga4';
 
 import config from "@/config";
 import { queryClient } from "@/utils";
@@ -15,18 +15,24 @@ import { queryClient } from "@/utils";
 import { router } from "./router";
 
 const ldClientId = config.launchDarkly?.CLIENT_ID;
-const googleAnalayticsGtag =config.googleAnalytics?.GOOGLE_ANALYTICS_ID;
+const googleAnalyticsGtag = config.googleAnalytics?.GOOGLE_ANALYTICS_ID;
 
 if (ldClientId === undefined) {
   throw new Error("To configure LaunchDarkly, you must set LAUNCHDARKLY_CLIENT_ID");
 }
 
+const initializeApp = async () => {
+  console.log("google analytics tag: " + googleAnalyticsGtag);
+  
+  // Initialize Google Analytics
+  if (googleAnalyticsGtag) {
+    ReactGA.initialize(googleAnalyticsGtag);
+    ReactGA.send({ hitType: "pageview", page: window.location.pathname });
+  } else {
+    console.warn("Google Analytics Measurement ID is not set.");
+  }
 
-
-const initializeLaunchDarkly = async () => {
-  console.log("google analytics tag: "+ googleAnalayticsGtag);
-
-
+  // Initialize LaunchDarkly
   const LDProvider = await asyncWithLDProvider({
     clientSideID: ldClientId,
     options: {
@@ -37,7 +43,7 @@ const initializeLaunchDarkly = async () => {
     },
   });
 
-  ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(
+  ReactDOM.createRoot(document.getElementById("root")).render(
     <React.StrictMode>
       <QueryClientProvider client={queryClient}>
         <LDProvider>
@@ -45,8 +51,8 @@ const initializeLaunchDarkly = async () => {
         </LDProvider>
         <ReactQueryDevtools initialIsOpen={false} />
       </QueryClientProvider>
-    </React.StrictMode>,
+    </React.StrictMode>
   );
 };
 
-initializeLaunchDarkly();
+initializeApp();
