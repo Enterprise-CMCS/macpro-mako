@@ -27,7 +27,7 @@ const initializeApp = async () => {
   // Initialize Google Analytics
   if (googleAnalyticsGtag) {
     ReactGA.initialize(googleAnalyticsGtag);
-    ReactGA.event('User Login', {
+    ReactGA.event('Test 123', {
       user_role: 'hello-test',  // Send user role with an event
     });
     ReactGA.send({ hitType: "pageview", page: window.location.pathname });
