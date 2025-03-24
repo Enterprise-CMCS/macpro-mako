@@ -1,4 +1,3 @@
-import { time } from "console";
 import { z } from "zod";
 
 import { getStatus, SEATOOL_STATUS } from "..";
