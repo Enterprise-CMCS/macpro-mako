@@ -9,9 +9,9 @@ export const baseSchema = z.object({
     cmsForm179: z.object({
       files: attachmentArraySchema({
         max: 1,
-        message: "Required: You must submit exactly one file for CMS Form 179.",
+        message: "Required: You must submit exactly one file for CMS-179 Form.",
       }),
-      label: z.string().default("CMS Form 179"),
+      label: z.string().default("CMS-179 Form"),
     }),
     spaPages: z.object({
       files: attachmentArraySchema(),
