@@ -176,7 +176,8 @@ export const ActionForm = <Schema extends SchemaWithEnforcableProps>({
       await queryClient.invalidateQueries({ queryKey: ["record"] });
       navigate(formOrigins);
       console.log("on submit clicked")
-      console.log("form data: "+ formData)
+      console.log("form data event: "+ formData.event)
+      
     } catch (error) {
       console.error(error);
       banner({
