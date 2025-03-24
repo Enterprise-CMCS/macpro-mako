@@ -49,24 +49,6 @@ const sendSubmitMessage = async (item: submitMessageType) => {
   const formatedSubmittedDate = convertStringToTimestamp(item.submissionDate);
   const formatedProposedDate = convertStringToTimestamp(item.proposedDate);
 
-  // ANDIE DELETE THESE
-  console.log(
-    "ANDIE - PROPOSED TIME",
-    " passed in value",
-    item.proposedDate,
-    " formated: ",
-    formatedProposedDate,
-  );
-
-  console.log(
-    "ANDIE - SUBMITTED TIME",
-    " passed in value",
-    item.submissionDate,
-    " formated: ",
-    formatedSubmittedDate,
-  );
-  // ***
-
   await produceMessage(
     topicName,
     item.id,
@@ -107,11 +89,13 @@ export const handler = async (event: APIGatewayEvent) => {
       typeof event.body === "string" ? JSON.parse(event.body) : event.body,
     );
 
-    const { stateStatus, cmsStatus } = getStatus(item.status);
-    // check if it already exsists
+    let status: string = item.status;
+    // check if it already exsists in onemac - should exsist in SEATool
     const currentPackage: ItemResult | undefined = await getPackage(item.id);
 
     if (currentPackage && currentPackage.found == true) {
+      // we should default to the current status in SEATool, and use entered status as a backup
+      status = currentPackage._source?.seatoolStatus ?? item.status;
       // if it exists and has origin OneMAC we shouldn't override it
       if (currentPackage._source.origin === "OneMAC") {
         return response({
@@ -120,10 +104,8 @@ export const handler = async (event: APIGatewayEvent) => {
         });
       }
     }
-    // ANDIE DELETE THESE
-    console.log("ANDIE - OG ITEM:", item);
-    console.log("ANDIE - New StateStatus: ", stateStatus, " cms status:", cmsStatus);
-    // ***
+
+    const { stateStatus, cmsStatus } = getStatus(status);
     return await sendSubmitMessage({ ...item, stateStatus, cmsStatus });
   } catch (err) {
     console.error("Error has occured submitting package:", err);
