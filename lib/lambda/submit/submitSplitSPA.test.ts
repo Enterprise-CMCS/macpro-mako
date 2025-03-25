@@ -9,6 +9,10 @@ import { beforeEach, describe, expect, it, vi } from "vitest";
 
 import { handler } from "./submitSplitSPA";
 
+vi.mock("libs/api/kafka", () => ({
+  produceMessage: vi.fn(() => Promise.resolve([{ partition: 0, offset: "1" }])),
+}));
+
 describe("handler", () => {
   beforeEach(() => {
     vi.clearAllMocks();
