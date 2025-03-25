@@ -16,6 +16,7 @@ import { isFaqPage, isProd } from "@/utils";
 import ReactGA from "react-ga4";
 import { Footer } from "../Footer";
 import { UsaBanner } from "../UsaBanner";
+
 /**
  * Custom hook that generates a list of navigation links based on the user's status and whether the current page is the FAQ page.
  *
@@ -163,7 +164,7 @@ export const Layout = () => {
   const isDesktop = useMediaQuery("(min-width: 768px)");
   const { data: user } = useGetUser();
   const customUserRoles = user?.user?.["custom:cms-roles"] || "";
-
+  const customisMemberOf = user?.user?.["custom:ismemberof"] || "";
   console.log("user roles outside use effect" +  customUserRoles);
   // const [userRoles, setUserRoles] = useState("");
 
@@ -172,15 +173,28 @@ export const Layout = () => {
   // }
 
   useEffect(()=>{
-    if(customUserRoles.length > 0 ) {
-      console.log("user login send GA event");
-      ReactGA.set({user_roles: customUserRoles});
-      console.log("user roles" +  customUserRoles);
-      ReactGA.event('User Login' + '-' + customUserRoles, {
-        user_role: customUserRoles
-      });
+    if(customUserRoles.length > 0) {
+      if(customisMemberOf.includes("onemac-state-user")){
+        console.log("user login send state user event");
+        ReactGA.set({user_roles: "State Submitter"});
+        console.log("user roles" +  customUserRoles);
+        ReactGA.event('User Login' + ' - ' + "State Submitter", {
+          user_role: "State Submitter"
+        });
+      }
     }
-  },[customUserRoles])
+
+    if(customisMemberOf.length>0) {
+      if(customisMemberOf.includes("ONEMAC_USER")){
+        console.log("user login send cms reviewer event");
+        ReactGA.set({user_roles: "CMS Reviewer"});
+        console.log("user roles" +  customisMemberOf);
+        ReactGA.event('User Login' + ' - ' + "CMS Reviewer", {
+          user_role: "CMS Reviewer"
+        });
+      }
+    }
+  },[customUserRoles, customisMemberOf])
 
   return (
     <div className="min-h-full flex flex-col">
