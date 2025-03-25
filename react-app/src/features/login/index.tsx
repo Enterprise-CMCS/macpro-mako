@@ -36,7 +36,7 @@ export const Login = () => {
             How do I get access to OneMAC?
           </Link>
         </div>
-        <div className="border-gray-300 border-y-2 w-full" />
+        <div className="border-gray-300 border-t-2 w-full" />
         <div className="gap-3 flex flex-col items-center">
           <p className="text-lg text-primary-dark font-bold">{"New state users"}</p>
           <Link
