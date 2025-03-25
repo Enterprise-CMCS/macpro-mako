@@ -179,7 +179,7 @@ export const Layout = () => {
         ReactGA.set({user_roles: "State Submitter"});
         console.log("user roles" +  customUserRoles);
         ReactGA.event('User Login' + ' - ' + "State Submitter", {
-          user_role: "State Submitter"
+          user_roles: "State Submitter"
         });
       }
     }
@@ -190,7 +190,7 @@ export const Layout = () => {
         ReactGA.set({user_roles: "CMS Reviewer"});
         console.log("user roles" +  customisMemberOf);
         ReactGA.event('User Login' + ' - ' + "CMS Reviewer", {
-          user_role: "CMS Reviewer"
+          user_roles: "CMS Reviewer"
         });
       }
     }
