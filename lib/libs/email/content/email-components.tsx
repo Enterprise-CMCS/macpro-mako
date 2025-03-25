@@ -317,7 +317,7 @@ const getCpocEmail = (item?: os.main.ItemResult): string[] => {
     const name = item?._source?.leadAnalystName;
 
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-
+    console.log("cpoc email", name, email);
     if (!email || !emailRegex.test(email)) {
       console.error(`Invalid or missing email for item: ${JSON.stringify(item?._source, null, 2)}`);
       return [];
@@ -333,7 +333,7 @@ const getCpocEmail = (item?: os.main.ItemResult): string[] => {
 const getSrtEmails = (item?: os.main.ItemResult): string[] => {
   try {
     const reviewTeam = item?._source?.reviewTeam;
-
+    console.log("review team", reviewTeam);
     // Email validation regex
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
