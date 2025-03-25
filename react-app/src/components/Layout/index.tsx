@@ -181,6 +181,20 @@ export const Layout = () => {
         ReactGA.event('User Login' + ' - ' + "State Submitter", {
           user_roles: "State Submitter"
         });
+      } else if (customisMemberOf.includes("onemac-state-user")){
+        console.log("user login helpdesk event");
+        console.log("user roles" +  customUserRoles);
+        ReactGA.set({user_roles: "Helpdesk"});
+        ReactGA.event('User Login' + ' - ' + "Helpdesk", {
+          user_roles: "Helpdesk"
+        });
+      } else if (customisMemberOf.includes("onemac-micro-readonly")){
+        console.log("user login read only event");
+        console.log("user roles" +  customUserRoles);
+        ReactGA.set({user_roles: "CMS Read Only"});
+        ReactGA.event('User Login' + ' - ' + "CMS Read Only", {
+          user_roles: "CMS Read Only"
+        });
       }
     }
 
