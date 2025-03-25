@@ -1,7 +1,7 @@
 import { fireEvent, render, screen } from "@testing-library/react";
 import { describe, expect, it, vi } from "vitest";
 
-import { LegacyFaq } from "./LegacyFaq";
+import { Faq } from "./Faq";
 
 vi.mock("react-router", async () => ({
   ...(await vi.importActual<Record<string, unknown>>("react-router")),
@@ -24,9 +24,9 @@ vi.mock("./content/oneMACFAQContent", () => ({
   },
 }));
 
-describe("LegacyFaq", () => {
+describe("Faq", () => {
   it("should expand all FAQ items when the 'Expand all' button is clicked", () => {
-    render(<LegacyFaq flagValue={null} />);
+    render(<Faq />);
 
     const expandButton = screen.getByTestId("expand-all");
 
@@ -39,7 +39,7 @@ describe("LegacyFaq", () => {
     const scrollToMock = vi.fn();
     global.scrollTo = scrollToMock;
 
-    render(<LegacyFaq flagValue={null} />);
+    render(<Faq />);
 
     expect(screen.getByTestId("q1")).toBeInTheDocument();
     expect(scrollToMock).toHaveBeenCalled();
