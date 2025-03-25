@@ -162,7 +162,9 @@ const UserDropdownMenu = () => {
 export const Layout = () => {
   const isDesktop = useMediaQuery("(min-width: 768px)");
   const { data: user } = useGetUser();
-  const customUserRoles = user?.user?.["custom:cms-roles"];
+  const customUserRoles = user?.user?.["custom:cms-roles"] || "";
+
+  console.log("user roles outside use effect" +  customUserRoles);
   // const [userRoles, setUserRoles] = useState("");
 
   // if(customUserRoles && customUserRoles != userRoles) {
