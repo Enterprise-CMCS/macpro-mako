@@ -6,68 +6,60 @@ exports[`package details > makes a package 1`] = `
     class="w-full py-1 px-4 lg:px-8"
   >
     <section
-      class="flex flex-col sm:flex-row sm:justify-between"
+      class="flex flex-col sm:flex-row gap-3 mb-3 sm:gap-x-[3rem] md:gap-x-[5rem] lg:gap-x-[3rem] xl:gap-x-[6rem] sm:mb-0"
       id="package_overview"
     >
       <div
-        class="w-full -mb-3 sm:mb-0 sm:w-[45%]"
+        class="sticky top-12 flex-1 text-wrap my-0 sm:my-6"
       >
         <div
-          class="my-6 sticky top-12"
+          class="h-2 shadow-lg"
+          style="border-radius: 3px 3px 0px 0px; height: 8px;"
+        />
+        <div
+          class="border border-t-0 rounded-b-sm border-slate-300"
         >
           <div
-            class="h-2 shadow-lg"
-            style="border-radius: 3px 3px 0px 0px; height: 8px;"
-          />
-          <div
-            class="border border-t-0 rounded-b-sm border-slate-300"
+            class="p-4 py-1 min-h-36"
           >
+            <h2>
+              Status
+            </h2>
             <div
-              class="p-4 py-1 min-h-36"
+              class="my-3 max-w-2xl font-bold text-xl"
             >
-              <h2>
-                Status
-              </h2>
+              <div />
               <div
-                class="my-3 max-w-2xl font-bold text-xl"
-              >
-                <div />
-                <div
-                  class="flex mt-1 flex-col gap-1 items-start"
-                />
-              </div>
+                class="flex mt-1 flex-col gap-1 items-start"
+              />
             </div>
           </div>
         </div>
       </div>
       <div
-        class="w-full -mt-3 text-wrap sm:mt-0 sm:text-nowrap sm:min-w-min sm:w-[45%]"
+        class="sticky top-12 flex-1 text-wrap my-0 sm:my-6"
       >
         <div
-          class="my-6 sticky top-12"
+          class="h-2 shadow-lg"
+          style="border-radius: 3px 3px 0px 0px; height: 8px;"
+        />
+        <div
+          class="border border-t-0 rounded-b-sm border-slate-300"
         >
           <div
-            class="h-2 shadow-lg"
-            style="border-radius: 3px 3px 0px 0px; height: 8px;"
-          />
-          <div
-            class="border border-t-0 rounded-b-sm border-slate-300"
+            class="p-4 py-1 min-h-36"
           >
+            <h2>
+              Package Actions
+            </h2>
             <div
-              class="p-4 py-1 min-h-36"
+              class="my-3"
             >
-              <h2>
-                Package Actions
-              </h2>
-              <div
-                class="my-3"
+              <em
+                class="text-gray-400 my-3"
               >
-                <em
-                  class="text-gray-400 my-3"
-                >
-                  No actions are currently available for this submission.
-                </em>
-              </div>
+                No actions are currently available for this submission.
+              </em>
             </div>
           </div>
         </div>
