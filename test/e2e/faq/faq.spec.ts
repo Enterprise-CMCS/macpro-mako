@@ -7,60 +7,66 @@ let faqPage: FAQPage;
 test.describe("FAQ page", { tag: ["@e2e", "@smoke", "@faq"] }, () => {
   test.beforeEach(async ({ page }) => {
     faqPage = new FAQPage(page);
-    await page.route('*/**/clientsdk.launchdarkly.us/sdk/evalx/**', async (route) => {
-      const url = await route.request().url();
+
+    let featureFlags = {};
+    await page.route("*/**/clientsdk.launchdarkly.us/sdk/evalx/**", async (route) => {
+      // const url = await route.request().url();
       const pl = {"COMPLETE_INTAKE":{"version":144,"flagVersion":3,"value":false,"variation":1,"trackEvents":false},"SHOW_SUBMISSION_LOADER":{"version":144,"flagVersion":3,"value":true,"variation":0,"trackEvents":false},"clear-data-button":{"version":144,"flagVersion":3,"value":true,"variation":0,"trackEvents":false},"complete-intake":{"version":144,"flagVersion":4,"value":true,"variation":0,"trackEvents":false},"perform-intake":{"version":144,"flagVersion":4,"value":false,"variation":1,"trackEvents":false},"site-under-maintenance-banner":{"version":144,"flagVersion":5,"value":"SCHEDULED","variation":1,"trackEvents":false},"toggleFaq":{"version":144,"flagVersion":64,"value":false,"variation":0,"trackEvents":false},"uat-hide-mmdl-banner":{"version":144,"flagVersion":77,"value":"on","variation":1,"trackEvents":false}}
 
       await route.fulfill({
-        contentType: "application/json", 
-        body: JSON.stringify(pl)
-      })
-      // await route.continue();
-    //   // await route.abort();
+        // contentType: "application/json",
+        body: JSON.stringify(pl),
+      });
     });
 
-    await page.route('*/**/clientstream.launchdarkly.us/sdk/**', async (route) => {
-      const url = await route.request().url();
-      const pl = {"COMPLETE_INTAKE":{"version":144,"flagVersion":3,"value":false,"variation":1,"trackEvents":false},"SHOW_SUBMISSION_LOADER":{"version":144,"flagVersion":3,"value":true,"variation":0,"trackEvents":false},"clear-data-button":{"version":144,"flagVersion":3,"value":true,"variation":0,"trackEvents":false},"complete-intake":{"version":144,"flagVersion":4,"value":true,"variation":0,"trackEvents":false},"perform-intake":{"version":144,"flagVersion":4,"value":false,"variation":1,"trackEvents":false},"site-under-maintenance-banner":{"version":144,"flagVersion":5,"value":"SCHEDULED","variation":1,"trackEvents":false},"toggleFaq":{"version":144,"flagVersion":64,"value":false,"variation":0,"trackEvents":false},"uat-hide-mmdl-banner":{"version":144,"flagVersion":77,"value":"on","variation":1,"trackEvents":false}}
+    // // await page.route("*/**/clientstream.launchdarkly.us/sdk/**", async (route) => {
+    // //   // const url = await route.request().url();
+    // //   const pl = {"COMPLETE_INTAKE":{"version":144,"flagVersion":3,"value":false,"variation":1,"trackEvents":false},"SHOW_SUBMISSION_LOADER":{"version":144,"flagVersion":3,"value":true,"variation":0,"trackEvents":false},"clear-data-button":{"version":144,"flagVersion":3,"value":true,"variation":0,"trackEvents":false},"complete-intake":{"version":144,"flagVersion":4,"value":true,"variation":0,"trackEvents":false},"perform-intake":{"version":144,"flagVersion":4,"value":false,"variation":1,"trackEvents":false},"site-under-maintenance-banner":{"version":144,"flagVersion":5,"value":"SCHEDULED","variation":1,"trackEvents":false},"toggleFaq":{"version":144,"flagVersion":64,"value":false,"variation":0,"trackEvents":false},"uat-hide-mmdl-banner":{"version":144,"flagVersion":77,"value":"on","variation":1,"trackEvents":false}}
 
-      await route.fulfill({
-        contentType: "application/json", 
-        body: JSON.stringify(pl)
-      })
-      // await route.continue();
-    //   // await route.abort();
-    });
+    // //   // await route.abort();
+    // //   await route.fulfill({
+    // //     contentType: "application/json",
+    // //     body: JSON.stringify(pl),
+    // //   });
+    // // });
 
-    await page.route(/events.launchdarkly/, async (route) => {
-      const request = await route.request();
-      // console.log(request.method());
-      if (request.method() === "POST") {
-        // console.log('Original POST data: ', request.postDataJSON());
+    // await page.route(/events.launchdarkly/, async (route) => {
+    //   const request = await route.request();
+    //   // console.log(request.method());
+    //   if (request.method() === "POST") {
+    //     // console.log('Original POST data: ', request.postDataJSON());
 
-        let data = request.postDataJSON();
+    //     let data = request.postDataJSON();
 
-        // console.log(data[1]['features']['toggleFaq']);
+    //     // console.log(data[1]['features']['toggleFaq']);
 
-        data[1]['features']['toggleFaq']['counters'][0]['value'] = false;
+    //     data[1]['features']['toggleFaq']['counters'][0]['value'] = false;
 
-        // console.log(data[1]['features']['toggleFaq']);
+    //     // console.log(data[1]['features']['toggleFaq']);
 
-        route.continue({
-          method: 'POST',
-          headers: request.headers(),
-          postData: data
-        })
-      }
-    });
+    //   await route.continue({
+    //     method: "POST",
+    //     headers: request.headers(),
+    //     postData: {},
+    //   });
+      // }
+      // route.abort();
+    // });
     //clientsdk.launchdarkly.us/sdk/evals
 
 
-    // page.on('response', async (response) => {
-    //   if (response.url().includes('clientsdk.launchdarkly.us/sdk/evalx')) {
-    //     const buffer = await response.body();
-    //     console.log(buffer.toString());
-    //   }
-    // });
+    page.on('response', async (response) => {
+      if (response.url().includes('clientsdk.launchdarkly.us/sdk/evalx')) {
+        const buffer = await response.body();
+
+        let data = await response.json();
+        console.log(data['toggleFaq']['value']);
+        // console.log(buffer.toString());
+        data['toggleFaq']['value'] = false;
+
+        console.log(data['toggleFaq']);
+      }
+    });
 
     // page.on('response', async (response) => {
     //   if (response.url().includes('clientstream.launchdarkly.us/eval')) {
@@ -69,7 +75,7 @@ test.describe("FAQ page", { tag: ["@e2e", "@smoke", "@faq"] }, () => {
     //   }
     // });
 
-    // Need to intercept the POST request to the event to set Flag to false
+    // // Need to intercept the POST request to the event to set Flag to false
     // page.on('request', async (req) => {
     //   if (req.url().includes('events.launchdarkly')) {
     //     console.log(req.url());
@@ -79,7 +85,7 @@ test.describe("FAQ page", { tag: ["@e2e", "@smoke", "@faq"] }, () => {
     //   }
     // });
     // await route.continue();
-    await page.waitForTimeout(5000);
+    // await page.waitForTimeout(5000);
     await page.goto("/faq");
   });
 
@@ -110,29 +116,29 @@ test.describe("FAQ page", { tag: ["@e2e", "@smoke", "@faq"] }, () => {
     // });
 
     test.describe("header", () => {
-      test("displays header", async ({ page }) => {
-        await page.route(/events.launchdarkly/, async (route) => {
-          const request = await route.request();
-          // console.log(request.method());
-          if (request.method() === "POST") {
-            // console.log('Original POST data: ', request.postDataJSON());
+      test.only("displays header", async ({ page }) => {
+        // await page.route(/events.launchdarkly/, async (route) => {
+        //   const request = await route.request();
+        //   // console.log(request.method());
+        //   if (request.method() === "POST") {
+        //     // console.log('Original POST data: ', request.postDataJSON());
     
-            let data = request.postDataJSON();
+        //     let data = request.postDataJSON();
     
-            // console.log(data[1]['features']['toggleFaq']);
+        //     // console.log(data[1]['features']['toggleFaq']);
     
-            data[1]['features']['toggleFaq']['counters'][0]['value'] = false;
+        //     data[1]['features']['toggleFaq']['counters'][0]['value'] = false;
     
-            // console.log(data[1]['features']['toggleFaq']);
+        //     // console.log(data[1]['features']['toggleFaq']);
     
-            route.continue({
-              method: 'POST',
-              headers: request.headers(),
-              postData: data
-            })
-          }
-        });
-        await page.goto("/faq");
+        //     route.continue({
+        //       method: 'POST',
+        //       headers: request.headers(),
+        //       postData: data
+        //     })
+        //   }
+        // });
+        // await page.goto("/faq");
 
         await expect(page.getByTestId("sub-nav-header")).toBeVisible();
         await expect(page.getByTestId("sub-nav-header")).toHaveText("Frequently Asked Questions");
