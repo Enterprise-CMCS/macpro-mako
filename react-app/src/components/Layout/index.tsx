@@ -165,12 +165,12 @@ export const Layout = () => {
   const customUserRoles = user?.user?.["custom:cms-roles"];
   const [userRoles, setUserRoles] = useState("");
 
-  if(customUserRoles) {
-    setUserRoles(customUserRoles)
-  }
+  // if(customUserRoles ) {
+  //   setUserRoles(customUserRoles)
+  // }
 
   useEffect(()=>{
-    if(userRoles.length > 0) {
+    if(userRoles.length > 0 ) {
       console.log("user login send GA event");
       ReactGA.set({user_roles: userRoles});
       console.log("user roles" +  userRoles);
