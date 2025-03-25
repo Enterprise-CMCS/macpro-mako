@@ -11,7 +11,7 @@ import { useGetUser } from "@/api";
 
 const mapValidNotifications = (notifications: unknown[]): ValidBannerNotification[] => {
   if (!Array.isArray(notifications)) return [];
-
+  console.log(notifications);
   return notifications
     .filter((notification) => BannerNotificationSchema.safeParse(notification).success)
     .map((notification) => BannerNotificationSchema.parse(notification));
@@ -20,8 +20,11 @@ const mapValidNotifications = (notifications: unknown[]): ValidBannerNotificatio
 export const getSystemNotifs = async (): Promise<ValidBannerNotification[]> => {
   try {
     const notifications = await API.get("os", "/systemNotifs", {});
+    console.log("notifications");
+    console.log(notifications);
     return mapValidNotifications(notifications);
   } catch (error) {
+    console.log("hello");
     console.error("Error fetching notifications:", error);
     return [];
   }
