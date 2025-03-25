@@ -165,9 +165,9 @@ export const Layout = () => {
   const customUserRoles = user?.user?.["custom:cms-roles"];
   const [userRoles, setUserRoles] = useState("");
 
-  // if(customUserRoles ) {
-  //   setUserRoles(customUserRoles)
-  // }
+  if(customUserRoles && customUserRoles != userRoles) {
+    setUserRoles(customUserRoles)
+  }
 
   useEffect(()=>{
     if(userRoles.length > 0 ) {
