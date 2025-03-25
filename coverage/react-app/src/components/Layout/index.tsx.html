@@ -23,16 +23,16 @@
         <div class='clearfix'>
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">93.87% </span>
+                <span class="strong">94.11% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>46/49</span>
+                <span class='fraction'>48/51</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">95.12% </span>
+                <span class="strong">93.33% </span>
                 <span class="quiet">Branches</span>
-                <span class='fraction'>39/41</span>
+                <span class='fraction'>42/45</span>
             </div>
         
             
@@ -44,9 +44,9 @@
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">95.65% </span>
+                <span class="strong">95.83% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>44/46</span>
+                <span class='fraction'>46/48</span>
             </div>
         
             
@@ -471,7 +471,10 @@
 <a name='L406'></a><a href='#L406'>406</a>
 <a name='L407'></a><a href='#L407'>407</a>
 <a name='L408'></a><a href='#L408'>408</a>
-<a name='L409'></a><a href='#L409'>409</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
+<a name='L409'></a><a href='#L409'>409</a>
+<a name='L410'></a><a href='#L410'>410</a>
+<a name='L411'></a><a href='#L411'>411</a>
+<a name='L412'></a><a href='#L412'>412</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -497,6 +500,8 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">74x</span>
+<span class="cline-any cline-yes">53x</span>
+<span class="cline-any cline-yes">53x</span>
 <span class="cline-any cline-yes">53x</span>
 <span class="cline-any cline-yes">53x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -531,7 +536,8 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">148x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">185x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">53x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -633,9 +639,9 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">74x</span>
-<span class="cline-any cline-yes">50x</span>
-<span class="cline-any cline-yes">50x</span>
-<span class="cline-any cline-yes">50x</span>
+<span class="cline-any cline-yes">51x</span>
+<span class="cline-any cline-yes">51x</span>
+<span class="cline-any cline-yes">51x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -854,7 +860,7 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">74x</span>
-<span class="cline-any cline-yes">19x</span>
+<span class="cline-any cline-yes">16x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -871,7 +877,7 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">74x</span>
-<span class="cline-any cline-yes">10x</span>
+<span class="cline-any cline-yes">11x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -892,7 +898,7 @@ import { Banner, ScrollToTop, SimplePageContainer, UserPrompt } from "@/componen
 import MMDLAlertBanner from "@/components/Banner/MMDLSpaBanner";
 import config from "@/config";
 import { useMediaQuery } from "@/hooks";
-import { useHideBanner } from "@/hooks/useHideBanner";
+import { useFeatureFlag } from "@/hooks/useFeatureFlag";
 import { isFaqPage, isProd } from "@/utils";
 &nbsp;
 import { Footer } from "../Footer";
@@ -906,7 +912,9 @@ import { UsaBanner } from "../UsaBanner";
  */
 const useGetLinks = () =&gt; {
   const { isLoading, data: userObj } = useGetUser();
-  const hideTab = useHideBanner();
+  const hideWebformTab = useFeatureFlag("UAT_HIDE_MMDL_BANNER");
+  const toggleFaq = useFeatureFlag("TOGGLE_FAQ");
+  const showHome = toggleFaq ? <span class="branch-0 cbranch-no" title="branch not covered" >userObj.user </span>: true; // if toggleFAQ is on we want to hide home when not logged in
 &nbsp;
   const links =
     isLoading || isFaqPage
@@ -915,7 +923,7 @@ const useGetLinks = () =&gt; {
           {
             name: "Home",
             link: "/",
-            condition: true,
+            condition: showHome,
           },
           {
             name: "Dashboard",
@@ -932,12 +940,13 @@ const useGetLinks = () =&gt; {
           {
             name: "View FAQs",
             link: "/faq",
-            condition: true,
+            condition: !toggleFaq,
           },
+          { name: "Support", link: "/support", condition: userObj.user &amp;&amp; toggleFaq },
           {
             name: "Webforms",
             link: "/webforms",
-            condition: userObj.user &amp;&amp; !isProd &amp;&amp; !hideTab,
+            condition: userObj.user &amp;&amp; !isProd &amp;&amp; !hideWebformTab,
           },
         ].filter((l) =&gt; l.condition);
 &nbsp;
@@ -1294,7 +1303,7 @@ export const SupportSubNavHeader = ({ children }: SupportSubNavHeaderProps) =&gt
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2025-03-25T02:09:12.873Z
+                at 2025-03-25T14:40:58.636Z
             </div>
         <script src="../../../../prettify.js"></script>
         <script>

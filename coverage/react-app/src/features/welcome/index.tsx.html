@@ -23,16 +23,16 @@
         <div class='clearfix'>
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">13.33% </span>
+                <span class="strong">12.5% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>2/15</span>
+                <span class='fraction'>2/16</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
                 <span class="strong">0% </span>
                 <span class="quiet">Branches</span>
-                <span class='fraction'>0/8</span>
+                <span class='fraction'>0/10</span>
             </div>
         
             
@@ -44,9 +44,9 @@
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">13.33% </span>
+                <span class="strong">12.5% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>2/15</span>
+                <span class='fraction'>2/16</span>
             </div>
         
             
@@ -262,7 +262,12 @@
 <a name='L197'></a><a href='#L197'>197</a>
 <a name='L198'></a><a href='#L198'>198</a>
 <a name='L199'></a><a href='#L199'>199</a>
-<a name='L200'></a><a href='#L200'>200</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
+<a name='L200'></a><a href='#L200'>200</a>
+<a name='L201'></a><a href='#L201'>201</a>
+<a name='L202'></a><a href='#L202'>202</a>
+<a name='L203'></a><a href='#L203'>203</a>
+<a name='L204'></a><a href='#L204'>204</a>
+<a name='L205'></a><a href='#L205'>205</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -298,6 +303,11 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -471,7 +481,7 @@ import { Button } from "@/components";
 import { CardWithTopBorder } from "@/components";
 import { LatestUpdates } from "@/components/Banner/latestUpdates";
 import { FAQ_TAB } from "@/consts";
-import { useHideBanner } from "@/hooks/useHideBanner";
+import { useFeatureFlag } from "@/hooks/useFeatureFlag";
 &nbsp;
 export const loader = <span class="fstat-no" title="function not covered" >(q</span>ueryClient: QueryClient) =&gt; {
 <span class="cstat-no" title="statement not covered" >  return <span class="fstat-no" title="function not covered" >async () =&gt; {</span></span>
@@ -496,7 +506,8 @@ export const loader = <span class="fstat-no" title="function not covered" >(q</s
 };
 &nbsp;
 export const Welcome = <span class="fstat-no" title="function not covered" >() =&gt; {</span>
-  const isSectionHidden = <span class="cstat-no" title="statement not covered" >useHideBanner();</span>
+  const isSectionHidden = <span class="cstat-no" title="statement not covered" >useFeatureFlag("UAT_HIDE_MMDL_BANNER");</span>
+  const faqRoute = <span class="cstat-no" title="statement not covered" >useFeatureFlag("TOGGLE_FAQ") ? "/support" : "/faq";</span>
 &nbsp;
   return (
     &lt;&gt;
@@ -525,7 +536,11 @@ export const Welcome = <span class="fstat-no" title="function not covered" >() =
               Medicaid Alternative Benefit Plan, Premium and Cost Sharing, and CHIP Eligibility SPA
               templates and implementation guides are now available in OneMAC. New submissions for
               these SPA types are submitted through the OneMAC system effective [add date].{" "}
-              &lt;Link to="/faq/spa-admendments" target={FAQ_TAB} className="underline text-[#0071bc]"&gt;
+              &lt;Link
+                to={`${faqRoute}/spa-admendments`}
+                target={FAQ_TAB}
+                className="underline text-[#0071bc]"
+              &gt;
                 Learn more
               &lt;/Link&gt;
             &lt;/p&gt;
@@ -652,7 +667,7 @@ export const Welcome = <span class="fstat-no" title="function not covered" >() =
       &lt;section&gt;
         &lt;div className="flex justify-around items-center text-xl px-10 py-2 max-w-screen-xl mx-auto"&gt;
           &lt;h4&gt;Do you have questions or need support?&lt;/h4&gt;
-          &lt;Link to="/faq" target={FAQ_TAB}&gt;
+          &lt;Link to={faqRoute} target={FAQ_TAB}&gt;
             &lt;Button&gt;View FAQs&lt;/Button&gt;
           &lt;/Link&gt;
         &lt;/div&gt;
@@ -667,7 +682,7 @@ export const Welcome = <span class="fstat-no" title="function not covered" >() =
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2025-03-25T02:09:12.873Z
+                at 2025-03-25T14:40:58.636Z
             </div>
         <script src="../../../../prettify.js"></script>
         <script>
