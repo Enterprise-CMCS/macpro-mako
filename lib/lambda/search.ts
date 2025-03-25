@@ -13,8 +13,9 @@ import { handleOpensearchError } from "./utils";
 // Handler function to search index
 export const getSearchData = async (event: APIGatewayEvent) => {
   validateEnvVariable("osDomain");
-
+  console.log("here");
   if (!event.pathParameters || !event.pathParameters.index) {
+    console.log("kjd;flkdj;lkfjdk");
     console.error(
       "event.pathParameters.index path parameter required, Event: ",
       JSON.stringify(event, null, 2),
@@ -24,7 +25,7 @@ export const getSearchData = async (event: APIGatewayEvent) => {
       body: { message: "Index path parameter required" },
     });
   }
-
+  console.log("there");
   const { domain, index } = getDomainAndNamespace(event.pathParameters.index as BaseIndex);
 
   try {
@@ -32,6 +33,7 @@ export const getSearchData = async (event: APIGatewayEvent) => {
     if (event.body) {
       query = JSON.parse(event.body);
     }
+    console.log("build query");
     query.query = query?.query || {};
     query.query.bool = query.query?.bool || {};
     query.query.bool.must = query.query.bool?.must || [];
@@ -42,6 +44,7 @@ export const getSearchData = async (event: APIGatewayEvent) => {
     if (stateFilter) {
       query.query.bool.must.push(stateFilter);
     }
+    console.log("query built");
     // Return OneMAC records and NOSOs (denoted with SEATool origin)
     query.query.bool.must.push({
       bool: {
@@ -61,9 +64,10 @@ export const getSearchData = async (event: APIGatewayEvent) => {
 
     query.from = query.from || 0;
     query.size = query.size || 100;
-
+    console.log("results");
     const results = await search(domain, index, query);
-
+    console.log("reults");
+    console.log(results);
     for (let i = 0; i < results?.hits?.hits?.length; i++) {
       if (results.hits.hits[i]._source?.appkParent) {
         const children = await getAppkChildren(results.hits.hits[i]._id);

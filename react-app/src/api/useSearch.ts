@@ -29,7 +29,7 @@ export const getOsData = async <TProps, TResponse extends opensearch.Response<an
       track_total_hits: true,
     },
   });
-
+  console.log(searchData);
   return searchData;
 };
 
