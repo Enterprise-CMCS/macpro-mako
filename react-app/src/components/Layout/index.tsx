@@ -163,22 +163,22 @@ export const Layout = () => {
   const isDesktop = useMediaQuery("(min-width: 768px)");
   const { data: user } = useGetUser();
   const customUserRoles = user?.user?.["custom:cms-roles"];
-  const [userRoles, setUserRoles] = useState("");
+  // const [userRoles, setUserRoles] = useState("");
 
-  if(customUserRoles && customUserRoles != userRoles) {
-    setUserRoles(customUserRoles)
-  }
+  // if(customUserRoles && customUserRoles != userRoles) {
+  //   setUserRoles(customUserRoles)
+  // }
 
   useEffect(()=>{
-    if(userRoles.length > 0 ) {
+    if(customUserRoles.length > 0 ) {
       console.log("user login send GA event");
-      ReactGA.set({user_roles: userRoles});
-      console.log("user roles" +  userRoles);
-      ReactGA.event('User Login' + '-' + userRoles, {
-        user_role: userRoles
+      ReactGA.set({user_roles: customUserRoles});
+      console.log("user roles" +  customUserRoles);
+      ReactGA.event('User Login' + '-' + customUserRoles, {
+        user_role: customUserRoles
       });
     }
-  },[userRoles])
+  },[customUserRoles])
 
   return (
     <div className="min-h-full flex flex-col">
