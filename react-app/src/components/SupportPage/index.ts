@@ -1,3 +1,5 @@
-export * from "./expandCollapseBtn";
-export * from "./contactHelpDesk";
-export * from "./navigationBar";
+import ContactHelpDesk from "./contactHelpDesk";
+import ExpandCollapseBtn from "./expandCollapseBtn";
+import LeftNavigation from "./navigationBar";
+
+export { ContactHelpDesk, ExpandCollapseBtn, LeftNavigation };
