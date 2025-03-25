@@ -2,7 +2,7 @@ import { AwsCognitoOAuthOpts } from "@aws-amplify/auth/lib-esm/types";
 import { Bars3Icon, XMarkIcon } from "@heroicons/react/24/outline";
 import * as DropdownMenu from "@radix-ui/react-dropdown-menu";
 import { Auth } from "aws-amplify";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { Link, NavLink, NavLinkProps, Outlet, useNavigate } from "react-router";
 import { UserRoles } from "shared-types";
 
@@ -162,16 +162,7 @@ const UserDropdownMenu = () => {
 export const Layout = () => {
   const isDesktop = useMediaQuery("(min-width: 768px)");
   const { data: user } = useGetUser();
-  const navigate = useNavigate();
   const customUserRoles = user?.user?.["custom:cms-roles"];
-
-  useEffect(() => {
-    const notLoggedOutPages =
-      window.location.pathname !== "/login" && window.location.pathname !== "/faq";
-    if (!user?.user && notLoggedOutPages) {
-      navigate("/login");
-    }
-  }, [user, navigate]);
 
   return (
     <div className="min-h-full flex flex-col">
@@ -184,7 +175,7 @@ export const Layout = () => {
           <div className="h-[70px] relative flex gap-12 items-center text-white">
             {!isFaqPage ? (
               // This is the original Link component
-              <Link to="/">
+              <Link to={user.user ? "/" : "/login"}>
                 <img
                   className="h-10 w-28 min-w-[112px] resize-none"
                   src="/onemac-logo.png"

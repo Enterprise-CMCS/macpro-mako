@@ -1,8 +1,8 @@
 import * as Heroicons from "@heroicons/react/24/outline";
 import { QueryClient } from "@tanstack/react-query";
-import { Link } from "react-router";
+import { Link, Navigate, redirect } from "react-router";
 
-import { getUser } from "@/api";
+import { getUser, OneMacUser } from "@/api";
 import * as C from "@/components";
 import { Button } from "@/components";
 import { CardWithTopBorder } from "@/components";
@@ -18,15 +18,26 @@ export const loader = (queryClient: QueryClient) => {
     // Access specific parameters
     const errorDescription = queryParams.get("error_description");
     const error = queryParams.get("error");
+    // Check user query
+    const userQuery = queryClient.getQueryData<OneMacUser>(["user"]);
+    // Verify location point if logged out
+    const notLoggedOutPages =
+      window.location.pathname !== "/login" && window.location.pathname !== "/faq";
+
     if (errorDescription || error) {
       console.error("Authentication Error:", { errorDescription, error });
       return { error };
     }
-    if (!queryClient.getQueryData(["user"])) {
-      return await queryClient.fetchQuery({
+
+    if (!userQuery) {
+      const userFetch = await queryClient.fetchQuery({
         queryKey: ["user"],
         queryFn: () => getUser(),
       });
+      return userFetch?.user ? userFetch : notLoggedOutPages && redirect("/login");
+    }
+    if (!userQuery?.user && notLoggedOutPages) {
+      return <Navigate to="/login" />;
     }
     return queryClient.getQueryData(["user"]);
   };
