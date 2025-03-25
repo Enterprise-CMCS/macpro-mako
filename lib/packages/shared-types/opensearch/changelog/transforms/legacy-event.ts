@@ -11,13 +11,11 @@ export const transform = (id: string) => {
 
     // const eventType = data?.GSI1pk?.split("OneMAC#submit")?.[1] || "";
     if (eventType === "spa" || eventType === "waiver") {
-      console.log("IN THIS ONE?");
       event = "new-legacy-submission";
     }
 
     if (eventType === "submit") {
       submitType = eventTypeMatch?.[2] || "";
-      console.log("IN HERE???");
 
       switch (submitType) {
         case "chipspa":
@@ -73,11 +71,12 @@ export const transform = (id: string) => {
     const transformedData = {
       // Append only changelog, so we add the offset to make the document id unique
       // Legacy emits can emit multiple events for the same business event, so we key off the timestamp, not the offset, to prevent duplciates
-      id: `${data.componentId}-legacy-${data.eventTimestamp}`,
+      id: `${data.componentId}-legacy-${data.eventTimestamp ? data.eventTimestamp : data.lastEventTimestamp}`,
       packageId: data.componentId,
       timestamp: data.eventTimestamp,
       event: event,
-      attachments: data.attachments?.map(handleLegacyAttachment) ?? null,
+      attachments:
+        data.attachments?.map((attachment) => handleLegacyAttachment(attachment)) ?? null,
       additionalInformation: data.additionalInformation,
       submitterEmail: data.submitterEmail,
       submitterName: data.submitterName,
