@@ -60,7 +60,6 @@ export const UserPrompt = () => {
   };
 
   const onAccept = () => {
-    console.log("new package submitted")
     if (activeUserPrompt) {
       activeUserPrompt.onAccept();
       userPromptState.dismiss();

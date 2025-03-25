@@ -7,6 +7,7 @@ import { Navigate, useLocation, useNavigate, useParams } from "react-router";
 import { Authority, CognitoUserAttributes } from "shared-types";
 import { isStateUser } from "shared-utils";
 import { z } from "zod";
+import ReactGA from "react-ga4";
 
 import { useGetUser } from "@/api";
 import {
@@ -177,7 +178,13 @@ export const ActionForm = <Schema extends SchemaWithEnforcableProps>({
       navigate(formOrigins);
       console.log("on submit clicked")
       console.log("form data event: "+ formData.event)
-      
+      const customUserRoles = userObj?.user?.["custom:cms-roles"];
+      console.log("custom user roles; " + customUserRoles)
+      ReactGA.event('Submit Package' + '-' + formData.event, {
+        user_role: customUserRoles
+      });
+      ReactGA.event(formData.event);
+
     } catch (error) {
       console.error(error);
       banner({

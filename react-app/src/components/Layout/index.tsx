@@ -2,7 +2,7 @@ import { AwsCognitoOAuthOpts } from "@aws-amplify/auth/lib-esm/types";
 import { Bars3Icon, XMarkIcon } from "@heroicons/react/24/outline";
 import * as DropdownMenu from "@radix-ui/react-dropdown-menu";
 import { Auth } from "aws-amplify";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Link, NavLink, NavLinkProps, Outlet, useNavigate } from "react-router";
 import { UserRoles } from "shared-types";
 
@@ -13,7 +13,7 @@ import config from "@/config";
 import { useMediaQuery } from "@/hooks";
 import { useHideBanner } from "@/hooks/useHideBanner";
 import { isFaqPage, isProd } from "@/utils";
-
+import ReactGA from "react-ga4";
 import { Footer } from "../Footer";
 import { UsaBanner } from "../UsaBanner";
 /**
@@ -163,6 +163,22 @@ export const Layout = () => {
   const isDesktop = useMediaQuery("(min-width: 768px)");
   const { data: user } = useGetUser();
   const customUserRoles = user?.user?.["custom:cms-roles"];
+  const [userRoles, setUserRoles] = useState("");
+
+  if(customUserRoles) {
+    setUserRoles(customUserRoles)
+  }
+
+  useEffect(()=>{
+    if(userRoles.length > 0) {
+      console.log("user login send GA event");
+      ReactGA.set({user_roles: userRoles});
+      console.log("user roles" +  userRoles);
+      ReactGA.event('User Login' + '-' + userRoles, {
+        user_role: userRoles
+      });
+    }
+  },[userRoles])
 
   return (
     <div className="min-h-full flex flex-col">
