@@ -22,7 +22,9 @@ export const legacyAttachmentSchema = z.object({
 export type LegacyAttachment = z.infer<typeof legacyAttachmentSchema>;
 
 export function handleLegacyAttachment(attachment: LegacyAttachment): Attachment | null {
+  console.log(attachment, "ATTACHMENT");
   const parsedUrl = s3ParseUrl(attachment.url || "");
+  console.log(parsedUrl, "PARSED URL");
   if (!parsedUrl) return null;
   const bucket = parsedUrl.bucket;
   const key = parsedUrl.key;
