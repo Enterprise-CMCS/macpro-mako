@@ -178,7 +178,13 @@ export const ActionForm = <Schema extends SchemaWithEnforcableProps>({
       navigate(formOrigins);
       console.log("on submit clicked")
       console.log("form data event: "+ formData.event)
-      ReactGA.event(formData.event);
+      // ReactGA.event(formData.event);
+      // const customUserRoles = userObj?.user?.["custom:cms-roles"];
+      // const customisMemberOf = userObj?.user?.["custom:ismemberof"];
+      ReactGA.event( formData.event, {
+        user_role: "State Submitter",
+        state: formData.id.substring(0,2)
+      });
 
     } catch (error) {
       console.error(error);
