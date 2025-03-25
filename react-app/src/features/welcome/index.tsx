@@ -1,8 +1,8 @@
 import * as Heroicons from "@heroicons/react/24/outline";
 import { QueryClient } from "@tanstack/react-query";
-import { Link, Navigate, redirect } from "react-router";
+import { Link, Navigate } from "react-router";
 
-import { getUser, OneMacUser } from "@/api";
+import { getUser } from "@/api";
 import * as C from "@/components";
 import { Button } from "@/components";
 import { CardWithTopBorder } from "@/components";
@@ -12,31 +12,28 @@ import { useFeatureFlag } from "@/hooks/useFeatureFlag";
 
 export const loader = (queryClient: QueryClient) => {
   return async () => {
+    // Check user query
+    const userFetch = await queryClient.fetchQuery({
+      queryKey: ["user"],
+      queryFn: () => getUser(),
+    });
+    // Verify location point if logged out
+    const noAuthPage = ["/login", "/faq"].includes(window.location.pathname);
+
+    // Grab query string for possible errors
     const queryString = window.location.search;
     // Parse the query string to get URL parameters
     const queryParams = new URLSearchParams(queryString);
     // Access specific parameters
     const errorDescription = queryParams.get("error_description");
     const error = queryParams.get("error");
-    // Check user query
-    const userQuery = queryClient.getQueryData<OneMacUser>(["user"]);
-    // Verify location point if logged out
-    const notLoggedOutPages =
-      window.location.pathname !== "/login" && window.location.pathname !== "/faq";
 
     if (errorDescription || error) {
       console.error("Authentication Error:", { errorDescription, error });
       return { error };
     }
 
-    if (!userQuery) {
-      const userFetch = await queryClient.fetchQuery({
-        queryKey: ["user"],
-        queryFn: () => getUser(),
-      });
-      return userFetch?.user ? userFetch : notLoggedOutPages && redirect("/login");
-    }
-    if (!userQuery?.user && notLoggedOutPages) {
+    if (!userFetch?.user && !noAuthPage) {
       return <Navigate to="/login" />;
     }
     return queryClient.getQueryData(["user"]);
