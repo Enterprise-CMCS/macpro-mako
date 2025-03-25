@@ -178,11 +178,6 @@ export const ActionForm = <Schema extends SchemaWithEnforcableProps>({
       navigate(formOrigins);
       console.log("on submit clicked")
       console.log("form data event: "+ formData.event)
-      const customUserRoles = userObj?.user?.["custom:cms-roles"];
-      console.log("custom user roles; " + customUserRoles)
-      ReactGA.event('Submit Package' + '-' + formData.event, {
-        user_role: customUserRoles
-      });
       ReactGA.event(formData.event);
 
     } catch (error) {

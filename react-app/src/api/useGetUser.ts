@@ -4,7 +4,6 @@ import { CognitoUserAttributes } from "shared-types";
 import { isCmsUser } from "shared-utils";
 import config from "@/config";
 
-import ReactGA from "react-ga4"
 
 
 export type OneMacUser = {

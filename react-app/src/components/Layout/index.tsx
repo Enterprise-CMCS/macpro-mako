@@ -165,7 +165,7 @@ export const Layout = () => {
   const { data: user } = useGetUser();
   const customUserRoles = user?.user?.["custom:cms-roles"] || "";
   const customisMemberOf = user?.user?.["custom:ismemberof"] || "";
-  console.log("user roles outside use effect" +  customUserRoles);
+  console.log("user roles outside use effect" +  customUserRoles + customisMemberOf);
   // const [userRoles, setUserRoles] = useState("");
 
   // if(customUserRoles && customUserRoles != userRoles) {
