@@ -35,7 +35,7 @@ interface submitMessageType {
 
 const convertStringToTimestamp = (date: string) => {
   const formatedDate = new Date(date).getTime();
-  if (isNaN(formatedDate.valueOf())) throw new Error("Not a valid time");
+  if (isNaN(formatedDate)) throw new Error("Not a valid time");
   return formatedDate;
 };
 
