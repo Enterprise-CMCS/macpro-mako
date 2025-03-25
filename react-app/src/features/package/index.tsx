@@ -47,7 +47,7 @@ export const DetailsContent = ({ id }: DetailsContentProps) => {
         <div className="w-full -mb-3 sm:mb-0 sm:w-[45%]">
           <PackageStatusCard submission={submission} />
         </div>
-        <div className="w-full -mt-3 text-wrap sm:mt-0 sm:text-nowrap sm:min-w-min sm:w-[45%]">
+        <div className="w-full -mt-3 text-wrap sm:mt-0 sm:w-[45%]">
           <PackageActionsCard id={id} submission={submission} />
         </div>
       </section>
