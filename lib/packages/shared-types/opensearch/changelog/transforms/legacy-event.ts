@@ -66,6 +66,7 @@ export const transform = (id: string) => {
 
     // Return if the actionType is unhandled
     if (event === undefined) return undefined;
+    console.log("IN THE TRANSFORMS");
 
     // If we're still here, go ahead and transform the data
     const transformedData = {
