@@ -17,8 +17,13 @@ export const loader = (queryClient: QueryClient) => {
       queryKey: ["user"],
       queryFn: () => getUser(),
     });
-    // Verify location point if logged out
-    const noAuthPage = ["/login", "/faq"].includes(window.location.pathname);
+    // Verify location point for login redirect
+    const loginRedirect =
+      !["/login", "/faq"].includes(window.location.pathname) && !userFetch?.user;
+
+    if (loginRedirect) {
+      return <Navigate to="/login" />;
+    }
 
     // Grab query string for possible errors
     const queryString = window.location.search;
@@ -33,10 +38,7 @@ export const loader = (queryClient: QueryClient) => {
       return { error };
     }
 
-    if (!userFetch?.user && !noAuthPage) {
-      return <Navigate to="/login" />;
-    }
-    return queryClient.getQueryData(["user"]);
+    return userFetch;
   };
 };
 
