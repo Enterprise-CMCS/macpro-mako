@@ -130,6 +130,14 @@ export const router = createBrowserRouter([
             element: <PostSubmissionWrapper />,
             loader: postSubmissionLoader,
           },
+          {
+            path: "/support",
+            element: <F.SupportPage />,
+          },
+          {
+            path: "/support:id",
+            element: <F.SupportPage />,
+          },
         ],
       },
     ],
