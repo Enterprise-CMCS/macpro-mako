@@ -13,7 +13,7 @@ import { handleOpensearchError } from "./utils";
 // Handler function to search index
 export const getSearchData = async (event: APIGatewayEvent) => {
   validateEnvVariable("osDomain");
-
+  console.log("started");
   if (!event.pathParameters || !event.pathParameters.index) {
     console.error(
       "event.pathParameters.index path parameter required, Event: ",
@@ -26,7 +26,7 @@ export const getSearchData = async (event: APIGatewayEvent) => {
   }
 
   const { domain, index } = getDomainAndNamespace(event.pathParameters.index as BaseIndex);
-
+  console.log("here");
   try {
     let query: any = {};
     if (event.body) {
@@ -37,7 +37,7 @@ export const getSearchData = async (event: APIGatewayEvent) => {
     query.query.bool.must = query.query.bool?.must || [];
     query.query.bool.must_not = query.query.bool?.must_not || [];
     query.query.bool.must_not.push({ term: { deleted: true } });
-
+    console.log("there");
     const stateFilter = await getStateFilter(event);
     if (stateFilter) {
       query.query.bool.must.push(stateFilter);
