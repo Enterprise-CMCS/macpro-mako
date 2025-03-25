@@ -25,6 +25,8 @@ describe("Kafka producer functions", () => {
     const key = "test-key";
     const value = JSON.stringify({ foo: "bar" });
 
+    mockedProducer.send.mockResolvedValueOnce([{ partition: 0, offset: "1" }]);
+
     await produceMessage(topic, key, value);
 
     expect(mockedProducer.connect).toHaveBeenCalled();
@@ -39,10 +41,9 @@ describe("Kafka producer functions", () => {
         },
       ],
     });
-    expect(mockedProducer.disconnect).toHaveBeenCalled();
   });
 
-  it("should handle errors when producing a message", async () => {
+  it("should throw an error if Kafka send fails", async () => {
     const topic = "test-topic";
     const key = "test-key";
     const value = JSON.stringify({ foo: "bar" });
@@ -50,21 +51,25 @@ describe("Kafka producer functions", () => {
     const error = new Error("Failed to send message");
     mockedProducer.send.mockRejectedValueOnce(error);
 
-    await produceMessage(topic, key, value);
+    await expect(produceMessage(topic, key, value)).rejects.toThrow("Failed to send message");
 
     expect(mockedProducer.connect).toHaveBeenCalled();
-    expect(mockedProducer.send).toHaveBeenCalledWith({
-      topic,
-      messages: [
-        {
-          key,
-          value,
-          partition: 0,
-          headers: { source: "mako" },
-        },
-      ],
-    });
-    expect(mockedProducer.disconnect).toHaveBeenCalled();
+    expect(mockedProducer.send).toHaveBeenCalled();
+  });
+
+  it("should throw an error if Kafka response is empty", async () => {
+    const topic = "test-topic";
+    const key = "test-key";
+    const value = JSON.stringify({ foo: "bar" });
+
+    mockedProducer.send.mockResolvedValueOnce([]);
+
+    await expect(produceMessage(topic, key, value)).rejects.toThrow(
+      "Kafka did not return a valid response.",
+    );
+
+    expect(mockedProducer.connect).toHaveBeenCalled();
+    expect(mockedProducer.send).toHaveBeenCalled();
   });
 
   it("should throw an error if brokerString is not defined", () => {
