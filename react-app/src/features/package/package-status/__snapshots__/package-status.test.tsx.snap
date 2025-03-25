@@ -13,7 +13,7 @@ exports[`Package Status test > The package status component is called successful
       class="border border-t-0 rounded-b-sm border-slate-300"
     >
       <div
-        class="p-4 py-1 w-80 min-h-36"
+        class="p-4 py-1 min-h-36"
       >
         <h2>
           Status

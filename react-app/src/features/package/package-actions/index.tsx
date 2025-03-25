@@ -52,9 +52,9 @@ export const PackageActionsCard = ({ submission, id }: PackageActionsCardProps) 
                       : DETAILS_ORIGIN,
                 }).toString(),
               }}
-              className="text-sky-700 font-semibold text-lg"
+              className="text-sky-700 font-semibold text-lg hover:underline hover:decoration-inherit"
             >
-              <li>{mapActionLabel(type)}</li>
+              <li className="py-2">{mapActionLabel(type)}</li>
             </Link>
           ))}
         </ul>
