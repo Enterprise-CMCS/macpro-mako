@@ -186,6 +186,7 @@ export const ActionForm = <Schema extends SchemaWithEnforcableProps>({
         state: formData.id.substring(0,2)
       });
 
+      console.log("state"+formData.id.substring(0,2))
     } catch (error) {
       console.error(error);
       banner({
