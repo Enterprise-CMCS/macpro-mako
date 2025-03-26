@@ -27,11 +27,11 @@ export const loader = (queryClient: QueryClient) => {
 
     // check user query has been initialized
     if (!queryClient.getQueryData(["user"])) {
-      await queryClient.fetchQuery({
+      const userFetch = await queryClient.fetchQuery({
         queryKey: ["user"],
         queryFn: () => getUser(),
       });
-      return redirect("/login");
+      return userFetch?.user && redirect("/login");
     }
 
     // check user is logged in
