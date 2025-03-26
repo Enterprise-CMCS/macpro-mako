@@ -181,20 +181,20 @@ export const ActionForm = <Schema extends SchemaWithEnforcableProps>({
       // ReactGA.event(formData.event);
       // const customUserRoles = userObj?.user?.["custom:cms-roles"];
       // const customisMemberOf = userObj?.user?.["custom:ismemberof"];
-      // ReactGA.event( formData.event, {
-      //   user_role: "State Submitter",
-      //   state: formData.id.substring(0,2)
+      ReactGA.event( formData.event, {
+        user_role: "State Submitter",
+        state: formData.id.substring(0,2)
+      });
+      // ReactGA.set({
+      //   dimension1: "State Submitter",  // user_role
+      //   dimension2: "MD"  // state
       // });
-      ReactGA.set({
-        dimension1: "State Submitter",  // user_role
-        dimension2: "MD"  // state
-      });
       
-      ReactGA.event({
-        category: 'Form Submission',
-        action: 'Submit',
-        label: formData.event
-      });
+      // ReactGA.event({
+      //   category: 'Form Submission',
+      //   action: 'Submit',
+      //   label: formData.event
+      // });
       
       console.log("state"+formData.id.substring(0,2))
     } catch (error) {
