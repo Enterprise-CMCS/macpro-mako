@@ -148,18 +148,7 @@
 <a name='L83'></a><a href='#L83'>83</a>
 <a name='L84'></a><a href='#L84'>84</a>
 <a name='L85'></a><a href='#L85'>85</a>
-<a name='L86'></a><a href='#L86'>86</a>
-<a name='L87'></a><a href='#L87'>87</a>
-<a name='L88'></a><a href='#L88'>88</a>
-<a name='L89'></a><a href='#L89'>89</a>
-<a name='L90'></a><a href='#L90'>90</a>
-<a name='L91'></a><a href='#L91'>91</a>
-<a name='L92'></a><a href='#L92'>92</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
+<a name='L86'></a><a href='#L86'>86</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -244,17 +233,11 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">import { FC, useState } from "react";
 &nbsp;
 import { useGetSystemNotifs } from "@/api";
-import { cn } from "@/utils";
 &nbsp;
-interface LatestUpdatesProps {
-  className?: string;
-}
-&nbsp;
-export const LatestUpdates: FC&lt;LatestUpdatesProps&gt; = ({ className }) =&gt; {
+export const LatestUpdates: FC = () =&gt; {
   const [showMore, setShowMore] = useState(false);
   const { allNotifications } = useGetSystemNotifs();
 &nbsp;
@@ -280,59 +263,58 @@ export const LatestUpdates: FC&lt;LatestUpdatesProps&gt; = ({ className }) =&gt;
   const visibleUpdates = showMore ? latestUpdates : latestUpdates.slice(0, 1);
 &nbsp;
   return (
-    &lt;div className={cn("m-auto w-full max-w-screen-xl min-h-[228px]", className)}&gt;
-      &lt;div className="border-2 rounded-b-sm p-4 md:p-6 rounded-[3px] border-[#DFE1E2] bg-[var(--Background-Base-base-lightest,rgba(240,240,240,1))] overflow-hidden"&gt;
-        &lt;h2 className="text-2xl font-bold font-serif pb-2"&gt;Latest Updates&lt;/h2&gt;
-        &lt;ul className="list-none pl-1"&gt;
-          {visibleUpdates.map((notif) =&gt; {
-            const meta = updateMeta[notif.notifId] || <span class="branch-1 cbranch-no" title="branch not covered" >{ date: "", title: "" };</span>
-            return (
-              &lt;li
-                key={notif.notifId}
-                className="pb-8 relative pl-4 before:content-['•'] before:absolute before:left-0 before:text-sm before:top-1.5 before:leading-none text-[18px]"
-              &gt;
-                &lt;span className="font-semibold text-[#0071bc]"&gt;
-                  {meta.date} {meta.title}:
-                &lt;/span&gt;
-                {notif.buttonLink &amp;&amp; (
-                  &lt;button
-                    className="text-[#0071bc] underline ml-1"
-                    onClick={<span class="fstat-no" title="function not covered" >() =&gt; (<span class="cstat-no" title="statement not covered" >w</span>indow.location.href = notif.buttonLink)</span>}
-                  &gt;
-                    →
-                  &lt;/button&gt;
-                )}{" "}
-                {notif.body}
-              &lt;/li&gt;
-            );
-          })}
-        &lt;/ul&gt;
+    &lt;div className="flex flex-col gap-[16px] pb-[18px]"&gt;
+      &lt;h2 className="text-2xl font-bold font-serif"&gt;Latest Updates&lt;/h2&gt;
 &nbsp;
-        {latestUpdates.length &gt; 1 &amp;&amp; (
-          &lt;button
-            onClick={() =&gt; setShowMore(!showMore)}
-            className="flex items-center justify-start gap-2 rounded-md bg-transparent mt-2 cursor-pointer"
-          &gt;
-            &lt;span className="pl-5 pt-[5px] pb-[5px] font-bold text-[#0071bc] leading-[22px] text-center"&gt;
-              {showMore ? "Hide additional updates" : "Show more updates"}
-            &lt;/span&gt;
-            &lt;svg
-              className="w-[24px] h-[24px] text-[#0071bc]"
-              fill="none"
-              stroke="currentColor"
-              strokeWidth="2"
-              viewBox="0 0 24 24"
-              xmlns="http://www.w3.org/2000/svg"
+      &lt;ul className="list-none pl-2"&gt;
+        {visibleUpdates.map((notif) =&gt; {
+          const meta = updateMeta[notif.notifId] || <span class="branch-1 cbranch-no" title="branch not covered" >{ date: "", title: "" };</span>
+          return (
+            &lt;li
+              key={notif.notifId}
+              className="pb-8 relative pl-4 before:content-['•'] before:absolute before:left-0 before:text-sm before:top-1.5 before:leading-none text-[18px]"
             &gt;
-              &lt;path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                d={showMore ? "M20 12H4" : "M12 4v16m8-8H4"}
-              /&gt;
-            &lt;/svg&gt;
-          &lt;/button&gt;
-        )}
-      &lt;/div&gt;
+              &lt;span&gt;
+                {meta.date} &lt;span className="text-[#0071bc] font-semibold"&gt;{meta.title}&lt;/span&gt;:
+              &lt;/span&gt;
+              {notif.buttonLink &amp;&amp; (
+                &lt;button
+                  className="text-[#0071bc] underline ml-1"
+                  onClick={<span class="fstat-no" title="function not covered" >() =&gt; (<span class="cstat-no" title="statement not covered" >w</span>indow.location.href = notif.buttonLink)</span>}
+                &gt;
+                  →
+                &lt;/button&gt;
+              )}{" "}
+              {notif.body}
+            &lt;/li&gt;
+          );
+        })}
+      &lt;/ul&gt;
+&nbsp;
+      {latestUpdates.length &gt; 1 &amp;&amp; (
+        &lt;button
+          onClick={() =&gt; setShowMore(!showMore)}
+          className="flex items-center justify-start gap-2 rounded-md bg-transparent cursor-pointer"
+        &gt;
+          &lt;span className="pl-4 font-bold text-[#0071bc] leading-[22px] text-center"&gt;
+            {showMore ? "Hide additional updates" : "Show more updates"}
+          &lt;/span&gt;
+          &lt;svg
+            className="w-[24px] h-[24px] text-[#0071bc]"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth="2"
+            viewBox="0 0 24 24"
+            xmlns="http://www.w3.org/2000/svg"
+          &gt;
+            &lt;path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              d={showMore ? "M20 12H4" : "M12 4v16m8-8H4"}
+            /&gt;
+          &lt;/svg&gt;
+        &lt;/button&gt;
+      )}
     &lt;/div&gt;
   );
 };
@@ -343,7 +325,7 @@ export const LatestUpdates: FC&lt;LatestUpdatesProps&gt; = ({ className }) =&gt;
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2025-03-26T02:08:46.874Z
+                at 2025-03-26T14:11:58.339Z
             </div>
         <script src="../../../../prettify.js"></script>
         <script>
