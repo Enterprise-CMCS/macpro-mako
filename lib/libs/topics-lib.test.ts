@@ -9,8 +9,6 @@ describe("topics-lib test", () => {
   });
 
   it("Creates and modifies existing topics", async () => {
-    const spyCreate = vi.spyOn(mockedAdmin, "createTopics");
-    const spyUpdate = vi.spyOn(mockedAdmin, "createPartitions");
     await createTopics("", [
       {
         topic: TOPIC_ONE,
@@ -26,13 +24,12 @@ describe("topics-lib test", () => {
       },
     ]);
 
-    expect(spyCreate).toBeCalledTimes(1);
-    expect(spyUpdate).toBeCalledTimes(1);
+    expect(mockedAdmin.createTopics).toBeCalledTimes(1);
+    expect(mockedAdmin.createPartitions).toBeCalledTimes(1);
   });
   it("tries to delete existing topics fails for bad filename", async () => {
-    const spyDelete = vi.spyOn(mockedAdmin, "deleteTopics");
     await deleteTopics("", [TOPIC_ONE]);
-    expect(spyDelete).toBeCalledTimes(1);
+    expect(mockedAdmin.deleteTopics).toBeCalledTimes(1);
   });
   it("deletes existing topics fails for bad filename", async () => {
     await expect(deleteTopics("", ["topic1"])).rejects.toThrowError(
