@@ -22,6 +22,7 @@ export const router = createBrowserRouter([
     element: <C.Layout />,
     children: [
       { path: "/", index: true, element: <F.WelcomeWrapper /> },
+      { path: "/login", element: <F.Login /> },
       { path: "/faq", element: <F.Faq /> },
       { path: "/faq/:id", element: <F.Faq /> },
       { path: "/webforms", element: <F.WebformsList /> },
