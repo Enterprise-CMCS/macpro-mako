@@ -1,6 +1,7 @@
 import { QueryClient } from "@tanstack/react-query";
+import { Navigate, redirect } from "react-router";
 
-import { getUser } from "@/api";
+import { getUser, OneMacUser } from "@/api";
 
 export const loader = (queryClient: QueryClient) => {
   return async () => {
@@ -14,12 +15,24 @@ export const loader = (queryClient: QueryClient) => {
       console.error("Authentication Error:", { errorDescription, error });
       return { error };
     }
+
+    // check user query has been initialized
     if (!queryClient.getQueryData(["user"])) {
-      return await queryClient.fetchQuery({
+      const userFetch = await queryClient.fetchQuery({
         queryKey: ["user"],
         queryFn: () => getUser(),
       });
+      return userFetch?.user && redirect("/login");
     }
+
+    // check user is logged in
+    const loginRedirect =
+      !["/login", "/faq", "/support"].includes(window.location.pathname) &&
+      !queryClient.getQueryData<OneMacUser>(["user"])?.user;
+    if (loginRedirect) {
+      return <Navigate to="/login" />;
+    }
+
     return queryClient.getQueryData(["user"]);
   };
 };
