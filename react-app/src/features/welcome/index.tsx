@@ -1,8 +1,8 @@
 import * as Heroicons from "@heroicons/react/24/outline";
 import { QueryClient } from "@tanstack/react-query";
-import { Link, Navigate } from "react-router";
+import { Link, Navigate, redirect } from "react-router";
 
-import { getUser } from "@/api";
+import { getUser, OneMacUser } from "@/api";
 import * as C from "@/components";
 import { Button } from "@/components";
 import { CardWithTopBorder } from "@/components";
@@ -12,19 +12,6 @@ import { useFeatureFlag } from "@/hooks/useFeatureFlag";
 
 export const loader = (queryClient: QueryClient) => {
   return async () => {
-    // Check user query
-    const userFetch = await queryClient.fetchQuery({
-      queryKey: ["user"],
-      queryFn: () => getUser(),
-    });
-    // Verify location point for login redirect
-    const loginRedirect =
-      !["/login", "/faq"].includes(window.location.pathname) && !userFetch?.user;
-
-    if (loginRedirect) {
-      return <Navigate to="/login" />;
-    }
-
     // Grab query string for possible errors
     const queryString = window.location.search;
     // Parse the query string to get URL parameters
@@ -38,7 +25,24 @@ export const loader = (queryClient: QueryClient) => {
       return { error };
     }
 
-    return userFetch;
+    // check user query has been initialized
+    if (!queryClient.getQueryData(["user"])) {
+      await queryClient.fetchQuery({
+        queryKey: ["user"],
+        queryFn: () => getUser(),
+      });
+      return redirect("/login");
+    }
+
+    // check user is logged in
+    const loginRedirect =
+      !["/login", "/faq", "/support"].includes(window.location.pathname) &&
+      !queryClient.getQueryData<OneMacUser>(["user"])?.user;
+    if (loginRedirect) {
+      return <Navigate to="/login" />;
+    }
+
+    return queryClient.getQueryData(["user"]);
   };
 };
 
