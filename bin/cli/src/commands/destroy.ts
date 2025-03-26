@@ -29,7 +29,7 @@ export const destroy = {
     const stackName = `${project}-${stage}`;
 
     if (/prod/i.test(stage)) {
-      console.log("Error: Destruction of production stages is not allowed.");
+      console.log("Error: Destructxion of production stages is not allowed.");
       process.exit(1);
     }
 
