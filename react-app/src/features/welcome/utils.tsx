@@ -22,7 +22,7 @@ export const loader = (queryClient: QueryClient) => {
         queryKey: ["user"],
         queryFn: () => getUser(),
       });
-      return userFetch?.user && redirect("/login");
+      return !userFetch?.user && redirect("/login");
     }
 
     // check user is logged in
