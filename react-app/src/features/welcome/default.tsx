@@ -6,6 +6,7 @@ import { Button } from "@/components";
 import { CardWithTopBorder } from "@/components";
 import { FAQ_TAB } from "@/consts";
 import { useHideBanner } from "@/hooks/useHideBanner";
+import { cn } from "@/utils";
 
 export const Welcome = () => {
   const isSectionHidden = useHideBanner();
@@ -26,10 +27,7 @@ export const Welcome = () => {
       {/* End Hero Section */}
       {/* Two Column Main Layout */}
       <div className="max-w-screen-xl mx-auto p-4 lg:px-8">
-        <div
-          className="m-auto max-w-[767px]"
-          style={{ display: isSectionHidden ? "none" : "block" }}
-        >
+        <div className={cn("m-auto max-w-[767px]", isSectionHidden ? "hidden" : "block")}>
           <h2 className="text-2xl font-bold">New and Notable</h2>
           <CardWithTopBorder className="">
             <p className="py-5 pl-6 pr-20">
