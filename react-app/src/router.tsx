@@ -21,7 +21,8 @@ export const router = createBrowserRouter([
     path: "/",
     element: <C.Layout />,
     children: [
-      { path: "/", index: true, element: <F.Welcome /> },
+      { path: "/", index: true, element: <F.WelcomeWrapper /> },
+      { path: "/login", element: <F.Login /> },
       { path: "/faq", element: <F.Faq /> },
       { path: "/faq/:id", element: <F.Faq /> },
       { path: "/webforms", element: <F.WebformsList /> },
@@ -129,6 +130,14 @@ export const router = createBrowserRouter([
             path: "/actions/:type/:authority/:id",
             element: <PostSubmissionWrapper />,
             loader: postSubmissionLoader,
+          },
+          {
+            path: "/support",
+            element: <F.SupportPage />,
+          },
+          {
+            path: "/support:id",
+            element: <F.SupportPage />,
           },
         ],
       },

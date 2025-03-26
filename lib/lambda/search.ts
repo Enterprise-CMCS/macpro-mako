@@ -2,17 +2,17 @@ import { APIGatewayEvent } from "aws-lambda";
 import { response } from "libs/handler-lib";
 import { getDomainAndNamespace } from "libs/utils";
 import { BaseIndex } from "shared-types/opensearch";
+import { ONEMAC_LEGACY_ORIGIN } from "shared-types/opensearch/main/transforms/legacy-transforms";
 import { validateEnvVariable } from "shared-utils";
 
 import { getStateFilter } from "../libs/api/auth/user";
 import { getAppkChildren } from "../libs/api/package";
-import * as os from "../libs/opensearch-lib";
+import { search } from "../libs/opensearch-lib";
 import { handleOpensearchError } from "./utils";
 
 // Handler function to search index
 export const getSearchData = async (event: APIGatewayEvent) => {
   validateEnvVariable("osDomain");
-
   if (!event.pathParameters || !event.pathParameters.index) {
     console.error(
       "event.pathParameters.index path parameter required, Event: ",
@@ -23,7 +23,6 @@ export const getSearchData = async (event: APIGatewayEvent) => {
       body: { message: "Index path parameter required" },
     });
   }
-
   const { domain, index } = getDomainAndNamespace(event.pathParameters.index as BaseIndex);
 
   try {
@@ -41,19 +40,26 @@ export const getSearchData = async (event: APIGatewayEvent) => {
     if (stateFilter) {
       query.query.bool.must.push(stateFilter);
     }
-
-    // Return OneMAC records and NOSOs (denoted with SEATool origin)
+    // Return OneMAC records and NOSOs (denoted with SEATool origin and only NOSO)
     query.query.bool.must.push({
-      terms: {
-        "origin.keyword": ["OneMAC", "SEATool"],
+      bool: {
+        should: [
+          { terms: { "origin.keyword": ["OneMAC", ONEMAC_LEGACY_ORIGIN] } },
+          {
+            bool: {
+              must: [
+                { term: { "origin.keyword": "SEATool" } },
+                { term: { "event.keyword": "NOSO" } },
+              ],
+            },
+          },
+        ],
       },
     });
 
     query.from = query.from || 0;
     query.size = query.size || 100;
-
-    const results = await os.search(domain, index, query);
-
+    const results = await search(domain, index, query);
     for (let i = 0; i < results?.hits?.hits?.length; i++) {
       if (results.hits.hits[i]._source?.appkParent) {
         const children = await getAppkChildren(results.hits.hits[i]._id);
