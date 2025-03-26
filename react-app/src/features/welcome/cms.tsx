@@ -8,7 +8,7 @@ export const CMSWelcome = () => {
       content: "Medicaid & CHIP Program System",
       body: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
       buttonText: "Go to MACPro System",
-      buttonLink: "https://example.com/macpro",
+      buttonLink: "https://macpro.cms.gov/suite",
     },
     {
       id: 2,
@@ -16,7 +16,7 @@ export const CMSWelcome = () => {
       content: "State Early Alert",
       body: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
       buttonText: "Go to SEA Tool",
-      buttonLink: "https://example.com/sea-tool",
+      buttonLink: "https://sea.cms.gov/",
     },
     {
       id: 3,
@@ -24,7 +24,7 @@ export const CMSWelcome = () => {
       content: "Waiver Management System",
       body: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
       buttonText: "Go to WMS",
-      buttonLink: "https://example.com/wms",
+      buttonLink: "https://wms-mmdl.cms.gov/WMS/faces/portal.jsp",
     },
     {
       id: 4,
@@ -32,7 +32,7 @@ export const CMSWelcome = () => {
       content: "Medicaid and CHIP eRegulations",
       body: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
       buttonText: "Go to eRegs",
-      buttonLink: "https://example.com/eregs",
+      buttonLink: "https://eregulations.cms.gov/",
     },
     {
       id: 5,
@@ -40,7 +40,7 @@ export const CMSWelcome = () => {
       content: "Subtitle for LaserFishe",
       body: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
       buttonText: "Go to Laserfische",
-      buttonLink: "https://example.com/laserfische",
+      buttonLink: "https://cmsrio.cms.local/laserfiche",
     },
     {
       id: 6,
@@ -48,7 +48,7 @@ export const CMSWelcome = () => {
       content: "Medicaid Model Data Lab",
       body: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
       buttonText: "Go to MMDL",
-      buttonLink: "https://example.com/mmdl",
+      buttonLink: "https://wms-mmdl.cms.gov/MMDL/faces/portal.jsp",
     },
   ];
 
