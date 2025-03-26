@@ -1,59 +1,51 @@
 {% if include.data %}
-  <!-- use the custom normalize_playwright filter to get the status, total number of tests, errors, and test statistics from the data -->
-  {% assign results = include.data | normalize_playwright %}
-  <!-- if the data was included, display the summary -->
-  <div class="test-report-container">
-    <div class="report-header">
-      <!-- if the run_id was included, display it in the header of the summary -->
-      {% if include.run_id %}
-        <!-- capture also creates strings with variables, create the url back to the run -->
-        {% capture run_link %}{{ site.github_url }}/actions/runs/{{ include.run_id }}{% endcapture %}
-        <!-- no relative_url necessary here because the link it outside of the app -->
-        <span class="report-run">Run Id: <a href="{{ run_link }}" target="_blank">{{ include.run_id }}</a></span>
-      {% else %}
-        <span class="report-run"></span>
-      {% endif %}
-      <!-- Liquid provides a helper method for formatting dates -->
-      <span class="report-time">Run At: {{ results.startTime | date: "%Y-%m-%d %H:%M %Z" }}</span>
-    </div>
-    <div class="report-body">
-      <!-- style the icon according to the report status and use the custom status_icon filter to return the correct svg -->
-      <span class="status-icon status-{{results.status}}">{{ results.status | status_icon }}</span>
-      <div class="results">
-        {% if results.status == "error" %}
-          <!-- if there are errors, there won't be any test statistics, so only display the errors -->
-          <div class="report-errors">
-          {% for error in results.errors %}
-            <!-- loop through the errors and display the messages -->
-            <div class="report-error">{{ error.message }}</div>
-          {% endfor %}
-          </div>
-        {% else %}
-        <!-- if there are no errors, display the test statistics -->
-        <div class="report-stats">
-          <div class="stat-item">
-            All <span class="stat-count">{{ results.total }}</span>
-          </div>
-          <div class="stat-item">
-            Passed <span class="stat-count">{{ results.expected }}</span>
-          </div>
-          <div class="stat-item">
-            Failed <span class="stat-count">{{ results.unexpected }}</span>
-          </div>
-          <div class="stat-item">
-            Flaky <span class="stat-count">{{ results.flaky }}</span>
-          </div>
-          <div class="stat-item">
-            Skipped <span class="stat-count">{{ results.skipped }}</span>
-          </div>
-        </div>
-        {% endif  %}
-        <!-- Liquid provides a helper method that will create the link relative to the baseurl set in _config.yml -->
-        <span class="report-link"><a href="{{ include.url | relative_url }}" target="_blank">View Full Report</a></span>
-      </div>
-    </div>
-  </div>
+	<!-- use the custom normalize_playwright filter to get the status, total number of tests, errors, and test statistics from the data -->
+	{% assign results = include.data | normalize_playwright %}
+	<!-- if the data was included, display the summary -->
+	<div class="@container flex flex-col mb-8">
+		<div class="mt-4 py-1 @sm:py-2 px-2 @sm:px-4 font-light text-[0.6rem] @sm:text-xs text-tertiary border border-outline border-b-0 rounded-t-md bg-highlight flex flex-row justify-between">
+			<!-- if the run_id was included, display it in the header of the summary -->
+			{% if include.run_id %}
+				<!-- capture also creates strings with variables, create the url back to the run -->
+				{% capture run_link %}{{ site.github_url }}/actions/runs/{{ include.run_id }}{% endcapture %}
+				<!-- no relative_url necessary here because the link it outside of the app -->
+				<span>Run Id: <a href="{{ run_link }}" target="_blank">{{ include.run_id }}</a></span>
+			{% else %}
+				<span></span>
+			{% endif %}
+			<!-- Liquid provides a helper method for formatting dates -->
+			<span>Run At: {{ results.startTime | date: "%Y-%m-%d %H:%M %Z" }}</span>
+		</div>
+		<div class="pt-2 @sm:pt-4 pb-1 @sm:pb-2 text-xs @sm:text-sm leading-normal border border-outline rounded-b-md flex items-center justify-around">
+			<!-- style the icon according to the report status and use the custom status_icon filter to return the correct svg -->
+			<span class="w-10 @sm:w-12 h-10 @sm:h-12 {{results.status}}">{{ results.status | status_icon }}</span>
+			<div class="py-1 @md:py-2 w-2/3 @sm:w-4/5">
+				{% if results.status == "warn" %}
+					<!-- if there are errors, there won't be any test statistics, so only display the errors -->
+					<div class="py-1 @md:py-2 px-0 font-mono flex flex-col gap-4">
+					{% for error in results.errors %}
+						<!-- loop through the errors and display the messages -->
+						<div class="py-1 @md:py-2 px-2 @md:px-4 border rounded-md border-outline flex flex-wrap">{{ error.message }}</div>
+					{% endfor %}
+					</div>
+				{% else %}
+					<!-- if there are no errors, display the test statistics -->
+					<div class="min-w-full font-medium leading-8 grid grid-cols-1 grid-rows-5 @lg:grid-cols-5 @lg:grid-rows-1 justify-center">
+						{% include playwright-stat.html label="All" value=results.total %}
+						{% include playwright-stat.html label="Passed" value=results.expected %}
+						{% include playwright-stat.html label="Failed" value=results.unexpected %}
+						{% include playwright-stat.html label="Flaky" value=results.flaky %}
+						{% include playwright-stat.html label="Skipped" value=results.skipped %}
+					</div>
+				{% endif %}
+
+				<!-- Liquid provides a helper method that will create the link relative to the baseurl set in _config.yml -->
+				<span class="pt-1 @sm:pt-2 float-right min-h-4 text-xs @sm:text-sm"><a href="{{ include.url | relative_url }}" target="_blank">View Full Report</a></span>
+			</div>
+		</div>
+	</div>
 {% else %}
-  <!-- if the data was not included, display a message that there is nothing to display -->
-  <div>There is currently no report for {{ include.branch }}</div>
+	<!-- if the data was not included, display a message that there is nothing to display -->
+
+	<div>There is currently no report for {{ include.branch }}</div>
 {% endif %}

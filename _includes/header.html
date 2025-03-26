@@ -1,0 +1,40 @@
+<header class="border-t-4 border-t-tertiary border-b border-b-outline" role="banner">
+
+  <div class="wrapper relative flex flex-row justify-between items-center">
+    {%- assign default_paths = site.pages | map: "path" -%}
+    {%- assign page_paths = site.nav_pages | default: default_paths -%}
+    <a
+      class="text-secondary hover:text-primary text-2xl/14 font-light tracking-tighter"
+      rel="author"
+      href="{{ "/" | relative_url }}">{{ site.title | escape }}</a>
+
+    {%- if page_paths -%}
+      <nav class="absolute top-2 right-4 border border-outline rounded-md bg-light-primary md:relative md:top-auto md:right-auto md:border-none">
+        <input
+          type="checkbox"
+          id="nav-trigger"
+          class="hidden peer" />
+        <label for="nav-trigger" class="w-9 h-9 z-2 float-right flex justify-center items-center cursor-pointer md:hidden">
+          <span class="w-5 h-4 leading-0 md:hidden">
+            <svg
+              viewBox="0 0 18 15"
+              width="18px"
+              height="15px"
+              class="fill-secondary">
+              <path d="M18,1.484c0,0.82-0.665,1.484-1.484,1.484H1.484C0.665,2.969,0,2.304,0,1.484l0,0C0,0.665,0.665,0,1.484,0 h15.032C17.335,0,18,0.665,18,1.484L18,1.484z M18,7.516C18,8.335,17.335,9,16.516,9H1.484C0.665,9,0,8.335,0,7.516l0,0 c0-0.82,0.665-1.484,1.484-1.484h15.032C17.335,6.031,18,6.696,18,7.516L18,7.516z M18,13.516C18,14.335,17.335,15,16.516,15H1.484 C0.665,15,0,14.335,0,13.516l0,0c0-0.82,0.665-1.483,1.484-1.483h15.032C17.335,12.031,18,12.695,18,13.516L18,13.516z" />
+            </svg>
+          </span>
+        </label>
+
+        <div class="hidden clear-both peer-checked:flex flex-col items-end px-4 pb-4 gap-2 md:flex md:flex-row md:p-0 md:gap-5 md:justify-end md:items-center">
+          {%- for path in page_paths -%}
+            {%- assign my_page = site.pages | where: "path", path | first -%}
+            {%- if my_page.title -%}
+              <a class="text-primary cursor-pointer leading-[24px]" href="{{ my_page.url | relative_url }}">{{ my_page.title | escape }}</a>
+            {%- endif -%}
+          {%- endfor -%}
+        </div>
+      </nav>
+    {%- endif -%}
+  </div>
+</header>

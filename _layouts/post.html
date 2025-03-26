@@ -1,0 +1,25 @@
+---
+layout: default
+---
+<article>
+
+  <header class="mb-8">
+    <h1 class="tracking-[-1px] leading-none">{{ page.title | escape }}</h1>
+    
+    <p class="text-sm text-tertiary">
+      <time datetime="{{ page.date | date_to_xmlschema }}">
+        {%- assign date_format = site.minima.date_format | default: "%b %-d, %Y" -%}
+        {{ page.date | date: date_format }}
+      </time>
+      {%- if page.author -%}
+        • <span>{{ page.author }}</span>
+      {%- endif -%}
+    </p>
+  </header>
+
+  <div class="mb-8">
+    {{ content }}
+  </div>
+
+  <a class="u-url" href="{{ page.url | relative_url }}" hidden></a>
+</article>

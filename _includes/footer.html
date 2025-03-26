@@ -1,0 +1,35 @@
+<footer class="border-t border-outline">
+  <data href="{{ "/" | relative_url }}"></data>
+
+  <div class="wrapper my-4 sm:grid sm:grid-rows-3">
+
+    <h2 class="text-lg sm:row-start-1">{{ site.title | escape }}</h2>
+
+    <div class="text-sm text-secondary sm:row-start-2 sm:row-span-2 sm:grid sm:grid-cols-4">
+      <div class="sm:col-start-1">
+        <ul class="mb-4 ml-0 list-none sm:m-0">
+          <li>
+            {%- if site.author -%}
+              {{ site.author | escape }}
+            {%- else -%}
+              {{ site.title | escape }}
+            {%- endif -%}
+          </li>
+          {%- if site.email -%}
+            <li>
+              <a href="mailto:{{ site.email }}">{{ site.email }}</a>
+            </li>
+          {%- endif -%}
+        </ul>
+      </div>
+
+      <div class="sm:col-start-2"></div>
+
+      <div class="sm:col-start-3 sm:col-span-2">
+        <p>{{- site.description | escape -}}</p>
+      </div>
+    </div>
+
+  </div>
+
+</footer>

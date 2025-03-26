@@ -9,42 +9,24 @@ url: "https://enterprise-cmcs.github.io/" # the base hostname & protocol for you
 github_url: "https://github.com/Enterprise-CMCS/macpro-mako"
 
 # Build settings
-theme: minima
+# theme:
+# plugins:
 
 # If you want to link only specific pages in your header, use this and add the path to the pages
 # in order as they should show up.
-header_pages:
+nav_pages:
   - coverage.markdown
   - playwright-reports.markdown
+  - releases.markdown
 
 defaults:
-  -
-    scope:
-      path: ""
-      type: "pages"
-    values:
-      layout: "page"
-  -
-    scope:
-      path: "index.markdown"
-    values:
-      custom_css: [onemac,playwright,coverage]
-  -
-    scope:
-      path: "coverage.markdown"
-    values:
-      custom_css: [onemac,coverage]
-  -
-    scope:
-      path: "playwright-*.markdown"
-      type: "pages"
-    values:
-      custom_css: [onemac,playwright]
-  -
-    scope:
+  - scope:
       path: "playwright-reports/branches/*"
       type: "pages"
     values:
       layout: "playwright-branch"
-      custom_css: [onemac,playwright]
-
+  - scope:
+      path: "_posts/releases/*"
+      type: "posts"
+    values:
+      layout: "release-note"

@@ -1,12 +1,11 @@
 module Jekyll
-
   class BranchIndex < Page
     def initialize(site, base, dir, branch)
       @site = site
       @base = base
       @dir = dir
       @name = 'index.html'
-
+			
       self.process(@name)
       self.read_yaml(File.join(base, '_layouts'), 'playwright-branch.html')
       self.data['branch'] = branch
@@ -26,5 +25,4 @@ module Jekyll
       end
     end
   end
-
 end

@@ -1,0 +1,29 @@
+<article class="@container border border-outline rounded-sm p-4 my-8">
+  <header class="block mb-8">
+    <a class="text-primary font-semibold leading-14" href="{{ include.post.html_url }}">
+      <h1 class="text-3xl md:text-4xl font-semibold leading-14">{{ include.post.tag | escape }}</h1>
+    </a>
+    <div class="text-sm text-tertiary border-b border-outline pb-6 leading-normal break-words flex flex-row flex-wrap items-end">
+      <div class="mr-6 mb-2">
+        {% if include.post.author_avatar %}
+          <img class="h-5 w-5 rounded-sm inline-block box-border leading-none overflow-hidden align-middle" src="{{ include.post.author_avatar }}" alt="@{{ include.post.author }}" />
+        {% endif %}
+        {% if include.post.author_link %}
+          <a class="decoration-inherit text-current font-bold" href="{{ include.post.author_link }}">{{ include.post.author }}</a>
+        {% else %}
+          <span class="font-bold">{{ include.post.author }}</span>
+        {% endif %}
+        released this
+        {%- assign date_format = site.minima.date_format | default: "%b %-d, %Y" -%}
+        {% assign pdate = include.post.published_at | date_to_xmlschema %}
+        <time datetime="{{ pdate }}">
+          {{ pdate | date: date_format }}
+        </time>
+      </div>
+    </div>
+  </header>
+
+  <div class="gh-markdown-content mb-8">
+    {{ include.content }}
+  </div>
+</article>

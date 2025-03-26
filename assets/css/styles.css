@@ -1,0 +1,292 @@
+---
+# This yaml frontmatter is required for jekyll to process the file
+---
+
+@import "tailwindcss";
+
+@layer utilities {
+}
+
+@theme {
+  --color-primary: var(--color-gray-900);
+  --color-secondary: var(--color-gray-700);
+  --color-tertiary: var(--color-gray-500);
+
+  --color-light-primary: #fdfdfd;
+  --color-highlight: var(--color-gray-100);
+  --color-outline: var(--color-gray-300);
+
+  --breakpoint-sm: 40rem; /* 640px */
+  --breakpoint-md: 48rem; /* 768px */
+  --breakpoint-lg: 64rem; /* 1024px */
+  --breakpoint-xl: 80rem; /* 1280px */
+  --breakpoint-2xl: 96rem; /* 1536px */
+
+  --font-body:
+    ui-sans-serif, system-ui, sans-serif, Helvetica, Roboto,
+    "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+}
+
+@layer components {
+  body {
+    color: var(--color-primary);
+    background-color: var(--color-light-primary);
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+  }
+
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6,
+  p,
+  blockquote,
+  pre,
+  ul,
+  ol,
+  dl,
+  figure {
+    margin-bottom: 15px;
+  }
+
+  main {
+    display: block;
+  }
+
+  img {
+    max-width: 100%;
+    vertical-align: middle;
+  }
+
+  a {
+    color: var(--color-sky-700);
+    text-decoration: none;
+  }
+
+  a:visited {
+    color: var(--color-sky-900);
+    text-decoration: none;
+  }
+
+  a:hover {
+    text-decoration: underline;
+  }
+
+  h1 {
+    font-size: 36px;
+  }
+
+  h2 {
+    font-size: 28px;
+  }
+
+  h3 {
+    font-size: 22px;
+  }
+
+  h4 {
+    font-size: 18px;
+  }
+
+  @media (width >= 40rem) {
+    h1 {
+      font-size: 42px;
+    }
+
+    h2 {
+      font-size: 32px;
+    }
+
+    h3 {
+      font-size: 26px;
+    }
+
+    h4 {
+      font-size: 20px;
+    }
+  }
+
+  table {
+    margin-bottom: 30px;
+    width: 100%;
+    text-align: left;
+    color: var(--color-primary);
+    border-collapse: collapse;
+    border: 1px solid var(--color-outline);
+  }
+  table tr:nth-child(even) {
+    background-color: var(--color-highlight);
+  }
+  table th,
+  table td {
+    padding: 9.999999999px 15px;
+  }
+  table th {
+    background-color: var(--color-highlight);
+    border: 1px solid var(--color-outline);
+    border-bottom-color: var(--color-outline);
+  }
+  table td {
+    border: 1px solid var(--color-outline);
+  }
+
+  ul {
+    list-style-type: disc;
+    margin-left: 30px;
+  }
+
+  li {
+    display: list-item;
+  }
+
+  blockquote {
+    font-size: 1em;
+    font-weight: normal;
+    font-style: normal;
+    border-left-color: var(--color-outline);
+    border-left-style: solid;
+    border-left-width: 4px;
+    box-sizing: border-box;
+    color: var(--color-secondary);
+    display: block;
+    margin-bottom: 1em;
+    overflow-wrap: break-word;
+    padding: 0 1em;
+  }
+
+  p > code {
+    padding: 0.2em 0.4em;
+    margin: 0;
+    font-size: 0.85em;
+    white-space: break-spaces;
+    background-color: var(--color-highlight);
+    border: 1px solid var(--color-highlight);
+    border-radius: 6px;
+  }
+
+  pre {
+    padding: 1em;
+    overflow: auto;
+    font-size: 0.85em;
+    line-height: 1.45em;
+    background-color: var(--color-highlight);
+    border: 1px solid var(--color-highlight);
+    border-radius: 6px;
+    word-wrap: normal;
+    margin-top: 0;
+    margin-bottom: 1rem;
+    box-sizing: border-box;
+
+    > code {
+      display: inline;
+      padding: 0;
+      margin: 0;
+      overflow: visible;
+      line-height: inherit;
+      word-wrap: normal;
+      word-break: normal;
+      white-space: pre;
+      border: 0;
+      background-color: transparent;
+    }
+  }
+
+  .wrapper {
+    max-width: 30rem;
+    margin: 0 auto;
+    padding: 0 1rem;
+
+    @media (width >= 26rem) {
+      max-width: 24rem; /* 384px, container @sm */
+    }
+    @media (width >= 40rem) {
+      max-width: 36rem; /* 576px, container @xl */
+    }
+    @media (width >= 48rem) {
+      max-width: 42rem; /* 672px, container @2xl */
+    }
+    @media (width >= 64rem) {
+      max-width: 56rem; /* 896px, container @4xl */
+      padding: 0 2rem;
+    }
+  }
+
+  .pass {
+    color: var(--color-green-700);
+  }
+
+  .fail {
+    color: var(--color-red-600);
+  }
+
+  .warn {
+    color: var(--color-amber-400);
+  }
+
+  .gh-markdown-content {
+    width: 100%;
+    overflow-x: auto;
+
+    p,
+    li {
+      word-wrap: break-word;
+      word-break: break-word;
+      overflow-wrap: break-word;
+    }
+
+    table {
+      overflow: auto;
+    }
+
+    h1,
+    h2,
+    h3,
+    h4,
+    h5,
+    h6 {
+      margin-top: 1.5rem;
+      margin-bottom: 1rem;
+      font-weight: 600;
+    }
+
+    h1 {
+      font-size: 2rem;
+      line-height: 2.5rem;
+      padding-bottom: 0.6rem;
+      border-bottom: 1px solid var(--color-outline);
+    }
+
+    h2 {
+      font-size: 1.5rem;
+      line-height: 1.25rem;
+      padding-bottom: 0.45rem;
+      border-bottom: 1px solid var(--color-outline);
+    }
+
+    h3 {
+      font-size: 1.25rem;
+      line-height: 1.25rem;
+    }
+
+    h4 {
+      font-size: 1rem;
+      line-height: 1.25rem;
+    }
+
+    h5 {
+      font-size: 0.875rem;
+      line-height: 1.25rem;
+    }
+
+    h6 {
+      font-size: 0.85rem;
+      line-height: 1.25rem;
+      color: var(--color-secondary);
+    }
+  }
+}
+
+@plugin "@tailwindcss/typography";

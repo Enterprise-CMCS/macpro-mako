@@ -5,8 +5,8 @@
     {% assign branch_name = branch[0] %}
     <!-- capture creates a link using the branch_name -->
     {% capture branch_link %}/playwright-reports/branches/{{branch_name}}{% endcapture %}
-    <div class="branch-header">
-      <h3>{{ branch_name }}</h3>
+    <div class="mt-8 flex flex-row justify-between items-end">
+      <h3 class="mb-0">{{ branch_name }}</h3>
       <!-- Liquid provides a helper method that will create the link relative to the baseurl set in _config.yml -->
       <a href="{{ branch_link | relative_url }}">View Previous Runs</a>
     </div>
