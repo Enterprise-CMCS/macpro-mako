@@ -86,6 +86,8 @@ export type BaseIndex =
   | "types"
   | "subtypes"
   | "legacyinsights"
-  | "cpocs";
+  | "cpocs"
+  | "users"
+  | "roles";
 
 export type Index = `${string}${BaseIndex}`;

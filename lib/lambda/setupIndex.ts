@@ -45,6 +45,14 @@ export const handler: Handler = async (event, __, callback) => {
       osDomain: event.osDomain,
       index: `${event.indexNamespace}legacyinsights`,
     });
+    await manageIndexResource({
+      osDomain: event.osDomain,
+      index: `${event.indexNamespace}users`,
+    });
+    await manageIndexResource({
+      osDomain: event.osDomain,
+      index: `${event.indexNamespace}roles`,
+    });
   } catch (error: any) {
     response.statusCode = 500;
     errorResponse = error;

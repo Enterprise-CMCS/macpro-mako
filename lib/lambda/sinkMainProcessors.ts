@@ -160,9 +160,6 @@ const getOneMacRecordWithAllProperties = (
     } else {
       console.log("USER RECORD INVALID BECAUSE: ", userParseResult.error, JSON.stringify(record));
     }
-    // determine which type of user record
-    // onemac user v1 or v0
-    // or if it is a role request
   }
 
   if (isRecordALegacyUser(record, kafkaSource)) {
