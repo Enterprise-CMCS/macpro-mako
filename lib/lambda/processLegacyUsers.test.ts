@@ -1,20 +1,31 @@
-import { onemacLegacyUser } from "shared-types/events/legacy-user";
+import {
+  onemacLegacyUserInformation,
+  onemacLegacyUserRoleRequest,
+} from "shared-types/events/legacy-user";
 import { describe, expect, it } from "vitest";
 
 ///@ts-ignore
 import seedJson from "./legacySeedData";
-import { isRecordALegacyUser } from "./sinkMainProcessors";
+import { isRecordALegacyUser, isRecordALegacyUserRoleRequest } from "./sinkMainProcessors";
 
 describe("test user data", () => {
   it("is valid cmsreviewer", () => {
-    const cmsUsers = seedJson.filter((record: any) =>
-      isRecordALegacyUser(record, "onemac"),
+    const cmsUserRoleRequests = seedJson.filter((record: any) =>
+      isRecordALegacyUserRoleRequest(record, "onemac"),
     ) as Array<unknown>;
+    const cmsUsers = seedJson.filter((record: any) => isRecordALegacyUser(record, "onemac"));
 
-    cmsUsers.forEach((user) => {
-      const result = onemacLegacyUser.safeParse(user);
+    cmsUserRoleRequests.forEach((user) => {
+      const result = onemacLegacyUserRoleRequest.safeParse(user);
       if (result.success === false) {
         console.log("the following record failed to parse", user.sk);
+      }
+    });
+
+    cmsUsers.forEach((user: any) => {
+      const result = onemacLegacyUserInformation.safeParse(user);
+      if (result.success === false) {
+        console.log("the following record failed to parse", user.sk, result.error);
       }
     });
 

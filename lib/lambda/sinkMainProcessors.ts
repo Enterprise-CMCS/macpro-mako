@@ -1,7 +1,10 @@
 import { isBefore } from "date-fns";
 import { bulkUpdateDataWrapper, ErrorType, getItems, logError } from "libs";
 import { KafkaRecord, opensearch, SeatoolRecordWithUpdatedDate } from "shared-types";
-import { onemacLegacyUser } from "shared-types/events/legacy-user";
+import {
+  onemacLegacyUserInformation,
+  onemacLegacyUserRoleRequest,
+} from "shared-types/events/legacy-user";
 import { Document, legacyTransforms, transforms } from "shared-types/opensearch/main";
 import { decodeBase64WithUtf8 } from "shared-utils";
 
@@ -38,7 +41,7 @@ type ParsedLegacyRecordFromKafka = Partial<{
   GSI1pk: string;
 }>;
 
-export const isRecordALegacyUser = (
+export const isRecordALegacyUserRoleRequest = (
   record: ParsedLegacyRecordFromKafka,
   kafkaSource: string,
 ): record is {
@@ -54,6 +57,17 @@ export const isRecordALegacyUser = (
     "helpdesk",
     "statesubmitter",
   ].some((role) => record!.sk!.includes(role)) &&
+  kafkaSource === "onemac";
+
+export const isRecordALegacyUser = (
+  record: ParsedLegacyRecordFromKafka,
+  kafkaSource: string,
+): record is {
+  componentType: keyof typeof legacyTransforms;
+} =>
+  typeof record === "object" &&
+  record.sk !== undefined &&
+  record.sk === "ContactInfo" &&
   kafkaSource === "onemac";
 
 export const isRecordALegacyOneMacRecord = (
@@ -138,8 +152,8 @@ const getOneMacRecordWithAllProperties = (
     return oneMacRecord;
   }
 
-  if (isRecordALegacyUser(record, kafkaSource)) {
-    const userParseResult = onemacLegacyUser.safeParse(record);
+  if (isRecordALegacyUserRoleRequest(record, kafkaSource)) {
+    const userParseResult = onemacLegacyUserRoleRequest.safeParse(record);
 
     if (userParseResult.success === true) {
       console.log("USER RECORD: ", JSON.stringify(record));
@@ -149,6 +163,16 @@ const getOneMacRecordWithAllProperties = (
     // determine which type of user record
     // onemac user v1 or v0
     // or if it is a role request
+  }
+
+  if (isRecordALegacyUser(record, kafkaSource)) {
+    const userParseResult = onemacLegacyUserInformation.safeParse(record);
+
+    if (userParseResult.success === true) {
+      console.log("USER RECORD: ", JSON.stringify(record));
+    } else {
+      console.log("USER RECORD INVALID BECAUSE: ", userParseResult.error, JSON.stringify(record));
+    }
   }
 
   if (isRecordALegacyOneMacRecord(record, kafkaSource)) {

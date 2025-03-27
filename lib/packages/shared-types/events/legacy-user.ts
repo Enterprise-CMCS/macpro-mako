@@ -11,11 +11,18 @@ const userRoles = z.enum([
 const userStatus = z.enum(["active", "pending", "revoked", "denied"]);
 const skPattern = /^v[0-3]#[a-z]+#(N\/A|[A-Z]{2})$/;
 
-export const onemacLegacyUser = z.object({
+export const onemacLegacyUserRoleRequest = z.object({
   sk: z.string().regex(skPattern),
   status: userStatus,
   territory: z.string(),
   role: userRoles,
   doneByEmail: z.string(),
   doneByName: z.string(),
+});
+
+export const onemacLegacyUserInformation = z.object({
+  sk: z.literal("ContactInfo"),
+  email: z.string().email(),
+  group: z.string().optional(),
+  division: z.string().optional(),
 });
