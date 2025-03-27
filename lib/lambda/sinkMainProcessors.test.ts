@@ -531,12 +531,7 @@ describe("insertOneMacRecordsFromKafkaIntoMako", () => {
     ["waivernew", "1915(b)", {}, { actionType: "New" }],
     ["waiverrenewal", "1915(b)", {}, { actionType: "Renew" }],
     ["waiveramendment", "1915(b)", {}, { actionType: "Amend" }],
-    [
-      "waiverappk",
-      "1915(c)",
-      { title: TEST_TITLE },
-      { actionType: "Amendment", title: TEST_TITLE },
-    ],
+    ["waiverappk", "1915(c)", { title: TEST_TITLE }, { actionType: "Amend", title: TEST_TITLE }],
     // For waiverextension types, add a waiverNumber and override currentStatus.
     [
       "waiverextension",
