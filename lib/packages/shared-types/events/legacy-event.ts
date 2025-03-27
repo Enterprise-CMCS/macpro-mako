@@ -31,7 +31,7 @@ export const legacyEventSchema = legacySharedSchema
     const lastEventTimestampDate = new Date(data.lastEventTimestamp);
     const submissionTimestampDate = new Date(data.submissionTimestamp);
     const isRaiResponseWithdrawEnabled = data.subStatus === "Withdraw Formal RAI Response Enabled";
-
+    console.log(data, "THIS IS THE LGEACY DATA???");
     return {
       ...data,
       proposedEffectiveDate: null, // blank out the value that will be transformed, we handle it below

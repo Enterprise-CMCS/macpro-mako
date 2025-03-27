@@ -4,6 +4,6 @@ import { z } from "zod";
 export const legacySharedSchema = z.object({
   state: z.string().nullable().optional(),
   additionalInformation: z.string().nullable().default(null),
-  submitterName: z.string().nullable(),
-  submitterEmail: z.string().nullable(),
+  submitterName: z.string(),
+  submitterEmail: z.string(),
 });
