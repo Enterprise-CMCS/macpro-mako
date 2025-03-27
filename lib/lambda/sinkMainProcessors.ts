@@ -37,6 +37,19 @@ type ParsedLegacyRecordFromKafka = Partial<{
   GSI1pk: string;
 }>;
 
+export const isRecordALegacyUser = (
+  record: ParsedLegacyRecordFromKafka,
+  kafkaSource: string,
+): record is {
+  componentType: keyof typeof legacyTransforms;
+} =>
+  typeof record === "object" &&
+  record?.componentType !== undefined &&
+  record.componentType in legacyTransforms &&
+  record.sk !== undefined &&
+  record.sk.includes("defaultcmsuser") &&
+  kafkaSource === "onemac";
+
 export const isRecordALegacyOneMacRecord = (
   record: ParsedLegacyRecordFromKafka,
   kafkaSource: string,
@@ -117,6 +130,13 @@ const getOneMacRecordWithAllProperties = (
     console.log(`event after transformation: ${JSON.stringify(oneMacRecord, null, 2)}`);
 
     return oneMacRecord;
+  }
+
+  if (isRecordALegacyUser(record, kafkaSource)) {
+    console.log("USER RECORD: ", JSON.stringify(record));
+    // determine which type of user record
+    // onemac user v1 or v0
+    // or if it is a role request
   }
 
   if (isRecordALegacyOneMacRecord(record, kafkaSource)) {
