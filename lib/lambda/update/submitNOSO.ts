@@ -106,6 +106,7 @@ export const handler = async (event: APIGatewayEvent) => {
       }
     }
 
+    item.id = item.id.toUpperCase();
     const { stateStatus, cmsStatus } = getStatus(status);
     return await sendSubmitMessage({ ...item, stateStatus, cmsStatus });
   } catch (err) {
