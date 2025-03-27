@@ -528,9 +528,9 @@ describe("insertOneMacRecordsFromKafkaIntoMako", () => {
   it.each([
     ["medicaidspa", "Medicaid SPA", {}, {}],
     ["chipspa", "CHIP SPA", {}, {}],
-    ["waivernew", "1915(b)", {}, { actionType: "Initial" }],
-    ["waiverrenewal", "1915(b)", {}, { actionType: "Renewal" }],
-    ["waiveramendment", "1915(b)", {}, { actionType: "Amendment" }],
+    ["waivernew", "1915(b)", {}, { actionType: "New" }],
+    ["waiverrenewal", "1915(b)", {}, { actionType: "Renew" }],
+    ["waiveramendment", "1915(b)", {}, { actionType: "Amend" }],
     [
       "waiverappk",
       "1915(c)",
