@@ -11,8 +11,13 @@
       <a href="{{ branch_link | relative_url }}">View Previous Runs</a>
     </div>
 
-    <!-- use the custom key_list filter to get all of the run_ids in the branch, then reverse the list and get the first one -->
-    {% assign latest_run_id = site.data.playwright-reports.branches[branch_name] | key_list | reverse | first %}
+    <!-- get all of the run_ids in the branch, then reverse the list and get the first one -->
+    {% assign runs = "" | split: "," %}
+    {% for run in site.data.playwright-reports.branches[branch_name] %}
+      {% assign runs = runs | push: run[0] %}
+    {% endfor %}
+
+    {% assign latest_run_id = runs | reverse | first %}
     {% assign data = site.data.playwright-reports.branches[branch_name][latest_run_id] %}
     <!-- capture creates a link to the actual report file-->
     {% capture report_link %}/playwright-reports/branches/{{branch_name}}/{{latest_run_id}}.html{% endcapture %}

@@ -14,8 +14,17 @@
             <!-- Liquid provides a helper method to capitalize text -->
             {{ name | capitalize }}
           </div>
+          {%- capture status -%}
+            {%- if values.pct >= site.coverage.pass.[name] -%}
+              text-pass
+            {%- elsif values.pct > site.coverage.fail.[name] -%}
+              text-warn
+            {%- else -%}
+              text-fail
+            {%- endif -%}
+          {%- endcapture -%}
           <!-- use the custom coverage_status filter with the stat name to get the correct styling for the percent -->
-          <div class="font-bold text-xl @sm:text-2xl @md:text-3xl @lg:text-4xl {{ values.pct | coverage_status: name }}">
+          <div class="font-bold text-xl @sm:text-2xl @md:text-3xl @lg:text-4xl {{ status }}">
             <!-- Liquid provides a helper method for rounding floats to a number -->
             {{ values.pct | round: 1 }}%
           </div>
@@ -28,7 +37,7 @@
   </div>
   <div class="flex justify-end mt-4 min-h-4">
     <!-- Liquid provides a helper method that will create the link relative to the baseurl set in _config.yml -->
-    <a href="{{ '/coverage' | relative_url }}" target="_blank">View Full Report</a>
+    <a href="{{ "/coverage" | relative_url }}" target="_blank">View Full Report</a>
   </div>
 {% else %}
   <!-- if the total was not included, display a message that there is nothing to display -->

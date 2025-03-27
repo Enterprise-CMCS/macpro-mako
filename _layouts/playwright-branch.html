@@ -2,8 +2,13 @@
 layout: page
 ---
 
-<!-- use the custom key_list filter to get the run ids for the branch and sort them by newest to oldest -->
-{% assign run_ids = site.data.playwright-reports.branches[page.branch] | key_list | reverse %}
+<!-- get the run ids for the branch and sort them by newest to oldest -->
+{% assign unsorted_runs = "" | split: "," %}
+{% for run in site.data.playwright-reports.branches[page.branch] %}
+  {% assign unsorted_runs = unsorted_runs | push: run[0] %}
+{% endfor %}
+
+{% assign run_ids = unsorted_runs | reverse %}
 {% for run_id in run_ids %}
   <!-- loop through the run ids -->
   {% assign data = site.data.playwright-reports.branches[page.branch][run_id] %}

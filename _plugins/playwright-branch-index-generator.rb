@@ -5,10 +5,15 @@ module Jekyll
       @base = base
       @dir = dir
       @name = 'index.html'
-			
-      self.process(@name)
-      self.read_yaml(File.join(base, '_layouts'), 'playwright-branch.html')
-      self.data['branch'] = branch
+
+      process(@name)
+
+      @data = {
+        'layout' => 'playwright-branch',
+        'title' => branch,
+        'branch' => branch
+      }
+
     end
   end
 

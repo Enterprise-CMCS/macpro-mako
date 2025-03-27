@@ -1,7 +1,7 @@
 {% if include.data %}
-	<!-- use the custom normalize_playwright filter to get the status, total number of tests, errors, and test statistics from the data -->
-	{% assign results = include.data | normalize_playwright %}
 	<!-- if the data was included, display the summary -->
+	{% assign results = include.data %}
+	{% assign total = results.stats.expected + results.stats.unexpected + results.stats.skipped + results.stats.flaky %}
 	<div class="@container flex flex-col mb-8">
 		<div class="mt-4 py-1 @sm:py-2 px-2 @sm:px-4 font-light text-[0.6rem] @sm:text-xs text-tertiary border border-outline border-b-0 rounded-t-md bg-highlight flex flex-row justify-between">
 			<!-- if the run_id was included, display it in the header of the summary -->
@@ -14,13 +14,21 @@
 				<span></span>
 			{% endif %}
 			<!-- Liquid provides a helper method for formatting dates -->
-			<span>Run At: {{ results.startTime | date: "%Y-%m-%d %H:%M %Z" }}</span>
+			<span>Run At: {{ results.stats.startTime | date: "%Y-%m-%d %H:%M %Z" }}</span>
 		</div>
 		<div class="pt-2 @sm:pt-4 pb-1 @sm:pb-2 text-xs @sm:text-sm leading-normal border border-outline rounded-b-md flex items-center justify-around">
-			<!-- style the icon according to the report status and use the custom status_icon filter to return the correct svg -->
-			<span class="w-10 @sm:w-12 h-10 @sm:h-12 {{results.status}}">{{ results.status | status_icon }}</span>
+			<!-- style the icon according to the report status and use the correct svg -->
+			<span class="w-10 @sm:w-12 h-10 @sm:h-12">
+				{% if results.stats.unexpected > 0 %}
+					<svg aria-hidden="true" class="fill-fail" height="100%" width="100%" viewBox="0 0 16 16" version="1.1"><path fillRule="evenodd" d="M3.72 3.72a.75.75 0 011.06 0L8 6.94l3.22-3.22a.75.75 0 111.06 1.06L9.06 8l3.22 3.22a.75.75 0 11-1.06 1.06L8 9.06l-3.22 3.22a.75.75 0 01-1.06-1.06L6.94 8 3.72 4.78a.75.75 0 010-1.06z"></path></svg>
+				{% elsif results.errors.size == 0 %}
+					<svg aria-hidden="true" class="fill-pass" height="100%" width="100%" viewBox="0 0 16 16" version="1.1"><path fillRule="evenodd" d="M13.78 4.22a.75.75 0 010 1.06l-7.25 7.25a.75.75 0 01-1.06 0L2.22 9.28a.75.75 0 011.06-1.06L6 10.94l6.72-6.72a.75.75 0 011.06 0z"></path></svg>
+				{% else %}
+					<svg aria-hidden="true" class="fill-warn" height="100%" width="100%" viewBox="0 0 16 16" version="1.1"><path fillRule="evenodd" d="M8.22 1.754a.25.25 0 00-.44 0L1.698 13.132a.25.25 0 00.22.368h12.164a.25.25 0 00.22-.368L8.22 1.754zm-1.763-.707c.659-1.234 2.427-1.234 3.086 0l6.082 11.378A1.75 1.75 0 0114.082 15H1.918a1.75 1.75 0 01-1.543-2.575L6.457 1.047zM9 11a1 1 0 11-2 0 1 1 0 012 0zm-.25-5.25a.75.75 0 00-1.5 0v2.5a.75.75 0 001.5 0v-2.5z"></path></svg>
+				{% endif %}
+			</span>
 			<div class="py-1 @md:py-2 w-2/3 @sm:w-4/5">
-				{% if results.status == "warn" %}
+				{% if status == "warn" %}
 					<!-- if there are errors, there won't be any test statistics, so only display the errors -->
 					<div class="py-1 @md:py-2 px-0 font-mono flex flex-col gap-4">
 					{% for error in results.errors %}
@@ -31,11 +39,11 @@
 				{% else %}
 					<!-- if there are no errors, display the test statistics -->
 					<div class="min-w-full font-medium leading-8 grid grid-cols-1 grid-rows-5 @lg:grid-cols-5 @lg:grid-rows-1 justify-center">
-						{% include playwright-stat.html label="All" value=results.total %}
-						{% include playwright-stat.html label="Passed" value=results.expected %}
-						{% include playwright-stat.html label="Failed" value=results.unexpected %}
-						{% include playwright-stat.html label="Flaky" value=results.flaky %}
-						{% include playwright-stat.html label="Skipped" value=results.skipped %}
+						{% include playwright-stat.html label="All" value=total %}
+						{% include playwright-stat.html label="Passed" value=results.stats.expected %}
+						{% include playwright-stat.html label="Failed" value=results.stats.unexpected %}
+						{% include playwright-stat.html label="Flaky" value=results.stats.flaky %}
+						{% include playwright-stat.html label="Skipped" value=results.stats.skipped %}
 					</div>
 				{% endif %}
 
