@@ -139,6 +139,7 @@ const processAndIndex = async ({
         // This is a onemac legacy event
         record.event = "legacy-event";
         record.origin = "onemac";
+        console.log("WHAT DOES THE RECORD LOOK LIKE", record);
       }
 
       // If the event is a supported event, transform and push to docs array for indexing
