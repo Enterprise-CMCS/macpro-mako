@@ -90,6 +90,7 @@ export const handler = async (event: APIGatewayEvent) => {
     const item = submitNOSOAdminSchema.parse(
       typeof event.body === "string" ? JSON.parse(event.body) : event.body,
     );
+    item.id = item.id.trim();
 
     let status: string = item.status;
     // check if it already exists in onemac - should exist in SEATool
