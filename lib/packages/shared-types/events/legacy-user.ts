@@ -9,7 +9,7 @@ const userRoles = z.enum([
   "statesubmitter",
 ]);
 const userStatus = z.enum(["active", "pending", "revoked", "denied"]);
-const skPattern = /^v[0-3]#[a-z]+#(N\/A|[A-Z]{2})$/;
+const skPattern = /^v[0-9]+#[a-z]+#(N\/A|[A-Z]{2})$/;
 
 export const onemacLegacyUserRoleRequest = z.object({
   sk: z.string().regex(skPattern),
