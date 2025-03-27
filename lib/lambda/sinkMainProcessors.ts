@@ -1,6 +1,7 @@
 import { isBefore } from "date-fns";
 import { bulkUpdateDataWrapper, ErrorType, getItems, logError } from "libs";
 import { KafkaRecord, opensearch, SeatoolRecordWithUpdatedDate } from "shared-types";
+import { onemacLegacyUser } from "shared-types/events/legacy-user";
 import { Document, legacyTransforms, transforms } from "shared-types/opensearch/main";
 import { decodeBase64WithUtf8 } from "shared-utils";
 
@@ -45,7 +46,14 @@ export const isRecordALegacyUser = (
 } =>
   typeof record === "object" &&
   record.sk !== undefined &&
-  record.sk.includes("defaultcmsuser") &&
+  [
+    "defaultcmsuser",
+    "cmsroleapprover",
+    "cmsreviewer",
+    "statesystemadmin",
+    "helpdesk",
+    "statesubmitter",
+  ].some((role) => record!.sk!.includes(role)) &&
   kafkaSource === "onemac";
 
 export const isRecordALegacyOneMacRecord = (
@@ -131,7 +139,13 @@ const getOneMacRecordWithAllProperties = (
   }
 
   if (isRecordALegacyUser(record, kafkaSource)) {
-    console.log("USER RECORD: ", JSON.stringify(record));
+    const userParseResult = onemacLegacyUser.safeParse(record);
+
+    if (userParseResult.success === true) {
+      console.log("USER RECORD: ", JSON.stringify(record));
+    } else {
+      console.log("USER RECORD INVALID BECAUSE: ", userParseResult.error, JSON.stringify(record));
+    }
     // determine which type of user record
     // onemac user v1 or v0
     // or if it is a role request
