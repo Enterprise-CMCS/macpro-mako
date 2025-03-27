@@ -155,18 +155,18 @@ const sendUpdateIdMessage = async ({
     });
   }
   // use event of current package to determine how ID should be formatted
-  // const packageEvent = await getPackageType(currentPackage._id);
-  // const packageSubmissionTypeSchema = events[packageEvent as keyof typeof events].baseSchema;
+  const packageEvent = await getPackageType(currentPackage._id);
+  const packageSubmissionTypeSchema = events[packageEvent as keyof typeof events].baseSchema;
 
-  // const idSchema = packageSubmissionTypeSchema.shape.id;
-  // const parsedId = idSchema.safeParse(updatedId);
+  const idSchema = packageSubmissionTypeSchema.shape.id;
+  const parsedId = idSchema.safeParse(updatedId);
 
-  // if (!parsedId.success) {
-  //   return response({
-  //     statusCode: 400,
-  //     body: parsedId.error.message,
-  //   });
-  // }
+  if (!parsedId.success) {
+    return response({
+      statusCode: 400,
+      body: parsedId.error.message,
+    });
+  }
 
   await sendDeleteMessage(currentPackage._id);
 

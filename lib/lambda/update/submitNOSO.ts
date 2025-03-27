@@ -2,11 +2,13 @@ import { APIGatewayEvent } from "aws-lambda";
 import { produceMessage } from "libs/api/kafka";
 import { getPackage } from "libs/api/package";
 import { response } from "libs/handler-lib";
+import { events } from "shared-types";
 import { getStatus } from "shared-types";
 import { ItemResult } from "shared-types/opensearch/main";
 import { z } from "zod";
 
 import { submitNOSOAdminSchema } from "./adminChangeSchemas";
+import { getPackageType } from "./getPackageType";
 
 /** @typedef {object} json
  * @property {object} body
@@ -94,6 +96,19 @@ export const handler = async (event: APIGatewayEvent) => {
     const currentPackage: ItemResult | undefined = await getPackage(item.id);
 
     if (currentPackage && currentPackage.found == true) {
+      // use event of current package to determine how ID should be formatted
+      const packageEvent = await getPackageType(currentPackage?._id);
+      const packageSubmissionTypeSchema = events[packageEvent as keyof typeof events].baseSchema;
+
+      const idSchema = packageSubmissionTypeSchema.shape.id;
+      const parsedId = idSchema.safeParse(item.id);
+
+      if (!parsedId.success) {
+        return response({
+          statusCode: 400,
+          body: parsedId.error.message,
+        });
+      }
       // we should default to the current status in SEATool, and use entered status as a backup
       status = currentPackage._source?.seatoolStatus ?? item.status;
       // if it exists and has origin OneMAC we shouldn't override it
