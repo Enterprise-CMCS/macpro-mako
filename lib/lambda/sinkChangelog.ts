@@ -144,6 +144,7 @@ const processAndIndex = async ({
 
       // If the event is a supported event, transform and push to docs array for indexing
       if (record.event in transforms) {
+        console.log("ARE WE IN HERE LEGACY DATA");
         const transformForEvent = transforms[record.event as keyof typeof transforms];
 
         const result = transformForEvent.transform(offset).safeParse(record);
@@ -157,6 +158,7 @@ const processAndIndex = async ({
           });
           continue;
         }
+        console.log("WHAT IS RESULT DATA AT THIS POINT");
         docs.push(result.data);
       } else {
         console.log(`No transform found for event: ${record.event}`);
