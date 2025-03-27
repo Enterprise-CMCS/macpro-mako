@@ -44,8 +44,6 @@ export const isRecordALegacyUser = (
   componentType: keyof typeof legacyTransforms;
 } =>
   typeof record === "object" &&
-  record?.componentType !== undefined &&
-  record.componentType in legacyTransforms &&
   record.sk !== undefined &&
   record.sk.includes("defaultcmsuser") &&
   kafkaSource === "onemac";
