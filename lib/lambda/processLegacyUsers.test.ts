@@ -19,6 +19,8 @@ describe("test user data", () => {
       const result = onemacLegacyUserRoleRequest.safeParse(user);
       if (result.success === false) {
         console.log("the following record failed to parse", user.sk);
+
+        throw new Error("failed to validate user role information");
       }
     });
 
@@ -26,9 +28,9 @@ describe("test user data", () => {
       const result = onemacLegacyUserInformation.safeParse(user);
       if (result.success === false) {
         console.log("the following record failed to parse", user.sk, result.error);
+
+        throw new Error("failed to validate user information");
       }
     });
-
-    expect(1).toEqual(1);
   });
 });
