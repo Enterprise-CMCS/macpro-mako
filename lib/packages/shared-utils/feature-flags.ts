@@ -40,7 +40,7 @@ export const featureFlags = {
    * Toggles the visibility of the CMS Hompage
    */
   CMS_HOMEPAGE_FLAG: {
-    flag: "cms-homepage-flag",
+    flag: "cms-home-page",
     defaultValue: "OFF",
   },
 
