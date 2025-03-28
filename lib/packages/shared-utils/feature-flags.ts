@@ -41,6 +41,6 @@ export const featureFlags = {
    */
   LOGIN_PAGE: {
     flag: "login-page",
-    defaultValue: false,
+    defaultValue: true,
   },
 } as const;
