@@ -28,36 +28,43 @@ export const legacyEventSchema = legacySharedSchema
   .transform((data) => {
     const seatoolStatus = getSeaToolStatusFromLegacyStatus(data.currentStatus);
     const { stateStatus, cmsStatus } = getStatus(seatoolStatus);
-    const lastEventTimestampDate = new Date(data.lastEventTimestamp);
-    const submissionTimestampDate = new Date(data.submissionTimestamp);
+    const lastEventIsoDate = getIsoDateFromTimestamp(data.lastEventTimestamp);
+    const submissionIsoDate = getIsoDateFromTimestamp(data.submissionTimestamp);
     const isRaiResponseWithdrawEnabled = data.subStatus === "Withdraw Formal RAI Response Enabled";
 
     return {
       ...data,
       proposedEffectiveDate: null, // blank out the value that will be transformed, we handle it below
       additionalInformation: data.additionalInformation,
-      changedDate: lastEventTimestampDate.toISOString(), // eventTimestamp as ISO string
+      changedDate: lastEventIsoDate, // eventTimestamp as ISO string
       cmsStatus, // Derived status
       description: null, // Not provided in legacy, set to null
       id: data.pk, // pk becomes id
-      makoChangedDate: lastEventTimestampDate.toISOString(),
+      makoChangedDate: lastEventIsoDate,
       origin: ONEMAC_LEGACY_ORIGIN,
       raiWithdrawEnabled: isRaiResponseWithdrawEnabled,
       seatoolStatus,
       state: data.pk?.slice(0, 2), // Extract state from pk
       stateStatus,
-      statusDate: lastEventTimestampDate.toISOString(),
+      statusDate: lastEventIsoDate,
       proposedDate:
         data.proposedEffectiveDate && !isNaN(new Date(data.proposedEffectiveDate).getTime())
           ? data.proposedEffectiveDate
           : null,
       subject: null,
-      submissionDate: submissionTimestampDate.toISOString(),
+      submissionDate: submissionIsoDate,
       submitterEmail: data.submitterEmail,
       submitterName: data.submitterName,
       initialIntakeNeeded: true,
     };
   });
+
+function getIsoDateFromTimestamp(timestamp: number | null | undefined) {
+  if (!timestamp || timestamp === 0) {
+    return null;
+  }
+  return new Date(timestamp).toISOString();
+}
 
 function getSeaToolStatusFromLegacyStatus(legacyStatus: string | null | undefined) {
   if (!legacyStatus) {

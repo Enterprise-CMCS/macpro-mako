@@ -53,7 +53,7 @@ type UsaBannerProps = {
 
 export const UsaBanner = ({ isUserMissingRole }: UsaBannerProps) => {
   const [isOpen, setIsOpen] = useState(false);
-  const { error } = useLoaderData() as { error: string };
+  const loaderData = useLoaderData() as { error: string };
 
   return (
     <div className="bg-[#f0f0f0]" role="banner">
@@ -94,7 +94,7 @@ export const UsaBanner = ({ isUserMissingRole }: UsaBannerProps) => {
         </div>
       </button>
 
-      {(isUserMissingRole || error?.length > 0) && (
+      {(isUserMissingRole || loaderData?.error?.length > 0) && (
         <div className="w-full  px-4 py-1 lg:px-8 text-xs mx-auto flex gap-2 items-center justify-center bg-red-200">
           <p className="text-center text-base">
             You do not have access to view the entire application.{" "}

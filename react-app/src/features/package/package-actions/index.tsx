@@ -35,27 +35,29 @@ export const PackageActionsCard = ({ submission, id }: PackageActionsCardProps) 
 
   return (
     <DetailCardWrapper title={"Package Actions"}>
-      <div className="my-3">
+      <div className="my-3 sm:text-nowrap sm:min-w-min">
         <ul className="my-3">
           {data.actions.map((type, idx) => (
-            <Link
-              key={`${idx}-${type}`}
-              state={{
-                from: `${location.pathname}${location.search}`,
-              }}
-              to={{
-                pathname: `/actions/${type}/${submission.authority}/${id}`,
-                search: new URLSearchParams({
-                  [ORIGIN]:
-                    type === "amend-waiver" || type === "temporary-extension"
-                      ? WAIVER_SUBMISSION_ORIGIN
-                      : DETAILS_ORIGIN,
-                }).toString(),
-              }}
-              className="text-sky-700 font-semibold text-lg"
-            >
-              <li>{mapActionLabel(type)}</li>
-            </Link>
+            <li className="py-2">
+              <Link
+                key={`${idx}-${type}`}
+                state={{
+                  from: `${location.pathname}${location.search}`,
+                }}
+                to={{
+                  pathname: `/actions/${type}/${submission.authority}/${id}`,
+                  search: new URLSearchParams({
+                    [ORIGIN]:
+                      type === "amend-waiver" || type === "temporary-extension"
+                        ? WAIVER_SUBMISSION_ORIGIN
+                        : DETAILS_ORIGIN,
+                  }).toString(),
+                }}
+                className="text-sky-700 font-semibold text-lg hover:underline hover:decoration-inherit"
+              >
+                {mapActionLabel(type)}
+              </Link>
+            </li>
           ))}
         </ul>
       </div>

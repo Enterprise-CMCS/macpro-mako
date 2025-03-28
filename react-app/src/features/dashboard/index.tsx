@@ -32,7 +32,7 @@ const loader = (queryClient: QueryClient) => {
 
     const isUser = queryClient.getQueryData(["user"]) as Awaited<ReturnType<typeof getUser>>;
     if (!isUser.user) {
-      return redirect("/");
+      return redirect("/login");
     }
 
     return isUser;

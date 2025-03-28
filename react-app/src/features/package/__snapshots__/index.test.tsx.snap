@@ -6,11 +6,11 @@ exports[`package details > makes a package 1`] = `
     class="w-full py-1 px-4 lg:px-8"
   >
     <section
-      class="block md:flex space-x-0 md:space-x-8"
+      class="flex flex-col sm:flex-row gap-3 mb-3 sm:gap-x-[3rem] md:gap-x-[5rem] lg:gap-x-[3rem] xl:gap-x-[6rem] sm:mb-0"
       id="package_overview"
     >
       <div
-        class="my-6 sticky top-12"
+        class="sticky top-12 flex-1 text-wrap my-0 sm:my-6"
       >
         <div
           class="h-2 shadow-lg"
@@ -20,7 +20,7 @@ exports[`package details > makes a package 1`] = `
           class="border border-t-0 rounded-b-sm border-slate-300"
         >
           <div
-            class="p-4 py-1 w-80 min-h-36"
+            class="p-4 py-1 min-h-36"
           >
             <h2>
               Status
@@ -37,7 +37,7 @@ exports[`package details > makes a package 1`] = `
         </div>
       </div>
       <div
-        class="my-6 sticky top-12"
+        class="sticky top-12 flex-1 text-wrap my-0 sm:my-6"
       >
         <div
           class="h-2 shadow-lg"
@@ -47,7 +47,7 @@ exports[`package details > makes a package 1`] = `
           class="border border-t-0 rounded-b-sm border-slate-300"
         >
           <div
-            class="p-4 py-1 w-80 min-h-36"
+            class="p-4 py-1 min-h-36"
           >
             <h2>
               Package Actions

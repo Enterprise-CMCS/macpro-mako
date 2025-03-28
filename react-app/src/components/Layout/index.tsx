@@ -178,7 +178,7 @@ export const Layout = () => {
           <div className="h-[70px] relative flex gap-12 items-center text-white">
             {!isFaqPage ? (
               // This is the original Link component
-              <Link to="/">
+              <Link to={user?.user ? "/" : "/login"}>
                 <img
                   className="h-10 w-28 min-w-[112px] resize-none"
                   src="/onemac-logo.png"

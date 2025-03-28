@@ -340,7 +340,7 @@ describe("Dashboard", () => {
 
       await dashboardLoader(queryClient)();
 
-      expect(redirect).toHaveBeenCalledWith("/");
+      expect(redirect).toHaveBeenCalledWith("/login");
     });
   });
 });
