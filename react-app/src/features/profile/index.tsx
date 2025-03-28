@@ -1,3 +1,4 @@
+import { API } from "aws-amplify";
 import { RoleDescriptionStrings } from "shared-types";
 
 import { useGetUser } from "@/api";
@@ -25,8 +26,17 @@ const getFullStateNamesFromUser = (states: string | undefined) => {
   return states.split(",").map(convertStateAbbrToFullName).join(", ");
 };
 
+const useGetUserProfile = async () => {
+  const results = await API.get("os", "/getUserProfile", {});
+
+  console.log("Andie is the smart one:", { results });
+
+  return results;
+};
+
 export const Profile = () => {
   const { data: userData } = useGetUser();
+  useGetUserProfile();
 
   const fullStateNames = getFullStateNamesFromUser(userData?.user["custom:state"]);
 
