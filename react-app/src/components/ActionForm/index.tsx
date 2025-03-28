@@ -8,7 +8,7 @@ import { Authority, CognitoUserAttributes } from "shared-types";
 import { isStateUser } from "shared-utils";
 import { z } from "zod";
 import ReactGA from "react-ga4";
-
+import  UaEventOptions  from 'react-ga4';
 import { useGetUser } from "@/api";
 import {
   ActionFormDescription,
@@ -35,6 +35,8 @@ import { CheckDocumentFunction, documentPoller } from "@/utils/Poller/documentPo
 import { getAttachments } from "./actionForm.utilities";
 import { ActionFormAttachments, AttachmentsOptions } from "./ActionFormAttachments";
 import { AdditionalInformation } from "./AdditionalInformation";
+
+
 
 type EnforceSchemaProps<Shape extends z.ZodRawShape> = z.ZodObject<
   Shape & {
@@ -186,10 +188,10 @@ export const ActionForm = <Schema extends SchemaWithEnforcableProps>({
 
       console.log("roles: "+ customUserRoles || customisMemberOf);
       console.log("user_territory "+  formData.id.substring(0,2));
-      // ReactGA.event( formData.event, {
-      //   territory: formData.id.substring(0,2),
-      //   user_role: customUserRoles || customisMemberOf
-      // });
+      ReactGA.event( formData.event, {
+        category: formData.id.substring(0,2),
+        // user_role: customUserRoles || customisMemberOf
+      });
 
 
       // ReactGA.set({
@@ -197,13 +199,11 @@ export const ActionForm = <Schema extends SchemaWithEnforcableProps>({
       //   dimension2: "MD"
       // });
 
-      ReactGA.event({
-        category: 'Form Submission',
-        action: 'Submit',
-        label: formData.event,
-        territory: formData.id.substring(0,2),
-        user_role: customUserRoles || customisMemberOf
-      });
+      // ReactGA.event({
+      //   category: formData.id.substring(0,2)?,
+      //   action: 'Submit',
+      //   label: formData.event
+      // });
       
       console.log("state"+formData.id.substring(0,2))
     } catch (error) {
