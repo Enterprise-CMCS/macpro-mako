@@ -8,6 +8,10 @@ vi.mock("libs/handler-lib", () => ({
   response: vi.fn((data) => data),
 }));
 
+vi.mock("libs/api/kafka", () => ({
+  produceMessage: vi.fn(() => Promise.resolve([{ partition: 0, offset: "1" }])),
+}));
+
 describe("handler", () => {
   beforeEach(() => {
     vi.clearAllMocks();
