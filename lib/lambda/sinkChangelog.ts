@@ -146,8 +146,9 @@ const processAndIndex = async ({
       if (record.event in transforms) {
         console.log("ARE WE IN HERE LEGACY DATA");
         const transformForEvent = transforms[record.event as keyof typeof transforms];
-
+        console.log(transformForEvent, "TRANSFORM FOR EVENT");
         const result = transformForEvent.transform(offset).safeParse(record);
+        console.log(result, "WHAT IS THE RESULT");
 
         if (result.success && result.data === undefined) continue;
         if (!result.success) {
