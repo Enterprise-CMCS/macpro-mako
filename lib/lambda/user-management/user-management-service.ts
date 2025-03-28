@@ -10,13 +10,15 @@ export const getUserByEmail = async (email: string) => {
 export const getAllUserRolesByEmail = async (email: string) => {
   const { domain, index } = getDomainAndNamespace("roles");
 
-  return await search(domain, index, {
+  const result = await search(domain, index, {
     query: {
-      term: {
+      match: {
         email,
       },
     },
   });
+
+  return result.hits.hits.map((hit: any) => ({ ...hit._source }));
 };
 
 export const userHasThisRole = async (email: string, state: string, role: string) => {
