@@ -23,7 +23,7 @@ jobs:
         uses: actions/checkout@v3
 
       - name: Configure AWS credentials
-        uses: aws-actions/configure-aws-credentials@v2
+        uses: aws-actions/configure-aws-credentials@v4
         with:
           role-to-assume: ${{ secrets.AWS_OIDC_ROLE_TO_ASSUME }}
           aws-region: us-east-1
@@ -73,19 +73,3 @@ jobs:
           nvm use
           direnv allow
           direnv exec run destroy --stage $STAGE_NAME --verify false --wait false
-
-  notify_of_failure:
-    runs-on: ubuntu-20.04
-    needs:
-      - test
-    if: failure()
-    steps:
-      - name: Slack Notification
-        uses: rtCamp/action-slack-notify@v2
-        if: env.SLACK_WEBHOOK != ''
-        env:
-          SLACK_COLOR: ${{job.status}}
-          SLACK_ICON: https://github.com/Enterprise-CMCS.png?size=48
-          SLACK_TITLE: Failure
-          SLACK_USERNAME: ${{ github.repository }} - ${{job.status}}
-          SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK }}

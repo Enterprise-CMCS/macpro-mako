@@ -1,0 +1,63 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`Package Status test > The package status component is called successfully 1`] = `
+<DocumentFragment>
+  <div
+    class="sticky top-12 flex-1 text-wrap my-0 sm:my-6"
+  >
+    <div
+      class="h-2 shadow-lg"
+      style="border-radius: 3px 3px 0px 0px; height: 8px;"
+    />
+    <div
+      class="border border-t-0 rounded-b-sm border-slate-300"
+    >
+      <div
+        class="p-4 py-1 min-h-36"
+      >
+        <h2>
+          Status
+        </h2>
+        <div
+          class="my-3 max-w-2xl font-bold text-xl"
+        >
+          <div />
+          <div
+            class="flex mt-1 flex-col gap-1 items-start"
+          >
+            <div
+              class="flex flex-row gap-1"
+            >
+              <p
+                class="text-xs font-bold opacity-80"
+              >
+                ·
+              </p>
+              <p
+                class="text-xs opacity-80"
+              >
+                Withdraw Formal RAI Response - Enabled
+              </p>
+            </div>
+            <div
+              class="flex flex-row gap-1"
+            >
+              <p
+                class="text-xs font-bold opacity-80"
+              >
+                ·
+              </p>
+              <p
+                class="text-xs opacity-80"
+              >
+                2nd Clock
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  ,
+</DocumentFragment>
+`;

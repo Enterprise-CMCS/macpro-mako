@@ -17,48 +17,54 @@ permissions:
   contents: write
   issues: write
   pull-requests: write
+  actions: read
 
 jobs:
   init:
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-latest
     steps:
       - name: Validate stage name
         run: |
           if [[ ! $STAGE_NAME =~ ^[a-z][a-z0-9-]*$ ]]; then
               echo "ERROR:  Your branch name, $STAGE_NAME, is not a valid Serverless Framework stage name." && exit 1
           fi
-  cache:
-    runs-on: ubuntu-20.04
+
+  test:
+    runs-on: ubuntu-latest
     needs:
       - init
     environment:
       name: ${{ startsWith(github.ref_name, 'snyk-') && 'snyk' || github.ref_name }}
     steps:
       - name: Checkout
-        uses: actions/checkout@v3
-
+        uses: actions/checkout@v4
       - uses: ./.github/actions/setup
-
-      - run: run install
+      - name: Test
+        run: run test
 
   deploy:
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-latest
     needs:
-      - cache
+      - init
     environment:
       name: ${{ startsWith(github.ref_name, 'snyk-') && 'snyk' || github.ref_name }}
-      url: ${{ steps.deployment-data.outputs.APPURL }}
     outputs:
       app-url: ${{ steps.deployment-data.outputs.APPURL }}
-      kibana-url: ${{ steps.kibana-url.outputs.KIBANAURL }}
+      kibana-url: ${{ steps.deployment-data.outputs.KIBANAURL }}
     steps:
       - name: Checkout
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
       - uses: ./.github/actions/setup
 
+      - uses: docker/setup-qemu-action@v2
+        with:
+          platforms: "amd64"
+
+      - uses: docker/setup-buildx-action@v2
+
       - name: Configure AWS credentials
-        uses: aws-actions/configure-aws-credentials@v2
+        uses: aws-actions/configure-aws-credentials@v4
         with:
           role-to-assume: ${{ secrets.AWS_OIDC_ROLE_TO_ASSUME }}
           aws-region: us-east-1
@@ -67,28 +73,33 @@ jobs:
       - name: Deploy
         run: run deploy --stage $STAGE_NAME
 
-      - name: Set Site URL
+      - name: Set Application URLs
         id: deployment-data
         run: |
-          echo ${{ startsWith(github.ref_name, 'snyk-') && 'snyk' || github.ref_name }}
-          echo "APPURL=$(
-            aws cloudformation \
-            --region us-east-1 describe-stacks \
-            --stack-name $PROJECT-ui-infra-$STAGE_NAME \
-            --query Stacks[0].Outputs[0].OutputValue
-          )" | tr -d \'\" >> $GITHUB_OUTPUT
+          secret_value=$(aws ssm get-parameter \
+            --region us-east-1 \
+            --name "/$PROJECT/$STAGE_NAME/deployment-output" \
+            --query Parameter.Value \
+            --output text)
+          application_endpoint_url=$(echo $secret_value | jq -r '.applicationEndpointUrl')
+          echo "APPURL=$application_endpoint_url" >> $GITHUB_OUTPUT
+          kibana_url=$(echo $secret_value | jq -r '.kibanaUrl')
+          echo "KIBANAURL=$kibana_url" >> $GITHUB_OUTPUT
 
-      - name: Set Kibana URL
-        id: kibana-url
+  application-url:
+    runs-on: ubuntu-latest
+    needs:
+      - deploy
+    environment:
+      name: ${{ startsWith(github.ref_name, 'snyk-') && 'snyk' || github.ref_name }}-app
+      url: ${{ needs.deploy.outputs.app-url }}
+    steps:
+      - name: Display App URL
         run: |
-          echo KIBANAURL=$(
-            sls info --verbose --stage $STAGE_NAME |& grep -m 1 OpenSearchDashboardEndpoint |
-            awk '{print $NF}' | awk '{$1=$1};1' |
-            tr -d \'\"
-          ) >> $GITHUB_OUTPUT
+          echo "App URL: ${{ needs.deploy.outputs.app-url }}"
 
   kibana-url:
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-latest
     needs:
       - deploy
     environment:
@@ -99,58 +110,91 @@ jobs:
         run: |
           echo "Kibana URL: ${{ needs.deploy.outputs.kibana-url }}"
 
-  test:
-    runs-on: ubuntu-20.04
-    needs:
-      - cache
-    environment:
-      name: ${{ startsWith(github.ref_name, 'snyk-') && 'snyk' || github.ref_name }}
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v3
-
-      - uses: ./.github/actions/setup
-
-      - name: Configure AWS credentials
-        uses: aws-actions/configure-aws-credentials@v2
-        with:
-          role-to-assume: ${{ secrets.AWS_OIDC_ROLE_TO_ASSUME }}
-          aws-region: us-east-1
-          role-duration-seconds: 10800
-
-      - name: Test
-        run: yarn test-ci
-
   e2e:
-    timeout-minutes: 5
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-latest
+    continue-on-error: true
     needs:
       - deploy
-    env:
-      baseurl: ${{ needs.deploy.outputs.app-url }}
+    environment:
+      name: ${{ startsWith(github.ref_name, 'snyk-') && 'snyk' || github.ref_name }}
     if: ${{ github.ref != 'refs/heads/production' }}
+    env:
+      JSON_ARTIFACT_ID: json-playwright-report
+      HTML_ARTIFACT_ID: html-playwright-report
+    outputs:
+      json_artifact_id: ${{ env.JSON_ARTIFACT_ID }}
+      json_deploy_to: _data/${{ steps.variables.outputs.report_path }}
+      html_artifact_id: ${{ env.HTML_ARTIFACT_ID }}
+      html_deploy_to: ${{ steps.variables.outputs.report_path }}
+      commit_msg: ${{ steps.variables.outputs.commit_msg }}
+      output_url: ${{ steps.variables.outputs.report_path }}${{ steps.variables.outputs.report_name }}.html
+      actualResult: ${{ steps.e2e-test.conclusion }}
     steps:
       - name: Checkout
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
       - name: Setup
         uses: ./.github/actions/setup
       - name: Configure AWS credentials
-        uses: aws-actions/configure-aws-credentials@v2
+        uses: aws-actions/configure-aws-credentials@v4
         with:
           role-to-assume: ${{ secrets.AWS_OIDC_ROLE_TO_ASSUME }}
           aws-region: us-east-1
           role-duration-seconds: 10800
       - name: Run e2e tests
+        id: e2e-test
         run: run e2e
-      - uses: actions/upload-artifact@v3
-        if: always()
+      - name: Set Report Path and Name
+        if: ${{ !cancelled() }}
+        id: variables
+        run: |
+          if [[ ${{ github.ref_name }} == 'main' ]]; then
+            echo "report_path=playwright-reports/" >> "$GITHUB_OUTPUT"
+            echo "report_name=main" >> "$GITHUB_OUTPUT"
+            echo "commit_msg=update Playwright report for main" >> "$GITHUB_OUTPUT"
+          else
+            echo "report_path=playwright-reports/branches/${{ github.ref_name }}/" >> "$GITHUB_OUTPUT"
+            echo "report_name=${{ github.run_id }}" >> "$GITHUB_OUTPUT"
+            echo "commit_msg=add Playwright report for branch ${{ github.ref_name }}, run-id ${{ github.run_id }}" >> "$GITHUB_OUTPUT"
+          fi
+      - name: Rename Reports
+        if: ${{ !cancelled() }}
+        working-directory: test/e2e/playwright-reports/
+        run: |
+          mv playwright-summary.json ${{ steps.variables.outputs.report_name }}.json
+          cd html-report
+          mv index.html ${{ steps.variables.outputs.report_name }}.html
+      - name: Upload JSON Report
+        uses: actions/upload-artifact@v4
+        id: upload-json
+        if: ${{ !cancelled() }}
         with:
-          name: playwright-report
-          path: src/services/ui/playwright-report/
+          name: ${{ env.JSON_ARTIFACT_ID }}
+          path: test/e2e/playwright-reports/${{ steps.variables.outputs.report_name }}.json
+          retention-days: 30
+      - name: Upload HTML Report
+        uses: actions/upload-artifact@v4
+        id: upload-html
+        if: ${{ !cancelled() }}
+        with:
+          name: ${{ env.HTML_ARTIFACT_ID }}
+          path: test/e2e/playwright-reports/html-report/${{ steps.variables.outputs.report_name }}.html
           retention-days: 30
 
+  publish:
+    needs: [e2e]
+    uses: ./.github/workflows/push-to-gh-pages.yml
+    if: ${{ github.ref != 'refs/heads/production' }} && ${{ github.ref != 'refs/heads/val' }}
+    with:
+      FILE_1_ARTIFACT_ID: ${{ needs.e2e.outputs.json_artifact_id }}
+      FILE_1_DEPLOY_TO: ${{ needs.e2e.outputs.json_deploy_to }}
+      FILE_2_ARTIFACT_ID: ${{ needs.e2e.outputs.html_artifact_id }}
+      FILE_2_DEPLOY_TO: ${{ needs.e2e.outputs.html_deploy_to }}
+      COMMIT_MSG: ${{ needs.e2e.outputs.commit_msg }}
+      URL_PATH: ${{ needs.e2e.outputs.output_url }}
+    secrets: inherit # pragma: allowlist secret
+
   cfn-nag:
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-latest
     needs:
       - deploy
     environment:
@@ -162,7 +206,7 @@ jobs:
       - uses: ./.github/actions/setup
 
       - name: Configure AWS credentials
-        uses: aws-actions/configure-aws-credentials@v2
+        uses: aws-actions/configure-aws-credentials@v4
         with:
           role-to-assume: ${{ secrets.AWS_OIDC_ROLE_TO_ASSUME }}
           aws-region: us-east-1
@@ -182,7 +226,7 @@ jobs:
         with:
           input_path: cftemplates
   resources:
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-latest
     needs:
       - deploy
     environment:
@@ -194,7 +238,7 @@ jobs:
       - uses: ./.github/actions/setup
 
       - name: Configure AWS credentials
-        uses: aws-actions/configure-aws-credentials@v2
+        uses: aws-actions/configure-aws-credentials@v4
         with:
           role-to-assume: ${{ secrets.AWS_OIDC_ROLE_TO_ASSUME }}
           aws-region: us-east-1
@@ -213,15 +257,15 @@ jobs:
           join_by() { local IFS="$1"; shift; echo "$*"; }
           echo "["$(join_by "," "${resourceData[@]}")"]" > "resources/aws-resources.json"
       - name: Archive stage resources
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: aws-resources-${{ startsWith(github.ref_name, 'snyk-') && 'snyk' || github.ref_name }}
           path: resources/aws-resources.json
 
   release:
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-latest
     needs:
-      - test
+      - e2e
       - cfn-nag
     steps:
       - name: Checkout
@@ -229,23 +273,10 @@ jobs:
 
       - uses: ./.github/actions/setup
 
+      - name: Install
+        run: bun install
+
       - name: Release
-        run: npx semantic-release
+        run: bun semantic-release
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-
-  notify_of_failure:
-    runs-on: ubuntu-20.04
-    needs:
-      - release
-    if: failure()
-    steps:
-      - name: Slack Notification
-        uses: rtCamp/action-slack-notify@v2
-        if: env.SLACK_WEBHOOK != '' && contains(fromJson('["master", "val", "production"]'), env.STAGE_NAME)
-        env:
-          SLACK_COLOR: ${{job.status}}
-          SLACK_ICON: https://github.com/Enterprise-CMCS.png?size=48
-          SLACK_TITLE: Failure
-          SLACK_USERNAME: ${{ github.repository }} - ${{job.status}}
-          SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK }}

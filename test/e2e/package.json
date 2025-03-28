@@ -1,0 +1,17 @@
+{
+  "name": "e2e",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "e2e": "playwright test --project=state-user-chrome",
+    "e2e:ui": "playwright test --ui --project=state-user-chrome"
+  },
+  "dependencies": {
+    "shared-utils": "*"
+  },
+  "author": "",
+  "license": "ISC"
+}

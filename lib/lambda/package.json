@@ -1,0 +1,26 @@
+{
+  "name": "y",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {},
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@aws-sdk/client-ses": "^3.600.0",
+    "@aws-sdk/client-lambda": "^3.600.0",
+    "@aws-sdk/client-s3": "^3.600.0",
+    "@aws-sdk/client-sfn": "^3.600.0",
+    "@aws-sdk/s3-request-presigner": "^3.600.0",
+    "@haftahave/serverless-ses-template": "^6.1.0",
+    "base-64": "^1.0.0",
+    "cfn-response-async": "^1.0.0",
+    "mssql": "^11.0.0",
+    "uuid": "^10.0.0"
+  },
+  "devDependencies": {
+    "@types/base-64": "^1.0.2",
+    "@types/mssql": "^9.1.5",
+    "@types/uuid": "^10.0.0"
+  }
+}

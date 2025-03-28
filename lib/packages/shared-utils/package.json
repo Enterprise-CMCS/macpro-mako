@@ -1,0 +1,21 @@
+{
+  "name": "shared-utils",
+  "version": "0.0.0",
+  "private": true,
+  "license": "MIT",
+  "scripts": {
+    "test": "vitest",
+    "test:coverage": "vitest run --coverage.enabled.true",
+    "test:ui": "vitest --ui"
+  },
+  "devDependencies": {},
+  "dependencies": {
+    "@18f/us-federal-holidays": "^4.0.0",
+    "@date-fns/tz": "1.2.0",
+    "@date-fns/utc": "2.1.0",
+    "date-fns": "^4.1.0",
+    "shared-types": "*",
+    "eslint-config-custom-server": "*",
+    "eslint-config-custom": "*"
+  }
+}
