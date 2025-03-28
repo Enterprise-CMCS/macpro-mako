@@ -16,7 +16,7 @@ const RoutesWithTimeout = () => (
   </>
 );
 
-export const router = (loginFlag: boolean) => {
+export const router = (loginFlag = false) => {
   return createBrowserRouter([
     {
       path: "/",
