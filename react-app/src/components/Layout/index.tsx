@@ -165,6 +165,7 @@ const UserDropdownMenu = () => {
 export const Layout = () => {
   const isDesktop = useMediaQuery("(min-width: 768px)");
   const { data: user } = useGetUser();
+  const hideLogin = useFeatureFlag("LOGIN_PAGE");
   const customUserRoles = user?.user?.["custom:cms-roles"];
 
   return (
@@ -178,7 +179,7 @@ export const Layout = () => {
           <div className="h-[70px] relative flex gap-12 items-center text-white">
             {!isFaqPage ? (
               // This is the original Link component
-              <Link to={user?.user ? "/" : "/login"}>
+              <Link to={user?.user || hideLogin ? "/" : "/login"}>
                 <img
                   className="h-10 w-28 min-w-[112px] resize-none"
                   src="/onemac-logo.png"

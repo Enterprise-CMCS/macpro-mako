@@ -11,6 +11,7 @@ import { RouterProvider } from "react-router";
 import config from "@/config";
 import { queryClient } from "@/utils";
 
+import { useFeatureFlag } from "./hooks/useFeatureFlag";
 import { router } from "./router";
 
 const ldClientId = config.launchDarkly?.CLIENT_ID;
@@ -33,12 +34,18 @@ const initializeLaunchDarkly = async () => {
     <React.StrictMode>
       <QueryClientProvider client={queryClient}>
         <LDProvider>
-          <RouterProvider router={router} />
+          <FlagRouter />
         </LDProvider>
         <ReactQueryDevtools initialIsOpen={false} />
       </QueryClientProvider>
     </React.StrictMode>,
   );
+};
+
+const FlagRouter = () => {
+  const loginFlag = useFeatureFlag("LOGIN_PAGE");
+
+  return <RouterProvider router={router(loginFlag)} />;
 };
 
 initializeLaunchDarkly();
