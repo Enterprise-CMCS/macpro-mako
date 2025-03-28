@@ -192,15 +192,17 @@ export const ActionForm = <Schema extends SchemaWithEnforcableProps>({
       // });
 
 
-      ReactGA.set({
-        dimension1: "CMS Reviewer",  // state
-        dimension2: "MD"
-      });
+      // ReactGA.set({
+      //   dimension1: "CMS Reviewer",  // state
+      //   dimension2: "MD"
+      // });
 
       ReactGA.event({
         category: 'Form Submission',
         action: 'Submit',
-        label: formData.event
+        label: formData.event,
+        territory: formData.id.substring(0,2),
+        user_role: customUserRoles || customisMemberOf
       });
       
       console.log("state"+formData.id.substring(0,2))
