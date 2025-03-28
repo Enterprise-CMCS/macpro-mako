@@ -22,11 +22,12 @@ export const loader = (queryClient: QueryClient) => {
         queryKey: ["user"],
         queryFn: () => getUser(),
       });
-      return (
-        !["/login", "/faq"].includes(window.location.pathname) &&
-        !userFetch?.user &&
-        redirect("/login")
-      );
+      const isUserLoggedIn =
+        !["/login", "/faq"].includes(window.location.pathname) && !userFetch?.user;
+
+      if (isUserLoggedIn) {
+        return redirect("/login");
+      }
     }
 
     return queryClient.getQueryData(["user"]);
