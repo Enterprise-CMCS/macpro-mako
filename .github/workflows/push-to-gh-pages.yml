@@ -64,7 +64,11 @@ jobs:
       - name: Push to GitHub Pages Branch
         run: |
           git add -A
-          git commit -am "${{ inputs.COMMIT_MSG }}"
-          git pull origin gh-pages --rebase -s recursive -X ours
-          git push
-          echo "New URL: https://enterprise-cmcs.github.io/macpro-mako/${{ inputs.URL_PATH }}" >> "$GITHUB_STEP_SUMMARY"
+          if [[ `git status --porcelain` ]]; then
+            git commit -am "${{ inputs.COMMIT_MSG }}"
+            git pull origin gh-pages --rebase -s recursive -X ours
+            git push
+            echo "New URL: https://enterprise-cmcs.github.io/macpro-mako/${{ inputs.URL_PATH }}" >> "$GITHUB_STEP_SUMMARY"
+          else
+            echo "Nothing to commit"
+          fi
