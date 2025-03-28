@@ -8,7 +8,7 @@ import { Authority, CognitoUserAttributes } from "shared-types";
 import { isStateUser } from "shared-utils";
 import { z } from "zod";
 import ReactGA from "react-ga4";
-import  UaEventOptions  from 'react-ga4';
+// import  UaEventOptions  from 'react-ga4';
 import { useGetUser } from "@/api";
 import {
   ActionFormDescription,
@@ -188,22 +188,22 @@ export const ActionForm = <Schema extends SchemaWithEnforcableProps>({
 
       console.log("roles: "+ customUserRoles || customisMemberOf);
       console.log("user_territory "+  formData.id.substring(0,2));
-      ReactGA.event( formData.event, {
-        category: formData.id.substring(0,2),
-        // user_role: customUserRoles || customisMemberOf
+      // ReactGA.event( formData.event, {
+      //   category: formData.id.substring(0,2),
+      //   // user_role: customUserRoles || customisMemberOf
+      // });
+
+
+      ReactGA.set({
+        dimension1: "CMS Reviewer",  // state
+        dimension2: "MA"
       });
 
-
-      // ReactGA.set({
-      //   dimension1: "CMS Reviewer",  // state
-      //   dimension2: "MD"
-      // });
-
-      // ReactGA.event({
-      //   category: formData.id.substring(0,2)?,
-      //   action: 'Submit',
-      //   label: formData.event
-      // });
+      ReactGA.event({
+        category: formData.id?.substring(0,2),
+        action: 'Submit',
+        label: formData.event
+      });
       
       console.log("state"+formData.id.substring(0,2))
     } catch (error) {
