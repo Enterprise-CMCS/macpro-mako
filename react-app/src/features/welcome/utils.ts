@@ -3,7 +3,7 @@ import { redirect } from "react-router";
 
 import { getUser } from "@/api";
 
-export const loader = (queryClient: QueryClient) => {
+export const loader = (queryClient: QueryClient, loginFlag?: boolean) => {
   return async () => {
     const queryString = window.location.search;
     // Parse the query string to get URL parameters
@@ -23,9 +23,9 @@ export const loader = (queryClient: QueryClient) => {
         queryFn: () => getUser(),
       });
       const isUserLoggedIn =
-        !["/login", "/faq"].includes(window.location.pathname) && !userFetch?.user;
+        !["/login", "/faq", "/support"].includes(window.location.pathname) && !userFetch?.user;
 
-      if (isUserLoggedIn) {
+      if (!loginFlag && isUserLoggedIn) {
         return redirect("/login");
       }
     }
