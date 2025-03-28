@@ -197,11 +197,11 @@ export const ActionForm = <Schema extends SchemaWithEnforcableProps>({
         dimension2: "MD"
       });
 
-      // ReactGA.event({
-      //   category: 'Form Submission',
-      //   action: 'Submit',
-      //   label: formData.event
-      // });
+      ReactGA.event({
+        category: 'Form Submission',
+        action: 'Submit',
+        label: formData.event
+      });
       
       console.log("state"+formData.id.substring(0,2))
     } catch (error) {
