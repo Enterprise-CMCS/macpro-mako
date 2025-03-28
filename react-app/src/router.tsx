@@ -136,7 +136,7 @@ export const router = createBrowserRouter([
             element: <F.SupportPage />,
           },
           {
-            path: "/support:id",
+            path: "/support/:id",
             element: <F.SupportPage />,
           },
         ],
