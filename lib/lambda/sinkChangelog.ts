@@ -147,9 +147,11 @@ const processAndIndex = async ({
         : [record];
 
       for (const currentRecord of recordsToProcess) {
+        console.log(recordsToProcess, "RECORDS TO PROCESS");
         // If the event is a supported event, transform and push to docs array for indexing
         if (currentRecord.event in transforms) {
           console.log("ARE WE IN HERE LEGACY DATA");
+          console.log("LEGACY EVENT", currentRecord.event);
           const transformForEvent = transforms[currentRecord.event as keyof typeof transforms];
           console.log(transformForEvent, "TRANSFORM FOR EVENT");
           const result = transformForEvent.transform(offset).safeParse(record);
