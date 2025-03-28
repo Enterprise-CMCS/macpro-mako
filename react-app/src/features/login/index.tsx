@@ -1,21 +1,27 @@
 import { AwsCognitoOAuthOpts } from "@aws-amplify/auth/lib-esm/types/Auth";
 import { Auth } from "aws-amplify";
-import { Link } from "react-router";
+import { Link, Navigate } from "react-router";
 
 import config from "@/config";
 import { FAQ_TAB } from "@/consts";
+import { useFeatureFlag } from "@/hooks/useFeatureFlag";
 import { cn } from "@/utils";
 
 const buttonStyling =
   "inline-flex p-2 items-center justify-center rounded-md text-[16px] font-bold ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50";
 
 export const Login = () => {
+  const hideLogin = useFeatureFlag("LOGIN_PAGE");
   const configLogin = () => {
     const authConfig = Auth.configure();
     const { domain, redirectSignIn, responseType } = authConfig.oauth as AwsCognitoOAuthOpts;
     const clientId = authConfig.userPoolWebClientId;
     return `https://${domain}/oauth2/authorize?redirect_uri=${redirectSignIn}&response_type=${responseType}&client_id=${clientId}`;
   };
+
+  if (hideLogin) {
+    return <Navigate to={"/"} />;
+  }
 
   return (
     <div className="w-full p-8 font-sans">
