@@ -20,6 +20,8 @@ export const handler: Handler = async (event, __, callback) => {
       `${indexNamespace}subtypes`,
       `${indexNamespace}legacyinsights`,
       `${indexNamespace}cpocs`,
+      `${indexNamespace}users`,
+      `${indexNamespace}roles`,
     ];
     for (const index of indices) {
       await os.deleteIndex(osDomain, index);
