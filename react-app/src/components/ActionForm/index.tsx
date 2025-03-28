@@ -187,7 +187,7 @@ export const ActionForm = <Schema extends SchemaWithEnforcableProps>({
       console.log("roles: "+ customUserRoles || customisMemberOf);
       console.log("user_territory "+  formData.id.substring(0,2));
       ReactGA.event( formData.event, {
-        user_territory: formData.id.substring(0,2),
+        territory: formData.id.substring(0,2),
         user_role: customUserRoles || customisMemberOf
       });
 
