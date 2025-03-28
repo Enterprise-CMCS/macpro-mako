@@ -3,7 +3,7 @@ import { useMemo } from "react";
 import { LatestUpdates } from "@/components/Banner/latestUpdates";
 import { Footer } from "@/components/Footer";
 import { Welcome } from "@/features/welcome/default";
-import { useCmsHomepageFlag } from "@/hooks/useCmsHome";
+import { useFeatureFlag } from "@/hooks/useFeatureFlag";
 
 export const CMSWelcome = () => {
   const cards = [
@@ -122,7 +122,7 @@ export const CMSWelcome = () => {
 };
 
 const CMSWelcomeWrapper = () => {
-  const isCmsHomepageEnabled = useCmsHomepageFlag();
+  const isCmsHomepageEnabled = useFeatureFlag("CMS_HOMEPAGE_FLAG");
 
   const contactInfo = useMemo(
     () => ({
