@@ -1,0 +1,64 @@
+name: Publish Release Notes
+
+on:
+  release:
+    types: [published]
+
+# this action needs the same permissions as the Push to GitHub Pages action because it is calling it
+permissions:
+  contents: write
+  actions: read
+
+jobs:
+  generate-post:
+    name: Generate Release Post
+    runs-on: ubuntu-latest
+    outputs:
+      artifact_id: ${{ steps.filename.outputs.filename }}
+    steps:
+      - name: Format Published At Date
+        run: |
+          published_at=$(echo ${{ github.event.release.published_at }}| cut -d "T" -f 1)
+          echo "PUB_DATE=$published_at" >> "$GITHUB_ENV"
+      - name: Create Filename
+        id: filename
+        run: |
+          # Normalize the tag name to replace the `.` with `-`
+          tag_name=$(echo "${{ github.event.release.tag_name }}" | sed "s/\./-/g")
+          name="$PUB_DATE-$tag_name"
+          echo "post_name=$name" >> "$GITHUB_OUTPUT"
+          echo "filename=$name.md" >> "$GITHUB_OUTPUT"
+      - name: Create Post
+        run: |
+          echo """---
+          title: ${{ github.event.release.tag_name }}
+          tag: ${{ github.event.release.tag_name }}
+          category: release
+          date: $PUB_DATE
+          created_at: ${{ github.event.release.created_at }}
+          published_at: ${{ github.event.release.published_at }}
+          author: ${{ github.event.release.author.login }}
+          author_avatar: ${{ github.event.release.author.avatar_url }}
+          author_link: ${{ github.event.release.author.html_url }}
+          html_url: ${{ github.event.release.html_url }}
+          prerelease: ${{ github.event.release.prerelease }}
+          ---
+
+          ${{ github.event.release.body }}
+          """ > ${{ steps.filename.outputs.filename }}
+      - name: Upload Release Notes
+        uses: actions/upload-artifact@v4
+        with:
+          name: ${{ steps.filename.outputs.filename }}
+          path: ${{ steps.filename.outputs.filename }}
+          retention-days: 30
+
+  publish:
+    needs: [generate-post]
+    uses: ./.github/workflows/push-to-gh-pages.yml
+    with:
+      FILE_1_ARTIFACT_ID: ${{ needs.generate-post.outputs.artifact_id }}
+      FILE_1_DEPLOY_TO: _posts/releases/
+      COMMIT_MSG: "adding release ${{ github.event.release.tag_name }} to the release notes"
+      URL_PATH: releases/
+    secrets: inherit # allow called workflow to use GitHub secrets
