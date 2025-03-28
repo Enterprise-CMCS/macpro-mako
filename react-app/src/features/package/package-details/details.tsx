@@ -5,6 +5,7 @@ import {
   formatDateToET,
   formatDateToUTC,
   isCmsUser,
+  isEpochStartDate,
   isStateUser,
 } from "shared-utils";
 
@@ -106,11 +107,17 @@ export const getSubmissionDetails: GetLabelAndValueFromSubmission = (submission,
   },
   {
     label: "Initial Submission Date",
-    value: submission.submissionDate ? formatDateToET(submission.submissionDate) : BLANK_VALUE,
+    value:
+      submission.submissionDate && !isEpochStartDate(submission.submissionDate)
+        ? formatDateToET(submission.submissionDate)
+        : BLANK_VALUE,
   },
   {
     label: "Latest Package Activity",
-    value: submission.makoChangedDate ? formatDateToET(submission.makoChangedDate) : BLANK_VALUE,
+    value:
+      submission.makoChangedDate && !isEpochStartDate(submission.makoChangedDate)
+        ? formatDateToET(submission.makoChangedDate)
+        : BLANK_VALUE,
   },
   {
     label: "Formal RAI Response Date",
