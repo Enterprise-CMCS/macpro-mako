@@ -1,4 +1,9 @@
+import { useMemo } from "react";
+
 import { LatestUpdates } from "@/components/Banner/latestUpdates";
+import { Footer } from "@/components/Footer";
+import { Welcome } from "@/features/welcome/default";
+import { useFeatureFlag } from "@/hooks/useFeatureFlag";
 
 export const CMSWelcome = () => {
   const cards = [
@@ -88,6 +93,7 @@ export const CMSWelcome = () => {
           <h1>Search Right</h1>
         </div>
       </div>
+
       <div className="w-full max-w-[1439px] mx-auto">
         {/* Latest Updates Banner */}
         <div className="mt-[56px] mx-auto w-full max-w-[1440px] h-auto min-h-[228px] border-[2px] border-gray-300 rounded-[3px] bg-gray-100 px-[24px] py-[24px] flex flex-col gap-[16px]">
@@ -114,3 +120,33 @@ export const CMSWelcome = () => {
     </div>
   );
 };
+
+const CMSWelcomeWrapper = () => {
+  const isCmsHomepageEnabled = useFeatureFlag("CMS_HOMEPAGE_FLAG");
+
+  const contactInfo = useMemo(
+    () => ({
+      email: "OneMAC_Helpdesk@cms.hhs.gov",
+      address: {
+        street: "7500 Security Blvd.",
+        city: "Baltimore",
+        state: "MD",
+        zip: 21244,
+      },
+    }),
+    [],
+  );
+
+  return (
+    <>
+      {isCmsHomepageEnabled ? <CMSWelcome /> : <Welcome />}
+      <Footer
+        email={contactInfo.email}
+        address={contactInfo.address}
+        showNavLinks={isCmsHomepageEnabled}
+      />
+    </>
+  );
+};
+
+export default CMSWelcomeWrapper;
