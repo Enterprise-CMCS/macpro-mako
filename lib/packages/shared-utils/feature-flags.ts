@@ -35,4 +35,12 @@ export const featureFlags = {
     flag: "uat-hide-mmdl-banner",
     defaultValue: "OFF",
   },
+
+  /**
+   * Toggles the visibility of the CMS Hompage
+   */
+  CMS_HOMEPAGE_FLAG: {
+    flag: "cms-homepage-flag",
+    defaultValue: "OFF",
+  },
 } as const;
