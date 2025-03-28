@@ -4,7 +4,7 @@ import { validateEnvVariable } from "shared-utils";
 import { getStateFilter } from "../libs/api/auth/user";
 import { getAppkChildren, getPackage, getPackageChangelog } from "../libs/api/package";
 import { response } from "../libs/handler-lib";
-import { handleOpensearchError } from "./utils";
+import { decorateChangelogAttachments, handleOpensearchError } from "./utils";
 
 export const getItemData = async (event: APIGatewayEvent) => {
   validateEnvVariable("osDomain");
@@ -59,6 +59,7 @@ export const getItemData = async (event: APIGatewayEvent) => {
     }
 
     const changelog = await getPackageChangelog(body.id, filter);
+    const decoratedChangelog = decorateChangelogAttachments(changelog.hits.hits);
 
     return response<unknown>({
       statusCode: 200,
@@ -67,7 +68,7 @@ export const getItemData = async (event: APIGatewayEvent) => {
         _source: {
           ...packageResult._source,
           ...(!!appkChildren.length && { appkChildren }),
-          changelog: changelog.hits.hits,
+          changelog: decoratedChangelog,
         },
       },
     });
