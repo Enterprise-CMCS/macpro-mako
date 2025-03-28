@@ -157,9 +157,10 @@ const getOneMacRecordWithAllProperties = (
 
     if (userParseResult.success === true) {
       console.log("USER RECORD: ", JSON.stringify(record));
-    } else {
-      console.log("USER RECORD INVALID BECAUSE: ", userParseResult.error, JSON.stringify(record));
+      return userParseResult.data;
     }
+
+    console.log("USER RECORD INVALID BECAUSE: ", userParseResult.error, JSON.stringify(record));
   }
 
   if (isRecordALegacyUser(record, kafkaSource)) {
@@ -167,9 +168,9 @@ const getOneMacRecordWithAllProperties = (
 
     if (userParseResult.success === true) {
       console.log("USER RECORD: ", JSON.stringify(record));
-    } else {
-      console.log("USER RECORD INVALID BECAUSE: ", userParseResult.error, JSON.stringify(record));
+      return userParseResult.data;
     }
+    console.log("USER RECORD INVALID BECAUSE: ", userParseResult.error, JSON.stringify(record));
   }
 
   if (isRecordALegacyOneMacRecord(record, kafkaSource)) {
@@ -247,7 +248,15 @@ export const insertOneMacRecordsFromKafkaIntoMako = async (
     return collection;
   }, []);
 
-  await bulkUpdateDataWrapper(oneMacRecordsForMako, "main");
+  const oneMacRecords = oneMacRecordsForMako.filter(
+    (record) => record.event === "user-info" || record.event === "user-role",
+  );
+  const oneMacUsers = oneMacRecordsForMako.filter((record) => record.event !== "user-info");
+  const oneMacRoleRequests = oneMacRecordsForMako.filter((record) => record.event !== "user-role");
+
+  await bulkUpdateDataWrapper(oneMacRecords, "main");
+  await bulkUpdateDataWrapper(oneMacUsers, "users");
+  await bulkUpdateDataWrapper(oneMacRoleRequests, "roles");
 };
 
 const getMakoDocTimestamps = async (kafkaRecords: KafkaRecord[]) => {
