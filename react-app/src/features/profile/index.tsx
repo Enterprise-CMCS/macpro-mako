@@ -27,11 +27,15 @@ const getFullStateNamesFromUser = (states: string | undefined) => {
 };
 
 const useGetUserProfile = async () => {
-  const results = await API.get("os", "/getUserProfile", {});
+  try {
+    const results = await API.get("os", "/getUserProfile", {});
 
-  console.log("Andie is the smart one:", { results });
+    console.log("Andie is the smart one:", { results });
 
-  return results;
+    return results;
+  } catch (err: unknown) {
+    console.log("Tiffany", err);
+  }
 };
 
 export const Profile = () => {

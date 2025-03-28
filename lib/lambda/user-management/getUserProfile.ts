@@ -4,10 +4,15 @@ import { APIGatewayEvent } from "shared-types";
 import { getAllUserRolesByEmail } from "./user-management-service";
 
 export const getUserProfile = async (event: APIGatewayEvent) => {
-  const authDetails = getAuthDetails(event);
-  const userAttributes = await lookupUserAttributes(authDetails.userId, authDetails.poolId);
+  try {
+    console.log("this is the event: ", event);
+    const authDetails = getAuthDetails(event);
+    const userAttributes = await lookupUserAttributes(authDetails.userId, authDetails.poolId);
 
-  return await getAllUserRolesByEmail(userAttributes.email);
+    return await getAllUserRolesByEmail(userAttributes.email);
+  } catch (err: unknown) {
+    console.log("An error occured: ", err);
+  }
 };
 
 export const handler = getUserProfile;
