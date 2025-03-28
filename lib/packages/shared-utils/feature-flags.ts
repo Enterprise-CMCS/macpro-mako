@@ -42,6 +42,9 @@ export const featureFlags = {
   CMS_HOMEPAGE_FLAG: {
     flag: "cms-homepage-flag",
     defaultValue: "OFF",
+  },
+
+  /*
    * Toggle visibility of login feature page
    */
   LOGIN_PAGE: {
