@@ -22,8 +22,8 @@ export const onemacLegacyUserRoleRequest = z
     doneByName: z.string(),
   })
   .transform((data) => ({
-    id: data.pk,
-    event: "user-role",
+    id: `${data.pk}_${data.territory}_${data.role}`,
+    eventType: "user-role",
     email: data.pk,
     doneByEmail: data.doneByEmail,
     doneByName: data.doneByName,
@@ -42,7 +42,7 @@ export const onemacLegacyUserInformation = z
   })
   .transform((data) => ({
     id: data.pk,
-    event: "user-info",
+    eventType: "user-info",
     email: data.pk,
     group: data.group,
     division: data.division,
