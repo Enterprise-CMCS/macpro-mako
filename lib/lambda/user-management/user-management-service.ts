@@ -13,7 +13,7 @@ export const getAllUserRolesByEmail = async (email: string) => {
   const result = await search(domain, index, {
     query: {
       match: {
-        email,
+        "email.keyword": email,
       },
     },
   });
