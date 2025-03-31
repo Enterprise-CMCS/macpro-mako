@@ -15,6 +15,7 @@ export const transform = (id: string) => {
     }
 
     if (eventType === "submit") {
+      console.log(eventType, "IS IT SUBMIT");
       submitType = eventTypeMatch?.[2] || "";
 
       switch (submitType) {
@@ -30,7 +31,6 @@ export const transform = (id: string) => {
           event = "new-legacy-submission";
           break;
         case "chipsparai":
-        case "submitmedicaidsparai":
         case "medicaidsparai":
         case "waiveramendmentrai":
         case "waiverappkrai":
@@ -67,7 +67,7 @@ export const transform = (id: string) => {
 
     // Return if the actionType is unhandled
     if (event === undefined) return undefined;
-    console.log("IN THE TRANSFORMS");
+    console.log("IN THE TRANSFORMS, EVENT?", event);
 
     // If we're still here, go ahead and transform the data
     const transformedData = {
