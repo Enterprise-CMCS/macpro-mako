@@ -5,6 +5,11 @@ on:
     branches:
       - gh-pages
 
+# ensures that currently running GitHub Pages Build and Deploy workflows are canceled if another one starts
+concurrency:
+  group: publish-github-pages
+  cancel-in-progress: true
+
 jobs:
   build:
     runs-on: ubuntu-latest
