@@ -8,8 +8,8 @@
         {% if include.post.author_avatar %}
           <img class="h-5 w-5 rounded-sm inline-block box-border leading-none overflow-hidden align-middle" src="{{ include.post.author_avatar }}" alt="@{{ include.post.author }}" />
         {% endif %}
-        {% if include.post.author_link %}
-          <a class="decoration-inherit text-current font-bold" href="{{ include.post.author_link }}">{{ include.post.author }}</a>
+        {% if include.post.author_url %}
+          <a class="decoration-inherit text-current font-bold" href="{{ include.post.author_url }}">{{ include.post.author }}</a>
         {% else %}
           <span class="font-bold">{{ include.post.author }}</span>
         {% endif %}
