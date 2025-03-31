@@ -3,7 +3,7 @@ import { events } from "shared-types";
 
 export const transform = () => {
   return events["legacy-event"].legacyEventSchema.transform((data) => {
-    const cleanData = omit(data, ["parentId"]);
+    const cleanData = omit(data, ["parentId", "statusDate"]);
     return {
       ...cleanData,
       cmsStatus: "Requested",

@@ -545,10 +545,11 @@ describe("insertOneMacRecordsFromKafkaIntoMako", () => {
       {
         originalWaiverNumber: "W-12345",
         actionType: "Extend",
-        cmsStatus: "Submitted - Intake Needed",
+        cmsStatus: "Requested",
         stateStatus: "Submitted",
         currentStatus: "TE Requested",
         seatoolStatus: "Submitted",
+        state: "MD",
       },
     ],
     [
@@ -558,7 +559,7 @@ describe("insertOneMacRecordsFromKafkaIntoMako", () => {
       {
         originalWaiverNumber: "W-12345",
         actionType: "Extend",
-        cmsStatus: "Submitted - Intake Needed",
+        cmsStatus: "Requested",
         stateStatus: "Submitted",
         currentStatus: "TE Requested",
         seatoolStatus: "Submitted",
@@ -571,7 +572,7 @@ describe("insertOneMacRecordsFromKafkaIntoMako", () => {
       {
         originalWaiverNumber: "W-12345",
         actionType: "Extend",
-        cmsStatus: "Submitted - Intake Needed",
+        cmsStatus: "Requested",
         stateStatus: "Submitted",
         currentStatus: "TE Requested",
         seatoolStatus: "Submitted",
@@ -626,6 +627,7 @@ describe("insertOneMacRecordsFromKafkaIntoMako", () => {
         description: null,
         id: "MD-12345",
         makoChangedDate: new Date(TIMESTAMP).toISOString(),
+        state: "MD",
         origin: "OneMACLegacy",
         proposedDate: "2025-03-10T00:00:00Z",
         subject: null,
