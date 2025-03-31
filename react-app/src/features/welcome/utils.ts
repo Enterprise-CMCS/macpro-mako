@@ -1,9 +1,9 @@
 import { QueryClient } from "@tanstack/react-query";
-import { Navigate, redirect } from "react-router";
+import { redirect } from "react-router";
 
-import { getUser, OneMacUser } from "@/api";
+import { getUser } from "@/api";
 
-export const loader = (queryClient: QueryClient) => {
+export const loader = (queryClient: QueryClient, loginFlag?: boolean) => {
   return async () => {
     const queryString = window.location.search;
     // Parse the query string to get URL parameters
@@ -22,15 +22,12 @@ export const loader = (queryClient: QueryClient) => {
         queryKey: ["user"],
         queryFn: () => getUser(),
       });
-      return !userFetch?.user && redirect("/login");
-    }
+      const isUserLoggedIn =
+        !["/login", "/faq", "/support"].includes(window.location.pathname) && !userFetch?.user;
 
-    // check user is logged in
-    const loginRedirect =
-      !["/login", "/faq", "/support"].includes(window.location.pathname) &&
-      !queryClient.getQueryData<OneMacUser>(["user"])?.user;
-    if (loginRedirect) {
-      return <Navigate to="/login" />;
+      if (!loginFlag && isUserLoggedIn) {
+        return redirect("/login");
+      }
     }
 
     return queryClient.getQueryData(["user"]);
