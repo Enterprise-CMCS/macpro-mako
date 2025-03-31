@@ -141,6 +141,10 @@ const processAndIndex = async ({
         record.origin = "onemac";
         console.log("WHAT DOES THE RECORD LOOK LIKE", record);
       }
+
+      const recordToProcess = record.reverseChrono.length
+        ? { ...record, ...record.reverseChrono.at(-1) }
+        : record;
       // flatten legacy data record with multiple events
       // const recordsToProcess = record.reverseChrono?.length
       //   ? record.reverseChrono.map((activity: any) => ({ ...record, ...activity }))
@@ -149,12 +153,12 @@ const processAndIndex = async ({
       // for (const currentRecord of recordsToProcess) {
       //   console.log(recordsToProcess, "RECORDS TO PROCESS");
       // If the event is a supported event, transform and push to docs array for indexing
-      if (record.event in transforms) {
+      if (recordToProcess.event in transforms) {
         console.log("ARE WE IN HERE LEGACY DATA");
-        console.log("LEGACY EVENT", record.event);
-        const transformForEvent = transforms[record.event as keyof typeof transforms];
+        console.log("LEGACY EVENT", recordToProcess.event);
+        const transformForEvent = transforms[recordToProcess.event as keyof typeof transforms];
         console.log(transformForEvent, "TRANSFORM FOR EVENT");
-        const result = transformForEvent.transform(offset).safeParse(record);
+        const result = transformForEvent.transform(offset).safeParse(recordToProcess);
         console.log(result, "WHAT IS THE RESULT");
 
         if (result.success && result.data === undefined) continue;
@@ -162,14 +166,14 @@ const processAndIndex = async ({
           logError({
             type: ErrorType.VALIDATION,
             error: result?.error,
-            metadata: { topicPartition, kafkaRecord, record },
+            metadata: { topicPartition, kafkaRecord, recordToProcess },
           });
           continue;
         }
         console.log("WHAT IS RESULT DATA AT THIS POINT", result.data);
         docs.push(result.data);
       } else {
-        console.log(`No transform found for event: ${currentRecord.event}`);
+        console.log(`No transform found for event: ${recordToProcess.event}`);
       }
       // }
     } catch (error) {
