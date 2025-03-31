@@ -162,14 +162,14 @@ const processAndIndex = async ({
             logError({
               type: ErrorType.VALIDATION,
               error: result?.error,
-              metadata: { topicPartition, kafkaRecord, record },
+              metadata: { topicPartition, kafkaRecord, currentRecord },
             });
             continue;
           }
           console.log("WHAT IS RESULT DATA AT THIS POINT", result.data);
           docs.push(result.data);
         } else {
-          console.log(`No transform found for event: ${record.event}`);
+          console.log(`No transform found for event: ${currentRecord.event}`);
         }
       }
     } catch (error) {
