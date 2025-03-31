@@ -50,4 +50,4 @@ jobs:
       FILE_1_DEPLOY_TO: _posts/releases/
       COMMIT_MSG: "adding release ${{ needs.generate-post.outputs.tag }} to the release notes"
       URL_PATH: releases/
-    secrets: inherit # allow called workflow to use GitHub secrets
+    secrets: inherit # pragma: allowlist secret
