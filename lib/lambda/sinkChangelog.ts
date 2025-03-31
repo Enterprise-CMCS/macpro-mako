@@ -145,6 +145,7 @@ const processAndIndex = async ({
       const recordToProcess = record.reverseChrono.length
         ? { ...record, ...record.reverseChrono.at(-1) }
         : record;
+      console.log(recordToProcess, "WHAT????");
       // flatten legacy data record with multiple events
       // const recordsToProcess = record.reverseChrono?.length
       //   ? record.reverseChrono.map((activity: any) => ({ ...record, ...activity }))
