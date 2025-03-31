@@ -11,7 +11,7 @@ export const legacyEventSchema = legacySharedSchema
     z.object({
       eventTimestamp: z.number().nullish(),
       lastEventTimestamp: z.number().nullish(),
-      submissionTimestamp: z.number(),
+      submissionTimestamp: z.number().nullish(),
       pk: z.string(),
       currentStatus: z.string().nullish(),
       subStatus: z.string().nullish(),
