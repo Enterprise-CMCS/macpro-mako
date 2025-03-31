@@ -30,6 +30,7 @@ export const transform = (id: string) => {
           event = "new-legacy-submission";
           break;
         case "chipsparai":
+        case "submitmedicaidsparai":
         case "medicaidsparai":
         case "waiveramendmentrai":
         case "waiverappkrai":
