@@ -28,7 +28,7 @@
 				{% endif %}
 			</span>
 			<div class="py-1 @md:py-2 w-2/3 @md:w-4/5">
-				{% if results.errors.size > 0 %}
+				{% if results.stats.unexpected == 0 and results.errors.size > 0 %}
 					<!-- if there are errors, there won't be any test statistics, so only display the errors -->
 					<div class="py-1 @md:py-2 px-0 font-mono flex flex-col gap-4">
 					{% for error in results.errors %}
