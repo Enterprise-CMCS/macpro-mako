@@ -1,0 +1,56 @@
+name: Create Release Note Post
+description: retrieves the release data from the API and creates a release post
+inputs:
+  tag: # tag for release
+    description: "The tag of the release to create a post for"
+    required: true
+  token:
+    description: "GitHub Token"
+    required: true
+outputs:
+  filename:
+    description: "The name of the post file created"
+    value: ${{ steps.filename.outputs.filename }}
+runs:
+  using: "composite"
+  steps:
+    - name: Get Release Info
+      uses: octokit/request-action@v2.x
+      id: get-release
+      with:
+        route: /repos/${{ github.repository }}/releases/tags/${{ inputs.tag }}
+      env:
+        GITHUB_TOKEN: ${{ inputs.token }}
+    - name: Format Published At Date
+      shell: bash
+      run: |
+        published_at=$(echo ${{ fromJson(steps.get-release.outputs.data).published_at }}| cut -d "T" -f 1)
+        echo "PUB_DATE=$published_at" >> "$GITHUB_ENV"
+    - name: Create Filename
+      id: filename
+      shell: bash
+      run: |
+        # Normalize the tag name to replace the `.` with `-`
+        tag_name=$(echo "${{ inputs.tag }}" | sed "s/\./-/g")
+        name="$PUB_DATE-$tag_name"
+        echo "post_name=$name" >> "$GITHUB_OUTPUT"
+        echo "filename=$name.md" >> "$GITHUB_OUTPUT"
+    - name: Create Post File
+      shell: bash
+      run: |
+        echo """---
+        title: ${{ inputs.tag }}
+        tag: ${{ inputs.tag }}
+        category: release
+        date: $PUB_DATE
+        created_at: ${{ fromJson(steps.get-release.outputs.data).created_at }}
+        published_at: ${{ fromJson(steps.get-release.outputs.data).published_at }}
+        author: ${{ fromJson(steps.get-release.outputs.data).author.login }}
+        author_avatar: ${{ fromJson(steps.get-release.outputs.data).author.avatar_url }}
+        author_url: ${{ fromJson(steps.get-release.outputs.data).author.html_url }}
+        html_url: ${{ fromJson(steps.get-release.outputs.data).html_url }}
+        prerelease: ${{ fromJson(steps.get-release.outputs.data).prerelease }}
+        ---
+
+        ${{ fromJson(steps.get-release.outputs.data).body }}
+        """ > ${{ steps.filename.outputs.filename }}
