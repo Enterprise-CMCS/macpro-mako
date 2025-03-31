@@ -39,7 +39,7 @@ GEM
       safe_yaml (~> 1.0)
       terminal-table (>= 1.8, < 4.0)
       webrick (~> 1.7)
-    jekyll-report-dashboard (0.1.12)
+    jekyll-report-dashboard (0.1.13)
       jekyll (~> 4.4.1)
       jekyll-tailwindcss
     jekyll-sass-converter (3.1.0)
