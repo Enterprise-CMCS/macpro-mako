@@ -20,8 +20,8 @@ export const DetailCardWrapper = ({
 }: PropsWithChildren<{
   title: string;
 }>) => (
-  <CardWithTopBorder className="flex-1 text-wrap my-0 sm:my-6">
-    <div className="p-4 py-1 min-h-36">
+  <CardWithTopBorder className="h-full flex-1 text-wrap my-0 sm:my-6">
+    <div className="p-4 py-1 min-h-36 h-full">
       <h2>{title}</h2>
       {children}
     </div>
@@ -45,7 +45,7 @@ export const DetailsContent = ({ id }: DetailsContentProps) => {
     <div className="w-full py-1 px-4 lg:px-8">
       <section
         id="package_overview"
-        className="flex flex-col sm:flex-row gap-3 mb-3 sm:gap-x-[3rem] md:gap-x-[5rem] lg:gap-x-[3rem] xl:gap-x-[6rem] sm:mb-0"
+        className="min-h-min flex flex-col sm:flex-row gap-3 mb-3 sm:gap-x-[3rem] md:gap-x-[5rem] lg:gap-x-[3rem] xl:gap-x-[6rem] sm:mb-0"
       >
         <PackageStatusCard submission={submission} />
         <PackageActionsCard id={id} submission={submission} />
