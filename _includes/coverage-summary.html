@@ -10,7 +10,7 @@
         <!-- assign the value to values -->
         {% assign values = stat[1] %}
           <div class="w-full px-1 py-2 @md:px-2 @md:py-4 leading-none border rounded-sm border-outline flex flex-col items-center gap-4 @sm:gap-8 @md:gap-10">
-          <div class="font-medium text-sm @sm:text-base @md:text-lg @lg:text-xl">
+          <div class="font-medium text-sm @sm:text-base @md:text-lg">
             <!-- Liquid provides a helper method to capitalize text -->
             {{ name | capitalize }}
           </div>
@@ -24,11 +24,11 @@
             {%- endif -%}
           {%- endcapture -%}
           <!-- use the custom coverage_status filter with the stat name to get the correct styling for the percent -->
-          <div class="font-bold text-xl @sm:text-2xl @md:text-3xl @lg:text-4xl {{ status }}">
+          <div class="font-bold text-xl @md:text-3xl @lg:text-4xl {{ status }}">
             <!-- Liquid provides a helper method for rounding floats to a number -->
             {{ values.pct | round: 1 }}%
           </div>
-          <div class="font-light text-xs @sm:text-base @md:text-base @lg:text-lg">
+          <div class="font-light text-[0.5rem] @xs:text-[0.6rem] @sm:text-sm">
             {{ values.covered }} / {{ values.total }}
           </div>
         </div>

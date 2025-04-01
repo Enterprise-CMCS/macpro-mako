@@ -42,7 +42,7 @@ layout: default
 
   <div class="md:mt-[-2rem] md:col-start-3">
     {% assign releases = site.categories["release"] | sort: 'published_at' | reverse %}
-    {% for post in releases limit: 12 %}
+    {% for post in releases limit: 3 %}
       {% include release-note.html post=post content=post.content %}
     {% endfor %}
   </div>
