@@ -23,30 +23,30 @@
         <div class='clearfix'>
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">100% </span>
+                <span class="strong">96.77% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>22/22</span>
+                <span class='fraction'>30/31</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">81.25% </span>
+                <span class="strong">75% </span>
                 <span class="quiet">Branches</span>
-                <span class='fraction'>13/16</span>
+                <span class='fraction'>15/20</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
                 <span class="strong">100% </span>
                 <span class="quiet">Functions</span>
-                <span class='fraction'>2/2</span>
+                <span class='fraction'>3/3</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
                 <span class="strong">100% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>22/22</span>
+                <span class='fraction'>30/30</span>
             </div>
         
             
@@ -172,7 +172,24 @@
 <a name='L107'></a><a href='#L107'>107</a>
 <a name='L108'></a><a href='#L108'>108</a>
 <a name='L109'></a><a href='#L109'>109</a>
-<a name='L110'></a><a href='#L110'>110</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
+<a name='L110'></a><a href='#L110'>110</a>
+<a name='L111'></a><a href='#L111'>111</a>
+<a name='L112'></a><a href='#L112'>112</a>
+<a name='L113'></a><a href='#L113'>113</a>
+<a name='L114'></a><a href='#L114'>114</a>
+<a name='L115'></a><a href='#L115'>115</a>
+<a name='L116'></a><a href='#L116'>116</a>
+<a name='L117'></a><a href='#L117'>117</a>
+<a name='L118'></a><a href='#L118'>118</a>
+<a name='L119'></a><a href='#L119'>119</a>
+<a name='L120'></a><a href='#L120'>120</a>
+<a name='L121'></a><a href='#L121'>121</a>
+<a name='L122'></a><a href='#L122'>122</a>
+<a name='L123'></a><a href='#L123'>123</a>
+<a name='L124'></a><a href='#L124'>124</a>
+<a name='L125'></a><a href='#L125'>125</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -208,12 +225,22 @@
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">2x</span>
 <span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-yes">2x</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -258,6 +285,8 @@
 <span class="cline-any cline-yes">3x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -265,6 +294,7 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">2x</span>
 <span class="cline-any cline-yes">2x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">3x</span>
@@ -309,10 +339,18 @@ interface submitMessageType {
   status: string;
   submitterEmail: string;
   submitterName: string;
+  submissionDate: string;
+  proposedDate: string;
   adminChangeType: string;
   stateStatus: string;
   cmsStatus: string;
 }
+&nbsp;
+const convertStringToTimestamp = (date: string) =&gt; {
+  const formatedDate = new Date(date).getTime();
+  <span class="missing-if-branch" title="if path not taken" >I</span>if (isNaN(formatedDate)) <span class="cstat-no" title="statement not covered" >throw new Error("Not a valid time");</span>
+  return formatedDate;
+};
 &nbsp;
 const sendSubmitMessage = async (item: submitMessageType) =&gt; {
   const topicName = process.env.topicName as string;
@@ -321,6 +359,8 @@ const sendSubmitMessage = async (item: submitMessageType) =&gt; {
   }
 &nbsp;
   const currentTime = Date.now();
+  const formatedSubmittedDate = convertStringToTimestamp(item.submissionDate);
+  const formatedProposedDate = convertStringToTimestamp(item.proposedDate);
 &nbsp;
   await produceMessage(
     topicName,
@@ -334,6 +374,8 @@ const sendSubmitMessage = async (item: submitMessageType) =&gt; {
       description: null,
       event: "NOSO",
       state: item.id.substring(0, 2),
+      submissionDate: formatedSubmittedDate,
+      proposedDate: formatedProposedDate,
       makoChangedDate: currentTime,
       changedDate: currentTime,
       statusDate: currentTime,
@@ -360,11 +402,13 @@ export const handler = async (event: APIGatewayEvent) =&gt; {
       typeof event.body === "string" ? JSON.parse(event.body) : <span class="branch-1 cbranch-no" title="branch not covered" >event.body,</span>
     );
 &nbsp;
-    const { stateStatus, cmsStatus } = getStatus(item.status);
-    // check if it already exsists
+    let status: string = item.status;
+    // check if it already exists in onemac - should exist in SEATool
     const currentPackage: ItemResult | undefined = await getPackage(item.id);
 &nbsp;
     if (currentPackage &amp;&amp; currentPackage.found == true) {
+      // we should default to the current status in SEATool, and use entered status as a backup
+      status = currentPackage._source?.seatoolStatus ?? <span class="branch-1 cbranch-no" title="branch not covered" >item.status;</span>
       // if it exists and has origin OneMAC we shouldn't override it
       <span class="missing-if-branch" title="else path not taken" >E</span>if (currentPackage._source.origin === "OneMAC") {
         return response({
@@ -374,6 +418,7 @@ export const handler = async (event: APIGatewayEvent) =&gt; {
       }
     }
 &nbsp;
+    const { stateStatus, cmsStatus } = getStatus(status);
     return await sendSubmitMessage({ ...item, stateStatus, cmsStatus });
   } catch (err) {
     console.error("Error has occured submitting package:", err);
@@ -397,7 +442,7 @@ export const handler = async (event: APIGatewayEvent) =&gt; {
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2025-04-01T02:16:27.442Z
+                at 2025-04-01T13:50:02.409Z
             </div>
         <script src="../../../prettify.js"></script>
         <script>
