@@ -1,7 +1,7 @@
-<article class="@container border border-outline rounded-sm p-4 my-8">
+<article class="@container border border-outline rounded-sm p-4 my-8 first:mt-0 last:mb-0">
   <header class="block mb-8">
     <div class="flex flex-row flex-wrap items-center mb-8">
-      <a class="text-primary font-semibold mr-4" href="{{ include.post.html_url }}">
+      <a class="text-primary font-semibold mr-4" href="{{ include.post.html_url }}" target="_blank">
         <h1 class="text-nowrap text-3xl md:text-4xl font-semibold mb-0">{{ include.post.tag | escape }}</h1>
       </a>
       {% if include.post.prerelease %}

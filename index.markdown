@@ -2,8 +2,8 @@
 layout: home
 ---
 
-<div class="xl:max-w-[68rem] 2xl:max-w-[80rem] md:grid md:grid-cols-3 md:gap-4 md:items-start md:justify-center">
-  <div class="md:col-start-1 md:col-span-2">
+<div class="xl:max-w-[68rem] 2xl:max-w-[80rem] md:grid md:grid-cols-5 md:gap-4 md:items-start md:justify-center">
+  <div class="md:col-start-1 md:col-span-3">
     <div class="">
       <h2 class="md:mt-0">Main</h2>
 
@@ -40,10 +40,16 @@ layout: home
     </div>
   </div>
 
-  <div class="md:mt-[-2rem] md:col-start-3">
-    {% assign releases = site.categories["release"] | sort: 'published_at' | reverse %}
-    {% for post in releases limit: 12 %}
-      {% include release-note.html post=post content=post.content %}
-    {% endfor %}
+  <div class="md:col-start-4 md:col-span-2 md:mt-16">
+    <h3>Latest Releases</h3>
+    <div class="">
+      {% assign releases = site.categories["release"] | sort: 'published_at' | reverse %}
+      {% for post in releases limit: 12 %}
+        {% include release-note.html post=post content=post.content %}
+      {% endfor %}
+    </div>
+    <div class="flex justify-end mt-4 min-h-4">
+      <a href="{{ "/releases" | relative_url }}">View Previous Releases</a>
+    </div>
   </div>
 </div>
