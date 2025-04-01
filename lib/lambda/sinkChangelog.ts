@@ -152,6 +152,7 @@ const processAndIndex = async ({
             recordsToProcess.push({
               ...record,
               ...adminChange,
+              event: "legacy-admin-change",
               // GSI1pk: "OneMAC#adminchange",
               // isAdminChange: true,
             }),

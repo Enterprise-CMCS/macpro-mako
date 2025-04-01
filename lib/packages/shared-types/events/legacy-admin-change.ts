@@ -11,7 +11,7 @@ export const legacyAdminChangeSchema = z
     changeMade: z.string(),
     changeReason: z.string().optional().default(""),
     isAdminChange: z.boolean().default(true),
-    event: z.string().default(Action.LEGACY_ADMIN_CHANGE),
+    event: z.string(),
   })
   .transform((data) => ({
     ...data,
