@@ -142,7 +142,7 @@ const processAndIndex = async ({
         console.log("WHAT DOES THE RECORD LOOK LIKE", record);
       }
 
-      const recordToProcess = record.reverseChrono.length
+      const recordToProcess = record.reverseChrono?.length
         ? { ...record, ...record.reverseChrono.at(-1) }
         : record;
       console.log(recordToProcess, "WHAT????");
