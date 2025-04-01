@@ -4,12 +4,15 @@ import { ONEMAC_LEGACY_ORIGIN } from "../../main/transforms/legacy-transforms";
 export const transform = (id: string) => {
   return legacyEventSchema.transform((data) => {
     // Resolve the action type based on the GSI1pk
-    const eventTypeMatch = data?.GSI1pk?.match(/OneMAC#(submit|spa|waiver)(.*)/i);
+    const eventTypeMatch = data?.GSI1pk?.match(/OneMAC#(submit|spa|waiver|adminchange)(.*)/i);
     const eventType = eventTypeMatch?.[1]?.toLowerCase();
     let submitType: string = "";
     let event;
 
     // const eventType = data?.GSI1pk?.split("OneMAC#submit")?.[1] || "";
+    if (eventType === "adminchange") {
+      event = Action.LEGACY_ADMIN_CHANGE;
+    }
     if (eventType === "spa" || eventType === "waiver") {
       event = "new-legacy-submission";
     }

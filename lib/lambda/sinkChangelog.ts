@@ -1,7 +1,7 @@
 import { Handler } from "aws-lambda";
 import { getPackageChangelog } from "libs/api/package";
 import { bulkUpdateDataWrapper, ErrorType, getTopic, logError } from "libs/sink-lib";
-import { KafkaEvent, KafkaRecord, opensearch } from "shared-types";
+import { KafkaEvent, KafkaRecord, LegacyAdminChange, opensearch } from "shared-types";
 import { decodeBase64WithUtf8 } from "shared-utils";
 
 import {
@@ -141,42 +141,54 @@ const processAndIndex = async ({
         record.origin = "onemac";
         console.log("WHAT DOES THE RECORD LOOK LIKE", record);
       }
-
-      const recordToProcess = record.reverseChrono?.length
-        ? { ...record, ...record.reverseChrono.at(-1) }
-        : record;
-      console.log(recordToProcess, "WHAT????");
+      // legacy records with multiple actions have a reverseChrono property in the main record for this package
+      // each action within a package is also in their own record without a reverseChrono property
+      const recordsToProcess: Array<(typeof transforms)[keyof typeof transforms]["Schema"]> = [];
+      if (record.reverseChrono?.length) {
+        recordsToProcess.push({ ...record, ...record.reverseChrono.at(-1) });
+        // focus on adminChange property in records with the reverseChrono property to avoid ingesting duplicates
+        if (record.adminChanges?.length) {
+          record.adminChanges.map((adminChange: LegacyAdminChange) =>
+            recordsToProcess.push({ ...record, ...adminChange, GSI1pk: "OneMAC#adminchange" }),
+          );
+        }
+      }
+      recordsToProcess.push(record);
+      // const recordToProcess = record.reverseChrono?.length
+      //   ? { ...record, ...record.reverseChrono.at(-1) }
+      //   : record;
+      // console.log(recordToProcess, "WHAT????");
       // flatten legacy data record with multiple events
       // const recordsToProcess = record.reverseChrono?.length
       //   ? record.reverseChrono.map((activity: any) => ({ ...record, ...activity }))
       //   : [record];
 
-      // for (const currentRecord of recordsToProcess) {
-      //   console.log(recordsToProcess, "RECORDS TO PROCESS");
-      // If the event is a supported event, transform and push to docs array for indexing
-      if (recordToProcess.event in transforms) {
-        console.log("ARE WE IN HERE LEGACY DATA");
-        console.log("LEGACY EVENT", recordToProcess.event);
-        const transformForEvent = transforms[recordToProcess.event as keyof typeof transforms];
-        console.log(transformForEvent, "TRANSFORM FOR EVENT");
-        const result = transformForEvent.transform(offset).safeParse(recordToProcess);
-        console.log(result, "WHAT IS THE RESULT");
+      for (const currentRecord of recordsToProcess) {
+        //   console.log(recordsToProcess, "RECORDS TO PROCESS");
+        // If the event is a supported event, transform and push to docs array for indexing
+        if (currentRecord.event in transforms) {
+          console.log("ARE WE IN HERE LEGACY DATA");
+          console.log("LEGACY EVENT", currentRecord.event);
+          const transformForEvent = transforms[currentRecord.event as keyof typeof transforms];
+          console.log(transformForEvent, "TRANSFORM FOR EVENT");
+          const result = transformForEvent.transform(offset).safeParse(currentRecord);
+          console.log(result, "WHAT IS THE RESULT");
 
-        if (result.success && result.data === undefined) continue;
-        if (!result.success) {
-          logError({
-            type: ErrorType.VALIDATION,
-            error: result?.error,
-            metadata: { topicPartition, kafkaRecord, recordToProcess },
-          });
-          continue;
+          if (result.success && result.data === undefined) continue;
+          if (!result.success) {
+            logError({
+              type: ErrorType.VALIDATION,
+              error: result?.error,
+              metadata: { topicPartition, kafkaRecord, currentRecord },
+            });
+            continue;
+          }
+          console.log("WHAT IS RESULT DATA AT THIS POINT", result.data);
+          docs.push(result.data);
+        } else {
+          console.log(`No transform found for event: ${recordToProcess.event}`);
         }
-        console.log("WHAT IS RESULT DATA AT THIS POINT", result.data);
-        docs.push(result.data);
-      } else {
-        console.log(`No transform found for event: ${recordToProcess.event}`);
       }
-      // }
     } catch (error) {
       logError({
         type: ErrorType.BADPARSE,
