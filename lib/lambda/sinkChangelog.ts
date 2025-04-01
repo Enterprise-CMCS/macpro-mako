@@ -152,9 +152,9 @@ const processAndIndex = async ({
             recordsToProcess.push({
               ...record,
               ...adminChange,
-              GSI1pk: "OneMAC#adminchange",
-              isAdminChange: true,
-              adminChangeType: "legacy-admin-change",
+              event: "legacy-admin-change",
+              // GSI1pk: "OneMAC#adminchange",
+              // isAdminChange: true,
             }),
           );
         }
