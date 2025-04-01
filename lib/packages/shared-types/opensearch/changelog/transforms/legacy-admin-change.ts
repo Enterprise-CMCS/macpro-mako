@@ -12,6 +12,7 @@ export const transform = (id: string) => {
       changeMade: data.changeMade,
       changeReason: data.changeReason,
       isAdminChange: data.isAdminChange,
+      event: data.event,
     };
     return transformedData;
   });
