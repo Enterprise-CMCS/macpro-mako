@@ -158,8 +158,9 @@ const processAndIndex = async ({
             }),
           );
         }
+      } else {
+        recordsToProcess.push(record);
       }
-      recordsToProcess.push(record);
       // const recordToProcess = record.reverseChrono?.length
       //   ? { ...record, ...record.reverseChrono.at(-1) }
       //   : record;
