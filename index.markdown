@@ -2,7 +2,7 @@
 layout: default
 ---
 
-<div class="md:grid md:grid-cols-3 md:gap-8 md:items-start md:justify-center">
+<div class="md:grid md:grid-cols-3 md:gap-4 md:items-start md:justify-center">
   <div class="md:col-start-1 md:col-span-2">
     <div class="">
       <h2 class="md:mt-0">Main</h2>
@@ -42,7 +42,7 @@ layout: default
 
   <div class="md:mt-[-2rem] md:col-start-3">
     {% assign releases = site.categories["release"] | sort: 'published_at' | reverse %}
-    {% for post in releases limit: 3 %}
+    {% for post in releases limit: 12 %}
       {% include release-note.html post=post content=post.content %}
     {% endfor %}
   </div>
