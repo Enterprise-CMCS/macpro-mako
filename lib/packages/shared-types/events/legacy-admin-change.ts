@@ -8,6 +8,7 @@ export const legacyAdminChangeSchema = z
     changeType: z.string().nullish(),
     changeMade: z.string(),
     changeReason: z.string().optional().default(""),
+    isAdminChange: z.boolean().default(true),
   })
   .transform((data) => ({
     ...data,

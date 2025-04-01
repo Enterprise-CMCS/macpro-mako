@@ -11,6 +11,7 @@ export const transform = (id: string) => {
       changeType: data.changeType,
       changeMade: data.changeMade,
       changeReason: data.changeReason,
+      isAdminChange: data.isAdminChange,
     };
     return transformedData;
   });
