@@ -149,7 +149,13 @@ const processAndIndex = async ({
         // focus on adminChange property in records with the reverseChrono property to avoid ingesting duplicates
         if (record.adminChanges?.length) {
           record.adminChanges.map((adminChange: LegacyAdminChange) =>
-            recordsToProcess.push({ ...record, ...adminChange, GSI1pk: "OneMAC#adminchange" }),
+            recordsToProcess.push({
+              ...record,
+              ...adminChange,
+              GSI1pk: "OneMAC#adminchange",
+              isAdminChange: true,
+              adminChangeType: "legacy-admin-change",
+            }),
           );
         }
       }
