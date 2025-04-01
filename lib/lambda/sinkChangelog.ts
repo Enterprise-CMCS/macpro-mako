@@ -193,7 +193,7 @@ const processAndIndex = async ({
           console.log("WHAT IS RESULT DATA AT THIS POINT", result.data);
           docs.push(result.data);
         } else {
-          console.log(`No transform found for event: ${recordToProcess.event}`);
+          console.log(`No transform found for event: ${currentRecord.event}`);
         }
       }
     } catch (error) {
