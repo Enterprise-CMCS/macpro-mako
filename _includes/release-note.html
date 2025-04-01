@@ -1,18 +1,14 @@
 <article class="@container border border-outline rounded-sm p-4 my-8">
   <header class="block mb-8">
-    <div class="flex flex-row flex-wrap items-center gap-4 leading-14 mb-8">
-      <a class="text-primary font-semibold" href="{{ include.post.html_url }}">
+    <div class="flex flex-row flex-wrap items-center mb-8">
+      <a class="text-primary font-semibold mr-4" href="{{ include.post.html_url }}">
         <h1 class="text-nowrap text-3xl md:text-4xl font-semibold mb-0">{{ include.post.tag | escape }}</h1>
       </a>
       {% if include.post.prerelease %}
-      <span>
-        <span data-view-component="true" class="text-xs text-yellow-700 border rounded-3xl py-1 px-2">Pre-release</span>
-          <div class="ml-2 d-none d-md-inline">
-          </div>
-      </span>
+        <span class="my-3 text-xs text-yellow-700 border rounded-3xl py-1 px-2">Pre-release</span>
       {% endif %}
     </div>
-    <div class="text-sm text-tertiary border-b border-outline pb-6 leading-normal break-words flex flex-row flex-wrap items-end">
+    <div class="text-sm/7 text-tertiary border-b border-outline pb-6 leading-normal break-words flex flex-row flex-wrap items-end">
       <div class="mr-6 mb-2">
         {% if include.post.author_avatar %}
           <img class="h-5 w-5 rounded-sm inline-block box-border leading-none overflow-hidden align-middle" src="{{ include.post.author_avatar }}" alt="@{{ include.post.author }}" />
