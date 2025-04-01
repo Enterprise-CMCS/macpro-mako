@@ -148,6 +148,7 @@ export const ActionForm = <Schema extends SchemaWithEnforcableProps>({
   const onSubmit = form.handleSubmit(async (formData) => {
     try {
       try {
+        console.log(formData);
         await mutateAsync(formData);
       } catch (error) {
         throw Error(`Error submitting form: ${error?.message || error}`);
