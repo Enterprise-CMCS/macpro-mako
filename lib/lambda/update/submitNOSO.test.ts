@@ -56,6 +56,8 @@ describe("handler", () => {
         changeMade: "change",
         mockEvent: "mock-event",
         changeReason: "reason",
+        submissionDate: "1/1/2025",
+        proposedDate: "12/1/2025",
       }),
     } as APIGatewayEvent;
 
@@ -80,6 +82,8 @@ describe("handler", () => {
         changeMade: "change",
         mockEvent: "mock-event",
         changeReason: "reason",
+        submissionDate: "1/1/2025",
+        proposedDate: "12/1/2025",
       }),
     } as APIGatewayEvent;
 
@@ -105,6 +109,8 @@ describe("handler", () => {
         mockEvent: "mock-event",
         changeMade: "change",
         changeReason: "reason",
+        submissionDate: "1/1/2025",
+        proposedDate: "12/1/2025",
       }),
     } as APIGatewayEvent;
 
