@@ -21,7 +21,7 @@ import { useLocalStorage } from "@/hooks/useLocalStorage";
 import { SpasList } from "./Lists/spas";
 import { WaiversList } from "./Lists/waivers";
 
-const loader = (queryClient: QueryClient) => {
+const loader = (queryClient: QueryClient, loginFlag?: boolean) => {
   return async () => {
     if (!queryClient.getQueryData(["user"])) {
       await queryClient.fetchQuery({
@@ -32,7 +32,7 @@ const loader = (queryClient: QueryClient) => {
 
     const isUser = queryClient.getQueryData(["user"]) as Awaited<ReturnType<typeof getUser>>;
     if (!isUser.user) {
-      return redirect("/");
+      return redirect(loginFlag ? "/" : "/login");
     }
 
     return isUser;
