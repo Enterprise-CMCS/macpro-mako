@@ -7,12 +7,18 @@ import { getMainExportData } from "./useSearch";
 
 describe("getMainExportData tests", () => {
   it("should return spa items", async () => {
-    const results = await getMainExportData(DEFAULT_FILTERS.spas.filters);
+    const results = await getMainExportData(DEFAULT_FILTERS.spas.filters, {
+      field: "id",
+      order: "desc",
+    });
     expect(results).toEqual(getFilteredDocList(["Medicaid SPA", "CHIP SPA"]));
   });
 
   it("should return waiver items", async () => {
-    const results = await getMainExportData(DEFAULT_FILTERS.waivers.filters);
+    const results = await getMainExportData(DEFAULT_FILTERS.waivers.filters, {
+      field: "id",
+      order: "desc",
+    });
     expect(results).toEqual(getFilteredDocList(["1915(b)", "1915(c)"]));
   });
 
