@@ -14,10 +14,11 @@
             <!-- Liquid provides a helper method to capitalize text -->
             {{ name | capitalize }}
           </div>
+          {% assign warn = site.coverage.[name] | times: 0.9 %}
           {%- capture status -%}
-            {%- if values.pct >= site.coverage.pass.[name] -%}
+            {%- if values.pct >= site.coverage.[name] -%}
               text-pass
-            {%- elsif values.pct > site.coverage.fail.[name] -%}
+            {%- elsif values.pct >= warn -%}
               text-warn
             {%- else -%}
               text-fail
