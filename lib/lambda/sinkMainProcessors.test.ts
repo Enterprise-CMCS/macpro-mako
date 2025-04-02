@@ -528,15 +528,10 @@ describe("insertOneMacRecordsFromKafkaIntoMako", () => {
   it.each([
     ["medicaidspa", "Medicaid SPA", {}, {}],
     ["chipspa", "CHIP SPA", {}, {}],
-    ["waivernew", "1915(b)", {}, { actionType: "Initial" }],
-    ["waiverrenewal", "1915(b)", {}, { actionType: "Renewal" }],
-    ["waiveramendment", "1915(b)", {}, { actionType: "Amendment" }],
-    [
-      "waiverappk",
-      "1915(c)",
-      { title: TEST_TITLE },
-      { actionType: "Amendment", title: TEST_TITLE },
-    ],
+    ["waivernew", "1915(b)", {}, { actionType: "New" }],
+    ["waiverrenewal", "1915(b)", {}, { actionType: "Renew" }],
+    ["waiveramendment", "1915(b)", {}, { actionType: "Amend" }],
+    ["waiverappk", "1915(c)", { title: TEST_TITLE }, { actionType: "Amend", title: TEST_TITLE }],
     // For waiverextension types, add a waiverNumber and override currentStatus.
     [
       "waiverextension",

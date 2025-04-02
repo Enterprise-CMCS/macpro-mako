@@ -1,0 +1,53 @@
+name: Publish Release Notes
+
+on:
+  workflow_call:
+    inputs:
+      TAG:
+        type: string
+        required: true
+  workflow_dispatch:
+    inputs:
+      TAG:
+        type: string
+        required: true
+  release:
+    types: [prereleased, released]
+
+# this action needs the same permissions as the Push to GitHub Pages action because it is calling it
+permissions:
+  contents: write
+  actions: read
+
+jobs:
+  generate-post:
+    name: Generate Release Post
+    runs-on: ubuntu-latest
+    env:
+      TAG: ${{ github.event_name == 'release' && github.event.release.tag_name || inputs.TAG }}
+    outputs:
+      tag: ${{ env.TAG }}
+      artifact_id: ${{ steps.post.outputs.filename }}
+    steps:
+      - uses: actions/checkout@v4
+      - id: post
+        uses: ./.github/actions/create-release-note-post
+        with:
+          tag: ${{ env.TAG }}
+          token: ${{ secrets.GITHUB_TOKEN }}
+      - name: Upload Release Note
+        uses: actions/upload-artifact@v4
+        with:
+          name: ${{ steps.post.outputs.filename }}
+          path: ${{ steps.post.outputs.filename }}
+          retention-days: 30
+
+  publish:
+    needs: [generate-post]
+    uses: ./.github/workflows/push-to-gh-pages.yml
+    with:
+      FILE_1_ARTIFACT_ID: ${{ needs.generate-post.outputs.artifact_id }}
+      FILE_1_DEPLOY_TO: _posts/releases/
+      COMMIT_MSG: "adding release ${{ needs.generate-post.outputs.tag }} to the release notes"
+      URL_PATH: releases/
+    secrets: inherit # pragma: allowlist secret
