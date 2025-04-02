@@ -9,16 +9,11 @@ export const transform = (id: string) => {
     let submitType: string = "";
     let event;
 
-    // const eventType = data?.GSI1pk?.split("OneMAC#submit")?.[1] || "";
-    // if (eventType === "adminchange") {
-    //   event = Action.LEGACY_ADMIN_CHANGE;
-    // }
     if (eventType === "spa" || eventType === "waiver") {
       event = "new-legacy-submission";
     }
 
     if (eventType === "submit") {
-      console.log(eventType, "IS IT SUBMIT");
       submitType = eventTypeMatch?.[2] || "";
 
       switch (submitType) {
@@ -70,7 +65,6 @@ export const transform = (id: string) => {
 
     // Return if the actionType is unhandled
     if (event === undefined) return undefined;
-    console.log("IN THE TRANSFORMS, EVENT?", event);
 
     // If we're still here, go ahead and transform the data
     const transformedData = {
