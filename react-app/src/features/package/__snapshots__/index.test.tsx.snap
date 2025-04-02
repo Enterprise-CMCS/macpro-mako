@@ -10,7 +10,7 @@ exports[`package details > makes a package 1`] = `
       id="package_overview"
     >
       <div
-        class="sticky top-12 flex-1 text-wrap my-0 sm:my-6"
+        class="relative top-auto sm:sticky sm:top-12 flex-1 text-wrap my-0 sm:my-6"
       >
         <div
           class="h-2 shadow-lg"
@@ -37,7 +37,7 @@ exports[`package details > makes a package 1`] = `
         </div>
       </div>
       <div
-        class="sticky top-12 flex-1 text-wrap my-0 sm:my-6"
+        class="relative top-auto sm:sticky sm:top-12 flex-1 text-wrap my-0 sm:my-6"
       >
         <div
           class="h-2 shadow-lg"
