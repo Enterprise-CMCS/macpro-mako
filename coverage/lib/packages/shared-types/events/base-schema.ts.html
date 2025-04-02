@@ -3,15 +3,15 @@
 <html lang="en">
 
 <head>
-    <title>Code coverage report for lib/libs/email/preview/WithdrawPackage/CMS/CHIP_SPA.tsx</title>
+    <title>Code coverage report for lib/packages/shared-types/events/base-schema.ts</title>
     <meta charset="utf-8" />
-    <link rel="stylesheet" href="../../../../../../prettify.css" />
-    <link rel="stylesheet" href="../../../../../../base.css" />
-    <link rel="shortcut icon" type="image/x-icon" href="../../../../../../favicon.png" />
+    <link rel="stylesheet" href="../../../../prettify.css" />
+    <link rel="stylesheet" href="../../../../base.css" />
+    <link rel="shortcut icon" type="image/x-icon" href="../../../../favicon.png" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <style type='text/css'>
         .coverage-summary .sorter {
-            background-image: url(../../../../../../sort-arrow-sprite.png);
+            background-image: url(../../../../sort-arrow-sprite.png);
         }
     </style>
 </head>
@@ -19,13 +19,13 @@
 <body>
 <div class='wrapper'>
     <div class='pad1'>
-        <h1><a href="../../../../../../index.html">All files</a> / <a href="index.html">lib/libs/email/preview/WithdrawPackage/CMS</a> CHIP_SPA.tsx</h1>
+        <h1><a href="../../../../index.html">All files</a> / <a href="index.html">lib/packages/shared-types/events</a> base-schema.ts</h1>
         <div class='clearfix'>
             
             <div class='fl pad1y space-right2'>
                 <span class="strong">100% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>1/1</span>
+                <span class='fraction'>10/10</span>
             </div>
         
             
@@ -39,14 +39,14 @@
             <div class='fl pad1y space-right2'>
                 <span class="strong">100% </span>
                 <span class="quiet">Functions</span>
-                <span class='fraction'>1/1</span>
+                <span class='fraction'>0/0</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
                 <span class="strong">100% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>1/1</span>
+                <span class='fraction'>5/5</span>
             </div>
         
             
@@ -86,46 +86,46 @@
 <a name='L21'></a><a href='#L21'>21</a>
 <a name='L22'></a><a href='#L22'>22</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">211x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">211x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">211x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">211x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">211x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">import { ChipSpaCMSEmail } from "libs/email/content/withdrawPackage/emailTemplates";
-import * as attachments from "libs/email/mock-data/attachments";
-import { emailTemplateValue } from "libs/email/mock-data/new-submission";
+<span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">import { z } from "zod";
 &nbsp;
-export default () =&gt; {
-  return (
-    &lt;ChipSpaCMSEmail
-      variables={{
-        ...emailTemplateValue,
-        authority: "CHIP SPA",
-        event: "withdraw-package",
-        id: "CO-1234.R21.00",
-        actionType: "",
-        attachments: {
-          officialWithdrawalLetter: attachments.withdrawRequest,
-          supportingDocumentation: attachments.supportingDocumentation,
-        },
-      }}
-    /&gt;
-  );
-};
+export const sharedSchema = z.object({
+  origin: z.literal("mako").default("mako"),
+  submitterName: z.string(),
+  submitterEmail: z.string().email(),
+  timestamp: z.number(),
+});
+&nbsp;
+export const ammendSchema = sharedSchema.extend({
+  actionType: z.string().default("Amend"),
+});
+export const renewSchema = sharedSchema.extend({
+  actionType: z.string().default("Renew"),
+});
+export const initialSchema = sharedSchema.extend({
+  actionType: z.string().default("Initial"),
+});
+export const extendSchema = sharedSchema.extend({
+  actionType: z.string().default("Extend"),
+});
 &nbsp;</pre></td></tr></table></pre>
 
                 <div class='push'></div><!-- for sticky footer -->
@@ -135,14 +135,14 @@ export default () =&gt; {
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
                 at 2025-04-02T14:32:12.570Z
             </div>
-        <script src="../../../../../../prettify.js"></script>
+        <script src="../../../../prettify.js"></script>
         <script>
             window.onload = function () {
                 prettyPrint();
             };
         </script>
-        <script src="../../../../../../sorter.js"></script>
-        <script src="../../../../../../block-navigation.js"></script>
+        <script src="../../../../sorter.js"></script>
+        <script src="../../../../block-navigation.js"></script>
     </body>
 </html>
     
