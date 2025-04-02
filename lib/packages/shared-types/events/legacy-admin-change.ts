@@ -1,7 +1,5 @@
 import { z } from "zod";
 
-import { Action } from "..";
-
 // A schema for legacy admin changes
 export const legacyAdminChangeSchema = z
   .object({
