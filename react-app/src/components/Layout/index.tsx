@@ -14,6 +14,7 @@ import { useMediaQuery } from "@/hooks";
 import { useHideBanner } from "@/hooks/useHideBanner";
 import { isFaqPage, isProd } from "@/utils";
 import ReactGA from "react-ga4";
+import { event } from 'react-ga4';
 import { Footer } from "../Footer";
 import { UsaBanner } from "../UsaBanner";
 
@@ -176,24 +177,40 @@ export const Layout = () => {
     if(customUserRoles.length > 0) {
       if(customUserRoles.includes("onemac-state-user")){
         console.log("user login send state user event");
-        ReactGA.set({user_roles: "State Submitter"});
+        // ReactGA.set({user_roles: "State Submitter"});
         console.log("user roles" +  customUserRoles);
-        ReactGA.event('User Login' + ' - ' + "State Submitter", {
-          user_roles: "State Submitter"
-        });
+        // ReactGA.event('User Login' + ' - ' + "State Submitter", {
+        //   user_roles: "State Submitter"
+        // });
+
+      ReactGA.event({
+        action: 'Login',
+        label: 'User Login',
+        user_role: customUserRoles
+      });
       } else if (customUserRoles.includes("onemac-helpdesk")){
         console.log("user login helpdesk event");
         console.log("user roles" +  customUserRoles);
-        ReactGA.set({user_roles: "Helpdesk"});
-        ReactGA.event('User Login' + ' - ' + "Helpdesk", {
-          user_roles: "Helpdesk"
+        // ReactGA.set({user_roles: "Helpdesk"});
+        // ReactGA.event('User Login' + ' - ' + "Helpdesk", {
+        //   user_roles: "Helpdesk"
+        // });
+        ReactGA.event({
+          action: 'Login',
+          label: 'User Login',
+          user_role: customUserRoles
         });
       } else if (customUserRoles.includes("onemac-micro-readonly")){
         console.log("user login read only event");
         console.log("user roles" +  customUserRoles);
-        ReactGA.set({user_roles: "CMS Read Only"});
-        ReactGA.event('User Login' + ' - ' + "CMS Read Only", {
-          user_roles: "CMS Read Only"
+        // ReactGA.set({user_roles: "CMS Read Only"});
+        // ReactGA.event('User Login' + ' - ' + "CMS Read Only", {
+        //   user_roles: "CMS Read Only"
+        // });
+        ReactGA.event({
+          action: 'Login',
+          label: 'User Login',
+          user_role: "customUserRoles"
         });
       }
     }
@@ -201,10 +218,15 @@ export const Layout = () => {
     if(customisMemberOf.length>0) {
       if(customisMemberOf.includes("ONEMAC_USER")){
         console.log("user login send cms reviewer event");
-        ReactGA.set({user_roles: "CMS Reviewer"});
-        console.log("user roles" +  customisMemberOf);
-        ReactGA.event('User Login' + ' - ' + "CMS Reviewer", {
-          user_roles: "CMS Reviewer"
+        // ReactGA.set({user_roles: "CMS Reviewer"});
+        // console.log("user roles" +  customisMemberOf);
+        // ReactGA.event('User Login' + ' - ' + "CMS Reviewer", {
+        //   user_roles: "CMS Reviewer"
+        // });
+        ReactGA.event({
+          action: 'Login',
+          label: 'User Login',
+          user_role: "cms-reviewer"
         });
       }
     }

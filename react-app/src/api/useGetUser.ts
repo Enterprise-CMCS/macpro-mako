@@ -4,8 +4,6 @@ import { CognitoUserAttributes } from "shared-types";
 import { isCmsUser } from "shared-utils";
 import config from "@/config";
 
-
-
 export type OneMacUser = {
   isCms?: boolean;
   user: CognitoUserAttributes | null;
