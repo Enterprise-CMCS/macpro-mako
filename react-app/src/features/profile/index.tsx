@@ -92,7 +92,7 @@ export const Profile = () => {
                         {convertStateAbbrToFullName(access.territory)}
                       </h3>
                       <p className="italic">{stateAccessStatus[access.status]}</p>
-                      <p className="block lg:mt-3">
+                      <p className="block lg:mt-8 lg:mb-2">
                         <span className="font-semibold">State System Admin: </span>
                         <a className="text-blue-600" href={`mailto:${access.doneByEmail}`}>
                           {access.doneByName}
