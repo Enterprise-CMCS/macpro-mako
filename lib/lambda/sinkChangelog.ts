@@ -139,47 +139,31 @@ const processAndIndex = async ({
         // This is a onemac legacy event
         record.event = "legacy-event";
         record.origin = "onemac";
-        console.log("WHAT DOES THE RECORD LOOK LIKE", record);
       }
-      // legacy records with multiple actions have a reverseChrono property in the main record for this package
-      // each action within a package is also in their own record without a reverseChrono property
+      // Legacy records with multiple actions have a reverseChrono property in the main record for this package
+      // Each action within a package is also in their own record without a reverseChrono property
       const recordsToProcess: Array<(typeof transforms)[keyof typeof transforms]["Schema"]> = [];
       if (record.reverseChrono?.length) {
         recordsToProcess.push({ ...record, ...record.reverseChrono.at(-1) });
-        // focus on adminChange property in records with the reverseChrono property to avoid ingesting duplicates
+        // Focus on adminChange property in records with the reverseChrono property to avoid ingesting duplicates
         if (record.adminChanges?.length) {
           record.adminChanges.map((adminChange: LegacyAdminChange) =>
             recordsToProcess.push({
               ...record,
               ...adminChange,
               event: "legacy-admin-change",
-              // GSI1pk: "OneMAC#adminchange",
-              // isAdminChange: true,
             }),
           );
         }
       } else {
         recordsToProcess.push(record);
       }
-      // const recordToProcess = record.reverseChrono?.length
-      //   ? { ...record, ...record.reverseChrono.at(-1) }
-      //   : record;
-      console.log(recordsToProcess, "WHAT????");
-      // flatten legacy data record with multiple events
-      // const recordsToProcess = record.reverseChrono?.length
-      //   ? record.reverseChrono.map((activity: any) => ({ ...record, ...activity }))
-      //   : [record];
 
       for (const currentRecord of recordsToProcess) {
-        //   console.log(recordsToProcess, "RECORDS TO PROCESS");
         // If the event is a supported event, transform and push to docs array for indexing
         if (currentRecord.event in transforms) {
-          console.log("ARE WE IN HERE LEGACY DATA");
-          console.log("LEGACY EVENT", currentRecord.event);
           const transformForEvent = transforms[currentRecord.event as keyof typeof transforms];
-          console.log(transformForEvent, "TRANSFORM FOR EVENT");
           const result = transformForEvent.transform(offset).safeParse(currentRecord);
-          console.log(result, "WHAT IS THE RESULT");
 
           if (result.success && result.data === undefined) continue;
           if (!result.success) {
@@ -190,7 +174,6 @@ const processAndIndex = async ({
             });
             continue;
           }
-          console.log("WHAT IS RESULT DATA AT THIS POINT", result.data);
           docs.push(result.data);
         } else {
           console.log(`No transform found for event: ${currentRecord.event}`);

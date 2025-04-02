@@ -52,7 +52,7 @@ export const legacyEventSchema = legacySharedSchema
           ? data.proposedEffectiveDate
           : null,
       subject: null,
-      submissionDate: submissionTimestampDate,
+      submissionDate: submissionTimestampDate.toISOString(),
       submitterEmail: data.submitterEmail,
       submitterName: data.submitterName,
       initialIntakeNeeded: true,
