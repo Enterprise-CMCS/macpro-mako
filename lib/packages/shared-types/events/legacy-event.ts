@@ -28,10 +28,10 @@ export const legacyEventSchema = legacySharedSchema
   .transform((data) => {
     const seatoolStatus = getSeaToolStatusFromLegacyStatus(data.currentStatus);
     const { stateStatus, cmsStatus } = getStatus(seatoolStatus);
-    const lastEventTimestampDate = new Date(data.lastEventTimestamp ?? data.eventTimestamp);
-    const submissionTimestampDate = new Date(data.submissionTimestamp ?? data.eventTimestamp);
+    const lastEventTimestampDate = new Date(data.lastEventTimestamp);
+    const submissionTimestampDate = new Date(data.submissionTimestamp);
     const isRaiResponseWithdrawEnabled = data.subStatus === "Withdraw Formal RAI Response Enabled";
-    console.log(data, "THIS IS THE LGEACY DATA???");
+
     return {
       ...data,
       proposedEffectiveDate: null, // blank out the value that will be transformed, we handle it below
@@ -52,7 +52,7 @@ export const legacyEventSchema = legacySharedSchema
           ? data.proposedEffectiveDate
           : null,
       subject: null,
-      submissionDate: submissionIsoDate,
+      submissionDate: submissionTimestampDate,
       submitterEmail: data.submitterEmail,
       submitterName: data.submitterName,
       initialIntakeNeeded: true,
