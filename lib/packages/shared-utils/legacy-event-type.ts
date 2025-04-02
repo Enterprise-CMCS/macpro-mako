@@ -4,12 +4,13 @@ export const getLegacyEventType = (GSI1pk: string) => {
   // Resolve the action type based on the GSI1pk
   const eventTypeMatch = GSI1pk?.match(/OneMAC#(submit|spa|waiver)(.*)/i);
 
-  if (!eventTypeMatch) {
-    console.log(`${GSI1pk} does not match any existing event types.`);
+  if (!eventTypeMatch || !GSI1pk) {
+    console.log(`${GSI1pk} is missing or does not match any existing event types.`);
     return undefined;
   }
 
-  const eventType = eventTypeMatch?.[1]?.toLowerCase();
+  const eventType = eventTypeMatch[1].toLowerCase();
+
   let submitType: string = "";
   let event;
 
