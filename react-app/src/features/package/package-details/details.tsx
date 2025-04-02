@@ -90,11 +90,7 @@ export const getSubmissionDetails: GetLabelAndValueFromSubmission = (submission,
   {
     label: "Subtype",
     value: submission.subTypes
-      ? submission.subTypes.map((T) => (
-          <ul>
-            <li key={T?.TYPE_ID}>{T?.TYPE_NAME}test</li>
-          </ul>
-        ))
+      ? submission.subTypes.map((T) => <li key={T?.TYPE_ID}>{T?.TYPE_NAME}test</li>)
       : BLANK_VALUE,
     canView: submission.actionType !== "Extend" && isStateUser(user) === false,
   },
