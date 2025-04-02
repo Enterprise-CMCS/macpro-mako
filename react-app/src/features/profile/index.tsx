@@ -1,10 +1,9 @@
-import { API } from "aws-amplify";
 import { RoleDescriptionStrings } from "shared-types";
 
-import { useGetUser } from "@/api";
+import { useGetUser, useGetUserProfile } from "@/api";
 import { Alert, Button, CardWithTopBorder, SubNavHeader } from "@/components";
 import config from "@/config";
-import { convertStateAbbrToFullName } from "@/utils";
+import { convertStateAbbrToFullName, stateAccessStatus } from "@/utils";
 
 const getRoleDescriptionsFromUser = (roles: string | undefined) => {
   if (roles === undefined) {
@@ -18,35 +17,14 @@ const getRoleDescriptionsFromUser = (roles: string | undefined) => {
     .join(", ");
 };
 
-const getFullStateNamesFromUser = (states: string | undefined) => {
-  if (states === undefined) {
-    return "";
-  }
-
-  return states.split(",").map(convertStateAbbrToFullName).join(", ");
-};
-
-const useGetUserProfile = async () => {
-  try {
-    const results = await API.get("os", "/getUserProfile", {});
-
-    console.log("Andie is the smart one:", { results });
-
-    return results;
-  } catch (err: unknown) {
-    console.log("Tiffany", err);
-  }
-};
-
 export const Profile = () => {
   const { data: userData } = useGetUser();
-  useGetUserProfile();
-
-  const fullStateNames = getFullStateNamesFromUser(userData?.user["custom:state"]);
+  const { data: userProfile } = useGetUserProfile();
 
   const euaRoles = getRoleDescriptionsFromUser(userData?.user["custom:cms-roles"]);
   const idmRoles = getRoleDescriptionsFromUser(userData?.user["custom:ismemberof"]);
   const isStateUser = userData?.user?.["custom:cms-roles"].includes("onemac-state-user");
+  const stateAccess = userProfile?.stateAccess?.filter((access) => access.territory != "ZZ");
 
   const userRoles = euaRoles ? euaRoles : idmRoles;
 
@@ -103,14 +81,27 @@ export const Profile = () => {
             </div>
           </div>
 
-          {isStateUser && fullStateNames && (
-            <div className="my-4 md:my-0 md:basis-1/2">
-              <CardWithTopBorder>
-                <div className="px-8 py-2">
-                  <h3 className="text-xl font-bold">{fullStateNames}</h3>
-                  <p className="italic">Access Granted</p>
-                </div>
-              </CardWithTopBorder>
+          {isStateUser && stateAccess?.length && (
+            <div className="flex flex-col gap-6 md:basis-1/2">
+              <h2 className="text-2xl font-bold">State Access Management</h2>
+              {stateAccess.map((access) => {
+                return (
+                  <CardWithTopBorder className="my-0">
+                    <div className="p-8 min-h-36">
+                      <h3 className="text-xl font-bold">
+                        {convertStateAbbrToFullName(access.territory)}
+                      </h3>
+                      <p className="italic">{stateAccessStatus[access.status]}</p>
+                      <p className="block lg:mt-3">
+                        <span className="font-semibold">State System Admin: </span>
+                        <a className="text-blue-600" href={`mailto:${access.doneByEmail}`}>
+                          {access.doneByName}
+                        </a>
+                      </p>
+                    </div>
+                  </CardWithTopBorder>
+                );
+              })}
             </div>
           )}
         </div>
