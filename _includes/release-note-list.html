@@ -1,0 +1,12 @@
+
+{% if site.categories["release"].size > 0 %}
+  {% assign releases = site.categories["release"] | sort: 'published_at' | reverse %}
+  {% for post in releases %}
+    {% if include.limit and forloop.index0 >= include.limit %}
+      {% break %}
+    {% endif %}
+    {% include release-note.html post=post content=post.content %}
+  {% endfor %}
+{% else %}
+  <div>There are currently no release notes.</div>
+{% endif %}
