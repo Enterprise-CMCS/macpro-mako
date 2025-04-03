@@ -6,7 +6,7 @@ export type QuestionAnswer = {
   answerJSX: JSX.Element;
 };
 
-type FAQContent = {
+export type FAQContent = {
   sectionTitle: string;
   qanda: QuestionAnswer[];
 };

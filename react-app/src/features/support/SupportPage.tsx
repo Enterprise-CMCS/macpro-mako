@@ -1,5 +1,8 @@
+import Fuse from "fuse.js";
 import { useEffect, useMemo, useState } from "react";
-import { Navigate, useParams } from "react-router";
+import ReactDOMServer from "react-dom/server";
+import { useParams } from "react-router";
+// import {Navigate} from "react-router"
 import { isCmsUser } from "shared-utils";
 
 import { useGetUser } from "@/api/useGetUser";
@@ -10,13 +13,75 @@ import {
   AccordionTrigger,
   ExpandCollapseBtn,
   LeftNavigation,
+  SearchForm,
   SupportSubNavHeader,
   ToggleGroup,
   ToggleGroupItem,
 } from "@/components";
-import { useFeatureFlag } from "@/hooks/useFeatureFlag";
 
-import { oneMACCMSContent, oneMACStateFAQContent, QuestionAnswer } from "./SupportMockContent";
+// import { useFeatureFlag } from "@/hooks/useFeatureFlag";
+import {
+  FAQContent,
+  oneMACCMSContent,
+  oneMACStateFAQContent,
+  QuestionAnswer,
+} from "./SupportMockContent";
+
+interface SearchContentProps {
+  supportContent: FAQContent[];
+  setSearchResults: (searchResults: FAQContent[], isSearching: boolean) => void;
+}
+
+const SearchContent = ({ supportContent, setSearchResults }: SearchContentProps) => {
+  const removeTags = (jsxElement: JSX.Element) => {
+    const text = ReactDOMServer.renderToStaticMarkup(jsxElement);
+    return text.replace(/(<([^>]+)>)/gi, "");
+  };
+
+  const searchAbleContent = supportContent.flatMap(({ qanda }) =>
+    qanda.map(({ question, answerJSX, anchorText }) => {
+      const answer = removeTags(answerJSX);
+      return { question: question, answer: answer, anchorText };
+    }),
+  );
+
+  const fuse = new Fuse(searchAbleContent, {
+    includeScore: true,
+    keys: ["question", "answer"],
+    findAllMatches: true,
+    threshold: 0.4,
+    distance: 10000,
+  });
+
+  function reorderSupportContent(supportContent: FAQContent[], searchResults) {
+    const contentMap = new Map();
+
+    supportContent.forEach((section) => {
+      section.qanda.forEach((q) => {
+        contentMap.set(q.anchorText, { ...q, sectionTitle: section.sectionTitle });
+      });
+    });
+
+    const formatedSearchResults = searchResults
+      .map((result) => contentMap.get(result.item.anchorText))
+      .filter(Boolean);
+
+    return [{ sectionTitle: "", qanda: formatedSearchResults }];
+  }
+
+  const handleSearch = (s: string) => {
+    if (s.length) {
+      const searchResults = fuse.search(s);
+      console.log("ANDIE: ", searchResults);
+      const formatedSearchResults = reorderSupportContent(supportContent, searchResults);
+      setSearchResults(formatedSearchResults, true);
+    } else {
+      setSearchResults(supportContent, false);
+    }
+  };
+
+  return <SearchForm handleSearch={handleSearch} isSearching={false} disabled={false} />;
+};
 
 const FaqAccordion = ({ question }: { question: QuestionAnswer[] }) => {
   return (
@@ -41,18 +106,21 @@ const FaqAccordion = ({ question }: { question: QuestionAnswer[] }) => {
 
 export const SupportPage = () => {
   const { id } = useParams<{ id: string }>();
-  const isSupportPageShown = useFeatureFlag("TOGGLE_FAQ");
+  // const isSupportPageShown = useFeatureFlag("TOGGLE_FAQ");
   const [openAccordions, setOpenAccordions] = useState<string[]>([]);
 
   const { data: userObj } = useGetUser();
   const isCmsView = isCmsUser(userObj.user);
 
   const [tgValue, setTGValue] = useState<"cms" | "state">(isCmsView ? "cms" : "state");
+  const [isSearching, setIsSearching] = useState<boolean>(false);
 
-  const supportContent = useMemo(() => {
+  const startingSupportContent = useMemo(() => {
     if (tgValue === "cms") return oneMACCMSContent;
     return oneMACStateFAQContent;
   }, [tgValue]);
+
+  const [supportContent, setSupportContent] = useState(oneMACStateFAQContent);
 
   const expandAll = () => {
     const allIds = supportContent.flatMap(({ qanda }) => qanda.map(({ anchorText }) => anchorText));
@@ -84,12 +152,25 @@ export const SupportPage = () => {
     }
   }, [id]);
 
-  if (!isSupportPageShown || !userObj?.user) return <Navigate to="/" replace />;
+  const setSearchResults = (searchResults: FAQContent[], isSearching?: boolean) => {
+    setIsSearching(isSearching);
+    setSupportContent(searchResults);
+
+    if (isSearching) {
+      setOpenAccordions([searchResults[0].qanda[0].anchorText]);
+    } else collapseAll();
+  };
+
+  // if (!isSupportPageShown || !userObj?.user) return <Navigate to="/" replace />;
 
   return (
     <div className="min-h-screen flex flex-col">
       <SupportSubNavHeader>
         <h1 className="text-4xl font-bold">OneMAC Support</h1>
+        <SearchContent
+          supportContent={startingSupportContent}
+          setSearchResults={setSearchResults}
+        />
       </SupportSubNavHeader>
 
       {/* only display the toggle CMS/State view when the user is CMS */}
@@ -124,11 +205,14 @@ export const SupportPage = () => {
         <div className="flex">
           {/* Left Navigation - Fixed width with explicit max-width */}
           <div className="w-1/3 sticky top-20 h-[calc(100vh-5rem)] sm:-z-10">
-            <LeftNavigation topics={supportContent.flatMap(({ sectionTitle }) => sectionTitle)} />
+            <LeftNavigation
+              topics={supportContent.flatMap(({ sectionTitle }) => sectionTitle)}
+              isSearching={isSearching}
+            />
           </div>
 
           {/* Content - Force minimum width */}
-          <section className="w-2/3 block max-w-screen-xl m-auto px-4 lg:px-8 gap-10">
+          <section className="w-2/3 block max-w-screen-xl px-4 lg:px-8 gap-10">
             <div className="">
               <div className="flex justify-end py-4">
                 <ExpandCollapseBtn
@@ -143,8 +227,12 @@ export const SupportPage = () => {
               <Accordion type="multiple" value={openAccordions} onValueChange={setOpenAccordions}>
                 {supportContent.map(({ sectionTitle, qanda }) => (
                   <article key={sectionTitle} className="mb-8">
-                    <h2 className="text-2xl font-bold mb-4">{sectionTitle}</h2>
-                    <hr className="bg-gray-300 h-[1.7px]" />
+                    {!isSearching && (
+                      <>
+                        <h2 className="text-2xl font-bold mb-4">{sectionTitle}</h2>
+                        <hr className="bg-gray-300 h-[1.7px]" />
+                      </>
+                    )}
                     <FaqAccordion question={qanda} />
                   </article>
                 ))}
