@@ -227,7 +227,8 @@ export const insertNewSeatoolRecordsFromKafkaIntoMako = async (
     (collection, kafkaRecord) => {
       try {
         const { key, value } = kafkaRecord;
-
+        console.log("seatoolrecordsfrommako");
+        console.log(value);
         if (!key) {
           console.log(`Record without a key property: ${value}`);
 
@@ -235,7 +236,6 @@ export const insertNewSeatoolRecordsFromKafkaIntoMako = async (
         }
 
         const id: string = removeDoubleQuotesSurroundingString(decodeBase64WithUtf8(key));
-
         if (!value) {
           // record in seatool has been deleted
           // nulls the seatool properties from the record
@@ -248,7 +248,10 @@ export const insertNewSeatoolRecordsFromKafkaIntoMako = async (
           id,
           ...JSON.parse(decodeBase64WithUtf8(value)),
         };
-
+        // We get the ID here and look up to see if it exist in mako currently
+        if (seatoolRecord.seatoolStatus == "Pending-RAI") {
+          seatoolRecord.seatoolStatus = "Pending-Finance";
+        }
         const safeSeatoolRecord = opensearch.main.seatool.transform(id).safeParse(seatoolRecord);
 
         if (safeSeatoolRecord.success === false) {
@@ -362,6 +365,6 @@ export const syncSeatoolRecordDatesFromKafkaWithMako = async (
     console.log(collection);
     return collection;
   }, []);
-
+  console.log(recordIdsWithUpdatedDates);
   await bulkUpdateDataWrapper(recordIdsWithUpdatedDates, "main");
 };
