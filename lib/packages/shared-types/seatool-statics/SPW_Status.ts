@@ -1,4 +1,4 @@
-// seatool authorities and authority id
+// seatool authorities and authority ids
 export const SEATOOL_SPW_STATUS: { [key: string]: string } = {
   "1": "Pending",
   "2": "Pending-RAI",

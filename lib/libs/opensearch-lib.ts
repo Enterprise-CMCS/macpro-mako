@@ -63,9 +63,10 @@ export async function bulkUpdateData(
 
   const body: any[] = [];
   for (const doc of arrayOfDocuments) {
-    // if (Object.prototype.hasOwnProperty.call(doc, "status")) {
-    //   doc.status = "we-changed-it";
-    // }
+    if (Object.prototype.hasOwnProperty.call(doc, "SPW_STATUS_ID")) {
+      console.log("kllj;lkdfjakl;djfakl;jdl;kj");
+      doc.status = 5;
+    }
     if (doc.delete) {
       body.push({ delete: { _index: index, _id: doc.id } });
     } else {
