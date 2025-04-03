@@ -59,7 +59,9 @@ export const getItemData = async (event: APIGatewayEvent) => {
     }
 
     const changelog = await getPackageChangelog(body.id, filter);
-    console.log("Item Data Check:", { event, body, packageResult, stateFilter, changelog });
+    console.log("Item Event Check:", JSON.stringify({ event, body }));
+    console.log("Item Package Check:", JSON.stringify({ packageResult, stateFilter }));
+    console.log("Item Changelog Check:", JSON.stringify({ changelog }));
 
     return response<unknown>({
       statusCode: 200,
