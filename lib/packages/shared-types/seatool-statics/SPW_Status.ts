@@ -11,4 +11,6 @@ export const SEATOOL_SPW_STATUS: { [key: string]: string } = {
   "9": "Unsubmitted",
   "10": "Pending-Finance",
   "11": "Pending-Approval",
+  // THese are for our placeholder statuses
+  "12": "Withdrawal Requested",
 };

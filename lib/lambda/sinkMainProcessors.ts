@@ -1,6 +1,12 @@
 import { isBefore } from "date-fns";
 import { bulkUpdateDataWrapper, ErrorType, getItems, logError } from "libs";
-import { KafkaRecord, opensearch, SeatoolRecordWithUpdatedDate } from "shared-types";
+import { getPackage } from "libs/api/package";
+import {
+  KafkaRecord,
+  opensearch,
+  SEATOOL_STATUS,
+  SeatoolRecordWithUpdatedDate,
+} from "shared-types";
 import { Document, legacyTransforms, transforms } from "shared-types/opensearch/main";
 import { decodeBase64WithUtf8 } from "shared-utils";
 
@@ -222,92 +228,86 @@ export const insertNewSeatoolRecordsFromKafkaIntoMako = async (
   topicPartition: string,
 ) => {
   const makoDocTimestamps = await getMakoDocTimestamps(kafkaRecords);
+  const seatoolRecordsForMako: { id: string; [key: string]: unknown }[] = [];
 
-  const seatoolRecordsForMako = kafkaRecords.reduce<{ id: string; [key: string]: unknown }[]>(
-    (collection, kafkaRecord) => {
-      try {
-        const { key, value } = kafkaRecord;
+  for (const kafkaRecord of kafkaRecords) {
+    try {
+      const { key, value } = kafkaRecord;
 
-        if (!key) {
-          console.log(`Record without a key property: ${value}`);
-
-          return collection;
-        }
-
-        const id: string = removeDoubleQuotesSurroundingString(decodeBase64WithUtf8(key));
-        if (!value) {
-          // record in seatool has been deleted
-          // nulls the seatool properties from the record
-          // seatool record would now only have mako properties
-          console.log(`Record without a value property: ${value}`);
-          return collection.concat(opensearch.main.seatool.tombstone(id));
-        }
-
-        const seatoolRecord: Document = {
-          id,
-          ...JSON.parse(decodeBase64WithUtf8(value)),
-        };
-        console.log("Seatoolstatus");
-        console.log(seatoolRecord);
-        // We get the ID here and look up to see if it exist in mako currently
-        if (seatoolRecord?.STATE_PLAN?.SPW_STATUS_ID === 2) {
-          console.log("APPLES");
-          seatoolRecord.STATE_PLAN.SPW_STATUS_ID = 11;
-        }
-        const safeSeatoolRecord = opensearch.main.seatool.transform(id).safeParse(seatoolRecord);
-
-        if (safeSeatoolRecord.success === false) {
-          logError({
-            type: ErrorType.VALIDATION,
-            error: safeSeatoolRecord.error.errors,
-            metadata: { topicPartition, kafkaRecord, record: seatoolRecord },
-          });
-
-          return collection;
-        }
-
-        const { data: seatoolDocument } = safeSeatoolRecord;
-        const makoDocumentTimestamp = makoDocTimestamps.get(seatoolDocument.id);
-
-        console.log("--------------------");
-        console.log(`id: ${seatoolDocument.id}`);
-        console.log(`mako: ${makoDocumentTimestamp}`);
-        console.log(`seatool: ${seatoolDocument.changed_date}`);
-
-        const isNewerOrUndefined =
-          seatoolDocument.changed_date &&
-          makoDocumentTimestamp &&
-          isBefore(makoDocumentTimestamp, seatoolDocument.changed_date);
-
-        if (isNewerOrUndefined) {
-          console.log("SKIPPED DUE TO OUT-OF-DATE INFORMATION");
-          return collection;
-        }
-        console.log("document");
-        console.log(seatoolDocument);
-        if (seatoolDocument.authority && seatoolDocument.seatoolStatus !== "Unknown") {
-          console.log("INDEX");
-          console.log("--------------------");
-          console.log(`Status: ${seatoolDocument.seatoolStatus}`);
-
-          return collection.concat({ ...seatoolDocument });
-        }
-      } catch (error) {
-        logError({
-          type: ErrorType.BADPARSE,
-          error,
-          metadata: { topicPartition, kafkaRecord },
-        });
+      if (!key) {
+        console.log(`Record without a key property: ${value}`);
+        continue;
       }
 
-      return collection;
-    },
-    [],
-  );
+      const id: string = removeDoubleQuotesSurroundingString(decodeBase64WithUtf8(key));
+
+      if (!value) {
+        console.log(`Record without a value property: ${value}`);
+        seatoolRecordsForMako.push(opensearch.main.seatool.tombstone(id));
+        continue;
+      }
+
+      const seatoolRecord: Document = {
+        id,
+        ...JSON.parse(decodeBase64WithUtf8(value)),
+      };
+
+      const existingPackage = await getPackage(id);
+
+      if (
+        existingPackage?._source?.seatoolStatus === SEATOOL_STATUS.WITHDRAW_REQUESTED &&
+        seatoolRecord?.STATE_PLAN.SPW_STATUS_ID !== 6
+      ) {
+        seatoolRecord.STATE_PLAN.SPW_STATUS_ID = 12;
+      }
+
+      const safeSeatoolRecord = opensearch.main.seatool.transform(id).safeParse(seatoolRecord);
+
+      if (!safeSeatoolRecord.success) {
+        logError({
+          type: ErrorType.VALIDATION,
+          error: safeSeatoolRecord.error.errors,
+          metadata: { topicPartition, kafkaRecord, record: seatoolRecord },
+        });
+        continue;
+      }
+
+      const { data: seatoolDocument } = safeSeatoolRecord;
+      const makoDocumentTimestamp = makoDocTimestamps.get(seatoolDocument.id);
+
+      console.log("--------------------");
+      console.log(`id: ${seatoolDocument.id}`);
+      console.log(`mako: ${makoDocumentTimestamp}`);
+      console.log(`seatool: ${seatoolDocument.changed_date}`);
+
+      const isNewerOrUndefined =
+        seatoolDocument.changed_date &&
+        makoDocumentTimestamp &&
+        isBefore(makoDocumentTimestamp, seatoolDocument.changed_date);
+
+      if (isNewerOrUndefined) {
+        console.log("SKIPPED DUE TO OUT-OF-DATE INFORMATION");
+        continue;
+      }
+
+      if (seatoolDocument.authority && seatoolDocument.seatoolStatus !== "Unknown") {
+        console.log("INDEX");
+        console.log("--------------------");
+        console.log(`Status: ${seatoolDocument.seatoolStatus}`);
+
+        seatoolRecordsForMako.push(seatoolDocument);
+      }
+    } catch (error) {
+      logError({
+        type: ErrorType.BADPARSE,
+        error,
+        metadata: { topicPartition, kafkaRecord },
+      });
+    }
+  }
 
   await bulkUpdateDataWrapper(seatoolRecordsForMako, "main");
 };
-
 /**
  * Syncs date updates in SEATOOL records with Mako, offloading processing from `insertNewSeatoolRecordsFromKafkaIntoMako`
  * @param kafkaRecords records with updated date payload
