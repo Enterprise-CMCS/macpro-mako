@@ -63,6 +63,7 @@ export async function bulkUpdateData(
 
   const body: any[] = [];
   for (const doc of arrayOfDocuments) {
+    console.log("documentskkdkfjdkjfkj");
     console.log(doc);
     if (Object.prototype.hasOwnProperty.call(doc, "Status")) {
       console.log("kllj;lkdfjakl;djfakl;jdl;kj");
