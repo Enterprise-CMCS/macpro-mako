@@ -55,7 +55,7 @@ export const getLegacyEventType = (GSI1pk: string) => {
       event = Action.UPLOAD_SUBSEQUENT_DOCUMENTS;
       break;
     default:
-      console.log(`Unhandled event type for ${eventType}.  Doing nothing and continuing.`);
+      console.log(`Unhandled event type for ${submitType}.  Doing nothing and continuing.`);
       event = undefined;
       break;
     // }
