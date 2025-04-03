@@ -130,7 +130,7 @@ export const useOsAggregate = () => {
                 ? "cmsStatus.keyword"
                 : "stateStatus.keyword",
             type: "terms",
-            size: 10,
+            size: 20,
           },
           {
             field: "leadAnalystName.keyword",
