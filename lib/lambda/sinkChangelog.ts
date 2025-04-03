@@ -1,7 +1,7 @@
 import { Handler } from "aws-lambda";
 import { getPackageChangelog } from "libs/api/package";
 import { bulkUpdateDataWrapper, ErrorType, getTopic, logError } from "libs/sink-lib";
-import { KafkaEvent, KafkaRecord, LegacyAdminChange, opensearch } from "shared-types";
+import { KafkaEvent, KafkaRecord, opensearch } from "shared-types";
 import { decodeBase64WithUtf8 } from "shared-utils";
 
 import {
@@ -140,27 +140,7 @@ const processAndIndex = async ({
         record.event = "legacy-event";
         record.origin = "onemac";
       }
-      // Legacy records with multiple actions have a reverseChrono property in the main record for this package
-      // Each action within a package is also in their own record without a reverseChrono property
-      // const recordsToProcess: Array<(typeof transforms)[keyof typeof transforms]["Schema"]> = [];
-      // if (record.reverseChrono?.length) {
-      //   recordsToProcess.push({ ...record, ...record.reverseChrono.at(-1) });
-      //   // Focus on adminChange property in records with the reverseChrono property to avoid ingesting duplicates
-      //   if (record.adminChanges?.length) {
-      //     record.adminChanges.map((adminChange: LegacyAdminChange) =>
-      //       recordsToProcess.push({
-      //         ...record,
-      //         ...adminChange,
-      //         event: "legacy-admin-change",
-      //       }),
-      //     );
-      //   }
-      // } else {
-      //   recordsToProcess.push(record);
-      // }
-      // recordsToProcess.push(record);
-      console.log(record, "WHAT IS THIS RECORD");
-      // for (const currentRecord of recordsToProcess) {
+
       // If the event is a supported event, transform and push to docs array for indexing
       if (record.event in transforms) {
         const transformForEvent = transforms[record.event as keyof typeof transforms];
@@ -179,7 +159,6 @@ const processAndIndex = async ({
       } else {
         console.log(`No transform found for event: ${record.event}`);
       }
-      // }
     } catch (error) {
       logError({
         type: ErrorType.BADPARSE,
