@@ -144,6 +144,7 @@ const processAndIndex = async ({
       // If the event is a supported event, transform and push to docs array for indexing
       if (record.event in transforms) {
         const transformForEvent = transforms[record.event as keyof typeof transforms];
+
         const result = transformForEvent.transform(offset).safeParse(record);
 
         if (result.success && result.data === undefined) continue;

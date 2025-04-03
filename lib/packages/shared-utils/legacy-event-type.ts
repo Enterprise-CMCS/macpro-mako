@@ -1,20 +1,13 @@
 import { Action } from "shared-types";
 
+// Resolve the action type based on the GSI1pk
 export const getLegacyEventType = (GSI1pk: string) => {
-  // Resolve the action type based on the GSI1pk
-  // const eventTypeMatch = GSI1pk?.match(/OneMAC#(submit|spa|waiver)(.*)/i);
-
   if (!GSI1pk) {
     return undefined;
   }
   const submitType = GSI1pk?.split("OneMAC#submit")?.[1] || "";
-  // const eventType = eventTypeMatch[1].toLowerCase();
 
-  // const submitType: string = "";
   let event;
-
-  // if (eventType === "submit") {
-  //   submitType = eventTypeMatch?.[2] || "";
 
   switch (submitType) {
     case "chipspa":
@@ -58,7 +51,6 @@ export const getLegacyEventType = (GSI1pk: string) => {
       console.log(`Unhandled event type for ${submitType}.  Doing nothing and continuing.`);
       event = undefined;
       break;
-    // }
   }
   return event;
 };
