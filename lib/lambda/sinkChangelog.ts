@@ -142,7 +142,7 @@ const processAndIndex = async ({
       }
       // Legacy records with multiple actions have a reverseChrono property in the main record for this package
       // Each action within a package is also in their own record without a reverseChrono property
-      const recordsToProcess: Array<(typeof transforms)[keyof typeof transforms]["Schema"]> = [];
+      // const recordsToProcess: Array<(typeof transforms)[keyof typeof transforms]["Schema"]> = [];
       // if (record.reverseChrono?.length) {
       //   recordsToProcess.push({ ...record, ...record.reverseChrono.at(-1) });
       //   // Focus on adminChange property in records with the reverseChrono property to avoid ingesting duplicates
@@ -158,28 +158,28 @@ const processAndIndex = async ({
       // } else {
       //   recordsToProcess.push(record);
       // }
-      recordsToProcess.push(record);
+      // recordsToProcess.push(record);
       console.log(record, "WHAT IS THIS RECORD");
-      for (const currentRecord of recordsToProcess) {
-        // If the event is a supported event, transform and push to docs array for indexing
-        if (currentRecord.event in transforms) {
-          const transformForEvent = transforms[currentRecord.event as keyof typeof transforms];
-          const result = transformForEvent.transform(offset).safeParse(currentRecord);
+      // for (const currentRecord of recordsToProcess) {
+      // If the event is a supported event, transform and push to docs array for indexing
+      if (record.event in transforms) {
+        const transformForEvent = transforms[record.event as keyof typeof transforms];
+        const result = transformForEvent.transform(offset).safeParse(record);
 
-          if (result.success && result.data === undefined) continue;
-          if (!result.success) {
-            logError({
-              type: ErrorType.VALIDATION,
-              error: result?.error,
-              metadata: { topicPartition, kafkaRecord, currentRecord },
-            });
-            continue;
-          }
-          docs.push(result.data);
-        } else {
-          console.log(`No transform found for event: ${currentRecord.event}`);
+        if (result.success && result.data === undefined) continue;
+        if (!result.success) {
+          logError({
+            type: ErrorType.VALIDATION,
+            error: result?.error,
+            metadata: { topicPartition, kafkaRecord, record },
+          });
+          continue;
         }
+        docs.push(result.data);
+      } else {
+        console.log(`No transform found for event: ${record.event}`);
       }
+      // }
     } catch (error) {
       logError({
         type: ErrorType.BADPARSE,

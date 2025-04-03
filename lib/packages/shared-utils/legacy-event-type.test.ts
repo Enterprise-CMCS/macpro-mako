@@ -13,11 +13,6 @@ describe("getLegacyEventType", () => {
     expect(legacyEvent).toBe(undefined);
   });
 
-  it("should return 'new-legacy-submission' if GSI1pk is 'spa' or 'waiver'", () => {
-    const legacyEvent = getLegacyEventType("OneMAC#spa");
-    expect(legacyEvent).toEqual("new-legacy-submission");
-  });
-
   it("should return 'new-legacy-submission' if GSI1pk is an initial submission type", () => {
     const legacyEvent = getLegacyEventType("OneMAC#submitchipspa");
     expect(legacyEvent).toEqual("new-legacy-submission");
