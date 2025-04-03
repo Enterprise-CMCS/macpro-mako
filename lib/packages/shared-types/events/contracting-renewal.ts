@@ -1,6 +1,7 @@
 import { z } from "zod";
 
 import { attachmentArraySchema, attachmentArraySchemaOptional } from "../attachments";
+import { renewSchema } from "./base-schema";
 
 export const baseSchema = z.object({
   event: z.literal("contracting-renewal").default("contracting-renewal"),
@@ -47,10 +48,4 @@ export const baseSchema = z.object({
     }),
 });
 
-export const schema = baseSchema.extend({
-  actionType: z.string().default("Renew"),
-  origin: z.literal("mako").default("mako"),
-  submitterName: z.string(),
-  submitterEmail: z.string().email(),
-  timestamp: z.number(),
-});
+export const schema = baseSchema.merge(renewSchema);

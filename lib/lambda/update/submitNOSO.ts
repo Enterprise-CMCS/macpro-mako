@@ -26,10 +26,18 @@ interface submitMessageType {
   status: string;
   submitterEmail: string;
   submitterName: string;
+  submissionDate: string;
+  proposedDate: string;
   adminChangeType: string;
   stateStatus: string;
   cmsStatus: string;
 }
+
+const convertStringToTimestamp = (date: string) => {
+  const formatedDate = new Date(date).getTime();
+  if (isNaN(formatedDate)) throw new Error("Not a valid time");
+  return formatedDate;
+};
 
 const sendSubmitMessage = async (item: submitMessageType) => {
   const topicName = process.env.topicName as string;
@@ -38,6 +46,8 @@ const sendSubmitMessage = async (item: submitMessageType) => {
   }
 
   const currentTime = Date.now();
+  const formatedSubmittedDate = convertStringToTimestamp(item.submissionDate);
+  const formatedProposedDate = convertStringToTimestamp(item.proposedDate);
 
   await produceMessage(
     topicName,
@@ -51,6 +61,8 @@ const sendSubmitMessage = async (item: submitMessageType) => {
       description: null,
       event: "NOSO",
       state: item.id.substring(0, 2),
+      submissionDate: formatedSubmittedDate,
+      proposedDate: formatedProposedDate,
       makoChangedDate: currentTime,
       changedDate: currentTime,
       statusDate: currentTime,
@@ -77,11 +89,13 @@ export const handler = async (event: APIGatewayEvent) => {
       typeof event.body === "string" ? JSON.parse(event.body) : event.body,
     );
 
-    const { stateStatus, cmsStatus } = getStatus(item.status);
-    // check if it already exsists
+    let status: string = item.status;
+    // check if it already exists in onemac - should exist in SEATool
     const currentPackage: ItemResult | undefined = await getPackage(item.id);
 
     if (currentPackage && currentPackage.found == true) {
+      // we should default to the current status in SEATool, and use entered status as a backup
+      status = currentPackage._source?.seatoolStatus ?? item.status;
       // if it exists and has origin OneMAC we shouldn't override it
       if (currentPackage._source.origin === "OneMAC") {
         return response({
@@ -91,6 +105,7 @@ export const handler = async (event: APIGatewayEvent) => {
       }
     }
 
+    const { stateStatus, cmsStatus } = getStatus(status);
     return await sendSubmitMessage({ ...item, stateStatus, cmsStatus });
   } catch (err) {
     console.error("Error has occured submitting package:", err);

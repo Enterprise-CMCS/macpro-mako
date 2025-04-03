@@ -1,6 +1,7 @@
 import { z } from "zod";
 
 import { attachmentArraySchema, attachmentArraySchemaOptional } from "../attachments";
+import { ammendSchema } from "./base-schema";
 
 export const baseSchema = z.object({
   event: z.literal("capitated-amendment").default("capitated-amendment"),
@@ -42,11 +43,4 @@ export const baseSchema = z.object({
         "The approved 1915(b) Initial or Renewal Number must be in the format of SS-####.R##.## or SS-#####.R##.##.",
     }),
 });
-
-export const schema = baseSchema.extend({
-  actionType: z.string().default("Amend"),
-  origin: z.literal("mako").default("mako"),
-  submitterName: z.string(),
-  submitterEmail: z.string().email(),
-  timestamp: z.number(),
-});
+export const schema = baseSchema.merge(ammendSchema);

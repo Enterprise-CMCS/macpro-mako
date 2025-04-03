@@ -5,7 +5,7 @@ export const transform = () => {
     return {
       ...data,
       authority: "1915(b)",
-      actionType: "Renewal",
+      actionType: "Renew",
     };
   });
 };

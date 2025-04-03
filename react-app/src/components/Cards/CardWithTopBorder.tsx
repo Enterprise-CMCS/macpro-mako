@@ -11,7 +11,7 @@ export const CardWithTopBorder: FC<CardWithTopBorderProps> = ({
   className,
 }: CardWithTopBorderProps) => {
   return (
-    <div className={cn("my-6 sticky top-12", className)}>
+    <div className={cn("my-6 flex flex-col", className)}>
       <div
         style={{
           background: "linear-gradient(90.11deg,#0071bc 49.91%,#02bfe7 66.06%)",
@@ -20,7 +20,7 @@ export const CardWithTopBorder: FC<CardWithTopBorderProps> = ({
         }}
         className="h-2 shadow-lg"
       />
-      <div className="border border-t-0 rounded-b-sm border-slate-300">{children}</div>
+      <div className="flex-1 border border-t-0 rounded-b-sm border-slate-300">{children}</div>
     </div>
   );
 };
