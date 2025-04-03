@@ -227,8 +227,7 @@ export const insertNewSeatoolRecordsFromKafkaIntoMako = async (
     (collection, kafkaRecord) => {
       try {
         const { key, value } = kafkaRecord;
-        console.log("seatoolrecordsfrommako");
-        console.log(value);
+
         if (!key) {
           console.log(`Record without a key property: ${value}`);
 
@@ -248,6 +247,8 @@ export const insertNewSeatoolRecordsFromKafkaIntoMako = async (
           id,
           ...JSON.parse(decodeBase64WithUtf8(value)),
         };
+        console.log("Seatoolstatus");
+        console.log(seatoolRecord);
         // We get the ID here and look up to see if it exist in mako currently
         if (seatoolRecord.seatoolStatus == "Pending-RAI") {
           seatoolRecord.seatoolStatus = "Pending-Finance";
