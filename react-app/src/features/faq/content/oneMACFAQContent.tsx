@@ -31,9 +31,14 @@ export const oneMACFAQContent: FAQContent[] = [
     qanda: [
       {
         anchorText: "crosswalk-system",
-        question: "Which system should I use for my state’s submission?",
+        question: "Which SPA or waiver packages should I submit in OneMAC?",
         answerJSX: (
           <section>
+            <p>
+              OneMAC supports all Medicaid SPAs, except SPAs submitted in MACPro. This includes CHIP
+              SPAs, 1915(b) waiver actions, 1915(c) Appendix K waiver amendments, and 1915(b) and
+              (c) waiver temporary extension requests.
+            </p>
             <p>
               Check which system to submit your state plan in with this crosswalk training document.
             </p>
