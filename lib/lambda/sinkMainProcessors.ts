@@ -250,8 +250,9 @@ export const insertNewSeatoolRecordsFromKafkaIntoMako = async (
         console.log("Seatoolstatus");
         console.log(seatoolRecord);
         // We get the ID here and look up to see if it exist in mako currently
-        if (seatoolRecord.seatoolStatus == "Pending-RAI") {
-          seatoolRecord.seatoolStatus = "Pending-Finance";
+        if (seatoolRecord?.STATE_PLAN?.SPW_STATUS_ID === 2) {
+          console.log("APPLES");
+          seatoolRecord.STATE_PLAN.SPW_STATUS_ID = 11;
         }
         const safeSeatoolRecord = opensearch.main.seatool.transform(id).safeParse(seatoolRecord);
 
