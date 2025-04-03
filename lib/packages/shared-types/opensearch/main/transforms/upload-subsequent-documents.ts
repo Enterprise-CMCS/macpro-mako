@@ -1,4 +1,4 @@
-import { events } from "../../../events";
+import { events } from "../../../index";
 
 export const transform = () => {
   return events["upload-subsequent-documents"].schema.transform((data) => ({

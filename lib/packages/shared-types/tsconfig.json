@@ -1,14 +1,17 @@
 {
   "compilerOptions": {
-    "strict": true,
-    "forceConsistentCasingInFileNames": true,
-    "target": "ES2016",
-    "moduleResolution": "Bundler",
-    "module": "ESNext",
+    "target": "ESNext",
+    "useDefineForClassFields": true,
+    "allowJs": false,
     "skipLibCheck": true,
     "esModuleInterop": true,
+    "allowSyntheticDefaultImports": true,
+    "strict": true,
+    "forceConsistentCasingInFileNames": true,
+    "module": "ESNext",
+    "moduleResolution": "Node",
     "resolveJsonModule": true,
-    "verbatimModuleSyntax": false,
+    "isolatedModules": true,
     "noEmit": true
   },
   "include": ["./**/*.ts"],

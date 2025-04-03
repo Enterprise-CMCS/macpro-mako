@@ -1,4 +1,4 @@
-import { events, getStatus, SEATOOL_STATUS } from "shared-types";
+import { events, getStatus, SEATOOL_STATUS } from "../../../index";
 export const transform = () => {
   return events["respond-to-rai"].schema.transform((data) => {
     const { stateStatus, cmsStatus } = getStatus(SEATOOL_STATUS.SUBMITTED);

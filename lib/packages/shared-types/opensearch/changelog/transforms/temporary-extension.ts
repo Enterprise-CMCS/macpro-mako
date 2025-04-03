@@ -1,4 +1,4 @@
-import { events } from "shared-types";
+import { events } from "../../../index";
 export const transform = (offset: number) => {
   return events["temporary-extension"].schema.transform((data) => {
     const attachments = data.attachments

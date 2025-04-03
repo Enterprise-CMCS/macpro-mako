@@ -1,4 +1,4 @@
-import { Action, handleLegacyAttachment, legacyEventSchema } from "../../..";
+import { Action, handleLegacyAttachment, legacyEventSchema } from "../../../index";
 import { ONEMAC_LEGACY_ORIGIN } from "../../main/transforms/legacy-transforms";
 
 export const transform = (id: string) => {
