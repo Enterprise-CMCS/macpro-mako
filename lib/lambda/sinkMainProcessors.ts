@@ -278,7 +278,8 @@ export const insertNewSeatoolRecordsFromKafkaIntoMako = async (
           console.log("SKIPPED DUE TO OUT-OF-DATE INFORMATION");
           return collection;
         }
-
+        console.log("document");
+        console.log(seatoolDocument);
         if (seatoolDocument.authority && seatoolDocument.seatoolStatus !== "Unknown") {
           console.log("INDEX");
           console.log("--------------------");
