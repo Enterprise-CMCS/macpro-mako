@@ -10,8 +10,8 @@ export const legacyEventSchema = legacySharedSchema
   .merge(
     z.object({
       eventTimestamp: z.number().nullish(),
-      lastEventTimestamp: z.number(),
-      submissionTimestamp: z.number(),
+      lastEventTimestamp: z.number().nullish(),
+      submissionTimestamp: z.number().nullish(),
       pk: z.string(),
       currentStatus: z.string().nullish(),
       subStatus: z.string().nullish(),
