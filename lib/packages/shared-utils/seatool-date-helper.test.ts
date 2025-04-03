@@ -27,6 +27,11 @@ describe("formatSeatoolDate", () => {
     const originalDate = new Date("Fri Dec 31 1999 19:00:00 GMT-0500 (Eastern Standard Time)");
     expect(formatSeatoolDate(originalDate.toISOString())).toEqual("01/01/2000");
   });
+
+  it("should return empty string for epoch start date", () => {
+    const originalDate = new Date("1970-01-01T00:00:00.000Z");
+    expect(formatSeatoolDate(originalDate)).toEqual("");
+  });
 });
 
 describe("getBusinessDayTimestamp", () => {

@@ -47,3 +47,7 @@ export const formatDateToUTC = (
 
   return format(utcDateObj, formatValue);
 };
+
+export const isEpochStartDate = (date: string | number | Date) => {
+  return new Date(date).getTime() === new Date("1970-01-01T00:00:00.000Z").getTime();
+};
