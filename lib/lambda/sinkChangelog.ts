@@ -143,22 +143,23 @@ const processAndIndex = async ({
       // Legacy records with multiple actions have a reverseChrono property in the main record for this package
       // Each action within a package is also in their own record without a reverseChrono property
       const recordsToProcess: Array<(typeof transforms)[keyof typeof transforms]["Schema"]> = [];
-      if (record.reverseChrono?.length) {
-        recordsToProcess.push({ ...record, ...record.reverseChrono.at(-1) });
-        // Focus on adminChange property in records with the reverseChrono property to avoid ingesting duplicates
-        if (record.adminChanges?.length) {
-          record.adminChanges.map((adminChange: LegacyAdminChange) =>
-            recordsToProcess.push({
-              ...record,
-              ...adminChange,
-              event: "legacy-admin-change",
-            }),
-          );
-        }
-      } else {
-        recordsToProcess.push(record);
-      }
-
+      // if (record.reverseChrono?.length) {
+      //   recordsToProcess.push({ ...record, ...record.reverseChrono.at(-1) });
+      //   // Focus on adminChange property in records with the reverseChrono property to avoid ingesting duplicates
+      //   if (record.adminChanges?.length) {
+      //     record.adminChanges.map((adminChange: LegacyAdminChange) =>
+      //       recordsToProcess.push({
+      //         ...record,
+      //         ...adminChange,
+      //         event: "legacy-admin-change",
+      //       }),
+      //     );
+      //   }
+      // } else {
+      //   recordsToProcess.push(record);
+      // }
+      recordsToProcess.push(record);
+      console.log(record, "WHAT IS THIS RECORD");
       for (const currentRecord of recordsToProcess) {
         // If the event is a supported event, transform and push to docs array for indexing
         if (currentRecord.event in transforms) {
