@@ -1,13 +1,11 @@
 import { Action } from "shared-types";
 
 // Resolve the action type based on the GSI1pk
-export const getLegacyEventType = (GSI1pk: string) => {
-  if (!GSI1pk) {
+export const getLegacyEventType = (gsi1pk: string) => {
+  if (gsi1pk === "") {
     return undefined;
   }
-  const submitType = GSI1pk?.split("OneMAC#submit")?.[1] || "";
-
-  let event;
+  const submitType = gsi1pk.split("OneMAC#submit")?.[1] || "";
 
   switch (submitType) {
     case "chipspa":
@@ -19,38 +17,31 @@ export const getLegacyEventType = (GSI1pk: string) => {
     case "waiverextensionc":
     case "waivernew":
     case "waiverrenewal":
-      event = "new-legacy-submission";
-      break;
+      return "new-legacy-submission";
     case "chipsparai":
     case "medicaidsparai":
     case "waiveramendmentrai":
     case "waiverappkrai":
     case "waiverrai":
-      event = Action.RESPOND_TO_RAI;
-      break;
+      return Action.RESPOND_TO_RAI;
     case "chipspawithdraw":
     case "medicaidspawithdraw":
     case "waiveramendmentwithdraw":
     case "waiverappkwithdraw":
     case "waivernewwithdraw":
     case "waiverrenewalwithdraw":
-      event = Action.WITHDRAW_PACKAGE;
-      break;
+      return Action.WITHDRAW_PACKAGE;
     case "rairesponsewithdraw":
-      event = Action.LEGACY_WITHDRAW_RAI_REQUEST;
-      break;
+      return Action.LEGACY_WITHDRAW_RAI_REQUEST;
     case "medicaidspasubsequent":
     case "chipspasubsequent":
     case "waiverappksubsequent":
     case "waivernewsubsequent":
     case "waiverrenewalsubsequent":
     case "waiveramendmentsubsequent":
-      event = Action.UPLOAD_SUBSEQUENT_DOCUMENTS;
-      break;
+      return Action.UPLOAD_SUBSEQUENT_DOCUMENTS;
     default:
       console.log(`Unhandled event type for ${submitType}.  Doing nothing and continuing.`);
-      event = undefined;
-      break;
+      return undefined;
   }
-  return event;
 };

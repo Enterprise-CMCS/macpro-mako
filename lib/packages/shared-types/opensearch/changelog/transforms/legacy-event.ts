@@ -15,7 +15,7 @@ export const transform = () => {
     const transformedData = {
       // Append only changelog, so we add the offset to make the document id unique
       // Legacy emits can emit multiple events for the same business event, so we key off the timestamp, not the offset, to prevent duplciates
-      id: `${data.componentId}-legacy-${data.eventTimestamp ? data.eventTimestamp : data.lastEventTimestamp}`,
+      id: `${data.componentId}-legacy-${data.eventTimestamp ?? data.lastEventTimestamp}`,
       packageId: data.componentId,
       timestamp: data.eventTimestamp,
       event: eventType,
