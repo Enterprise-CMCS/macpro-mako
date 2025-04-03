@@ -358,7 +358,8 @@ export const syncSeatoolRecordDatesFromKafkaWithMako = async (
         metadata: { topicPartition, kafkaRecord },
       });
     }
-
+    console.log("collection from seatool");
+    console.log(collection);
     return collection;
   }, []);
 
