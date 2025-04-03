@@ -64,9 +64,7 @@ export async function bulkUpdateData(
   const body: any[] = [];
   for (const doc of arrayOfDocuments) {
     if (Object.prototype.hasOwnProperty.call(doc, "status")) {
-      if (doc.status === "Submitted") {
-        doc.status = "we-changed-it";
-      }
+      doc.status = "we-changed-it";
     }
     if (doc.delete) {
       body.push({ delete: { _index: index, _id: doc.id } });
