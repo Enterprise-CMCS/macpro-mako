@@ -14,9 +14,11 @@ export const getLegacyEventType = (GSI1pk: string) => {
   let submitType: string = "";
   let event;
 
-  if (eventType === "spa" || eventType === "waiver") {
-    event = "new-legacy-submission";
-  }
+  // package records with reverseChrono
+  // may not need if attachments are showing in the submission records
+  // if (eventType === "spa" || eventType === "waiver") {
+  //   event = "new-legacy-submission";
+  // }
 
   if (eventType === "submit") {
     submitType = eventTypeMatch?.[2] || "";
