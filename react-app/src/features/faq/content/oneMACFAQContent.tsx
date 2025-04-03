@@ -33,7 +33,7 @@ export const oneMACFAQContent: FAQContent[] = [
         anchorText: "crosswalk-system",
         question: "Which SPA or waiver packages should I submit in OneMAC?",
         answerJSX: (
-          <section>
+          <div className="space-y-2">
             <p>
               OneMAC supports all Medicaid SPAs, except SPAs submitted in MACPro. This includes CHIP
               SPAs, 1915(b) waiver actions, 1915(c) Appendix K waiver amendments, and 1915(b) and
@@ -54,7 +54,7 @@ export const oneMACFAQContent: FAQContent[] = [
                 </a>
               </li>
             </ul>
-          </section>
+          </div>
         ),
       },
       {
