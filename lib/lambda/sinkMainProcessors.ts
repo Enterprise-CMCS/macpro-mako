@@ -6,7 +6,7 @@ import {
   opensearch,
   SEATOOL_STATUS,
   SeatoolRecordWithUpdatedDate,
-  SeatoolSpwStatus,
+  SeatoolSpwStatusEnum,
 } from "shared-types";
 import { Document, legacyTransforms, seatool, transforms } from "shared-types/opensearch/main";
 import { decodeBase64WithUtf8 } from "shared-utils";
@@ -235,19 +235,22 @@ const oneMacSeatoolStatusCheck = async (seatoolRecord: Document) => {
   // If we have a withdrawal requested do not update unless the status in seatool is Withdrawn
   if (
     oneMacStatus === SEATOOL_STATUS.WITHDRAW_REQUESTED &&
-    seatoolStatus !== SeatoolSpwStatus.Withdrawn
+    seatoolStatus !== SeatoolSpwStatusEnum.Withdrawn
   ) {
-    return SeatoolSpwStatus.WithdrawalRequested;
+    return SeatoolSpwStatusEnum.WithdrawalRequested;
   }
   // OneMac is requesting an RAI withdrawal it is not Pending RAI in seatool
   if (
     oneMacStatus === SEATOOL_STATUS.RAI_RESPONSE_WITHDRAW_REQUESTED &&
-    seatoolStatus !== SeatoolSpwStatus.PendingRAI
+    seatoolStatus !== SeatoolSpwStatusEnum.PendingRAI
   ) {
-    return SeatoolSpwStatus.FormalRAIResponseWithdrawalRequested;
+    return SeatoolSpwStatusEnum.FormalRAIResponseWithdrawalRequested;
   }
   // Current status is RAI Issued in seatool and onemac status is SUBMITTED
-  if (oneMacStatus === SEATOOL_STATUS.SUBMITTED && seatoolStatus === SeatoolSpwStatus.PendingRAI) {
+  if (
+    oneMacStatus === SEATOOL_STATUS.SUBMITTED &&
+    seatoolStatus === SeatoolSpwStatusEnum.PendingRAI
+  ) {
     // Checking to see if the most recent entry is in the changelog is respond to rai
     const changelogs = await getPackageChangelog(seatoolRecord.id);
 
@@ -261,7 +264,7 @@ const oneMacSeatoolStatusCheck = async (seatoolRecord: Document) => {
       const requestedDate = normalizeToDate(raiDate.raiRequestedDate);
       // Set status to submitted if our dates line up
       if (eventDate >= requestedDate) {
-        seatoolRecord.STATE_PLAN.SPW_STATUS_ID = SeatoolSpwStatus.Submitted;
+        seatoolRecord.STATE_PLAN.SPW_STATUS_ID = SeatoolSpwStatusEnum.Submitted;
       }
     }
   }
@@ -406,10 +409,8 @@ export const syncSeatoolRecordDatesFromKafkaWithMako = async (
         metadata: { topicPartition, kafkaRecord },
       });
     }
-    console.log("collection from seatool");
-    console.log(collection);
+
     return collection;
   }, []);
-  console.log(recordIdsWithUpdatedDates);
   await bulkUpdateDataWrapper(recordIdsWithUpdatedDates, "main");
 };

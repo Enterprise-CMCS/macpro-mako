@@ -1,4 +1,4 @@
-export enum SeatoolSpwStatus {
+export enum SeatoolSpwStatusEnum {
   Pending = 1,
   PendingRAI = 2,
   PendingOffTheClock = 3,
