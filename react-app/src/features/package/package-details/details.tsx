@@ -52,72 +52,80 @@ type GetLabelAndValueFromSubmission = (
   user: OneMacUser,
 ) => LabelAndValue[];
 
-export const getSubmissionDetails: GetLabelAndValueFromSubmission = (submission, { user }) => [
-  {
-    label: "Submission ID",
-    value: submission.id,
-  },
-  {
-    label: "Authority",
-    value: submission.authority,
-  },
-  {
-    label: "Action Type",
-    value: formatActionType(submission.actionType),
-    canView: ([Authority["1915b"], Authority["1915c"]] as string[]).includes(submission.authority),
-  },
-  {
-    label: "State",
-    value: convertStateAbbrToFullName(submission.state),
-  },
-  {
-    label: "Amendment Title",
-    value: submission.title || BLANK_VALUE,
-    canView: submission.title !== undefined,
-  },
-  {
-    label: "Subject",
-    value: submission.subject || BLANK_VALUE,
-    canView: isCmsUser(user) && submission.actionType !== "Extend",
-  },
-  {
-    label: "Type",
-    value: submission.types
-      ? submission.types.map((type) => <p key={type?.SPA_TYPE_ID}>{type?.SPA_TYPE_NAME}</p>)
-      : BLANK_VALUE,
-    canView: submission.actionType !== "Extend" && isStateUser(user) === false,
-  },
-  {
-    label: "Subtype",
-    value: submission.subTypes
-      ? submission.subTypes.map((T) => <p key={T?.TYPE_ID}>{T?.TYPE_NAME}</p>)
-      : BLANK_VALUE,
-    canView: submission.actionType !== "Extend" && isStateUser(user) === false,
-  },
-  {
-    label: "Approved Initial or Renewal Number",
-    value: submission.originalWaiverNumber,
-    canView: submission.actionType === "Extend",
-  },
-  {
-    label: "Proposed Effective Date",
-    value: submission.proposedDate ? formatDateToUTC(submission.proposedDate) : "Pending",
-    canView: submission.actionType !== "Extend",
-  },
-  {
-    label: "Initial Submission Date",
-    value: submission.submissionDate ? formatDateToET(submission.submissionDate) : BLANK_VALUE,
-  },
-  {
-    label: "Latest Package Activity",
-    value: submission.makoChangedDate ? formatDateToET(submission.makoChangedDate) : BLANK_VALUE,
-  },
-  {
-    label: "Formal RAI Response Date",
-    value: submission.raiReceivedDate ? formatDateToET(submission.raiReceivedDate) : BLANK_VALUE,
-    canView: submission.actionType !== "Extend",
-  },
-];
+export const getSubmissionDetails: GetLabelAndValueFromSubmission = (submission, { user }) => {
+  const details: LabelAndValue[] = [
+    {
+      label: "Submission ID",
+      value: submission.id,
+    },
+    {
+      label: "Authority",
+      value: submission.authority,
+    },
+    {
+      label: "Action Type",
+      value: formatActionType(submission.actionType),
+      canView: ([Authority["1915b"], Authority["1915c"]] as string[]).includes(
+        submission.authority,
+      ),
+    },
+    {
+      label: "State",
+      value: convertStateAbbrToFullName(submission.state),
+    },
+    {
+      label: "Amendment Title",
+      value: submission.title || BLANK_VALUE,
+      canView: submission.title !== undefined,
+    },
+    {
+      label: "Subject",
+      value: submission.subject || BLANK_VALUE,
+      canView: isCmsUser(user) && submission.actionType !== "Extend",
+    },
+    {
+      label: "Type",
+      value: submission.types
+        ? submission.types.map((type) => <p key={type?.SPA_TYPE_ID}>{type?.SPA_TYPE_NAME}</p>)
+        : BLANK_VALUE,
+      canView: submission.actionType !== "Extend" && isStateUser(user) === false,
+    },
+    {
+      label: "Subtype",
+      value: submission.subTypes
+        ? submission.subTypes.map((T) => <p key={T?.TYPE_ID}>{T?.TYPE_NAME}</p>)
+        : BLANK_VALUE,
+      canView: submission.actionType !== "Extend" && isStateUser(user) === false,
+    },
+    {
+      label: "Approved Initial or Renewal Number",
+      value: submission.originalWaiverNumber,
+      canView: submission.actionType === "Extend",
+    },
+    {
+      label: "Proposed Effective Date",
+      value: submission.proposedDate ? formatDateToUTC(submission.proposedDate) : "Pending",
+      canView: submission.actionType !== "Extend",
+    },
+    {
+      label: "Initial Submission Date",
+      value: submission.submissionDate ? formatDateToET(submission.submissionDate) : BLANK_VALUE,
+    },
+    {
+      label: "Latest Package Activity",
+      value: submission.makoChangedDate ? formatDateToET(submission.makoChangedDate) : BLANK_VALUE,
+    },
+    {
+      label: "Formal RAI Response Date",
+      value: submission.raiReceivedDate ? formatDateToET(submission.raiReceivedDate) : BLANK_VALUE,
+      canView: submission.actionType !== "Extend",
+    },
+  ];
+  console.log("📋 getSubmissionDetails received:", { submission, user });
+  console.log("🧾 Processed Submission Details:", details);
+
+  return details;
+};
 
 export const getApprovedAndEffectiveDetails: GetLabelAndValueFromSubmission = (submission) => [
   {
