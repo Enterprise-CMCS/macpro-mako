@@ -1,4 +1,4 @@
-// seatool authorities and authority ids
+// seatool authorities and authority ids.
 export const SEATOOL_SPW_STATUS: { [key: string]: string } = {
   "1": "Pending",
   "2": "Pending-RAI",
@@ -11,6 +11,8 @@ export const SEATOOL_SPW_STATUS: { [key: string]: string } = {
   "9": "Unsubmitted",
   "10": "Pending-Finance",
   "11": "Pending-Approval",
-  // THese are for our placeholder statuses
+  // These are for our placeholder statuses.  Seatool expects a number returned for the zod object.
   "12": "Withdrawal Requested",
+  "13": "Formal RAI Response - Withdrawal Requested",
+  "14": "Submitted",
 };

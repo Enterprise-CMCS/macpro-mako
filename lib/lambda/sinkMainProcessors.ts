@@ -1,6 +1,6 @@
 import { isBefore } from "date-fns";
 import { bulkUpdateDataWrapper, ErrorType, getItems, logError } from "libs";
-import { getPackage } from "libs/api/package";
+import { getPackage, getPackageChangelog } from "libs/api/package";
 import {
   KafkaRecord,
   opensearch,
@@ -217,7 +217,47 @@ const getMakoDocTimestamps = async (kafkaRecords: KafkaRecord[]) => {
     return map;
   }, new Map());
 };
+const statusCodeConversion = async (seatoolRecord: Document) => {
+  const existingPackage = await getPackage(seatoolRecord.id);
 
+  const oneMacStatus = existingPackage?._source?.seatoolStatus;
+  const seatoolStatus = seatoolRecord?.STATE_PLAN.SPW_STATUS_ID;
+
+  // If we have a withdrawal requested do not update unless the status in seatool is Withdrawn
+  if (oneMacStatus === SEATOOL_STATUS.WITHDRAW_REQUESTED && seatoolStatus !== 6) {
+    return 12;
+  }
+  // OneMac is requesting an RAI withdrawal it is not Pending RAI in seatool
+  if (oneMacStatus === SEATOOL_STATUS.RAI_RESPONSE_WITHDRAW_REQUESTED && seatoolStatus !== 2) {
+    return 13;
+  }
+  // Current status is RAI Issued in seatool and onemac status is SUBMITTED
+  if (seatoolStatus === 2 && oneMacStatus === SEATOOL_STATUS.SUBMITTED) {
+    // Checking to see if the most recent entry is in the changelog is respond to rai
+    const changelogs = await getPackageChangelog(seatoolRecord.id);
+    const raiResponseEvents = changelogs.hits.hits.filter(
+      (event) => event._source.event === "respond-to-rai",
+    );
+
+    // Only proceed if we have events and a RAI requested date
+    if (raiResponseEvents?.length && seatoolRecord.raiRequestedDate) {
+      const eventDate = normalizeToDate(raiResponseEvents[0]._source.timestamp);
+      const requestedDate = normalizeToDate(seatoolRecord.raiRequestedDate);
+
+      // Set status to submitted if our dates line up
+      if (eventDate >= requestedDate) {
+        seatoolRecord.STATE_PLAN.SPW_STATUS_ID = 14;
+      }
+    }
+  }
+  return seatoolRecord.STATE_PLAN.SPW_STATUS_ID;
+};
+// Seatool sets their days to a fixed time so we just round it to the day.
+function normalizeToDate(timestamp: string | number | Date): number {
+  const date = new Date(timestamp);
+  date.setHours(0, 0, 0, 0);
+  return date.getTime();
+}
 /**
  * Processes new SEATOOL records and reconciles them with existing Mako records
  * @param kafkaRecords records to process
@@ -252,14 +292,7 @@ export const insertNewSeatoolRecordsFromKafkaIntoMako = async (
         ...JSON.parse(decodeBase64WithUtf8(value)),
       };
 
-      const existingPackage = await getPackage(id);
-
-      if (
-        existingPackage?._source?.seatoolStatus === SEATOOL_STATUS.WITHDRAW_REQUESTED &&
-        seatoolRecord?.STATE_PLAN.SPW_STATUS_ID !== 6
-      ) {
-        seatoolRecord.STATE_PLAN.SPW_STATUS_ID = 12;
-      }
+      seatoolRecord.STATE_PLAN.SPW_STATUS_ID = await statusCodeConversion(seatoolRecord);
 
       const safeSeatoolRecord = opensearch.main.seatool.transform(id).safeParse(seatoolRecord);
 
