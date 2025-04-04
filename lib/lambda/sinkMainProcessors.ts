@@ -221,7 +221,7 @@ const getMakoDocTimestamps = async (kafkaRecords: KafkaRecord[]) => {
 //  Withdrawl-requested,RAI response withdrawal requested and if we responded to an rai request take priority
 const oneMacSeatoolStatusCheck = async (seatoolRecord: Document) => {
   const existingPackage = await getPackage(seatoolRecord.id);
-
+  console.log("seatool record: " + seatoolRecord);
   const oneMacStatus = existingPackage?._source?.seatoolStatus;
   const seatoolStatus = seatoolRecord?.STATE_PLAN.SPW_STATUS_ID;
 
@@ -238,7 +238,6 @@ const oneMacSeatoolStatusCheck = async (seatoolRecord: Document) => {
     // Checking to see if the most recent entry is in the changelog is respond to rai
     const changelogs = await getPackageChangelog(seatoolRecord.id);
 
-    console.log("changelogs: " + changelogs);
     const raiResponseEvents = changelogs.hits.hits.filter(
       (event) => event._source.event === "respond-to-rai",
     );
