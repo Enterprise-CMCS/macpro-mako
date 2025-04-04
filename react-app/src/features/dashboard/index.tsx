@@ -68,7 +68,7 @@ export const Dashboard = () => {
   if (!userObj?.user || !isAbleToAccessDashboard()) {
     return <Navigate to="/" />;
   }
-  console.log(osData);
+
   return (
     <OsProvider
       value={{

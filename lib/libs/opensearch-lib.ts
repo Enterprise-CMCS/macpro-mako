@@ -124,7 +124,7 @@ export async function deleteIndex(host: string, index: opensearch.Index) {
     }
   }
 }
-///almost there
+
 export async function mapRole(
   host: string,
   masterRoleToAssume: string,

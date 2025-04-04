@@ -217,7 +217,9 @@ const getMakoDocTimestamps = async (kafkaRecords: KafkaRecord[]) => {
     return map;
   }, new Map());
 };
-const statusCodeConversion = async (seatoolRecord: Document) => {
+//  We need to make sure if we have a certain status in onemac that it takes priority over what comes over from seatool.
+//  Withdrawl-requested,RAI response withdrawal requested and if we responded to an rai request take priority
+const oneMacSeatoolStatusCheck = async (seatoolRecord: Document) => {
   const existingPackage = await getPackage(seatoolRecord.id);
 
   const oneMacStatus = existingPackage?._source?.seatoolStatus;
@@ -235,15 +237,19 @@ const statusCodeConversion = async (seatoolRecord: Document) => {
   if (seatoolStatus === 2 && oneMacStatus === SEATOOL_STATUS.SUBMITTED) {
     // Checking to see if the most recent entry is in the changelog is respond to rai
     const changelogs = await getPackageChangelog(seatoolRecord.id);
+
+    console.log("changelogs: " + changelogs);
     const raiResponseEvents = changelogs.hits.hits.filter(
       (event) => event._source.event === "respond-to-rai",
     );
-
+    console.log("rai events");
+    console.log(raiResponseEvents);
     // Only proceed if we have events and a RAI requested date
     if (raiResponseEvents?.length && seatoolRecord.raiRequestedDate) {
       const eventDate = normalizeToDate(raiResponseEvents[0]._source.timestamp);
       const requestedDate = normalizeToDate(seatoolRecord.raiRequestedDate);
-
+      console.log("event date: " + eventDate);
+      console.log("request date: " + requestedDate);
       // Set status to submitted if our dates line up
       if (eventDate >= requestedDate) {
         seatoolRecord.STATE_PLAN.SPW_STATUS_ID = 14;
@@ -292,7 +298,7 @@ export const insertNewSeatoolRecordsFromKafkaIntoMako = async (
         ...JSON.parse(decodeBase64WithUtf8(value)),
       };
 
-      seatoolRecord.STATE_PLAN.SPW_STATUS_ID = await statusCodeConversion(seatoolRecord);
+      seatoolRecord.STATE_PLAN.SPW_STATUS_ID = await oneMacSeatoolStatusCheck(seatoolRecord);
 
       const safeSeatoolRecord = opensearch.main.seatool.transform(id).safeParse(seatoolRecord);
 
