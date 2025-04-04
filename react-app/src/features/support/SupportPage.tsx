@@ -1,6 +1,4 @@
-import Fuse from "fuse.js";
 import { useEffect, useMemo, useState } from "react";
-import ReactDOMServer from "react-dom/server";
 import { useParams } from "react-router";
 // import {Navigate} from "react-router"
 import { isCmsUser } from "shared-utils";
@@ -13,7 +11,7 @@ import {
   AccordionTrigger,
   ExpandCollapseBtn,
   LeftNavigation,
-  SearchForm,
+  SearchContent,
   SupportSubNavHeader,
   ToggleGroup,
   ToggleGroupItem,
@@ -26,62 +24,6 @@ import {
   oneMACStateFAQContent,
   QuestionAnswer,
 } from "./SupportMockContent";
-
-interface SearchContentProps {
-  supportContent: FAQContent[];
-  setSearchResults: (searchResults: FAQContent[], isSearching: boolean) => void;
-}
-
-const SearchContent = ({ supportContent, setSearchResults }: SearchContentProps) => {
-  const removeTags = (jsxElement: JSX.Element) => {
-    const text = ReactDOMServer.renderToStaticMarkup(jsxElement);
-    return text.replace(/(<([^>]+)>)/gi, "");
-  };
-
-  const searchAbleContent = supportContent.flatMap(({ qanda }) =>
-    qanda.map(({ question, answerJSX, anchorText }) => {
-      const answer = removeTags(answerJSX);
-      return { question: question, answer: answer, anchorText };
-    }),
-  );
-
-  const fuse = new Fuse(searchAbleContent, {
-    includeScore: true,
-    keys: ["question", "answer"],
-    findAllMatches: true,
-    threshold: 0.4,
-    distance: 10000,
-  });
-
-  function reorderSupportContent(supportContent: FAQContent[], searchResults) {
-    const contentMap = new Map();
-
-    supportContent.forEach((section) => {
-      section.qanda.forEach((q) => {
-        contentMap.set(q.anchorText, { ...q, sectionTitle: section.sectionTitle });
-      });
-    });
-
-    const formatedSearchResults = searchResults
-      .map((result) => contentMap.get(result.item.anchorText))
-      .filter(Boolean);
-
-    return [{ sectionTitle: "", qanda: formatedSearchResults }];
-  }
-
-  const handleSearch = (s: string) => {
-    if (s.length) {
-      const searchResults = fuse.search(s);
-      console.log("ANDIE: ", searchResults);
-      const formatedSearchResults = reorderSupportContent(supportContent, searchResults);
-      setSearchResults(formatedSearchResults, true);
-    } else {
-      setSearchResults(supportContent, false);
-    }
-  };
-
-  return <SearchForm handleSearch={handleSearch} isSearching={false} disabled={false} />;
-};
 
 const FaqAccordion = ({ question }: { question: QuestionAnswer[] }) => {
   return (
@@ -154,11 +96,14 @@ export const SupportPage = () => {
 
   const setSearchResults = (searchResults: FAQContent[], isSearching?: boolean) => {
     setIsSearching(isSearching);
-    setSupportContent(searchResults);
 
-    if (isSearching) {
+    if (isSearching && searchResults[0].qanda.length) {
+      setSupportContent(searchResults);
       setOpenAccordions([searchResults[0].qanda[0].anchorText]);
-    } else collapseAll();
+    } else {
+      collapseAll();
+      setSupportContent(startingSupportContent);
+    }
   };
 
   // if (!isSupportPageShown || !userObj?.user) return <Navigate to="/" replace />;
@@ -168,13 +113,14 @@ export const SupportPage = () => {
       <SupportSubNavHeader>
         <h1 className="text-4xl font-bold">OneMAC Support</h1>
         <SearchContent
-          supportContent={startingSupportContent}
+          stateSupportContent={oneMACStateFAQContent}
+          cmsSupportContent={isCmsView ? oneMACCMSContent : []}
           setSearchResults={setSearchResults}
         />
       </SupportSubNavHeader>
 
       {/* only display the toggle CMS/State view when the user is CMS */}
-      {isCmsView && (
+      {isCmsView && !isSearching && (
         <div className="max-w-screen-xl m-auto px-4 lg:px-8 w-full pt-8">
           <div className="flex justify-end">
             <div className="w-2/3 px-4 lg:px-8">
@@ -227,12 +173,8 @@ export const SupportPage = () => {
               <Accordion type="multiple" value={openAccordions} onValueChange={setOpenAccordions}>
                 {supportContent.map(({ sectionTitle, qanda }) => (
                   <article key={sectionTitle} className="mb-8">
-                    {!isSearching && (
-                      <>
-                        <h2 className="text-2xl font-bold mb-4">{sectionTitle}</h2>
-                        <hr className="bg-gray-300 h-[1.7px]" />
-                      </>
-                    )}
+                    <h2 className="text-2xl font-bold mb-4">{sectionTitle}</h2>
+                    {!isSearching && <hr className="bg-gray-300 h-[1.7px]" />}
                     <FaqAccordion question={qanda} />
                   </article>
                 ))}
