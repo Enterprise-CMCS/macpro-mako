@@ -7,7 +7,7 @@ import {
   SEATOOL_STATUS,
   SeatoolRecordWithUpdatedDate,
 } from "shared-types";
-import { Document, legacyTransforms, transforms } from "shared-types/opensearch/main";
+import { Document, legacyTransforms, seatool, transforms } from "shared-types/opensearch/main";
 import { decodeBase64WithUtf8 } from "shared-utils";
 
 import {
@@ -221,7 +221,6 @@ const getMakoDocTimestamps = async (kafkaRecords: KafkaRecord[]) => {
 //  Withdrawl-requested,RAI response withdrawal requested and if we responded to an rai request take priority
 const oneMacSeatoolStatusCheck = async (seatoolRecord: Document) => {
   const existingPackage = await getPackage(seatoolRecord.id);
-  console.log("seatool record: " + seatoolRecord);
   const oneMacStatus = existingPackage?._source?.seatoolStatus;
   const seatoolStatus = seatoolRecord?.STATE_PLAN.SPW_STATUS_ID;
 
@@ -241,15 +240,11 @@ const oneMacSeatoolStatusCheck = async (seatoolRecord: Document) => {
     const raiResponseEvents = changelogs.hits.hits.filter(
       (event) => event._source.event === "respond-to-rai",
     );
-    console.log("rai events");
-    console.log(raiResponseEvents);
-    console.log("seatool requested date: " + seatoolRecord.raiRequestedDate);
-    console.log("response legnth " + raiResponseEvents?.length);
+    const raiDate = seatool.getRaiDate(seatoolRecord);
     // Only proceed if we have events and a RAI requested date
-    if (raiResponseEvents?.length && seatoolRecord.raiRequestedDate) {
-      console.log("hi");
+    if (raiResponseEvents?.length && raiDate.raiRequestedDate) {
       const eventDate = normalizeToDate(raiResponseEvents[0]._source.timestamp);
-      const requestedDate = normalizeToDate(seatoolRecord.raiRequestedDate);
+      const requestedDate = normalizeToDate(raiDate.raiRequestedDate);
       console.log("event date: " + eventDate);
       console.log("request date: " + requestedDate);
       // Set status to submitted if our dates line up
