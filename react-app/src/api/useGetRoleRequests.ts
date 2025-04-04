@@ -1,3 +1,4 @@
+import { useQuery } from "@tanstack/react-query";
 import { API } from "aws-amplify";
 
 export const getRoleRequests = async (): Promise<string> => {
@@ -9,3 +10,9 @@ export const getRoleRequests = async (): Promise<string> => {
     return "";
   }
 };
+
+export const useGetRoleRequests = () =>
+  useQuery({
+    queryKey: ["roleRequests"],
+    queryFn: () => getRoleRequests(),
+  });

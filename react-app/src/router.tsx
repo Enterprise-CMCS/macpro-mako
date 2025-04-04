@@ -143,6 +143,7 @@ export const router = (loginFlag = false) => {
               path: "/support/:id",
               element: <F.SupportPage />,
             },
+            { path: "/usermanagement", element: <F.UserManagement /> },
           ],
         },
       ],
