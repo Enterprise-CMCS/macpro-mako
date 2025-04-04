@@ -1,7 +1,7 @@
 import { useGetRoleRequests } from "@/api";
 
 export const UserManagement = () => {
-  const { data, error } = useGetRoleRequests();
-  console.log(error, "ERROR??");
+  const { data } = useGetRoleRequests();
+  console.log(data, "data??");
   return <div>hi</div>;
 };
