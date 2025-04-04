@@ -244,8 +244,11 @@ const oneMacSeatoolStatusCheck = async (seatoolRecord: Document) => {
     );
     console.log("rai events");
     console.log(raiResponseEvents);
+    console.log("seatool requested date: " + seatoolRecord.raiRequestedDate);
+    console.log("response legnth " + raiResponseEvents?.length);
     // Only proceed if we have events and a RAI requested date
     if (raiResponseEvents?.length && seatoolRecord.raiRequestedDate) {
+      console.log("hi");
       const eventDate = normalizeToDate(raiResponseEvents[0]._source.timestamp);
       const requestedDate = normalizeToDate(seatoolRecord.raiRequestedDate);
       console.log("event date: " + eventDate);
