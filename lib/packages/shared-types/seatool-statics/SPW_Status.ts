@@ -1,3 +1,20 @@
+export enum SeatoolSpwStatus {
+  Pending = 1,
+  PendingRAI = 2,
+  PendingOffTheClock = 3,
+  Approved = 4,
+  Disapproved = 5,
+  Withdrawn = 6,
+  Terminated = 7,
+  PendingConcurrence = 8,
+  Unsubmitted = 9,
+  PendingFinance = 10,
+  PendingApproval = 11,
+  // These are for placeholder statuses. Seatool expects a number returned for the zod object.
+  WithdrawalRequested = 12,
+  FormalRAIResponseWithdrawalRequested = 13,
+  Submitted = 14,
+}
 // seatool authorities and authority ids.
 export const SEATOOL_SPW_STATUS: { [key: string]: string } = {
   "1": "Pending",

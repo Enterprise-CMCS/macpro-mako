@@ -6,6 +6,7 @@ import {
   opensearch,
   SEATOOL_STATUS,
   SeatoolRecordWithUpdatedDate,
+  SeatoolSpwStatus,
 } from "shared-types";
 import { Document, legacyTransforms, seatool, transforms } from "shared-types/opensearch/main";
 import { decodeBase64WithUtf8 } from "shared-utils";
@@ -203,6 +204,13 @@ export const insertOneMacRecordsFromKafkaIntoMako = async (
   await bulkUpdateDataWrapper(oneMacRecordsForMako, "main");
 };
 
+// Seatool sets their days to a fixed time so we just round it to the day.
+function normalizeToDate(timestamp: string | number | Date): number {
+  const date = new Date(timestamp);
+  date.setHours(0, 0, 0, 0);
+  return date.getTime();
+}
+
 const getMakoDocTimestamps = async (kafkaRecords: KafkaRecord[]) => {
   const kafkaIds = kafkaRecords.map((record) =>
     removeDoubleQuotesSurroundingString(decodeBase64WithUtf8(record.key)),
@@ -225,15 +233,21 @@ const oneMacSeatoolStatusCheck = async (seatoolRecord: Document) => {
   const seatoolStatus = seatoolRecord?.STATE_PLAN.SPW_STATUS_ID;
 
   // If we have a withdrawal requested do not update unless the status in seatool is Withdrawn
-  if (oneMacStatus === SEATOOL_STATUS.WITHDRAW_REQUESTED && seatoolStatus !== 6) {
-    return 12;
+  if (
+    oneMacStatus === SEATOOL_STATUS.WITHDRAW_REQUESTED &&
+    seatoolStatus !== SeatoolSpwStatus.Withdrawn
+  ) {
+    return SeatoolSpwStatus.WithdrawalRequested;
   }
   // OneMac is requesting an RAI withdrawal it is not Pending RAI in seatool
-  if (oneMacStatus === SEATOOL_STATUS.RAI_RESPONSE_WITHDRAW_REQUESTED && seatoolStatus !== 2) {
-    return 13;
+  if (
+    oneMacStatus === SEATOOL_STATUS.RAI_RESPONSE_WITHDRAW_REQUESTED &&
+    seatoolStatus !== SeatoolSpwStatus.PendingRAI
+  ) {
+    return SeatoolSpwStatus.FormalRAIResponseWithdrawalRequested;
   }
   // Current status is RAI Issued in seatool and onemac status is SUBMITTED
-  if (seatoolStatus === 2 && oneMacStatus === SEATOOL_STATUS.SUBMITTED) {
+  if (oneMacStatus === SEATOOL_STATUS.SUBMITTED && seatoolStatus === SeatoolSpwStatus.PendingRAI) {
     // Checking to see if the most recent entry is in the changelog is respond to rai
     const changelogs = await getPackageChangelog(seatoolRecord.id);
 
@@ -245,22 +259,15 @@ const oneMacSeatoolStatusCheck = async (seatoolRecord: Document) => {
     if (raiResponseEvents?.length && raiDate.raiRequestedDate) {
       const eventDate = normalizeToDate(raiResponseEvents[0]._source.timestamp);
       const requestedDate = normalizeToDate(raiDate.raiRequestedDate);
-      console.log("event date: " + eventDate);
-      console.log("request date: " + requestedDate);
       // Set status to submitted if our dates line up
       if (eventDate >= requestedDate) {
-        seatoolRecord.STATE_PLAN.SPW_STATUS_ID = 14;
+        seatoolRecord.STATE_PLAN.SPW_STATUS_ID = SeatoolSpwStatus.Submitted;
       }
     }
   }
   return seatoolRecord.STATE_PLAN.SPW_STATUS_ID;
 };
-// Seatool sets their days to a fixed time so we just round it to the day.
-function normalizeToDate(timestamp: string | number | Date): number {
-  const date = new Date(timestamp);
-  date.setHours(0, 0, 0, 0);
-  return date.getTime();
-}
+
 /**
  * Processes new SEATOOL records and reconciles them with existing Mako records
  * @param kafkaRecords records to process
