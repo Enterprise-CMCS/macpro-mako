@@ -23,6 +23,7 @@ export const legacyEventSchema = legacySharedSchema
       parentId: z.string().nullish(),
       temporaryExtensionType: z.string().nullish(),
       attachments: z.array(legacyAttachmentSchema).nullish(),
+      latestRaiResponseTimestamp: z.number().nullish(),
     }),
   )
   .transform((data) => {
@@ -56,6 +57,7 @@ export const legacyEventSchema = legacySharedSchema
       submitterEmail: data.submitterEmail,
       submitterName: data.submitterName,
       initialIntakeNeeded: true,
+      raiReceivedDate: data.latestRaiResponseTimestamp,
     };
   });
 
