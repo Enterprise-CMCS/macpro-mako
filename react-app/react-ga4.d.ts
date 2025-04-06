@@ -1,5 +1,3 @@
-// lib/react-ga4.d.ts
-// import 'react-ga4'; // Import the module you're augmenting
 import { event as gaEvent } from 'react-ga4';
 import { initialize, send } from 'react-ga4';
 
@@ -8,10 +6,11 @@ declare module 'react-ga4' {
   export function initialize(trackingId: string, options?: any): void;
   export function send(event: any): void;
 
+   // Add custom dimensions that would otherwise be blocked by typescript
   export type UaEventOptions = {
-    state?: string;  // Add your custom dimension here, like `state`
-    user_role?: string;  // Add user_roles or other custom properties
-    [key: string]: any;  // Allow other arbitrary properties for custom dimensions
+    state?: string;  // state the event takes place for
+    user_role?: string; // role of the logged in user
+    [key: string]: any;  
   }
 }
 

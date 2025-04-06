@@ -13,8 +13,6 @@ export type OneMacUser = {
 export const getUser = async (): Promise<OneMacUser> => {
 
   try {
-
-    const googleAnalyticsGtag = config.googleAnalytics?.GOOGLE_ANALYTICS_ID;
     const currentAuthenticatedUser = await Auth.currentAuthenticatedUser();
 
     if (!currentAuthenticatedUser) {
@@ -36,11 +34,6 @@ export const getUser = async (): Promise<OneMacUser> => {
     // Manual additions and normalizations
     userAttributesObj["custom:cms-roles"] = userAttributesObj["custom:cms-roles"] || "";
 
-    // gtag('config', 'YOUR_MEASUREMENT_ID', {
-    //   'user_properties': {
-    //     'user_role': 'state-user'
-    //   }
-    // });
     
     userAttributesObj.username =
       currentAuthenticatedUser.username || currentAuthenticatedUser.Username || "";

@@ -166,6 +166,7 @@ export const Layout = () => {
   const { data: user } = useGetUser();
   const customUserRoles = user?.user?.["custom:cms-roles"] || "";
   const customisMemberOf = user?.user?.["custom:ismemberof"] || "";
+  const state = user?.user?.["custom:state"] || "";
   console.log("user roles outside use effect" +  customUserRoles + customisMemberOf);
   // const [userRoles, setUserRoles] = useState("");
 
@@ -177,16 +178,15 @@ export const Layout = () => {
     if(customUserRoles.length > 0) {
       if(customUserRoles.includes("onemac-state-user")){
         console.log("user login send state user event");
-        // ReactGA.set({user_roles: "State Submitter"});
+
         console.log("user roles" +  customUserRoles);
-        // ReactGA.event('User Login' + ' - ' + "State Submitter", {
-        //   user_roles: "State Submitter"
-        // });
+        console.log("logged in user state: " + state);
 
       ReactGA.event({
         action: 'Login',
         label: 'User Login',
-        user_role: customUserRoles
+        user_role: customUserRoles,
+        category: state
       });
       } else if (customUserRoles.includes("onemac-helpdesk")){
         console.log("user login helpdesk event");

@@ -189,30 +189,12 @@ export const ActionForm = <Schema extends SchemaWithEnforcableProps>({
       console.log("roles: "+ customUserRoles || customisMemberOf);
       console.log("user_territory "+  formData.id.substring(0,2));
 
-
       ReactGA.event({
         action:  formData.event,
-        category: formData.id?.substring(0, 2),
-        user_role: customUserRoles || customisMemberOf,
-        // state: formData.id?.substring(0, 2),  // `state` works without TypeScript errors
+        // category: formData.id?.substring(0, 2), // this sets the state of UaEventOptions which is an Event category custom dimension
+        category: "CA",
+        user_role: customUserRoles || customisMemberOf || ""
       });
-      // ReactGA.event( formData.event, {
-      //   category: formData.id.substring(0,2),
-      //   // user_role: customUserRoles || customisMemberOf
-      // });
-
-      // ReactGA.ga('set', 'dimension1', formData.id?.substring(0, 2)); 
-
-      // ReactGA.set({
-      //   dimension1: "CMS Reviewer",  // state
-      //   dimension2: "MA"
-      // });
-
-      // ReactGA.event({
-      //   category: formData.id?.substring(0,2),
-      //   action: 'Submit',
-      //   label: formData.event
-      // });
       
       console.log("state"+formData.id.substring(0,2))
     } catch (error) {
