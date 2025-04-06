@@ -166,70 +166,25 @@ export const Layout = () => {
   const { data: user } = useGetUser();
   const customUserRoles = user?.user?.["custom:cms-roles"] || "";
   const customisMemberOf = user?.user?.["custom:ismemberof"] || "";
-  const state = user?.user?.["custom:state"] || "";
-  console.log("user roles outside use effect" +  customUserRoles + customisMemberOf);
-  // const [userRoles, setUserRoles] = useState("");
-
-  // if(customUserRoles && customUserRoles != userRoles) {
-  //   setUserRoles(customUserRoles)
-  // }
-
   useEffect(()=>{
     if(customUserRoles.length > 0) {
-      if(customUserRoles.includes("onemac-state-user")){
-        console.log("user login send state user event");
-
-        console.log("user roles" +  customUserRoles);
-        console.log("logged in user state: " + state);
-
+      if(customUserRoles.includes("onemac-state-user") || customUserRoles.includes("onemac-helpdesk" ) || customUserRoles.includes("onemac-micro-readonly")){
       ReactGA.event({
         action: 'Login',
-        label: 'User Login',
         user_role: customUserRoles,
-        category: state
       });
-      } else if (customUserRoles.includes("onemac-helpdesk")){
-        console.log("user login helpdesk event");
-        console.log("user roles" +  customUserRoles);
-        // ReactGA.set({user_roles: "Helpdesk"});
-        // ReactGA.event('User Login' + ' - ' + "Helpdesk", {
-        //   user_roles: "Helpdesk"
-        // });
-        ReactGA.event({
-          action: 'Login',
-          label: 'User Login',
-          user_role: customUserRoles
-        });
-      } else if (customUserRoles.includes("onemac-micro-readonly")){
-        console.log("user login read only event");
-        console.log("user roles" +  customUserRoles);
-        // ReactGA.set({user_roles: "CMS Read Only"});
-        // ReactGA.event('User Login' + ' - ' + "CMS Read Only", {
-        //   user_roles: "CMS Read Only"
-        // });
-        ReactGA.event({
-          action: 'Login',
-          label: 'User Login',
-          user_role: "customUserRoles"
-        });
-      }
+      } 
+      return;
     }
-
     if(customisMemberOf.length>0) {
       if(customisMemberOf.includes("ONEMAC_USER")){
-        console.log("user login send cms reviewer event");
-        // ReactGA.set({user_roles: "CMS Reviewer"});
-        // console.log("user roles" +  customisMemberOf);
-        // ReactGA.event('User Login' + ' - ' + "CMS Reviewer", {
-        //   user_roles: "CMS Reviewer"
-        // });
         ReactGA.event({
           action: 'Login',
-          label: 'User Login',
           user_role: "cms-reviewer"
         });
       }
     }
+    // TODO: add logic for super user when/if super user goes into effect
   },[customUserRoles, customisMemberOf])
 
   return (

@@ -9,7 +9,6 @@ import {
 } from "@/features/forms/post-submission/post-submission-forms";
 import { queryClient } from "@/utils";
 
-
 import { GetParameterCommand, SSMClient } from "@aws-sdk/client-ssm";
 const RoutesWithTimeout = () => (
   <>
@@ -17,21 +16,6 @@ const RoutesWithTimeout = () => (
     <Outlet />
   </>
 );
-
-// const stage = process.env.STAGE_NAME || "main";
-
-// const googleAnalyticsId = JSON.parse(
-//   (
-//     await new SSMClient({ region: "us-east-1" }).send(
-//       new GetParameterCommand({
-//         // Name: `/${process.env.PROJECT}/${stage}/google-analytics-id`,
-//         Name: `/mako/add-analytics/google-analytics-id`,
-//       }),
-//     )
-//   ).Parameter!.Value!,
-// );
-
-//   console.log("google analytics ID: " + googleAnalyticsId);
 
 export const router = createBrowserRouter([
   {

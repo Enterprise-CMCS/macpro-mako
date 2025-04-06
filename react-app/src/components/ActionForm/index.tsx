@@ -35,7 +35,7 @@ import { CheckDocumentFunction, documentPoller } from "@/utils/Poller/documentPo
 import { getAttachments } from "./actionForm.utilities";
 import { ActionFormAttachments, AttachmentsOptions } from "./ActionFormAttachments";
 import { AdditionalInformation } from "./AdditionalInformation";
-
+import { sendGAEvent } from "@/utils/ReactGA/sendGAEvent";
 
 
 type EnforceSchemaProps<Shape extends z.ZodRawShape> = z.ZodObject<
@@ -178,25 +178,14 @@ export const ActionForm = <Schema extends SchemaWithEnforcableProps>({
       // Prevent stale data from displaying on formOrigins page
       await queryClient.invalidateQueries({ queryKey: ["record"] });
       navigate(formOrigins);
-      console.log("on submit clicked")
-      console.log("form data event: "+ formData.event)
-
-
 
       const customUserRoles = userObj?.user?.["custom:cms-roles"];
       const customisMemberOf = userObj?.user?.["custom:ismemberof"];
+      const userRoles = customUserRoles || customisMemberOf || "";
+      const userState = formData.id?.substring(0, 2);
 
-      console.log("roles: "+ customUserRoles || customisMemberOf);
-      console.log("user_territory "+  formData.id.substring(0,2));
+      sendGAEvent(formData.event, userRoles, userState);
 
-      ReactGA.event({
-        action:  formData.event,
-        // category: formData.id?.substring(0, 2), // this sets the state of UaEventOptions which is an Event category custom dimension
-        category: "CA",
-        user_role: customUserRoles || customisMemberOf || ""
-      });
-      
-      console.log("state"+formData.id.substring(0,2))
     } catch (error) {
       console.error(error);
       banner({
