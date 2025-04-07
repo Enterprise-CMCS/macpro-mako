@@ -6,8 +6,8 @@ import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 import { asyncWithLDProvider } from "launchdarkly-react-client-sdk";
 import React from "react";
 import ReactDOM from "react-dom/client";
+import ReactGA from "react-ga4";
 import { RouterProvider } from "react-router";
-import ReactGA from 'react-ga4';
 
 import config from "@/config";
 import { queryClient } from "@/utils";
@@ -43,10 +43,10 @@ const initializeApp = async () => {
 
   const FlagRouter = () => {
     const loginFlag = useFeatureFlag("LOGIN_PAGE");
-  
+
     return <RouterProvider router={router(loginFlag)} />;
   };
-  
+
   ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(
     <React.StrictMode>
       <QueryClientProvider client={queryClient}>
@@ -55,7 +55,7 @@ const initializeApp = async () => {
         </LDProvider>
         <ReactQueryDevtools initialIsOpen={false} />
       </QueryClientProvider>
-    </React.StrictMode>
+    </React.StrictMode>,
   );
 };
 

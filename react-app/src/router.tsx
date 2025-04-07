@@ -8,8 +8,6 @@ import {
   PostSubmissionWrapper,
 } from "@/features/forms/post-submission/post-submission-forms";
 import { queryClient } from "@/utils";
-
-import { GetParameterCommand, SSMClient } from "@aws-sdk/client-ssm";
 const RoutesWithTimeout = () => (
   <>
     <TimeoutModal />

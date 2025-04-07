@@ -7,6 +7,7 @@ import { Navigate, useLocation, useNavigate, useParams } from "react-router";
 import { Authority, CognitoUserAttributes } from "shared-types";
 import { isStateUser } from "shared-utils";
 import { z } from "zod";
+
 import { useGetUser } from "@/api";
 import {
   ActionFormDescription,
@@ -29,11 +30,11 @@ import {
 } from "@/components";
 import { getFormOrigin, queryClient } from "@/utils";
 import { CheckDocumentFunction, documentPoller } from "@/utils/Poller/documentPoller";
+import { sendGAEvent } from "@/utils/ReactGA/sendGAEvent";
 
 import { getAttachments } from "./actionForm.utilities";
 import { ActionFormAttachments, AttachmentsOptions } from "./ActionFormAttachments";
 import { AdditionalInformation } from "./AdditionalInformation";
-import { sendGAEvent } from "@/utils/ReactGA/sendGAEvent";
 
 type EnforceSchemaProps<Shape extends z.ZodRawShape> = z.ZodObject<
   Shape & {
@@ -180,10 +181,9 @@ export const ActionForm = <Schema extends SchemaWithEnforcableProps>({
       const customisMemberOf = userObj?.user?.["custom:ismemberof"];
       const userRoles = customUserRoles || customisMemberOf || "";
       const eventState = formData.id?.substring(0, 2);
-      
+
       // send login event
       sendGAEvent(formData.event, userRoles, eventState);
-
     } catch (error) {
       console.error(error);
       banner({

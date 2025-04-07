@@ -6,10 +6,10 @@ import { beforeAll, beforeEach, describe, expect, it, vi } from "vitest";
 
 import * as api from "@/api";
 import * as hooks from "@/hooks";
+import { sendGAEvent } from "@/utils/ReactGA/sendGAEvent";
 import { renderWithQueryClientAndMemoryRouter } from "@/utils/test-helpers";
 
 import { Layout, SubNavHeader } from "./index";
-import { sendGAEvent } from "@/utils/ReactGA/sendGAEvent";
 /**
  * Mock Configurations
  * -------------------
@@ -221,13 +221,13 @@ describe("Layout", () => {
     });
 
     it("sends custom GA login event", async () => {
-      vi.mock('@/utils/ReactGA/sendGAEvent', async (importOriginal) => {
-        const actual = await importOriginal<typeof import('@/utils/ReactGA/sendGAEvent')>()
+      vi.mock("@/utils/ReactGA/sendGAEvent", async (importOriginal) => {
+        const actual = await importOriginal<typeof import("@/utils/ReactGA/sendGAEvent")>();
         return {
           ...actual,
-          sendGAEvent: vi.fn()
-        }
-      })
+          sendGAEvent: vi.fn(),
+        };
+      });
       const setupLayoutTest = async (
         viewMode: ViewMode = VIEW_MODES.DESKTOP,
         userData = makoStateSubmitter,
@@ -237,7 +237,7 @@ describe("Layout", () => {
         await renderLayout();
       };
       await setupLayoutTest(VIEW_MODES.DESKTOP);
-      expect(sendGAEvent).toHaveBeenCalledWith("Login", 'onemac-state-user', null);
+      expect(sendGAEvent).toHaveBeenCalledWith("Login", "onemac-state-user", null);
     });
   });
 
