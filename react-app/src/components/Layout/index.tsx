@@ -173,6 +173,7 @@ export const Layout = () => {
   console.log("custom roles: " + customUserRoles)
   console.log("cusom  is member of: "+ customisMemberOf) 
   useEffect(() => {
+    console.log(" Layout use effect for React GA called")
     if (customUserRoles.length > 0) {
       if (
         customUserRoles.includes("onemac-state-user") ||
