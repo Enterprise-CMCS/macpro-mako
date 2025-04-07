@@ -1501,6 +1501,7 @@ describe("insertNewSeatoolRecordsFromKafkaIntoMako", () => {
       error: expect.any(Array),
     });
   });
+
   it("tries to update a package with withdrawal requested", async () => {
     await insertNewSeatoolRecordsFromKafkaIntoMako(
       [
@@ -1569,7 +1570,7 @@ describe("insertNewSeatoolRecordsFromKafkaIntoMako", () => {
         changed_date: EARLIER_TIMESTAMP,
         cmsStatus: "Submitted - Intake Needed",
         description: "Sample summary",
-        finalDispositionDate: null,
+        finalDispositionDate: "2024-08-03T00:30:41.557Z",
         id: WITHDRAWAL_REQUESTED_ID,
         initialIntakeNeeded: false,
         leadAnalystEmail: "michael.chen@cms.hhs.gov",
@@ -1578,7 +1579,7 @@ describe("insertNewSeatoolRecordsFromKafkaIntoMako", () => {
         locked: false,
         proposedDate: null,
         raiRequestedDate: null,
-        raiWithdrawEnabled: undefined,
+        raiWithdrawEnabled: false,
         raiWithdrawnDate: null,
         reviewTeam: [
           {
@@ -1590,7 +1591,7 @@ describe("insertNewSeatoolRecordsFromKafkaIntoMako", () => {
             name: "Emily Rodriguez",
           },
         ],
-        seatoolStatus: "Withdrawal Requested",
+        seatoolStatus: "Approved",
         secondClock: false,
         state: "10",
         stateStatus: "Withdrawal Requested",
@@ -1611,7 +1612,7 @@ describe("insertNewSeatoolRecordsFromKafkaIntoMako", () => {
       },
     ]);
   });
-  it("tries to tries to updatea  package that already responded to an rai", async () => {
+  it("tries to tries to update a  package that already responded to an rai", async () => {
     await insertNewSeatoolRecordsFromKafkaIntoMako(
       [
         createKafkaRecord({
@@ -1708,7 +1709,7 @@ describe("insertNewSeatoolRecordsFromKafkaIntoMako", () => {
             name: "Emily Rodriguez",
           },
         ],
-        seatoolStatus: "Submitted",
+        seatoolStatus: "Pending-RAI",
         secondClock: false,
         state: "10",
         stateStatus: "Submitted",

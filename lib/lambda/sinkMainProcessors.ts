@@ -4,9 +4,12 @@ import { getPackage, getPackageChangelog } from "libs/api/package";
 import {
   KafkaRecord,
   opensearch,
+  SEATOOL_SPW_STATUS,
   SEATOOL_STATUS,
   SeatoolRecordWithUpdatedDate,
   SeatoolSpwStatusEnum,
+  statusToDisplayToCmsUser,
+  statusToDisplayToStateUser,
 } from "shared-types";
 import { Document, legacyTransforms, seatool, transforms } from "shared-types/opensearch/main";
 import { decodeBase64WithUtf8 } from "shared-utils";
@@ -266,7 +269,7 @@ const oneMacSeatoolStatusCheck = async (seatoolRecord: Document) => {
       const requestedDate = normalizeToDate(raiDate.raiRequestedDate);
       // Set status to submitted if our dates line up
       if (eventDate >= requestedDate) {
-        seatoolRecord.STATE_PLAN.SPW_STATUS_ID = SeatoolSpwStatusEnum.Submitted;
+        return SeatoolSpwStatusEnum.Submitted;
       }
     }
   }
@@ -308,10 +311,19 @@ export const insertNewSeatoolRecordsFromKafkaIntoMako = async (
           ...JSON.parse(decodeBase64WithUtf8(value)),
         };
 
-        seatoolRecord.STATE_PLAN.SPW_STATUS_ID = await oneMacSeatoolStatusCheck(seatoolRecord);
+        const oneMacStatusId = await oneMacSeatoolStatusCheck(seatoolRecord);
 
         const safeSeatoolRecord = opensearch.main.seatool.transform(id).safeParse(seatoolRecord);
 
+        if (
+          safeSeatoolRecord.success &&
+          oneMacStatusId &&
+          safeSeatoolRecord.data.seatoolStatus !== SEATOOL_SPW_STATUS[oneMacStatusId]
+        ) {
+          const onemacStatus = SEATOOL_SPW_STATUS[oneMacStatusId];
+          safeSeatoolRecord.data.stateStatus = statusToDisplayToStateUser[onemacStatus];
+          safeSeatoolRecord.data.cmsStatus = statusToDisplayToCmsUser[onemacStatus];
+        }
         if (!safeSeatoolRecord.success) {
           logError({
             type: ErrorType.VALIDATION,
