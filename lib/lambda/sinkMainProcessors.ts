@@ -315,15 +315,6 @@ export const insertNewSeatoolRecordsFromKafkaIntoMako = async (
 
         const safeSeatoolRecord = opensearch.main.seatool.transform(id).safeParse(seatoolRecord);
 
-        if (
-          safeSeatoolRecord.success &&
-          oneMacStatusId &&
-          safeSeatoolRecord.data.seatoolStatus !== SEATOOL_SPW_STATUS[oneMacStatusId]
-        ) {
-          const onemacStatus = SEATOOL_SPW_STATUS[oneMacStatusId];
-          safeSeatoolRecord.data.stateStatus = statusToDisplayToStateUser[onemacStatus];
-          safeSeatoolRecord.data.cmsStatus = statusToDisplayToCmsUser[onemacStatus];
-        }
         if (!safeSeatoolRecord.success) {
           logError({
             type: ErrorType.VALIDATION,
@@ -331,6 +322,14 @@ export const insertNewSeatoolRecordsFromKafkaIntoMako = async (
             metadata: { topicPartition, kafkaRecord, record: seatoolRecord },
           });
           return acc;
+        }
+        if (
+          oneMacStatusId &&
+          safeSeatoolRecord.data.seatoolStatus !== SEATOOL_SPW_STATUS[oneMacStatusId]
+        ) {
+          const onemacStatus = SEATOOL_SPW_STATUS[oneMacStatusId];
+          safeSeatoolRecord.data.stateStatus = statusToDisplayToStateUser[onemacStatus];
+          safeSeatoolRecord.data.cmsStatus = statusToDisplayToCmsUser[onemacStatus];
         }
 
         const { data: seatoolDocument } = safeSeatoolRecord;
