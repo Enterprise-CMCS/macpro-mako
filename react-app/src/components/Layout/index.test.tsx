@@ -9,7 +9,7 @@ import * as hooks from "@/hooks";
 import { renderWithQueryClientAndMemoryRouter } from "@/utils/test-helpers";
 
 import { Layout, SubNavHeader } from "./index";
-
+import { sendGAEvent } from "@/utils/ReactGA/sendGAEvent";
 /**
  * Mock Configurations
  * -------------------
@@ -218,6 +218,26 @@ describe("Layout", () => {
       };
       await setupLayoutTest(VIEW_MODES.DESKTOP);
       expect(screen.queryByText("Dashboard")).not.toBeInTheDocument();
+    });
+
+    it("sends custom GA login event", async () => {
+      vi.mock('@/utils/ReactGA/sendGAEvent', async (importOriginal) => {
+        const actual = await importOriginal<typeof import('@/utils/ReactGA/sendGAEvent')>()
+        return {
+          ...actual,
+          sendGAEvent: vi.fn()
+        }
+      })
+      const setupLayoutTest = async (
+        viewMode: ViewMode = VIEW_MODES.DESKTOP,
+        userData = makoStateSubmitter,
+      ) => {
+        setMockUsername(userData);
+        mockMediaQuery(viewMode);
+        await renderLayout();
+      };
+      await setupLayoutTest(VIEW_MODES.DESKTOP);
+      expect(sendGAEvent).toHaveBeenCalledWith("Login", 'onemac-state-user', null);
     });
   });
 

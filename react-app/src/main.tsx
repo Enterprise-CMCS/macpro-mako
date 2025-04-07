@@ -16,34 +16,11 @@ import { router } from "./router";
 
 const ldClientId = config.launchDarkly?.CLIENT_ID;
 const googleAnalyticsGtag = config.googleAnalytics?.GOOGLE_ANALYTICS_ID;
-
 if (ldClientId === undefined) {
   throw new Error("To configure LaunchDarkly, you must set LAUNCHDARKLY_CLIENT_ID");
 }
-// This is a global wrapper for fetch that modifies headers
-// const originalFetch = window.fetch;
-
-// window.fetch = async function(url, options) {
-//   // Check if this is a request to Google Analytics
-//   if (url.toString().includes("google-analytics.com")) {
-//     // Modify headers for Google Analytics requests
-//     options = {
-//       ...options,
-//       headers: {
-//         ...options.headers,
-//         'Referrer-Policy': 'no-referrer-when-downgrade', // Example: change referrer policy
-//         'Origin': 'https://yourdomain.com', // Add custom Origin header if needed
-//         // Any other custom headers you want to add
-//       },
-//     };
-//   }
-
-//   // Call the original fetch function
-//   return originalFetch(url, options);
-// };
 
 const initializeApp = async () => {
-  
   // Initialize Google Analytics
   if (googleAnalyticsGtag) {
     ReactGA.initialize(googleAnalyticsGtag);

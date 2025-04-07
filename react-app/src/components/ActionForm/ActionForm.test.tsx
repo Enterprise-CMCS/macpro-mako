@@ -21,7 +21,11 @@ import {
 } from "@/utils/test-helpers/renderForm";
 
 import { ActionForm } from "./index";
-
+import { mockUseGetUser } from "mocks";
+import * as api from "@/api";
+import * as query from "@tanstack/react-query";
+import { OneMacUser } from "@/api";
+import { sendGAEvent } from "@/utils/ReactGA/sendGAEvent";
 const PROGRESS_REMINDER = /If you leave this page, you will lose your progress on this form./;
 
 describe("ActionForm", () => {
@@ -289,6 +293,59 @@ describe("ActionForm", () => {
       onAccept: onAcceptMock,
     });
   });
+
+  test("sends a cusomt GA event", async () => {
+    vi.spyOn(api, "useGetUser").mockImplementation(() => {
+      const response = mockUseGetUser();
+      return response as query.UseQueryResult<OneMacUser, unknown>;
+    });
+
+    vi.mock('@/utils/ReactGA/sendGAEvent', async (importOriginal) => {
+      const actual = await importOriginal<typeof import('@/utils/ReactGA/sendGAEvent')>()
+      return {
+        ...actual,
+        sendGAEvent: vi.fn()
+      }
+    })
+    const dataPollerSpy = vi.spyOn(DataPoller.prototype, "startPollingData");
+
+    await renderFormWithPackageSectionAsync(
+      <ActionForm
+        title="Action Form Title"
+        schema={z.object({
+          id: z.string(),
+        })}
+        defaultValues={{ id: EXISTING_ITEM_PENDING_ID}}
+        fields={() => null}
+        documentPollerArgs={{
+          property: "id",
+          documentChecker: () => true,
+        }}
+        bannerPostSubmission={{
+          header: "Hello World Header",
+          body: "Hello World Body",
+        }}
+        breadcrumbText="Example Breadcrumb"
+      />,
+      EXISTING_ITEM_PENDING_ID,
+    );
+
+    const submitButton = await screen.findByTestId("submit-action-form");
+
+    vi.useFakeTimers();
+
+    fireEvent.submit(submitButton);
+
+    await vi.waitFor(async () => {
+      await vi.runAllTimersAsync();
+      expect(dataPollerSpy).toHaveResolvedWith({
+        correctDataStateFound: true,
+        maxAttemptsReached: false,
+      });
+      expect(sendGAEvent).toHaveBeenCalledWith(undefined, 'onemac-state-user', 'MD');
+    });
+  });
+
 
   test("calls `documentPoller` with `documentPollerArgs`", async () => {
     const documentPollerSpy = vi.spyOn(documentPoller, "documentPoller");

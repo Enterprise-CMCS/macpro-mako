@@ -2,7 +2,6 @@ import { useQuery } from "@tanstack/react-query";
 import { Auth } from "aws-amplify";
 import { CognitoUserAttributes } from "shared-types";
 import { isCmsUser } from "shared-utils";
-import config from "@/config";
 
 export type OneMacUser = {
   isCms?: boolean;
@@ -11,7 +10,6 @@ export type OneMacUser = {
 };
 
 export const getUser = async (): Promise<OneMacUser> => {
-
   try {
     const currentAuthenticatedUser = await Auth.currentAuthenticatedUser();
 
@@ -34,7 +32,6 @@ export const getUser = async (): Promise<OneMacUser> => {
     // Manual additions and normalizations
     userAttributesObj["custom:cms-roles"] = userAttributesObj["custom:cms-roles"] || "";
 
-    
     userAttributesObj.username =
       currentAuthenticatedUser.username || currentAuthenticatedUser.Username || "";
 
@@ -53,11 +50,3 @@ export const useGetUser = () =>
     queryKey: ["user"],
     queryFn: () => getUser(),
   });
-
-
-
-
-
-
-
-  

@@ -13,10 +13,10 @@ import config from "@/config";
 import { useMediaQuery } from "@/hooks";
 import { useHideBanner } from "@/hooks/useHideBanner";
 import { isFaqPage, isProd } from "@/utils";
-import ReactGA from "react-ga4";
-import { event } from 'react-ga4';
+
 import { Footer } from "../Footer";
 import { UsaBanner } from "../UsaBanner";
+import { sendGAEvent } from "@/utils/ReactGA/sendGAEvent";
 
 /**
  * Custom hook that generates a list of navigation links based on the user's status and whether the current page is the FAQ page.
@@ -169,19 +169,14 @@ export const Layout = () => {
   useEffect(()=>{
     if(customUserRoles.length > 0) {
       if(customUserRoles.includes("onemac-state-user") || customUserRoles.includes("onemac-helpdesk" ) || customUserRoles.includes("onemac-micro-readonly")){
-      ReactGA.event({
-        action: 'Login',
-        user_role: customUserRoles,
-      });
+        // TBD weather to add states to the login event since users may have a states array with multiple states.  
+        sendGAEvent("Login", customUserRoles, null)
       } 
       return;
     }
     if(customisMemberOf.length>0) {
       if(customisMemberOf.includes("ONEMAC_USER")){
-        ReactGA.event({
-          action: 'Login',
-          user_role: "cms-reviewer"
-        });
+        sendGAEvent("Login", customisMemberOf, null)
       }
     }
     // TODO: add logic for super user when/if super user goes into effect

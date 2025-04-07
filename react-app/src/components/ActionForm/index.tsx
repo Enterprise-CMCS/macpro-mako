@@ -7,8 +7,6 @@ import { Navigate, useLocation, useNavigate, useParams } from "react-router";
 import { Authority, CognitoUserAttributes } from "shared-types";
 import { isStateUser } from "shared-utils";
 import { z } from "zod";
-import ReactGA from "react-ga4";
-// import  UaEventOptions  from 'react-ga4';
 import { useGetUser } from "@/api";
 import {
   ActionFormDescription,
@@ -36,7 +34,6 @@ import { getAttachments } from "./actionForm.utilities";
 import { ActionFormAttachments, AttachmentsOptions } from "./ActionFormAttachments";
 import { AdditionalInformation } from "./AdditionalInformation";
 import { sendGAEvent } from "@/utils/ReactGA/sendGAEvent";
-
 
 type EnforceSchemaProps<Shape extends z.ZodRawShape> = z.ZodObject<
   Shape & {
@@ -182,9 +179,10 @@ export const ActionForm = <Schema extends SchemaWithEnforcableProps>({
       const customUserRoles = userObj?.user?.["custom:cms-roles"];
       const customisMemberOf = userObj?.user?.["custom:ismemberof"];
       const userRoles = customUserRoles || customisMemberOf || "";
-      const userState = formData.id?.substring(0, 2);
-
-      sendGAEvent(formData.event, userRoles, userState);
+      const eventState = formData.id?.substring(0, 2);
+      
+      // send login event
+      sendGAEvent(formData.event, userRoles, eventState);
 
     } catch (error) {
       console.error(error);

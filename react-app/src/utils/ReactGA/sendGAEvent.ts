@@ -1,6 +1,6 @@
 import ReactGA from "react-ga4";
 
-export const  sendGAEvent = (eventTitle :string, userRoles: string, userState: string ) => {
+export function  sendGAEvent(eventTitle :string, userRoles: string, userState: string ) {
     userState? 
     ReactGA.event({
         action:  eventTitle,
