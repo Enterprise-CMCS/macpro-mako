@@ -38,8 +38,9 @@ runs:
     - name: Create Post File
       shell: bash
       run: |
-        echo """---
-        title: ${{ inputs.tag }}
+        cat <<EOF > ${{ steps.filename.outputs.filename }}
+        ---
+        title: ${{ fromJson(steps.get-release.outputs.data).name }}
         tag: ${{ inputs.tag }}
         category: release
         date: $PUB_DATE
@@ -53,4 +54,4 @@ runs:
         ---
 
         ${{ fromJson(steps.get-release.outputs.data).body }}
-        """ > ${{ steps.filename.outputs.filename }}
+        EOF

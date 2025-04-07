@@ -33,7 +33,10 @@ export const getOsData = async <TProps, TResponse extends opensearch.Response<an
   return searchData;
 };
 
-export const getMainExportData = async (filters?: opensearch.main.Filterable[]) => {
+export const getMainExportData = async (
+  filters?: opensearch.main.Filterable[],
+  sort?: opensearch.main.State["sort"],
+) => {
   if (!filters) return [];
 
   const recursiveSearch = async (startPage: number): Promise<opensearch.main.Document[]> => {
@@ -44,6 +47,7 @@ export const getMainExportData = async (filters?: opensearch.main.Filterable[]) 
     const searchData = await API.post("os", "/search/main", {
       body: {
         ...filterQueryBuilder(filters),
+        ...(!!sort && sortQueryBuilder(sort)),
         ...paginationQueryBuilder({ number: startPage, size: 1000 }),
       },
     });

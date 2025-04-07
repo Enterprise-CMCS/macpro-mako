@@ -44,6 +44,7 @@ jobs:
   create-posts:
     needs: get-all-tags
     if: needs.get-all-tags.outputs.tags != '[]'
+    continue-on-error: true
     runs-on: ubuntu-latest
     strategy:
       matrix:
@@ -65,6 +66,7 @@ jobs:
   push-to-pages:
     needs: [get-all-tags, create-posts]
     if: needs.get-all-tags.outputs.tags != '[]'
+    continue-on-error: true
     runs-on: ubuntu-latest
     steps:
       - uses: actions/create-github-app-token@v1
@@ -101,5 +103,5 @@ jobs:
             git commit -am "Adding release notes for the following tags: ${{ needs.get-all-tags.outputs.tags }}"
             git pull origin gh-pages --rebase -s recursive -X ours
             git push
-            echo "New URL: https://fearlesssolutions.github.io/publish-playwright/releases" >> "$GITHUB_STEP_SUMMARY"
+            echo "New URL: https://enterprise-cmcs.github.io/macpro-mako/releases" >> "$GITHUB_STEP_SUMMARY"
           fi
