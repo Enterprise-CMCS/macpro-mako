@@ -165,6 +165,7 @@ const UserDropdownMenu = () => {
  * - The footer displays contact information.
  */
 export const Layout = () => {
+  const hideLogin = useFeatureFlag("LOGIN_PAGE");
   const isDesktop = useMediaQuery("(min-width: 768px)");
   const { data: user } = useGetUser();
   const customUserRoles = user?.user?.["custom:cms-roles"] || "";
@@ -187,8 +188,6 @@ export const Layout = () => {
     }
   }
   // TODO: add logic for super user when/if super user goes into effect
-
-  const hideLogin = useFeatureFlag("LOGIN_PAGE");
 
   return (
     <div className="min-h-full flex flex-col">
