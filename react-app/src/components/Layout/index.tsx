@@ -2,7 +2,7 @@ import { AwsCognitoOAuthOpts } from "@aws-amplify/auth/lib-esm/types";
 import { Bars3Icon, XMarkIcon } from "@heroicons/react/24/outline";
 import * as DropdownMenu from "@radix-ui/react-dropdown-menu";
 import { Auth } from "aws-amplify";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { Link, NavLink, NavLinkProps, Outlet, useNavigate } from "react-router";
 import { UserRoles } from "shared-types";
 
@@ -169,29 +169,25 @@ export const Layout = () => {
   const { data: user } = useGetUser();
   const customUserRoles = user?.user?.["custom:cms-roles"] || "";
   const customisMemberOf = user?.user?.["custom:ismemberof"] || "";
-  console.log("Layout Rendered")
-  console.log("custom roles: " + customUserRoles)
-  console.log("cusom  is member of: "+ customisMemberOf) 
-  useEffect(() => {
-    console.log(" Layout use effect for React GA called")
-    if (customUserRoles.length > 0) {
-      if (
-        customUserRoles.includes("onemac-state-user") ||
-        customUserRoles.includes("onemac-helpdesk") ||
-        customUserRoles.includes("onemac-micro-readonly")
-      ) {
-        // TBD weather to add states to the login event since users may have a states array with multiple states.
-        sendGAEvent("Login", customUserRoles, null);
-      }
-      return;
+
+  if (customUserRoles.length > 0) {
+    if (
+      customUserRoles.includes("onemac-state-user") ||
+      customUserRoles.includes("onemac-helpdesk") ||
+      customUserRoles.includes("onemac-micro-readonly")
+    ) {
+      // TBD weather to add states to the login event since users may have a states array with multiple states.
+      sendGAEvent("Login", customUserRoles, null);
     }
-    if (customisMemberOf.length > 0) {
-      if (customisMemberOf.includes("ONEMAC_USER")) {
-        sendGAEvent("Login", customisMemberOf, null);
-      }
+    return;
+  }
+  if (customisMemberOf.length > 0) {
+    if (customisMemberOf.includes("ONEMAC_USER")) {
+      sendGAEvent("Login", customisMemberOf, null);
     }
-    // TODO: add logic for super user when/if super user goes into effect
-  }, [customUserRoles, customisMemberOf]);
+  }
+  // TODO: add logic for super user when/if super user goes into effect
+
   const hideLogin = useFeatureFlag("LOGIN_PAGE");
 
   return (
