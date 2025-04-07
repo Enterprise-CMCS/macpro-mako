@@ -57,7 +57,9 @@ export const legacyEventSchema = legacySharedSchema
       submitterEmail: data.submitterEmail,
       submitterName: data.submitterName,
       initialIntakeNeeded: true,
-      raiReceivedDate: data.latestRaiResponseTimestamp,
+      raiReceivedDate: data.latestRaiResponseTimestamp
+        ? new Date(data.latestRaiResponseTimestamp).toISOString()
+        : null,
     };
   });
 
