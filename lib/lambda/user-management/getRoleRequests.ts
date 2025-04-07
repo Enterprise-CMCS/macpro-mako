@@ -11,9 +11,6 @@ import {
 
 export const getRoleRequests = async (event: APIGatewayEvent) => {
   try {
-    // check authentication
-    // check role - state admin can only see role requests for that state
-    // cms approver role can see all role requests
     const { userId, poolId } = getAuthDetails(event);
     const { email } = await lookupUserAttributes(userId, poolId);
 
@@ -26,6 +23,7 @@ export const getRoleRequests = async (event: APIGatewayEvent) => {
     }
 
     let roleRequests: StateAccess[] = [];
+
     const cmsRoleApproverRole = userRoles.find(
       (roleObj: StateAccess) => roleObj.role === "cmsroleapprover",
     );
@@ -36,10 +34,9 @@ export const getRoleRequests = async (event: APIGatewayEvent) => {
     if (cmsRoleApproverRole) {
       roleRequests = await getAllUserRoles();
     } else if (stateSystemAdminRole?.territory) {
-      console.log("WHAT IS THIS", stateSystemAdminRole?.territory);
       roleRequests = await getAllUserRolesByState(stateSystemAdminRole.territory);
     }
-    console.log(roleRequests, "HELLOO");
+
     return response({
       statusCode: 200,
       body: roleRequests,

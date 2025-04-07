@@ -52,12 +52,14 @@ export const getAllUserRoles = async () => {
 
 export const getAllUserRolesByState = async (state: string) => {
   const { domain, index } = getDomainAndNamespace("roles");
-  console.log(state, "what is STATE");
-  return await search(domain, index, {
+
+  const results = await search(domain, index, {
     query: {
       term: {
         "territory.keyword": state,
       },
     },
   });
+
+  return results.hits.hits;
 };
