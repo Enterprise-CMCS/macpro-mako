@@ -1,5 +1,10 @@
 import { http, HttpResponse } from "msw";
 
+const defaultLaunchDarklyGoalsHandler = http.get(
+  "https://clientsdk.launchdarkly.us/sdk/goals/*",
+  async () => new HttpResponse(null, { status: 200 }),
+);
+
 const defaultLaunchDarklyHandler = http.get(
   "https://clientsdk.launchdarkly.us/sdk/evalx/*",
   async () => {
@@ -78,4 +83,4 @@ const defaultLaunchDarklyHandler = http.get(
   },
 );
 
-export const launchDarklyHandlers = [defaultLaunchDarklyHandler];
+export const launchDarklyHandlers = [defaultLaunchDarklyGoalsHandler, defaultLaunchDarklyHandler];
