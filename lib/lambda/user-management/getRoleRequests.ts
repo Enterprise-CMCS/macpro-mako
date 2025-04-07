@@ -2,7 +2,7 @@ import { getAuthDetails, lookupUserAttributes } from "lib/libs/api/auth/user";
 import { response } from "lib/libs/handler-lib";
 import { APIGatewayEvent } from "shared-types";
 
-import { getAllUserRolesByState } from "./user-management-service";
+import { getAllUserRolesByEmail, getAllUserRolesByState } from "./user-management-service";
 
 export const getRoleRequests = async (event: APIGatewayEvent) => {
   try {
@@ -13,6 +13,8 @@ export const getRoleRequests = async (event: APIGatewayEvent) => {
     const userAttributes = await lookupUserAttributes(authDetails.userId, authDetails.poolId);
     console.log(userAttributes, "USER ATTRIBUTES?");
     const role = userAttributes["custom:cms-roles"];
+    const opensearchResponse = await getAllUserRolesByEmail(userAttributes.email);
+    console.log(opensearchResponse, "OPEN SEARCH RESPONSE");
 
     let roleRequests: unknown[] = [];
 
@@ -26,6 +28,7 @@ export const getRoleRequests = async (event: APIGatewayEvent) => {
           body: { message: "User must be an admin of a state" },
         });
       }
+      // state is multiple states?
       roleRequests = await getAllUserRolesByState(state);
     }
 

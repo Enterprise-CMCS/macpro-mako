@@ -1,4 +1,5 @@
 import { getDomainAndNamespace } from "lib/libs/utils";
+import { StateCode } from "lib/packages/shared-types";
 import { getItem, search } from "libs";
 
 export const getUserByEmail = async (email: string) => {
@@ -57,6 +58,18 @@ export const getAllUserRolesByState = async (state: string) => {
     query: {
       term: {
         state,
+      },
+    },
+  });
+};
+
+export const getAllUserRolesByStates = async (states: StateCode[]) => {
+  const { domain, index } = getDomainAndNamespace("roles");
+
+  return await search(domain, index, {
+    query: {
+      terms: {
+        state: states,
       },
     },
   });
