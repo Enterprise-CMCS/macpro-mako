@@ -169,6 +169,9 @@ export const Layout = () => {
   const { data: user } = useGetUser();
   const customUserRoles = user?.user?.["custom:cms-roles"] || "";
   const customisMemberOf = user?.user?.["custom:ismemberof"] || "";
+  console.log("Layout Rendered")
+  console.log("custom roles: " + customUserRoles)
+  console.log("cusom  is member of: "+ customisMemberOf) 
   useEffect(() => {
     if (customUserRoles.length > 0) {
       if (
