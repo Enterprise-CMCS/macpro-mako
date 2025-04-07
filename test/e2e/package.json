@@ -13,5 +13,8 @@
     "shared-utils": "*"
   },
   "author": "",
-  "license": "ISC"
+  "license": "ISC",
+  "devDependencies": {
+    "playwright-msw": "^3.0.1"
+  }
 }

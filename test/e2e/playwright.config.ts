@@ -24,7 +24,7 @@ export default defineConfig({
 
   // need to find a reasonable timeout less than 30s
   // timeout: 10_000,
-  testDir: "../../test",
+  testDir: "./",
   /* Run tests in files in parallel */
   fullyParallel: true,
   /* Fail the build on CI if you accidentally left test.only in the source code. */

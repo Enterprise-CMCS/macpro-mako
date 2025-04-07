@@ -1,5 +1,4 @@
-import { expect, test } from "@playwright/test";
-
+import { expect, test } from "../fixtures/msw";
 import { FAQPage } from "../pages/faq.page";
 
 let faqPage: FAQPage;

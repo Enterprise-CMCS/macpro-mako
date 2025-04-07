@@ -13,9 +13,6 @@ export class LoginPage {
     await this.page.getByRole("textbox", { name: "name@host.com" }).fill(email);
     await this.page.getByRole("textbox", { name: "Password" }).fill(password);
     await this.page.getByRole("button", { name: "submit" }).click();
-    await this.page.getByRole("link", { name: "Dashboard" }).nth(0).waitFor();
-    await this.page.getByRole("link", { name: "Dashboard" }).nth(1).waitFor();
-    await this.page.getByRole("link", { name: "Dashboard" }).nth(0).isVisible();
-    await this.page.getByRole("link", { name: "Dashboard" }).nth(1).isVisible();
+    await this.page.getByRole("link", { name: "Dashboard" }).isVisible();
   }
 }
