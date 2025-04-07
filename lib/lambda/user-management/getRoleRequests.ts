@@ -3,7 +3,11 @@ import { response } from "lib/libs/handler-lib";
 import { StateAccess } from "react-app/src/api";
 import { APIGatewayEvent } from "shared-types";
 
-import { getAllUserRolesByEmail, getAllUserRolesByState } from "./user-management-service";
+import {
+  getAllUserRoles,
+  getAllUserRolesByEmail,
+  getAllUserRolesByState,
+} from "./user-management-service";
 
 export const getRoleRequests = async (event: APIGatewayEvent) => {
   try {
@@ -11,29 +15,30 @@ export const getRoleRequests = async (event: APIGatewayEvent) => {
     // check role - state admin can only see role requests for that state
     // cms approver role can see all role requests
     const { userId, poolId } = getAuthDetails(event);
-    const userAttributes = await lookupUserAttributes(userId, poolId);
-    const { email } = userAttributes;
+    const { email } = await lookupUserAttributes(userId, poolId);
 
     const userRoles = await getAllUserRolesByEmail(email);
-    console.log(userRoles, "USER ROLES");
     if (!userRoles.length) {
       return response({
-        statusCode: 200,
+        statusCode: 400,
         body: { message: "User doesn't have any roles" },
       });
     }
 
-    const stateAdminRole = userRoles.find(
-      (role: StateAccess) => role.role === "statesystemadmin" && role.status === "active",
+    let roleRequests: StateAccess[] = [];
+    const cmsRoleApproverRole = userRoles.find(
+      (roleObj: StateAccess) => roleObj.role === "cmsroleapprover",
     );
-    if (!stateAdminRole) {
-      return response({
-        statusCode: 200,
-        body: { message: "User doesn't have appropriate roles" },
-      });
+    const stateSystemAdminRole = userRoles.find(
+      (roleObj: StateAccess) => roleObj.role === "statesystemadmin",
+    );
+
+    if (cmsRoleApproverRole) {
+      roleRequests = await getAllUserRoles();
+    } else if (stateSystemAdminRole?.territory) {
+      roleRequests = await getAllUserRolesByState(stateSystemAdminRole.territory);
     }
-    const roleRequests = await getAllUserRolesByState(stateAdminRole.territory);
-    console.log(roleRequests, "WHAT ARE THE ROLE REQUESTS");
+    console.log(roleRequests, "HELLOO");
     return response({
       statusCode: 200,
       body: roleRequests,

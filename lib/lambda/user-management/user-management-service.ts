@@ -56,7 +56,7 @@ export const getAllUserRolesByState = async (state: string) => {
   return await search(domain, index, {
     query: {
       term: {
-        state,
+        territory: state,
       },
     },
   });
