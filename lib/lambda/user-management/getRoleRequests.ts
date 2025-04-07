@@ -36,6 +36,7 @@ export const getRoleRequests = async (event: APIGatewayEvent) => {
     if (cmsRoleApproverRole) {
       roleRequests = await getAllUserRoles();
     } else if (stateSystemAdminRole?.territory) {
+      console.log('WHAT IS THIS', (stateSystemAdminRole?.territory)
       roleRequests = await getAllUserRolesByState(stateSystemAdminRole.territory);
     }
     console.log(roleRequests, "HELLOO");
