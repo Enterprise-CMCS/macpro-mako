@@ -69,7 +69,7 @@ export async function bulkUpdateData(
       // If document contains a status field, use script update to implement conditional logic
 
       // Extract status field from document
-      const { status, ...docWithoutStatus } = doc;
+      const { seatoolStatus, ...docWithoutStatus } = doc;
 
       body.push(
         { update: { _index: index, _id: doc.id } },
@@ -78,30 +78,30 @@ export async function bulkUpdateData(
             source: `
               // Update all non-status fields first
               for (entry in params.doc.entrySet()) {
-                if (entry.getKey() != "status") {
+                if (entry.getKey() != "seatoolStatus") {
                   ctx._source[entry.getKey()] = entry.getValue();
                 }
               }
               
               // Special logic for status field
-              if (ctx._source.containsKey("status")) {
+              if (ctx._source.containsKey("seatoolStatus")) {
                 // If current status is "Withdrawal Requested" and new status is not "Withdrawn",
                 // keep the current status
-                if (ctx._source.status == "Withdrawal Requested" && params.status != "Withdrawn") {
+                if (ctx._source.seatoolStatus == "Withdrawal Requested" && params.seatoolStatus != "Withdrawn") {
                   ctx._source.cmsStatus ="Withdrawal Requested"
                   ctx._source.stateStatus ="Submitted - Intake Needed"
                 } else {
                   // Otherwise, update the status normally
-                  ctx._source.status = params.status;
+                  ctx._source.seatoolStatus = params.seatoolStatus;
                 }
               } else {
                 // If document doesn't have a status field yet, add it
-                ctx._source.status = params.status;
+                ctx._source.seatoolStatus = params.seatoolStatus;
               }
             `,
             params: {
               doc: docWithoutStatus,
-              status: status,
+              status: seatoolStatus,
             },
           },
           upsert: doc, // For new documents, use the complete document
