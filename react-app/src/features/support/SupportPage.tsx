@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useState } from "react";
-import { Navigate, useParams } from "react-router";
+import { useParams } from "react-router";
 import { isCmsUser } from "shared-utils";
 
 import { useGetUser } from "@/api/useGetUser";
@@ -10,18 +10,19 @@ import {
   AccordionTrigger,
   ExpandCollapseBtn,
   LeftNavigation,
+  StatusLabel,
   SupportSubNavHeader,
   ToggleGroup,
   ToggleGroupItem,
 } from "@/components";
-import { useFeatureFlag } from "@/hooks/useFeatureFlag";
 
+// import { useFeatureFlag } from "@/hooks/useFeatureFlag";
 import { oneMACCMSContent, oneMACStateFAQContent, QuestionAnswer } from "./SupportMockContent";
 
 const FaqAccordion = ({ question }: { question: QuestionAnswer[] }) => {
   return (
     <>
-      {question.map(({ anchorText, answerJSX, question }) => (
+      {question.map(({ anchorText, answerJSX, question, statusLabel }) => (
         <AccordionItem
           value={anchorText}
           id={`${anchorText}-support`}
@@ -30,7 +31,9 @@ const FaqAccordion = ({ question }: { question: QuestionAnswer[] }) => {
           className="border-none my-6"
         >
           <AccordionTrigger showPlusMinus className="text-left font-bold bg-neutral-100 px-5">
-            {question}
+            <div className="flex">
+              {statusLabel && <StatusLabel type={statusLabel} />} {question}{" "}
+            </div>
           </AccordionTrigger>
           <AccordionContent className="bg-white pt-4">{answerJSX}</AccordionContent>
         </AccordionItem>
@@ -41,7 +44,7 @@ const FaqAccordion = ({ question }: { question: QuestionAnswer[] }) => {
 
 export const SupportPage = () => {
   const { id } = useParams<{ id: string }>();
-  const isSupportPageShown = useFeatureFlag("TOGGLE_FAQ");
+  // const isSupportPageShown = useFeatureFlag("TOGGLE_FAQ");
   const [openAccordions, setOpenAccordions] = useState<string[]>([]);
 
   const { data: userObj } = useGetUser();
@@ -84,7 +87,7 @@ export const SupportPage = () => {
     }
   }, [id]);
 
-  if (!isSupportPageShown || !userObj?.user) return <Navigate to="/" replace />;
+  // if (!isSupportPageShown || !userObj?.user) return <Navigate to="/" replace />;
 
   return (
     <div className="min-h-screen flex flex-col">

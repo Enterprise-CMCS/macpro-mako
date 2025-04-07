@@ -4,6 +4,7 @@ export type QuestionAnswer = {
   anchorText: string;
   question: string;
   answerJSX: JSX.Element;
+  statusLabel?: "New" | "Updated";
 };
 
 type FAQContent = {
@@ -23,6 +24,7 @@ export const oneMACStateFAQContent: FAQContent[] = [
       {
         anchorText: "state-sub",
         question: "Should I use OneMAC for my state's submission?",
+        statusLabel: "New",
         answerJSX: (
           <section>
             <p>
@@ -55,6 +57,7 @@ export const oneMACStateFAQContent: FAQContent[] = [
       {
         anchorText: "confirm-email",
         question: "What should I do if I don’t get a confirmation email?",
+        statusLabel: "Updated",
         answerJSX: (
           <section>
             <p>
