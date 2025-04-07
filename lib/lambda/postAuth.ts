@@ -58,12 +58,10 @@ export const handler: Handler = async (event) => {
         const role = element.roleName;
         if (Object.values(UserRoles).includes(role)) {
           roleArray.push(role);
-          console.log("roles array: "+ roleArray)
           if (STATE_ROLES.includes(role)) {
             element.roleAttributes.forEach((attr: any) => {
               if (attr.name === "State/Territory") {
                 stateArray.push(attr.value);
-                console.log("state array: "+ stateArray)
               }
             });
           }
