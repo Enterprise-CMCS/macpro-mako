@@ -10,34 +10,48 @@ import {
   AccordionTrigger,
   ExpandCollapseBtn,
   LeftNavigation,
+  Search,
   StatusLabel,
   SupportSubNavHeader,
   ToggleGroup,
   ToggleGroupItem,
 } from "@/components";
+import { cn } from "@/utils";
 
 // import { useFeatureFlag } from "@/hooks/useFeatureFlag";
 import { oneMACCMSContent, oneMACStateFAQContent, QuestionAnswer } from "./SupportMockContent";
 
-const FaqAccordion = ({ question }: { question: QuestionAnswer[] }) => {
+const FaqAccordion = ({
+  question,
+  latestOpened,
+}: {
+  question: QuestionAnswer[];
+  latestOpened: string;
+}) => {
   return (
     <>
-      {question.map(({ anchorText, answerJSX, question, statusLabel }) => (
-        <AccordionItem
-          value={anchorText}
-          id={`${anchorText}-support`}
-          data-testid={`${anchorText}-support`}
-          key={anchorText}
-          className="border-none my-6"
-        >
-          <AccordionTrigger showPlusMinus className="text-left font-bold bg-neutral-100 px-5">
-            <div className="flex">
-              {statusLabel && <StatusLabel type={statusLabel} />} {question}{" "}
-            </div>
-          </AccordionTrigger>
-          <AccordionContent className="bg-white pt-4">{answerJSX}</AccordionContent>
-        </AccordionItem>
-      ))}
+      {question.map(({ anchorText, answerJSX, question, statusLabel }) => {
+        const oulineLatest = latestOpened === anchorText ? "border-blue-500 border-2 " : "";
+        return (
+          <AccordionItem
+            value={anchorText}
+            id={`${anchorText}-support`}
+            data-testid={`${anchorText}-support`}
+            key={anchorText}
+            className="my-6 border-none"
+          >
+            <AccordionTrigger
+              showPlusMinus
+              className={cn("text-left font-bold bg-neutral-100 px-5", oulineLatest)}
+            >
+              <div className="flex">
+                {statusLabel && <StatusLabel type={statusLabel} />} {question}
+              </div>
+            </AccordionTrigger>
+            <AccordionContent className="bg-white pt-4">{answerJSX}</AccordionContent>
+          </AccordionItem>
+        );
+      })}
     </>
   );
 };
@@ -74,6 +88,13 @@ export const SupportPage = () => {
     return false;
   })();
 
+  const latestOpenedFAQ = areAllAccordionsOpen ? "" : openAccordions[openAccordions.length - 1];
+
+  const onSearch = (s: string) => {
+    // search logic will be added here
+    console.log("searching... ", s);
+  };
+
   useEffect(() => {
     if (id) {
       const element = document.getElementById(id);
@@ -92,7 +113,8 @@ export const SupportPage = () => {
   return (
     <div className="min-h-screen flex flex-col">
       <SupportSubNavHeader>
-        <h1 className="text-4xl font-bold">OneMAC Support</h1>
+        <h1 className="text-4xl font-semibold">OneMAC Support</h1>
+        <Search placeholderText="Search OneMAC support" handleSearch={onSearch} />
       </SupportSubNavHeader>
 
       {/* only display the toggle CMS/State view when the user is CMS */}
@@ -148,7 +170,7 @@ export const SupportPage = () => {
                   <article key={sectionTitle} className="mb-8">
                     <h2 className="text-2xl font-bold mb-4">{sectionTitle}</h2>
                     <hr className="bg-gray-300 h-[1.7px]" />
-                    <FaqAccordion question={qanda} />
+                    <FaqAccordion question={qanda} latestOpened={latestOpenedFAQ} />
                   </article>
                 ))}
               </Accordion>
