@@ -2,8 +2,8 @@
   "name": "mocks",
   "version": "1.0.0",
   "private": true,
+  "license": "ISC",
   "type": "module",
-  "description": "",
   "main": "index.ts",
   "scripts": {
     "build": "tsc"
@@ -14,11 +14,6 @@
     "amazon-cognito-identity-js": "6.3.12",
     "aws-lambda": "1.0.7",
     "jsonwebtoken": "9.0.2",
-    "msw": "^2.3.1",
-    "react-app": "*",
-    "shared-types": "*",
-    "shared-utils": "*"
-  },
-  "author": "",
-  "license": "ISC"
+    "msw": "^2.3.1"
+  }
 }

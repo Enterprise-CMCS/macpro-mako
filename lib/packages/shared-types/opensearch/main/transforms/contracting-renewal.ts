@@ -1,6 +1,6 @@
-import { events, getStatus, SEATOOL_STATUS } from "shared-types";
+import { seaToolFriendlyTimestamp } from "shared-utils";
 
-import { seaToolFriendlyTimestamp } from "../../../../shared-utils/seatool-date-helper";
+import { events, getStatus, SEATOOL_STATUS } from "../../../index";
 
 export const transform = () => {
   return events["contracting-renewal"].schema.transform((data) => {

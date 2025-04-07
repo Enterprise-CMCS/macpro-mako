@@ -13,7 +13,6 @@
     "dotenv": "^16.0.3",
     "open": "^10.0.4",
     "readline-sync": "^1.4.10",
-    "shared-utils": "*",
     "yargs": "^17.7.1"
   },
   "devDependencies": {

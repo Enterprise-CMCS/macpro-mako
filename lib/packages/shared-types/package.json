@@ -3,10 +3,11 @@
   "version": "0.0.0",
   "private": true,
   "license": "MIT",
+  "type": "module",
+  "main": "index.ts",
   "devDependencies": {
     "base-64": "^1.0.0",
     "eslint": "^8.38.0",
-    "eslint-config-custom-server": "*",
     "zod": "^3.22.3"
   },
   "scripts": {

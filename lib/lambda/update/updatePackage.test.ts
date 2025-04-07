@@ -5,7 +5,7 @@ import {
   EXISTING_ITEM_PENDING_ID,
   SIMPLE_ID,
 } from "mocks";
-import { APIGatewayEvent } from "node_modules/shared-types";
+import { APIGatewayEvent } from "shared-types";
 import { beforeEach, describe, expect, it, vi } from "vitest";
 
 import { handler } from "./updatePackage";

@@ -1,4 +1,5 @@
 import { Control, FieldArrayPath, FieldValues, RegisterOptions } from "react-hook-form";
+
 import {
   CalendarProps,
   InputProps,
@@ -7,7 +8,7 @@ import {
   SelectProps,
   SwitchProps,
   TextareaProps,
-} from "shared-types";
+} from "./index";
 
 export interface FormSchema {
   header: string;

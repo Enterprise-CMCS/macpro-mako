@@ -1,5 +1,5 @@
-import { BaseIndex } from "lib/packages/shared-types/opensearch";
 import { getDomain, getOsNamespace } from "libs/utils";
+import { BaseIndex } from "shared-types/opensearch";
 
 import * as os from "../../../libs/opensearch-lib";
 

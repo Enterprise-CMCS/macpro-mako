@@ -6,7 +6,7 @@ import * as logs from "aws-cdk-lib/aws-logs";
 import * as cr from "aws-cdk-lib/custom-resources";
 import { describe, expect, it } from "vitest";
 
-import { ManageUsers } from ".";
+import { ManageUsers } from "./index";
 
 describe("ManageUsers", () => {
   const app = new cdk.App();

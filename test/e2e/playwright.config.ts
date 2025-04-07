@@ -1,6 +1,6 @@
 import { GetParameterCommand, SSMClient } from "@aws-sdk/client-ssm";
 import { defineConfig, devices } from "@playwright/test";
-
+import { TEST_ITEM_ID } from "mocks";
 /**
  * See https://playwright.dev/docs/test-configuration.
  */
