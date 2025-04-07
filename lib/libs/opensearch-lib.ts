@@ -65,7 +65,50 @@ export async function bulkUpdateData(
   for (const doc of arrayOfDocuments) {
     if (doc.delete) {
       body.push({ delete: { _index: index, _id: doc.id } });
+    } else if (doc.status !== undefined && index === "main") {
+      // If document contains a status field, use script update to implement conditional logic
+
+      // Extract status field from document
+      const { status, ...docWithoutStatus } = doc;
+
+      body.push(
+        { update: { _index: index, _id: doc.id } },
+        {
+          script: {
+            source: `
+              // Update all non-status fields first
+              for (entry in params.doc.entrySet()) {
+                if (entry.getKey() != "status") {
+                  ctx._source[entry.getKey()] = entry.getValue();
+                }
+              }
+              
+              // Special logic for status field
+              if (ctx._source.containsKey("status")) {
+                // If current status is "Withdrawal Requested" and new status is not "Withdrawn",
+                // keep the current status
+                if (ctx._source.status == "Withdrawal Requested" && params.status != "Withdrawn") {
+                  ctx._source.cmsStatus ="Withdrawal Requested"
+                  ctx._source.stateStatus ="Submitted - Intake Needed"
+                } else {
+                  // Otherwise, update the status normally
+                  ctx._source.status = params.status;
+                }
+              } else {
+                // If document doesn't have a status field yet, add it
+                ctx._source.status = params.status;
+              }
+            `,
+            params: {
+              doc: docWithoutStatus,
+              status: status,
+            },
+          },
+          upsert: doc, // For new documents, use the complete document
+        },
+      );
     } else {
+      // If no status field in the document, use regular update - unchanged
       body.push({ update: { _index: index, _id: doc.id } }, { doc: doc, doc_as_upsert: true });
     }
   }
