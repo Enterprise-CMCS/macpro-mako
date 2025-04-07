@@ -241,12 +241,12 @@ const oneMacSeatoolStatusCheck = async (seatoolRecord: Document) => {
   }
 
   // OneMac is requesting an RAI withdrawal it is not Pending RAI in seatool
-  if (
-    oneMacStatus === SEATOOL_STATUS.RAI_RESPONSE_WITHDRAW_REQUESTED &&
-    seatoolStatus !== SeatoolSpwStatusEnum.PendingRAI
-  ) {
-    return SeatoolSpwStatusEnum.FormalRAIResponseWithdrawalRequested;
-  }
+  // if (
+  //   oneMacStatus === SEATOOL_STATUS.RAI_RESPONSE_WITHDRAW_REQUESTED &&
+  //   seatoolStatus !== SeatoolSpwStatusEnum.Pending
+  // ) {
+  //   return SeatoolSpwStatusEnum.FormalRAIResponseWithdrawalRequested;
+  // }
 
   // Current status is RAI Issued in seatool and onemac status is SUBMITTED
   if (
