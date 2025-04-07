@@ -30,6 +30,10 @@ const initializeLaunchDarkly = async () => {
     },
   });
 
+  if (import.meta.env.DEV) {
+    await import("../mockServiceWorker.js?worker");
+  }
+
   ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(
     <React.StrictMode>
       <QueryClientProvider client={queryClient}>
