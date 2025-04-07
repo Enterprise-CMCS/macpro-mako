@@ -13,7 +13,7 @@ export const getAllUserRolesByEmail = async (email: string) => {
 
   const result = await search(domain, index, {
     query: {
-      match: {
+      term: {
         "email.keyword": email,
       },
     },
@@ -63,14 +63,14 @@ export const getAllUserRolesByState = async (state: string) => {
   });
 };
 
-export const getAllUserRolesByStates = async (states: StateCode[]) => {
-  const { domain, index } = getDomainAndNamespace("roles");
+// export const getAllUserRolesByStates = async (states: StateCode[]) => {
+//   const { domain, index } = getDomainAndNamespace("roles");
 
-  return await search(domain, index, {
-    query: {
-      terms: {
-        state: states,
-      },
-    },
-  });
-};
+//   return await search(domain, index, {
+//     query: {
+//       terms: {
+//         state: states,
+//       },
+//     },
+//   });
+// };
