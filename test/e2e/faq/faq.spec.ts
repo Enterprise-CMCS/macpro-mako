@@ -22,7 +22,7 @@ test.describe("FAQ page", { tag: ["@e2e", "@smoke", "@faq"] }, () => {
       test("displays system for state submission FAQ", async () => {
         await expect(faqPage.crossWalk).toBeVisible();
         await expect(faqPage.crossWalk).toHaveText(
-          "Which system should I use for my state’s submission?",
+          "Which SPA or waiver packages should I submit in OneMAC?",
         );
 
         await expect(faqPage.pdfs.statePlans).not.toBeVisible();
