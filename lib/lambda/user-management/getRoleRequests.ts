@@ -1,5 +1,6 @@
 import { getAuthDetails, lookupUserAttributes } from "lib/libs/api/auth/user";
 import { response } from "lib/libs/handler-lib";
+import { StateAccess } from "react-app/src/api";
 import { APIGatewayEvent } from "shared-types";
 
 import { getAllUserRolesByEmail, getAllUserRolesByState } from "./user-management-service";
@@ -9,31 +10,30 @@ export const getRoleRequests = async (event: APIGatewayEvent) => {
     // check authentication
     // check role - state admin can only see role requests for that state
     // cms approver role can see all role requests
-    const authDetails = getAuthDetails(event);
-    const userAttributes = await lookupUserAttributes(authDetails.userId, authDetails.poolId);
-    console.log(userAttributes, "USER ATTRIBUTES?");
-    const role = userAttributes["custom:cms-roles"];
-    const opensearchResponse = await getAllUserRolesByEmail(userAttributes.email);
-    console.log(opensearchResponse, "OPEN SEARCH RESPONSE");
+    const { userId, poolId } = getAuthDetails(event);
+    const userAttributes = await lookupUserAttributes(userId, poolId);
+    const { email } = userAttributes;
 
-    let roleRequests: unknown[] = [];
-
-    if (role === "onemac-state-user") {
-      const state = userAttributes["custom:state"];
-      console.log("WHAT IS THE STATE", state);
-      if (!state) {
-        // TODO: Fix message
-        return response({
-          statusCode: 400,
-          body: { message: "User must be an admin of a state" },
-        });
-      }
-      // state is multiple states?
-      roleRequests = await getAllUserRolesByState(state);
+    const userRoles = await getAllUserRolesByEmail(email);
+    console.log(userRoles, "USER ROLES");
+    if (!userRoles.length) {
+      return response({
+        statusCode: 200,
+        body: { message: "User doesn't have any roles" },
+      });
     }
 
-    console.log(role, "WHAT IS THE ROLE");
-
+    const stateAdminRole = userRoles.find(
+      (role: StateAccess) => role.role === "statesystemadmin" && role.status === "active",
+    );
+    if (!stateAdminRole) {
+      return response({
+        statusCode: 200,
+        body: { message: "User doesn't have appropriate roles" },
+      });
+    }
+    const roleRequests = await getAllUserRolesByState(stateAdminRole.territory);
+    console.log(roleRequests, "WHAT ARE THE ROLE REQUESTS");
     return response({
       statusCode: 200,
       body: roleRequests,
