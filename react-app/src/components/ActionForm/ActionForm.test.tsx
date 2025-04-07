@@ -309,13 +309,16 @@ describe("ActionForm", () => {
     })
     const dataPollerSpy = vi.spyOn(DataPoller.prototype, "startPollingData");
 
+    const schema = z.object({
+      id: z.string(),
+      event: z.string().optional(), 
+    });
+
     await renderFormWithPackageSectionAsync(
       <ActionForm
         title="Action Form Title"
-        schema={z.object({
-          id: z.string(),
-        })}
-        defaultValues={{ id: EXISTING_ITEM_PENDING_ID}}
+        schema={schema}
+        defaultValues={{ id: EXISTING_ITEM_PENDING_ID, event:"new-chip" }}
         fields={() => null}
         documentPollerArgs={{
           property: "id",
@@ -342,7 +345,7 @@ describe("ActionForm", () => {
         correctDataStateFound: true,
         maxAttemptsReached: false,
       });
-      expect(sendGAEvent).toHaveBeenCalledWith(undefined, 'onemac-state-user', 'MD');
+      expect(sendGAEvent).toHaveBeenCalledWith('new-chip', 'onemac-state-user', 'MD');
     });
   });
 
