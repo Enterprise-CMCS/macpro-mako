@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useState } from "react";
-import { useParams } from "react-router";
+import { Navigate, useParams } from "react-router";
 import { isCmsUser } from "shared-utils";
 
 import { useGetUser } from "@/api/useGetUser";
@@ -16,9 +16,9 @@ import {
   ToggleGroup,
   ToggleGroupItem,
 } from "@/components";
+import { useFeatureFlag } from "@/hooks/useFeatureFlag";
 import { cn } from "@/utils";
 
-// import { useFeatureFlag } from "@/hooks/useFeatureFlag";
 import { oneMACCMSContent, oneMACStateFAQContent, QuestionAnswer } from "./SupportMockContent";
 
 const FaqAccordion = ({
@@ -58,7 +58,7 @@ const FaqAccordion = ({
 
 export const SupportPage = () => {
   const { id } = useParams<{ id: string }>();
-  // const isSupportPageShown = useFeatureFlag("TOGGLE_FAQ");
+  const isSupportPageShown = useFeatureFlag("TOGGLE_FAQ");
   const [openAccordions, setOpenAccordions] = useState<string[]>([]);
 
   const { data: userObj } = useGetUser();
@@ -108,7 +108,7 @@ export const SupportPage = () => {
     }
   }, [id]);
 
-  // if (!isSupportPageShown || !userObj?.user) return <Navigate to="/" replace />;
+  if (!isSupportPageShown || !userObj?.user) return <Navigate to="/" replace />;
 
   return (
     <div className="min-h-screen flex flex-col">
