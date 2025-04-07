@@ -12,6 +12,7 @@ import ReactGA from 'react-ga4';
 import config from "@/config";
 import { queryClient } from "@/utils";
 
+import { useFeatureFlag } from "./hooks/useFeatureFlag";
 import { router } from "./router";
 
 const ldClientId = config.launchDarkly?.CLIENT_ID;
@@ -40,11 +41,17 @@ const initializeApp = async () => {
     },
   });
 
+  const FlagRouter = () => {
+    const loginFlag = useFeatureFlag("LOGIN_PAGE");
+  
+    return <RouterProvider router={router(loginFlag)} />;
+  };
+  
   ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(
     <React.StrictMode>
       <QueryClientProvider client={queryClient}>
         <LDProvider>
-          <RouterProvider router={router} />
+          <FlagRouter />
         </LDProvider>
         <ReactQueryDevtools initialIsOpen={false} />
       </QueryClientProvider>

@@ -528,15 +528,10 @@ describe("insertOneMacRecordsFromKafkaIntoMako", () => {
   it.each([
     ["medicaidspa", "Medicaid SPA", {}, {}],
     ["chipspa", "CHIP SPA", {}, {}],
-    ["waivernew", "1915(b)", {}, { actionType: "Initial" }],
-    ["waiverrenewal", "1915(b)", {}, { actionType: "Renewal" }],
-    ["waiveramendment", "1915(b)", {}, { actionType: "Amendment" }],
-    [
-      "waiverappk",
-      "1915(c)",
-      { title: TEST_TITLE },
-      { actionType: "Amendment", title: TEST_TITLE },
-    ],
+    ["waivernew", "1915(b)", {}, { actionType: "New" }],
+    ["waiverrenewal", "1915(b)", {}, { actionType: "Renew" }],
+    ["waiveramendment", "1915(b)", {}, { actionType: "Amend" }],
+    ["waiverappk", "1915(c)", { title: TEST_TITLE }, { actionType: "Amend", title: TEST_TITLE }],
     // For waiverextension types, add a waiverNumber and override currentStatus.
     [
       "waiverextension",
@@ -545,10 +540,11 @@ describe("insertOneMacRecordsFromKafkaIntoMako", () => {
       {
         originalWaiverNumber: "W-12345",
         actionType: "Extend",
-        cmsStatus: "Submitted - Intake Needed",
+        cmsStatus: "Requested",
         stateStatus: "Submitted",
         currentStatus: "TE Requested",
         seatoolStatus: "Submitted",
+        state: "MD",
       },
     ],
     [
@@ -558,10 +554,11 @@ describe("insertOneMacRecordsFromKafkaIntoMako", () => {
       {
         originalWaiverNumber: "W-12345",
         actionType: "Extend",
-        cmsStatus: "Submitted - Intake Needed",
+        cmsStatus: "Requested",
         stateStatus: "Submitted",
         currentStatus: "TE Requested",
         seatoolStatus: "Submitted",
+        state: "MD",
       },
     ],
     [
@@ -571,10 +568,11 @@ describe("insertOneMacRecordsFromKafkaIntoMako", () => {
       {
         originalWaiverNumber: "W-12345",
         actionType: "Extend",
-        cmsStatus: "Submitted - Intake Needed",
+        cmsStatus: "Requested",
         stateStatus: "Submitted",
         currentStatus: "TE Requested",
         seatoolStatus: "Submitted",
+        state: "MD",
       },
     ],
   ])(
@@ -612,11 +610,12 @@ describe("insertOneMacRecordsFromKafkaIntoMako", () => {
 
       await insertOneMacRecordsFromKafkaIntoMako([kafkaRecord], TOPIC);
 
-      // Build the expected base transformation (common to all)
-      const baseExpected = {
+      // Build the expected transformation
+      const expectedRecord = {
         pk: "MD-12345",
         GSI1pk: "OneMAC#spa",
         componentId: "MD-12345",
+        authority: expectedAuthority,
         additionalInformation: "info",
         lastEventTimestamp: TIMESTAMP,
         submissionTimestamp: TIMESTAMP,
@@ -626,6 +625,7 @@ describe("insertOneMacRecordsFromKafkaIntoMako", () => {
         description: null,
         id: "MD-12345",
         makoChangedDate: new Date(TIMESTAMP).toISOString(),
+        state: "MD",
         origin: "OneMACLegacy",
         proposedDate: "2025-03-10T00:00:00Z",
         subject: null,
@@ -634,37 +634,75 @@ describe("insertOneMacRecordsFromKafkaIntoMako", () => {
         submitterName: "Tester",
         initialIntakeNeeded: true,
         raiWithdrawEnabled: false,
+        cmsStatus: statusToDisplayToCmsUser[SEATOOL_STATUS.SUBMITTED],
+        stateStatus: statusToDisplayToStateUser[SEATOOL_STATUS.SUBMITTED],
+        seatoolStatus: SEATOOL_STATUS.SUBMITTED,
+        statusDate: new Date(TIMESTAMP).toISOString(),
+        ...expectedExtras,
       };
-
-      // Build expected outcome conditionally based on the transform type.
-      let expectedRecord;
-      if (componentType.startsWith("waiverextension")) {
-        expectedRecord = {
-          ...baseExpected,
-          authority: expectedAuthority,
-          // For temporary extension, we expect the transform to override some status fields.
-          cmsStatus: "Requested",
-          stateStatus: "Submitted",
-          ...expectedExtras,
-        };
-      } else {
-        expectedRecord = {
-          ...baseExpected,
-          authority: expectedAuthority,
-          cmsStatus: statusToDisplayToCmsUser[SEATOOL_STATUS.SUBMITTED],
-          seatoolStatus: SEATOOL_STATUS.SUBMITTED,
-          state: "MD",
-          stateStatus: statusToDisplayToStateUser[SEATOOL_STATUS.SUBMITTED],
-          statusDate: new Date(TIMESTAMP).toISOString(),
-          ...expectedExtras,
-        };
-      }
 
       expect(bulkUpdateDataSpy).toBeCalledWith(OPENSEARCH_DOMAIN, OPENSEARCH_INDEX, [
         expectedRecord,
       ]);
     },
   );
+  it("should set date fields to null for legacy records when timestamps are 0", async () => {
+    const record = {
+      pk: "MD-00000",
+      sk: "Package",
+      GSI1pk: "OneMAC#spa",
+      componentId: "MD-00000",
+      additionalInformation: "info",
+      lastEventTimestamp: 0,
+      submissionTimestamp: 0,
+      proposedEffectiveDate: "2025-03-10T00:00:00Z",
+      submitterEmail: "tester@example.com",
+      submitterName: "Tester",
+      currentStatus: "Submitted",
+      subStatus: "Normal",
+      componentType: "medicaidspa",
+    };
+
+    const kafkaRecord = createKafkaRecord({
+      topic: TOPIC,
+      key: "some-key",
+      value: convertObjToBase64({
+        ...record,
+        origin: "OneMACLegacy",
+        submitterName: "Tester",
+        submitterEmail: "tester@example.com",
+        timestamp: TIMESTAMP,
+      }),
+      headers: [{ source: [111, 110, 101, 109, 97, 99] }], // "onemac"
+    });
+
+    await insertOneMacRecordsFromKafkaIntoMako([kafkaRecord], TOPIC);
+
+    const expectedRecord = {
+      additionalInformation: "info",
+      changedDate: null, // due to lastEventTimestamp === 0
+      description: null,
+      id: "MD-00000",
+      makoChangedDate: null, // due to lastEventTimestamp === 0
+      origin: "OneMACLegacy",
+      proposedDate: "2025-03-10T00:00:00Z",
+      subject: null,
+      submissionDate: null, // due to submissionTimestamp === 0
+      submitterEmail: "tester@example.com",
+      submitterName: "Tester",
+      initialIntakeNeeded: true,
+      authority: "Medicaid SPA", // as defined in medicaid-spa transform
+      cmsStatus: statusToDisplayToCmsUser[SEATOOL_STATUS.SUBMITTED],
+      seatoolStatus: SEATOOL_STATUS.SUBMITTED,
+      state: "MD",
+      stateStatus: statusToDisplayToStateUser[SEATOOL_STATUS.SUBMITTED],
+      statusDate: null, // due to lastEventTimestamp === 0
+    };
+
+    expect(bulkUpdateDataSpy).toBeCalledWith(OPENSEARCH_DOMAIN, OPENSEARCH_INDEX, [
+      expect.objectContaining(expectedRecord),
+    ]);
+  });
 });
 
 describe("insertNewSeatoolRecordsFromKafkaIntoMako", () => {

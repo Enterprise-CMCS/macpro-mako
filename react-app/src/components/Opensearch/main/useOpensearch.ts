@@ -130,7 +130,7 @@ export const useOsAggregate = () => {
                 ? "cmsStatus.keyword"
                 : "stateStatus.keyword",
             type: "terms",
-            size: 10,
+            size: 20,
           },
           {
             field: "leadAnalystName.keyword",
@@ -159,7 +159,7 @@ export const useOsUrl = () => {
       search: "",
       tab: "spas",
       pagination: { number: 0, size: 25 },
-      sort: { field: "submissionDate", order: "desc" },
+      sort: { field: "makoChangedDate", order: "desc" },
       ...queryObject,
     },
     redirectTab: queryObject?.tab,
