@@ -91,8 +91,10 @@ export async function bulkUpdateData(
                 if (ctx._source.seatoolStatus == "Withdrawal Requested" && params.seatoolStatus != "Withdrawn") {
                   ctx._source.cmsStatus ="Withdrawal Requested"
                   ctx._source.stateStatus ="Submitted - Intake Needed"
+                } else if (ctx_.source.seatoolStatus == "Submitted" && params.seatoolStatus == "Pending-RAI"){
+                  ctx._source.cmsStatus ="Submitted"
+                  ctx._source.stateStatus ="Submitted - Intake Needed" 
                 } else {
-                  // Otherwise, update the status normally
                   ctx._source.seatoolStatus = params.seatoolStatus;
                 }
               } else {
