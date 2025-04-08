@@ -294,7 +294,7 @@ describe("ActionForm", () => {
     });
   });
 
-  test("sends a cusomt GA event", async () => {
+  test("sends a custom Google Analytics event", async () => {
     vi.spyOn(api, "useGetUser").mockImplementation(() => {
       const response = mockUseGetUser();
       return response as query.UseQueryResult<OneMacUser, unknown>;
