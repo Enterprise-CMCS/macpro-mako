@@ -63,7 +63,8 @@ export async function bulkUpdateData(
 
   const body: any[] = [];
   for (const doc of arrayOfDocuments) {
-    console.log(doc);
+    console.log("index: " + index);
+    console.log("document: " + doc);
     if (doc.delete) {
       body.push({ delete: { _index: index, _id: doc.id } });
     } else if (doc.seatoolStatus !== undefined && index === "main") {
