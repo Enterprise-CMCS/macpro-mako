@@ -668,6 +668,7 @@ export const oneMACCMSContent: FAQContent[] = [
       {
         anchorText: "state-sub",
         question: "Should I use OneMAC for my state's submission?",
+        statusLabel: "New",
         answerJSX: (
           <section>
             <p>
@@ -700,6 +701,7 @@ export const oneMACCMSContent: FAQContent[] = [
       {
         anchorText: "confirm-email",
         question: "What should I do if I don’t get a confirmation email?",
+        statusLabel: "Updated",
         answerJSX: (
           <section>
             <p>

@@ -2,6 +2,7 @@ import { XIcon } from "lucide-react";
 import { useState } from "react";
 
 import { Button } from "@/components";
+import { cn } from "@/utils";
 
 interface searchProps {
   handleSearch: (s: string) => void;
@@ -19,6 +20,8 @@ const Search = ({ handleSearch, placeholderText }: searchProps) => {
     const updateText = event.target.value;
     setSearchText(updateText);
   };
+
+  const isHidden = searchText ? "visible" : "invisible";
 
   return (
     <div className="flex items-center">
@@ -48,17 +51,16 @@ const Search = ({ handleSearch, placeholderText }: searchProps) => {
             onChange={handleInputChange}
             placeholder={placeholderText}
           />
-          {!!searchText && (
-            <XIcon
-              className="text-gray-500 mr-2 cursor-pointer"
-              data-testid="close-icon"
-              onClick={() => {
-                setSearchText("");
-                handleSearch("");
-              }}
-              name="close"
-            />
-          )}
+
+          <XIcon
+            className={cn("text-gray-500 mr-2 cursor-pointer", isHidden)}
+            data-testid="close-icon"
+            onClick={() => {
+              setSearchText("");
+              handleSearch("");
+            }}
+            name="close"
+          />
         </div>
       </form>
       <Button

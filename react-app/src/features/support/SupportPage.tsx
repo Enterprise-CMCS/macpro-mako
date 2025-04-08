@@ -42,10 +42,14 @@ const FaqAccordion = ({
           >
             <AccordionTrigger
               showPlusMinus
-              className={cn("text-left font-bold bg-neutral-100 px-5", oulineLatest)}
+              className={cn(
+                "text-left font-bold bg-neutral-100 px-5 hover:no-underline",
+                oulineLatest,
+              )}
             >
               <div className="flex">
-                {statusLabel && <StatusLabel type={statusLabel} />} {question}
+                {statusLabel && <StatusLabel type={statusLabel} />}{" "}
+                <span className="hover:underline">{question}</span>
               </div>
             </AccordionTrigger>
             <AccordionContent className="bg-white pt-4">{answerJSX}</AccordionContent>
