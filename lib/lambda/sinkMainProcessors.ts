@@ -289,90 +289,85 @@ export const insertNewSeatoolRecordsFromKafkaIntoMako = async (
   topicPartition: string,
 ) => {
   const makoDocTimestamps = await getMakoDocTimestamps(kafkaRecords);
+  const seatoolRecordsForMako: { id: string; [key: string]: unknown }[] = [];
 
-  const seatoolRecordsForMako = await kafkaRecords.reduce(
-    async (accPromise, kafkaRecord) => {
-      const acc = await accPromise;
+  for (const kafkaRecord of kafkaRecords) {
+    try {
+      const { key, value } = kafkaRecord;
 
-      try {
-        const { key, value } = kafkaRecord;
-
-        if (!key) {
-          console.log(`Record without a key property: ${value}`);
-          return acc;
-        }
-
-        const id: string = removeDoubleQuotesSurroundingString(decodeBase64WithUtf8(key));
-
-        if (!value) {
-          console.log(`Record without a value property: ${value}`);
-          return [...acc, opensearch.main.seatool.tombstone(id)];
-        }
-
-        const seatoolRecord: Document = {
-          id,
-          ...JSON.parse(decodeBase64WithUtf8(value)),
-        };
-
-        const oneMacStatusId = await oneMacSeatoolStatusCheck(seatoolRecord);
-
-        const safeSeatoolRecord = opensearch.main.seatool.transform(id).safeParse(seatoolRecord);
-
-        if (!safeSeatoolRecord.success) {
-          logError({
-            type: ErrorType.VALIDATION,
-            error: safeSeatoolRecord.error.errors,
-            metadata: { topicPartition, kafkaRecord, record: seatoolRecord },
-          });
-          return acc;
-        }
-        if (
-          oneMacStatusId &&
-          safeSeatoolRecord.data.seatoolStatus !== SEATOOL_SPW_STATUS[oneMacStatusId]
-        ) {
-          const onemacStatus = SEATOOL_SPW_STATUS[oneMacStatusId];
-          safeSeatoolRecord.data.stateStatus = statusToDisplayToStateUser[onemacStatus];
-          safeSeatoolRecord.data.cmsStatus = statusToDisplayToCmsUser[onemacStatus];
-        }
-
-        const { data: seatoolDocument } = safeSeatoolRecord;
-        const makoDocumentTimestamp = makoDocTimestamps.get(seatoolDocument.id);
-
-        console.log("--------------------");
-        console.log(`id: ${seatoolDocument.id}`);
-        console.log(`mako: ${makoDocumentTimestamp}`);
-        console.log(`seatool: ${seatoolDocument.changed_date}`);
-
-        const isNewerOrUndefined =
-          seatoolDocument.changed_date &&
-          makoDocumentTimestamp &&
-          isBefore(makoDocumentTimestamp, seatoolDocument.changed_date);
-
-        if (isNewerOrUndefined) {
-          console.log("SKIPPED DUE TO OUT-OF-DATE INFORMATION");
-          return acc;
-        }
-
-        if (seatoolDocument.authority && seatoolDocument.seatoolStatus !== "Unknown") {
-          console.log("INDEX");
-          console.log("--------------------");
-          console.log(`Status: ${seatoolDocument.seatoolStatus}`);
-
-          return [...acc, seatoolDocument];
-        }
-
-        return acc;
-      } catch (error) {
-        logError({
-          type: ErrorType.BADPARSE,
-          error,
-          metadata: { topicPartition, kafkaRecord },
-        });
-        return acc;
+      if (!key) {
+        console.log(`Record without a key property: ${value}`);
+        continue;
       }
-    },
-    Promise.resolve([] as { id: string; [key: string]: unknown }[]),
-  );
+
+      const id: string = removeDoubleQuotesSurroundingString(decodeBase64WithUtf8(key));
+
+      if (!value) {
+        console.log(`Record without a value property: ${value}`);
+        seatoolRecordsForMako.push(opensearch.main.seatool.tombstone(id));
+        continue;
+      }
+
+      const seatoolRecord: Document = {
+        id,
+        ...JSON.parse(decodeBase64WithUtf8(value)),
+      };
+
+      const oneMacStatusId = await oneMacSeatoolStatusCheck(seatoolRecord);
+
+      const safeSeatoolRecord = opensearch.main.seatool.transform(id).safeParse(seatoolRecord);
+
+      if (!safeSeatoolRecord.success) {
+        logError({
+          type: ErrorType.VALIDATION,
+          error: safeSeatoolRecord.error.errors,
+          metadata: { topicPartition, kafkaRecord, record: seatoolRecord },
+        });
+        continue;
+      }
+
+      if (
+        oneMacStatusId &&
+        safeSeatoolRecord.data.seatoolStatus !== SEATOOL_SPW_STATUS[oneMacStatusId]
+      ) {
+        const onemacStatus = SEATOOL_SPW_STATUS[oneMacStatusId];
+        safeSeatoolRecord.data.stateStatus = statusToDisplayToStateUser[onemacStatus];
+        safeSeatoolRecord.data.cmsStatus = statusToDisplayToCmsUser[onemacStatus];
+      }
+
+      const { data: seatoolDocument } = safeSeatoolRecord;
+      const makoDocumentTimestamp = makoDocTimestamps.get(seatoolDocument.id);
+
+      console.log("--------------------");
+      console.log(`id: ${seatoolDocument.id}`);
+      console.log(`mako: ${makoDocumentTimestamp}`);
+      console.log(`seatool: ${seatoolDocument.changed_date}`);
+
+      const isNewerOrUndefined =
+        seatoolDocument.changed_date &&
+        makoDocumentTimestamp &&
+        isBefore(makoDocumentTimestamp, seatoolDocument.changed_date);
+
+      if (isNewerOrUndefined) {
+        console.log("SKIPPED DUE TO OUT-OF-DATE INFORMATION");
+        continue;
+      }
+
+      if (seatoolDocument.authority && seatoolDocument.seatoolStatus !== "Unknown") {
+        console.log("INDEX");
+        console.log("--------------------");
+        console.log(`Status: ${seatoolDocument.seatoolStatus}`);
+
+        seatoolRecordsForMako.push(seatoolDocument);
+      }
+    } catch (error) {
+      logError({
+        type: ErrorType.BADPARSE,
+        error,
+        metadata: { topicPartition, kafkaRecord },
+      });
+    }
+  }
 
   await bulkUpdateDataWrapper(seatoolRecordsForMako, "main");
 };
