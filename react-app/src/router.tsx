@@ -7,6 +7,7 @@ import {
   postSubmissionLoader,
   PostSubmissionWrapper,
 } from "@/features/forms/post-submission/post-submission-forms";
+import { SignUp } from "@/features/sign-up/sign-up";
 import { queryClient } from "@/utils";
 
 const RoutesWithTimeout = () => (
@@ -34,6 +35,10 @@ export const router = (loginFlag = false) => {
         {
           element: <RoutesWithTimeout />,
           children: [
+            {
+              path: "/signup",
+              element: <SignUp />,
+            },
             {
               path: "/dashboard",
               element: <F.Dashboard />,
