@@ -327,7 +327,11 @@ export const insertNewSeatoolRecordsFromKafkaIntoMako = async (
         });
         continue;
       }
-
+      console.log("StatusID: " + oneMacStatusId);
+      if (oneMacStatusId) {
+        console.log("Converted status: " + SEATOOL_SPW_STATUS[oneMacStatusId]);
+      }
+      console.log("seatool status from safe: " + safeSeatoolRecord.data.seatoolStatus);
       if (
         oneMacStatusId &&
         safeSeatoolRecord.data.seatoolStatus !== SEATOOL_SPW_STATUS[oneMacStatusId]
