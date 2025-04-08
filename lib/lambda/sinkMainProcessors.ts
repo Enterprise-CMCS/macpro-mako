@@ -316,7 +316,7 @@ export const insertNewSeatoolRecordsFromKafkaIntoMako = async (
       };
 
       const oneMacStatusId = await oneMacSeatoolStatusCheck(seatoolRecord);
-
+      if (oneMacStatusId) seatoolRecord.seatoolStatus = oneMacStatusId?.toString();
       const safeSeatoolRecord = opensearch.main.seatool.transform(id).safeParse(seatoolRecord);
 
       if (!safeSeatoolRecord.success) {
@@ -327,19 +327,21 @@ export const insertNewSeatoolRecordsFromKafkaIntoMako = async (
         });
         continue;
       }
-      console.log("StatusID: " + oneMacStatusId);
-      if (oneMacStatusId) {
-        console.log("Converted status: " + SEATOOL_SPW_STATUS[oneMacStatusId]);
-      }
-      console.log("seatool status from safe: " + safeSeatoolRecord.data.seatoolStatus);
-      if (
-        oneMacStatusId &&
-        safeSeatoolRecord.data.seatoolStatus !== SEATOOL_SPW_STATUS[oneMacStatusId]
-      ) {
-        const onemacStatus = SEATOOL_SPW_STATUS[oneMacStatusId];
-        safeSeatoolRecord.data.stateStatus = statusToDisplayToStateUser[onemacStatus];
-        safeSeatoolRecord.data.cmsStatus = statusToDisplayToCmsUser[onemacStatus];
-      }
+      // console.log("StatusID: " + oneMacStatusId);
+      // if (oneMacStatusId) {
+      //   console.log("Converted status: " + SEATOOL_SPW_STATUS[oneMacStatusId]);
+      // }
+      // console.log("seatool status from safe: " + safeSeatoolRecord.data.seatoolStatus);
+      // if (
+      //   oneMacStatusId &&
+      //   safeSeatoolRecord.data.seatoolStatus !== SEATOOL_SPW_STATUS[oneMacStatusId]
+      // ) {
+      //   console.log("hello");
+      //   const onemacStatus = SEATOOL_SPW_STATUS[oneMacStatusId];
+      //   safeSeatoolRecord.data.stateStatus = statusToDisplayToStateUser[onemacStatus];
+      //   safeSeatoolRecord.data.cmsStatus = statusToDisplayToCmsUser[onemacStatus];
+      //   console.log("om status within change = " + onemacStatus);
+      // }
 
       const { data: seatoolDocument } = safeSeatoolRecord;
       const makoDocumentTimestamp = makoDocTimestamps.get(seatoolDocument.id);
