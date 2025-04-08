@@ -316,9 +316,9 @@ export const insertNewSeatoolRecordsFromKafkaIntoMako = async (
       };
 
       const oneMacStatusId = await oneMacSeatoolStatusCheck(seatoolRecord);
-      if (oneMacStatusId) seatoolRecord.seatoolStatus = oneMacStatusId?.toString();
+      seatoolRecord.STATE_PLAN.SPW_STATUS_ID = oneMacStatusId;
       const safeSeatoolRecord = opensearch.main.seatool.transform(id).safeParse(seatoolRecord);
-
+      // console.log(seatoolRecord.STATE_PLAN.SPW_STATUS_ID);
       if (!safeSeatoolRecord.success) {
         logError({
           type: ErrorType.VALIDATION,
