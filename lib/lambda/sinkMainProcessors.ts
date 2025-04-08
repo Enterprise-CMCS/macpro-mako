@@ -4,12 +4,9 @@ import { getPackage, getPackageChangelog } from "libs/api/package";
 import {
   KafkaRecord,
   opensearch,
-  SEATOOL_SPW_STATUS,
   SEATOOL_STATUS,
   SeatoolRecordWithUpdatedDate,
   SeatoolSpwStatusEnum,
-  statusToDisplayToCmsUser,
-  statusToDisplayToStateUser,
 } from "shared-types";
 import { Document, legacyTransforms, seatool, transforms } from "shared-types/opensearch/main";
 import { decodeBase64WithUtf8 } from "shared-utils";
@@ -327,21 +324,6 @@ export const insertNewSeatoolRecordsFromKafkaIntoMako = async (
         });
         continue;
       }
-      // console.log("StatusID: " + oneMacStatusId);
-      // if (oneMacStatusId) {
-      //   console.log("Converted status: " + SEATOOL_SPW_STATUS[oneMacStatusId]);
-      // }
-      // console.log("seatool status from safe: " + safeSeatoolRecord.data.seatoolStatus);
-      // if (
-      //   oneMacStatusId &&
-      //   safeSeatoolRecord.data.seatoolStatus !== SEATOOL_SPW_STATUS[oneMacStatusId]
-      // ) {
-      //   console.log("hello");
-      //   const onemacStatus = SEATOOL_SPW_STATUS[oneMacStatusId];
-      //   safeSeatoolRecord.data.stateStatus = statusToDisplayToStateUser[onemacStatus];
-      //   safeSeatoolRecord.data.cmsStatus = statusToDisplayToCmsUser[onemacStatus];
-      //   console.log("om status within change = " + onemacStatus);
-      // }
 
       const { data: seatoolDocument } = safeSeatoolRecord;
       const makoDocumentTimestamp = makoDocTimestamps.get(seatoolDocument.id);
