@@ -32,6 +32,14 @@ export const legacyEventSchema = legacySharedSchema
     const submissionIsoDate = getIsoDateFromTimestamp(data.submissionTimestamp);
     const isRaiResponseWithdrawEnabled = data.subStatus === "Withdraw Formal RAI Response Enabled";
 
+    if (["MD-25-1207-P", "MD-25-0186-P", "MD-25-0011-A"].includes(data.pk)) {
+      console.log("transform log", {
+        id: data.pk,
+        data: data,
+        status: { stateStatus, cmsStatus, seatoolStatus },
+      });
+    }
+
     return {
       ...data,
       proposedEffectiveDate: null, // blank out the value that will be transformed, we handle it below
@@ -55,7 +63,7 @@ export const legacyEventSchema = legacySharedSchema
       submissionDate: submissionIsoDate,
       submitterEmail: data.submitterEmail,
       submitterName: data.submitterName,
-      initialIntakeNeeded: true,
+      initialIntakeNeeded: true, //TODO: here
     };
   });
 
