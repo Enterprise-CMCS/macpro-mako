@@ -1,8 +1,8 @@
 import { test, expect } from "@playwright/test";
 
-const numberOfWaivers = 30;
-const SS = "SC";
-let NNNN = 2999;
+const numberOfWaivers = 12;
+const SS = "CO";
+let NNNN = 4064;
 
 const fileName = "upload-sample.png";
 const filePath = `../fixtures/${fileName}`;
@@ -44,3 +44,31 @@ for (let i = 0; i < numberOfWaivers; i++) {
     });
   });
 }
+
+
+// CO-4065.R00.00
+// CO-4066.R00.00
+// CO-4067.R00.00
+// CO-4068.R00.00
+// CO-4069.R00.00
+// CO-4070.R00.00
+// CO-4071.R00.00
+// CO-4072.R00.00
+// CO-4073.R00.00
+// CO-4074.R00.00
+// CO-4075.R00.00
+// CO-4076.R00.00
+
+
+// CO-4077.R00.00
+// CO-4078.R00.00
+// CO-4079.R00.00
+// CO-4080.R00.00
+// CO-4081.R00.00
+// CO-4082.R00.00
+// CO-4083.R00.00
+// CO-4084.R00.00
+// CO-4085.R00.00
+// CO-4086.R00.00
+// CO-4087.R00.00
+// CO-4088.R00.00

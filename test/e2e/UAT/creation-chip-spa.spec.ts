@@ -1,9 +1,9 @@
 import { test, expect } from "@playwright/test";
 
-const numberOfSPAs = 30;
-const SS = "SC";
+const numberOfSPAs = 6;
+const SS = "CO";
 const YY = "25";
-let NNNN = 8999;
+let NNNN = 9047;
 
 const fileName = "upload-sample.png";
 const filePath = `../fixtures/${fileName}`;
@@ -47,3 +47,16 @@ for (let i = 0; i < numberOfSPAs; i++) {
     });
   });
 }
+
+// CO-25-9030
+// CO-25-9031
+// CO-25-9032
+// CO-25-9033
+// CO-25-9034
+// CO-25-9035
+// CO-25-9036
+// CO-25-9037
+// CO-25-9038
+// CO-25-9039
+// CO-25-9040
+// CO-25-9041
