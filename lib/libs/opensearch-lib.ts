@@ -102,7 +102,7 @@ export async function bulkUpdateData(
             `,
             params: {
               doc: docWithoutStatus,
-              status: seatoolStatus,
+              seatoolStatus: seatoolStatus,
             },
           },
           upsert: doc, // For new documents, use the complete document
