@@ -5,7 +5,7 @@ import { useGetPackageActions } from "@/api";
 import { LoadingSpinner } from "@/components";
 import { DETAILS_ORIGIN, mapActionLabel, ORIGIN, WAIVER_SUBMISSION_ORIGIN } from "@/utils";
 
-import { DetailCardWrapper } from "..";
+import { DetailCardWrapper } from "../index";
 
 type PackageActionsCardProps = {
   id: string;

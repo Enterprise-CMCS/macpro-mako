@@ -1,5 +1,4 @@
-import { convertUserAttributes } from "mocks/handlers/auth.utils";
-
+import { convertUserAttributes } from "../../handlers/auth.utils";
 import type { TestUserData } from "../../index.d";
 import { makoReviewer, reviewers, superReviewer } from "./cmsReviewer";
 import { helpDeskUser, helpDeskUsers } from "./helpDeskUsers";

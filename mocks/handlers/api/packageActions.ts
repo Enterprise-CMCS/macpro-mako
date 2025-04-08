@@ -1,8 +1,9 @@
-import { mockUseGetUser, PackageActionsRequestBody } from "mocks";
-import items from "mocks/data/items";
 import { http, HttpResponse, PathParams } from "msw";
 import { opensearch, UserRoles } from "shared-types";
 import { getAvailableActions } from "shared-utils";
+
+import items from "../../data/items";
+import { mockUseGetUser, PackageActionsRequestBody } from "../../index";
 
 const defaultApiPackageActionsHandler = http.post<PathParams, PackageActionsRequestBody>(
   "https://test-domain.execute-api.us-east-1.amazonaws.com/mocked-tests/getPackageActions",

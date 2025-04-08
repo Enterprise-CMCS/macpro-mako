@@ -32,8 +32,9 @@ export default defineConfig(({ mode }) => {
       port: 5000,
     },
     test: {
-      root: ".",
-      setupFiles: "./vitest.setup.ts",
+      root: "react-app",
+      setupFiles: "vitest.setup.ts",
+      include: ["**/*.test.{ts,tsx}"],
       exclude: ["**/node_modules/**"],
       environment: "jsdom",
     },
@@ -42,7 +43,7 @@ export default defineConfig(({ mode }) => {
         "@": fileURLToPath(new URL("./src", import.meta.url)),
       },
     },
-    root: "./",
+    root: "react-app/",
     publicDir: "src/assets",
     build: {
       outDir: "dist",

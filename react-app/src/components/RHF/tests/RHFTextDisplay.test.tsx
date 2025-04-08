@@ -3,7 +3,7 @@ import { BrowserRouter } from "react-router";
 import { RHFTextField } from "shared-types";
 import { describe, expect, test } from "vitest";
 
-import { RHFTextDisplay } from "..";
+import { RHFTextDisplay } from "../index";
 
 const TestComp = (props: { text: RHFTextField }) => {
   return (

@@ -1,4 +1,4 @@
-import { seaSubTypeSchema } from "../../..";
+import { seaSubTypeSchema } from "../../../index";
 
 export const transform = () => {
   return seaSubTypeSchema.transform((data) => {

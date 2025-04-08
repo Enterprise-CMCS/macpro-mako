@@ -1,4 +1,4 @@
-import { removeAppkChildSchema } from "../../..";
+import { removeAppkChildSchema } from "../../../index";
 
 export const transform = (id: string) => {
   return removeAppkChildSchema.transform((data) => {

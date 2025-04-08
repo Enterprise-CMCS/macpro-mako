@@ -5,6 +5,7 @@
   "license": "MIT",
   "type": "module",
   "main": "index.ts",
+  "types": "index.ts",
   "devDependencies": {
     "base-64": "^1.0.0",
     "eslint": "^8.38.0",

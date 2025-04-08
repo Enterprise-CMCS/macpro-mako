@@ -1,6 +1,6 @@
 import { afterEach, describe, expect, test } from "vitest";
 
-import { checkEnvVars } from "..";
+import { checkEnvVars } from "../index";
 describe("checkEnvVars", () => {
   afterEach(() => {
     delete process.env.FOO;

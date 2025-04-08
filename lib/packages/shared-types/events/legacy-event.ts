@@ -1,7 +1,7 @@
 import { z } from "zod";
 
-import { getStatus, SEATOOL_STATUS } from "..";
 import { legacyAttachmentSchema } from "../attachments";
+import { getStatus, SEATOOL_STATUS } from "../index";
 import { ONEMAC_LEGACY_ORIGIN } from "../opensearch/main/transforms/legacy-transforms";
 import { legacySharedSchema } from "./legacy-shared";
 

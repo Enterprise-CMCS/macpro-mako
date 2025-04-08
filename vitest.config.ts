@@ -3,12 +3,9 @@ import { join } from "path";
 import { configDefaults, defineConfig } from "vitest/config";
 
 export default defineConfig({
+  cacheDir: ".vitest/cache",
   test: {
     globals: true,
-    environmentMatchGlobs: [["**/*.test.ts", "**/*.test.tsx"]],
-    cache: {
-      dir: ".vitest/cache",
-    },
     testTimeout: 10000,
     pool: "threads",
     poolOptions: {

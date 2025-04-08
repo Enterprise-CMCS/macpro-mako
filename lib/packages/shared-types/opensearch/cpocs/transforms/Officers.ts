@@ -1,4 +1,4 @@
-import { seaOfficersSchema } from "../../..";
+import { seaOfficersSchema } from "../../../index";
 
 export const transform = () => {
   return seaOfficersSchema.transform((data) => {

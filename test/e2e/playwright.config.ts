@@ -5,6 +5,8 @@ import { TEST_ITEM_ID } from "mocks";
  * See https://playwright.dev/docs/test-configuration.
  */
 
+console.log({ TEST_ITEM_ID });
+
 const baseURL = process.env.STAGE_NAME
   ? JSON.parse(
       (
@@ -24,7 +26,8 @@ export default defineConfig({
 
   // need to find a reasonable timeout less than 30s
   // timeout: 10_000,
-  testDir: "../../test",
+  testDir: "../",
+  testMatch: "*.spec.ts",
   /* Run tests in files in parallel */
   fullyParallel: true,
   /* Fail the build on CI if you accidentally left test.only in the source code. */

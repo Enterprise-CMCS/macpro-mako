@@ -2,8 +2,9 @@
   "name": "mako",
   "version": "0.0.0-managed-by-semantic-release",
   "private": true,
+  "type": "module",
   "bin": {
-    "mako": "bin/app.js"
+    "mako": "bin/app.ts"
   },
   "scripts": {
     "build": "tsc",
@@ -82,7 +83,7 @@
     "turbo": "^2.1.2",
     "typescript": "^5.6.2",
     "typescript-eslint": "^8.5.0",
-    "vitest": "^2.1.1"
+    "vitest": "^2.1.9"
   },
   "release": {
     "branches": [
