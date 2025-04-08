@@ -236,6 +236,7 @@ const oneMacSeatoolStatusCheck = async (seatoolRecord: Document) => {
 
   const oneMacStatus = existingPackage?._source?.seatoolStatus;
   const seatoolStatus = seatoolRecord?.STATE_PLAN.SPW_STATUS_ID;
+
   console.log("Onemac " + oneMacStatus);
   console.log("seatool" + seatoolStatus);
   // If we have a withdrawal requested do not update unless the status in seatool is Withdrawn
@@ -243,6 +244,7 @@ const oneMacSeatoolStatusCheck = async (seatoolRecord: Document) => {
     oneMacStatus === SEATOOL_STATUS.WITHDRAW_REQUESTED &&
     seatoolStatus !== SeatoolSpwStatusEnum.Withdrawn
   ) {
+    console.log("withdrawwal requeted");
     return SeatoolSpwStatusEnum.WithdrawalRequested;
   }
 
