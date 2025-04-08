@@ -232,9 +232,12 @@ const getMakoDocTimestamps = async (kafkaRecords: KafkaRecord[]) => {
 //  Withdrawl-requested,RAI response withdrawal requested and if we responded to an rai request take priority
 const oneMacSeatoolStatusCheck = async (seatoolRecord: Document) => {
   const existingPackage = await getPackage(seatoolRecord.id);
+  console.log("existing package: " + existingPackage);
+
   const oneMacStatus = existingPackage?._source?.seatoolStatus;
   const seatoolStatus = seatoolRecord?.STATE_PLAN.SPW_STATUS_ID;
-
+  console.log("Onemac " + oneMacStatus);
+  console.log("seatool" + seatoolStatus);
   // If we have a withdrawal requested do not update unless the status in seatool is Withdrawn
   if (
     oneMacStatus === SEATOOL_STATUS.WITHDRAW_REQUESTED &&
