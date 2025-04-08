@@ -67,7 +67,7 @@ export async function bulkUpdateData(
     console.log("document: " + doc);
     if (doc.delete) {
       body.push({ delete: { _index: index, _id: doc.id } });
-    } else if (doc.seatoolStatus !== undefined && index === "main") {
+    } else if (doc.seatoolStatus !== undefined && index.slice(-4) === "main") {
       // If document contains a status field, use script update to implement conditional logic
 
       // Extract status field from document
