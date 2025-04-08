@@ -182,7 +182,7 @@ export const ActionForm = <Schema extends SchemaWithEnforcableProps>({
       const userRoles = customUserRoles || customisMemberOf || "";
       const eventState = formData.id?.substring(0, 2);
 
-      // send login event
+      // send package action event
       sendGAEvent(formData.event, userRoles, eventState);
     } catch (error) {
       console.error(error);
