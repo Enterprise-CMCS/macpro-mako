@@ -11,3 +11,4 @@ export { SupportPage } from "./support/SupportPage";
 export * from "./webforms";
 // export * from "./submission";
 export * from "./forms";
+export * from "./usermanagement";

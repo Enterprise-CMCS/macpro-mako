@@ -12,7 +12,7 @@ export const getAllUserRolesByEmail = async (email: string) => {
 
   const result = await search(domain, index, {
     query: {
-      match: {
+      term: {
         "email.keyword": email,
       },
     },
@@ -53,11 +53,13 @@ export const getAllUserRoles = async () => {
 export const getAllUserRolesByState = async (state: string) => {
   const { domain, index } = getDomainAndNamespace("roles");
 
-  return await search(domain, index, {
+  const results = await search(domain, index, {
     query: {
       term: {
-        state,
+        "territory.keyword": state,
       },
     },
   });
+
+  return results.hits.hits;
 };

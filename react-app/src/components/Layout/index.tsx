@@ -51,6 +51,19 @@ const useGetLinks = () => {
               ),
           },
           {
+            name: "User Management",
+            link: "/usermanagement",
+            condition:
+              // TODO: only allow state admin or cms role users
+              userObj.user &&
+              (userObj.user["custom:cms-roles"] || userObj.user["custom:ismemberof"]) &&
+              Object.values(UserRoles).some(
+                (role) =>
+                  userObj.user["custom:cms-roles"].includes(role) ||
+                  userObj.user["custom:ismemberof"] === role,
+              ),
+          },
+          {
             name: "View FAQs",
             link: "/faq",
             condition: !toggleFaq,
