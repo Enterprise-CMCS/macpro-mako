@@ -27,7 +27,7 @@ export function handleLegacyAttachment(attachment: LegacyAttachment): Attachment
   const key = parsedUrl.key;
   const uploadDate = parseInt(attachment.s3Key?.split("/")[0] || "0");
   return {
-    title: attachment.title,
+    title: attachment.title === "CMS Form 179" ? "CMS-179 Form" : attachment.title,
     filename: attachment.filename,
     uploadDate,
     bucket,

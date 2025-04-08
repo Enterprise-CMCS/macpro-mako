@@ -8,7 +8,7 @@ export const transform = (offset: number) => {
             // Map each file in 'files' array to the desired shape
             return attachment.files.map((file) => ({
               filename: file.filename,
-              title: attachment.label,
+              title: attachment.label === "CMS Form 179" ? "CMS-179 Form" : attachment.label,
               bucket: file.bucket,
               key: file.key,
               uploadDate: file.uploadDate,
