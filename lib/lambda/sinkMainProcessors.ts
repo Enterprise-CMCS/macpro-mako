@@ -241,14 +241,6 @@ const oneMacSeatoolStatusCheck = async (seatoolRecord: Document) => {
     return SeatoolSpwStatusEnum.WithdrawalRequested;
   }
 
-  // OneMac is requesting an RAI withdrawal it is not Pending RAI in seatool
-  // if (
-  //   oneMacStatus === SEATOOL_STATUS.RAI_RESPONSE_WITHDRAW_REQUESTED &&
-  //   seatoolStatus !== SeatoolSpwStatusEnum.Pending
-  // ) {
-  //   return SeatoolSpwStatusEnum.FormalRAIResponseWithdrawalRequested;
-  // }
-
   // Current status is RAI Issued in seatool and onemac status is SUBMITTED
   if (
     oneMacStatus === SEATOOL_STATUS.SUBMITTED &&
@@ -266,7 +258,7 @@ const oneMacSeatoolStatusCheck = async (seatoolRecord: Document) => {
       const eventDate = normalizeToDate(raiResponseEvents[0]._source.timestamp);
       const requestedDate = normalizeToDate(raiDate.raiRequestedDate);
       // Set status to submitted if our dates line up
-      if (eventDate >= requestedDate) {
+      if (!isBefore(eventDate, requestedDate)) {
         return SeatoolSpwStatusEnum.Submitted;
       }
     }
@@ -308,10 +300,10 @@ export const insertNewSeatoolRecordsFromKafkaIntoMako = async (
         ...JSON.parse(decodeBase64WithUtf8(value)),
       };
 
-      const oneMacStatusId = await oneMacSeatoolStatusCheck(seatoolRecord);
-      seatoolRecord.STATE_PLAN.SPW_STATUS_ID = oneMacStatusId;
+      seatoolRecord.STATE_PLAN.SPW_STATUS_ID = await oneMacSeatoolStatusCheck(seatoolRecord);
+
       const safeSeatoolRecord = opensearch.main.seatool.transform(id).safeParse(seatoolRecord);
-      // console.log(seatoolRecord.STATE_PLAN.SPW_STATUS_ID);
+
       if (!safeSeatoolRecord.success) {
         logError({
           type: ErrorType.VALIDATION,
@@ -329,12 +321,11 @@ export const insertNewSeatoolRecordsFromKafkaIntoMako = async (
       console.log(`mako: ${makoDocumentTimestamp}`);
       console.log(`seatool: ${seatoolDocument.changed_date}`);
 
-      const isNewerOrUndefined =
+      if (
         seatoolDocument.changed_date &&
         makoDocumentTimestamp &&
-        isBefore(makoDocumentTimestamp, seatoolDocument.changed_date);
-
-      if (isNewerOrUndefined) {
+        isBefore(makoDocumentTimestamp, seatoolDocument.changed_date)
+      ) {
         console.log("SKIPPED DUE TO OUT-OF-DATE INFORMATION");
         continue;
       }
