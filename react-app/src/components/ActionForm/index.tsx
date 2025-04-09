@@ -180,7 +180,9 @@ export const ActionForm = <Schema extends SchemaWithEnforcableProps>({
       const customUserRoles = userObj?.user?.["custom:cms-roles"];
       const customisMemberOf = userObj?.user?.["custom:ismemberof"];
       const userRoles = customUserRoles || customisMemberOf || "";
-      const eventState = formData.id?.substring(0, 2);
+      const eventState = id;
+      // const eventState = formData.id?.substring(0, 2);
+      console.log("event id : ", id)
 
       // send package action event
       sendGAEvent(formData.event, userRoles, eventState);
