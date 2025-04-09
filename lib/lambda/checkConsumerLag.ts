@@ -54,6 +54,7 @@ export const handler: Handler = async (event, _, callback) => {
         triggerInfo.push({
           groupId,
           topics: [topic],
+          function: trigger.function, // Store function name for better logging
         });
       }
     }
@@ -68,35 +69,89 @@ export const handler: Handler = async (event, _, callback) => {
     // Get status for each consumer group
     const info = await admin.describeGroups(triggerInfo.map((a) => a.groupId));
     const statuses = info.groups.map((a) => a.state.toString());
+
     // Get topic and group offset for each consumer group
-    const offsets: { [key: string]: any } = {};
+    const offsets: { [key: string]: boolean } = {};
+    const partitionDetails: { [key: string]: any[] } = {};
+
     for (const trigger of triggerInfo) {
+      const groupId: string = trigger.groupId;
+      offsets[groupId] = true; // Initialize as current
+      partitionDetails[groupId] = [];
+
       for (const topic of trigger.topics) {
-        const groupId: string = trigger.groupId;
+        // Get latest offsets for all partitions in the topic
         const topicOffsets = await admin.fetchTopicOffsets(topic);
+
+        // Get consumer group offsets for all partitions
         const groupOffsets = await admin.fetchOffsets({
           groupId,
           topics: [topic],
         });
-        // Assuming there's a single partition for simplicity.
-        const latestOffset = topicOffsets[0].offset;
-        const currentOffset = groupOffsets[0].partitions[0].offset;
-        console.log("Group offsets:" + groupOffsets);
-        console.log("latest offsets: " + topicOffsets);
-        offsets[groupId] = {
-          latestOffset,
-          currentOffset,
-        };
-        console.log(
-          `Topic: ${topic}, Group: ${groupId}, Latest Offset: ${latestOffset}, Current Offset: ${currentOffset}`,
+
+        // Create a map of partition to latest offset for easier lookup
+        const latestOffsetsByPartition = topicOffsets.reduce(
+          (map, partition) => {
+            map[partition.partition] = partition.offset;
+            return map;
+          },
+          {} as Record<number, string>,
         );
+
+        // Check each partition in the consumer group offsets
+        for (const topicInfo of groupOffsets) {
+          if (topicInfo.topic !== topic) continue;
+
+          for (const partition of topicInfo.partitions) {
+            const partitionId = partition.partition;
+            const currentOffset = partition.offset === "-1" ? "0" : partition.offset;
+            const latestOffset = latestOffsetsByPartition[partitionId];
+
+            if (!latestOffset) {
+              console.warn(
+                `Warning: No latest offset found for topic ${topic}, partition ${partitionId}`,
+              );
+              continue;
+            }
+
+            // Calculate lag
+            const lag = parseInt(latestOffset) - parseInt(currentOffset);
+
+            // Store details for logging
+            partitionDetails[groupId].push({
+              topic,
+              partition: partitionId,
+              currentOffset,
+              latestOffset,
+              lag,
+            });
+
+            // Log the offset information
+            console.log(
+              `Topic: ${topic}, Partition: ${partitionId}, Group: ${groupId}, Latest Offset: ${latestOffset}, Current Offset: ${currentOffset}, Lag: ${lag}`,
+            );
+
+            // If any partition is not current, mark the entire consumer group as not current
+            if (currentOffset !== latestOffset) {
+              offsets[groupId] = false;
+            }
+          }
+        }
       }
     }
+
     await admin.disconnect();
+
     response.stable = statuses.every((status) => status === "Stable");
-    response.current = Object.values(offsets).every((o) => o.latestOffset === o.currentOffset);
+    response.current = Object.values(offsets).every((isCurrent) => isCurrent === true);
     response.ready = response.stable && response.current;
+
+    console.log(
+      `Status: stable=${response.stable}, current=${response.current}, ready=${response.ready}`,
+    );
+    console.log("Partition details:", JSON.stringify(partitionDetails, null, 2));
   } catch (error: any) {
+    console.error("Error:", error);
     response.statusCode = 500;
     errorResponse = error;
   } finally {
