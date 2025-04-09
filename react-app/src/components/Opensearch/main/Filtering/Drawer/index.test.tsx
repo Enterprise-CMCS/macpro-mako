@@ -1,4 +1,4 @@
-import { screen, within } from "@testing-library/react";
+import { screen, waitForElementToBeRemoved, within } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { opensearch } from "shared-types";
 import { describe, expect, it } from "vitest";
@@ -132,7 +132,7 @@ describe("OsFilterDrawer", () => {
       await user.click(screen.queryByRole("button", { name: "Reset" }));
 
       expect(state.getAttribute("data-state")).toEqual("open");
-      expect(within(state).queryByLabelText("Remove MD")).toBeNull();
+      await waitForElementToBeRemoved(within(state).queryByLabelText("Remove MD"));
 
       expect(authority.getAttribute("data-state")).toEqual("open");
       expect(within(authority).queryByLabelText("CHIP SPA").getAttribute("data-state")).toEqual(
