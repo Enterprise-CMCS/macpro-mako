@@ -1,6 +1,9 @@
 {
   "compilerOptions": {
+    "jsx": "react-jsx",
     "target": "ESNext",
+    "module": "ESNext",
+    "moduleResolution": "bundler",
     "useDefineForClassFields": true,
     "lib": ["DOM", "DOM.Iterable", "ESNext", "ES2022"],
     "allowJs": false,
@@ -9,15 +12,12 @@
     "allowSyntheticDefaultImports": true,
     "strict": false,
     "forceConsistentCasingInFileNames": true,
-    "module": "ESNext",
-    "moduleResolution": "bundler",
     "resolveJsonModule": true,
     "isolatedModules": true,
     "noEmit": true,
-    "jsx": "react-jsx",
     "baseUrl": ".",
     "paths": {
-      "@/*": ["e2e/*"]
+      "@/*": ["./*"]
     }
   },
   "include": [".", "playwright.config.ts"]

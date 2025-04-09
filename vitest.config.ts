@@ -5,9 +5,12 @@ import { configDefaults, defineConfig } from "vitest/config";
 export default defineConfig({
   test: {
     globals: true,
-    environmentMatchGlobs: [["**/*.test.ts", "**/*.test.tsx"]],
-    cache: {
-      dir: ".vitest/cache",
+    include: ["**/*.test.{ts,tsx}"],
+    exclude: ["**/node_modules/**", "test/e2e/**", "**/*.spec.ts"],
+    server: {
+      deps: {
+        cacheDir: ".vitest/cache",
+      },
     },
     testTimeout: 10000,
     pool: "threads",

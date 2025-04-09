@@ -1,5 +1,5 @@
 import { GetParameterCommand, SSMClient } from "@aws-sdk/client-ssm";
-import { defineConfig, devices } from "@playwright/test";
+import { defineConfig, devices, PlaywrightTestConfig } from "@playwright/test";
 
 /**
  * See https://playwright.dev/docs/test-configuration.
@@ -19,12 +19,12 @@ const baseURL = process.env.STAGE_NAME
 
 console.log(`Playwright configured to run against ${baseURL}`);
 export default defineConfig({
+  testIgnore: "**/*.test.{ts,tsx}",
+  testMatch: "*.spec.ts",
   // Global setup
   globalSetup: "./utils/auth.setup.ts",
-
   // need to find a reasonable timeout less than 30s
   // timeout: 10_000,
-  testDir: "./",
   /* Run tests in files in parallel */
   fullyParallel: true,
   /* Fail the build on CI if you accidentally left test.only in the source code. */
@@ -38,19 +38,17 @@ export default defineConfig({
   reporter: process.env.CI
     ? [
         ["github"],
-        ["html", { outputFolder: "playwright-reports/html-report", open: "never" }],
-        ["json", { outputFile: "playwright-reports/playwright-summary.json" }],
+        ["html", { outputFolder: "./playwright-reports/html-report", open: "never" }],
+        ["json", { outputFile: "./playwright-reports/playwright-summary.json" }],
       ]
     : [["dot"]],
   /* Shared settings for all the projects below. See https://playwright.dev/docs/api/class-testoptions. */
   use: {
     /* Base URL to use in actions like `await page.goto('/')`. */
     baseURL,
-
     /* Collect trace when retrying the failed test. See https://playwright.dev/docs/trace-viewer */
     trace: "on-first-retry",
   },
-
   /* Configure projects for major browsers */
   // Note: we can test on multiple browsers and resolutions defined here
   projects: [
@@ -60,8 +58,8 @@ export default defineConfig({
       use: {
         ...devices["Desktop Chrome"],
         // Use prepared auth state for state submitter.
-        storageState: "playwright/.auth/state-user.json",
+        storageState: "./playwright/.auth/state-user.json",
       },
     },
   ],
-});
+}) satisfies PlaywrightTestConfig;
