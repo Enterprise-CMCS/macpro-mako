@@ -82,6 +82,7 @@ export const handler: Handler = async (event, _, callback) => {
         const latestOffset = topicOffsets[0].offset;
         const currentOffset = groupOffsets[0].partitions[0].offset;
         console.log(currentOffset);
+        console.log(latestOffset);
         offsets[groupId] = {
           latestOffset,
           currentOffset,
