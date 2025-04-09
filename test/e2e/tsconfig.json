@@ -2,7 +2,7 @@
   "compilerOptions": {
     "target": "ESNext",
     "useDefineForClassFields": true,
-    "lib": ["DOM", "DOM.Iterable", "ESNext", "ES2023"],
+    "lib": ["DOM", "DOM.Iterable", "ESNext"],
     "allowJs": false,
     "skipLibCheck": true,
     "esModuleInterop": false,
@@ -14,12 +14,11 @@
     "resolveJsonModule": true,
     "isolatedModules": true,
     "noEmit": true,
-    "jsx": "react-jsx",
-    "baseUrl": ".",
+    "baseUrl": "./",
     "paths": {
-      "@/selectors": ["e2e/selectors"],
-      "@/*": ["src/*"]
-    }
-  },
-  "include": [".", "playwright.config.ts"]
+      "@/selectors": ["selectors"]
+    },
+    "include": ["."],
+    "exclude": ["node_modules"]
+  }
 }

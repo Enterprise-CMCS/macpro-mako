@@ -34,8 +34,6 @@ export default defineConfig(({ mode }) => {
     test: {
       root: "react-app",
       setupFiles: "vitest.setup.ts",
-      include: ["**/*.test.{ts,tsx}"],
-      exclude: ["**/node_modules/**"],
       environment: "jsdom",
     },
     resolve: {
@@ -43,7 +41,7 @@ export default defineConfig(({ mode }) => {
         "@": fileURLToPath(new URL("./src", import.meta.url)),
       },
     },
-    root: "react-app/",
+    root: "./",
     publicDir: "src/assets",
     build: {
       outDir: "dist",

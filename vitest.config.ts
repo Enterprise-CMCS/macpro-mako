@@ -3,7 +3,6 @@ import { join } from "path";
 import { configDefaults, defineConfig } from "vitest/config";
 
 export default defineConfig({
-  cacheDir: ".vitest/cache",
   test: {
     globals: true,
     testTimeout: 10000,
@@ -14,6 +13,13 @@ export default defineConfig({
         isolate: true,
         maxThreads: Math.max(1, Math.floor(cpus().length * 0.75)),
         minThreads: Math.max(1, Math.floor(cpus().length * 0.5)),
+      },
+    },
+    include: ["**/*.test.{ts,tsx}"],
+    exclude: ["**/node_modules/**", "test/e2e", "**/*.spec.ts"],
+    server: {
+      deps: {
+        cacheDir: ".vitest/cache",
       },
     },
     coverage: {
