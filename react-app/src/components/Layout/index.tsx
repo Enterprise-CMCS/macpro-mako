@@ -180,7 +180,6 @@ export const Layout = () => {
       // TBD weather to add states to the login event since users may have a states array with multiple states.
       sendGAEvent("Login", customUserRoles, null);
     }
-    return;
   }
   if (customisMemberOf.length > 0) {
     if (customisMemberOf.includes("ONEMAC_USER")) {

@@ -41,12 +41,6 @@ const initializeApp = async () => {
     },
   });
 
-  const FlagRouter = () => {
-    const loginFlag = useFeatureFlag("LOGIN_PAGE");
-
-    return <RouterProvider router={router(loginFlag)} />;
-  };
-
   ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(
     <React.StrictMode>
       <QueryClientProvider client={queryClient}>
@@ -57,6 +51,12 @@ const initializeApp = async () => {
       </QueryClientProvider>
     </React.StrictMode>,
   );
+};
+
+const FlagRouter = () => {
+  const loginFlag = useFeatureFlag("LOGIN_PAGE");
+
+  return <RouterProvider router={router(loginFlag)} />;
 };
 
 initializeApp();

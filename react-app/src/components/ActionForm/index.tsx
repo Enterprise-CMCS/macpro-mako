@@ -185,7 +185,7 @@ export const ActionForm = <Schema extends SchemaWithEnforcableProps>({
       console.log("event id : ", id)
 
       // send package action event
-      sendGAEvent(formData.event, userRoles, eventState);
+      sendGAEvent(id.substring(0, 2), userRoles, eventState);
     } catch (error) {
       console.error(error);
       banner({
