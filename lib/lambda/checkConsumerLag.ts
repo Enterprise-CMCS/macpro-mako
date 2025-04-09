@@ -81,8 +81,8 @@ export const handler: Handler = async (event, _, callback) => {
         // Assuming there's a single partition for simplicity.
         const latestOffset = topicOffsets[0].offset;
         const currentOffset = groupOffsets[0].partitions[0].offset;
-        console.log(currentOffset);
-        console.log(latestOffset);
+        console.log("Group offsets:" + groupOffsets);
+        console.log("latest offsets: " + topicOffsets);
         offsets[groupId] = {
           latestOffset,
           currentOffset,
