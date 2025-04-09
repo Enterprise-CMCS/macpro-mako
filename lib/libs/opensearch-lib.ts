@@ -99,7 +99,7 @@ export async function bulkUpdateData(
         return attemptBulkUpdate(retries - 1, delay * 2); // Exponential backoff
       }
       console.error("An error occurred:", error);
-      throw error;
+      // throw error;
     }
   }
 
