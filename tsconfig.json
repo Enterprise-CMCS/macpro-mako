@@ -1,9 +1,9 @@
 {
   "compilerOptions": {
-    "jsx": "react-jsx",
     "target": "esnext",
-    "lib": ["dom", "esnext"],
     "module": "esnext",
+    "moduleResolution": "bundler",
+    "lib": ["dom", "esnext"],
     "noImplicitAny": true,
     "strictNullChecks": true,
     "noImplicitThis": true,
@@ -17,7 +17,6 @@
     "experimentalDecorators": true,
     "strictPropertyInitialization": false,
     "typeRoots": ["@types", "vitest/globals"],
-    "moduleResolution": "bundler",
     "allowImportingTsExtensions": true,
     "verbatimModuleSyntax": false,
     "noEmit": true,

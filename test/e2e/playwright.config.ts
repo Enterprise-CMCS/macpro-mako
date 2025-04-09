@@ -19,7 +19,6 @@ const baseURL = process.env.STAGE_NAME
 
 console.log(`Playwright configured to run against ${baseURL}`);
 export default defineConfig({
-  testDir: "./",
   testIgnore: "**/*.test.{ts,tsx}",
   testMatch: "*.spec.ts",
   // Global setup

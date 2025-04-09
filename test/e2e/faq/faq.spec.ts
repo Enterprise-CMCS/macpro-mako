@@ -1,4 +1,5 @@
 import { expect, test } from "@playwright/test";
+import { TEST_ITEM_ID } from "mocks";
 
 import { FAQPage } from "../pages/faq.page";
 
@@ -13,6 +14,7 @@ test.describe("FAQ page", { tag: ["@e2e", "@smoke", "@faq"] }, () => {
   test.describe("UI validation", { tag: ["@CI"] }, () => {
     test.describe("header", () => {
       test("displays header", async () => {
+        console.log({ TEST_ITEM_ID });
         await expect(faqPage.header).toBeVisible();
         await expect(faqPage.header).toHaveText("Frequently Asked Questions");
       });

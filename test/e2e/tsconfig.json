@@ -1,24 +1,22 @@
 {
   "compilerOptions": {
+    "composite": true,
     "target": "ESNext",
+    "module": "ESNext",
+    "moduleResolution": "bundler",
     "useDefineForClassFields": true,
-    "lib": ["DOM", "DOM.Iterable", "ESNext"],
+    "lib": ["DOM", "DOM.Iterable", "ESNext", "ES2022"],
     "allowJs": false,
     "skipLibCheck": true,
     "esModuleInterop": false,
+    "allowImportingTsExtensions": true,
     "allowSyntheticDefaultImports": true,
     "strict": false,
     "forceConsistentCasingInFileNames": true,
-    "module": "ESNext",
-    "moduleResolution": "Node",
     "resolveJsonModule": true,
     "isolatedModules": true,
     "noEmit": true,
-    "baseUrl": "./",
-    "paths": {
-      "@/selectors": ["selectors"]
-    },
-    "include": ["."],
-    "exclude": ["node_modules"]
-  }
+    "baseUrl": "./"
+  },
+  "include": [".", "playwright.config.ts"]
 }

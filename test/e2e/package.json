@@ -3,13 +3,16 @@
   "version": "1.0.0",
   "private": true,
   "type": "module",
-  "main": "index.js",
   "scripts": {
     "e2e": "playwright test --project=state-user-chrome",
     "e2e:ui": "playwright test --ui --project=state-user-chrome"
   },
   "devDependencies": {
-    "@playwright/test": "^1.51.1"
+    "@axe-core/playwright": "^4.8.3",
+    "@playwright/test": "^1.51.1",
+    "mocks": "*",
+    "shared-types": "*",
+    "shared-utils": "*"
   },
   "author": "",
   "license": "ISC"
