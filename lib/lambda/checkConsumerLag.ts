@@ -17,7 +17,7 @@ export const handler: Handler = async (event, _, callback) => {
     });
     for (const trigger of event.triggers) {
       for (const topic of [...new Set(trigger.topics)]) {
-        console.log(`Getting consumer groups for function: ${trigger.function} and topic ${topic}`);
+        // console.log(`Getting consumer groups for function: ${trigger.function} and topic ${topic}`);
         const lambdaResponse = await lambdaClient.send(
           new ListEventSourceMappingsCommand({
             FunctionName: trigger.function,
@@ -81,6 +81,7 @@ export const handler: Handler = async (event, _, callback) => {
         // Assuming there's a single partition for simplicity.
         const latestOffset = topicOffsets[0].offset;
         const currentOffset = groupOffsets[0].partitions[0].offset;
+        console.log(currentOffset);
         offsets[groupId] = {
           latestOffset,
           currentOffset,
