@@ -50,9 +50,9 @@ export const getRoleRequests = async (event: APIGatewayEvent) => {
         console.log(request, "REQUEST??");
         const email = request._id.split("_")[0];
         console.log(email, "EMAIL");
-        const fullName = await getUserByEmail(email);
-        console.log("WHAT IS FULL NAME", fullName);
-        return { ...request };
+        const userObj = await getUserByEmail(email);
+        console.log("WHAT IS FULL NAME", userObj);
+        return { ...request, fullName: userObj?._source.fullName };
       }),
     );
     console.log(roleRequestsWithName, "WITH NAME");
