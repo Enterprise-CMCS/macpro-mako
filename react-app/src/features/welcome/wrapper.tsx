@@ -1,4 +1,4 @@
-import { isCmsUser } from "shared-utils";
+import { isCmsUser, isStateUser } from "shared-utils";
 
 import { useGetUser } from "@/api";
 import * as F from "@/features";
@@ -9,8 +9,14 @@ export const WelcomeWrapper = () => {
   const isEnabled = useFeatureFlag("CMS_HOMEPAGE_FLAG");
 
   // Check if the user exists and has a CMS role
-  return user && isCmsUser(user.user) && isEnabled ? <F.CMSWelcome /> : <F.Welcome />;
+  if (user && isCmsUser(user.user) && isEnabled) {
+    return <F.CMSWelcome />;
+  }
+  // Check if the user exists and has a State role
+  if (user && isStateUser(user.user) && isEnabled) {
+    return <F.StateWelcome />;
+  }
 
-  // Uncomment to test the CMSWelcome component:
-  // return <F.CMSWelcome />;
+  // If user is not logged in, show the default welcome page
+  return <F.Welcome />;
 };
