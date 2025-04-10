@@ -47,13 +47,15 @@ export const getRoleRequests = async (event: APIGatewayEvent) => {
 
     const roleRequestsWithName = await Promise.all(
       roleRequests.map(async (request) => {
-        const email = request.id.split("_")[0];
+        console.log(request, "REQUEST??");
+        const email = request.id?.split("_")[0];
+        console.log(email, "EMAIL");
         const fullName = await getUserByEmail(email);
         console.log("WHAT IS FULL NAME", fullName);
         return { ...request };
       }),
     );
-
+    console.log(roleRequestsWithName, "WITH NAME");
     return response({
       statusCode: 200,
       body: roleRequestsWithName,
