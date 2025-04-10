@@ -20,6 +20,7 @@ export const onemacLegacyUserRoleRequest = z
     role: userRoles,
     doneByEmail: z.string(),
     doneByName: z.string(),
+    date: z.number(),
   })
   .transform((data) => ({
     id: `${data.pk}_${data.territory}_${data.role}`,
@@ -30,6 +31,7 @@ export const onemacLegacyUserRoleRequest = z
     status: data.status,
     role: data.role,
     territory: data.territory,
+    lastModifiedDate: data.date,
   }));
 
 export const onemacLegacyUserInformation = z
