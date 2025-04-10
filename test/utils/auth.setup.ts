@@ -1,6 +1,6 @@
 import { GetSecretValueCommand, SecretsManagerClient } from "@aws-sdk/client-secrets-manager";
 import { GetParameterCommand, SSMClient } from "@aws-sdk/client-ssm";
-import { chromium, FullConfig } from "@playwright/test";
+import { chromium, expect, FullConfig } from "@playwright/test";
 
 import { LoginPage } from "@/pages";
 
@@ -38,6 +38,9 @@ async function globalSetup(config: FullConfig) {
   const submitterLoginPage = new LoginPage(submitterPage);
   await submitterLoginPage.goto();
   await submitterLoginPage.login(testUsers.state, password);
+
+  await expect(submitterPage).toHaveURL("/dashboard");
+
   await submitterContext.storageState({ path: stateSubmitterAuthFile });
 
   const reviewerContext = await browser.newContext({ baseURL });
@@ -45,6 +48,9 @@ async function globalSetup(config: FullConfig) {
   const reviewerLoginPage = new LoginPage(reviewerPage);
   await reviewerLoginPage.goto();
   await reviewerLoginPage.login(testUsers.reviewer, password);
+
+  await expect(reviewerPage).toHaveURL("/dashboard");
+
   await reviewerContext.storageState({ path: reviewerAuthFile });
 
   await browser.close();

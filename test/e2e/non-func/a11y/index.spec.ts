@@ -12,6 +12,13 @@ test.describe("test a11y on static routes", { tag: ["@CI", "@a11y"] }, () => {
     }) => {
       await page.goto(route);
       await page.waitForTimeout(500);
+      await expect(page).toHaveURL(new RegExp(`${route}*`));
+
+      if (page.getByLabel("three-dots-loading")) {
+        await page.getByLabel("three-dots-loading").waitFor({ state: "detached" });
+      }
+      await page.waitForTimeout(500);
+
       const accessibilityScanResults = await new AxeBuilder({ page }).analyze();
       console.log(`${route} violations: `, accessibilityScanResults.violations.length);
       expect(accessibilityScanResults.violations).toEqual([]);
@@ -29,6 +36,8 @@ test.describe("test a11y on webform routes", { tag: ["@CI", "@a11y"] }, () => {
     }) => {
       await page.goto(route);
       await page.waitForTimeout(2000);
+      await expect(page).toHaveURL(new RegExp(`${route}*`));
+
       const accessibilityScanResults = await new AxeBuilder({ page }).analyze();
       console.log(`${route} violations: `, accessibilityScanResults.violations.length);
       expect(accessibilityScanResults.violations).toEqual([]);
