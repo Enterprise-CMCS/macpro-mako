@@ -87,7 +87,6 @@ export async function bulkUpdateData(
         if (!hasRateLimitErrors) {
           // Handle or throw other errors normally
           console.error("Bulk update errors:", JSON.stringify(response.body.items, null, 2));
-          // throw "ERROR:  Bulk update had an error that was not rate related.";
         }
       } else {
         console.log("Bulk update successful.");
