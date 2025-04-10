@@ -50,7 +50,7 @@ export const getRoleRequests = async (event: APIGatewayEvent) => {
         const email = request.id.split("_")[0];
         const fullName = await getUserByEmail(email);
         console.log("WHAT IS FULL NAME", fullName);
-        request = { ...request };
+        return { ...request };
       }),
     );
 
