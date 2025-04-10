@@ -23,7 +23,7 @@ export const getRoleRequests = async (event: APIGatewayEvent) => {
       });
     }
 
-    let roleRequests: StateAccess[] = [];
+    let roleRequests = [];
 
     const cmsRoleApproverRole = userRoles.find(
       (roleObj: StateAccess) => roleObj.role === "cmsroleapprover",
@@ -48,7 +48,7 @@ export const getRoleRequests = async (event: APIGatewayEvent) => {
     const roleRequestsWithName = await Promise.all(
       roleRequests.map(async (request) => {
         console.log(request, "REQUEST??");
-        const email = request.id?.split("_")[0];
+        const email = request._id.split("_")[0];
         console.log(email, "EMAIL");
         const fullName = await getUserByEmail(email);
         console.log("WHAT IS FULL NAME", fullName);
