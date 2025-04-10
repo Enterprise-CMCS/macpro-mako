@@ -39,6 +39,7 @@ export const onemacLegacyUserInformation = z
     email: z.string().email(),
     group: z.string().optional(),
     division: z.string().optional(),
+    fullName: z.string(),
   })
   .transform((data) => ({
     id: data.pk,
@@ -46,4 +47,5 @@ export const onemacLegacyUserInformation = z
     email: data.pk,
     group: data.group,
     division: data.division,
+    fullName: data.fullName,
   }));
