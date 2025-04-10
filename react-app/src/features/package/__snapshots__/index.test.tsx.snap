@@ -1,0 +1,674 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`package details > makes a package 1`] = `
+<DocumentFragment>
+  <div
+    class="w-full py-1 px-4 lg:px-8"
+  >
+    <section
+      class="flex flex-col sm:flex-row gap-3 mb-3 sm:gap-x-[3rem] md:gap-x-[5rem] lg:gap-x-[3rem] xl:gap-x-[6rem] sm:mb-0"
+      id="package_overview"
+    >
+      <div
+        class="sticky top-12 flex-1 text-wrap my-0 sm:my-6"
+      >
+        <div
+          class="h-2 shadow-lg"
+          style="border-radius: 3px 3px 0px 0px; height: 8px;"
+        />
+        <div
+          class="border border-t-0 rounded-b-sm border-slate-300"
+        >
+          <div
+            class="p-4 py-1 min-h-36"
+          >
+            <h2>
+              Status
+            </h2>
+            <div
+              class="my-3 max-w-2xl font-bold text-xl"
+            >
+              <div />
+              <div
+                class="flex mt-1 flex-col gap-1 items-start"
+              />
+            </div>
+          </div>
+        </div>
+      </div>
+      <div
+        class="sticky top-12 flex-1 text-wrap my-0 sm:my-6"
+      >
+        <div
+          class="h-2 shadow-lg"
+          style="border-radius: 3px 3px 0px 0px; height: 8px;"
+        />
+        <div
+          class="border border-t-0 rounded-b-sm border-slate-300"
+        >
+          <div
+            class="p-4 py-1 min-h-36"
+          >
+            <h2>
+              Package Actions
+            </h2>
+            <div
+              class="my-3"
+            >
+              <em
+                class="text-gray-400 my-3"
+              >
+                No actions are currently available for this submission.
+              </em>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+    <div
+      class="flex flex-col gap-3"
+    >
+      <section
+        class="p-4 border rounded-sm border-cardBorder"
+        id="package_details"
+      >
+        <h1
+          class="text-3xl font-semibold mb-2"
+          data-testid="undefined-title"
+        >
+          undefined Package Details
+        </h1>
+        <hr
+          class="my-6 bg-slate-200"
+        />
+        <div
+          class="gap-8 flex flex-col"
+          data-testid="undefined-child"
+        >
+          <div
+            class="flex-col gap-4 max-w-2xl"
+          >
+            <div
+              class="grid grid-cols-2 gap-6"
+            >
+              <div>
+                <h3
+                  class="font-bold"
+                >
+                  Submission ID
+                </h3>
+                <div
+                  class="py-2"
+                >
+                  SS-1235.R00.01
+                </div>
+              </div>
+              <div>
+                <h3
+                  class="font-bold"
+                >
+                  Authority
+                </h3>
+                <div
+                  class="py-2"
+                />
+              </div>
+              <div>
+                <h3
+                  class="font-bold"
+                >
+                  State
+                </h3>
+                <div
+                  class="py-2"
+                >
+                  Maryland
+                </div>
+              </div>
+              <div>
+                <h3
+                  class="font-bold"
+                >
+                  Proposed Effective Date
+                </h3>
+                <div
+                  class="py-2"
+                >
+                  Pending
+                </div>
+              </div>
+              <div>
+                <h3
+                  class="font-bold"
+                >
+                  Initial Submission Date
+                </h3>
+                <div
+                  class="py-2"
+                >
+                  -- --
+                </div>
+              </div>
+              <div>
+                <h3
+                  class="font-bold"
+                >
+                  Latest Package Activity
+                </h3>
+                <div
+                  class="py-2"
+                >
+                  -- --
+                </div>
+              </div>
+              <div>
+                <h3
+                  class="font-bold"
+                >
+                  Formal RAI Response Date
+                </h3>
+                <div
+                  class="py-2"
+                >
+                  -- --
+                </div>
+              </div>
+              <div>
+                <h3
+                  class="font-bold"
+                >
+                  Final Disposition Date
+                </h3>
+                <div
+                  class="py-2"
+                >
+                  -- --
+                </div>
+              </div>
+              <div>
+                <h3
+                  class="font-bold"
+                >
+                  Approved Effective Date
+                </h3>
+                <div
+                  class="py-2"
+                >
+                  -- --
+                </div>
+              </div>
+            </div>
+            <hr
+              class="my-4"
+            />
+            <div
+              class="grid grid-cols-2 gap-6"
+            >
+              <div>
+                <h3
+                  class="font-bold"
+                >
+                  Submitted By
+                </h3>
+                <div
+                  class="py-2"
+                >
+                  <p
+                    class="text-lg"
+                  >
+                    -- --
+                  </p>
+                </div>
+              </div>
+              <div>
+                <h3
+                  class="font-bold"
+                >
+                  CPOC
+                </h3>
+                <div
+                  class="py-2"
+                >
+                  <p
+                    class="text-lg"
+                  >
+                    -- --
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+      <section
+        class="p-4 border rounded-sm border-cardBorder"
+        id="package_activity"
+      >
+        <h1
+          class="text-3xl font-semibold mb-2"
+          data-testid="undefined-title"
+        >
+          <div
+            class="flex justify-between"
+          >
+            Package Activity (0)
+          </div>
+        </h1>
+        <hr
+          class="my-6 bg-slate-200"
+        />
+        <div
+          class="gap-8 flex flex-col"
+          data-testid="undefined-child"
+        >
+          <p
+            class="text-gray-500"
+          >
+            No package activity recorded
+          </p>
+        </div>
+      </section>
+      <section
+        class="p-4 border rounded-sm border-cardBorder"
+        id="administrative_package_changes"
+      >
+        <h1
+          class="text-3xl font-semibold mb-2"
+          data-testid="undefined-title"
+        >
+          Administrative Package Changes (6)
+        </h1>
+        <hr
+          class="my-6 bg-slate-200"
+        />
+        <div
+          class="gap-8 flex flex-col"
+          data-testid="undefined-child"
+        >
+          <p
+            class="text-sm"
+          >
+            Administrative changes reflect updates to specific data fields. If you have additional questions, please contact the assigned CPOC.
+          </p>
+          <div
+            class="flex flex-col gap-2"
+            data-orientation="vertical"
+          >
+            <div
+              class="border-b"
+              data-orientation="vertical"
+              data-state="open"
+            >
+              <h3
+                class="flex"
+                data-orientation="vertical"
+                data-state="open"
+              >
+                <button
+                  aria-controls="radix-:r1:"
+                  aria-expanded="true"
+                  class="flex flex-1 items-center justify-between py-4 font-medium transition-all hover:underline [&[data-state=open]>svg]:rotate-180 bg-gray-100 px-3"
+                  data-orientation="vertical"
+                  data-radix-collection-item=""
+                  data-state="open"
+                  id="radix-:r0:"
+                  type="button"
+                >
+                  <p
+                    class="flex flex-row gap-2 text-gray-600"
+                  >
+                    <strong>
+                      Package Added
+                    </strong>
+                     - Sun, Jan 1 2023, 09:00:00 AM EST
+                  </p>
+                  <svg
+                    class="h-4 w-4 shrink-0 transition-transform duration-200"
+                    fill="none"
+                    height="24"
+                    stroke="currentColor"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                    viewBox="0 0 24 24"
+                    width="24"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <path
+                      d="m6 9 6 6 6-6"
+                    />
+                  </svg>
+                </button>
+              </h3>
+              <div
+                aria-labelledby="radix-:r0:"
+                class="text-sm transition-all p-4"
+                data-orientation="vertical"
+                data-state="open"
+                id="radix-:r1:"
+                role="region"
+                style="--radix-accordion-content-height: var(--radix-collapsible-content-height); --radix-accordion-content-width: var(--radix-collapsible-content-width); transition-duration: 0s; animation-name: none;"
+              >
+                <div
+                  class="pb-4 pt-0"
+                >
+                  <div
+                    class="flex flex-col gap-6"
+                  >
+                    <div>
+                      <h2
+                        class="font-bold text-lg mb-2"
+                      >
+                        Change Made
+                      </h2>
+                      <p>
+                        add file
+                      </p>
+                    </div>
+                    <div>
+                      <h2
+                        class="font-bold text-lg mb-2"
+                      >
+                        Change Reason
+                      </h2>
+                      <p>
+                        missing file
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div
+              class="border-b"
+              data-orientation="vertical"
+              data-state="closed"
+            >
+              <h3
+                class="flex"
+                data-orientation="vertical"
+                data-state="closed"
+              >
+                <button
+                  aria-controls="radix-:r3:"
+                  aria-expanded="false"
+                  class="flex flex-1 items-center justify-between py-4 font-medium transition-all hover:underline [&[data-state=open]>svg]:rotate-180 bg-gray-100 px-3"
+                  data-orientation="vertical"
+                  data-radix-collection-item=""
+                  data-state="closed"
+                  id="radix-:r2:"
+                  type="button"
+                >
+                  <p
+                    class="flex flex-row gap-2 text-gray-600"
+                  >
+                    <strong>
+                      Package Added
+                    </strong>
+                     - Wed, Mar 1 2023, 09:00:00 AM EST
+                  </p>
+                  <svg
+                    class="h-4 w-4 shrink-0 transition-transform duration-200"
+                    fill="none"
+                    height="24"
+                    stroke="currentColor"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                    viewBox="0 0 24 24"
+                    width="24"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <path
+                      d="m6 9 6 6 6-6"
+                    />
+                  </svg>
+                </button>
+              </h3>
+              <div
+                aria-labelledby="radix-:r2:"
+                class="text-sm transition-all p-4"
+                data-orientation="vertical"
+                data-state="closed"
+                hidden=""
+                id="radix-:r3:"
+                role="region"
+                style="--radix-accordion-content-height: var(--radix-collapsible-content-height); --radix-accordion-content-width: var(--radix-collapsible-content-width);"
+              />
+            </div>
+            <div
+              class="border-b"
+              data-orientation="vertical"
+              data-state="closed"
+            >
+              <h3
+                class="flex"
+                data-orientation="vertical"
+                data-state="closed"
+              >
+                <button
+                  aria-controls="radix-:r5:"
+                  aria-expanded="false"
+                  class="flex flex-1 items-center justify-between py-4 font-medium transition-all hover:underline [&[data-state=open]>svg]:rotate-180 bg-gray-100 px-3"
+                  data-orientation="vertical"
+                  data-radix-collection-item=""
+                  data-state="closed"
+                  id="radix-:r4:"
+                  type="button"
+                >
+                  <p
+                    class="flex flex-row gap-2 text-gray-600"
+                  >
+                    <strong>
+                      Manual Update
+                    </strong>
+                     - Thu, Jun 1 2023, 09:00:00 AM EDT
+                  </p>
+                  <svg
+                    class="h-4 w-4 shrink-0 transition-transform duration-200"
+                    fill="none"
+                    height="24"
+                    stroke="currentColor"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                    viewBox="0 0 24 24"
+                    width="24"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <path
+                      d="m6 9 6 6 6-6"
+                    />
+                  </svg>
+                </button>
+              </h3>
+              <div
+                aria-labelledby="radix-:r4:"
+                class="text-sm transition-all p-4"
+                data-orientation="vertical"
+                data-state="closed"
+                hidden=""
+                id="radix-:r5:"
+                role="region"
+                style="--radix-accordion-content-height: var(--radix-collapsible-content-height); --radix-accordion-content-width: var(--radix-collapsible-content-width);"
+              />
+            </div>
+            <div
+              class="border-b"
+              data-orientation="vertical"
+              data-state="closed"
+            >
+              <h3
+                class="flex"
+                data-orientation="vertical"
+                data-state="closed"
+              >
+                <button
+                  aria-controls="radix-:r7:"
+                  aria-expanded="false"
+                  class="flex flex-1 items-center justify-between py-4 font-medium transition-all hover:underline [&[data-state=open]>svg]:rotate-180 bg-gray-100 px-3"
+                  data-orientation="vertical"
+                  data-radix-collection-item=""
+                  data-state="closed"
+                  id="radix-:r6:"
+                  type="button"
+                >
+                  <p
+                    class="flex flex-row gap-2 text-gray-600"
+                  >
+                    <strong>
+                      -- --
+                    </strong>
+                     - Fri, Sep 1 2023, 09:00:00 AM EDT
+                  </p>
+                  <svg
+                    class="h-4 w-4 shrink-0 transition-transform duration-200"
+                    fill="none"
+                    height="24"
+                    stroke="currentColor"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                    viewBox="0 0 24 24"
+                    width="24"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <path
+                      d="m6 9 6 6 6-6"
+                    />
+                  </svg>
+                </button>
+              </h3>
+              <div
+                aria-labelledby="radix-:r6:"
+                class="text-sm transition-all p-4"
+                data-orientation="vertical"
+                data-state="closed"
+                hidden=""
+                id="radix-:r7:"
+                role="region"
+                style="--radix-accordion-content-height: var(--radix-collapsible-content-height); --radix-accordion-content-width: var(--radix-collapsible-content-width);"
+              />
+            </div>
+            <div
+              class="border-b"
+              data-orientation="vertical"
+              data-state="closed"
+            >
+              <h3
+                class="flex"
+                data-orientation="vertical"
+                data-state="closed"
+              >
+                <button
+                  aria-controls="radix-:r9:"
+                  aria-expanded="false"
+                  class="flex flex-1 items-center justify-between py-4 font-medium transition-all hover:underline [&[data-state=open]>svg]:rotate-180 bg-gray-100 px-3"
+                  data-orientation="vertical"
+                  data-radix-collection-item=""
+                  data-state="closed"
+                  id="radix-:r8:"
+                  type="button"
+                >
+                  <p
+                    class="flex flex-row gap-2 text-gray-600"
+                  >
+                    <strong>
+                      Enable Formal RAI Response Withdraw
+                    </strong>
+                     - Sat, Dec 31 2022, 07:00:00 PM EST
+                  </p>
+                  <svg
+                    class="h-4 w-4 shrink-0 transition-transform duration-200"
+                    fill="none"
+                    height="24"
+                    stroke="currentColor"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                    viewBox="0 0 24 24"
+                    width="24"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <path
+                      d="m6 9 6 6 6-6"
+                    />
+                  </svg>
+                </button>
+              </h3>
+              <div
+                aria-labelledby="radix-:r8:"
+                class="text-sm transition-all p-4"
+                data-orientation="vertical"
+                data-state="closed"
+                hidden=""
+                id="radix-:r9:"
+                role="region"
+                style="--radix-accordion-content-height: var(--radix-collapsible-content-height); --radix-accordion-content-width: var(--radix-collapsible-content-width);"
+              />
+            </div>
+            <div
+              class="border-b"
+              data-orientation="vertical"
+              data-state="closed"
+            >
+              <h3
+                class="flex"
+                data-orientation="vertical"
+                data-state="closed"
+              >
+                <button
+                  aria-controls="radix-:rb:"
+                  aria-expanded="false"
+                  class="flex flex-1 items-center justify-between py-4 font-medium transition-all hover:underline [&[data-state=open]>svg]:rotate-180 bg-gray-100 px-3"
+                  data-orientation="vertical"
+                  data-radix-collection-item=""
+                  data-state="closed"
+                  id="radix-:ra:"
+                  type="button"
+                >
+                  <p
+                    class="flex flex-row gap-2 text-gray-600"
+                  >
+                    <strong>
+                      Disable Formal RAI Response Withdraw
+                    </strong>
+                     - Fri, Dec 1 2023, 09:00:00 AM EST
+                  </p>
+                  <svg
+                    class="h-4 w-4 shrink-0 transition-transform duration-200"
+                    fill="none"
+                    height="24"
+                    stroke="currentColor"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                    viewBox="0 0 24 24"
+                    width="24"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <path
+                      d="m6 9 6 6 6-6"
+                    />
+                  </svg>
+                </button>
+              </h3>
+              <div
+                aria-labelledby="radix-:ra:"
+                class="text-sm transition-all p-4"
+                data-orientation="vertical"
+                data-state="closed"
+                hidden=""
+                id="radix-:rb:"
+                role="region"
+                style="--radix-accordion-content-height: var(--radix-collapsible-content-height); --radix-accordion-content-width: var(--radix-collapsible-content-width);"
+              />
+            </div>
+          </div>
+        </div>
+      </section>
+    </div>
+  </div>
+  ,
+</DocumentFragment>
+`;

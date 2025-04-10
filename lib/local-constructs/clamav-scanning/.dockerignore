@@ -1,0 +1,22 @@
+# Ignore node_modules directory
+node_modules
+
+# Ignore log files
+*.log
+
+# Ignore local environment configuration files
+.env
+
+# Ignore Dockerfile and docker-compose files (optional)
+Dockerfile
+docker-compose.yml
+
+# Ignore any directories or files related to local development
+.git
+.vscode
+.idea
+.DS_Store
+
+# Ignore build output directories
+dist
+build

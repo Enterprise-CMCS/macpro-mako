@@ -2,7 +2,9 @@
   "recommendations": [
     "bradlc.vscode-tailwindcss",
     "dbaeumer.vscode-eslint",
-    "rvest.vs-code-prettier-eslint",
-    "ZixuanChen.vitest-explorer"
+    "esbenp.prettier-vscode",
+    "eamodio.gitlens",
+    "ms-vsliveshare.vsliveshare",
+    "github.vscode-github-actions"
   ]
 }

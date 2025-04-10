@@ -7,12 +7,10 @@ runs:
       uses: HatsuneMiku3939/direnv-action@v1
 
     - name: Install Node
-      uses: actions/setup-node@v3
+      uses: actions/setup-node@v4
       with:
         node-version-file: .nvmrc
 
-    - name: Node cache
-      uses: actions/cache@v3
+    - uses: oven-sh/setup-bun@v2
       with:
-        path: "**/node_modules"
-        key: ${{ github.workflow}}-${{ runner.os }}-modules-${{ hashFiles('**/yarn.lock', '.nvmrc') }}
+        bun-version-file: ".bun-version"

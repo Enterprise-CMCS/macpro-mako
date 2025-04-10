@@ -1,9 +1,0 @@
-{
-  "compilerOptions": {
-    "strict": true,
-    "target": "ES2016",
-    "resolveJsonModule": true,
-    "moduleResolution": "node",
-    "allowSyntheticDefaultImports": true
-  }
-}

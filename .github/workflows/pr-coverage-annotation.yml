@@ -1,0 +1,59 @@
+name: PR - coverage annotation
+
+on:
+  pull_request:
+    branches:
+      - main
+
+# ensures that currently running PR Coverage Annotation workflow is canceled if another one starts
+concurrency:
+  group: ${{ github.workflow }}-${{ github.head_ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+  pull-requests: write
+  actions: read
+
+jobs:
+  coverage-report:
+    runs-on: ubuntu-latest
+    outputs:
+      actualResult: ${{ steps.test.conclusion }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: ./.github/actions/setup
+      - name: Test
+        id: test
+        continue-on-error: true
+        run: run test --coverage
+      - name: Get run ID of Code Climate workflow
+        id: get-run-id
+        continue-on-error: true
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          WF_NAME="Code Climate Report"
+          RUN_ID=`gh run list --workflow "${WF_NAME}" --json databaseId --jq .[0].databaseId`
+          echo "Detected latest run id of ${RUN_ID} for workflow ${WF_NAME}"
+          echo "run-id=${RUN_ID}" >> "$GITHUB_OUTPUT"
+      - uses: actions/download-artifact@v4
+        if: steps.get-run-id.conclusion == 'success'
+        id: get-main-coverage
+        continue-on-error: true
+        with:
+          name: main-coverage
+          path: main-coverage
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          run-id: ${{ steps.get-run-id.outputs.run-id }}
+      - name: Report Coverage (compared with Main)
+        if: ${{ steps.get-run-id.conclusion == 'success' && steps.get-main-coverage.conclusion == 'success' }}
+        uses: davelosert/vitest-coverage-report-action@v2
+        with:
+          json-summary-compare-path: main-coverage/coverage-summary.json
+          file-coverage-mode: all
+      - name: Report Coverage (only PR)
+        if: ${{ failure() }}
+        uses: davelosert/vitest-coverage-report-action@v2
+        with:
+          file-coverage-mode: all
