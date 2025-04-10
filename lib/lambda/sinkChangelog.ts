@@ -110,8 +110,7 @@ const processAndIndex = async ({
             "idToBeUpdated" in result.data
           ) {
             // Push doc with new split package
-            docs.push(result.data);
-
+            docs.push({ ...result.data, proposedDate: null, submissionDate: null });
             // Get all changelog entries for this ID and create copies of all entries with new ID
             const packageChangelogs = await getPackageChangelog(result.data.idToBeUpdated);
 
@@ -124,7 +123,7 @@ const processAndIndex = async ({
               });
             });
           } else {
-            docs.push(result.data);
+            docs.push({ ...result.data, proposedDate: null, submissionDate: null });
           }
         } else {
           console.log(
