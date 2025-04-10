@@ -102,7 +102,9 @@ export const getUserRolesWithNames = async (roleRequests: any[]) => {
   const rolesWithName = roleRequests.map((roleObj) => {
     console.log(roleObj, "ROLE OBJ");
     const email = roleObj._id?.split("_")[0];
+    console.log(email, "EMAIL???");
     const user = users[email];
+    console.log(user, "USER???");
     const fullName = user?.fullName || "Unknown";
 
     return {
