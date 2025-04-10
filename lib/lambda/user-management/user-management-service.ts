@@ -90,15 +90,17 @@ export const getAllUserRolesByState = async (state: string) => {
 };
 
 export const getUserRolesWithNames = async (roleRequests: any[]) => {
-  if (!Array.isArray(roleRequests)) {
+  if (!Array.isArray(roleRequests) || !roleRequests.length) {
     throw new Error("No role requests found");
   }
 
   const emails = roleRequests.map((role) => role._id?.split("_")[0]).filter(Boolean);
-
+  console.log(emails, "EMAILSSS");
   const users = await getUsersByEmails(emails);
+  console.log(users, "USERSSS");
 
   const rolesWithName = roleRequests.map((roleObj) => {
+    console.log(roleObj, "ROLE OBJ");
     const email = roleObj._id?.split("_")[0];
     const user = users[email];
     const fullName = user?.fullName || "Unknown";

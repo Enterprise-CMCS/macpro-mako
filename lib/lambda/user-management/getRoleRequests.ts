@@ -45,8 +45,8 @@ export const getRoleRequests = async (event: APIGatewayEvent) => {
         body: { message: "Error getting role requests " },
       });
     }
-
-    const roleRequestsWithName = getUserRolesWithNames(roleRequests);
+    console.log(roleRequests, "ROLE REQUESTSS");
+    const roleRequestsWithName = await getUserRolesWithNames(roleRequests);
 
     return response({
       statusCode: 200,
