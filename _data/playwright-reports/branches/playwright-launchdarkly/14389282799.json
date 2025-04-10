@@ -110,7 +110,7 @@
                             {
                               "workerIndex": 0,
                               "status": "failed",
-                              "duration": 5773,
+                              "duration": 5824,
                               "error": {
                                 "message": "Error: \u001b[31mTimed out 5000ms waiting for \u001b[39m\u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m()\u001b[22m\n\nLocator: getByTestId('sub-nav-header')\nExpected: visible\nReceived: <element(s) not found>\nCall log:\n  \u001b[2m- expect.toBeVisible with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for getByTestId('sub-nav-header')\u001b[22m\n",
                                 "stack": "Error: \u001b[31mTimed out 5000ms waiting for \u001b[39m\u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m()\u001b[22m\n\nLocator: getByTestId('sub-nav-header')\nExpected: visible\nReceived: <element(s) not found>\nCall log:\n  \u001b[2m- expect.toBeVisible with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for getByTestId('sub-nav-header')\u001b[22m\n\n    at /home/runner/work/macpro-mako/macpro-mako/test/e2e/faq/faq.spec.ts:15:38",
@@ -134,7 +134,7 @@
                               "stdout": [],
                               "stderr": [],
                               "retry": 0,
-                              "startTime": "2025-04-10T20:07:52.306Z",
+                              "startTime": "2025-04-10T20:18:33.814Z",
                               "attachments": [],
                               "errorLocation": {
                                 "file": "/home/runner/work/macpro-mako/macpro-mako/test/e2e/faq/faq.spec.ts",
@@ -145,12 +145,12 @@
                             {
                               "workerIndex": 1,
                               "status": "passed",
-                              "duration": 1064,
+                              "duration": 1074,
                               "errors": [],
                               "stdout": [],
                               "stderr": [],
                               "retry": 1,
-                              "startTime": "2025-04-10T20:07:59.272Z",
+                              "startTime": "2025-04-10T20:18:40.876Z",
                               "attachments": [
                                 {
                                   "name": "trace",
@@ -196,12 +196,12 @@
                             {
                               "workerIndex": 1,
                               "status": "passed",
-                              "duration": 675,
+                              "duration": 690,
                               "errors": [],
                               "stdout": [],
                               "stderr": [],
                               "retry": 0,
-                              "startTime": "2025-04-10T20:08:00.526Z",
+                              "startTime": "2025-04-10T20:18:42.147Z",
                               "attachments": []
                             }
                           ],
@@ -233,12 +233,12 @@
                             {
                               "workerIndex": 1,
                               "status": "passed",
-                              "duration": 836,
+                              "duration": 691,
                               "errors": [],
                               "stdout": [],
                               "stderr": [],
                               "retry": 0,
-                              "startTime": "2025-04-10T20:08:01.206Z",
+                              "startTime": "2025-04-10T20:18:42.843Z",
                               "attachments": []
                             }
                           ],
@@ -270,12 +270,12 @@
                             {
                               "workerIndex": 1,
                               "status": "passed",
-                              "duration": 840,
+                              "duration": 683,
                               "errors": [],
                               "stdout": [],
                               "stderr": [],
                               "retry": 0,
-                              "startTime": "2025-04-10T20:08:02.049Z",
+                              "startTime": "2025-04-10T20:18:43.541Z",
                               "attachments": []
                             }
                           ],
@@ -307,12 +307,12 @@
                             {
                               "workerIndex": 1,
                               "status": "passed",
-                              "duration": 677,
+                              "duration": 687,
                               "errors": [],
                               "stdout": [],
                               "stderr": [],
                               "retry": 0,
-                              "startTime": "2025-04-10T20:08:02.897Z",
+                              "startTime": "2025-04-10T20:18:44.232Z",
                               "attachments": []
                             }
                           ],
@@ -344,12 +344,12 @@
                             {
                               "workerIndex": 1,
                               "status": "passed",
-                              "duration": 680,
+                              "duration": 693,
                               "errors": [],
                               "stdout": [],
                               "stderr": [],
                               "retry": 0,
-                              "startTime": "2025-04-10T20:08:03.581Z",
+                              "startTime": "2025-04-10T20:18:44.927Z",
                               "attachments": []
                             }
                           ],
@@ -381,12 +381,12 @@
                             {
                               "workerIndex": 1,
                               "status": "passed",
-                              "duration": 834,
+                              "duration": 840,
                               "errors": [],
                               "stdout": [],
                               "stderr": [],
                               "retry": 0,
-                              "startTime": "2025-04-10T20:08:04.268Z",
+                              "startTime": "2025-04-10T20:18:45.627Z",
                               "attachments": []
                             }
                           ],
@@ -418,12 +418,12 @@
                             {
                               "workerIndex": 1,
                               "status": "passed",
-                              "duration": 832,
+                              "duration": 877,
                               "errors": [],
                               "stdout": [],
                               "stderr": [],
                               "retry": 0,
-                              "startTime": "2025-04-10T20:08:05.108Z",
+                              "startTime": "2025-04-10T20:18:46.473Z",
                               "attachments": []
                             }
                           ],
@@ -463,12 +463,12 @@
                             {
                               "workerIndex": 1,
                               "status": "passed",
-                              "duration": 670,
+                              "duration": 696,
                               "errors": [],
                               "stdout": [],
                               "stderr": [],
                               "retry": 0,
-                              "startTime": "2025-04-10T20:08:05.947Z",
+                              "startTime": "2025-04-10T20:18:47.356Z",
                               "attachments": []
                             }
                           ],
@@ -500,12 +500,12 @@
                             {
                               "workerIndex": 1,
                               "status": "passed",
-                              "duration": 668,
+                              "duration": 700,
                               "errors": [],
                               "stdout": [],
                               "stderr": [],
                               "retry": 0,
-                              "startTime": "2025-04-10T20:08:06.623Z",
+                              "startTime": "2025-04-10T20:18:48.059Z",
                               "attachments": []
                             }
                           ],
@@ -537,12 +537,12 @@
                             {
                               "workerIndex": 1,
                               "status": "passed",
-                              "duration": 666,
+                              "duration": 692,
                               "errors": [],
                               "stdout": [],
                               "stderr": [],
                               "retry": 0,
-                              "startTime": "2025-04-10T20:08:07.298Z",
+                              "startTime": "2025-04-10T20:18:48.767Z",
                               "attachments": []
                             }
                           ],
@@ -574,12 +574,12 @@
                             {
                               "workerIndex": 1,
                               "status": "passed",
-                              "duration": 654,
+                              "duration": 852,
                               "errors": [],
                               "stdout": [],
                               "stderr": [],
                               "retry": 0,
-                              "startTime": "2025-04-10T20:08:07.970Z",
+                              "startTime": "2025-04-10T20:18:49.465Z",
                               "attachments": []
                             }
                           ],
@@ -611,12 +611,12 @@
                             {
                               "workerIndex": 1,
                               "status": "passed",
-                              "duration": 681,
+                              "duration": 913,
                               "errors": [],
                               "stdout": [],
                               "stderr": [],
                               "retry": 0,
-                              "startTime": "2025-04-10T20:08:08.632Z",
+                              "startTime": "2025-04-10T20:18:50.324Z",
                               "attachments": []
                             }
                           ],
@@ -648,12 +648,12 @@
                             {
                               "workerIndex": 1,
                               "status": "passed",
-                              "duration": 833,
+                              "duration": 861,
                               "errors": [],
                               "stdout": [],
                               "stderr": [],
                               "retry": 0,
-                              "startTime": "2025-04-10T20:08:09.319Z",
+                              "startTime": "2025-04-10T20:18:51.243Z",
                               "attachments": []
                             }
                           ],
@@ -685,12 +685,12 @@
                             {
                               "workerIndex": 1,
                               "status": "passed",
-                              "duration": 850,
+                              "duration": 853,
                               "errors": [],
                               "stdout": [],
                               "stderr": [],
                               "retry": 0,
-                              "startTime": "2025-04-10T20:08:10.158Z",
+                              "startTime": "2025-04-10T20:18:52.109Z",
                               "attachments": []
                             }
                           ],
@@ -722,12 +722,12 @@
                             {
                               "workerIndex": 1,
                               "status": "passed",
-                              "duration": 660,
+                              "duration": 684,
                               "errors": [],
                               "stdout": [],
                               "stderr": [],
                               "retry": 0,
-                              "startTime": "2025-04-10T20:08:11.014Z",
+                              "startTime": "2025-04-10T20:18:52.968Z",
                               "attachments": []
                             }
                           ],
@@ -759,12 +759,12 @@
                             {
                               "workerIndex": 1,
                               "status": "passed",
-                              "duration": 666,
+                              "duration": 696,
                               "errors": [],
                               "stdout": [],
                               "stderr": [],
                               "retry": 0,
-                              "startTime": "2025-04-10T20:08:11.681Z",
+                              "startTime": "2025-04-10T20:18:53.658Z",
                               "attachments": []
                             }
                           ],
@@ -796,12 +796,12 @@
                             {
                               "workerIndex": 1,
                               "status": "passed",
-                              "duration": 660,
+                              "duration": 689,
                               "errors": [],
                               "stdout": [],
                               "stderr": [],
                               "retry": 0,
-                              "startTime": "2025-04-10T20:08:12.353Z",
+                              "startTime": "2025-04-10T20:18:54.360Z",
                               "attachments": []
                             }
                           ],
@@ -833,12 +833,12 @@
                             {
                               "workerIndex": 1,
                               "status": "passed",
-                              "duration": 808,
+                              "duration": 684,
                               "errors": [],
                               "stdout": [],
                               "stderr": [],
                               "retry": 0,
-                              "startTime": "2025-04-10T20:08:13.019Z",
+                              "startTime": "2025-04-10T20:18:55.055Z",
                               "attachments": []
                             }
                           ],
@@ -870,12 +870,12 @@
                             {
                               "workerIndex": 1,
                               "status": "passed",
-                              "duration": 662,
+                              "duration": 690,
                               "errors": [],
                               "stdout": [],
                               "stderr": [],
                               "retry": 0,
-                              "startTime": "2025-04-10T20:08:13.834Z",
+                              "startTime": "2025-04-10T20:18:55.746Z",
                               "attachments": []
                             }
                           ],
@@ -907,12 +907,12 @@
                             {
                               "workerIndex": 1,
                               "status": "passed",
-                              "duration": 823,
+                              "duration": 843,
                               "errors": [],
                               "stdout": [],
                               "stderr": [],
                               "retry": 0,
-                              "startTime": "2025-04-10T20:08:14.503Z",
+                              "startTime": "2025-04-10T20:18:56.442Z",
                               "attachments": []
                             }
                           ],
@@ -944,12 +944,12 @@
                             {
                               "workerIndex": 1,
                               "status": "passed",
-                              "duration": 655,
+                              "duration": 855,
                               "errors": [],
                               "stdout": [],
                               "stderr": [],
                               "retry": 0,
-                              "startTime": "2025-04-10T20:08:15.335Z",
+                              "startTime": "2025-04-10T20:18:57.293Z",
                               "attachments": []
                             }
                           ],
@@ -981,12 +981,12 @@
                             {
                               "workerIndex": 1,
                               "status": "passed",
-                              "duration": 678,
+                              "duration": 681,
                               "errors": [],
                               "stdout": [],
                               "stderr": [],
                               "retry": 0,
-                              "startTime": "2025-04-10T20:08:15.997Z",
+                              "startTime": "2025-04-10T20:18:58.154Z",
                               "attachments": []
                             }
                           ],
@@ -1018,12 +1018,12 @@
                             {
                               "workerIndex": 1,
                               "status": "passed",
-                              "duration": 826,
+                              "duration": 686,
                               "errors": [],
                               "stdout": [],
                               "stderr": [],
                               "retry": 0,
-                              "startTime": "2025-04-10T20:08:16.681Z",
+                              "startTime": "2025-04-10T20:18:58.841Z",
                               "attachments": []
                             }
                           ],
@@ -1063,12 +1063,12 @@
                             {
                               "workerIndex": 1,
                               "status": "passed",
-                              "duration": 660,
+                              "duration": 683,
                               "errors": [],
                               "stdout": [],
                               "stderr": [],
                               "retry": 0,
-                              "startTime": "2025-04-10T20:08:17.513Z",
+                              "startTime": "2025-04-10T20:18:59.532Z",
                               "attachments": []
                             }
                           ],
@@ -1100,12 +1100,12 @@
                             {
                               "workerIndex": 1,
                               "status": "passed",
-                              "duration": 846,
+                              "duration": 678,
                               "errors": [],
                               "stdout": [],
                               "stderr": [],
                               "retry": 0,
-                              "startTime": "2025-04-10T20:08:18.178Z",
+                              "startTime": "2025-04-10T20:19:00.222Z",
                               "attachments": []
                             }
                           ],
@@ -1137,12 +1137,12 @@
                             {
                               "workerIndex": 1,
                               "status": "passed",
-                              "duration": 832,
+                              "duration": 854,
                               "errors": [],
                               "stdout": [],
                               "stderr": [],
                               "retry": 0,
-                              "startTime": "2025-04-10T20:08:19.030Z",
+                              "startTime": "2025-04-10T20:19:00.906Z",
                               "attachments": []
                             }
                           ],
@@ -1174,12 +1174,12 @@
                             {
                               "workerIndex": 1,
                               "status": "passed",
-                              "duration": 661,
+                              "duration": 684,
                               "errors": [],
                               "stdout": [],
                               "stderr": [],
                               "retry": 0,
-                              "startTime": "2025-04-10T20:08:19.868Z",
+                              "startTime": "2025-04-10T20:19:01.766Z",
                               "attachments": []
                             }
                           ],
@@ -1211,12 +1211,12 @@
                             {
                               "workerIndex": 1,
                               "status": "passed",
-                              "duration": 820,
+                              "duration": 859,
                               "errors": [],
                               "stdout": [],
                               "stderr": [],
                               "retry": 0,
-                              "startTime": "2025-04-10T20:08:20.534Z",
+                              "startTime": "2025-04-10T20:19:02.456Z",
                               "attachments": []
                             }
                           ],
@@ -1248,12 +1248,12 @@
                             {
                               "workerIndex": 1,
                               "status": "passed",
-                              "duration": 663,
+                              "duration": 692,
                               "errors": [],
                               "stdout": [],
                               "stderr": [],
                               "retry": 0,
-                              "startTime": "2025-04-10T20:08:21.360Z",
+                              "startTime": "2025-04-10T20:19:03.321Z",
                               "attachments": []
                             }
                           ],
@@ -1285,12 +1285,12 @@
                             {
                               "workerIndex": 1,
                               "status": "passed",
-                              "duration": 659,
+                              "duration": 848,
                               "errors": [],
                               "stdout": [],
                               "stderr": [],
                               "retry": 0,
-                              "startTime": "2025-04-10T20:08:22.029Z",
+                              "startTime": "2025-04-10T20:19:04.019Z",
                               "attachments": []
                             }
                           ],
@@ -1322,12 +1322,12 @@
                             {
                               "workerIndex": 1,
                               "status": "passed",
-                              "duration": 662,
+                              "duration": 854,
                               "errors": [],
                               "stdout": [],
                               "stderr": [],
                               "retry": 0,
-                              "startTime": "2025-04-10T20:08:22.693Z",
+                              "startTime": "2025-04-10T20:19:04.873Z",
                               "attachments": []
                             }
                           ],
@@ -1359,12 +1359,12 @@
                             {
                               "workerIndex": 1,
                               "status": "passed",
-                              "duration": 659,
+                              "duration": 691,
                               "errors": [],
                               "stdout": [],
                               "stderr": [],
                               "retry": 0,
-                              "startTime": "2025-04-10T20:08:23.361Z",
+                              "startTime": "2025-04-10T20:19:05.734Z",
                               "attachments": []
                             }
                           ],
@@ -1405,7 +1405,7 @@
                               "stdout": [],
                               "stderr": [],
                               "retry": 0,
-                              "startTime": "2025-04-10T20:08:24.026Z",
+                              "startTime": "2025-04-10T20:19:06.430Z",
                               "attachments": []
                             }
                           ],
@@ -1446,7 +1446,7 @@
                               "stdout": [],
                               "stderr": [],
                               "retry": 0,
-                              "startTime": "2025-04-10T20:08:24.026Z",
+                              "startTime": "2025-04-10T20:19:06.430Z",
                               "attachments": []
                             }
                           ],
@@ -1478,12 +1478,12 @@
                             {
                               "workerIndex": 1,
                               "status": "passed",
-                              "duration": 857,
+                              "duration": 863,
                               "errors": [],
                               "stdout": [],
                               "stderr": [],
                               "retry": 0,
-                              "startTime": "2025-04-10T20:08:24.026Z",
+                              "startTime": "2025-04-10T20:19:06.431Z",
                               "attachments": []
                             }
                           ],
@@ -1515,12 +1515,12 @@
                             {
                               "workerIndex": 1,
                               "status": "passed",
-                              "duration": 819,
+                              "duration": 690,
                               "errors": [],
                               "stdout": [],
                               "stderr": [],
                               "retry": 0,
-                              "startTime": "2025-04-10T20:08:24.890Z",
+                              "startTime": "2025-04-10T20:19:07.300Z",
                               "attachments": []
                             }
                           ],
@@ -1552,12 +1552,12 @@
                             {
                               "workerIndex": 1,
                               "status": "passed",
-                              "duration": 678,
+                              "duration": 686,
                               "errors": [],
                               "stdout": [],
                               "stderr": [],
                               "retry": 0,
-                              "startTime": "2025-04-10T20:08:25.716Z",
+                              "startTime": "2025-04-10T20:19:07.997Z",
                               "attachments": []
                             }
                           ],
@@ -1589,12 +1589,12 @@
                             {
                               "workerIndex": 1,
                               "status": "passed",
-                              "duration": 826,
+                              "duration": 690,
                               "errors": [],
                               "stdout": [],
                               "stderr": [],
                               "retry": 0,
-                              "startTime": "2025-04-10T20:08:26.400Z",
+                              "startTime": "2025-04-10T20:19:08.689Z",
                               "attachments": []
                             }
                           ],
@@ -1645,7 +1645,7 @@
                     {
                       "workerIndex": 1,
                       "status": "passed",
-                      "duration": 1672,
+                      "duration": 1718,
                       "errors": [],
                       "stdout": [
                         {
@@ -1654,7 +1654,7 @@
                       ],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2025-04-10T20:08:27.301Z",
+                      "startTime": "2025-04-10T20:19:09.463Z",
                       "attachments": []
                     }
                   ],
@@ -1684,7 +1684,7 @@
                     {
                       "workerIndex": 1,
                       "status": "passed",
-                      "duration": 1887,
+                      "duration": 1979,
                       "errors": [],
                       "stdout": [
                         {
@@ -1693,7 +1693,7 @@
                       ],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2025-04-10T20:08:28.979Z",
+                      "startTime": "2025-04-10T20:19:11.186Z",
                       "attachments": []
                     }
                   ],
@@ -1723,7 +1723,7 @@
                     {
                       "workerIndex": 1,
                       "status": "passed",
-                      "duration": 2325,
+                      "duration": 2358,
                       "errors": [],
                       "stdout": [
                         {
@@ -1732,7 +1732,7 @@
                       ],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2025-04-10T20:08:30.871Z",
+                      "startTime": "2025-04-10T20:19:13.170Z",
                       "attachments": []
                     }
                   ],
@@ -1762,7 +1762,7 @@
                     {
                       "workerIndex": 1,
                       "status": "failed",
-                      "duration": 1659,
+                      "duration": 1722,
                       "error": {
                         "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoEqual\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // deep equality\u001b[22m\n\n\u001b[32m- Expected  -   1\u001b[39m\n\u001b[31m+ Received  + 103\u001b[39m\n\n\u001b[32m- Array []\u001b[39m\n\u001b[31m+ Array [\u001b[39m\n\u001b[31m+   Object {\u001b[39m\n\u001b[31m+     \"description\": \"Ensure the document has a main landmark\",\u001b[39m\n\u001b[31m+     \"help\": \"Document should have one main landmark\",\u001b[39m\n\u001b[31m+     \"helpUrl\": \"https://dequeuniversity.com/rules/axe/4.10/landmark-one-main?application=playwright\",\u001b[39m\n\u001b[31m+     \"id\": \"landmark-one-main\",\u001b[39m\n\u001b[31m+     \"impact\": \"moderate\",\u001b[39m\n\u001b[31m+     \"nodes\": Array [\u001b[39m\n\u001b[31m+       Object {\u001b[39m\n\u001b[31m+         \"all\": Array [\u001b[39m\n\u001b[31m+           Object {\u001b[39m\n\u001b[31m+             \"data\": null,\u001b[39m\n\u001b[31m+             \"id\": \"page-has-main\",\u001b[39m\n\u001b[31m+             \"impact\": \"moderate\",\u001b[39m\n\u001b[31m+             \"message\": \"Document does not have a main landmark\",\u001b[39m\n\u001b[31m+             \"relatedNodes\": Array [],\u001b[39m\n\u001b[31m+           },\u001b[39m\n\u001b[31m+         ],\u001b[39m\n\u001b[31m+         \"any\": Array [],\u001b[39m\n\u001b[31m+         \"failureSummary\": \"Fix all of the following:\u001b[39m\n\u001b[31m+   Document does not have a main landmark\",\u001b[39m\n\u001b[31m+         \"html\": \"<html lang=\\\"en\\\" class=\\\"h-full\\\">\",\u001b[39m\n\u001b[31m+         \"impact\": \"moderate\",\u001b[39m\n\u001b[31m+         \"none\": Array [],\u001b[39m\n\u001b[31m+         \"target\": Array [\u001b[39m\n\u001b[31m+           \"html\",\u001b[39m\n\u001b[31m+         ],\u001b[39m\n\u001b[31m+       },\u001b[39m\n\u001b[31m+     ],\u001b[39m\n\u001b[31m+     \"tags\": Array [\u001b[39m\n\u001b[31m+       \"cat.semantics\",\u001b[39m\n\u001b[31m+       \"best-practice\",\u001b[39m\n\u001b[31m+     ],\u001b[39m\n\u001b[31m+   },\u001b[39m\n\u001b[31m+   Object {\u001b[39m\n\u001b[31m+     \"description\": \"Ensure that the page, or at least one of its frames contains a level-one heading\",\u001b[39m\n\u001b[31m+     \"help\": \"Page should contain a level-one heading\",\u001b[39m\n\u001b[31m+     \"helpUrl\": \"https://dequeuniversity.com/rules/axe/4.10/page-has-heading-one?application=playwright\",\u001b[39m\n\u001b[31m+     \"id\": \"page-has-heading-one\",\u001b[39m\n\u001b[31m+     \"impact\": \"moderate\",\u001b[39m\n\u001b[31m+     \"nodes\": Array [\u001b[39m\n\u001b[31m+       Object {\u001b[39m\n\u001b[31m+         \"all\": Array [\u001b[39m\n\u001b[31m+           Object {\u001b[39m\n\u001b[31m+             \"data\": null,\u001b[39m\n\u001b[31m+             \"id\": \"page-has-heading-one\",\u001b[39m\n\u001b[31m+             \"impact\": \"moderate\",\u001b[39m\n\u001b[31m+             \"message\": \"Page must have a level-one heading\",\u001b[39m\n\u001b[31m+             \"relatedNodes\": Array [],\u001b[39m\n\u001b[31m+           },\u001b[39m\n\u001b[31m+         ],\u001b[39m\n\u001b[31m+         \"any\": Array [],\u001b[39m\n\u001b[31m+         \"failureSummary\": \"Fix all of the following:\u001b[39m\n\u001b[31m+   Page must have a level-one heading\",\u001b[39m\n\u001b[31m+         \"html\": \"<html lang=\\\"en\\\" class=\\\"h-full\\\">\",\u001b[39m\n\u001b[31m+         \"impact\": \"moderate\",\u001b[39m\n\u001b[31m+         \"none\": Array [],\u001b[39m\n\u001b[31m+         \"target\": Array [\u001b[39m\n\u001b[31m+           \"html\",\u001b[39m\n\u001b[31m+         ],\u001b[39m\n\u001b[31m+       },\u001b[39m\n\u001b[31m+     ],\u001b[39m\n\u001b[31m+     \"tags\": Array [\u001b[39m\n\u001b[31m+       \"cat.semantics\",\u001b[39m\n\u001b[31m+       \"best-practice\",\u001b[39m\n\u001b[31m+     ],\u001b[39m\n\u001b[31m+   },\u001b[39m\n\u001b[31m+   Object {\u001b[39m\n\u001b[31m+     \"description\": \"Ensure all page content is contained by landmarks\",\u001b[39m\n\u001b[31m+     \"help\": \"All page content should be contained by landmarks\",\u001b[39m\n\u001b[31m+     \"helpUrl\": \"https://dequeuniversity.com/rules/axe/4.10/region?application=playwright\",\u001b[39m\n\u001b[31m+     \"id\": \"region\",\u001b[39m\n\u001b[31m+     \"impact\": \"moderate\",\u001b[39m\n\u001b[31m+     \"nodes\": Array [\u001b[39m\n\u001b[31m+       Object {\u001b[39m\n\u001b[31m+         \"all\": Array [],\u001b[39m\n\u001b[31m+         \"any\": Array [\u001b[39m\n\u001b[31m+           Object {\u001b[39m\n\u001b[31m+             \"data\": Object {\u001b[39m\n\u001b[31m+               \"isIframe\": false,\u001b[39m\n\u001b[31m+             },\u001b[39m\n\u001b[31m+             \"id\": \"region\",\u001b[39m\n\u001b[31m+             \"impact\": \"moderate\",\u001b[39m\n\u001b[31m+             \"message\": \"Some page content is not contained by landmarks\",\u001b[39m\n\u001b[31m+             \"relatedNodes\": Array [],\u001b[39m\n\u001b[31m+           },\u001b[39m\n\u001b[31m+         ],\u001b[39m\n\u001b[31m+         \"failureSummary\": \"Fix any of the following:\u001b[39m\n\u001b[31m+   Some page content is not contained by landmarks\",\u001b[39m\n\u001b[31m+         \"html\": \"<div id=\\\"root\\\" class=\\\"h-full\\\">\",\u001b[39m\n\u001b[31m+         \"impact\": \"moderate\",\u001b[39m\n\u001b[31m+         \"none\": Array [],\u001b[39m\n\u001b[31m+         \"target\": Array [\u001b[39m\n\u001b[31m+           \"#root\",\u001b[39m\n\u001b[31m+         ],\u001b[39m\n\u001b[31m+       },\u001b[39m\n\u001b[31m+     ],\u001b[39m\n\u001b[31m+     \"tags\": Array [\u001b[39m\n\u001b[31m+       \"cat.keyboard\",\u001b[39m\n\u001b[31m+       \"best-practice\",\u001b[39m\n\u001b[31m+     ],\u001b[39m\n\u001b[31m+   },\u001b[39m\n\u001b[31m+ ]\u001b[39m",
                         "stack": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoEqual\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // deep equality\u001b[22m\n\n\u001b[32m- Expected  -   1\u001b[39m\n\u001b[31m+ Received  + 103\u001b[39m\n\n\u001b[32m- Array []\u001b[39m\n\u001b[31m+ Array [\u001b[39m\n\u001b[31m+   Object {\u001b[39m\n\u001b[31m+     \"description\": \"Ensure the document has a main landmark\",\u001b[39m\n\u001b[31m+     \"help\": \"Document should have one main landmark\",\u001b[39m\n\u001b[31m+     \"helpUrl\": \"https://dequeuniversity.com/rules/axe/4.10/landmark-one-main?application=playwright\",\u001b[39m\n\u001b[31m+     \"id\": \"landmark-one-main\",\u001b[39m\n\u001b[31m+     \"impact\": \"moderate\",\u001b[39m\n\u001b[31m+     \"nodes\": Array [\u001b[39m\n\u001b[31m+       Object {\u001b[39m\n\u001b[31m+         \"all\": Array [\u001b[39m\n\u001b[31m+           Object {\u001b[39m\n\u001b[31m+             \"data\": null,\u001b[39m\n\u001b[31m+             \"id\": \"page-has-main\",\u001b[39m\n\u001b[31m+             \"impact\": \"moderate\",\u001b[39m\n\u001b[31m+             \"message\": \"Document does not have a main landmark\",\u001b[39m\n\u001b[31m+             \"relatedNodes\": Array [],\u001b[39m\n\u001b[31m+           },\u001b[39m\n\u001b[31m+         ],\u001b[39m\n\u001b[31m+         \"any\": Array [],\u001b[39m\n\u001b[31m+         \"failureSummary\": \"Fix all of the following:\u001b[39m\n\u001b[31m+   Document does not have a main landmark\",\u001b[39m\n\u001b[31m+         \"html\": \"<html lang=\\\"en\\\" class=\\\"h-full\\\">\",\u001b[39m\n\u001b[31m+         \"impact\": \"moderate\",\u001b[39m\n\u001b[31m+         \"none\": Array [],\u001b[39m\n\u001b[31m+         \"target\": Array [\u001b[39m\n\u001b[31m+           \"html\",\u001b[39m\n\u001b[31m+         ],\u001b[39m\n\u001b[31m+       },\u001b[39m\n\u001b[31m+     ],\u001b[39m\n\u001b[31m+     \"tags\": Array [\u001b[39m\n\u001b[31m+       \"cat.semantics\",\u001b[39m\n\u001b[31m+       \"best-practice\",\u001b[39m\n\u001b[31m+     ],\u001b[39m\n\u001b[31m+   },\u001b[39m\n\u001b[31m+   Object {\u001b[39m\n\u001b[31m+     \"description\": \"Ensure that the page, or at least one of its frames contains a level-one heading\",\u001b[39m\n\u001b[31m+     \"help\": \"Page should contain a level-one heading\",\u001b[39m\n\u001b[31m+     \"helpUrl\": \"https://dequeuniversity.com/rules/axe/4.10/page-has-heading-one?application=playwright\",\u001b[39m\n\u001b[31m+     \"id\": \"page-has-heading-one\",\u001b[39m\n\u001b[31m+     \"impact\": \"moderate\",\u001b[39m\n\u001b[31m+     \"nodes\": Array [\u001b[39m\n\u001b[31m+       Object {\u001b[39m\n\u001b[31m+         \"all\": Array [\u001b[39m\n\u001b[31m+           Object {\u001b[39m\n\u001b[31m+             \"data\": null,\u001b[39m\n\u001b[31m+             \"id\": \"page-has-heading-one\",\u001b[39m\n\u001b[31m+             \"impact\": \"moderate\",\u001b[39m\n\u001b[31m+             \"message\": \"Page must have a level-one heading\",\u001b[39m\n\u001b[31m+             \"relatedNodes\": Array [],\u001b[39m\n\u001b[31m+           },\u001b[39m\n\u001b[31m+         ],\u001b[39m\n\u001b[31m+         \"any\": Array [],\u001b[39m\n\u001b[31m+         \"failureSummary\": \"Fix all of the following:\u001b[39m\n\u001b[31m+   Page must have a level-one heading\",\u001b[39m\n\u001b[31m+         \"html\": \"<html lang=\\\"en\\\" class=\\\"h-full\\\">\",\u001b[39m\n\u001b[31m+         \"impact\": \"moderate\",\u001b[39m\n\u001b[31m+         \"none\": Array [],\u001b[39m\n\u001b[31m+         \"target\": Array [\u001b[39m\n\u001b[31m+           \"html\",\u001b[39m\n\u001b[31m+         ],\u001b[39m\n\u001b[31m+       },\u001b[39m\n\u001b[31m+     ],\u001b[39m\n\u001b[31m+     \"tags\": Array [\u001b[39m\n\u001b[31m+       \"cat.semantics\",\u001b[39m\n\u001b[31m+       \"best-practice\",\u001b[39m\n\u001b[31m+     ],\u001b[39m\n\u001b[31m+   },\u001b[39m\n\u001b[31m+   Object {\u001b[39m\n\u001b[31m+     \"description\": \"Ensure all page content is contained by landmarks\",\u001b[39m\n\u001b[31m+     \"help\": \"All page content should be contained by landmarks\",\u001b[39m\n\u001b[31m+     \"helpUrl\": \"https://dequeuniversity.com/rules/axe/4.10/region?application=playwright\",\u001b[39m\n\u001b[31m+     \"id\": \"region\",\u001b[39m\n\u001b[31m+     \"impact\": \"moderate\",\u001b[39m\n\u001b[31m+     \"nodes\": Array [\u001b[39m\n\u001b[31m+       Object {\u001b[39m\n\u001b[31m+         \"all\": Array [],\u001b[39m\n\u001b[31m+         \"any\": Array [\u001b[39m\n\u001b[31m+           Object {\u001b[39m\n\u001b[31m+             \"data\": Object {\u001b[39m\n\u001b[31m+               \"isIframe\": false,\u001b[39m\n\u001b[31m+             },\u001b[39m\n\u001b[31m+             \"id\": \"region\",\u001b[39m\n\u001b[31m+             \"impact\": \"moderate\",\u001b[39m\n\u001b[31m+             \"message\": \"Some page content is not contained by landmarks\",\u001b[39m\n\u001b[31m+             \"relatedNodes\": Array [],\u001b[39m\n\u001b[31m+           },\u001b[39m\n\u001b[31m+         ],\u001b[39m\n\u001b[31m+         \"failureSummary\": \"Fix any of the following:\u001b[39m\n\u001b[31m+   Some page content is not contained by landmarks\",\u001b[39m\n\u001b[31m+         \"html\": \"<div id=\\\"root\\\" class=\\\"h-full\\\">\",\u001b[39m\n\u001b[31m+         \"impact\": \"moderate\",\u001b[39m\n\u001b[31m+         \"none\": Array [],\u001b[39m\n\u001b[31m+         \"target\": Array [\u001b[39m\n\u001b[31m+           \"#root\",\u001b[39m\n\u001b[31m+         ],\u001b[39m\n\u001b[31m+       },\u001b[39m\n\u001b[31m+     ],\u001b[39m\n\u001b[31m+     \"tags\": Array [\u001b[39m\n\u001b[31m+       \"cat.keyboard\",\u001b[39m\n\u001b[31m+       \"best-practice\",\u001b[39m\n\u001b[31m+     ],\u001b[39m\n\u001b[31m+   },\u001b[39m\n\u001b[31m+ ]\u001b[39m\n    at /home/runner/work/macpro-mako/macpro-mako/test/e2e/non-func/a11y/index.spec.ts:17:51",
@@ -1790,7 +1790,7 @@
                       ],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2025-04-10T20:08:33.202Z",
+                      "startTime": "2025-04-10T20:19:15.533Z",
                       "attachments": [],
                       "errorLocation": {
                         "file": "/home/runner/work/macpro-mako/macpro-mako/test/e2e/non-func/a11y/index.spec.ts",
@@ -1801,7 +1801,7 @@
                     {
                       "workerIndex": 2,
                       "status": "failed",
-                      "duration": 2087,
+                      "duration": 2117,
                       "error": {
                         "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoEqual\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // deep equality\u001b[22m\n\n\u001b[32m- Expected  -   1\u001b[39m\n\u001b[31m+ Received  + 103\u001b[39m\n\n\u001b[32m- Array []\u001b[39m\n\u001b[31m+ Array [\u001b[39m\n\u001b[31m+   Object {\u001b[39m\n\u001b[31m+     \"description\": \"Ensure the document has a main landmark\",\u001b[39m\n\u001b[31m+     \"help\": \"Document should have one main landmark\",\u001b[39m\n\u001b[31m+     \"helpUrl\": \"https://dequeuniversity.com/rules/axe/4.10/landmark-one-main?application=playwright\",\u001b[39m\n\u001b[31m+     \"id\": \"landmark-one-main\",\u001b[39m\n\u001b[31m+     \"impact\": \"moderate\",\u001b[39m\n\u001b[31m+     \"nodes\": Array [\u001b[39m\n\u001b[31m+       Object {\u001b[39m\n\u001b[31m+         \"all\": Array [\u001b[39m\n\u001b[31m+           Object {\u001b[39m\n\u001b[31m+             \"data\": null,\u001b[39m\n\u001b[31m+             \"id\": \"page-has-main\",\u001b[39m\n\u001b[31m+             \"impact\": \"moderate\",\u001b[39m\n\u001b[31m+             \"message\": \"Document does not have a main landmark\",\u001b[39m\n\u001b[31m+             \"relatedNodes\": Array [],\u001b[39m\n\u001b[31m+           },\u001b[39m\n\u001b[31m+         ],\u001b[39m\n\u001b[31m+         \"any\": Array [],\u001b[39m\n\u001b[31m+         \"failureSummary\": \"Fix all of the following:\u001b[39m\n\u001b[31m+   Document does not have a main landmark\",\u001b[39m\n\u001b[31m+         \"html\": \"<html lang=\\\"en\\\" class=\\\"h-full\\\">\",\u001b[39m\n\u001b[31m+         \"impact\": \"moderate\",\u001b[39m\n\u001b[31m+         \"none\": Array [],\u001b[39m\n\u001b[31m+         \"target\": Array [\u001b[39m\n\u001b[31m+           \"html\",\u001b[39m\n\u001b[31m+         ],\u001b[39m\n\u001b[31m+       },\u001b[39m\n\u001b[31m+     ],\u001b[39m\n\u001b[31m+     \"tags\": Array [\u001b[39m\n\u001b[31m+       \"cat.semantics\",\u001b[39m\n\u001b[31m+       \"best-practice\",\u001b[39m\n\u001b[31m+     ],\u001b[39m\n\u001b[31m+   },\u001b[39m\n\u001b[31m+   Object {\u001b[39m\n\u001b[31m+     \"description\": \"Ensure that the page, or at least one of its frames contains a level-one heading\",\u001b[39m\n\u001b[31m+     \"help\": \"Page should contain a level-one heading\",\u001b[39m\n\u001b[31m+     \"helpUrl\": \"https://dequeuniversity.com/rules/axe/4.10/page-has-heading-one?application=playwright\",\u001b[39m\n\u001b[31m+     \"id\": \"page-has-heading-one\",\u001b[39m\n\u001b[31m+     \"impact\": \"moderate\",\u001b[39m\n\u001b[31m+     \"nodes\": Array [\u001b[39m\n\u001b[31m+       Object {\u001b[39m\n\u001b[31m+         \"all\": Array [\u001b[39m\n\u001b[31m+           Object {\u001b[39m\n\u001b[31m+             \"data\": null,\u001b[39m\n\u001b[31m+             \"id\": \"page-has-heading-one\",\u001b[39m\n\u001b[31m+             \"impact\": \"moderate\",\u001b[39m\n\u001b[31m+             \"message\": \"Page must have a level-one heading\",\u001b[39m\n\u001b[31m+             \"relatedNodes\": Array [],\u001b[39m\n\u001b[31m+           },\u001b[39m\n\u001b[31m+         ],\u001b[39m\n\u001b[31m+         \"any\": Array [],\u001b[39m\n\u001b[31m+         \"failureSummary\": \"Fix all of the following:\u001b[39m\n\u001b[31m+   Page must have a level-one heading\",\u001b[39m\n\u001b[31m+         \"html\": \"<html lang=\\\"en\\\" class=\\\"h-full\\\">\",\u001b[39m\n\u001b[31m+         \"impact\": \"moderate\",\u001b[39m\n\u001b[31m+         \"none\": Array [],\u001b[39m\n\u001b[31m+         \"target\": Array [\u001b[39m\n\u001b[31m+           \"html\",\u001b[39m\n\u001b[31m+         ],\u001b[39m\n\u001b[31m+       },\u001b[39m\n\u001b[31m+     ],\u001b[39m\n\u001b[31m+     \"tags\": Array [\u001b[39m\n\u001b[31m+       \"cat.semantics\",\u001b[39m\n\u001b[31m+       \"best-practice\",\u001b[39m\n\u001b[31m+     ],\u001b[39m\n\u001b[31m+   },\u001b[39m\n\u001b[31m+   Object {\u001b[39m\n\u001b[31m+     \"description\": \"Ensure all page content is contained by landmarks\",\u001b[39m\n\u001b[31m+     \"help\": \"All page content should be contained by landmarks\",\u001b[39m\n\u001b[31m+     \"helpUrl\": \"https://dequeuniversity.com/rules/axe/4.10/region?application=playwright\",\u001b[39m\n\u001b[31m+     \"id\": \"region\",\u001b[39m\n\u001b[31m+     \"impact\": \"moderate\",\u001b[39m\n\u001b[31m+     \"nodes\": Array [\u001b[39m\n\u001b[31m+       Object {\u001b[39m\n\u001b[31m+         \"all\": Array [],\u001b[39m\n\u001b[31m+         \"any\": Array [\u001b[39m\n\u001b[31m+           Object {\u001b[39m\n\u001b[31m+             \"data\": Object {\u001b[39m\n\u001b[31m+               \"isIframe\": false,\u001b[39m\n\u001b[31m+             },\u001b[39m\n\u001b[31m+             \"id\": \"region\",\u001b[39m\n\u001b[31m+             \"impact\": \"moderate\",\u001b[39m\n\u001b[31m+             \"message\": \"Some page content is not contained by landmarks\",\u001b[39m\n\u001b[31m+             \"relatedNodes\": Array [],\u001b[39m\n\u001b[31m+           },\u001b[39m\n\u001b[31m+         ],\u001b[39m\n\u001b[31m+         \"failureSummary\": \"Fix any of the following:\u001b[39m\n\u001b[31m+   Some page content is not contained by landmarks\",\u001b[39m\n\u001b[31m+         \"html\": \"<div id=\\\"root\\\" class=\\\"h-full\\\">\",\u001b[39m\n\u001b[31m+         \"impact\": \"moderate\",\u001b[39m\n\u001b[31m+         \"none\": Array [],\u001b[39m\n\u001b[31m+         \"target\": Array [\u001b[39m\n\u001b[31m+           \"#root\",\u001b[39m\n\u001b[31m+         ],\u001b[39m\n\u001b[31m+       },\u001b[39m\n\u001b[31m+     ],\u001b[39m\n\u001b[31m+     \"tags\": Array [\u001b[39m\n\u001b[31m+       \"cat.keyboard\",\u001b[39m\n\u001b[31m+       \"best-practice\",\u001b[39m\n\u001b[31m+     ],\u001b[39m\n\u001b[31m+   },\u001b[39m\n\u001b[31m+ ]\u001b[39m",
                         "stack": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoEqual\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // deep equality\u001b[22m\n\n\u001b[32m- Expected  -   1\u001b[39m\n\u001b[31m+ Received  + 103\u001b[39m\n\n\u001b[32m- Array []\u001b[39m\n\u001b[31m+ Array [\u001b[39m\n\u001b[31m+   Object {\u001b[39m\n\u001b[31m+     \"description\": \"Ensure the document has a main landmark\",\u001b[39m\n\u001b[31m+     \"help\": \"Document should have one main landmark\",\u001b[39m\n\u001b[31m+     \"helpUrl\": \"https://dequeuniversity.com/rules/axe/4.10/landmark-one-main?application=playwright\",\u001b[39m\n\u001b[31m+     \"id\": \"landmark-one-main\",\u001b[39m\n\u001b[31m+     \"impact\": \"moderate\",\u001b[39m\n\u001b[31m+     \"nodes\": Array [\u001b[39m\n\u001b[31m+       Object {\u001b[39m\n\u001b[31m+         \"all\": Array [\u001b[39m\n\u001b[31m+           Object {\u001b[39m\n\u001b[31m+             \"data\": null,\u001b[39m\n\u001b[31m+             \"id\": \"page-has-main\",\u001b[39m\n\u001b[31m+             \"impact\": \"moderate\",\u001b[39m\n\u001b[31m+             \"message\": \"Document does not have a main landmark\",\u001b[39m\n\u001b[31m+             \"relatedNodes\": Array [],\u001b[39m\n\u001b[31m+           },\u001b[39m\n\u001b[31m+         ],\u001b[39m\n\u001b[31m+         \"any\": Array [],\u001b[39m\n\u001b[31m+         \"failureSummary\": \"Fix all of the following:\u001b[39m\n\u001b[31m+   Document does not have a main landmark\",\u001b[39m\n\u001b[31m+         \"html\": \"<html lang=\\\"en\\\" class=\\\"h-full\\\">\",\u001b[39m\n\u001b[31m+         \"impact\": \"moderate\",\u001b[39m\n\u001b[31m+         \"none\": Array [],\u001b[39m\n\u001b[31m+         \"target\": Array [\u001b[39m\n\u001b[31m+           \"html\",\u001b[39m\n\u001b[31m+         ],\u001b[39m\n\u001b[31m+       },\u001b[39m\n\u001b[31m+     ],\u001b[39m\n\u001b[31m+     \"tags\": Array [\u001b[39m\n\u001b[31m+       \"cat.semantics\",\u001b[39m\n\u001b[31m+       \"best-practice\",\u001b[39m\n\u001b[31m+     ],\u001b[39m\n\u001b[31m+   },\u001b[39m\n\u001b[31m+   Object {\u001b[39m\n\u001b[31m+     \"description\": \"Ensure that the page, or at least one of its frames contains a level-one heading\",\u001b[39m\n\u001b[31m+     \"help\": \"Page should contain a level-one heading\",\u001b[39m\n\u001b[31m+     \"helpUrl\": \"https://dequeuniversity.com/rules/axe/4.10/page-has-heading-one?application=playwright\",\u001b[39m\n\u001b[31m+     \"id\": \"page-has-heading-one\",\u001b[39m\n\u001b[31m+     \"impact\": \"moderate\",\u001b[39m\n\u001b[31m+     \"nodes\": Array [\u001b[39m\n\u001b[31m+       Object {\u001b[39m\n\u001b[31m+         \"all\": Array [\u001b[39m\n\u001b[31m+           Object {\u001b[39m\n\u001b[31m+             \"data\": null,\u001b[39m\n\u001b[31m+             \"id\": \"page-has-heading-one\",\u001b[39m\n\u001b[31m+             \"impact\": \"moderate\",\u001b[39m\n\u001b[31m+             \"message\": \"Page must have a level-one heading\",\u001b[39m\n\u001b[31m+             \"relatedNodes\": Array [],\u001b[39m\n\u001b[31m+           },\u001b[39m\n\u001b[31m+         ],\u001b[39m\n\u001b[31m+         \"any\": Array [],\u001b[39m\n\u001b[31m+         \"failureSummary\": \"Fix all of the following:\u001b[39m\n\u001b[31m+   Page must have a level-one heading\",\u001b[39m\n\u001b[31m+         \"html\": \"<html lang=\\\"en\\\" class=\\\"h-full\\\">\",\u001b[39m\n\u001b[31m+         \"impact\": \"moderate\",\u001b[39m\n\u001b[31m+         \"none\": Array [],\u001b[39m\n\u001b[31m+         \"target\": Array [\u001b[39m\n\u001b[31m+           \"html\",\u001b[39m\n\u001b[31m+         ],\u001b[39m\n\u001b[31m+       },\u001b[39m\n\u001b[31m+     ],\u001b[39m\n\u001b[31m+     \"tags\": Array [\u001b[39m\n\u001b[31m+       \"cat.semantics\",\u001b[39m\n\u001b[31m+       \"best-practice\",\u001b[39m\n\u001b[31m+     ],\u001b[39m\n\u001b[31m+   },\u001b[39m\n\u001b[31m+   Object {\u001b[39m\n\u001b[31m+     \"description\": \"Ensure all page content is contained by landmarks\",\u001b[39m\n\u001b[31m+     \"help\": \"All page content should be contained by landmarks\",\u001b[39m\n\u001b[31m+     \"helpUrl\": \"https://dequeuniversity.com/rules/axe/4.10/region?application=playwright\",\u001b[39m\n\u001b[31m+     \"id\": \"region\",\u001b[39m\n\u001b[31m+     \"impact\": \"moderate\",\u001b[39m\n\u001b[31m+     \"nodes\": Array [\u001b[39m\n\u001b[31m+       Object {\u001b[39m\n\u001b[31m+         \"all\": Array [],\u001b[39m\n\u001b[31m+         \"any\": Array [\u001b[39m\n\u001b[31m+           Object {\u001b[39m\n\u001b[31m+             \"data\": Object {\u001b[39m\n\u001b[31m+               \"isIframe\": false,\u001b[39m\n\u001b[31m+             },\u001b[39m\n\u001b[31m+             \"id\": \"region\",\u001b[39m\n\u001b[31m+             \"impact\": \"moderate\",\u001b[39m\n\u001b[31m+             \"message\": \"Some page content is not contained by landmarks\",\u001b[39m\n\u001b[31m+             \"relatedNodes\": Array [],\u001b[39m\n\u001b[31m+           },\u001b[39m\n\u001b[31m+         ],\u001b[39m\n\u001b[31m+         \"failureSummary\": \"Fix any of the following:\u001b[39m\n\u001b[31m+   Some page content is not contained by landmarks\",\u001b[39m\n\u001b[31m+         \"html\": \"<div id=\\\"root\\\" class=\\\"h-full\\\">\",\u001b[39m\n\u001b[31m+         \"impact\": \"moderate\",\u001b[39m\n\u001b[31m+         \"none\": Array [],\u001b[39m\n\u001b[31m+         \"target\": Array [\u001b[39m\n\u001b[31m+           \"#root\",\u001b[39m\n\u001b[31m+         ],\u001b[39m\n\u001b[31m+       },\u001b[39m\n\u001b[31m+     ],\u001b[39m\n\u001b[31m+     \"tags\": Array [\u001b[39m\n\u001b[31m+       \"cat.keyboard\",\u001b[39m\n\u001b[31m+       \"best-practice\",\u001b[39m\n\u001b[31m+     ],\u001b[39m\n\u001b[31m+   },\u001b[39m\n\u001b[31m+ ]\u001b[39m\n    at /home/runner/work/macpro-mako/macpro-mako/test/e2e/non-func/a11y/index.spec.ts:17:51",
@@ -1829,7 +1829,7 @@
                       ],
                       "stderr": [],
                       "retry": 1,
-                      "startTime": "2025-04-10T20:08:35.949Z",
+                      "startTime": "2025-04-10T20:19:18.353Z",
                       "attachments": [
                         {
                           "name": "trace",
@@ -1846,7 +1846,7 @@
                     {
                       "workerIndex": 3,
                       "status": "failed",
-                      "duration": 1658,
+                      "duration": 1813,
                       "error": {
                         "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoEqual\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // deep equality\u001b[22m\n\n\u001b[32m- Expected  -   1\u001b[39m\n\u001b[31m+ Received  + 103\u001b[39m\n\n\u001b[32m- Array []\u001b[39m\n\u001b[31m+ Array [\u001b[39m\n\u001b[31m+   Object {\u001b[39m\n\u001b[31m+     \"description\": \"Ensure the document has a main landmark\",\u001b[39m\n\u001b[31m+     \"help\": \"Document should have one main landmark\",\u001b[39m\n\u001b[31m+     \"helpUrl\": \"https://dequeuniversity.com/rules/axe/4.10/landmark-one-main?application=playwright\",\u001b[39m\n\u001b[31m+     \"id\": \"landmark-one-main\",\u001b[39m\n\u001b[31m+     \"impact\": \"moderate\",\u001b[39m\n\u001b[31m+     \"nodes\": Array [\u001b[39m\n\u001b[31m+       Object {\u001b[39m\n\u001b[31m+         \"all\": Array [\u001b[39m\n\u001b[31m+           Object {\u001b[39m\n\u001b[31m+             \"data\": null,\u001b[39m\n\u001b[31m+             \"id\": \"page-has-main\",\u001b[39m\n\u001b[31m+             \"impact\": \"moderate\",\u001b[39m\n\u001b[31m+             \"message\": \"Document does not have a main landmark\",\u001b[39m\n\u001b[31m+             \"relatedNodes\": Array [],\u001b[39m\n\u001b[31m+           },\u001b[39m\n\u001b[31m+         ],\u001b[39m\n\u001b[31m+         \"any\": Array [],\u001b[39m\n\u001b[31m+         \"failureSummary\": \"Fix all of the following:\u001b[39m\n\u001b[31m+   Document does not have a main landmark\",\u001b[39m\n\u001b[31m+         \"html\": \"<html lang=\\\"en\\\" class=\\\"h-full\\\">\",\u001b[39m\n\u001b[31m+         \"impact\": \"moderate\",\u001b[39m\n\u001b[31m+         \"none\": Array [],\u001b[39m\n\u001b[31m+         \"target\": Array [\u001b[39m\n\u001b[31m+           \"html\",\u001b[39m\n\u001b[31m+         ],\u001b[39m\n\u001b[31m+       },\u001b[39m\n\u001b[31m+     ],\u001b[39m\n\u001b[31m+     \"tags\": Array [\u001b[39m\n\u001b[31m+       \"cat.semantics\",\u001b[39m\n\u001b[31m+       \"best-practice\",\u001b[39m\n\u001b[31m+     ],\u001b[39m\n\u001b[31m+   },\u001b[39m\n\u001b[31m+   Object {\u001b[39m\n\u001b[31m+     \"description\": \"Ensure that the page, or at least one of its frames contains a level-one heading\",\u001b[39m\n\u001b[31m+     \"help\": \"Page should contain a level-one heading\",\u001b[39m\n\u001b[31m+     \"helpUrl\": \"https://dequeuniversity.com/rules/axe/4.10/page-has-heading-one?application=playwright\",\u001b[39m\n\u001b[31m+     \"id\": \"page-has-heading-one\",\u001b[39m\n\u001b[31m+     \"impact\": \"moderate\",\u001b[39m\n\u001b[31m+     \"nodes\": Array [\u001b[39m\n\u001b[31m+       Object {\u001b[39m\n\u001b[31m+         \"all\": Array [\u001b[39m\n\u001b[31m+           Object {\u001b[39m\n\u001b[31m+             \"data\": null,\u001b[39m\n\u001b[31m+             \"id\": \"page-has-heading-one\",\u001b[39m\n\u001b[31m+             \"impact\": \"moderate\",\u001b[39m\n\u001b[31m+             \"message\": \"Page must have a level-one heading\",\u001b[39m\n\u001b[31m+             \"relatedNodes\": Array [],\u001b[39m\n\u001b[31m+           },\u001b[39m\n\u001b[31m+         ],\u001b[39m\n\u001b[31m+         \"any\": Array [],\u001b[39m\n\u001b[31m+         \"failureSummary\": \"Fix all of the following:\u001b[39m\n\u001b[31m+   Page must have a level-one heading\",\u001b[39m\n\u001b[31m+         \"html\": \"<html lang=\\\"en\\\" class=\\\"h-full\\\">\",\u001b[39m\n\u001b[31m+         \"impact\": \"moderate\",\u001b[39m\n\u001b[31m+         \"none\": Array [],\u001b[39m\n\u001b[31m+         \"target\": Array [\u001b[39m\n\u001b[31m+           \"html\",\u001b[39m\n\u001b[31m+         ],\u001b[39m\n\u001b[31m+       },\u001b[39m\n\u001b[31m+     ],\u001b[39m\n\u001b[31m+     \"tags\": Array [\u001b[39m\n\u001b[31m+       \"cat.semantics\",\u001b[39m\n\u001b[31m+       \"best-practice\",\u001b[39m\n\u001b[31m+     ],\u001b[39m\n\u001b[31m+   },\u001b[39m\n\u001b[31m+   Object {\u001b[39m\n\u001b[31m+     \"description\": \"Ensure all page content is contained by landmarks\",\u001b[39m\n\u001b[31m+     \"help\": \"All page content should be contained by landmarks\",\u001b[39m\n\u001b[31m+     \"helpUrl\": \"https://dequeuniversity.com/rules/axe/4.10/region?application=playwright\",\u001b[39m\n\u001b[31m+     \"id\": \"region\",\u001b[39m\n\u001b[31m+     \"impact\": \"moderate\",\u001b[39m\n\u001b[31m+     \"nodes\": Array [\u001b[39m\n\u001b[31m+       Object {\u001b[39m\n\u001b[31m+         \"all\": Array [],\u001b[39m\n\u001b[31m+         \"any\": Array [\u001b[39m\n\u001b[31m+           Object {\u001b[39m\n\u001b[31m+             \"data\": Object {\u001b[39m\n\u001b[31m+               \"isIframe\": false,\u001b[39m\n\u001b[31m+             },\u001b[39m\n\u001b[31m+             \"id\": \"region\",\u001b[39m\n\u001b[31m+             \"impact\": \"moderate\",\u001b[39m\n\u001b[31m+             \"message\": \"Some page content is not contained by landmarks\",\u001b[39m\n\u001b[31m+             \"relatedNodes\": Array [],\u001b[39m\n\u001b[31m+           },\u001b[39m\n\u001b[31m+         ],\u001b[39m\n\u001b[31m+         \"failureSummary\": \"Fix any of the following:\u001b[39m\n\u001b[31m+   Some page content is not contained by landmarks\",\u001b[39m\n\u001b[31m+         \"html\": \"<div id=\\\"root\\\" class=\\\"h-full\\\">\",\u001b[39m\n\u001b[31m+         \"impact\": \"moderate\",\u001b[39m\n\u001b[31m+         \"none\": Array [],\u001b[39m\n\u001b[31m+         \"target\": Array [\u001b[39m\n\u001b[31m+           \"#root\",\u001b[39m\n\u001b[31m+         ],\u001b[39m\n\u001b[31m+       },\u001b[39m\n\u001b[31m+     ],\u001b[39m\n\u001b[31m+     \"tags\": Array [\u001b[39m\n\u001b[31m+       \"cat.keyboard\",\u001b[39m\n\u001b[31m+       \"best-practice\",\u001b[39m\n\u001b[31m+     ],\u001b[39m\n\u001b[31m+   },\u001b[39m\n\u001b[31m+ ]\u001b[39m",
                         "stack": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoEqual\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // deep equality\u001b[22m\n\n\u001b[32m- Expected  -   1\u001b[39m\n\u001b[31m+ Received  + 103\u001b[39m\n\n\u001b[32m- Array []\u001b[39m\n\u001b[31m+ Array [\u001b[39m\n\u001b[31m+   Object {\u001b[39m\n\u001b[31m+     \"description\": \"Ensure the document has a main landmark\",\u001b[39m\n\u001b[31m+     \"help\": \"Document should have one main landmark\",\u001b[39m\n\u001b[31m+     \"helpUrl\": \"https://dequeuniversity.com/rules/axe/4.10/landmark-one-main?application=playwright\",\u001b[39m\n\u001b[31m+     \"id\": \"landmark-one-main\",\u001b[39m\n\u001b[31m+     \"impact\": \"moderate\",\u001b[39m\n\u001b[31m+     \"nodes\": Array [\u001b[39m\n\u001b[31m+       Object {\u001b[39m\n\u001b[31m+         \"all\": Array [\u001b[39m\n\u001b[31m+           Object {\u001b[39m\n\u001b[31m+             \"data\": null,\u001b[39m\n\u001b[31m+             \"id\": \"page-has-main\",\u001b[39m\n\u001b[31m+             \"impact\": \"moderate\",\u001b[39m\n\u001b[31m+             \"message\": \"Document does not have a main landmark\",\u001b[39m\n\u001b[31m+             \"relatedNodes\": Array [],\u001b[39m\n\u001b[31m+           },\u001b[39m\n\u001b[31m+         ],\u001b[39m\n\u001b[31m+         \"any\": Array [],\u001b[39m\n\u001b[31m+         \"failureSummary\": \"Fix all of the following:\u001b[39m\n\u001b[31m+   Document does not have a main landmark\",\u001b[39m\n\u001b[31m+         \"html\": \"<html lang=\\\"en\\\" class=\\\"h-full\\\">\",\u001b[39m\n\u001b[31m+         \"impact\": \"moderate\",\u001b[39m\n\u001b[31m+         \"none\": Array [],\u001b[39m\n\u001b[31m+         \"target\": Array [\u001b[39m\n\u001b[31m+           \"html\",\u001b[39m\n\u001b[31m+         ],\u001b[39m\n\u001b[31m+       },\u001b[39m\n\u001b[31m+     ],\u001b[39m\n\u001b[31m+     \"tags\": Array [\u001b[39m\n\u001b[31m+       \"cat.semantics\",\u001b[39m\n\u001b[31m+       \"best-practice\",\u001b[39m\n\u001b[31m+     ],\u001b[39m\n\u001b[31m+   },\u001b[39m\n\u001b[31m+   Object {\u001b[39m\n\u001b[31m+     \"description\": \"Ensure that the page, or at least one of its frames contains a level-one heading\",\u001b[39m\n\u001b[31m+     \"help\": \"Page should contain a level-one heading\",\u001b[39m\n\u001b[31m+     \"helpUrl\": \"https://dequeuniversity.com/rules/axe/4.10/page-has-heading-one?application=playwright\",\u001b[39m\n\u001b[31m+     \"id\": \"page-has-heading-one\",\u001b[39m\n\u001b[31m+     \"impact\": \"moderate\",\u001b[39m\n\u001b[31m+     \"nodes\": Array [\u001b[39m\n\u001b[31m+       Object {\u001b[39m\n\u001b[31m+         \"all\": Array [\u001b[39m\n\u001b[31m+           Object {\u001b[39m\n\u001b[31m+             \"data\": null,\u001b[39m\n\u001b[31m+             \"id\": \"page-has-heading-one\",\u001b[39m\n\u001b[31m+             \"impact\": \"moderate\",\u001b[39m\n\u001b[31m+             \"message\": \"Page must have a level-one heading\",\u001b[39m\n\u001b[31m+             \"relatedNodes\": Array [],\u001b[39m\n\u001b[31m+           },\u001b[39m\n\u001b[31m+         ],\u001b[39m\n\u001b[31m+         \"any\": Array [],\u001b[39m\n\u001b[31m+         \"failureSummary\": \"Fix all of the following:\u001b[39m\n\u001b[31m+   Page must have a level-one heading\",\u001b[39m\n\u001b[31m+         \"html\": \"<html lang=\\\"en\\\" class=\\\"h-full\\\">\",\u001b[39m\n\u001b[31m+         \"impact\": \"moderate\",\u001b[39m\n\u001b[31m+         \"none\": Array [],\u001b[39m\n\u001b[31m+         \"target\": Array [\u001b[39m\n\u001b[31m+           \"html\",\u001b[39m\n\u001b[31m+         ],\u001b[39m\n\u001b[31m+       },\u001b[39m\n\u001b[31m+     ],\u001b[39m\n\u001b[31m+     \"tags\": Array [\u001b[39m\n\u001b[31m+       \"cat.semantics\",\u001b[39m\n\u001b[31m+       \"best-practice\",\u001b[39m\n\u001b[31m+     ],\u001b[39m\n\u001b[31m+   },\u001b[39m\n\u001b[31m+   Object {\u001b[39m\n\u001b[31m+     \"description\": \"Ensure all page content is contained by landmarks\",\u001b[39m\n\u001b[31m+     \"help\": \"All page content should be contained by landmarks\",\u001b[39m\n\u001b[31m+     \"helpUrl\": \"https://dequeuniversity.com/rules/axe/4.10/region?application=playwright\",\u001b[39m\n\u001b[31m+     \"id\": \"region\",\u001b[39m\n\u001b[31m+     \"impact\": \"moderate\",\u001b[39m\n\u001b[31m+     \"nodes\": Array [\u001b[39m\n\u001b[31m+       Object {\u001b[39m\n\u001b[31m+         \"all\": Array [],\u001b[39m\n\u001b[31m+         \"any\": Array [\u001b[39m\n\u001b[31m+           Object {\u001b[39m\n\u001b[31m+             \"data\": Object {\u001b[39m\n\u001b[31m+               \"isIframe\": false,\u001b[39m\n\u001b[31m+             },\u001b[39m\n\u001b[31m+             \"id\": \"region\",\u001b[39m\n\u001b[31m+             \"impact\": \"moderate\",\u001b[39m\n\u001b[31m+             \"message\": \"Some page content is not contained by landmarks\",\u001b[39m\n\u001b[31m+             \"relatedNodes\": Array [],\u001b[39m\n\u001b[31m+           },\u001b[39m\n\u001b[31m+         ],\u001b[39m\n\u001b[31m+         \"failureSummary\": \"Fix any of the following:\u001b[39m\n\u001b[31m+   Some page content is not contained by landmarks\",\u001b[39m\n\u001b[31m+         \"html\": \"<div id=\\\"root\\\" class=\\\"h-full\\\">\",\u001b[39m\n\u001b[31m+         \"impact\": \"moderate\",\u001b[39m\n\u001b[31m+         \"none\": Array [],\u001b[39m\n\u001b[31m+         \"target\": Array [\u001b[39m\n\u001b[31m+           \"#root\",\u001b[39m\n\u001b[31m+         ],\u001b[39m\n\u001b[31m+       },\u001b[39m\n\u001b[31m+     ],\u001b[39m\n\u001b[31m+     \"tags\": Array [\u001b[39m\n\u001b[31m+       \"cat.keyboard\",\u001b[39m\n\u001b[31m+       \"best-practice\",\u001b[39m\n\u001b[31m+     ],\u001b[39m\n\u001b[31m+   },\u001b[39m\n\u001b[31m+ ]\u001b[39m\n    at /home/runner/work/macpro-mako/macpro-mako/test/e2e/non-func/a11y/index.spec.ts:17:51",
@@ -1874,7 +1874,7 @@
                       ],
                       "stderr": [],
                       "retry": 2,
-                      "startTime": "2025-04-10T20:08:39.505Z",
+                      "startTime": "2025-04-10T20:19:21.956Z",
                       "attachments": [],
                       "errorLocation": {
                         "file": "/home/runner/work/macpro-mako/macpro-mako/test/e2e/non-func/a11y/index.spec.ts",
@@ -1909,7 +1909,7 @@
                     {
                       "workerIndex": 4,
                       "status": "passed",
-                      "duration": 2116,
+                      "duration": 2064,
                       "errors": [],
                       "stdout": [
                         {
@@ -1918,7 +1918,7 @@
                       ],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2025-04-10T20:08:42.387Z",
+                      "startTime": "2025-04-10T20:19:25.032Z",
                       "attachments": []
                     }
                   ],
@@ -1948,7 +1948,7 @@
                     {
                       "workerIndex": 4,
                       "status": "passed",
-                      "duration": 1863,
+                      "duration": 1950,
                       "errors": [],
                       "stdout": [
                         {
@@ -1957,7 +1957,7 @@
                       ],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2025-04-10T20:08:44.644Z",
+                      "startTime": "2025-04-10T20:19:27.239Z",
                       "attachments": []
                     }
                   ],
@@ -1987,7 +1987,7 @@
                     {
                       "workerIndex": 4,
                       "status": "passed",
-                      "duration": 1936,
+                      "duration": 1956,
                       "errors": [],
                       "stdout": [
                         {
@@ -1996,7 +1996,7 @@
                       ],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2025-04-10T20:08:46.513Z",
+                      "startTime": "2025-04-10T20:19:29.195Z",
                       "attachments": []
                     }
                   ],
@@ -2026,7 +2026,7 @@
                     {
                       "workerIndex": 4,
                       "status": "passed",
-                      "duration": 1930,
+                      "duration": 1959,
                       "errors": [],
                       "stdout": [
                         {
@@ -2035,7 +2035,7 @@
                       ],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2025-04-10T20:08:48.455Z",
+                      "startTime": "2025-04-10T20:19:31.158Z",
                       "attachments": []
                     }
                   ],
@@ -2065,7 +2065,7 @@
                     {
                       "workerIndex": 4,
                       "status": "passed",
-                      "duration": 1874,
+                      "duration": 1925,
                       "errors": [],
                       "stdout": [
                         {
@@ -2074,7 +2074,7 @@
                       ],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2025-04-10T20:08:50.391Z",
+                      "startTime": "2025-04-10T20:19:33.123Z",
                       "attachments": []
                     }
                   ],
@@ -2104,7 +2104,7 @@
                     {
                       "workerIndex": 4,
                       "status": "passed",
-                      "duration": 1946,
+                      "duration": 1890,
                       "errors": [],
                       "stdout": [
                         {
@@ -2113,7 +2113,7 @@
                       ],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2025-04-10T20:08:52.271Z",
+                      "startTime": "2025-04-10T20:19:35.057Z",
                       "attachments": []
                     }
                   ],
@@ -2143,7 +2143,7 @@
                     {
                       "workerIndex": 4,
                       "status": "passed",
-                      "duration": 1863,
+                      "duration": 1892,
                       "errors": [],
                       "stdout": [
                         {
@@ -2152,7 +2152,7 @@
                       ],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2025-04-10T20:08:54.223Z",
+                      "startTime": "2025-04-10T20:19:36.952Z",
                       "attachments": []
                     }
                   ],
@@ -2182,7 +2182,7 @@
                     {
                       "workerIndex": 4,
                       "status": "passed",
-                      "duration": 1900,
+                      "duration": 1908,
                       "errors": [],
                       "stdout": [
                         {
@@ -2191,7 +2191,7 @@
                       ],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2025-04-10T20:08:56.092Z",
+                      "startTime": "2025-04-10T20:19:38.850Z",
                       "attachments": []
                     }
                   ],
@@ -2221,7 +2221,7 @@
                     {
                       "workerIndex": 4,
                       "status": "passed",
-                      "duration": 1786,
+                      "duration": 1616,
                       "errors": [],
                       "stdout": [
                         {
@@ -2230,7 +2230,7 @@
                       ],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2025-04-10T20:08:57.998Z",
+                      "startTime": "2025-04-10T20:19:40.764Z",
                       "attachments": []
                     }
                   ],
@@ -2260,7 +2260,7 @@
                     {
                       "workerIndex": 4,
                       "status": "passed",
-                      "duration": 1789,
+                      "duration": 1834,
                       "errors": [],
                       "stdout": [
                         {
@@ -2269,7 +2269,7 @@
                       ],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2025-04-10T20:08:59.789Z",
+                      "startTime": "2025-04-10T20:19:42.385Z",
                       "attachments": []
                     }
                   ],
@@ -2299,7 +2299,7 @@
                     {
                       "workerIndex": 4,
                       "status": "passed",
-                      "duration": 1778,
+                      "duration": 1781,
                       "errors": [],
                       "stdout": [
                         {
@@ -2308,7 +2308,7 @@
                       ],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2025-04-10T20:09:01.583Z",
+                      "startTime": "2025-04-10T20:19:44.224Z",
                       "attachments": []
                     }
                   ],
@@ -2338,7 +2338,7 @@
                     {
                       "workerIndex": 4,
                       "status": "passed",
-                      "duration": 1942,
+                      "duration": 1904,
                       "errors": [],
                       "stdout": [
                         {
@@ -2347,7 +2347,7 @@
                       ],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2025-04-10T20:09:03.366Z",
+                      "startTime": "2025-04-10T20:19:46.010Z",
                       "attachments": []
                     }
                   ],
@@ -2377,7 +2377,7 @@
                     {
                       "workerIndex": 4,
                       "status": "passed",
-                      "duration": 1877,
+                      "duration": 1884,
                       "errors": [],
                       "stdout": [
                         {
@@ -2386,7 +2386,7 @@
                       ],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2025-04-10T20:09:05.313Z",
+                      "startTime": "2025-04-10T20:19:47.921Z",
                       "attachments": []
                     }
                   ],
@@ -2416,7 +2416,7 @@
                     {
                       "workerIndex": 4,
                       "status": "passed",
-                      "duration": 1874,
+                      "duration": 1868,
                       "errors": [],
                       "stdout": [
                         {
@@ -2425,7 +2425,7 @@
                       ],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2025-04-10T20:09:07.195Z",
+                      "startTime": "2025-04-10T20:19:49.809Z",
                       "attachments": []
                     }
                   ],
@@ -2455,7 +2455,7 @@
                     {
                       "workerIndex": 4,
                       "status": "passed",
-                      "duration": 1929,
+                      "duration": 1926,
                       "errors": [],
                       "stdout": [
                         {
@@ -2464,7 +2464,7 @@
                       ],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2025-04-10T20:09:09.074Z",
+                      "startTime": "2025-04-10T20:19:51.683Z",
                       "attachments": []
                     }
                   ],
@@ -2494,7 +2494,7 @@
                     {
                       "workerIndex": 4,
                       "status": "passed",
-                      "duration": 1890,
+                      "duration": 1894,
                       "errors": [],
                       "stdout": [
                         {
@@ -2503,7 +2503,7 @@
                       ],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2025-04-10T20:09:11.008Z",
+                      "startTime": "2025-04-10T20:19:53.614Z",
                       "attachments": []
                     }
                   ],
@@ -2533,7 +2533,7 @@
                     {
                       "workerIndex": 4,
                       "status": "passed",
-                      "duration": 1928,
+                      "duration": 1872,
                       "errors": [],
                       "stdout": [
                         {
@@ -2542,7 +2542,7 @@
                       ],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2025-04-10T20:09:12.904Z",
+                      "startTime": "2025-04-10T20:19:55.517Z",
                       "attachments": []
                     }
                   ],
@@ -2572,7 +2572,7 @@
                     {
                       "workerIndex": 4,
                       "status": "passed",
-                      "duration": 1909,
+                      "duration": 1892,
                       "errors": [],
                       "stdout": [
                         {
@@ -2581,7 +2581,7 @@
                       ],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2025-04-10T20:09:14.845Z",
+                      "startTime": "2025-04-10T20:19:57.395Z",
                       "attachments": []
                     }
                   ],
@@ -2611,7 +2611,7 @@
                     {
                       "workerIndex": 4,
                       "status": "passed",
-                      "duration": 1904,
+                      "duration": 1897,
                       "errors": [],
                       "stdout": [
                         {
@@ -2620,7 +2620,7 @@
                       ],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2025-04-10T20:09:16.759Z",
+                      "startTime": "2025-04-10T20:19:59.292Z",
                       "attachments": []
                     }
                   ],
@@ -2650,7 +2650,7 @@
                     {
                       "workerIndex": 4,
                       "status": "passed",
-                      "duration": 1865,
+                      "duration": 1866,
                       "errors": [],
                       "stdout": [
                         {
@@ -2659,7 +2659,7 @@
                       ],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2025-04-10T20:09:18.672Z",
+                      "startTime": "2025-04-10T20:20:01.195Z",
                       "attachments": []
                     }
                   ],
@@ -2689,7 +2689,7 @@
                     {
                       "workerIndex": 4,
                       "status": "passed",
-                      "duration": 1904,
+                      "duration": 1866,
                       "errors": [],
                       "stdout": [
                         {
@@ -2698,7 +2698,7 @@
                       ],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2025-04-10T20:09:20.542Z",
+                      "startTime": "2025-04-10T20:20:03.066Z",
                       "attachments": []
                     }
                   ],
@@ -2736,7 +2736,7 @@
                     {
                       "workerIndex": 4,
                       "status": "passed",
-                      "duration": 3389,
+                      "duration": 3395,
                       "errors": [],
                       "stdout": [
                         {
@@ -2745,7 +2745,7 @@
                       ],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2025-04-10T20:09:22.452Z",
+                      "startTime": "2025-04-10T20:20:04.936Z",
                       "attachments": []
                     }
                   ],
@@ -2775,7 +2775,7 @@
                     {
                       "workerIndex": 4,
                       "status": "passed",
-                      "duration": 3215,
+                      "duration": 3217,
                       "errors": [],
                       "stdout": [
                         {
@@ -2784,7 +2784,7 @@
                       ],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2025-04-10T20:09:25.845Z",
+                      "startTime": "2025-04-10T20:20:08.336Z",
                       "attachments": []
                     }
                   ],
@@ -2814,7 +2814,7 @@
                     {
                       "workerIndex": 4,
                       "status": "passed",
-                      "duration": 3208,
+                      "duration": 3228,
                       "errors": [],
                       "stdout": [
                         {
@@ -2823,7 +2823,7 @@
                       ],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2025-04-10T20:09:29.066Z",
+                      "startTime": "2025-04-10T20:20:11.558Z",
                       "attachments": []
                     }
                   ],
@@ -2853,7 +2853,7 @@
                     {
                       "workerIndex": 4,
                       "status": "passed",
-                      "duration": 3213,
+                      "duration": 3230,
                       "errors": [],
                       "stdout": [
                         {
@@ -2862,7 +2862,7 @@
                       ],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2025-04-10T20:09:32.279Z",
+                      "startTime": "2025-04-10T20:20:14.791Z",
                       "attachments": []
                     }
                   ],
@@ -2892,7 +2892,7 @@
                     {
                       "workerIndex": 4,
                       "status": "passed",
-                      "duration": 3198,
+                      "duration": 3254,
                       "errors": [],
                       "stdout": [
                         {
@@ -2901,7 +2901,7 @@
                       ],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2025-04-10T20:09:35.500Z",
+                      "startTime": "2025-04-10T20:20:18.028Z",
                       "attachments": []
                     }
                   ],
@@ -2931,7 +2931,7 @@
                     {
                       "workerIndex": 4,
                       "status": "passed",
-                      "duration": 3217,
+                      "duration": 3258,
                       "errors": [],
                       "stdout": [
                         {
@@ -2940,7 +2940,7 @@
                       ],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2025-04-10T20:09:38.703Z",
+                      "startTime": "2025-04-10T20:20:21.287Z",
                       "attachments": []
                     }
                   ],
@@ -2970,7 +2970,7 @@
                     {
                       "workerIndex": 4,
                       "status": "passed",
-                      "duration": 3272,
+                      "duration": 3246,
                       "errors": [],
                       "stdout": [
                         {
@@ -2979,7 +2979,7 @@
                       ],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2025-04-10T20:09:41.926Z",
+                      "startTime": "2025-04-10T20:20:24.550Z",
                       "attachments": []
                     }
                   ],
@@ -3009,7 +3009,7 @@
                     {
                       "workerIndex": 4,
                       "status": "passed",
-                      "duration": 3272,
+                      "duration": 3250,
                       "errors": [],
                       "stdout": [
                         {
@@ -3018,7 +3018,7 @@
                       ],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2025-04-10T20:09:45.203Z",
+                      "startTime": "2025-04-10T20:20:27.802Z",
                       "attachments": []
                     }
                   ],
@@ -3048,7 +3048,7 @@
                     {
                       "workerIndex": 4,
                       "status": "passed",
-                      "duration": 3212,
+                      "duration": 3236,
                       "errors": [],
                       "stdout": [
                         {
@@ -3057,7 +3057,7 @@
                       ],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2025-04-10T20:09:48.480Z",
+                      "startTime": "2025-04-10T20:20:31.058Z",
                       "attachments": []
                     }
                   ],
@@ -3087,7 +3087,7 @@
                     {
                       "workerIndex": 4,
                       "status": "passed",
-                      "duration": 3218,
+                      "duration": 3257,
                       "errors": [],
                       "stdout": [
                         {
@@ -3096,7 +3096,7 @@
                       ],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2025-04-10T20:09:51.698Z",
+                      "startTime": "2025-04-10T20:20:34.302Z",
                       "attachments": []
                     }
                   ],
@@ -3126,7 +3126,7 @@
                     {
                       "workerIndex": 4,
                       "status": "passed",
-                      "duration": 3225,
+                      "duration": 3297,
                       "errors": [],
                       "stdout": [
                         {
@@ -3135,7 +3135,7 @@
                       ],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2025-04-10T20:09:54.922Z",
+                      "startTime": "2025-04-10T20:20:37.565Z",
                       "attachments": []
                     }
                   ],
@@ -3165,7 +3165,7 @@
                     {
                       "workerIndex": 4,
                       "status": "passed",
-                      "duration": 3200,
+                      "duration": 3227,
                       "errors": [],
                       "stdout": [
                         {
@@ -3174,7 +3174,7 @@
                       ],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2025-04-10T20:09:58.152Z",
+                      "startTime": "2025-04-10T20:20:40.867Z",
                       "attachments": []
                     }
                   ],
@@ -3204,7 +3204,7 @@
                     {
                       "workerIndex": 4,
                       "status": "passed",
-                      "duration": 3192,
+                      "duration": 3211,
                       "errors": [],
                       "stdout": [
                         {
@@ -3213,7 +3213,7 @@
                       ],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2025-04-10T20:10:01.356Z",
+                      "startTime": "2025-04-10T20:20:44.100Z",
                       "attachments": []
                     }
                   ],
@@ -3243,7 +3243,7 @@
                     {
                       "workerIndex": 4,
                       "status": "passed",
-                      "duration": 3207,
+                      "duration": 3208,
                       "errors": [],
                       "stdout": [
                         {
@@ -3252,7 +3252,7 @@
                       ],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2025-04-10T20:10:04.554Z",
+                      "startTime": "2025-04-10T20:20:47.315Z",
                       "attachments": []
                     }
                   ],
@@ -3282,7 +3282,7 @@
                     {
                       "workerIndex": 4,
                       "status": "passed",
-                      "duration": 3225,
+                      "duration": 3204,
                       "errors": [],
                       "stdout": [
                         {
@@ -3291,7 +3291,7 @@
                       ],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2025-04-10T20:10:07.767Z",
+                      "startTime": "2025-04-10T20:20:50.528Z",
                       "attachments": []
                     }
                   ],
@@ -3321,7 +3321,7 @@
                     {
                       "workerIndex": 4,
                       "status": "passed",
-                      "duration": 3186,
+                      "duration": 3241,
                       "errors": [],
                       "stdout": [
                         {
@@ -3330,7 +3330,7 @@
                       ],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2025-04-10T20:10:10.997Z",
+                      "startTime": "2025-04-10T20:20:53.737Z",
                       "attachments": []
                     }
                   ],
@@ -3360,7 +3360,7 @@
                     {
                       "workerIndex": 4,
                       "status": "passed",
-                      "duration": 3188,
+                      "duration": 3235,
                       "errors": [],
                       "stdout": [
                         {
@@ -3369,7 +3369,7 @@
                       ],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2025-04-10T20:10:14.189Z",
+                      "startTime": "2025-04-10T20:20:56.983Z",
                       "attachments": []
                     }
                   ],
@@ -3399,7 +3399,7 @@
                     {
                       "workerIndex": 4,
                       "status": "passed",
-                      "duration": 3247,
+                      "duration": 3219,
                       "errors": [],
                       "stdout": [
                         {
@@ -3408,7 +3408,7 @@
                       ],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2025-04-10T20:10:17.382Z",
+                      "startTime": "2025-04-10T20:21:00.222Z",
                       "attachments": []
                     }
                   ],
@@ -3438,7 +3438,7 @@
                     {
                       "workerIndex": 4,
                       "status": "passed",
-                      "duration": 3221,
+                      "duration": 3206,
                       "errors": [],
                       "stdout": [
                         {
@@ -3447,7 +3447,7 @@
                       ],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2025-04-10T20:10:20.634Z",
+                      "startTime": "2025-04-10T20:21:03.445Z",
                       "attachments": []
                     }
                   ],
@@ -3477,7 +3477,7 @@
                     {
                       "workerIndex": 4,
                       "status": "passed",
-                      "duration": 3190,
+                      "duration": 3224,
                       "errors": [],
                       "stdout": [
                         {
@@ -3486,7 +3486,7 @@
                       ],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2025-04-10T20:10:23.860Z",
+                      "startTime": "2025-04-10T20:21:06.656Z",
                       "attachments": []
                     }
                   ],
@@ -3516,7 +3516,7 @@
                     {
                       "workerIndex": 4,
                       "status": "passed",
-                      "duration": 3230,
+                      "duration": 3212,
                       "errors": [],
                       "stdout": [
                         {
@@ -3525,7 +3525,7 @@
                       ],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2025-04-10T20:10:27.055Z",
+                      "startTime": "2025-04-10T20:21:09.885Z",
                       "attachments": []
                     }
                   ],
@@ -3555,7 +3555,7 @@
                     {
                       "workerIndex": 4,
                       "status": "passed",
-                      "duration": 3250,
+                      "duration": 3236,
                       "errors": [],
                       "stdout": [
                         {
@@ -3564,7 +3564,7 @@
                       ],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2025-04-10T20:10:30.290Z",
+                      "startTime": "2025-04-10T20:21:13.102Z",
                       "attachments": []
                     }
                   ],
@@ -3583,8 +3583,8 @@
   ],
   "errors": [],
   "stats": {
-    "startTime": "2025-04-10T20:07:41.594Z",
-    "duration": 171996.129,
+    "startTime": "2025-04-10T20:18:24.074Z",
+    "duration": 172317.512,
     "expected": 82,
     "skipped": 2,
     "unexpected": 1,
