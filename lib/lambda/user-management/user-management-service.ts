@@ -16,7 +16,7 @@ export const getUsersByEmails = async (emails: string[]) => {
       bool: {
         should: emails.map((email) => ({
           term: {
-            _id: email,
+            email: email,
           },
         })),
       },
@@ -25,7 +25,7 @@ export const getUsersByEmails = async (emails: string[]) => {
 
   return results.hits.hits.reduce(
     (acc: any, hit: any) => {
-      acc[hit._id] = hit._source;
+      acc[hit._source.email] = hit._source;
       return acc;
     },
     {} as Record<string, { fullName?: string }>,
