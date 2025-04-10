@@ -38,12 +38,21 @@ export const getRoleRequests = async (event: APIGatewayEvent) => {
       roleRequests = await getAllUserRolesByState(stateSystemAdminRole.territory);
     }
 
-    const roleRequestsWithName = roleRequests.map(async (request) => {
-      const email = request.id.split("_")[0];
-      const fullName = await getUserByEmail(email);
-      console.log("WHAT IS FULL NAME", fullName);
-      request = { ...request };
-    });
+    if (!roleRequests || !Array.isArray(roleRequests)) {
+      return response({
+        statusCode: 400,
+        body: { message: "Error getting role requests " },
+      });
+    }
+
+    const roleRequestsWithName = await Promise.all(
+      roleRequests.map(async (request) => {
+        const email = request.id.split("_")[0];
+        const fullName = await getUserByEmail(email);
+        console.log("WHAT IS FULL NAME", fullName);
+        request = { ...request };
+      }),
+    );
 
     return response({
       statusCode: 200,
