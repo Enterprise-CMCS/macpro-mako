@@ -94,7 +94,7 @@ export const getUserRolesWithNames = async (roleRequests: any[]) => {
     throw new Error("No role requests found");
   }
 
-  const emails = roleRequests.map((role) => role._id?.split("_")[0]).filter(Boolean);
+  const emails = roleRequests.map((role) => role.email);
   console.log(emails, "EMAILSSS");
   const users = await getUsersByEmails(emails);
   console.log(users, "USERSSS");
