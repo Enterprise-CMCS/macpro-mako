@@ -13,13 +13,11 @@ import {
 } from "@/components";
 
 type UserRoleType = {
-  _id: string;
-  _source: {
-    fullName: string;
-    doneByName: string;
-    lastModifiedDate: number;
-    status: "active" | "pending" | "denied" | "revoked";
-  };
+  id: string;
+  fullName: string;
+  doneByName: string;
+  lastModifiedDate: number;
+  status: "active" | "pending" | "denied" | "revoked";
 };
 
 const pendingCircle = (
@@ -79,11 +77,11 @@ export const UserManagement = () => {
           <TableBody>
             {userRoles.map((userRole) => {
               return (
-                <TableRow key={userRole._id}>
-                  <TableCell>{userRole._source.fullName}</TableCell>
-                  <TableCell>{renderStatus(userRole._source.status)}</TableCell>
-                  <TableCell>{formatDate(userRole._source.lastModifiedDate)}</TableCell>
-                  <TableCell>{userRole._source.doneByName}</TableCell>
+                <TableRow key={userRole.id}>
+                  <TableCell>{userRole.fullName}</TableCell>
+                  <TableCell>{renderStatus(userRole.status)}</TableCell>
+                  <TableCell>{formatDate(userRole.lastModifiedDate)}</TableCell>
+                  <TableCell>{userRole.doneByName}</TableCell>
                 </TableRow>
               );
             })}

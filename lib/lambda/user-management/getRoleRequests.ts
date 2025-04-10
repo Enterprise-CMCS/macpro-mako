@@ -7,7 +7,6 @@ import {
   getAllUserRoles,
   getAllUserRolesByEmail,
   getAllUserRolesByState,
-  getUserByEmail,
   getUserRolesWithNames,
 } from "./user-management-service";
 
