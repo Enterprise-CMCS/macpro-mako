@@ -10,6 +10,7 @@ export type StateAccess = {
   status: string;
   role: string;
   territory: string;
+  fullName: string;
 };
 
 export type OneMacUserProfile = {

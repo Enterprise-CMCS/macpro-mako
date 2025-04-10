@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { RoleDescriptionStrings, STATE_CODES, StateCode } from "shared-types";
+import { FULL_CENSUS_STATES, RoleDescriptionStrings, StateCode } from "shared-types";
 
 import { useGetUser, useGetUserProfile } from "@/api";
 import { Alert, Button, CardWithTopBorder, SubNavHeader } from "@/components";
@@ -37,9 +37,11 @@ export const Profile = () => {
   // include denied or pending states as disabled?
   const statesToRequest: Option[] =
     isStateUser && stateAccess?.length
-      ? STATE_CODES.filter(
-          (state) => !stateAccess.some((request) => request.territory === state) && state !== "ZZ",
-        ).map((stateCode) => ({ label: stateCode, value: stateCode }))
+      ? FULL_CENSUS_STATES.filter(
+          (state) =>
+            !stateAccess.some((request) => request.territory === state.value) &&
+            state.value !== "ZZ",
+        ).map((stateObj) => ({ label: stateObj.label, value: stateObj.value }))
       : [];
 
   return (

@@ -7,6 +7,7 @@ import {
   getAllUserRoles,
   getAllUserRolesByEmail,
   getAllUserRolesByState,
+  getUserByEmail,
 } from "./user-management-service";
 
 export const getRoleRequests = async (event: APIGatewayEvent) => {
@@ -37,9 +38,16 @@ export const getRoleRequests = async (event: APIGatewayEvent) => {
       roleRequests = await getAllUserRolesByState(stateSystemAdminRole.territory);
     }
 
+    const roleRequestsWithName = roleRequests.map(async (request) => {
+      const email = request.id.split("_")[0];
+      const fullName = await getUserByEmail(email);
+      console.log("WHAT IS FULL NAME", fullName);
+      request = { ...request };
+    });
+
     return response({
       statusCode: 200,
-      body: roleRequests,
+      body: roleRequestsWithName,
     });
   } catch (err: unknown) {
     console.log("An error occured: ", err);
