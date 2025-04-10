@@ -16,7 +16,7 @@ export const getUsersByEmails = async (emails: string[]) => {
       bool: {
         should: emails.map((email) => ({
           term: {
-            email: email,
+            "email.keyword": email,
           },
         })),
       },
