@@ -3,6 +3,7 @@ import * as React from "react";
 
 import { cn } from "@/utils";
 
+// Table Docs - https://ui.shadcn.com/docs/components/table
 const Table = React.forwardRef<
   HTMLTableElement,
   React.HTMLAttributes<HTMLTableElement> & {
