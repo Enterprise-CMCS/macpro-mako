@@ -318,7 +318,7 @@ describe("ActionForm", () => {
       <ActionForm
         title="Action Form Title"
         schema={schema}
-        defaultValues={{ id: EXISTING_ITEM_PENDING_ID, event: "new-chip" }}
+        defaultValues={{ id: EXISTING_ITEM_PENDING_ID, event: "onemac-state-user" }}
         fields={() => null}
         documentPollerArgs={{
           property: "id",
