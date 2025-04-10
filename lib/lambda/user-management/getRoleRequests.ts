@@ -8,6 +8,7 @@ import {
   getAllUserRolesByEmail,
   getAllUserRolesByState,
   getUserByEmail,
+  getUserRolesWithNames,
 } from "./user-management-service";
 
 export const getRoleRequests = async (event: APIGatewayEvent) => {
@@ -45,14 +46,8 @@ export const getRoleRequests = async (event: APIGatewayEvent) => {
       });
     }
 
-    const roleRequestsWithName = await Promise.all(
-      roleRequests.map(async (request) => {
-        const email = request._id.split("_")[0];
-        const userObj = await getUserByEmail(email);
-        return { ...request, fullName: userObj?._source.fullName };
-      }),
-    );
-    console.log(roleRequestsWithName, "WITH NAME");
+    const roleRequestsWithName = getUserRolesWithNames(roleRequests);
+
     return response({
       statusCode: 200,
       body: roleRequestsWithName,

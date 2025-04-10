@@ -7,6 +7,31 @@ export const getUserByEmail = async (email: string) => {
   return await getItem(domain, index, email);
 };
 
+export const getUsersByEmails = async (emails: string[]) => {
+  const { domain, index } = getDomainAndNamespace("users");
+
+  const results = await search(domain, index, {
+    size: emails.length,
+    query: {
+      bool: {
+        should: emails.map((email) => ({
+          term: {
+            _id: email,
+          },
+        })),
+      },
+    },
+  });
+
+  return results.hits.hits.reduce(
+    (acc: any, hit: any) => {
+      acc[hit._id] = hit._source;
+      return acc;
+    },
+    {} as Record<string, { fullName?: string }>,
+  );
+};
+
 export const getAllUserRolesByEmail = async (email: string) => {
   const { domain, index } = getDomainAndNamespace("roles");
 
@@ -61,5 +86,29 @@ export const getAllUserRolesByState = async (state: string) => {
     },
   });
 
-  return results.hits.hits;
+  return results.hits.hits.map((hit: any) => ({ ...hit._source }));
+};
+
+export const getUserRolesWithNames = async (roleRequests: any[]) => {
+  if (!Array.isArray(roleRequests)) {
+    throw new Error("No role requests found");
+  }
+
+  const emails = roleRequests.map((role) => role._id?.split("_")[0]).filter(Boolean);
+
+  const users = await getUsersByEmails(emails);
+
+  const rolesWithName = roleRequests.map((roleObj) => {
+    const email = roleObj._id?.split("_")[0];
+    const user = users[email];
+    const fullName = user?.fullName || "Unknown";
+
+    return {
+      ...roleObj,
+      email,
+      fullName,
+    };
+  });
+
+  return rolesWithName;
 };
