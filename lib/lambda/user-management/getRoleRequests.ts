@@ -47,11 +47,8 @@ export const getRoleRequests = async (event: APIGatewayEvent) => {
 
     const roleRequestsWithName = await Promise.all(
       roleRequests.map(async (request) => {
-        console.log(request, "REQUEST??");
         const email = request._id.split("_")[0];
-        console.log(email, "EMAIL");
         const userObj = await getUserByEmail(email);
-        console.log("WHAT IS FULL NAME", userObj);
         return { ...request, fullName: userObj?._source.fullName };
       }),
     );
