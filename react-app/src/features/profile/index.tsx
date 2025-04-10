@@ -1,7 +1,10 @@
-import { RoleDescriptionStrings } from "shared-types";
+import { useState } from "react";
+import { RoleDescriptionStrings, STATE_CODES, StateCode } from "shared-types";
 
 import { useGetUser, useGetUserProfile } from "@/api";
 import { Alert, Button, CardWithTopBorder, SubNavHeader } from "@/components";
+import { Option } from "@/components/Opensearch/main/Filtering/Drawer/Filterable";
+import { FilterableSelect } from "@/components/Opensearch/main/Filtering/Drawer/Filterable";
 import config from "@/config";
 import { convertStateAbbrToFullName, stateAccessStatus } from "@/utils";
 
@@ -25,8 +28,19 @@ export const Profile = () => {
   const idmRoles = getRoleDescriptionsFromUser(userData?.user["custom:ismemberof"]);
   const isStateUser = userData?.user?.["custom:cms-roles"].includes("onemac-state-user");
   const stateAccess = userProfile?.stateAccess?.filter((access) => access.territory != "ZZ");
-
   const userRoles = euaRoles ? euaRoles : idmRoles;
+
+  const [showAddState, setShowAddState] = useState<boolean>(true);
+  const [requestedStates, setRequestedStates] = useState<StateCode[]>([]);
+
+  // move or fix
+  // include denied or pending states as disabled?
+  const statesToRequest: Option[] =
+    isStateUser && stateAccess?.length
+      ? STATE_CODES.filter(
+          (state) => !stateAccess.some((request) => request.territory === state) && state !== "ZZ",
+        ).map((stateCode) => ({ label: stateCode, value: stateCode }))
+      : [];
 
   return (
     <>
@@ -80,13 +94,13 @@ export const Profile = () => {
               <p>{userData?.user?.email}</p>
             </div>
           </div>
-
-          {isStateUser && stateAccess?.length && (
+          {/* State Access Management Section */}
+          {isStateUser && (
             <div className="flex flex-col gap-6 md:basis-1/2">
               <h2 className="text-2xl font-bold">State Access Management</h2>
-              {stateAccess.map((access) => {
+              {stateAccess?.map((access) => {
                 return (
-                  <CardWithTopBorder className="my-0">
+                  <CardWithTopBorder className="my-0" key={`${access.territory}-${access.role}`}>
                     <div className="p-8 min-h-36">
                       <h3 className="text-xl font-bold">
                         {convertStateAbbrToFullName(access.territory)}
@@ -102,6 +116,28 @@ export const Profile = () => {
                   </CardWithTopBorder>
                 );
               })}
+              {showAddState ? (
+                <Button onClick={() => setShowAddState(false)}>Add State</Button>
+              ) : (
+                <CardWithTopBorder>
+                  <div className="p-8 min-h-36">
+                    <h3 className="text-xl font-bold">Choose State Access</h3>
+                    <FilterableSelect
+                      value={requestedStates}
+                      options={statesToRequest}
+                      onChange={(values: StateCode[]) => setRequestedStates(values)}
+                    />
+                    <div className="block lg:mt-8 lg:mb-2">
+                      <span>
+                        <Button>Submit</Button>
+                        <Button variant="link" onClick={() => setShowAddState(true)}>
+                          Cancel
+                        </Button>
+                      </span>
+                    </div>
+                  </div>
+                </CardWithTopBorder>
+              )}
             </div>
           )}
         </div>
