@@ -26,8 +26,8 @@ const password = (
   )
 ).SecretString!;
 
-const stateSubmitterAuthFile = "../playwright/.auth/state-user.json";
-const reviewerAuthFile = "../playwright/.auth/reviewer-user.json";
+const stateSubmitterAuthFile = "./playwright/.auth/state-user.json";
+const reviewerAuthFile = "./playwright/.auth/reviewer-user.json";
 
 async function globalSetup(config: FullConfig) {
   const { baseURL } = config.projects[0].use;

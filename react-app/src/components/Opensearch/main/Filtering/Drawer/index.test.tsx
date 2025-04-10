@@ -132,7 +132,7 @@ describe("OsFilterDrawer", () => {
       await user.click(screen.queryByRole("button", { name: "Reset" }));
 
       expect(state.getAttribute("data-state")).toEqual("open");
-      await waitForElementToBeRemoved(within(state).queryByLabelText("Remove MD"));
+      expect(within(state).queryByLabelText("Remove MD")).toBeNull();
 
       expect(authority.getAttribute("data-state")).toEqual("open");
       expect(within(authority).queryByLabelText("CHIP SPA").getAttribute("data-state")).toEqual(
