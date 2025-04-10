@@ -1,7 +1,7 @@
 import AxeBuilder from "@axe-core/playwright";
 
-import { expect, test } from "../../e2e/fixtures/msw";
-import * as routes from "../../fixtures/routes";
+import { expect, test } from "@/fixtures/msw";
+import * as routes from "@/fixtures/routes";
 
 const STATIC_ROUTES = routes.STATIC;
 

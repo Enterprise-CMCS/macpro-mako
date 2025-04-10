@@ -19,8 +19,9 @@ const baseURL = process.env.STAGE_NAME
 
 console.log(`Playwright configured to run against ${baseURL}`);
 export default defineConfig({
+  testDir: "e2e/",
+  testMatch: "**/*.spec.ts",
   testIgnore: "**/*.test.{ts,tsx}",
-  testMatch: "*.spec.ts",
   // Global setup
   globalSetup: "./utils/auth.setup.ts",
   // need to find a reasonable timeout less than 30s
@@ -32,7 +33,7 @@ export default defineConfig({
   /* Retry on CI only */
   retries: process.env.CI ? 2 : 0,
   /* Opt out of parallel tests on CI. */
-  workers: process.env.CI ? 1 : undefined,
+  workers: 1, //process.env.CI ? 1 : undefined,
   /* Reporter to use. See https://playwright.dev/docs/test-reporters */
   // reporter: [["dot"], ["html"]],
   reporter: process.env.CI

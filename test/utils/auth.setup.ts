@@ -2,8 +2,12 @@ import { GetSecretValueCommand, SecretsManagerClient } from "@aws-sdk/client-sec
 import { GetParameterCommand, SSMClient } from "@aws-sdk/client-ssm";
 import { chromium, FullConfig } from "@playwright/test";
 
-import { LoginPage } from "../pages/loginPage";
-import { testUsers } from "./users";
+import { LoginPage } from "@/pages";
+
+const testUsers = {
+  state: "george@example.com",
+  reviewer: "reviewer@example.com",
+};
 
 const stage = process.env.STAGE_NAME || "main";
 const deploymentConfig = JSON.parse(
@@ -22,8 +26,8 @@ const password = (
   )
 ).SecretString!;
 
-const stateSubmitterAuthFile = "playwright/.auth/state-user.json";
-const reviewerAuthFile = "playwright/.auth/reviewer-user.json";
+const stateSubmitterAuthFile = "../playwright/.auth/state-user.json";
+const reviewerAuthFile = "../playwright/.auth/reviewer-user.json";
 
 async function globalSetup(config: FullConfig) {
   const { baseURL } = config.projects[0].use;

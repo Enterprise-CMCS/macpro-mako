@@ -1,17 +1,17 @@
 import { expect, test } from "@playwright/test";
 
-test.beforeEach(async ({ page }) => {
-  await page.goto("/");
-  await page.getByTestId("Dashboard-d").click();
-  await page.locator('a[href*="details/Medicaid%20SPA/CO-22-2020"]').click();
-  await page
-    .locator(
-      'a[href*="/actions/upload-subsequent-documents/Medicaid SPA/CO-22-2020?origin=details"]',
-    )
-    .click();
-});
-
 test.describe("UI - Validation", () => {
+  test.beforeEach(async ({ page }) => {
+    await page.goto("/");
+    await page.getByTestId("Dashboard-d").click();
+    await page.locator('a[href*="details/Medicaid%20SPA/CO-22-2020"]').click();
+    await page
+      .locator(
+        'a[href*="/actions/upload-subsequent-documents/Medicaid SPA/CO-22-2020?origin=details"]',
+      )
+      .click();
+  });
+
   test.describe("Breadcrumbs", () => {
     test("should displays breadcrumb elements", async ({ page }) => {
       // need a better selector

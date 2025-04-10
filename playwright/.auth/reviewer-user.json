@@ -1,0 +1,80 @@
+{
+  "cookies": [
+    {
+      "name": "csrf-state",
+      "value": "\"\"",
+      "domain": "playwright-launchdarkly-login-2a6h5ekup131c0ajka6molsjju.auth.us-east-1.amazoncognito.com",
+      "path": "/",
+      "expires": 1744309931.713187,
+      "httpOnly": true,
+      "secure": true,
+      "sameSite": "None"
+    },
+    {
+      "name": "csrf-state-legacy",
+      "value": "\"\"",
+      "domain": "playwright-launchdarkly-login-2a6h5ekup131c0ajka6molsjju.auth.us-east-1.amazoncognito.com",
+      "path": "/",
+      "expires": 1744309931.713278,
+      "httpOnly": true,
+      "secure": true,
+      "sameSite": "Lax"
+    },
+    {
+      "name": "XSRF-TOKEN",
+      "value": "59171198-5341-4493-ab0b-7bc07af603ad",
+      "domain": "playwright-launchdarkly-login-2a6h5ekup131c0ajka6molsjju.auth.us-east-1.amazoncognito.com",
+      "path": "/",
+      "expires": -1,
+      "httpOnly": true,
+      "secure": true,
+      "sameSite": "Lax"
+    },
+    {
+      "name": "cognito",
+      "value": "\"H4sIAAAAAAAAAAHeACH/OUG9l2GWEbLcgs39liilCQtoA4k0OhVr9a2Lqt2gtQgI11FSxTuYj2OPx+f4ylfe18LIww08LDZ1y4zh91Nv5SSPw4mRHbbAEeJ42hd4xNLOxJ35Xwj4drYgqH97dspU3L0z5+ZFfNE3HfJ89oOzvEwRtRRzaKvgZtiFcjy+Tm+uzJZfADprUTWRr7Kv8vBr+GzytFaAdPKWfT+I749yR662JdGm0r0hChJFe0q9Yy2z6n/LjJp47OQ8EmdJuUd+B3NpnsyJKhdwHuEu1wb8hrCXIL9MjUoWhyrrcNH0G5RVwN4AAAA=.H4sIAAAAAAAAAJNS2voxTrUusXqR6kL/wKBnx8u/MRp7lz/L6Vu2peyEfhkA0JLjfSAAAAA=.4\"",
+      "domain": ".playwright-launchdarkly-login-2a6h5ekup131c0ajka6molsjju.auth.us-east-1.amazoncognito.com",
+      "path": "/",
+      "expires": 1744313232.367974,
+      "httpOnly": true,
+      "secure": true,
+      "sameSite": "Lax"
+    }
+  ],
+  "origins": [
+    {
+      "origin": "http://localhost:5000",
+      "localStorage": [
+        {
+          "name": "ld:6638280397c1bc569aea5f3f:eyJhbm9ueW1vdXMiOnRydWUsImtpbmQiOiJ1c2VyIiwia2V5IjoiNmFjODE1ZDAtMTYzOS0xMWYwLTk3NTEtMGJlMWNjMjg2N2QwIn0=",
+          "value": "{\"SHOW_SUBMISSION_LOADER\":{\"version\":172,\"flagVersion\":3,\"value\":true,\"variation\":0,\"trackEvents\":false},\"cms-home-page\":{\"version\":172,\"flagVersion\":7,\"value\":\"off\",\"variation\":0,\"trackEvents\":false},\"COMPLETE_INTAKE\":{\"version\":172,\"flagVersion\":3,\"value\":false,\"variation\":1,\"trackEvents\":false},\"clear-data-button\":{\"version\":172,\"flagVersion\":3,\"value\":true,\"variation\":0,\"trackEvents\":false},\"toggleFaq\":{\"version\":172,\"flagVersion\":70,\"value\":true,\"variation\":0,\"trackEvents\":false},\"login-page\":{\"version\":172,\"flagVersion\":5,\"value\":true,\"variation\":0,\"trackEvents\":false},\"site-under-maintenance-banner\":{\"version\":172,\"flagVersion\":5,\"value\":\"SCHEDULED\",\"variation\":1,\"trackEvents\":false},\"perform-intake\":{\"version\":172,\"flagVersion\":4,\"value\":false,\"variation\":1,\"trackEvents\":false},\"uat-hide-mmdl-banner\":{\"version\":172,\"flagVersion\":81,\"value\":\"on\",\"variation\":1,\"trackEvents\":false},\"complete-intake\":{\"version\":172,\"flagVersion\":4,\"value\":true,\"variation\":0,\"trackEvents\":false},\"$schema\":1}"
+        },
+        {
+          "name": "ld:$anonUserId",
+          "value": "6ac815d0-1639-11f0-9751-0be1cc2867d0"
+        },
+        {
+          "name": "ld:6638280397c1bc569aea5f3f:$diagnostics",
+          "value": "{\"dataSinceDate\":1744309630898,\"droppedEvents\":0,\"eventsInLastBatch\":0,\"streamInits\":[]}"
+        },
+        {
+          "name": "banner",
+          "value": "null"
+        }
+      ]
+    },
+    {
+      "origin": "https://playwright-launchdarkly-login-2a6h5ekup131c0ajka6molsjju.auth.us-east-1.amazoncognito.com",
+      "localStorage": [
+        {
+          "name": "amznfbgid",
+          "value": "X76-4975243-3709976:1744309631"
+        },
+        {
+          "name": "Amazon.AWS.Cognito.ContextData.LS_UBID",
+          "value": "1hsgtsblqfqk3v6v9n3a:1744309631893"
+        }
+      ]
+    }
+  ]
+}
