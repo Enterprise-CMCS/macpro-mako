@@ -84,11 +84,13 @@ export const getSubmissionDetails: GetLabelAndValueFromSubmission = (submission,
     label: "Type",
     value: submission.types ? (
       <ul className="list-disc list-inside">
-        {submission.types.map((type) => (
-          <li className="mb-2" key={type?.SPA_TYPE_ID}>
-            {type?.SPA_TYPE_NAME}
-          </li>
-        ))}
+        {submission.types
+          .filter((type) => type?.SPA_TYPE_ID && type?.SPA_TYPE_NAME)
+          .map((type) => (
+            <li className="mb-2" key={type?.SPA_TYPE_ID}>
+              {type?.SPA_TYPE_NAME}
+            </li>
+          ))}
       </ul>
     ) : (
       BLANK_VALUE
@@ -100,11 +102,13 @@ export const getSubmissionDetails: GetLabelAndValueFromSubmission = (submission,
     label: "Subtype",
     value: submission.subTypes ? (
       <ul className="list-disc list-inside">
-        {submission.subTypes.map((T) => (
-          <li className="mb-2" key={T?.TYPE_ID}>
-            {T?.TYPE_NAME}
-          </li>
-        ))}
+        {submission.subTypes
+          .filter((T) => T?.TYPE_ID && T?.TYPE_NAME)
+          .map((T) => (
+            <li className="mb-2" key={T?.TYPE_ID}>
+              {T?.TYPE_NAME}
+            </li>
+          ))}
       </ul>
     ) : (
       BLANK_VALUE
