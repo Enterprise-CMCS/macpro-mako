@@ -1,4 +1,4 @@
-import { test } from "@playwright/test";
+import { test } from "@/fixtures/mocked";
 
 // TODO
 test.describe.skip("Submission Type page", { tag: ["@subtype"] }, () => {

@@ -158,7 +158,7 @@ jobs:
           fi
       - name: Rename Reports
         if: ${{ !cancelled() }}
-        working-directory: test/e2e/playwright-reports/
+        working-directory: test/playwright-reports/
         run: |
           mv playwright-summary.json ${{ steps.variables.outputs.report_name }}.json
           cd html-report
@@ -169,7 +169,7 @@ jobs:
         if: ${{ !cancelled() }}
         with:
           name: ${{ env.JSON_ARTIFACT_ID }}
-          path: test/e2e/playwright-reports/${{ steps.variables.outputs.report_name }}.json
+          path: test/playwright-reports/${{ steps.variables.outputs.report_name }}.json
           retention-days: 30
       - name: Upload HTML Report
         uses: actions/upload-artifact@v4
@@ -177,7 +177,7 @@ jobs:
         if: ${{ !cancelled() }}
         with:
           name: ${{ env.HTML_ARTIFACT_ID }}
-          path: test/e2e/playwright-reports/html-report/${{ steps.variables.outputs.report_name }}.html
+          path: test/playwright-reports/html-report/${{ steps.variables.outputs.report_name }}.html
           retention-days: 30
 
   publish:

@@ -1,7 +1,8 @@
+import { Navigate } from "react-router";
 import { RoleDescriptionStrings } from "shared-types";
 
 import { useGetUser } from "@/api";
-import { Alert, Button, CardWithTopBorder, SubNavHeader } from "@/components";
+import { Alert, Button, CardWithTopBorder, LoadingSpinner, SubNavHeader } from "@/components";
 import config from "@/config";
 import { convertStateAbbrToFullName } from "@/utils";
 
@@ -26,13 +27,21 @@ const getFullStateNamesFromUser = (states: string | undefined) => {
 };
 
 export const Profile = () => {
-  const { data: userData } = useGetUser();
+  const { data: userData, isLoading: isUserLoading } = useGetUser();
 
-  const fullStateNames = getFullStateNamesFromUser(userData?.user["custom:state"]);
+  if (isUserLoading) {
+    return <LoadingSpinner />;
+  }
 
-  const euaRoles = getRoleDescriptionsFromUser(userData?.user["custom:cms-roles"]);
-  const idmRoles = getRoleDescriptionsFromUser(userData?.user["custom:ismemberof"]);
-  const isStateUser = userData?.user?.["custom:cms-roles"].includes("onemac-state-user");
+  if (!isUserLoading && !userData?.user) {
+    return <Navigate to="/" replace />;
+  }
+
+  const fullStateNames = getFullStateNamesFromUser(userData?.user?.["custom:state"]);
+
+  const euaRoles = getRoleDescriptionsFromUser(userData?.user?.["custom:cms-roles"]);
+  const idmRoles = getRoleDescriptionsFromUser(userData?.user?.["custom:ismemberof"]);
+  const isStateUser = userData?.user?.["custom:cms-roles"]?.includes("onemac-state-user");
 
   const userRoles = euaRoles ? euaRoles : idmRoles;
 

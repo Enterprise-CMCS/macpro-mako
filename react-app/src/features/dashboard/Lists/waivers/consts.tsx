@@ -84,7 +84,7 @@ const getColumns = (props) => {
             {data.raiWithdrawEnabled &&
               data.seatoolStatus !== SEATOOL_STATUS.PENDING_APPROVAL &&
               data.seatoolStatus !== SEATOOL_STATUS.PENDING_CONCURRENCE && (
-                <p className="text-xs opacity-60">· Withdraw Formal RAI Response - Enabled</p>
+                <p className="text-xs opacity-65">· Withdraw Formal RAI Response - Enabled</p>
               )}
           </>
         );

@@ -1,11 +1,17 @@
 import { render, screen } from "@testing-library/react";
 import { describe, expect, it, vi } from "vitest";
 
-import { CMSWelcome } from "./cms";
+import { renderWithMemoryRouter } from "@/utils/test-helpers";
+
+import CMSWelcomeWrapper, { CMSWelcome } from "./cms";
 
 // Mock LatestUpdates component
 vi.mock("@/components/Banner/latestUpdates", () => ({
   LatestUpdates: () => <div data-testid="latest-updates">Mocked Latest Updates</div>,
+}));
+
+vi.mock("@/hooks/useFeatureFlag", () => ({
+  useFeatureFlag: () => true,
 }));
 
 describe("CMSWelcome", () => {
@@ -38,5 +44,26 @@ describe("CMSWelcome", () => {
     expect(screen.getByText("Go to eRegs")).toBeInTheDocument();
     expect(screen.getByText("Go to Laserfische")).toBeInTheDocument();
     expect(screen.getByText("Go to MMDL")).toBeInTheDocument();
+  });
+
+  it("renders the Welcome page if the feature flag is off", () => {
+    vi.mock("@/hooks/useFeatureFlag", () => ({
+      useFeatureFlag: () => false,
+    }));
+
+    renderWithMemoryRouter(
+      <CMSWelcomeWrapper />,
+      [
+        {
+          path: "/",
+          element: <CMSWelcomeWrapper />,
+        },
+      ],
+      {
+        initialEntries: ["/"],
+      },
+    );
+
+    expect(screen.getByText("State Users")).toBeInTheDocument();
   });
 });

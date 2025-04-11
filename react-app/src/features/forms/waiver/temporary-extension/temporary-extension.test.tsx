@@ -14,23 +14,17 @@ import {
   renderFormAsync,
   renderFormWithPackageSectionAsync,
 } from "@/utils/test-helpers/renderForm";
-import { mockApiRefinements, skipCleanup } from "@/utils/test-helpers/skipCleanup";
+import { skipCleanup } from "@/utils/test-helpers/skipCleanup";
 import { uploadFiles } from "@/utils/test-helpers/uploadFiles";
 
-import { TemporaryExtensionForm } from ".";
+import { TemporaryExtensionForm } from "./index";
 
 const upload = uploadFiles<(typeof formSchemas)["temporary-extension"]>();
 
 describe("Temporary Extension", () => {
-  beforeAll(() => {
-    mockApiRefinements();
-  });
-
   afterEach(() => {
     vi.clearAllMocks();
   });
-
-  const user = userEvent.setup();
 
   test("EXISTING WAIVER ID", async () => {
     // set the Item Id to TEST_ITEM_ID
@@ -60,87 +54,95 @@ describe("Temporary Extension", () => {
     ).toBe(Node.DOCUMENT_POSITION_FOLLOWING);
   });
 
-  test("TEMPORARY EXTENSION TYPE 1915(c)", async () => {
-    await renderFormAsync(<TemporaryExtensionForm />);
+  describe("New Temporary Extension", () => {
+    const user = userEvent.setup();
+    beforeAll(async () => {
+      skipCleanup();
 
-    // enable render cleanup here
-    skipCleanup();
-
-    const teTypeDropdown = screen.getByRole("combobox");
-
-    await user.click(teTypeDropdown);
-
-    const teOptionToClick = screen.getByRole("option", {
-      name: "1915(c)",
+      await renderFormAsync(<TemporaryExtensionForm />);
     });
 
-    await user.click(teOptionToClick);
+    test("TEMPORARY EXTENSION TYPE 1915(c)", async () => {
+      const teTypeDropdown = screen.getByRole("combobox");
 
-    expect(screen.getByRole("combobox")).toHaveTextContent("1915(c)");
-  });
+      await user.click(teTypeDropdown); // open dropdown
 
-  test("TEMPORARY EXTENSION TYPE 1915(b)", async () => {
-    const teTypeDropdown = screen.getByRole("combobox");
+      const teOptionToClick = screen.getByRole("option", {
+        name: "1915(c)",
+      });
 
-    await user.click(teTypeDropdown);
+      await user.click(teOptionToClick); // click option
 
-    const teOptionToClick = screen.getByRole("option", {
-      name: "1915(b)",
+      await user.click(teTypeDropdown); // close dropdown
+
+      expect(screen.getByRole("combobox")).toHaveTextContent("1915(c)");
     });
 
-    await user.click(teOptionToClick);
+    test("TEMPORARY EXTENSION TYPE 1915(b)", async () => {
+      const teTypeDropdown = screen.getByRole("combobox");
 
-    expect(screen.getByRole("combobox")).toHaveTextContent("1915(b)");
-  });
+      await user.click(teTypeDropdown); // open dropdown
 
-  test("APPROVED INITIAL OR RENEWAL WAIVER NUMBER", async () => {
-    const waiverNumberInput = screen.getByLabelText(/Approved Initial or Renewal Waiver Number/);
-    const waiverNumberLabel = screen.getByTestId("waiverNumber-label");
+      const teOptionToClick = screen.getByRole("option", {
+        name: "1915(b)",
+      });
 
-    // test record does not exist error occurs
-    await user.type(waiverNumberInput, NOT_FOUND_ITEM_ID);
-    const recordDoesNotExistError = screen.getByText(
-      "According to our records, this Approved Initial or Renewal Waiver Number does not yet exist. Please check the Approved Initial or Renewal Waiver Number and try entering it again.",
-    );
-    expect(recordDoesNotExistError).toBeInTheDocument();
-    await user.clear(waiverNumberInput);
+      await user.click(teOptionToClick); // click option
 
-    // test record is not approved error occurs
-    await user.type(waiverNumberInput, EXISTING_ITEM_PENDING_ID);
-    const recordIsNotApproved = screen.getByText(
-      "According to our records, this Approved Initial or Renewal Waiver Number is not approved. You must supply an approved Initial or Renewal Waiver Number.",
-    );
-    expect(recordIsNotApproved).toBeInTheDocument();
-    await user.clear(waiverNumberInput);
+      await user.click(teTypeDropdown); // close dropdown
 
-    await user.type(waiverNumberInput, EXISTING_ITEM_APPROVED_NEW_ID);
+      expect(screen.getByRole("combobox")).toHaveTextContent("1915(b)");
+    });
 
-    expect(waiverNumberLabel).not.toHaveClass("text-destructive");
-  });
+    test("APPROVED INITIAL OR RENEWAL WAIVER NUMBER", async () => {
+      const waiverNumberInput = screen.getByLabelText(/Approved Initial or Renewal Waiver Number/);
+      const waiverNumberLabel = screen.getByTestId("waiverNumber-label");
 
-  test("TEMPORARY EXTENSION REQUEST NUMBER", async () => {
-    const requestNumberInput = screen.getByLabelText(/Temporary Extension Request Number/);
-    const requestNumberLabel = screen.getByTestId("requestNumber-label");
+      // test record does not exist error occurs
+      await user.type(waiverNumberInput, NOT_FOUND_ITEM_ID);
+      const recordDoesNotExistError = screen.getByText(
+        "According to our records, this Approved Initial or Renewal Waiver Number does not yet exist. Please check the Approved Initial or Renewal Waiver Number and try entering it again.",
+      );
+      expect(recordDoesNotExistError).toBeInTheDocument();
+      await user.clear(waiverNumberInput);
 
-    // invalid TE request format
-    await user.type(requestNumberInput, EXISTING_ITEM_APPROVED_NEW_ID);
-    const invalidRequestNumberError = screen.getByText(
-      "The Temporary Extension Request Number must be in the format of SS-####.R##.TE## or SS-#####.R##.TE##",
-    );
-    expect(invalidRequestNumberError).toBeInTheDocument();
-    await user.clear(requestNumberInput);
+      // test record is not approved error occurs
+      await user.type(waiverNumberInput, EXISTING_ITEM_PENDING_ID);
+      const recordIsNotApproved = screen.getByText(
+        "According to our records, this Approved Initial or Renewal Waiver Number is not approved. You must supply an approved Initial or Renewal Waiver Number.",
+      );
+      expect(recordIsNotApproved).toBeInTheDocument();
+      await user.clear(waiverNumberInput);
 
-    await user.type(requestNumberInput, VALID_ITEM_TEMPORARY_EXTENSION_ID);
+      await user.type(waiverNumberInput, EXISTING_ITEM_APPROVED_NEW_ID);
 
-    expect(requestNumberLabel).not.toHaveClass("text-destructive");
-  });
+      expect(waiverNumberLabel).not.toHaveClass("text-destructive");
+    });
 
-  test("WAIVER EXTENSION REQUEST", async () => {
-    const cmsForm179PlanLabel = await upload("waiverExtensionRequest");
-    expect(cmsForm179PlanLabel).not.toHaveClass("text-destructive");
-  });
+    test("TEMPORARY EXTENSION REQUEST NUMBER", async () => {
+      const requestNumberInput = screen.getByLabelText(/Temporary Extension Request Number/);
+      const requestNumberLabel = screen.getByTestId("requestNumber-label");
 
-  test("submit button is enabled", async () => {
-    expect(screen.getByTestId("submit-action-form")).toBeEnabled();
+      // invalid TE request format
+      await user.type(requestNumberInput, EXISTING_ITEM_APPROVED_NEW_ID);
+      const invalidRequestNumberError = screen.getByText(
+        "The Temporary Extension Request Number must be in the format of SS-####.R##.TE## or SS-#####.R##.TE##",
+      );
+      expect(invalidRequestNumberError).toBeInTheDocument();
+      await user.clear(requestNumberInput);
+
+      await user.type(requestNumberInput, VALID_ITEM_TEMPORARY_EXTENSION_ID);
+
+      expect(requestNumberLabel).not.toHaveClass("text-destructive");
+    });
+
+    test("WAIVER EXTENSION REQUEST", async () => {
+      const cmsForm179PlanLabel = await upload("waiverExtensionRequest");
+      expect(cmsForm179PlanLabel).not.toHaveClass("text-destructive");
+    });
+
+    test("submit button is enabled", async () => {
+      expect(screen.getByTestId("submit-action-form")).toBeEnabled();
+    });
   });
 });

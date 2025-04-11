@@ -5,9 +5,12 @@ import { configDefaults, defineConfig } from "vitest/config";
 export default defineConfig({
   test: {
     globals: true,
-    environmentMatchGlobs: [["**/*.test.ts", "**/*.test.tsx"]],
-    cache: {
-      dir: ".vitest/cache",
+    include: ["**/*.test.{ts,tsx}"],
+    exclude: ["**/node_modules/**", "test/e2e/**", "**/*.spec.ts"],
+    server: {
+      deps: {
+        cacheDir: ".vitest/cache",
+      },
     },
     testTimeout: 10000,
     pool: "threads",
@@ -64,16 +67,18 @@ export default defineConfig({
         "react-app/src/main.tsx",
         "react-app/src/utils/test-helpers/**",
         "test/**",
+        "vitest.config.ts",
         "vitest.workspace.ts",
         "**/*/.eslintrc.{ts,js,cjs}",
         "**/*.config.{ts,js,cjs}",
         "**/*.js",
+        "**/*.json",
         "**/*.test.ts",
         "**/*.test.tsx",
         "**/assets/**",
         "**/coverage/**",
         "**/vitest.setup.ts",
-        "test/**",
+        "**/vitest.config.ts",
         "**/legacy-package-view.ts",
         "**/legacy-admin-change.ts",
         "**/legacy-event.ts",

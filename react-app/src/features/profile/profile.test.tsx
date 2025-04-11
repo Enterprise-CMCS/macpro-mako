@@ -1,20 +1,62 @@
-import { screen, waitFor } from "@testing-library/react";
-import { multiStateSubmitter, setDefaultStateSubmitter, setMockUsername } from "mocks";
-import { afterEach, describe, expect, test } from "vitest";
+import { screen, waitFor, waitForElementToBeRemoved } from "@testing-library/react";
+import {
+  multiStateSubmitter,
+  noStateSubmitter,
+  setDefaultStateSubmitter,
+  setMockUsername,
+} from "mocks";
+import { beforeEach, describe, expect, test } from "vitest";
 
-import { renderWithQueryClient } from "@/utils/test-helpers";
+import { renderWithQueryClientAndMemoryRouter } from "@/utils/test-helpers";
 
 import { Profile } from ".";
 
 describe("Profile", () => {
-  afterEach(() => {
+  const setup = async () => {
+    const rendered = renderWithQueryClientAndMemoryRouter(
+      <Profile />,
+      [
+        {
+          path: "/profile",
+          element: <Profile />,
+        },
+        {
+          path: "/",
+          element: <div data-testid="home">Home</div>,
+        },
+      ],
+      {
+        initialEntries: [
+          {
+            pathname: "/profile",
+          },
+        ],
+      },
+    );
+    if (screen.queryAllByLabelText("three-dots-loading")?.length > 0) {
+      await waitForElementToBeRemoved(() => screen.queryAllByLabelText("three-dots-loading"));
+    }
+    return rendered;
+  };
+
+  beforeEach(() => {
     setDefaultStateSubmitter();
+  });
+
+  test("redirects to / for non-authenticated users", async () => {
+    setMockUsername(null);
+
+    await setup();
+
+    await screen.findByTestId("home");
+
+    expect(screen.queryByTestId("home")).toBeInTheDocument();
   });
 
   test("renders state names", async () => {
     setMockUsername(multiStateSubmitter);
 
-    renderWithQueryClient(<Profile />);
+    await setup();
 
     await waitFor(() =>
       expect(screen.getByText("California, New York, Maryland")).toBeInTheDocument(),
@@ -22,25 +64,28 @@ describe("Profile", () => {
   });
 
   test("renders nothing if user has no states", async () => {
-    renderWithQueryClient(<Profile />);
+    setMockUsername(noStateSubmitter);
+
+    await setup();
 
     await waitFor(() => expect(screen.queryByText("Access Granted")).not.toBeInTheDocument());
   });
 
   test("renders roles", async () => {
-    renderWithQueryClient(<Profile />);
+    await setup();
 
     await waitFor(() => expect(screen.getByText("State Submitter")).toBeInTheDocument());
   });
 
   test("renders full name", async () => {
-    renderWithQueryClient(<Profile />);
+    await setup();
 
     await waitFor(() => expect(screen.getByText("Stateuser Tester")).toBeInTheDocument());
   });
 
   test("renders email", async () => {
-    renderWithQueryClient(<Profile />);
+    await setup();
+    screen.debug();
 
     await waitFor(() => expect(screen.getByText("mako.stateuser@gmail.com")).toBeInTheDocument());
   });

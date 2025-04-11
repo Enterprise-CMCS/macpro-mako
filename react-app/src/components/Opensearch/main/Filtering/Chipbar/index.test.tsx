@@ -1,4 +1,4 @@
-import { render, screen } from "@testing-library/react";
+import { render, screen, waitForElementToBeRemoved } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { opensearch } from "shared-types";
 import { afterEach, describe, expect, it, vi } from "vitest";
@@ -410,6 +410,9 @@ describe("FilterChips", () => {
     it("should handle deleting a chip", async () => {
       const { user } = setup(DEFAULT_FILTERS);
       await user.click(screen.getAllByRole("button")[0]);
+      if (screen.queryByText("State: Maryland, MD")) {
+        await waitForElementToBeRemoved(screen.queryByText("State: Maryland, MD"));
+      }
       expect(screen.queryByText("State: Maryland, MD")).toBeNull();
       expect(screen.getByText("Authority: CHIP SPA")).toBeInTheDocument();
       expect(screen.getByText("RAI Withdraw Enabled:")).toBeInTheDocument();
@@ -432,6 +435,9 @@ describe("FilterChips", () => {
       ]);
       await user.click(screen.getAllByRole("button")[1]);
       expect(screen.getByText("State: Maryland, MD")).toBeInTheDocument();
+      if (screen.queryByText("State: Ohio, OH")) {
+        await waitForElementToBeRemoved(screen.queryByText("State: Ohio, OH"));
+      }
       expect(screen.queryByText("State: Ohio, OH")).toBeNull();
     });
 
