@@ -1,4 +1,4 @@
-import { expect, test } from "@/fixtures/msw";
+import { expect, test } from "@/fixtures/mocked";
 import { FAQPage } from "@/pages";
 
 let faqPage: FAQPage;

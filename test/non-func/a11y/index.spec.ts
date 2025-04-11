@@ -1,6 +1,6 @@
 import AxeBuilder from "@axe-core/playwright";
 
-import { expect, test } from "@/fixtures/msw";
+import { expect, test } from "@/fixtures/mocked";
 import * as routes from "@/fixtures/routes";
 
 const STATIC_ROUTES = routes.STATIC;
@@ -11,13 +11,15 @@ test.describe("test a11y on static routes", { tag: ["@CI", "@a11y"] }, () => {
       page,
     }) => {
       await page.goto(route);
-      await page.waitForTimeout(500);
-      await expect(page).toHaveURL(new RegExp(`${route}*`));
+      await page.waitForTimeout(2000);
 
+      // wait for loading screen if present
       if (page.getByLabel("three-dots-loading")) {
         await page.getByLabel("three-dots-loading").waitFor({ state: "detached" });
       }
-      await page.waitForTimeout(500);
+
+      // make sure we are still on the route and haven't been redirected to /
+      await expect(page).toHaveURL(new RegExp(`${route}*`));
 
       const accessibilityScanResults = await new AxeBuilder({ page }).analyze();
       console.log(`${route} violations: `, accessibilityScanResults.violations.length);
@@ -36,6 +38,8 @@ test.describe("test a11y on webform routes", { tag: ["@CI", "@a11y"] }, () => {
     }) => {
       await page.goto(route);
       await page.waitForTimeout(2000);
+
+      // make sure we are still on the route and haven't been redirected to /
       await expect(page).toHaveURL(new RegExp(`${route}*`));
 
       const accessibilityScanResults = await new AxeBuilder({ page }).analyze();
