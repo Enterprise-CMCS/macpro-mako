@@ -67,11 +67,11 @@ const sortUserData = (sortByKey: keyof UserRoleType, dirrection: boolean, data: 
 };
 
 export const renderCellActions = (
-  status: StatusType,
-  setModalOpen: React.Dispatch<React.SetStateAction<boolean>>,
+  userRole: UserRoleType,
+  setModalText: React.Dispatch<React.SetStateAction<string>>,
 ) => {
   const actions = (function () {
-    switch (status) {
+    switch (userRole.status) {
       case "pending":
         return ["Grant Access", "Deny Access"];
       case "active":
@@ -83,8 +83,17 @@ export const renderCellActions = (
     }
   })();
   const actionChosen = (action: string) => {
-    console.log("action: ", action);
-    setModalOpen(true);
+    const modalAction = {
+      "Grant Access": "grant",
+      "Deny Access": "deny",
+      "Revoke Access": "revoke",
+    };
+
+    const requestFor = userRole.status === "pending" ? " request for" : "";
+    //  in legacy there is logic to add the territory in front
+    setModalText(
+      `This will ${modalAction[action]} ${userRole.fullName}'s${requestFor} access to OneMac.`,
+    );
   };
   return (
     <Popover>
@@ -122,7 +131,7 @@ export const UserManagement = () => {
     title: keyof headingType | "";
     direction: boolean;
   }>({ title: "", direction: false });
-  const [modalOpen, setModalOpen] = useState<boolean>(false);
+  const [modalText, setModalText] = useState<string | null>(null);
 
   const renderStatus = (value: string) => {
     switch (value) {
@@ -158,7 +167,6 @@ export const UserManagement = () => {
 
   useEffect(() => {
     if (data && data.length && data[0]) {
-      console.log("Data", data);
       setUserRoles(JSON.parse(data));
     }
   }, [data]);
@@ -166,17 +174,16 @@ export const UserManagement = () => {
   return (
     <div>
       <ConfirmationDialog
-        open={modalOpen}
+        open={modalText !== null}
         title="Modify User's Access?"
-        body="This will grant <user> <type> access to OneMAC."
+        body={modalText}
         acceptButtonText="Confirm"
         aria-labelledby="Modify User's Access Modal"
         onAccept={() => {
           // add in API call to do this action
-          console.log("accepted");
-          setModalOpen(false);
+          setModalText(null);
         }}
-        onCancel={() => setModalOpen(false)}
+        onCancel={() => setModalText(null)}
       />
       <SubNavHeader>
         <h1 className="text-xl font-medium">User Management</h1>
@@ -204,7 +211,7 @@ export const UserManagement = () => {
               return (
                 <TableRow key={userRole.id}>
                   <TableCell className="py-5 px-4">
-                    {renderCellActions(userRole.status, setModalOpen)}
+                    {renderCellActions(userRole, setModalText)}
                   </TableCell>
                   <TableCell>{userRole.fullName}</TableCell>
                   <TableCell>
