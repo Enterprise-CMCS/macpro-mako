@@ -85,8 +85,8 @@ export const getSubmissionDetails: GetLabelAndValueFromSubmission = (submission,
     value: submission.types ? (
       <ul>
         {submission.types.map((type) => (
-          <li key={type?.SPA_TYPE_ID}>{type?.SPA_TYPE_NAME}test</li>
-        ))}{" "}
+          <li key={type?.SPA_TYPE_ID}>{type?.SPA_TYPE_NAME}</li>
+        ))}
       </ul>
     ) : (
       BLANK_VALUE
@@ -100,7 +100,7 @@ export const getSubmissionDetails: GetLabelAndValueFromSubmission = (submission,
       <ul>
         {submission.subTypes.map((T) => (
           <li key={T?.TYPE_ID}>{T?.TYPE_NAME}</li>
-        ))}{" "}
+        ))}
       </ul>
     ) : (
       BLANK_VALUE
