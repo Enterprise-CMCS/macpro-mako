@@ -1,9 +1,14 @@
+import { EllipsisVerticalIcon } from "@heroicons/react/24/outline";
 import { useEffect, useState } from "react";
 import { formatDate } from "shared-utils";
 
 import { useGetRoleRequests } from "@/api";
 import {
+  ConfirmationDialog,
   LoadingSpinner,
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
   SubNavHeader,
   Table,
   TableBody,
@@ -12,15 +17,16 @@ import {
   TableHeader,
   TableRow,
 } from "@/components";
-
+import { cn } from "@/utils";
+type StatusType = "active" | "pending" | "denied" | "revoked";
 type UserRoleType = {
   id: string;
   fullName: string;
   doneByName: string;
   lastModifiedDate: number;
-  status: "active" | "pending" | "denied" | "revoked";
+  status: StatusType;
 };
-type headingType = { [key: string]: keyof UserRoleType };
+type headingType = { [key: string]: keyof UserRoleType | null };
 
 const pendingCircle = (
   <svg
@@ -37,11 +43,76 @@ const pendingCircle = (
 
 const sortUserData = (sortByKey: keyof UserRoleType, dirrection: boolean, data: UserRoleType[]) => {
   // when dirrection is true, that means we are decending
-  if (dirrection) {
-    return data.sort((a, b) => (a[sortByKey] < b[sortByKey] ? 1 : -1));
-  }
-  data.sort((a, b) => (a[sortByKey] > b[sortByKey] ? 1 : -1));
-  return data;
+  const [last, first] = dirrection ? [-1, 1] : [1, -1];
+  const sortStatus = (a: UserRoleType, b: UserRoleType) => {
+    switch (a.status) {
+      case "pending":
+        return first;
+      case "active":
+        return b.status === "pending" ? last : first;
+      case "denied":
+        return b.status === "revoked" ? first : last;
+      case "revoked":
+        return last;
+      default:
+        return last;
+    }
+  };
+  const mainSort = (a: UserRoleType, b: UserRoleType) =>
+    a[sortByKey] < b[sortByKey] ? first : last;
+
+  if (sortByKey === "status") return data.sort((a, b) => sortStatus(a, b));
+
+  return data.sort((a, b) => mainSort(a, b));
+};
+
+export const renderCellActions = (
+  status: StatusType,
+  setModalOpen: React.Dispatch<React.SetStateAction<boolean>>,
+) => {
+  const actions = (function () {
+    switch (status) {
+      case "pending":
+        return ["Grant Access", "Deny Access"];
+      case "active":
+        return ["Revoke Access"];
+      case "denied":
+        return ["Grant Access"];
+      case "revoked":
+        return ["Grant Access"];
+    }
+  })();
+  const actionChosen = (action: string) => {
+    console.log("action: ", action);
+    setModalOpen(true);
+  };
+  return (
+    <Popover>
+      <PopoverTrigger
+        disabled={!actions.length}
+        className="block ml-3"
+        aria-label="Available actions"
+      >
+        <EllipsisVerticalIcon
+          aria-label="record actions"
+          className={cn("w-8 ", actions.length ? "text-blue-700" : "text-gray-400")}
+        />
+      </PopoverTrigger>
+      <PopoverContent>
+        <div className="flex flex-col">
+          {actions.map((action, idx) => (
+            <div
+              className="text-blue-500 cursor-pointer relative flex select-none items-center rounded-sm px-2 py-2 text-sm outline-none transition-colors hover:bg-accent hover:text-accent-foreground"
+              key={idx}
+              onClick={() => actionChosen(action)}
+            >
+              {action}
+            </div>
+          ))}
+        </div>
+      </PopoverContent>
+    </Popover>
+  );
 };
 
 export const UserManagement = () => {
@@ -49,8 +120,9 @@ export const UserManagement = () => {
   const [userRoles, setUserRoles] = useState<UserRoleType[]>([]);
   const [sortBy, setSortBy] = useState<{
     title: keyof headingType | "";
-    dirrection: boolean;
-  }>({ title: "", dirrection: false });
+    direction: boolean;
+  }>({ title: "", direction: false });
+  const [modalOpen, setModalOpen] = useState<boolean>(false);
 
   const renderStatus = (value: string) => {
     switch (value) {
@@ -66,6 +138,7 @@ export const UserManagement = () => {
   };
 
   const headings: headingType = {
+    Actions: null,
     Name: "fullName",
     Status: "status",
     "Last Modified": "lastModifiedDate",
@@ -73,22 +146,38 @@ export const UserManagement = () => {
   };
 
   const sortByHeading = (heading: string) => {
-    let dirrection = false;
+    if (heading === "Actions") return;
+
+    let direction = false;
     if (sortBy.title === heading) {
-      setSortBy({ title: heading, dirrection: !sortBy.dirrection });
-      dirrection = !sortBy.dirrection;
-    } else setSortBy({ title: heading, dirrection: false });
-    setUserRoles(sortUserData(headings[heading], dirrection, userRoles));
+      setSortBy({ title: heading, direction: !sortBy.direction });
+      direction = !sortBy.direction;
+    } else setSortBy({ title: heading, direction: false });
+    setUserRoles(sortUserData(headings[heading], direction, userRoles));
   };
 
   useEffect(() => {
     if (data && data.length && data[0]) {
+      console.log("Data", data);
       setUserRoles(JSON.parse(data));
     }
   }, [data]);
 
   return (
     <div>
+      <ConfirmationDialog
+        open={modalOpen}
+        title="Modify User's Access?"
+        body="This will grant <user> <type> access to OneMAC."
+        acceptButtonText="Confirm"
+        aria-labelledby="Modify User's Access Modal"
+        onAccept={() => {
+          // add in API call to do this action
+          console.log("accepted");
+          setModalOpen(false);
+        }}
+        onCancel={() => setModalOpen(false)}
+      />
       <SubNavHeader>
         <h1 className="text-xl font-medium">User Management</h1>
       </SubNavHeader>
@@ -103,7 +192,7 @@ export const UserManagement = () => {
                   className="py-5 px-2 font-bold cursor-pointer max-w-fit"
                   onClick={() => sortByHeading(title)}
                   isActive={sortBy.title === title}
-                  desc={sortBy.dirrection}
+                  desc={sortBy.direction}
                 >
                   {title}
                 </TableHead>
@@ -114,7 +203,10 @@ export const UserManagement = () => {
             {userRoles.map((userRole) => {
               return (
                 <TableRow key={userRole.id}>
-                  <TableCell className="py-5 px-2">{userRole.fullName}</TableCell>
+                  <TableCell className="py-5 px-4">
+                    {renderCellActions(userRole.status, setModalOpen)}
+                  </TableCell>
+                  <TableCell>{userRole.fullName}</TableCell>
                   <TableCell>
                     <span className="font-semibold flex items-center">
                       {renderStatus(userRole.status)}
