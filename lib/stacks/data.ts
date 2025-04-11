@@ -259,6 +259,7 @@ export class Data extends cdk.NestedStack {
 
       const mapRole = new NodejsFunction(this, "MapRoleLambdaFunction", {
         functionName: `${project}-${stage}-${stack}-mapRole`,
+        timeout: cdk.Duration.minutes(2),
         entry: join(__dirname, "../lambda/mapRole.ts"),
         handler: "handler",
         depsLockFilePath: join(__dirname, "../../bun.lockb"),
