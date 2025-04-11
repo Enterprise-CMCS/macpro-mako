@@ -120,10 +120,14 @@ export const transform = (id: string) => {
       : "Unknown";
     if (
       seatoolStatus === "Pending" &&
-      (!data.STATE_PLAN.TITLE_NAME || data.STATE_PLAN.TITLE_NAME.trim() === "") &&
-      (!data.STATE_PLAN.SUMMARY_MEMO || data.STATE_PLAN.SUMMARY_MEMO.trim() === "")
+      (!data.STATE_PLAN.TITLE_NAME ||
+        data.STATE_PLAN.TITLE_NAME.trim() === "" ||
+        !data.STATE_PLAN.SUMMARY_MEMO ||
+        data.STATE_PLAN.SUMMARY_MEMO.trim() === "")
     ) {
-      throw new Error("Seatool record is missing summary or description");
+      throw new Error(
+        "Validation failed: Pending status requires both subject and description to be non-empty",
+      );
     }
     const authority =
       data?.STATE_PLAN?.PLAN_TYPE && data.STATE_PLAN.PLAN_TYPE in SEATOOL_AUTHORITIES
