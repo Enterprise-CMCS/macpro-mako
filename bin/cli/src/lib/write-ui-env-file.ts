@@ -25,6 +25,14 @@ export async function writeUiEnvFile(stage, local = false) {
     ).Parameter!.Value!,
   );
 
+  const googleAnalytics = (
+    await new SSMClient({ region: "us-east-1" }).send(
+      new GetParameterCommand({
+        Name: `/${project}/${stage}/google-analytics-id`,
+      }),
+    )
+  ).Parameter!.Value!;
+
   const envVariables = {
     VITE_API_REGION: `"${region}"`,
     VITE_API_URL: deploymentOutput.apiGatewayRestApiUrl,
@@ -41,7 +49,7 @@ export async function writeUiEnvFile(stage, local = false) {
       ? `"http://localhost:5000/"`
       : deploymentOutput.applicationEndpointUrl,
     VITE_IDM_HOME_URL: deploymentOutput.idmHomeUrl,
-    VITE_GOOGLE_ANALYTICS_GTAG: `"${deploymentConfig.googleAnalyticsGTag}"`,
+    VITE_GOOGLE_ANALYTICS_GTAG: `"${googleAnalytics}"`,
     VITE_GOOGLE_ANALYTICS_DISABLE: `"${deploymentConfig.googleAnalyticsDisable}"`,
     VITE_LAUNCHDARKLY_CLIENT_ID: `"${deploymentConfig.launchDarklyClientId}"`,
   };
