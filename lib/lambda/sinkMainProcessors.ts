@@ -72,14 +72,13 @@ const getOneMacRecordWithAllProperties = (
   kafkaRecord: KafkaRecord,
 ): OneMacRecord | undefined => {
   const record = JSON.parse(decodeBase64WithUtf8(value));
-  console.log(`kafkaRecord: ${JSON.stringify(kafkaRecord, null, 2)}`);
   const kafkaSource = String.fromCharCode(...(kafkaRecord.headers[0]?.source || []));
 
   if (isRecordAnAdminOneMacRecord(record)) {
     const safeRecord = adminRecordSchema.safeParse(record);
 
     if (safeRecord.success === false) {
-      console.log(`Skipping package with invalid format for type "${record.adminChangeType}"`);
+      console.error(`Skipping package with invalid format for type "${record.adminChangeType}"`);
 
       logError({
         type: ErrorType.VALIDATION,
@@ -91,8 +90,6 @@ const getOneMacRecordWithAllProperties = (
     }
 
     const { data: oneMacAdminRecord } = safeRecord;
-
-    console.log(`admin record: ${JSON.stringify(oneMacAdminRecord, null, 2)}`);
 
     return oneMacAdminRecord;
   }
@@ -114,13 +111,10 @@ const getOneMacRecordWithAllProperties = (
 
     const { data: oneMacRecord } = safeEvent;
 
-    console.log(`event after transformation: ${JSON.stringify(oneMacRecord, null, 2)}`);
-
     return oneMacRecord;
   }
 
   if (isRecordALegacyOneMacRecord(record, kafkaSource)) {
-    console.log(`legacy event: ${JSON.stringify(record, null, 2)}`);
     const transformForLegacyEvent = legacyTransforms[record.componentType];
 
     const safeEvent = transformForLegacyEvent
@@ -128,7 +122,6 @@ const getOneMacRecordWithAllProperties = (
       .transform((data) => ({ ...data, proposedEffectiveDate: null }))
       .safeParse(record);
 
-    console.log(`safeEvent: ${JSON.stringify(safeEvent, null, 2)}`);
     if (safeEvent.success === false) {
       logError({
         type: ErrorType.VALIDATION,
@@ -141,14 +134,10 @@ const getOneMacRecordWithAllProperties = (
 
     const { data: oneMacLegacyRecord } = safeEvent;
 
-    console.log(
-      `legacy event after transformation: ${JSON.stringify(oneMacLegacyRecord, null, 2)}`,
-    );
-
     return oneMacLegacyRecord;
   }
 
-  console.log(`No transform found for event: ${record.event}`);
+  console.error(`No transform found for event: ${record.event}`);
 
   return;
 };
@@ -163,10 +152,6 @@ export const insertOneMacRecordsFromKafkaIntoMako = async (
   topicPartition: string,
 ) => {
   const oneMacRecordsForMako = kafkaRecords.reduce<OneMacRecord[]>((collection, kafkaRecord) => {
-    console.log(
-      `kafka record in insertOneMacRecordsFromKafkaIntoMako: ${JSON.stringify(kafkaRecord, null, 2)}`,
-    );
-
     try {
       const { value } = kafkaRecord;
 
@@ -222,25 +207,24 @@ export const insertNewSeatoolRecordsFromKafkaIntoMako = async (
   topicPartition: string,
 ) => {
   const makoDocTimestamps = await getMakoDocTimestamps(kafkaRecords);
-  console.log("WE should see it come in from here");
   const seatoolRecordsForMako = kafkaRecords.reduce<{ id: string; [key: string]: unknown }[]>(
     (collection, kafkaRecord) => {
       try {
         const { key, value } = kafkaRecord;
 
         if (!key) {
-          console.log(`Record without a key property: ${value}`);
+          console.error(`Record without a key property: ${value}`);
 
           return collection;
         }
 
         const id: string = removeDoubleQuotesSurroundingString(decodeBase64WithUtf8(key));
-        console.log("id of entry: " + id);
+
         if (!value) {
           // record in seatool has been deleted
           // nulls the seatool properties from the record
           // seatool record would now only have mako properties
-          console.log(`Record without a value property: ${value}`);
+          console.error(`Record without a value property: ${value}`);
           return collection.concat(opensearch.main.seatool.tombstone(id));
         }
 
@@ -250,7 +234,6 @@ export const insertNewSeatoolRecordsFromKafkaIntoMako = async (
         };
 
         const safeSeatoolRecord = opensearch.main.seatool.transform(id).safeParse(seatoolRecord);
-        console.log("seatool record: " + safeSeatoolRecord);
         if (safeSeatoolRecord.success === false) {
           logError({
             type: ErrorType.VALIDATION,
@@ -264,26 +247,17 @@ export const insertNewSeatoolRecordsFromKafkaIntoMako = async (
         const { data: seatoolDocument } = safeSeatoolRecord;
         const makoDocumentTimestamp = makoDocTimestamps.get(seatoolDocument.id);
 
-        console.log("--------------------");
-        console.log(`id: ${seatoolDocument.id}`);
-        console.log(`mako: ${makoDocumentTimestamp}`);
-        console.log(`seatool: ${seatoolDocument.changed_date}`);
-
         const isNewerOrUndefined =
           seatoolDocument.changed_date &&
           makoDocumentTimestamp &&
           isBefore(makoDocumentTimestamp, seatoolDocument.changed_date);
 
         if (isNewerOrUndefined) {
-          console.log("SKIPPED DUE TO OUT-OF-DATE INFORMATION");
+          console.error("SKIPPED DUE TO OUT-OF-DATE INFORMATION");
           return collection;
         }
 
         if (seatoolDocument.authority && seatoolDocument.seatoolStatus !== "Unknown") {
-          console.log("INDEX");
-          console.log("--------------------");
-          console.log(`Status: ${seatoolDocument.seatoolStatus}`);
-
           return collection.concat({ ...seatoolDocument });
         }
       } catch (error) {
@@ -318,7 +292,7 @@ export const syncSeatoolRecordDatesFromKafkaWithMako = async (
 
     try {
       if (!value) {
-        console.log(`Record without a value property: ${value}`);
+        console.error(`Record without a value property: ${value}`);
 
         return collection;
       }
