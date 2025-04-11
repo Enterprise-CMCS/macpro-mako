@@ -222,7 +222,7 @@ export const insertNewSeatoolRecordsFromKafkaIntoMako = async (
   topicPartition: string,
 ) => {
   const makoDocTimestamps = await getMakoDocTimestamps(kafkaRecords);
-
+  console.log("WE should see it come in from here");
   const seatoolRecordsForMako = kafkaRecords.reduce<{ id: string; [key: string]: unknown }[]>(
     (collection, kafkaRecord) => {
       try {
@@ -235,7 +235,7 @@ export const insertNewSeatoolRecordsFromKafkaIntoMako = async (
         }
 
         const id: string = removeDoubleQuotesSurroundingString(decodeBase64WithUtf8(key));
-
+        console.log("id of entry: " + id);
         if (!value) {
           // record in seatool has been deleted
           // nulls the seatool properties from the record
@@ -250,7 +250,7 @@ export const insertNewSeatoolRecordsFromKafkaIntoMako = async (
         };
 
         const safeSeatoolRecord = opensearch.main.seatool.transform(id).safeParse(seatoolRecord);
-
+        console.log("seatool record: " + safeSeatoolRecord);
         if (safeSeatoolRecord.success === false) {
           logError({
             type: ErrorType.VALIDATION,
