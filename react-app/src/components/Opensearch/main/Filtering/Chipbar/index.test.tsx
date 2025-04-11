@@ -410,6 +410,9 @@ describe("FilterChips", () => {
     it("should handle deleting a chip", async () => {
       const { user } = setup(DEFAULT_FILTERS);
       await user.click(screen.getAllByRole("button")[0]);
+      if (screen.queryByText("State: Maryland, MD")) {
+        await waitForElementToBeRemoved(screen.queryByText("State: Maryland, MD"));
+      }
       expect(screen.queryByText("State: Maryland, MD")).toBeNull();
       expect(screen.getByText("Authority: CHIP SPA")).toBeInTheDocument();
       expect(screen.getByText("RAI Withdraw Enabled:")).toBeInTheDocument();
