@@ -262,7 +262,7 @@ describe("test sync cpoc", () => {
     expect(osBulkSpy).toHaveBeenCalledTimes(2);
   });
 
-  it("should succeed after receiving a rate limit exceeded error", async () => {
+  it("Should fail to update because of an error", async () => {
     mockedServer.use(errorBulkUpdateDataHandler);
 
     await expect(() =>

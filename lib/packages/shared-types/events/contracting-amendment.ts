@@ -1,6 +1,7 @@
 import { z } from "zod";
 
 import { attachmentArraySchema, attachmentArraySchemaOptional } from "../attachments";
+import { ammendSchema } from "./base-schema";
 
 export const baseSchema = z.object({
   event: z.literal("contracting-amendment").default("contracting-amendment"),
@@ -39,10 +40,4 @@ export const baseSchema = z.object({
     }),
 });
 
-export const schema = baseSchema.extend({
-  actionType: z.string().default("Amend"),
-  origin: z.literal("mako").default("mako"),
-  submitterName: z.string(),
-  submitterEmail: z.string().email(),
-  timestamp: z.number(),
-});
+export const schema = baseSchema.merge(ammendSchema);

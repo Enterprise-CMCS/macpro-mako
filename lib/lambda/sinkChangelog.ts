@@ -1,7 +1,7 @@
 import { Handler } from "aws-lambda";
 import { getPackageChangelog } from "libs/api/package";
 import { bulkUpdateDataWrapper, ErrorType, getTopic, logError } from "libs/sink-lib";
-import { KafkaEvent, KafkaRecord, opensearch } from "shared-types";
+import { KafkaEvent, KafkaRecord, LegacyAdminChange, opensearch } from "shared-types";
 import { decodeBase64WithUtf8 } from "shared-utils";
 
 import {
@@ -141,24 +141,41 @@ const processAndIndex = async ({
         record.origin = "onemac";
       }
 
-      // If the event is a supported event, transform and push to docs array for indexing
-      if (record.event in transforms) {
-        const transformForEvent = transforms[record.event as keyof typeof transforms];
-
-        const result = transformForEvent.transform(offset).safeParse(record);
-
-        if (result.success && result.data === undefined) continue;
-        if (!result.success) {
-          logError({
-            type: ErrorType.VALIDATION,
-            error: result?.error,
-            metadata: { topicPartition, kafkaRecord, record },
-          });
-          continue;
+      const recordsToProcess: Array<(typeof transforms)[keyof typeof transforms]["Schema"]> = [];
+      if (record.reverseChrono?.length) {
+        // Focus on adminChange property in records with the reverseChrono property to avoid ingesting duplicates
+        if (record.adminChanges?.length) {
+          record.adminChanges.map((adminChange: LegacyAdminChange) =>
+            recordsToProcess.push({
+              ...record,
+              ...adminChange,
+              event: "legacy-admin-change",
+            }),
+          );
         }
-        docs.push(result.data);
       } else {
-        console.log(`No transform found for event: ${record.event}`);
+        recordsToProcess.push(record);
+      }
+      for (const currentRecord of recordsToProcess) {
+        // If the event is a supported event, transform and push to docs array for indexing
+        if (currentRecord.event in transforms) {
+          const transformForEvent = transforms[currentRecord.event as keyof typeof transforms];
+
+          const result = transformForEvent.transform(offset).safeParse(currentRecord);
+
+          if (result.success && result.data === undefined) continue;
+          if (!result.success) {
+            logError({
+              type: ErrorType.VALIDATION,
+              error: result?.error,
+              metadata: { topicPartition, kafkaRecord, currentRecord },
+            });
+            continue;
+          }
+          docs.push(result.data);
+        } else {
+          console.log(`No transform found for event: ${currentRecord.event}`);
+        }
       }
     } catch (error) {
       logError({

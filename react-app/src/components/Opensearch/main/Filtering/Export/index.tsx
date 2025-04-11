@@ -40,7 +40,7 @@ export const OsExportData: FC<{
       ...createSearchFilterable(url.state.search || ""),
     ];
 
-    const resolvedData = await getMainExportData(filters);
+    const resolvedData = await getMainExportData(filters, url.state.sort);
 
     for (const item of resolvedData) {
       const column: Record<any, any> = {};

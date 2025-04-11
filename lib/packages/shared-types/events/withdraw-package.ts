@@ -1,6 +1,7 @@
 import { z } from "zod";
 
 import { attachmentArraySchema, attachmentArraySchemaOptional } from "../attachments";
+import { sharedSchema } from "./base-schema";
 
 export const attachmentsDefault = z.object({
   supportingDocumentation: z.object({
@@ -23,9 +24,4 @@ export const baseSchema = z.object({
   attachments: attachmentsDefault.or(attachmentsChip),
 });
 
-export const schema = baseSchema.extend({
-  origin: z.literal("mako").default("mako"),
-  submitterName: z.string(),
-  submitterEmail: z.string().email(),
-  timestamp: z.number(),
-});
+export const schema = baseSchema.merge(sharedSchema);

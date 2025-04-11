@@ -5,7 +5,7 @@ export const transform = () => {
     return {
       ...data,
       authority: "1915(c)",
-      actionType: "Amendment",
+      actionType: "Amend",
       title: data.title,
     };
   });
