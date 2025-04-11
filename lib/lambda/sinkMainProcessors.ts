@@ -1,6 +1,10 @@
 import { isBefore } from "date-fns";
 import { bulkUpdateDataWrapper, ErrorType, getItems, logError } from "libs";
 import { KafkaRecord, opensearch, SeatoolRecordWithUpdatedDate } from "shared-types";
+import {
+  onemacLegacyUserInformation,
+  onemacLegacyUserRoleRequest,
+} from "shared-types/events/legacy-user";
 import { Document, legacyTransforms, transforms } from "shared-types/opensearch/main";
 import { decodeBase64WithUtf8 } from "shared-utils";
 
@@ -36,6 +40,35 @@ type ParsedLegacyRecordFromKafka = Partial<{
   sk: string;
   GSI1pk: string;
 }>;
+
+export const isRecordALegacyUserRoleRequest = (
+  record: ParsedLegacyRecordFromKafka,
+  kafkaSource: string,
+): record is {
+  componentType: keyof typeof legacyTransforms;
+} =>
+  typeof record === "object" &&
+  record.sk !== undefined &&
+  [
+    "defaultcmsuser",
+    "cmsroleapprover",
+    "cmsreviewer",
+    "statesystemadmin",
+    "helpdesk",
+    "statesubmitter",
+  ].some((role) => record!.sk!.includes(role)) &&
+  kafkaSource === "onemac";
+
+export const isRecordALegacyUser = (
+  record: ParsedLegacyRecordFromKafka,
+  kafkaSource: string,
+): record is {
+  componentType: keyof typeof legacyTransforms;
+} =>
+  typeof record === "object" &&
+  record.sk !== undefined &&
+  record.sk === "ContactInfo" &&
+  kafkaSource === "onemac";
 
 export const isRecordALegacyOneMacRecord = (
   record: ParsedLegacyRecordFromKafka,
@@ -119,6 +152,27 @@ const getOneMacRecordWithAllProperties = (
     return oneMacRecord;
   }
 
+  if (isRecordALegacyUserRoleRequest(record, kafkaSource)) {
+    const userParseResult = onemacLegacyUserRoleRequest.safeParse(record);
+
+    if (userParseResult.success === true) {
+      console.log("USER RECORD: ", JSON.stringify(record));
+      return userParseResult.data;
+    }
+
+    console.log("USER RECORD INVALID BECAUSE: ", userParseResult.error, JSON.stringify(record));
+  }
+
+  if (isRecordALegacyUser(record, kafkaSource)) {
+    const userParseResult = onemacLegacyUserInformation.safeParse(record);
+
+    if (userParseResult.success === true) {
+      console.log("USER RECORD: ", JSON.stringify(record));
+      return userParseResult.data;
+    }
+    console.log("USER RECORD INVALID BECAUSE: ", userParseResult.error, JSON.stringify(record));
+  }
+
   if (isRecordALegacyOneMacRecord(record, kafkaSource)) {
     console.log(`legacy event: ${JSON.stringify(record, null, 2)}`);
     const transformForLegacyEvent = legacyTransforms[record.componentType];
@@ -194,7 +248,17 @@ export const insertOneMacRecordsFromKafkaIntoMako = async (
     return collection;
   }, []);
 
-  await bulkUpdateDataWrapper(oneMacRecordsForMako, "main");
+  const oneMacRecords = oneMacRecordsForMako.filter(
+    (record) => record.eventType !== "user-info" && record.eventType !== "user-role",
+  );
+  const oneMacUsers = oneMacRecordsForMako.filter((record) => record.eventType === "user-info");
+  const oneMacRoleRequests = oneMacRecordsForMako.filter(
+    (record) => record.eventType === "user-role",
+  );
+
+  await bulkUpdateDataWrapper(oneMacRecords, "main");
+  await bulkUpdateDataWrapper(oneMacUsers, "users");
+  await bulkUpdateDataWrapper(oneMacRoleRequests, "roles");
 };
 
 const getMakoDocTimestamps = async (kafkaRecords: KafkaRecord[]) => {

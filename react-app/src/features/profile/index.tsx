@@ -1,9 +1,12 @@
-import { RoleDescriptionStrings } from "shared-types";
+import { useState } from "react";
+import { FULL_CENSUS_STATES, RoleDescriptionStrings, StateCode } from "shared-types";
 
-import { useGetUser } from "@/api";
+import { useGetUser, useGetUserProfile } from "@/api";
 import { Alert, Button, CardWithTopBorder, SubNavHeader } from "@/components";
+import { Option } from "@/components/Opensearch/main/Filtering/Drawer/Filterable";
+import { FilterableSelect } from "@/components/Opensearch/main/Filtering/Drawer/Filterable";
 import config from "@/config";
-import { convertStateAbbrToFullName } from "@/utils";
+import { convertStateAbbrToFullName, stateAccessStatus } from "@/utils";
 
 const getRoleDescriptionsFromUser = (roles: string | undefined) => {
   if (roles === undefined) {
@@ -17,24 +20,29 @@ const getRoleDescriptionsFromUser = (roles: string | undefined) => {
     .join(", ");
 };
 
-const getFullStateNamesFromUser = (states: string | undefined) => {
-  if (states === undefined) {
-    return "";
-  }
-
-  return states.split(",").map(convertStateAbbrToFullName).join(", ");
-};
-
 export const Profile = () => {
   const { data: userData } = useGetUser();
-
-  const fullStateNames = getFullStateNamesFromUser(userData?.user["custom:state"]);
+  const { data: userProfile } = useGetUserProfile();
 
   const euaRoles = getRoleDescriptionsFromUser(userData?.user["custom:cms-roles"]);
   const idmRoles = getRoleDescriptionsFromUser(userData?.user["custom:ismemberof"]);
   const isStateUser = userData?.user?.["custom:cms-roles"].includes("onemac-state-user");
-
+  const stateAccess = userProfile?.stateAccess?.filter((access) => access.territory != "ZZ");
   const userRoles = euaRoles ? euaRoles : idmRoles;
+
+  const [showAddState, setShowAddState] = useState<boolean>(true);
+  const [requestedStates, setRequestedStates] = useState<StateCode[]>([]);
+
+  // move or fix
+  // include denied or pending states as disabled?
+  const statesToRequest: Option[] =
+    isStateUser && stateAccess?.length
+      ? FULL_CENSUS_STATES.filter(
+          (state) =>
+            !stateAccess.some((request) => request.territory === state.value) &&
+            state.value !== "ZZ",
+        ).map((stateObj) => ({ label: stateObj.label, value: stateObj.value }))
+      : [];
 
   return (
     <>
@@ -88,15 +96,50 @@ export const Profile = () => {
               <p>{userData?.user?.email}</p>
             </div>
           </div>
-
-          {isStateUser && fullStateNames && (
-            <div className="my-4 md:my-0 md:basis-1/2">
-              <CardWithTopBorder>
-                <div className="px-8 py-2">
-                  <h3 className="text-xl font-bold">{fullStateNames}</h3>
-                  <p className="italic">Access Granted</p>
-                </div>
-              </CardWithTopBorder>
+          {/* State Access Management Section */}
+          {isStateUser && (
+            <div className="flex flex-col gap-6 md:basis-1/2">
+              <h2 className="text-2xl font-bold">State Access Management</h2>
+              {stateAccess?.map((access) => {
+                return (
+                  <CardWithTopBorder className="my-0" key={`${access.territory}-${access.role}`}>
+                    <div className="p-8 min-h-36">
+                      <h3 className="text-xl font-bold">
+                        {convertStateAbbrToFullName(access.territory)}
+                      </h3>
+                      <p className="italic">{stateAccessStatus[access.status]}</p>
+                      <p className="block lg:mt-8 lg:mb-2">
+                        <span className="font-semibold">State System Admin: </span>
+                        <a className="text-blue-600" href={`mailto:${access.doneByEmail}`}>
+                          {access.doneByName}
+                        </a>
+                      </p>
+                    </div>
+                  </CardWithTopBorder>
+                );
+              })}
+              {showAddState ? (
+                <Button onClick={() => setShowAddState(false)}>Add State</Button>
+              ) : (
+                <CardWithTopBorder>
+                  <div className="p-8 min-h-36">
+                    <h3 className="text-xl font-bold">Choose State Access</h3>
+                    <FilterableSelect
+                      value={requestedStates}
+                      options={statesToRequest}
+                      onChange={(values: StateCode[]) => setRequestedStates(values)}
+                    />
+                    <div className="block lg:mt-8 lg:mb-2">
+                      <span>
+                        <Button>Submit</Button>
+                        <Button variant="link" onClick={() => setShowAddState(true)}>
+                          Cancel
+                        </Button>
+                      </span>
+                    </div>
+                  </div>
+                </CardWithTopBorder>
+              )}
             </div>
           )}
         </div>
