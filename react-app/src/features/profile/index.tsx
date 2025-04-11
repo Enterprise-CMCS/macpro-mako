@@ -33,7 +33,7 @@ export const Profile = () => {
     return <LoadingSpinner />;
   }
 
-  if (!userData?.user) {
+  if (!isUserLoading && !userData?.user) {
     return <Navigate to="/" replace />;
   }
 

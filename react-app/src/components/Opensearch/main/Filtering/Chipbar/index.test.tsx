@@ -1,4 +1,4 @@
-import { render, screen } from "@testing-library/react";
+import { render, screen, waitForElementToBeRemoved } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { opensearch } from "shared-types";
 import { afterEach, describe, expect, it, vi } from "vitest";
@@ -432,6 +432,9 @@ describe("FilterChips", () => {
       ]);
       await user.click(screen.getAllByRole("button")[1]);
       expect(screen.getByText("State: Maryland, MD")).toBeInTheDocument();
+      if (screen.queryByText("State: Ohio, OH")) {
+        await waitForElementToBeRemoved(screen.queryByText("State: Ohio, OH"));
+      }
       expect(screen.queryByText("State: Ohio, OH")).toBeNull();
     });
 
