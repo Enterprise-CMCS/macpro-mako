@@ -82,16 +82,29 @@ export const getSubmissionDetails: GetLabelAndValueFromSubmission = (submission,
   },
   {
     label: "Type",
-    value: submission.types
-      ? submission.types.map((type) => <p key={type?.SPA_TYPE_ID}>{type?.SPA_TYPE_NAME}</p>)
-      : BLANK_VALUE,
+    value: submission.types ? (
+      <ul>
+        {submission.types.map((type) => (
+          <li key={type?.SPA_TYPE_ID}>{type?.SPA_TYPE_NAME}</li>
+        ))}{" "}
+      </ul>
+    ) : (
+      BLANK_VALUE
+    ),
     canView: submission.actionType !== "Extend" && isStateUser(user) === false,
   },
+
   {
     label: "Subtype",
-    value: submission.subTypes
-      ? submission.subTypes.map((T) => <p key={T?.TYPE_ID}>{T?.TYPE_NAME}</p>)
-      : BLANK_VALUE,
+    value: submission.subTypes ? (
+      <ul>
+        {submission.subTypes.map((T) => (
+          <li key={T?.TYPE_ID}>{T?.TYPE_NAME}</li>
+        ))}{" "}
+      </ul>
+    ) : (
+      BLANK_VALUE
+    ),
     canView: submission.actionType !== "Extend" && isStateUser(user) === false,
   },
   {
