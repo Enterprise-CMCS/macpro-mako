@@ -118,6 +118,13 @@ export const transform = (id: string) => {
     const seatoolStatus = data?.STATE_PLAN?.SPW_STATUS_ID
       ? SEATOOL_SPW_STATUS[data?.STATE_PLAN?.SPW_STATUS_ID]
       : "Unknown";
+    if (
+      seatoolStatus === "Pending" &&
+      (!data.STATE_PLAN.TITLE_NAME || data.STATE_PLAN.TITLE_NAME.trim() === "") &&
+      (!data.STATE_PLAN.SUMMARY_MEMO || data.STATE_PLAN.SUMMARY_MEMO.trim() === "")
+    ) {
+      throw new Error("Seatool record is missing summary or description");
+    }
     const authority =
       data?.STATE_PLAN?.PLAN_TYPE && data.STATE_PLAN.PLAN_TYPE in SEATOOL_AUTHORITIES
         ? SEATOOL_AUTHORITIES[data?.STATE_PLAN?.PLAN_TYPE]
