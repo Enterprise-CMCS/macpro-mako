@@ -7,11 +7,45 @@ import { Button } from "@/components";
 import { CardWithTopBorder } from "@/components";
 import { FAQ_TAB } from "@/consts";
 import { useHideBanner } from "@/hooks/useHideBanner";
-import { cn } from "@/utils";
 
 export const Welcome = () => {
   const isSectionHidden = useHideBanner();
   const [activeTab, setActiveTab] = useState("medicaid");
+
+  const tabConfig = [
+    {
+      id: "medicaid",
+      label: "Medicaid SPA",
+      content:
+        "Submit all Medicaid SPAs here, except for Medicaid eligibility, enrollment, administration, and health home SPAs, which can be submitted in MACPro System without logging in separately.",
+      buttonText: "New Medicaid SPA",
+    },
+    {
+      id: "chip",
+      label: "CHIP SPA",
+      content: "Submit a new CHIP state plan amendment.",
+      buttonText: "New CHIP SPA",
+    },
+    {
+      id: "waiverB",
+      label: "1915(b) waiver",
+      content:
+        "Submit a new 1915(b)(4) FFS selective contracting waiver or 1915(b) comprehensive (capacitated) waiver authority, amendment, or renewal.",
+      buttonText: "New 1915(b) waiver",
+    },
+    {
+      id: "waiverC",
+      label: "1915(c) waiver",
+      content: "Submit section 1915(c) Appendix K amendments not handled in WMS.",
+      buttonText: "New 1915(c) waiver",
+    },
+    {
+      id: "extension",
+      label: "Request temporary waiver extension",
+      content: "Submit a new temporary extension request for a 1915(b) or 1915(c) waiver.",
+      buttonText: "New request",
+    },
+  ];
 
   return (
     <>
@@ -28,114 +62,80 @@ export const Welcome = () => {
       </div>
 
       <div className="max-w-screen-xl mx-auto p-4 lg:px-8">
-        <div className={cn("m-auto max-w-[767px]", isSectionHidden ? "hidden" : "block")}>
-          <h2 className="text-2xl font-bold">New and Notable</h2>
-          <CardWithTopBorder className="">
-            <p className="py-5 pl-6 pr-20">
-              <span className="font-bold text-[#0071bc]">MMDL SPA forms available in OneMAC:</span>{" "}
-              Medicaid Alternative Benefit Plan, Premium and Cost Sharing, and CHIP Eligibility SPA
-              templates and implementation guides are now available in OneMAC. New submissions for
-              these SPA types are submitted through the OneMAC system effective [add date].{" "}
-              <Link to="/faq/spa-admendments" target={FAQ_TAB} className="underline text-[#0071bc]">
-                Learn more
-              </Link>
-            </p>
-          </CardWithTopBorder>
-        </div>
+        {!isSectionHidden && (
+          <div className="m-auto max-w-[767px]">
+            <h2 className="text-2xl font-bold">New and Notable</h2>
+            <CardWithTopBorder>
+              <p className="py-5 pl-6 pr-20">
+                <span className="font-bold text-[#0071bc]">
+                  MMDL SPA forms available in OneMAC:
+                </span>{" "}
+                Medicaid Alternative Benefit Plan, Premium and Cost Sharing, and CHIP Eligibility
+                SPA templates and implementation guides are now available in OneMAC. New submissions
+                for these SPA types are submitted through the OneMAC system effective [add date].{" "}
+                <Link
+                  to="/faq/spa-admendments"
+                  target={FAQ_TAB}
+                  className="underline text-[#0071bc]"
+                >
+                  Learn more
+                </Link>
+              </p>
+            </CardWithTopBorder>
+          </div>
+        )}
 
-        {/* NEW SUBMISSION */}
-        <div className="flex flex-col justify-center gap-8">
-          <div>
-            <h2 className="text-2xl font-bold mb-4">New submission</h2>
-            <div className="flex flex-col md:flex-row gap-12">
-              {/* Tabs List */}
-              <div className="flex flex-col space-y-4">
-                {[
-                  { id: "medicaid", label: "Medicaid SPA" },
-                  { id: "chip", label: "CHIP SPA" },
-                  { id: "waiverB", label: "1915(b) waiver" },
-                  { id: "waiverC", label: "1915(c) waiver" },
-                  { id: "extension", label: "Request temporary waiver extension" },
-                ].map((tab) => (
-                  <button
-                    key={tab.id}
-                    onClick={() => setActiveTab(tab.id)}
-                    className={`text-left px-4 py-2 border-l-4 transition-all duration-200 ${
-                      activeTab === tab.id
-                        ? "border-blue-600 bg-blue-50 text-blue-800 font-semibold"
-                        : "border-transparent hover:border-blue-300"
-                    }`}
-                  >
-                    {tab.label}
-                  </button>
-                ))}
-              </div>
+        {/* New Submission Section */}
+        <div className="w-full flex justify-start px-[102px] pt-[80px]">
+          <div className="w-[712px]">
+            <h2 className="text-[48px] font-merriweather font-bold text-[#3D4551] leading-[100%] mb-[32px]">
+              New submission
+            </h2>
 
-              {/* Tab Content */}
-              <div className="flex-1 p-4 border rounded shadow-sm bg-white">
-                {activeTab === "medicaid" && (
-                  <>
-                    <h3 className="text-xl font-bold text-blue-700 mb-2">Medicaid SPA</h3>
-                    <p className="text-gray-700 mb-4">
-                      Submit all Medicaid SPAs here, except for Medicaid eligibility, enrollment,
-                      administration, and health home SPAs, which can be submitted in MACPro System
-                      without logging in separately.{" "}
-                      <a href="#" className="text-blue-600 underline">
-                        Learn how.
-                      </a>
-                    </p>
-                    <button className="bg-blue-700 text-white px-4 py-2 rounded font-semibold">
-                      New Medicaid SPA
-                    </button>
-                  </>
-                )}
-                {activeTab === "chip" && (
-                  <>
-                    <h3 className="text-xl font-bold text-blue-700 mb-2">CHIP SPA</h3>
-                    <p className="text-gray-700 mb-4">
-                      Submit CHIP SPAs here for state-specific child health plans.
-                    </p>
-                    <button className="bg-blue-700 text-white px-4 py-2 rounded font-semibold">
-                      New CHIP SPA
-                    </button>
-                  </>
-                )}
-                {activeTab === "waiverB" && (
-                  <>
-                    <h3 className="text-xl font-bold text-blue-700 mb-2">1915(b) Waiver</h3>
-                    <p className="text-gray-700 mb-4">
-                      Submit section 1915(b) waivers that are not submitted through WMS.
-                    </p>
-                    <button className="bg-blue-700 text-white px-4 py-2 rounded font-semibold">
-                      New 1915(b) Waiver
-                    </button>
-                  </>
-                )}
-                {activeTab === "waiverC" && (
-                  <>
-                    <h3 className="text-xl font-bold text-blue-700 mb-2">1915(c) Waiver</h3>
-                    <p className="text-gray-700 mb-4">
-                      Submit section 1915(c) Appendix K amendments not handled in WMS.
-                    </p>
-                    <button className="bg-blue-700 text-white px-4 py-2 rounded font-semibold">
-                      New 1915(c) Waiver
-                    </button>
-                  </>
-                )}
-                {activeTab === "extension" && (
-                  <>
-                    <h3 className="text-xl font-bold text-blue-700 mb-2">
-                      Temporary Waiver Extension
-                    </h3>
-                    <p className="text-gray-700 mb-4">
-                      Submit state requests for Temporary Extensions for section 1915(b) and 1915(c)
-                      waivers.
-                    </p>
-                    <button className="bg-blue-700 text-white px-4 py-2 rounded font-semibold">
-                      Request Extension
-                    </button>
-                  </>
-                )}
+            <div className="w-full min-h-[495px] bg-white rounded border-[#DFE1E2] p-[16px]">
+              {/* Tabs stacked with content underneath */}
+              <div className="flex flex-col gap-[24px]">
+                {tabConfig.map((tab) => {
+                  const isActive = activeTab === tab.id;
+                  return (
+                    <div
+                      key={tab.id}
+                      onClick={() => setActiveTab(tab.id)}
+                      className="cursor-pointer"
+                    >
+                      <div className="flex items-center">
+                        <div
+                          className={`w-[6px] h-[39px] rounded-[5px] shadow-md flex-shrink-0 ${
+                            isActive ? "bg-[#3D4551]" : "bg-transparent"
+                          }`}
+                        ></div>
+                        <div
+                          className={`pl-3 font-open-sans font-bold text-[24px] leading-[1.62] ${
+                            isActive ? "text-[#0071BC]" : "text-[#3D4551]"
+                          }`}
+                        >
+                          {tab.label}
+                        </div>
+                      </div>
+
+                      {isActive && (
+                        <div className="pl-[24px] pt-[8px]">
+                          <p className="font-open-sans text-[18px] text-[#212121] leading-[1.62] mb-4">
+                            {tab.content}
+                            {tab.id === "medicaid" && (
+                              <a href="#" className="underline ml-1 hover:text-blue-700">
+                                Learn how.
+                              </a>
+                            )}
+                          </p>
+                          <button className="w-fit h-[38px] bg-[#0071BC] text-white px-4 py-2 rounded-md text-sm font-semibold">
+                            {tab.buttonText}
+                          </button>
+                        </div>
+                      )}
+                    </div>
+                  );
+                })}
               </div>
             </div>
           </div>
