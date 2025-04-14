@@ -39,7 +39,7 @@ async function globalSetup(config: FullConfig) {
   await submitterLoginPage.goto();
   await submitterLoginPage.login(testUsers.state, password);
 
-  await expect(submitterPage).toHaveURL(/dashboard/);
+  await expect(submitterPage).toHaveURL("/dashboard");
 
   await submitterContext.storageState({ path: stateSubmitterAuthFile });
 
