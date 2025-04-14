@@ -1,10 +1,10 @@
 {
   "config": {
-    "configFile": "/home/runner/work/macpro-mako/macpro-mako/test/e2e/playwright.config.ts",
+    "configFile": "/home/runner/work/macpro-mako/macpro-mako/test/playwright.config.ts",
     "rootDir": "/home/runner/work/macpro-mako/macpro-mako/test",
     "forbidOnly": true,
     "fullyParallel": true,
-    "globalSetup": "/home/runner/work/macpro-mako/macpro-mako/test/e2e/utils/auth.setup.ts",
+    "globalSetup": "/home/runner/work/macpro-mako/macpro-mako/test/lib/auth.setup.ts",
     "globalTeardown": null,
     "globalTimeout": 0,
     "grep": {},
@@ -20,14 +20,14 @@
       [
         "html",
         {
-          "outputFolder": "playwright-reports/html-report",
+          "outputFolder": "./playwright-reports/html-report",
           "open": "never"
         }
       ],
       [
         "json",
         {
-          "outputFile": "playwright-reports/playwright-summary.json"
+          "outputFile": "./playwright-reports/playwright-summary.json"
         }
       ]
     ],
@@ -38,16 +38,18 @@
     "quiet": false,
     "projects": [
       {
-        "outputDir": "/home/runner/work/macpro-mako/macpro-mako/test/e2e/test-results",
+        "outputDir": "/home/runner/work/macpro-mako/macpro-mako/test/test-results",
         "repeatEach": 1,
         "retries": 2,
         "metadata": {},
         "id": "state-user-chrome",
         "name": "state-user-chrome",
         "testDir": "/home/runner/work/macpro-mako/macpro-mako/test",
-        "testIgnore": [],
+        "testIgnore": [
+          "**/*.test.{ts,tsx}"
+        ],
         "testMatch": [
-          "**/*.@(spec|test).?(c|m)[jt]s?(x)"
+          "**/*.spec.ts"
         ],
         "timeout": 30000
       }
@@ -55,25 +57,25 @@
     "shard": null,
     "updateSnapshots": "missing",
     "version": "1.47.2",
-    "workers": 1,
+    "workers": 2,
     "webServer": null
   },
   "suites": [],
   "errors": [
     {
-      "message": "TimeoutError: locator.waitFor: Timeout 30000ms exceeded.\nCall log:\n  - waiting for getByRole('link', { name: 'Dashboard' }).nth(1) to be visible\n",
-      "stack": "TimeoutError: locator.waitFor: Timeout 30000ms exceeded.\nCall log:\n  - waiting for getByRole('link', { name: 'Dashboard' }).nth(1) to be visible\n\n    at LoginPage.login (/home/runner/work/macpro-mako/macpro-mako/test/e2e/pages/loginPage.ts:17:69)\n    at globalSetup (/home/runner/work/macpro-mako/macpro-mako/test/e2e/utils/auth.setup.ts:36:3)",
+      "message": "Error: Timed out 5000ms waiting for expect(locator).toHaveURL(expected)\n\nLocator: locator(':root')\nExpected string: \"https://mako-dev.cms.gov/dashboard\"\nReceived string: \"https://mako-dev.cms.gov/dashboard?code=e601122a-15ec-4b41-8926-6b7305c29464&os=N4IgZglgNgLgpgJwM4gFwG0C6AaES4CGCAxgBZogi4wEBGFSADgSrswOYQB2BMEA9lzSguAVwC2tRGgAMuJBABecNACYArAF95-BDGHgIcKABMK4ggGt%2BAYVIEu7OCYAivFbl0npqEN6TEINogxPzeFHAAbDIAjDGqqgQAtDHqcMRJACy0mTFJABwAnKqRSZG0AOwAzDLqxKqFmZGZQUA\"\nCall log:\n  - locator._expect with timeout 5000ms\n  - waiting for locator(':root')\n  -   locator resolved to <html lang=\"en\" class=\"h-full\">…</html>\n  -   unexpected value \"https://mako-dev.cms.gov/dashboard?code=e601122a-15ec-4b41-8926-6b7305c29464\"\n  -   locator resolved to <html lang=\"en\" class=\"h-full\">…</html>\n  -   unexpected value \"https://mako-dev.cms.gov/dashboard?code=e601122a-15ec-4b41-8926-6b7305c29464\"\n  -   locator resolved to <html lang=\"en\" class=\"h-full\">…</html>\n  -   unexpected value \"https://mako-dev.cms.gov/dashboard?code=e601122a-15ec-4b41-8926-6b7305c29464\"\n  -   locator resolved to <html lang=\"en\" class=\"h-full\">…</html>\n  -   unexpected value \"https://mako-dev.cms.gov/dashboard?code=e601122a-15ec-4b41-8926-6b7305c29464\"\n  -   locator resolved to <html lang=\"en\" class=\"h-full\">…</html>\n  -   unexpected value \"https://mako-dev.cms.gov/dashboard?code=e601122a-15ec-4b41-8926-6b7305c29464\"\n  -   locator resolved to <html lang=\"en\" class=\"h-full\">…</html>\n  -   unexpected value \"https://mako-dev.cms.gov/dashboard?code=e601122a-15ec-4b41-8926-6b7305c29464&os=N4IgZglgNgLgpgJwM4gFwG0C6AaES4CGCAxgBZogi4wEBGFSADgSrswOYQB2BMEA9lzSguAVwC2tRGgAMuJBABecNACYArAF95-BDGHgIcKABMK4ggGt%2BAYVIEu7OCYAivFbl0npqEN6TEINogxPzeFHAAbDIAjDGqqgQAtDHqcMRJACy0mTFJABwAnKqRSZG0AOwAzDLqxKqFmZGZQUA\"\n  -   locator resolved to <html lang=\"en\" class=\"h-full\">…</html>\n  -   unexpected value \"https://mako-dev.cms.gov/dashboard?code=e601122a-15ec-4b41-8926-6b7305c29464&os=N4IgZglgNgLgpgJwM4gFwG0C6AaES4CGCAxgBZogi4wEBGFSADgSrswOYQB2BMEA9lzSguAVwC2tRGgAMuJBABecNACYArAF95-BDGHgIcKABMK4ggGt%2BAYVIEu7OCYAivFbl0npqEN6TEINogxPzeFHAAbDIAjDGqqgQAtDHqcMRJACy0mTFJABwAnKqRSZG0AOwAzDLqxKqFmZGZQUA\"\n  -   locator resolved to <html lang=\"en\" class=\"h-full\">…</html>\n  -   unexpected value \"https://mako-dev.cms.gov/dashboard?code=e601122a-15ec-4b41-8926-6b7305c29464&os=N4IgZglgNgLgpgJwM4gFwG0C6AaES4CGCAxgBZogi4wEBGFSADgSrswOYQB2BMEA9lzSguAVwC2tRGgAMuJBABecNACYArAF95-BDGHgIcKABMK4ggGt%2BAYVIEu7OCYAivFbl0npqEN6TEINogxPzeFHAAbDIAjDGqqgQAtDHqcMRJACy0mTFJABwAnKqRSZG0AOwAzDLqxKqFmZGZQUA\"\n  -   locator resolved to <html lang=\"en\" class=\"h-full\">…</html>\n  -   unexpected value \"https://mako-dev.cms.gov/dashboard?code=e601122a-15ec-4b41-8926-6b7305c29464&os=N4IgZglgNgLgpgJwM4gFwG0C6AaES4CGCAxgBZogi4wEBGFSADgSrswOYQB2BMEA9lzSguAVwC2tRGgAMuJBABecNACYArAF95-BDGHgIcKABMK4ggGt%2BAYVIEu7OCYAivFbl0npqEN6TEINogxPzeFHAAbDIAjDGqqgQAtDHqcMRJACy0mTFJABwAnKqRSZG0AOwAzDLqxKqFmZGZQUA\"\n",
+      "stack": "Error: Timed out 5000ms waiting for expect(locator).toHaveURL(expected)\n\nLocator: locator(':root')\nExpected string: \"https://mako-dev.cms.gov/dashboard\"\nReceived string: \"https://mako-dev.cms.gov/dashboard?code=e601122a-15ec-4b41-8926-6b7305c29464&os=N4IgZglgNgLgpgJwM4gFwG0C6AaES4CGCAxgBZogi4wEBGFSADgSrswOYQB2BMEA9lzSguAVwC2tRGgAMuJBABecNACYArAF95-BDGHgIcKABMK4ggGt%2BAYVIEu7OCYAivFbl0npqEN6TEINogxPzeFHAAbDIAjDGqqgQAtDHqcMRJACy0mTFJABwAnKqRSZG0AOwAzDLqxKqFmZGZQUA\"\nCall log:\n  - locator._expect with timeout 5000ms\n  - waiting for locator(':root')\n  -   locator resolved to <html lang=\"en\" class=\"h-full\">…</html>\n  -   unexpected value \"https://mako-dev.cms.gov/dashboard?code=e601122a-15ec-4b41-8926-6b7305c29464\"\n  -   locator resolved to <html lang=\"en\" class=\"h-full\">…</html>\n  -   unexpected value \"https://mako-dev.cms.gov/dashboard?code=e601122a-15ec-4b41-8926-6b7305c29464\"\n  -   locator resolved to <html lang=\"en\" class=\"h-full\">…</html>\n  -   unexpected value \"https://mako-dev.cms.gov/dashboard?code=e601122a-15ec-4b41-8926-6b7305c29464\"\n  -   locator resolved to <html lang=\"en\" class=\"h-full\">…</html>\n  -   unexpected value \"https://mako-dev.cms.gov/dashboard?code=e601122a-15ec-4b41-8926-6b7305c29464\"\n  -   locator resolved to <html lang=\"en\" class=\"h-full\">…</html>\n  -   unexpected value \"https://mako-dev.cms.gov/dashboard?code=e601122a-15ec-4b41-8926-6b7305c29464\"\n  -   locator resolved to <html lang=\"en\" class=\"h-full\">…</html>\n  -   unexpected value \"https://mako-dev.cms.gov/dashboard?code=e601122a-15ec-4b41-8926-6b7305c29464&os=N4IgZglgNgLgpgJwM4gFwG0C6AaES4CGCAxgBZogi4wEBGFSADgSrswOYQB2BMEA9lzSguAVwC2tRGgAMuJBABecNACYArAF95-BDGHgIcKABMK4ggGt%2BAYVIEu7OCYAivFbl0npqEN6TEINogxPzeFHAAbDIAjDGqqgQAtDHqcMRJACy0mTFJABwAnKqRSZG0AOwAzDLqxKqFmZGZQUA\"\n  -   locator resolved to <html lang=\"en\" class=\"h-full\">…</html>\n  -   unexpected value \"https://mako-dev.cms.gov/dashboard?code=e601122a-15ec-4b41-8926-6b7305c29464&os=N4IgZglgNgLgpgJwM4gFwG0C6AaES4CGCAxgBZogi4wEBGFSADgSrswOYQB2BMEA9lzSguAVwC2tRGgAMuJBABecNACYArAF95-BDGHgIcKABMK4ggGt%2BAYVIEu7OCYAivFbl0npqEN6TEINogxPzeFHAAbDIAjDGqqgQAtDHqcMRJACy0mTFJABwAnKqRSZG0AOwAzDLqxKqFmZGZQUA\"\n  -   locator resolved to <html lang=\"en\" class=\"h-full\">…</html>\n  -   unexpected value \"https://mako-dev.cms.gov/dashboard?code=e601122a-15ec-4b41-8926-6b7305c29464&os=N4IgZglgNgLgpgJwM4gFwG0C6AaES4CGCAxgBZogi4wEBGFSADgSrswOYQB2BMEA9lzSguAVwC2tRGgAMuJBABecNACYArAF95-BDGHgIcKABMK4ggGt%2BAYVIEu7OCYAivFbl0npqEN6TEINogxPzeFHAAbDIAjDGqqgQAtDHqcMRJACy0mTFJABwAnKqRSZG0AOwAzDLqxKqFmZGZQUA\"\n  -   locator resolved to <html lang=\"en\" class=\"h-full\">…</html>\n  -   unexpected value \"https://mako-dev.cms.gov/dashboard?code=e601122a-15ec-4b41-8926-6b7305c29464&os=N4IgZglgNgLgpgJwM4gFwG0C6AaES4CGCAxgBZogi4wEBGFSADgSrswOYQB2BMEA9lzSguAVwC2tRGgAMuJBABecNACYArAF95-BDGHgIcKABMK4ggGt%2BAYVIEu7OCYAivFbl0npqEN6TEINogxPzeFHAAbDIAjDGqqgQAtDHqcMRJACy0mTFJABwAnKqRSZG0AOwAzDLqxKqFmZGZQUA\"\n\n    at globalSetup (/home/runner/work/macpro-mako/macpro-mako/test/lib/auth.setup.ts:42:31)",
       "location": {
-        "file": "/home/runner/work/macpro-mako/macpro-mako/test/e2e/pages/loginPage.ts",
-        "column": 69,
-        "line": 17
+        "file": "/home/runner/work/macpro-mako/macpro-mako/test/lib/auth.setup.ts",
+        "column": 31,
+        "line": 42
       },
-      "snippet": "   at e2e/pages/loginPage.ts:17\n\n\u001b[0m \u001b[90m 15 |\u001b[39m     \u001b[36mawait\u001b[39m \u001b[36mthis\u001b[39m\u001b[33m.\u001b[39mpage\u001b[33m.\u001b[39mgetByRole(\u001b[32m\"button\"\u001b[39m\u001b[33m,\u001b[39m { name\u001b[33m:\u001b[39m \u001b[32m\"submit\"\u001b[39m })\u001b[33m.\u001b[39mclick()\u001b[33m;\u001b[39m\n \u001b[90m 16 |\u001b[39m     \u001b[36mawait\u001b[39m \u001b[36mthis\u001b[39m\u001b[33m.\u001b[39mpage\u001b[33m.\u001b[39mgetByRole(\u001b[32m\"link\"\u001b[39m\u001b[33m,\u001b[39m { name\u001b[33m:\u001b[39m \u001b[32m\"Dashboard\"\u001b[39m })\u001b[33m.\u001b[39mnth(\u001b[35m0\u001b[39m)\u001b[33m.\u001b[39mwaitFor()\u001b[33m;\u001b[39m\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 17 |\u001b[39m     \u001b[36mawait\u001b[39m \u001b[36mthis\u001b[39m\u001b[33m.\u001b[39mpage\u001b[33m.\u001b[39mgetByRole(\u001b[32m\"link\"\u001b[39m\u001b[33m,\u001b[39m { name\u001b[33m:\u001b[39m \u001b[32m\"Dashboard\"\u001b[39m })\u001b[33m.\u001b[39mnth(\u001b[35m1\u001b[39m)\u001b[33m.\u001b[39mwaitFor()\u001b[33m;\u001b[39m\n \u001b[90m    |\u001b[39m                                                                     \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 18 |\u001b[39m     \u001b[36mawait\u001b[39m \u001b[36mthis\u001b[39m\u001b[33m.\u001b[39mpage\u001b[33m.\u001b[39mgetByRole(\u001b[32m\"link\"\u001b[39m\u001b[33m,\u001b[39m { name\u001b[33m:\u001b[39m \u001b[32m\"Dashboard\"\u001b[39m })\u001b[33m.\u001b[39mnth(\u001b[35m0\u001b[39m)\u001b[33m.\u001b[39misVisible()\u001b[33m;\u001b[39m\n \u001b[90m 19 |\u001b[39m     \u001b[36mawait\u001b[39m \u001b[36mthis\u001b[39m\u001b[33m.\u001b[39mpage\u001b[33m.\u001b[39mgetByRole(\u001b[32m\"link\"\u001b[39m\u001b[33m,\u001b[39m { name\u001b[33m:\u001b[39m \u001b[32m\"Dashboard\"\u001b[39m })\u001b[33m.\u001b[39mnth(\u001b[35m1\u001b[39m)\u001b[33m.\u001b[39misVisible()\u001b[33m;\u001b[39m\n \u001b[90m 20 |\u001b[39m   }\u001b[0m"
+      "snippet": "   at lib/auth.setup.ts:42\n\n\u001b[0m \u001b[90m 40 |\u001b[39m   \u001b[36mawait\u001b[39m submitterLoginPage\u001b[33m.\u001b[39mlogin(testUsers\u001b[33m.\u001b[39mstate\u001b[33m,\u001b[39m password)\u001b[33m;\u001b[39m\n \u001b[90m 41 |\u001b[39m\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 42 |\u001b[39m   \u001b[36mawait\u001b[39m expect(submitterPage)\u001b[33m.\u001b[39mtoHaveURL(\u001b[32m\"/dashboard\"\u001b[39m)\u001b[33m;\u001b[39m\n \u001b[90m    |\u001b[39m                               \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 43 |\u001b[39m\n \u001b[90m 44 |\u001b[39m   \u001b[36mawait\u001b[39m submitterContext\u001b[33m.\u001b[39mstorageState({ path\u001b[33m:\u001b[39m stateSubmitterAuthFile })\u001b[33m;\u001b[39m\n \u001b[90m 45 |\u001b[39m\u001b[0m"
     }
   ],
   "stats": {
-    "startTime": "2025-04-11T16:00:44.098Z",
-    "duration": 39219.627,
+    "startTime": "2025-04-14T20:01:59.134Z",
+    "duration": 8396.432,
     "expected": 0,
     "skipped": 0,
     "unexpected": 0,
