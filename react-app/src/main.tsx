@@ -41,15 +41,19 @@ const initializeApp = async () => {
     },
   });
 
+  if (import.meta.env.DEV) {
+    await import("../mockServiceWorker.js?worker");
+  }
+
   ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(
-    <React.StrictMode>
-      <QueryClientProvider client={queryClient}>
-        <LDProvider>
+    <LDProvider>
+      <React.StrictMode>
+        <QueryClientProvider client={queryClient}>
           <FlagRouter />
-        </LDProvider>
-        <ReactQueryDevtools initialIsOpen={false} />
-      </QueryClientProvider>
-    </React.StrictMode>,
+          <ReactQueryDevtools initialIsOpen={false} />
+        </QueryClientProvider>
+      </React.StrictMode>
+    </LDProvider>,
   );
 };
 

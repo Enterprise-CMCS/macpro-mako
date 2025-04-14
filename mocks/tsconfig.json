@@ -1,6 +1,9 @@
 {
   "compilerOptions": {
+    "jsx": "react-jsx",
     "target": "ESNext",
+    "module": "ESNext",
+    "moduleResolution": "bundler",
     "useDefineForClassFields": true,
     "lib": ["DOM", "DOM.Iterable", "ESNext"],
     "allowJs": false,
@@ -9,12 +12,9 @@
     "allowSyntheticDefaultImports": true,
     "strict": true,
     "forceConsistentCasingInFileNames": true,
-    "module": "ESNext",
-    "moduleResolution": "Node",
     "resolveJsonModule": true,
     "isolatedModules": true,
     "noEmit": true,
-    "jsx": "react-jsx",
     "baseUrl": ".",
     "declaration": true
   },

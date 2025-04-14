@@ -424,9 +424,7 @@ type SupportSubNavHeaderProps = {
 export const SupportSubNavHeader = ({ children }: SupportSubNavHeaderProps) => (
   <div className="bg-primary-dark sticky top-0" data-testid="sub-faq-nav-header">
     <div className="max-w-screen-lg m-auto px-4 lg:px-8">
-      <div className="flex items-center">
-        <div className="flex align-middle py-2 text-white">{children}</div>
-      </div>
+      <div className="flex justify-between py-2 text-white">{children}</div>
     </div>
   </div>
 );
