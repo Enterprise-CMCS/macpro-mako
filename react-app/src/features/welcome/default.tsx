@@ -1,4 +1,5 @@
 import * as Heroicons from "@heroicons/react/24/outline";
+import { useState } from "react";
 import { Link } from "react-router";
 
 import * as C from "@/components";
@@ -10,6 +11,7 @@ import { cn } from "@/utils";
 
 export const Welcome = () => {
   const isSectionHidden = useHideBanner();
+  const [activeTab, setActiveTab] = useState("medicaid");
 
   return (
     <>
@@ -24,8 +26,7 @@ export const Welcome = () => {
           </p>
         </div>
       </div>
-      {/* End Hero Section */}
-      {/* Two Column Main Layout */}
+
       <div className="max-w-screen-xl mx-auto p-4 lg:px-8">
         <div className={cn("m-auto max-w-[767px]", isSectionHidden ? "hidden" : "block")}>
           <h2 className="text-2xl font-bold">New and Notable</h2>
@@ -41,6 +42,106 @@ export const Welcome = () => {
             </p>
           </CardWithTopBorder>
         </div>
+
+        {/* NEW SUBMISSION */}
+        <div className="flex flex-col justify-center gap-8">
+          <div>
+            <h2 className="text-2xl font-bold mb-4">New submission</h2>
+            <div className="flex flex-col md:flex-row gap-12">
+              {/* Tabs List */}
+              <div className="flex flex-col space-y-4">
+                {[
+                  { id: "medicaid", label: "Medicaid SPA" },
+                  { id: "chip", label: "CHIP SPA" },
+                  { id: "waiverB", label: "1915(b) waiver" },
+                  { id: "waiverC", label: "1915(c) waiver" },
+                  { id: "extension", label: "Request temporary waiver extension" },
+                ].map((tab) => (
+                  <button
+                    key={tab.id}
+                    onClick={() => setActiveTab(tab.id)}
+                    className={`text-left px-4 py-2 border-l-4 transition-all duration-200 ${
+                      activeTab === tab.id
+                        ? "border-blue-600 bg-blue-50 text-blue-800 font-semibold"
+                        : "border-transparent hover:border-blue-300"
+                    }`}
+                  >
+                    {tab.label}
+                  </button>
+                ))}
+              </div>
+
+              {/* Tab Content */}
+              <div className="flex-1 p-4 border rounded shadow-sm bg-white">
+                {activeTab === "medicaid" && (
+                  <>
+                    <h3 className="text-xl font-bold text-blue-700 mb-2">Medicaid SPA</h3>
+                    <p className="text-gray-700 mb-4">
+                      Submit all Medicaid SPAs here, except for Medicaid eligibility, enrollment,
+                      administration, and health home SPAs, which can be submitted in MACPro System
+                      without logging in separately.{" "}
+                      <a href="#" className="text-blue-600 underline">
+                        Learn how.
+                      </a>
+                    </p>
+                    <button className="bg-blue-700 text-white px-4 py-2 rounded font-semibold">
+                      New Medicaid SPA
+                    </button>
+                  </>
+                )}
+                {activeTab === "chip" && (
+                  <>
+                    <h3 className="text-xl font-bold text-blue-700 mb-2">CHIP SPA</h3>
+                    <p className="text-gray-700 mb-4">
+                      Submit CHIP SPAs here for state-specific child health plans.
+                    </p>
+                    <button className="bg-blue-700 text-white px-4 py-2 rounded font-semibold">
+                      New CHIP SPA
+                    </button>
+                  </>
+                )}
+                {activeTab === "waiverB" && (
+                  <>
+                    <h3 className="text-xl font-bold text-blue-700 mb-2">1915(b) Waiver</h3>
+                    <p className="text-gray-700 mb-4">
+                      Submit section 1915(b) waivers that are not submitted through WMS.
+                    </p>
+                    <button className="bg-blue-700 text-white px-4 py-2 rounded font-semibold">
+                      New 1915(b) Waiver
+                    </button>
+                  </>
+                )}
+                {activeTab === "waiverC" && (
+                  <>
+                    <h3 className="text-xl font-bold text-blue-700 mb-2">1915(c) Waiver</h3>
+                    <p className="text-gray-700 mb-4">
+                      Submit section 1915(c) Appendix K amendments not handled in WMS.
+                    </p>
+                    <button className="bg-blue-700 text-white px-4 py-2 rounded font-semibold">
+                      New 1915(c) Waiver
+                    </button>
+                  </>
+                )}
+                {activeTab === "extension" && (
+                  <>
+                    <h3 className="text-xl font-bold text-blue-700 mb-2">
+                      Temporary Waiver Extension
+                    </h3>
+                    <p className="text-gray-700 mb-4">
+                      Submit state requests for Temporary Extensions for section 1915(b) and 1915(c)
+                      waivers.
+                    </p>
+                    <button className="bg-blue-700 text-white px-4 py-2 rounded font-semibold">
+                      Request Extension
+                    </button>
+                  </>
+                )}
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* STATE USERS */}
         <div className="flex flex-col justify-center gap-8">
           <div>
             <h2 className="text-2xl font-bold mb-4">State Users</h2>
@@ -102,6 +203,8 @@ export const Welcome = () => {
               </div>
             </div>
           </div>
+
+          {/* CMS USERS */}
           <div>
             <h2 className="text-2xl font-bold mb-4">CMS Users</h2>
             <div className="flex flex-col md:flex-row gap-8">
@@ -158,6 +261,8 @@ export const Welcome = () => {
           </div>
         </div>
       </div>
+
+      {/* FAQ Footer */}
       <section>
         <div className="flex justify-around items-center text-xl px-10 py-2 max-w-screen-xl mx-auto">
           <h4>Do you have questions or need support?</h4>
