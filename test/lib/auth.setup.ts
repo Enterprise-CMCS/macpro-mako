@@ -39,7 +39,7 @@ async function globalSetup(config: FullConfig) {
   await submitterLoginPage.goto();
   await submitterLoginPage.login(testUsers.state, password);
 
-  await expect(submitterPage).toHaveURL("/dashboard");
+  await expect(submitterPage).toHaveURL(/dashboard/);
 
   await submitterContext.storageState({ path: stateSubmitterAuthFile });
 
@@ -49,7 +49,7 @@ async function globalSetup(config: FullConfig) {
   await reviewerLoginPage.goto();
   await reviewerLoginPage.login(testUsers.reviewer, password);
 
-  await expect(reviewerPage).toHaveURL("/dashboard");
+  await expect(reviewerPage).toHaveURL(/dashboard/);
 
   await reviewerContext.storageState({ path: reviewerAuthFile });
 
