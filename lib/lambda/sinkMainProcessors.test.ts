@@ -643,6 +643,7 @@ describe("insertOneMacRecordsFromKafkaIntoMako", () => {
         submitterName: "Tester",
         initialIntakeNeeded: true,
         raiWithdrawEnabled: false,
+        raiReceivedDate: null,
         cmsStatus: statusToDisplayToCmsUser[SEATOOL_STATUS.SUBMITTED],
         stateStatus: statusToDisplayToStateUser[SEATOOL_STATUS.SUBMITTED],
         seatoolStatus: SEATOOL_STATUS.SUBMITTED,
