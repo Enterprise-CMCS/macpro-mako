@@ -131,6 +131,7 @@ const getOneMacRecordWithAllProperties = (
   }
 
   if (isRecordAOneMacRecord(record)) {
+    console.log(record, "ARE WE IN HERE");
     const transformForEvent = transforms[record.event];
 
     const safeEvent = transformForEvent.transform().safeParse(record);
