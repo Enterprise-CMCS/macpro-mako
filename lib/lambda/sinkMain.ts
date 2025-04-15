@@ -11,14 +11,10 @@ import {
 export const handler: Handler<KafkaEvent> = async (event) => {
   const prettifiedEventJSON = JSON.stringify(event, null, 2);
 
-  // console.log(`event: ${prettifiedEventJSON}`);
-
   try {
     await Promise.all(
       Object.entries(event.records).map(async ([topicPartition, records]) => {
         const topic = getTopic(topicPartition);
-        // Uncomment the line below if you are trying to see what is being hit in sync
-        // console.log(`topic: ${topic}`);
 
         switch (topic) {
           case "aws.onemac.migration.cdc":
