@@ -3,7 +3,6 @@ import { response } from "lib/libs/handler-lib";
 import { StateAccess } from "react-app/src/api";
 import { APIGatewayEvent } from "shared-types";
 
-import { submitRoleRequests } from "./submitRoleRequests";
 import {
   getAllUserRoles,
   getAllUserRolesByEmail,
@@ -27,10 +26,10 @@ export const getRoleRequests = async (event: APIGatewayEvent) => {
     let roleRequests: StateAccess[] = [];
 
     const cmsRoleApproverRole = userRoles.find(
-      (roleObj: StateAccess) => roleObj.role === "cmsroleapprover",
+      (roleObj: StateAccess) => roleObj.role === "cmsroleapprover" && roleObj.status === "active",
     );
     const stateSystemAdminRole = userRoles.find(
-      (roleObj: StateAccess) => roleObj.role === "statesystemadmin",
+      (roleObj: StateAccess) => roleObj.role === "statesystemadmin" && roleObj.status === "active",
     );
 
     if (cmsRoleApproverRole) {

@@ -249,11 +249,14 @@ export const insertOneMacRecordsFromKafkaIntoMako = async (
   }, []);
 
   const oneMacRecords = oneMacRecordsForMako.filter(
-    (record) => record.eventType !== "user-info" && record.eventType !== "user-role",
+    (record) =>
+      record.eventType !== "user-info" &&
+      record.eventType !== "legacy-user-role" &&
+      record.event !== "user-role",
   );
   const oneMacUsers = oneMacRecordsForMako.filter((record) => record.eventType === "user-info");
   const roleRequests = oneMacRecordsForMako.filter(
-    (record) => record.eventType === "legacy-user-role" || record.eventType === "user-role",
+    (record) => record.eventType === "legacy-user-role" || record.event === "user-role",
   );
 
   await bulkUpdateDataWrapper(oneMacRecords, "main");

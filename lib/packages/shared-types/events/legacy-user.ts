@@ -44,10 +44,11 @@ export const onemacLegacyUserRoleRequest = baseUserRoleRequestSchema
     lastModifiedDate: data.date,
   }));
 
-// OneMAC Upgrade User Role Request Schema
+// OneMAC Upgrade/Mako User Role Request Schema
 export const userRoleRequest = baseUserRoleRequestSchema.transform((data) => ({
   id: `${data.email}_${data.territory}_${data.role}`,
-  eventType: "user-role",
+  // mako events are "event" instead of "eventType"?
+  event: "user-role",
   email: data.email,
   doneByEmail: data.doneByEmail,
   doneByName: data.doneByName,
