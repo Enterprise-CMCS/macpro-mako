@@ -39,7 +39,8 @@ export async function writeUiEnvFile(stage, local = false) {
       }
     }
   } catch (e) {
-    throw new Error("PROJECT environment variable is required but not set");
+    googleAnalytics = "";
+    console.log("Environment variable not found")
   }
 
 
