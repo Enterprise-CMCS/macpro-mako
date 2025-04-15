@@ -15,9 +15,9 @@ export const submitRoleRequests = async (event: APIGatewayEvent) => {
 
   const { userId, poolId } = getAuthDetails(event);
   console.log(await lookupUserAttributes(userId, poolId), "USER ATTRIBUTES");
-  const { email } = await lookupUserAttributes(userId, poolId);
+  const userAttributes = await lookupUserAttributes(userId, poolId);
 
-  const userRoles = await getAllUserRolesByEmail(email);
+  const userRoles = await getAllUserRolesByEmail(userAttributes.email);
   if (!userRoles.length) {
     return response({
       statusCode: 400,
@@ -28,18 +28,19 @@ export const submitRoleRequests = async (event: APIGatewayEvent) => {
   const activeRole = userRoles.find((roleObj: StateAccess) => roleObj.status === "active");
   console.log(activeRole, "ACTIVE ROLE");
   const { state } = typeof event.body === "string" ? JSON.parse(event.body) : event.body;
-  const id = `${email}_${state}_${activeRole.role}`;
+  const id = `${userAttributes.email}_${state}_${activeRole.role}`;
   // TODO: add user role to the end of ID
   await produceMessage(
     topicName,
     id,
     JSON.stringify({
-      email,
+      event: "user-role",
+      email: userAttributes.email,
       status: "pending",
       territory: state,
       role: activeRole.role, // ?? get user main role? can there only be 1 active role?
-      doneByEmail: email,
-      doneByName: "", // get full name of current user
+      doneByEmail: userAttributes.email,
+      doneByName: `${userAttributes.given_name} ${userAttributes.family_name}`, // get full name of current user
       date: Date.now(), // correct time format?
     }),
   );

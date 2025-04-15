@@ -9,6 +9,7 @@ const userRoles = z.enum([
   "statesubmitter",
 ]);
 const userStatus = z.enum(["active", "pending", "revoked", "denied"]);
+const roleEvent = z.enum(["user-role", "legacy-user-role"]);
 const skPattern = /^v[0-9]+#[a-z]+#(N\/A|[A-Z]{2})$/;
 
 export const baseUserRoleRequestSchema = z.object({
@@ -19,6 +20,7 @@ export const baseUserRoleRequestSchema = z.object({
   doneByEmail: z.string(),
   doneByName: z.string(),
   date: z.number(),
+  event: roleEvent.optional(),
 });
 
 export const onemacLegacyUserRoleRequest = baseUserRoleRequestSchema
