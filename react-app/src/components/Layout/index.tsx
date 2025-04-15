@@ -142,6 +142,11 @@ const UserDropdownMenu = () => {
               View Profile
             </button>
           </DropdownMenu.Item>
+          <DropdownMenu.Item>
+            <Link to="/signup" className="text-primary hover:text-primary/70">
+              Request a Role Change
+            </Link>
+          </DropdownMenu.Item>
           <DropdownMenu.Item className="flex">
             <button className="text-primary hover:text-primary/70" onClick={handleLogout}>
               Sign Out

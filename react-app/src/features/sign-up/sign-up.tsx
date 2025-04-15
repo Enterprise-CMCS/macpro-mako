@@ -1,12 +1,11 @@
-import { OptionCard, OptionFieldset } from "@/components/Cards/OptionCard";
-import { SimplePageContainer } from "@/components/Container/SimplePageContainer";
-
-import { SimplePageTitle } from "../selection-flow/plan-types";
+import { OptionCard, OptionFieldset, SimplePageContainer, SubNavHeader } from "@/components";
 
 export const SignUp = () => {
   return (
-    <SimplePageContainer>
-      <SimplePageTitle title={"Registration: User Role"} />
+    <div>
+      <SubNavHeader>
+        <h1 className="text-xl font-medium">Registration: User Role</h1>
+      </SubNavHeader>
       <OptionFieldset legend={"Select the role for which you are registering."}>
         <OptionCard
           description="Ability to approve state submitters and submit packages"
@@ -14,6 +13,6 @@ export const SignUp = () => {
           to="/dashboard"
         />
       </OptionFieldset>
-    </SimplePageContainer>
+    </div>
   );
 };
