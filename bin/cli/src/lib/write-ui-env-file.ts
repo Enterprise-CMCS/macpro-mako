@@ -38,9 +38,9 @@ export async function writeUiEnvFile(stage, local = false) {
         ).Parameter!.Value!;
       }
     }
-  } catch (e) {
+  } catch (error) {
     googleAnalytics = "";
-    console.log("Environment variable not found")
+    console.error("Environment variable not found", error)
   }
 
 
