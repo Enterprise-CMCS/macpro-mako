@@ -26,16 +26,17 @@ export async function writeUiEnvFile(stage, local = false) {
   );
 
   let googleAnalytics;
-  if (stage == "main" || stage == "val" || stage == "production") {
-    googleAnalytics = (
-      await new SSMClient({ region: "us-east-1" }).send(
-        new GetParameterCommand({
-          Name: `/${project}/${stage}/google-analytics-id`,
-        }),
-      )
-    ).Parameter!.Value!;
+  if (["main", "val", "production"].includes(stage)) {
+    {
+      googleAnalytics = (
+        await new SSMClient({ region: "us-east-1" }).send(
+          new GetParameterCommand({
+            Name: `/${project}/${stage}/google-analytics-id`,
+          }),
+        )
+      ).Parameter!.Value!;
+    }
   }
-
 
   const envVariables = {
     VITE_API_REGION: `"${region}"`,
