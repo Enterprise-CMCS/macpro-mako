@@ -40,7 +40,7 @@ export async function writeUiEnvFile(stage, local = false) {
     }
   } catch (error) {
     googleAnalytics = "";
-    console.error("Can't find the google analytics ID", error)
+    console.error("Can't find the google analytics ID")
   }
 
 
