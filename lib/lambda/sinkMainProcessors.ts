@@ -4,6 +4,7 @@ import { KafkaRecord, opensearch, SeatoolRecordWithUpdatedDate } from "shared-ty
 import {
   onemacLegacyUserInformation,
   onemacLegacyUserRoleRequest,
+  userRoleRequest,
 } from "shared-types/events/legacy-user";
 import { Document, legacyTransforms, transforms } from "shared-types/opensearch/main";
 import { decodeBase64WithUtf8 } from "shared-utils";
@@ -40,6 +41,12 @@ type ParsedLegacyRecordFromKafka = Partial<{
   sk: string;
   GSI1pk: string;
 }>;
+
+export const isRecordAUserRoleRequest = (
+  record: OneMacRecord,
+): record is OneMacRecord & {
+  event: "user-role";
+} => typeof record === "object" && record.event === "user-role";
 
 export const isRecordALegacyUserRoleRequest = (
   record: ParsedLegacyRecordFromKafka,
@@ -151,6 +158,17 @@ const getOneMacRecordWithAllProperties = (
     console.log(`event after transformation: ${JSON.stringify(oneMacRecord, null, 2)}`);
 
     return oneMacRecord;
+  }
+
+  if (isRecordAUserRoleRequest(record)) {
+    const userParseResult = userRoleRequest.safeParse(record);
+
+    if (userParseResult.success === true) {
+      console.log("USER RECORD: ", JSON.stringify(record));
+      return userParseResult.data;
+    }
+
+    console.log("USER RECORD INVALID BECAUSE: ", userParseResult.error, JSON.stringify(record));
   }
 
   if (isRecordALegacyUserRoleRequest(record, kafkaSource)) {

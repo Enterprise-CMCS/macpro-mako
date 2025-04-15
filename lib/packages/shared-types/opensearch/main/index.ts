@@ -118,7 +118,6 @@ export const transforms = {
   "upload-subsequent-documents": uploadSubsequentDocuments,
   "withdraw-package": withdrawPackage,
   "withdraw-rai": withdrawRai,
-  "user-role": userRoleRequest,
 };
 
 export const legacyTransforms = {
