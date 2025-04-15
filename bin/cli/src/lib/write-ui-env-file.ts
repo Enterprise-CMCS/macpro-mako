@@ -26,17 +26,22 @@ export async function writeUiEnvFile(stage, local = false) {
   );
 
   let googleAnalytics;
-  if (["main", "val", "production"].includes(stage)) {
-    {
-      googleAnalytics = (
-        await new SSMClient({ region: "us-east-1" }).send(
-          new GetParameterCommand({
-            Name: `/${project}/${stage}/google-analytics-id`,
-          }),
-        )
-      ).Parameter!.Value!;
+  try {
+    if (["main", "val", "production"].includes(stage)) {
+      {
+        googleAnalytics = (
+          await new SSMClient({ region: "us-east-1" }).send(
+            new GetParameterCommand({
+              Name: `/${project}/${stage}/google-analytics-id`,
+            }),
+          )
+        ).Parameter!.Value!;
+      }
     }
+  } catch (e) {
+    throw new Error("PROJECT environment variable is required but not set");
   }
+
 
   const envVariables = {
     VITE_API_REGION: `"${region}"`,
