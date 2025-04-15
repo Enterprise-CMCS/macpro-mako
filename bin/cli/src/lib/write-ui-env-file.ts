@@ -25,14 +25,23 @@ export async function writeUiEnvFile(stage, local = false) {
     ).Parameter!.Value!,
   );
 
-  const googleAnalytics = (
-    await new SSMClient({ region: "us-east-1" }).send(
-      new GetParameterCommand({
-        Name: `/${project}/${stage}/google-analytics-id`,
-      }),
-    )
-  ).Parameter!.Value!;
-
+  let googleAnalytics;
+  try {
+    if (["main", "val", "production"].includes(stage)) {
+      {
+        googleAnalytics = (
+          await new SSMClient({ region: "us-east-1" }).send(
+            new GetParameterCommand({
+              Name: `/${project}/${stage}/google-analytics-id`,
+            }),
+          )
+        ).Parameter!.Value!;
+      }
+    }
+  } catch {
+    googleAnalytics = "";
+    console.error("Can't find the google analytics ID");
+  }
   const envVariables = {
     VITE_API_REGION: `"${region}"`,
     VITE_API_URL: deploymentOutput.apiGatewayRestApiUrl,
