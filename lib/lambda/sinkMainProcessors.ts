@@ -269,7 +269,7 @@ const oneMacSeatoolStatusCheck = async (seatoolRecord: Document) => {
   ) {
     if (
       seatoolStatus &&
-      ![
+      [
         SeatoolSpwStatusEnum.Withdrawn,
         SeatoolSpwStatusEnum.Terminated,
         SeatoolSpwStatusEnum.Disapproved,
