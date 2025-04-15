@@ -36,7 +36,7 @@ function getLeadAnalyst(eventData: SeaTool) {
   };
 }
 
-const getRaiDate = (data: SeaTool) => {
+export const getRaiDate = (data: SeaTool) => {
   let raiReceivedDate: null | string = null;
   let raiRequestedDate: null | string = null;
   let raiWithdrawnDate: null | string = null;
