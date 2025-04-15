@@ -13,10 +13,11 @@ type Props = {
   showNavLinks?: boolean;
 };
 
-export const Footer = ({ email, address, showNavLinks = false }: Props) => {
+export const Footer = ({ email, address, showNavLinks }: Props) => {
+  const shouldShowNavLinks = showNavLinks ?? true;
   return (
     <footer>
-      {showNavLinks && (
+      {shouldShowNavLinks && (
         <section className="bg-[#f0f0f0] text-sm">
           <div className="grid grid-cols-12 gap-4 px-10 py-4 max-w-screen-xl mx-auto">
             <div className="col-span-6 flex gap-8">

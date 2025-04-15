@@ -1,7 +1,4 @@
-import { useMemo } from "react";
-
 import { LatestUpdates } from "@/components/Banner/latestUpdates";
-import { Footer } from "@/components/Footer";
 import { Welcome } from "@/features/welcome/default";
 import { useFeatureFlag } from "@/hooks/useFeatureFlag";
 
@@ -125,29 +122,7 @@ const CMSWelcomeWrapper = () => {
   const isCmsHomepageEnabled = useFeatureFlag("CMS_HOMEPAGE_FLAG");
   console.log({ isCmsHomepageEnabled });
 
-  const contactInfo = useMemo(
-    () => ({
-      email: "OneMAC_Helpdesk@cms.hhs.gov",
-      address: {
-        street: "7500 Security Blvd.",
-        city: "Baltimore",
-        state: "MD",
-        zip: 21244,
-      },
-    }),
-    [],
-  );
-
-  return (
-    <>
-      {isCmsHomepageEnabled ? <CMSWelcome /> : <Welcome />}
-      <Footer
-        email={contactInfo.email}
-        address={contactInfo.address}
-        showNavLinks={isCmsHomepageEnabled}
-      />
-    </>
-  );
+  return <>{isCmsHomepageEnabled ? <CMSWelcome /> : <Welcome />}</>;
 };
 
 export default CMSWelcomeWrapper;
