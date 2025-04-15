@@ -252,13 +252,13 @@ export const insertOneMacRecordsFromKafkaIntoMako = async (
     (record) => record.eventType !== "user-info" && record.eventType !== "user-role",
   );
   const oneMacUsers = oneMacRecordsForMako.filter((record) => record.eventType === "user-info");
-  const oneMacRoleRequests = oneMacRecordsForMako.filter(
-    (record) => record.eventType === "user-role",
+  const roleRequests = oneMacRecordsForMako.filter(
+    (record) => record.eventType === "legacy-user-role" || record.eventType === "user-role",
   );
 
   await bulkUpdateDataWrapper(oneMacRecords, "main");
   await bulkUpdateDataWrapper(oneMacUsers, "users");
-  await bulkUpdateDataWrapper(oneMacRoleRequests, "roles");
+  await bulkUpdateDataWrapper(roleRequests, "roles");
 };
 
 const getMakoDocTimestamps = async (kafkaRecords: KafkaRecord[]) => {

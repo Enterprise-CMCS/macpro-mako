@@ -68,11 +68,13 @@ export const userHasThisRole = async (email: string, state: string, role: string
 export const getAllUserRoles = async () => {
   const { domain, index } = getDomainAndNamespace("roles");
 
-  return await search(domain, index, {
+  const results = await search(domain, index, {
     query: {
       match_all: {},
     },
   });
+
+  return results.hits.hits.map((hit: any) => ({ ...hit._source }));
 };
 
 export const getAllUserRolesByState = async (state: string) => {
@@ -95,17 +97,11 @@ export const getUserRolesWithNames = async (roleRequests: any[]) => {
   }
 
   const emails = roleRequests.map((role) => role.email);
-  console.log(emails, "EMAILSSS");
   const users = await getUsersByEmails(emails);
-  console.log(users, "USERSSS");
 
   const rolesWithName = roleRequests.map((roleObj) => {
-    console.log(roleObj, "ROLE OBJ");
     const email = roleObj.id?.split("_")[0];
-    console.log(email, "EMAIL???");
-    const user = users[email];
-    console.log(user, "USER???");
-    const fullName = user?.fullName || "Unknown";
+    const fullName = users[email]?.fullName || "Unknown";
 
     return {
       ...roleObj,

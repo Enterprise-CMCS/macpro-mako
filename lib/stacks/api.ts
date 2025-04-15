@@ -267,6 +267,18 @@ export class Api extends cdk.NestedStack {
         provisionedConcurrency: 2,
       },
       {
+        id: "submitRoleRequests",
+        entry: join(__dirname, "../lambda/user-management/submitRoleRequests.ts"),
+        environment: {
+          dbInfoSecretName,
+          topicName,
+          brokerString,
+          osDomain: `https://${openSearchDomainEndpoint}`,
+          indexNamespace,
+        },
+        provisionedConcurrency: 2,
+      },
+      {
         id: "getTypes",
         entry: join(__dirname, "../lambda/getTypes.ts"),
         environment: {
@@ -486,6 +498,11 @@ export class Api extends cdk.NestedStack {
         path: "getRoleRequests",
         lambda: lambdas.getRoleRequests,
         method: "GET",
+      },
+      submitRoleRequests: {
+        path: "submitRoleRequests",
+        lambda: lambdas.submitRoleRequests,
+        method: "POST",
       },
       item: { path: "item", lambda: lambdas.item, method: "POST" },
       submit: { path: "submit", lambda: lambdas.submit, method: "POST" },

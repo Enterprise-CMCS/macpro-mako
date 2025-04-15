@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { FULL_CENSUS_STATES, RoleDescriptionStrings, StateCode } from "shared-types";
 
-import { useGetUser, useGetUserProfile } from "@/api";
+import { submitRoleRequests, useGetUser, useGetUserProfile } from "@/api";
 import { Alert, Button, CardWithTopBorder, SubNavHeader } from "@/components";
 import { Option } from "@/components/Opensearch/main/Filtering/Drawer/Filterable";
 import { FilterableSelect } from "@/components/Opensearch/main/Filtering/Drawer/Filterable";
@@ -131,7 +131,7 @@ export const Profile = () => {
                     />
                     <div className="block lg:mt-8 lg:mb-2">
                       <span>
-                        <Button>Submit</Button>
+                        <Button onClick={() => submitRoleRequests(requestedStates)}>Submit</Button>
                         <Button variant="link" onClick={() => setShowAddState(true)}>
                           Cancel
                         </Button>

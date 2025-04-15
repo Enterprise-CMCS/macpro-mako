@@ -3,6 +3,7 @@ import { response } from "lib/libs/handler-lib";
 import { StateAccess } from "react-app/src/api";
 import { APIGatewayEvent } from "shared-types";
 
+import { submitRoleRequests } from "./submitRoleRequests";
 import {
   getAllUserRoles,
   getAllUserRolesByEmail,
@@ -23,7 +24,7 @@ export const getRoleRequests = async (event: APIGatewayEvent) => {
       });
     }
 
-    let roleRequests = [];
+    let roleRequests: StateAccess[] = [];
 
     const cmsRoleApproverRole = userRoles.find(
       (roleObj: StateAccess) => roleObj.role === "cmsroleapprover",
@@ -44,7 +45,7 @@ export const getRoleRequests = async (event: APIGatewayEvent) => {
         body: { message: "Error getting role requests " },
       });
     }
-    console.log(roleRequests, "ROLE REQUESTSS");
+
     const roleRequestsWithName = await getUserRolesWithNames(roleRequests);
 
     return response({
