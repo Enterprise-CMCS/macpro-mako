@@ -48,4 +48,13 @@ describe("Faq", () => {
       behavior: "smooth",
     });
   });
+
+  it("should display the items expected", async () => {
+    const scrollToMock = vi.fn();
+    global.scrollTo = scrollToMock;
+
+    const { asFragment } = render(<Faq />);
+
+    expect(asFragment()).toMatchSnapshot();
+  });
 });
