@@ -43,7 +43,6 @@ export async function writeUiEnvFile(stage, local = false) {
     console.error("Can't find the google analytics ID")
   }
 
-
   const envVariables = {
     VITE_API_REGION: `"${region}"`,
     VITE_API_URL: deploymentOutput.apiGatewayRestApiUrl,
