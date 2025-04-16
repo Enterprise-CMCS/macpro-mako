@@ -34,7 +34,7 @@ export const submitRoleRequests = async (event: APIGatewayEvent) => {
     topicName,
     id,
     JSON.stringify({
-      event: "user-role",
+      eventType: "user-role",
       email: userAttributes.email,
       status: "pending",
       territory: state,
