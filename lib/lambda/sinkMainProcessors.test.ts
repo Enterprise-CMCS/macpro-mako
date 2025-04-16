@@ -832,7 +832,130 @@ describe("insertNewSeatoolRecordsFromKafkaIntoMako", () => {
       },
     ]);
   });
+  it("Fails to add kafka record missing memo", async () => {
+    await insertNewSeatoolRecordsFromKafkaIntoMako(
+      [
+        createKafkaRecord({
+          topic: TOPIC,
+          key: TEST_ITEM_KEY,
+          value: convertObjToBase64({
+            id: TEST_ITEM_ID,
+            ACTION_OFFICERS: [
+              {
+                FIRST_NAME: "John",
+                LAST_NAME: "Doe",
+                EMAIL: "john.doe@medicaid.gov",
+                OFFICER_ID: 12345,
+                DEPARTMENT: "State Plan Review",
+                PHONE: "202-555-1234",
+              },
+              {
+                FIRST_NAME: "Emily",
+                LAST_NAME: "Rodriguez",
+                EMAIL: "emily.rodriguez@medicaid.gov",
+                OFFICER_ID: 12346,
+                DEPARTMENT: "Compliance Division",
+                PHONE: "202-555-5678",
+              },
+            ],
+            LEAD_ANALYST: [
+              {
+                FIRST_NAME: "Michael",
+                LAST_NAME: "Chen",
+                EMAIL: "michael.chen@cms.hhs.gov",
+                OFFICER_ID: 67890,
+                DEPARTMENT: "Medicaid Innovation Center",
+                PHONE: "202-555-9012",
+              },
+            ],
+            STATE_PLAN: {
+              PLAN_TYPE: 123,
+              SPW_STATUS_ID: 1,
+              APPROVED_EFFECTIVE_DATE: TIMESTAMP,
+              CHANGED_DATE: EARLIER_TIMESTAMP,
+              SUMMARY_MEMO: null,
+              TITLE_NAME: "Sample Title",
+              STATUS_DATE: EARLIER_TIMESTAMP,
+              SUBMISSION_DATE: TIMESTAMP,
+              LEAD_ANALYST_ID: 67890,
+              ACTUAL_EFFECTIVE_DATE: null,
+              PROPOSED_DATE: null,
+              STATE_CODE: "10",
+            },
+            RAI: [],
+            ACTIONTYPES: [{ ACTION_NAME: "Initial Review", ACTION_ID: 1, PLAN_TYPE_ID: 123 }],
+            STATE_PLAN_SERVICETYPES: [{ SPA_TYPE_ID: 1, SPA_TYPE_NAME: "Type A" }],
+            STATE_PLAN_SERVICE_SUBTYPES: [{ TYPE_ID: 1, TYPE_NAME: "SubType X" }],
+          }),
+        }),
+      ],
+      TOPIC,
+    );
 
+    expect(bulkUpdateDataSpy).toBeCalledWith(OPENSEARCH_DOMAIN, OPENSEARCH_INDEX, []);
+  });
+  it("Fails to add kafka record missing title", async () => {
+    await insertNewSeatoolRecordsFromKafkaIntoMako(
+      [
+        createKafkaRecord({
+          topic: TOPIC,
+          key: TEST_ITEM_KEY,
+          value: convertObjToBase64({
+            id: TEST_ITEM_ID,
+            ACTION_OFFICERS: [
+              {
+                FIRST_NAME: "John",
+                LAST_NAME: "Doe",
+                EMAIL: "john.doe@medicaid.gov",
+                OFFICER_ID: 12345,
+                DEPARTMENT: "State Plan Review",
+                PHONE: "202-555-1234",
+              },
+              {
+                FIRST_NAME: "Emily",
+                LAST_NAME: "Rodriguez",
+                EMAIL: "emily.rodriguez@medicaid.gov",
+                OFFICER_ID: 12346,
+                DEPARTMENT: "Compliance Division",
+                PHONE: "202-555-5678",
+              },
+            ],
+            LEAD_ANALYST: [
+              {
+                FIRST_NAME: "Michael",
+                LAST_NAME: "Chen",
+                EMAIL: "michael.chen@cms.hhs.gov",
+                OFFICER_ID: 67890,
+                DEPARTMENT: "Medicaid Innovation Center",
+                PHONE: "202-555-9012",
+              },
+            ],
+            STATE_PLAN: {
+              PLAN_TYPE: 123,
+              SPW_STATUS_ID: 1,
+              APPROVED_EFFECTIVE_DATE: TIMESTAMP,
+              CHANGED_DATE: EARLIER_TIMESTAMP,
+              SUMMARY_MEMO: "Sample memo",
+              TITLE_NAME: null,
+              STATUS_DATE: EARLIER_TIMESTAMP,
+              SUBMISSION_DATE: TIMESTAMP,
+              LEAD_ANALYST_ID: 67890,
+              ACTUAL_EFFECTIVE_DATE: null,
+              PROPOSED_DATE: null,
+              STATE_CODE: "10",
+            },
+            RAI: [],
+            ACTIONTYPES: [{ ACTION_NAME: "Initial Review", ACTION_ID: 1, PLAN_TYPE_ID: 123 }],
+            STATE_PLAN_SERVICETYPES: [{ SPA_TYPE_ID: 1, SPA_TYPE_NAME: "Type A" }],
+            STATE_PLAN_SERVICE_SUBTYPES: [{ TYPE_ID: 1, TYPE_NAME: "SubType X" }],
+          }),
+        }),
+      ],
+      TOPIC,
+    );
+
+    expect(bulkUpdateDataSpy).toBeCalledWith(OPENSEARCH_DOMAIN, OPENSEARCH_INDEX, []);
+  });
   it("outputs kafka records into mako records if mako record is not found", async () => {
     await insertNewSeatoolRecordsFromKafkaIntoMako(
       [
