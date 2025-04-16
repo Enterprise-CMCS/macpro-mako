@@ -41,6 +41,7 @@ export const getAllUserRolesByEmail = async (email: string) => {
         "email.keyword": email,
       },
     },
+    size: 100,
   });
 
   return result.hits.hits.map((hit: any) => ({ ...hit._source }));
