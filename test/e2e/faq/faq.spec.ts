@@ -1,6 +1,5 @@
-import { expect, test } from "@playwright/test";
-
-import { FAQPage } from "../pages/faq.page";
+import { expect, test } from "@/fixtures/mocked";
+import { FAQPage } from "@/pages";
 
 let faqPage: FAQPage;
 
@@ -22,7 +21,7 @@ test.describe("FAQ page", { tag: ["@e2e", "@smoke", "@faq"] }, () => {
       test("displays system for state submission FAQ", async () => {
         await expect(faqPage.crossWalk).toBeVisible();
         await expect(faqPage.crossWalk).toHaveText(
-          "Which system should I use for my state’s submission?",
+          "Which SPA or waiver packages should I submit in OneMAC?",
         );
 
         await expect(faqPage.pdfs.statePlans).not.toBeVisible();
@@ -372,37 +371,37 @@ test.describe("FAQ page", { tag: ["@e2e", "@smoke", "@faq"] }, () => {
 
       test("should display browser FAQ response", async () => {
         await faqPage.browsers.click();
-        await expect(faqPage.browsers.locator("div:nth-child(1)")).toBeVisible();
+        await expect(faqPage.browsers.locator("div:nth-child(1)").first()).toBeVisible();
         // await expect(faqPage.browsers.locator("div:nth-child(1)")).toHaveText(""); Something TODO
       });
 
       test("should display confirmation email FAQ response", async () => {
         await faqPage.confirmEmail.click();
-        await expect(faqPage.confirmEmail.locator("div:nth-child(1)")).toBeVisible();
+        await expect(faqPage.confirmEmail.locator("div:nth-child(1)").first()).toBeVisible();
         // await expect(faqPage.confirmEmail.locator("div:nth-child(1)")).toHaveText(""); // Something TODO
       });
 
       test("should display official submission FAQ response", async () => {
         await faqPage.official.click();
-        await expect(faqPage.official.locator("div:nth-child(1)")).toBeVisible();
+        await expect(faqPage.official.locator("div:nth-child(1)").first()).toBeVisible();
         // await expect(faqPage.official.locator("div:nth-child(1)")).toHaveText(""); TODO
       });
 
       test("should diplay OneMac User role FAQ response", async () => {
         await faqPage.onemacRoles.click();
-        await expect(faqPage.onemacRoles.locator("div:nth-child(1)")).toBeVisible();
+        await expect(faqPage.onemacRoles.locator("div:nth-child(1)").first()).toBeVisible();
         // await expect(faqPage.onemacRoles.locator("div:nth-child(1)")).toHaveText(""); TODO
       });
 
       test("should display file formats FAQ response", async () => {
         await faqPage.fileFormats.click();
-        await expect(faqPage.fileFormats.locator("div:nth-child(1)")).toBeVisible();
+        await expect(faqPage.fileFormats.locator("div:nth-child(1)").first()).toBeVisible();
         // await expect(faqPage.fileFormats.locator("div:nth-child(1)")).toHaveText(""); TODO
       });
 
       test("should display the list on onboarding materials FAQ response", async () => {
         await faqPage.onboardingMaterials.click();
-        await expect(faqPage.onboardingMaterials.locator("div:nth-child(1)")).toBeVisible();
+        await expect(faqPage.onboardingMaterials.locator("div:nth-child(1)").first()).toBeVisible();
         // await expect(faqPage.onboardingMaterials.locator("div:nth-child(1)")).toHaveText(""); TODO
         // TODO: assert on PDF HREFs
       });
@@ -411,176 +410,204 @@ test.describe("FAQ page", { tag: ["@e2e", "@smoke", "@faq"] }, () => {
     test.describe("State Plan Amendments (SPAs) Section", () => {
       test("should display format used to enter a SPA ID FAQ response", async () => {
         await faqPage.spaIdFormat.click();
-        await expect(faqPage.spaIdFormat.locator("div:nth-child(1)")).toBeVisible();
+        await expect(faqPage.spaIdFormat.locator("div:nth-child(1)").first()).toBeVisible();
       });
 
       test("should display Medicaid SPA attachments FAQ response", async () => {
         await faqPage.medicaidSpaAttachments.click();
-        await expect(faqPage.medicaidSpaAttachments.locator("div:nth-child(1)")).toBeVisible();
+        await expect(
+          faqPage.medicaidSpaAttachments.locator("div:nth-child(1)").first(),
+        ).toBeVisible();
       });
 
       test("should display attachments response to Medicaid RAI FAQ response", async () => {
         await faqPage.medicaidSpaRai.click();
-        await expect(faqPage.medicaidSpaRai.locator("div:nth-child(1)")).toBeVisible();
+        await expect(faqPage.medicaidSpaRai.locator("div:nth-child(1)").first()).toBeVisible();
       });
 
       test("should display CHIP SPA attachments FAQ response", async () => {
         await faqPage.chipSpaAttachments.click();
-        await expect(faqPage.chipSpaAttachments.locator("div:nth-child(1)")).toBeVisible();
+        await expect(faqPage.chipSpaAttachments.locator("div:nth-child(1)").first()).toBeVisible();
       });
 
       test("should display attachments response to CHIP RAI FAQ response", async () => {
         await faqPage.chipSpaRai.click();
-        await expect(faqPage.chipSpaRai.locator("div:nth-child(1)")).toBeVisible();
+        await expect(faqPage.chipSpaRai.locator("div:nth-child(1)").first()).toBeVisible();
       });
 
       test("should display PHE FAQ response", async () => {
         await faqPage.publicHealthEmergency.click();
-        await expect(faqPage.publicHealthEmergency.locator("div:nth-child(1)")).toBeVisible();
+        await expect(
+          faqPage.publicHealthEmergency.locator("div:nth-child(1)").first(),
+        ).toBeVisible();
       });
 
       test("should display withdraw formal RAI for Medicaid SPA FAQ response", async () => {
         await faqPage.withdrawSpaRai.click();
-        await expect(faqPage.withdrawSpaRai.locator('div[data-state="open"]')).toBeVisible();
+        await expect(
+          faqPage.withdrawSpaRai.locator('div[data-state="open"]').first(),
+        ).toBeVisible();
       });
 
       test("should display withdraw package for Medicaid SPA FAQ response", async () => {
         await faqPage.withdrawPackageSpa.click();
-        await expect(faqPage.withdrawPackageSpa.locator('div[data-state="open"]')).toBeVisible();
+        await expect(
+          faqPage.withdrawPackageSpa.locator('div[data-state="open"]').first(),
+        ).toBeVisible();
       });
 
       test("should display withdraw formal RAI for CHIP SPA FAQ response", async () => {
         await faqPage.withdrawChipSpaRai.click();
-        await expect(faqPage.withdrawChipSpaRai.locator('div[data-state="open"]')).toBeVisible();
+        await expect(
+          faqPage.withdrawChipSpaRai.locator('div[data-state="open"]').first(),
+        ).toBeVisible();
       });
 
       test("should display withdraw package for CHIP SPA FAQ response", async () => {
         await faqPage.withdrawPackageChipSpa.click();
         await expect(
-          faqPage.withdrawPackageChipSpa.locator('div[data-state="open"]'),
+          faqPage.withdrawPackageChipSpa.locator('div[data-state="open"]').first(),
         ).toBeVisible();
       });
 
       test("should display download ABP SPA templates FAQ response", async () => {
         await faqPage.abpSpaTemplates.click();
-        await expect(faqPage.abpSpaTemplates.locator("div:nth-child(1)")).toBeVisible();
+        await expect(faqPage.abpSpaTemplates.locator("div:nth-child(1)").first()).toBeVisible();
       });
 
       test("should display download ABP SPA implementation guides FAQ response", async () => {
         await faqPage.abpSpaGuides.click();
-        await expect(faqPage.abpSpaGuides.locator("div:nth-child(1)")).toBeVisible();
+        await expect(faqPage.abpSpaGuides.locator("div:nth-child(1)").first()).toBeVisible();
       });
 
       test("should display download MPC SPA templates FAQ response", async () => {
         await faqPage.mpcSpaTemplates.click();
-        await expect(faqPage.mpcSpaTemplates.locator("div:nth-child(1)")).toBeVisible();
+        await expect(faqPage.mpcSpaTemplates.locator("div:nth-child(1)").first()).toBeVisible();
       });
 
       test("should display download MPC SPA implementation guides FAQ response", async () => {
         await faqPage.mpcSpaGuides.click();
-        await expect(faqPage.mpcSpaGuides.locator("div:nth-child(1)")).toBeVisible();
+        await expect(faqPage.mpcSpaGuides.locator("div:nth-child(1)").first()).toBeVisible();
       });
 
       test("should display download CHIP eligibility SPA templates FAQ response", async () => {
         await faqPage.chipSpaTemplates.click();
-        await expect(faqPage.chipSpaTemplates.locator("div:nth-child(1)")).toBeVisible();
+        await expect(faqPage.chipSpaTemplates.locator("div:nth-child(1)").first()).toBeVisible();
       });
 
       test("should display download CHIP eligibility SPA implementation guides FAQ response", async () => {
         await faqPage.chipSpaGuides.click();
-        await expect(faqPage.chipSpaGuides.locator("div:nth-child(1)")).toBeVisible();
+        await expect(faqPage.chipSpaGuides.locator("div").first()).toBeVisible();
       });
     });
 
     test.describe("Waivers Section", () => {
       test("displays 1915(b) initial waiver number FAQ response", async () => {
         await faqPage.waiverIdFormat.click();
-        await expect(faqPage.waiverIdFormat.locator("div:nth-child(1)")).toBeVisible();
+        await expect(faqPage.waiverIdFormat.locator("div:nth-child(1)").first()).toBeVisible();
         // await expect(faqPage.waiverIdFormat.locator("div:nth-child(1)")).toHaveText(""); TODO
       });
 
       test("displays 1915(b) waiver renewal number FAQ response", async () => {
         await faqPage.waiverRenewalIdFormat.click();
-        await expect(faqPage.waiverRenewalIdFormat.locator("div:nth-child(1)")).toBeVisible();
+        await expect(
+          faqPage.waiverRenewalIdFormat.locator("div:nth-child(1)").first(),
+        ).toBeVisible();
         // await expect(faqPage.waiverRenewalIdFormat.locator("div:nth-child(1)")).toHaveText(""); TODO
       });
 
       test("displays 1915(b) waiver amendment number FAQ response", async () => {
         await faqPage.waiverAmendmentIdFormat.click();
-        await expect(faqPage.waiverAmendmentIdFormat.locator("div:nth-child(1)")).toBeVisible();
+        await expect(
+          faqPage.waiverAmendmentIdFormat.locator("div:nth-child(1)").first(),
+        ).toBeVisible();
         // await expect(faqPage.waiverAmendmentIdFormat.locator("div:nth-child(1)")).toHaveText(""); TODO
       });
 
       test("displays contact help for 1915(b) waiver FAQ response", async () => {
         await faqPage.waiverIdHelp.click();
-        await expect(faqPage.waiverIdHelp.locator("div:nth-child(1)")).toBeVisible();
+        await expect(faqPage.waiverIdHelp.locator("div:nth-child(1)").first()).toBeVisible();
         // await expect(faqPage.waiverIdHelp.locator("div:nth-child(1)")).toHaveText(""); TODO
       });
 
       test("displays format 1915(c) waiver number FAQ response", async () => {
         await faqPage.waiverCId.click();
-        await expect(faqPage.waiverCId.locator("div:nth-child(1)")).toBeVisible();
+        await expect(faqPage.waiverCId.locator("div:nth-child(1)").first()).toBeVisible();
         // await expect(faqPage.waiverCId.locator("div:nth-child(1)")).toHaveText(""); TODO
       });
 
       test("displays attachments are needed for 1915(b) waiver action FAQ response", async () => {
         await faqPage.waiverBAttachments.click();
-        await expect(faqPage.waiverBAttachments.locator("div:nth-child(1)")).toBeVisible();
+        await expect(faqPage.waiverBAttachments.locator("div:nth-child(1)").first()).toBeVisible();
         // await expect(faqPage.waiverBAttachments.locator("div:nth-child(1)")).toHaveText(""); TODO
       });
 
       test("displays attachments 1915b and c App K RAI response FAQ response", async () => {
         await faqPage.waiverBRaiAttachments.click();
-        await expect(faqPage.waiverBRaiAttachments.locator("div:nth-child(1)")).toBeVisible();
+        await expect(
+          faqPage.waiverBRaiAttachments.locator("div:nth-child(1)").first(),
+        ).toBeVisible();
         // await expect(faqPage.waiverBRaiAttachments.locator("div:nth-child(1)")).toHaveText(""); TODO
       });
 
       test("displays temporary extension format FAQ response", async () => {
         await faqPage.waiverExtensionIdFormat.click();
-        await expect(faqPage.waiverExtensionIdFormat.locator("div:nth-child(1)")).toBeVisible();
+        await expect(
+          faqPage.waiverExtensionIdFormat.locator("div:nth-child(1)").first(),
+        ).toBeVisible();
         // await expect(faqPage.waiverExtensionIdFormat.locator("div:nth-child(1)")).toHaveText(""); TODO
       });
 
       test("displays status of my temporary extension FAQ response", async () => {
         await faqPage.waiverExtensionStatus.click();
-        await expect(faqPage.waiverExtensionStatus.locator("div:nth-child(1)")).toBeVisible();
+        await expect(
+          faqPage.waiverExtensionStatus.locator("div:nth-child(1)").first(),
+        ).toBeVisible();
       });
 
       // remove skip when selector is updated in application
       test.skip("displays attachments for 1915(b) waiver FAQ response", async () => {
         await faqPage.tempExtensionBAttachments.click();
-        await expect(faqPage.tempExtensionBAttachments.locator("div:nth-child(1)")).toBeVisible();
+        await expect(
+          faqPage.tempExtensionBAttachments.locator("div:nth-child(1)").first(),
+        ).toBeVisible();
         // await expect(faqPage.tempExtensionBAttachments.locator("div:nth-child(1)")).toHaveText(""); TODO
       });
 
       // remove skip when selector us updated in application
       test.skip("displays attachments for 1915(c) waiver FAQ response", async () => {
         await faqPage.tempExtensionCAttachments.click();
-        await expect(faqPage.tempExtensionCAttachments.locator("div:nth-child(1)")).toBeVisible();
+        await expect(
+          faqPage.tempExtensionCAttachments.locator("div:nth-child(1)").first(),
+        ).toBeVisible();
         // await expect(faqPage.tempExtensionCAttachments.locator("div:nth-child(1)")).toHaveText(""); TODO
       });
 
       test("displays submit App K attachments FAQ response", async () => {
         await faqPage.appK.click();
-        await expect(faqPage.appK.locator("div:nth-child(1)")).toBeVisible();
+        await expect(faqPage.appK.locator("div:nth-child(1)").first()).toBeVisible();
         // await expect(faqPage.appK.locator("div:nth-child(1)")).toHaveText(""); TODO
       });
 
       test("displays attachments for 1915(c) Appendix K waiver FAQ response", async () => {
         await faqPage.appKAttachments.click();
-        await expect(faqPage.appKAttachments.locator("div:nth-child(1)")).toBeVisible();
+        await expect(faqPage.appKAttachments.locator("div:nth-child(1)").first()).toBeVisible();
         // await expect(faqPage.appKAttachments.locator("div:nth-child(1)")).toHaveText(""); TODO
       });
 
       test("displays withdraw Formal RAI Response for Medicaid Waiver FAQ response", async () => {
         await faqPage.withdrawWaiverRai.click();
-        await expect(faqPage.withdrawWaiverRai.locator('div[data-state="open"]')).toBeVisible();
+        await expect(
+          faqPage.withdrawWaiverRai.locator('div[data-state="open"]').first(),
+        ).toBeVisible();
         // await expect(faqPage.withdrawWaiverRai.locator("div:nth-child(1)")).toHaveText(""); TODO
       });
 
       test("displays withdraw Package for Waiver FAQ response", async () => {
         await faqPage.withdrawPackageWaiver.click();
-        await expect(faqPage.withdrawPackageWaiver.locator('div[data-state="open"]')).toBeVisible();
+        await expect(
+          faqPage.withdrawPackageWaiver.locator('div[data-state="open"]').first(),
+        ).toBeVisible();
         // await expect(faqPage.withdrawPackageWaiver.locator("div:nth-child(1)")).toHaveText(""); TODO
       });
     });

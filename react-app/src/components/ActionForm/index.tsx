@@ -30,6 +30,7 @@ import {
 } from "@/components";
 import { getFormOrigin, queryClient } from "@/utils";
 import { CheckDocumentFunction, documentPoller } from "@/utils/Poller/documentPoller";
+import { sendGAEvent } from "@/utils/ReactGA/sendGAEvent";
 
 import { getAttachments } from "./actionForm.utilities";
 import { ActionFormAttachments, AttachmentsOptions } from "./ActionFormAttachments";
@@ -175,6 +176,14 @@ export const ActionForm = <Schema extends SchemaWithEnforcableProps>({
       // Prevent stale data from displaying on formOrigins page
       await queryClient.invalidateQueries({ queryKey: ["record"] });
       navigate(formOrigins);
+
+      const customUserRoles = userObj?.user?.["custom:cms-roles"];
+      const customisMemberOf = userObj?.user?.["custom:ismemberof"];
+      const userRoles = customUserRoles || customisMemberOf || "";
+      const eventState = formData.id?.substring(0, 2);
+
+      // send package action event
+      sendGAEvent(formData.event, userRoles, eventState);
     } catch (error) {
       console.error(error);
       banner({

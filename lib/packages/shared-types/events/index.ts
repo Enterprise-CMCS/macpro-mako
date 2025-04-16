@@ -7,6 +7,7 @@ import * as capitatedRenewal from "./capitated-renewal";
 import * as contractingAmendment from "./contracting-amendment";
 import * as contractingInitial from "./contracting-initial";
 import * as contractingRenewal from "./contracting-renewal";
+import * as legacyAdminChange from "./legacy-admin-change";
 import * as legacyEvent from "./legacy-event";
 import * as newChipSubmission from "./new-chip-submission";
 import * as newMedicaidSubmission from "./new-medicaid-submission";
@@ -42,6 +43,7 @@ export const events = {
   "upload-subsequent-documents": uploadSubsequentDocuments,
   "app-k": appk,
   "legacy-event": legacyEvent,
+  "legacy-admin-change": legacyAdminChange,
 };
 
 export type BaseSchemas = z.infer<typeof newMedicaidSubmission.baseSchema>;
