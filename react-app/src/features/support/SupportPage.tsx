@@ -68,11 +68,12 @@ export const SupportPage = () => {
   const { id } = useParams<{ id: string }>();
   const isSupportPageShown = useFeatureFlag("TOGGLE_FAQ");
   const [openAccordions, setOpenAccordions] = useState<string[]>([]);
-  const [supportContent, setSupportContent] = useState(oneMACStateFAQContent);
-
   const { data: userObj } = useGetUser();
   const isCmsView = isCmsUser(userObj.user);
 
+  const [supportContent, setSupportContent] = useState(
+    isCmsView ? oneMACCMSContent : oneMACStateFAQContent,
+  );
   const [tgValue, setTGValue] = useState<"cms" | "state">(isCmsView ? "cms" : "state");
   const [isSearching, setIsSearching] = useState<boolean>(false);
 
@@ -134,8 +135,7 @@ export const SupportPage = () => {
         <h1 className="text-4xl font-semibold">OneMAC Support</h1>
         <SearchContent
           placeholderText="Search OneMAC support"
-          stateSupportContent={oneMACStateFAQContent}
-          cmsSupportContent={isCmsView ? oneMACCMSContent : []}
+          supportContent={startingSupportContent}
           setSearchResults={setSearchResults}
           isSearching={isSearching}
         />
@@ -152,7 +152,11 @@ export const SupportPage = () => {
                 data-testid="cms-toggle-group"
                 value={tgValue}
                 onValueChange={(value: "cms" | "state") => {
-                  if (value) setTGValue(value);
+                  if (value) {
+                    setTGValue(value);
+                    if (value === "cms") setSupportContent(oneMACCMSContent);
+                    else setSupportContent(oneMACStateFAQContent);
+                  }
                 }}
               >
                 <ToggleGroupItem value="cms" aria-label="cms">

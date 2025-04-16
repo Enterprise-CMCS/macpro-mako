@@ -7,15 +7,13 @@ import Search from "./search";
 
 interface SearchContentProps {
   placeholderText: string;
-  stateSupportContent: FAQContentType[];
-  cmsSupportContent: FAQContentType[];
+  supportContent: FAQContentType[];
   isSearching: boolean;
   setSearchResults: (searchResults: FAQContentType[], isSearching: boolean) => void;
 }
 
 const SearchContent = ({
-  stateSupportContent,
-  cmsSupportContent,
+  supportContent,
   setSearchResults,
   isSearching,
   placeholderText,
@@ -24,8 +22,6 @@ const SearchContent = ({
     const text = ReactDOMServer.renderToStaticMarkup(jsxElement);
     return text.replace(/(<([^>]+)>)/gi, "");
   };
-
-  const supportContent = stateSupportContent.concat(cmsSupportContent);
 
   const searchAbleContent = supportContent.flatMap(({ qanda }) =>
     qanda.map(({ question, answerJSX, anchorText }) => {
@@ -40,7 +36,7 @@ const SearchContent = ({
     findAllMatches: true,
     includeMatches: true,
     threshold: 0.1,
-    distance: 10000,
+    distance: 100,
   });
 
   function reorderSupportContent(supportContent: FAQContentType[], searchResults, searched) {
