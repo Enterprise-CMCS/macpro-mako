@@ -23,30 +23,30 @@
         <div class='clearfix'>
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">64.28% </span>
+                <span class="strong">56.25% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>9/14</span>
+                <span class='fraction'>9/16</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">56.81% </span>
+                <span class="strong">51.92% </span>
                 <span class="quiet">Branches</span>
-                <span class='fraction'>25/44</span>
-            </div>
-        
-            
-            <div class='fl pad1y space-right2'>
-                <span class="strong">66.66% </span>
-                <span class="quiet">Functions</span>
-                <span class='fraction'>4/6</span>
+                <span class='fraction'>27/52</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
                 <span class="strong">50% </span>
+                <span class="quiet">Functions</span>
+                <span class='fraction'>4/8</span>
+            </div>
+        
+            
+            <div class='fl pad1y space-right2'>
+                <span class="strong">41.66% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>5/10</span>
+                <span class='fraction'>5/12</span>
             </div>
         
             
@@ -238,7 +238,17 @@
 <a name='L173'></a><a href='#L173'>173</a>
 <a name='L174'></a><a href='#L174'>174</a>
 <a name='L175'></a><a href='#L175'>175</a>
-<a name='L176'></a><a href='#L176'>176</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
+<a name='L176'></a><a href='#L176'>176</a>
+<a name='L177'></a><a href='#L177'>177</a>
+<a name='L178'></a><a href='#L178'>178</a>
+<a name='L179'></a><a href='#L179'>179</a>
+<a name='L180'></a><a href='#L180'>180</a>
+<a name='L181'></a><a href='#L181'>181</a>
+<a name='L182'></a><a href='#L182'>182</a>
+<a name='L183'></a><a href='#L183'>183</a>
+<a name='L184'></a><a href='#L184'>184</a>
+<a name='L185'></a><a href='#L185'>185</a>
+<a name='L186'></a><a href='#L186'>186</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -326,6 +336,7 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -336,6 +347,15 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -497,29 +517,39 @@ export const getSubmissionDetails: GetLabelAndValueFromSubmission = (submission,
   },
   {
     label: "Type",
-    value: submission.types ? (
-<span class="branch-0 cbranch-no" title="branch not covered" >      &lt;ul&gt;</span>
-        {submission.types.map((type) =&gt; (
-          &lt;li key={type?.SPA_TYPE_ID}&gt;{type?.SPA_TYPE_NAME}&lt;/li&gt;
-        ))}{" "}
-      &lt;/ul&gt;
-    ) : (
-      BLANK_VALUE
-    ),
+    value:
+      submission.types &amp;&amp; <span class="branch-1 cbranch-no" title="branch not covered" >submission.types.length </span>? (
+<span class="branch-0 cbranch-no" title="branch not covered" >        &lt;ul className="list-disc list-outside pl-5"&gt;</span>
+          {submission.types
+            .filter(<span class="fstat-no" title="function not covered" >(t</span>ype) =&gt; <span class="cstat-no" title="statement not covered" >type?.SPA_TYPE_ID &amp;&amp; type?.SPA_TYPE_NAME)</span>
+            .map((type) =&gt; (
+              &lt;li className="mb-2" key={type?.SPA_TYPE_ID}&gt;
+                {type?.SPA_TYPE_NAME}
+              &lt;/li&gt;
+            ))}
+        &lt;/ul&gt;
+      ) : (
+        BLANK_VALUE
+      ),
     canView: submission.actionType !== "Extend" &amp;&amp; isStateUser(user) === false,
   },
 &nbsp;
   {
     label: "Subtype",
-    value: submission.subTypes ? (
-<span class="branch-0 cbranch-no" title="branch not covered" >      &lt;ul&gt;</span>
-        {submission.subTypes.map((T) =&gt; (
-          &lt;li key={T?.TYPE_ID}&gt;{T?.TYPE_NAME}&lt;/li&gt;
-        ))}{" "}
-      &lt;/ul&gt;
-    ) : (
-      BLANK_VALUE
-    ),
+    value:
+      submission.subTypes &amp;&amp; <span class="branch-1 cbranch-no" title="branch not covered" >submission.subTypes.length </span>? (
+<span class="branch-0 cbranch-no" title="branch not covered" >        &lt;ul className="list-disc list-outside pl-5"&gt;</span>
+          {submission.subTypes
+            .filter(<span class="fstat-no" title="function not covered" >(T</span>) =&gt; <span class="cstat-no" title="statement not covered" >T?.TYPE_ID &amp;&amp; T?.TYPE_NAME)</span>
+            .map((T) =&gt; (
+              &lt;li className="mb-2" key={T?.TYPE_ID}&gt;
+                {T?.TYPE_NAME}
+              &lt;/li&gt;
+            ))}
+        &lt;/ul&gt;
+      ) : (
+        BLANK_VALUE
+      ),
     canView: submission.actionType !== "Extend" &amp;&amp; isStateUser(user) === false,
   },
   {
@@ -595,7 +625,7 @@ export const getSubmittedByDetails: GetLabelAndValueFromSubmission = (submission
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2025-04-16T02:12:05.663Z
+                at 2025-04-16T18:29:51.491Z
             </div>
         <script src="../../../../../prettify.js"></script>
         <script>
