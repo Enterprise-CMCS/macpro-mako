@@ -1,8 +1,8 @@
 import { useState } from "react";
 import { FULL_CENSUS_STATES, RoleDescriptionStrings, StateCode } from "shared-types";
 
-import { submitRoleRequests, useGetUser, useGetUserProfile } from "@/api";
-import { Alert, Button, CardWithTopBorder, SubNavHeader } from "@/components";
+import { useGetUser, useGetUserProfile, useSubmitRoleRequests } from "@/api";
+import { Alert, Button, CardWithTopBorder, LoadingSpinner, SubNavHeader } from "@/components";
 import { Option } from "@/components/Opensearch/main/Filtering/Drawer/Filterable";
 import { FilterableSelect } from "@/components/Opensearch/main/Filtering/Drawer/Filterable";
 import config from "@/config";
@@ -33,17 +33,15 @@ export const Profile = () => {
   const [showAddState, setShowAddState] = useState<boolean>(true);
   const [requestedStates, setRequestedStates] = useState<StateCode[]>([]);
 
-  // move or fix
-  // include denied or pending states as disabled?
-  const statesToRequest: Option[] =
-    isStateUser && stateAccess?.length
-      ? FULL_CENSUS_STATES.filter(
-          (state) =>
-            !stateAccess.some((request) => request.territory === state.value) &&
-            state.value !== "ZZ",
-        ).map((stateObj) => ({ label: stateObj.label, value: stateObj.value }))
-      : [];
+  const hasStateAccess = Array.isArray(stateAccess) && stateAccess.length > 0;
 
+  const statesToRequest: Option[] = FULL_CENSUS_STATES.filter(({ value }) => {
+    if (!hasStateAccess) return true;
+    const isAlreadyRequested = stateAccess.some(({ territory }) => territory === value);
+    return !isAlreadyRequested && value !== "ZZ";
+  }).map(({ label, value }) => ({ label, value }));
+
+  const { mutate: submitRequest, isLoading } = useSubmitRoleRequests();
   return (
     <>
       <SubNavHeader>
@@ -131,7 +129,19 @@ export const Profile = () => {
                     />
                     <div className="block lg:mt-8 lg:mb-2">
                       <span>
-                        <Button onClick={() => submitRoleRequests(requestedStates)}>Submit</Button>
+                        <Button
+                          onClick={() => {
+                            submitRequest(requestedStates, {
+                              onSuccess: () => {
+                                setShowAddState(true);
+                                setRequestedStates([]);
+                              },
+                            });
+                          }}
+                        >
+                          Submit
+                        </Button>
+                        {isLoading && <LoadingSpinner />}
                         <Button variant="link" onClick={() => setShowAddState(true)}>
                           Cancel
                         </Button>

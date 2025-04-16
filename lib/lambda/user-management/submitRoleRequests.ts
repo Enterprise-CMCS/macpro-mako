@@ -44,6 +44,11 @@ export const submitRoleRequests = async (event: APIGatewayEvent) => {
       date: Date.now(), // correct time format?
     }),
   );
+
+  return response({
+    statusCode: 200,
+    body: { message: `Request to access ${state} has been submitted.` },
+  });
 };
 
 export const handler = submitRoleRequests;
