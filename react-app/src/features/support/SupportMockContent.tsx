@@ -7,7 +7,7 @@ export type QuestionAnswer = {
   statusLabel?: "New" | "Updated";
 };
 
-type FAQContent = {
+export type FAQContentType = {
   sectionTitle: string;
   qanda: QuestionAnswer[];
 };
@@ -17,7 +17,7 @@ export const helpDeskContact = {
   phone: "(833) 228-2540",
 };
 
-export const oneMACStateFAQContent: FAQContent[] = [
+export const oneMACStateFAQContent: FAQContentType[] = [
   {
     sectionTitle: "Frequently asked questions (FAQs)",
     qanda: [
@@ -661,7 +661,7 @@ export const oneMACStateFAQContent: FAQContent[] = [
   },
 ];
 
-export const oneMACCMSContent: FAQContent[] = [
+export const oneMACCMSContent: FAQContentType[] = [
   {
     sectionTitle: "Frequently asked questions (FAQs)",
     qanda: [

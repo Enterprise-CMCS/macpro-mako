@@ -2,8 +2,6 @@ import React from "react";
 
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components";
 
-import ContactHelpDesk from "./contactHelpDesk";
-
 interface LeftNavigationProps {
   topics: string[];
 }
@@ -22,8 +20,6 @@ const LeftNavigation = ({ topics }: LeftNavigationProps) => {
           </AccordionItem>
         ))}
       </Accordion>
-
-      <ContactHelpDesk />
     </div>
   );
 };

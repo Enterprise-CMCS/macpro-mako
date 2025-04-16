@@ -11,7 +11,9 @@ describe("Search Component", () => {
   });
 
   it("should update the search input value when typed into", () => {
-    render(<Search handleSearch={handleSearchMock} placeholderText="Search..." />);
+    render(
+      <Search handleSearch={handleSearchMock} placeholderText="Search..." isSearching={true} />,
+    );
 
     const input = screen.getByPlaceholderText("Search...");
 
@@ -21,7 +23,9 @@ describe("Search Component", () => {
   });
 
   it("should call handleSearch with the correct value when the search button is clicked", async () => {
-    render(<Search handleSearch={handleSearchMock} placeholderText="Search..." />);
+    render(
+      <Search handleSearch={handleSearchMock} placeholderText="Search..." isSearching={true} />,
+    );
 
     const input = screen.getByPlaceholderText("Search...");
     const button = screen.getByRole("button", { name: /search/i });
@@ -36,7 +40,9 @@ describe("Search Component", () => {
   });
 
   it("should clear the input and call handleSearch with an empty string when the close icon is clicked", () => {
-    render(<Search handleSearch={handleSearchMock} placeholderText="Search..." />);
+    render(
+      <Search handleSearch={handleSearchMock} placeholderText="Search..." isSearching={true} />,
+    );
 
     const input = screen.getByPlaceholderText("Search...");
     const closeIcon = screen.getByTestId("close-icon");
