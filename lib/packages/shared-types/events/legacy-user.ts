@@ -50,7 +50,7 @@ export const onemacLegacyUserRoleRequest = baseUserRoleRequestSchema
 export const userRoleRequest = baseUserRoleRequestSchema.transform((data) => ({
   id: `${data.email}_${data.territory}_${data.role}`,
   // mako events are "event" instead of "eventType"?
-  event: "user-role",
+  eventType: "user-role",
   email: data.email,
   doneByEmail: data.doneByEmail,
   doneByName: data.doneByName,

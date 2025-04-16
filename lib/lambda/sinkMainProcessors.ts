@@ -45,8 +45,8 @@ type ParsedLegacyRecordFromKafka = Partial<{
 export const isRecordAUserRoleRequest = (
   record: OneMacRecord,
 ): record is OneMacRecord & {
-  event: "user-role";
-} => typeof record === "object" && record.event === "user-role";
+  eventType: "user-role";
+} => typeof record === "object" && record.eventType === "user-role";
 
 export const isRecordALegacyUserRoleRequest = (
   record: ParsedLegacyRecordFromKafka,
@@ -275,7 +275,7 @@ export const insertOneMacRecordsFromKafkaIntoMako = async (
   );
   const oneMacUsers = oneMacRecordsForMako.filter((record) => record.eventType === "user-info");
   const roleRequests = oneMacRecordsForMako.filter(
-    (record) => record.eventType === "legacy-user-role" || record.event === "user-role",
+    (record) => record.eventType === "legacy-user-role" || record.eventType === "user-role",
   );
   console.log(roleRequests, "ROLE REQUESTS??");
 

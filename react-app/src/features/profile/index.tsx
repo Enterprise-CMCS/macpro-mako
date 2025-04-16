@@ -2,7 +2,14 @@ import { useState } from "react";
 import { FULL_CENSUS_STATES, RoleDescriptionStrings, StateCode } from "shared-types";
 
 import { useGetUser, useGetUserProfile, useSubmitRoleRequests } from "@/api";
-import { Alert, Button, CardWithTopBorder, LoadingSpinner, SubNavHeader } from "@/components";
+import {
+  Alert,
+  banner,
+  Button,
+  CardWithTopBorder,
+  LoadingSpinner,
+  SubNavHeader,
+} from "@/components";
 import { Option } from "@/components/Opensearch/main/Filtering/Drawer/Filterable";
 import { FilterableSelect } from "@/components/Opensearch/main/Filtering/Drawer/Filterable";
 import config from "@/config";
@@ -28,6 +35,8 @@ export const Profile = () => {
   const idmRoles = getRoleDescriptionsFromUser(userData?.user["custom:ismemberof"]);
   const isStateUser = userData?.user?.["custom:cms-roles"].includes("onemac-state-user");
   const stateAccess = userProfile?.stateAccess?.filter((access) => access.territory != "ZZ");
+  console.log(stateAccess, "state accessss");
+  console.log(userProfile, "HELLOOO");
   const userRoles = euaRoles ? euaRoles : idmRoles;
 
   const [showAddState, setShowAddState] = useState<boolean>(true);
@@ -41,7 +50,34 @@ export const Profile = () => {
     return !isAlreadyRequested && value !== "ZZ";
   }).map(({ label, value }) => ({ label, value }));
 
-  const { mutate: submitRequest, isLoading } = useSubmitRoleRequests();
+  const { mutateAsync: submitRequest, isLoading } = useSubmitRoleRequests();
+
+  const handleSubmitRequest = async () => {
+    try {
+      await submitRequest(requestedStates);
+
+      setShowAddState(true);
+      setRequestedStates([]);
+
+      banner({
+        header: "Submission Completed",
+        body: "Your submission has been received.",
+        variant: "success",
+        pathnameToDisplayOn: window.location.pathname,
+      });
+      window.scrollTo(0, 0);
+    } catch (error) {
+      console.error(error);
+      banner({
+        header: "An unexpected error has occurred:",
+        body: error instanceof Error ? error.message : String(error),
+        variant: "destructive",
+        pathnameToDisplayOn: window.location.pathname,
+      });
+      window.scrollTo(0, 0);
+    }
+  };
+
   return (
     <>
       <SubNavHeader>
@@ -129,18 +165,7 @@ export const Profile = () => {
                     />
                     <div className="block lg:mt-8 lg:mb-2">
                       <span>
-                        <Button
-                          onClick={() => {
-                            submitRequest(requestedStates, {
-                              onSuccess: () => {
-                                setShowAddState(true);
-                                setRequestedStates([]);
-                              },
-                            });
-                          }}
-                        >
-                          Submit
-                        </Button>
+                        <Button onClick={handleSubmitRequest}>Submit</Button>
                         {isLoading && <LoadingSpinner />}
                         <Button variant="link" onClick={() => setShowAddState(true)}>
                           Cancel

@@ -1,7 +1,5 @@
 import { z } from "zod";
 
-// Restructure this file?
-import { userRoleRequest } from "../../events/legacy-user";
 import { ItemResult as Changelog } from "../changelog";
 import { AggQuery, Filterable as FIL, Hit, QueryState, Response as Res } from "./../_";
 import {
