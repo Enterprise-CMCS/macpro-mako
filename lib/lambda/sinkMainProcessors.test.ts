@@ -691,12 +691,10 @@ describe("insertOneMacRecordsFromKafkaIntoMako", () => {
     const expectedRecord = {
       additionalInformation: "info",
       changedDate: null, // due to lastEventTimestamp === 0
-      description: null,
       id: "MD-00000",
       makoChangedDate: null, // due to lastEventTimestamp === 0
       origin: "OneMACLegacy",
       proposedDate: "2025-03-10T00:00:00Z",
-      subject: null,
       submissionDate: null, // due to submissionTimestamp === 0
       submitterEmail: "tester@example.com",
       submitterName: "Tester",
