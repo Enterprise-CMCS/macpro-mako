@@ -1,9 +1,10 @@
+import { ReactElement } from "react";
 import { FILE_TYPES } from "shared-types/uploads";
 
 export type QuestionAnswer = {
   anchorText: string;
   question: string;
-  answerJSX: JSX.Element;
+  answerJSX: ReactElement;
   statusLabel?: "New" | "Updated";
 };
 

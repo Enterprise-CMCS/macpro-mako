@@ -1,8 +1,9 @@
 import Fuse from "fuse.js";
 import ReactDOMServer from "react-dom/server";
 
-import { FAQContentType } from "@/features/support/SupportMockContent";
+import { FAQContentType, QuestionAnswer } from "@/features/support/SupportMockContent";
 
+import { generateBoldAnswerJSX } from "./boldText";
 import Search from "./search";
 
 interface SearchContentProps {
@@ -36,7 +37,8 @@ const SearchContent = ({
     findAllMatches: true,
     includeMatches: true,
     threshold: 0.1,
-    distance: 100,
+    minMatchCharLength: 2,
+    distance: 1000000,
   });
 
   function reorderSupportContent(supportContent: FAQContentType[], searchResults, searched) {
@@ -49,7 +51,22 @@ const SearchContent = ({
     });
 
     const formatedSearchResults = searchResults
-      .map((result) => contentMap.get(result.item.anchorText))
+      .map((result) => {
+        const matches: { indices: [number, number][]; value: string }[] = result.matches.filter(
+          (matches) => matches.key === "answer",
+        );
+        const resultsInOgFormat: QuestionAnswer = contentMap.get(result.item.anchorText);
+
+        matches.forEach((match) => {
+          resultsInOgFormat.answerJSX = generateBoldAnswerJSX(
+            match.value,
+            resultsInOgFormat.answerJSX,
+            match.indices,
+          );
+        });
+
+        return resultsInOgFormat;
+      })
       .filter(Boolean);
 
     return [{ sectionTitle: `Search results for "${searched}"`, qanda: formatedSearchResults }];
@@ -58,10 +75,8 @@ const SearchContent = ({
   const handleSearch = (s: string) => {
     if (s.length) {
       const searchResults = fuse.search(s);
-      console.log("SEARCH RESULTS", searchResults);
 
       if (searchResults.length === 0) {
-        console.log("NO RESULTS FOUND");
         setSearchResults([{ sectionTitle: `No matches found for "${s}"`, qanda: [] }], true);
         return;
       }

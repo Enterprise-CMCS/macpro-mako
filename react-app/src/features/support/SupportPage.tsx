@@ -131,7 +131,7 @@ export const SupportPage = () => {
 
   return (
     <div className="min-h-screen flex flex-col">
-      <SupportSubNavHeader>
+      <SupportSubNavHeader className="z-10">
         <h1 className="text-4xl font-semibold">OneMAC Support</h1>
         <SearchContent
           placeholderText="Search OneMAC support"
