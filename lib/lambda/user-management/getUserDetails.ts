@@ -17,10 +17,10 @@ export const getUserDetails = async (event: APIGatewayEvent) => {
 
     return response({
       statusCode: 200,
-      body: JSON.parse({
+      body: {
         ...userDetails,
         role: latestActiveRole?.role ?? "",
-      }),
+      },
     });
   } catch (err: unknown) {
     console.log("An error occured: ", err);
