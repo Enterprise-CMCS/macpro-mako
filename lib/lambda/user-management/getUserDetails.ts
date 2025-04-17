@@ -16,10 +16,10 @@ export const getUserDetails = async (event: APIGatewayEvent) => {
     const latestActiveRole = await getLatestActiveRoleByEmail(userAttributes.email);
     return response({
       statusCode: 200,
-      body: JSON.stringify({
+      body: {
         ...userDetails,
         role: latestActiveRole.role,
-      }),
+      },
     });
   } catch (err: unknown) {
     console.log("An error occured: ", err);
