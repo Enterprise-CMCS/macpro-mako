@@ -1,7 +1,6 @@
 import { getAuthDetails, lookupUserAttributes } from "lib/libs/api/auth/user";
 import { response } from "lib/libs/handler-lib";
 import { APIGatewayEvent } from "shared-types";
-import { json } from "stream/consumers";
 
 import { getLatestActiveRoleByEmail, getUserByEmail } from "./user-management-service";
 
@@ -14,11 +13,12 @@ export const getUserDetails = async (event: APIGatewayEvent) => {
     const userDetails = await getUserByEmail(userAttributes.email);
     console.log(userDetails, "WHAT IS USER DETAILS");
     const latestActiveRole = await getLatestActiveRoleByEmail(userAttributes.email);
+    console.log(latestActiveRole, "LATEST ACTIVE ROLE");
     return response({
       statusCode: 200,
       body: {
         ...userDetails,
-        role: latestActiveRole.role,
+        role: latestActiveRole?.role ?? "",
       },
     });
   } catch (err: unknown) {
