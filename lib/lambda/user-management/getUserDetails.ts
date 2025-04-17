@@ -1,6 +1,7 @@
 import { getAuthDetails, lookupUserAttributes } from "lib/libs/api/auth/user";
 import { response } from "lib/libs/handler-lib";
 import { APIGatewayEvent } from "shared-types";
+import { json } from "stream/consumers";
 
 import { getLatestActiveRoleByEmail, getUserByEmail } from "./user-management-service";
 
@@ -15,10 +16,10 @@ export const getUserDetails = async (event: APIGatewayEvent) => {
     const latestActiveRole = await getLatestActiveRoleByEmail(userAttributes.email);
     return response({
       statusCode: 200,
-      body: {
+      body: JSON.stringify({
         ...userDetails,
         role: latestActiveRole.role,
-      },
+      }),
     });
   } catch (err: unknown) {
     console.log("An error occured: ", err);
