@@ -15,17 +15,19 @@ import { FilterableSelect } from "@/components/Opensearch/main/Filtering/Drawer/
 import config from "@/config";
 import { convertStateAbbrToFullName, stateAccessStatus } from "@/utils";
 
-const getRoleDescriptionsFromUser = (roles: string | undefined) => {
-  if (roles === undefined) {
-    return "";
-  }
+// const getRoleDescriptionsFromUser = (roles: string | undefined) => {
+//   if (roles === undefined) {
+//     return "";
+//   }
 
-  return roles
-    .split(",")
-    .map((role) => RoleDescriptionStrings[role])
-    .filter(Boolean)
-    .join(", ");
-};
+//   return roles
+//     .split(",")
+//     .map((role) => RoleDescriptionStrings[role])
+//     .filter(Boolean)
+//     .join(", ");
+// };
+
+const adminRoles = ["statesubmitter", "statesystemadmin"];
 
 export const Profile = () => {
   // const { data: userData } = useGetUser();
@@ -134,7 +136,7 @@ export const Profile = () => {
             </div>
           </div>
           {/* State Access Management Section */}
-          {isStateUser && (
+          {adminRoles.includes(userDetails.role) && (
             <div className="flex flex-col gap-6 md:basis-1/2">
               <h2 className="text-2xl font-bold">State Access Management</h2>
               {stateAccess?.map((access) => {
