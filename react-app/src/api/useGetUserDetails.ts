@@ -12,15 +12,15 @@ export const getUserDetails = async () => {
   try {
     const userDetails = await API.get("os", "/getUserDetails", {});
 
-    return userDetails;
+    return JSON.stringify(userDetails);
   } catch (e) {
     console.log({ e });
-    return {};
+    return "";
   }
 };
 
 export const useGetUserDetails = () =>
   useQuery({
-    queryKey: ["user"],
+    queryKey: ["userDetails"],
     queryFn: () => getUserDetails(),
   });
