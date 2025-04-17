@@ -2,6 +2,7 @@ export * from "./useSearch";
 export * from "./useGetForm";
 export * from "./useGetItem";
 export * from "./useGetUser";
+export * from "./useGetUserDetails";
 export * from "./useGetUserProfile";
 export * from "./useGetRoleRequests";
 export * from "./useSubmitRoleRequests";

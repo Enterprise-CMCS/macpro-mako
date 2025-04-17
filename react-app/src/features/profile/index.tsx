@@ -29,7 +29,8 @@ const getRoleDescriptionsFromUser = (roles: string | undefined) => {
 
 export const Profile = () => {
   const { data: userData } = useGetUser();
-  const { data: userProfile } = useGetUserProfile();
+  console.log(userData, "USER DATA");
+  const { data: userProfile, refetch: reloadUserProfile } = useGetUserProfile();
 
   const euaRoles = getRoleDescriptionsFromUser(userData?.user["custom:cms-roles"]);
   const idmRoles = getRoleDescriptionsFromUser(userData?.user["custom:ismemberof"]);
@@ -58,6 +59,7 @@ export const Profile = () => {
 
       setShowAddState(true);
       setRequestedStates([]);
+      await reloadUserProfile();
 
       banner({
         header: "Submission Completed",
