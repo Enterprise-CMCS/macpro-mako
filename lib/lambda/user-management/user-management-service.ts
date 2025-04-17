@@ -4,7 +4,17 @@ import { getItem, search } from "libs";
 export const getUserByEmail = async (email: string) => {
   const { domain, index } = getDomainAndNamespace("users");
 
-  return await getItem(domain, index, email);
+  const result = await search(domain, index, {
+    // size: 1,
+    query: {
+      term: {
+        "email.keyword": email,
+      },
+    },
+  });
+
+  return result.hits.hits[0]?._source ?? null;
+  // return await getItem(domain, index, email);
 };
 
 export const getUsersByEmails = async (emails: string[]) => {

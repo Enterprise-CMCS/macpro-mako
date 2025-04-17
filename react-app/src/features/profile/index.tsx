@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { FULL_CENSUS_STATES, RoleDescriptionStrings, StateCode } from "shared-types";
 
-import { useGetUser, useGetUserProfile, useSubmitRoleRequests } from "@/api";
+import { useGetUser, useGetUserDetails, useGetUserProfile, useSubmitRoleRequests } from "@/api";
 import {
   Alert,
   banner,
@@ -31,6 +31,8 @@ export const Profile = () => {
   const { data: userData } = useGetUser();
   console.log(userData, "USER DATA");
   const { data: userProfile, refetch: reloadUserProfile } = useGetUserProfile();
+  const { data: userDetails } = useGetUserDetails();
+  console.log(userDetails, "USER DETAILSSSS");
 
   const euaRoles = getRoleDescriptionsFromUser(userData?.user["custom:cms-roles"]);
   const idmRoles = getRoleDescriptionsFromUser(userData?.user["custom:ismemberof"]);
