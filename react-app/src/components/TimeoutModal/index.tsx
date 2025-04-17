@@ -30,10 +30,24 @@ export const TimeoutModal = () => {
   const { data: user, isLoading: isUserLoading } = useGetUser();
 
   const onLogOut = () => {
-    // Small delay to ensure Amplify completes its internal processes
     setTimeout(() => {
-      window.localStorage.clear();
+      const preservePrefix = "notifs.";
+      const preserved: Record<string, string> = {};
+
+      for (let i = 0; i < localStorage.length; i++) {
+        const key = localStorage.key(i);
+        if (key && key.startsWith(preservePrefix)) {
+          preserved[key] = localStorage.getItem(key)!;
+        }
+      }
+
+      localStorage.clear();
+
+      Object.entries(preserved).forEach(([key, value]) => {
+        localStorage.setItem(key, value);
+      });
     }, 100);
+
     Auth.signOut();
   };
 
