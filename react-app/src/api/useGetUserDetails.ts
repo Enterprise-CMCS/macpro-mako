@@ -13,7 +13,7 @@ export const getUserDetails = async () => {
   try {
     const userDetails = await API.get("os", "/getUserDetails", {});
     console.log("WHAT IS THIS", userDetails);
-    return userDetails;
+    return JSON.parse(userDetails);
   } catch (e) {
     console.log({ e });
     return null;
