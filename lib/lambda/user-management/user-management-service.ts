@@ -123,3 +123,25 @@ export const getUserRolesWithNames = async (roleRequests: any[]) => {
 
   return rolesWithName;
 };
+
+export const getLatestActiveRoleByEmail = async (email: string) => {
+  const { domain, index } = getDomainAndNamespace("roles");
+
+  const result = await search(domain, index, {
+    size: 1,
+    query: {
+      bool: {
+        must: [{ term: { "email.keyword": email } }, { term: { status: "active" } }],
+      },
+    },
+    sort: [
+      {
+        lastModifiedDate: {
+          order: "desc",
+        },
+      },
+    ],
+  });
+
+  return result.hits.hits[0]?._source ?? null;
+};
