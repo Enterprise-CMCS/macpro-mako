@@ -14,12 +14,13 @@ export const getUserDetails = async (event: APIGatewayEvent) => {
     console.log(userDetails, "WHAT IS USER DETAILS");
     const latestActiveRole = await getLatestActiveRoleByEmail(userAttributes.email);
     console.log(latestActiveRole, "LATEST ACTIVE ROLE");
+
     return response({
       statusCode: 200,
-      body: {
+      body: JSON.parse({
         ...userDetails,
         role: latestActiveRole?.role ?? "",
-      },
+      }),
     });
   } catch (err: unknown) {
     console.log("An error occured: ", err);

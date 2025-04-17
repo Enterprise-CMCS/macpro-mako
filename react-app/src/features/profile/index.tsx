@@ -32,9 +32,9 @@ const adminRoles = ["statesubmitter", "statesystemadmin"];
 export const Profile = () => {
   // const { data: userData } = useGetUser();
   // console.log(userData, "USER DATA");
-  const { data: userProfile, refetch: reloadUserProfile } = useGetUserProfile();
   const { data: userDetails } = useGetUserDetails();
   console.log(userDetails, "USER DETAILSSSS");
+  const { data: userProfile, refetch: reloadUserProfile } = useGetUserProfile();
 
   // const euaRoles = getRoleDescriptionsFromUser(userData?.user["custom:cms-roles"]);
   // const idmRoles = getRoleDescriptionsFromUser(userData?.user["custom:ismemberof"]);
