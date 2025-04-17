@@ -28,8 +28,8 @@ const getRoleDescriptionsFromUser = (roles: string | undefined) => {
 };
 
 export const Profile = () => {
-  const { data: userData } = useGetUser();
-  console.log(userData, "USER DATA");
+  // const { data: userData } = useGetUser();
+  // console.log(userData, "USER DATA");
   const { data: userProfile, refetch: reloadUserProfile } = useGetUserProfile();
   const { data: userDetails } = useGetUserDetails();
   console.log(userDetails, "USER DETAILSSSS");
@@ -37,7 +37,7 @@ export const Profile = () => {
   // const euaRoles = getRoleDescriptionsFromUser(userData?.user["custom:cms-roles"]);
   // const idmRoles = getRoleDescriptionsFromUser(userData?.user["custom:ismemberof"]);
 
-  const isStateUser = userData?.user?.["custom:cms-roles"].includes("onemac-state-user");
+  // const isStateUser = userData?.user?.["custom:cms-roles"].includes("onemac-state-user");
   const stateAccess = userProfile?.stateAccess?.filter((access) => access.territory != "ZZ");
   console.log(stateAccess, "state accessss");
   console.log(userProfile, "HELLOOO");
@@ -120,9 +120,7 @@ export const Profile = () => {
 
             <div className="leading-9">
               <h3 className="font-bold">Full Name</h3>
-              <p>
-                {userData?.user?.given_name} {userData?.user?.family_name}
-              </p>
+              <p>{userDetails.fullName}</p>
             </div>
 
             <div className="leading-9">
