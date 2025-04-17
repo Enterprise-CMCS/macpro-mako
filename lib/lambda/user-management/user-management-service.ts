@@ -1,11 +1,11 @@
 import { getDomainAndNamespace } from "lib/libs/utils";
-import { getItem, search } from "libs";
+import { search } from "libs";
 
 export const getUserByEmail = async (email: string) => {
   const { domain, index } = getDomainAndNamespace("users");
 
   const result = await search(domain, index, {
-    // size: 1,
+    size: 1,
     query: {
       term: {
         "email.keyword": email,
