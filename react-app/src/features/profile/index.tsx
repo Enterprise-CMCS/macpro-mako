@@ -34,13 +34,14 @@ export const Profile = () => {
   const { data: userDetails } = useGetUserDetails();
   console.log(userDetails, "USER DETAILSSSS");
 
-  const euaRoles = getRoleDescriptionsFromUser(userData?.user["custom:cms-roles"]);
-  const idmRoles = getRoleDescriptionsFromUser(userData?.user["custom:ismemberof"]);
+  // const euaRoles = getRoleDescriptionsFromUser(userData?.user["custom:cms-roles"]);
+  // const idmRoles = getRoleDescriptionsFromUser(userData?.user["custom:ismemberof"]);
+
   const isStateUser = userData?.user?.["custom:cms-roles"].includes("onemac-state-user");
   const stateAccess = userProfile?.stateAccess?.filter((access) => access.territory != "ZZ");
   console.log(stateAccess, "state accessss");
   console.log(userProfile, "HELLOOO");
-  const userRoles = euaRoles ? euaRoles : idmRoles;
+  // const userRoles = euaRoles ? euaRoles : idmRoles;
 
   const [showAddState, setShowAddState] = useState<boolean>(true);
   const [requestedStates, setRequestedStates] = useState<StateCode[]>([]);
@@ -126,12 +127,12 @@ export const Profile = () => {
 
             <div className="leading-9">
               <h3 className="font-bold">Role</h3>
-              <p>{userRoles}</p>
+              <p>{userDetails.role}</p>
             </div>
 
             <div className="leading-9">
               <h3 className="font-bold">Email</h3>
-              <p>{userData?.user?.email}</p>
+              <p>{userDetails.email}</p>
             </div>
           </div>
           {/* State Access Management Section */}
