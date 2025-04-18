@@ -1,13 +1,14 @@
+import { ReactElement } from "react";
 import { FILE_TYPES } from "shared-types/uploads";
 
 export type QuestionAnswer = {
   anchorText: string;
   question: string;
-  answerJSX: JSX.Element;
+  answerJSX: ReactElement;
   statusLabel?: "New" | "Updated";
 };
 
-type FAQContent = {
+export type FAQContentType = {
   sectionTitle: string;
   qanda: QuestionAnswer[];
 };
@@ -17,7 +18,7 @@ export const helpDeskContact = {
   phone: "(833) 228-2540",
 };
 
-export const oneMACStateFAQContent: FAQContent[] = [
+export const oneMACStateFAQContent: FAQContentType[] = [
   {
     sectionTitle: "Frequently asked questions (FAQs)",
     qanda: [
@@ -661,7 +662,7 @@ export const oneMACStateFAQContent: FAQContent[] = [
   },
 ];
 
-export const oneMACCMSContent: FAQContent[] = [
+export const oneMACCMSContent: FAQContentType[] = [
   {
     sectionTitle: "Frequently asked questions (FAQs)",
     qanda: [

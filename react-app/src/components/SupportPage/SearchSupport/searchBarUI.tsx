@@ -1,5 +1,5 @@
 import { XIcon } from "lucide-react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 import { Button } from "@/components";
 import { cn } from "@/utils";
@@ -7,9 +7,10 @@ import { cn } from "@/utils";
 interface searchProps {
   handleSearch: (s: string) => void;
   placeholderText: string;
+  isSearching: boolean;
 }
 
-const Search = ({ handleSearch, placeholderText }: searchProps) => {
+const Search = ({ handleSearch, placeholderText, isSearching }: searchProps) => {
   const [searchText, setSearchText] = useState("");
 
   const handleButtonClick = () => {
@@ -21,11 +22,20 @@ const Search = ({ handleSearch, placeholderText }: searchProps) => {
     setSearchText(updateText);
   };
 
+  useEffect(() => {
+    if (!isSearching) setSearchText("");
+  }, [isSearching]);
+
   const isHidden = searchText ? "visible" : "invisible";
 
   return (
     <div className="flex items-center">
-      <form>
+      <form
+        onSubmit={(event) => {
+          event.preventDefault();
+          handleButtonClick();
+        }}
+      >
         <div className="flex items-center border-gray-500 bg-white mr-5 lg:w-[25rem]">
           <svg
             xmlns="http://www.w3.org/2000/svg"
@@ -57,7 +67,6 @@ const Search = ({ handleSearch, placeholderText }: searchProps) => {
             data-testid="close-icon"
             onClick={() => {
               setSearchText("");
-              handleSearch("");
             }}
             name="close"
           />

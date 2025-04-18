@@ -1,7 +1,7 @@
 import { fireEvent, render, screen, waitFor } from "@testing-library/react";
 import { beforeEach, describe, expect, it, vi } from "vitest";
 
-import Search from "./search";
+import Search from "./searchBarUI";
 
 describe("Search Component", () => {
   const handleSearchMock = vi.fn();
@@ -11,7 +11,9 @@ describe("Search Component", () => {
   });
 
   it("should update the search input value when typed into", () => {
-    render(<Search handleSearch={handleSearchMock} placeholderText="Search..." />);
+    render(
+      <Search handleSearch={handleSearchMock} placeholderText="Search..." isSearching={true} />,
+    );
 
     const input = screen.getByPlaceholderText("Search...");
 
@@ -21,7 +23,9 @@ describe("Search Component", () => {
   });
 
   it("should call handleSearch with the correct value when the search button is clicked", async () => {
-    render(<Search handleSearch={handleSearchMock} placeholderText="Search..." />);
+    render(
+      <Search handleSearch={handleSearchMock} placeholderText="Search..." isSearching={true} />,
+    );
 
     const input = screen.getByPlaceholderText("Search...");
     const button = screen.getByRole("button", { name: /search/i });
@@ -35,8 +39,10 @@ describe("Search Component", () => {
     expect(handleSearchMock).toHaveBeenCalledWith("test search");
   });
 
-  it("should clear the input and call handleSearch with an empty string when the close icon is clicked", () => {
-    render(<Search handleSearch={handleSearchMock} placeholderText="Search..." />);
+  it("should clear the input when the close icon is clicked", () => {
+    render(
+      <Search handleSearch={handleSearchMock} placeholderText="Search..." isSearching={true} />,
+    );
 
     const input = screen.getByPlaceholderText("Search...");
     const closeIcon = screen.getByTestId("close-icon");
@@ -48,7 +54,5 @@ describe("Search Component", () => {
     fireEvent.click(closeIcon);
 
     expect(input).toHaveValue("");
-
-    expect(handleSearchMock).toHaveBeenCalledWith("");
   });
 });
