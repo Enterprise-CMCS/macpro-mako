@@ -15,35 +15,13 @@ import { FilterableSelect } from "@/components/Opensearch/main/Filtering/Drawer/
 import config from "@/config";
 import { convertStateAbbrToFullName, stateAccessStatus } from "@/utils";
 
-// const getRoleDescriptionsFromUser = (roles: string | undefined) => {
-//   if (roles === undefined) {
-//     return "";
-//   }
-
-//   return roles
-//     .split(",")
-//     .map((role) => RoleDescriptionStrings[role])
-//     .filter(Boolean)
-//     .join(", ");
-// };
-
 const adminRoles = ["statesubmitter", "statesystemadmin"];
 
 export const Profile = () => {
-  // const { data: userData } = useGetUser();
-  // console.log(userData, "USER DATA");
   const { data: userDetails } = useGetUserDetails();
-  console.log(userDetails, "USER DETAILSSSS");
   const { data: userProfile, refetch: reloadUserProfile } = useGetUserProfile();
 
-  // const euaRoles = getRoleDescriptionsFromUser(userData?.user["custom:cms-roles"]);
-  // const idmRoles = getRoleDescriptionsFromUser(userData?.user["custom:ismemberof"]);
-
-  // const isStateUser = userData?.user?.["custom:cms-roles"].includes("onemac-state-user");
   const stateAccess = userProfile?.stateAccess?.filter((access) => access.territory != "ZZ");
-  console.log(stateAccess, "state accessss");
-  console.log(userProfile, "HELLOOO");
-  // const userRoles = euaRoles ? euaRoles : idmRoles;
 
   const [showAddState, setShowAddState] = useState<boolean>(true);
   const [requestedStates, setRequestedStates] = useState<StateCode[]>([]);
@@ -164,29 +142,30 @@ export const Profile = () => {
                   </CardWithTopBorder>
                 );
               })}
-              {showAddState ? (
-                <Button onClick={() => setShowAddState(false)}>Add State</Button>
-              ) : (
-                <CardWithTopBorder>
-                  <div className="p-8 min-h-36">
-                    <h3 className="text-xl font-bold">Choose State Access</h3>
-                    <FilterableSelect
-                      value={requestedStates}
-                      options={statesToRequest}
-                      onChange={(values: StateCode[]) => setRequestedStates(values)}
-                    />
-                    <div className="block lg:mt-8 lg:mb-2">
-                      <span>
-                        <Button onClick={handleSubmitRequest}>Submit</Button>
-                        {isLoading && <LoadingSpinner />}
-                        <Button variant="link" onClick={() => setShowAddState(true)}>
-                          Cancel
-                        </Button>
-                      </span>
+              {userDetails?.role === "statesubmitter" &&
+                (showAddState ? (
+                  <Button onClick={() => setShowAddState(false)}>Add State</Button>
+                ) : (
+                  <CardWithTopBorder>
+                    <div className="p-8 min-h-36">
+                      <h3 className="text-xl font-bold">Choose State Access</h3>
+                      <FilterableSelect
+                        value={requestedStates}
+                        options={statesToRequest}
+                        onChange={(values: StateCode[]) => setRequestedStates(values)}
+                      />
+                      <div className="block lg:mt-8 lg:mb-2">
+                        <span>
+                          <Button onClick={handleSubmitRequest}>Submit</Button>
+                          {isLoading && <LoadingSpinner />}
+                          <Button variant="link" onClick={() => setShowAddState(true)}>
+                            Cancel
+                          </Button>
+                        </span>
+                      </div>
                     </div>
-                  </div>
-                </CardWithTopBorder>
-              )}
+                  </CardWithTopBorder>
+                ))}
             </div>
           )}
         </div>
