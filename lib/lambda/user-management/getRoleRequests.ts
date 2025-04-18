@@ -35,13 +35,14 @@ export const getRoleRequests = async (event: APIGatewayEvent) => {
     if (cmsRoleApproverRole) {
       roleRequests = await getAllUserRoles();
     } else if (stateSystemAdminRole?.territory) {
+      console.log("are we in here");
       roleRequests = await getAllUserRolesByState(stateSystemAdminRole.territory);
     }
-
+    console.log(roleRequests, "ROLE REQUESTS??");
     if (!roleRequests.length || !Array.isArray(roleRequests)) {
       return response({
         statusCode: 400,
-        body: { message: "Error getting role requests " },
+        body: { message: "Error getting role requests" },
       });
     }
 
