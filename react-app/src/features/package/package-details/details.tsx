@@ -82,29 +82,39 @@ export const getSubmissionDetails: GetLabelAndValueFromSubmission = (submission,
   },
   {
     label: "Type",
-    value: submission.types ? (
-      <ul>
-        {submission.types.map((type) => (
-          <li key={type?.SPA_TYPE_ID}>{type?.SPA_TYPE_NAME}</li>
-        ))}{" "}
-      </ul>
-    ) : (
-      BLANK_VALUE
-    ),
+    value:
+      submission.types && submission.types.length ? (
+        <ul className="list-disc list-outside pl-5">
+          {submission.types
+            .filter((type) => type?.SPA_TYPE_ID && type?.SPA_TYPE_NAME)
+            .map((type) => (
+              <li className="mb-2" key={type?.SPA_TYPE_ID}>
+                {type?.SPA_TYPE_NAME}
+              </li>
+            ))}
+        </ul>
+      ) : (
+        BLANK_VALUE
+      ),
     canView: submission.actionType !== "Extend" && isStateUser(user) === false,
   },
 
   {
     label: "Subtype",
-    value: submission.subTypes ? (
-      <ul>
-        {submission.subTypes.map((T) => (
-          <li key={T?.TYPE_ID}>{T?.TYPE_NAME}</li>
-        ))}{" "}
-      </ul>
-    ) : (
-      BLANK_VALUE
-    ),
+    value:
+      submission.subTypes && submission.subTypes.length ? (
+        <ul className="list-disc list-outside pl-5">
+          {submission.subTypes
+            .filter((T) => T?.TYPE_ID && T?.TYPE_NAME)
+            .map((T) => (
+              <li className="mb-2" key={T?.TYPE_ID}>
+                {T?.TYPE_NAME}
+              </li>
+            ))}
+        </ul>
+      ) : (
+        BLANK_VALUE
+      ),
     canView: submission.actionType !== "Extend" && isStateUser(user) === false,
   },
   {
