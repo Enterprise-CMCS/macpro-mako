@@ -61,7 +61,12 @@ export const Profile = () => {
   const handleSubmitRequest = async () => {
     try {
       for (const state of requestedStates) {
-        await submitRequest({ email: userDetails.email, state });
+        await submitRequest({
+          email: userDetails.email,
+          state,
+          role: userDetails.role,
+          eventType: "user-role",
+        });
       }
 
       setShowAddState(true);

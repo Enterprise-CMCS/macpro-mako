@@ -94,7 +94,7 @@ export const submitRoleRequests = async (event: APIGatewayEvent) => {
       status,
       territory: state,
       role: latestActiveRoleObj.role, // ?? get user main role? can there only be 1 active role?
-      doneByEmail: email,
+      doneByEmail: userAttributes.email,
       doneByName: `${userAttributes.given_name} ${userAttributes.family_name}`, // full name of current user
       date: Date.now(), // correct time format?
     }),

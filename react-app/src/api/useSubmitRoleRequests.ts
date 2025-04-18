@@ -5,6 +5,8 @@ import { StateCode } from "shared-types";
 export type RoleRequest = {
   email: string;
   state: StateCode;
+  role: string;
+  eventType?: string;
   grantAccess?: boolean; // true for active, false for denied, undefined for pending
 };
 
