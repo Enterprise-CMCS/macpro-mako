@@ -165,7 +165,7 @@ export const UserManagement = () => {
     Name: "fullName",
     Status: "status",
     "Last Modified": "lastModifiedDate",
-    ModifiedBy: "doneByName",
+    "Modified By": "doneByName",
   };
 
   const sortByHeading = (heading: string) => {

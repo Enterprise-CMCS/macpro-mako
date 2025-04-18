@@ -3,7 +3,11 @@ import { getAuthDetails, lookupUserAttributes } from "lib/libs/api/auth/user";
 import { produceMessage } from "lib/libs/api/kafka";
 import { response } from "libs/handler-lib";
 
-import { getAllUserRolesByEmail, getLatestActiveRoleByEmail } from "./user-management-service";
+import {
+  getAllUserRolesByEmail,
+  getLatestActiveRoleByEmail,
+  getUserByEmail,
+} from "./user-management-service";
 
 export const ROLES_ALLOWED_TO_GRANT = ["cmsroleapprover", "statesystemadmin"];
 export const ROLES_ALLOWED_TO_REQUEST = ["statesubmitter"];
@@ -29,6 +33,9 @@ export const submitRoleRequests = async (event: APIGatewayEvent) => {
   const { userId, poolId } = getAuthDetails(event);
   const userAttributes = await lookupUserAttributes(userId, poolId);
   console.log(userAttributes, "USER ATTRIBUTES");
+  // dumb
+  const userInfo = await getUserByEmail(userAttributes.email);
+  console.log(userInfo, "USER INFO NOT COGNITO");
 
   const userRoles = await getAllUserRolesByEmail(userAttributes.email);
   if (!userRoles.length) {
@@ -93,9 +100,9 @@ export const submitRoleRequests = async (event: APIGatewayEvent) => {
       email,
       status,
       territory: state,
-      role: role, // ?? get user main role? can there only be 1 active role?
+      role, // ?? get user main role? can there only be 1 active role?
       doneByEmail: userAttributes.email,
-      doneByName: `${userAttributes.given_name} ${userAttributes.family_name}`, // full name of current user
+      doneByName: userInfo.fullName, // full name of current user
       date: Date.now(), // correct time format?
     }),
   );
