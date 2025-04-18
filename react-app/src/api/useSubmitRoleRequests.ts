@@ -8,10 +8,10 @@ export type RoleRequest = {
 };
 
 export const submitRoleRequests = async (request: RoleRequest) => {
-  return await
-    API.post("os", "/submitRoleRequests", {
-      body: request,
-    }),
+  const roleRequest = await API.post("os", "/submitRoleRequests", {
+    body: request,
+  });
+  return roleRequest;
   // return Promise.all(promises);
 };
 
