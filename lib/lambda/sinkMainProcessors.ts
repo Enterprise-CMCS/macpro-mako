@@ -263,6 +263,23 @@ const oneMacSeatoolStatusCheck = async (seatoolRecord: Document) => {
       }
     }
   }
+  if (
+    oneMacStatus === SEATOOL_STATUS.RAI_RESPONSE_WITHDRAW_REQUESTED &&
+    seatoolStatus !== SeatoolSpwStatusEnum.PendingRAI
+  ) {
+    if (
+      seatoolStatus &&
+      [
+        SeatoolSpwStatusEnum.Withdrawn,
+        SeatoolSpwStatusEnum.Terminated,
+        SeatoolSpwStatusEnum.Disapproved,
+      ].includes(seatoolStatus)
+    ) {
+      return seatoolStatus;
+    }
+    return SeatoolSpwStatusEnum.FormalRAIResponseWithdrawalRequested;
+  }
+
   return seatoolRecord.STATE_PLAN.SPW_STATUS_ID;
 };
 
