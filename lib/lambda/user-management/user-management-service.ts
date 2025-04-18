@@ -20,7 +20,7 @@ export const getUsersByEmails = async (emails: string[]) => {
   const { domain, index } = getDomainAndNamespace("users");
 
   const results = await search(domain, index, {
-    size: emails.length,
+    size: 100,
     query: {
       bool: {
         should: emails.map((email) => ({
@@ -82,6 +82,7 @@ export const getAllUserRoles = async () => {
     query: {
       match_all: {},
     },
+    size: 100,
   });
 
   return results.hits.hits.map((hit: any) => ({ ...hit._source }));
@@ -96,6 +97,7 @@ export const getAllUserRolesByState = async (state: string) => {
         "territory.keyword": state,
       },
     },
+    size: 100,
   });
 
   return results.hits.hits.map((hit: any) => ({ ...hit._source }));
