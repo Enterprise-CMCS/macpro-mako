@@ -286,7 +286,7 @@ const oneMacSeatoolStatusCheck = async (seatoolRecord: Document) => {
 /**
  * Processes new SEATOOL records and reconciles them with existing Mako records
  * @param kafkaRecords records to process
- * @param topicPartition kafka topic for verbose error handling
+ * @param topicPartition kafka xtopic for verbose error handling
  */
 export const insertNewSeatoolRecordsFromKafkaIntoMako = async (
   kafkaRecords: KafkaRecord[],
