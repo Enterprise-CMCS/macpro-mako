@@ -103,7 +103,7 @@ export const renderCellActions = (
       email: userRole.email,
       state: userRole.territory,
       role: userRole.role,
-      grantAccess: modalAction[action] === "grant" ? true : false,
+      grantAccess: modalAction[action] === "grant",
       eventType: userRole.eventType,
     });
   };

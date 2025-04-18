@@ -16,7 +16,7 @@ export const getRoleRequests = async (event: APIGatewayEvent) => {
     const { email } = await lookupUserAttributes(userId, poolId);
 
     const userRoles = await getAllUserRolesByEmail(email);
-    console.log(userRoles, "USER ROLES??");
+
     if (!userRoles.length) {
       return response({
         statusCode: 400,
@@ -36,18 +36,19 @@ export const getRoleRequests = async (event: APIGatewayEvent) => {
     if (cmsRoleApproverRole) {
       roleRequests = await getAllUserRoles();
     } else if (stateSystemAdminRole?.territory) {
-      console.log("are we in here");
       roleRequests = await getAllUserRolesByState(stateSystemAdminRole.territory);
     }
-    console.log(roleRequests, "ROLE REQUESTS??");
+
     if (!roleRequests.length || !Array.isArray(roleRequests)) {
       return response({
         statusCode: 400,
         body: { message: "Error getting role requests" },
       });
     }
+    // Exclude current user
+    const filteredRequests = roleRequests.filter((adminRole) => adminRole.email !== email);
 
-    const roleRequestsWithName = await getUserRolesWithNames(roleRequests);
+    const roleRequestsWithName = await getUserRolesWithNames(filteredRequests);
 
     return response({
       statusCode: 200,
