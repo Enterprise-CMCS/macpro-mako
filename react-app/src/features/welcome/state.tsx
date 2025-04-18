@@ -15,14 +15,14 @@ export const StateWelcome = () => {
       content:
         "Submit all Medicaid SPAs here, except for Medicaid eligibility, enrollment, administration, and health home SPAs, which can be submitted in MACPro System without logging in separately.",
       buttonText: "New Medicaid SPA",
-      link: "/new-submission/spa/medicaid/create",
+      link: "/new-submission/spa/medicaid",
     },
     {
       id: "chip",
       label: "CHIP SPA",
       content: "Submit a new CHIP state plan amendment.",
       buttonText: "New CHIP SPA",
-      link: "/new-submission/spa/chip/create",
+      link: "/new-submission/spa/chip/",
     },
     {
       id: "waiverB",
