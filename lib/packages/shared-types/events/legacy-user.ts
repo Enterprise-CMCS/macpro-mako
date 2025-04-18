@@ -20,7 +20,7 @@ export const baseUserRoleRequestSchema = z.object({
   doneByEmail: z.string(),
   doneByName: z.string(),
   date: z.number(),
-  eventType: roleEvent.optional().default("legacy-user-role"),
+  eventType: roleEvent,
 });
 
 export const onemacLegacyUserRoleRequest = baseUserRoleRequestSchema
