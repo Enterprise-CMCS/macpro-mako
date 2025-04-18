@@ -1,6 +1,10 @@
+import { isCmsUser, isStateUser } from "shared-utils";
+
+import { useGetUser } from "@/api";
 import { useFeatureFlag } from "@/hooks/useFeatureFlag";
 
 const TopBanner = () => {
+  const { data: user } = useGetUser();
   const isStateHomepage = useFeatureFlag("STATE_HOMEPAGE_FLAG");
   const isCMSHomepage = useFeatureFlag("CMS_HOMEPAGE_FLAG");
 
@@ -23,7 +27,12 @@ const TopBanner = () => {
     { label: "MMDL", href: "https://wms-mmdl.cms.gov/MMDL/faces/portal.jsp" },
   ];
 
-  const linksToRender = isCMSHomepage ? cmsLinks : isStateHomepage ? stateLinks : [];
+  const linksToRender =
+    isCMSHomepage && isCmsUser(user.user)
+      ? cmsLinks
+      : isStateHomepage && isStateUser(user.user)
+        ? stateLinks
+        : [];
 
   return (
     <div className="w-full h-[64px] bg-[#205493] flex items-center">

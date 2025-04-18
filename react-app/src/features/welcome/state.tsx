@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { Link } from "react-router";
 
 import { LatestUpdates } from "@/components/Banner/latestUpdates";
 import { Welcome } from "@/features/welcome/default";
@@ -14,12 +15,14 @@ export const StateWelcome = () => {
       content:
         "Submit all Medicaid SPAs here, except for Medicaid eligibility, enrollment, administration, and health home SPAs, which can be submitted in MACPro System without logging in separately.",
       buttonText: "New Medicaid SPA",
+      link: "/new-submission/spa/medicaid/create",
     },
     {
       id: "chip",
       label: "CHIP SPA",
       content: "Submit a new CHIP state plan amendment.",
       buttonText: "New CHIP SPA",
+      link: "/new-submission/spa/chip/create",
     },
     {
       id: "waiverB",
@@ -27,18 +30,21 @@ export const StateWelcome = () => {
       content:
         "Submit a new 1915(b)(4) FFS selective contracting waiver or 1915(b) comprehensive (capacitated) waiver authority, amendment, or renewal.",
       buttonText: "New 1915(b) waiver",
+      link: "/new-submission/waiver/b",
     },
     {
       id: "waiverC",
       label: "1915(c) waiver",
       content: "Submit section 1915(c) Appendix K amendments not handled in WMS.",
       buttonText: "New 1915(c) waiver",
+      link: "/new-submission/waiver/app-k",
     },
     {
       id: "extension",
       label: "Request temporary waiver extension",
       content: "Submit a new temporary extension request for a 1915(b) or 1915(c) waiver.",
       buttonText: "New request",
+      link: "/new-submission/waiver/temporary-extensions",
     },
   ];
 
@@ -136,9 +142,11 @@ export const StateWelcome = () => {
                             </a>
                           )}
                         </p>
-                        <button className="w-fit h-[38px] bg-[#0071BC] text-white px-4 py-2 rounded-md text-sm font-semibold">
-                          {tab.buttonText}
-                        </button>
+                        <Link to={tab.link}>
+                          <button className="w-fit h-[38px] bg-[#0071BC] text-white px-4 py-2 rounded-md text-sm font-semibold">
+                            {tab.buttonText}
+                          </button>
+                        </Link>
                       </div>
                     )}
                   </div>

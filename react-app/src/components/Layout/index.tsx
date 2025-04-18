@@ -5,6 +5,7 @@ import { Auth } from "aws-amplify";
 import { useState } from "react";
 import { Link, NavLink, NavLinkProps, Outlet, useNavigate } from "react-router";
 import { UserRoles } from "shared-types";
+import { isStateUser } from "shared-utils";
 
 import { useGetUser } from "@/api";
 import { Banner, ScrollToTop, SimplePageContainer, UserPrompt } from "@/components";
@@ -32,7 +33,7 @@ const useGetLinks = () => {
   const toggleFaq = useFeatureFlag("TOGGLE_FAQ");
   const showHome = toggleFaq ? userObj.user : true; // if toggleFAQ is on we want to hide home when not logged in
   const isStateHomepage = useFeatureFlag("STATE_HOMEPAGE_FLAG");
-  const isCMSHomepage = useFeatureFlag("CMS_HOMEPAGE_FLAG");
+  const { data: user } = useGetUser();
 
   const links =
     isLoading || isFaqPage
@@ -63,7 +64,7 @@ const useGetLinks = () => {
           {
             name: "Latest Updates",
             link: "/latestupdates",
-            condition: isStateHomepage && !isCMSHomepage,
+            condition: isStateHomepage && isStateUser(user.user),
           },
           { name: "Support", link: "/support", condition: userObj.user && toggleFaq },
           {

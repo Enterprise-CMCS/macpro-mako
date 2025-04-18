@@ -1,5 +1,7 @@
 import { Link } from "react-router";
+import { isStateUser } from "shared-utils";
 
+import { useGetUser } from "@/api";
 import { Alert, Button } from "@/components";
 import { useFeatureFlag } from "@/hooks/useFeatureFlag";
 
@@ -16,8 +18,8 @@ type Props = {
 
 export const Footer = ({ email, address, showNavLinks }: Props) => {
   const shouldShowNavLinks = showNavLinks ?? true;
+  const { data: user } = useGetUser();
   const isStateHomepage = useFeatureFlag("STATE_HOMEPAGE_FLAG");
-  const isCMSHomepage = useFeatureFlag("CMS_HOMEPAGE_FLAG");
 
   return (
     <footer>
@@ -31,7 +33,7 @@ export const Footer = ({ email, address, showNavLinks }: Props) => {
               <a href="/dashboard" className="underline font-bold">
                 <p>Dashboard</p>
               </a>
-              {isStateHomepage && !isCMSHomepage && (
+              {isStateHomepage && isStateUser(user.user) && (
                 <a href="/latestupdates" className="underline font-bold">
                   <p>Latest Updates</p>
                 </a>
