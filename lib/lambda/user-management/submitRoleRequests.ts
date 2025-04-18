@@ -47,14 +47,14 @@ export const submitRoleRequests = async (event: APIGatewayEvent) => {
     });
   }
 
-  // Extract the state and grantAccess fields from the event body
-  const { state, grantAccess } =
+  // Extract the email, state, and grantAccess fields from the event body
+  const { email, state, grantAccess } =
     typeof event.body === "string" ? JSON.parse(event.body) : event.body;
 
   let status: RoleStatus;
   // Check if the user's role is allowed to grant or request access
   if (!canGrantAccess(latestActiveRoleObj.role) && !canRequestAccess(latestActiveRoleObj.role)) {
-    console.warn(`Unauthorized action attempt by ${userAttributes.email}`);
+    console.warn(`Unauthorized action attempt by ${email}`);
     return response({
       statusCode: 403,
       body: { message: "You are not authorized to perform this action." },
@@ -83,18 +83,18 @@ export const submitRoleRequests = async (event: APIGatewayEvent) => {
     });
   }
 
-  const id = `${userAttributes.email}_${state}_${latestActiveRoleObj.role}`;
+  const id = `${email}_${state}_${latestActiveRoleObj.role}`;
 
   await produceMessage(
     topicName,
     id,
     JSON.stringify({
       eventType: "user-role",
-      email: userAttributes.email,
+      email,
       status,
       territory: state,
       role: latestActiveRoleObj.role, // ?? get user main role? can there only be 1 active role?
-      doneByEmail: userAttributes.email,
+      doneByEmail: email,
       doneByName: `${userAttributes.given_name} ${userAttributes.family_name}`, // full name of current user
       date: Date.now(), // correct time format?
     }),

@@ -3,6 +3,7 @@ import { API } from "aws-amplify";
 import { StateCode } from "shared-types";
 
 export type RoleRequest = {
+  email: string;
   state: StateCode;
   grantAccess?: boolean; // true for active, false for denied, undefined for pending
 };
