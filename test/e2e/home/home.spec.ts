@@ -3,7 +3,7 @@ import { HomePage } from "@/pages";
 
 let homePage: HomePage;
 
-test.describe("home page", { tag: ["@home", "@e2e", "@sample"] }, () => {
+test.describe("home page", { tag: ["@home", "@e2e"] }, () => {
   test.beforeEach(async ({ page }) => {
     homePage = new HomePage(page);
 
