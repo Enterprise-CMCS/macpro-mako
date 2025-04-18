@@ -1,17 +1,26 @@
 import { getDomainAndNamespace } from "lib/libs/utils";
-import { getItem, search } from "libs";
+import { search } from "libs";
 
 export const getUserByEmail = async (email: string) => {
   const { domain, index } = getDomainAndNamespace("users");
 
-  return await getItem(domain, index, email);
+  const result = await search(domain, index, {
+    size: 1,
+    query: {
+      term: {
+        "email.keyword": email,
+      },
+    },
+  });
+
+  return result.hits.hits[0]?._source ?? null;
 };
 
 export const getUsersByEmails = async (emails: string[]) => {
   const { domain, index } = getDomainAndNamespace("users");
 
   const results = await search(domain, index, {
-    size: emails.length,
+    size: 100,
     query: {
       bool: {
         should: emails.map((email) => ({
@@ -41,6 +50,7 @@ export const getAllUserRolesByEmail = async (email: string) => {
         "email.keyword": email,
       },
     },
+    size: 100,
   });
 
   return result.hits.hits.map((hit: any) => ({ ...hit._source }));
@@ -68,11 +78,14 @@ export const userHasThisRole = async (email: string, state: string, role: string
 export const getAllUserRoles = async () => {
   const { domain, index } = getDomainAndNamespace("roles");
 
-  return await search(domain, index, {
+  const results = await search(domain, index, {
     query: {
       match_all: {},
     },
+    size: 100,
   });
+
+  return results.hits.hits.map((hit: any) => ({ ...hit._source }));
 };
 
 export const getAllUserRolesByState = async (state: string) => {
@@ -84,6 +97,7 @@ export const getAllUserRolesByState = async (state: string) => {
         "territory.keyword": state,
       },
     },
+    size: 100,
   });
 
   return results.hits.hits.map((hit: any) => ({ ...hit._source }));
@@ -95,17 +109,11 @@ export const getUserRolesWithNames = async (roleRequests: any[]) => {
   }
 
   const emails = roleRequests.map((role) => role.email);
-  console.log(emails, "EMAILSSS");
   const users = await getUsersByEmails(emails);
-  console.log(users, "USERSSS");
 
   const rolesWithName = roleRequests.map((roleObj) => {
-    console.log(roleObj, "ROLE OBJ");
     const email = roleObj.id?.split("_")[0];
-    console.log(email, "EMAIL???");
-    const user = users[email];
-    console.log(user, "USER???");
-    const fullName = user?.fullName || "Unknown";
+    const fullName = users[email]?.fullName || "Unknown";
 
     return {
       ...roleObj,
@@ -115,4 +123,26 @@ export const getUserRolesWithNames = async (roleRequests: any[]) => {
   });
 
   return rolesWithName;
+};
+
+export const getLatestActiveRoleByEmail = async (email: string) => {
+  const { domain, index } = getDomainAndNamespace("roles");
+
+  const result = await search(domain, index, {
+    size: 1,
+    query: {
+      bool: {
+        must: [{ term: { "email.keyword": email } }, { term: { status: "active" } }],
+      },
+    },
+    sort: [
+      {
+        lastModifiedDate: {
+          order: "desc",
+        },
+      },
+    ],
+  });
+
+  return result.hits.hits[0]?._source ?? null;
 };

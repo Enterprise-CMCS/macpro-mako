@@ -1,48 +1,74 @@
 import { useState } from "react";
 import { FULL_CENSUS_STATES, RoleDescriptionStrings, StateCode } from "shared-types";
 
-import { useGetUser, useGetUserProfile } from "@/api";
-import { Alert, Button, CardWithTopBorder, SubNavHeader } from "@/components";
+import { useGetUser, useGetUserDetails, useGetUserProfile, useSubmitRoleRequests } from "@/api";
+import {
+  Alert,
+  banner,
+  Button,
+  CardWithTopBorder,
+  LoadingSpinner,
+  SubNavHeader,
+} from "@/components";
 import { Option } from "@/components/Opensearch/main/Filtering/Drawer/Filterable";
 import { FilterableSelect } from "@/components/Opensearch/main/Filtering/Drawer/Filterable";
 import config from "@/config";
 import { convertStateAbbrToFullName, stateAccessStatus } from "@/utils";
 
-const getRoleDescriptionsFromUser = (roles: string | undefined) => {
-  if (roles === undefined) {
-    return "";
-  }
-
-  return roles
-    .split(",")
-    .map((role) => RoleDescriptionStrings[role])
-    .filter(Boolean)
-    .join(", ");
-};
+const adminRoles = ["statesubmitter", "statesystemadmin"];
 
 export const Profile = () => {
-  const { data: userData } = useGetUser();
-  const { data: userProfile } = useGetUserProfile();
+  const { data: userDetails } = useGetUserDetails();
+  const { data: userProfile, refetch: reloadUserProfile } = useGetUserProfile();
 
-  const euaRoles = getRoleDescriptionsFromUser(userData?.user["custom:cms-roles"]);
-  const idmRoles = getRoleDescriptionsFromUser(userData?.user["custom:ismemberof"]);
-  const isStateUser = userData?.user?.["custom:cms-roles"].includes("onemac-state-user");
   const stateAccess = userProfile?.stateAccess?.filter((access) => access.territory != "ZZ");
-  const userRoles = euaRoles ? euaRoles : idmRoles;
 
   const [showAddState, setShowAddState] = useState<boolean>(true);
   const [requestedStates, setRequestedStates] = useState<StateCode[]>([]);
 
-  // move or fix
-  // include denied or pending states as disabled?
-  const statesToRequest: Option[] =
-    isStateUser && stateAccess?.length
-      ? FULL_CENSUS_STATES.filter(
-          (state) =>
-            !stateAccess.some((request) => request.territory === state.value) &&
-            state.value !== "ZZ",
-        ).map((stateObj) => ({ label: stateObj.label, value: stateObj.value }))
-      : [];
+  const hasStateAccess = Array.isArray(stateAccess) && stateAccess.length > 0;
+
+  const statesToRequest: Option[] = FULL_CENSUS_STATES.filter(({ value }) => {
+    if (!hasStateAccess) return true;
+    const isAlreadyRequested = stateAccess.some(({ territory }) => territory === value);
+    return !isAlreadyRequested && value !== "ZZ";
+  }).map(({ label, value }) => ({ label, value }));
+
+  const { mutateAsync: submitRequest, isLoading } = useSubmitRoleRequests();
+
+  const handleSubmitRequest = async () => {
+    try {
+      for (const state of requestedStates) {
+        await submitRequest({
+          email: userDetails.email,
+          state,
+          role: userDetails.role,
+          eventType: "user-role",
+        });
+      }
+
+      setShowAddState(true);
+      setRequestedStates([]);
+      await reloadUserProfile();
+
+      banner({
+        header: "Submission Completed",
+        body: "Your submission has been received.",
+        variant: "success",
+        pathnameToDisplayOn: window.location.pathname,
+      });
+      window.scrollTo(0, 0);
+    } catch (error) {
+      console.error(error);
+      banner({
+        header: "An unexpected error has occurred:",
+        body: error instanceof Error ? error.message : String(error),
+        variant: "destructive",
+        pathnameToDisplayOn: window.location.pathname,
+      });
+      window.scrollTo(0, 0);
+    }
+  };
 
   return (
     <>
@@ -81,23 +107,21 @@ export const Profile = () => {
 
             <div className="leading-9">
               <h3 className="font-bold">Full Name</h3>
-              <p>
-                {userData?.user?.given_name} {userData?.user?.family_name}
-              </p>
+              <p>{userDetails?.fullName}</p>
             </div>
 
             <div className="leading-9">
               <h3 className="font-bold">Role</h3>
-              <p>{userRoles}</p>
+              <p>{userDetails?.role}</p>
             </div>
 
             <div className="leading-9">
               <h3 className="font-bold">Email</h3>
-              <p>{userData?.user?.email}</p>
+              <p>{userDetails?.email}</p>
             </div>
           </div>
           {/* State Access Management Section */}
-          {isStateUser && (
+          {adminRoles.includes(userDetails?.role) && (
             <div className="flex flex-col gap-6 md:basis-1/2">
               <h2 className="text-2xl font-bold">State Access Management</h2>
               {stateAccess?.map((access) => {
@@ -118,28 +142,30 @@ export const Profile = () => {
                   </CardWithTopBorder>
                 );
               })}
-              {showAddState ? (
-                <Button onClick={() => setShowAddState(false)}>Add State</Button>
-              ) : (
-                <CardWithTopBorder>
-                  <div className="p-8 min-h-36">
-                    <h3 className="text-xl font-bold">Choose State Access</h3>
-                    <FilterableSelect
-                      value={requestedStates}
-                      options={statesToRequest}
-                      onChange={(values: StateCode[]) => setRequestedStates(values)}
-                    />
-                    <div className="block lg:mt-8 lg:mb-2">
-                      <span>
-                        <Button>Submit</Button>
-                        <Button variant="link" onClick={() => setShowAddState(true)}>
-                          Cancel
-                        </Button>
-                      </span>
+              {userDetails?.role === "statesubmitter" &&
+                (showAddState ? (
+                  <Button onClick={() => setShowAddState(false)}>Add State</Button>
+                ) : (
+                  <CardWithTopBorder>
+                    <div className="p-8 min-h-36">
+                      <h3 className="text-xl font-bold">Choose State Access</h3>
+                      <FilterableSelect
+                        value={requestedStates}
+                        options={statesToRequest}
+                        onChange={(values: StateCode[]) => setRequestedStates(values)}
+                      />
+                      <div className="block lg:mt-8 lg:mb-2">
+                        <span>
+                          <Button onClick={handleSubmitRequest}>Submit</Button>
+                          {isLoading && <LoadingSpinner />}
+                          <Button variant="link" onClick={() => setShowAddState(true)}>
+                            Cancel
+                          </Button>
+                        </span>
+                      </div>
                     </div>
-                  </div>
-                </CardWithTopBorder>
-              )}
+                  </CardWithTopBorder>
+                ))}
             </div>
           )}
         </div>

@@ -2,7 +2,7 @@ import { EllipsisVerticalIcon } from "@heroicons/react/24/outline";
 import { useEffect, useState } from "react";
 import { formatDate } from "shared-utils";
 
-import { useGetRoleRequests } from "@/api";
+import { RoleRequest, useGetRoleRequests, useSubmitRoleRequests } from "@/api";
 import {
   ConfirmationDialog,
   LoadingSpinner,
@@ -21,10 +21,14 @@ import { cn } from "@/utils";
 type StatusType = "active" | "pending" | "denied" | "revoked";
 type UserRoleType = {
   id: string;
+  email: string;
   fullName: string;
+  role: string;
+  territory: string;
   doneByName: string;
   lastModifiedDate: number;
   status: StatusType;
+  eventType: string;
 };
 type headingType = { [key: string]: keyof UserRoleType | null };
 
@@ -69,6 +73,7 @@ const sortUserData = (sortByKey: keyof UserRoleType, dirrection: boolean, data: 
 export const renderCellActions = (
   userRole: UserRoleType,
   setModalText: React.Dispatch<React.SetStateAction<string>>,
+  setSelectedUserRole: React.Dispatch<React.SetStateAction<object>>,
 ) => {
   const actions = (function () {
     switch (userRole.status) {
@@ -94,6 +99,13 @@ export const renderCellActions = (
     setModalText(
       `This will ${modalAction[action]} ${userRole.fullName}'s${requestFor} access to OneMac.`,
     );
+    setSelectedUserRole({
+      email: userRole.email,
+      state: userRole.territory,
+      role: userRole.role,
+      grantAccess: modalAction[action] === "grant",
+      eventType: userRole.eventType,
+    });
   };
   return (
     <Popover>
@@ -125,14 +137,16 @@ export const renderCellActions = (
 };
 
 export const UserManagement = () => {
-  const { data } = useGetRoleRequests();
+  const { data, refetch: reloadRoleRequests } = useGetRoleRequests();
   const [userRoles, setUserRoles] = useState<UserRoleType[]>([]);
   const [sortBy, setSortBy] = useState<{
     title: keyof headingType | "";
     direction: boolean;
   }>({ title: "", direction: false });
   const [modalText, setModalText] = useState<string | null>(null);
-
+  const [selectedUserRole, setSelectedUserRole] = useState<RoleRequest>(null);
+  const { mutateAsync: submitRequest } = useSubmitRoleRequests();
+  console.log(data, "DATAAA");
   const renderStatus = (value: string) => {
     switch (value) {
       case "pending":
@@ -151,7 +165,7 @@ export const UserManagement = () => {
     Name: "fullName",
     Status: "status",
     "Last Modified": "lastModifiedDate",
-    ModifiedBy: "doneByName",
+    "Modified By": "doneByName",
   };
 
   const sortByHeading = (heading: string) => {
@@ -179,9 +193,11 @@ export const UserManagement = () => {
         body={modalText}
         acceptButtonText="Confirm"
         aria-labelledby="Modify User's Access Modal"
-        onAccept={() => {
-          // add in API call to do this action
+        onAccept={async () => {
+          submitRequest(selectedUserRole);
           setModalText(null);
+          setSelectedUserRole(null);
+          await reloadRoleRequests();
         }}
         onCancel={() => setModalText(null)}
       />
@@ -211,7 +227,7 @@ export const UserManagement = () => {
               return (
                 <TableRow key={userRole.id}>
                   <TableCell className="py-5 px-4">
-                    {renderCellActions(userRole, setModalText)}
+                    {renderCellActions(userRole, setModalText, setSelectedUserRole)}
                   </TableCell>
                   <TableCell>{userRole.fullName}</TableCell>
                   <TableCell>

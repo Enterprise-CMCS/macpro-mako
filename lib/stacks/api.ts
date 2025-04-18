@@ -243,6 +243,18 @@ export class Api extends cdk.NestedStack {
         provisionedConcurrency: 2,
       },
       {
+        id: "getUserDetails",
+        entry: join(__dirname, "../lambda/user-management/getUserDetails.ts"),
+        environment: {
+          dbInfoSecretName,
+          topicName,
+          brokerString,
+          osDomain: `https://${openSearchDomainEndpoint}`,
+          indexNamespace,
+        },
+        provisionedConcurrency: 2,
+      },
+      {
         id: "getUserProfile",
         entry: join(__dirname, "../lambda/user-management/getUserProfile.ts"),
         environment: {
@@ -257,6 +269,18 @@ export class Api extends cdk.NestedStack {
       {
         id: "getRoleRequests",
         entry: join(__dirname, "../lambda/user-management/getRoleRequests.ts"),
+        environment: {
+          dbInfoSecretName,
+          topicName,
+          brokerString,
+          osDomain: `https://${openSearchDomainEndpoint}`,
+          indexNamespace,
+        },
+        provisionedConcurrency: 2,
+      },
+      {
+        id: "submitRoleRequests",
+        entry: join(__dirname, "../lambda/user-management/submitRoleRequests.ts"),
         environment: {
           dbInfoSecretName,
           topicName,
@@ -477,6 +501,11 @@ export class Api extends cdk.NestedStack {
         lambda: lambdas.getUploadUrl,
         method: "POST",
       },
+      getUserDetails: {
+        path: "getUserDetails",
+        lambda: lambdas.getUserDetails,
+        method: "GET",
+      },
       getUserProfile: {
         path: "getUserProfile",
         lambda: lambdas.getUserProfile,
@@ -486,6 +515,11 @@ export class Api extends cdk.NestedStack {
         path: "getRoleRequests",
         lambda: lambdas.getRoleRequests,
         method: "GET",
+      },
+      submitRoleRequests: {
+        path: "submitRoleRequests",
+        lambda: lambdas.submitRoleRequests,
+        method: "POST",
       },
       item: { path: "item", lambda: lambdas.item, method: "POST" },
       submit: { path: "submit", lambda: lambdas.submit, method: "POST" },

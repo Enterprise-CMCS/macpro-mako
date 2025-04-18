@@ -16,6 +16,7 @@ export const getRoleRequests = async (event: APIGatewayEvent) => {
     const { email } = await lookupUserAttributes(userId, poolId);
 
     const userRoles = await getAllUserRolesByEmail(email);
+
     if (!userRoles.length) {
       return response({
         statusCode: 400,
@@ -23,13 +24,13 @@ export const getRoleRequests = async (event: APIGatewayEvent) => {
       });
     }
 
-    let roleRequests = [];
+    let roleRequests: StateAccess[] = [];
 
     const cmsRoleApproverRole = userRoles.find(
-      (roleObj: StateAccess) => roleObj.role === "cmsroleapprover",
+      (roleObj: StateAccess) => roleObj.role === "cmsroleapprover" && roleObj.status === "active",
     );
     const stateSystemAdminRole = userRoles.find(
-      (roleObj: StateAccess) => roleObj.role === "statesystemadmin",
+      (roleObj: StateAccess) => roleObj.role === "statesystemadmin" && roleObj.status === "active",
     );
 
     if (cmsRoleApproverRole) {
@@ -38,14 +39,16 @@ export const getRoleRequests = async (event: APIGatewayEvent) => {
       roleRequests = await getAllUserRolesByState(stateSystemAdminRole.territory);
     }
 
-    if (!roleRequests || !Array.isArray(roleRequests)) {
+    if (!roleRequests.length || !Array.isArray(roleRequests)) {
       return response({
         statusCode: 400,
-        body: { message: "Error getting role requests " },
+        body: { message: "Error getting role requests" },
       });
     }
-    console.log(roleRequests, "ROLE REQUESTSS");
-    const roleRequestsWithName = await getUserRolesWithNames(roleRequests);
+    // Exclude current user
+    const filteredRequests = roleRequests.filter((adminRole) => adminRole.email !== email);
+
+    const roleRequestsWithName = await getUserRolesWithNames(filteredRequests);
 
     return response({
       statusCode: 200,
