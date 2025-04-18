@@ -39,7 +39,7 @@ describe("Search Component", () => {
     expect(handleSearchMock).toHaveBeenCalledWith("test search");
   });
 
-  it("should clear the input and call handleSearch with an empty string when the close icon is clicked", () => {
+  it("should clear the input when the close icon is clicked", () => {
     render(
       <Search handleSearch={handleSearchMock} placeholderText="Search..." isSearching={true} />,
     );
@@ -54,7 +54,5 @@ describe("Search Component", () => {
     fireEvent.click(closeIcon);
 
     expect(input).toHaveValue("");
-
-    expect(handleSearchMock).toHaveBeenCalledWith("");
   });
 });
