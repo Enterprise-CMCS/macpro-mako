@@ -60,7 +60,9 @@ export const Profile = () => {
 
   const handleSubmitRequest = async () => {
     try {
-      await submitRequest(requestedStates);
+      for (const state of requestedStates) {
+        await submitRequest({ state });
+      }
 
       setShowAddState(true);
       setRequestedStates([]);

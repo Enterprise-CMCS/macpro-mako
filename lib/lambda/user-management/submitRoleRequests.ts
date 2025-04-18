@@ -4,7 +4,20 @@ import { produceMessage } from "lib/libs/api/kafka";
 import { response } from "libs/handler-lib";
 import { StateAccess } from "react-app/src/api";
 
-import { getAllUserRolesByEmail } from "./user-management-service";
+import { getAllUserRolesByEmail, getLatestActiveRoleByEmail } from "./user-management-service";
+
+export const ROLES_ALLOWED_TO_GRANT = ["cms-role-approver", "state-system-admin"];
+export const ROLES_ALLOWED_TO_REQUEST = ["state-submitter"]; // or whatever roles are allowed to request access
+
+export const canGrantAccess = (role: string): boolean => {
+  return ROLES_ALLOWED_TO_GRANT.includes(role);
+};
+
+export const canRequestAccess = (role: string): boolean => {
+  return ROLES_ALLOWED_TO_REQUEST.includes(role);
+};
+
+type RoleStatus = "active" | "denied" | "pending";
 
 export const submitRoleRequests = async (event: APIGatewayEvent) => {
   console.log(event, "EVENTTT");
@@ -25,14 +38,53 @@ export const submitRoleRequests = async (event: APIGatewayEvent) => {
       body: { message: "User doesn't have any roles" },
     });
   }
-  // could there be multiple active roles objs?
-  // check for state submitter role?
-  // handle granting/revoking access here too if cms role approver or state system admin or separate lambda?
-  const activeRole = userRoles.find((roleObj: StateAccess) => roleObj.status === "active");
-  console.log(activeRole, "ACTIVE ROLE");
 
-  const { state } = typeof event.body === "string" ? JSON.parse(event.body) : event.body;
-  const id = `${userAttributes.email}_${state}_${activeRole.role}`;
+  const latestActiveRoleObj = await getLatestActiveRoleByEmail(userAttributes.email);
+  console.log(latestActiveRoleObj, "ACTIVE ROLE");
+  if (!latestActiveRoleObj) {
+    return response({
+      statusCode: 400,
+      body: { message: "No active role found for user" },
+    });
+  }
+
+  // Extract the state and grantAccess fields from the event body
+  const { state, grantAccess } =
+    typeof event.body === "string" ? JSON.parse(event.body) : event.body;
+
+  let status: RoleStatus;
+  // Check if the user's role is allowed to grant or request access
+  if (!canGrantAccess(latestActiveRoleObj.role) && !canRequestAccess(latestActiveRoleObj.role)) {
+    console.warn(`Unauthorized action attempt by ${userAttributes.email}`);
+    return response({
+      statusCode: 403,
+      body: { message: "You are not authorized to perform this action." },
+    });
+  }
+
+  // Determine the status based on the user's role and action
+  if (canGrantAccess(latestActiveRoleObj.role)) {
+    if (grantAccess === true || grantAccess === false) {
+      // Grant access or deny access based on the `grantAccess` value
+      status = grantAccess ? "active" : "denied";
+    } else {
+      return response({
+        statusCode: 400,
+        body: { message: "Invalid grantAccess value." },
+      });
+    }
+  } else if (canRequestAccess(latestActiveRoleObj.role)) {
+    // If the role is allowed to request access, set status to "pending"
+    status = "pending";
+  } else {
+    // If the role can't grant or request access, return an error
+    return response({
+      statusCode: 403,
+      body: { message: "You are not authorized to perform this action." },
+    });
+  }
+
+  const id = `${userAttributes.email}_${state}_${latestActiveRoleObj.role}`;
 
   await produceMessage(
     topicName,
@@ -40,9 +92,9 @@ export const submitRoleRequests = async (event: APIGatewayEvent) => {
     JSON.stringify({
       eventType: "user-role",
       email: userAttributes.email,
-      status: "pending",
+      status,
       territory: state,
-      role: activeRole.role, // ?? get user main role? can there only be 1 active role?
+      role: latestActiveRoleObj.role, // ?? get user main role? can there only be 1 active role?
       doneByEmail: userAttributes.email,
       doneByName: `${userAttributes.given_name} ${userAttributes.family_name}`, // full name of current user
       date: Date.now(), // correct time format?

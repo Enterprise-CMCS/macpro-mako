@@ -12,14 +12,14 @@ export const getUserDetails = async (event: APIGatewayEvent) => {
     console.log("what are the user attributes", userAttributes);
     const userDetails = await getUserByEmail(userAttributes.email);
     console.log(userDetails, "WHAT IS USER DETAILS");
-    const latestActiveRole = await getLatestActiveRoleByEmail(userAttributes.email);
-    console.log(latestActiveRole, "LATEST ACTIVE ROLE");
+    const latestActiveRoleObj = await getLatestActiveRoleByEmail(userAttributes.email);
+    console.log(latestActiveRoleObj, "LATEST ACTIVE ROLE");
 
     return response({
       statusCode: 200,
       body: {
         ...userDetails,
-        role: latestActiveRole?.role ?? "",
+        role: latestActiveRoleObj?.role ?? "",
       },
     });
   } catch (err: unknown) {
