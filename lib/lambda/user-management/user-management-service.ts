@@ -14,7 +14,6 @@ export const getUserByEmail = async (email: string) => {
   });
 
   return result.hits.hits[0]?._source ?? null;
-  // return await getItem(domain, index, email);
 };
 
 export const getUsersByEmails = async (emails: string[]) => {

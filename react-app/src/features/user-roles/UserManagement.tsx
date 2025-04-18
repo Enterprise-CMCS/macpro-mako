@@ -137,7 +137,7 @@ export const renderCellActions = (
 };
 
 export const UserManagement = () => {
-  const { data } = useGetRoleRequests();
+  const { data, refetch: reloadRoleRequests } = useGetRoleRequests();
   const [userRoles, setUserRoles] = useState<UserRoleType[]>([]);
   const [sortBy, setSortBy] = useState<{
     title: keyof headingType | "";
@@ -146,10 +146,7 @@ export const UserManagement = () => {
   const [modalText, setModalText] = useState<string | null>(null);
   const [selectedUserRole, setSelectedUserRole] = useState<RoleRequest>(null);
   const { mutateAsync: submitRequest } = useSubmitRoleRequests();
-  console.log(data, "DATAAA");
-  {
-    console.log(selectedUserRole, "SELECTED");
-  }
+
   const renderStatus = (value: string) => {
     switch (value) {
       case "pending":
@@ -196,10 +193,11 @@ export const UserManagement = () => {
         body={modalText}
         acceptButtonText="Confirm"
         aria-labelledby="Modify User's Access Modal"
-        onAccept={() => {
+        onAccept={async () => {
           submitRequest(selectedUserRole);
           setModalText(null);
           setSelectedUserRole(null);
+          await reloadRoleRequests();
         }}
         onCancel={() => setModalText(null)}
       />

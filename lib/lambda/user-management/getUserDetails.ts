@@ -7,13 +7,12 @@ import { getLatestActiveRoleByEmail, getUserByEmail } from "./user-management-se
 export const getUserDetails = async (event: APIGatewayEvent) => {
   try {
     const authDetails = getAuthDetails(event);
-    console.log("what are the auth details", authDetails);
+
     const userAttributes = await lookupUserAttributes(authDetails.userId, authDetails.poolId);
-    console.log("what are the user attributes", userAttributes);
+
     const userDetails = await getUserByEmail(userAttributes.email);
-    console.log(userDetails, "WHAT IS USER DETAILS");
+
     const latestActiveRoleObj = await getLatestActiveRoleByEmail(userAttributes.email);
-    console.log(latestActiveRoleObj, "LATEST ACTIVE ROLE");
 
     return response({
       statusCode: 200,
