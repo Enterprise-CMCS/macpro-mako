@@ -120,23 +120,23 @@ export const Profile = () => {
           <div className="flex flex-col gap-6 md:basis-1/2">
             <h2 className="text-2xl font-bold">My Information</h2>
 
-            {/* <div className="leading-9">
+            <div className="leading-9">
               <h3 className="font-bold">Full Name</h3>
-              <p>{userDetails.fullName}</p>
+              <p>{userDetails?.fullName}</p>
             </div>
 
             <div className="leading-9">
               <h3 className="font-bold">Role</h3>
-              <p>{userDetails.role}</p>
+              <p>{userDetails?.role}</p>
             </div>
 
             <div className="leading-9">
               <h3 className="font-bold">Email</h3>
-              <p>{userDetails.email}</p>
-            </div> */}
+              <p>{userDetails?.email}</p>
+            </div>
           </div>
           {/* State Access Management Section */}
-          {/* {adminRoles.includes(userDetails.role) && (
+          {adminRoles.includes(userDetails?.role) && (
             <div className="flex flex-col gap-6 md:basis-1/2">
               <h2 className="text-2xl font-bold">State Access Management</h2>
               {stateAccess?.map((access) => {
@@ -181,7 +181,7 @@ export const Profile = () => {
                 </CardWithTopBorder>
               )}
             </div>
-          )} */}
+          )}
         </div>
       </section>
     </>
