@@ -3,8 +3,8 @@ import ReactDOMServer from "react-dom/server";
 
 import { FAQContentType, QuestionAnswer } from "@/features/support/SupportMockContent";
 
-import { generateBoldAnswerJSX } from "./boldText";
-import Search from "./search";
+import { generateBoldAnswerJSX } from "./boldSearchResults";
+import Search from "./searchBarUI";
 
 interface SearchContentProps {
   placeholderText: string;

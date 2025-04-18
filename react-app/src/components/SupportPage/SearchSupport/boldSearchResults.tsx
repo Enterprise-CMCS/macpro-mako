@@ -20,6 +20,7 @@ export const generateBoldAnswerJSX = (
   const uniqueMatches = [...new Set(matchedText)];
 
   // used for 'modifier' in the JSXModify Text
+  // keep in the scope of this function to be able to use uniqueMatches
   const boldText = (text: string) => {
     let replacedText = reactStringReplace(text, uniqueMatches[0], (match, i) => (
       <strong key={`bold-${i}`}>{match}</strong>
