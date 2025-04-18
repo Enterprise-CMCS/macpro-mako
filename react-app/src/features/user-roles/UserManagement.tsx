@@ -146,7 +146,7 @@ export const UserManagement = () => {
   const [modalText, setModalText] = useState<string | null>(null);
   const [selectedUserRole, setSelectedUserRole] = useState<RoleRequest>(null);
   const { mutateAsync: submitRequest } = useSubmitRoleRequests();
-  console.log(JSON.parse(data), "DATAAA");
+  console.log(data, "DATAAA");
   const renderStatus = (value: string) => {
     switch (value) {
       case "pending":
