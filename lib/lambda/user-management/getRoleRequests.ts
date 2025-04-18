@@ -16,6 +16,7 @@ export const getRoleRequests = async (event: APIGatewayEvent) => {
     const { email } = await lookupUserAttributes(userId, poolId);
 
     const userRoles = await getAllUserRolesByEmail(email);
+    console.log(userRoles, "USER ROLES??");
     if (!userRoles.length) {
       return response({
         statusCode: 400,
