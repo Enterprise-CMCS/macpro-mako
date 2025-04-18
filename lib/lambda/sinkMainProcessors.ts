@@ -41,12 +41,16 @@ type ParsedLegacyRecordFromKafka = Partial<{
   sk: string;
   GSI1pk: string;
 }>;
-
+// TODO: fix?
 export const isRecordAUserRoleRequest = (
   record: OneMacRecord,
-): record is OneMacRecord & {
-  eventType: "user-role";
-} => typeof record === "object" && record.eventType === "user-role";
+): record is OneMacRecord & { eventType: "user-role" | "legacy-user-role" } => {
+  return (
+    typeof record === "object" &&
+    record !== null &&
+    (record.eventType === "user-role" || record.eventType === "legacy-user-role")
+  );
+};
 
 export const isRecordALegacyUserRoleRequest = (
   record: ParsedLegacyRecordFromKafka,
