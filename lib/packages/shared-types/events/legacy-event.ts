@@ -40,7 +40,6 @@ export const legacyEventSchema = legacySharedSchema
       additionalInformation: data.additionalInformation,
       changedDate: lastEventIsoDate, // eventTimestamp as ISO string
       cmsStatus, // Derived status
-      description: null, // Not provided in legacy, set to null
       id: data.pk, // pk becomes id
       makoChangedDate: lastEventIsoDate,
       origin: ONEMAC_LEGACY_ORIGIN,
@@ -53,7 +52,6 @@ export const legacyEventSchema = legacySharedSchema
         data.proposedEffectiveDate && !isNaN(new Date(data.proposedEffectiveDate).getTime())
           ? data.proposedEffectiveDate
           : null,
-      subject: null,
       submissionDate: submissionIsoDate,
       submitterEmail: data.submitterEmail,
       submitterName: data.submitterName,
