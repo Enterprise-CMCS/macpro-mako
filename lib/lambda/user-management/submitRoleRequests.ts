@@ -48,7 +48,7 @@ export const submitRoleRequests = async (event: APIGatewayEvent) => {
   }
 
   // Extract the email, state, and grantAccess fields from the event body
-  const { email, state, role, grantAccess } =
+  const { email, state, role, eventType, grantAccess } =
     typeof event.body === "string" ? JSON.parse(event.body) : event.body;
 
   let status: RoleStatus;
@@ -89,7 +89,7 @@ export const submitRoleRequests = async (event: APIGatewayEvent) => {
     topicName,
     id,
     JSON.stringify({
-      email,
+      eventType,
       status,
       territory: state,
       role: role, // ?? get user main role? can there only be 1 active role?
