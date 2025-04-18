@@ -1,4 +1,4 @@
-import React, { ReactElement, ReactNode } from "react";
+import { ReactElement, ReactNode } from "react";
 import reactStringReplace from "react-string-replace";
 
 export const generateBoldAnswerJSX = (
@@ -20,7 +20,7 @@ export const generateBoldAnswerJSX = (
   const uniqueMatches = [...new Set(matchedText)];
 
   // used for 'modifier' in the JSXModify Text
-  const boldText = (text: string): Node => {
+  const boldText = (text: string) => {
     let replacedText = reactStringReplace(text, uniqueMatches[0], (match, i) => (
       <strong key={`bold-${i}`}>{match}</strong>
     ));
@@ -39,16 +39,16 @@ export const generateBoldAnswerJSX = (
 
 // https://adueck.github.io/blog/recursively-modify-text-jsx-react/ - Modify JSX
 
-type Node = React.ReactElement | string | undefined;
+type Node = ReactElement;
 
-export function JSXModifyText(e: Node, modifier: (s: string) => ReactNode): Node {
+export function JSXModifyText(e: Node, modifier: (s: string) => ReactNode): ReactElement {
   // a. it's nothing. return and stop.
   if (!e) {
     return e;
   }
   // b. it's text. modify, return and stop.
   if (typeof e === "string") {
-    return modifier(e);
+    return <>{modifier(e)}</>;
   }
   // we have an element with something inside
   // let's return the outside and recursively work on the inside
