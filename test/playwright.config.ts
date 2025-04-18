@@ -15,7 +15,8 @@ const baseURL = process.env.STAGE_NAME
         )
       ).Parameter!.Value!,
     ).applicationEndpointUrl
-  : "http://localhost:5000";
+  // : "http://localhost:5000";
+: "https://mako-val.cms.gov";
 
 console.log(`Playwright configured to run against ${baseURL}`);
 export default defineConfig({

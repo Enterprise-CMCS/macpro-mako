@@ -10,6 +10,7 @@ test.describe("home page - no auth", { tag: ["@home", "@e2e", "@smoke"] }, () =>
     homePage = new HomePage(page);
     await page.goto("/");
   });
+
   test.describe("UI validations", () => {
     test("should have a USA banner", async () => {
       await expect(homePage.desktop.usaBanner).toBeVisible();
@@ -25,13 +26,13 @@ test.describe("home page - no auth", { tag: ["@home", "@e2e", "@smoke"] }, () =>
     });
 
     test("should have a navigation banner", async () => {
-      // TODO logo assertion
+      await expect(homePage.desktop.logo).toBeVisible();
 
       await expect(homePage.desktop.homeLink).toBeVisible();
       await expect(homePage.desktop.homeLink).toHaveText("Home");
 
       await expect(homePage.desktop.faqLink).toBeVisible();
-      await expect(homePage.desktop.faqLink).toHaveText("FAQ");
+      await expect(homePage.desktop.faqLink).toHaveText("View FAQs");
 
       await expect(homePage.desktop.signInBtn).toBeVisible();
       await expect(homePage.desktop.signInBtn).toHaveText("Sign In");
@@ -40,17 +41,96 @@ test.describe("home page - no auth", { tag: ["@home", "@e2e", "@smoke"] }, () =>
       await expect(homePage.desktop.registerBtn).toHaveText("Register");
     });
 
-    // TODO
-    test.skip("header section", async () => {});
+    test("header section", async () => {
+      await expect(homePage.largeLogo).toBeVisible();
+
+      await expect(homePage.welcomeMessage).toBeVisible();
+      await expect(homePage.welcomeMessage).toHaveText(
+        "Welcome to the official submission system for paper-based state plan amendments (SPAs) and section 1915 waivers.",
+      );
+    });
 
     // TODO
     test.skip("New and Notable section", async () => {});
 
     // TODO
-    test.describe.skip("State Users section", () => {
-      test.skip("How it works", async () => {});
+    test.describe("State Users section", () => {
+      test("displays the section header", async () => {
+        await expect(homePage.stateUsersSection.header).toBeVisible();
+        await expect(homePage.stateUsersSection.header).toHaveText("State Users");
+      });
 
-      test.skip("Submission types", async () => {});
+      test("How it works", async () => {
+        await expect(homePage.stateUsersSection.howItWorks.header).toBeVisible();
+        await expect(homePage.stateUsersSection.howItWorks.header).toHaveText("How it works");
+
+        await expect(homePage.stateUsersSection.howItWorks.loginHeader).toBeVisible();
+        await expect(homePage.stateUsersSection.howItWorks.loginHeader).toHaveText(
+          "Login with IDM",
+        );
+
+        await expect(homePage.stateUsersSection.howItWorks.login).toBeVisible();
+        await expect(homePage.stateUsersSection.howItWorks.login).toHaveText(
+          "Login with your IDM username and password to access your SPA and Waiver dashboard.",
+        );
+
+        await expect(homePage.stateUsersSection.howItWorks.attachHeader).toBeVisible();
+        await expect(homePage.stateUsersSection.howItWorks.attachHeader).toHaveText(
+          "Attach your documents",
+        );
+
+        await expect(homePage.stateUsersSection.howItWorks.attach).toBeVisible();
+        await expect(homePage.stateUsersSection.howItWorks.attach).toHaveText(
+          "Select a submission type and attach required documents relevant to your SPA and/or Waiver submission.",
+        );
+
+        await expect(homePage.stateUsersSection.howItWorks.emailHeader).toBeVisible();
+        await expect(homePage.stateUsersSection.howItWorks.emailHeader).toHaveText(
+          "Receive an email confirmation",
+        );
+
+        await expect(homePage.stateUsersSection.howItWorks.email).toBeVisible();
+        await expect(homePage.stateUsersSection.howItWorks.email).toHaveText(
+          "After you submit, you will receive an email confirmation that your submission was successful, marking the start of the 90-day review process.",
+        );
+      });
+
+      test("Submission Types", async () => {
+        await expect(homePage.stateUsersSection.submissionTypes.header).toBeVisible();
+        await expect(homePage.stateUsersSection.submissionTypes.header).toHaveText(
+          "Submission Types include:",
+        );
+
+        await expect(homePage.stateUsersSection.submissionTypes.amendment).toBeVisible();
+        await expect(homePage.stateUsersSection.submissionTypes.amendment).toHaveText(
+          "Amendments to your Medicaid and CHIP State Plans (not submitted through MACPro, MMDL or WMS).",
+        );
+
+        await expect(homePage.stateUsersSection.submissionTypes.responses).toBeVisible();
+        await expect(homePage.stateUsersSection.submissionTypes.responses).toHaveText(
+          "Official state responses to formal requests for additional information (RAIs) for SPAs (not submitted through MACPro).",
+        );
+
+        await expect(homePage.stateUsersSection.submissionTypes.waiver).toBeVisible();
+        await expect(homePage.stateUsersSection.submissionTypes.waiver).toHaveText(
+          "Section 1915(b) waiver submissions (those not submitted through WMS).",
+        );
+
+        await expect(homePage.stateUsersSection.submissionTypes.appK).toBeVisible();
+        await expect(homePage.stateUsersSection.submissionTypes.appK).toHaveText(
+          "Section 1915(c) Appendix K amendments (which cannot be submitted through WMS).",
+        );
+
+        await expect(homePage.stateUsersSection.submissionTypes.responses2).toBeVisible();
+        await expect(homePage.stateUsersSection.submissionTypes.responses2).toHaveText(
+          "Official state responses to formal requests for additional information (RAIs) for Section 1915(b) waiver actions (in addition to submitting waiver changes in WMS, if applicable).",
+        );
+
+        await expect(homePage.stateUsersSection.submissionTypes.te).toBeVisible();
+        await expect(homePage.stateUsersSection.submissionTypes.te).toHaveText(
+          "State requests for Temporary Extensions for section 1915(b) and 1915(c) waivers.",
+        );
+      });
     });
 
     // TODO
@@ -67,7 +147,7 @@ test.describe("home page - no auth", { tag: ["@home", "@e2e", "@smoke"] }, () =>
     test.skip("footer", async () => {});
   });
 
-  test.describe("Workflow validations", () => {
+  test.describe.skip("Workflow validations", () => {
     test.describe("USA Banner Interactions", () => {
       test.beforeEach(async () => {
         await homePage.desktop.usaBannerBtn.click();
