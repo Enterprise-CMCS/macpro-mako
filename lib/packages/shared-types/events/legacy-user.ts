@@ -22,17 +22,11 @@ export const baseUserRoleRequestSchema = z.object({
   date: z.number(),
   eventType: roleEvent,
 });
-
+// this schema is used to ingest legacy role requests
 export const onemacLegacyUserRoleRequest = baseUserRoleRequestSchema
   .extend({
     pk: z.string().email(),
     sk: z.string().regex(skPattern),
-    // status: userStatus,
-    // territory: z.string(),
-    // role: userRoles,
-    // doneByEmail: z.string(),
-    // doneByName: z.string(),
-    // date: z.number(),
   })
   .transform((data) => ({
     id: `${data.pk}_${data.territory}_${data.role}`,
@@ -47,9 +41,9 @@ export const onemacLegacyUserRoleRequest = baseUserRoleRequestSchema
   }));
 
 // OneMAC Upgrade/Mako User Role Request Schema
+// Rename to stateAccessRequest? this schema is used to request access to states, grant and deny access
 export const userRoleRequest = baseUserRoleRequestSchema.transform((data) => ({
   id: `${data.email}_${data.territory}_${data.role}`,
-  // mako events are "event" instead of "eventType"?
   eventType: data.eventType,
   email: data.email,
   doneByEmail: data.doneByEmail,

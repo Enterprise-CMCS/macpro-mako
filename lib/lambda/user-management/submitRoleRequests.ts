@@ -23,8 +23,6 @@ export const canRequestAccess = (role: string): boolean => {
 type RoleStatus = "active" | "denied" | "pending";
 
 export const submitRoleRequests = async (event: APIGatewayEvent) => {
-  console.log(event, "EVENTTT");
-
   const topicName = process.env.topicName as string;
   if (!topicName) {
     throw new Error("Topic name is not defined");
@@ -33,7 +31,7 @@ export const submitRoleRequests = async (event: APIGatewayEvent) => {
   const { userId, poolId } = getAuthDetails(event);
   const userAttributes = await lookupUserAttributes(userId, poolId);
   console.log(userAttributes, "USER ATTRIBUTES");
-  // dumb
+  // dumb; this is to grab the full name of the user in the users index instead of Cognito
   const userInfo = await getUserByEmail(userAttributes.email);
   console.log(userInfo, "USER INFO NOT COGNITO");
 
@@ -46,7 +44,6 @@ export const submitRoleRequests = async (event: APIGatewayEvent) => {
   }
 
   const latestActiveRoleObj = await getLatestActiveRoleByEmail(userAttributes.email);
-  console.log(latestActiveRoleObj, "ACTIVE ROLE");
   if (!latestActiveRoleObj) {
     return response({
       statusCode: 400,
@@ -54,7 +51,6 @@ export const submitRoleRequests = async (event: APIGatewayEvent) => {
     });
   }
 
-  // Extract the email, state, and grantAccess fields from the event body
   const { email, state, role, eventType, grantAccess } =
     typeof event.body === "string" ? JSON.parse(event.body) : event.body;
 
@@ -100,9 +96,9 @@ export const submitRoleRequests = async (event: APIGatewayEvent) => {
       email,
       status,
       territory: state,
-      role, // ?? get user main role? can there only be 1 active role?
+      role, // role for this state
       doneByEmail: userAttributes.email,
-      doneByName: userInfo.fullName, // full name of current user
+      doneByName: userInfo.fullName, // full name of current user. Cognito (userAttributes) may have a different full name
       date: Date.now(), // correct time format?
     }),
   );

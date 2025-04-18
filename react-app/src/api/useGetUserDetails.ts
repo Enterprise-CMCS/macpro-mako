@@ -12,7 +12,7 @@ export type UserDetails = {
 export const getUserDetails = async (): Promise<UserDetails> => {
   try {
     const userDetails = await API.get("os", "/getUserDetails", {});
-    console.log("WHAT IS THIS", userDetails);
+
     return userDetails as UserDetails;
   } catch (e) {
     console.log({ e });
