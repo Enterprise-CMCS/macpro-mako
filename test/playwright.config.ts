@@ -34,7 +34,7 @@ export default defineConfig({
   retries: process.env.CI ? 2 : 0,
   /* Opt out of parallel tests on CI. */
   // workers: process.env.CI ? 1 : undefined,
-  workers: 2,
+  workers: 1,
   /* Reporter to use. See https://playwright.dev/docs/test-reporters */
   // reporter: [["dot"], ["html"]],
   reporter: process.env.CI
@@ -62,6 +62,7 @@ export default defineConfig({
         ...devices["Desktop Chrome"],
         // Use prepared auth state for state submitter.
         storageState: "./playwright/.auth/state-user.json",
+        video: "on",
       },
     },
   ],
