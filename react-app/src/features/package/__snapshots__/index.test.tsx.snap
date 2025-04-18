@@ -6,18 +6,18 @@ exports[`package details > makes a package 1`] = `
     class="w-full py-1 px-4 lg:px-8"
   >
     <section
-      class="flex flex-col sm:flex-row gap-3 mb-3 sm:gap-x-[3rem] md:gap-x-[5rem] lg:gap-x-[3rem] xl:gap-x-[6rem] sm:mb-0"
+      class="flex flex-col sm:flex-row mb-3 sm:mb-0 gap-3 sm:gap-x-[3rem] md:gap-x-[5rem] lg:gap-x-[3rem] xl:gap-x-[6rem]"
       id="package_overview"
     >
       <div
-        class="sticky top-12 flex-1 text-wrap my-0 sm:my-6"
+        class="flex flex-col flex-1 min-h-full text-wrap my-0 sm:my-6"
       >
         <div
           class="h-2 shadow-lg"
           style="border-radius: 3px 3px 0px 0px; height: 8px;"
         />
         <div
-          class="border border-t-0 rounded-b-sm border-slate-300"
+          class="flex-1 border border-t-0 rounded-b-sm border-slate-300"
         >
           <div
             class="p-4 py-1 min-h-36"
@@ -37,14 +37,14 @@ exports[`package details > makes a package 1`] = `
         </div>
       </div>
       <div
-        class="sticky top-12 flex-1 text-wrap my-0 sm:my-6"
+        class="flex flex-col flex-1 min-h-full text-wrap my-0 sm:my-6"
       >
         <div
           class="h-2 shadow-lg"
           style="border-radius: 3px 3px 0px 0px; height: 8px;"
         />
         <div
-          class="border border-t-0 rounded-b-sm border-slate-300"
+          class="flex-1 border border-t-0 rounded-b-sm border-slate-300"
         >
           <div
             class="p-4 py-1 min-h-36"

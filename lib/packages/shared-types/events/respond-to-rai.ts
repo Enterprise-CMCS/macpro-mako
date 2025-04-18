@@ -1,6 +1,7 @@
 import { z } from "zod";
 
 import { attachmentArraySchema, attachmentArraySchemaOptional } from "../attachments";
+import { sharedSchema } from "./base-schema";
 
 export const medicaidSpaAttachments = z.object({
   raiResponseLetter: z.object({
@@ -57,9 +58,4 @@ export const baseSchema = z.object({
   attachments: chipSpaAttachments.or(waiverAttachments).or(medicaidSpaAttachments),
   id: z.string(),
 });
-export const schema = baseSchema.extend({
-  origin: z.literal("mako").default("mako"),
-  submitterName: z.string(),
-  submitterEmail: z.string().email(),
-  timestamp: z.number(),
-});
+export const schema = baseSchema.merge(sharedSchema);
