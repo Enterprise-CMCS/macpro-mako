@@ -120,7 +120,9 @@ export const StateWelcome = () => {
                     <div className="flex items-center">
                       <div
                         className={`w-[6px] h-[39px] rounded-[5px] shadow-md flex-shrink-0 ${
-                          isActive ? "bg-[#3D4551]" : "bg-transparent hover:bg-[#3D4551]"
+                          isActive
+                            ? "bg-[#3D4551]"
+                            : "bg-transparent hover:bg-[#3D4551] shadow-slate-400 border border-slate-300"
                         }`}
                       />
                       <div
