@@ -17,6 +17,7 @@ type Props = {
 export const Footer = ({ email, address, showNavLinks }: Props) => {
   const shouldShowNavLinks = showNavLinks ?? true;
   const isStateHomepage = useFeatureFlag("STATE_HOMEPAGE_FLAG");
+  const isCMSHomepage = useFeatureFlag("CMS_HOMEPAGE_FLAG");
 
   return (
     <footer>
@@ -30,7 +31,7 @@ export const Footer = ({ email, address, showNavLinks }: Props) => {
               <a href="/dashboard" className="underline font-bold">
                 <p>Dashboard</p>
               </a>
-              {isStateHomepage && (
+              {isStateHomepage && !isCMSHomepage && (
                 <a href="/latestupdates" className="underline font-bold">
                   <p>Latest Updates</p>
                 </a>

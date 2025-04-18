@@ -31,7 +31,8 @@ const useGetLinks = () => {
   const hideWebformTab = useFeatureFlag("UAT_HIDE_MMDL_BANNER");
   const toggleFaq = useFeatureFlag("TOGGLE_FAQ");
   const showHome = toggleFaq ? userObj.user : true; // if toggleFAQ is on we want to hide home when not logged in
-  const latestUpdates = useFeatureFlag("STATE_HOMEPAGE_FLAG");
+  const isStateHomepage = useFeatureFlag("STATE_HOMEPAGE_FLAG");
+  const isCMSHomepage = useFeatureFlag("CMS_HOMEPAGE_FLAG");
 
   const links =
     isLoading || isFaqPage
@@ -62,7 +63,7 @@ const useGetLinks = () => {
           {
             name: "Latest Updates",
             link: "/latestupdates",
-            condition: latestUpdates,
+            condition: isStateHomepage && !isCMSHomepage,
           },
           { name: "Support", link: "/support", condition: userObj.user && toggleFaq },
           {

@@ -92,16 +92,20 @@ export const StateWelcome = () => {
   );
 
   return (
-    <div className="w-full flex flex-col items-start justify-start px-[102px] pt-[80px]">
-      <div className="flex flex-col lg:flex-row gap-x-[48px] w-full">
+    <div className="w-full max-w-[1440px] mx-auto pt-[80px] px-[24px] xl:px-[102px]">
+      <div className="flex flex-col lg:flex-row gap-x-[48px] w-full px-6">
         {/* Left: New Submission */}
-        <div className="max-w-[700px] flex-1">
-          <h2 className="text-[48px] font-merriweather font-bold text-[#3D4551] leading-[100%] mb-[32px] pl-[50px]">
+        <div className="max-w-[700px] flex-1 relative">
+          <h2 className="text-[48px] font-merriweather font-bold text-[#3D4551] leading-[100%] mb-[32px]">
             New submission
           </h2>
 
-          <div className="w-full min-h-[495px] bg-white rounded border-[#DFE1E2] p-[16px] pl-[65px]">
-            {/* Tabs stacked with content underneath */}
+          {/* Wrap the tab content in a relative container */}
+          <div className="w-full min-h-[495px] bg-white rounded border-[#DFE1E2] p-[24px] relative">
+            {/* Divider */}
+            <div className="hidden lg:block absolute top-0 bottom-0 right-[-24px] w-[1px] border border-[#DFE1E2]" />
+
+            {/* Tabs */}
             <div className="flex flex-col gap-[24px]">
               {tabConfig.map((tab) => {
                 const isActive = activeTab === tab.id;
@@ -144,16 +148,13 @@ export const StateWelcome = () => {
           </div>
         </div>
 
-        {/* Middle Divider */}
-        <div className="hidden lg:block w-[1px] h-[500px] border border-[#DFE1E2]" />
-
         {/* Right: View Existing Packages */}
-        <div className="flex-1 max-w-[561px]">
+        <div className="flex-1 max-w-[561px] px-4">
           <h2 className="text-[32px] sm:text-[40px] lg:text-[48px] leading-[100%] font-merriweather font-bold text-[#3D4551]">
             {" "}
             View existing package
           </h2>
-          <div className="w-full h-[202px] border border-dashed border-[#DFE1E2] rounded flex items-center justify-center text-[#9CA3AF] mb-8">
+          <div className="w-full h-[202px] border border-dashed border-[#DFE1E2] rounded flex items-center justify-center text-[#9CA3AF] mb-8 mt-8">
             Search for package (placeholder)
           </div>
 
