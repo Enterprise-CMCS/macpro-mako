@@ -13,9 +13,9 @@ describe("getLegacyEventType", () => {
     expect(legacyEvent).toBe(undefined);
   });
 
-  it("should return 'new-legacy-submission' if GSI1pk is an initial submission type", () => {
+  it("should return 'new-chip-submission' if GSI1pk is an initial submission type", () => {
     const legacyEvent = getLegacyEventType("OneMAC#submitchipspa");
-    expect(legacyEvent).toEqual("new-legacy-submission");
+    expect(legacyEvent).toEqual("new-chip-submission");
   });
 
   it("should return 'respond-to-rai' if GSI1pk is an RAI response submission type", () => {
