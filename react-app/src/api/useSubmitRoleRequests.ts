@@ -12,7 +12,6 @@ export const submitRoleRequests = async (request: RoleRequest) => {
     body: request,
   });
   return roleRequest;
-  // return Promise.all(promises);
 };
 
 export const useSubmitRoleRequests = () =>

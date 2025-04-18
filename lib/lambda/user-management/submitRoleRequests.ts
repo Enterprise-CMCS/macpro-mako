@@ -2,12 +2,11 @@ import { APIGatewayEvent } from "aws-lambda";
 import { getAuthDetails, lookupUserAttributes } from "lib/libs/api/auth/user";
 import { produceMessage } from "lib/libs/api/kafka";
 import { response } from "libs/handler-lib";
-import { StateAccess } from "react-app/src/api";
 
 import { getAllUserRolesByEmail, getLatestActiveRoleByEmail } from "./user-management-service";
 
-export const ROLES_ALLOWED_TO_GRANT = ["cms-role-approver", "state-system-admin"];
-export const ROLES_ALLOWED_TO_REQUEST = ["state-submitter"]; // or whatever roles are allowed to request access
+export const ROLES_ALLOWED_TO_GRANT = ["cmsroleapprover", "statesystemadmin"];
+export const ROLES_ALLOWED_TO_REQUEST = ["statesubmitter"];
 
 export const canGrantAccess = (role: string): boolean => {
   return ROLES_ALLOWED_TO_GRANT.includes(role);
