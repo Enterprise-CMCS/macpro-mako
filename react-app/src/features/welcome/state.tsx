@@ -96,11 +96,11 @@ export const StateWelcome = () => {
       <div className="flex flex-col lg:flex-row gap-x-[48px] w-full">
         {/* Left: New Submission */}
         <div className="max-w-[700px] flex-1">
-          <h2 className="text-[48px] font-merriweather font-bold text-[#3D4551] leading-[100%] mb-[32px]">
+          <h2 className="text-[48px] font-merriweather font-bold text-[#3D4551] leading-[100%] mb-[32px] pl-[50px]">
             New submission
           </h2>
 
-          <div className="w-full min-h-[495px] bg-white rounded border-[#DFE1E2] p-[16px]">
+          <div className="w-full min-h-[495px] bg-white rounded border-[#DFE1E2] p-[16px] pl-[65px]">
             {/* Tabs stacked with content underneath */}
             <div className="flex flex-col gap-[24px]">
               {tabConfig.map((tab) => {
@@ -110,7 +110,7 @@ export const StateWelcome = () => {
                     <div className="flex items-center">
                       <div
                         className={`w-[6px] h-[39px] rounded-[5px] shadow-md flex-shrink-0 ${
-                          isActive ? "bg-[#3D4551]" : "bg-transparent"
+                          isActive ? "bg-[#3D4551]" : "bg-transparent hover:bg-[#3D4551]"
                         }`}
                       />
                       <div
@@ -127,7 +127,7 @@ export const StateWelcome = () => {
                         <p className="max-w-[677px] w-full font-open-sans text-[18px] text-[#212121] leading-[1.62] mb-4">
                           {tab.content}
                           {tab.id === "medicaid" && (
-                            <a href="#" className="underline ml-1 hover:text-blue-700">
+                            <a href="#" className="underline ml-1 text-blue-700">
                               Learn how.
                             </a>
                           )}
@@ -148,10 +148,10 @@ export const StateWelcome = () => {
         <div className="hidden lg:block w-[1px] h-[500px] border border-[#DFE1E2]" />
 
         {/* Right: View Existing Packages */}
-        <div className="flex-1 max-w-[561px] mt-[8px]">
+        <div className="flex-1 max-w-[561px]">
           <h2 className="text-[32px] sm:text-[40px] lg:text-[48px] leading-[100%] font-merriweather font-bold text-[#3D4551]">
             {" "}
-            View existing packages
+            View existing package
           </h2>
           <div className="w-full h-[202px] border border-dashed border-[#DFE1E2] rounded flex items-center justify-center text-[#9CA3AF] mb-8">
             Search for package (placeholder)
@@ -189,7 +189,11 @@ export const StateWelcome = () => {
             {cards[1] && renderCard(cards[1])}
           </div>
           {cards[2] && (
-            <div className="flex flex-col md:flex-row gap-[40px]">{renderCard(cards[2])}</div>
+            <div className="flex flex-col md:flex-row gap-[40px]">
+              {renderCard(cards[2])}
+              {/* Optionally add an empty div to balance the row if you want spacing */}
+              <div className="hidden md:block md:w-[616px]" />
+            </div>
           )}
         </div>
       </div>

@@ -1,6 +1,7 @@
 import { Link } from "react-router";
 
 import { Alert, Button } from "@/components";
+import { useFeatureFlag } from "@/hooks/useFeatureFlag";
 
 type Props = {
   email: string;
@@ -15,6 +16,8 @@ type Props = {
 
 export const Footer = ({ email, address, showNavLinks }: Props) => {
   const shouldShowNavLinks = showNavLinks ?? true;
+  const isStateHomepage = useFeatureFlag("STATE_HOMEPAGE_FLAG");
+
   return (
     <footer>
       {shouldShowNavLinks && (
@@ -27,6 +30,11 @@ export const Footer = ({ email, address, showNavLinks }: Props) => {
               <a href="/dashboard" className="underline font-bold">
                 <p>Dashboard</p>
               </a>
+              {isStateHomepage && (
+                <a href="/latestupdates" className="underline font-bold">
+                  <p>Latest Updates</p>
+                </a>
+              )}
               <a href="/faq" className="underline font-bold">
                 <p>Support</p>
               </a>
