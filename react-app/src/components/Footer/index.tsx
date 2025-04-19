@@ -1,6 +1,9 @@
 import { Link } from "react-router";
+import { isStateUser } from "shared-utils";
 
+import { useGetUser } from "@/api";
 import { Alert, Button } from "@/components";
+import { useFeatureFlag } from "@/hooks/useFeatureFlag";
 
 type Props = {
   email: string;
@@ -13,10 +16,14 @@ type Props = {
   showNavLinks?: boolean;
 };
 
-export const Footer = ({ email, address, showNavLinks = false }: Props) => {
+export const Footer = ({ email, address, showNavLinks }: Props) => {
+  const shouldShowNavLinks = showNavLinks ?? true;
+  const { data: user } = useGetUser();
+  const isStateHomepage = useFeatureFlag("STATE_HOMEPAGE_FLAG");
+
   return (
     <footer>
-      {showNavLinks && (
+      {shouldShowNavLinks && (
         <section className="bg-[#f0f0f0] text-sm">
           <div className="grid grid-cols-12 gap-4 px-10 py-4 max-w-screen-xl mx-auto">
             <div className="col-span-6 flex gap-8">
@@ -26,6 +33,11 @@ export const Footer = ({ email, address, showNavLinks = false }: Props) => {
               <a href="/dashboard" className="underline font-bold">
                 <p>Dashboard</p>
               </a>
+              {isStateHomepage && isStateUser(user.user) && (
+                <a href="/latestupdates" className="underline font-bold">
+                  <p>Latest Updates</p>
+                </a>
+              )}
               <a href="/faq" className="underline font-bold">
                 <p>Support</p>
               </a>
