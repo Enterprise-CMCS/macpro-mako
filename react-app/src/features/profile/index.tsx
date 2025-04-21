@@ -15,6 +15,15 @@ import { FilterableSelect } from "@/components/Opensearch/main/Filtering/Drawer/
 import config from "@/config";
 import { convertStateAbbrToFullName, stateAccessStatus } from "@/utils";
 
+const roleMap = {
+  defaultcmsuser: "Default CMS User Placeholder",
+  cmsroleapprover: "CMS Role Approver",
+  cmsreviewer: "CMS Reviewer",
+  statesystemadmin: "State System Admin",
+  helpdesk: "Helpdesk",
+  statesubmitter: "State Submitter",
+};
+
 const adminRoles = ["statesubmitter", "statesystemadmin"];
 
 export const Profile = () => {
@@ -112,7 +121,7 @@ export const Profile = () => {
 
             <div className="leading-9">
               <h3 className="font-bold">Role</h3>
-              <p>{userDetails?.role}</p>
+              <p>{roleMap[userDetails?.role]}</p>
             </div>
 
             <div className="leading-9">

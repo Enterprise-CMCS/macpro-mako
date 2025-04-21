@@ -6,7 +6,7 @@ import { useState } from "react";
 import { Link, NavLink, NavLinkProps, Outlet, useNavigate } from "react-router";
 import { UserRoles } from "shared-types";
 
-import { useGetUser } from "@/api";
+import { useGetUser, useGetUserDetails } from "@/api";
 import { Banner, ScrollToTop, SimplePageContainer, UserPrompt } from "@/components";
 import MMDLAlertBanner from "@/components/Banner/MMDLSpaBanner";
 import config from "@/config";
@@ -24,13 +24,14 @@ import { UsaBanner } from "../UsaBanner";
  * - `isFaqPage`: A boolean indicating if the current page is the FAQ page.
  */
 const useGetLinks = () => {
-  const { isLoading, data: userObj } = useGetUser();
+  const { isLoading: userLoading, data: userObj } = useGetUser();
+  const { data: userDetailsData, isLoading: userDetailsLoading } = useGetUserDetails();
   const hideWebformTab = useFeatureFlag("UAT_HIDE_MMDL_BANNER");
   const toggleFaq = useFeatureFlag("TOGGLE_FAQ");
   const showHome = toggleFaq ? userObj.user : true; // if toggleFAQ is on we want to hide home when not logged in
 
   const links =
-    isLoading || isFaqPage
+    userLoading || userDetailsLoading || isFaqPage
       ? []
       : [
           {
@@ -55,13 +56,7 @@ const useGetLinks = () => {
             link: "/usermanagement",
             condition:
               // TODO: only allow state admin or cms role users
-              userObj.user &&
-              (userObj.user["custom:cms-roles"] || userObj.user["custom:ismemberof"]) &&
-              Object.values(UserRoles).some(
-                (role) =>
-                  userObj.user["custom:cms-roles"].includes(role) ||
-                  userObj.user["custom:ismemberof"] === role,
-              ),
+              userDetailsData?.role === "statesystemadmin",
           },
           {
             name: "View FAQs",
