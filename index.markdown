@@ -2,7 +2,7 @@
 layout: home
 ---
 
-<div class="xl:max-w-[68rem] 2xl:max-w-[80rem] md:grid md:grid-cols-5 md:gap-4 md:items-start md:justify-center">
+<div class="xl:max-w-[68rem] 2xl:max-w-[80rem] md:grid md:grid-cols-5 md:gap-8 md:items-start md:justify-center">
   <div class="md:col-start-1 md:col-span-3">
     <div class="">
       <h2 class="md:mt-0">Main</h2>
