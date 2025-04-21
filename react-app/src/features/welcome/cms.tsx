@@ -9,7 +9,7 @@ export const CMSWelcome = () => {
       title: "MACPro System",
       content: "Medicaid & CHIP Program System",
       body: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
-      buttonText: "Go to MACPro System",
+      buttonText: "Go to MACPro",
       buttonLink: "https://macpro.cms.gov/suite",
     },
     {

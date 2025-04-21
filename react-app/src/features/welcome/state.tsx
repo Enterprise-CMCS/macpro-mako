@@ -35,7 +35,7 @@ export const StateWelcome = () => {
     {
       id: "waiverC",
       label: "1915(c) waiver",
-      content: "Submit section 1915(c) Appendix K amendments not handled in WMS.",
+      content: "Submit a new 1915(c) Appendix K amendment.",
       buttonText: "New 1915(c) waiver",
       link: "/new-submission/waiver/app-k",
     },
@@ -54,7 +54,7 @@ export const StateWelcome = () => {
       title: "MACPro System",
       content: "Medicaid & CHIP Program System",
       body: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
-      buttonText: "Go to MACPro System",
+      buttonText: "Go to MACPro",
       buttonLink: "https://macpro.cms.gov/suite",
     },
     {
