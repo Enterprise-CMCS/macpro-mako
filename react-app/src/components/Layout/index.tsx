@@ -142,6 +142,12 @@ const UserDropdownMenu = () => {
               View Profile
             </button>
           </DropdownMenu.Item>
+          {/* TODO: conditionally show this if the user IS NOT HELPDESK */}
+          <DropdownMenu.Item>
+            <Link to="/signup" className="text-primary hover:text-primary/70">
+              Request a Role Change
+            </Link>
+          </DropdownMenu.Item>
           <DropdownMenu.Item className="flex">
             <button className="text-primary hover:text-primary/70" onClick={handleLogout}>
               Sign Out
