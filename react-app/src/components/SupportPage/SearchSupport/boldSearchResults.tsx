@@ -16,6 +16,8 @@ export const generateBoldAnswerJSX = (
     matchedText.push(resultText.substring(start, lastRegionNextIndex));
   });
 
+  // we want the longest (aka closest) matches to be found first
+  matchedText.sort((a, b) => b.length - a.length);
   // remove all duplicates from the matched text
   const uniqueMatches = [...new Set(matchedText)];
 
