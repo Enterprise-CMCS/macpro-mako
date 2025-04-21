@@ -44,7 +44,24 @@ const pendingCircle = (
     <circle cx="4.5" cy="4.5" r="4.5" fill="#3D94D0" />
   </svg>
 );
+const initSortUserData = (userData: UserRoleType[]) => {
+  if (!userData.length) return [];
+  // seprate pending / other
+  const pendingRoles = userData.filter((x: UserRoleType) => x.status === "pending");
+  const remainingRoles = userData.filter((x: UserRoleType) => x.status !== "pending");
 
+  const compare = (a: UserRoleType, b: UserRoleType) => {
+    const nameA = a.fullName.toLocaleLowerCase();
+    const nameB = b.fullName.toLocaleLowerCase();
+
+    if (nameA < nameB) return -1;
+    if (nameA > nameB) return 1;
+    return 0;
+  };
+  const sorted = pendingRoles.sort(compare).concat(remainingRoles.sort(compare));
+
+  return sorted;
+};
 const sortUserData = (sortByKey: keyof UserRoleType, dirrection: boolean, data: UserRoleType[]) => {
   // when dirrection is true, that means we are decending
   const [last, first] = dirrection ? [-1, 1] : [1, -1];
@@ -181,7 +198,8 @@ export const UserManagement = () => {
 
   useEffect(() => {
     if (data && data.length && data[0]) {
-      setUserRoles(JSON.parse(data));
+      const sortedRoles = initSortUserData(JSON.parse(data));
+      setUserRoles(sortedRoles);
     }
   }, [data]);
 
