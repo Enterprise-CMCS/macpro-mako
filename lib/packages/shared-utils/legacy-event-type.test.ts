@@ -19,47 +19,47 @@ describe("getLegacyEventType", () => {
   });
 
   it("should return 'new-medicaid-submission' if GSI1pk is a medicaid spa submission type", () => {
-    const legacyEvent = getLegacyEventType("OneMAC#medicaidspa");
+    const legacyEvent = getLegacyEventType("OneMAC#submitmedicaidspa");
     expect(legacyEvent).toEqual("new-medicaid-submission");
   });
 
   it("should return 'capitated-amendment' if is a 1915(b) ammendment submission type", () => {
-    const legacyEvent = getLegacyEventType("OneMAC#waiveramendment");
+    const legacyEvent = getLegacyEventType("OneMAC#submitwaiveramendment", "1915(b)");
     expect(legacyEvent).toEqual("capitated-amendment");
   });
 
   it("should return 'contracting-amendment' if is a 1915(b)(4) ammendment submission type", () => {
-    const legacyEvent = getLegacyEventType("OneMAC#waiveramendment");
+    const legacyEvent = getLegacyEventType("OneMAC#submitwaiveramendment", "1915(b)(4)");
     expect(legacyEvent).toEqual("contracting-amendment");
   });
 
   it("should return 'app-k' if is an waiver app k submission type", () => {
-    const legacyEvent = getLegacyEventType("OneMAC#waiverappk");
+    const legacyEvent = getLegacyEventType("OneMAC#submitwaiverappk");
     expect(legacyEvent).toEqual("app-k");
   });
 
   it("should return 'temporary-extension' if GSI1pk is an waiver extension submission type", () => {
-    const legacyEvent = getLegacyEventType("OneMAC#waiverextension");
+    const legacyEvent = getLegacyEventType("OneMAC#submitwaiverextension");
     expect(legacyEvent).toEqual("temporary-extension");
   });
 
   it("should return 'capitated-initial' if is a 1915(b) initial submission type", () => {
-    const legacyEvent = getLegacyEventType("OneMAC#waivernew", "1915(b)");
+    const legacyEvent = getLegacyEventType("OneMAC#submitwaivernew", "1915(b)");
     expect(legacyEvent).toEqual("capitated-initial");
   });
 
   it("should return 'contracting-initial' if is a 1915(b)(4) initial submission type", () => {
-    const legacyEvent = getLegacyEventType("OneMAC#waivernew", "1915(b)(4)");
+    const legacyEvent = getLegacyEventType("OneMAC#submitwaivernew", "1915(b)(4)");
     expect(legacyEvent).toEqual("contracting-initial");
   });
 
   it("should return 'capitated-renewal' if is a 1915(b) renewal submission type", () => {
-    const legacyEvent = getLegacyEventType("OneMAC#waiverrenewal");
+    const legacyEvent = getLegacyEventType("OneMAC#submitwaiverrenewal", "1915(b)");
     expect(legacyEvent).toEqual("capitated-renewal");
   });
 
   it("should return 'contracting-renewal' if is a 1915(b)(4) renewal submission type", () => {
-    const legacyEvent = getLegacyEventType("OneMAC#waiverrenewal", "1915(b)(4)");
+    const legacyEvent = getLegacyEventType("OneMAC#submitwaiverrenewal", "1915(b)(4)");
     expect(legacyEvent).toEqual("contracting-renewal");
   });
 
