@@ -1,4 +1,4 @@
-import { getDomainAndNamespace } from "lib/libs/utils";
+import { getDomainAndNamespace } from "lib/libs/utils.ts";
 import { search } from "libs";
 
 export const getUserByEmail = async (email: string) => {

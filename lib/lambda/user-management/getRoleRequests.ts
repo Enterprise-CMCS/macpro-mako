@@ -1,5 +1,5 @@
-import { getAuthDetails, lookupUserAttributes } from "lib/libs/api/auth/user";
-import { response } from "lib/libs/handler-lib";
+import { getAuthDetails, lookupUserAttributes } from "lib/libs/api/auth/user.ts";
+import { response } from "lib/libs/handler-lib.ts";
 import { StateAccess } from "react-app/src/api";
 import { APIGatewayEvent } from "shared-types";
 
@@ -8,7 +8,7 @@ import {
   getAllUserRolesByEmail,
   getAllUserRolesByState,
   getUserRolesWithNames,
-} from "./user-management-service";
+} from "./user-management-service.ts";
 
 export const getRoleRequests = async (event: APIGatewayEvent) => {
   try {

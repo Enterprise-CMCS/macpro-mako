@@ -14,5 +14,5 @@ export const getRoleRequests = async (): Promise<string> => {
 export const useGetRoleRequests = () =>
   useQuery({
     queryKey: ["roleRequests"],
-    queryFn: () => getRoleRequests(),
+    queryFn: getRoleRequests,
   });

@@ -1,4 +1,4 @@
-import { useMutation } from "@tanstack/react-query";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { API } from "aws-amplify";
 import { StateCode } from "shared-types";
 
@@ -17,7 +17,40 @@ export const submitRoleRequests = async (request: RoleRequest) => {
   return roleRequest;
 };
 
-export const useSubmitRoleRequests = () =>
-  useMutation({
+// export const useSubmitRoleRequests = () =>
+//   useMutation({
+//     mutationFn: submitRoleRequests,
+//   });
+
+export const useSubmitRoleRequests = () => {
+  const queryClient = useQueryClient();
+
+  return useMutation({
     mutationFn: submitRoleRequests,
+
+    onMutate: async (newRequest) => {
+      await queryClient.cancelQueries(["roleRequests"]);
+      // Save current cache in case there's an error
+      const previousRequests = queryClient.getQueryData<RoleRequest[]>(["roleRequests"]);
+      // Updates existing cache if anything changed
+      queryClient.setQueryData(["roleRequests"], (old: RoleRequest[] = []) => {
+        if (!Array.isArray(old)) return [];
+        return old.map((request) =>
+          request.email === newRequest.email ? { ...request, ...newRequest } : request,
+        );
+      });
+
+      return { previousRequests };
+    },
+    onSettled: async () => {
+      await queryClient.invalidateQueries(["roleRequests"]);
+      await queryClient.refetchQueries(["roleRequests"]);
+    },
+
+    onError: ({ context }) => {
+      if (context?.previousRequests) {
+        queryClient.setQueryData(["roleRequests"], context.previousRequests);
+      }
+    },
   });
+};

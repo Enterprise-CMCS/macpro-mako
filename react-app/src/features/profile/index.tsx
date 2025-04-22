@@ -29,6 +29,7 @@ const adminRoles = ["statesubmitter", "statesystemadmin"];
 export const Profile = () => {
   const { data: userDetails } = useGetUserDetails();
   const { data: userProfile, refetch: reloadUserProfile } = useGetUserProfile();
+  console.log(userProfile, "IS THIS UPDATED");
 
   const stateAccess = userProfile?.stateAccess?.filter((access) => access.territory != "ZZ");
 

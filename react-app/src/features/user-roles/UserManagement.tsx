@@ -1,5 +1,5 @@
 import { EllipsisVerticalIcon } from "@heroicons/react/24/outline";
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { formatDate } from "shared-utils";
 
 import { RoleRequest, useGetRoleRequests, useSubmitRoleRequests } from "@/api";
@@ -137,16 +137,17 @@ export const renderCellActions = (
 };
 
 export const UserManagement = () => {
-  const { data, refetch: reloadRoleRequests } = useGetRoleRequests();
+  const { data, isLoading, isFetching } = useGetRoleRequests();
+  const { mutateAsync: submitRequest, isLoading: processSubmit } = useSubmitRoleRequests();
   const [userRoles, setUserRoles] = useState<UserRoleType[]>([]);
+  const [selectedUserRole, setSelectedUserRole] = useState<RoleRequest>(null);
+
   const [sortBy, setSortBy] = useState<{
     title: keyof headingType | "";
     direction: boolean;
   }>({ title: "", direction: false });
   const [modalText, setModalText] = useState<string | null>(null);
-  const [selectedUserRole, setSelectedUserRole] = useState<RoleRequest>(null);
-  const { mutateAsync: submitRequest } = useSubmitRoleRequests();
-  console.log(data, "DATAAA");
+
   const renderStatus = (value: string) => {
     switch (value) {
       case "pending":
@@ -160,13 +161,24 @@ export const UserManagement = () => {
     }
   };
 
-  const headings: headingType = {
-    Actions: null,
-    Name: "fullName",
-    Status: "status",
-    "Last Modified": "lastModifiedDate",
-    "Modified By": "doneByName",
-  };
+  // const headings: headingType = {
+  //   Actions: null,
+  //   Name: "fullName",
+  //   Status: "status",
+  //   "Last Modified": "lastModifiedDate",
+  //   "Modified By": "doneByName",
+  // };
+
+  const headings = useMemo(
+    () => ({
+      Actions: null,
+      Name: "fullName",
+      Status: "status",
+      "Last Modified": "lastModifiedDate",
+      "Modified By": "doneByName",
+    }),
+    [],
+  );
 
   const sortByHeading = (heading: string) => {
     if (heading === "Actions") return;
@@ -179,11 +191,20 @@ export const UserManagement = () => {
     setUserRoles(sortUserData(headings[heading], direction, userRoles));
   };
 
-  useEffect(() => {
-    if (data && data.length && data[0]) {
-      setUserRoles(JSON.parse(data));
-    }
+  // useEffect(() => {
+  //   if (data && data.length && data[0]) {
+  //     setUserRoles(JSON.parse(data));
+  //   }
+  // }, [data]);
+  const parsedUserRoles: UserRoleType[] = useMemo(() => {
+    if (!data || !data.length) return [];
+    return JSON.parse(data);
   }, [data]);
+
+  const sortedUserRoles = useMemo(() => {
+    if (!sortBy.title) return parsedUserRoles;
+    return sortUserData(headings[sortBy.title], sortBy.direction, parsedUserRoles);
+  }, [parsedUserRoles, sortBy, headings]);
 
   return (
     <div>
@@ -197,7 +218,6 @@ export const UserManagement = () => {
           submitRequest(selectedUserRole);
           setModalText(null);
           setSelectedUserRole(null);
-          await reloadRoleRequests();
         }}
         onCancel={() => setModalText(null)}
       />
@@ -205,7 +225,7 @@ export const UserManagement = () => {
         <h1 className="text-xl font-medium">User Management</h1>
       </SubNavHeader>
       <div className="py-5 px-10">
-        {!userRoles.length && <LoadingSpinner />}
+        {(isLoading || processSubmit || isFetching) && <LoadingSpinner />}
         <Table>
           <TableHeader className="[&_tr]:border-b sticky top-0 bg-white">
             <TableRow className="border-b transition-colors hover:bg-muted/50 ">
@@ -223,7 +243,7 @@ export const UserManagement = () => {
             </TableRow>
           </TableHeader>
           <TableBody>
-            {userRoles.map((userRole) => {
+            {sortedUserRoles.map((userRole) => {
               return (
                 <TableRow key={userRole.id}>
                   <TableCell className="py-5 px-4">
