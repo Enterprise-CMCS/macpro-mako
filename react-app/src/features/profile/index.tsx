@@ -1,18 +1,10 @@
 import { useState } from "react";
-import { FULL_CENSUS_STATES, RoleDescriptionStrings, StateCode } from "shared-types";
+import { FULL_CENSUS_STATES, StateCode } from "shared-types";
 
-import { useGetUser, useGetUserDetails, useGetUserProfile, useSubmitRoleRequests } from "@/api";
-import {
-  Alert,
-  banner,
-  Button,
-  CardWithTopBorder,
-  LoadingSpinner,
-  SubNavHeader,
-} from "@/components";
+import { StateAccess, useGetUserDetails, useGetUserProfile, useSubmitRoleRequests } from "@/api";
+import { banner, Button, CardWithTopBorder, LoadingSpinner, SubNavHeader } from "@/components";
 import { Option } from "@/components/Opensearch/main/Filtering/Drawer/Filterable";
 import { FilterableSelect } from "@/components/Opensearch/main/Filtering/Drawer/Filterable";
-import config from "@/config";
 import { convertStateAbbrToFullName, stateAccessStatus } from "@/utils";
 
 const roleMap = {
@@ -26,11 +18,33 @@ const roleMap = {
 
 const adminRoles = ["statesubmitter", "statesystemadmin"];
 
+const orderStateAccess = (accesses: StateAccess[]) => {
+  if (!accesses || !accesses.length) return;
+  // sort revoked states seprately and add to
+  const activeStates = accesses.filter((x: StateAccess) => x.status != "revoked");
+  const revokedStates = accesses.filter((x: StateAccess) => (x.status = "revoked"));
+
+  const compare = (a: StateAccess, b: StateAccess) => {
+    const stateA = convertStateAbbrToFullName(a.territory);
+    const stateB = convertStateAbbrToFullName(b.territory);
+
+    if (stateA < stateB) return -1;
+    if (stateA > stateB) return 1;
+    return 0;
+  };
+
+  const sorted = activeStates.sort(compare).concat(revokedStates.sort(compare));
+
+  return sorted;
+};
+
 export const Profile = () => {
   const { data: userDetails } = useGetUserDetails();
   const { data: userProfile, refetch: reloadUserProfile } = useGetUserProfile();
 
-  const stateAccess = userProfile?.stateAccess?.filter((access) => access.territory != "ZZ");
+  const stateAccess = orderStateAccess(
+    userProfile?.stateAccess?.filter((access) => access.territory != "ZZ"),
+  );
 
   const [showAddState, setShowAddState] = useState<boolean>(true);
   const [requestedStates, setRequestedStates] = useState<StateCode[]>([]);
@@ -86,30 +100,6 @@ export const Profile = () => {
       </SubNavHeader>
 
       <section className="block max-w-screen-xl m-auto px-4 lg:px-8 py-8 gap-10">
-        <Alert className="mb-6 bg-sky-50 flex flex-row">
-          <div className="py-1 mr-2 flex-none w-8">
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              viewBox="0 0 24 24"
-              fill="currentColor"
-              className="w-8 h-8"
-            >
-              <path
-                fillRule="evenodd"
-                d="M2.25 12c0-5.385 4.365-9.75 9.75-9.75s9.75 4.365 9.75 9.75-4.365 9.75-9.75 9.75S2.25 17.385 2.25 12zM12 8.25a.75.75 0 01.75.75v3.75a.75.75 0 01-1.5 0V9a.75.75 0 01.75-.75zm0 8.25a.75.75 0 100-1.5.75.75 0 000 1.5z"
-                clipRule="evenodd"
-              />
-            </svg>
-          </div>
-
-          <div className="py-2 flex-1 mr-4">
-            All changes to your access or profile must be made in IDM.
-          </div>
-          <a href={config.idm.home_url} target="_blank" rel="noreferrer">
-            <Button variant="outline">Go to IDM</Button>
-          </a>
-        </Alert>
-
         <div className="flex flex-col md:flex-row">
           <div className="flex flex-col gap-6 md:basis-1/2">
             <h2 className="text-2xl font-bold">My Information</h2>
@@ -127,6 +117,13 @@ export const Profile = () => {
             <div className="leading-9">
               <h3 className="font-bold">Email</h3>
               <p>{userDetails?.email}</p>
+            </div>
+
+            <div className="">
+              <p className="italic">
+                This page contains Profile Information for the {roleMap[userDetails?.role]}. The
+                information cannot be changed in the portal.
+              </p>
             </div>
           </div>
           {/* State Access Management Section */}
