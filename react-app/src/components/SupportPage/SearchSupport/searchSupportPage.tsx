@@ -52,18 +52,8 @@ const SearchContent = ({
 
     const formatedSearchResults = searchResults
       .map((result) => {
-        const matches: { indices: [number, number][]; value: string }[] = result.matches.filter(
-          (matches) => matches.key === "answer",
-        );
         const resultsInOgFormat: QuestionAnswer = contentMap.get(result.item.anchorText);
-
-        matches.forEach((match) => {
-          resultsInOgFormat.answerJSX = generateBoldAnswerJSX(
-            match.value,
-            resultsInOgFormat.answerJSX,
-            match.indices,
-          );
-        });
+        resultsInOgFormat.answerJSX = generateBoldAnswerJSX(searched, resultsInOgFormat.answerJSX);
 
         return resultsInOgFormat;
       })

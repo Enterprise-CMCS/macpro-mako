@@ -1,39 +1,12 @@
 import { ReactElement, ReactNode } from "react";
 import reactStringReplace from "react-string-replace";
 
-export const generateBoldAnswerJSX = (
-  resultText: string,
-  resultsJSX: ReactElement,
-  regions: [number, number][] = [],
-) => {
-  const matchedText = [];
-
-  // get the substring matches abstracted
-  regions.forEach((region) => {
-    const [start, end] = region;
-    const lastRegionNextIndex = end + 1;
-
-    matchedText.push(resultText.substring(start, lastRegionNextIndex));
-  });
-
-  // we want the longest (aka closest) matches to be found first
-  matchedText.sort((a, b) => b.length - a.length);
-  // remove all duplicates from the matched text
-  const uniqueMatches = [...new Set(matchedText)];
-
-  // used for 'modifier' in the JSXModify Text
-  // keep in the scope of this function to be able to use uniqueMatches
+export const generateBoldAnswerJSX = (searched: string, resultsJSX: ReactElement) => {
   const boldText = (text: string) => {
-    let replacedText = reactStringReplace(text, uniqueMatches[0], (match, i) => (
+    const replacedText = reactStringReplace(text, searched, (match, i) => (
       <strong key={`bold-${i}`}>{match}</strong>
     ));
 
-    uniqueMatches.forEach(
-      (match) =>
-        (replacedText = reactStringReplace(replacedText, match, (match, i) => (
-          <strong key={`bold-${i}`}>{match}</strong>
-        ))),
-    );
     return replacedText;
   };
 
