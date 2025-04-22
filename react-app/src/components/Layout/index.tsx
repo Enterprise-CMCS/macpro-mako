@@ -101,10 +101,24 @@ const UserDropdownMenu = () => {
   };
 
   const handleLogout = async () => {
-    // Small delay to ensure Amplify completes its internal processes
+    const preservePrefix = "notifs.";
+    const preserved: Record<string, string> = {};
+
+    for (let i = 0; i < localStorage.length; i++) {
+      const key = localStorage.key(i);
+      if (key && key.startsWith(preservePrefix)) {
+        preserved[key] = localStorage.getItem(key)!;
+      }
+    }
+
     setTimeout(() => {
-      window.localStorage.clear();
+      localStorage.clear();
+
+      Object.entries(preserved).forEach(([key, value]) => {
+        localStorage.setItem(key, value);
+      });
     }, 100);
+
     await Auth.signOut();
   };
 
