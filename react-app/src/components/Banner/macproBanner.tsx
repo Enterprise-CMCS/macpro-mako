@@ -23,7 +23,7 @@ const TopBanner = () => {
     { label: "SEA TOOL", href: "https://seatool.cms.gov" },
     { label: "WMS", href: "https://wms-mmdl.cms.gov/WMS/faces/portal.jsp" },
     { label: "eRegs", href: "https://www.ecfr.gov/current/title-42" },
-    { label: "Laserfiche", href: "https://lf.cms.gov" },
+    { label: "Laserfiche", href: "https://cmsrio.cms.local/laserfiche" },
     { label: "MMDL", href: "https://wms-mmdl.cms.gov/MMDL/faces/portal.jsp" },
   ];
 
