@@ -28,7 +28,7 @@ export const StateWelcome = () => {
       id: "waiverB",
       label: "1915(b) waiver",
       content:
-        "Submit a new 1915(b)(4) FFS selective contracting waiver or 1915(b) comprehensive (capacitated) waiver authority, amendment, or renewal.",
+        "Submit a new 1915(b)(4) FFS selective contracting waiver or 1915(b) comprehensive (Capitated) waiver authority, amendment, or renewal.",
       buttonText: "New 1915(b) waiver",
       link: "/new-submission/waiver/b",
     },
