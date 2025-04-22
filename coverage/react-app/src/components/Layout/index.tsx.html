@@ -23,30 +23,30 @@
         <div class='clearfix'>
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">91.52% </span>
+                <span class="strong">86.76% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>54/59</span>
+                <span class='fraction'>59/68</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">85.93% </span>
+                <span class="strong">80.88% </span>
                 <span class="quiet">Branches</span>
-                <span class='fraction'>55/64</span>
+                <span class='fraction'>55/68</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">100% </span>
+                <span class="strong">94.11% </span>
                 <span class="quiet">Functions</span>
-                <span class='fraction'>16/16</span>
+                <span class='fraction'>16/17</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">92.85% </span>
+                <span class="strong">87.5% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>52/56</span>
+                <span class='fraction'>56/64</span>
             </div>
         
             
@@ -493,7 +493,21 @@
 <a name='L428'></a><a href='#L428'>428</a>
 <a name='L429'></a><a href='#L429'>429</a>
 <a name='L430'></a><a href='#L430'>430</a>
-<a name='L431'></a><a href='#L431'>431</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
+<a name='L431'></a><a href='#L431'>431</a>
+<a name='L432'></a><a href='#L432'>432</a>
+<a name='L433'></a><a href='#L433'>433</a>
+<a name='L434'></a><a href='#L434'>434</a>
+<a name='L435'></a><a href='#L435'>435</a>
+<a name='L436'></a><a href='#L436'>436</a>
+<a name='L437'></a><a href='#L437'>437</a>
+<a name='L438'></a><a href='#L438'>438</a>
+<a name='L439'></a><a href='#L439'>439</a>
+<a name='L440'></a><a href='#L440'>440</a>
+<a name='L441'></a><a href='#L441'>441</a>
+<a name='L442'></a><a href='#L442'>442</a>
+<a name='L443'></a><a href='#L443'>443</a>
+<a name='L444'></a><a href='#L444'>444</a>
+<a name='L445'></a><a href='#L445'>445</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -587,9 +601,23 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">22x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -1017,10 +1045,24 @@ const UserDropdownMenu = () =&gt; {
   };
 &nbsp;
   const handleLogout = async () =&gt; {
-    // Small delay to ensure Amplify completes its internal processes
+    const preservePrefix = "notifs.";
+    const preserved: Record&lt;string, string&gt; = {};
+&nbsp;
+    for (let i = 0; i &lt; localStorage.length; i++) {
+      const key = <span class="cstat-no" title="statement not covered" >localStorage.key(i);</span>
+<span class="cstat-no" title="statement not covered" >      if (key &amp;&amp; key.startsWith(preservePrefix)) {</span>
+<span class="cstat-no" title="statement not covered" >        preserved[key] = localStorage.getItem(key)!;</span>
+      }
+    }
+&nbsp;
     setTimeout(() =&gt; {
-      window.localStorage.clear();
+      localStorage.clear();
+&nbsp;
+      Object.entries(preserved).forEach(<span class="fstat-no" title="function not covered" >([</span>key, value]) =&gt; {
+<span class="cstat-no" title="statement not covered" >        localStorage.setItem(key, value);</span>
+      });
     }, 100);
+&nbsp;
     await Auth.signOut();
   };
 &nbsp;
@@ -1360,7 +1402,7 @@ export const SupportSubNavHeader = ({ children }: SupportSubNavHeaderProps) =&gt
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2025-04-22T02:11:28.117Z
+                at 2025-04-22T15:20:48.627Z
             </div>
         <script src="../../../../prettify.js"></script>
         <script>
