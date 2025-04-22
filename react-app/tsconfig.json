@@ -20,5 +20,5 @@
       "@/*": ["src/*"]
     }
   },
-  "include": ["src", "src/assets/_.d.ts"]
+  "include": ["src", "e2e", "src/assets/_.d.ts", "../lib/react-ga.d.ts"]
 }

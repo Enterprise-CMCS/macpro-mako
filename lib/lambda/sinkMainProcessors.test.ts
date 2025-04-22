@@ -10,7 +10,10 @@ import {
   NOT_FOUND_ITEM_ID,
   OPENSEARCH_DOMAIN,
   OPENSEARCH_INDEX_NAMESPACE,
+  RAI_WITHDRAWAL_ID,
+  SUBMITTED_RAI_ID,
   TEST_ITEM_ID,
+  WITHDRAWAL_REQUESTED_ID,
 } from "mocks";
 import {
   appkBase,
@@ -30,7 +33,12 @@ import {
   withdrawRai,
 } from "mocks/data/submit/base";
 import { mockedServiceServer as mockedServer } from "mocks/server";
-import { SEATOOL_STATUS, statusToDisplayToCmsUser, statusToDisplayToStateUser } from "shared-types";
+import {
+  SEATOOL_STATUS,
+  SeatoolSpwStatusEnum,
+  statusToDisplayToCmsUser,
+  statusToDisplayToStateUser,
+} from "shared-types";
 import { seatool } from "shared-types/opensearch/main";
 import { afterEach, describe, expect, it, vi } from "vitest";
 
@@ -42,6 +50,9 @@ import {
 
 const OPENSEARCH_INDEX = `${OPENSEARCH_INDEX_NAMESPACE}main`;
 const TEST_ITEM_KEY = Buffer.from(TEST_ITEM_ID).toString("base64");
+const WITHDRAWAL_REQUESTED_KEY = Buffer.from(WITHDRAWAL_REQUESTED_ID).toString("base64");
+const SUBMITTED_RAI_KEY = Buffer.from(SUBMITTED_RAI_ID).toString("base64");
+const RAI_WITHDRAWAL_KEY = Buffer.from(RAI_WITHDRAWAL_ID).toString("base64");
 const TIMESTAMP = 1732645041557;
 const ISO_DATETIME = "2024-11-26T18:17:21.557Z";
 const EARLIER_TIMESTAMP = 1722645041557;
@@ -622,13 +633,11 @@ describe("insertOneMacRecordsFromKafkaIntoMako", () => {
         proposedEffectiveDate: null,
         currentStatus: "Submitted",
         changedDate: new Date(TIMESTAMP).toISOString(),
-        description: null,
         id: "MD-12345",
         makoChangedDate: new Date(TIMESTAMP).toISOString(),
         state: "MD",
         origin: "OneMACLegacy",
         proposedDate: "2025-03-10T00:00:00Z",
-        subject: null,
         submissionDate: new Date(TIMESTAMP).toISOString(),
         submitterEmail: "tester@example.com",
         submitterName: "Tester",
@@ -682,12 +691,10 @@ describe("insertOneMacRecordsFromKafkaIntoMako", () => {
     const expectedRecord = {
       additionalInformation: "info",
       changedDate: null, // due to lastEventTimestamp === 0
-      description: null,
       id: "MD-00000",
       makoChangedDate: null, // due to lastEventTimestamp === 0
       origin: "OneMACLegacy",
       proposedDate: "2025-03-10T00:00:00Z",
-      subject: null,
       submissionDate: null, // due to submissionTimestamp === 0
       submitterEmail: "tester@example.com",
       submitterName: "Tester",
@@ -823,7 +830,130 @@ describe("insertNewSeatoolRecordsFromKafkaIntoMako", () => {
       },
     ]);
   });
+  it("Fails to add kafka record missing memo", async () => {
+    await insertNewSeatoolRecordsFromKafkaIntoMako(
+      [
+        createKafkaRecord({
+          topic: TOPIC,
+          key: TEST_ITEM_KEY,
+          value: convertObjToBase64({
+            id: TEST_ITEM_ID,
+            ACTION_OFFICERS: [
+              {
+                FIRST_NAME: "John",
+                LAST_NAME: "Doe",
+                EMAIL: "john.doe@medicaid.gov",
+                OFFICER_ID: 12345,
+                DEPARTMENT: "State Plan Review",
+                PHONE: "202-555-1234",
+              },
+              {
+                FIRST_NAME: "Emily",
+                LAST_NAME: "Rodriguez",
+                EMAIL: "emily.rodriguez@medicaid.gov",
+                OFFICER_ID: 12346,
+                DEPARTMENT: "Compliance Division",
+                PHONE: "202-555-5678",
+              },
+            ],
+            LEAD_ANALYST: [
+              {
+                FIRST_NAME: "Michael",
+                LAST_NAME: "Chen",
+                EMAIL: "michael.chen@cms.hhs.gov",
+                OFFICER_ID: 67890,
+                DEPARTMENT: "Medicaid Innovation Center",
+                PHONE: "202-555-9012",
+              },
+            ],
+            STATE_PLAN: {
+              PLAN_TYPE: 123,
+              SPW_STATUS_ID: 1,
+              APPROVED_EFFECTIVE_DATE: TIMESTAMP,
+              CHANGED_DATE: EARLIER_TIMESTAMP,
+              SUMMARY_MEMO: null,
+              TITLE_NAME: "Sample Title",
+              STATUS_DATE: EARLIER_TIMESTAMP,
+              SUBMISSION_DATE: TIMESTAMP,
+              LEAD_ANALYST_ID: 67890,
+              ACTUAL_EFFECTIVE_DATE: null,
+              PROPOSED_DATE: null,
+              STATE_CODE: "10",
+            },
+            RAI: [],
+            ACTIONTYPES: [{ ACTION_NAME: "Initial Review", ACTION_ID: 1, PLAN_TYPE_ID: 123 }],
+            STATE_PLAN_SERVICETYPES: [{ SPA_TYPE_ID: 1, SPA_TYPE_NAME: "Type A" }],
+            STATE_PLAN_SERVICE_SUBTYPES: [{ TYPE_ID: 1, TYPE_NAME: "SubType X" }],
+          }),
+        }),
+      ],
+      TOPIC,
+    );
 
+    expect(bulkUpdateDataSpy).toBeCalledWith(OPENSEARCH_DOMAIN, OPENSEARCH_INDEX, []);
+  });
+  it("Fails to add kafka record missing title", async () => {
+    await insertNewSeatoolRecordsFromKafkaIntoMako(
+      [
+        createKafkaRecord({
+          topic: TOPIC,
+          key: TEST_ITEM_KEY,
+          value: convertObjToBase64({
+            id: TEST_ITEM_ID,
+            ACTION_OFFICERS: [
+              {
+                FIRST_NAME: "John",
+                LAST_NAME: "Doe",
+                EMAIL: "john.doe@medicaid.gov",
+                OFFICER_ID: 12345,
+                DEPARTMENT: "State Plan Review",
+                PHONE: "202-555-1234",
+              },
+              {
+                FIRST_NAME: "Emily",
+                LAST_NAME: "Rodriguez",
+                EMAIL: "emily.rodriguez@medicaid.gov",
+                OFFICER_ID: 12346,
+                DEPARTMENT: "Compliance Division",
+                PHONE: "202-555-5678",
+              },
+            ],
+            LEAD_ANALYST: [
+              {
+                FIRST_NAME: "Michael",
+                LAST_NAME: "Chen",
+                EMAIL: "michael.chen@cms.hhs.gov",
+                OFFICER_ID: 67890,
+                DEPARTMENT: "Medicaid Innovation Center",
+                PHONE: "202-555-9012",
+              },
+            ],
+            STATE_PLAN: {
+              PLAN_TYPE: 123,
+              SPW_STATUS_ID: 1,
+              APPROVED_EFFECTIVE_DATE: TIMESTAMP,
+              CHANGED_DATE: EARLIER_TIMESTAMP,
+              SUMMARY_MEMO: "Sample memo",
+              TITLE_NAME: null,
+              STATUS_DATE: EARLIER_TIMESTAMP,
+              SUBMISSION_DATE: TIMESTAMP,
+              LEAD_ANALYST_ID: 67890,
+              ACTUAL_EFFECTIVE_DATE: null,
+              PROPOSED_DATE: null,
+              STATE_CODE: "10",
+            },
+            RAI: [],
+            ACTIONTYPES: [{ ACTION_NAME: "Initial Review", ACTION_ID: 1, PLAN_TYPE_ID: 123 }],
+            STATE_PLAN_SERVICETYPES: [{ SPA_TYPE_ID: 1, SPA_TYPE_NAME: "Type A" }],
+            STATE_PLAN_SERVICE_SUBTYPES: [{ TYPE_ID: 1, TYPE_NAME: "SubType X" }],
+          }),
+        }),
+      ],
+      TOPIC,
+    );
+
+    expect(bulkUpdateDataSpy).toBeCalledWith(OPENSEARCH_DOMAIN, OPENSEARCH_INDEX, []);
+  });
   it("outputs kafka records into mako records if mako record is not found", async () => {
     await insertNewSeatoolRecordsFromKafkaIntoMako(
       [
@@ -1478,6 +1608,707 @@ describe("insertNewSeatoolRecordsFromKafkaIntoMako", () => {
       metadata: expect.any(Object),
       error: expect.any(Array),
     });
+  });
+
+  it("tries to update a package with withdrawal requested", async () => {
+    await insertNewSeatoolRecordsFromKafkaIntoMako(
+      [
+        createKafkaRecord({
+          topic: TOPIC,
+          key: WITHDRAWAL_REQUESTED_KEY,
+          value: convertObjToBase64({
+            id: WITHDRAWAL_REQUESTED_ID,
+            ACTION_OFFICERS: [
+              {
+                FIRST_NAME: "John",
+                LAST_NAME: "Doe",
+                EMAIL: "john.doe@medicaid.gov",
+                OFFICER_ID: 12345,
+                DEPARTMENT: "State Plan Review",
+                PHONE: "202-555-1234",
+              },
+              {
+                FIRST_NAME: "Emily",
+                LAST_NAME: "Rodriguez",
+                EMAIL: "emily.rodriguez@medicaid.gov",
+                OFFICER_ID: 12346,
+                DEPARTMENT: "Compliance Division",
+                PHONE: "202-555-5678",
+              },
+            ],
+            LEAD_ANALYST: [
+              {
+                FIRST_NAME: "Michael",
+                LAST_NAME: "Chen",
+                EMAIL: "michael.chen@cms.hhs.gov",
+                OFFICER_ID: 67890,
+                DEPARTMENT: "Medicaid Innovation Center",
+                PHONE: "202-555-9012",
+              },
+            ],
+            STATE_PLAN: {
+              PLAN_TYPE: 123,
+              SPW_STATUS_ID: 4,
+              APPROVED_EFFECTIVE_DATE: TIMESTAMP,
+              CHANGED_DATE: EARLIER_TIMESTAMP,
+              SUMMARY_MEMO: "Sample summary",
+              TITLE_NAME: "Sample Title",
+              STATUS_DATE: EARLIER_TIMESTAMP,
+              SUBMISSION_DATE: TIMESTAMP,
+              LEAD_ANALYST_ID: 67890,
+              ACTUAL_EFFECTIVE_DATE: null,
+              PROPOSED_DATE: null,
+              STATE_CODE: "10",
+            },
+            RAI: [],
+            ACTIONTYPES: [{ ACTION_NAME: "Initial Review", ACTION_ID: 1, PLAN_TYPE_ID: 123 }],
+            STATE_PLAN_SERVICETYPES: [{ SPA_TYPE_ID: 1, SPA_TYPE_NAME: "Type A" }],
+            STATE_PLAN_SERVICE_SUBTYPES: [{ TYPE_ID: 1, TYPE_NAME: "SubType X" }],
+          }),
+        }),
+      ],
+      TOPIC,
+    );
+
+    expect(bulkUpdateDataSpy).toBeCalledWith(OPENSEARCH_DOMAIN, OPENSEARCH_INDEX, [
+      {
+        actionType: "Initial Review",
+        approvedEffectiveDate: ISO_DATETIME,
+        authority: "1915(c)",
+        changed_date: EARLIER_TIMESTAMP,
+        cmsStatus: "Submitted - Intake Needed",
+        description: "Sample summary",
+        finalDispositionDate: null,
+        id: WITHDRAWAL_REQUESTED_ID,
+        initialIntakeNeeded: false,
+        leadAnalystEmail: "michael.chen@cms.hhs.gov",
+        leadAnalystName: "Michael Chen",
+        leadAnalystOfficerId: 67890,
+        locked: false,
+        proposedDate: null,
+        raiRequestedDate: null,
+        raiWithdrawEnabled: undefined,
+        raiWithdrawnDate: null,
+        reviewTeam: [
+          {
+            email: "john.doe@medicaid.gov",
+            name: "John Doe",
+          },
+          {
+            email: "emily.rodriguez@medicaid.gov",
+            name: "Emily Rodriguez",
+          },
+        ],
+        seatoolStatus: "Withdrawal Requested",
+        secondClock: false,
+        state: "10",
+        stateStatus: "Withdrawal Requested",
+        statusDate: EARLIER_ISO_DATETIME,
+        subTypes: [
+          {
+            TYPE_ID: 1,
+            TYPE_NAME: "SubType X",
+          },
+        ],
+        subject: "Sample Title",
+        types: [
+          {
+            SPA_TYPE_ID: 1,
+            SPA_TYPE_NAME: "Type A",
+          },
+        ],
+      },
+    ]);
+  });
+  it("tries to tries to update a  package that already responded to an rai", async () => {
+    await insertNewSeatoolRecordsFromKafkaIntoMako(
+      [
+        createKafkaRecord({
+          topic: TOPIC,
+          key: SUBMITTED_RAI_KEY,
+          value: convertObjToBase64({
+            id: SUBMITTED_RAI_ID,
+            ACTION_OFFICERS: [
+              {
+                FIRST_NAME: "John",
+                LAST_NAME: "Doe",
+                EMAIL: "john.doe@medicaid.gov",
+                OFFICER_ID: 12345,
+                DEPARTMENT: "State Plan Review",
+                PHONE: "202-555-1234",
+              },
+              {
+                FIRST_NAME: "Emily",
+                LAST_NAME: "Rodriguez",
+                EMAIL: "emily.rodriguez@medicaid.gov",
+                OFFICER_ID: 12346,
+                DEPARTMENT: "Compliance Division",
+                PHONE: "202-555-5678",
+              },
+            ],
+            LEAD_ANALYST: [
+              {
+                FIRST_NAME: "Michael",
+                LAST_NAME: "Chen",
+                EMAIL: "michael.chen@cms.hhs.gov",
+                OFFICER_ID: 67890,
+                DEPARTMENT: "Medicaid Innovation Center",
+                PHONE: "202-555-9012",
+              },
+            ],
+            STATE_PLAN: {
+              PLAN_TYPE: 123,
+              SPW_STATUS_ID: SeatoolSpwStatusEnum.PendingRAI,
+              APPROVED_EFFECTIVE_DATE: TIMESTAMP,
+              CHANGED_DATE: EARLIER_TIMESTAMP,
+              SUMMARY_MEMO: "Sample summary",
+              TITLE_NAME: "Sample Title",
+              STATUS_DATE: EARLIER_TIMESTAMP,
+              SUBMISSION_DATE: TIMESTAMP,
+              LEAD_ANALYST_ID: 67890,
+              ACTUAL_EFFECTIVE_DATE: null,
+              PROPOSED_DATE: null,
+              STATE_CODE: "10",
+            },
+            RAI: [
+              {
+                RAI_RECEIVED_DATE: null,
+                RAI_REQUESTED_DATE: 1675123200000,
+                RAI_WITHDRAWN_DATE: null,
+              },
+            ],
+            ACTIONTYPES: [
+              { ACTION_NAME: "Respond to Formal RAI", ACTION_ID: 1, PLAN_TYPE_ID: 123 },
+            ],
+            STATE_PLAN_SERVICETYPES: [{ SPA_TYPE_ID: 1, SPA_TYPE_NAME: "Type A" }],
+            STATE_PLAN_SERVICE_SUBTYPES: [{ TYPE_ID: 1, TYPE_NAME: "SubType X" }],
+          }),
+        }),
+      ],
+      TOPIC,
+    );
+
+    expect(bulkUpdateDataSpy).toBeCalledWith(OPENSEARCH_DOMAIN, OPENSEARCH_INDEX, [
+      {
+        actionType: "Respond to Formal RAI",
+        approvedEffectiveDate: ISO_DATETIME,
+        authority: "1915(c)",
+        changed_date: EARLIER_TIMESTAMP,
+        cmsStatus: "Submitted - Intake Needed",
+        description: "Sample summary",
+        finalDispositionDate: null,
+        id: SUBMITTED_RAI_ID,
+        initialIntakeNeeded: false,
+        leadAnalystEmail: "michael.chen@cms.hhs.gov",
+        leadAnalystName: "Michael Chen",
+        leadAnalystOfficerId: 67890,
+        locked: false,
+        proposedDate: null,
+        raiRequestedDate: "2023-01-31T00:00:00.000Z",
+        raiWithdrawEnabled: undefined,
+        raiWithdrawnDate: null,
+        reviewTeam: [
+          {
+            email: "john.doe@medicaid.gov",
+            name: "John Doe",
+          },
+          {
+            email: "emily.rodriguez@medicaid.gov",
+            name: "Emily Rodriguez",
+          },
+        ],
+        seatoolStatus: "Submitted",
+        secondClock: false,
+        state: "10",
+        stateStatus: "Submitted",
+        statusDate: EARLIER_ISO_DATETIME,
+        subTypes: [
+          {
+            TYPE_ID: 1,
+            TYPE_NAME: "SubType X",
+          },
+        ],
+        subject: "Sample Title",
+        types: [
+          {
+            SPA_TYPE_ID: 1,
+            SPA_TYPE_NAME: "Type A",
+          },
+        ],
+      },
+    ]);
+  });
+  it("tries to tries to update a  package that requested a RAI to be withdrawn", async () => {
+    await insertNewSeatoolRecordsFromKafkaIntoMako(
+      [
+        createKafkaRecord({
+          topic: TOPIC,
+          key: RAI_WITHDRAWAL_KEY,
+          value: convertObjToBase64({
+            id: RAI_WITHDRAWAL_ID,
+            ACTION_OFFICERS: [
+              {
+                FIRST_NAME: "John",
+                LAST_NAME: "Doe",
+                EMAIL: "john.doe@medicaid.gov",
+                OFFICER_ID: 12345,
+                DEPARTMENT: "State Plan Review",
+                PHONE: "202-555-1234",
+              },
+              {
+                FIRST_NAME: "Emily",
+                LAST_NAME: "Rodriguez",
+                EMAIL: "emily.rodriguez@medicaid.gov",
+                OFFICER_ID: 12346,
+                DEPARTMENT: "Compliance Division",
+                PHONE: "202-555-5678",
+              },
+            ],
+            LEAD_ANALYST: [
+              {
+                FIRST_NAME: "Michael",
+                LAST_NAME: "Chen",
+                EMAIL: "michael.chen@cms.hhs.gov",
+                OFFICER_ID: 67890,
+                DEPARTMENT: "Medicaid Innovation Center",
+                PHONE: "202-555-9012",
+              },
+            ],
+            STATE_PLAN: {
+              PLAN_TYPE: 123,
+              SPW_STATUS_ID: SeatoolSpwStatusEnum.Pending,
+              APPROVED_EFFECTIVE_DATE: TIMESTAMP,
+              CHANGED_DATE: EARLIER_TIMESTAMP,
+              SUMMARY_MEMO: "Sample summary",
+              TITLE_NAME: "Sample Title",
+              STATUS_DATE: EARLIER_TIMESTAMP,
+              SUBMISSION_DATE: TIMESTAMP,
+              LEAD_ANALYST_ID: 67890,
+              ACTUAL_EFFECTIVE_DATE: null,
+              PROPOSED_DATE: null,
+              STATE_CODE: "10",
+            },
+            RAI: [
+              {
+                RAI_RECEIVED_DATE: null,
+                RAI_REQUESTED_DATE: 1675123200000,
+                RAI_WITHDRAWN_DATE: null,
+              },
+            ],
+            ACTIONTYPES: [
+              { ACTION_NAME: "Respond to Formal RAI", ACTION_ID: 1, PLAN_TYPE_ID: 123 },
+            ],
+            STATE_PLAN_SERVICETYPES: [{ SPA_TYPE_ID: 1, SPA_TYPE_NAME: "Type A" }],
+            STATE_PLAN_SERVICE_SUBTYPES: [{ TYPE_ID: 1, TYPE_NAME: "SubType X" }],
+          }),
+        }),
+      ],
+      TOPIC,
+    );
+
+    expect(bulkUpdateDataSpy).toBeCalledWith(OPENSEARCH_DOMAIN, OPENSEARCH_INDEX, [
+      {
+        actionType: "Respond to Formal RAI",
+        approvedEffectiveDate: ISO_DATETIME,
+        authority: "1915(c)",
+        changed_date: EARLIER_TIMESTAMP,
+        cmsStatus: "Formal RAI Response - Withdrawal Requested",
+        description: "Sample summary",
+        finalDispositionDate: null,
+        id: RAI_WITHDRAWAL_ID,
+        initialIntakeNeeded: false,
+        leadAnalystEmail: "michael.chen@cms.hhs.gov",
+        leadAnalystName: "Michael Chen",
+        leadAnalystOfficerId: 67890,
+        locked: false,
+        proposedDate: null,
+        raiRequestedDate: "2023-01-31T00:00:00.000Z",
+        raiWithdrawEnabled: undefined,
+        raiWithdrawnDate: null,
+        reviewTeam: [
+          {
+            email: "john.doe@medicaid.gov",
+            name: "John Doe",
+          },
+          {
+            email: "emily.rodriguez@medicaid.gov",
+            name: "Emily Rodriguez",
+          },
+        ],
+        seatoolStatus: "Formal RAI Response - Withdrawal Requested",
+        secondClock: false,
+        state: "10",
+        stateStatus: "Formal RAI Response - Withdrawal Requested",
+        statusDate: EARLIER_ISO_DATETIME,
+        subTypes: [
+          {
+            TYPE_ID: 1,
+            TYPE_NAME: "SubType X",
+          },
+        ],
+        subject: "Sample Title",
+        types: [
+          {
+            SPA_TYPE_ID: 1,
+            SPA_TYPE_NAME: "Type A",
+          },
+        ],
+      },
+    ]);
+  });
+  it("tries to tries to update a  package that requested a RAI to be withdrawn but was terminated", async () => {
+    await insertNewSeatoolRecordsFromKafkaIntoMako(
+      [
+        createKafkaRecord({
+          topic: TOPIC,
+          key: RAI_WITHDRAWAL_KEY,
+          value: convertObjToBase64({
+            id: RAI_WITHDRAWAL_ID,
+            ACTION_OFFICERS: [
+              {
+                FIRST_NAME: "John",
+                LAST_NAME: "Doe",
+                EMAIL: "john.doe@medicaid.gov",
+                OFFICER_ID: 12345,
+                DEPARTMENT: "State Plan Review",
+                PHONE: "202-555-1234",
+              },
+              {
+                FIRST_NAME: "Emily",
+                LAST_NAME: "Rodriguez",
+                EMAIL: "emily.rodriguez@medicaid.gov",
+                OFFICER_ID: 12346,
+                DEPARTMENT: "Compliance Division",
+                PHONE: "202-555-5678",
+              },
+            ],
+            LEAD_ANALYST: [
+              {
+                FIRST_NAME: "Michael",
+                LAST_NAME: "Chen",
+                EMAIL: "michael.chen@cms.hhs.gov",
+                OFFICER_ID: 67890,
+                DEPARTMENT: "Medicaid Innovation Center",
+                PHONE: "202-555-9012",
+              },
+            ],
+            STATE_PLAN: {
+              PLAN_TYPE: 123,
+              SPW_STATUS_ID: SeatoolSpwStatusEnum.Disapproved,
+              APPROVED_EFFECTIVE_DATE: TIMESTAMP,
+              CHANGED_DATE: EARLIER_TIMESTAMP,
+              SUMMARY_MEMO: "Sample summary",
+              TITLE_NAME: "Sample Title",
+              STATUS_DATE: EARLIER_TIMESTAMP,
+              SUBMISSION_DATE: TIMESTAMP,
+              LEAD_ANALYST_ID: 67890,
+              ACTUAL_EFFECTIVE_DATE: null,
+              PROPOSED_DATE: null,
+              STATE_CODE: "10",
+            },
+            RAI: [
+              {
+                RAI_RECEIVED_DATE: null,
+                RAI_REQUESTED_DATE: 1675123200000,
+                RAI_WITHDRAWN_DATE: null,
+              },
+            ],
+            ACTIONTYPES: [
+              { ACTION_NAME: "Respond to Formal RAI", ACTION_ID: 1, PLAN_TYPE_ID: 123 },
+            ],
+            STATE_PLAN_SERVICETYPES: [{ SPA_TYPE_ID: 1, SPA_TYPE_NAME: "Type A" }],
+            STATE_PLAN_SERVICE_SUBTYPES: [{ TYPE_ID: 1, TYPE_NAME: "SubType X" }],
+          }),
+        }),
+      ],
+      TOPIC,
+    );
+
+    expect(bulkUpdateDataSpy).toBeCalledWith(OPENSEARCH_DOMAIN, OPENSEARCH_INDEX, [
+      {
+        actionType: "Respond to Formal RAI",
+        approvedEffectiveDate: ISO_DATETIME,
+        authority: "1915(c)",
+        changed_date: EARLIER_TIMESTAMP,
+        cmsStatus: "Disapproved",
+        description: "Sample summary",
+        finalDispositionDate: "2024-08-03T00:30:41.557Z",
+        id: RAI_WITHDRAWAL_ID,
+        initialIntakeNeeded: false,
+        leadAnalystEmail: "michael.chen@cms.hhs.gov",
+        leadAnalystName: "Michael Chen",
+        leadAnalystOfficerId: 67890,
+        locked: false,
+        proposedDate: null,
+        raiRequestedDate: "2023-01-31T00:00:00.000Z",
+        raiWithdrawEnabled: false,
+        raiWithdrawnDate: null,
+        reviewTeam: [
+          {
+            email: "john.doe@medicaid.gov",
+            name: "John Doe",
+          },
+          {
+            email: "emily.rodriguez@medicaid.gov",
+            name: "Emily Rodriguez",
+          },
+        ],
+        seatoolStatus: "Disapproved",
+        secondClock: false,
+        state: "10",
+        stateStatus: "Disapproved",
+        statusDate: EARLIER_ISO_DATETIME,
+        subTypes: [
+          {
+            TYPE_ID: 1,
+            TYPE_NAME: "SubType X",
+          },
+        ],
+        subject: "Sample Title",
+        types: [
+          {
+            SPA_TYPE_ID: 1,
+            SPA_TYPE_NAME: "Type A",
+          },
+        ],
+      },
+    ]);
+  });
+  it("tries to tries to update a  package that requested a RAI to be withdrawn but was withdrawn completely", async () => {
+    await insertNewSeatoolRecordsFromKafkaIntoMako(
+      [
+        createKafkaRecord({
+          topic: TOPIC,
+          key: RAI_WITHDRAWAL_KEY,
+          value: convertObjToBase64({
+            id: RAI_WITHDRAWAL_ID,
+            ACTION_OFFICERS: [
+              {
+                FIRST_NAME: "John",
+                LAST_NAME: "Doe",
+                EMAIL: "john.doe@medicaid.gov",
+                OFFICER_ID: 12345,
+                DEPARTMENT: "State Plan Review",
+                PHONE: "202-555-1234",
+              },
+              {
+                FIRST_NAME: "Emily",
+                LAST_NAME: "Rodriguez",
+                EMAIL: "emily.rodriguez@medicaid.gov",
+                OFFICER_ID: 12346,
+                DEPARTMENT: "Compliance Division",
+                PHONE: "202-555-5678",
+              },
+            ],
+            LEAD_ANALYST: [
+              {
+                FIRST_NAME: "Michael",
+                LAST_NAME: "Chen",
+                EMAIL: "michael.chen@cms.hhs.gov",
+                OFFICER_ID: 67890,
+                DEPARTMENT: "Medicaid Innovation Center",
+                PHONE: "202-555-9012",
+              },
+            ],
+            STATE_PLAN: {
+              PLAN_TYPE: 123,
+              SPW_STATUS_ID: SeatoolSpwStatusEnum.Withdrawn,
+              APPROVED_EFFECTIVE_DATE: TIMESTAMP,
+              CHANGED_DATE: EARLIER_TIMESTAMP,
+              SUMMARY_MEMO: "Sample summary",
+              TITLE_NAME: "Sample Title",
+              STATUS_DATE: EARLIER_TIMESTAMP,
+              SUBMISSION_DATE: TIMESTAMP,
+              LEAD_ANALYST_ID: 67890,
+              ACTUAL_EFFECTIVE_DATE: null,
+              PROPOSED_DATE: null,
+              STATE_CODE: "10",
+            },
+            RAI: [
+              {
+                RAI_RECEIVED_DATE: null,
+                RAI_REQUESTED_DATE: 1675123200000,
+                RAI_WITHDRAWN_DATE: null,
+              },
+            ],
+            ACTIONTYPES: [
+              { ACTION_NAME: "Respond to Formal RAI", ACTION_ID: 1, PLAN_TYPE_ID: 123 },
+            ],
+            STATE_PLAN_SERVICETYPES: [{ SPA_TYPE_ID: 1, SPA_TYPE_NAME: "Type A" }],
+            STATE_PLAN_SERVICE_SUBTYPES: [{ TYPE_ID: 1, TYPE_NAME: "SubType X" }],
+          }),
+        }),
+      ],
+      TOPIC,
+    );
+
+    expect(bulkUpdateDataSpy).toBeCalledWith(OPENSEARCH_DOMAIN, OPENSEARCH_INDEX, [
+      {
+        actionType: "Respond to Formal RAI",
+        approvedEffectiveDate: ISO_DATETIME,
+        authority: "1915(c)",
+        changed_date: EARLIER_TIMESTAMP,
+        cmsStatus: "Package Withdrawn",
+        description: "Sample summary",
+        finalDispositionDate: "2024-08-03T00:30:41.557Z",
+        id: RAI_WITHDRAWAL_ID,
+        initialIntakeNeeded: false,
+        leadAnalystEmail: "michael.chen@cms.hhs.gov",
+        leadAnalystName: "Michael Chen",
+        leadAnalystOfficerId: 67890,
+        locked: false,
+        proposedDate: null,
+        raiRequestedDate: "2023-01-31T00:00:00.000Z",
+        raiWithdrawEnabled: false,
+        raiWithdrawnDate: null,
+        reviewTeam: [
+          {
+            email: "john.doe@medicaid.gov",
+            name: "John Doe",
+          },
+          {
+            email: "emily.rodriguez@medicaid.gov",
+            name: "Emily Rodriguez",
+          },
+        ],
+        seatoolStatus: "Withdrawn",
+        secondClock: false,
+        state: "10",
+        stateStatus: "Package Withdrawn",
+        statusDate: EARLIER_ISO_DATETIME,
+        subTypes: [
+          {
+            TYPE_ID: 1,
+            TYPE_NAME: "SubType X",
+          },
+        ],
+        subject: "Sample Title",
+        types: [
+          {
+            SPA_TYPE_ID: 1,
+            SPA_TYPE_NAME: "Type A",
+          },
+        ],
+      },
+    ]);
+  });
+  it("tries to tries to update a  package that requested a RAI to be withdrawn but was terminated", async () => {
+    await insertNewSeatoolRecordsFromKafkaIntoMako(
+      [
+        createKafkaRecord({
+          topic: TOPIC,
+          key: RAI_WITHDRAWAL_KEY,
+          value: convertObjToBase64({
+            id: RAI_WITHDRAWAL_ID,
+            ACTION_OFFICERS: [
+              {
+                FIRST_NAME: "John",
+                LAST_NAME: "Doe",
+                EMAIL: "john.doe@medicaid.gov",
+                OFFICER_ID: 12345,
+                DEPARTMENT: "State Plan Review",
+                PHONE: "202-555-1234",
+              },
+              {
+                FIRST_NAME: "Emily",
+                LAST_NAME: "Rodriguez",
+                EMAIL: "emily.rodriguez@medicaid.gov",
+                OFFICER_ID: 12346,
+                DEPARTMENT: "Compliance Division",
+                PHONE: "202-555-5678",
+              },
+            ],
+            LEAD_ANALYST: [
+              {
+                FIRST_NAME: "Michael",
+                LAST_NAME: "Chen",
+                EMAIL: "michael.chen@cms.hhs.gov",
+                OFFICER_ID: 67890,
+                DEPARTMENT: "Medicaid Innovation Center",
+                PHONE: "202-555-9012",
+              },
+            ],
+            STATE_PLAN: {
+              PLAN_TYPE: 123,
+              SPW_STATUS_ID: SeatoolSpwStatusEnum.Terminated,
+              APPROVED_EFFECTIVE_DATE: TIMESTAMP,
+              CHANGED_DATE: EARLIER_TIMESTAMP,
+              SUMMARY_MEMO: "Sample summary",
+              TITLE_NAME: "Sample Title",
+              STATUS_DATE: EARLIER_TIMESTAMP,
+              SUBMISSION_DATE: TIMESTAMP,
+              LEAD_ANALYST_ID: 67890,
+              ACTUAL_EFFECTIVE_DATE: null,
+              PROPOSED_DATE: null,
+              STATE_CODE: "10",
+            },
+            RAI: [
+              {
+                RAI_RECEIVED_DATE: null,
+                RAI_REQUESTED_DATE: 1675123200000,
+                RAI_WITHDRAWN_DATE: null,
+              },
+            ],
+            ACTIONTYPES: [
+              { ACTION_NAME: "Respond to Formal RAI", ACTION_ID: 1, PLAN_TYPE_ID: 123 },
+            ],
+            STATE_PLAN_SERVICETYPES: [{ SPA_TYPE_ID: 1, SPA_TYPE_NAME: "Type A" }],
+            STATE_PLAN_SERVICE_SUBTYPES: [{ TYPE_ID: 1, TYPE_NAME: "SubType X" }],
+          }),
+        }),
+      ],
+      TOPIC,
+    );
+
+    expect(bulkUpdateDataSpy).toBeCalledWith(OPENSEARCH_DOMAIN, OPENSEARCH_INDEX, [
+      {
+        actionType: "Respond to Formal RAI",
+        approvedEffectiveDate: ISO_DATETIME,
+        authority: "1915(c)",
+        changed_date: EARLIER_TIMESTAMP,
+        cmsStatus: "Terminated",
+        description: "Sample summary",
+        finalDispositionDate: "2024-08-03T00:30:41.557Z",
+        id: RAI_WITHDRAWAL_ID,
+        initialIntakeNeeded: false,
+        leadAnalystEmail: "michael.chen@cms.hhs.gov",
+        leadAnalystName: "Michael Chen",
+        leadAnalystOfficerId: 67890,
+        locked: false,
+        proposedDate: null,
+        raiRequestedDate: "2023-01-31T00:00:00.000Z",
+        raiWithdrawEnabled: false,
+        raiWithdrawnDate: null,
+        reviewTeam: [
+          {
+            email: "john.doe@medicaid.gov",
+            name: "John Doe",
+          },
+          {
+            email: "emily.rodriguez@medicaid.gov",
+            name: "Emily Rodriguez",
+          },
+        ],
+        seatoolStatus: "Terminated",
+        secondClock: false,
+        state: "10",
+        stateStatus: "Terminated",
+        statusDate: EARLIER_ISO_DATETIME,
+        subTypes: [
+          {
+            TYPE_ID: 1,
+            TYPE_NAME: "SubType X",
+          },
+        ],
+        subject: "Sample Title",
+        types: [
+          {
+            SPA_TYPE_ID: 1,
+            SPA_TYPE_NAME: "Type A",
+          },
+        ],
+      },
+    ]);
   });
 });
 
