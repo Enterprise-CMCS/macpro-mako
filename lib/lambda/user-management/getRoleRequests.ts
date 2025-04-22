@@ -8,7 +8,7 @@ import {
   getAllUserRolesByEmail,
   getAllUserRolesByState,
   getUserRolesWithNames,
-} from "./user-management-service.ts";
+} from "./userManagementService";
 
 export const getRoleRequests = async (event: APIGatewayEvent) => {
   try {

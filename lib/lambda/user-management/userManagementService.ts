@@ -1,5 +1,5 @@
-import { getDomainAndNamespace } from "lib/libs/utils.ts";
 import { search } from "libs";
+import { getDomainAndNamespace } from "libs/utils";
 
 export const getUserByEmail = async (email: string) => {
   const { domain, index } = getDomainAndNamespace("users");
@@ -23,11 +23,13 @@ export const getUsersByEmails = async (emails: string[]) => {
     size: 100,
     query: {
       bool: {
-        should: emails.map((email) => ({
-          term: {
-            "email.keyword": email,
-          },
-        })),
+        should: emails
+          ?.filter((email) => email)
+          .map((email) => ({
+            term: {
+              "email.keyword": email,
+            },
+          })),
       },
     },
   });
@@ -63,15 +65,14 @@ export const userHasThisRole = async (email: string, state: string, role: string
     query: {
       bool: {
         must: [
-          { term: { email } },
-          { term: { status: "approved" } },
-          { term: { role } },
-          { term: { state } },
+          { term: { "email.keyword": email } },
+          { term: { status: "active" } },
+          { term: { role: role } },
+          { term: { "territory.keyword": state } },
         ],
       },
     },
   });
-
   return result.hits.hits.length > 0;
 };
 
@@ -110,6 +111,7 @@ export const getUserRolesWithNames = async (roleRequests: any[]) => {
 
   const emails = roleRequests.map((role) => role.email);
   const users = await getUsersByEmails(emails);
+  console.log({ emails, users });
 
   const rolesWithName = roleRequests.map((roleObj) => {
     const email = roleObj.id?.split("_")[0];

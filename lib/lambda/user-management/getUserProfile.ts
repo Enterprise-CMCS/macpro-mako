@@ -2,7 +2,7 @@ import { getAuthDetails, lookupUserAttributes } from "lib/libs/api/auth/user";
 import { response } from "lib/libs/handler-lib";
 import { APIGatewayEvent } from "shared-types";
 
-import { getAllUserRolesByEmail } from "./user-management-service";
+import { getAllUserRolesByEmail } from "./userManagementService";
 
 export const getUserProfile = async (event: APIGatewayEvent) => {
   try {
