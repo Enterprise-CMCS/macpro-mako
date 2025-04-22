@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useState } from "react";
-import { Navigate, useParams } from "react-router";
+import { Navigate, useLocation, useNavigate, useParams } from "react-router";
 import { isCmsUser } from "shared-utils";
 
 import { useGetUser } from "@/api/useGetUser";
@@ -70,6 +70,8 @@ export const SupportPage = () => {
   const [openAccordions, setOpenAccordions] = useState<string[]>([]);
   const { data: userObj } = useGetUser();
   const isCmsView = isCmsUser(userObj.user);
+  const location = useLocation();
+  const navigate = useNavigate();
 
   const [supportContent, setSupportContent] = useState(
     isCmsView ? oneMACCMSContent : oneMACStateFAQContent,
@@ -126,6 +128,33 @@ export const SupportPage = () => {
       }
     }
   }, [id]);
+
+  // since the search page is mimicing a new "page",
+  // this will allow the user to go "back" to the original support page when searching
+  useEffect(() => {
+    const handlePopState = () => {
+      if (isSearching) {
+        navigate(location.pathname, { replace: true });
+        setIsSearching(false);
+        collapseAll();
+        setSupportContent(startingSupportContent);
+      } else {
+        navigate("/dashboard");
+      }
+    };
+    window.addEventListener("popstate", handlePopState);
+    return () => {
+      window.removeEventListener("popstate", handlePopState);
+    };
+  }, [
+    isSearching,
+    location.pathname,
+    navigate,
+    setIsSearching,
+    collapseAll,
+    setSupportContent,
+    startingSupportContent,
+  ]);
 
   if (!isSupportPageShown || !userObj?.user) return <Navigate to="/" replace />;
 
