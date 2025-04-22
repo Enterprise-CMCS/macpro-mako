@@ -2,18 +2,22 @@ import { changelogSearchHandlers } from "./changelog";
 import { cpocSearchHandlers } from "./cpocs";
 import { indexHandlers } from "./indices";
 import { mainSearchHandlers } from "./main";
+import { roleHandlers } from "./roles";
 import { securityHandlers } from "./security";
 import { subtypeSearchHandlers } from "./subtypes";
 import { typeSearchHandlers } from "./types";
+import { userHandlers } from "./users";
 
 export const opensearchHandlers = [
   ...changelogSearchHandlers,
   ...cpocSearchHandlers,
   ...indexHandlers,
   ...mainSearchHandlers,
+  ...roleHandlers,
   ...securityHandlers,
   ...subtypeSearchHandlers,
   ...typeSearchHandlers,
+  ...userHandlers,
 ];
 
 export { emptyOSCpocSearchHandler, errorOSCpocSearchHandler } from "./cpocs";

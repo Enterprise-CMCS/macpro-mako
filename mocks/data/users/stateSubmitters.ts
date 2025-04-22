@@ -370,6 +370,70 @@ export const invalidEmailStateSubmitter: TestUserData = {
   Username: "f8e64f73-d121-4252-b9e3-1f4df902a1c2",
 };
 
+export const idmStateSystemAdmin: TestUserData = {
+  UserAttributes: [
+    {
+      Name: "email",
+      Value: "statesystemadmin@nightwatch.test",
+    },
+    {
+      Name: "email_verified",
+      Value: "true",
+    },
+    {
+      Name: "family_name",
+      Value: "Again",
+    },
+    {
+      Name: "given_name",
+      Value: "Test",
+    },
+    {
+      Name: "custom:state",
+      Value: "VA,OH,SC,CO,GA,MD,CA",
+    },
+    {
+      Name: "custom:cms-roles",
+      Value: "onemac-state-user",
+    },
+    {
+      Name: "sub",
+      Value: "142824f8-f011-703f-c22b-62e027e9435e",
+    },
+  ],
+  Username: "142824f8-f011-703f-c22b-62e027e9435e",
+};
+
+export const idmStateSubmitter: TestUserData = {
+  UserAttributes: [
+    {
+      Name: "email",
+      Value: "statesubmitter@nightwatch.test",
+    },
+    {
+      Name: "family_name",
+      Value: "Submitter Test",
+    },
+    {
+      Name: "given_name",
+      Value: "State",
+    },
+    {
+      Name: "custom:state",
+      Value: "VA,OH,SC,CO,GA,MD,CA",
+    },
+    {
+      Name: "custom:cms-roles",
+      Value: "onemac-state-user",
+    },
+    {
+      Name: "sub",
+      Value: "d4b8f498-d001-7038-15f6-d7a1a1e677e1",
+    },
+  ],
+  Username: "d4b8f498-d001-7038-15f6-d7a1a1e677e1",
+};
+
 export const stateSubmitters: TestUserData[] = [
   makoStateSubmitter,
   superUser,
@@ -382,4 +446,6 @@ export const stateSubmitters: TestUserData[] = [
   testNewStateSubmitter,
   noEmailStateSubmitter,
   invalidEmailStateSubmitter,
+  idmStateSystemAdmin,
+  idmStateSubmitter,
 ];

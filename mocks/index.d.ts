@@ -38,6 +38,50 @@ export type TestCpocsItemResult = DeepPartial<opensearch.cpocs.ItemResult>;
 
 export type TestCpocsDocument = TestCpocsItemResult["_source"];
 
+export type TestUserResult = {
+  _id: string;
+  found: boolean;
+  _source: {
+    id: string;
+    eventType: "user-role" | "legacy-user-role";
+    email: string;
+    fullName: string;
+    role:
+      | "defaultcmsuser"
+      | "cmsroleapprover"
+      | "cmsreviewer"
+      | "statesystemadmin"
+      | "helpdesk"
+      | "statesubmitter";
+  };
+};
+
+export type TestUserDocument = TestUserResult["_source"];
+
+export type TestRoleResult = {
+  _id: string;
+  found: boolean;
+  _source: {
+    id: string;
+    eventType: "user-role" | "legacy-user-role";
+    email: string;
+    doneByEmail: string;
+    doneByName: string;
+    status: "active" | "pending" | "revoked" | "denied";
+    role:
+      | "defaultcmsuser"
+      | "cmsroleapprover"
+      | "cmsreviewer"
+      | "statesystemadmin"
+      | "helpdesk"
+      | "statesubmitter";
+    territory: string;
+    lastModifiedDate: number;
+  };
+};
+
+export type TestRoleDocument = TestRoleResult["_source"];
+
 export type TestSecretData = Partial<Omit<GetSecretValueCommandOutput, "CreatedDate">> & {
   CreatedDate: number;
   DeletedDate?: number;
@@ -132,7 +176,8 @@ export type SearchQueryBody = {
   from?: number;
   search?: string;
   query?: {
-    bool: BoolQuery;
+    term?: Record<string, string>;
+    bool?: BoolQuery;
     match_all?: MatchAllQuery;
     regexp?: Record<string, string>;
   };

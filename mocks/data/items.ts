@@ -1149,9 +1149,7 @@ export const getFilteredItemList = (filters: string[]): opensearch.main.ItemResu
     .filter((item) => filters.includes(item?._source?.authority || ""))
     .map((item) => item as opensearch.main.ItemResult);
 
-export const docList = Object.values(items).map(
-  (item) => (item?._source || {}) as opensearch.main.Document,
-);
+export const docList = itemList.map((item) => (item?._source || {}) as opensearch.main.Document);
 
 export const getFilteredDocList = (filters: string[]): opensearch.main.Document[] =>
   docList.filter((item) => filters.includes(item?.authority || ""));

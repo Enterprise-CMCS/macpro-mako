@@ -7,7 +7,7 @@ import {
   getAllUserRolesByEmail,
   getLatestActiveRoleByEmail,
   getUserByEmail,
-} from "./user-management-service";
+} from "./userManagementService";
 
 export const ROLES_ALLOWED_TO_GRANT = ["cmsroleapprover", "statesystemadmin"];
 export const ROLES_ALLOWED_TO_REQUEST = ["statesubmitter"];
