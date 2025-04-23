@@ -7,6 +7,7 @@ const userRoles = z.enum([
   "statesystemadmin",
   "helpdesk",
   "statesubmitter",
+  "systemadmin",
 ]);
 const userStatus = z.enum(["active", "pending", "revoked", "denied"]);
 const roleEvent = z.enum(["user-role", "legacy-user-role"]);
