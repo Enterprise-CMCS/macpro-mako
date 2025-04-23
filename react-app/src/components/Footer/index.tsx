@@ -16,8 +16,8 @@ type Props = {
   showNavLinks?: boolean;
 };
 
-export const Footer = ({ email, address, showNavLinks = false }: Props) => {
-  const shouldShowNavLinks = showNavLinks ?? true;
+export const Footer = ({ email, address, showNavLinks }: Props) => {
+  const shouldShowNavLinks = showNavLinks ?? false;
   const { data: user } = useGetUser();
   const isStateHomepage = useFeatureFlag("STATE_HOMEPAGE_FLAG");
 
