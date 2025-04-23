@@ -16,13 +16,11 @@ vi.mock("fuse.js", () => {
         if (s === "browser")
           return [
             {
-              item: [
-                {
-                  question: "Support Browsers",
-                  answer: "Chrome, Firefox, and Edge.",
-                  anchorText: "supported-browsers",
-                },
-              ],
+              item: {
+                question: "Support Browsers",
+                answer: "Chrome, Firefox, and Edge.",
+                anchorText: "supported-browsers",
+              },
               matches: [],
               refIndex: 7,
             },
@@ -81,6 +79,40 @@ describe("SearchContent", () => {
 
     expect(setSearchResults).toHaveBeenCalledWith(
       [{ sectionTitle: `No matches found for "nonexistent"`, qanda: [] }],
+      true,
+    );
+  });
+
+  it("returns formatted result when a match is found", async () => {
+    const setSearchResults = vi.fn();
+    render(
+      <SearchContent
+        supportContent={mockContent}
+        placeholderText="Search here"
+        setSearchResults={setSearchResults}
+        isSearching={false}
+      />,
+    );
+
+    const input = screen.getByPlaceholderText("Search here");
+    await userEvent.type(input, "browser");
+    const button = screen.getByRole("button");
+    await userEvent.click(button);
+
+    expect(setSearchResults).toHaveBeenCalledWith(
+      [
+        {
+          sectionTitle: `Search results for "browser"`,
+          qanda: [
+            {
+              question: "Support Browsers",
+              answerJSX: <p>Chrome, Firefox, and Edge.</p>,
+              anchorText: "supported-browsers",
+              sectionTitle: "General",
+            },
+          ],
+        },
+      ],
       true,
     );
   });
