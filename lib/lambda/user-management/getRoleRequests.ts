@@ -10,6 +10,9 @@ import {
   getUserRolesWithNames,
 } from "./userManagementService";
 
+const getActiveRole = (roles: StateAccess[], roleName: string) =>
+  roles.find((roleObj) => roleObj.role === roleName && roleObj.status === "active");
+
 export const getRoleRequests = async (event: APIGatewayEvent) => {
   try {
     const { userId, poolId } = getAuthDetails(event);
@@ -26,14 +29,11 @@ export const getRoleRequests = async (event: APIGatewayEvent) => {
 
     let roleRequests: StateAccess[] = [];
 
-    const cmsRoleApproverRole = userRoles.find(
-      (roleObj: StateAccess) => roleObj.role === "cmsroleapprover" && roleObj.status === "active",
-    );
-    const stateSystemAdminRole = userRoles.find(
-      (roleObj: StateAccess) => roleObj.role === "statesystemadmin" && roleObj.status === "active",
-    );
+    const cmsRoleApproverRole = getActiveRole(userRoles, "cmsroleapprover");
+    const helpDeskRole = getActiveRole(userRoles, "helpdesk");
+    const stateSystemAdminRole = getActiveRole(userRoles, "statesystemadmin");
 
-    if (cmsRoleApproverRole) {
+    if (cmsRoleApproverRole || helpDeskRole) {
       roleRequests = await getAllUserRoles();
     } else if (stateSystemAdminRole?.territory) {
       roleRequests = await getAllUserRolesByState(stateSystemAdminRole.territory);

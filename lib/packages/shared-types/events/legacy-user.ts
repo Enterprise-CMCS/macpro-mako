@@ -9,6 +9,8 @@ const userRoles = z.enum([
   "statesubmitter",
   "systemadmin",
 ]);
+export type UserRole = z.infer<typeof userRoles>;
+
 const userStatus = z.enum(["active", "pending", "revoked", "denied"]);
 const roleEvent = z.enum(["user-role", "legacy-user-role"]);
 const skPattern = /^v[0-9]+#[a-z]+#(N\/A|[A-Z]{2})$/;
