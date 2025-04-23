@@ -48,7 +48,7 @@ type ParsedLegacyRecordFromKafka = Partial<{
   sk: string;
   GSI1pk: string;
 }>;
-// TODO: fix?
+// Used for updating access for legacy user role events and request state access on mako
 export const isRecordAUserRoleRequest = (
   record: OneMacRecord,
 ): record is OneMacRecord & { eventType: "user-role" | "legacy-user-role" } => {
@@ -58,7 +58,7 @@ export const isRecordAUserRoleRequest = (
     (record.eventType === "user-role" || record.eventType === "legacy-user-role")
   );
 };
-
+// Only used for ingesting legacy user role documents?
 export const isRecordALegacyUserRoleRequest = (
   record: ParsedLegacyRecordFromKafka,
   kafkaSource: string,
@@ -146,7 +146,6 @@ const getOneMacRecordWithAllProperties = (
   }
 
   if (isRecordAOneMacRecord(record)) {
-    console.log(record, "ARE WE IN HERE");
     const transformForEvent = transforms[record.event];
 
     const safeEvent = transformForEvent.transform().safeParse(record);
@@ -270,13 +269,12 @@ export const insertOneMacRecordsFromKafkaIntoMako = async (
     (record) =>
       record.eventType !== "user-info" &&
       record.eventType !== "legacy-user-role" &&
-      record.event !== "user-role",
+      record.eventType !== "user-role",
   );
   const oneMacUsers = oneMacRecordsForMako.filter((record) => record.eventType === "user-info");
   const roleRequests = oneMacRecordsForMako.filter(
     (record) => record.eventType === "legacy-user-role" || record.eventType === "user-role",
   );
-  console.log(roleRequests, "ROLE REQUESTS??");
 
   await bulkUpdateDataWrapper(oneMacRecords, "main");
   await bulkUpdateDataWrapper(oneMacUsers, "users");
