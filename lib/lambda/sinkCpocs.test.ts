@@ -262,32 +262,32 @@ describe("test sync cpoc", () => {
     expect(osBulkSpy).toHaveBeenCalledTimes(2);
   });
 
-//   it("should succeed after receiving a rate limit exceeded error", async () => {
-//     mockedServer.use(errorBulkUpdateDataHandler);
+  it("Should fail to update because of an error", async () => {
+    mockedServer.use(errorBulkUpdateDataHandler);
 
-//     await expect(() =>
-//       handler(
-//         createKafkaEvent({
-//           [`${TOPIC}-xyz`]: [
-//             createKafkaRecord({
-//               topic: `${TOPIC}-xyz`,
-//               key: MUHAMMAD_BASHAR_KEY,
-//               value: convertObjToBase64({
-//                 payload: {
-//                   after: {
-//                     Officer_ID: MUHAMMAD_BASHAR_ID,
-//                     First_Name: MUHAMMAD_BASHAR._source?.firstName,
-//                     Last_Name: MUHAMMAD_BASHAR._source?.lastName,
-//                     Email: MUHAMMAD_BASHAR._source?.email,
-//                   },
-//                 },
-//               }),
-//             }),
-//           ],
-//         }),
-//         {} as Context,
-//         vi.fn(),
-//       ),
-//     ).rejects.toThrowError("Response Error");
-//   });
-// });
+    await expect(() =>
+      handler(
+        createKafkaEvent({
+          [`${TOPIC}-xyz`]: [
+            createKafkaRecord({
+              topic: `${TOPIC}-xyz`,
+              key: MUHAMMAD_BASHAR_KEY,
+              value: convertObjToBase64({
+                payload: {
+                  after: {
+                    Officer_ID: MUHAMMAD_BASHAR_ID,
+                    First_Name: MUHAMMAD_BASHAR._source?.firstName,
+                    Last_Name: MUHAMMAD_BASHAR._source?.lastName,
+                    Email: MUHAMMAD_BASHAR._source?.email,
+                  },
+                },
+              }),
+            }),
+          ],
+        }),
+        {} as Context,
+        vi.fn(),
+      ),
+    ).rejects.toThrowError("Response Error");
+  });
+});
