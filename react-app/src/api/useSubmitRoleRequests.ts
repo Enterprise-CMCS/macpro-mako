@@ -47,7 +47,7 @@ export const useSubmitRoleRequests = () => {
       await queryClient.refetchQueries(["roleRequests"]);
     },
 
-    onError: ({ context }) => {
+    onError: (_error, _variables, context) => {
       if (context?.previousRequests) {
         queryClient.setQueryData(["roleRequests"], context.previousRequests);
       }

@@ -19,7 +19,7 @@ import {
 } from "@/components";
 import { cn } from "@/utils";
 type StatusType = "active" | "pending" | "denied" | "revoked";
-type UserRoleType = {
+export type UserRoleType = {
   id: string;
   email: string;
   fullName: string;
@@ -217,7 +217,7 @@ export const UserManagement = () => {
 
   const parsedUserRoles: UserRoleType[] = useMemo(() => {
     if (!data || !data.length) return [];
-    return initSortUserData(JSON.parse(data));
+    return initSortUserData(data);
   }, [data]);
 
   const sortedUserRoles = useMemo(() => {
