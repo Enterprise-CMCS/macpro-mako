@@ -189,7 +189,9 @@ export const StateWelcome = () => {
 
       {/* Access Header */}
       <div className="pt-[56px] pb-[25px] pl-[24px]">
-        <h2 className="text-2xl font-semibold">Access more SPA and waiver systems</h2>
+        <h2 className="text-2xl font-merriweather font-black">
+          Access more SPA and waiver systems
+        </h2>
       </div>
 
       {/* Cards Section */}
