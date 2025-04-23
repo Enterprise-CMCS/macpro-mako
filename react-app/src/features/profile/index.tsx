@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { Navigate } from "react-router";
 import { FULL_CENSUS_STATES, StateCode } from "shared-types";
 
 import { StateAccess, useGetUserDetails, useGetUserProfile, useSubmitRoleRequests } from "@/api";
@@ -22,7 +23,7 @@ const orderStateAccess = (accesses: StateAccess[]) => {
   if (!accesses || !accesses.length) return;
   // sort revoked states seprately and add to
   const activeStates = accesses.filter((x: StateAccess) => x.status != "revoked");
-  const revokedStates = accesses.filter((x: StateAccess) => (x.status = "revoked"));
+  const revokedStates = accesses.filter((x: StateAccess) => x.status == "revoked");
 
   const compare = (a: StateAccess, b: StateAccess) => {
     const stateA = convertStateAbbrToFullName(a.territory);
@@ -39,16 +40,27 @@ const orderStateAccess = (accesses: StateAccess[]) => {
 };
 
 export const Profile = () => {
-  const { data: userDetails } = useGetUserDetails();
-  const { data: userProfile, refetch: reloadUserProfile } = useGetUserProfile();
-  console.log(userProfile, "IS THIS UPDATED");
+  const { data: userDetails, isLoading: isDetailLoading } = useGetUserDetails();
+  const {
+    data: userProfile,
+    isLoading: isProfileLoading,
+    refetch: reloadUserProfile,
+  } = useGetUserProfile();
+  const { mutateAsync: submitRequest, isLoading: areRolesLoading } = useSubmitRoleRequests();
+  const [showAddState, setShowAddState] = useState<boolean>(true);
+  const [requestedStates, setRequestedStates] = useState<StateCode[]>([]);
+
+  if (isDetailLoading || isProfileLoading) {
+    return <LoadingSpinner />;
+  }
+
+  if (!isDetailLoading && !userDetails?.id) {
+    return <Navigate to="/" />;
+  }
 
   const stateAccess = orderStateAccess(
     userProfile?.stateAccess?.filter((access) => access.territory != "ZZ"),
   );
-
-  const [showAddState, setShowAddState] = useState<boolean>(true);
-  const [requestedStates, setRequestedStates] = useState<StateCode[]>([]);
 
   const hasStateAccess = Array.isArray(stateAccess) && stateAccess.length > 0;
 
@@ -57,8 +69,6 @@ export const Profile = () => {
     const isAlreadyRequested = stateAccess.some(({ territory }) => territory === value);
     return !isAlreadyRequested && value !== "ZZ";
   }).map(({ label, value }) => ({ label, value }));
-
-  const { mutateAsync: submitRequest, isLoading } = useSubmitRoleRequests();
 
   const handleSubmitRequest = async () => {
     try {
@@ -164,7 +174,7 @@ export const Profile = () => {
                       <div className="block lg:mt-8 lg:mb-2">
                         <span>
                           <Button onClick={handleSubmitRequest}>Submit</Button>
-                          {isLoading && <LoadingSpinner />}
+                          {areRolesLoading && <LoadingSpinner />}
                           <Button variant="link" onClick={() => setShowAddState(true)}>
                             Cancel
                           </Button>

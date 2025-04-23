@@ -174,7 +174,7 @@ export const multiStateSubmitter: TestUserData = {
   UserAttributes: [
     {
       Name: "email",
-      Value: "statemulti@example.com",
+      Value: "multistate@example.com",
     },
     {
       Name: "email_verified",
@@ -182,11 +182,11 @@ export const multiStateSubmitter: TestUserData = {
     },
     {
       Name: "given_name",
-      Value: "State",
+      Value: "Multi",
     },
     {
       Name: "family_name",
-      Value: "Multi",
+      Value: "State",
     },
     {
       Name: "custom:state",
@@ -208,7 +208,7 @@ export const noStateSubmitter: TestUserData = {
   UserAttributes: [
     {
       Name: "email",
-      Value: "statemulti@example.com",
+      Value: "nostate@example.com",
     },
     {
       Name: "email_verified",
@@ -216,11 +216,11 @@ export const noStateSubmitter: TestUserData = {
     },
     {
       Name: "given_name",
-      Value: "State",
+      Value: "No",
     },
     {
       Name: "family_name",
-      Value: "Multi",
+      Value: "State",
     },
     {
       Name: "custom:state",

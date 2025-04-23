@@ -1,7 +1,7 @@
 import { http, HttpResponse } from "msw";
 
 import { getUserByUsername } from "../../data";
-import { getFilteredRolesByEmail } from "../../data/roles";
+import { getFilteredRoleDocsByEmail } from "../../data/roles";
 
 const defaultApiUserProfileHandler = http.get(
   "https://test-domain.execute-api.us-east-1.amazonaws.com/mocked-tests/getUserProfile",
@@ -14,7 +14,7 @@ const defaultApiUserProfileHandler = http.get(
     if (!user) {
       return HttpResponse.json([]);
     }
-    const roles = getFilteredRolesByEmail(user?.email || "");
+    const roles = getFilteredRoleDocsByEmail(user?.email || "");
 
     return HttpResponse.json(roles);
   },

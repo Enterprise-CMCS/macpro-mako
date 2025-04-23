@@ -14,10 +14,10 @@ describe("getAllStateUsers", () => {
         formattedEmailAddress: "George Harrison <george@example.com>",
       },
       {
-        firstName: "State",
-        lastName: "Multi",
-        email: "statemulti@example.com",
-        formattedEmailAddress: "State Multi <statemulti@example.com>",
+        firstName: "Multi",
+        lastName: "State",
+        email: "multistate@example.com",
+        formattedEmailAddress: "Multi State <multistate@example.com>",
       },
       {
         firstName: "Otto",

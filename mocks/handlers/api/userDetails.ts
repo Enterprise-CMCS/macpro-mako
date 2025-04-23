@@ -1,7 +1,8 @@
 import { http, HttpResponse } from "msw";
 
 import { getUserByUsername } from "../../data";
-import { getFilteredUserDocList } from "../../data/osusers";
+import { getFilteredUserResultList } from "../../data/osusers";
+import { getLatestRoleByEmail } from "../../data/roles";
 
 const defaultApiUserDetailsHandler = http.get(
   "https://test-domain.execute-api.us-east-1.amazonaws.com/mocked-tests/getUserDetails",
@@ -14,9 +15,13 @@ const defaultApiUserDetailsHandler = http.get(
     if (!user) {
       return HttpResponse.json({});
     }
-    const details = getFilteredUserDocList([user?.email || ""]);
+    const userDetails = getFilteredUserResultList([user?.email || ""])?.[0]?._source ?? null;
+    const userRoles = getLatestRoleByEmail(user?.email || "")?.[0]?._source ?? null;
 
-    return HttpResponse.json(details);
+    return HttpResponse.json({
+      ...userDetails,
+      role: userRoles?.role ?? "",
+    });
   },
 );
 

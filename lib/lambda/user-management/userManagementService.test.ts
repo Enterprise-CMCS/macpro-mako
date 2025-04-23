@@ -2,7 +2,7 @@ import {
   getFilteredRoleDocsByEmail,
   getFilteredRoleDocsByState,
   getLatestRoleByEmail,
-  idmRolesDoc,
+  roleDocs,
   STATE_SUBMITTER_EMAIL,
   STATE_SUBMITTER_USER,
   STATE_SYSTEM_ADMIN_EMAIL,
@@ -195,7 +195,7 @@ describe("User Management Service", () => {
   describe("getAllUserRoles", () => {
     it("should return all of the role records", async () => {
       const result = await getAllUserRoles();
-      expect(result).toEqual(idmRolesDoc);
+      expect(result).toEqual(roleDocs);
     });
   });
 

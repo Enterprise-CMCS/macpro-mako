@@ -5,7 +5,7 @@ import type { TestUserData } from "../../index.d";
 import { makoReviewer, reviewers, superReviewer } from "./cmsReviewer";
 import { helpDeskUser, helpDeskUsers } from "./helpDeskUsers";
 import { readOnlyUser, readOnlyUsers } from "./readOnlyCMSUsers";
-import { coStateSubmitter, osStateSubmitter, stateSubmitters } from "./stateSubmitters";
+import { coStateSubmitter, makoStateSubmitter, stateSubmitters } from "./stateSubmitters";
 
 export const noRoleUser: TestUserData = {
   UserAttributes: [
@@ -53,7 +53,7 @@ export const getUserByUsername = (id: string) => {
   return {} as CognitoUserAttributes;
 };
 
-export const TEST_STATE_SUBMITTER_USER = convertUserAttributes(osStateSubmitter);
+export const TEST_STATE_SUBMITTER_USER = convertUserAttributes(makoStateSubmitter);
 export const TEST_CO_STATE_SUBMITTER_USER = convertUserAttributes(coStateSubmitter);
 export const TEST_CMS_REVIEWER_USER = convertUserAttributes(makoReviewer);
 export const TEST_HELP_DESK_USER = convertUserAttributes(helpDeskUser);

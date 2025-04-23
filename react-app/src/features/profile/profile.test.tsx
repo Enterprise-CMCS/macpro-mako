@@ -11,7 +11,7 @@ import { renderWithQueryClientAndMemoryRouter } from "@/utils/test-helpers";
 
 import { Profile } from ".";
 
-describe.skip("Profile", () => {
+describe("Profile", () => {
   const setup = async () => {
     const rendered = renderWithQueryClientAndMemoryRouter(
       <Profile />,
@@ -58,9 +58,11 @@ describe.skip("Profile", () => {
 
     await setup();
 
-    await waitFor(() =>
-      expect(screen.getByText("California, New York, Maryland")).toBeInTheDocument(),
-    );
+    await waitFor(() => expect(screen.getByText("Multi State")).toBeInTheDocument());
+
+    expect(screen.queryByText("California")).toBeInTheDocument();
+    expect(screen.queryByText("New York")).toBeInTheDocument();
+    expect(screen.queryByText("Maryland")).toBeInTheDocument();
   });
 
   test("renders nothing if user has no states", async () => {
@@ -68,13 +70,21 @@ describe.skip("Profile", () => {
 
     await setup();
 
-    await waitFor(() => expect(screen.queryByText("Access Granted")).not.toBeInTheDocument());
+    await waitFor(() => expect(screen.getByText("No State")).toBeInTheDocument());
+    expect(screen.queryByText("Access Granted")).not.toBeInTheDocument();
   });
 
   test("renders roles", async () => {
     await setup();
 
     await waitFor(() => expect(screen.getByText("State Submitter")).toBeInTheDocument());
+
+    expect(screen.queryByText("Virginia")).toBeInTheDocument();
+    expect(screen.queryByText("Ohio")).toBeInTheDocument();
+    expect(screen.queryByText("South Carolina")).toBeInTheDocument();
+    expect(screen.queryByText("Colorado")).toBeInTheDocument();
+    expect(screen.queryByText("Georgia")).toBeInTheDocument();
+    expect(screen.queryByText("Maryland")).toBeInTheDocument();
   });
 
   test("renders full name", async () => {

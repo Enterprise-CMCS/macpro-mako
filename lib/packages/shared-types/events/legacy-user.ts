@@ -27,6 +27,7 @@ export const onemacLegacyUserRoleRequest = baseUserRoleRequestSchema
   .extend({
     pk: z.string().email(),
     sk: z.string().regex(skPattern),
+    eventType: roleEvent.default("legacy-user-role"),
   })
   .transform((data) => ({
     id: `${data.pk}_${data.territory}_${data.role}`,

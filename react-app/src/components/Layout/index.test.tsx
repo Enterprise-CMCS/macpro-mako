@@ -1,7 +1,7 @@
 import { render, screen, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { Auth } from "aws-amplify";
-import { AUTH_CONFIG, noRoleUser, osStateSubmitter, setMockUsername } from "mocks";
+import { AUTH_CONFIG, makoStateSubmitter, noRoleUser, setMockUsername } from "mocks";
 import { beforeAll, beforeEach, describe, expect, it, vi } from "vitest";
 
 import * as api from "@/api";
@@ -197,7 +197,7 @@ describe("Layout", () => {
     it("navigates to dashboard if user has appropriate roles", async () => {
       const setupLayoutTest = async (
         viewMode: ViewMode = VIEW_MODES.DESKTOP,
-        userData = osStateSubmitter,
+        userData = makoStateSubmitter,
       ) => {
         setMockUsername(userData);
         mockMediaQuery(viewMode);
@@ -230,7 +230,7 @@ describe("Layout", () => {
       });
       const setupLayoutTest = async (
         viewMode: ViewMode = VIEW_MODES.DESKTOP,
-        userData = osStateSubmitter,
+        userData = makoStateSubmitter,
       ) => {
         setMockUsername(userData);
         mockMediaQuery(viewMode);
@@ -267,7 +267,7 @@ describe("Layout", () => {
   describe("Navigation links and mobile view", () => {
     const setupLayoutTest = async (
       viewMode: ViewMode = VIEW_MODES.DESKTOP,
-      userData = osStateSubmitter,
+      userData = makoStateSubmitter,
     ) => {
       setMockUsername(userData);
       mockMediaQuery(viewMode);

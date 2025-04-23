@@ -5,7 +5,7 @@ import {
   getFilteredRolesByEmail,
   getFilteredRolesByState,
   getLatestRoleByEmail,
-  idmRoles,
+  roleResults,
 } from "../../data/roles";
 import { SearchQueryBody, TestRoleResult } from "../../index.d";
 import { getFilterValueAsString } from "../search.utils";
@@ -32,7 +32,7 @@ const defaultRoleSearchHandler = http.post<PathParams, SearchQueryBody>(
       const approvedRole = getApprovedRoleByEmailAndState(email, state, role);
       hits = approvedRole ? [approvedRole] : [];
     } else if (query?.match_all) {
-      hits = idmRoles;
+      hits = roleResults;
     } else {
       hits = [];
     }
