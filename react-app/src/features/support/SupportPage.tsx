@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import { Navigate, useLocation, useNavigate, useParams } from "react-router";
 import { isCmsUser } from "shared-utils";
 
@@ -89,9 +89,9 @@ export const SupportPage = () => {
     setOpenAccordions(allIds);
   };
 
-  const collapseAll = () => {
+  const collapseAll = useCallback(() => {
     setOpenAccordions([]);
-  };
+  }, [setOpenAccordions]);
 
   const areAllAccordionsOpen = (function () {
     const totalQandas = supportContent.reduce((total, section) => {
@@ -155,6 +155,10 @@ export const SupportPage = () => {
     setSupportContent,
     startingSupportContent,
   ]);
+
+  useEffect(() => {
+    console.log("support content", supportContent);
+  }, [supportContent]);
 
   if (!isSupportPageShown || !userObj?.user) return <Navigate to="/" replace />;
 
@@ -228,16 +232,20 @@ export const SupportPage = () => {
 
           {/* Content - Force minimum width */}
           <section className="w-2/3 block max-w-screen-xl px-4 lg:px-8 gap-10">
-            <div className="">
-              <div className="flex justify-end py-4">
-                <ExpandCollapseBtn
-                  collapseAll={collapseAll}
-                  expandAll={expandAll}
-                  areAllOpen={areAllAccordionsOpen}
-                />
+            {supportContent[0].qanda.length ? (
+              <div className="">
+                <div className="flex justify-end py-4">
+                  <ExpandCollapseBtn
+                    collapseAll={collapseAll}
+                    expandAll={expandAll}
+                    areAllOpen={areAllAccordionsOpen}
+                  />
+                </div>
+                <hr className="bg-gray-300 h-[1.2px]" />
               </div>
-              <hr className="bg-gray-300 h-[1.2px]" />
-            </div>
+            ) : (
+              <div></div>
+            )}
             <div className="flex-1 mt-8">
               <Accordion type="multiple" value={openAccordions} onValueChange={setOpenAccordions}>
                 {supportContent.map(({ sectionTitle, qanda }) => (
