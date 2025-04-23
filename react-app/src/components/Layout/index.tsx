@@ -5,6 +5,7 @@ import { Auth } from "aws-amplify";
 import { useState } from "react";
 import { Link, NavLink, NavLinkProps, Outlet, useNavigate } from "react-router";
 import { UserRoles } from "shared-types";
+import { isStateUser } from "shared-utils";
 
 import { useGetUser } from "@/api";
 import { Banner, ScrollToTop, SimplePageContainer, UserPrompt } from "@/components";
@@ -15,6 +16,7 @@ import { useFeatureFlag } from "@/hooks/useFeatureFlag";
 import { isFaqPage, isProd } from "@/utils";
 import { sendGAEvent } from "@/utils/ReactGA/sendGAEvent";
 
+import TopBanner from "../Banner/macproBanner";
 import { Footer } from "../Footer";
 import { UsaBanner } from "../UsaBanner";
 
@@ -30,6 +32,8 @@ const useGetLinks = () => {
   const hideWebformTab = useFeatureFlag("UAT_HIDE_MMDL_BANNER");
   const toggleFaq = useFeatureFlag("TOGGLE_FAQ");
   const showHome = toggleFaq ? userObj.user : true; // if toggleFAQ is on we want to hide home when not logged in
+  const isStateHomepage = useFeatureFlag("STATE_HOMEPAGE_FLAG");
+  const { data: user } = useGetUser();
 
   const links =
     isLoading || isFaqPage
@@ -56,6 +60,11 @@ const useGetLinks = () => {
             name: "View FAQs",
             link: "/faq",
             condition: !toggleFaq,
+          },
+          {
+            name: "Latest Updates",
+            link: "/latestupdates",
+            condition: isStateHomepage && isStateUser(user.user),
           },
           { name: "Support", link: "/support", condition: userObj.user && toggleFaq },
           {
@@ -208,6 +217,7 @@ export const Layout = () => {
       <UserPrompt />
       {user?.user && !isFaqPage && <MMDLAlertBanner />}
       <UsaBanner isUserMissingRole={user?.user && customUserRoles === undefined} />
+      <TopBanner />
       <nav data-testid="nav-banner-d" className="bg-primary">
         <div className="max-w-screen-xl mx-auto px-4 lg:px-8">
           <div className="h-[70px] relative flex gap-12 items-center text-white">

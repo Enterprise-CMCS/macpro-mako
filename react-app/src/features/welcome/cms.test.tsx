@@ -38,7 +38,7 @@ describe("CMSWelcome", () => {
 
   it("renders all action buttons with correct labels", () => {
     render(<CMSWelcome />);
-    expect(screen.getByText("Go to MACPro System")).toBeInTheDocument();
+    expect(screen.getByText("Go to MACPro")).toBeInTheDocument();
     expect(screen.getByText("Go to SEA Tool")).toBeInTheDocument();
     expect(screen.getByText("Go to WMS")).toBeInTheDocument();
     expect(screen.getByText("Go to eRegs")).toBeInTheDocument();
