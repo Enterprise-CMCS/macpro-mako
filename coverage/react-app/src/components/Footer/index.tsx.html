@@ -25,14 +25,14 @@
             <div class='fl pad1y space-right2'>
                 <span class="strong">100% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>2/2</span>
+                <span class='fraction'>5/5</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
                 <span class="strong">100% </span>
                 <span class="quiet">Branches</span>
-                <span class='fraction'>2/2</span>
+                <span class='fraction'>5/5</span>
             </div>
         
             
@@ -46,7 +46,7 @@
             <div class='fl pad1y space-right2'>
                 <span class="strong">100% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>2/2</span>
+                <span class='fraction'>5/5</span>
             </div>
         
             
@@ -168,7 +168,19 @@
 <a name='L103'></a><a href='#L103'>103</a>
 <a name='L104'></a><a href='#L104'>104</a>
 <a name='L105'></a><a href='#L105'>105</a>
-<a name='L106'></a><a href='#L106'>106</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
+<a name='L106'></a><a href='#L106'>106</a>
+<a name='L107'></a><a href='#L107'>107</a>
+<a name='L108'></a><a href='#L108'>108</a>
+<a name='L109'></a><a href='#L109'>109</a>
+<a name='L110'></a><a href='#L110'>110</a>
+<a name='L111'></a><a href='#L111'>111</a>
+<a name='L112'></a><a href='#L112'>112</a>
+<a name='L113'></a><a href='#L113'>113</a>
+<a name='L114'></a><a href='#L114'>114</a>
+<a name='L115'></a><a href='#L115'>115</a>
+<a name='L116'></a><a href='#L116'>116</a>
+<a name='L117'></a><a href='#L117'>117</a>
+<a name='L118'></a><a href='#L118'>118</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -183,10 +195,13 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">77x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">78x</span>
+<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-yes">2x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -258,7 +273,16 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">77x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">78x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -274,8 +298,11 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">import { Link } from "react-router";
+import { isStateUser } from "shared-utils";
 &nbsp;
+import { useGetUser } from "@/api";
 import { Alert, Button } from "@/components";
+import { useFeatureFlag } from "@/hooks/useFeatureFlag";
 &nbsp;
 type Props = {
   email: string;
@@ -288,10 +315,14 @@ type Props = {
   showNavLinks?: boolean;
 };
 &nbsp;
-export const Footer = ({ email, address, showNavLinks = false }: Props) =&gt; {
+export const Footer = ({ email, address, showNavLinks }: Props) =&gt; {
+  const shouldShowNavLinks = showNavLinks ?? true;
+  const { data: user } = useGetUser();
+  const isStateHomepage = useFeatureFlag("STATE_HOMEPAGE_FLAG");
+&nbsp;
   return (
     &lt;footer&gt;
-      {showNavLinks &amp;&amp; (
+      {shouldShowNavLinks &amp;&amp; (
         &lt;section className="bg-[#f0f0f0] text-sm"&gt;
           &lt;div className="grid grid-cols-12 gap-4 px-10 py-4 max-w-screen-xl mx-auto"&gt;
             &lt;div className="col-span-6 flex gap-8"&gt;
@@ -301,6 +332,11 @@ export const Footer = ({ email, address, showNavLinks = false }: Props) =&gt; {
               &lt;a href="/dashboard" className="underline font-bold"&gt;
                 &lt;p&gt;Dashboard&lt;/p&gt;
               &lt;/a&gt;
+              {isStateHomepage &amp;&amp; isStateUser(user.user) &amp;&amp; (
+                &lt;a href="/latestupdates" className="underline font-bold"&gt;
+                  &lt;p&gt;Latest Updates&lt;/p&gt;
+                &lt;/a&gt;
+              )}
               &lt;a href="/faq" className="underline font-bold"&gt;
                 &lt;p&gt;Support&lt;/p&gt;
               &lt;/a&gt;
@@ -385,7 +421,7 @@ export const FAQFooter = () =&gt; {
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2025-04-23T13:47:30.725Z
+                at 2025-04-23T14:27:14.846Z
             </div>
         <script src="../../../../prettify.js"></script>
         <script>
