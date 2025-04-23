@@ -1,5 +1,5 @@
-import { useEffect, useMemo, useState } from "react";
-import { Navigate, useParams } from "react-router";
+import { useCallback, useEffect, useMemo, useState } from "react";
+import { Navigate, useNavigate, useParams } from "react-router";
 import { isCmsUser } from "shared-utils";
 
 import { useGetUser } from "@/api/useGetUser";
@@ -8,14 +8,18 @@ import {
   AccordionContent,
   AccordionItem,
   AccordionTrigger,
+  BreadCrumbBar,
+  BreadCrumbSeperator,
+  ContactHelpDesk,
   ExpandCollapseBtn,
   LeftNavigation,
-  Search,
+  SearchContent,
   StatusLabel,
   SupportSubNavHeader,
   ToggleGroup,
   ToggleGroupItem,
 } from "@/components";
+import { FAQContentType } from "@/features/support/SupportMockContent";
 import { useFeatureFlag } from "@/hooks/useFeatureFlag";
 import { cn } from "@/utils";
 
@@ -64,13 +68,17 @@ export const SupportPage = () => {
   const { id } = useParams<{ id: string }>();
   const isSupportPageShown = useFeatureFlag("TOGGLE_FAQ");
   const [openAccordions, setOpenAccordions] = useState<string[]>([]);
-
   const { data: userObj } = useGetUser();
   const isCmsView = isCmsUser(userObj.user);
+  const navigate = useNavigate();
 
+  const [supportContent, setSupportContent] = useState(
+    isCmsView ? oneMACCMSContent : oneMACStateFAQContent,
+  );
   const [tgValue, setTGValue] = useState<"cms" | "state">(isCmsView ? "cms" : "state");
+  const [isSearching, setIsSearching] = useState<boolean>(false);
 
-  const supportContent = useMemo(() => {
+  const startingSupportContent = useMemo(() => {
     if (tgValue === "cms") return oneMACCMSContent;
     return oneMACStateFAQContent;
   }, [tgValue]);
@@ -80,9 +88,9 @@ export const SupportPage = () => {
     setOpenAccordions(allIds);
   };
 
-  const collapseAll = () => {
+  const collapseAll = useCallback(() => {
     setOpenAccordions([]);
-  };
+  }, [setOpenAccordions]);
 
   const areAllAccordionsOpen = (function () {
     const totalQandas = supportContent.reduce((total, section) => {
@@ -94,9 +102,17 @@ export const SupportPage = () => {
 
   const latestOpenedFAQ = areAllAccordionsOpen ? "" : openAccordions[openAccordions.length - 1];
 
-  const onSearch = (s: string) => {
-    // search logic will be added here
-    console.log("searching... ", s);
+  const setSearchResults = (searchResults: FAQContentType[], isSearching?: boolean) => {
+    setIsSearching(isSearching);
+
+    if (isSearching && searchResults[0].qanda.length) {
+      setSupportContent(searchResults);
+      setOpenAccordions([searchResults[0].qanda[0].anchorText]);
+    } else if (isSearching) setSupportContent(searchResults);
+    else {
+      collapseAll();
+      setSupportContent(startingSupportContent);
+    }
   };
 
   useEffect(() => {
@@ -112,17 +128,48 @@ export const SupportPage = () => {
     }
   }, [id]);
 
+  // since the search page is mimicing a new "page",
+  // this will allow the user to go "back" to the original support page when searching
+  useEffect(() => {
+    const handlePopState = () => {
+      if (isSearching) {
+        navigate("/support", { replace: true });
+        setIsSearching(false);
+        collapseAll();
+        setSupportContent(startingSupportContent);
+      } else {
+        navigate("/dashboard");
+      }
+    };
+    window.addEventListener("popstate", handlePopState);
+    return () => {
+      window.removeEventListener("popstate", handlePopState);
+    };
+  }, [
+    isSearching,
+    navigate,
+    setIsSearching,
+    collapseAll,
+    setSupportContent,
+    startingSupportContent,
+  ]);
+
   if (!isSupportPageShown || !userObj?.user) return <Navigate to="/" replace />;
 
   return (
     <div className="min-h-screen flex flex-col">
-      <SupportSubNavHeader>
+      <SupportSubNavHeader className="z-10">
         <h1 className="text-4xl font-semibold">OneMAC Support</h1>
-        <Search placeholderText="Search OneMAC support" handleSearch={onSearch} />
+        <SearchContent
+          placeholderText="Search OneMAC support"
+          supportContent={startingSupportContent}
+          setSearchResults={setSearchResults}
+          isSearching={isSearching}
+        />
       </SupportSubNavHeader>
 
       {/* only display the toggle CMS/State view when the user is CMS */}
-      {isCmsView && (
+      {isCmsView && !isSearching && (
         <div className="max-w-screen-xl m-auto px-4 lg:px-8 w-full pt-8">
           <div className="flex justify-end">
             <div className="w-2/3 px-4 lg:px-8">
@@ -132,7 +179,11 @@ export const SupportPage = () => {
                 data-testid="cms-toggle-group"
                 value={tgValue}
                 onValueChange={(value: "cms" | "state") => {
-                  if (value) setTGValue(value);
+                  if (value) {
+                    setTGValue(value);
+                    if (value === "cms") setSupportContent(oneMACCMSContent);
+                    else setSupportContent(oneMACStateFAQContent);
+                  }
                 }}
               >
                 <ToggleGroupItem value="cms" aria-label="cms">
@@ -152,28 +203,49 @@ export const SupportPage = () => {
       <div className="max-w-screen-xl m-auto px-4 lg:px-8 pt-4 w-full">
         <div className="flex">
           {/* Left Navigation - Fixed width with explicit max-width */}
-          <div className="w-1/3 sticky top-20 h-[calc(100vh-5rem)] sm:-z-10">
-            <LeftNavigation topics={supportContent.flatMap(({ sectionTitle }) => sectionTitle)} />
+          <div className="w-1/3 sticky top-20 h-[calc(100vh-5rem)]">
+            {isSearching && (
+              <BreadCrumbBar>
+                <li>
+                  <a
+                    onClick={() => setSearchResults([], false)}
+                    className="underline cursor-pointer text-sky-700 hover:text-sky-800 flex items-center text-sm"
+                  >
+                    Support
+                  </a>
+                </li>
+                <BreadCrumbSeperator />
+                <li className="flex items-center text-sm">Search Results</li>
+              </BreadCrumbBar>
+            )}
+            {!isSearching && (
+              <LeftNavigation topics={supportContent.flatMap(({ sectionTitle }) => sectionTitle)} />
+            )}
+            <ContactHelpDesk />
           </div>
 
           {/* Content - Force minimum width */}
-          <section className="w-2/3 block max-w-screen-xl m-auto px-4 lg:px-8 gap-10">
-            <div className="">
-              <div className="flex justify-end py-4">
-                <ExpandCollapseBtn
-                  collapseAll={collapseAll}
-                  expandAll={expandAll}
-                  areAllOpen={areAllAccordionsOpen}
-                />
+          <section className="w-2/3 block max-w-screen-xl px-4 lg:px-8 gap-10">
+            {supportContent[0].qanda.length ? (
+              <div className="">
+                <div className="flex justify-end py-4">
+                  <ExpandCollapseBtn
+                    collapseAll={collapseAll}
+                    expandAll={expandAll}
+                    areAllOpen={areAllAccordionsOpen}
+                  />
+                </div>
+                <hr className="bg-gray-300 h-[1.2px]" />
               </div>
-              <hr className="bg-gray-300 h-[1.2px]" />
-            </div>
+            ) : (
+              <div></div>
+            )}
             <div className="flex-1 mt-8">
               <Accordion type="multiple" value={openAccordions} onValueChange={setOpenAccordions}>
                 {supportContent.map(({ sectionTitle, qanda }) => (
                   <article key={sectionTitle} className="mb-8">
                     <h2 className="text-2xl font-bold mb-4">{sectionTitle}</h2>
-                    <hr className="bg-gray-300 h-[1.7px]" />
+                    {!isSearching && <hr className="bg-gray-300 h-[1.7px]" />}
                     <FaqAccordion question={qanda} latestOpened={latestOpenedFAQ} />
                   </article>
                 ))}
