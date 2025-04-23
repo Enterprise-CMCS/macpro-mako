@@ -20,7 +20,7 @@ describe("test user data", () => {
       if (result.success === false) {
         ///@ts-ignore
         console.log("the following record failed to parse", user.sk);
-
+        console.log("validation error: ", result.error); // remove
         throw new Error("failed to validate user role information");
       }
     });

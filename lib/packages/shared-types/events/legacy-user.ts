@@ -7,7 +7,10 @@ const userRoles = z.enum([
   "statesystemadmin",
   "helpdesk",
   "statesubmitter",
+  "systemadmin",
 ]);
+export type UserRole = z.infer<typeof userRoles>;
+
 const userStatus = z.enum(["active", "pending", "revoked", "denied"]);
 const roleEvent = z.enum(["user-role", "legacy-user-role"]);
 const skPattern = /^v[0-9]+#[a-z]+#(N\/A|[A-Z]{2})$/;
@@ -22,7 +25,7 @@ export const baseUserRoleRequestSchema = z.object({
   date: z.number(),
   eventType: roleEvent,
 });
-// this schema is used to ingest legacy role requests
+// This schema is used to parse ingested legacy role requests
 export const onemacLegacyUserRoleRequest = baseUserRoleRequestSchema
   .extend({
     pk: z.string().email(),
@@ -42,7 +45,7 @@ export const onemacLegacyUserRoleRequest = baseUserRoleRequestSchema
   }));
 
 // OneMAC Upgrade/Mako User Role Request Schema
-// Rename to stateAccessRequest? this schema is used to request access to states, grant and deny access
+// Rename? This schema is used to parse access requests to states, grant and deny access
 export const userRoleRequest = baseUserRoleRequestSchema.transform((data) => ({
   id: `${data.email}_${data.territory}_${data.role}`,
   eventType: data.eventType,
