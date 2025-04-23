@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useMemo, useState } from "react";
-import { Navigate, useLocation, useNavigate, useParams } from "react-router";
+import { Navigate, useNavigate, useParams } from "react-router";
 import { isCmsUser } from "shared-utils";
 
 import { useGetUser } from "@/api/useGetUser";
@@ -70,7 +70,6 @@ export const SupportPage = () => {
   const [openAccordions, setOpenAccordions] = useState<string[]>([]);
   const { data: userObj } = useGetUser();
   const isCmsView = isCmsUser(userObj.user);
-  const location = useLocation();
   const navigate = useNavigate();
 
   const [supportContent, setSupportContent] = useState(
@@ -134,7 +133,7 @@ export const SupportPage = () => {
   useEffect(() => {
     const handlePopState = () => {
       if (isSearching) {
-        navigate(location.pathname, { replace: true });
+        navigate("/support", { replace: true });
         setIsSearching(false);
         collapseAll();
         setSupportContent(startingSupportContent);
@@ -148,7 +147,6 @@ export const SupportPage = () => {
     };
   }, [
     isSearching,
-    location.pathname,
     navigate,
     setIsSearching,
     collapseAll,
