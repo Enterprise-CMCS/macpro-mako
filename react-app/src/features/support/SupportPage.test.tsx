@@ -1,4 +1,5 @@
 import { render, screen, waitFor } from "@testing-library/react";
+import userEvent from "@testing-library/user-event";
 import { describe, expect, it, vi } from "vitest";
 
 import { SupportPage } from "./SupportPage";
@@ -7,7 +8,7 @@ vi.mock("react-router", async () => ({
   ...(await vi.importActual<Record<string, unknown>>("react-router")),
   useParams: vi.fn().mockReturnValue({ id: "q1-support" }),
   Navigate: vi.fn(),
-  useNavigate: vi.fn(),
+  useNavigate: vi.fn().mockReturnValue(vi.fn()),
 }));
 
 vi.mock("@/hooks/useFeatureFlag", () => ({
@@ -105,5 +106,42 @@ describe("OneMAC Support", () => {
     render(<SupportPage />);
 
     expect(screen.getByTestId("cms-toggle-group")).toBeInTheDocument();
+  });
+
+  it("should show search results and update state when a match is found", async () => {
+    render(<SupportPage />);
+
+    const input = screen.getByPlaceholderText("Search OneMAC support");
+    const button = screen.getByRole("button", { name: /Search/i });
+
+    await userEvent.type(input, "CMS FAQ 2");
+    await userEvent.click(button);
+
+    expect(screen.getByText("Search Results")).toBeInTheDocument();
+
+    expect(screen.getByText("Answer 2")).toBeInTheDocument();
+  });
+
+  it("should display the LeftNavigation when not searching", () => {
+    render(<SupportPage />);
+
+    expect(screen.getByTestId("support-left-nav")).toBeInTheDocument();
+  });
+
+  it("should reset search state when browser back button is pressed", async () => {
+    render(<SupportPage />);
+
+    await userEvent.type(screen.getByPlaceholderText("Search OneMAC support"), "FAQ 3");
+    await userEvent.click(screen.getByRole("button", { name: /Search/i }));
+
+    await waitFor(() => {
+      expect(screen.getByText("Search Results")).toBeInTheDocument();
+    });
+
+    window.dispatchEvent(new PopStateEvent("popstate"));
+
+    await waitFor(() => {
+      expect(screen.queryByText("Search Results")).not.toBeInTheDocument();
+    });
   });
 });

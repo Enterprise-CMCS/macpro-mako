@@ -154,10 +154,6 @@ export const SupportPage = () => {
     startingSupportContent,
   ]);
 
-  useEffect(() => {
-    console.log("support content", supportContent);
-  }, [supportContent]);
-
   if (!isSupportPageShown || !userObj?.user) return <Navigate to="/" replace />;
 
   return (
