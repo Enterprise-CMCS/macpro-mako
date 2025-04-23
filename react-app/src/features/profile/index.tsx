@@ -41,6 +41,7 @@ const orderStateAccess = (accesses: StateAccess[]) => {
 export const Profile = () => {
   const { data: userDetails } = useGetUserDetails();
   const { data: userProfile, refetch: reloadUserProfile } = useGetUserProfile();
+  console.log(userProfile, "IS THIS UPDATED");
 
   const stateAccess = orderStateAccess(
     userProfile?.stateAccess?.filter((access) => access.territory != "ZZ"),

@@ -29,7 +29,7 @@ const useGetLinks = () => {
   const hideWebformTab = useFeatureFlag("UAT_HIDE_MMDL_BANNER");
   const toggleFaq = useFeatureFlag("TOGGLE_FAQ");
   const showHome = toggleFaq ? userObj.user : true; // if toggleFAQ is on we want to hide home when not logged in
-
+  console.log(userDetailsData, "WHAT IS THIS");
   const links =
     userLoading || userDetailsLoading || isFaqPage
       ? []
@@ -55,8 +55,7 @@ const useGetLinks = () => {
             name: "User Management",
             link: "/usermanagement",
             condition:
-              // TODO: only allow state admin or cms role users
-              userDetailsData?.role === "statesystemadmin",
+              userDetailsData?.role === "statesystemadmin" || userDetailsData?.role === "helpdesk",
           },
           {
             name: "View FAQs",
