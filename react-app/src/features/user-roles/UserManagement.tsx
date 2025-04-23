@@ -1,15 +1,17 @@
 import { EllipsisVerticalIcon } from "@heroicons/react/24/outline";
+import { ExportToCsv } from "export-to-csv";
 import { useEffect, useMemo, useState } from "react";
 import { formatDate } from "shared-utils";
 
-import { RoleRequest, useGetRoleRequests, useSubmitRoleRequests } from "@/api";
+import { RoleRequest, useGetRoleRequests, useGetUserDetails, useSubmitRoleRequests } from "@/api";
 import {
+  Button,
   ConfirmationDialog,
   LoadingSpinner,
   Popover,
   PopoverContent,
   PopoverTrigger,
-  SubNavHeader,
+  // SubNavHeader,
   Table,
   TableBody,
   TableCell,
@@ -25,6 +27,7 @@ export type UserRoleType = {
   fullName: string;
   role: string;
   territory: string;
+  doneByEmail: string;
   doneByName: string;
   lastModifiedDate: number;
   status: StatusType;
@@ -154,10 +157,13 @@ export const renderCellActions = (
 };
 
 export const UserManagement = () => {
+  const { data: userDetails } = useGetUserDetails();
   const { data, isLoading, isFetching } = useGetRoleRequests();
   const { mutateAsync: submitRequest, isLoading: processSubmit } = useSubmitRoleRequests();
   const [userRoles, setUserRoles] = useState<UserRoleType[]>([]);
   const [selectedUserRole, setSelectedUserRole] = useState<RoleRequest>(null);
+
+  const isHelpDesk = userDetails.role === "helpdesk";
 
   const [sortBy, setSortBy] = useState<{
     title: keyof headingType | "";
@@ -178,16 +184,15 @@ export const UserManagement = () => {
     }
   };
 
-  const headings: headingType = useMemo(
-    () => ({
-      Actions: null,
+  const headings = useMemo(() => {
+    const baseHeadings: headingType = {
       Name: "fullName",
       Status: "status",
       "Last Modified": "lastModifiedDate",
       "Modified By": "doneByName",
-    }),
-    [],
-  );
+    };
+    return isHelpDesk ? baseHeadings : { Actions: null, ...baseHeadings };
+  }, [isHelpDesk]);
 
   const sortByHeading = (heading: string) => {
     if (heading === "Actions") return;
@@ -212,6 +217,26 @@ export const UserManagement = () => {
     }
   }, [data, sortBy, headings]);
 
+  // Export Section
+  const handleExport = async () => {
+    const modifiedUserRoles = userRoles.map((role) => ({
+      ["Full Name"]: role.fullName,
+      role: role.role,
+      territory: role.territory,
+      status: role.status,
+      ["Modified By Email"]: role.doneByEmail,
+      ["Modified By Name"]: role.doneByName,
+      ["Last Modified"]: formatDate(role.lastModifiedDate),
+    }));
+
+    const csvExporter = new ExportToCsv({
+      useKeysAsHeaders: true,
+      filename: `Role-Requests-${formatDate(Date.now())}`,
+    });
+
+    csvExporter.generateCsv(modifiedUserRoles);
+  };
+
   return (
     <div>
       <ConfirmationDialog
@@ -227,9 +252,19 @@ export const UserManagement = () => {
         }}
         onCancel={() => setModalText(null)}
       />
-      <SubNavHeader>
-        <h1 className="text-xl font-medium">User Management</h1>
-      </SubNavHeader>
+      {/* SubNavHeader flex align-middle interferes with justify-between */}
+      {/* <SubNavHeader> */}
+      <div className="bg-sky-100" data-testid="sub-nav-header">
+        <div className="max-w-screen-xl m-auto px-4 lg:px-8 flex items-center py-4 justify-between">
+          <h1 className="text-xl font-medium">User Management</h1>
+          {isHelpDesk && (
+            <Button variant="outline" onClick={handleExport}>
+              Export to Excel (CSV)
+            </Button>
+          )}
+        </div>
+      </div>
+      {/* </SubNavHeader> */}
       <div className="py-5 px-10">
         {(isLoading || processSubmit || isFetching) && <LoadingSpinner />}
         <Table>
@@ -252,9 +287,11 @@ export const UserManagement = () => {
             {userRoles.map((userRole) => {
               return (
                 <TableRow key={userRole.id}>
-                  <TableCell className="py-5 px-4">
-                    {renderCellActions(userRole, setModalText, setSelectedUserRole)}
-                  </TableCell>
+                  {!isHelpDesk && (
+                    <TableCell className="py-5 px-4">
+                      {renderCellActions(userRole, setModalText, setSelectedUserRole)}
+                    </TableCell>
+                  )}
                   <TableCell>{userRole.fullName}</TableCell>
                   <TableCell>
                     <span className="font-semibold flex items-center">
