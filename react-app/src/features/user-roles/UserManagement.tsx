@@ -178,15 +178,7 @@ export const UserManagement = () => {
     }
   };
 
-  // const headings: headingType = {
-  //   Actions: null,
-  //   Name: "fullName",
-  //   Status: "status",
-  //   "Last Modified": "lastModifiedDate",
-  //   "Modified By": "doneByName",
-  // };
-
-  const headings = useMemo(
+  const headings: headingType = useMemo(
     () => ({
       Actions: null,
       Name: "fullName",
@@ -208,22 +200,17 @@ export const UserManagement = () => {
     setUserRoles(sortUserData(headings[heading], direction, userRoles));
   };
 
-  // useEffect(() => {
-  //   if (data && data.length && data[0]) {
-  //     const sortedRoles = initSortUserData(JSON.parse(data));
-  //     setUserRoles(sortedRoles);
-  //   }
-  // }, [data]);
-
-  const parsedUserRoles: UserRoleType[] = useMemo(() => {
-    if (!data || !data.length) return [];
-    return initSortUserData(data);
-  }, [data]);
-
-  const sortedUserRoles = useMemo(() => {
-    if (!sortBy.title) return parsedUserRoles;
-    return sortUserData(headings[sortBy.title], sortBy.direction, parsedUserRoles);
-  }, [parsedUserRoles, sortBy, headings]);
+  useEffect(() => {
+    if (data && data.length) {
+      let sorted: UserRoleType[];
+      if (sortBy.title) {
+        sorted = sortUserData(headings[sortBy.title], sortBy.direction, [...data]);
+      } else {
+        sorted = initSortUserData([...data]); // default sort if no column clicked yet
+      }
+      setUserRoles(sorted);
+    }
+  }, [data, sortBy, headings]);
 
   return (
     <div>
@@ -262,7 +249,7 @@ export const UserManagement = () => {
             </TableRow>
           </TableHeader>
           <TableBody>
-            {sortedUserRoles.map((userRole) => {
+            {userRoles.map((userRole) => {
               return (
                 <TableRow key={userRole.id}>
                   <TableCell className="py-5 px-4">
