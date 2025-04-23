@@ -30,12 +30,14 @@ describe("handler", () => {
       `${OPENSEARCH_INDEX_NAMESPACE}cpocs`,
       `${OPENSEARCH_INDEX_NAMESPACE}insights`,
       `${OPENSEARCH_INDEX_NAMESPACE}legacyinsights`,
+      `${OPENSEARCH_INDEX_NAMESPACE}users`,
+      `${OPENSEARCH_INDEX_NAMESPACE}roles`,
     ];
 
     for (const index of expectedIndices) {
       expect(createIndexSpy).toHaveBeenCalledWith(OPENSEARCH_DOMAIN, index);
     }
-    expect(createIndexSpy).toHaveBeenCalledTimes(7);
+    expect(createIndexSpy).toHaveBeenCalledTimes(9);
 
     expect(updateMappingSpy).toHaveBeenCalledWith(
       OPENSEARCH_DOMAIN,

@@ -13,9 +13,11 @@ import config from "@/config";
 import { useMediaQuery } from "@/hooks";
 import { useFeatureFlag } from "@/hooks/useFeatureFlag";
 import { isFaqPage, isProd } from "@/utils";
+import { sendGAEvent } from "@/utils/ReactGA/sendGAEvent";
 
 import { Footer } from "../Footer";
 import { UsaBanner } from "../UsaBanner";
+
 /**
  * Custom hook that generates a list of navigation links based on the user's status and whether the current page is the FAQ page.
  *
@@ -97,10 +99,24 @@ const UserDropdownMenu = () => {
   };
 
   const handleLogout = async () => {
-    // Small delay to ensure Amplify completes its internal processes
+    const preservePrefix = "notifs.";
+    const preserved: Record<string, string> = {};
+
+    for (let i = 0; i < localStorage.length; i++) {
+      const key = localStorage.key(i);
+      if (key && key.startsWith(preservePrefix)) {
+        preserved[key] = localStorage.getItem(key)!;
+      }
+    }
+
     setTimeout(() => {
-      window.localStorage.clear();
+      localStorage.clear();
+
+      Object.entries(preserved).forEach(([key, value]) => {
+        localStorage.setItem(key, value);
+      });
     }, 100);
+
     await Auth.signOut();
   };
 
@@ -176,10 +192,28 @@ const UserDropdownMenu = () => {
  * - The footer displays contact information.
  */
 export const Layout = () => {
+  const hideLogin = useFeatureFlag("LOGIN_PAGE");
   const isDesktop = useMediaQuery("(min-width: 768px)");
   const { data: user } = useGetUser();
-  const hideLogin = useFeatureFlag("LOGIN_PAGE");
-  const customUserRoles = user?.user?.["custom:cms-roles"];
+  const customUserRoles = user?.user?.["custom:cms-roles"] || "";
+  const customisMemberOf = user?.user?.["custom:ismemberof"] || "";
+
+  if (customUserRoles.length > 0) {
+    if (
+      customUserRoles.includes("onemac-state-user") ||
+      customUserRoles.includes("onemac-helpdesk") ||
+      customUserRoles.includes("onemac-micro-readonly")
+    ) {
+      // TBD weather to add states to the login event since users may have a states array with multiple states.
+      sendGAEvent("Login", customUserRoles, null);
+    }
+  }
+  if (customisMemberOf.length > 0) {
+    if (customisMemberOf.includes("ONEMAC_USER")) {
+      sendGAEvent("Login", customisMemberOf, null);
+    }
+  }
+  // TODO: add logic for super user when/if super user goes into effect
 
   return (
     <div className="min-h-full flex flex-col">

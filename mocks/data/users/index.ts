@@ -1,10 +1,11 @@
 import { convertUserAttributes } from "mocks/handlers/auth.utils";
+import { CognitoUserAttributes } from "shared-types";
 
 import type { TestUserData } from "../../index.d";
 import { makoReviewer, reviewers, superReviewer } from "./cmsReviewer";
 import { helpDeskUser, helpDeskUsers } from "./helpDeskUsers";
 import { readOnlyUser, readOnlyUsers } from "./readOnlyCMSUsers";
-import { coStateSubmitter, makoStateSubmitter, stateSubmitters } from "./stateSubmitters";
+import { coStateSubmitter, osStateSubmitter, stateSubmitters } from "./stateSubmitters";
 
 export const noRoleUser: TestUserData = {
   UserAttributes: [
@@ -44,7 +45,15 @@ export const userResponses: TestUserData[] = [
 // return an array of all usernames
 export default userResponses.map((response) => ({ username: response.Username }));
 
-export const TEST_STATE_SUBMITTER_USER = convertUserAttributes(makoStateSubmitter);
+export const getUserByUsername = (id: string) => {
+  const user = userResponses.find((user) => user?.Username === id);
+  if (user) {
+    return convertUserAttributes(user);
+  }
+  return {} as CognitoUserAttributes;
+};
+
+export const TEST_STATE_SUBMITTER_USER = convertUserAttributes(osStateSubmitter);
 export const TEST_CO_STATE_SUBMITTER_USER = convertUserAttributes(coStateSubmitter);
 export const TEST_CMS_REVIEWER_USER = convertUserAttributes(makoReviewer);
 export const TEST_HELP_DESK_USER = convertUserAttributes(helpDeskUser);

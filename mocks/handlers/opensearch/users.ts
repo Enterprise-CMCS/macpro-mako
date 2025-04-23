@@ -1,6 +1,6 @@
 import { http, HttpResponse, PathParams } from "msw";
 
-import { getFilteredUserResultList } from "../../data/idmUsers";
+import { getFilteredUserResultList } from "../../data/osusers";
 import { SearchQueryBody } from "../../index.d";
 import { getFilterValueAsStringArray } from "../search.utils";
 
