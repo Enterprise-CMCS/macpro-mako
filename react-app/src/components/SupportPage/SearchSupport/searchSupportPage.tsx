@@ -65,6 +65,7 @@ const SearchContent = ({
   const handleSearch = (s: string) => {
     if (s.length) {
       const searchResults = fuse.search(s);
+      console.log("search results", searchResults);
 
       if (searchResults.length === 0) {
         setSearchResults([{ sectionTitle: `No matches found for "${s}"`, qanda: [] }], true);

@@ -7,6 +7,7 @@ vi.mock("react-router", async () => ({
   ...(await vi.importActual<Record<string, unknown>>("react-router")),
   useParams: vi.fn().mockReturnValue({ id: "q1-support" }),
   Navigate: vi.fn(),
+  useNavigate: vi.fn(),
 }));
 
 vi.mock("@/hooks/useFeatureFlag", () => ({

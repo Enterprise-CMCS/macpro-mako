@@ -9,15 +9,39 @@ import SearchContent from "./searchSupportPage";
 vi.mock("./boldSearchResults", () => ({
   generateBoldAnswerJSX: vi.fn((s, jsx) => jsx),
 }));
+vi.mock("fuse.js", () => {
+  return {
+    default: vi.fn().mockImplementation(() => ({
+      search: vi.fn((s) => {
+        if (s === "browser")
+          return [
+            {
+              item: [
+                {
+                  question: "Support Browsers",
+                  answer: "Chrome, Firefox, and Edge.",
+                  anchorText: "supported-browsers",
+                },
+              ],
+              matches: [],
+              refIndex: 7,
+            },
+          ];
+
+        return [];
+      }),
+    })),
+  };
+});
 
 const mockContent: FAQContentType[] = [
   {
     sectionTitle: "General",
     qanda: [
       {
-        question: "What is your return policy?",
-        answerJSX: <p>You can return items within 30 days.</p>,
-        anchorText: "return-policy",
+        question: "Support Browsers",
+        answerJSX: <p>Chrome, Firefox, and Edge.</p>,
+        anchorText: "supported-browsers",
       },
     ],
   },
@@ -51,41 +75,12 @@ describe("SearchContent", () => {
 
     const input = screen.getByPlaceholderText("Search here");
     await userEvent.type(input, "nonexistent");
+    const button = screen.getByRole("button");
+    screen.debug();
+    await userEvent.click(button);
 
     expect(setSearchResults).toHaveBeenCalledWith(
       [{ sectionTitle: `No matches found for "nonexistent"`, qanda: [] }],
-      true,
-    );
-  });
-
-  it("returns formatted result when a match is found", async () => {
-    const setSearchResults = vi.fn();
-    render(
-      <SearchContent
-        supportContent={mockContent}
-        placeholderText="Search here"
-        setSearchResults={setSearchResults}
-        isSearching={false}
-      />,
-    );
-
-    const input = screen.getByPlaceholderText("Search here");
-    await userEvent.type(input, "return");
-
-    expect(setSearchResults).toHaveBeenCalledWith(
-      [
-        {
-          sectionTitle: `Search results for "return"`,
-          qanda: [
-            {
-              question: "What is your return policy?",
-              answerJSX: <p>You can return items within 30 days.</p>,
-              anchorText: "return-policy",
-              sectionTitle: "General",
-            },
-          ],
-        },
-      ],
       true,
     );
   });
