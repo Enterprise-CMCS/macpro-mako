@@ -192,6 +192,8 @@ const UserDropdownMenu = () => {
  */
 export const Layout = () => {
   const hideLogin = useFeatureFlag("LOGIN_PAGE");
+  const cmsHomeFlag = useFeatureFlag("CMS_HOMEPAGE_FLAG");
+  const stateHomeFlag = useFeatureFlag("STATE_HOMEPAGE_FLAG");
   const isDesktop = useMediaQuery("(min-width: 768px)");
   const { data: user } = useGetUser();
   const customUserRoles = user?.user?.["custom:cms-roles"] || "";
@@ -253,15 +255,17 @@ export const Layout = () => {
         </SimplePageContainer>
         <Outlet />
       </main>
-      <Footer
-        email="OneMAC_Helpdesk@cms.hhs.gov"
-        address={{
-          city: "Baltimore",
-          state: "MD",
-          street: "7500 Security Boulevard",
-          zip: 21244,
-        }}
-      />
+      {cmsHomeFlag && stateHomeFlag && (
+        <Footer
+          email="OneMAC_Helpdesk@cms.hhs.gov"
+          address={{
+            city: "Baltimore",
+            state: "MD",
+            street: "7500 Security Boulevard",
+            zip: 21244,
+          }}
+        />
+      )}
     </div>
   );
 };
