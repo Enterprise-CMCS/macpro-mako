@@ -1,4 +1,4 @@
-import { TestRoleDocument, TestRoleResult } from "../index.d";
+import { TestRoleDocument, TestRoleResult } from "..";
 
 export const idmRoles: TestRoleResult[] = [
   {

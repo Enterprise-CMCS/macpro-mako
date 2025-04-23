@@ -370,7 +370,7 @@ export const invalidEmailStateSubmitter: TestUserData = {
   Username: "f8e64f73-d121-4252-b9e3-1f4df902a1c2",
 };
 
-export const idmStateSystemAdmin: TestUserData = {
+export const osStateSystemAdmin: TestUserData = {
   UserAttributes: [
     {
       Name: "email",
@@ -404,7 +404,7 @@ export const idmStateSystemAdmin: TestUserData = {
   Username: "142824f8-f011-703f-c22b-62e027e9435e",
 };
 
-export const idmStateSubmitter: TestUserData = {
+export const osStateSubmitter: TestUserData = {
   UserAttributes: [
     {
       Name: "email",
@@ -446,6 +446,6 @@ export const stateSubmitters: TestUserData[] = [
   testNewStateSubmitter,
   noEmailStateSubmitter,
   invalidEmailStateSubmitter,
-  idmStateSystemAdmin,
-  idmStateSubmitter,
+  osStateSystemAdmin,
+  osStateSubmitter,
 ];

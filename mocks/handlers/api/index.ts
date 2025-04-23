@@ -5,6 +5,8 @@ import { packageActionHandlers } from "./packageActions";
 import { searchHandlers } from "./search";
 import { submissionHandlers } from "./submissions";
 import { typeHandlers } from "./types";
+import { userDetailsHandlers } from "./userDetails";
+import { userProfileHandlers } from "./userProfile";
 
 export const apiHandlers = [
   ...notificationHandlers,
@@ -14,6 +16,8 @@ export const apiHandlers = [
   ...searchHandlers,
   ...submissionHandlers,
   ...typeHandlers,
+  ...userDetailsHandlers,
+  ...userProfileHandlers,
 ];
 
 export { errorApiCpocHandler } from "./cpocs";

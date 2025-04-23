@@ -6,7 +6,7 @@ import {
   getFilteredRolesByState,
   getLatestRoleByEmail,
   idmRoles,
-} from "../../data/idmRoles";
+} from "../../data/roles";
 import { SearchQueryBody, TestRoleResult } from "../../index.d";
 import { getFilterValueAsString } from "../search.utils";
 

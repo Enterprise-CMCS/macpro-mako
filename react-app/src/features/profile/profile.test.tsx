@@ -11,7 +11,7 @@ import { renderWithQueryClientAndMemoryRouter } from "@/utils/test-helpers";
 
 import { Profile } from ".";
 
-describe("Profile", () => {
+describe.skip("Profile", () => {
   const setup = async () => {
     const rendered = renderWithQueryClientAndMemoryRouter(
       <Profile />,

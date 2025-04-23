@@ -1,6 +1,6 @@
 import { CognitoUserAttributes } from "shared-types";
 
-import { makoReviewer, makoStateSubmitter, userResponses } from "../data/users";
+import { makoReviewer, osStateSubmitter, userResponses } from "../data/users";
 import type { TestUserData } from "../index.d";
 
 export const setMockUsername = (user?: TestUserData | string | null): void => {
@@ -13,7 +13,7 @@ export const setMockUsername = (user?: TestUserData | string | null): void => {
   }
 };
 
-export const setDefaultStateSubmitter = () => setMockUsername(makoStateSubmitter);
+export const setDefaultStateSubmitter = () => setMockUsername(osStateSubmitter);
 
 export const setDefaultReviewer = () => setMockUsername(makoReviewer);
 
