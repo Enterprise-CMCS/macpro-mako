@@ -25,14 +25,14 @@
             <div class='fl pad1y space-right2'>
                 <span class="strong">100% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>13/13</span>
+                <span class='fraction'>22/22</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">58.82% </span>
+                <span class="strong">65% </span>
                 <span class="quiet">Branches</span>
-                <span class='fraction'>20/34</span>
+                <span class='fraction'>26/40</span>
             </div>
         
             
@@ -46,7 +46,7 @@
             <div class='fl pad1y space-right2'>
                 <span class="strong">100% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>12/12</span>
+                <span class='fraction'>18/18</span>
             </div>
         
             
@@ -110,26 +110,38 @@
 <a name='L45'></a><a href='#L45'>45</a>
 <a name='L46'></a><a href='#L46'>46</a>
 <a name='L47'></a><a href='#L47'>47</a>
-<a name='L48'></a><a href='#L48'>48</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
+<a name='L48'></a><a href='#L48'>48</a>
+<a name='L49'></a><a href='#L49'>49</a>
+<a name='L50'></a><a href='#L50'>50</a>
+<a name='L51'></a><a href='#L51'>51</a>
+<a name='L52'></a><a href='#L52'>52</a>
+<a name='L53'></a><a href='#L53'>53</a>
+<a name='L54'></a><a href='#L54'>54</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">215x</span>
-<span class="cline-any cline-yes">9x</span>
+<span class="cline-any cline-yes">18x</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">8x</span>
+<span class="cline-any cline-yes">17x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">8x</span>
+<span class="cline-any cline-yes">17x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">2x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">2x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -160,7 +172,7 @@
 <span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">import { Action } from "shared-types";
 &nbsp;
 // Resolve the action type based on the GSI1pk
-export const getLegacyEventType = <span class="fstat-no" title="function not covered" >(g</span>si1pk: string) =&gt; {
+export const getLegacyEventType = <span class="fstat-no" title="function not covered" >(g</span>si1pk: string, waiverAuthority?: string | null | undefined) =&gt; {
   if (gsi1pk === "") {
     return undefined;
   }
@@ -168,15 +180,21 @@ export const getLegacyEventType = <span class="fstat-no" title="function not cov
 &nbsp;
   switch (submitType) {
     case "chipspa":
+      return "new-chip-submission";
     case "medicaidspa":
+      return "new-medicaid-submission";
     case "waiveramendment":
+      return waiverAuthority === "1915(b)" ? "capitated-amendment" : "contracting-amendment"; //legacy uses 1915(b) for capitated and 1915(b)(4) for contracting
     case "waiverappk":
+      return "app-k";
     case "waiverextension":
     case "waiverextensionb":
     case "waiverextensionc":
+      return "temporary-extension";
     case "waivernew":
+      return waiverAuthority === "1915(b)" ? "capitated-initial" : "contracting-initial"; //legacy uses 1915(b) for capitated and 1915(b)(4) for contracting
     case "waiverrenewal":
-      return "new-legacy-submission";
+      return waiverAuthority === "1915(b)" ? "capitated-renewal" : "contracting-renewal"; //legacy uses 1915(b) for capitated and 1915(b)(4) for contracting
 <span class="branch-9 cbranch-no" title="branch not covered" >    case "chipsparai":</span>
 <span class="branch-10 cbranch-no" title="branch not covered" >    case "medicaidsparai":</span>
 <span class="branch-11 cbranch-no" title="branch not covered" >    case "waiveramendmentrai":</span>
@@ -211,7 +229,7 @@ export const getLegacyEventType = <span class="fstat-no" title="function not cov
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2025-04-22T15:20:48.627Z
+                at 2025-04-23T13:47:30.725Z
             </div>
         <script src="../../../prettify.js"></script>
         <script>
