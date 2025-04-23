@@ -1,4 +1,4 @@
-import { expect, test } from "@playwright/test";
+import { expect, test } from "@/fixtures/mocked";
 
 test.describe("Medicaid SPA Details page", { tag: ["@SPA", "@FCexample"] }, () => {
   test.beforeEach(async ({ page }) => {

@@ -24,25 +24,29 @@ const ParentComponent = () => (
 describe("Timeout Modal", () => {
   beforeEach(() => {
     vi.useFakeTimers();
+
+    setDefaultStateSubmitter();
     vi.spyOn(api, "useGetUser").mockImplementation(() => {
       const response = mockUseGetUser();
       return response as UseQueryResult<OneMacUser, unknown>;
     });
-
-    vi.spyOn(hooks, "useCountdown").mockReturnValue([
-      mockTimer,
-      { startCountdown: vi.fn(), stopCountdown: vi.fn(), resetCountdown: vi.fn() },
-    ]);
   });
 
   afterEach(() => {
+    vi.clearAllTimers();
     vi.useRealTimers();
     vi.resetAllMocks();
   });
 
   it("closes after user extends session", async () => {
+    vi.spyOn(hooks, "useCountdown").mockReturnValue([
+      mockTimer,
+      { startCountdown: vi.fn(), stopCountdown: vi.fn(), resetCountdown: vi.fn() },
+    ]);
+
     render(<ParentComponent />);
 
+    await vi.advanceTimersToNextTimerAsync();
     await vi.advanceTimersToNextTimerAsync();
     await vi.advanceTimersToNextTimerAsync();
 
@@ -57,20 +61,16 @@ describe("Timeout Modal", () => {
     expect(screen.queryByText(/Your session will expire in/i)).not.toBeInTheDocument();
   });
 
-  it("calls Auth.signOut when countdown timer reaches 0", async () => {
-    vi.spyOn(hooks, "useCountdown").mockReturnValueOnce([
-      0,
+  it("calls Auth.signOut when user clicks sign out", async () => {
+    vi.spyOn(hooks, "useCountdown").mockReturnValue([
+      mockTimer,
       { startCountdown: vi.fn(), stopCountdown: vi.fn(), resetCountdown: vi.fn() },
     ]);
+
     const signOutSpy = vi.spyOn(Auth, "signOut");
     render(<ParentComponent />);
 
-    expect(signOutSpy).toHaveBeenCalled();
-  });
-
-  it("calls Auth.signOut when user clicks sign out", async () => {
-    render(<ParentComponent />);
-
+    await vi.advanceTimersToNextTimerAsync();
     await vi.advanceTimersToNextTimerAsync();
     await vi.advanceTimersToNextTimerAsync();
 
@@ -80,12 +80,20 @@ describe("Timeout Modal", () => {
     const signOutBtn = screen.getByRole("button", { name: /No, sign out/i });
     expect(signOutBtn).toBeInTheDocument();
 
-    const signOutSpy = vi.spyOn(Auth, "signOut");
-
     fireEvent.click(signOutBtn);
 
     expect(signOutSpy).toHaveBeenCalled();
+  });
 
-    setDefaultStateSubmitter();
+  it("calls Auth.signOut when countdown timer reaches 0", async () => {
+    vi.spyOn(hooks, "useCountdown").mockReturnValueOnce([
+      0,
+      { startCountdown: vi.fn(), stopCountdown: vi.fn(), resetCountdown: vi.fn() },
+    ]);
+
+    const signOutSpy = vi.spyOn(Auth, "signOut");
+    render(<ParentComponent />);
+
+    expect(signOutSpy).toHaveBeenCalled();
   });
 });

@@ -18,6 +18,9 @@ export const EXISTING_ITEM_ID = "MD-00-0000";
 export const NOT_FOUND_ITEM_ID = "MD-0004.R00.00";
 export const NOT_EXISTING_ITEM_ID = "MD-11-0000";
 export const TEST_ITEM_ID = "MD-0005.R01.00";
+export const WITHDRAWAL_REQUESTED_ID = "MD-0005.R01.05";
+export const SUBMITTED_RAI_ID = "MD-0005.R01.06";
+export const RAI_WITHDRAWAL_ID = "MD-0005.R01.07";
 export const TEST_SPA_ITEM_ID = "MD-11-2020";
 export const TEST_SPA_ITEM_RAI_ID = "MD-11-2022";
 export const TEST_PACKAGE_STATUS_ID = "MD-11-2021";
@@ -750,6 +753,101 @@ const items: Record<string, TestItemResult> = {
             ],
             additionalInformation: "Uncategorized file upload.",
             isAdminChange: false,
+          },
+        },
+      ],
+    },
+  },
+  [RAI_WITHDRAWAL_ID]: {
+    _id: RAI_WITHDRAWAL_ID,
+    found: true,
+    _source: {
+      id: RAI_WITHDRAWAL_ID,
+      seatoolStatus: SEATOOL_STATUS.RAI_RESPONSE_WITHDRAW_REQUESTED,
+      stateStatus: statusToDisplayToStateUser[SEATOOL_STATUS.RAI_RESPONSE_WITHDRAW_REQUESTED],
+      cmsStatus: statusToDisplayToCmsUser[SEATOOL_STATUS.RAI_RESPONSE_WITHDRAW_REQUESTED],
+      actionType: "Respond to Formal RAI",
+      authority: "CHIP SPA",
+      state: "MD",
+      origin: "OneMAC",
+      changelog: [
+        {
+          _id: `${RAI_WITHDRAWAL_ID}-0001`,
+          _source: {
+            packageId: RAI_WITHDRAWAL_ID,
+            id: `${RAI_WITHDRAWAL_ID}-0001`,
+            event: "respond-to-rai",
+            attachments: [
+              {
+                key: "rai001",
+                title: "Response to RAI",
+                filename: "rai_response.docx",
+                bucket: ATTACHMENT_BUCKET_NAME,
+              },
+            ],
+            additionalInformation: "Detailed response to the request for additional information.",
+            timestamp: 1675123200000, // Feb 1, 2023
+          },
+        },
+      ],
+    },
+  },
+  [SUBMITTED_RAI_ID]: {
+    _id: SUBMITTED_RAI_ID,
+    found: true,
+    _source: {
+      id: SUBMITTED_RAI_ID,
+      seatoolStatus: SEATOOL_STATUS.SUBMITTED,
+      stateStatus: statusToDisplayToStateUser[SEATOOL_STATUS.SUBMITTED],
+      cmsStatus: statusToDisplayToCmsUser[SEATOOL_STATUS.SUBMITTED],
+      actionType: "Respond to Formal RAI",
+      authority: "CHIP SPA",
+      state: "MD",
+      origin: "OneMAC",
+      changelog: [
+        {
+          _id: `${SUBMITTED_RAI_ID}-0001`,
+          _source: {
+            packageId: SUBMITTED_RAI_ID,
+            id: `${SUBMITTED_RAI_ID}-0001`,
+            event: "respond-to-rai",
+            attachments: [
+              {
+                key: "rai001",
+                title: "Response to RAI",
+                filename: "rai_response.docx",
+                bucket: ATTACHMENT_BUCKET_NAME,
+              },
+            ],
+            additionalInformation: "Detailed response to the request for additional information.",
+            timestamp: 1675123200000, // Feb 1, 2023
+          },
+        },
+      ],
+    },
+  },
+  [WITHDRAWAL_REQUESTED_ID]: {
+    _id: WITHDRAWAL_REQUESTED_ID,
+    found: true,
+    _source: {
+      id: WITHDRAWAL_REQUESTED_ID,
+      seatoolStatus: SEATOOL_STATUS.WITHDRAW_REQUESTED,
+      stateStatus: statusToDisplayToStateUser[SEATOOL_STATUS.WITHDRAW_REQUESTED],
+      cmsStatus: statusToDisplayToCmsUser[SEATOOL_STATUS.WITHDRAW_REQUESTED],
+      actionType: "New",
+      authority: "1915(c)",
+      state: "MD",
+      origin: "OneMAC",
+      appkChildren: [
+        {
+          _source: {
+            authority: "1915(c)",
+            changedDate: "2024-01-01T00:00:00Z",
+            makoChangedDate: "2024-01-01T00:00:00Z",
+            title: "Withrdrawal Requested",
+            seatoolStatus: SEATOOL_STATUS.WITHDRAW_REQUESTED,
+            stateStatus: statusToDisplayToStateUser[SEATOOL_STATUS.WITHDRAW_REQUESTED],
+            cmsStatus: statusToDisplayToCmsUser[SEATOOL_STATUS.WITHDRAW_REQUESTED],
           },
         },
       ],
