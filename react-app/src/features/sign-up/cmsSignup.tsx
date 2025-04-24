@@ -18,7 +18,7 @@ export const CMSSignup = () => {
   if (!userDetails) return <LoadingSpinner />;
 
   const currentRole = userDetails.role;
-  if (currentRole !== "statesubmitter" && currentRole !== "statesystemadmin")
+  if (currentRole !== "cmsreviewer" && currentRole !== "cmsroleapprover")
     return <Navigate to="/profile" />;
 
   return (
