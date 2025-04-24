@@ -156,9 +156,9 @@ jobs:
       - name: Run e2e tests
         id: e2e-test
         env:
-          PLAYWRIGHT_HTML_OUTPUT_DIR: ${{ steps.variables.outputs.report_name }}
+          PLAYWRIGHT_HTML_OUTPUT_DIR: test/playwright-reports/${{ steps.variables.outputs.report_name }}
           PLAYWRIGHT_HTML_ATTACHMENTS_BASE_URL: ${{ steps.variables.outputs.report_path }}${{ steps.variables.outputs.report_name }}/data
-          PLAYWRIGHT_JSON_OUTPUT_FILE: ${{ steps.variables.outputs.report_name }}.json
+          PLAYWRIGHT_JSON_OUTPUT_FILE: test/playwright-reports/${{ steps.variables.outputs.report_name }}.json
         run: run e2e
       - name: Upload JSON Report
         uses: actions/upload-artifact@v4
