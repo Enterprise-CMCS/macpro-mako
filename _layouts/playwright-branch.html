@@ -13,7 +13,7 @@ layout: page
   <!-- loop through the run ids -->
   {% assign data = site.data.playwright-reports.branches[page.branch][run_id] %}
   <!-- capture creates a link using the page.branch variable and the run id -->
-  {% capture report_link %}/playwright-reports/branches/{{page.branch}}/{{run_id}}.html{% endcapture %}
+  {% capture report_link %}/playwright-reports/branches/{{page.branch}}/{{run_id}}/index.html{% endcapture %}
   <!--
     Include the html snippet in `_includes/playwright-summary.html` with the parameters the `page.branch` variable as `branch`,
     the `run_id` variable as `run_id`, the `data` variable as `data`, and the `report_link` variable as `url`.

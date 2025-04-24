@@ -28,9 +28,9 @@ layout: home
       <!-- Jekyll uses Liquid filters to provide helper functions. https://jekyllrb.com/docs/liquid/filters/ -->
       <!--
         Include the html snippet in `_includes/playwright-summary.html` with the parameters "main" as `branch`,
-        the data variable as `data`, and "/playwright-reports/main.html" as `url`.
+        the data variable as `data`, and "/playwright-reports/main/index.html" as `url`.
       -->
-      {% include playwright-summary.html branch="main" data=data url="/playwright-reports/main.html" %}
+      {% include playwright-summary.html branch="main" data=data url="/playwright-reports/main/index.html" %}
     </div>
 
     <div class="">

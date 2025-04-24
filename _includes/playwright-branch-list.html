@@ -20,7 +20,7 @@
     {% assign latest_run_id = runs | reverse | first %}
     {% assign data = site.data.playwright-reports.branches[branch_name][latest_run_id] %}
     <!-- capture creates a link to the actual report file-->
-    {% capture report_link %}/playwright-reports/branches/{{branch_name}}/{{latest_run_id}}.html{% endcapture %}
+    {% capture report_link %}/playwright-reports/branches/{{branch_name}}/{{latest_run_id}}/index.html{% endcapture %}
     <!--
       Include the html snippet in `_includes/playwright-summary.html` with the parameters the `branch_name` variable as `branch`,
       the `latest_run_id` variable as `run_id`, the `data` variable as `data`, and the `report_link` variable as `url`.
