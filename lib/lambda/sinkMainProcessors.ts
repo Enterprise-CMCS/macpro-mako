@@ -123,7 +123,7 @@ const getOneMacRecordWithAllProperties = (
 
   if (isRecordALegacyOneMacRecord(record, kafkaSource)) {
     const transformForLegacyEvent = legacyTransforms[record.componentType];
-    console.log("Legacy Record: " + record);
+    console.log("Legacy Record: " + JSON.stringify(record));
     const safeEvent = transformForLegacyEvent
       .transform()
       .transform((data) => ({ ...data, proposedEffectiveDate: null }))
@@ -300,7 +300,7 @@ export const insertNewSeatoolRecordsFromKafkaIntoMako = async (
         id,
         ...JSON.parse(decodeBase64WithUtf8(value)),
       };
-      console.log("SeatoolRecord: " + seatoolRecord);
+      console.log("SeatoolRecord: " + JSON.parse(decodeBase64WithUtf8(value)));
       seatoolRecord.STATE_PLAN.SPW_STATUS_ID = await oneMacSeatoolStatusCheck(seatoolRecord);
 
       const safeSeatoolRecord = opensearch.main.seatool.transform(id).safeParse(seatoolRecord);
