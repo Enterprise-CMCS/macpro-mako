@@ -27,7 +27,7 @@ export const requestBaseCMSAccess = async (event: APIGatewayEvent) => {
   }
 
   if (userAttributes["custom:ismemberof"]) {
-    const id = `${userAttributes.email}_NA_defaultcmsuser`;
+    const id = `${userAttributes.email}_N/A_defaultcmsuser`;
 
     await produceMessage(
       topicName,
@@ -38,6 +38,31 @@ export const requestBaseCMSAccess = async (event: APIGatewayEvent) => {
         status: "active",
         territory: "N/A",
         role: "defaultcmsuser", // role for this state
+        doneByEmail: userAttributes.email,
+        doneByName: `${userAttributes.given_name} ${userAttributes.family_name}`, // full name of current user. Cognito (userAttributes) may have a different full name
+        date: Date.now(), // correct time format?
+      }),
+    );
+
+    return response({
+      statusCode: 200,
+      body: {
+        message: "User role updated, because no default role found",
+      },
+    });
+  }
+  if (userAttributes["custom:cms-roles"].includes("onemac-helpdesk")) {
+    const id = `${userAttributes.email}_N/A_helpdesk`;
+
+    await produceMessage(
+      topicName,
+      id,
+      JSON.stringify({
+        eventType: "user-role",
+        email: userAttributes.email,
+        status: "active",
+        territory: "N/A",
+        role: "helpdesk", // role for this state
         doneByEmail: userAttributes.email,
         doneByName: `${userAttributes.given_name} ${userAttributes.family_name}`, // full name of current user. Cognito (userAttributes) may have a different full name
         date: Date.now(), // correct time format?
