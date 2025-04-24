@@ -256,17 +256,16 @@ export const Layout = () => {
         </SimplePageContainer>
         <Outlet />
       </main>
-      {cmsHomeFlag && stateHomeFlag && (
-        <Footer
-          email="OneMAC_Helpdesk@cms.hhs.gov"
-          address={{
-            city: "Baltimore",
-            state: "MD",
-            street: "7500 Security Boulevard",
-            zip: 21244,
-          }}
-        />
-      )}
+      <Footer
+        email="OneMAC_Helpdesk@cms.hhs.gov"
+        address={{
+          city: "Baltimore",
+          state: "MD",
+          street: "7500 Security Boulevard",
+          zip: 21244,
+        }}
+        showNavLinks={cmsHomeFlag && stateHomeFlag}
+      />
     </div>
   );
 };
