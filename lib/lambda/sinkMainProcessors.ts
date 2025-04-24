@@ -11,6 +11,7 @@ import {
 import {
   onemacLegacyUserInformation,
   onemacLegacyUserRoleRequest,
+  userInformation,
   userRoleRequest,
 } from "shared-types/events/legacy-user";
 import { Document, legacyTransforms, seatool, transforms } from "shared-types/opensearch/main";
@@ -87,6 +88,13 @@ export const isRecordALegacyUser = (
   record.sk !== undefined &&
   record.sk === "ContactInfo" &&
   kafkaSource === "onemac";
+
+export const isRecordAUser = (
+  record: OneMacRecord,
+): record is OneMacRecord & { eventType: "user-info" | "legacy-user-info" } =>
+  typeof record === "object" &&
+  record !== null &&
+  (record.eventType === "user-info" || record.eventType === "legacy-user-info");
 
 export const isRecordALegacyOneMacRecord = (
   record: ParsedLegacyRecordFromKafka,
@@ -192,6 +200,15 @@ const getOneMacRecordWithAllProperties = (
 
   if (isRecordALegacyUser(record, kafkaSource)) {
     const userParseResult = onemacLegacyUserInformation.safeParse(record);
+
+    if (userParseResult.success === true) {
+      console.log("USER RECORD: ", JSON.stringify(record));
+      return userParseResult.data;
+    }
+    console.log("USER RECORD INVALID BECAUSE: ", userParseResult.error, JSON.stringify(record));
+  }
+  if (isRecordAUser(record)) {
+    const userParseResult = userInformation.safeParse(record);
 
     if (userParseResult.success === true) {
       console.log("USER RECORD: ", JSON.stringify(record));

@@ -13,6 +13,7 @@ export type UserRole = z.infer<typeof userRoles>;
 
 const userStatus = z.enum(["active", "pending", "revoked", "denied"]);
 const roleEvent = z.enum(["user-role", "legacy-user-role"]);
+const userInfoEvent = z.enum(["user-info", "legacy-user-info"]);
 const skPattern = /^v[0-9]+#[a-z]+#(N\/A|[A-Z]{2})$/;
 
 export const baseUserRoleRequestSchema = z.object({
@@ -59,20 +60,34 @@ export const userRoleRequest = baseUserRoleRequestSchema.transform((data) => ({
 }));
 
 // User Information Schema
-export const onemacLegacyUserInformation = z
-  .object({
+export const baseUserInformationSchema = z.object({
+  email: z.string().email(),
+  group: z.string().optional(),
+  division: z.string().optional(),
+  fullName: z.string(),
+  eventType: userInfoEvent,
+});
+
+export const onemacLegacyUserInformation = baseUserInformationSchema
+  .extend({
     pk: z.string().email(),
     sk: z.literal("ContactInfo"),
-    email: z.string().email(),
-    group: z.string().optional(),
-    division: z.string().optional(),
-    fullName: z.string(),
+    eventType: userInfoEvent.default("legacy-user-info"),
   })
   .transform((data) => ({
     id: data.pk,
-    eventType: "user-info",
+    eventType: data.eventType,
     email: data.pk,
     group: data.group,
     division: data.division,
     fullName: data.fullName,
   }));
+
+export const userInformation = baseUserInformationSchema.transform((data) => ({
+  id: data.email,
+  eventType: data.eventType,
+  email: data.email,
+  group: data.group,
+  division: data.division,
+  fullName: data.fullName,
+}));

@@ -267,6 +267,18 @@ export class Api extends cdk.NestedStack {
         provisionedConcurrency: 2,
       },
       {
+        id: "createUserProfile",
+        entry: join(__dirname, "../lambda/user-management/createUserProfile.ts"),
+        environment: {
+          dbInfoSecretName,
+          topicName,
+          brokerString,
+          osDomain: `https://${openSearchDomainEndpoint}`,
+          indexNamespace,
+        },
+        provisionedConcurrency: 2,
+      },
+      {
         id: "getUserProfile",
         entry: join(__dirname, "../lambda/user-management/getUserProfile.ts"),
         environment: {
@@ -516,6 +528,11 @@ export class Api extends cdk.NestedStack {
       requestBaseCMSAccess: {
         path: "requestBaseCMSAccess",
         lambda: lambdas.requestBaseCMSAccess,
+        method: "GET",
+      },
+      createUserProfile: {
+        path: "createUserProfile",
+        lambda: lambdas.createUserProfile,
         method: "GET",
       },
       getUserDetails: {
