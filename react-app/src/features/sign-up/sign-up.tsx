@@ -3,11 +3,12 @@ import { UserRole } from "shared-types/events/legacy-user";
 import { useGetUserDetails } from "@/api";
 import { LoadingSpinner, OptionCard, OptionFieldset, SubNavHeader } from "@/components";
 
+type UserRoleWithNoRole = UserRole | "norole";
 type RoleOptions = {
-  key: UserRole;
+  key: UserRoleWithNoRole;
   title: string;
   description: string;
-  rolesWhoCanView: UserRole[];
+  rolesWhoCanView: UserRoleWithNoRole[];
 };
 
 export const SignUp = () => {
@@ -15,14 +16,13 @@ export const SignUp = () => {
   if (!userDetails) return <LoadingSpinner />;
 
   const role = userDetails.role;
-
   // helpdesk, system admins, and cms reviewer users don't even see request role as an option
   const roleOptions = [
     {
       key: "statesubmitter",
       title: "State Submitter",
       description: "Responsible for submitting packages",
-      rolesWhoCanView: ["statesystemadmin"],
+      rolesWhoCanView: ["statesystemadmin", "norole"],
     },
     {
       key: "statesystemadmin",

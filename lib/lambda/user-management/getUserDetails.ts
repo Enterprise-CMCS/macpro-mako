@@ -18,7 +18,7 @@ export const getUserDetails = async (event: APIGatewayEvent) => {
       statusCode: 200,
       body: {
         ...userDetails,
-        role: latestActiveRoleObj?.role ?? "",
+        role: latestActiveRoleObj?.role ?? "norole",
       },
     });
   } catch (err: unknown) {
