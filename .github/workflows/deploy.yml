@@ -164,13 +164,15 @@ jobs:
           echo $PLAYWRIGHT_HTML_ATTACHMENTS_BASE_URL
           echo $PLAYWRIGHT_JSON_OUTPUT_FILE
           run e2e
+          ls -R
       - name: Upload JSON Report
         uses: actions/upload-artifact@v4
         id: upload-json
         if: ${{ !cancelled() }}
         with:
           name: ${{ env.JSON_ARTIFACT_ID }}
-          path: test/playwright-reports/${{ steps.variables.outputs.report_name }}.json
+          # path: test/playwright-reports/${{ steps.variables.outputs.report_name }}.json
+          path: test/playwright-reports/playwright-summary.json
           retention-days: 30
       - name: Upload HTML Report
         uses: actions/upload-artifact@v4
