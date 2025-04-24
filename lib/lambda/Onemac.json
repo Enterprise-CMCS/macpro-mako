@@ -1,0 +1,206 @@
+{
+    "STATE_PLAN": {
+        "ID_NUMBER": "VA-65-3131",
+        "SUBMISSION_DATE": 1745452800000,
+        "START_CLOCK_DATE": 1745452800000,
+        "REGION_ID": "3",
+        "COMPONENT_ID": null,
+        "STATE_CODE": "VA",
+        "PROPOSED_DATE": 1745452800000,
+        "PLAN_TYPE": 125,
+        "ACTION_TYPE": null,
+        "CO_SUBMISSION_DATE": null,
+        "LEAD_ANALYST_ID": 3428,
+        "APPROVAL_STATUS_TYPE": null,
+        "APPROVED_EFFECTIVE_DATE": null,
+        "ACTUAL_EFFECTIVE_DATE": null,
+        "DAYS_EXTENSION_NUMBER": null,
+        "TITLE_NAME": "dfdfd",
+        "ALERT_90_DAYS_DATE": 1753228800000,
+        "ALERT_MILESTONE1_DAYS": null,
+        "ALERT_MILESTONE2_DAYS": null,
+        "ALERT_MILESTONE3_DAYS": null,
+        "ALERT_MILESTONE4_DAYS": null,
+        "END_DATE": null,
+        "REMARKS_MEMO": null,
+        "STATUS_MEMO": null,
+        "SUMMARY_MEMO": "d",
+        "PRIORITY_COMMENTS_MEMO": "ccfd",
+        "BUDGET_NEUTRALITY_ESTABLISHED_FLAG": false,
+        "BUDGET_NEUTRALITY_STATUS_MEMO": null,
+        "BUDGET_IMPACT": null,
+        "BUDGET_IMPACT_VALUE": null,
+        "CHANGED_DATE": 1745522972787,
+        "SPA_TYPE_ID": null,
+        "TYPE_ID": null,
+        "STATUS_DATE": 1745452800000,
+        "SPW_STATUS_ID": 1,
+        "PRIORITY_CODE_ID": null,
+        "PRIORITY_COMPLEXITY_ID": null,
+        "REVIEW_POSITION_ID": null,
+        "FRT_DATE": null,
+        "CURRENT_WAIVER_TE": null,
+        "CURRENT_WAIVER_EXPIRES_DATE": null,
+        "TE_END_DATE": null,
+        "OCD_REVIEW_ID": 2,
+        "OCD_REVIEW_COMMENTS_MEMO": null,
+        "COMPANION_LETTER_REQUESTED_DATE": null,
+        "COMPANION_LETTER_RECEIVED_DATE": null,
+        "RO_ANALYST_ID": null,
+        "SPW_IMPORT": false,
+        "MMDL_IMPORT": null,
+        "APPROVAL_DOCS_RECEIVED": false,
+        "BLOCKING_SPAS_MEMO": null,
+        "CALL_HELD": null,
+        "CALL_HELD_REASON_ID": null,
+        "CODE_AFTER_INIT_ASSESS_ID": null,
+        "DATE_OF_CODING_CHANGE": null,
+        "INITIAL_SUBMISSION_COMPLETE": null,
+        "MISSING_INFORMATION": null,
+        "BACKUP_PROGRAM_ANALYST_ID": null,
+        "BACKUP_FM_ANALYST_ID": null,
+        "PENDING_CONCURRENCE_DATE": null,
+        "GAP": null,
+        "ATTACHED_SPA": null,
+        "UPL_ACCEPTED": null,
+        "TEMPLATE_ISSUES": null,
+        "TEMPLATE_ISSUES_MEMO": null,
+        "TEMPLATE_ISSUES_RESOLVED": null,
+        "GAP2": null,
+        "GAP3": null,
+        "GAP_NA": null,
+        "GAP2_NA": null,
+        "GAP3_NA": null,
+        "GUIDANCE_DOCS_SUBMITTED": null,
+        "PUBLICHEALTH_STATEEMERGENCY": null,
+        "SUBMISSION_TYPE": null,
+        "FISCAL_YEAR": null,
+        "FISCAL_QUARTER": null,
+        "DATE_SENT_PSCCAS": null,
+        "ELIMINATED_COST": null,
+        "ADDED_COST": null,
+        "ORGANIZATION_CHANGE": null
+    },
+    "ACTION_OFFICERS": null,
+    "COMPONENTS_SP": null,
+    "SP1115": null,
+    "SP_APD_SUB_TYPE": null,
+    "SP_EARLY_ALERTS": {
+        "EARLYALERT": [
+            {
+                "ID_NUMBER": "VA-65-3131",
+                "EA_FIELD_ID": 11,
+                "YES_NO_VAL": null,
+                "TEXT_DD_VAL": null,
+                "EMAIL_SENT": null
+            },
+            {
+                "ID_NUMBER": "VA-65-3131",
+                "EA_FIELD_ID": 24,
+                "YES_NO_VAL": null,
+                "TEXT_DD_VAL": null,
+                "EMAIL_SENT": null
+            }
+        ],
+        "ALERTFIELD": [
+            {
+                "EA_FIELD_ID": 11,
+                "EA_LABEL": "Reduced Eligibility",
+                "EA_TYPE_ID": 1,
+                "EA_DROP_DOWN_VALUES": null,
+                "PRIORITY_VALUE": "true",
+                "PRIORITY_OPERATOR": null,
+                "PRIORITY_CODE_ID": 1,
+                "ACTIVE": true,
+                "IS_APD": false
+            },
+            {
+                "EA_FIELD_ID": 24,
+                "EA_LABEL": "Meets expedited criteria",
+                "EA_TYPE_ID": 1,
+                "EA_DROP_DOWN_VALUES": null,
+                "PRIORITY_VALUE": "true",
+                "PRIORITY_OPERATOR": null,
+                "PRIORITY_CODE_ID": 3,
+                "ACTIVE": true,
+                "IS_APD": null
+            }
+        ]
+    },
+    "RAI": null,
+    "SP_APD": null,
+    "SP_IMPACT_FUNDING": [
+        {
+            "ID_NUMBER": "VA-65-3131",
+            "IMPACT_YEAR_1": null,
+            "IMPACT_YEAR_1_VALUE": null,
+            "IMPACT_YEAR_2": null,
+            "IMPACT_YEAR_2_VALUE": null,
+            "IMPACT_YEAR_3": null,
+            "IMPACT_YEAR_3_VALUE": null,
+            "APPROPRIATIONS": null,
+            "IGT": null,
+            "CPE": null,
+            "PROVIDER_TAX": null,
+            "OTHER": null
+        }
+    ],
+    "STOP_RESUME_DATES": null,
+    "ACTIONTYPES": null,
+    "CALLHELDREASONS": null,
+    "CODEAFTERINITACCESS": null,
+    "COMPONENTS": null,
+    "OCD_REVIEW": [
+        {
+            "OCD_REVIEW_ID": 2,
+            "OCD_REVIEW_DESCRIPTION": "No"
+        }
+    ],
+    "RO_ANALYST": null,
+    "PROGRAM_ANALYST": null,
+    "FM_ANALYST": null,
+    "LEAD_ANALYST": [
+        {
+            "OFFICER_ID": 3428,
+            "FIRST_NAME": "Anne",
+            "LAST_NAME": "aaa",
+            "INITIALS": null,
+            "TELEPHONE": null,
+            "POSITION_ID": null,
+            "EMAIL": null
+        }
+    ],
+    "PRIORITY_CODES": null,
+    "PRIORITY_COMPLEXITY": null,
+    "REVIEW_POSITION": null,
+    "REGION": [
+        {
+            "REGION_ID": "3",
+            "REGION_NAME": "Philadelphia",
+            "ALERTS_INBOX_ADDRESS": "SPA_Waivers_Philadelphia_R03@cms.hhs.gov"
+        }
+    ],
+    "STATES": [
+        {
+            "STATE_CODE": "VA",
+            "REGION_ID": "3",
+            "STATE_NAME": "Virginia",
+            "PRIORITY_FLAG": false
+        }
+    ],
+    "STATE_PLAN_SERVICETYPES": [
+        {
+            "SPA_TYPE_ID": 93,
+            "SPA_TYPE_NAME": "1915(i) – State Plan HCBS",
+            "PLAN_TYPE_ID": 125
+        }
+    ],
+    "STATE_PLAN_SERVICE_SUBTYPES": [
+        {
+            "TYPE_ID": 967,
+            "TYPE_NAME": "Concurrent 1115",
+            "TYPE_CLASS": 93,
+            "PLAN_TYPE_ID": 125
+        }
+    ]
+}

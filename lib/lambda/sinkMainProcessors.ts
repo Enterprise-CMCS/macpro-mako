@@ -73,11 +73,11 @@ const isRecordAnAdminOneMacRecord = (
   record?.isAdminChange === true &&
   record?.adminChangeType !== undefined;
 
-const getOneMacRecordWithAllProperties = (
+const getOneMacRecordWithAllProperties = async (
   value: string,
   topicPartition: string,
   kafkaRecord: KafkaRecord,
-): OneMacRecord | undefined => {
+): Promise<OneMacRecord | undefined> => {
   const record = JSON.parse(decodeBase64WithUtf8(value));
   const kafkaSource = String.fromCharCode(...(kafkaRecord.headers[0]?.source || []));
 
@@ -124,6 +124,7 @@ const getOneMacRecordWithAllProperties = (
   if (isRecordALegacyOneMacRecord(record, kafkaSource)) {
     const transformForLegacyEvent = legacyTransforms[record.componentType];
     console.log("Legacy Record: " + JSON.stringify(record));
+
     const safeEvent = transformForLegacyEvent
       .transform()
       .transform((data) => ({ ...data, proposedEffectiveDate: null }))
@@ -140,6 +141,18 @@ const getOneMacRecordWithAllProperties = (
     }
 
     const { data: oneMacLegacyRecord } = safeEvent;
+    const existingPackage = await getPackage(oneMacLegacyRecord.id);
+    if (
+      oneMacLegacyRecord &&
+      existingPackage &&
+      existingPackage._source &&
+      oneMacLegacyRecord.lastEventTimestamp &&
+      existingPackage._source.changed_date &&
+      oneMacLegacyRecord.lastEventTimestamp <= existingPackage._source.changed_date
+    ) {
+      console.warn("Seatool data from legacy event");
+      return;
+    }
     return oneMacLegacyRecord;
   }
 
@@ -157,22 +170,24 @@ export const insertOneMacRecordsFromKafkaIntoMako = async (
   kafkaRecords: KafkaRecord[],
   topicPartition: string,
 ) => {
-  const oneMacRecordsForMako = kafkaRecords.reduce<OneMacRecord[]>((collection, kafkaRecord) => {
+  const oneMacRecordsForMako = [];
+
+  for (const kafkaRecord of kafkaRecords) {
     try {
       const { value } = kafkaRecord;
 
       if (!value) {
-        return collection;
+        continue;
       }
 
-      const oneMacRecordWithAllProperties = getOneMacRecordWithAllProperties(
+      const oneMacRecordWithAllProperties = await getOneMacRecordWithAllProperties(
         value,
         topicPartition,
         kafkaRecord,
       );
 
       if (oneMacRecordWithAllProperties) {
-        return collection.concat(oneMacRecordWithAllProperties);
+        oneMacRecordsForMako.push(oneMacRecordWithAllProperties);
       }
     } catch (error) {
       logError({
@@ -181,9 +196,7 @@ export const insertOneMacRecordsFromKafkaIntoMako = async (
         metadata: { topicPartition, kafkaRecord },
       });
     }
-
-    return collection;
-  }, []);
+  }
 
   await bulkUpdateDataWrapper(oneMacRecordsForMako, "main");
 };
