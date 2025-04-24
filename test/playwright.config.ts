@@ -45,7 +45,6 @@ export default defineConfig({
           {
             outputFolder: "./playwright-reports/html-report",
             open: "never",
-            attachmentsBaseURL: "https://enterprise-cmcs.github.io/macpro-mako/",
           },
         ],
         ["json", { outputFile: "./playwright-reports/playwright-summary.json" }],

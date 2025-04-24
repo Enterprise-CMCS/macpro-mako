@@ -130,19 +130,6 @@ jobs:
       output_url: ${{ steps.variables.outputs.report_path }}${{ steps.variables.outputs.report_name }}/
       actualResult: ${{ steps.e2e-test.conclusion }}
     steps:
-      - name: Checkout
-        uses: actions/checkout@v4
-      - name: Setup
-        uses: ./.github/actions/setup
-      - name: Configure AWS credentials
-        uses: aws-actions/configure-aws-credentials@v4
-        with:
-          role-to-assume: ${{ secrets.AWS_OIDC_ROLE_TO_ASSUME }}
-          aws-region: us-east-1
-          role-duration-seconds: 10800
-      - name: Run e2e tests
-        id: e2e-test
-        run: run e2e
       - name: Set Report Path and Name
         if: ${{ !cancelled() }}
         id: variables
@@ -156,6 +143,21 @@ jobs:
             echo "report_name=${{ github.run_id }}" >> "$GITHUB_OUTPUT"
             echo "commit_msg=add Playwright report for branch ${{ github.ref_name }}, run-id ${{ github.run_id }}" >> "$GITHUB_OUTPUT"
           fi
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Setup
+        uses: ./.github/actions/setup
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          role-to-assume: ${{ secrets.AWS_OIDC_ROLE_TO_ASSUME }}
+          aws-region: us-east-1
+          role-duration-seconds: 10800
+      - name: Run e2e tests
+        id: e2e-test
+        env:
+          PLAYWRIGHT_HTML_ATTACHMENTS_BASE_URL: "${{ steps.variables.outputs.report_path }}${{ steps.variables.outputs.report_name }}/data"
+        run: run e2e
       - name: Rename Reports
         if: ${{ !cancelled() }}
         working-directory: test/playwright-reports/
