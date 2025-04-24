@@ -14,6 +14,7 @@ import config from "@/config";
 import { useMediaQuery } from "@/hooks";
 import { useFeatureFlag } from "@/hooks/useFeatureFlag";
 import { isFaqPage, isProd } from "@/utils";
+import { cn } from "@/utils";
 import { sendGAEvent } from "@/utils/ReactGA/sendGAEvent";
 
 import TopBanner from "../Banner/macproBanner";
@@ -192,6 +193,8 @@ const UserDropdownMenu = () => {
  */
 export const Layout = () => {
   const hideLogin = useFeatureFlag("LOGIN_PAGE");
+  const cmsHomeFlag = useFeatureFlag("CMS_HOMEPAGE_FLAG");
+  const stateHomeFlag = useFeatureFlag("STATE_HOMEPAGE_FLAG");
   const isDesktop = useMediaQuery("(min-width: 768px)");
   const { data: user } = useGetUser();
   const customUserRoles = user?.user?.["custom:cms-roles"] || "";
@@ -261,6 +264,7 @@ export const Layout = () => {
           street: "7500 Security Boulevard",
           zip: 21244,
         }}
+        showNavLinks={cmsHomeFlag && stateHomeFlag}
       />
     </div>
   );
@@ -446,10 +450,11 @@ type SupportSubNavHeaderProps = {
    * The content to be displayed inside the sub-navigation header
    */
   children: React.ReactNode;
+  className?: string;
 };
 
-export const SupportSubNavHeader = ({ children }: SupportSubNavHeaderProps) => (
-  <div className="bg-primary-dark sticky top-0" data-testid="sub-faq-nav-header">
+export const SupportSubNavHeader = ({ children, className }: SupportSubNavHeaderProps) => (
+  <div className={cn("bg-primary-dark sticky top-0", className)} data-testid="sub-faq-nav-header">
     <div className="max-w-screen-lg m-auto px-4 lg:px-8">
       <div className="flex justify-between py-2 text-white">{children}</div>
     </div>
