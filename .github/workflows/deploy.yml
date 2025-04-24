@@ -131,7 +131,6 @@ jobs:
       actualResult: ${{ steps.e2e-test.conclusion }}
     steps:
       - name: Set Report Path and Name
-        if: ${{ !cancelled() }}
         id: variables
         run: |
           if [[ ${{ github.ref_name }} == 'main' ]]; then
@@ -156,7 +155,7 @@ jobs:
       - name: Run e2e tests
         id: e2e-test
         env:
-          PLAYWRIGHT_HTML_ATTACHMENTS_BASE_URL: "${{ steps.variables.outputs.report_path }}${{ steps.variables.outputs.report_name }}/data"
+          PLAYWRIGHT_HTML_ATTACHMENTS_BASE_URL: "${{ steps.variables.outputs.report_path }}${{ steps.variables.outputs.report_name }}/data/"
         run: run e2e
       - name: Rename Reports
         if: ${{ !cancelled() }}
