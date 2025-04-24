@@ -23,9 +23,11 @@ export const baseUserRoleRequestSchema = z.object({
   role: userRoles,
   doneByEmail: z.string(),
   doneByName: z.string(),
-  date: z.number(),
+  date: z.number().optional(),
   eventType: roleEvent,
 });
+
+export type BaseUserRoleRequest = z.infer<typeof baseUserRoleRequestSchema>;
 // This schema is used to parse ingested legacy role requests
 export const onemacLegacyUserRoleRequest = baseUserRoleRequestSchema
   .extend({
