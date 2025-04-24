@@ -5,6 +5,7 @@ import { Auth } from "aws-amplify";
 import { useState } from "react";
 import { Link, NavLink, NavLinkProps, Outlet, useNavigate } from "react-router";
 import { UserRoles } from "shared-types";
+import { UserRole } from "shared-types/events/legacy-user";
 
 import { useGetUser, useGetUserDetails } from "@/api";
 import { Banner, ScrollToTop, SimplePageContainer, UserPrompt } from "@/components";
@@ -93,6 +94,7 @@ const useGetLinks = () => {
  */
 const UserDropdownMenu = () => {
   const navigate = useNavigate();
+  const { data, isLoading } = useGetUserDetails();
 
   const handleViewProfile = () => {
     navigate("/profile");
@@ -153,11 +155,16 @@ const UserDropdownMenu = () => {
             </button>
           </DropdownMenu.Item>
           {/* TODO: conditionally show this if the user IS NOT HELPDESK */}
-          <DropdownMenu.Item>
-            <Link to="/signup" className="text-primary hover:text-primary/70">
-              Request a Role Change
-            </Link>
-          </DropdownMenu.Item>
+          {/* // helpdesk, system admins, and cms reviewer users don't even see request role as an option */}
+          {!isLoading &&
+            data &&
+            !["helpdesk", "systemadmin", "cmsreviewer"].includes(data.role) && (
+              <DropdownMenu.Item>
+                <Link to="/signup" className="text-primary hover:text-primary/70">
+                  Request a Role Change
+                </Link>
+              </DropdownMenu.Item>
+            )}
           <DropdownMenu.Item className="flex">
             <button className="text-primary hover:text-primary/70" onClick={handleLogout}>
               Sign Out

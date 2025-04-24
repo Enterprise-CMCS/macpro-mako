@@ -1,12 +1,13 @@
 import { useQuery } from "@tanstack/react-query";
 import { API } from "aws-amplify";
+import { UserRole } from "shared-types/events/legacy-user";
 
 export type UserDetails = {
   id: string;
   eventType: string;
   email: string;
   fullName: string;
-  role: string;
+  role: UserRole;
 };
 
 export const getUserDetails = async (): Promise<UserDetails> => {
