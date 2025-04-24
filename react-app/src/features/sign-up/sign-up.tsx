@@ -9,6 +9,7 @@ type RoleOptions = {
   title: string;
   description: string;
   rolesWhoCanView: UserRoleWithNoRole[];
+  link: string;
 };
 
 export const SignUp = () => {
@@ -23,24 +24,28 @@ export const SignUp = () => {
       title: "State Submitter",
       description: "Responsible for submitting packages",
       rolesWhoCanView: ["statesystemadmin", "norole"],
+      link: "/signup/state",
     },
     {
       key: "statesystemadmin",
       title: "State System Administrator",
       description: "Ability to approve state submitters and submit packages",
       rolesWhoCanView: ["statesubmitter"],
+      link: "/signup/state",
     },
     {
       key: "cmsreviewer",
       title: "CMS Reviewer",
       description: "Responsible for reviewing packages",
       rolesWhoCanView: ["cmsroleapprover"],
+      link: "/signup/cms",
     },
     {
       key: "cmsroleapprover",
       title: "CMS Role Approver",
       description: "Responsible for managing CMS Reviewers and State System Admins",
       rolesWhoCanView: ["defaultcmsuser"],
+      link: "/signup/cms",
     },
   ] satisfies RoleOptions[];
 
@@ -58,7 +63,7 @@ export const SignUp = () => {
           <OptionCard
             description={role.description}
             title={role.title}
-            to="/dashboard"
+            to={role.link}
             key={role.key}
           />
         ))}

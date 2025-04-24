@@ -8,7 +8,7 @@ import { Option } from "@/components/Opensearch/main/Filtering/Drawer/Filterable
 import { FilterableSelect } from "@/components/Opensearch/main/Filtering/Drawer/Filterable";
 import { convertStateAbbrToFullName, stateAccessStatus } from "@/utils";
 
-const roleMap = {
+export const userRoleMap = {
   defaultcmsuser: "Default CMS User Placeholder",
   cmsroleapprover: "CMS Role Approver",
   cmsreviewer: "CMS Reviewer",
@@ -122,7 +122,7 @@ export const Profile = () => {
 
             <div className="leading-9">
               <h3 className="font-bold">Role</h3>
-              <p>{roleMap[userDetails?.role]}</p>
+              <p>{userRoleMap[userDetails?.role]}</p>
             </div>
 
             <div className="leading-9">
@@ -132,7 +132,7 @@ export const Profile = () => {
 
             <div className="">
               <p className="italic">
-                This page contains Profile Information for the {roleMap[userDetails?.role]}. The
+                This page contains Profile Information for the {userRoleMap[userDetails?.role]}. The
                 information cannot be changed in the portal.
               </p>
             </div>

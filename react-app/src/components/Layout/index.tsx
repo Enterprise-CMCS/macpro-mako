@@ -5,7 +5,6 @@ import { Auth } from "aws-amplify";
 import { useState } from "react";
 import { Link, NavLink, NavLinkProps, Outlet, useNavigate } from "react-router";
 import { UserRoles } from "shared-types";
-import { UserRole } from "shared-types/events/legacy-user";
 
 import { useGetUser, useGetUserDetails } from "@/api";
 import { Banner, ScrollToTop, SimplePageContainer, UserPrompt } from "@/components";
