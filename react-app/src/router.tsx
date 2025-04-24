@@ -10,6 +10,8 @@ import {
 import { SignUp } from "@/features/sign-up/sign-up";
 import { queryClient } from "@/utils";
 
+import { CMSSignup, StateSignup } from "./features/sign-up";
+
 const RoutesWithTimeout = () => (
   <>
     <TimeoutModal />
@@ -39,6 +41,9 @@ export const router = (loginFlag = false) => {
               path: "/signup",
               element: <SignUp />,
             },
+            { path: "/signup/state", element: <StateSignup /> },
+            { path: "/signup/state", element: <StateSignup /> },
+            { path: "/signup/cms", element: <CMSSignup /> },
             {
               path: "/dashboard",
               element: <F.Dashboard />,
