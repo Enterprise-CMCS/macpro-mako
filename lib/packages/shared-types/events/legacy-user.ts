@@ -11,6 +11,22 @@ const userRoles = z.enum([
 ]);
 export type UserRole = z.infer<typeof userRoles>;
 
+export type GrantPermissionsMap = Partial<Record<UserRole, UserRole[]>>;
+export const roleUpdatePermissionsMap: GrantPermissionsMap = {
+  systemadmin: [
+    "defaultcmsuser",
+    "cmsroleapprover",
+    "cmsreviewer",
+    "statesystemadmin",
+    "helpdesk",
+    "statesubmitter",
+  ],
+  cmsroleapprover: ["statesystemadmin", "statesubmitter"],
+  statesystemadmin: ["statesubmitter"],
+};
+export const ROLES_ALLOWED_TO_UPDATE = Object.keys(roleUpdatePermissionsMap) as UserRole[];
+export const ROLES_ALLOWED_TO_REQUEST: UserRole[] = ["statesubmitter", "statesystemadmin"];
+
 const userStatus = z.enum(["active", "pending", "revoked", "denied"]);
 const roleEvent = z.enum(["user-role", "legacy-user-role"]);
 const userInfoEvent = z.enum(["user-info", "legacy-user-info"]);

@@ -1,6 +1,12 @@
 import { APIGatewayEvent } from "aws-lambda";
 import { getAuthDetails, lookupUserAttributes } from "lib/libs/api/auth/user";
 import { produceMessage } from "lib/libs/api/kafka";
+import {
+  ROLES_ALLOWED_TO_REQUEST,
+  ROLES_ALLOWED_TO_UPDATE,
+  roleUpdatePermissionsMap,
+  UserRole,
+} from "lib/packages/shared-types/events/legacy-user";
 import { response } from "libs/handler-lib";
 
 import {
@@ -9,18 +15,21 @@ import {
   getUserByEmail,
 } from "./userManagementService";
 
-export const ROLES_ALLOWED_TO_GRANT = ["cmsroleapprover", "statesystemadmin"];
-export const ROLES_ALLOWED_TO_REQUEST = ["statesubmitter"];
+type RoleStatus = "active" | "denied" | "pending";
 
-export const canGrantAccess = (role: string): boolean => {
-  return ROLES_ALLOWED_TO_GRANT.includes(role);
+// Check if current user can update access for a certain role
+export const canUpdateAccess = (currentUserRole: UserRole, roleToUpdate: UserRole): boolean => {
+  if (ROLES_ALLOWED_TO_UPDATE.includes(currentUserRole)) {
+    if (roleUpdatePermissionsMap[currentUserRole]?.includes(roleToUpdate)) {
+      return true;
+    }
+  }
+  return false;
 };
 
-export const canRequestAccess = (role: string): boolean => {
+export const canRequestAccess = (role: UserRole): boolean => {
   return ROLES_ALLOWED_TO_REQUEST.includes(role);
 };
-
-type RoleStatus = "active" | "denied" | "pending";
 
 export const submitRoleRequests = async (event: APIGatewayEvent) => {
   const topicName = process.env.topicName as string;
@@ -50,12 +59,20 @@ export const submitRoleRequests = async (event: APIGatewayEvent) => {
     });
   }
 
-  const { email, state, role, eventType, grantAccess } =
-    typeof event.body === "string" ? JSON.parse(event.body) : event.body;
+  const {
+    email,
+    state,
+    role: roleToUpdate,
+    eventType,
+    grantAccess,
+  } = typeof event.body === "string" ? JSON.parse(event.body) : event.body;
 
   let status: RoleStatus;
   // Check if the user's role is allowed to grant or request access
-  if (!canGrantAccess(latestActiveRoleObj.role) && !canRequestAccess(latestActiveRoleObj.role)) {
+  if (
+    !canUpdateAccess(latestActiveRoleObj.role, roleToUpdate) &&
+    !canRequestAccess(latestActiveRoleObj.role)
+  ) {
     console.warn(`Unauthorized action attempt by ${email}`);
 
     return response({
@@ -65,14 +82,14 @@ export const submitRoleRequests = async (event: APIGatewayEvent) => {
   }
 
   // Determine the status based on the user's role and action
-  if (canGrantAccess(latestActiveRoleObj.role)) {
+  if (canUpdateAccess(latestActiveRoleObj.role, roleToUpdate)) {
     if (grantAccess === true || grantAccess === false) {
       // Grant access or deny access based on the `grantAccess` value
       status = grantAccess ? "active" : "denied";
     } else {
       return response({
         statusCode: 400,
-        body: { message: "Invalid grantAccess value." },
+        body: { message: "Invalid or missing grantAccess value." },
       });
     }
   } else if (canRequestAccess(latestActiveRoleObj.role)) {
@@ -96,7 +113,7 @@ export const submitRoleRequests = async (event: APIGatewayEvent) => {
       email,
       status,
       territory: state,
-      role, // role for this state
+      role: roleToUpdate, // role for this state
       doneByEmail: userAttributes.email,
       doneByName: userInfo.fullName, // full name of current user. Cognito (userAttributes) may have a different full name
       date: Date.now(), // correct time format?

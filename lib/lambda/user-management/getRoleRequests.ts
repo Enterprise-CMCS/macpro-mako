@@ -17,7 +17,6 @@ export const getRoleRequests = async (event: APIGatewayEvent) => {
   try {
     const { userId, poolId } = getAuthDetails(event);
     const { email } = await lookupUserAttributes(userId, poolId);
-
     const userRoles = await getAllUserRolesByEmail(email);
 
     if (!userRoles.length) {
@@ -27,24 +26,34 @@ export const getRoleRequests = async (event: APIGatewayEvent) => {
       });
     }
 
+    const cmsRoleApprover = getActiveRole(userRoles, "cmsroleapprover");
+    const systemAdmin = getActiveRole(userRoles, "systemadmin");
+    const helpDesk = getActiveRole(userRoles, "helpdesk");
+    const stateSystemAdmin = getActiveRole(userRoles, "statesystemadmin");
+
     let roleRequests: StateAccess[] = [];
 
-    const cmsRoleApproverRole = getActiveRole(userRoles, "cmsroleapprover");
-    const helpDeskRole = getActiveRole(userRoles, "helpdesk");
-    const stateSystemAdminRole = getActiveRole(userRoles, "statesystemadmin");
-
-    if (cmsRoleApproverRole || helpDeskRole) {
+    if (systemAdmin || cmsRoleApprover || helpDesk) {
       roleRequests = await getAllUserRoles();
-    } else if (stateSystemAdminRole?.territory) {
-      roleRequests = await getAllUserRolesByState(stateSystemAdminRole.territory);
+
+      if (cmsRoleApprover) {
+        // filter out other cmsroleapprovers and systemadmins
+        const excludedRoles = new Set(["cmsroleapprover", "systemadmin"]);
+        roleRequests = roleRequests.filter((role) => !excludedRoles.has(role.role));
+      }
+    } else if (stateSystemAdmin?.territory) {
+      roleRequests = await getAllUserRolesByState(stateSystemAdmin.territory);
+      // filter out other statesystemadmins
+      roleRequests = roleRequests.filter((role) => role.role !== "statesystemadmin");
     }
 
-    if (!roleRequests.length || !Array.isArray(roleRequests)) {
+    if (!Array.isArray(roleRequests) || !roleRequests.length) {
       return response({
         statusCode: 400,
         body: { message: "Error getting role requests" },
       });
     }
+
     // Exclude current user
     const filteredRequests = roleRequests.filter((adminRole) => adminRole.email !== email);
 
@@ -56,6 +65,10 @@ export const getRoleRequests = async (event: APIGatewayEvent) => {
     });
   } catch (err: unknown) {
     console.log("An error occured: ", err);
+    return response({
+      statusCode: 500,
+      body: { message: "Internal server error" },
+    });
   }
 };
 
