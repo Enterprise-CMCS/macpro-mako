@@ -39,7 +39,7 @@ export const requestBaseCMSAccess = async (event: APIGatewayEvent) => {
         territory: "N/A",
         role: "defaultcmsuser", // role for this state
         doneByEmail: userAttributes.email,
-        doneByName: userInfo.fullName, // full name of current user. Cognito (userAttributes) may have a different full name
+        doneByName: `${userAttributes.given_name} ${userAttributes.family_name}`, // full name of current user. Cognito (userAttributes) may have a different full name
         date: Date.now(), // correct time format?
       }),
     );
