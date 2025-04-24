@@ -17,7 +17,7 @@ export const createUserProfile = async (event: APIGatewayEvent) => {
 
   const id = `${userAttributes.email}_user-information`;
 
-  if (!userInfo.length) {
+  if (!userInfo) {
     await produceMessage(
       topicName,
       id,
