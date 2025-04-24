@@ -14,6 +14,7 @@ import config from "@/config";
 import { useMediaQuery } from "@/hooks";
 import { useFeatureFlag } from "@/hooks/useFeatureFlag";
 import { isFaqPage, isProd } from "@/utils";
+import { cn } from "@/utils";
 import { sendGAEvent } from "@/utils/ReactGA/sendGAEvent";
 
 import TopBanner from "../Banner/macproBanner";
@@ -450,10 +451,11 @@ type SupportSubNavHeaderProps = {
    * The content to be displayed inside the sub-navigation header
    */
   children: React.ReactNode;
+  className?: string;
 };
 
-export const SupportSubNavHeader = ({ children }: SupportSubNavHeaderProps) => (
-  <div className="bg-primary-dark sticky top-0" data-testid="sub-faq-nav-header">
+export const SupportSubNavHeader = ({ children, className }: SupportSubNavHeaderProps) => (
+  <div className={cn("bg-primary-dark sticky top-0", className)} data-testid="sub-faq-nav-header">
     <div className="max-w-screen-lg m-auto px-4 lg:px-8">
       <div className="flex justify-between py-2 text-white">{children}</div>
     </div>
