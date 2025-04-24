@@ -220,13 +220,13 @@ export const UserManagement = () => {
   // Export Section
   const handleExport = async () => {
     const modifiedUserRoles = userRoles.map((role) => ({
-      ["Full Name"]: role.fullName,
-      role: role.role,
-      territory: role.territory,
-      status: role.status,
-      ["Modified By Email"]: role.doneByEmail,
-      ["Modified By Name"]: role.doneByName,
+      Name: role.fullName,
+      Email: role.email,
+      State: role.territory,
+      Status: role.status,
+      Role: role.role,
       ["Last Modified"]: formatDate(role.lastModifiedDate),
+      ["Modified By"]: role.doneByName,
     }));
 
     const csvExporter = new ExportToCsv({
