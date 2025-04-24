@@ -156,9 +156,9 @@ jobs:
       - name: Run e2e tests
         id: e2e-test
         env:
-          PLAYWRIGHT_HTML_OUTPUT_DIR: test/playwright-reports/${{ steps.variables.outputs.report_name }}
+          PLAYWRIGHT_HTML_OUTPUT_DIR: ./playwright-reports/${{ steps.variables.outputs.report_name }}
           PLAYWRIGHT_HTML_ATTACHMENTS_BASE_URL: ${{ steps.variables.outputs.report_path }}${{ steps.variables.outputs.report_name }}/data
-          PLAYWRIGHT_JSON_OUTPUT_FILE: test/playwright-reports/${{ steps.variables.outputs.report_name }}.json
+          PLAYWRIGHT_JSON_OUTPUT_FILE: ./playwright-reports/${{ steps.variables.outputs.report_name }}.json
         run: |
           echo $PLAYWRIGHT_HTML_OUTPUT_DIR
           echo $PLAYWRIGHT_HTML_ATTACHMENTS_BASE_URL
