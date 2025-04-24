@@ -30,10 +30,9 @@ export const submitRoleRequests = async (event: APIGatewayEvent) => {
 
   const { userId, poolId } = getAuthDetails(event);
   const userAttributes = await lookupUserAttributes(userId, poolId);
-  console.log(userAttributes, "USER ATTRIBUTES");
-  // dumb; this is to grab the full name of the user in the users index instead of Cognito
+
+  // Grab the full name of the user in the users index instead of Cognito
   const userInfo = await getUserByEmail(userAttributes.email);
-  console.log(userInfo, "USER INFO NOT COGNITO");
 
   const userRoles = await getAllUserRolesByEmail(userAttributes.email);
   if (!userRoles.length) {
@@ -58,6 +57,7 @@ export const submitRoleRequests = async (event: APIGatewayEvent) => {
   // Check if the user's role is allowed to grant or request access
   if (!canGrantAccess(latestActiveRoleObj.role) && !canRequestAccess(latestActiveRoleObj.role)) {
     console.warn(`Unauthorized action attempt by ${email}`);
+
     return response({
       statusCode: 403,
       body: { message: "You are not authorized to perform this action." },
