@@ -127,7 +127,7 @@ jobs:
       html_artifact_id: ${{ env.HTML_ARTIFACT_ID }}
       html_deploy_to: ${{ steps.variables.outputs.report_path }}
       commit_msg: ${{ steps.variables.outputs.commit_msg }}
-      output_url: ${{ steps.variables.outputs.report_path }}${{ steps.variables.outputs.report_name }}.html
+      output_url: ${{ steps.variables.outputs.report_path }}${{ steps.variables.outputs.report_name }}
       actualResult: ${{ steps.e2e-test.conclusion }}
     steps:
       - name: Checkout
@@ -161,8 +161,7 @@ jobs:
         working-directory: test/playwright-reports/
         run: |
           mv playwright-summary.json ${{ steps.variables.outputs.report_name }}.json
-          cd html-report
-          mv index.html ${{ steps.variables.outputs.report_name }}.html
+          mv html-report ${{ steps.variables.outputs.report_name }}
       - name: Upload JSON Report
         uses: actions/upload-artifact@v4
         id: upload-json
@@ -177,7 +176,7 @@ jobs:
         if: ${{ !cancelled() }}
         with:
           name: ${{ env.HTML_ARTIFACT_ID }}
-          path: test/playwright-reports/html-report/${{ steps.variables.outputs.report_name }}.html
+          path: test/playwright-reports/${{ steps.variables.outputs.report_name }}
           retention-days: 30
 
   publish:
