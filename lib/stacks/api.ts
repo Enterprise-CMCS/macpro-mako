@@ -513,6 +513,11 @@ export class Api extends cdk.NestedStack {
         lambda: lambdas.getUploadUrl,
         method: "POST",
       },
+      requestBaseCMSAccess: {
+        path: "requestBaseCMSAccess",
+        lambda: lambdas.requestBaseCMSAccess,
+        method: "GET",
+      },
       getUserDetails: {
         path: "getUserDetails",
         lambda: lambdas.getUserDetails,
