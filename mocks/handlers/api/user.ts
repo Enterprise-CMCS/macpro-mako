@@ -36,7 +36,7 @@ export const mockUseGetUser = () => {
       return {
         data: {
           user: userAttributesObj,
-          isCms: isCmsUser(userAttributesObj),
+          isCms: isCmsUser({ ...userAttributesObj, role: "cmsreviewer" }),
         },
         isLoading: false,
         isSuccess: true,
