@@ -6,7 +6,7 @@ import { ONEMAC_LEGACY_ORIGIN } from "../../main/transforms/legacy-transforms";
 export const transform = () => {
   return legacyEventSchema.transform((data) => {
     // Resolve the action type based on the GSI1pk
-    const eventType = getLegacyEventType(data?.GSI1pk);
+    const eventType = getLegacyEventType(data?.GSI1pk, data.waiverAuthority);
 
     // Return if the actionType is unhandled
     if (eventType === undefined) return undefined;

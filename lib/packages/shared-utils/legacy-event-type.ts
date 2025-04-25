@@ -1,7 +1,7 @@
 import { Action } from "shared-types";
 
 // Resolve the action type based on the GSI1pk
-export const getLegacyEventType = (gsi1pk: string) => {
+export const getLegacyEventType = (gsi1pk: string, waiverAuthority?: string | null | undefined) => {
   if (gsi1pk === "") {
     return undefined;
   }
@@ -9,15 +9,21 @@ export const getLegacyEventType = (gsi1pk: string) => {
 
   switch (submitType) {
     case "chipspa":
+      return "new-chip-submission";
     case "medicaidspa":
+      return "new-medicaid-submission";
     case "waiveramendment":
+      return waiverAuthority === "1915(b)" ? "capitated-amendment" : "contracting-amendment"; //legacy uses 1915(b) for capitated and 1915(b)(4) for contracting
     case "waiverappk":
+      return "app-k";
     case "waiverextension":
     case "waiverextensionb":
     case "waiverextensionc":
+      return "temporary-extension";
     case "waivernew":
+      return waiverAuthority === "1915(b)" ? "capitated-initial" : "contracting-initial"; //legacy uses 1915(b) for capitated and 1915(b)(4) for contracting
     case "waiverrenewal":
-      return "new-legacy-submission";
+      return waiverAuthority === "1915(b)" ? "capitated-renewal" : "contracting-renewal"; //legacy uses 1915(b) for capitated and 1915(b)(4) for contracting
     case "chipsparai":
     case "medicaidsparai":
     case "waiveramendmentrai":
