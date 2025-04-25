@@ -27,7 +27,6 @@ export const useSubmitRoleRequests = () => {
     mutationFn: submitRoleRequests,
 
     onMutate: async (newRequest) => {
-      console.log("New?", newRequest);
       await queryClient.cancelQueries(["roleRequests"]);
       // Save current cache in case there's an error
       const previousRequests: StateAccess[] = queryClient.getQueryData<StateAccess[]>([
@@ -36,18 +35,11 @@ export const useSubmitRoleRequests = () => {
       // Updates existing cache if anything changed
       queryClient.setQueryData(["roleRequests"], (old: StateAccess[] = []) => {
         if (!Array.isArray(old)) return [];
-        console.log("OLD", old);
         return old.map((request) => {
           if (request.email === newRequest.email) {
             let status = "pending";
             if (newRequest.grantAccess !== undefined)
               status = newRequest.grantAccess ? "active" : "denied";
-            console.log("OLD REQUEST", request);
-            console.log("NEW REQUEST", newRequest);
-            console.log("status", status);
-
-            console.log("TOGETHER", { ...request, status: status, ...newRequest });
-            // const status = newRequest.grantAccess ? "active" : "denied";
             return { ...request, status: status, ...newRequest };
           }
           return request;
