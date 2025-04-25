@@ -5,6 +5,7 @@ import { Auth } from "aws-amplify";
 import { useState } from "react";
 import { Link, NavLink, NavLinkProps, Outlet, useNavigate } from "react-router";
 import { UserRoles } from "shared-types";
+import { isStateUser } from "shared-utils";
 
 import { useGetUser } from "@/api";
 import { Banner, ScrollToTop, SimplePageContainer, UserPrompt } from "@/components";
@@ -13,8 +14,10 @@ import config from "@/config";
 import { useMediaQuery } from "@/hooks";
 import { useFeatureFlag } from "@/hooks/useFeatureFlag";
 import { isFaqPage, isProd } from "@/utils";
+import { cn } from "@/utils";
 import { sendGAEvent } from "@/utils/ReactGA/sendGAEvent";
 
+import TopBanner from "../Banner/macproBanner";
 import { Footer } from "../Footer";
 import { UsaBanner } from "../UsaBanner";
 
@@ -30,6 +33,8 @@ const useGetLinks = () => {
   const hideWebformTab = useFeatureFlag("UAT_HIDE_MMDL_BANNER");
   const toggleFaq = useFeatureFlag("TOGGLE_FAQ");
   const showHome = toggleFaq ? userObj.user : true; // if toggleFAQ is on we want to hide home when not logged in
+  const isStateHomepage = useFeatureFlag("STATE_HOMEPAGE_FLAG");
+  const { data: user } = useGetUser();
 
   const links =
     isLoading || isFaqPage
@@ -56,6 +61,11 @@ const useGetLinks = () => {
             name: "View FAQs",
             link: "/faq",
             condition: !toggleFaq,
+          },
+          {
+            name: "Latest Updates",
+            link: "/latestupdates",
+            condition: isStateHomepage && isStateUser(user.user),
           },
           { name: "Support", link: "/support", condition: userObj.user && toggleFaq },
           {
@@ -92,10 +102,24 @@ const UserDropdownMenu = () => {
   };
 
   const handleLogout = async () => {
-    // Small delay to ensure Amplify completes its internal processes
+    const preservePrefix = "notifs.";
+    const preserved: Record<string, string> = {};
+
+    for (let i = 0; i < localStorage.length; i++) {
+      const key = localStorage.key(i);
+      if (key && key.startsWith(preservePrefix)) {
+        preserved[key] = localStorage.getItem(key)!;
+      }
+    }
+
     setTimeout(() => {
-      window.localStorage.clear();
+      localStorage.clear();
+
+      Object.entries(preserved).forEach(([key, value]) => {
+        localStorage.setItem(key, value);
+      });
     }, 100);
+
     await Auth.signOut();
   };
 
@@ -122,20 +146,23 @@ const UserDropdownMenu = () => {
         </button>
       </DropdownMenu.Trigger>
       <DropdownMenu.Portal>
-        <DropdownMenu.Content
-          align="start"
-          className="bg-white z-50 flex flex-col gap-4 px-10 py-4 shadow-md rounded-b-sm "
-        >
-          <DropdownMenu.Item className="flex">
-            <button className="text-primary hover:text-primary/70" onClick={handleViewProfile}>
-              View Profile
-            </button>
-          </DropdownMenu.Item>
-          <DropdownMenu.Item className="flex">
-            <button className="text-primary hover:text-primary/70" onClick={handleLogout}>
-              Sign Out
-            </button>
-          </DropdownMenu.Item>
+        <DropdownMenu.Content align="start" asChild>
+          <ul className="bg-white z-50 flex flex-col gap-4 px-10 py-4 shadow-md rounded-b-sm">
+            <DropdownMenu.Item
+              className="text-primary hover:text-primary/70"
+              asChild
+              onSelect={handleViewProfile}
+            >
+              <li>View Profile</li>
+            </DropdownMenu.Item>
+            <DropdownMenu.Item
+              className="text-primary hover:text-primary/70"
+              asChild
+              onSelect={handleLogout}
+            >
+              <li>Sign Out</li>
+            </DropdownMenu.Item>
+          </ul>
         </DropdownMenu.Content>
       </DropdownMenu.Portal>
     </DropdownMenu.Root>
@@ -166,6 +193,8 @@ const UserDropdownMenu = () => {
  */
 export const Layout = () => {
   const hideLogin = useFeatureFlag("LOGIN_PAGE");
+  const cmsHomeFlag = useFeatureFlag("CMS_HOMEPAGE_FLAG");
+  const stateHomeFlag = useFeatureFlag("STATE_HOMEPAGE_FLAG");
   const isDesktop = useMediaQuery("(min-width: 768px)");
   const { data: user } = useGetUser();
   const customUserRoles = user?.user?.["custom:cms-roles"] || "";
@@ -194,6 +223,7 @@ export const Layout = () => {
       <UserPrompt />
       {user?.user && !isFaqPage && <MMDLAlertBanner />}
       <UsaBanner isUserMissingRole={user?.user && customUserRoles === undefined} />
+      <TopBanner />
       <nav data-testid="nav-banner-d" className="bg-primary">
         <div className="max-w-screen-xl mx-auto px-4 lg:px-8">
           <div className="h-[70px] relative flex gap-12 items-center text-white">
@@ -234,6 +264,7 @@ export const Layout = () => {
           street: "7500 Security Boulevard",
           zip: 21244,
         }}
+        showNavLinks={cmsHomeFlag && stateHomeFlag}
       />
     </div>
   );
@@ -419,10 +450,11 @@ type SupportSubNavHeaderProps = {
    * The content to be displayed inside the sub-navigation header
    */
   children: React.ReactNode;
+  className?: string;
 };
 
-export const SupportSubNavHeader = ({ children }: SupportSubNavHeaderProps) => (
-  <div className="bg-primary-dark sticky top-0" data-testid="sub-faq-nav-header">
+export const SupportSubNavHeader = ({ children, className }: SupportSubNavHeaderProps) => (
+  <div className={cn("bg-primary-dark sticky top-0", className)} data-testid="sub-faq-nav-header">
     <div className="max-w-screen-lg m-auto px-4 lg:px-8">
       <div className="flex justify-between py-2 text-white">{children}</div>
     </div>
