@@ -1,5 +1,5 @@
 import { STATE_CODES } from "shared-types/states";
-import { type CognitoUserAttributes } from "shared-types/user";
+import { FullUser } from "shared-types/user";
 import { isCmsUser, isStateUser } from "shared-utils";
 import { beforeEach, describe, expect, it, vi } from "vitest";
 
@@ -10,9 +10,10 @@ import { getUserStateCodes, isAuthorizedState } from "./user";
 // Mock users with different roles
 const cmsReviewerUser = {
   "custom:cms-roles": "onemac-micro-reviewer",
+  role: "cmsreviewer",
 };
 
-const stateSubmitterUser: CognitoUserAttributes = {
+const stateSubmitterUser: FullUser = {
   sub: "12345678-1234-1234-1234-123456789012",
   email_verified: true,
   "custom:state": "CA",
@@ -21,6 +22,7 @@ const stateSubmitterUser: CognitoUserAttributes = {
   family_name: "User",
   "custom:cms-roles": "",
   username: "stateuser",
+  role: "statesubmitter",
 };
 
 // Partial mock setup
@@ -55,14 +57,14 @@ describe("getUserStateCodes", () => {
 
   it("should return all state codes for a CMS user", () => {
     vi.mocked(isCmsUser).mockReturnValue(true);
-    const result = getUserStateCodes(cmsReviewerUser as CognitoUserAttributes);
+    const result = getUserStateCodes(cmsReviewerUser as FullUser);
     expect(result).toEqual(STATE_CODES);
   });
 
   it("should return the state codes for a state user", () => {
     vi.mocked(isCmsUser).mockReturnValue(false);
     vi.mocked(isStateUser).mockReturnValue(true);
-    const result = getUserStateCodes(stateSubmitterUser as CognitoUserAttributes);
+    const result = getUserStateCodes(stateSubmitterUser as FullUser);
     expect(result).toEqual(["CA"]);
   });
 });
@@ -78,7 +80,7 @@ describe("isAuthorizedState", () => {
 
   it("should return true if the user is authorized", async () => {
     vi.mocked(getUser).mockResolvedValue({
-      user: stateSubmitterUser as CognitoUserAttributes,
+      user: stateSubmitterUser as FullUser,
     });
     expect(await isAuthorizedState("CA-1234.R00.00")).toBe(true);
   });

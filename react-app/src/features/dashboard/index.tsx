@@ -4,7 +4,7 @@ import { Link, Navigate, redirect } from "react-router";
 import { UserRoles } from "shared-types";
 import { isStateUser } from "shared-utils";
 
-import { getUser, useGetUser } from "@/api";
+import { getUser, useGetUser, useGetUserDetails } from "@/api";
 import {
   FilterDrawerProvider,
   LoadingSpinner,
@@ -43,6 +43,7 @@ export const dashboardLoader = loader;
 
 export const Dashboard = () => {
   const { data: userObj, isLoading } = useGetUser();
+  const { data: userDetails, isLoading: isUserDetailsLoading } = useGetUserDetails();
   const osData = useOsData();
 
   const [localStorageCol, setLocalStorageCol] = useLocalStorage("osDashboardData", {
@@ -61,7 +62,7 @@ export const Dashboard = () => {
     );
   };
 
-  if (isLoading || osData.tabLoading) {
+  if (isLoading || isUserDetailsLoading || osData.tabLoading) {
     return <LoadingSpinner />;
   }
 
@@ -81,7 +82,7 @@ export const Dashboard = () => {
         <FilterDrawerProvider>
           <div className="flex flex-col w-full self-center mx-auto max-w-screen-xl xs:flex-row justify-between p-4 lg:px-8">
             <h1 className="text-xl font-bold mb-4 md:mb-0">Dashboard</h1>
-            {isStateUser(userObj.user) && (
+            {isStateUser({ ...userObj.user, role: userDetails.role }) && (
               <Link
                 to="/new-submission"
                 className="flex items-center text-white font-bold bg-primary border-none px-10 py-2 rounded cursor-pointer"

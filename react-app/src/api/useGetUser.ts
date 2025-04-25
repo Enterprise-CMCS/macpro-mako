@@ -1,17 +1,20 @@
 import { useQuery } from "@tanstack/react-query";
 import { Auth } from "aws-amplify";
-import { CognitoUserAttributes } from "shared-types";
+import { CognitoUserAttributes, FullUser } from "shared-types";
 import { isCmsUser } from "shared-utils";
+
+import { getUserDetails } from "./useGetUserDetails";
 
 export type OneMacUser = {
   isCms?: boolean;
-  user: CognitoUserAttributes | null;
+  user: FullUser | null;
   counties?: { label: string; value: string }[];
 };
 
 export const getUser = async (): Promise<OneMacUser> => {
   try {
     const currentAuthenticatedUser = await Auth.currentAuthenticatedUser();
+    const userDetails = await getUserDetails();
 
     if (!currentAuthenticatedUser) {
       return { user: null } satisfies OneMacUser;
@@ -36,8 +39,8 @@ export const getUser = async (): Promise<OneMacUser> => {
       currentAuthenticatedUser.username || currentAuthenticatedUser.Username || "";
 
     return {
-      user: userAttributesObj,
-      isCms: isCmsUser(userAttributesObj),
+      user: { ...userAttributesObj, role: userDetails.role },
+      isCms: isCmsUser({ ...userAttributesObj, role: userDetails.role }),
     } satisfies OneMacUser;
   } catch (e) {
     console.log({ e });

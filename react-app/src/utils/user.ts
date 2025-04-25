@@ -1,10 +1,10 @@
 import { STATE_CODES, StateCode } from "shared-types/states";
-import { type CognitoUserAttributes } from "shared-types/user";
+import { FullUser } from "shared-types/user";
 import { isCmsUser, isStateUser } from "shared-utils";
 
 import { getUser } from "@/api";
 
-export const getUserStateCodes = (user: CognitoUserAttributes | null | undefined): StateCode[] => {
+export const getUserStateCodes = (user: FullUser | null | undefined): StateCode[] => {
   // We always need a user, and state users always need a custom:state value
   if (!user || (isStateUser(user) && user["custom:state"] === undefined)) return [];
   return isCmsUser(user) ? [...STATE_CODES] : (user["custom:state"]!.split(",") as StateCode[]);
