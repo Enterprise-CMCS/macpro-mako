@@ -40,7 +40,13 @@ export default defineConfig({
   reporter: process.env.CI
     ? [
         ["github"],
-        ["html", { outputFolder: "./playwright-reports/html-report", open: "never" }],
+        [
+          "html",
+          {
+            outputFolder: "./playwright-reports/html-report",
+            open: "never",
+          },
+        ],
         ["json", { outputFile: "./playwright-reports/playwright-summary.json" }],
       ]
     : [["dot"]],
@@ -48,8 +54,10 @@ export default defineConfig({
   use: {
     /* Base URL to use in actions like `await page.goto('/')`. */
     baseURL,
-    /* Collect trace when retrying the failed test. See https://playwright.dev/docs/trace-viewer */
-    trace: "on-first-retry",
+    /* Collect trace for test failures. See https://playwright.dev/docs/trace-viewer */
+    trace: "retain-on-failure",
+    /* Save the videos for test failures. See https://playwright.dev/docs/videos */
+    video: "retain-on-failure",
     // storageState: "./playwright/.auth/state-user.json",
   },
   /* Configure projects for major browsers */
