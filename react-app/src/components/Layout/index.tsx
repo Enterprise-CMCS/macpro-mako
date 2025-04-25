@@ -345,8 +345,9 @@ const ResponsiveNav = ({ isDesktop }: ResponsiveNavProps) => {
           // When the user is signed in
           <UserDropdownMenu />
         ) : (
-          !isFaqPage && (
-            // When the user is not signed in
+          !isFaqPage &&
+          // When the user is not signed in
+          (hideLogin ? (
             <>
               <button
                 data-testid="sign-in-button-d"
@@ -363,7 +364,24 @@ const ResponsiveNav = ({ isDesktop }: ResponsiveNavProps) => {
                 Register
               </button>
             </>
-          )
+          ) : (
+            <>
+              <button
+                data-testid="register-button-d"
+                className="text-white hover:text-white/70"
+                onClick={handleRegister}
+              >
+                Register
+              </button>
+              <button
+                data-testid="sign-in-button-d"
+                className="text-white hover:text-white/70"
+                onClick={handleLogin}
+              >
+                {hideLogin ? "Sign In" : "Log in"}
+              </button>
+            </>
+          ))
         )}
       </>
     );
