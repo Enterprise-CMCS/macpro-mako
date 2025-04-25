@@ -7,7 +7,8 @@ export type RoleRequest = {
   state: StateCode;
   role: string;
   eventType: string;
-  grantAccess?: boolean; // true for active, false for denied, undefined for pending
+  requestRoleChange: boolean; // is this a role change request? (used in state signup and profile page)
+  grantAccess?: boolean; // true for active, false for denied, undefined for pending (used in user management page)
 };
 
 export const submitRoleRequests = async (request: RoleRequest) => {
@@ -16,11 +17,6 @@ export const submitRoleRequests = async (request: RoleRequest) => {
   });
   return roleRequest;
 };
-
-// export const useSubmitRoleRequests = () =>
-//   useMutation({
-//     mutationFn: submitRoleRequests,
-//   });
 
 export const useSubmitRoleRequests = () => {
   const queryClient = useQueryClient();

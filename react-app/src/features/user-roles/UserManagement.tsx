@@ -246,7 +246,7 @@ export const UserManagement = () => {
         acceptButtonText="Confirm"
         aria-labelledby="Modify User's Access Modal"
         onAccept={async () => {
-          submitRequest(selectedUserRole);
+          submitRequest({ ...selectedUserRole, requestRoleChange: false });
           setModalText(null);
           setSelectedUserRole(null);
         }}

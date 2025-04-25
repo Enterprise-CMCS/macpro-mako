@@ -78,6 +78,7 @@ export const Profile = () => {
           state,
           role: userDetails.role,
           eventType: "user-role",
+          requestRoleChange: true,
         });
       }
 
