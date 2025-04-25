@@ -1,5 +1,7 @@
 import { UserStatusType } from "@aws-sdk/client-cognito-identity-provider";
 
+import { UserRole } from "./events/legacy-user";
+
 export { CognitoUser } from "amazon-cognito-identity-js";
 export type { UserData } from "amazon-cognito-identity-js";
 export type {
@@ -32,25 +34,22 @@ export type CognitoUserAttributes = {
   username: string;
 };
 
-export const CMS_ROLES = [
-  UserRoles.CMS_READ_ONLY,
-  UserRoles.CMS_REVIEWER_DEV,
-  UserRoles.CMS_REVIEWER_VAL,
-  UserRoles.CMS_REVIEWER_PROD,
-  UserRoles.HELPDESK,
-  UserRoles.CMS_SUPER_USER,
+export type FullUser = CognitoUserAttributes & {
+  role: UserRole;
+};
+
+export const CMS_ROLES: UserRole[] = [
+  "cmsreviewer",
+  "cmsroleapprover",
+  "defaultcmsuser",
+  "helpdesk",
 ];
 
-export const CMS_WRITE_ROLES = [
-  UserRoles.CMS_REVIEWER_DEV,
-  UserRoles.CMS_REVIEWER_VAL,
-  UserRoles.CMS_REVIEWER_PROD,
-  UserRoles.CMS_SUPER_USER,
-];
+export const CMS_WRITE_ROLES: UserRole[] = ["cmsreviewer", "defaultcmsuser", "cmsroleapprover"];
 
-export const CMS_READ_ONLY_ROLES = [UserRoles.CMS_READ_ONLY, UserRoles.HELPDESK];
+export const CMS_READ_ONLY_ROLES: UserRole[] = ["helpdesk"];
 
-export const STATE_ROLES = [UserRoles.STATE_SUBMITTER];
+export const STATE_ROLES: UserRole[] = ["statesubmitter"];
 
 export const RoleDescriptionStrings: { [key: string]: string } = {
   [UserRoles.CMS_READ_ONLY]: "Read Only",

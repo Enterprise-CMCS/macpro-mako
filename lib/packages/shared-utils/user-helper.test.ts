@@ -1,4 +1,4 @@
-import type { CognitoUserAttributes } from "shared-types";
+import type { CognitoUserAttributes, FullUser } from "shared-types";
 import { describe, expect, it } from "vitest";
 
 import {
@@ -20,22 +20,26 @@ type User = CognitoUserAttributes;
 const cmsHelpDeskUser = {
   ...testCMSCognitoUser.user,
   "custom:cms-roles": "onemac-helpdesk",
+  role: "helpdesk",
 };
 const cmsReadOnlyUser = {
   ...testCMSCognitoUser.user,
   "custom:cms-roles": "onemac-micro-readonly",
+  role: "cmsreviewer",
 };
 const cmsReviewerUser = {
   ...testCMSCognitoUser.user,
   "custom:ismemberof": "ONEMAC_USER_D",
+  role: "cmsreviewer",
 };
 const cmsSuperUser = {
   ...testCMSCognitoUser.user,
   "custom:ismemberof": "ONEMAC_USER_D_SUPER",
   sub: testCMSCognitoUser?.user?.sub || "",
+  role: "cmsreviewer",
   // Add other required properties with default values if needed
 };
-const stateSubmitterUser = testStateCognitoUser.user;
+const stateSubmitterUser = { ...testStateCognitoUser.user, role: "statesubmitter" };
 
 describe("isCmsUser", () => {
   it("returns true for CMS users", () => {
@@ -77,14 +81,14 @@ describe("isCmsReadonlyUser", () => {
 
 describe("isStateUser", () => {
   it("returns false for CMS Write users", () => {
-    expect(isStateUser(cmsReviewerUser as User)).toEqual(false);
+    expect(isStateUser(cmsReviewerUser as FullUser)).toEqual(false);
   });
   it("returns false for CMS Read-Only users", () => {
-    expect(isStateUser(cmsReadOnlyUser as User)).toEqual(false);
-    expect(isStateUser(cmsHelpDeskUser as User)).toEqual(false);
+    expect(isStateUser(cmsReadOnlyUser as FullUser)).toEqual(false);
+    expect(isStateUser(cmsHelpDeskUser as FullUser)).toEqual(false);
   });
   it("returns true for State users", () => {
-    expect(isStateUser(stateSubmitterUser)).toEqual(true);
+    expect(isStateUser(stateSubmitterUser as FullUser)).toEqual(true);
   });
   // Maybe we should refactor to eliminate this
   it("returns false for null args", () => {

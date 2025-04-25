@@ -1,11 +1,4 @@
-import {
-  Action,
-  ActionType,
-  Authority,
-  CognitoUserAttributes,
-  opensearch,
-  SEATOOL_STATUS,
-} from "shared-types";
+import { Action, ActionType, Authority, FullUser, opensearch, SEATOOL_STATUS } from "shared-types";
 
 const checkAuthority = (authority: Authority | string | null, validAuthorities: string[]) =>
   !authority ? false : validAuthorities.includes(authority.toLowerCase());
@@ -116,7 +109,7 @@ export type ActionRule = {
   action: Action;
   check: (
     checker: IPackageCheck,
-    user: CognitoUserAttributes,
+    user: FullUser,
     /** Keep excess parameters to a minimum **/
     ...any: any[]
   ) => boolean;

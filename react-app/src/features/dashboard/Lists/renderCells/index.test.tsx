@@ -72,7 +72,7 @@ describe("renderCells", () => {
       item: opensearch.main.Document,
     ) => {
       const user = userEvent.setup();
-      const element = renderCellActions(userAttributes)(item);
+      const element = renderCellActions({ ...userAttributes, role: "statesubmitter" })(item);
       const rendered = renderWithMemoryRouter(
         element,
         [

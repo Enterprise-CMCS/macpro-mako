@@ -8,6 +8,7 @@ import {
   lookupUserAttributes,
 } from "../libs/api/auth/user";
 import { getPackage } from "../libs/api/package/getPackage";
+import { getLatestActiveRoleByEmail } from "./user-management/userManagementService";
 import { handleOpensearchError } from "./utils";
 
 export const getPackageActions = async (event: APIGatewayEvent) => {
@@ -40,11 +41,21 @@ export const getPackageActions = async (event: APIGatewayEvent) => {
 
     const authDetails = getAuthDetails(event);
     const userAttr = await lookupUserAttributes(authDetails.userId, authDetails.poolId);
+    const activeRole = await getLatestActiveRoleByEmail(userAttr.email);
+
+    if (!activeRole) {
+      return response({
+        statusCode: 400,
+        body: {
+          message: "No active role found for user",
+        },
+      });
+    }
 
     return response({
       statusCode: 200,
       body: {
-        actions: getAvailableActions(userAttr, result._source),
+        actions: getAvailableActions({ ...userAttr, role: activeRole.role }, result._source),
       },
     });
   } catch (err) {

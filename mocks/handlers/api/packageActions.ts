@@ -34,7 +34,10 @@ const defaultApiPackageActionsHandler = http.post<PathParams, PackageActionsRequ
     }
 
     return HttpResponse.json(
-      getAvailableActions(currUser, item._source as opensearch.main.Document) || [],
+      getAvailableActions(
+        { ...currUser, role: "statesubmitter" },
+        item._source as opensearch.main.Document,
+      ) || [],
     );
   },
 );
