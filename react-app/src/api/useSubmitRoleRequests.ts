@@ -2,6 +2,8 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { API } from "aws-amplify";
 import { StateCode } from "shared-types";
 
+import { StateAccess } from "./useGetUserProfile";
+
 export type RoleRequest = {
   email: string;
   state: StateCode;
@@ -25,22 +27,34 @@ export const useSubmitRoleRequests = () => {
     mutationFn: submitRoleRequests,
 
     onMutate: async (newRequest) => {
+      console.log("New?", newRequest);
       await queryClient.cancelQueries(["roleRequests"]);
       // Save current cache in case there's an error
-      const previousRequests = queryClient.getQueryData<RoleRequest[]>(["roleRequests"]);
+      const previousRequests: StateAccess[] = queryClient.getQueryData<StateAccess[]>([
+        "roleRequests",
+      ]);
       // Updates existing cache if anything changed
-      queryClient.setQueryData(["roleRequests"], (old: RoleRequest[] = []) => {
+      queryClient.setQueryData(["roleRequests"], (old: StateAccess[] = []) => {
         if (!Array.isArray(old)) return [];
-        return old.map((request) =>
-          request.email === newRequest.email ? { ...request, ...newRequest } : request,
-        );
+        console.log("OLD", old);
+        return old.map((request) => {
+          if (request.email === newRequest.email) {
+            let status = "pending";
+            if (newRequest.grantAccess !== undefined)
+              status = newRequest.grantAccess ? "active" : "denied";
+            console.log("OLD REQUEST", request);
+            console.log("NEW REQUEST", newRequest);
+            console.log("status", status);
+
+            console.log("TOGETHER", { ...request, status: status, ...newRequest });
+            // const status = newRequest.grantAccess ? "active" : "denied";
+            return { ...request, status: status, ...newRequest };
+          }
+          return request;
+        });
       });
 
       return { previousRequests };
-    },
-    onSettled: async () => {
-      await queryClient.invalidateQueries(["roleRequests"]);
-      await queryClient.refetchQueries(["roleRequests"]);
     },
 
     onError: (_error, _variables, context) => {
