@@ -361,7 +361,7 @@ describe("Layout", () => {
       await renderLayout();
 
       // Click the "Sign In" button
-      const signInButton = screen.getByText("Sign In");
+      const signInButton = screen.getByText("Sign In") || screen.getByText("Log in");
       await user.click(signInButton);
 
       // Construct the expected URL
