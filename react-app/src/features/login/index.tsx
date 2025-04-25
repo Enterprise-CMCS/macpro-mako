@@ -67,11 +67,14 @@ export const Login = () => {
           <p className="font-bold">Contact Help Desk</p>
           <p>
             Email:
-            <a href="email:OneMAC_Helpdesk@cms.hhs.gov">OneMAC_Helpdesk@cms.hhs.gov</a>
+            <a className="underline" href="email:OneMAC_Helpdesk@cms.hhs.gov">
+              {" "}
+              OneMAC_Helpdesk@cms.hhs.gov
+            </a>
           </p>
           <p>
             Leave a message at
-            <a href="tel:18332282540">(833) 228-2540</a>
+            <a href="tel:18332282540"> (833) 228-2540</a>
           </p>
         </div>
       </div>
