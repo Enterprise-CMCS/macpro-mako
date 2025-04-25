@@ -4,6 +4,7 @@ import {
   UserType as CognitoUserType,
 } from "@aws-sdk/client-cognito-identity-provider";
 import { APIGatewayEvent } from "aws-lambda";
+import { getLatestActiveRoleByEmail } from "lib/lambda/user-management/userManagementService";
 import { CognitoUserAttributes } from "shared-types";
 import { isCmsUser, isCmsWriteUser } from "shared-utils";
 
@@ -93,9 +94,16 @@ export const isAuthorized = async (event: APIGatewayEvent, stateCode?: string | 
 
   // Look up user attributes from Cognito
   const userAttributes = await lookupUserAttributes(authDetails.userId, authDetails.poolId);
+
+  const activeRole = await getLatestActiveRoleByEmail(userAttributes.email);
+
+  if (!activeRole) {
+    return false;
+  }
+
   console.log(userAttributes);
   return (
-    isCmsUser(userAttributes) ||
+    isCmsUser({ ...userAttributes, role: activeRole.role }) ||
     (stateCode && userAttributes?.["custom:state"]?.includes(stateCode))
   );
 };
@@ -109,8 +117,15 @@ export const isAuthorizedToGetPackageActions = async (
 
   // Look up user attributes from Cognito
   const userAttributes = await lookupUserAttributes(authDetails.userId, authDetails.poolId);
+
+  const activeRole = await getLatestActiveRoleByEmail(userAttributes.email);
+
+  if (!activeRole) {
+    return false;
+  }
+
   return (
-    isCmsWriteUser(userAttributes) ||
+    isCmsWriteUser({ ...userAttributes, role: activeRole.role }) ||
     (stateCode && userAttributes?.["custom:state"]?.includes(stateCode))
   );
 };
@@ -123,7 +138,13 @@ export const getStateFilter = async (event: APIGatewayEvent) => {
   // Look up user attributes from Cognito
   const userAttributes = await lookupUserAttributes(authDetails.userId, authDetails.poolId);
 
-  if (!isCmsUser(userAttributes)) {
+  const activeRole = await getLatestActiveRoleByEmail(userAttributes.email);
+
+  if (!activeRole) {
+    return false;
+  }
+
+  if (!isCmsUser({ ...userAttributes, role: activeRole.role })) {
     if (userAttributes["custom:state"]) {
       const filter = {
         terms: {
