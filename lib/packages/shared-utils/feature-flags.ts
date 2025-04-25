@@ -44,6 +44,14 @@ export const featureFlags = {
     defaultValue: "OFF",
   },
 
+  /**
+   * Toggles the visibility of the CMS Hompage
+   */
+  STATE_HOMEPAGE_FLAG: {
+    flag: "state-home-page",
+    defaultValue: "OFF",
+  },
+
   /*
    * Toggle visibility of login feature page
    */

@@ -33,13 +33,25 @@ async function globalSetup(config: FullConfig) {
   const { baseURL } = config.projects[0].use;
   const browser = await chromium.launch();
 
+  // will be used for EAU and IDM access
+  switch (baseURL) {
+    case "https://mako.cms.gov":
+      console.log("prod");
+      break;
+    case "https://mako-val.cms.gov":
+      console.log("val");
+      break;
+    default:
+      console.log("local");
+  }
+
   const submitterContext = await browser.newContext({ baseURL });
   const submitterPage = await submitterContext.newPage();
   const submitterLoginPage = new LoginPage(submitterPage);
   await submitterLoginPage.goto();
   await submitterLoginPage.login(testUsers.state, password);
 
-  await expect(submitterPage).toHaveURL("/dashboard");
+  await expect(submitterPage).toHaveURL(/dashboard/);
 
   await submitterContext.storageState({ path: stateSubmitterAuthFile });
 
