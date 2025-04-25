@@ -11,7 +11,7 @@
     "grepInvert": null,
     "maxFailures": 0,
     "metadata": {
-      "actualWorkers": 2
+      "actualWorkers": 1
     },
     "preserveOutput": "always",
     "reporter": [
@@ -59,7 +59,7 @@
     "shard": null,
     "updateSnapshots": "missing",
     "version": "1.47.2",
-    "workers": 2,
+    "workers": 1,
     "webServer": null
   },
   "suites": [
@@ -110,13 +110,19 @@
                             {
                               "workerIndex": 0,
                               "status": "passed",
-                              "duration": 1432,
+                              "duration": 1172,
                               "errors": [],
                               "stdout": [],
                               "stderr": [],
                               "retry": 0,
-                              "startTime": "2025-04-24T16:05:48.193Z",
-                              "attachments": []
+                              "startTime": "2025-04-25T13:11:11.242Z",
+                              "attachments": [
+                                {
+                                  "name": "video",
+                                  "contentType": "video/webm",
+                                  "path": "/home/runner/work/macpro-mako/macpro-mako/test/test-results/e2e-faq-faq-FAQ-page-UI-validation-header-displays-header-state-user-chrome/video.webm"
+                                }
+                              ]
                             }
                           ],
                           "status": "expected"
@@ -153,15 +159,21 @@
                           "projectName": "state-user-chrome",
                           "results": [
                             {
-                              "workerIndex": 1,
+                              "workerIndex": 0,
                               "status": "passed",
-                              "duration": 1534,
+                              "duration": 973,
                               "errors": [],
                               "stdout": [],
                               "stderr": [],
                               "retry": 0,
-                              "startTime": "2025-04-24T16:05:48.203Z",
-                              "attachments": []
+                              "startTime": "2025-04-25T13:11:12.564Z",
+                              "attachments": [
+                                {
+                                  "name": "video",
+                                  "contentType": "video/webm",
+                                  "path": "/home/runner/work/macpro-mako/macpro-mako/test/test-results/e2e-faq-faq-FAQ-page-UI-va-2a37f-em-for-state-submission-FAQ-state-user-chrome/video.webm"
+                                }
+                              ]
                             }
                           ],
                           "status": "expected"
@@ -192,13 +204,19 @@
                             {
                               "workerIndex": 0,
                               "status": "passed",
-                              "duration": 1368,
+                              "duration": 999,
                               "errors": [],
                               "stdout": [],
                               "stderr": [],
                               "retry": 0,
-                              "startTime": "2025-04-24T16:05:49.849Z",
-                              "attachments": []
+                              "startTime": "2025-04-25T13:11:13.544Z",
+                              "attachments": [
+                                {
+                                  "name": "video",
+                                  "contentType": "video/webm",
+                                  "path": "/home/runner/work/macpro-mako/macpro-mako/test/test-results/e2e-faq-faq-FAQ-page-UI-va-c26c5-n-displays-browser-type-FAQ-state-user-chrome/video.webm"
+                                }
+                              ]
                             }
                           ],
                           "status": "expected"
@@ -227,15 +245,21 @@
                           "projectName": "state-user-chrome",
                           "results": [
                             {
-                              "workerIndex": 1,
+                              "workerIndex": 0,
                               "status": "passed",
-                              "duration": 1308,
+                              "duration": 1020,
                               "errors": [],
                               "stdout": [],
                               "stderr": [],
                               "retry": 0,
-                              "startTime": "2025-04-24T16:05:49.962Z",
-                              "attachments": []
+                              "startTime": "2025-04-25T13:11:14.552Z",
+                              "attachments": [
+                                {
+                                  "name": "video",
+                                  "contentType": "video/webm",
+                                  "path": "/home/runner/work/macpro-mako/macpro-mako/test/test-results/e2e-faq-faq-FAQ-page-UI-va-dfa5d-lays-confirmation-email-FAQ-state-user-chrome/video.webm"
+                                }
+                              ]
                             }
                           ],
                           "status": "expected"
@@ -266,13 +290,19 @@
                             {
                               "workerIndex": 0,
                               "status": "passed",
-                              "duration": 1322,
+                              "duration": 1046,
                               "errors": [],
                               "stdout": [],
                               "stderr": [],
                               "retry": 0,
-                              "startTime": "2025-04-24T16:05:51.232Z",
-                              "attachments": []
+                              "startTime": "2025-04-25T13:11:15.578Z",
+                              "attachments": [
+                                {
+                                  "name": "video",
+                                  "contentType": "video/webm",
+                                  "path": "/home/runner/work/macpro-mako/macpro-mako/test/test-results/e2e-faq-faq-FAQ-page-UI-va-ebf2f-ays-official-submission-FAQ-state-user-chrome/video.webm"
+                                }
+                              ]
                             }
                           ],
                           "status": "expected"
@@ -301,15 +331,21 @@
                           "projectName": "state-user-chrome",
                           "results": [
                             {
-                              "workerIndex": 1,
+                              "workerIndex": 0,
                               "status": "passed",
-                              "duration": 1305,
+                              "duration": 977,
                               "errors": [],
                               "stdout": [],
                               "stderr": [],
                               "retry": 0,
-                              "startTime": "2025-04-24T16:05:51.283Z",
-                              "attachments": []
+                              "startTime": "2025-04-25T13:11:16.630Z",
+                              "attachments": [
+                                {
+                                  "name": "video",
+                                  "contentType": "video/webm",
+                                  "path": "/home/runner/work/macpro-mako/macpro-mako/test/test-results/e2e-faq-faq-FAQ-page-UI-va-fe312-plays-OneMac-user-roles-FAQ-state-user-chrome/video.webm"
+                                }
+                              ]
                             }
                           ],
                           "status": "expected"
@@ -340,13 +376,19 @@
                             {
                               "workerIndex": 0,
                               "status": "passed",
-                              "duration": 1376,
+                              "duration": 997,
                               "errors": [],
                               "stdout": [],
                               "stderr": [],
                               "retry": 0,
-                              "startTime": "2025-04-24T16:05:52.563Z",
-                              "attachments": []
+                              "startTime": "2025-04-25T13:11:17.614Z",
+                              "attachments": [
+                                {
+                                  "name": "video",
+                                  "contentType": "video/webm",
+                                  "path": "/home/runner/work/macpro-mako/macpro-mako/test/test-results/e2e-faq-faq-FAQ-page-UI-va-52bd0-on-displays-file-format-FAQ-state-user-chrome/video.webm"
+                                }
+                              ]
                             }
                           ],
                           "status": "expected"
@@ -375,15 +417,21 @@
                           "projectName": "state-user-chrome",
                           "results": [
                             {
-                              "workerIndex": 1,
+                              "workerIndex": 0,
                               "status": "passed",
-                              "duration": 1374,
+                              "duration": 1001,
                               "errors": [],
                               "stdout": [],
                               "stderr": [],
                               "retry": 0,
-                              "startTime": "2025-04-24T16:05:52.597Z",
-                              "attachments": []
+                              "startTime": "2025-04-25T13:11:18.617Z",
+                              "attachments": [
+                                {
+                                  "name": "video",
+                                  "contentType": "video/webm",
+                                  "path": "/home/runner/work/macpro-mako/macpro-mako/test/test-results/e2e-faq-faq-FAQ-page-UI-va-db055-ys-onboarding-materials-FAQ-state-user-chrome/video.webm"
+                                }
+                              ]
                             }
                           ],
                           "status": "expected"
@@ -422,13 +470,19 @@
                             {
                               "workerIndex": 0,
                               "status": "passed",
-                              "duration": 1218,
+                              "duration": 1012,
                               "errors": [],
                               "stdout": [],
                               "stderr": [],
                               "retry": 0,
-                              "startTime": "2025-04-24T16:05:53.955Z",
-                              "attachments": []
+                              "startTime": "2025-04-25T13:11:19.624Z",
+                              "attachments": [
+                                {
+                                  "name": "video",
+                                  "contentType": "video/webm",
+                                  "path": "/home/runner/work/macpro-mako/macpro-mako/test/test-results/e2e-faq-faq-FAQ-page-UI-va-e8b91--used-to-enter-a-SPA-ID-FAQ-state-user-chrome/video.webm"
+                                }
+                              ]
                             }
                           ],
                           "status": "expected"
@@ -457,15 +511,21 @@
                           "projectName": "state-user-chrome",
                           "results": [
                             {
-                              "workerIndex": 1,
+                              "workerIndex": 0,
                               "status": "passed",
-                              "duration": 1157,
+                              "duration": 970,
                               "errors": [],
                               "stdout": [],
                               "stderr": [],
                               "retry": 0,
-                              "startTime": "2025-04-24T16:05:53.982Z",
-                              "attachments": []
+                              "startTime": "2025-04-25T13:11:20.643Z",
+                              "attachments": [
+                                {
+                                  "name": "video",
+                                  "contentType": "video/webm",
+                                  "path": "/home/runner/work/macpro-mako/macpro-mako/test/test-results/e2e-faq-faq-FAQ-page-UI-va-ac5ab-edicaid-SPA-attachments-FAQ-state-user-chrome/video.webm"
+                                }
+                              ]
                             }
                           ],
                           "status": "expected"
@@ -494,15 +554,21 @@
                           "projectName": "state-user-chrome",
                           "results": [
                             {
-                              "workerIndex": 1,
+                              "workerIndex": 0,
                               "status": "passed",
-                              "duration": 1223,
+                              "duration": 949,
                               "errors": [],
                               "stdout": [],
                               "stderr": [],
                               "retry": 0,
-                              "startTime": "2025-04-24T16:05:55.148Z",
-                              "attachments": []
+                              "startTime": "2025-04-25T13:11:21.620Z",
+                              "attachments": [
+                                {
+                                  "name": "video",
+                                  "contentType": "video/webm",
+                                  "path": "/home/runner/work/macpro-mako/macpro-mako/test/test-results/e2e-faq-faq-FAQ-page-UI-va-90810-esponse-to-Medicaid-RAI-FAQ-state-user-chrome/video.webm"
+                                }
+                              ]
                             }
                           ],
                           "status": "expected"
@@ -533,13 +599,19 @@
                             {
                               "workerIndex": 0,
                               "status": "passed",
-                              "duration": 1189,
+                              "duration": 999,
                               "errors": [],
                               "stdout": [],
                               "stderr": [],
                               "retry": 0,
-                              "startTime": "2025-04-24T16:05:55.185Z",
-                              "attachments": []
+                              "startTime": "2025-04-25T13:11:22.576Z",
+                              "attachments": [
+                                {
+                                  "name": "video",
+                                  "contentType": "video/webm",
+                                  "path": "/home/runner/work/macpro-mako/macpro-mako/test/test-results/e2e-faq-faq-FAQ-page-UI-va-ce894-ys-CHIP-SPA-attachments-FAQ-state-user-chrome/video.webm"
+                                }
+                              ]
                             }
                           ],
                           "status": "expected"
@@ -568,15 +640,21 @@
                           "projectName": "state-user-chrome",
                           "results": [
                             {
-                              "workerIndex": 1,
+                              "workerIndex": 0,
                               "status": "passed",
-                              "duration": 1155,
+                              "duration": 943,
                               "errors": [],
                               "stdout": [],
                               "stderr": [],
                               "retry": 0,
-                              "startTime": "2025-04-24T16:05:56.383Z",
-                              "attachments": []
+                              "startTime": "2025-04-25T13:11:23.581Z",
+                              "attachments": [
+                                {
+                                  "name": "video",
+                                  "contentType": "video/webm",
+                                  "path": "/home/runner/work/macpro-mako/macpro-mako/test/test-results/e2e-faq-faq-FAQ-page-UI-va-7136a-ts-response-to-CHIP-RAI-FAQ-state-user-chrome/video.webm"
+                                }
+                              ]
                             }
                           ],
                           "status": "expected"
@@ -607,13 +685,19 @@
                             {
                               "workerIndex": 0,
                               "status": "passed",
-                              "duration": 1111,
+                              "duration": 1048,
                               "errors": [],
                               "stdout": [],
                               "stderr": [],
                               "retry": 0,
-                              "startTime": "2025-04-24T16:05:56.383Z",
-                              "attachments": []
+                              "startTime": "2025-04-25T13:11:24.528Z",
+                              "attachments": [
+                                {
+                                  "name": "video",
+                                  "contentType": "video/webm",
+                                  "path": "/home/runner/work/macpro-mako/macpro-mako/test/test-results/e2e-faq-faq-FAQ-page-UI-va-0e123-ments-SPAs-displays-PHE-FAQ-state-user-chrome/video.webm"
+                                }
+                              ]
                             }
                           ],
                           "status": "expected"
@@ -644,13 +728,19 @@
                             {
                               "workerIndex": 0,
                               "status": "passed",
-                              "duration": 1135,
+                              "duration": 985,
                               "errors": [],
                               "stdout": [],
                               "stderr": [],
                               "retry": 0,
-                              "startTime": "2025-04-24T16:05:57.503Z",
-                              "attachments": []
+                              "startTime": "2025-04-25T13:11:25.583Z",
+                              "attachments": [
+                                {
+                                  "name": "video",
+                                  "contentType": "video/webm",
+                                  "path": "/home/runner/work/macpro-mako/macpro-mako/test/test-results/e2e-faq-faq-FAQ-page-UI-va-25c25-al-RAI-for-Medicaid-SPA-FAQ-state-user-chrome/video.webm"
+                                }
+                              ]
                             }
                           ],
                           "status": "expected"
@@ -679,15 +769,21 @@
                           "projectName": "state-user-chrome",
                           "results": [
                             {
-                              "workerIndex": 1,
+                              "workerIndex": 0,
                               "status": "passed",
-                              "duration": 1148,
+                              "duration": 946,
                               "errors": [],
                               "stdout": [],
                               "stderr": [],
                               "retry": 0,
-                              "startTime": "2025-04-24T16:05:57.547Z",
-                              "attachments": []
+                              "startTime": "2025-04-25T13:11:26.574Z",
+                              "attachments": [
+                                {
+                                  "name": "video",
+                                  "contentType": "video/webm",
+                                  "path": "/home/runner/work/macpro-mako/macpro-mako/test/test-results/e2e-faq-faq-FAQ-page-UI-va-2901a-ackage-for-Medicaid-SPA-FAQ-state-user-chrome/video.webm"
+                                }
+                              ]
                             }
                           ],
                           "status": "expected"
@@ -718,13 +814,19 @@
                             {
                               "workerIndex": 0,
                               "status": "passed",
-                              "duration": 1147,
+                              "duration": 946,
                               "errors": [],
                               "stdout": [],
                               "stderr": [],
                               "retry": 0,
-                              "startTime": "2025-04-24T16:05:58.647Z",
-                              "attachments": []
+                              "startTime": "2025-04-25T13:11:27.524Z",
+                              "attachments": [
+                                {
+                                  "name": "video",
+                                  "contentType": "video/webm",
+                                  "path": "/home/runner/work/macpro-mako/macpro-mako/test/test-results/e2e-faq-faq-FAQ-page-UI-va-bdd66-formal-RAI-for-CHIP-SPA-FAQ-state-user-chrome/video.webm"
+                                }
+                              ]
                             }
                           ],
                           "status": "expected"
@@ -753,15 +855,21 @@
                           "projectName": "state-user-chrome",
                           "results": [
                             {
-                              "workerIndex": 1,
+                              "workerIndex": 0,
                               "status": "passed",
-                              "duration": 1126,
+                              "duration": 952,
                               "errors": [],
                               "stdout": [],
                               "stderr": [],
                               "retry": 0,
-                              "startTime": "2025-04-24T16:05:58.704Z",
-                              "attachments": []
+                              "startTime": "2025-04-25T13:11:28.476Z",
+                              "attachments": [
+                                {
+                                  "name": "video",
+                                  "contentType": "video/webm",
+                                  "path": "/home/runner/work/macpro-mako/macpro-mako/test/test-results/e2e-faq-faq-FAQ-page-UI-va-907a9-aw-package-for-CHIP-SPA-FAQ-state-user-chrome/video.webm"
+                                }
+                              ]
                             }
                           ],
                           "status": "expected"
@@ -792,13 +900,19 @@
                             {
                               "workerIndex": 0,
                               "status": "passed",
-                              "duration": 1137,
+                              "duration": 994,
                               "errors": [],
                               "stdout": [],
                               "stderr": [],
                               "retry": 0,
-                              "startTime": "2025-04-24T16:05:59.805Z",
-                              "attachments": []
+                              "startTime": "2025-04-25T13:11:29.433Z",
+                              "attachments": [
+                                {
+                                  "name": "video",
+                                  "contentType": "video/webm",
+                                  "path": "/home/runner/work/macpro-mako/macpro-mako/test/test-results/e2e-faq-faq-FAQ-page-UI-va-b9fe9-nload-ABP-SPA-templates-FAQ-state-user-chrome/video.webm"
+                                }
+                              ]
                             }
                           ],
                           "status": "expected"
@@ -827,15 +941,21 @@
                           "projectName": "state-user-chrome",
                           "results": [
                             {
-                              "workerIndex": 1,
+                              "workerIndex": 0,
                               "status": "passed",
-                              "duration": 1123,
+                              "duration": 973,
                               "errors": [],
                               "stdout": [],
                               "stderr": [],
                               "retry": 0,
-                              "startTime": "2025-04-24T16:05:59.839Z",
-                              "attachments": []
+                              "startTime": "2025-04-25T13:11:30.433Z",
+                              "attachments": [
+                                {
+                                  "name": "video",
+                                  "contentType": "video/webm",
+                                  "path": "/home/runner/work/macpro-mako/macpro-mako/test/test-results/e2e-faq-faq-FAQ-page-UI-va-87f96-A-implementation-guides-FAQ-state-user-chrome/video.webm"
+                                }
+                              ]
                             }
                           ],
                           "status": "expected"
@@ -866,13 +986,19 @@
                             {
                               "workerIndex": 0,
                               "status": "passed",
-                              "duration": 1135,
+                              "duration": 985,
                               "errors": [],
                               "stdout": [],
                               "stderr": [],
                               "retry": 0,
-                              "startTime": "2025-04-24T16:06:00.955Z",
-                              "attachments": []
+                              "startTime": "2025-04-25T13:11:31.413Z",
+                              "attachments": [
+                                {
+                                  "name": "video",
+                                  "contentType": "video/webm",
+                                  "path": "/home/runner/work/macpro-mako/macpro-mako/test/test-results/e2e-faq-faq-FAQ-page-UI-va-4d8c2-nload-MPC-SPA-templates-FAQ-state-user-chrome/video.webm"
+                                }
+                              ]
                             }
                           ],
                           "status": "expected"
@@ -901,15 +1027,21 @@
                           "projectName": "state-user-chrome",
                           "results": [
                             {
-                              "workerIndex": 1,
+                              "workerIndex": 0,
                               "status": "passed",
-                              "duration": 1162,
+                              "duration": 938,
                               "errors": [],
                               "stdout": [],
                               "stderr": [],
                               "retry": 0,
-                              "startTime": "2025-04-24T16:06:00.972Z",
-                              "attachments": []
+                              "startTime": "2025-04-25T13:11:32.404Z",
+                              "attachments": [
+                                {
+                                  "name": "video",
+                                  "contentType": "video/webm",
+                                  "path": "/home/runner/work/macpro-mako/macpro-mako/test/test-results/e2e-faq-faq-FAQ-page-UI-va-54f3b-A-implementation-guides-FAQ-state-user-chrome/video.webm"
+                                }
+                              ]
                             }
                           ],
                           "status": "expected"
@@ -940,13 +1072,19 @@
                             {
                               "workerIndex": 0,
                               "status": "passed",
-                              "duration": 1137,
+                              "duration": 981,
                               "errors": [],
                               "stdout": [],
                               "stderr": [],
                               "retry": 0,
-                              "startTime": "2025-04-24T16:06:02.100Z",
-                              "attachments": []
+                              "startTime": "2025-04-25T13:11:33.348Z",
+                              "attachments": [
+                                {
+                                  "name": "video",
+                                  "contentType": "video/webm",
+                                  "path": "/home/runner/work/macpro-mako/macpro-mako/test/test-results/e2e-faq-faq-FAQ-page-UI-va-280fe-igibility-SPA-templates-FAQ-state-user-chrome/video.webm"
+                                }
+                              ]
                             }
                           ],
                           "status": "expected"
@@ -975,15 +1113,21 @@
                           "projectName": "state-user-chrome",
                           "results": [
                             {
-                              "workerIndex": 1,
+                              "workerIndex": 0,
                               "status": "passed",
-                              "duration": 1102,
+                              "duration": 1003,
                               "errors": [],
                               "stdout": [],
                               "stderr": [],
                               "retry": 0,
-                              "startTime": "2025-04-24T16:06:02.144Z",
-                              "attachments": []
+                              "startTime": "2025-04-25T13:11:34.334Z",
+                              "attachments": [
+                                {
+                                  "name": "video",
+                                  "contentType": "video/webm",
+                                  "path": "/home/runner/work/macpro-mako/macpro-mako/test/test-results/e2e-faq-faq-FAQ-page-UI-va-864c1-A-implementation-guides-FAQ-state-user-chrome/video.webm"
+                                }
+                              ]
                             }
                           ],
                           "status": "expected"
@@ -1022,13 +1166,19 @@
                             {
                               "workerIndex": 0,
                               "status": "passed",
-                              "duration": 1154,
+                              "duration": 1020,
                               "errors": [],
                               "stdout": [],
                               "stderr": [],
                               "retry": 0,
-                              "startTime": "2025-04-24T16:06:03.246Z",
-                              "attachments": []
+                              "startTime": "2025-04-25T13:11:35.342Z",
+                              "attachments": [
+                                {
+                                  "name": "video",
+                                  "contentType": "video/webm",
+                                  "path": "/home/runner/work/macpro-mako/macpro-mako/test/test-results/e2e-faq-faq-FAQ-page-UI-va-ddc77-b-initial-waiver-number-FAQ-state-user-chrome/video.webm"
+                                }
+                              ]
                             }
                           ],
                           "status": "expected"
@@ -1057,15 +1207,21 @@
                           "projectName": "state-user-chrome",
                           "results": [
                             {
-                              "workerIndex": 1,
+                              "workerIndex": 0,
                               "status": "passed",
-                              "duration": 1155,
+                              "duration": 949,
                               "errors": [],
                               "stdout": [],
                               "stderr": [],
                               "retry": 0,
-                              "startTime": "2025-04-24T16:06:03.255Z",
-                              "attachments": []
+                              "startTime": "2025-04-25T13:11:36.368Z",
+                              "attachments": [
+                                {
+                                  "name": "video",
+                                  "contentType": "video/webm",
+                                  "path": "/home/runner/work/macpro-mako/macpro-mako/test/test-results/e2e-faq-faq-FAQ-page-UI-va-bb3e8-b-waiver-renewal-number-FAQ-state-user-chrome/video.webm"
+                                }
+                              ]
                             }
                           ],
                           "status": "expected"
@@ -1096,13 +1252,19 @@
                             {
                               "workerIndex": 0,
                               "status": "passed",
-                              "duration": 1104,
+                              "duration": 943,
                               "errors": [],
                               "stdout": [],
                               "stderr": [],
                               "retry": 0,
-                              "startTime": "2025-04-24T16:06:04.409Z",
-                              "attachments": []
+                              "startTime": "2025-04-25T13:11:37.322Z",
+                              "attachments": [
+                                {
+                                  "name": "video",
+                                  "contentType": "video/webm",
+                                  "path": "/home/runner/work/macpro-mako/macpro-mako/test/test-results/e2e-faq-faq-FAQ-page-UI-va-5216f-waiver-amendment-number-FAQ-state-user-chrome/video.webm"
+                                }
+                              ]
                             }
                           ],
                           "status": "expected"
@@ -1131,15 +1293,21 @@
                           "projectName": "state-user-chrome",
                           "results": [
                             {
-                              "workerIndex": 1,
+                              "workerIndex": 0,
                               "status": "passed",
-                              "duration": 1124,
+                              "duration": 950,
                               "errors": [],
                               "stdout": [],
                               "stderr": [],
                               "retry": 0,
-                              "startTime": "2025-04-24T16:06:04.423Z",
-                              "attachments": []
+                              "startTime": "2025-04-25T13:11:38.271Z",
+                              "attachments": [
+                                {
+                                  "name": "video",
+                                  "contentType": "video/webm",
+                                  "path": "/home/runner/work/macpro-mako/macpro-mako/test/test-results/e2e-faq-faq-FAQ-page-UI-va-ecb40--help-for-1915-b-waiver-FAQ-state-user-chrome/video.webm"
+                                }
+                              ]
                             }
                           ],
                           "status": "expected"
@@ -1170,13 +1338,19 @@
                             {
                               "workerIndex": 0,
                               "status": "passed",
-                              "duration": 1116,
+                              "duration": 968,
                               "errors": [],
                               "stdout": [],
                               "stderr": [],
                               "retry": 0,
-                              "startTime": "2025-04-24T16:06:05.523Z",
-                              "attachments": []
+                              "startTime": "2025-04-25T13:11:39.227Z",
+                              "attachments": [
+                                {
+                                  "name": "video",
+                                  "contentType": "video/webm",
+                                  "path": "/home/runner/work/macpro-mako/macpro-mako/test/test-results/e2e-faq-faq-FAQ-page-UI-va-56a1e-at-1915-c-waiver-number-FAQ-state-user-chrome/video.webm"
+                                }
+                              ]
                             }
                           ],
                           "status": "expected"
@@ -1205,15 +1379,21 @@
                           "projectName": "state-user-chrome",
                           "results": [
                             {
-                              "workerIndex": 1,
+                              "workerIndex": 0,
                               "status": "passed",
-                              "duration": 1106,
+                              "duration": 984,
                               "errors": [],
                               "stdout": [],
                               "stderr": [],
                               "retry": 0,
-                              "startTime": "2025-04-24T16:06:05.554Z",
-                              "attachments": []
+                              "startTime": "2025-04-25T13:11:40.201Z",
+                              "attachments": [
+                                {
+                                  "name": "video",
+                                  "contentType": "video/webm",
+                                  "path": "/home/runner/work/macpro-mako/macpro-mako/test/test-results/e2e-faq-faq-FAQ-page-UI-va-d610c-or-1915-b-waiver-action-FAQ-state-user-chrome/video.webm"
+                                }
+                              ]
                             }
                           ],
                           "status": "expected"
@@ -1244,13 +1424,19 @@
                             {
                               "workerIndex": 0,
                               "status": "passed",
-                              "duration": 1117,
+                              "duration": 972,
                               "errors": [],
                               "stdout": [],
                               "stderr": [],
                               "retry": 0,
-                              "startTime": "2025-04-24T16:06:06.646Z",
-                              "attachments": []
+                              "startTime": "2025-04-25T13:11:41.191Z",
+                              "attachments": [
+                                {
+                                  "name": "video",
+                                  "contentType": "video/webm",
+                                  "path": "/home/runner/work/macpro-mako/macpro-mako/test/test-results/e2e-faq-faq-FAQ-page-UI-va-004d4-nd-c-App-K-RAI-response-FAQ-state-user-chrome/video.webm"
+                                }
+                              ]
                             }
                           ],
                           "status": "expected"
@@ -1279,15 +1465,21 @@
                           "projectName": "state-user-chrome",
                           "results": [
                             {
-                              "workerIndex": 1,
+                              "workerIndex": 0,
                               "status": "passed",
-                              "duration": 1142,
+                              "duration": 1032,
                               "errors": [],
                               "stdout": [],
                               "stderr": [],
                               "retry": 0,
-                              "startTime": "2025-04-24T16:06:06.668Z",
-                              "attachments": []
+                              "startTime": "2025-04-25T13:11:42.168Z",
+                              "attachments": [
+                                {
+                                  "name": "video",
+                                  "contentType": "video/webm",
+                                  "path": "/home/runner/work/macpro-mako/macpro-mako/test/test-results/e2e-faq-faq-FAQ-page-UI-va-49000-porary-extension-format-FAQ-state-user-chrome/video.webm"
+                                }
+                              ]
                             }
                           ],
                           "status": "expected"
@@ -1318,13 +1510,19 @@
                             {
                               "workerIndex": 0,
                               "status": "passed",
-                              "duration": 1106,
+                              "duration": 984,
                               "errors": [],
                               "stdout": [],
                               "stderr": [],
                               "retry": 0,
-                              "startTime": "2025-04-24T16:06:07.775Z",
-                              "attachments": []
+                              "startTime": "2025-04-25T13:11:43.206Z",
+                              "attachments": [
+                                {
+                                  "name": "video",
+                                  "contentType": "video/webm",
+                                  "path": "/home/runner/work/macpro-mako/macpro-mako/test/test-results/e2e-faq-faq-FAQ-page-UI-va-40fbc--my-temporary-extension-FAQ-state-user-chrome/video.webm"
+                                }
+                              ]
                             }
                           ],
                           "status": "expected"
@@ -1364,7 +1562,7 @@
                               "stdout": [],
                               "stderr": [],
                               "retry": 0,
-                              "startTime": "2025-04-24T16:06:07.817Z",
+                              "startTime": "2025-04-25T13:11:44.195Z",
                               "attachments": []
                             }
                           ],
@@ -1405,7 +1603,7 @@
                               "stdout": [],
                               "stderr": [],
                               "retry": 0,
-                              "startTime": "2025-04-24T16:06:07.817Z",
+                              "startTime": "2025-04-25T13:11:44.195Z",
                               "attachments": []
                             }
                           ],
@@ -1435,15 +1633,21 @@
                           "projectName": "state-user-chrome",
                           "results": [
                             {
-                              "workerIndex": 1,
+                              "workerIndex": 0,
                               "status": "passed",
-                              "duration": 1121,
+                              "duration": 985,
                               "errors": [],
                               "stdout": [],
                               "stderr": [],
                               "retry": 0,
-                              "startTime": "2025-04-24T16:06:07.818Z",
-                              "attachments": []
+                              "startTime": "2025-04-25T13:11:44.196Z",
+                              "attachments": [
+                                {
+                                  "name": "video",
+                                  "contentType": "video/webm",
+                                  "path": "/home/runner/work/macpro-mako/macpro-mako/test/test-results/e2e-faq-faq-FAQ-page-UI-va-f5711-ubmit-App-K-attachments-FAQ-state-user-chrome/video.webm"
+                                }
+                              ]
                             }
                           ],
                           "status": "expected"
@@ -1474,13 +1678,19 @@
                             {
                               "workerIndex": 0,
                               "status": "passed",
-                              "duration": 1186,
+                              "duration": 969,
                               "errors": [],
                               "stdout": [],
                               "stderr": [],
                               "retry": 0,
-                              "startTime": "2025-04-24T16:06:08.894Z",
-                              "attachments": []
+                              "startTime": "2025-04-25T13:11:45.185Z",
+                              "attachments": [
+                                {
+                                  "name": "video",
+                                  "contentType": "video/webm",
+                                  "path": "/home/runner/work/macpro-mako/macpro-mako/test/test-results/e2e-faq-faq-FAQ-page-UI-va-0a4a9-915-c-Appendix-K-waiver-FAQ-state-user-chrome/video.webm"
+                                }
+                              ]
                             }
                           ],
                           "status": "expected"
@@ -1509,15 +1719,21 @@
                           "projectName": "state-user-chrome",
                           "results": [
                             {
-                              "workerIndex": 1,
+                              "workerIndex": 0,
                               "status": "passed",
-                              "duration": 1159,
+                              "duration": 963,
                               "errors": [],
                               "stdout": [],
                               "stderr": [],
                               "retry": 0,
-                              "startTime": "2025-04-24T16:06:08.947Z",
-                              "attachments": []
+                              "startTime": "2025-04-25T13:11:46.160Z",
+                              "attachments": [
+                                {
+                                  "name": "video",
+                                  "contentType": "video/webm",
+                                  "path": "/home/runner/work/macpro-mako/macpro-mako/test/test-results/e2e-faq-faq-FAQ-page-UI-va-44daf-nse-for-Medicaid-Waiver-FAQ-state-user-chrome/video.webm"
+                                }
+                              ]
                             }
                           ],
                           "status": "expected"
@@ -1548,13 +1764,19 @@
                             {
                               "workerIndex": 0,
                               "status": "passed",
-                              "duration": 1108,
+                              "duration": 962,
                               "errors": [],
                               "stdout": [],
                               "stderr": [],
                               "retry": 0,
-                              "startTime": "2025-04-24T16:06:10.089Z",
-                              "attachments": []
+                              "startTime": "2025-04-25T13:11:47.128Z",
+                              "attachments": [
+                                {
+                                  "name": "video",
+                                  "contentType": "video/webm",
+                                  "path": "/home/runner/work/macpro-mako/macpro-mako/test/test-results/e2e-faq-faq-FAQ-page-UI-va-f6498-draw-Package-for-Waiver-FAQ-state-user-chrome/video.webm"
+                                }
+                              ]
                             }
                           ],
                           "status": "expected"
@@ -1602,9 +1824,9 @@
                   "projectName": "state-user-chrome",
                   "results": [
                     {
-                      "workerIndex": 1,
+                      "workerIndex": 0,
                       "status": "passed",
-                      "duration": 3475,
+                      "duration": 3502,
                       "errors": [],
                       "stdout": [
                         {
@@ -1613,8 +1835,19 @@
                       ],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2025-04-24T16:06:10.224Z",
-                      "attachments": []
+                      "startTime": "2025-04-25T13:11:48.173Z",
+                      "attachments": [
+                        {
+                          "name": "video",
+                          "contentType": "video/webm",
+                          "path": "/home/runner/work/macpro-mako/macpro-mako/test/test-results/non-func-a11y-index-test-a-a8567-ctable-accessibility-issues-state-user-chrome/video-1.webm"
+                        },
+                        {
+                          "name": "video",
+                          "contentType": "video/webm",
+                          "path": "/home/runner/work/macpro-mako/macpro-mako/test/test-results/non-func-a11y-index-test-a-a8567-ctable-accessibility-issues-state-user-chrome/video.webm"
+                        }
+                      ]
                     }
                   ],
                   "status": "expected"
@@ -1643,7 +1876,7 @@
                     {
                       "workerIndex": 0,
                       "status": "passed",
-                      "duration": 4887,
+                      "duration": 4988,
                       "errors": [],
                       "stdout": [
                         {
@@ -1652,8 +1885,19 @@
                       ],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2025-04-24T16:06:11.314Z",
-                      "attachments": []
+                      "startTime": "2025-04-25T13:11:51.682Z",
+                      "attachments": [
+                        {
+                          "name": "video",
+                          "contentType": "video/webm",
+                          "path": "/home/runner/work/macpro-mako/macpro-mako/test/test-results/non-func-a11y-index-test-a-0691b-ctable-accessibility-issues-state-user-chrome/video-1.webm"
+                        },
+                        {
+                          "name": "video",
+                          "contentType": "video/webm",
+                          "path": "/home/runner/work/macpro-mako/macpro-mako/test/test-results/non-func-a11y-index-test-a-0691b-ctable-accessibility-issues-state-user-chrome/video.webm"
+                        }
+                      ]
                     }
                   ],
                   "status": "expected"
@@ -1680,9 +1924,9 @@
                   "projectName": "state-user-chrome",
                   "results": [
                     {
-                      "workerIndex": 1,
+                      "workerIndex": 0,
                       "status": "passed",
-                      "duration": 4016,
+                      "duration": 4098,
                       "errors": [],
                       "stdout": [
                         {
@@ -1691,8 +1935,19 @@
                       ],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2025-04-24T16:06:13.708Z",
-                      "attachments": []
+                      "startTime": "2025-04-25T13:11:56.675Z",
+                      "attachments": [
+                        {
+                          "name": "video",
+                          "contentType": "video/webm",
+                          "path": "/home/runner/work/macpro-mako/macpro-mako/test/test-results/non-func-a11y-index-test-a-64f19-ctable-accessibility-issues-state-user-chrome/video-1.webm"
+                        },
+                        {
+                          "name": "video",
+                          "contentType": "video/webm",
+                          "path": "/home/runner/work/macpro-mako/macpro-mako/test/test-results/non-func-a11y-index-test-a-64f19-ctable-accessibility-issues-state-user-chrome/video.webm"
+                        }
+                      ]
                     }
                   ],
                   "status": "expected"
@@ -1721,7 +1976,7 @@
                     {
                       "workerIndex": 0,
                       "status": "passed",
-                      "duration": 3285,
+                      "duration": 3544,
                       "errors": [],
                       "stdout": [
                         {
@@ -1730,8 +1985,19 @@
                       ],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2025-04-24T16:06:16.208Z",
-                      "attachments": []
+                      "startTime": "2025-04-25T13:12:00.779Z",
+                      "attachments": [
+                        {
+                          "name": "video",
+                          "contentType": "video/webm",
+                          "path": "/home/runner/work/macpro-mako/macpro-mako/test/test-results/non-func-a11y-index-test-a-91ad8-ctable-accessibility-issues-state-user-chrome/video-1.webm"
+                        },
+                        {
+                          "name": "video",
+                          "contentType": "video/webm",
+                          "path": "/home/runner/work/macpro-mako/macpro-mako/test/test-results/non-func-a11y-index-test-a-91ad8-ctable-accessibility-issues-state-user-chrome/video.webm"
+                        }
+                      ]
                     }
                   ],
                   "status": "expected"
@@ -1758,9 +2024,9 @@
                   "projectName": "state-user-chrome",
                   "results": [
                     {
-                      "workerIndex": 1,
+                      "workerIndex": 0,
                       "status": "passed",
-                      "duration": 3309,
+                      "duration": 3355,
                       "errors": [],
                       "stdout": [
                         {
@@ -1769,8 +2035,19 @@
                       ],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2025-04-24T16:06:17.735Z",
-                      "attachments": []
+                      "startTime": "2025-04-25T13:12:04.327Z",
+                      "attachments": [
+                        {
+                          "name": "video",
+                          "contentType": "video/webm",
+                          "path": "/home/runner/work/macpro-mako/macpro-mako/test/test-results/non-func-a11y-index-test-a-ed255-ctable-accessibility-issues-state-user-chrome/video-1.webm"
+                        },
+                        {
+                          "name": "video",
+                          "contentType": "video/webm",
+                          "path": "/home/runner/work/macpro-mako/macpro-mako/test/test-results/non-func-a11y-index-test-a-ed255-ctable-accessibility-issues-state-user-chrome/video.webm"
+                        }
+                      ]
                     }
                   ],
                   "status": "expected"
@@ -1799,7 +2076,7 @@
                     {
                       "workerIndex": 0,
                       "status": "passed",
-                      "duration": 3283,
+                      "duration": 3401,
                       "errors": [],
                       "stdout": [
                         {
@@ -1808,8 +2085,19 @@
                       ],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2025-04-24T16:06:19.499Z",
-                      "attachments": []
+                      "startTime": "2025-04-25T13:12:07.687Z",
+                      "attachments": [
+                        {
+                          "name": "video",
+                          "contentType": "video/webm",
+                          "path": "/home/runner/work/macpro-mako/macpro-mako/test/test-results/non-func-a11y-index-test-a-4ba7d-ctable-accessibility-issues-state-user-chrome/video-1.webm"
+                        },
+                        {
+                          "name": "video",
+                          "contentType": "video/webm",
+                          "path": "/home/runner/work/macpro-mako/macpro-mako/test/test-results/non-func-a11y-index-test-a-4ba7d-ctable-accessibility-issues-state-user-chrome/video.webm"
+                        }
+                      ]
                     }
                   ],
                   "status": "expected"
@@ -1836,9 +2124,9 @@
                   "projectName": "state-user-chrome",
                   "results": [
                     {
-                      "workerIndex": 1,
+                      "workerIndex": 0,
                       "status": "passed",
-                      "duration": 3309,
+                      "duration": 4635,
                       "errors": [],
                       "stdout": [
                         {
@@ -1847,8 +2135,19 @@
                       ],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2025-04-24T16:06:21.054Z",
-                      "attachments": []
+                      "startTime": "2025-04-25T13:12:11.093Z",
+                      "attachments": [
+                        {
+                          "name": "video",
+                          "contentType": "video/webm",
+                          "path": "/home/runner/work/macpro-mako/macpro-mako/test/test-results/non-func-a11y-index-test-a-84e4e-ctable-accessibility-issues-state-user-chrome/video-1.webm"
+                        },
+                        {
+                          "name": "video",
+                          "contentType": "video/webm",
+                          "path": "/home/runner/work/macpro-mako/macpro-mako/test/test-results/non-func-a11y-index-test-a-84e4e-ctable-accessibility-issues-state-user-chrome/video.webm"
+                        }
+                      ]
                     }
                   ],
                   "status": "expected"
@@ -1877,7 +2176,7 @@
                     {
                       "workerIndex": 0,
                       "status": "passed",
-                      "duration": 3263,
+                      "duration": 3418,
                       "errors": [],
                       "stdout": [
                         {
@@ -1886,8 +2185,19 @@
                       ],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2025-04-24T16:06:22.788Z",
-                      "attachments": []
+                      "startTime": "2025-04-25T13:12:15.733Z",
+                      "attachments": [
+                        {
+                          "name": "video",
+                          "contentType": "video/webm",
+                          "path": "/home/runner/work/macpro-mako/macpro-mako/test/test-results/non-func-a11y-index-test-a-000c0-ctable-accessibility-issues-state-user-chrome/video-1.webm"
+                        },
+                        {
+                          "name": "video",
+                          "contentType": "video/webm",
+                          "path": "/home/runner/work/macpro-mako/macpro-mako/test/test-results/non-func-a11y-index-test-a-000c0-ctable-accessibility-issues-state-user-chrome/video.webm"
+                        }
+                      ]
                     }
                   ],
                   "status": "expected"
@@ -1914,9 +2224,9 @@
                   "projectName": "state-user-chrome",
                   "results": [
                     {
-                      "workerIndex": 1,
+                      "workerIndex": 0,
                       "status": "passed",
-                      "duration": 3290,
+                      "duration": 3386,
                       "errors": [],
                       "stdout": [
                         {
@@ -1925,8 +2235,19 @@
                       ],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2025-04-24T16:06:24.368Z",
-                      "attachments": []
+                      "startTime": "2025-04-25T13:12:19.155Z",
+                      "attachments": [
+                        {
+                          "name": "video",
+                          "contentType": "video/webm",
+                          "path": "/home/runner/work/macpro-mako/macpro-mako/test/test-results/non-func-a11y-index-test-a-2e086-ctable-accessibility-issues-state-user-chrome/video-1.webm"
+                        },
+                        {
+                          "name": "video",
+                          "contentType": "video/webm",
+                          "path": "/home/runner/work/macpro-mako/macpro-mako/test/test-results/non-func-a11y-index-test-a-2e086-ctable-accessibility-issues-state-user-chrome/video.webm"
+                        }
+                      ]
                     }
                   ],
                   "status": "expected"
@@ -1955,7 +2276,7 @@
                     {
                       "workerIndex": 0,
                       "status": "passed",
-                      "duration": 3267,
+                      "duration": 3416,
                       "errors": [],
                       "stdout": [
                         {
@@ -1964,8 +2285,19 @@
                       ],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2025-04-24T16:06:26.056Z",
-                      "attachments": []
+                      "startTime": "2025-04-25T13:12:22.546Z",
+                      "attachments": [
+                        {
+                          "name": "video",
+                          "contentType": "video/webm",
+                          "path": "/home/runner/work/macpro-mako/macpro-mako/test/test-results/non-func-a11y-index-test-a-766a3-ctable-accessibility-issues-state-user-chrome/video-1.webm"
+                        },
+                        {
+                          "name": "video",
+                          "contentType": "video/webm",
+                          "path": "/home/runner/work/macpro-mako/macpro-mako/test/test-results/non-func-a11y-index-test-a-766a3-ctable-accessibility-issues-state-user-chrome/video.webm"
+                        }
+                      ]
                     }
                   ],
                   "status": "expected"
@@ -1992,9 +2324,9 @@
                   "projectName": "state-user-chrome",
                   "results": [
                     {
-                      "workerIndex": 1,
+                      "workerIndex": 0,
                       "status": "passed",
-                      "duration": 3315,
+                      "duration": 3414,
                       "errors": [],
                       "stdout": [
                         {
@@ -2003,8 +2335,19 @@
                       ],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2025-04-24T16:06:27.663Z",
-                      "attachments": []
+                      "startTime": "2025-04-25T13:12:25.967Z",
+                      "attachments": [
+                        {
+                          "name": "video",
+                          "contentType": "video/webm",
+                          "path": "/home/runner/work/macpro-mako/macpro-mako/test/test-results/non-func-a11y-index-test-a-cc462-ctable-accessibility-issues-state-user-chrome/video-1.webm"
+                        },
+                        {
+                          "name": "video",
+                          "contentType": "video/webm",
+                          "path": "/home/runner/work/macpro-mako/macpro-mako/test/test-results/non-func-a11y-index-test-a-cc462-ctable-accessibility-issues-state-user-chrome/video.webm"
+                        }
+                      ]
                     }
                   ],
                   "status": "expected"
@@ -2033,7 +2376,7 @@
                     {
                       "workerIndex": 0,
                       "status": "passed",
-                      "duration": 3291,
+                      "duration": 3410,
                       "errors": [],
                       "stdout": [
                         {
@@ -2042,8 +2385,19 @@
                       ],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2025-04-24T16:06:29.328Z",
-                      "attachments": []
+                      "startTime": "2025-04-25T13:12:29.386Z",
+                      "attachments": [
+                        {
+                          "name": "video",
+                          "contentType": "video/webm",
+                          "path": "/home/runner/work/macpro-mako/macpro-mako/test/test-results/non-func-a11y-index-test-a-0f045-ctable-accessibility-issues-state-user-chrome/video-1.webm"
+                        },
+                        {
+                          "name": "video",
+                          "contentType": "video/webm",
+                          "path": "/home/runner/work/macpro-mako/macpro-mako/test/test-results/non-func-a11y-index-test-a-0f045-ctable-accessibility-issues-state-user-chrome/video.webm"
+                        }
+                      ]
                     }
                   ],
                   "status": "expected"
@@ -2070,9 +2424,9 @@
                   "projectName": "state-user-chrome",
                   "results": [
                     {
-                      "workerIndex": 1,
+                      "workerIndex": 0,
                       "status": "passed",
-                      "duration": 3288,
+                      "duration": 3411,
                       "errors": [],
                       "stdout": [
                         {
@@ -2081,8 +2435,19 @@
                       ],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2025-04-24T16:06:30.983Z",
-                      "attachments": []
+                      "startTime": "2025-04-25T13:12:32.801Z",
+                      "attachments": [
+                        {
+                          "name": "video",
+                          "contentType": "video/webm",
+                          "path": "/home/runner/work/macpro-mako/macpro-mako/test/test-results/non-func-a11y-index-test-a-a1d90-ctable-accessibility-issues-state-user-chrome/video-1.webm"
+                        },
+                        {
+                          "name": "video",
+                          "contentType": "video/webm",
+                          "path": "/home/runner/work/macpro-mako/macpro-mako/test/test-results/non-func-a11y-index-test-a-a1d90-ctable-accessibility-issues-state-user-chrome/video.webm"
+                        }
+                      ]
                     }
                   ],
                   "status": "expected"
@@ -2111,7 +2476,7 @@
                     {
                       "workerIndex": 0,
                       "status": "passed",
-                      "duration": 3264,
+                      "duration": 3424,
                       "errors": [],
                       "stdout": [
                         {
@@ -2120,8 +2485,19 @@
                       ],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2025-04-24T16:06:32.625Z",
-                      "attachments": []
+                      "startTime": "2025-04-25T13:12:36.217Z",
+                      "attachments": [
+                        {
+                          "name": "video",
+                          "contentType": "video/webm",
+                          "path": "/home/runner/work/macpro-mako/macpro-mako/test/test-results/non-func-a11y-index-test-a-c4c9e-ctable-accessibility-issues-state-user-chrome/video-1.webm"
+                        },
+                        {
+                          "name": "video",
+                          "contentType": "video/webm",
+                          "path": "/home/runner/work/macpro-mako/macpro-mako/test/test-results/non-func-a11y-index-test-a-c4c9e-ctable-accessibility-issues-state-user-chrome/video.webm"
+                        }
+                      ]
                     }
                   ],
                   "status": "expected"
@@ -2148,9 +2524,9 @@
                   "projectName": "state-user-chrome",
                   "results": [
                     {
-                      "workerIndex": 1,
+                      "workerIndex": 0,
                       "status": "passed",
-                      "duration": 3270,
+                      "duration": 3402,
                       "errors": [],
                       "stdout": [
                         {
@@ -2159,8 +2535,19 @@
                       ],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2025-04-24T16:06:34.276Z",
-                      "attachments": []
+                      "startTime": "2025-04-25T13:12:39.645Z",
+                      "attachments": [
+                        {
+                          "name": "video",
+                          "contentType": "video/webm",
+                          "path": "/home/runner/work/macpro-mako/macpro-mako/test/test-results/non-func-a11y-index-test-a-39453-ctable-accessibility-issues-state-user-chrome/video-1.webm"
+                        },
+                        {
+                          "name": "video",
+                          "contentType": "video/webm",
+                          "path": "/home/runner/work/macpro-mako/macpro-mako/test/test-results/non-func-a11y-index-test-a-39453-ctable-accessibility-issues-state-user-chrome/video.webm"
+                        }
+                      ]
                     }
                   ],
                   "status": "expected"
@@ -2189,7 +2576,7 @@
                     {
                       "workerIndex": 0,
                       "status": "passed",
-                      "duration": 3429,
+                      "duration": 3647,
                       "errors": [],
                       "stdout": [
                         {
@@ -2198,8 +2585,19 @@
                       ],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2025-04-24T16:06:35.895Z",
-                      "attachments": []
+                      "startTime": "2025-04-25T13:12:43.052Z",
+                      "attachments": [
+                        {
+                          "name": "video",
+                          "contentType": "video/webm",
+                          "path": "/home/runner/work/macpro-mako/macpro-mako/test/test-results/non-func-a11y-index-test-a-670bd-ctable-accessibility-issues-state-user-chrome/video-1.webm"
+                        },
+                        {
+                          "name": "video",
+                          "contentType": "video/webm",
+                          "path": "/home/runner/work/macpro-mako/macpro-mako/test/test-results/non-func-a11y-index-test-a-670bd-ctable-accessibility-issues-state-user-chrome/video.webm"
+                        }
+                      ]
                     }
                   ],
                   "status": "expected"
@@ -2226,9 +2624,9 @@
                   "projectName": "state-user-chrome",
                   "results": [
                     {
-                      "workerIndex": 1,
+                      "workerIndex": 0,
                       "status": "passed",
-                      "duration": 3532,
+                      "duration": 3667,
                       "errors": [],
                       "stdout": [
                         {
@@ -2237,8 +2635,19 @@
                       ],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2025-04-24T16:06:37.551Z",
-                      "attachments": []
+                      "startTime": "2025-04-25T13:12:46.704Z",
+                      "attachments": [
+                        {
+                          "name": "video",
+                          "contentType": "video/webm",
+                          "path": "/home/runner/work/macpro-mako/macpro-mako/test/test-results/non-func-a11y-index-test-a-ad944-ctable-accessibility-issues-state-user-chrome/video-1.webm"
+                        },
+                        {
+                          "name": "video",
+                          "contentType": "video/webm",
+                          "path": "/home/runner/work/macpro-mako/macpro-mako/test/test-results/non-func-a11y-index-test-a-ad944-ctable-accessibility-issues-state-user-chrome/video.webm"
+                        }
+                      ]
                     }
                   ],
                   "status": "expected"
@@ -2267,7 +2676,7 @@
                     {
                       "workerIndex": 0,
                       "status": "passed",
-                      "duration": 3557,
+                      "duration": 3601,
                       "errors": [],
                       "stdout": [
                         {
@@ -2276,8 +2685,19 @@
                       ],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2025-04-24T16:06:39.329Z",
-                      "attachments": []
+                      "startTime": "2025-04-25T13:12:50.375Z",
+                      "attachments": [
+                        {
+                          "name": "video",
+                          "contentType": "video/webm",
+                          "path": "/home/runner/work/macpro-mako/macpro-mako/test/test-results/non-func-a11y-index-test-a-59867-ctable-accessibility-issues-state-user-chrome/video-1.webm"
+                        },
+                        {
+                          "name": "video",
+                          "contentType": "video/webm",
+                          "path": "/home/runner/work/macpro-mako/macpro-mako/test/test-results/non-func-a11y-index-test-a-59867-ctable-accessibility-issues-state-user-chrome/video.webm"
+                        }
+                      ]
                     }
                   ],
                   "status": "expected"
@@ -2304,9 +2724,9 @@
                   "projectName": "state-user-chrome",
                   "results": [
                     {
-                      "workerIndex": 1,
+                      "workerIndex": 0,
                       "status": "passed",
-                      "duration": 3571,
+                      "duration": 3592,
                       "errors": [],
                       "stdout": [
                         {
@@ -2315,8 +2735,19 @@
                       ],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2025-04-24T16:06:41.088Z",
-                      "attachments": []
+                      "startTime": "2025-04-25T13:12:53.980Z",
+                      "attachments": [
+                        {
+                          "name": "video",
+                          "contentType": "video/webm",
+                          "path": "/home/runner/work/macpro-mako/macpro-mako/test/test-results/non-func-a11y-index-test-a-49f3b-ctable-accessibility-issues-state-user-chrome/video-1.webm"
+                        },
+                        {
+                          "name": "video",
+                          "contentType": "video/webm",
+                          "path": "/home/runner/work/macpro-mako/macpro-mako/test/test-results/non-func-a11y-index-test-a-49f3b-ctable-accessibility-issues-state-user-chrome/video.webm"
+                        }
+                      ]
                     }
                   ],
                   "status": "expected"
@@ -2345,7 +2776,7 @@
                     {
                       "workerIndex": 0,
                       "status": "passed",
-                      "duration": 3475,
+                      "duration": 3648,
                       "errors": [],
                       "stdout": [
                         {
@@ -2354,8 +2785,19 @@
                       ],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2025-04-24T16:06:42.891Z",
-                      "attachments": []
+                      "startTime": "2025-04-25T13:12:57.577Z",
+                      "attachments": [
+                        {
+                          "name": "video",
+                          "contentType": "video/webm",
+                          "path": "/home/runner/work/macpro-mako/macpro-mako/test/test-results/non-func-a11y-index-test-a-0105a-ctable-accessibility-issues-state-user-chrome/video-1.webm"
+                        },
+                        {
+                          "name": "video",
+                          "contentType": "video/webm",
+                          "path": "/home/runner/work/macpro-mako/macpro-mako/test/test-results/non-func-a11y-index-test-a-0105a-ctable-accessibility-issues-state-user-chrome/video.webm"
+                        }
+                      ]
                     }
                   ],
                   "status": "expected"
@@ -2382,9 +2824,9 @@
                   "projectName": "state-user-chrome",
                   "results": [
                     {
-                      "workerIndex": 1,
+                      "workerIndex": 0,
                       "status": "passed",
-                      "duration": 3506,
+                      "duration": 3845,
                       "errors": [],
                       "stdout": [
                         {
@@ -2393,8 +2835,19 @@
                       ],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2025-04-24T16:06:44.665Z",
-                      "attachments": []
+                      "startTime": "2025-04-25T13:13:01.229Z",
+                      "attachments": [
+                        {
+                          "name": "video",
+                          "contentType": "video/webm",
+                          "path": "/home/runner/work/macpro-mako/macpro-mako/test/test-results/non-func-a11y-index-test-a-c5535-ctable-accessibility-issues-state-user-chrome/video-1.webm"
+                        },
+                        {
+                          "name": "video",
+                          "contentType": "video/webm",
+                          "path": "/home/runner/work/macpro-mako/macpro-mako/test/test-results/non-func-a11y-index-test-a-c5535-ctable-accessibility-issues-state-user-chrome/video.webm"
+                        }
+                      ]
                     }
                   ],
                   "status": "expected"
@@ -2423,7 +2876,7 @@
                     {
                       "workerIndex": 0,
                       "status": "passed",
-                      "duration": 3537,
+                      "duration": 3942,
                       "errors": [],
                       "stdout": [
                         {
@@ -2432,8 +2885,19 @@
                       ],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2025-04-24T16:06:46.372Z",
-                      "attachments": []
+                      "startTime": "2025-04-25T13:13:05.080Z",
+                      "attachments": [
+                        {
+                          "name": "video",
+                          "contentType": "video/webm",
+                          "path": "/home/runner/work/macpro-mako/macpro-mako/test/test-results/non-func-a11y-index-test-a-1a961-ctable-accessibility-issues-state-user-chrome/video-1.webm"
+                        },
+                        {
+                          "name": "video",
+                          "contentType": "video/webm",
+                          "path": "/home/runner/work/macpro-mako/macpro-mako/test/test-results/non-func-a11y-index-test-a-1a961-ctable-accessibility-issues-state-user-chrome/video.webm"
+                        }
+                      ]
                     }
                   ],
                   "status": "expected"
@@ -2460,9 +2924,9 @@
                   "projectName": "state-user-chrome",
                   "results": [
                     {
-                      "workerIndex": 1,
+                      "workerIndex": 0,
                       "status": "passed",
-                      "duration": 3536,
+                      "duration": 3686,
                       "errors": [],
                       "stdout": [
                         {
@@ -2471,8 +2935,19 @@
                       ],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2025-04-24T16:06:48.177Z",
-                      "attachments": []
+                      "startTime": "2025-04-25T13:13:09.027Z",
+                      "attachments": [
+                        {
+                          "name": "video",
+                          "contentType": "video/webm",
+                          "path": "/home/runner/work/macpro-mako/macpro-mako/test/test-results/non-func-a11y-index-test-a-44743-ctable-accessibility-issues-state-user-chrome/video-1.webm"
+                        },
+                        {
+                          "name": "video",
+                          "contentType": "video/webm",
+                          "path": "/home/runner/work/macpro-mako/macpro-mako/test/test-results/non-func-a11y-index-test-a-44743-ctable-accessibility-issues-state-user-chrome/video.webm"
+                        }
+                      ]
                     }
                   ],
                   "status": "expected"
@@ -2501,7 +2976,7 @@
                     {
                       "workerIndex": 0,
                       "status": "passed",
-                      "duration": 3463,
+                      "duration": 3557,
                       "errors": [],
                       "stdout": [
                         {
@@ -2510,8 +2985,19 @@
                       ],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2025-04-24T16:06:49.914Z",
-                      "attachments": []
+                      "startTime": "2025-04-25T13:13:12.718Z",
+                      "attachments": [
+                        {
+                          "name": "video",
+                          "contentType": "video/webm",
+                          "path": "/home/runner/work/macpro-mako/macpro-mako/test/test-results/non-func-a11y-index-test-a-81054-ctable-accessibility-issues-state-user-chrome/video-1.webm"
+                        },
+                        {
+                          "name": "video",
+                          "contentType": "video/webm",
+                          "path": "/home/runner/work/macpro-mako/macpro-mako/test/test-results/non-func-a11y-index-test-a-81054-ctable-accessibility-issues-state-user-chrome/video.webm"
+                        }
+                      ]
                     }
                   ],
                   "status": "expected"
@@ -2538,9 +3024,9 @@
                   "projectName": "state-user-chrome",
                   "results": [
                     {
-                      "workerIndex": 1,
+                      "workerIndex": 0,
                       "status": "passed",
-                      "duration": 3391,
+                      "duration": 5626,
                       "errors": [],
                       "stdout": [
                         {
@@ -2549,8 +3035,19 @@
                       ],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2025-04-24T16:06:51.720Z",
-                      "attachments": []
+                      "startTime": "2025-04-25T13:13:16.279Z",
+                      "attachments": [
+                        {
+                          "name": "video",
+                          "contentType": "video/webm",
+                          "path": "/home/runner/work/macpro-mako/macpro-mako/test/test-results/non-func-a11y-index-test-a-cb04f-ctable-accessibility-issues-state-user-chrome/video-1.webm"
+                        },
+                        {
+                          "name": "video",
+                          "contentType": "video/webm",
+                          "path": "/home/runner/work/macpro-mako/macpro-mako/test/test-results/non-func-a11y-index-test-a-cb04f-ctable-accessibility-issues-state-user-chrome/video.webm"
+                        }
+                      ]
                     }
                   ],
                   "status": "expected"
@@ -2587,7 +3084,7 @@
                     {
                       "workerIndex": 0,
                       "status": "passed",
-                      "duration": 3410,
+                      "duration": 3530,
                       "errors": [],
                       "stdout": [
                         {
@@ -2596,8 +3093,19 @@
                       ],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2025-04-24T16:06:53.383Z",
-                      "attachments": []
+                      "startTime": "2025-04-25T13:13:21.911Z",
+                      "attachments": [
+                        {
+                          "name": "video",
+                          "contentType": "video/webm",
+                          "path": "/home/runner/work/macpro-mako/macpro-mako/test/test-results/non-func-a11y-index-test-a-e1462-ctable-accessibility-issues-state-user-chrome/video-1.webm"
+                        },
+                        {
+                          "name": "video",
+                          "contentType": "video/webm",
+                          "path": "/home/runner/work/macpro-mako/macpro-mako/test/test-results/non-func-a11y-index-test-a-e1462-ctable-accessibility-issues-state-user-chrome/video.webm"
+                        }
+                      ]
                     }
                   ],
                   "status": "expected"
@@ -2624,9 +3132,9 @@
                   "projectName": "state-user-chrome",
                   "results": [
                     {
-                      "workerIndex": 1,
+                      "workerIndex": 0,
                       "status": "passed",
-                      "duration": 3991,
+                      "duration": 4098,
                       "errors": [],
                       "stdout": [
                         {
@@ -2635,8 +3143,19 @@
                       ],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2025-04-24T16:06:55.116Z",
-                      "attachments": []
+                      "startTime": "2025-04-25T13:13:25.446Z",
+                      "attachments": [
+                        {
+                          "name": "video",
+                          "contentType": "video/webm",
+                          "path": "/home/runner/work/macpro-mako/macpro-mako/test/test-results/non-func-a11y-index-test-a-ceca8-ctable-accessibility-issues-state-user-chrome/video-1.webm"
+                        },
+                        {
+                          "name": "video",
+                          "contentType": "video/webm",
+                          "path": "/home/runner/work/macpro-mako/macpro-mako/test/test-results/non-func-a11y-index-test-a-ceca8-ctable-accessibility-issues-state-user-chrome/video.webm"
+                        }
+                      ]
                     }
                   ],
                   "status": "expected"
@@ -2665,7 +3184,7 @@
                     {
                       "workerIndex": 0,
                       "status": "passed",
-                      "duration": 3698,
+                      "duration": 3640,
                       "errors": [],
                       "stdout": [
                         {
@@ -2674,8 +3193,19 @@
                       ],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2025-04-24T16:06:56.798Z",
-                      "attachments": []
+                      "startTime": "2025-04-25T13:13:29.548Z",
+                      "attachments": [
+                        {
+                          "name": "video",
+                          "contentType": "video/webm",
+                          "path": "/home/runner/work/macpro-mako/macpro-mako/test/test-results/non-func-a11y-index-test-a-3e2b1-ctable-accessibility-issues-state-user-chrome/video-1.webm"
+                        },
+                        {
+                          "name": "video",
+                          "contentType": "video/webm",
+                          "path": "/home/runner/work/macpro-mako/macpro-mako/test/test-results/non-func-a11y-index-test-a-3e2b1-ctable-accessibility-issues-state-user-chrome/video.webm"
+                        }
+                      ]
                     }
                   ],
                   "status": "expected"
@@ -2702,9 +3232,9 @@
                   "projectName": "state-user-chrome",
                   "results": [
                     {
-                      "workerIndex": 1,
+                      "workerIndex": 0,
                       "status": "passed",
-                      "duration": 3570,
+                      "duration": 3607,
                       "errors": [],
                       "stdout": [
                         {
@@ -2713,8 +3243,19 @@
                       ],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2025-04-24T16:06:59.112Z",
-                      "attachments": []
+                      "startTime": "2025-04-25T13:13:33.193Z",
+                      "attachments": [
+                        {
+                          "name": "video",
+                          "contentType": "video/webm",
+                          "path": "/home/runner/work/macpro-mako/macpro-mako/test/test-results/non-func-a11y-index-test-a-1d350-ctable-accessibility-issues-state-user-chrome/video-1.webm"
+                        },
+                        {
+                          "name": "video",
+                          "contentType": "video/webm",
+                          "path": "/home/runner/work/macpro-mako/macpro-mako/test/test-results/non-func-a11y-index-test-a-1d350-ctable-accessibility-issues-state-user-chrome/video.webm"
+                        }
+                      ]
                     }
                   ],
                   "status": "expected"
@@ -2743,7 +3284,7 @@
                     {
                       "workerIndex": 0,
                       "status": "passed",
-                      "duration": 3733,
+                      "duration": 3752,
                       "errors": [],
                       "stdout": [
                         {
@@ -2752,8 +3293,19 @@
                       ],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2025-04-24T16:07:00.502Z",
-                      "attachments": []
+                      "startTime": "2025-04-25T13:13:36.805Z",
+                      "attachments": [
+                        {
+                          "name": "video",
+                          "contentType": "video/webm",
+                          "path": "/home/runner/work/macpro-mako/macpro-mako/test/test-results/non-func-a11y-index-test-a-6389b-ctable-accessibility-issues-state-user-chrome/video-1.webm"
+                        },
+                        {
+                          "name": "video",
+                          "contentType": "video/webm",
+                          "path": "/home/runner/work/macpro-mako/macpro-mako/test/test-results/non-func-a11y-index-test-a-6389b-ctable-accessibility-issues-state-user-chrome/video.webm"
+                        }
+                      ]
                     }
                   ],
                   "status": "expected"
@@ -2780,9 +3332,9 @@
                   "projectName": "state-user-chrome",
                   "results": [
                     {
-                      "workerIndex": 1,
+                      "workerIndex": 0,
                       "status": "passed",
-                      "duration": 3531,
+                      "duration": 3653,
                       "errors": [],
                       "stdout": [
                         {
@@ -2791,8 +3343,19 @@
                       ],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2025-04-24T16:07:02.688Z",
-                      "attachments": []
+                      "startTime": "2025-04-25T13:13:40.561Z",
+                      "attachments": [
+                        {
+                          "name": "video",
+                          "contentType": "video/webm",
+                          "path": "/home/runner/work/macpro-mako/macpro-mako/test/test-results/non-func-a11y-index-test-a-69022-ctable-accessibility-issues-state-user-chrome/video-1.webm"
+                        },
+                        {
+                          "name": "video",
+                          "contentType": "video/webm",
+                          "path": "/home/runner/work/macpro-mako/macpro-mako/test/test-results/non-func-a11y-index-test-a-69022-ctable-accessibility-issues-state-user-chrome/video.webm"
+                        }
+                      ]
                     }
                   ],
                   "status": "expected"
@@ -2821,7 +3384,7 @@
                     {
                       "workerIndex": 0,
                       "status": "passed",
-                      "duration": 3449,
+                      "duration": 3354,
                       "errors": [],
                       "stdout": [
                         {
@@ -2830,8 +3393,19 @@
                       ],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2025-04-24T16:07:04.240Z",
-                      "attachments": []
+                      "startTime": "2025-04-25T13:13:44.219Z",
+                      "attachments": [
+                        {
+                          "name": "video",
+                          "contentType": "video/webm",
+                          "path": "/home/runner/work/macpro-mako/macpro-mako/test/test-results/non-func-a11y-index-test-a-f1a04-ctable-accessibility-issues-state-user-chrome/video-1.webm"
+                        },
+                        {
+                          "name": "video",
+                          "contentType": "video/webm",
+                          "path": "/home/runner/work/macpro-mako/macpro-mako/test/test-results/non-func-a11y-index-test-a-f1a04-ctable-accessibility-issues-state-user-chrome/video.webm"
+                        }
+                      ]
                     }
                   ],
                   "status": "expected"
@@ -2858,9 +3432,9 @@
                   "projectName": "state-user-chrome",
                   "results": [
                     {
-                      "workerIndex": 1,
+                      "workerIndex": 0,
                       "status": "passed",
-                      "duration": 3501,
+                      "duration": 4857,
                       "errors": [],
                       "stdout": [
                         {
@@ -2869,8 +3443,19 @@
                       ],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2025-04-24T16:07:06.224Z",
-                      "attachments": []
+                      "startTime": "2025-04-25T13:13:47.577Z",
+                      "attachments": [
+                        {
+                          "name": "video",
+                          "contentType": "video/webm",
+                          "path": "/home/runner/work/macpro-mako/macpro-mako/test/test-results/non-func-a11y-index-test-a-a2a8c-ctable-accessibility-issues-state-user-chrome/video-1.webm"
+                        },
+                        {
+                          "name": "video",
+                          "contentType": "video/webm",
+                          "path": "/home/runner/work/macpro-mako/macpro-mako/test/test-results/non-func-a11y-index-test-a-a2a8c-ctable-accessibility-issues-state-user-chrome/video.webm"
+                        }
+                      ]
                     }
                   ],
                   "status": "expected"
@@ -2899,7 +3484,7 @@
                     {
                       "workerIndex": 0,
                       "status": "passed",
-                      "duration": 3376,
+                      "duration": 3432,
                       "errors": [],
                       "stdout": [
                         {
@@ -2908,8 +3493,19 @@
                       ],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2025-04-24T16:07:07.694Z",
-                      "attachments": []
+                      "startTime": "2025-04-25T13:13:52.439Z",
+                      "attachments": [
+                        {
+                          "name": "video",
+                          "contentType": "video/webm",
+                          "path": "/home/runner/work/macpro-mako/macpro-mako/test/test-results/non-func-a11y-index-test-a-f267e-ctable-accessibility-issues-state-user-chrome/video-1.webm"
+                        },
+                        {
+                          "name": "video",
+                          "contentType": "video/webm",
+                          "path": "/home/runner/work/macpro-mako/macpro-mako/test/test-results/non-func-a11y-index-test-a-f267e-ctable-accessibility-issues-state-user-chrome/video.webm"
+                        }
+                      ]
                     }
                   ],
                   "status": "expected"
@@ -2936,9 +3532,9 @@
                   "projectName": "state-user-chrome",
                   "results": [
                     {
-                      "workerIndex": 1,
+                      "workerIndex": 0,
                       "status": "passed",
-                      "duration": 3353,
+                      "duration": 3506,
                       "errors": [],
                       "stdout": [
                         {
@@ -2947,8 +3543,19 @@
                       ],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2025-04-24T16:07:09.735Z",
-                      "attachments": []
+                      "startTime": "2025-04-25T13:13:55.875Z",
+                      "attachments": [
+                        {
+                          "name": "video",
+                          "contentType": "video/webm",
+                          "path": "/home/runner/work/macpro-mako/macpro-mako/test/test-results/non-func-a11y-index-test-a-81906-ctable-accessibility-issues-state-user-chrome/video-1.webm"
+                        },
+                        {
+                          "name": "video",
+                          "contentType": "video/webm",
+                          "path": "/home/runner/work/macpro-mako/macpro-mako/test/test-results/non-func-a11y-index-test-a-81906-ctable-accessibility-issues-state-user-chrome/video.webm"
+                        }
+                      ]
                     }
                   ],
                   "status": "expected"
@@ -2977,7 +3584,7 @@
                     {
                       "workerIndex": 0,
                       "status": "passed",
-                      "duration": 3355,
+                      "duration": 3488,
                       "errors": [],
                       "stdout": [
                         {
@@ -2986,8 +3593,19 @@
                       ],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2025-04-24T16:07:11.076Z",
-                      "attachments": []
+                      "startTime": "2025-04-25T13:13:59.385Z",
+                      "attachments": [
+                        {
+                          "name": "video",
+                          "contentType": "video/webm",
+                          "path": "/home/runner/work/macpro-mako/macpro-mako/test/test-results/non-func-a11y-index-test-a-b1fbc-ctable-accessibility-issues-state-user-chrome/video-1.webm"
+                        },
+                        {
+                          "name": "video",
+                          "contentType": "video/webm",
+                          "path": "/home/runner/work/macpro-mako/macpro-mako/test/test-results/non-func-a11y-index-test-a-b1fbc-ctable-accessibility-issues-state-user-chrome/video.webm"
+                        }
+                      ]
                     }
                   ],
                   "status": "expected"
@@ -3014,9 +3632,9 @@
                   "projectName": "state-user-chrome",
                   "results": [
                     {
-                      "workerIndex": 1,
+                      "workerIndex": 0,
                       "status": "passed",
-                      "duration": 3487,
+                      "duration": 3724,
                       "errors": [],
                       "stdout": [
                         {
@@ -3025,8 +3643,19 @@
                       ],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2025-04-24T16:07:13.092Z",
-                      "attachments": []
+                      "startTime": "2025-04-25T13:14:02.879Z",
+                      "attachments": [
+                        {
+                          "name": "video",
+                          "contentType": "video/webm",
+                          "path": "/home/runner/work/macpro-mako/macpro-mako/test/test-results/non-func-a11y-index-test-a-05465-ctable-accessibility-issues-state-user-chrome/video-1.webm"
+                        },
+                        {
+                          "name": "video",
+                          "contentType": "video/webm",
+                          "path": "/home/runner/work/macpro-mako/macpro-mako/test/test-results/non-func-a11y-index-test-a-05465-ctable-accessibility-issues-state-user-chrome/video.webm"
+                        }
+                      ]
                     }
                   ],
                   "status": "expected"
@@ -3055,7 +3684,7 @@
                     {
                       "workerIndex": 0,
                       "status": "passed",
-                      "duration": 3527,
+                      "duration": 3568,
                       "errors": [],
                       "stdout": [
                         {
@@ -3064,8 +3693,19 @@
                       ],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2025-04-24T16:07:14.436Z",
-                      "attachments": []
+                      "startTime": "2025-04-25T13:14:06.607Z",
+                      "attachments": [
+                        {
+                          "name": "video",
+                          "contentType": "video/webm",
+                          "path": "/home/runner/work/macpro-mako/macpro-mako/test/test-results/non-func-a11y-index-test-a-73b8e-ctable-accessibility-issues-state-user-chrome/video-1.webm"
+                        },
+                        {
+                          "name": "video",
+                          "contentType": "video/webm",
+                          "path": "/home/runner/work/macpro-mako/macpro-mako/test/test-results/non-func-a11y-index-test-a-73b8e-ctable-accessibility-issues-state-user-chrome/video.webm"
+                        }
+                      ]
                     }
                   ],
                   "status": "expected"
@@ -3092,9 +3732,9 @@
                   "projectName": "state-user-chrome",
                   "results": [
                     {
-                      "workerIndex": 1,
+                      "workerIndex": 0,
                       "status": "passed",
-                      "duration": 3266,
+                      "duration": 3415,
                       "errors": [],
                       "stdout": [
                         {
@@ -3103,8 +3743,19 @@
                       ],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2025-04-24T16:07:16.584Z",
-                      "attachments": []
+                      "startTime": "2025-04-25T13:14:10.180Z",
+                      "attachments": [
+                        {
+                          "name": "video",
+                          "contentType": "video/webm",
+                          "path": "/home/runner/work/macpro-mako/macpro-mako/test/test-results/non-func-a11y-index-test-a-9b617-ctable-accessibility-issues-state-user-chrome/video-1.webm"
+                        },
+                        {
+                          "name": "video",
+                          "contentType": "video/webm",
+                          "path": "/home/runner/work/macpro-mako/macpro-mako/test/test-results/non-func-a11y-index-test-a-9b617-ctable-accessibility-issues-state-user-chrome/video.webm"
+                        }
+                      ]
                     }
                   ],
                   "status": "expected"
@@ -3133,7 +3784,7 @@
                     {
                       "workerIndex": 0,
                       "status": "passed",
-                      "duration": 3315,
+                      "duration": 3456,
                       "errors": [],
                       "stdout": [
                         {
@@ -3142,8 +3793,19 @@
                       ],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2025-04-24T16:07:17.968Z",
-                      "attachments": []
+                      "startTime": "2025-04-25T13:14:13.599Z",
+                      "attachments": [
+                        {
+                          "name": "video",
+                          "contentType": "video/webm",
+                          "path": "/home/runner/work/macpro-mako/macpro-mako/test/test-results/non-func-a11y-index-test-a-83bd9-ctable-accessibility-issues-state-user-chrome/video-1.webm"
+                        },
+                        {
+                          "name": "video",
+                          "contentType": "video/webm",
+                          "path": "/home/runner/work/macpro-mako/macpro-mako/test/test-results/non-func-a11y-index-test-a-83bd9-ctable-accessibility-issues-state-user-chrome/video.webm"
+                        }
+                      ]
                     }
                   ],
                   "status": "expected"
@@ -3170,9 +3832,9 @@
                   "projectName": "state-user-chrome",
                   "results": [
                     {
-                      "workerIndex": 1,
+                      "workerIndex": 0,
                       "status": "passed",
-                      "duration": 3372,
+                      "duration": 3581,
                       "errors": [],
                       "stdout": [
                         {
@@ -3181,8 +3843,19 @@
                       ],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2025-04-24T16:07:19.855Z",
-                      "attachments": []
+                      "startTime": "2025-04-25T13:14:17.062Z",
+                      "attachments": [
+                        {
+                          "name": "video",
+                          "contentType": "video/webm",
+                          "path": "/home/runner/work/macpro-mako/macpro-mako/test/test-results/non-func-a11y-index-test-a-e80fc-ctable-accessibility-issues-state-user-chrome/video-1.webm"
+                        },
+                        {
+                          "name": "video",
+                          "contentType": "video/webm",
+                          "path": "/home/runner/work/macpro-mako/macpro-mako/test/test-results/non-func-a11y-index-test-a-e80fc-ctable-accessibility-issues-state-user-chrome/video.webm"
+                        }
+                      ]
                     }
                   ],
                   "status": "expected"
@@ -3211,7 +3884,7 @@
                     {
                       "workerIndex": 0,
                       "status": "passed",
-                      "duration": 3549,
+                      "duration": 3643,
                       "errors": [],
                       "stdout": [
                         {
@@ -3220,8 +3893,19 @@
                       ],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2025-04-24T16:07:21.289Z",
-                      "attachments": []
+                      "startTime": "2025-04-25T13:14:20.648Z",
+                      "attachments": [
+                        {
+                          "name": "video",
+                          "contentType": "video/webm",
+                          "path": "/home/runner/work/macpro-mako/macpro-mako/test/test-results/non-func-a11y-index-test-a-2589c-ctable-accessibility-issues-state-user-chrome/video-1.webm"
+                        },
+                        {
+                          "name": "video",
+                          "contentType": "video/webm",
+                          "path": "/home/runner/work/macpro-mako/macpro-mako/test/test-results/non-func-a11y-index-test-a-2589c-ctable-accessibility-issues-state-user-chrome/video.webm"
+                        }
+                      ]
                     }
                   ],
                   "status": "expected"
@@ -3248,9 +3932,9 @@
                   "projectName": "state-user-chrome",
                   "results": [
                     {
-                      "workerIndex": 1,
+                      "workerIndex": 0,
                       "status": "passed",
-                      "duration": 3656,
+                      "duration": 3770,
                       "errors": [],
                       "stdout": [
                         {
@@ -3259,8 +3943,19 @@
                       ],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2025-04-24T16:07:23.231Z",
-                      "attachments": []
+                      "startTime": "2025-04-25T13:14:24.295Z",
+                      "attachments": [
+                        {
+                          "name": "video",
+                          "contentType": "video/webm",
+                          "path": "/home/runner/work/macpro-mako/macpro-mako/test/test-results/non-func-a11y-index-test-a-acc2f-ctable-accessibility-issues-state-user-chrome/video-1.webm"
+                        },
+                        {
+                          "name": "video",
+                          "contentType": "video/webm",
+                          "path": "/home/runner/work/macpro-mako/macpro-mako/test/test-results/non-func-a11y-index-test-a-acc2f-ctable-accessibility-issues-state-user-chrome/video.webm"
+                        }
+                      ]
                     }
                   ],
                   "status": "expected"
@@ -3289,7 +3984,7 @@
                     {
                       "workerIndex": 0,
                       "status": "passed",
-                      "duration": 3694,
+                      "duration": 3807,
                       "errors": [],
                       "stdout": [
                         {
@@ -3298,8 +3993,19 @@
                       ],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2025-04-24T16:07:24.843Z",
-                      "attachments": []
+                      "startTime": "2025-04-25T13:14:28.069Z",
+                      "attachments": [
+                        {
+                          "name": "video",
+                          "contentType": "video/webm",
+                          "path": "/home/runner/work/macpro-mako/macpro-mako/test/test-results/non-func-a11y-index-test-a-e3716-ctable-accessibility-issues-state-user-chrome/video-1.webm"
+                        },
+                        {
+                          "name": "video",
+                          "contentType": "video/webm",
+                          "path": "/home/runner/work/macpro-mako/macpro-mako/test/test-results/non-func-a11y-index-test-a-e3716-ctable-accessibility-issues-state-user-chrome/video.webm"
+                        }
+                      ]
                     }
                   ],
                   "status": "expected"
@@ -3326,9 +4032,9 @@
                   "projectName": "state-user-chrome",
                   "results": [
                     {
-                      "workerIndex": 1,
+                      "workerIndex": 0,
                       "status": "passed",
-                      "duration": 3290,
+                      "duration": 3405,
                       "errors": [],
                       "stdout": [
                         {
@@ -3337,8 +4043,19 @@
                       ],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2025-04-24T16:07:26.891Z",
-                      "attachments": []
+                      "startTime": "2025-04-25T13:14:31.881Z",
+                      "attachments": [
+                        {
+                          "name": "video",
+                          "contentType": "video/webm",
+                          "path": "/home/runner/work/macpro-mako/macpro-mako/test/test-results/non-func-a11y-index-test-a-7835a-ctable-accessibility-issues-state-user-chrome/video-1.webm"
+                        },
+                        {
+                          "name": "video",
+                          "contentType": "video/webm",
+                          "path": "/home/runner/work/macpro-mako/macpro-mako/test/test-results/non-func-a11y-index-test-a-7835a-ctable-accessibility-issues-state-user-chrome/video.webm"
+                        }
+                      ]
                     }
                   ],
                   "status": "expected"
@@ -3367,7 +4084,7 @@
                     {
                       "workerIndex": 0,
                       "status": "passed",
-                      "duration": 3415,
+                      "duration": 3447,
                       "errors": [],
                       "stdout": [
                         {
@@ -3376,8 +4093,19 @@
                       ],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2025-04-24T16:07:28.541Z",
-                      "attachments": []
+                      "startTime": "2025-04-25T13:14:35.291Z",
+                      "attachments": [
+                        {
+                          "name": "video",
+                          "contentType": "video/webm",
+                          "path": "/home/runner/work/macpro-mako/macpro-mako/test/test-results/non-func-a11y-index-test-a-113a7-ctable-accessibility-issues-state-user-chrome/video-1.webm"
+                        },
+                        {
+                          "name": "video",
+                          "contentType": "video/webm",
+                          "path": "/home/runner/work/macpro-mako/macpro-mako/test/test-results/non-func-a11y-index-test-a-113a7-ctable-accessibility-issues-state-user-chrome/video.webm"
+                        }
+                      ]
                     }
                   ],
                   "status": "expected"
@@ -3404,9 +4132,9 @@
                   "projectName": "state-user-chrome",
                   "results": [
                     {
-                      "workerIndex": 1,
+                      "workerIndex": 0,
                       "status": "passed",
-                      "duration": 3336,
+                      "duration": 3422,
                       "errors": [],
                       "stdout": [
                         {
@@ -3415,8 +4143,19 @@
                       ],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2025-04-24T16:07:30.186Z",
-                      "attachments": []
+                      "startTime": "2025-04-25T13:14:38.743Z",
+                      "attachments": [
+                        {
+                          "name": "video",
+                          "contentType": "video/webm",
+                          "path": "/home/runner/work/macpro-mako/macpro-mako/test/test-results/non-func-a11y-index-test-a-057ea-ctable-accessibility-issues-state-user-chrome/video-1.webm"
+                        },
+                        {
+                          "name": "video",
+                          "contentType": "video/webm",
+                          "path": "/home/runner/work/macpro-mako/macpro-mako/test/test-results/non-func-a11y-index-test-a-057ea-ctable-accessibility-issues-state-user-chrome/video.webm"
+                        }
+                      ]
                     }
                   ],
                   "status": "expected"
@@ -3434,8 +4173,8 @@
   ],
   "errors": [],
   "stats": {
-    "startTime": "2025-04-24T16:05:38.295Z",
-    "duration": 115293.246,
+    "startTime": "2025-04-25T13:10:51.699Z",
+    "duration": 230528.44499999998,
     "expected": 84,
     "skipped": 2,
     "unexpected": 0,
