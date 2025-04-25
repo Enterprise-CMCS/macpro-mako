@@ -264,7 +264,7 @@ export const Layout = () => {
           street: "7500 Security Boulevard",
           zip: 21244,
         }}
-        showNavLinks={cmsHomeFlag && stateHomeFlag}
+        showNavLinks={cmsHomeFlag && stateHomeFlag && !!user.user}
       />
     </div>
   );
@@ -308,6 +308,7 @@ const ResponsiveNav = ({ isDesktop }: ResponsiveNavProps) => {
     const url = `https://${domain}/oauth2/authorize?redirect_uri=${redirectSignIn}&response_type=${responseType}&client_id=${clientId}`;
     window.location.assign(url);
   };
+  const hideLogin = useFeatureFlag("LOGIN_PAGE");
 
   const handleRegister = () => {
     const url = `${config.idm.home_url}/signin/login.html`;
@@ -352,7 +353,7 @@ const ResponsiveNav = ({ isDesktop }: ResponsiveNavProps) => {
                 className="text-white hover:text-white/70"
                 onClick={handleLogin}
               >
-                Sign In
+                {hideLogin ? "Sign In" : "Log in"}
               </button>
               <button
                 data-testid="register-button-d"
@@ -397,7 +398,7 @@ const ResponsiveNav = ({ isDesktop }: ResponsiveNavProps) => {
                     className="text-left block py-2 pl-3 pr-4 text-white rounded"
                     onClick={handleLogin}
                   >
-                    Sign In
+                    {hideLogin ? "Sign In" : "Log in"}
                   </button>
                   <button
                     className="text-left block py-2 pl-3 pr-4 text-white rounded"
