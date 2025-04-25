@@ -1,7 +1,7 @@
-import { TestUserData } from "../../index.d";
+import { TestUserDataWithRole } from "../../index.d";
 
 export const automatedStateSubmitterUsername = "f3a1b6d6-3bc9-498d-ac22-41a6d46982c9";
-export const makoStateSubmitter: TestUserData = {
+export const makoStateSubmitter: TestUserDataWithRole = {
   UserAttributes: [
     {
       Name: "email",
@@ -33,8 +33,9 @@ export const makoStateSubmitter: TestUserData = {
     },
   ],
   Username: "cd400c39-9e7c-4341-b62f-234e2ecb339d",
+  role: "statesubmitter",
 };
-export const superUser: TestUserData = {
+export const superUser: TestUserDataWithRole = {
   UserAttributes: [
     {
       Name: "email",
@@ -66,9 +67,10 @@ export const superUser: TestUserData = {
     },
   ],
   Username: "cd400c39-9e7c-4341-b62f-234e2ecb339e",
+  role: "statesubmitter",
 };
 
-export const stateSubmitter: TestUserData = {
+export const stateSubmitter: TestUserDataWithRole = {
   UserAttributes: [
     {
       Name: "email",
@@ -100,9 +102,10 @@ export const stateSubmitter: TestUserData = {
     },
   ],
   Username: "c4087448-d0e1-70c1-3d74-4f8bd1fa13fd",
+  role: "statesubmitter",
 };
 
-export const noDataStateSubmitter: TestUserData = {
+export const noDataStateSubmitter: TestUserDataWithRole = {
   UserAttributes: [
     {
       Name: "email",
@@ -134,9 +137,10 @@ export const noDataStateSubmitter: TestUserData = {
     },
   ],
   Username: "068f3852-dd7e-484d-a423-578556f52886",
+  role: "statesubmitter",
 };
 
-export const coStateSubmitter: TestUserData = {
+export const coStateSubmitter: TestUserDataWithRole = {
   UserAttributes: [
     {
       Name: "email",
@@ -168,9 +172,10 @@ export const coStateSubmitter: TestUserData = {
     },
   ],
   Username: "c16071b6-e24b-4405-962c-37ad6262708c",
+  role: "statesubmitter",
 };
 
-export const multiStateSubmitter: TestUserData = {
+export const multiStateSubmitter: TestUserDataWithRole = {
   UserAttributes: [
     {
       Name: "email",
@@ -202,9 +207,10 @@ export const multiStateSubmitter: TestUserData = {
     },
   ],
   Username: "3de7904e-fc0a-498f-9527-8e39044edf4c",
+  role: "statesubmitter",
 };
 
-export const noStateSubmitter: TestUserData = {
+export const noStateSubmitter: TestUserDataWithRole = {
   UserAttributes: [
     {
       Name: "email",
@@ -236,9 +242,10 @@ export const noStateSubmitter: TestUserData = {
     },
   ],
   Username: "604551c7-a98f-4971-aa1e-06dee6f28598",
+  role: "statesubmitter",
 };
 
-export const automatedStateSubmitter: TestUserData = {
+export const automatedStateSubmitter: TestUserDataWithRole = {
   UserAttributes: [
     {
       Name: "email",
@@ -270,9 +277,10 @@ export const automatedStateSubmitter: TestUserData = {
     },
   ],
   Username: automatedStateSubmitterUsername,
+  role: "statesubmitter",
 };
 
-export const testNewStateSubmitter: TestUserData = {
+export const testNewStateSubmitter: TestUserDataWithRole = {
   UserAttributes: [
     {
       Name: "email",
@@ -304,9 +312,10 @@ export const testNewStateSubmitter: TestUserData = {
     },
   ],
   Username: "f8e64f73-d121-4252-b9e3-1f4df902a1c1",
+  role: "statesubmitter",
 };
 
-export const noEmailStateSubmitter: TestUserData = {
+export const noEmailStateSubmitter: TestUserDataWithRole = {
   UserAttributes: [
     {
       Name: "email",
@@ -338,9 +347,10 @@ export const noEmailStateSubmitter: TestUserData = {
     },
   ],
   Username: "f8e64f73-d121-4252-b9e3-1f4df902a1c2",
+  role: "statesubmitter",
 };
 
-export const invalidEmailStateSubmitter: TestUserData = {
+export const invalidEmailStateSubmitter: TestUserDataWithRole = {
   UserAttributes: [
     {
       Name: "email_verified",
@@ -368,9 +378,10 @@ export const invalidEmailStateSubmitter: TestUserData = {
     },
   ],
   Username: "f8e64f73-d121-4252-b9e3-1f4df902a1c2",
+  role: "statesubmitter",
 };
 
-export const osStateSystemAdmin: TestUserData = {
+export const osStateSystemAdmin: TestUserDataWithRole = {
   UserAttributes: [
     {
       Name: "email",
@@ -402,9 +413,10 @@ export const osStateSystemAdmin: TestUserData = {
     },
   ],
   Username: "142824f8-f011-703f-c22b-62e027e9435e",
+  role: "statesubmitter",
 };
 
-export const osStateSubmitter: TestUserData = {
+export const osStateSubmitter: TestUserDataWithRole = {
   UserAttributes: [
     {
       Name: "email",
@@ -432,9 +444,10 @@ export const osStateSubmitter: TestUserData = {
     },
   ],
   Username: "d4b8f498-d001-7038-15f6-d7a1a1e677e1",
+  role: "statesubmitter",
 };
 
-export const stateSubmitters: TestUserData[] = [
+export const stateSubmitters: TestUserDataWithRole[] = [
   makoStateSubmitter,
   superUser,
   stateSubmitter,

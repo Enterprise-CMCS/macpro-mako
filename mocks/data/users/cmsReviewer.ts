@@ -1,6 +1,6 @@
-import { TestUserData } from "../../index.d";
+import { TestUserDataWithRole } from "../../index.d";
 
-export const makoReviewer: TestUserData = {
+export const makoReviewer: TestUserDataWithRole = {
   UserAttributes: [
     {
       Name: "email",
@@ -32,9 +32,10 @@ export const makoReviewer: TestUserData = {
     },
   ],
   Username: "53832e35-1fbe-4c74-9111-4a0cd29ce2cf",
+  role: "cmsreviewer",
 };
 
-export const reviewer: TestUserData = {
+export const reviewer: TestUserDataWithRole = {
   UserAttributes: [
     {
       Name: "email",
@@ -66,9 +67,10 @@ export const reviewer: TestUserData = {
     },
   ],
   Username: "07a2519e-0bdd-4bf6-8ec0-6f88ffa684fc",
+  role: "cmsreviewer",
 };
 
-export const automatedReviewer: TestUserData = {
+export const automatedReviewer: TestUserDataWithRole = {
   UserAttributes: [
     {
       Name: "email",
@@ -100,9 +102,10 @@ export const automatedReviewer: TestUserData = {
     },
   ],
   Username: "e04f3cc5-4cd6-4acb-9fff-210b469bc934",
+  role: "cmsreviewer",
 };
 
-export const superReviewer: TestUserData = {
+export const superReviewer: TestUserDataWithRole = {
   UserAttributes: [
     {
       Name: "email",
@@ -134,6 +137,12 @@ export const superReviewer: TestUserData = {
     },
   ],
   Username: "1bddab21-ddc0-4e5b-8ee1-fe16a7883673",
+  role: "cmsreviewer",
 };
 
-export const reviewers: TestUserData[] = [makoReviewer, reviewer, automatedReviewer, superReviewer];
+export const reviewers: TestUserDataWithRole[] = [
+  makoReviewer,
+  reviewer,
+  automatedReviewer,
+  superReviewer,
+];

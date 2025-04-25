@@ -2,6 +2,7 @@ import type { Export } from "@aws-sdk/client-cloudformation";
 import { CreateEventSourceMappingCommandInput } from "@aws-sdk/client-lambda";
 import type { GetSecretValueCommandOutput } from "@aws-sdk/client-secrets-manager";
 import type { APIGatewayEventRequestContext, opensearch, UserData } from "shared-types";
+import { UserRole } from "shared-types/events/legacy-user";
 
 // code borrowed from https://stackoverflow.com/questions/47914536/use-partial-in-nested-property-with-typescript
 export type DeepPartial<T> = {
@@ -11,6 +12,8 @@ export type DeepPartial<T> = {
 export type TestHit<T> = DeepPartial<opensearch.Hit<T>>;
 
 export type TestUserData = DeepPartial<UserData>;
+
+export type TestUserDataWithRole = TestUserData & { role: UserRole };
 
 export type TestItemResult = DeepPartial<opensearch.main.ItemResult>;
 

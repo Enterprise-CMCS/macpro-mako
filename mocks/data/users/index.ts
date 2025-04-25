@@ -1,13 +1,14 @@
 import { convertUserAttributes } from "mocks/handlers/auth.utils";
 import { CognitoUserAttributes } from "shared-types";
+import { UserRole } from "shared-types/events/legacy-user";
 
-import type { TestUserData } from "../../index.d";
+import type { TestUserDataWithRole } from "../../index.d";
 import { makoReviewer, reviewers, superReviewer } from "./cmsReviewer";
 import { helpDeskUser, helpDeskUsers } from "./helpDeskUsers";
 import { readOnlyUser, readOnlyUsers } from "./readOnlyCMSUsers";
 import { coStateSubmitter, makoStateSubmitter, stateSubmitters } from "./stateSubmitters";
 
-export const noRoleUser: TestUserData = {
+export const noRoleUser: TestUserDataWithRole = {
   UserAttributes: [
     {
       Name: "email",
@@ -31,10 +32,11 @@ export const noRoleUser: TestUserData = {
     },
   ],
   Username: "0d4e3b53-07c8-42c8-9a26-c7dbf7eee027",
+  role: "" as UserRole,
 };
 
 // return all of the possible responses
-export const userResponses: TestUserData[] = [
+export const userResponses: TestUserDataWithRole[] = [
   ...stateSubmitters,
   ...reviewers,
   ...helpDeskUsers,
