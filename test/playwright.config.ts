@@ -70,7 +70,6 @@ export default defineConfig({
         ...devices["Desktop Chrome"],
         // Use prepared auth state for state submitter.
         storageState: "./playwright/.auth/state-user.json",
-        video: "on",
       },
     },
   ],
