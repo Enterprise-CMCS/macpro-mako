@@ -193,6 +193,8 @@ const UserDropdownMenu = () => {
  */
 export const Layout = () => {
   const hideLogin = useFeatureFlag("LOGIN_PAGE");
+  const cmsHomeFlag = useFeatureFlag("CMS_HOMEPAGE_FLAG");
+  const stateHomeFlag = useFeatureFlag("STATE_HOMEPAGE_FLAG");
   const isDesktop = useMediaQuery("(min-width: 768px)");
   const { data: user } = useGetUser();
   const customUserRoles = user?.user?.["custom:cms-roles"] || "";
@@ -262,6 +264,7 @@ export const Layout = () => {
           street: "7500 Security Boulevard",
           zip: 21244,
         }}
+        showNavLinks={cmsHomeFlag && stateHomeFlag}
       />
     </div>
   );
