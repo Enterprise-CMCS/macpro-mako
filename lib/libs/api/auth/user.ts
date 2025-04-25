@@ -4,7 +4,10 @@ import {
   UserType as CognitoUserType,
 } from "@aws-sdk/client-cognito-identity-provider";
 import { APIGatewayEvent } from "aws-lambda";
-import { getLatestActiveRoleByEmail } from "lib/lambda/user-management/userManagementService";
+import {
+  getActiveStatesForUserByEmail,
+  getLatestActiveRoleByEmail,
+} from "lib/lambda/user-management/userManagementService";
 import { CognitoUserAttributes } from "shared-types";
 import { isCmsUser, isCmsWriteUser } from "shared-utils";
 
@@ -145,14 +148,13 @@ export const getStateFilter = async (event: APIGatewayEvent) => {
   }
 
   if (!isCmsUser({ ...userAttributes, role: activeRole.role })) {
-    if (userAttributes["custom:state"]) {
+    const states = await getActiveStatesForUserByEmail(userAttributes.email);
+    if (states.length > 0) {
       const filter = {
         terms: {
           //NOTE: this could instead be
           // "state.keyword": userAttributes["custom:state"],
-          state: userAttributes["custom:state"]
-            .split(",")
-            .map((state) => state.toLocaleLowerCase()),
+          state: states.map((state) => state.toLocaleLowerCase()),
         },
       };
 
