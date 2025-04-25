@@ -105,7 +105,7 @@ export const submitRoleRequests = async (event: APIGatewayEvent) => {
     });
   }
 
-  const id = `${email}_${state}_${latestActiveRoleObj.role}`;
+  const id = `${email}_${state}_${roleToUpdate.role}`;
 
   await produceMessage(
     topicName,

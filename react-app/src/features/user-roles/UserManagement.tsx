@@ -163,7 +163,7 @@ export const UserManagement = () => {
   const [userRoles, setUserRoles] = useState<UserRoleType[]>([]);
   const [selectedUserRole, setSelectedUserRole] = useState<RoleRequest>(null);
 
-  const isHelpDesk = userDetails.role === "helpdesk";
+  const isHelpDesk = userDetails?.role === "helpdesk";
 
   const [sortBy, setSortBy] = useState<{
     title: keyof headingType | "";
