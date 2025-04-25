@@ -164,6 +164,7 @@ export const UserManagement = () => {
   const [selectedUserRole, setSelectedUserRole] = useState<RoleRequest>(null);
 
   const isHelpDesk = userDetails && userDetails.role === "helpdesk";
+  const isStateSystemAdmin = userDetails && userDetails.role === "statesystemadmin";
 
   const [sortBy, setSortBy] = useState<{
     title: keyof headingType | "";
@@ -187,12 +188,18 @@ export const UserManagement = () => {
   const headings = useMemo(() => {
     const baseHeadings: headingType = {
       Name: "fullName",
+      State: "territory",
       Status: "status",
+      Role: "role",
       "Last Modified": "lastModifiedDate",
       "Modified By": "doneByName",
     };
-    return isHelpDesk ? baseHeadings : { Actions: null, ...baseHeadings };
-  }, [isHelpDesk]);
+    if (isHelpDesk) return baseHeadings;
+    if (!isStateSystemAdmin) return { Actions: null, ...baseHeadings };
+    delete baseHeadings.State;
+    delete baseHeadings.Role;
+    return { Actions: null, ...baseHeadings };
+  }, [isHelpDesk, isStateSystemAdmin]);
 
   const sortByHeading = (heading: string) => {
     if (heading === "Actions") return;
@@ -294,11 +301,13 @@ export const UserManagement = () => {
                     </TableCell>
                   )}
                   <TableCell>{userRole.fullName}</TableCell>
+                  {!isStateSystemAdmin && <TableCell>{userRole.territory}</TableCell>}
                   <TableCell>
                     <span className="font-semibold flex items-center">
                       {renderStatus(userRole.status)}
                     </span>
                   </TableCell>
+                  {!isStateSystemAdmin && <TableCell>{userRole.role}</TableCell>}
                   <TableCell>{formatDate(userRole.lastModifiedDate)}</TableCell>
                   <TableCell>{userRole.doneByName}</TableCell>
                 </TableRow>
