@@ -137,6 +137,7 @@ describe("submitRoleRequests", () => {
           role: "statesubmitter",
           eventType: "user-role",
           grantAccess: true,
+          requestRoleChange: false,
         },
         requestContext: getRequestContext(),
       } as APIGatewayEvent;
@@ -160,6 +161,7 @@ describe("submitRoleRequests", () => {
           role: "statesubmitter",
           eventType: "user-role",
           grantAccess: true,
+          requestRoleChange: true,
         },
         requestContext: getRequestContext(),
       } as APIGatewayEvent;
