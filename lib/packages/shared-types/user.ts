@@ -38,18 +38,22 @@ export type FullUser = CognitoUserAttributes & {
   role: UserRole;
 };
 
-export const CMS_ROLES: UserRole[] = [
+export const CMS_ROLES = [
   "cmsreviewer",
   "cmsroleapprover",
   "defaultcmsuser",
   "helpdesk",
-];
+] satisfies UserRole[];
 
-export const CMS_WRITE_ROLES: UserRole[] = ["cmsreviewer", "defaultcmsuser", "cmsroleapprover"];
+export const CMS_WRITE_ROLES = [
+  "cmsreviewer",
+  "defaultcmsuser",
+  "cmsroleapprover",
+] satisfies UserRole[];
 
-export const CMS_READ_ONLY_ROLES: UserRole[] = ["helpdesk"];
+export const CMS_READ_ONLY_ROLES = ["helpdesk"] satisfies UserRole[];
 
-export const STATE_ROLES: UserRole[] = ["statesubmitter"];
+export const STATE_ROLES = ["statesubmitter"] satisfies UserRole[];
 
 export const RoleDescriptionStrings: { [key: string]: string } = {
   [UserRoles.CMS_READ_ONLY]: "Read Only",
