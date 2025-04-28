@@ -14,10 +14,15 @@ export type RoleRequest = {
 };
 
 export const submitRoleRequests = async (request: RoleRequest) => {
-  const roleRequest = await API.post("os", "/submitRoleRequests", {
-    body: request,
-  });
-  return roleRequest;
+  try {
+    const roleRequest = await API.post("os", "/submitRoleRequests", {
+      body: request,
+    });
+    return roleRequest;
+  } catch (error) {
+    console.error(error);
+    throw new Error("Failed to submit role request");
+  }
 };
 
 export const useSubmitRoleRequests = () => {
