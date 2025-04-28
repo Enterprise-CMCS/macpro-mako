@@ -14,7 +14,7 @@ export const useFilterState = () => {
   const { data: user } = useGetUser();
   const url = useOsUrl();
 
-  const isCms = !!user?.isCms && !user.user?.["custom:cms-roles"].includes(UserRoles.HELPDESK);
+  const isCms = !!user?.isCms && user.user?.role !== "helpdesk";
 
   const filters: FilterGroup = (() => {
     // ------------------------ SPAS ------------------------ //

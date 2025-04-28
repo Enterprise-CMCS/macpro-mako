@@ -11,13 +11,9 @@ export type {
 } from "aws-lambda";
 
 export enum UserRoles {
-  CMS_READ_ONLY = "onemac-micro-readonly", // this isn't a thing
-  CMS_REVIEWER_DEV = "ONEMAC_USER_D",
-  CMS_REVIEWER_VAL = "ONEMAC_USER_V",
-  CMS_REVIEWER_PROD = "ONEMAC_USER_P",
-  HELPDESK = "onemac-helpdesk",
-  STATE_SUBMITTER = "onemac-state-user",
-  CMS_SUPER_USER = "ONEMAC_USER_D_SUPER",
+  CMS_REVIEWER = "cmsreviewer",
+  HELPDESK = "helpdesk",
+  STATE_SUBMITTER = "statesubmitter",
 }
 
 export type UserRolesString = `${UserRoles}${"," | ""}` | "";
@@ -56,13 +52,9 @@ export const CMS_READ_ONLY_ROLES = ["helpdesk"] satisfies UserRole[];
 export const STATE_ROLES = ["statesubmitter"] satisfies UserRole[];
 
 export const RoleDescriptionStrings: { [key: string]: string } = {
-  [UserRoles.CMS_READ_ONLY]: "Read Only",
-  [UserRoles.CMS_REVIEWER_DEV]: "Reviewer",
-  [UserRoles.CMS_REVIEWER_VAL]: "Reviewer",
-  [UserRoles.CMS_REVIEWER_PROD]: "Reviewer",
+  [UserRoles.CMS_REVIEWER]: "Reviewer",
   [UserRoles.HELPDESK]: "Helpdesk",
   [UserRoles.STATE_SUBMITTER]: "State Submitter",
-  [UserRoles.CMS_SUPER_USER]: "Super User",
 };
 
 export type UserAttributes = {

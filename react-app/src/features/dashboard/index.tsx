@@ -51,6 +51,7 @@ export const Dashboard = () => {
     waivers: { ...osData.state, tab: "waivers" as OsTab },
   });
 
+  // come back to this
   const isAbleToAccessDashboard = () => {
     return (
       (userObj.user["custom:cms-roles"] || userObj.user["custom:ismemberof"]) &&

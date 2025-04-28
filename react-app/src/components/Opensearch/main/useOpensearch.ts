@@ -122,11 +122,11 @@ export const useOsAggregate = () => {
           },
           {
             field:
-              user?.isCms && !user.user?.["custom:cms-roles"].includes(UserRoles.HELPDESK)
+              user?.isCms && user.user?.role !== "helpdesk"
                 ? "cmsStatus.keyword"
                 : "stateStatus.keyword",
             name:
-              user?.isCms && !user.user?.["custom:cms-roles"].includes(UserRoles.HELPDESK)
+              user?.isCms && user.user?.role !== "helpdesk"
                 ? "cmsStatus.keyword"
                 : "stateStatus.keyword",
             type: "terms",
