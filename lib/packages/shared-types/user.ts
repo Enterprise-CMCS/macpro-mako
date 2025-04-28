@@ -11,6 +11,7 @@ export type {
 } from "aws-lambda";
 
 export enum UserRoles {
+  DEFAULT_CMS_USER = "defaultcmsuser",
   CMS_REVIEWER = "cmsreviewer",
   HELPDESK = "helpdesk",
   STATE_SUBMITTER = "statesubmitter",
