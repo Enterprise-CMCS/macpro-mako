@@ -2,12 +2,15 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { API } from "aws-amplify";
 import { StateCode } from "shared-types";
 
+import { StateAccess } from "./useGetUserProfile";
+
 export type RoleRequest = {
   email: string;
   state: StateCode;
   role: string;
   eventType: string;
-  grantAccess?: boolean; // true for active, false for denied, undefined for pending
+  requestRoleChange: boolean; // is this a role change request? (used in state signup and profile page)
+  grantAccess?: boolean; // true for active, false for denied, undefined for pending (used in user management page)
 };
 
 export const submitRoleRequests = async (request: RoleRequest) => {
@@ -16,11 +19,6 @@ export const submitRoleRequests = async (request: RoleRequest) => {
   });
   return roleRequest;
 };
-
-// export const useSubmitRoleRequests = () =>
-//   useMutation({
-//     mutationFn: submitRoleRequests,
-//   });
 
 export const useSubmitRoleRequests = () => {
   const queryClient = useQueryClient();
@@ -31,20 +29,24 @@ export const useSubmitRoleRequests = () => {
     onMutate: async (newRequest) => {
       await queryClient.cancelQueries(["roleRequests"]);
       // Save current cache in case there's an error
-      const previousRequests = queryClient.getQueryData<RoleRequest[]>(["roleRequests"]);
+      const previousRequests: StateAccess[] = queryClient.getQueryData<StateAccess[]>([
+        "roleRequests",
+      ]);
       // Updates existing cache if anything changed
-      queryClient.setQueryData(["roleRequests"], (old: RoleRequest[] = []) => {
+      queryClient.setQueryData(["roleRequests"], (old: StateAccess[] = []) => {
         if (!Array.isArray(old)) return [];
-        return old.map((request) =>
-          request.email === newRequest.email ? { ...request, ...newRequest } : request,
-        );
+        return old.map((request) => {
+          if (request.email === newRequest.email) {
+            let status = "pending";
+            if (newRequest.grantAccess !== undefined)
+              status = newRequest.grantAccess ? "active" : "denied";
+            return { ...request, status: status, ...newRequest };
+          }
+          return request;
+        });
       });
 
       return { previousRequests };
-    },
-    onSettled: async () => {
-      await queryClient.invalidateQueries(["roleRequests"]);
-      await queryClient.refetchQueries(["roleRequests"]);
     },
 
     onError: (_error, _variables, context) => {

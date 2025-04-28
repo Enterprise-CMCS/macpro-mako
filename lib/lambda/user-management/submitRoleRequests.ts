@@ -26,7 +26,7 @@ export const canUpdateAccess = (currentUserRole: UserRole, roleToUpdate: UserRol
   }
   return false;
 };
-
+// Check if current user can request to change their own role
 export const canRequestAccess = (role: UserRole): boolean => {
   return ROLES_ALLOWED_TO_REQUEST.includes(role);
 };
@@ -65,9 +65,9 @@ export const submitRoleRequests = async (event: APIGatewayEvent) => {
     role: roleToUpdate,
     eventType,
     grantAccess,
+    requestRoleChange,
   } = typeof event.body === "string" ? JSON.parse(event.body) : event.body;
 
-  let status: RoleStatus;
   // Check if the user's role is allowed to grant or request access
   if (
     !canUpdateAccess(latestActiveRoleObj.role, roleToUpdate) &&
@@ -81,8 +81,10 @@ export const submitRoleRequests = async (event: APIGatewayEvent) => {
     });
   }
 
+  let status: RoleStatus;
+
   // Determine the status based on the user's role and action
-  if (canUpdateAccess(latestActiveRoleObj.role, roleToUpdate)) {
+  if (!requestRoleChange && canUpdateAccess(latestActiveRoleObj.role, roleToUpdate)) {
     if (grantAccess === true || grantAccess === false) {
       // Grant access or deny access based on the `grantAccess` value
       status = grantAccess ? "active" : "denied";
@@ -92,7 +94,7 @@ export const submitRoleRequests = async (event: APIGatewayEvent) => {
         body: { message: "Invalid or missing grantAccess value." },
       });
     }
-  } else if (canRequestAccess(latestActiveRoleObj.role)) {
+  } else if (requestRoleChange && canRequestAccess(latestActiveRoleObj.role)) {
     // If the role is allowed to request access, set status to "pending"
     status = "pending";
   } else {
@@ -103,7 +105,7 @@ export const submitRoleRequests = async (event: APIGatewayEvent) => {
     });
   }
 
-  const id = `${email}_${state}_${latestActiveRoleObj.role}`;
+  const id = `${email}_${state}_${roleToUpdate.role}`;
 
   await produceMessage(
     topicName,

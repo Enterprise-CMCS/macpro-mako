@@ -50,6 +50,7 @@ export const StateSignup = () => {
           state,
           role: requestRole,
           eventType: "user-role",
+          requestRoleChange: true,
         });
       }
 
