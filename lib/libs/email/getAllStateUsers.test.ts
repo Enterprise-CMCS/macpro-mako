@@ -26,12 +26,6 @@ describe("getAllStateUsers", () => {
         formattedEmailAddress: "Otto State <automated-state@example.com>",
       },
       {
-        email: "statesystemadmin@nightwatch.test",
-        firstName: "Test",
-        formattedEmailAddress: "Test Again <statesystemadmin@nightwatch.test>",
-        lastName: "Again",
-      },
-      {
         email: "statesubmitter@nightwatch.test",
         firstName: "State",
         formattedEmailAddress: "State Submitter Test <statesubmitter@nightwatch.test>",

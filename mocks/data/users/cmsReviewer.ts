@@ -12,11 +12,11 @@ export const makoReviewer: TestUserDataWithRole = {
     },
     {
       Name: "given_name",
-      Value: "CMS Reviewer",
+      Value: "CMS",
     },
     {
       Name: "family_name",
-      Value: "Cypress",
+      Value: "Reviewer",
     },
     {
       Name: "custom:state",

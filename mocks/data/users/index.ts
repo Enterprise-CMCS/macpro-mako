@@ -5,6 +5,7 @@ import { UserRole } from "shared-types/events/legacy-user";
 import type { TestUserDataWithRole } from "../../index.d";
 import { makoReviewer, reviewers, superReviewer } from "./cmsReviewer";
 import { helpDeskUser, helpDeskUsers } from "./helpDeskUsers";
+import { cmsRoleApprover, cmsUsers, systemAdmin } from "./otherCMSUsers";
 import { readOnlyUser, readOnlyUsers } from "./readOnlyCMSUsers";
 import { coStateSubmitter, makoStateSubmitter, stateSubmitters } from "./stateSubmitters";
 
@@ -39,6 +40,7 @@ export const noRoleUser: TestUserDataWithRole = {
 export const userResponses: TestUserDataWithRole[] = [
   ...stateSubmitters,
   ...reviewers,
+  ...cmsUsers,
   ...helpDeskUsers,
   ...readOnlyUsers,
   noRoleUser,
@@ -60,11 +62,14 @@ export const TEST_CO_STATE_SUBMITTER_USER = convertUserAttributes(coStateSubmitt
 export const TEST_CMS_REVIEWER_USER = convertUserAttributes(makoReviewer);
 export const TEST_HELP_DESK_USER = convertUserAttributes(helpDeskUser);
 export const TEST_READ_ONLY_USER = convertUserAttributes(readOnlyUser);
+export const TEST_CMS_ROLE_APPROVER_USER = convertUserAttributes(cmsRoleApprover);
+export const TEST_SYSTEM_ADMIN_USER = convertUserAttributes(systemAdmin);
 export const TEST_SUPER_USER = convertUserAttributes(superReviewer);
 
 export * from "./cmsReviewer";
 export * from "./helpDeskUsers";
 export * from "./mockStorage";
+export * from "./otherCMSUsers";
 export * from "./readOnlyCMSUsers";
 export * from "./stateSubmitters";
 export * from "./idmUsers";

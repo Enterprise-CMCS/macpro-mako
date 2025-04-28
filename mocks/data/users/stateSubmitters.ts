@@ -401,7 +401,7 @@ export const osStateSystemAdmin: TestUserDataWithRole = {
     },
     {
       Name: "custom:state",
-      Value: "VA,OH,SC,CO,GA,MD,CA",
+      Value: "MD",
     },
     {
       Name: "custom:cms-roles",
