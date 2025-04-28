@@ -1,11 +1,12 @@
 import { useState } from "react";
 import { Navigate } from "react-router";
-import { FULL_CENSUS_STATES, StateCode } from "shared-types";
+import { StateCode } from "shared-types";
 
 import { StateAccess, useGetUserDetails, useGetUserProfile, useSubmitRoleRequests } from "@/api";
 import { banner, Button, CardWithTopBorder, LoadingSpinner, SubNavHeader } from "@/components";
 import { Option } from "@/components/Opensearch/main/Filtering/Drawer/Filterable";
 import { FilterableSelect } from "@/components/Opensearch/main/Filtering/Drawer/Filterable";
+import { useAvailableStates } from "@/hooks/useAvailableStates";
 import { convertStateAbbrToFullName, stateAccessStatus } from "@/utils";
 
 export const userRoleMap = {
@@ -49,6 +50,7 @@ export const Profile = () => {
   const { mutateAsync: submitRequest, isLoading: areRolesLoading } = useSubmitRoleRequests();
   const [showAddState, setShowAddState] = useState<boolean>(true);
   const [requestedStates, setRequestedStates] = useState<StateCode[]>([]);
+  const statesToRequest: Option[] = useAvailableStates(userProfile?.stateAccess);
 
   if (isDetailLoading || isProfileLoading) {
     return <LoadingSpinner />;
@@ -61,14 +63,6 @@ export const Profile = () => {
   const stateAccess = orderStateAccess(
     userProfile?.stateAccess?.filter((access) => access.territory != "ZZ"),
   );
-
-  const hasStateAccess = Array.isArray(stateAccess) && stateAccess.length > 0;
-
-  const statesToRequest: Option[] = FULL_CENSUS_STATES.filter(({ value }) => {
-    if (!hasStateAccess) return true;
-    const isAlreadyRequested = stateAccess.some(({ territory }) => territory === value);
-    return !isAlreadyRequested && value !== "ZZ";
-  }).map(({ label, value }) => ({ label, value }));
 
   const handleSubmitRequest = async () => {
     try {

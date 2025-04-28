@@ -1,9 +1,8 @@
 import { useState } from "react";
 import { Navigate, useNavigate } from "react-router";
-import { FULL_CENSUS_STATES } from "shared-types";
 import { StateCode } from "shared-types";
 
-import { useGetUserDetails, useSubmitRoleRequests } from "@/api";
+import { useGetUserDetails, useGetUserProfile, useSubmitRoleRequests } from "@/api";
 import {
   banner,
   Button,
@@ -18,6 +17,7 @@ import {
   SubNavHeader,
 } from "@/components";
 import { FilterableSelect, Option } from "@/components/Opensearch/main/Filtering/Drawer/Filterable";
+import { useAvailableStates } from "@/hooks/useAvailableStates";
 
 import { userRoleMap } from "../profile";
 
@@ -25,9 +25,12 @@ export const StateSignup = () => {
   const [stateSelected, setStateSelected] = useState<StateCode[]>([]);
   const [showModal, setShowModal] = useState<boolean>(false);
   const navigate = useNavigate();
-  const { mutateAsync: submitRequest } = useSubmitRoleRequests();
+  const { mutateAsync: submitRequest, isLoading } = useSubmitRoleRequests();
 
   const { data: userDetails } = useGetUserDetails();
+  const { data: userProfile } = useGetUserProfile();
+  const statesToRequest: Option[] = useAvailableStates(userProfile?.stateAccess);
+
   if (!userDetails) return <LoadingSpinner />;
 
   const currentRole = userDetails.role;
@@ -35,8 +38,6 @@ export const StateSignup = () => {
     return <Navigate to="/profile" />;
   const requestRole = currentRole === "statesubmitter" ? "statesystemadmin" : "statesubmitter";
   const isRequestRoleAdmin = currentRole === "statesubmitter";
-
-  const stateOptions: Option[] = FULL_CENSUS_STATES.map(({ label, value }) => ({ label, value }));
 
   const onChange = (values: StateCode[]) => {
     setStateSelected(values);
@@ -100,7 +101,7 @@ export const StateSignup = () => {
                     <SelectValue placeholder="Select state here" />
                   </SelectTrigger>
                   <SelectContent>
-                    {stateOptions.map((state) => (
+                    {statesToRequest.map((state) => (
                       <SelectItem value={state.value} key={state.value}>
                         {state.label}
                       </SelectItem>
@@ -110,7 +111,7 @@ export const StateSignup = () => {
               ) : (
                 <FilterableSelect
                   value={stateSelected}
-                  options={stateOptions}
+                  options={statesToRequest}
                   onChange={(values: StateCode[]) => onChange(values)}
                 />
               )}
@@ -125,6 +126,7 @@ export const StateSignup = () => {
                 <Button className="mr-3" disabled={!stateSelected.length} onClick={onSubmit}>
                   Submit
                 </Button>
+                {isLoading && <LoadingSpinner />}
                 <Button variant="outline" onClick={() => setShowModal(true)}>
                   Cancel
                 </Button>
