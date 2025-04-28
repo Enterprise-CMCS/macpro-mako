@@ -35,7 +35,7 @@ export const CMSSignup = () => {
 
   const onSubmit = async () => {
     try {
-      await mutateAsync({ group: group.name, division: division.name });
+      await mutateAsync({ group: group.abbr, division: division.abbr });
 
       banner({
         header: "Submission Completed",
@@ -110,7 +110,7 @@ export const CMSSignup = () => {
                     const matchingDivision: divisionsType[] = group.divisions.filter(
                       (division) => division.id === parseInt(value),
                     );
-                    console.log(matchingDivision);
+                    // console.log(matchingDivision);
                     setDivision(matchingDivision[0]);
                   }}
                 >
