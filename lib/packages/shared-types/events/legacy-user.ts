@@ -11,8 +11,9 @@ const userRoles = z.enum([
 ]);
 export type UserRole = z.infer<typeof userRoles>;
 
-export type GrantPermissionsMap = Partial<Record<UserRole, UserRole[]>>;
-export const roleUpdatePermissionsMap: GrantPermissionsMap = {
+export type UpdatePermissionsMap = Partial<Record<UserRole, UserRole[]>>;
+// The values are other roles that this user role key can approve/deny/revoke state or role access
+export const roleUpdatePermissionsMap: UpdatePermissionsMap = {
   systemadmin: [
     "defaultcmsuser",
     "cmsroleapprover",

@@ -160,10 +160,11 @@ export const UserManagement = () => {
   const { data: userDetails } = useGetUserDetails();
   const { data, isLoading, isFetching } = useGetRoleRequests();
   const { mutateAsync: submitRequest, isLoading: processSubmit } = useSubmitRoleRequests();
-  const [userRoles, setUserRoles] = useState<UserRoleType[]>([]);
+  const [userRoles, setUserRoles] = useState<UserRoleType[] | null>(null);
   const [selectedUserRole, setSelectedUserRole] = useState<RoleRequest>(null);
 
-  const isHelpDesk = userDetails.role === "helpdesk";
+  const isHelpDesk = userDetails && userDetails.role === "helpdesk";
+  const isStateSystemAdmin = userDetails && userDetails.role === "statesystemadmin";
 
   const [sortBy, setSortBy] = useState<{
     title: keyof headingType | "";
@@ -187,12 +188,18 @@ export const UserManagement = () => {
   const headings = useMemo(() => {
     const baseHeadings: headingType = {
       Name: "fullName",
+      State: "territory",
       Status: "status",
+      Role: "role",
       "Last Modified": "lastModifiedDate",
       "Modified By": "doneByName",
     };
-    return isHelpDesk ? baseHeadings : { Actions: null, ...baseHeadings };
-  }, [isHelpDesk]);
+    if (isHelpDesk) return baseHeadings;
+    if (!isStateSystemAdmin) return { Actions: null, ...baseHeadings };
+    delete baseHeadings.State;
+    delete baseHeadings.Role;
+    return { Actions: null, ...baseHeadings };
+  }, [isHelpDesk, isStateSystemAdmin]);
 
   const sortByHeading = (heading: string) => {
     if (heading === "Actions") return;
@@ -215,7 +222,14 @@ export const UserManagement = () => {
       }
       setUserRoles(sorted);
     }
+    if (data && !data.length) setUserRoles([]);
   }, [data, sortBy, headings]);
+
+  const onAcceptRoleChange = async () => {
+    submitRequest(selectedUserRole);
+    setModalText(null);
+    setSelectedUserRole(null);
+  };
 
   // Export Section
   const handleExport = async () => {
@@ -237,6 +251,8 @@ export const UserManagement = () => {
     csvExporter.generateCsv(modifiedUserRoles);
   };
 
+  if (!userDetails || isLoading || processSubmit || isFetching || !userRoles)
+    return <LoadingSpinner />;
   return (
     <div>
       <ConfirmationDialog
@@ -245,15 +261,9 @@ export const UserManagement = () => {
         body={modalText}
         acceptButtonText="Confirm"
         aria-labelledby="Modify User's Access Modal"
-        onAccept={async () => {
-          submitRequest(selectedUserRole);
-          setModalText(null);
-          setSelectedUserRole(null);
-        }}
+        onAccept={onAcceptRoleChange}
         onCancel={() => setModalText(null)}
       />
-      {/* SubNavHeader flex align-middle interferes with justify-between */}
-      {/* <SubNavHeader> */}
       <div className="bg-sky-100" data-testid="sub-nav-header">
         <div className="max-w-screen-xl m-auto px-4 lg:px-8 flex items-center py-4 justify-between">
           <h1 className="text-xl font-medium">User Management</h1>
@@ -264,9 +274,7 @@ export const UserManagement = () => {
           )}
         </div>
       </div>
-      {/* </SubNavHeader> */}
       <div className="py-5 px-10">
-        {(isLoading || processSubmit || isFetching) && <LoadingSpinner />}
         <Table>
           <TableHeader className="[&_tr]:border-b sticky top-0 bg-white">
             <TableRow className="border-b transition-colors hover:bg-muted/50 ">
@@ -293,11 +301,13 @@ export const UserManagement = () => {
                     </TableCell>
                   )}
                   <TableCell>{userRole.fullName}</TableCell>
+                  {!isStateSystemAdmin && <TableCell>{userRole.territory}</TableCell>}
                   <TableCell>
                     <span className="font-semibold flex items-center">
                       {renderStatus(userRole.status)}
                     </span>
                   </TableCell>
+                  {!isStateSystemAdmin && <TableCell>{userRole.role}</TableCell>}
                   <TableCell>{formatDate(userRole.lastModifiedDate)}</TableCell>
                   <TableCell>{userRole.doneByName}</TableCell>
                 </TableRow>

@@ -6,20 +6,35 @@ import {
   Button,
   ConfirmationDialog,
   LoadingSpinner,
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
   SimplePageContainer,
   SubNavHeader,
 } from "@/components";
 
+import { divisionsType, groupDivision, groupDivisionType } from "./groupDivision";
+
 export const CMSSignup = () => {
   const [showModal, setShowModal] = useState<boolean>(false);
+  const [group, setGroup] = useState<groupDivisionType | null>(null);
+  const [division, setDivision] = useState<divisionsType | null>(null);
+
   const navigate = useNavigate();
 
   const { data: userDetails } = useGetUserDetails();
   if (!userDetails) return <LoadingSpinner />;
 
   const currentRole = userDetails.role;
-  if (currentRole !== "cmsreviewer" && currentRole !== "cmsroleapprover")
+  if (currentRole !== "defaultcmsuser" && currentRole !== "cmsroleapprover")
     return <Navigate to="/profile" />;
+
+  const onSubmit = () => {
+    //TODO: add logic for submitting cms role request change
+    console.log("group: ", group, " division: ", division);
+  };
 
   return (
     <div>
@@ -38,35 +53,69 @@ export const CMSSignup = () => {
         />
 
         <div className="flex justify-center p-5">
-          <div className="w-1/3">
+          <div className="w-1/2">
             <div className="py-2">
               <h2 className="text-xl font-bold mb-2">Select a Group and Division</h2>
-              <p className="text-xl italic">Group</p>
             </div>
 
             {/* TODO: mimic onemac Group logic */}
-            {/* <div className="py-2">
+            <div className="py-4">
               <h2 className="text-xl font-bold mb-2">Select your State Access</h2>
               <Select
                 onValueChange={(value) => {
-                  console.log("value", value);
+                  const matchingGroup: groupDivisionType[] = groupDivision.filter(
+                    (group) => group.abbr === value,
+                  );
+                  setGroup(matchingGroup[0]);
                 }}
               >
                 <SelectTrigger>
                   <SelectValue placeholder="Select state here" />
                 </SelectTrigger>
                 <SelectContent>
-                  {stateOptions.map((state) => (
-                    <SelectItem value={state.value} key={state.value}>
-                      {state.label}
+                  {groupDivision.map((group) => (
+                    <SelectItem value={group.abbr} key={`${group.id}-${group.abbr}`}>
+                      <span className="font-bold min-w-[4rem]">{group.abbr}</span>
+                      <span>{group.name}</span>
                     </SelectItem>
                   ))}
                 </SelectContent>
               </Select>
-            </div> */}
+            </div>
+
+            {group && (
+              <div className="py-4">
+                <h2 className="text-xl font-bold mb-2">Select your State Access</h2>
+                <Select
+                  onValueChange={(value) => {
+                    const matchingDivision: divisionsType[] = group.divisions.filter(
+                      (division) => division.id === parseInt(value),
+                    );
+                    console.log(matchingDivision);
+                    setDivision(matchingDivision[0]);
+                  }}
+                >
+                  <SelectTrigger>
+                    <SelectValue placeholder="Select state here" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    {group &&
+                      group.divisions.map((divisions) => (
+                        <SelectItem
+                          value={divisions.id.toString()}
+                          key={`${divisions.id}-${divisions.abbr}`}
+                        >
+                          <span className="font-bold min-w-[4rem]">{divisions.abbr ?? "--"}</span>
+                          <span>{divisions.name}</span>
+                        </SelectItem>
+                      ))}
+                  </SelectContent>
+                </Select>
+              </div>
+            )}
 
             <div className="py-4">
-              <Button className="mr-3" onClick={() => console.log("submit")}>
+              <Button className="mr-3" disabled={division == null} onClick={onSubmit}>
                 Submit
               </Button>
               <Button variant="outline" onClick={() => setShowModal(true)}>

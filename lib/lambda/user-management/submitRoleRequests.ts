@@ -22,7 +22,7 @@ export const canUpdateAccess = (currentUserRole: UserRole, roleToUpdate: UserRol
   }
   return false;
 };
-
+// Check if current user can request to change their own role
 export const canRequestAccess = (role: UserRole): boolean => {
   return ROLES_ALLOWED_TO_REQUEST.includes(role);
 };
@@ -61,11 +61,9 @@ export const submitRoleRequests = async (event: APIGatewayEvent) => {
   try {
     const { userId, poolId } = authDetails;
     const userAttributes = await lookupUserAttributes(userId, poolId);
-
-    // Grab the full name of the user in the users index instead of Cognito
-    const userInfo = await getUserByEmail(userAttributes.email);
-
+    const userInfo = await getUserByEmail(userAttributes?.email);
     const latestActiveRoleObj = await getLatestActiveRoleByEmail(userAttributes.email);
+
     if (!latestActiveRoleObj) {
       return response({
         statusCode: 403,
@@ -79,12 +77,26 @@ export const submitRoleRequests = async (event: APIGatewayEvent) => {
       role: roleToUpdate,
       eventType,
       grantAccess,
+      requestRoleChange,
     } = typeof event.body === "string" ? JSON.parse(event.body) : event.body;
+
+    // Check if the user's role is allowed to grant or request access
+    if (
+      !canUpdateAccess(latestActiveRoleObj.role, roleToUpdate) &&
+      !canRequestAccess(latestActiveRoleObj.role)
+    ) {
+      console.warn(`Unauthorized action attempt by ${email}`);
+
+      return response({
+        statusCode: 403,
+        body: { message: "You are not authorized to perform this action." },
+      });
+    }
 
     let status: RoleStatus;
 
     // Determine the status based on the user's role and action
-    if (canUpdateAccess(latestActiveRoleObj.role, roleToUpdate)) {
+    if (!requestRoleChange && canUpdateAccess(latestActiveRoleObj.role, roleToUpdate)) {
       if (grantAccess === true || grantAccess === false) {
         // Grant access or deny access based on the `grantAccess` value
         status = grantAccess ? "active" : "denied";
@@ -94,20 +106,18 @@ export const submitRoleRequests = async (event: APIGatewayEvent) => {
           body: { message: "Invalid or missing grantAccess value." },
         });
       }
-    } else if (canRequestAccess(latestActiveRoleObj.role)) {
+    } else if (requestRoleChange && canRequestAccess(latestActiveRoleObj.role)) {
       // If the role is allowed to request access, set status to "pending"
       status = "pending";
     } else {
-      console.warn(`Unauthorized action attempt by ${email}`);
-
       // If the role can't grant or request access, return an error
       return response({
-        statusCode: 403,
-        body: { message: "You are not authorized to perform this action." },
+        statusCode: 200,
+        body: { message: `Request to access ${state} has been submitted.` },
       });
     }
 
-    const id = `${email}_${state}_${latestActiveRoleObj.role}`;
+    const id = `${email}_${state}_${roleToUpdate.role}`;
 
     await produceMessage(
       topicName,
