@@ -1,8 +1,9 @@
 import { useState } from "react";
 import { Navigate, useNavigate } from "react-router";
 
-import { useGetUserDetails } from "@/api";
+import { useGetUserDetails, useSubmitGroupDivision } from "@/api";
 import {
+  banner,
   Button,
   ConfirmationDialog,
   LoadingSpinner,
@@ -21,6 +22,7 @@ export const CMSSignup = () => {
   const [showModal, setShowModal] = useState<boolean>(false);
   const [group, setGroup] = useState<groupDivisionType | null>(null);
   const [division, setDivision] = useState<divisionsType | null>(null);
+  const { mutateAsync } = useSubmitGroupDivision();
 
   const navigate = useNavigate();
 
@@ -31,9 +33,26 @@ export const CMSSignup = () => {
   if (currentRole !== "defaultcmsuser" && currentRole !== "cmsroleapprover")
     return <Navigate to="/profile" />;
 
-  const onSubmit = () => {
-    //TODO: add logic for submitting cms role request change
-    console.log("group: ", group, " division: ", division);
+  const onSubmit = async () => {
+    try {
+      await mutateAsync({ group: group.name, division: division.name });
+
+      banner({
+        header: "Submission Completed",
+        body: "Your submission has been received.",
+        variant: "success",
+        pathnameToDisplayOn: window.location.pathname,
+      });
+    } catch (error) {
+      console.error(`Error updating group and division: ${error?.message || error}`);
+
+      banner({
+        header: "An unexpected error has occurred:",
+        body: error instanceof Error ? error.message : String(error),
+        variant: "destructive",
+        pathnameToDisplayOn: window.location.pathname,
+      });
+    }
   };
 
   return (
@@ -60,7 +79,7 @@ export const CMSSignup = () => {
 
             {/* TODO: mimic onemac Group logic */}
             <div className="py-4">
-              <h2 className="text-xl font-bold mb-2">Select your State Access</h2>
+              <h2 className="text-xl font-bold mb-2">Group</h2>
               <Select
                 onValueChange={(value) => {
                   const matchingGroup: groupDivisionType[] = groupDivision.filter(
@@ -85,7 +104,7 @@ export const CMSSignup = () => {
 
             {group && (
               <div className="py-4">
-                <h2 className="text-xl font-bold mb-2">Select your State Access</h2>
+                <h2 className="text-xl font-bold mb-2">Division</h2>
                 <Select
                   onValueChange={(value) => {
                     const matchingDivision: divisionsType[] = group.divisions.filter(
