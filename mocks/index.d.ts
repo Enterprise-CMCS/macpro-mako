@@ -74,7 +74,8 @@ export type TestRoleResult = {
       | "cmsreviewer"
       | "statesystemadmin"
       | "helpdesk"
-      | "statesubmitter";
+      | "statesubmitter"
+      | "systemadmin";
     territory: string;
     lastModifiedDate: number;
   };

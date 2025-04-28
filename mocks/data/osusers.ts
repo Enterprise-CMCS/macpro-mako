@@ -1,11 +1,58 @@
+export const SYSTEM_ADMIN_EMAIL = "systemadmin@example.com";
+export const HELP_DESK_EMAIL = "helpdesk@example.com";
+export const CMS_ROLE_APPROVER_EMAIL = "cmsroleapprover@example.com";
+export const TEST_CMS_REVIEWER_EMAIL = "mako.cmsuser@outlook.com";
 export const STATE_SYSTEM_ADMIN_EMAIL = "statesystemadmin@nightwatch.test";
 export const STATE_SUBMITTER_EMAIL = "statesubmitter@nightwatch.test";
 export const TEST_STATE_SUBMITTER_EMAIL = "mako.stateuser@gmail.com";
 export const MULTI_STATE_SUBMITTER_EMAIL = "multistate@example.com";
 export const NO_STATE_SUBMITTER_EMAIL = "nostate@example.com";
-export const TEST_CMS_REVIEWER_EMAIL = "mako.cmsuser@outlook.com";
 
-export const idmUsers = {
+export const osUsers = {
+  [SYSTEM_ADMIN_EMAIL]: {
+    _id: SYSTEM_ADMIN_EMAIL,
+    found: true,
+    _source: {
+      id: SYSTEM_ADMIN_EMAIL,
+      eventType: "user-info",
+      email: SYSTEM_ADMIN_EMAIL,
+      fullName: "System Admin",
+      role: "systemadmin",
+    },
+  },
+  [HELP_DESK_EMAIL]: {
+    _id: HELP_DESK_EMAIL,
+    found: true,
+    _source: {
+      id: HELP_DESK_EMAIL,
+      eventType: "user-info",
+      email: HELP_DESK_EMAIL,
+      fullName: "CMS Helpdesk",
+      role: "helpdesk",
+    },
+  },
+  [CMS_ROLE_APPROVER_EMAIL]: {
+    _id: CMS_ROLE_APPROVER_EMAIL,
+    found: true,
+    _source: {
+      id: CMS_ROLE_APPROVER_EMAIL,
+      eventType: "user-info",
+      email: CMS_ROLE_APPROVER_EMAIL,
+      fullName: "CMSRole Approver",
+      role: "cmsroleapprover",
+    },
+  },
+  [TEST_CMS_REVIEWER_EMAIL]: {
+    _id: TEST_CMS_REVIEWER_EMAIL,
+    found: true,
+    _source: {
+      id: TEST_CMS_REVIEWER_EMAIL,
+      eventType: "user-info",
+      email: TEST_CMS_REVIEWER_EMAIL,
+      fullName: "CMS Reviewer",
+      role: "cmsreviewer",
+    },
+  },
   [STATE_SYSTEM_ADMIN_EMAIL]: {
     _id: STATE_SYSTEM_ADMIN_EMAIL,
     found: true,
@@ -61,25 +108,14 @@ export const idmUsers = {
       role: "statesubmitter",
     },
   },
-  [TEST_CMS_REVIEWER_EMAIL]: {
-    _id: TEST_CMS_REVIEWER_EMAIL,
-    found: true,
-    _source: {
-      id: TEST_CMS_REVIEWER_EMAIL,
-      eventType: "user-info",
-      email: TEST_CMS_REVIEWER_EMAIL,
-      fullName: "CMS Reviewer Cypress",
-      role: "cmsreviewer",
-    },
-  },
 };
 
-export const STATE_SYSTEM_ADMIN_USER = idmUsers[STATE_SYSTEM_ADMIN_EMAIL];
-export const STATE_SUBMITTER_USER = idmUsers[STATE_SUBMITTER_EMAIL];
-export const MULTI_STATE_SUBMITTER_USER = idmUsers[MULTI_STATE_SUBMITTER_EMAIL];
-export const NO_STATE_SUBMITTER_USER = idmUsers[NO_STATE_SUBMITTER_EMAIL];
+export const STATE_SYSTEM_ADMIN_USER = osUsers[STATE_SYSTEM_ADMIN_EMAIL];
+export const STATE_SUBMITTER_USER = osUsers[STATE_SUBMITTER_EMAIL];
+export const MULTI_STATE_SUBMITTER_USER = osUsers[MULTI_STATE_SUBMITTER_EMAIL];
+export const NO_STATE_SUBMITTER_USER = osUsers[NO_STATE_SUBMITTER_EMAIL];
 
-export const userResultList = Object.values(idmUsers);
+export const userResultList = Object.values(osUsers);
 
 export const getFilteredUserResultList = (emails: string[]) =>
   userResultList.filter((user) => emails.includes(user?._source?.email || ""));

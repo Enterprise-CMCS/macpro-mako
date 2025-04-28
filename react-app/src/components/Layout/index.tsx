@@ -71,7 +71,7 @@ const useGetLinks = () => {
           {
             name: "Latest Updates",
             link: "/latestupdates",
-            condition: isStateHomepage && isStateUser(user.user),
+            condition: isStateHomepage && isStateUser(userObj?.user),
           },
           { name: "Support", link: "/support", condition: userObj.user && toggleFaq },
           {

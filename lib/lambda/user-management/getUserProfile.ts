@@ -1,16 +1,30 @@
-import { getAuthDetails, lookupUserAttributes } from "lib/libs/api/auth/user";
-import { response } from "lib/libs/handler-lib";
+import { getAuthDetails, lookupUserAttributes } from "libs/api/auth/user";
+import { response } from "libs/handler-lib";
 import { APIGatewayEvent } from "shared-types";
 
 import { getAllUserRolesByEmail } from "./userManagementService";
 
 export const getUserProfile = async (event: APIGatewayEvent) => {
+  if (!event?.requestContext) {
+    return response({
+      statusCode: 400,
+      body: { message: "Request context required" },
+    });
+  }
+  let authDetails;
   try {
-    console.log("this is the event: ", event);
-    const authDetails = getAuthDetails(event);
-    console.log("what are the auth details", authDetails);
-    const userAttributes = await lookupUserAttributes(authDetails.userId, authDetails.poolId);
-    console.log("what are the user attributes", userAttributes);
+    authDetails = getAuthDetails(event);
+  } catch (err) {
+    console.error(err);
+    return response({
+      statusCode: 401,
+      body: { message: "User not authenticated" },
+    });
+  }
+
+  try {
+    const { userId, poolId } = authDetails;
+    const userAttributes = await lookupUserAttributes(userId, poolId);
     const opensearchResponse = await getAllUserRolesByEmail(userAttributes.email);
 
     return response({
@@ -18,7 +32,11 @@ export const getUserProfile = async (event: APIGatewayEvent) => {
       body: opensearchResponse,
     });
   } catch (err: unknown) {
-    console.log("An error occured: ", err);
+    console.log("An error occurred: ", err);
+    return response({
+      statusCode: 500,
+      body: { message: `Error: ${err}` },
+    });
   }
 };
 
