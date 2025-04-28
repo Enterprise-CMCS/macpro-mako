@@ -60,8 +60,9 @@ const useGetLinks = () => {
           {
             name: "User Management",
             link: "/usermanagement",
-            condition:
-              userDetailsData?.role === "statesystemadmin" || userDetailsData?.role === "helpdesk",
+            condition: ["statesystemadmin", "cmsroleapprover", "helpdesk"].includes(
+              userDetailsData?.role,
+            ),
           },
           {
             name: "View FAQs",

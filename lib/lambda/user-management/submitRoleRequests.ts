@@ -1,13 +1,13 @@
 import { APIGatewayEvent } from "aws-lambda";
-import { getAuthDetails, lookupUserAttributes } from "libs/api/auth/user";
-import { produceMessage } from "libs/api/kafka";
-import { response } from "libs/handler-lib";
 import {
   ROLES_ALLOWED_TO_REQUEST,
   ROLES_ALLOWED_TO_UPDATE,
   roleUpdatePermissionsMap,
   UserRole,
-} from "shared-types/events/legacy-user";
+} from "lib/packages/shared-types/events/legacy-user";
+import { getAuthDetails, lookupUserAttributes } from "libs/api/auth/user";
+import { produceMessage } from "libs/api/kafka";
+import { response } from "libs/handler-lib";
 
 import { getLatestActiveRoleByEmail, getUserByEmail } from "./userManagementService";
 
