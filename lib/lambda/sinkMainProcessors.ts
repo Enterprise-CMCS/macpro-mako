@@ -293,7 +293,7 @@ export const insertNewSeatoolRecordsFromKafkaIntoMako = async (
 
       if (!value) {
         console.error(`Record without a value property: ${value}`);
-        seatoolRecordsForMako.push(opensearch.main.seatool.tombstone(id));
+        // seatoolRecordsForMako.push(opensearch.main.seatool.tombstone(id));
         continue;
       }
 
