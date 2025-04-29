@@ -15,7 +15,7 @@ export const CMSWelcome = () => {
     {
       id: 2,
       title: "SEA Tool",
-      content: "State Early Alert",
+      content: "State Early Alert Tool",
       body: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
       buttonText: "Go to SEA Tool",
       buttonLink: "https://sea.cms.gov/",
@@ -38,10 +38,10 @@ export const CMSWelcome = () => {
     },
     {
       id: 5,
-      title: "Laserfische",
-      content: "Subtitle for LaserFishe",
+      title: "Laserfiche",
+      content: "Subtitle for Laserfiche",
       body: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
-      buttonText: "Go to Laserfische",
+      buttonText: "Go to Laserfiche",
       buttonLink: "https://cmsrio.cms.local/laserfiche",
     },
     {
