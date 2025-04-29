@@ -1,3 +1,5 @@
+import { TestUserDocument, TestUserResult } from "../index.d";
+
 export const SYSTEM_ADMIN_EMAIL = "systemadmin@example.com";
 export const HELP_DESK_EMAIL = "helpdesk@example.com";
 export const CMS_ROLE_APPROVER_EMAIL = "cmsroleapprover@example.com";
@@ -8,13 +10,13 @@ export const TEST_STATE_SUBMITTER_EMAIL = "mako.stateuser@gmail.com";
 export const MULTI_STATE_SUBMITTER_EMAIL = "multistate@example.com";
 export const NO_STATE_SUBMITTER_EMAIL = "nostate@example.com";
 
-export const osUsers = {
+export const osUsers: Record<string, TestUserResult> = {
   [SYSTEM_ADMIN_EMAIL]: {
     _id: SYSTEM_ADMIN_EMAIL,
     found: true,
     _source: {
       id: SYSTEM_ADMIN_EMAIL,
-      eventType: "user-info",
+      eventType: "user-role",
       email: SYSTEM_ADMIN_EMAIL,
       fullName: "System Admin",
       role: "systemadmin",
@@ -25,7 +27,7 @@ export const osUsers = {
     found: true,
     _source: {
       id: HELP_DESK_EMAIL,
-      eventType: "user-info",
+      eventType: "user-role",
       email: HELP_DESK_EMAIL,
       fullName: "CMS Helpdesk",
       role: "helpdesk",
@@ -36,7 +38,7 @@ export const osUsers = {
     found: true,
     _source: {
       id: CMS_ROLE_APPROVER_EMAIL,
-      eventType: "user-info",
+      eventType: "user-role",
       email: CMS_ROLE_APPROVER_EMAIL,
       fullName: "CMSRole Approver",
       role: "cmsroleapprover",
@@ -47,7 +49,7 @@ export const osUsers = {
     found: true,
     _source: {
       id: TEST_CMS_REVIEWER_EMAIL,
-      eventType: "user-info",
+      eventType: "user-role",
       email: TEST_CMS_REVIEWER_EMAIL,
       fullName: "CMS Reviewer",
       role: "cmsreviewer",
@@ -58,7 +60,7 @@ export const osUsers = {
     found: true,
     _source: {
       id: STATE_SYSTEM_ADMIN_EMAIL,
-      eventType: "user-info",
+      eventType: "user-role",
       email: STATE_SYSTEM_ADMIN_EMAIL,
       fullName: "Statesystemadmin Nightwatch",
       role: "statesystemadmin",
@@ -69,7 +71,7 @@ export const osUsers = {
     found: true,
     _source: {
       id: STATE_SUBMITTER_EMAIL,
-      eventType: "user-info",
+      eventType: "user-role",
       email: STATE_SUBMITTER_EMAIL,
       fullName: "Statesubmitter Nightwatch",
       role: "statesubmitter",
@@ -80,7 +82,7 @@ export const osUsers = {
     found: true,
     _source: {
       id: TEST_STATE_SUBMITTER_EMAIL,
-      eventType: "user-info",
+      eventType: "user-role",
       email: TEST_STATE_SUBMITTER_EMAIL,
       fullName: "Stateuser Tester",
       role: "statesubmitter",
@@ -91,7 +93,7 @@ export const osUsers = {
     found: true,
     _source: {
       id: MULTI_STATE_SUBMITTER_EMAIL,
-      eventType: "user-info",
+      eventType: "user-role",
       email: MULTI_STATE_SUBMITTER_EMAIL,
       fullName: "Multi State",
       role: "statesubmitter",
@@ -102,7 +104,7 @@ export const osUsers = {
     found: true,
     _source: {
       id: NO_STATE_SUBMITTER_EMAIL,
-      eventType: "user-info",
+      eventType: "user-role",
       email: NO_STATE_SUBMITTER_EMAIL,
       fullName: "No State",
       role: "statesubmitter",
@@ -120,9 +122,9 @@ export const userResultList = Object.values(osUsers);
 export const getFilteredUserResultList = (emails: string[]) =>
   userResultList.filter((user) => emails.includes(user?._source?.email || ""));
 
-export const userDocList = userResultList
+export const userDocList: TestUserDocument[] = userResultList
   .filter((user) => user?._source)
-  .map((user) => user?._source);
+  .map((user) => user?._source as TestUserDocument);
 
 export const getFilteredUserDocList = (emails: string[]) =>
   userDocList.filter((user) => emails.includes(user?.email || ""));

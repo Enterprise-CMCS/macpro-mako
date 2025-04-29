@@ -4,6 +4,7 @@ export * from "./useGetItem";
 export * from "./useGetUser";
 export * from "./useGetUserDetails";
 export * from "./useGetUserProfile";
+export * from "./useSubmitGroupDivision";
 export * from "./useGetRoleRequests";
 export * from "./useSubmitRoleRequests";
 export * from "./getAttachmentUrl";
