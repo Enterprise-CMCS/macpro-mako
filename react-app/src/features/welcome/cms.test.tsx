@@ -32,7 +32,7 @@ describe("CMSWelcome", () => {
     expect(screen.getByText("SEA Tool")).toBeInTheDocument();
     expect(screen.getByText("WMS")).toBeInTheDocument();
     expect(screen.getByText("eRegs")).toBeInTheDocument();
-    expect(screen.getByText("Laserfische")).toBeInTheDocument();
+    expect(screen.getByText("Laserfiche")).toBeInTheDocument();
     expect(screen.getByText("MMDL")).toBeInTheDocument();
   });
 
@@ -42,7 +42,7 @@ describe("CMSWelcome", () => {
     expect(screen.getByText("Go to SEA Tool")).toBeInTheDocument();
     expect(screen.getByText("Go to WMS")).toBeInTheDocument();
     expect(screen.getByText("Go to eRegs")).toBeInTheDocument();
-    expect(screen.getByText("Go to Laserfische")).toBeInTheDocument();
+    expect(screen.getByText("Go to Laserfiche")).toBeInTheDocument();
     expect(screen.getByText("Go to MMDL")).toBeInTheDocument();
   });
 

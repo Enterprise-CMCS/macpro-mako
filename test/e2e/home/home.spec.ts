@@ -3,7 +3,7 @@ import { HomePage } from "@/pages";
 
 let homePage: HomePage;
 
-test.describe("home page", { tag: ["@home", "@e2e", "@sample"] }, () => {
+test.describe("home page", { tag: ["@home", "@e2e", "@newHome"] }, () => {
   test.beforeEach(async ({ page }) => {
     homePage = new HomePage(page);
 
@@ -18,7 +18,7 @@ test.describe("home page", { tag: ["@home", "@e2e", "@sample"] }, () => {
     await expect(homePage.desktop.signInBtn).not.toBeVisible();
   });
 
-  test("see freqiently asked questions header when in FAQ page", async ({ page }) => {
+  test("see frequently asked questions header when in FAQ page", async ({ page }) => {
     const popup = page.waitForEvent("popup");
     await homePage.desktop.faqLink.click();
     const foundFaqHeading = await popup;

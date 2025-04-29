@@ -14,8 +14,8 @@ test.describe("test a11y on static routes", { tag: ["@CI", "@a11y"] }, () => {
       await page.waitForTimeout(2000);
 
       // wait for loading screen if present
-      if (page.getByLabel("three-dots-loading")) {
-        await page.getByLabel("three-dots-loading").waitFor({ state: "detached" });
+      if (page.getByTestId("three-dots-loading")) {
+        await page.getByTestId("three-dots-loading").waitFor({ state: "detached" });
       }
 
       // make sure we are still on the route and haven't been redirected to /
