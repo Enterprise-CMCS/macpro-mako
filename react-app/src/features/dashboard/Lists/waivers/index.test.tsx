@@ -166,7 +166,7 @@ const getExpectedExportData = (useCmsStatus: boolean) => {
 };
 
 const verifyColumns = (hasActions: boolean) => {
-  const table = screen.getByRole("table");
+  const table = screen.getByTestId("os-table");
 
   if (hasActions) {
     expect(within(table).getByText("Actions", { selector: "th>div" })).toBeInTheDocument();

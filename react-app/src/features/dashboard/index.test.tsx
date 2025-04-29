@@ -173,7 +173,7 @@ describe("Dashboard", () => {
       expect(waiverTab).toBeInTheDocument();
       expect(waiverTab.parentElement.getAttribute("aria-selected")).toEqual("false");
 
-      const table = screen.getByRole("table");
+      const table = screen.getByTestId("os-table");
       verifyColumns(table, hasActions, isWaiver, spaHits.total.value);
       verifyPagination(spaHits.total.value);
     });
@@ -193,7 +193,7 @@ describe("Dashboard", () => {
       expect(spaTab).toBeInTheDocument();
       expect(spaTab.parentElement.getAttribute("aria-selected")).toEqual("false");
 
-      const table = screen.getByRole("table");
+      const table = screen.getByTestId("os-table");
       verifyColumns(table, hasActions, isWaiver, waiverHits.total.value);
       verifyPagination(waiverHits.total.value);
     });
@@ -213,7 +213,7 @@ describe("Dashboard", () => {
       expect(waiverTab).toBeInTheDocument();
       expect(waiverTab.parentElement.getAttribute("aria-selected")).toEqual("false");
 
-      const table = screen.getByRole("table");
+      const table = screen.getByTestId("os-table");
       verifyColumns(table, hasActions, isWaiver, spaHits.total.value);
       verifyPagination(spaHits.total.value);
     });
@@ -268,7 +268,7 @@ describe("Dashboard", () => {
       expect(waiverTab).toBeInTheDocument();
       expect(waiverTab.parentElement.getAttribute("aria-selected")).toEqual("false");
 
-      const table = screen.getByRole("table");
+      const table = screen.getByTestId("os-table");
       verifyColumns(table, hasActions, isWaiver, spaHits.total.value);
       verifyPagination(spaHits.total.value);
     });
@@ -288,7 +288,7 @@ describe("Dashboard", () => {
       expect(spaTab).toBeInTheDocument();
       expect(spaTab.parentElement.getAttribute("aria-selected")).toEqual("false");
 
-      const table = screen.getByRole("table");
+      const table = screen.getByTestId("os-table");
       verifyColumns(table, hasActions, isWaiver, waiverHits.total.value);
       verifyPagination(waiverHits.total.value);
     });
@@ -308,7 +308,7 @@ describe("Dashboard", () => {
       expect(waiverTab).toBeInTheDocument();
       expect(waiverTab.parentElement.getAttribute("aria-selected")).toEqual("false");
 
-      const table = screen.getByRole("table");
+      const table = screen.getByTestId("os-table");
       verifyColumns(table, hasActions, isWaiver, spaHits.total.value);
       verifyPagination(spaHits.total.value);
     });
