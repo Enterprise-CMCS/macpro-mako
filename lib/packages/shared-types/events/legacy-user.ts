@@ -22,8 +22,8 @@ export const roleUpdatePermissionsMap: UpdatePermissionsMap = {
     "helpdesk",
     "statesubmitter",
   ],
-  cmsroleapprover: ["statesystemadmin", "statesubmitter"],
-  statesystemadmin: ["statesubmitter"],
+  cmsroleapprover: ["statesystemadmin", "statesubmitter", "cmsreviewer"],
+  statesystemadmin: ["statesubmitter", "defaultcmsuser"],
 };
 export const ROLES_ALLOWED_TO_UPDATE = Object.keys(roleUpdatePermissionsMap) as UserRole[];
 export const ROLES_ALLOWED_TO_REQUEST: UserRole[] = ["statesubmitter", "statesystemadmin"];
