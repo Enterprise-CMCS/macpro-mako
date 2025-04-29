@@ -59,7 +59,7 @@ export const submitRoleRequests = async (event: APIGatewayEvent) => {
       eventType,
       grantAccess,
       requestRoleChange,
-    } = typeof event.body === "string" ? JSON.parse(event.body) : event.body;
+    } = JSON.parse(event.body);
 
     let status: RoleStatus;
 
