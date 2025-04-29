@@ -1,42 +1,23 @@
-import { APIGatewayEvent } from "aws-lambda";
-import { getAuthDetails, lookupUserAttributes } from "libs/api/auth/user";
 import { produceMessage } from "libs/api/kafka";
 import { response } from "libs/handler-lib";
 
-import { getUserByEmail, userHasThisRole } from "./userManagementService";
+import { getUserByEmail } from "./userManagementService";
 
 type SubmitGroupDivisionBody = {
+  userEmail: string;
   group: string;
   division: string;
 };
 
-export const submitGroupDivision = async (event: APIGatewayEvent) => {
+export const submitGroupDivision = async (body: SubmitGroupDivisionBody) => {
   try {
-    if (!event.body) {
-      return response({
-        statusCode: 400,
-        body: { message: "Event body required" },
-      });
-    }
-    const { group, division } = JSON.parse(event.body) as SubmitGroupDivisionBody;
-
     const topicName = process.env.topicName as string;
     if (!topicName) {
       throw new Error("Topic name is not defined");
     }
 
-    const { userId, poolId } = getAuthDetails(event);
-    const userAttributes = await lookupUserAttributes(userId, poolId);
-
-    const userInfo = await getUserByEmail(userAttributes.email);
-    const isDefaultCMSUser = await userHasThisRole(userAttributes.email, "N/A", "defaultcmsuser");
-
-    if (!isDefaultCMSUser) {
-      return response({
-        statusCode: 403,
-        body: { message: "User is not a default CMS user" },
-      });
-    }
+    const { userEmail, group, division } = body;
+    const userInfo = await getUserByEmail(userEmail);
 
     await produceMessage(
       topicName,
