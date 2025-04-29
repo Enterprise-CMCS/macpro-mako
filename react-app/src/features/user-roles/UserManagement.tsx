@@ -32,6 +32,8 @@ export type UserRoleType = {
   lastModifiedDate: number;
   status: StatusType;
   eventType: string;
+  group?: string;
+  division?: string;
 };
 type headingType = { [key: string]: keyof UserRoleType | null };
 
@@ -125,6 +127,8 @@ export const renderCellActions = (
       role: userRole.role,
       grantAccess: modalAction[action] === "grant",
       eventType: userRole.eventType,
+      group: userRole.group ?? null,
+      division: userRole.division ?? null,
     });
   };
   return (
