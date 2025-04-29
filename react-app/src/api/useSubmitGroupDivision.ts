@@ -10,6 +10,7 @@ export const submitGroupDivision = async (
   params: GroupDivisionParams,
 ): Promise<{ message: string }> => {
   try {
+    console.log(params, "PARAMS");
     const submitGroupAndDivisionInfo = await API.post("os", "/submitGroupDivision", {
       body: params,
     });

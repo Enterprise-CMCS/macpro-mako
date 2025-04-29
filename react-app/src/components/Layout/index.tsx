@@ -7,7 +7,7 @@ import { Link, NavLink, NavLinkProps, Outlet, useNavigate } from "react-router";
 import { UserRoles } from "shared-types";
 import { isStateUser } from "shared-utils";
 
-import { RoleRequest, StateAccess, useGetUser, useGetUserDetails, useGetUserProfile } from "@/api";
+import { useGetUser, useGetUserDetails } from "@/api";
 import { Banner, ScrollToTop, SimplePageContainer, UserPrompt } from "@/components";
 import MMDLAlertBanner from "@/components/Banner/MMDLSpaBanner";
 import config from "@/config";
@@ -60,7 +60,7 @@ const useGetLinks = () => {
           {
             name: "User Management",
             link: "/usermanagement",
-            condition: ["statesystemadmin", "cmsroleapprover", "helpdesk"].includes(
+            condition: ["systemadmin", "statesystemadmin", "cmsroleapprover", "helpdesk"].includes(
               userDetailsData?.role,
             ),
           },
