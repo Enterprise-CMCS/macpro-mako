@@ -59,6 +59,8 @@ export const submitRoleRequests = async (event: APIGatewayEvent) => {
       eventType,
       grantAccess,
       requestRoleChange,
+      group = null,
+      division = null,
     } = JSON.parse(event.body);
 
     let status: RoleStatus;
@@ -86,7 +88,7 @@ export const submitRoleRequests = async (event: APIGatewayEvent) => {
       });
     }
 
-    const id = `${email}_${state}_${roleToUpdate.role}`;
+    const id = `${email}_${state}_${roleToUpdate}`;
 
     await produceMessage(
       topicName,
@@ -100,6 +102,8 @@ export const submitRoleRequests = async (event: APIGatewayEvent) => {
         doneByEmail: userAttributes.email,
         doneByName: userInfo.fullName, // full name of current user. Cognito (userAttributes) may have a different full name
         date: Date.now(), // correct time format?
+        group,
+        division,
       }),
     );
 
