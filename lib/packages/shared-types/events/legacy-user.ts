@@ -42,6 +42,8 @@ export const baseUserRoleRequestSchema = z.object({
   doneByName: z.string(),
   date: z.number().optional(),
   eventType: roleEvent,
+  group: z.string().optional(),
+  division: z.string().optional(),
 });
 
 export type BaseUserRoleRequest = z.infer<typeof baseUserRoleRequestSchema>;
@@ -76,6 +78,8 @@ export const userRoleRequest = baseUserRoleRequestSchema.transform((data) => ({
   role: data.role,
   territory: data.territory,
   lastModifiedDate: data.date,
+  group: data.group,
+  division: data.division,
 }));
 
 // User Information Schema

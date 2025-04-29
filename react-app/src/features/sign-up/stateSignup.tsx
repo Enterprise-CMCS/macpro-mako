@@ -54,12 +54,12 @@ export const StateSignup = () => {
           requestRoleChange: true,
         });
       }
-
+      navigate("/dashboard");
       banner({
         header: "Submission Completed",
         body: "Your submission has been received.",
         variant: "success",
-        pathnameToDisplayOn: window.location.pathname,
+        pathnameToDisplayOn: "/dashboard",
       });
     } catch (error) {
       console.error(error);

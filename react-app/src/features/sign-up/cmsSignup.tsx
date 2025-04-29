@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { Navigate, useNavigate } from "react-router";
 
-import { useGetUserDetails, useSubmitGroupDivision } from "@/api";
+import { useGetUserDetails, useSubmitGroupDivision, useSubmitRoleRequests } from "@/api";
 import {
   banner,
   Button,
@@ -22,7 +22,8 @@ export const CMSSignup = () => {
   const [showModal, setShowModal] = useState<boolean>(false);
   const [group, setGroup] = useState<groupDivisionType | null>(null);
   const [division, setDivision] = useState<divisionsType | null>(null);
-  const { mutateAsync } = useSubmitGroupDivision();
+  // const { mutateAsync } = useSubmitGroupDivision();
+  const { mutateAsync: submitRequest } = useSubmitRoleRequests();
 
   const navigate = useNavigate();
 
@@ -35,13 +36,24 @@ export const CMSSignup = () => {
 
   const onSubmit = async () => {
     try {
-      await mutateAsync({ group: group.abbr, division: division.abbr });
+      // await mutateAsync({ group: group.abbr, division: division.abbr });
+      // Is this wanted? CMS role approvers cannot see dashboard
+      await submitRequest({
+        email: userDetails.email,
+        state: "N/A",
+        role: "cmsroleapprover",
+        eventType: "user-role",
+        requestRoleChange: true,
+        group: group.abbr,
+        division: division.abbr,
+      });
+      navigate("/");
 
       banner({
         header: "Submission Completed",
         body: "Your submission has been received.",
         variant: "success",
-        pathnameToDisplayOn: window.location.pathname,
+        pathnameToDisplayOn: "/",
       });
     } catch (error) {
       console.error(`Error updating group and division: ${error?.message || error}`);
