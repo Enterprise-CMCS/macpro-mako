@@ -21,6 +21,7 @@ export const VisibilityPopover = ({
         <UI.Button
           variant="outline"
           className="w-full xs:w-fit whitespace-nowrap hover:bg-transparent self-center h-10 flex gap-2"
+          data-testid="columns-menu-btn"
         >
           <span className="prose-sm">
             {hiddenColumns.length ? `Columns (${hiddenColumns.length} hidden)` : "Columns"}
@@ -74,7 +75,10 @@ export const VisiblityItem = <T extends UI.OsTableColumn>(props: T & { onClick: 
 
 export const VisibilityMenu = <T extends UI.OsTableColumn>(props: Props<T>) => (
   <DropdownMenu.Content asChild>
-    <ul className="flex flex-col gap-2 bg-white p-4 shadow-md rounded-md w-72">
+    <ul
+      className="flex flex-col gap-2 bg-white p-4 shadow-md rounded-md w-72"
+      data-testid="columns-menu"
+    >
       {props.list.map((IT) =>
         IT.field ? (
           <VisiblityItem
