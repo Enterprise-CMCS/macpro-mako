@@ -52,7 +52,8 @@ export type TestUserResult = {
       | "cmsreviewer"
       | "statesystemadmin"
       | "helpdesk"
-      | "statesubmitter";
+      | "statesubmitter"
+      | "systemadmin";
   };
 };
 

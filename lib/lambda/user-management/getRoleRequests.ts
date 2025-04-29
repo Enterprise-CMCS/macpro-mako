@@ -1,5 +1,5 @@
-import { getAuthDetails, lookupUserAttributes } from "lib/libs/api/auth/user.ts";
-import { response } from "lib/libs/handler-lib.ts";
+import { getAuthDetails, lookupUserAttributes } from "libs/api/auth/user";
+import { response } from "libs/handler-lib";
 import { StateAccess } from "react-app/src/api";
 import { APIGatewayEvent } from "shared-types";
 
