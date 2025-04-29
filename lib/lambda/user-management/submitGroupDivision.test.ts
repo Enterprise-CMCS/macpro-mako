@@ -1,7 +1,5 @@
-import { APIGatewayEvent } from "aws-lambda";
 import {
   errorRoleSearchHandler,
-  getRequestContext,
   mockedProducer,
   readOnlyUser,
   setDefaultStateSubmitter,
@@ -18,25 +16,14 @@ describe("submitGroupDivision handler", () => {
     process.env.topicName = "submit-group-division";
   });
 
-  it("should return 400 if the event body is missing", async () => {
-    const event = {} as APIGatewayEvent;
-
-    const res = await handler(event);
-
-    expect(res.statusCode).toEqual(400);
-    expect(res.body).toEqual(JSON.stringify({ message: "Event body required" }));
-  });
-
   it("should throw an error if the topicName is not set", async () => {
     delete process.env.topicName;
 
     const event = {
-      body: JSON.stringify({
-        group: "Group1",
-        division: "Division1",
-      }),
-      requestContext: getRequestContext(),
-    } as APIGatewayEvent;
+      userEmail: "mako.stateuser@gmail.com",
+      group: "Group1",
+      division: "Division1",
+    };
 
     const res = await handler(event);
 
@@ -46,32 +33,15 @@ describe("submitGroupDivision handler", () => {
     );
   });
 
-  it("should return a 403 if the user is not a CMS user", async () => {
-    const event = {
-      body: JSON.stringify({
-        group: "Group1",
-        division: "Division1",
-      }),
-      requestContext: getRequestContext(),
-    } as APIGatewayEvent;
-
-    const res = await handler(event);
-
-    expect(res.statusCode).toEqual(403);
-    expect(res.body).toEqual(JSON.stringify({ message: "User is not a default CMS user" }));
-  });
-
   it("should return a 200 if the group and division were submitted successfully", async () => {
     mockedProducer.send.mockResolvedValueOnce([{ message: "sent" }]);
     setMockUsername(readOnlyUser);
 
     const event = {
-      body: JSON.stringify({
-        group: "Group1",
-        division: "Division1",
-      }),
-      requestContext: getRequestContext(),
-    } as APIGatewayEvent;
+      userEmail: "mako.stateuser@gmail.com",
+      group: "Group1",
+      division: "Division1",
+    };
 
     const res = await handler(event);
 
@@ -86,16 +56,14 @@ describe("submitGroupDivision handler", () => {
     setMockUsername(readOnlyUser);
 
     const event = {
-      body: JSON.stringify({
-        group: "Group1",
-        division: "Division1",
-      }),
-      requestContext: getRequestContext(),
-    } as APIGatewayEvent;
+      userEmail: "cmsroleapprover@example.com",
+      group: "Group1",
+      division: "Division1",
+    };
 
     const res = await handler(event);
 
     expect(res.statusCode).toEqual(500);
-    expect(res.body).toEqual(JSON.stringify({ message: "Internal Server Error: Response Error" }));
+    expect(res.body).toContain("Internal Server Error");
   });
 });

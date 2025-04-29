@@ -68,4 +68,38 @@ export const automatedReadOnlyUser: TestUserData = {
   Username: "acfaf0ae-1af5-4e48-ad1e-54abcee4f3bf",
 };
 
+export const defaultCMSUser: TestUserData = {
+  UserAttributes: [
+    {
+      Name: "email",
+      Value: "reviewer@example.com",
+    },
+    {
+      Name: "email_verified",
+      Value: "true",
+    },
+    {
+      Name: "given_name",
+      Value: "DefaultCMS",
+    },
+    {
+      Name: "family_name",
+      Value: "User",
+    },
+    {
+      Name: "custom:state",
+      Value: "",
+    },
+    {
+      Name: "custom:cms-roles",
+      Value: "onemac-micro-readonly",
+    },
+    {
+      Name: "sub",
+      Value: "cd613967-c034-4e02-baad-03221840a35d",
+    },
+  ],
+  Username: "cd613967-c034-4e02-baad-03221840a35d",
+};
+
 export const readOnlyUsers: TestUserData[] = [readOnlyUser, automatedReadOnlyUser];

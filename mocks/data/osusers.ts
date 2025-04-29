@@ -4,6 +4,7 @@ export const SYSTEM_ADMIN_EMAIL = "systemadmin@example.com";
 export const HELP_DESK_EMAIL = "helpdesk@example.com";
 export const CMS_ROLE_APPROVER_EMAIL = "cmsroleapprover@example.com";
 export const CMS_READ_ONLY_EMAIL = "readonly@example.com";
+export const DEFAULT_CMS_USER_EMAIL = "reviewer@example.com";
 export const TEST_CMS_REVIEWER_EMAIL = "mako.cmsuser@outlook.com";
 export const STATE_SYSTEM_ADMIN_EMAIL = "statesystemadmin@nightwatch.test";
 export const STATE_SUBMITTER_EMAIL = "statesubmitter@nightwatch.test";
@@ -43,6 +44,17 @@ export const osUsers: Record<string, TestUserResult> = {
       email: CMS_ROLE_APPROVER_EMAIL,
       fullName: "CMSRole Approver",
       role: "cmsroleapprover",
+    },
+  },
+  [DEFAULT_CMS_USER_EMAIL]: {
+    _id: DEFAULT_CMS_USER_EMAIL,
+    found: true,
+    _source: {
+      id: DEFAULT_CMS_USER_EMAIL,
+      eventType: "user-info",
+      email: DEFAULT_CMS_USER_EMAIL,
+      fullName: "DefaultCMS User",
+      role: "defaultcmsuser",
     },
   },
   [TEST_CMS_REVIEWER_EMAIL]: {
