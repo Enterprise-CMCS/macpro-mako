@@ -27,4 +27,10 @@ export { errorApiSearchHandler } from "./search";
 export { errorApiAttachmentUrlHandler } from "./submissions";
 export { errorApiSubTypesHandler, errorApiTypeHandler } from "./types";
 export { mockCurrentAuthenticatedUser, mockUseGetUser, mockUserAttributes } from "./user";
-export { errorApiGetCreateUserProfileHandler } from "./userProfile";
+export { errorApiRequestBaseCMSAccessHandler } from "./userDetails";
+export {
+  errorApiGetRoleRequestsHandler,
+  errorApiGetCreateUserProfileHandler,
+  errorApiOptionSubmitGroupDivisionHandler,
+  errorApiSubmitRoleRequestsHandler,
+} from "./userProfile";

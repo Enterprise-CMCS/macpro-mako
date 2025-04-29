@@ -1,31 +1,12 @@
 import { APIGatewayEvent } from "aws-lambda";
-import {
-  ROLES_ALLOWED_TO_REQUEST,
-  ROLES_ALLOWED_TO_UPDATE,
-  roleUpdatePermissionsMap,
-  UserRole,
-} from "lib/packages/shared-types/events/legacy-user";
 import { getAuthDetails, lookupUserAttributes } from "libs/api/auth/user";
 import { produceMessage } from "libs/api/kafka";
 import { response } from "libs/handler-lib";
+import { canRequestAccess, canUpdateAccess } from "shared-utils";
 
 import { getLatestActiveRoleByEmail, getUserByEmail } from "./userManagementService";
 
 type RoleStatus = "active" | "denied" | "pending";
-
-// Check if current user can update access for a certain role
-export const canUpdateAccess = (currentUserRole: UserRole, roleToUpdate: UserRole): boolean => {
-  if (ROLES_ALLOWED_TO_UPDATE.includes(currentUserRole)) {
-    if (roleUpdatePermissionsMap[currentUserRole]?.includes(roleToUpdate)) {
-      return true;
-    }
-  }
-  return false;
-};
-// Check if current user can request to change their own role
-export const canRequestAccess = (role: UserRole): boolean => {
-  return ROLES_ALLOWED_TO_REQUEST.includes(role);
-};
 
 export const submitRoleRequests = async (event: APIGatewayEvent) => {
   if (!event?.body) {

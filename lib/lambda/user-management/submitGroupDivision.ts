@@ -1,7 +1,7 @@
 import { APIGatewayEvent } from "aws-lambda";
-import { getAuthDetails, lookupUserAttributes } from "lib/libs/api/auth/user";
-import { produceMessage } from "lib/libs/api/kafka";
-import { response } from "lib/libs/handler-lib";
+import { getAuthDetails, lookupUserAttributes } from "libs/api/auth/user";
+import { produceMessage } from "libs/api/kafka";
+import { response } from "libs/handler-lib";
 
 import { getUserByEmail, userHasThisRole } from "./userManagementService";
 
@@ -55,10 +55,10 @@ export const submitGroupDivision = async (event: APIGatewayEvent) => {
       body: { message: "Group and division submitted successfully." },
     });
   } catch (error) {
-    console.error("Error submitting group and division:", error);
+    console.error("Error submitting group and division:", { error });
     return response({
       statusCode: 500,
-      body: { message: "Internal Server Error: ", error },
+      body: { message: `Internal Server Error: ${error.message}` },
     });
   }
 };

@@ -1,14 +1,17 @@
 import { APIGatewayEvent } from "aws-lambda";
 import {
+  CMS_ROLE_APPROVER_EMAIL,
   cmsRoleApprover,
   errorRoleSearchHandler,
   getRequestContext,
+  HELP_DESK_EMAIL,
   helpDeskUser,
   noStateSubmitter,
   osStateSystemAdmin,
   roleDocs,
   setDefaultStateSubmitter,
   setMockUsername,
+  SYSTEM_ADMIN_EMAIL,
   systemAdmin,
 } from "mocks";
 import { mockedServiceServer as mockedServer } from "mocks/server";
@@ -75,7 +78,9 @@ describe("getRoleRequests", () => {
 
     expect(res.statusCode).toEqual(200);
     const roles = JSON.parse(res.body);
-    expect(roles.length).toEqual(roleDocs.length - 1); // remove the systemAdmin user
+    // remove the systemAdmin roles
+    const filteredRoles = roleDocs.filter((roleObj) => roleObj?.email !== SYSTEM_ADMIN_EMAIL);
+    expect(roles.length).toEqual(filteredRoles.length);
   });
 
   it("should return 200 and get all role requests if user is a Help Desk User", async () => {
@@ -88,7 +93,9 @@ describe("getRoleRequests", () => {
 
     expect(res.statusCode).toEqual(200);
     const roles = JSON.parse(res.body);
-    expect(roles.length).toEqual(roleDocs.length - 1); // remove the systemAdmin user
+    // remove the helpDesk roles
+    const filteredRoles = roleDocs.filter((roleObj) => roleObj?.email !== HELP_DESK_EMAIL);
+    expect(roles.length).toEqual(filteredRoles.length);
   });
 
   it("should return 200 and get all state role requests if user is a CMS role approver", async () => {
@@ -101,10 +108,13 @@ describe("getRoleRequests", () => {
 
     expect(res.statusCode).toEqual(200);
     const roles = JSON.parse(res.body);
-    const expectedRoles = roleDocs.filter(
-      (role) => !["cmsroleapprover", "systemadmin"].includes(role?.role),
+    // remove the cmsRoleApprover roles
+    const filteredRoles = roleDocs.filter(
+      (roleObj) =>
+        !["cmsroleapprover", "systemadmin"].includes(roleObj?.role) &&
+        roleObj?.email !== CMS_ROLE_APPROVER_EMAIL,
     );
-    expect(roles.length).toEqual(expectedRoles.length);
+    expect(roles.length).toEqual(filteredRoles.length);
   });
 
   it("should return 200 and get corresponding state role requests if user is a state system admin", async () => {

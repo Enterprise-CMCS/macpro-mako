@@ -1,11 +1,13 @@
 import {
+  CMS_ROLE_APPROVER_EMAIL,
   cmsRoleApprover,
-  errorApiGetCreateUserProfileHandler,
+  errorApiGetRoleRequestsHandler,
+  HELP_DESK_EMAIL,
   helpDeskUser,
-  osStateSubmitter,
   osStateSystemAdmin,
   roleDocs,
   setMockUsername,
+  SYSTEM_ADMIN_EMAIL,
   systemAdmin,
 } from "mocks";
 import { mockedApiServer as mockedServer } from "mocks/server";
@@ -17,19 +19,27 @@ describe("useGetRoleRequests", () => {
   it("should return all the role requests except for the current user for systemadmin", async () => {
     setMockUsername(systemAdmin);
     const result = await getRoleRequests();
-    expect(result.length).toEqual(roleDocs.length - 1);
+    // remove the systemAdmin roles
+    const filteredRoles = roleDocs.filter((roleObj) => roleObj?.email !== SYSTEM_ADMIN_EMAIL);
+    expect(result.length).toEqual(filteredRoles.length);
   });
   it("should return all the role requests except for the current user for helpdesk", async () => {
     setMockUsername(helpDeskUser);
     const result = await getRoleRequests();
-    expect(result.length).toEqual(roleDocs.length - 1);
+    // remove the helpDesk roles
+    const filterRoles = roleDocs.filter((roleObj) => roleObj?.email !== HELP_DESK_EMAIL);
+    expect(result.length).toEqual(filterRoles.length);
   });
   it("should return all the role requests except for the cmsroleapprovers, systemadmins, and the current user for cmsRoleApprover", async () => {
     setMockUsername(cmsRoleApprover);
     const result = await getRoleRequests();
-    expect(result.length).toEqual(
-      roleDocs.filter((role) => !["cmsroleapprover", "systemadmin"].includes(role?.role)).length,
+    // remove the cmsRoleApprover roles
+    const filteredRoles = roleDocs.filter(
+      (roleObj) =>
+        !["cmsroleapprover", "systemadmin"].includes(roleObj?.role) &&
+        roleObj?.email !== CMS_ROLE_APPROVER_EMAIL,
     );
+    expect(result.length).toEqual(filteredRoles.length);
   });
   it("should return the state submitters for the state of the osStateSystemAdmin", async () => {
     setMockUsername(osStateSystemAdmin);
@@ -72,5 +82,11 @@ describe("useGetRoleRequests", () => {
         fullName: "Multi State",
       },
     ]);
+  });
+
+  it("should return an empty array if there is an error", async () => {
+    mockedServer.use(errorApiGetRoleRequestsHandler);
+    const result = await getRoleRequests();
+    expect(result).toEqual([]);
   });
 });
