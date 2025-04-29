@@ -7,7 +7,7 @@ import { Link, NavLink, NavLinkProps, Outlet, useNavigate } from "react-router";
 import { UserRoles } from "shared-types";
 import { isStateUser } from "shared-utils";
 
-import { useGetUser, useGetUserDetails } from "@/api";
+import { StateAccess, useGetUser, useGetUserDetails, useGetUserProfile } from "@/api";
 import { Banner, ScrollToTop, SimplePageContainer, UserPrompt } from "@/components";
 import MMDLAlertBanner from "@/components/Banner/MMDLSpaBanner";
 import config from "@/config";
@@ -104,27 +104,16 @@ const useGetLinks = () => {
 const UserDropdownMenu = () => {
   const navigate = useNavigate();
   const { data: userDetails, isLoading } = useGetUserDetails();
-  // const { data: userProfile } = useGetUserProfile();
+  const { data: userProfile } = useGetUserProfile();
 
   // TODO: fix?
   // Disable page if user is a defaultcmsuser that just requested cmsroleapprover?
   // Disable page if user is a statesubmitter that just requested statesystemadmin and is pending?
-  // const disableRoleChange = () => {
-  //   const currentRole = userDetails.role;
-  //   if (currentRole === "defaultcmsuser") {
-  //     const requestedCMSRoleApprover = userProfile?.stateAccess.find(
-  //       (role: StateAccess) => role.role === "cmsroleapprover",
-  //     );
-  //     if (requestedCMSRoleApprover) return true;
-  //   }
-  //   if (currentRole === "statesubmitter") {
-  //     const requestedStateSystemAdmin = userProfile?.stateAccess.find(
-  //       (role: StateAccess) => role.role === "statesystemadmin",
-  //     );
-  //     if (requestedStateSystemAdmin) return true;
-  //   }
-  //   return false;
-  // };
+  const disableRoleChange = () => {
+    const currentRole = userDetails.role;
+    if (currentRole === "cmsroleapprover" || currentRole === "statesystemadmin") return true;
+    return false;
+  };
 
   const handleViewProfile = () => {
     navigate("/profile");
@@ -188,7 +177,8 @@ const UserDropdownMenu = () => {
           </DropdownMenu.Item>
           {/* TODO: conditionally show this if the user IS NOT HELPDESK */}
           {/* // helpdesk, system admins, and cms reviewer users don't even see request role as an option */}
-          {!isLoading &&
+          {!disableRoleChange &&
+            !isLoading &&
             userDetails &&
             !["helpdesk", "systemadmin", "cmsreviewer"].includes(userDetails.role) && (
               <DropdownMenu.Item>
