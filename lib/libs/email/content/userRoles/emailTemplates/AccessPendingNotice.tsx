@@ -2,8 +2,8 @@ import { formatDate } from "shared-utils";
 
 import { BasicFooter } from "../../email-components";
 import { BaseEmailTemplate } from "../../email-templates";
-import { userRoleMap } from "../types";
-import { UserRoleEmailType } from "./AccessChangeNotice";
+import { UserRoleEmailType } from "../index";
+import { userRoleMap } from "../roleHelper";
 
 export const AccessPendingNoticeEmail = ({ variables }: { variables: UserRoleEmailType }) => {
   const requestDate = formatDate(Date.now());

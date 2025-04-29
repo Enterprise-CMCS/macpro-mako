@@ -1,7 +1,7 @@
 import { BasicFooter } from "../../email-components";
 import { BaseEmailTemplate } from "../../email-templates";
-import { statesMap } from "../types";
-import { UserRoleEmailType } from "./AccessChangeNotice";
+import { UserRoleEmailType } from "../index";
+import { statesMap } from "../roleHelper";
 
 export const SelfRevokeAdminChangeEmail = ({ variables }: { variables: UserRoleEmailType }) => {
   const stateAccess = variables.territory === "N/A" ? "" : ` for ${statesMap[variables.territory]}`;
