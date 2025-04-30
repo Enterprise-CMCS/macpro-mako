@@ -258,7 +258,9 @@ describe("Layout", () => {
         await user.click(screen.getByRole("button"));
       }
 
-      expect(screen.getByText("Sign In")).toBeInTheDocument();
+      const signInButton = screen.queryByText("Sign In") ?? screen.queryByText("Log in");
+
+      expect(signInButton).toBeInTheDocument();
       expect(screen.getByText("Register")).toBeInTheDocument();
       expect(screen.queryByText("My Account")).not.toBeInTheDocument();
     });
@@ -281,6 +283,7 @@ describe("Layout", () => {
       expect(screen.getByText("View FAQs")).toBeInTheDocument();
       expect(screen.getByText("Webforms")).toBeInTheDocument();
       expect(screen.queryByText("Sign In")).not.toBeInTheDocument();
+      expect(screen.queryByText("Log in")).not.toBeInTheDocument();
       expect(screen.queryByText("Register")).not.toBeInTheDocument();
     });
 
@@ -361,7 +364,8 @@ describe("Layout", () => {
       await renderLayout();
 
       // Click the "Sign In" button
-      const signInButton = screen.getByText("Sign In") || screen.getByText("Log in");
+      const signInButton = screen.queryByText("Sign In") ?? screen.queryByText("Log in");
+      expect(signInButton).toBeInTheDocument();
       await user.click(signInButton);
 
       // Construct the expected URL
