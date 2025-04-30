@@ -157,8 +157,9 @@ export async function sendUserRoleEmails(kafkaRecord: any, config: any) {
     }
     // else -> AccessChangeNotice
     else {
-      console.log("ANDIE - access change");
+      console.log("ANDIE - access change", JSON.stringify(userRoleTemplate));
       templates.push(userRoleTemplate["AccessChangeNotice"]);
+      console.log("ANDIE - template?", JSON.stringify(userRoleTemplate["AccessChangeNotice"]));
     }
 
     // Process templates sequentially
@@ -166,7 +167,7 @@ export async function sendUserRoleEmails(kafkaRecord: any, config: any) {
 
     const results = [];
     for (const template of templates) {
-      console.log("ANDIE - tmeplate", JSON.stringify(template));
+      console.log("ANDIE - temeplate", JSON.stringify(template));
       try {
         const filledTemplate = await template(record);
         console.log("ANDIE - filledTemplate", JSON.stringify(filledTemplate));
