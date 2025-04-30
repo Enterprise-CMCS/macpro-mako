@@ -130,19 +130,28 @@ export const handler: Handler<KafkaEvent> = async (event) => {
 
 // ANDIE: CHANNGE TYPE OF KAFKA RECORD
 export async function sendUserRoleEmails(kafkaRecord: any) {
-  console.log("ANDIE -", kafkaRecord);
+  // Decode the kafka record
+  const { key, value, timestamp } = kafkaRecord;
+  const id: string = decodeBase64WithUtf8(key);
+  const record = {
+    timestamp,
+    ...JSON.parse(decodeBase64WithUtf8(value)),
+  };
 
-  if (kafkaRecord.eventType === "user-role" || kafkaRecord.eventType === "legacy-user-role") {
+  console.log("ANDIE - id:", id);
+  console.log("ANDIE - record: ", record);
+
+  if (record.eventType === "user-role" || record.eventType === "legacy-user-role") {
     console.log("ANDIE - user-role event ");
     // if the status = pending -> AdminPendingNotice & AccessPendingNotice
     const templates = [];
-    if (kafkaRecord.status === "pending") {
+    if (record.status === "pending") {
       console.log("ANDIE - pending emails");
       templates.push(userRoleTemplate["AccessPendingNotice"]);
       templates.push(userRoleTemplate["AdminPendingNotice"]);
     }
     // if the status = denied AND doneByEmail = email -> SelfRevokeAdminChangeEmail
-    else if (kafkaRecord.status === "denied" && kafkaRecord.doneByEmail === kafkaRecord.email) {
+    else if (record.status === "denied" && record.doneByEmail === record.email) {
       console.log("ANDIE - self revoke");
       templates.push(userRoleTemplate["SelfRevokeAdminChangeEmail"]);
     }
@@ -158,13 +167,13 @@ export async function sendUserRoleEmails(kafkaRecord: any) {
     const results = [];
     for (const template of templates) {
       try {
-        const filledTemplate = await template(kafkaRecord);
+        const filledTemplate = await template(record);
         validateEmailTemplate(filledTemplate);
         const params = createEmailParams(
           filledTemplate,
-          kafkaRecord.email,
+          record.email,
           "https://mako-dev.cms.gov/",
-          true,
+          true, //isDev
         );
 
         const result = await sendEmail(params, "");
