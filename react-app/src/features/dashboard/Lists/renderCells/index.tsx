@@ -38,6 +38,7 @@ export const renderCellActions = (user: CognitoUserAttributes | null) => {
           disabled={!actions.length}
           className="block ml-3"
           aria-label="Available actions"
+          data-testid="available-actions"
         >
           <EllipsisVerticalIcon
             aria-label="record actions"
