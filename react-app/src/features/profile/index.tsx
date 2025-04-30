@@ -1,9 +1,17 @@
+import { XIcon } from "lucide-react";
 import { useState } from "react";
 import { Navigate } from "react-router";
 import { StateCode } from "shared-types";
 
 import { StateAccess, useGetUserDetails, useGetUserProfile, useSubmitRoleRequests } from "@/api";
-import { banner, Button, CardWithTopBorder, LoadingSpinner, SubNavHeader } from "@/components";
+import {
+  banner,
+  Button,
+  CardWithTopBorder,
+  ConfirmationDialog,
+  LoadingSpinner,
+  SubNavHeader,
+} from "@/components";
 import { Option } from "@/components/Opensearch/main/Filtering/Drawer/Filterable";
 import { FilterableSelect } from "@/components/Opensearch/main/Filtering/Drawer/Filterable";
 import { useAvailableStates } from "@/hooks/useAvailableStates";
@@ -49,6 +57,7 @@ export const Profile = () => {
     refetch: reloadUserProfile,
   } = useGetUserProfile();
   const { mutateAsync: submitRequest, isLoading: areRolesLoading } = useSubmitRoleRequests();
+  const [selfRevokeState, setSelfRevokeState] = useState<StateCode | null>(null);
   const [showAddState, setShowAddState] = useState<boolean>(true);
   const [requestedStates, setRequestedStates] = useState<StateCode[]>([]);
   const statesToRequest: Option[] = useAvailableStates(userProfile?.stateAccess);
@@ -79,6 +88,39 @@ export const Profile = () => {
 
       setShowAddState(true);
       setRequestedStates([]);
+      await reloadUserProfile();
+
+      banner({
+        header: "Submission Completed",
+        body: "Your submission has been received.",
+        variant: "success",
+        pathnameToDisplayOn: window.location.pathname,
+      });
+      window.scrollTo(0, 0);
+    } catch (error) {
+      console.error(error);
+      banner({
+        header: "An unexpected error has occurred:",
+        body: error instanceof Error ? error.message : String(error),
+        variant: "destructive",
+        pathnameToDisplayOn: window.location.pathname,
+      });
+      window.scrollTo(0, 0);
+    }
+  };
+
+  const handleSelfRevokeAccess = async () => {
+    try {
+      await submitRequest({
+        email: userDetails.email,
+        state: selfRevokeState,
+        role: userDetails.role,
+        eventType: "user-role",
+        requestRoleChange: false,
+        grantAccess: false,
+      });
+
+      setSelfRevokeState(null);
       await reloadUserProfile();
 
       banner({
@@ -137,9 +179,27 @@ export const Profile = () => {
           {adminRoles.includes(userDetails?.role) && (
             <div className="flex flex-col gap-6 md:basis-1/2">
               <h2 className="text-2xl font-bold">State Access Management</h2>
+              {/* TODO: Get state system admin for that state */}
+              <ConfirmationDialog
+                open={selfRevokeState !== null}
+                title="Withdraw State Access?"
+                body={"This action cannot be undone. State System Admin will be notified."}
+                acceptButtonText="Confirm"
+                aria-labelledby="Self Revoke Access Modal"
+                onAccept={handleSelfRevokeAccess}
+                onCancel={() => setSelfRevokeState(null)}
+              />
               {stateAccess?.map((access) => {
                 return (
                   <CardWithTopBorder className="my-0" key={`${access.territory}-${access.role}`}>
+                    <button
+                      disabled={userDetails?.role !== "statesubmitter"}
+                      data-testid="self-revoke"
+                      onClick={() => setSelfRevokeState(access.territory as StateCode)}
+                    >
+                      <XIcon size={20} />
+                    </button>
+
                     <div className="p-8 min-h-36">
                       <h3 className="text-xl font-bold">
                         {convertStateAbbrToFullName(access.territory)}

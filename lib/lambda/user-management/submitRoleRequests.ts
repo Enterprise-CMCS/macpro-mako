@@ -8,7 +8,7 @@ import { canRequestAccess, canSelfRevokeAccess, canUpdateAccess } from "shared-u
 import { submitGroupDivision } from "./submitGroupDivision";
 import { getLatestActiveRoleByEmail, getUserByEmail } from "./userManagementService";
 
-type RoleStatus = "active" | "denied" | "pending";
+type RoleStatus = "active" | "denied" | "pending" | "revoked";
 
 export const submitRoleRequests = async (event: APIGatewayEvent) => {
   if (!event?.body) {
@@ -79,10 +79,11 @@ export const submitRoleRequests = async (event: APIGatewayEvent) => {
         });
       }
     } else if (
-      grantAccess &&
+      !requestRoleChange &&
+      !grantAccess &&
       canSelfRevokeAccess(latestActiveRoleObj.role, userInfo.email, email)
     ) {
-      status = "denied";
+      status = "revoked";
     } else if (requestRoleChange && canRequestAccess(latestActiveRoleObj.role)) {
       // If the role is allowed to request access, set status to "pending"
       status = "pending";
