@@ -8,8 +8,8 @@ export class LoginPage {
     const signInButton = this.page.getByRole("button", { name: "Sign In" });
     const loginButton = this.page.getByRole("button", { name: "Log in" });
 
-    if (signInButton.isVisible()) await signInButton.click();
-    if (loginButton.isVisible()) await loginButton.click();
+    if (await signInButton.isVisible()) await signInButton.click();
+    if (await loginButton.isVisible()) await loginButton.click();
   }
 
   async login(email: string, password: string) {
