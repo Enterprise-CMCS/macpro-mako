@@ -26,7 +26,12 @@ export const roleUpdatePermissionsMap: UpdatePermissionsMap = {
   statesystemadmin: ["statesubmitter", "defaultcmsuser"],
 };
 export const ROLES_ALLOWED_TO_UPDATE = Object.keys(roleUpdatePermissionsMap) as UserRole[];
-export const ROLES_ALLOWED_TO_REQUEST: UserRole[] = ["statesubmitter", "statesystemadmin"];
+export const ROLES_ALLOWED_TO_REQUEST: UserRole[] = [
+  "statesubmitter",
+  "statesystemadmin",
+  "defaultcmsuser",
+  "cmsroleapprover",
+];
 
 const userStatus = z.enum(["active", "pending", "revoked", "denied"]);
 const roleEvent = z.enum(["user-role", "legacy-user-role"]);
