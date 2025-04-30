@@ -5,10 +5,11 @@ export class LoginPage {
 
   async goto() {
     await this.page.goto("/");
-    const signInButton =
-      (await this.page.getByRole("button", { name: "Sign In" }).elementHandle()) ??
-      (await this.page.getByRole("button", { name: "Log in" }).elementHandle());
-    signInButton.click();
+    const signInButton = this.page.getByRole("button", { name: "Sign In" });
+    const loginButton = this.page.getByRole("button", { name: "Log in" });
+
+    if (signInButton.isVisible()) await signInButton.click();
+    if (loginButton.isVisible()) await loginButton.click();
   }
 
   async login(email: string, password: string) {
