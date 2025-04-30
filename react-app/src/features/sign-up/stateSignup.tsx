@@ -36,9 +36,14 @@ export const StateSignup = () => {
   if (!userDetails?.role) return <Navigate to="/" />;
 
   const currentRole = userDetails.role;
+  // Only statesubmitters and statesystemadmins can access this page
   if (currentRole !== "statesubmitter" && currentRole !== "statesystemadmin")
     return <Navigate to="/profile" />;
+
+  // Determine which role the user is allowed to request based on their current role
   const requestRole = currentRole === "statesubmitter" ? "statesystemadmin" : "statesubmitter";
+
+  // Statesubmitters can request to be a statesystemadmin for 1 state
   const isRequestRoleAdmin = currentRole === "statesubmitter";
 
   const onChange = (values: StateCode[]) => {

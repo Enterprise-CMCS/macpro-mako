@@ -16,6 +16,7 @@ export const userRoleMap = {
   statesystemadmin: "State System Admin",
   helpdesk: "Helpdesk",
   statesubmitter: "State Submitter",
+  systemadmin: "System Admin",
 };
 
 const adminRoles = ["statesubmitter", "statesystemadmin"];

@@ -9,10 +9,12 @@ import {
   osStateSystemAdmin,
   setDefaultStateSubmitter,
   setMockUsername,
+  systemAdmin,
 } from "mocks";
 import { mockedServiceServer as mockedServer } from "mocks/server";
-import { beforeEach, describe, expect, it } from "vitest";
+import { beforeEach, describe, expect, it, vi } from "vitest";
 
+import * as submitGroupDivision from "./submitGroupDivision";
 import { handler } from "./submitRoleRequests";
 
 describe("submitRoleRequests handler", () => {
@@ -142,6 +144,29 @@ describe("submitRoleRequests handler", () => {
     expect(res.body).toEqual(
       JSON.stringify({ message: "Request to access CO has been submitted." }),
     );
+  });
+
+  it("should call submitGroupDivision if user is a systemadmin updating a cmsroleapprover", async () => {
+    const submitGroupDivisionSpy = vi.spyOn(submitGroupDivision, "submitGroupDivision");
+    mockedProducer.send.mockResolvedValueOnce([{ message: "sent" }]);
+    setMockUsername(systemAdmin);
+    const event = {
+      body: JSON.stringify({
+        email: "reviewer@example.com",
+        state: "N/A",
+        role: "cmsroleapprover",
+        eventType: "user-role",
+        grantAccess: true,
+        group: "ABC",
+        division: "ABCDE",
+      }),
+      requestContext: getRequestContext(),
+    } as APIGatewayEvent;
+
+    const res = await handler(event);
+
+    expect(res.statusCode).toEqual(200);
+    expect(submitGroupDivisionSpy).toHaveBeenCalled();
   });
 
   it("should return 403 if the currentUserRole cannot request updates", async () => {

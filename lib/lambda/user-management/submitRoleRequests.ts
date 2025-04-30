@@ -2,8 +2,10 @@ import { APIGatewayEvent } from "aws-lambda";
 import { getAuthDetails, lookupUserAttributes } from "libs/api/auth/user";
 import { produceMessage } from "libs/api/kafka";
 import { response } from "libs/handler-lib";
+import { RoleRequest } from "react-app/src/api";
 import { canRequestAccess, canUpdateAccess } from "shared-utils";
 
+import { submitGroupDivision } from "./submitGroupDivision";
 import { getLatestActiveRoleByEmail, getUserByEmail } from "./userManagementService";
 
 type RoleStatus = "active" | "denied" | "pending";
@@ -59,7 +61,9 @@ export const submitRoleRequests = async (event: APIGatewayEvent) => {
       eventType,
       grantAccess,
       requestRoleChange,
-    } = JSON.parse(event.body);
+      group = null,
+      division = null,
+    } = JSON.parse(event.body) as RoleRequest;
 
     let status: RoleStatus;
 
@@ -86,7 +90,7 @@ export const submitRoleRequests = async (event: APIGatewayEvent) => {
       });
     }
 
-    const id = `${email}_${state}_${roleToUpdate.role}`;
+    const id = `${email}_${state}_${roleToUpdate}`;
     const date = Date.now(); // correct time format?
 
     await produceMessage(
@@ -97,12 +101,24 @@ export const submitRoleRequests = async (event: APIGatewayEvent) => {
         email,
         status,
         territory: state,
-        role: roleToUpdate, // role for this state
+        role: roleToUpdate, // role for this state or newly requested role
         doneByEmail: userAttributes.email,
         doneByName: userInfo.fullName, // full name of current user. Cognito (userAttributes) may have a different full name
         date,
+        group,
+        division,
       }),
     );
+
+    // Update group and division info for new cmsroleapprovers
+    if (
+      canUpdateAccess(latestActiveRoleObj.role, roleToUpdate) &&
+      grantAccess === true &&
+      group &&
+      division
+    ) {
+      await submitGroupDivision({ userEmail: email, group, division });
+    }
 
     return response({
       statusCode: 200,
