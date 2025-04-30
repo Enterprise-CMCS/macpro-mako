@@ -38,6 +38,7 @@ export const getAllStateUsers = async ({
       region: process.env.region,
     });
     const response: ListUsersCommandOutput = await cognitoClient.send(command);
+    console.log({ response });
 
     if (!response.Users || response.Users.length === 0) {
       return [];

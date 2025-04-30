@@ -1,4 +1,9 @@
-import { USER_POOL_ID } from "mocks";
+import {
+  emptyIdentityProviderServiceHandler,
+  errorIdentityProviderServiceHandler,
+  USER_POOL_ID,
+} from "mocks";
+import { mockedServiceServer as mockedServer } from "mocks/server";
 import { describe, expect, it } from "vitest";
 
 import { getAllStateUsers } from "./getAllStateUsers";
@@ -47,5 +52,18 @@ describe("getAllStateUsers", () => {
   it("should ignore users with invalid email formats", async () => {
     const result = await getAllStateUsers({ userPoolId: USER_POOL_ID, state: "LA" });
     expect(result).toEqual([]);
+  });
+
+  it("should handle fetching empty state users", async () => {
+    mockedServer.use(emptyIdentityProviderServiceHandler);
+    const result = await getAllStateUsers({ userPoolId: USER_POOL_ID, state: "CA" });
+    expect(result).toEqual([]);
+  });
+
+  it("should handle an error when fetching state users", async () => {
+    mockedServer.use(errorIdentityProviderServiceHandler);
+    await expect(() =>
+      getAllStateUsers({ userPoolId: USER_POOL_ID, state: "CA" }),
+    ).rejects.toThrowError("Error fetching users");
   });
 });
