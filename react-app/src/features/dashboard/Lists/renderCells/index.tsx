@@ -36,13 +36,13 @@ export const renderCellActions = (user: CognitoUserAttributes | null) => {
       <DropdownMenu.Root>
         <DropdownMenu.DropdownMenuTrigger
           disabled={!actions.length}
-          aria-label="Available actions"
+          aria-label="Available package actions"
           data-testid="available-actions"
           asChild
         >
           <button className="group ml-3" type="button">
             <EllipsisVerticalIcon
-              aria-label="record actions"
+              aria-hidden
               className="w-8 text-blue-700 group-disabled:text-gray-500"
             />
           </button>
@@ -52,7 +52,11 @@ export const renderCellActions = (user: CognitoUserAttributes | null) => {
           align="start"
         >
           {actions.map((action, idx) => (
-            <DropdownMenu.Item key={`${idx}-${action}`} asChild>
+            <DropdownMenu.Item
+              key={`${idx}-${action}`}
+              asChild
+              aria-label={`${mapActionLabel(action)} for ${data.id}`}
+            >
               <Link
                 state={{
                   from: `${location.pathname}${location.search}`,
