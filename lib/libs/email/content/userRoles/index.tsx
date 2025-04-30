@@ -18,7 +18,7 @@ export type UserRoleEmailType = {
   email: string;
 };
 
-export const userRoleTemplate = {
+export const userRole = {
   AccessChangeNotice: async (variables: UserRoleEmailType) => {
     const userInfo: { fullName: string } = await getUserByEmail(variables.email);
     variables.fullName = userInfo.fullName ?? "";
