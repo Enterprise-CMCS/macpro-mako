@@ -32,7 +32,7 @@
             <div class='fl pad1y space-right2'>
                 <span class="strong">100% </span>
                 <span class="quiet">Branches</span>
-                <span class='fraction'>6/6</span>
+                <span class='fraction'>4/4</span>
             </div>
         
             
@@ -138,7 +138,12 @@
 <a name='L73'></a><a href='#L73'>73</a>
 <a name='L74'></a><a href='#L74'>74</a>
 <a name='L75'></a><a href='#L75'>75</a>
-<a name='L76'></a><a href='#L76'>76</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
+<a name='L76'></a><a href='#L76'>76</a>
+<a name='L77'></a><a href='#L77'>77</a>
+<a name='L78'></a><a href='#L78'>78</a>
+<a name='L79'></a><a href='#L79'>79</a>
+<a name='L80'></a><a href='#L80'>80</a>
+<a name='L81'></a><a href='#L81'>81</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -148,8 +153,8 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">5x</span>
 <span class="cline-any cline-yes">147x</span>
-<span class="cline-any cline-yes">5982x</span>
-<span class="cline-any cline-yes">1915x</span>
+<span class="cline-any cline-yes">6138x</span>
+<span class="cline-any cline-yes">1987x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -158,7 +163,7 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">5x</span>
-<span class="cline-any cline-yes">1303x</span>
+<span class="cline-any cline-yes">1302x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -213,13 +218,18 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">import { EllipsisVerticalIcon } from "@heroicons/react/24/outline";
+import * as DropdownMenu from "@radix-ui/react-dropdown-menu";
 import { Link } from "react-router";
 import { Authority, CognitoUserAttributes, opensearch } from "shared-types";
 import { formatSeatoolDate, getAvailableActions } from "shared-utils";
 &nbsp;
-import * as POP from "@/components";
-import { cn, DASHBOARD_ORIGIN, mapActionLabel, ORIGIN } from "@/utils";
+import { DASHBOARD_ORIGIN, mapActionLabel, ORIGIN } from "@/utils";
 &nbsp;
 export const renderCellDate = (key: keyof opensearch.main.Document) =&gt;
   function Cell(data: opensearch.main.Document) {
@@ -248,21 +258,30 @@ export const renderCellActions = (user: CognitoUserAttributes | null) =&gt; {
     const actions = getAvailableActions(user, data);
 &nbsp;
     return (
-      &lt;POP.Popover&gt;
-        &lt;POP.PopoverTrigger
+      &lt;DropdownMenu.Root&gt;
+        &lt;DropdownMenu.DropdownMenuTrigger
           disabled={!actions.length}
-          className="block ml-3"
-          aria-label="Available actions"
+          aria-label="Available package actions"
           data-testid="available-actions"
+          asChild
         &gt;
-          &lt;EllipsisVerticalIcon
-            aria-label="record actions"
-            className={cn("w-8 ", actions.length ? "text-blue-700" : "text-gray-400")}
-          /&gt;
-        &lt;/POP.PopoverTrigger&gt;
-        &lt;POP.PopoverContent&gt;
-          &lt;div className="flex flex-col"&gt;
-            {actions.map((action, idx) =&gt; (
+          &lt;button className="group ml-3" type="button"&gt;
+            &lt;EllipsisVerticalIcon
+              aria-hidden
+              className="w-8 text-blue-700 group-disabled:text-gray-500"
+            /&gt;
+          &lt;/button&gt;
+        &lt;/DropdownMenu.DropdownMenuTrigger&gt;
+        &lt;DropdownMenu.Content
+          className="flex flex-col bg-white rounded-md shadow-lg p-4 border"
+          align="start"
+        &gt;
+          {actions.map((action, idx) =&gt; (
+            &lt;DropdownMenu.Item
+              key={`${idx}-${action}`}
+              asChild
+              aria-label={`${mapActionLabel(action)} for ${data.id}`}
+            &gt;
               &lt;Link
                 state={{
                   from: `${location.pathname}${location.search}`,
@@ -273,18 +292,14 @@ export const renderCellActions = (user: CognitoUserAttributes | null) =&gt; {
                     [ORIGIN]: DASHBOARD_ORIGIN,
                   }).toString(),
                 }}
-                key={`${idx}-${action}`}
-                className={cn(
-                  "text-blue-500",
-                  "relative flex select-none items-center rounded-sm px-2 py-2 text-sm outline-none transition-colors hover:bg-accent hover:text-accent-foreground data-[disabled]:pointer-events-none data-[disabled]:opacity-50",
-                )}
+                className="text-blue-500 flex select-none items-center rounded-sm px-2 py-2 text-sm hover:bg-accent"
               &gt;
                 {mapActionLabel(action)}
               &lt;/Link&gt;
-            ))}
-          &lt;/div&gt;
-        &lt;/POP.PopoverContent&gt;
-      &lt;/POP.Popover&gt;
+            &lt;/DropdownMenu.Item&gt;
+          ))}
+        &lt;/DropdownMenu.Content&gt;
+      &lt;/DropdownMenu.Root&gt;
     );
   };
 };
@@ -295,7 +310,7 @@ export const renderCellActions = (user: CognitoUserAttributes | null) =&gt; {
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2025-04-30T14:48:36.702Z
+                at 2025-04-30T17:08:40.976Z
             </div>
         <script src="../../../../../../prettify.js"></script>
         <script>
