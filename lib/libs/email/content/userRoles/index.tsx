@@ -1,4 +1,5 @@
 import { render } from "@react-email/render";
+import { getUserByEmail } from "lib/lambda/user-management/userManagementService";
 
 import {
   AccessChangeNoticeEmail,
@@ -17,8 +18,10 @@ export type UserRoleEmailType = {
   email: string;
 };
 
-export const userRole = {
+export const userRoleTemplate = {
   AccessChangeNotice: async (variables: UserRoleEmailType) => {
+    const userInfo: { fullName: string } = await getUserByEmail(variables.email);
+    variables.fullName = userInfo.fullName ?? "";
     const roleDisplay = userRoleMap[variables.role];
     const stateAccess =
       variables.territory === "N/A" ? "" : ` for ${statesMap[variables.territory]}`;
@@ -29,6 +32,8 @@ export const userRole = {
     };
   },
   AccessPendingNotice: async (variables: UserRoleEmailType) => {
+    const userInfo = await getUserByEmail(variables.email);
+    variables.fullName = userInfo.fullName ?? "";
     return {
       to: [`${variables.fullName} <${variables.email}>`],
       subject: "Your OneMAC Role Access is Pending Review",
@@ -36,6 +41,8 @@ export const userRole = {
     };
   },
   AdminPendingNotice: async (variables: UserRoleEmailType) => {
+    const userInfo = await getUserByEmail(variables.email);
+    variables.fullName = userInfo.fullName ?? "";
     const roleDisplay = userRoleMap[variables.role];
     //   TODO: add logic to actually get approverList?
     const approverList = [`${variables.fullName} <${variables.email}>`];
@@ -46,6 +53,8 @@ export const userRole = {
     };
   },
   SelfRevokeAdminChangeEmail: async (variables: UserRoleEmailType) => {
+    const userInfo = await getUserByEmail(variables.email);
+    variables.fullName = userInfo.fullName ?? "";
     const stateAccess =
       variables.territory === "N/A" ? "" : ` for ${statesMap[variables.territory]}`;
     //   TODO: add logic to actually get approverList?

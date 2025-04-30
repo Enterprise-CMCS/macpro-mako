@@ -2,6 +2,7 @@ import { SendEmailCommand, SendEmailCommandInput, SESClient } from "@aws-sdk/cli
 import { SendMessageCommand, SQSClient } from "@aws-sdk/client-sqs";
 import { Handler } from "aws-lambda";
 import { htmlToText, HtmlToTextOptions } from "html-to-text";
+import { userRoleTemplate } from "lib/libs/email/content";
 import { getAllStateUsers, getEmailTemplates } from "libs/email";
 import { EMAIL_CONFIG, getCpocEmail, getSrtEmails } from "libs/email/content/email-components";
 import * as os from "libs/opensearch-lib";
@@ -87,7 +88,10 @@ export const handler: Handler<KafkaEvent> = async (event) => {
     const results = await Promise.allSettled(
       Object.values(event.records)
         .flat()
-        .map((rec) => processRecord(rec, config)),
+        .map((rec) => {
+          processRecord(rec, config);
+          sendUserRoleEmails(rec);
+        }),
     );
 
     console.log("results: ", JSON.stringify(results, null, 2));
@@ -123,6 +127,57 @@ export const handler: Handler<KafkaEvent> = async (event) => {
     throw error;
   }
 };
+
+// ANDIE: CHANNGE TYPE OF KAFKA RECORD
+export async function sendUserRoleEmails(kafkaRecord: any) {
+  console.log("ANDIE -", kafkaRecord);
+
+  if (kafkaRecord.eventType === "user-role" || kafkaRecord.eventType === "legacy-user-role") {
+    console.log("ANDIE - user-role event ");
+    // if the status = pending -> AdminPendingNotice & AccessPendingNotice
+    const templates = [];
+    if (kafkaRecord.status === "pending") {
+      console.log("ANDIE - pending emails");
+      templates.push(userRoleTemplate["AccessPendingNotice"]);
+      templates.push(userRoleTemplate["AdminPendingNotice"]);
+    }
+    // if the status = denied AND doneByEmail = email -> SelfRevokeAdminChangeEmail
+    else if (kafkaRecord.status === "denied" && kafkaRecord.doneByEmail === kafkaRecord.email) {
+      console.log("ANDIE - self revoke");
+      templates.push(userRoleTemplate["SelfRevokeAdminChangeEmail"]);
+    }
+    // else -> AccessChangeNotice
+    else {
+      console.log("ANDIE - access change");
+      templates.push(userRoleTemplate["AccessChangeNotice"]);
+    }
+
+    console.log("ANDIE - Selected templates: ", templates);
+    // Process templates sequentially
+
+    const results = [];
+    for (const template of templates) {
+      try {
+        const filledTemplate = await template(kafkaRecord);
+        validateEmailTemplate(filledTemplate);
+        const params = createEmailParams(
+          filledTemplate,
+          kafkaRecord.email,
+          "https://mako-dev.cms.gov/",
+          false,
+        );
+
+        const result = await sendEmail(params, "");
+        results.push({ success: true, result });
+        console.log(`Successfully sent email for template: ${JSON.stringify(result)}`);
+      } catch (error) {
+        console.error("Error processing template:", error);
+        results.push({ success: false, error });
+        // Continue with next template instead of throwing
+      }
+    }
+  }
+}
 
 export async function processRecord(kafkaRecord: KafkaRecord, config: ProcessEmailConfig) {
   console.log("processRecord called with kafkaRecord: ", JSON.stringify(kafkaRecord, null, 2));
