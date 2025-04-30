@@ -118,9 +118,17 @@ describe("submitRoleRequests handler", () => {
     const res = await handler(event);
 
     expect(res.statusCode).toEqual(200);
-    expect(res.body).toEqual(
-      JSON.stringify({ message: "Request to access MD has been submitted." }),
-    );
+    expect(JSON.parse(res.body)).toEqual({
+      message: "Request to access MD has been submitted.",
+      eventType: "user-role",
+      email: "nostate@example.com",
+      status: "active",
+      territory: "MD",
+      role: "statesubmitter",
+      doneByEmail: "statesystemadmin@nightwatch.test",
+      doneByName: "Statesystemadmin Nightwatch",
+      date: expect.any(Number),
+    });
   });
 
   it("should return 200 if the user is allowed to request access", async () => {
@@ -141,9 +149,17 @@ describe("submitRoleRequests handler", () => {
     const res = await handler(event);
 
     expect(res.statusCode).toEqual(200);
-    expect(res.body).toEqual(
-      JSON.stringify({ message: "Request to access CO has been submitted." }),
-    );
+    expect(JSON.parse(res.body)).toEqual({
+      message: "Request to access CO has been submitted.",
+      eventType: "user-role",
+      email: "multistate@example.com",
+      status: "pending",
+      territory: "CO",
+      role: "statesubmitter",
+      doneByEmail: "multistate@example.com",
+      doneByName: "Multi State",
+      date: expect.any(Number),
+    });
   });
 
   it("should call submitGroupDivision if user is a systemadmin updating a cmsroleapprover", async () => {

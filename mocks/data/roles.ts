@@ -616,6 +616,51 @@ export const roleResults: TestRoleResult[] = [
       lastModifiedDate: 1745234449866,
     },
   },
+  {
+    _id: "pending@example.com_MD_statesubmitter",
+    found: true,
+    _source: {
+      id: "pending@example.com_MD_statesubmitter",
+      eventType: "user-role",
+      email: "pending@example.com",
+      doneByEmail: "statesystemadmin@nightwatch.test",
+      doneByName: "Test Again",
+      status: "pending",
+      role: "statesubmitter",
+      territory: "MD",
+      lastModifiedDate: 1745234449866,
+    },
+  },
+  {
+    _id: "denied@example.com_MD_statesubmitter",
+    found: true,
+    _source: {
+      id: "denied@example.com_MD_statesubmitter",
+      eventType: "user-role",
+      email: "denied@example.com",
+      doneByEmail: "statesystemadmin@nightwatch.test",
+      doneByName: "Test Again",
+      status: "denied",
+      role: "statesubmitter",
+      territory: "MD",
+      lastModifiedDate: 1745234449866,
+    },
+  },
+  {
+    _id: "revoked@example.com_MD_statesubmitter",
+    found: true,
+    _source: {
+      id: "revoked@example.com_MD_statesubmitter",
+      eventType: "user-role",
+      email: "revoked@example.com",
+      doneByEmail: "statesystemadmin@nightwatch.test",
+      doneByName: "Test Again",
+      status: "revoked",
+      role: "statesubmitter",
+      territory: "MD",
+      lastModifiedDate: 1745234449866,
+    },
+  },
 ];
 
 export const roleDocs = roleResults.map((role) => role?._source as TestRoleDocument);

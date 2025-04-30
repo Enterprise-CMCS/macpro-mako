@@ -11,6 +11,9 @@ export const STATE_SUBMITTER_EMAIL = "statesubmitter@nightwatch.test";
 export const TEST_STATE_SUBMITTER_EMAIL = "mako.stateuser@gmail.com";
 export const MULTI_STATE_SUBMITTER_EMAIL = "multistate@example.com";
 export const NO_STATE_SUBMITTER_EMAIL = "nostate@example.com";
+export const PENDING_SUBMITTER_EMAIL = "pending@example.com";
+export const DENIED_SUBMITTER_EMAIL = "denied@example.com";
+export const REVOKED_SUBMITTER_EMAIL = "revoked@example.com";
 
 export const osUsers: Record<string, TestUserResult> = {
   [SYSTEM_ADMIN_EMAIL]: {
@@ -131,6 +134,39 @@ export const osUsers: Record<string, TestUserResult> = {
       eventType: "user-info",
       email: NO_STATE_SUBMITTER_EMAIL,
       fullName: "No State",
+      role: "statesubmitter",
+    },
+  },
+  [PENDING_SUBMITTER_EMAIL]: {
+    _id: PENDING_SUBMITTER_EMAIL,
+    found: true,
+    _source: {
+      id: PENDING_SUBMITTER_EMAIL,
+      eventType: "user-info",
+      email: PENDING_SUBMITTER_EMAIL,
+      fullName: "Pending State",
+      role: "statesubmitter",
+    },
+  },
+  [DENIED_SUBMITTER_EMAIL]: {
+    _id: DENIED_SUBMITTER_EMAIL,
+    found: true,
+    _source: {
+      id: DENIED_SUBMITTER_EMAIL,
+      eventType: "user-info",
+      email: DENIED_SUBMITTER_EMAIL,
+      fullName: "Denied State",
+      role: "statesubmitter",
+    },
+  },
+  [REVOKED_SUBMITTER_EMAIL]: {
+    _id: REVOKED_SUBMITTER_EMAIL,
+    found: true,
+    _source: {
+      id: REVOKED_SUBMITTER_EMAIL,
+      eventType: "user-info",
+      email: REVOKED_SUBMITTER_EMAIL,
+      fullName: "Revoked State",
       role: "statesubmitter",
     },
   },

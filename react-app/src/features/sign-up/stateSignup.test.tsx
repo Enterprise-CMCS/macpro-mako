@@ -1,15 +1,11 @@
 import { screen, waitFor, waitForElementToBeRemoved } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
-import { sub } from "date-fns";
 import {
-  cmsRoleApprover,
   errorApiSubmitRoleRequestsHandler,
   osStateSubmitter,
   osStateSystemAdmin,
   readOnlyUser,
-  setDefaultStateSubmitter,
   setMockUsername,
-  stateSubmitter,
 } from "mocks";
 import { mockedApiServer as mockedServer } from "mocks/server";
 import { describe, expect, it } from "vitest";

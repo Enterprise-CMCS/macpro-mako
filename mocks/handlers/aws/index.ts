@@ -18,4 +18,8 @@ export const awsHandlers = [
 ];
 
 export { errorCloudFormationHandler } from "./cloudFormation";
-export { getRequestContext } from "./cognito";
+export {
+  getRequestContext,
+  emptyIdentityProviderServiceHandler,
+  errorIdentityProviderServiceHandler,
+} from "./cognito";

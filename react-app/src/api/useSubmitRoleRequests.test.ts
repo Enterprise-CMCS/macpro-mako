@@ -84,7 +84,7 @@ describe("useSubmitRoleRequests", () => {
         eventType: "user-role",
         requestRoleChange: false,
       }),
-    );
+    ).rejects.toThrowError("Failed to submit role request");
   });
 
   it("should return a success message if the user is allowed to update the access", async () => {
@@ -98,7 +98,17 @@ describe("useSubmitRoleRequests", () => {
       requestRoleChange: false,
       grantAccess: true,
     });
-    expect(result).toEqual({ message: "Request to access MD has been submitted." });
+    expect(result).toEqual({
+      message: "Request to access MD has been submitted.",
+      date: expect.any(Number),
+      doneByEmail: "statesystemadmin@nightwatch.test",
+      doneByName: "Test Again",
+      email: "nostate@example.com",
+      eventType: "user-role",
+      role: "statesubmitter",
+      status: "active",
+      territory: "MD",
+    });
   });
 
   it("should return a success message if the user is allowed to request access", async () => {
@@ -112,6 +122,16 @@ describe("useSubmitRoleRequests", () => {
       grantAccess: true,
       requestRoleChange: true,
     });
-    expect(result).toEqual({ message: "Request to access CO has been submitted." });
+    expect(result).toEqual({
+      message: "Request to access CO has been submitted.",
+      date: expect.any(Number),
+      doneByEmail: "multistate@example.com",
+      doneByName: "Multi State",
+      email: "multistate@example.com",
+      eventType: "user-role",
+      role: "statesubmitter",
+      status: "pending",
+      territory: "CO",
+    });
   });
 });
