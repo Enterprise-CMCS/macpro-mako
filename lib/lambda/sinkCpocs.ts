@@ -45,10 +45,10 @@ const officers = async (kafkaRecords: KafkaRecord[], topicPartition: string) => 
       // Handle tombstone events and continue
       if (!record) {
         console.log(`Tombstone detected for ${id}. Continuing...`);
-        // docs.push({
-        //   id,
-        //   delete: true,
-        // });
+        docs.push({
+          id,
+          delete: true,
+        });
         continue;
       }
 

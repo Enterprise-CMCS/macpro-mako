@@ -1364,7 +1364,7 @@ describe("insertNewSeatoolRecordsFromKafkaIntoMako", () => {
       TOPIC,
     );
 
-    expect(bulkUpdateDataSpy).toBeCalledTimes(0);
+    expect(bulkUpdateDataSpy).toHaveBeenCalledWith(OPENSEARCH_DOMAIN, OPENSEARCH_INDEX, []);
   });
 
   it("skips over records with no key property", async () => {
