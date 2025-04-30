@@ -5,9 +5,10 @@ import { Auth } from "aws-amplify";
 import { useState } from "react";
 import { Link, NavLink, NavLinkProps, Outlet, useNavigate } from "react-router";
 import { UserRoles } from "shared-types";
+import { UserRole } from "shared-types/events/legacy-user";
 import { isStateUser } from "shared-utils";
 
-import { StateAccess, useGetUser, useGetUserDetails, useGetUserProfile } from "@/api";
+import { useGetUser, useGetUserDetails, useGetUserProfile } from "@/api";
 import { Banner, ScrollToTop, SimplePageContainer, UserPrompt } from "@/components";
 import MMDLAlertBanner from "@/components/Banner/MMDLSpaBanner";
 import config from "@/config";
@@ -107,12 +108,29 @@ const UserDropdownMenu = () => {
   const { data: userProfile } = useGetUserProfile();
 
   // TODO: fix?
-  // Disable page if user is a defaultcmsuser that just requested cmsroleapprover?
+  // Disable page if user is a defaultcmsuser that just requested cmsroleapprover and is pending?
   // Disable page if user is a statesubmitter that just requested statesystemadmin and is pending?
+  // Certain roles cannot be changed
   const disableRoleChange = () => {
-    const currentRole = userDetails.role;
-    if (currentRole === "cmsroleapprover" || currentRole === "statesystemadmin") return true;
-    return false;
+    const currentRole = userDetails?.role;
+    const requestedRoles = userProfile?.stateAccess ?? [];
+
+    const roleIsActiveOrPending = (targetRole: string) =>
+      requestedRoles.some(
+        (r) => r.role === targetRole && (r.status === "active" || r.status === "pending"),
+      );
+
+    // Prevent duplicate or inappropriate role requests
+    if (
+      (currentRole === "statesubmitter" && roleIsActiveOrPending("statesystemadmin")) ||
+      (currentRole === "defaultcmsuser" && roleIsActiveOrPending("cmsroleapprover"))
+    ) {
+      return true;
+    }
+
+    const excludedRoles = ["helpdesk", "systemadmin", "cmsreviewer", "cmsroleapprover"];
+
+    return excludedRoles.includes(currentRole);
   };
 
   const handleViewProfile = () => {
@@ -177,16 +195,13 @@ const UserDropdownMenu = () => {
           </DropdownMenu.Item>
           {/* TODO: conditionally show this if the user IS NOT HELPDESK */}
           {/* // helpdesk, system admins, and cms reviewer users don't even see request role as an option */}
-          {!disableRoleChange &&
-            !isLoading &&
-            userDetails &&
-            !["helpdesk", "systemadmin", "cmsreviewer"].includes(userDetails.role) && (
-              <DropdownMenu.Item>
-                <Link to="/signup" className="text-primary hover:text-primary/70">
-                  Request a Role Change
-                </Link>
-              </DropdownMenu.Item>
-            )}
+          {!disableRoleChange() && !isLoading && userDetails && (
+            <DropdownMenu.Item>
+              <Link to="/signup" className="text-primary hover:text-primary/70">
+                Request a Role Change
+              </Link>
+            </DropdownMenu.Item>
+          )}
           <DropdownMenu.Item
             className="text-primary hover:text-primary/70"
             asChild
