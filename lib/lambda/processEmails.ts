@@ -162,19 +162,23 @@ export async function sendUserRoleEmails(kafkaRecord: any, config: any) {
     }
 
     // Process templates sequentially
+    console.log("ANDIE - Selected templates: ", JSON.stringify(templates));
 
     const results = [];
     for (const template of templates) {
+      console.log("ANDIE - tmeplate", JSON.stringify(template));
       try {
         const filledTemplate = await template(record);
-        console.log("ANDIE - Selected templates: ", JSON.stringify(templates));
+        console.log("ANDIE - filledTemplate", JSON.stringify(filledTemplate));
         validateEmailTemplate(filledTemplate);
+        console.log("ANDIE - validated");
         const params = createEmailParams(
           filledTemplate,
           record.email,
           config.baseUrl,
           config.isDev,
         );
+        console.log("ANDIE - params", params);
 
         const result = await sendEmail(params, config.region);
         results.push({ success: true, result });
