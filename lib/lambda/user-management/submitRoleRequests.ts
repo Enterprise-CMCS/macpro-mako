@@ -3,7 +3,7 @@ import { getAuthDetails, lookupUserAttributes } from "libs/api/auth/user";
 import { produceMessage } from "libs/api/kafka";
 import { response } from "libs/handler-lib";
 import { RoleRequest } from "react-app/src/api";
-import { canRequestAccess, canUpdateAccess } from "shared-utils";
+import { canRequestAccess, canSelfRevokeAccess, canUpdateAccess } from "shared-utils";
 
 import { submitGroupDivision } from "./submitGroupDivision";
 import { getLatestActiveRoleByEmail, getUserByEmail } from "./userManagementService";
@@ -78,6 +78,11 @@ export const submitRoleRequests = async (event: APIGatewayEvent) => {
           body: { message: "Invalid or missing grantAccess value." },
         });
       }
+    } else if (
+      grantAccess &&
+      canSelfRevokeAccess(latestActiveRoleObj.role, userInfo.email, email)
+    ) {
+      status = "denied";
     } else if (requestRoleChange && canRequestAccess(latestActiveRoleObj.role)) {
       // If the role is allowed to request access, set status to "pending"
       status = "pending";
@@ -101,7 +106,7 @@ export const submitRoleRequests = async (event: APIGatewayEvent) => {
         status,
         territory: state,
         role: roleToUpdate, // role for this state or newly requested role
-        doneByEmail: userAttributes.email,
+        doneByEmail: userInfo.email,
         doneByName: userInfo.fullName, // full name of current user. Cognito (userAttributes) may have a different full name
         date: Date.now(), // correct time format?
         group,

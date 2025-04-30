@@ -58,3 +58,11 @@ export const canUpdateAccess = (currentUserRole: UserRole, roleToUpdate: UserRol
 export const canRequestAccess = (role: UserRole): boolean => {
   return ROLES_ALLOWED_TO_REQUEST.includes(role);
 };
+// Check if current user is a statesubmitter and is revoking their own state access
+export const canSelfRevokeAccess = (
+  currentRole: UserRole,
+  currentEmail: string,
+  emailToUpdate: string,
+) => {
+  return currentRole === "statesubmitter" && currentEmail === emailToUpdate;
+};
