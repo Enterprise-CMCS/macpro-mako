@@ -90,7 +90,7 @@ export const handler: Handler<KafkaEvent> = async (event) => {
         .flat()
         .map((rec) => {
           processRecord(rec, config);
-          sendUserRoleEmails(rec);
+          sendUserRoleEmails(rec, config);
         }),
     );
 
@@ -129,7 +129,7 @@ export const handler: Handler<KafkaEvent> = async (event) => {
 };
 
 // ANDIE: CHANNGE TYPE OF KAFKA RECORD
-export async function sendUserRoleEmails(kafkaRecord: any) {
+export async function sendUserRoleEmails(kafkaRecord: any, config: any) {
   // Decode the kafka record
   const { key, value, timestamp } = kafkaRecord;
   const id: string = decodeBase64WithUtf8(key);
@@ -172,8 +172,8 @@ export async function sendUserRoleEmails(kafkaRecord: any) {
         const params = createEmailParams(
           filledTemplate,
           record.email,
-          "https://mako-dev.cms.gov/",
-          true, //isDev
+          config.baseUrl,
+          config.isDev,
         );
 
         const result = await sendEmail(params, "");
