@@ -161,13 +161,13 @@ export async function sendUserRoleEmails(kafkaRecord: any, config: any) {
       templates.push(userRoleTemplate["AccessChangeNotice"]);
     }
 
-    console.log("ANDIE - Selected templates: ", templates);
     // Process templates sequentially
 
     const results = [];
     for (const template of templates) {
       try {
         const filledTemplate = await template(record);
+        console.log("ANDIE - Selected templates: ", JSON.stringify(templates));
         validateEmailTemplate(filledTemplate);
         const params = createEmailParams(
           filledTemplate,
@@ -176,7 +176,7 @@ export async function sendUserRoleEmails(kafkaRecord: any, config: any) {
           config.isDev,
         );
 
-        const result = await sendEmail(params, "");
+        const result = await sendEmail(params, config.region);
         results.push({ success: true, result });
         console.log(`Successfully sent email for template: ${JSON.stringify(result)}`);
       } catch (error) {
