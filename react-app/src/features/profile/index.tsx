@@ -52,7 +52,7 @@ export const Profile = () => {
   const [showAddState, setShowAddState] = useState<boolean>(true);
   const [requestedStates, setRequestedStates] = useState<StateCode[]>([]);
   const statesToRequest: Option[] = useAvailableStates(userProfile?.stateAccess);
-  console.log(userDetails, "USER DETAILSSS");
+
   if (isDetailLoading || isProfileLoading) {
     return <LoadingSpinner />;
   }

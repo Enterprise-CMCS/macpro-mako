@@ -22,7 +22,7 @@ export const CMSSignup = () => {
   const [showModal, setShowModal] = useState<boolean>(false);
   const [group, setGroup] = useState<groupDivisionType | null>(null);
   const [division, setDivision] = useState<divisionsType | null>(null);
-  // const { mutateAsync } = useSubmitGroupDivision();
+
   const { mutateAsync: submitRequest } = useSubmitRoleRequests();
 
   const navigate = useNavigate();
@@ -36,8 +36,6 @@ export const CMSSignup = () => {
 
   const onSubmit = async () => {
     try {
-      // await mutateAsync({ group: group.abbr, division: division.abbr });
-      // Is this wanted? CMS role approvers cannot see dashboard
       await submitRequest({
         email: userDetails.email,
         state: "N/A",
@@ -47,6 +45,7 @@ export const CMSSignup = () => {
         group: group.abbr,
         division: division.abbr,
       });
+      // TODO: Change?
       navigate("/");
 
       banner({
@@ -89,7 +88,7 @@ export const CMSSignup = () => {
               <h2 className="text-xl font-bold mb-2">Select a Group and Division</h2>
             </div>
 
-            {/* TODO: mimic onemac Group logic */}
+            {/* Not doing anything with group and division besides updating user index */}
             <div className="py-4">
               <h2 className="text-xl font-bold mb-2">Group</h2>
               <Select
@@ -122,7 +121,6 @@ export const CMSSignup = () => {
                     const matchingDivision: divisionsType[] = group.divisions.filter(
                       (division) => division.id === parseInt(value),
                     );
-                    // console.log(matchingDivision);
                     setDivision(matchingDivision[0]);
                   }}
                 >
