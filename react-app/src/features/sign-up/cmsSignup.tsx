@@ -1,7 +1,11 @@
 import { useState } from "react";
 import { Navigate, useNavigate } from "react-router";
 
-import { useGetUserDetails, useSubmitGroupDivision, useSubmitRoleRequests } from "@/api";
+import {
+  useGetUserDetails,
+  // useSubmitGroupDivision,
+  useSubmitRoleRequests,
+} from "@/api";
 import {
   banner,
   Button,
@@ -22,13 +26,14 @@ export const CMSSignup = () => {
   const [showModal, setShowModal] = useState<boolean>(false);
   const [group, setGroup] = useState<groupDivisionType | null>(null);
   const [division, setDivision] = useState<divisionsType | null>(null);
-
   const { mutateAsync: submitRequest } = useSubmitRoleRequests();
 
   const navigate = useNavigate();
 
   const { data: userDetails } = useGetUserDetails();
   if (!userDetails) return <LoadingSpinner />;
+
+  if (!userDetails?.role) return <Navigate to="/" />;
 
   const currentRole = userDetails.role;
   if (currentRole !== "defaultcmsuser" && currentRole !== "cmsroleapprover")
@@ -99,7 +104,7 @@ export const CMSSignup = () => {
                   setGroup(matchingGroup[0]);
                 }}
               >
-                <SelectTrigger>
+                <SelectTrigger aria-label="Select group">
                   <SelectValue placeholder="Select state here" />
                 </SelectTrigger>
                 <SelectContent>
@@ -124,7 +129,7 @@ export const CMSSignup = () => {
                     setDivision(matchingDivision[0]);
                   }}
                 >
-                  <SelectTrigger>
+                  <SelectTrigger aria-label="Select division">
                     <SelectValue placeholder="Select state here" />
                   </SelectTrigger>
                   <SelectContent>

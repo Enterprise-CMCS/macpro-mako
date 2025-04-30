@@ -33,6 +33,8 @@ export const StateSignup = () => {
 
   if (!userDetails) return <LoadingSpinner />;
 
+  if (!userDetails?.role) return <Navigate to="/" />;
+
   const currentRole = userDetails.role;
   // Only statesubmitters and statesystemadmins can access this page
   if (currentRole !== "statesubmitter" && currentRole !== "statesystemadmin")
@@ -102,7 +104,7 @@ export const StateSignup = () => {
               <h2 className="text-xl font-bold mb-2">Select your State Access</h2>
               {isRequestRoleAdmin ? (
                 <Select onValueChange={(value: StateCode) => onChange([value])}>
-                  <SelectTrigger>
+                  <SelectTrigger aria-label="Select state">
                     <SelectValue placeholder="Select state here" />
                   </SelectTrigger>
                   <SelectContent>

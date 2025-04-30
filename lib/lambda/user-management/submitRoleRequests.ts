@@ -96,6 +96,7 @@ export const submitRoleRequests = async (event: APIGatewayEvent) => {
     }
 
     const id = `${email}_${state}_${roleToUpdate}`;
+    const date = Date.now(); // correct time format?
 
     await produceMessage(
       topicName,
@@ -108,7 +109,7 @@ export const submitRoleRequests = async (event: APIGatewayEvent) => {
         role: roleToUpdate, // role for this state or newly requested role
         doneByEmail: userInfo.email,
         doneByName: userInfo.fullName, // full name of current user. Cognito (userAttributes) may have a different full name
-        date: Date.now(), // correct time format?
+        date,
         group,
         division,
       }),
@@ -126,7 +127,17 @@ export const submitRoleRequests = async (event: APIGatewayEvent) => {
 
     return response({
       statusCode: 200,
-      body: { message: `Request to access ${state} has been submitted.` },
+      body: {
+        message: `Request to access ${state} has been submitted.`,
+        eventType,
+        email,
+        status,
+        territory: state,
+        role: roleToUpdate, // role for this state
+        doneByEmail: userAttributes.email,
+        doneByName: userInfo.fullName, // full name of current user. Cognito (userAttributes) may have a different full name
+        date,
+      },
     });
   } catch (err: unknown) {
     console.log("An error occurred: ", err);

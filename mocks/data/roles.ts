@@ -2,21 +2,6 @@ import { TestRoleDocument, TestRoleResult } from "..";
 
 export const roleResults: TestRoleResult[] = [
   {
-    _id: "systemadmin@example.com_N/A_systemadmin",
-    found: true,
-    _source: {
-      id: "systemadmin@example.com_N/A_systemadmin",
-      eventType: "user-role",
-      email: "systemadmin@example.com",
-      doneByEmail: "systemadmin@example.com",
-      doneByName: "System Admin",
-      status: "active",
-      role: "systemadmin",
-      territory: "N/A",
-      lastModifiedDate: 1744503573565,
-    },
-  },
-  {
     _id: "systemadmin@example.com_N/A_defaultcmsuser",
     found: true,
     _source: {
@@ -32,18 +17,18 @@ export const roleResults: TestRoleResult[] = [
     },
   },
   {
-    _id: "helpdesk@example.com_N/A_helpdesk",
+    _id: "systemadmin@example.com_N/A_systemadmin",
     found: true,
     _source: {
-      id: "helpdesk@example.com_N/A_helpdesk",
+      id: "systemadmin@example.com_N/A_systemadmin",
       eventType: "user-role",
-      email: "helpdesk@example.com",
+      email: "systemadmin@example.com",
       doneByEmail: "systemadmin@example.com",
       doneByName: "System Admin",
       status: "active",
-      role: "helpdesk",
+      role: "systemadmin",
       territory: "N/A",
-      lastModifiedDate: 1748003573565,
+      lastModifiedDate: 1744503573565,
     },
   },
   {
@@ -62,18 +47,18 @@ export const roleResults: TestRoleResult[] = [
     },
   },
   {
-    _id: "cmsroleapprover@example.com_N/A_cmsroleapprover",
+    _id: "helpdesk@example.com_N/A_helpdesk",
     found: true,
     _source: {
-      id: "cmsroleapprover@example.com_N/A_cmsroleapprover",
+      id: "helpdesk@example.com_N/A_helpdesk",
       eventType: "user-role",
-      email: "cmsroleapprover@example.com",
+      email: "helpdesk@example.com",
       doneByEmail: "systemadmin@example.com",
       doneByName: "System Admin",
       status: "active",
-      role: "cmsroleapprover",
+      role: "helpdesk",
       territory: "N/A",
-      lastModifiedDate: 1749993573565,
+      lastModifiedDate: 1748003573565,
     },
   },
   {
@@ -89,6 +74,36 @@ export const roleResults: TestRoleResult[] = [
       role: "defaultcmsuser",
       territory: "N/A",
       lastModifiedDate: 1749993573560,
+    },
+  },
+  {
+    _id: "cmsroleapprover@example.com_N/A_cmsroleapprover",
+    found: true,
+    _source: {
+      id: "cmsroleapprover@example.com_N/A_cmsroleapprover",
+      eventType: "user-role",
+      email: "cmsroleapprover@example.com",
+      doneByEmail: "systemadmin@example.com",
+      doneByName: "System Admin",
+      status: "active",
+      role: "cmsroleapprover",
+      territory: "N/A",
+      lastModifiedDate: 1749993573565,
+    },
+  },
+  {
+    _id: "mako.cmsuser@outlook.com_N/A_defaultcmsuser",
+    found: true,
+    _source: {
+      id: "mako.cmsuser@outlook.com_N/A_defaultcmsuser",
+      eventType: "user-role",
+      email: "mako.cmsuser@outlook.com",
+      doneByEmail: "systemadmin@example.com",
+      doneByName: "System Admin",
+      status: "active",
+      role: "defaultcmsuser",
+      territory: "N/A",
+      lastModifiedDate: 1749003573565,
     },
   },
   {

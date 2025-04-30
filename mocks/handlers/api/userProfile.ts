@@ -154,32 +154,52 @@ const defaultApiSubmitRoleRequestsHandler = http.post<PathParams, SubmitRoleRequ
   async ({ request }) => {
     const username = process.env.MOCK_USER_USERNAME;
     if (!username) {
-      return HttpResponse.json({ message: "User not authenticated" }, { status: 401 });
+      return new HttpResponse("User not authenticated", { status: 401 });
     }
+
     const user = getUserByUsername(username);
     if (!user) {
-      return HttpResponse.json({ message: "User not authenticated" }, { status: 401 });
+      return new HttpResponse("User not authenticated", { status: 401 });
     }
 
     const latestActiveRoleObj = getLatestRoleByEmail(user?.email)?.[0]?._source ?? null;
-
     if (!latestActiveRoleObj) {
-      return HttpResponse.json({ message: "No active role found for user" }, { status: 403 });
+      return new HttpResponse("No active role found for user", { status: 403 });
     }
 
-    const { state, requestRoleChange, grantAccess, role: roleToUpdate } = await request.json();
+    const {
+      email,
+      state,
+      role: roleToUpdate,
+      eventType,
+      grantAccess,
+      requestRoleChange,
+    } = await request.json();
 
+    let status: string;
     if (!requestRoleChange && canUpdateAccess(latestActiveRoleObj.role, roleToUpdate)) {
-      if (grantAccess !== true && grantAccess !== false) {
+      if (grantAccess === true || grantAccess === false) {
+        status = grantAccess ? "active" : "denied";
+      } else {
         return new HttpResponse("Invalid or missing grantAccess value.", { status: 400 });
       }
     } else if (requestRoleChange && canRequestAccess(latestActiveRoleObj.role)) {
-      // do nothing
+      status = "pending";
     } else {
       return new HttpResponse("You are not authorized to perform this action.", { status: 403 });
     }
 
-    return HttpResponse.json({ message: `Request to access ${state} has been submitted.` });
+    return HttpResponse.json({
+      message: `Request to access ${state} has been submitted.`,
+      eventType,
+      email,
+      status,
+      territory: state,
+      role: roleToUpdate,
+      doneByEmail: user.email,
+      doneByName: `${user.given_name} ${user.family_name}`,
+      date: Date.now(),
+    });
   },
 );
 
