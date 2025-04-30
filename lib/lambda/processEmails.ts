@@ -164,7 +164,7 @@ export async function sendUserRoleEmails(kafkaRecord: any) {
           filledTemplate,
           kafkaRecord.email,
           "https://mako-dev.cms.gov/",
-          false,
+          true,
         );
 
         const result = await sendEmail(params, "");
