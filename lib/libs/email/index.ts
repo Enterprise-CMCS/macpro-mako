@@ -66,6 +66,9 @@ const emailTemplates: EmailTemplates = {
   "upload-subsequent-documents": EmailContent.uploadSubsequentDocuments,
 };
 
+// user roles are so different they will be their own thing for now
+export const userRoleTemplate = EmailContent.userRoleTemplate;
+
 // Create a type-safe lookup function
 export function getEmailTemplate(
   action: keyof EmailTemplates,
