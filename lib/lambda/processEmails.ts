@@ -6,6 +6,7 @@ import { getAllStateUsers, getEmailTemplates } from "libs/email";
 import { EMAIL_CONFIG, getCpocEmail, getSrtEmails } from "libs/email/content/email-components";
 import * as os from "libs/opensearch-lib";
 import { getOsNamespace } from "libs/utils";
+import { log } from "node:console";
 import {
   EmailAddresses,
   Events,
@@ -128,6 +129,10 @@ export async function processRecord(kafkaRecord: KafkaRecord, config: ProcessEma
   console.log("processRecord called with kafkaRecord: ", JSON.stringify(kafkaRecord, null, 2));
   const { key, value, timestamp } = kafkaRecord;
   const id: string = decodeBase64WithUtf8(key);
+
+  const logRecord: string = decodeBase64WithUtf8(value);
+  console.log("logRecord: ", logRecord)
+
 
   if (kafkaRecord.topic === "aws.seatool.ksql.onemac.three.agg.State_Plan") {
     const safeID = id.replace(/^"|"$/g, "");
