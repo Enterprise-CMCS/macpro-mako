@@ -2,7 +2,7 @@ import * as query from "@tanstack/react-query";
 import { render, screen } from "@testing-library/react";
 import { mockUseGetUser } from "mocks";
 import { isCmsUser, isStateUser } from "shared-utils";
-import { afterEach, describe, expect, it, vi } from "vitest";
+import { afterEach, beforeAll, describe, expect, it, vi } from "vitest";
 
 import { useGetUser } from "@/api";
 import * as api from "@/api";
