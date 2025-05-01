@@ -75,13 +75,13 @@ export const getUserRoleTemplate = async (
 };
 
 // Create a type-safe lookup function
-export function getEmailTemplate(
-  action: keyof EmailTemplates,
-): AuthoritiesWithUserTypesTemplate | UserTypeOnlyTemplate {
-  // Handle -state suffix variants
-  const baseAction = action.replace(/-state$/, "") as keyof EmailTemplates;
-  return emailTemplates[baseAction];
-}
+// export function getEmailTemplate(
+//   action: keyof EmailTemplates,
+// ): AuthoritiesWithUserTypesTemplate | UserTypeOnlyTemplate {
+//   // Handle -state suffix variants
+//   const baseAction = action.replace(/-state$/, "") as keyof EmailTemplates;
+//   return emailTemplates[baseAction];
+// }
 
 function hasAuthority(
   obj: Events[keyof Events],
