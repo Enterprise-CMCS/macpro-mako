@@ -2,7 +2,7 @@ import { render, screen, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { Auth } from "aws-amplify";
 import { AUTH_CONFIG, makoStateSubmitter, noRoleUser, setMockUsername } from "mocks";
-import { beforeAll, beforeEach, describe, expect, it, vi } from "vitest";
+import { afterEach, beforeAll, beforeEach, describe, expect, it, vi } from "vitest";
 
 import * as api from "@/api";
 import * as hooks from "@/hooks";
@@ -17,7 +17,7 @@ import { Layout, SubNavHeader } from "./index";
 
 // Component mocks
 vi.mock("../UsaBanner", () => ({ UsaBanner: () => null }));
-vi.mock("../Footer", () => ({ Footer: () => null }));
+vi.mock("../Footer", () => ({ Footer: () => <div data-testid="mock-footer"></div> }));
 vi.mock("@/components", () => ({
   Layout: ({ children }: { children: React.ReactNode }) => (
     <div data-testid="mocked-layout">{children}</div>
@@ -30,6 +30,7 @@ vi.mock("@/components", () => ({
   AccordionItem: () => null,
   AccordionTrigger: () => null,
   AccordionContent: () => null,
+  BreadCrumbs: () => <div data-testid="mock-breadcrumbs"></div>,
 }));
 
 // Navigation mock
@@ -395,6 +396,84 @@ describe("Layout", () => {
 
       // Restore original window.location
       window.location = originalLocation;
+    });
+  });
+
+  describe("Layout Error Handling", () => {
+    const FaultyChildComponent = () => {
+      throw new Error("This is a simulated render error!");
+    };
+
+    let consoleErrorSpy: ReturnType<typeof vi.spyOn>;
+
+    beforeEach(() => {
+      vi.clearAllMocks();
+      consoleErrorSpy = vi.spyOn(console, "error").mockImplementation(() => {});
+    });
+
+    afterEach(() => {
+      if (consoleErrorSpy) {
+        consoleErrorSpy.mockRestore();
+      }
+    });
+
+    it("should render ErrorPage within Layout when a child component throws an error", async () => {
+      const testRoutes = [
+        {
+          path: "/",
+          element: <Layout />,
+          errorElement: <Layout />,
+          children: [
+            {
+              index: true,
+              element: <FaultyChildComponent />,
+            },
+            {
+              path: "working",
+              element: <div>This page works</div>,
+            },
+          ],
+        },
+      ];
+
+      renderWithQueryClientAndMemoryRouter(undefined, testRoutes, { initialEntries: ["/"] });
+
+      await waitFor(() => {
+        expect(screen.getByText("Sorry, we couldn't find that page.")).toBeInTheDocument();
+      });
+
+      expect(screen.getByTestId("mock-footer")).toBeInTheDocument();
+      expect(screen.getByTestId("nav-banner-d")).toBeInTheDocument();
+
+      expect(screen.queryByText("This page works")).not.toBeInTheDocument();
+
+      expect(consoleErrorSpy).toHaveBeenCalled();
+    });
+
+    it("should render normally when no error occurs in child", async () => {
+      const testRoutes = [
+        {
+          path: "/",
+          element: <Layout />,
+          errorElement: <Layout />,
+          children: [
+            {
+              index: true,
+              element: <div data-testid="welcome-content">Welcome Page Content</div>,
+            },
+          ],
+        },
+      ];
+
+      renderWithQueryClientAndMemoryRouter(undefined, testRoutes, { initialEntries: ["/"] });
+
+      const welcomeContent = await screen.findByTestId("welcome-content");
+      expect(welcomeContent).toBeInTheDocument();
+      expect(welcomeContent).toHaveTextContent("Welcome Page Content");
+
+      expect(screen.queryByText("Sorry, we couldn't find that page.")).not.toBeInTheDocument();
+
+      expect(consoleErrorSpy).not.toHaveBeenCalled();
     });
   });
 
