@@ -15,8 +15,9 @@ import {
   opensearch,
   SEATOOL_STATUS,
 } from "shared-types";
-import { decodeBase64WithUtf8, formatActionType, getSecret } from "shared-utils";
+import { decodeBase64WithUtf8, formatActionType, getSecret } from "shared-utils"
 import { retry } from "shared-utils/retry";
+import { getPackage, getPackageChangelog } from "../libs/api/package";
 
 class TemporaryError extends Error {
   constructor(message: string) {
@@ -131,8 +132,19 @@ export async function processRecord(kafkaRecord: KafkaRecord, config: ProcessEma
   const id: string = decodeBase64WithUtf8(key);
 
   const logRecord = decodeBase64WithUtf8(value);
-  console.log("logRecord: ", logRecord)
+  console.log("logRecord: ", logRecord);
   const parsedRecord = JSON.parse(logRecord);
+
+  if (parsedRecord?.event == "respond-to-rai" && parsedRecord?.authority == "CHIP SPA") {
+    console.log("respond to rai event for package: ", parsedRecord.id);
+    const osRecord = await getPackage(parsedRecord.id);
+    console.log("returned open search record: ", osRecord);
+  }
+
+
+
+
+
   const submissionTimestamp = parsedRecord.STATE_PLAN?.SUBMISSION_DATE ?? null;
   console.log("submission timestamp: ", submissionTimestamp)
   const alert90DaysDate = parsedRecord.STATE_PLAN?.ALERT_90_DAYS_DATE ?? null;
