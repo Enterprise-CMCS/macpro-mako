@@ -6,6 +6,7 @@ import { FILE_TYPES } from "shared-types/uploads";
 import { v4 as uuidv4 } from "uuid";
 import { z } from "zod";
 
+import { userPrompt } from "@/components";
 import * as I from "@/components/Inputs";
 import { LoadingSpinner } from "@/components/LoadingSpinner"; // Import your LoadingSpinner component
 import { cn } from "@/utils";
@@ -56,6 +57,12 @@ export const Upload = ({ maxFiles, files, setFiles, dataTestId }: UploadProps) =
     },
     {} as Record<string, string[]>,
   );
+  const promptOnDelete = {
+    header: "Delete Attachment?",
+    body: "Are you sure you want to delete this attachment?",
+    acceptButtonText: "Yes, delete",
+    cancelButtonText: "Cancel",
+  };
 
   const existingFileNames = files.map((file) => file.filename);
 
@@ -149,11 +156,15 @@ export const Upload = ({ maxFiles, files, setFiles, dataTestId }: UploadProps) =
             >
               <span className="text-sky-700">{file.filename}</span>
               <I.Button
-                onClick={(e) => {
-                  e.preventDefault();
-                  setRejectedFiles([]);
-                  setFiles(files.filter((a) => a.filename !== file.filename));
-                }}
+                onClick={() =>
+                  userPrompt({
+                    ...promptOnDelete,
+                    onAccept: () => {
+                      setRejectedFiles([]);
+                      setFiles(files.filter((a) => a.filename !== file.filename));
+                    },
+                  })
+                }
                 variant="ghost"
                 className="p-0 h-0"
                 data-testid={`${dataTestId}-remove-file-${file.filename}`}
