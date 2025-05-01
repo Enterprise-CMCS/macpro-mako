@@ -20,6 +20,7 @@ export const opensearchHandlers = [
   ...userHandlers,
 ];
 
+export { errorOSChangelogSearchHandler } from "./changelog";
 export { emptyOSCpocSearchHandler, errorOSCpocSearchHandler } from "./cpocs";
 export {
   errorCreateIndexHandler,

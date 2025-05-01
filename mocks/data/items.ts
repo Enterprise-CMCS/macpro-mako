@@ -102,11 +102,16 @@ const items: Record<string, TestItemResult> = {
       withdrawEmailSent: true,
       submitterName: "BOB SMITH",
       submitterEmail: "BOBSMITH@MEDICAIDFAKE.gov",
-      id: EXISTING_ITEM_ID,
+      id: WITHDRAW_EMAIL_SENT,
       seatoolStatus: SEATOOL_STATUS.APPROVED,
       stateStatus: statusToDisplayToStateUser[SEATOOL_STATUS.APPROVED],
       cmsStatus: statusToDisplayToCmsUser[SEATOOL_STATUS.APPROVED],
       actionType: "New",
+      changelog: [
+        {
+          _id: `${WITHDRAW_EMAIL_SENT}-001`,
+        },
+      ],
     },
   },
   [EXISTING_ITEM_APPROVED_NEW_ID]: {
@@ -189,6 +194,68 @@ const items: Record<string, TestItemResult> = {
       actionType: "New",
       origin: "SEATool",
       state: "MD",
+      changelog: [
+        {
+          _id: `${CAPITATED_AMEND_ITEM_ID}-001`,
+          _source: {
+            id: `${CAPITATED_AMEND_ITEM_ID}-0001`,
+            event: "upload-subsequent-documents",
+            packageId: CAPITATED_AMEND_ITEM_ID,
+            authority: "Medicaid SPA",
+            attachments: [
+              {
+                key: "subdoc001",
+                title: "Follow-Up Documents",
+                filename: "followup_docs.zip",
+                bucket: ATTACHMENT_BUCKET_NAME,
+              },
+            ],
+            additionalInformation: "Supporting documents uploaded as follow-up.",
+            timestamp: 1677715200000, // Mar 1, 2023
+          },
+        },
+        {
+          _id: `${CAPITATED_AMEND_ITEM_ID}-003`,
+          _source: {
+            id: `${CAPITATED_AMEND_ITEM_ID}-0003`,
+            event: "upload-subsequent-documents",
+            packageId: CAPITATED_AMEND_ITEM_ID,
+            authority: "Medicaid SPA",
+            attachments: [
+              {
+                key: "subdoc003",
+                title: "Follow-Up Documents",
+                filename: "followup_docs.zip",
+                bucket: ATTACHMENT_BUCKET_NAME,
+              },
+            ],
+            additionalInformation: "Supporting documents uploaded as follow-up.",
+            timestamp: 1678715205000, // Mar 13, 2023
+          },
+        },
+        {
+          _id: `${CAPITATED_AMEND_ITEM_ID}-002`,
+          _source: {
+            id: `${CAPITATED_AMEND_ITEM_ID}-0002`,
+            event: "upload-subsequent-documents",
+            packageId: CAPITATED_AMEND_ITEM_ID,
+            authority: "Medicaid SPA",
+            attachments: [
+              {
+                key: "subdoc002",
+                title: "Follow-Up Documents",
+                filename: "followup_docs.zip",
+                bucket: ATTACHMENT_BUCKET_NAME,
+              },
+            ],
+            additionalInformation: "Supporting documents uploaded as follow-up.",
+            timestamp: 1678515205000, // Mar 11, 2023
+          },
+        },
+        {
+          _id: `${CAPITATED_AMEND_ITEM_ID}-004`,
+        },
+      ],
     },
   },
   [ADMIN_ITEM_ID]: {

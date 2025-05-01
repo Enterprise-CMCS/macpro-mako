@@ -92,7 +92,7 @@ afterEach(() => {
 });
 
 afterAll(() => {
-  vi.clearAllMocks();
+  vi.resetAllMocks();
 
   // Clean up after the tests are finished.
   mockedServer.close();
