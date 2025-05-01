@@ -43,17 +43,6 @@ export const transform = (id: string) => {
 };
 
 export type Schema = ReturnType<typeof transform>;
-// export const tombstone = (id: string) => {
-//   return {
-//     id,
-//     additionalInformation: null,
-//     raiWithdrawEnabled: null,
-//     attachments: null,
-//     submitterEmail: null,
-//     submitterName: null,
-//     origin: null,
-//   };
-// };
 
 const getDateStringOrNullFromEpoc = (epocDate: number | null | undefined) =>
   epocDate !== null && epocDate !== undefined ? new Date(epocDate)?.toISOString() : null;

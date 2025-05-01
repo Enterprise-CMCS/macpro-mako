@@ -186,30 +186,3 @@ export const transform = (id: string) => {
   });
 };
 export type Schema = ReturnType<typeof transform>;
-// export const tombstone = (id: string) => {
-//   return {
-//     id,
-//     actionType: null,
-//     approvedEffectiveDate: null,
-//     changedDate: null,
-//     description: null,
-//     finalDispositionDate: null,
-//     leadAnalystName: null,
-//     leadAnalystOfficerId: null,
-//     authority: null,
-//     proposedDate: null,
-//     raiReceivedDate: null,
-//     raiRequestedDate: null,
-//     raiWithdrawnDate: null,
-//     reviewTeam: null,
-//     state: null,
-//     cmsStatus: null,
-//     stateStatus: null,
-//     seatoolStatus: null,
-//     statusDate: null,
-//     submissionDate: null,
-//     subject: null,
-//     types: null,
-//     subTypes: null,
-//   };
-// };
