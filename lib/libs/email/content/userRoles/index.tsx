@@ -1,5 +1,4 @@
 import { render } from "@react-email/render";
-import { getUserByEmail } from "lib/lambda/user-management/userManagementService";
 
 import {
   AccessChangeNoticeEmail,
@@ -19,58 +18,47 @@ export type UserRoleEmailType = {
 };
 
 export const userRoleTemplate = {
-   AccessChangeNotice: async (variables: UserRoleEmailType) => {
-     console.log("ANDIE - we're in 1", variables);
-     //  const userInfo: { fullName: string } = await getUserByEmail(variables.email);
-     //  variables.fullName = userInfo.fullName ?? "";
-     variables.fullName = "ANDIE ";
-     const roleDisplay = userRoleMap[variables.role];
-     const stateAccess =
-       variables.territory === "N/A" ? "" : ` for ${statesMap[variables.territory]}`;
-     return {
-       to: ["aswift@fearless.tech"],
-       subject: `Your OneMAC ${roleDisplay} Access${stateAccess} has been ${statusMap[variables.status]}`,
-       body: await render(<AccessChangeNoticeEmail variables={variables} />),
-     };
-   },
-   AccessPendingNotice: async (variables: UserRoleEmailType) => {
-     console.log("ANDIE - we're in 2", variables);
-     //  const userInfo = await getUserByEmail(variables.email);
-     //  variables.fullName = userInfo.fullName ?? "";
-     variables.fullName = "ANDIE ";
-     return {
-       to: ["aswift@fearless.tech"],
-       subject: "Your OneMAC Role Access is Pending Review",
-       body: await render(<AccessPendingNoticeEmail variables={variables} />),
-     };
-   },
-   AdminPendingNotice: async (variables: UserRoleEmailType) => {
-     console.log("ANDIE - we're in 3", variables);
-     //  const userInfo = await getUserByEmail(variables.email);
-     //  variables.fullName = userInfo.fullName ?? "";
-     const roleDisplay = userRoleMap[variables.role];
-     //   TODO: add logic to actually get approverList?
-     const approverList = [`${variables.fullName} <${variables.email}>`];
-     variables.fullName = "ANDIE ";
-     return {
-       to: ["aswift@fearless.tech"],
-       subject: `New OneMAC ${roleDisplay} Access Request`,
-       body: await render(<AdminPendingNoticeEmail variables={variables} />),
-     };
-   },
-   SelfRevokeAdminChangeEmail: async (variables: UserRoleEmailType) => {
-     console.log("ANDIE - we're in 4");
-     //  const userInfo = await getUserByEmail(variables.email);
-     //  variables.fullName = userInfo.fullName ?? "";
-     const stateAccess =
-       variables.territory === "N/A" ? "" : ` for ${statesMap[variables.territory]}`;
-     //   TODO: add logic to actually get approverList?
-     const approverList = [`${variables.fullName} <${variables.email}>`];
-     variables.fullName = "ANDIE ";
-     return {
-       to: ["aswift@fearless.tech"],
-       subject: `OneMAC State access for ${stateAccess} was self-revoked by ${variables.fullName}`,
-       body: await render(<SelfRevokeAdminChangeEmail variables={variables} />),
-     };
-   },
- };
+  AccessChangeNotice: async (variables: UserRoleEmailType) => {
+    console.log("ANDIE - we're in 1");
+    const roleDisplay = userRoleMap[variables.role];
+    const stateAccess =
+      variables.territory === "N/A" ? "" : ` for ${statesMap[variables.territory]}`;
+    return {
+      to: [`${variables.fullName} <${variables.email}>`],
+      subject: `Your OneMAC ${roleDisplay} Access${stateAccess} has been ${statusMap[variables.status]}`,
+      body: await render(<AccessChangeNoticeEmail variables={variables} />),
+    };
+  },
+  AccessPendingNotice: async (variables: UserRoleEmailType) => {
+    console.log("ANDIE - we're in 2", variables);
+
+    return {
+      to: [`${variables.fullName} <${variables.email}>`],
+      subject: "Your OneMAC Role Access is Pending Review",
+      body: await render(<AccessPendingNoticeEmail variables={variables} />),
+    };
+  },
+  AdminPendingNotice: async (variables: UserRoleEmailType) => {
+    console.log("ANDIE - we're in 3");
+    const roleDisplay = userRoleMap[variables.role];
+    //   TODO: add logic to actually get approverList?
+    const approverList = [`${variables.fullName} <${variables.email}>`];
+    return {
+      to: approverList,
+      subject: `New OneMAC ${roleDisplay} Access Request`,
+      body: await render(<AdminPendingNoticeEmail variables={variables} />),
+    };
+  },
+  SelfRevokeAdminChangeEmail: async (variables: UserRoleEmailType) => {
+    console.log("ANDIE - we're in 4");
+    const stateAccess =
+      variables.territory === "N/A" ? "" : ` for ${statesMap[variables.territory]}`;
+    //   TODO: add logic to actually get approverList?
+    const approverList = [`${variables.fullName} <${variables.email}>`];
+    return {
+      to: approverList,
+      subject: `OneMAC State access for ${stateAccess} was self-revoked by ${variables.fullName}`,
+      body: await render(<SelfRevokeAdminChangeEmail variables={variables} />),
+    };
+  },
+};

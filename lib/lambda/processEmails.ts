@@ -17,6 +17,8 @@ import {
 import { decodeBase64WithUtf8, formatActionType, getSecret } from "shared-utils";
 import { retry } from "shared-utils/retry";
 
+import { getUserByEmail } from "./user-management/userManagementService";
+
 class TemporaryError extends Error {
   constructor(message: string) {
     super(message);
@@ -134,6 +136,7 @@ export async function sendUserRoleEmails(kafkaRecord: any, config: any) {
   const id: string = decodeBase64WithUtf8(key);
   const record = {
     timestamp,
+    applicationEndpointUrl: config.applicationEndpointUrl,
     ...JSON.parse(decodeBase64WithUtf8(value)),
   };
 
@@ -159,8 +162,16 @@ export async function sendUserRoleEmails(kafkaRecord: any, config: any) {
       templates.push(await getUserRoleTemplate("AccessChangeNotice"));
     }
 
-    // Process templates sequentially
-    console.log("ANDIE - Selected templates: ", JSON.stringify(templates));
+    // get the user's name
+    if (templates.length) {
+      try {
+        const userInfo = await getUserByEmail(record.email);
+        record.fullName = userInfo.fullName;
+        console.log("ANDIE - username: ", record.fullName);
+      } catch (error) {
+        console.error("Error trying to get user name:", error);
+      }
+    }
 
     const results = [];
     for (const template of templates) {
