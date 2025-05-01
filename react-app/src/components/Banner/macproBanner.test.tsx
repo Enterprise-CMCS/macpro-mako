@@ -7,15 +7,9 @@ import { useFeatureFlag } from "@/hooks/useFeatureFlag";
 
 import TopBanner from "./macproBanner";
 
-// Mock the user as a state user
 vi.mock("@/api", () => ({
   useGetUser: () => ({
-    data: {
-      user: {
-        "custom:ismemberof": "ONEMAC_USER",
-        "custom:cms-roles": "", // Not a CMS role
-      },
-    },
+    data: { user: { role: "state", name: "Test User" } },
   }),
 }));
 
