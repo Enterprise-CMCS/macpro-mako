@@ -1,17 +1,14 @@
+import * as query from "@tanstack/react-query";
 import { render, screen } from "@testing-library/react";
+import { mockUseGetUser } from "mocks";
 import { isCmsUser, isStateUser } from "shared-utils";
 import { afterEach, describe, expect, it, vi } from "vitest";
 
 import { useGetUser } from "@/api";
+import * as api from "@/api";
 import { useFeatureFlag } from "@/hooks/useFeatureFlag";
 
 import TopBanner from "./macproBanner";
-
-vi.mock("@/api", () => ({
-  useGetUser: () => ({
-    data: { user: { role: "state", name: "Test User" } },
-  }),
-}));
 
 // Mock modules
 vi.mock("@/hooks/useFeatureFlag", () => ({
@@ -28,12 +25,19 @@ vi.mock("shared-utils", () => ({
 }));
 
 describe("TopBanner", () => {
+  beforeAll(() => {
+    vi.spyOn(api, "useGetUser").mockImplementation(() => {
+      const response = mockUseGetUser();
+      return response as query.UseQueryResult<api.OneMacUser, unknown>;
+    });
+  });
+
   afterEach(() => {
     vi.resetAllMocks();
   });
 
   it("renders CMS banner when CMS user and CMS flag are true", () => {
-    (useGetUser as any).mockReturnValue({ data: { user: {} } });
+    // (useGetUser as any).mockReturnValue({ data: { user: {} } });
     (useFeatureFlag as any).mockImplementation((flag: string) => flag === "CMS_HOMEPAGE_FLAG");
     (useFeatureFlag as any).mockImplementation((flag: string) => flag === "STATE_HOMEPAGE_FLAG");
     (isCmsUser as any).mockReturnValue(true);
