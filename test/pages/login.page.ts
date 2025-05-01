@@ -5,16 +5,13 @@ export class LoginPage {
 
   async goto() {
     await this.page.goto("/");
-    const loginButton = this.page.getByRole("button", { name: "Log in" });
-    const signInButton = this.page.getByRole("button", { name: "Sign In" });
 
-    const [loginVisible, signInVisible] = await Promise.all([
-      loginButton.isVisible().catch(() => false),
-      signInButton.isVisible().catch(() => false),
-    ]);
-
-    if (loginVisible) await loginButton.click();
-    if (signInVisible) await signInButton.click();
+    try {
+      await this.page.waitForSelector('[data-testid="sign-in-button-d"]');
+      await this.page.locator('[data-testid="sign-in-button-d"]').click();
+    } catch (error) {
+      console.log("Sign in button not found", error);
+    }
   }
 
   async login(email: string, password: string) {
