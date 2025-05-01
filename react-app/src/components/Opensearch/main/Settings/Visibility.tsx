@@ -1,9 +1,8 @@
+import * as DropdownMenu from "@radix-ui/react-dropdown-menu";
 import { EyeIcon, EyeOffIcon } from "lucide-react";
 
 import * as UI from "@/components";
 import { cn } from "@/utils";
-
-// type Item = { label: string; field?: string; hidden: boolean };
 
 type Props<T extends UI.OsTableColumn> = {
   list: T[];
@@ -17,60 +16,78 @@ export const VisibilityPopover = ({
   hiddenColumns,
 }: Props<UI.OsTableColumn>) => {
   return (
-    <UI.Popover>
-      <UI.PopoverTrigger asChild>
+    <DropdownMenu.Root>
+      <DropdownMenu.Trigger asChild>
         <UI.Button
           variant="outline"
           className="w-full xs:w-fit whitespace-nowrap hover:bg-transparent self-center h-10 flex gap-2"
+          data-testid="columns-menu-btn"
         >
           <span className="prose-sm">
             {hiddenColumns.length ? `Columns (${hiddenColumns.length} hidden)` : "Columns"}
           </span>
         </UI.Button>
-      </UI.PopoverTrigger>
-      <UI.PopoverContent className="bg-white">
-        <div className="flex flex-col gap-2">
-          <VisibilityMenu list={list} onItemClick={onItemClick} hiddenColumns={hiddenColumns} />
-        </div>
-      </UI.PopoverContent>
-    </UI.Popover>
+      </DropdownMenu.Trigger>
+      <DropdownMenu.Portal>
+        <VisibilityMenu list={list} onItemClick={onItemClick} hiddenColumns={hiddenColumns} />
+      </DropdownMenu.Portal>
+    </DropdownMenu.Root>
   );
 };
 
 export const VisiblityItem = <T extends UI.OsTableColumn>(props: T & { onClick: () => void }) => {
-  const eyeStyles = cn("flex flex-row gap-2 cursor-pointer", {
+  const eyeStyles = cn("flex gap-2", {
     "text-gray-800": !props.hidden,
-    "text-gray-400": props.hidden,
+    "text-gray-500": props.hidden,
   });
 
   return (
-    <div
-      className={cn("flex flex-row gap-2 cursor-pointer", {
-        "text-gray-800": !props.hidden,
-        "text-gray-400": props.hidden,
-      })}
-      onClick={props.onClick}
+    <li
+      aria-live="assertive"
+      aria-atomic="true"
+      aria-label={`${props.label}, toggle visibility, currently ${props.hidden ? "hidden" : "visible"}`}
     >
-      {props.hidden && <EyeOffIcon className={eyeStyles} />}
-      {!props.hidden && <EyeIcon className={eyeStyles} />}
-      <div className="mt-[-1px] prose-base">{props.label}</div>
-    </div>
+      <DropdownMenu.Item
+        asChild
+        onSelect={(e) => {
+          e.preventDefault(); // necessary to prevent closing the menu when selecting an item
+          props.onClick();
+        }}
+      >
+        <button
+          className={cn("flex items-center gap-2 w-full", {
+            "text-gray-800": !props.hidden,
+            "text-gray-500": props.hidden,
+          })}
+          type="button"
+        >
+          {props.hidden ? (
+            <EyeOffIcon className={eyeStyles} aria-hidden focusable={false} />
+          ) : (
+            <EyeIcon className={eyeStyles} aria-hidden focusable={false} />
+          )}
+          <span aria-hidden>{props.label}</span>
+        </button>
+      </DropdownMenu.Item>
+    </li>
   );
 };
 
-export const VisibilityMenu = <T extends UI.OsTableColumn>(props: Props<T>) => {
-  return (
-    <div className="flex flex-col gap-2">
-      {props.list.map((IT) => {
-        if (!IT.field) return null;
-        return (
+export const VisibilityMenu = <T extends UI.OsTableColumn>(props: Props<T>) => (
+  <DropdownMenu.Content asChild>
+    <ul
+      className="flex flex-col gap-2 bg-white p-4 shadow-md rounded-md w-72"
+      data-testid="columns-menu"
+    >
+      {props.list.map((IT) =>
+        IT.field ? (
           <VisiblityItem
             key={`vis-${IT.field}`}
             onClick={() => props.onItemClick(IT.field as string)}
             {...IT}
           />
-        );
-      })}
-    </div>
-  );
-};
+        ) : null,
+      )}
+    </ul>
+  </DropdownMenu.Content>
+);
