@@ -2,7 +2,7 @@ import { render, screen, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { Auth } from "aws-amplify";
 import { AUTH_CONFIG, makoStateSubmitter, noRoleUser, setMockUsername } from "mocks";
-import { afterEach, beforeAll, beforeEach, describe, expect, it, vi } from "vitest";
+import { afterAll, beforeAll, beforeEach, describe, expect, it, vi } from "vitest";
 
 import * as api from "@/api";
 import * as hooks from "@/hooks";
@@ -411,7 +411,7 @@ describe("Layout", () => {
       consoleErrorSpy = vi.spyOn(console, "error").mockImplementation(() => {});
     });
 
-    afterEach(() => {
+    afterAll(() => {
       if (consoleErrorSpy) {
         consoleErrorSpy.mockRestore();
       }
