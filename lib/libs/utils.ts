@@ -10,6 +10,7 @@ export function getDomain(): string {
   if (domain === undefined) {
     throw new Error("process.env.osDomain must be defined");
   }
+  console.log("osdomain: ", domain)
   return domain;
 }
 
@@ -27,7 +28,10 @@ export function getOsNamespace(baseIndex: BaseIndex): Index {
     throw new Error("process.env.indexNamespace must be defined");
   }
 
-  return `${indexNamespace}${baseIndex}`;
+  console.log("osNamespace: ", `${indexNamespace}${baseIndex}`)
+
+  // return `${indexNamespace}${baseIndex}`;
+  return "mainmain"
 }
 
 /**
