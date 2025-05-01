@@ -1,6 +1,7 @@
 import { z } from "zod";
 
 import { attachmentArraySchema, attachmentArraySchemaOptional } from "../attachments";
+import { sharedSchema } from "./base-schema";
 
 export const baseSchema = z.object({
   event: z.literal("new-medicaid-submission").default("new-medicaid-submission"),
@@ -9,9 +10,9 @@ export const baseSchema = z.object({
     cmsForm179: z.object({
       files: attachmentArraySchema({
         max: 1,
-        message: "Required: You must submit exactly one file for CMS Form 179.",
+        message: "Required: You must submit exactly one file for CMS-179 Form.",
       }),
-      label: z.string().default("CMS Form 179"),
+      label: z.string().default("CMS-179 Form"),
     }),
     spaPages: z.object({
       files: attachmentArraySchema(),
@@ -56,9 +57,4 @@ export const baseSchema = z.object({
     }),
 });
 
-export const schema = baseSchema.extend({
-  origin: z.literal("mako").default("mako"),
-  submitterName: z.string(),
-  submitterEmail: z.string().email(),
-  timestamp: z.number(),
-});
+export const schema = baseSchema.merge(sharedSchema);

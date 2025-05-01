@@ -1,10 +1,10 @@
 import { EllipsisVerticalIcon } from "@heroicons/react/24/outline";
+import * as DropdownMenu from "@radix-ui/react-dropdown-menu";
 import { Link } from "react-router";
 import { Authority, CognitoUserAttributes, opensearch } from "shared-types";
 import { formatSeatoolDate, getAvailableActions, isEpochStartDate } from "shared-utils";
 
-import * as POP from "@/components";
-import { cn, DASHBOARD_ORIGIN, mapActionLabel, ORIGIN } from "@/utils";
+import { DASHBOARD_ORIGIN, mapActionLabel, ORIGIN } from "@/utils";
 
 export const renderCellDate = (key: keyof opensearch.main.Document) =>
   function Cell(data: opensearch.main.Document) {
@@ -33,20 +33,30 @@ export const renderCellActions = (user: CognitoUserAttributes | null) => {
     const actions = getAvailableActions(user, data);
 
     return (
-      <POP.Popover>
-        <POP.PopoverTrigger
+      <DropdownMenu.Root>
+        <DropdownMenu.DropdownMenuTrigger
           disabled={!actions.length}
-          className="block ml-3"
-          aria-label="Available actions"
+          aria-label="Available package actions"
+          data-testid="available-actions"
+          asChild
         >
-          <EllipsisVerticalIcon
-            aria-label="record actions"
-            className={cn("w-8 ", actions.length ? "text-blue-700" : "text-gray-400")}
-          />
-        </POP.PopoverTrigger>
-        <POP.PopoverContent>
-          <div className="flex flex-col">
-            {actions.map((action, idx) => (
+          <button className="group ml-3" type="button">
+            <EllipsisVerticalIcon
+              aria-hidden
+              className="w-8 text-blue-700 group-disabled:text-gray-500"
+            />
+          </button>
+        </DropdownMenu.DropdownMenuTrigger>
+        <DropdownMenu.Content
+          className="flex flex-col bg-white rounded-md shadow-lg p-4 border"
+          align="start"
+        >
+          {actions.map((action, idx) => (
+            <DropdownMenu.Item
+              key={`${idx}-${action}`}
+              asChild
+              aria-label={`${mapActionLabel(action)} for ${data.id}`}
+            >
               <Link
                 state={{
                   from: `${location.pathname}${location.search}`,
@@ -57,18 +67,14 @@ export const renderCellActions = (user: CognitoUserAttributes | null) => {
                     [ORIGIN]: DASHBOARD_ORIGIN,
                   }).toString(),
                 }}
-                key={`${idx}-${action}`}
-                className={cn(
-                  "text-blue-500",
-                  "relative flex select-none items-center rounded-sm px-2 py-2 text-sm outline-none transition-colors hover:bg-accent hover:text-accent-foreground data-[disabled]:pointer-events-none data-[disabled]:opacity-50",
-                )}
+                className="text-blue-500 flex select-none items-center rounded-sm px-2 py-2 text-sm hover:bg-accent"
               >
                 {mapActionLabel(action)}
               </Link>
-            ))}
-          </div>
-        </POP.PopoverContent>
-      </POP.Popover>
+            </DropdownMenu.Item>
+          ))}
+        </DropdownMenu.Content>
+      </DropdownMenu.Root>
     );
   };
 };

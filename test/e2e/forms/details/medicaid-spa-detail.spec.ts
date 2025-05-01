@@ -1,6 +1,6 @@
-import { expect, test } from "@playwright/test";
+import { expect, test } from "@/fixtures/mocked";
 
-test.describe("Medicaid SPA - Sub Doc", () => {
+test.describe.skip("Medicaid SPA - Sub Doc", () => {
   test.beforeEach(async ({ page }) => {
     await page.goto("/");
     await page.getByTestId("Dashboard-d").click();

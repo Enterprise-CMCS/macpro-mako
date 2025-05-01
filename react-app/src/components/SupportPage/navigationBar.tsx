@@ -2,21 +2,16 @@ import React from "react";
 
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components";
 
-import ContactHelpDesk from "./contactHelpDesk";
+interface LeftNavigationProps {
+  topics: string[];
+}
 
-const LeftNavigation: React.FC = () => {
+const LeftNavigation = ({ topics }: LeftNavigationProps) => {
   return (
     <div className="w-full pr-4">
       <h2 className="text-2xl font-bold mb-6 font-serif">Topics</h2>
-      <Accordion type="multiple">
-        {[
-          "General",
-          "Package actions",
-          "Implementation guides",
-          "Access & roles",
-          "User profile",
-          "Glossary",
-        ].map((item) => (
+      <Accordion type="multiple" data-testid="support-left-nav">
+        {topics.map((item) => (
           <AccordionItem value={item} key={item} className="border-none">
             <AccordionTrigger className="text-gray-700 hover:text-gray-900 py-2">
               <div className="font-semibold">{item}</div>
@@ -25,8 +20,6 @@ const LeftNavigation: React.FC = () => {
           </AccordionItem>
         ))}
       </Accordion>
-
-      <ContactHelpDesk />
     </div>
   );
 };

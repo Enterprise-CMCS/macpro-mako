@@ -102,7 +102,7 @@ describe("renderCells", () => {
 
     it("should display button only initially", () => {
       setup(TEST_STATE_SUBMITTER_USER, TEST_MED_SPA_ITEM._source);
-      expect(screen.queryByLabelText("Available actions")).toBeInTheDocument();
+      expect(screen.queryByLabelText("Available package actions")).toBeInTheDocument();
     });
 
     it("should return null if there is no user", () => {
@@ -118,7 +118,7 @@ describe("renderCells", () => {
           seatoolStatus: SEATOOL_STATUS.PENDING_RAI,
           raiRequestedDate: "2024-01-01T00:00:00.000Z",
         });
-        await user.click(screen.getByLabelText("Available actions"));
+        await user.click(screen.getByLabelText("Available package actions"));
 
         expect(screen.queryByText("Respond to Formal RAI")).toBeInTheDocument();
         expect(screen.getByText("Respond to Formal RAI").getAttribute("href")).toEqual(
@@ -136,7 +136,7 @@ describe("renderCells", () => {
           actionType: "New",
           seatoolStatus: SEATOOL_STATUS.APPROVED,
         });
-        await user.click(screen.getByLabelText("Available actions"));
+        await user.click(screen.getByLabelText("Available package actions"));
 
         expect(screen.queryByText("Request Temporary Extension")).toBeInTheDocument();
         expect(screen.getByText("Request Temporary Extension").getAttribute("href")).toEqual(
@@ -157,7 +157,7 @@ describe("renderCells", () => {
           raiReceivedDate: "2024-01-01T00:00:00.000Z",
           raiWithdrawEnabled: true,
         });
-        await user.click(screen.getByLabelText("Available actions"));
+        await user.click(screen.getByLabelText("Available package actions"));
 
         expect(screen.queryByText("Withdraw Formal RAI Response")).toBeInTheDocument();
         expect(screen.getByText("Withdraw Formal RAI Response").getAttribute("href")).toEqual(
@@ -180,7 +180,7 @@ describe("renderCells", () => {
           actionType: "New",
           raiWithdrawEnabled: true,
         });
-        await user.click(screen.getByLabelText("Available actions"));
+        await user.click(screen.getByLabelText("Available package actions"));
 
         expect(screen.queryByText("Withdraw Package")).toBeInTheDocument();
         expect(screen.getByText("Withdraw Package").getAttribute("href")).toEqual(
@@ -202,7 +202,7 @@ describe("renderCells", () => {
           raiRequestedDate: "2024-01-01T00:00:00.000Z",
           raiReceivedDate: "2024-01-01T00:00:00.000Z",
         });
-        await user.click(screen.getByLabelText("Available actions"));
+        await user.click(screen.getByLabelText("Available package actions"));
 
         expect(screen.queryByText("Enable Formal RAI Response Withdraw")).toBeInTheDocument();
         expect(
@@ -219,7 +219,7 @@ describe("renderCells", () => {
           raiReceivedDate: "2024-01-01T00:00:00.000Z",
           raiWithdrawEnabled: true,
         });
-        await user.click(screen.getByLabelText("Available actions"));
+        await user.click(screen.getByLabelText("Available package actions"));
 
         expect(screen.queryByText("Disable Formal RAI Response Withdraw")).toBeInTheDocument();
         expect(

@@ -10,8 +10,9 @@ export const legacyEventSchema = legacySharedSchema
   .merge(
     z.object({
       eventTimestamp: z.number().nullish(),
-      lastEventTimestamp: z.number(),
-      submissionTimestamp: z.number(),
+      lastEventTimestamp: z.number().nullish(),
+      lastActivityTimestamp: z.number().nullish(),
+      submissionTimestamp: z.number().nullish(),
       pk: z.string(),
       currentStatus: z.string().nullish(),
       subStatus: z.string().nullish(),
@@ -23,40 +24,51 @@ export const legacyEventSchema = legacySharedSchema
       parentId: z.string().nullish(),
       temporaryExtensionType: z.string().nullish(),
       attachments: z.array(legacyAttachmentSchema).nullish(),
+      latestRaiResponseTimestamp: z.number().nullish(),
     }),
   )
   .transform((data) => {
     const seatoolStatus = getSeaToolStatusFromLegacyStatus(data.currentStatus);
     const { stateStatus, cmsStatus } = getStatus(seatoolStatus);
-    const lastEventTimestampDate = new Date(data.lastEventTimestamp);
-    const submissionTimestampDate = new Date(data.submissionTimestamp);
+    const lastEventIsoDate = getIsoDateFromTimestamp(data.lastActivityTimestamp);
+    const submissionIsoDate = getIsoDateFromTimestamp(data.submissionTimestamp);
     const isRaiResponseWithdrawEnabled = data.subStatus === "Withdraw Formal RAI Response Enabled";
+    const initialIntakeNeeded = ![SEATOOL_STATUS.PENDING].includes(seatoolStatus);
 
     return {
       ...data,
+      proposedEffectiveDate: null, // blank out the value that will be transformed, we handle it below
       additionalInformation: data.additionalInformation,
-      changedDate: lastEventTimestampDate.toISOString(), // eventTimestamp as ISO string
+      changedDate: lastEventIsoDate, // eventTimestamp as ISO string
       cmsStatus, // Derived status
-      description: null, // Not provided in legacy, set to null
       id: data.pk, // pk becomes id
-      makoChangedDate: lastEventTimestampDate.toISOString(),
+      makoChangedDate: lastEventIsoDate,
       origin: ONEMAC_LEGACY_ORIGIN,
       raiWithdrawEnabled: isRaiResponseWithdrawEnabled,
       seatoolStatus,
       state: data.pk?.slice(0, 2), // Extract state from pk
       stateStatus,
-      statusDate: lastEventTimestampDate.toISOString(),
+      statusDate: lastEventIsoDate,
       proposedDate:
         data.proposedEffectiveDate && !isNaN(new Date(data.proposedEffectiveDate).getTime())
           ? data.proposedEffectiveDate
           : null,
-      subject: null,
-      submissionDate: submissionTimestampDate.toISOString(),
+      submissionDate: submissionIsoDate,
       submitterEmail: data.submitterEmail,
       submitterName: data.submitterName,
-      initialIntakeNeeded: true,
+      initialIntakeNeeded: initialIntakeNeeded,
+      raiReceivedDate: data.latestRaiResponseTimestamp
+        ? new Date(data.latestRaiResponseTimestamp).toISOString()
+        : null,
     };
   });
+
+function getIsoDateFromTimestamp(timestamp: number | null | undefined) {
+  if (!timestamp || timestamp === 0) {
+    return null;
+  }
+  return new Date(timestamp).toISOString();
+}
 
 function getSeaToolStatusFromLegacyStatus(legacyStatus: string | null | undefined) {
   if (!legacyStatus) {

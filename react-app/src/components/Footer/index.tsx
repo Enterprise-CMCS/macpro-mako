@@ -1,6 +1,9 @@
 import { Link } from "react-router";
+import { isStateUser } from "shared-utils";
 
+import { useGetUser } from "@/api";
 import { Alert, Button } from "@/components";
+import { useFeatureFlag } from "@/hooks/useFeatureFlag";
 
 type Props = {
   email: string;
@@ -10,11 +13,52 @@ type Props = {
     city: string;
     zip: number;
   };
+  showNavLinks?: boolean;
 };
 
-export const Footer = ({ email, address }: Props) => {
+export const Footer = ({ email, address, showNavLinks }: Props) => {
+  const shouldShowNavLinks = showNavLinks ?? true;
+  const { data: user } = useGetUser();
+  const isStateHomepage = useFeatureFlag("STATE_HOMEPAGE_FLAG");
+
   return (
     <footer>
+      {shouldShowNavLinks && (
+        <section className="bg-[#f0f0f0] text-sm">
+          <div className="grid grid-cols-12 gap-4 px-10 py-4 max-w-screen-xl mx-auto">
+            <div className="col-span-6 flex gap-8">
+              <a href="/" className="underline font-bold">
+                <p>Home</p>
+              </a>
+              <a href="/dashboard" className="underline font-bold">
+                <p>Dashboard</p>
+              </a>
+              {isStateHomepage && isStateUser(user.user) && (
+                <a href="/latestupdates" className="underline font-bold">
+                  <p>Latest Updates</p>
+                </a>
+              )}
+              <a href="/faq" className="underline font-bold">
+                <p>Support</p>
+              </a>
+            </div>
+            <div className="col-span-6 flex gap-8 justify-end">
+              <p>Help Desk:</p>
+              <p>
+                <a href="tel:(833) 228-2540" className="underline">
+                  (833) 228-2540
+                </a>
+              </p>
+              <p>
+                <a href="mailto:OneMAC_Helpdesk@cms.hhs.gov" className="underline">
+                  OneMAC_Helpdesk@cms.hhs.gov
+                </a>
+              </p>
+            </div>
+          </div>
+        </section>
+      )}
+
       <section className="bg-sky-100">
         <div className="grid grid-cols-12 gap-4 px-10 py-4 max-w-screen-xl mx-auto">
           <img
@@ -33,6 +77,7 @@ export const Footer = ({ email, address }: Props) => {
           </p>
         </div>
       </section>
+
       <div className="w-full bg-primary">
         <div className="px-10 py-4 text-white text-[.8rem] flex flex-col items-center sm:flex-row max-w-screen-xl mx-auto">
           <div>

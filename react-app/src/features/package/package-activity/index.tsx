@@ -70,7 +70,7 @@ const Submission = ({ packageActivity }: SubmissionProps) => {
           loading={loading}
           onClick={() => onZip(attachments)}
         >
-          Download documents
+          Download section attachments
         </Table.Button>
       )}
 
@@ -99,7 +99,6 @@ const PackageActivity = ({ packageActivity }: PackageActivityProps) => {
       case "new-medicaid-submission":
       case "temporary-extension":
       case "app-k":
-      case "new-legacy-submission":
         return "Initial Package Submitted";
 
       case "withdraw-package":
@@ -166,7 +165,7 @@ const DownloadAllButton = ({ packageId, submissionChangelog }: DownloadAllButton
 
   return (
     <Table.Button loading={loading} onClick={onDownloadAll} variant="outline">
-      Download all documents
+      Download all attachments
     </Table.Button>
   );
 };

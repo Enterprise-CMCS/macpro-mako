@@ -1,9 +1,46 @@
-import { test } from "@playwright/test";
+import * as fs from "fs";
 
-test.describe.skip("User Profile", () => {
+import { expect, test } from "@/fixtures/mocked";
+
+test.describe("User Profile", { tag: ["@profile", "@smoke"] }, () => {
   test.skip("Page header", async () => {});
 
   test.skip("Goto IDM", async () => {});
 
-  test.skip("My Information", async () => {});
+  test.describe("My Information", async () => {
+    test("state user", async ({ page }) => {
+      await page.goto("/profile");
+
+      await expect(page.getByText("State Submitter")).toBeVisible();
+      await expect(page.getByText("State Submitter")).toHaveText("State Submitter");
+    });
+
+    test("reviewer user", async ({ browser }) => {
+      const reviewerContext = await browser.newContext({
+        storageState: "playwright/.auth/reviewer-user.json",
+      });
+      const page = await reviewerContext.newPage();
+
+      await page.goto("/profile");
+
+      await expect(page.getByText("Reviewer", { exact: true })).toBeVisible();
+      await expect(page.getByText("Reviewer", { exact: true })).toHaveText("Reviewer");
+    });
+
+    if (fs.existsSync("playwright/.auth/eua-user.json")) {
+      test("EUA user", async ({ browser }) => {
+        const reviewerContext = await browser.newContext({
+          storageState: "playwright/.auth/eua-user.json",
+        });
+        const page = await reviewerContext.newPage();
+
+        await page.goto("/profile");
+
+        await expect(page.getByText("Reviewer", { exact: true })).toBeVisible();
+        await expect(page.getByText("Reviewer", { exact: true })).toHaveText("Reviewer");
+      });
+    } else {
+      test.skip("no auth file found, skipping test", () => {});
+    }
+  });
 });

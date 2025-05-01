@@ -8,6 +8,10 @@ vi.mock("libs/handler-lib", () => ({
   response: vi.fn((data) => data),
 }));
 
+vi.mock("libs/api/kafka", () => ({
+  produceMessage: vi.fn(() => Promise.resolve([{ partition: 0, offset: "1" }])),
+}));
+
 describe("handler", () => {
   beforeEach(() => {
     vi.clearAllMocks();
@@ -52,6 +56,8 @@ describe("handler", () => {
         changeMade: "change",
         mockEvent: "mock-event",
         changeReason: "reason",
+        submissionDate: "1/1/2025",
+        proposedDate: "12/1/2025",
       }),
     } as APIGatewayEvent;
 
@@ -76,6 +82,8 @@ describe("handler", () => {
         changeMade: "change",
         mockEvent: "mock-event",
         changeReason: "reason",
+        submissionDate: "1/1/2025",
+        proposedDate: "12/1/2025",
       }),
     } as APIGatewayEvent;
 
@@ -101,6 +109,8 @@ describe("handler", () => {
         mockEvent: "mock-event",
         changeMade: "change",
         changeReason: "reason",
+        submissionDate: "1/1/2025",
+        proposedDate: "12/1/2025",
       }),
     } as APIGatewayEvent;
 

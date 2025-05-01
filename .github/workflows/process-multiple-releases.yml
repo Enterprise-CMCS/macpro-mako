@@ -1,0 +1,107 @@
+name: Publish Multiple Release Notes
+
+on:
+  workflow_dispatch:
+    inputs:
+      PER_PAGE:
+        type: number
+        required: false
+        default: 30
+      PAGE:
+        type: number
+        required: false
+        default: 1
+
+# this action needs the same permissions as the Push to GitHub Pages action because it is calling it
+permissions:
+  contents: write
+  actions: read
+
+jobs:
+  get-all-tags:
+    name: Get All Tags
+    runs-on: ubuntu-latest
+    outputs:
+      tags: ${{ steps.tag-names.outputs.tags }}
+    steps:
+      - name: Get Tags
+        uses: octokit/request-action@v2.x
+        id: get-tags
+        with:
+          route: /repos/${{ github.repository }}/tags?per_page=${{ inputs.PER_PAGE <= 100 && inputs.PER_PAGE || 30 }}&page=${{ inputs.PAGE }}
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - name: Get Tag Names
+        id: tag-names
+        run: |
+          TAGS=$(echo '${{ steps.get-tags.outputs.data }}' | jq -c '[.[].name]' )
+          echo $TAGS
+          echo "tags=$TAGS" >> "$GITHUB_OUTPUT"
+          if [[ $TAGS == "[]" ]]; then
+            echo "Nothing to process" >> "$GITHUB_STEP_SUMMARY"
+          fi
+
+  create-posts:
+    needs: get-all-tags
+    if: needs.get-all-tags.outputs.tags != '[]'
+    continue-on-error: true
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        tag: ${{ fromJson(needs.get-all-tags.outputs.tags) }}
+    steps:
+      - uses: actions/checkout@v4
+      - id: post
+        uses: ./.github/actions/create-release-note-post
+        with:
+          tag: ${{ matrix.tag }}
+          token: ${{ secrets.GITHUB_TOKEN }}
+      - name: Upload Release Note
+        uses: actions/upload-artifact@v4
+        with:
+          name: release-note-${{ steps.post.outputs.filename }}
+          path: ${{ steps.post.outputs.filename }}
+          retention-days: 30
+
+  push-to-pages:
+    needs: [get-all-tags, create-posts]
+    if: needs.get-all-tags.outputs.tags != '[]'
+    continue-on-error: true
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/create-github-app-token@v1
+        id: app-token
+        with:
+          app-id: ${{ vars.APP_ID }}
+          private-key: ${{ secrets.PRIVATE_KEY }}
+      - name: Get GitHub App User ID
+        id: get-user-id
+        run: echo "user-id=$(gh api "/users/${{ steps.app-token.outputs.app-slug }}[bot]" --jq .id)" >> "$GITHUB_OUTPUT"
+        env:
+          GH_TOKEN: ${{ steps.app-token.outputs.token }}
+      - run: |
+          git config --global user.name '${{ steps.app-token.outputs.app-slug }}[bot]'
+          git config --global user.email '${{ steps.get-user-id.outputs.user-id }}+${{ steps.app-token.outputs.app-slug }}[bot]@users.noreply.github.com'
+      - name: Checkout GitHub Pages Branch
+        uses: actions/checkout@v4
+        with:
+          ref: gh-pages
+          token: ${{ steps.app-token.outputs.token }}
+      - name: Download Release Notes
+        uses: actions/download-artifact@v4
+        with:
+          path: _posts/releases/
+          pattern: release-note-*
+          merge-multiple: true
+      - name: Push to GitHub Pages Branch
+        run: |
+          git add -A
+          if [[ -z $(git status --porcelain) ]]; then
+            # if there were not changes, do nothing
+            echo "Release was already added" >> "$GITHUB_STEP_SUMMARY"
+          else
+            git commit -am "Adding release notes for the following tags: ${{ needs.get-all-tags.outputs.tags }}"
+            git pull origin gh-pages --rebase -s recursive -X ours
+            git push
+            echo "New URL: https://enterprise-cmcs.github.io/macpro-mako/releases" >> "$GITHUB_STEP_SUMMARY"
+          fi
