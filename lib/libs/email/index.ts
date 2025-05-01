@@ -67,7 +67,9 @@ const emailTemplates: EmailTemplates = {
 };
 
 // user roles are so different they will be their own thing for now
-export const getUserRoleTemplate = (userRoleAction: keyof typeof EmailContent.userRoleTemplate) => {
+export const getUserRoleTemplate = async (
+  userRoleAction: keyof typeof EmailContent.userRoleTemplate,
+): Promise<(variables: EmailContent.UserRoleEmailType) => Promise<EmailTemplate>> => {
   const userRoleTemplate = EmailContent.userRoleTemplate;
   return userRoleTemplate[userRoleAction];
 };

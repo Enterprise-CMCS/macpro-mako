@@ -146,18 +146,17 @@ export async function sendUserRoleEmails(kafkaRecord: any, config: any) {
     const templates = [];
     if (record.status === "pending") {
       console.log("ANDIE - pending emails");
-      templates.push(getUserRoleTemplate("AccessPendingNotice"));
-      templates.push(getUserRoleTemplate("AdminPendingNotice"));
+      templates.push(await getUserRoleTemplate("AccessPendingNotice"));
+      templates.push(await getUserRoleTemplate("AdminPendingNotice"));
     }
     // if the status = denied AND doneByEmail = email -> SelfRevokeAdminChangeEmail
     else if (record.status === "denied" && record.doneByEmail === record.email) {
       console.log("ANDIE - self revoke");
-      templates.push(getUserRoleTemplate("SelfRevokeAdminChangeEmail"));
+      templates.push(await getUserRoleTemplate("SelfRevokeAdminChangeEmail"));
     }
     // else -> AccessChangeNotice
     else {
-      templates.push(getUserRoleTemplate("AccessChangeNotice"));
-      console.log("ANDIE - template?", JSON.stringify(getUserRoleTemplate("AccessChangeNotice")));
+      templates.push(await getUserRoleTemplate("AccessChangeNotice"));
     }
 
     // Process templates sequentially
