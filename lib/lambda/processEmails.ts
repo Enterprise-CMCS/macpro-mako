@@ -2,7 +2,7 @@ import { SendEmailCommand, SendEmailCommandInput, SESClient } from "@aws-sdk/cli
 import { SendMessageCommand, SQSClient } from "@aws-sdk/client-sqs";
 import { Handler } from "aws-lambda";
 import { htmlToText, HtmlToTextOptions } from "html-to-text";
-import { getAllStateUsers, getEmailTemplates, userRoleTemplate } from "libs/email";
+import { getAllStateUsers, getEmailTemplates, getUserRoleTemplate } from "libs/email";
 import { EMAIL_CONFIG, getCpocEmail, getSrtEmails } from "libs/email/content/email-components";
 import * as os from "libs/opensearch-lib";
 import { getOsNamespace } from "libs/utils";
@@ -146,19 +146,18 @@ export async function sendUserRoleEmails(kafkaRecord: any, config: any) {
     const templates = [];
     if (record.status === "pending") {
       console.log("ANDIE - pending emails");
-      templates.push(userRoleTemplate["AccessPendingNotice"]);
-      templates.push(userRoleTemplate["AdminPendingNotice"]);
+      templates.push(getUserRoleTemplate("AccessPendingNotice"));
+      templates.push(getUserRoleTemplate("AdminPendingNotice"));
     }
     // if the status = denied AND doneByEmail = email -> SelfRevokeAdminChangeEmail
     else if (record.status === "denied" && record.doneByEmail === record.email) {
       console.log("ANDIE - self revoke");
-      templates.push(userRoleTemplate["SelfRevokeAdminChangeEmail"]);
+      templates.push(getUserRoleTemplate("SelfRevokeAdminChangeEmail"));
     }
     // else -> AccessChangeNotice
     else {
-      console.log("ANDIE - access change", JSON.stringify(userRoleTemplate));
-      templates.push(userRoleTemplate["AccessChangeNotice"]);
-      console.log("ANDIE - template?", JSON.stringify(userRoleTemplate["AccessChangeNotice"]));
+      templates.push(getUserRoleTemplate("AccessChangeNotice"));
+      console.log("ANDIE - template?", JSON.stringify(getUserRoleTemplate("AccessChangeNotice")));
     }
 
     // Process templates sequentially

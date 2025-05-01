@@ -67,7 +67,10 @@ const emailTemplates: EmailTemplates = {
 };
 
 // user roles are so different they will be their own thing for now
-export const userRoleTemplate = EmailContent.userRoleTemplate;
+export const getUserRoleTemplate = (userRoleAction: keyof typeof EmailContent.userRoleTemplate) => {
+  const userRoleTemplate = EmailContent.userRoleTemplate;
+  return userRoleTemplate[userRoleAction];
+};
 
 // Create a type-safe lookup function
 export function getEmailTemplate(
