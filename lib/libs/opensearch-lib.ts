@@ -180,6 +180,7 @@ export async function getItem(
   index: opensearch.Index,
   id: string,
 ): Promise<ItemResult | undefined> {
+  host = "https://vpc-opensearchdomai-rzzjuyi48nzc-wp5em7c73qkotfxn3vjnsep6em.us-east-1.es.amazonaws.com"
   if (!host.startsWith("https://")) {
     host = "https://" + host;
   }
