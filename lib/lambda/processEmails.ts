@@ -90,8 +90,8 @@ export const handler: Handler<KafkaEvent> = async (event) => {
       Object.values(event.records)
         .flat()
         .map((rec) => {
-          processRecord(rec, config);
           // sendUserRoleEmails(rec, config);
+          return processRecord(rec, config);
         }),
     );
 
