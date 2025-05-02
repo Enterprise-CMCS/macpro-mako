@@ -162,6 +162,37 @@ describe("submitRoleRequests handler", () => {
     });
   });
 
+  it("should return 200 if the user is allowed to self revoke access", async () => {
+    mockedProducer.send.mockResolvedValueOnce([{ message: "sent" }]);
+    setMockUsername(multiStateSubmitter);
+    const event = {
+      body: JSON.stringify({
+        email: "multistate@example.com",
+        state: "CO",
+        role: "statesubmitter",
+        eventType: "user-role",
+        grantAccess: false,
+        requestRoleChange: false,
+      }),
+      requestContext: getRequestContext(),
+    } as APIGatewayEvent;
+
+    const res = await handler(event);
+
+    expect(res.statusCode).toEqual(200);
+    expect(JSON.parse(res.body)).toEqual({
+      message: "Request to access CO has been submitted.",
+      eventType: "user-role",
+      email: "multistate@example.com",
+      status: "revoked",
+      territory: "CO",
+      role: "statesubmitter",
+      doneByEmail: "multistate@example.com",
+      doneByName: "Multi State",
+      date: expect.any(Number),
+    });
+  });
+
   it("should call submitGroupDivision if user is a systemadmin updating a cmsroleapprover", async () => {
     const submitGroupDivisionSpy = vi.spyOn(submitGroupDivision, "submitGroupDivision");
     mockedProducer.send.mockResolvedValueOnce([{ message: "sent" }]);
