@@ -90,44 +90,37 @@ export const Dashboard = () => {
               </Link>
             )}
           </div>
-          <div className="w-full">
-            <div className="flex flex-col">
-              <Tabs
-                value={osData.state.tab}
-                onValueChange={(tab) => {
-                  setLocalStorageCol((prev) => ({
-                    ...prev,
-                    [osData.state.tab]: osData.state,
-                  }));
 
-                  osData.onSet(
-                    (prev) => ({
-                      ...prev,
-                      ...localStorageCol[tab],
-                    }),
-                    true,
-                  );
-                }}
-              >
-                <div className="flex max-w-screen-xl mx-auto px-4 lg:px-8">
-                  <TabsList>
-                    <TabsTrigger value="spas" className="px-6 py-2">
-                      <h2 className="font-bold text-[1.3em]">SPAs</h2>
-                    </TabsTrigger>
-                    <TabsTrigger value="waivers" className="px-6 py-2">
-                      <h2 className="font-bold text-[1.3em]">Waivers</h2>
-                    </TabsTrigger>
-                  </TabsList>
-                </div>
-                <TabsContent value="spas">
-                  <SpasList />
-                </TabsContent>
-                <TabsContent value="waivers">
-                  <WaiversList />
-                </TabsContent>
-              </Tabs>
+          <Tabs
+            value={osData.state.tab}
+            onValueChange={(tab) => {
+              setLocalStorageCol((prev) => ({
+                ...prev,
+                [osData.state.tab]: osData.state,
+              }));
+
+              osData.onSet(
+                (prev) => ({
+                  ...prev,
+                  ...localStorageCol[tab],
+                }),
+                true,
+              );
+            }}
+          >
+            <div className="max-w-screen-xl mx-auto px-4 lg:px-8">
+              <TabsList>
+                <TabsTrigger value="spas">SPAs</TabsTrigger>
+                <TabsTrigger value="waivers">Waivers</TabsTrigger>
+              </TabsList>
             </div>
-          </div>
+            <TabsContent value="spas">
+              <SpasList />
+            </TabsContent>
+            <TabsContent value="waivers">
+              <WaiversList />
+            </TabsContent>
+          </Tabs>
         </FilterDrawerProvider>
       </div>
     </OsProvider>

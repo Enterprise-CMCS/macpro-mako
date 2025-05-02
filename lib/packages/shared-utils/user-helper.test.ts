@@ -2,6 +2,8 @@ import type { CognitoUserAttributes, FullUser } from "shared-types";
 import { describe, expect, it } from "vitest";
 
 import {
+  canRequestAccess,
+  canUpdateAccess,
   isCmsReadonlyUser,
   isCmsSuperUser,
   isCmsUser,
@@ -110,5 +112,28 @@ describe("isIDM", () => {
   it("returns true if a user has the IDM Cognito identity attribute", () => {
     expect(isIDM(testStateIDMUser.user)).toBe(true);
     expect(isIDM(testCMSIDMUser.user)).toBe(true);
+  });
+});
+
+describe("canUpdateAccess", () => {
+  it("should return false if the currentUserRole is not allowed to update roles", () => {
+    expect(canUpdateAccess("statesubmitter", "statesystemadmin")).toBeFalsy();
+  });
+
+  it("should return false if the currentUserRole is not allowed to update the roleToUpdate", () => {
+    expect(canUpdateAccess("statesystemadmin", "helpdesk")).toBeFalsy();
+  });
+
+  it("should return true if the currentUserRole is allowed to update the roleToUpdate", () => {
+    expect(canUpdateAccess("systemadmin", "helpdesk")).toBeTruthy();
+  });
+});
+
+describe("canRequestAccess", () => {
+  it("should return false if the role is not allowed to request access", () => {
+    expect(canRequestAccess("cmsreviewer")).toBeFalsy();
+  });
+  it("should return true if the role is allowed to request access", () => {
+    expect(canRequestAccess("statesubmitter")).toBeTruthy();
   });
 });

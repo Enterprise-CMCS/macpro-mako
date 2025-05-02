@@ -34,20 +34,22 @@ const defaultOSChangelogSearchHandler = http.post<PathParams, SearchQueryBody>(
       let changelog: TestChangelogItemResult[] =
         (item._source?.changelog as TestChangelogItemResult[]) || [];
       if (changelog.length > 0) {
-        mustTerms.forEach((term) => {
-          const filterValue = getTermValues(must, term);
-          const filterTerm: keyof TestChangelogDocument = term.replace(
-            ".keyword",
-            "",
-          ) as keyof TestChangelogDocument;
-          if (filterValue) {
-            changelog = filterItemsByTerm<TestChangelogDocument>(
-              changelog,
-              filterTerm,
-              filterValue,
-            );
-          }
-        });
+        mustTerms
+          .filter((term) => term !== "packageId.keyword" && term !== "packageId")
+          .forEach((term) => {
+            const filterValue = getTermValues(must, term);
+            const filterTerm: keyof TestChangelogDocument = term.replace(
+              ".keyword",
+              "",
+            ) as keyof TestChangelogDocument;
+            if (filterValue) {
+              changelog = filterItemsByTerm<TestChangelogDocument>(
+                changelog,
+                filterTerm,
+                filterValue,
+              );
+            }
+          });
       }
 
       return HttpResponse.json({
@@ -72,6 +74,11 @@ const defaultOSChangelogSearchHandler = http.post<PathParams, SearchQueryBody>(
 
     return new HttpResponse(null, { status: 404 });
   },
+);
+
+export const errorOSChangelogSearchHandler = http.post<PathParams, SearchQueryBody>(
+  "https://vpc-opensearchdomain-mock-domain.us-east-1.es.amazonaws.com/test-namespace-changelog/_search",
+  async () => new HttpResponse("Response Error", { status: 500 }),
 );
 
 export const changelogSearchHandlers = [defaultOSChangelogSearchHandler];

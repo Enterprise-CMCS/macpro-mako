@@ -1,31 +1,14 @@
 import { APIGatewayEvent } from "aws-lambda";
-import {
-  ROLES_ALLOWED_TO_REQUEST,
-  ROLES_ALLOWED_TO_UPDATE,
-  roleUpdatePermissionsMap,
-  UserRole,
-} from "lib/packages/shared-types/events/legacy-user";
 import { getAuthDetails, lookupUserAttributes } from "libs/api/auth/user";
 import { produceMessage } from "libs/api/kafka";
 import { response } from "libs/handler-lib";
+import { RoleRequest } from "react-app/src/api";
+import { canRequestAccess, canSelfRevokeAccess, canUpdateAccess } from "shared-utils";
 
+import { submitGroupDivision } from "./submitGroupDivision";
 import { getLatestActiveRoleByEmail, getUserByEmail } from "./userManagementService";
 
-type RoleStatus = "active" | "denied" | "pending";
-
-// Check if current user can update access for a certain role
-export const canUpdateAccess = (currentUserRole: UserRole, roleToUpdate: UserRole): boolean => {
-  if (ROLES_ALLOWED_TO_UPDATE.includes(currentUserRole)) {
-    if (roleUpdatePermissionsMap[currentUserRole]?.includes(roleToUpdate)) {
-      return true;
-    }
-  }
-  return false;
-};
-// Check if current user can request to change their own role
-export const canRequestAccess = (role: UserRole): boolean => {
-  return ROLES_ALLOWED_TO_REQUEST.includes(role);
-};
+type RoleStatus = "active" | "denied" | "pending" | "revoked";
 
 export const submitRoleRequests = async (event: APIGatewayEvent) => {
   if (!event?.body) {
@@ -78,7 +61,9 @@ export const submitRoleRequests = async (event: APIGatewayEvent) => {
       eventType,
       grantAccess,
       requestRoleChange,
-    } = typeof event.body === "string" ? JSON.parse(event.body) : event.body;
+      group = null,
+      division = null,
+    } = JSON.parse(event.body) as RoleRequest;
 
     let status: RoleStatus;
 
@@ -93,6 +78,12 @@ export const submitRoleRequests = async (event: APIGatewayEvent) => {
           body: { message: "Invalid or missing grantAccess value." },
         });
       }
+    } else if (
+      !requestRoleChange &&
+      !grantAccess &&
+      canSelfRevokeAccess(latestActiveRoleObj.role, userInfo.email, email)
+    ) {
+      status = "revoked";
     } else if (requestRoleChange && canRequestAccess(latestActiveRoleObj.role)) {
       // If the role is allowed to request access, set status to "pending"
       status = "pending";
@@ -105,7 +96,8 @@ export const submitRoleRequests = async (event: APIGatewayEvent) => {
       });
     }
 
-    const id = `${email}_${state}_${roleToUpdate.role}`;
+    const id = `${email}_${state}_${roleToUpdate}`;
+    const date = Date.now(); // correct time format?
 
     await produceMessage(
       topicName,
@@ -115,16 +107,38 @@ export const submitRoleRequests = async (event: APIGatewayEvent) => {
         email,
         status,
         territory: state,
-        role: roleToUpdate, // role for this state
-        doneByEmail: userAttributes.email,
+        role: roleToUpdate, // role for this state or newly requested role
+        doneByEmail: userInfo.email,
         doneByName: userInfo.fullName, // full name of current user. Cognito (userAttributes) may have a different full name
-        date: Date.now(), // correct time format?
+        date,
+        group,
+        division,
       }),
     );
 
+    // Update group and division info for new cmsroleapprovers
+    if (
+      canUpdateAccess(latestActiveRoleObj.role, roleToUpdate) &&
+      grantAccess === true &&
+      group &&
+      division
+    ) {
+      await submitGroupDivision({ userEmail: email, group, division });
+    }
+
     return response({
       statusCode: 200,
-      body: { message: `Request to access ${state} has been submitted.` },
+      body: {
+        message: `Request to access ${state} has been submitted.`,
+        eventType,
+        email,
+        status,
+        territory: state,
+        role: roleToUpdate, // role for this state
+        doneByEmail: userAttributes.email,
+        doneByName: userInfo.fullName, // full name of current user. Cognito (userAttributes) may have a different full name
+        date,
+      },
     });
   } catch (err: unknown) {
     console.log("An error occurred: ", err);

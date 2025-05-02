@@ -119,7 +119,7 @@ const PackageActivity = ({ packageActivity }: PackageActivityProps) => {
 
   return (
     <AccordionItem value={packageActivity.id}>
-      <AccordionTrigger className="bg-gray-100 px-3">
+      <AccordionTrigger className="bg-gray-100 px-3" showPlusMinus>
         <p className="flex flex-row gap-2 text-gray-600">
           <strong>
             {label} {packageActivity.submitterName ? `By ${packageActivity.submitterName}` : ""}

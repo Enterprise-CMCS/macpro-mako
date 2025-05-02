@@ -4,12 +4,13 @@ import {
   UserType as CognitoUserType,
 } from "@aws-sdk/client-cognito-identity-provider";
 import { APIGatewayEvent } from "aws-lambda";
+import { CognitoUserAttributes } from "shared-types";
+import { isCmsUser, isCmsWriteUser } from "shared-utils";
+
 import {
   getActiveStatesForUserByEmail,
   getLatestActiveRoleByEmail,
-} from "lib/lambda/user-management/userManagementService";
-import { CognitoUserAttributes } from "shared-types";
-import { isCmsUser, isCmsWriteUser } from "shared-utils";
+} from "../../../lambda/user-management/userManagementService";
 
 // Retrieve user authentication details from the APIGatewayEvent
 export function getAuthDetails(event: APIGatewayEvent) {

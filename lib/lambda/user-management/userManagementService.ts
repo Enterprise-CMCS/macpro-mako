@@ -52,7 +52,7 @@ export const getAllUserRolesByEmail = async (email: string) => {
         "email.keyword": email,
       },
     },
-    size: 100,
+    size: 200,
   });
 
   return result.hits.hits.map((hit: any) => ({ ...hit._source }));
@@ -83,7 +83,7 @@ export const getAllUserRoles = async () => {
     query: {
       match_all: {},
     },
-    size: 100,
+    size: 200,
   });
 
   return results.hits.hits.map((hit: any) => ({ ...hit._source }));
@@ -98,7 +98,7 @@ export const getAllUserRolesByState = async (state: string) => {
         "territory.keyword": state,
       },
     },
-    size: 100,
+    size: 200,
   });
 
   return results.hits.hits.map((hit: any) => ({ ...hit._source }));

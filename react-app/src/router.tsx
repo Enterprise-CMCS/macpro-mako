@@ -41,7 +41,7 @@ export const router = (loginFlag = false) => {
               path: "/signup",
               element: <SignUp />,
             },
-            { path: "/signup/state", element: <StateSignup /> },
+            // { path: "/signup/state", element: <StateSignup /> },
             { path: "/signup/state", element: <StateSignup /> },
             { path: "/signup/cms", element: <CMSSignup /> },
             {

@@ -1,7 +1,8 @@
-import { AppKStateEmail } from "libs/email/content/uploadSubsequentDocuments/emailTemplates/AppKState";
-import * as attachments from "libs/email/mock-data/attachments";
-import { emailTemplateValue } from "libs/email/mock-data/new-submission";
 import { formatActionType } from "shared-utils";
+
+import { AppKStateEmail } from "../../../content/uploadSubsequentDocuments/emailTemplates/AppKState";
+import * as attachments from "../../../mock-data/attachments";
+import { emailTemplateValue } from "../../../mock-data/new-submission";
 const AppKStateEmailPreview = () => {
   return (
     <AppKStateEmail

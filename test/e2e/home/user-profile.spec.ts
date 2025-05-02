@@ -1,3 +1,5 @@
+import * as fs from "fs";
+
 import { expect, test } from "@/fixtures/mocked";
 
 test.describe("User Profile", { tag: ["@profile", "@smoke"] }, () => {
@@ -24,5 +26,21 @@ test.describe("User Profile", { tag: ["@profile", "@smoke"] }, () => {
       await expect(page.getByText("Reviewer", { exact: true })).toBeVisible();
       await expect(page.getByText("Reviewer", { exact: true })).toHaveText("Reviewer");
     });
+
+    if (fs.existsSync("playwright/.auth/eua-user.json")) {
+      test("EUA user", async ({ browser }) => {
+        const reviewerContext = await browser.newContext({
+          storageState: "playwright/.auth/eua-user.json",
+        });
+        const page = await reviewerContext.newPage();
+
+        await page.goto("/profile");
+
+        await expect(page.getByText("Reviewer", { exact: true })).toBeVisible();
+        await expect(page.getByText("Reviewer", { exact: true })).toHaveText("Reviewer");
+      });
+    } else {
+      test.skip("no auth file found, skipping test", () => {});
+    }
   });
 });

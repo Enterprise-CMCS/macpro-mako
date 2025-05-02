@@ -11,6 +11,7 @@ export const legacyEventSchema = legacySharedSchema
     z.object({
       eventTimestamp: z.number().nullish(),
       lastEventTimestamp: z.number().nullish(),
+      lastActivityTimestamp: z.number().nullish(),
       submissionTimestamp: z.number().nullish(),
       pk: z.string(),
       currentStatus: z.string().nullish(),
@@ -29,7 +30,7 @@ export const legacyEventSchema = legacySharedSchema
   .transform((data) => {
     const seatoolStatus = getSeaToolStatusFromLegacyStatus(data.currentStatus);
     const { stateStatus, cmsStatus } = getStatus(seatoolStatus);
-    const lastEventIsoDate = getIsoDateFromTimestamp(data.lastEventTimestamp);
+    const lastEventIsoDate = getIsoDateFromTimestamp(data.lastActivityTimestamp);
     const submissionIsoDate = getIsoDateFromTimestamp(data.submissionTimestamp);
     const isRaiResponseWithdrawEnabled = data.subStatus === "Withdraw Formal RAI Response Enabled";
     const initialIntakeNeeded = ![SEATOOL_STATUS.PENDING].includes(seatoolStatus);

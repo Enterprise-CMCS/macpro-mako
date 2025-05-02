@@ -33,10 +33,17 @@ export const StateSignup = () => {
 
   if (!userDetails) return <LoadingSpinner />;
 
+  if (!userDetails?.role) return <Navigate to="/" />;
+
   const currentRole = userDetails.role;
+  // Only statesubmitters and statesystemadmins can access this page
   if (currentRole !== "statesubmitter" && currentRole !== "statesystemadmin")
     return <Navigate to="/profile" />;
+
+  // Determine which role the user is allowed to request based on their current role
   const requestRole = currentRole === "statesubmitter" ? "statesystemadmin" : "statesubmitter";
+
+  // Statesubmitters can request to be a statesystemadmin for 1 state
   const isRequestRoleAdmin = currentRole === "statesubmitter";
 
   const onChange = (values: StateCode[]) => {
@@ -54,12 +61,12 @@ export const StateSignup = () => {
           requestRoleChange: true,
         });
       }
-
+      navigate("/dashboard");
       banner({
         header: "Submission Completed",
         body: "Your submission has been received.",
         variant: "success",
-        pathnameToDisplayOn: window.location.pathname,
+        pathnameToDisplayOn: "/dashboard",
       });
     } catch (error) {
       console.error(error);
@@ -97,7 +104,7 @@ export const StateSignup = () => {
               <h2 className="text-xl font-bold mb-2">Select your State Access</h2>
               {isRequestRoleAdmin ? (
                 <Select onValueChange={(value: StateCode) => onChange([value])}>
-                  <SelectTrigger>
+                  <SelectTrigger aria-label="Select state">
                     <SelectValue placeholder="Select state here" />
                   </SelectTrigger>
                   <SelectContent>

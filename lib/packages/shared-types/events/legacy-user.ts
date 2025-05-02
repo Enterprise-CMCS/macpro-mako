@@ -22,11 +22,16 @@ export const roleUpdatePermissionsMap: UpdatePermissionsMap = {
     "helpdesk",
     "statesubmitter",
   ],
-  cmsroleapprover: ["statesystemadmin", "statesubmitter"],
-  statesystemadmin: ["statesubmitter"],
+  cmsroleapprover: ["statesystemadmin", "statesubmitter", "cmsreviewer"],
+  statesystemadmin: ["statesubmitter", "defaultcmsuser"],
 };
 export const ROLES_ALLOWED_TO_UPDATE = Object.keys(roleUpdatePermissionsMap) as UserRole[];
-export const ROLES_ALLOWED_TO_REQUEST: UserRole[] = ["statesubmitter", "statesystemadmin"];
+export const ROLES_ALLOWED_TO_REQUEST: UserRole[] = [
+  "statesubmitter",
+  "statesystemadmin",
+  "defaultcmsuser",
+  "cmsroleapprover",
+];
 
 const userStatus = z.enum(["active", "pending", "revoked", "denied"]);
 const roleEvent = z.enum(["user-role", "legacy-user-role"]);
@@ -42,6 +47,8 @@ export const baseUserRoleRequestSchema = z.object({
   doneByName: z.string(),
   date: z.number().optional(),
   eventType: roleEvent,
+  group: z.string().nullish(),
+  division: z.string().nullish(),
 });
 
 export type BaseUserRoleRequest = z.infer<typeof baseUserRoleRequestSchema>;
@@ -76,6 +83,8 @@ export const userRoleRequest = baseUserRoleRequestSchema.transform((data) => ({
   role: data.role,
   territory: data.territory,
   lastModifiedDate: data.date,
+  group: data.group,
+  division: data.division,
 }));
 
 // User Information Schema

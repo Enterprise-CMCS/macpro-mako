@@ -1,6 +1,6 @@
-import { TestUserData } from "../../index.d";
+import { TestUserDataWithRole } from "../../index.d";
 
-export const systemAdmin: TestUserData = {
+export const systemAdmin: TestUserDataWithRole = {
   UserAttributes: [
     {
       Name: "email",
@@ -32,9 +32,10 @@ export const systemAdmin: TestUserData = {
     },
   ],
   Username: "bd3fb35d-6495-4665-8bab-d00693796e91",
+  role: "systemadmin",
 };
 
-export const cmsRoleApprover: TestUserData = {
+export const cmsRoleApprover: TestUserDataWithRole = {
   UserAttributes: [
     {
       Name: "email",
@@ -66,6 +67,7 @@ export const cmsRoleApprover: TestUserData = {
     },
   ],
   Username: "dc891f53-d20c-484a-bc40-447fce719658",
+  role: "cmsroleapprover",
 };
 
-export const cmsUsers: TestUserData[] = [systemAdmin, cmsRoleApprover];
+export const cmsUsers: TestUserDataWithRole[] = [systemAdmin, cmsRoleApprover];

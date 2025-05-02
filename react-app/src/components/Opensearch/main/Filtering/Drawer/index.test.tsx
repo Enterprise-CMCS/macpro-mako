@@ -33,8 +33,8 @@ describe("OsFilterDrawer", () => {
     it("should handle clicking the Filter button and opening the drawer", async () => {
       const { user } = setup([], "spas");
       await user.click(screen.getByRole("button", { name: "Filters" }));
-      expect(screen.getByRole("heading", { name: "Filters", level: 4 })).toBeInTheDocument();
-      expect(screen.queryByRole("button", { name: "Reset" })).toBeInTheDocument();
+      expect(screen.getByRole("heading", { name: "Filter by", level: 4 })).toBeInTheDocument();
+      expect(screen.queryByRole("button", { name: "Clear all filters" })).toBeInTheDocument();
       expect(screen.queryByRole("button", { name: "Close" })).toBeInTheDocument();
 
       [
@@ -129,7 +129,7 @@ describe("OsFilterDrawer", () => {
         within(finalDisposition).queryByText("Jan 01, 2025 - Jan 01, 2025"),
       ).toBeInTheDocument();
 
-      await user.click(screen.queryByRole("button", { name: "Reset" }));
+      await user.click(screen.queryByRole("button", { name: "Clear all filters" }));
 
       expect(state.getAttribute("data-state")).toEqual("open");
       if (within(state).queryByLabelText("Remove MD")) {
@@ -153,7 +153,7 @@ describe("OsFilterDrawer", () => {
     it("should handle clicking the Close button", async () => {
       const { user } = setup([], "spas");
       await user.click(screen.getByRole("button", { name: "Filters" }));
-      expect(screen.getByRole("heading", { name: "Filters", level: 4 })).toBeInTheDocument();
+      expect(screen.getByRole("heading", { name: "Filter by", level: 4 })).toBeInTheDocument();
       await user.click(screen.queryByRole("button", { name: "Close" }));
       expect(screen.getByRole("button", { name: "Filters" }).getAttribute("data-state")).toEqual(
         "closed",
@@ -334,8 +334,8 @@ describe("OsFilterDrawer", () => {
     it("should open the drawer and show all the filters, if you click the Filter button", async () => {
       const { user } = setup([], "waivers");
       await user.click(screen.getByRole("button", { name: "Filters" }));
-      expect(screen.getByRole("heading", { name: "Filters", level: 4 })).toBeInTheDocument();
-      expect(screen.queryByRole("button", { name: "Reset" })).toBeInTheDocument();
+      expect(screen.getByRole("heading", { name: "Filter by", level: 4 })).toBeInTheDocument();
+      expect(screen.queryByRole("button", { name: "Clear all filters" })).toBeInTheDocument();
 
       [
         "State",
@@ -418,7 +418,7 @@ describe("OsFilterDrawer", () => {
     const { user } = setup([], "invalid");
     await user.click(screen.getByRole("button", { name: "Filters" }));
     expect(screen.getAllByRole("button").length).toEqual(2);
-    expect(screen.getByRole("button", { name: "Reset" })).toBeInTheDocument();
+    expect(screen.getByRole("button", { name: "Clear all filters" })).toBeInTheDocument();
     expect(screen.getByRole("button", { name: "Close" })).toBeInTheDocument();
   });
 });

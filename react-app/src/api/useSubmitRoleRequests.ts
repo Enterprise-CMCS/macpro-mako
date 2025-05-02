@@ -7,11 +7,13 @@ import { StateAccess } from "./useGetUserProfile";
 
 export type RoleRequest = {
   email: string;
-  state: StateCode;
+  state: StateCode | "N/A";
   role: UserRole;
   eventType: string;
   requestRoleChange: boolean; // is this a role change request? (used in state signup and profile page)
   grantAccess?: boolean; // true for active, false for denied, undefined for pending (used in user management page)
+  group?: string; // used for systemadmins upgrading defaultcmsuser to cmsroleapprover
+  division?: string; // used for systemadmins upgrading defaultcmsuser to cmsroleapprover
 };
 
 export const submitRoleRequests = async (request: RoleRequest): Promise<{ message: string }> => {
@@ -36,9 +38,9 @@ export const useSubmitRoleRequests = () => {
       onMutate: async (newRequest) => {
         await queryClient.cancelQueries(["roleRequests"]);
         // Save current cache in case there's an error
-        const previousRequests: StateAccess[] = queryClient.getQueryData<StateAccess[]>([
-          "roleRequests",
-        ]);
+        const previousRequests: StateAccess[] | undefined = queryClient.getQueryData<StateAccess[]>(
+          ["roleRequests"],
+        );
         // Updates existing cache if anything changed
         queryClient.setQueryData(["roleRequests"], (old: StateAccess[] = []) => {
           if (!Array.isArray(old)) return [];

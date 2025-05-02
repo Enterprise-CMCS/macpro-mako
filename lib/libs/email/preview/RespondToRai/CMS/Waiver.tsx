@@ -1,8 +1,8 @@
-import { WaiverCMSEmail } from "libs/email/content/respondToRai/emailTemplates";
-import { emailTemplateValue } from "libs/email/mock-data/respond-to-rai";
 import { formatActionType } from "shared-utils";
 
+import { WaiverCMSEmail } from "../../../content/respondToRai/emailTemplates";
 import * as attachments from "../../../mock-data/attachments";
+import { emailTemplateValue } from "../../../mock-data/respond-to-rai";
 
 export default () => {
   return (

@@ -1,12 +1,15 @@
-import { mockUseGetUser, PackageActionsRequestBody } from "mocks";
-import items from "mocks/data/items";
+import { APIGatewayEvent } from "aws-lambda";
+import { isAuthorizedToGetPackageActions } from "libs/api/auth/user";
 import { http, HttpResponse, PathParams } from "msw";
-import { opensearch, UserRoles } from "shared-types";
+import { opensearch } from "shared-types";
 import { getAvailableActions } from "shared-utils";
+
+import items from "../../data/items";
+import { getRequestContext, mockUseGetUser } from "../../index";
+import { PackageActionsRequestBody } from "../../index.d";
 
 const defaultApiPackageActionsHandler = http.post<PathParams, PackageActionsRequestBody>(
   "https://test-domain.execute-api.us-east-1.amazonaws.com/mocked-tests/getPackageActions",
-
   async ({ request }) => {
     const { id } = await request.json();
 
@@ -19,14 +22,14 @@ const defaultApiPackageActionsHandler = http.post<PathParams, PackageActionsRequ
       return HttpResponse.json({ message: "No record found for the given id" }, { status: 404 });
     }
 
+    const passedStateAuth = await isAuthorizedToGetPackageActions(
+      {
+        requestContext: getRequestContext(),
+      } as APIGatewayEvent,
+      item._source.state,
+    );
     const currUser = mockUseGetUser()?.data?.user;
-    const userRoles = (currUser?.["custom:cms-roles"] as string) || "";
-    const userStates = (currUser?.["custom:state"] as string) || "";
-    if (
-      !currUser ||
-      !userRoles.includes(UserRoles.STATE_SUBMITTER) ||
-      !userStates.includes(item._source.state)
-    ) {
+    if (!passedStateAuth || !currUser) {
       return HttpResponse.json(
         { message: "Not authorized to view resources from this state" },
         { status: 401 },
@@ -41,6 +44,35 @@ const defaultApiPackageActionsHandler = http.post<PathParams, PackageActionsRequ
     );
   },
 );
+
+export const onceApiPackageActionsHandler = (doc: opensearch.main.Document) =>
+  http.post<PathParams, PackageActionsRequestBody>(
+    "https://test-domain.execute-api.us-east-1.amazonaws.com/mocked-tests/getPackageActions",
+    async () => {
+      if (!doc) {
+        return HttpResponse.json([]);
+      }
+
+      const passedStateAuth = await isAuthorizedToGetPackageActions(
+        {
+          requestContext: getRequestContext(),
+        } as APIGatewayEvent,
+        doc.state,
+      );
+      const currUser = mockUseGetUser()?.data?.user;
+      if (!passedStateAuth || !currUser) {
+        return HttpResponse.json(
+          { message: "Not authorized to view resources from this state" },
+          { status: 401 },
+        );
+      }
+
+      return HttpResponse.json({
+        actions: getAvailableActions(currUser, doc) || [],
+      });
+    },
+    { once: true },
+  );
 
 export const errorApiPackageActionsHandler = http.post<PathParams, PackageActionsRequestBody>(
   "https://test-domain.execute-api.us-east-1.amazonaws.com/mocked-tests/getPackageActions",
