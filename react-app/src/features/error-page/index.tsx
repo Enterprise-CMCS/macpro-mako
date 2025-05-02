@@ -1,8 +1,11 @@
 import { Link } from "react-router";
 
 import { BreadCrumbs, SimplePageContainer } from "@/components";
+import { useFeatureFlag } from "@/hooks/useFeatureFlag";
 
 export const ErrorPage = () => {
+  const isFAQEnabled = useFeatureFlag("TOGGLE_FAQ");
+
   return (
     <SimplePageContainer>
       <BreadCrumbs
@@ -30,7 +33,10 @@ export const ErrorPage = () => {
             <Link className="text-2xl p-0 text-primary hover:underline font-bold" to="/">
               Go to Home Page
             </Link>
-            <Link className="text-2xl p-0 text-primary hover:underline font-bold" to="/support">
+            <Link
+              className="text-2xl p-0 text-primary hover:underline font-bold"
+              to={isFAQEnabled ? "/support" : "/faq"}
+            >
               Get Support
             </Link>
           </div>
