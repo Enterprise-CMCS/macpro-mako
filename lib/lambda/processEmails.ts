@@ -91,7 +91,7 @@ export const handler: Handler<KafkaEvent> = async (event) => {
         .flat()
         .map((rec) => {
           processRecord(rec, config);
-          sendUserRoleEmails(rec, config);
+          // sendUserRoleEmails(rec, config);
         }),
     );
 
@@ -199,6 +199,7 @@ export async function sendUserRoleEmails(kafkaRecord: any, config: any) {
       }
     }
   }
+  return;
 }
 
 export async function processRecord(kafkaRecord: KafkaRecord, config: ProcessEmailConfig) {
