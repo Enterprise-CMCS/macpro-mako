@@ -89,10 +89,7 @@ export const handler: Handler<KafkaEvent> = async (event) => {
     const results = await Promise.allSettled(
       Object.values(event.records)
         .flat()
-        .map((rec) => {
-          // sendUserRoleEmails(rec, config);
-          return processRecord(rec, config);
-        }),
+        .map((rec) => processRecord(rec, config)),
     );
 
     console.log("results: ", JSON.stringify(results, null, 2));
@@ -130,73 +127,59 @@ export const handler: Handler<KafkaEvent> = async (event) => {
 };
 
 // ANDIE: CHANNGE TYPE OF KAFKA RECORD
-export async function sendUserRoleEmails(kafkaRecord: any, config: any) {
-  // Decode the kafka record
-  const { key, value, timestamp } = kafkaRecord;
-  const id: string = decodeBase64WithUtf8(key);
+export async function sendUserRoleEmails(valueParsed: any, timestamp: number, config: any) {
   const record = {
     timestamp,
     applicationEndpointUrl: config.applicationEndpointUrl,
-    ...JSON.parse(decodeBase64WithUtf8(value)),
+    ...valueParsed,
   };
+  console.log("ANDIE - user-role event ");
+  // if the status = pending -> AdminPendingNotice & AccessPendingNotice
+  const templates = [];
+  if (record.status === "pending") {
+    console.log("ANDIE - pending emails");
+    templates.push(await getUserRoleTemplate("AccessPendingNotice"));
+    templates.push(await getUserRoleTemplate("AdminPendingNotice"));
+  }
+  // if the status = denied AND doneByEmail = email -> SelfRevokeAdminChangeEmail
+  else if (record.status === "denied" && record.doneByEmail === record.email) {
+    console.log("ANDIE - self revoke");
+    templates.push(await getUserRoleTemplate("SelfRevokeAdminChangeEmail"));
+  }
+  // else -> AccessChangeNotice
+  else {
+    templates.push(await getUserRoleTemplate("AccessChangeNotice"));
+  }
 
-  console.log("ANDIE - id:", id);
-  console.log("ANDIE - record: ", record);
-
-  if (record.eventType === "user-role" || record.eventType === "legacy-user-role") {
-    console.log("ANDIE - user-role event ");
-    // if the status = pending -> AdminPendingNotice & AccessPendingNotice
-    const templates = [];
-    if (record.status === "pending") {
-      console.log("ANDIE - pending emails");
-      templates.push(await getUserRoleTemplate("AccessPendingNotice"));
-      templates.push(await getUserRoleTemplate("AdminPendingNotice"));
+  // get the user's name
+  if (templates.length) {
+    try {
+      const userInfo = await getUserByEmail(record.email);
+      record.fullName = userInfo.fullName;
+      console.log("ANDIE - username: ", record.fullName);
+    } catch (error) {
+      console.error("Error trying to get user name:", error);
     }
-    // if the status = denied AND doneByEmail = email -> SelfRevokeAdminChangeEmail
-    else if (record.status === "denied" && record.doneByEmail === record.email) {
-      console.log("ANDIE - self revoke");
-      templates.push(await getUserRoleTemplate("SelfRevokeAdminChangeEmail"));
-    }
-    // else -> AccessChangeNotice
-    else {
-      templates.push(await getUserRoleTemplate("AccessChangeNotice"));
-    }
+  }
 
-    // get the user's name
-    if (templates.length) {
-      try {
-        const userInfo = await getUserByEmail(record.email);
-        record.fullName = userInfo.fullName;
-        console.log("ANDIE - username: ", record.fullName);
-      } catch (error) {
-        console.error("Error trying to get user name:", error);
-      }
-    }
+  const results = [];
+  for (const template of templates) {
+    console.log("ANDIE - temeplate", JSON.stringify(template));
+    try {
+      const filledTemplate = await template(record);
+      console.log("ANDIE - filledTemplate", JSON.stringify(filledTemplate));
+      validateEmailTemplate(filledTemplate);
+      console.log("ANDIE - validated");
+      const params = createEmailParams(filledTemplate, record.email, config.baseUrl, config.isDev);
+      console.log("ANDIE - params", params);
 
-    const results = [];
-    for (const template of templates) {
-      console.log("ANDIE - temeplate", JSON.stringify(template));
-      try {
-        const filledTemplate = await template(record);
-        console.log("ANDIE - filledTemplate", JSON.stringify(filledTemplate));
-        validateEmailTemplate(filledTemplate);
-        console.log("ANDIE - validated");
-        const params = createEmailParams(
-          filledTemplate,
-          record.email,
-          config.baseUrl,
-          config.isDev,
-        );
-        console.log("ANDIE - params", params);
-
-        const result = await sendEmail(params, config.region);
-        results.push({ success: true, result });
-        console.log(`Successfully sent email for template: ${JSON.stringify(result)}`);
-      } catch (error) {
-        console.error("Error processing template:", error);
-        results.push({ success: false, error });
-        // Continue with next template instead of throwing
-      }
+      const result = await sendEmail(params, config.region);
+      results.push({ success: true, result });
+      console.log(`Successfully sent email for template: ${JSON.stringify(result)}`);
+    } catch (error) {
+      console.error("Error processing template:", error);
+      results.push({ success: false, error });
+      // Continue with next template instead of throwing
     }
   }
   return;
@@ -206,12 +189,16 @@ export async function processRecord(kafkaRecord: KafkaRecord, config: ProcessEma
   console.log("processRecord called with kafkaRecord: ", JSON.stringify(kafkaRecord, null, 2));
   const { key, value, timestamp } = kafkaRecord;
   const id: string = decodeBase64WithUtf8(key);
+  const valueParsed = JSON.parse(decodeBase64WithUtf8(value));
+
+  if (valueParsed.eventType === "user-role" || valueParsed.eventType === "")
+    sendUserRoleEmails(valueParsed, timestamp, config);
 
   if (kafkaRecord.topic === "aws.seatool.ksql.onemac.three.agg.State_Plan") {
     const safeID = id.replace(/^"|"$/g, "");
     const seatoolRecord: Document = {
       safeID,
-      ...JSON.parse(decodeBase64WithUtf8(value)),
+      ...valueParsed,
     };
     const safeSeatoolRecord = opensearch.main.seatool.transform(safeID).safeParse(seatoolRecord);
 
