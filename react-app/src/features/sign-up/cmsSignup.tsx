@@ -1,8 +1,13 @@
 import { useState } from "react";
 import { Navigate, useNavigate } from "react-router";
 
-import { useGetUserDetails } from "@/api";
 import {
+  useGetUserDetails,
+  // useSubmitGroupDivision,
+  useSubmitRoleRequests,
+} from "@/api";
+import {
+  banner,
   Button,
   ConfirmationDialog,
   LoadingSpinner,
@@ -21,19 +26,49 @@ export const CMSSignup = () => {
   const [showModal, setShowModal] = useState<boolean>(false);
   const [group, setGroup] = useState<groupDivisionType | null>(null);
   const [division, setDivision] = useState<divisionsType | null>(null);
+  const { mutateAsync: submitRequest } = useSubmitRoleRequests();
 
   const navigate = useNavigate();
 
   const { data: userDetails } = useGetUserDetails();
   if (!userDetails) return <LoadingSpinner />;
 
+  if (!userDetails?.role) return <Navigate to="/" />;
+
   const currentRole = userDetails.role;
   if (currentRole !== "defaultcmsuser" && currentRole !== "cmsroleapprover")
     return <Navigate to="/profile" />;
 
-  const onSubmit = () => {
-    //TODO: add logic for submitting cms role request change
-    console.log("group: ", group, " division: ", division);
+  const onSubmit = async () => {
+    try {
+      await submitRequest({
+        email: userDetails.email,
+        state: "N/A",
+        role: "cmsroleapprover",
+        eventType: "user-role",
+        requestRoleChange: true,
+        group: group.abbr,
+        division: division.abbr,
+      });
+      // TODO: Change?
+      navigate("/");
+
+      banner({
+        header: "Submission Completed",
+        body: "Your submission has been received.",
+        variant: "success",
+        pathnameToDisplayOn: "/",
+      });
+    } catch (error) {
+      console.error(`Error updating group and division: ${error?.message || error}`);
+
+      banner({
+        header: "An unexpected error has occurred:",
+        body: error instanceof Error ? error.message : String(error),
+        variant: "destructive",
+        pathnameToDisplayOn: window.location.pathname,
+      });
+    }
   };
 
   return (
@@ -58,9 +93,9 @@ export const CMSSignup = () => {
               <h2 className="text-xl font-bold mb-2">Select a Group and Division</h2>
             </div>
 
-            {/* TODO: mimic onemac Group logic */}
+            {/* Not doing anything with group and division besides updating user index */}
             <div className="py-4">
-              <h2 className="text-xl font-bold mb-2">Select your State Access</h2>
+              <h2 className="text-xl font-bold mb-2">Group</h2>
               <Select
                 onValueChange={(value) => {
                   const matchingGroup: groupDivisionType[] = groupDivision.filter(
@@ -69,7 +104,7 @@ export const CMSSignup = () => {
                   setGroup(matchingGroup[0]);
                 }}
               >
-                <SelectTrigger>
+                <SelectTrigger aria-label="Select group">
                   <SelectValue placeholder="Select state here" />
                 </SelectTrigger>
                 <SelectContent>
@@ -85,17 +120,16 @@ export const CMSSignup = () => {
 
             {group && (
               <div className="py-4">
-                <h2 className="text-xl font-bold mb-2">Select your State Access</h2>
+                <h2 className="text-xl font-bold mb-2">Division</h2>
                 <Select
                   onValueChange={(value) => {
                     const matchingDivision: divisionsType[] = group.divisions.filter(
                       (division) => division.id === parseInt(value),
                     );
-                    console.log(matchingDivision);
                     setDivision(matchingDivision[0]);
                   }}
                 >
-                  <SelectTrigger>
+                  <SelectTrigger aria-label="Select division">
                     <SelectValue placeholder="Select state here" />
                   </SelectTrigger>
                   <SelectContent>

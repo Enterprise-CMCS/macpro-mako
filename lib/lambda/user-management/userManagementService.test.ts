@@ -90,31 +90,26 @@ describe("User Management Service", () => {
       });
     });
     it("should handle an undefined email in search", async () => {
+      const emails = [STATE_SUBMITTER_EMAIL, STATE_SYSTEM_ADMIN_EMAIL];
       // @ts-ignore testing undefined email
-      const result = await getUsersByEmails([
-        STATE_SUBMITTER_EMAIL,
-        STATE_SYSTEM_ADMIN_EMAIL,
-        undefined,
-      ]);
+      emails.push(undefined);
+      const result = await getUsersByEmails(emails);
       expect(result).toEqual({
         [STATE_SUBMITTER_EMAIL]: STATE_SUBMITTER_USER._source,
         [STATE_SYSTEM_ADMIN_EMAIL]: STATE_SYSTEM_ADMIN_USER._source,
       });
     });
     it("should handle a null email in search", async () => {
+      const emails = [STATE_SUBMITTER_EMAIL, STATE_SYSTEM_ADMIN_EMAIL];
       // @ts-ignore testing a null email
-      const result = await getUsersByEmails([
-        STATE_SUBMITTER_EMAIL,
-        STATE_SYSTEM_ADMIN_EMAIL,
-        null,
-      ]);
+      emails.push(null);
+      const result = await getUsersByEmails(emails);
       expect(result).toEqual({
         [STATE_SUBMITTER_EMAIL]: STATE_SUBMITTER_USER._source,
         [STATE_SYSTEM_ADMIN_EMAIL]: STATE_SYSTEM_ADMIN_USER._source,
       });
     });
     it("should handle an empty string email in search", async () => {
-      // @ts-ignore testing null email
       const result = await getUsersByEmails([STATE_SUBMITTER_EMAIL, STATE_SYSTEM_ADMIN_EMAIL, ""]);
       expect(result).toEqual({
         [STATE_SUBMITTER_EMAIL]: STATE_SUBMITTER_USER._source,

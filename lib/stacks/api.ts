@@ -291,6 +291,18 @@ export class Api extends cdk.NestedStack {
         provisionedConcurrency: 2,
       },
       {
+        id: "submitGroupDivision",
+        entry: join(__dirname, "../lambda/user-management/submitGroupDivision.ts"),
+        environment: {
+          dbInfoSecretName,
+          topicName,
+          brokerString,
+          osDomain: `https://${openSearchDomainEndpoint}`,
+          indexNamespace,
+        },
+        provisionedConcurrency: 2,
+      },
+      {
         id: "updateUserRoles",
         entry: join(__dirname, "../lambda/user-management/updateUserRoles.ts"),
         environment: {
@@ -556,6 +568,11 @@ export class Api extends cdk.NestedStack {
         path: "getUserProfile",
         lambda: lambdas.getUserProfile,
         method: "GET",
+      },
+      submitGroupDivision: {
+        path: "submitGroupDivision",
+        lambda: lambdas.submitGroupDivision,
+        method: "POST",
       },
       updateUserRoles: {
         path: "updateUserRoles",

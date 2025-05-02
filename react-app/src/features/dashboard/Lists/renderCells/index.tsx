@@ -19,7 +19,7 @@ export type CellIdLinkProps = {
 
 export const CellDetailsLink = ({ id, authority }: CellIdLinkProps) => (
   <Link
-    className="cursor-pointer text-blue-600"
+    className="cursor-pointer text-blue-600 hover:underline"
     to={`/details/${encodeURIComponent(authority)}/${encodeURIComponent(id)}`}
   >
     {id}

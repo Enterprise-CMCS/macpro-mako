@@ -43,7 +43,7 @@ export type TestUserResult = {
   found: boolean;
   _source: {
     id: string;
-    eventType: "user-role" | "legacy-user-role";
+    eventType: "user-info" | "legacy-user-info";
     email: string;
     fullName: string;
     role:
@@ -52,11 +52,21 @@ export type TestUserResult = {
       | "cmsreviewer"
       | "statesystemadmin"
       | "helpdesk"
-      | "statesubmitter";
+      | "statesubmitter"
+      | "systemadmin";
   };
 };
 
 export type TestUserDocument = TestUserResult["_source"];
+
+export type TestUserRole =
+  | "defaultcmsuser"
+  | "cmsroleapprover"
+  | "cmsreviewer"
+  | "statesystemadmin"
+  | "helpdesk"
+  | "statesubmitter"
+  | "systemadmin";
 
 export type TestRoleResult = {
   _id: string;
@@ -68,13 +78,7 @@ export type TestRoleResult = {
     doneByEmail: string;
     doneByName: string;
     status: "active" | "pending" | "revoked" | "denied";
-    role:
-      | "defaultcmsuser"
-      | "cmsroleapprover"
-      | "cmsreviewer"
-      | "statesystemadmin"
-      | "helpdesk"
-      | "statesubmitter";
+    role: TestUserRole;
     territory: string;
     lastModifiedDate: number;
   };
@@ -222,4 +226,13 @@ export type AttachmentUrlRequestBody = {
 
 export type PackageActionsRequestBody = {
   id: string;
+};
+
+export type SubmitRoleRequestBody = {
+  email: string;
+  state: string;
+  role: TestUserRole;
+  eventType: string;
+  grantAccess?: boolean;
+  requestRoleChange: boolean;
 };

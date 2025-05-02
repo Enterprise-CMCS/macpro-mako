@@ -32,6 +32,8 @@ export type UserRoleType = {
   lastModifiedDate: number;
   status: StatusType;
   eventType: string;
+  group?: string;
+  division?: string;
 };
 type headingType = { [key: string]: keyof UserRoleType | null };
 
@@ -49,7 +51,7 @@ const pendingCircle = (
 );
 const initSortUserData = (userData: UserRoleType[]) => {
   if (!userData.length) return [];
-  // seprate pending / other
+  // separate pending / other
   const pendingRoles = userData.filter((x: UserRoleType) => x.status === "pending");
   const remainingRoles = userData.filter((x: UserRoleType) => x.status !== "pending");
 
@@ -65,9 +67,9 @@ const initSortUserData = (userData: UserRoleType[]) => {
 
   return sorted;
 };
-const sortUserData = (sortByKey: keyof UserRoleType, dirrection: boolean, data: UserRoleType[]) => {
-  // when dirrection is true, that means we are decending
-  const [last, first] = dirrection ? [-1, 1] : [1, -1];
+const sortUserData = (sortByKey: keyof UserRoleType, direction: boolean, data: UserRoleType[]) => {
+  // when direction is true, that means we are descending
+  const [last, first] = direction ? [-1, 1] : [1, -1];
   const sortStatus = (a: UserRoleType, b: UserRoleType) => {
     switch (a.status) {
       case "pending":
@@ -125,6 +127,8 @@ export const renderCellActions = (
       role: userRole.role,
       grantAccess: modalAction[action] === "grant",
       eventType: userRole.eventType,
+      group: userRole.group ?? null,
+      division: userRole.division ?? null,
     });
   };
   return (

@@ -7,7 +7,7 @@ export type UserDetails = {
   eventType: string;
   email: string;
   fullName: string;
-  role: UserRole;
+  role?: UserRole;
 };
 
 export const getUserDetails = async (): Promise<UserDetails> => {
