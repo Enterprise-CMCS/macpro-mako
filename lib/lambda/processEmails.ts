@@ -164,6 +164,10 @@ export async function sendUserRoleEmails(valueParsed: any, timestamp: number, co
   }
 
   const results = [];
+
+  const secret = await getSecret(config.emailAddressLookupSecretName);
+  const emails: EmailAddresses = JSON.parse(secret);
+
   for (const template of templates) {
     console.log("ANDIE - temeplate", JSON.stringify(template));
     try {
@@ -171,7 +175,12 @@ export async function sendUserRoleEmails(valueParsed: any, timestamp: number, co
       console.log("ANDIE - filledTemplate", JSON.stringify(filledTemplate));
       validateEmailTemplate(filledTemplate);
       console.log("ANDIE - validated");
-      const params = createEmailParams(filledTemplate, record.email, config.baseUrl, config.isDev);
+      const params = createEmailParams(
+        filledTemplate,
+        emails.sourceEmail,
+        config.baseUrl,
+        config.isDev,
+      );
       console.log("ANDIE - params", params);
 
       const result = await sendEmail(params, config.region);
