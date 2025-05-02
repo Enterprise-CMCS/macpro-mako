@@ -5,7 +5,7 @@ import { htmlToText, HtmlToTextOptions } from "html-to-text";
 import { getAllStateUsers, getEmailTemplates } from "libs/email";
 import { EMAIL_CONFIG, getCpocEmail, getSrtEmails } from "libs/email/content/email-components";
 import * as os from "libs/opensearch-lib";
-import { getOsNamespace } from "libs/utils";
+import { getOsNamespace, getDomain } from "libs/utils";
 import { log } from "node:console";
 import {
   EmailAddresses,
@@ -17,7 +17,9 @@ import {
 } from "shared-types";
 import { decodeBase64WithUtf8, formatActionType, getSecret } from "shared-utils"
 import { retry } from "shared-utils/retry";
-import { getPackage, getPackageChangelog } from "../libs/api/package";
+// import { getDomain, getOsNamespace } from "libs/utils";
+// import { getPackage, getPackageChangelog } from "../libs/api/package";
+// import { useGetItem } from "../";
 
 class TemporaryError extends Error {
   constructor(message: string) {
@@ -137,8 +139,11 @@ export async function processRecord(kafkaRecord: KafkaRecord, config: ProcessEma
 
   if (parsedRecord?.event == "respond-to-rai" && parsedRecord?.authority == "CHIP SPA") {
     console.log("respond to rai event for package: ", parsedRecord.id);
-    const osRecord = await getPackage(parsedRecord.id);
-    console.log("returned open search record: ", osRecord);
+    const item = await os.getItem(config.osDomain, getOsNamespace("main"), parsedRecord.id);
+
+    // const item = await os.getItem(getDomain(), getOsNamespace("main"), parsedResult.data.id);
+    // const osRecord = await getPackage(parsedRecord.id);
+    console.log("returned open search record: ", item);
   }
 
 

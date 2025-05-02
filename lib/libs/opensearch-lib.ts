@@ -180,6 +180,9 @@ export async function getItem(
   index: opensearch.Index,
   id: string,
 ): Promise<ItemResult | undefined> {
+  if (!host.startsWith("https://")) {
+    host = "https://" + host;
+  }
   console.log("host: ", host);
   console.log("index: ", index);
   console.log("id: ", id);

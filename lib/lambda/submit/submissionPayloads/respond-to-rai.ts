@@ -13,7 +13,7 @@ export const respondToRai = async (event: APIGatewayEvent) => {
   if (!parsedResult.success) {
     throw parsedResult.error;
   }
-
+  console.log(" parsedResult.data.id", parsedResult.data.id);
   // This is the backend check for auth
   if (!(await isAuthorized(event, parsedResult.data.id.slice(0, 2)))) {
     throw "Unauthorized";
@@ -25,6 +25,7 @@ export const respondToRai = async (event: APIGatewayEvent) => {
   }
 
   const item = await os.getItem(getDomain(), getOsNamespace("main"), parsedResult.data.id);
+  console.log("item : ", item);
   const authDetails = getAuthDetails(event);
   const userAttr = await lookupUserAttributes(authDetails.userId, authDetails.poolId);
   const submitterEmail = userAttr.email;

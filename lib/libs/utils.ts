@@ -30,8 +30,8 @@ export function getOsNamespace(baseIndex: BaseIndex): Index {
 
   console.log("osNamespace: ", `${indexNamespace}${baseIndex}`)
 
-  // return `${indexNamespace}${baseIndex}`;
-  return "mainmain"
+  return `${indexNamespace}${baseIndex}`;
+  // return "mainmain"
 }
 
 /**
