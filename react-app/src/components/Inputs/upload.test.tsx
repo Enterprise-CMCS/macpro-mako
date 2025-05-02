@@ -172,19 +172,44 @@ describe("Upload", () => {
     });
   });
 
-  it("handles file removal on event", () => {
+  it("removes file after confirmation", async () => {
     const mockSetFiles = vi.fn();
 
-    // Render the component with necessary props
     renderWithQueryClient(<Upload {...defaultProps} files={files} setFiles={mockSetFiles} />);
 
-    // Simulate the event (e.g., a click on the remove button)
-    const removeButton = screen.getByTestId(`upload-component-remove-file-${FILE_REMOVE}.txt`); // Ensure your component uses this testId
+    const removeButton = screen.getByTestId(`upload-component-remove-file-${FILE_REMOVE}.txt`);
     fireEvent.click(removeButton);
 
-    // Assert that setFiles was called with the updated files array
-    expect(mockSetFiles).toHaveBeenCalledWith(
-      files.filter((file) => file.filename !== `${FILE_REMOVE}.txt`),
-    );
+    // Confirm dialog appears
+    expect(await screen.findByText("Delete Attachment?")).toBeInTheDocument();
+
+    // Click confirm
+    const confirmButton = screen.getByRole("button", { name: /Yes, delete/i });
+    fireEvent.click(confirmButton);
+
+    await waitFor(() => {
+      expect(mockSetFiles).toHaveBeenCalledWith(
+        files.filter((file) => file.filename !== `${FILE_REMOVE}.txt`),
+      );
+    });
+  });
+
+  it("does not remove file if cancel is clicked", async () => {
+    const mockSetFiles = vi.fn();
+
+    renderWithQueryClient(<Upload {...defaultProps} files={files} setFiles={mockSetFiles} />);
+
+    const removeButton = screen.getByTestId(`upload-component-remove-file-${FILE_REMOVE}.txt`);
+    fireEvent.click(removeButton);
+
+    expect(await screen.findByText("Delete Attachment?")).toBeInTheDocument();
+
+    // Click cancel (assumes cancel button has "Cancel" text)
+    const cancelButton = screen.getByRole("button", { name: /cancel/i });
+    fireEvent.click(cancelButton);
+
+    await waitFor(() => {
+      expect(mockSetFiles).not.toHaveBeenCalled();
+    });
   });
 });
