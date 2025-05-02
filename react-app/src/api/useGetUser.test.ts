@@ -88,6 +88,7 @@ describe("getUser", () => {
       "custom:state": "VA,OH,SC,CO,GA,MD",
       "custom:cms-roles": "onemac-micro-cmsreview",
       username: "0000aaaa-0000-00aa-0a0a-aaaaaa000000",
+      role: "statesubmitter",
     });
   });
   it("handles a user with no 'custom:cms-roles'", async () => {
@@ -106,6 +107,7 @@ describe("getUser", () => {
       "custom:state": "VA,OH,SC,CO,GA,MD",
       "custom:cms-roles": "",
       username: "0000aaaa-0000-00aa-0a0a-aaaaaa000000",
+      role: "statesubmitter",
     });
   });
   it("handles and logs errors", async () => {
