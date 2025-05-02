@@ -262,7 +262,7 @@ export async function processRecord(kafkaRecord: KafkaRecord, config: ProcessEma
   console.log("record: ", JSON.stringify(record, null, 2));
 
   console.log("ANDIE - ", valueParsed);
-  if (valueParsed.eventType === "user-role" || valueParsed.eventType === "") {
+  if (valueParsed.eventType === "user-role" || valueParsed.eventType === "legacy-user-role") {
     try {
       console.log("Sending user role email...");
       await sendUserRoleEmails(valueParsed, timestamp, config);
@@ -270,7 +270,6 @@ export async function processRecord(kafkaRecord: KafkaRecord, config: ProcessEma
       console.error("Error sending user email", error);
       throw error;
     }
-
     return;
   }
 
