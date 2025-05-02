@@ -24,7 +24,7 @@ export const userRoleTemplate = {
     const stateAccess =
       variables.territory === "N/A" ? "" : ` for ${statesMap[variables.territory]}`;
     return {
-      to: "Andie Swift <aswift@fearless.tech>",
+      to: [`${variables.fullName} <${variables.email}>`],
       subject: `Your OneMAC ${roleDisplay} Access${stateAccess} has been ${statusMap[variables.status]}`,
       body: await render(<AccessChangeNoticeEmail variables={variables} />),
     };
@@ -33,7 +33,7 @@ export const userRoleTemplate = {
     console.log("ANDIE - we're in 2", variables);
 
     return {
-      to: "Andie Swift <aswift@fearless.tech>",
+      to: [`${variables.fullName} <${variables.email}>`],
       subject: "Your OneMAC Role Access is Pending Review",
       body: await render(<AccessPendingNoticeEmail variables={variables} />),
     };
@@ -44,7 +44,7 @@ export const userRoleTemplate = {
     //   TODO: add logic to actually get approverList?
     const approverList = [`${variables.fullName} <${variables.email}>`];
     return {
-      to: "Andie Swift <aswift@fearless.tech>",
+      to: approverList,
       subject: `New OneMAC ${roleDisplay} Access Request`,
       body: await render(<AdminPendingNoticeEmail variables={variables} />),
     };
@@ -56,7 +56,7 @@ export const userRoleTemplate = {
     //   TODO: add logic to actually get approverList?
     const approverList = [`${variables.fullName} <${variables.email}>`];
     return {
-      to: "Andie Swift <aswift@fearless.tech>",
+      to: approverList,
       subject: `OneMAC State access for ${stateAccess} was self-revoked by ${variables.fullName}`,
       body: await render(<SelfRevokeAdminChangeEmail variables={variables} />),
     };
