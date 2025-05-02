@@ -1,6 +1,5 @@
 import { events, getStatus, SEATOOL_STATUS } from "shared-types";
-
-import { seaToolFriendlyTimestamp } from "../../../../shared-utils/seatool-date-helper";
+import { seaToolFriendlyTimestamp } from "shared-utils/seatool-date-helper";
 
 export const transform = () => {
   return events["new-chip-submission"].schema.transform((data) => {

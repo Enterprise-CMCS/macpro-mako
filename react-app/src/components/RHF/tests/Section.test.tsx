@@ -53,7 +53,7 @@ const testDocData: FormSchema = {
 };
 
 describe("Section Tests", () => {
-  test("renders, subsections distinct", () => {
+  test.only("renders, subsections distinct", () => {
     renderWithQueryClient(<TestWrapper data={testDocData} />);
     const sectionHeader = screen.getByText("Section");
     const subsectionHeader = screen.getByText("Subsection");
