@@ -133,7 +133,7 @@ export async function sendUserRoleEmails(valueParsed: any, timestamp: number, co
     applicationEndpointUrl: config.applicationEndpointUrl,
     ...valueParsed,
   };
-  console.log("ANDIE - user-role event ");
+  console.log("ANDIE - user-role event ", record);
   // if the status = pending -> AdminPendingNotice & AccessPendingNotice
   const templates = [];
   if (record.status === "pending") {
@@ -148,6 +148,7 @@ export async function sendUserRoleEmails(valueParsed: any, timestamp: number, co
   }
   // else -> AccessChangeNotice
   else {
+    console.log("ANDIE -- all other emails");
     templates.push(await getUserRoleTemplate("AccessChangeNotice"));
   }
 
@@ -190,11 +191,6 @@ export async function processRecord(kafkaRecord: KafkaRecord, config: ProcessEma
   const { key, value, timestamp } = kafkaRecord;
   const id: string = decodeBase64WithUtf8(key);
   const valueParsed = JSON.parse(decodeBase64WithUtf8(value));
-
-  if (valueParsed.eventType === "user-role" || valueParsed.eventType === "") {
-    await sendUserRoleEmails(valueParsed, timestamp, config);
-    return;
-  }
 
   if (kafkaRecord.topic === "aws.seatool.ksql.onemac.three.agg.State_Plan") {
     const safeID = id.replace(/^"|"$/g, "");
@@ -264,6 +260,19 @@ export async function processRecord(kafkaRecord: KafkaRecord, config: ProcessEma
     ...JSON.parse(decodeBase64WithUtf8(value)),
   };
   console.log("record: ", JSON.stringify(record, null, 2));
+
+  console.log("ANDIE - ", valueParsed);
+  if (valueParsed.eventType === "user-role" || valueParsed.eventType === "") {
+    try {
+      console.log("Sending user role email...");
+      await sendUserRoleEmails(valueParsed, timestamp, config);
+    } catch (error) {
+      console.error("Error sending user email", error);
+      throw error;
+    }
+
+    return;
+  }
 
   if (record.origin !== "mako") {
     console.log("Kafka event is not of mako origin. Doing nothing.");
