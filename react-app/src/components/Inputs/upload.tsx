@@ -57,12 +57,6 @@ export const Upload = ({ maxFiles, files, setFiles, dataTestId }: UploadProps) =
     },
     {} as Record<string, string[]>,
   );
-  const promptOnDelete = {
-    header: "Delete Attachment?",
-    body: "Are you sure you want to delete this attachment?",
-    acceptButtonText: "Yes, delete",
-    cancelButtonText: "Cancel",
-  };
 
   const existingFileNames = files.map((file) => file.filename);
 
@@ -158,7 +152,9 @@ export const Upload = ({ maxFiles, files, setFiles, dataTestId }: UploadProps) =
               <I.Button
                 onClick={() =>
                   userPrompt({
-                    ...promptOnDelete,
+                    header: "Delete Attachment?",
+                    body: `Are you sure you want to delete ${file.filename}?`,
+                    acceptButtonText: "Yes, delete",
                     onAccept: () => {
                       setRejectedFiles([]);
                       setFiles(files.filter((a) => a.filename !== file.filename));
