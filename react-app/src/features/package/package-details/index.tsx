@@ -2,7 +2,7 @@ import { useMemo } from "react";
 import { Authority, opensearch } from "shared-types";
 
 import { useGetUser } from "@/api/useGetUser";
-import { DetailsSection } from "@/components";
+import { DetailsSection, LoadingSpinner } from "@/components";
 
 import {
   getApprovedAndEffectiveDetails,
@@ -34,8 +34,7 @@ type PackageDetailsProps = {
 };
 
 export const PackageDetails = ({ submission }: PackageDetailsProps) => {
-  const { data: user } = useGetUser();
-
+  const { data: user, isLoading: isUserLoading } = useGetUser();
   const title = useMemo(() => {
     switch (submission.authority) {
       case Authority["1915b"]:
@@ -48,6 +47,8 @@ export const PackageDetails = ({ submission }: PackageDetailsProps) => {
 
     return `${submission.authority} Package Details`;
   }, [submission]);
+
+  if (isUserLoading) return <LoadingSpinner />;
 
   return (
     <DetailsSection id="package_details" title={title}>

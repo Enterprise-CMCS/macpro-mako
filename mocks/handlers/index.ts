@@ -1,7 +1,7 @@
 import { http, HttpResponse } from "msw";
 
 import { apiHandlers } from "./api";
-import { awsHandlers } from "./aws";
+import { awsHandlers, identityProviderServiceHandler } from "./aws";
 import { countiesHandlers } from "./counties";
 import { opensearchHandlers } from "./opensearch";
 
@@ -25,7 +25,11 @@ export const postOnceHandler = (endpoint: string, status: number = 200, body?: B
   );
 
 // Handlers that mock calls to the API
-export const defaultApiHandlers = [...apiHandlers, ...countiesHandlers];
+export const defaultApiHandlers = [
+  ...apiHandlers,
+  ...countiesHandlers,
+  identityProviderServiceHandler,
+];
 
 // Handlers that mock calls to 3rd party services from the API
 export const defaultServiceHandlers = [...awsHandlers, ...opensearchHandlers, ...countiesHandlers];
