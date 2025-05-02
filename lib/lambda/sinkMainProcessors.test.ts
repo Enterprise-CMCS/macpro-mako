@@ -39,7 +39,6 @@ import {
   statusToDisplayToCmsUser,
   statusToDisplayToStateUser,
 } from "shared-types";
-import { seatool } from "shared-types/opensearch/main";
 import { afterEach, describe, expect, it, vi } from "vitest";
 
 import {
