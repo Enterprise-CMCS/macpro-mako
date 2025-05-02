@@ -1,11 +1,18 @@
-import { test } from "@/fixtures/mocked"; // add expect when writing assertions
+import { expect, test } from "@/fixtures/mocked"; // add expect when writing assertions
 
 // TODO
-test.describe.skip("Dashboard page", { tag: ["@dashboard"] }, () => {
-  test.describe.skip("UI validations", () => {
+test.describe("Dashboard page", { tag: ["@dashboard"] }, () => {
+  test.beforeEach(async ({ page }) => {
+    await page.goto("/dashboard");
+  });
+
+  test.describe("UI validations", {}, () => {
     test.skip("nav banner updated", async () => {});
 
-    test.skip("page header", async () => {});
+    test("page header", async ({ page }) => {
+      await expect(page.getByRole("heading", { name: "Dashboard" })).toBeVisible();
+      await expect(page.getByRole("heading", { name: "Dashboard" })).toHaveText("Dashboard");
+    });
 
     test.skip("SPA and Waiver tabs", async () => {});
 
