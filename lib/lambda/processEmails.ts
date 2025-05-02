@@ -191,8 +191,10 @@ export async function processRecord(kafkaRecord: KafkaRecord, config: ProcessEma
   const id: string = decodeBase64WithUtf8(key);
   const valueParsed = JSON.parse(decodeBase64WithUtf8(value));
 
-  if (valueParsed.eventType === "user-role" || valueParsed.eventType === "")
-    sendUserRoleEmails(valueParsed, timestamp, config);
+  if (valueParsed.eventType === "user-role" || valueParsed.eventType === "") {
+    await sendUserRoleEmails(valueParsed, timestamp, config);
+    return;
+  }
 
   if (kafkaRecord.topic === "aws.seatool.ksql.onemac.three.agg.State_Plan") {
     const safeID = id.replace(/^"|"$/g, "");
