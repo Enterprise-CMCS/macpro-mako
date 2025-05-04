@@ -79,9 +79,9 @@ const compileSrtList = (
 ): { name: string; email: string }[] =>
   officers?.length
     ? officers.map((o) => ({
-        name: `${o.FIRST_NAME || ""} ${o.LAST_NAME || ""}`,
-        email: o.EMAIL || "",
-      }))
+      name: `${o.FIRST_NAME || ""} ${o.LAST_NAME || ""}`,
+      email: o.EMAIL || "",
+    }))
     : [];
 
 const getFinalDispositionDate = (status: string, record: SeaTool) => {
@@ -181,6 +181,7 @@ export const transform = (id: string) => {
       subject: data.STATE_PLAN.TITLE_NAME,
       secondClock: isInSecondClock(raiReceivedDate, raiWithdrawnDate, seatoolStatus, authority),
       raiWithdrawEnabled: finalDispositionStatuses.includes(seatoolStatus) ? false : undefined,
+      alert90daysDate: data.STATE_PLAN.ALERT_90_DAYS_DATE,
     };
     return resp;
   });
@@ -211,5 +212,6 @@ export const tombstone = (id: string) => {
     subject: null,
     types: null,
     subTypes: null,
+    alert90daysDate: null,
   };
 };
