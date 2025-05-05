@@ -3,7 +3,7 @@ import { Bars3Icon, XMarkIcon } from "@heroicons/react/24/outline";
 import * as DropdownMenu from "@radix-ui/react-dropdown-menu";
 import { Auth } from "aws-amplify";
 import { useState } from "react";
-import { Link, NavLink, NavLinkProps, Outlet, useNavigate } from "react-router";
+import { Link, NavLink, NavLinkProps, Outlet, useNavigate, useRouteError } from "react-router";
 import { UserRoles } from "shared-types";
 import { isStateUser } from "shared-utils";
 
@@ -11,6 +11,7 @@ import { useGetUser, useGetUserDetails, useGetUserProfile } from "@/api";
 import { Banner, ScrollToTop, SimplePageContainer, UserPrompt } from "@/components";
 import MMDLAlertBanner from "@/components/Banner/MMDLSpaBanner";
 import config from "@/config";
+import { ErrorPage } from "@/features/error-page";
 import { useMediaQuery } from "@/hooks";
 import { useFeatureFlag } from "@/hooks/useFeatureFlag";
 import { isFaqPage, isProd } from "@/utils";
@@ -235,6 +236,8 @@ const UserDropdownMenu = () => {
  * - The footer displays contact information.
  */
 export const Layout = () => {
+  const error = useRouteError();
+
   const hideLogin = useFeatureFlag("LOGIN_PAGE");
   const cmsHomeFlag = useFeatureFlag("CMS_HOMEPAGE_FLAG");
   const stateHomeFlag = useFeatureFlag("STATE_HOMEPAGE_FLAG");
@@ -297,7 +300,7 @@ export const Layout = () => {
         <SimplePageContainer>
           <Banner />
         </SimplePageContainer>
-        <Outlet />
+        {error ? <ErrorPage /> : <Outlet />}
       </main>
       <Footer
         email="OneMAC_Helpdesk@cms.hhs.gov"
