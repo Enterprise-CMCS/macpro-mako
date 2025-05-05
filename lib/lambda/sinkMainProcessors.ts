@@ -1,4 +1,12 @@
 import { isBefore } from "date-fns";
+import {
+  onemacLegacyUserRoleRequest,
+  userRoleRequest,
+} from "lib/packages/shared-types/opensearch/roles";
+import {
+  onemacLegacyUserInformation,
+  userInformation,
+} from "lib/packages/shared-types/opensearch/users";
 import { bulkUpdateDataWrapper, ErrorType, getItems, logError } from "libs";
 import { getPackage, getPackageChangelog } from "libs/api/package";
 import {
@@ -8,12 +16,6 @@ import {
   SeatoolRecordWithUpdatedDate,
   SeatoolSpwStatusEnum,
 } from "shared-types";
-import {
-  onemacLegacyUserInformation,
-  onemacLegacyUserRoleRequest,
-  userInformation,
-  userRoleRequest,
-} from "shared-types/events/legacy-user";
 import { Document, legacyTransforms, seatool, transforms } from "shared-types/opensearch/main";
 import { decodeBase64WithUtf8 } from "shared-utils";
 
@@ -174,7 +176,7 @@ const getOneMacRecordWithAllProperties = (
   }
 
   if (isRecordAUserRoleRequest(record)) {
-    const userParseResult = userRoleRequest.safeParse(record);
+    const userParseResult = userRoleRequest.transform().safeParse(record);
 
     if (userParseResult.success === true) {
       console.log("USER RECORD: ", JSON.stringify(record));
@@ -185,7 +187,7 @@ const getOneMacRecordWithAllProperties = (
   }
 
   if (isRecordALegacyUserRoleRequest(record, kafkaSource)) {
-    const userParseResult = onemacLegacyUserRoleRequest.safeParse({
+    const userParseResult = onemacLegacyUserRoleRequest.transform().safeParse({
       ...record,
       eventType: "legacy-user-role",
     });
@@ -199,7 +201,7 @@ const getOneMacRecordWithAllProperties = (
   }
 
   if (isRecordALegacyUser(record, kafkaSource)) {
-    const userParseResult = onemacLegacyUserInformation.safeParse(record);
+    const userParseResult = onemacLegacyUserInformation.transform().safeParse(record);
 
     if (userParseResult.success === true) {
       console.log("USER RECORD: ", JSON.stringify(record));
@@ -208,7 +210,7 @@ const getOneMacRecordWithAllProperties = (
     console.log("USER RECORD INVALID BECAUSE: ", userParseResult.error, JSON.stringify(record));
   }
   if (isRecordAUser(record)) {
-    const userParseResult = userInformation.safeParse(record);
+    const userParseResult = userInformation.transform().safeParse(record);
 
     if (userParseResult.success === true) {
       console.log("USER RECORD: ", JSON.stringify(record));

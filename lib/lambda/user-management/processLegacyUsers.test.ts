@@ -1,7 +1,5 @@
-import {
-  onemacLegacyUserInformation,
-  onemacLegacyUserRoleRequest,
-} from "shared-types/events/legacy-user";
+import { onemacLegacyUserRoleRequest } from "shared-types/opensearch/roles/index";
+import { onemacLegacyUserInformation } from "shared-types/opensearch/users/index";
 import { describe, it } from "vitest";
 
 import { isRecordALegacyUser, isRecordALegacyUserRoleRequest } from "../sinkMainProcessors";
@@ -16,7 +14,7 @@ describe("test user data", () => {
     const cmsUsers = seedJson.filter((record: any) => isRecordALegacyUser(record, "onemac"));
 
     cmsUserRoleRequests.forEach((user) => {
-      const result = onemacLegacyUserRoleRequest.safeParse(user);
+      const result = onemacLegacyUserRoleRequest.transform().safeParse(user);
       if (result.success === false) {
         ///@ts-ignore
         console.log("the following record failed to parse", user.sk);
@@ -26,7 +24,7 @@ describe("test user data", () => {
     });
 
     cmsUsers.forEach((user: any) => {
-      const result = onemacLegacyUserInformation.safeParse(user);
+      const result = onemacLegacyUserInformation.transform().safeParse(user);
       if (result.success === false) {
         console.log("the following record failed to parse", user.sk, result.error);
 
