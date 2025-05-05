@@ -31,26 +31,26 @@ export const getPackageActions = async (event: APIGatewayEvent) => {
       });
     }
 
-    const passedStateAuth = await isAuthorizedToGetPackageActions(event, result._source.state);
-
-    if (!passedStateAuth)
-      return response({
-        statusCode: 401,
-        body: { message: "Not authorized to view resources from this state" },
-      });
-
     const authDetails = getAuthDetails(event);
     const userAttr = await lookupUserAttributes(authDetails.userId, authDetails.poolId);
     const activeRole = await getLatestActiveRoleByEmail(userAttr.email);
 
     if (!activeRole) {
       return response({
-        statusCode: 400,
+        statusCode: 401,
         body: {
           message: "No active role found for user",
         },
       });
     }
+
+    const passedStateAuth = await isAuthorizedToGetPackageActions(event, result._source.state);
+
+    if (!passedStateAuth)
+      return response({
+        statusCode: 403,
+        body: { message: "Not authorized to view resources from this state" },
+      });
 
     return response({
       statusCode: 200,
