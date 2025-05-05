@@ -39,7 +39,7 @@ export const baseSchema = z.object({
   authority: z.string().default("CHIP SPA"),
   proposedEffectiveDate: z.number(),
   actionType: z.string().default("Amend"),
-  alert90daysDate: z.string().max(4000).nullable().default(null).optional(),
+  alert90daysDate: z.string().default("date"),
   id: z
     .string()
     .min(1, { message: "Required" })
