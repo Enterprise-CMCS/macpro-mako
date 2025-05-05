@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { CMS_READ_ONLY_ROLES, SEATOOL_STATUS, UserRoles } from "shared-types";
-import { formatActionType, formatSeatoolDate } from "shared-utils";
+import { formatActionType, formatDateToET } from "shared-utils";
 
 import { useGetUser } from "@/api";
 import { OsTableColumn } from "@/components";
@@ -94,7 +94,9 @@ const getColumns = (props) => {
       field: "submissionDate",
       label: "Initial Submission",
       transform: (data) =>
-        data?.submissionDate ? formatSeatoolDate(data.submissionDate) : BLANK_VALUE,
+        data?.submissionDate
+          ? formatDateToET(data.submissionDate, "MM/dd/yyyy", false)
+          : BLANK_VALUE,
       cell: renderCellDate("submissionDate"),
     },
     {
@@ -102,14 +104,18 @@ const getColumns = (props) => {
       label: "Final Disposition",
       hidden: true,
       transform: (data) =>
-        data?.finalDispositionDate ? formatSeatoolDate(data.finalDispositionDate) : BLANK_VALUE,
+        data?.finalDispositionDate
+          ? formatDateToET(data.finalDispositionDate, "MM/dd/yyyy", false)
+          : BLANK_VALUE,
       cell: renderCellDate("finalDispositionDate"),
     },
     {
       field: "makoChangedDate",
       label: "Latest Package Activity",
       transform: (data) =>
-        data.makoChangedDate ? formatSeatoolDate(data.makoChangedDate) : BLANK_VALUE,
+        data.makoChangedDate
+          ? formatDateToET(data.makoChangedDate, "MM/dd/yyyy", false)
+          : BLANK_VALUE,
       cell: renderCellDate("makoChangedDate"),
     },
     {
@@ -117,7 +123,9 @@ const getColumns = (props) => {
       label: "Formal RAI Requested",
       hidden: true,
       transform: (data) => {
-        return data.raiRequestedDate ? formatSeatoolDate(data.raiRequestedDate) : BLANK_VALUE;
+        return data.raiRequestedDate
+          ? formatDateToET(data.raiRequestedDate, "MM/dd/yyyy", false)
+          : BLANK_VALUE;
       },
       cell: renderCellDate("raiRequestedDate"),
     },
@@ -125,7 +133,9 @@ const getColumns = (props) => {
       field: "raiReceivedDate",
       label: "Formal RAI Response",
       transform: (data) => {
-        return data.raiReceivedDate ? formatSeatoolDate(data.raiReceivedDate) : BLANK_VALUE;
+        return data.raiReceivedDate
+          ? formatDateToET(data.raiReceivedDate, "MM/dd/yyyy", false)
+          : BLANK_VALUE;
       },
       cell: renderCellDate("raiReceivedDate"),
     },
