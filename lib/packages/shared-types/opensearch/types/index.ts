@@ -1,6 +1,7 @@
 import { z } from "zod";
 
 import {
+  onemacLegacyUserInformation,
   onemacLegacyUserRoleRequest,
   userInformation,
   UserRole,
@@ -10,7 +11,9 @@ import { AggQuery, Filterable as FIL, Hit, QueryState, Response as Res } from ".
 import { SPA_Type } from "./transforms";
 
 export type Document = z.infer<SPA_Type.Schema>;
-export type UserDocument = z.infer<typeof userInformation>;
+export type UserDocument =
+  | z.infer<typeof onemacLegacyUserInformation>
+  | z.infer<typeof userInformation>;
 export type RoleDocument =
   | z.infer<typeof userRoleRequest>
   | z.infer<typeof onemacLegacyUserRoleRequest>;
