@@ -2,7 +2,7 @@ import { EllipsisVerticalIcon } from "@heroicons/react/24/outline";
 import * as DropdownMenu from "@radix-ui/react-dropdown-menu";
 import { Link } from "react-router";
 import { Authority, CognitoUserAttributes, opensearch } from "shared-types";
-import { formatDateToET, formatSeatoolDate, getAvailableActions } from "shared-utils";
+import { formatDateToET, getAvailableActions } from "shared-utils";
 
 import { DASHBOARD_ORIGIN, mapActionLabel, ORIGIN } from "@/utils";
 
