@@ -181,7 +181,7 @@ export const transform = (id: string) => {
       subject: data.STATE_PLAN.TITLE_NAME,
       secondClock: isInSecondClock(raiReceivedDate, raiWithdrawnDate, seatoolStatus, authority),
       raiWithdrawEnabled: finalDispositionStatuses.includes(seatoolStatus) ? false : undefined,
-      alert90daysDate: data.STATE_PLAN.ALERT_90_DAYS_DATE,
+      // alert90daysDate: data.STATE_PLAN.ALERT_90_DAYS_DATE,
     };
     return resp;
   });
