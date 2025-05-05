@@ -177,7 +177,7 @@ type PackageActivitiesProps = {
 
 export const PackageActivities = ({ id, changelog }: PackageActivitiesProps) => {
   const changelogWithoutAdminChanges = changelog.filter((item) => !item._source.isAdminChange);
-
+  console.log("Changelog" + changelogWithoutAdminChanges);
   return (
     <Table.DetailsSection
       id="package_activity"
