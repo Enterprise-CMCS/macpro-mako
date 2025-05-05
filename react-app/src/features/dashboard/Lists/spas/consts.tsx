@@ -90,10 +90,11 @@ const getColumns = (props) => {
     {
       field: "submissionDate",
       label: "Initial Submission",
-      transform: (data) =>
-        data?.submissionDate
+      transform: (data) => {
+        return data?.submissionDate
           ? formatDateToET(data.submissionDate, "MM/dd/yyyy", false)
-          : BLANK_VALUE,
+          : BLANK_VALUE;
+      },
       cell: renderCellDate("submissionDate"),
     },
     {
