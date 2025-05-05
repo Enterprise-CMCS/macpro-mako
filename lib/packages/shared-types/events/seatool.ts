@@ -47,7 +47,7 @@ export const seatoolSchema = z.object({
     SUMMARY_MEMO: z.string().nullish(),
     TITLE_NAME: z.string().nullish(),
     CHANGED_DATE: z.number().optional(),
-    // ALERT_90_DAYS_DATE: z.number().optional(),
+    ALERT_90_DAYS_DATE: z.number().optional(),
   }),
   RAI: z
     .array(
