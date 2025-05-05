@@ -23,7 +23,8 @@ export default defineConfig({
   testMatch: "**/*.spec.ts",
   testIgnore: "**/*.test.{ts,tsx}",
   // Global setup
-  globalSetup: "./lib/auth.setup.ts",
+  globalSetup: "./lib/global.setup.ts",
+  globalTeardown: "./lib/global.teardown.ts",
   // need to find a reasonable timeout less than 30s
   // timeout: 10_000,
   /* Run tests in files in parallel */
@@ -70,7 +71,6 @@ export default defineConfig({
         ...devices["Desktop Chrome"],
         // Use prepared auth state for state submitter.
         storageState: "./playwright/.auth/state-user.json",
-        video: "on",
       },
     },
   ],
