@@ -9,10 +9,10 @@ type ToggleGroupItemProps = React.ComponentProps<typeof RadixToggleGroupItem> & 
 
 const ToggleGroupItem = ({ className, ...props }: ToggleGroupItemProps) => {
   const toggleGroupItemStyle =
-    "inline-flex items-center justify-center px-3 py-1.5 text-2xl bg-neutral-100 rounded-xs ring-offset-background transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus:outline-none disabled:pointer-events-none disabled:opacity-50 border-b-4 border-b-transparent";
+    "inline-flex items-center justify-center px-3 py-1.5 text-lg bg-neutral-100 rounded-xs ring-offset-background transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus:outline-none disabled:pointer-events-none disabled:opacity-50 border-b-4 border-b-transparent";
 
   const toggleGroupItemActiveStyle =
-    "data-[state=on]:border-b-[#0050D8] data-[state=on]:bg-blue-50 data-[state=on]:text-[#0050D8] data-[state=on]:font-bold";
+    "data-[state=on]:border-b-primary-bright data-[state=on]:bg-blue-50 data-[state=on]:text-primary-bright data-[state=on]:font-bold";
 
   return (
     <RadixToggleGroupItem
