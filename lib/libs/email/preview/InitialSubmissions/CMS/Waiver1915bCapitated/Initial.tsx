@@ -1,6 +1,7 @@
-import { Waiver1915bCMSEmail } from "libs/email/content/newSubmission/emailTemplates";
-import { emailTemplateValue } from "libs/email/mock-data/new-submission";
 import { formatActionType } from "shared-utils";
+
+import { Waiver1915bCMSEmail } from "../../../../content/newSubmission/emailTemplates";
+import { emailTemplateValue } from "../../../../mock-data/new-submission";
 
 export default () => {
   return (

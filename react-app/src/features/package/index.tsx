@@ -114,7 +114,7 @@ const DetailsSidebar = ({ id }: DetailsSidebarProps) => {
   return (
     <aside className="min-w-56 flex-none font-semibold mt-6">
       {links.map(({ id, href, displayName }) => (
-        <a className="block mb-2 text-blue-900" key={id} href={href}>
+        <a className="block mb-2 text-blue-900 hover:underline" key={id} href={href}>
           {displayName}
         </a>
       ))}

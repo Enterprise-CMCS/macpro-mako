@@ -1,7 +1,6 @@
-import { BaseIndex } from "lib/packages/shared-types/opensearch";
+import * as os from "libs/opensearch-lib";
 import { getDomain, getOsNamespace } from "libs/utils";
-
-import * as os from "../../../libs/opensearch-lib";
+import { BaseIndex } from "shared-types/opensearch";
 
 export async function itemExists({ id }: { id: string }): Promise<boolean> {
   try {

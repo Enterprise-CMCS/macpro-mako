@@ -80,6 +80,7 @@ export type Document = Omit<AppkDocument, "event"> &
       | "upload-subsequent-documents"
       | "withdraw-package"
       | "withdraw-rai"
+      | "legacy-withdraw-rai-request"
       | "update-values"
       | "update-id"
       | "delete"
