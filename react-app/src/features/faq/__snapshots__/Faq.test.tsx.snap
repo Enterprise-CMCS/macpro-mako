@@ -34,7 +34,7 @@ exports[`Faq > should display the items expected 1`] = `
         class="mb-8"
       >
         <button
-          class="inline-flex items-center justify-center rounded-md text-[16px] ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none border border-primary text-primary font-bold disabled:opacity-50 h-10 px-4 py-2 w-full xs:w-fit hover:bg-transparent mb-5"
+          class="inline-flex items-center justify-center rounded-md text-[16px] ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none border-2 border-primary text-primary font-bold disabled:opacity-50 h-10 px-4 py-2 w-full xs:w-fit hover:bg-transparent mb-5"
           data-testid="expand-all"
         >
           Expand all to search with CTRL + F
