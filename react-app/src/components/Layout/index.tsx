@@ -113,20 +113,18 @@ const UserDropdownMenu = () => {
     const currentRole = userDetails?.role;
     const requestedRoles = userProfile?.stateAccess ?? [];
 
-    const roleIsActiveOrPending = (targetRole: string) =>
-      requestedRoles.some(
-        (r) => r.role === targetRole && (r.status === "active" || r.status === "pending"),
-      );
+    const roleIsPending = (targetRole: string) =>
+      requestedRoles.some((r) => r.role === targetRole && r.status === "pending");
 
     // Prevent duplicate or inappropriate role requests
     if (
-      (currentRole === "statesubmitter" && roleIsActiveOrPending("statesystemadmin")) ||
-      (currentRole === "defaultcmsuser" && roleIsActiveOrPending("cmsroleapprover"))
+      (currentRole === "statesubmitter" && roleIsPending("statesystemadmin")) ||
+      (currentRole === "defaultcmsuser" && roleIsPending("cmsroleapprover"))
     ) {
       return true;
     }
 
-    const excludedRoles = ["helpdesk", "systemadmin", "cmsreviewer", "cmsroleapprover"];
+    const excludedRoles = ["helpdesk", "systemadmin", "cmsreviewer"];
 
     return excludedRoles.includes(currentRole);
   };
