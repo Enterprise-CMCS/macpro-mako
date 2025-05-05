@@ -1,4 +1,4 @@
-import { Events } from "lib/packages/shared-types/events";
+import { Events } from "shared-types/events";
 
 export const emailTemplateValue: Omit<Events["WithdrawRai"], "id" | "authority"> = {
   event: "withdraw-rai" as const,
