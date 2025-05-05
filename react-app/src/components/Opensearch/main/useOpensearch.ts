@@ -1,7 +1,7 @@
 import { useQuery } from "@tanstack/react-query";
 import { useEffect, useRef, useState } from "react";
 import { useLocation } from "react-router";
-import { opensearch, UserRoles } from "shared-types";
+import { opensearch } from "shared-types";
 
 import { getOsData, useGetUser, useOsSearch } from "@/api";
 import { useLzUrl } from "@/hooks";
@@ -89,7 +89,7 @@ export const useOsData = () => {
   };
   useEffect(() => {
     onRequest(params.state);
-  }, [params.queryString]);
+  }, [params.queryString]); // eslint-disable-line react-hooks/exhaustive-deps
   return { data, isLoading, error, ...params, tabLoading };
 };
 export const useOsAggregate = () => {
