@@ -1,0 +1,3444 @@
+{
+  "config": {
+    "configFile": "/home/runner/work/macpro-mako/macpro-mako/test/playwright.config.ts",
+    "rootDir": "/home/runner/work/macpro-mako/macpro-mako/test",
+    "forbidOnly": true,
+    "fullyParallel": true,
+    "globalSetup": "/home/runner/work/macpro-mako/macpro-mako/test/lib/global.setup.ts",
+    "globalTeardown": "/home/runner/work/macpro-mako/macpro-mako/test/lib/global.teardown.ts",
+    "globalTimeout": 0,
+    "grep": {},
+    "grepInvert": null,
+    "maxFailures": 0,
+    "metadata": {
+      "actualWorkers": 1
+    },
+    "preserveOutput": "always",
+    "reporter": [
+      [
+        "github",
+        null
+      ],
+      [
+        "html",
+        {
+          "outputFolder": "./playwright-reports/html-report",
+          "open": "never"
+        }
+      ],
+      [
+        "json",
+        {
+          "outputFile": "./playwright-reports/playwright-summary.json"
+        }
+      ]
+    ],
+    "reportSlowTests": {
+      "max": 5,
+      "threshold": 15000
+    },
+    "quiet": false,
+    "projects": [
+      {
+        "outputDir": "/home/runner/work/macpro-mako/macpro-mako/test/test-results",
+        "repeatEach": 1,
+        "retries": 2,
+        "metadata": {},
+        "id": "state-user-chrome",
+        "name": "state-user-chrome",
+        "testDir": "/home/runner/work/macpro-mako/macpro-mako/test",
+        "testIgnore": [
+          "**/*.test.{ts,tsx}"
+        ],
+        "testMatch": [
+          "**/*.spec.ts"
+        ],
+        "timeout": 30000
+      }
+    ],
+    "shard": null,
+    "updateSnapshots": "missing",
+    "version": "1.47.2",
+    "workers": 1,
+    "webServer": null
+  },
+  "suites": [
+    {
+      "title": "e2e/faq/faq.spec.ts",
+      "file": "e2e/faq/faq.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [],
+      "suites": [
+        {
+          "title": "FAQ page",
+          "file": "e2e/faq/faq.spec.ts",
+          "line": 6,
+          "column": 6,
+          "specs": [],
+          "suites": [
+            {
+              "title": "UI validation",
+              "file": "e2e/faq/faq.spec.ts",
+              "line": 12,
+              "column": 8,
+              "specs": [],
+              "suites": [
+                {
+                  "title": "header",
+                  "file": "e2e/faq/faq.spec.ts",
+                  "line": 13,
+                  "column": 10,
+                  "specs": [
+                    {
+                      "title": "displays header",
+                      "ok": true,
+                      "tags": [
+                        "e2e",
+                        "smoke",
+                        "faq",
+                        "CI"
+                      ],
+                      "tests": [
+                        {
+                          "timeout": 30000,
+                          "annotations": [],
+                          "expectedStatus": "passed",
+                          "projectId": "state-user-chrome",
+                          "projectName": "state-user-chrome",
+                          "results": [
+                            {
+                              "workerIndex": 0,
+                              "status": "passed",
+                              "duration": 1145,
+                              "errors": [],
+                              "stdout": [],
+                              "stderr": [],
+                              "retry": 0,
+                              "startTime": "2025-05-05T21:14:15.730Z",
+                              "attachments": []
+                            }
+                          ],
+                          "status": "expected"
+                        }
+                      ],
+                      "id": "ea688ac7e25471e4a698-4e622ef0edec4f961300",
+                      "file": "e2e/faq/faq.spec.ts",
+                      "line": 14,
+                      "column": 7
+                    }
+                  ]
+                },
+                {
+                  "title": "General section",
+                  "file": "e2e/faq/faq.spec.ts",
+                  "line": 20,
+                  "column": 10,
+                  "specs": [
+                    {
+                      "title": "displays system for state submission FAQ",
+                      "ok": true,
+                      "tags": [
+                        "e2e",
+                        "smoke",
+                        "faq",
+                        "CI"
+                      ],
+                      "tests": [
+                        {
+                          "timeout": 30000,
+                          "annotations": [],
+                          "expectedStatus": "passed",
+                          "projectId": "state-user-chrome",
+                          "projectName": "state-user-chrome",
+                          "results": [
+                            {
+                              "workerIndex": 0,
+                              "status": "passed",
+                              "duration": 1023,
+                              "errors": [],
+                              "stdout": [],
+                              "stderr": [],
+                              "retry": 0,
+                              "startTime": "2025-05-05T21:14:17.033Z",
+                              "attachments": []
+                            }
+                          ],
+                          "status": "expected"
+                        }
+                      ],
+                      "id": "ea688ac7e25471e4a698-939d93089e0af2b4a675",
+                      "file": "e2e/faq/faq.spec.ts",
+                      "line": 21,
+                      "column": 7
+                    },
+                    {
+                      "title": "displays browser type FAQ",
+                      "ok": true,
+                      "tags": [
+                        "e2e",
+                        "smoke",
+                        "faq",
+                        "CI"
+                      ],
+                      "tests": [
+                        {
+                          "timeout": 30000,
+                          "annotations": [],
+                          "expectedStatus": "passed",
+                          "projectId": "state-user-chrome",
+                          "projectName": "state-user-chrome",
+                          "results": [
+                            {
+                              "workerIndex": 0,
+                              "status": "passed",
+                              "duration": 1031,
+                              "errors": [],
+                              "stdout": [],
+                              "stderr": [],
+                              "retry": 0,
+                              "startTime": "2025-05-05T21:14:18.062Z",
+                              "attachments": []
+                            }
+                          ],
+                          "status": "expected"
+                        }
+                      ],
+                      "id": "ea688ac7e25471e4a698-1b3eee382ad552f8014d",
+                      "file": "e2e/faq/faq.spec.ts",
+                      "line": 30,
+                      "column": 7
+                    },
+                    {
+                      "title": "displays confirmation email FAQ",
+                      "ok": true,
+                      "tags": [
+                        "e2e",
+                        "smoke",
+                        "faq",
+                        "CI"
+                      ],
+                      "tests": [
+                        {
+                          "timeout": 30000,
+                          "annotations": [],
+                          "expectedStatus": "passed",
+                          "projectId": "state-user-chrome",
+                          "projectName": "state-user-chrome",
+                          "results": [
+                            {
+                              "workerIndex": 0,
+                              "status": "passed",
+                              "duration": 1024,
+                              "errors": [],
+                              "stdout": [],
+                              "stderr": [],
+                              "retry": 0,
+                              "startTime": "2025-05-05T21:14:19.099Z",
+                              "attachments": []
+                            }
+                          ],
+                          "status": "expected"
+                        }
+                      ],
+                      "id": "ea688ac7e25471e4a698-86458dc55ce4d083c823",
+                      "file": "e2e/faq/faq.spec.ts",
+                      "line": 37,
+                      "column": 7
+                    },
+                    {
+                      "title": "displays official submission FAQ",
+                      "ok": true,
+                      "tags": [
+                        "e2e",
+                        "smoke",
+                        "faq",
+                        "CI"
+                      ],
+                      "tests": [
+                        {
+                          "timeout": 30000,
+                          "annotations": [],
+                          "expectedStatus": "passed",
+                          "projectId": "state-user-chrome",
+                          "projectName": "state-user-chrome",
+                          "results": [
+                            {
+                              "workerIndex": 0,
+                              "status": "passed",
+                              "duration": 1003,
+                              "errors": [],
+                              "stdout": [],
+                              "stderr": [],
+                              "retry": 0,
+                              "startTime": "2025-05-05T21:14:20.130Z",
+                              "attachments": []
+                            }
+                          ],
+                          "status": "expected"
+                        }
+                      ],
+                      "id": "ea688ac7e25471e4a698-37ffcfb73c675e1bb134",
+                      "file": "e2e/faq/faq.spec.ts",
+                      "line": 46,
+                      "column": 7
+                    },
+                    {
+                      "title": "displays OneMac user roles FAQ",
+                      "ok": true,
+                      "tags": [
+                        "e2e",
+                        "smoke",
+                        "faq",
+                        "CI"
+                      ],
+                      "tests": [
+                        {
+                          "timeout": 30000,
+                          "annotations": [],
+                          "expectedStatus": "passed",
+                          "projectId": "state-user-chrome",
+                          "projectName": "state-user-chrome",
+                          "results": [
+                            {
+                              "workerIndex": 0,
+                              "status": "passed",
+                              "duration": 1084,
+                              "errors": [],
+                              "stdout": [],
+                              "stderr": [],
+                              "retry": 0,
+                              "startTime": "2025-05-05T21:14:21.139Z",
+                              "attachments": []
+                            }
+                          ],
+                          "status": "expected"
+                        }
+                      ],
+                      "id": "ea688ac7e25471e4a698-7821de7ea6508168c162",
+                      "file": "e2e/faq/faq.spec.ts",
+                      "line": 55,
+                      "column": 7
+                    },
+                    {
+                      "title": "displays file format FAQ",
+                      "ok": true,
+                      "tags": [
+                        "e2e",
+                        "smoke",
+                        "faq",
+                        "CI"
+                      ],
+                      "tests": [
+                        {
+                          "timeout": 30000,
+                          "annotations": [],
+                          "expectedStatus": "passed",
+                          "projectId": "state-user-chrome",
+                          "projectName": "state-user-chrome",
+                          "results": [
+                            {
+                              "workerIndex": 0,
+                              "status": "passed",
+                              "duration": 1004,
+                              "errors": [],
+                              "stdout": [],
+                              "stderr": [],
+                              "retry": 0,
+                              "startTime": "2025-05-05T21:14:22.230Z",
+                              "attachments": []
+                            }
+                          ],
+                          "status": "expected"
+                        }
+                      ],
+                      "id": "ea688ac7e25471e4a698-15b57e29b71783880603",
+                      "file": "e2e/faq/faq.spec.ts",
+                      "line": 62,
+                      "column": 7
+                    },
+                    {
+                      "title": "displays onboarding materials FAQ",
+                      "ok": true,
+                      "tags": [
+                        "e2e",
+                        "smoke",
+                        "faq",
+                        "CI"
+                      ],
+                      "tests": [
+                        {
+                          "timeout": 30000,
+                          "annotations": [],
+                          "expectedStatus": "passed",
+                          "projectId": "state-user-chrome",
+                          "projectName": "state-user-chrome",
+                          "results": [
+                            {
+                              "workerIndex": 0,
+                              "status": "passed",
+                              "duration": 1044,
+                              "errors": [],
+                              "stdout": [],
+                              "stderr": [],
+                              "retry": 0,
+                              "startTime": "2025-05-05T21:14:23.239Z",
+                              "attachments": []
+                            }
+                          ],
+                          "status": "expected"
+                        }
+                      ],
+                      "id": "ea688ac7e25471e4a698-24087be2a5f2d9c3bdf1",
+                      "file": "e2e/faq/faq.spec.ts",
+                      "line": 71,
+                      "column": 7
+                    }
+                  ]
+                },
+                {
+                  "title": "State Plan Amendments (SPAs)",
+                  "file": "e2e/faq/faq.spec.ts",
+                  "line": 79,
+                  "column": 10,
+                  "specs": [
+                    {
+                      "title": "displays format used to enter a SPA ID FAQ",
+                      "ok": true,
+                      "tags": [
+                        "e2e",
+                        "smoke",
+                        "faq",
+                        "CI"
+                      ],
+                      "tests": [
+                        {
+                          "timeout": 30000,
+                          "annotations": [],
+                          "expectedStatus": "passed",
+                          "projectId": "state-user-chrome",
+                          "projectName": "state-user-chrome",
+                          "results": [
+                            {
+                              "workerIndex": 0,
+                              "status": "passed",
+                              "duration": 1007,
+                              "errors": [],
+                              "stdout": [],
+                              "stderr": [],
+                              "retry": 0,
+                              "startTime": "2025-05-05T21:14:24.290Z",
+                              "attachments": []
+                            }
+                          ],
+                          "status": "expected"
+                        }
+                      ],
+                      "id": "ea688ac7e25471e4a698-eab721eb4b234f1f2c7a",
+                      "file": "e2e/faq/faq.spec.ts",
+                      "line": 80,
+                      "column": 7
+                    },
+                    {
+                      "title": "displays Medicaid SPA attachments FAQ",
+                      "ok": true,
+                      "tags": [
+                        "e2e",
+                        "smoke",
+                        "faq",
+                        "CI"
+                      ],
+                      "tests": [
+                        {
+                          "timeout": 30000,
+                          "annotations": [],
+                          "expectedStatus": "passed",
+                          "projectId": "state-user-chrome",
+                          "projectName": "state-user-chrome",
+                          "results": [
+                            {
+                              "workerIndex": 0,
+                              "status": "passed",
+                              "duration": 1001,
+                              "errors": [],
+                              "stdout": [],
+                              "stderr": [],
+                              "retry": 0,
+                              "startTime": "2025-05-05T21:14:25.303Z",
+                              "attachments": []
+                            }
+                          ],
+                          "status": "expected"
+                        }
+                      ],
+                      "id": "ea688ac7e25471e4a698-a0d98c42f240b2f773c9",
+                      "file": "e2e/faq/faq.spec.ts",
+                      "line": 87,
+                      "column": 7
+                    },
+                    {
+                      "title": "displays attachments response to Medicaid RAI FAQ",
+                      "ok": true,
+                      "tags": [
+                        "e2e",
+                        "smoke",
+                        "faq",
+                        "CI"
+                      ],
+                      "tests": [
+                        {
+                          "timeout": 30000,
+                          "annotations": [],
+                          "expectedStatus": "passed",
+                          "projectId": "state-user-chrome",
+                          "projectName": "state-user-chrome",
+                          "results": [
+                            {
+                              "workerIndex": 0,
+                              "status": "passed",
+                              "duration": 1022,
+                              "errors": [],
+                              "stdout": [],
+                              "stderr": [],
+                              "retry": 0,
+                              "startTime": "2025-05-05T21:14:26.310Z",
+                              "attachments": []
+                            }
+                          ],
+                          "status": "expected"
+                        }
+                      ],
+                      "id": "ea688ac7e25471e4a698-2d769ea391b4955cdfd7",
+                      "file": "e2e/faq/faq.spec.ts",
+                      "line": 96,
+                      "column": 7
+                    },
+                    {
+                      "title": "displays CHIP SPA attachments FAQ",
+                      "ok": true,
+                      "tags": [
+                        "e2e",
+                        "smoke",
+                        "faq",
+                        "CI"
+                      ],
+                      "tests": [
+                        {
+                          "timeout": 30000,
+                          "annotations": [],
+                          "expectedStatus": "passed",
+                          "projectId": "state-user-chrome",
+                          "projectName": "state-user-chrome",
+                          "results": [
+                            {
+                              "workerIndex": 0,
+                              "status": "passed",
+                              "duration": 997,
+                              "errors": [],
+                              "stdout": [],
+                              "stderr": [],
+                              "retry": 0,
+                              "startTime": "2025-05-05T21:14:27.339Z",
+                              "attachments": []
+                            }
+                          ],
+                          "status": "expected"
+                        }
+                      ],
+                      "id": "ea688ac7e25471e4a698-7297c9c7eb95015076b0",
+                      "file": "e2e/faq/faq.spec.ts",
+                      "line": 105,
+                      "column": 7
+                    },
+                    {
+                      "title": "displays attachments response to CHIP RAI FAQ",
+                      "ok": true,
+                      "tags": [
+                        "e2e",
+                        "smoke",
+                        "faq",
+                        "CI"
+                      ],
+                      "tests": [
+                        {
+                          "timeout": 30000,
+                          "annotations": [],
+                          "expectedStatus": "passed",
+                          "projectId": "state-user-chrome",
+                          "projectName": "state-user-chrome",
+                          "results": [
+                            {
+                              "workerIndex": 0,
+                              "status": "passed",
+                              "duration": 1002,
+                              "errors": [],
+                              "stdout": [],
+                              "stderr": [],
+                              "retry": 0,
+                              "startTime": "2025-05-05T21:14:28.342Z",
+                              "attachments": []
+                            }
+                          ],
+                          "status": "expected"
+                        }
+                      ],
+                      "id": "ea688ac7e25471e4a698-ae5f05ae96c93f4b73ae",
+                      "file": "e2e/faq/faq.spec.ts",
+                      "line": 114,
+                      "column": 7
+                    },
+                    {
+                      "title": "displays PHE FAQ",
+                      "ok": true,
+                      "tags": [
+                        "e2e",
+                        "smoke",
+                        "faq",
+                        "CI"
+                      ],
+                      "tests": [
+                        {
+                          "timeout": 30000,
+                          "annotations": [],
+                          "expectedStatus": "passed",
+                          "projectId": "state-user-chrome",
+                          "projectName": "state-user-chrome",
+                          "results": [
+                            {
+                              "workerIndex": 0,
+                              "status": "passed",
+                              "duration": 1010,
+                              "errors": [],
+                              "stdout": [],
+                              "stderr": [],
+                              "retry": 0,
+                              "startTime": "2025-05-05T21:14:29.350Z",
+                              "attachments": []
+                            }
+                          ],
+                          "status": "expected"
+                        }
+                      ],
+                      "id": "ea688ac7e25471e4a698-22d899400d99d98361f6",
+                      "file": "e2e/faq/faq.spec.ts",
+                      "line": 123,
+                      "column": 7
+                    },
+                    {
+                      "title": "displays withdraw formal RAI for Medicaid SPA FAQ",
+                      "ok": true,
+                      "tags": [
+                        "e2e",
+                        "smoke",
+                        "faq",
+                        "CI"
+                      ],
+                      "tests": [
+                        {
+                          "timeout": 30000,
+                          "annotations": [],
+                          "expectedStatus": "passed",
+                          "projectId": "state-user-chrome",
+                          "projectName": "state-user-chrome",
+                          "results": [
+                            {
+                              "workerIndex": 0,
+                              "status": "passed",
+                              "duration": 1008,
+                              "errors": [],
+                              "stdout": [],
+                              "stderr": [],
+                              "retry": 0,
+                              "startTime": "2025-05-05T21:14:30.366Z",
+                              "attachments": []
+                            }
+                          ],
+                          "status": "expected"
+                        }
+                      ],
+                      "id": "ea688ac7e25471e4a698-0f64481b59219a5bbaa7",
+                      "file": "e2e/faq/faq.spec.ts",
+                      "line": 132,
+                      "column": 7
+                    },
+                    {
+                      "title": "displays withdraw package for Medicaid SPA FAQ",
+                      "ok": true,
+                      "tags": [
+                        "e2e",
+                        "smoke",
+                        "faq",
+                        "CI"
+                      ],
+                      "tests": [
+                        {
+                          "timeout": 30000,
+                          "annotations": [],
+                          "expectedStatus": "passed",
+                          "projectId": "state-user-chrome",
+                          "projectName": "state-user-chrome",
+                          "results": [
+                            {
+                              "workerIndex": 0,
+                              "status": "passed",
+                              "duration": 1052,
+                              "errors": [],
+                              "stdout": [],
+                              "stderr": [],
+                              "retry": 0,
+                              "startTime": "2025-05-05T21:14:31.379Z",
+                              "attachments": []
+                            }
+                          ],
+                          "status": "expected"
+                        }
+                      ],
+                      "id": "ea688ac7e25471e4a698-bdda65491865e132ee38",
+                      "file": "e2e/faq/faq.spec.ts",
+                      "line": 141,
+                      "column": 7
+                    },
+                    {
+                      "title": "displays withdraw formal RAI for CHIP SPA FAQ",
+                      "ok": true,
+                      "tags": [
+                        "e2e",
+                        "smoke",
+                        "faq",
+                        "CI"
+                      ],
+                      "tests": [
+                        {
+                          "timeout": 30000,
+                          "annotations": [],
+                          "expectedStatus": "passed",
+                          "projectId": "state-user-chrome",
+                          "projectName": "state-user-chrome",
+                          "results": [
+                            {
+                              "workerIndex": 0,
+                              "status": "passed",
+                              "duration": 1045,
+                              "errors": [],
+                              "stdout": [],
+                              "stderr": [],
+                              "retry": 0,
+                              "startTime": "2025-05-05T21:14:32.439Z",
+                              "attachments": []
+                            }
+                          ],
+                          "status": "expected"
+                        }
+                      ],
+                      "id": "ea688ac7e25471e4a698-7bddfed0ac94c0971c5c",
+                      "file": "e2e/faq/faq.spec.ts",
+                      "line": 150,
+                      "column": 7
+                    },
+                    {
+                      "title": "displays withdraw package for CHIP SPA FAQ",
+                      "ok": true,
+                      "tags": [
+                        "e2e",
+                        "smoke",
+                        "faq",
+                        "CI"
+                      ],
+                      "tests": [
+                        {
+                          "timeout": 30000,
+                          "annotations": [],
+                          "expectedStatus": "passed",
+                          "projectId": "state-user-chrome",
+                          "projectName": "state-user-chrome",
+                          "results": [
+                            {
+                              "workerIndex": 0,
+                              "status": "passed",
+                              "duration": 1021,
+                              "errors": [],
+                              "stdout": [],
+                              "stderr": [],
+                              "retry": 0,
+                              "startTime": "2025-05-05T21:14:33.497Z",
+                              "attachments": []
+                            }
+                          ],
+                          "status": "expected"
+                        }
+                      ],
+                      "id": "ea688ac7e25471e4a698-dfbff9a41baceaabce55",
+                      "file": "e2e/faq/faq.spec.ts",
+                      "line": 159,
+                      "column": 7
+                    },
+                    {
+                      "title": "displays download ABP SPA templates FAQ",
+                      "ok": true,
+                      "tags": [
+                        "e2e",
+                        "smoke",
+                        "faq",
+                        "CI"
+                      ],
+                      "tests": [
+                        {
+                          "timeout": 30000,
+                          "annotations": [],
+                          "expectedStatus": "passed",
+                          "projectId": "state-user-chrome",
+                          "projectName": "state-user-chrome",
+                          "results": [
+                            {
+                              "workerIndex": 0,
+                              "status": "passed",
+                              "duration": 1022,
+                              "errors": [],
+                              "stdout": [],
+                              "stderr": [],
+                              "retry": 0,
+                              "startTime": "2025-05-05T21:14:34.524Z",
+                              "attachments": []
+                            }
+                          ],
+                          "status": "expected"
+                        }
+                      ],
+                      "id": "ea688ac7e25471e4a698-37434253b0908d9ce75e",
+                      "file": "e2e/faq/faq.spec.ts",
+                      "line": 168,
+                      "column": 7
+                    },
+                    {
+                      "title": "displays download ABP SPA implementation guides FAQ",
+                      "ok": true,
+                      "tags": [
+                        "e2e",
+                        "smoke",
+                        "faq",
+                        "CI"
+                      ],
+                      "tests": [
+                        {
+                          "timeout": 30000,
+                          "annotations": [],
+                          "expectedStatus": "passed",
+                          "projectId": "state-user-chrome",
+                          "projectName": "state-user-chrome",
+                          "results": [
+                            {
+                              "workerIndex": 0,
+                              "status": "passed",
+                              "duration": 1022,
+                              "errors": [],
+                              "stdout": [],
+                              "stderr": [],
+                              "retry": 0,
+                              "startTime": "2025-05-05T21:14:35.552Z",
+                              "attachments": []
+                            }
+                          ],
+                          "status": "expected"
+                        }
+                      ],
+                      "id": "ea688ac7e25471e4a698-0963c854d8258e74f166",
+                      "file": "e2e/faq/faq.spec.ts",
+                      "line": 177,
+                      "column": 7
+                    },
+                    {
+                      "title": "displays download MPC SPA templates FAQ",
+                      "ok": true,
+                      "tags": [
+                        "e2e",
+                        "smoke",
+                        "faq",
+                        "CI"
+                      ],
+                      "tests": [
+                        {
+                          "timeout": 30000,
+                          "annotations": [],
+                          "expectedStatus": "passed",
+                          "projectId": "state-user-chrome",
+                          "projectName": "state-user-chrome",
+                          "results": [
+                            {
+                              "workerIndex": 0,
+                              "status": "passed",
+                              "duration": 1037,
+                              "errors": [],
+                              "stdout": [],
+                              "stderr": [],
+                              "retry": 0,
+                              "startTime": "2025-05-05T21:14:36.580Z",
+                              "attachments": []
+                            }
+                          ],
+                          "status": "expected"
+                        }
+                      ],
+                      "id": "ea688ac7e25471e4a698-496ea50452ddd6df612b",
+                      "file": "e2e/faq/faq.spec.ts",
+                      "line": 186,
+                      "column": 7
+                    },
+                    {
+                      "title": "displays download MPC SPA implementation guides FAQ",
+                      "ok": true,
+                      "tags": [
+                        "e2e",
+                        "smoke",
+                        "faq",
+                        "CI"
+                      ],
+                      "tests": [
+                        {
+                          "timeout": 30000,
+                          "annotations": [],
+                          "expectedStatus": "passed",
+                          "projectId": "state-user-chrome",
+                          "projectName": "state-user-chrome",
+                          "results": [
+                            {
+                              "workerIndex": 0,
+                              "status": "passed",
+                              "duration": 1006,
+                              "errors": [],
+                              "stdout": [],
+                              "stderr": [],
+                              "retry": 0,
+                              "startTime": "2025-05-05T21:14:37.623Z",
+                              "attachments": []
+                            }
+                          ],
+                          "status": "expected"
+                        }
+                      ],
+                      "id": "ea688ac7e25471e4a698-cc93c82c71b42b6a1187",
+                      "file": "e2e/faq/faq.spec.ts",
+                      "line": 195,
+                      "column": 7
+                    },
+                    {
+                      "title": "displays download CHIP eligibility SPA templates FAQ",
+                      "ok": true,
+                      "tags": [
+                        "e2e",
+                        "smoke",
+                        "faq",
+                        "CI"
+                      ],
+                      "tests": [
+                        {
+                          "timeout": 30000,
+                          "annotations": [],
+                          "expectedStatus": "passed",
+                          "projectId": "state-user-chrome",
+                          "projectName": "state-user-chrome",
+                          "results": [
+                            {
+                              "workerIndex": 0,
+                              "status": "passed",
+                              "duration": 1011,
+                              "errors": [],
+                              "stdout": [],
+                              "stderr": [],
+                              "retry": 0,
+                              "startTime": "2025-05-05T21:14:38.634Z",
+                              "attachments": []
+                            }
+                          ],
+                          "status": "expected"
+                        }
+                      ],
+                      "id": "ea688ac7e25471e4a698-f47e28b489e7752fcf61",
+                      "file": "e2e/faq/faq.spec.ts",
+                      "line": 204,
+                      "column": 7
+                    },
+                    {
+                      "title": "displays download CHIP eligibility SPA implementation guides FAQ",
+                      "ok": true,
+                      "tags": [
+                        "e2e",
+                        "smoke",
+                        "faq",
+                        "CI"
+                      ],
+                      "tests": [
+                        {
+                          "timeout": 30000,
+                          "annotations": [],
+                          "expectedStatus": "passed",
+                          "projectId": "state-user-chrome",
+                          "projectName": "state-user-chrome",
+                          "results": [
+                            {
+                              "workerIndex": 0,
+                              "status": "passed",
+                              "duration": 1002,
+                              "errors": [],
+                              "stdout": [],
+                              "stderr": [],
+                              "retry": 0,
+                              "startTime": "2025-05-05T21:14:39.651Z",
+                              "attachments": []
+                            }
+                          ],
+                          "status": "expected"
+                        }
+                      ],
+                      "id": "ea688ac7e25471e4a698-ce499e6a378aacf18db0",
+                      "file": "e2e/faq/faq.spec.ts",
+                      "line": 213,
+                      "column": 7
+                    }
+                  ]
+                },
+                {
+                  "title": "Waivers Section",
+                  "file": "e2e/faq/faq.spec.ts",
+                  "line": 223,
+                  "column": 10,
+                  "specs": [
+                    {
+                      "title": "displays 1915(b) initial waiver number FAQ",
+                      "ok": true,
+                      "tags": [
+                        "e2e",
+                        "smoke",
+                        "faq",
+                        "CI"
+                      ],
+                      "tests": [
+                        {
+                          "timeout": 30000,
+                          "annotations": [],
+                          "expectedStatus": "passed",
+                          "projectId": "state-user-chrome",
+                          "projectName": "state-user-chrome",
+                          "results": [
+                            {
+                              "workerIndex": 0,
+                              "status": "passed",
+                              "duration": 998,
+                              "errors": [],
+                              "stdout": [],
+                              "stderr": [],
+                              "retry": 0,
+                              "startTime": "2025-05-05T21:14:40.659Z",
+                              "attachments": []
+                            }
+                          ],
+                          "status": "expected"
+                        }
+                      ],
+                      "id": "ea688ac7e25471e4a698-0b1b9fb9301d726ae420",
+                      "file": "e2e/faq/faq.spec.ts",
+                      "line": 224,
+                      "column": 7
+                    },
+                    {
+                      "title": "displays 1915(b) waiver renewal number FAQ",
+                      "ok": true,
+                      "tags": [
+                        "e2e",
+                        "smoke",
+                        "faq",
+                        "CI"
+                      ],
+                      "tests": [
+                        {
+                          "timeout": 30000,
+                          "annotations": [],
+                          "expectedStatus": "passed",
+                          "projectId": "state-user-chrome",
+                          "projectName": "state-user-chrome",
+                          "results": [
+                            {
+                              "workerIndex": 0,
+                              "status": "passed",
+                              "duration": 1026,
+                              "errors": [],
+                              "stdout": [],
+                              "stderr": [],
+                              "retry": 0,
+                              "startTime": "2025-05-05T21:14:41.662Z",
+                              "attachments": []
+                            }
+                          ],
+                          "status": "expected"
+                        }
+                      ],
+                      "id": "ea688ac7e25471e4a698-c6edef90252424ae41ae",
+                      "file": "e2e/faq/faq.spec.ts",
+                      "line": 233,
+                      "column": 7
+                    },
+                    {
+                      "title": "displays 1915(b) waiver amendment number FAQ",
+                      "ok": true,
+                      "tags": [
+                        "e2e",
+                        "smoke",
+                        "faq",
+                        "CI"
+                      ],
+                      "tests": [
+                        {
+                          "timeout": 30000,
+                          "annotations": [],
+                          "expectedStatus": "passed",
+                          "projectId": "state-user-chrome",
+                          "projectName": "state-user-chrome",
+                          "results": [
+                            {
+                              "workerIndex": 0,
+                              "status": "passed",
+                              "duration": 1005,
+                              "errors": [],
+                              "stdout": [],
+                              "stderr": [],
+                              "retry": 0,
+                              "startTime": "2025-05-05T21:14:42.692Z",
+                              "attachments": []
+                            }
+                          ],
+                          "status": "expected"
+                        }
+                      ],
+                      "id": "ea688ac7e25471e4a698-2731559be7403b6be3b2",
+                      "file": "e2e/faq/faq.spec.ts",
+                      "line": 242,
+                      "column": 7
+                    },
+                    {
+                      "title": "displays contact help for 1915(b) waiver FAQ",
+                      "ok": true,
+                      "tags": [
+                        "e2e",
+                        "smoke",
+                        "faq",
+                        "CI"
+                      ],
+                      "tests": [
+                        {
+                          "timeout": 30000,
+                          "annotations": [],
+                          "expectedStatus": "passed",
+                          "projectId": "state-user-chrome",
+                          "projectName": "state-user-chrome",
+                          "results": [
+                            {
+                              "workerIndex": 0,
+                              "status": "passed",
+                              "duration": 1009,
+                              "errors": [],
+                              "stdout": [],
+                              "stderr": [],
+                              "retry": 0,
+                              "startTime": "2025-05-05T21:14:43.703Z",
+                              "attachments": []
+                            }
+                          ],
+                          "status": "expected"
+                        }
+                      ],
+                      "id": "ea688ac7e25471e4a698-3813a297da89cb94f0c1",
+                      "file": "e2e/faq/faq.spec.ts",
+                      "line": 251,
+                      "column": 7
+                    },
+                    {
+                      "title": "displays format 1915(c) waiver number FAQ",
+                      "ok": true,
+                      "tags": [
+                        "e2e",
+                        "smoke",
+                        "faq",
+                        "CI"
+                      ],
+                      "tests": [
+                        {
+                          "timeout": 30000,
+                          "annotations": [],
+                          "expectedStatus": "passed",
+                          "projectId": "state-user-chrome",
+                          "projectName": "state-user-chrome",
+                          "results": [
+                            {
+                              "workerIndex": 0,
+                              "status": "passed",
+                              "duration": 1015,
+                              "errors": [],
+                              "stdout": [],
+                              "stderr": [],
+                              "retry": 0,
+                              "startTime": "2025-05-05T21:14:44.717Z",
+                              "attachments": []
+                            }
+                          ],
+                          "status": "expected"
+                        }
+                      ],
+                      "id": "ea688ac7e25471e4a698-c73f20857b1a12b240d4",
+                      "file": "e2e/faq/faq.spec.ts",
+                      "line": 260,
+                      "column": 7
+                    },
+                    {
+                      "title": "displays attachments are needed for 1915(b) waiver action FAQ",
+                      "ok": true,
+                      "tags": [
+                        "e2e",
+                        "smoke",
+                        "faq",
+                        "CI"
+                      ],
+                      "tests": [
+                        {
+                          "timeout": 30000,
+                          "annotations": [],
+                          "expectedStatus": "passed",
+                          "projectId": "state-user-chrome",
+                          "projectName": "state-user-chrome",
+                          "results": [
+                            {
+                              "workerIndex": 0,
+                              "status": "passed",
+                              "duration": 1024,
+                              "errors": [],
+                              "stdout": [],
+                              "stderr": [],
+                              "retry": 0,
+                              "startTime": "2025-05-05T21:14:45.738Z",
+                              "attachments": []
+                            }
+                          ],
+                          "status": "expected"
+                        }
+                      ],
+                      "id": "ea688ac7e25471e4a698-ce2108fe05af78d4ed8d",
+                      "file": "e2e/faq/faq.spec.ts",
+                      "line": 269,
+                      "column": 7
+                    },
+                    {
+                      "title": "displays attachments 1915b and c App K RAI response FAQ",
+                      "ok": true,
+                      "tags": [
+                        "e2e",
+                        "smoke",
+                        "faq",
+                        "CI"
+                      ],
+                      "tests": [
+                        {
+                          "timeout": 30000,
+                          "annotations": [],
+                          "expectedStatus": "passed",
+                          "projectId": "state-user-chrome",
+                          "projectName": "state-user-chrome",
+                          "results": [
+                            {
+                              "workerIndex": 0,
+                              "status": "passed",
+                              "duration": 1052,
+                              "errors": [],
+                              "stdout": [],
+                              "stderr": [],
+                              "retry": 0,
+                              "startTime": "2025-05-05T21:14:46.768Z",
+                              "attachments": []
+                            }
+                          ],
+                          "status": "expected"
+                        }
+                      ],
+                      "id": "ea688ac7e25471e4a698-16e47132d7d5ffb53775",
+                      "file": "e2e/faq/faq.spec.ts",
+                      "line": 278,
+                      "column": 7
+                    },
+                    {
+                      "title": "displays temporary extension format FAQ",
+                      "ok": true,
+                      "tags": [
+                        "e2e",
+                        "smoke",
+                        "faq",
+                        "CI"
+                      ],
+                      "tests": [
+                        {
+                          "timeout": 30000,
+                          "annotations": [],
+                          "expectedStatus": "passed",
+                          "projectId": "state-user-chrome",
+                          "projectName": "state-user-chrome",
+                          "results": [
+                            {
+                              "workerIndex": 0,
+                              "status": "passed",
+                              "duration": 1033,
+                              "errors": [],
+                              "stdout": [],
+                              "stderr": [],
+                              "retry": 0,
+                              "startTime": "2025-05-05T21:14:47.824Z",
+                              "attachments": []
+                            }
+                          ],
+                          "status": "expected"
+                        }
+                      ],
+                      "id": "ea688ac7e25471e4a698-86432e056230250b9b18",
+                      "file": "e2e/faq/faq.spec.ts",
+                      "line": 287,
+                      "column": 7
+                    },
+                    {
+                      "title": "displays status of my temporary extension FAQ",
+                      "ok": true,
+                      "tags": [
+                        "e2e",
+                        "smoke",
+                        "faq",
+                        "CI"
+                      ],
+                      "tests": [
+                        {
+                          "timeout": 30000,
+                          "annotations": [],
+                          "expectedStatus": "passed",
+                          "projectId": "state-user-chrome",
+                          "projectName": "state-user-chrome",
+                          "results": [
+                            {
+                              "workerIndex": 0,
+                              "status": "passed",
+                              "duration": 1021,
+                              "errors": [],
+                              "stdout": [],
+                              "stderr": [],
+                              "retry": 0,
+                              "startTime": "2025-05-05T21:14:48.862Z",
+                              "attachments": []
+                            }
+                          ],
+                          "status": "expected"
+                        }
+                      ],
+                      "id": "ea688ac7e25471e4a698-e76c7f68f5073a7d63e9",
+                      "file": "e2e/faq/faq.spec.ts",
+                      "line": 296,
+                      "column": 7
+                    },
+                    {
+                      "title": "displays attachments for 1915(b) waiver FAQ",
+                      "ok": true,
+                      "tags": [
+                        "e2e",
+                        "smoke",
+                        "faq",
+                        "CI"
+                      ],
+                      "tests": [
+                        {
+                          "timeout": 30000,
+                          "annotations": [
+                            {
+                              "type": "skip"
+                            }
+                          ],
+                          "expectedStatus": "skipped",
+                          "projectId": "state-user-chrome",
+                          "projectName": "state-user-chrome",
+                          "results": [
+                            {
+                              "workerIndex": -1,
+                              "status": "skipped",
+                              "duration": 0,
+                              "errors": [],
+                              "stdout": [],
+                              "stderr": [],
+                              "retry": 0,
+                              "startTime": "2025-05-05T21:14:49.888Z",
+                              "attachments": []
+                            }
+                          ],
+                          "status": "skipped"
+                        }
+                      ],
+                      "id": "ea688ac7e25471e4a698-40786322a44a1d100569",
+                      "file": "e2e/faq/faq.spec.ts",
+                      "line": 306,
+                      "column": 12
+                    },
+                    {
+                      "title": "displays attachments for 1915(c) waiver FAQ",
+                      "ok": true,
+                      "tags": [
+                        "e2e",
+                        "smoke",
+                        "faq",
+                        "CI"
+                      ],
+                      "tests": [
+                        {
+                          "timeout": 30000,
+                          "annotations": [
+                            {
+                              "type": "skip"
+                            }
+                          ],
+                          "expectedStatus": "skipped",
+                          "projectId": "state-user-chrome",
+                          "projectName": "state-user-chrome",
+                          "results": [
+                            {
+                              "workerIndex": -1,
+                              "status": "skipped",
+                              "duration": 0,
+                              "errors": [],
+                              "stdout": [],
+                              "stderr": [],
+                              "retry": 0,
+                              "startTime": "2025-05-05T21:14:49.888Z",
+                              "attachments": []
+                            }
+                          ],
+                          "status": "skipped"
+                        }
+                      ],
+                      "id": "ea688ac7e25471e4a698-ff814f26dbf831579e60",
+                      "file": "e2e/faq/faq.spec.ts",
+                      "line": 318,
+                      "column": 12
+                    },
+                    {
+                      "title": "displays submit App K attachments FAQ",
+                      "ok": true,
+                      "tags": [
+                        "e2e",
+                        "smoke",
+                        "faq",
+                        "CI"
+                      ],
+                      "tests": [
+                        {
+                          "timeout": 30000,
+                          "annotations": [],
+                          "expectedStatus": "passed",
+                          "projectId": "state-user-chrome",
+                          "projectName": "state-user-chrome",
+                          "results": [
+                            {
+                              "workerIndex": 0,
+                              "status": "passed",
+                              "duration": 1019,
+                              "errors": [],
+                              "stdout": [],
+                              "stderr": [],
+                              "retry": 0,
+                              "startTime": "2025-05-05T21:14:49.889Z",
+                              "attachments": []
+                            }
+                          ],
+                          "status": "expected"
+                        }
+                      ],
+                      "id": "ea688ac7e25471e4a698-a47c1b2de6a0952b5e35",
+                      "file": "e2e/faq/faq.spec.ts",
+                      "line": 329,
+                      "column": 7
+                    },
+                    {
+                      "title": "displays attachments for 1915(c) Appendix K waiver FAQ",
+                      "ok": true,
+                      "tags": [
+                        "e2e",
+                        "smoke",
+                        "faq",
+                        "CI"
+                      ],
+                      "tests": [
+                        {
+                          "timeout": 30000,
+                          "annotations": [],
+                          "expectedStatus": "passed",
+                          "projectId": "state-user-chrome",
+                          "projectName": "state-user-chrome",
+                          "results": [
+                            {
+                              "workerIndex": 0,
+                              "status": "passed",
+                              "duration": 1060,
+                              "errors": [],
+                              "stdout": [],
+                              "stderr": [],
+                              "retry": 0,
+                              "startTime": "2025-05-05T21:14:50.914Z",
+                              "attachments": []
+                            }
+                          ],
+                          "status": "expected"
+                        }
+                      ],
+                      "id": "ea688ac7e25471e4a698-295960946a876110c5de",
+                      "file": "e2e/faq/faq.spec.ts",
+                      "line": 336,
+                      "column": 7
+                    },
+                    {
+                      "title": "displays withdraw Formal RAI Response for Medicaid Waiver FAQ",
+                      "ok": true,
+                      "tags": [
+                        "e2e",
+                        "smoke",
+                        "faq",
+                        "CI"
+                      ],
+                      "tests": [
+                        {
+                          "timeout": 30000,
+                          "annotations": [],
+                          "expectedStatus": "passed",
+                          "projectId": "state-user-chrome",
+                          "projectName": "state-user-chrome",
+                          "results": [
+                            {
+                              "workerIndex": 0,
+                              "status": "passed",
+                              "duration": 1006,
+                              "errors": [],
+                              "stdout": [],
+                              "stderr": [],
+                              "retry": 0,
+                              "startTime": "2025-05-05T21:14:51.979Z",
+                              "attachments": []
+                            }
+                          ],
+                          "status": "expected"
+                        }
+                      ],
+                      "id": "ea688ac7e25471e4a698-1719216f53d2b85c4d35",
+                      "file": "e2e/faq/faq.spec.ts",
+                      "line": 345,
+                      "column": 7
+                    },
+                    {
+                      "title": "displays withdraw Package for Waiver FAQ",
+                      "ok": true,
+                      "tags": [
+                        "e2e",
+                        "smoke",
+                        "faq",
+                        "CI"
+                      ],
+                      "tests": [
+                        {
+                          "timeout": 30000,
+                          "annotations": [],
+                          "expectedStatus": "passed",
+                          "projectId": "state-user-chrome",
+                          "projectName": "state-user-chrome",
+                          "results": [
+                            {
+                              "workerIndex": 0,
+                              "status": "passed",
+                              "duration": 1012,
+                              "errors": [],
+                              "stdout": [],
+                              "stderr": [],
+                              "retry": 0,
+                              "startTime": "2025-05-05T21:14:52.989Z",
+                              "attachments": []
+                            }
+                          ],
+                          "status": "expected"
+                        }
+                      ],
+                      "id": "ea688ac7e25471e4a698-5983eb64aeb6029d1afe",
+                      "file": "e2e/faq/faq.spec.ts",
+                      "line": 354,
+                      "column": 7
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "title": "non-func/a11y/index.spec.ts",
+      "file": "non-func/a11y/index.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [],
+      "suites": [
+        {
+          "title": "test a11y on static routes",
+          "file": "non-func/a11y/index.spec.ts",
+          "line": 8,
+          "column": 6,
+          "specs": [
+            {
+              "title": "/ should not have any automatically detectable accessibility issues",
+              "ok": true,
+              "tags": [
+                "CI",
+                "a11y"
+              ],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "state-user-chrome",
+                  "projectName": "state-user-chrome",
+                  "results": [
+                    {
+                      "workerIndex": 0,
+                      "status": "passed",
+                      "duration": 3806,
+                      "errors": [],
+                      "stdout": [
+                        {
+                          "text": "/ violations:  \u001b[33m0\u001b[39m\n"
+                        }
+                      ],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-05-05T21:14:54.079Z",
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "37280e3c1e02c3251f32-4b4f5479f4265871afe0",
+              "file": "non-func/a11y/index.spec.ts",
+              "line": 10,
+              "column": 5
+            },
+            {
+              "title": "/dashboard should not have any automatically detectable accessibility issues",
+              "ok": true,
+              "tags": [
+                "CI",
+                "a11y"
+              ],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "state-user-chrome",
+                  "projectName": "state-user-chrome",
+                  "results": [
+                    {
+                      "workerIndex": 0,
+                      "status": "passed",
+                      "duration": 4917,
+                      "errors": [],
+                      "stdout": [
+                        {
+                          "text": "/dashboard violations:  \u001b[33m0\u001b[39m\n"
+                        }
+                      ],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-05-05T21:14:57.892Z",
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "37280e3c1e02c3251f32-62b024a4cee055b288c9",
+              "file": "non-func/a11y/index.spec.ts",
+              "line": 10,
+              "column": 5
+            },
+            {
+              "title": "/faq should not have any automatically detectable accessibility issues",
+              "ok": true,
+              "tags": [
+                "CI",
+                "a11y"
+              ],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "state-user-chrome",
+                  "projectName": "state-user-chrome",
+                  "results": [
+                    {
+                      "workerIndex": 0,
+                      "status": "passed",
+                      "duration": 4127,
+                      "errors": [],
+                      "stdout": [
+                        {
+                          "text": "/faq violations:  \u001b[33m0\u001b[39m\n"
+                        }
+                      ],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-05-05T21:15:02.813Z",
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "37280e3c1e02c3251f32-9a6c4f0b6958db7af0b3",
+              "file": "non-func/a11y/index.spec.ts",
+              "line": 10,
+              "column": 5
+            },
+            {
+              "title": "/profile should not have any automatically detectable accessibility issues",
+              "ok": true,
+              "tags": [
+                "CI",
+                "a11y"
+              ],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "state-user-chrome",
+                  "projectName": "state-user-chrome",
+                  "results": [
+                    {
+                      "workerIndex": 0,
+                      "status": "passed",
+                      "duration": 3596,
+                      "errors": [],
+                      "stdout": [
+                        {
+                          "text": "/profile violations:  \u001b[33m0\u001b[39m\n"
+                        }
+                      ],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-05-05T21:15:06.946Z",
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "37280e3c1e02c3251f32-0c4b99db1142258de123",
+              "file": "non-func/a11y/index.spec.ts",
+              "line": 10,
+              "column": 5
+            },
+            {
+              "title": "/new-submission should not have any automatically detectable accessibility issues",
+              "ok": true,
+              "tags": [
+                "CI",
+                "a11y"
+              ],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "state-user-chrome",
+                  "projectName": "state-user-chrome",
+                  "results": [
+                    {
+                      "workerIndex": 0,
+                      "status": "passed",
+                      "duration": 3600,
+                      "errors": [],
+                      "stdout": [
+                        {
+                          "text": "/new-submission violations:  \u001b[33m0\u001b[39m\n"
+                        }
+                      ],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-05-05T21:15:10.547Z",
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "37280e3c1e02c3251f32-857fa62bf7e5d36a7dbe",
+              "file": "non-func/a11y/index.spec.ts",
+              "line": 10,
+              "column": 5
+            },
+            {
+              "title": "/new-submission/spa should not have any automatically detectable accessibility issues",
+              "ok": true,
+              "tags": [
+                "CI",
+                "a11y"
+              ],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "state-user-chrome",
+                  "projectName": "state-user-chrome",
+                  "results": [
+                    {
+                      "workerIndex": 0,
+                      "status": "passed",
+                      "duration": 3528,
+                      "errors": [],
+                      "stdout": [
+                        {
+                          "text": "/new-submission/spa violations:  \u001b[33m0\u001b[39m\n"
+                        }
+                      ],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-05-05T21:15:14.151Z",
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "37280e3c1e02c3251f32-2c512ad1551f4caa94b0",
+              "file": "non-func/a11y/index.spec.ts",
+              "line": 10,
+              "column": 5
+            },
+            {
+              "title": "/new-submission/spa/medicaid should not have any automatically detectable accessibility issues",
+              "ok": true,
+              "tags": [
+                "CI",
+                "a11y"
+              ],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "state-user-chrome",
+                  "projectName": "state-user-chrome",
+                  "results": [
+                    {
+                      "workerIndex": 0,
+                      "status": "passed",
+                      "duration": 3652,
+                      "errors": [],
+                      "stdout": [
+                        {
+                          "text": "/new-submission/spa/medicaid violations:  \u001b[33m0\u001b[39m\n"
+                        }
+                      ],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-05-05T21:15:17.685Z",
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "37280e3c1e02c3251f32-36d33e301fde12f210ee",
+              "file": "non-func/a11y/index.spec.ts",
+              "line": 10,
+              "column": 5
+            },
+            {
+              "title": "/new-submission/spa/chip should not have any automatically detectable accessibility issues",
+              "ok": true,
+              "tags": [
+                "CI",
+                "a11y"
+              ],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "state-user-chrome",
+                  "projectName": "state-user-chrome",
+                  "results": [
+                    {
+                      "workerIndex": 0,
+                      "status": "passed",
+                      "duration": 3554,
+                      "errors": [],
+                      "stdout": [
+                        {
+                          "text": "/new-submission/spa/chip violations:  \u001b[33m0\u001b[39m\n"
+                        }
+                      ],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-05-05T21:15:21.343Z",
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "37280e3c1e02c3251f32-ccc48d7d7eaeaf675f29",
+              "file": "non-func/a11y/index.spec.ts",
+              "line": 10,
+              "column": 5
+            },
+            {
+              "title": "/new-submission/waiver should not have any automatically detectable accessibility issues",
+              "ok": true,
+              "tags": [
+                "CI",
+                "a11y"
+              ],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "state-user-chrome",
+                  "projectName": "state-user-chrome",
+                  "results": [
+                    {
+                      "workerIndex": 0,
+                      "status": "passed",
+                      "duration": 3572,
+                      "errors": [],
+                      "stdout": [
+                        {
+                          "text": "/new-submission/waiver violations:  \u001b[33m0\u001b[39m\n"
+                        }
+                      ],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-05-05T21:15:24.902Z",
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "37280e3c1e02c3251f32-032350aef2535a2f2431",
+              "file": "non-func/a11y/index.spec.ts",
+              "line": 10,
+              "column": 5
+            },
+            {
+              "title": "/new-submission/waiver/b should not have any automatically detectable accessibility issues",
+              "ok": true,
+              "tags": [
+                "CI",
+                "a11y"
+              ],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "state-user-chrome",
+                  "projectName": "state-user-chrome",
+                  "results": [
+                    {
+                      "workerIndex": 0,
+                      "status": "passed",
+                      "duration": 3550,
+                      "errors": [],
+                      "stdout": [
+                        {
+                          "text": "/new-submission/waiver/b violations:  \u001b[33m0\u001b[39m\n"
+                        }
+                      ],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-05-05T21:15:28.479Z",
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "37280e3c1e02c3251f32-ffde4f38b22ca315f360",
+              "file": "non-func/a11y/index.spec.ts",
+              "line": 10,
+              "column": 5
+            },
+            {
+              "title": "/new-submission/waiver/b/b4 should not have any automatically detectable accessibility issues",
+              "ok": true,
+              "tags": [
+                "CI",
+                "a11y"
+              ],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "state-user-chrome",
+                  "projectName": "state-user-chrome",
+                  "results": [
+                    {
+                      "workerIndex": 0,
+                      "status": "passed",
+                      "duration": 3613,
+                      "errors": [],
+                      "stdout": [
+                        {
+                          "text": "/new-submission/waiver/b/b4 violations:  \u001b[33m0\u001b[39m\n"
+                        }
+                      ],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-05-05T21:15:32.033Z",
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "37280e3c1e02c3251f32-523cf218f6c0865f907d",
+              "file": "non-func/a11y/index.spec.ts",
+              "line": 10,
+              "column": 5
+            },
+            {
+              "title": "/new-submission/waiver/b/capitated should not have any automatically detectable accessibility issues",
+              "ok": true,
+              "tags": [
+                "CI",
+                "a11y"
+              ],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "state-user-chrome",
+                  "projectName": "state-user-chrome",
+                  "results": [
+                    {
+                      "workerIndex": 0,
+                      "status": "passed",
+                      "duration": 3667,
+                      "errors": [],
+                      "stdout": [
+                        {
+                          "text": "/new-submission/waiver/b/capitated violations:  \u001b[33m0\u001b[39m\n"
+                        }
+                      ],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-05-05T21:15:35.651Z",
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "37280e3c1e02c3251f32-e64a62c49585d0dfd607",
+              "file": "non-func/a11y/index.spec.ts",
+              "line": 10,
+              "column": 5
+            },
+            {
+              "title": "/new-submission/spa/medicaid/landing/medicaid-abp should not have any automatically detectable accessibility issues",
+              "ok": true,
+              "tags": [
+                "CI",
+                "a11y"
+              ],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "state-user-chrome",
+                  "projectName": "state-user-chrome",
+                  "results": [
+                    {
+                      "workerIndex": 0,
+                      "status": "passed",
+                      "duration": 3677,
+                      "errors": [],
+                      "stdout": [
+                        {
+                          "text": "/new-submission/spa/medicaid/landing/medicaid-abp violations:  \u001b[33m0\u001b[39m\n"
+                        }
+                      ],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-05-05T21:15:39.324Z",
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "37280e3c1e02c3251f32-e1e0c880ac9a9e69d4bf",
+              "file": "non-func/a11y/index.spec.ts",
+              "line": 10,
+              "column": 5
+            },
+            {
+              "title": "/new-submission/spa/medicaid/landing/medicaid-eligibility should not have any automatically detectable accessibility issues",
+              "ok": true,
+              "tags": [
+                "CI",
+                "a11y"
+              ],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "state-user-chrome",
+                  "projectName": "state-user-chrome",
+                  "results": [
+                    {
+                      "workerIndex": 0,
+                      "status": "passed",
+                      "duration": 3662,
+                      "errors": [],
+                      "stdout": [
+                        {
+                          "text": "/new-submission/spa/medicaid/landing/medicaid-eligibility violations:  \u001b[33m0\u001b[39m\n"
+                        }
+                      ],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-05-05T21:15:43.006Z",
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "37280e3c1e02c3251f32-eeea894394768353c3f0",
+              "file": "non-func/a11y/index.spec.ts",
+              "line": 10,
+              "column": 5
+            },
+            {
+              "title": "/new-submission/spa/chip/landing/chip-eligibility should not have any automatically detectable accessibility issues",
+              "ok": true,
+              "tags": [
+                "CI",
+                "a11y"
+              ],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "state-user-chrome",
+                  "projectName": "state-user-chrome",
+                  "results": [
+                    {
+                      "workerIndex": 0,
+                      "status": "passed",
+                      "duration": 3629,
+                      "errors": [],
+                      "stdout": [
+                        {
+                          "text": "/new-submission/spa/chip/landing/chip-eligibility violations:  \u001b[33m0\u001b[39m\n"
+                        }
+                      ],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-05-05T21:15:46.673Z",
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "37280e3c1e02c3251f32-917525c8e0aabf618360",
+              "file": "non-func/a11y/index.spec.ts",
+              "line": 10,
+              "column": 5
+            },
+            {
+              "title": "/new-submission/waiver/b/capitated/amendment/create should not have any automatically detectable accessibility issues",
+              "ok": true,
+              "tags": [
+                "CI",
+                "a11y"
+              ],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "state-user-chrome",
+                  "projectName": "state-user-chrome",
+                  "results": [
+                    {
+                      "workerIndex": 0,
+                      "status": "passed",
+                      "duration": 3806,
+                      "errors": [],
+                      "stdout": [
+                        {
+                          "text": "/new-submission/waiver/b/capitated/amendment/create violations:  \u001b[33m0\u001b[39m\n"
+                        }
+                      ],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-05-05T21:15:50.308Z",
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "37280e3c1e02c3251f32-4f48ac046548fc1e6a58",
+              "file": "non-func/a11y/index.spec.ts",
+              "line": 10,
+              "column": 5
+            },
+            {
+              "title": "/new-submission/waiver/b/capitated/renewal/create should not have any automatically detectable accessibility issues",
+              "ok": true,
+              "tags": [
+                "CI",
+                "a11y"
+              ],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "state-user-chrome",
+                  "projectName": "state-user-chrome",
+                  "results": [
+                    {
+                      "workerIndex": 0,
+                      "status": "passed",
+                      "duration": 3858,
+                      "errors": [],
+                      "stdout": [
+                        {
+                          "text": "/new-submission/waiver/b/capitated/renewal/create violations:  \u001b[33m0\u001b[39m\n"
+                        }
+                      ],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-05-05T21:15:54.119Z",
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "37280e3c1e02c3251f32-46613a2c918f0843aba9",
+              "file": "non-func/a11y/index.spec.ts",
+              "line": 10,
+              "column": 5
+            },
+            {
+              "title": "/new-submission/waiver/b/capitated/initial/create should not have any automatically detectable accessibility issues",
+              "ok": true,
+              "tags": [
+                "CI",
+                "a11y"
+              ],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "state-user-chrome",
+                  "projectName": "state-user-chrome",
+                  "results": [
+                    {
+                      "workerIndex": 0,
+                      "status": "passed",
+                      "duration": 3823,
+                      "errors": [],
+                      "stdout": [
+                        {
+                          "text": "/new-submission/waiver/b/capitated/initial/create violations:  \u001b[33m0\u001b[39m\n"
+                        }
+                      ],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-05-05T21:15:57.982Z",
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "37280e3c1e02c3251f32-058debe26c633c63f722",
+              "file": "non-func/a11y/index.spec.ts",
+              "line": 10,
+              "column": 5
+            },
+            {
+              "title": "/new-submission/waiver/b/b4/initial/create should not have any automatically detectable accessibility issues",
+              "ok": true,
+              "tags": [
+                "CI",
+                "a11y"
+              ],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "state-user-chrome",
+                  "projectName": "state-user-chrome",
+                  "results": [
+                    {
+                      "workerIndex": 0,
+                      "status": "passed",
+                      "duration": 3782,
+                      "errors": [],
+                      "stdout": [
+                        {
+                          "text": "/new-submission/waiver/b/b4/initial/create violations:  \u001b[33m0\u001b[39m\n"
+                        }
+                      ],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-05-05T21:16:01.810Z",
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "37280e3c1e02c3251f32-eb48c56f0b62cbe031ac",
+              "file": "non-func/a11y/index.spec.ts",
+              "line": 10,
+              "column": 5
+            },
+            {
+              "title": "/new-submission/waiver/b/b4/amendment/create should not have any automatically detectable accessibility issues",
+              "ok": true,
+              "tags": [
+                "CI",
+                "a11y"
+              ],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "state-user-chrome",
+                  "projectName": "state-user-chrome",
+                  "results": [
+                    {
+                      "workerIndex": 0,
+                      "status": "passed",
+                      "duration": 3948,
+                      "errors": [],
+                      "stdout": [
+                        {
+                          "text": "/new-submission/waiver/b/b4/amendment/create violations:  \u001b[33m0\u001b[39m\n"
+                        }
+                      ],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-05-05T21:16:05.597Z",
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "37280e3c1e02c3251f32-7c83e4f5d1544a84eec1",
+              "file": "non-func/a11y/index.spec.ts",
+              "line": 10,
+              "column": 5
+            },
+            {
+              "title": "/new-submission/waiver/b/b4/renewal/create should not have any automatically detectable accessibility issues",
+              "ok": true,
+              "tags": [
+                "CI",
+                "a11y"
+              ],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "state-user-chrome",
+                  "projectName": "state-user-chrome",
+                  "results": [
+                    {
+                      "workerIndex": 0,
+                      "status": "passed",
+                      "duration": 3871,
+                      "errors": [],
+                      "stdout": [
+                        {
+                          "text": "/new-submission/waiver/b/b4/renewal/create violations:  \u001b[33m0\u001b[39m\n"
+                        }
+                      ],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-05-05T21:16:09.551Z",
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "37280e3c1e02c3251f32-49bdf2c909413aaa02b5",
+              "file": "non-func/a11y/index.spec.ts",
+              "line": 10,
+              "column": 5
+            },
+            {
+              "title": "/new-submission/spa/medicaid/create should not have any automatically detectable accessibility issues",
+              "ok": true,
+              "tags": [
+                "CI",
+                "a11y"
+              ],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "state-user-chrome",
+                  "projectName": "state-user-chrome",
+                  "results": [
+                    {
+                      "workerIndex": 0,
+                      "status": "passed",
+                      "duration": 3910,
+                      "errors": [],
+                      "stdout": [
+                        {
+                          "text": "/new-submission/spa/medicaid/create violations:  \u001b[33m0\u001b[39m\n"
+                        }
+                      ],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-05-05T21:16:13.427Z",
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "37280e3c1e02c3251f32-d34070cfe84d48ebd0a2",
+              "file": "non-func/a11y/index.spec.ts",
+              "line": 10,
+              "column": 5
+            },
+            {
+              "title": "/new-submission/spa/chip/create should not have any automatically detectable accessibility issues",
+              "ok": true,
+              "tags": [
+                "CI",
+                "a11y"
+              ],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "state-user-chrome",
+                  "projectName": "state-user-chrome",
+                  "results": [
+                    {
+                      "workerIndex": 0,
+                      "status": "passed",
+                      "duration": 3837,
+                      "errors": [],
+                      "stdout": [
+                        {
+                          "text": "/new-submission/spa/chip/create violations:  \u001b[33m0\u001b[39m\n"
+                        }
+                      ],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-05-05T21:16:17.342Z",
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "37280e3c1e02c3251f32-24176b01d225b993061a",
+              "file": "non-func/a11y/index.spec.ts",
+              "line": 10,
+              "column": 5
+            },
+            {
+              "title": "/new-submission/waiver/app-k should not have any automatically detectable accessibility issues",
+              "ok": true,
+              "tags": [
+                "CI",
+                "a11y"
+              ],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "state-user-chrome",
+                  "projectName": "state-user-chrome",
+                  "results": [
+                    {
+                      "workerIndex": 0,
+                      "status": "passed",
+                      "duration": 3764,
+                      "errors": [],
+                      "stdout": [
+                        {
+                          "text": "/new-submission/waiver/app-k violations:  \u001b[33m0\u001b[39m\n"
+                        }
+                      ],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-05-05T21:16:21.184Z",
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "37280e3c1e02c3251f32-b18e956b40b1d5219c68",
+              "file": "non-func/a11y/index.spec.ts",
+              "line": 10,
+              "column": 5
+            },
+            {
+              "title": "/new-submission/waiver/temporary-extensions should not have any automatically detectable accessibility issues",
+              "ok": true,
+              "tags": [
+                "CI",
+                "a11y"
+              ],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "state-user-chrome",
+                  "projectName": "state-user-chrome",
+                  "results": [
+                    {
+                      "workerIndex": 0,
+                      "status": "passed",
+                      "duration": 3769,
+                      "errors": [],
+                      "stdout": [
+                        {
+                          "text": "/new-submission/waiver/temporary-extensions violations:  \u001b[33m0\u001b[39m\n"
+                        }
+                      ],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-05-05T21:16:24.953Z",
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "37280e3c1e02c3251f32-2fa9333d89cc29bcee66",
+              "file": "non-func/a11y/index.spec.ts",
+              "line": 10,
+              "column": 5
+            }
+          ]
+        },
+        {
+          "title": "test a11y on webform routes",
+          "file": "non-func/a11y/index.spec.ts",
+          "line": 34,
+          "column": 6,
+          "specs": [
+            {
+              "title": "/guides/abp should not have any automatically detectable accessibility issues",
+              "ok": true,
+              "tags": [
+                "CI",
+                "a11y"
+              ],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "state-user-chrome",
+                  "projectName": "state-user-chrome",
+                  "results": [
+                    {
+                      "workerIndex": 0,
+                      "status": "passed",
+                      "duration": 3659,
+                      "errors": [],
+                      "stdout": [
+                        {
+                          "text": "/guides/abp violations:  \u001b[33m0\u001b[39m\n"
+                        }
+                      ],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-05-05T21:16:28.727Z",
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "37280e3c1e02c3251f32-15c3522369cd86774996",
+              "file": "non-func/a11y/index.spec.ts",
+              "line": 36,
+              "column": 5
+            },
+            {
+              "title": "/webform/g3/202401 should not have any automatically detectable accessibility issues",
+              "ok": true,
+              "tags": [
+                "CI",
+                "a11y"
+              ],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "state-user-chrome",
+                  "projectName": "state-user-chrome",
+                  "results": [
+                    {
+                      "workerIndex": 0,
+                      "status": "passed",
+                      "duration": 4219,
+                      "errors": [],
+                      "stdout": [
+                        {
+                          "text": "/webform/g3/202401 violations:  \u001b[33m0\u001b[39m\n"
+                        }
+                      ],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-05-05T21:16:32.390Z",
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "37280e3c1e02c3251f32-ea26df9b68f81c423bd2",
+              "file": "non-func/a11y/index.spec.ts",
+              "line": 36,
+              "column": 5
+            },
+            {
+              "title": "/webform/g2b/202401 should not have any automatically detectable accessibility issues",
+              "ok": true,
+              "tags": [
+                "CI",
+                "a11y"
+              ],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "state-user-chrome",
+                  "projectName": "state-user-chrome",
+                  "results": [
+                    {
+                      "workerIndex": 0,
+                      "status": "passed",
+                      "duration": 3857,
+                      "errors": [],
+                      "stdout": [
+                        {
+                          "text": "/webform/g2b/202401 violations:  \u001b[33m0\u001b[39m\n"
+                        }
+                      ],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-05-05T21:16:36.614Z",
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "37280e3c1e02c3251f32-0ca61bcb8fb1ca55f8dd",
+              "file": "non-func/a11y/index.spec.ts",
+              "line": 36,
+              "column": 5
+            },
+            {
+              "title": "/webform/g2a/202401 should not have any automatically detectable accessibility issues",
+              "ok": true,
+              "tags": [
+                "CI",
+                "a11y"
+              ],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "state-user-chrome",
+                  "projectName": "state-user-chrome",
+                  "results": [
+                    {
+                      "workerIndex": 0,
+                      "status": "passed",
+                      "duration": 3870,
+                      "errors": [],
+                      "stdout": [
+                        {
+                          "text": "/webform/g2a/202401 violations:  \u001b[33m0\u001b[39m\n"
+                        }
+                      ],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-05-05T21:16:40.478Z",
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "37280e3c1e02c3251f32-2cc33f8876c7fae89e26",
+              "file": "non-func/a11y/index.spec.ts",
+              "line": 36,
+              "column": 5
+            },
+            {
+              "title": "/webform/g1/202401 should not have any automatically detectable accessibility issues",
+              "ok": true,
+              "tags": [
+                "CI",
+                "a11y"
+              ],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "state-user-chrome",
+                  "projectName": "state-user-chrome",
+                  "results": [
+                    {
+                      "workerIndex": 0,
+                      "status": "passed",
+                      "duration": 3984,
+                      "errors": [],
+                      "stdout": [
+                        {
+                          "text": "/webform/g1/202401 violations:  \u001b[33m0\u001b[39m\n"
+                        }
+                      ],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-05-05T21:16:44.353Z",
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "37280e3c1e02c3251f32-f399896491225c244e3b",
+              "file": "non-func/a11y/index.spec.ts",
+              "line": 36,
+              "column": 5
+            },
+            {
+              "title": "/webform/cs8/202401 should not have any automatically detectable accessibility issues",
+              "ok": true,
+              "tags": [
+                "CI",
+                "a11y"
+              ],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "state-user-chrome",
+                  "projectName": "state-user-chrome",
+                  "results": [
+                    {
+                      "workerIndex": 0,
+                      "status": "passed",
+                      "duration": 3809,
+                      "errors": [],
+                      "stdout": [
+                        {
+                          "text": "/webform/cs8/202401 violations:  \u001b[33m0\u001b[39m\n"
+                        }
+                      ],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-05-05T21:16:48.342Z",
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "37280e3c1e02c3251f32-1f6ed40b5244efb92c98",
+              "file": "non-func/a11y/index.spec.ts",
+              "line": 36,
+              "column": 5
+            },
+            {
+              "title": "/webform/cs3/202401 should not have any automatically detectable accessibility issues",
+              "ok": true,
+              "tags": [
+                "CI",
+                "a11y"
+              ],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "state-user-chrome",
+                  "projectName": "state-user-chrome",
+                  "results": [
+                    {
+                      "workerIndex": 0,
+                      "status": "passed",
+                      "duration": 3546,
+                      "errors": [],
+                      "stdout": [
+                        {
+                          "text": "/webform/cs3/202401 violations:  \u001b[33m0\u001b[39m\n"
+                        }
+                      ],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-05-05T21:16:52.155Z",
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "37280e3c1e02c3251f32-0675f0351af0a349546e",
+              "file": "non-func/a11y/index.spec.ts",
+              "line": 36,
+              "column": 5
+            },
+            {
+              "title": "/webform/cs7/202401 should not have any automatically detectable accessibility issues",
+              "ok": true,
+              "tags": [
+                "CI",
+                "a11y"
+              ],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "state-user-chrome",
+                  "projectName": "state-user-chrome",
+                  "results": [
+                    {
+                      "workerIndex": 0,
+                      "status": "passed",
+                      "duration": 3699,
+                      "errors": [],
+                      "stdout": [
+                        {
+                          "text": "/webform/cs7/202401 violations:  \u001b[33m0\u001b[39m\n"
+                        }
+                      ],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-05-05T21:16:55.706Z",
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "37280e3c1e02c3251f32-c601598091a255d818c2",
+              "file": "non-func/a11y/index.spec.ts",
+              "line": 36,
+              "column": 5
+            },
+            {
+              "title": "/webform/abp11/202401 should not have any automatically detectable accessibility issues",
+              "ok": true,
+              "tags": [
+                "CI",
+                "a11y"
+              ],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "state-user-chrome",
+                  "projectName": "state-user-chrome",
+                  "results": [
+                    {
+                      "workerIndex": 0,
+                      "status": "passed",
+                      "duration": 3638,
+                      "errors": [],
+                      "stdout": [
+                        {
+                          "text": "/webform/abp11/202401 violations:  \u001b[33m0\u001b[39m\n"
+                        }
+                      ],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-05-05T21:16:59.410Z",
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "37280e3c1e02c3251f32-5784f0762388914f3e4d",
+              "file": "non-func/a11y/index.spec.ts",
+              "line": 36,
+              "column": 5
+            },
+            {
+              "title": "/webform/abp10/202401 should not have any automatically detectable accessibility issues",
+              "ok": true,
+              "tags": [
+                "CI",
+                "a11y"
+              ],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "state-user-chrome",
+                  "projectName": "state-user-chrome",
+                  "results": [
+                    {
+                      "workerIndex": 0,
+                      "status": "passed",
+                      "duration": 3627,
+                      "errors": [],
+                      "stdout": [
+                        {
+                          "text": "/webform/abp10/202401 violations:  \u001b[33m0\u001b[39m\n"
+                        }
+                      ],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-05-05T21:17:03.053Z",
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "37280e3c1e02c3251f32-8ee8eaca87eea56d0b41",
+              "file": "non-func/a11y/index.spec.ts",
+              "line": 36,
+              "column": 5
+            },
+            {
+              "title": "/webform/abp9/202401 should not have any automatically detectable accessibility issues",
+              "ok": true,
+              "tags": [
+                "CI",
+                "a11y"
+              ],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "state-user-chrome",
+                  "projectName": "state-user-chrome",
+                  "results": [
+                    {
+                      "workerIndex": 0,
+                      "status": "passed",
+                      "duration": 3577,
+                      "errors": [],
+                      "stdout": [
+                        {
+                          "text": "/webform/abp9/202401 violations:  \u001b[33m0\u001b[39m\n"
+                        }
+                      ],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-05-05T21:17:06.685Z",
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "37280e3c1e02c3251f32-66b6b821abd37cfaac0b",
+              "file": "non-func/a11y/index.spec.ts",
+              "line": 36,
+              "column": 5
+            },
+            {
+              "title": "/webform/abp7/202401 should not have any automatically detectable accessibility issues",
+              "ok": true,
+              "tags": [
+                "CI",
+                "a11y"
+              ],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "state-user-chrome",
+                  "projectName": "state-user-chrome",
+                  "results": [
+                    {
+                      "workerIndex": 0,
+                      "status": "passed",
+                      "duration": 3839,
+                      "errors": [],
+                      "stdout": [
+                        {
+                          "text": "/webform/abp7/202401 violations:  \u001b[33m0\u001b[39m\n"
+                        }
+                      ],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-05-05T21:17:10.267Z",
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "37280e3c1e02c3251f32-39a5acd017325ba7998c",
+              "file": "non-func/a11y/index.spec.ts",
+              "line": 36,
+              "column": 5
+            },
+            {
+              "title": "/webform/abp6/202401 should not have any automatically detectable accessibility issues",
+              "ok": true,
+              "tags": [
+                "CI",
+                "a11y"
+              ],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "state-user-chrome",
+                  "projectName": "state-user-chrome",
+                  "results": [
+                    {
+                      "workerIndex": 0,
+                      "status": "passed",
+                      "duration": 3733,
+                      "errors": [],
+                      "stdout": [
+                        {
+                          "text": "/webform/abp6/202401 violations:  \u001b[33m0\u001b[39m\n"
+                        }
+                      ],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-05-05T21:17:14.111Z",
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "37280e3c1e02c3251f32-cfa3f09f7372643178cc",
+              "file": "non-func/a11y/index.spec.ts",
+              "line": 36,
+              "column": 5
+            },
+            {
+              "title": "/webform/abp5/202401 should not have any automatically detectable accessibility issues",
+              "ok": true,
+              "tags": [
+                "CI",
+                "a11y"
+              ],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "state-user-chrome",
+                  "projectName": "state-user-chrome",
+                  "results": [
+                    {
+                      "workerIndex": 0,
+                      "status": "passed",
+                      "duration": 3579,
+                      "errors": [],
+                      "stdout": [
+                        {
+                          "text": "/webform/abp5/202401 violations:  \u001b[33m0\u001b[39m\n"
+                        }
+                      ],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-05-05T21:17:17.848Z",
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "37280e3c1e02c3251f32-08247e889595323aa15b",
+              "file": "non-func/a11y/index.spec.ts",
+              "line": 36,
+              "column": 5
+            },
+            {
+              "title": "/webform/abp4/202401 should not have any automatically detectable accessibility issues",
+              "ok": true,
+              "tags": [
+                "CI",
+                "a11y"
+              ],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "state-user-chrome",
+                  "projectName": "state-user-chrome",
+                  "results": [
+                    {
+                      "workerIndex": 0,
+                      "status": "passed",
+                      "duration": 3558,
+                      "errors": [],
+                      "stdout": [
+                        {
+                          "text": "/webform/abp4/202401 violations:  \u001b[33m0\u001b[39m\n"
+                        }
+                      ],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-05-05T21:17:21.432Z",
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "37280e3c1e02c3251f32-82ad6c97f6175cdf2216",
+              "file": "non-func/a11y/index.spec.ts",
+              "line": 36,
+              "column": 5
+            },
+            {
+              "title": "/webform/abp3_1/202401 should not have any automatically detectable accessibility issues",
+              "ok": true,
+              "tags": [
+                "CI",
+                "a11y"
+              ],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "state-user-chrome",
+                  "projectName": "state-user-chrome",
+                  "results": [
+                    {
+                      "workerIndex": 0,
+                      "status": "passed",
+                      "duration": 3800,
+                      "errors": [],
+                      "stdout": [
+                        {
+                          "text": "/webform/abp3_1/202401 violations:  \u001b[33m0\u001b[39m\n"
+                        }
+                      ],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-05-05T21:17:24.995Z",
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "37280e3c1e02c3251f32-3956f981468898ec5afd",
+              "file": "non-func/a11y/index.spec.ts",
+              "line": 36,
+              "column": 5
+            },
+            {
+              "title": "/webform/abp3/202401 should not have any automatically detectable accessibility issues",
+              "ok": true,
+              "tags": [
+                "CI",
+                "a11y"
+              ],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "state-user-chrome",
+                  "projectName": "state-user-chrome",
+                  "results": [
+                    {
+                      "workerIndex": 0,
+                      "status": "passed",
+                      "duration": 3814,
+                      "errors": [],
+                      "stdout": [
+                        {
+                          "text": "/webform/abp3/202401 violations:  \u001b[33m0\u001b[39m\n"
+                        }
+                      ],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-05-05T21:17:28.800Z",
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "37280e3c1e02c3251f32-8e0b50228a2e17982af6",
+              "file": "non-func/a11y/index.spec.ts",
+              "line": 36,
+              "column": 5
+            },
+            {
+              "title": "/webform/abp2c/202401 should not have any automatically detectable accessibility issues",
+              "ok": true,
+              "tags": [
+                "CI",
+                "a11y"
+              ],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "state-user-chrome",
+                  "projectName": "state-user-chrome",
+                  "results": [
+                    {
+                      "workerIndex": 0,
+                      "status": "passed",
+                      "duration": 3986,
+                      "errors": [],
+                      "stdout": [
+                        {
+                          "text": "/webform/abp2c/202401 violations:  \u001b[33m0\u001b[39m\n"
+                        }
+                      ],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-05-05T21:17:32.619Z",
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "37280e3c1e02c3251f32-b22645bac837bb67c481",
+              "file": "non-func/a11y/index.spec.ts",
+              "line": 36,
+              "column": 5
+            },
+            {
+              "title": "/webform/abp2b/202401 should not have any automatically detectable accessibility issues",
+              "ok": true,
+              "tags": [
+                "CI",
+                "a11y"
+              ],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "state-user-chrome",
+                  "projectName": "state-user-chrome",
+                  "results": [
+                    {
+                      "workerIndex": 0,
+                      "status": "passed",
+                      "duration": 3965,
+                      "errors": [],
+                      "stdout": [
+                        {
+                          "text": "/webform/abp2b/202401 violations:  \u001b[33m0\u001b[39m\n"
+                        }
+                      ],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-05-05T21:17:36.610Z",
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "37280e3c1e02c3251f32-7953486ea3a4dd67ec8b",
+              "file": "non-func/a11y/index.spec.ts",
+              "line": 36,
+              "column": 5
+            },
+            {
+              "title": "/webform/abp2a/202401 should not have any automatically detectable accessibility issues",
+              "ok": true,
+              "tags": [
+                "CI",
+                "a11y"
+              ],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "state-user-chrome",
+                  "projectName": "state-user-chrome",
+                  "results": [
+                    {
+                      "workerIndex": 0,
+                      "status": "passed",
+                      "duration": 3613,
+                      "errors": [],
+                      "stdout": [
+                        {
+                          "text": "/webform/abp2a/202401 violations:  \u001b[33m0\u001b[39m\n"
+                        }
+                      ],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-05-05T21:17:40.581Z",
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "37280e3c1e02c3251f32-48114b61f32f7ce98d5a",
+              "file": "non-func/a11y/index.spec.ts",
+              "line": 36,
+              "column": 5
+            },
+            {
+              "title": "/webform/abp1/202401 should not have any automatically detectable accessibility issues",
+              "ok": true,
+              "tags": [
+                "CI",
+                "a11y"
+              ],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "state-user-chrome",
+                  "projectName": "state-user-chrome",
+                  "results": [
+                    {
+                      "workerIndex": 0,
+                      "status": "passed",
+                      "duration": 3586,
+                      "errors": [],
+                      "stdout": [
+                        {
+                          "text": "/webform/abp1/202401 violations:  \u001b[33m0\u001b[39m\n"
+                        }
+                      ],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-05-05T21:17:44.198Z",
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "37280e3c1e02c3251f32-50f23652b039e14a33cc",
+              "file": "non-func/a11y/index.spec.ts",
+              "line": 36,
+              "column": 5
+            },
+            {
+              "title": "/webform/abp1/202402 should not have any automatically detectable accessibility issues",
+              "ok": true,
+              "tags": [
+                "CI",
+                "a11y"
+              ],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "state-user-chrome",
+                  "projectName": "state-user-chrome",
+                  "results": [
+                    {
+                      "workerIndex": 0,
+                      "status": "passed",
+                      "duration": 3591,
+                      "errors": [],
+                      "stdout": [
+                        {
+                          "text": "/webform/abp1/202402 violations:  \u001b[33m0\u001b[39m\n"
+                        }
+                      ],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-05-05T21:17:47.789Z",
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "37280e3c1e02c3251f32-94f97e5e39b28f6acda8",
+              "file": "non-func/a11y/index.spec.ts",
+              "line": 36,
+              "column": 5
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "errors": [],
+  "stats": {
+    "startTime": "2025-05-05T21:14:04.781Z",
+    "duration": 226707.71300000002,
+    "expected": 84,
+    "skipped": 2,
+    "unexpected": 0,
+    "flaky": 0
+  }
+}
