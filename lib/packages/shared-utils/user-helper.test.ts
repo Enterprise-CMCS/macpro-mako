@@ -1,4 +1,5 @@
-import type { CognitoUserAttributes, FullUser } from "shared-types";
+import { defaultCMSUser, helpDeskUser, reviewer, stateSubmitter, superReviewer } from "mocks";
+import type { FullUser } from "shared-types";
 import { describe, expect, it } from "vitest";
 
 import {
@@ -18,79 +19,53 @@ import {
   testStateIDMUser,
 } from "./testData";
 
-type User = CognitoUserAttributes;
-const cmsHelpDeskUser = {
-  ...testCMSCognitoUser.user,
-  "custom:cms-roles": "onemac-helpdesk",
-  role: "helpdesk",
-};
-const cmsReadOnlyUser = {
-  ...testCMSCognitoUser.user,
-  "custom:cms-roles": "onemac-micro-readonly",
-  role: "cmsreviewer",
-};
-const cmsReviewerUser = {
-  ...testCMSCognitoUser.user,
-  "custom:ismemberof": "ONEMAC_USER_D",
-  role: "cmsreviewer",
-};
-const cmsSuperUser = {
-  ...testCMSCognitoUser.user,
-  "custom:ismemberof": "ONEMAC_USER_D_SUPER",
-  sub: testCMSCognitoUser?.user?.sub || "",
-  role: "cmsreviewer",
-  // Add other required properties with default values if needed
-};
-const stateSubmitterUser = { ...testStateCognitoUser.user, role: "statesubmitter" };
-
 describe("isCmsUser", () => {
   it("returns true for CMS users", () => {
-    expect(isCmsUser(cmsHelpDeskUser as User)).toEqual(true);
-    expect(isCmsUser(cmsReadOnlyUser as User)).toEqual(true);
-    expect(isCmsUser(cmsReviewerUser as User)).toEqual(true);
-    expect(isCmsUser(cmsSuperUser as User)).toEqual(true);
+    expect(isCmsUser(helpDeskUser as FullUser)).toEqual(true);
+    expect(isCmsUser(defaultCMSUser as FullUser)).toEqual(true);
+    expect(isCmsUser(reviewer as FullUser)).toEqual(true);
+    expect(isCmsUser(superReviewer as FullUser)).toEqual(true);
   });
   it("returns false for State users", () => {
-    expect(isCmsUser(stateSubmitterUser as User)).toEqual(false);
+    expect(isCmsUser(stateSubmitter as FullUser)).toEqual(false);
   });
 });
 
 describe("isCmsWriteUser", () => {
   it("returns true for CMS Write users", () => {
-    expect(isCmsWriteUser(cmsReviewerUser as User)).toEqual(true);
+    expect(isCmsWriteUser(reviewer as FullUser)).toEqual(true);
+    expect(isCmsWriteUser(defaultCMSUser as FullUser)).toEqual(true);
   });
   it("returns false for CMS Read-Only users", () => {
-    expect(isCmsWriteUser(cmsReadOnlyUser as User)).toEqual(false);
-    expect(isCmsWriteUser(cmsHelpDeskUser as User)).toEqual(false);
+    expect(isCmsWriteUser(helpDeskUser as FullUser)).toEqual(false);
   });
   it("returns false for State users", () => {
-    expect(isCmsWriteUser(stateSubmitterUser as User)).toEqual(false);
+    expect(isCmsWriteUser(stateSubmitter as FullUser)).toEqual(false);
   });
 });
 
 describe("isCmsReadonlyUser", () => {
   it("returns false for CMS Write users", () => {
-    expect(isCmsReadonlyUser(cmsReviewerUser as User)).toEqual(false);
+    expect(isCmsReadonlyUser(reviewer as FullUser)).toEqual(false);
   });
   it("returns true for CMS Read-Only users", () => {
-    expect(isCmsReadonlyUser(cmsReadOnlyUser as User)).toEqual(true);
-    expect(isCmsReadonlyUser(cmsHelpDeskUser as User)).toEqual(true);
+    expect(isCmsReadonlyUser(helpDeskUser as FullUser)).toEqual(true);
   });
   it("returns false for State users", () => {
-    expect(isCmsReadonlyUser(stateSubmitterUser as User)).toEqual(false);
+    expect(isCmsReadonlyUser(stateSubmitter as FullUser)).toEqual(false);
   });
 });
 
 describe("isStateUser", () => {
   it("returns false for CMS Write users", () => {
-    expect(isStateUser(cmsReviewerUser as FullUser)).toEqual(false);
+    expect(isStateUser(reviewer as FullUser)).toEqual(false);
   });
   it("returns false for CMS Read-Only users", () => {
-    expect(isStateUser(cmsReadOnlyUser as FullUser)).toEqual(false);
-    expect(isStateUser(cmsHelpDeskUser as FullUser)).toEqual(false);
+    expect(isStateUser(defaultCMSUser as FullUser)).toEqual(false);
+    expect(isStateUser(helpDeskUser as FullUser)).toEqual(false);
   });
   it("returns true for State users", () => {
-    expect(isStateUser(stateSubmitterUser as FullUser)).toEqual(true);
+    expect(isStateUser(stateSubmitter as FullUser)).toEqual(true);
   });
   // Maybe we should refactor to eliminate this
   it("returns false for null args", () => {
@@ -99,8 +74,8 @@ describe("isStateUser", () => {
 });
 
 describe("isCmsSuperUser", () => {
-  it("returns true for CMS Super Users", () => {
-    expect(isCmsSuperUser(cmsSuperUser as User)).toEqual(true);
+  it("returns false because there is no longer a CMS Super User role", () => {
+    expect(isCmsSuperUser(superReviewer as FullUser)).toEqual(false);
   });
 });
 

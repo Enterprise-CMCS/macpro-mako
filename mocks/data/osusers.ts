@@ -3,13 +3,14 @@ import { TestUserDocument, TestUserResult } from "../index.d";
 export const SYSTEM_ADMIN_EMAIL = "systemadmin@example.com";
 export const HELP_DESK_EMAIL = "helpdesk@example.com";
 export const CMS_ROLE_APPROVER_EMAIL = "cmsroleapprover@example.com";
-export const CMS_READ_ONLY_EMAIL = "readonly@example.com";
-export const DEFAULT_CMS_USER_EMAIL = "reviewer@example.com";
+export const DEFAULT_CMS_USER_EMAIL = "defaultcmsuser@example.com";
+export const CMS_REVIEWER_EMAIL = "reviewer@example.com";
 export const TEST_CMS_REVIEWER_EMAIL = "mako.cmsuser@outlook.com";
 export const STATE_SYSTEM_ADMIN_EMAIL = "statesystemadmin@nightwatch.test";
 export const STATE_SUBMITTER_EMAIL = "statesubmitter@nightwatch.test";
 export const TEST_STATE_SUBMITTER_EMAIL = "mako.stateuser@gmail.com";
 export const MULTI_STATE_SUBMITTER_EMAIL = "multistate@example.com";
+export const NULL_STATE_SUBMITTER_EMAIL = "nullstate@example.com";
 export const NO_STATE_SUBMITTER_EMAIL = "nostate@example.com";
 export const PENDING_SUBMITTER_EMAIL = "pending@example.com";
 export const DENIED_SUBMITTER_EMAIL = "denied@example.com";
@@ -60,6 +61,17 @@ export const osUsers: Record<string, TestUserResult> = {
       role: "defaultcmsuser",
     },
   },
+  [CMS_REVIEWER_EMAIL]: {
+    _id: CMS_REVIEWER_EMAIL,
+    found: true,
+    _source: {
+      id: CMS_REVIEWER_EMAIL,
+      eventType: "user-info",
+      email: CMS_REVIEWER_EMAIL,
+      fullName: "CMS Reviewer",
+      role: "cmsreviewer",
+    },
+  },
   [TEST_CMS_REVIEWER_EMAIL]: {
     _id: TEST_CMS_REVIEWER_EMAIL,
     found: true,
@@ -67,19 +79,8 @@ export const osUsers: Record<string, TestUserResult> = {
       id: TEST_CMS_REVIEWER_EMAIL,
       eventType: "user-info",
       email: TEST_CMS_REVIEWER_EMAIL,
-      fullName: "CMS Reviewer",
+      fullName: "CMSReviewer Tester",
       role: "cmsreviewer",
-    },
-  },
-  [CMS_READ_ONLY_EMAIL]: {
-    _id: CMS_READ_ONLY_EMAIL,
-    found: true,
-    _source: {
-      id: CMS_READ_ONLY_EMAIL,
-      eventType: "user-info",
-      email: CMS_READ_ONLY_EMAIL,
-      fullName: "Read Only",
-      role: "defaultcmsuser",
     },
   },
   [STATE_SYSTEM_ADMIN_EMAIL]: {
@@ -134,6 +135,17 @@ export const osUsers: Record<string, TestUserResult> = {
       eventType: "user-info",
       email: NO_STATE_SUBMITTER_EMAIL,
       fullName: "No State",
+      role: "statesubmitter",
+    },
+  },
+  [NULL_STATE_SUBMITTER_EMAIL]: {
+    _id: NULL_STATE_SUBMITTER_EMAIL,
+    found: true,
+    _source: {
+      id: NULL_STATE_SUBMITTER_EMAIL,
+      eventType: "user-info",
+      email: NULL_STATE_SUBMITTER_EMAIL,
+      fullName: "Null State",
       role: "statesubmitter",
     },
   },

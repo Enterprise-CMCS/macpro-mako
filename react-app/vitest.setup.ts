@@ -21,12 +21,6 @@ Amplify.configure({
   Auth: AUTH_CONFIG,
 });
 
-global.ResizeObserver = vi.fn().mockImplementation(() => ({
-  observe: vi.fn(),
-  unobserve: vi.fn(),
-  disconnect: vi.fn(),
-}));
-
 // extends Vitest's expect method with methods from react-testing-library
 expect.extend(matchers);
 
@@ -47,17 +41,25 @@ window.HTMLElement.prototype.scrollIntoView = vi.fn();
 window.HTMLElement.prototype.releasePointerCapture = vi.fn();
 window.HTMLElement.prototype.hasPointerCapture = vi.fn();
 
-vi.spyOn(Auth, "currentAuthenticatedUser").mockImplementation(mockCurrentAuthenticatedUser);
+process.env.TZ = "UTC";
+
+// Add this to remove all the expected errors in console when running unit tests.
+vi.spyOn(console, "error").mockImplementation(() => {});
+
 vi.spyOn(Auth, "userAttributes").mockImplementation(mockUserAttributes);
+vi.spyOn(Auth, "currentAuthenticatedUser").mockImplementation(mockCurrentAuthenticatedUser);
 vi.spyOn(Auth, "signOut").mockImplementation(async () => {
   setMockUsername(null);
 });
-process.env.TZ = "UTC";
-// Add this to remove all the expected errors in console when running unit tests.
+
+global.ResizeObserver = vi.fn().mockImplementation(() => ({
+  observe: vi.fn(),
+  unobserve: vi.fn(),
+  disconnect: vi.fn(),
+}));
+
 beforeAll(() => {
   setDefaultStateSubmitter();
-
-  vi.spyOn(console, "error").mockImplementation(() => {});
 
   console.log("starting MSW listener for react-app");
   mockedServer.listen({
@@ -92,10 +94,10 @@ afterEach(() => {
 });
 
 afterAll(() => {
-  vi.resetAllMocks();
-
   // Clean up after the tests are finished.
   mockedServer.close();
 
   delete process.env.SKIP_CLEANUP;
+
+  vi.clearAllMocks();
 });

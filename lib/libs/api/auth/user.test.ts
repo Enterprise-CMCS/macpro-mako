@@ -4,7 +4,7 @@ import {
   getRequestContext,
   makoReviewer,
   makoStateSubmitter,
-  noStateSubmitter,
+  nullStateSubmitter,
   setMockUsername,
   USER_POOL_ID,
 } from "mocks";
@@ -51,7 +51,11 @@ describe("Auth functions", () => {
         makoStateSubmitter.Username || "",
         USER_POOL_ID,
       );
-      expect(userAttributes).toEqual(convertUserAttributes(makoStateSubmitter));
+      const expectedAttributes = convertUserAttributes(makoStateSubmitter);
+      expect(userAttributes).toEqual({
+        ...expectedAttributes,
+        role: undefined,
+      });
     });
 
     it("should throw an error if no user is found", async () => {
@@ -139,7 +143,7 @@ describe("Auth functions", () => {
     it("should throw an error if state user has no associated states", async () => {
       await expect(
         getStateFilter({
-          requestContext: getRequestContext(noStateSubmitter),
+          requestContext: getRequestContext(nullStateSubmitter),
         } as APIGatewayEvent),
       ).rejects.toThrow("State user detected, but no associated states.  Cannot continue");
     });

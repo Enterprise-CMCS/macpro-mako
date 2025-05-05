@@ -1,4 +1,4 @@
-import { errorApiOptionSubmitGroupDivisionHandler, readOnlyUser, setMockUsername } from "mocks";
+import { defaultCMSUser, errorApiOptionSubmitGroupDivisionHandler, setMockUsername } from "mocks";
 import { mockedApiServer as mockedServer } from "mocks/server";
 import { describe, expect, it } from "vitest";
 
@@ -13,7 +13,7 @@ describe("submitGroupDivision hook", () => {
   });
 
   it("should return a success message if the group and division were submitter successfully", async () => {
-    setMockUsername(readOnlyUser);
+    setMockUsername(defaultCMSUser);
 
     const result = await submitGroupDivision({ group: "Group1", division: "Division1" });
     expect(result).toEqual({ message: "Group and division submitted successfully." });
@@ -21,7 +21,7 @@ describe("submitGroupDivision hook", () => {
 
   it("should throw an error if there is an error", async () => {
     mockedServer.use(errorApiOptionSubmitGroupDivisionHandler);
-    setMockUsername(readOnlyUser);
+    setMockUsername(defaultCMSUser);
 
     await expect(() =>
       submitGroupDivision({ group: "Group1", division: "Division1" }),

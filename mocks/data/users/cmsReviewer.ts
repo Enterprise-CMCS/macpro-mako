@@ -12,11 +12,11 @@ export const makoReviewer: TestUserDataWithRole = {
     },
     {
       Name: "given_name",
-      Value: "CMS",
+      Value: "CMSReviewer",
     },
     {
       Name: "family_name",
-      Value: "Reviewer",
+      Value: "Tester",
     },
     {
       Name: "custom:state",
@@ -130,6 +130,10 @@ export const superReviewer: TestUserDataWithRole = {
     {
       Name: "custom:cms-roles",
       Value: "onemac-micro-reviewer,onemac-micro-super",
+    },
+    {
+      Name: "custom:ismemberof",
+      Value: "ONEMAC_USER_D_SUPER",
     },
     {
       Name: "sub",

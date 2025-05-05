@@ -192,6 +192,7 @@ export type SearchQueryBody = {
   size?: number;
   sortDirection?: string;
   sortField?: string;
+  _source?: string[];
 };
 
 export type GetItemBody = { id: string };

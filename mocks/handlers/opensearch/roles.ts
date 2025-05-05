@@ -13,7 +13,7 @@ import { getFilterValueAsString } from "../search.utils";
 const defaultRoleSearchHandler = http.post<PathParams, SearchQueryBody>(
   "https://vpc-opensearchdomain-mock-domain.us-east-1.es.amazonaws.com/test-namespace-roles/_search",
   async ({ request }) => {
-    const { query, size } = await request.json();
+    const { query, size, _source } = await request.json();
     let hits: TestRoleResult[];
 
     if (query?.term?.["email.keyword"]) {
@@ -22,6 +22,11 @@ const defaultRoleSearchHandler = http.post<PathParams, SearchQueryBody>(
     } else if (query?.term?.["territory.keyword"]) {
       const state = getFilterValueAsString(query, "term", "territory.keyword") || "";
       hits = getFilteredRolesByState(state);
+    } else if (query?.bool?.must && query?.bool?.must_not && _source) {
+      const email = getFilterValueAsString(query.bool.must, "term", "email.keyword") || "";
+      hits = getFilteredRolesByEmail(email).filter(
+        (roleObj) => roleObj._source.status === "active",
+      );
     } else if (query?.bool?.must && size === 1) {
       const email = getFilterValueAsString(query.bool.must, "term", "email.keyword") || "";
       hits = getLatestRoleByEmail(email);

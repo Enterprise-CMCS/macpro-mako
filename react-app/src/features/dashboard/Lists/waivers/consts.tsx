@@ -61,6 +61,7 @@ const getColumns = (props) => {
           if (props?.user?.role === UserRoles.HELPDESK) {
             return data.stateStatus;
           }
+          return data.cmsStatus;
         })();
 
         const subStatusRAI = data.raiWithdrawEnabled

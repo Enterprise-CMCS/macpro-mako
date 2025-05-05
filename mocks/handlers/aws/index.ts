@@ -6,6 +6,7 @@ import { idmHandlers } from "./idm";
 import { lambdaHandlers } from "./lambda";
 import { secretsManagerHandlers } from "./secretsManager";
 import { stepFunctionHandlers } from "./stepFunctions";
+
 export const awsHandlers = [
   ...cloudFormationHandlers,
   ...cognitoHandlers,

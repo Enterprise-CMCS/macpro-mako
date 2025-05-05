@@ -245,6 +245,41 @@ export const noStateSubmitter: TestUserDataWithRole = {
   role: "statesubmitter",
 };
 
+export const nullStateSubmitter: TestUserDataWithRole = {
+  UserAttributes: [
+    {
+      Name: "email",
+      Value: "nullstate@example.com",
+    },
+    {
+      Name: "email_verified",
+      Value: "true",
+    },
+    {
+      Name: "given_name",
+      Value: "Null",
+    },
+    {
+      Name: "family_name",
+      Value: "State",
+    },
+    {
+      Name: "custom:state",
+      Value: "",
+    },
+    {
+      Name: "custom:cms-roles",
+      Value: "onemac-state-user",
+    },
+    {
+      Name: "sub",
+      Value: "7b1d217e-fcff-490a-af11-cd07a681789e",
+    },
+  ],
+  Username: "7b1d217e-fcff-490a-af11-cd07a681789e",
+  role: "statesubmitter",
+};
+
 export const automatedStateSubmitter: TestUserDataWithRole = {
   UserAttributes: [
     {
@@ -455,6 +490,7 @@ export const stateSubmitters: TestUserDataWithRole[] = [
   coStateSubmitter,
   multiStateSubmitter,
   noStateSubmitter,
+  nullStateSubmitter,
   automatedStateSubmitter,
   testNewStateSubmitter,
   noEmailStateSubmitter,
