@@ -1,6 +1,6 @@
 import { Action, legacyAdminChangeSchema } from "../../..";
 
-export const transform = (id: string) => {
+export const transform = () => {
   return legacyAdminChangeSchema.transform((data) => {
     const transformedData = {
       // Timestamp is what makes admin changes unique; we add it to the id here, instead of the offset
