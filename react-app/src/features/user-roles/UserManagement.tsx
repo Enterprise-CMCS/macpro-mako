@@ -172,6 +172,7 @@ export const UserManagement = () => {
 
   const isHelpDesk = userDetails && userDetails.role === "helpdesk";
   const isStateSystemAdmin = userDetails && userDetails.role === "statesystemadmin";
+  const isSystemAdmin = userDetails && userDetails.role === "systemadmin";
 
   const [sortBy, setSortBy] = useState<{
     title: keyof headingType | "";
@@ -274,11 +275,12 @@ export const UserManagement = () => {
       <div className="bg-sky-100" data-testid="sub-nav-header">
         <div className="max-w-screen-xl m-auto px-4 lg:px-8 flex items-center py-4 justify-between">
           <h1 className="text-xl font-medium">User Management</h1>
-          {isHelpDesk && (
-            <Button variant="outline" onClick={handleExport}>
-              Export to Excel (CSV)
-            </Button>
-          )}
+          {isHelpDesk ||
+            (isSystemAdmin && (
+              <Button variant="outline" onClick={handleExport}>
+                Export to Excel (CSV)
+              </Button>
+            ))}
         </div>
       </div>
       <div className="py-5 px-10">
