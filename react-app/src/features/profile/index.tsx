@@ -18,7 +18,7 @@ import { useAvailableStates } from "@/hooks/useAvailableStates";
 import { convertStateAbbrToFullName, stateAccessStatus } from "@/utils";
 
 export const userRoleMap = {
-  defaultcmsuser: "Default CMS User Placeholder",
+  defaultcmsuser: "CMS Read-only User",
   cmsroleapprover: "CMS Role Approver",
   cmsreviewer: "CMS Reviewer",
   statesystemadmin: "State System Admin",
