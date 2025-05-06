@@ -17,4 +17,5 @@ export const useGetRoleRequests = () =>
   useQuery({
     queryKey: ["roleRequests"],
     queryFn: getRoleRequests,
+    refetchOnWindowFocus: false,
   });
