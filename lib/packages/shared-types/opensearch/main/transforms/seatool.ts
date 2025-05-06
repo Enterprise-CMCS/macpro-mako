@@ -97,13 +97,21 @@ const isInSecondClock = (
   authority: any,
 ) => {
   console.log("in is second clock seatool transform");
-  console.log("")
-  console.log("rai withdrawn date: ", raiWithdrawnDate)
-  const raiWithdrawnDateMS = new Date(raiWithdrawnDate).getTime();
-  console.log("rai withdrawn date milliseconds : ", raiWithdrawnDateMS)
-  console.log("raiReceivedDate date: ", raiReceivedDate);
-  const raiReceivedDateMS = new Date(raiReceivedDate).getTime();
-  console.log("rai recieved date milliseconds : ", raiReceivedDateMS)
+  const authorityCheck = authority !== "CHIP SPA" && // if it's not a chip
+    [
+      SEATOOL_STATUS.PENDING,
+      SEATOOL_STATUS.PENDING_CONCURRENCE,
+      SEATOOL_STATUS.PENDING_APPROVAL,
+    ].includes(seatoolStatus);
+
+  console.log("authority check ", authorityCheck);
+  console.log("raiReceivedDate", raiReceivedDate);
+  // console.log("")
+  // console.log("rai withdrawn date: ", raiWithdrawnDate)
+  // const raiWithdrawnDateMS = new Date(raiWithdrawnDate).getTime();
+  // console.log("rai withdrawn date milliseconds : ", raiWithdrawnDateMS)
+  // console.log("raiReceivedDate date: ", raiReceivedDate);
+  // const raiReceivedDateMS = new Date(raiReceivedDate).getTime();  // console.log("rai recieved date milliseconds : ", raiReceivedDateMS)
   if (
     authority !== "CHIP SPA" && // if it's not a chip
     [

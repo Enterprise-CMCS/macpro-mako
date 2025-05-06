@@ -33,15 +33,16 @@ export const PackageCheck = ({
   leadAnalystName,
   locked,
 }: opensearch.main.Document) => {
-  console.log("in package check");
-  console.log("rai Received Date: ", raiReceivedDate);
-  const raiReceivedDateMS = raiReceivedDate ? new Date(raiReceivedDate).getTime() : Date.now();
-  console.log("rai Received Date milliseconds: ", raiReceivedDateMS);
-  console.log("rai withdraw date: ", raiWithdrawnDate);
-  const raiWithdrawnDateMS = raiWithdrawnDate ? new Date(raiWithdrawnDate).getTime() : Date.now();
-  console.log("rai withdraw date milliseconds: ", raiWithdrawnDateMS);
-  console.log("package Id: ", id)
-  console.log("is raiReceived date > raiWithdrawn date", raiReceivedDateMS > raiWithdrawnDateMS)
+  // console.log("in package check");
+  // console.log("rai Received Date: ", raiReceivedDate);
+  // const raiReceivedDateMS = raiReceivedDate ? new Date(raiReceivedDate).getTime() : Date.now();
+  // console.log("rai Received Date milliseconds: ", raiReceivedDateMS);
+  // console.log("rai withdraw date: ", raiWithdrawnDate);
+  // const raiWithdrawnDateMS = raiWithdrawnDate ? new Date(raiWithdrawnDate).getTime() : Date.now();
+  // console.log("rai withdraw date milliseconds: ", raiWithdrawnDateMS);
+  // console.log("package Id: ", id)
+  // console.log("is raiReceived date > raiWithdrawn date", raiReceivedDateMS > raiWithdrawnDateMS)
+
   const secondClockStatuses = [
     SEATOOL_STATUS.PENDING,
     SEATOOL_STATUS.PENDING_APPROVAL,
@@ -57,6 +58,11 @@ export const PackageCheck = ({
     authorityIs: (validAuthorities: string[]) => checkAuthority(authority, validAuthorities),
     hasCpoc: !!leadAnalystName,
   };
+  console.log("in package check");
+  console.log("!planChecks.authorityIs([Authority.CHIP_SPA]", !planChecks.authorityIs([Authority.CHIP_SPA]));
+  console.log("checkStatus(seatoolStatus, secondClockStatuses)", checkStatus(seatoolStatus, secondClockStatuses));
+  console.log("!!raiRequestedDate", !!raiRequestedDate);
+  console.log("!!raiReceivedDate", !!raiReceivedDate)
   const statusChecks = {
     /** Is in any of our pending statuses, sans Pending-RAI **/
     isInActivePendingStatus: checkStatus(seatoolStatus, [
@@ -101,7 +107,7 @@ export const PackageCheck = ({
     /** There is an RAI **/
     hasLatestRai: !!raiRequestedDate,
     /** There is an RAI, it has a response, and it has not been withdrawn **/
-    hasRaiResponse: !!raiRequestedDate && !!raiReceivedDate && !raiWithdrawnDate,
+    hasRaiResponse: !!raiRequestedDate && !!raiReceivedDate,
     /** Latest RAI has a response and/or has been withdrawn **/
     hasCompletedRai: !!raiRequestedDate && !!raiReceivedDate,
     /** Latest RAI has a response and/or has been withdrawn **/
