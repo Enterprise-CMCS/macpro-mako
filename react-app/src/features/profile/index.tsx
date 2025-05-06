@@ -18,7 +18,7 @@ import { useAvailableStates } from "@/hooks/useAvailableStates";
 import { convertStateAbbrToFullName, stateAccessStatus } from "@/utils";
 
 export const userRoleMap = {
-  defaultcmsuser: "Default CMS User Placeholder",
+  defaultcmsuser: "CMS Read-only User",
   cmsroleapprover: "CMS Role Approver",
   cmsreviewer: "CMS Reviewer",
   statesystemadmin: "State System Admin",
@@ -70,9 +70,17 @@ export const Profile = () => {
     return <Navigate to="/" />;
   }
 
-  const stateAccess = orderStateAccess(
-    userProfile?.stateAccess?.filter((access) => access.territory != "ZZ"),
-  );
+  // if user has no active roles, show pending state(s)
+  // show state(s) for latest active role
+  const stateAccess = () => {
+    const statesToShow = userDetails.role
+      ? userProfile?.stateAccess?.filter(
+          (access: StateAccess) => access.role === userDetails.role && access.territory !== "ZZ",
+        )
+      : userProfile?.stateAccess?.filter((access: StateAccess) => access.territory !== "ZZ");
+
+    return orderStateAccess(statesToShow);
+  };
 
   const handleSubmitRequest = async () => {
     try {
@@ -189,7 +197,7 @@ export const Profile = () => {
                 onAccept={handleSelfRevokeAccess}
                 onCancel={() => setSelfRevokeState(null)}
               />
-              {stateAccess?.map((access) => {
+              {stateAccess().map((access) => {
                 return (
                   <CardWithTopBorder className="my-0" key={`${access.territory}-${access.role}`}>
                     <button

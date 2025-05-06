@@ -49,7 +49,12 @@ const useGetLinks = () => {
           {
             name: "Dashboard",
             link: "/dashboard",
-            condition: userObj.user && userObj.user.role !== "cmsroleapprover",
+            condition:
+              userObj.user &&
+              Object.values(UserRoles).some((role) => {
+                return userObj.user.role === role;
+              }) &&
+              userObj.user.role !== "cmsroleapprover",
           },
           {
             name: "User Management",
