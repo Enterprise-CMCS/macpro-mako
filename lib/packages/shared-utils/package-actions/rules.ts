@@ -41,6 +41,7 @@ export const arAmend: ActionRule = {
 export const arEnableWithdrawRaiResponse: ActionRule = {
   action: Action.ENABLE_RAI_WITHDRAW,
   check: (checker, user) => {
+    console.log("in enable rai withdraw")
     if (checker.authorityIs([Authority["CHIP_SPA"]])) {
       return (
         !checker.isTempExtension &&
@@ -53,6 +54,15 @@ export const arEnableWithdrawRaiResponse: ActionRule = {
         !checker.isPlaceholderStatus
       );
     }
+
+    console.log("!checker.isTempExtension", !checker.isTempExtension);
+    console.log("checker.isNotWithdrawn", checker.isNotWithdrawn);
+    console.log("checker.hasRaiResponse", checker.hasRaiResponse);
+    console.log(" !checker.hasEnabledRaiWithdraw", !checker.hasEnabledRaiWithdraw);
+    console.log("checker.isInSecondClock", checker.isInSecondClock)
+    console.log("isCmsWriteUser(user)", isCmsWriteUser(user))
+    console.log("!checker.hasStatus(finalDispositionStatuses)", !checker.hasStatus(finalDispositionStatuses));
+    console.log("!checker.hasStatus([SEATOOL_STATUS.PENDING_CONCURRENCE, SEATOOL_STATUS.PENDING_APPROVAL])", !checker.hasStatus([SEATOOL_STATUS.PENDING_CONCURRENCE, SEATOOL_STATUS.PENDING_APPROVAL]))
 
     return (
       !checker.isTempExtension &&
