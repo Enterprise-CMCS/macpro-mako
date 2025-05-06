@@ -2,7 +2,7 @@ import { EllipsisVerticalIcon } from "@heroicons/react/24/outline";
 import { ExportToCsv } from "export-to-csv";
 import { useEffect, useMemo, useState } from "react";
 import { Link } from "react-router";
-import { formatDate } from "shared-utils";
+import { formatDate, formatDateToET } from "shared-utils";
 
 import { RoleRequest, useGetRoleRequests, useGetUserDetails, useSubmitRoleRequests } from "@/api";
 import {
@@ -21,6 +21,8 @@ import {
   TableRow,
 } from "@/components";
 import { cn } from "@/utils";
+
+import { userRoleMap } from "../profile";
 type StatusType = "active" | "pending" | "denied" | "revoked";
 export type UserRoleType = {
   id: string;
@@ -312,8 +314,8 @@ export const UserManagement = () => {
                       {renderStatus(userRole.status)}
                     </span>
                   </TableCell>
-                  {!isStateSystemAdmin && <TableCell>{userRole.role}</TableCell>}
-                  <TableCell>{formatDate(userRole.lastModifiedDate)}</TableCell>
+                  {!isStateSystemAdmin && <TableCell>{userRoleMap[userRole.role]}</TableCell>}
+                  <TableCell>{formatDateToET(userRole.lastModifiedDate)}</TableCell>
                   <TableCell>{userRole.doneByName}</TableCell>
                 </TableRow>
               );

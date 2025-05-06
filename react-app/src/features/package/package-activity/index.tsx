@@ -48,7 +48,7 @@ const Submission = ({ packageActivity }: SubmissionProps) => {
     <div className="flex flex-col gap-6">
       <div>
         <h2 className="font-bold text-lg mb-2">Attachments</h2>
-        {attachments.length > 0 ? (
+        {attachments && attachments?.length > 0 ? (
           <Table.Table>
             <Table.TableHeader>
               <Table.TableRow>
@@ -63,7 +63,7 @@ const Submission = ({ packageActivity }: SubmissionProps) => {
         )}
       </div>
 
-      {attachments.length > 1 && (
+      {attachments && attachments.length > 1 && (
         <Table.Button
           variant="outline"
           className="w-max"
@@ -103,6 +103,7 @@ const PackageActivity = ({ packageActivity }: PackageActivityProps) => {
 
       case "withdraw-package":
         return "Package - Withdrawal Requested";
+      case "legacy-withdraw-rai-request":
       case "withdraw-rai":
         return "Formal RAI Response - Withdrawal Requested";
 
@@ -121,11 +122,13 @@ const PackageActivity = ({ packageActivity }: PackageActivityProps) => {
     <AccordionItem value={packageActivity.id}>
       <AccordionTrigger className="bg-gray-100 px-3" showPlusMinus>
         <p className="flex flex-row gap-2 text-gray-600">
-          <strong>
+          <strong className="text-left">
             {label} {packageActivity.submitterName ? `By ${packageActivity.submitterName}` : ""}
           </strong>
           {" - "}
-          {packageActivity.timestamp ? formatDateToET(packageActivity.timestamp) : "Unknown"}
+          <span className="text-right">
+            {packageActivity.timestamp ? formatDateToET(packageActivity.timestamp) : "Unknown"}
+          </span>
         </p>
       </AccordionTrigger>
       <AccordionContent className="p-4">
@@ -177,7 +180,7 @@ type PackageActivitiesProps = {
 
 export const PackageActivities = ({ id, changelog }: PackageActivitiesProps) => {
   const changelogWithoutAdminChanges = changelog.filter((item) => !item._source.isAdminChange);
-
+  console.log("Changelog" + changelogWithoutAdminChanges);
   return (
     <Table.DetailsSection
       id="package_activity"

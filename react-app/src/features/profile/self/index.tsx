@@ -1,8 +1,9 @@
+import { XIcon } from "lucide-react";
 import { useState } from "react";
 import { Navigate } from "react-router";
 import { StateCode } from "shared-types";
 
-import { useGetUserDetails, useGetUserProfile, useSubmitRoleRequests } from "@/api";
+import { StateAccess, useGetUserDetails, useGetUserProfile, useSubmitRoleRequests } from "@/api";
 import {
   banner,
   Button,
@@ -40,9 +41,17 @@ export const Profile = () => {
     return <Navigate to="/" />;
   }
 
-  const stateAccess = orderStateAccess(
-    userProfile?.stateAccess?.filter((access) => access.territory != "ZZ"),
-  );
+  // if user has no active roles, show pending state(s)
+  // show state(s) for latest active role
+  const stateAccess = () => {
+    const statesToShow = userDetails.role
+      ? userProfile?.stateAccess?.filter(
+          (access: StateAccess) => access.role === userDetails.role && access.territory !== "ZZ",
+        )
+      : userProfile?.stateAccess?.filter((access: StateAccess) => access.territory !== "ZZ");
+
+    return orderStateAccess(statesToShow);
+  };
 
   const handleSubmitRequest = async () => {
     try {
@@ -139,7 +148,7 @@ export const Profile = () => {
                 onAccept={handleSelfRevokeAccess}
                 onCancel={() => setSelfRevokeState(null)}
               />
-              {stateAccess?.map((access) => (
+              {stateAccess().map((access) => (
                 <StateAccessCard
                   access={access}
                   role={userRoleMap[userDetails?.role]}

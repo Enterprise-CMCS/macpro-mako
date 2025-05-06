@@ -52,9 +52,9 @@ const useGetLinks = () => {
             condition:
               userObj.user &&
               Object.values(UserRoles).some((role) => {
-                console.log("what is the role", role, userObj.user.role);
                 return userObj.user.role === role;
-              }),
+              }) &&
+              userObj.user.role !== "cmsroleapprover",
           },
           {
             name: "User Management",
@@ -114,7 +114,8 @@ const UserDropdownMenu = () => {
     const requestedRoles = userProfile?.stateAccess ?? [];
 
     const roleIsPending = (targetRole: string) =>
-      requestedRoles.some((r) => r.role === targetRole && r.status === "pending");
+      requestedRoles.some((r) => r.role === targetRole && r.status === "pending") ||
+      requestedRoles.some((r) => r.status === "pending");
 
     // Prevent duplicate or inappropriate role requests
     if (
