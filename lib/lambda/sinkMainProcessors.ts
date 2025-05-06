@@ -317,7 +317,10 @@ export const insertNewSeatoolRecordsFromKafkaIntoMako = async (
 
       const { data: seatoolDocument } = safeSeatoolRecord;
       const makoDocumentTimestamp = makoDocTimestamps.get(seatoolDocument.id);
-
+      console.log("--------------------");
+      console.log(`id: ${seatoolDocument.id}`);
+      console.log(`mako: ${makoDocumentTimestamp}`);
+      console.log(`seatool: ${seatoolDocument.changed_date}`);
       if (
         seatoolDocument.changed_date &&
         makoDocumentTimestamp &&
@@ -325,6 +328,8 @@ export const insertNewSeatoolRecordsFromKafkaIntoMako = async (
       ) {
         console.warn("SKIPPED DUE TO OUT-OF-DATE INFORMATION");
         continue;
+      } else {
+        console.log("this was fine");
       }
 
       if (seatoolDocument.authority && seatoolDocument.seatoolStatus !== "Unknown") {
