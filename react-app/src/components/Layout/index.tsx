@@ -113,7 +113,7 @@ const UserDropdownMenu = () => {
     const currentRole = userDetails?.role;
     const requestedRoles = userProfile?.stateAccess ?? [];
 
-    const roleIsPending = () => requestedRoles.some((r) => r.status === "pending");
+    const roleIsPending = requestedRoles.some((r) => r.status === "pending");
 
     // Prevent duplicate or inappropriate role requests
     // if (

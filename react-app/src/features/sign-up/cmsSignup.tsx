@@ -93,7 +93,6 @@ export const CMSSignup = () => {
               <h2 className="text-xl font-bold mb-2">Select a Group and Division</h2>
             </div>
 
-            {/* Not doing anything with group and division besides updating user index */}
             <div className="py-4">
               <h2 className="text-xl font-bold mb-2">Group</h2>
               <Select
@@ -105,7 +104,7 @@ export const CMSSignup = () => {
                 }}
               >
                 <SelectTrigger aria-label="Select group">
-                  <SelectValue placeholder="Select state here" />
+                  <SelectValue placeholder="Select..." />
                 </SelectTrigger>
                 <SelectContent>
                   {groupDivision.map((group) => (
@@ -130,7 +129,7 @@ export const CMSSignup = () => {
                   }}
                 >
                   <SelectTrigger aria-label="Select division">
-                    <SelectValue placeholder="Select state here" />
+                    <SelectValue placeholder="Select..." />
                   </SelectTrigger>
                   <SelectContent>
                     {group &&
