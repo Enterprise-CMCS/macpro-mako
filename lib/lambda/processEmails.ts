@@ -173,7 +173,7 @@ export async function sendUserRoleEmails(
   // get the approver list
   if (templates.length) {
     try {
-      const approverList = await getApproversByRoleState(
+      const approverList: { email: string } | null[] = await getApproversByRoleState(
         record.role,
         record.territory,
         {
@@ -190,9 +190,10 @@ export async function sendUserRoleEmails(
       console.log("ANDIE - approver roles", JSON.stringify(approverList));
 
       const approverListFormated = approverList.map(
-        (approver: { email: string; fullName: string }) => [
-          `${approver.fullName} <${approver.email}>`,
-        ],
+        (approver: { email: string; fullName: string } | null) => {
+          if (!approver) return;
+          return `${approver.fullName} <${approver.email}>`;
+        },
       );
 
       console.log("ANDIE - formated list", approverListFormated);
