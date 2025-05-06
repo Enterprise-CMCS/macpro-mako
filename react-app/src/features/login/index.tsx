@@ -36,7 +36,7 @@ export const Login = () => {
             className={cn("w-60", buttonStyling, "bg-primary text-slate-50 hover:bg-primary-dark")}
             to={configLogin()}
           >
-            Log in
+            Log In
           </Link>
           <Link to="/faq" target={FAQ_TAB} className="text-primary underline">
             How do I get access to OneMAC?

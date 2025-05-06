@@ -357,7 +357,7 @@ const ResponsiveNav = ({ isDesktop }: ResponsiveNavProps) => {
                 className="text-white hover:text-white/70"
                 onClick={handleLogin}
               >
-                {hideLogin ? "Sign In" : "Log in"}
+                {hideLogin ? "Sign In" : "Log In"}
               </button>
               <button
                 data-testid="register-button-d"
@@ -381,7 +381,7 @@ const ResponsiveNav = ({ isDesktop }: ResponsiveNavProps) => {
                 className="text-white hover:text-white/70"
                 onClick={handleLogin}
               >
-                {hideLogin ? "Sign In" : "Log in"}
+                {hideLogin ? "Sign In" : "Log In"}
               </button>
             </>
           ))
@@ -419,7 +419,7 @@ const ResponsiveNav = ({ isDesktop }: ResponsiveNavProps) => {
                     className="text-left block py-2 pl-3 pr-4 text-white rounded"
                     onClick={handleLogin}
                   >
-                    {hideLogin ? "Sign In" : "Log in"}
+                    {hideLogin ? "Sign In" : "Log In"}
                   </button>
                   <button
                     className="text-left block py-2 pl-3 pr-4 text-white rounded"
