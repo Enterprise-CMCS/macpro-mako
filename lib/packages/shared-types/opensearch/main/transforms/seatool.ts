@@ -111,22 +111,24 @@ const isInSecondClock = (
       SEATOOL_STATUS.PENDING_CONCURRENCE,
       SEATOOL_STATUS.PENDING_APPROVAL,
     ].includes(seatoolStatus) && // if it's in pending
-    raiReceivedDate && // if its latest rai has a received date
-    !raiWithdrawnDate // if the latest rai has not been withdrawn
+    raiReceivedDate  // if its latest rai has a received date
+    // !raiWithdrawnDate // if the latest rai has not been withdrawn
   ) {
     return true; // then we're in second clock
-  } else if (
-    authority !== "CHIP SPA" && // if it's not a chip
-    [
-      SEATOOL_STATUS.PENDING,
-      SEATOOL_STATUS.PENDING_CONCURRENCE,
-      SEATOOL_STATUS.PENDING_APPROVAL,
-    ].includes(seatoolStatus) && // if it's in pending
-    raiReceivedDateMS > raiWithdrawnDateMS
-  ) {
-    console.log("made it into second if")
-    return true;
   }
+
+  // else if (
+  //   authority !== "CHIP SPA" && // if it's not a chip
+  //   [
+  //     SEATOOL_STATUS.PENDING,
+  //     SEATOOL_STATUS.PENDING_CONCURRENCE,
+  //     SEATOOL_STATUS.PENDING_APPROVAL,
+  //   ].includes(seatoolStatus) && // if it's in pending
+  //   raiReceivedDateMS > raiWithdrawnDateMS
+  // ) {
+  //   console.log("made it into second if")
+  //   return true;
+  // }
   return false; // otherwise, we're not
 };
 

@@ -68,13 +68,13 @@ export const PackageCheck = ({
       (!planChecks.authorityIs([Authority.CHIP_SPA]) &&
         checkStatus(seatoolStatus, secondClockStatuses) &&
         !!raiRequestedDate &&
-        !!raiReceivedDate &&
-        !raiWithdrawnDate) ||
+        !!raiReceivedDate),
+    // !raiWithdrawnDate),
 
-      (!planChecks.authorityIs([Authority.CHIP_SPA]) &&
-        checkStatus(seatoolStatus, secondClockStatuses) &&
-        !!raiRequestedDate &&
-        !!raiReceivedDate && raiReceivedDateMS > raiWithdrawnDateMS),
+    // (!planChecks.authorityIs([Authority.CHIP_SPA]) &&
+    //   checkStatus(seatoolStatus, secondClockStatuses) &&
+    //   !!raiRequestedDate &&
+    //   !!raiReceivedDate && raiReceivedDateMS > raiWithdrawnDateMS),
     /** Is in any status except Package Withdrawn **/
     isNotWithdrawn: !checkStatus(seatoolStatus, SEATOOL_STATUS.WITHDRAWN),
     /** Added for elasticity, but common checks should always bubble up as
