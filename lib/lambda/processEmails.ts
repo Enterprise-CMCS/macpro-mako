@@ -3,6 +3,7 @@ import { SendMessageCommand, SQSClient } from "@aws-sdk/client-sqs";
 import { Handler } from "aws-lambda";
 import { htmlToText, HtmlToTextOptions } from "html-to-text";
 import { getAllStateUsers, getEmailTemplates, getUserRoleTemplate } from "libs/email";
+import { UserRoleEmailType } from "libs/email/content";
 import { EMAIL_CONFIG, getCpocEmail, getSrtEmails } from "libs/email/content/email-components";
 import * as os from "libs/opensearch-lib";
 import { getOsNamespace } from "libs/utils";
@@ -83,8 +84,6 @@ export const handler: Handler<KafkaEvent> = async (event) => {
     isDev: isDev === "true",
   };
 
-  console.log("config: ", JSON.stringify(config, null, 2));
-
   try {
     const results = await Promise.allSettled(
       Object.values(event.records)
@@ -126,33 +125,28 @@ export const handler: Handler<KafkaEvent> = async (event) => {
   }
 };
 
-// ANDIE: CHANNGE TYPE OF KAFKA RECORD
 export async function sendUserRoleEmails(
-  valueParsed: any,
+  valueParsed: UserRoleEmailType,
   timestamp: number,
   config: ProcessEmailConfig,
 ) {
   const record = {
+    ...valueParsed,
     timestamp,
     applicationEndpointUrl: config.applicationEndpointUrl,
-    ...valueParsed,
   };
-  console.log("ANDIE - user-role event ", record);
   // if the status = pending -> AdminPendingNotice & AccessPendingNotice
   const templates = [];
   if (record.status === "pending") {
-    console.log("ANDIE - pending emails");
     templates.push(await getUserRoleTemplate("AccessPendingNotice"));
     templates.push(await getUserRoleTemplate("AdminPendingNotice"));
   }
   // if the status = denied AND doneByEmail = email -> SelfRevokeAdminChangeEmail
   else if (record.status === "denied" && record.doneByEmail === record.email) {
-    console.log("ANDIE - self revoke");
     templates.push(await getUserRoleTemplate("SelfRevokeAdminChangeEmail"));
   }
   // else -> AccessChangeNotice
   else {
-    console.log("ANDIE -- all other emails");
     templates.push(await getUserRoleTemplate("AccessChangeNotice"));
   }
 
@@ -164,7 +158,6 @@ export async function sendUserRoleEmails(
         index: `${config.indexNamespace}users`,
       });
       record.fullName = userInfo.fullName;
-      console.log("ANDIE - username: ", record.fullName);
     } catch (error) {
       console.error("Error trying to get user name:", error);
     }
@@ -187,16 +180,13 @@ export async function sendUserRoleEmails(
       );
 
       if (!approverList.length) console.log("NO APPROVERS FOUND");
-      console.log("ANDIE - approver roles", JSON.stringify(approverList));
 
       const approverListFormated = approverList.map(
         (approver: { email: string; fullName: string } | null) => {
-          if (!approver) return;
+          if (!approver) return "";
           return `${approver.fullName} <${approver.email}>`;
         },
       );
-
-      console.log("ANDIE - formated list", approverListFormated);
       record.approverList = approverListFormated;
     } catch (error) {
       console.log("Error trying to get approver list: ", error);
@@ -209,23 +199,18 @@ export async function sendUserRoleEmails(
   const emails: EmailAddresses = JSON.parse(secret);
 
   for (const template of templates) {
-    console.log("ANDIE - temeplate", JSON.stringify(template));
     try {
       const filledTemplate = await template(record);
-      console.log("ANDIE - filledTemplate", JSON.stringify(filledTemplate));
       validateEmailTemplate(filledTemplate);
-      console.log("ANDIE - validated");
       const params = createEmailParams(
         filledTemplate,
         emails.sourceEmail,
         config.osDomain,
         config.isDev,
       );
-      console.log("ANDIE - params", params);
 
       const result = await sendEmail(params, config.region);
       results.push({ success: true, result });
-      console.log(`Successfully sent email for template: ${JSON.stringify(result)}`);
     } catch (error) {
       console.error("Error processing template:", error);
       results.push({ success: false, error });
@@ -310,7 +295,6 @@ export async function processRecord(kafkaRecord: KafkaRecord, config: ProcessEma
   };
   console.log("record: ", JSON.stringify(record, null, 2));
 
-  console.log("ANDIE - ", valueParsed);
   if (valueParsed.eventType === "user-role" || valueParsed.eventType === "legacy-user-role") {
     try {
       console.log("Sending user role email...");

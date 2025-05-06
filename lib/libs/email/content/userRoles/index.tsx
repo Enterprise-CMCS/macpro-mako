@@ -15,6 +15,8 @@ export type UserRoleEmailType = {
   territory: keyof typeof statesMap | "N/A";
   fullName: string;
   email: string;
+  doneBy: string;
+  doneByEmail: string;
   approverList: string[];
 };
 
@@ -38,7 +40,6 @@ export const userRoleTemplate = {
   },
   AdminPendingNotice: async (variables: UserRoleEmailType) => {
     const roleDisplay = userRoleMap[variables.role];
-    //   TODO: add logic to actually get approverList?
     const approverList = variables.approverList;
     return {
       to: approverList,
@@ -49,7 +50,6 @@ export const userRoleTemplate = {
   SelfRevokeAdminChangeEmail: async (variables: UserRoleEmailType) => {
     const stateAccess =
       variables.territory === "N/A" ? "" : ` for ${statesMap[variables.territory]}`;
-    //   TODO: add logic to actually get approverList?
     const approverList = variables.approverList;
     return {
       to: approverList,
