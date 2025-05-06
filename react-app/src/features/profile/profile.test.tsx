@@ -9,7 +9,7 @@ import { beforeEach, describe, expect, test } from "vitest";
 
 import { renderWithQueryClientAndMemoryRouter } from "@/utils/test-helpers";
 
-import { Profile } from ".";
+import { Profile } from "./self";
 
 describe("Profile", () => {
   const setup = async () => {

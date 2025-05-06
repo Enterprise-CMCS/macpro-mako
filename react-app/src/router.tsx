@@ -140,6 +140,7 @@ export const router = (loginFlag = false) => {
               element: <F.CHIPEligibilityLandingPage />,
             },
             { path: "/profile", element: <F.Profile /> },
+            { path: "/profile/:profileId", element: <F.UserProfile /> },
             { path: "/guides/abp", element: <F.ABPGuide /> },
             {
               path: "/actions/:type/:authority/:id",

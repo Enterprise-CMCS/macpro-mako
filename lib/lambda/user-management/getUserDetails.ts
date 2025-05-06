@@ -1,8 +1,13 @@
 import { getAuthDetails, lookupUserAttributes } from "libs/api/auth/user";
 import { response } from "libs/handler-lib";
 import { APIGatewayEvent } from "shared-types";
+import { z } from "zod";
 
 import { getLatestActiveRoleByEmail, getUserByEmail } from "./userManagementService";
+
+export const getUserDetailsSchema = z.object({
+  userId: z.string(),
+});
 
 export const getUserDetails = async (event: APIGatewayEvent) => {
   if (!event?.requestContext) {
@@ -11,9 +16,9 @@ export const getUserDetails = async (event: APIGatewayEvent) => {
       body: { message: "Request context required" },
     });
   }
-  let authDetails;
+  let currAuthDetails;
   try {
-    authDetails = getAuthDetails(event);
+    currAuthDetails = getAuthDetails(event);
   } catch (err) {
     console.error(err);
     return response({
@@ -23,16 +28,49 @@ export const getUserDetails = async (event: APIGatewayEvent) => {
   }
 
   try {
-    const { userId, poolId } = authDetails;
-    const userAttributes = await lookupUserAttributes(userId, poolId);
-    const userDetails = await getUserByEmail(userAttributes.email);
-    const latestActiveRoleObj = await getLatestActiveRoleByEmail(userAttributes.email);
+    const { userId, poolId } = currAuthDetails;
+    const currUserAttributes = await lookupUserAttributes(userId, poolId);
+    const currUserDetails = await getUserByEmail(currUserAttributes.email);
+    const currLatestActiveRoleObj = await getLatestActiveRoleByEmail(currUserAttributes.email);
+
+    if (event.body) {
+      const eventBody = typeof event.body === "string" ? JSON.parse(event.body) : event.body;
+      const safeEventBody = getUserDetailsSchema.safeParse(eventBody);
+      console.log("safeEventBody", JSON.stringify(safeEventBody, null, 2));
+
+      // if the event has a body with a userEmail, the userEmail is not the same as
+      // the current user's email, and the current user is a user manager, then
+      // return the data for the userEmail instead of the current user
+      if (
+        safeEventBody.success &&
+        safeEventBody?.data?.userId &&
+        safeEventBody.data.userId !== userId &&
+        ["systemadmin", "statesystemadmin", "cmsroleapprover", "helpdesk"].includes(
+          currLatestActiveRoleObj?.role,
+        )
+      ) {
+        // retrieving user details for another user
+        const reqUserAttributes = await lookupUserAttributes(safeEventBody.data.userId, poolId);
+        const reqUserDetails = await getUserByEmail(reqUserAttributes.email);
+        const reqUserLatestActiveRoleObj = await getLatestActiveRoleByEmail(
+          reqUserAttributes.email,
+        );
+
+        return response({
+          statusCode: 200,
+          body: {
+            ...reqUserDetails,
+            role: reqUserLatestActiveRoleObj?.role ?? "norole",
+          },
+        });
+      }
+    }
 
     return response({
       statusCode: 200,
       body: {
-        ...userDetails,
-        role: latestActiveRoleObj?.role ?? "norole",
+        ...currUserDetails,
+        role: currLatestActiveRoleObj?.role ?? "norole",
       },
     });
   } catch (err: unknown) {
