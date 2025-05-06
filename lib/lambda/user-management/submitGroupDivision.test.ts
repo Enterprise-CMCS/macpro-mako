@@ -1,7 +1,7 @@
 import {
+  defaultCMSUser,
   errorRoleSearchHandler,
   mockedProducer,
-  readOnlyUser,
   setDefaultStateSubmitter,
   setMockUsername,
 } from "mocks";
@@ -35,7 +35,7 @@ describe("submitGroupDivision handler", () => {
 
   it("should return a 200 if the group and division were submitted successfully", async () => {
     mockedProducer.send.mockResolvedValueOnce([{ message: "sent" }]);
-    setMockUsername(readOnlyUser);
+    setMockUsername(defaultCMSUser);
 
     const event = {
       userEmail: "mako.stateuser@gmail.com",
@@ -53,7 +53,7 @@ describe("submitGroupDivision handler", () => {
 
   it("should return a 500 if there is an error", async () => {
     mockedServer.use(errorRoleSearchHandler);
-    setMockUsername(readOnlyUser);
+    setMockUsername(defaultCMSUser);
 
     const event = {
       userEmail: "cmsroleapprover@example.com",

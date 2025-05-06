@@ -3,8 +3,11 @@ import {
   errorRoleSearchHandler,
   getRequestContext,
   noStateSubmitter,
+  osStateSystemAdmin,
   setDefaultStateSubmitter,
   setMockUsername,
+  STATE_SYSTEM_ADMIN_EMAIL,
+  TEST_STATE_SUBMITTER_EMAIL,
 } from "mocks";
 import { mockedServiceServer as mockedServer } from "mocks/server";
 import { beforeEach, describe, expect, it } from "vitest";
@@ -57,7 +60,7 @@ describe("getUserDetails handler", () => {
     );
   });
 
-  it("should return 200 and the users details", async () => {
+  it("should return 200 and the users details with norole role", async () => {
     setMockUsername(noStateSubmitter);
     const event = {
       requestContext: getRequestContext(),
@@ -73,6 +76,76 @@ describe("getUserDetails handler", () => {
         email: "nostate@example.com",
         fullName: "No State",
         role: "norole",
+      }),
+    );
+  });
+
+  it("should return 200 and the user details for the email in the body if the user is a user manager", async () => {
+    setMockUsername(osStateSystemAdmin);
+
+    const event = {
+      requestContext: getRequestContext(),
+      body: JSON.stringify({
+        userEmail: TEST_STATE_SUBMITTER_EMAIL,
+      }),
+    } as APIGatewayEvent;
+
+    const res = await handler(event);
+
+    expect(res.statusCode).toEqual(200);
+    expect(res.body).toEqual(
+      JSON.stringify({
+        id: TEST_STATE_SUBMITTER_EMAIL,
+        eventType: "user-info",
+        email: TEST_STATE_SUBMITTER_EMAIL,
+        fullName: "Stateuser Tester",
+        role: "statesubmitter",
+      }),
+    );
+  });
+
+  it("should return 200 and the current user details if the user email in the body matches and the user is a user manager", async () => {
+    setMockUsername(osStateSystemAdmin);
+
+    const event = {
+      requestContext: getRequestContext(),
+      body: JSON.stringify({
+        userEmail: STATE_SYSTEM_ADMIN_EMAIL,
+      }),
+    } as APIGatewayEvent;
+
+    const res = await handler(event);
+
+    expect(res.statusCode).toEqual(200);
+    expect(res.body).toEqual(
+      JSON.stringify({
+        id: STATE_SYSTEM_ADMIN_EMAIL,
+        eventType: "user-info",
+        email: STATE_SYSTEM_ADMIN_EMAIL,
+        fullName: "Statesystemadmin Nightwatch",
+        role: "statesystemadmin",
+      }),
+    );
+  });
+
+  it("should return 200 and the current user details if the user is not a user manager", async () => {
+    const event = {
+      requestContext: getRequestContext(),
+      body: JSON.stringify({
+        userEmail: STATE_SYSTEM_ADMIN_EMAIL,
+      }),
+    } as APIGatewayEvent;
+
+    const res = await handler(event);
+
+    expect(res.statusCode).toEqual(200);
+    expect(res.body).toEqual(
+      JSON.stringify({
+        id: TEST_STATE_SUBMITTER_EMAIL,
+        eventType: "user-info",
+        email: TEST_STATE_SUBMITTER_EMAIL,
+        fullName: "Stateuser Tester",
+        role: "statesubmitter",
       }),
     );
   });

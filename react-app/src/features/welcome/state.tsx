@@ -102,7 +102,7 @@ export const StateWelcome = () => {
       <div className="flex flex-col lg:flex-row gap-x-[48px] w-full px-6">
         {/* Left: New Submission */}
         <div className="max-w-[700px] flex-1 relative">
-          <h2 className="text-[48px] font-merriweather font-bold text-[#3D4551] leading-[100%] mb-[32px]">
+          <h2 className="text-[48px] font-[Merriweather] font-bold text-[#3D4551] leading-[100%] mb-[32px]">
             New submission
           </h2>
 
@@ -160,7 +160,7 @@ export const StateWelcome = () => {
 
         {/* Right: View Existing Packages */}
         <div className="flex-1 max-w-[561px] px-4">
-          <h2 className="text-[32px] sm:text-[40px] lg:text-[48px] leading-[100%] font-merriweather font-bold text-[#3D4551]">
+          <h2 className="text-[32px] sm:text-[40px] lg:text-[48px] leading-[100%] font-[Merriweather] font-bold text-[#3D4551]">
             {" "}
             View existing package
           </h2>
@@ -189,7 +189,7 @@ export const StateWelcome = () => {
 
       {/* Access Header */}
       <div className="pt-[56px] pb-[25px] pl-[24px]">
-        <h2 className="text-2xl font-merriweather font-black">
+        <h2 className="text-2xl font-[Merriweather] font-black">
           Access more SPA and waiver systems
         </h2>
       </div>

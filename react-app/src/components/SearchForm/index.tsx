@@ -14,7 +14,7 @@ export const SearchForm: FC<{
 
   useEffect(() => {
     handleSearch(debouncedSearchString);
-  }, [debouncedSearchString]);
+  }, [debouncedSearchString]); // eslint-disable-line react-hooks/exhaustive-deps
 
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();

@@ -202,3 +202,24 @@ export const getApproversByRoleState = async (
 
   return approversInfo;
 };
+
+export const getActiveStatesForUserByEmail = async (email: string): Promise<string[]> => {
+  const { domain, index } = getDomainAndNamespace("roles");
+
+  const result = await search(domain, index, {
+    size: 1000,
+    query: {
+      bool: {
+        must: [{ term: { "email.keyword": email } }, { term: { status: "active" } }],
+        must_not: [{ terms: { territory: ["N/A"] } }],
+      },
+    },
+    _source: ["territory"],
+  });
+
+  const states = result.hits?.hits
+    .map((hit: any) => hit._source.territory)
+    .filter((v: any): v is string => typeof v === "string");
+
+  return Array.from(new Set(states));
+};

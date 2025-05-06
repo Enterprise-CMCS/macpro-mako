@@ -4,8 +4,8 @@ import { ExportToCsv } from "export-to-csv";
 import {
   setMockUsername,
   TEST_CMS_REVIEWER_USER,
+  TEST_DEFAULT_CMS_USER,
   TEST_HELP_DESK_USER,
-  TEST_READ_ONLY_USER,
   TEST_STATE_SUBMITTER_USER,
 } from "mocks";
 import { opensearch } from "shared-types";
@@ -275,8 +275,8 @@ describe("SpasList", () => {
   describe.each([
     ["State Submitter", TEST_STATE_SUBMITTER_USER.username, true, false],
     ["CMS Reviewer", TEST_CMS_REVIEWER_USER.username, true, true],
+    ["Default CMS User", TEST_DEFAULT_CMS_USER.username, true, true],
     ["CMS Help Desk User", TEST_HELP_DESK_USER.username, false, false],
-    ["CMS Read-Only User", TEST_READ_ONLY_USER.username, false, true],
   ])("as a %s", async (_title, username, hasActions, useCmsStatus) => {
     let user: UserEvent;
     beforeAll(async () => {
@@ -332,8 +332,8 @@ describe("SpasList", () => {
         {
           hasActions,
           status: useCmsStatus ? pendingDoc.cmsStatus : pendingDoc.stateStatus,
-          submissionDate: "01/01/2024",
-          makoChangedDate: "02/01/2024",
+          submissionDate: "12/31/2023",
+          makoChangedDate: "01/31/2024",
         },
       ],
       [
@@ -342,9 +342,9 @@ describe("SpasList", () => {
         {
           hasActions,
           status: useCmsStatus ? raiRequestDoc.cmsStatus : raiRequestDoc.stateStatus,
-          submissionDate: "01/01/2024",
-          makoChangedDate: "02/01/2024",
-          raiRequestedDate: "03/01/2024",
+          submissionDate: "12/31/2023",
+          makoChangedDate: "01/31/2024",
+          raiRequestedDate: "02/29/2024",
         },
       ],
       [
@@ -353,10 +353,10 @@ describe("SpasList", () => {
         {
           hasActions,
           status: useCmsStatus ? raiReceivedDoc.cmsStatus : raiReceivedDoc.stateStatus,
-          submissionDate: "01/01/2024",
-          makoChangedDate: "02/01/2024",
-          raiRequestedDate: "03/01/2024",
-          raiReceivedDate: "04/01/2024",
+          submissionDate: "12/31/2023",
+          makoChangedDate: "01/31/2024",
+          raiRequestedDate: "02/29/2024",
+          raiReceivedDate: "03/31/2024",
         },
       ],
       [
@@ -365,10 +365,10 @@ describe("SpasList", () => {
         {
           hasActions,
           status: `${useCmsStatus ? withdrawEnabledDoc.cmsStatus : withdrawEnabledDoc.stateStatus}· Withdraw Formal RAI Response - Enabled`,
-          submissionDate: "01/01/2024",
-          makoChangedDate: "02/01/2024",
-          raiRequestedDate: "03/01/2024",
-          raiReceivedDate: "04/01/2024",
+          submissionDate: "12/31/2023",
+          makoChangedDate: "01/31/2024",
+          raiRequestedDate: "02/29/2024",
+          raiReceivedDate: "03/31/2024",
         },
       ],
       [
@@ -377,10 +377,10 @@ describe("SpasList", () => {
         {
           hasActions,
           status: useCmsStatus ? withdrawDisabledDoc.cmsStatus : withdrawDisabledDoc.stateStatus,
-          submissionDate: "01/01/2024",
-          makoChangedDate: "02/01/2024",
-          raiRequestedDate: "03/01/2024",
-          raiReceivedDate: "04/01/2024",
+          submissionDate: "12/31/2023",
+          makoChangedDate: "01/31/2024",
+          raiRequestedDate: "02/29/2024",
+          raiReceivedDate: "03/31/2024",
         },
       ],
       [
@@ -389,9 +389,9 @@ describe("SpasList", () => {
         {
           hasActions,
           status: useCmsStatus ? approvedDoc.cmsStatus : approvedDoc.stateStatus,
-          submissionDate: "01/01/2024",
-          makoChangedDate: "02/01/2024",
-          finalDispositionDate: "05/01/2024",
+          submissionDate: "12/31/2023",
+          makoChangedDate: "01/31/2024",
+          finalDispositionDate: "04/30/2024",
         },
       ],
       [

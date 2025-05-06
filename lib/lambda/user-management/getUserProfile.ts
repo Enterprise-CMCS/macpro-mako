@@ -1,8 +1,13 @@
 import { getAuthDetails, lookupUserAttributes } from "libs/api/auth/user";
 import { response } from "libs/handler-lib";
 import { APIGatewayEvent } from "shared-types";
+import { z } from "zod";
 
-import { getAllUserRolesByEmail } from "./userManagementService";
+import { getAllUserRolesByEmail, getLatestActiveRoleByEmail } from "./userManagementService";
+
+export const getUserProfileSchema = z.object({
+  userId: z.string(),
+});
 
 export const getUserProfile = async (event: APIGatewayEvent) => {
   if (!event?.requestContext) {
@@ -11,9 +16,9 @@ export const getUserProfile = async (event: APIGatewayEvent) => {
       body: { message: "Request context required" },
     });
   }
-  let authDetails;
+  let currAuthDetails;
   try {
-    authDetails = getAuthDetails(event);
+    currAuthDetails = getAuthDetails(event);
   } catch (err) {
     console.error(err);
     return response({
@@ -23,9 +28,40 @@ export const getUserProfile = async (event: APIGatewayEvent) => {
   }
 
   try {
-    const { userId, poolId } = authDetails;
-    const userAttributes = await lookupUserAttributes(userId, poolId);
-    const opensearchResponse = await getAllUserRolesByEmail(userAttributes.email);
+    const { userId, poolId } = currAuthDetails;
+    const currUserAttributes = await lookupUserAttributes(userId, poolId);
+
+    if (event.body) {
+      const eventBody = typeof event.body === "string" ? JSON.parse(event.body) : event.body;
+      const safeEventBody = getUserProfileSchema.safeParse(eventBody);
+
+      // if the event has a body with a userEmail, the userEmail is not the same as
+      // the current user's email, and the current user is a user manager, then
+      // return the data for the userEmail instead of the current user
+      if (
+        safeEventBody.success &&
+        safeEventBody?.data?.userId &&
+        safeEventBody.data.userId !== userId
+      ) {
+        const currUserLatestActiveRoleObj = await getLatestActiveRoleByEmail(
+          currUserAttributes.email,
+        );
+        if (
+          ["systemadmin", "statesystemadmin", "cmsroleapprover", "helpdesk"].includes(
+            currUserLatestActiveRoleObj?.role,
+          )
+        ) {
+          const reqUserAttributes = await lookupUserAttributes(safeEventBody.data.userId, poolId);
+          const opensearchResponse = await getAllUserRolesByEmail(reqUserAttributes.email);
+          return response({
+            statusCode: 200,
+            body: opensearchResponse,
+          });
+        }
+      }
+    }
+
+    const opensearchResponse = await getAllUserRolesByEmail(currUserAttributes.email);
 
     return response({
       statusCode: 200,

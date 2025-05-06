@@ -38,10 +38,10 @@ export const OsFilterDrawer = () => {
       </SheetTrigger>
       <SheetContent className="bg-white overflow-scroll">
         <SheetHeader>
-          <h4 className="prose-2xl">Filter by</h4>
+          <h4 className="text-2xl font-bold">Filter by</h4>
         </SheetHeader>
         <Button
-          className="w-full my-2"
+          className="mt-5 mb-2 w-fit"
           variant="outline"
           disabled={!filterDrawerHook.filtersApplied}
           onClick={filterDrawerHook.onFilterReset}
@@ -55,7 +55,9 @@ export const OsFilterDrawer = () => {
         >
           {Object.values(filterDrawerHook.filters).map((filter) => (
             <AccordionItem key={`filter-${filter.field}`} value={filter.field}>
-              <AccordionTrigger className="font-bold">{filter.label}</AccordionTrigger>
+              <AccordionTrigger className="font-bold hover:no-underline">
+                {filter.label}
+              </AccordionTrigger>
               <AccordionContent className="px-0">
                 {filter.component === "multiSelect" && (
                   <F.FilterableSelect

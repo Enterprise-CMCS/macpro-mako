@@ -1,11 +1,9 @@
-import { APIGatewayEvent } from "aws-lambda";
-import { isAuthorizedToGetPackageActions } from "libs/api/auth/user";
 import { http, HttpResponse, PathParams } from "msw";
 import { opensearch } from "shared-types";
-import { getAvailableActions } from "shared-utils";
+import { getAvailableActions, isCmsWriteUser } from "shared-utils";
 
 import items from "../../data/items";
-import { getRequestContext, mockUseGetUser } from "../../index";
+import { mockUseGetUser } from "../../index";
 import { PackageActionsRequestBody } from "../../index.d";
 
 const defaultApiPackageActionsHandler = http.post<PathParams, PackageActionsRequestBody>(
@@ -22,14 +20,16 @@ const defaultApiPackageActionsHandler = http.post<PathParams, PackageActionsRequ
       return HttpResponse.json({ message: "No record found for the given id" }, { status: 404 });
     }
 
-    const passedStateAuth = await isAuthorizedToGetPackageActions(
-      {
-        requestContext: getRequestContext(),
-      } as APIGatewayEvent,
-      item._source.state,
-    );
     const currUser = mockUseGetUser()?.data?.user;
-    if (!passedStateAuth || !currUser) {
+    if (!currUser) {
+      return HttpResponse.json({ message: "User not authenticated" }, { status: 401 });
+    }
+
+    const passedStateAuth =
+      isCmsWriteUser(currUser) ||
+      (item?._source?.state && currUser["custom:state"]?.includes(item._source.state));
+
+    if (!passedStateAuth) {
       return HttpResponse.json(
         { message: "Not authorized to view resources from this state" },
         { status: 401 },
@@ -50,14 +50,15 @@ export const onceApiPackageActionsHandler = (doc: opensearch.main.Document) =>
         return HttpResponse.json([]);
       }
 
-      const passedStateAuth = await isAuthorizedToGetPackageActions(
-        {
-          requestContext: getRequestContext(),
-        } as APIGatewayEvent,
-        doc.state,
-      );
       const currUser = mockUseGetUser()?.data?.user;
-      if (!passedStateAuth || !currUser) {
+      if (!currUser) {
+        return HttpResponse.json({ message: "User not authenticated" }, { status: 401 });
+      }
+
+      const passedStateAuth =
+        isCmsWriteUser(currUser) || (doc?.state && currUser["custom:state"]?.includes(doc.state));
+
+      if (!passedStateAuth) {
         return HttpResponse.json(
           { message: "Not authorized to view resources from this state" },
           { status: 401 },

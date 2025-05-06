@@ -1,10 +1,10 @@
 import { screen, waitFor, waitForElementToBeRemoved } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import {
+  defaultCMSUser,
   errorApiSubmitRoleRequestsHandler,
   osStateSubmitter,
   osStateSystemAdmin,
-  readOnlyUser,
   setMockUsername,
 } from "mocks";
 import { mockedApiServer as mockedServer } from "mocks/server";
@@ -66,7 +66,7 @@ describe("StateSignup", () => {
   });
 
   it("should navigate to /profile if the user is not a State user", async () => {
-    setMockUsername(readOnlyUser);
+    setMockUsername(defaultCMSUser);
     await setup();
 
     expect(screen.getByText("Profile")).toBeInTheDocument();

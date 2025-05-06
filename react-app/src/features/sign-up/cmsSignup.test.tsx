@@ -2,8 +2,8 @@ import { screen, waitFor, waitForElementToBeRemoved } from "@testing-library/rea
 import userEvent from "@testing-library/user-event";
 import {
   cmsRoleApprover,
+  defaultCMSUser,
   errorApiSubmitRoleRequestsHandler,
-  readOnlyUser,
   setDefaultStateSubmitter,
   setMockUsername,
 } from "mocks";
@@ -69,7 +69,7 @@ describe("CMSSignup", () => {
   });
 
   it("should show the form if the user is a defaultcmsuser", async () => {
-    setMockUsername(readOnlyUser);
+    setMockUsername(defaultCMSUser);
     await setup();
 
     expect(screen.getByText("Registration: CMS Reviewer Access")).toBeInTheDocument();

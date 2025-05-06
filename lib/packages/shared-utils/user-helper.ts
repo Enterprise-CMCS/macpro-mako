@@ -2,9 +2,8 @@ import {
   CMS_READ_ONLY_ROLES,
   CMS_ROLES,
   CMS_WRITE_ROLES,
-  CognitoUserAttributes,
+  FullUser,
   STATE_ROLES,
-  UserRoles,
 } from "shared-types";
 import {
   ROLES_ALLOWED_TO_REQUEST,
@@ -15,35 +14,28 @@ import {
 
 /** Function receives a user's cognito attributes and list of authorized roles,
  * and will confirm the user has one or more authorized UserRoles */
-const userHasAuthorizedRole = (user: CognitoUserAttributes | null, authorized: UserRoles[]) => {
+const userHasAuthorizedRole = (user: FullUser | null, authorized: UserRole[]) => {
   if (!user) return false;
-  const euaRoles = user["custom:ismemberof"] as UserRoles;
-  const idmRoles = (user?.["custom:cms-roles"]?.split(",") ?? []) as UserRoles[];
-  const userRoles = [euaRoles, ...idmRoles];
 
-  return userRoles.filter((role) => authorized.includes(role)).length > 0;
+  return authorized.includes(user.role);
 };
 
 /** Confirms user is any kind of CMS user */
-export const isCmsUser = (user: CognitoUserAttributes | null) =>
-  userHasAuthorizedRole(user, CMS_ROLES);
+export const isCmsUser = (user: FullUser | null) => userHasAuthorizedRole(user, CMS_ROLES);
 /** Confirms user is help desk user */
-export const isHelpDeskUser = (user: CognitoUserAttributes | null) =>
-  userHasAuthorizedRole(user, [UserRoles.HELPDESK]);
+export const isHelpDeskUser = (user: FullUser | null) => userHasAuthorizedRole(user, ["helpdesk"]);
 /** Confirms user is a CMS user who can create data */
-export const isCmsWriteUser = (user: CognitoUserAttributes | null) =>
+export const isCmsWriteUser = (user: FullUser | null) =>
   userHasAuthorizedRole(user, CMS_WRITE_ROLES);
 /** Confirms user is a CMS user who can only view data */
-export const isCmsReadonlyUser = (user: CognitoUserAttributes | null) =>
+export const isCmsReadonlyUser = (user: FullUser | null) =>
   userHasAuthorizedRole(user, CMS_READ_ONLY_ROLES);
 /** Confirms user is a State user */
-export const isStateUser = (user: CognitoUserAttributes | null) =>
-  userHasAuthorizedRole(user, STATE_ROLES);
+export const isStateUser = (user: FullUser | null) => userHasAuthorizedRole(user, STATE_ROLES);
 /** Confirms user is a State user */
-export const isCmsSuperUser = (user: CognitoUserAttributes | null) =>
-  userHasAuthorizedRole(user, [UserRoles.CMS_SUPER_USER]);
+export const isCmsSuperUser = (user: FullUser | null) => userHasAuthorizedRole(user, []);
 /** Confirms user is an IDM user */
-export const isIDM = (user: CognitoUserAttributes | null) => user?.username.startsWith("IDM_");
+export const isIDM = (user: FullUser | null) => user?.username.startsWith("IDM_");
 
 // Check if current user can update access for a certain role
 export const canUpdateAccess = (currentUserRole: UserRole, roleToUpdate: UserRole): boolean => {

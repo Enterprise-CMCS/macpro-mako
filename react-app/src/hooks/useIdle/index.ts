@@ -50,7 +50,7 @@ export function useIdle(
     return () => {
       events.forEach((event) => document.removeEventListener(event, handleEvents));
     };
-  }, [timeout]);
+  }, [timeout]); // eslint-disable-line react-hooks/exhaustive-deps
 
   return idle;
 }

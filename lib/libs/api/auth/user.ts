@@ -7,6 +7,11 @@ import { APIGatewayEvent } from "aws-lambda";
 import { CognitoUserAttributes } from "shared-types";
 import { isCmsUser, isCmsWriteUser } from "shared-utils";
 
+import {
+  getActiveStatesForUserByEmail,
+  getLatestActiveRoleByEmail,
+} from "../../../lambda/user-management/userManagementService";
+
 // Retrieve user authentication details from the APIGatewayEvent
 export function getAuthDetails(event: APIGatewayEvent) {
   const authProvider = event?.requestContext?.identity?.cognitoAuthenticationProvider;
@@ -93,9 +98,16 @@ export const isAuthorized = async (event: APIGatewayEvent, stateCode?: string | 
 
   // Look up user attributes from Cognito
   const userAttributes = await lookupUserAttributes(authDetails.userId, authDetails.poolId);
+
+  const activeRole = await getLatestActiveRoleByEmail(userAttributes.email);
+
+  if (!activeRole) {
+    return false;
+  }
+
   console.log(userAttributes);
   return (
-    isCmsUser(userAttributes) ||
+    isCmsUser({ ...userAttributes, role: activeRole.role }) ||
     (stateCode && userAttributes?.["custom:state"]?.includes(stateCode))
   );
 };
@@ -109,8 +121,15 @@ export const isAuthorizedToGetPackageActions = async (
 
   // Look up user attributes from Cognito
   const userAttributes = await lookupUserAttributes(authDetails.userId, authDetails.poolId);
+
+  const activeRole = await getLatestActiveRoleByEmail(userAttributes.email);
+
+  if (!activeRole) {
+    return false;
+  }
+
   return (
-    isCmsWriteUser(userAttributes) ||
+    isCmsWriteUser({ ...userAttributes, role: activeRole.role }) ||
     (stateCode && userAttributes?.["custom:state"]?.includes(stateCode))
   );
 };
@@ -123,15 +142,20 @@ export const getStateFilter = async (event: APIGatewayEvent) => {
   // Look up user attributes from Cognito
   const userAttributes = await lookupUserAttributes(authDetails.userId, authDetails.poolId);
 
-  if (!isCmsUser(userAttributes)) {
-    if (userAttributes["custom:state"]) {
+  const activeRole = await getLatestActiveRoleByEmail(userAttributes.email);
+
+  if (!activeRole) {
+    return false;
+  }
+
+  if (!isCmsUser({ ...userAttributes, role: activeRole.role })) {
+    const states = await getActiveStatesForUserByEmail(userAttributes.email);
+    if (states.length > 0) {
       const filter = {
         terms: {
           //NOTE: this could instead be
           // "state.keyword": userAttributes["custom:state"],
-          state: userAttributes["custom:state"]
-            .split(",")
-            .map((state) => state.toLocaleLowerCase()),
+          state: states.map((state) => state.toLocaleLowerCase()),
         },
       };
 

@@ -125,8 +125,8 @@ export const StateSignup = () => {
               {!stateSelected.length && (
                 <p className="text-red-600 mt-3">
                   {isRequestRoleAdmin
-                    ? "Please select at least one state."
-                    : "Please select a state."}
+                    ? "Please select a state."
+                    : "Please select at least one state."}
                 </p>
               )}
               <div className="py-4">

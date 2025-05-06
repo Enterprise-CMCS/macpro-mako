@@ -24,6 +24,7 @@ export const router = (loginFlag = false) => {
     {
       path: "/",
       element: <C.Layout />,
+      errorElement: <C.Layout />,
       children: [
         { path: "/", index: true, element: <F.WelcomeWrapper /> },
         { path: "/faq", element: <F.Faq /> },
@@ -139,6 +140,7 @@ export const router = (loginFlag = false) => {
               element: <F.CHIPEligibilityLandingPage />,
             },
             { path: "/profile", element: <F.Profile /> },
+            { path: "/profile/:profileId", element: <F.UserProfile /> },
             { path: "/guides/abp", element: <F.ABPGuide /> },
             {
               path: "/actions/:type/:authority/:id",
@@ -156,6 +158,9 @@ export const router = (loginFlag = false) => {
             { path: "/usermanagement", element: <F.UserManagement /> },
           ],
         },
+
+        { path: "/404", element: <F.ErrorPage /> },
+        { path: "*", element: <Navigate to="/404" replace /> },
       ],
       loader: F.loader(queryClient, loginFlag),
       HydrateFallback: () => null,

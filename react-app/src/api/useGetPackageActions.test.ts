@@ -1,11 +1,11 @@
 import {
   coStateSubmitter,
   errorApiPackageActionsHandler,
+  helpDeskUser,
   NOT_EXISTING_ITEM_ID,
   NOT_FOUND_ITEM_ID,
   setDefaultStateSubmitter,
   setMockUsername,
-  superReviewer,
   TEST_SPA_ITEM_ID,
   WITHDRAW_RAI_ITEM_C,
 } from "mocks";
@@ -53,7 +53,7 @@ describe("getPackageActions test", () => {
   });
 
   it("should return 401 if the user is not a state submitter or cms writer", async () => {
-    setMockUsername(superReviewer);
+    setMockUsername(helpDeskUser);
 
     await expect(() => getPackageActions(WITHDRAW_RAI_ITEM_C)).rejects.toThrowError(
       "Request failed with status code 401",
