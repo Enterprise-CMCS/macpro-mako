@@ -157,8 +157,10 @@ export const getApproversByRoleState = async (
   role: string,
   state: string,
   domainNamespace?: { domain: string; index: Index },
+  userDomainNamespace?: { domain: string; index: Index },
 ) => {
   if (!domainNamespace) domainNamespace = getDomainAndNamespace("roles");
+  if (!userDomainNamespace) userDomainNamespace = getDomainAndNamespace("users");
   const { domain, index } = domainNamespace;
 
   // TODO: move to shared type bc this is the same code coppied
@@ -187,5 +189,16 @@ export const getApproversByRoleState = async (
     },
     size: 100,
   });
-  return results.hits.hits.map((hit: any) => ({ ...hit._source }));
+
+  const approverRoleList: { id: string; email: string }[] = results.hits.hits.map((hit: any) => ({
+    ...hit._source,
+  }));
+
+  const approversInfo = [];
+  for (const approver of approverRoleList) {
+    const approverUserInfo = await getUserByEmail(approver.email, userDomainNamespace);
+    approversInfo.push(approverUserInfo);
+  }
+
+  return approversInfo;
 };

@@ -15,6 +15,7 @@ export type UserRoleEmailType = {
   territory: keyof typeof statesMap | "N/A";
   fullName: string;
   email: string;
+  approverList: string[];
 };
 
 export const userRoleTemplate = {
@@ -38,7 +39,7 @@ export const userRoleTemplate = {
   AdminPendingNotice: async (variables: UserRoleEmailType) => {
     const roleDisplay = userRoleMap[variables.role];
     //   TODO: add logic to actually get approverList?
-    const approverList = [`${variables.fullName} <${variables.email}>`];
+    const approverList = variables.approverList;
     return {
       to: approverList,
       subject: `New OneMAC ${roleDisplay} Access Request`,
@@ -49,7 +50,7 @@ export const userRoleTemplate = {
     const stateAccess =
       variables.territory === "N/A" ? "" : ` for ${statesMap[variables.territory]}`;
     //   TODO: add logic to actually get approverList?
-    const approverList = [`${variables.fullName} <${variables.email}>`];
+    const approverList = variables.approverList;
     return {
       to: approverList,
       subject: `OneMAC State access for ${stateAccess} was self-revoked by ${variables.fullName}`,

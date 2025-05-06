@@ -173,13 +173,30 @@ export async function sendUserRoleEmails(
   // get the approver list
   if (templates.length) {
     try {
-      const approverList = await getApproversByRoleState(record.role, record.territory, {
-        domain: config.osDomain,
-        index: `${config.indexNamespace}roles`,
-      });
+      const approverList = await getApproversByRoleState(
+        record.role,
+        record.territory,
+        {
+          domain: config.osDomain,
+          index: `${config.indexNamespace}roles`,
+        },
+        {
+          domain: config.osDomain,
+          index: `${config.indexNamespace}users`,
+        },
+      );
 
+      if (!approverList.length) console.log("NO APPROVERS FOUND");
       console.log("ANDIE - approver roles", JSON.stringify(approverList));
-      record.approverList = approverList;
+
+      const approverListFormated = approverList.map(
+        (approver: { email: string; fullName: string }) => [
+          `${approver.fullName} <${approver.email}>`,
+        ],
+      );
+
+      console.log("ANDIE - formated list", approverListFormated);
+      record.approverList = approverListFormated;
     } catch (error) {
       console.log("Error trying to get approver list: ", error);
     }
