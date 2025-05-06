@@ -162,18 +162,20 @@ export const getApproversByRoleState = async (
   const { domain, index } = domainNamespace;
 
   // TODO: move to shared type bc this is the same code coppied
-  const userRoleMap = {
-    defaultcmsuser: "Default CMS User Placeholder",
-    cmsroleapprover: "CMS Role Approver",
-    cmsreviewer: "CMS Reviewer",
-    statesystemadmin: "State System Admin",
-    systemadmin: "System Admin",
-    helpdesk: "Helpdesk",
-    statesubmitter: "State Submitter",
+  const approvingUserRole = {
+    statesubmitter: "statesystemadmin",
+    statesystemadmin: "cmsroleapprover",
+    cmsroleapprover: "systemadmin",
+    defaultcmsuser: "statesystemadmin",
+    helpdesk: "systemadmin",
+    cmsreviewer: "cmsroleapprover",
   };
-  const approverRole = userRoleMap[role as keyof typeof userRoleMap] ?? "";
 
-  const result = await search(domain, index, {
+  const approverRole =
+    approvingUserRole[role as keyof typeof approvingUserRole] ?? "statesystemadmin";
+  console.log("ANDIE -- ", approverRole);
+
+  const results = await search(domain, index, {
     query: {
       bool: {
         must: [
@@ -183,6 +185,7 @@ export const getApproversByRoleState = async (
         ],
       },
     },
+    size: 100,
   });
-  return result.hits.hits.length > 0;
+  return results.hits.hits.map((hit: any) => ({ ...hit._source }));
 };
