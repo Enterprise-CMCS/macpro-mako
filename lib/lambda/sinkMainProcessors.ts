@@ -215,8 +215,11 @@ const getMakoDocTimestamps = async (kafkaRecords: KafkaRecord[]) => {
 const oneMacSeatoolStatusCheck = async (seatoolRecord: Document) => {
   const existingPackage = await getPackage(seatoolRecord.id);
 
+  console.log("oneMacSeatoolStatusCheck")
   const oneMacStatus = existingPackage?._source?.seatoolStatus;
+  console.log("oneMacStatus", oneMacStatus)
   const seatoolStatus = seatoolRecord?.STATE_PLAN.SPW_STATUS_ID;
+  console.log("seatoolStatus", seatoolStatus)
 
   // If we have a withdrawal requested do not update unless the status in seatool is Withdrawn
   if (
@@ -226,11 +229,12 @@ const oneMacSeatoolStatusCheck = async (seatoolRecord: Document) => {
     return SeatoolSpwStatusEnum.WithdrawalRequested;
   }
 
-  // Current status is RAI Issued in seatool and onemac status is SUBMITTED
+  // Current status is RAI Issued in seatool and onemac status is SUBMITTED ??
   if (
     oneMacStatus === SEATOOL_STATUS.SUBMITTED &&
     seatoolStatus === SeatoolSpwStatusEnum.PendingRAI
   ) {
+    console.log("SEATOOL_STATUS.SUBMITTED &&  SeatoolSpwStatusEnum.PendingRAI");
     // Checking to see if the most recent entry is in the changelog is respond to rai
     const changelogs = await getPackageChangelog(seatoolRecord.id);
 
@@ -252,6 +256,7 @@ const oneMacSeatoolStatusCheck = async (seatoolRecord: Document) => {
     oneMacStatus === SEATOOL_STATUS.RAI_RESPONSE_WITHDRAW_REQUESTED &&
     seatoolStatus !== SeatoolSpwStatusEnum.PendingRAI
   ) {
+
     if (
       seatoolStatus &&
       [
@@ -260,11 +265,13 @@ const oneMacSeatoolStatusCheck = async (seatoolRecord: Document) => {
         SeatoolSpwStatusEnum.Disapproved,
       ].includes(seatoolStatus)
     ) {
+      console.log("inception if");
       return seatoolStatus;
     }
+    console.log("No inception if :(")
     return SeatoolSpwStatusEnum.FormalRAIResponseWithdrawalRequested;
   }
-
+  console.log("SEATOOL_STATUS.RAI_RESPONSE_WITHDRAW_REQUESTED &&  SeatoolSpwStatusEnum.PendingRAI");
   return seatoolRecord.STATE_PLAN.SPW_STATUS_ID;
 };
 
@@ -278,7 +285,7 @@ export const insertNewSeatoolRecordsFromKafkaIntoMako = async (
   topicPartition: string,
 ) => {
   const makoDocTimestamps = await getMakoDocTimestamps(kafkaRecords);
-  const seatoolRecordsForMako: { id: string; [key: string]: unknown }[] = [];
+  const seatoolRecordsForMako: { id: string;[key: string]: unknown }[] = [];
 
   for (const kafkaRecord of kafkaRecords) {
     try {

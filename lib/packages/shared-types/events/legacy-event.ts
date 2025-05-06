@@ -28,6 +28,9 @@ export const legacyEventSchema = legacySharedSchema
     }),
   )
   .transform((data) => {
+    console.log("legacy event .ts transform: ");
+    console.log("data.currentStatus: ", data.currentStatus);
+    console.log("seatoolStatus: ", getSeaToolStatusFromLegacyStatus(data.currentStatus));
     const seatoolStatus = getSeaToolStatusFromLegacyStatus(data.currentStatus);
     const { stateStatus, cmsStatus } = getStatus(seatoolStatus);
     const lastEventIsoDate = getIsoDateFromTimestamp(data.lastActivityTimestamp);
