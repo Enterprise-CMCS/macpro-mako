@@ -32,6 +32,14 @@ export const PackageCheck = ({
   leadAnalystName,
   locked,
 }: opensearch.main.Document) => {
+  console.log("in package check");
+  console.log("rai Received Date: ", raiReceivedDate);
+  const raiReceivedDateMS = raiReceivedDate ? new Date(raiReceivedDate).getTime() : Date.now();
+  console.log("rai Received Date milliseconds: ", raiReceivedDateMS);
+  console.log("rai withdraw date: ", raiWithdrawnDate);
+  const raiWithdrawnDateMS = raiWithdrawnDate ? new Date(raiWithdrawnDate).getTime() : Date.now();
+  console.log("rai withdraw date milliseconds: ", raiWithdrawnDateMS);
+  console.log("is raiReceived date > raiWithdrawn date", raiReceivedDateMS > raiWithdrawnDateMS)
   const secondClockStatuses = [
     SEATOOL_STATUS.PENDING,
     SEATOOL_STATUS.PENDING_APPROVAL,
@@ -55,11 +63,16 @@ export const PackageCheck = ({
     ]),
     /** Is in a second clock status and RAI has been received **/
     isInSecondClock:
-      !planChecks.authorityIs([Authority.CHIP_SPA]) &&
-      checkStatus(seatoolStatus, secondClockStatuses) &&
-      !!raiRequestedDate &&
-      !!raiReceivedDate &&
-      !raiWithdrawnDate,
+      (!planChecks.authorityIs([Authority.CHIP_SPA]) &&
+        checkStatus(seatoolStatus, secondClockStatuses) &&
+        !!raiRequestedDate &&
+        !!raiReceivedDate &&
+        !raiWithdrawnDate) ||
+
+      (!planChecks.authorityIs([Authority.CHIP_SPA]) &&
+        checkStatus(seatoolStatus, secondClockStatuses) &&
+        !!raiRequestedDate &&
+        !!raiReceivedDate && raiReceivedDateMS > raiWithdrawnDateMS),
     /** Is in any status except Package Withdrawn **/
     isNotWithdrawn: !checkStatus(seatoolStatus, SEATOOL_STATUS.WITHDRAWN),
     /** Added for elasticity, but common checks should always bubble up as
