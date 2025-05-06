@@ -1,5 +1,5 @@
 import { XIcon } from "lucide-react";
-import { useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { Navigate } from "react-router";
 import { StateCode } from "shared-types";
 
@@ -60,7 +60,32 @@ export const Profile = () => {
   const [selfRevokeState, setSelfRevokeState] = useState<StateCode | null>(null);
   const [showAddState, setShowAddState] = useState<boolean>(true);
   const [requestedStates, setRequestedStates] = useState<StateCode[]>([]);
+  const [pendingStates, setPendingStates] = useState<boolean>(false);
   const statesToRequest: Option[] = useAvailableStates(userProfile?.stateAccess);
+
+  // if user has no active roles, show pending state(s)
+  // show state(s) for latest active role
+  const filteredStateAccess = useMemo(() => {
+    if (!userProfile?.stateAccess) return [];
+    return userDetails?.role
+      ? userProfile.stateAccess.filter(
+          (access) => access.role === userDetails.role && access.territory !== "ZZ",
+        )
+      : userProfile.stateAccess.filter((access) => access.territory !== "ZZ");
+  }, [userDetails?.role, userProfile?.stateAccess]);
+
+  const orderedStateAccess = useMemo(
+    () => orderStateAccess(filteredStateAccess),
+    [filteredStateAccess],
+  );
+
+  // Set initial value of showAddState based on pending roles
+  useEffect(() => {
+    if (!isDetailLoading && !isProfileLoading) {
+      const hasPendingRequests = filteredStateAccess.some((access) => access.status === "pending");
+      setPendingStates(hasPendingRequests);
+    }
+  }, [isDetailLoading, isProfileLoading, filteredStateAccess]);
 
   if (isDetailLoading || isProfileLoading) {
     return <LoadingSpinner />;
@@ -70,16 +95,37 @@ export const Profile = () => {
     return <Navigate to="/" />;
   }
 
-  // if user has no active roles, show pending state(s)
-  // show state(s) for latest active role
-  const stateAccess = () => {
-    const statesToShow = userDetails.role
-      ? userProfile?.stateAccess?.filter(
-          (access: StateAccess) => access.role === userDetails.role && access.territory !== "ZZ",
-        )
-      : userProfile?.stateAccess?.filter((access: StateAccess) => access.territory !== "ZZ");
-
-    return orderStateAccess(statesToShow);
+  const renderStateAccessControls = () => {
+    if (userDetails.role !== "statesubmitter") return null;
+    if (pendingStates) {
+      return <p>State Access Requests Disabled until Role Request is finalized.</p>;
+    }
+    if (showAddState) {
+      return <Button onClick={() => setShowAddState(false)}>Add State</Button>;
+    }
+    return (
+      <CardWithTopBorder>
+        <div className="p-8 min-h-36">
+          <h3 className="text-xl font-bold">Choose State Access</h3>
+          <FilterableSelect
+            value={requestedStates}
+            options={statesToRequest}
+            onChange={(values: StateCode[]) => setRequestedStates(values)}
+          />
+          <div className="block lg:mt-8 lg:mb-2">
+            <span>
+              <Button disabled={!requestedStates.length} onClick={handleSubmitRequest}>
+                Submit
+              </Button>
+              {areRolesLoading && <LoadingSpinner />}
+              <Button variant="link" onClick={() => setShowAddState(true)}>
+                Cancel
+              </Button>
+            </span>
+          </div>
+        </div>
+      </CardWithTopBorder>
+    );
   };
 
   const handleSubmitRequest = async () => {
@@ -94,7 +140,7 @@ export const Profile = () => {
         });
       }
 
-      setShowAddState(true);
+      setShowAddState(false);
       setRequestedStates([]);
       await reloadUserProfile();
 
@@ -191,13 +237,13 @@ export const Profile = () => {
               <ConfirmationDialog
                 open={selfRevokeState !== null}
                 title="Withdraw State Access?"
-                body={"This action cannot be undone. State System Admin will be notified."}
+                body={`This action cannot be undone. ${convertStateAbbrToFullName(selfRevokeState)} State System Admin will be notified.`}
                 acceptButtonText="Confirm"
                 aria-labelledby="Self Revoke Access Modal"
                 onAccept={handleSelfRevokeAccess}
                 onCancel={() => setSelfRevokeState(null)}
               />
-              {stateAccess().map((access) => {
+              {orderedStateAccess.map((access) => {
                 return (
                   <CardWithTopBorder className="my-0" key={`${access.territory}-${access.role}`}>
                     <button
@@ -223,30 +269,7 @@ export const Profile = () => {
                   </CardWithTopBorder>
                 );
               })}
-              {userDetails?.role === "statesubmitter" &&
-                (showAddState ? (
-                  <Button onClick={() => setShowAddState(false)}>Add State</Button>
-                ) : (
-                  <CardWithTopBorder>
-                    <div className="p-8 min-h-36">
-                      <h3 className="text-xl font-bold">Choose State Access</h3>
-                      <FilterableSelect
-                        value={requestedStates}
-                        options={statesToRequest}
-                        onChange={(values: StateCode[]) => setRequestedStates(values)}
-                      />
-                      <div className="block lg:mt-8 lg:mb-2">
-                        <span>
-                          <Button onClick={handleSubmitRequest}>Submit</Button>
-                          {areRolesLoading && <LoadingSpinner />}
-                          <Button variant="link" onClick={() => setShowAddState(true)}>
-                            Cancel
-                          </Button>
-                        </span>
-                      </div>
-                    </div>
-                  </CardWithTopBorder>
-                ))}
+              {renderStateAccessControls()}
             </div>
           )}
         </div>
