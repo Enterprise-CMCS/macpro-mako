@@ -52,7 +52,6 @@ const useGetLinks = () => {
             condition:
               userObj.user &&
               Object.values(UserRoles).some((role) => {
-                console.log("what is the role", role, userObj.user.role);
                 return userObj.user.role === role;
               }) &&
               userObj.user.role !== "cmsroleapprover",
