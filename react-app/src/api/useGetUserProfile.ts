@@ -18,7 +18,11 @@ export type OneMacUserProfile = {
 
 export const getUserProfile = async (userEmail?: string): Promise<OneMacUserProfile> => {
   try {
-    const stateAccess = await API.get("os", "/getUserProfile", { body: { userEmail } });
+    const stateAccess = await API.get(
+      "os",
+      "/getUserProfile",
+      userEmail ? { body: { userEmail } } : {},
+    );
 
     return {
       stateAccess,
