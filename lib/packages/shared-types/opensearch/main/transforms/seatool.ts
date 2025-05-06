@@ -97,6 +97,7 @@ const isInSecondClock = (
   authority: any,
 ) => {
   console.log("in is second clock seatool transform");
+  console.log("")
   console.log("rai withdrawn date: ", raiWithdrawnDate)
   const raiWithdrawnDateMS = new Date(raiWithdrawnDate).getTime();
   console.log("rai withdrawn date milliseconds : ", raiWithdrawnDateMS)
@@ -153,7 +154,7 @@ export const transform = (id: string) => {
         : null;
 
     const { stateStatus, cmsStatus } = getStatus(seatoolStatus);
-
+    console.log("transforming package: ", id)
     const resp = {
       id: id.toUpperCase(),
       actionType: data.ACTIONTYPES?.[0].ACTION_NAME,
