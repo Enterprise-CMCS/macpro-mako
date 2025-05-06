@@ -16,13 +16,9 @@ export type OneMacUserProfile = {
   stateAccess?: StateAccess[];
 };
 
-export const getUserProfile = async (userEmail?: string): Promise<OneMacUserProfile> => {
+export const getUserProfile = async (userId?: string): Promise<OneMacUserProfile> => {
   try {
-    const stateAccess = await API.get(
-      "os",
-      "/getUserProfile",
-      userEmail ? { body: { userEmail } } : {},
-    );
+    const stateAccess = await API.get("os", "/getUserProfile", userId ? { body: { userId } } : {});
 
     return {
       stateAccess,

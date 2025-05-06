@@ -1,4 +1,3 @@
-import { XIcon } from "lucide-react";
 import { useState } from "react";
 import { Navigate } from "react-router";
 import { StateCode } from "shared-types";

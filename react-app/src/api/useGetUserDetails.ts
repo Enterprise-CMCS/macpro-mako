@@ -10,13 +10,9 @@ export type UserDetails = {
   role?: UserRole;
 };
 
-export const getUserDetails = async (userEmail?: string): Promise<UserDetails> => {
+export const getUserDetails = async (userId?: string): Promise<UserDetails> => {
   try {
-    const userDetails = await API.get(
-      "os",
-      "/getUserDetails",
-      userEmail ? { body: { userEmail } } : {},
-    );
+    const userDetails = await API.get("os", "/getUserDetails", userId ? { body: { userId } } : {});
 
     return userDetails as UserDetails;
   } catch (e) {

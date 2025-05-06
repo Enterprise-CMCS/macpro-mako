@@ -6,7 +6,7 @@ import { z } from "zod";
 import { getLatestActiveRoleByEmail, getUserByEmail } from "./userManagementService";
 
 export const getUserDetailsSchema = z.object({
-  userEmail: z.string().email(),
+  userId: z.string(),
 });
 
 export const getUserDetails = async (event: APIGatewayEvent) => {
@@ -43,22 +43,24 @@ export const getUserDetails = async (event: APIGatewayEvent) => {
       // return the data for the userEmail instead of the current user
       if (
         safeEventBody.success &&
-        safeEventBody?.data?.userEmail &&
-        safeEventBody.data.userEmail !== currUserAttributes.email &&
+        safeEventBody?.data?.userId &&
+        safeEventBody.data.userId !== userId &&
         ["systemadmin", "statesystemadmin", "cmsroleapprover", "helpdesk"].includes(
           currLatestActiveRoleObj?.role,
         )
       ) {
-        const { userEmail } = safeEventBody.data;
         // retrieving user details for another user
-        const userDetails = await getUserByEmail(userEmail);
-        const latestActiveRoleObj = await getLatestActiveRoleByEmail(userEmail);
+        const reqUserAttributes = await lookupUserAttributes(safeEventBody.data.userId, poolId);
+        const reqUserDetails = await getUserByEmail(reqUserAttributes.email);
+        const reqUserLatestActiveRoleObj = await getLatestActiveRoleByEmail(
+          reqUserAttributes.email,
+        );
 
         return response({
           statusCode: 200,
           body: {
-            ...userDetails,
-            role: latestActiveRoleObj?.role ?? "norole",
+            ...reqUserDetails,
+            role: reqUserLatestActiveRoleObj?.role ?? "norole",
           },
         });
       }
