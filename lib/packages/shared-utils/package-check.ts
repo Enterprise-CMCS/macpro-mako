@@ -27,6 +27,7 @@ export const PackageCheck = ({
   actionType,
   // appkParentId,
   // appkParent,
+  id,
   initialIntakeNeeded,
   submissionDate,
   leadAnalystName,
@@ -39,6 +40,7 @@ export const PackageCheck = ({
   console.log("rai withdraw date: ", raiWithdrawnDate);
   const raiWithdrawnDateMS = raiWithdrawnDate ? new Date(raiWithdrawnDate).getTime() : Date.now();
   console.log("rai withdraw date milliseconds: ", raiWithdrawnDateMS);
+  console.log("package Id: ", id)
   console.log("is raiReceived date > raiWithdrawn date", raiReceivedDateMS > raiWithdrawnDateMS)
   const secondClockStatuses = [
     SEATOOL_STATUS.PENDING,
