@@ -79,9 +79,9 @@ const compileSrtList = (
 ): { name: string; email: string }[] =>
   officers?.length
     ? officers.map((o) => ({
-        name: `${o.FIRST_NAME || ""} ${o.LAST_NAME || ""}`,
-        email: o.EMAIL || "",
-      }))
+      name: `${o.FIRST_NAME || ""} ${o.LAST_NAME || ""}`,
+      email: o.EMAIL || "",
+    }))
     : [];
 
 const getFinalDispositionDate = (status: string, record: SeaTool) => {
@@ -96,6 +96,8 @@ const isInSecondClock = (
   seatoolStatus: any,
   authority: any,
 ) => {
+  console.log("rai withdrawn date: ", raiWithdrawnDate)
+  console.log("rai withdrawn date: ", raiWithdrawnDate)
   if (
     authority !== "CHIP SPA" && // if it's not a chip
     [
