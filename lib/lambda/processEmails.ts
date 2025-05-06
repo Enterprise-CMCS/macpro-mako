@@ -17,7 +17,7 @@ import {
 import { decodeBase64WithUtf8, formatActionType, getSecret } from "shared-utils";
 import { retry } from "shared-utils/retry";
 
-import { getUserByEmail } from "./user-management/userManagementService";
+import { getApproversByRoleState, getUserByEmail } from "./user-management/userManagementService";
 
 class TemporaryError extends Error {
   constructor(message: string) {
@@ -127,7 +127,11 @@ export const handler: Handler<KafkaEvent> = async (event) => {
 };
 
 // ANDIE: CHANNGE TYPE OF KAFKA RECORD
-export async function sendUserRoleEmails(valueParsed: any, timestamp: number, config: any) {
+export async function sendUserRoleEmails(
+  valueParsed: any,
+  timestamp: number,
+  config: ProcessEmailConfig,
+) {
   const record = {
     timestamp,
     applicationEndpointUrl: config.applicationEndpointUrl,
@@ -155,11 +159,29 @@ export async function sendUserRoleEmails(valueParsed: any, timestamp: number, co
   // get the user's name
   if (templates.length) {
     try {
-      const userInfo = await getUserByEmail(record.email);
+      const userInfo = await getUserByEmail(record.email, {
+        domain: config.osDomain,
+        index: `${config.indexNamespace}users`,
+      });
       record.fullName = userInfo.fullName;
       console.log("ANDIE - username: ", record.fullName);
     } catch (error) {
       console.error("Error trying to get user name:", error);
+    }
+  }
+
+  // get the approver list
+  if (templates.length) {
+    try {
+      const approverList = await getApproversByRoleState(record.role, record.territory, {
+        domain: config.osDomain,
+        index: `${config.indexNamespace}roles`,
+      });
+
+      console.log("ANDIE - approver roles", JSON.stringify(approverList));
+      record.approverList = approverList;
+    } catch (error) {
+      console.log("Error trying to get approver list: ", error);
     }
   }
 
@@ -178,7 +200,7 @@ export async function sendUserRoleEmails(valueParsed: any, timestamp: number, co
       const params = createEmailParams(
         filledTemplate,
         emails.sourceEmail,
-        config.baseUrl,
+        config.osDomain,
         config.isDev,
       );
       console.log("ANDIE - params", params);

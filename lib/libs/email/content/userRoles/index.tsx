@@ -19,7 +19,6 @@ export type UserRoleEmailType = {
 
 export const userRoleTemplate = {
   AccessChangeNotice: async (variables: UserRoleEmailType) => {
-    console.log("ANDIE - we're in 1");
     const roleDisplay = userRoleMap[variables.role];
     const stateAccess =
       variables.territory === "N/A" ? "" : ` for ${statesMap[variables.territory]}`;
@@ -30,8 +29,6 @@ export const userRoleTemplate = {
     };
   },
   AccessPendingNotice: async (variables: UserRoleEmailType) => {
-    console.log("ANDIE - we're in 2", variables);
-
     return {
       to: [`${variables.fullName} <${variables.email}>`],
       subject: "Your OneMAC Role Access is Pending Review",
@@ -39,7 +36,6 @@ export const userRoleTemplate = {
     };
   },
   AdminPendingNotice: async (variables: UserRoleEmailType) => {
-    console.log("ANDIE - we're in 3");
     const roleDisplay = userRoleMap[variables.role];
     //   TODO: add logic to actually get approverList?
     const approverList = [`${variables.fullName} <${variables.email}>`];
@@ -50,7 +46,6 @@ export const userRoleTemplate = {
     };
   },
   SelfRevokeAdminChangeEmail: async (variables: UserRoleEmailType) => {
-    console.log("ANDIE - we're in 4");
     const stateAccess =
       variables.territory === "N/A" ? "" : ` for ${statesMap[variables.territory]}`;
     //   TODO: add logic to actually get approverList?

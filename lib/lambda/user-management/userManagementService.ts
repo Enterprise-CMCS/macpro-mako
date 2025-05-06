@@ -1,8 +1,13 @@
 import { search } from "libs";
 import { getDomainAndNamespace } from "libs/utils";
+import { Index } from "shared-types/opensearch";
 
-export const getUserByEmail = async (email: string) => {
-  const { domain, index } = getDomainAndNamespace("users");
+export const getUserByEmail = async (
+  email: string,
+  domainNamespace?: { domain: string; index: Index },
+) => {
+  if (!domainNamespace) domainNamespace = getDomainAndNamespace("users");
+  const { domain, index } = domainNamespace;
 
   const result = await search(domain, index, {
     size: 1,
@@ -18,7 +23,6 @@ export const getUserByEmail = async (email: string) => {
 
 export const getUsersByEmails = async (emails: string[]) => {
   const { domain, index } = getDomainAndNamespace("users");
-
   const results = await search(domain, index, {
     size: 100,
     query: {
@@ -147,4 +151,38 @@ export const getLatestActiveRoleByEmail = async (email: string) => {
   });
 
   return result.hits.hits[0]?._source ?? null;
+};
+
+export const getApproversByRoleState = async (
+  role: string,
+  state: string,
+  domainNamespace?: { domain: string; index: Index },
+) => {
+  if (!domainNamespace) domainNamespace = getDomainAndNamespace("roles");
+  const { domain, index } = domainNamespace;
+
+  // TODO: move to shared type bc this is the same code coppied
+  const userRoleMap = {
+    defaultcmsuser: "Default CMS User Placeholder",
+    cmsroleapprover: "CMS Role Approver",
+    cmsreviewer: "CMS Reviewer",
+    statesystemadmin: "State System Admin",
+    systemadmin: "System Admin",
+    helpdesk: "Helpdesk",
+    statesubmitter: "State Submitter",
+  };
+  const approverRole = userRoleMap[role as keyof typeof userRoleMap] ?? "";
+
+  const result = await search(domain, index, {
+    query: {
+      bool: {
+        must: [
+          { term: { status: "active" } },
+          { term: { role: approverRole } },
+          { term: { "territory.keyword": state } },
+        ],
+      },
+    },
+  });
+  return result.hits.hits.length > 0;
 };
