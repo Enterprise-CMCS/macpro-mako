@@ -44,7 +44,7 @@ export const CMSSignup = () => {
       await submitRequest({
         email: userDetails.email,
         state: "N/A",
-        role: "cmsroleapprover",
+        role: currentRole === "cmsroleapprover" ? "cmsreviewer" : "cmsroleapprover",
         eventType: "user-role",
         requestRoleChange: true,
         group: group.abbr,
