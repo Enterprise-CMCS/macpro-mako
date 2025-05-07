@@ -1,4 +1,4 @@
-import { render, screen } from "@testing-library/react";
+import { screen } from "@testing-library/react";
 import { describe, expect, it, vi } from "vitest";
 
 import { renderWithMemoryRouter } from "@/utils/test-helpers";
@@ -36,7 +36,7 @@ describe("CMSWelcome", () => {
   });
 
   it("renders the Access Header", () => {
-    render(<CMSWelcome />);
+    testRender(<CMSWelcome />);
     expect(screen.getByText("Access more SPA and waiver systems")).toBeInTheDocument();
   });
 
