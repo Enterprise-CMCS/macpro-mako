@@ -23,16 +23,16 @@
         <div class='clearfix'>
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">87.67% </span>
+                <span class="strong">87.83% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>64/73</span>
+                <span class='fraction'>65/74</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">79.45% </span>
+                <span class="strong">75% </span>
                 <span class="quiet">Branches</span>
-                <span class='fraction'>58/73</span>
+                <span class='fraction'>63/84</span>
             </div>
         
             
@@ -44,9 +44,9 @@
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">88.4% </span>
+                <span class="strong">88.57% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>61/69</span>
+                <span class='fraction'>62/70</span>
             </div>
         
             
@@ -528,7 +528,26 @@
 <a name='L463'></a><a href='#L463'>463</a>
 <a name='L464'></a><a href='#L464'>464</a>
 <a name='L465'></a><a href='#L465'>465</a>
-<a name='L466'></a><a href='#L466'>466</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
+<a name='L466'></a><a href='#L466'>466</a>
+<a name='L467'></a><a href='#L467'>467</a>
+<a name='L468'></a><a href='#L468'>468</a>
+<a name='L469'></a><a href='#L469'>469</a>
+<a name='L470'></a><a href='#L470'>470</a>
+<a name='L471'></a><a href='#L471'>471</a>
+<a name='L472'></a><a href='#L472'>472</a>
+<a name='L473'></a><a href='#L473'>473</a>
+<a name='L474'></a><a href='#L474'>474</a>
+<a name='L475'></a><a href='#L475'>475</a>
+<a name='L476'></a><a href='#L476'>476</a>
+<a name='L477'></a><a href='#L477'>477</a>
+<a name='L478'></a><a href='#L478'>478</a>
+<a name='L479'></a><a href='#L479'>479</a>
+<a name='L480'></a><a href='#L480'>480</a>
+<a name='L481'></a><a href='#L481'>481</a>
+<a name='L482'></a><a href='#L482'>482</a>
+<a name='L483'></a><a href='#L483'>483</a>
+<a name='L484'></a><a href='#L484'>484</a>
+<a name='L485'></a><a href='#L485'>485</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -841,6 +860,7 @@
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">61x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">61x</span>
 <span class="cline-any cline-yes">1x</span>
@@ -859,6 +879,24 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">39x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -1262,7 +1300,7 @@ export const Layout = () =&gt; {
           street: "7500 Security Boulevard",
           zip: 21244,
         }}
-        showNavLinks={cmsHomeFlag &amp;&amp; <span class="branch-1 cbranch-no" title="branch not covered" >stateHomeFlag}</span>
+        showNavLinks={cmsHomeFlag &amp;&amp; <span class="branch-1 cbranch-no" title="branch not covered" >stateHomeFlag &amp;&amp; <span class="branch-2 cbranch-no" title="branch not covered" >!</span>!user.user}</span>
       /&gt;
     &lt;/div&gt;
   );
@@ -1306,6 +1344,7 @@ const ResponsiveNav = ({ isDesktop }: ResponsiveNavProps) =&gt; {
     const url = `https://${domain}/oauth2/authorize?redirect_uri=${redirectSignIn}&amp;response_type=${responseType}&amp;client_id=${clientId}`;
     window.location.assign(url);
   };
+  const hideLogin = useFeatureFlag("LOGIN_PAGE");
 &nbsp;
   const handleRegister = () =&gt; {
     const url = `${config.idm.home_url}/signin/login.html`;
@@ -1342,15 +1381,16 @@ const ResponsiveNav = ({ isDesktop }: ResponsiveNavProps) =&gt; {
           // When the user is signed in
           &lt;UserDropdownMenu /&gt;
         ) : (
-          !isFaqPage &amp;&amp; (
-            // When the user is not signed in
-            &lt;&gt;
+          !isFaqPage &amp;&amp;
+          // When the user is not signed in
+          (hideLogin ? (
+<span class="branch-0 cbranch-no" title="branch not covered" >            &lt;&gt;</span>
               &lt;button
                 data-testid="sign-in-button-d"
                 className="text-white hover:text-white/70"
                 onClick={handleLogin}
               &gt;
-                Sign In
+                {hideLogin ? "Sign In" : "Log In"}
               &lt;/button&gt;
               &lt;button
                 data-testid="register-button-d"
@@ -1360,7 +1400,24 @@ const ResponsiveNav = ({ isDesktop }: ResponsiveNavProps) =&gt; {
                 Register
               &lt;/button&gt;
             &lt;/&gt;
-          )
+          ) : (
+            &lt;&gt;
+              &lt;button
+                data-testid="register-button-d"
+                className="text-white hover:text-white/70"
+                onClick={handleRegister}
+              &gt;
+                Register
+              &lt;/button&gt;
+              &lt;button
+                data-testid="sign-in-button-d"
+                className="text-white hover:text-white/70"
+                onClick={handleLogin}
+              &gt;
+                {hideLogin ? <span class="branch-0 cbranch-no" title="branch not covered" >"Sign In" : "</span>Log In"}
+              &lt;/button&gt;
+            &lt;/&gt;
+          ))
         )}
       &lt;/&gt;
     );
@@ -1395,7 +1452,7 @@ const ResponsiveNav = ({ isDesktop }: ResponsiveNavProps) =&gt; {
                     className="text-left block py-2 pl-3 pr-4 text-white rounded"
                     onClick={handleLogin}
                   &gt;
-                    Sign In
+                    {hideLogin ? <span class="branch-0 cbranch-no" title="branch not covered" >"Sign In" : "</span>Log In"}
                   &lt;/button&gt;
                   &lt;button
                     className="text-left block py-2 pl-3 pr-4 text-white rounded"
@@ -1465,7 +1522,7 @@ export const SupportSubNavHeader = ({ children, className }: SupportSubNavHeader
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2025-05-07T14:24:11.803Z
+                at 2025-05-07T15:17:25.959Z
             </div>
         <script src="../../../../prettify.js"></script>
         <script>
