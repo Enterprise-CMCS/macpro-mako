@@ -68,7 +68,7 @@ export const UserProfile = () => {
       <section className="block max-w-screen-xl m-auto px-4 lg:px-8 py-8 gap-10">
         <div className="flex flex-col md:flex-row">
           <UserInformation
-            fullName={userDetails?.fullName}
+            fullName={userDetails?.fullName || "Unknown"}
             role={userRoleMap[userDetails?.role]}
             email={userDetails?.email}
           />
