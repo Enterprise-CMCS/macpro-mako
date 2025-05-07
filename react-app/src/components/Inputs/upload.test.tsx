@@ -1,4 +1,5 @@
 import { fireEvent, screen, waitFor } from "@testing-library/react";
+import userEvent from "@testing-library/user-event";
 import { beforeEach, describe, expect, it, vi } from "vitest";
 
 import { renderWithQueryClient } from "@/utils/test-helpers";
@@ -174,11 +175,12 @@ describe("Upload", () => {
 
   it("removes file after confirmation", async () => {
     const mockSetFiles = vi.fn();
+    const user = userEvent.setup();
 
     renderWithQueryClient(<Upload {...defaultProps} files={files} setFiles={mockSetFiles} />);
 
     const removeButton = screen.getByTestId(`upload-component-remove-file-${FILE_REMOVE}.txt`);
-    fireEvent.click(removeButton);
+    user.click(removeButton);
 
     // Confirm dialog appears
     expect(await screen.findByText("Delete Attachment?")).toBeInTheDocument();
