@@ -193,7 +193,7 @@ const UserDropdownMenu = () => {
               <DropdownMenu.Item
                 className="text-primary hover:text-primary/70"
                 asChild
-                onSelect={() => navigate("/singup")}
+                onSelect={() => navigate("/signup")}
               >
                 <li>Request a Role Change</li>
               </DropdownMenu.Item>
