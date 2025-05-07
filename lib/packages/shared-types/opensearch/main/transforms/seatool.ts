@@ -105,7 +105,6 @@ const isInSecondClock = (
     ].includes(seatoolStatus) && // if it's in pending
     raiReceivedDate  // if its latest rai has a received date
   ) {
-    console.log("is in second clock")
     return true; // then we're in second clock
   }
   return false; // otherwise, we're not
@@ -135,6 +134,7 @@ export const transform = (id: string) => {
         : null;
 
     const { stateStatus, cmsStatus } = getStatus(seatoolStatus);
+
     const resp = {
       id: id.toUpperCase(),
       actionType: data.ACTIONTYPES?.[0].ACTION_NAME,

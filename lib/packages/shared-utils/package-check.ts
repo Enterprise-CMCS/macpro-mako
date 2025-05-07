@@ -32,7 +32,6 @@ export const PackageCheck = ({
   leadAnalystName,
   locked,
 }: opensearch.main.Document) => {
-
   const secondClockStatuses = [
     SEATOOL_STATUS.PENDING,
     SEATOOL_STATUS.PENDING_APPROVAL,
