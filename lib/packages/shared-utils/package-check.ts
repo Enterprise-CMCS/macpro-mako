@@ -27,21 +27,11 @@ export const PackageCheck = ({
   actionType,
   // appkParentId,
   // appkParent,
-  id,
   initialIntakeNeeded,
   submissionDate,
   leadAnalystName,
   locked,
 }: opensearch.main.Document) => {
-  // console.log("in package check");
-  // console.log("rai Received Date: ", raiReceivedDate);
-  // const raiReceivedDateMS = raiReceivedDate ? new Date(raiReceivedDate).getTime() : Date.now();
-  // console.log("rai Received Date milliseconds: ", raiReceivedDateMS);
-  // console.log("rai withdraw date: ", raiWithdrawnDate);
-  // const raiWithdrawnDateMS = raiWithdrawnDate ? new Date(raiWithdrawnDate).getTime() : Date.now();
-  // console.log("rai withdraw date milliseconds: ", raiWithdrawnDateMS);
-  // console.log("package Id: ", id)
-  // console.log("is raiReceived date > raiWithdrawn date", raiReceivedDateMS > raiWithdrawnDateMS)
 
   const secondClockStatuses = [
     SEATOOL_STATUS.PENDING,
@@ -58,11 +48,6 @@ export const PackageCheck = ({
     authorityIs: (validAuthorities: string[]) => checkAuthority(authority, validAuthorities),
     hasCpoc: !!leadAnalystName,
   };
-  console.log("in package check");
-  console.log("!planChecks.authorityIs([Authority.CHIP_SPA]", !planChecks.authorityIs([Authority.CHIP_SPA]));
-  console.log("checkStatus(seatoolStatus, secondClockStatuses)", checkStatus(seatoolStatus, secondClockStatuses));
-  console.log("!!raiRequestedDate", !!raiRequestedDate);
-  console.log("!!raiReceivedDate", !!raiReceivedDate)
   const statusChecks = {
     /** Is in any of our pending statuses, sans Pending-RAI **/
     isInActivePendingStatus: checkStatus(seatoolStatus, [
@@ -75,12 +60,6 @@ export const PackageCheck = ({
         checkStatus(seatoolStatus, secondClockStatuses) &&
         !!raiRequestedDate &&
         !!raiReceivedDate),
-    // !raiWithdrawnDate),
-
-    // (!planChecks.authorityIs([Authority.CHIP_SPA]) &&
-    //   checkStatus(seatoolStatus, secondClockStatuses) &&
-    //   !!raiRequestedDate &&
-    //   !!raiReceivedDate && raiReceivedDateMS > raiWithdrawnDateMS),
     /** Is in any status except Package Withdrawn **/
     isNotWithdrawn: !checkStatus(seatoolStatus, SEATOOL_STATUS.WITHDRAWN),
     /** Added for elasticity, but common checks should always bubble up as

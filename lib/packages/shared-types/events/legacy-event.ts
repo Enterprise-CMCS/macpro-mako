@@ -28,15 +28,8 @@ export const legacyEventSchema = legacySharedSchema
     }),
   )
   .transform((data) => {
-
-    console.log("legacy event .ts transform: ");
-    console.log("component Id", data.componentId)
-    console.log("data.currentStatus: ", data.currentStatus);
     const seatoolStatus = getSeaToolStatusFromLegacyStatus(data.currentStatus);
-    console.log("seatoolStatus: ", getSeaToolStatusFromLegacyStatus(data.currentStatus));
     const { stateStatus, cmsStatus } = getStatus(seatoolStatus);
-    console.log("stateStatus:", stateStatus);
-    console.log("cmsStatus: ", cmsStatus);
     const lastEventIsoDate = getIsoDateFromTimestamp(data.lastActivityTimestamp);
     const submissionIsoDate = getIsoDateFromTimestamp(data.submissionTimestamp);
     const isRaiResponseWithdrawEnabled = data.subStatus === "Withdraw Formal RAI Response Enabled";

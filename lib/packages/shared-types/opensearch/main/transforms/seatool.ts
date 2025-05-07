@@ -96,22 +96,6 @@ const isInSecondClock = (
   seatoolStatus: any,
   authority: any,
 ) => {
-  console.log("in is second clock seatool transform");
-  const authorityCheck = authority !== "CHIP SPA" && // if it's not a chip
-    [
-      SEATOOL_STATUS.PENDING,
-      SEATOOL_STATUS.PENDING_CONCURRENCE,
-      SEATOOL_STATUS.PENDING_APPROVAL,
-    ].includes(seatoolStatus);
-
-  console.log("authority check ", authorityCheck);
-  console.log("raiReceivedDate", raiReceivedDate);
-  // console.log("")
-  // console.log("rai withdrawn date: ", raiWithdrawnDate)
-  // const raiWithdrawnDateMS = new Date(raiWithdrawnDate).getTime();
-  // console.log("rai withdrawn date milliseconds : ", raiWithdrawnDateMS)
-  // console.log("raiReceivedDate date: ", raiReceivedDate);
-  // const raiReceivedDateMS = new Date(raiReceivedDate).getTime();  // console.log("rai recieved date milliseconds : ", raiReceivedDateMS)
   if (
     authority !== "CHIP SPA" && // if it's not a chip
     [
@@ -120,24 +104,10 @@ const isInSecondClock = (
       SEATOOL_STATUS.PENDING_APPROVAL,
     ].includes(seatoolStatus) && // if it's in pending
     raiReceivedDate  // if its latest rai has a received date
-    // !raiWithdrawnDate // if the latest rai has not been withdrawn
   ) {
     console.log("is in second clock")
     return true; // then we're in second clock
   }
-
-  // else if (
-  //   authority !== "CHIP SPA" && // if it's not a chip
-  //   [
-  //     SEATOOL_STATUS.PENDING,
-  //     SEATOOL_STATUS.PENDING_CONCURRENCE,
-  //     SEATOOL_STATUS.PENDING_APPROVAL,
-  //   ].includes(seatoolStatus) && // if it's in pending
-  //   raiReceivedDateMS > raiWithdrawnDateMS
-  // ) {
-  //   console.log("made it into second if")
-  //   return true;
-  // }
   return false; // otherwise, we're not
 };
 
@@ -165,9 +135,6 @@ export const transform = (id: string) => {
         : null;
 
     const { stateStatus, cmsStatus } = getStatus(seatoolStatus);
-    console.log("stateStatus: ", stateStatus);
-    console.log("cmsStatus: ", cmsStatus);
-    console.log("transforming package: ", id)
     const resp = {
       id: id.toUpperCase(),
       actionType: data.ACTIONTYPES?.[0].ACTION_NAME,

@@ -46,6 +46,5 @@ export const getAvailableActions = (
   const sortedActions = commonActions.sort(
     (a, b) => (orderMap.get(a) ?? Infinity) - (orderMap.get(b) ?? Infinity),
   );
-  console.log("sorted actions: ", sortedActions);
   return sortedActions;
 };
