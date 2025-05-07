@@ -46,7 +46,7 @@ export const arEnableWithdrawRaiResponse: ActionRule = {
       return (
         !checker.isTempExtension &&
         checker.isNotWithdrawn &&
-        checker.hasCompletedRai &&
+        checker.hasRaiResponse &&
         !checker.hasEnabledRaiWithdraw &&
         isCmsWriteUser(user) &&
         !checker.hasStatus(finalDispositionStatuses) &&
@@ -57,7 +57,7 @@ export const arEnableWithdrawRaiResponse: ActionRule = {
 
     console.log("!checker.isTempExtension", !checker.isTempExtension);
     console.log("checker.isNotWithdrawn", checker.isNotWithdrawn);
-    console.log("checker.hasRaiResponse", checker.hasRaiResponse);
+    console.log("checker.hasRaiResponse", checker.hasCompletedRai);
     console.log(" !checker.hasEnabledRaiWithdraw", !checker.hasEnabledRaiWithdraw);
     console.log("checker.isInSecondClock", checker.isInSecondClock)
     console.log("isCmsWriteUser(user)", isCmsWriteUser(user))
@@ -67,7 +67,7 @@ export const arEnableWithdrawRaiResponse: ActionRule = {
     return (
       !checker.isTempExtension &&
       checker.isNotWithdrawn &&
-      checker.hasRaiResponse &&
+      checker.hasCompletedRai &&
       !checker.hasEnabledRaiWithdraw &&
       checker.isInSecondClock &&
       isCmsWriteUser(user) &&

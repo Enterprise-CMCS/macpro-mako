@@ -122,6 +122,7 @@ const isInSecondClock = (
     raiReceivedDate  // if its latest rai has a received date
     // !raiWithdrawnDate // if the latest rai has not been withdrawn
   ) {
+    console.log("is in second clock")
     return true; // then we're in second clock
   }
 
@@ -164,6 +165,8 @@ export const transform = (id: string) => {
         : null;
 
     const { stateStatus, cmsStatus } = getStatus(seatoolStatus);
+    console.log("stateStatus: ", stateStatus);
+    console.log("cmsStatus: ", cmsStatus);
     console.log("transforming package: ", id)
     const resp = {
       id: id.toUpperCase(),
