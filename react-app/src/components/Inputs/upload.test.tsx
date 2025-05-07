@@ -185,7 +185,7 @@ describe("Upload", () => {
     renderWithQueryClient(<Upload {...defaultProps} files={files} setFiles={mockSetFiles} />);
 
     const removeButton = screen.getByTestId(`upload-component-remove-file-${FILE_REMOVE}.txt`);
-    user.click(removeButton);
+    await user.click(removeButton);
 
     expect(userPromptSpy).toBeCalledWith({
       header: "Delete Attachment?",
