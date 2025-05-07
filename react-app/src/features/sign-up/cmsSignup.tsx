@@ -84,7 +84,11 @@ export const CMSSignup = () => {
   return (
     <div>
       <SubNavHeader>
-        <h1 className="text-xl font-medium">Registration: CMS Reviewer Access</h1>
+        <h1 className="text-xl font-medium">
+          {currentRole === "cmsroleapprover"
+            ? "Registration: CMS Reviewer Access"
+            : "Registration: CMS Role Approver Access"}
+        </h1>
       </SubNavHeader>
       <SimplePageContainer>
         <ConfirmationDialog
