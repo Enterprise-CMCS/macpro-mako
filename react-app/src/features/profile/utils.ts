@@ -36,6 +36,9 @@ export const orderStateAccess = (accesses: StateAccess[]) => {
 // if user has no active roles, show pending state(s)
 // show state(s) for latest active role
 export const getStateAccess = (userDetails, userProfile) => {
+  if (!userDetails?.role) {
+    return [];
+  }
   const statesToShow = userDetails.role
     ? userProfile?.stateAccess?.filter(
         (access: StateAccess) => access.role === userDetails.role && access.territory !== "ZZ",

@@ -10,9 +10,13 @@ export type UserDetails = {
   role?: UserRole;
 };
 
-export const getUserDetails = async (userId?: string): Promise<UserDetails> => {
+export const getUserDetails = async (userEmail?: string): Promise<UserDetails> => {
   try {
-    const userDetails = await API.post("os", "/getUserDetails", userId ? { body: { userId } } : {});
+    const userDetails = await API.post(
+      "os",
+      "/getUserDetails",
+      userEmail ? { body: { userEmail } } : {},
+    );
 
     return userDetails as UserDetails;
   } catch (e) {
@@ -21,8 +25,8 @@ export const getUserDetails = async (userId?: string): Promise<UserDetails> => {
   }
 };
 
-export const useGetUserDetails = (profileId?: string) =>
+export const useGetUserDetails = (userEmail?: string) =>
   useQuery({
     queryKey: ["userDetails"],
-    queryFn: () => getUserDetails(profileId),
+    queryFn: () => getUserDetails(userEmail),
   });

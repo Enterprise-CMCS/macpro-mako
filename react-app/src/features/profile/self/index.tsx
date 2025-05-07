@@ -140,7 +140,7 @@ export const Profile = () => {
                 onAccept={handleSelfRevokeAccess}
                 onCancel={() => setSelfRevokeState(null)}
               />
-              {stateAccess.map((access) => (
+              {stateAccess?.map((access) => (
                 <StateAccessCard
                   access={access}
                   role={userRoleMap[userDetails?.role]}

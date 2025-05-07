@@ -13,9 +13,10 @@ export const UserProfile = () => {
   const { data: userDetails, isLoading: isDetailLoading } = useGetUserDetails();
 
   const decodedProfileId = useMemo(() => {
-    if (profileId) return LZ.decompressFromEncodedURIComponent(profileId);
+    if (profileId) return LZ.decompressFromEncodedURIComponent(profileId.replaceAll("_", "+"));
     return undefined;
   }, [profileId]);
+  console.log({ decodedProfileId });
 
   if (isDetailLoading) {
     return <LoadingSpinner />;
@@ -61,7 +62,7 @@ const Profile = ({ profileId }: { profileId: string }) => {
           {adminRoles.includes(userDetails?.role) && (
             <div className="flex flex-col gap-6 md:basis-1/2">
               <h2 className="text-2xl font-bold">State Access Management</h2>
-              {stateAccess.map((access) => (
+              {stateAccess?.map((access) => (
                 <StateAccessCard access={access} role={userRoleMap[userDetails?.role]} />
               ))}
             </div>

@@ -16,9 +16,13 @@ export type OneMacUserProfile = {
   stateAccess?: StateAccess[];
 };
 
-export const getUserProfile = async (userId?: string): Promise<OneMacUserProfile> => {
+export const getUserProfile = async (userEmail?: string): Promise<OneMacUserProfile> => {
   try {
-    const stateAccess = await API.post("os", "/getUserProfile", userId ? { body: { userId } } : {});
+    const stateAccess = await API.post(
+      "os",
+      "/getUserProfile",
+      userEmail ? { body: { userEmail } } : {},
+    );
 
     return {
       stateAccess,
@@ -29,8 +33,8 @@ export const getUserProfile = async (userId?: string): Promise<OneMacUserProfile
   }
 };
 
-export const useGetUserProfile = (profileId?: string) =>
+export const useGetUserProfile = (userEmail?: string) =>
   useQuery({
     queryKey: ["profile"],
-    queryFn: () => getUserProfile(profileId),
+    queryFn: () => getUserProfile(userEmail),
   });

@@ -311,7 +311,9 @@ export const UserManagement = () => {
                     </TableCell>
                   )}
                   <TableCell>
-                    <Link to={`/profile/${LZ.compressToEncodedURIComponent(userRole.email)}`}>
+                    <Link
+                      to={`/profile/${LZ.compressToEncodedURIComponent(userRole.email).replaceAll("+", "_")}`}
+                    >
                       {userRole.fullName}
                     </Link>
                   </TableCell>

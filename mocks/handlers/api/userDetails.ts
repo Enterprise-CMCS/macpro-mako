@@ -4,7 +4,7 @@ import { getUserByUsername } from "../../data";
 import { getFilteredUserResultList } from "../../data/osusers";
 import { getFilteredRoleDocsByEmail, getLatestRoleByEmail } from "../../data/roles";
 
-const defaultApiUserDetailsHandler = http.get(
+const defaultApiUserDetailsHandler = http.post(
   "https://test-domain.execute-api.us-east-1.amazonaws.com/mocked-tests/getUserDetails",
   async () => {
     const username = process.env.MOCK_USER_USERNAME;
