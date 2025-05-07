@@ -57,6 +57,7 @@ describe("getUserDetails handler", () => {
         email: "mako.stateuser@gmail.com",
         fullName: "Stateuser Tester",
         role: "statesubmitter",
+        states: ["VA", "OH", "SC", "CO", "GA", "MD"],
       }),
     );
   });
@@ -77,6 +78,7 @@ describe("getUserDetails handler", () => {
         email: "nostate@example.com",
         fullName: "No State",
         role: "norole",
+        states: [],
       }),
     );
   });
@@ -101,6 +103,7 @@ describe("getUserDetails handler", () => {
         email: TEST_STATE_SUBMITTER_EMAIL,
         fullName: "Stateuser Tester",
         role: "statesubmitter",
+        states: ["VA", "OH", "SC", "CO", "GA", "MD"],
       }),
     );
   });
@@ -125,6 +128,7 @@ describe("getUserDetails handler", () => {
         email: STATE_SYSTEM_ADMIN_EMAIL,
         fullName: "Statesystemadmin Nightwatch",
         role: "statesystemadmin",
+        states: ["MD"],
       }),
     );
   });
@@ -147,6 +151,7 @@ describe("getUserDetails handler", () => {
         email: TEST_STATE_SUBMITTER_EMAIL,
         fullName: "Stateuser Tester",
         role: "statesubmitter",
+        states: ["VA", "OH", "SC", "CO", "GA", "MD"],
       }),
     );
   });
