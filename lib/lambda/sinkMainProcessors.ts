@@ -301,7 +301,9 @@ export const insertNewSeatoolRecordsFromKafkaIntoMako = async (
         id,
         ...JSON.parse(decodeBase64WithUtf8(value)),
       };
-
+      if (seatoolRecord.id === "VA-74-5615") {
+        console.log(JSON.stringify(seatoolRecord));
+      }
       seatoolRecord.STATE_PLAN.SPW_STATUS_ID = await oneMacSeatoolStatusCheck(seatoolRecord);
 
       const safeSeatoolRecord = opensearch.main.seatool.transform(id).safeParse(seatoolRecord);
@@ -318,9 +320,10 @@ export const insertNewSeatoolRecordsFromKafkaIntoMako = async (
       const { data: seatoolDocument } = safeSeatoolRecord;
       const makoDocumentTimestamp = makoDocTimestamps.get(seatoolDocument.id);
       console.log("--------------------");
-      console.log(`id: ${seatoolDocument.id}`);
-      console.log(`mako: ${makoDocumentTimestamp}`);
-      console.log(`seatool: ${seatoolDocument.changed_date}`);
+      console.log(
+        `id: ${seatoolDocument.id} mako: ${makoDocumentTimestamp} seatool: ${seatoolDocument.changed_date} ${seatoolDocument.cmsStatus}`,
+      );
+
       if (
         seatoolDocument.changed_date &&
         makoDocumentTimestamp &&

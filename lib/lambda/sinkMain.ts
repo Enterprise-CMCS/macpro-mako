@@ -11,8 +11,6 @@ import {
 export const handler: Handler<KafkaEvent> = async (event) => {
   const prettifiedEventJSON = JSON.stringify(event, null, 2);
 
-  console.log(`event: ${prettifiedEventJSON}`);
-
   try {
     await Promise.all(
       Object.entries(event.records).map(async ([topicPartition, records]) => {
