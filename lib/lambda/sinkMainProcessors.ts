@@ -321,8 +321,11 @@ export const insertNewSeatoolRecordsFromKafkaIntoMako = async (
       if (
         seatoolDocument.changed_date &&
         makoDocumentTimestamp &&
-        isBefore(makoDocumentTimestamp, seatoolDocument.changed_date)
+        isBefore(seatoolDocument.changed_date, makoDocumentTimestamp)
       ) {
+        console.warn(
+          `id: ${seatoolDocument.id} mako: ${makoDocumentTimestamp} seatool: ${seatoolDocument.changed_date} ${seatoolDocument.cmsStatus}`,
+        );
         console.warn("SKIPPED DUE TO OUT-OF-DATE INFORMATION");
         continue;
       }
