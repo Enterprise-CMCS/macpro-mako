@@ -79,9 +79,9 @@ const compileSrtList = (
 ): { name: string; email: string }[] =>
   officers?.length
     ? officers.map((o) => ({
-      name: `${o.FIRST_NAME || ""} ${o.LAST_NAME || ""}`,
-      email: o.EMAIL || "",
-    }))
+        name: `${o.FIRST_NAME || ""} ${o.LAST_NAME || ""}`,
+        email: o.EMAIL || "",
+      }))
     : [];
 
 const getFinalDispositionDate = (status: string, record: SeaTool) => {
@@ -103,7 +103,7 @@ const isInSecondClock = (
       SEATOOL_STATUS.PENDING_CONCURRENCE,
       SEATOOL_STATUS.PENDING_APPROVAL,
     ].includes(seatoolStatus) && // if it's in pending
-    raiReceivedDate  // if its latest rai has a received date
+    raiReceivedDate // if its latest rai has a received date
   ) {
     return true; // then we're in second clock
   }

@@ -55,10 +55,10 @@ export const PackageCheck = ({
     ]),
     /** Is in a second clock status and RAI has been received **/
     isInSecondClock:
-      (!planChecks.authorityIs([Authority.CHIP_SPA]) &&
-        checkStatus(seatoolStatus, secondClockStatuses) &&
-        !!raiRequestedDate &&
-        !!raiReceivedDate),
+      !planChecks.authorityIs([Authority.CHIP_SPA]) &&
+      checkStatus(seatoolStatus, secondClockStatuses) &&
+      !!raiRequestedDate &&
+      !!raiReceivedDate,
     /** Is in any status except Package Withdrawn **/
     isNotWithdrawn: !checkStatus(seatoolStatus, SEATOOL_STATUS.WITHDRAWN),
     /** Added for elasticity, but common checks should always bubble up as
