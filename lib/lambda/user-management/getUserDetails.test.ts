@@ -2,6 +2,7 @@ import { APIGatewayEvent } from "aws-lambda";
 import {
   errorRoleSearchHandler,
   getRequestContext,
+  makoStateSubmitter,
   noStateSubmitter,
   osStateSystemAdmin,
   setDefaultStateSubmitter,
@@ -81,7 +82,7 @@ describe("getUserDetails handler", () => {
   });
 
   it("should return 200 and the user details for the email in the body if the user is a user manager", async () => {
-    setMockUsername(osStateSystemAdmin);
+    setMockUsername(makoStateSubmitter);
 
     const event = {
       requestContext: getRequestContext(),
