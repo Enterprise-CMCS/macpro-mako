@@ -5,7 +5,7 @@ import { convertStateAbbrToFullName, stateAccessStatus } from "@/utils";
 
 export type StateAccessProps = {
   role: string;
-  onClick: () => void;
+  onClick?: () => void;
   access: {
     territory: string;
     role: string;
@@ -18,7 +18,7 @@ export type StateAccessProps = {
 export const StateAccessCard = ({ role, onClick, access }: StateAccessProps) => (
   <CardWithTopBorder className="my-0" key={`${access.territory}-${access.role}`}>
     <button
-      disabled={role !== "statesubmitter"}
+      disabled={role !== "statesubmitter" || !onClick}
       data-testid="self-revoke"
       onClick={onClick}
       title="close"

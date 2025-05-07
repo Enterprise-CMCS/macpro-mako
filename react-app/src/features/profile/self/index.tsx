@@ -1,8 +1,8 @@
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import { Navigate } from "react-router";
 import { StateCode } from "shared-types";
 
-import { StateAccess, useGetUserDetails, useGetUserProfile, useSubmitRoleRequests } from "@/api";
+import { useGetUserDetails, useGetUserProfile, useSubmitRoleRequests } from "@/api";
 import {
   banner,
   Button,
@@ -17,7 +17,7 @@ import { Option } from "@/components/Opensearch/main/Filtering/Drawer/Filterable
 import { FilterableSelect } from "@/components/Opensearch/main/Filtering/Drawer/Filterable";
 import { useAvailableStates } from "@/hooks/useAvailableStates";
 
-import { adminRoles, orderStateAccess, userRoleMap } from "../utils";
+import { adminRoles, getStateAccess, userRoleMap } from "../utils";
 
 export const Profile = () => {
   const { data: userDetails, isLoading: isDetailLoading } = useGetUserDetails();
@@ -32,6 +32,11 @@ export const Profile = () => {
   const [requestedStates, setRequestedStates] = useState<StateCode[]>([]);
   const statesToRequest: Option[] = useAvailableStates(userProfile?.stateAccess);
 
+  const stateAccess = useMemo(
+    () => getStateAccess(userDetails, userProfile),
+    [userDetails, userProfile],
+  );
+
   if (isDetailLoading || isProfileLoading) {
     return <LoadingSpinner />;
   }
@@ -39,18 +44,6 @@ export const Profile = () => {
   if (!isDetailLoading && !userDetails?.id) {
     return <Navigate to="/" />;
   }
-
-  // if user has no active roles, show pending state(s)
-  // show state(s) for latest active role
-  const stateAccess = () => {
-    const statesToShow = userDetails.role
-      ? userProfile?.stateAccess?.filter(
-          (access: StateAccess) => access.role === userDetails.role && access.territory !== "ZZ",
-        )
-      : userProfile?.stateAccess?.filter((access: StateAccess) => access.territory !== "ZZ");
-
-    return orderStateAccess(statesToShow);
-  };
 
   const handleSubmitRequest = async () => {
     try {
@@ -147,7 +140,7 @@ export const Profile = () => {
                 onAccept={handleSelfRevokeAccess}
                 onCancel={() => setSelfRevokeState(null)}
               />
-              {stateAccess().map((access) => (
+              {stateAccess.map((access) => (
                 <StateAccessCard
                   access={access}
                   role={userRoleMap[userDetails?.role]}
