@@ -249,18 +249,20 @@ export const Profile = () => {
               {orderedStateAccess.map((access) => {
                 return (
                   <CardWithTopBorder className="my-0" key={`${access.territory}-${access.role}`}>
-                    <button
-                      disabled={userDetails?.role !== "statesubmitter"}
-                      data-testid="self-revoke"
-                      onClick={() => setSelfRevokeState(access.territory as StateCode)}
-                    >
-                      <XIcon size={20} />
-                    </button>
-
                     <div className="p-8 min-h-36">
-                      <h3 className="text-xl font-bold">
-                        {convertStateAbbrToFullName(access.territory)}
-                      </h3>
+                      <div className="flex justify-between">
+                        <h3 className="text-xl font-bold">
+                          {convertStateAbbrToFullName(access.territory)}
+                        </h3>
+                        <button
+                          className="text-blue-700"
+                          disabled={userDetails?.role !== "statesubmitter"}
+                          data-testid="self-revoke"
+                          onClick={() => setSelfRevokeState(access.territory as StateCode)}
+                        >
+                          <XIcon size={30} />
+                        </button>
+                      </div>
                       <p className="italic">{stateAccessStatus[access.status]}</p>
                       <p className="block lg:mt-8 lg:mb-2">
                         <span className="font-semibold">State System Admin: </span>

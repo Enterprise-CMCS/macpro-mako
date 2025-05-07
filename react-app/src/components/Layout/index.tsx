@@ -178,33 +178,34 @@ const UserDropdownMenu = () => {
         </button>
       </DropdownMenu.Trigger>
       <DropdownMenu.Portal>
-        <DropdownMenu.Content
-          align="start"
-          className="bg-white z-50 flex flex-col gap-4 px-10 py-4 shadow-md rounded-b-sm "
-        >
-          <DropdownMenu.Item
-            className="text-primary hover:text-primary/70"
-            asChild
-            onSelect={handleViewProfile}
-          >
-            <li>View Profile</li>
-          </DropdownMenu.Item>
-          {/* TODO: conditionally show this if the user IS NOT HELPDESK */}
-          {/* // helpdesk, system admins, and cms reviewer users don't even see request role as an option */}
-          {!disableRoleChange() && !isLoading && userDetails && (
-            <DropdownMenu.Item>
-              <Link to="/signup" className="text-primary hover:text-primary/70">
-                Request a Role Change
-              </Link>
+        <DropdownMenu.Content align="start" asChild>
+          <ul className="bg-white z-50 flex flex-col gap-4 px-10 py-4 shadow-md rounded-b-sm">
+            <DropdownMenu.Item
+              className="text-primary hover:text-primary/70"
+              asChild
+              onSelect={handleViewProfile}
+            >
+              <li>View Profile</li>
             </DropdownMenu.Item>
-          )}
-          <DropdownMenu.Item
-            className="text-primary hover:text-primary/70"
-            asChild
-            onSelect={handleLogout}
-          >
-            <li>Sign Out</li>
-          </DropdownMenu.Item>
+            {/* TODO: conditionally show this if the user IS NOT HELPDESK */}
+            {/* // helpdesk, system admins, and cms reviewer users don't even see request role as an option */}
+            {!disableRoleChange() && !isLoading && userDetails && (
+              <DropdownMenu.Item
+                className="text-primary hover:text-primary/70"
+                asChild
+                onSelect={() => navigate("/singup")}
+              >
+                <li>Request a Role Change</li>
+              </DropdownMenu.Item>
+            )}
+            <DropdownMenu.Item
+              className="text-primary hover:text-primary/70"
+              asChild
+              onSelect={handleLogout}
+            >
+              <li>Sign Out</li>
+            </DropdownMenu.Item>
+          </ul>
         </DropdownMenu.Content>
       </DropdownMenu.Portal>
     </DropdownMenu.Root>
