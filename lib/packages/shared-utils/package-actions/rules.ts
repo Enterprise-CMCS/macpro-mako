@@ -46,7 +46,7 @@ export const arEnableWithdrawRaiResponse: ActionRule = {
       return (
         !checker.isTempExtension &&
         checker.isNotWithdrawn &&
-        checker.hasRaiResponse &&
+        checker.hasCompletedRai &&
         !checker.hasEnabledRaiWithdraw &&
         isCmsWriteUser(user) &&
         !checker.hasStatus(finalDispositionStatuses) &&
