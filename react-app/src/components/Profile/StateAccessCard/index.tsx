@@ -21,9 +21,10 @@ export const StateAccessCard = ({ role, onClick, access }: StateAccessProps) => 
       <div className="flex justify-between">
         <h3 className="text-xl font-bold">{convertStateAbbrToFullName(access.territory)}</h3>
         <button
-          className="text-blue-700"
+          className="text-blue-700 disabled:text-gray-300"
           disabled={role !== "statesubmitter" || !onClick}
           data-testid="self-revoke"
+          title="Self Revoke Access"
           onClick={onClick}
         >
           <XIcon size={30} />
