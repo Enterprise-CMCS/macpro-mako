@@ -154,7 +154,7 @@ export const renderCellActions = (
           className={cn("w-8 ", actions.length ? "text-blue-700" : "text-gray-400")}
         />
       </PopoverTrigger>
-      <PopoverContent>
+      <PopoverContent className="w-auto">
         <div className="flex flex-col">
           {actions.map((action, idx) => (
             <div
@@ -327,7 +327,7 @@ export const UserManagement = () => {
                   </TableCell>
                   {!isStateSystemAdmin && <TableCell>{userRole.territory}</TableCell>}
                   <TableCell>
-                    <span className="font-semibold flex items-center">
+                    <span className="font-bold flex items-center">
                       {renderStatus(userRole.status)}
                     </span>
                   </TableCell>
