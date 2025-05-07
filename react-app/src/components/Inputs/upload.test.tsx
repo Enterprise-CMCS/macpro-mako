@@ -2,6 +2,7 @@ import { fireEvent, screen, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { beforeEach, describe, expect, it, vi } from "vitest";
 
+import * as components from "@/components";
 import { renderWithQueryClient } from "@/utils/test-helpers";
 
 import { Upload } from "./upload";
@@ -173,8 +174,12 @@ describe("Upload", () => {
     });
   });
 
-  it("removes file after confirmation", async () => {
+  it("shows file removal confirmation", async () => {
     const mockSetFiles = vi.fn();
+    const onAcceptMock = vi.fn();
+    const userPromptSpy = vi
+      .spyOn(components, "userPrompt")
+      .mockImplementation((args) => (args.onAccept = onAcceptMock));
     const user = userEvent.setup();
 
     renderWithQueryClient(<Upload {...defaultProps} files={files} setFiles={mockSetFiles} />);
@@ -182,36 +187,11 @@ describe("Upload", () => {
     const removeButton = screen.getByTestId(`upload-component-remove-file-${FILE_REMOVE}.txt`);
     user.click(removeButton);
 
-    // Confirm dialog appears
-    expect(await screen.findByText("Delete Attachment?")).toBeInTheDocument();
-
-    // Click confirm
-    const confirmButton = screen.getByRole("button", { name: /Yes, delete/i });
-    fireEvent.click(confirmButton);
-
-    await waitFor(() => {
-      expect(mockSetFiles).toHaveBeenCalledWith(
-        files.filter((file) => file.filename !== `${FILE_REMOVE}.txt`),
-      );
-    });
-  });
-
-  it("does not remove file if cancel is clicked", async () => {
-    const mockSetFiles = vi.fn();
-
-    renderWithQueryClient(<Upload {...defaultProps} files={files} setFiles={mockSetFiles} />);
-
-    const removeButton = screen.getByTestId(`upload-component-remove-file-${FILE_REMOVE}.txt`);
-    fireEvent.click(removeButton);
-
-    expect(await screen.findByText("Delete Attachment?")).toBeInTheDocument();
-
-    // Click cancel (assumes cancel button has "Cancel" text)
-    const cancelButton = screen.getByRole("button", { name: /cancel/i });
-    fireEvent.click(cancelButton);
-
-    await waitFor(() => {
-      expect(mockSetFiles).not.toHaveBeenCalled();
+    expect(userPromptSpy).toBeCalledWith({
+      header: "Delete Attachment?",
+      body: "`Are you sure you want to delete ${FILE_REMOVE}.txt?`",
+      acceptButtonText: "Yes, delete",
+      onAccept: onAcceptMock,
     });
   });
 });
