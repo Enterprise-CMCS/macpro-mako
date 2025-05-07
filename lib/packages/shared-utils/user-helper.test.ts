@@ -106,7 +106,7 @@ describe("canUpdateAccess", () => {
 
 describe("canRequestAccess", () => {
   it("should return false if the role is not allowed to request access", () => {
-    expect(canRequestAccess("cmsreviewer")).toBeFalsy();
+    expect(canRequestAccess("helpdesk")).toBeFalsy();
   });
   it("should return true if the role is allowed to request access", () => {
     expect(canRequestAccess("statesubmitter")).toBeTruthy();

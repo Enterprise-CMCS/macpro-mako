@@ -124,7 +124,7 @@ const UserDropdownMenu = () => {
     // }
     if (roleIsPending) return true;
 
-    const excludedRoles = ["helpdesk", "systemadmin", "cmsreviewer"];
+    const excludedRoles = ["helpdesk", "systemadmin"];
 
     return excludedRoles.includes(currentRole);
   };

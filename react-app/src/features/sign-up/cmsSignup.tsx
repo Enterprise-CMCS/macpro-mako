@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { Navigate, useNavigate } from "react-router";
+import { isCmsUser } from "shared-utils";
 
 import {
   useGetUserDetails,
@@ -45,11 +46,8 @@ export const CMSSignup = () => {
   if (!userDetails?.role) return <Navigate to="/" />;
 
   const currentRole = userDetails.role;
-  if (
-    currentRole !== "defaultcmsuser" &&
-    currentRole !== "cmsroleapprover" &&
-    currentRole !== "cmsreviewer"
-  )
+  // TODO: refactor to use isCmsUser
+  if (!["defaultcmsuser", "cmsroleapprover", "cmsreviewer"].includes(currentRole))
     return <Navigate to="/profile" />;
 
   const onSubmit = async () => {
