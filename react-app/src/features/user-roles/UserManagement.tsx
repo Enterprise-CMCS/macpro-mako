@@ -313,6 +313,7 @@ export const UserManagement = () => {
                   <TableCell>
                     <Link
                       to={`/profile/${LZ.compressToEncodedURIComponent(userRole.email).replaceAll("+", "_")}`}
+                      className="text-blue-500 flex select-none items-center px-2 py-2"
                     >
                       {userRole.fullName}
                     </Link>
