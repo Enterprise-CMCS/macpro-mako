@@ -189,7 +189,7 @@ describe("Upload", () => {
 
     expect(userPromptSpy).toBeCalledWith({
       header: "Delete Attachment?",
-      body: "`Are you sure you want to delete ${FILE_REMOVE}.txt?`",
+      body: `Are you sure you want to delete ${FILE_REMOVE}.txt?`,
       acceptButtonText: "Yes, delete",
       onAccept: onAcceptMock,
     });
