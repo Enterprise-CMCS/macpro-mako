@@ -1,5 +1,6 @@
 import { EllipsisVerticalIcon } from "@heroicons/react/24/outline";
 import { ExportToCsv } from "export-to-csv";
+import LZ from "lz-string";
 import { useEffect, useMemo, useState } from "react";
 import { Link } from "react-router";
 import { formatDate, formatDateToET } from "shared-utils";
@@ -309,7 +310,11 @@ export const UserManagement = () => {
                       {renderCellActions(userRole, setModalText, setSelectedUserRole)}
                     </TableCell>
                   )}
-                  <TableCell>{userRole.fullName}</TableCell>
+                  <TableCell>
+                    <Link to={`/profile/${LZ.compressToEncodedURIComponent(userRole.email)}`}>
+                      {userRole.fullName}
+                    </Link>
+                  </TableCell>
                   {!isStateSystemAdmin && <TableCell>{userRole.territory}</TableCell>}
                   <TableCell>
                     <span className="font-semibold flex items-center">

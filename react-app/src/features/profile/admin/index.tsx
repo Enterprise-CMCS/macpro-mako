@@ -1,3 +1,4 @@
+import LZ from "lz-string";
 import { useMemo } from "react";
 import { useParams } from "react-router";
 import { Navigate } from "react-router";
@@ -11,18 +12,26 @@ export const UserProfile = () => {
   const { profileId } = useParams();
   const { data: userDetails, isLoading: isDetailLoading } = useGetUserDetails();
 
+  const decodedProfileId = useMemo(() => {
+    if (profileId) return LZ.decompressFromEncodedURIComponent(profileId);
+    return undefined;
+  }, [profileId]);
+
   if (isDetailLoading) {
     return <LoadingSpinner />;
   }
 
   if (
     !userDetails?.id ||
-    !["systemadmin", "statesystemadmin", "cmsroleapprover", "helpdesk"].includes(userDetails?.role)
+    !["systemadmin", "statesystemadmin", "cmsroleapprover", "helpdesk"].includes(
+      userDetails?.role,
+    ) ||
+    !decodedProfileId
   ) {
     return <Navigate to="/" />;
   }
 
-  return <Profile profileId={profileId} />;
+  return <Profile profileId={decodedProfileId} />;
 };
 
 const Profile = ({ profileId }: { profileId: string }) => {
