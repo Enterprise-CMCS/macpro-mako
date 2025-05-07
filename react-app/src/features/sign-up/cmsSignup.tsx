@@ -30,13 +30,26 @@ export const CMSSignup = () => {
 
   const navigate = useNavigate();
 
+  const groupSortFn = (groupA, groupB) => {
+    if (groupA.abbr) {
+      if (groupB.abbr) return groupA.abbr.localeCompare(groupB.abbr);
+      return -1;
+    }
+    if (groupA.abbr) return 1;
+    return 0;
+  };
+
   const { data: userDetails } = useGetUserDetails();
   if (!userDetails) return <LoadingSpinner />;
 
   if (!userDetails?.role) return <Navigate to="/" />;
 
   const currentRole = userDetails.role;
-  if (currentRole !== "defaultcmsuser" && currentRole !== "cmsroleapprover")
+  if (
+    currentRole !== "defaultcmsuser" &&
+    currentRole !== "cmsroleapprover" &&
+    currentRole !== "cmsreviewer"
+  )
     return <Navigate to="/profile" />;
 
   const onSubmit = async () => {
@@ -107,7 +120,7 @@ export const CMSSignup = () => {
                   <SelectValue placeholder="Select..." />
                 </SelectTrigger>
                 <SelectContent>
-                  {groupDivision.map((group) => (
+                  {groupDivision.sort(groupSortFn).map((group) => (
                     <SelectItem value={group.abbr} key={`${group.id}-${group.abbr}`}>
                       <span className="font-bold min-w-[4rem]">{group.abbr}</span>
                       <span>{group.name}</span>
@@ -133,7 +146,7 @@ export const CMSSignup = () => {
                   </SelectTrigger>
                   <SelectContent>
                     {group &&
-                      group.divisions.map((divisions) => (
+                      group.divisions.sort(groupSortFn).map((divisions) => (
                         <SelectItem
                           value={divisions.id.toString()}
                           key={`${divisions.id}-${divisions.abbr}`}
