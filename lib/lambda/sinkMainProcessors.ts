@@ -226,7 +226,7 @@ const oneMacSeatoolStatusCheck = async (seatoolRecord: Document) => {
     return SeatoolSpwStatusEnum.WithdrawalRequested;
   }
 
-  // Current status is RAI Issued in seatool and onemac status is SUBMITTED 
+  // Current status is RAI Issued in seatool and onemac status is SUBMITTED
   if (
     oneMacStatus === SEATOOL_STATUS.SUBMITTED &&
     seatoolStatus === SeatoolSpwStatusEnum.PendingRAI
@@ -252,7 +252,6 @@ const oneMacSeatoolStatusCheck = async (seatoolRecord: Document) => {
     oneMacStatus === SEATOOL_STATUS.RAI_RESPONSE_WITHDRAW_REQUESTED &&
     seatoolStatus !== SeatoolSpwStatusEnum.PendingRAI
   ) {
-
     if (
       seatoolStatus &&
       [
@@ -265,6 +264,7 @@ const oneMacSeatoolStatusCheck = async (seatoolRecord: Document) => {
     }
     return SeatoolSpwStatusEnum.FormalRAIResponseWithdrawalRequested;
   }
+
   return seatoolRecord.STATE_PLAN.SPW_STATUS_ID;
 };
 
@@ -278,7 +278,7 @@ export const insertNewSeatoolRecordsFromKafkaIntoMako = async (
   topicPartition: string,
 ) => {
   const makoDocTimestamps = await getMakoDocTimestamps(kafkaRecords);
-  const seatoolRecordsForMako: { id: string;[key: string]: unknown }[] = [];
+  const seatoolRecordsForMako: { id: string; [key: string]: unknown }[] = [];
 
   for (const kafkaRecord of kafkaRecords) {
     try {
