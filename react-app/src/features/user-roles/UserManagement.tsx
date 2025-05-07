@@ -154,7 +154,7 @@ export const renderCellActions = (
           className={cn("w-8 ", actions.length ? "text-blue-700" : "text-gray-400")}
         />
       </PopoverTrigger>
-      <PopoverContent>
+      <PopoverContent className="w-auto">
         <div className="flex flex-col">
           {actions.map((action, idx) => (
             <div
