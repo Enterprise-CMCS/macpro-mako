@@ -72,7 +72,7 @@ describe("CMSSignup", () => {
     setMockUsername(defaultCMSUser);
     await setup();
 
-    expect(screen.getByText("Registration: CMS Reviewer Access")).toBeInTheDocument();
+    expect(screen.getByText("Registration: CMS Role Approver Access")).toBeInTheDocument();
   });
 
   it("should show the form if the user is a cmsroleapprover", async () => {
