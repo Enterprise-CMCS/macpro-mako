@@ -16,6 +16,7 @@ export enum UserRoles {
   HELPDESK = "helpdesk",
   STATE_SUBMITTER = "statesubmitter",
   SYSTEM_ADMIN = "systemadmin",
+  STATE_SYSTEM_ADMIN = "statesystemadmin",
 }
 
 export type UserRolesString = `${UserRoles}${"," | ""}` | "";
