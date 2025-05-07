@@ -88,7 +88,7 @@ export const Profile = () => {
         role: userDetails.role,
         eventType: "user-role",
         requestRoleChange: false,
-        grantAccess: false,
+        grantAccess: "revoked",
       });
 
       setSelfRevokeState(null);

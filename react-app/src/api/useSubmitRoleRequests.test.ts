@@ -22,7 +22,7 @@ describe("useSubmitRoleRequests", () => {
         role: "statesubmitter",
         eventType: "user-role",
         requestRoleChange: true,
-        grantAccess: false,
+        grantAccess: "denied",
       }),
     ).rejects.toThrowError("Failed to submit role request");
   });
@@ -37,7 +37,7 @@ describe("useSubmitRoleRequests", () => {
         role: "statesubmitter",
         eventType: "user-role",
         requestRoleChange: true,
-        grantAccess: false,
+        grantAccess: "denied",
       }),
     ).rejects.toThrowError("Failed to submit role request");
   });
@@ -52,7 +52,7 @@ describe("useSubmitRoleRequests", () => {
         role: "defaultcmsuser",
         eventType: "user-role",
         requestRoleChange: true,
-        grantAccess: false,
+        grantAccess: "denied",
       }),
     ).rejects.toThrowError("Failed to submit role request");
   });
@@ -68,7 +68,7 @@ describe("useSubmitRoleRequests", () => {
         role: "statesubmitter",
         eventType: "user-role",
         requestRoleChange: true,
-        grantAccess: false,
+        grantAccess: "denied",
       }),
     ).rejects.toThrowError("Failed to submit role request");
   });
@@ -95,8 +95,8 @@ describe("useSubmitRoleRequests", () => {
       state: "MD",
       role: "statesubmitter",
       eventType: "user-role",
-      requestRoleChange: false,
-      grantAccess: true,
+      requestRoleChange: true,
+      grantAccess: "pending",
     });
     expect(result).toEqual({
       message: "Request to access MD has been submitted.",
@@ -106,7 +106,7 @@ describe("useSubmitRoleRequests", () => {
       email: "nostate@example.com",
       eventType: "user-role",
       role: "statesubmitter",
-      status: "active",
+      status: "pending",
       territory: "MD",
     });
   });
@@ -119,7 +119,7 @@ describe("useSubmitRoleRequests", () => {
       state: "CO",
       role: "statesubmitter",
       eventType: "user-role",
-      grantAccess: true,
+      grantAccess: "active",
       requestRoleChange: true,
     });
     expect(result).toEqual({

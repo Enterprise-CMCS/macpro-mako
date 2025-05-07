@@ -121,6 +121,12 @@ export const renderCellActions = (
     };
 
     const requestFor = userRole.status === "pending" ? " request for" : "";
+
+    const statusMap = {
+      "Grant Access": "active",
+      "Deny Access": "denied",
+      "Revoke Access": "revoked",
+    };
     //  in legacy there is logic to add the territory in front
     setModalText(
       `This will ${modalAction[action]} ${userRole.fullName}'s${requestFor} access to OneMac.`,
@@ -129,10 +135,11 @@ export const renderCellActions = (
       email: userRole.email,
       state: userRole.territory,
       role: userRole.role,
-      grantAccess: modalAction[action] === "grant",
+      grantAccess: statusMap[action],
       eventType: userRole.eventType,
       group: userRole.group ?? null,
       division: userRole.division ?? null,
+      requestRoleChange: false,
     });
   };
   return (

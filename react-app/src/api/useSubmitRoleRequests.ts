@@ -5,13 +5,14 @@ import { UserRole } from "shared-types/events/legacy-user";
 
 import { StateAccess } from "./useGetUserProfile";
 
+export type RoleStatus = "active" | "denied" | "pending" | "revoked";
 export type RoleRequest = {
   email: string;
   state: StateCode | "N/A";
   role: UserRole;
   eventType: string;
   requestRoleChange: boolean; // is this a role change request? (used in state signup and profile page)
-  grantAccess?: boolean; // true for active, false for denied, undefined for pending (used in user management page)
+  grantAccess?: RoleStatus; // active, denied, revoked, or pending if undefined (used in user management page)
   group?: string; // used for systemadmins upgrading defaultcmsuser to cmsroleapprover
   division?: string; // used for systemadmins upgrading defaultcmsuser to cmsroleapprover
 };
@@ -45,7 +46,7 @@ export const useSubmitRoleRequests = () => {
         queryClient.setQueryData(["roleRequests"], (old: StateAccess[] = []) => {
           if (!Array.isArray(old)) return [];
           return old.map((request) => {
-            if (request.email === newRequest.email) {
+            if (request.id === `${newRequest.email}_${newRequest.state}_${newRequest.role}`) {
               let status = "pending";
               if (newRequest.grantAccess !== undefined)
                 status = newRequest.grantAccess ? "active" : "denied";

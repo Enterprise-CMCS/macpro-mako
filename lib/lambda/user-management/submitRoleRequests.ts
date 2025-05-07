@@ -59,7 +59,7 @@ export const submitRoleRequests = async (event: APIGatewayEvent) => {
       state,
       role: roleToUpdate,
       eventType,
-      grantAccess,
+      grantAccess = "pending",
       requestRoleChange,
       group = null,
       division = null,
@@ -68,24 +68,27 @@ export const submitRoleRequests = async (event: APIGatewayEvent) => {
     let status: RoleStatus;
 
     // Determine the status based on the user's role and action
+    // Not a role request change; user is updating another role access request
     if (!requestRoleChange && canUpdateAccess(latestActiveRoleObj.role, roleToUpdate)) {
-      if (grantAccess === true || grantAccess === false) {
-        // Grant access or deny access based on the `grantAccess` value
-        status = grantAccess ? "active" : "denied";
-      } else {
-        return response({
-          statusCode: 400,
-          body: { message: "Invalid or missing grantAccess value." },
-        });
-      }
+      // if (grantAccess === true || grantAccess === false) {
+      // Grant access or deny access based on the `grantAccess` value
+      // status = grantAccess ? "active" : "denied";
+      status = grantAccess;
+      // } else {
+      //   return response({
+      //     statusCode: 400,
+      //     body: { message: "Invalid or missing grantAccess value." },
+      //   });
+      // }
     } else if (
       !requestRoleChange &&
-      !grantAccess &&
+      grantAccess === "revoked" &&
       canSelfRevokeAccess(latestActiveRoleObj.role, userInfo.email, email)
     ) {
+      // Not a role request change; user is revoking their own access
       status = "revoked";
     } else if (requestRoleChange && canRequestAccess(latestActiveRoleObj.role)) {
-      // If the role is allowed to request access, set status to "pending"
+      // User is permitted to request a role change
       status = "pending";
     } else {
       console.warn(`Unauthorized action attempt by ${email}`);
