@@ -13,7 +13,7 @@ export type TestHit<T> = DeepPartial<opensearch.Hit<T>>;
 
 export type TestUserData = DeepPartial<UserData>;
 
-export type TestUserDataWithRole = TestUserData & { role: UserRole };
+export type TestUserDataWithRole = TestUserData & { role: UserRole; states: string[] };
 
 export type TestItemResult = DeepPartial<opensearch.main.ItemResult>;
 
@@ -57,6 +57,7 @@ export type TestUserResult = {
       | "helpdesk"
       | "statesubmitter"
       | "systemadmin";
+    states?: string[];
   };
 };
 

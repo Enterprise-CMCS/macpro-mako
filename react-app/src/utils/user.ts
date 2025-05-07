@@ -1,13 +1,14 @@
 import { STATE_CODES, StateCode } from "shared-types/states";
 import { FullUser } from "shared-types/user";
-import { isCmsUser, isStateUser } from "shared-utils";
+import { isCmsUser } from "shared-utils";
 
 import { getUser } from "@/api";
 
 export const getUserStateCodes = (user: FullUser | null | undefined): StateCode[] => {
+  console.log("what is the user", user);
   // We always need a user, and state users always need a custom:state value
-  if (!user || (isStateUser(user) && user["custom:state"] === undefined)) return [];
-  return isCmsUser(user) ? [...STATE_CODES] : (user["custom:state"]!.split(",") as StateCode[]);
+  if (!user) return [];
+  return isCmsUser(user) ? [...STATE_CODES] : ((user.states ?? []) as StateCode[]);
 };
 export const isAuthorizedState = async (id: string) => {
   try {

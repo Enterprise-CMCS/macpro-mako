@@ -33,6 +33,7 @@ export const makoReviewer: TestUserDataWithRole = {
   ],
   Username: "53832e35-1fbe-4c74-9111-4a0cd29ce2cf",
   role: "cmsreviewer",
+  states: [],
 };
 
 export const reviewer: TestUserDataWithRole = {
@@ -68,6 +69,7 @@ export const reviewer: TestUserDataWithRole = {
   ],
   Username: "07a2519e-0bdd-4bf6-8ec0-6f88ffa684fc",
   role: "cmsreviewer",
+  states: [],
 };
 
 export const automatedReviewer: TestUserDataWithRole = {
@@ -103,6 +105,7 @@ export const automatedReviewer: TestUserDataWithRole = {
   ],
   Username: "e04f3cc5-4cd6-4acb-9fff-210b469bc934",
   role: "cmsreviewer",
+  states: [],
 };
 
 export const superReviewer: TestUserDataWithRole = {
@@ -142,6 +145,7 @@ export const superReviewer: TestUserDataWithRole = {
   ],
   Username: "1bddab21-ddc0-4e5b-8ee1-fe16a7883673",
   role: "cmsreviewer",
+  states: [],
 };
 
 export const reviewers: TestUserDataWithRole[] = [

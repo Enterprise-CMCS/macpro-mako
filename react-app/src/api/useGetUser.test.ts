@@ -9,6 +9,7 @@ import {
 import { describe, expect, it } from "vitest";
 
 import { getUser } from "./useGetUser";
+import { getUserDetails } from "./useGetUserDetails";
 
 describe("getUser", () => {
   it("distinguishes users without `isCMS` property", async () => {

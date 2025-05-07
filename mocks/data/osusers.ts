@@ -26,6 +26,7 @@ export const osUsers: Record<string, TestUserResult> = {
       email: SYSTEM_ADMIN_EMAIL,
       fullName: "System Admin",
       role: "systemadmin",
+      states: [],
     },
   },
   [HELP_DESK_EMAIL]: {
@@ -37,6 +38,7 @@ export const osUsers: Record<string, TestUserResult> = {
       email: HELP_DESK_EMAIL,
       fullName: "CMS Helpdesk",
       role: "helpdesk",
+      states: [],
     },
   },
   [CMS_ROLE_APPROVER_EMAIL]: {
@@ -48,6 +50,7 @@ export const osUsers: Record<string, TestUserResult> = {
       email: CMS_ROLE_APPROVER_EMAIL,
       fullName: "CMSRole Approver",
       role: "cmsroleapprover",
+      states: [],
     },
   },
   [DEFAULT_CMS_USER_EMAIL]: {
@@ -59,6 +62,7 @@ export const osUsers: Record<string, TestUserResult> = {
       email: DEFAULT_CMS_USER_EMAIL,
       fullName: "DefaultCMS User",
       role: "defaultcmsuser",
+      states: [],
     },
   },
   [CMS_REVIEWER_EMAIL]: {
@@ -70,6 +74,7 @@ export const osUsers: Record<string, TestUserResult> = {
       email: CMS_REVIEWER_EMAIL,
       fullName: "CMS Reviewer",
       role: "cmsreviewer",
+      states: [],
     },
   },
   [TEST_CMS_REVIEWER_EMAIL]: {
@@ -81,6 +86,7 @@ export const osUsers: Record<string, TestUserResult> = {
       email: TEST_CMS_REVIEWER_EMAIL,
       fullName: "CMSReviewer Tester",
       role: "cmsreviewer",
+      states: [],
     },
   },
   [STATE_SYSTEM_ADMIN_EMAIL]: {
@@ -92,6 +98,7 @@ export const osUsers: Record<string, TestUserResult> = {
       email: STATE_SYSTEM_ADMIN_EMAIL,
       fullName: "Statesystemadmin Nightwatch",
       role: "statesystemadmin",
+      states: [],
     },
   },
   [STATE_SUBMITTER_EMAIL]: {
@@ -103,6 +110,7 @@ export const osUsers: Record<string, TestUserResult> = {
       email: STATE_SUBMITTER_EMAIL,
       fullName: "Statesubmitter Nightwatch",
       role: "statesubmitter",
+      states: ["VA", "OH", "SC", "CO", "GA", "MD"],
     },
   },
   [TEST_STATE_SUBMITTER_EMAIL]: {
@@ -114,6 +122,7 @@ export const osUsers: Record<string, TestUserResult> = {
       email: TEST_STATE_SUBMITTER_EMAIL,
       fullName: "Stateuser Tester",
       role: "statesubmitter",
+      states: ["VA", "OH", "SC", "CO", "GA", "MD"],
     },
   },
   [MULTI_STATE_SUBMITTER_EMAIL]: {
@@ -125,6 +134,7 @@ export const osUsers: Record<string, TestUserResult> = {
       email: MULTI_STATE_SUBMITTER_EMAIL,
       fullName: "Multi State",
       role: "statesubmitter",
+      states: ["VA", "OH", "SC", "CO", "GA", "MD"],
     },
   },
   [NO_STATE_SUBMITTER_EMAIL]: {
@@ -136,6 +146,7 @@ export const osUsers: Record<string, TestUserResult> = {
       email: NO_STATE_SUBMITTER_EMAIL,
       fullName: "No State",
       role: "statesubmitter",
+      states: [],
     },
   },
   [NULL_STATE_SUBMITTER_EMAIL]: {
@@ -147,6 +158,7 @@ export const osUsers: Record<string, TestUserResult> = {
       email: NULL_STATE_SUBMITTER_EMAIL,
       fullName: "Null State",
       role: "statesubmitter",
+      states: [],
     },
   },
   [PENDING_SUBMITTER_EMAIL]: {
@@ -158,6 +170,7 @@ export const osUsers: Record<string, TestUserResult> = {
       email: PENDING_SUBMITTER_EMAIL,
       fullName: "Pending State",
       role: "statesubmitter",
+      states: [],
     },
   },
   [DENIED_SUBMITTER_EMAIL]: {
@@ -169,6 +182,7 @@ export const osUsers: Record<string, TestUserResult> = {
       email: DENIED_SUBMITTER_EMAIL,
       fullName: "Denied State",
       role: "statesubmitter",
+      states: [],
     },
   },
   [REVOKED_SUBMITTER_EMAIL]: {
@@ -180,6 +194,7 @@ export const osUsers: Record<string, TestUserResult> = {
       email: REVOKED_SUBMITTER_EMAIL,
       fullName: "Revoked State",
       role: "statesubmitter",
+      states: [],
     },
   },
 };

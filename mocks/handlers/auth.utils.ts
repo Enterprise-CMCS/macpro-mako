@@ -37,7 +37,7 @@ export const convertUserAttributes = (user: TestUserDataWithRole): FullUser => {
 
     userAttributesObj.username = user.Username || "";
 
-    return { ...userAttributesObj, role: user.role };
+    return { ...userAttributesObj, role: user.role, states: user.states };
   }
 
   return {} as FullUser;
