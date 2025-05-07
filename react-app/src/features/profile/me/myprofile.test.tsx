@@ -9,16 +9,16 @@ import { beforeEach, describe, expect, test } from "vitest";
 
 import { renderWithQueryClientAndMemoryRouter } from "@/utils/test-helpers";
 
-import { Profile } from "./self";
+import { MyProfile } from ".";
 
-describe("Profile", () => {
+describe("MyProfile", () => {
   const setup = async () => {
     const rendered = renderWithQueryClientAndMemoryRouter(
-      <Profile />,
+      <MyProfile />,
       [
         {
           path: "/profile",
-          element: <Profile />,
+          element: <MyProfile />,
         },
         {
           path: "/",

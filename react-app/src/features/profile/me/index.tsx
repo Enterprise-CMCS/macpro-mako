@@ -1,4 +1,4 @@
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { Navigate } from "react-router";
 import { StateCode } from "shared-types";
 
@@ -17,9 +17,9 @@ import { Option } from "@/components/Opensearch/main/Filtering/Drawer/Filterable
 import { FilterableSelect } from "@/components/Opensearch/main/Filtering/Drawer/Filterable";
 import { useAvailableStates } from "@/hooks/useAvailableStates";
 
-import { adminRoles, getStateAccess, userRoleMap } from "../utils";
+import { adminRoles, filterStateAccess, orderStateAccess, userRoleMap } from "../utils";
 
-export const Profile = () => {
+export const MyProfile = () => {
   const { data: userDetails, isLoading: isDetailLoading } = useGetUserDetails();
   const {
     data: userProfile,
@@ -30,12 +30,26 @@ export const Profile = () => {
   const [selfRevokeState, setSelfRevokeState] = useState<StateCode | null>(null);
   const [showAddState, setShowAddState] = useState<boolean>(true);
   const [requestedStates, setRequestedStates] = useState<StateCode[]>([]);
+  const [pendingStates, setPendingStates] = useState<boolean>(false);
   const statesToRequest: Option[] = useAvailableStates(userProfile?.stateAccess);
 
-  const stateAccess = useMemo(
-    () => getStateAccess(userDetails, userProfile),
+  const filteredStateAccess = useMemo(
+    () => filterStateAccess(userDetails, userProfile),
     [userDetails, userProfile],
   );
+
+  const orderedStateAccess = useMemo(
+    () => orderStateAccess(filteredStateAccess),
+    [filteredStateAccess],
+  );
+
+  // Set initial value of showAddState based on pending roles
+  useEffect(() => {
+    if (!isDetailLoading && !isProfileLoading) {
+      const hasPendingRequests = filteredStateAccess.some((access) => access.status === "pending");
+      setPendingStates(hasPendingRequests);
+    }
+  }, [isDetailLoading, isProfileLoading, filteredStateAccess]);
 
   if (isDetailLoading || isProfileLoading) {
     return <LoadingSpinner />;
@@ -44,6 +58,39 @@ export const Profile = () => {
   if (!isDetailLoading && !userDetails?.id) {
     return <Navigate to="/" />;
   }
+
+  const renderStateAccessControls = () => {
+    if (userDetails.role !== "statesubmitter") return null;
+    if (pendingStates) {
+      return <p>State Access Requests Disabled until Role Request is finalized.</p>;
+    }
+    if (showAddState) {
+      return <Button onClick={() => setShowAddState(false)}>Add State</Button>;
+    }
+    return (
+      <CardWithTopBorder>
+        <div className="p-8 min-h-36">
+          <h3 className="text-xl font-bold">Choose State Access</h3>
+          <FilterableSelect
+            value={requestedStates}
+            options={statesToRequest}
+            onChange={(values: StateCode[]) => setRequestedStates(values)}
+          />
+          <div className="block lg:mt-8 lg:mb-2">
+            <span>
+              <Button disabled={!requestedStates.length} onClick={handleSubmitRequest}>
+                Submit
+              </Button>
+              {areRolesLoading && <LoadingSpinner />}
+              <Button variant="link" onClick={() => setShowAddState(true)}>
+                Cancel
+              </Button>
+            </span>
+          </div>
+        </div>
+      </CardWithTopBorder>
+    );
+  };
 
   const handleSubmitRequest = async () => {
     try {
@@ -140,37 +187,14 @@ export const Profile = () => {
                 onAccept={handleSelfRevokeAccess}
                 onCancel={() => setSelfRevokeState(null)}
               />
-              {stateAccess?.map((access) => (
+              {orderedStateAccess?.map((access) => (
                 <StateAccessCard
                   access={access}
                   role={userRoleMap[userDetails?.role]}
                   onClick={() => setSelfRevokeState(access.territory as StateCode)}
                 />
               ))}
-              {userDetails?.role === "statesubmitter" &&
-                (showAddState ? (
-                  <Button onClick={() => setShowAddState(false)}>Add State</Button>
-                ) : (
-                  <CardWithTopBorder>
-                    <div className="p-8 min-h-36">
-                      <h3 className="text-xl font-bold">Choose State Access</h3>
-                      <FilterableSelect
-                        value={requestedStates}
-                        options={statesToRequest}
-                        onChange={(values: StateCode[]) => setRequestedStates(values)}
-                      />
-                      <div className="block lg:mt-8 lg:mb-2">
-                        <span>
-                          <Button onClick={handleSubmitRequest}>Submit</Button>
-                          {areRolesLoading && <LoadingSpinner />}
-                          <Button variant="link" onClick={() => setShowAddState(true)}>
-                            Cancel
-                          </Button>
-                        </span>
-                      </div>
-                    </div>
-                  </CardWithTopBorder>
-                ))}
+              {renderStateAccessControls()}
             </div>
           )}
         </div>

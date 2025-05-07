@@ -7,7 +7,7 @@ import {
   postSubmissionLoader,
   PostSubmissionWrapper,
 } from "@/features/forms/post-submission/post-submission-forms";
-import { userProfileLoader } from "@/features/profile/admin";
+import { userProfileLoader } from "@/features/profile/user";
 import { SignUp } from "@/features/sign-up/sign-up";
 import { queryClient } from "@/utils";
 
@@ -140,7 +140,7 @@ export const router = (loginFlag = false) => {
               path: "/new-submission/spa/chip/landing/chip-eligibility",
               element: <F.CHIPEligibilityLandingPage />,
             },
-            { path: "/profile", element: <F.Profile /> },
+            { path: "/profile", element: <F.MyProfile /> },
             {
               path: "/profile/:profileId",
               element: <F.UserProfile />,

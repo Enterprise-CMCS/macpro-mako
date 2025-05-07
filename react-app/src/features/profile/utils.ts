@@ -15,7 +15,7 @@ export const adminRoles = ["statesubmitter", "statesystemadmin"];
 
 export const orderStateAccess = (accesses: StateAccess[]) => {
   if (!accesses || !accesses.length) return;
-  // sort revoked states separately and add to
+  // sort revoked states seprately and add to
   const activeStates = accesses.filter((x: StateAccess) => x.status != "revoked");
   const revokedStates = accesses.filter((x: StateAccess) => x.status == "revoked");
 
@@ -35,15 +35,11 @@ export const orderStateAccess = (accesses: StateAccess[]) => {
 
 // if user has no active roles, show pending state(s)
 // show state(s) for latest active role
-export const getStateAccess = (userDetails, userProfile) => {
-  if (!userDetails?.role) {
-    return [];
-  }
-  const statesToShow = userDetails.role
-    ? userProfile?.stateAccess?.filter(
+export const filterStateAccess = (userDetails, userProfile) => {
+  if (!userProfile?.stateAccess) return [];
+  return userDetails?.role
+    ? userProfile.stateAccess.filter(
         (access: StateAccess) => access.role === userDetails.role && access.territory !== "ZZ",
       )
-    : userProfile?.stateAccess?.filter((access: StateAccess) => access.territory !== "ZZ");
-
-  return orderStateAccess(statesToShow);
+    : userProfile.stateAccess.filter((access: StateAccess) => access.territory !== "ZZ");
 };

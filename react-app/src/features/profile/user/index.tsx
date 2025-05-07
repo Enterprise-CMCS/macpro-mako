@@ -5,7 +5,7 @@ import { LoaderFunctionArgs, redirect, useLoaderData } from "react-router";
 import { getUserDetails, getUserProfile, OneMacUserProfile, UserDetails } from "@/api";
 import { StateAccessCard, SubNavHeader, UserInformation } from "@/components";
 
-import { adminRoles, getStateAccess, userRoleMap } from "../utils";
+import { filterStateAccess, orderStateAccess, userRoleMap } from "../utils";
 
 type LoaderData = {
   userDetails: UserDetails;
@@ -16,13 +16,11 @@ export const userProfileLoader = async ({
   params,
 }: LoaderFunctionArgs): Promise<LoaderData | Response> => {
   const { profileId } = params;
-  console.log({ profileId });
 
   if (!profileId) return redirect("/usermanagement");
 
   try {
     const currUserDetails = await getUserDetails();
-    console.log({ currUserDetails });
     if (
       !currUserDetails?.role ||
       !["systemadmin", "statesystemadmin", "cmsroleapprover", "helpdesk"].includes(
@@ -33,7 +31,6 @@ export const userProfileLoader = async ({
     }
 
     const userEmail = LZ.decompressFromEncodedURIComponent(profileId.replaceAll("_", "+"));
-    console.log({ userEmail });
 
     if (!userEmail) return redirect("/usermanagement");
 
@@ -54,9 +51,14 @@ export const userProfileLoader = async ({
 export const UserProfile = () => {
   const { userDetails, userProfile } = useLoaderData<LoaderData>();
 
-  const stateAccess = useMemo(
-    () => getStateAccess(userDetails, userProfile),
+  const filteredStateAccess = useMemo(
+    () => filterStateAccess(userDetails, userProfile),
     [userDetails, userProfile],
+  );
+
+  const orderedStateAccess = useMemo(
+    () => orderStateAccess(filteredStateAccess),
+    [filteredStateAccess],
   );
 
   return (
@@ -72,19 +74,16 @@ export const UserProfile = () => {
             role={userRoleMap[userDetails?.role]}
             email={userDetails?.email}
           />
-          {/* State Access Management Section */}
-          {adminRoles.includes(userDetails?.role) && (
-            <div className="flex flex-col gap-6 md:basis-1/2">
-              <h2 className="text-2xl font-bold">State Access Management</h2>
-              {stateAccess?.map((access) => (
-                <StateAccessCard
-                  access={access}
-                  role={userRoleMap[userDetails?.role]}
-                  key={access.id}
-                />
-              ))}
-            </div>
-          )}
+          <div className="flex flex-col gap-6 md:basis-1/2">
+            <h2 className="text-2xl font-bold">State Access Management</h2>
+            {orderedStateAccess?.map((access) => (
+              <StateAccessCard
+                access={access}
+                role={userRoleMap[userDetails?.role]}
+                key={access.id}
+              />
+            ))}
+          </div>
         </div>
       </section>
     </>
