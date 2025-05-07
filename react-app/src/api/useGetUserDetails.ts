@@ -21,8 +21,8 @@ export const getUserDetails = async (userId?: string): Promise<UserDetails> => {
   }
 };
 
-export const useGetUserDetails = () =>
+export const useGetUserDetails = (profileId?: string) =>
   useQuery({
     queryKey: ["userDetails"],
-    queryFn: () => getUserDetails(),
+    queryFn: () => getUserDetails(profileId),
   });
