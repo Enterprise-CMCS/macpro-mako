@@ -33,8 +33,8 @@ export const getUserProfile = async (userEmail?: string): Promise<OneMacUserProf
   }
 };
 
-export const useGetUserProfile = (userEmail?: string) =>
+export const useGetUserProfile = () =>
   useQuery({
     queryKey: ["profile"],
-    queryFn: () => getUserProfile(userEmail),
+    queryFn: () => getUserProfile(),
   });

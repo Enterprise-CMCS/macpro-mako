@@ -1,50 +1,64 @@
 import LZ from "lz-string";
 import { useMemo } from "react";
-import { useParams } from "react-router";
-import { Navigate } from "react-router";
+import { LoaderFunctionArgs, redirect, useLoaderData } from "react-router";
 
-import { useGetUserDetails, useGetUserProfile } from "@/api";
-import { LoadingSpinner, StateAccessCard, SubNavHeader, UserInformation } from "@/components";
+import { getUserDetails, getUserProfile, OneMacUserProfile, UserDetails } from "@/api";
+import { StateAccessCard, SubNavHeader, UserInformation } from "@/components";
 
 import { adminRoles, getStateAccess, userRoleMap } from "../utils";
 
-export const UserProfile = () => {
-  const { profileId } = useParams();
-  const { data: userDetails, isLoading: isDetailLoading } = useGetUserDetails();
-
-  const decodedProfileId = useMemo(() => {
-    if (profileId) return LZ.decompressFromEncodedURIComponent(profileId.replaceAll("_", "+"));
-    return undefined;
-  }, [profileId]);
-  console.log({ decodedProfileId });
-
-  if (isDetailLoading) {
-    return <LoadingSpinner />;
-  }
-
-  if (
-    !userDetails?.id ||
-    !["systemadmin", "statesystemadmin", "cmsroleapprover", "helpdesk"].includes(
-      userDetails?.role,
-    ) ||
-    !decodedProfileId
-  ) {
-    return <Navigate to="/" />;
-  }
-
-  return <Profile profileId={decodedProfileId} />;
+type LoaderData = {
+  userDetails: UserDetails;
+  userProfile: OneMacUserProfile;
 };
 
-const Profile = ({ profileId }: { profileId: string }) => {
-  const { data: userDetails, isLoading: isDetailLoading } = useGetUserDetails(profileId);
-  const { data: userProfile, isLoading: isProfileLoading } = useGetUserProfile(profileId);
+export const userProfileLoader = async ({
+  params,
+}: LoaderFunctionArgs): Promise<LoaderData | Response> => {
+  const { profileId } = params;
+  console.log({ profileId });
+
+  if (!profileId) return redirect("/usermanagement");
+
+  try {
+    const currUserDetails = await getUserDetails();
+    console.log({ currUserDetails });
+    if (
+      !currUserDetails?.role ||
+      !["systemadmin", "statesystemadmin", "cmsroleapprover", "helpdesk"].includes(
+        currUserDetails?.role,
+      )
+    ) {
+      return redirect("/usermanagement");
+    }
+
+    const userEmail = LZ.decompressFromEncodedURIComponent(profileId.replaceAll("_", "+"));
+    console.log({ userEmail });
+
+    if (!userEmail) return redirect("/usermanagement");
+
+    const profileUserDetails = await getUserDetails(userEmail);
+    const profileUserProfile = await getUserProfile(userEmail);
+
+    return { userDetails: profileUserDetails, userProfile: profileUserProfile };
+  } catch (error) {
+    if (error instanceof Error) {
+      console.log("Error fetching profile: ", error.message);
+    } else {
+      console.log("Unknown error fetching profile: ", error);
+    }
+    return redirect("/usermanagement");
+  }
+};
+
+export const UserProfile = () => {
+  const { userDetails, userProfile } = useLoaderData<LoaderData>();
 
   const stateAccess = useMemo(
     () => getStateAccess(userDetails, userProfile),
     [userDetails, userProfile],
   );
 
-  if (isDetailLoading || isProfileLoading) return <LoadingSpinner />;
   return (
     <>
       <SubNavHeader>
@@ -63,7 +77,11 @@ const Profile = ({ profileId }: { profileId: string }) => {
             <div className="flex flex-col gap-6 md:basis-1/2">
               <h2 className="text-2xl font-bold">State Access Management</h2>
               {stateAccess?.map((access) => (
-                <StateAccessCard access={access} role={userRoleMap[userDetails?.role]} />
+                <StateAccessCard
+                  access={access}
+                  role={userRoleMap[userDetails?.role]}
+                  key={access.id}
+                />
               ))}
             </div>
           )}
