@@ -42,11 +42,7 @@ export const VisiblityItem = <T extends UI.OsTableColumn>(props: T & { onClick: 
   });
 
   return (
-    <li
-      aria-live="assertive"
-      aria-atomic="true"
-      aria-label={`${props.label}, toggle visibility, currently ${props.hidden ? "hidden" : "visible"}`}
-    >
+    <li>
       <DropdownMenu.Item
         asChild
         onSelect={(e) => {
@@ -60,6 +56,8 @@ export const VisiblityItem = <T extends UI.OsTableColumn>(props: T & { onClick: 
             "text-gray-500": props.hidden,
           })}
           type="button"
+          aria-label={`${props.label}, toggle visibility, currently ${props.hidden ? "hidden" : "visible"}`}
+          aria-live="polite"
         >
           {props.hidden ? (
             <EyeOffIcon className={eyeStyles} aria-hidden focusable={false} />
