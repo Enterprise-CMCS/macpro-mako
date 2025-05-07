@@ -352,8 +352,8 @@ describe("WaiversList", () => {
         {
           hasActions,
           status: useCmsStatus ? pendingDoc.cmsStatus : pendingDoc.stateStatus,
-          submissionDate: "01/01/2024",
-          makoChangedDate: "02/01/2024",
+          submissionDate: "12/31/2023",
+          makoChangedDate: "01/31/2024",
         },
       ],
       [
@@ -362,9 +362,9 @@ describe("WaiversList", () => {
         {
           hasActions,
           status: useCmsStatus ? raiRequestDoc.cmsStatus : raiRequestDoc.stateStatus,
-          submissionDate: "01/01/2024",
-          makoChangedDate: "02/01/2024",
-          raiRequestedDate: "03/01/2024",
+          submissionDate: "12/31/2023",
+          makoChangedDate: "01/31/2024",
+          raiRequestedDate: "02/29/2024",
         },
       ],
       [
@@ -373,10 +373,10 @@ describe("WaiversList", () => {
         {
           hasActions,
           status: useCmsStatus ? raiReceivedDoc.cmsStatus : raiReceivedDoc.stateStatus,
-          submissionDate: "01/01/2024",
-          makoChangedDate: "02/01/2024",
-          raiRequestedDate: "03/01/2024",
-          raiReceivedDate: "04/01/2024",
+          submissionDate: "12/31/2023",
+          makoChangedDate: "01/31/2024",
+          raiRequestedDate: "02/29/2024",
+          raiReceivedDate: "03/31/2024",
         },
       ],
       [
@@ -385,10 +385,10 @@ describe("WaiversList", () => {
         {
           hasActions,
           status: `${useCmsStatus ? withdrawEnabledDoc.cmsStatus : withdrawEnabledDoc.stateStatus}· Withdraw Formal RAI Response - Enabled`,
-          submissionDate: "01/01/2024",
-          makoChangedDate: "02/01/2024",
-          raiRequestedDate: "03/01/2024",
-          raiReceivedDate: "04/01/2024",
+          submissionDate: "12/31/2023",
+          makoChangedDate: "01/31/2024",
+          raiRequestedDate: "02/29/2024",
+          raiReceivedDate: "03/31/2024",
         },
       ],
       [
@@ -397,10 +397,10 @@ describe("WaiversList", () => {
         {
           hasActions,
           status: useCmsStatus ? withdrawDisabledDoc.cmsStatus : withdrawDisabledDoc.stateStatus,
-          submissionDate: "01/01/2024",
-          makoChangedDate: "02/01/2024",
-          raiRequestedDate: "03/01/2024",
-          raiReceivedDate: "04/01/2024",
+          submissionDate: "12/31/2023",
+          makoChangedDate: "01/31/2024",
+          raiRequestedDate: "02/29/2024",
+          raiReceivedDate: "03/31/2024",
         },
       ],
       [
@@ -409,9 +409,9 @@ describe("WaiversList", () => {
         {
           hasActions,
           status: useCmsStatus ? approvedDoc.cmsStatus : approvedDoc.stateStatus,
-          submissionDate: "01/01/2024",
-          makoChangedDate: "02/01/2024",
-          finalDispositionDate: "05/01/2024",
+          submissionDate: "12/31/2023",
+          makoChangedDate: "01/31/2024",
+          finalDispositionDate: "04/30/2024",
         },
       ],
       [

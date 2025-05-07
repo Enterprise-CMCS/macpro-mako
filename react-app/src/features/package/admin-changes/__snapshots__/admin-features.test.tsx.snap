@@ -44,7 +44,7 @@ exports[`Admin Features test > finds an admin change admin changes 1`] = `
                 <button
                   aria-controls="radix-:r1:"
                   aria-expanded="true"
-                  class="flex flex-1 items-center justify-between py-4 font-medium transition-all hover:underline [&[data-state=open]>svg]:rotate-180 bg-gray-100 px-3"
+                  class="flex flex-1 items-center justify-between py-4 font-medium transition-all hover:underline group bg-gray-100 px-3"
                   data-orientation="vertical"
                   data-radix-collection-item=""
                   data-state="open"
@@ -61,7 +61,7 @@ exports[`Admin Features test > finds an admin change admin changes 1`] = `
                     Sun, Jan 1 2023, 09:00:00 AM EST
                   </p>
                   <svg
-                    class="h-4 w-4 shrink-0 transition-transform duration-200"
+                    class="h-4 w-4 shrink-0 transition-transform duration-200 group-data-[state=open]:hidden"
                     fill="none"
                     height="24"
                     stroke="currentColor"
@@ -73,7 +73,26 @@ exports[`Admin Features test > finds an admin change admin changes 1`] = `
                     xmlns="http://www.w3.org/2000/svg"
                   >
                     <path
-                      d="m6 9 6 6 6-6"
+                      d="M5 12h14"
+                    />
+                    <path
+                      d="M12 5v14"
+                    />
+                  </svg>
+                  <svg
+                    class="h-4 w-4 shrink-0 transition-transform duration-200 group-data-[state=closed]:hidden"
+                    fill="none"
+                    height="24"
+                    stroke="currentColor"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                    viewBox="0 0 24 24"
+                    width="24"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <path
+                      d="M5 12h14"
                     />
                   </svg>
                 </button>
@@ -130,7 +149,7 @@ exports[`Admin Features test > finds an admin change admin changes 1`] = `
                 <button
                   aria-controls="radix-:r3:"
                   aria-expanded="false"
-                  class="flex flex-1 items-center justify-between py-4 font-medium transition-all hover:underline [&[data-state=open]>svg]:rotate-180 bg-gray-100 px-3"
+                  class="flex flex-1 items-center justify-between py-4 font-medium transition-all hover:underline group bg-gray-100 px-3"
                   data-orientation="vertical"
                   data-radix-collection-item=""
                   data-state="closed"
@@ -147,7 +166,7 @@ exports[`Admin Features test > finds an admin change admin changes 1`] = `
                     Wed, Mar 1 2023, 09:00:00 AM EST
                   </p>
                   <svg
-                    class="h-4 w-4 shrink-0 transition-transform duration-200"
+                    class="h-4 w-4 shrink-0 transition-transform duration-200 group-data-[state=open]:hidden"
                     fill="none"
                     height="24"
                     stroke="currentColor"
@@ -159,7 +178,26 @@ exports[`Admin Features test > finds an admin change admin changes 1`] = `
                     xmlns="http://www.w3.org/2000/svg"
                   >
                     <path
-                      d="m6 9 6 6 6-6"
+                      d="M5 12h14"
+                    />
+                    <path
+                      d="M12 5v14"
+                    />
+                  </svg>
+                  <svg
+                    class="h-4 w-4 shrink-0 transition-transform duration-200 group-data-[state=closed]:hidden"
+                    fill="none"
+                    height="24"
+                    stroke="currentColor"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                    viewBox="0 0 24 24"
+                    width="24"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <path
+                      d="M5 12h14"
                     />
                   </svg>
                 </button>
@@ -188,7 +226,7 @@ exports[`Admin Features test > finds an admin change admin changes 1`] = `
                 <button
                   aria-controls="radix-:r5:"
                   aria-expanded="false"
-                  class="flex flex-1 items-center justify-between py-4 font-medium transition-all hover:underline [&[data-state=open]>svg]:rotate-180 bg-gray-100 px-3"
+                  class="flex flex-1 items-center justify-between py-4 font-medium transition-all hover:underline group bg-gray-100 px-3"
                   data-orientation="vertical"
                   data-radix-collection-item=""
                   data-state="closed"
@@ -205,7 +243,7 @@ exports[`Admin Features test > finds an admin change admin changes 1`] = `
                     Thu, Jun 1 2023, 09:00:00 AM EDT
                   </p>
                   <svg
-                    class="h-4 w-4 shrink-0 transition-transform duration-200"
+                    class="h-4 w-4 shrink-0 transition-transform duration-200 group-data-[state=open]:hidden"
                     fill="none"
                     height="24"
                     stroke="currentColor"
@@ -217,7 +255,26 @@ exports[`Admin Features test > finds an admin change admin changes 1`] = `
                     xmlns="http://www.w3.org/2000/svg"
                   >
                     <path
-                      d="m6 9 6 6 6-6"
+                      d="M5 12h14"
+                    />
+                    <path
+                      d="M12 5v14"
+                    />
+                  </svg>
+                  <svg
+                    class="h-4 w-4 shrink-0 transition-transform duration-200 group-data-[state=closed]:hidden"
+                    fill="none"
+                    height="24"
+                    stroke="currentColor"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                    viewBox="0 0 24 24"
+                    width="24"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <path
+                      d="M5 12h14"
                     />
                   </svg>
                 </button>
@@ -246,7 +303,7 @@ exports[`Admin Features test > finds an admin change admin changes 1`] = `
                 <button
                   aria-controls="radix-:r7:"
                   aria-expanded="false"
-                  class="flex flex-1 items-center justify-between py-4 font-medium transition-all hover:underline [&[data-state=open]>svg]:rotate-180 bg-gray-100 px-3"
+                  class="flex flex-1 items-center justify-between py-4 font-medium transition-all hover:underline group bg-gray-100 px-3"
                   data-orientation="vertical"
                   data-radix-collection-item=""
                   data-state="closed"
@@ -263,7 +320,7 @@ exports[`Admin Features test > finds an admin change admin changes 1`] = `
                     Fri, Sep 1 2023, 09:00:00 AM EDT
                   </p>
                   <svg
-                    class="h-4 w-4 shrink-0 transition-transform duration-200"
+                    class="h-4 w-4 shrink-0 transition-transform duration-200 group-data-[state=open]:hidden"
                     fill="none"
                     height="24"
                     stroke="currentColor"
@@ -275,7 +332,26 @@ exports[`Admin Features test > finds an admin change admin changes 1`] = `
                     xmlns="http://www.w3.org/2000/svg"
                   >
                     <path
-                      d="m6 9 6 6 6-6"
+                      d="M5 12h14"
+                    />
+                    <path
+                      d="M12 5v14"
+                    />
+                  </svg>
+                  <svg
+                    class="h-4 w-4 shrink-0 transition-transform duration-200 group-data-[state=closed]:hidden"
+                    fill="none"
+                    height="24"
+                    stroke="currentColor"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                    viewBox="0 0 24 24"
+                    width="24"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <path
+                      d="M5 12h14"
                     />
                   </svg>
                 </button>
@@ -304,7 +380,7 @@ exports[`Admin Features test > finds an admin change admin changes 1`] = `
                 <button
                   aria-controls="radix-:r9:"
                   aria-expanded="false"
-                  class="flex flex-1 items-center justify-between py-4 font-medium transition-all hover:underline [&[data-state=open]>svg]:rotate-180 bg-gray-100 px-3"
+                  class="flex flex-1 items-center justify-between py-4 font-medium transition-all hover:underline group bg-gray-100 px-3"
                   data-orientation="vertical"
                   data-radix-collection-item=""
                   data-state="closed"
@@ -321,7 +397,7 @@ exports[`Admin Features test > finds an admin change admin changes 1`] = `
                     Sat, Dec 31 2022, 07:00:00 PM EST
                   </p>
                   <svg
-                    class="h-4 w-4 shrink-0 transition-transform duration-200"
+                    class="h-4 w-4 shrink-0 transition-transform duration-200 group-data-[state=open]:hidden"
                     fill="none"
                     height="24"
                     stroke="currentColor"
@@ -333,7 +409,26 @@ exports[`Admin Features test > finds an admin change admin changes 1`] = `
                     xmlns="http://www.w3.org/2000/svg"
                   >
                     <path
-                      d="m6 9 6 6 6-6"
+                      d="M5 12h14"
+                    />
+                    <path
+                      d="M12 5v14"
+                    />
+                  </svg>
+                  <svg
+                    class="h-4 w-4 shrink-0 transition-transform duration-200 group-data-[state=closed]:hidden"
+                    fill="none"
+                    height="24"
+                    stroke="currentColor"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                    viewBox="0 0 24 24"
+                    width="24"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <path
+                      d="M5 12h14"
                     />
                   </svg>
                 </button>
@@ -362,7 +457,7 @@ exports[`Admin Features test > finds an admin change admin changes 1`] = `
                 <button
                   aria-controls="radix-:rb:"
                   aria-expanded="false"
-                  class="flex flex-1 items-center justify-between py-4 font-medium transition-all hover:underline [&[data-state=open]>svg]:rotate-180 bg-gray-100 px-3"
+                  class="flex flex-1 items-center justify-between py-4 font-medium transition-all hover:underline group bg-gray-100 px-3"
                   data-orientation="vertical"
                   data-radix-collection-item=""
                   data-state="closed"
@@ -379,7 +474,7 @@ exports[`Admin Features test > finds an admin change admin changes 1`] = `
                     Fri, Dec 1 2023, 09:00:00 AM EST
                   </p>
                   <svg
-                    class="h-4 w-4 shrink-0 transition-transform duration-200"
+                    class="h-4 w-4 shrink-0 transition-transform duration-200 group-data-[state=open]:hidden"
                     fill="none"
                     height="24"
                     stroke="currentColor"
@@ -391,7 +486,26 @@ exports[`Admin Features test > finds an admin change admin changes 1`] = `
                     xmlns="http://www.w3.org/2000/svg"
                   >
                     <path
-                      d="m6 9 6 6 6-6"
+                      d="M5 12h14"
+                    />
+                    <path
+                      d="M12 5v14"
+                    />
+                  </svg>
+                  <svg
+                    class="h-4 w-4 shrink-0 transition-transform duration-200 group-data-[state=closed]:hidden"
+                    fill="none"
+                    height="24"
+                    stroke="currentColor"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                    viewBox="0 0 24 24"
+                    width="24"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <path
+                      d="M5 12h14"
                     />
                   </svg>
                 </button>
@@ -453,7 +567,7 @@ exports[`Admin Features test > finds an admin change admin changes 1`] = `
               <button
                 aria-controls="radix-:r1:"
                 aria-expanded="true"
-                class="flex flex-1 items-center justify-between py-4 font-medium transition-all hover:underline [&[data-state=open]>svg]:rotate-180 bg-gray-100 px-3"
+                class="flex flex-1 items-center justify-between py-4 font-medium transition-all hover:underline group bg-gray-100 px-3"
                 data-orientation="vertical"
                 data-radix-collection-item=""
                 data-state="open"
@@ -470,7 +584,7 @@ exports[`Admin Features test > finds an admin change admin changes 1`] = `
                   Sun, Jan 1 2023, 09:00:00 AM EST
                 </p>
                 <svg
-                  class="h-4 w-4 shrink-0 transition-transform duration-200"
+                  class="h-4 w-4 shrink-0 transition-transform duration-200 group-data-[state=open]:hidden"
                   fill="none"
                   height="24"
                   stroke="currentColor"
@@ -482,7 +596,26 @@ exports[`Admin Features test > finds an admin change admin changes 1`] = `
                   xmlns="http://www.w3.org/2000/svg"
                 >
                   <path
-                    d="m6 9 6 6 6-6"
+                    d="M5 12h14"
+                  />
+                  <path
+                    d="M12 5v14"
+                  />
+                </svg>
+                <svg
+                  class="h-4 w-4 shrink-0 transition-transform duration-200 group-data-[state=closed]:hidden"
+                  fill="none"
+                  height="24"
+                  stroke="currentColor"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  viewBox="0 0 24 24"
+                  width="24"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <path
+                    d="M5 12h14"
                   />
                 </svg>
               </button>
@@ -539,7 +672,7 @@ exports[`Admin Features test > finds an admin change admin changes 1`] = `
               <button
                 aria-controls="radix-:r3:"
                 aria-expanded="false"
-                class="flex flex-1 items-center justify-between py-4 font-medium transition-all hover:underline [&[data-state=open]>svg]:rotate-180 bg-gray-100 px-3"
+                class="flex flex-1 items-center justify-between py-4 font-medium transition-all hover:underline group bg-gray-100 px-3"
                 data-orientation="vertical"
                 data-radix-collection-item=""
                 data-state="closed"
@@ -556,7 +689,7 @@ exports[`Admin Features test > finds an admin change admin changes 1`] = `
                   Wed, Mar 1 2023, 09:00:00 AM EST
                 </p>
                 <svg
-                  class="h-4 w-4 shrink-0 transition-transform duration-200"
+                  class="h-4 w-4 shrink-0 transition-transform duration-200 group-data-[state=open]:hidden"
                   fill="none"
                   height="24"
                   stroke="currentColor"
@@ -568,7 +701,26 @@ exports[`Admin Features test > finds an admin change admin changes 1`] = `
                   xmlns="http://www.w3.org/2000/svg"
                 >
                   <path
-                    d="m6 9 6 6 6-6"
+                    d="M5 12h14"
+                  />
+                  <path
+                    d="M12 5v14"
+                  />
+                </svg>
+                <svg
+                  class="h-4 w-4 shrink-0 transition-transform duration-200 group-data-[state=closed]:hidden"
+                  fill="none"
+                  height="24"
+                  stroke="currentColor"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  viewBox="0 0 24 24"
+                  width="24"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <path
+                    d="M5 12h14"
                   />
                 </svg>
               </button>
@@ -597,7 +749,7 @@ exports[`Admin Features test > finds an admin change admin changes 1`] = `
               <button
                 aria-controls="radix-:r5:"
                 aria-expanded="false"
-                class="flex flex-1 items-center justify-between py-4 font-medium transition-all hover:underline [&[data-state=open]>svg]:rotate-180 bg-gray-100 px-3"
+                class="flex flex-1 items-center justify-between py-4 font-medium transition-all hover:underline group bg-gray-100 px-3"
                 data-orientation="vertical"
                 data-radix-collection-item=""
                 data-state="closed"
@@ -614,7 +766,7 @@ exports[`Admin Features test > finds an admin change admin changes 1`] = `
                   Thu, Jun 1 2023, 09:00:00 AM EDT
                 </p>
                 <svg
-                  class="h-4 w-4 shrink-0 transition-transform duration-200"
+                  class="h-4 w-4 shrink-0 transition-transform duration-200 group-data-[state=open]:hidden"
                   fill="none"
                   height="24"
                   stroke="currentColor"
@@ -626,7 +778,26 @@ exports[`Admin Features test > finds an admin change admin changes 1`] = `
                   xmlns="http://www.w3.org/2000/svg"
                 >
                   <path
-                    d="m6 9 6 6 6-6"
+                    d="M5 12h14"
+                  />
+                  <path
+                    d="M12 5v14"
+                  />
+                </svg>
+                <svg
+                  class="h-4 w-4 shrink-0 transition-transform duration-200 group-data-[state=closed]:hidden"
+                  fill="none"
+                  height="24"
+                  stroke="currentColor"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  viewBox="0 0 24 24"
+                  width="24"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <path
+                    d="M5 12h14"
                   />
                 </svg>
               </button>
@@ -655,7 +826,7 @@ exports[`Admin Features test > finds an admin change admin changes 1`] = `
               <button
                 aria-controls="radix-:r7:"
                 aria-expanded="false"
-                class="flex flex-1 items-center justify-between py-4 font-medium transition-all hover:underline [&[data-state=open]>svg]:rotate-180 bg-gray-100 px-3"
+                class="flex flex-1 items-center justify-between py-4 font-medium transition-all hover:underline group bg-gray-100 px-3"
                 data-orientation="vertical"
                 data-radix-collection-item=""
                 data-state="closed"
@@ -672,7 +843,7 @@ exports[`Admin Features test > finds an admin change admin changes 1`] = `
                   Fri, Sep 1 2023, 09:00:00 AM EDT
                 </p>
                 <svg
-                  class="h-4 w-4 shrink-0 transition-transform duration-200"
+                  class="h-4 w-4 shrink-0 transition-transform duration-200 group-data-[state=open]:hidden"
                   fill="none"
                   height="24"
                   stroke="currentColor"
@@ -684,7 +855,26 @@ exports[`Admin Features test > finds an admin change admin changes 1`] = `
                   xmlns="http://www.w3.org/2000/svg"
                 >
                   <path
-                    d="m6 9 6 6 6-6"
+                    d="M5 12h14"
+                  />
+                  <path
+                    d="M12 5v14"
+                  />
+                </svg>
+                <svg
+                  class="h-4 w-4 shrink-0 transition-transform duration-200 group-data-[state=closed]:hidden"
+                  fill="none"
+                  height="24"
+                  stroke="currentColor"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  viewBox="0 0 24 24"
+                  width="24"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <path
+                    d="M5 12h14"
                   />
                 </svg>
               </button>
@@ -713,7 +903,7 @@ exports[`Admin Features test > finds an admin change admin changes 1`] = `
               <button
                 aria-controls="radix-:r9:"
                 aria-expanded="false"
-                class="flex flex-1 items-center justify-between py-4 font-medium transition-all hover:underline [&[data-state=open]>svg]:rotate-180 bg-gray-100 px-3"
+                class="flex flex-1 items-center justify-between py-4 font-medium transition-all hover:underline group bg-gray-100 px-3"
                 data-orientation="vertical"
                 data-radix-collection-item=""
                 data-state="closed"
@@ -730,7 +920,7 @@ exports[`Admin Features test > finds an admin change admin changes 1`] = `
                   Sat, Dec 31 2022, 07:00:00 PM EST
                 </p>
                 <svg
-                  class="h-4 w-4 shrink-0 transition-transform duration-200"
+                  class="h-4 w-4 shrink-0 transition-transform duration-200 group-data-[state=open]:hidden"
                   fill="none"
                   height="24"
                   stroke="currentColor"
@@ -742,7 +932,26 @@ exports[`Admin Features test > finds an admin change admin changes 1`] = `
                   xmlns="http://www.w3.org/2000/svg"
                 >
                   <path
-                    d="m6 9 6 6 6-6"
+                    d="M5 12h14"
+                  />
+                  <path
+                    d="M12 5v14"
+                  />
+                </svg>
+                <svg
+                  class="h-4 w-4 shrink-0 transition-transform duration-200 group-data-[state=closed]:hidden"
+                  fill="none"
+                  height="24"
+                  stroke="currentColor"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  viewBox="0 0 24 24"
+                  width="24"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <path
+                    d="M5 12h14"
                   />
                 </svg>
               </button>
@@ -771,7 +980,7 @@ exports[`Admin Features test > finds an admin change admin changes 1`] = `
               <button
                 aria-controls="radix-:rb:"
                 aria-expanded="false"
-                class="flex flex-1 items-center justify-between py-4 font-medium transition-all hover:underline [&[data-state=open]>svg]:rotate-180 bg-gray-100 px-3"
+                class="flex flex-1 items-center justify-between py-4 font-medium transition-all hover:underline group bg-gray-100 px-3"
                 data-orientation="vertical"
                 data-radix-collection-item=""
                 data-state="closed"
@@ -788,7 +997,7 @@ exports[`Admin Features test > finds an admin change admin changes 1`] = `
                   Fri, Dec 1 2023, 09:00:00 AM EST
                 </p>
                 <svg
-                  class="h-4 w-4 shrink-0 transition-transform duration-200"
+                  class="h-4 w-4 shrink-0 transition-transform duration-200 group-data-[state=open]:hidden"
                   fill="none"
                   height="24"
                   stroke="currentColor"
@@ -800,7 +1009,26 @@ exports[`Admin Features test > finds an admin change admin changes 1`] = `
                   xmlns="http://www.w3.org/2000/svg"
                 >
                   <path
-                    d="m6 9 6 6 6-6"
+                    d="M5 12h14"
+                  />
+                  <path
+                    d="M12 5v14"
+                  />
+                </svg>
+                <svg
+                  class="h-4 w-4 shrink-0 transition-transform duration-200 group-data-[state=closed]:hidden"
+                  fill="none"
+                  height="24"
+                  stroke="currentColor"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  viewBox="0 0 24 24"
+                  width="24"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <path
+                    d="M5 12h14"
                   />
                 </svg>
               </button>

@@ -2,14 +2,14 @@ import { EllipsisVerticalIcon } from "@heroicons/react/24/outline";
 import * as DropdownMenu from "@radix-ui/react-dropdown-menu";
 import { Link } from "react-router";
 import { Authority, CognitoUserAttributes, opensearch } from "shared-types";
-import { formatSeatoolDate, getAvailableActions } from "shared-utils";
+import { formatDateToET, getAvailableActions } from "shared-utils";
 
 import { DASHBOARD_ORIGIN, mapActionLabel, ORIGIN } from "@/utils";
 
 export const renderCellDate = (key: keyof opensearch.main.Document) =>
   function Cell(data: opensearch.main.Document) {
     if (!data[key]) return null;
-    return formatSeatoolDate(data[key] as string);
+    return formatDateToET(data[key] as string, "MM/dd/yyyy", false);
   };
 
 export type CellIdLinkProps = {
@@ -19,7 +19,7 @@ export type CellIdLinkProps = {
 
 export const CellDetailsLink = ({ id, authority }: CellIdLinkProps) => (
   <Link
-    className="cursor-pointer text-blue-600"
+    className="cursor-pointer text-blue-600 hover:underline"
     to={`/details/${encodeURIComponent(authority)}/${encodeURIComponent(id)}`}
   >
     {id}
