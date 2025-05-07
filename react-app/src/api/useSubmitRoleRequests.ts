@@ -48,8 +48,7 @@ export const useSubmitRoleRequests = () => {
           return old.map((request) => {
             if (request.id === `${newRequest.email}_${newRequest.state}_${newRequest.role}`) {
               let status = "pending";
-              if (newRequest.grantAccess !== undefined)
-                status = newRequest.grantAccess ? "active" : "denied";
+              if (newRequest.grantAccess !== undefined) status = newRequest.grantAccess;
               return { ...request, status: status, ...newRequest };
             }
             return request;
