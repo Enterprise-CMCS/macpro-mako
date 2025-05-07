@@ -3,7 +3,11 @@ import { response } from "libs/handler-lib";
 import { APIGatewayEvent } from "shared-types";
 import { z } from "zod";
 
-import { getLatestActiveRoleByEmail, getUserByEmail } from "./userManagementService";
+import {
+  getActiveStatesForUserByEmail,
+  getLatestActiveRoleByEmail,
+  getUserByEmail,
+} from "./userManagementService";
 
 export const getUserDetailsSchema = z.object({
   userEmail: z.string().email(),
@@ -65,11 +69,14 @@ export const getUserDetails = async (event: APIGatewayEvent) => {
       }
     }
 
+    const statesUserHasAccessTo = await getActiveStatesForUserByEmail(currUserAttributes.email);
+
     return response({
       statusCode: 200,
       body: {
         ...currUserDetails,
         role: currLatestActiveRoleObj?.role ?? "norole",
+        states: statesUserHasAccessTo,
       },
     });
   } catch (err: unknown) {

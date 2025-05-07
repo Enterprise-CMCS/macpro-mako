@@ -35,6 +35,7 @@ export type CognitoUserAttributes = {
 
 export type FullUser = CognitoUserAttributes & {
   role: UserRole;
+  states?: string[];
 };
 
 export const CMS_ROLES = [
