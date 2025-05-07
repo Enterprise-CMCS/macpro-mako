@@ -33,6 +33,7 @@ export const helpDeskUser: TestUserDataWithRole = {
   ],
   Username: "7ebff3df-a133-4eb7-b62c-3346f2f81fd1",
   role: "helpdesk",
+  states: [],
 };
 
 export const automatedHelpDeskUser: TestUserDataWithRole = {
@@ -68,6 +69,7 @@ export const automatedHelpDeskUser: TestUserDataWithRole = {
   ],
   Username: "63d9033c-5122-48eb-a664-74d391178938",
   role: "helpdesk",
+  states: [],
 };
 
 export const helpDeskUsers: TestUserDataWithRole[] = [helpDeskUser, automatedHelpDeskUser];

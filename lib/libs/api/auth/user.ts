@@ -99,6 +99,8 @@ export const isAuthorized = async (event: APIGatewayEvent, stateCode?: string | 
   // Look up user attributes from Cognito
   const userAttributes = await lookupUserAttributes(authDetails.userId, authDetails.poolId);
 
+  const validStates = await getActiveStatesForUserByEmail(userAttributes.email);
+
   const activeRole = await getLatestActiveRoleByEmail(userAttributes.email);
 
   if (!activeRole) {
@@ -108,7 +110,7 @@ export const isAuthorized = async (event: APIGatewayEvent, stateCode?: string | 
   console.log(userAttributes);
   return (
     isCmsUser({ ...userAttributes, role: activeRole.role }) ||
-    (stateCode && userAttributes?.["custom:state"]?.includes(stateCode))
+    (stateCode && validStates.includes(stateCode))
   );
 };
 

@@ -11,12 +11,14 @@ import { getUserStateCodes, isAuthorizedState } from "./user";
 const cmsReviewerUser = {
   "custom:cms-roles": "onemac-micro-reviewer",
   role: "cmsreviewer",
+  states: [],
 };
 
 const stateSubmitterUser: FullUser = {
   sub: "12345678-1234-1234-1234-123456789012",
   email_verified: true,
   "custom:state": "CA",
+  states: ["CA"],
   email: "stateuser@example.com",
   given_name: "State",
   family_name: "User",
