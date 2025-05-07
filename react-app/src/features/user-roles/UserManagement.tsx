@@ -327,7 +327,7 @@ export const UserManagement = () => {
                   </TableCell>
                   {!isStateSystemAdmin && <TableCell>{userRole.territory}</TableCell>}
                   <TableCell>
-                    <span className="font-semibold flex items-center">
+                    <span className="font-bold flex items-center">
                       {renderStatus(userRole.status)}
                     </span>
                   </TableCell>
