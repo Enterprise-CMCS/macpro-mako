@@ -176,11 +176,13 @@ export const MyProfile = () => {
             email={userDetails?.email}
           />
           <div className="flex flex-col gap-6 md:basis-1/2">
-            {/* State Access Management Section */}
+            {/* Status/State Access Management Section */}
             {stateAccessRoles.includes(userDetails?.role) && (
               <div>
                 <h2 className="text-2xl font-bold">
-                  {userDetails.role === "statesubmitter" ? "State" : "Status"} Access Management
+                  {userDetails.role === "statesubmitter" || userDetails.role === "statesystemadmin"
+                    ? "State Access Management"
+                    : "Status"}
                 </h2>
                 {/* TODO: Get state system admin for that state */}
                 <ConfirmationDialog
