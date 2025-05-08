@@ -17,7 +17,7 @@ import { Option } from "@/components/Opensearch/main/Filtering/Drawer/Filterable
 import { FilterableSelect } from "@/components/Opensearch/main/Filtering/Drawer/Filterable";
 import { useAvailableStates } from "@/hooks/useAvailableStates";
 
-import { adminRoles, filterStateAccess, orderStateAccess, userRoleMap } from "../utils";
+import { filterStateAccess, orderStateAccess, stateAccessRoles, userRoleMap } from "../utils";
 
 export const MyProfile = () => {
   const { data: userDetails, isLoading: isDetailLoading } = useGetUserDetails();
@@ -26,6 +26,7 @@ export const MyProfile = () => {
     isLoading: isProfileLoading,
     refetch: reloadUserProfile,
   } = useGetUserProfile();
+
   const { mutateAsync: submitRequest, isLoading: areRolesLoading } = useSubmitRoleRequests();
   const [selfRevokeState, setSelfRevokeState] = useState<StateCode | null>(null);
   const [showAddState, setShowAddState] = useState<boolean>(true);
@@ -59,7 +60,7 @@ export const MyProfile = () => {
     return <Navigate to="/" />;
   }
 
-  const renderStateAccessControls = () => {
+  const StateAccessControls = () => {
     if (userDetails.role !== "statesubmitter") return null;
     if (pendingStates) {
       return <p>State Access Requests Disabled until Role Request is finalized.</p>;
@@ -174,7 +175,7 @@ export const MyProfile = () => {
             email={userDetails?.email}
           />
           {/* State Access Management Section */}
-          {adminRoles.includes(userDetails?.role) && (
+          {stateAccessRoles.includes(userDetails?.role) && (
             <div className="flex flex-col gap-6 md:basis-1/2">
               <h2 className="text-2xl font-bold">State Access Management</h2>
               {/* TODO: Get state system admin for that state */}
@@ -190,11 +191,11 @@ export const MyProfile = () => {
               {orderedStateAccess?.map((access) => (
                 <StateAccessCard
                   access={access}
-                  role={userRoleMap[userDetails?.role]}
+                  role={userDetails.role}
                   onClick={() => setSelfRevokeState(access.territory as StateCode)}
                 />
               ))}
-              {renderStateAccessControls()}
+              <StateAccessControls />
             </div>
           )}
         </div>

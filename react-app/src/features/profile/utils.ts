@@ -1,3 +1,5 @@
+import { UserRole } from "shared-types/events/legacy-user";
+
 import { StateAccess } from "@/api";
 import { convertStateAbbrToFullName } from "@/utils";
 
@@ -11,7 +13,11 @@ export const userRoleMap = {
   systemadmin: "System Admin",
 };
 
-export const adminRoles = ["statesubmitter", "statesystemadmin"];
+export const stateAccessRoles: UserRole[] = [
+  "statesubmitter",
+  "statesystemadmin",
+  "cmsroleapprover",
+];
 
 export const orderStateAccess = (accesses: StateAccess[]) => {
   if (!accesses || !accesses.length) return;

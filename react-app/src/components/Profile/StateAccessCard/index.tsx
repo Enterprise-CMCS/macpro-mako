@@ -1,10 +1,11 @@
 import { XIcon } from "lucide-react";
+import { UserRole } from "shared-types/events/legacy-user";
 
 import { CardWithTopBorder } from "@/components";
 import { convertStateAbbrToFullName, stateAccessStatus } from "@/utils";
 
 export type StateAccessProps = {
-  role: string;
+  role: UserRole;
   onClick?: () => void;
   access: {
     territory: string;
@@ -32,7 +33,9 @@ export const StateAccessCard = ({ role, onClick, access }: StateAccessProps) => 
       </div>
       <p className="italic">{stateAccessStatus[access.status]}</p>
       <p className="block lg:mt-8 lg:mb-2">
-        <span className="font-semibold">State System Admin: </span>
+        <span className="font-semibold">
+          {role === "cmsroleapprover" ? "CMS Role Approver:" : "State System Admin:"}{" "}
+        </span>
         <a className="text-blue-600" href={`mailto:${access.doneByEmail}`}>
           {access.doneByName}
         </a>
