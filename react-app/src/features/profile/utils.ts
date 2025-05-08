@@ -17,6 +17,7 @@ export const stateAccessRoles: UserRole[] = [
   "statesubmitter",
   "statesystemadmin",
   "cmsroleapprover",
+  "systemadmin",
 ];
 
 export const orderStateAccess = (accesses: StateAccess[]) => {

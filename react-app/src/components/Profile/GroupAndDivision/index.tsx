@@ -9,7 +9,7 @@ type GroupAndDivisionProps = {
 };
 
 export const GroupAndDivision = ({ division, group, role }: GroupAndDivisionProps) => {
-  if (role === "defaultcmsuser") {
+  if (role === "defaultcmsuser" || role === "systemadmin") {
     return null;
   }
 
