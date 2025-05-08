@@ -1,5 +1,6 @@
 import { screen, waitFor, waitForElementToBeRemoved } from "@testing-library/react";
 import {
+  cmsRoleApprover,
   multiStateSubmitter,
   noStateSubmitter,
   setDefaultStateSubmitter,
@@ -95,8 +96,33 @@ describe("MyProfile", () => {
 
   test("renders email", async () => {
     await setup();
-    screen.debug();
 
     await waitFor(() => expect(screen.getByText("mako.stateuser@gmail.com")).toBeInTheDocument());
+  });
+
+  test("renders state access control for statesubmitters", async () => {
+    setMockUsername(multiStateSubmitter);
+    await setup();
+    screen.debug();
+
+    const addStateButton = screen.queryByText("Add State");
+    addStateButton.click();
+
+    await waitFor(() => expect(screen.queryByText("Choose State Access")).toBeInTheDocument());
+    await waitFor(() => expect(screen.queryByText("Submit")).toBeInTheDocument());
+  });
+
+  test("renders group and divisions for cmsroleapprovers", async () => {
+    setMockUsername(cmsRoleApprover);
+    await setup();
+    await waitFor(() => expect(screen.queryByText("Choose State Access")).not.toBeInTheDocument());
+    await waitFor(() => expect(screen.queryByText("Group & Division")).toBeInTheDocument());
+  });
+
+  test("hides state access control for non statesubmitter users", async () => {
+    setMockUsername(noStateSubmitter);
+    await setup();
+    expect(screen.queryByText("Choose State Access")).not.toBeInTheDocument();
+    expect(screen.queryByText("Add State")).not.toBeInTheDocument();
   });
 });
