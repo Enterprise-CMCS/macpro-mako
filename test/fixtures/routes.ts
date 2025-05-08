@@ -2,6 +2,7 @@ export const STATIC = [
   "/",
   "/dashboard",
   "/faq",
+  "/latestupdates",
   "/profile",
   "/new-submission",
   "/new-submission/spa",

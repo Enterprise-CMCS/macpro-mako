@@ -26,6 +26,7 @@ export const router = (loginFlag = false) => {
         { path: "/", index: true, element: <F.WelcomeWrapper /> },
         { path: "/faq", element: <F.Faq /> },
         { path: "/faq/:id", element: <F.Faq /> },
+        { path: "/latestupdates", element: <F.LatestUpdates /> },
         { path: "/webforms", element: <F.WebformsList /> },
         { path: "/webform/:id/:version", element: <F.Webform /> },
         {

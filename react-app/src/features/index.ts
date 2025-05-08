@@ -11,3 +11,4 @@ export * from "./support/SupportPage";
 export * from "./webforms";
 export * from "./forms";
 export * from "./error-page";
+export * from "./latest-updates";
