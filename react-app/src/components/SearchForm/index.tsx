@@ -4,12 +4,15 @@ import { FC, useEffect, useState } from "react";
 
 import { useDebounce } from "@/hooks";
 
+import { OsUrlState } from "../Opensearch";
+
 export const SearchForm: FC<{
   handleSearch: (s: string) => void;
+  urlState?: OsUrlState;
   isSearching: boolean;
   disabled: boolean;
-}> = ({ handleSearch, disabled, isSearching }) => {
-  const [searchText, setSearchText] = useState("");
+}> = ({ handleSearch, urlState, disabled, isSearching }) => {
+  const [searchText, setSearchText] = useState(urlState?.search ?? "");
   const debouncedSearchString = useDebounce(searchText, 750);
 
   useEffect(() => {
