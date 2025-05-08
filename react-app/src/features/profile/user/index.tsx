@@ -3,7 +3,7 @@ import { useMemo } from "react";
 import { LoaderFunctionArgs, redirect, useLoaderData } from "react-router";
 
 import { getUserDetails, getUserProfile, OneMacUserProfile, UserDetails } from "@/api";
-import { StateAccessCard, SubNavHeader, UserInformation } from "@/components";
+import { GroupAndDivision, StateAccessCard, SubNavHeader, UserInformation } from "@/components";
 
 import { filterStateAccess, orderStateAccess, userRoleMap } from "../utils";
 
@@ -75,10 +75,17 @@ export const UserProfile = () => {
             email={userDetails?.email}
           />
           <div className="flex flex-col gap-6 md:basis-1/2">
-            <h2 className="text-2xl font-bold">State Access Management</h2>
-            {orderedStateAccess?.map((access) => (
-              <StateAccessCard access={access} role={userDetails.role} key={access.id} />
-            ))}
+            <div>
+              <h2 className="text-2xl font-bold">State Access Management</h2>
+              {orderedStateAccess?.map((access) => (
+                <StateAccessCard access={access} role={userDetails.role} key={access.id} />
+              ))}
+            </div>
+
+            <div>
+              <h2 className="text-2xl font-bold">Group & Division</h2>
+              <GroupAndDivision group={userDetails.group} division={userDetails.division} />
+            </div>
           </div>
         </div>
       </section>

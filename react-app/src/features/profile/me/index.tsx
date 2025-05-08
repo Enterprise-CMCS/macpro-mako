@@ -8,6 +8,7 @@ import {
   Button,
   CardWithTopBorder,
   ConfirmationDialog,
+  GroupAndDivision,
   LoadingSpinner,
   StateAccessCard,
   SubNavHeader,
@@ -174,30 +175,36 @@ export const MyProfile = () => {
             role={userRoleMap[userDetails?.role]}
             email={userDetails?.email}
           />
-          {/* State Access Management Section */}
-          {stateAccessRoles.includes(userDetails?.role) && (
-            <div className="flex flex-col gap-6 md:basis-1/2">
-              <h2 className="text-2xl font-bold">State Access Management</h2>
-              {/* TODO: Get state system admin for that state */}
-              <ConfirmationDialog
-                open={selfRevokeState !== null}
-                title="Withdraw State Access?"
-                body={"This action cannot be undone. State System Admin will be notified."}
-                acceptButtonText="Confirm"
-                aria-labelledby="Self Revoke Access Modal"
-                onAccept={handleSelfRevokeAccess}
-                onCancel={() => setSelfRevokeState(null)}
-              />
-              {orderedStateAccess?.map((access) => (
-                <StateAccessCard
-                  access={access}
-                  role={userDetails.role}
-                  onClick={() => setSelfRevokeState(access.territory as StateCode)}
+          <div className="flex flex-col gap-6 md:basis-1/2">
+            {/* State Access Management Section */}
+            {stateAccessRoles.includes(userDetails?.role) && (
+              <div>
+                <h2 className="text-2xl font-bold">State Access Management</h2>
+                {/* TODO: Get state system admin for that state */}
+                <ConfirmationDialog
+                  open={selfRevokeState !== null}
+                  title="Withdraw State Access?"
+                  body={"This action cannot be undone. State System Admin will be notified."}
+                  acceptButtonText="Confirm"
+                  aria-labelledby="Self Revoke Access Modal"
+                  onAccept={handleSelfRevokeAccess}
+                  onCancel={() => setSelfRevokeState(null)}
                 />
-              ))}
-              <StateAccessControls />
+                {orderedStateAccess?.map((access) => (
+                  <StateAccessCard
+                    access={access}
+                    role={userDetails.role}
+                    onClick={() => setSelfRevokeState(access.territory as StateCode)}
+                  />
+                ))}
+                <StateAccessControls />
+              </div>
+            )}
+            <div>
+              <h2 className="text-2xl font-bold">Group & Division</h2>
+              <GroupAndDivision group={userDetails.group} division={userDetails.division} />
             </div>
-          )}
+          </div>
         </div>
       </section>
     </>
