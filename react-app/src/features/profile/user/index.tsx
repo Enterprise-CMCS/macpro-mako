@@ -82,10 +82,11 @@ export const UserProfile = () => {
               ))}
             </div>
 
-            <div>
-              <h2 className="text-2xl font-bold">Group & Division</h2>
-              <GroupAndDivision group={userDetails.group} division={userDetails.division} />
-            </div>
+            <GroupAndDivision
+              group={userDetails.group}
+              division={userDetails.division}
+              role={userDetails.role}
+            />
           </div>
         </div>
       </section>
