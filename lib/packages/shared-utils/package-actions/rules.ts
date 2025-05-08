@@ -80,17 +80,30 @@ export const arDisableWithdrawRaiResponse: ActionRule = {
 };
 
 export const arWithdrawRaiResponse: ActionRule = {
+
+
   action: Action.WITHDRAW_RAI,
-  check: (checker, user) =>
-    !checker.isTempExtension &&
-    checker.isInActivePendingStatus &&
-    checker.hasRaiResponse &&
-    // safety; prevent bad status from causing overwrite
-    !checker.hasCompletedRai &&
-    !checker.hasStatus([SEATOOL_STATUS.PENDING_CONCURRENCE, SEATOOL_STATUS.PENDING_APPROVAL]) &&
-    checker.hasEnabledRaiWithdraw &&
-    isStateUser(user) &&
-    !checker.isLocked,
+  check: (checker, user) => {
+    console.log(" checker.isInActivePendingStatus", checker.isInActivePendingStatus)
+    console.log("checker.hasRaiResponse", checker.hasRaiResponse)
+    console.log("!checker.hasCompletedRai", !checker.hasCompletedRai)
+    console.log("!checker.hasStatus([SEATOOL_STATUS.PENDING_CONCURRENCE, SEATOOL_STATUS.PENDING_APPROVAL])", !checker.hasStatus([SEATOOL_STATUS.PENDING_CONCURRENCE, SEATOOL_STATUS.PENDING_APPROVAL]))
+    console.log("checker.hasEnabledRaiWithdraw", checker.hasEnabledRaiWithdraw)
+    console.log(" isStateUser(user)", isStateUser(user))
+    console.log("!checker.isLocked", !checker.isLocked)
+
+    return (
+      !checker.isTempExtension &&
+      checker.isInActivePendingStatus &&
+      checker.hasRaiResponse &&
+      // safety; prevent bad status from causing overwrite
+      !checker.hasCompletedRai &&
+      !checker.hasStatus([SEATOOL_STATUS.PENDING_CONCURRENCE, SEATOOL_STATUS.PENDING_APPROVAL]) &&
+      checker.hasEnabledRaiWithdraw &&
+      isStateUser(user) &&
+      !checker.isLocked
+    )
+  }
 };
 
 export const arWithdrawPackage: ActionRule = {
