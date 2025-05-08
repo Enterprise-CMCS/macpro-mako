@@ -4,9 +4,9 @@ import { StateAccess } from "@/api";
 import { convertStateAbbrToFullName } from "@/utils";
 
 export const userRoleMap = {
-  defaultcmsuser: "Default CMS User Placeholder",
+  defaultcmsuser: "CMS Read-only User",
   cmsroleapprover: "CMS Role Approver",
-  cmsreviewer: "CMS Reviewer",
+  cmsreviewer: "CMS Read-only User",
   statesystemadmin: "State System Admin",
   helpdesk: "Helpdesk",
   statesubmitter: "State Submitter",

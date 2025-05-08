@@ -79,7 +79,7 @@ describe("CMSSignup", () => {
     setMockUsername(cmsRoleApprover);
     await setup();
 
-    expect(screen.getByText("Registration: CMS Reviewer Access")).toBeInTheDocument();
+    expect(screen.getByText("Registration: CMS Read-only Access")).toBeInTheDocument();
   });
 
   it("should handle filling out the form", async () => {
@@ -136,6 +136,6 @@ describe("CMSSignup", () => {
 
     await user.click(submitButton);
 
-    expect(screen.getByText("Registration: CMS Reviewer Access")).toBeInTheDocument();
+    expect(screen.getByText("Registration: CMS Read-only Access")).toBeInTheDocument();
   });
 });
