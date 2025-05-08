@@ -17,19 +17,21 @@ export type StateAccessProps = {
 };
 
 export const StateAccessCard = ({ role, onClick, access }: StateAccessProps) => (
-  <CardWithTopBorder className="my-0" key={`${access.territory}-${access.role}`}>
+  <CardWithTopBorder key={`${access.territory}-${access.role}`}>
     <div className="p-8 min-h-36">
       <div className="flex justify-between">
         <h3 className="text-xl font-bold">{convertStateAbbrToFullName(access.territory)}</h3>
-        <button
-          className="text-blue-700 disabled:text-gray-300"
-          disabled={role !== "statesubmitter" || !onClick}
-          data-testid="self-revoke"
-          title="Self Revoke Access"
-          onClick={onClick}
-        >
-          <XIcon size={30} />
-        </button>
+        {role === "statesubmitter" && (
+          <button
+            className="text-blue-700 disabled:text-gray-300"
+            disabled={!onClick}
+            data-testid="self-revoke"
+            title="Self Revoke Access"
+            onClick={onClick}
+          >
+            <XIcon size={30} />
+          </button>
+        )}
       </div>
       <p className="italic">{stateAccessStatus[access.status]}</p>
       <p className="block lg:mt-8 lg:mb-2">
