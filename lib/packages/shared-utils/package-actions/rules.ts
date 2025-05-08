@@ -95,14 +95,25 @@ export const arWithdrawRaiResponse: ActionRule = {
     return (
       !checker.isTempExtension &&
       checker.isInActivePendingStatus &&
-      checker.hasRaiResponse &&
+      checker.hasCompletedRai &&
       // safety; prevent bad status from causing overwrite
-      !checker.hasCompletedRai &&
+      // !checker.hasRaiWithdrawal &&
       !checker.hasStatus([SEATOOL_STATUS.PENDING_CONCURRENCE, SEATOOL_STATUS.PENDING_APPROVAL]) &&
       checker.hasEnabledRaiWithdraw &&
       isStateUser(user) &&
       !checker.isLocked
     )
+
+    // !checker.isTempExtension &&
+    // checker.isInActivePendingStatus &&
+    // checker.hasRaiResponse &&
+    // // safety; prevent bad status from causing overwrite
+    // !checker.hasCompletedRai &&
+    // !checker.hasStatus([SEATOOL_STATUS.PENDING_CONCURRENCE, SEATOOL_STATUS.PENDING_APPROVAL]) &&
+    // checker.hasEnabledRaiWithdraw &&
+    // isStateUser(user) &&
+    // !checker.isLocked
+
   }
 };
 
