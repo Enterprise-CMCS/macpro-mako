@@ -86,11 +86,13 @@ export const UserProfile = () => {
               ))}
             </div>
 
-            <GroupAndDivision
-              group={userDetails.group}
-              division={userDetails.division}
-              role={userDetails.role}
-            />
+            {userDetails.role === "cmsroleapprover" && (
+              <GroupAndDivision
+                group={userDetails.group}
+                division={userDetails.division}
+                role={userDetails.role}
+              />
+            )}
           </div>
         </div>
       </section>
