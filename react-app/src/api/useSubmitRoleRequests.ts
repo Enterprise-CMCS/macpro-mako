@@ -45,13 +45,13 @@ export const useSubmitRoleRequests = () => {
         // Updates existing cache if anything changed
         queryClient.setQueryData(["roleRequests"], (old: StateAccess[] = []) => {
           if (!Array.isArray(old)) return [];
-          return old.map((request) => {
-            if (request.id === `${newRequest.email}_${newRequest.state}_${newRequest.role}`) {
+          return old.map((oldRequest) => {
+            if (oldRequest.id === `${newRequest.email}_${newRequest.state}_${newRequest.role}`) {
               let status = "pending";
               if (newRequest.grantAccess !== undefined) status = newRequest.grantAccess;
-              return { ...request, status: status, ...newRequest };
+              return { ...oldRequest, lastModifiedDate: Date.now(), status: status, ...newRequest };
             }
-            return request;
+            return oldRequest;
           });
         });
 
