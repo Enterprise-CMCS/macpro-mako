@@ -1,9 +1,23 @@
-import { render, screen } from "@testing-library/react";
+import { screen } from "@testing-library/react";
 import { describe, expect, it, vi } from "vitest";
 
 import { renderWithMemoryRouter } from "@/utils/test-helpers";
 
 import CMSWelcomeWrapper, { CMSWelcome } from "./cms";
+
+const testRender = (comp: React.ReactElement) =>
+  renderWithMemoryRouter(
+    comp,
+    [
+      {
+        path: "/",
+        element: comp,
+      },
+    ],
+    {
+      initialEntries: ["/"],
+    },
+  );
 
 // Mock LatestUpdates component
 vi.mock("@/components/Banner/latestUpdates", () => ({
@@ -16,18 +30,18 @@ vi.mock("@/hooks/useFeatureFlag", () => ({
 
 describe("CMSWelcome", () => {
   it("renders the Latest Updates section", () => {
-    render(<CMSWelcome />);
+    testRender(<CMSWelcome />);
     const banner = screen.getByTestId("latest-updates");
     expect(banner).toBeInTheDocument();
   });
 
   it("renders the Access Header", () => {
-    render(<CMSWelcome />);
+    testRender(<CMSWelcome />);
     expect(screen.getByText("Access more SPA and waiver systems")).toBeInTheDocument();
   });
 
   it("renders all 6 cards with titles", () => {
-    render(<CMSWelcome />);
+    testRender(<CMSWelcome />);
     expect(screen.getByText("MACPro System")).toBeInTheDocument();
     expect(screen.getByText("SEA Tool")).toBeInTheDocument();
     expect(screen.getByText("WMS")).toBeInTheDocument();
@@ -37,7 +51,7 @@ describe("CMSWelcome", () => {
   });
 
   it("renders all action buttons with correct labels", () => {
-    render(<CMSWelcome />);
+    testRender(<CMSWelcome />);
     expect(screen.getByText("Go to MACPro")).toBeInTheDocument();
     expect(screen.getByText("Go to SEA Tool")).toBeInTheDocument();
     expect(screen.getByText("Go to WMS")).toBeInTheDocument();

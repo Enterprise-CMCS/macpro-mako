@@ -5,6 +5,8 @@ import { LatestUpdates } from "@/components/Banner/latestUpdates";
 import { Welcome } from "@/features/welcome/default";
 import { useFeatureFlag } from "@/hooks/useFeatureFlag";
 
+import { BrowseDash, PackageSearch } from "./packageSearch";
+
 export const StateWelcome = () => {
   const [activeTab, setActiveTab] = useState("medicaid");
 
@@ -160,13 +162,11 @@ export const StateWelcome = () => {
 
         {/* Right: View Existing Packages */}
         <div className="flex-1 max-w-[561px] px-4">
-          <h2 className="text-[32px] sm:text-[40px] lg:text-[48px] leading-[100%] font-[Merriweather] font-bold text-[#3D4551]">
+          <h2 className="text-[32px] sm:text-[40px] lg:text-[48px] leading-[100%] font-[Merriweather] font-bold text-[#3D4551] mb-16">
             {" "}
             View existing package
           </h2>
-          <div className="w-full h-[202px] border border-dashed border-[#DFE1E2] rounded flex items-center justify-center text-[#9CA3AF] mb-8 mt-8">
-            Search for package (placeholder)
-          </div>
+          <PackageSearch />
 
           {/* Horizontal "or" line */}
           <div className="flex items-center w-full mb-8">
@@ -176,9 +176,7 @@ export const StateWelcome = () => {
           </div>
 
           {/* Browse Dashboard Placeholder */}
-          <div className="w-full h-[142px] border border-[#DFE1E2] rounded-[4px] flex items-center justify-center text-[#9CA3AF]">
-            Browse dashboard (placeholder)
-          </div>
+          <BrowseDash />
         </div>
       </div>
 
