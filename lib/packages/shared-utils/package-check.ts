@@ -32,6 +32,9 @@ export const PackageCheck = ({
   leadAnalystName,
   locked,
 }: opensearch.main.Document) => {
+  console.log("raiRequestedDate", raiRequestedDate)
+  console.log("raiReceivedDate", raiReceivedDate)
+  console.log("raiWithdrawnDate", raiWithdrawnDate)
   const secondClockStatuses = [
     SEATOOL_STATUS.PENDING,
     SEATOOL_STATUS.PENDING_APPROVAL,
