@@ -76,7 +76,9 @@ export const UserProfile = () => {
           />
           <div className="flex flex-col gap-6 md:basis-1/2">
             <div>
-              <h2 className="text-2xl font-bold">State Access Management</h2>
+              <h2 className="text-2xl font-bold">
+                {userDetails.role === "statesubmitter" ? "State" : "Status"} Access Management
+              </h2>
               {orderedStateAccess?.map((access) => (
                 <StateAccessCard access={access} role={userDetails.role} key={access.id} />
               ))}
