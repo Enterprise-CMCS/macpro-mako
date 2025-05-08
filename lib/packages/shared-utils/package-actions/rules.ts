@@ -54,6 +54,15 @@ export const arEnableWithdrawRaiResponse: ActionRule = {
       );
     }
 
+    console.log("!checker.isTempExtension", !checker.isTempExtension)
+    console.log("checker.isNotWithdrawn ", checker.isNotWithdrawn)
+    console.log("checker.hasCompletedRai", checker.hasCompletedRai)
+    console.log("!checker.hasEnabledRaiWithdraw", !checker.hasEnabledRaiWithdraw)
+    console.log("checker.isInSecondClock", checker.isInSecondClock)
+    console.log("isCmsWriteUser(user)", isCmsWriteUser(user))
+    console.log("!checker.hasStatus(finalDispositionStatuses)", !checker.hasStatus(finalDispositionStatuses))
+    console.log("!checker.hasStatus([SEATOOL_STATUS.PENDING_CONCURRENCE, SEATOOL_STATUS.PENDING_APPROVAL])", !checker.hasStatus([SEATOOL_STATUS.PENDING_CONCURRENCE, SEATOOL_STATUS.PENDING_APPROVAL]))
+
     return (
       !checker.isTempExtension &&
       checker.isNotWithdrawn &&
