@@ -13,6 +13,7 @@ describe("StateAccessCard", () => {
   it("should display pending access", () => {
     render(
       <StateAccessCard
+        role="statesubmitter"
         access={{
           territory: "MD",
           role: "statesubmitter",
