@@ -82,7 +82,7 @@ export const UserProfile = () => {
                   : "Status"}
               </h2>
               {orderedStateAccess?.map((access) => (
-                <StateAccessCard access={access} role={userDetails.role} key={access.id} />
+                <StateAccessCard role={userDetails.role} access={access} key={access.id} />
               ))}
             </div>
 

@@ -1,17 +1,22 @@
 import { screen, waitFor, waitForElementToBeRemoved } from "@testing-library/react";
+import userEvent from "@testing-library/user-event";
 import {
+  cmsRoleApprover,
   multiStateSubmitter,
   noStateSubmitter,
   setDefaultStateSubmitter,
   setMockUsername,
 } from "mocks";
-import { beforeEach, describe, expect, test } from "vitest";
+import { beforeEach, describe, expect, test, vi } from "vitest";
 
+import * as components from "@/components";
 import { renderWithQueryClientAndMemoryRouter } from "@/utils/test-helpers";
 
 import { MyProfile } from ".";
 
 describe("MyProfile", () => {
+  const bannerSpy = vi.spyOn(components, "banner");
+
   const setup = async () => {
     const rendered = renderWithQueryClientAndMemoryRouter(
       <MyProfile />,
@@ -65,6 +70,75 @@ describe("MyProfile", () => {
     expect(screen.queryByText("Maryland")).toBeInTheDocument();
   });
 
+  test("shows Add State button when showAddState is true", async () => {
+    setMockUsername(multiStateSubmitter);
+
+    await setup();
+
+    const addButton = screen.queryByText("Add State");
+    expect(addButton).toBeInTheDocument();
+  });
+
+  test("clicking state State reveals form with submit and cancel", async () => {
+    setMockUsername(multiStateSubmitter);
+
+    await setup();
+
+    const addStateButton = screen.getByText("Add State");
+    addStateButton.click();
+
+    await waitFor(() => {
+      expect(screen.getByText("Choose State Access")).toBeInTheDocument();
+      expect(screen.getByText("Submit")).toBeInTheDocument();
+      expect(screen.getByText("Cancel")).toBeInTheDocument();
+    });
+  });
+
+  test("calls `banner` with `bannerPostSubmission`", async () => {
+    vi.mock("@/hooks/useAvailableStates", () => {
+      return {
+        useAvailableStates: vi.fn().mockReturnValue([{ label: "Arizona", value: "AZ" }]),
+      };
+    });
+
+    setMockUsername(multiStateSubmitter);
+
+    await setup();
+
+    const addStateButton = screen.getByText("Add State");
+    addStateButton.click();
+
+    await waitFor(() => {
+      expect(screen.getByText("Choose State Access")).toBeInTheDocument();
+      expect(screen.getByText("Submit")).toBeInTheDocument();
+      expect(screen.getByText("Cancel")).toBeInTheDocument();
+    });
+
+    await userEvent.click(screen.getByRole("combobox"));
+    await userEvent.click(screen.getByText("Arizona"));
+
+    const submitBtn = screen.getByText("Submit");
+    submitBtn.click();
+
+    await waitFor(() =>
+      expect(bannerSpy).toHaveBeenCalledWith(
+        expect.objectContaining({
+          header: "Submission Completed",
+        }),
+      ),
+    );
+  });
+
+  test("self revoking acces shows modal", async () => {
+    setMockUsername(multiStateSubmitter);
+
+    await setup();
+
+    const revokeStateButton = screen.queryAllByTestId("self-revoke");
+    await revokeStateButton[0].click();
+    expect(screen.getByRole("dialog", { name: /Withdraw State Access/i })).toBeInTheDocument();
+  });
+
   test("renders nothing if user has no states", async () => {
     setMockUsername(noStateSubmitter);
 
@@ -95,8 +169,33 @@ describe("MyProfile", () => {
 
   test("renders email", async () => {
     await setup();
-    screen.debug();
 
     await waitFor(() => expect(screen.getByText("mako.stateuser@gmail.com")).toBeInTheDocument());
+  });
+
+  test("renders state access control for statesubmitters", async () => {
+    setMockUsername(multiStateSubmitter);
+    await setup();
+    screen.debug();
+
+    const addStateButton = screen.queryByText("Add State");
+    addStateButton.click();
+
+    await waitFor(() => expect(screen.queryByText("Choose State Access")).toBeInTheDocument());
+    await waitFor(() => expect(screen.queryByText("Submit")).toBeInTheDocument());
+  });
+
+  test("renders group and divisions for cmsroleapprovers", async () => {
+    setMockUsername(cmsRoleApprover);
+    await setup();
+    await waitFor(() => expect(screen.queryByText("Choose State Access")).not.toBeInTheDocument());
+    await waitFor(() => expect(screen.queryByText("Group & Division")).toBeInTheDocument());
+  });
+
+  test("hides state access control for non statesubmitter users", async () => {
+    setMockUsername(noStateSubmitter);
+    await setup();
+    expect(screen.queryByText("Choose State Access")).not.toBeInTheDocument();
+    expect(screen.queryByText("Add State")).not.toBeInTheDocument();
   });
 });

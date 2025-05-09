@@ -181,7 +181,7 @@ const UserDropdownMenu = () => {
         <DropdownMenu.Content align="start" asChild>
           <ul className="bg-white z-50 flex flex-col gap-4 px-10 py-4 shadow-md rounded-b-sm">
             <DropdownMenu.Item
-              className="text-primary hover:text-primary/70"
+              className="text-primary hover:text-primary/70 cursor-pointer"
               asChild
               onSelect={handleViewProfile}
             >
@@ -191,7 +191,7 @@ const UserDropdownMenu = () => {
             {/* // helpdesk, system admins, and cms reviewer users don't even see request role as an option */}
             {!disableRoleChange() && !isLoading && userDetails && (
               <DropdownMenu.Item
-                className="text-primary hover:text-primary/70"
+                className="text-primary hover:text-primary/70 cursor-pointer"
                 asChild
                 onSelect={() => navigate("/signup")}
               >
@@ -199,7 +199,7 @@ const UserDropdownMenu = () => {
               </DropdownMenu.Item>
             )}
             <DropdownMenu.Item
-              className="text-primary hover:text-primary/70"
+              className="text-primary hover:text-primary/70 cursor-pointer"
               asChild
               onSelect={handleLogout}
             >
