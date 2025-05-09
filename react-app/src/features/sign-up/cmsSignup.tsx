@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Navigate, useNavigate } from "react-router";
 
 import {
@@ -30,21 +30,27 @@ export const CMSSignup = () => {
 
   const navigate = useNavigate();
 
-  const groupSortFn = (groupA, groupB) => {
-    if (groupA.abbr) {
-      if (groupB.abbr) return groupA.abbr.localeCompare(groupB.abbr);
-      return -1;
-    }
-    if (groupA.abbr) return 1;
-    return 0;
-  };
-
   const { data: userDetails } = useGetUserDetails();
+  const currentRole = userDetails.role;
+
+  useEffect(() => {
+    const autoSubmit = async () => {
+      if (currentRole === "cmsroleapprover") {
+        try {
+          await onSubmit();
+        } catch (e) {
+          console.error("CMS Read-only access submission failed", e);
+        }
+      }
+    };
+    autoSubmit();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [userDetails]);
+
   if (!userDetails) return <LoadingSpinner />;
 
   if (!userDetails?.role) return <Navigate to="/" />;
 
-  const currentRole = userDetails.role;
   // TODO: refactor to use isCmsUser
   if (!["defaultcmsuser", "cmsroleapprover", "cmsreviewer"].includes(currentRole))
     return <Navigate to="/profile" />;
@@ -57,8 +63,8 @@ export const CMSSignup = () => {
         role: currentRole === "cmsroleapprover" ? "defaultcmsuser" : "cmsroleapprover",
         eventType: "user-role",
         requestRoleChange: true,
-        group: group.abbr,
-        division: division.abbr,
+        group: currentRole !== "cmsroleapprover" ? group.abbr : null,
+        division: currentRole !== "cmsroleapprover" ? division.abbr : null,
       });
       // TODO: Change?
       navigate("/");
@@ -79,6 +85,15 @@ export const CMSSignup = () => {
         pathnameToDisplayOn: window.location.pathname,
       });
     }
+  };
+
+  const groupSortFn = (groupA, groupB) => {
+    if (groupA.abbr) {
+      if (groupB.abbr) return groupA.abbr.localeCompare(groupB.abbr);
+      return -1;
+    }
+    if (groupA.abbr) return 1;
+    return 0;
   };
 
   return (
