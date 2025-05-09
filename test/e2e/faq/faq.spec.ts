@@ -6,7 +6,7 @@ let faqPage: FAQPage;
 test.describe("FAQ page", { tag: ["@e2e", "@smoke", "@faq"] }, () => {
   test.beforeEach(async ({ page }) => {
     faqPage = new FAQPage(page);
-    await page.goto("faq");
+    await page.goto("/faq");
   });
 
   test.describe("UI validation", { tag: ["@CI"] }, () => {

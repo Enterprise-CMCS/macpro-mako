@@ -3,7 +3,7 @@ import { expect, test } from "@/fixtures/mocked"; // add expect when writing ass
 // TODO
 test.describe("Dashboard page", { tag: ["@dashboard"] }, () => {
   test.beforeEach(async ({ page }) => {
-    await page.goto("dashboard");
+    await page.goto("/dashboard");
   });
 
   test.describe("UI validations", { tag: ["@CI", "@smoke"] }, () => {
