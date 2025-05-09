@@ -6,8 +6,8 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "e2e": "playwright test --project=state-user-chrome",
-    "e2e:ui": "playwright test --ui --project=state-user-chrome"
+    "e2e": "playwright test --project=ci",
+    "e2e:ui": "playwright test --ui --project=ci"
   },
   "author": "",
   "license": "ISC",
