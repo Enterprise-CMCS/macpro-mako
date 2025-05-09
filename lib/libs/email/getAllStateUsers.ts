@@ -5,6 +5,7 @@ import {
   ListUsersCommandInput,
   ListUsersCommandOutput,
 } from "@aws-sdk/client-cognito-identity-provider";
+import { getStateUsersByState } from "lib/lambda/user-management/userManagementService";
 
 export type StateUser = {
   firstName: string;
@@ -80,6 +81,33 @@ export const getAllStateUsers = async ({
     });
 
     return filteredStateUsers.filter((user): user is StateUser => user !== null);
+  } catch (error) {
+    console.error("Error fetching users:", error);
+    throw new Error("Error fetching users");
+  }
+};
+
+export const getAllStateUsersFromOpenSearch = async (
+  state: string,
+): Promise<
+  {
+    formattedEmailAddress: string;
+    email: string;
+    fullName: string;
+  }[]
+> => {
+  try {
+    const stateUsers = await getStateUsersByState(state);
+
+    return stateUsers.map(({ fullName, email }) => {
+      const formattedEmailAddress = `${fullName} <${email}>`;
+
+      return {
+        fullName,
+        email,
+        formattedEmailAddress,
+      };
+    });
   } catch (error) {
     console.error("Error fetching users:", error);
     throw new Error("Error fetching users");

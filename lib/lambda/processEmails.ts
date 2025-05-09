@@ -2,7 +2,7 @@ import { SendEmailCommand, SendEmailCommandInput, SESClient } from "@aws-sdk/cli
 import { SendMessageCommand, SQSClient } from "@aws-sdk/client-sqs";
 import { Handler } from "aws-lambda";
 import { htmlToText, HtmlToTextOptions } from "html-to-text";
-import { getAllStateUsers, getEmailTemplates } from "libs/email";
+import { getAllStateUsersFromOpenSearch, getEmailTemplates } from "libs/email";
 import { EMAIL_CONFIG, getCpocEmail, getSrtEmails } from "libs/email/content/email-components";
 import * as os from "libs/opensearch-lib";
 import { getOsNamespace } from "libs/utils";
@@ -239,10 +239,8 @@ export async function processAndSendEmails(
   }
 
   const territory = id.slice(0, 2);
-  const allStateUsers = await getAllStateUsers({
-    userPoolId: config.userPoolId,
-    state: territory,
-  });
+  const allStateUsers = await getAllStateUsersFromOpenSearch(territory);
+  console.log("what are the state users listed", allStateUsers);
 
   const sec = await getSecret(config.emailAddressLookupSecretName);
 
