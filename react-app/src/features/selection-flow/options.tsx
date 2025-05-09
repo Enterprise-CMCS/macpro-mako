@@ -52,8 +52,8 @@ export const MEDICAID_SPA_OPTIONS: OptionData[] = [
 
 export const CHIP_SPA_OPTIONS: OptionData[] = [
   {
-    title: "CHIP Eligibility",
-    description: "Redirects to MMDL submission system",
+    title: "CHIP eligibility SPA submissions",
+    description: "Create a new CHIP eligibility state plan amendment",
     to: "/new-submission/spa/chip/landing/chip-eligibility",
   },
   {
