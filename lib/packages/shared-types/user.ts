@@ -43,12 +43,14 @@ export const CMS_ROLES = [
   "cmsroleapprover",
   "defaultcmsuser",
   "helpdesk",
+  "systemadmin",
 ] satisfies UserRole[];
 
 export const CMS_WRITE_ROLES = [
   "cmsreviewer",
   "defaultcmsuser",
   "cmsroleapprover",
+  "systemadmin",
 ] satisfies UserRole[];
 
 export const CMS_READ_ONLY_ROLES = ["helpdesk"] satisfies UserRole[];
