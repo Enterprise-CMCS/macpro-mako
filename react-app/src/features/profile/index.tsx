@@ -82,19 +82,19 @@ export const Profile = () => {
 
             <div className="leading-9">
               <h3 className="font-bold">Full Name</h3>
-              <p>
+              <p data-testid="user-name">
                 {userData?.user?.given_name} {userData?.user?.family_name}
               </p>
             </div>
 
             <div className="leading-9">
               <h3 className="font-bold">Role</h3>
-              <p>{userRoles}</p>
+              <p data-testid="user-role">{userRoles}</p>
             </div>
 
             <div className="leading-9">
               <h3 className="font-bold">Email</h3>
-              <p>{userData?.user?.email}</p>
+              <p data-testid="user-email">{userData?.user?.email}</p>
             </div>
           </div>
 
