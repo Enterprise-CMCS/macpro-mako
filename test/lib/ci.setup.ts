@@ -7,7 +7,8 @@ const stage = process.env.STAGE_NAME || "main";
 const project = process.env.PROJECT;
 const deploymentConfig = await getDeploymentConfig(stage, project);
 const baseURL = deploymentConfig.applicationEndpointUrl;
-const password = await getSecret(deploymentConfig.devPasswordArn);
+// const password = await getSecret(deploymentConfig.devPasswordArn);
+const password = "";
 
 const stateSubmitterAuthFile = "./playwright/.auth/state-user.json";
 const reviewerAuthFile = "./playwright/.auth/reviewer-user.json";
