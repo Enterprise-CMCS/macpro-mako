@@ -8,8 +8,8 @@ const TopBanner = () => {
   const isStateHomepage = useFeatureFlag("STATE_HOMEPAGE_FLAG");
   const isCMSHomepage = useFeatureFlag("CMS_HOMEPAGE_FLAG");
 
-  // Show nothing if neither flag is on
-  if (!isStateHomepage && !isCMSHomepage) return null;
+  // Show nothing if neither flag is on or user is not signed in
+  if (!isStateHomepage || !isCMSHomepage || !user.user) return null;
 
   // Button sets
   const stateLinks = [

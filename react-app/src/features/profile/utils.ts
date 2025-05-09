@@ -1,17 +1,24 @@
+import { UserRole } from "shared-types/events/legacy-user";
+
 import { StateAccess } from "@/api";
 import { convertStateAbbrToFullName } from "@/utils";
 
 export const userRoleMap = {
-  defaultcmsuser: "Default CMS User Placeholder",
+  defaultcmsuser: "CMS Read-only User",
   cmsroleapprover: "CMS Role Approver",
-  cmsreviewer: "CMS Reviewer",
+  cmsreviewer: "CMS Read-only User",
   statesystemadmin: "State System Admin",
   helpdesk: "Helpdesk",
   statesubmitter: "State Submitter",
   systemadmin: "System Admin",
 };
 
-export const adminRoles = ["statesubmitter", "statesystemadmin"];
+export const stateAccessRoles: UserRole[] = [
+  "statesubmitter",
+  "statesystemadmin",
+  "cmsroleapprover",
+  "systemadmin",
+];
 
 export const orderStateAccess = (accesses: StateAccess[]) => {
   if (!accesses || !accesses.length) return;

@@ -54,7 +54,7 @@ export const CMSSignup = () => {
       await submitRequest({
         email: userDetails.email,
         state: "N/A",
-        role: currentRole === "cmsroleapprover" ? "cmsreviewer" : "cmsroleapprover",
+        role: currentRole === "cmsroleapprover" ? "defaultcmsuser" : "cmsroleapprover",
         eventType: "user-role",
         requestRoleChange: true,
         group: group.abbr,
@@ -86,7 +86,7 @@ export const CMSSignup = () => {
       <SubNavHeader>
         <h1 className="text-xl font-medium">
           {currentRole === "cmsroleapprover"
-            ? "Registration: CMS Reviewer Access"
+            ? "Registration: CMS Read-only Access"
             : "Registration: CMS Role Approver Access"}
         </h1>
       </SubNavHeader>

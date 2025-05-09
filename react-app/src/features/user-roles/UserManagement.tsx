@@ -7,6 +7,7 @@ import { formatDate, formatDateToET } from "shared-utils";
 
 import { RoleRequest, useGetRoleRequests, useGetUserDetails, useSubmitRoleRequests } from "@/api";
 import {
+  banner,
   Button,
   ConfirmationDialog,
   LoadingSpinner,
@@ -245,6 +246,14 @@ export const UserManagement = () => {
     submitRequest(selectedUserRole);
     setModalText(null);
     setSelectedUserRole(null);
+
+    banner({
+      header: "Submission Completed",
+      body: "Your submission has been received.",
+      variant: "success",
+      pathnameToDisplayOn: window.location.pathname,
+    });
+    window.scrollTo(0, 0);
   };
 
   // Export Section

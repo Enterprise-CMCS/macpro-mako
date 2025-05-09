@@ -8,6 +8,7 @@ import {
   Button,
   CardWithTopBorder,
   ConfirmationDialog,
+  GroupAndDivision,
   LoadingSpinner,
   StateAccessCard,
   SubNavHeader,
@@ -17,7 +18,7 @@ import { Option } from "@/components/Opensearch/main/Filtering/Drawer/Filterable
 import { FilterableSelect } from "@/components/Opensearch/main/Filtering/Drawer/Filterable";
 import { useAvailableStates } from "@/hooks/useAvailableStates";
 
-import { adminRoles, filterStateAccess, orderStateAccess, userRoleMap } from "../utils";
+import { filterStateAccess, orderStateAccess, stateAccessRoles, userRoleMap } from "../utils";
 
 export const MyProfile = () => {
   const { data: userDetails, isLoading: isDetailLoading } = useGetUserDetails();
@@ -26,6 +27,7 @@ export const MyProfile = () => {
     isLoading: isProfileLoading,
     refetch: reloadUserProfile,
   } = useGetUserProfile();
+
   const { mutateAsync: submitRequest, isLoading: areRolesLoading } = useSubmitRoleRequests();
   const [selfRevokeState, setSelfRevokeState] = useState<StateCode | null>(null);
   const [showAddState, setShowAddState] = useState<boolean>(true);
@@ -59,7 +61,7 @@ export const MyProfile = () => {
     return <Navigate to="/" />;
   }
 
-  const renderStateAccessControls = () => {
+  const StateAccessControls = () => {
     if (userDetails.role !== "statesubmitter") return null;
     if (pendingStates) {
       return <p>State Access Requests Disabled until Role Request is finalized.</p>;
@@ -173,33 +175,44 @@ export const MyProfile = () => {
             role={userRoleMap[userDetails?.role]}
             email={userDetails?.email}
           />
-          {/* State Access Management Section */}
-          {adminRoles.includes(userDetails?.role) && (
-            <div className="flex flex-col gap-6 md:basis-1/2">
-              <h2 className="text-2xl font-bold">State Access Management</h2>
-              {/* TODO: Get state system admin for that state */}
-              <ConfirmationDialog
-                open={selfRevokeState !== null}
-                title="Withdraw State Access?"
-                body={"This action cannot be undone. State System Admin will be notified."}
-                acceptButtonText="Confirm"
-                aria-labelledby="Self Revoke Access Modal"
-                onAccept={handleSelfRevokeAccess}
-                onCancel={() => setSelfRevokeState(null)}
-              />
-              {orderedStateAccess?.map((access) => (
-                <StateAccessCard
-                  access={access}
-                  onClick={
-                    userDetails?.role === "statesubmitter"
-                      ? () => setSelfRevokeState(access.territory as StateCode)
-                      : undefined
-                  }
+          <div className="flex flex-col gap-6 md:basis-1/2">
+            {/* Status/State Access Management Section */}
+            {stateAccessRoles.includes(userDetails?.role) && (
+              <div>
+                <h2 className="text-2xl font-bold">
+                  {userDetails.role === "statesubmitter" || userDetails.role === "statesystemadmin"
+                    ? "State Access Management"
+                    : "Status"}
+                </h2>
+                {/* TODO: Get state system admin for that state */}
+                <ConfirmationDialog
+                  open={selfRevokeState !== null}
+                  title="Withdraw State Access?"
+                  body={"This action cannot be undone. State System Admin will be notified."}
+                  acceptButtonText="Confirm"
+                  aria-labelledby="Self Revoke Access Modal"
+                  onAccept={handleSelfRevokeAccess}
+                  onCancel={() => setSelfRevokeState(null)}
                 />
-              ))}
-              {renderStateAccessControls()}
-            </div>
-          )}
+                {orderedStateAccess?.map((access) => (
+                  <StateAccessCard
+                    access={access}
+                    role={userDetails.role}
+                    onClick={() => setSelfRevokeState(access.territory as StateCode)}
+                  />
+                ))}
+                <StateAccessControls />
+              </div>
+            )}
+
+            {userDetails.role === "cmsroleapprover" && (
+              <GroupAndDivision
+                group={userDetails.group}
+                division={userDetails.division}
+                role={userDetails.role}
+              />
+            )}
+          </div>
         </div>
       </section>
     </>

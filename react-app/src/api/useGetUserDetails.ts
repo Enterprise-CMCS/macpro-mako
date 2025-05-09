@@ -9,6 +9,8 @@ export type UserDetails = {
   fullName: string;
   role?: UserRole;
   states?: string[];
+  division: string;
+  group: string;
 };
 
 export const getUserDetails = async (userEmail?: string): Promise<UserDetails> => {

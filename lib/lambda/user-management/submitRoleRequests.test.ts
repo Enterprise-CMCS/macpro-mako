@@ -203,7 +203,7 @@ describe("submitRoleRequests handler", () => {
         state: "N/A",
         role: "cmsroleapprover",
         eventType: "user-role",
-        grantAccess: true,
+        grantAccess: "active",
         group: "ABC",
         division: "ABCDE",
       }),
