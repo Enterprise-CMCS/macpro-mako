@@ -17,6 +17,8 @@ const testUsers = {
   reviewer: "reviewer@example.com",
 };
 
+console.log("dp config", deploymentConfig);
+
 console.log(`[Setup] Stage: ${stage} | Project: ${project} | Base URL: ${baseURL}`);
 
 setup("auth", async () => {
