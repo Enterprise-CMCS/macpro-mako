@@ -17,6 +17,7 @@ import {
 import { Option } from "@/components/Opensearch/main/Filtering/Drawer/Filterable";
 import { FilterableSelect } from "@/components/Opensearch/main/Filtering/Drawer/Filterable";
 import { useAvailableStates } from "@/hooks/useAvailableStates";
+import { convertStateAbbrToFullName } from "@/utils";
 
 import { filterStateAccess, orderStateAccess, stateAccessRoles, userRoleMap } from "../utils";
 
@@ -188,7 +189,7 @@ export const MyProfile = () => {
                 <ConfirmationDialog
                   open={selfRevokeState !== null}
                   title="Withdraw State Access?"
-                  body={"This action cannot be undone. State System Admin will be notified."}
+                  body={`This action cannot be undone. ${convertStateAbbrToFullName(selfRevokeState)} State System Admin will be notified.`}
                   acceptButtonText="Confirm"
                   aria-labelledby="Self Revoke Access Modal"
                   onAccept={handleSelfRevokeAccess}
