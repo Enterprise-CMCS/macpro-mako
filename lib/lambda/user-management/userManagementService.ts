@@ -169,3 +169,60 @@ export const getActiveStatesForUserByEmail = async (email: string): Promise<stri
 
   return Array.from(new Set(states));
 };
+
+export const getStateUsersByState = async (
+  state: string,
+): Promise<
+  {
+    email: string;
+    fullName: string;
+  }[]
+> => {
+  const { domain: rolesDomain, index: rolesIndex } = getDomainAndNamespace("roles");
+  const { domain: usersDomain, index: usersIndex } = getDomainAndNamespace("users");
+
+  const rolesResult = await search(rolesDomain, rolesIndex, {
+    size: 1000,
+    query: {
+      bool: {
+        must: [
+          { term: { status: "active" } },
+          { term: { "territory.keyword": state } },
+          { terms: { role: ["statesubmitter", "statesystemadmin"] } },
+        ],
+      },
+    },
+    _source: ["email"],
+  });
+
+  const seen = new Set<string>();
+  const emails = rolesResult.hits.hits
+    .map((hit: any) => hit._source.email)
+    .filter((email: string): email is string => {
+      if (seen.has(email)) return false;
+      seen.add(email);
+      return true;
+    });
+
+  if (!emails.length) return [];
+
+  const usersResult = await search(usersDomain, usersIndex, {
+    size: 100,
+    query: {
+      bool: {
+        should: emails.map((email: string) => ({
+          term: { "email.keyword": email },
+        })),
+      },
+    },
+    _source: ["email", "fullName"],
+  });
+
+  return usersResult.hits.hits.map((hit: any) => {
+    const user = hit._source;
+    return {
+      email: user.email,
+      fullName: user.fullName,
+    };
+  });
+};

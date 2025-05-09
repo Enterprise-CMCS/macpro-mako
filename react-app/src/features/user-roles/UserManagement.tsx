@@ -42,6 +42,8 @@ export type UserRoleType = {
 };
 type headingType = { [key: string]: keyof UserRoleType | null };
 
+type SelectedUser = RoleRequest & { fullName: string };
+
 const pendingCircle = (
   <svg
     className="mr-2"
@@ -134,6 +136,7 @@ export const renderCellActions = (
     );
     setSelectedUserRole({
       email: userRole.email,
+      fullName: userRole.fullName,
       state: userRole.territory,
       role: userRole.role,
       grantAccess: statusMap[action],
@@ -177,11 +180,28 @@ export const UserManagement = () => {
   const { data, isLoading, isFetching } = useGetRoleRequests();
   const { mutateAsync: submitRequest, isLoading: processSubmit } = useSubmitRoleRequests();
   const [userRoles, setUserRoles] = useState<UserRoleType[] | null>(null);
-  const [selectedUserRole, setSelectedUserRole] = useState<RoleRequest>(null);
+  const [selectedUserRole, setSelectedUserRole] = useState<SelectedUser>(null);
 
   const isHelpDesk = userDetails && userDetails.role === "helpdesk";
   const isStateSystemAdmin = userDetails && userDetails.role === "statesystemadmin";
   const isSystemAdmin = userDetails && userDetails.role === "systemadmin";
+
+  const getBannerText = (selectedUser: SelectedUser) => {
+    const getStatusText = () => {
+      switch (selectedUser.grantAccess) {
+        case "active":
+          return " has been granted access";
+        case "denied":
+          return " has been denied access";
+        case "revoked":
+          return "'s access has been revoked";
+        default:
+          return "'s access is pending";
+      }
+    };
+
+    return `${selectedUser.fullName}${getStatusText()}`;
+  };
 
   const [sortBy, setSortBy] = useState<{
     title: keyof headingType | "";
@@ -248,8 +268,8 @@ export const UserManagement = () => {
     setSelectedUserRole(null);
 
     banner({
-      header: "Submission Completed",
-      body: "Your submission has been received.",
+      header: "Status Change",
+      body: `${getBannerText(selectedUserRole)}, a notification has been sent to their email.`,
       variant: "success",
       pathnameToDisplayOn: window.location.pathname,
     });
