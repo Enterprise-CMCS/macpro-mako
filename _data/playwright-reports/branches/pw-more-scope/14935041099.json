@@ -1,0 +1,2853 @@
+{
+  "config": {
+    "configFile": "/home/runner/work/macpro-mako/macpro-mako/test/playwright.config.ts",
+    "rootDir": "/home/runner/work/macpro-mako/macpro-mako/test",
+    "forbidOnly": true,
+    "fullyParallel": true,
+    "globalSetup": null,
+    "globalTeardown": "/home/runner/work/macpro-mako/macpro-mako/test/lib/global.teardown.ts",
+    "globalTimeout": 0,
+    "grep": {},
+    "grepInvert": null,
+    "maxFailures": 0,
+    "metadata": {
+      "actualWorkers": 1
+    },
+    "preserveOutput": "always",
+    "reporter": [
+      [
+        "github",
+        null
+      ],
+      [
+        "html",
+        {
+          "outputFolder": "./playwright-reports/html-report",
+          "open": "never"
+        }
+      ],
+      [
+        "json",
+        {
+          "outputFile": "./playwright-reports/playwright-summary.json"
+        }
+      ]
+    ],
+    "reportSlowTests": {
+      "max": 5,
+      "threshold": 15000
+    },
+    "quiet": false,
+    "projects": [
+      {
+        "outputDir": "/home/runner/work/macpro-mako/macpro-mako/test/test-results",
+        "repeatEach": 1,
+        "retries": 2,
+        "metadata": {},
+        "id": "local-setup",
+        "name": "local-setup",
+        "testDir": "/home/runner/work/macpro-mako/macpro-mako/test",
+        "testIgnore": [
+          "**/*.test.{ts,tsx}"
+        ],
+        "testMatch": [
+          "/local\\.setup\\.ts/"
+        ],
+        "timeout": 30000
+      },
+      {
+        "outputDir": "/home/runner/work/macpro-mako/macpro-mako/test/test-results",
+        "repeatEach": 1,
+        "retries": 2,
+        "metadata": {},
+        "id": "ci-setup",
+        "name": "ci-setup",
+        "testDir": "/home/runner/work/macpro-mako/macpro-mako/test",
+        "testIgnore": [
+          "**/*.test.{ts,tsx}"
+        ],
+        "testMatch": [
+          "/ci\\.setup\\.ts/"
+        ],
+        "timeout": 30000
+      },
+      {
+        "outputDir": "/home/runner/work/macpro-mako/macpro-mako/test/test-results",
+        "repeatEach": 1,
+        "retries": 2,
+        "metadata": {},
+        "id": "eua-setup",
+        "name": "eua-setup",
+        "testDir": "/home/runner/work/macpro-mako/macpro-mako/test",
+        "testIgnore": [
+          "**/*.test.{ts,tsx}"
+        ],
+        "testMatch": [
+          "/eua\\.setup\\.ts/"
+        ],
+        "timeout": 30000
+      },
+      {
+        "outputDir": "/home/runner/work/macpro-mako/macpro-mako/test/test-results",
+        "repeatEach": 1,
+        "retries": 2,
+        "metadata": {},
+        "id": "mfa-setup",
+        "name": "mfa-setup",
+        "testDir": "/home/runner/work/macpro-mako/macpro-mako/test",
+        "testIgnore": [
+          "**/*.test.{ts,tsx}"
+        ],
+        "testMatch": [
+          "/mfa\\.setup\\.ts/"
+        ],
+        "timeout": 30000
+      },
+      {
+        "outputDir": "/home/runner/work/macpro-mako/macpro-mako/test/test-results",
+        "repeatEach": 1,
+        "retries": 2,
+        "metadata": {},
+        "id": "local",
+        "name": "local",
+        "testDir": "/home/runner/work/macpro-mako/macpro-mako/test",
+        "testIgnore": [
+          "**/*.test.{ts,tsx}"
+        ],
+        "testMatch": [
+          "**/*.spec.ts"
+        ],
+        "timeout": 30000
+      },
+      {
+        "outputDir": "/home/runner/work/macpro-mako/macpro-mako/test/test-results",
+        "repeatEach": 1,
+        "retries": 2,
+        "metadata": {},
+        "id": "ci",
+        "name": "ci",
+        "testDir": "/home/runner/work/macpro-mako/macpro-mako/test",
+        "testIgnore": [
+          "**/*.test.{ts,tsx}"
+        ],
+        "testMatch": [
+          "**/*.spec.ts"
+        ],
+        "timeout": 30000
+      },
+      {
+        "outputDir": "/home/runner/work/macpro-mako/macpro-mako/test/test-results",
+        "repeatEach": 1,
+        "retries": 2,
+        "metadata": {},
+        "id": "eua-user",
+        "name": "eua-user",
+        "testDir": "/home/runner/work/macpro-mako/macpro-mako/test",
+        "testIgnore": [
+          "**/*.test.{ts,tsx}"
+        ],
+        "testMatch": [
+          "**/*.spec.ts"
+        ],
+        "timeout": 30000
+      },
+      {
+        "outputDir": "/home/runner/work/macpro-mako/macpro-mako/test/test-results",
+        "repeatEach": 1,
+        "retries": 2,
+        "metadata": {},
+        "id": "mfa-user",
+        "name": "mfa-user",
+        "testDir": "/home/runner/work/macpro-mako/macpro-mako/test",
+        "testIgnore": [
+          "**/*.test.{ts,tsx}"
+        ],
+        "testMatch": [
+          "**/*.spec.ts"
+        ],
+        "timeout": 30000
+      }
+    ],
+    "shard": null,
+    "updateSnapshots": "missing",
+    "version": "1.47.2",
+    "workers": 1,
+    "webServer": null
+  },
+  "suites": [
+    {
+      "title": "lib/ci.setup.ts",
+      "file": "lib/ci.setup.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [
+        {
+          "title": "auth",
+          "ok": false,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "ci-setup",
+              "projectName": "ci-setup",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "status": "failed",
+                  "duration": 2683,
+                  "error": {
+                    "message": "Error: page.goto: Protocol error (Page.navigate): Cannot navigate to invalid URL\nCall log:\n  \u001b[2m- navigating to \"/\", waiting until \"load\"\u001b[22m\n",
+                    "stack": "Error: page.goto: Protocol error (Page.navigate): Cannot navigate to invalid URL\nCall log:\n  \u001b[2m- navigating to \"/\", waiting until \"load\"\u001b[22m\n\n    at LoginPage.goto (/home/runner/work/macpro-mako/macpro-mako/test/pages/login.page.ts:10:21)\n    at generateAuthFile (/home/runner/work/macpro-mako/macpro-mako/test/lib/auth.setup.ts:25:19)\n    at /home/runner/work/macpro-mako/macpro-mako/test/lib/ci.setup.ts:23:3",
+                    "location": {
+                      "file": "/home/runner/work/macpro-mako/macpro-mako/test/pages/login.page.ts",
+                      "column": 21,
+                      "line": 10
+                    },
+                    "snippet": "   at pages/login.page.ts:10\n\n\u001b[0m \u001b[90m  8 |\u001b[39m\n \u001b[90m  9 |\u001b[39m   \u001b[36masync\u001b[39m goto() {\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 10 |\u001b[39m     \u001b[36mawait\u001b[39m \u001b[36mthis\u001b[39m\u001b[33m.\u001b[39mpage\u001b[33m.\u001b[39mgoto(\u001b[32m\"/\"\u001b[39m)\u001b[33m;\u001b[39m\n \u001b[90m    |\u001b[39m                     \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 11 |\u001b[39m     \u001b[36mawait\u001b[39m \u001b[36mthis\u001b[39m\u001b[33m.\u001b[39mpage\u001b[33m.\u001b[39mgetByRole(\u001b[32m\"button\"\u001b[39m\u001b[33m,\u001b[39m { name\u001b[33m:\u001b[39m \u001b[32m\"Sign In\"\u001b[39m })\u001b[33m.\u001b[39mclick()\u001b[33m;\u001b[39m\n \u001b[90m 12 |\u001b[39m   }\n \u001b[90m 13 |\u001b[39m\u001b[0m"
+                  },
+                  "errors": [
+                    {
+                      "location": {
+                        "file": "/home/runner/work/macpro-mako/macpro-mako/test/pages/login.page.ts",
+                        "column": 21,
+                        "line": 10
+                      },
+                      "message": "Error: page.goto: Protocol error (Page.navigate): Cannot navigate to invalid URL\nCall log:\n  \u001b[2m- navigating to \"/\", waiting until \"load\"\u001b[22m\n\n\n   at pages/login.page.ts:10\n\n\u001b[0m \u001b[90m  8 |\u001b[39m\n \u001b[90m  9 |\u001b[39m   \u001b[36masync\u001b[39m goto() {\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 10 |\u001b[39m     \u001b[36mawait\u001b[39m \u001b[36mthis\u001b[39m\u001b[33m.\u001b[39mpage\u001b[33m.\u001b[39mgoto(\u001b[32m\"/\"\u001b[39m)\u001b[33m;\u001b[39m\n \u001b[90m    |\u001b[39m                     \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 11 |\u001b[39m     \u001b[36mawait\u001b[39m \u001b[36mthis\u001b[39m\u001b[33m.\u001b[39mpage\u001b[33m.\u001b[39mgetByRole(\u001b[32m\"button\"\u001b[39m\u001b[33m,\u001b[39m { name\u001b[33m:\u001b[39m \u001b[32m\"Sign In\"\u001b[39m })\u001b[33m.\u001b[39mclick()\u001b[33m;\u001b[39m\n \u001b[90m 12 |\u001b[39m   }\n \u001b[90m 13 |\u001b[39m\u001b[0m\n\n    at LoginPage.goto (/home/runner/work/macpro-mako/macpro-mako/test/pages/login.page.ts:10:21)\n    at generateAuthFile (/home/runner/work/macpro-mako/macpro-mako/test/lib/auth.setup.ts:25:19)\n    at /home/runner/work/macpro-mako/macpro-mako/test/lib/ci.setup.ts:23:3"
+                    }
+                  ],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2025-05-09T18:14:48.714Z",
+                  "attachments": [
+                    {
+                      "name": "trace",
+                      "contentType": "application/zip",
+                      "path": "/home/runner/work/macpro-mako/macpro-mako/test/test-results/lib-ci.setup.ts-auth-ci-setup/trace.zip"
+                    }
+                  ],
+                  "errorLocation": {
+                    "file": "/home/runner/work/macpro-mako/macpro-mako/test/pages/login.page.ts",
+                    "column": 21,
+                    "line": 10
+                  }
+                },
+                {
+                  "workerIndex": 1,
+                  "status": "failed",
+                  "duration": 210,
+                  "error": {
+                    "message": "Error: page.goto: Protocol error (Page.navigate): Cannot navigate to invalid URL\nCall log:\n  \u001b[2m- navigating to \"/\", waiting until \"load\"\u001b[22m\n",
+                    "stack": "Error: page.goto: Protocol error (Page.navigate): Cannot navigate to invalid URL\nCall log:\n  \u001b[2m- navigating to \"/\", waiting until \"load\"\u001b[22m\n\n    at LoginPage.goto (/home/runner/work/macpro-mako/macpro-mako/test/pages/login.page.ts:10:21)\n    at generateAuthFile (/home/runner/work/macpro-mako/macpro-mako/test/lib/auth.setup.ts:25:19)\n    at /home/runner/work/macpro-mako/macpro-mako/test/lib/ci.setup.ts:23:3",
+                    "location": {
+                      "file": "/home/runner/work/macpro-mako/macpro-mako/test/pages/login.page.ts",
+                      "column": 21,
+                      "line": 10
+                    },
+                    "snippet": "   at pages/login.page.ts:10\n\n\u001b[0m \u001b[90m  8 |\u001b[39m\n \u001b[90m  9 |\u001b[39m   \u001b[36masync\u001b[39m goto() {\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 10 |\u001b[39m     \u001b[36mawait\u001b[39m \u001b[36mthis\u001b[39m\u001b[33m.\u001b[39mpage\u001b[33m.\u001b[39mgoto(\u001b[32m\"/\"\u001b[39m)\u001b[33m;\u001b[39m\n \u001b[90m    |\u001b[39m                     \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 11 |\u001b[39m     \u001b[36mawait\u001b[39m \u001b[36mthis\u001b[39m\u001b[33m.\u001b[39mpage\u001b[33m.\u001b[39mgetByRole(\u001b[32m\"button\"\u001b[39m\u001b[33m,\u001b[39m { name\u001b[33m:\u001b[39m \u001b[32m\"Sign In\"\u001b[39m })\u001b[33m.\u001b[39mclick()\u001b[33m;\u001b[39m\n \u001b[90m 12 |\u001b[39m   }\n \u001b[90m 13 |\u001b[39m\u001b[0m"
+                  },
+                  "errors": [
+                    {
+                      "location": {
+                        "file": "/home/runner/work/macpro-mako/macpro-mako/test/pages/login.page.ts",
+                        "column": 21,
+                        "line": 10
+                      },
+                      "message": "Error: page.goto: Protocol error (Page.navigate): Cannot navigate to invalid URL\nCall log:\n  \u001b[2m- navigating to \"/\", waiting until \"load\"\u001b[22m\n\n\n   at pages/login.page.ts:10\n\n\u001b[0m \u001b[90m  8 |\u001b[39m\n \u001b[90m  9 |\u001b[39m   \u001b[36masync\u001b[39m goto() {\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 10 |\u001b[39m     \u001b[36mawait\u001b[39m \u001b[36mthis\u001b[39m\u001b[33m.\u001b[39mpage\u001b[33m.\u001b[39mgoto(\u001b[32m\"/\"\u001b[39m)\u001b[33m;\u001b[39m\n \u001b[90m    |\u001b[39m                     \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 11 |\u001b[39m     \u001b[36mawait\u001b[39m \u001b[36mthis\u001b[39m\u001b[33m.\u001b[39mpage\u001b[33m.\u001b[39mgetByRole(\u001b[32m\"button\"\u001b[39m\u001b[33m,\u001b[39m { name\u001b[33m:\u001b[39m \u001b[32m\"Sign In\"\u001b[39m })\u001b[33m.\u001b[39mclick()\u001b[33m;\u001b[39m\n \u001b[90m 12 |\u001b[39m   }\n \u001b[90m 13 |\u001b[39m\u001b[0m\n\n    at LoginPage.goto (/home/runner/work/macpro-mako/macpro-mako/test/pages/login.page.ts:10:21)\n    at generateAuthFile (/home/runner/work/macpro-mako/macpro-mako/test/lib/auth.setup.ts:25:19)\n    at /home/runner/work/macpro-mako/macpro-mako/test/lib/ci.setup.ts:23:3"
+                    }
+                  ],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 1,
+                  "startTime": "2025-05-09T18:14:52.587Z",
+                  "attachments": [
+                    {
+                      "name": "trace",
+                      "contentType": "application/zip",
+                      "path": "/home/runner/work/macpro-mako/macpro-mako/test/test-results/lib-ci.setup.ts-auth-ci-setup-retry1/trace.zip"
+                    }
+                  ],
+                  "errorLocation": {
+                    "file": "/home/runner/work/macpro-mako/macpro-mako/test/pages/login.page.ts",
+                    "column": 21,
+                    "line": 10
+                  }
+                },
+                {
+                  "workerIndex": 2,
+                  "status": "failed",
+                  "duration": 227,
+                  "error": {
+                    "message": "Error: page.goto: Protocol error (Page.navigate): Cannot navigate to invalid URL\nCall log:\n  \u001b[2m- navigating to \"/\", waiting until \"load\"\u001b[22m\n",
+                    "stack": "Error: page.goto: Protocol error (Page.navigate): Cannot navigate to invalid URL\nCall log:\n  \u001b[2m- navigating to \"/\", waiting until \"load\"\u001b[22m\n\n    at LoginPage.goto (/home/runner/work/macpro-mako/macpro-mako/test/pages/login.page.ts:10:21)\n    at generateAuthFile (/home/runner/work/macpro-mako/macpro-mako/test/lib/auth.setup.ts:25:19)\n    at /home/runner/work/macpro-mako/macpro-mako/test/lib/ci.setup.ts:23:3",
+                    "location": {
+                      "file": "/home/runner/work/macpro-mako/macpro-mako/test/pages/login.page.ts",
+                      "column": 21,
+                      "line": 10
+                    },
+                    "snippet": "   at pages/login.page.ts:10\n\n\u001b[0m \u001b[90m  8 |\u001b[39m\n \u001b[90m  9 |\u001b[39m   \u001b[36masync\u001b[39m goto() {\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 10 |\u001b[39m     \u001b[36mawait\u001b[39m \u001b[36mthis\u001b[39m\u001b[33m.\u001b[39mpage\u001b[33m.\u001b[39mgoto(\u001b[32m\"/\"\u001b[39m)\u001b[33m;\u001b[39m\n \u001b[90m    |\u001b[39m                     \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 11 |\u001b[39m     \u001b[36mawait\u001b[39m \u001b[36mthis\u001b[39m\u001b[33m.\u001b[39mpage\u001b[33m.\u001b[39mgetByRole(\u001b[32m\"button\"\u001b[39m\u001b[33m,\u001b[39m { name\u001b[33m:\u001b[39m \u001b[32m\"Sign In\"\u001b[39m })\u001b[33m.\u001b[39mclick()\u001b[33m;\u001b[39m\n \u001b[90m 12 |\u001b[39m   }\n \u001b[90m 13 |\u001b[39m\u001b[0m"
+                  },
+                  "errors": [
+                    {
+                      "location": {
+                        "file": "/home/runner/work/macpro-mako/macpro-mako/test/pages/login.page.ts",
+                        "column": 21,
+                        "line": 10
+                      },
+                      "message": "Error: page.goto: Protocol error (Page.navigate): Cannot navigate to invalid URL\nCall log:\n  \u001b[2m- navigating to \"/\", waiting until \"load\"\u001b[22m\n\n\n   at pages/login.page.ts:10\n\n\u001b[0m \u001b[90m  8 |\u001b[39m\n \u001b[90m  9 |\u001b[39m   \u001b[36masync\u001b[39m goto() {\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 10 |\u001b[39m     \u001b[36mawait\u001b[39m \u001b[36mthis\u001b[39m\u001b[33m.\u001b[39mpage\u001b[33m.\u001b[39mgoto(\u001b[32m\"/\"\u001b[39m)\u001b[33m;\u001b[39m\n \u001b[90m    |\u001b[39m                     \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 11 |\u001b[39m     \u001b[36mawait\u001b[39m \u001b[36mthis\u001b[39m\u001b[33m.\u001b[39mpage\u001b[33m.\u001b[39mgetByRole(\u001b[32m\"button\"\u001b[39m\u001b[33m,\u001b[39m { name\u001b[33m:\u001b[39m \u001b[32m\"Sign In\"\u001b[39m })\u001b[33m.\u001b[39mclick()\u001b[33m;\u001b[39m\n \u001b[90m 12 |\u001b[39m   }\n \u001b[90m 13 |\u001b[39m\u001b[0m\n\n    at LoginPage.goto (/home/runner/work/macpro-mako/macpro-mako/test/pages/login.page.ts:10:21)\n    at generateAuthFile (/home/runner/work/macpro-mako/macpro-mako/test/lib/auth.setup.ts:25:19)\n    at /home/runner/work/macpro-mako/macpro-mako/test/lib/ci.setup.ts:23:3"
+                    }
+                  ],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 2,
+                  "startTime": "2025-05-09T18:14:53.849Z",
+                  "attachments": [
+                    {
+                      "name": "trace",
+                      "contentType": "application/zip",
+                      "path": "/home/runner/work/macpro-mako/macpro-mako/test/test-results/lib-ci.setup.ts-auth-ci-setup-retry2/trace.zip"
+                    }
+                  ],
+                  "errorLocation": {
+                    "file": "/home/runner/work/macpro-mako/macpro-mako/test/pages/login.page.ts",
+                    "column": 21,
+                    "line": 10
+                  }
+                }
+              ],
+              "status": "unexpected"
+            }
+          ],
+          "id": "9707e25f226d0e9f8d3b-89e10dbcc7ff0b776b63",
+          "file": "lib/ci.setup.ts",
+          "line": 22,
+          "column": 1
+        }
+      ]
+    },
+    {
+      "title": "e2e/dashboard/dashboard.spec.ts",
+      "file": "e2e/dashboard/dashboard.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [],
+      "suites": [
+        {
+          "title": "Dashboard page",
+          "file": "e2e/dashboard/dashboard.spec.ts",
+          "line": 4,
+          "column": 6,
+          "specs": [],
+          "suites": [
+            {
+              "title": "UI validations",
+              "file": "e2e/dashboard/dashboard.spec.ts",
+              "line": 9,
+              "column": 8,
+              "specs": [
+                {
+                  "title": "nav banner updated",
+                  "ok": true,
+                  "tags": [
+                    "dashboard",
+                    "CI",
+                    "smoke"
+                  ],
+                  "tests": [
+                    {
+                      "timeout": 30000,
+                      "annotations": [],
+                      "expectedStatus": "passed",
+                      "projectId": "ci",
+                      "projectName": "ci",
+                      "results": [],
+                      "status": "skipped"
+                    }
+                  ],
+                  "id": "100b0891d08a31cb23fb-76f8cc81557dc0f61241",
+                  "file": "e2e/dashboard/dashboard.spec.ts",
+                  "line": 10,
+                  "column": 5
+                },
+                {
+                  "title": "page header",
+                  "ok": true,
+                  "tags": [
+                    "dashboard",
+                    "CI",
+                    "smoke"
+                  ],
+                  "tests": [
+                    {
+                      "timeout": 30000,
+                      "annotations": [],
+                      "expectedStatus": "passed",
+                      "projectId": "ci",
+                      "projectName": "ci",
+                      "results": [],
+                      "status": "skipped"
+                    }
+                  ],
+                  "id": "100b0891d08a31cb23fb-5ad29c1ddaa083a63709",
+                  "file": "e2e/dashboard/dashboard.spec.ts",
+                  "line": 24,
+                  "column": 5
+                },
+                {
+                  "title": "SPA and Waiver tabs",
+                  "ok": true,
+                  "tags": [
+                    "dashboard",
+                    "CI",
+                    "smoke"
+                  ],
+                  "tests": [
+                    {
+                      "timeout": 30000,
+                      "annotations": [],
+                      "expectedStatus": "passed",
+                      "projectId": "ci",
+                      "projectName": "ci",
+                      "results": [],
+                      "status": "skipped"
+                    }
+                  ],
+                  "id": "100b0891d08a31cb23fb-11919b40cdcee1309ee8",
+                  "file": "e2e/dashboard/dashboard.spec.ts",
+                  "line": 32,
+                  "column": 5
+                },
+                {
+                  "title": "search field",
+                  "ok": true,
+                  "tags": [
+                    "dashboard",
+                    "CI",
+                    "smoke"
+                  ],
+                  "tests": [
+                    {
+                      "timeout": 30000,
+                      "annotations": [],
+                      "expectedStatus": "passed",
+                      "projectId": "ci",
+                      "projectName": "ci",
+                      "results": [],
+                      "status": "skipped"
+                    }
+                  ],
+                  "id": "100b0891d08a31cb23fb-eb013ef3c4c22ada5e84",
+                  "file": "e2e/dashboard/dashboard.spec.ts",
+                  "line": 40,
+                  "column": 5
+                },
+                {
+                  "title": "columns button",
+                  "ok": true,
+                  "tags": [
+                    "dashboard",
+                    "CI",
+                    "smoke"
+                  ],
+                  "tests": [
+                    {
+                      "timeout": 30000,
+                      "annotations": [],
+                      "expectedStatus": "passed",
+                      "projectId": "ci",
+                      "projectName": "ci",
+                      "results": [],
+                      "status": "skipped"
+                    }
+                  ],
+                  "id": "100b0891d08a31cb23fb-5aec2b240885fac5da33",
+                  "file": "e2e/dashboard/dashboard.spec.ts",
+                  "line": 49,
+                  "column": 5
+                },
+                {
+                  "title": "filters buttons",
+                  "ok": true,
+                  "tags": [
+                    "dashboard",
+                    "CI",
+                    "smoke"
+                  ],
+                  "tests": [
+                    {
+                      "timeout": 30000,
+                      "annotations": [],
+                      "expectedStatus": "passed",
+                      "projectId": "ci",
+                      "projectName": "ci",
+                      "results": [],
+                      "status": "skipped"
+                    }
+                  ],
+                  "id": "100b0891d08a31cb23fb-76fd73727ab1056ed638",
+                  "file": "e2e/dashboard/dashboard.spec.ts",
+                  "line": 54,
+                  "column": 5
+                },
+                {
+                  "title": "export button",
+                  "ok": true,
+                  "tags": [
+                    "dashboard",
+                    "CI",
+                    "smoke"
+                  ],
+                  "tests": [
+                    {
+                      "timeout": 30000,
+                      "annotations": [],
+                      "expectedStatus": "passed",
+                      "projectId": "ci",
+                      "projectName": "ci",
+                      "results": [],
+                      "status": "skipped"
+                    }
+                  ],
+                  "id": "100b0891d08a31cb23fb-4663d16124e0d9e12ee5",
+                  "file": "e2e/dashboard/dashboard.spec.ts",
+                  "line": 59,
+                  "column": 5
+                }
+              ],
+              "suites": [
+                {
+                  "title": "dashboard table",
+                  "file": "e2e/dashboard/dashboard.spec.ts",
+                  "line": 64,
+                  "column": 10,
+                  "specs": [],
+                  "suites": [
+                    {
+                      "title": "spas",
+                      "file": "e2e/dashboard/dashboard.spec.ts",
+                      "line": 65,
+                      "column": 12,
+                      "specs": [
+                        {
+                          "title": "column headers",
+                          "ok": true,
+                          "tags": [
+                            "dashboard",
+                            "CI",
+                            "smoke"
+                          ],
+                          "tests": [
+                            {
+                              "timeout": 30000,
+                              "annotations": [],
+                              "expectedStatus": "passed",
+                              "projectId": "ci",
+                              "projectName": "ci",
+                              "results": [],
+                              "status": "skipped"
+                            }
+                          ],
+                          "id": "100b0891d08a31cb23fb-4271e7712f1088d9201c",
+                          "file": "e2e/dashboard/dashboard.spec.ts",
+                          "line": 66,
+                          "column": 9
+                        },
+                        {
+                          "title": "table data",
+                          "ok": true,
+                          "tags": [
+                            "dashboard",
+                            "CI",
+                            "smoke"
+                          ],
+                          "tests": [
+                            {
+                              "timeout": 30000,
+                              "annotations": [],
+                              "expectedStatus": "passed",
+                              "projectId": "ci",
+                              "projectName": "ci",
+                              "results": [],
+                              "status": "skipped"
+                            }
+                          ],
+                          "id": "100b0891d08a31cb23fb-1e7e5fa732c20d3643d5",
+                          "file": "e2e/dashboard/dashboard.spec.ts",
+                          "line": 88,
+                          "column": 9
+                        },
+                        {
+                          "title": "table footer",
+                          "ok": true,
+                          "tags": [
+                            "dashboard",
+                            "CI",
+                            "smoke"
+                          ],
+                          "tests": [
+                            {
+                              "timeout": 30000,
+                              "annotations": [],
+                              "expectedStatus": "passed",
+                              "projectId": "ci",
+                              "projectName": "ci",
+                              "results": [],
+                              "status": "skipped"
+                            }
+                          ],
+                          "id": "100b0891d08a31cb23fb-4ee423d0ee439c542958",
+                          "file": "e2e/dashboard/dashboard.spec.ts",
+                          "line": 92,
+                          "column": 9
+                        }
+                      ]
+                    },
+                    {
+                      "title": "waivers",
+                      "file": "e2e/dashboard/dashboard.spec.ts",
+                      "line": 97,
+                      "column": 12,
+                      "specs": [
+                        {
+                          "title": "column headers",
+                          "ok": true,
+                          "tags": [
+                            "dashboard",
+                            "CI",
+                            "smoke"
+                          ],
+                          "tests": [
+                            {
+                              "timeout": 30000,
+                              "annotations": [],
+                              "expectedStatus": "passed",
+                              "projectId": "ci",
+                              "projectName": "ci",
+                              "results": [],
+                              "status": "skipped"
+                            }
+                          ],
+                          "id": "100b0891d08a31cb23fb-0806ffed22afd0f21e10",
+                          "file": "e2e/dashboard/dashboard.spec.ts",
+                          "line": 102,
+                          "column": 9
+                        },
+                        {
+                          "title": "table data",
+                          "ok": true,
+                          "tags": [
+                            "dashboard",
+                            "CI",
+                            "smoke"
+                          ],
+                          "tests": [
+                            {
+                              "timeout": 30000,
+                              "annotations": [],
+                              "expectedStatus": "passed",
+                              "projectId": "ci",
+                              "projectName": "ci",
+                              "results": [],
+                              "status": "skipped"
+                            }
+                          ],
+                          "id": "100b0891d08a31cb23fb-3f9fb7478995c03532ad",
+                          "file": "e2e/dashboard/dashboard.spec.ts",
+                          "line": 124,
+                          "column": 9
+                        },
+                        {
+                          "title": "table footer",
+                          "ok": true,
+                          "tags": [
+                            "dashboard",
+                            "CI",
+                            "smoke"
+                          ],
+                          "tests": [
+                            {
+                              "timeout": 30000,
+                              "annotations": [],
+                              "expectedStatus": "passed",
+                              "projectId": "ci",
+                              "projectName": "ci",
+                              "results": [],
+                              "status": "skipped"
+                            }
+                          ],
+                          "id": "100b0891d08a31cb23fb-b8675e4ae6878c150e0f",
+                          "file": "e2e/dashboard/dashboard.spec.ts",
+                          "line": 128,
+                          "column": 9
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "title": "e2e/faq/faq.spec.ts",
+      "file": "e2e/faq/faq.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [],
+      "suites": [
+        {
+          "title": "FAQ page",
+          "file": "e2e/faq/faq.spec.ts",
+          "line": 6,
+          "column": 6,
+          "specs": [],
+          "suites": [
+            {
+              "title": "UI validation",
+              "file": "e2e/faq/faq.spec.ts",
+              "line": 12,
+              "column": 8,
+              "specs": [],
+              "suites": [
+                {
+                  "title": "header",
+                  "file": "e2e/faq/faq.spec.ts",
+                  "line": 13,
+                  "column": 10,
+                  "specs": [
+                    {
+                      "title": "displays header",
+                      "ok": true,
+                      "tags": [
+                        "e2e",
+                        "smoke",
+                        "faq",
+                        "CI"
+                      ],
+                      "tests": [
+                        {
+                          "timeout": 30000,
+                          "annotations": [],
+                          "expectedStatus": "passed",
+                          "projectId": "ci",
+                          "projectName": "ci",
+                          "results": [],
+                          "status": "skipped"
+                        }
+                      ],
+                      "id": "ea688ac7e25471e4a698-87855c30a40bcc822eba",
+                      "file": "e2e/faq/faq.spec.ts",
+                      "line": 14,
+                      "column": 7
+                    }
+                  ]
+                },
+                {
+                  "title": "General section",
+                  "file": "e2e/faq/faq.spec.ts",
+                  "line": 20,
+                  "column": 10,
+                  "specs": [
+                    {
+                      "title": "displays system for state submission FAQ",
+                      "ok": true,
+                      "tags": [
+                        "e2e",
+                        "smoke",
+                        "faq",
+                        "CI"
+                      ],
+                      "tests": [
+                        {
+                          "timeout": 30000,
+                          "annotations": [],
+                          "expectedStatus": "passed",
+                          "projectId": "ci",
+                          "projectName": "ci",
+                          "results": [],
+                          "status": "skipped"
+                        }
+                      ],
+                      "id": "ea688ac7e25471e4a698-1db92d6572ee5f00c877",
+                      "file": "e2e/faq/faq.spec.ts",
+                      "line": 21,
+                      "column": 7
+                    },
+                    {
+                      "title": "displays browser type FAQ",
+                      "ok": true,
+                      "tags": [
+                        "e2e",
+                        "smoke",
+                        "faq",
+                        "CI"
+                      ],
+                      "tests": [
+                        {
+                          "timeout": 30000,
+                          "annotations": [],
+                          "expectedStatus": "passed",
+                          "projectId": "ci",
+                          "projectName": "ci",
+                          "results": [],
+                          "status": "skipped"
+                        }
+                      ],
+                      "id": "ea688ac7e25471e4a698-e0f7fde1c833601b7f87",
+                      "file": "e2e/faq/faq.spec.ts",
+                      "line": 30,
+                      "column": 7
+                    },
+                    {
+                      "title": "displays confirmation email FAQ",
+                      "ok": true,
+                      "tags": [
+                        "e2e",
+                        "smoke",
+                        "faq",
+                        "CI"
+                      ],
+                      "tests": [
+                        {
+                          "timeout": 30000,
+                          "annotations": [],
+                          "expectedStatus": "passed",
+                          "projectId": "ci",
+                          "projectName": "ci",
+                          "results": [],
+                          "status": "skipped"
+                        }
+                      ],
+                      "id": "ea688ac7e25471e4a698-6184ef87ad185b28a952",
+                      "file": "e2e/faq/faq.spec.ts",
+                      "line": 37,
+                      "column": 7
+                    },
+                    {
+                      "title": "displays official submission FAQ",
+                      "ok": true,
+                      "tags": [
+                        "e2e",
+                        "smoke",
+                        "faq",
+                        "CI"
+                      ],
+                      "tests": [
+                        {
+                          "timeout": 30000,
+                          "annotations": [],
+                          "expectedStatus": "passed",
+                          "projectId": "ci",
+                          "projectName": "ci",
+                          "results": [],
+                          "status": "skipped"
+                        }
+                      ],
+                      "id": "ea688ac7e25471e4a698-9e9ba530f3490becbc63",
+                      "file": "e2e/faq/faq.spec.ts",
+                      "line": 46,
+                      "column": 7
+                    },
+                    {
+                      "title": "displays OneMac user roles FAQ",
+                      "ok": true,
+                      "tags": [
+                        "e2e",
+                        "smoke",
+                        "faq",
+                        "CI"
+                      ],
+                      "tests": [
+                        {
+                          "timeout": 30000,
+                          "annotations": [],
+                          "expectedStatus": "passed",
+                          "projectId": "ci",
+                          "projectName": "ci",
+                          "results": [],
+                          "status": "skipped"
+                        }
+                      ],
+                      "id": "ea688ac7e25471e4a698-ed1d01e829a9919d6693",
+                      "file": "e2e/faq/faq.spec.ts",
+                      "line": 55,
+                      "column": 7
+                    },
+                    {
+                      "title": "displays file format FAQ",
+                      "ok": true,
+                      "tags": [
+                        "e2e",
+                        "smoke",
+                        "faq",
+                        "CI"
+                      ],
+                      "tests": [
+                        {
+                          "timeout": 30000,
+                          "annotations": [],
+                          "expectedStatus": "passed",
+                          "projectId": "ci",
+                          "projectName": "ci",
+                          "results": [],
+                          "status": "skipped"
+                        }
+                      ],
+                      "id": "ea688ac7e25471e4a698-e9cc264e1909662cffcc",
+                      "file": "e2e/faq/faq.spec.ts",
+                      "line": 62,
+                      "column": 7
+                    },
+                    {
+                      "title": "displays onboarding materials FAQ",
+                      "ok": true,
+                      "tags": [
+                        "e2e",
+                        "smoke",
+                        "faq",
+                        "CI"
+                      ],
+                      "tests": [
+                        {
+                          "timeout": 30000,
+                          "annotations": [],
+                          "expectedStatus": "passed",
+                          "projectId": "ci",
+                          "projectName": "ci",
+                          "results": [],
+                          "status": "skipped"
+                        }
+                      ],
+                      "id": "ea688ac7e25471e4a698-165f479f08e04e77a948",
+                      "file": "e2e/faq/faq.spec.ts",
+                      "line": 71,
+                      "column": 7
+                    }
+                  ]
+                },
+                {
+                  "title": "State Plan Amendments (SPAs)",
+                  "file": "e2e/faq/faq.spec.ts",
+                  "line": 79,
+                  "column": 10,
+                  "specs": [
+                    {
+                      "title": "displays format used to enter a SPA ID FAQ",
+                      "ok": true,
+                      "tags": [
+                        "e2e",
+                        "smoke",
+                        "faq",
+                        "CI"
+                      ],
+                      "tests": [
+                        {
+                          "timeout": 30000,
+                          "annotations": [],
+                          "expectedStatus": "passed",
+                          "projectId": "ci",
+                          "projectName": "ci",
+                          "results": [],
+                          "status": "skipped"
+                        }
+                      ],
+                      "id": "ea688ac7e25471e4a698-6a8cbe76a595b8b72815",
+                      "file": "e2e/faq/faq.spec.ts",
+                      "line": 80,
+                      "column": 7
+                    },
+                    {
+                      "title": "displays Medicaid SPA attachments FAQ",
+                      "ok": true,
+                      "tags": [
+                        "e2e",
+                        "smoke",
+                        "faq",
+                        "CI"
+                      ],
+                      "tests": [
+                        {
+                          "timeout": 30000,
+                          "annotations": [],
+                          "expectedStatus": "passed",
+                          "projectId": "ci",
+                          "projectName": "ci",
+                          "results": [],
+                          "status": "skipped"
+                        }
+                      ],
+                      "id": "ea688ac7e25471e4a698-9d1c36868646e8a6990f",
+                      "file": "e2e/faq/faq.spec.ts",
+                      "line": 87,
+                      "column": 7
+                    },
+                    {
+                      "title": "displays attachments response to Medicaid RAI FAQ",
+                      "ok": true,
+                      "tags": [
+                        "e2e",
+                        "smoke",
+                        "faq",
+                        "CI"
+                      ],
+                      "tests": [
+                        {
+                          "timeout": 30000,
+                          "annotations": [],
+                          "expectedStatus": "passed",
+                          "projectId": "ci",
+                          "projectName": "ci",
+                          "results": [],
+                          "status": "skipped"
+                        }
+                      ],
+                      "id": "ea688ac7e25471e4a698-028987b942159ad30b0b",
+                      "file": "e2e/faq/faq.spec.ts",
+                      "line": 96,
+                      "column": 7
+                    },
+                    {
+                      "title": "displays CHIP SPA attachments FAQ",
+                      "ok": true,
+                      "tags": [
+                        "e2e",
+                        "smoke",
+                        "faq",
+                        "CI"
+                      ],
+                      "tests": [
+                        {
+                          "timeout": 30000,
+                          "annotations": [],
+                          "expectedStatus": "passed",
+                          "projectId": "ci",
+                          "projectName": "ci",
+                          "results": [],
+                          "status": "skipped"
+                        }
+                      ],
+                      "id": "ea688ac7e25471e4a698-5e73ce456cb7680c7289",
+                      "file": "e2e/faq/faq.spec.ts",
+                      "line": 105,
+                      "column": 7
+                    },
+                    {
+                      "title": "displays attachments response to CHIP RAI FAQ",
+                      "ok": true,
+                      "tags": [
+                        "e2e",
+                        "smoke",
+                        "faq",
+                        "CI"
+                      ],
+                      "tests": [
+                        {
+                          "timeout": 30000,
+                          "annotations": [],
+                          "expectedStatus": "passed",
+                          "projectId": "ci",
+                          "projectName": "ci",
+                          "results": [],
+                          "status": "skipped"
+                        }
+                      ],
+                      "id": "ea688ac7e25471e4a698-b26c27bbb7cf0ad1f2e0",
+                      "file": "e2e/faq/faq.spec.ts",
+                      "line": 114,
+                      "column": 7
+                    },
+                    {
+                      "title": "displays PHE FAQ",
+                      "ok": true,
+                      "tags": [
+                        "e2e",
+                        "smoke",
+                        "faq",
+                        "CI"
+                      ],
+                      "tests": [
+                        {
+                          "timeout": 30000,
+                          "annotations": [],
+                          "expectedStatus": "passed",
+                          "projectId": "ci",
+                          "projectName": "ci",
+                          "results": [],
+                          "status": "skipped"
+                        }
+                      ],
+                      "id": "ea688ac7e25471e4a698-f3e2fc9ccde2f0eab11b",
+                      "file": "e2e/faq/faq.spec.ts",
+                      "line": 123,
+                      "column": 7
+                    },
+                    {
+                      "title": "displays withdraw formal RAI for Medicaid SPA FAQ",
+                      "ok": true,
+                      "tags": [
+                        "e2e",
+                        "smoke",
+                        "faq",
+                        "CI"
+                      ],
+                      "tests": [
+                        {
+                          "timeout": 30000,
+                          "annotations": [],
+                          "expectedStatus": "passed",
+                          "projectId": "ci",
+                          "projectName": "ci",
+                          "results": [],
+                          "status": "skipped"
+                        }
+                      ],
+                      "id": "ea688ac7e25471e4a698-2836d59a187698696658",
+                      "file": "e2e/faq/faq.spec.ts",
+                      "line": 132,
+                      "column": 7
+                    },
+                    {
+                      "title": "displays withdraw package for Medicaid SPA FAQ",
+                      "ok": true,
+                      "tags": [
+                        "e2e",
+                        "smoke",
+                        "faq",
+                        "CI"
+                      ],
+                      "tests": [
+                        {
+                          "timeout": 30000,
+                          "annotations": [],
+                          "expectedStatus": "passed",
+                          "projectId": "ci",
+                          "projectName": "ci",
+                          "results": [],
+                          "status": "skipped"
+                        }
+                      ],
+                      "id": "ea688ac7e25471e4a698-c69cf1bc980abc235883",
+                      "file": "e2e/faq/faq.spec.ts",
+                      "line": 141,
+                      "column": 7
+                    },
+                    {
+                      "title": "displays withdraw formal RAI for CHIP SPA FAQ",
+                      "ok": true,
+                      "tags": [
+                        "e2e",
+                        "smoke",
+                        "faq",
+                        "CI"
+                      ],
+                      "tests": [
+                        {
+                          "timeout": 30000,
+                          "annotations": [],
+                          "expectedStatus": "passed",
+                          "projectId": "ci",
+                          "projectName": "ci",
+                          "results": [],
+                          "status": "skipped"
+                        }
+                      ],
+                      "id": "ea688ac7e25471e4a698-38c46f4f2df031f47894",
+                      "file": "e2e/faq/faq.spec.ts",
+                      "line": 150,
+                      "column": 7
+                    },
+                    {
+                      "title": "displays withdraw package for CHIP SPA FAQ",
+                      "ok": true,
+                      "tags": [
+                        "e2e",
+                        "smoke",
+                        "faq",
+                        "CI"
+                      ],
+                      "tests": [
+                        {
+                          "timeout": 30000,
+                          "annotations": [],
+                          "expectedStatus": "passed",
+                          "projectId": "ci",
+                          "projectName": "ci",
+                          "results": [],
+                          "status": "skipped"
+                        }
+                      ],
+                      "id": "ea688ac7e25471e4a698-652622d18b8193289468",
+                      "file": "e2e/faq/faq.spec.ts",
+                      "line": 159,
+                      "column": 7
+                    },
+                    {
+                      "title": "displays download ABP SPA templates FAQ",
+                      "ok": true,
+                      "tags": [
+                        "e2e",
+                        "smoke",
+                        "faq",
+                        "CI"
+                      ],
+                      "tests": [
+                        {
+                          "timeout": 30000,
+                          "annotations": [],
+                          "expectedStatus": "passed",
+                          "projectId": "ci",
+                          "projectName": "ci",
+                          "results": [],
+                          "status": "skipped"
+                        }
+                      ],
+                      "id": "ea688ac7e25471e4a698-124b5292a95c5a218e56",
+                      "file": "e2e/faq/faq.spec.ts",
+                      "line": 168,
+                      "column": 7
+                    },
+                    {
+                      "title": "displays download ABP SPA implementation guides FAQ",
+                      "ok": true,
+                      "tags": [
+                        "e2e",
+                        "smoke",
+                        "faq",
+                        "CI"
+                      ],
+                      "tests": [
+                        {
+                          "timeout": 30000,
+                          "annotations": [],
+                          "expectedStatus": "passed",
+                          "projectId": "ci",
+                          "projectName": "ci",
+                          "results": [],
+                          "status": "skipped"
+                        }
+                      ],
+                      "id": "ea688ac7e25471e4a698-0c3ab2f239e713943d2a",
+                      "file": "e2e/faq/faq.spec.ts",
+                      "line": 177,
+                      "column": 7
+                    },
+                    {
+                      "title": "displays download MPC SPA templates FAQ",
+                      "ok": true,
+                      "tags": [
+                        "e2e",
+                        "smoke",
+                        "faq",
+                        "CI"
+                      ],
+                      "tests": [
+                        {
+                          "timeout": 30000,
+                          "annotations": [],
+                          "expectedStatus": "passed",
+                          "projectId": "ci",
+                          "projectName": "ci",
+                          "results": [],
+                          "status": "skipped"
+                        }
+                      ],
+                      "id": "ea688ac7e25471e4a698-6d33b4e65aeec005b344",
+                      "file": "e2e/faq/faq.spec.ts",
+                      "line": 186,
+                      "column": 7
+                    },
+                    {
+                      "title": "displays download MPC SPA implementation guides FAQ",
+                      "ok": true,
+                      "tags": [
+                        "e2e",
+                        "smoke",
+                        "faq",
+                        "CI"
+                      ],
+                      "tests": [
+                        {
+                          "timeout": 30000,
+                          "annotations": [],
+                          "expectedStatus": "passed",
+                          "projectId": "ci",
+                          "projectName": "ci",
+                          "results": [],
+                          "status": "skipped"
+                        }
+                      ],
+                      "id": "ea688ac7e25471e4a698-6a0914cd19324e470c91",
+                      "file": "e2e/faq/faq.spec.ts",
+                      "line": 195,
+                      "column": 7
+                    },
+                    {
+                      "title": "displays download CHIP eligibility SPA templates FAQ",
+                      "ok": true,
+                      "tags": [
+                        "e2e",
+                        "smoke",
+                        "faq",
+                        "CI"
+                      ],
+                      "tests": [
+                        {
+                          "timeout": 30000,
+                          "annotations": [],
+                          "expectedStatus": "passed",
+                          "projectId": "ci",
+                          "projectName": "ci",
+                          "results": [],
+                          "status": "skipped"
+                        }
+                      ],
+                      "id": "ea688ac7e25471e4a698-2428563419366ff76057",
+                      "file": "e2e/faq/faq.spec.ts",
+                      "line": 204,
+                      "column": 7
+                    },
+                    {
+                      "title": "displays download CHIP eligibility SPA implementation guides FAQ",
+                      "ok": true,
+                      "tags": [
+                        "e2e",
+                        "smoke",
+                        "faq",
+                        "CI"
+                      ],
+                      "tests": [
+                        {
+                          "timeout": 30000,
+                          "annotations": [],
+                          "expectedStatus": "passed",
+                          "projectId": "ci",
+                          "projectName": "ci",
+                          "results": [],
+                          "status": "skipped"
+                        }
+                      ],
+                      "id": "ea688ac7e25471e4a698-90a4d1b8aed1a9097823",
+                      "file": "e2e/faq/faq.spec.ts",
+                      "line": 213,
+                      "column": 7
+                    }
+                  ]
+                },
+                {
+                  "title": "Waivers Section",
+                  "file": "e2e/faq/faq.spec.ts",
+                  "line": 223,
+                  "column": 10,
+                  "specs": [
+                    {
+                      "title": "displays 1915(b) initial waiver number FAQ",
+                      "ok": true,
+                      "tags": [
+                        "e2e",
+                        "smoke",
+                        "faq",
+                        "CI"
+                      ],
+                      "tests": [
+                        {
+                          "timeout": 30000,
+                          "annotations": [],
+                          "expectedStatus": "passed",
+                          "projectId": "ci",
+                          "projectName": "ci",
+                          "results": [],
+                          "status": "skipped"
+                        }
+                      ],
+                      "id": "ea688ac7e25471e4a698-9fc39f9687138dce840c",
+                      "file": "e2e/faq/faq.spec.ts",
+                      "line": 224,
+                      "column": 7
+                    },
+                    {
+                      "title": "displays 1915(b) waiver renewal number FAQ",
+                      "ok": true,
+                      "tags": [
+                        "e2e",
+                        "smoke",
+                        "faq",
+                        "CI"
+                      ],
+                      "tests": [
+                        {
+                          "timeout": 30000,
+                          "annotations": [],
+                          "expectedStatus": "passed",
+                          "projectId": "ci",
+                          "projectName": "ci",
+                          "results": [],
+                          "status": "skipped"
+                        }
+                      ],
+                      "id": "ea688ac7e25471e4a698-bb2475f734ad781ed225",
+                      "file": "e2e/faq/faq.spec.ts",
+                      "line": 233,
+                      "column": 7
+                    },
+                    {
+                      "title": "displays 1915(b) waiver amendment number FAQ",
+                      "ok": true,
+                      "tags": [
+                        "e2e",
+                        "smoke",
+                        "faq",
+                        "CI"
+                      ],
+                      "tests": [
+                        {
+                          "timeout": 30000,
+                          "annotations": [],
+                          "expectedStatus": "passed",
+                          "projectId": "ci",
+                          "projectName": "ci",
+                          "results": [],
+                          "status": "skipped"
+                        }
+                      ],
+                      "id": "ea688ac7e25471e4a698-81eb0827310d9283360b",
+                      "file": "e2e/faq/faq.spec.ts",
+                      "line": 242,
+                      "column": 7
+                    },
+                    {
+                      "title": "displays contact help for 1915(b) waiver FAQ",
+                      "ok": true,
+                      "tags": [
+                        "e2e",
+                        "smoke",
+                        "faq",
+                        "CI"
+                      ],
+                      "tests": [
+                        {
+                          "timeout": 30000,
+                          "annotations": [],
+                          "expectedStatus": "passed",
+                          "projectId": "ci",
+                          "projectName": "ci",
+                          "results": [],
+                          "status": "skipped"
+                        }
+                      ],
+                      "id": "ea688ac7e25471e4a698-a3466843f78fa30f66c4",
+                      "file": "e2e/faq/faq.spec.ts",
+                      "line": 251,
+                      "column": 7
+                    },
+                    {
+                      "title": "displays format 1915(c) waiver number FAQ",
+                      "ok": true,
+                      "tags": [
+                        "e2e",
+                        "smoke",
+                        "faq",
+                        "CI"
+                      ],
+                      "tests": [
+                        {
+                          "timeout": 30000,
+                          "annotations": [],
+                          "expectedStatus": "passed",
+                          "projectId": "ci",
+                          "projectName": "ci",
+                          "results": [],
+                          "status": "skipped"
+                        }
+                      ],
+                      "id": "ea688ac7e25471e4a698-1dbf8cd238e13c8d2676",
+                      "file": "e2e/faq/faq.spec.ts",
+                      "line": 260,
+                      "column": 7
+                    },
+                    {
+                      "title": "displays attachments are needed for 1915(b) waiver action FAQ",
+                      "ok": true,
+                      "tags": [
+                        "e2e",
+                        "smoke",
+                        "faq",
+                        "CI"
+                      ],
+                      "tests": [
+                        {
+                          "timeout": 30000,
+                          "annotations": [],
+                          "expectedStatus": "passed",
+                          "projectId": "ci",
+                          "projectName": "ci",
+                          "results": [],
+                          "status": "skipped"
+                        }
+                      ],
+                      "id": "ea688ac7e25471e4a698-fb21a37a4f250ba2a386",
+                      "file": "e2e/faq/faq.spec.ts",
+                      "line": 269,
+                      "column": 7
+                    },
+                    {
+                      "title": "displays attachments 1915b and c App K RAI response FAQ",
+                      "ok": true,
+                      "tags": [
+                        "e2e",
+                        "smoke",
+                        "faq",
+                        "CI"
+                      ],
+                      "tests": [
+                        {
+                          "timeout": 30000,
+                          "annotations": [],
+                          "expectedStatus": "passed",
+                          "projectId": "ci",
+                          "projectName": "ci",
+                          "results": [],
+                          "status": "skipped"
+                        }
+                      ],
+                      "id": "ea688ac7e25471e4a698-4e931df0787a3a673ca3",
+                      "file": "e2e/faq/faq.spec.ts",
+                      "line": 278,
+                      "column": 7
+                    },
+                    {
+                      "title": "displays temporary extension format FAQ",
+                      "ok": true,
+                      "tags": [
+                        "e2e",
+                        "smoke",
+                        "faq",
+                        "CI"
+                      ],
+                      "tests": [
+                        {
+                          "timeout": 30000,
+                          "annotations": [],
+                          "expectedStatus": "passed",
+                          "projectId": "ci",
+                          "projectName": "ci",
+                          "results": [],
+                          "status": "skipped"
+                        }
+                      ],
+                      "id": "ea688ac7e25471e4a698-7920ff850c062bebb3cd",
+                      "file": "e2e/faq/faq.spec.ts",
+                      "line": 287,
+                      "column": 7
+                    },
+                    {
+                      "title": "displays status of my temporary extension FAQ",
+                      "ok": true,
+                      "tags": [
+                        "e2e",
+                        "smoke",
+                        "faq",
+                        "CI"
+                      ],
+                      "tests": [
+                        {
+                          "timeout": 30000,
+                          "annotations": [],
+                          "expectedStatus": "passed",
+                          "projectId": "ci",
+                          "projectName": "ci",
+                          "results": [],
+                          "status": "skipped"
+                        }
+                      ],
+                      "id": "ea688ac7e25471e4a698-2f8bd96271e84c891255",
+                      "file": "e2e/faq/faq.spec.ts",
+                      "line": 296,
+                      "column": 7
+                    },
+                    {
+                      "title": "displays attachments for 1915(b) waiver FAQ",
+                      "ok": true,
+                      "tags": [
+                        "e2e",
+                        "smoke",
+                        "faq",
+                        "CI"
+                      ],
+                      "tests": [
+                        {
+                          "timeout": 30000,
+                          "annotations": [
+                            {
+                              "type": "skip"
+                            }
+                          ],
+                          "expectedStatus": "skipped",
+                          "projectId": "ci",
+                          "projectName": "ci",
+                          "results": [],
+                          "status": "skipped"
+                        }
+                      ],
+                      "id": "ea688ac7e25471e4a698-65455dba4ac8dd87ec49",
+                      "file": "e2e/faq/faq.spec.ts",
+                      "line": 306,
+                      "column": 12
+                    },
+                    {
+                      "title": "displays attachments for 1915(c) waiver FAQ",
+                      "ok": true,
+                      "tags": [
+                        "e2e",
+                        "smoke",
+                        "faq",
+                        "CI"
+                      ],
+                      "tests": [
+                        {
+                          "timeout": 30000,
+                          "annotations": [
+                            {
+                              "type": "skip"
+                            }
+                          ],
+                          "expectedStatus": "skipped",
+                          "projectId": "ci",
+                          "projectName": "ci",
+                          "results": [],
+                          "status": "skipped"
+                        }
+                      ],
+                      "id": "ea688ac7e25471e4a698-1b31ee8e91885ff21a83",
+                      "file": "e2e/faq/faq.spec.ts",
+                      "line": 318,
+                      "column": 12
+                    },
+                    {
+                      "title": "displays submit App K attachments FAQ",
+                      "ok": true,
+                      "tags": [
+                        "e2e",
+                        "smoke",
+                        "faq",
+                        "CI"
+                      ],
+                      "tests": [
+                        {
+                          "timeout": 30000,
+                          "annotations": [],
+                          "expectedStatus": "passed",
+                          "projectId": "ci",
+                          "projectName": "ci",
+                          "results": [],
+                          "status": "skipped"
+                        }
+                      ],
+                      "id": "ea688ac7e25471e4a698-dc8a0612497ecf7f2fd5",
+                      "file": "e2e/faq/faq.spec.ts",
+                      "line": 329,
+                      "column": 7
+                    },
+                    {
+                      "title": "displays attachments for 1915(c) Appendix K waiver FAQ",
+                      "ok": true,
+                      "tags": [
+                        "e2e",
+                        "smoke",
+                        "faq",
+                        "CI"
+                      ],
+                      "tests": [
+                        {
+                          "timeout": 30000,
+                          "annotations": [],
+                          "expectedStatus": "passed",
+                          "projectId": "ci",
+                          "projectName": "ci",
+                          "results": [],
+                          "status": "skipped"
+                        }
+                      ],
+                      "id": "ea688ac7e25471e4a698-ab39a6ce877a47767c4d",
+                      "file": "e2e/faq/faq.spec.ts",
+                      "line": 336,
+                      "column": 7
+                    },
+                    {
+                      "title": "displays withdraw Formal RAI Response for Medicaid Waiver FAQ",
+                      "ok": true,
+                      "tags": [
+                        "e2e",
+                        "smoke",
+                        "faq",
+                        "CI"
+                      ],
+                      "tests": [
+                        {
+                          "timeout": 30000,
+                          "annotations": [],
+                          "expectedStatus": "passed",
+                          "projectId": "ci",
+                          "projectName": "ci",
+                          "results": [],
+                          "status": "skipped"
+                        }
+                      ],
+                      "id": "ea688ac7e25471e4a698-53768ed2bf2c5608d8b5",
+                      "file": "e2e/faq/faq.spec.ts",
+                      "line": 345,
+                      "column": 7
+                    },
+                    {
+                      "title": "displays withdraw Package for Waiver FAQ",
+                      "ok": true,
+                      "tags": [
+                        "e2e",
+                        "smoke",
+                        "faq",
+                        "CI"
+                      ],
+                      "tests": [
+                        {
+                          "timeout": 30000,
+                          "annotations": [],
+                          "expectedStatus": "passed",
+                          "projectId": "ci",
+                          "projectName": "ci",
+                          "results": [],
+                          "status": "skipped"
+                        }
+                      ],
+                      "id": "ea688ac7e25471e4a698-c0ab2966f039a090c50a",
+                      "file": "e2e/faq/faq.spec.ts",
+                      "line": 354,
+                      "column": 7
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "title": "non-func/a11y/index.spec.ts",
+      "file": "non-func/a11y/index.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [],
+      "suites": [
+        {
+          "title": "test a11y on static routes",
+          "file": "non-func/a11y/index.spec.ts",
+          "line": 8,
+          "column": 6,
+          "specs": [
+            {
+              "title": "/ should not have any automatically detectable accessibility issues",
+              "ok": true,
+              "tags": [
+                "CI",
+                "a11y"
+              ],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "ci",
+                  "projectName": "ci",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "37280e3c1e02c3251f32-d15a0876fd2f5a7fc9ea",
+              "file": "non-func/a11y/index.spec.ts",
+              "line": 10,
+              "column": 5
+            },
+            {
+              "title": "/dashboard should not have any automatically detectable accessibility issues",
+              "ok": true,
+              "tags": [
+                "CI",
+                "a11y"
+              ],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "ci",
+                  "projectName": "ci",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "37280e3c1e02c3251f32-cc045bee0204d07448c8",
+              "file": "non-func/a11y/index.spec.ts",
+              "line": 10,
+              "column": 5
+            },
+            {
+              "title": "/faq should not have any automatically detectable accessibility issues",
+              "ok": true,
+              "tags": [
+                "CI",
+                "a11y"
+              ],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "ci",
+                  "projectName": "ci",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "37280e3c1e02c3251f32-8740808cb5b08fcef8d2",
+              "file": "non-func/a11y/index.spec.ts",
+              "line": 10,
+              "column": 5
+            },
+            {
+              "title": "/profile should not have any automatically detectable accessibility issues",
+              "ok": true,
+              "tags": [
+                "CI",
+                "a11y"
+              ],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "ci",
+                  "projectName": "ci",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "37280e3c1e02c3251f32-1e63b77df142c1aa1023",
+              "file": "non-func/a11y/index.spec.ts",
+              "line": 10,
+              "column": 5
+            },
+            {
+              "title": "/new-submission should not have any automatically detectable accessibility issues",
+              "ok": true,
+              "tags": [
+                "CI",
+                "a11y"
+              ],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "ci",
+                  "projectName": "ci",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "37280e3c1e02c3251f32-7a76ccf38fc5280795b6",
+              "file": "non-func/a11y/index.spec.ts",
+              "line": 10,
+              "column": 5
+            },
+            {
+              "title": "/new-submission/spa should not have any automatically detectable accessibility issues",
+              "ok": true,
+              "tags": [
+                "CI",
+                "a11y"
+              ],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "ci",
+                  "projectName": "ci",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "37280e3c1e02c3251f32-efbb95768bff03be545e",
+              "file": "non-func/a11y/index.spec.ts",
+              "line": 10,
+              "column": 5
+            },
+            {
+              "title": "/new-submission/spa/medicaid should not have any automatically detectable accessibility issues",
+              "ok": true,
+              "tags": [
+                "CI",
+                "a11y"
+              ],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "ci",
+                  "projectName": "ci",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "37280e3c1e02c3251f32-1597a6ac6ec223236303",
+              "file": "non-func/a11y/index.spec.ts",
+              "line": 10,
+              "column": 5
+            },
+            {
+              "title": "/new-submission/spa/chip should not have any automatically detectable accessibility issues",
+              "ok": true,
+              "tags": [
+                "CI",
+                "a11y"
+              ],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "ci",
+                  "projectName": "ci",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "37280e3c1e02c3251f32-814b5c262aab364b5931",
+              "file": "non-func/a11y/index.spec.ts",
+              "line": 10,
+              "column": 5
+            },
+            {
+              "title": "/new-submission/waiver should not have any automatically detectable accessibility issues",
+              "ok": true,
+              "tags": [
+                "CI",
+                "a11y"
+              ],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "ci",
+                  "projectName": "ci",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "37280e3c1e02c3251f32-ca14a6d92aaff6e57bd0",
+              "file": "non-func/a11y/index.spec.ts",
+              "line": 10,
+              "column": 5
+            },
+            {
+              "title": "/new-submission/waiver/b should not have any automatically detectable accessibility issues",
+              "ok": true,
+              "tags": [
+                "CI",
+                "a11y"
+              ],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "ci",
+                  "projectName": "ci",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "37280e3c1e02c3251f32-b6e96816b9200951b93a",
+              "file": "non-func/a11y/index.spec.ts",
+              "line": 10,
+              "column": 5
+            },
+            {
+              "title": "/new-submission/waiver/b/b4 should not have any automatically detectable accessibility issues",
+              "ok": true,
+              "tags": [
+                "CI",
+                "a11y"
+              ],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "ci",
+                  "projectName": "ci",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "37280e3c1e02c3251f32-f820e686e0f0b165d4d0",
+              "file": "non-func/a11y/index.spec.ts",
+              "line": 10,
+              "column": 5
+            },
+            {
+              "title": "/new-submission/waiver/b/capitated should not have any automatically detectable accessibility issues",
+              "ok": true,
+              "tags": [
+                "CI",
+                "a11y"
+              ],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "ci",
+                  "projectName": "ci",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "37280e3c1e02c3251f32-8df20010b665d301a1b3",
+              "file": "non-func/a11y/index.spec.ts",
+              "line": 10,
+              "column": 5
+            },
+            {
+              "title": "/new-submission/spa/medicaid/landing/medicaid-abp should not have any automatically detectable accessibility issues",
+              "ok": true,
+              "tags": [
+                "CI",
+                "a11y"
+              ],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "ci",
+                  "projectName": "ci",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "37280e3c1e02c3251f32-2c08faa80f0614bf1f27",
+              "file": "non-func/a11y/index.spec.ts",
+              "line": 10,
+              "column": 5
+            },
+            {
+              "title": "/new-submission/spa/medicaid/landing/medicaid-eligibility should not have any automatically detectable accessibility issues",
+              "ok": true,
+              "tags": [
+                "CI",
+                "a11y"
+              ],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "ci",
+                  "projectName": "ci",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "37280e3c1e02c3251f32-47d5c54c892f0577f7ae",
+              "file": "non-func/a11y/index.spec.ts",
+              "line": 10,
+              "column": 5
+            },
+            {
+              "title": "/new-submission/spa/chip/landing/chip-eligibility should not have any automatically detectable accessibility issues",
+              "ok": true,
+              "tags": [
+                "CI",
+                "a11y"
+              ],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "ci",
+                  "projectName": "ci",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "37280e3c1e02c3251f32-71b3e117425ece5948d9",
+              "file": "non-func/a11y/index.spec.ts",
+              "line": 10,
+              "column": 5
+            },
+            {
+              "title": "/new-submission/waiver/b/capitated/amendment/create should not have any automatically detectable accessibility issues",
+              "ok": true,
+              "tags": [
+                "CI",
+                "a11y"
+              ],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "ci",
+                  "projectName": "ci",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "37280e3c1e02c3251f32-80e032e9433179de29fc",
+              "file": "non-func/a11y/index.spec.ts",
+              "line": 10,
+              "column": 5
+            },
+            {
+              "title": "/new-submission/waiver/b/capitated/renewal/create should not have any automatically detectable accessibility issues",
+              "ok": true,
+              "tags": [
+                "CI",
+                "a11y"
+              ],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "ci",
+                  "projectName": "ci",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "37280e3c1e02c3251f32-97d28170546fbe09ba49",
+              "file": "non-func/a11y/index.spec.ts",
+              "line": 10,
+              "column": 5
+            },
+            {
+              "title": "/new-submission/waiver/b/capitated/initial/create should not have any automatically detectable accessibility issues",
+              "ok": true,
+              "tags": [
+                "CI",
+                "a11y"
+              ],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "ci",
+                  "projectName": "ci",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "37280e3c1e02c3251f32-cbd8be170dcc3eb1ed23",
+              "file": "non-func/a11y/index.spec.ts",
+              "line": 10,
+              "column": 5
+            },
+            {
+              "title": "/new-submission/waiver/b/b4/initial/create should not have any automatically detectable accessibility issues",
+              "ok": true,
+              "tags": [
+                "CI",
+                "a11y"
+              ],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "ci",
+                  "projectName": "ci",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "37280e3c1e02c3251f32-0b3435dfd99ec42efe8b",
+              "file": "non-func/a11y/index.spec.ts",
+              "line": 10,
+              "column": 5
+            },
+            {
+              "title": "/new-submission/waiver/b/b4/amendment/create should not have any automatically detectable accessibility issues",
+              "ok": true,
+              "tags": [
+                "CI",
+                "a11y"
+              ],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "ci",
+                  "projectName": "ci",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "37280e3c1e02c3251f32-0ca35137a06aece7f89c",
+              "file": "non-func/a11y/index.spec.ts",
+              "line": 10,
+              "column": 5
+            },
+            {
+              "title": "/new-submission/waiver/b/b4/renewal/create should not have any automatically detectable accessibility issues",
+              "ok": true,
+              "tags": [
+                "CI",
+                "a11y"
+              ],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "ci",
+                  "projectName": "ci",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "37280e3c1e02c3251f32-7a0eb5b63546933b1459",
+              "file": "non-func/a11y/index.spec.ts",
+              "line": 10,
+              "column": 5
+            },
+            {
+              "title": "/new-submission/spa/medicaid/create should not have any automatically detectable accessibility issues",
+              "ok": true,
+              "tags": [
+                "CI",
+                "a11y"
+              ],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "ci",
+                  "projectName": "ci",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "37280e3c1e02c3251f32-6eebb886182f4aba3c52",
+              "file": "non-func/a11y/index.spec.ts",
+              "line": 10,
+              "column": 5
+            },
+            {
+              "title": "/new-submission/spa/chip/create should not have any automatically detectable accessibility issues",
+              "ok": true,
+              "tags": [
+                "CI",
+                "a11y"
+              ],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "ci",
+                  "projectName": "ci",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "37280e3c1e02c3251f32-7558b1fb35a572fa4e21",
+              "file": "non-func/a11y/index.spec.ts",
+              "line": 10,
+              "column": 5
+            },
+            {
+              "title": "/new-submission/waiver/app-k should not have any automatically detectable accessibility issues",
+              "ok": true,
+              "tags": [
+                "CI",
+                "a11y"
+              ],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "ci",
+                  "projectName": "ci",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "37280e3c1e02c3251f32-5aee131542d7c168bae2",
+              "file": "non-func/a11y/index.spec.ts",
+              "line": 10,
+              "column": 5
+            },
+            {
+              "title": "/new-submission/waiver/temporary-extensions should not have any automatically detectable accessibility issues",
+              "ok": true,
+              "tags": [
+                "CI",
+                "a11y"
+              ],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "ci",
+                  "projectName": "ci",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "37280e3c1e02c3251f32-7fadcee1da6a90e36220",
+              "file": "non-func/a11y/index.spec.ts",
+              "line": 10,
+              "column": 5
+            }
+          ]
+        },
+        {
+          "title": "test a11y on webform routes",
+          "file": "non-func/a11y/index.spec.ts",
+          "line": 34,
+          "column": 6,
+          "specs": [
+            {
+              "title": "/guides/abp should not have any automatically detectable accessibility issues",
+              "ok": true,
+              "tags": [
+                "CI",
+                "a11y"
+              ],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "ci",
+                  "projectName": "ci",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "37280e3c1e02c3251f32-84c7161018402e30a8f6",
+              "file": "non-func/a11y/index.spec.ts",
+              "line": 36,
+              "column": 5
+            },
+            {
+              "title": "/webform/g3/202401 should not have any automatically detectable accessibility issues",
+              "ok": true,
+              "tags": [
+                "CI",
+                "a11y"
+              ],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "ci",
+                  "projectName": "ci",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "37280e3c1e02c3251f32-d928c3ccfd36a080c0d5",
+              "file": "non-func/a11y/index.spec.ts",
+              "line": 36,
+              "column": 5
+            },
+            {
+              "title": "/webform/g2b/202401 should not have any automatically detectable accessibility issues",
+              "ok": true,
+              "tags": [
+                "CI",
+                "a11y"
+              ],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "ci",
+                  "projectName": "ci",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "37280e3c1e02c3251f32-05532d32ef144aa6354a",
+              "file": "non-func/a11y/index.spec.ts",
+              "line": 36,
+              "column": 5
+            },
+            {
+              "title": "/webform/g2a/202401 should not have any automatically detectable accessibility issues",
+              "ok": true,
+              "tags": [
+                "CI",
+                "a11y"
+              ],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "ci",
+                  "projectName": "ci",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "37280e3c1e02c3251f32-4a6fd5b307c1b9652f6c",
+              "file": "non-func/a11y/index.spec.ts",
+              "line": 36,
+              "column": 5
+            },
+            {
+              "title": "/webform/g1/202401 should not have any automatically detectable accessibility issues",
+              "ok": true,
+              "tags": [
+                "CI",
+                "a11y"
+              ],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "ci",
+                  "projectName": "ci",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "37280e3c1e02c3251f32-06fc42c3d4ce10ddda83",
+              "file": "non-func/a11y/index.spec.ts",
+              "line": 36,
+              "column": 5
+            },
+            {
+              "title": "/webform/cs8/202401 should not have any automatically detectable accessibility issues",
+              "ok": true,
+              "tags": [
+                "CI",
+                "a11y"
+              ],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "ci",
+                  "projectName": "ci",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "37280e3c1e02c3251f32-b04804dee864687efbfc",
+              "file": "non-func/a11y/index.spec.ts",
+              "line": 36,
+              "column": 5
+            },
+            {
+              "title": "/webform/cs3/202401 should not have any automatically detectable accessibility issues",
+              "ok": true,
+              "tags": [
+                "CI",
+                "a11y"
+              ],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "ci",
+                  "projectName": "ci",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "37280e3c1e02c3251f32-158ca1adda78a882863d",
+              "file": "non-func/a11y/index.spec.ts",
+              "line": 36,
+              "column": 5
+            },
+            {
+              "title": "/webform/cs7/202401 should not have any automatically detectable accessibility issues",
+              "ok": true,
+              "tags": [
+                "CI",
+                "a11y"
+              ],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "ci",
+                  "projectName": "ci",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "37280e3c1e02c3251f32-f2acb9406875310abf61",
+              "file": "non-func/a11y/index.spec.ts",
+              "line": 36,
+              "column": 5
+            },
+            {
+              "title": "/webform/abp11/202401 should not have any automatically detectable accessibility issues",
+              "ok": true,
+              "tags": [
+                "CI",
+                "a11y"
+              ],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "ci",
+                  "projectName": "ci",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "37280e3c1e02c3251f32-414eea7bd9e38993397e",
+              "file": "non-func/a11y/index.spec.ts",
+              "line": 36,
+              "column": 5
+            },
+            {
+              "title": "/webform/abp10/202401 should not have any automatically detectable accessibility issues",
+              "ok": true,
+              "tags": [
+                "CI",
+                "a11y"
+              ],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "ci",
+                  "projectName": "ci",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "37280e3c1e02c3251f32-9740306a1086a8f364b9",
+              "file": "non-func/a11y/index.spec.ts",
+              "line": 36,
+              "column": 5
+            },
+            {
+              "title": "/webform/abp9/202401 should not have any automatically detectable accessibility issues",
+              "ok": true,
+              "tags": [
+                "CI",
+                "a11y"
+              ],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "ci",
+                  "projectName": "ci",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "37280e3c1e02c3251f32-93dbfcf3e1c1994e5f19",
+              "file": "non-func/a11y/index.spec.ts",
+              "line": 36,
+              "column": 5
+            },
+            {
+              "title": "/webform/abp7/202401 should not have any automatically detectable accessibility issues",
+              "ok": true,
+              "tags": [
+                "CI",
+                "a11y"
+              ],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "ci",
+                  "projectName": "ci",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "37280e3c1e02c3251f32-d062bca497c1dc7515ac",
+              "file": "non-func/a11y/index.spec.ts",
+              "line": 36,
+              "column": 5
+            },
+            {
+              "title": "/webform/abp6/202401 should not have any automatically detectable accessibility issues",
+              "ok": true,
+              "tags": [
+                "CI",
+                "a11y"
+              ],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "ci",
+                  "projectName": "ci",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "37280e3c1e02c3251f32-c4e23cb7587820bdd50d",
+              "file": "non-func/a11y/index.spec.ts",
+              "line": 36,
+              "column": 5
+            },
+            {
+              "title": "/webform/abp5/202401 should not have any automatically detectable accessibility issues",
+              "ok": true,
+              "tags": [
+                "CI",
+                "a11y"
+              ],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "ci",
+                  "projectName": "ci",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "37280e3c1e02c3251f32-d4e7f018194e47fc72d6",
+              "file": "non-func/a11y/index.spec.ts",
+              "line": 36,
+              "column": 5
+            },
+            {
+              "title": "/webform/abp4/202401 should not have any automatically detectable accessibility issues",
+              "ok": true,
+              "tags": [
+                "CI",
+                "a11y"
+              ],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "ci",
+                  "projectName": "ci",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "37280e3c1e02c3251f32-5d65f13e2cd47c507673",
+              "file": "non-func/a11y/index.spec.ts",
+              "line": 36,
+              "column": 5
+            },
+            {
+              "title": "/webform/abp3_1/202401 should not have any automatically detectable accessibility issues",
+              "ok": true,
+              "tags": [
+                "CI",
+                "a11y"
+              ],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "ci",
+                  "projectName": "ci",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "37280e3c1e02c3251f32-2b21a369b54ba5270723",
+              "file": "non-func/a11y/index.spec.ts",
+              "line": 36,
+              "column": 5
+            },
+            {
+              "title": "/webform/abp3/202401 should not have any automatically detectable accessibility issues",
+              "ok": true,
+              "tags": [
+                "CI",
+                "a11y"
+              ],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "ci",
+                  "projectName": "ci",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "37280e3c1e02c3251f32-cdbd0e777824dfffb4eb",
+              "file": "non-func/a11y/index.spec.ts",
+              "line": 36,
+              "column": 5
+            },
+            {
+              "title": "/webform/abp2c/202401 should not have any automatically detectable accessibility issues",
+              "ok": true,
+              "tags": [
+                "CI",
+                "a11y"
+              ],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "ci",
+                  "projectName": "ci",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "37280e3c1e02c3251f32-38d4fd1fe7f6f2c607e6",
+              "file": "non-func/a11y/index.spec.ts",
+              "line": 36,
+              "column": 5
+            },
+            {
+              "title": "/webform/abp2b/202401 should not have any automatically detectable accessibility issues",
+              "ok": true,
+              "tags": [
+                "CI",
+                "a11y"
+              ],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "ci",
+                  "projectName": "ci",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "37280e3c1e02c3251f32-e7689da94797abf612d6",
+              "file": "non-func/a11y/index.spec.ts",
+              "line": 36,
+              "column": 5
+            },
+            {
+              "title": "/webform/abp2a/202401 should not have any automatically detectable accessibility issues",
+              "ok": true,
+              "tags": [
+                "CI",
+                "a11y"
+              ],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "ci",
+                  "projectName": "ci",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "37280e3c1e02c3251f32-1af192b66969ea57125c",
+              "file": "non-func/a11y/index.spec.ts",
+              "line": 36,
+              "column": 5
+            },
+            {
+              "title": "/webform/abp1/202401 should not have any automatically detectable accessibility issues",
+              "ok": true,
+              "tags": [
+                "CI",
+                "a11y"
+              ],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "ci",
+                  "projectName": "ci",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "37280e3c1e02c3251f32-de5e473d4c1bdb873f64",
+              "file": "non-func/a11y/index.spec.ts",
+              "line": 36,
+              "column": 5
+            },
+            {
+              "title": "/webform/abp1/202402 should not have any automatically detectable accessibility issues",
+              "ok": true,
+              "tags": [
+                "CI",
+                "a11y"
+              ],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "ci",
+                  "projectName": "ci",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "37280e3c1e02c3251f32-4938d4a603ba6ad4dd6b",
+              "file": "non-func/a11y/index.spec.ts",
+              "line": 36,
+              "column": 5
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "errors": [],
+  "stats": {
+    "startTime": "2025-05-09T18:14:46.324Z",
+    "duration": 7842.534999999999,
+    "expected": 0,
+    "skipped": 99,
+    "unexpected": 1,
+    "flaky": 0
+  }
+}
