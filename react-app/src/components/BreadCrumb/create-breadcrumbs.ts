@@ -25,6 +25,7 @@ const newSubmissionPageRouteMapper: Record<string, { to: string; displayText: st
     displayText:
       "Medicaid Alternative Benefits Plans (ABP), and Medicaid Premiums and Cost Sharing",
   },
+  //feature flag for new chip spa submission
   chip: {
     to: "/new-submission/spa/chip",
     displayText: "CHIP SPA Type",
@@ -32,6 +33,10 @@ const newSubmissionPageRouteMapper: Record<string, { to: string; displayText: st
   "chip-eligibility": {
     to: "/new-submission/spa/chip/landing/chip-eligibility",
     displayText: "CHIP Eligibility SPAs",
+  },
+  chip2: {
+    to: "/new-submission/spa/chip/chip-state-plan",
+    displayText: "Submit new CHIP eligibility SPA",
   },
   waiver: {
     to: "/new-submission/waiver",

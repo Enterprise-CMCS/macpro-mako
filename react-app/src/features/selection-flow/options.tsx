@@ -1,4 +1,5 @@
 import { OptionData } from "@/features/selection-flow/plan-types";
+import { useFeatureFlag } from "@/hooks/useFeatureFlag";
 import { ORIGIN, SPA_SUBMISSION_ORIGIN, WAIVER_SUBMISSION_ORIGIN } from "@/utils";
 
 export const AUTHORITY_OPTIONS: OptionData[] = [
@@ -50,23 +51,52 @@ export const MEDICAID_SPA_OPTIONS: OptionData[] = [
   },
 ];
 
-export const CHIP_SPA_OPTIONS: OptionData[] = [
-  {
-    title: "CHIP eligibility SPA submissions",
-    description: "Create a new CHIP eligibility state plan amendment",
-    to: "/new-submission/spa/chip/landing/chip-eligibility",
-  },
-  {
-    title: "All Other CHIP SPA Submissions",
-    description: "Create a new CHIP State Plan Amendment",
-    to: {
-      pathname: "/new-submission/spa/chip/create",
-      search: new URLSearchParams({
-        [ORIGIN]: SPA_SUBMISSION_ORIGIN,
-      }).toString(),
+export const useChipSpaOptions = (): OptionData[] => {
+  const isEligibilityFormActive = useFeatureFlag("CHIP_SPA_SUBMISSION");
+
+  if (isEligibilityFormActive) {
+    return [
+      {
+        title: "CHIP eligibility SPA submissions",
+        description: "Create a new CHIP eligibility state plan amendment",
+        to: {
+          pathname: "/new-submission/spa/chip/create",
+          search: new URLSearchParams({
+            [ORIGIN]: SPA_SUBMISSION_ORIGIN,
+          }).toString(),
+        },
+      },
+      {
+        title: "All Other CHIP SPA Submissions",
+        description: "Create a new CHIP State Plan Amendment",
+        to: {
+          pathname: "/new-submission/spa/chip/create",
+          search: new URLSearchParams({
+            [ORIGIN]: SPA_SUBMISSION_ORIGIN,
+          }).toString(),
+        },
+      },
+    ];
+  }
+
+  return [
+    {
+      title: "CHIP Eligibility",
+      description: "Redirects to MMDL submission system",
+      to: "/new-submission/spa/chip/landing/chip-eligibility",
     },
-  },
-];
+    {
+      title: "All Other CHIP SPA Submissions",
+      description: "Create a new CHIP State Plan Amendment",
+      to: {
+        pathname: "/new-submission/spa/chip/create",
+        search: new URLSearchParams({
+          [ORIGIN]: SPA_SUBMISSION_ORIGIN,
+        }).toString(),
+      },
+    },
+  ];
+};
 
 export const WAIVER_OPTIONS: OptionData[] = [
   {

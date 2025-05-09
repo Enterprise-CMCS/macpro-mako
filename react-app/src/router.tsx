@@ -9,12 +9,20 @@ import {
 } from "@/features/forms/post-submission/post-submission-forms";
 import { queryClient } from "@/utils";
 
+import { useFeatureFlag } from "./hooks/useFeatureFlag";
+
 const RoutesWithTimeout = () => (
   <>
     <TimeoutModal />
     <Outlet />
   </>
 );
+
+const ChipFormWrapper = () => {
+  const chipEligibilityFlag = useFeatureFlag("CHIP_SPA_SUBMISSION");
+
+  return chipEligibilityFlag ? <F.ChipEligibilityForm /> : <F.ChipForm />;
+};
 
 export const router = (loginFlag = false) => {
   return createBrowserRouter([
@@ -51,7 +59,7 @@ export const router = (loginFlag = false) => {
             },
             {
               path: "/new-submission/spa/chip/create",
-              element: <F.ChipForm />,
+              element: <ChipFormWrapper />,
             },
             {
               path: "/new-submission/waiver/b/capitated/amendment/create",

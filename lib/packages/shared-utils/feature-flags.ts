@@ -59,4 +59,11 @@ export const featureFlags = {
     flag: "login-page",
     defaultValue: true,
   },
+  /*
+   * Toggle visibility of chip spa submission page
+   */
+  CHIP_SPA_SUBMISSION: {
+    flag: "chip-spa-submission",
+    defaultValue: true,
+  },
 } as const;
