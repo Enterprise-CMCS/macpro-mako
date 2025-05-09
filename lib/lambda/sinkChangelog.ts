@@ -74,10 +74,10 @@ const processAndIndex = async ({
           .or(transformSubmitValuesSchema);
 
         const result = schema.safeParse(record);
-        if (result.data?.packageId == "MD-22-0029" || result.data?.packageId === "MD-22-0030") {
-          console.log(result.data.packageId + " : " + JSON.stringify(result.data));
-        }
         if (result.success) {
+          if (result.data?.packageId == "MD-22-0029" || result.data?.packageId === "MD-22-0030") {
+            console.log(result.data.packageId + " : " + JSON.stringify(result.data));
+          }
           if (result.data.adminChangeType === "update-id" && "idToBeUpdated" in result.data) {
             const { id, packageId: _packageId, idToBeUpdated, ...restOfResultData } = result.data;
             // Push doc with content of package being soft deleted
