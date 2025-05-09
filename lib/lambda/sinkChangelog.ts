@@ -55,7 +55,6 @@ const processAndIndex = async ({
 }) => {
   const docs: Array<(typeof transforms)[keyof typeof transforms]["Schema"]> = [];
   for (const kafkaRecord of kafkaRecords) {
-    console.log(JSON.stringify(kafkaRecord, null, 2));
     const { value, offset, headers } = kafkaRecord;
     const kafkaSource = String.fromCharCode(...(headers[0]?.source || []));
     try {
@@ -75,11 +74,16 @@ const processAndIndex = async ({
           .or(transformSubmitValuesSchema);
 
         const result = schema.safeParse(record);
-
         if (result.success) {
+          if (result.data?.packageId == "MD-22-0029" || result.data?.packageId === "MD-22-0030") {
+            console.log(result.data.packageId + " : " + JSON.stringify(result.data));
+          }
           if (result.data.adminChangeType === "update-id" && "idToBeUpdated" in result.data) {
             const { id, packageId: _packageId, idToBeUpdated, ...restOfResultData } = result.data;
             // Push doc with content of package being soft deleted
+            // if (_packageId === "MD-22-0029" || _packageId === "MD-22-0030") {
+            //   console.log(_packageId + " : " + JSON.stringify(result.data));
+            // }
             docs.forEach((log) => {
               const recordOffset = log.id.split("-").at(-1);
               docs.push({
