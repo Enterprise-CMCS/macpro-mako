@@ -181,6 +181,9 @@ export const getStateUsersByState = async (
   const { domain: rolesDomain, index: rolesIndex } = getDomainAndNamespace("roles");
   const { domain: usersDomain, index: usersIndex } = getDomainAndNamespace("users");
 
+  console.log("what is the roles domain and index?", rolesDomain, rolesIndex);
+  console.log("what is the users domain and index?", usersDomain, usersIndex);
+
   const rolesResult = await search(rolesDomain, rolesIndex, {
     size: 1000,
     query: {
