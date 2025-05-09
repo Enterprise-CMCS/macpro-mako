@@ -1,0 +1,196 @@
+{
+  "config": {
+    "configFile": "/home/runner/work/macpro-mako/macpro-mako/test/playwright.config.ts",
+    "rootDir": "/home/runner/work/macpro-mako/macpro-mako/test",
+    "forbidOnly": true,
+    "fullyParallel": true,
+    "globalSetup": null,
+    "globalTeardown": "/home/runner/work/macpro-mako/macpro-mako/test/lib/global.teardown.ts",
+    "globalTimeout": 0,
+    "grep": {},
+    "grepInvert": null,
+    "maxFailures": 0,
+    "metadata": {},
+    "preserveOutput": "always",
+    "reporter": [
+      [
+        "github",
+        null
+      ],
+      [
+        "html",
+        {
+          "outputFolder": "./playwright-reports/html-report",
+          "open": "never"
+        }
+      ],
+      [
+        "json",
+        {
+          "outputFile": "./playwright-reports/playwright-summary.json"
+        }
+      ]
+    ],
+    "reportSlowTests": {
+      "max": 5,
+      "threshold": 15000
+    },
+    "quiet": false,
+    "projects": [
+      {
+        "outputDir": "/home/runner/work/macpro-mako/macpro-mako/test/test-results",
+        "repeatEach": 1,
+        "retries": 2,
+        "metadata": {},
+        "id": "local-setup",
+        "name": "local-setup",
+        "testDir": "/home/runner/work/macpro-mako/macpro-mako/test",
+        "testIgnore": [
+          "**/*.test.{ts,tsx}"
+        ],
+        "testMatch": [
+          "/local\\.setup\\.ts/"
+        ],
+        "timeout": 30000
+      },
+      {
+        "outputDir": "/home/runner/work/macpro-mako/macpro-mako/test/test-results",
+        "repeatEach": 1,
+        "retries": 2,
+        "metadata": {},
+        "id": "ci-setup",
+        "name": "ci-setup",
+        "testDir": "/home/runner/work/macpro-mako/macpro-mako/test",
+        "testIgnore": [
+          "**/*.test.{ts,tsx}"
+        ],
+        "testMatch": [
+          "/ci\\.setup\\.ts/"
+        ],
+        "timeout": 30000
+      },
+      {
+        "outputDir": "/home/runner/work/macpro-mako/macpro-mako/test/test-results",
+        "repeatEach": 1,
+        "retries": 2,
+        "metadata": {},
+        "id": "eua-setup",
+        "name": "eua-setup",
+        "testDir": "/home/runner/work/macpro-mako/macpro-mako/test",
+        "testIgnore": [
+          "**/*.test.{ts,tsx}"
+        ],
+        "testMatch": [
+          "/eua\\.setup\\.ts/"
+        ],
+        "timeout": 30000
+      },
+      {
+        "outputDir": "/home/runner/work/macpro-mako/macpro-mako/test/test-results",
+        "repeatEach": 1,
+        "retries": 2,
+        "metadata": {},
+        "id": "mfa-setup",
+        "name": "mfa-setup",
+        "testDir": "/home/runner/work/macpro-mako/macpro-mako/test",
+        "testIgnore": [
+          "**/*.test.{ts,tsx}"
+        ],
+        "testMatch": [
+          "/mfa\\.setup\\.ts/"
+        ],
+        "timeout": 30000
+      },
+      {
+        "outputDir": "/home/runner/work/macpro-mako/macpro-mako/test/test-results",
+        "repeatEach": 1,
+        "retries": 2,
+        "metadata": {},
+        "id": "local",
+        "name": "local",
+        "testDir": "/home/runner/work/macpro-mako/macpro-mako/test",
+        "testIgnore": [
+          "**/*.test.{ts,tsx}"
+        ],
+        "testMatch": [
+          "**/*.spec.ts"
+        ],
+        "timeout": 30000
+      },
+      {
+        "outputDir": "/home/runner/work/macpro-mako/macpro-mako/test/test-results",
+        "repeatEach": 1,
+        "retries": 2,
+        "metadata": {},
+        "id": "ci",
+        "name": "ci",
+        "testDir": "/home/runner/work/macpro-mako/macpro-mako/test",
+        "testIgnore": [
+          "**/*.test.{ts,tsx}"
+        ],
+        "testMatch": [
+          "**/*.spec.ts"
+        ],
+        "timeout": 30000
+      },
+      {
+        "outputDir": "/home/runner/work/macpro-mako/macpro-mako/test/test-results",
+        "repeatEach": 1,
+        "retries": 2,
+        "metadata": {},
+        "id": "eua-user",
+        "name": "eua-user",
+        "testDir": "/home/runner/work/macpro-mako/macpro-mako/test",
+        "testIgnore": [
+          "**/*.test.{ts,tsx}"
+        ],
+        "testMatch": [
+          "**/*.spec.ts"
+        ],
+        "timeout": 30000
+      },
+      {
+        "outputDir": "/home/runner/work/macpro-mako/macpro-mako/test/test-results",
+        "repeatEach": 1,
+        "retries": 2,
+        "metadata": {},
+        "id": "mfa-user",
+        "name": "mfa-user",
+        "testDir": "/home/runner/work/macpro-mako/macpro-mako/test",
+        "testIgnore": [
+          "**/*.test.{ts,tsx}"
+        ],
+        "testMatch": [
+          "**/*.spec.ts"
+        ],
+        "timeout": 30000
+      }
+    ],
+    "shard": null,
+    "updateSnapshots": "missing",
+    "version": "1.47.2",
+    "workers": 1,
+    "webServer": null
+  },
+  "suites": [],
+  "errors": [
+    {
+      "message": "ValidationException: 1 validation error detected: Value null at 'secretId' failed to satisfy constraint: Member must not be null",
+      "stack": "ValidationException: 1 validation error detected: Value null at 'secretId' failed to satisfy constraint: Member must not be null\n    at throwDefaultError (/home/runner/work/macpro-mako/macpro-mako/node_modules/@smithy/smithy-client/dist-cjs/index.js:844:20)\n    at /home/runner/work/macpro-mako/macpro-mako/node_modules/@smithy/smithy-client/dist-cjs/index.js:853:5\n    at de_CommandError (/home/runner/work/macpro-mako/macpro-mako/node_modules/@aws-sdk/client-secrets-manager/dist-cjs/index.js:992:14)\n    at /home/runner/work/macpro-mako/macpro-mako/node_modules/@smithy/middleware-serde/dist-cjs/index.js:35:20\n    at /home/runner/work/macpro-mako/macpro-mako/node_modules/@smithy/core/dist-cjs/index.js:165:18\n    at /home/runner/work/macpro-mako/macpro-mako/node_modules/@smithy/middleware-retry/dist-cjs/index.js:320:38\n    at /home/runner/work/macpro-mako/macpro-mako/node_modules/@aws-sdk/middleware-logger/dist-cjs/index.js:34:22\n    at getSecret (/home/runner/work/macpro-mako/macpro-mako/test/lib/auth.secrets.ts:17:18)\n    at /home/runner/work/macpro-mako/macpro-mako/test/lib/ci.setup.ts:10:18",
+      "location": {
+        "file": "/home/runner/work/macpro-mako/macpro-mako/test/lib/auth.secrets.ts",
+        "column": 18,
+        "line": 17
+      },
+      "snippet": "   at lib/auth.secrets.ts:17\n\n\u001b[0m \u001b[90m 15 |\u001b[39m \u001b[36mexport\u001b[39m \u001b[36masync\u001b[39m \u001b[36mfunction\u001b[39m getSecret(secretArn\u001b[33m:\u001b[39m string)\u001b[33m:\u001b[39m \u001b[33mPromise\u001b[39m\u001b[33m<\u001b[39m\u001b[33mstring\u001b[39m\u001b[33m>\u001b[39m {\n \u001b[90m 16 |\u001b[39m   \u001b[36mconst\u001b[39m secretsManager \u001b[33m=\u001b[39m \u001b[36mnew\u001b[39m \u001b[33mSecretsManagerClient\u001b[39m({ region\u001b[33m:\u001b[39m \u001b[33mREGION\u001b[39m })\u001b[33m;\u001b[39m\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 17 |\u001b[39m   \u001b[36mconst\u001b[39m secret \u001b[33m=\u001b[39m \u001b[36mawait\u001b[39m secretsManager\u001b[33m.\u001b[39msend(\u001b[36mnew\u001b[39m \u001b[33mGetSecretValueCommand\u001b[39m({ \u001b[33mSecretId\u001b[39m\u001b[33m:\u001b[39m secretArn }))\u001b[33m;\u001b[39m\n \u001b[90m    |\u001b[39m                  \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 18 |\u001b[39m   \u001b[36mreturn\u001b[39m secret\u001b[33m.\u001b[39m\u001b[33mSecretString\u001b[39m\u001b[33m!\u001b[39m\u001b[33m;\u001b[39m\n \u001b[90m 19 |\u001b[39m }\n \u001b[90m 20 |\u001b[39m\u001b[0m"
+    }
+  ],
+  "stats": {
+    "startTime": "2025-05-09T18:37:31.108Z",
+    "duration": 1294.7,
+    "expected": 0,
+    "skipped": 0,
+    "unexpected": 0,
+    "flaky": 0
+  }
+}
