@@ -1,5 +1,5 @@
 import { APIGatewayEvent } from "aws-lambda";
-import { getRequestContext } from "mocks";
+import { getRequestContext, noStateSubmitter, setMockUsername } from "mocks";
 import {
   GET_ERROR_ITEM_ID,
   HI_TEST_ITEM_ID,
@@ -22,6 +22,35 @@ describe("getPackageActions Handler", () => {
     expect(res.statusCode).toEqual(400);
   });
 
+  it("should return 401 if the user does not have an active role", async () => {
+    setMockUsername(noStateSubmitter);
+    const event = {
+      body: JSON.stringify({ id: HI_TEST_ITEM_ID }),
+      requestContext: getRequestContext(),
+    } as APIGatewayEvent;
+
+    const res = await handler(event);
+
+    expect(res).toBeTruthy();
+    expect(res.statusCode).toEqual(401);
+    expect(res.body).toEqual(JSON.stringify({ message: "No active role found for user" }));
+  });
+
+  it("should return 403 if not authorized to view resources from the state", async () => {
+    const event = {
+      body: JSON.stringify({ id: HI_TEST_ITEM_ID }),
+      requestContext: getRequestContext(),
+    } as APIGatewayEvent;
+
+    const res = await handler(event);
+
+    expect(res).toBeTruthy();
+    expect(res.statusCode).toEqual(403);
+    expect(res.body).toEqual(
+      JSON.stringify({ message: "Not authorized to view resources from this state" }),
+    );
+  });
+
   it("should return 500 if event body is invalid", async () => {
     const event = {
       body: {},
@@ -33,21 +62,6 @@ describe("getPackageActions Handler", () => {
     expect(res).toBeTruthy();
     expect(res.statusCode).toEqual(500);
     expect(res.body).toEqual(JSON.stringify({ message: "Internal server error" }));
-  });
-
-  it("should return 401 if not authorized to view resources from the state", async () => {
-    const event = {
-      body: JSON.stringify({ id: HI_TEST_ITEM_ID }),
-      requestContext: getRequestContext(),
-    } as APIGatewayEvent;
-
-    const res = await handler(event);
-
-    expect(res).toBeTruthy();
-    expect(res.statusCode).toEqual(401);
-    expect(res.body).toEqual(
-      JSON.stringify({ message: "Not authorized to view resources from this state" }),
-    );
   });
 
   it("should return 404 if the package is not found", async () => {

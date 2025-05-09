@@ -1,7 +1,7 @@
 import { EllipsisVerticalIcon } from "@heroicons/react/24/outline";
 import * as DropdownMenu from "@radix-ui/react-dropdown-menu";
 import { Link } from "react-router";
-import { Authority, CognitoUserAttributes, opensearch } from "shared-types";
+import { Authority, FullUser, opensearch } from "shared-types";
 import { formatDateToET, getAvailableActions } from "shared-utils";
 
 import { DASHBOARD_ORIGIN, mapActionLabel, ORIGIN } from "@/utils";
@@ -26,7 +26,7 @@ export const CellDetailsLink = ({ id, authority }: CellIdLinkProps) => (
   </Link>
 );
 
-export const renderCellActions = (user: CognitoUserAttributes | null) => {
+export const renderCellActions = (user: FullUser | null) => {
   return function Cell(data: opensearch.main.Document) {
     if (!user) return null;
 

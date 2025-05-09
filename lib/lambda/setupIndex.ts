@@ -1,7 +1,6 @@
 import { Handler } from "aws-lambda";
-
-import * as os from "../libs/opensearch-lib";
-import { opensearch } from "../packages/shared-types";
+import * as os from "libs/opensearch-lib";
+import { opensearch } from "shared-types";
 
 export const handler: Handler = async (event, __, callback) => {
   const response = {
@@ -44,6 +43,14 @@ export const handler: Handler = async (event, __, callback) => {
     await manageIndexResource({
       osDomain: event.osDomain,
       index: `${event.indexNamespace}legacyinsights`,
+    });
+    await manageIndexResource({
+      osDomain: event.osDomain,
+      index: `${event.indexNamespace}users`,
+    });
+    await manageIndexResource({
+      osDomain: event.osDomain,
+      index: `${event.indexNamespace}roles`,
     });
   } catch (error: any) {
     response.statusCode = 500;

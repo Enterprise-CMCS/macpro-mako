@@ -6,6 +6,7 @@ import { idmHandlers } from "./idm";
 import { lambdaHandlers } from "./lambda";
 import { secretsManagerHandlers } from "./secretsManager";
 import { stepFunctionHandlers } from "./stepFunctions";
+
 export const awsHandlers = [
   ...cloudFormationHandlers,
   ...cognitoHandlers,
@@ -18,4 +19,9 @@ export const awsHandlers = [
 ];
 
 export { errorCloudFormationHandler } from "./cloudFormation";
-export { getRequestContext } from "./cognito";
+export {
+  getRequestContext,
+  identityProviderServiceHandler,
+  emptyIdentityProviderServiceHandler,
+  errorIdentityProviderServiceHandler,
+} from "./cognito";

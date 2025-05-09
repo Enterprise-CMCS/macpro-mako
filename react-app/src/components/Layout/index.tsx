@@ -7,7 +7,7 @@ import { Link, NavLink, NavLinkProps, Outlet, useNavigate, useRouteError } from 
 import { UserRoles } from "shared-types";
 import { isStateUser } from "shared-utils";
 
-import { useGetUser } from "@/api";
+import { useGetUser, useGetUserDetails, useGetUserProfile } from "@/api";
 import { Banner, ScrollToTop, SimplePageContainer, UserPrompt } from "@/components";
 import MMDLAlertBanner from "@/components/Banner/MMDLSpaBanner";
 import config from "@/config";
@@ -30,15 +30,15 @@ import { UsaBanner } from "../UsaBanner";
  * - `isFaqPage`: A boolean indicating if the current page is the FAQ page.
  */
 const useGetLinks = () => {
-  const { isLoading, data: userObj } = useGetUser();
+  const { isLoading: userLoading, data: userObj } = useGetUser();
+  const { data: userDetailsData, isLoading: userDetailsLoading } = useGetUserDetails();
   const hideWebformTab = useFeatureFlag("UAT_HIDE_MMDL_BANNER");
   const toggleFaq = useFeatureFlag("TOGGLE_FAQ");
   const showHome = toggleFaq ? userObj.user : true; // if toggleFAQ is on we want to hide home when not logged in
   const isStateHomepage = useFeatureFlag("STATE_HOMEPAGE_FLAG");
-  const { data: user } = useGetUser();
 
   const links =
-    isLoading || isFaqPage
+    userLoading || userDetailsLoading || isFaqPage
       ? []
       : [
           {
@@ -51,12 +51,17 @@ const useGetLinks = () => {
             link: "/dashboard",
             condition:
               userObj.user &&
-              (userObj.user["custom:cms-roles"] || userObj.user["custom:ismemberof"]) &&
-              Object.values(UserRoles).some(
-                (role) =>
-                  userObj.user["custom:cms-roles"].includes(role) ||
-                  userObj.user["custom:ismemberof"] === role,
-              ),
+              Object.values(UserRoles).some((role) => {
+                return userObj.user.role === role;
+              }) &&
+              userObj.user.role !== "cmsroleapprover",
+          },
+          {
+            name: "User Management",
+            link: "/usermanagement",
+            condition: ["systemadmin", "statesystemadmin", "cmsroleapprover", "helpdesk"].includes(
+              userDetailsData?.role,
+            ),
           },
           {
             name: "View FAQs",
@@ -66,7 +71,7 @@ const useGetLinks = () => {
           {
             name: "Latest Updates",
             link: "/latestupdates",
-            condition: isStateHomepage && isStateUser(user.user),
+            condition: isStateHomepage && isStateUser(userObj.user),
           },
           { name: "Support", link: "/support", condition: userObj.user && toggleFaq },
           {
@@ -97,6 +102,32 @@ const useGetLinks = () => {
  */
 const UserDropdownMenu = () => {
   const navigate = useNavigate();
+  const { data: userDetails, isLoading } = useGetUserDetails();
+  const { data: userProfile } = useGetUserProfile();
+
+  // TODO: fix?
+  // Disable page if user is a defaultcmsuser that just requested cmsroleapprover and is pending?
+  // Disable page if user is a statesubmitter that just requested statesystemadmin and is pending?
+  // Certain roles cannot be changed
+  const disableRoleChange = () => {
+    const currentRole = userDetails?.role;
+    const requestedRoles = userProfile?.stateAccess ?? [];
+
+    const roleIsPending = requestedRoles.some((r) => r.status === "pending");
+
+    // Prevent duplicate or inappropriate role requests
+    // if (
+    //   (currentRole === "statesubmitter" && roleIsPending("statesystemadmin")) ||
+    //   (currentRole === "defaultcmsuser" && roleIsPending("cmsroleapprover"))
+    // ) {
+    //   return true;
+    // }
+    if (roleIsPending) return true;
+
+    const excludedRoles = ["helpdesk", "systemadmin"];
+
+    return excludedRoles.includes(currentRole);
+  };
 
   const handleViewProfile = () => {
     navigate("/profile");
@@ -150,14 +181,25 @@ const UserDropdownMenu = () => {
         <DropdownMenu.Content align="start" asChild>
           <ul className="bg-white z-50 flex flex-col gap-4 px-10 py-4 shadow-md rounded-b-sm">
             <DropdownMenu.Item
-              className="text-primary hover:text-primary/70"
+              className="text-primary hover:text-primary/70 cursor-pointer"
               asChild
               onSelect={handleViewProfile}
             >
               <li>View Profile</li>
             </DropdownMenu.Item>
+            {/* TODO: conditionally show this if the user IS NOT HELPDESK */}
+            {/* // helpdesk, system admins, and cms reviewer users don't even see request role as an option */}
+            {!disableRoleChange() && !isLoading && userDetails && (
+              <DropdownMenu.Item
+                className="text-primary hover:text-primary/70 cursor-pointer"
+                asChild
+                onSelect={() => navigate("/signup")}
+              >
+                <li>Request a Role Change</li>
+              </DropdownMenu.Item>
+            )}
             <DropdownMenu.Item
-              className="text-primary hover:text-primary/70"
+              className="text-primary hover:text-primary/70 cursor-pointer"
               asChild
               onSelect={handleLogout}
             >

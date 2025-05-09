@@ -1,4 +1,4 @@
-import { screen, within } from "@testing-library/react";
+import { screen, waitFor, within } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { opensearch } from "shared-types";
 import { beforeEach, describe, expect, it } from "vitest";
@@ -259,7 +259,7 @@ describe("OsMainView", () => {
       );
 
       await user.selectOptions(recordsSelect, ["50"]);
-      expect(recordsSelect).toHaveValue("50");
+      await waitFor(() => expect(recordsSelect).toHaveValue("50"));
       const expectedQueryString = getDashboardQueryString({
         filters: DEFAULT_FILTERS,
         tab: "spas",

@@ -3,6 +3,8 @@ import { getAuthDetails, isAuthorized, lookupUserAttributes } from "libs/api/aut
 import { itemExists } from "libs/api/package";
 import { events } from "shared-types/events";
 
+import { getUserByEmail } from "../../user-management/userManagementService";
+
 export const appK = async (event: APIGatewayEvent) => {
   if (!event.body) return;
 
@@ -24,12 +26,16 @@ export const appK = async (event: APIGatewayEvent) => {
   const authDetails = getAuthDetails(event);
   const userAttr = await lookupUserAttributes(authDetails.userId, authDetails.poolId);
   const submitterEmail = userAttr.email;
-  const submitterName = `${userAttr.given_name} ${userAttr.family_name}`;
+  const user = await getUserByEmail(submitterEmail);
+
+  if (!user) {
+    throw new Error("User does not exist in User OpenSearch Index");
+  }
 
   const transformedData = events["app-k"].schema.parse({
     ...parsedResult.data,
-    submitterName,
-    submitterEmail,
+    submitterName: user.fullName,
+    submitterEmail: user.email,
     timestamp: Date.now(),
   });
 

@@ -33,6 +33,7 @@ export const testStateIDMUserGood = {
   identities:
     '[{"dateCreated":"1709308952587","userId":"abc123","providerName":"IDM","providerType":"OIDC","issuer":null,"primary":"true"}]',
 };
+
 export const TEST_IDM_USERS = {
   testStateIDMUser,
   testStateIDMUserGood,
