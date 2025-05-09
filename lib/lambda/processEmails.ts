@@ -240,7 +240,6 @@ export async function processAndSendEmails(
 
   const territory = id.slice(0, 2);
   const allStateUsers = await getAllStateUsersFromOpenSearch(territory);
-  console.log("what are the state users listed", allStateUsers);
 
   const sec = await getSecret(config.emailAddressLookupSecretName);
 
