@@ -71,7 +71,7 @@ export default defineConfig({
       // needs george and reviewer
       name: "local",
       use: {
-        baseURL: "http://localhost:5000",
+        baseURL: "http://localhost:5000/",
         storageState: "./playwright/.auth/state-user.json",
       },
       dependencies: ["local-setup"],
@@ -86,7 +86,7 @@ export default defineConfig({
     {
       name: "eua-user",
       use: {
-        baseURL: "https://mako.cms.gov",
+        baseURL: "https://mako.cms.gov/",
         storageState: "./playwright/.auth/eua-user.json",
       },
       dependencies: ["eua-setup"],
@@ -94,7 +94,7 @@ export default defineConfig({
     {
       name: "mfa-user",
       use: {
-        baseURL: "https://mako.cms.gov",
+        baseURL: "https://mako.cms.gov/",
         storageState: "./playwright/.auth/zzState-user.json",
       },
       dependencies: ["mfa-setup"],
