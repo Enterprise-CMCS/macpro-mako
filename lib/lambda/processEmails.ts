@@ -72,7 +72,7 @@ export const handler: Handler<KafkaEvent> = async (event) => {
   const config: ProcessEmailConfig = {
     emailAddressLookupSecretName,
     applicationEndpointUrl,
-    osDomain: `https://${osDomain}`,
+    osDomain,
     indexNamespace,
     region,
     DLQ_URL,
