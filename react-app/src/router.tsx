@@ -2,6 +2,7 @@ import { createBrowserRouter, Navigate, Outlet } from "react-router";
 
 import * as C from "@/components";
 import { TimeoutModal } from "@/components";
+import { ChipFormWrapper } from "@/features";
 import * as F from "@/features";
 import {
   postSubmissionLoader,
@@ -51,7 +52,7 @@ export const router = (loginFlag = false) => {
             },
             {
               path: "/new-submission/spa/chip/create",
-              element: <F.ChipForm />,
+              element: <ChipFormWrapper />,
             },
             {
               path: "/new-submission/waiver/b/capitated/amendment/create",

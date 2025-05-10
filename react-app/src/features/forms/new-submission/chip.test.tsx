@@ -8,7 +8,7 @@ import { renderFormAsync } from "@/utils/test-helpers/renderForm";
 import { skipCleanup } from "@/utils/test-helpers/skipCleanup";
 import { uploadFiles } from "@/utils/test-helpers/uploadFiles";
 
-import { ChipForm } from "./Chip";
+import { ChipFormWrapper } from "./Chip";
 
 const upload = uploadFiles<(typeof formSchemas)["new-chip-submission"]>();
 
@@ -16,7 +16,7 @@ describe("CHIP SPA", () => {
   beforeAll(async () => {
     skipCleanup();
 
-    await renderFormAsync(<ChipForm />);
+    await renderFormAsync(<ChipFormWrapper />);
   });
 
   test("SPA ID", async () => {

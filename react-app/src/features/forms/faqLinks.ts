@@ -2,6 +2,7 @@ export const getFAQLinkForAttachments = (eventName: string) => {
   const faqLinks = new Map<string, string>([
     ["new-medicaid-submission", "/faq/medicaid-spa-attachments"],
     ["new-chip-submission", "/faq/chip-spa-attachments"],
+    ["new-chip-eligibility-submission", "/faq/chip-eligibility-attachments"],
     ["respond-to-rai-medicaid", "/faq/medicaid-spa-rai-attachments"],
     ["respond-to-rai-waiver", "/faq/waiverb-rai-attachments"],
     ["respond-to-rai-chip", "/faq/chip-spa-rai-attachments"],
