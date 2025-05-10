@@ -2,6 +2,7 @@ import { createBrowserRouter, Navigate, Outlet } from "react-router";
 
 import * as C from "@/components";
 import { TimeoutModal } from "@/components";
+import { ChipFormWrapper } from "@/features";
 import * as F from "@/features";
 import {
   postSubmissionLoader,
@@ -9,20 +10,12 @@ import {
 } from "@/features/forms/post-submission/post-submission-forms";
 import { queryClient } from "@/utils";
 
-import { useFeatureFlag } from "./hooks/useFeatureFlag";
-
 const RoutesWithTimeout = () => (
   <>
     <TimeoutModal />
     <Outlet />
   </>
 );
-
-const ChipFormWrapper = () => {
-  const chipEligibilityFlag = useFeatureFlag("CHIP_SPA_SUBMISSION");
-
-  return chipEligibilityFlag ? <F.ChipEligibilityForm /> : <F.ChipForm />;
-};
 
 export const router = (loginFlag = false) => {
   return createBrowserRouter([

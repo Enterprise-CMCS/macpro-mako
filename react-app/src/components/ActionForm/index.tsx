@@ -234,7 +234,7 @@ export const ActionForm = <Schema extends SchemaWithEnforcableProps>({
             </div>
             <Fields {...form} />
           </SectionCard>
-          {attachmentsFromSchema.length > 0 && (
+          {(attachmentsFromSchema.length > 0 || attachments?.faqLink) && (
             <ActionFormAttachments attachmentsFromSchema={attachmentsFromSchema} {...attachments} />
           )}
           {additionalInformation && (
