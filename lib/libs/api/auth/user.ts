@@ -152,7 +152,7 @@ export const getStateFilter = async (event: APIGatewayEvent) => {
   }
 
   if (!isCmsUser({ ...userAttributes, role: activeRole.role })) {
-    const states = await getActiveStatesForUserByEmail(userAttributes.email, activeRole);
+    const states = await getActiveStatesForUserByEmail(userAttributes.email, activeRole.role);
     if (states.length > 0) {
       const filter = {
         terms: {
