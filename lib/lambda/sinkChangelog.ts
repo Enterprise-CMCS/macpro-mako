@@ -1,10 +1,11 @@
 import { Handler } from "aws-lambda";
-import { getPackageChangelog } from "libs/api/package";
+import { getPackageChangelog, getPackageChangelogTimestamp } from "libs/api/package";
 import { bulkUpdateDataWrapper, ErrorType, getTopic, logError } from "libs/sink-lib";
 import { KafkaEvent, KafkaRecord, LegacyAdminChange, opensearch } from "shared-types";
 import { decodeBase64WithUtf8 } from "shared-utils";
 
 import {
+  legacyEventIdUpdateSchema,
   transformDeleteSchema,
   transformedSplitSPASchema,
   transformedUpdateIdSchema,
@@ -66,10 +67,7 @@ const processAndIndex = async ({
 
       // Parse the kafka record's value
       const record = JSON.parse(decodeBase64WithUtf8(value));
-      console.log(record);
-      if (record?.id && (record.ID == "MD-22-0029" || record.id == "MD-22-0030")) {
-        console.log(record);
-      }
+
       if (record.isAdminChange) {
         const schema = transformDeleteSchema(offset)
           .or(transformUpdateValuesSchema(offset))
@@ -139,8 +137,37 @@ const processAndIndex = async ({
 
       // If the event is a supported event, transform and push to docs array for indexing
       if (kafkaSource === "onemac" && record.GSI1pk?.startsWith("OneMAC#submit")) {
-        // This is a onemac legacy event
-        record.event = "legacy-event";
+        const schema = legacyEventIdUpdateSchema;
+        const result = schema.safeParse(record);
+        const eventType = "legacy-event";
+
+        //Check if event has admin changes
+        if (result.success && result.data.adminChanges) {
+          const newID = result.data.componentId;
+          const timestamp = result.data.eventTimestamp;
+
+          const lastPackageChangelog = await getPackageChangelogTimestamp(timestamp);
+          if (lastPackageChangelog.hits.hits[0]) {
+            const packageId = lastPackageChangelog.hits.hits[0]._source.packageId;
+            const packageChangelogs = await getPackageChangelog(packageId);
+            packageChangelogs.hits.hits.forEach((log) => {
+              if (log._source.event !== "delete") {
+                const recordOffset = log._id.split("-").at(-1);
+                docs.push({
+                  ...log._source,
+                  id: `${newID}-${recordOffset}`,
+                  packageId: newID,
+                });
+              }
+            });
+          }
+        }
+        // Check the timestamp of the admin change
+        // Search the changelog for the most event that matches the changelog of the number and take the ID from it.
+        //  UPdate all entries that have that ID with the new ID
+        // Delete the entry in upgrade of the original ID
+        //Try not to hate everythign
+        record.event = eventType;
         record.origin = "onemac";
       }
 
