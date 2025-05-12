@@ -66,7 +66,8 @@ const processAndIndex = async ({
 
       // Parse the kafka record's value
       const record = JSON.parse(decodeBase64WithUtf8(value));
-      if (record?.ID && (record.ID == "MD-22-0029" || record.ID == "MD-22-0030")) {
+      console.log(record);
+      if (record?.id && (record.ID == "MD-22-0029" || record.id == "MD-22-0030")) {
         console.log(record);
       }
       if (record.isAdminChange) {
