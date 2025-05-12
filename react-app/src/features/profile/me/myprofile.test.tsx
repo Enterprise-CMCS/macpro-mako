@@ -129,7 +129,7 @@ describe("MyProfile", () => {
     );
   });
 
-  test("self revoking acces shows modal", async () => {
+  test("self revoking access shows modal", async () => {
     setMockUsername(multiStateSubmitter);
 
     await setup();
@@ -176,7 +176,6 @@ describe("MyProfile", () => {
   test("renders state access control for statesubmitters", async () => {
     setMockUsername(multiStateSubmitter);
     await setup();
-    screen.debug();
 
     const addStateButton = screen.queryByText("Add State");
     addStateButton.click();

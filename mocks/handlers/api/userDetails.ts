@@ -20,7 +20,7 @@ const defaultApiUserDetailsHandler = http.post(
 
     return HttpResponse.json({
       ...userDetails,
-      role: userRoles?.role ?? "",
+      role: userRoles?.role ?? "norole",
     });
   },
 );

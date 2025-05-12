@@ -324,6 +324,114 @@ export const automatedStateSubmitter: TestUserDataWithRole = {
   states: ["TX", "CA", "NY", "FL"],
 };
 
+export const pendingStateSubmitter: TestUserDataWithRole = {
+  UserAttributes: [
+    {
+      Name: "email",
+      Value: "pending@example.com",
+    },
+    {
+      Name: "email_verified",
+      Value: "true",
+    },
+    {
+      Name: "given_name",
+      Value: "Pending",
+    },
+    {
+      Name: "family_name",
+      Value: "State",
+    },
+    {
+      Name: "custom:state",
+      Value: "MD",
+    },
+    {
+      Name: "custom:cms-roles",
+      Value: "onemac-state-user",
+    },
+    {
+      Name: "sub",
+      Value: "249efcea-ab76-4758-b0a2-17dbb081925b",
+    },
+  ],
+  Username: "249efcea-ab76-4758-b0a2-17dbb081925b",
+  role: "statesubmitter",
+  states: ["MD"],
+};
+
+export const deniedStateSubmitter: TestUserDataWithRole = {
+  UserAttributes: [
+    {
+      Name: "email",
+      Value: "denied@example.com",
+    },
+    {
+      Name: "email_verified",
+      Value: "true",
+    },
+    {
+      Name: "given_name",
+      Value: "Denied",
+    },
+    {
+      Name: "family_name",
+      Value: "State",
+    },
+    {
+      Name: "custom:state",
+      Value: "MD",
+    },
+    {
+      Name: "custom:cms-roles",
+      Value: "onemac-state-user",
+    },
+    {
+      Name: "sub",
+      Value: "d1e1c173-5c37-4bb0-a29a-f67eefa23465",
+    },
+  ],
+  Username: "d1e1c173-5c37-4bb0-a29a-f67eefa23465",
+  role: "statesubmitter",
+  states: ["MD"],
+};
+
+export const revokedStateSubmitter: TestUserDataWithRole = {
+  UserAttributes: [
+    {
+      Name: "email",
+      Value: "revoked@example.com",
+    },
+    {
+      Name: "email_verified",
+      Value: "true",
+    },
+    {
+      Name: "given_name",
+      Value: "Revoked",
+    },
+    {
+      Name: "family_name",
+      Value: "State",
+    },
+    {
+      Name: "custom:state",
+      Value: "MD",
+    },
+    {
+      Name: "custom:cms-roles",
+      Value: "onemac-state-user",
+    },
+    {
+      Name: "sub",
+      Value: "76786d25-1428-4da6-841b-cba6b308e881",
+    },
+  ],
+  Username: "76786d25-1428-4da6-841b-cba6b308e881",
+  role: "statesubmitter",
+  states: ["MD"],
+};
+
 export const testNewStateSubmitter: TestUserDataWithRole = {
   UserAttributes: [
     {
@@ -511,4 +619,7 @@ export const stateSubmitters: TestUserDataWithRole[] = [
   invalidEmailStateSubmitter,
   osStateSystemAdmin,
   osStateSubmitter,
+  pendingStateSubmitter,
+  revokedStateSubmitter,
+  deniedStateSubmitter,
 ];

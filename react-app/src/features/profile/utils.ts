@@ -44,7 +44,7 @@ export const orderStateAccess = (accesses: StateAccess[]) => {
 // show state(s) for latest active role
 export const filterStateAccess = (userDetails, userProfile) => {
   if (!userProfile?.stateAccess || userProfile.stateAccess.length < 1) return [];
-  return userDetails?.role
+  return userDetails?.role && userDetails?.role !== "norole"
     ? userProfile.stateAccess.filter(
         (access: StateAccess) => access.role === userDetails.role && access.territory !== "ZZ",
       )

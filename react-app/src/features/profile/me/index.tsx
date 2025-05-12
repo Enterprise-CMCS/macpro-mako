@@ -119,7 +119,6 @@ export const MyProfile = () => {
       });
       window.scrollTo(0, 0);
     } catch (error) {
-      console.error(error);
       banner({
         header: "An unexpected error has occurred:",
         body: error instanceof Error ? error.message : String(error),
@@ -152,7 +151,6 @@ export const MyProfile = () => {
       });
       window.scrollTo(0, 0);
     } catch (error) {
-      console.error(error);
       banner({
         header: "An unexpected error has occurred:",
         body: error instanceof Error ? error.message : String(error),
