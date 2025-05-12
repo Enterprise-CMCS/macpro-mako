@@ -2,22 +2,43 @@ import { Link } from "react-router";
 import { z } from "zod";
 
 import { FAQ_TAB } from "@/consts";
+import { useFeatureFlag } from "@/hooks/useFeatureFlag";
 
-export const AttachmentFileFormatInstructions = () => (
-  <p data-testid="accepted-files">
-    We accept the following file formats:{" "}
-    <span className="font-bold">.doc, .docx, .pdf, .jpg, .xlsx, and more. </span>{" "}
-    <Link
-      to={"/faq/acceptable-file-formats"}
-      target={FAQ_TAB}
-      rel="noopener noreferrer"
-      className="text-blue-900 underline"
-    >
-      See the full list
-    </Link>
-    .
-  </p>
-);
+export const AttachmentFileFormatInstructions = () => {
+  const showEligibilityLink = useFeatureFlag("CHIP_SPA_SUBMISSION");
+
+  return (
+    <>
+      <p data-testid="accepted-files">
+        We accept the following file formats:{" "}
+        <span className="font-bold">.doc, .docx, .pdf, .jpg, .xlsx, and more. </span>
+        <Link
+          to="/faq/acceptable-file-formats"
+          target={FAQ_TAB}
+          rel="noopener noreferrer"
+          className="text-blue-900 underline"
+        >
+          See the full list
+        </Link>
+        .
+      </p>
+      {showEligibilityLink && (
+        <div className="pt-[24.06px] pb-[30px]" data-testid="chip-eligibility-link">
+          {" "}
+          View all{" "}
+          <Link
+            to="https://www.medicaid.gov/state-resource-center/mac-learning-collaboratives/state-toolbox/chip-eligibility.html"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="text-blue-900 underline"
+          >
+            CHIP eligibility SPA templates and implementation guides
+          </Link>
+        </div>
+      )}
+    </>
+  );
+};
 
 export const AttachmentFAQInstructions = ({ faqLink }: { faqLink?: string }) => (
   <p data-testid="attachments-instructions">
