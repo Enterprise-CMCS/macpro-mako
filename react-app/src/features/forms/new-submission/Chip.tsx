@@ -1,7 +1,9 @@
+import { useState } from "react";
 import { Link } from "react-router";
 
 import {
   ActionForm,
+  Checkbox,
   DatePicker,
   FormControl,
   FormField,
@@ -10,6 +12,10 @@ import {
   FormMessage,
   Input,
   RequiredIndicator,
+  Select,
+  SelectContent,
+  SelectTrigger,
+  SelectValue,
   SpaIdFormattingDesc,
 } from "@/components";
 import { FAQ_TAB } from "@/consts";
@@ -19,23 +25,21 @@ import { useFeatureFlag } from "@/hooks/useFeatureFlag";
 import { getFAQLinkForAttachments } from "../faqLinks";
 
 export const ChipFormWrapper = () => {
+  const [open, setOpen] = useState(false);
   const useEligibilityForm = useFeatureFlag("CHIP_SPA_SUBMISSION");
-
-  const schemaKey = useEligibilityForm ? "new-chip-eligibility-submission" : "new-chip-submission";
-
-  const schema = formSchemas[schemaKey];
-  const faqEventKey = useEligibilityForm
-    ? "new-chip-eligibility-submission"
-    : "new-chip-submission";
-
   const title = useEligibilityForm ? "CHIP Eligibility SPA Details" : "CHIP SPA Details";
-
   const breadcrumb = useEligibilityForm ? "Submit new CHIP eligibility SPA" : "Submit new CHIP SPA";
+  const chipOptions = [
+    "MAGI Eligibility and Methods",
+    "Non-Financial Eligibility",
+    "XXI Medicaid Expansion",
+    "Eligibility Process",
+  ];
 
   return (
     <ActionForm
       title={title}
-      schema={schema}
+      schema={formSchemas["new-chip-submission"]}
       breadcrumbText={breadcrumb}
       fields={({ control }) => (
         <>
@@ -72,6 +76,62 @@ export const ChipFormWrapper = () => {
           />
           <FormField
             control={control}
+            name="chipSubmissionType"
+            render={({ field }) => {
+              const selectedValues = Array.isArray(field.value) ? field.value : [];
+              return (
+                <FormItem className="w-full sm:max-w-[460px]">
+                  <FormLabel className="font-bold">CHIP Submission Type</FormLabel>
+                  <Select open={open} onOpenChange={setOpen}>
+                    <FormControl>
+                      <SelectTrigger
+                        showIcon={false}
+                        className="relative w-full mt-2 h-[40px] px-[4px] gap-[5px] border border-[#565C65] text-gray-950 flex items-center justify-between rounded-none after:hidden"
+                      >
+                        <SelectValue className="truncate text-left w-full">
+                          {selectedValues.length > 0 ? selectedValues.join(", ") : ""}
+                        </SelectValue>
+                        <div className="flex items-center pl-2 pr-3 h-full border-l border-slate-300">
+                          <svg
+                            className="w-6 h-6"
+                            fill="none"
+                            stroke="#565C65"
+                            strokeWidth={3}
+                            viewBox="0 0 24 24"
+                          >
+                            <path strokeLinecap="round" strokeLinejoin="round" d="M19 9l-7 7-7-7" />
+                          </svg>
+                        </div>
+                      </SelectTrigger>
+                    </FormControl>
+                    <SelectContent>
+                      {chipOptions.map((option) => {
+                        const isSelected = selectedValues.includes(option);
+                        return (
+                          <div
+                            key={option}
+                            className="flex items-center gap-2 px-4 py-2 cursor-pointer hover:bg-gray-100"
+                            onClick={() => {
+                              const updated = isSelected
+                                ? selectedValues.filter((val) => val !== option)
+                                : [...selectedValues, option];
+                              field.onChange(updated);
+                            }}
+                          >
+                            <Checkbox checked={isSelected} />
+                            <span>{option}</span>
+                          </div>
+                        );
+                      })}
+                    </SelectContent>
+                  </Select>
+                  <FormMessage />
+                </FormItem>
+              );
+            }}
+          />
+          <FormField
+            control={control}
             name="proposedEffectiveDate"
             render={({ field }) => (
               <FormItem className="max-w-sm">
@@ -93,7 +153,7 @@ export const ChipFormWrapper = () => {
       )}
       defaultValues={{ id: "" }}
       attachments={{
-        faqLink: getFAQLinkForAttachments(faqEventKey),
+        faqLink: getFAQLinkForAttachments("new-chip-submission"),
       }}
       documentPollerArgs={{
         property: "id",

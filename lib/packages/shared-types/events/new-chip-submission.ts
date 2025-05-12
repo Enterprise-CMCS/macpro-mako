@@ -5,6 +5,7 @@ import { sharedSchema } from "./base-schema";
 
 export const baseSchema = z.object({
   event: z.literal("new-chip-submission").default("new-chip-submission"),
+  chipSubmissionType: z.array(z.string()).optional(),
   additionalInformation: z.string().max(4000).nullable().default(null).optional(),
   attachments: z.object({
     currentStatePlan: z.object({
