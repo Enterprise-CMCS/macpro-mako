@@ -33,18 +33,19 @@ export const SignUp = () => {
       rolesWhoCanView: ["statesubmitter"],
       link: "/signup/state",
     },
+    // TODO: Get language from HCD/CMS. This used to be "CMS Reviewer" in legacy
     {
-      key: "cmsreviewer",
-      title: "CMS Reviewer",
-      description: "Responsible for reviewing packages",
+      key: "defaultcmsuser",
+      title: "CMS Read-only",
+      description: "Responsible for viewing packages",
       rolesWhoCanView: ["cmsroleapprover"],
       link: "/signup/cms",
     },
     {
       key: "cmsroleapprover",
       title: "CMS Role Approver",
-      description: "Responsible for managing CMS Reviewers and State System Admins",
-      rolesWhoCanView: ["defaultcmsuser"],
+      description: "Responsible for managing CMS Read-only Users and State System Admins",
+      rolesWhoCanView: ["defaultcmsuser", "cmsreviewer"],
       link: "/signup/cms",
     },
   ] satisfies RoleOptions[];

@@ -31,6 +31,7 @@ export const ROLES_ALLOWED_TO_REQUEST: UserRole[] = [
   "statesystemadmin",
   "defaultcmsuser",
   "cmsroleapprover",
+  "cmsreviewer",
 ];
 
 const userStatus = z.enum(["active", "pending", "revoked", "denied"]);

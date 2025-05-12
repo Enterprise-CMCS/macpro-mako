@@ -7,7 +7,13 @@ export class LoginPage {
 
   async goto() {
     await this.page.goto("/");
-    await this.page.getByRole("button", { name: "Sign In" }).click();
+
+    try {
+      await this.page.waitForSelector('[data-testid="sign-in-button-d"]');
+      await this.page.locator('[data-testid="sign-in-button-d"]').click();
+    } catch (error) {
+      console.log("Sign in button not found", error);
+    }
   }
 
   async login(email: string, password: string) {

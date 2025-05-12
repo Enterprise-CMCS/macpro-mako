@@ -2,6 +2,7 @@ import { APIGatewayEvent } from "aws-lambda";
 import {
   errorRoleSearchHandler,
   getRequestContext,
+  makoStateSubmitter,
   noStateSubmitter,
   osStateSystemAdmin,
   setDefaultStateSubmitter,
@@ -56,6 +57,7 @@ describe("getUserDetails handler", () => {
         email: "mako.stateuser@gmail.com",
         fullName: "Stateuser Tester",
         role: "statesubmitter",
+        states: ["VA", "OH", "SC", "CO", "GA", "MD"],
       }),
     );
   });
@@ -76,12 +78,13 @@ describe("getUserDetails handler", () => {
         email: "nostate@example.com",
         fullName: "No State",
         role: "norole",
+        states: [],
       }),
     );
   });
 
   it("should return 200 and the user details for the email in the body if the user is a user manager", async () => {
-    setMockUsername(osStateSystemAdmin);
+    setMockUsername(makoStateSubmitter);
 
     const event = {
       requestContext: getRequestContext(),
@@ -100,6 +103,7 @@ describe("getUserDetails handler", () => {
         email: TEST_STATE_SUBMITTER_EMAIL,
         fullName: "Stateuser Tester",
         role: "statesubmitter",
+        states: ["VA", "OH", "SC", "CO", "GA", "MD"],
       }),
     );
   });
@@ -124,6 +128,7 @@ describe("getUserDetails handler", () => {
         email: STATE_SYSTEM_ADMIN_EMAIL,
         fullName: "Statesystemadmin Nightwatch",
         role: "statesystemadmin",
+        states: ["MD"],
       }),
     );
   });
@@ -146,6 +151,7 @@ describe("getUserDetails handler", () => {
         email: TEST_STATE_SUBMITTER_EMAIL,
         fullName: "Stateuser Tester",
         role: "statesubmitter",
+        states: ["VA", "OH", "SC", "CO", "GA", "MD"],
       }),
     );
   });

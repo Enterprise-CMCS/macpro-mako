@@ -34,6 +34,7 @@ export const makoStateSubmitter: TestUserDataWithRole = {
   ],
   Username: "cd400c39-9e7c-4341-b62f-234e2ecb339d",
   role: "statesubmitter",
+  states: ["VA", "OH", "SC", "CO", "GA", "MD"],
 };
 export const superUser: TestUserDataWithRole = {
   UserAttributes: [
@@ -68,6 +69,7 @@ export const superUser: TestUserDataWithRole = {
   ],
   Username: "cd400c39-9e7c-4341-b62f-234e2ecb339e",
   role: "statesubmitter",
+  states: ["ZZ"],
 };
 
 export const stateSubmitter: TestUserDataWithRole = {
@@ -103,6 +105,7 @@ export const stateSubmitter: TestUserDataWithRole = {
   ],
   Username: "c4087448-d0e1-70c1-3d74-4f8bd1fa13fd",
   role: "statesubmitter",
+  states: ["VA", "OH", "SC", "CO", "CA", "MD"],
 };
 
 export const noDataStateSubmitter: TestUserDataWithRole = {
@@ -138,6 +141,7 @@ export const noDataStateSubmitter: TestUserDataWithRole = {
   ],
   Username: "068f3852-dd7e-484d-a423-578556f52886",
   role: "statesubmitter",
+  states: ["VI"],
 };
 
 export const coStateSubmitter: TestUserDataWithRole = {
@@ -173,6 +177,7 @@ export const coStateSubmitter: TestUserDataWithRole = {
   ],
   Username: "c16071b6-e24b-4405-962c-37ad6262708c",
   role: "statesubmitter",
+  states: ["CO"],
 };
 
 export const multiStateSubmitter: TestUserDataWithRole = {
@@ -208,6 +213,7 @@ export const multiStateSubmitter: TestUserDataWithRole = {
   ],
   Username: "3de7904e-fc0a-498f-9527-8e39044edf4c",
   role: "statesubmitter",
+  states: ["CA", "NY", "MD"],
 };
 
 export const noStateSubmitter: TestUserDataWithRole = {
@@ -243,6 +249,7 @@ export const noStateSubmitter: TestUserDataWithRole = {
   ],
   Username: "604551c7-a98f-4971-aa1e-06dee6f28598",
   role: "statesubmitter",
+  states: [],
 };
 
 export const nullStateSubmitter: TestUserDataWithRole = {
@@ -278,6 +285,7 @@ export const nullStateSubmitter: TestUserDataWithRole = {
   ],
   Username: "7b1d217e-fcff-490a-af11-cd07a681789e",
   role: "statesubmitter",
+  states: [],
 };
 
 export const automatedStateSubmitter: TestUserDataWithRole = {
@@ -313,6 +321,7 @@ export const automatedStateSubmitter: TestUserDataWithRole = {
   ],
   Username: automatedStateSubmitterUsername,
   role: "statesubmitter",
+  states: ["TX", "CA", "NY", "FL"],
 };
 
 export const testNewStateSubmitter: TestUserDataWithRole = {
@@ -348,6 +357,7 @@ export const testNewStateSubmitter: TestUserDataWithRole = {
   ],
   Username: "f8e64f73-d121-4252-b9e3-1f4df902a1c1",
   role: "statesubmitter",
+  states: ["VA"],
 };
 
 export const noEmailStateSubmitter: TestUserDataWithRole = {
@@ -383,6 +393,7 @@ export const noEmailStateSubmitter: TestUserDataWithRole = {
   ],
   Username: "f8e64f73-d121-4252-b9e3-1f4df902a1c2",
   role: "statesubmitter",
+  states: ["LA"],
 };
 
 export const invalidEmailStateSubmitter: TestUserDataWithRole = {
@@ -414,6 +425,7 @@ export const invalidEmailStateSubmitter: TestUserDataWithRole = {
   ],
   Username: "f8e64f73-d121-4252-b9e3-1f4df902a1c2",
   role: "statesubmitter",
+  states: ["AK"],
 };
 
 export const osStateSystemAdmin: TestUserDataWithRole = {
@@ -449,6 +461,7 @@ export const osStateSystemAdmin: TestUserDataWithRole = {
   ],
   Username: "142824f8-f011-703f-c22b-62e027e9435e",
   role: "statesubmitter",
+  states: ["MD"],
 };
 
 export const osStateSubmitter: TestUserDataWithRole = {
@@ -480,6 +493,7 @@ export const osStateSubmitter: TestUserDataWithRole = {
   ],
   Username: "d4b8f498-d001-7038-15f6-d7a1a1e677e1",
   role: "statesubmitter",
+  states: ["VA", "OH", "SC", "CO", "GA", "MD", "CA"],
 };
 
 export const stateSubmitters: TestUserDataWithRole[] = [

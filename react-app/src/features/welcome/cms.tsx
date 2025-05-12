@@ -2,6 +2,8 @@ import { LatestUpdates } from "@/components/Banner/latestUpdates";
 import { Welcome } from "@/features/welcome/default";
 import { useFeatureFlag } from "@/hooks/useFeatureFlag";
 
+import { BrowseDash, PackageSearch } from "./packageSearch";
+
 export const CMSWelcome = () => {
   const cards = [
     {
@@ -81,14 +83,15 @@ export const CMSWelcome = () => {
 
   return (
     <div className="w-full max-w-[1440px] mx-auto pt-[80px] px-[24px] xl:px-[102px]">
-      <div className="flex flex-row justify-center gap-8">
+      <div className="flex flex-row justify-center gap-2">
         {/* Search section */}
-        <div>
-          <h1>Search Left</h1>
+        <PackageSearch />
+        <div className="flex flex-col items-center w-full mb-8">
+          <div className="h-[115px] border border-[#DFE1E2]" />
+          <span className="my-2 text-sm text-[#9CA3AF]">or</span>
+          <div className="h-[115px] border border-[#DFE1E2]" />
         </div>
-        <div>
-          <h1>Search Right</h1>
-        </div>
+        <BrowseDash />
       </div>
 
       {/* Latest Updates Banner */}

@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Navigate, useNavigate } from "react-router";
 
 import {
@@ -22,6 +22,16 @@ import {
 
 import { divisionsType, groupDivision, groupDivisionType } from "./groupDivision";
 
+// sorting helper function
+const groupSortFn = (groupA, groupB) => {
+  if (groupA.abbr) {
+    if (groupB.abbr) return groupA.abbr.localeCompare(groupB.abbr);
+    return -1;
+  }
+  if (groupA.abbr) return 1;
+  return 0;
+};
+
 export const CMSSignup = () => {
   const [showModal, setShowModal] = useState<boolean>(false);
   const [group, setGroup] = useState<groupDivisionType | null>(null);
@@ -31,27 +41,22 @@ export const CMSSignup = () => {
   const navigate = useNavigate();
 
   const { data: userDetails } = useGetUserDetails();
-  if (!userDetails) return <LoadingSpinner />;
-
-  if (!userDetails?.role) return <Navigate to="/" />;
-
-  const currentRole = userDetails.role;
-  if (currentRole !== "defaultcmsuser" && currentRole !== "cmsroleapprover")
-    return <Navigate to="/profile" />;
+  const currentRole = userDetails?.role;
 
   const onSubmit = async () => {
     try {
       await submitRequest({
         email: userDetails.email,
         state: "N/A",
-        role: "cmsroleapprover",
+        role: isCMSRoleApprover ? "defaultcmsuser" : "cmsroleapprover",
         eventType: "user-role",
         requestRoleChange: true,
-        group: group.abbr,
-        division: division.abbr,
+        group: !isCMSRoleApprover ? group.abbr : null,
+        division: !isCMSRoleApprover ? division.abbr : null,
       });
-      // TODO: Change?
-      navigate("/");
+
+      if (isCMSRoleApprover) navigate("/usermanagement");
+      else navigate("/");
 
       banner({
         header: "Submission Completed",
@@ -71,94 +76,125 @@ export const CMSSignup = () => {
     }
   };
 
+  // should leave this page if the user is requesting to be read-on
+  // this work could be done in sign-up but we want to keep the submit fnc in one place & have a loading screen
+  useEffect(() => {
+    const autoSubmit = async () => {
+      if (currentRole === "cmsroleapprover") {
+        try {
+          await onSubmit();
+        } catch (e) {
+          console.error("CMS Read-only access submission failed", e);
+        }
+      }
+    };
+    autoSubmit();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  if (!userDetails) return <LoadingSpinner />;
+
+  if (!userDetails?.role) return <Navigate to="/" />;
+
+  const isCMSRoleApprover = currentRole === "cmsroleapprover";
+
+  // TODO: refactor to use isCmsUser
+  if (!["defaultcmsuser", "cmsroleapprover", "cmsreviewer"].includes(currentRole))
+    return <Navigate to="/profile" />;
+
   return (
     <div>
       <SubNavHeader>
-        <h1 className="text-xl font-medium">Registration: CMS Reviewer Access</h1>
+        <h1 className="text-xl font-medium">
+          {isCMSRoleApprover
+            ? "Registration: CMS Read-only Access"
+            : "Registration: CMS Role Approver Access"}
+        </h1>
       </SubNavHeader>
-      <SimplePageContainer>
-        <ConfirmationDialog
-          open={showModal}
-          title="Cancel role request?"
-          body="Changes you made will not be saved."
-          onAccept={() => navigate("/signup")}
-          onCancel={() => setShowModal(false)}
-          cancelButtonText="Stay on Page"
-          acceptButtonText="Confirm"
-        />
+      {!isCMSRoleApprover && (
+        <SimplePageContainer>
+          <ConfirmationDialog
+            open={showModal}
+            title="Cancel role request?"
+            body="Changes you made will not be saved."
+            onAccept={() => navigate("/signup")}
+            onCancel={() => setShowModal(false)}
+            cancelButtonText="Stay on Page"
+            acceptButtonText="Confirm"
+          />
 
-        <div className="flex justify-center p-5">
-          <div className="w-1/2">
-            <div className="py-2">
-              <h2 className="text-xl font-bold mb-2">Select a Group and Division</h2>
-            </div>
+          <div className="flex justify-center p-5">
+            <div className="w-1/2">
+              <div className="py-2">
+                <h2 className="text-xl font-bold mb-2">Select a Group and Division</h2>
+              </div>
 
-            {/* Not doing anything with group and division besides updating user index */}
-            <div className="py-4">
-              <h2 className="text-xl font-bold mb-2">Group</h2>
-              <Select
-                onValueChange={(value) => {
-                  const matchingGroup: groupDivisionType[] = groupDivision.filter(
-                    (group) => group.abbr === value,
-                  );
-                  setGroup(matchingGroup[0]);
-                }}
-              >
-                <SelectTrigger aria-label="Select group">
-                  <SelectValue placeholder="Select state here" />
-                </SelectTrigger>
-                <SelectContent>
-                  {groupDivision.map((group) => (
-                    <SelectItem value={group.abbr} key={`${group.id}-${group.abbr}`}>
-                      <span className="font-bold min-w-[4rem]">{group.abbr}</span>
-                      <span>{group.name}</span>
-                    </SelectItem>
-                  ))}
-                </SelectContent>
-              </Select>
-            </div>
-
-            {group && (
               <div className="py-4">
-                <h2 className="text-xl font-bold mb-2">Division</h2>
+                <h2 className="text-xl font-bold mb-2">Group</h2>
                 <Select
                   onValueChange={(value) => {
-                    const matchingDivision: divisionsType[] = group.divisions.filter(
-                      (division) => division.id === parseInt(value),
+                    const matchingGroup: groupDivisionType[] = groupDivision.filter(
+                      (group) => group.abbr === value,
                     );
-                    setDivision(matchingDivision[0]);
+                    setGroup(matchingGroup[0]);
                   }}
                 >
-                  <SelectTrigger aria-label="Select division">
-                    <SelectValue placeholder="Select state here" />
+                  <SelectTrigger aria-label="Select group">
+                    <SelectValue placeholder="Select..." />
                   </SelectTrigger>
                   <SelectContent>
-                    {group &&
-                      group.divisions.map((divisions) => (
-                        <SelectItem
-                          value={divisions.id.toString()}
-                          key={`${divisions.id}-${divisions.abbr}`}
-                        >
-                          <span className="font-bold min-w-[4rem]">{divisions.abbr ?? "--"}</span>
-                          <span>{divisions.name}</span>
-                        </SelectItem>
-                      ))}
+                    {groupDivision.sort(groupSortFn).map((group) => (
+                      <SelectItem value={group.abbr} key={`${group.id}-${group.abbr}`}>
+                        <span className="font-bold min-w-[4rem]">{group.abbr}</span>
+                        <span>{group.name}</span>
+                      </SelectItem>
+                    ))}
                   </SelectContent>
                 </Select>
               </div>
-            )}
 
-            <div className="py-4">
-              <Button className="mr-3" disabled={division == null} onClick={onSubmit}>
-                Submit
-              </Button>
-              <Button variant="outline" onClick={() => setShowModal(true)}>
-                Cancel
-              </Button>
+              {group && (
+                <div className="py-4">
+                  <h2 className="text-xl font-bold mb-2">Division</h2>
+                  <Select
+                    onValueChange={(value) => {
+                      const matchingDivision: divisionsType[] = group.divisions.filter(
+                        (division) => division.id === parseInt(value),
+                      );
+                      setDivision(matchingDivision[0]);
+                    }}
+                  >
+                    <SelectTrigger aria-label="Select division">
+                      <SelectValue placeholder="Select..." />
+                    </SelectTrigger>
+                    <SelectContent>
+                      {group &&
+                        group.divisions.sort(groupSortFn).map((divisions) => (
+                          <SelectItem
+                            value={divisions.id.toString()}
+                            key={`${divisions.id}-${divisions.abbr}`}
+                          >
+                            <span className="font-bold min-w-[4rem]">{divisions.abbr ?? "--"}</span>
+                            <span>{divisions.name}</span>
+                          </SelectItem>
+                        ))}
+                    </SelectContent>
+                  </Select>
+                </div>
+              )}
+
+              <div className="py-4">
+                <Button className="mr-3" disabled={division == null} onClick={onSubmit}>
+                  Submit
+                </Button>
+                <Button variant="outline" onClick={() => setShowModal(true)}>
+                  Cancel
+                </Button>
+              </div>
             </div>
           </div>
-        </div>
-      </SimplePageContainer>
+        </SimplePageContainer>
+      )}
     </div>
   );
 };

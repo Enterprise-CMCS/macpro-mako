@@ -1,21 +1,28 @@
+import { UserRole } from "shared-types/events/legacy-user";
+
 import { StateAccess } from "@/api";
 import { convertStateAbbrToFullName } from "@/utils";
 
 export const userRoleMap = {
-  defaultcmsuser: "Default CMS User Placeholder",
+  defaultcmsuser: "CMS Read-only User",
   cmsroleapprover: "CMS Role Approver",
-  cmsreviewer: "CMS Reviewer",
+  cmsreviewer: "CMS Read-only User",
   statesystemadmin: "State System Admin",
   helpdesk: "Helpdesk",
   statesubmitter: "State Submitter",
   systemadmin: "System Admin",
 };
 
-export const adminRoles = ["statesubmitter", "statesystemadmin"];
+export const stateAccessRoles: UserRole[] = [
+  "statesubmitter",
+  "statesystemadmin",
+  "cmsroleapprover",
+  "systemadmin",
+];
 
 export const orderStateAccess = (accesses: StateAccess[]) => {
   if (!accesses || !accesses.length) return;
-  // sort revoked states separately and add to
+  // sort revoked states seprately and add to
   const activeStates = accesses.filter((x: StateAccess) => x.status != "revoked");
   const revokedStates = accesses.filter((x: StateAccess) => x.status == "revoked");
 
@@ -31,4 +38,15 @@ export const orderStateAccess = (accesses: StateAccess[]) => {
   const sorted = activeStates.sort(compare).concat(revokedStates.sort(compare));
 
   return sorted;
+};
+
+// if user has no active roles, show pending state(s)
+// show state(s) for latest active role
+export const filterStateAccess = (userDetails, userProfile) => {
+  if (!userProfile?.stateAccess) return [];
+  return userDetails?.role
+    ? userProfile.stateAccess.filter(
+        (access: StateAccess) => access.role === userDetails.role && access.territory !== "ZZ",
+      )
+    : userProfile.stateAccess.filter((access: StateAccess) => access.territory !== "ZZ");
 };

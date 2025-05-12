@@ -8,11 +8,18 @@ export type UserDetails = {
   email: string;
   fullName: string;
   role?: UserRole;
+  states?: string[];
+  division: string;
+  group: string;
 };
 
-export const getUserDetails = async (userId?: string): Promise<UserDetails> => {
+export const getUserDetails = async (userEmail?: string): Promise<UserDetails> => {
   try {
-    const userDetails = await API.get("os", "/getUserDetails", userId ? { body: { userId } } : {});
+    const userDetails = await API.post(
+      "os",
+      "/getUserDetails",
+      userEmail ? { body: { userEmail } } : {},
+    );
 
     return userDetails as UserDetails;
   } catch (e) {

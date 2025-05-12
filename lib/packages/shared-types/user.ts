@@ -15,6 +15,8 @@ export enum UserRoles {
   CMS_REVIEWER = "cmsreviewer",
   HELPDESK = "helpdesk",
   STATE_SUBMITTER = "statesubmitter",
+  SYSTEM_ADMIN = "systemadmin",
+  STATE_SYSTEM_ADMIN = "statesystemadmin",
 }
 
 export type UserRolesString = `${UserRoles}${"," | ""}` | "";
@@ -33,6 +35,7 @@ export type CognitoUserAttributes = {
 
 export type FullUser = CognitoUserAttributes & {
   role: UserRole;
+  states?: string[];
 };
 
 export const CMS_ROLES = [
@@ -40,17 +43,19 @@ export const CMS_ROLES = [
   "cmsroleapprover",
   "defaultcmsuser",
   "helpdesk",
+  "systemadmin",
 ] satisfies UserRole[];
 
 export const CMS_WRITE_ROLES = [
   "cmsreviewer",
   "defaultcmsuser",
   "cmsroleapprover",
+  "systemadmin",
 ] satisfies UserRole[];
 
 export const CMS_READ_ONLY_ROLES = ["helpdesk"] satisfies UserRole[];
 
-export const STATE_ROLES = ["statesubmitter"] satisfies UserRole[];
+export const STATE_ROLES = ["statesubmitter", "statesystemadmin"] satisfies UserRole[];
 
 export const RoleDescriptionStrings: { [key: string]: string } = {
   [UserRoles.CMS_REVIEWER]: "Reviewer",

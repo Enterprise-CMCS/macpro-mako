@@ -1,3 +1,3 @@
-export * from "./self";
-export * from "./admin";
+export * from "./me";
+export * from "./user";
 export * from "./utils";

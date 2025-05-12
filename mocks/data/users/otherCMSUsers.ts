@@ -33,6 +33,7 @@ export const systemAdmin: TestUserDataWithRole = {
   ],
   Username: "bd3fb35d-6495-4665-8bab-d00693796e91",
   role: "systemadmin",
+  states: [],
 };
 
 export const cmsRoleApprover: TestUserDataWithRole = {
@@ -68,6 +69,7 @@ export const cmsRoleApprover: TestUserDataWithRole = {
   ],
   Username: "dc891f53-d20c-484a-bc40-447fce719658",
   role: "cmsroleapprover",
+  states: [],
 };
 
 export const defaultCMSUser: TestUserDataWithRole = {
@@ -103,6 +105,7 @@ export const defaultCMSUser: TestUserDataWithRole = {
   ],
   Username: "cd613967-c034-4e02-baad-03221840a35d",
   role: "defaultcmsuser",
+  states: [],
 };
 
 export const cmsUsers: TestUserDataWithRole[] = [systemAdmin, cmsRoleApprover, defaultCMSUser];

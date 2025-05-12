@@ -72,18 +72,17 @@ describe("CMSSignup", () => {
     setMockUsername(defaultCMSUser);
     await setup();
 
-    expect(screen.getByText("Registration: CMS Reviewer Access")).toBeInTheDocument();
+    expect(screen.getByText("Registration: CMS Role Approver Access")).toBeInTheDocument();
   });
 
-  it("should show the form if the user is a cmsroleapprover", async () => {
+  it("should redirect if the user is cmsroleapprover", async () => {
     setMockUsername(cmsRoleApprover);
     await setup();
-
-    expect(screen.getByText("Registration: CMS Reviewer Access")).toBeInTheDocument();
+    expect(screen.getByText("Registration: CMS Read-only Access")).toBeInTheDocument();
   });
 
   it("should handle filling out the form", async () => {
-    setMockUsername(cmsRoleApprover);
+    setMockUsername(defaultCMSUser);
     const { user } = await setup();
 
     const submitButton = screen.getByRole("button", { name: "Submit" });
@@ -112,7 +111,7 @@ describe("CMSSignup", () => {
 
   it("should show an error if there was an error submitting the request", async () => {
     mockedServer.use(errorApiSubmitRoleRequestsHandler);
-    setMockUsername(cmsRoleApprover);
+    setMockUsername(defaultCMSUser);
     const { user } = await setup();
 
     const submitButton = screen.getByRole("button", { name: "Submit" });
@@ -136,6 +135,6 @@ describe("CMSSignup", () => {
 
     await user.click(submitButton);
 
-    expect(screen.getByText("Registration: CMS Reviewer Access")).toBeInTheDocument();
+    expect(screen.getByText("Registration: CMS Role Approver Access")).toBeInTheDocument();
   });
 });

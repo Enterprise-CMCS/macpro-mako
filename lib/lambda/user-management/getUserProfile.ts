@@ -6,7 +6,7 @@ import { z } from "zod";
 import { getAllUserRolesByEmail, getLatestActiveRoleByEmail } from "./userManagementService";
 
 export const getUserProfileSchema = z.object({
-  userId: z.string(),
+  userEmail: z.string().email(),
 });
 
 export const getUserProfile = async (event: APIGatewayEvent) => {
@@ -40,8 +40,8 @@ export const getUserProfile = async (event: APIGatewayEvent) => {
       // return the data for the userEmail instead of the current user
       if (
         safeEventBody.success &&
-        safeEventBody?.data?.userId &&
-        safeEventBody.data.userId !== userId
+        safeEventBody?.data?.userEmail &&
+        safeEventBody.data.userEmail !== currUserAttributes.email
       ) {
         const currUserLatestActiveRoleObj = await getLatestActiveRoleByEmail(
           currUserAttributes.email,
@@ -51,8 +51,7 @@ export const getUserProfile = async (event: APIGatewayEvent) => {
             currUserLatestActiveRoleObj?.role,
           )
         ) {
-          const reqUserAttributes = await lookupUserAttributes(safeEventBody.data.userId, poolId);
-          const opensearchResponse = await getAllUserRolesByEmail(reqUserAttributes.email);
+          const opensearchResponse = await getAllUserRolesByEmail(safeEventBody.data.userEmail);
           return response({
             statusCode: 200,
             body: opensearchResponse,

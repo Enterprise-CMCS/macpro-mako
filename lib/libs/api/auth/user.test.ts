@@ -55,6 +55,7 @@ describe("Auth functions", () => {
       expect(userAttributes).toEqual({
         ...expectedAttributes,
         role: undefined,
+        states: undefined,
       });
     });
 

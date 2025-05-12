@@ -562,12 +562,12 @@ export class Api extends cdk.NestedStack {
       getUserDetails: {
         path: "getUserDetails",
         lambda: lambdas.getUserDetails,
-        method: "GET",
+        method: "POST",
       },
       getUserProfile: {
         path: "getUserProfile",
         lambda: lambdas.getUserProfile,
-        method: "GET",
+        method: "POST",
       },
       submitGroupDivision: {
         path: "submitGroupDivision",

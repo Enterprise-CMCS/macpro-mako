@@ -13,7 +13,7 @@ import {
 } from "../../data";
 import { SubmitRoleRequestBody, TestRoleDocument } from "../../index.d";
 
-const defaultApiUserProfileHandler = http.get(
+const defaultApiUserProfileHandler = http.post(
   "https://test-domain.execute-api.us-east-1.amazonaws.com/mocked-tests/getUserProfile",
   async () => {
     const username = process.env.MOCK_USER_USERNAME;

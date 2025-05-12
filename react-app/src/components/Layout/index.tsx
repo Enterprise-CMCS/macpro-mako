@@ -113,19 +113,18 @@ const UserDropdownMenu = () => {
     const currentRole = userDetails?.role;
     const requestedRoles = userProfile?.stateAccess ?? [];
 
-    const roleIsPending = (targetRole: string) =>
-      requestedRoles.some((r) => r.role === targetRole && r.status === "pending") ||
-      requestedRoles.some((r) => r.status === "pending");
+    const roleIsPending = requestedRoles.some((r) => r.status === "pending");
 
     // Prevent duplicate or inappropriate role requests
-    if (
-      (currentRole === "statesubmitter" && roleIsPending("statesystemadmin")) ||
-      (currentRole === "defaultcmsuser" && roleIsPending("cmsroleapprover"))
-    ) {
-      return true;
-    }
+    // if (
+    //   (currentRole === "statesubmitter" && roleIsPending("statesystemadmin")) ||
+    //   (currentRole === "defaultcmsuser" && roleIsPending("cmsroleapprover"))
+    // ) {
+    //   return true;
+    // }
+    if (roleIsPending) return true;
 
-    const excludedRoles = ["helpdesk", "systemadmin", "cmsreviewer"];
+    const excludedRoles = ["helpdesk", "systemadmin"];
 
     return excludedRoles.includes(currentRole);
   };
@@ -179,33 +178,34 @@ const UserDropdownMenu = () => {
         </button>
       </DropdownMenu.Trigger>
       <DropdownMenu.Portal>
-        <DropdownMenu.Content
-          align="start"
-          className="bg-white z-50 flex flex-col gap-4 px-10 py-4 shadow-md rounded-b-sm "
-        >
-          <DropdownMenu.Item
-            className="text-primary hover:text-primary/70"
-            asChild
-            onSelect={handleViewProfile}
-          >
-            <li>View Profile</li>
-          </DropdownMenu.Item>
-          {/* TODO: conditionally show this if the user IS NOT HELPDESK */}
-          {/* // helpdesk, system admins, and cms reviewer users don't even see request role as an option */}
-          {!disableRoleChange() && !isLoading && userDetails && (
-            <DropdownMenu.Item>
-              <Link to="/signup" className="text-primary hover:text-primary/70">
-                Request a Role Change
-              </Link>
+        <DropdownMenu.Content align="start" asChild>
+          <ul className="bg-white z-50 flex flex-col gap-4 px-10 py-4 shadow-md rounded-b-sm">
+            <DropdownMenu.Item
+              className="text-primary hover:text-primary/70 cursor-pointer"
+              asChild
+              onSelect={handleViewProfile}
+            >
+              <li>View Profile</li>
             </DropdownMenu.Item>
-          )}
-          <DropdownMenu.Item
-            className="text-primary hover:text-primary/70"
-            asChild
-            onSelect={handleLogout}
-          >
-            <li>Sign Out</li>
-          </DropdownMenu.Item>
+            {/* TODO: conditionally show this if the user IS NOT HELPDESK */}
+            {/* // helpdesk, system admins, and cms reviewer users don't even see request role as an option */}
+            {!disableRoleChange() && !isLoading && userDetails && (
+              <DropdownMenu.Item
+                className="text-primary hover:text-primary/70 cursor-pointer"
+                asChild
+                onSelect={() => navigate("/signup")}
+              >
+                <li>Request a Role Change</li>
+              </DropdownMenu.Item>
+            )}
+            <DropdownMenu.Item
+              className="text-primary hover:text-primary/70 cursor-pointer"
+              asChild
+              onSelect={handleLogout}
+            >
+              <li>Sign Out</li>
+            </DropdownMenu.Item>
+          </ul>
         </DropdownMenu.Content>
       </DropdownMenu.Portal>
     </DropdownMenu.Root>
@@ -309,7 +309,7 @@ export const Layout = () => {
           street: "7500 Security Boulevard",
           zip: 21244,
         }}
-        showNavLinks={cmsHomeFlag && stateHomeFlag}
+        showNavLinks={cmsHomeFlag && stateHomeFlag && !!user.user}
       />
     </div>
   );
@@ -353,6 +353,7 @@ const ResponsiveNav = ({ isDesktop }: ResponsiveNavProps) => {
     const url = `https://${domain}/oauth2/authorize?redirect_uri=${redirectSignIn}&response_type=${responseType}&client_id=${clientId}`;
     window.location.assign(url);
   };
+  const hideLogin = useFeatureFlag("LOGIN_PAGE");
 
   const handleRegister = () => {
     const url = `${config.idm.home_url}/signin/login.html`;
@@ -389,15 +390,16 @@ const ResponsiveNav = ({ isDesktop }: ResponsiveNavProps) => {
           // When the user is signed in
           <UserDropdownMenu />
         ) : (
-          !isFaqPage && (
-            // When the user is not signed in
+          !isFaqPage &&
+          // When the user is not signed in
+          (hideLogin ? (
             <>
               <button
                 data-testid="sign-in-button-d"
                 className="text-white hover:text-white/70"
                 onClick={handleLogin}
               >
-                Sign In
+                {hideLogin ? "Sign In" : "Log In"}
               </button>
               <button
                 data-testid="register-button-d"
@@ -407,7 +409,24 @@ const ResponsiveNav = ({ isDesktop }: ResponsiveNavProps) => {
                 Register
               </button>
             </>
-          )
+          ) : (
+            <>
+              <button
+                data-testid="register-button-d"
+                className="text-white hover:text-white/70"
+                onClick={handleRegister}
+              >
+                Register
+              </button>
+              <button
+                data-testid="sign-in-button-d"
+                className="text-white hover:text-white/70"
+                onClick={handleLogin}
+              >
+                {hideLogin ? "Sign In" : "Log In"}
+              </button>
+            </>
+          ))
         )}
       </>
     );
@@ -442,7 +461,7 @@ const ResponsiveNav = ({ isDesktop }: ResponsiveNavProps) => {
                     className="text-left block py-2 pl-3 pr-4 text-white rounded"
                     onClick={handleLogin}
                   >
-                    Sign In
+                    {hideLogin ? "Sign In" : "Log In"}
                   </button>
                   <button
                     className="text-left block py-2 pl-3 pr-4 text-white rounded"

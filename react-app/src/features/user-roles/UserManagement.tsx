@@ -1,11 +1,13 @@
 import { EllipsisVerticalIcon } from "@heroicons/react/24/outline";
 import { ExportToCsv } from "export-to-csv";
+import LZ from "lz-string";
 import { useEffect, useMemo, useState } from "react";
 import { Link } from "react-router";
 import { formatDate, formatDateToET } from "shared-utils";
 
 import { RoleRequest, useGetRoleRequests, useGetUserDetails, useSubmitRoleRequests } from "@/api";
 import {
+  banner,
   Button,
   ConfirmationDialog,
   LoadingSpinner,
@@ -39,6 +41,8 @@ export type UserRoleType = {
   division?: string;
 };
 type headingType = { [key: string]: keyof UserRoleType | null };
+
+type SelectedUser = RoleRequest & { fullName: string };
 
 const pendingCircle = (
   <svg
@@ -120,18 +124,26 @@ export const renderCellActions = (
     };
 
     const requestFor = userRole.status === "pending" ? " request for" : "";
+
+    const statusMap = {
+      "Grant Access": "active",
+      "Deny Access": "denied",
+      "Revoke Access": "revoked",
+    };
     //  in legacy there is logic to add the territory in front
     setModalText(
       `This will ${modalAction[action]} ${userRole.fullName}'s${requestFor} access to OneMac.`,
     );
     setSelectedUserRole({
       email: userRole.email,
+      fullName: userRole.fullName,
       state: userRole.territory,
       role: userRole.role,
-      grantAccess: modalAction[action] === "grant",
+      grantAccess: statusMap[action],
       eventType: userRole.eventType,
       group: userRole.group ?? null,
       division: userRole.division ?? null,
+      requestRoleChange: false,
     });
   };
   return (
@@ -146,7 +158,7 @@ export const renderCellActions = (
           className={cn("w-8 ", actions.length ? "text-blue-700" : "text-gray-400")}
         />
       </PopoverTrigger>
-      <PopoverContent>
+      <PopoverContent className="w-auto">
         <div className="flex flex-col">
           {actions.map((action, idx) => (
             <div
@@ -168,10 +180,28 @@ export const UserManagement = () => {
   const { data, isLoading, isFetching } = useGetRoleRequests();
   const { mutateAsync: submitRequest, isLoading: processSubmit } = useSubmitRoleRequests();
   const [userRoles, setUserRoles] = useState<UserRoleType[] | null>(null);
-  const [selectedUserRole, setSelectedUserRole] = useState<RoleRequest>(null);
+  const [selectedUserRole, setSelectedUserRole] = useState<SelectedUser>(null);
 
   const isHelpDesk = userDetails && userDetails.role === "helpdesk";
   const isStateSystemAdmin = userDetails && userDetails.role === "statesystemadmin";
+  const isSystemAdmin = userDetails && userDetails.role === "systemadmin";
+
+  const getBannerText = (selectedUser: SelectedUser) => {
+    const getStatusText = () => {
+      switch (selectedUser.grantAccess) {
+        case "active":
+          return " has been granted access";
+        case "denied":
+          return " has been denied access";
+        case "revoked":
+          return "'s access has been revoked";
+        default:
+          return "'s access is pending";
+      }
+    };
+
+    return `${selectedUser.fullName}${getStatusText()}`;
+  };
 
   const [sortBy, setSortBy] = useState<{
     title: keyof headingType | "";
@@ -236,6 +266,14 @@ export const UserManagement = () => {
     submitRequest(selectedUserRole);
     setModalText(null);
     setSelectedUserRole(null);
+
+    banner({
+      header: "Status Change",
+      body: `${getBannerText(selectedUserRole)}, a notification has been sent to their email.`,
+      variant: "success",
+      pathnameToDisplayOn: window.location.pathname,
+    });
+    window.scrollTo(0, 0);
   };
 
   // Export Section
@@ -274,11 +312,12 @@ export const UserManagement = () => {
       <div className="bg-sky-100" data-testid="sub-nav-header">
         <div className="max-w-screen-xl m-auto px-4 lg:px-8 flex items-center py-4 justify-between">
           <h1 className="text-xl font-medium">User Management</h1>
-          {isHelpDesk && (
-            <Button variant="outline" onClick={handleExport}>
-              Export to Excel (CSV)
-            </Button>
-          )}
+          {isHelpDesk ||
+            (isSystemAdmin && (
+              <Button variant="outline" onClick={handleExport}>
+                Export to Excel (CSV)
+              </Button>
+            ))}
         </div>
       </div>
       <div className="py-5 px-10">
@@ -307,10 +346,17 @@ export const UserManagement = () => {
                       {renderCellActions(userRole, setModalText, setSelectedUserRole)}
                     </TableCell>
                   )}
-                  <TableCell>{userRole.fullName}</TableCell>
+                  <TableCell>
+                    <Link
+                      to={`/profile/${LZ.compressToEncodedURIComponent(userRole.email).replaceAll("+", "_")}`}
+                      className="text-blue-500 flex select-none items-center px-2 py-2"
+                    >
+                      {userRole.fullName}
+                    </Link>
+                  </TableCell>
                   {!isStateSystemAdmin && <TableCell>{userRole.territory}</TableCell>}
                   <TableCell>
-                    <span className="font-semibold flex items-center">
+                    <span className="font-bold flex items-center">
                       {renderStatus(userRole.status)}
                     </span>
                   </TableCell>
