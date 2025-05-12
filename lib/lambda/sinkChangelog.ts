@@ -80,6 +80,9 @@ const processAndIndex = async ({
           if (result.data.adminChangeType === "update-id" && "idToBeUpdated" in result.data) {
             const { id, packageId: _packageId, idToBeUpdated, ...restOfResultData } = result.data;
             // Push doc with content of package being soft deleted
+            if (result.data?.packageId == "MD-22-0029" || result.data?.packageId === "MD-22-0030") {
+              console.log(result.data.packageId + " : " + JSON.stringify(result.data));
+            }
             docs.forEach((log) => {
               const recordOffset = log.id.split("-").at(-1);
               docs.push({
