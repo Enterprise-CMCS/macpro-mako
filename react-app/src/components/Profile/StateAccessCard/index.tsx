@@ -17,7 +17,7 @@ export type StateAccessProps = {
 };
 
 export const StateAccessCard = ({ role, onClick, access }: StateAccessProps) => {
-  if (!access) return <div />;
+  if (!access) return null;
   return (
     <CardWithTopBorder key={`${access.territory}-${access.role}`}>
       <div className="p-8 min-h-36">

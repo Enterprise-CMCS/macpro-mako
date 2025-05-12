@@ -235,53 +235,48 @@ export const getStateUsersByState = async (
   const { domain: rolesDomain, index: rolesIndex } = getDomainAndNamespace("roles");
   const { domain: usersDomain, index: usersIndex } = getDomainAndNamespace("users");
 
-  try {
-    const rolesResult = await search(rolesDomain, rolesIndex, {
-      size: 1000,
-      query: {
-        bool: {
-          must: [
-            { term: { status: "active" } },
-            { term: { "territory.keyword": state } },
-            { terms: { role: ["statesubmitter", "statesystemadmin"] } },
-          ],
-        },
+  const rolesResult = await search(rolesDomain, rolesIndex, {
+    size: 1000,
+    query: {
+      bool: {
+        must: [
+          { term: { status: "active" } },
+          { term: { "territory.keyword": state } },
+          { terms: { role: ["statesubmitter", "statesystemadmin"] } },
+        ],
       },
-      _source: ["email"],
+    },
+    _source: ["email"],
+  });
+
+  const seen = new Set<string>();
+  const emails = rolesResult.hits.hits
+    .map((hit: any) => hit._source.email)
+    .filter((email: string): email is string => {
+      if (seen.has(email)) return false;
+      seen.add(email);
+      return true;
     });
 
-    const seen = new Set<string>();
-    const emails = rolesResult.hits.hits
-      .map((hit: any) => hit._source.email)
-      .filter((email: string): email is string => {
-        if (seen.has(email)) return false;
-        seen.add(email);
-        return true;
-      });
+  if (!emails.length) return [];
 
-    if (!emails.length) return [];
-
-    const usersResult = await search(usersDomain, usersIndex, {
-      size: 100,
-      query: {
-        bool: {
-          should: emails.map((email: string) => ({
-            term: { "email.keyword": email },
-          })),
-        },
+  const usersResult = await search(usersDomain, usersIndex, {
+    size: 100,
+    query: {
+      bool: {
+        should: emails.map((email: string) => ({
+          term: { "email.keyword": email },
+        })),
       },
-      _source: ["email", "fullName"],
-    });
+    },
+    _source: ["email", "fullName"],
+  });
 
-    return usersResult.hits.hits.map((hit: any) => {
-      const user = hit._source;
-      return {
-        email: user.email,
-        fullName: user.fullName,
-      };
-    });
-  } catch (err: unknown) {
-    console.log("An error occured in opensearch query: ", err);
-    throw new Error("An error occured in opensearch query");
-  }
+  return usersResult.hits.hits.map((hit: any) => {
+    const user = hit._source;
+    return {
+      email: user.email,
+      fullName: user.fullName,
+    };
+  });
 };

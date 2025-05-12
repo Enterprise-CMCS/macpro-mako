@@ -75,7 +75,7 @@ export const handler: Handler<KafkaEvent> = async (event) => {
   const config: ProcessEmailConfig = {
     emailAddressLookupSecretName,
     applicationEndpointUrl,
-    osDomain: `https://${osDomain}`,
+    osDomain,
     indexNamespace,
     region,
     DLQ_URL,
@@ -348,7 +348,6 @@ export async function processAndSendEmails(
 
   const territory = id.slice(0, 2);
   const allStateUsers = await getAllStateUsersFromOpenSearch(territory);
-  console.log("what are the state users listed", allStateUsers);
 
   const sec = await getSecret(config.emailAddressLookupSecretName);
 

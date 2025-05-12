@@ -5,7 +5,8 @@ import {
   ListUsersCommandInput,
   ListUsersCommandOutput,
 } from "@aws-sdk/client-cognito-identity-provider";
-import { getStateUsersByState } from "lib/lambda/user-management/userManagementService";
+
+import { getStateUsersByState } from "../../lambda/user-management/userManagementService";
 
 export type StateUser = {
   firstName: string;
