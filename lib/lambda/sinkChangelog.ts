@@ -159,6 +159,11 @@ const processAndIndex = async ({
                   id: `${newID}-${recordOffset}`,
                   packageId: newID,
                 });
+                docs.push({
+                  ...log._source,
+                  id: `${packageId}-${recordOffset}-del`,
+                  packageId: `${packageId}-${recordOffset}-del`,
+                });
               }
             });
           }
