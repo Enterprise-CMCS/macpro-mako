@@ -150,6 +150,7 @@ const processAndIndex = async ({
           if (lastPackageChangelog.hits.hits[0]) {
             const packageId = lastPackageChangelog.hits.hits[0]._source.packageId;
             const packageChangelogs = await getPackageChangelog(packageId);
+            console.log(JSON.stringify(packageChangelogs));
             packageChangelogs.hits.hits.forEach((log) => {
               if (log._source.event !== "delete") {
                 const recordOffset = log._id.split("-").at(-1);

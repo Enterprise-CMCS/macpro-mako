@@ -12,7 +12,7 @@ export const getPackageChangelogTimestamp = async (timestamp: number, filter: an
     sort: [{ timestamp: "desc" }],
     query: {
       bool: {
-        must: [{ term: { "timestamp.keyword": timestamp } }].concat(filter),
+        must: [{ term: { timestamp: timestamp } }].concat(filter),
       },
     },
   })) as opensearch.changelog.Response;
