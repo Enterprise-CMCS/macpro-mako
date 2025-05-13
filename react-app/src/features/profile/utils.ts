@@ -8,16 +8,19 @@ export const userRoleMap = {
   cmsroleapprover: "CMS Role Approver",
   cmsreviewer: "CMS Read-only User",
   statesystemadmin: "State System Admin",
-  helpdesk: "Helpdesk",
+  helpdesk: "Help Desk",
   statesubmitter: "State Submitter",
   systemadmin: "System Admin",
 };
-
+// TODO: rename? all roles should see either a State or Status Access Card
 export const stateAccessRoles: UserRole[] = [
   "statesubmitter",
   "statesystemadmin",
   "cmsroleapprover",
   "systemadmin",
+  "helpdesk",
+  "defaultcmsuser",
+  "cmsreviewer",
 ];
 
 export const orderStateAccess = (accesses: StateAccess[]) => {

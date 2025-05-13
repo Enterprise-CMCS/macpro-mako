@@ -175,7 +175,6 @@ export const getApproversByRoleState = async (
 
   const approverRole =
     approvingUserRole[role as keyof typeof approvingUserRole] ?? "statesystemadmin";
-  console.log("ANDIE -- ", approverRole);
 
   const results = await search(domain, index, {
     query: {
@@ -203,14 +202,21 @@ export const getApproversByRoleState = async (
   return approversInfo;
 };
 
-export const getActiveStatesForUserByEmail = async (email: string): Promise<string[]> => {
+export const getActiveStatesForUserByEmail = async (
+  email: string,
+  latestActiveRole?: string,
+): Promise<string[]> => {
   const { domain, index } = getDomainAndNamespace("roles");
 
   const result = await search(domain, index, {
     size: 1000,
     query: {
       bool: {
-        must: [{ term: { "email.keyword": email } }, { term: { status: "active" } }],
+        must: [
+          { term: { "email.keyword": email } },
+          { term: { status: "active" } },
+          ...(latestActiveRole ? [{ term: { role: latestActiveRole } }] : []),
+        ],
         must_not: [{ terms: { territory: ["N/A"] } }],
       },
     },
