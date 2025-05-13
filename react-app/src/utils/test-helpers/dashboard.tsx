@@ -136,7 +136,7 @@ export const getDashboardQueryString = ({
       tab: tab || "spas",
       pagination: pagination || {
         number: 0,
-        size: 25,
+        size: 100,
       },
       sort: sort || {
         field: "makoChangedDate",
