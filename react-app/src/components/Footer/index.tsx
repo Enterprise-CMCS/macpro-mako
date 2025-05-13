@@ -101,9 +101,12 @@ export const Footer = ({ email, address, showNavLinks }: Props) => {
 };
 
 export const FAQFooter = () => {
+  const showEligibilityFields = useFeatureFlag("CHIP_SPA_SUBMISSION");
+  if (showEligibilityFields) return null;
+
   return (
     <Alert
-      variant={"infoBlock"}
+      variant="infoBlock"
       className="mb-8 items-center flex py-8 px-14 flex-row text-sm justify-center gap-24"
     >
       <p className="text-lg">Do you have questions or need support?</p>

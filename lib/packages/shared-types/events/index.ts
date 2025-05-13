@@ -9,7 +9,7 @@ import * as contractingInitial from "./contracting-initial";
 import * as contractingRenewal from "./contracting-renewal";
 import * as legacyAdminChange from "./legacy-admin-change";
 import * as legacyEvent from "./legacy-event";
-import * as newChipEligibilitySubmission from "./new-chip-eligibilty-submission";
+import { buildChipSchema } from "./new-chip-submission";
 import * as newChipSubmission from "./new-chip-submission";
 import * as newMedicaidSubmission from "./new-medicaid-submission";
 import * as respondToRai from "./respond-to-rai";
@@ -35,7 +35,6 @@ export const events = {
   "contracting-initial": contractingInitial,
   "contracting-renewal": contractingRenewal,
   "new-chip-submission": newChipSubmission,
-  "new-chip-eligibility-submission": newChipEligibilitySubmission,
   "new-medicaid-submission": newMedicaidSubmission,
   "temporary-extension": temporaryExtension,
   "withdraw-package": withdrawPackage,
@@ -50,6 +49,9 @@ export const events = {
 
 export type BaseSchemas = z.infer<typeof newMedicaidSubmission.baseSchema>;
 
+const _builtSchema = buildChipSchema(false);
+export type NewChipSubmission = z.infer<typeof _builtSchema>;
+
 export type Events = {
   AppKSubmission: z.infer<typeof appk.schema>;
   CapitatedInitial: z.infer<typeof capitatedIntial.schema>;
@@ -58,8 +60,7 @@ export type Events = {
   ContractingInitial: z.infer<typeof contractingInitial.schema>;
   ContractingRenewal: z.infer<typeof contractingRenewal.schema>;
   ContractingAmendment: z.infer<typeof contractingAmendment.schema>;
-  NewChipSubmission: z.infer<typeof newChipSubmission.schema>;
-  NewChipEligibilitySubmission: z.infer<typeof newChipEligibilitySubmission.schema>;
+  NewChipSubmission: NewChipSubmission;
   NewMedicaidSubmission: z.infer<typeof newMedicaidSubmission.schema>;
   TemporaryExtension: z.infer<typeof temporaryExtension.schema>;
   RespondToRai: z.infer<typeof respondToRai.schema>;

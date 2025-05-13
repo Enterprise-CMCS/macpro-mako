@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { Link } from "react-router";
+import { buildChipSchema } from "shared-types/events/new-chip-submission";
 
 import {
   ActionForm,
@@ -19,7 +20,6 @@ import {
   SpaIdFormattingDesc,
 } from "@/components";
 import { FAQ_TAB } from "@/consts";
-import { formSchemas } from "@/formSchemas";
 import { useFeatureFlag } from "@/hooks/useFeatureFlag";
 
 import { getFAQLinkForAttachments } from "../faqLinks";
@@ -35,11 +35,12 @@ export const ChipFormWrapper = () => {
     "XXI Medicaid Expansion",
     "Eligibility Process",
   ];
+  const schema = buildChipSchema(useEligibilityForm);
 
   return (
     <ActionForm
       title={title}
-      schema={formSchemas["new-chip-submission"]}
+      schema={schema}
       breadcrumbText={breadcrumb}
       fields={({ control }) => (
         <>

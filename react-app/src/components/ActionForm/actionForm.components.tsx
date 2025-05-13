@@ -27,12 +27,12 @@ export const AttachmentFileFormatInstructions = () => {
           {" "}
           View all{" "}
           <Link
-            to="https://www.medicaid.gov/state-resource-center/mac-learning-collaboratives/state-toolbox/chip-eligibility.html"
-            target="_blank"
+            to="/faq/acceptable-file-formats"
+            target={FAQ_TAB}
             rel="noopener noreferrer"
             className="text-blue-900 underline"
           >
-            CHIP eligibility SPA templates and implementation guides
+            CHIP eligibility SPA templates and implementation guides.
           </Link>
         </div>
       )}

@@ -1,9 +1,12 @@
-import { events } from "shared-types/events";
+import { buildChipSchema } from "shared-types/events/new-chip-submission";
 
 import { itemExists } from "@/api";
 import { isAuthorizedState } from "@/utils";
-export const formSchema = events["new-chip-submission"].baseSchema.extend({
-  id: events["new-chip-submission"].baseSchema.shape.id
+
+const baseSchema = buildChipSchema(false); // or true based on the LD flag
+
+export const formSchema = baseSchema.extend({
+  id: baseSchema.shape.id
     .refine(isAuthorizedState, {
       message:
         "You can only submit for a state you have access to. If you need to add another state, visit your IDM user profile to request access.",
