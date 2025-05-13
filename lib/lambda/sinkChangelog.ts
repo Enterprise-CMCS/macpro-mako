@@ -149,6 +149,7 @@ const processAndIndex = async ({
           const lastPackageChangelog = await getPackageChangelogTimestamp(timestamp);
           if (lastPackageChangelog.hits.hits[0]) {
             const packageId = lastPackageChangelog.hits.hits[0]._source.packageId;
+            const origID = lastPackageChangelog.hits.hits[0]._id;
             const packageChangelogs = await getPackageChangelog(packageId);
             console.log(JSON.stringify(packageChangelogs));
             packageChangelogs.hits.hits.forEach((log) => {
@@ -161,7 +162,7 @@ const processAndIndex = async ({
                 });
                 docs.push({
                   ...log._source,
-                  id: `${packageId}-${recordOffset}`,
+                  id: origID,
                   packageId: `${packageId}-${recordOffset}-del`,
                 });
               }
