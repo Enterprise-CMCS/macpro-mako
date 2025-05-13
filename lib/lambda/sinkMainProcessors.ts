@@ -79,6 +79,7 @@ const getOneMacRecordWithAllProperties = (
   kafkaRecord: KafkaRecord,
 ): OneMacRecord | undefined => {
   const record = JSON.parse(decodeBase64WithUtf8(value));
+  console.log(`kafkaRecord: ${JSON.stringify(kafkaRecord, null, 2)}`);
   const kafkaSource = String.fromCharCode(...(kafkaRecord.headers[0]?.source || []));
 
   if (isRecordAnAdminOneMacRecord(record)) {
