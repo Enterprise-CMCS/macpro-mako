@@ -25,6 +25,10 @@ describe("CMSSignup", () => {
           element: <div>Home</div>,
         },
         {
+          path: "/dashboard",
+          element: <div>Dashboard</div>,
+        },
+        {
           path: "/profile",
           element: <div>Profile</div>,
         },
