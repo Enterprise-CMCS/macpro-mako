@@ -118,29 +118,29 @@ describe("process emails Handler", () => {
     expect(secSPY).toHaveBeenCalledTimes(0);
   });
 
-  // it("should be missing a value, so nothing sent", async () => {
-  //   const callback = vi.fn();
-  //   const mockEvent: KafkaEvent = {
-  //     records: {
-  //       "mock-topic": [
-  //         {
-  //           key: Buffer.from("VA").toString("base64"),
-  //           headers: {},
-  //           timestamp: 1732645041557,
-  //           offset: "0",
-  //           partition: 0,
-  //           topic: "mock-topic",
-  //         } as unknown as KafkaRecord,
-  //       ],
-  //     },
-  //     eventSource: "",
-  //     bootstrapServers: "",
-  //   };
-  //   const secSPY = vi.spyOn(SESClient.prototype, "send");
+  it("should be missing a value, so nothing sent", async () => {
+    const callback = vi.fn();
+    const mockEvent: KafkaEvent = {
+      records: {
+        "mock-topic": [
+          {
+            key: Buffer.from("VA").toString("base64"),
+            headers: {},
+            timestamp: 1732645041557,
+            offset: "0",
+            partition: 0,
+            topic: "mock-topic",
+          } as unknown as KafkaRecord,
+        ],
+      },
+      eventSource: "",
+      bootstrapServers: "",
+    };
+    const secSPY = vi.spyOn(SESClient.prototype, "send");
 
-  //   await handler(mockEvent, {} as Context, callback);
-  //   expect(secSPY).toHaveBeenCalledTimes(0);
-  // });
+    await handler(mockEvent, {} as Context, callback);
+    expect(secSPY).toHaveBeenCalledTimes(0);
+  });
 
   it("should be missing an environment variable", async () => {
     const callback = vi.fn();

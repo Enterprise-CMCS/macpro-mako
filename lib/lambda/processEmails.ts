@@ -84,6 +84,8 @@ export const handler: Handler<KafkaEvent> = async (event) => {
     isDev: isDev === "true",
   };
 
+  console.log("config: ", JSON.stringify(config, null, 2));
+
   try {
     const results = await Promise.allSettled(
       Object.values(event.records)
