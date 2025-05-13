@@ -8,7 +8,7 @@ export const userRoleMap = {
   cmsroleapprover: "CMS Role Approver",
   cmsreviewer: "CMS Read-only User",
   statesystemadmin: "State System Admin",
-  helpdesk: "Helpdesk",
+  helpdesk: "Help Desk",
   statesubmitter: "State Submitter",
   systemadmin: "System Admin",
 };
@@ -18,6 +18,7 @@ export const stateAccessRoles: UserRole[] = [
   "statesystemadmin",
   "cmsroleapprover",
   "systemadmin",
+  "helpdesk",
 ];
 
 export const orderStateAccess = (accesses: StateAccess[]) => {

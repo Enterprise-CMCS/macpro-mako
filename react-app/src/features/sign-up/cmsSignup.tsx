@@ -56,13 +56,13 @@ export const CMSSignup = () => {
       });
 
       if (isCMSRoleApprover) navigate("/usermanagement");
-      else navigate("/");
+      else navigate("/dashboard");
 
       banner({
         header: "Submission Completed",
         body: "Your submission has been received.",
         variant: "success",
-        pathnameToDisplayOn: "/",
+        pathnameToDisplayOn: isCMSRoleApprover ? "/usermanagement" : "/dashboard",
       });
     } catch (error) {
       console.error(`Error updating group and division: ${error?.message || error}`);
