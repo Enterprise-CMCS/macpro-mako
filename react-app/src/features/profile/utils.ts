@@ -12,13 +12,15 @@ export const userRoleMap = {
   statesubmitter: "State Submitter",
   systemadmin: "System Admin",
 };
-
+// TODO: rename? all roles should see either a State or Status Access Card
 export const stateAccessRoles: UserRole[] = [
   "statesubmitter",
   "statesystemadmin",
   "cmsroleapprover",
   "systemadmin",
   "helpdesk",
+  "defaultcmsuser",
+  "cmsreviewer",
 ];
 
 export const orderStateAccess = (accesses: StateAccess[]) => {
