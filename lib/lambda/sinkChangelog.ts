@@ -67,7 +67,7 @@ const processAndIndex = async ({
 
       // Parse the kafka record's value
       const record = JSON.parse(decodeBase64WithUtf8(value));
-      console.log(record);
+
       if (record.isAdminChange) {
         const schema = transformDeleteSchema(offset)
           .or(transformUpdateValuesSchema(offset))
@@ -139,19 +139,23 @@ const processAndIndex = async ({
       if (kafkaSource === "onemac" && record.GSI1pk?.startsWith("OneMAC#submit")) {
         const schema = legacyEventIdUpdateSchema;
         const result = schema.safeParse(record);
-        const eventType = "legacy-event";
-        //Check if event has admin changes
+
+        // Check if event has admin changes
+        // The previous packageID can be retrieved by matching the timestamp
+        // Take that ID then use it to get the changelogs to update
+        // Mark all the packageIDs with the offset and Del to get rid of them from use
         if (result.success && result.data.adminChanges) {
           console.log(result.data);
           const newID = result.data.componentId;
           const timestamp = result.data.eventTimestamp;
 
           const lastPackageChangelog = await getPackageChangelogTimestamp(timestamp);
+
           if (lastPackageChangelog.hits.hits[0]) {
             const packageId = lastPackageChangelog.hits.hits[0]._source.packageId;
             const origID = lastPackageChangelog.hits.hits[0]._id;
             const packageChangelogs = await getPackageChangelog(packageId);
-            console.log(JSON.stringify(packageChangelogs));
+
             packageChangelogs.hits.hits.forEach((log) => {
               if (log._source.event !== "delete") {
                 const recordOffset = log._id.split("-").at(-1);
@@ -169,12 +173,8 @@ const processAndIndex = async ({
             });
           }
         }
-        // Check the timestamp of the admin change
-        // Search the changelog for the most event that matches the changelog of the number and take the ID from it.
-        //  UPdate all entries that have that ID with the new ID
-        // Delete the entry in upgrade of the original ID
-        //Try not to hate everythign
-        record.event = eventType;
+
+        record.event = "legacy-event";
         record.origin = "onemac";
       }
 
