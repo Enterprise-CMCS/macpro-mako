@@ -21,6 +21,7 @@ export const router = (loginFlag = false) => {
     {
       path: "/",
       element: <C.Layout />,
+      errorElement: <C.Layout />,
       children: [
         { path: "/", index: true, element: <F.WelcomeWrapper /> },
         { path: "/faq", element: <F.Faq /> },
@@ -145,6 +146,9 @@ export const router = (loginFlag = false) => {
             },
           ],
         },
+
+        { path: "/404", element: <F.ErrorPage /> },
+        { path: "*", element: <Navigate to="/404" replace /> },
       ],
       loader: F.loader(queryClient, loginFlag),
       HydrateFallback: () => null,

@@ -50,6 +50,10 @@ export default {
           DEFAULT: "hsl(var(--primary) / <alpha-value>)",
           foreground: "hsl(var(--primary-foreground) / <alpha-value>)",
         },
+        "primary-bright": {
+          DEFAULT: "rgb(var(--primary-bright) / <alpha-value>)",
+          foreground: "rgb(var(--primary-bright-foreground) / <alpha-value>)",
+        },
         "primary-dark": {
           DEFAULT: "hsl(var(--primary-dark) / <alpha-value>)",
           foreground: "hsl(var(--primary-dark-foreground) / <alpha-value>)",

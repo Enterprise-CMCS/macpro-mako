@@ -57,7 +57,7 @@ export const arEnableWithdrawRaiResponse: ActionRule = {
     return (
       !checker.isTempExtension &&
       checker.isNotWithdrawn &&
-      checker.hasRaiResponse &&
+      checker.hasCompletedRai &&
       !checker.hasEnabledRaiWithdraw &&
       checker.isInSecondClock &&
       isCmsWriteUser(user) &&
@@ -81,16 +81,20 @@ export const arDisableWithdrawRaiResponse: ActionRule = {
 
 export const arWithdrawRaiResponse: ActionRule = {
   action: Action.WITHDRAW_RAI,
-  check: (checker, user) =>
-    !checker.isTempExtension &&
-    checker.isInActivePendingStatus &&
-    checker.hasRaiResponse &&
-    // safety; prevent bad status from causing overwrite
-    !checker.hasRaiWithdrawal &&
-    !checker.hasStatus([SEATOOL_STATUS.PENDING_CONCURRENCE, SEATOOL_STATUS.PENDING_APPROVAL]) &&
-    checker.hasEnabledRaiWithdraw &&
-    isStateUser(user) &&
-    !checker.isLocked,
+  check: (checker, user) => {
+    return (
+      !checker.isTempExtension &&
+      checker.isInActivePendingStatus &&
+      checker.hasCompletedRai &&
+      // safety; prevent bad status from causing overwrite,
+      // update: needed to allow subsequent RAI responses
+      // !checker.hasRaiWithdrawal &&
+      !checker.hasStatus([SEATOOL_STATUS.PENDING_CONCURRENCE, SEATOOL_STATUS.PENDING_APPROVAL]) &&
+      checker.hasEnabledRaiWithdraw &&
+      isStateUser(user) &&
+      !checker.isLocked
+    );
+  },
 };
 
 export const arWithdrawPackage: ActionRule = {

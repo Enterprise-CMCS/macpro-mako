@@ -132,7 +132,7 @@ describe("VisibilityPopover", () => {
     );
     await user.click(screen.getByRole("button", { name: "Columns (1 hidden)" }));
 
-    expect(within(screen.getByRole("dialog")).queryByText("Authority")).toBeNull();
+    expect(within(screen.getByRole("menu")).queryByText("Authority")).toBeNull();
   });
 
   it("should handle hiding a column", async () => {
@@ -183,7 +183,7 @@ describe("VisibilityPopover", () => {
     );
     await user.click(screen.getByRole("button", { name: "Columns (1 hidden)" }));
 
-    const stateColumnMenuItem = within(screen.getByRole("dialog")).getByText("State");
+    const stateColumnMenuItem = within(screen.getByRole("menu")).getByText("State");
     await user.click(stateColumnMenuItem.parentElement);
 
     expect(onItemClick).toHaveBeenCalledWith("state.keyword");
@@ -237,7 +237,7 @@ describe("VisibilityPopover", () => {
     );
     await user.click(screen.getByRole("button", { name: "Columns (1 hidden)" }));
 
-    const stateColumnMenuItem = within(screen.getByRole("dialog")).getByText("Final Disposition");
+    const stateColumnMenuItem = within(screen.getByRole("menu")).getByText("Final Disposition");
     await user.click(stateColumnMenuItem.parentElement);
 
     expect(onItemClick).toHaveBeenCalledWith("finalDispositionDate.keyword");
