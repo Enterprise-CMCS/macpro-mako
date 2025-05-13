@@ -332,7 +332,7 @@ describe("package actions rules tests", () => {
       });
       expect(arEnableWithdrawRaiResponse.check(check, TEST_CMS_REVIEWER_USER)).toBe(false);
     });
-    it("should return false for a package that has an rai response 1915(b)", () => {
+    it("should return false for a package that has an rai withdraw 1915(b)", () => {
       const check = PackageCheck({
         ...TEST_1915B_ITEM?._source,
         seatoolStatus: SEATOOL_STATUS.PENDING,
@@ -340,6 +340,7 @@ describe("package actions rules tests", () => {
         raiRequestedDate: "2024-01-01T00:00:00.000Z",
         raiReceivedDate: "2024-01-01T00:00:00.000Z",
         raiWithdrawnDate: "2024-01-01T00:00:00.000Z",
+        raiWithdrawEnabled: true,
       });
       expect(arEnableWithdrawRaiResponse.check(check, TEST_CMS_REVIEWER_USER)).toBe(false);
     });
@@ -533,7 +534,7 @@ describe("package actions rules tests", () => {
       });
       expect(arWithdrawRaiResponse.check(check, TEST_STATE_SUBMITTER_USER)).toBe(false);
     });
-    it("should return false for a package that has an rai response", () => {
+    it("should return true for a package that has an rai response to allow for subsequent RAI submissions", () => {
       const check = PackageCheck({
         ...TEST_MED_SPA_ITEM?._source,
         seatoolStatus: SEATOOL_STATUS.PENDING,
@@ -543,7 +544,7 @@ describe("package actions rules tests", () => {
         raiWithdrawnDate: "2024-01-01T00:00:00.000Z",
         raiWithdrawEnabled: true,
       });
-      expect(arWithdrawRaiResponse.check(check, TEST_STATE_SUBMITTER_USER)).toBe(false);
+      expect(arWithdrawRaiResponse.check(check, TEST_STATE_SUBMITTER_USER)).toBe(true);
     });
     it("should return false for a package with a status of Pending-Approval", () => {
       const check = PackageCheck({
