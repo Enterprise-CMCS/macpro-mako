@@ -226,13 +226,12 @@ export async function processRecord(kafkaRecord: KafkaRecord, config: ProcessEma
   console.log("processRecord called with kafkaRecord: ", JSON.stringify(kafkaRecord, null, 2));
   const { key, value, timestamp } = kafkaRecord;
   const id: string = decodeBase64WithUtf8(key);
-  const valueParsed = JSON.parse(decodeBase64WithUtf8(value));
 
   if (kafkaRecord.topic === "aws.seatool.ksql.onemac.three.agg.State_Plan") {
     const safeID = id.replace(/^"|"$/g, "");
     const seatoolRecord: Document = {
       safeID,
-      ...valueParsed,
+      ...JSON.parse(decodeBase64WithUtf8(value)),
     };
     const safeSeatoolRecord = opensearch.main.seatool.transform(safeID).safeParse(seatoolRecord);
 
@@ -297,6 +296,7 @@ export async function processRecord(kafkaRecord: KafkaRecord, config: ProcessEma
   };
   console.log("record: ", JSON.stringify(record, null, 2));
 
+  const valueParsed = JSON.parse(decodeBase64WithUtf8(value));
   if (valueParsed.eventType === "user-role" || valueParsed.eventType === "legacy-user-role") {
     try {
       console.log("Sending user role email...");
