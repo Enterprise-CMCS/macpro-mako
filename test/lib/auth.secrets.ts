@@ -3,10 +3,19 @@ import { GetParameterCommand, SSMClient } from "@aws-sdk/client-ssm";
 
 const REGION = "us-east-1";
 
+export async function getDeploymentOutput(stage: string, project: string) {
+  const ssm = new SSMClient({ region: REGION });
+  const param = await ssm.send(
+    new GetParameterCommand({ Name: `/${project}/${stage || "main"}/deployment-output` }),
+  );
+
+  return JSON.parse(param.Parameter!.Value!);
+}
+
 export async function getDeploymentConfig(stage: string, project: string) {
   const ssm = new SSMClient({ region: REGION });
   const param = await ssm.send(
-    new GetParameterCommand({ Name: `/${project}/${stage}/deployment-config` }),
+    new GetParameterCommand({ Name: `/${project}/${stage || "main"}/deployment-config` }),
   );
 
   return JSON.parse(param.Parameter!.Value!);
