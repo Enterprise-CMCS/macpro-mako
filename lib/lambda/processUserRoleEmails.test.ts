@@ -3,7 +3,8 @@ import { getUserRoleTemplate } from "libs/email";
 import { getSecret } from "shared-utils";
 import { beforeEach, describe, expect, it, vi } from "vitest";
 
-import { sendUserRoleEmails } from "./processEmails";
+import { createEmailParams, sendEmail, validateEmailTemplate } from "./processEmails";
+import { sendUserRoleEmails } from "./processUserRoleEmails";
 import { getApproversByRoleState, getUserByEmail } from "./user-management/userManagementService";
 
 vi.mock("libs/email", async () => {
@@ -18,6 +19,12 @@ vi.mock("libs/email", async () => {
     })),
   };
 });
+
+vi.mock("./processEmails", () => ({
+  sendEmail: vi.fn(),
+  validateEmailTemplate: vi.fn(),
+  createEmailParams: vi.fn(),
+}));
 
 vi.mock("shared-utils", () => ({
   getSecret: vi.fn(),
@@ -45,6 +52,7 @@ const baseConfig = {
   applicationEndpointUrl: "https://app.url",
   osDomain: "test.domain.com",
   indexNamespace: "test-",
+  // pragma: allowlist secret
   emailAddressLookupSecretName: "email-secret",
   DLQ_URL: "",
   isDev: false,
@@ -69,6 +77,9 @@ describe("process user role emails", () => {
     (getSecret as unknown as ReturnType<typeof vi.fn>).mockResolvedValue(
       JSON.stringify({ sourceEmail: "source@example.com" }),
     );
+    (sendEmail as unknown as ReturnType<typeof vi.fn>).mockResolvedValue("email sent!");
+    (validateEmailTemplate as unknown as ReturnType<typeof vi.fn>).mockResolvedValue(true);
+    (createEmailParams as unknown as ReturnType<typeof vi.fn>).mockResolvedValue(true);
   });
 
   it("sends AccessPendingNotice and AdminPendingNotice emails if status is pending", async () => {
@@ -76,6 +87,7 @@ describe("process user role emails", () => {
 
     expect(getUserRoleTemplate).toHaveBeenCalledWith("AccessPendingNotice");
     expect(getUserRoleTemplate).toHaveBeenCalledWith("AdminPendingNotice");
+    expect(sendEmail).toHaveBeenCalledTimes(2);
   });
 
   it("sends SelfRevokeAdminChangeEmail if user self-revokes", async () => {
@@ -86,11 +98,13 @@ describe("process user role emails", () => {
     );
 
     expect(getUserRoleTemplate).toHaveBeenCalledWith("SelfRevokeAdminChangeEmail");
+    expect(sendEmail).toHaveBeenCalledTimes(1);
   });
 
   it("sends AccessChangeNotice if status is neither pending nor self-revoked", async () => {
     await sendUserRoleEmails({ ...baseValue, status: "active" }, 1234567890, baseConfig);
     expect(getUserRoleTemplate).toHaveBeenCalledWith("AccessChangeNotice");
+    expect(sendEmail).toHaveBeenCalledTimes(1);
   });
 
   it("logs error if getUserByEmail fails but continues", async () => {
@@ -99,5 +113,6 @@ describe("process user role emails", () => {
     );
 
     await sendUserRoleEmails({ ...baseValue, status: "active" }, 1234567890, baseConfig);
+    expect(sendEmail).toHaveBeenCalledTimes(1);
   });
 });
