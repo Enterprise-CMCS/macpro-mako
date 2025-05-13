@@ -52,8 +52,7 @@ const baseConfig = {
   applicationEndpointUrl: "https://app.url",
   osDomain: "test.domain.com",
   indexNamespace: "test-",
-  // pragma: allow secret
-  emailAddressLookupSecretName: "email-secret",
+  emailAddressLookupSecretName: "email-secret", // pragma: allow secret
   DLQ_URL: "",
   isDev: false,
   region: "us-east-2",
