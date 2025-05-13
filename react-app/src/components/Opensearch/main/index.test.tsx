@@ -20,7 +20,7 @@ import {
 } from "@/utils/test-helpers";
 
 const verifyTable = (recordCount: number) => {
-  const table = screen.getByRole("table");
+  const table = screen.getByTestId("os-table");
   expect(within(table).getAllByRole("columnheader").length).toEqual(3);
   expect(within(table).getByText("SPA ID", { selector: "th>div" })).toBeInTheDocument();
   expect(within(table).getByText("State", { selector: "th>div" })).toBeInTheDocument();
@@ -109,9 +109,9 @@ describe("OsMainView", () => {
           tab: "spas",
         }),
       );
-      expect(screen.queryByRole("dialog")).toBeNull();
+      expect(screen.queryByRole("menu")).toBeNull();
       await user.click(screen.queryByRole("button", { name: "Columns (1 hidden)" }));
-      const columns = screen.queryByRole("dialog");
+      const columns = screen.queryByRole("menu");
       expect(columns).toBeInTheDocument();
       expect(within(columns).getByText("State")).toBeInTheDocument();
       expect(within(columns).getByText("State").parentElement).toHaveClass("text-gray-800");
@@ -119,7 +119,7 @@ describe("OsMainView", () => {
       expect(within(columns).getByText("Authority").parentElement).toHaveClass("text-gray-800");
       expect(within(columns).getByText("Final Disposition")).toBeInTheDocument();
       expect(within(columns).getByText("Final Disposition").parentElement).toHaveClass(
-        "text-gray-400",
+        "flex items-center gap-2 w-full text-gray-500",
       );
     });
 
@@ -133,15 +133,17 @@ describe("OsMainView", () => {
         }),
       );
 
-      const table = screen.getByRole("table");
+      const table = screen.getByTestId("os-table");
       expect(within(table).getAllByRole("columnheader").length).toEqual(3);
       expect(within(table).getByText("SPA ID", { selector: "th>div" })).toBeInTheDocument();
       expect(within(table).getByText("State", { selector: "th>div" })).toBeInTheDocument();
       expect(within(table).getByText("Authority", { selector: "th>div" })).toBeInTheDocument();
 
       await user.click(screen.queryByRole("button", { name: "Columns" }));
-      const columns = screen.queryByRole("dialog");
+      const columns = screen.queryByRole("menu");
       await user.click(within(columns).getByText("State"));
+
+      await user.keyboard("{Escape}");
 
       expect(within(table).getAllByRole("columnheader").length).toEqual(2);
       expect(within(table).getByText("SPA ID", { selector: "th>div" })).toBeInTheDocument();
@@ -159,15 +161,17 @@ describe("OsMainView", () => {
         }),
       );
 
-      const table = screen.getByRole("table");
+      const table = screen.getByTestId("os-table");
       expect(within(table).getAllByRole("columnheader").length).toEqual(3);
       expect(within(table).getByText("SPA ID", { selector: "th>div" })).toBeInTheDocument();
       expect(within(table).getByText("State", { selector: "th>div" })).toBeInTheDocument();
       expect(within(table).getByText("Authority", { selector: "th>div" })).toBeInTheDocument();
 
       await user.click(screen.queryByRole("button", { name: "Columns (1 hidden)" }));
-      const columns = screen.queryByRole("dialog");
+      const columns = screen.queryByRole("menu");
       await user.click(within(columns).getByText("Final Disposition"));
+
+      await user.keyboard("{Escape}");
 
       expect(within(table).getAllByRole("columnheader").length).toEqual(4);
       expect(within(table).getByText("SPA ID", { selector: "th>div" })).toBeInTheDocument();
@@ -176,7 +180,6 @@ describe("OsMainView", () => {
     });
 
     it("should handle clicking a column header", async () => {
-      // const paramsSpy = vi.spyOn(router, "useSearchParams").mockImplementation;
       const spaHits = getFilteredHits(["CHIP SPA", "Medicaid SPA"]);
       const { user, router } = setup(
         [...DEFAULT_COLUMNS, HIDDEN_COLUMN],
@@ -209,9 +212,9 @@ describe("OsMainView", () => {
           tab: "spas",
         }),
       );
-      expect(screen.queryByRole("dialog")).toBeNull();
-      await user.click(screen.queryByRole("button", { name: "Filters" }));
-      const filters = screen.queryByRole("dialog");
+      expect(screen.queryByRole("menu")).toBeNull();
+      await user.click(screen.getByTestId("columns-menu-btn"));
+      const filters = screen.getByRole("menu");
       expect(filters).toBeInTheDocument();
     });
 
@@ -326,11 +329,13 @@ describe("OsMainView", () => {
         }),
       );
 
-      expect(screen.queryByRole("dialog")).toBeNull();
+      expect(screen.queryByRole("menu")).toBeNull();
       await user.click(screen.queryByRole("button", { name: "Columns (1 hidden)" }));
-      const columns = screen.queryByRole("dialog");
+      const columns = screen.queryByRole("menu");
       expect(within(columns).getByText("Authority")).toBeInTheDocument();
-      expect(within(columns).getByText("Authority").parentElement).toHaveClass("text-gray-400");
+      expect(within(columns).getByText("Authority").parentElement).toHaveClass(
+        "flex items-center gap-2 w-full text-gray-500",
+      );
     });
   });
 });

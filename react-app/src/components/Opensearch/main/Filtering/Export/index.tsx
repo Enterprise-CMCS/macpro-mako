@@ -97,7 +97,7 @@ export const OsExportData: FC<{
               onClick={handleExport}
               disabled={loading || disabled}
               className="w-full xs:w-fit hover:bg-transparent self-center h-10 flex gap-2"
-              data-testid="tooltip-trigger"
+              data-testid="export-csv-btn"
             >
               {loading ? (
                 <motion.div

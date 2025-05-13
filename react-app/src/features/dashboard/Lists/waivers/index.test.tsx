@@ -1,5 +1,5 @@
 import { cleanup, screen, waitForElementToBeRemoved, within } from "@testing-library/react";
-import userEvent from "@testing-library/user-event";
+import userEvent, { UserEvent } from "@testing-library/user-event";
 import { ExportToCsv } from "export-to-csv";
 import {
   setMockUsername,
@@ -166,7 +166,7 @@ const getExpectedExportData = (useCmsStatus: boolean) => {
 };
 
 const verifyColumns = (hasActions: boolean) => {
-  const table = screen.getByRole("table");
+  const table = screen.getByTestId("os-table");
 
   if (hasActions) {
     expect(within(table).getByText("Actions", { selector: "th>div" })).toBeInTheDocument();
@@ -210,13 +210,13 @@ const verifyRow = (
     raiReceivedDate?: string;
   },
 ) => {
-  const row = within(screen.getByRole("table")).getByText(doc.id).parentElement.parentElement;
+  const row = within(screen.getByTestId("os-table")).getByText(doc.id).parentElement.parentElement;
   const cells = row.children;
   let cellIndex = hasActions ? 1 : 0;
 
   if (hasActions) {
     // Actions
-    expect(within(row).getByRole("button", { name: "Available actions" }));
+    expect(within(row).getByTestId("available-actions"));
   }
   expect(cells[cellIndex].textContent).toEqual(doc.id); // SPA ID
   expect(cells[cellIndex].firstElementChild.getAttribute("href")).toEqual(
@@ -288,7 +288,7 @@ describe("WaiversList", () => {
       }),
     );
 
-    const table = screen.getByRole("table");
+    const table = screen.getByTestId("os-table");
     expect(table.firstElementChild.firstElementChild.childElementCount).toEqual(0);
   });
 
@@ -297,8 +297,8 @@ describe("WaiversList", () => {
     ["CMS Reviewer", TEST_CMS_REVIEWER_USER.username, true, true],
     ["CMS Help Desk User", TEST_HELP_DESK_USER.username, false, false],
     ["CMS Read-Only User", TEST_READ_ONLY_USER.username, false, true],
-  ])("as a %s", (title, username, hasActions, useCmsStatus) => {
-    let user;
+  ])("as a %s", (_title, username, hasActions, useCmsStatus) => {
+    let user: UserEvent;
     beforeAll(async () => {
       skipCleanup();
 
@@ -330,12 +330,12 @@ describe("WaiversList", () => {
     it("should handle showing all of the columns", async () => {
       // show all the hidden columns
       await user.click(screen.queryByRole("button", { name: "Columns (3 hidden)" }));
-      const columns = screen.queryByRole("dialog");
+      const columns = screen.getByTestId("columns-menu");
       await user.click(within(columns).getByText("Final Disposition"));
       await user.click(within(columns).getByText("Formal RAI Requested"));
       await user.click(within(columns).getByText("CPOC Name"));
 
-      const table = screen.getByRole("table");
+      const table = screen.getByTestId("os-table");
       expect(
         within(table).getByText("Final Disposition", { selector: "th>div" }),
       ).toBeInTheDocument();
@@ -352,8 +352,8 @@ describe("WaiversList", () => {
         {
           hasActions,
           status: useCmsStatus ? pendingDoc.cmsStatus : pendingDoc.stateStatus,
-          submissionDate: "01/01/2024",
-          makoChangedDate: "02/01/2024",
+          submissionDate: "12/31/2023",
+          makoChangedDate: "01/31/2024",
         },
       ],
       [
@@ -362,9 +362,9 @@ describe("WaiversList", () => {
         {
           hasActions,
           status: useCmsStatus ? raiRequestDoc.cmsStatus : raiRequestDoc.stateStatus,
-          submissionDate: "01/01/2024",
-          makoChangedDate: "02/01/2024",
-          raiRequestedDate: "03/01/2024",
+          submissionDate: "12/31/2023",
+          makoChangedDate: "01/31/2024",
+          raiRequestedDate: "02/29/2024",
         },
       ],
       [
@@ -373,10 +373,10 @@ describe("WaiversList", () => {
         {
           hasActions,
           status: useCmsStatus ? raiReceivedDoc.cmsStatus : raiReceivedDoc.stateStatus,
-          submissionDate: "01/01/2024",
-          makoChangedDate: "02/01/2024",
-          raiRequestedDate: "03/01/2024",
-          raiReceivedDate: "04/01/2024",
+          submissionDate: "12/31/2023",
+          makoChangedDate: "01/31/2024",
+          raiRequestedDate: "02/29/2024",
+          raiReceivedDate: "03/31/2024",
         },
       ],
       [
@@ -385,10 +385,10 @@ describe("WaiversList", () => {
         {
           hasActions,
           status: `${useCmsStatus ? withdrawEnabledDoc.cmsStatus : withdrawEnabledDoc.stateStatus}· Withdraw Formal RAI Response - Enabled`,
-          submissionDate: "01/01/2024",
-          makoChangedDate: "02/01/2024",
-          raiRequestedDate: "03/01/2024",
-          raiReceivedDate: "04/01/2024",
+          submissionDate: "12/31/2023",
+          makoChangedDate: "01/31/2024",
+          raiRequestedDate: "02/29/2024",
+          raiReceivedDate: "03/31/2024",
         },
       ],
       [
@@ -397,10 +397,10 @@ describe("WaiversList", () => {
         {
           hasActions,
           status: useCmsStatus ? withdrawDisabledDoc.cmsStatus : withdrawDisabledDoc.stateStatus,
-          submissionDate: "01/01/2024",
-          makoChangedDate: "02/01/2024",
-          raiRequestedDate: "03/01/2024",
-          raiReceivedDate: "04/01/2024",
+          submissionDate: "12/31/2023",
+          makoChangedDate: "01/31/2024",
+          raiRequestedDate: "02/29/2024",
+          raiReceivedDate: "03/31/2024",
         },
       ],
       [
@@ -409,9 +409,9 @@ describe("WaiversList", () => {
         {
           hasActions,
           status: useCmsStatus ? approvedDoc.cmsStatus : approvedDoc.stateStatus,
-          submissionDate: "01/01/2024",
-          makoChangedDate: "02/01/2024",
-          finalDispositionDate: "05/01/2024",
+          submissionDate: "12/31/2023",
+          makoChangedDate: "01/31/2024",
+          finalDispositionDate: "04/30/2024",
         },
       ],
       [
@@ -429,7 +429,9 @@ describe("WaiversList", () => {
     it("should handle export", async () => {
       const spy = vi.spyOn(ExportToCsv.prototype, "generateCsv").mockImplementation(() => {});
 
-      await user.click(screen.queryByTestId("tooltip-trigger"));
+      await user.keyboard("{Escape}"); // ⚠️ close columns menu after testing
+
+      await user.click(screen.queryByTestId("export-csv-btn"));
 
       const expectedData = getExpectedExportData(useCmsStatus);
       expect(spy).toHaveBeenCalledWith(expectedData);

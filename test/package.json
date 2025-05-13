@@ -6,8 +6,8 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "e2e": "playwright test --project=state-user-chrome",
-    "e2e:ui": "playwright test --ui --project=state-user-chrome"
+    "e2e": "playwright test --project=ci",
+    "e2e:ui": "playwright test --ui --project=ci"
   },
   "author": "",
   "license": "ISC",
@@ -15,6 +15,7 @@
     "@axe-core/playwright": "^4.8.3",
     "@playwright/test": "^1.45.3",
     "msw": "^2.7.3",
-    "playwright-msw": "^3.0.1"
+    "playwright-msw": "^3.0.1",
+    "otpauth": "9.4.0"
   }
 }
