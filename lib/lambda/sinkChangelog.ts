@@ -161,7 +161,7 @@ const processAndIndex = async ({
                 });
                 docs.push({
                   ...log._source,
-                  id: `${packageId}-${recordOffset}-del`,
+                  id: `${packageId}-${recordOffset}`,
                   packageId: `${packageId}-${recordOffset}-del`,
                 });
               }
