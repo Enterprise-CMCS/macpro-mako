@@ -52,7 +52,7 @@ const baseConfig = {
   applicationEndpointUrl: "https://app.url",
   osDomain: "test.domain.com",
   indexNamespace: "test-",
-  emailAddressLookupSecretName: "email-secret", // pragma: allow secret
+  emailAddressLookupSecretName: "email-secret", // pragma: allowlist secret
   DLQ_URL: "",
   isDev: false,
   region: "us-east-2",
@@ -73,7 +73,6 @@ describe("process user role emails", () => {
     (getApproversByRoleState as unknown as ReturnType<typeof vi.fn>).mockResolvedValue([
       { email: "approver1@example.com", fullName: "Approver One" },
     ]);
-    // pragma: allowlist secret
     (getSecret as unknown as ReturnType<typeof vi.fn>).mockResolvedValue(
       JSON.stringify({ sourceEmail: "source@example.com" }),
     );
