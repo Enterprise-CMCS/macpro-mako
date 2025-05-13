@@ -1,7 +1,8 @@
-import { WaiversEmailState } from "libs/email/content/uploadSubsequentDocuments/emailTemplates/Waiver1915BState";
-import * as attachments from "libs/email/mock-data/attachments";
-import { emailTemplateValue } from "libs/email/mock-data/upload-subsequent-documents";
 import { formatActionType } from "shared-utils";
+
+import { WaiversEmailState } from "../../../content/uploadSubsequentDocuments/emailTemplates/Waiver1915BState";
+import * as attachments from "../../../mock-data/attachments";
+import { emailTemplateValue } from "../../../mock-data/upload-subsequent-documents";
 
 const Waiver1915bStateEmail = () => {
   return (

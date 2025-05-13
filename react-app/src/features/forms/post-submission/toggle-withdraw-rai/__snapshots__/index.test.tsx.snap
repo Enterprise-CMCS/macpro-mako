@@ -147,7 +147,7 @@ exports[`Toggle Withdraw Rai components > renders disable withdraw rai correctly
             class="flex justify-end gap-2 p-4 ml-auto"
           >
             <button
-              class="inline-flex items-center justify-center rounded-md text-[16px] font-bold ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 bg-primary text-slate-50 hover:bg-primary-dark h-10 py-2 px-12"
+              class="inline-flex items-center justify-center rounded-md text-[16px] font-bold ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none bg-primary text-slate-50 hover:bg-primary-dark disabled:bg-[#E3E3E3] disabled:text-[#4F4F4F] h-10 py-2 px-12"
               data-testid="submit-action-form"
               disabled=""
               type="submit"
@@ -155,7 +155,7 @@ exports[`Toggle Withdraw Rai components > renders disable withdraw rai correctly
               Submit
             </button>
             <button
-              class="inline-flex items-center justify-center rounded-md text-[16px] ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 border border-primary text-primary font-bold hover:bg-primary/10 h-10 py-2 px-12"
+              class="inline-flex items-center justify-center rounded-md text-[16px] ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none border-2 border-primary text-primary font-bold hover:bg-primary/10 disabled:opacity-50 h-10 py-2 px-12"
               data-testid="cancel-action-form"
               type="reset"
             >
@@ -178,7 +178,7 @@ exports[`Toggle Withdraw Rai components > renders disable withdraw rai correctly
             target="_blank"
           >
             <button
-              class="inline-flex items-center justify-center text-[16px] font-bold ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 bg-primary text-slate-50 hover:bg-primary-dark h-11 rounded-md px-8 mx-4"
+              class="inline-flex items-center justify-center text-[16px] font-bold ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none bg-primary text-slate-50 hover:bg-primary-dark disabled:bg-[#E3E3E3] disabled:text-[#4F4F4F] h-11 rounded-md px-8 mx-4"
             >
               View FAQs
             </button>
@@ -331,7 +331,7 @@ exports[`Toggle Withdraw Rai components > renders disable withdraw rai correctly
           class="flex justify-end gap-2 p-4 ml-auto"
         >
           <button
-            class="inline-flex items-center justify-center rounded-md text-[16px] font-bold ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 bg-primary text-slate-50 hover:bg-primary-dark h-10 py-2 px-12"
+            class="inline-flex items-center justify-center rounded-md text-[16px] font-bold ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none bg-primary text-slate-50 hover:bg-primary-dark disabled:bg-[#E3E3E3] disabled:text-[#4F4F4F] h-10 py-2 px-12"
             data-testid="submit-action-form"
             disabled=""
             type="submit"
@@ -339,7 +339,7 @@ exports[`Toggle Withdraw Rai components > renders disable withdraw rai correctly
             Submit
           </button>
           <button
-            class="inline-flex items-center justify-center rounded-md text-[16px] ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 border border-primary text-primary font-bold hover:bg-primary/10 h-10 py-2 px-12"
+            class="inline-flex items-center justify-center rounded-md text-[16px] ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none border-2 border-primary text-primary font-bold hover:bg-primary/10 disabled:opacity-50 h-10 py-2 px-12"
             data-testid="cancel-action-form"
             type="reset"
           >
@@ -362,7 +362,7 @@ exports[`Toggle Withdraw Rai components > renders disable withdraw rai correctly
           target="_blank"
         >
           <button
-            class="inline-flex items-center justify-center text-[16px] font-bold ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 bg-primary text-slate-50 hover:bg-primary-dark h-11 rounded-md px-8 mx-4"
+            class="inline-flex items-center justify-center text-[16px] font-bold ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none bg-primary text-slate-50 hover:bg-primary-dark disabled:bg-[#E3E3E3] disabled:text-[#4F4F4F] h-11 rounded-md px-8 mx-4"
           >
             View FAQs
           </button>
@@ -572,7 +572,7 @@ exports[`Toggle Withdraw Rai components > renders disable withdraw rai correctly
             class="flex justify-end gap-2 p-4 ml-auto"
           >
             <button
-              class="inline-flex items-center justify-center rounded-md text-[16px] font-bold ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 bg-primary text-slate-50 hover:bg-primary-dark h-10 py-2 px-12"
+              class="inline-flex items-center justify-center rounded-md text-[16px] font-bold ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none bg-primary text-slate-50 hover:bg-primary-dark disabled:bg-[#E3E3E3] disabled:text-[#4F4F4F] h-10 py-2 px-12"
               data-testid="submit-action-form"
               disabled=""
               type="submit"
@@ -580,7 +580,7 @@ exports[`Toggle Withdraw Rai components > renders disable withdraw rai correctly
               Submit
             </button>
             <button
-              class="inline-flex items-center justify-center rounded-md text-[16px] ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 border border-primary text-primary font-bold hover:bg-primary/10 h-10 py-2 px-12"
+              class="inline-flex items-center justify-center rounded-md text-[16px] ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none border-2 border-primary text-primary font-bold hover:bg-primary/10 disabled:opacity-50 h-10 py-2 px-12"
               data-testid="cancel-action-form"
               type="reset"
             >
@@ -603,7 +603,7 @@ exports[`Toggle Withdraw Rai components > renders disable withdraw rai correctly
             target="_blank"
           >
             <button
-              class="inline-flex items-center justify-center text-[16px] font-bold ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 bg-primary text-slate-50 hover:bg-primary-dark h-11 rounded-md px-8 mx-4"
+              class="inline-flex items-center justify-center text-[16px] font-bold ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none bg-primary text-slate-50 hover:bg-primary-dark disabled:bg-[#E3E3E3] disabled:text-[#4F4F4F] h-11 rounded-md px-8 mx-4"
             >
               View FAQs
             </button>
@@ -756,7 +756,7 @@ exports[`Toggle Withdraw Rai components > renders disable withdraw rai correctly
           class="flex justify-end gap-2 p-4 ml-auto"
         >
           <button
-            class="inline-flex items-center justify-center rounded-md text-[16px] font-bold ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 bg-primary text-slate-50 hover:bg-primary-dark h-10 py-2 px-12"
+            class="inline-flex items-center justify-center rounded-md text-[16px] font-bold ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none bg-primary text-slate-50 hover:bg-primary-dark disabled:bg-[#E3E3E3] disabled:text-[#4F4F4F] h-10 py-2 px-12"
             data-testid="submit-action-form"
             disabled=""
             type="submit"
@@ -764,7 +764,7 @@ exports[`Toggle Withdraw Rai components > renders disable withdraw rai correctly
             Submit
           </button>
           <button
-            class="inline-flex items-center justify-center rounded-md text-[16px] ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 border border-primary text-primary font-bold hover:bg-primary/10 h-10 py-2 px-12"
+            class="inline-flex items-center justify-center rounded-md text-[16px] ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none border-2 border-primary text-primary font-bold hover:bg-primary/10 disabled:opacity-50 h-10 py-2 px-12"
             data-testid="cancel-action-form"
             type="reset"
           >
@@ -787,7 +787,7 @@ exports[`Toggle Withdraw Rai components > renders disable withdraw rai correctly
           target="_blank"
         >
           <button
-            class="inline-flex items-center justify-center text-[16px] font-bold ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 bg-primary text-slate-50 hover:bg-primary-dark h-11 rounded-md px-8 mx-4"
+            class="inline-flex items-center justify-center text-[16px] font-bold ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none bg-primary text-slate-50 hover:bg-primary-dark disabled:bg-[#E3E3E3] disabled:text-[#4F4F4F] h-11 rounded-md px-8 mx-4"
           >
             View FAQs
           </button>

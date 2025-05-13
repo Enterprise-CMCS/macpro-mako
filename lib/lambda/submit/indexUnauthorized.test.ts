@@ -1,6 +1,6 @@
 import { automatedStateSubmitter, getRequestContext } from "mocks";
 import { eventsAuthorizationRequired } from "mocks/data/submit/base";
-import { APIGatewayEvent } from "node_modules/shared-types";
+import { APIGatewayEvent } from "shared-types";
 import { describe, expect, it } from "vitest";
 
 import { submit } from "./index";

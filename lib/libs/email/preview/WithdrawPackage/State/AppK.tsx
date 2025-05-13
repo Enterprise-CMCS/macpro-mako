@@ -1,8 +1,8 @@
-import { WaiverStateEmail } from "libs/email/content/withdrawPackage/emailTemplates";
-import { emailTemplateValue } from "libs/email/mock-data/new-submission";
 import { formatActionType } from "shared-utils";
 
+import { WaiverStateEmail } from "../../../content/withdrawPackage/emailTemplates";
 import * as attachments from "../../../mock-data/attachments";
+import { emailTemplateValue } from "../../../mock-data/new-submission";
 
 export default () => {
   return (

@@ -18,7 +18,7 @@ export const OsTable: FC<{
   const onlyID = props.columns.filter((c) => c.hidden === false).length <= 2;
 
   return (
-    <UI.Table className="overflow-scroll w-full">
+    <UI.Table className="overflow-scroll w-full" data-testid="os-table">
       <UI.TableHeader className="sticky top-0 bg-white">
         <UI.TableRow>
           {props.columns.map((TH) => {

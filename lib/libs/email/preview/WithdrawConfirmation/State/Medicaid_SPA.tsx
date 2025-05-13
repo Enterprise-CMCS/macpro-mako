@@ -1,7 +1,6 @@
-import { MedSpaStateEmail } from "libs/email/content/withdrawConfirmation/emailTemplates";
-import { emailTemplateValue } from "libs/email/mock-data/new-submission";
-
+import { MedSpaStateEmail } from "../../../content/withdrawConfirmation/emailTemplates";
 import * as attachments from "../../../mock-data/attachments";
+import { emailTemplateValue } from "../../../mock-data/new-submission";
 
 export default () => {
   return (

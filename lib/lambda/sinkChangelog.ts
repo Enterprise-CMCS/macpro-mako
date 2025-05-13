@@ -134,24 +134,21 @@ const processAndIndex = async ({
       }
 
       // If the event is a supported event, transform and push to docs array for indexing
-      if (kafkaSource === "onemac" && record.GSI1pk) {
+      if (kafkaSource === "onemac" && record.GSI1pk?.startsWith("OneMAC#submit")) {
         // This is a onemac legacy event
         record.event = "legacy-event";
         record.origin = "onemac";
       }
 
       const recordsToProcess: Array<(typeof transforms)[keyof typeof transforms]["Schema"]> = [];
-      if (record.reverseChrono?.length) {
-        // Focus on adminChange property in records with the reverseChrono property to avoid ingesting duplicates
-        if (record.adminChanges?.length) {
-          record.adminChanges.map((adminChange: LegacyAdminChange) =>
-            recordsToProcess.push({
-              ...record,
-              ...adminChange,
-              event: "legacy-admin-change",
-            }),
-          );
-        }
+      if (record.adminChanges?.length) {
+        record.adminChanges.map((adminChange: LegacyAdminChange) =>
+          recordsToProcess.push({
+            ...record,
+            ...adminChange,
+            event: "legacy-admin-change",
+          }),
+        );
       } else {
         recordsToProcess.push(record);
       }

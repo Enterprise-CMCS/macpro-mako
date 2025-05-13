@@ -117,7 +117,7 @@ describe("Visibility button", () => {
 
     expect(screen.queryByRole("dialog")).toBeNull();
     await user.click(screen.queryByRole("button", { name: "Columns" }));
-    const columns = screen.queryByRole("dialog");
+    const columns = screen.queryByRole("menu");
     expect(columns).toBeInTheDocument();
     expect(within(columns).getByText("State")).toBeInTheDocument();
     expect(within(columns).getByText("Authority")).toBeInTheDocument();
@@ -131,7 +131,7 @@ describe("Visibility button", () => {
     const filters = screen.getByRole("button", { name: "Filters" });
     expect(filters.getAttribute("data-state")).toEqual("closed");
     await user.click(filters);
-    expect(screen.getByRole("heading", { name: "Filters", level: 4 })).toBeInTheDocument();
+    expect(screen.getByRole("heading", { name: "Filter by", level: 4 })).toBeInTheDocument();
   });
 
   it("should handle clicking the Export button", async () => {

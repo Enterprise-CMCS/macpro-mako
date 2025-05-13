@@ -4,7 +4,7 @@ import {
   TEST_MED_SPA_ITEM,
   TEST_SPA_ITEM_TO_SPLIT,
 } from "mocks";
-import { APIGatewayEvent } from "node_modules/shared-types";
+import { APIGatewayEvent } from "shared-types";
 import { beforeEach, describe, expect, it, vi } from "vitest";
 
 import { handler } from "./submitSplitSPA";

@@ -1,71 +1,50 @@
-import { GetSecretValueCommand, SecretsManagerClient } from "@aws-sdk/client-secrets-manager";
-import { GetParameterCommand, SSMClient } from "@aws-sdk/client-ssm";
-import { chromium, expect, FullConfig } from "@playwright/test";
+import { chromium, expect } from "@playwright/test";
 
 import { LoginPage } from "@/pages";
 
-const testUsers = {
-  state: "george@example.com",
-  reviewer: "reviewer@example.com",
-};
-
-const stage = process.env.STAGE_NAME || "main";
-const deploymentConfig = JSON.parse(
-  (
-    await new SSMClient({ region: "us-east-1" }).send(
-      new GetParameterCommand({
-        Name: `/${process.env.PROJECT}/${stage}/deployment-config`,
-      }),
-    )
-  ).Parameter!.Value!,
-);
-
-const password = (
-  await new SecretsManagerClient({ region: "us-east-1" }).send(
-    new GetSecretValueCommand({ SecretId: deploymentConfig.devPasswordArn }),
-  )
-).SecretString!;
-
-const stateSubmitterAuthFile = "./playwright/.auth/state-user.json";
-const reviewerAuthFile = "./playwright/.auth/reviewer-user.json";
-
-async function globalSetup(config: FullConfig) {
-  const { baseURL } = config.projects[0].use;
+export async function generateAuthFile({
+  baseURL,
+  user,
+  password,
+  storagePath,
+  eua = false,
+  mfa = false,
+}: {
+  baseURL: string;
+  user: string;
+  password: string;
+  storagePath: string;
+  eua?: boolean;
+  mfa?: boolean;
+}): Promise<void> {
   const browser = await chromium.launch();
+  const context = await browser.newContext({ baseURL });
+  const page = await context.newPage();
+  const loginPage = new LoginPage(page);
 
-  // will be used for EAU and IDM access
-  switch (baseURL) {
-    case "https://mako.cms.gov":
-      console.log("prod");
+  await loginPage.goto();
+  switch (true) {
+    case eua:
+      console.log(`eua flag: ${eua}`);
+      if (!user || !password) {
+        throw new Error("user or password is null or not defined");
+      }
+      await loginPage.euaLogin(user, password);
       break;
-    case "https://mako-val.cms.gov":
-      console.log("val");
+
+    case mfa:
+      console.log(`mfa flag: ${mfa}`);
+      await loginPage.mfaLogin(user, password);
       break;
+
     default:
-      console.log("local");
+      console.log("default");
+      await loginPage.login(user, password);
   }
 
-  const submitterContext = await browser.newContext({ baseURL });
-  const submitterPage = await submitterContext.newPage();
-  const submitterLoginPage = new LoginPage(submitterPage);
-  await submitterLoginPage.goto();
-  await submitterLoginPage.login(testUsers.state, password);
-
-  await expect(submitterPage).toHaveURL(/dashboard/);
-
-  await submitterContext.storageState({ path: stateSubmitterAuthFile });
-
-  const reviewerContext = await browser.newContext({ baseURL });
-  const reviewerPage = await reviewerContext.newPage();
-  const reviewerLoginPage = new LoginPage(reviewerPage);
-  await reviewerLoginPage.goto();
-  await reviewerLoginPage.login(testUsers.reviewer, password);
-
-  await expect(reviewerPage).toHaveURL(/dashboard/);
-
-  await reviewerContext.storageState({ path: reviewerAuthFile });
+  await expect(page).toHaveURL(/dashboard/);
+  await context.storageState({ path: storagePath });
+  console.log(`${storagePath} written`);
 
   await browser.close();
 }
-
-export default globalSetup;
