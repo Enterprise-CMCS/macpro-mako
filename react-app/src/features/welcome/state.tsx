@@ -14,37 +14,30 @@ export const StateWelcome = () => {
     {
       id: "medicaid",
       label: "Medicaid SPA",
-      content:
-        "Submit all Medicaid SPAs here, except for Medicaid eligibility, enrollment, administration, and health home SPAs, which can be submitted in MACPro System without logging in separately.",
       buttonText: "New Medicaid SPA",
       link: "/new-submission/spa/medicaid",
     },
     {
       id: "chip",
       label: "CHIP SPA",
-      content: "Submit a new CHIP state plan amendment.",
       buttonText: "New CHIP SPA",
       link: "/new-submission/spa/chip/",
     },
     {
       id: "waiverB",
       label: "1915(b) waiver",
-      content:
-        "Submit a new 1915(b)(4) FFS selective contracting waiver or 1915(b) comprehensive (Capitated) waiver authority, amendment, or renewal.",
       buttonText: "New 1915(b) waiver",
       link: "/new-submission/waiver/b",
     },
     {
       id: "waiverC",
       label: "1915(c) waiver",
-      content: "Submit a new 1915(c) Appendix K amendment.",
       buttonText: "New 1915(c) waiver",
       link: "/new-submission/waiver/app-k",
     },
     {
       id: "extension",
       label: "Request temporary waiver extension",
-      content: "Submit a new temporary extension request for a 1915(b) or 1915(c) waiver.",
       buttonText: "New request",
       link: "/new-submission/waiver/temporary-extensions",
     },
@@ -118,8 +111,11 @@ export const StateWelcome = () => {
               {tabConfig.map((tab) => {
                 const isActive = activeTab === tab.id;
                 return (
-                  <div key={tab.id} onClick={() => setActiveTab(tab.id)} className="cursor-pointer">
-                    <div className="flex items-center">
+                  <div key={tab.id}>
+                    <div
+                      onClick={() => setActiveTab(tab.id)}
+                      className="flex items-center cursor-pointer"
+                    >
                       <div
                         className={`w-[6px] h-[39px] rounded-[5px] shadow-md flex-shrink-0 ${
                           isActive
@@ -138,14 +134,6 @@ export const StateWelcome = () => {
 
                     {isActive && (
                       <div className="pl-[24px] pt-[8px]">
-                        <p className="max-w-[677px] w-full font-open-sans text-[18px] text-[#212121] leading-[1.62] mb-4">
-                          {tab.content}
-                          {tab.id === "medicaid" && (
-                            <a href="#" className="underline ml-1 text-blue-700">
-                              Learn how.
-                            </a>
-                          )}
-                        </p>
                         <Link to={tab.link}>
                           <button className="w-fit h-[38px] bg-[#0071BC] text-white px-4 py-2 rounded-md text-sm font-semibold">
                             {tab.buttonText}
