@@ -172,4 +172,42 @@ describe("process emails Handler", () => {
       "Missing required environment variables: osDomain",
     );
   });
+
+  it("should send user-role emails when eventType is user-role", async () => {
+    const callback = vi.fn();
+    const secSPY = vi.spyOn(SESClient.prototype, "send");
+
+    const mockEvent: KafkaEvent = {
+      records: {
+        "mock-topic": [
+          {
+            key: Buffer.from("VA").toString("base64"),
+            value: Buffer.from(
+              JSON.stringify({
+                eventType: "user-role",
+                role: "statesubmitter",
+                status: "pending",
+                territory: "CA",
+                fullName: "Mock Name",
+                email: "mock@email.com",
+                doneBy: "done by",
+                doneByEmail: "doneby@email.com",
+              }),
+            ).toString("base64"),
+            headers: {},
+            timestamp: 1732645041557,
+            offset: "0",
+            partition: 0,
+            topic: "mock-topic",
+          } as unknown as KafkaRecord,
+        ],
+      },
+      eventSource: "",
+      bootstrapServers: "",
+    };
+
+    await handler(mockEvent, {} as Context, callback);
+
+    expect(secSPY).toHaveBeenCalledTimes(2);
+  });
 });
