@@ -27,6 +27,7 @@ vi.mock("./processEmails", () => ({
 }));
 
 vi.mock("shared-utils", () => ({
+  // pragma: allowlist secret
   getSecret: vi.fn(),
 }));
 
@@ -74,6 +75,7 @@ describe("process user role emails", () => {
     (getApproversByRoleState as unknown as ReturnType<typeof vi.fn>).mockResolvedValue([
       { email: "approver1@example.com", fullName: "Approver One" },
     ]);
+    // pragma: allowlist secret
     (getSecret as unknown as ReturnType<typeof vi.fn>).mockResolvedValue(
       JSON.stringify({ sourceEmail: "source@example.com" }),
     );
@@ -114,5 +116,51 @@ describe("process user role emails", () => {
 
     await sendUserRoleEmails({ ...baseValue, status: "active" }, 1234567890, baseConfig);
     expect(sendEmail).toHaveBeenCalledTimes(1);
+  });
+
+  it("logs if there are no approvers but continues sending email", async () => {
+    const consoleLogSpy = vi.spyOn(console, "log").mockImplementation(() => {});
+    (getApproversByRoleState as unknown as ReturnType<typeof vi.fn>).mockResolvedValue([]);
+
+    await sendUserRoleEmails({ ...baseValue, status: "pending" }, 1234567890, baseConfig);
+
+    expect(consoleLogSpy).toHaveBeenCalledWith("NO APPROVERS FOUND");
+    expect(sendEmail).toHaveBeenCalledTimes(2);
+
+    consoleLogSpy.mockRestore();
+  });
+
+  it("logs error if getApproversByRoleState fails but continues", async () => {
+    const consoleLogSpy = vi.spyOn(console, "log").mockImplementation(() => {});
+    (getApproversByRoleState as unknown as ReturnType<typeof vi.fn>).mockRejectedValue(
+      new Error("Approver fetch failed"),
+    );
+
+    await sendUserRoleEmails({ ...baseValue, status: "pending" }, 1234567890, baseConfig);
+
+    expect(consoleLogSpy).toHaveBeenCalledWith(
+      "Error trying to get approver list: ",
+      expect.any(Error),
+    );
+    expect(sendEmail).toHaveBeenCalledTimes(2);
+
+    consoleLogSpy.mockRestore();
+  });
+
+  it("logs error if template processing fails", async () => {
+    const consoleErrorSpy = vi.spyOn(console, "error").mockImplementation(() => {});
+    const brokenTemplate = vi.fn().mockImplementation(() => {
+      throw new Error("Template failed");
+    });
+
+    (getUserRoleTemplate as unknown as ReturnType<typeof vi.fn>).mockResolvedValue(brokenTemplate);
+
+    await sendUserRoleEmails({ ...baseValue, status: "active" }, 1234567890, baseConfig);
+
+    expect(consoleErrorSpy).toHaveBeenCalledWith("Error processing template:", expect.any(Error));
+
+    expect(sendEmail).not.toHaveBeenCalled();
+
+    consoleErrorSpy.mockRestore();
   });
 });
