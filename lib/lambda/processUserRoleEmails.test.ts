@@ -27,7 +27,6 @@ vi.mock("./processEmails", () => ({
 }));
 
 vi.mock("shared-utils", () => ({
-  // pragma: allowlist secret
   getSecret: vi.fn(),
 }));
 
@@ -53,7 +52,7 @@ const baseConfig = {
   applicationEndpointUrl: "https://app.url",
   osDomain: "test.domain.com",
   indexNamespace: "test-",
-  // pragma: allowlist secret
+  // pragma: allow secret
   emailAddressLookupSecretName: "email-secret",
   DLQ_URL: "",
   isDev: false,
