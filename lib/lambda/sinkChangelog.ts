@@ -136,11 +136,11 @@ const processAndIndex = async ({
       }
 
       // If the event is a supported event, transform and push to docs array for indexing
-      if (kafkaSource === "onemac" && record.GSI1pk?.startsWith("OneMAC#submit")) {
+      if (record.GSI1pk?.startsWith("OneMAC#submit")) {
         const schema = legacyEventIdUpdateSchema;
         const result = schema.safeParse(record);
+        console.log(result.data);
         const eventType = "legacy-event";
-
         //Check if event has admin changes
         if (result.success && result.data.adminChanges) {
           const newID = result.data.componentId;
