@@ -7,7 +7,11 @@ import {
   postSubmissionLoader,
   PostSubmissionWrapper,
 } from "@/features/forms/post-submission/post-submission-forms";
+import { userProfileLoader } from "@/features/profile/user";
+import { SignUp } from "@/features/sign-up/sign-up";
 import { queryClient } from "@/utils";
+
+import { CMSSignup, StateSignup } from "./features/sign-up";
 
 const RoutesWithTimeout = () => (
   <>
@@ -36,6 +40,13 @@ export const router = (loginFlag = false) => {
         {
           element: <RoutesWithTimeout />,
           children: [
+            {
+              path: "/signup",
+              element: <SignUp />,
+            },
+            // { path: "/signup/state", element: <StateSignup /> },
+            { path: "/signup/state", element: <StateSignup /> },
+            { path: "/signup/cms", element: <CMSSignup /> },
             {
               path: "/dashboard",
               element: <F.Dashboard />,
@@ -130,7 +141,12 @@ export const router = (loginFlag = false) => {
               path: "/new-submission/spa/chip/landing/chip-eligibility",
               element: <F.CHIPEligibilityLandingPage />,
             },
-            { path: "/profile", element: <F.Profile /> },
+            { path: "/profile", element: <F.MyProfile /> },
+            {
+              path: "/profile/:profileId",
+              element: <F.UserProfile />,
+              loader: userProfileLoader,
+            },
             { path: "/guides/abp", element: <F.ABPGuide /> },
             {
               path: "/actions/:type/:authority/:id",
@@ -145,6 +161,7 @@ export const router = (loginFlag = false) => {
               path: "/support/:id",
               element: <F.SupportPage />,
             },
+            { path: "/usermanagement", element: <F.UserManagement /> },
           ],
         },
 

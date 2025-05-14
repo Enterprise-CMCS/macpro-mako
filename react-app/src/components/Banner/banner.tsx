@@ -73,7 +73,7 @@ export const Banner = () => {
 
     // store current pathname for next render's comparison
     previousPathRef.current = pathname;
-  }, [pathname, activeBanner]);
+  }, [pathname, activeBanner]); // eslint-disable-line react-hooks/exhaustive-deps
 
   if (activeBanner && activeBanner.pathnameToDisplayOn === pathname) {
     return (
