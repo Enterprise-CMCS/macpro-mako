@@ -12,6 +12,7 @@ export interface Option {
 export const FilterableSelect: FC<{
   options: Option[];
   value: string[];
+  placeholder?: string;
   onChange: (values: string[]) => void;
 }> = (props) => {
   return (
@@ -21,7 +22,7 @@ export const FilterableSelect: FC<{
       onChange={(val) => props.onChange(val.map((s: any) => s.value))}
       options={props.options}
       closeMenuOnSelect={false}
-      placeholder
+      placeholder={props.placeholder}
     />
   );
 };

@@ -1,5 +1,92 @@
 [
   {
+    "username": "cmsroleapprover@example.com",
+    "attributes": [
+      {
+        "Name": "email",
+        "Value": "cmsroleapprover@example.com"
+      },
+      {
+        "Name": "given_name",
+        "Value": "CMS"
+      },
+      {
+        "Name": "family_name",
+        "Value": "Roleapprover"
+      },
+      {
+        "Name": "email_verified",
+        "Value": "true"
+      },
+      {
+        "Name": "custom:state",
+        "Value": ""
+      },
+      {
+        "Name": "custom:ismemberof",
+        "Value": "ONEMAC_USER_D"
+      }
+    ]
+  },
+  {
+    "username": "systemadmin@example.com",
+    "attributes": [
+      {
+        "Name": "email",
+        "Value": "systemadmin@example.com"
+      },
+      {
+        "Name": "given_name",
+        "Value": "System"
+      },
+      {
+        "Name": "family_name",
+        "Value": "Admin"
+      },
+      {
+        "Name": "email_verified",
+        "Value": "true"
+      },
+      {
+        "Name": "custom:state",
+        "Value": ""
+      },
+      {
+        "Name": "custom:ismemberof",
+        "Value": "ONEMAC_USER_D"
+      }
+    ]
+  },
+  {
+    "username": "statesystemadmin@example.com",
+    "attributes": [
+      {
+        "Name": "email",
+        "Value": "statesystemadmin@example.com"
+      },
+      {
+        "Name": "given_name",
+        "Value": "State"
+      },
+      {
+        "Name": "family_name",
+        "Value": "Systemadmin"
+      },
+      {
+        "Name": "email_verified",
+        "Value": "true"
+      },
+      {
+        "Name": "custom:state",
+        "Value": "OH"
+      },
+      {
+        "Name": "custom:cms-roles",
+        "Value": "onemac-state-user"
+      }
+    ]
+  },
+  {
     "username": "reviewer@example.com",
     "attributes": [
       {

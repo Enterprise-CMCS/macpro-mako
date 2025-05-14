@@ -3,6 +3,8 @@ import { getAuthDetails, lookupUserAttributes } from "libs/api/auth/user";
 import { itemExists } from "libs/api/package";
 import { events } from "shared-types";
 
+import { getUserByEmail } from "../../user-management/userManagementService";
+
 export const uploadSubsequentDocuments = async (event: APIGatewayEvent) => {
   if (event.body === null) return;
 
@@ -22,12 +24,16 @@ export const uploadSubsequentDocuments = async (event: APIGatewayEvent) => {
   const userAttr = await lookupUserAttributes(authDetails.userId, authDetails.poolId);
 
   const submitterEmail = userAttr.email;
-  const submitterName = `${userAttr.given_name} ${userAttr.family_name}`;
+  const user = await getUserByEmail(submitterEmail);
+
+  if (!user) {
+    throw new Error("User does not exist in User OpenSearch Index");
+  }
 
   const transformedData = events["upload-subsequent-documents"].schema.parse({
     ...parsedResult.data,
-    submitterName,
-    submitterEmail,
+    submitterName: user.fullName,
+    submitterEmail: user.email,
     timestamp: Date.now(),
   });
 

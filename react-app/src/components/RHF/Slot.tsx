@@ -32,7 +32,7 @@ export const RHFSlot = <
       return () => {
         control.unregister(field.name);
       };
-    }, []);
+    }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
     return (
       <FormItem

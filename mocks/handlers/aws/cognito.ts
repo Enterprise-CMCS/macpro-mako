@@ -381,6 +381,49 @@ export const identityProviderServiceHandler = http.post<
   return passthrough();
 });
 
+export const emptyIdentityProviderServiceHandler = http.post<
+  PathParams,
+  IdpRequestSessionBody | IdpRefreshRequestBody | IdpListUsersRequestBody | AdminGetUserRequestBody
+>(/https:\/\/cognito-idp.\S*.amazonaws.com\//, async ({ request }) => {
+  const target = request.headers.get("x-amz-target");
+  if (target == "AWSCognitoIdentityProviderService.ListUsers") {
+    const { Filter } = (await request.json()) as IdpListUsersRequestBody;
+
+    if (Filter && Filter.startsWith("sub = ")) {
+      const username = Filter.replace("sub = ", "").replaceAll('"', "");
+      if (username) {
+        const user = findUserByUsername(username);
+        if (user) {
+          return HttpResponse.json({
+            Users: [
+              {
+                Attributes: user.UserAttributes,
+                Username: user.Username,
+                UserStatus: "CONFIRMED",
+                Enabled: true,
+              },
+            ],
+          });
+        }
+      }
+    }
+    return HttpResponse.json({
+      Users: [],
+    });
+  }
+
+  console.error("x-amz-target not present");
+  return passthrough();
+});
+
+export const errorIdentityProviderServiceHandler = http.post<
+  PathParams,
+  IdpRequestSessionBody | IdpRefreshRequestBody | IdpListUsersRequestBody | AdminGetUserRequestBody
+>(
+  /https:\/\/cognito-idp.\S*.amazonaws.com\//,
+  async () => new HttpResponse("Response Error", { status: 500 }),
+);
+
 export const cognitoHandlers = [
   signInHandler,
   identityProviderServiceHandler,

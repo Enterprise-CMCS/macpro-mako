@@ -4,6 +4,7 @@ import { isStateUser } from "shared-utils";
 import { useGetUser } from "@/api";
 import {
   BreadCrumbs,
+  LoadingSpinner,
   MACFieldsetOption,
   OptionCard,
   optionCrumbsFromPath,
@@ -37,9 +38,11 @@ type OptionsPageProps = {
 /** A page for rendering an array of {@link OptionData} */
 const OptionsPage = ({ options, title, fieldsetLegend }: OptionsPageProps) => {
   const location = useLocation();
-  const { data: userObj } = useGetUser();
+  const { data: userObj, isLoading: isUserLoading } = useGetUser();
 
-  if (userObj && isStateUser(userObj.user) === false) {
+  if (isUserLoading) return <LoadingSpinner />;
+
+  if (!userObj || isStateUser(userObj.user) === false) {
     return <Navigate to="/" replace />;
   }
 
