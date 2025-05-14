@@ -634,7 +634,7 @@ describe("syncing Changelog events", () => {
           value: undefined,
         },
       ],
-    });
+    } as any);
     await handler(event, {} as Context, vi.fn());
     expect(bulkUpdateDataSpy).toHaveBeenCalledWith(OPENSEARCH_DOMAIN, OPENSEARCH_INDEX, []);
   });
