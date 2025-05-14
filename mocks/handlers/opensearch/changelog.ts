@@ -1,4 +1,3 @@
-import { timeStamp } from "console";
 import { http, HttpResponse, PathParams } from "msw";
 
 import { GET_ERROR_ITEM_ID } from "../../data";
