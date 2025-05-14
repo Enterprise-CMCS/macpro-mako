@@ -75,7 +75,6 @@ export async function createTopics(brokerString: string, topicsConfig: TopicConf
     console.log("Topics to Create:", JSON.stringify(topicsToCreate, null, 2));
     console.log("Topics to Update:", JSON.stringify(topicsToUpdate, null, 2));
     console.log("Partitions to Update:", JSON.stringify(partitionConfig, null, 2));
-    console.log("Topic configuration options:", JSON.stringify(configs, null, 2));
 
     // Create topics that don't exist in MSK
     await admin.createTopics({ topics: topicsToCreate });
