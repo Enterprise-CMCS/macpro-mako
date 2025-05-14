@@ -35,7 +35,7 @@ const newSubmissionPageRouteMapper: Record<string, { to: string; displayText: st
   },
   "chip-details": {
     to: "/new-submission/spa/chip/landing/chip-details",
-    displayText: "Submit new CHIP eligibility SPA",
+    displayText: "CHIP SPA Details",
   },
   waiver: {
     to: "/new-submission/waiver",
