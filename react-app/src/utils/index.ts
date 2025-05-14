@@ -7,5 +7,6 @@ export * from "./queryClient";
 export * from "./stateNames";
 export * from "./textHelpers";
 export * from "./user";
+export * from "./userProfile";
 export * from "./utils";
 export * from "./zod";

@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useState } from "react";
-import { opensearch, UserRoles } from "shared-types";
+import { opensearch } from "shared-types";
 
 import { useGetUser } from "@/api";
 import { checkMultiFilter, useOsAggregate, useOsUrl } from "@/components";
@@ -14,7 +14,7 @@ export const useFilterState = () => {
   const { data: user } = useGetUser();
   const url = useOsUrl();
 
-  const isCms = !!user?.isCms && !user.user?.["custom:cms-roles"].includes(UserRoles.HELPDESK);
+  const isCms = !!user?.isCms && user.user?.role !== "helpdesk";
 
   const filters: FilterGroup = (() => {
     // ------------------------ SPAS ------------------------ //
@@ -145,8 +145,8 @@ export const useFilterDrawer = () => {
       }, {} as any);
     });
     setAccordionValues(updateAccordions);
-    // accordionValues is intensionally left out of this dendency array because it could cause looping
-  }, [url.state.filters, drawer.drawerOpen, setFilters]);
+    // accordionValues is intensionally left out of this dependency array because it could cause looping
+  }, [url.state.filters, drawer.drawerOpen, setFilters]); // eslint-disable-line react-hooks/exhaustive-deps
 
   const aggs = useMemo(() => {
     return Object.entries(_aggs || {}).reduce(
