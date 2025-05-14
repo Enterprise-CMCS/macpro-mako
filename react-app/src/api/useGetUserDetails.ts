@@ -7,7 +7,7 @@ export type UserDetails = {
   eventType: string;
   email: string;
   fullName: string;
-  role?: UserRole | "norole";
+  role?: UserRole;
   states?: string[];
   division: string;
   group: string;

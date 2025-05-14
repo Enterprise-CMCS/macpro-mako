@@ -8,6 +8,7 @@ const userRoles = z.enum([
   "helpdesk",
   "statesubmitter",
   "systemadmin",
+  "norole",
 ]);
 export type UserRole = z.infer<typeof userRoles>;
 
