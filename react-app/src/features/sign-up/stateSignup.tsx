@@ -37,7 +37,11 @@ export const StateSignup = () => {
 
   const currentRole = userDetails.role;
   // Only statesubmitters and statesystemadmins can access this page
-  if (currentRole !== "statesubmitter" && currentRole !== "statesystemadmin")
+  if (
+    currentRole !== "statesubmitter" &&
+    currentRole !== "statesystemadmin" &&
+    currentRole !== "norole"
+  )
     return <Navigate to="/profile" />;
 
   // Determine which role the user is allowed to request based on their current role
