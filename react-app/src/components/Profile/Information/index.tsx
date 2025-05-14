@@ -23,12 +23,5 @@ export const UserInformation = ({ title, fullName, role, email }: UserInformatio
       <h3 className="font-bold">Email</h3>
       <p>{email}</p>
     </div>
-
-    <div className="">
-      <p className="italic">
-        This page contains Profile Information for the {role}. The information cannot be changed in
-        the portal.
-      </p>
-    </div>
   </div>
 );

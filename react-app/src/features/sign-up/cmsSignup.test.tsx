@@ -25,6 +25,10 @@ describe("CMSSignup", () => {
           element: <div>Home</div>,
         },
         {
+          path: "/dashboard",
+          element: <div>Dashboard</div>,
+        },
+        {
           path: "/profile",
           element: <div>Profile</div>,
         },
@@ -106,7 +110,7 @@ describe("CMSSignup", () => {
 
     await user.click(submitButton);
 
-    await waitFor(() => expect(screen.getByText("Home")).toBeInTheDocument());
+    await waitFor(() => expect(screen.getByText("Dashboard")).toBeInTheDocument());
   });
 
   it("should show an error if there was an error submitting the request", async () => {

@@ -182,7 +182,7 @@ export const UserManagement = () => {
   const [userRoles, setUserRoles] = useState<UserRoleType[] | null>(null);
   const [selectedUserRole, setSelectedUserRole] = useState<SelectedUser>(null);
 
-  const isHelpDesk = userDetails && userDetails.role === "helpdesk";
+  const isHelpDesk = userDetails && userDetails?.role === "helpdesk";
   const isStateSystemAdmin = userDetails && userDetails.role === "statesystemadmin";
   const isSystemAdmin = userDetails && userDetails.role === "systemadmin";
 
@@ -312,12 +312,11 @@ export const UserManagement = () => {
       <div className="bg-sky-100" data-testid="sub-nav-header">
         <div className="max-w-screen-xl m-auto px-4 lg:px-8 flex items-center py-4 justify-between">
           <h1 className="text-xl font-medium">User Management</h1>
-          {isHelpDesk ||
-            (isSystemAdmin && (
-              <Button variant="outline" onClick={handleExport}>
-                Export to Excel (CSV)
-              </Button>
-            ))}
+          {(isHelpDesk || isSystemAdmin) && (
+            <Button variant="outline" onClick={handleExport}>
+              Export to Excel (CSV)
+            </Button>
+          )}
         </div>
       </div>
       <div className="py-5 px-10">
