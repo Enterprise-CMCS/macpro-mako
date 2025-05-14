@@ -23,16 +23,16 @@
         <div class='clearfix'>
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">80% </span>
+                <span class="strong">100% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>8/10</span>
+                <span class='fraction'>10/10</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">66.66% </span>
+                <span class="strong">100% </span>
                 <span class="quiet">Branches</span>
-                <span class='fraction'>8/12</span>
+                <span class='fraction'>12/12</span>
             </div>
         
             
@@ -44,9 +44,9 @@
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">88.88% </span>
+                <span class="strong">100% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>8/9</span>
+                <span class='fraction'>9/9</span>
             </div>
         
             
@@ -130,7 +130,8 @@
 <a name='L65'></a><a href='#L65'>65</a>
 <a name='L66'></a><a href='#L66'>66</a>
 <a name='L67'></a><a href='#L67'>67</a>
-<a name='L68'></a><a href='#L68'>68</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
+<a name='L68'></a><a href='#L68'>68</a>
+<a name='L69'></a><a href='#L69'>69</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -151,7 +152,7 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">38x</span>
+<span class="cline-any cline-yes">95x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -165,20 +166,21 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">6x</span>
+<span class="cline-any cline-yes">9x</span>
+<span class="cline-any cline-yes">9x</span>
+<span class="cline-any cline-yes">5x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">5x</span>
+<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">4x</span>
-<span class="cline-any cline-yes">2x</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">2x</span>
-<span class="cline-any cline-yes">2x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">2x</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-yes">3x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">2x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -201,7 +203,7 @@
 import { Authority, opensearch } from "shared-types";
 &nbsp;
 import { useGetUser } from "@/api/useGetUser";
-import { DetailsSection } from "@/components";
+import { DetailsSection, LoadingSpinner } from "@/components";
 &nbsp;
 import {
   getApprovedAndEffectiveDetails,
@@ -233,20 +235,21 @@ type PackageDetailsProps = {
 };
 &nbsp;
 export const PackageDetails = ({ submission }: PackageDetailsProps) =&gt; {
-  const { data: user } = useGetUser();
-&nbsp;
+  const { data: user, isLoading: isUserLoading } = useGetUser();
   const title = useMemo(() =&gt; {
     switch (submission.authority) {
-<span class="branch-0 cbranch-no" title="branch not covered" >      case Authority["1915b"]:</span>
+      case Authority["1915b"]:
       case Authority["1915c"]:
       case undefined: // Some TEs have no authority
-        <span class="missing-if-branch" title="if path not taken" >I</span>if (submission.actionType == "Amend" &amp;&amp; <span class="branch-1 cbranch-no" title="branch not covered" >submission.authority === Authority["1915c"])</span>
-<span class="cstat-no" title="statement not covered" >          return "1915(c) Appendix K Amendment Package Details";</span>
-        <span class="missing-if-branch" title="if path not taken" >I</span>if (submission.actionType == "Extend") <span class="cstat-no" title="statement not covered" >return "Temporary Extension Request Details";</span>
+        if (submission.actionType == "Amend" &amp;&amp; submission.authority === Authority["1915c"])
+          return "1915(c) Appendix K Amendment Package Details";
+        if (submission.actionType == "Extend") return "Temporary Extension Request Details";
     }
 &nbsp;
     return `${submission.authority} Package Details`;
   }, [submission]);
+&nbsp;
+  if (isUserLoading) return &lt;LoadingSpinner /&gt;;
 &nbsp;
   return (
     &lt;DetailsSection id="package_details" title={title}&gt;
@@ -271,7 +274,7 @@ export const PackageDetails = ({ submission }: PackageDetailsProps) =&gt; {
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2025-05-14T02:14:19.762Z
+                at 2025-05-14T14:44:42.509Z
             </div>
         <script src="../../../../../prettify.js"></script>
         <script>
