@@ -51,7 +51,7 @@ export const MEDICAID_SPA_OPTIONS: OptionData[] = [
   },
 ];
 
-export const CHIP_SPA_OPTIONS = (): OptionData[] => {
+export const useChipSpaOptions = (): OptionData[] => {
   const isEligibilityFormActive = useFeatureFlag("CHIP_SPA_SUBMISSION");
 
   if (isEligibilityFormActive) {

@@ -16,9 +16,9 @@ import {
   B_WAIVER_OPTIONS,
   B4_WAIVER_OPTIONS,
   BCAP_WAIVER_OPTIONS,
-  CHIP_SPA_OPTIONS,
   MEDICAID_SPA_OPTIONS,
   SPA_OPTIONS,
+  useChipSpaOptions,
   WAIVER_OPTIONS,
 } from "@/features";
 
@@ -91,7 +91,7 @@ export const ChipSPASubmissionOptions = () => (
   <OptionsPage
     title="CHIP SPA Type"
     fieldsetLegend="Select a CHIP SPA type to create your submission"
-    options={CHIP_SPA_OPTIONS}
+    options={useChipSpaOptions()}
   />
 );
 export const WaiverSubmissionOptions = () => (
