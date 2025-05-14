@@ -1,3 +1,4 @@
+import { timeStamp } from "console";
 import { http, HttpResponse, PathParams } from "msw";
 
 import { GET_ERROR_ITEM_ID } from "../../data";
@@ -13,7 +14,9 @@ const defaultOSChangelogSearchHandler = http.post<PathParams, SearchQueryBody>(
     const mustTerms = must ? getTermKeys(must) : [];
 
     const packageIdValue =
-      getTermValues(must, "packageId.keyword") || getTermValues(must, "packageId");
+      getTermValues(must, "packageId.keyword") ||
+      getTermValues(must, "packageId") ||
+      getTermValues(must, "timestamp");
 
     if (!packageIdValue) {
       return new HttpResponse("No packageId provided", { status: 400 });
