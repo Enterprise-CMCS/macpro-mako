@@ -1,0 +1,172 @@
+import { useState } from "react";
+import { Link } from "react-router";
+import { buildChipSchema } from "shared-types/events/new-chip-details-submission";
+
+import {
+  ActionForm,
+  Checkbox,
+  DatePicker,
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+  Input,
+  RequiredIndicator,
+  Select,
+  SelectContent,
+  SelectTrigger,
+  SelectValue,
+  SpaIdFormattingDesc,
+} from "@/components";
+import { FAQ_TAB } from "@/consts";
+import { useFeatureFlag } from "@/hooks/useFeatureFlag";
+
+import { getFAQLinkForAttachments } from "../faqLinks";
+
+export const ChipDetailsForm = () => {
+  const [open, setOpen] = useState(false);
+  const useDetailsForm = useFeatureFlag("CHIP_SPA_SUBMISSION");
+  const title = useDetailsForm ? "CHIP Eligibility SPA Details" : "CHIP SPA Details";
+  const breadcrumb = useDetailsForm ? "Submit new CHIP eligibility SPA" : "Submit new CHIP SPA";
+  const chipOptions = [
+    "MAGI Eligibility and Methods",
+    "Non-Financial Eligibility",
+    "XXI Medicaid Expansion",
+    "Eligibility Process",
+  ];
+  const schema = buildChipSchema(useDetailsForm);
+
+  return (
+    <ActionForm
+      title={title}
+      schema={schema}
+      breadcrumbText={breadcrumb}
+      fields={({ control }) => (
+        <>
+          <FormField
+            control={control}
+            name="id"
+            render={({ field }) => (
+              <FormItem>
+                <div className="flex gap-4">
+                  <FormLabel className="font-semibold" data-testid="spaid-label">
+                    SPA ID <RequiredIndicator />
+                  </FormLabel>
+                  <Link
+                    to="/faq/spa-id-format"
+                    target={FAQ_TAB}
+                    rel="noopener noreferrer"
+                    className="text-blue-900 underline"
+                  >
+                    What is my SPA ID?
+                  </Link>
+                </div>
+                <SpaIdFormattingDesc />
+                <FormControl>
+                  <Input
+                    className="max-w-sm"
+                    ref={field.ref}
+                    value={field.value}
+                    onChange={(e) => field.onChange(e.currentTarget.value.toUpperCase())}
+                  />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          <FormField
+            control={control}
+            name="chipSubmissionType"
+            render={({ field }) => {
+              const selectedValues = Array.isArray(field.value) ? field.value : [];
+              return (
+                <FormItem className="w-full sm:max-w-[460px]">
+                  <FormLabel className="font-bold">CHIP Submission Type</FormLabel>
+                  <Select open={open} onOpenChange={setOpen}>
+                    <FormControl>
+                      <SelectTrigger
+                        showIcon={false}
+                        className="relative w-full mt-2 h-[40px] px-[4px] gap-[5px] border border-[#565C65] text-gray-950 flex items-center justify-between rounded-none after:hidden"
+                      >
+                        <SelectValue className="truncate text-left w-full">
+                          {selectedValues.length > 0 ? selectedValues.join(", ") : ""}
+                        </SelectValue>
+                        <div className="flex items-center pl-2 pr-3 h-full border-l border-slate-300">
+                          <svg
+                            className="w-6 h-6"
+                            fill="none"
+                            stroke="#565C65"
+                            strokeWidth={3}
+                            viewBox="0 0 24 24"
+                          >
+                            <path strokeLinecap="round" strokeLinejoin="round" d="M19 9l-7 7-7-7" />
+                          </svg>
+                        </div>
+                      </SelectTrigger>
+                    </FormControl>
+                    <SelectContent>
+                      {chipOptions.map((option) => {
+                        const isSelected = selectedValues.includes(option);
+                        return (
+                          <div
+                            key={option}
+                            className="flex items-center gap-2 px-4 py-2 cursor-pointer hover:bg-gray-100"
+                            onClick={() => {
+                              const updated = isSelected
+                                ? selectedValues.filter((val) => val !== option)
+                                : [...selectedValues, option];
+                              field.onChange(updated);
+                            }}
+                          >
+                            <Checkbox checked={isSelected} />
+                            <span>{option}</span>
+                          </div>
+                        );
+                      })}
+                    </SelectContent>
+                  </Select>
+                  <FormMessage />
+                </FormItem>
+              );
+            }}
+          />
+          <FormField
+            control={control}
+            name="proposedEffectiveDate"
+            render={({ field }) => (
+              <FormItem className="max-w-sm">
+                <FormLabel className="text-lg font-semibold block">
+                  Proposed Effective Date of CHIP SPA <RequiredIndicator />
+                </FormLabel>
+                <FormControl>
+                  <DatePicker
+                    dataTestId="proposedEffectiveDate"
+                    onChange={(date) => field.onChange(date.getTime())}
+                    date={field.value ? new Date(field.value) : undefined}
+                  />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+        </>
+      )}
+      defaultValues={{ id: "" }}
+      attachments={{
+        faqLink: getFAQLinkForAttachments("new-chip-submission"),
+      }}
+      documentPollerArgs={{
+        property: "id",
+        documentChecker: (check) => check.recordExists,
+      }}
+      promptOnLeavingForm={{
+        header: "Stop form submission?",
+        body: "All information you've entered on this form will be lost if you leave this page.",
+        acceptButtonText: "Yes, leave form",
+        cancelButtonText: "Return to form",
+        areButtonsReversed: true,
+      }}
+    />
+  );
+};
