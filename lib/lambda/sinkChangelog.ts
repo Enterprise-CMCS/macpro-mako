@@ -145,32 +145,31 @@ const processAndIndex = async ({
         // Take that ID then use it to get the changelogs to update
         // Mark all the packageIDs with the offset and Del to get rid of them from use
         if (result.success && result.data.adminChanges) {
-          console.log(result.data);
-          const newID = result.data.componentId;
-          const timestamp = result.data.eventTimestamp;
+          const { componentId: newID, eventTimestamp: timestamp } = result.data;
+          const changelog = await getPackageChangelogTimestamp(timestamp);
 
-          const lastPackageChangelog = await getPackageChangelogTimestamp(timestamp);
+          if (changelog.hits.hits[0]) {
+            const {
+              _source: { packageId },
+              _id: origID,
+            } = changelog.hits.hits[0];
 
-          if (lastPackageChangelog.hits.hits[0]) {
-            const packageId = lastPackageChangelog.hits.hits[0]._source.packageId;
-            const origID = lastPackageChangelog.hits.hits[0]._id;
-            const packageChangelogs = await getPackageChangelog(packageId);
+            //Only proceed to update if the ID's are different.
+            if (newID != origID) {
+              const packageChangelogs = await getPackageChangelog(packageId);
 
-            packageChangelogs.hits.hits.forEach((log) => {
-              if (log._source.event !== "delete") {
-                const recordOffset = log._id.split("-").at(-1);
-                docs.push({
-                  ...log._source,
-                  id: `${newID}-${recordOffset}`,
-                  packageId: newID,
+              packageChangelogs.hits.hits
+                .filter((log) => log._source.event !== "delete")
+                .forEach((log) => {
+                  const recordOffset = log._id.split("-")[-1];
+                  const source = log._source;
+
+                  docs.push(
+                    { ...source, id: `${newID}-${recordOffset}`, packageId: newID },
+                    { ...source, id: origID, packageId: `${packageId}-del` },
+                  );
                 });
-                docs.push({
-                  ...log._source,
-                  id: origID,
-                  packageId: `${packageId}-${recordOffset}-del`,
-                });
-              }
-            });
+            }
           }
         }
 
