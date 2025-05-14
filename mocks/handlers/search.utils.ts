@@ -12,12 +12,15 @@ export const getFilterValue = (
       if (rule?.[queryKey]?.[filterName] !== undefined) {
         if (Array.isArray(rule[queryKey][filterName])) {
           rule[queryKey][filterName].forEach((value) => {
-            if (value !== undefined) {
+            if (value !== undefined && value !== null) {
               values.push(value.toString());
             }
           });
         } else {
-          values.push(rule[queryKey][filterName].toString());
+          const value = rule[queryKey][filterName];
+          if (value !== undefined && value !== null) {
+            values.push(value.toString());
+          }
         }
       }
     });
