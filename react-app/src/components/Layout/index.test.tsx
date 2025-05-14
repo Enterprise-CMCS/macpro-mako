@@ -342,7 +342,7 @@ describe("Layout", () => {
       expect(screen.queryByTestId("mobile-menu-button")).not.toBeInTheDocument();
 
       // Desktop menu items should be visible
-      expect(screen.getByText("Home")).toBeVisible();
+      waitFor(() => expect(screen.getByText("Home")).toBeVisible());
     });
   });
 

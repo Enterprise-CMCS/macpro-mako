@@ -3,6 +3,7 @@ import { itemExists } from "libs/api/package";
 import { events } from "shared-types/events";
 
 import { getAuthDetails, isAuthorized, lookupUserAttributes } from "../../../libs/api/auth/user";
+import { getUserByEmail } from "../../user-management/userManagementService";
 
 export const newMedicaidSubmission = async (event: APIGatewayEvent) => {
   if (!event.body) return;
@@ -27,12 +28,17 @@ export const newMedicaidSubmission = async (event: APIGatewayEvent) => {
   const authDetails = getAuthDetails(event);
   const userAttr = await lookupUserAttributes(authDetails.userId, authDetails.poolId);
   const submitterEmail = userAttr.email;
-  const submitterName = `${userAttr.given_name} ${userAttr.family_name}`;
+
+  const user = await getUserByEmail(submitterEmail);
+
+  if (!user) {
+    throw new Error("User does not exist in User OpenSearch Index");
+  }
 
   const transformedData = events["new-medicaid-submission"].schema.parse({
     ...parsedResult.data,
-    submitterName,
-    submitterEmail,
+    submitterName: user.fullName,
+    submitterEmail: user.email,
     timestamp: Date.now(),
   });
 

@@ -1,4 +1,9 @@
-import { USER_POOL_ID } from "mocks";
+import {
+  emptyIdentityProviderServiceHandler,
+  errorIdentityProviderServiceHandler,
+  USER_POOL_ID,
+} from "mocks";
+import { mockedServiceServer as mockedServer } from "mocks/server";
 import { describe, expect, it } from "vitest";
 
 import { getAllStateUsers } from "./getAllStateUsers";
@@ -14,16 +19,22 @@ describe("getAllStateUsers", () => {
         formattedEmailAddress: "George Harrison <george@example.com>",
       },
       {
-        firstName: "State",
-        lastName: "Multi",
-        email: "statemulti@example.com",
-        formattedEmailAddress: "State Multi <statemulti@example.com>",
+        firstName: "Multi",
+        lastName: "State",
+        email: "multistate@example.com",
+        formattedEmailAddress: "Multi State <multistate@example.com>",
       },
       {
         firstName: "Otto",
         lastName: "State",
         email: "automated-state@example.com",
         formattedEmailAddress: "Otto State <automated-state@example.com>",
+      },
+      {
+        email: "statesubmitter@nightwatch.test",
+        firstName: "State",
+        formattedEmailAddress: "State Submitter Test <statesubmitter@nightwatch.test>",
+        lastName: "Submitter Test",
       },
     ]);
   });
@@ -41,5 +52,18 @@ describe("getAllStateUsers", () => {
   it("should ignore users with invalid email formats", async () => {
     const result = await getAllStateUsers({ userPoolId: USER_POOL_ID, state: "LA" });
     expect(result).toEqual([]);
+  });
+
+  it("should handle fetching empty state users", async () => {
+    mockedServer.use(emptyIdentityProviderServiceHandler);
+    const result = await getAllStateUsers({ userPoolId: USER_POOL_ID, state: "CA" });
+    expect(result).toEqual([]);
+  });
+
+  it("should handle an error when fetching state users", async () => {
+    mockedServer.use(errorIdentityProviderServiceHandler);
+    await expect(() =>
+      getAllStateUsers({ userPoolId: USER_POOL_ID, state: "CA" }),
+    ).rejects.toThrowError("Error fetching users");
   });
 });
