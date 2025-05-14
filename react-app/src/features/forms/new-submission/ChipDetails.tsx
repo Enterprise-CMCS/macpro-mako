@@ -27,8 +27,6 @@ import { getFAQLinkForAttachments } from "../faqLinks";
 export const ChipDetailsForm = () => {
   const [open, setOpen] = useState(false);
   const useDetailsForm = useFeatureFlag("CHIP_SPA_SUBMISSION");
-  const title = useDetailsForm ? "CHIP Eligibility SPA Details" : "CHIP SPA Details";
-  const breadcrumb = useDetailsForm ? "Submit new CHIP eligibility SPA" : "Submit new CHIP SPA";
   const chipOptions = [
     "MAGI Eligibility and Methods",
     "Non-Financial Eligibility",
@@ -39,9 +37,9 @@ export const ChipDetailsForm = () => {
 
   return (
     <ActionForm
-      title={title}
+      title="CHIP Eligibility SPA Details"
       schema={schema}
-      breadcrumbText={breadcrumb}
+      breadcrumbText="Submit new CHIP eligibility SPA"
       fields={({ control }) => (
         <>
           <FormField
@@ -154,7 +152,7 @@ export const ChipDetailsForm = () => {
       )}
       defaultValues={{ id: "" }}
       attachments={{
-        faqLink: getFAQLinkForAttachments("new-chip-submission"),
+        faqLink: getFAQLinkForAttachments("new-chip-details-submission"),
       }}
       documentPollerArgs={{
         property: "id",
