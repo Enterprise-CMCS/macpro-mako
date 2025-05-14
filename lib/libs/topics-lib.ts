@@ -63,15 +63,6 @@ export async function createTopics(brokerString: string, topicsConfig: TopicConf
       type: ConfigResourceTypes.TOPIC,
     }));
 
-    // Query topic configuration
-    const configs =
-      configOptions.length !== 0
-        ? await admin.describeConfigs({
-            resources: configOptions,
-            includeSynonyms: false,
-          })
-        : [];
-
     console.log("Topics to Create:", JSON.stringify(topicsToCreate, null, 2));
     console.log("Topics to Update:", JSON.stringify(topicsToUpdate, null, 2));
     console.log("Partitions to Update:", JSON.stringify(partitionConfig, null, 2));
