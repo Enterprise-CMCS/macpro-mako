@@ -1,4 +1,4 @@
-import { ConfigResourceTypes, Kafka } from "kafkajs";
+import { Kafka } from "kafkajs";
 import * as _ from "lodash";
 
 interface TopicConfig {
@@ -55,12 +55,6 @@ export async function createTopics(brokerString: string, topicsConfig: TopicConf
     const partitionConfig = _.map(topicsToUpdate, (topic) => ({
       topic: _.get(topic, "topic"),
       count: _.get(topic, "numPartitions"),
-    }));
-
-    // Create a collection to allow querying of topic configuration
-    const configOptions = _.map(topicsMetadata, (topic) => ({
-      name: _.get(topic, "name"),
-      type: ConfigResourceTypes.TOPIC,
     }));
 
     console.log("Topics to Create:", JSON.stringify(topicsToCreate, null, 2));
