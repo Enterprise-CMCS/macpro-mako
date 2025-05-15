@@ -54,3 +54,8 @@ export const filterStateAccess = (userDetails, userProfile) => {
       )
     : userProfile.stateAccess.filter((access: StateAccess) => access.territory !== "ZZ");
 };
+
+export const hasPendingRequests = (stateAccess) => {
+  if (stateAccess.length < 1) return false;
+  return stateAccess.some((role) => role.status === "pending");
+};

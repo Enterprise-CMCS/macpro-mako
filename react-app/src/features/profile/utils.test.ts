@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
 
-import { filterStateAccess, orderStateAccess } from "./utils";
+import { filterStateAccess, hasPendingRequests, orderStateAccess } from "./utils";
 
 const baseRole = {
   eventType: "user-role",
@@ -221,6 +221,32 @@ describe("Profile utils", () => {
           territory: "MD",
         },
       ]);
+    });
+  });
+
+  describe("hasPendingRequests", () => {
+    it("should return false if user has no requests", () => {
+      // @ts-ignore
+      expect(hasPendingRequests([])).toBe(false);
+    });
+    it("should return true if user has pending requests", () => {
+      const stateAccessArray = [
+        {
+          ...baseRole,
+          role: "statesystemadmin",
+          id: `${baseRole.email}_MD_statesystemadmin`,
+          status: "active",
+          territory: "MD",
+        },
+        {
+          ...baseRole,
+          id: `${baseRole.email}_MD_${baseRole.role}`,
+          status: "pending",
+          territory: "MD",
+        },
+      ];
+      // @ts-ignore
+      expect(hasPendingRequests(stateAccessArray)).toBe(true);
     });
   });
 });
