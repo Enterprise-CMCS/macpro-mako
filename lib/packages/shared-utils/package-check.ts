@@ -1,11 +1,4 @@
-import {
-  Action,
-  ActionType,
-  Authority,
-  CognitoUserAttributes,
-  opensearch,
-  SEATOOL_STATUS,
-} from "shared-types";
+import { Action, ActionType, Authority, FullUser, opensearch, SEATOOL_STATUS } from "shared-types";
 
 const checkAuthority = (authority: Authority | string | null, validAuthorities: string[]) =>
   !authority ? false : validAuthorities.includes(authority.toLowerCase());
@@ -58,8 +51,7 @@ export const PackageCheck = ({
       !planChecks.authorityIs([Authority.CHIP_SPA]) &&
       checkStatus(seatoolStatus, secondClockStatuses) &&
       !!raiRequestedDate &&
-      !!raiReceivedDate &&
-      !raiWithdrawnDate,
+      !!raiReceivedDate,
     /** Is in any status except Package Withdrawn **/
     isNotWithdrawn: !checkStatus(seatoolStatus, SEATOOL_STATUS.WITHDRAWN),
     /** Added for elasticity, but common checks should always bubble up as
@@ -116,7 +108,7 @@ export type ActionRule = {
   action: Action;
   check: (
     checker: IPackageCheck,
-    user: CognitoUserAttributes,
+    user: FullUser,
     /** Keep excess parameters to a minimum **/
     ...any: any[]
   ) => boolean;

@@ -5,13 +5,13 @@ import {
   waitForElementToBeRemoved,
   within,
 } from "@testing-library/react";
-import userEvent from "@testing-library/user-event";
+import userEvent, { UserEvent } from "@testing-library/user-event";
 import {
   errorApiSearchHandler,
   setMockUsername,
   TEST_CMS_REVIEWER_USER,
+  TEST_DEFAULT_CMS_USER,
   TEST_HELP_DESK_USER,
-  TEST_READ_ONLY_USER,
   TEST_STATE_SUBMITTER_USER,
 } from "mocks";
 import { mockedApiServer as mockedServer } from "mocks/server";
@@ -126,13 +126,13 @@ describe("Dashboard", () => {
     expect(screen.queryByTestId("chips")).toBeNull();
     expect(screen.queryByTestId("pagination")).toBeNull();
 
-    const spaTab = screen.queryByRole("heading", { level: 2, name: "SPAs" });
+    const spaTab = screen.queryByRole("tab", { name: "SPAs" });
     expect(spaTab).toBeInTheDocument();
-    expect(spaTab.parentElement.getAttribute("aria-selected")).toEqual("true");
+    expect(spaTab.getAttribute("aria-selected")).toEqual("true");
 
-    const waiverTab = screen.queryByRole("heading", { level: 2, name: "Waivers" });
+    const waiverTab = screen.queryByRole("tab", { name: "Waivers" });
     expect(waiverTab).toBeInTheDocument();
-    expect(waiverTab.parentElement.getAttribute("aria-selected")).toEqual("false");
+    expect(waiverTab.getAttribute("aria-selected")).toEqual("false");
 
     expect(screen.getByRole("tabpanel").textContent).toEqual("ErrorAn error has occurred");
   });
@@ -165,15 +165,15 @@ describe("Dashboard", () => {
 
     it("should display the SPA tab initially", async () => {
       const isWaiver = false;
-      const spaTab = screen.queryByRole("heading", { level: 2, name: "SPAs" });
+      const spaTab = screen.queryByRole("tab", { name: "SPAs" });
       expect(spaTab).toBeInTheDocument();
-      expect(spaTab.parentElement.getAttribute("aria-selected")).toEqual("true");
+      expect(spaTab.getAttribute("aria-selected")).toEqual("true");
 
-      const waiverTab = screen.queryByRole("heading", { level: 2, name: "Waivers" });
+      const waiverTab = screen.queryByRole("tab", { name: "Waivers" });
       expect(waiverTab).toBeInTheDocument();
-      expect(waiverTab.parentElement.getAttribute("aria-selected")).toEqual("false");
+      expect(waiverTab.getAttribute("aria-selected")).toEqual("false");
 
-      const table = screen.getByRole("table");
+      const table = screen.getByTestId("os-table");
       verifyColumns(table, hasActions, isWaiver, spaHits.total.value);
       verifyPagination(spaHits.total.value);
     });
@@ -182,18 +182,18 @@ describe("Dashboard", () => {
       const isWaiver = true;
 
       await waitFor(async () => {
-        const waiverTab = await screen.findByRole("heading", { level: 2, name: "Waivers" });
-        await user.click(waiverTab.parentElement);
+        const waiverTab = await screen.findByRole("tab", { name: "Waivers" });
+        await user.click(waiverTab);
 
         expect(waiverTab).toBeInTheDocument();
-        expect(waiverTab.parentElement.getAttribute("aria-selected")).toEqual("true");
+        expect(waiverTab.getAttribute("aria-selected")).toEqual("true");
       });
 
-      const spaTab = screen.queryByRole("heading", { level: 2, name: "SPAs" });
+      const spaTab = screen.queryByRole("tab", { name: "SPAs" });
       expect(spaTab).toBeInTheDocument();
-      expect(spaTab.parentElement.getAttribute("aria-selected")).toEqual("false");
+      expect(spaTab.getAttribute("aria-selected")).toEqual("false");
 
-      const table = screen.getByRole("table");
+      const table = screen.getByTestId("os-table");
       verifyColumns(table, hasActions, isWaiver, waiverHits.total.value);
       verifyPagination(waiverHits.total.value);
     });
@@ -202,18 +202,18 @@ describe("Dashboard", () => {
       const isWaiver = false;
 
       await waitFor(async () => {
-        const spaTab = await screen.findByRole("heading", { level: 2, name: "SPAs" });
-        await user.click(spaTab.parentElement);
+        const spaTab = await screen.findByRole("tab", { name: "SPAs" });
+        await user.click(spaTab);
 
         expect(spaTab).toBeInTheDocument();
-        expect(spaTab.parentElement.getAttribute("aria-selected")).toEqual("true");
+        expect(spaTab.getAttribute("aria-selected")).toEqual("true");
       });
 
-      const waiverTab = screen.queryByRole("heading", { level: 2, name: "Waivers" });
+      const waiverTab = screen.queryByRole("tab", { name: "Waivers" });
       expect(waiverTab).toBeInTheDocument();
-      expect(waiverTab.parentElement.getAttribute("aria-selected")).toEqual("false");
+      expect(waiverTab.getAttribute("aria-selected")).toEqual("false");
 
-      const table = screen.getByRole("table");
+      const table = screen.getByTestId("os-table");
       verifyColumns(table, hasActions, isWaiver, spaHits.total.value);
       verifyPagination(spaHits.total.value);
     });
@@ -230,10 +230,10 @@ describe("Dashboard", () => {
 
   describe.each([
     ["CMS Reviewer", TEST_CMS_REVIEWER_USER.username, true],
+    ["Default CMS User", TEST_DEFAULT_CMS_USER.username, true],
     ["CMS Help Desk User", TEST_HELP_DESK_USER.username, false],
-    ["CMS Read-Only User", TEST_READ_ONLY_USER.username, false],
-  ])("as a %s", (title, username, hasActions) => {
-    let user;
+  ])("as a %s", (_title, username, hasActions) => {
+    let user: UserEvent;
     beforeAll(async () => {
       skipCleanup();
 
@@ -260,15 +260,15 @@ describe("Dashboard", () => {
 
     it("should display the SPA tab initially", async () => {
       const isWaiver = false;
-      const spaTab = screen.queryByRole("heading", { level: 2, name: "SPAs" });
+      const spaTab = screen.queryByRole("tab", { name: "SPAs" });
       expect(spaTab).toBeInTheDocument();
-      expect(spaTab.parentElement.getAttribute("aria-selected")).toEqual("true");
+      expect(spaTab.getAttribute("aria-selected")).toEqual("true");
 
-      const waiverTab = screen.queryByRole("heading", { level: 2, name: "Waivers" });
+      const waiverTab = screen.queryByRole("tab", { name: "Waivers" });
       expect(waiverTab).toBeInTheDocument();
-      expect(waiverTab.parentElement.getAttribute("aria-selected")).toEqual("false");
+      expect(waiverTab.getAttribute("aria-selected")).toEqual("false");
 
-      const table = screen.getByRole("table");
+      const table = screen.getByTestId("os-table");
       verifyColumns(table, hasActions, isWaiver, spaHits.total.value);
       verifyPagination(spaHits.total.value);
     });
@@ -277,18 +277,19 @@ describe("Dashboard", () => {
       const isWaiver = true;
 
       await waitFor(async () => {
-        const waiverTab = await screen.findByRole("heading", { level: 2, name: "Waivers" });
-        await user.click(waiverTab.parentElement);
+        const waiverTab = await screen.findByRole("tab", { name: "Waivers" });
+
+        await user.click(waiverTab);
 
         expect(waiverTab).toBeInTheDocument();
-        expect(waiverTab.parentElement.getAttribute("aria-selected")).toEqual("true");
+        expect(waiverTab.getAttribute("aria-selected")).toEqual("true");
       });
 
-      const spaTab = screen.queryByRole("heading", { level: 2, name: "SPAs" });
+      const spaTab = screen.queryByRole("tab", { name: "SPAs" });
       expect(spaTab).toBeInTheDocument();
-      expect(spaTab.parentElement.getAttribute("aria-selected")).toEqual("false");
+      expect(spaTab.getAttribute("aria-selected")).toEqual("false");
 
-      const table = screen.getByRole("table");
+      const table = screen.getByTestId("os-table");
       verifyColumns(table, hasActions, isWaiver, waiverHits.total.value);
       verifyPagination(waiverHits.total.value);
     });
@@ -297,18 +298,18 @@ describe("Dashboard", () => {
       const isWaiver = false;
 
       await waitFor(async () => {
-        const spaTab = screen.queryByRole("heading", { level: 2, name: "SPAs" });
-        await user.click(spaTab.parentElement);
+        const spaTab = screen.queryByRole("tab", { name: "SPAs" });
+        await user.click(spaTab);
 
         expect(spaTab).toBeInTheDocument();
-        expect(spaTab.parentElement.getAttribute("aria-selected")).toEqual("true");
+        expect(spaTab.getAttribute("aria-selected")).toEqual("true");
       });
 
-      const waiverTab = screen.queryByRole("heading", { level: 2, name: "Waivers" });
+      const waiverTab = screen.queryByRole("tab", { name: "Waivers" });
       expect(waiverTab).toBeInTheDocument();
-      expect(waiverTab.parentElement.getAttribute("aria-selected")).toEqual("false");
+      expect(waiverTab.getAttribute("aria-selected")).toEqual("false");
 
-      const table = screen.getByRole("table");
+      const table = screen.getByTestId("os-table");
       verifyColumns(table, hasActions, isWaiver, spaHits.total.value);
       verifyPagination(spaHits.total.value);
     });
@@ -319,8 +320,8 @@ describe("Dashboard", () => {
     it.each([
       ["State Submitter", TEST_STATE_SUBMITTER_USER, false],
       ["CMS Reviewer", TEST_CMS_REVIEWER_USER, true],
+      ["Default CMS Reviewer", TEST_DEFAULT_CMS_USER, true],
       ["CMS Help Desk User", TEST_HELP_DESK_USER, true],
-      ["CMS Read-Only User", TEST_READ_ONLY_USER, true],
     ])("should load a %s", async (title, user, isCms) => {
       const queryClient = createTestQueryClient();
       setMockUsername(user.username);

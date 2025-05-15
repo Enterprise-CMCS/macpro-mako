@@ -17,6 +17,7 @@ export * from "./LockIcon";
 export * from "./Opensearch";
 export * from "./Pagination";
 export * from "./Popover";
+export * from "./Profile";
 export * from "./RHF";
 export * from "./ScrollToTop";
 export * from "./SearchForm";

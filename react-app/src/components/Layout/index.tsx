@@ -3,14 +3,15 @@ import { Bars3Icon, XMarkIcon } from "@heroicons/react/24/outline";
 import * as DropdownMenu from "@radix-ui/react-dropdown-menu";
 import { Auth } from "aws-amplify";
 import { useState } from "react";
-import { Link, NavLink, NavLinkProps, Outlet, useNavigate } from "react-router";
+import { Link, NavLink, NavLinkProps, Outlet, useNavigate, useRouteError } from "react-router";
 import { UserRoles } from "shared-types";
 import { isStateUser } from "shared-utils";
 
-import { useGetUser } from "@/api";
+import { useGetUser, useGetUserDetails, useGetUserProfile } from "@/api";
 import { Banner, ScrollToTop, SimplePageContainer, UserPrompt } from "@/components";
 import MMDLAlertBanner from "@/components/Banner/MMDLSpaBanner";
 import config from "@/config";
+import { ErrorPage } from "@/features/error-page";
 import { useMediaQuery } from "@/hooks";
 import { useFeatureFlag } from "@/hooks/useFeatureFlag";
 import { isFaqPage, isProd } from "@/utils";
@@ -29,15 +30,15 @@ import { UsaBanner } from "../UsaBanner";
  * - `isFaqPage`: A boolean indicating if the current page is the FAQ page.
  */
 const useGetLinks = () => {
-  const { isLoading, data: userObj } = useGetUser();
+  const { isLoading: userLoading, data: userObj } = useGetUser();
+  const { data: userDetailsData, isLoading: userDetailsLoading } = useGetUserDetails();
   const hideWebformTab = useFeatureFlag("UAT_HIDE_MMDL_BANNER");
   const toggleFaq = useFeatureFlag("TOGGLE_FAQ");
   const showHome = toggleFaq ? userObj.user : true; // if toggleFAQ is on we want to hide home when not logged in
   const isStateHomepage = useFeatureFlag("STATE_HOMEPAGE_FLAG");
-  const { data: user } = useGetUser();
 
   const links =
-    isLoading || isFaqPage
+    userLoading || userDetailsLoading || isFaqPage
       ? []
       : [
           {
@@ -50,12 +51,17 @@ const useGetLinks = () => {
             link: "/dashboard",
             condition:
               userObj.user &&
-              (userObj.user["custom:cms-roles"] || userObj.user["custom:ismemberof"]) &&
-              Object.values(UserRoles).some(
-                (role) =>
-                  userObj.user["custom:cms-roles"].includes(role) ||
-                  userObj.user["custom:ismemberof"] === role,
-              ),
+              Object.values(UserRoles).some((role) => {
+                return userObj.user.role === role;
+              }) &&
+              userObj.user.role !== "cmsroleapprover",
+          },
+          {
+            name: "User Management",
+            link: "/usermanagement",
+            condition: ["systemadmin", "statesystemadmin", "cmsroleapprover", "helpdesk"].includes(
+              userDetailsData?.role,
+            ),
           },
           {
             name: "View FAQs",
@@ -65,7 +71,7 @@ const useGetLinks = () => {
           {
             name: "Latest Updates",
             link: "/latestupdates",
-            condition: isStateHomepage && isStateUser(user.user),
+            condition: isStateHomepage && isStateUser(userObj.user),
           },
           { name: "Support", link: "/support", condition: userObj.user && toggleFaq },
           {
@@ -96,6 +102,32 @@ const useGetLinks = () => {
  */
 const UserDropdownMenu = () => {
   const navigate = useNavigate();
+  const { data: userDetails, isLoading } = useGetUserDetails();
+  const { data: userProfile } = useGetUserProfile();
+
+  // TODO: fix?
+  // Disable page if user is a defaultcmsuser that just requested cmsroleapprover and is pending?
+  // Disable page if user is a statesubmitter that just requested statesystemadmin and is pending?
+  // Certain roles cannot be changed
+  const disableRoleChange = () => {
+    const currentRole = userDetails?.role;
+    const requestedRoles = userProfile?.stateAccess ?? [];
+
+    const roleIsPending = requestedRoles.some((r) => r.status === "pending");
+
+    // Prevent duplicate or inappropriate role requests
+    // if (
+    //   (currentRole === "statesubmitter" && roleIsPending("statesystemadmin")) ||
+    //   (currentRole === "defaultcmsuser" && roleIsPending("cmsroleapprover"))
+    // ) {
+    //   return true;
+    // }
+    if (roleIsPending) return true;
+
+    const excludedRoles = ["helpdesk", "systemadmin"];
+
+    return excludedRoles.includes(currentRole);
+  };
 
   const handleViewProfile = () => {
     navigate("/profile");
@@ -149,14 +181,25 @@ const UserDropdownMenu = () => {
         <DropdownMenu.Content align="start" asChild>
           <ul className="bg-white z-50 flex flex-col gap-4 px-10 py-4 shadow-md rounded-b-sm">
             <DropdownMenu.Item
-              className="text-primary hover:text-primary/70"
+              className="text-primary hover:text-primary/70 cursor-pointer"
               asChild
               onSelect={handleViewProfile}
             >
               <li>View Profile</li>
             </DropdownMenu.Item>
+            {/* TODO: conditionally show this if the user IS NOT HELPDESK */}
+            {/* // helpdesk, system admins, and cms reviewer users don't even see request role as an option */}
+            {!disableRoleChange() && !isLoading && userDetails && (
+              <DropdownMenu.Item
+                className="text-primary hover:text-primary/70 cursor-pointer"
+                asChild
+                onSelect={() => navigate("/signup")}
+              >
+                <li>Request a Role Change</li>
+              </DropdownMenu.Item>
+            )}
             <DropdownMenu.Item
-              className="text-primary hover:text-primary/70"
+              className="text-primary hover:text-primary/70 cursor-pointer"
               asChild
               onSelect={handleLogout}
             >
@@ -192,6 +235,8 @@ const UserDropdownMenu = () => {
  * - The footer displays contact information.
  */
 export const Layout = () => {
+  const error = useRouteError();
+
   const hideLogin = useFeatureFlag("LOGIN_PAGE");
   const cmsHomeFlag = useFeatureFlag("CMS_HOMEPAGE_FLAG");
   const stateHomeFlag = useFeatureFlag("STATE_HOMEPAGE_FLAG");
@@ -254,7 +299,7 @@ export const Layout = () => {
         <SimplePageContainer>
           <Banner />
         </SimplePageContainer>
-        <Outlet />
+        {error ? <ErrorPage /> : <Outlet />}
       </main>
       <Footer
         email="OneMAC_Helpdesk@cms.hhs.gov"
@@ -264,7 +309,7 @@ export const Layout = () => {
           street: "7500 Security Boulevard",
           zip: 21244,
         }}
-        showNavLinks={cmsHomeFlag && stateHomeFlag}
+        showNavLinks={cmsHomeFlag && stateHomeFlag && !!user.user}
       />
     </div>
   );
@@ -308,6 +353,7 @@ const ResponsiveNav = ({ isDesktop }: ResponsiveNavProps) => {
     const url = `https://${domain}/oauth2/authorize?redirect_uri=${redirectSignIn}&response_type=${responseType}&client_id=${clientId}`;
     window.location.assign(url);
   };
+  const hideLogin = useFeatureFlag("LOGIN_PAGE");
 
   const handleRegister = () => {
     const url = `${config.idm.home_url}/signin/login.html`;
@@ -344,15 +390,16 @@ const ResponsiveNav = ({ isDesktop }: ResponsiveNavProps) => {
           // When the user is signed in
           <UserDropdownMenu />
         ) : (
-          !isFaqPage && (
-            // When the user is not signed in
+          !isFaqPage &&
+          // When the user is not signed in
+          (hideLogin ? (
             <>
               <button
                 data-testid="sign-in-button-d"
                 className="text-white hover:text-white/70"
                 onClick={handleLogin}
               >
-                Sign In
+                {hideLogin ? "Sign In" : "Log In"}
               </button>
               <button
                 data-testid="register-button-d"
@@ -362,7 +409,24 @@ const ResponsiveNav = ({ isDesktop }: ResponsiveNavProps) => {
                 Register
               </button>
             </>
-          )
+          ) : (
+            <>
+              <button
+                data-testid="register-button-d"
+                className="text-white hover:text-white/70"
+                onClick={handleRegister}
+              >
+                Register
+              </button>
+              <button
+                data-testid="sign-in-button-d"
+                className="text-white hover:text-white/70"
+                onClick={handleLogin}
+              >
+                {hideLogin ? "Sign In" : "Log In"}
+              </button>
+            </>
+          ))
         )}
       </>
     );
@@ -397,7 +461,7 @@ const ResponsiveNav = ({ isDesktop }: ResponsiveNavProps) => {
                     className="text-left block py-2 pl-3 pr-4 text-white rounded"
                     onClick={handleLogin}
                   >
-                    Sign In
+                    {hideLogin ? "Sign In" : "Log In"}
                   </button>
                   <button
                     className="text-left block py-2 pl-3 pr-4 text-white rounded"

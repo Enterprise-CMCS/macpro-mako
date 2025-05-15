@@ -8,12 +8,14 @@ export async function generateAuthFile({
   password,
   storagePath,
   eua = false,
+  mfa = false,
 }: {
   baseURL: string;
   user: string;
   password: string;
   storagePath: string;
   eua?: boolean;
+  mfa?: boolean;
 }): Promise<void> {
   const browser = await chromium.launch();
   const context = await browser.newContext({ baseURL });
@@ -21,16 +23,28 @@ export async function generateAuthFile({
   const loginPage = new LoginPage(page);
 
   await loginPage.goto();
-  if (eua) {
-    if (!user || !password) {
-      throw new Error("user or password is null or not defined");
-    }
-    await loginPage.euaLogin(user, password);
-  } else {
-    await loginPage.login(user, password);
+  switch (true) {
+    case eua:
+      console.log(`eua flag: ${eua}`);
+      if (!user || !password) {
+        throw new Error("user or password is null or not defined");
+      }
+      await loginPage.euaLogin(user, password);
+      break;
+
+    case mfa:
+      console.log(`mfa flag: ${mfa}`);
+      await loginPage.mfaLogin(user, password);
+      break;
+
+    default:
+      console.log("default");
+      await loginPage.login(user, password);
   }
+
   await expect(page).toHaveURL(/dashboard/);
   await context.storageState({ path: storagePath });
+  console.log(`${storagePath} written`);
 
   await browser.close();
 }

@@ -31,7 +31,7 @@ describe("Tooltip component within export button", () => {
   it("Tooltip content hidden when not hovering", async () => {
     setup(true);
 
-    const tooltipTrigger = screen.queryByTestId("tooltip-trigger");
+    const tooltipTrigger = screen.queryByTestId("export-csv-btn");
     expect(tooltipTrigger).toBeInTheDocument();
 
     const tooltipContent = screen.queryByText("No records available");
@@ -41,7 +41,7 @@ describe("Tooltip component within export button", () => {
   it("Tooltip content shown on hover", async () => {
     const { user } = setup(true);
 
-    const tooltipTrigger = screen.queryByTestId("tooltip-trigger");
+    const tooltipTrigger = screen.queryByTestId("export-csv-btn");
     expect(tooltipTrigger).toBeTruthy();
     expect(tooltipTrigger).toBeDisabled();
 
@@ -61,7 +61,7 @@ describe("Tooltip component within export button", () => {
 
     const { user } = setup(false);
 
-    await user.click(screen.queryByTestId("tooltip-trigger"));
+    await user.click(screen.queryByTestId("export-csv-btn"));
 
     expect(spy).toHaveBeenCalledWith(expected);
   });
@@ -69,7 +69,7 @@ describe("Tooltip component within export button", () => {
   it("should show modal when count is greater than 10000", async () => {
     const { user } = setup(false, 10001);
 
-    await user.click(screen.queryByTestId("tooltip-trigger"));
+    await user.click(screen.queryByTestId("export-csv-btn"));
 
     expect(screen.getByText("Export limit reached")).toBeVisible();
     expect(
@@ -82,7 +82,7 @@ describe("Tooltip component within export button", () => {
   it("should not show modal when count is under the limit", async () => {
     const { user } = setup(false, 9999);
 
-    await user.click(screen.queryByTestId("tooltip-trigger"));
+    await user.click(screen.queryByTestId("export-csv-btn"));
 
     expect(screen.queryByText("Export limit reached")).not.toBeInTheDocument();
   });
@@ -92,7 +92,7 @@ describe("Tooltip component within export button", () => {
 
     const { user } = setup(false, 10001);
 
-    await user.click(screen.queryByTestId("tooltip-trigger"));
+    await user.click(screen.queryByTestId("export-csv-btn"));
 
     expect(screen.getByText("Export limit reached")).toBeVisible();
 
@@ -108,7 +108,7 @@ describe("Tooltip component within export button", () => {
   it("should not open modal if button is disabled", async () => {
     const { user } = setup(true, 10001);
 
-    await user.click(screen.queryByTestId("tooltip-trigger"));
+    await user.click(screen.queryByTestId("export-csv-btn"));
 
     expect(screen.queryByText("Export limit reached")).not.toBeInTheDocument();
   });

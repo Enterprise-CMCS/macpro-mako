@@ -9,6 +9,7 @@ import {
   TEST_STATE_SUBMITTER_USER,
 } from "mocks";
 import { Action, CognitoUserAttributes, opensearch, SEATOOL_STATUS } from "shared-types";
+import { UserRole } from "shared-types/events/legacy-user";
 import { describe, expect, it } from "vitest";
 
 import { renderWithMemoryRouter } from "@/utils/test-helpers";
@@ -69,10 +70,11 @@ describe("renderCells", () => {
   describe("renderCellActions", () => {
     const setup = (
       userAttributes: CognitoUserAttributes | null,
+      role: UserRole | null,
       item: opensearch.main.Document,
     ) => {
       const user = userEvent.setup();
-      const element = renderCellActions(userAttributes)(item);
+      const element = renderCellActions(role ? { ...userAttributes, role } : null)(item);
       const rendered = renderWithMemoryRouter(
         element,
         [
@@ -94,25 +96,24 @@ describe("renderCells", () => {
       `/actions/${action}/${item.authority}/${item.id}?origin=dashboard`;
 
     it("should display button only initially", () => {
-      setup(TEST_STATE_SUBMITTER_USER, TEST_MED_SPA_ITEM._source);
-      expect(screen.queryByLabelText("Available actions")).toBeInTheDocument();
+      setup(TEST_STATE_SUBMITTER_USER, "statesubmitter", TEST_MED_SPA_ITEM._source);
+      expect(screen.queryByLabelText("Available package actions")).toBeInTheDocument();
     });
 
     it("should return null if there is no user", () => {
-      const { container } = setup(null, TEST_CHIP_SPA_ITEM._source);
+      const { container } = setup(null, null, TEST_CHIP_SPA_ITEM._source);
       expect(container.childElementCount).toEqual(1);
       expect(container.firstElementChild.childElementCount).toEqual(0);
     });
 
     describe("as a State Submitter", () => {
       it(`should handle button click and display [${Action.RESPOND_TO_RAI},${Action.WITHDRAW_PACKAGE}]`, async () => {
-        const { user } = setup(TEST_STATE_SUBMITTER_USER, {
+        const { user } = setup(TEST_STATE_SUBMITTER_USER, "statesubmitter", {
           ...TEST_MED_SPA_ITEM._source,
           seatoolStatus: SEATOOL_STATUS.PENDING_RAI,
           raiRequestedDate: "2024-01-01T00:00:00.000Z",
         });
-        await user.click(screen.getByLabelText("Available actions"));
-
+        await user.click(screen.getByLabelText("Available package actions"));
         expect(screen.queryByText("Respond to Formal RAI")).toBeInTheDocument();
         expect(screen.getByText("Respond to Formal RAI").getAttribute("href")).toEqual(
           getUrl(Action.RESPOND_TO_RAI, TEST_MED_SPA_ITEM._source),
@@ -124,12 +125,12 @@ describe("renderCells", () => {
       });
 
       it(`should handle button click and display [${Action.TEMP_EXTENSION}, ${Action.AMEND_WAIVER}]`, async () => {
-        const { user } = setup(TEST_STATE_SUBMITTER_USER, {
+        const { user } = setup(TEST_STATE_SUBMITTER_USER, "statesubmitter", {
           ...TEST_1915B_ITEM._source,
           actionType: "New",
           seatoolStatus: SEATOOL_STATUS.APPROVED,
         });
-        await user.click(screen.getByLabelText("Available actions"));
+        await user.click(screen.getByLabelText("Available package actions"));
 
         expect(screen.queryByText("Request Temporary Extension")).toBeInTheDocument();
         expect(screen.getByText("Request Temporary Extension").getAttribute("href")).toEqual(
@@ -142,7 +143,7 @@ describe("renderCells", () => {
       });
 
       it(`should handle button click and display [${Action.WITHDRAW_RAI}, ${Action.WITHDRAW_PACKAGE}, ${Action.UPLOAD_SUBSEQUENT_DOCUMENTS}]`, async () => {
-        const { user } = setup(TEST_STATE_SUBMITTER_USER, {
+        const { user } = setup(TEST_STATE_SUBMITTER_USER, "statesubmitter", {
           ...TEST_MED_SPA_ITEM._source,
           seatoolStatus: SEATOOL_STATUS.PENDING,
           actionType: "New",
@@ -150,7 +151,7 @@ describe("renderCells", () => {
           raiReceivedDate: "2024-01-01T00:00:00.000Z",
           raiWithdrawEnabled: true,
         });
-        await user.click(screen.getByLabelText("Available actions"));
+        await user.click(screen.getByLabelText("Available package actions"));
 
         expect(screen.queryByText("Withdraw Formal RAI Response")).toBeInTheDocument();
         expect(screen.getByText("Withdraw Formal RAI Response").getAttribute("href")).toEqual(
@@ -167,13 +168,13 @@ describe("renderCells", () => {
       });
 
       it(`should handle button click and display [${Action.WITHDRAW_PACKAGE}, ${Action.UPLOAD_SUBSEQUENT_DOCUMENTS}]`, async () => {
-        const { user } = setup(TEST_STATE_SUBMITTER_USER, {
+        const { user } = setup(TEST_STATE_SUBMITTER_USER, "statesubmitter", {
           ...TEST_MED_SPA_ITEM._source,
           seatoolStatus: SEATOOL_STATUS.PENDING,
           actionType: "New",
           raiWithdrawEnabled: true,
         });
-        await user.click(screen.getByLabelText("Available actions"));
+        await user.click(screen.getByLabelText("Available package actions"));
 
         expect(screen.queryByText("Withdraw Package")).toBeInTheDocument();
         expect(screen.getByText("Withdraw Package").getAttribute("href")).toEqual(
@@ -188,14 +189,14 @@ describe("renderCells", () => {
 
     describe("as a CMS Reviewer", () => {
       it(`should handle a button click and display [${Action.ENABLE_RAI_WITHDRAW}]`, async () => {
-        const { user } = setup(TEST_CMS_REVIEWER_USER, {
+        const { user } = setup(TEST_CMS_REVIEWER_USER, "cmsreviewer", {
           ...TEST_CHIP_SPA_ITEM._source,
           seatoolStatus: SEATOOL_STATUS.PENDING,
           actionType: "New",
           raiRequestedDate: "2024-01-01T00:00:00.000Z",
           raiReceivedDate: "2024-01-01T00:00:00.000Z",
         });
-        await user.click(screen.getByLabelText("Available actions"));
+        await user.click(screen.getByLabelText("Available package actions"));
 
         expect(screen.queryByText("Enable Formal RAI Response Withdraw")).toBeInTheDocument();
         expect(
@@ -204,7 +205,7 @@ describe("renderCells", () => {
       });
 
       it(`should handle a button click and display [${Action.DISABLE_RAI_WITHDRAW}]`, async () => {
-        const { user } = setup(TEST_CMS_REVIEWER_USER, {
+        const { user } = setup(TEST_CMS_REVIEWER_USER, "cmsreviewer", {
           ...TEST_MED_SPA_ITEM._source,
           seatoolStatus: SEATOOL_STATUS.PENDING,
           actionType: "New",
@@ -212,7 +213,7 @@ describe("renderCells", () => {
           raiReceivedDate: "2024-01-01T00:00:00.000Z",
           raiWithdrawEnabled: true,
         });
-        await user.click(screen.getByLabelText("Available actions"));
+        await user.click(screen.getByLabelText("Available package actions"));
 
         expect(screen.queryByText("Disable Formal RAI Response Withdraw")).toBeInTheDocument();
         expect(

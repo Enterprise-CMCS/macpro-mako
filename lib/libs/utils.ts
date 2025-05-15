@@ -1,4 +1,4 @@
-import { BaseIndex, Index } from "lib/packages/shared-types/opensearch";
+import { BaseIndex, Index } from "shared-types/opensearch";
 
 /**
  * Returns the `osDomain`

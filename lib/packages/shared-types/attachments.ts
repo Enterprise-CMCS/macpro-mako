@@ -1,6 +1,5 @@
+import { s3ParseUrl } from "shared-utils/s3-url-parser";
 import { z } from "zod";
-
-import { s3ParseUrl } from "../shared-utils/s3-url-parser";
 
 export const attachmentSchema = z.object({
   filename: z.string(),
