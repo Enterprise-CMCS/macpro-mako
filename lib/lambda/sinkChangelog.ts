@@ -1,10 +1,11 @@
 import { Handler } from "aws-lambda";
-import { getPackageChangelog } from "libs/api/package";
+import { getPackageChangelog, getPackageChangelogTimestamp } from "libs/api/package";
 import { bulkUpdateDataWrapper, ErrorType, getTopic, logError } from "libs/sink-lib";
 import { KafkaEvent, KafkaRecord, LegacyAdminChange, opensearch } from "shared-types";
 import { decodeBase64WithUtf8 } from "shared-utils";
 
 import {
+  legacyEventIdUpdateSchema,
   transformDeleteSchema,
   transformedSplitSPASchema,
   transformedUpdateIdSchema,
@@ -80,6 +81,7 @@ const processAndIndex = async ({
           if (result.data.adminChangeType === "update-id" && "idToBeUpdated" in result.data) {
             const { id, packageId: _packageId, idToBeUpdated, ...restOfResultData } = result.data;
             // Push doc with content of package being soft deleted
+
             docs.forEach((log) => {
               const recordOffset = log.id.split("-").at(-1);
               docs.push({
@@ -135,7 +137,42 @@ const processAndIndex = async ({
 
       // If the event is a supported event, transform and push to docs array for indexing
       if (kafkaSource === "onemac" && record.GSI1pk?.startsWith("OneMAC#submit")) {
-        // This is a onemac legacy event
+        const schema = legacyEventIdUpdateSchema;
+        const result = schema.safeParse(record);
+
+        // Check if event has admin changes
+        // The previous packageID can be retrieved by matching the timestamp
+        // Take that ID then use it to get the changelogs to update
+        // Mark all the packageIDs with the offset and Del to get rid of them from use
+        if (result.success && result.data.adminChanges) {
+          const { componentId: newID, eventTimestamp: timestamp } = result.data;
+          const changelog = await getPackageChangelogTimestamp(timestamp);
+
+          if (changelog.hits.hits[0]) {
+            const {
+              _source: { packageId },
+              _id: origID,
+            } = changelog.hits.hits[0];
+
+            //Only proceed to update if the ID's are different.
+            if (newID != origID) {
+              const packageChangelogs = await getPackageChangelog(packageId);
+
+              packageChangelogs.hits.hits
+                .filter((log) => log._source.event !== "delete")
+                .forEach((log) => {
+                  const recordOffset = log._id.split("-")[-1];
+                  const source = log._source;
+
+                  docs.push(
+                    { ...source, id: `${newID}-${recordOffset}`, packageId: newID },
+                    { ...source, id: origID, packageId: `${packageId}-del` },
+                  );
+                });
+            }
+          }
+        }
+
         record.event = "legacy-event";
         record.origin = "onemac";
       }
