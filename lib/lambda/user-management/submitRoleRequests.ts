@@ -45,9 +45,8 @@ export const submitRoleRequests = async (event: APIGatewayEvent) => {
     const { userId, poolId } = authDetails;
     const userAttributes = await lookupUserAttributes(userId, poolId);
     const userInfo = await getUserByEmail(userAttributes?.email);
-    const latestActiveRoleObj =
+    const latestActiveRole =
       (await getLatestActiveRoleByEmail(userAttributes.email))?.role ?? "norole";
-    console.log(latestActiveRoleObj, "LATEST ACTIVE ROLE");
 
     // if (!latestActiveRoleObj) {
     //   return response({
@@ -68,21 +67,19 @@ export const submitRoleRequests = async (event: APIGatewayEvent) => {
     } = JSON.parse(event.body) as RoleRequest;
 
     let status: RoleStatus;
-    console.log(roleToUpdate, "ROLE TO UPDATE");
-    console.log(canUpdateAccess(latestActiveRoleObj.role, roleToUpdate), "CAN UPDATE THIS");
-    console.log(requestRoleChange, "REQUEST???");
+
     // Determine the status based on the user's role and action
     // Not a role request change; user is updating another role access request
-    if (!requestRoleChange && canUpdateAccess(latestActiveRoleObj.role, roleToUpdate)) {
+    if (!requestRoleChange && canUpdateAccess(latestActiveRole, roleToUpdate)) {
       status = grantAccess;
     } else if (
       !requestRoleChange &&
       grantAccess === "revoked" &&
-      canSelfRevokeAccess(latestActiveRoleObj.role, userInfo.email, email)
+      canSelfRevokeAccess(latestActiveRole, userInfo.email, email)
     ) {
       // Not a role request change; user is revoking their own access
       status = "revoked";
-    } else if (requestRoleChange && canRequestAccess(latestActiveRoleObj.role ?? "norole")) {
+    } else if (requestRoleChange && canRequestAccess(latestActiveRole)) {
       // User is permitted to request a role change
       status = "pending";
     } else {
@@ -116,7 +113,7 @@ export const submitRoleRequests = async (event: APIGatewayEvent) => {
 
     // Update group and division info for new cmsroleapprovers
     if (
-      canUpdateAccess(latestActiveRoleObj.role, roleToUpdate) &&
+      canUpdateAccess(latestActiveRole, roleToUpdate) &&
       grantAccess === "active" &&
       group &&
       division

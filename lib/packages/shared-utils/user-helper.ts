@@ -39,8 +39,6 @@ export const isIDM = (user: FullUser | null) => user?.username.startsWith("IDM_"
 
 // Check if current user can update access for a certain role
 export const canUpdateAccess = (currentUserRole: UserRole, roleToUpdate: UserRole): boolean => {
-  console.log(currentUserRole, "CURRENT USER ROLE");
-  console.log(roleToUpdate, "ROLE TO UPDATE");
   if (ROLES_ALLOWED_TO_UPDATE.includes(currentUserRole)) {
     if (roleUpdatePermissionsMap[currentUserRole]?.includes(roleToUpdate)) {
       return true;
