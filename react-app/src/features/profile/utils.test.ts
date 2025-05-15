@@ -163,33 +163,33 @@ describe("Profile utils", () => {
       expect(filterStateAccess({ role: "statesubmitter" }, { stateAccess: [] })).toEqual([]);
     });
 
-    it("should filter out the ZZ states", () => {
-      expect(
-        filterStateAccess(undefined, {
-          stateAccess: [
-            {
-              ...baseRole,
-              id: `${baseRole.email}_ZZ_${baseRole.role}`,
-              status: "active",
-              territory: "ZZ",
-            },
-            {
-              ...baseRole,
-              id: `${baseRole.email}_MD_${baseRole.role}`,
-              status: "active",
-              territory: "MD",
-            },
-          ],
-        }),
-      ).toEqual([
-        {
-          ...baseRole,
-          id: `${baseRole.email}_MD_${baseRole.role}`,
-          status: "active",
-          territory: "MD",
-        },
-      ]);
-    });
+    // it("should filter out the ZZ states", () => {
+    //   expect(
+    //     filterStateAccess(undefined, {
+    //       stateAccess: [
+    //         {
+    //           ...baseRole,
+    //           id: `${baseRole.email}_ZZ_${baseRole.role}`,
+    //           status: "active",
+    //           territory: "ZZ",
+    //         },
+    //         {
+    //           ...baseRole,
+    //           id: `${baseRole.email}_MD_${baseRole.role}`,
+    //           status: "active",
+    //           territory: "MD",
+    //         },
+    //       ],
+    //     }),
+    //   ).toEqual([
+    //     {
+    //       ...baseRole,
+    //       id: `${baseRole.email}_MD_${baseRole.role}`,
+    //       status: "active",
+    //       territory: "MD",
+    //     },
+    //   ]);
+    // });
 
     it("should filter all roles except the user's role if it has one", () => {
       expect(

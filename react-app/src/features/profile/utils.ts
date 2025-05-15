@@ -48,10 +48,8 @@ export const orderStateAccess = (accesses: StateAccess[]) => {
 export const filterStateAccess = (userDetails, userProfile) => {
   if (!userProfile?.stateAccess || userProfile.stateAccess.length < 1) return [];
   return userDetails?.role && userDetails?.role !== "norole"
-    ? userProfile.stateAccess.filter(
-        (access: StateAccess) => access.role === userDetails.role && access.territory !== "ZZ",
-      )
-    : userProfile.stateAccess.filter((access: StateAccess) => access.territory !== "ZZ");
+    ? userProfile.stateAccess.filter((access: StateAccess) => access.role === userDetails.role)
+    : userProfile.stateAccess;
 };
 
 export const hasPendingRequests = (stateAccess) => {
