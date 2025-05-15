@@ -47,12 +47,12 @@ export const submitRoleRequests = async (event: APIGatewayEvent) => {
     const userInfo = await getUserByEmail(userAttributes?.email);
     const latestActiveRoleObj = await getLatestActiveRoleByEmail(userAttributes.email);
 
-    if (!latestActiveRoleObj) {
-      return response({
-        statusCode: 403,
-        body: { message: "No active role found for user" },
-      });
-    }
+    // if (!latestActiveRoleObj) {
+    //   return response({
+    //     statusCode: 403,
+    //     body: { message: "No active role found for user" },
+    //   });
+    // }
 
     const {
       email,
@@ -70,16 +70,7 @@ export const submitRoleRequests = async (event: APIGatewayEvent) => {
     // Determine the status based on the user's role and action
     // Not a role request change; user is updating another role access request
     if (!requestRoleChange && canUpdateAccess(latestActiveRoleObj.role, roleToUpdate)) {
-      // if (grantAccess === true || grantAccess === false) {
-      // Grant access or deny access based on the `grantAccess` value
-      // status = grantAccess ? "active" : "denied";
       status = grantAccess;
-      // } else {
-      //   return response({
-      //     statusCode: 400,
-      //     body: { message: "Invalid or missing grantAccess value." },
-      //   });
-      // }
     } else if (
       !requestRoleChange &&
       grantAccess === "revoked" &&
