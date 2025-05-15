@@ -68,7 +68,9 @@ export const submitRoleRequests = async (event: APIGatewayEvent) => {
     } = JSON.parse(event.body) as RoleRequest;
 
     let status: RoleStatus;
-
+    console.log(roleToUpdate, "ROLE TO UPDATE");
+    console.log(canUpdateAccess(latestActiveRoleObj.role, roleToUpdate), "CAN UPDATE THIS");
+    console.log(requestRoleChange, "REQUEST???");
     // Determine the status based on the user's role and action
     // Not a role request change; user is updating another role access request
     if (!requestRoleChange && canUpdateAccess(latestActiveRoleObj.role, roleToUpdate)) {
