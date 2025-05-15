@@ -17,7 +17,6 @@ export const stateAccessRoles: UserRole[] = [
   "statesubmitter",
   "statesystemadmin",
   "cmsroleapprover",
-  "systemadmin",
   "helpdesk",
   "defaultcmsuser",
   "cmsreviewer",
