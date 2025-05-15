@@ -78,7 +78,7 @@ export const submitRoleRequests = async (event: APIGatewayEvent) => {
     ) {
       // Not a role request change; user is revoking their own access
       status = "revoked";
-    } else if (requestRoleChange && canRequestAccess(latestActiveRoleObj.role)) {
+    } else if (requestRoleChange && canRequestAccess(latestActiveRoleObj.role ?? "norole")) {
       // User is permitted to request a role change
       status = "pending";
     } else {
