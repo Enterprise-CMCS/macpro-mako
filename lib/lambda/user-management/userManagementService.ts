@@ -177,7 +177,7 @@ export const getApproversByRoleState = async (
     approvingUserRole[role as keyof typeof approvingUserRole] ?? "statesystemadmin";
 
   const queryRequirements =
-    approverRole !== "cmsroleapprover"
+    role === "statesubmitter"
       ? [
           { term: { status: "active" } },
           { term: { role: approverRole } },
