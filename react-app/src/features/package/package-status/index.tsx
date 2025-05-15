@@ -24,7 +24,12 @@ export const PackageStatusCard = ({ submission }: PackageStatusCardProps) => {
 
   // Similar to the above check their are certain things that occur in seatool that invalidate the secondClock
   // flag. Additionally second clock sub status only displays for CMS users
-  const isInActiveSecondClockStatus = isCmsUser(user.user) && submission.secondClock;
+  const isInActiveSecondClockStatus =
+    isCmsUser(user.user) &&
+    submission.secondClock &&
+    [SEATOOL_STATUS.PENDING_APPROVAL, SEATOOL_STATUS.PENDING_CONCURRENCE].includes(
+      submission.seatoolStatus,
+    );
 
   return (
     <DetailCardWrapper title="Status">
