@@ -1,5 +1,6 @@
 import { search } from "libs";
 import { getDomainAndNamespace } from "libs/utils";
+<<<<<<< HEAD
 import { Index } from "shared-types/opensearch";
 
 export const getUserByEmail = async (
@@ -8,6 +9,11 @@ export const getUserByEmail = async (
 ) => {
   if (!domainNamespace) domainNamespace = getDomainAndNamespace("users");
   const { domain, index } = domainNamespace;
+=======
+
+export const getUserByEmail = async (email: string) => {
+  const { domain, index } = getDomainAndNamespace("users");
+>>>>>>> main
 
   const result = await search(domain, index, {
     size: 1,
@@ -23,6 +29,10 @@ export const getUserByEmail = async (
 
 export const getUsersByEmails = async (emails: string[]) => {
   const { domain, index } = getDomainAndNamespace("users");
+<<<<<<< HEAD
+=======
+
+>>>>>>> main
   const results = await search(domain, index, {
     size: 100,
     query: {
