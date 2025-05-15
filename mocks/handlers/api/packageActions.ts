@@ -1,12 +1,13 @@
-import { mockUseGetUser, PackageActionsRequestBody } from "mocks";
-import items from "mocks/data/items";
 import { http, HttpResponse, PathParams } from "msw";
-import { opensearch, UserRoles } from "shared-types";
-import { getAvailableActions } from "shared-utils";
+import { opensearch } from "shared-types";
+import { getAvailableActions, isCmsWriteUser } from "shared-utils";
+
+import items from "../../data/items";
+import { mockUseGetUser } from "../../index";
+import { PackageActionsRequestBody } from "../../index.d";
 
 const defaultApiPackageActionsHandler = http.post<PathParams, PackageActionsRequestBody>(
   "https://test-domain.execute-api.us-east-1.amazonaws.com/mocked-tests/getPackageActions",
-
   async ({ request }) => {
     const { id } = await request.json();
 
@@ -20,24 +21,56 @@ const defaultApiPackageActionsHandler = http.post<PathParams, PackageActionsRequ
     }
 
     const currUser = mockUseGetUser()?.data?.user;
-    const userRoles = (currUser?.["custom:cms-roles"] as string) || "";
-    const userStates = (currUser?.["custom:state"] as string) || "";
-    if (
-      !currUser ||
-      !userRoles.includes(UserRoles.STATE_SUBMITTER) ||
-      !userStates.includes(item._source.state)
-    ) {
+    if (!currUser) {
+      return HttpResponse.json({ message: "User not authenticated" }, { status: 401 });
+    }
+
+    const passedStateAuth =
+      isCmsWriteUser(currUser) ||
+      (item?._source?.state && currUser["custom:state"]?.includes(item._source.state));
+
+    if (!passedStateAuth) {
       return HttpResponse.json(
         { message: "Not authorized to view resources from this state" },
         { status: 401 },
       );
     }
 
-    return HttpResponse.json(
-      getAvailableActions(currUser, item._source as opensearch.main.Document) || [],
-    );
+    return HttpResponse.json({
+      actions: getAvailableActions(currUser, item._source as opensearch.main.Document) || [],
+    });
   },
 );
+
+export const onceApiPackageActionsHandler = (doc: opensearch.main.Document) =>
+  http.post<PathParams, PackageActionsRequestBody>(
+    "https://test-domain.execute-api.us-east-1.amazonaws.com/mocked-tests/getPackageActions",
+    async () => {
+      if (!doc) {
+        return HttpResponse.json([]);
+      }
+
+      const currUser = mockUseGetUser()?.data?.user;
+      if (!currUser) {
+        return HttpResponse.json({ message: "User not authenticated" }, { status: 401 });
+      }
+
+      const passedStateAuth =
+        isCmsWriteUser(currUser) || (doc?.state && currUser["custom:state"]?.includes(doc.state));
+
+      if (!passedStateAuth) {
+        return HttpResponse.json(
+          { message: "Not authorized to view resources from this state" },
+          { status: 401 },
+        );
+      }
+
+      return HttpResponse.json({
+        actions: getAvailableActions(currUser, doc) || [],
+      });
+    },
+    { once: true },
+  );
 
 export const errorApiPackageActionsHandler = http.post<PathParams, PackageActionsRequestBody>(
   "https://test-domain.execute-api.us-east-1.amazonaws.com/mocked-tests/getPackageActions",

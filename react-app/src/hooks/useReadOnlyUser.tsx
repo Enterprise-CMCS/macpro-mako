@@ -10,7 +10,7 @@ export const useReadOnlyUser = () => {
 
   useEffect(() => {
     if (isUserFetched) {
-      const role = user?.user?.["custom:cms-roles"];
+      const role = user?.user?.role;
       setReadOnly(role !== UserRoles.STATE_SUBMITTER);
       setIsLoading(false);
     }
