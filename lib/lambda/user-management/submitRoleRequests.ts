@@ -69,9 +69,14 @@ export const submitRoleRequests = async (event: APIGatewayEvent) => {
 
     // Determine the status based on the user's role and action
     // Not a role request change; user is updating another role access request
-    if (!requestRoleChange && canUpdateAccess(latestActiveRoleObj.role, roleToUpdate)) {
+    if (
+      latestActiveRoleObj.role &&
+      !requestRoleChange &&
+      canUpdateAccess(latestActiveRoleObj.role, roleToUpdate)
+    ) {
       status = grantAccess;
     } else if (
+      latestActiveRoleObj.role &&
       !requestRoleChange &&
       grantAccess === "revoked" &&
       canSelfRevokeAccess(latestActiveRoleObj.role, userInfo.email, email)

@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { Navigate, useNavigate } from "react-router";
 import { StateCode } from "shared-types";
+import { UserRole } from "shared-types/events/legacy-user";
 
 import { useGetUserDetails, useGetUserProfile, useSubmitRoleRequests } from "@/api";
 import {
@@ -36,7 +37,8 @@ export const StateSignup = () => {
   if (!userDetails?.role) return <Navigate to="/" />;
 
   const currentRole = userDetails.role;
-  // Only statesubmitters and statesystemadmins can access this page
+
+  // Only state users can access this page
   if (
     currentRole !== "statesubmitter" &&
     currentRole !== "statesystemadmin" &&
@@ -45,7 +47,12 @@ export const StateSignup = () => {
     return <Navigate to="/profile" />;
 
   // Determine which role the user is allowed to request based on their current role
-  const requestRole = currentRole === "statesubmitter" ? "statesystemadmin" : "statesubmitter";
+  const roleToRequestMap: Partial<Record<UserRole, UserRole>> = {
+    norole: "statesubmitter",
+    statesubmitter: "statesystemadmin",
+    statesystemadmin: "statesubmitter",
+  };
+  const roleToRequest = roleToRequestMap[currentRole];
 
   // Statesubmitters can request to be a statesystemadmin for 1 state
   const isRequestRoleAdmin = currentRole === "statesubmitter";
@@ -60,7 +67,7 @@ export const StateSignup = () => {
         await submitRequest({
           email: userDetails.email,
           state,
-          role: requestRole,
+          role: roleToRequest,
           eventType: "user-role",
           requestRoleChange: true,
         });
@@ -102,7 +109,7 @@ export const StateSignup = () => {
           <div className="w-1/3">
             <div className="py-2">
               <h2 className="text-xl font-bold mb-2">User Role:</h2>
-              <p className="text-xl italic">{userRoleMap[requestRole] ?? "Not Found"}</p>
+              <p className="text-xl italic">{userRoleMap[roleToRequest] ?? "Not Found"}</p>
             </div>
             <div className="py-2">
               <h2 className="text-xl font-bold mb-2">Select your State Access</h2>
