@@ -52,9 +52,9 @@ export const MEDICAID_SPA_OPTIONS: OptionData[] = [
 ];
 
 export const useChipSpaOptions = (): OptionData[] => {
-  const isEligibilityFormActive = useFeatureFlag("CHIP_SPA_SUBMISSION");
+  const useChipForm = useFeatureFlag("CHIP_SPA_SUBMISSION");
 
-  if (isEligibilityFormActive) {
+  if (useChipForm) {
     return [
       {
         title: "CHIP eligibility SPA submissions",
@@ -78,6 +78,7 @@ export const useChipSpaOptions = (): OptionData[] => {
       },
     ];
   }
+
   return [
     {
       title: "CHIP Eligibility",

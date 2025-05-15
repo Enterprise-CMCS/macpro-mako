@@ -101,8 +101,8 @@ export const Footer = ({ email, address, showNavLinks }: Props) => {
 };
 
 export const FAQFooter = () => {
-  const showEligibilityFields = useFeatureFlag("CHIP_SPA_SUBMISSION");
-  if (showEligibilityFields) return null;
+  const useChipForm = useFeatureFlag("CHIP_SPA_SUBMISSION");
+  if (useChipForm) return null;
 
   return (
     <Alert

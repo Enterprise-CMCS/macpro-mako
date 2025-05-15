@@ -1,6 +1,4 @@
-import { useState } from "react";
 import { Link } from "react-router";
-import { buildChipSchema } from "shared-types/events/new-chip-details-submission";
 
 import {
   ActionForm,
@@ -19,26 +17,22 @@ import {
   SelectValue,
   SpaIdFormattingDesc,
 } from "@/components";
+import { AttachmentFileFormatInstructions } from "@/components/ActionForm/actionForm.components";
 import { FAQ_TAB } from "@/consts";
-import { useFeatureFlag } from "@/hooks/useFeatureFlag";
-
-import { getFAQLinkForAttachments } from "../faqLinks";
+import { formSchemas } from "@/formSchemas";
 
 export const ChipDetailsForm = () => {
-  const [open, setOpen] = useState(false);
-  const useDetailsForm = useFeatureFlag("CHIP_SPA_SUBMISSION");
   const chipOptions = [
     "MAGI Eligibility and Methods",
     "Non-Financial Eligibility",
     "XXI Medicaid Expansion",
     "Eligibility Process",
   ];
-  const schema = buildChipSchema(useDetailsForm);
 
   return (
     <ActionForm
       title="CHIP Eligibility SPA Details"
-      schema={schema}
+      schema={formSchemas["new-chip-details-submission"]}
       breadcrumbText="Submit new CHIP eligibility SPA"
       fields={({ control }) => (
         <>
@@ -81,7 +75,7 @@ export const ChipDetailsForm = () => {
               return (
                 <FormItem className="w-full sm:max-w-[460px]">
                   <FormLabel className="font-bold">CHIP Submission Type</FormLabel>
-                  <Select open={open} onOpenChange={setOpen}>
+                  <Select>
                     <FormControl>
                       <SelectTrigger
                         showIcon={false}
@@ -152,7 +146,34 @@ export const ChipDetailsForm = () => {
       )}
       defaultValues={{ id: "" }}
       attachments={{
-        faqLink: getFAQLinkForAttachments("new-chip-details-submission"),
+        instructions: [
+          <p data-testid="chip-attachments-instructions">
+            Maximum file size of 80 MB per attachment. You can add multiple files per attachment
+            type. <br /> Read the description for each of the attachment types on the{" "}
+            <Link
+              to="/faq/medicaid-spa-attachments"
+              target={FAQ_TAB}
+              rel="noopener noreferrer"
+              className="text-blue-900 underline"
+            >
+              FAQ Page
+            </Link>
+            .
+          </p>,
+          <AttachmentFileFormatInstructions />,
+          <p data-testid="chip-attachments-instructions">
+            View all{" "}
+            <Link
+              to="/faq/medicaid-spa-attachments"
+              target={FAQ_TAB}
+              rel="noopener noreferrer"
+              className="text-blue-900 underline"
+            >
+              CHIP eligibility SPA templates and implementation guides
+            </Link>
+            .
+          </p>,
+        ],
       }}
       documentPollerArgs={{
         property: "id",

@@ -87,13 +87,17 @@ export const MedicaidSPASubmissionOptions = () => (
   />
 );
 /** Sub-choices for CHIP SPAs */
-export const ChipSPASubmissionOptions = () => (
-  <OptionsPage
-    title="CHIP SPA Type"
-    fieldsetLegend="Select a CHIP SPA type to create your submission"
-    options={useChipSpaOptions()}
-  />
-);
+export const ChipSPASubmissionOptions = () => {
+  const CHIP_SPA_OPTIONS = useChipSpaOptions();
+
+  return (
+    <OptionsPage
+      title="CHIP SPA Type"
+      fieldsetLegend="Select a CHIP SPA type to create your submission"
+      options={CHIP_SPA_OPTIONS}
+    />
+  );
+};
 export const WaiverSubmissionOptions = () => (
   <OptionsPage
     title="Waiver Action Type"

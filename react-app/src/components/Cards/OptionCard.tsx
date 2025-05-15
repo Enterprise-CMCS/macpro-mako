@@ -3,6 +3,7 @@ import { PropsWithChildren, ReactNode } from "react";
 import { Link, LinkProps } from "react-router";
 
 import { CardWithTopBorder } from "@/components";
+import { cn } from "@/utils";
 
 export type OptionCardFieldsetProps = PropsWithChildren<{
   legend: string;
@@ -39,9 +40,9 @@ export const OptionCard = ({ title, description, to, altBg = false }: MACFieldse
           <div>
             <h2 className="text-lg text-sky-700 font-bold my-2">{title}</h2>
             <p
-              className={`my-2 text-slate-600 ${
-                title === "CHIP eligibility SPA submissions" ? "font-bold" : ""
-              }`}
+              className={cn("my-2 text-slate-600", {
+                "font-bold": title === "CHIP eligibility SPA submissions",
+              })}
             >
               {description}
             </p>
