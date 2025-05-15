@@ -45,7 +45,8 @@ export const submitRoleRequests = async (event: APIGatewayEvent) => {
     const { userId, poolId } = authDetails;
     const userAttributes = await lookupUserAttributes(userId, poolId);
     const userInfo = await getUserByEmail(userAttributes?.email);
-    const latestActiveRoleObj = await getLatestActiveRoleByEmail(userAttributes.email);
+    const latestActiveRoleObj =
+      (await getLatestActiveRoleByEmail(userAttributes.email))?.role ?? "norole";
 
     // if (!latestActiveRoleObj) {
     //   return response({
@@ -69,14 +70,9 @@ export const submitRoleRequests = async (event: APIGatewayEvent) => {
 
     // Determine the status based on the user's role and action
     // Not a role request change; user is updating another role access request
-    if (
-      latestActiveRoleObj.role &&
-      !requestRoleChange &&
-      canUpdateAccess(latestActiveRoleObj.role, roleToUpdate)
-    ) {
+    if (!requestRoleChange && canUpdateAccess(latestActiveRoleObj.role, roleToUpdate)) {
       status = grantAccess;
     } else if (
-      latestActiveRoleObj.role &&
       !requestRoleChange &&
       grantAccess === "revoked" &&
       canSelfRevokeAccess(latestActiveRoleObj.role, userInfo.email, email)
@@ -117,7 +113,6 @@ export const submitRoleRequests = async (event: APIGatewayEvent) => {
 
     // Update group and division info for new cmsroleapprovers
     if (
-      latestActiveRoleObj.role &&
       canUpdateAccess(latestActiveRoleObj.role, roleToUpdate) &&
       grantAccess === "active" &&
       group &&
