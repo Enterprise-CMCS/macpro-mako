@@ -13,7 +13,9 @@ const defaultOSChangelogSearchHandler = http.post<PathParams, SearchQueryBody>(
     const mustTerms = must ? getTermKeys(must) : [];
 
     const packageIdValue =
-      getTermValues(must, "packageId.keyword") || getTermValues(must, "packageId");
+      getTermValues(must, "packageId.keyword") ||
+      getTermValues(must, "packageId") ||
+      getTermValues(must, "timestamp");
 
     if (!packageIdValue) {
       return new HttpResponse("No packageId provided", { status: 400 });

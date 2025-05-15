@@ -47,7 +47,8 @@ export const WITHDRAW_RAI_ITEM_B = "VA-2234.R11.02";
 export const WITHDRAW_RAI_ITEM_C = "VA-2234.R11.03";
 export const WITHDRAW_RAI_ITEM_D = "VA-12-2020";
 export const WITHDRAW_RAI_ITEM_E = "MD-13-2020";
-
+export const LEGACY_TIMESTAMP_ID = "1666885236740";
+export const LEGACY_PREVIOUS_ENTRY = "MD-22-0029";
 const items: Record<string, TestItemResult> = {
   [EXISTING_ITEM_ID]: {
     _id: EXISTING_ITEM_ID,
@@ -254,6 +255,94 @@ const items: Record<string, TestItemResult> = {
         },
         {
           _id: `${CAPITATED_AMEND_ITEM_ID}-004`,
+        },
+      ],
+    },
+  },
+  [LEGACY_TIMESTAMP_ID]: {
+    _id: "MD-22-0030",
+    found: true,
+    _source: {
+      id: "MD-22-0030",
+      seatoolStatus: SEATOOL_STATUS.PENDING,
+      stateStatus: statusToDisplayToStateUser[SEATOOL_STATUS.PENDING],
+      cmsStatus: statusToDisplayToCmsUser[SEATOOL_STATUS.PENDING],
+      actionType: "New",
+      origin: "SEATool",
+      state: "MD",
+      changelog: [
+        {
+          _id: "MD-22-0030-1666885236740",
+
+          _source: {
+            id: "MD-22-0030-1666885236740",
+            packageId: LEGACY_PREVIOUS_ENTRY,
+            timestamp: 1666885236740,
+            event: "new-medicaid-submission",
+            attachments: [
+              {
+                title: "CMS Form 179",
+                filename: "15MB.pdf",
+                uploadDate: 1666885211577,
+                bucket: "uploads-develop-attachments-116229642442",
+                key: "protected/us-east-1:86a190fe-b195-42bf-9685-9761bf0ff14b/1666885211577/15MB.pdf",
+              },
+              {
+                title: "SPA Pages",
+                filename: "adobe.pdf",
+                uploadDate: 1666885211579,
+                bucket: "uploads-develop-attachments-116229642442",
+                key: "protected/us-east-1:86a190fe-b195-42bf-9685-9761bf0ff14b/1666885211579/adobe.pdf",
+              },
+            ],
+            additionalInformation: "This is just a test",
+            submitterEmail: "statesubmitter@nightwatch.test",
+            submitterName: "Statesubmitter Nightwatch",
+          },
+        },
+      ],
+    },
+  },
+  [LEGACY_PREVIOUS_ENTRY]: {
+    _id: LEGACY_PREVIOUS_ENTRY,
+    found: true,
+    _source: {
+      id: LEGACY_PREVIOUS_ENTRY,
+      seatoolStatus: SEATOOL_STATUS.PENDING,
+      stateStatus: statusToDisplayToStateUser[SEATOOL_STATUS.PENDING],
+      cmsStatus: statusToDisplayToCmsUser[SEATOOL_STATUS.PENDING],
+      actionType: "New",
+      origin: "SEATool",
+      state: "MD",
+      changelog: [
+        {
+          _id: "MD-22-0030-1666885236740",
+
+          _source: {
+            id: "MD-22-0030-1666885236740",
+            packageId: LEGACY_PREVIOUS_ENTRY,
+            timestamp: 1666885236740,
+            event: "new-medicaid-submission",
+            attachments: [
+              {
+                title: "CMS Form 179",
+                filename: "15MB.pdf",
+                uploadDate: 1666885211577,
+                bucket: "uploads-develop-attachments-116229642442",
+                key: "protected/us-east-1:86a190fe-b195-42bf-9685-9761bf0ff14b/1666885211577/15MB.pdf",
+              },
+              {
+                title: "SPA Pages",
+                filename: "adobe.pdf",
+                uploadDate: 1666885211579,
+                bucket: "uploads-develop-attachments-116229642442",
+                key: "protected/us-east-1:86a190fe-b195-42bf-9685-9761bf0ff14b/1666885211579/adobe.pdf",
+              },
+            ],
+            additionalInformation: "This is just a test",
+            submitterEmail: "statesubmitter@nightwatch.test",
+            submitterName: "Statesubmitter Nightwatch",
+          },
         },
       ],
     },

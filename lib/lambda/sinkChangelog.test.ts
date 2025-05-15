@@ -31,6 +31,8 @@ import { afterEach, describe, expect, it, vi } from "vitest";
 
 import { handler } from "./sinkChangelog";
 
+// Onemac charcode used for header
+const oneMacCode = [111, 110, 101, 109, 97, 99];
 const OPENSEARCH_INDEX = `${OPENSEARCH_INDEX_NAMESPACE}changelog`;
 const TOPIC = "--mako--branch-name--aws.onemac.migration.cdc";
 const TEST_ITEM = items[TEST_ITEM_ID];
@@ -158,7 +160,117 @@ describe("syncing Changelog events", () => {
       },
     ]);
   });
+  it("should handle a valid admin id update", async () => {
+    const event = createKafkaEvent({
+      [`${TOPIC}-03`]: [
+        createKafkaRecord({
+          topic: `${TOPIC}-03`,
+          key: TEST_ITEM_UPDATE_KEY,
+          headers: [{ source: oneMacCode }],
+          value: convertObjToBase64({
+            additionalInformation: "This is just a test",
+            componentType: "medicaidspa",
+            attachments: [
+              {
+                s3Key: "1666885211577/15MB.pdf",
+                filename: "15MB.pdf",
+                title: "CMS Form 179",
+                contentType: "application/pdf",
+                url: "https://fake.pdf",
+              },
+              {
+                s3Key: "1666885211579/adobe.pdf",
+                filename: "adobe.pdf",
+                title: "SPA Pages",
+                contentType: "application/pdf",
+                url: "https://fake.pdf",
+              },
+            ],
+            componentId: "MD-22-0030",
+            currentStatus: "Submitted",
+            convertTimestamp: 1673973227043,
+            submissionTimestamp: 1666885236740,
+            clockEndTimestamp: 1674664836740,
+            proposedEffectiveDate: "none",
+            GSI1pk: "OneMAC#submitmedicaidspa",
+            adminChanges: [
+              {
+                changeTimestamp: 1746798111690,
+                changeReason: "test update from 29 to 30",
+                changeMade: "ID changed from MD-22-0029 to MD-22-0030",
+              },
+            ],
+            GSI1sk: "MD-22-0030",
+            sk: "OneMAC#1666885236740",
+            pk: "MD-22-0030",
+            submitterName: "Statesubmitter Nightwatch",
+            originallyFrom: "cms-spa-form-develop-change-requests",
+            eventTimestamp: 1666885236740,
+            submitterEmail: "statesubmitter@nightwatch.test",
+          }),
+          offset: 3,
+        }),
+      ],
+    });
+    const attachments = [
+      {
+        bucket: "uploads-develop-attachments-116229642442",
+        filename: "15MB.pdf",
+        key: "protected/us-east-1:86a190fe-b195-42bf-9685-9761bf0ff14b/1666885211577/15MB.pdf",
+        title: "CMS Form 179",
+        uploadDate: 1666885211577,
+      },
+      {
+        bucket: "uploads-develop-attachments-116229642442",
+        filename: "adobe.pdf",
+        key: "protected/us-east-1:86a190fe-b195-42bf-9685-9761bf0ff14b/1666885211579/adobe.pdf",
+        title: "SPA Pages",
+        uploadDate: 1666885211579,
+      },
+    ];
+    const expectedChangelogs = [
+      {
+        id: "MD-22-0030-undefined",
+        packageId: "MD-22-0030",
+        timestamp: 1666885236740,
+        event: "new-medicaid-submission",
+        attachments: attachments,
+        additionalInformation: "This is just a test",
+        submitterEmail: "statesubmitter@nightwatch.test",
+        submitterName: "Statesubmitter Nightwatch",
+      },
+      {
+        id: "MD-22-0030-1666885236740",
+        packageId: "MD-22-0029-del",
+        timestamp: 1666885236740,
+        event: "new-medicaid-submission",
+        attachments: attachments,
+        additionalInformation: "This is just a test",
+        submitterEmail: "statesubmitter@nightwatch.test",
+        submitterName: "Statesubmitter Nightwatch",
+      },
+      {
+        id: "MD-22-0030-legacy-admin-change-1746798111690",
+        packageId: "MD-22-0030",
+        timestamp: 1746798111690,
+        actionType: "legacy-admin-change",
+        changeType: undefined,
+        changeMade: "ID changed from MD-22-0029 to MD-22-0030",
+        changeReason: "test update from 29 to 30",
+        isAdminChange: true,
+        event: "legacy-admin-change",
+      },
+    ];
 
+    await handler(event, {} as Context, vi.fn());
+
+    expect(bulkUpdateDataSpy).toBeCalledTimes(1);
+    expect(bulkUpdateDataSpy).toHaveBeenCalledWith(
+      OPENSEARCH_DOMAIN,
+      OPENSEARCH_INDEX,
+      expectedChangelogs,
+    );
+  });
   it("should handle a valid admin id update", async () => {
     const event = createKafkaEvent({
       [`${TOPIC}-03`]: [
@@ -522,7 +634,7 @@ describe("syncing Changelog events", () => {
           value: undefined,
         },
       ],
-    });
+    } as any);
     await handler(event, {} as Context, vi.fn());
     expect(bulkUpdateDataSpy).toHaveBeenCalledWith(OPENSEARCH_DOMAIN, OPENSEARCH_INDEX, []);
   });
