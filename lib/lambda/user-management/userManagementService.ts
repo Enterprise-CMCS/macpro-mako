@@ -176,14 +176,18 @@ export const getApproversByRoleState = async (
   const approverRole =
     approvingUserRole[role as keyof typeof approvingUserRole] ?? "statesystemadmin";
 
-  const results = await search(domain, index, {
-    query: {
-      bool: {
-        must: [
+  const queryRequirements =
+    approverRole !== "cmsroleapprover"
+      ? [
           { term: { status: "active" } },
           { term: { role: approverRole } },
           { term: { "territory.keyword": state } },
-        ],
+        ]
+      : [{ term: { status: "active" } }, { term: { role: approverRole } }];
+  const results = await search(domain, index, {
+    query: {
+      bool: {
+        must: queryRequirements,
       },
     },
     size: 100,
