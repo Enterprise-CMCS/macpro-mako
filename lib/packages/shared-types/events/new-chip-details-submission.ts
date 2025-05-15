@@ -8,16 +8,20 @@ export const baseSchema = z.object({
   chipSubmissionType: z.array(z.string()).optional(),
   additionalInformation: z.string().max(4000).nullable().default(null).optional(),
   attachments: z.object({
+    chipEligibility: z.object({
+      files: attachmentArraySchema(),
+      label: z.string().default("CHIP eligibility template"),
+    }),
     coverLetter: z.object({
       files: attachmentArraySchema(),
       label: z.string().default("Cover Letter"),
     }),
     currentStatePlan: z.object({
-      files: attachmentArraySchema(),
+      files: attachmentArraySchemaOptional(),
       label: z.string().default("Current State Plan"),
     }),
     amendedLanguage: z.object({
-      files: attachmentArraySchema(),
+      files: attachmentArraySchemaOptional(),
       label: z.string().default("Amended State Plan Language"),
     }),
     budgetDocuments: z.object({
