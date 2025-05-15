@@ -117,6 +117,7 @@ export const submitRoleRequests = async (event: APIGatewayEvent) => {
 
     // Update group and division info for new cmsroleapprovers
     if (
+      latestActiveRoleObj.role &&
       canUpdateAccess(latestActiveRoleObj.role, roleToUpdate) &&
       grantAccess === "active" &&
       group &&
