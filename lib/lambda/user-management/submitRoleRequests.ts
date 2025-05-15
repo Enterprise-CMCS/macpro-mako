@@ -47,6 +47,7 @@ export const submitRoleRequests = async (event: APIGatewayEvent) => {
     const userInfo = await getUserByEmail(userAttributes?.email);
     const latestActiveRoleObj =
       (await getLatestActiveRoleByEmail(userAttributes.email))?.role ?? "norole";
+    console.log(latestActiveRoleObj, "LATEST ACTIVE ROLE");
 
     // if (!latestActiveRoleObj) {
     //   return response({
