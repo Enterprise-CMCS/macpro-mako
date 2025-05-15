@@ -86,7 +86,7 @@ export const submitRoleRequests = async (event: APIGatewayEvent) => {
       // User is permitted to request a role change
       status = "pending";
     } else {
-      console.warn(`Unauthorized action attempt by ${email}`);
+      console.warn(`Unauthorized action attempt by ${userInfo.email}`);
 
       return response({
         statusCode: 403,

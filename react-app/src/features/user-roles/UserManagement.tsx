@@ -265,7 +265,7 @@ export const UserManagement = () => {
 
   const onAcceptRoleChange = async () => {
     try {
-      submitRequest(selectedUserRole);
+      await submitRequest(selectedUserRole);
       setModalText(null);
       setSelectedUserRole(null);
 
