@@ -17,15 +17,14 @@ export const PackageStatusCard = ({ submission }: PackageStatusCardProps) => {
   // specifically in seatool that will invalidate the raiWithdrawEnabled flag such as the two statuses
   // below (Pending Approval, and Pending Concurrence). In the future we should build logic into the
   // seatool sink that allows us to simply clear these flags
-  const isInRAIWithdrawEnabledSubStatus = submission.raiWithdrawEnabled;
+  const isInRAIWithdrawEnabledSubStatus =
+    submission.raiWithdrawEnabled &&
+    submission.seatoolStatus !== SEATOOL_STATUS.PENDING_APPROVAL &&
+    submission.seatoolStatus !== SEATOOL_STATUS.PENDING_CONCURRENCE;
 
   // Similar to the above check their are certain things that occur in seatool that invalidate the secondClock
   // flag. Additionally second clock sub status only displays for CMS users
-  const isInActiveSecondClockStatus =
-    isCmsUser(user.user) &&
-    submission.secondClock &&
-    submission.seatoolStatus !== SEATOOL_STATUS.PENDING_APPROVAL &&
-    submission.seatoolStatus !== SEATOOL_STATUS.PENDING_CONCURRENCE;
+  const isInActiveSecondClockStatus = isCmsUser(user.user) && submission.secondClock;
 
   return (
     <DetailCardWrapper title="Status">
