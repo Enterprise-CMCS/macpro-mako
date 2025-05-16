@@ -49,7 +49,21 @@ const AC_LegacyAdminChange = ({ adminActivity }: AdminChangeProps) => (
     )}
   </div>
 );
+function checkRegexPatterns(input: string): string {
+  // Check which pattern matches
+  const enabledPattern = /enabled.*withdraw Formal RAI Response/;
+  const disabledPattern = /disabled.*withdraw Formal RAI Response/;
+  switch (true) {
+    case enabledPattern.test(input):
+      return "Enable Formal RAI Response Withdraw";
 
+    case disabledPattern.test(input):
+      return "Disable Formal RAI Response Withdraw";
+
+    default:
+      return "";
+  }
+}
 const AC_Update = () => <p>Coming Soon</p>;
 
 export const AdminChange = ({ adminActivity }: AdminChangeProps) => {
@@ -64,7 +78,10 @@ export const AdminChange = ({ adminActivity }: AdminChangeProps) => {
       case "NOSO":
         return [adminActivity.changeType || "Package Added", AC_LegacyAdminChange];
       case "legacy-admin-change":
-        return [adminActivity.changeType || "Manual Update", AC_LegacyAdminChange];
+        return [
+          checkRegexPatterns(adminActivity.changeMade) || "Manual Update",
+          AC_LegacyAdminChange,
+        ];
       case "split-spa":
         return ["Package Added", AC_LegacyAdminChange];
       case "update-id":

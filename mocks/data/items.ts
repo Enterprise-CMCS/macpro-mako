@@ -7,7 +7,6 @@ import {
 
 import { ATTACHMENT_BUCKET_NAME } from "../consts";
 import type { TestItemResult } from "../index.d";
-
 export const EXISTING_ITEM_PENDING_ID = "MD-0002.R00.00";
 export const EXISTING_ITEM_APPROVED_NEW_ID = "MD-0000.R00.00";
 export const VALID_ITEM_TEMPORARY_EXTENSION_ID = "MD-0000.R00.TE00";
@@ -259,50 +258,6 @@ const items: Record<string, TestItemResult> = {
       ],
     },
   },
-  [LEGACY_TIMESTAMP_ID]: {
-    _id: "MD-22-0030",
-    found: true,
-    _source: {
-      id: "MD-22-0030",
-      seatoolStatus: SEATOOL_STATUS.PENDING,
-      stateStatus: statusToDisplayToStateUser[SEATOOL_STATUS.PENDING],
-      cmsStatus: statusToDisplayToCmsUser[SEATOOL_STATUS.PENDING],
-      actionType: "New",
-      origin: "SEATool",
-      state: "MD",
-      changelog: [
-        {
-          _id: "MD-22-0030-1666885236740",
-
-          _source: {
-            id: "MD-22-0030-1666885236740",
-            packageId: LEGACY_PREVIOUS_ENTRY,
-            timestamp: 1666885236740,
-            event: "new-medicaid-submission",
-            attachments: [
-              {
-                title: "CMS Form 179",
-                filename: "15MB.pdf",
-                uploadDate: 1666885211577,
-                bucket: "uploads-develop-attachments-116229642442",
-                key: "protected/us-east-1:86a190fe-b195-42bf-9685-9761bf0ff14b/1666885211577/15MB.pdf",
-              },
-              {
-                title: "SPA Pages",
-                filename: "adobe.pdf",
-                uploadDate: 1666885211579,
-                bucket: "uploads-develop-attachments-116229642442",
-                key: "protected/us-east-1:86a190fe-b195-42bf-9685-9761bf0ff14b/1666885211579/adobe.pdf",
-              },
-            ],
-            additionalInformation: "This is just a test",
-            submitterEmail: "statesubmitter@nightwatch.test",
-            submitterName: "Statesubmitter Nightwatch",
-          },
-        },
-      ],
-    },
-  },
   [LEGACY_PREVIOUS_ENTRY]: {
     _id: LEGACY_PREVIOUS_ENTRY,
     found: true,
@@ -482,6 +437,56 @@ const items: Record<string, TestItemResult> = {
                 bucket: ATTACHMENT_BUCKET_NAME,
               },
             ],
+            additionalInformation: "Uncategorized file upload.",
+            isAdminChange: true,
+          },
+        },
+        {
+          _id: `${ADMIN_ITEM_ID}-0007`,
+          _source: {
+            timestamp: 1701439200000, // Dec 1, 2023, in milliseconds
+            packageId: ADMIN_ITEM_ID,
+            id: `${ADMIN_ITEM_ID}-0007`,
+            submitterName: "Test person",
+            event: "legacy-admin-change",
+            changeMade:
+              "Systemadmin Nightwatch has disabled State package action to withdraw Formal RAI Response",
+            changeReason: "missing file",
+            raiWithdrawEnabled: false,
+
+            additionalInformation: "Uncategorized file upload.",
+            isAdminChange: true,
+          },
+        },
+        {
+          _id: `${ADMIN_ITEM_ID}-0008`,
+          _source: {
+            timestamp: 1701439200000, // Dec 1, 2023, in milliseconds
+            packageId: ADMIN_ITEM_ID,
+            id: `${ADMIN_ITEM_ID}-0008`,
+            submitterName: "Test person",
+            event: "legacy-admin-change",
+            changeMade:
+              "Systemadmin Nightwatch has enabled State package action to withdraw Formal RAI Response",
+            changeReason: "missing file",
+            raiWithdrawEnabled: false,
+
+            additionalInformation: "Uncategorized file upload.",
+            isAdminChange: true,
+          },
+        },
+        {
+          _id: `${ADMIN_ITEM_ID}-0009`,
+          _source: {
+            timestamp: 1701439200000, // Dec 1, 2023, in milliseconds
+            packageId: ADMIN_ITEM_ID,
+            id: `${ADMIN_ITEM_ID}-0009`,
+            submitterName: "Test person",
+            event: "legacy-admin-change",
+            changeMade: "ID changed from one to another",
+            changeReason: "missing file",
+            raiWithdrawEnabled: false,
+
             additionalInformation: "Uncategorized file upload.",
             isAdminChange: true,
           },
