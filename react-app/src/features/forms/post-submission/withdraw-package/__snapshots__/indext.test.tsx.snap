@@ -218,6 +218,7 @@ exports[`WithdrawPackageAction components > renders WithdrawPackageActionWaiver 
                   >
                     .doc, .docx, .pdf, .jpg, .xlsx, and more. 
                   </span>
+                   
                   <a
                     class="text-blue-900 underline"
                     data-discover="true"
@@ -627,6 +628,7 @@ exports[`WithdrawPackageAction components > renders WithdrawPackageActionWaiver 
                 >
                   .doc, .docx, .pdf, .jpg, .xlsx, and more. 
                 </span>
+                 
                 <a
                   class="text-blue-900 underline"
                   data-discover="true"
