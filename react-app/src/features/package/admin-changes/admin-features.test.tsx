@@ -30,4 +30,11 @@ describe("Admin Features test", () => {
 
     expect(admin).toMatchSnapshot();
   });
+  it("finds an legacy admin change for enabling and disabling RAI", () => {
+    const admin = renderWithQueryClient(
+      <AdminPackageActivities changelog={ADMIN_CHANGE_ITEM._source.changelog} />,
+    );
+
+    expect(admin).toMatchSnapshot();
+  });
 });
