@@ -128,12 +128,13 @@ export const newChipSubmission = {
 };
 
 export const newChipDetailsSubmission = {
-  id: "VA-11-2021",
+  id: "VA-11-3321",
   event: "new-chip-details-submission",
   authority: "1915(b)",
   proposedEffectiveDate: 1700000000,
   title: "Sample Title for Appendix K",
   attachments: {
+    ...attachments.chipEligibility,
     ...attachments.currentStatePlan,
     ...attachments.amendedLanguage,
     ...attachments.coverLetter,
