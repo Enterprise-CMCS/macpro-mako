@@ -5,8 +5,6 @@ import {
   statusToDisplayToStateUser,
 } from "shared-types";
 
-import { BLANK_VALUE } from "@/consts";
-
 import { ATTACHMENT_BUCKET_NAME } from "../consts";
 import type { TestItemResult } from "../index.d";
 export const EXISTING_ITEM_PENDING_ID = "MD-0002.R00.00";
