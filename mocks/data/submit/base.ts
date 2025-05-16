@@ -127,6 +127,25 @@ export const newChipSubmission = {
   waiverNumber: "VA-1111.R11.11",
 };
 
+export const newChipDetailsSubmission = {
+  id: "VA-11-2021",
+  event: "new-chip-details-submission",
+  authority: "1915(b)",
+  proposedEffectiveDate: 1700000000,
+  title: "Sample Title for Appendix K",
+  attachments: {
+    ...attachments.currentStatePlan,
+    ...attachments.amendedLanguage,
+    ...attachments.coverLetter,
+    ...attachments.budgetDocuments,
+    ...attachments.publicNotice,
+    ...attachments.tribalConsultation,
+    ...attachments.other,
+  },
+  additionalInformation: "Some additional information about this submission.",
+  waiverNumber: "VA-1111.R11.11",
+};
+
 export const newMedicaidSubmission = {
   id: "VA-11-2021",
   event: "new-medicaid-submission",
@@ -231,6 +250,7 @@ export const eventsAttachmentRequired = [
   respondToRai,
   newMedicaidSubmission,
   newChipSubmission,
+  newChipDetailsSubmission,
   contractingRenewal,
   contractingInitial,
   contractingAmendment,
