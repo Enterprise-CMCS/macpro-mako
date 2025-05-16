@@ -19,7 +19,13 @@ import { FilterableSelect } from "@/components/Opensearch/main/Filtering/Drawer/
 import { useAvailableStates } from "@/hooks/useAvailableStates";
 import { convertStateAbbrToFullName } from "@/utils";
 
-import { filterStateAccess, orderStateAccess, stateAccessRoles, userRoleMap } from "../utils";
+import {
+  filterStateAccess,
+  hasPendingRequests,
+  orderStateAccess,
+  stateAccessRoles,
+  userRoleMap,
+} from "../utils";
 
 export const MyProfile = () => {
   const { data: userDetails, isLoading: isDetailLoading } = useGetUserDetails();
@@ -33,7 +39,7 @@ export const MyProfile = () => {
   const [selfRevokeState, setSelfRevokeState] = useState<StateCode | null>(null);
   const [showAddState, setShowAddState] = useState<boolean>(true);
   const [requestedStates, setRequestedStates] = useState<StateCode[]>([]);
-  const [pendingStates, setPendingStates] = useState<boolean>(false);
+  const [pendingRequests, setPendingRequests] = useState<boolean>(false);
   const statesToRequest: Option[] = useAvailableStates(userProfile?.stateAccess);
 
   const filteredStateAccess = useMemo(
@@ -49,10 +55,10 @@ export const MyProfile = () => {
   // Set initial value of showAddState based on pending roles
   useEffect(() => {
     if (!isDetailLoading && !isProfileLoading) {
-      const hasPendingRequests = filteredStateAccess.some((access) => access.status === "pending");
-      setPendingStates(hasPendingRequests);
+      const pendingRequests = hasPendingRequests(userProfile?.stateAccess);
+      setPendingRequests(pendingRequests);
     }
-  }, [isDetailLoading, isProfileLoading, filteredStateAccess]);
+  }, [isDetailLoading, isProfileLoading, filteredStateAccess, userProfile]);
 
   if (isDetailLoading || isProfileLoading) {
     return <LoadingSpinner />;
@@ -64,7 +70,7 @@ export const MyProfile = () => {
 
   const StateAccessControls = () => {
     if (userDetails.role !== "statesubmitter") return null;
-    if (pendingStates) {
+    if (pendingRequests) {
       return <p>State Access Requests Disabled until Role Request is finalized.</p>;
     }
     if (showAddState) {
