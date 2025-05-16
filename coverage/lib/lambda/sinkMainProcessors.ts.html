@@ -30,9 +30,9 @@
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">85.21% </span>
+                <span class="strong">85.59% </span>
                 <span class="quiet">Branches</span>
-                <span class='fraction'>98/115</span>
+                <span class='fraction'>101/118</span>
             </div>
         
             
@@ -44,9 +44,9 @@
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">87.2% </span>
+                <span class="strong">87.28% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>150/172</span>
+                <span class='fraction'>151/173</span>
             </div>
         
             
@@ -578,7 +578,14 @@
 <a name='L513'></a><a href='#L513'>513</a>
 <a name='L514'></a><a href='#L514'>514</a>
 <a name='L515'></a><a href='#L515'>515</a>
-<a name='L516'></a><a href='#L516'>516</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
+<a name='L516'></a><a href='#L516'>516</a>
+<a name='L517'></a><a href='#L517'>517</a>
+<a name='L518'></a><a href='#L518'>518</a>
+<a name='L519'></a><a href='#L519'>519</a>
+<a name='L520'></a><a href='#L520'>520</a>
+<a name='L521'></a><a href='#L521'>521</a>
+<a name='L522'></a><a href='#L522'>522</a>
+<a name='L523'></a><a href='#L523'>523</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -781,11 +788,15 @@
 <span class="cline-any cline-yes">11x</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">11x</span>
 <span class="cline-any cline-no">&nbsp;</span>
@@ -868,7 +879,10 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">33x</span>
+<span class="cline-any cline-yes">28x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">33x</span>
 <span class="cline-any cline-yes">28x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -1294,7 +1308,10 @@ const getOneMacRecordWithAllProperties = (
   }
 &nbsp;
   <span class="missing-if-branch" title="if path not taken" >I</span>if (isRecordALegacyUser(record, kafkaSource)) {
-    const userParseResult = <span class="cstat-no" title="statement not covered" >onemacLegacyUserInformation.safeParse(record);</span>
+    const userParseResult = <span class="cstat-no" title="statement not covered" >onemacLegacyUserInformation.safeParse({</span>
+      ...record,
+      eventType: "legacy-user-info",
+    });
 &nbsp;
 <span class="cstat-no" title="statement not covered" >    if (userParseResult.success === true) {</span>
 <span class="cstat-no" title="statement not covered" >      console.log("USER RECORD: ", JSON.stringify(record));</span>
@@ -1302,6 +1319,7 @@ const getOneMacRecordWithAllProperties = (
     }
 <span class="cstat-no" title="statement not covered" >    console.log("USER RECORD INVALID BECAUSE: ", userParseResult.error, JSON.stringify(record));</span>
   }
+&nbsp;
   <span class="missing-if-branch" title="if path not taken" >I</span>if (isRecordAUser(record)) {
     const userParseResult = <span class="cstat-no" title="statement not covered" >userInformation.safeParse(record);</span>
 &nbsp;
@@ -1381,9 +1399,12 @@ export const insertOneMacRecordsFromKafkaIntoMako = async (
     (record) =&gt;
       record.eventType !== "user-info" &amp;&amp;
       record.eventType !== "legacy-user-role" &amp;&amp;
+      record.eventType !== "legacy-user-info" &amp;&amp;
       record.eventType !== "user-role",
   );
-  const oneMacUsers = oneMacRecordsForMako.filter((record) =&gt; record.eventType === "user-info");
+  const oneMacUsers = oneMacRecordsForMako.filter(
+    (record) =&gt; record.eventType === "user-info" || record.eventType === "legacy-user-info",
+  );
   const roleRequests = oneMacRecordsForMako.filter(
     (record) =&gt; record.eventType === "legacy-user-role" || record.eventType === "user-role",
   );
@@ -1615,7 +1636,7 @@ export const syncSeatoolRecordDatesFromKafkaWithMako = async (
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2025-05-16T17:28:02.901Z
+                at 2025-05-16T20:15:36.850Z
             </div>
         <script src="../../prettify.js"></script>
         <script>
