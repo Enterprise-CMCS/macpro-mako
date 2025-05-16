@@ -199,7 +199,10 @@ const getOneMacRecordWithAllProperties = (
   }
 
   if (isRecordALegacyUser(record, kafkaSource)) {
-    const userParseResult = onemacLegacyUserInformation.safeParse(record);
+    const userParseResult = onemacLegacyUserInformation.safeParse({
+      ...record,
+      eventType: "legacy-user-info",
+    });
 
     if (userParseResult.success === true) {
       console.log("USER RECORD: ", JSON.stringify(record));
