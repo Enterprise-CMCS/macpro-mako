@@ -17,7 +17,6 @@ import {
   SelectValue,
   SpaIdFormattingDesc,
 } from "@/components";
-import { AttachmentFileFormatInstructions } from "@/components/ActionForm/actionForm.components";
 import { FAQ_TAB } from "@/consts";
 import { formSchemas } from "@/formSchemas";
 
@@ -46,7 +45,7 @@ export const ChipDetailsForm = () => {
                     SPA ID <RequiredIndicator />
                   </FormLabel>
                   <Link
-                    to="/faq/spa-id-format"
+                    to="/support"
                     target={FAQ_TAB}
                     rel="noopener noreferrer"
                     className="text-blue-900 underline"
@@ -151,7 +150,7 @@ export const ChipDetailsForm = () => {
             Maximum file size of 80 MB per attachment. You can add multiple files per attachment
             type. <br /> Read the description for each of the attachment types on the{" "}
             <Link
-              to="/faq/medicaid-spa-attachments"
+              to="/support"
               target={FAQ_TAB}
               rel="noopener noreferrer"
               className="text-blue-900 underline"
@@ -160,11 +159,23 @@ export const ChipDetailsForm = () => {
             </Link>
             .
           </p>,
-          <AttachmentFileFormatInstructions />,
+          <p data-testid="accepted-files">
+            We accept the following file formats:{" "}
+            <span className="font-bold">.doc, .docx, .pdf, .jpg, .odp, and more. </span>{" "}
+            <Link
+              to={"/support"}
+              target={FAQ_TAB}
+              rel="noopener noreferrer"
+              className="text-blue-900 underline"
+            >
+              See the full list
+            </Link>
+            .
+          </p>,
           <p data-testid="chip-attachments-instructions">
             View all{" "}
             <Link
-              to="/faq/medicaid-spa-attachments"
+              to="/support"
               target={FAQ_TAB}
               rel="noopener noreferrer"
               className="text-blue-900 underline"
