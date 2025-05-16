@@ -7,7 +7,7 @@ import {
   EMAIL_CONFIG,
   getCpocEmail,
   Textarea,
-} from "../email-components";
+} from "./email-components";
 
 // 🟢 Test EMAIL_CONFIG
 test("EMAIL_CONFIG contains correct email addresses", () => {

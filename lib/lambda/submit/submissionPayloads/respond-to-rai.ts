@@ -5,6 +5,7 @@ import { getDomain, getOsNamespace } from "libs/utils";
 import { events } from "shared-types/events";
 
 import { getAuthDetails, isAuthorized, lookupUserAttributes } from "../../../libs/api/auth/user";
+import { getUserByEmail } from "../../user-management/userManagementService";
 
 export const respondToRai = async (event: APIGatewayEvent) => {
   if (!event.body) return;
@@ -28,13 +29,17 @@ export const respondToRai = async (event: APIGatewayEvent) => {
   const authDetails = getAuthDetails(event);
   const userAttr = await lookupUserAttributes(authDetails.userId, authDetails.poolId);
   const submitterEmail = userAttr.email;
-  const submitterName = `${userAttr.given_name} ${userAttr.family_name}`;
+  const user = await getUserByEmail(submitterEmail);
+
+  if (!user) {
+    throw new Error("User does not exist in User OpenSearch Index");
+  }
 
   const transformedData = events["respond-to-rai"].schema.parse({
     ...parsedResult.data,
     authority: item?._source?.authority,
-    submitterName,
-    submitterEmail,
+    submitterName: user.fullName,
+    submitterEmail: user.email,
     timestamp: Date.now(),
   });
 

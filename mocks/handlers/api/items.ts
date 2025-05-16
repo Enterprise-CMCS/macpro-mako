@@ -1,4 +1,5 @@
 import { http, HttpResponse } from "msw";
+import { opensearch } from "shared-types";
 
 import items, { GET_ERROR_ITEM_ID } from "../../data/items";
 import type { GetItemBody } from "../../index.d";
@@ -17,6 +18,14 @@ const defaultApiItemHandler = http.post<GetItemBody, GetItemBody>(
     return item ? HttpResponse.json(item) : new HttpResponse(null, { status: 404 });
   },
 );
+
+export const onceApiItemHandler = (item: opensearch.main.ItemResult) =>
+  http.post<GetItemBody, GetItemBody>(
+    "https://test-domain.execute-api.us-east-1.amazonaws.com/mocked-tests/item",
+    async () => {
+      return item ? HttpResponse.json(item) : new HttpResponse(null, { status: 404 });
+    },
+  );
 
 export const errorApiItemHandler = http.post(
   "https://test-domain.execute-api.us-east-1.amazonaws.com/mocked-tests/item",
