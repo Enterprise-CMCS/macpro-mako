@@ -6,3 +6,4 @@ export * from "./withdrawConfirmation";
 export * from "./email-components";
 export * from "./respondToRai";
 export * from "./uploadSubsequentDocuments";
+export * from "./userRoles";

@@ -66,6 +66,14 @@ const emailTemplates: EmailTemplates = {
   "upload-subsequent-documents": EmailContent.uploadSubsequentDocuments,
 };
 
+// user roles are so different they will be their own thing for now
+export const getUserRoleTemplate = async (
+  userRoleAction: keyof typeof EmailContent.userRoleTemplate,
+): Promise<(variables: EmailContent.UserRoleEmailType) => Promise<EmailTemplate>> => {
+  const userRoleTemplate = EmailContent.userRoleTemplate;
+  return userRoleTemplate[userRoleAction];
+};
+
 // Create a type-safe lookup function
 export function getEmailTemplate(
   action: keyof EmailTemplates,
