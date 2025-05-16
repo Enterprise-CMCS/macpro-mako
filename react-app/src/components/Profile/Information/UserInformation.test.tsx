@@ -6,7 +6,12 @@ import { UserInformation } from "./index";
 describe("UserInformation", () => {
   it("should display the user information", () => {
     render(
-      <UserInformation fullName="Test User" role="State Submitter" email="test@example.com" />,
+      <UserInformation
+        title="My Information"
+        fullName="Test User"
+        role="State Submitter"
+        email="test@example.com"
+      />,
     );
     expect(screen.getByRole("heading", { name: "Full Name", level: 3 })).toBeInTheDocument();
     expect(screen.getByText("Test User")).toBeInTheDocument();

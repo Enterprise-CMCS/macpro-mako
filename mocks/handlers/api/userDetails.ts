@@ -1,22 +1,31 @@
-import { http, HttpResponse } from "msw";
+import { http, HttpResponse, PathParams } from "msw";
 
 import { getUserByUsername } from "../../data";
 import { getFilteredUserResultList } from "../../data/osusers";
 import { getFilteredRoleDocsByEmail, getLatestRoleByEmail } from "../../data/roles";
+import { UserDetailsRequestBody } from "../../index.d";
 
-const defaultApiUserDetailsHandler = http.post(
+const defaultApiUserDetailsHandler = http.post<PathParams, UserDetailsRequestBody>(
   "https://test-domain.execute-api.us-east-1.amazonaws.com/mocked-tests/getUserDetails",
-  async () => {
-    const username = process.env.MOCK_USER_USERNAME;
-    if (!username) {
-      return HttpResponse.json({});
+  async ({ request }) => {
+    let email;
+    if (request.body) {
+      const { userEmail } = await request.json();
+      email = userEmail;
+    } else {
+      const username = process.env.MOCK_USER_USERNAME;
+      if (!username) {
+        return HttpResponse.json({});
+      }
+      const user = getUserByUsername(username);
+      if (!user) {
+        return HttpResponse.json({});
+      }
+      email = user?.email;
     }
-    const user = getUserByUsername(username);
-    if (!user) {
-      return HttpResponse.json({});
-    }
-    const userDetails = getFilteredUserResultList([user?.email || ""])?.[0]?._source ?? null;
-    const userRoles = getLatestRoleByEmail(user?.email || "")?.[0]?._source ?? null;
+
+    const userDetails = getFilteredUserResultList([email || ""])?.[0]?._source ?? null;
+    const userRoles = getLatestRoleByEmail(email || "")?.[0]?._source ?? null;
 
     return HttpResponse.json({
       ...userDetails,

@@ -50,6 +50,8 @@ export const osUsers: Record<string, TestUserResult> = {
       email: CMS_ROLE_APPROVER_EMAIL,
       fullName: "CMSRole Approver",
       role: "cmsroleapprover",
+      group: "Group 1",
+      division: "Division 1",
       states: [],
     },
   },

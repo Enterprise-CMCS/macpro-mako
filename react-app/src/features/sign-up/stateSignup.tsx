@@ -120,7 +120,7 @@ export const StateSignup = () => {
                   value={stateSelected}
                   options={statesToRequest}
                   onChange={(values: StateCode[]) => onChange(values)}
-                  placeholder={"Select state here"}
+                  placeholder="Select state here"
                 />
               )}
               {!stateSelected.length && (

@@ -58,6 +58,8 @@ export type TestUserResult = {
       | "statesubmitter"
       | "systemadmin";
     states?: string[];
+    group?: string;
+    division?: string;
   };
 };
 
@@ -240,4 +242,12 @@ export type SubmitRoleRequestBody = {
   eventType: string;
   grantAccess?: boolean;
   requestRoleChange: boolean;
+};
+
+export type UserDetailsRequestBody = {
+  userEmail?: string;
+};
+
+export type UserProfileRequestBody = {
+  userEmail?: string;
 };
