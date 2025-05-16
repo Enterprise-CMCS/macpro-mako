@@ -199,7 +199,6 @@ const getOneMacRecordWithAllProperties = (
   }
 
   if (isRecordALegacyUser(record, kafkaSource)) {
-    console.log("Got inside isRecordALegacyUserCheck: ", record, kafkaSource);
     const userParseResult = onemacLegacyUserInformation.safeParse({
       ...record,
       eventType: "legacy-user-info",
@@ -210,9 +209,8 @@ const getOneMacRecordWithAllProperties = (
       return userParseResult.data;
     }
     console.log("USER RECORD INVALID BECAUSE: ", userParseResult.error, JSON.stringify(record));
-  } else {
-    console.log("Did not get inside isRecordALegacyUser check: ", record, kafkaSource);
   }
+
   if (isRecordAUser(record)) {
     const userParseResult = userInformation.safeParse(record);
 
@@ -292,9 +290,12 @@ export const insertOneMacRecordsFromKafkaIntoMako = async (
     (record) =>
       record.eventType !== "user-info" &&
       record.eventType !== "legacy-user-role" &&
+      record.eventType !== "legacy-user-info" &&
       record.eventType !== "user-role",
   );
-  const oneMacUsers = oneMacRecordsForMako.filter((record) => record.eventType === "user-info");
+  const oneMacUsers = oneMacRecordsForMako.filter(
+    (record) => record.eventType === "user-info" || record.eventType === "legacy-user-info",
+  );
   const roleRequests = oneMacRecordsForMako.filter(
     (record) => record.eventType === "legacy-user-role" || record.eventType === "user-role",
   );
