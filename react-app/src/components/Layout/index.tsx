@@ -2,6 +2,7 @@ import { AwsCognitoOAuthOpts } from "@aws-amplify/auth/lib-esm/types";
 import { Bars3Icon, XMarkIcon } from "@heroicons/react/24/outline";
 import * as DropdownMenu from "@radix-ui/react-dropdown-menu";
 import { Auth } from "aws-amplify";
+import { LogOutIcon, UserPenIcon, UserPlusIcon } from "lucide-react";
 import { useState } from "react";
 import { Link, NavLink, NavLinkProps, Outlet, useNavigate, useRouteError } from "react-router";
 import { UserRoles } from "shared-types";
@@ -146,7 +147,6 @@ const UserDropdownMenu = () => {
 
     setTimeout(() => {
       localStorage.clear();
-
       Object.entries(preserved).forEach(([key, value]) => {
         localStorage.setItem(key, value);
       });
@@ -185,7 +185,10 @@ const UserDropdownMenu = () => {
               asChild
               onSelect={handleViewProfile}
             >
-              <li>View Profile</li>
+              <li>
+                <UserPenIcon className="inline mr-2" />
+                Manage Profile
+              </li>
             </DropdownMenu.Item>
             {/* TODO: conditionally show this if the user IS NOT HELPDESK */}
             {/* // helpdesk, system admins, and cms reviewer users don't even see request role as an option */}
@@ -195,7 +198,10 @@ const UserDropdownMenu = () => {
                 asChild
                 onSelect={() => navigate("/signup")}
               >
-                <li>Request a Role Change</li>
+                <li>
+                  <UserPlusIcon className="inline mr-2" />
+                  Request a Role Change
+                </li>
               </DropdownMenu.Item>
             )}
             <DropdownMenu.Item
@@ -203,7 +209,10 @@ const UserDropdownMenu = () => {
               asChild
               onSelect={handleLogout}
             >
-              <li>Sign Out</li>
+              <li>
+                <LogOutIcon className="inline mr-2" />
+                Log Out
+              </li>
             </DropdownMenu.Item>
           </ul>
         </DropdownMenu.Content>
