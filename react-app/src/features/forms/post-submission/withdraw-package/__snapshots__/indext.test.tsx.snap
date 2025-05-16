@@ -9,11 +9,10 @@ exports[`WithdrawPackageAction components > renders WithdrawPackageActionWaiver 
         class="max-w-screen-xl mx-auto px-4 lg:px-8"
       >
         <nav
-          aria-label="breadcrumbs for spa or waiver choices"
+          aria-label="breadcrumb"
           class="my-4"
-          role="navigation"
         >
-          <ul
+          <ol
             class="flex flex-wrap gap-1"
           >
             <li
@@ -32,8 +31,10 @@ exports[`WithdrawPackageAction components > renders WithdrawPackageActionWaiver 
             >
               <span>
                 <svg
+                  aria-hidden="true"
                   class="w-5 h-5"
                   fill="none"
+                  focusable="false"
                   height="24"
                   stroke="currentColor"
                   stroke-linecap="round"
@@ -61,8 +62,10 @@ exports[`WithdrawPackageAction components > renders WithdrawPackageActionWaiver 
             >
               <span>
                 <svg
+                  aria-hidden="true"
                   class="w-5 h-5"
                   fill="none"
+                  focusable="false"
                   height="24"
                   stroke="currentColor"
                   stroke-linecap="round"
@@ -78,13 +81,14 @@ exports[`WithdrawPackageAction components > renders WithdrawPackageActionWaiver 
                 </svg>
               </span>
               <span
+                aria-current="page"
                 aria-disabled="true"
                 class="whitespace-nowrap"
               >
                 Withdraw Package
               </span>
             </li>
-          </ul>
+          </ol>
         </nav>
         <form
           class="my-6 space-y-8 mx-auto justify-center flex flex-col"
@@ -419,11 +423,10 @@ exports[`WithdrawPackageAction components > renders WithdrawPackageActionWaiver 
       class="max-w-screen-xl mx-auto px-4 lg:px-8"
     >
       <nav
-        aria-label="breadcrumbs for spa or waiver choices"
+        aria-label="breadcrumb"
         class="my-4"
-        role="navigation"
       >
-        <ul
+        <ol
           class="flex flex-wrap gap-1"
         >
           <li
@@ -442,8 +445,10 @@ exports[`WithdrawPackageAction components > renders WithdrawPackageActionWaiver 
           >
             <span>
               <svg
+                aria-hidden="true"
                 class="w-5 h-5"
                 fill="none"
+                focusable="false"
                 height="24"
                 stroke="currentColor"
                 stroke-linecap="round"
@@ -471,8 +476,10 @@ exports[`WithdrawPackageAction components > renders WithdrawPackageActionWaiver 
           >
             <span>
               <svg
+                aria-hidden="true"
                 class="w-5 h-5"
                 fill="none"
+                focusable="false"
                 height="24"
                 stroke="currentColor"
                 stroke-linecap="round"
@@ -488,13 +495,14 @@ exports[`WithdrawPackageAction components > renders WithdrawPackageActionWaiver 
               </svg>
             </span>
             <span
+              aria-current="page"
               aria-disabled="true"
               class="whitespace-nowrap"
             >
               Withdraw Package
             </span>
           </li>
-        </ul>
+        </ol>
       </nav>
       <form
         class="my-6 space-y-8 mx-auto justify-center flex flex-col"
