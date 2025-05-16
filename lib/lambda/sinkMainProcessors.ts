@@ -1,6 +1,8 @@
 import { isBefore } from "date-fns";
 import { bulkUpdateDataWrapper, ErrorType, getItems, logError } from "libs";
 import { getPackage, getPackageChangelog } from "libs/api/package";
+import { RecordHandlerProgressCommand } from "node_modules/@aws-sdk/client-cloudformation/dist-types";
+import { ReceiptRule } from "node_modules/aws-cdk-lib/aws-ses";
 import {
   KafkaRecord,
   opensearch,
@@ -288,6 +290,8 @@ export const insertOneMacRecordsFromKafkaIntoMako = async (
       record.eventType !== "legacy-user-role" &&
       record.eventType !== "user-role",
   );
+
+  console.log("ONE MAC RECORDS: " + JSON.stringify(oneMacRecords));
   const oneMacUsers = oneMacRecordsForMako.filter((record) => record.eventType === "user-info");
   const roleRequests = oneMacRecordsForMako.filter(
     (record) => record.eventType === "legacy-user-role" || record.eventType === "user-role",
