@@ -56,19 +56,14 @@ describe("submit Lambda function", () => {
   });
 
   describe("successfully submit event types", () => {
-    it.each(events.map((event) => [event.event.toString(), event]))(
+    it.each(events.map((event) => [event.event, JSON.stringify(event)]))(
       "should successfully submit %s event",
-      async (eventName, eventPayload) => {
+      async (_, base) => {
         const event = {
-          body: JSON.stringify(eventPayload),
+          body: base,
           requestContext: getRequestContext(),
         } as unknown as APIGatewayEvent;
         const result = await submit(event);
-        if (result.statusCode !== 200) {
-          console.error(`❌ Failed event: ${eventName}`);
-          console.error("Status:", result.statusCode);
-          console.error("Response body:", result.body);
-        }
         expect(result.statusCode).toEqual(200);
         expect(result.body).toEqual('{"message":"success"}');
       },
