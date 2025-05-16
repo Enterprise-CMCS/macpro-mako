@@ -199,6 +199,7 @@ const getOneMacRecordWithAllProperties = (
   }
 
   if (isRecordALegacyUser(record, kafkaSource)) {
+    console.log("Got inside isRecordALegacyUserCheck: ", record, kafkaSource);
     const userParseResult = onemacLegacyUserInformation.safeParse({
       ...record,
       eventType: "legacy-user-info",
@@ -209,6 +210,8 @@ const getOneMacRecordWithAllProperties = (
       return userParseResult.data;
     }
     console.log("USER RECORD INVALID BECAUSE: ", userParseResult.error, JSON.stringify(record));
+  } else {
+    console.log("Did not get inside isRecordALegacyUser check: ", record, kafkaSource);
   }
   if (isRecordAUser(record)) {
     const userParseResult = userInformation.safeParse(record);
