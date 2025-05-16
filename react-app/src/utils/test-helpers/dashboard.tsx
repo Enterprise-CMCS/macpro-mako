@@ -204,7 +204,9 @@ export const verifyFiltering = (hiddenCount: number = 0) => {
       name: hiddenCount === 0 ? "Columns" : `Columns (${hiddenCount} hidden)`,
     }),
   ).toBeInTheDocument();
-  expect(within(filtering).queryByRole("button", { name: "Filters" })).toBeInTheDocument();
+  expect(
+    within(filtering).queryByRole("button", { name: "Open filter panel" }),
+  ).toBeInTheDocument();
 
   const exportBtn = within(filtering).queryByRole("button", { name: "Export" });
   expect(exportBtn).toBeInTheDocument();
