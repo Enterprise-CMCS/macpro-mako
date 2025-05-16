@@ -152,14 +152,13 @@ const processAndIndex = async ({
         const schema = legacyEventIdUpdateSchema;
         const result = schema.safeParse(record);
 
-        // Check if event has admin changes
-        // The previous packageID can be retrieved by matching the timestamp
-        // Take that ID then use it to get the changelogs to update
+        // Check if event has admin changes and then only use the most recent.
+        // Take that ID then use it to get the changelogs to update by comparing timestamps
         // Mark all the packageIDs with the offset and Del to get rid of them from use
         if (result.success && result.data.adminChanges) {
           const { adminChanges: adminChanges } = result.data;
-
-          const ids = extractIds(adminChanges[0].changeMade);
+          const adminChange = adminChanges[0];
+          const ids = extractIds(adminChange.changeMade);
           if (ids) {
             const changelogs = await getPackageChangelog(ids.beforeId);
 
@@ -167,7 +166,7 @@ const processAndIndex = async ({
               const recordOffset = changelog._id.split("-")[-1];
               const origID = changelog._id;
               const source = changelog._source;
-              if (source.timestamp <= adminChanges[0].changeTimestamp) {
+              if (source.timestamp <= adminChange.changeTimestamp) {
                 docs.push(
                   { ...source, id: `${ids.afterId}-${recordOffset}`, packageId: ids.afterId },
                   { ...source, id: origID, packageId: `${ids.beforeId}-del` },
