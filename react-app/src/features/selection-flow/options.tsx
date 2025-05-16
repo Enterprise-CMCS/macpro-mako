@@ -60,7 +60,7 @@ export const useChipSpaOptions = (): OptionData[] => {
         title: "CHIP eligibility SPA submissions",
         description: "Create a new CHIP eligibility state plan amendment",
         to: {
-          pathname: "/new-submission/spa/chip/landing/chip-details",
+          pathname: "/new-submission/spa/chip/create/chip-details",
           search: new URLSearchParams({
             [ORIGIN]: SPA_SUBMISSION_ORIGIN,
           }).toString(),
@@ -83,7 +83,7 @@ export const useChipSpaOptions = (): OptionData[] => {
     {
       title: "CHIP Eligibility",
       description: "Redirects to MMDL submission system",
-      to: "/new-submission/spa/chip/landing/chip-eligibility",
+      to: "/new-submission/spa/chip/create/chip-eligibility",
     },
     {
       title: "All Other CHIP SPA Submissions",
