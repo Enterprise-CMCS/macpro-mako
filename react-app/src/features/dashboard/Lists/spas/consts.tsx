@@ -15,7 +15,7 @@ const getColumns = (props) => {
   }
   return [
     // hide actions column for: readonly,help desk
-    ...(!CMS_READ_ONLY_ROLES.some((UR) => props.user?.["custom:cms-roles"].includes(UR))
+    ...(!CMS_READ_ONLY_ROLES.some((UR) => props.user?.role === UR)
       ? [
           {
             locked: true,
@@ -52,7 +52,7 @@ const getColumns = (props) => {
       transform: (data) => {
         const status = (() => {
           if (!props?.isCms) return data.stateStatus;
-          if (props?.user?.["custom:cms-roles"].includes(UserRoles.HELPDESK)) {
+          if (props?.user?.role === UserRoles.HELPDESK) {
             return data.stateStatus;
           }
           return data.cmsStatus;
@@ -70,8 +70,7 @@ const getColumns = (props) => {
       cell: (data) => {
         const status = (() => {
           if (!props?.isCms) return data.stateStatus;
-          if (props.user?.["custom:cms-roles"].includes(UserRoles.HELPDESK))
-            return data.stateStatus;
+          if (props.user?.role === UserRoles.HELPDESK) return data.stateStatus;
           return data.cmsStatus;
         })();
 

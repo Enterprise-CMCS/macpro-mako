@@ -198,7 +198,7 @@ export class Email extends cdk.NestedStack {
         stage,
         isDev: isDev.toString(),
         indexNamespace,
-        osDomain: openSearchDomainEndpoint,
+        osDomain: `https://${openSearchDomainEndpoint}`,
         applicationEndpointUrl,
         emailAddressLookupSecretName,
         userPoolId: userPool.userPoolId,

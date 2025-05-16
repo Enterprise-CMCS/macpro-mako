@@ -1,0 +1,15 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`plan-types > SimplePageTitle > should render the page 1`] = `
+<DocumentFragment>
+  <div
+    class="flex items-center justify-between my-4"
+  >
+    <h1
+      class="text-xl"
+    >
+      Test
+    </h1>
+  </div>
+</DocumentFragment>
+`;
