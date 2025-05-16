@@ -1,7 +1,6 @@
 import { Handler } from "aws-lambda";
-import { getPackageChangelog, getPackageChangelogTimestamp } from "libs/api/package";
+import { getPackageChangelog } from "libs/api/package";
 import { bulkUpdateDataWrapper, ErrorType, getTopic, logError } from "libs/sink-lib";
-import { changelog } from "node_modules/shared-types/opensearch";
 import { KafkaEvent, KafkaRecord, LegacyAdminChange, opensearch } from "shared-types";
 import { decodeBase64WithUtf8 } from "shared-utils";
 
@@ -168,7 +167,7 @@ const processAndIndex = async ({
               const recordOffset = changelog._id.split("-")[-1];
               const origID = changelog._id;
               const source = changelog._source;
-              if (source.timestamp > adminChanges[0].changeTimestamp) {
+              if (source.timestamp <= adminChanges[0].changeTimestamp) {
                 docs.push(
                   { ...source, id: `${ids.afterId}-${recordOffset}`, packageId: ids.afterId },
                   { ...source, id: origID, packageId: `${ids.beforeId}-del` },
