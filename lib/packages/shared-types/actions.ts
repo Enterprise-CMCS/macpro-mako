@@ -1,6 +1,6 @@
 import { IPackageCheck } from "shared-utils";
 
-import { CognitoUserAttributes } from "./user";
+import { FullUser } from "./user";
 
 export enum Action {
   UPLOAD_SUBSEQUENT_DOCUMENTS = "upload-subsequent-documents",
@@ -21,7 +21,7 @@ export type ActionRule = {
   action: Action;
   check: (
     checker: IPackageCheck,
-    user: CognitoUserAttributes,
+    user: FullUser,
     /** Keep excess parameters to a minimum **/
     ...any: any[]
   ) => boolean;
