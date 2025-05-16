@@ -13,6 +13,7 @@ import {
   contractingInitial,
   contractingRenewal,
   legacyPackageView,
+  newChipDetailsSubmission,
   newChipSubmission,
   newMedicaidSubmission,
   respondToRai,
@@ -43,6 +44,7 @@ export type ContractingInitialDocument = z.infer<contractingInitial.Schema>;
 export type ContractingRenewalDocument = z.infer<contractingAmendment.Schema>;
 export type LegacyPackageViewDocument = z.infer<legacyPackageView.Schema>;
 export type NewChipSubmissionDocument = z.infer<newChipSubmission.Schema>;
+export type newChipDetailsSubmissionDocument = z.infer<newChipDetailsSubmission.Schema>;
 export type NewMedicaidSubmissionDocument = z.infer<newMedicaidSubmission.Schema>;
 export type RespondToRaiDocument = z.infer<respondToRai.Schema>;
 export type SeatoolDocument = z.infer<seatool.Schema>;
@@ -69,6 +71,7 @@ export type Document = AppkDocument &
   ContractingInitialDocument &
   ContractingRenewalDocument &
   NewChipSubmissionDocument &
+  newChipDetailsSubmissionDocument &
   NewMedicaidSubmissionDocument &
   RespondToRaiDocument &
   SeatoolDocument &
@@ -111,6 +114,7 @@ export const transforms = {
   "contracting-initial": contractingInitial,
   "contracting-renewal": contractingRenewal,
   "new-chip-submission": newChipSubmission,
+  "new-chip-details-submission": newChipDetailsSubmission,
   "new-medicaid-submission": newMedicaidSubmission,
   "respond-to-rai": respondToRai,
   "temporary-extension": temporaryExtension,

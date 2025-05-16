@@ -164,6 +164,19 @@ export const budgetDocuments = {
   },
 };
 
+export const chipEligibility = {
+  label: "CHIP Eligibility Docs",
+  files: [
+    {
+      filename: "chip-eligibility.pdf",
+      title: "CHIP Eligibility Document",
+      bucket: "mako-outbox-attachments-635052997545",
+      key: "8b56f7ab-e1ad-4782-87f4-d43ab9d2f5d7.docx",
+      uploadDate: Date.now(),
+    },
+  ],
+};
+
 export const publicNotice = {
   publicNotice: {
     label: "Public Notice",
@@ -326,6 +339,7 @@ export const attachments = {
   budgetDocuments,
   cmsForm,
   coverLetter,
+  chipEligibility,
   currentStatePlan,
   existingStatePlanPages,
   publicNotice,

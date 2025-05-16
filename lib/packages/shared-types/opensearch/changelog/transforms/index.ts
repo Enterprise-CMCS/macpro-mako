@@ -7,6 +7,7 @@ export * as contractingAmendment from "./contracting-amendment";
 export * as contractingInitial from "./contracting-initial";
 export * as contractingRenewal from "./contracting-renewal";
 export * as newChipSubmission from "./new-chip-submission";
+export * as newChipDetailsSubmission from "./new-chip-details-submission";
 export * as newMedicaidSubmission from "./new-medicaid-submission";
 export * as temporaryExtension from "./temporary-extension";
 export * as withdrawPackage from "./withdraw-package";

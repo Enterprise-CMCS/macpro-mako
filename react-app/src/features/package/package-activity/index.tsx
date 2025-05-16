@@ -96,6 +96,7 @@ const PackageActivity = ({ packageActivity }: PackageActivityProps) => {
       case "contracting-initial":
       case "contracting-renewal":
       case "new-chip-submission":
+      case "new-chip-details-submission":
       case "new-medicaid-submission":
       case "temporary-extension":
       case "app-k":

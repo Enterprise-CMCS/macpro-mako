@@ -65,6 +65,10 @@ export const router = (loginFlag = false) => {
               element: <F.ChipForm />,
             },
             {
+              path: "/new-submission/spa/chip/create/chip-details",
+              element: <F.ChipDetailsForm />,
+            },
+            {
               path: "/new-submission/waiver/b/capitated/amendment/create",
               element: <F.CapitatedWaivers.AmendmentForm />,
             },

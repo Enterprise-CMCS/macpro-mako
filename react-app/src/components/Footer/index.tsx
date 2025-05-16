@@ -101,6 +101,9 @@ export const Footer = ({ email, address, showNavLinks }: Props) => {
 };
 
 export const FAQFooter = () => {
+  const useChipForm = useFeatureFlag("CHIP_SPA_SUBMISSION");
+  if (useChipForm) return null;
+
   return (
     <Alert
       variant={"infoBlock"}
