@@ -56,13 +56,12 @@ export const BreadCrumb = ({
     <li className="flex items-center text-sm">
       {showSeperator && <span>{seperator}</span>}
 
-      {active && (
+      {active ? (
         <Link to={to} className="underline text-sky-700 hover:text-sky-800">
           {children}
         </Link>
-      )}
-      {!active && (
-        <span className="whitespace-nowrap" aria-disabled>
+      ) : (
+        <span className="whitespace-nowrap" aria-disabled aria-current="page">
           {children}
         </span>
       )}
@@ -70,12 +69,14 @@ export const BreadCrumb = ({
   );
 };
 
-export const BreadCrumbSeperator = () => <ChevronRight className="w-5 h-5" />;
+export const BreadCrumbSeperator = () => (
+  <ChevronRight className="w-5 h-5" focusable={false} aria-hidden />
+);
 
 export const BreadCrumbBar = ({ children }: React.PropsWithChildren) => {
   return (
-    <nav role="navigation" aria-label="breadcrumbs for spa or waiver choices" className="my-4">
-      <ul className="flex flex-wrap gap-1">{children}</ul>
+    <nav aria-label="breadcrumb" className="my-4">
+      <ol className="flex flex-wrap gap-1">{children}</ol>
     </nav>
   );
 };
