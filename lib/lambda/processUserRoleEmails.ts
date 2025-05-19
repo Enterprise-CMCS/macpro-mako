@@ -73,7 +73,7 @@ export async function sendUserRoleEmails(
           return `${approver.fullName} <${approver.email}>`;
         },
       );
-      record.approverList = approverListFormated;
+      record.approverList = approverListFormated.filter((approver) => approver !== "");
     } catch (error) {
       console.log("Error trying to get approver list: ", error);
     }
