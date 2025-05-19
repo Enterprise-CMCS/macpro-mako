@@ -90,7 +90,7 @@ export async function sendUserRoleEmails(
       validateEmailTemplate(filledTemplate);
       const params = createEmailParams(
         filledTemplate,
-        emails.sourceEmail,
+        emails.accessEmail,
         config.osDomain,
         config.isDev,
       );
