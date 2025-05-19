@@ -230,7 +230,7 @@ describe("syncing Changelog events", () => {
     ];
     const expectedChangelogs = [
       {
-        id: "MD-22-0030-undefined",
+        id: "MD-22-0030-1666885236740",
         packageId: "MD-22-0030",
         timestamp: 1666885236740,
         event: "new-medicaid-submission",
