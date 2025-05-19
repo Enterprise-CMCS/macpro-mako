@@ -15,6 +15,7 @@ export const STATIC = [
   "/new-submission/spa/medicaid/landing/medicaid-abp",
   "/new-submission/spa/medicaid/landing/medicaid-eligibility",
   "/new-submission/spa/chip/landing/chip-eligibility",
+  "/new-submission/spa/chip/create/chip-details",
   "/new-submission/waiver/b/capitated/amendment/create",
   "/new-submission/waiver/b/capitated/renewal/create",
   "/new-submission/waiver/b/capitated/initial/create",

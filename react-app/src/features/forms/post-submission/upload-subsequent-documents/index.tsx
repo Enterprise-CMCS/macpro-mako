@@ -78,6 +78,8 @@ const getTitle = (originalSubmissionEvent: string) => {
       return "Medicaid SPA";
     case originalSubmissionEvent === "new-chip-submission":
       return "CHIP SPA";
+    case originalSubmissionEvent === "new-chip-details-submission":
+      return "CHIP Eligibility SPA Details";
     case originalSubmissionEvent === "app-k":
       return "1915(c) Appendix K Waiver Amendment";
     case originalSubmissionEvent.includes("amendment"):
