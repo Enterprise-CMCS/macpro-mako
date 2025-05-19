@@ -323,22 +323,6 @@ describe("syncing Changelog events", () => {
         }),
       ],
     });
-    const attachments = [
-      {
-        bucket: "uploads-develop-attachments-116229642442",
-        filename: "15MB.pdf",
-        key: "protected/us-east-1:86a190fe-b195-42bf-9685-9761bf0ff14b/1666885211577/15MB.pdf",
-        title: "CMS Form 179",
-        uploadDate: 1666885211577,
-      },
-      {
-        bucket: "uploads-develop-attachments-116229642442",
-        filename: "adobe.pdf",
-        key: "protected/us-east-1:86a190fe-b195-42bf-9685-9761bf0ff14b/1666885211579/adobe.pdf",
-        title: "SPA Pages",
-        uploadDate: 1666885211579,
-      },
-    ];
     const expectedChangelogs = [
       {
         id: "MD-22-0030-legacy-admin-change-1746798111690",
