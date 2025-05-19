@@ -56,7 +56,8 @@ export type TestUserResult = {
       | "statesystemadmin"
       | "helpdesk"
       | "statesubmitter"
-      | "systemadmin";
+      | "systemadmin"
+      | "norole";
     states?: string[];
   };
 };
@@ -70,7 +71,8 @@ export type TestUserRole =
   | "statesystemadmin"
   | "helpdesk"
   | "statesubmitter"
-  | "systemadmin";
+  | "systemadmin"
+  | "norole";
 
 export type TestRoleResult = {
   _id: string;
