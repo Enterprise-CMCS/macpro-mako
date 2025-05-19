@@ -83,7 +83,7 @@ export const useChipSpaOptions = (): OptionData[] => {
     {
       title: "CHIP Eligibility",
       description: "Redirects to MMDL submission system",
-      to: "/new-submission/spa/chip/create/chip-eligibility",
+      to: "/new-submission/spa/chip/landing/chip-eligibility",
     },
     {
       title: "All Other CHIP SPA Submissions",

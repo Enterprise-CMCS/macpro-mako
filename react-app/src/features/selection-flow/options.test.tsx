@@ -23,7 +23,7 @@ describe("useChipSpaOptions", () => {
 
     expect(result.current).toHaveLength(2);
     expect(result.current[0].title).toBe("CHIP Eligibility");
-    expect(result.current[0].to).toBe("/new-submission/spa/chip/create/chip-eligibility");
+    expect(result.current[0].to).toBe("/new-submission/spa/chip/landing/chip-eligibility");
     expect(result.current[1].title).toBe("All Other CHIP SPA Submissions");
     expect(result.current[1].to).toMatchObject({
       pathname: "/new-submission/spa/chip/create",

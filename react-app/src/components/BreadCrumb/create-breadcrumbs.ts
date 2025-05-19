@@ -30,7 +30,7 @@ const newSubmissionPageRouteMapper: Record<string, { to: string; displayText: st
     displayText: "CHIP SPA Type",
   },
   "chip-eligibility": {
-    to: "/new-submission/spa/chip/create/chip-eligibility",
+    to: "/new-submission/spa/chip/landing/chip-eligibility",
     displayText: "CHIP Eligibility SPAs",
   },
   "chip-details": {
