@@ -66,11 +66,8 @@ export const getRoleRequests = async (event: APIGatewayEvent) => {
       // get all of the role requests
       roleRequests = await getAllUserRoles();
 
-      // filter out other cmsroleapprovers and systemadmins
-      // cmsroleapprovers cannot approve those role requests
-      roleRequests = roleRequests.filter(
-        (roleObj) => !["cmsroleapprover", "systemadmin"].includes(roleObj?.role),
-      );
+      // cmsroleapprovers can only see state admin requests
+      roleRequests = roleRequests.filter((roleObj) => roleObj?.role === "statesystemadmin");
     } else if (stateSystemAdmin?.territory) {
       roleRequests = await getAllUserRolesByState(stateSystemAdmin?.territory);
 
