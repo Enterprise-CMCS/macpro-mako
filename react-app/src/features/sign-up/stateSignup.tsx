@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { Navigate, useNavigate } from "react-router";
-import { StateCode } from "shared-types";
+import { FULL_CENSUS_STATES, StateCode } from "shared-types";
 import { UserRole } from "shared-types/events/legacy-user";
 
 import { useGetUserDetails, useGetUserProfile, useSubmitRoleRequests } from "@/api";
@@ -18,8 +18,8 @@ import {
   SubNavHeader,
 } from "@/components";
 import { FilterableSelect, Option } from "@/components/Opensearch/main/Filtering/Drawer/Filterable";
-import { useAvailableStates } from "@/hooks/useAvailableStates";
 
+// import { useAvailableStates } from "@/hooks/useAvailableStates";
 import { userRoleMap } from "../profile";
 
 export const StateSignup = () => {
@@ -27,10 +27,12 @@ export const StateSignup = () => {
   const [showModal, setShowModal] = useState<boolean>(false);
   const navigate = useNavigate();
   const { mutateAsync: submitRequest, isLoading } = useSubmitRoleRequests();
-
   const { data: userDetails } = useGetUserDetails();
-  const { data: userProfile } = useGetUserProfile();
-  const statesToRequest: Option[] = useAvailableStates(userProfile?.stateAccess);
+
+  const statesToRequest: Option[] = FULL_CENSUS_STATES.map(({ label, value }) => ({
+    label,
+    value,
+  }));
 
   if (!userDetails) return <LoadingSpinner />;
 
