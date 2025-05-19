@@ -163,7 +163,7 @@ const processAndIndex = async ({
             const changelogs = await getPackageChangelog(ids.beforeId);
 
             for (const changelog of changelogs.hits.hits) {
-              const recordOffset = changelog._id.split("-")[-1];
+              const recordOffset = changelog._source.timestamp;
               const origID = changelog._id;
               const source = changelog._source;
               if (source.timestamp <= adminChange.changeTimestamp) {

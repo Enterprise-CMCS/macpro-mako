@@ -1,0 +1,41 @@
+{
+    "_index": "valchangelog",
+    "_id": "MD-23-2323-VM-undefined",
+    "_version": 4,
+    "_score": 0,
+    "_source": {
+        "id": "MD-23-2323-VM-undefined",
+        "packageId": "MD-23-2323-VM",
+        "timestamp": 1672290673531,
+        "actionType": "legacy-admin-change",
+        "changeMade": "Systemadmin Nightwatch has enabled State package action to withdraw Formal RAI Response",
+        "changeReason": "Enable RAI Response withdraw for automated testing",
+        "isAdminChange": true,
+        "event": "new-chip-submission",
+        "additionalInformation": "test",
+        "attachments": [
+            {
+                "bucket": "uploads-develop-attachments-116229642442",
+                "filename": "excel.xlsx",
+                "uploadDate": 1672290671436,
+                "title": "CMS-179 Form",
+                "key": "protected/us-east-1:86a190fe-b195-42bf-9685-9761bf0ff14b/1672290671436/excel.xlsx"
+            },
+            {
+                "bucket": "uploads-develop-attachments-116229642442",
+                "filename": "textnotes.txt",
+                "uploadDate": 1672290671438,
+                "title": "SPA Pages",
+                "key": "protected/us-east-1:86a190fe-b195-42bf-9685-9761bf0ff14b/1672290671438/textnotes.txt"
+            }
+        ],
+        "origin": "OneMACLegacy",
+        "submitterName": "Statesubmitter Nightwatch",
+        "submitterEmail": "statesubmitter@nightwatch.test"
+    },
+    "highlight": {
+        "packageId.keyword": [
+            "@opensearch-dashboards-highlighted-field@MD-23-2323-VM@/opensearch-dashboards-highlighted-field@"
+        ]
+    }
+}
