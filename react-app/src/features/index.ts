@@ -12,3 +12,4 @@ export * from "./webforms";
 export * from "./forms";
 export { UserManagement } from "./user-roles/UserManagement";
 export * from "./error-page";
+export * from "./latest-updates";

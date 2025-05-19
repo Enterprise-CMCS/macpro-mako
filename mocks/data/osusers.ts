@@ -147,7 +147,7 @@ export const osUsers: Record<string, TestUserResult> = {
       eventType: "user-info",
       email: NO_STATE_SUBMITTER_EMAIL,
       fullName: "No State",
-      role: "statesubmitter",
+      role: "norole",
       states: [],
     },
   },
