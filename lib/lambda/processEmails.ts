@@ -129,6 +129,7 @@ export const handler: Handler<KafkaEvent> = async (event) => {
 };
 
 export async function processRecord(kafkaRecord: KafkaRecord, config: ProcessEmailConfig) {
+  let ninetyDayExpirationClock;
   console.log("processRecord called with kafkaRecord: ", JSON.stringify(kafkaRecord, null, 2));
   const { key, value, timestamp } = kafkaRecord;
   const id: string = decodeBase64WithUtf8(key);
@@ -165,7 +166,7 @@ export async function processRecord(kafkaRecord: KafkaRecord, config: ProcessEma
       const ninetyDays = 90 * 24 * 60 * 60 * 1000;
 
       // The due date = submission timestamp + 90 days + the paused duration
-      let ninetyDayExpirationClock;
+
       if (!alert90DaysDate) {
         ninetyDayExpirationClock = submissionMS + ninetyDays + pausedDuration;
       } else {
@@ -265,10 +266,21 @@ export async function processRecord(kafkaRecord: KafkaRecord, config: ProcessEma
   }
 
   console.log("made it this far")
-  const record = {
-    timestamp,
-    ...JSON.parse(decodeBase64WithUtf8(value)),
-  };
+  let record;
+  if (parsedRecord?.event == "respond-to-rai" && parsedRecord?.authority == "CHIP SPA") {
+    console.log("send with modified timestamp")
+    record = {
+      timestamp: ninetyDayExpirationClock,
+      ...JSON.parse(decodeBase64WithUtf8(value)),
+    };
+  } else {
+    console.log("non chiprai event")
+    record = {
+      timestamp,
+      ...JSON.parse(decodeBase64WithUtf8(value)),
+    };
+  }
+
   console.log("record: ", JSON.stringify(record, null, 2));
 
   if (record.origin !== "mako") {
