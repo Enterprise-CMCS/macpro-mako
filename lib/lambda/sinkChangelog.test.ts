@@ -323,7 +323,6 @@ describe("syncing Changelog events", () => {
         }),
       ],
     });
-
     const expectedChangelogs = [
       {
         id: "MD-22-0030-legacy-admin-change-1746798111690",
