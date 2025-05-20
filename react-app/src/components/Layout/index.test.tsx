@@ -282,7 +282,7 @@ describe("Layout", () => {
       expect(screen.getByText("Home")).toBeInTheDocument();
       expect(screen.getByText("Dashboard")).toBeInTheDocument();
       expect(screen.getByText("View FAQs")).toBeInTheDocument();
-      expect(screen.getByText("Webforms")).not.toBeInTheDocument();
+      expect(screen.queryByText("Webforms")).not.toBeInTheDocument();
       expect(screen.queryByText("Sign In")).not.toBeInTheDocument();
       expect(screen.queryByText("Log In")).not.toBeInTheDocument();
       expect(screen.queryByText("Register")).not.toBeInTheDocument();
@@ -309,7 +309,7 @@ describe("Layout", () => {
       expect(screen.getByText("Home")).toBeInTheDocument();
       expect(screen.getByText("Dashboard")).toBeInTheDocument();
       expect(screen.getByText("View FAQs")).toBeInTheDocument();
-      expect(screen.getByText("Webforms")).not.toBeInTheDocument();
+      expect(screen.queryByText("Webforms")).not.toBeInTheDocument();
 
       // Close the menu
       await user.click(menuButton);
