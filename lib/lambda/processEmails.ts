@@ -196,6 +196,7 @@ export async function processRecord(kafkaRecord: KafkaRecord, config: ProcessEma
 
 
   if (kafkaRecord.topic === "aws.seatool.ksql.onemac.three.agg.State_Plan") {
+    console.log("aws.seatool.ksql.onemac.three.agg.State_Plan")
     const safeID = id.replace(/^"|"$/g, "").toUpperCase();
     const seatoolRecord: Document = {
       safeID,
@@ -263,6 +264,7 @@ export async function processRecord(kafkaRecord: KafkaRecord, config: ProcessEma
     return;
   }
 
+  console.log("made it this far")
   const record = {
     timestamp,
     ...JSON.parse(decodeBase64WithUtf8(value)),
