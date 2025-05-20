@@ -65,7 +65,7 @@ export const CMSWelcome = () => {
         <div className="pl-[24px] pr-4 pt-4">
           <h3 className="font-bold text-lg mb-[16px]">{card.title}</h3>
           <p className="font-semibold text-sm text-gray-800 mb-[16px]">{card.content}</p>
-          <p className="text-sm text-gray-600">{card.body}</p>
+          {/* <p className="text-sm text-gray-600">{card.body}</p> */}
         </div>
         <div className="pl-[24px] mt-[16px] mb-[24px]">
           <a
