@@ -3,7 +3,7 @@ import { UserRole } from "shared-types/events/legacy-user";
 import { useGetUserDetails } from "@/api";
 import { LoadingSpinner, OptionCard, OptionFieldset, SubNavHeader } from "@/components";
 
-type UserRoleWithNoRole = UserRole | "norole";
+type UserRoleWithNoRole = UserRole;
 type RoleOptions = {
   key: UserRoleWithNoRole;
   title: string;

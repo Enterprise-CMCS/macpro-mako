@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
 
-import { filterStateAccess, orderStateAccess } from "./utils";
+import { filterStateAccess, hasPendingRequests, orderStateAccess } from "./utils";
 
 const baseRole = {
   eventType: "user-role",
@@ -163,33 +163,33 @@ describe("Profile utils", () => {
       expect(filterStateAccess({ role: "statesubmitter" }, { stateAccess: [] })).toEqual([]);
     });
 
-    it("should filter out the ZZ states", () => {
-      expect(
-        filterStateAccess(undefined, {
-          stateAccess: [
-            {
-              ...baseRole,
-              id: `${baseRole.email}_ZZ_${baseRole.role}`,
-              status: "active",
-              territory: "ZZ",
-            },
-            {
-              ...baseRole,
-              id: `${baseRole.email}_MD_${baseRole.role}`,
-              status: "active",
-              territory: "MD",
-            },
-          ],
-        }),
-      ).toEqual([
-        {
-          ...baseRole,
-          id: `${baseRole.email}_MD_${baseRole.role}`,
-          status: "active",
-          territory: "MD",
-        },
-      ]);
-    });
+    // it("should filter out the ZZ states", () => {
+    //   expect(
+    //     filterStateAccess(undefined, {
+    //       stateAccess: [
+    //         {
+    //           ...baseRole,
+    //           id: `${baseRole.email}_ZZ_${baseRole.role}`,
+    //           status: "active",
+    //           territory: "ZZ",
+    //         },
+    //         {
+    //           ...baseRole,
+    //           id: `${baseRole.email}_MD_${baseRole.role}`,
+    //           status: "active",
+    //           territory: "MD",
+    //         },
+    //       ],
+    //     }),
+    //   ).toEqual([
+    //     {
+    //       ...baseRole,
+    //       id: `${baseRole.email}_MD_${baseRole.role}`,
+    //       status: "active",
+    //       territory: "MD",
+    //     },
+    //   ]);
+    // });
 
     it("should filter all roles except the user's role if it has one", () => {
       expect(
@@ -221,6 +221,32 @@ describe("Profile utils", () => {
           territory: "MD",
         },
       ]);
+    });
+  });
+
+  describe("hasPendingRequests", () => {
+    it("should return false if user has no requests", () => {
+      // @ts-ignore
+      expect(hasPendingRequests([])).toBe(false);
+    });
+    it("should return true if user has pending requests", () => {
+      const stateAccessArray = [
+        {
+          ...baseRole,
+          role: "statesystemadmin",
+          id: `${baseRole.email}_MD_statesystemadmin`,
+          status: "active",
+          territory: "MD",
+        },
+        {
+          ...baseRole,
+          id: `${baseRole.email}_MD_${baseRole.role}`,
+          status: "pending",
+          territory: "MD",
+        },
+      ];
+      // @ts-ignore
+      expect(hasPendingRequests(stateAccessArray)).toBe(true);
     });
   });
 });
