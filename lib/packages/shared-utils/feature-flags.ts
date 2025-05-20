@@ -69,7 +69,7 @@ export const featureFlags = {
    *  Toggle visibility of webform tab
    */
   WEBFORM_TAB_VISIBLE: {
-    flag: "",
+    flag: "webform-tab",
     default: false,
   },
 } as const;
