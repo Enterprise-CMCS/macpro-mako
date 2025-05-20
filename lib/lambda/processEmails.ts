@@ -186,13 +186,13 @@ export async function processRecord(kafkaRecord: KafkaRecord, config: ProcessEma
 
 
 
-  const submissionTimestamp = parsedRecord.STATE_PLAN?.SUBMISSION_DATE ?? null;
-  console.log("submission timestamp: ", submissionTimestamp)
-  const alert90DaysDate = parsedRecord.STATE_PLAN?.ALERT_90_DAYS_DATE ?? null;
-  console.log("alert90DaysDate", alert90DaysDate)
-  const raiArrayLength = parsedRecord.RAI?.length;
-  console.log("raiArrayLength", raiArrayLength);
-  console.log("rai requested date: ", JSON.parse(parsedRecord.RAI[raiArrayLength - 1]).RAI_REQUESTED_DATE);
+  // const submissionTimestamp = parsedRecord.STATE_PLAN?.SUBMISSION_DATE ?? null;
+  // console.log("submission timestamp: ", submissionTimestamp)
+  // const alert90DaysDate = parsedRecord.STATE_PLAN?.ALERT_90_DAYS_DATE ?? null;
+  // console.log("alert90DaysDate", alert90DaysDate)
+  // const raiArrayLength = parsedRecord.RAI?.length;
+  // console.log("raiArrayLength", raiArrayLength);
+  // console.log("rai requested date: ", JSON.parse(parsedRecord.RAI[raiArrayLength - 1]).RAI_REQUESTED_DATE);
 
 
   if (kafkaRecord.topic === "aws.seatool.ksql.onemac.three.agg.State_Plan") {
