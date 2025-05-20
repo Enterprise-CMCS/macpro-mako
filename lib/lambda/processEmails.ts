@@ -269,10 +269,12 @@ export async function processRecord(kafkaRecord: KafkaRecord, config: ProcessEma
   let record;
   if (parsedRecord?.event == "respond-to-rai" && parsedRecord?.authority == "CHIP SPA") {
     console.log("send with modified timestamp")
+    console.log("ninetyDayExpirationClock: ", ninetyDayExpirationClock);
     record = {
       timestamp: ninetyDayExpirationClock,
       ...JSON.parse(decodeBase64WithUtf8(value)),
     };
+    record.timestamp = ninetyDayExpirationClock;
   } else {
     console.log("non chiprai event")
     record = {
