@@ -168,13 +168,12 @@ export const getApproversByRoleState = async (
     statesubmitter: "statesystemadmin",
     statesystemadmin: "cmsroleapprover",
     cmsroleapprover: "systemadmin",
-    defaultcmsuser: "statesystemadmin",
+    defaultcmsuser: "cmsroleapprover",
     helpdesk: "systemadmin",
     cmsreviewer: "cmsroleapprover",
   };
 
-  const approverRole =
-    approvingUserRole[role as keyof typeof approvingUserRole] ?? "statesystemadmin";
+  const approverRole = approvingUserRole[role as keyof typeof approvingUserRole];
 
   const queryRequirements =
     role === "statesubmitter"
