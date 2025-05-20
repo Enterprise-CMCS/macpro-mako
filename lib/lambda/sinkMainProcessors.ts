@@ -125,11 +125,11 @@ const isRecordAnAdminOneMacRecord = (
   record?.isAdminChange === true &&
   record?.adminChangeType !== undefined;
 
-const getOneMacRecordWithAllProperties = (
+const getOneMacRecordWithAllProperties = async (
   value: string,
   topicPartition: string,
   kafkaRecord: KafkaRecord,
-): OneMacRecord | undefined => {
+): Promise<OneMacRecord | undefined> => {
   const record = JSON.parse(decodeBase64WithUtf8(value));
   const kafkaSource = String.fromCharCode(...(kafkaRecord.headers[0]?.source || []));
 
@@ -240,7 +240,13 @@ const getOneMacRecordWithAllProperties = (
     }
 
     const { data: oneMacLegacyRecord } = safeEvent;
+    //here
 
+    const existingPackage = await getPackage(oneMacLegacyRecord.id);
+    if (existingPackage && existingPackage._source.origin !== "mako") {
+      console.log("Event already updated in Upgrade");
+      return;
+    }
     return oneMacLegacyRecord;
   }
 
