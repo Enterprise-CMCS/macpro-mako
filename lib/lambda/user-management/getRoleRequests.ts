@@ -58,7 +58,6 @@ export const getRoleRequests = async (event: APIGatewayEvent) => {
     const stateSystemAdmin = getActiveRole(approverRoles, "statesystemadmin");
 
     let roleRequests: StateAccess[] = [];
-    console.log(stateSystemAdmin?.territory, "STATE SYSTEM ADMIN TERRITORY");
 
     if (systemAdmin || helpDesk) {
       roleRequests = await getAllUserRoles();
@@ -71,7 +70,6 @@ export const getRoleRequests = async (event: APIGatewayEvent) => {
     }
 
     if (stateSystemAdmin) {
-      console.log("IN HERE");
       roleRequests = await getAllUserRolesByState(stateSystemAdmin?.territory);
 
       // statesystemadmins cannot update other statesystemadmin requests
