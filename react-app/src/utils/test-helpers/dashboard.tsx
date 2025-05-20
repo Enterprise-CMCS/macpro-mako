@@ -225,10 +225,10 @@ export const verifyChips = (labels: string[]) => {
 export const verifyPagination = (recordCount: number) => {
   const pagination = screen.getByTestId("pagination");
   expect(within(screen.getByTestId("pagination")).getByLabelText("Records per page:")).toHaveValue(
-    "25",
+    "100",
   );
   expect(within(pagination).getByTestId("page-location").textContent).toEqual(
-    `1-${recordCount < 25 ? recordCount : 25}of${recordCount}records`,
+    `1-${recordCount < 100 ? recordCount : 100}of${recordCount}records`,
   );
   expect(within(pagination).getByLabelText("Pagination")).toBeInTheDocument();
 };
