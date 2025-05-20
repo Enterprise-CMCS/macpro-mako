@@ -65,4 +65,11 @@ export const featureFlags = {
     flag: "chip-spa-submission",
     defaultValue: true,
   },
+  /**
+   * Toggles the visibility of the MMDL Alert Banner
+   */
+  WEBFORM_TAB: {
+    flag: "webform-tab",
+    defaultValue: false,
+  },
 } as const;
