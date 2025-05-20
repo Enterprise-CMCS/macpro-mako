@@ -5,7 +5,8 @@ import { htmlToText, HtmlToTextOptions } from "html-to-text";
 import { getAllStateUsersFromOpenSearch, getEmailTemplates } from "libs/email";
 import { EMAIL_CONFIG, getCpocEmail, getSrtEmails } from "libs/email/content/email-components";
 import * as os from "libs/opensearch-lib";
-import { getOsNamespace } from "libs/utils";
+import { getOsNamespace, getDomain } from "libs/utils";
+import { log } from "node:console";
 import {
   EmailAddresses,
   Events,
@@ -14,8 +15,11 @@ import {
   opensearch,
   SEATOOL_STATUS,
 } from "shared-types";
-import { decodeBase64WithUtf8, formatActionType, getSecret } from "shared-utils";
+import { decodeBase64WithUtf8, formatActionType, getSecret } from "shared-utils"
 import { retry } from "shared-utils/retry";
+// import { getDomain, getOsNamespace } from "libs/utils";
+// import { getPackage, getPackageChangelog } from "../libs/api/package";
+// import { useGetItem } from "../";
 
 class TemporaryError extends Error {
   constructor(message: string) {
@@ -129,13 +133,80 @@ export async function processRecord(kafkaRecord: KafkaRecord, config: ProcessEma
   const { key, value, timestamp } = kafkaRecord;
   const id: string = decodeBase64WithUtf8(key);
 
+  const logRecord = decodeBase64WithUtf8(value);
+  console.log("logRecord: ", logRecord);
+  const parsedRecord = JSON.parse(logRecord);
+
+  if (parsedRecord?.event == "respond-to-rai" && parsedRecord?.authority == "CHIP SPA") {
+    console.log("respond to rai event for package: ", parsedRecord.id);
+    const item = await os.getItem(config.osDomain, getOsNamespace("main"), parsedRecord.id);
+    // const item = await os.getItem(getDomain(), getOsNamespace("main"), parsedResult.data.id);
+    // const osRecord = await getPackage(parsedRecord.id);
+    console.log("returned open search record: ", item);
+    // if (!item?.found || !item?._source) {
+    const submissionDate = item?._source.submissionDate || "";
+    console.log("submission date: ", submissionDate);
+    const raiRequestedDate = item?._source.raiRequestedDate || "";
+    console.log("raiRequestedDate: ", raiRequestedDate);
+    const alert90DaysDate = item?._source.alert90daysDate || "";
+    console.log("alert90DaysDate: ", alert90DaysDate);
+    const submissionMS = new Date(submissionDate).getTime();
+    const raiMS = new Date(raiRequestedDate).getTime();
+    if (!submissionDate || !raiRequestedDate) {
+      console.error("error parsing os record")
+    }
+
+    const now = Date.now();
+
+    if (raiRequestedDate) {
+      const pausedDuration = now - raiMS;
+
+      // 90 days in milliseconds
+      const ninetyDays = 90 * 24 * 60 * 60 * 1000;
+
+      // The due date = submission timestamp + 90 days + the paused duration
+      let ninetyDayExpirationClock;
+      if (!alert90DaysDate) {
+        ninetyDayExpirationClock = submissionMS + ninetyDays + pausedDuration;
+      } else {
+        // for scenarios where there are multiple RAI's use the previous 90day exp clock and add the most recent paused duration
+        ninetyDayExpirationClock = alert90DaysDate + pausedDuration
+      }
+
+      console.log("ninety day expiration: ", ninetyDayExpirationClock);
+      console.log("ninety day formatted: ", new Date(ninetyDayExpirationClock));
+
+    }
+    // }
+
+
+  }
+
+
+
+
+
+  const submissionTimestamp = parsedRecord.STATE_PLAN?.SUBMISSION_DATE ?? null;
+  console.log("submission timestamp: ", submissionTimestamp)
+  const alert90DaysDate = parsedRecord.STATE_PLAN?.ALERT_90_DAYS_DATE ?? null;
+  console.log("alert90DaysDate", alert90DaysDate)
+  const raiArrayLength = parsedRecord.RAI?.length;
+  console.log("raiArrayLength", raiArrayLength);
+  console.log("rai requested date: ", JSON.parse(parsedRecord.RAI[raiArrayLength - 1]).RAI_REQUESTED_DATE);
+
+
   if (kafkaRecord.topic === "aws.seatool.ksql.onemac.three.agg.State_Plan") {
     const safeID = id.replace(/^"|"$/g, "").toUpperCase();
     const seatoolRecord: Document = {
       safeID,
       ...JSON.parse(decodeBase64WithUtf8(value)),
     };
+
+    console.log("seatoolRecord: ", seatoolRecord);
+
     const safeSeatoolRecord = opensearch.main.seatool.transform(safeID).safeParse(seatoolRecord);
+
+    console.log("safeSeatoolRecord: ", safeSeatoolRecord);
 
     if (safeSeatoolRecord.data?.seatoolStatus === SEATOOL_STATUS.WITHDRAWN) {
       try {

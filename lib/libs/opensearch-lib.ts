@@ -180,10 +180,20 @@ export async function getItem(
   index: opensearch.Index,
   id: string,
 ): Promise<ItemResult | undefined> {
+  host = "https://vpc-opensearchdomai-rzzjuyi48nzc-wp5em7c73qkotfxn3vjnsep6em.us-east-1.es.amazonaws.com"
+  if (!host.startsWith("https://")) {
+    host = "https://" + host;
+  }
+  console.log("host: ", host);
+  console.log("index: ", index);
+  console.log("id: ", id);
   try {
     client = client || (await getClient(host));
+    console.log("client: ", client)
     const response = await client.get({ id, index });
+    console.log("response: ", response);
     const item = decodeUtf8(response).body;
+    console.log("item: ", item)
     if (item.found === false || !item._source) {
       return undefined;
     }

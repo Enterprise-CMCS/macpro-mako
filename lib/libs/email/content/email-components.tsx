@@ -313,7 +313,7 @@ const WithdrawRAI: React.FC<WithdrawRAIProps> = ({ variables }) => {
 
 const getCpocEmail = (item?: os.main.ItemResult): string[] => {
   try {
-    const email = item?._source?.leadAnalystEmail;
+    const email = item?._source?.leadAnalystEmail || "dummyemail@test.com";
     const name = item?._source?.leadAnalystName;
 
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;

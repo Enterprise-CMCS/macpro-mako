@@ -131,6 +131,7 @@ const getOneMacRecordWithAllProperties = (
   kafkaRecord: KafkaRecord,
 ): OneMacRecord | undefined => {
   const record = JSON.parse(decodeBase64WithUtf8(value));
+  console.log("getOneMacRecordWithAllProperties record: ", record)
   const kafkaSource = String.fromCharCode(...(kafkaRecord.headers[0]?.source || []));
 
   if (isRecordAnAdminOneMacRecord(record)) {
@@ -157,6 +158,7 @@ const getOneMacRecordWithAllProperties = (
     const transformForEvent = transforms[record.event];
 
     const safeEvent = transformForEvent.transform().safeParse(record);
+    console.log("isRecordAOneMacRecord safeEvent: ", safeEvent)
 
     if (safeEvent.success === false) {
       logError({
@@ -229,6 +231,7 @@ const getOneMacRecordWithAllProperties = (
       .transform((data) => ({ ...data, proposedEffectiveDate: null }))
       .safeParse(record);
 
+    console.log("isRecordALegacyOneMacRecord: safeEvent", safeEvent)
     if (safeEvent.success === false) {
       logError({
         type: ErrorType.VALIDATION,
@@ -271,6 +274,9 @@ export const insertOneMacRecordsFromKafkaIntoMako = async (
         topicPartition,
         kafkaRecord,
       );
+
+
+      console.log("insertOneMacRecordsFromKafkaIntoMako oneMacRecordWithAllProperties", oneMacRecordWithAllProperties)
 
       if (oneMacRecordWithAllProperties) {
         return collection.concat(oneMacRecordWithAllProperties);
@@ -394,7 +400,7 @@ export const insertNewSeatoolRecordsFromKafkaIntoMako = async (
   topicPartition: string,
 ) => {
   const makoDocTimestamps = await getMakoDocTimestamps(kafkaRecords);
-  const seatoolRecordsForMako: { id: string; [key: string]: unknown }[] = [];
+  const seatoolRecordsForMako: { id: string;[key: string]: unknown }[] = [];
 
   for (const kafkaRecord of kafkaRecords) {
     try {
@@ -413,6 +419,7 @@ export const insertNewSeatoolRecordsFromKafkaIntoMako = async (
         continue;
       }
 
+
       const seatoolRecord: Document = {
         id,
         ...JSON.parse(decodeBase64WithUtf8(value)),
@@ -421,7 +428,7 @@ export const insertNewSeatoolRecordsFromKafkaIntoMako = async (
       seatoolRecord.STATE_PLAN.SPW_STATUS_ID = await oneMacSeatoolStatusCheck(seatoolRecord);
 
       const safeSeatoolRecord = opensearch.main.seatool.transform(id).safeParse(seatoolRecord);
-
+      console.log("insertNewSeatoolRecordsFromKafkaIntoMako safeSeatoolRecord", safeSeatoolRecord);
       if (!safeSeatoolRecord.success) {
         logError({
           type: ErrorType.VALIDATION,
