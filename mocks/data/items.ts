@@ -7,7 +7,6 @@ import {
 
 import { ATTACHMENT_BUCKET_NAME } from "../consts";
 import type { TestItemResult } from "../index.d";
-
 export const EXISTING_ITEM_PENDING_ID = "MD-0002.R00.00";
 export const EXISTING_ITEM_APPROVED_NEW_ID = "MD-0000.R00.00";
 export const VALID_ITEM_TEMPORARY_EXTENSION_ID = "MD-0000.R00.TE00";
@@ -438,6 +437,56 @@ const items: Record<string, TestItemResult> = {
                 bucket: ATTACHMENT_BUCKET_NAME,
               },
             ],
+            additionalInformation: "Uncategorized file upload.",
+            isAdminChange: true,
+          },
+        },
+        {
+          _id: `${ADMIN_ITEM_ID}-0007`,
+          _source: {
+            timestamp: 1701439200000, // Dec 1, 2023, in milliseconds
+            packageId: ADMIN_ITEM_ID,
+            id: `${ADMIN_ITEM_ID}-0007`,
+            submitterName: "Test person",
+            event: "legacy-admin-change",
+            changeMade:
+              "Systemadmin Nightwatch has disabled State package action to withdraw Formal RAI Response",
+            changeReason: "missing file",
+            raiWithdrawEnabled: false,
+
+            additionalInformation: "Uncategorized file upload.",
+            isAdminChange: true,
+          },
+        },
+        {
+          _id: `${ADMIN_ITEM_ID}-0008`,
+          _source: {
+            timestamp: 1701439200000, // Dec 1, 2023, in milliseconds
+            packageId: ADMIN_ITEM_ID,
+            id: `${ADMIN_ITEM_ID}-0008`,
+            submitterName: "Test person",
+            event: "legacy-admin-change",
+            changeMade:
+              "Systemadmin Nightwatch has enabled State package action to withdraw Formal RAI Response",
+            changeReason: "missing file",
+            raiWithdrawEnabled: false,
+
+            additionalInformation: "Uncategorized file upload.",
+            isAdminChange: true,
+          },
+        },
+        {
+          _id: `${ADMIN_ITEM_ID}-0009`,
+          _source: {
+            timestamp: 1701439200000, // Dec 1, 2023, in milliseconds
+            packageId: ADMIN_ITEM_ID,
+            id: `${ADMIN_ITEM_ID}-0009`,
+            submitterName: "Test person",
+            event: "legacy-admin-change",
+            changeMade: "ID changed from one to another",
+            changeReason: "missing file",
+            raiWithdrawEnabled: false,
+
             additionalInformation: "Uncategorized file upload.",
             isAdminChange: true,
           },

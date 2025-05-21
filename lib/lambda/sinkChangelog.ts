@@ -79,7 +79,7 @@ const processAndIndex = async ({
 
       // Parse the kafka record's value
       const record = JSON.parse(decodeBase64WithUtf8(value));
-
+      console.log(JSON.stringify(record, null, 2));
       if (record.isAdminChange) {
         const schema = transformDeleteSchema(offset)
           .or(transformUpdateValuesSchema(offset))
@@ -173,6 +173,21 @@ const processAndIndex = async ({
                 );
               }
             }
+            const copyDocs: Array<(typeof transforms)[keyof typeof transforms]["Schema"]> = [];
+            for (const record of docs) {
+              if (
+                record.packageId === ids.beforeId &&
+                record.timestamp <= adminChange.changeTimestamp
+              ) {
+                copyDocs.push({
+                  ...record,
+                  id: `${ids.afterId}-${record.timestamp}`,
+                  packageId: ids.afterId,
+                });
+                record.packageId += "-del";
+              }
+            }
+            docs.push(...copyDocs);
           }
         }
 
