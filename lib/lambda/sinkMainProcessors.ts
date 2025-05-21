@@ -264,22 +264,24 @@ export const insertOneMacRecordsFromKafkaIntoMako = async (
   kafkaRecords: KafkaRecord[],
   topicPartition: string,
 ) => {
-  const oneMacRecordsForMako = kafkaRecords.reduce<OneMacRecord[]>((collection, kafkaRecord) => {
+  const oneMacRecordsForMako: OneMacRecord[] = [];
+  for (const kafkaRecord of kafkaRecords) {
     try {
       const { value } = kafkaRecord;
 
       if (!value) {
-        return collection;
+        continue;
       }
 
-      const oneMacRecordWithAllProperties = getOneMacRecordWithAllProperties(
+      // Await the promise here
+      const oneMacRecordWithAllProperties = await getOneMacRecordWithAllProperties(
         value,
         topicPartition,
         kafkaRecord,
       );
 
       if (oneMacRecordWithAllProperties) {
-        return collection.concat(oneMacRecordWithAllProperties);
+        oneMacRecordsForMako.push(oneMacRecordWithAllProperties);
       }
     } catch (error) {
       logError({
@@ -288,10 +290,9 @@ export const insertOneMacRecordsFromKafkaIntoMako = async (
         metadata: { topicPartition, kafkaRecord },
       });
     }
+  }
 
-    return collection;
-  }, []);
-
+  // Continue with the rest of your function...
   const oneMacRecords = oneMacRecordsForMako.filter(
     (record) =>
       record.eventType !== "user-info" &&
