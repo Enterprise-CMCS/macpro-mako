@@ -107,6 +107,27 @@ describe("StateSignup", () => {
     await waitFor(() => expect(screen.getByText("Dashboard")).toBeInTheDocument());
   });
 
+  it("should handle cancelling the form", async () => {
+    setMockUsername(osStateSubmitter);
+    const { user } = await setup();
+
+    const submitButton = screen.getByRole("button", { name: "Submit" });
+    expect(submitButton).toBeDisabled();
+
+    await user.click(screen.getByRole("combobox", { name: /Select state/ }));
+    expect(submitButton).toBeDisabled();
+
+    await waitFor(() => expect(screen.getByText("Maine")).toBeInTheDocument());
+    await user.click(screen.getByText("Maine"));
+    expect(submitButton).toBeEnabled();
+
+    const cancelButton = screen.getByRole("button", { name: "Cancel" });
+
+    await user.click(cancelButton);
+
+    await waitFor(() => expect(screen.getByText("Registration: State Access")).toBeInTheDocument());
+  });
+
   it("should show an error if there was an error submitting the request", async () => {
     mockedServer.use(errorApiSubmitRoleRequestsHandler);
     setMockUsername(osStateSubmitter);
