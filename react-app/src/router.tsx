@@ -30,6 +30,7 @@ export const router = (loginFlag = false) => {
         { path: "/", index: true, element: <F.WelcomeWrapper /> },
         { path: "/faq", element: <F.Faq /> },
         { path: "/faq/:id", element: <F.Faq /> },
+        { path: "/latestupdates", element: <F.LatestUpdates /> },
         { path: "/webforms", element: <F.WebformsList /> },
         { path: "/webform/:id/:version", element: <F.Webform /> },
         {
@@ -63,6 +64,10 @@ export const router = (loginFlag = false) => {
             {
               path: "/new-submission/spa/chip/create",
               element: <F.ChipForm />,
+            },
+            {
+              path: "/new-submission/spa/chip/create/chip-details",
+              element: <F.ChipDetailsForm />,
             },
             {
               path: "/new-submission/waiver/b/capitated/amendment/create",

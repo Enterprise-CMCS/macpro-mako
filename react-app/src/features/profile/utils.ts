@@ -10,17 +10,17 @@ export const userRoleMap = {
   statesystemadmin: "State System Admin",
   helpdesk: "Help Desk",
   statesubmitter: "State Submitter",
-  systemadmin: "System Admin",
+  systemadmin: "CMS System Admin",
 };
 // TODO: rename? all roles should see either a State or Status Access Card
 export const stateAccessRoles: UserRole[] = [
   "statesubmitter",
   "statesystemadmin",
   "cmsroleapprover",
-  "systemadmin",
   "helpdesk",
   "defaultcmsuser",
   "cmsreviewer",
+  "norole",
 ];
 
 export const orderStateAccess = (accesses: StateAccess[]) => {
@@ -48,8 +48,11 @@ export const orderStateAccess = (accesses: StateAccess[]) => {
 export const filterStateAccess = (userDetails, userProfile) => {
   if (!userProfile?.stateAccess || userProfile.stateAccess.length < 1) return [];
   return userDetails?.role && userDetails?.role !== "norole"
-    ? userProfile.stateAccess.filter(
-        (access: StateAccess) => access.role === userDetails.role && access.territory !== "ZZ",
-      )
-    : userProfile.stateAccess.filter((access: StateAccess) => access.territory !== "ZZ");
+    ? userProfile.stateAccess.filter((access: StateAccess) => access.role === userDetails.role)
+    : userProfile.stateAccess;
+};
+
+export const hasPendingRequests = (stateAccess) => {
+  if (stateAccess.length < 1) return false;
+  return stateAccess.some((role) => role.status === "pending");
 };

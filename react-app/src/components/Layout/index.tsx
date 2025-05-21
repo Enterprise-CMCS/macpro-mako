@@ -13,6 +13,7 @@ import { Banner, ScrollToTop, SimplePageContainer, UserPrompt } from "@/componen
 import MMDLAlertBanner from "@/components/Banner/MMDLSpaBanner";
 import config from "@/config";
 import { ErrorPage } from "@/features/error-page";
+import { hasPendingRequests } from "@/features/profile/utils";
 import { useMediaQuery } from "@/hooks";
 import { useFeatureFlag } from "@/hooks/useFeatureFlag";
 import { isFaqPage, isProd } from "@/utils";
@@ -33,7 +34,7 @@ import { UsaBanner } from "../UsaBanner";
 const useGetLinks = () => {
   const { isLoading: userLoading, data: userObj } = useGetUser();
   const { data: userDetailsData, isLoading: userDetailsLoading } = useGetUserDetails();
-  const hideWebformTab = useFeatureFlag("UAT_HIDE_MMDL_BANNER");
+  const showWebformTab = useFeatureFlag("WEBFORM_TAB_VISIBLE");
   const toggleFaq = useFeatureFlag("TOGGLE_FAQ");
   const showHome = toggleFaq ? userObj.user : true; // if toggleFAQ is on we want to hide home when not logged in
   const isStateHomepage = useFeatureFlag("STATE_HOMEPAGE_FLAG");
@@ -78,7 +79,7 @@ const useGetLinks = () => {
           {
             name: "Webforms",
             link: "/webforms",
-            condition: userObj.user && !isProd && !hideWebformTab,
+            condition: userObj.user && !isProd && showWebformTab,
           },
         ].filter((l) => l.condition);
 
@@ -106,24 +107,13 @@ const UserDropdownMenu = () => {
   const { data: userDetails, isLoading } = useGetUserDetails();
   const { data: userProfile } = useGetUserProfile();
 
-  // TODO: fix?
-  // Disable page if user is a defaultcmsuser that just requested cmsroleapprover and is pending?
-  // Disable page if user is a statesubmitter that just requested statesystemadmin and is pending?
+  // Disable page if user has a pending request
   // Certain roles cannot be changed
   const disableRoleChange = () => {
     const currentRole = userDetails?.role;
     const requestedRoles = userProfile?.stateAccess ?? [];
 
-    const roleIsPending = requestedRoles.some((r) => r.status === "pending");
-
-    // Prevent duplicate or inappropriate role requests
-    // if (
-    //   (currentRole === "statesubmitter" && roleIsPending("statesystemadmin")) ||
-    //   (currentRole === "defaultcmsuser" && roleIsPending("cmsroleapprover"))
-    // ) {
-    //   return true;
-    // }
-    if (roleIsPending) return true;
+    if (hasPendingRequests(requestedRoles)) return true;
 
     const excludedRoles = ["helpdesk", "systemadmin"];
 
