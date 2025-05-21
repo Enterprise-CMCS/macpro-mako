@@ -184,7 +184,7 @@ const processAndIndex = async ({
                 record.packageId += "-del";
               }
             }
-            docs.push(copyDocs);
+            docs.push(...copyDocs);
           }
         }
 
