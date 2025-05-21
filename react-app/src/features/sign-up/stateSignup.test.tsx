@@ -88,7 +88,7 @@ describe("StateSignup", () => {
     expect(screen.getByText("State System Admin")).toBeInTheDocument();
   });
 
-  it("should handle filling out the form", async () => {
+  it("should handle filling out the form as a statesubmitter", async () => {
     setMockUsername(osStateSubmitter);
     const { user } = await setup();
 
