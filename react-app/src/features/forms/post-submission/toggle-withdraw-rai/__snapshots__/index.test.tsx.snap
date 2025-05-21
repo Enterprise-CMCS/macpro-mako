@@ -32,7 +32,7 @@ exports[`Toggle Withdraw Rai components > renders disable withdraw rai correctly
             >
               <span>
                 <svg
-                  class="w-5 h-5"
+                  class="lucide lucide-chevron-right w-5 h-5"
                   fill="none"
                   height="24"
                   stroke="currentColor"
@@ -61,7 +61,7 @@ exports[`Toggle Withdraw Rai components > renders disable withdraw rai correctly
             >
               <span>
                 <svg
-                  class="w-5 h-5"
+                  class="lucide lucide-chevron-right w-5 h-5"
                   fill="none"
                   height="24"
                   stroke="currentColor"
@@ -216,7 +216,7 @@ exports[`Toggle Withdraw Rai components > renders disable withdraw rai correctly
           >
             <span>
               <svg
-                class="w-5 h-5"
+                class="lucide lucide-chevron-right w-5 h-5"
                 fill="none"
                 height="24"
                 stroke="currentColor"
@@ -245,7 +245,7 @@ exports[`Toggle Withdraw Rai components > renders disable withdraw rai correctly
           >
             <span>
               <svg
-                class="w-5 h-5"
+                class="lucide lucide-chevron-right w-5 h-5"
                 fill="none"
                 height="24"
                 stroke="currentColor"
@@ -457,7 +457,7 @@ exports[`Toggle Withdraw Rai components > renders disable withdraw rai correctly
             >
               <span>
                 <svg
-                  class="w-5 h-5"
+                  class="lucide lucide-chevron-right w-5 h-5"
                   fill="none"
                   height="24"
                   stroke="currentColor"
@@ -486,7 +486,7 @@ exports[`Toggle Withdraw Rai components > renders disable withdraw rai correctly
             >
               <span>
                 <svg
-                  class="w-5 h-5"
+                  class="lucide lucide-chevron-right w-5 h-5"
                   fill="none"
                   height="24"
                   stroke="currentColor"
@@ -641,7 +641,7 @@ exports[`Toggle Withdraw Rai components > renders disable withdraw rai correctly
           >
             <span>
               <svg
-                class="w-5 h-5"
+                class="lucide lucide-chevron-right w-5 h-5"
                 fill="none"
                 height="24"
                 stroke="currentColor"
@@ -670,7 +670,7 @@ exports[`Toggle Withdraw Rai components > renders disable withdraw rai correctly
           >
             <span>
               <svg
-                class="w-5 h-5"
+                class="lucide lucide-chevron-right w-5 h-5"
                 fill="none"
                 height="24"
                 stroke="currentColor"

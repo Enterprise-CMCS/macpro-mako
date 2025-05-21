@@ -61,7 +61,7 @@ exports[`Admin Features test > finds an admin change admin changes 1`] = `
                     Sun, Jan 1 2023, 09:00:00 AM EST
                   </p>
                   <svg
-                    class="h-4 w-4 shrink-0 transition-transform duration-200 group-data-[state=open]:hidden"
+                    class="lucide lucide-plus h-4 w-4 shrink-0 transition-transform duration-200 group-data-[state=open]:hidden"
                     fill="none"
                     height="24"
                     stroke="currentColor"
@@ -80,7 +80,7 @@ exports[`Admin Features test > finds an admin change admin changes 1`] = `
                     />
                   </svg>
                   <svg
-                    class="h-4 w-4 shrink-0 transition-transform duration-200 group-data-[state=closed]:hidden"
+                    class="lucide lucide-minus h-4 w-4 shrink-0 transition-transform duration-200 group-data-[state=closed]:hidden"
                     fill="none"
                     height="24"
                     stroke="currentColor"
@@ -166,7 +166,7 @@ exports[`Admin Features test > finds an admin change admin changes 1`] = `
                     Wed, Mar 1 2023, 09:00:00 AM EST
                   </p>
                   <svg
-                    class="h-4 w-4 shrink-0 transition-transform duration-200 group-data-[state=open]:hidden"
+                    class="lucide lucide-plus h-4 w-4 shrink-0 transition-transform duration-200 group-data-[state=open]:hidden"
                     fill="none"
                     height="24"
                     stroke="currentColor"
@@ -185,7 +185,7 @@ exports[`Admin Features test > finds an admin change admin changes 1`] = `
                     />
                   </svg>
                   <svg
-                    class="h-4 w-4 shrink-0 transition-transform duration-200 group-data-[state=closed]:hidden"
+                    class="lucide lucide-minus h-4 w-4 shrink-0 transition-transform duration-200 group-data-[state=closed]:hidden"
                     fill="none"
                     height="24"
                     stroke="currentColor"
@@ -243,7 +243,7 @@ exports[`Admin Features test > finds an admin change admin changes 1`] = `
                     Thu, Jun 1 2023, 09:00:00 AM EDT
                   </p>
                   <svg
-                    class="h-4 w-4 shrink-0 transition-transform duration-200 group-data-[state=open]:hidden"
+                    class="lucide lucide-plus h-4 w-4 shrink-0 transition-transform duration-200 group-data-[state=open]:hidden"
                     fill="none"
                     height="24"
                     stroke="currentColor"
@@ -262,7 +262,7 @@ exports[`Admin Features test > finds an admin change admin changes 1`] = `
                     />
                   </svg>
                   <svg
-                    class="h-4 w-4 shrink-0 transition-transform duration-200 group-data-[state=closed]:hidden"
+                    class="lucide lucide-minus h-4 w-4 shrink-0 transition-transform duration-200 group-data-[state=closed]:hidden"
                     fill="none"
                     height="24"
                     stroke="currentColor"
@@ -320,7 +320,7 @@ exports[`Admin Features test > finds an admin change admin changes 1`] = `
                     Fri, Sep 1 2023, 09:00:00 AM EDT
                   </p>
                   <svg
-                    class="h-4 w-4 shrink-0 transition-transform duration-200 group-data-[state=open]:hidden"
+                    class="lucide lucide-plus h-4 w-4 shrink-0 transition-transform duration-200 group-data-[state=open]:hidden"
                     fill="none"
                     height="24"
                     stroke="currentColor"
@@ -339,7 +339,7 @@ exports[`Admin Features test > finds an admin change admin changes 1`] = `
                     />
                   </svg>
                   <svg
-                    class="h-4 w-4 shrink-0 transition-transform duration-200 group-data-[state=closed]:hidden"
+                    class="lucide lucide-minus h-4 w-4 shrink-0 transition-transform duration-200 group-data-[state=closed]:hidden"
                     fill="none"
                     height="24"
                     stroke="currentColor"
@@ -397,7 +397,7 @@ exports[`Admin Features test > finds an admin change admin changes 1`] = `
                     Sat, Dec 31 2022, 07:00:00 PM EST
                   </p>
                   <svg
-                    class="h-4 w-4 shrink-0 transition-transform duration-200 group-data-[state=open]:hidden"
+                    class="lucide lucide-plus h-4 w-4 shrink-0 transition-transform duration-200 group-data-[state=open]:hidden"
                     fill="none"
                     height="24"
                     stroke="currentColor"
@@ -416,7 +416,7 @@ exports[`Admin Features test > finds an admin change admin changes 1`] = `
                     />
                   </svg>
                   <svg
-                    class="h-4 w-4 shrink-0 transition-transform duration-200 group-data-[state=closed]:hidden"
+                    class="lucide lucide-minus h-4 w-4 shrink-0 transition-transform duration-200 group-data-[state=closed]:hidden"
                     fill="none"
                     height="24"
                     stroke="currentColor"
@@ -474,7 +474,7 @@ exports[`Admin Features test > finds an admin change admin changes 1`] = `
                     Fri, Dec 1 2023, 09:00:00 AM EST
                   </p>
                   <svg
-                    class="h-4 w-4 shrink-0 transition-transform duration-200 group-data-[state=open]:hidden"
+                    class="lucide lucide-plus h-4 w-4 shrink-0 transition-transform duration-200 group-data-[state=open]:hidden"
                     fill="none"
                     height="24"
                     stroke="currentColor"
@@ -493,7 +493,7 @@ exports[`Admin Features test > finds an admin change admin changes 1`] = `
                     />
                   </svg>
                   <svg
-                    class="h-4 w-4 shrink-0 transition-transform duration-200 group-data-[state=closed]:hidden"
+                    class="lucide lucide-minus h-4 w-4 shrink-0 transition-transform duration-200 group-data-[state=closed]:hidden"
                     fill="none"
                     height="24"
                     stroke="currentColor"
@@ -584,7 +584,7 @@ exports[`Admin Features test > finds an admin change admin changes 1`] = `
                   Sun, Jan 1 2023, 09:00:00 AM EST
                 </p>
                 <svg
-                  class="h-4 w-4 shrink-0 transition-transform duration-200 group-data-[state=open]:hidden"
+                  class="lucide lucide-plus h-4 w-4 shrink-0 transition-transform duration-200 group-data-[state=open]:hidden"
                   fill="none"
                   height="24"
                   stroke="currentColor"
@@ -603,7 +603,7 @@ exports[`Admin Features test > finds an admin change admin changes 1`] = `
                   />
                 </svg>
                 <svg
-                  class="h-4 w-4 shrink-0 transition-transform duration-200 group-data-[state=closed]:hidden"
+                  class="lucide lucide-minus h-4 w-4 shrink-0 transition-transform duration-200 group-data-[state=closed]:hidden"
                   fill="none"
                   height="24"
                   stroke="currentColor"
@@ -689,7 +689,7 @@ exports[`Admin Features test > finds an admin change admin changes 1`] = `
                   Wed, Mar 1 2023, 09:00:00 AM EST
                 </p>
                 <svg
-                  class="h-4 w-4 shrink-0 transition-transform duration-200 group-data-[state=open]:hidden"
+                  class="lucide lucide-plus h-4 w-4 shrink-0 transition-transform duration-200 group-data-[state=open]:hidden"
                   fill="none"
                   height="24"
                   stroke="currentColor"
@@ -708,7 +708,7 @@ exports[`Admin Features test > finds an admin change admin changes 1`] = `
                   />
                 </svg>
                 <svg
-                  class="h-4 w-4 shrink-0 transition-transform duration-200 group-data-[state=closed]:hidden"
+                  class="lucide lucide-minus h-4 w-4 shrink-0 transition-transform duration-200 group-data-[state=closed]:hidden"
                   fill="none"
                   height="24"
                   stroke="currentColor"
@@ -766,7 +766,7 @@ exports[`Admin Features test > finds an admin change admin changes 1`] = `
                   Thu, Jun 1 2023, 09:00:00 AM EDT
                 </p>
                 <svg
-                  class="h-4 w-4 shrink-0 transition-transform duration-200 group-data-[state=open]:hidden"
+                  class="lucide lucide-plus h-4 w-4 shrink-0 transition-transform duration-200 group-data-[state=open]:hidden"
                   fill="none"
                   height="24"
                   stroke="currentColor"
@@ -785,7 +785,7 @@ exports[`Admin Features test > finds an admin change admin changes 1`] = `
                   />
                 </svg>
                 <svg
-                  class="h-4 w-4 shrink-0 transition-transform duration-200 group-data-[state=closed]:hidden"
+                  class="lucide lucide-minus h-4 w-4 shrink-0 transition-transform duration-200 group-data-[state=closed]:hidden"
                   fill="none"
                   height="24"
                   stroke="currentColor"
@@ -843,7 +843,7 @@ exports[`Admin Features test > finds an admin change admin changes 1`] = `
                   Fri, Sep 1 2023, 09:00:00 AM EDT
                 </p>
                 <svg
-                  class="h-4 w-4 shrink-0 transition-transform duration-200 group-data-[state=open]:hidden"
+                  class="lucide lucide-plus h-4 w-4 shrink-0 transition-transform duration-200 group-data-[state=open]:hidden"
                   fill="none"
                   height="24"
                   stroke="currentColor"
@@ -862,7 +862,7 @@ exports[`Admin Features test > finds an admin change admin changes 1`] = `
                   />
                 </svg>
                 <svg
-                  class="h-4 w-4 shrink-0 transition-transform duration-200 group-data-[state=closed]:hidden"
+                  class="lucide lucide-minus h-4 w-4 shrink-0 transition-transform duration-200 group-data-[state=closed]:hidden"
                   fill="none"
                   height="24"
                   stroke="currentColor"
@@ -920,7 +920,7 @@ exports[`Admin Features test > finds an admin change admin changes 1`] = `
                   Sat, Dec 31 2022, 07:00:00 PM EST
                 </p>
                 <svg
-                  class="h-4 w-4 shrink-0 transition-transform duration-200 group-data-[state=open]:hidden"
+                  class="lucide lucide-plus h-4 w-4 shrink-0 transition-transform duration-200 group-data-[state=open]:hidden"
                   fill="none"
                   height="24"
                   stroke="currentColor"
@@ -939,7 +939,7 @@ exports[`Admin Features test > finds an admin change admin changes 1`] = `
                   />
                 </svg>
                 <svg
-                  class="h-4 w-4 shrink-0 transition-transform duration-200 group-data-[state=closed]:hidden"
+                  class="lucide lucide-minus h-4 w-4 shrink-0 transition-transform duration-200 group-data-[state=closed]:hidden"
                   fill="none"
                   height="24"
                   stroke="currentColor"
@@ -997,7 +997,7 @@ exports[`Admin Features test > finds an admin change admin changes 1`] = `
                   Fri, Dec 1 2023, 09:00:00 AM EST
                 </p>
                 <svg
-                  class="h-4 w-4 shrink-0 transition-transform duration-200 group-data-[state=open]:hidden"
+                  class="lucide lucide-plus h-4 w-4 shrink-0 transition-transform duration-200 group-data-[state=open]:hidden"
                   fill="none"
                   height="24"
                   stroke="currentColor"
@@ -1016,7 +1016,7 @@ exports[`Admin Features test > finds an admin change admin changes 1`] = `
                   />
                 </svg>
                 <svg
-                  class="h-4 w-4 shrink-0 transition-transform duration-200 group-data-[state=closed]:hidden"
+                  class="lucide lucide-minus h-4 w-4 shrink-0 transition-transform duration-200 group-data-[state=closed]:hidden"
                   fill="none"
                   height="24"
                   stroke="currentColor"
