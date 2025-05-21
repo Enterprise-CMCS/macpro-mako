@@ -34,6 +34,14 @@ const defaultApiUserDetailsHandler = http.post<PathParams, UserDetailsRequestBod
   },
 );
 
+export const errorApiUserDetailsHandler = http.post<PathParams, UserDetailsRequestBody>(
+  "https://test-domain.execute-api.us-east-1.amazonaws.com/mocked-tests/getUserDetails",
+  () => {
+    console.log("throw error");
+    return new HttpResponse("Response Error", { status: 500 });
+  },
+);
+
 const defaultApiRequestBaseCMSAccessHandler = http.get(
   "https://test-domain.execute-api.us-east-1.amazonaws.com/mocked-tests/requestBaseCMSAccess",
   async () => {

@@ -37,6 +37,14 @@ const defaultApiUserProfileHandler = http.post<PathParams, UserProfileRequestBod
   },
 );
 
+export const errorApiUserProfileHandler = http.post<PathParams, UserProfileRequestBody>(
+  "https://test-domain.execute-api.us-east-1.amazonaws.com/mocked-tests/getUserProfile",
+  async () => {
+    console.log("throw error");
+    return new HttpResponse("Response Error", { status: 500 });
+  },
+);
+
 const defaultApiGetCreateUserProfileHandler = http.get(
   "https://test-domain.execute-api.us-east-1.amazonaws.com/mocked-tests/createUserProfile",
   async () => {

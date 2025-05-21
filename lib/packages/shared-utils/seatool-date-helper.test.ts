@@ -18,6 +18,10 @@ describe("seaToolFriendlyTimestamp", () => {
 });
 
 describe("formatSeatoolDate", () => {
+  it("should return an empty string if the SEATool date is undefined", () => {
+    expect(formatSeatoolDate("")).toEqual("");
+  });
+
   it("should format a SEATool date to a user-friendly format", () => {
     const originalDate = new Date("2000-01-01T00:00:00.000Z");
     expect(formatSeatoolDate(originalDate.toISOString())).toEqual("01/01/2000");
