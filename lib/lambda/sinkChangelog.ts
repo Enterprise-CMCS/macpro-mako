@@ -175,7 +175,10 @@ const processAndIndex = async ({
             }
             const copyDocs: Array<(typeof transforms)[keyof typeof transforms]["Schema"]> = [];
             for (const record of docs) {
-              if (record.packageId === ids.beforeId) {
+              if (
+                record.packageId === ids.beforeId &&
+                record.timestamp <= adminChange.changeTimestamp
+              ) {
                 copyDocs.push({
                   ...record,
                   id: `${ids.afterId}-${record.timestamp}`,
