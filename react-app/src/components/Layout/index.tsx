@@ -33,7 +33,7 @@ import { UsaBanner } from "../UsaBanner";
 const useGetLinks = () => {
   const { isLoading: userLoading, data: userObj } = useGetUser();
   const { data: userDetailsData, isLoading: userDetailsLoading } = useGetUserDetails();
-  const hideWebformTab = useFeatureFlag("UAT_HIDE_MMDL_BANNER");
+  const showWebformTab = useFeatureFlag("WEBFORM_TAB_VISIBLE");
   const toggleFaq = useFeatureFlag("TOGGLE_FAQ");
   const showHome = toggleFaq ? userObj.user : true; // if toggleFAQ is on we want to hide home when not logged in
   const isStateHomepage = useFeatureFlag("STATE_HOMEPAGE_FLAG");
@@ -78,7 +78,7 @@ const useGetLinks = () => {
           {
             name: "Webforms",
             link: "/webforms",
-            condition: userObj.user && !isProd && !hideWebformTab,
+            condition: userObj.user && !isProd && showWebformTab,
           },
         ].filter((l) => l.condition);
 
