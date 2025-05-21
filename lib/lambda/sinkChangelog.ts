@@ -173,6 +173,18 @@ const processAndIndex = async ({
                 );
               }
             }
+            const copyDocs: Array<(typeof transforms)[keyof typeof transforms]["Schema"]> = [];
+            for (const record of docs) {
+              if (record.id === ids.beforeId) {
+                copyDocs.push({
+                  ...record,
+                  id: `${ids.afterId}-${record.timestamp}`,
+                  packageId: ids.afterId,
+                });
+                record.packageId += "-del";
+              }
+            }
+            docs.push(copyDocs);
           }
         }
 
