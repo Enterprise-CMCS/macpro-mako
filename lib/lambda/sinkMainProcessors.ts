@@ -243,7 +243,11 @@ const getOneMacRecordWithAllProperties = async (
     //here
 
     const existingPackage = await getPackage(oneMacLegacyRecord.id);
-    if (existingPackage && existingPackage._source.origin !== "mako") {
+    if (
+      existingPackage &&
+      existingPackage._source.origin &&
+      existingPackage._source.origin !== "mako"
+    ) {
       console.log("Event already updated in Upgrade");
       return;
     }
@@ -273,7 +277,6 @@ export const insertOneMacRecordsFromKafkaIntoMako = async (
         continue;
       }
 
-      // Await the promise here
       const oneMacRecordWithAllProperties = await getOneMacRecordWithAllProperties(
         value,
         topicPartition,
@@ -292,7 +295,6 @@ export const insertOneMacRecordsFromKafkaIntoMako = async (
     }
   }
 
-  // Continue with the rest of your function...
   const oneMacRecords = oneMacRecordsForMako.filter(
     (record) =>
       record.eventType !== "user-info" &&
