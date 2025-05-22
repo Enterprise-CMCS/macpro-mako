@@ -115,9 +115,8 @@ const processAndIndex = async ({
                 docs.push({
                   ...log._source,
                   id: `${id}-${recordOffset}`,
-                  packageId: id + "-del",
+                  packageId: id,
                 });
-                console.log(JSON.stringify(docs));
               }
             });
           } else if (
@@ -143,10 +142,8 @@ const processAndIndex = async ({
 
             packageChangelogs.hits.hits.forEach((log) => {
               if (log._source.event !== "delete") {
-                const recordOffset = log._id.split("-").at(-1);
                 docs.push({
                   ...log._source,
-                  id: `${packageId}-${recordOffset}`,
                   packageId: packageId + "-del",
                 });
                 console.log(JSON.stringify(docs));
