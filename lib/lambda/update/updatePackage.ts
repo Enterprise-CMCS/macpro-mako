@@ -13,18 +13,20 @@ import { getPackageType } from "./getPackageType";
  * @property {string} body.packageId
  * @property {string} body.action
  */
-const sendDeleteMessage = async (packageId: string) => {
+const sendDeleteMessage = async (currentPackage: ItemResult) => {
   const topicName = process.env.topicName as string;
   if (!topicName) {
     throw new Error("Topic name is not defined");
   }
-
+  const packageId = currentPackage._source.id;
   const currentTime = Date.now();
 
+  // Making a copy of the previous package and deleting it
   await produceMessage(
     topicName,
     packageId,
     JSON.stringify({
+      ...currentPackage._source,
       id: packageId + "-del",
       deleted: true,
       isAdminChange: true,
@@ -168,7 +170,7 @@ const sendUpdateIdMessage = async ({
     });
   }
 
-  await sendDeleteMessage(currentPackage._id);
+  await sendDeleteMessage(currentPackage);
 
   const currentTime = Date.now();
 
@@ -250,7 +252,7 @@ export const handler = async (event: APIGatewayEvent) => {
     }
 
     if (action === "delete") {
-      return await sendDeleteMessage(packageId);
+      return await sendDeleteMessage(currentPackage);
     }
 
     if (action === "update-id") {
