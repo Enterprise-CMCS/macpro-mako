@@ -9,11 +9,10 @@ exports[`Toggle Withdraw Rai components > renders disable withdraw rai correctly
         class="max-w-screen-xl mx-auto px-4 lg:px-8"
       >
         <nav
-          aria-label="breadcrumbs for spa or waiver choices"
+          aria-label="breadcrumb"
           class="my-4"
-          role="navigation"
         >
-          <ul
+          <ol
             class="flex flex-wrap gap-1"
           >
             <li
@@ -32,8 +31,10 @@ exports[`Toggle Withdraw Rai components > renders disable withdraw rai correctly
             >
               <span>
                 <svg
+                  aria-hidden="true"
                   class="w-5 h-5"
                   fill="none"
+                  focusable="false"
                   height="24"
                   stroke="currentColor"
                   stroke-linecap="round"
@@ -61,8 +62,10 @@ exports[`Toggle Withdraw Rai components > renders disable withdraw rai correctly
             >
               <span>
                 <svg
+                  aria-hidden="true"
                   class="w-5 h-5"
                   fill="none"
+                  focusable="false"
                   height="24"
                   stroke="currentColor"
                   stroke-linecap="round"
@@ -78,13 +81,14 @@ exports[`Toggle Withdraw Rai components > renders disable withdraw rai correctly
                 </svg>
               </span>
               <span
+                aria-current="page"
                 aria-disabled="true"
                 class="whitespace-nowrap"
               >
                 Enable Formal RAI Response Withdraw
               </span>
             </li>
-          </ul>
+          </ol>
         </nav>
         <form
           class="my-6 space-y-8 mx-auto justify-center flex flex-col"
@@ -193,11 +197,10 @@ exports[`Toggle Withdraw Rai components > renders disable withdraw rai correctly
       class="max-w-screen-xl mx-auto px-4 lg:px-8"
     >
       <nav
-        aria-label="breadcrumbs for spa or waiver choices"
+        aria-label="breadcrumb"
         class="my-4"
-        role="navigation"
       >
-        <ul
+        <ol
           class="flex flex-wrap gap-1"
         >
           <li
@@ -216,8 +219,10 @@ exports[`Toggle Withdraw Rai components > renders disable withdraw rai correctly
           >
             <span>
               <svg
+                aria-hidden="true"
                 class="w-5 h-5"
                 fill="none"
+                focusable="false"
                 height="24"
                 stroke="currentColor"
                 stroke-linecap="round"
@@ -245,8 +250,10 @@ exports[`Toggle Withdraw Rai components > renders disable withdraw rai correctly
           >
             <span>
               <svg
+                aria-hidden="true"
                 class="w-5 h-5"
                 fill="none"
+                focusable="false"
                 height="24"
                 stroke="currentColor"
                 stroke-linecap="round"
@@ -262,13 +269,14 @@ exports[`Toggle Withdraw Rai components > renders disable withdraw rai correctly
               </svg>
             </span>
             <span
+              aria-current="page"
               aria-disabled="true"
               class="whitespace-nowrap"
             >
               Enable Formal RAI Response Withdraw
             </span>
           </li>
-        </ul>
+        </ol>
       </nav>
       <form
         class="my-6 space-y-8 mx-auto justify-center flex flex-col"
@@ -434,11 +442,10 @@ exports[`Toggle Withdraw Rai components > renders disable withdraw rai correctly
         class="max-w-screen-xl mx-auto px-4 lg:px-8"
       >
         <nav
-          aria-label="breadcrumbs for spa or waiver choices"
+          aria-label="breadcrumb"
           class="my-4"
-          role="navigation"
         >
-          <ul
+          <ol
             class="flex flex-wrap gap-1"
           >
             <li
@@ -457,8 +464,10 @@ exports[`Toggle Withdraw Rai components > renders disable withdraw rai correctly
             >
               <span>
                 <svg
+                  aria-hidden="true"
                   class="w-5 h-5"
                   fill="none"
+                  focusable="false"
                   height="24"
                   stroke="currentColor"
                   stroke-linecap="round"
@@ -486,8 +495,10 @@ exports[`Toggle Withdraw Rai components > renders disable withdraw rai correctly
             >
               <span>
                 <svg
+                  aria-hidden="true"
                   class="w-5 h-5"
                   fill="none"
+                  focusable="false"
                   height="24"
                   stroke="currentColor"
                   stroke-linecap="round"
@@ -503,13 +514,14 @@ exports[`Toggle Withdraw Rai components > renders disable withdraw rai correctly
                 </svg>
               </span>
               <span
+                aria-current="page"
                 aria-disabled="true"
                 class="whitespace-nowrap"
               >
                 Disable Formal RAI Response Withdraw
               </span>
             </li>
-          </ul>
+          </ol>
         </nav>
         <form
           class="my-6 space-y-8 mx-auto justify-center flex flex-col"
@@ -618,11 +630,10 @@ exports[`Toggle Withdraw Rai components > renders disable withdraw rai correctly
       class="max-w-screen-xl mx-auto px-4 lg:px-8"
     >
       <nav
-        aria-label="breadcrumbs for spa or waiver choices"
+        aria-label="breadcrumb"
         class="my-4"
-        role="navigation"
       >
-        <ul
+        <ol
           class="flex flex-wrap gap-1"
         >
           <li
@@ -641,8 +652,10 @@ exports[`Toggle Withdraw Rai components > renders disable withdraw rai correctly
           >
             <span>
               <svg
+                aria-hidden="true"
                 class="w-5 h-5"
                 fill="none"
+                focusable="false"
                 height="24"
                 stroke="currentColor"
                 stroke-linecap="round"
@@ -670,8 +683,10 @@ exports[`Toggle Withdraw Rai components > renders disable withdraw rai correctly
           >
             <span>
               <svg
+                aria-hidden="true"
                 class="w-5 h-5"
                 fill="none"
+                focusable="false"
                 height="24"
                 stroke="currentColor"
                 stroke-linecap="round"
@@ -687,13 +702,14 @@ exports[`Toggle Withdraw Rai components > renders disable withdraw rai correctly
               </svg>
             </span>
             <span
+              aria-current="page"
               aria-disabled="true"
               class="whitespace-nowrap"
             >
               Disable Formal RAI Response Withdraw
             </span>
           </li>
-        </ul>
+        </ol>
       </nav>
       <form
         class="my-6 space-y-8 mx-auto justify-center flex flex-col"
