@@ -25,7 +25,7 @@ const sendDeleteMessage = async (packageId: string) => {
     topicName,
     packageId,
     JSON.stringify({
-      id: packageId,
+      id: packageId + "-del",
       deleted: true,
       isAdminChange: true,
       adminChangeType: "delete",
