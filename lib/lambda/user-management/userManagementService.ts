@@ -1,8 +1,15 @@
 import { search } from "libs";
 import { getDomainAndNamespace } from "libs/utils";
+import { Index } from "shared-types/opensearch";
 
-export const getUserByEmail = async (email: string) => {
-  const { domain, index } = getDomainAndNamespace("users");
+const QUERY_LIMIT = 2000;
+
+export const getUserByEmail = async (
+  email: string,
+  domainNamespace?: { domain: string; index: Index },
+) => {
+  if (!domainNamespace) domainNamespace = getDomainAndNamespace("users");
+  const { domain, index } = domainNamespace;
 
   const result = await search(domain, index, {
     size: 1,
@@ -18,9 +25,8 @@ export const getUserByEmail = async (email: string) => {
 
 export const getUsersByEmails = async (emails: string[]) => {
   const { domain, index } = getDomainAndNamespace("users");
-
   const results = await search(domain, index, {
-    size: 100,
+    size: QUERY_LIMIT,
     query: {
       bool: {
         should: emails
@@ -47,12 +53,12 @@ export const getAllUserRolesByEmail = async (email: string) => {
   const { domain, index } = getDomainAndNamespace("roles");
 
   const result = await search(domain, index, {
+    size: QUERY_LIMIT,
     query: {
       term: {
         "email.keyword": email,
       },
     },
-    size: 200,
   });
 
   return result.hits.hits.map((hit: any) => ({ ...hit._source }));
@@ -62,6 +68,7 @@ export const userHasThisRole = async (email: string, state: string, role: string
   const { domain, index } = getDomainAndNamespace("roles");
 
   const result = await search(domain, index, {
+    size: 100,
     query: {
       bool: {
         must: [
@@ -83,7 +90,7 @@ export const getAllUserRoles = async () => {
     query: {
       match_all: {},
     },
-    size: 200,
+    size: QUERY_LIMIT,
   });
 
   return results.hits.hits.map((hit: any) => ({ ...hit._source }));
@@ -98,7 +105,7 @@ export const getAllUserRolesByState = async (state: string) => {
         "territory.keyword": state,
       },
     },
-    size: 200,
+    size: QUERY_LIMIT,
   });
 
   return results.hits.hits.map((hit: any) => ({ ...hit._source }));
@@ -111,7 +118,6 @@ export const getUserRolesWithNames = async (roleRequests: any[]) => {
 
   const emails = roleRequests.map((role) => role.email);
   const users = await getUsersByEmails(emails);
-  console.log({ emails, users });
 
   const rolesWithName = roleRequests.map((roleObj) => {
     const email = roleObj.id?.split("_")[0];
@@ -149,6 +155,58 @@ export const getLatestActiveRoleByEmail = async (email: string) => {
   return result.hits.hits[0]?._source ?? null;
 };
 
+export const getApproversByRoleState = async (
+  role: string,
+  state: string,
+  domainNamespace?: { domain: string; index: Index },
+  userDomainNamespace?: { domain: string; index: Index },
+) => {
+  if (!domainNamespace) domainNamespace = getDomainAndNamespace("roles");
+  if (!userDomainNamespace) userDomainNamespace = getDomainAndNamespace("users");
+  const { domain, index } = domainNamespace;
+
+  // TODO: move to shared type bc this is the same code coppied
+  const approvingUserRole = {
+    statesubmitter: "statesystemadmin",
+    statesystemadmin: "cmsroleapprover",
+    cmsroleapprover: "systemadmin",
+    defaultcmsuser: "cmsroleapprover",
+    helpdesk: "systemadmin",
+    cmsreviewer: "cmsroleapprover",
+  };
+
+  const approverRole = approvingUserRole[role as keyof typeof approvingUserRole];
+
+  const queryRequirements =
+    role === "statesubmitter"
+      ? [
+          { term: { status: "active" } },
+          { term: { role: approverRole } },
+          { term: { "territory.keyword": state } },
+        ]
+      : [{ term: { status: "active" } }, { term: { role: approverRole } }];
+  const results = await search(domain, index, {
+    query: {
+      bool: {
+        must: queryRequirements,
+      },
+    },
+    size: QUERY_LIMIT,
+  });
+
+  const approverRoleList: { id: string; email: string }[] = results.hits.hits.map((hit: any) => ({
+    ...hit._source,
+  }));
+
+  const approversInfo = [];
+  for (const approver of approverRoleList) {
+    const approverUserInfo = await getUserByEmail(approver.email, userDomainNamespace);
+    approversInfo.push(approverUserInfo);
+  }
+
+  return approversInfo;
+};
+
 export const getActiveStatesForUserByEmail = async (
   email: string,
   latestActiveRole?: string,
@@ -156,7 +214,7 @@ export const getActiveStatesForUserByEmail = async (
   const { domain, index } = getDomainAndNamespace("roles");
 
   const result = await search(domain, index, {
-    size: 1000,
+    size: QUERY_LIMIT,
     query: {
       bool: {
         must: [
@@ -189,7 +247,7 @@ export const getStateUsersByState = async (
   const { domain: usersDomain, index: usersIndex } = getDomainAndNamespace("users");
 
   const rolesResult = await search(rolesDomain, rolesIndex, {
-    size: 1000,
+    size: QUERY_LIMIT,
     query: {
       bool: {
         must: [
@@ -214,7 +272,7 @@ export const getStateUsersByState = async (
   if (!emails.length) return [];
 
   const usersResult = await search(usersDomain, usersIndex, {
-    size: 100,
+    size: QUERY_LIMIT,
     query: {
       bool: {
         should: emails.map((email: string) => ({
