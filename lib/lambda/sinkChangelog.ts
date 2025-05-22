@@ -117,6 +117,7 @@ const processAndIndex = async ({
                   id: `${id}-${recordOffset}`,
                   packageId: id + "-del",
                 });
+                console.log(JSON.stringify(docs));
               }
             });
           } else if (
@@ -135,6 +136,21 @@ const processAndIndex = async ({
                 id: `${result.data.id}-${recordOffset}`,
                 packageId: result.data.id,
               });
+            });
+          } else if (result.data.adminChangeType === "delete") {
+            const { packageId } = result.data;
+            const packageChangelogs = await getPackageChangelog(packageId);
+
+            packageChangelogs.hits.hits.forEach((log) => {
+              if (log._source.event !== "delete") {
+                const recordOffset = log._id.split("-").at(-1);
+                docs.push({
+                  ...log._source,
+                  id: `${packageId}-${recordOffset}`,
+                  packageId: packageId + "-del",
+                });
+                console.log(JSON.stringify(docs));
+              }
             });
           } else {
             docs.push({ ...result.data, proposedDate: null, submissionDate: null });
