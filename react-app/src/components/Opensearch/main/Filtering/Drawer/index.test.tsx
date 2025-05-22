@@ -194,7 +194,7 @@ describe("OsFilterDrawer", () => {
           name: "State",
           level: 3,
         }).parentElement;
-        expect(state.getAttribute("data-state")).toEqual("open");
+        await waitFor(() => expect(state.getAttribute("data-state")).toEqual("open"));
 
         const combo = screen.getByRole("combobox");
         expect(combo).toBeInTheDocument();

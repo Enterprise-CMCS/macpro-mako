@@ -18,6 +18,7 @@ import {
   contractingAmendment,
   contractingInitial,
   contractingRenewal,
+  newChipDetailsSubmission,
   newChipSubmission,
   newMedicaidSubmission,
   respondToRai,
@@ -97,6 +98,13 @@ describe("syncing Changelog events", () => {
       contractingRenewal,
       {
         actionType: "Renew",
+      },
+    ],
+    [
+      "new-chip-details-submission",
+      newChipDetailsSubmission,
+      {
+        actionType: "Amend",
       },
     ],
     [

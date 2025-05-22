@@ -63,9 +63,10 @@ describe("User Profile", () => {
   test("renders state access management", async () => {
     await setup(TEST_STATE_SUBMITTER_EMAIL);
     await waitFor(() =>
-      expect(screen.getByRole("heading", { name: "User Profile", level: 1 })).toBeInTheDocument(),
+      expect(
+        screen.getByRole("heading", { name: "Profile Information", level: 2 }),
+      ).toBeInTheDocument(),
     );
-    expect(screen.getByRole("heading", { name: "User Information", level: 2 })).toBeInTheDocument();
     expect(screen.getByRole("heading", { name: "Full Name", level: 3 })).toBeInTheDocument();
     expect(screen.getByText("Stateuser Tester")).toBeInTheDocument();
     expect(screen.getByRole("heading", { name: "Role", level: 3 })).toBeInTheDocument();
