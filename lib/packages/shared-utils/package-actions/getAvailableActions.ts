@@ -30,6 +30,7 @@ export const getAvailableActions = (user: FullUser, result: opensearch.main.Docu
     .filter((member) => (member as opensearch.main.SeatoolDocument)?.raiRequestedDate !== undefined)
     .map((member) => (member as opensearch.main.SeatoolDocument)?.raiRequestedDate);
   const isRaiRequestedDateIdentical = allRaiRequestedDates.every((date, _, arr) => date === arr[0]);
+  console.log("rai identical : " + isRaiRequestedDateIdentical);
   if (!isRaiRequestedDateIdentical) {
     const actionsToRemove = [Action.RESPOND_TO_RAI, Action.WITHDRAW_RAI];
     commonActions = commonActions.filter((action: any) => !actionsToRemove.includes(action));
@@ -39,7 +40,7 @@ export const getAvailableActions = (user: FullUser, result: opensearch.main.Docu
   // If we want to update this order just move the values around.
   const actionOrder = Object.values(Action);
   const orderMap = new Map(actionOrder.map((action, index) => [action, index]));
-
+  console.log("commonactions: " + JSON.stringify(commonActions));
   const sortedActions = commonActions.sort(
     (a, b) => (orderMap.get(a) ?? Infinity) - (orderMap.get(b) ?? Infinity),
   );
