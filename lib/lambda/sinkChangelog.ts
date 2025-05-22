@@ -104,6 +104,7 @@ const processAndIndex = async ({
                 ...restOfResultData,
               });
             });
+
             // Get all changelog entries for the original package ID
             // Filter out any entry regarding the soft deleted event
             // Create copies of the rest of the changelog entries with the new package ID
@@ -119,6 +120,7 @@ const processAndIndex = async ({
                 });
               }
             });
+            console.log(docs);
           } else if (
             result.data.adminChangeType === "split-spa" &&
             "idToBeUpdated" in result.data
@@ -249,6 +251,6 @@ const processAndIndex = async ({
       });
     }
   }
-
+  console.log("docs before upload: " + docs);
   await bulkUpdateDataWrapper(docs, "changelog");
 };
