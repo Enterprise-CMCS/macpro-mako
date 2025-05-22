@@ -34,7 +34,7 @@ describe("isCmsUser", () => {
 describe("isCmsWriteUser", () => {
   it("returns true for CMS Write users", () => {
     expect(isCmsWriteUser(reviewer as FullUser)).toEqual(true);
-    expect(isCmsWriteUser(defaultCMSUser as FullUser)).toEqual(true);
+    expect(isCmsWriteUser(defaultCMSUser as FullUser)).toEqual(false);
   });
   it("returns false for CMS Read-Only users", () => {
     expect(isCmsWriteUser(helpDeskUser as FullUser)).toEqual(false);

@@ -48,7 +48,7 @@ export const CMS_ROLES = [
 
 export const CMS_WRITE_ROLES = [
   "cmsreviewer",
-  "defaultcmsuser",
+  // "defaultcmsuser",
   "cmsroleapprover",
   "systemadmin",
 ] satisfies UserRole[];
