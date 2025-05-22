@@ -5,9 +5,9 @@ export type UserInformationProps = {
   email: string;
 };
 
-export const UserInformation = ({ title, fullName, role, email }: UserInformationProps) => (
+export const UserInformation = ({ fullName, role, email }: UserInformationProps) => (
   <div className="flex flex-col gap-6 md:basis-1/2">
-    <h2 className="text-2xl font-bold">{title}</h2>
+    <h2 className="text-2xl font-bold">Profile Information</h2>
 
     <div className="leading-9">
       <h3 className="font-bold">Full Name</h3>
