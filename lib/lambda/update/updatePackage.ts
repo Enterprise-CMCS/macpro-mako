@@ -27,7 +27,7 @@ const sendDeleteMessage = async (currentPackage: ItemResult) => {
     packageId,
     JSON.stringify({
       ...currentPackage._source,
-      id: packageId + "-del-" + currentTime,
+      id: packageId + "-del-",
       deleted: true,
       isAdminChange: true,
       adminChangeType: "delete-preserve",
@@ -41,7 +41,6 @@ const sendDeleteMessage = async (currentPackage: ItemResult) => {
     topicName,
     packageId,
     JSON.stringify({
-      ...currentPackage._source,
       id: packageId,
       deleted: true,
       isAdminChange: true,
