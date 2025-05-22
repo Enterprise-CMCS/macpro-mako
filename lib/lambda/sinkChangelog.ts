@@ -251,6 +251,6 @@ const processAndIndex = async ({
       });
     }
   }
-  console.log("docs before upload: " + JSON.stringify(docs))s;
+  console.log("docs before upload: " + JSON.stringify(docs));
   await bulkUpdateDataWrapper(docs, "changelog");
 };
