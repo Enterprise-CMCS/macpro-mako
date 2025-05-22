@@ -164,8 +164,8 @@ describe("Layout", () => {
     ])("renders UserDropdownMenu for logged-in user in %s view", async (_, viewMode) => {
       await setupUserDropdownTest(viewMode as ViewMode);
 
-      expect(screen.getByText("View Profile")).toBeInTheDocument();
-      expect(screen.getByText("Sign Out")).toBeInTheDocument();
+      expect(screen.getByText("Manage Profile")).toBeInTheDocument();
+      expect(screen.getByText("Log Out")).toBeInTheDocument();
     });
   });
 
@@ -175,21 +175,21 @@ describe("Layout", () => {
       mockMediaQuery(VIEW_MODES.DESKTOP);
     });
 
-    it("navigates to profile page when View Profile is clicked", async () => {
+    it("navigates to profile page when Manage Profile is clicked", async () => {
       const user = userEvent.setup();
       await setupUserDropdownTest();
 
-      await user.click(screen.getByText("View Profile"));
+      await user.click(screen.getByText("Manage Profile"));
       expect(mockNavigate).toHaveBeenCalledWith("/profile");
     });
 
-    it("calls Auth.signOut when Sign Out is clicked", async () => {
+    it("calls Auth.signOut when Log Out is clicked", async () => {
       const spy = vi.spyOn(Auth, "signOut");
 
       const user = userEvent.setup();
       await setupUserDropdownTest();
 
-      await user.click(screen.getByText("Sign Out"));
+      await user.click(screen.getByText("Log Out"));
       expect(spy).toHaveBeenCalled();
     });
   });
@@ -282,7 +282,7 @@ describe("Layout", () => {
       expect(screen.getByText("Home")).toBeInTheDocument();
       expect(screen.getByText("Dashboard")).toBeInTheDocument();
       expect(screen.getByText("View FAQs")).toBeInTheDocument();
-      expect(screen.getByText("Webforms")).toBeInTheDocument();
+      expect(screen.queryByText("Webforms")).not.toBeInTheDocument();
       expect(screen.queryByText("Sign In")).not.toBeInTheDocument();
       expect(screen.queryByText("Log In")).not.toBeInTheDocument();
       expect(screen.queryByText("Register")).not.toBeInTheDocument();
@@ -309,7 +309,7 @@ describe("Layout", () => {
       expect(screen.getByText("Home")).toBeInTheDocument();
       expect(screen.getByText("Dashboard")).toBeInTheDocument();
       expect(screen.getByText("View FAQs")).toBeInTheDocument();
-      expect(screen.getByText("Webforms")).toBeInTheDocument();
+      expect(screen.queryByText("Webforms")).not.toBeInTheDocument();
 
       // Close the menu
       await user.click(menuButton);

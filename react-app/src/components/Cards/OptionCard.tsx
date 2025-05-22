@@ -39,13 +39,7 @@ export const OptionCard = ({ title, description, to, altBg = false }: MACFieldse
         >
           <div>
             <h2 className="text-lg text-sky-700 font-bold my-2">{title}</h2>
-            <p
-              className={cn("my-2 text-slate-600", {
-                "font-bold": title === "CHIP eligibility SPA submissions",
-              })}
-            >
-              {description}
-            </p>
+            <p className={cn("my-2 text-slate-600")}>{description}</p>
           </div>
           <ChevronRight className="text-sky-700 w-8 h-8" />
         </div>
