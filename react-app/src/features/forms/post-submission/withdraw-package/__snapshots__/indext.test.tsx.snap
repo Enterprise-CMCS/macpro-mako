@@ -32,7 +32,7 @@ exports[`WithdrawPackageAction components > renders WithdrawPackageActionWaiver 
             >
               <span>
                 <svg
-                  class="w-5 h-5"
+                  class="lucide lucide-chevron-right w-5 h-5"
                   fill="none"
                   height="24"
                   stroke="currentColor"
@@ -61,7 +61,7 @@ exports[`WithdrawPackageAction components > renders WithdrawPackageActionWaiver 
             >
               <span>
                 <svg
-                  class="w-5 h-5"
+                  class="lucide lucide-chevron-right w-5 h-5"
                   fill="none"
                   height="24"
                   stroke="currentColor"
@@ -442,7 +442,7 @@ exports[`WithdrawPackageAction components > renders WithdrawPackageActionWaiver 
           >
             <span>
               <svg
-                class="w-5 h-5"
+                class="lucide lucide-chevron-right w-5 h-5"
                 fill="none"
                 height="24"
                 stroke="currentColor"
@@ -471,7 +471,7 @@ exports[`WithdrawPackageAction components > renders WithdrawPackageActionWaiver 
           >
             <span>
               <svg
-                class="w-5 h-5"
+                class="lucide lucide-chevron-right w-5 h-5"
                 fill="none"
                 height="24"
                 stroke="currentColor"
