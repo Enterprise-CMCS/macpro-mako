@@ -11,11 +11,10 @@ export function useAvailableStates(roleToRequest: UserRole, stateAccessList: Sta
     if (!stateAccessList) {
       return FULL_CENSUS_STATES.map(({ label, value }) => ({ label, value }));
     }
-    console.log(roleToRequest, "ROLEEE");
+
     const validAccess = stateAccessList.filter(
       ({ role, territory }) => role === roleToRequest && territory !== "ZZ",
     );
-    console.log(validAccess, "VALID ACCESS");
     const accessedStates = new Set(validAccess.map(({ territory }) => territory));
 
     const availableStates = FULL_CENSUS_STATES.filter(
