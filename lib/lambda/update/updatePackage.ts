@@ -184,8 +184,6 @@ const sendUpdateIdMessage = async ({
     });
   }
 
-  await sendDeleteMessage(currentPackage);
-
   const currentTime = Date.now();
 
   await produceMessage(
@@ -206,7 +204,7 @@ const sendUpdateIdMessage = async ({
       timestamp: currentTime,
     }),
   );
-
+  await sendDeleteMessage(currentPackage);
   return response({
     statusCode: 200,
     body: { message: `The ID of package ${currentPackage._id} has been updated to ${updatedId}.` },
