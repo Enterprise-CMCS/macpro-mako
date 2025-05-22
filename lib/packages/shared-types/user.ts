@@ -45,7 +45,7 @@ export const CMS_ROLES = [
   "helpdesk",
   "systemadmin",
 ] satisfies UserRole[];
-
+// TODO: Determine cmsreviewer permissions
 export const CMS_WRITE_ROLES = [
   "cmsreviewer",
   // "defaultcmsuser",
@@ -53,7 +53,7 @@ export const CMS_WRITE_ROLES = [
   "systemadmin",
 ] satisfies UserRole[];
 
-export const CMS_READ_ONLY_ROLES = ["helpdesk"] satisfies UserRole[];
+export const CMS_READ_ONLY_ROLES = ["helpdesk", "defaultcmsuser"] satisfies UserRole[];
 
 export const STATE_ROLES = ["statesubmitter", "statesystemadmin"] satisfies UserRole[];
 
