@@ -4,17 +4,16 @@ import { UserRole } from "shared-types/events/legacy-user";
 
 import { StateAccess } from "@/api";
 
-export function useAvailableStates(
-  currentRole: UserRole,
-  stateAccessList: StateAccess[] | undefined,
-) {
+// Get available states for the role to be requested
+// eslint-disable-next-line prettier/prettier
+export function useAvailableStates(roleToRequest: UserRole, stateAccessList: StateAccess[] | undefined) {
   return useMemo(() => {
     if (!stateAccessList) {
       return FULL_CENSUS_STATES.map(({ label, value }) => ({ label, value }));
     }
 
     const validAccess = stateAccessList.filter(
-      ({ role, territory }) => role === currentRole && territory !== "ZZ",
+      ({ role, territory }) => role !== roleToRequest && territory !== "ZZ",
     );
 
     const accessedStates = new Set(validAccess.map(({ territory }) => territory));
@@ -24,5 +23,5 @@ export function useAvailableStates(
     ).map(({ label, value }) => ({ label, value }));
 
     return availableStates;
-  }, [currentRole, stateAccessList]);
+  }, [roleToRequest, stateAccessList]);
 }
