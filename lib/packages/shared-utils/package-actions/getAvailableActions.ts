@@ -25,10 +25,12 @@ export const getAvailableActions = (user: FullUser, result: opensearch.main.Docu
     if (index === 0) return currentActions;
     return acc.filter((action: Action) => currentActions.includes(action));
   }, []);
+  console.log("all members: " + allMembers);
 
   const allRaiRequestedDates = allMembers
     .filter((member) => (member as opensearch.main.SeatoolDocument)?.raiRequestedDate !== undefined)
     .map((member) => (member as opensearch.main.SeatoolDocument)?.raiRequestedDate);
+  console.log("all rai dates" + JSON.stringify(allRaiRequestedDates));
   const isRaiRequestedDateIdentical = allRaiRequestedDates.every((date, _, arr) => date === arr[0]);
   console.log("rai identical : " + isRaiRequestedDateIdentical);
   if (!isRaiRequestedDateIdentical) {
