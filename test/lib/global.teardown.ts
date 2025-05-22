@@ -12,6 +12,7 @@ async function deleteAuthFiles(): Promise<void> {
 
     for (const file of files) {
       const filePath: string = path.join(authDir, file);
+
       await fs.unlink(filePath);
       console.log(`File ${file} has been deleted successfully.`);
     }

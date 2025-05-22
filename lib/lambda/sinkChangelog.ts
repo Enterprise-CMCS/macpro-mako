@@ -5,6 +5,7 @@ import { KafkaEvent, KafkaRecord, LegacyAdminChange, opensearch } from "shared-t
 import { decodeBase64WithUtf8 } from "shared-utils";
 
 import {
+  legacyEventIdUpdateSchema,
   transformDeleteSchema,
   transformedSplitSPASchema,
   transformedUpdateIdSchema,
@@ -43,7 +44,19 @@ export const handler: Handler<KafkaEvent> = async (event) => {
     throw error;
   }
 };
+function extractIds(input: string): { beforeId: string; afterId: string } | null {
+  const regex = /from\s+([^\s]+)\s+to\s+([^\s]+)/;
+  const match = input.match(regex);
 
+  if (match && match.length >= 3) {
+    return {
+      beforeId: match[1],
+      afterId: match[2],
+    };
+  }
+
+  return null;
+}
 const processAndIndex = async ({
   kafkaRecords,
   transforms,
@@ -66,7 +79,7 @@ const processAndIndex = async ({
 
       // Parse the kafka record's value
       const record = JSON.parse(decodeBase64WithUtf8(value));
-
+      console.log(JSON.stringify(record, null, 2));
       if (record.isAdminChange) {
         const schema = transformDeleteSchema(offset)
           .or(transformUpdateValuesSchema(offset))
@@ -80,6 +93,7 @@ const processAndIndex = async ({
           if (result.data.adminChangeType === "update-id" && "idToBeUpdated" in result.data) {
             const { id, packageId: _packageId, idToBeUpdated, ...restOfResultData } = result.data;
             // Push doc with content of package being soft deleted
+
             docs.forEach((log) => {
               const recordOffset = log.id.split("-").at(-1);
               docs.push({
@@ -134,24 +148,62 @@ const processAndIndex = async ({
       }
 
       // If the event is a supported event, transform and push to docs array for indexing
-      if (kafkaSource === "onemac" && record.GSI1pk) {
-        // This is a onemac legacy event
+      if (kafkaSource === "onemac" && record.GSI1pk?.startsWith("OneMAC#submit")) {
+        const schema = legacyEventIdUpdateSchema;
+        const result = schema.safeParse(record);
+
+        // Check if event has admin changes and then only use the most recent.
+        // Take that ID then use it to get the changelogs to update by comparing timestamps
+        // Mark all the packageIDs with the offset and Del to get rid of them from use
+        if (result.success && result.data.adminChanges) {
+          const { adminChanges: adminChanges } = result.data;
+          const adminChange = adminChanges[0];
+          const ids = extractIds(adminChange.changeMade);
+          if (ids) {
+            const changelogs = await getPackageChangelog(ids.beforeId);
+
+            for (const changelog of changelogs.hits.hits) {
+              const recordOffset = changelog._source.timestamp;
+              const origID = changelog._id;
+              const source = changelog._source;
+              if (source.timestamp <= adminChange.changeTimestamp) {
+                docs.push(
+                  { ...source, id: `${ids.afterId}-${recordOffset}`, packageId: ids.afterId },
+                  { ...source, id: origID, packageId: `${ids.beforeId}-del` },
+                );
+              }
+            }
+            const copyDocs: Array<(typeof transforms)[keyof typeof transforms]["Schema"]> = [];
+            for (const record of docs) {
+              if (
+                record.packageId === ids.beforeId &&
+                record.timestamp <= adminChange.changeTimestamp
+              ) {
+                copyDocs.push({
+                  ...record,
+                  id: `${ids.afterId}-${record.timestamp}`,
+                  packageId: ids.afterId,
+                });
+                record.packageId += "-del";
+              }
+            }
+            docs.push(...copyDocs);
+          }
+        }
+
         record.event = "legacy-event";
         record.origin = "onemac";
       }
 
       const recordsToProcess: Array<(typeof transforms)[keyof typeof transforms]["Schema"]> = [];
-      if (record.reverseChrono?.length) {
-        // Focus on adminChange property in records with the reverseChrono property to avoid ingesting duplicates
-        if (record.adminChanges?.length) {
-          record.adminChanges.map((adminChange: LegacyAdminChange) =>
-            recordsToProcess.push({
-              ...record,
-              ...adminChange,
-              event: "legacy-admin-change",
-            }),
-          );
-        }
+      if (record.adminChanges?.length) {
+        record.adminChanges.map((adminChange: LegacyAdminChange) =>
+          recordsToProcess.push({
+            ...record,
+            ...adminChange,
+            event: "legacy-admin-change",
+          }),
+        );
       } else {
         recordsToProcess.push(record);
       }

@@ -22,6 +22,7 @@ export const OsFiltering: FC<{
       <div className="flex w-full lg:flex-row flex-col flex-grow content-between gap-2">
         <SearchForm
           isSearching={context.isLoading}
+          urlState={url.state}
           handleSearch={(search) =>
             url.onSet((s) => ({
               ...s,

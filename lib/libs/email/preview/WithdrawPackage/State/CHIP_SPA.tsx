@@ -1,6 +1,6 @@
-import { ChipSpaStateEmail } from "libs/email/content/withdrawPackage/emailTemplates";
-import * as attachments from "libs/email/mock-data/attachments";
-import { emailTemplateValue } from "libs/email/mock-data/new-submission";
+import { ChipSpaStateEmail } from "../../../content/withdrawPackage/emailTemplates";
+import * as attachments from "../../../mock-data/attachments";
+import { emailTemplateValue } from "../../../mock-data/new-submission";
 
 export default () => {
   return (

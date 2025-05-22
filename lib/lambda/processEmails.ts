@@ -2,7 +2,7 @@ import { SendEmailCommand, SendEmailCommandInput, SESClient } from "@aws-sdk/cli
 import { SendMessageCommand, SQSClient } from "@aws-sdk/client-sqs";
 import { Handler } from "aws-lambda";
 import { htmlToText, HtmlToTextOptions } from "html-to-text";
-import { getAllStateUsers, getEmailTemplates } from "libs/email";
+import { getAllStateUsersFromOpenSearch, getEmailTemplates } from "libs/email";
 import { EMAIL_CONFIG, getCpocEmail, getSrtEmails } from "libs/email/content/email-components";
 import * as os from "libs/opensearch-lib";
 import { getOsNamespace } from "libs/utils";
@@ -17,6 +17,8 @@ import {
 import { decodeBase64WithUtf8, formatActionType, getSecret } from "shared-utils";
 import { retry } from "shared-utils/retry";
 
+import { sendUserRoleEmails } from "./processUserRoleEmails";
+
 class TemporaryError extends Error {
   constructor(message: string) {
     super(message);
@@ -24,7 +26,7 @@ class TemporaryError extends Error {
   }
 }
 
-interface ProcessEmailConfig {
+export interface ProcessEmailConfig {
   emailAddressLookupSecretName: string;
   applicationEndpointUrl: string;
   osDomain: string;
@@ -72,7 +74,7 @@ export const handler: Handler<KafkaEvent> = async (event) => {
   const config: ProcessEmailConfig = {
     emailAddressLookupSecretName,
     applicationEndpointUrl,
-    osDomain: `https://${osDomain}`,
+    osDomain,
     indexNamespace,
     region,
     DLQ_URL,
@@ -130,7 +132,7 @@ export async function processRecord(kafkaRecord: KafkaRecord, config: ProcessEma
   const id: string = decodeBase64WithUtf8(key);
 
   if (kafkaRecord.topic === "aws.seatool.ksql.onemac.three.agg.State_Plan") {
-    const safeID = id.replace(/^"|"$/g, "");
+    const safeID = id.replace(/^"|"$/g, "").toUpperCase();
     const seatoolRecord: Document = {
       safeID,
       ...JSON.parse(decodeBase64WithUtf8(value)),
@@ -198,6 +200,18 @@ export async function processRecord(kafkaRecord: KafkaRecord, config: ProcessEma
   };
   console.log("record: ", JSON.stringify(record, null, 2));
 
+  const valueParsed = JSON.parse(decodeBase64WithUtf8(value));
+  if (valueParsed.eventType === "user-role" || valueParsed.eventType === "legacy-user-role") {
+    try {
+      console.log("Sending user role email...");
+      await sendUserRoleEmails(valueParsed, timestamp, config);
+    } catch (error) {
+      console.error("Error sending user email", error);
+      throw error;
+    }
+    return;
+  }
+
   if (record.origin !== "mako") {
     console.log("Kafka event is not of mako origin. Doing nothing.");
     return;
@@ -239,10 +253,7 @@ export async function processAndSendEmails(
   }
 
   const territory = id.slice(0, 2);
-  const allStateUsers = await getAllStateUsers({
-    userPoolId: config.userPoolId,
-    state: territory,
-  });
+  const allStateUsers = await getAllStateUsersFromOpenSearch(territory);
 
   const sec = await getSecret(config.emailAddressLookupSecretName);
 

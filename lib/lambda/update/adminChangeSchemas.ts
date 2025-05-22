@@ -55,6 +55,25 @@ export const transformDeleteSchema = (offset: number) =>
     id: `${data.id}-${offset}`,
   }));
 
+const AdminChangeSchema = z.object({
+  changeTimestamp: z.number(),
+  changeReason: z.string(),
+  changeMade: z.string(),
+});
+
+export const legacyEventIdUpdateSchema = z.object({
+  componentId: z.string(),
+  currentStatus: z.string(),
+  GSI1pk: z.string(),
+  adminChanges: z.array(AdminChangeSchema),
+  GSI1sk: z.string(),
+  sk: z.string(),
+  pk: z.string(),
+  submitterName: z.string(),
+  eventTimestamp: z.number(),
+  submitterEmail: z.string().email(),
+});
+
 export const transformUpdateValuesSchema = (offset: number) =>
   updateValuesAdminChangeSchema.transform((data) => ({
     ...data,

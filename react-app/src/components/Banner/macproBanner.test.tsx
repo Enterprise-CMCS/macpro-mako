@@ -27,8 +27,10 @@ describe("TopBanner", () => {
   });
 
   it("renders CMS banner when CMS user and CMS flag are true", () => {
-    (useGetUser as any).mockReturnValue({ data: { user: {} } });
-    (useFeatureFlag as any).mockImplementation((flag: string) => flag === "CMS_HOMEPAGE_FLAG");
+    (useGetUser as any).mockReturnValue({ data: { user: { role: "cms" } } });
+    (useFeatureFlag as any).mockImplementation(
+      (flag: string) => flag === "CMS_HOMEPAGE_FLAG" || flag === "STATE_HOMEPAGE_FLAG",
+    );
     (isCmsUser as any).mockReturnValue(true);
     (isStateUser as any).mockReturnValue(false);
 
@@ -40,8 +42,10 @@ describe("TopBanner", () => {
   });
 
   it("renders State banner when State user and State flag are true", () => {
-    (useGetUser as any).mockReturnValue({ data: { user: {} } });
-    (useFeatureFlag as any).mockImplementation((flag: string) => flag === "STATE_HOMEPAGE_FLAG");
+    (useGetUser as any).mockReturnValue({ data: { user: { role: "state" } } });
+    (useFeatureFlag as any).mockImplementation(
+      (flag: string) => flag === "CMS_HOMEPAGE_FLAG" || flag === "STATE_HOMEPAGE_FLAG",
+    );
     (isCmsUser as any).mockReturnValue(false);
     (isStateUser as any).mockReturnValue(true);
 

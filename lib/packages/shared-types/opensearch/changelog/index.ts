@@ -18,6 +18,7 @@ import {
   contractingRenewal,
   legacyAdminChange,
   legacyEvent,
+  newChipDetailsSubmission,
   newChipSubmission,
   newMedicaidSubmission,
   respondToRai,
@@ -38,6 +39,7 @@ export type ContractingRenewalDocument = z.infer<contractingRenewal.Schema>;
 export type LegacyEventDocument = z.infer<legacyEvent.Schema>;
 export type LegacyAdminChangeDocument = z.infer<legacyAdminChange.Schema>;
 export type NewChipSubmissionDocument = z.infer<newChipSubmission.Schema>;
+export type NewChipDetailsSubmissionDocument = z.infer<newChipDetailsSubmission.Schema>;
 export type NewMedicaidSubmissionDocument = z.infer<newMedicaidSubmission.Schema>;
 export type RespondToRaiDocument = z.infer<respondToRai.Schema>;
 export type TemporaryExtensionDocument = z.infer<temporaryExtension.Schema>;
@@ -56,6 +58,7 @@ export type Document = Omit<AppkDocument, "event"> &
   Omit<LegacyEventDocument, "event"> &
   LegacyAdminChangeDocument &
   Omit<NewChipSubmissionDocument, "event"> &
+  Omit<NewChipDetailsSubmissionDocument, "event"> &
   Omit<NewMedicaidSubmissionDocument, "event"> &
   Omit<RespondToRaiDocument, "event"> &
   Omit<TemporaryExtensionDocument, "event"> &
@@ -73,6 +76,7 @@ export type Document = Omit<AppkDocument, "event"> &
       | "contracting-renewal"
       | "legacy-admin-change"
       | "new-chip-submission"
+      | "new-chip-details-submission"
       | "new-medicaid-submission"
       | "respond-to-rai"
       | "temporary-extension"
@@ -80,6 +84,7 @@ export type Document = Omit<AppkDocument, "event"> &
       | "upload-subsequent-documents"
       | "withdraw-package"
       | "withdraw-rai"
+      | "legacy-withdraw-rai-request"
       | "update-values"
       | "update-id"
       | "delete"
@@ -111,6 +116,7 @@ export const transforms = {
   "legacy-admin-change": legacyAdminChange,
   "legacy-event": legacyEvent,
   "new-chip-submission": newChipSubmission,
+  "new-chip-details-submission": newChipDetailsSubmission,
   "new-medicaid-submission": newMedicaidSubmission,
   "respond-to-rai": respondToRai,
   "temporary-extension": temporaryExtension,

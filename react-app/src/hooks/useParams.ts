@@ -38,7 +38,7 @@ export const useLzUrl = <T>(props: { key: string; initValue?: T; redirectTab?: s
       return props.initValue;
     }
     // adding props.initValue causes this to loop
-  }, [queryString, query, setQuery]);
+  }, [queryString, query, setQuery]); // eslint-disable-line react-hooks/exhaustive-deps
 
   const onSet = (arg: (arg: T) => T | T, shouldIsolate?: boolean) => {
     const val = (() => {

@@ -66,12 +66,20 @@ const emailTemplates: EmailTemplates = {
   "upload-subsequent-documents": EmailContent.uploadSubsequentDocuments,
 };
 
+// user roles are so different they will be their own thing for now
+export const getUserRoleTemplate = async (
+  userRoleAction: keyof typeof EmailContent.userRoleTemplate,
+): Promise<(variables: EmailContent.UserRoleEmailType) => Promise<EmailTemplate>> => {
+  const userRoleTemplate = EmailContent.userRoleTemplate;
+  return userRoleTemplate[userRoleAction];
+};
+
 // Create a type-safe lookup function
 export function getEmailTemplate(
   action: keyof EmailTemplates,
 ): AuthoritiesWithUserTypesTemplate | UserTypeOnlyTemplate {
   // Handle -state suffix variants
-  const baseAction = action.replace(/-state$/, "") as keyof EmailTemplates;
+  const baseAction = action?.replace(/-state$/, "") as keyof EmailTemplates;
   return emailTemplates[baseAction];
 }
 
@@ -85,6 +93,10 @@ function hasAuthority(
 export async function getEmailTemplates(
   record: Events[keyof Events],
 ): Promise<EmailTemplateFunction<typeof record>[]> {
+  if (!record) {
+    throw new Error("Invalid record");
+  }
+
   const { event } = record;
 
   const emailTemplate = emailTemplates[event as keyof EmailTemplates];
@@ -116,12 +128,14 @@ export async function getLatestMatchingEvent(
       return null;
     }
 
-    // Filter matching events
-    const events = item.hits.hits.filter((event) => event._source.event === actionType);
+    // Filter events with _source and matching events
+    const events = item.hits.hits.filter(
+      (event) => event?._source && event._source.event === actionType,
+    );
 
     // Check if any matching events were found
     if (!events.length) {
-      console.log(`No events found with for package ${id}`);
+      console.log(`No events found for package ${id}`);
       return null;
     }
 
@@ -133,11 +147,7 @@ export async function getLatestMatchingEvent(
     });
 
     // Get the latest event
-    const latestMatchingEvent = events[0]?._source;
-    if (!latestMatchingEvent) {
-      console.log(`Latest event for ${id} with has no source data`);
-      return null;
-    }
+    const latestMatchingEvent = events?.[0]?._source ?? null;
 
     return latestMatchingEvent;
   } catch (error) {
