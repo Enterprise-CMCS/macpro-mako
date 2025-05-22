@@ -183,7 +183,7 @@
       "specs": [
         {
           "title": "auth",
-          "ok": false,
+          "ok": true,
           "tags": [],
           "tests": [
             {
@@ -195,28 +195,9 @@
               "results": [
                 {
                   "workerIndex": 0,
-                  "status": "failed",
-                  "duration": 14837,
-                  "error": {
-                    "message": "Error: \u001b[31mTimed out 5000ms waiting for \u001b[39m\u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoHaveURL\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m)\u001b[22m\n\nLocator: locator(':root')\nExpected pattern: \u001b[32m/dashboard/\u001b[39m\nReceived string:  \u001b[31m\"https://mako-dev.cms.gov/\"\u001b[39m\nCall log:\n  \u001b[2m- expect.toHaveURL with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for locator(':root')\u001b[22m\n\u001b[2m  -   locator resolved to <html lang=\"en\" class=\"h-full\">…</html>\u001b[22m\n\u001b[2m  -   unexpected value \"https://mako-dev.cms.gov/\"\u001b[22m\n\u001b[2m  -   locator resolved to <html lang=\"en\" class=\"h-full\">…</html>\u001b[22m\n\u001b[2m  -   unexpected value \"https://mako-dev.cms.gov/\"\u001b[22m\n\u001b[2m  -   locator resolved to <html lang=\"en\" class=\"h-full\">…</html>\u001b[22m\n\u001b[2m  -   unexpected value \"https://mako-dev.cms.gov/\"\u001b[22m\n\u001b[2m  -   locator resolved to <html lang=\"en\" class=\"h-full\">…</html>\u001b[22m\n\u001b[2m  -   unexpected value \"https://mako-dev.cms.gov/\"\u001b[22m\n\u001b[2m  -   locator resolved to <html lang=\"en\" class=\"h-full\">…</html>\u001b[22m\n\u001b[2m  -   unexpected value \"https://mako-dev.cms.gov/\"\u001b[22m\n\u001b[2m  -   locator resolved to <html lang=\"en\" class=\"h-full\">…</html>\u001b[22m\n\u001b[2m  -   unexpected value \"https://mako-dev.cms.gov/\"\u001b[22m\n\u001b[2m  -   locator resolved to <html lang=\"en\" class=\"h-full\">…</html>\u001b[22m\n\u001b[2m  -   unexpected value \"https://mako-dev.cms.gov/\"\u001b[22m\n\u001b[2m  -   locator resolved to <html lang=\"en\" class=\"h-full\">…</html>\u001b[22m\n\u001b[2m  -   unexpected value \"https://mako-dev.cms.gov/\"\u001b[22m\n\u001b[2m  -   locator resolved to <html lang=\"en\" class=\"h-full\">…</html>\u001b[22m\n\u001b[2m  -   unexpected value \"https://mako-dev.cms.gov/\"\u001b[22m\n",
-                    "stack": "Error: \u001b[31mTimed out 5000ms waiting for \u001b[39m\u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoHaveURL\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m)\u001b[22m\n\nLocator: locator(':root')\nExpected pattern: \u001b[32m/dashboard/\u001b[39m\nReceived string:  \u001b[31m\"https://mako-dev.cms.gov/\"\u001b[39m\nCall log:\n  \u001b[2m- expect.toHaveURL with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for locator(':root')\u001b[22m\n\u001b[2m  -   locator resolved to <html lang=\"en\" class=\"h-full\">…</html>\u001b[22m\n\u001b[2m  -   unexpected value \"https://mako-dev.cms.gov/\"\u001b[22m\n\u001b[2m  -   locator resolved to <html lang=\"en\" class=\"h-full\">…</html>\u001b[22m\n\u001b[2m  -   unexpected value \"https://mako-dev.cms.gov/\"\u001b[22m\n\u001b[2m  -   locator resolved to <html lang=\"en\" class=\"h-full\">…</html>\u001b[22m\n\u001b[2m  -   unexpected value \"https://mako-dev.cms.gov/\"\u001b[22m\n\u001b[2m  -   locator resolved to <html lang=\"en\" class=\"h-full\">…</html>\u001b[22m\n\u001b[2m  -   unexpected value \"https://mako-dev.cms.gov/\"\u001b[22m\n\u001b[2m  -   locator resolved to <html lang=\"en\" class=\"h-full\">…</html>\u001b[22m\n\u001b[2m  -   unexpected value \"https://mako-dev.cms.gov/\"\u001b[22m\n\u001b[2m  -   locator resolved to <html lang=\"en\" class=\"h-full\">…</html>\u001b[22m\n\u001b[2m  -   unexpected value \"https://mako-dev.cms.gov/\"\u001b[22m\n\u001b[2m  -   locator resolved to <html lang=\"en\" class=\"h-full\">…</html>\u001b[22m\n\u001b[2m  -   unexpected value \"https://mako-dev.cms.gov/\"\u001b[22m\n\u001b[2m  -   locator resolved to <html lang=\"en\" class=\"h-full\">…</html>\u001b[22m\n\u001b[2m  -   unexpected value \"https://mako-dev.cms.gov/\"\u001b[22m\n\u001b[2m  -   locator resolved to <html lang=\"en\" class=\"h-full\">…</html>\u001b[22m\n\u001b[2m  -   unexpected value \"https://mako-dev.cms.gov/\"\u001b[22m\n\n    at generateAuthFile (/home/runner/work/macpro-mako/macpro-mako/test/lib/auth.setup.ts:45:22)\n    at /home/runner/work/macpro-mako/macpro-mako/test/lib/ci.setup.ts:31:3",
-                    "location": {
-                      "file": "/home/runner/work/macpro-mako/macpro-mako/test/lib/auth.setup.ts",
-                      "column": 22,
-                      "line": 45
-                    },
-                    "snippet": "   at lib/auth.setup.ts:45\n\n\u001b[0m \u001b[90m 43 |\u001b[39m   }\n \u001b[90m 44 |\u001b[39m\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 45 |\u001b[39m   \u001b[36mawait\u001b[39m expect(page)\u001b[33m.\u001b[39mtoHaveURL(\u001b[35m/dashboard/\u001b[39m)\u001b[33m;\u001b[39m\n \u001b[90m    |\u001b[39m                      \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 46 |\u001b[39m   \u001b[36mawait\u001b[39m context\u001b[33m.\u001b[39mstorageState({ path\u001b[33m:\u001b[39m storagePath })\u001b[33m;\u001b[39m\n \u001b[90m 47 |\u001b[39m   console\u001b[33m.\u001b[39mlog(\u001b[32m`${storagePath} written`\u001b[39m)\u001b[33m;\u001b[39m\n \u001b[90m 48 |\u001b[39m\u001b[0m"
-                  },
-                  "errors": [
-                    {
-                      "location": {
-                        "file": "/home/runner/work/macpro-mako/macpro-mako/test/lib/auth.setup.ts",
-                        "column": 22,
-                        "line": 45
-                      },
-                      "message": "Error: \u001b[31mTimed out 5000ms waiting for \u001b[39m\u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoHaveURL\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m)\u001b[22m\n\nLocator: locator(':root')\nExpected pattern: \u001b[32m/dashboard/\u001b[39m\nReceived string:  \u001b[31m\"https://mako-dev.cms.gov/\"\u001b[39m\nCall log:\n  \u001b[2m- expect.toHaveURL with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for locator(':root')\u001b[22m\n\u001b[2m  -   locator resolved to <html lang=\"en\" class=\"h-full\">…</html>\u001b[22m\n\u001b[2m  -   unexpected value \"https://mako-dev.cms.gov/\"\u001b[22m\n\u001b[2m  -   locator resolved to <html lang=\"en\" class=\"h-full\">…</html>\u001b[22m\n\u001b[2m  -   unexpected value \"https://mako-dev.cms.gov/\"\u001b[22m\n\u001b[2m  -   locator resolved to <html lang=\"en\" class=\"h-full\">…</html>\u001b[22m\n\u001b[2m  -   unexpected value \"https://mako-dev.cms.gov/\"\u001b[22m\n\u001b[2m  -   locator resolved to <html lang=\"en\" class=\"h-full\">…</html>\u001b[22m\n\u001b[2m  -   unexpected value \"https://mako-dev.cms.gov/\"\u001b[22m\n\u001b[2m  -   locator resolved to <html lang=\"en\" class=\"h-full\">…</html>\u001b[22m\n\u001b[2m  -   unexpected value \"https://mako-dev.cms.gov/\"\u001b[22m\n\u001b[2m  -   locator resolved to <html lang=\"en\" class=\"h-full\">…</html>\u001b[22m\n\u001b[2m  -   unexpected value \"https://mako-dev.cms.gov/\"\u001b[22m\n\u001b[2m  -   locator resolved to <html lang=\"en\" class=\"h-full\">…</html>\u001b[22m\n\u001b[2m  -   unexpected value \"https://mako-dev.cms.gov/\"\u001b[22m\n\u001b[2m  -   locator resolved to <html lang=\"en\" class=\"h-full\">…</html>\u001b[22m\n\u001b[2m  -   unexpected value \"https://mako-dev.cms.gov/\"\u001b[22m\n\u001b[2m  -   locator resolved to <html lang=\"en\" class=\"h-full\">…</html>\u001b[22m\n\u001b[2m  -   unexpected value \"https://mako-dev.cms.gov/\"\u001b[22m\n\n\n   at lib/auth.setup.ts:45\n\n\u001b[0m \u001b[90m 43 |\u001b[39m   }\n \u001b[90m 44 |\u001b[39m\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 45 |\u001b[39m   \u001b[36mawait\u001b[39m expect(page)\u001b[33m.\u001b[39mtoHaveURL(\u001b[35m/dashboard/\u001b[39m)\u001b[33m;\u001b[39m\n \u001b[90m    |\u001b[39m                      \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 46 |\u001b[39m   \u001b[36mawait\u001b[39m context\u001b[33m.\u001b[39mstorageState({ path\u001b[33m:\u001b[39m storagePath })\u001b[33m;\u001b[39m\n \u001b[90m 47 |\u001b[39m   console\u001b[33m.\u001b[39mlog(\u001b[32m`${storagePath} written`\u001b[39m)\u001b[33m;\u001b[39m\n \u001b[90m 48 |\u001b[39m\u001b[0m\n\n    at generateAuthFile (/home/runner/work/macpro-mako/macpro-mako/test/lib/auth.setup.ts:45:22)\n    at /home/runner/work/macpro-mako/macpro-mako/test/lib/ci.setup.ts:31:3"
-                    }
-                  ],
+                  "status": "passed",
+                  "duration": 17443,
+                  "errors": [],
                   "stdout": [
                     {
                       "text": "default\n"
@@ -226,116 +207,18 @@
                     },
                     {
                       "text": "default\n"
+                    },
+                    {
+                      "text": "./playwright/.auth/reviewer-user.json written\n"
                     }
                   ],
                   "stderr": [],
                   "retry": 0,
-                  "startTime": "2025-05-21T19:44:12.897Z",
-                  "attachments": [
-                    {
-                      "name": "trace",
-                      "contentType": "application/zip",
-                      "path": "/home/runner/work/macpro-mako/macpro-mako/test/test-results/lib-ci.setup.ts-auth-ci-setup/trace.zip"
-                    }
-                  ],
-                  "errorLocation": {
-                    "file": "/home/runner/work/macpro-mako/macpro-mako/test/lib/auth.setup.ts",
-                    "column": 22,
-                    "line": 45
-                  }
-                },
-                {
-                  "workerIndex": 1,
-                  "status": "failed",
-                  "duration": 9310,
-                  "error": {
-                    "message": "Error: \u001b[31mTimed out 5000ms waiting for \u001b[39m\u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoHaveURL\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m)\u001b[22m\n\nLocator: locator(':root')\nExpected pattern: \u001b[32m/dashboard/\u001b[39m\nReceived string:  \u001b[31m\"https://mako-dev.cms.gov/\"\u001b[39m\nCall log:\n  \u001b[2m- expect.toHaveURL with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for locator(':root')\u001b[22m\n\u001b[2m  -   locator resolved to <html lang=\"en\" class=\"h-full\">…</html>\u001b[22m\n\u001b[2m  -   unexpected value \"https://mako-dev.cms.gov/\"\u001b[22m\n\u001b[2m  -   locator resolved to <html lang=\"en\" class=\"h-full\">…</html>\u001b[22m\n\u001b[2m  -   unexpected value \"https://mako-dev.cms.gov/\"\u001b[22m\n\u001b[2m  -   locator resolved to <html lang=\"en\" class=\"h-full\">…</html>\u001b[22m\n\u001b[2m  -   unexpected value \"https://mako-dev.cms.gov/\"\u001b[22m\n\u001b[2m  -   locator resolved to <html lang=\"en\" class=\"h-full\">…</html>\u001b[22m\n\u001b[2m  -   unexpected value \"https://mako-dev.cms.gov/\"\u001b[22m\n\u001b[2m  -   locator resolved to <html lang=\"en\" class=\"h-full\">…</html>\u001b[22m\n\u001b[2m  -   unexpected value \"https://mako-dev.cms.gov/\"\u001b[22m\n\u001b[2m  -   locator resolved to <html lang=\"en\" class=\"h-full\">…</html>\u001b[22m\n\u001b[2m  -   unexpected value \"https://mako-dev.cms.gov/\"\u001b[22m\n\u001b[2m  -   locator resolved to <html lang=\"en\" class=\"h-full\">…</html>\u001b[22m\n\u001b[2m  -   unexpected value \"https://mako-dev.cms.gov/\"\u001b[22m\n\u001b[2m  -   locator resolved to <html lang=\"en\" class=\"h-full\">…</html>\u001b[22m\n\u001b[2m  -   unexpected value \"https://mako-dev.cms.gov/\"\u001b[22m\n\u001b[2m  -   locator resolved to <html lang=\"en\" class=\"h-full\">…</html>\u001b[22m\n\u001b[2m  -   unexpected value \"https://mako-dev.cms.gov/\"\u001b[22m\n",
-                    "stack": "Error: \u001b[31mTimed out 5000ms waiting for \u001b[39m\u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoHaveURL\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m)\u001b[22m\n\nLocator: locator(':root')\nExpected pattern: \u001b[32m/dashboard/\u001b[39m\nReceived string:  \u001b[31m\"https://mako-dev.cms.gov/\"\u001b[39m\nCall log:\n  \u001b[2m- expect.toHaveURL with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for locator(':root')\u001b[22m\n\u001b[2m  -   locator resolved to <html lang=\"en\" class=\"h-full\">…</html>\u001b[22m\n\u001b[2m  -   unexpected value \"https://mako-dev.cms.gov/\"\u001b[22m\n\u001b[2m  -   locator resolved to <html lang=\"en\" class=\"h-full\">…</html>\u001b[22m\n\u001b[2m  -   unexpected value \"https://mako-dev.cms.gov/\"\u001b[22m\n\u001b[2m  -   locator resolved to <html lang=\"en\" class=\"h-full\">…</html>\u001b[22m\n\u001b[2m  -   unexpected value \"https://mako-dev.cms.gov/\"\u001b[22m\n\u001b[2m  -   locator resolved to <html lang=\"en\" class=\"h-full\">…</html>\u001b[22m\n\u001b[2m  -   unexpected value \"https://mako-dev.cms.gov/\"\u001b[22m\n\u001b[2m  -   locator resolved to <html lang=\"en\" class=\"h-full\">…</html>\u001b[22m\n\u001b[2m  -   unexpected value \"https://mako-dev.cms.gov/\"\u001b[22m\n\u001b[2m  -   locator resolved to <html lang=\"en\" class=\"h-full\">…</html>\u001b[22m\n\u001b[2m  -   unexpected value \"https://mako-dev.cms.gov/\"\u001b[22m\n\u001b[2m  -   locator resolved to <html lang=\"en\" class=\"h-full\">…</html>\u001b[22m\n\u001b[2m  -   unexpected value \"https://mako-dev.cms.gov/\"\u001b[22m\n\u001b[2m  -   locator resolved to <html lang=\"en\" class=\"h-full\">…</html>\u001b[22m\n\u001b[2m  -   unexpected value \"https://mako-dev.cms.gov/\"\u001b[22m\n\u001b[2m  -   locator resolved to <html lang=\"en\" class=\"h-full\">…</html>\u001b[22m\n\u001b[2m  -   unexpected value \"https://mako-dev.cms.gov/\"\u001b[22m\n\n    at generateAuthFile (/home/runner/work/macpro-mako/macpro-mako/test/lib/auth.setup.ts:45:22)\n    at /home/runner/work/macpro-mako/macpro-mako/test/lib/ci.setup.ts:24:3",
-                    "location": {
-                      "file": "/home/runner/work/macpro-mako/macpro-mako/test/lib/auth.setup.ts",
-                      "column": 22,
-                      "line": 45
-                    },
-                    "snippet": "   at lib/auth.setup.ts:45\n\n\u001b[0m \u001b[90m 43 |\u001b[39m   }\n \u001b[90m 44 |\u001b[39m\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 45 |\u001b[39m   \u001b[36mawait\u001b[39m expect(page)\u001b[33m.\u001b[39mtoHaveURL(\u001b[35m/dashboard/\u001b[39m)\u001b[33m;\u001b[39m\n \u001b[90m    |\u001b[39m                      \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 46 |\u001b[39m   \u001b[36mawait\u001b[39m context\u001b[33m.\u001b[39mstorageState({ path\u001b[33m:\u001b[39m storagePath })\u001b[33m;\u001b[39m\n \u001b[90m 47 |\u001b[39m   console\u001b[33m.\u001b[39mlog(\u001b[32m`${storagePath} written`\u001b[39m)\u001b[33m;\u001b[39m\n \u001b[90m 48 |\u001b[39m\u001b[0m"
-                  },
-                  "errors": [
-                    {
-                      "location": {
-                        "file": "/home/runner/work/macpro-mako/macpro-mako/test/lib/auth.setup.ts",
-                        "column": 22,
-                        "line": 45
-                      },
-                      "message": "Error: \u001b[31mTimed out 5000ms waiting for \u001b[39m\u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoHaveURL\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m)\u001b[22m\n\nLocator: locator(':root')\nExpected pattern: \u001b[32m/dashboard/\u001b[39m\nReceived string:  \u001b[31m\"https://mako-dev.cms.gov/\"\u001b[39m\nCall log:\n  \u001b[2m- expect.toHaveURL with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for locator(':root')\u001b[22m\n\u001b[2m  -   locator resolved to <html lang=\"en\" class=\"h-full\">…</html>\u001b[22m\n\u001b[2m  -   unexpected value \"https://mako-dev.cms.gov/\"\u001b[22m\n\u001b[2m  -   locator resolved to <html lang=\"en\" class=\"h-full\">…</html>\u001b[22m\n\u001b[2m  -   unexpected value \"https://mako-dev.cms.gov/\"\u001b[22m\n\u001b[2m  -   locator resolved to <html lang=\"en\" class=\"h-full\">…</html>\u001b[22m\n\u001b[2m  -   unexpected value \"https://mako-dev.cms.gov/\"\u001b[22m\n\u001b[2m  -   locator resolved to <html lang=\"en\" class=\"h-full\">…</html>\u001b[22m\n\u001b[2m  -   unexpected value \"https://mako-dev.cms.gov/\"\u001b[22m\n\u001b[2m  -   locator resolved to <html lang=\"en\" class=\"h-full\">…</html>\u001b[22m\n\u001b[2m  -   unexpected value \"https://mako-dev.cms.gov/\"\u001b[22m\n\u001b[2m  -   locator resolved to <html lang=\"en\" class=\"h-full\">…</html>\u001b[22m\n\u001b[2m  -   unexpected value \"https://mako-dev.cms.gov/\"\u001b[22m\n\u001b[2m  -   locator resolved to <html lang=\"en\" class=\"h-full\">…</html>\u001b[22m\n\u001b[2m  -   unexpected value \"https://mako-dev.cms.gov/\"\u001b[22m\n\u001b[2m  -   locator resolved to <html lang=\"en\" class=\"h-full\">…</html>\u001b[22m\n\u001b[2m  -   unexpected value \"https://mako-dev.cms.gov/\"\u001b[22m\n\u001b[2m  -   locator resolved to <html lang=\"en\" class=\"h-full\">…</html>\u001b[22m\n\u001b[2m  -   unexpected value \"https://mako-dev.cms.gov/\"\u001b[22m\n\n\n   at lib/auth.setup.ts:45\n\n\u001b[0m \u001b[90m 43 |\u001b[39m   }\n \u001b[90m 44 |\u001b[39m\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 45 |\u001b[39m   \u001b[36mawait\u001b[39m expect(page)\u001b[33m.\u001b[39mtoHaveURL(\u001b[35m/dashboard/\u001b[39m)\u001b[33m;\u001b[39m\n \u001b[90m    |\u001b[39m                      \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 46 |\u001b[39m   \u001b[36mawait\u001b[39m context\u001b[33m.\u001b[39mstorageState({ path\u001b[33m:\u001b[39m storagePath })\u001b[33m;\u001b[39m\n \u001b[90m 47 |\u001b[39m   console\u001b[33m.\u001b[39mlog(\u001b[32m`${storagePath} written`\u001b[39m)\u001b[33m;\u001b[39m\n \u001b[90m 48 |\u001b[39m\u001b[0m\n\n    at generateAuthFile (/home/runner/work/macpro-mako/macpro-mako/test/lib/auth.setup.ts:45:22)\n    at /home/runner/work/macpro-mako/macpro-mako/test/lib/ci.setup.ts:24:3"
-                    }
-                  ],
-                  "stdout": [
-                    {
-                      "text": "default\n"
-                    }
-                  ],
-                  "stderr": [],
-                  "retry": 1,
-                  "startTime": "2025-05-21T19:44:28.774Z",
-                  "attachments": [
-                    {
-                      "name": "trace",
-                      "contentType": "application/zip",
-                      "path": "/home/runner/work/macpro-mako/macpro-mako/test/test-results/lib-ci.setup.ts-auth-ci-setup-retry1/trace.zip"
-                    }
-                  ],
-                  "errorLocation": {
-                    "file": "/home/runner/work/macpro-mako/macpro-mako/test/lib/auth.setup.ts",
-                    "column": 22,
-                    "line": 45
-                  }
-                },
-                {
-                  "workerIndex": 2,
-                  "status": "failed",
-                  "duration": 9739,
-                  "error": {
-                    "message": "Error: \u001b[31mTimed out 5000ms waiting for \u001b[39m\u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoHaveURL\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m)\u001b[22m\n\nLocator: locator(':root')\nExpected pattern: \u001b[32m/dashboard/\u001b[39m\nReceived string:  \u001b[31m\"https://mako-dev.cms.gov/\"\u001b[39m\nCall log:\n  \u001b[2m- expect.toHaveURL with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for locator(':root')\u001b[22m\n\u001b[2m  -   locator resolved to <html lang=\"en\" class=\"h-full\">…</html>\u001b[22m\n\u001b[2m  -   unexpected value \"https://mako-dev.cms.gov/\"\u001b[22m\n\u001b[2m  -   locator resolved to <html lang=\"en\" class=\"h-full\">…</html>\u001b[22m\n\u001b[2m  -   unexpected value \"https://mako-dev.cms.gov/\"\u001b[22m\n\u001b[2m  -   locator resolved to <html lang=\"en\" class=\"h-full\">…</html>\u001b[22m\n\u001b[2m  -   unexpected value \"https://mako-dev.cms.gov/\"\u001b[22m\n\u001b[2m  -   locator resolved to <html lang=\"en\" class=\"h-full\">…</html>\u001b[22m\n\u001b[2m  -   unexpected value \"https://mako-dev.cms.gov/\"\u001b[22m\n\u001b[2m  -   locator resolved to <html lang=\"en\" class=\"h-full\">…</html>\u001b[22m\n\u001b[2m  -   unexpected value \"https://mako-dev.cms.gov/\"\u001b[22m\n\u001b[2m  -   locator resolved to <html lang=\"en\" class=\"h-full\">…</html>\u001b[22m\n\u001b[2m  -   unexpected value \"https://mako-dev.cms.gov/\"\u001b[22m\n\u001b[2m  -   locator resolved to <html lang=\"en\" class=\"h-full\">…</html>\u001b[22m\n\u001b[2m  -   unexpected value \"https://mako-dev.cms.gov/\"\u001b[22m\n\u001b[2m  -   locator resolved to <html lang=\"en\" class=\"h-full\">…</html>\u001b[22m\n\u001b[2m  -   unexpected value \"https://mako-dev.cms.gov/\"\u001b[22m\n\u001b[2m  -   locator resolved to <html lang=\"en\" class=\"h-full\">…</html>\u001b[22m\n\u001b[2m  -   unexpected value \"https://mako-dev.cms.gov/\"\u001b[22m\n",
-                    "stack": "Error: \u001b[31mTimed out 5000ms waiting for \u001b[39m\u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoHaveURL\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m)\u001b[22m\n\nLocator: locator(':root')\nExpected pattern: \u001b[32m/dashboard/\u001b[39m\nReceived string:  \u001b[31m\"https://mako-dev.cms.gov/\"\u001b[39m\nCall log:\n  \u001b[2m- expect.toHaveURL with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for locator(':root')\u001b[22m\n\u001b[2m  -   locator resolved to <html lang=\"en\" class=\"h-full\">…</html>\u001b[22m\n\u001b[2m  -   unexpected value \"https://mako-dev.cms.gov/\"\u001b[22m\n\u001b[2m  -   locator resolved to <html lang=\"en\" class=\"h-full\">…</html>\u001b[22m\n\u001b[2m  -   unexpected value \"https://mako-dev.cms.gov/\"\u001b[22m\n\u001b[2m  -   locator resolved to <html lang=\"en\" class=\"h-full\">…</html>\u001b[22m\n\u001b[2m  -   unexpected value \"https://mako-dev.cms.gov/\"\u001b[22m\n\u001b[2m  -   locator resolved to <html lang=\"en\" class=\"h-full\">…</html>\u001b[22m\n\u001b[2m  -   unexpected value \"https://mako-dev.cms.gov/\"\u001b[22m\n\u001b[2m  -   locator resolved to <html lang=\"en\" class=\"h-full\">…</html>\u001b[22m\n\u001b[2m  -   unexpected value \"https://mako-dev.cms.gov/\"\u001b[22m\n\u001b[2m  -   locator resolved to <html lang=\"en\" class=\"h-full\">…</html>\u001b[22m\n\u001b[2m  -   unexpected value \"https://mako-dev.cms.gov/\"\u001b[22m\n\u001b[2m  -   locator resolved to <html lang=\"en\" class=\"h-full\">…</html>\u001b[22m\n\u001b[2m  -   unexpected value \"https://mako-dev.cms.gov/\"\u001b[22m\n\u001b[2m  -   locator resolved to <html lang=\"en\" class=\"h-full\">…</html>\u001b[22m\n\u001b[2m  -   unexpected value \"https://mako-dev.cms.gov/\"\u001b[22m\n\u001b[2m  -   locator resolved to <html lang=\"en\" class=\"h-full\">…</html>\u001b[22m\n\u001b[2m  -   unexpected value \"https://mako-dev.cms.gov/\"\u001b[22m\n\n    at generateAuthFile (/home/runner/work/macpro-mako/macpro-mako/test/lib/auth.setup.ts:45:22)\n    at /home/runner/work/macpro-mako/macpro-mako/test/lib/ci.setup.ts:24:3",
-                    "location": {
-                      "file": "/home/runner/work/macpro-mako/macpro-mako/test/lib/auth.setup.ts",
-                      "column": 22,
-                      "line": 45
-                    },
-                    "snippet": "   at lib/auth.setup.ts:45\n\n\u001b[0m \u001b[90m 43 |\u001b[39m   }\n \u001b[90m 44 |\u001b[39m\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 45 |\u001b[39m   \u001b[36mawait\u001b[39m expect(page)\u001b[33m.\u001b[39mtoHaveURL(\u001b[35m/dashboard/\u001b[39m)\u001b[33m;\u001b[39m\n \u001b[90m    |\u001b[39m                      \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 46 |\u001b[39m   \u001b[36mawait\u001b[39m context\u001b[33m.\u001b[39mstorageState({ path\u001b[33m:\u001b[39m storagePath })\u001b[33m;\u001b[39m\n \u001b[90m 47 |\u001b[39m   console\u001b[33m.\u001b[39mlog(\u001b[32m`${storagePath} written`\u001b[39m)\u001b[33m;\u001b[39m\n \u001b[90m 48 |\u001b[39m\u001b[0m"
-                  },
-                  "errors": [
-                    {
-                      "location": {
-                        "file": "/home/runner/work/macpro-mako/macpro-mako/test/lib/auth.setup.ts",
-                        "column": 22,
-                        "line": 45
-                      },
-                      "message": "Error: \u001b[31mTimed out 5000ms waiting for \u001b[39m\u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoHaveURL\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m)\u001b[22m\n\nLocator: locator(':root')\nExpected pattern: \u001b[32m/dashboard/\u001b[39m\nReceived string:  \u001b[31m\"https://mako-dev.cms.gov/\"\u001b[39m\nCall log:\n  \u001b[2m- expect.toHaveURL with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for locator(':root')\u001b[22m\n\u001b[2m  -   locator resolved to <html lang=\"en\" class=\"h-full\">…</html>\u001b[22m\n\u001b[2m  -   unexpected value \"https://mako-dev.cms.gov/\"\u001b[22m\n\u001b[2m  -   locator resolved to <html lang=\"en\" class=\"h-full\">…</html>\u001b[22m\n\u001b[2m  -   unexpected value \"https://mako-dev.cms.gov/\"\u001b[22m\n\u001b[2m  -   locator resolved to <html lang=\"en\" class=\"h-full\">…</html>\u001b[22m\n\u001b[2m  -   unexpected value \"https://mako-dev.cms.gov/\"\u001b[22m\n\u001b[2m  -   locator resolved to <html lang=\"en\" class=\"h-full\">…</html>\u001b[22m\n\u001b[2m  -   unexpected value \"https://mako-dev.cms.gov/\"\u001b[22m\n\u001b[2m  -   locator resolved to <html lang=\"en\" class=\"h-full\">…</html>\u001b[22m\n\u001b[2m  -   unexpected value \"https://mako-dev.cms.gov/\"\u001b[22m\n\u001b[2m  -   locator resolved to <html lang=\"en\" class=\"h-full\">…</html>\u001b[22m\n\u001b[2m  -   unexpected value \"https://mako-dev.cms.gov/\"\u001b[22m\n\u001b[2m  -   locator resolved to <html lang=\"en\" class=\"h-full\">…</html>\u001b[22m\n\u001b[2m  -   unexpected value \"https://mako-dev.cms.gov/\"\u001b[22m\n\u001b[2m  -   locator resolved to <html lang=\"en\" class=\"h-full\">…</html>\u001b[22m\n\u001b[2m  -   unexpected value \"https://mako-dev.cms.gov/\"\u001b[22m\n\u001b[2m  -   locator resolved to <html lang=\"en\" class=\"h-full\">…</html>\u001b[22m\n\u001b[2m  -   unexpected value \"https://mako-dev.cms.gov/\"\u001b[22m\n\n\n   at lib/auth.setup.ts:45\n\n\u001b[0m \u001b[90m 43 |\u001b[39m   }\n \u001b[90m 44 |\u001b[39m\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 45 |\u001b[39m   \u001b[36mawait\u001b[39m expect(page)\u001b[33m.\u001b[39mtoHaveURL(\u001b[35m/dashboard/\u001b[39m)\u001b[33m;\u001b[39m\n \u001b[90m    |\u001b[39m                      \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 46 |\u001b[39m   \u001b[36mawait\u001b[39m context\u001b[33m.\u001b[39mstorageState({ path\u001b[33m:\u001b[39m storagePath })\u001b[33m;\u001b[39m\n \u001b[90m 47 |\u001b[39m   console\u001b[33m.\u001b[39mlog(\u001b[32m`${storagePath} written`\u001b[39m)\u001b[33m;\u001b[39m\n \u001b[90m 48 |\u001b[39m\u001b[0m\n\n    at generateAuthFile (/home/runner/work/macpro-mako/macpro-mako/test/lib/auth.setup.ts:45:22)\n    at /home/runner/work/macpro-mako/macpro-mako/test/lib/ci.setup.ts:24:3"
-                    }
-                  ],
-                  "stdout": [
-                    {
-                      "text": "default\n"
-                    }
-                  ],
-                  "stderr": [],
-                  "retry": 2,
-                  "startTime": "2025-05-21T19:44:39.122Z",
-                  "attachments": [
-                    {
-                      "name": "trace",
-                      "contentType": "application/zip",
-                      "path": "/home/runner/work/macpro-mako/macpro-mako/test/test-results/lib-ci.setup.ts-auth-ci-setup-retry2/trace.zip"
-                    }
-                  ],
-                  "errorLocation": {
-                    "file": "/home/runner/work/macpro-mako/macpro-mako/test/lib/auth.setup.ts",
-                    "column": 22,
-                    "line": 45
-                  }
+                  "startTime": "2025-05-22T13:35:18.797Z",
+                  "attachments": []
                 }
               ],
-              "status": "unexpected"
+              "status": "expected"
             }
           ],
           "id": "9707e25f226d0e9f8d3b-89e10dbcc7ff0b776b63",
@@ -380,8 +263,20 @@
                       "expectedStatus": "passed",
                       "projectId": "ci",
                       "projectName": "ci",
-                      "results": [],
-                      "status": "skipped"
+                      "results": [
+                        {
+                          "workerIndex": 1,
+                          "status": "passed",
+                          "duration": 5231,
+                          "errors": [],
+                          "stdout": [],
+                          "stderr": [],
+                          "retry": 0,
+                          "startTime": "2025-05-22T13:35:37.273Z",
+                          "attachments": []
+                        }
+                      ],
+                      "status": "expected"
                     }
                   ],
                   "id": "100b0891d08a31cb23fb-76f8cc81557dc0f61241",
@@ -404,8 +299,20 @@
                       "expectedStatus": "passed",
                       "projectId": "ci",
                       "projectName": "ci",
-                      "results": [],
-                      "status": "skipped"
+                      "results": [
+                        {
+                          "workerIndex": 1,
+                          "status": "passed",
+                          "duration": 3963,
+                          "errors": [],
+                          "stdout": [],
+                          "stderr": [],
+                          "retry": 0,
+                          "startTime": "2025-05-22T13:35:42.643Z",
+                          "attachments": []
+                        }
+                      ],
+                      "status": "expected"
                     }
                   ],
                   "id": "100b0891d08a31cb23fb-5ad29c1ddaa083a63709",
@@ -428,8 +335,20 @@
                       "expectedStatus": "passed",
                       "projectId": "ci",
                       "projectName": "ci",
-                      "results": [],
-                      "status": "skipped"
+                      "results": [
+                        {
+                          "workerIndex": 1,
+                          "status": "passed",
+                          "duration": 4047,
+                          "errors": [],
+                          "stdout": [],
+                          "stderr": [],
+                          "retry": 0,
+                          "startTime": "2025-05-22T13:35:46.613Z",
+                          "attachments": []
+                        }
+                      ],
+                      "status": "expected"
                     }
                   ],
                   "id": "100b0891d08a31cb23fb-11919b40cdcee1309ee8",
@@ -452,8 +371,20 @@
                       "expectedStatus": "passed",
                       "projectId": "ci",
                       "projectName": "ci",
-                      "results": [],
-                      "status": "skipped"
+                      "results": [
+                        {
+                          "workerIndex": 1,
+                          "status": "passed",
+                          "duration": 3988,
+                          "errors": [],
+                          "stdout": [],
+                          "stderr": [],
+                          "retry": 0,
+                          "startTime": "2025-05-22T13:35:50.667Z",
+                          "attachments": []
+                        }
+                      ],
+                      "status": "expected"
                     }
                   ],
                   "id": "100b0891d08a31cb23fb-eb013ef3c4c22ada5e84",
@@ -476,8 +407,20 @@
                       "expectedStatus": "passed",
                       "projectId": "ci",
                       "projectName": "ci",
-                      "results": [],
-                      "status": "skipped"
+                      "results": [
+                        {
+                          "workerIndex": 1,
+                          "status": "passed",
+                          "duration": 3939,
+                          "errors": [],
+                          "stdout": [],
+                          "stderr": [],
+                          "retry": 0,
+                          "startTime": "2025-05-22T13:35:54.661Z",
+                          "attachments": []
+                        }
+                      ],
+                      "status": "expected"
                     }
                   ],
                   "id": "100b0891d08a31cb23fb-5aec2b240885fac5da33",
@@ -500,8 +443,20 @@
                       "expectedStatus": "passed",
                       "projectId": "ci",
                       "projectName": "ci",
-                      "results": [],
-                      "status": "skipped"
+                      "results": [
+                        {
+                          "workerIndex": 1,
+                          "status": "passed",
+                          "duration": 3920,
+                          "errors": [],
+                          "stdout": [],
+                          "stderr": [],
+                          "retry": 0,
+                          "startTime": "2025-05-22T13:35:58.607Z",
+                          "attachments": []
+                        }
+                      ],
+                      "status": "expected"
                     }
                   ],
                   "id": "100b0891d08a31cb23fb-76fd73727ab1056ed638",
@@ -524,8 +479,20 @@
                       "expectedStatus": "passed",
                       "projectId": "ci",
                       "projectName": "ci",
-                      "results": [],
-                      "status": "skipped"
+                      "results": [
+                        {
+                          "workerIndex": 1,
+                          "status": "passed",
+                          "duration": 2754,
+                          "errors": [],
+                          "stdout": [],
+                          "stderr": [],
+                          "retry": 0,
+                          "startTime": "2025-05-22T13:36:02.535Z",
+                          "attachments": []
+                        }
+                      ],
+                      "status": "expected"
                     }
                   ],
                   "id": "100b0891d08a31cb23fb-4663d16124e0d9e12ee5",
@@ -563,8 +530,20 @@
                               "expectedStatus": "passed",
                               "projectId": "ci",
                               "projectName": "ci",
-                              "results": [],
-                              "status": "skipped"
+                              "results": [
+                                {
+                                  "workerIndex": 1,
+                                  "status": "passed",
+                                  "duration": 940,
+                                  "errors": [],
+                                  "stdout": [],
+                                  "stderr": [],
+                                  "retry": 0,
+                                  "startTime": "2025-05-22T13:36:05.295Z",
+                                  "attachments": []
+                                }
+                              ],
+                              "status": "expected"
                             }
                           ],
                           "id": "100b0891d08a31cb23fb-4271e7712f1088d9201c",
@@ -587,8 +566,20 @@
                               "expectedStatus": "passed",
                               "projectId": "ci",
                               "projectName": "ci",
-                              "results": [],
-                              "status": "skipped"
+                              "results": [
+                                {
+                                  "workerIndex": 1,
+                                  "status": "passed",
+                                  "duration": 3713,
+                                  "errors": [],
+                                  "stdout": [],
+                                  "stderr": [],
+                                  "retry": 0,
+                                  "startTime": "2025-05-22T13:36:06.241Z",
+                                  "attachments": []
+                                }
+                              ],
+                              "status": "expected"
                             }
                           ],
                           "id": "100b0891d08a31cb23fb-1e7e5fa732c20d3643d5",
@@ -611,8 +602,20 @@
                               "expectedStatus": "passed",
                               "projectId": "ci",
                               "projectName": "ci",
-                              "results": [],
-                              "status": "skipped"
+                              "results": [
+                                {
+                                  "workerIndex": 1,
+                                  "status": "passed",
+                                  "duration": 3914,
+                                  "errors": [],
+                                  "stdout": [],
+                                  "stderr": [],
+                                  "retry": 0,
+                                  "startTime": "2025-05-22T13:36:09.961Z",
+                                  "attachments": []
+                                }
+                              ],
+                              "status": "expected"
                             }
                           ],
                           "id": "100b0891d08a31cb23fb-4ee423d0ee439c542958",
@@ -643,8 +646,20 @@
                               "expectedStatus": "passed",
                               "projectId": "ci",
                               "projectName": "ci",
-                              "results": [],
-                              "status": "skipped"
+                              "results": [
+                                {
+                                  "workerIndex": 1,
+                                  "status": "passed",
+                                  "duration": 3620,
+                                  "errors": [],
+                                  "stdout": [],
+                                  "stderr": [],
+                                  "retry": 0,
+                                  "startTime": "2025-05-22T13:36:13.882Z",
+                                  "attachments": []
+                                }
+                              ],
+                              "status": "expected"
                             }
                           ],
                           "id": "100b0891d08a31cb23fb-0806ffed22afd0f21e10",
@@ -667,8 +682,20 @@
                               "expectedStatus": "passed",
                               "projectId": "ci",
                               "projectName": "ci",
-                              "results": [],
-                              "status": "skipped"
+                              "results": [
+                                {
+                                  "workerIndex": 1,
+                                  "status": "passed",
+                                  "duration": 3481,
+                                  "errors": [],
+                                  "stdout": [],
+                                  "stderr": [],
+                                  "retry": 0,
+                                  "startTime": "2025-05-22T13:36:17.509Z",
+                                  "attachments": []
+                                }
+                              ],
+                              "status": "expected"
                             }
                           ],
                           "id": "100b0891d08a31cb23fb-3f9fb7478995c03532ad",
@@ -691,8 +718,20 @@
                               "expectedStatus": "passed",
                               "projectId": "ci",
                               "projectName": "ci",
-                              "results": [],
-                              "status": "skipped"
+                              "results": [
+                                {
+                                  "workerIndex": 1,
+                                  "status": "passed",
+                                  "duration": 3448,
+                                  "errors": [],
+                                  "stdout": [],
+                                  "stderr": [],
+                                  "retry": 0,
+                                  "startTime": "2025-05-22T13:36:20.997Z",
+                                  "attachments": []
+                                }
+                              ],
+                              "status": "expected"
                             }
                           ],
                           "id": "100b0891d08a31cb23fb-b8675e4ae6878c150e0f",
@@ -753,8 +792,20 @@
                           "expectedStatus": "passed",
                           "projectId": "ci",
                           "projectName": "ci",
-                          "results": [],
-                          "status": "skipped"
+                          "results": [
+                            {
+                              "workerIndex": 1,
+                              "status": "passed",
+                              "duration": 3037,
+                              "errors": [],
+                              "stdout": [],
+                              "stderr": [],
+                              "retry": 0,
+                              "startTime": "2025-05-22T13:36:24.472Z",
+                              "attachments": []
+                            }
+                          ],
+                          "status": "expected"
                         }
                       ],
                       "id": "ea688ac7e25471e4a698-87855c30a40bcc822eba",
@@ -786,8 +837,20 @@
                           "expectedStatus": "passed",
                           "projectId": "ci",
                           "projectName": "ci",
-                          "results": [],
-                          "status": "skipped"
+                          "results": [
+                            {
+                              "workerIndex": 1,
+                              "status": "passed",
+                              "duration": 3893,
+                              "errors": [],
+                              "stdout": [],
+                              "stderr": [],
+                              "retry": 0,
+                              "startTime": "2025-05-22T13:36:27.516Z",
+                              "attachments": []
+                            }
+                          ],
+                          "status": "expected"
                         }
                       ],
                       "id": "ea688ac7e25471e4a698-1db92d6572ee5f00c877",
@@ -811,8 +874,20 @@
                           "expectedStatus": "passed",
                           "projectId": "ci",
                           "projectName": "ci",
-                          "results": [],
-                          "status": "skipped"
+                          "results": [
+                            {
+                              "workerIndex": 1,
+                              "status": "passed",
+                              "duration": 3844,
+                              "errors": [],
+                              "stdout": [],
+                              "stderr": [],
+                              "retry": 0,
+                              "startTime": "2025-05-22T13:36:31.419Z",
+                              "attachments": []
+                            }
+                          ],
+                          "status": "expected"
                         }
                       ],
                       "id": "ea688ac7e25471e4a698-e0f7fde1c833601b7f87",
@@ -836,8 +911,20 @@
                           "expectedStatus": "passed",
                           "projectId": "ci",
                           "projectName": "ci",
-                          "results": [],
-                          "status": "skipped"
+                          "results": [
+                            {
+                              "workerIndex": 1,
+                              "status": "passed",
+                              "duration": 3864,
+                              "errors": [],
+                              "stdout": [],
+                              "stderr": [],
+                              "retry": 0,
+                              "startTime": "2025-05-22T13:36:35.268Z",
+                              "attachments": []
+                            }
+                          ],
+                          "status": "expected"
                         }
                       ],
                       "id": "ea688ac7e25471e4a698-6184ef87ad185b28a952",
@@ -861,8 +948,20 @@
                           "expectedStatus": "passed",
                           "projectId": "ci",
                           "projectName": "ci",
-                          "results": [],
-                          "status": "skipped"
+                          "results": [
+                            {
+                              "workerIndex": 1,
+                              "status": "passed",
+                              "duration": 3837,
+                              "errors": [],
+                              "stdout": [],
+                              "stderr": [],
+                              "retry": 0,
+                              "startTime": "2025-05-22T13:36:39.138Z",
+                              "attachments": []
+                            }
+                          ],
+                          "status": "expected"
                         }
                       ],
                       "id": "ea688ac7e25471e4a698-9e9ba530f3490becbc63",
@@ -886,8 +985,20 @@
                           "expectedStatus": "passed",
                           "projectId": "ci",
                           "projectName": "ci",
-                          "results": [],
-                          "status": "skipped"
+                          "results": [
+                            {
+                              "workerIndex": 1,
+                              "status": "passed",
+                              "duration": 2815,
+                              "errors": [],
+                              "stdout": [],
+                              "stderr": [],
+                              "retry": 0,
+                              "startTime": "2025-05-22T13:36:42.980Z",
+                              "attachments": []
+                            }
+                          ],
+                          "status": "expected"
                         }
                       ],
                       "id": "ea688ac7e25471e4a698-ed1d01e829a9919d6693",
@@ -911,8 +1022,20 @@
                           "expectedStatus": "passed",
                           "projectId": "ci",
                           "projectName": "ci",
-                          "results": [],
-                          "status": "skipped"
+                          "results": [
+                            {
+                              "workerIndex": 1,
+                              "status": "passed",
+                              "duration": 3837,
+                              "errors": [],
+                              "stdout": [],
+                              "stderr": [],
+                              "retry": 0,
+                              "startTime": "2025-05-22T13:36:45.802Z",
+                              "attachments": []
+                            }
+                          ],
+                          "status": "expected"
                         }
                       ],
                       "id": "ea688ac7e25471e4a698-e9cc264e1909662cffcc",
@@ -936,8 +1059,20 @@
                           "expectedStatus": "passed",
                           "projectId": "ci",
                           "projectName": "ci",
-                          "results": [],
-                          "status": "skipped"
+                          "results": [
+                            {
+                              "workerIndex": 1,
+                              "status": "passed",
+                              "duration": 3856,
+                              "errors": [],
+                              "stdout": [],
+                              "stderr": [],
+                              "retry": 0,
+                              "startTime": "2025-05-22T13:36:49.645Z",
+                              "attachments": []
+                            }
+                          ],
+                          "status": "expected"
                         }
                       ],
                       "id": "ea688ac7e25471e4a698-165f479f08e04e77a948",
@@ -969,8 +1104,20 @@
                           "expectedStatus": "passed",
                           "projectId": "ci",
                           "projectName": "ci",
-                          "results": [],
-                          "status": "skipped"
+                          "results": [
+                            {
+                              "workerIndex": 1,
+                              "status": "passed",
+                              "duration": 3674,
+                              "errors": [],
+                              "stdout": [],
+                              "stderr": [],
+                              "retry": 0,
+                              "startTime": "2025-05-22T13:36:53.506Z",
+                              "attachments": []
+                            }
+                          ],
+                          "status": "expected"
                         }
                       ],
                       "id": "ea688ac7e25471e4a698-6a8cbe76a595b8b72815",
@@ -994,8 +1141,20 @@
                           "expectedStatus": "passed",
                           "projectId": "ci",
                           "projectName": "ci",
-                          "results": [],
-                          "status": "skipped"
+                          "results": [
+                            {
+                              "workerIndex": 1,
+                              "status": "passed",
+                              "duration": 3837,
+                              "errors": [],
+                              "stdout": [],
+                              "stderr": [],
+                              "retry": 0,
+                              "startTime": "2025-05-22T13:36:57.185Z",
+                              "attachments": []
+                            }
+                          ],
+                          "status": "expected"
                         }
                       ],
                       "id": "ea688ac7e25471e4a698-9d1c36868646e8a6990f",
@@ -1019,8 +1178,20 @@
                           "expectedStatus": "passed",
                           "projectId": "ci",
                           "projectName": "ci",
-                          "results": [],
-                          "status": "skipped"
+                          "results": [
+                            {
+                              "workerIndex": 1,
+                              "status": "passed",
+                              "duration": 3868,
+                              "errors": [],
+                              "stdout": [],
+                              "stderr": [],
+                              "retry": 0,
+                              "startTime": "2025-05-22T13:37:01.027Z",
+                              "attachments": []
+                            }
+                          ],
+                          "status": "expected"
                         }
                       ],
                       "id": "ea688ac7e25471e4a698-028987b942159ad30b0b",
@@ -1044,8 +1215,20 @@
                           "expectedStatus": "passed",
                           "projectId": "ci",
                           "projectName": "ci",
-                          "results": [],
-                          "status": "skipped"
+                          "results": [
+                            {
+                              "workerIndex": 1,
+                              "status": "passed",
+                              "duration": 2926,
+                              "errors": [],
+                              "stdout": [],
+                              "stderr": [],
+                              "retry": 0,
+                              "startTime": "2025-05-22T13:37:04.901Z",
+                              "attachments": []
+                            }
+                          ],
+                          "status": "expected"
                         }
                       ],
                       "id": "ea688ac7e25471e4a698-5e73ce456cb7680c7289",
@@ -1069,8 +1252,20 @@
                           "expectedStatus": "passed",
                           "projectId": "ci",
                           "projectName": "ci",
-                          "results": [],
-                          "status": "skipped"
+                          "results": [
+                            {
+                              "workerIndex": 1,
+                              "status": "passed",
+                              "duration": 3835,
+                              "errors": [],
+                              "stdout": [],
+                              "stderr": [],
+                              "retry": 0,
+                              "startTime": "2025-05-22T13:37:07.833Z",
+                              "attachments": []
+                            }
+                          ],
+                          "status": "expected"
                         }
                       ],
                       "id": "ea688ac7e25471e4a698-b26c27bbb7cf0ad1f2e0",
@@ -1094,8 +1289,20 @@
                           "expectedStatus": "passed",
                           "projectId": "ci",
                           "projectName": "ci",
-                          "results": [],
-                          "status": "skipped"
+                          "results": [
+                            {
+                              "workerIndex": 1,
+                              "status": "passed",
+                              "duration": 3862,
+                              "errors": [],
+                              "stdout": [],
+                              "stderr": [],
+                              "retry": 0,
+                              "startTime": "2025-05-22T13:37:11.673Z",
+                              "attachments": []
+                            }
+                          ],
+                          "status": "expected"
                         }
                       ],
                       "id": "ea688ac7e25471e4a698-f3e2fc9ccde2f0eab11b",
@@ -1119,8 +1326,20 @@
                           "expectedStatus": "passed",
                           "projectId": "ci",
                           "projectName": "ci",
-                          "results": [],
-                          "status": "skipped"
+                          "results": [
+                            {
+                              "workerIndex": 1,
+                              "status": "passed",
+                              "duration": 3863,
+                              "errors": [],
+                              "stdout": [],
+                              "stderr": [],
+                              "retry": 0,
+                              "startTime": "2025-05-22T13:37:15.541Z",
+                              "attachments": []
+                            }
+                          ],
+                          "status": "expected"
                         }
                       ],
                       "id": "ea688ac7e25471e4a698-2836d59a187698696658",
@@ -1144,8 +1363,20 @@
                           "expectedStatus": "passed",
                           "projectId": "ci",
                           "projectName": "ci",
-                          "results": [],
-                          "status": "skipped"
+                          "results": [
+                            {
+                              "workerIndex": 1,
+                              "status": "passed",
+                              "duration": 3892,
+                              "errors": [],
+                              "stdout": [],
+                              "stderr": [],
+                              "retry": 0,
+                              "startTime": "2025-05-22T13:37:19.409Z",
+                              "attachments": []
+                            }
+                          ],
+                          "status": "expected"
                         }
                       ],
                       "id": "ea688ac7e25471e4a698-c69cf1bc980abc235883",
@@ -1169,8 +1400,20 @@
                           "expectedStatus": "passed",
                           "projectId": "ci",
                           "projectName": "ci",
-                          "results": [],
-                          "status": "skipped"
+                          "results": [
+                            {
+                              "workerIndex": 1,
+                              "status": "passed",
+                              "duration": 2837,
+                              "errors": [],
+                              "stdout": [],
+                              "stderr": [],
+                              "retry": 0,
+                              "startTime": "2025-05-22T13:37:23.307Z",
+                              "attachments": []
+                            }
+                          ],
+                          "status": "expected"
                         }
                       ],
                       "id": "ea688ac7e25471e4a698-38c46f4f2df031f47894",
@@ -1194,8 +1437,20 @@
                           "expectedStatus": "passed",
                           "projectId": "ci",
                           "projectName": "ci",
-                          "results": [],
-                          "status": "skipped"
+                          "results": [
+                            {
+                              "workerIndex": 1,
+                              "status": "passed",
+                              "duration": 3875,
+                              "errors": [],
+                              "stdout": [],
+                              "stderr": [],
+                              "retry": 0,
+                              "startTime": "2025-05-22T13:37:26.153Z",
+                              "attachments": []
+                            }
+                          ],
+                          "status": "expected"
                         }
                       ],
                       "id": "ea688ac7e25471e4a698-652622d18b8193289468",
@@ -1219,8 +1474,20 @@
                           "expectedStatus": "passed",
                           "projectId": "ci",
                           "projectName": "ci",
-                          "results": [],
-                          "status": "skipped"
+                          "results": [
+                            {
+                              "workerIndex": 1,
+                              "status": "passed",
+                              "duration": 3026,
+                              "errors": [],
+                              "stdout": [],
+                              "stderr": [],
+                              "retry": 0,
+                              "startTime": "2025-05-22T13:37:30.033Z",
+                              "attachments": []
+                            }
+                          ],
+                          "status": "expected"
                         }
                       ],
                       "id": "ea688ac7e25471e4a698-124b5292a95c5a218e56",
@@ -1244,8 +1511,20 @@
                           "expectedStatus": "passed",
                           "projectId": "ci",
                           "projectName": "ci",
-                          "results": [],
-                          "status": "skipped"
+                          "results": [
+                            {
+                              "workerIndex": 1,
+                              "status": "passed",
+                              "duration": 3704,
+                              "errors": [],
+                              "stdout": [],
+                              "stderr": [],
+                              "retry": 0,
+                              "startTime": "2025-05-22T13:37:33.066Z",
+                              "attachments": []
+                            }
+                          ],
+                          "status": "expected"
                         }
                       ],
                       "id": "ea688ac7e25471e4a698-0c3ab2f239e713943d2a",
@@ -1269,8 +1548,20 @@
                           "expectedStatus": "passed",
                           "projectId": "ci",
                           "projectName": "ci",
-                          "results": [],
-                          "status": "skipped"
+                          "results": [
+                            {
+                              "workerIndex": 1,
+                              "status": "passed",
+                              "duration": 3857,
+                              "errors": [],
+                              "stdout": [],
+                              "stderr": [],
+                              "retry": 0,
+                              "startTime": "2025-05-22T13:37:36.776Z",
+                              "attachments": []
+                            }
+                          ],
+                          "status": "expected"
                         }
                       ],
                       "id": "ea688ac7e25471e4a698-6d33b4e65aeec005b344",
@@ -1294,8 +1585,20 @@
                           "expectedStatus": "passed",
                           "projectId": "ci",
                           "projectName": "ci",
-                          "results": [],
-                          "status": "skipped"
+                          "results": [
+                            {
+                              "workerIndex": 1,
+                              "status": "passed",
+                              "duration": 3839,
+                              "errors": [],
+                              "stdout": [],
+                              "stderr": [],
+                              "retry": 0,
+                              "startTime": "2025-05-22T13:37:40.639Z",
+                              "attachments": []
+                            }
+                          ],
+                          "status": "expected"
                         }
                       ],
                       "id": "ea688ac7e25471e4a698-6a0914cd19324e470c91",
@@ -1319,8 +1622,20 @@
                           "expectedStatus": "passed",
                           "projectId": "ci",
                           "projectName": "ci",
-                          "results": [],
-                          "status": "skipped"
+                          "results": [
+                            {
+                              "workerIndex": 1,
+                              "status": "passed",
+                              "duration": 3871,
+                              "errors": [],
+                              "stdout": [],
+                              "stderr": [],
+                              "retry": 0,
+                              "startTime": "2025-05-22T13:37:44.485Z",
+                              "attachments": []
+                            }
+                          ],
+                          "status": "expected"
                         }
                       ],
                       "id": "ea688ac7e25471e4a698-2428563419366ff76057",
@@ -1344,8 +1659,20 @@
                           "expectedStatus": "passed",
                           "projectId": "ci",
                           "projectName": "ci",
-                          "results": [],
-                          "status": "skipped"
+                          "results": [
+                            {
+                              "workerIndex": 1,
+                              "status": "passed",
+                              "duration": 3857,
+                              "errors": [],
+                              "stdout": [],
+                              "stderr": [],
+                              "retry": 0,
+                              "startTime": "2025-05-22T13:37:48.361Z",
+                              "attachments": []
+                            }
+                          ],
+                          "status": "expected"
                         }
                       ],
                       "id": "ea688ac7e25471e4a698-90a4d1b8aed1a9097823",
@@ -1377,8 +1704,20 @@
                           "expectedStatus": "passed",
                           "projectId": "ci",
                           "projectName": "ci",
-                          "results": [],
-                          "status": "skipped"
+                          "results": [
+                            {
+                              "workerIndex": 1,
+                              "status": "passed",
+                              "duration": 3868,
+                              "errors": [],
+                              "stdout": [],
+                              "stderr": [],
+                              "retry": 0,
+                              "startTime": "2025-05-22T13:37:52.223Z",
+                              "attachments": []
+                            }
+                          ],
+                          "status": "expected"
                         }
                       ],
                       "id": "ea688ac7e25471e4a698-9fc39f9687138dce840c",
@@ -1402,8 +1741,20 @@
                           "expectedStatus": "passed",
                           "projectId": "ci",
                           "projectName": "ci",
-                          "results": [],
-                          "status": "skipped"
+                          "results": [
+                            {
+                              "workerIndex": 1,
+                              "status": "passed",
+                              "duration": 3870,
+                              "errors": [],
+                              "stdout": [],
+                              "stderr": [],
+                              "retry": 0,
+                              "startTime": "2025-05-22T13:37:56.096Z",
+                              "attachments": []
+                            }
+                          ],
+                          "status": "expected"
                         }
                       ],
                       "id": "ea688ac7e25471e4a698-bb2475f734ad781ed225",
@@ -1427,8 +1778,20 @@
                           "expectedStatus": "passed",
                           "projectId": "ci",
                           "projectName": "ci",
-                          "results": [],
-                          "status": "skipped"
+                          "results": [
+                            {
+                              "workerIndex": 1,
+                              "status": "passed",
+                              "duration": 3867,
+                              "errors": [],
+                              "stdout": [],
+                              "stderr": [],
+                              "retry": 0,
+                              "startTime": "2025-05-22T13:37:59.972Z",
+                              "attachments": []
+                            }
+                          ],
+                          "status": "expected"
                         }
                       ],
                       "id": "ea688ac7e25471e4a698-81eb0827310d9283360b",
@@ -1452,8 +1815,20 @@
                           "expectedStatus": "passed",
                           "projectId": "ci",
                           "projectName": "ci",
-                          "results": [],
-                          "status": "skipped"
+                          "results": [
+                            {
+                              "workerIndex": 1,
+                              "status": "passed",
+                              "duration": 3861,
+                              "errors": [],
+                              "stdout": [],
+                              "stderr": [],
+                              "retry": 0,
+                              "startTime": "2025-05-22T13:38:03.845Z",
+                              "attachments": []
+                            }
+                          ],
+                          "status": "expected"
                         }
                       ],
                       "id": "ea688ac7e25471e4a698-a3466843f78fa30f66c4",
@@ -1477,8 +1852,20 @@
                           "expectedStatus": "passed",
                           "projectId": "ci",
                           "projectName": "ci",
-                          "results": [],
-                          "status": "skipped"
+                          "results": [
+                            {
+                              "workerIndex": 1,
+                              "status": "passed",
+                              "duration": 2911,
+                              "errors": [],
+                              "stdout": [],
+                              "stderr": [],
+                              "retry": 0,
+                              "startTime": "2025-05-22T13:38:07.711Z",
+                              "attachments": []
+                            }
+                          ],
+                          "status": "expected"
                         }
                       ],
                       "id": "ea688ac7e25471e4a698-1dbf8cd238e13c8d2676",
@@ -1502,8 +1889,20 @@
                           "expectedStatus": "passed",
                           "projectId": "ci",
                           "projectName": "ci",
-                          "results": [],
-                          "status": "skipped"
+                          "results": [
+                            {
+                              "workerIndex": 1,
+                              "status": "passed",
+                              "duration": 3057,
+                              "errors": [],
+                              "stdout": [],
+                              "stderr": [],
+                              "retry": 0,
+                              "startTime": "2025-05-22T13:38:10.628Z",
+                              "attachments": []
+                            }
+                          ],
+                          "status": "expected"
                         }
                       ],
                       "id": "ea688ac7e25471e4a698-fb21a37a4f250ba2a386",
@@ -1527,8 +1926,20 @@
                           "expectedStatus": "passed",
                           "projectId": "ci",
                           "projectName": "ci",
-                          "results": [],
-                          "status": "skipped"
+                          "results": [
+                            {
+                              "workerIndex": 1,
+                              "status": "passed",
+                              "duration": 3881,
+                              "errors": [],
+                              "stdout": [],
+                              "stderr": [],
+                              "retry": 0,
+                              "startTime": "2025-05-22T13:38:13.691Z",
+                              "attachments": []
+                            }
+                          ],
+                          "status": "expected"
                         }
                       ],
                       "id": "ea688ac7e25471e4a698-4e931df0787a3a673ca3",
@@ -1552,8 +1963,20 @@
                           "expectedStatus": "passed",
                           "projectId": "ci",
                           "projectName": "ci",
-                          "results": [],
-                          "status": "skipped"
+                          "results": [
+                            {
+                              "workerIndex": 1,
+                              "status": "passed",
+                              "duration": 3868,
+                              "errors": [],
+                              "stdout": [],
+                              "stderr": [],
+                              "retry": 0,
+                              "startTime": "2025-05-22T13:38:17.577Z",
+                              "attachments": []
+                            }
+                          ],
+                          "status": "expected"
                         }
                       ],
                       "id": "ea688ac7e25471e4a698-7920ff850c062bebb3cd",
@@ -1577,8 +2000,20 @@
                           "expectedStatus": "passed",
                           "projectId": "ci",
                           "projectName": "ci",
-                          "results": [],
-                          "status": "skipped"
+                          "results": [
+                            {
+                              "workerIndex": 1,
+                              "status": "passed",
+                              "duration": 3025,
+                              "errors": [],
+                              "stdout": [],
+                              "stderr": [],
+                              "retry": 0,
+                              "startTime": "2025-05-22T13:38:21.451Z",
+                              "attachments": []
+                            }
+                          ],
+                          "status": "expected"
                         }
                       ],
                       "id": "ea688ac7e25471e4a698-2f8bd96271e84c891255",
@@ -1606,7 +2041,19 @@
                           "expectedStatus": "skipped",
                           "projectId": "ci",
                           "projectName": "ci",
-                          "results": [],
+                          "results": [
+                            {
+                              "workerIndex": -1,
+                              "status": "skipped",
+                              "duration": 0,
+                              "errors": [],
+                              "stdout": [],
+                              "stderr": [],
+                              "retry": 0,
+                              "startTime": "2025-05-22T13:38:24.481Z",
+                              "attachments": []
+                            }
+                          ],
                           "status": "skipped"
                         }
                       ],
@@ -1635,7 +2082,19 @@
                           "expectedStatus": "skipped",
                           "projectId": "ci",
                           "projectName": "ci",
-                          "results": [],
+                          "results": [
+                            {
+                              "workerIndex": -1,
+                              "status": "skipped",
+                              "duration": 0,
+                              "errors": [],
+                              "stdout": [],
+                              "stderr": [],
+                              "retry": 0,
+                              "startTime": "2025-05-22T13:38:24.481Z",
+                              "attachments": []
+                            }
+                          ],
                           "status": "skipped"
                         }
                       ],
@@ -1660,8 +2119,20 @@
                           "expectedStatus": "passed",
                           "projectId": "ci",
                           "projectName": "ci",
-                          "results": [],
-                          "status": "skipped"
+                          "results": [
+                            {
+                              "workerIndex": 1,
+                              "status": "passed",
+                              "duration": 3839,
+                              "errors": [],
+                              "stdout": [],
+                              "stderr": [],
+                              "retry": 0,
+                              "startTime": "2025-05-22T13:38:24.481Z",
+                              "attachments": []
+                            }
+                          ],
+                          "status": "expected"
                         }
                       ],
                       "id": "ea688ac7e25471e4a698-dc8a0612497ecf7f2fd5",
@@ -1685,8 +2156,20 @@
                           "expectedStatus": "passed",
                           "projectId": "ci",
                           "projectName": "ci",
-                          "results": [],
-                          "status": "skipped"
+                          "results": [
+                            {
+                              "workerIndex": 1,
+                              "status": "passed",
+                              "duration": 4072,
+                              "errors": [],
+                              "stdout": [],
+                              "stderr": [],
+                              "retry": 0,
+                              "startTime": "2025-05-22T13:38:28.325Z",
+                              "attachments": []
+                            }
+                          ],
+                          "status": "expected"
                         }
                       ],
                       "id": "ea688ac7e25471e4a698-ab39a6ce877a47767c4d",
@@ -1710,8 +2193,20 @@
                           "expectedStatus": "passed",
                           "projectId": "ci",
                           "projectName": "ci",
-                          "results": [],
-                          "status": "skipped"
+                          "results": [
+                            {
+                              "workerIndex": 1,
+                              "status": "passed",
+                              "duration": 3880,
+                              "errors": [],
+                              "stdout": [],
+                              "stderr": [],
+                              "retry": 0,
+                              "startTime": "2025-05-22T13:38:32.403Z",
+                              "attachments": []
+                            }
+                          ],
+                          "status": "expected"
                         }
                       ],
                       "id": "ea688ac7e25471e4a698-53768ed2bf2c5608d8b5",
@@ -1735,8 +2230,20 @@
                           "expectedStatus": "passed",
                           "projectId": "ci",
                           "projectName": "ci",
-                          "results": [],
-                          "status": "skipped"
+                          "results": [
+                            {
+                              "workerIndex": 1,
+                              "status": "passed",
+                              "duration": 3893,
+                              "errors": [],
+                              "stdout": [],
+                              "stderr": [],
+                              "retry": 0,
+                              "startTime": "2025-05-22T13:38:36.288Z",
+                              "attachments": []
+                            }
+                          ],
+                          "status": "expected"
                         }
                       ],
                       "id": "ea688ac7e25471e4a698-c0ab2966f039a090c50a",
@@ -1779,8 +2286,24 @@
                   "expectedStatus": "passed",
                   "projectId": "ci",
                   "projectName": "ci",
-                  "results": [],
-                  "status": "skipped"
+                  "results": [
+                    {
+                      "workerIndex": 1,
+                      "status": "passed",
+                      "duration": 3822,
+                      "errors": [],
+                      "stdout": [
+                        {
+                          "text": "/ violations:  \u001b[33m0\u001b[39m\n"
+                        }
+                      ],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-05-22T13:38:40.263Z",
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
                 }
               ],
               "id": "37280e3c1e02c3251f32-d15a0876fd2f5a7fc9ea",
@@ -1802,8 +2325,24 @@
                   "expectedStatus": "passed",
                   "projectId": "ci",
                   "projectName": "ci",
-                  "results": [],
-                  "status": "skipped"
+                  "results": [
+                    {
+                      "workerIndex": 1,
+                      "status": "passed",
+                      "duration": 5447,
+                      "errors": [],
+                      "stdout": [
+                        {
+                          "text": "/dashboard violations:  \u001b[33m0\u001b[39m\n"
+                        }
+                      ],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-05-22T13:38:44.092Z",
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
                 }
               ],
               "id": "37280e3c1e02c3251f32-cc045bee0204d07448c8",
@@ -1825,8 +2364,24 @@
                   "expectedStatus": "passed",
                   "projectId": "ci",
                   "projectName": "ci",
-                  "results": [],
-                  "status": "skipped"
+                  "results": [
+                    {
+                      "workerIndex": 1,
+                      "status": "passed",
+                      "duration": 4360,
+                      "errors": [],
+                      "stdout": [
+                        {
+                          "text": "/faq violations:  \u001b[33m0\u001b[39m\n"
+                        }
+                      ],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-05-22T13:38:49.545Z",
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
                 }
               ],
               "id": "37280e3c1e02c3251f32-8740808cb5b08fcef8d2",
@@ -1848,8 +2403,24 @@
                   "expectedStatus": "passed",
                   "projectId": "ci",
                   "projectName": "ci",
-                  "results": [],
-                  "status": "skipped"
+                  "results": [
+                    {
+                      "workerIndex": 1,
+                      "status": "passed",
+                      "duration": 3738,
+                      "errors": [],
+                      "stdout": [
+                        {
+                          "text": "/latestupdates violations:  \u001b[33m0\u001b[39m\n"
+                        }
+                      ],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-05-22T13:38:53.909Z",
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
                 }
               ],
               "id": "37280e3c1e02c3251f32-a3ea009d6645111d7057",
@@ -1871,8 +2442,24 @@
                   "expectedStatus": "passed",
                   "projectId": "ci",
                   "projectName": "ci",
-                  "results": [],
-                  "status": "skipped"
+                  "results": [
+                    {
+                      "workerIndex": 1,
+                      "status": "passed",
+                      "duration": 4868,
+                      "errors": [],
+                      "stdout": [
+                        {
+                          "text": "/profile violations:  \u001b[33m0\u001b[39m\n"
+                        }
+                      ],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-05-22T13:38:57.652Z",
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
                 }
               ],
               "id": "37280e3c1e02c3251f32-1e63b77df142c1aa1023",
@@ -1894,8 +2481,24 @@
                   "expectedStatus": "passed",
                   "projectId": "ci",
                   "projectName": "ci",
-                  "results": [],
-                  "status": "skipped"
+                  "results": [
+                    {
+                      "workerIndex": 1,
+                      "status": "passed",
+                      "duration": 3897,
+                      "errors": [],
+                      "stdout": [
+                        {
+                          "text": "/new-submission violations:  \u001b[33m0\u001b[39m\n"
+                        }
+                      ],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-05-22T13:39:02.525Z",
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
                 }
               ],
               "id": "37280e3c1e02c3251f32-7a76ccf38fc5280795b6",
@@ -1917,8 +2520,24 @@
                   "expectedStatus": "passed",
                   "projectId": "ci",
                   "projectName": "ci",
-                  "results": [],
-                  "status": "skipped"
+                  "results": [
+                    {
+                      "workerIndex": 1,
+                      "status": "passed",
+                      "duration": 3924,
+                      "errors": [],
+                      "stdout": [
+                        {
+                          "text": "/new-submission/spa violations:  \u001b[33m0\u001b[39m\n"
+                        }
+                      ],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-05-22T13:39:06.428Z",
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
                 }
               ],
               "id": "37280e3c1e02c3251f32-efbb95768bff03be545e",
@@ -1940,8 +2559,24 @@
                   "expectedStatus": "passed",
                   "projectId": "ci",
                   "projectName": "ci",
-                  "results": [],
-                  "status": "skipped"
+                  "results": [
+                    {
+                      "workerIndex": 1,
+                      "status": "passed",
+                      "duration": 3783,
+                      "errors": [],
+                      "stdout": [
+                        {
+                          "text": "/new-submission/spa/medicaid violations:  \u001b[33m0\u001b[39m\n"
+                        }
+                      ],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-05-22T13:39:10.357Z",
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
                 }
               ],
               "id": "37280e3c1e02c3251f32-1597a6ac6ec223236303",
@@ -1963,8 +2598,24 @@
                   "expectedStatus": "passed",
                   "projectId": "ci",
                   "projectName": "ci",
-                  "results": [],
-                  "status": "skipped"
+                  "results": [
+                    {
+                      "workerIndex": 1,
+                      "status": "passed",
+                      "duration": 3906,
+                      "errors": [],
+                      "stdout": [
+                        {
+                          "text": "/new-submission/spa/chip violations:  \u001b[33m0\u001b[39m\n"
+                        }
+                      ],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-05-22T13:39:14.145Z",
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
                 }
               ],
               "id": "37280e3c1e02c3251f32-814b5c262aab364b5931",
@@ -1986,8 +2637,24 @@
                   "expectedStatus": "passed",
                   "projectId": "ci",
                   "projectName": "ci",
-                  "results": [],
-                  "status": "skipped"
+                  "results": [
+                    {
+                      "workerIndex": 1,
+                      "status": "passed",
+                      "duration": 3854,
+                      "errors": [],
+                      "stdout": [
+                        {
+                          "text": "/new-submission/waiver violations:  \u001b[33m0\u001b[39m\n"
+                        }
+                      ],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-05-22T13:39:18.057Z",
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
                 }
               ],
               "id": "37280e3c1e02c3251f32-ca14a6d92aaff6e57bd0",
@@ -2009,8 +2676,24 @@
                   "expectedStatus": "passed",
                   "projectId": "ci",
                   "projectName": "ci",
-                  "results": [],
-                  "status": "skipped"
+                  "results": [
+                    {
+                      "workerIndex": 1,
+                      "status": "passed",
+                      "duration": 3833,
+                      "errors": [],
+                      "stdout": [
+                        {
+                          "text": "/new-submission/waiver/b violations:  \u001b[33m0\u001b[39m\n"
+                        }
+                      ],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-05-22T13:39:21.916Z",
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
                 }
               ],
               "id": "37280e3c1e02c3251f32-b6e96816b9200951b93a",
@@ -2032,8 +2715,24 @@
                   "expectedStatus": "passed",
                   "projectId": "ci",
                   "projectName": "ci",
-                  "results": [],
-                  "status": "skipped"
+                  "results": [
+                    {
+                      "workerIndex": 1,
+                      "status": "passed",
+                      "duration": 3800,
+                      "errors": [],
+                      "stdout": [
+                        {
+                          "text": "/new-submission/waiver/b/b4 violations:  \u001b[33m0\u001b[39m\n"
+                        }
+                      ],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-05-22T13:39:25.754Z",
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
                 }
               ],
               "id": "37280e3c1e02c3251f32-f820e686e0f0b165d4d0",
@@ -2055,8 +2754,24 @@
                   "expectedStatus": "passed",
                   "projectId": "ci",
                   "projectName": "ci",
-                  "results": [],
-                  "status": "skipped"
+                  "results": [
+                    {
+                      "workerIndex": 1,
+                      "status": "passed",
+                      "duration": 3747,
+                      "errors": [],
+                      "stdout": [
+                        {
+                          "text": "/new-submission/waiver/b/capitated violations:  \u001b[33m0\u001b[39m\n"
+                        }
+                      ],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-05-22T13:39:29.559Z",
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
                 }
               ],
               "id": "37280e3c1e02c3251f32-8df20010b665d301a1b3",
@@ -2078,8 +2793,79 @@
                   "expectedStatus": "passed",
                   "projectId": "ci",
                   "projectName": "ci",
-                  "results": [],
-                  "status": "skipped"
+                  "results": [
+                    {
+                      "workerIndex": 1,
+                      "status": "failed",
+                      "duration": 3706,
+                      "error": {
+                        "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoEqual\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // deep equality\u001b[22m\n\n\u001b[32m- Expected  -  1\u001b[39m\n\u001b[31m+ Received  + 68\u001b[39m\n\n\u001b[32m- Array []\u001b[39m\n\u001b[31m+ Array [\u001b[39m\n\u001b[31m+   Object {\u001b[39m\n\u001b[31m+     \"description\": \"Ensure the document has a main landmark\",\u001b[39m\n\u001b[31m+     \"help\": \"Document should have one main landmark\",\u001b[39m\n\u001b[31m+     \"helpUrl\": \"https://dequeuniversity.com/rules/axe/4.10/landmark-one-main?application=playwright\",\u001b[39m\n\u001b[31m+     \"id\": \"landmark-one-main\",\u001b[39m\n\u001b[31m+     \"impact\": \"moderate\",\u001b[39m\n\u001b[31m+     \"nodes\": Array [\u001b[39m\n\u001b[31m+       Object {\u001b[39m\n\u001b[31m+         \"all\": Array [\u001b[39m\n\u001b[31m+           Object {\u001b[39m\n\u001b[31m+             \"data\": null,\u001b[39m\n\u001b[31m+             \"id\": \"page-has-main\",\u001b[39m\n\u001b[31m+             \"impact\": \"moderate\",\u001b[39m\n\u001b[31m+             \"message\": \"Document does not have a main landmark\",\u001b[39m\n\u001b[31m+             \"relatedNodes\": Array [],\u001b[39m\n\u001b[31m+           },\u001b[39m\n\u001b[31m+         ],\u001b[39m\n\u001b[31m+         \"any\": Array [],\u001b[39m\n\u001b[31m+         \"failureSummary\": \"Fix all of the following:\u001b[39m\n\u001b[31m+   Document does not have a main landmark\",\u001b[39m\n\u001b[31m+         \"html\": \"<html lang=\\\"en\\\" class=\\\"h-full\\\">\",\u001b[39m\n\u001b[31m+         \"impact\": \"moderate\",\u001b[39m\n\u001b[31m+         \"none\": Array [],\u001b[39m\n\u001b[31m+         \"target\": Array [\u001b[39m\n\u001b[31m+           \"html\",\u001b[39m\n\u001b[31m+         ],\u001b[39m\n\u001b[31m+       },\u001b[39m\n\u001b[31m+     ],\u001b[39m\n\u001b[31m+     \"tags\": Array [\u001b[39m\n\u001b[31m+       \"cat.semantics\",\u001b[39m\n\u001b[31m+       \"best-practice\",\u001b[39m\n\u001b[31m+     ],\u001b[39m\n\u001b[31m+   },\u001b[39m\n\u001b[31m+   Object {\u001b[39m\n\u001b[31m+     \"description\": \"Ensure that the page, or at least one of its frames contains a level-one heading\",\u001b[39m\n\u001b[31m+     \"help\": \"Page should contain a level-one heading\",\u001b[39m\n\u001b[31m+     \"helpUrl\": \"https://dequeuniversity.com/rules/axe/4.10/page-has-heading-one?application=playwright\",\u001b[39m\n\u001b[31m+     \"id\": \"page-has-heading-one\",\u001b[39m\n\u001b[31m+     \"impact\": \"moderate\",\u001b[39m\n\u001b[31m+     \"nodes\": Array [\u001b[39m\n\u001b[31m+       Object {\u001b[39m\n\u001b[31m+         \"all\": Array [\u001b[39m\n\u001b[31m+           Object {\u001b[39m\n\u001b[31m+             \"data\": null,\u001b[39m\n\u001b[31m+             \"id\": \"page-has-heading-one\",\u001b[39m\n\u001b[31m+             \"impact\": \"moderate\",\u001b[39m\n\u001b[31m+             \"message\": \"Page must have a level-one heading\",\u001b[39m\n\u001b[31m+             \"relatedNodes\": Array [],\u001b[39m\n\u001b[31m+           },\u001b[39m\n\u001b[31m+         ],\u001b[39m\n\u001b[31m+         \"any\": Array [],\u001b[39m\n\u001b[31m+         \"failureSummary\": \"Fix all of the following:\u001b[39m\n\u001b[31m+   Page must have a level-one heading\",\u001b[39m\n\u001b[31m+         \"html\": \"<html lang=\\\"en\\\" class=\\\"h-full\\\">\",\u001b[39m\n\u001b[31m+         \"impact\": \"moderate\",\u001b[39m\n\u001b[31m+         \"none\": Array [],\u001b[39m\n\u001b[31m+         \"target\": Array [\u001b[39m\n\u001b[31m+           \"html\",\u001b[39m\n\u001b[31m+         ],\u001b[39m\n\u001b[31m+       },\u001b[39m\n\u001b[31m+     ],\u001b[39m\n\u001b[31m+     \"tags\": Array [\u001b[39m\n\u001b[31m+       \"cat.semantics\",\u001b[39m\n\u001b[31m+       \"best-practice\",\u001b[39m\n\u001b[31m+     ],\u001b[39m\n\u001b[31m+   },\u001b[39m\n\u001b[31m+ ]\u001b[39m",
+                        "stack": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoEqual\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // deep equality\u001b[22m\n\n\u001b[32m- Expected  -  1\u001b[39m\n\u001b[31m+ Received  + 68\u001b[39m\n\n\u001b[32m- Array []\u001b[39m\n\u001b[31m+ Array [\u001b[39m\n\u001b[31m+   Object {\u001b[39m\n\u001b[31m+     \"description\": \"Ensure the document has a main landmark\",\u001b[39m\n\u001b[31m+     \"help\": \"Document should have one main landmark\",\u001b[39m\n\u001b[31m+     \"helpUrl\": \"https://dequeuniversity.com/rules/axe/4.10/landmark-one-main?application=playwright\",\u001b[39m\n\u001b[31m+     \"id\": \"landmark-one-main\",\u001b[39m\n\u001b[31m+     \"impact\": \"moderate\",\u001b[39m\n\u001b[31m+     \"nodes\": Array [\u001b[39m\n\u001b[31m+       Object {\u001b[39m\n\u001b[31m+         \"all\": Array [\u001b[39m\n\u001b[31m+           Object {\u001b[39m\n\u001b[31m+             \"data\": null,\u001b[39m\n\u001b[31m+             \"id\": \"page-has-main\",\u001b[39m\n\u001b[31m+             \"impact\": \"moderate\",\u001b[39m\n\u001b[31m+             \"message\": \"Document does not have a main landmark\",\u001b[39m\n\u001b[31m+             \"relatedNodes\": Array [],\u001b[39m\n\u001b[31m+           },\u001b[39m\n\u001b[31m+         ],\u001b[39m\n\u001b[31m+         \"any\": Array [],\u001b[39m\n\u001b[31m+         \"failureSummary\": \"Fix all of the following:\u001b[39m\n\u001b[31m+   Document does not have a main landmark\",\u001b[39m\n\u001b[31m+         \"html\": \"<html lang=\\\"en\\\" class=\\\"h-full\\\">\",\u001b[39m\n\u001b[31m+         \"impact\": \"moderate\",\u001b[39m\n\u001b[31m+         \"none\": Array [],\u001b[39m\n\u001b[31m+         \"target\": Array [\u001b[39m\n\u001b[31m+           \"html\",\u001b[39m\n\u001b[31m+         ],\u001b[39m\n\u001b[31m+       },\u001b[39m\n\u001b[31m+     ],\u001b[39m\n\u001b[31m+     \"tags\": Array [\u001b[39m\n\u001b[31m+       \"cat.semantics\",\u001b[39m\n\u001b[31m+       \"best-practice\",\u001b[39m\n\u001b[31m+     ],\u001b[39m\n\u001b[31m+   },\u001b[39m\n\u001b[31m+   Object {\u001b[39m\n\u001b[31m+     \"description\": \"Ensure that the page, or at least one of its frames contains a level-one heading\",\u001b[39m\n\u001b[31m+     \"help\": \"Page should contain a level-one heading\",\u001b[39m\n\u001b[31m+     \"helpUrl\": \"https://dequeuniversity.com/rules/axe/4.10/page-has-heading-one?application=playwright\",\u001b[39m\n\u001b[31m+     \"id\": \"page-has-heading-one\",\u001b[39m\n\u001b[31m+     \"impact\": \"moderate\",\u001b[39m\n\u001b[31m+     \"nodes\": Array [\u001b[39m\n\u001b[31m+       Object {\u001b[39m\n\u001b[31m+         \"all\": Array [\u001b[39m\n\u001b[31m+           Object {\u001b[39m\n\u001b[31m+             \"data\": null,\u001b[39m\n\u001b[31m+             \"id\": \"page-has-heading-one\",\u001b[39m\n\u001b[31m+             \"impact\": \"moderate\",\u001b[39m\n\u001b[31m+             \"message\": \"Page must have a level-one heading\",\u001b[39m\n\u001b[31m+             \"relatedNodes\": Array [],\u001b[39m\n\u001b[31m+           },\u001b[39m\n\u001b[31m+         ],\u001b[39m\n\u001b[31m+         \"any\": Array [],\u001b[39m\n\u001b[31m+         \"failureSummary\": \"Fix all of the following:\u001b[39m\n\u001b[31m+   Page must have a level-one heading\",\u001b[39m\n\u001b[31m+         \"html\": \"<html lang=\\\"en\\\" class=\\\"h-full\\\">\",\u001b[39m\n\u001b[31m+         \"impact\": \"moderate\",\u001b[39m\n\u001b[31m+         \"none\": Array [],\u001b[39m\n\u001b[31m+         \"target\": Array [\u001b[39m\n\u001b[31m+           \"html\",\u001b[39m\n\u001b[31m+         ],\u001b[39m\n\u001b[31m+       },\u001b[39m\n\u001b[31m+     ],\u001b[39m\n\u001b[31m+     \"tags\": Array [\u001b[39m\n\u001b[31m+       \"cat.semantics\",\u001b[39m\n\u001b[31m+       \"best-practice\",\u001b[39m\n\u001b[31m+     ],\u001b[39m\n\u001b[31m+   },\u001b[39m\n\u001b[31m+ ]\u001b[39m\n    at /home/runner/work/macpro-mako/macpro-mako/test/non-func/a11y/index.spec.ts:26:51",
+                        "location": {
+                          "file": "/home/runner/work/macpro-mako/macpro-mako/test/non-func/a11y/index.spec.ts",
+                          "column": 51,
+                          "line": 26
+                        },
+                        "snippet": "\u001b[0m \u001b[90m 24 |\u001b[39m       \u001b[36mconst\u001b[39m accessibilityScanResults \u001b[33m=\u001b[39m \u001b[36mawait\u001b[39m \u001b[36mnew\u001b[39m \u001b[33mAxeBuilder\u001b[39m({ page })\u001b[33m.\u001b[39manalyze()\u001b[33m;\u001b[39m\n \u001b[90m 25 |\u001b[39m       console\u001b[33m.\u001b[39mlog(\u001b[32m`${route} violations: `\u001b[39m\u001b[33m,\u001b[39m accessibilityScanResults\u001b[33m.\u001b[39mviolations\u001b[33m.\u001b[39mlength)\u001b[33m;\u001b[39m\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 26 |\u001b[39m       expect(accessibilityScanResults\u001b[33m.\u001b[39mviolations)\u001b[33m.\u001b[39mtoEqual([])\u001b[33m;\u001b[39m\n \u001b[90m    |\u001b[39m                                                   \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 27 |\u001b[39m     })\u001b[33m;\u001b[39m\n \u001b[90m 28 |\u001b[39m   }\n \u001b[90m 29 |\u001b[39m })\u001b[33m;\u001b[39m\u001b[0m"
+                      },
+                      "errors": [
+                        {
+                          "location": {
+                            "file": "/home/runner/work/macpro-mako/macpro-mako/test/non-func/a11y/index.spec.ts",
+                            "column": 51,
+                            "line": 26
+                          },
+                          "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoEqual\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // deep equality\u001b[22m\n\n\u001b[32m- Expected  -  1\u001b[39m\n\u001b[31m+ Received  + 68\u001b[39m\n\n\u001b[32m- Array []\u001b[39m\n\u001b[31m+ Array [\u001b[39m\n\u001b[31m+   Object {\u001b[39m\n\u001b[31m+     \"description\": \"Ensure the document has a main landmark\",\u001b[39m\n\u001b[31m+     \"help\": \"Document should have one main landmark\",\u001b[39m\n\u001b[31m+     \"helpUrl\": \"https://dequeuniversity.com/rules/axe/4.10/landmark-one-main?application=playwright\",\u001b[39m\n\u001b[31m+     \"id\": \"landmark-one-main\",\u001b[39m\n\u001b[31m+     \"impact\": \"moderate\",\u001b[39m\n\u001b[31m+     \"nodes\": Array [\u001b[39m\n\u001b[31m+       Object {\u001b[39m\n\u001b[31m+         \"all\": Array [\u001b[39m\n\u001b[31m+           Object {\u001b[39m\n\u001b[31m+             \"data\": null,\u001b[39m\n\u001b[31m+             \"id\": \"page-has-main\",\u001b[39m\n\u001b[31m+             \"impact\": \"moderate\",\u001b[39m\n\u001b[31m+             \"message\": \"Document does not have a main landmark\",\u001b[39m\n\u001b[31m+             \"relatedNodes\": Array [],\u001b[39m\n\u001b[31m+           },\u001b[39m\n\u001b[31m+         ],\u001b[39m\n\u001b[31m+         \"any\": Array [],\u001b[39m\n\u001b[31m+         \"failureSummary\": \"Fix all of the following:\u001b[39m\n\u001b[31m+   Document does not have a main landmark\",\u001b[39m\n\u001b[31m+         \"html\": \"<html lang=\\\"en\\\" class=\\\"h-full\\\">\",\u001b[39m\n\u001b[31m+         \"impact\": \"moderate\",\u001b[39m\n\u001b[31m+         \"none\": Array [],\u001b[39m\n\u001b[31m+         \"target\": Array [\u001b[39m\n\u001b[31m+           \"html\",\u001b[39m\n\u001b[31m+         ],\u001b[39m\n\u001b[31m+       },\u001b[39m\n\u001b[31m+     ],\u001b[39m\n\u001b[31m+     \"tags\": Array [\u001b[39m\n\u001b[31m+       \"cat.semantics\",\u001b[39m\n\u001b[31m+       \"best-practice\",\u001b[39m\n\u001b[31m+     ],\u001b[39m\n\u001b[31m+   },\u001b[39m\n\u001b[31m+   Object {\u001b[39m\n\u001b[31m+     \"description\": \"Ensure that the page, or at least one of its frames contains a level-one heading\",\u001b[39m\n\u001b[31m+     \"help\": \"Page should contain a level-one heading\",\u001b[39m\n\u001b[31m+     \"helpUrl\": \"https://dequeuniversity.com/rules/axe/4.10/page-has-heading-one?application=playwright\",\u001b[39m\n\u001b[31m+     \"id\": \"page-has-heading-one\",\u001b[39m\n\u001b[31m+     \"impact\": \"moderate\",\u001b[39m\n\u001b[31m+     \"nodes\": Array [\u001b[39m\n\u001b[31m+       Object {\u001b[39m\n\u001b[31m+         \"all\": Array [\u001b[39m\n\u001b[31m+           Object {\u001b[39m\n\u001b[31m+             \"data\": null,\u001b[39m\n\u001b[31m+             \"id\": \"page-has-heading-one\",\u001b[39m\n\u001b[31m+             \"impact\": \"moderate\",\u001b[39m\n\u001b[31m+             \"message\": \"Page must have a level-one heading\",\u001b[39m\n\u001b[31m+             \"relatedNodes\": Array [],\u001b[39m\n\u001b[31m+           },\u001b[39m\n\u001b[31m+         ],\u001b[39m\n\u001b[31m+         \"any\": Array [],\u001b[39m\n\u001b[31m+         \"failureSummary\": \"Fix all of the following:\u001b[39m\n\u001b[31m+   Page must have a level-one heading\",\u001b[39m\n\u001b[31m+         \"html\": \"<html lang=\\\"en\\\" class=\\\"h-full\\\">\",\u001b[39m\n\u001b[31m+         \"impact\": \"moderate\",\u001b[39m\n\u001b[31m+         \"none\": Array [],\u001b[39m\n\u001b[31m+         \"target\": Array [\u001b[39m\n\u001b[31m+           \"html\",\u001b[39m\n\u001b[31m+         ],\u001b[39m\n\u001b[31m+       },\u001b[39m\n\u001b[31m+     ],\u001b[39m\n\u001b[31m+     \"tags\": Array [\u001b[39m\n\u001b[31m+       \"cat.semantics\",\u001b[39m\n\u001b[31m+       \"best-practice\",\u001b[39m\n\u001b[31m+     ],\u001b[39m\n\u001b[31m+   },\u001b[39m\n\u001b[31m+ ]\u001b[39m\n\n\u001b[0m \u001b[90m 24 |\u001b[39m       \u001b[36mconst\u001b[39m accessibilityScanResults \u001b[33m=\u001b[39m \u001b[36mawait\u001b[39m \u001b[36mnew\u001b[39m \u001b[33mAxeBuilder\u001b[39m({ page })\u001b[33m.\u001b[39manalyze()\u001b[33m;\u001b[39m\n \u001b[90m 25 |\u001b[39m       console\u001b[33m.\u001b[39mlog(\u001b[32m`${route} violations: `\u001b[39m\u001b[33m,\u001b[39m accessibilityScanResults\u001b[33m.\u001b[39mviolations\u001b[33m.\u001b[39mlength)\u001b[33m;\u001b[39m\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 26 |\u001b[39m       expect(accessibilityScanResults\u001b[33m.\u001b[39mviolations)\u001b[33m.\u001b[39mtoEqual([])\u001b[33m;\u001b[39m\n \u001b[90m    |\u001b[39m                                                   \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 27 |\u001b[39m     })\u001b[33m;\u001b[39m\n \u001b[90m 28 |\u001b[39m   }\n \u001b[90m 29 |\u001b[39m })\u001b[33m;\u001b[39m\u001b[0m\n\n    at /home/runner/work/macpro-mako/macpro-mako/test/non-func/a11y/index.spec.ts:26:51"
+                        }
+                      ],
+                      "stdout": [
+                        {
+                          "text": "/new-submission/spa/medicaid/landing/medicaid-abp violations:  \u001b[33m2\u001b[39m\n"
+                        }
+                      ],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-05-22T13:39:33.311Z",
+                      "attachments": [
+                        {
+                          "name": "video",
+                          "contentType": "video/webm",
+                          "path": "/home/runner/work/macpro-mako/macpro-mako/test/test-results/non-func-a11y-index-test-a-a1d90-ctable-accessibility-issues-ci/video-1.webm"
+                        },
+                        {
+                          "name": "video",
+                          "contentType": "video/webm",
+                          "path": "/home/runner/work/macpro-mako/macpro-mako/test/test-results/non-func-a11y-index-test-a-a1d90-ctable-accessibility-issues-ci/video.webm"
+                        },
+                        {
+                          "name": "trace",
+                          "contentType": "application/zip",
+                          "path": "/home/runner/work/macpro-mako/macpro-mako/test/test-results/non-func-a11y-index-test-a-a1d90-ctable-accessibility-issues-ci/trace.zip"
+                        }
+                      ],
+                      "errorLocation": {
+                        "file": "/home/runner/work/macpro-mako/macpro-mako/test/non-func/a11y/index.spec.ts",
+                        "column": 51,
+                        "line": 26
+                      }
+                    },
+                    {
+                      "workerIndex": 2,
+                      "status": "passed",
+                      "duration": 4128,
+                      "errors": [],
+                      "stdout": [
+                        {
+                          "text": "/new-submission/spa/medicaid/landing/medicaid-abp violations:  \u001b[33m0\u001b[39m\n"
+                        }
+                      ],
+                      "stderr": [],
+                      "retry": 1,
+                      "startTime": "2025-05-22T13:39:38.435Z",
+                      "attachments": []
+                    }
+                  ],
+                  "status": "flaky"
                 }
               ],
               "id": "37280e3c1e02c3251f32-2c08faa80f0614bf1f27",
@@ -2101,8 +2887,24 @@
                   "expectedStatus": "passed",
                   "projectId": "ci",
                   "projectName": "ci",
-                  "results": [],
-                  "status": "skipped"
+                  "results": [
+                    {
+                      "workerIndex": 2,
+                      "status": "passed",
+                      "duration": 3840,
+                      "errors": [],
+                      "stdout": [
+                        {
+                          "text": "/new-submission/spa/medicaid/landing/medicaid-eligibility violations:  \u001b[33m0\u001b[39m\n"
+                        }
+                      ],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-05-22T13:39:42.709Z",
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
                 }
               ],
               "id": "37280e3c1e02c3251f32-47d5c54c892f0577f7ae",
@@ -2124,8 +2926,24 @@
                   "expectedStatus": "passed",
                   "projectId": "ci",
                   "projectName": "ci",
-                  "results": [],
-                  "status": "skipped"
+                  "results": [
+                    {
+                      "workerIndex": 2,
+                      "status": "passed",
+                      "duration": 3795,
+                      "errors": [],
+                      "stdout": [
+                        {
+                          "text": "/new-submission/spa/chip/landing/chip-eligibility violations:  \u001b[33m0\u001b[39m\n"
+                        }
+                      ],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-05-22T13:39:46.555Z",
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
                 }
               ],
               "id": "37280e3c1e02c3251f32-71b3e117425ece5948d9",
@@ -2147,8 +2965,24 @@
                   "expectedStatus": "passed",
                   "projectId": "ci",
                   "projectName": "ci",
-                  "results": [],
-                  "status": "skipped"
+                  "results": [
+                    {
+                      "workerIndex": 2,
+                      "status": "passed",
+                      "duration": 4249,
+                      "errors": [],
+                      "stdout": [
+                        {
+                          "text": "/new-submission/spa/chip/create/chip-details violations:  \u001b[33m0\u001b[39m\n"
+                        }
+                      ],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-05-22T13:39:50.356Z",
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
                 }
               ],
               "id": "37280e3c1e02c3251f32-fa380068b469ab4e3cde",
@@ -2170,8 +3004,24 @@
                   "expectedStatus": "passed",
                   "projectId": "ci",
                   "projectName": "ci",
-                  "results": [],
-                  "status": "skipped"
+                  "results": [
+                    {
+                      "workerIndex": 2,
+                      "status": "passed",
+                      "duration": 4200,
+                      "errors": [],
+                      "stdout": [
+                        {
+                          "text": "/new-submission/waiver/b/capitated/amendment/create violations:  \u001b[33m0\u001b[39m\n"
+                        }
+                      ],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-05-22T13:39:54.611Z",
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
                 }
               ],
               "id": "37280e3c1e02c3251f32-80e032e9433179de29fc",
@@ -2193,8 +3043,24 @@
                   "expectedStatus": "passed",
                   "projectId": "ci",
                   "projectName": "ci",
-                  "results": [],
-                  "status": "skipped"
+                  "results": [
+                    {
+                      "workerIndex": 2,
+                      "status": "passed",
+                      "duration": 4129,
+                      "errors": [],
+                      "stdout": [
+                        {
+                          "text": "/new-submission/waiver/b/capitated/renewal/create violations:  \u001b[33m0\u001b[39m\n"
+                        }
+                      ],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-05-22T13:39:58.816Z",
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
                 }
               ],
               "id": "37280e3c1e02c3251f32-97d28170546fbe09ba49",
@@ -2216,8 +3082,24 @@
                   "expectedStatus": "passed",
                   "projectId": "ci",
                   "projectName": "ci",
-                  "results": [],
-                  "status": "skipped"
+                  "results": [
+                    {
+                      "workerIndex": 2,
+                      "status": "passed",
+                      "duration": 4035,
+                      "errors": [],
+                      "stdout": [
+                        {
+                          "text": "/new-submission/waiver/b/capitated/initial/create violations:  \u001b[33m0\u001b[39m\n"
+                        }
+                      ],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-05-22T13:40:02.952Z",
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
                 }
               ],
               "id": "37280e3c1e02c3251f32-cbd8be170dcc3eb1ed23",
@@ -2239,8 +3121,24 @@
                   "expectedStatus": "passed",
                   "projectId": "ci",
                   "projectName": "ci",
-                  "results": [],
-                  "status": "skipped"
+                  "results": [
+                    {
+                      "workerIndex": 2,
+                      "status": "passed",
+                      "duration": 4088,
+                      "errors": [],
+                      "stdout": [
+                        {
+                          "text": "/new-submission/waiver/b/b4/initial/create violations:  \u001b[33m0\u001b[39m\n"
+                        }
+                      ],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-05-22T13:40:06.992Z",
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
                 }
               ],
               "id": "37280e3c1e02c3251f32-0b3435dfd99ec42efe8b",
@@ -2262,8 +3160,24 @@
                   "expectedStatus": "passed",
                   "projectId": "ci",
                   "projectName": "ci",
-                  "results": [],
-                  "status": "skipped"
+                  "results": [
+                    {
+                      "workerIndex": 2,
+                      "status": "passed",
+                      "duration": 4112,
+                      "errors": [],
+                      "stdout": [
+                        {
+                          "text": "/new-submission/waiver/b/b4/amendment/create violations:  \u001b[33m0\u001b[39m\n"
+                        }
+                      ],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-05-22T13:40:11.086Z",
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
                 }
               ],
               "id": "37280e3c1e02c3251f32-0ca35137a06aece7f89c",
@@ -2285,8 +3199,24 @@
                   "expectedStatus": "passed",
                   "projectId": "ci",
                   "projectName": "ci",
-                  "results": [],
-                  "status": "skipped"
+                  "results": [
+                    {
+                      "workerIndex": 2,
+                      "status": "passed",
+                      "duration": 4173,
+                      "errors": [],
+                      "stdout": [
+                        {
+                          "text": "/new-submission/waiver/b/b4/renewal/create violations:  \u001b[33m0\u001b[39m\n"
+                        }
+                      ],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-05-22T13:40:15.204Z",
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
                 }
               ],
               "id": "37280e3c1e02c3251f32-7a0eb5b63546933b1459",
@@ -2308,8 +3238,79 @@
                   "expectedStatus": "passed",
                   "projectId": "ci",
                   "projectName": "ci",
-                  "results": [],
-                  "status": "skipped"
+                  "results": [
+                    {
+                      "workerIndex": 2,
+                      "status": "failed",
+                      "duration": 3755,
+                      "error": {
+                        "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoEqual\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // deep equality\u001b[22m\n\n\u001b[32m- Expected  -  1\u001b[39m\n\u001b[31m+ Received  + 68\u001b[39m\n\n\u001b[32m- Array []\u001b[39m\n\u001b[31m+ Array [\u001b[39m\n\u001b[31m+   Object {\u001b[39m\n\u001b[31m+     \"description\": \"Ensure the document has a main landmark\",\u001b[39m\n\u001b[31m+     \"help\": \"Document should have one main landmark\",\u001b[39m\n\u001b[31m+     \"helpUrl\": \"https://dequeuniversity.com/rules/axe/4.10/landmark-one-main?application=playwright\",\u001b[39m\n\u001b[31m+     \"id\": \"landmark-one-main\",\u001b[39m\n\u001b[31m+     \"impact\": \"moderate\",\u001b[39m\n\u001b[31m+     \"nodes\": Array [\u001b[39m\n\u001b[31m+       Object {\u001b[39m\n\u001b[31m+         \"all\": Array [\u001b[39m\n\u001b[31m+           Object {\u001b[39m\n\u001b[31m+             \"data\": null,\u001b[39m\n\u001b[31m+             \"id\": \"page-has-main\",\u001b[39m\n\u001b[31m+             \"impact\": \"moderate\",\u001b[39m\n\u001b[31m+             \"message\": \"Document does not have a main landmark\",\u001b[39m\n\u001b[31m+             \"relatedNodes\": Array [],\u001b[39m\n\u001b[31m+           },\u001b[39m\n\u001b[31m+         ],\u001b[39m\n\u001b[31m+         \"any\": Array [],\u001b[39m\n\u001b[31m+         \"failureSummary\": \"Fix all of the following:\u001b[39m\n\u001b[31m+   Document does not have a main landmark\",\u001b[39m\n\u001b[31m+         \"html\": \"<html lang=\\\"en\\\" class=\\\"h-full\\\">\",\u001b[39m\n\u001b[31m+         \"impact\": \"moderate\",\u001b[39m\n\u001b[31m+         \"none\": Array [],\u001b[39m\n\u001b[31m+         \"target\": Array [\u001b[39m\n\u001b[31m+           \"html\",\u001b[39m\n\u001b[31m+         ],\u001b[39m\n\u001b[31m+       },\u001b[39m\n\u001b[31m+     ],\u001b[39m\n\u001b[31m+     \"tags\": Array [\u001b[39m\n\u001b[31m+       \"cat.semantics\",\u001b[39m\n\u001b[31m+       \"best-practice\",\u001b[39m\n\u001b[31m+     ],\u001b[39m\n\u001b[31m+   },\u001b[39m\n\u001b[31m+   Object {\u001b[39m\n\u001b[31m+     \"description\": \"Ensure that the page, or at least one of its frames contains a level-one heading\",\u001b[39m\n\u001b[31m+     \"help\": \"Page should contain a level-one heading\",\u001b[39m\n\u001b[31m+     \"helpUrl\": \"https://dequeuniversity.com/rules/axe/4.10/page-has-heading-one?application=playwright\",\u001b[39m\n\u001b[31m+     \"id\": \"page-has-heading-one\",\u001b[39m\n\u001b[31m+     \"impact\": \"moderate\",\u001b[39m\n\u001b[31m+     \"nodes\": Array [\u001b[39m\n\u001b[31m+       Object {\u001b[39m\n\u001b[31m+         \"all\": Array [\u001b[39m\n\u001b[31m+           Object {\u001b[39m\n\u001b[31m+             \"data\": null,\u001b[39m\n\u001b[31m+             \"id\": \"page-has-heading-one\",\u001b[39m\n\u001b[31m+             \"impact\": \"moderate\",\u001b[39m\n\u001b[31m+             \"message\": \"Page must have a level-one heading\",\u001b[39m\n\u001b[31m+             \"relatedNodes\": Array [],\u001b[39m\n\u001b[31m+           },\u001b[39m\n\u001b[31m+         ],\u001b[39m\n\u001b[31m+         \"any\": Array [],\u001b[39m\n\u001b[31m+         \"failureSummary\": \"Fix all of the following:\u001b[39m\n\u001b[31m+   Page must have a level-one heading\",\u001b[39m\n\u001b[31m+         \"html\": \"<html lang=\\\"en\\\" class=\\\"h-full\\\">\",\u001b[39m\n\u001b[31m+         \"impact\": \"moderate\",\u001b[39m\n\u001b[31m+         \"none\": Array [],\u001b[39m\n\u001b[31m+         \"target\": Array [\u001b[39m\n\u001b[31m+           \"html\",\u001b[39m\n\u001b[31m+         ],\u001b[39m\n\u001b[31m+       },\u001b[39m\n\u001b[31m+     ],\u001b[39m\n\u001b[31m+     \"tags\": Array [\u001b[39m\n\u001b[31m+       \"cat.semantics\",\u001b[39m\n\u001b[31m+       \"best-practice\",\u001b[39m\n\u001b[31m+     ],\u001b[39m\n\u001b[31m+   },\u001b[39m\n\u001b[31m+ ]\u001b[39m",
+                        "stack": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoEqual\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // deep equality\u001b[22m\n\n\u001b[32m- Expected  -  1\u001b[39m\n\u001b[31m+ Received  + 68\u001b[39m\n\n\u001b[32m- Array []\u001b[39m\n\u001b[31m+ Array [\u001b[39m\n\u001b[31m+   Object {\u001b[39m\n\u001b[31m+     \"description\": \"Ensure the document has a main landmark\",\u001b[39m\n\u001b[31m+     \"help\": \"Document should have one main landmark\",\u001b[39m\n\u001b[31m+     \"helpUrl\": \"https://dequeuniversity.com/rules/axe/4.10/landmark-one-main?application=playwright\",\u001b[39m\n\u001b[31m+     \"id\": \"landmark-one-main\",\u001b[39m\n\u001b[31m+     \"impact\": \"moderate\",\u001b[39m\n\u001b[31m+     \"nodes\": Array [\u001b[39m\n\u001b[31m+       Object {\u001b[39m\n\u001b[31m+         \"all\": Array [\u001b[39m\n\u001b[31m+           Object {\u001b[39m\n\u001b[31m+             \"data\": null,\u001b[39m\n\u001b[31m+             \"id\": \"page-has-main\",\u001b[39m\n\u001b[31m+             \"impact\": \"moderate\",\u001b[39m\n\u001b[31m+             \"message\": \"Document does not have a main landmark\",\u001b[39m\n\u001b[31m+             \"relatedNodes\": Array [],\u001b[39m\n\u001b[31m+           },\u001b[39m\n\u001b[31m+         ],\u001b[39m\n\u001b[31m+         \"any\": Array [],\u001b[39m\n\u001b[31m+         \"failureSummary\": \"Fix all of the following:\u001b[39m\n\u001b[31m+   Document does not have a main landmark\",\u001b[39m\n\u001b[31m+         \"html\": \"<html lang=\\\"en\\\" class=\\\"h-full\\\">\",\u001b[39m\n\u001b[31m+         \"impact\": \"moderate\",\u001b[39m\n\u001b[31m+         \"none\": Array [],\u001b[39m\n\u001b[31m+         \"target\": Array [\u001b[39m\n\u001b[31m+           \"html\",\u001b[39m\n\u001b[31m+         ],\u001b[39m\n\u001b[31m+       },\u001b[39m\n\u001b[31m+     ],\u001b[39m\n\u001b[31m+     \"tags\": Array [\u001b[39m\n\u001b[31m+       \"cat.semantics\",\u001b[39m\n\u001b[31m+       \"best-practice\",\u001b[39m\n\u001b[31m+     ],\u001b[39m\n\u001b[31m+   },\u001b[39m\n\u001b[31m+   Object {\u001b[39m\n\u001b[31m+     \"description\": \"Ensure that the page, or at least one of its frames contains a level-one heading\",\u001b[39m\n\u001b[31m+     \"help\": \"Page should contain a level-one heading\",\u001b[39m\n\u001b[31m+     \"helpUrl\": \"https://dequeuniversity.com/rules/axe/4.10/page-has-heading-one?application=playwright\",\u001b[39m\n\u001b[31m+     \"id\": \"page-has-heading-one\",\u001b[39m\n\u001b[31m+     \"impact\": \"moderate\",\u001b[39m\n\u001b[31m+     \"nodes\": Array [\u001b[39m\n\u001b[31m+       Object {\u001b[39m\n\u001b[31m+         \"all\": Array [\u001b[39m\n\u001b[31m+           Object {\u001b[39m\n\u001b[31m+             \"data\": null,\u001b[39m\n\u001b[31m+             \"id\": \"page-has-heading-one\",\u001b[39m\n\u001b[31m+             \"impact\": \"moderate\",\u001b[39m\n\u001b[31m+             \"message\": \"Page must have a level-one heading\",\u001b[39m\n\u001b[31m+             \"relatedNodes\": Array [],\u001b[39m\n\u001b[31m+           },\u001b[39m\n\u001b[31m+         ],\u001b[39m\n\u001b[31m+         \"any\": Array [],\u001b[39m\n\u001b[31m+         \"failureSummary\": \"Fix all of the following:\u001b[39m\n\u001b[31m+   Page must have a level-one heading\",\u001b[39m\n\u001b[31m+         \"html\": \"<html lang=\\\"en\\\" class=\\\"h-full\\\">\",\u001b[39m\n\u001b[31m+         \"impact\": \"moderate\",\u001b[39m\n\u001b[31m+         \"none\": Array [],\u001b[39m\n\u001b[31m+         \"target\": Array [\u001b[39m\n\u001b[31m+           \"html\",\u001b[39m\n\u001b[31m+         ],\u001b[39m\n\u001b[31m+       },\u001b[39m\n\u001b[31m+     ],\u001b[39m\n\u001b[31m+     \"tags\": Array [\u001b[39m\n\u001b[31m+       \"cat.semantics\",\u001b[39m\n\u001b[31m+       \"best-practice\",\u001b[39m\n\u001b[31m+     ],\u001b[39m\n\u001b[31m+   },\u001b[39m\n\u001b[31m+ ]\u001b[39m\n    at /home/runner/work/macpro-mako/macpro-mako/test/non-func/a11y/index.spec.ts:26:51",
+                        "location": {
+                          "file": "/home/runner/work/macpro-mako/macpro-mako/test/non-func/a11y/index.spec.ts",
+                          "column": 51,
+                          "line": 26
+                        },
+                        "snippet": "\u001b[0m \u001b[90m 24 |\u001b[39m       \u001b[36mconst\u001b[39m accessibilityScanResults \u001b[33m=\u001b[39m \u001b[36mawait\u001b[39m \u001b[36mnew\u001b[39m \u001b[33mAxeBuilder\u001b[39m({ page })\u001b[33m.\u001b[39manalyze()\u001b[33m;\u001b[39m\n \u001b[90m 25 |\u001b[39m       console\u001b[33m.\u001b[39mlog(\u001b[32m`${route} violations: `\u001b[39m\u001b[33m,\u001b[39m accessibilityScanResults\u001b[33m.\u001b[39mviolations\u001b[33m.\u001b[39mlength)\u001b[33m;\u001b[39m\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 26 |\u001b[39m       expect(accessibilityScanResults\u001b[33m.\u001b[39mviolations)\u001b[33m.\u001b[39mtoEqual([])\u001b[33m;\u001b[39m\n \u001b[90m    |\u001b[39m                                                   \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 27 |\u001b[39m     })\u001b[33m;\u001b[39m\n \u001b[90m 28 |\u001b[39m   }\n \u001b[90m 29 |\u001b[39m })\u001b[33m;\u001b[39m\u001b[0m"
+                      },
+                      "errors": [
+                        {
+                          "location": {
+                            "file": "/home/runner/work/macpro-mako/macpro-mako/test/non-func/a11y/index.spec.ts",
+                            "column": 51,
+                            "line": 26
+                          },
+                          "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoEqual\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // deep equality\u001b[22m\n\n\u001b[32m- Expected  -  1\u001b[39m\n\u001b[31m+ Received  + 68\u001b[39m\n\n\u001b[32m- Array []\u001b[39m\n\u001b[31m+ Array [\u001b[39m\n\u001b[31m+   Object {\u001b[39m\n\u001b[31m+     \"description\": \"Ensure the document has a main landmark\",\u001b[39m\n\u001b[31m+     \"help\": \"Document should have one main landmark\",\u001b[39m\n\u001b[31m+     \"helpUrl\": \"https://dequeuniversity.com/rules/axe/4.10/landmark-one-main?application=playwright\",\u001b[39m\n\u001b[31m+     \"id\": \"landmark-one-main\",\u001b[39m\n\u001b[31m+     \"impact\": \"moderate\",\u001b[39m\n\u001b[31m+     \"nodes\": Array [\u001b[39m\n\u001b[31m+       Object {\u001b[39m\n\u001b[31m+         \"all\": Array [\u001b[39m\n\u001b[31m+           Object {\u001b[39m\n\u001b[31m+             \"data\": null,\u001b[39m\n\u001b[31m+             \"id\": \"page-has-main\",\u001b[39m\n\u001b[31m+             \"impact\": \"moderate\",\u001b[39m\n\u001b[31m+             \"message\": \"Document does not have a main landmark\",\u001b[39m\n\u001b[31m+             \"relatedNodes\": Array [],\u001b[39m\n\u001b[31m+           },\u001b[39m\n\u001b[31m+         ],\u001b[39m\n\u001b[31m+         \"any\": Array [],\u001b[39m\n\u001b[31m+         \"failureSummary\": \"Fix all of the following:\u001b[39m\n\u001b[31m+   Document does not have a main landmark\",\u001b[39m\n\u001b[31m+         \"html\": \"<html lang=\\\"en\\\" class=\\\"h-full\\\">\",\u001b[39m\n\u001b[31m+         \"impact\": \"moderate\",\u001b[39m\n\u001b[31m+         \"none\": Array [],\u001b[39m\n\u001b[31m+         \"target\": Array [\u001b[39m\n\u001b[31m+           \"html\",\u001b[39m\n\u001b[31m+         ],\u001b[39m\n\u001b[31m+       },\u001b[39m\n\u001b[31m+     ],\u001b[39m\n\u001b[31m+     \"tags\": Array [\u001b[39m\n\u001b[31m+       \"cat.semantics\",\u001b[39m\n\u001b[31m+       \"best-practice\",\u001b[39m\n\u001b[31m+     ],\u001b[39m\n\u001b[31m+   },\u001b[39m\n\u001b[31m+   Object {\u001b[39m\n\u001b[31m+     \"description\": \"Ensure that the page, or at least one of its frames contains a level-one heading\",\u001b[39m\n\u001b[31m+     \"help\": \"Page should contain a level-one heading\",\u001b[39m\n\u001b[31m+     \"helpUrl\": \"https://dequeuniversity.com/rules/axe/4.10/page-has-heading-one?application=playwright\",\u001b[39m\n\u001b[31m+     \"id\": \"page-has-heading-one\",\u001b[39m\n\u001b[31m+     \"impact\": \"moderate\",\u001b[39m\n\u001b[31m+     \"nodes\": Array [\u001b[39m\n\u001b[31m+       Object {\u001b[39m\n\u001b[31m+         \"all\": Array [\u001b[39m\n\u001b[31m+           Object {\u001b[39m\n\u001b[31m+             \"data\": null,\u001b[39m\n\u001b[31m+             \"id\": \"page-has-heading-one\",\u001b[39m\n\u001b[31m+             \"impact\": \"moderate\",\u001b[39m\n\u001b[31m+             \"message\": \"Page must have a level-one heading\",\u001b[39m\n\u001b[31m+             \"relatedNodes\": Array [],\u001b[39m\n\u001b[31m+           },\u001b[39m\n\u001b[31m+         ],\u001b[39m\n\u001b[31m+         \"any\": Array [],\u001b[39m\n\u001b[31m+         \"failureSummary\": \"Fix all of the following:\u001b[39m\n\u001b[31m+   Page must have a level-one heading\",\u001b[39m\n\u001b[31m+         \"html\": \"<html lang=\\\"en\\\" class=\\\"h-full\\\">\",\u001b[39m\n\u001b[31m+         \"impact\": \"moderate\",\u001b[39m\n\u001b[31m+         \"none\": Array [],\u001b[39m\n\u001b[31m+         \"target\": Array [\u001b[39m\n\u001b[31m+           \"html\",\u001b[39m\n\u001b[31m+         ],\u001b[39m\n\u001b[31m+       },\u001b[39m\n\u001b[31m+     ],\u001b[39m\n\u001b[31m+     \"tags\": Array [\u001b[39m\n\u001b[31m+       \"cat.semantics\",\u001b[39m\n\u001b[31m+       \"best-practice\",\u001b[39m\n\u001b[31m+     ],\u001b[39m\n\u001b[31m+   },\u001b[39m\n\u001b[31m+ ]\u001b[39m\n\n\u001b[0m \u001b[90m 24 |\u001b[39m       \u001b[36mconst\u001b[39m accessibilityScanResults \u001b[33m=\u001b[39m \u001b[36mawait\u001b[39m \u001b[36mnew\u001b[39m \u001b[33mAxeBuilder\u001b[39m({ page })\u001b[33m.\u001b[39manalyze()\u001b[33m;\u001b[39m\n \u001b[90m 25 |\u001b[39m       console\u001b[33m.\u001b[39mlog(\u001b[32m`${route} violations: `\u001b[39m\u001b[33m,\u001b[39m accessibilityScanResults\u001b[33m.\u001b[39mviolations\u001b[33m.\u001b[39mlength)\u001b[33m;\u001b[39m\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 26 |\u001b[39m       expect(accessibilityScanResults\u001b[33m.\u001b[39mviolations)\u001b[33m.\u001b[39mtoEqual([])\u001b[33m;\u001b[39m\n \u001b[90m    |\u001b[39m                                                   \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 27 |\u001b[39m     })\u001b[33m;\u001b[39m\n \u001b[90m 28 |\u001b[39m   }\n \u001b[90m 29 |\u001b[39m })\u001b[33m;\u001b[39m\u001b[0m\n\n    at /home/runner/work/macpro-mako/macpro-mako/test/non-func/a11y/index.spec.ts:26:51"
+                        }
+                      ],
+                      "stdout": [
+                        {
+                          "text": "/new-submission/spa/medicaid/create violations:  \u001b[33m2\u001b[39m\n"
+                        }
+                      ],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-05-22T13:40:19.383Z",
+                      "attachments": [
+                        {
+                          "name": "video",
+                          "contentType": "video/webm",
+                          "path": "/home/runner/work/macpro-mako/macpro-mako/test/test-results/non-func-a11y-index-test-a-1a961-ctable-accessibility-issues-ci/video-1.webm"
+                        },
+                        {
+                          "name": "video",
+                          "contentType": "video/webm",
+                          "path": "/home/runner/work/macpro-mako/macpro-mako/test/test-results/non-func-a11y-index-test-a-1a961-ctable-accessibility-issues-ci/video.webm"
+                        },
+                        {
+                          "name": "trace",
+                          "contentType": "application/zip",
+                          "path": "/home/runner/work/macpro-mako/macpro-mako/test/test-results/non-func-a11y-index-test-a-1a961-ctable-accessibility-issues-ci/trace.zip"
+                        }
+                      ],
+                      "errorLocation": {
+                        "file": "/home/runner/work/macpro-mako/macpro-mako/test/non-func/a11y/index.spec.ts",
+                        "column": 51,
+                        "line": 26
+                      }
+                    },
+                    {
+                      "workerIndex": 3,
+                      "status": "passed",
+                      "duration": 4310,
+                      "errors": [],
+                      "stdout": [
+                        {
+                          "text": "/new-submission/spa/medicaid/create violations:  \u001b[33m0\u001b[39m\n"
+                        }
+                      ],
+                      "stderr": [],
+                      "retry": 1,
+                      "startTime": "2025-05-22T13:40:24.542Z",
+                      "attachments": []
+                    }
+                  ],
+                  "status": "flaky"
                 }
               ],
               "id": "37280e3c1e02c3251f32-6eebb886182f4aba3c52",
@@ -2331,8 +3332,24 @@
                   "expectedStatus": "passed",
                   "projectId": "ci",
                   "projectName": "ci",
-                  "results": [],
-                  "status": "skipped"
+                  "results": [
+                    {
+                      "workerIndex": 3,
+                      "status": "passed",
+                      "duration": 4160,
+                      "errors": [],
+                      "stdout": [
+                        {
+                          "text": "/new-submission/spa/chip/create violations:  \u001b[33m0\u001b[39m\n"
+                        }
+                      ],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-05-22T13:40:29.020Z",
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
                 }
               ],
               "id": "37280e3c1e02c3251f32-7558b1fb35a572fa4e21",
@@ -2354,8 +3371,79 @@
                   "expectedStatus": "passed",
                   "projectId": "ci",
                   "projectName": "ci",
-                  "results": [],
-                  "status": "skipped"
+                  "results": [
+                    {
+                      "workerIndex": 3,
+                      "status": "failed",
+                      "duration": 3894,
+                      "error": {
+                        "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoEqual\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // deep equality\u001b[22m\n\n\u001b[32m- Expected  -  1\u001b[39m\n\u001b[31m+ Received  + 68\u001b[39m\n\n\u001b[32m- Array []\u001b[39m\n\u001b[31m+ Array [\u001b[39m\n\u001b[31m+   Object {\u001b[39m\n\u001b[31m+     \"description\": \"Ensure the document has a main landmark\",\u001b[39m\n\u001b[31m+     \"help\": \"Document should have one main landmark\",\u001b[39m\n\u001b[31m+     \"helpUrl\": \"https://dequeuniversity.com/rules/axe/4.10/landmark-one-main?application=playwright\",\u001b[39m\n\u001b[31m+     \"id\": \"landmark-one-main\",\u001b[39m\n\u001b[31m+     \"impact\": \"moderate\",\u001b[39m\n\u001b[31m+     \"nodes\": Array [\u001b[39m\n\u001b[31m+       Object {\u001b[39m\n\u001b[31m+         \"all\": Array [\u001b[39m\n\u001b[31m+           Object {\u001b[39m\n\u001b[31m+             \"data\": null,\u001b[39m\n\u001b[31m+             \"id\": \"page-has-main\",\u001b[39m\n\u001b[31m+             \"impact\": \"moderate\",\u001b[39m\n\u001b[31m+             \"message\": \"Document does not have a main landmark\",\u001b[39m\n\u001b[31m+             \"relatedNodes\": Array [],\u001b[39m\n\u001b[31m+           },\u001b[39m\n\u001b[31m+         ],\u001b[39m\n\u001b[31m+         \"any\": Array [],\u001b[39m\n\u001b[31m+         \"failureSummary\": \"Fix all of the following:\u001b[39m\n\u001b[31m+   Document does not have a main landmark\",\u001b[39m\n\u001b[31m+         \"html\": \"<html lang=\\\"en\\\" class=\\\"h-full\\\">\",\u001b[39m\n\u001b[31m+         \"impact\": \"moderate\",\u001b[39m\n\u001b[31m+         \"none\": Array [],\u001b[39m\n\u001b[31m+         \"target\": Array [\u001b[39m\n\u001b[31m+           \"html\",\u001b[39m\n\u001b[31m+         ],\u001b[39m\n\u001b[31m+       },\u001b[39m\n\u001b[31m+     ],\u001b[39m\n\u001b[31m+     \"tags\": Array [\u001b[39m\n\u001b[31m+       \"cat.semantics\",\u001b[39m\n\u001b[31m+       \"best-practice\",\u001b[39m\n\u001b[31m+     ],\u001b[39m\n\u001b[31m+   },\u001b[39m\n\u001b[31m+   Object {\u001b[39m\n\u001b[31m+     \"description\": \"Ensure that the page, or at least one of its frames contains a level-one heading\",\u001b[39m\n\u001b[31m+     \"help\": \"Page should contain a level-one heading\",\u001b[39m\n\u001b[31m+     \"helpUrl\": \"https://dequeuniversity.com/rules/axe/4.10/page-has-heading-one?application=playwright\",\u001b[39m\n\u001b[31m+     \"id\": \"page-has-heading-one\",\u001b[39m\n\u001b[31m+     \"impact\": \"moderate\",\u001b[39m\n\u001b[31m+     \"nodes\": Array [\u001b[39m\n\u001b[31m+       Object {\u001b[39m\n\u001b[31m+         \"all\": Array [\u001b[39m\n\u001b[31m+           Object {\u001b[39m\n\u001b[31m+             \"data\": null,\u001b[39m\n\u001b[31m+             \"id\": \"page-has-heading-one\",\u001b[39m\n\u001b[31m+             \"impact\": \"moderate\",\u001b[39m\n\u001b[31m+             \"message\": \"Page must have a level-one heading\",\u001b[39m\n\u001b[31m+             \"relatedNodes\": Array [],\u001b[39m\n\u001b[31m+           },\u001b[39m\n\u001b[31m+         ],\u001b[39m\n\u001b[31m+         \"any\": Array [],\u001b[39m\n\u001b[31m+         \"failureSummary\": \"Fix all of the following:\u001b[39m\n\u001b[31m+   Page must have a level-one heading\",\u001b[39m\n\u001b[31m+         \"html\": \"<html lang=\\\"en\\\" class=\\\"h-full\\\">\",\u001b[39m\n\u001b[31m+         \"impact\": \"moderate\",\u001b[39m\n\u001b[31m+         \"none\": Array [],\u001b[39m\n\u001b[31m+         \"target\": Array [\u001b[39m\n\u001b[31m+           \"html\",\u001b[39m\n\u001b[31m+         ],\u001b[39m\n\u001b[31m+       },\u001b[39m\n\u001b[31m+     ],\u001b[39m\n\u001b[31m+     \"tags\": Array [\u001b[39m\n\u001b[31m+       \"cat.semantics\",\u001b[39m\n\u001b[31m+       \"best-practice\",\u001b[39m\n\u001b[31m+     ],\u001b[39m\n\u001b[31m+   },\u001b[39m\n\u001b[31m+ ]\u001b[39m",
+                        "stack": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoEqual\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // deep equality\u001b[22m\n\n\u001b[32m- Expected  -  1\u001b[39m\n\u001b[31m+ Received  + 68\u001b[39m\n\n\u001b[32m- Array []\u001b[39m\n\u001b[31m+ Array [\u001b[39m\n\u001b[31m+   Object {\u001b[39m\n\u001b[31m+     \"description\": \"Ensure the document has a main landmark\",\u001b[39m\n\u001b[31m+     \"help\": \"Document should have one main landmark\",\u001b[39m\n\u001b[31m+     \"helpUrl\": \"https://dequeuniversity.com/rules/axe/4.10/landmark-one-main?application=playwright\",\u001b[39m\n\u001b[31m+     \"id\": \"landmark-one-main\",\u001b[39m\n\u001b[31m+     \"impact\": \"moderate\",\u001b[39m\n\u001b[31m+     \"nodes\": Array [\u001b[39m\n\u001b[31m+       Object {\u001b[39m\n\u001b[31m+         \"all\": Array [\u001b[39m\n\u001b[31m+           Object {\u001b[39m\n\u001b[31m+             \"data\": null,\u001b[39m\n\u001b[31m+             \"id\": \"page-has-main\",\u001b[39m\n\u001b[31m+             \"impact\": \"moderate\",\u001b[39m\n\u001b[31m+             \"message\": \"Document does not have a main landmark\",\u001b[39m\n\u001b[31m+             \"relatedNodes\": Array [],\u001b[39m\n\u001b[31m+           },\u001b[39m\n\u001b[31m+         ],\u001b[39m\n\u001b[31m+         \"any\": Array [],\u001b[39m\n\u001b[31m+         \"failureSummary\": \"Fix all of the following:\u001b[39m\n\u001b[31m+   Document does not have a main landmark\",\u001b[39m\n\u001b[31m+         \"html\": \"<html lang=\\\"en\\\" class=\\\"h-full\\\">\",\u001b[39m\n\u001b[31m+         \"impact\": \"moderate\",\u001b[39m\n\u001b[31m+         \"none\": Array [],\u001b[39m\n\u001b[31m+         \"target\": Array [\u001b[39m\n\u001b[31m+           \"html\",\u001b[39m\n\u001b[31m+         ],\u001b[39m\n\u001b[31m+       },\u001b[39m\n\u001b[31m+     ],\u001b[39m\n\u001b[31m+     \"tags\": Array [\u001b[39m\n\u001b[31m+       \"cat.semantics\",\u001b[39m\n\u001b[31m+       \"best-practice\",\u001b[39m\n\u001b[31m+     ],\u001b[39m\n\u001b[31m+   },\u001b[39m\n\u001b[31m+   Object {\u001b[39m\n\u001b[31m+     \"description\": \"Ensure that the page, or at least one of its frames contains a level-one heading\",\u001b[39m\n\u001b[31m+     \"help\": \"Page should contain a level-one heading\",\u001b[39m\n\u001b[31m+     \"helpUrl\": \"https://dequeuniversity.com/rules/axe/4.10/page-has-heading-one?application=playwright\",\u001b[39m\n\u001b[31m+     \"id\": \"page-has-heading-one\",\u001b[39m\n\u001b[31m+     \"impact\": \"moderate\",\u001b[39m\n\u001b[31m+     \"nodes\": Array [\u001b[39m\n\u001b[31m+       Object {\u001b[39m\n\u001b[31m+         \"all\": Array [\u001b[39m\n\u001b[31m+           Object {\u001b[39m\n\u001b[31m+             \"data\": null,\u001b[39m\n\u001b[31m+             \"id\": \"page-has-heading-one\",\u001b[39m\n\u001b[31m+             \"impact\": \"moderate\",\u001b[39m\n\u001b[31m+             \"message\": \"Page must have a level-one heading\",\u001b[39m\n\u001b[31m+             \"relatedNodes\": Array [],\u001b[39m\n\u001b[31m+           },\u001b[39m\n\u001b[31m+         ],\u001b[39m\n\u001b[31m+         \"any\": Array [],\u001b[39m\n\u001b[31m+         \"failureSummary\": \"Fix all of the following:\u001b[39m\n\u001b[31m+   Page must have a level-one heading\",\u001b[39m\n\u001b[31m+         \"html\": \"<html lang=\\\"en\\\" class=\\\"h-full\\\">\",\u001b[39m\n\u001b[31m+         \"impact\": \"moderate\",\u001b[39m\n\u001b[31m+         \"none\": Array [],\u001b[39m\n\u001b[31m+         \"target\": Array [\u001b[39m\n\u001b[31m+           \"html\",\u001b[39m\n\u001b[31m+         ],\u001b[39m\n\u001b[31m+       },\u001b[39m\n\u001b[31m+     ],\u001b[39m\n\u001b[31m+     \"tags\": Array [\u001b[39m\n\u001b[31m+       \"cat.semantics\",\u001b[39m\n\u001b[31m+       \"best-practice\",\u001b[39m\n\u001b[31m+     ],\u001b[39m\n\u001b[31m+   },\u001b[39m\n\u001b[31m+ ]\u001b[39m\n    at /home/runner/work/macpro-mako/macpro-mako/test/non-func/a11y/index.spec.ts:26:51",
+                        "location": {
+                          "file": "/home/runner/work/macpro-mako/macpro-mako/test/non-func/a11y/index.spec.ts",
+                          "column": 51,
+                          "line": 26
+                        },
+                        "snippet": "\u001b[0m \u001b[90m 24 |\u001b[39m       \u001b[36mconst\u001b[39m accessibilityScanResults \u001b[33m=\u001b[39m \u001b[36mawait\u001b[39m \u001b[36mnew\u001b[39m \u001b[33mAxeBuilder\u001b[39m({ page })\u001b[33m.\u001b[39manalyze()\u001b[33m;\u001b[39m\n \u001b[90m 25 |\u001b[39m       console\u001b[33m.\u001b[39mlog(\u001b[32m`${route} violations: `\u001b[39m\u001b[33m,\u001b[39m accessibilityScanResults\u001b[33m.\u001b[39mviolations\u001b[33m.\u001b[39mlength)\u001b[33m;\u001b[39m\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 26 |\u001b[39m       expect(accessibilityScanResults\u001b[33m.\u001b[39mviolations)\u001b[33m.\u001b[39mtoEqual([])\u001b[33m;\u001b[39m\n \u001b[90m    |\u001b[39m                                                   \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 27 |\u001b[39m     })\u001b[33m;\u001b[39m\n \u001b[90m 28 |\u001b[39m   }\n \u001b[90m 29 |\u001b[39m })\u001b[33m;\u001b[39m\u001b[0m"
+                      },
+                      "errors": [
+                        {
+                          "location": {
+                            "file": "/home/runner/work/macpro-mako/macpro-mako/test/non-func/a11y/index.spec.ts",
+                            "column": 51,
+                            "line": 26
+                          },
+                          "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoEqual\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // deep equality\u001b[22m\n\n\u001b[32m- Expected  -  1\u001b[39m\n\u001b[31m+ Received  + 68\u001b[39m\n\n\u001b[32m- Array []\u001b[39m\n\u001b[31m+ Array [\u001b[39m\n\u001b[31m+   Object {\u001b[39m\n\u001b[31m+     \"description\": \"Ensure the document has a main landmark\",\u001b[39m\n\u001b[31m+     \"help\": \"Document should have one main landmark\",\u001b[39m\n\u001b[31m+     \"helpUrl\": \"https://dequeuniversity.com/rules/axe/4.10/landmark-one-main?application=playwright\",\u001b[39m\n\u001b[31m+     \"id\": \"landmark-one-main\",\u001b[39m\n\u001b[31m+     \"impact\": \"moderate\",\u001b[39m\n\u001b[31m+     \"nodes\": Array [\u001b[39m\n\u001b[31m+       Object {\u001b[39m\n\u001b[31m+         \"all\": Array [\u001b[39m\n\u001b[31m+           Object {\u001b[39m\n\u001b[31m+             \"data\": null,\u001b[39m\n\u001b[31m+             \"id\": \"page-has-main\",\u001b[39m\n\u001b[31m+             \"impact\": \"moderate\",\u001b[39m\n\u001b[31m+             \"message\": \"Document does not have a main landmark\",\u001b[39m\n\u001b[31m+             \"relatedNodes\": Array [],\u001b[39m\n\u001b[31m+           },\u001b[39m\n\u001b[31m+         ],\u001b[39m\n\u001b[31m+         \"any\": Array [],\u001b[39m\n\u001b[31m+         \"failureSummary\": \"Fix all of the following:\u001b[39m\n\u001b[31m+   Document does not have a main landmark\",\u001b[39m\n\u001b[31m+         \"html\": \"<html lang=\\\"en\\\" class=\\\"h-full\\\">\",\u001b[39m\n\u001b[31m+         \"impact\": \"moderate\",\u001b[39m\n\u001b[31m+         \"none\": Array [],\u001b[39m\n\u001b[31m+         \"target\": Array [\u001b[39m\n\u001b[31m+           \"html\",\u001b[39m\n\u001b[31m+         ],\u001b[39m\n\u001b[31m+       },\u001b[39m\n\u001b[31m+     ],\u001b[39m\n\u001b[31m+     \"tags\": Array [\u001b[39m\n\u001b[31m+       \"cat.semantics\",\u001b[39m\n\u001b[31m+       \"best-practice\",\u001b[39m\n\u001b[31m+     ],\u001b[39m\n\u001b[31m+   },\u001b[39m\n\u001b[31m+   Object {\u001b[39m\n\u001b[31m+     \"description\": \"Ensure that the page, or at least one of its frames contains a level-one heading\",\u001b[39m\n\u001b[31m+     \"help\": \"Page should contain a level-one heading\",\u001b[39m\n\u001b[31m+     \"helpUrl\": \"https://dequeuniversity.com/rules/axe/4.10/page-has-heading-one?application=playwright\",\u001b[39m\n\u001b[31m+     \"id\": \"page-has-heading-one\",\u001b[39m\n\u001b[31m+     \"impact\": \"moderate\",\u001b[39m\n\u001b[31m+     \"nodes\": Array [\u001b[39m\n\u001b[31m+       Object {\u001b[39m\n\u001b[31m+         \"all\": Array [\u001b[39m\n\u001b[31m+           Object {\u001b[39m\n\u001b[31m+             \"data\": null,\u001b[39m\n\u001b[31m+             \"id\": \"page-has-heading-one\",\u001b[39m\n\u001b[31m+             \"impact\": \"moderate\",\u001b[39m\n\u001b[31m+             \"message\": \"Page must have a level-one heading\",\u001b[39m\n\u001b[31m+             \"relatedNodes\": Array [],\u001b[39m\n\u001b[31m+           },\u001b[39m\n\u001b[31m+         ],\u001b[39m\n\u001b[31m+         \"any\": Array [],\u001b[39m\n\u001b[31m+         \"failureSummary\": \"Fix all of the following:\u001b[39m\n\u001b[31m+   Page must have a level-one heading\",\u001b[39m\n\u001b[31m+         \"html\": \"<html lang=\\\"en\\\" class=\\\"h-full\\\">\",\u001b[39m\n\u001b[31m+         \"impact\": \"moderate\",\u001b[39m\n\u001b[31m+         \"none\": Array [],\u001b[39m\n\u001b[31m+         \"target\": Array [\u001b[39m\n\u001b[31m+           \"html\",\u001b[39m\n\u001b[31m+         ],\u001b[39m\n\u001b[31m+       },\u001b[39m\n\u001b[31m+     ],\u001b[39m\n\u001b[31m+     \"tags\": Array [\u001b[39m\n\u001b[31m+       \"cat.semantics\",\u001b[39m\n\u001b[31m+       \"best-practice\",\u001b[39m\n\u001b[31m+     ],\u001b[39m\n\u001b[31m+   },\u001b[39m\n\u001b[31m+ ]\u001b[39m\n\n\u001b[0m \u001b[90m 24 |\u001b[39m       \u001b[36mconst\u001b[39m accessibilityScanResults \u001b[33m=\u001b[39m \u001b[36mawait\u001b[39m \u001b[36mnew\u001b[39m \u001b[33mAxeBuilder\u001b[39m({ page })\u001b[33m.\u001b[39manalyze()\u001b[33m;\u001b[39m\n \u001b[90m 25 |\u001b[39m       console\u001b[33m.\u001b[39mlog(\u001b[32m`${route} violations: `\u001b[39m\u001b[33m,\u001b[39m accessibilityScanResults\u001b[33m.\u001b[39mviolations\u001b[33m.\u001b[39mlength)\u001b[33m;\u001b[39m\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 26 |\u001b[39m       expect(accessibilityScanResults\u001b[33m.\u001b[39mviolations)\u001b[33m.\u001b[39mtoEqual([])\u001b[33m;\u001b[39m\n \u001b[90m    |\u001b[39m                                                   \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 27 |\u001b[39m     })\u001b[33m;\u001b[39m\n \u001b[90m 28 |\u001b[39m   }\n \u001b[90m 29 |\u001b[39m })\u001b[33m;\u001b[39m\u001b[0m\n\n    at /home/runner/work/macpro-mako/macpro-mako/test/non-func/a11y/index.spec.ts:26:51"
+                        }
+                      ],
+                      "stdout": [
+                        {
+                          "text": "/new-submission/waiver/app-k violations:  \u001b[33m2\u001b[39m\n"
+                        }
+                      ],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-05-22T13:40:33.186Z",
+                      "attachments": [
+                        {
+                          "name": "video",
+                          "contentType": "video/webm",
+                          "path": "/home/runner/work/macpro-mako/macpro-mako/test/test-results/non-func-a11y-index-test-a-81054-ctable-accessibility-issues-ci/video-1.webm"
+                        },
+                        {
+                          "name": "video",
+                          "contentType": "video/webm",
+                          "path": "/home/runner/work/macpro-mako/macpro-mako/test/test-results/non-func-a11y-index-test-a-81054-ctable-accessibility-issues-ci/video.webm"
+                        },
+                        {
+                          "name": "trace",
+                          "contentType": "application/zip",
+                          "path": "/home/runner/work/macpro-mako/macpro-mako/test/test-results/non-func-a11y-index-test-a-81054-ctable-accessibility-issues-ci/trace.zip"
+                        }
+                      ],
+                      "errorLocation": {
+                        "file": "/home/runner/work/macpro-mako/macpro-mako/test/non-func/a11y/index.spec.ts",
+                        "column": 51,
+                        "line": 26
+                      }
+                    },
+                    {
+                      "workerIndex": 4,
+                      "status": "passed",
+                      "duration": 4220,
+                      "errors": [],
+                      "stdout": [
+                        {
+                          "text": "/new-submission/waiver/app-k violations:  \u001b[33m0\u001b[39m\n"
+                        }
+                      ],
+                      "stderr": [],
+                      "retry": 1,
+                      "startTime": "2025-05-22T13:40:38.523Z",
+                      "attachments": []
+                    }
+                  ],
+                  "status": "flaky"
                 }
               ],
               "id": "37280e3c1e02c3251f32-5aee131542d7c168bae2",
@@ -2377,8 +3465,24 @@
                   "expectedStatus": "passed",
                   "projectId": "ci",
                   "projectName": "ci",
-                  "results": [],
-                  "status": "skipped"
+                  "results": [
+                    {
+                      "workerIndex": 4,
+                      "status": "passed",
+                      "duration": 4080,
+                      "errors": [],
+                      "stdout": [
+                        {
+                          "text": "/new-submission/waiver/temporary-extensions violations:  \u001b[33m0\u001b[39m\n"
+                        }
+                      ],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-05-22T13:40:42.880Z",
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
                 }
               ],
               "id": "37280e3c1e02c3251f32-7fadcee1da6a90e36220",
@@ -2408,8 +3512,24 @@
                   "expectedStatus": "passed",
                   "projectId": "ci",
                   "projectName": "ci",
-                  "results": [],
-                  "status": "skipped"
+                  "results": [
+                    {
+                      "workerIndex": 4,
+                      "status": "passed",
+                      "duration": 3929,
+                      "errors": [],
+                      "stdout": [
+                        {
+                          "text": "/guides/abp violations:  \u001b[33m0\u001b[39m\n"
+                        }
+                      ],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-05-22T13:40:46.967Z",
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
                 }
               ],
               "id": "37280e3c1e02c3251f32-84c7161018402e30a8f6",
@@ -2431,8 +3551,24 @@
                   "expectedStatus": "passed",
                   "projectId": "ci",
                   "projectName": "ci",
-                  "results": [],
-                  "status": "skipped"
+                  "results": [
+                    {
+                      "workerIndex": 4,
+                      "status": "passed",
+                      "duration": 3780,
+                      "errors": [],
+                      "stdout": [
+                        {
+                          "text": "/webform/g3/202401 violations:  \u001b[33m0\u001b[39m\n"
+                        }
+                      ],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-05-22T13:40:50.902Z",
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
                 }
               ],
               "id": "37280e3c1e02c3251f32-d928c3ccfd36a080c0d5",
@@ -2454,8 +3590,24 @@
                   "expectedStatus": "passed",
                   "projectId": "ci",
                   "projectName": "ci",
-                  "results": [],
-                  "status": "skipped"
+                  "results": [
+                    {
+                      "workerIndex": 4,
+                      "status": "passed",
+                      "duration": 4349,
+                      "errors": [],
+                      "stdout": [
+                        {
+                          "text": "/webform/g2b/202401 violations:  \u001b[33m0\u001b[39m\n"
+                        }
+                      ],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-05-22T13:40:54.688Z",
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
                 }
               ],
               "id": "37280e3c1e02c3251f32-05532d32ef144aa6354a",
@@ -2477,8 +3629,24 @@
                   "expectedStatus": "passed",
                   "projectId": "ci",
                   "projectName": "ci",
-                  "results": [],
-                  "status": "skipped"
+                  "results": [
+                    {
+                      "workerIndex": 4,
+                      "status": "passed",
+                      "duration": 3973,
+                      "errors": [],
+                      "stdout": [
+                        {
+                          "text": "/webform/g2a/202401 violations:  \u001b[33m0\u001b[39m\n"
+                        }
+                      ],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-05-22T13:40:59.044Z",
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
                 }
               ],
               "id": "37280e3c1e02c3251f32-4a6fd5b307c1b9652f6c",
@@ -2500,8 +3668,24 @@
                   "expectedStatus": "passed",
                   "projectId": "ci",
                   "projectName": "ci",
-                  "results": [],
-                  "status": "skipped"
+                  "results": [
+                    {
+                      "workerIndex": 4,
+                      "status": "passed",
+                      "duration": 4299,
+                      "errors": [],
+                      "stdout": [
+                        {
+                          "text": "/webform/g1/202401 violations:  \u001b[33m0\u001b[39m\n"
+                        }
+                      ],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-05-22T13:41:03.022Z",
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
                 }
               ],
               "id": "37280e3c1e02c3251f32-06fc42c3d4ce10ddda83",
@@ -2523,8 +3707,24 @@
                   "expectedStatus": "passed",
                   "projectId": "ci",
                   "projectName": "ci",
-                  "results": [],
-                  "status": "skipped"
+                  "results": [
+                    {
+                      "workerIndex": 4,
+                      "status": "passed",
+                      "duration": 4161,
+                      "errors": [],
+                      "stdout": [
+                        {
+                          "text": "/webform/cs8/202401 violations:  \u001b[33m0\u001b[39m\n"
+                        }
+                      ],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-05-22T13:41:07.326Z",
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
                 }
               ],
               "id": "37280e3c1e02c3251f32-b04804dee864687efbfc",
@@ -2546,8 +3746,24 @@
                   "expectedStatus": "passed",
                   "projectId": "ci",
                   "projectName": "ci",
-                  "results": [],
-                  "status": "skipped"
+                  "results": [
+                    {
+                      "workerIndex": 4,
+                      "status": "passed",
+                      "duration": 4069,
+                      "errors": [],
+                      "stdout": [
+                        {
+                          "text": "/webform/cs3/202401 violations:  \u001b[33m0\u001b[39m\n"
+                        }
+                      ],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-05-22T13:41:11.496Z",
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
                 }
               ],
               "id": "37280e3c1e02c3251f32-158ca1adda78a882863d",
@@ -2569,8 +3785,24 @@
                   "expectedStatus": "passed",
                   "projectId": "ci",
                   "projectName": "ci",
-                  "results": [],
-                  "status": "skipped"
+                  "results": [
+                    {
+                      "workerIndex": 4,
+                      "status": "passed",
+                      "duration": 4237,
+                      "errors": [],
+                      "stdout": [
+                        {
+                          "text": "/webform/cs7/202401 violations:  \u001b[33m0\u001b[39m\n"
+                        }
+                      ],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-05-22T13:41:15.575Z",
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
                 }
               ],
               "id": "37280e3c1e02c3251f32-f2acb9406875310abf61",
@@ -2592,8 +3824,24 @@
                   "expectedStatus": "passed",
                   "projectId": "ci",
                   "projectName": "ci",
-                  "results": [],
-                  "status": "skipped"
+                  "results": [
+                    {
+                      "workerIndex": 4,
+                      "status": "passed",
+                      "duration": 3901,
+                      "errors": [],
+                      "stdout": [
+                        {
+                          "text": "/webform/abp11/202401 violations:  \u001b[33m0\u001b[39m\n"
+                        }
+                      ],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-05-22T13:41:19.817Z",
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
                 }
               ],
               "id": "37280e3c1e02c3251f32-414eea7bd9e38993397e",
@@ -2615,8 +3863,24 @@
                   "expectedStatus": "passed",
                   "projectId": "ci",
                   "projectName": "ci",
-                  "results": [],
-                  "status": "skipped"
+                  "results": [
+                    {
+                      "workerIndex": 4,
+                      "status": "passed",
+                      "duration": 3909,
+                      "errors": [],
+                      "stdout": [
+                        {
+                          "text": "/webform/abp10/202401 violations:  \u001b[33m0\u001b[39m\n"
+                        }
+                      ],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-05-22T13:41:23.724Z",
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
                 }
               ],
               "id": "37280e3c1e02c3251f32-9740306a1086a8f364b9",
@@ -2638,8 +3902,24 @@
                   "expectedStatus": "passed",
                   "projectId": "ci",
                   "projectName": "ci",
-                  "results": [],
-                  "status": "skipped"
+                  "results": [
+                    {
+                      "workerIndex": 4,
+                      "status": "passed",
+                      "duration": 3867,
+                      "errors": [],
+                      "stdout": [
+                        {
+                          "text": "/webform/abp9/202401 violations:  \u001b[33m0\u001b[39m\n"
+                        }
+                      ],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-05-22T13:41:27.638Z",
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
                 }
               ],
               "id": "37280e3c1e02c3251f32-93dbfcf3e1c1994e5f19",
@@ -2661,8 +3941,24 @@
                   "expectedStatus": "passed",
                   "projectId": "ci",
                   "projectName": "ci",
-                  "results": [],
-                  "status": "skipped"
+                  "results": [
+                    {
+                      "workerIndex": 4,
+                      "status": "passed",
+                      "duration": 3796,
+                      "errors": [],
+                      "stdout": [
+                        {
+                          "text": "/webform/abp7/202401 violations:  \u001b[33m0\u001b[39m\n"
+                        }
+                      ],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-05-22T13:41:31.511Z",
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
                 }
               ],
               "id": "37280e3c1e02c3251f32-d062bca497c1dc7515ac",
@@ -2684,8 +3980,24 @@
                   "expectedStatus": "passed",
                   "projectId": "ci",
                   "projectName": "ci",
-                  "results": [],
-                  "status": "skipped"
+                  "results": [
+                    {
+                      "workerIndex": 4,
+                      "status": "passed",
+                      "duration": 4070,
+                      "errors": [],
+                      "stdout": [
+                        {
+                          "text": "/webform/abp6/202401 violations:  \u001b[33m0\u001b[39m\n"
+                        }
+                      ],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-05-22T13:41:35.313Z",
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
                 }
               ],
               "id": "37280e3c1e02c3251f32-c4e23cb7587820bdd50d",
@@ -2707,8 +4019,24 @@
                   "expectedStatus": "passed",
                   "projectId": "ci",
                   "projectName": "ci",
-                  "results": [],
-                  "status": "skipped"
+                  "results": [
+                    {
+                      "workerIndex": 4,
+                      "status": "passed",
+                      "duration": 3821,
+                      "errors": [],
+                      "stdout": [
+                        {
+                          "text": "/webform/abp5/202401 violations:  \u001b[33m0\u001b[39m\n"
+                        }
+                      ],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-05-22T13:41:39.388Z",
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
                 }
               ],
               "id": "37280e3c1e02c3251f32-d4e7f018194e47fc72d6",
@@ -2730,8 +4058,24 @@
                   "expectedStatus": "passed",
                   "projectId": "ci",
                   "projectName": "ci",
-                  "results": [],
-                  "status": "skipped"
+                  "results": [
+                    {
+                      "workerIndex": 4,
+                      "status": "passed",
+                      "duration": 4220,
+                      "errors": [],
+                      "stdout": [
+                        {
+                          "text": "/webform/abp4/202401 violations:  \u001b[33m0\u001b[39m\n"
+                        }
+                      ],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-05-22T13:41:43.215Z",
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
                 }
               ],
               "id": "37280e3c1e02c3251f32-5d65f13e2cd47c507673",
@@ -2753,8 +4097,24 @@
                   "expectedStatus": "passed",
                   "projectId": "ci",
                   "projectName": "ci",
-                  "results": [],
-                  "status": "skipped"
+                  "results": [
+                    {
+                      "workerIndex": 4,
+                      "status": "passed",
+                      "duration": 3929,
+                      "errors": [],
+                      "stdout": [
+                        {
+                          "text": "/webform/abp3_1/202401 violations:  \u001b[33m0\u001b[39m\n"
+                        }
+                      ],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-05-22T13:41:47.440Z",
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
                 }
               ],
               "id": "37280e3c1e02c3251f32-2b21a369b54ba5270723",
@@ -2776,8 +4136,24 @@
                   "expectedStatus": "passed",
                   "projectId": "ci",
                   "projectName": "ci",
-                  "results": [],
-                  "status": "skipped"
+                  "results": [
+                    {
+                      "workerIndex": 4,
+                      "status": "passed",
+                      "duration": 4135,
+                      "errors": [],
+                      "stdout": [
+                        {
+                          "text": "/webform/abp3/202401 violations:  \u001b[33m0\u001b[39m\n"
+                        }
+                      ],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-05-22T13:41:51.375Z",
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
                 }
               ],
               "id": "37280e3c1e02c3251f32-cdbd0e777824dfffb4eb",
@@ -2799,8 +4175,24 @@
                   "expectedStatus": "passed",
                   "projectId": "ci",
                   "projectName": "ci",
-                  "results": [],
-                  "status": "skipped"
+                  "results": [
+                    {
+                      "workerIndex": 4,
+                      "status": "passed",
+                      "duration": 4200,
+                      "errors": [],
+                      "stdout": [
+                        {
+                          "text": "/webform/abp2c/202401 violations:  \u001b[33m0\u001b[39m\n"
+                        }
+                      ],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-05-22T13:41:55.515Z",
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
                 }
               ],
               "id": "37280e3c1e02c3251f32-38d4fd1fe7f6f2c607e6",
@@ -2822,8 +4214,24 @@
                   "expectedStatus": "passed",
                   "projectId": "ci",
                   "projectName": "ci",
-                  "results": [],
-                  "status": "skipped"
+                  "results": [
+                    {
+                      "workerIndex": 4,
+                      "status": "passed",
+                      "duration": 4238,
+                      "errors": [],
+                      "stdout": [
+                        {
+                          "text": "/webform/abp2b/202401 violations:  \u001b[33m0\u001b[39m\n"
+                        }
+                      ],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-05-22T13:41:59.720Z",
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
                 }
               ],
               "id": "37280e3c1e02c3251f32-e7689da94797abf612d6",
@@ -2845,8 +4253,24 @@
                   "expectedStatus": "passed",
                   "projectId": "ci",
                   "projectName": "ci",
-                  "results": [],
-                  "status": "skipped"
+                  "results": [
+                    {
+                      "workerIndex": 4,
+                      "status": "passed",
+                      "duration": 3906,
+                      "errors": [],
+                      "stdout": [
+                        {
+                          "text": "/webform/abp2a/202401 violations:  \u001b[33m0\u001b[39m\n"
+                        }
+                      ],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-05-22T13:42:03.963Z",
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
                 }
               ],
               "id": "37280e3c1e02c3251f32-1af192b66969ea57125c",
@@ -2868,8 +4292,24 @@
                   "expectedStatus": "passed",
                   "projectId": "ci",
                   "projectName": "ci",
-                  "results": [],
-                  "status": "skipped"
+                  "results": [
+                    {
+                      "workerIndex": 4,
+                      "status": "passed",
+                      "duration": 4047,
+                      "errors": [],
+                      "stdout": [
+                        {
+                          "text": "/webform/abp1/202401 violations:  \u001b[33m0\u001b[39m\n"
+                        }
+                      ],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-05-22T13:42:07.874Z",
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
                 }
               ],
               "id": "37280e3c1e02c3251f32-de5e473d4c1bdb873f64",
@@ -2891,8 +4331,24 @@
                   "expectedStatus": "passed",
                   "projectId": "ci",
                   "projectName": "ci",
-                  "results": [],
-                  "status": "skipped"
+                  "results": [
+                    {
+                      "workerIndex": 4,
+                      "status": "passed",
+                      "duration": 4016,
+                      "errors": [],
+                      "stdout": [
+                        {
+                          "text": "/webform/abp1/202402 violations:  \u001b[33m0\u001b[39m\n"
+                        }
+                      ],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-05-22T13:42:11.926Z",
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
                 }
               ],
               "id": "37280e3c1e02c3251f32-4938d4a603ba6ad4dd6b",
@@ -2907,11 +4363,11 @@
   ],
   "errors": [],
   "stats": {
-    "startTime": "2025-05-21T19:44:10.990Z",
-    "duration": 38111.492,
-    "expected": 0,
-    "skipped": 101,
-    "unexpected": 1,
-    "flaky": 0
+    "startTime": "2025-05-22T13:35:15.301Z",
+    "duration": 420716.38999999996,
+    "expected": 97,
+    "skipped": 2,
+    "unexpected": 0,
+    "flaky": 3
   }
 }
