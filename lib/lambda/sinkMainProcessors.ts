@@ -246,7 +246,7 @@ const getOneMacRecordWithAllProperties = async (
     if (
       existingPackage &&
       existingPackage._source.origin &&
-      existingPackage._source.origin !== "mako"
+      existingPackage._source.origin === "mako"
     ) {
       console.log("Event already updated in Upgrade");
       return;
