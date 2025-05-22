@@ -201,6 +201,7 @@ export const MyProfile = () => {
                 />
                 {orderedStateAccess?.map((access) => (
                   <StateAccessCard
+                    key={`${access.territory}`}
                     access={access}
                     role={userDetails.role}
                     onClick={() => setSelfRevokeState(access.territory as StateCode)}
