@@ -37,7 +37,14 @@ const sendDeleteMessage = async (currentPackage: ItemResult) => {
       timestamp: currentTime,
     }),
   );
-
+  await produceMessage(
+    topicName,
+    packageId,
+    JSON.stringify({
+      ...currentPackage._source,
+      delete: true,
+    }),
+  );
   return response({
     statusCode: 200,
     body: { message: `${packageId} has been deleted.` },
