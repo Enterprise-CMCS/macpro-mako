@@ -64,7 +64,7 @@ export async function bulkUpdateData(
   const body: any[] = [];
   for (const doc of arrayOfDocuments) {
     console.log("doc: " + JSON.stringify(doc));
-    if (doc.delete) {
+    if (doc.adminChangeType === "delete") {
       body.push({ delete: { _index: index, _id: doc.id } });
     } else {
       body.push({ update: { _index: index, _id: doc.id } }, { doc: doc, doc_as_upsert: true });

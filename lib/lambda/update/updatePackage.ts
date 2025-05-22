@@ -27,10 +27,10 @@ const sendDeleteMessage = async (currentPackage: ItemResult) => {
     packageId,
     JSON.stringify({
       ...currentPackage._source,
-      id: packageId + "-del",
+      id: packageId + "-del-" + currentTime,
       deleted: true,
       isAdminChange: true,
-      adminChangeType: "delete",
+      adminChangeType: "delete-preserve",
       makoChangedDate: currentTime,
       changedDate: currentTime,
       statusDate: currentTime,
@@ -42,7 +42,14 @@ const sendDeleteMessage = async (currentPackage: ItemResult) => {
     packageId,
     JSON.stringify({
       ...currentPackage._source,
-      delete: true,
+      id: packageId,
+      deleted: true,
+      isAdminChange: true,
+      adminChangeType: "delete",
+      makoChangedDate: currentTime,
+      changedDate: currentTime,
+      statusDate: currentTime,
+      timestamp: currentTime,
     }),
   );
   return response({
