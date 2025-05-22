@@ -354,9 +354,13 @@
 <a name='L289'></a><a href='#L289'>289</a>
 <a name='L290'></a><a href='#L290'>290</a>
 <a name='L291'></a><a href='#L291'>291</a>
-<a name='L292'></a><a href='#L292'>292</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
+<a name='L292'></a><a href='#L292'>292</a>
+<a name='L293'></a><a href='#L293'>293</a>
+<a name='L294'></a><a href='#L294'>294</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">20x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">20x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -433,6 +437,7 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">6x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -470,7 +475,6 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">150x</span>
-<span class="cline-any cline-yes">11x</span>
 <span class="cline-any cline-yes">11x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">11x</span>
@@ -649,6 +653,8 @@
 import { getDomainAndNamespace } from "libs/utils";
 import { Index } from "shared-types/opensearch";
 &nbsp;
+const QUERY_LIMIT = 2000;
+&nbsp;
 export const getUserByEmail = async (
   email: string,
   domainNamespace?: { domain: string; index: Index },
@@ -671,7 +677,7 @@ export const getUserByEmail = async (
 export const getUsersByEmails = async (emails: string[]) =&gt; {
   const { domain, index } = getDomainAndNamespace("users");
   const results = await search(domain, index, {
-    size: 100,
+    size: QUERY_LIMIT,
     query: {
       bool: {
         should: emails
@@ -698,12 +704,12 @@ export const getAllUserRolesByEmail = async (email: string) =&gt; {
   const { domain, index } = getDomainAndNamespace("roles");
 &nbsp;
   const result = await search(domain, index, {
+    size: QUERY_LIMIT,
     query: {
       term: {
         "email.keyword": email,
       },
     },
-    size: 200,
   });
 &nbsp;
   return result.hits.hits.map((hit: any) =&gt; ({ ...hit._source }));
@@ -713,6 +719,7 @@ export const userHasThisRole = async (email: string, state: string, role: string
   const { domain, index } = getDomainAndNamespace("roles");
 &nbsp;
   const result = await search(domain, index, {
+    size: 100,
     query: {
       bool: {
         must: [
@@ -734,7 +741,7 @@ export const getAllUserRoles = async () =&gt; {
     query: {
       match_all: {},
     },
-    size: 200,
+    size: QUERY_LIMIT,
   });
 &nbsp;
   return results.hits.hits.map((hit: any) =&gt; ({ ...hit._source }));
@@ -749,7 +756,7 @@ export const getAllUserRolesByState = async (state: string) =&gt; {
         "territory.keyword": state,
       },
     },
-    size: 200,
+    size: QUERY_LIMIT,
   });
 &nbsp;
   return results.hits.hits.map((hit: any) =&gt; ({ ...hit._source }));
@@ -762,7 +769,6 @@ export const getUserRolesWithNames = async (roleRequests: any[]) =&gt; {
 &nbsp;
   const emails = roleRequests.map((role) =&gt; role.email);
   const users = await getUsersByEmails(emails);
-  console.log({ emails, users });
 &nbsp;
   const rolesWithName = roleRequests.map((roleObj) =&gt; {
     const email = roleObj.id?.split("_")[0];
@@ -836,7 +842,7 @@ export const getApproversByRoleState = async (
         must: queryRequirements,
       },
     },
-    size: 100,
+    size: QUERY_LIMIT,
   });
 &nbsp;
   const approverRoleList: { id: string; email: string }[] = results.hits.hits.map(<span class="fstat-no" title="function not covered" >(h</span>it: any) =&gt; (<span class="cstat-no" title="statement not covered" >{</span>
@@ -859,7 +865,7 @@ export const getActiveStatesForUserByEmail = async (
   const { domain, index } = getDomainAndNamespace("roles");
 &nbsp;
   const result = await search(domain, index, {
-    size: 1000,
+    size: QUERY_LIMIT,
     query: {
       bool: {
         must: [
@@ -892,7 +898,7 @@ export const getStateUsersByState = async (
   const { domain: usersDomain, index: usersIndex } = getDomainAndNamespace("users");
 &nbsp;
   const rolesResult = await search(rolesDomain, rolesIndex, {
-    size: 1000,
+    size: QUERY_LIMIT,
     query: {
       bool: {
         must: [
@@ -917,7 +923,7 @@ export const getStateUsersByState = async (
   <span class="missing-if-branch" title="else path not taken" >E</span>if (!emails.length) return [];
 &nbsp;
   const usersResult = <span class="cstat-no" title="statement not covered" >await search(usersDomain, usersIndex, {</span>
-    size: 100,
+    size: QUERY_LIMIT,
     query: {
       bool: {
         should: emails.map(<span class="fstat-no" title="function not covered" >(e</span>mail: string) =&gt; (<span class="cstat-no" title="statement not covered" >{</span>
@@ -943,7 +949,7 @@ export const getStateUsersByState = async (
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2025-05-22T14:48:53.744Z
+                at 2025-05-22T16:46:16.513Z
             </div>
         <script src="../../../prettify.js"></script>
         <script>
