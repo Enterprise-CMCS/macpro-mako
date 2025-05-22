@@ -63,7 +63,7 @@ describe("updateUserRoles handler", () => {
       JSON.stringify({
         message: "Incorrect role object format",
         error:
-          '[\n  {\n    "received": "state",\n    "code": "invalid_enum_value",\n    "options": [\n      "defaultcmsuser",\n      "cmsroleapprover",\n      "cmsreviewer",\n      "statesystemadmin",\n      "helpdesk",\n      "statesubmitter",\n      "systemadmin"\n    ],\n    "path": [\n      "updatedRoles",\n      0,\n      "role"\n    ],\n    "message": "Invalid enum value. Expected \'defaultcmsuser\' | \'cmsroleapprover\' | \'cmsreviewer\' | \'statesystemadmin\' | \'helpdesk\' | \'statesubmitter\' | \'systemadmin\', received \'state\'"\n  }\n]',
+          '[\n  {\n    "received": "state",\n    "code": "invalid_enum_value",\n    "options": [\n      "defaultcmsuser",\n      "cmsroleapprover",\n      "cmsreviewer",\n      "statesystemadmin",\n      "helpdesk",\n      "statesubmitter",\n      "systemadmin",\n      "norole"\n    ],\n    "path": [\n      "updatedRoles",\n      0,\n      "role"\n    ],\n    "message": "Invalid enum value. Expected \'defaultcmsuser\' | \'cmsroleapprover\' | \'cmsreviewer\' | \'statesystemadmin\' | \'helpdesk\' | \'statesubmitter\' | \'systemadmin\' | \'norole\', received \'state\'"\n  }\n]',
       }),
     );
   });

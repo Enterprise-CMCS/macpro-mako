@@ -16,9 +16,9 @@ import {
   B_WAIVER_OPTIONS,
   B4_WAIVER_OPTIONS,
   BCAP_WAIVER_OPTIONS,
-  CHIP_SPA_OPTIONS,
   MEDICAID_SPA_OPTIONS,
   SPA_OPTIONS,
+  useChipSpaOptions,
   WAIVER_OPTIONS,
 } from "@/features";
 
@@ -87,13 +87,17 @@ export const MedicaidSPASubmissionOptions = () => (
   />
 );
 /** Sub-choices for CHIP SPAs */
-export const ChipSPASubmissionOptions = () => (
-  <OptionsPage
-    title="CHIP SPA Type"
-    fieldsetLegend="Select a CHIP SPA type to create your submission"
-    options={CHIP_SPA_OPTIONS}
-  />
-);
+export const ChipSPASubmissionOptions = () => {
+  const CHIP_SPA_OPTIONS = useChipSpaOptions();
+
+  return (
+    <OptionsPage
+      title="CHIP SPA Type"
+      fieldsetLegend="Select a CHIP SPA type to create your submission"
+      options={CHIP_SPA_OPTIONS}
+    />
+  );
+};
 export const WaiverSubmissionOptions = () => (
   <OptionsPage
     title="Waiver Action Type"

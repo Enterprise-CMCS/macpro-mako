@@ -145,6 +145,7 @@ export const renderCellActions = (
       division: userRole.division ?? null,
       requestRoleChange: false,
     });
+    console.log(userRole.role, "USERROLE");
   };
   return (
     <Popover>
@@ -263,17 +264,27 @@ export const UserManagement = () => {
   }, [data, sortBy, headings]);
 
   const onAcceptRoleChange = async () => {
-    submitRequest(selectedUserRole);
-    setModalText(null);
-    setSelectedUserRole(null);
+    try {
+      setModalText(null);
+      await submitRequest(selectedUserRole);
+      setSelectedUserRole(null);
 
-    banner({
-      header: "Status Change",
-      body: `${getBannerText(selectedUserRole)}, a notification has been sent to their email.`,
-      variant: "success",
-      pathnameToDisplayOn: window.location.pathname,
-    });
-    window.scrollTo(0, 0);
+      banner({
+        header: "Status Change",
+        body: `${getBannerText(selectedUserRole)}, a notification has been sent to their email.`,
+        variant: "success",
+        pathnameToDisplayOn: window.location.pathname,
+      });
+      window.scrollTo(0, 0);
+    } catch (error) {
+      console.error(error);
+      banner({
+        header: "An unexpected error has occurred:",
+        body: error instanceof Error ? error.message : String(error),
+        variant: "destructive",
+        pathnameToDisplayOn: window.location.pathname,
+      });
+    }
   };
 
   // Export Section

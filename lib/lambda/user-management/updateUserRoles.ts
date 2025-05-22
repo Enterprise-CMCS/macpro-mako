@@ -4,23 +4,6 @@ import { response } from "libs/handler-lib";
 import { BaseUserRoleRequest, baseUserRoleRequestSchema } from "shared-types/events/legacy-user";
 import { z } from "zod";
 
-/**
- * @typedef {Object} UpdatedRole
- * @property {string} email
- * @property {string} status
- * @property {string} territory
- * @property {string} role
- * @property {string} doneByEmail
- * @property {string} doneByName
- * @property {string} eventType
- * @property {string} group
- * @property {string} division
- */
-
-/**
- * @typedef {Object} Json
- * @property {{ updatedRoles: UpdatedRole[] }} body
- */
 export const updatedRolesSchema = z.object({
   updatedRoles: z.array(baseUserRoleRequestSchema),
 });

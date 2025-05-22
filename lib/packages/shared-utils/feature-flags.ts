@@ -51,12 +51,25 @@ export const featureFlags = {
     flag: "state-home-page",
     defaultValue: "OFF",
   },
-
   /*
    * Toggle visibility of login feature page
    */
   LOGIN_PAGE: {
     flag: "login-page",
+    defaultValue: true,
+  },
+  /*
+   * Toggle visibility of chip spa submission page
+   */
+  CHIP_SPA_SUBMISSION: {
+    flag: "chip-spa-submission",
+    defaultValue: true,
+  },
+  /*
+   *  Toggle visibility of webform tab
+   */
+  WEBFORM_TAB_VISIBLE: {
+    flag: "webform-tab",
     defaultValue: true,
   },
 } as const;

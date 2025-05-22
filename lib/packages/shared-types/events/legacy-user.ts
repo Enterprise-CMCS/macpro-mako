@@ -8,6 +8,7 @@ const userRoles = z.enum([
   "helpdesk",
   "statesubmitter",
   "systemadmin",
+  "norole",
 ]);
 export type UserRole = z.infer<typeof userRoles>;
 
@@ -32,6 +33,7 @@ export const ROLES_ALLOWED_TO_REQUEST: UserRole[] = [
   "defaultcmsuser",
   "cmsroleapprover",
   "cmsreviewer",
+  "norole",
 ];
 
 const userStatus = z.enum(["active", "pending", "revoked", "denied"]);
