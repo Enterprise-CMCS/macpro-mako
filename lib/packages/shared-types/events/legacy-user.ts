@@ -48,7 +48,14 @@ export const baseUserRoleRequestSchema = z.object({
   role: userRoles,
   doneByEmail: z.string(),
   doneByName: z.string(),
-  date: z.number().optional(),
+  date: z
+    .number()
+    .optional()
+    .transform((date) => {
+      if (!date) return date;
+      if (String(date).length === 10) return date * 1000;
+      return date;
+    }),
   eventType: roleEvent,
   group: z.string().nullish(),
   division: z.string().nullish(),
