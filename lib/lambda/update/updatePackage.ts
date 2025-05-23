@@ -30,7 +30,7 @@ const sendDeleteMessage = async (currentPackage: ItemResult) => {
       id: packageId + "-del-",
       deleted: true,
       isAdminChange: true,
-      adminChangeType: "delete-preserve",
+      adminChangeType: "update-id",
       makoChangedDate: currentTime,
       changedDate: currentTime,
       statusDate: currentTime,
@@ -182,16 +182,17 @@ const sendUpdateIdMessage = async ({
       body: parsedId.error.message,
     });
   }
-
+  console.log("current package id : " + currentPackage._id);
+  console.log("remaining fields: " + JSON.stringify(remainingFields));
   const currentTime = Date.now();
-
+  // check
   await produceMessage(
     topicName,
     updatedId,
     JSON.stringify({
       id: updatedId,
-      idToBeUpdated: currentPackage._id,
       ...remainingFields,
+      idToBeUpdated: currentPackage._id,
       origin: "OneMAC",
       changeMade,
       changeReason,
