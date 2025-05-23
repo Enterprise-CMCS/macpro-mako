@@ -30,9 +30,9 @@
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">93.75% </span>
+                <span class="strong">100% </span>
                 <span class="quiet">Branches</span>
-                <span class='fraction'>15/16</span>
+                <span class='fraction'>16/16</span>
             </div>
         
             
@@ -46,7 +46,7 @@
             <div class='fl pad1y space-right2'>
                 <span class="strong">100% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>37/37</span>
+                <span class='fraction'>36/36</span>
             </div>
         
             
@@ -160,11 +160,7 @@
 <a name='L95'></a><a href='#L95'>95</a>
 <a name='L96'></a><a href='#L96'>96</a>
 <a name='L97'></a><a href='#L97'>97</a>
-<a name='L98'></a><a href='#L98'>98</a>
-<a name='L99'></a><a href='#L99'>99</a>
-<a name='L100'></a><a href='#L100'>100</a>
-<a name='L101'></a><a href='#L101'>101</a>
-<a name='L102'></a><a href='#L102'>102</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
+<a name='L98'></a><a href='#L98'>98</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -226,28 +222,24 @@
 <span class="cline-any cline-yes">4x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">4x</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">2x</span>
 <span class="cline-any cline-yes">2x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">4x</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">48x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">4x</span>
+<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">7x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">148x</span>
+<span class="cline-any cline-yes">103x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">4x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -327,27 +319,23 @@ export const getRoleRequests = async (event: APIGatewayEvent) =&gt; {
     let roleRequests: StateAccess[] = [];
 &nbsp;
     if (systemAdmin || helpDesk) {
-      // get all of the role requests
       roleRequests = await getAllUserRoles();
-    } else if (cmsRoleApprover) {
-      // get all of the role requests
-      roleRequests = await getAllUserRoles();
+    }
 &nbsp;
-      // filter out other cmsroleapprovers and systemadmins
-      // cmsroleapprovers cannot approve those role requests
-      roleRequests = roleRequests.filter(
-        (roleObj) =&gt; !["cmsroleapprover", "systemadmin"].includes(roleObj?.role),
-      );
-    <span class="missing-if-branch" title="else path not taken" >E</span>} else if (stateSystemAdmin?.territory) {
+    if (cmsRoleApprover) {
+      roleRequests = await getAllUserRoles();
+      // cmsroleapprovers can only see statesystemadmin requests
+      roleRequests = roleRequests.filter((roleObj) =&gt; roleObj?.role === "statesystemadmin");
+    }
+&nbsp;
+    if (stateSystemAdmin) {
       roleRequests = await getAllUserRolesByState(stateSystemAdmin?.territory);
 &nbsp;
-      // filter out other statesystemadmins
-      // statesystemadmins cannot approve those role requests
+      // statesystemadmins cannot update other statesystemadmin requests
       roleRequests = roleRequests.filter((roleObj) =&gt; roleObj?.role !== "statesystemadmin");
     }
 &nbsp;
-    // remove the user from the role requests
-    // the user cannot approve their own role requests
+    // filter out the current user from the role requests
     roleRequests = roleRequests.filter((adminRole) =&gt; adminRole?.email !== email);
 &nbsp;
     const roleRequestsWithName = await getUserRolesWithNames(roleRequests);
@@ -373,7 +361,7 @@ export const handler = getRoleRequests;
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2025-05-23T20:47:53.015Z
+                at 2025-05-23T20:56:32.599Z
             </div>
         <script src="../../../prettify.js"></script>
         <script>
