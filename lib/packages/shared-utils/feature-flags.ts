@@ -65,4 +65,11 @@ export const featureFlags = {
     flag: "chip-spa-submission",
     defaultValue: true,
   },
+  /*
+   *  Toggle visibility of webform tab
+   */
+  WEBFORM_TAB_VISIBLE: {
+    flag: "webform-tab",
+    defaultValue: true,
+  },
 } as const;

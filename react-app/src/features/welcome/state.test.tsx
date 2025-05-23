@@ -1,13 +1,12 @@
-import { fireEvent, render, screen } from "@testing-library/react";
-import { MemoryRouter } from "react-router";
+import { fireEvent, screen } from "@testing-library/react";
 import { beforeEach, describe, expect, it, vi } from "vitest";
 
-import { StateWelcome } from "./state";
+import * as hooks from "@/hooks/useFeatureFlag";
+import { renderWithMemoryRouter } from "@/utils/test-helpers";
 
-// Mock useFeatureFlag to return true for STATE_HOMEPAGE_FLAG
-vi.mock("@/hooks/useFeatureFlag", () => ({
-  useFeatureFlag: vi.fn(() => true),
-}));
+import StateWelcomeWrapper, { StateWelcome } from "./state";
+
+const hookSpy = vi.spyOn(hooks, "useFeatureFlag").mockReturnValue(true);
 
 // Mock LatestUpdates
 vi.mock("@/components/Banner/latestUpdates", () => ({
@@ -15,16 +14,26 @@ vi.mock("@/components/Banner/latestUpdates", () => ({
 }));
 
 describe("StateWelcome", () => {
+  const setup = (comp: React.ReactElement) =>
+    renderWithMemoryRouter(
+      comp,
+      [
+        {
+          path: "/",
+          element: comp,
+        },
+      ],
+      {
+        initialEntries: ["/"],
+      },
+    );
+
   beforeEach(() => {
     vi.clearAllMocks();
   });
 
   it("renders all tabs", () => {
-    render(
-      <MemoryRouter>
-        <StateWelcome />
-      </MemoryRouter>,
-    );
+    setup(<StateWelcome />);
 
     expect(screen.getByText("Medicaid SPA")).toBeInTheDocument();
     expect(screen.getByText("CHIP SPA")).toBeInTheDocument();
@@ -34,22 +43,14 @@ describe("StateWelcome", () => {
   });
 
   it("defaults to Medicaid SPA active", () => {
-    render(
-      <MemoryRouter>
-        <StateWelcome />
-      </MemoryRouter>,
-    );
+    setup(<StateWelcome />);
 
     expect(screen.getByText(/submit all medicaid spas here/i)).toBeInTheDocument();
     expect(screen.getByRole("button", { name: /New Medicaid SPA/i })).toBeInTheDocument();
   });
 
   it("activates correct tab on click", () => {
-    render(
-      <MemoryRouter>
-        <StateWelcome />
-      </MemoryRouter>,
-    );
+    setup(<StateWelcome />);
 
     const chipTab = screen.getByText("CHIP SPA");
     fireEvent.click(chipTab);
@@ -59,12 +60,15 @@ describe("StateWelcome", () => {
   });
 
   it("renders LatestUpdates component", () => {
-    render(
-      <MemoryRouter>
-        <StateWelcome />
-      </MemoryRouter>,
-    );
+    setup(<StateWelcome />);
 
     expect(screen.getByTestId("latest-updates")).toBeInTheDocument();
+  });
+
+  it("renders the Welcome page if the feature flag is off", () => {
+    hookSpy.mockReturnValueOnce(false);
+
+    setup(<StateWelcomeWrapper />);
+    expect(screen.getByText("CMS Users")).toBeInTheDocument();
   });
 });

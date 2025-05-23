@@ -18,6 +18,7 @@ import {
   contractingAmendment,
   contractingInitial,
   contractingRenewal,
+  newChipDetailsSubmission,
   newChipSubmission,
   newMedicaidSubmission,
   respondToRai,
@@ -97,6 +98,13 @@ describe("syncing Changelog events", () => {
       contractingRenewal,
       {
         actionType: "Renew",
+      },
+    ],
+    [
+      "new-chip-details-submission",
+      newChipDetailsSubmission,
+      {
+        actionType: "Amend",
       },
     ],
     [
@@ -323,7 +331,6 @@ describe("syncing Changelog events", () => {
         }),
       ],
     });
-
     const expectedChangelogs = [
       {
         id: "MD-22-0030-legacy-admin-change-1746798111690",

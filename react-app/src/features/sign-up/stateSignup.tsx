@@ -27,24 +27,9 @@ export const StateSignup = () => {
   const [showModal, setShowModal] = useState<boolean>(false);
   const navigate = useNavigate();
   const { mutateAsync: submitRequest, isLoading } = useSubmitRoleRequests();
-
   const { data: userDetails } = useGetUserDetails();
   const { data: userProfile } = useGetUserProfile();
-  const statesToRequest: Option[] = useAvailableStates(userProfile?.stateAccess);
-
-  if (!userDetails) return <LoadingSpinner />;
-
-  if (!userDetails?.role) return <Navigate to="/" />;
-
-  const currentRole = userDetails.role;
-
-  // Only state users can access this page
-  if (
-    currentRole !== "statesubmitter" &&
-    currentRole !== "statesystemadmin" &&
-    currentRole !== "norole"
-  )
-    return <Navigate to="/profile" />;
+  const currentRole = userDetails?.role;
 
   // Determine which role the user is allowed to request based on their current role
   const roleToRequestMap: Partial<Record<UserRole, UserRole>> = {
@@ -53,6 +38,19 @@ export const StateSignup = () => {
     statesystemadmin: "statesubmitter",
   };
   const roleToRequest = roleToRequestMap[currentRole];
+  const statesToRequest: Option[] = useAvailableStates(roleToRequest, userProfile?.stateAccess);
+
+  if (!userDetails) return <LoadingSpinner />;
+
+  if (!userDetails?.role) return <Navigate to="/" />;
+
+  // Only state users can access this page
+  if (
+    currentRole !== "statesubmitter" &&
+    currentRole !== "statesystemadmin" &&
+    currentRole !== "norole"
+  )
+    return <Navigate to="/profile" />;
 
   // Statesubmitters can request to be a statesystemadmin for 1 state
   const isRequestRoleAdmin = currentRole === "statesubmitter";
@@ -131,7 +129,7 @@ export const StateSignup = () => {
                   value={stateSelected}
                   options={statesToRequest}
                   onChange={(values: StateCode[]) => onChange(values)}
-                  placeholder={"Select state here"}
+                  placeholder="Select state here"
                 />
               )}
               {!stateSelected.length && (
