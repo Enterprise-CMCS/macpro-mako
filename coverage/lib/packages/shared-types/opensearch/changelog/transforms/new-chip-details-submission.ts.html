@@ -23,30 +23,30 @@
         <div class='clearfix'>
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">18.18% </span>
+                <span class="strong">90.9% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>2/11</span>
+                <span class='fraction'>10/11</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">0% </span>
+                <span class="strong">66.66% </span>
                 <span class="quiet">Branches</span>
-                <span class='fraction'>0/9</span>
+                <span class='fraction'>6/9</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">0% </span>
+                <span class="strong">87.5% </span>
                 <span class="quiet">Functions</span>
-                <span class='fraction'>0/8</span>
+                <span class='fraction'>7/8</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">14.28% </span>
+                <span class="strong">85.71% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>1/7</span>
+                <span class='fraction'>6/7</span>
             </div>
         
             
@@ -61,7 +61,7 @@
             </div>
         </template>
     </div>
-    <div class='status-line low'></div>
+    <div class='status-line high'></div>
     <pre><table class="coverage">
 <tr><td class="line-count quiet"><a name='L1'></a><a href='#L1'>1</a>
 <a name='L2'></a><a href='#L2'>2</a>
@@ -103,9 +103,24 @@
 <a name='L38'></a><a href='#L38'>38</a>
 <a name='L39'></a><a href='#L39'>39</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">255x</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">257x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">8x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">8x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -114,22 +129,7 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -141,20 +141,20 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">import { events } from "shared-types";
 &nbsp;
-export const transform = <span class="fstat-no" title="function not covered" ><span class="fstat-no" title="function not covered" >(o</span></span>ffset: number) =&gt; {
-<span class="cstat-no" title="statement not covered" >  return events["new-chip-details-submission"].schema.transform(<span class="fstat-no" title="function not covered" ><span class="fstat-no" title="function not covered" >(d</span></span>ata) =&gt; {</span>
-    const attachments = <span class="cstat-no" title="statement not covered" ><span class="cstat-no" title="statement not covered" >data.attachments</span></span>
+export const transform = <span class="fstat-no" title="function not covered" >(o</span>ffset: number) =&gt; {
+  return events["new-chip-details-submission"].schema.transform((data) =&gt; {
+    const attachments = data.attachments
       ? Object.entries(data.attachments).flatMap(
           //eslint-disable-next-line
-<span class="fstat-no" title="function not covered" ><span class="fstat-no" title="function not covered" >          ([</span></span>_title, attachment]) =&gt; {
+          ([_title, attachment]) =&gt; {
             // Check if 'attachment' exists and has a non-empty 'files' array
-<span class="cstat-no" title="statement not covered" >            if (</span>
+            <span class="missing-if-branch" title="else path not taken" >E</span>if (
               attachment?.files &amp;&amp;
               Array.isArray(attachment.files) &amp;&amp;
               attachment.files.length &gt; 0
             ) {
               // Map each file in 'files' array to the desired shape
-<span class="cstat-no" title="statement not covered" >              return attachment.files.map(<span class="fstat-no" title="function not covered" ><span class="fstat-no" title="function not covered" >(f</span></span>ile) =&gt; (<span class="cstat-no" title="statement not covered" ><span class="cstat-no" title="statement not covered" >{</span></span></span>
+              return attachment.files.map((file) =&gt; ({
                 filename: file.filename,
                 title: attachment.label,
                 bucket: file.bucket,
@@ -166,8 +166,8 @@ export const transform = <span class="fstat-no" title="function not covered" ><s
 <span class="cstat-no" title="statement not covered" >            return [];</span>
           },
         )
-      : [];
-<span class="cstat-no" title="statement not covered" >    return {</span>
+      : <span class="branch-1 cbranch-no" title="branch not covered" ><span class="branch-1 cbranch-no" title="branch not covered" >[];</span></span>
+    return {
       ...data,
       attachments,
       packageId: data.id,
@@ -184,7 +184,7 @@ export type Schema = ReturnType&lt;typeof transform&gt;;
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2025-05-23T16:16:51.455Z
+                at 2025-05-23T18:51:01.482Z
             </div>
         <script src="../../../../../../prettify.js"></script>
         <script>

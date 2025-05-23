@@ -23,30 +23,30 @@
         <div class='clearfix'>
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">29.16% </span>
+                <span class="strong">72.72% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>7/24</span>
+                <span class='fraction'>16/22</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">41.17% </span>
+                <span class="strong">66.66% </span>
                 <span class="quiet">Branches</span>
-                <span class='fraction'>7/17</span>
+                <span class='fraction'>10/15</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">75% </span>
+                <span class="strong">100% </span>
                 <span class="quiet">Functions</span>
-                <span class='fraction'>3/4</span>
+                <span class='fraction'>4/4</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">31.81% </span>
+                <span class="strong">76.19% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>7/22</span>
+                <span class='fraction'>16/21</span>
             </div>
         
             
@@ -61,7 +61,7 @@
             </div>
         </template>
     </div>
-    <div class='status-line low'></div>
+    <div class='status-line medium'></div>
     <pre><table class="coverage">
 <tr><td class="line-count quiet"><a name='L1'></a><a href='#L1'>1</a>
 <a name='L2'></a><a href='#L2'>2</a>
@@ -162,9 +162,7 @@
 <a name='L97'></a><a href='#L97'>97</a>
 <a name='L98'></a><a href='#L98'>98</a>
 <a name='L99'></a><a href='#L99'>99</a>
-<a name='L100'></a><a href='#L100'>100</a>
-<a name='L101'></a><a href='#L101'>101</a>
-<a name='L102'></a><a href='#L102'>102</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
+<a name='L100'></a><a href='#L100'>100</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -181,13 +179,11 @@
 <span class="cline-any cline-yes">5x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">6x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">6x</span>
+<span class="cline-any cline-yes">6x</span>
+<span class="cline-any cline-yes">6x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -196,14 +192,14 @@
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">6x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">6x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">6x</span>
+<span class="cline-any cline-yes">6x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">6x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
@@ -217,13 +213,13 @@
 <span class="cline-any cline-yes">5x</span>
 <span class="cline-any cline-yes">5x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">4x</span>
-<span class="cline-any cline-yes">4x</span>
+<span class="cline-any cline-yes">5x</span>
+<span class="cline-any cline-yes">5x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">4x</span>
-<span class="cline-any cline-yes">4x</span>
+<span class="cline-any cline-yes">5x</span>
+<span class="cline-any cline-yes">5x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -279,32 +275,30 @@ type LoaderData = {
   userProfile: OneMacUserProfile;
 };
 &nbsp;
-export const userProfileLoader = <span class="fstat-no" title="function not covered" >async ({</span>
+export const userProfileLoader = async ({
   params,
 }: LoaderFunctionArgs): Promise&lt;LoaderData | Response&gt; =&gt; {
-  const { profileId } = <span class="cstat-no" title="statement not covered" >params;</span>
+  const { profileId } = params;
 &nbsp;
-<span class="cstat-no" title="statement not covered" >  if (!profileId) <span class="cstat-no" title="statement not covered" >return redirect("/usermanagement");</span></span>
-&nbsp;
-<span class="cstat-no" title="statement not covered" >  try {</span>
-    const currUserDetails = <span class="cstat-no" title="statement not covered" >await getUserDetails();</span>
-<span class="cstat-no" title="statement not covered" >    if (</span>
+  try {
+    const currUserDetails = await getUserDetails();
+    <span class="missing-if-branch" title="if path not taken" >I</span>if (
       !currUserDetails?.role ||
       !["systemadmin", "statesystemadmin", "cmsroleapprover", "helpdesk"].includes(
         currUserDetails?.role,
       )
     ) {
-<span class="cstat-no" title="statement not covered" >      return redirect("/usermanagement");</span>
+<span class="cstat-no" title="statement not covered" >      return redirect("/");</span>
     }
 &nbsp;
-    const userEmail = <span class="cstat-no" title="statement not covered" >LZ.decompressFromEncodedURIComponent(profileId.replaceAll("_", "+"));</span>
+    const userEmail = LZ.decompressFromEncodedURIComponent(profileId.replaceAll("_", "+"));
 &nbsp;
-<span class="cstat-no" title="statement not covered" >    if (!userEmail) <span class="cstat-no" title="statement not covered" >return redirect("/usermanagement");</span></span>
+    <span class="missing-if-branch" title="if path not taken" >I</span>if (!userEmail) <span class="cstat-no" title="statement not covered" >return redirect("/usermanagement");</span>
 &nbsp;
-    const profileUserDetails = <span class="cstat-no" title="statement not covered" >await getUserDetails(userEmail);</span>
-    const profileUserProfile = <span class="cstat-no" title="statement not covered" >await getUserProfile(userEmail);</span>
+    const profileUserDetails = await getUserDetails(userEmail);
+    const profileUserProfile = await getUserProfile(userEmail);
 &nbsp;
-<span class="cstat-no" title="statement not covered" >    return { userDetails: profileUserDetails, userProfile: profileUserProfile };</span>
+    return { userDetails: profileUserDetails, userProfile: profileUserProfile };
   } catch (error) {
 <span class="cstat-no" title="statement not covered" >    if (error instanceof Error) {</span>
 <span class="cstat-no" title="statement not covered" >      console.log("Error fetching profile: ", error.message);</span>
@@ -337,7 +331,7 @@ export const UserProfile = () =&gt; {
       &lt;section className="block max-w-screen-xl m-auto px-4 lg:px-8 py-8 gap-10"&gt;
         &lt;div className="flex flex-col md:flex-row"&gt;
           &lt;UserInformation
-            fullName={userDetails?.fullName || "Unknown"}
+            fullName={userDetails?.fullName || <span class="branch-1 cbranch-no" title="branch not covered" >"Unknown"}</span>
             role={userRoleMap[userDetails?.role]}
             email={userDetails?.email}
           /&gt;
@@ -373,7 +367,7 @@ export const UserProfile = () =&gt; {
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2025-05-23T16:16:51.455Z
+                at 2025-05-23T18:51:01.482Z
             </div>
         <script src="../../../../../prettify.js"></script>
         <script>

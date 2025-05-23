@@ -23,30 +23,30 @@
         <div class='clearfix'>
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">5.55% </span>
+                <span class="strong">83.33% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>1/18</span>
+                <span class='fraction'>15/18</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">0% </span>
+                <span class="strong">70% </span>
                 <span class="quiet">Branches</span>
-                <span class='fraction'>0/10</span>
+                <span class='fraction'>7/10</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">0% </span>
+                <span class="strong">100% </span>
                 <span class="quiet">Functions</span>
-                <span class='fraction'>0/1</span>
+                <span class='fraction'>1/1</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">5.88% </span>
+                <span class="strong">88.23% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>1/17</span>
+                <span class='fraction'>15/17</span>
             </div>
         
             
@@ -61,7 +61,7 @@
             </div>
         </template>
     </div>
-    <div class='status-line low'></div>
+    <div class='status-line high'></div>
     <pre><table class="coverage">
 <tr><td class="line-count quiet"><a name='L1'></a><a href='#L1'>1</a>
 <a name='L2'></a><a href='#L2'>2</a>
@@ -116,42 +116,42 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">3x</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">3x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">3x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">3x</span>
+<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">import { type APIGatewayEvent } from "aws-lambda";
 import { itemExists } from "libs/api/package";
@@ -160,43 +160,43 @@ import { events } from "shared-types/events";
 import { getAuthDetails, isAuthorized, lookupUserAttributes } from "../../../libs/api/auth/user";
 import { getUserByEmail } from "../../user-management/userManagementService";
 &nbsp;
-export const newChipDetailsSubmission = <span class="fstat-no" title="function not covered" >async (e</span>vent: APIGatewayEvent) =&gt; {
-<span class="cstat-no" title="statement not covered" >  if (!event.body) <span class="cstat-no" title="statement not covered" >return;</span></span>
+export const newChipDetailsSubmission = async (event: APIGatewayEvent) =&gt; {
+  <span class="missing-if-branch" title="if path not taken" >I</span>if (!event.body) <span class="cstat-no" title="statement not covered" >return;</span>
 &nbsp;
-  const parsedResult = <span class="cstat-no" title="statement not covered" >events["new-chip-details-submission"].baseSchema.safeParse(</span>
+  const parsedResult = events["new-chip-details-submission"].baseSchema.safeParse(
     JSON.parse(event.body),
   );
-<span class="cstat-no" title="statement not covered" >  if (!parsedResult.success) {</span>
-<span class="cstat-no" title="statement not covered" >    throw parsedResult.error;</span>
+  if (!parsedResult.success) {
+    throw parsedResult.error;
   }
 &nbsp;
   // This is the backend check for auth
-<span class="cstat-no" title="statement not covered" >  if (!(await isAuthorized(event, parsedResult.data.id.slice(0, 2)))) {</span>
-<span class="cstat-no" title="statement not covered" >    throw "Unauthorized";</span>
+  if (!(await isAuthorized(event, parsedResult.data.id.slice(0, 2)))) {
+    throw "Unauthorized";
   }
 &nbsp;
   // This is the backend check for the item already existing
-<span class="cstat-no" title="statement not covered" >  if (await itemExists({ id: parsedResult.data.id })) {</span>
+  <span class="missing-if-branch" title="if path not taken" >I</span>if (await itemExists({ id: parsedResult.data.id })) {
 <span class="cstat-no" title="statement not covered" >    throw "Item Already Exists";</span>
   }
 &nbsp;
-  const authDetails = <span class="cstat-no" title="statement not covered" >getAuthDetails(event);</span>
-  const userAttr = <span class="cstat-no" title="statement not covered" >await lookupUserAttributes(authDetails.userId, authDetails.poolId);</span>
-  const submitterEmail = <span class="cstat-no" title="statement not covered" >userAttr.email;</span>
-  const user = <span class="cstat-no" title="statement not covered" >await getUserByEmail(submitterEmail);</span>
+  const authDetails = getAuthDetails(event);
+  const userAttr = await lookupUserAttributes(authDetails.userId, authDetails.poolId);
+  const submitterEmail = userAttr.email;
+  const user = await getUserByEmail(submitterEmail);
 &nbsp;
-<span class="cstat-no" title="statement not covered" >  if (!user) {</span>
+  <span class="missing-if-branch" title="if path not taken" >I</span>if (!user) {
 <span class="cstat-no" title="statement not covered" >    throw new Error("User does not exist in User OpenSearch Index");</span>
   }
 &nbsp;
-  const transformedData = <span class="cstat-no" title="statement not covered" >events["new-chip-details-submission"].schema.parse({</span>
+  const transformedData = events["new-chip-details-submission"].schema.parse({
     ...parsedResult.data,
     submitterName: user.fullName,
     submitterEmail: user.email,
     timestamp: Date.now(),
   });
 &nbsp;
-<span class="cstat-no" title="statement not covered" >  return transformedData;</span>
+  return transformedData;
 };
 &nbsp;</pre></td></tr></table></pre>
 
@@ -205,7 +205,7 @@ export const newChipDetailsSubmission = <span class="fstat-no" title="function n
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2025-05-23T16:16:51.455Z
+                at 2025-05-23T18:51:01.482Z
             </div>
         <script src="../../../../prettify.js"></script>
         <script>
