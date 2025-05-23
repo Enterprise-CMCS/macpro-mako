@@ -17,8 +17,6 @@ export const userProfileLoader = async ({
 }: LoaderFunctionArgs): Promise<LoaderData | Response> => {
   const { profileId } = params;
 
-  if (!profileId) return redirect("/usermanagement");
-
   try {
     const currUserDetails = await getUserDetails();
     if (
@@ -27,7 +25,7 @@ export const userProfileLoader = async ({
         currUserDetails?.role,
       )
     ) {
-      return redirect("/usermanagement");
+      return redirect("/");
     }
 
     const userEmail = LZ.decompressFromEncodedURIComponent(profileId.replaceAll("_", "+"));
