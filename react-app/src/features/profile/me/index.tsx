@@ -84,6 +84,7 @@ export const MyProfile = () => {
             value={requestedStates}
             options={statesToRequest}
             onChange={(values: StateCode[]) => setRequestedStates(values)}
+            selectedDisplay="label"
           />
           <div className="block lg:mt-8 lg:mb-2">
             <span>
