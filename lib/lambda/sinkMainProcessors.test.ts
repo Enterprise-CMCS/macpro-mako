@@ -39,7 +39,6 @@ import {
   statusToDisplayToCmsUser,
   statusToDisplayToStateUser,
 } from "shared-types";
-import { seatool } from "shared-types/opensearch/main";
 import { afterEach, describe, expect, it, vi } from "vitest";
 
 import {
@@ -1355,9 +1354,7 @@ describe("insertNewSeatoolRecordsFromKafkaIntoMako", () => {
     expect(bulkUpdateDataSpy).toBeCalledWith(OPENSEARCH_DOMAIN, OPENSEARCH_INDEX, []);
   });
 
-  it("tombstones records with no value property", async () => {
-    const tombstoneSpy = vi.spyOn(seatool, "tombstone");
-
+  it("skips records with no value property", async () => {
     await insertNewSeatoolRecordsFromKafkaIntoMako(
       [
         createKafkaRecord({
@@ -1369,34 +1366,7 @@ describe("insertNewSeatoolRecordsFromKafkaIntoMako", () => {
       TOPIC,
     );
 
-    expect(tombstoneSpy).toBeCalledWith(TEST_ITEM_ID);
-    expect(bulkUpdateDataSpy).toBeCalledWith(OPENSEARCH_DOMAIN, OPENSEARCH_INDEX, [
-      {
-        actionType: null,
-        approvedEffectiveDate: null,
-        authority: null,
-        changedDate: null,
-        cmsStatus: null,
-        description: null,
-        finalDispositionDate: null,
-        id: TEST_ITEM_ID,
-        leadAnalystName: null,
-        leadAnalystOfficerId: null,
-        proposedDate: null,
-        raiReceivedDate: null,
-        raiRequestedDate: null,
-        raiWithdrawnDate: null,
-        reviewTeam: null,
-        seatoolStatus: null,
-        state: null,
-        stateStatus: null,
-        statusDate: null,
-        subTypes: null,
-        subject: null,
-        submissionDate: null,
-        types: null,
-      },
-    ]);
+    expect(bulkUpdateDataSpy).toHaveBeenCalledWith(OPENSEARCH_DOMAIN, OPENSEARCH_INDEX, []);
   });
 
   it("skips over records with no key property", async () => {
