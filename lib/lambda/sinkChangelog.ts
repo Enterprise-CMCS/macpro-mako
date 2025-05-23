@@ -98,7 +98,7 @@ const processAndIndex = async ({
               const recordOffset = result.data.timestamp;
               docs.push({
                 ...log,
-                _id: `${id}-${recordOffset}`,
+                id: `${id}-${recordOffset}`,
                 packageId: id,
                 deleted: false,
                 ...restOfResultData,
