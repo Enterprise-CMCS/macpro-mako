@@ -116,7 +116,7 @@ export const StateSignup = () => {
                   <SelectTrigger aria-label="Select state">
                     <SelectValue placeholder="Select state here" />
                   </SelectTrigger>
-                  <SelectContent>
+                  <SelectContent isScrollable>
                     {statesToRequest.map((state) => (
                       <SelectItem value={state.value} key={state.value}>
                         {state.label}
@@ -130,6 +130,7 @@ export const StateSignup = () => {
                   options={statesToRequest}
                   onChange={(values: StateCode[]) => onChange(values)}
                   placeholder="Select state here"
+                  selectedDisplay="label"
                 />
               )}
               {!stateSelected.length && (
