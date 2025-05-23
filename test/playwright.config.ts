@@ -65,12 +65,20 @@ export default defineConfig({
       testMatch: /ci\.setup\.ts/,
     },
     {
+      name: "val-setup",
+      testMatch: /val\.setup\.ts/,
+    },
+    {
       name: "eua-setup",
       testMatch: /eua\.setup\.ts/,
     },
     {
       name: "mfa-setup",
       testMatch: /mfa\.setup\.ts/,
+    },
+    {
+      name: "smoke-test",
+      testMatch: /smoke\.setup\.ts/,
     },
     {
       name: "local",
@@ -83,11 +91,12 @@ export default defineConfig({
     {
       name: "ci",
       use: {
-        storageState: "./playwright/.auth/state-user.json",
         baseURL: deploymentOutput.applicationEndpointUrl,
+        storageState: "./playwright/.auth/state-user.json",
       },
       dependencies: ["ci-setup"],
     },
+    {},
     {
       name: "eua-user",
       use: {
@@ -103,6 +112,14 @@ export default defineConfig({
         storageState: "./playwright/.auth/zzState-user.json",
       },
       dependencies: ["mfa-setup"],
+    },
+    {
+      name: "smoke-tests",
+      testMatch: "**/smoke/**/*.spec.ts",
+      use: {
+        baseURL: "https://mako.cms.gov",
+      },
+      dependencies: ["smoke-test"],
     },
   ],
 }) satisfies PlaywrightTestConfig;
