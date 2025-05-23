@@ -19,6 +19,10 @@ describe("seaToolFriendlyTimestamp", () => {
 
 describe("formatSeatoolDate", () => {
   it("should return an empty string if the SEATool date is undefined", () => {
+    expect(formatSeatoolDate()).toEqual("");
+  });
+
+  it("should return an empty string if the SEATool date is an empty string", () => {
     expect(formatSeatoolDate("")).toEqual("");
   });
 
