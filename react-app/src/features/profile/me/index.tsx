@@ -40,7 +40,7 @@ export const MyProfile = () => {
   const [showAddState, setShowAddState] = useState<boolean>(true);
   const [requestedStates, setRequestedStates] = useState<StateCode[]>([]);
   const [pendingRequests, setPendingRequests] = useState<boolean>(false);
-  const statesToRequest: Option[] = useAvailableStates(userProfile?.stateAccess);
+  const statesToRequest: Option[] = useAvailableStates(userDetails?.role, userProfile?.stateAccess);
 
   const filteredStateAccess = useMemo(
     () => filterStateAccess(userDetails, userProfile),
