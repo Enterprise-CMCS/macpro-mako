@@ -290,7 +290,7 @@ describe("Opensearch utils tests", () => {
       const result = paginationQueryBuilder({});
       expect(result).toEqual({
         from: 0,
-        size: 25,
+        size: 100,
       });
     });
     it("should handle an undefined number", () => {
@@ -320,21 +320,21 @@ describe("Opensearch utils tests", () => {
       const result = paginationQueryBuilder({ number: 1 });
       expect(result).toEqual({
         from: 0,
-        size: 25,
+        size: 100,
       });
     });
     it("should handle 0 size", () => {
       const result = paginationQueryBuilder({ number: 1, size: 0 });
       expect(result).toEqual({
         from: 0,
-        size: 25,
+        size: 100,
       });
     });
     it("should handle a negative size", () => {
       const result = paginationQueryBuilder({ number: 1, size: -3 });
       expect(result).toEqual({
         from: 0,
-        size: 25,
+        size: 100,
       });
     });
     it("should handle a valid number and size", () => {
