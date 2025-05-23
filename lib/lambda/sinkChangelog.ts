@@ -116,7 +116,6 @@ const processAndIndex = async ({
                 });
               }
             });
-            console.log(docs);
           } else if (
             result.data.adminChangeType === "split-spa" &&
             "idToBeUpdated" in result.data
@@ -247,6 +246,5 @@ const processAndIndex = async ({
       });
     }
   }
-  console.log("docs before upload: " + JSON.stringify(docs));
   await bulkUpdateDataWrapper(docs, "changelog");
 };
