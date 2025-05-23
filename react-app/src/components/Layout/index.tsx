@@ -4,6 +4,7 @@ import * as DropdownMenu from "@radix-ui/react-dropdown-menu";
 import { Auth } from "aws-amplify";
 import { LogOutIcon, UserPenIcon, UserPlusIcon } from "lucide-react";
 import { useState } from "react";
+import { createPortal } from "react-dom";
 import { Link, NavLink, NavLinkProps, Outlet, useNavigate, useRouteError } from "react-router";
 import { UserRoles } from "shared-types";
 import { isStateUser } from "shared-utils";
@@ -295,6 +296,8 @@ export const Layout = () => {
         </div>
       </nav>
       <main className="flex-1">
+        {/* Portal target for subHeader */}
+        <div id="subheader-portal-container" />
         <SimplePageContainer>
           <Banner />
         </SimplePageContainer>
@@ -498,15 +501,20 @@ const ResponsiveNav = ({ isDesktop }: ResponsiveNavProps) => {
  *
  * @returns {JSX.Element} The rendered sub-navigation header component.
  */
-export const SubNavHeader = ({ children }: { children: React.ReactNode }) => (
-  <div className="bg-sky-100" data-testid="sub-nav-header">
-    <div className="max-w-screen-xl m-auto px-4 lg:px-8">
-      <div className="flex items-center">
-        <div className="flex align-middle py-4">{children}</div>
+export const SubNavHeader = ({ children }: { children: React.ReactNode }) => {
+  const portalContainer = document.getElementById("subheader-portal-container");
+
+  return createPortal(
+    <div className="bg-sky-100" data-testid="sub-nav-header">
+      <div className="max-w-screen-xl m-auto px-4 lg:px-8">
+        <div className="flex items-center">
+          <div className="flex align-middle py-4">{children}</div>
+        </div>
       </div>
-    </div>
-  </div>
-);
+    </div>,
+    portalContainer,
+  );
+};
 
 type SupportSubNavHeaderProps = {
   /*
