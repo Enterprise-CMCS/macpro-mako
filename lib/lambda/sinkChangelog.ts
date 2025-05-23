@@ -96,7 +96,7 @@ const processAndIndex = async ({
 
             docs.push({
               ...restOfResultData,
-              id: id,
+              id: id + result.data.timestamp,
               packageId: id,
               event: "update-id",
             });
