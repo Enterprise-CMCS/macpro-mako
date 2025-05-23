@@ -123,11 +123,6 @@ export const getSubmissionDetails: GetLabelAndValueFromSubmission = (submission,
     canView: submission.actionType === "Extend",
   },
   {
-    label: "Proposed Effective Date",
-    value: submission.proposedDate ? formatDateToUTC(submission.proposedDate) : "Pending",
-    canView: submission.actionType !== "Extend",
-  },
-  {
     label: "Initial Submission Date",
     value: submission.submissionDate ? formatDateToET(submission.submissionDate) : BLANK_VALUE,
   },
@@ -148,6 +143,11 @@ export const getApprovedAndEffectiveDetails: GetLabelAndValueFromSubmission = (s
     value: submission.finalDispositionDate
       ? formatDateToUTC(submission.finalDispositionDate)
       : BLANK_VALUE,
+    canView: submission.actionType !== "Extend",
+  },
+  {
+    label: "Proposed Effective Date",
+    value: submission.proposedDate ? formatDateToUTC(submission.proposedDate) : "Pending",
     canView: submission.actionType !== "Extend",
   },
   {
