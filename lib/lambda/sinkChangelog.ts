@@ -96,7 +96,7 @@ const processAndIndex = async ({
 
             docs.push({
               ...restOfResultData,
-              id: id + result.data.timestamp,
+              id: id + "-" + result.data.timestamp,
               packageId: id,
               event: "update-id",
             });
@@ -105,12 +105,10 @@ const processAndIndex = async ({
             // Filter out any entry regarding the soft deleted event
             // Create copies of the rest of the changelog entries with the new package ID
             const packageChangelogs = await getPackageChangelog(idToBeUpdated);
-            console.log("package change logs: " + JSON.stringify(packageChangelogs));
-            console.log("old ID" + idToBeUpdated);
-            console.log("new iD" + id);
+
             packageChangelogs.hits.hits.forEach((log) => {
               if (log._source.event !== "delete") {
-                const recordOffset = log._source.timestamp;
+                const recordOffset = log._id.split("-").at(-1);
                 docs.push({
                   ...log._source,
                   id: `${id}-${recordOffset}`,
@@ -129,7 +127,7 @@ const processAndIndex = async ({
             const packageChangelogs = await getPackageChangelog(result.data.idToBeUpdated);
 
             packageChangelogs.hits.hits.forEach((log) => {
-              const recordOffset = log._source.timestamp;
+              const recordOffset = log._id.split("-").at(-1);
               docs.push({
                 ...log._source,
                 id: `${result.data.id}-${recordOffset}`,
