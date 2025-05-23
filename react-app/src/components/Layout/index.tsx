@@ -503,17 +503,17 @@ const ResponsiveNav = ({ isDesktop }: ResponsiveNavProps) => {
  */
 export const SubNavHeader = ({ children }: { children: React.ReactNode }) => {
   const portalContainer = document.getElementById("subheader-portal-container");
-
-  return createPortal(
+  const subNavComponent = (
     <div className="bg-sky-100" data-testid="sub-nav-header">
       <div className="max-w-screen-xl m-auto px-4 lg:px-8">
         <div className="flex items-center">
           <div className="flex align-middle py-4">{children}</div>
         </div>
       </div>
-    </div>,
-    portalContainer,
+    </div>
   );
+  if (!portalContainer) return subNavComponent;
+  return createPortal(subNavComponent, portalContainer);
 };
 
 type SupportSubNavHeaderProps = {
