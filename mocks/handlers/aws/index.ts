@@ -25,4 +25,3 @@ export {
   emptyIdentityProviderServiceHandler,
   errorIdentityProviderServiceHandler,
 } from "./cognito";
-export { disabledGetEventSourceMappingHandler } from "./lambda";

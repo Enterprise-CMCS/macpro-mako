@@ -1,5 +1,4 @@
 export type UserInformationProps = {
-  title: string;
   fullName: string;
   role: string;
   email: string;

@@ -70,7 +70,12 @@ const defaultCreateEventSourceMappingsHandler = http.post<
 
 const defaultGetEventSourceMappingHandler = http.get(
   "https://lambda.us-east-1.amazonaws.com/2015-03-31/event-source-mappings/:uuid",
-  async ({ params }) => {
+  async ({ request, params }) => {
+    console.log("defaultGetEventSourceMappingHandler", {
+      request,
+      headers: request.headers,
+      params,
+    });
     const { uuid } = params;
 
     if (!uuid) {
@@ -86,32 +91,6 @@ const defaultGetEventSourceMappingHandler = http.get(
     }, []);
 
     return mapping ? HttpResponse.json(mapping) : new HttpResponse(null, { status: 404 });
-  },
-);
-
-export const disabledGetEventSourceMappingHandler = http.get(
-  "https://lambda.us-east-1.amazonaws.com/2015-03-31/event-source-mappings/:uuid",
-  async ({ params }) => {
-    const { uuid } = params;
-
-    if (!uuid) {
-      return new HttpResponse("InvalidParameterValueException", { status: 400 });
-    }
-
-    if (uuid == TEST_ERROR_EVENT_SOURCE_UUID || uuid == TEST_DELETE_TRIGGER_UUID) {
-      return new HttpResponse(null, { status: 500 });
-    }
-
-    const [mapping] = Object.values(consumerGroups).reduce((acc, curr) => {
-      return acc.concat(curr.filter((currItem) => currItem.UUID == uuid));
-    }, []);
-
-    return mapping
-      ? HttpResponse.json({ ...mapping, State: "Disabled" })
-      : new HttpResponse(null, { status: 404 });
-  },
-  {
-    once: true,
   },
 );
 

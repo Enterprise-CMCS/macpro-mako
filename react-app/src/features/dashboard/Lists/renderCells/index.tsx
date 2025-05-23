@@ -35,13 +35,12 @@ export const renderCellActions = (user: FullUser | null) => {
     return (
       <DropdownMenu.Root>
         <DropdownMenu.DropdownMenuTrigger
-          id="package-actions-dropdown"
           disabled={!actions.length}
           aria-label="Available package actions"
           data-testid="available-actions"
           asChild
         >
-          <button className="group ml-3" type="button" title="Expand">
+          <button className="group ml-3" type="button" title="Expand Available Package Actions">
             <EllipsisVerticalIcon
               aria-hidden
               className="w-8 text-blue-700 group-disabled:text-gray-500"
