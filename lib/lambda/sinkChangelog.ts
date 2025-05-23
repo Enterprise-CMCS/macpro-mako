@@ -94,13 +94,11 @@ const processAndIndex = async ({
             const { id, packageId: _packageId, idToBeUpdated, ...restOfResultData } = result.data;
             // Push doc with content of package being soft deleted
 
-            const recordOffset = result.data.timestamp;
             docs.push({
-              ...log,
-              id: `${id}-${recordOffset}`,
-              packageId: id,
-              deleted: false,
               ...restOfResultData,
+              id: id,
+              packageId: id,
+              event: "update-id",
             });
 
             // Get all changelog entries for the original package ID
