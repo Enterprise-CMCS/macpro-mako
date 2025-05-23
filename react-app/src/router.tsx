@@ -134,10 +134,6 @@ export const router = (loginFlag = false) => {
               element: <F.ChipSPASubmissionOptions />,
             },
             {
-              path: "/new-submission/spa/medicaid/landing/medicaid-abp",
-              element: <F.MedicaidABPLandingPage />,
-            },
-            {
               path: "/new-submission/spa/medicaid/landing/medicaid-eligibility",
               element: <F.MedicaidEligibilityLandingPage />,
             },

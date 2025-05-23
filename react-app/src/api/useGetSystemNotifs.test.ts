@@ -1,6 +1,7 @@
 import * as query from "@tanstack/react-query";
 import { renderHook } from "@testing-library/react";
-import { mockUseGetUser } from "mocks";
+import { errorApiNotificationHandler, mockUseGetUser } from "mocks";
+import { mockedApiServer as mockedServer } from "mocks/server";
 import { afterAll, beforeAll, describe, expect, test, vi } from "vitest";
 
 import * as api from "@/api";
@@ -60,5 +61,11 @@ describe("useGetSystemNotif", () => {
     // expect(testHook.notifications[0].notifId).toBe(testNotifs[0].notifId);
     expect(testHook.allNotifications[0].notifId).toBe(testNotifs[0].notifId);
     expect(testHook.dismissed).toStrictEqual([]);
+  });
+
+  test("returns and empty array if there is an error", async () => {
+    mockedServer.use(errorApiNotificationHandler);
+    const notifs = await api.getSystemNotifs();
+    expect(notifs).toEqual([]);
   });
 });
