@@ -1,5 +1,11 @@
 import { Context } from "aws-lambda";
-import { makoStateSubmitter, setMockUsername, TEST_IDM_USERS, USER_POOL_ID } from "mocks";
+import {
+  makoStateSubmitter,
+  setMockUsername,
+  superUser,
+  TEST_IDM_USERS,
+  USER_POOL_ID,
+} from "mocks";
 import { afterAll, describe, expect, it, vi } from "vitest";
 
 import { handler } from "./postAuth";
@@ -74,20 +80,20 @@ describe("process emails Handler", () => {
         request: {
           userAttributes: TEST_IDM_USERS.testStateIDMUserGood,
         },
-        userName: makoStateSubmitter.Username,
+        userName: superUser.Username,
         userPoolId: USER_POOL_ID,
       },
       {} as Context,
       callback,
     );
     expect(consoleSpy).toBeCalledWith(
-      `Attributes for user ${makoStateSubmitter.Username} updated successfully.`,
+      `Attributes for user ${superUser.Username} updated successfully.`,
     );
     expect(validUser).toStrictEqual({
       request: {
         userAttributes: TEST_IDM_USERS.testStateIDMUserGood,
       },
-      userName: makoStateSubmitter.Username,
+      userName: superUser.Username,
       userPoolId: USER_POOL_ID,
     });
   });
