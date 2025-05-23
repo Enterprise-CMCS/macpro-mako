@@ -95,7 +95,7 @@ const processAndIndex = async ({
             // Push doc with content of package being soft deleted
 
             docs.forEach((log) => {
-              const recordOffset = log.id.split("-").at(-1);
+              const recordOffset = result.data.timestamp;
               docs.push({
                 ...log,
                 _id: `${id}-${recordOffset}`,
@@ -114,7 +114,7 @@ const processAndIndex = async ({
             console.log("new iD" + id);
             packageChangelogs.hits.hits.forEach((log) => {
               if (log._source.event !== "delete") {
-                const recordOffset = log._id.split("-").at(-1);
+                const recordOffset = log._source.timestamp;
                 docs.push({
                   ...log._source,
                   id: `${id}-${recordOffset}`,
@@ -133,7 +133,7 @@ const processAndIndex = async ({
             const packageChangelogs = await getPackageChangelog(result.data.idToBeUpdated);
 
             packageChangelogs.hits.hits.forEach((log) => {
-              const recordOffset = log._id.split("-").at(-1);
+              const recordOffset = log._source.timestamp;
               docs.push({
                 ...log._source,
                 id: `${result.data.id}-${recordOffset}`,
