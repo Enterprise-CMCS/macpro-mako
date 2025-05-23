@@ -32,7 +32,7 @@ export const ChipDetailsForm = () => {
     <ActionForm
       title="CHIP Eligibility SPA Details"
       schema={formSchemas["new-chip-details-submission"]}
-      breadcrumbText="Submit New CHIP Eligibility SPA"
+      breadcrumbText="Submit new CHIP eligibility SPA"
       fields={({ control }) => (
         <>
           <FormField
@@ -45,7 +45,7 @@ export const ChipDetailsForm = () => {
                     SPA ID <RequiredIndicator />
                   </FormLabel>
                   <Link
-                    to="/faq"
+                    to="/support"
                     target={FAQ_TAB}
                     rel="noopener noreferrer"
                     className="text-blue-900 underline"
@@ -150,7 +150,7 @@ export const ChipDetailsForm = () => {
             Maximum file size of 80 MB per attachment. You can add multiple files per attachment
             type. <br /> Read the description for each of the attachment types on the{" "}
             <Link
-              to="/faq"
+              to="/support"
               target={FAQ_TAB}
               rel="noopener noreferrer"
               className="text-blue-900 underline"
@@ -163,7 +163,7 @@ export const ChipDetailsForm = () => {
             We accept the following file formats:{" "}
             <span className="font-bold">.doc, .docx, .pdf, .jpg, .odp, and more. </span>{" "}
             <Link
-              to={"/faq"}
+              to={"/support"}
               target={FAQ_TAB}
               rel="noopener noreferrer"
               className="text-blue-900 underline"
@@ -175,12 +175,12 @@ export const ChipDetailsForm = () => {
           <p data-testid="chip-attachments-instructions">
             View all{" "}
             <Link
-              to="/faq"
+              to="/support"
               target={FAQ_TAB}
               rel="noopener noreferrer"
               className="text-blue-900 underline"
             >
-              CHIP eligibility SPA Templates and Implementation guides
+              CHIP eligibility SPA templates and implementation guides
             </Link>
             .
           </p>,
