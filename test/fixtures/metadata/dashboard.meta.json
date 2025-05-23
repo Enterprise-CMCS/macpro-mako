@@ -1,0 +1,12 @@
+[
+  {
+    "id": "DL-0001",
+    "title": "Export Dashboard Records",
+    "file": "dashboard.spec.ts",
+    "feature": "Dashboard",
+    "type": "smoke",
+    "tags": ["smoke"],
+    "jira": "",
+    "testrail_case_id": ""
+  }
+]

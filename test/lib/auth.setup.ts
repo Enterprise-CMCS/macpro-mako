@@ -26,9 +26,6 @@ export async function generateAuthFile({
   switch (true) {
     case eua:
       console.log(`eua flag: ${eua}`);
-      if (!user || !password) {
-        throw new Error("user or password is null or not defined");
-      }
       await loginPage.euaLogin(user, password);
       break;
 

@@ -15,7 +15,7 @@ const EUAPASSWORD = process.env.EUAPASSWORD;
 
 console.log(`[Setup] Stage: ${stage} | Project: ${project} | Base URL: ${baseURL}`);
 
-setup("mfa auth", async () => {
+setup("eua auth", async () => {
   if (!EUAID || !EUAPASSWORD) {
     console.error("no EUA ID or password provided.");
   } else {
