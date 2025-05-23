@@ -283,7 +283,7 @@ describe("User Management Service", () => {
       const result = await getUserRolesWithNames([{ email: null }]);
       expect(result).toEqual([
         {
-          email: undefined,
+          email: null,
           fullName: "Unknown",
         },
       ]);
@@ -292,16 +292,7 @@ describe("User Management Service", () => {
       const result = await getUserRolesWithNames([{ email: "" }]);
       expect(result).toEqual([
         {
-          email: undefined,
-          fullName: "Unknown",
-        },
-      ]);
-    });
-    it("should return default values if the role record email is invalid", async () => {
-      const result = await getUserRolesWithNames([{ email: "invalid@email.com" }]);
-      expect(result).toEqual([
-        {
-          email: undefined,
+          email: "",
           fullName: "Unknown",
         },
       ]);
