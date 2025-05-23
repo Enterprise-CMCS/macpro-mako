@@ -43,7 +43,6 @@ describe("Lambda Handler", () => {
       brokerString: "broker1,broker2",
       subnets: ["subnet-1", "subnet-2", "subnet-3"],
       securityGroup: "sg-12345678",
-      startingPosition: "TRIM_HORIZON",
     };
 
     await handler(event, {} as Context, callback);
@@ -58,6 +57,7 @@ describe("Lambda Handler", () => {
         }),
       } as CreateEventSourceMappingCommand),
     );
+
     expect(lambdaSpy).toHaveBeenCalledWith(
       expect.objectContaining({
         input: {

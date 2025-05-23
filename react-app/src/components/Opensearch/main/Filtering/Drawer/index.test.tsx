@@ -1,4 +1,4 @@
-import { screen, waitForElementToBeRemoved, within } from "@testing-library/react";
+import { screen, waitFor, waitForElementToBeRemoved, within } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { opensearch } from "shared-types";
 import { describe, expect, it } from "vitest";
@@ -99,7 +99,7 @@ describe("OsFilterDrawer", () => {
         name: "State",
         level: 3,
       }).parentElement;
-      expect(state.getAttribute("data-state")).toEqual("open");
+      await waitFor(() => expect(state.getAttribute("data-state")).toEqual("open"));
       expect(within(state).queryByLabelText("Remove MD")).toBeInTheDocument();
 
       const authority = screen.getByRole("heading", {
@@ -194,7 +194,7 @@ describe("OsFilterDrawer", () => {
           name: "State",
           level: 3,
         }).parentElement;
-        expect(state.getAttribute("data-state")).toEqual("open");
+        await waitFor(() => expect(state.getAttribute("data-state")).toEqual("open"));
 
         const combo = screen.getByRole("combobox");
         expect(combo).toBeInTheDocument();
@@ -394,14 +394,16 @@ describe("OsFilterDrawer", () => {
         await user.click(screen.getByRole("button", { name: "Filters" }));
 
         // it should already be expanded if there is a filter already set
-        expect(
-          screen
-            .getByRole("heading", {
-              name: "Authority",
-              level: 3,
-            })
-            .parentElement.getAttribute("data-state"),
-        ).toEqual("open");
+        await waitFor(() =>
+          expect(
+            screen
+              .getByRole("heading", {
+                name: "Authority",
+                level: 3,
+              })
+              .parentElement.getAttribute("data-state"),
+          ).toEqual("open"),
+        );
 
         const chip = screen.queryByLabelText("1915(b)");
         expect(chip).toBeInTheDocument();
