@@ -182,10 +182,8 @@ const sendUpdateIdMessage = async ({
       body: parsedId.error.message,
     });
   }
-  console.log("current package id : " + currentPackage._id);
-  console.log("remaining fields: " + JSON.stringify(remainingFields));
+
   const currentTime = Date.now();
-  // check
   await produceMessage(
     topicName,
     updatedId,
