@@ -1,5 +1,6 @@
 import { ChevronRight } from "lucide-react";
 import { type ReactNode } from "react";
+import ReactGA from "react-ga4";
 import { Link } from "react-router";
 
 type BreadCrumbsProps = {
@@ -55,6 +56,22 @@ export const BreadCrumb = ({
   return (
     <li className="flex items-center text-sm">
       {showSeperator && <span>{seperator}</span>}
+
+      {active && (
+        <Link
+          to={to}
+          className="underline text-sky-700 hover:text-sky-800"
+          onClick={() =>
+            ReactGA.event({
+              category: "navigation",
+              action: "breadcrumb_click",
+              label: typeof children === "string" ? children : undefined,
+            })
+          }
+        >
+          {children}
+        </Link>
+      )}
 
       {active && (
         <Link to={to} className="underline text-sky-700 hover:text-sky-800">
