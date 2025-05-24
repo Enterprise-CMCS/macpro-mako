@@ -72,12 +72,6 @@ export const BreadCrumb = ({
           {children}
         </Link>
       )}
-
-      {active && (
-        <Link to={to} className="underline text-sky-700 hover:text-sky-800">
-          {children}
-        </Link>
-      )}
       {!active && (
         <span className="whitespace-nowrap" aria-disabled>
           {children}
