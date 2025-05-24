@@ -70,12 +70,14 @@ export const StateSignup = () => {
           requestRoleChange: true,
         });
       }
-      navigate("/dashboard");
+      let redirrectRoute = "/dashboard";
+      if (currentRole === "norole") redirrectRoute = "/profile";
+      navigate(redirrectRoute);
       banner({
         header: "Submission Completed",
         body: "Your submission has been received.",
         variant: "success",
-        pathnameToDisplayOn: "/dashboard",
+        pathnameToDisplayOn: redirrectRoute,
       });
     } catch (error) {
       console.error(error);
