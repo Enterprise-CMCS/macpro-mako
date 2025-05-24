@@ -370,13 +370,136 @@ describe("syncing Changelog events", () => {
         }),
       ],
     });
+    const expectedChangelogs = [
+      {
+        adminChangeType: "update-id",
+        makoChangedDate: 1732645041557,
+        changedDate: 1732645041557,
+        statusDate: 1732645041557,
+        timestamp: 1732645041557,
+        submitterName: "George Harrison",
+        submitterEmail: "george@example.com",
+        changeMade: "update id of the change",
+        changeReason: "additional information of the change",
+        isAdminChange: true,
+        event: "update-id",
+        id: "MD-0005.R01.01-1732645041557",
+        packageId: "MD-0005.R01.01",
+      },
+      {
+        packageId: "MD-0005.R01.01",
+        id: "MD-0005.R01.01-0001",
+        event: "capitated-amendment",
+        attachments: [
+          {
+            bucket: "uploads-test-attachment-bucket",
+            filename: "contract_amendment_2024.pdf",
+            key: "doc001",
+            title: "Contract Amendment",
+          },
+          {
+            bucket: "uploads-test-attachment-bucket",
+            filename: "contract_amendment_2024_2.pdf",
+            key: "doc002",
+            title: "Contract Amendment2",
+          },
+        ],
+        additionalInformation: "Amendment to the capitated contract terms for 2024.",
+        timestamp: 1672531200000,
+        submitterName: "BOB SMITH",
+        submitterEmail: "BOBSMITH@MEDICAIDFAKE.gov",
+      },
+      {
+        packageId: "MD-0005.R01.01",
+        id: "MD-0005.R01.01-0002",
+        event: "respond-to-rai",
+        attachments: [
+          {
+            bucket: "uploads-test-attachment-bucket",
+            filename: "rai_response.docx",
+            key: "rai002",
+            title: "Response to RAI",
+          },
+        ],
+        additionalInformation: "Detailed response to the request for additional information.",
+        timestamp: 1675123200000,
+      },
 
-    const changelogs = TEST_ITEM._source!.changelog!;
-    const expectedChangelogs = changelogs.map((log) => ({
-      ...log?._source,
-      id: log?._id?.replace(TEST_ITEM_ID, TEST_ITEM_UPDATE_ID),
-      packageId: TEST_ITEM_UPDATE_ID,
-    }));
+      {
+        packageId: "MD-0005.R01.01",
+        id: "MD-0005.R01.01-0003",
+        event: "upload-subsequent-documents",
+        attachments: [
+          {
+            bucket: "uploads-test-attachment-bucket",
+            filename: "followup_docs.zip",
+            key: "subdoc003",
+            title: "Follow-Up Documents",
+          },
+        ],
+        additionalInformation: "Supporting documents uploaded as follow-up.",
+        timestamp: 1677715200000,
+      },
+      {
+        packageId: "MD-0005.R01.01",
+        id: "MD-0005.R01.01-0004",
+        event: "upload-subsequent-documents",
+        attachments: [
+          {
+            bucket: "uploads-test-attachment-bucket",
+            filename: "compliance_documents.xlsx",
+            key: "subdoc004",
+            title: "Compliance Files",
+          },
+        ],
+        additionalInformation: "Compliance review files uploaded.",
+        timestamp: 1680307200000,
+      },
+      {
+        packageId: "MD-0005.R01.01",
+        id: "MD-0005.R01.01-0005",
+        event: "withdraw-rai",
+        attachments: [
+          {
+            bucket: "uploads-test-attachment-bucket",
+            filename: "rai_withdrawal_notice.pdf",
+            key: "withdraw005",
+            title: "Withdrawal Notice",
+          },
+        ],
+        additionalInformation: "Official notice of RAI withdrawal submitted.",
+        timestamp: 1682899200000,
+      },
+      {
+        packageId: "MD-0005.R01.01",
+        id: "MD-0005.R01.01-0006",
+        event: "withdraw-package",
+        attachments: [
+          {
+            bucket: "uploads-test-attachment-bucket",
+            filename: "package_withdrawal_request.docx",
+            key: "withdraw006",
+            title: "Package Withdrawal",
+          },
+        ],
+        additionalInformation: "Package has been withdrawn from submission pipeline.",
+        timestamp: 1685491200000,
+      },
+      {
+        packageId: "MD-0005.R01.01",
+        id: "MD-0005.R01.01-0007",
+        attachments: [
+          {
+            bucket: "uploads-test-attachment-bucket",
+            filename: "miscellaneous_info.txt",
+            key: "misc007",
+            title: "Miscellaneous File",
+          },
+        ],
+        additionalInformation: "Uncategorized file upload.",
+        isAdminChange: false,
+      },
+    ];
 
     await handler(event, {} as Context, vi.fn());
     expect(bulkUpdateDataSpy).toHaveBeenCalledWith(
@@ -493,45 +616,150 @@ describe("syncing Changelog events", () => {
     const { attachments: _, ...changes } = TEST_ITEM?._source?.changelog?.[3]?._source || {};
     expect(bulkUpdateDataSpy).toHaveBeenCalledWith(OPENSEARCH_DOMAIN, OPENSEARCH_INDEX, [
       {
-        ...changes,
-        isAdminChange: true,
+        additionalInformation: "changed additional information",
         adminChangeType: "update-values",
         changeMade: "update additional information of the change",
         changeReason: "additional information of the change",
+        changedDate: 1732645041557,
         event: "update-values",
-        id: `${TEST_ITEM_ID}-3`,
-        packageId: TEST_ITEM_ID,
-        submissionDate: null,
+        id: "VA-11-2020-3",
+        isAdminChange: true,
+        makoChangedDate: 1732645041557,
+        packageId: "VA-11-2020",
         proposedDate: null,
-        submitterName: "George Harrison",
+        statusDate: 1732645041557,
+        submissionDate: null,
         submitterEmail: "george@example.com",
-        additionalInformation: "changed additional information",
-        makoChangedDate: expect.any(Number),
-        changedDate: expect.any(Number),
-        statusDate: expect.any(Number),
-        timestamp: expect.any(Number),
+        submitterName: "George Harrison",
+        timestamp: 1732645041557,
       },
       {
-        ...changes,
-        isAdminChange: true,
         adminChangeType: "update-id",
         changeMade: "update id of the change",
         changeReason: "additional information of the change",
+        changedDate: 1732645041557,
         event: "update-id",
-        submissionDate: null,
-        proposedDate: null,
-        id: `${TEST_ITEM_UPDATE_ID}-3`,
-        packageId: TEST_ITEM_UPDATE_ID,
-        deleted: false,
-        submitterName: "George Harrison",
+        id: "MD-0005.R01.01-1732645041557",
+        isAdminChange: true,
+        makoChangedDate: 1732645041557,
+        packageId: "MD-0005.R01.01",
+        statusDate: 1732645041557,
         submitterEmail: "george@example.com",
-        additionalInformation: "changed additional information",
-        makoChangedDate: expect.any(Number),
-        changedDate: expect.any(Number),
-        statusDate: expect.any(Number),
-        timestamp: expect.any(Number),
+        submitterName: "George Harrison",
+        timestamp: 1732645041557,
       },
-      ...expectedChangelogs,
+      {
+        additionalInformation: "Amendment to the capitated contract terms for 2024.",
+        attachments: [
+          {
+            bucket: "uploads-test-attachment-bucket",
+            filename: "contract_amendment_2024.pdf",
+            key: "doc001",
+            title: "Contract Amendment",
+          },
+          {
+            bucket: "uploads-test-attachment-bucket",
+            filename: "contract_amendment_2024_2.pdf",
+            key: "doc002",
+            title: "Contract Amendment2",
+          },
+        ],
+        event: "capitated-amendment",
+        id: "MD-0005.R01.01-0001",
+        packageId: "MD-0005.R01.01",
+        submitterEmail: "BOBSMITH@MEDICAIDFAKE.gov",
+        submitterName: "BOB SMITH",
+        timestamp: 1672531200000,
+      },
+      {
+        additionalInformation: "Detailed response to the request for additional information.",
+        attachments: [
+          {
+            bucket: "uploads-test-attachment-bucket",
+            filename: "rai_response.docx",
+            key: "rai002",
+            title: "Response to RAI",
+          },
+        ],
+        event: "respond-to-rai",
+        id: "MD-0005.R01.01-0002",
+        packageId: "MD-0005.R01.01",
+        timestamp: 1675123200000,
+      },
+      {
+        additionalInformation: "Supporting documents uploaded as follow-up.",
+        attachments: [
+          {
+            bucket: "uploads-test-attachment-bucket",
+            filename: "followup_docs.zip",
+            key: "subdoc003",
+            title: "Follow-Up Documents",
+          },
+        ],
+        event: "upload-subsequent-documents",
+        id: "MD-0005.R01.01-0003",
+        packageId: "MD-0005.R01.01",
+        timestamp: 1677715200000,
+      },
+      {
+        additionalInformation: "Compliance review files uploaded.",
+        attachments: [
+          {
+            bucket: "uploads-test-attachment-bucket",
+            filename: "compliance_documents.xlsx",
+            key: "subdoc004",
+            title: "Compliance Files",
+          },
+        ],
+        event: "upload-subsequent-documents",
+        id: "MD-0005.R01.01-0004",
+        packageId: "MD-0005.R01.01",
+        timestamp: 1680307200000,
+      },
+      {
+        additionalInformation: "Official notice of RAI withdrawal submitted.",
+        attachments: [
+          {
+            bucket: "uploads-test-attachment-bucket",
+            filename: "rai_withdrawal_notice.pdf",
+            key: "withdraw005",
+            title: "Withdrawal Notice",
+          },
+        ],
+        event: "withdraw-rai",
+        id: "MD-0005.R01.01-0005",
+        packageId: "MD-0005.R01.01",
+        timestamp: 1682899200000,
+      },
+      {
+        additionalInformation: "Package has been withdrawn from submission pipeline.",
+        attachments: [
+          {
+            bucket: "uploads-test-attachment-bucket",
+            filename: "package_withdrawal_request.docx",
+            key: "withdraw006",
+            title: "Package Withdrawal",
+          },
+        ],
+        event: "withdraw-package",
+        id: "MD-0005.R01.01-0006",
+        packageId: "MD-0005.R01.01",
+        timestamp: 1685491200000,
+      },
+      {
+        additionalInformation: "Uncategorized file upload.",
+        attachments: [
+          {
+            bucket: "uploads-test-attachment-bucket",
+            filename: "miscellaneous_info.txt",
+            key: "misc007",
+            title: "Miscellaneous File",
+          },
+        ],
+        id: "MD-0005.R01.01-0007",
+        isAdminChange: false,
+        packageId: "MD-0005.R01.01",
+      },
     ]);
   });
 
@@ -555,6 +783,7 @@ describe("syncing Changelog events", () => {
     });
 
     await handler(event, {} as Context, vi.fn());
+    console.log(bulkUpdateDataSpy);
     expect(bulkUpdateDataSpy).toHaveBeenCalledWith(OPENSEARCH_DOMAIN, OPENSEARCH_INDEX, [
       {
         ...toggleWithdrawRai,
@@ -594,30 +823,126 @@ describe("syncing Changelog events", () => {
 
     await handler(event, {} as Context, vi.fn());
 
-    const {
-      attachments: _a,
-      additionalInformation: _ai,
-      ...changes
-    } = TEST_ITEM?._source?.changelog?.[3]?._source || {};
-    expect(bulkUpdateDataSpy).toHaveBeenCalledWith(OPENSEARCH_DOMAIN, OPENSEARCH_INDEX, [
+    const expectedChanges = [
       {
-        ...changes,
-        isAdminChange: true,
-        adminChangeType: "delete",
-        event: "delete",
-        deleted: false,
-        id: `${TEST_ITEM_ID}-3`,
-        packageId: TEST_ITEM_ID,
-        submissionDate: null,
-        proposedDate: null,
-        submitterName: "George Harrison",
-        submitterEmail: "george@example.com",
-        makoChangedDate: expect.any(Number),
-        changedDate: expect.any(Number),
-        statusDate: expect.any(Number),
-        timestamp: expect.any(Number),
+        additionalInformation: "Amendment to the capitated contract terms for 2024.",
+        attachments: [
+          {
+            bucket: "uploads-test-attachment-bucket",
+            filename: "contract_amendment_2024.pdf",
+            key: "doc001",
+            title: "Contract Amendment",
+          },
+          {
+            bucket: "uploads-test-attachment-bucket",
+            filename: "contract_amendment_2024_2.pdf",
+            key: "doc002",
+            title: "Contract Amendment2",
+          },
+        ],
+        event: "capitated-amendment",
+        id: "VA-11-2020-0001",
+        packageId: "VA-11-2020-del",
+        submitterEmail: "BOBSMITH@MEDICAIDFAKE.gov",
+        submitterName: "BOB SMITH",
+        timestamp: 1672531200000,
       },
-    ]);
+      {
+        additionalInformation: "Detailed response to the request for additional information.",
+        attachments: [
+          {
+            bucket: "uploads-test-attachment-bucket",
+            filename: "rai_response.docx",
+            key: "rai002",
+            title: "Response to RAI",
+          },
+        ],
+        event: "respond-to-rai",
+        id: "VA-11-2020-0002",
+        packageId: "VA-11-2020-del",
+        timestamp: 1675123200000,
+      },
+      {
+        additionalInformation: "Supporting documents uploaded as follow-up.",
+        attachments: [
+          {
+            bucket: "uploads-test-attachment-bucket",
+            filename: "followup_docs.zip",
+            key: "subdoc003",
+            title: "Follow-Up Documents",
+          },
+        ],
+        event: "upload-subsequent-documents",
+        id: "VA-11-2020-0003",
+        packageId: "VA-11-2020-del",
+        timestamp: 1677715200000,
+      },
+      {
+        additionalInformation: "Compliance review files uploaded.",
+        attachments: [
+          {
+            bucket: "uploads-test-attachment-bucket",
+            filename: "compliance_documents.xlsx",
+            key: "subdoc004",
+            title: "Compliance Files",
+          },
+        ],
+        event: "upload-subsequent-documents",
+        id: "VA-11-2020-0004",
+        packageId: "VA-11-2020-del",
+        timestamp: 1680307200000,
+      },
+      {
+        additionalInformation: "Official notice of RAI withdrawal submitted.",
+        attachments: [
+          {
+            bucket: "uploads-test-attachment-bucket",
+            filename: "rai_withdrawal_notice.pdf",
+            key: "withdraw005",
+            title: "Withdrawal Notice",
+          },
+        ],
+        event: "withdraw-rai",
+        id: "VA-11-2020-0005",
+        packageId: "VA-11-2020-del",
+        timestamp: 1682899200000,
+      },
+      {
+        additionalInformation: "Package has been withdrawn from submission pipeline.",
+        attachments: [
+          {
+            bucket: "uploads-test-attachment-bucket",
+            filename: "package_withdrawal_request.docx",
+            key: "withdraw006",
+            title: "Package Withdrawal",
+          },
+        ],
+        event: "withdraw-package",
+        id: "VA-11-2020-0006",
+        packageId: "VA-11-2020-del",
+        timestamp: 1685491200000,
+      },
+      {
+        additionalInformation: "Uncategorized file upload.",
+        attachments: [
+          {
+            bucket: "uploads-test-attachment-bucket",
+            filename: "miscellaneous_info.txt",
+            key: "misc007",
+            title: "Miscellaneous File",
+          },
+        ],
+        id: "VA-11-2020-0007",
+        isAdminChange: false,
+        packageId: "VA-11-2020-del",
+      },
+    ];
+
+    expect(bulkUpdateDataSpy).toHaveBeenCalledWith(
+      OPENSEARCH_DOMAIN,
+      OPENSEARCH_INDEX,
+      expectedChanges,
+    );
   });
 
   it("should throw an error if the topic is undefined", async () => {
