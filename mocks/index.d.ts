@@ -56,8 +56,11 @@ export type TestUserResult = {
       | "statesystemadmin"
       | "helpdesk"
       | "statesubmitter"
-      | "systemadmin";
+      | "systemadmin"
+      | "norole";
     states?: string[];
+    group?: string;
+    division?: string;
   };
 };
 
@@ -70,7 +73,8 @@ export type TestUserRole =
   | "statesystemadmin"
   | "helpdesk"
   | "statesubmitter"
-  | "systemadmin";
+  | "systemadmin"
+  | "norole";
 
 export type TestRoleResult = {
   _id: string;
@@ -240,4 +244,12 @@ export type SubmitRoleRequestBody = {
   eventType: string;
   grantAccess?: boolean;
   requestRoleChange: boolean;
+};
+
+export type UserDetailsRequestBody = {
+  userEmail?: string;
+};
+
+export type UserProfileRequestBody = {
+  userEmail?: string;
 };

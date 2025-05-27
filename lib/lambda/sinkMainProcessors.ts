@@ -199,7 +199,10 @@ const getOneMacRecordWithAllProperties = (
   }
 
   if (isRecordALegacyUser(record, kafkaSource)) {
-    const userParseResult = onemacLegacyUserInformation.safeParse(record);
+    const userParseResult = onemacLegacyUserInformation.safeParse({
+      ...record,
+      eventType: "legacy-user-info",
+    });
 
     if (userParseResult.success === true) {
       console.log("USER RECORD: ", JSON.stringify(record));
@@ -207,6 +210,7 @@ const getOneMacRecordWithAllProperties = (
     }
     console.log("USER RECORD INVALID BECAUSE: ", userParseResult.error, JSON.stringify(record));
   }
+
   if (isRecordAUser(record)) {
     const userParseResult = userInformation.safeParse(record);
 
@@ -286,9 +290,12 @@ export const insertOneMacRecordsFromKafkaIntoMako = async (
     (record) =>
       record.eventType !== "user-info" &&
       record.eventType !== "legacy-user-role" &&
+      record.eventType !== "legacy-user-info" &&
       record.eventType !== "user-role",
   );
-  const oneMacUsers = oneMacRecordsForMako.filter((record) => record.eventType === "user-info");
+  const oneMacUsers = oneMacRecordsForMako.filter(
+    (record) => record.eventType === "user-info" || record.eventType === "legacy-user-info",
+  );
   const roleRequests = oneMacRecordsForMako.filter(
     (record) => record.eventType === "legacy-user-role" || record.eventType === "user-role",
   );
@@ -402,7 +409,6 @@ export const insertNewSeatoolRecordsFromKafkaIntoMako = async (
 
       if (!value) {
         console.error(`Record without a value property: ${value}`);
-        seatoolRecordsForMako.push(opensearch.main.seatool.tombstone(id));
         continue;
       }
 

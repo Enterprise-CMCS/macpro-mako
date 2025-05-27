@@ -32,7 +32,7 @@ exports[`Toggle Withdraw Rai components > renders disable withdraw rai correctly
               <span>
                 <svg
                   aria-hidden="true"
-                  class="w-5 h-5"
+                  class="lucide lucide-chevron-right w-5 h-5"
                   fill="none"
                   focusable="false"
                   height="24"
@@ -63,7 +63,7 @@ exports[`Toggle Withdraw Rai components > renders disable withdraw rai correctly
               <span>
                 <svg
                   aria-hidden="true"
-                  class="w-5 h-5"
+                  class="lucide lucide-chevron-right w-5 h-5"
                   fill="none"
                   focusable="false"
                   height="24"
@@ -220,7 +220,7 @@ exports[`Toggle Withdraw Rai components > renders disable withdraw rai correctly
             <span>
               <svg
                 aria-hidden="true"
-                class="w-5 h-5"
+                class="lucide lucide-chevron-right w-5 h-5"
                 fill="none"
                 focusable="false"
                 height="24"
@@ -251,7 +251,7 @@ exports[`Toggle Withdraw Rai components > renders disable withdraw rai correctly
             <span>
               <svg
                 aria-hidden="true"
-                class="w-5 h-5"
+                class="lucide lucide-chevron-right w-5 h-5"
                 fill="none"
                 focusable="false"
                 height="24"
@@ -465,7 +465,7 @@ exports[`Toggle Withdraw Rai components > renders disable withdraw rai correctly
               <span>
                 <svg
                   aria-hidden="true"
-                  class="w-5 h-5"
+                  class="lucide lucide-chevron-right w-5 h-5"
                   fill="none"
                   focusable="false"
                   height="24"
@@ -496,7 +496,7 @@ exports[`Toggle Withdraw Rai components > renders disable withdraw rai correctly
               <span>
                 <svg
                   aria-hidden="true"
-                  class="w-5 h-5"
+                  class="lucide lucide-chevron-right w-5 h-5"
                   fill="none"
                   focusable="false"
                   height="24"
@@ -653,7 +653,7 @@ exports[`Toggle Withdraw Rai components > renders disable withdraw rai correctly
             <span>
               <svg
                 aria-hidden="true"
-                class="w-5 h-5"
+                class="lucide lucide-chevron-right w-5 h-5"
                 fill="none"
                 focusable="false"
                 height="24"
@@ -684,7 +684,7 @@ exports[`Toggle Withdraw Rai components > renders disable withdraw rai correctly
             <span>
               <svg
                 aria-hidden="true"
-                class="w-5 h-5"
+                class="lucide lucide-chevron-right w-5 h-5"
                 fill="none"
                 focusable="false"
                 height="24"

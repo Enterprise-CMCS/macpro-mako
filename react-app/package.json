@@ -44,7 +44,7 @@
     "framer-motion": "^10.16.1",
     "jszip": "^3.10.1",
     "launchdarkly-react-client-sdk": "^3.0.10",
-    "lucide-react": "^0.291.0",
+    "lucide-react": "^0.405.0",
     "lz-string": "^1.5.0",
     "pluralize": "^8.0.0",
     "react": "^18.2.0",

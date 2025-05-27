@@ -2,6 +2,7 @@ import { AwsCognitoOAuthOpts } from "@aws-amplify/auth/lib-esm/types";
 import { Bars3Icon, XMarkIcon } from "@heroicons/react/24/outline";
 import * as DropdownMenu from "@radix-ui/react-dropdown-menu";
 import { Auth } from "aws-amplify";
+import { LogOutIcon, UserPenIcon, UserPlusIcon } from "lucide-react";
 import { useState } from "react";
 import { Link, NavLink, NavLinkProps, Outlet, useNavigate, useRouteError } from "react-router";
 import { UserRoles } from "shared-types";
@@ -12,6 +13,7 @@ import { Banner, ScrollToTop, SimplePageContainer, UserPrompt } from "@/componen
 import MMDLAlertBanner from "@/components/Banner/MMDLSpaBanner";
 import config from "@/config";
 import { ErrorPage } from "@/features/error-page";
+import { hasPendingRequests } from "@/features/profile/utils";
 import { useMediaQuery } from "@/hooks";
 import { useFeatureFlag } from "@/hooks/useFeatureFlag";
 import { isFaqPage, isProd } from "@/utils";
@@ -32,7 +34,7 @@ import { UsaBanner } from "../UsaBanner";
 const useGetLinks = () => {
   const { isLoading: userLoading, data: userObj } = useGetUser();
   const { data: userDetailsData, isLoading: userDetailsLoading } = useGetUserDetails();
-  const hideWebformTab = useFeatureFlag("UAT_HIDE_MMDL_BANNER");
+  const showWebformTab = useFeatureFlag("WEBFORM_TAB_VISIBLE");
   const toggleFaq = useFeatureFlag("TOGGLE_FAQ");
   const showHome = toggleFaq ? userObj.user : true; // if toggleFAQ is on we want to hide home when not logged in
   const isStateHomepage = useFeatureFlag("STATE_HOMEPAGE_FLAG");
@@ -77,7 +79,7 @@ const useGetLinks = () => {
           {
             name: "Webforms",
             link: "/webforms",
-            condition: userObj.user && !isProd && !hideWebformTab,
+            condition: userObj.user && !isProd && showWebformTab,
           },
         ].filter((l) => l.condition);
 
@@ -105,24 +107,13 @@ const UserDropdownMenu = () => {
   const { data: userDetails, isLoading } = useGetUserDetails();
   const { data: userProfile } = useGetUserProfile();
 
-  // TODO: fix?
-  // Disable page if user is a defaultcmsuser that just requested cmsroleapprover and is pending?
-  // Disable page if user is a statesubmitter that just requested statesystemadmin and is pending?
+  // Disable page if user has a pending request
   // Certain roles cannot be changed
   const disableRoleChange = () => {
     const currentRole = userDetails?.role;
     const requestedRoles = userProfile?.stateAccess ?? [];
 
-    const roleIsPending = requestedRoles.some((r) => r.status === "pending");
-
-    // Prevent duplicate or inappropriate role requests
-    // if (
-    //   (currentRole === "statesubmitter" && roleIsPending("statesystemadmin")) ||
-    //   (currentRole === "defaultcmsuser" && roleIsPending("cmsroleapprover"))
-    // ) {
-    //   return true;
-    // }
-    if (roleIsPending) return true;
+    if (hasPendingRequests(requestedRoles)) return true;
 
     const excludedRoles = ["helpdesk", "systemadmin"];
 
@@ -146,7 +137,6 @@ const UserDropdownMenu = () => {
 
     setTimeout(() => {
       localStorage.clear();
-
       Object.entries(preserved).forEach(([key, value]) => {
         localStorage.setItem(key, value);
       });
@@ -185,7 +175,10 @@ const UserDropdownMenu = () => {
               asChild
               onSelect={handleViewProfile}
             >
-              <li>View Profile</li>
+              <li>
+                <UserPenIcon className="inline mr-2" />
+                Manage Profile
+              </li>
             </DropdownMenu.Item>
             {/* TODO: conditionally show this if the user IS NOT HELPDESK */}
             {/* // helpdesk, system admins, and cms reviewer users don't even see request role as an option */}
@@ -195,7 +188,10 @@ const UserDropdownMenu = () => {
                 asChild
                 onSelect={() => navigate("/signup")}
               >
-                <li>Request a Role Change</li>
+                <li>
+                  <UserPlusIcon className="inline mr-2" />
+                  Request a Role Change
+                </li>
               </DropdownMenu.Item>
             )}
             <DropdownMenu.Item
@@ -203,7 +199,10 @@ const UserDropdownMenu = () => {
               asChild
               onSelect={handleLogout}
             >
-              <li>Sign Out</li>
+              <li>
+                <LogOutIcon className="inline mr-2" />
+                Log Out
+              </li>
             </DropdownMenu.Item>
           </ul>
         </DropdownMenu.Content>
