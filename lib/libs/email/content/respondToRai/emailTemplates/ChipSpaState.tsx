@@ -11,7 +11,6 @@ export const ChipSpaStateEmail = ({
 }: {
   variables: Events["RespondToRai"] & CommonEmailVariables;
 }) => (
-
   <BaseEmailTemplate
     previewText={`CHIP SPA ${variables.id} RAI Response Submitted`}
     heading="This response confirms you submitted a CHIP SPA RAI Response to CMS for review:"

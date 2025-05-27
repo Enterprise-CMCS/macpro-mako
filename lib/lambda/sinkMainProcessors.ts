@@ -413,7 +413,6 @@ export const insertNewSeatoolRecordsFromKafkaIntoMako = async (
         continue;
       }
 
-
       const seatoolRecord: Document = {
         id,
         ...JSON.parse(decodeBase64WithUtf8(value)),
@@ -422,6 +421,7 @@ export const insertNewSeatoolRecordsFromKafkaIntoMako = async (
       seatoolRecord.STATE_PLAN.SPW_STATUS_ID = await oneMacSeatoolStatusCheck(seatoolRecord);
 
       const safeSeatoolRecord = opensearch.main.seatool.transform(id).safeParse(seatoolRecord);
+
       if (!safeSeatoolRecord.success) {
         logError({
           type: ErrorType.VALIDATION,

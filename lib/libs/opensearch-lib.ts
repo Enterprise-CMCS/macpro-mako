@@ -180,13 +180,11 @@ export async function getItem(
   index: opensearch.Index,
   id: string,
 ): Promise<ItemResult | undefined> {
-  host = "https://vpc-opensearchdomai-rzzjuyi48nzc-wp5em7c73qkotfxn3vjnsep6em.us-east-1.es.amazonaws.com"
-  if (!host.startsWith("https://")) {
-    host = "https://" + host;
-  }
-  console.log("host: ", host);
-  console.log("index: ", index);
-  console.log("id: ", id);
+  // // host = "https://vpc-opensearchdomai-rzzjuyi48nzc-wp5em7c73qkotfxn3vjnsep6em.us-east-1.es.amazonaws.com"
+  // console.log("host: ", host);
+  // if (!host.startsWith("https://")) {
+  //   host = "https://" + host;
+  // }
   try {
     client = client || (await getClient(host));
     console.log("client: ", client)

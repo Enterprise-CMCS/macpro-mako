@@ -60,7 +60,6 @@ export const respondToRai: AuthoritiesWithUserTypesTemplate = {
     state: async (
       variables: Events["RespondToRai"] & CommonEmailVariables & { emails: EmailAddresses },
     ) => {
-      console.log("Send state email, variables: ", variables);
       return {
         to: [
           `${variables.submitterName} <${variables.submitterEmail}>`,
