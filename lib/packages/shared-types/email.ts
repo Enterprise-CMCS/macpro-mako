@@ -9,6 +9,7 @@ export type EmailAddresses = {
   srtEmails: string[];
   cpocEmail: string[];
   accessEmail: string;
+  userRoleCc?: string;
 };
 
 export interface CommonEmailVariables {
