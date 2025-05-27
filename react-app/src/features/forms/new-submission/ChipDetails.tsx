@@ -150,7 +150,7 @@ export const ChipDetailsForm = () => {
             Maximum file size of 80 MB per attachment. You can add multiple files per attachment
             type. <br /> Read the description for each of the attachment types on the{" "}
             <Link
-              to="/support"
+              to="/faq"
               target={FAQ_TAB}
               rel="noopener noreferrer"
               className="text-blue-900 underline"
@@ -163,7 +163,7 @@ export const ChipDetailsForm = () => {
             We accept the following file formats:{" "}
             <span className="font-bold">.doc, .docx, .pdf, .jpg, .odp, and more. </span>{" "}
             <Link
-              to={"/support"}
+              to={"/faq"}
               target={FAQ_TAB}
               rel="noopener noreferrer"
               className="text-blue-900 underline"
@@ -175,7 +175,7 @@ export const ChipDetailsForm = () => {
           <p data-testid="chip-attachments-instructions">
             View all{" "}
             <Link
-              to="/support"
+              to="/faq"
               target={FAQ_TAB}
               rel="noopener noreferrer"
               className="text-blue-900 underline"
