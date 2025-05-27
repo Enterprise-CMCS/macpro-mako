@@ -226,13 +226,15 @@ export const ActionForm = <Schema extends SchemaWithEnforcableProps>({
       <Form {...form}>
         <form onSubmit={onSubmit} className="my-6 space-y-8 mx-auto justify-center flex flex-col">
           <SectionCard testId="detail-section" title={title}>
-            <div>
-              {areFieldsRequired && <RequiredFieldDescription />}
-              <ActionFormDescription boldReminder={areFieldsRequired}>
-                {formDescription}
-              </ActionFormDescription>
+            <div className="gap-8 flex flex-col">
+              <div>
+                {areFieldsRequired && <RequiredFieldDescription />}
+                <ActionFormDescription boldReminder={areFieldsRequired}>
+                  {formDescription}
+                </ActionFormDescription>
+              </div>
+              <Fields {...form} />
             </div>
-            <Fields {...form} />
           </SectionCard>
           {attachmentsFromSchema.length > 0 && (
             <ActionFormAttachments attachmentsFromSchema={attachmentsFromSchema} {...attachments} />
@@ -241,10 +243,10 @@ export const ActionForm = <Schema extends SchemaWithEnforcableProps>({
             <SectionCard
               testId="additional-info"
               title={
-                <>
+                <div className="gap-8 flex flex-col">
                   {additionalInformation.title}{" "}
                   {additionalInformation.required && <RequiredIndicator />}
-                </>
+                </div>
               }
             >
               <FormField
