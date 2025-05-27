@@ -87,6 +87,8 @@ export async function sendUserRoleEmails(
   for (const template of templates) {
     try {
       const filledTemplate = await template(record);
+      const currentCcEmails = filledTemplate?.cc ?? [];
+      filledTemplate.cc = [...currentCcEmails, ...(emails?.userRoleCc ?? [])];
       validateEmailTemplate(filledTemplate);
       const params = createEmailParams(
         filledTemplate,
