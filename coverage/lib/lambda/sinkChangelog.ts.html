@@ -23,16 +23,16 @@
         <div class='clearfix'>
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">91.2% </span>
+                <span class="strong">91.57% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>83/91</span>
+                <span class='fraction'>87/95</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">84% </span>
+                <span class="strong">83.33% </span>
                 <span class="quiet">Branches</span>
-                <span class='fraction'>42/50</span>
+                <span class='fraction'>45/54</span>
             </div>
         
             
@@ -44,9 +44,9 @@
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">92.22% </span>
+                <span class="strong">92.55% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>83/90</span>
+                <span class='fraction'>87/94</span>
             </div>
         
             
@@ -304,7 +304,15 @@
 <a name='L239'></a><a href='#L239'>239</a>
 <a name='L240'></a><a href='#L240'>240</a>
 <a name='L241'></a><a href='#L241'>241</a>
-<a name='L242'></a><a href='#L242'>242</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
+<a name='L242'></a><a href='#L242'>242</a>
+<a name='L243'></a><a href='#L243'>243</a>
+<a name='L244'></a><a href='#L244'>244</a>
+<a name='L245'></a><a href='#L245'>245</a>
+<a name='L246'></a><a href='#L246'>246</a>
+<a name='L247'></a><a href='#L247'>247</a>
+<a name='L248'></a><a href='#L248'>248</a>
+<a name='L249'></a><a href='#L249'>249</a>
+<a name='L250'></a><a href='#L250'>250</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -401,9 +409,6 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">2x</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -442,8 +447,20 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">3x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">7x</span>
+<span class="cline-any cline-yes">7x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">2x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">1x</span>
@@ -536,7 +553,6 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -641,16 +657,13 @@ const processAndIndex = async ({
             const { id, packageId: _packageId, idToBeUpdated, ...restOfResultData } = result.data;
             // Push doc with content of package being soft deleted
 &nbsp;
-            docs.forEach((log) =&gt; {
-              const recordOffset = log.id.split("-").at(-1);
-              docs.push({
-                ...log,
-                id: `${id}-${recordOffset}`,
-                packageId: id,
-                deleted: false,
-                ...restOfResultData,
-              });
+            docs.push({
+              ...restOfResultData,
+              id: id + "-" + result.data.timestamp,
+              packageId: id,
+              event: "update-id",
             });
+&nbsp;
             // Get all changelog entries for the original package ID
             // Filter out any entry regarding the soft deleted event
             // Create copies of the rest of the changelog entries with the new package ID
@@ -682,6 +695,18 @@ const processAndIndex = async ({
                 id: `${result.data.id}-${recordOffset}`,
                 packageId: result.data.id,
               });
+            });
+          } else if (result.data.adminChangeType === "delete") {
+            const { packageId } = result.data;
+            const packageChangelogs = await getPackageChangelog(packageId);
+&nbsp;
+            packageChangelogs.hits.hits.forEach((log) =&gt; {
+              <span class="missing-if-branch" title="else path not taken" >E</span>if (log._source.event !== "delete") {
+                docs.push({
+                  ...log._source,
+                  packageId: packageId + "-del",
+                });
+              }
             });
           } else {
             docs.push({ ...result.data, proposedDate: null, submissionDate: null });
@@ -783,7 +808,6 @@ const processAndIndex = async ({
       });
     }
   }
-&nbsp;
   await bulkUpdateDataWrapper(docs, "changelog");
 };
 &nbsp;</pre></td></tr></table></pre>
@@ -793,7 +817,7 @@ const processAndIndex = async ({
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2025-05-27T02:15:29.309Z
+                at 2025-05-27T17:06:46.570Z
             </div>
         <script src="../../prettify.js"></script>
         <script>
