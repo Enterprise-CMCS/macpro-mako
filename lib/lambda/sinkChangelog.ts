@@ -94,16 +94,13 @@ const processAndIndex = async ({
             const { id, packageId: _packageId, idToBeUpdated, ...restOfResultData } = result.data;
             // Push doc with content of package being soft deleted
 
-            docs.forEach((log) => {
-              const recordOffset = log.id.split("-").at(-1);
-              docs.push({
-                ...log,
-                id: `${id}-${recordOffset}`,
-                packageId: id,
-                deleted: false,
-                ...restOfResultData,
-              });
+            docs.push({
+              ...restOfResultData,
+              id: id + "-" + result.data.timestamp,
+              packageId: id,
+              event: "update-id",
             });
+
             // Get all changelog entries for the original package ID
             // Filter out any entry regarding the soft deleted event
             // Create copies of the rest of the changelog entries with the new package ID
@@ -135,6 +132,18 @@ const processAndIndex = async ({
                 id: `${result.data.id}-${recordOffset}`,
                 packageId: result.data.id,
               });
+            });
+          } else if (result.data.adminChangeType === "delete") {
+            const { packageId } = result.data;
+            const packageChangelogs = await getPackageChangelog(packageId);
+
+            packageChangelogs.hits.hits.forEach((log) => {
+              if (log._source.event !== "delete") {
+                docs.push({
+                  ...log._source,
+                  packageId: packageId + "-del",
+                });
+              }
             });
           } else {
             docs.push({ ...result.data, proposedDate: null, submissionDate: null });
@@ -236,6 +245,5 @@ const processAndIndex = async ({
       });
     }
   }
-
   await bulkUpdateDataWrapper(docs, "changelog");
 };
