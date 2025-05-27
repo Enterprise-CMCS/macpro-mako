@@ -2,6 +2,10 @@ import { Template } from "./chpRenderSection";
 
 export const ABP_TEMPLATES: Template[] = [
   {
+    title: "ABP SPA Templates",
+    href: "/abp/ABPSPATemplates.pdf",
+  },
+  {
     title: "ABP 1",
     text: "Alternative Benefit Plan Populations",
     href: "/abp/ABP1.pdf",
