@@ -15,7 +15,7 @@ const defaultIDMHandler = http.get(
           userProfileAppRoles: {
             userRolesInfoList: [
               {
-                roleName: "onemac-micro-statesubmitter",
+                roleName: "statesubmitter",
                 roleAttributes: [{ name: "State/Territory", value: "VA" }],
               },
             ],

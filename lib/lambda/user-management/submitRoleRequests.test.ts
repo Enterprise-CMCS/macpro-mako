@@ -68,18 +68,35 @@ describe("submitRoleRequests handler", () => {
     expect(res.body).toEqual(JSON.stringify({ message: "User not authenticated" }));
   });
 
-  it("should return 403 if the user does not have an active role", async () => {
+  it("should return 200 if a state user is submitting their first state request", async () => {
+    mockedProducer.send.mockResolvedValueOnce([{ message: "sent" }]);
     setMockUsername(noStateSubmitter);
 
     const event = {
-      body: JSON.stringify({}),
+      body: JSON.stringify({
+        email: "nostate@example.com",
+        state: "CO",
+        role: "statesubmitter",
+        eventType: "user-role",
+        requestRoleChange: true,
+      }),
       requestContext: getRequestContext(),
     } as APIGatewayEvent;
 
     const res = await handler(event);
 
-    expect(res.statusCode).toEqual(403);
-    expect(res.body).toEqual(JSON.stringify({ message: "No active role found for user" }));
+    expect(res.statusCode).toEqual(200);
+    expect(JSON.parse(res.body)).toEqual({
+      message: "Request to access CO has been submitted.",
+      eventType: "user-role",
+      email: "nostate@example.com",
+      status: "pending",
+      territory: "CO",
+      role: "statesubmitter",
+      doneByEmail: "nostate@example.com",
+      doneByName: "No State",
+      date: expect.any(Number),
+    });
   });
 
   // it("should return 400 if the grantAccess is missing", async () => {

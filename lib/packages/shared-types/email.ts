@@ -8,6 +8,7 @@ export type EmailAddresses = {
   sourceEmail: string;
   srtEmails: string[];
   cpocEmail: string[];
+  accessEmail: string;
 };
 
 export interface CommonEmailVariables {

@@ -11,22 +11,37 @@ import {
   osUsers,
   roleDocs,
 } from "../../data";
-import { SubmitRoleRequestBody, TestRoleDocument } from "../../index.d";
+import { SubmitRoleRequestBody, TestRoleDocument, UserProfileRequestBody } from "../../index.d";
 
-const defaultApiUserProfileHandler = http.post(
+const defaultApiUserProfileHandler = http.post<PathParams, UserProfileRequestBody>(
   "https://test-domain.execute-api.us-east-1.amazonaws.com/mocked-tests/getUserProfile",
-  async () => {
-    const username = process.env.MOCK_USER_USERNAME;
-    if (!username) {
-      return HttpResponse.json([]);
+  async ({ request }) => {
+    let email;
+    if (request.body) {
+      const { userEmail } = await request.json();
+      email = userEmail;
+    } else {
+      const username = process.env.MOCK_USER_USERNAME;
+      if (!username) {
+        return HttpResponse.json([]);
+      }
+      const user = getUserByUsername(username);
+      if (!user) {
+        return HttpResponse.json([]);
+      }
+      email = user?.email;
     }
-    const user = getUserByUsername(username);
-    if (!user) {
-      return HttpResponse.json([]);
-    }
-    const roles = getFilteredRoleDocsByEmail(user?.email || "");
+    const roles = getFilteredRoleDocsByEmail(email || "");
 
     return HttpResponse.json(roles);
+  },
+);
+
+export const errorApiUserProfileHandler = http.post<PathParams, UserProfileRequestBody>(
+  "https://test-domain.execute-api.us-east-1.amazonaws.com/mocked-tests/getUserProfile",
+  async () => {
+    console.log("throw error");
+    return new HttpResponse("Response Error", { status: 500 });
   },
 );
 
