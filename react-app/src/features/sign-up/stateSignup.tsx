@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Navigate, useNavigate } from "react-router";
+import { Navigate, useNavigate, useSearchParams } from "react-router";
 import { StateCode } from "shared-types";
 import { UserRole } from "shared-types/events/legacy-user";
 
@@ -31,9 +31,12 @@ export const StateSignup = () => {
   const { data: userProfile } = useGetUserProfile();
   const currentRole = userDetails?.role;
 
+  const [searchParams] = useSearchParams();
+  const roleKey = searchParams.get("role") as UserRole;
+
   // Determine which role the user is allowed to request based on their current role
   const roleToRequestMap: Partial<Record<UserRole, UserRole>> = {
-    norole: "statesubmitter",
+    norole: roleKey,
     statesubmitter: "statesystemadmin",
     statesystemadmin: "statesubmitter",
   };
@@ -53,7 +56,7 @@ export const StateSignup = () => {
     return <Navigate to="/profile" />;
 
   // Statesubmitters can request to be a statesystemadmin for 1 state
-  const isRequestRoleAdmin = currentRole === "statesubmitter";
+  // const isRequestRoleAdmin = currentRole === "statesubmitter";
 
   const onChange = (values: StateCode[]) => {
     setStateSelected(values);
@@ -112,7 +115,7 @@ export const StateSignup = () => {
             </div>
             <div className="py-2">
               <h2 className="text-xl font-bold mb-2">Select your State Access</h2>
-              {isRequestRoleAdmin ? (
+              {roleToRequest === "statesystemadmin" ? (
                 <Select onValueChange={(value: StateCode) => onChange([value])}>
                   <SelectTrigger aria-label="Select state">
                     <SelectValue placeholder="Select state here" />
@@ -136,7 +139,7 @@ export const StateSignup = () => {
               )}
               {!stateSelected.length && (
                 <p className="text-red-600 mt-3">
-                  {isRequestRoleAdmin
+                  {roleToRequest === "statesystemadmin"
                     ? "Please select a state."
                     : "Please select at least one state."}
                 </p>
