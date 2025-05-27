@@ -14,15 +14,21 @@ export const FilterableSelect: FC<{
   value: string[];
   placeholder?: string;
   onChange: (values: string[]) => void;
-}> = (props) => {
+  selectedDisplay?: keyof Option;
+}> = ({ options, value, placeholder, onChange, selectedDisplay = "value" }) => {
+  const getLabel = (value) => {
+    if (selectedDisplay !== "label") return value;
+    const selected = options.filter((option) => option.value === value);
+    return selected[0].label;
+  };
   return (
     <Select<any, any>
       isMulti
-      value={props.value.map((S) => ({ value: S, label: S }))}
-      onChange={(val) => props.onChange(val.map((s: any) => s.value))}
-      options={props.options}
+      value={value.map((selected) => ({ value: selected, label: getLabel(selected) }))}
+      onChange={(value) => onChange(value.map((selected: any) => selected.value))}
+      options={options}
       closeMenuOnSelect={false}
-      placeholder={props.placeholder}
+      placeholder={placeholder}
     />
   );
 };

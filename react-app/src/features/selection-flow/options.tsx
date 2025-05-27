@@ -28,23 +28,51 @@ export const SPA_OPTIONS: OptionData[] = [
   },
 ];
 
-export const MEDICAID_SPA_OPTIONS: OptionData[] = [
-  {
-    title: "Medicaid Eligibility, Enrollment, Administration, and Health Homes",
-    description: "Redirects to the MACPro System",
-    to: "/new-submission/spa/medicaid/landing/medicaid-eligibility",
-  },
-  {
-    title: "All Other Medicaid SPA Submissions",
-    description: "Create a new Medicaid State Plan Amendment",
-    to: {
-      pathname: "/new-submission/spa/medicaid/create",
-      search: new URLSearchParams({
-        [ORIGIN]: SPA_SUBMISSION_ORIGIN,
-      }).toString(),
+export const useMedSpaOptions = (): OptionData[] => {
+  const useMMDLCard = useFeatureFlag("MED_SPA_CARD");
+
+  if (useMMDLCard) {
+    return [
+      {
+        title: "Medicaid Eligibility, Enrollment, Administration, and Health Homes",
+        description: "Redirects to the MACPro System",
+        to: "/new-submission/spa/medicaid/landing/medicaid-eligibility",
+      },
+      {
+        title: "Medicaid Alternative Benefits Plans (ABP), and Medicaid Premiums and Cost Sharing",
+        description: "Redirects to MMDL submission system",
+        to: "/new-submission/spa/medicaid/landing/medicaid-abp",
+      },
+      {
+        title: "All Other Medicaid SPA Submissions",
+        description: "Create a new Medicaid State Plan Amendment",
+        to: {
+          pathname: "/new-submission/spa/medicaid/create",
+          search: new URLSearchParams({
+            [ORIGIN]: SPA_SUBMISSION_ORIGIN,
+          }).toString(),
+        },
+      },
+    ];
+  }
+  return [
+    {
+      title: "Medicaid Eligibility, Enrollment, Administration, and Health Homes",
+      description: "Redirects to the MACPro System",
+      to: "/new-submission/spa/medicaid/landing/medicaid-eligibility",
     },
-  },
-];
+    {
+      title: "All Other Medicaid SPA Submissions",
+      description: "Create a new Medicaid State Plan Amendment",
+      to: {
+        pathname: "/new-submission/spa/medicaid/create",
+        search: new URLSearchParams({
+          [ORIGIN]: SPA_SUBMISSION_ORIGIN,
+        }).toString(),
+      },
+    },
+  ];
+};
 
 export const useChipSpaOptions = (): OptionData[] => {
   const useChipForm = useFeatureFlag("CHIP_SPA_SUBMISSION");
