@@ -612,16 +612,8 @@ describe("syncing Changelog events", () => {
       ],
     });
 
-    const changelogs = TEST_ITEM._source!.changelog!;
-    const expectedChangelogs = changelogs.map((log) => ({
-      ...log?._source,
-      id: log?._id?.replace(TEST_ITEM_ID, TEST_ITEM_UPDATE_ID),
-      packageId: TEST_ITEM_UPDATE_ID,
-    }));
-
     await handler(event, {} as Context, vi.fn());
 
-    const { attachments: _, ...changes } = TEST_ITEM?._source?.changelog?.[3]?._source || {};
     expect(bulkUpdateDataSpy).toHaveBeenCalledWith(OPENSEARCH_DOMAIN, OPENSEARCH_INDEX, [
       {
         additionalInformation: "changed additional information",
