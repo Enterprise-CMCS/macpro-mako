@@ -783,7 +783,6 @@ describe("syncing Changelog events", () => {
     });
 
     await handler(event, {} as Context, vi.fn());
-    console.log(bulkUpdateDataSpy);
     expect(bulkUpdateDataSpy).toHaveBeenCalledWith(OPENSEARCH_DOMAIN, OPENSEARCH_INDEX, [
       {
         ...toggleWithdrawRai,

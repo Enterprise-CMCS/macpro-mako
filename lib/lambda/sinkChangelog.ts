@@ -143,7 +143,6 @@ const processAndIndex = async ({
                   ...log._source,
                   packageId: packageId + "-del",
                 });
-                console.log(JSON.stringify(docs));
               }
             });
           } else {
