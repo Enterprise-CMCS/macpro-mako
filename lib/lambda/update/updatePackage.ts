@@ -13,14 +13,30 @@ import { getPackageType } from "./getPackageType";
  * @property {string} body.packageId
  * @property {string} body.action
  */
-const sendDeleteMessage = async (packageId: string) => {
+const sendDeleteMessage = async (currentPackage: ItemResult) => {
   const topicName = process.env.topicName as string;
   if (!topicName) {
     throw new Error("Topic name is not defined");
   }
-
+  const packageId = currentPackage._source.id;
   const currentTime = Date.now();
 
+  // Making a copy of the previous package and deleting it
+  await produceMessage(
+    topicName,
+    packageId,
+    JSON.stringify({
+      ...currentPackage._source,
+      id: packageId + "-del",
+      deleted: true,
+      isAdminChange: true,
+      adminChangeType: "update-id",
+      makoChangedDate: currentTime,
+      changedDate: currentTime,
+      statusDate: currentTime,
+      timestamp: currentTime,
+    }),
+  );
   await produceMessage(
     topicName,
     packageId,
@@ -35,7 +51,6 @@ const sendDeleteMessage = async (packageId: string) => {
       timestamp: currentTime,
     }),
   );
-
   return response({
     statusCode: 200,
     body: { message: `${packageId} has been deleted.` },
@@ -168,17 +183,14 @@ const sendUpdateIdMessage = async ({
     });
   }
 
-  await sendDeleteMessage(currentPackage._id);
-
   const currentTime = Date.now();
-
   await produceMessage(
     topicName,
     updatedId,
     JSON.stringify({
       id: updatedId,
-      idToBeUpdated: currentPackage._id,
       ...remainingFields,
+      idToBeUpdated: currentPackage._id,
       origin: "OneMAC",
       changeMade,
       changeReason,
@@ -190,7 +202,7 @@ const sendUpdateIdMessage = async ({
       timestamp: currentTime,
     }),
   );
-
+  await sendDeleteMessage(currentPackage);
   return response({
     statusCode: 200,
     body: { message: `The ID of package ${currentPackage._id} has been updated to ${updatedId}.` },
@@ -250,7 +262,7 @@ export const handler = async (event: APIGatewayEvent) => {
     }
 
     if (action === "delete") {
-      return await sendDeleteMessage(packageId);
+      return await sendDeleteMessage(currentPackage);
     }
 
     if (action === "update-id") {
