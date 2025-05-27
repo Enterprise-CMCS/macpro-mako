@@ -5,12 +5,19 @@ interface DetailsSectionProps {
   title: React.ReactNode;
   id: string;
   description?: string;
+  className?: string;
 }
 
-export const DetailsSection = ({ children, title, description, id }: DetailsSectionProps) => {
+export const DetailsSection = ({
+  children,
+  title,
+  description,
+  id,
+  className,
+}: DetailsSectionProps) => {
   return (
-    <SectionCard id={id} title={title}>
-      {description && <p className="text-sm">{description}</p>}
+    <SectionCard id={id} title={title} className={className}>
+      {description && <p className="text-sm mb-8">{description}</p>}
       {children}
     </SectionCard>
   );

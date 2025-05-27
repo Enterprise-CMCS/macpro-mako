@@ -43,7 +43,7 @@ export const DetailsContent = ({ id }: DetailsContentProps) => {
 
   return (
     <div className="w-full py-1 px-4 lg:px-8 two-cols">
-      <section id="package_overview" className="mb-3 sm:mb-0 col-span-full two-cols">
+      <section id="package_overview" className="mb-3 sm:mb-0 two-cols-subgrid gap-y-3">
         <DetailCardWrapper title="Status">
           <PackageStatusCard submission={submission} />
         </DetailCardWrapper>

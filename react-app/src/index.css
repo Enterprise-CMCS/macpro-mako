@@ -80,24 +80,28 @@
   /* creates 2 columns with a responsive gap */
   .two-cols {
     display: grid;
-    grid-template-columns: 1fr 1fr;
-    column-gap: 0.75rem;
+    grid-template-columns: 1fr;
+    gap: 0.75rem;
 
     @media (width >= 40rem) {
       /* sm */
-      column-gap: 3rem;
+      grid-template-columns: 1fr 1fr;
+      column-gap: 2rem;
     }
     @media (width >= 48rem) {
       /* md */
-      column-gap: 5rem;
+      grid-template-columns: 1fr 1fr;
+      column-gap: 2rem;
     }
     @media (width >= 64rem) {
       /* lg */
+      grid-template-columns: 1fr 1fr;
       column-gap: 3rem;
     }
     @media (width >= 80rem) {
       /* xl */
-      column-gap: 6rem;
+      grid-template-columns: 1fr 1fr;
+      column-gap: 4rem;
     }
   }
 
@@ -124,11 +128,11 @@
 
     @media (width >= 40rem) {
       /* sm */
-      grid-template-columns: 1fr 3rem 1fr;
+      grid-template-columns: 1fr 2rem 1fr;
     }
     @media (width >= 48rem) {
       /* md */
-      grid-template-columns: 1fr 5rem 1fr;
+      grid-template-columns: 1fr 2rem 1fr;
     }
     @media (width >= 64rem) {
       /* lg */
@@ -136,7 +140,7 @@
     }
     @media (width >= 80rem) {
       /* xl */
-      grid-template-columns: 1fr 6rem 1fr;
+      grid-template-columns: 1fr 4rem 1fr;
     }
   }
 
@@ -153,28 +157,6 @@
   .col-right-gutter {
     grid-column-start: 3;
     grid-column-end: 4;
-  }
-
-  .w-gutter {
-    /* sets the width to match the gutter in the 2 column grid */
-    width: 0.75rem;
-
-    @media (width >= 40rem) {
-      /* sm */
-      width: 3rem;
-    }
-    @media (width >= 48rem) {
-      /* md */
-      width: 5rem;
-    }
-    @media (width >= 64rem) {
-      /* lg */
-      width: 3rem;
-    }
-    @media (width >= 80rem) {
-      /* xl */
-      width: 6rem;
-    }
   }
 }
 

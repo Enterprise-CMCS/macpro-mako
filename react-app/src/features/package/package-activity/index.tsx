@@ -4,12 +4,12 @@ import { ItemResult } from "shared-types/opensearch/changelog";
 import { formatDateToET } from "shared-utils";
 
 import {
+  Accordion,
+  AccordionContent,
+  AccordionItem,
   Button,
-  GridAccordion,
-  GridAccordionContent,
-  GridAccordionItem,
+  DetailsSection,
   GridAccordionTrigger,
-  GridDetailsSection,
 } from "@/components";
 import { BLANK_VALUE } from "@/consts";
 
@@ -127,7 +127,7 @@ const PackageActivity = ({ packageActivity }: PackageActivityProps) => {
   }, [packageActivity.event]);
 
   return (
-    <GridAccordionItem value={packageActivity.id}>
+    <AccordionItem value={packageActivity.id}>
       <GridAccordionTrigger
         className="bg-gray-100 px-3 text-gray-600"
         showPlusMinus
@@ -143,10 +143,10 @@ const PackageActivity = ({ packageActivity }: PackageActivityProps) => {
           </span>
         }
       />
-      <GridAccordionContent>
+      <AccordionContent>
         <Submission packageActivity={packageActivity} />
-      </GridAccordionContent>
-    </GridAccordionItem>
+      </AccordionContent>
+    </AccordionItem>
   );
 };
 
@@ -199,7 +199,7 @@ export const PackageActivities = ({ id, changelog }: PackageActivitiesProps) => 
   const changelogWithoutAdminChanges = changelog.filter((item) => !item._source.isAdminChange);
   console.log("Changelog" + changelogWithoutAdminChanges);
   return (
-    <GridDetailsSection
+    <DetailsSection
       id="package_activity"
       title={
         <div className="flex justify-between">
@@ -209,20 +209,20 @@ export const PackageActivities = ({ id, changelog }: PackageActivitiesProps) => 
       }
     >
       {changelogWithoutAdminChanges.length > 0 ? (
-        <GridAccordion
+        <Accordion
           // `changelogWithoutAdminChanges[0]._source.id` to re-render the `defaultValue` whenever `keyAndDefaultValue` changes
           key={changelogWithoutAdminChanges[0]._source.id}
           type="multiple"
-          className="two-cols-subgrid"
+          className="two-cols-subgrid gap-y-2"
           defaultValue={[changelogWithoutAdminChanges[0]._source.id]}
         >
           {changelogWithoutAdminChanges.map(({ _source: packageActivity }) => (
             <PackageActivity key={packageActivity.id} packageActivity={packageActivity} />
           ))}
-        </GridAccordion>
+        </Accordion>
       ) : (
         <p className="text-gray-500">No package activity recorded</p>
       )}
-    </GridDetailsSection>
+    </DetailsSection>
   );
 };

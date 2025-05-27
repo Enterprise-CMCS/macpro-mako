@@ -24,9 +24,7 @@ export const SectionCard = ({ title, children, className, id, testId }: SectionC
           <hr className="my-6 bg-slate-200" />
         </>
       )}
-      <div data-testid={`${testId}-child`} className="gap-8 flex flex-col">
-        {children}
-      </div>
+      <div data-testid={`${testId}-child`}>{children}</div>
     </section>
   );
 };

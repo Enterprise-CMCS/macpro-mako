@@ -4,11 +4,11 @@ import { ItemResult } from "shared-types/opensearch/changelog";
 import { formatDateToET } from "shared-utils";
 
 import {
-  GridAccordion,
-  GridAccordionContent,
-  GridAccordionItem,
+  Accordion,
+  AccordionContent,
+  AccordionItem,
+  DetailsSection,
   GridAccordionTrigger,
-  GridDetailsSection,
 } from "@/components";
 import { BLANK_VALUE } from "@/consts";
 
@@ -94,7 +94,7 @@ export const AdminChange = ({ adminActivity }: AdminChangeProps) => {
   }, [adminActivity.event, adminActivity.changeType, adminActivity.raiWithdrawEnabled]);
 
   return (
-    <GridAccordionItem value={adminActivity.id}>
+    <AccordionItem value={adminActivity.id}>
       <GridAccordionTrigger
         className="bg-gray-100 px-3 text-gray-600"
         showPlusMinus
@@ -102,10 +102,10 @@ export const AdminChange = ({ adminActivity }: AdminChangeProps) => {
         col2=" - "
         col3={formatDateToET(adminActivity.timestamp)}
       />
-      <GridAccordionContent>
+      <AccordionContent>
         <Content adminActivity={adminActivity} />
-      </GridAccordionContent>
-    </GridAccordionItem>
+      </AccordionContent>
+    </AccordionItem>
   );
 };
 
@@ -119,12 +119,12 @@ export const AdminPackageActivities = ({ changelog }: AdminChangesProps) => {
   if (adminChangelog.length === 0) return null;
 
   return (
-    <GridDetailsSection
+    <DetailsSection
       id="administrative_package_changes"
       title={`Administrative Package Changes (${adminChangelog.length})`}
       description="Administrative changes reflect updates to specific data fields. If you have additional questions, please contact the assigned CPOC."
     >
-      <GridAccordion
+      <Accordion
         // There is a cached value (defaultValue) below
         // If you ever want to get around the cached value so
         // that is re-renders simply use a unique key that will
@@ -132,12 +132,12 @@ export const AdminPackageActivities = ({ changelog }: AdminChangesProps) => {
         key={adminChangelog[0]._source.id}
         type="multiple"
         defaultValue={[adminChangelog[0]._source.id]}
-        className="two-cols-subgrid"
+        className="two-cols-subgrid gap-y-2"
       >
         {adminChangelog.map(({ _source: adminActivity }) => (
           <AdminChange key={adminActivity.id} adminActivity={adminActivity} />
         ))}
-      </GridAccordion>
-    </GridDetailsSection>
+      </Accordion>
+    </DetailsSection>
   );
 };
