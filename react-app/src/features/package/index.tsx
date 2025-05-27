@@ -20,7 +20,7 @@ export const DetailCardWrapper = ({
 }: PropsWithChildren<{
   title: string;
 }>) => (
-  <CardWithTopBorder className="flex-1 min-h-full text-wrap my-0 sm:my-6">
+  <CardWithTopBorder className="text-wrap my-0 sm:my-6">
     <div className="p-4 py-1 min-h-36">
       <h2>{title}</h2>
       {children}
@@ -42,15 +42,16 @@ export const DetailsContent = ({ id }: DetailsContentProps) => {
   const { _source: submission } = record;
 
   return (
-    <div className="w-full py-1 px-4 lg:px-8">
-      <section
-        id="package_overview"
-        className="flex flex-col sm:flex-row mb-3 sm:mb-0 gap-3 sm:gap-x-[3rem] md:gap-x-[5rem] lg:gap-x-[3rem] xl:gap-x-[6rem]"
-      >
-        <PackageStatusCard submission={submission} />
-        <PackageActionsCard id={id} submission={submission} />
+    <div className="w-full py-1 px-4 lg:px-8 two-cols">
+      <section id="package_overview" className="mb-3 sm:mb-0 col-span-full two-cols">
+        <DetailCardWrapper title="Status">
+          <PackageStatusCard submission={submission} />
+        </DetailCardWrapper>
+        <DetailCardWrapper title="Package Actions">
+          <PackageActionsCard id={id} submission={submission} />
+        </DetailCardWrapper>
       </section>
-      <div className="flex flex-col gap-3">
+      <div className="col-span-full grid gap-y-3">
         <PackageDetails submission={submission} />
         <PackageActivities id={id} changelog={submission.changelog} />
         <AdminPackageActivities changelog={submission.changelog} />

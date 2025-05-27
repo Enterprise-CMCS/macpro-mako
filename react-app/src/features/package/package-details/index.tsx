@@ -2,7 +2,7 @@ import { useMemo } from "react";
 import { Authority, opensearch } from "shared-types";
 
 import { useGetUser } from "@/api/useGetUser";
-import { DetailsSection, LoadingSpinner } from "@/components";
+import { GridDetailsSection, LoadingSpinner } from "@/components";
 
 import {
   getApprovedAndEffectiveDetails,
@@ -17,7 +17,7 @@ type PackageDetailsGridProps = {
 };
 
 const PackageDetailsGrid = ({ details }: PackageDetailsGridProps) => (
-  <div className="grid grid-cols-2 gap-6">
+  <div className="two-cols gap-y-6">
     {details.map(({ label, value, canView = true }) => {
       return canView ? (
         <div key={label}>
@@ -51,8 +51,8 @@ export const PackageDetails = ({ submission }: PackageDetailsProps) => {
   if (isUserLoading) return <LoadingSpinner />;
 
   return (
-    <DetailsSection id="package_details" title={title}>
-      <div className="flex-col gap-4 max-w-2xl">
+    <GridDetailsSection id="package_details" title={title}>
+      <div>
         <PackageDetailsGrid
           details={[
             ...getSubmissionDetails(submission, user),
@@ -63,6 +63,6 @@ export const PackageDetails = ({ submission }: PackageDetailsProps) => {
         <hr className="my-4" />
         <PackageDetailsGrid details={getSubmittedByDetails(submission, user)} />
       </div>
-    </DetailsSection>
+    </GridDetailsSection>
   );
 };

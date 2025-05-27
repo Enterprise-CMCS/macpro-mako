@@ -4,11 +4,11 @@ import { ItemResult } from "shared-types/opensearch/changelog";
 import { formatDateToET } from "shared-utils";
 
 import {
-  Accordion,
-  AccordionContent,
-  AccordionItem,
-  AccordionTrigger,
-  DetailsSection,
+  GridAccordion,
+  GridAccordionContent,
+  GridAccordionItem,
+  GridAccordionTrigger,
+  GridDetailsSection,
 } from "@/components";
 import { BLANK_VALUE } from "@/consts";
 
@@ -17,7 +17,7 @@ type AdminChangeProps = {
 };
 
 const AC_WithdrawEnabled = ({ adminActivity }: AdminChangeProps) => (
-  <div className="flex flex-col gap-2">
+  <div className="col-span-full py-4 grid gap-y-2">
     <p className="font-bold">Change made</p>
     <p>
       {adminActivity.submitterName} has enabled State package action to withdraw formal RAI response
@@ -26,7 +26,7 @@ const AC_WithdrawEnabled = ({ adminActivity }: AdminChangeProps) => (
 );
 
 const AC_WithdrawDisabled = ({ adminActivity }: AdminChangeProps) => (
-  <div className="flex flex-col gap-2">
+  <div className="col-span-full py-4 grid gap-y-2">
     <p className="font-bold">Change made</p>
     <p>
       {adminActivity.submitterName} has disabled State package action to withdraw formal RAI
@@ -36,7 +36,7 @@ const AC_WithdrawDisabled = ({ adminActivity }: AdminChangeProps) => (
 );
 
 const AC_LegacyAdminChange = ({ adminActivity }: AdminChangeProps) => (
-  <div className="flex flex-col gap-6">
+  <div className="col-span-full py-4 grid gap-y-6">
     <div>
       <h2 className="font-bold text-lg mb-2">Change Made</h2>
       <p>{adminActivity.changeMade || "No information submitted"}</p>
@@ -94,18 +94,18 @@ export const AdminChange = ({ adminActivity }: AdminChangeProps) => {
   }, [adminActivity.event, adminActivity.changeType, adminActivity.raiWithdrawEnabled]);
 
   return (
-    <AccordionItem value={adminActivity.id}>
-      <AccordionTrigger className="bg-gray-100 px-3" showPlusMinus>
-        <p className="flex flex-row gap-2 text-gray-600">
-          <strong>{label as string}</strong>
-          {" - "}
-          {formatDateToET(adminActivity.timestamp)}
-        </p>
-      </AccordionTrigger>
-      <AccordionContent className="p-4">
+    <GridAccordionItem value={adminActivity.id}>
+      <GridAccordionTrigger
+        className="bg-gray-100 px-3 text-gray-600"
+        showPlusMinus
+        col1={<strong>{label as string}</strong>}
+        col2=" - "
+        col3={formatDateToET(adminActivity.timestamp)}
+      />
+      <GridAccordionContent>
         <Content adminActivity={adminActivity} />
-      </AccordionContent>
-    </AccordionItem>
+      </GridAccordionContent>
+    </GridAccordionItem>
   );
 };
 
@@ -119,12 +119,12 @@ export const AdminPackageActivities = ({ changelog }: AdminChangesProps) => {
   if (adminChangelog.length === 0) return null;
 
   return (
-    <DetailsSection
+    <GridDetailsSection
       id="administrative_package_changes"
       title={`Administrative Package Changes (${adminChangelog.length})`}
       description="Administrative changes reflect updates to specific data fields. If you have additional questions, please contact the assigned CPOC."
     >
-      <Accordion
+      <GridAccordion
         // There is a cached value (defaultValue) below
         // If you ever want to get around the cached value so
         // that is re-renders simply use a unique key that will
@@ -132,12 +132,12 @@ export const AdminPackageActivities = ({ changelog }: AdminChangesProps) => {
         key={adminChangelog[0]._source.id}
         type="multiple"
         defaultValue={[adminChangelog[0]._source.id]}
-        className="flex flex-col gap-2"
+        className="two-cols-subgrid"
       >
-        {adminChangelog.map(({ _source: adminActivity }) => {
-          return <AdminChange key={adminActivity.id} adminActivity={adminActivity} />;
-        })}
-      </Accordion>
-    </DetailsSection>
+        {adminChangelog.map(({ _source: adminActivity }) => (
+          <AdminChange key={adminActivity.id} adminActivity={adminActivity} />
+        ))}
+      </GridAccordion>
+    </GridDetailsSection>
   );
 };

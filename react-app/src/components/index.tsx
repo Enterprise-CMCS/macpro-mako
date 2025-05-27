@@ -8,6 +8,7 @@ export * from "./Dialog";
 export * from "./ErrorAlert";
 export * from "./Footer";
 export * from "./Form";
+export * from "./GridDetailsSelection";
 export * from "./HowItWorks";
 export * from "./index";
 export * from "./Inputs";
