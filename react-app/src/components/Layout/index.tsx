@@ -296,7 +296,7 @@ export const Layout = () => {
         </div>
       </nav>
       <main className="flex-1">
-        {/* Portal target for subHeader */}
+        {/* Portal target for SubNavHeader */}
         <div id="subheader-portal-container" />
         <SimplePageContainer>
           <Banner />
