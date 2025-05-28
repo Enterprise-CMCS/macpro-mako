@@ -23,16 +23,16 @@
         <div class='clearfix'>
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">86.9% </span>
+                <span class="strong">86.2% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>73/84</span>
+                <span class='fraction'>75/87</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">75.28% </span>
+                <span class="strong">74.72% </span>
                 <span class="quiet">Branches</span>
-                <span class='fraction'>67/89</span>
+                <span class='fraction'>68/91</span>
             </div>
         
             
@@ -44,9 +44,9 @@
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">88.6% </span>
+                <span class="strong">87.65% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>70/79</span>
+                <span class='fraction'>71/81</span>
             </div>
         
             
@@ -588,7 +588,16 @@
 <a name='L523'></a><a href='#L523'>523</a>
 <a name='L524'></a><a href='#L524'>524</a>
 <a name='L525'></a><a href='#L525'>525</a>
-<a name='L526'></a><a href='#L526'>526</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
+<a name='L526'></a><a href='#L526'>526</a>
+<a name='L527'></a><a href='#L527'>527</a>
+<a name='L528'></a><a href='#L528'>528</a>
+<a name='L529'></a><a href='#L529'>529</a>
+<a name='L530'></a><a href='#L530'>530</a>
+<a name='L531'></a><a href='#L531'>531</a>
+<a name='L532'></a><a href='#L532'>532</a>
+<a name='L533'></a><a href='#L533'>533</a>
+<a name='L534'></a><a href='#L534'>534</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -929,6 +938,8 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">94x</span>
 <span class="cline-any cline-yes">89x</span>
 <span class="cline-any cline-yes">89x</span>
@@ -1099,6 +1110,11 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">53x</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -1119,6 +1135,7 @@ import * as DropdownMenu from "@radix-ui/react-dropdown-menu";
 import { Auth } from "aws-amplify";
 import { LogOutIcon, UserPenIcon, UserPlusIcon } from "lucide-react";
 import { useState } from "react";
+import { createPortal } from "react-dom";
 import { Link, NavLink, NavLinkProps, Outlet, useNavigate, useRouteError } from "react-router";
 import { UserRoles } from "shared-types";
 import { isStateUser } from "shared-utils";
@@ -1410,6 +1427,8 @@ export const Layout = () =&gt; {
         &lt;/div&gt;
       &lt;/nav&gt;
       &lt;main className="flex-1"&gt;
+        {/* Portal target for SubNavHeader */}
+        &lt;div id="subheader-portal-container" /&gt;
         &lt;SimplePageContainer&gt;
           &lt;Banner /&gt;
         &lt;/SimplePageContainer&gt;
@@ -1613,15 +1632,20 @@ const ResponsiveNav = ({ isDesktop }: ResponsiveNavProps) =&gt; {
  *
  * @returns {JSX.Element} The rendered sub-navigation header component.
  */
-export const SubNavHeader = ({ children }: { children: React.ReactNode }) =&gt; (
-  &lt;div className="bg-sky-100" data-testid="sub-nav-header"&gt;
-    &lt;div className="max-w-screen-xl m-auto px-4 lg:px-8"&gt;
-      &lt;div className="flex items-center"&gt;
-        &lt;div className="flex align-middle py-4"&gt;{children}&lt;/div&gt;
+export const SubNavHeader = ({ children }: { children: React.ReactNode }) =&gt; {
+  const portalContainer = document.getElementById("subheader-portal-container");
+  const subNavComponent = (
+    &lt;div className="bg-sky-100" data-testid="sub-nav-header"&gt;
+      &lt;div className="max-w-screen-xl m-auto px-4 lg:px-8"&gt;
+        &lt;div className="flex items-center"&gt;
+          &lt;div className="flex align-middle py-4"&gt;{children}&lt;/div&gt;
+        &lt;/div&gt;
       &lt;/div&gt;
     &lt;/div&gt;
-  &lt;/div&gt;
-);
+  );
+  <span class="missing-if-branch" title="else path not taken" >E</span>if (!portalContainer) return subNavComponent;
+<span class="cstat-no" title="statement not covered" >  return createPortal(subNavComponent, portalContainer);</span>
+};
 &nbsp;
 type SupportSubNavHeaderProps = {
   /*
@@ -1645,7 +1669,7 @@ export const SupportSubNavHeader = ({ children, className }: SupportSubNavHeader
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2025-05-27T21:10:24.931Z
+                at 2025-05-28T01:25:24.214Z
             </div>
         <script src="../../../../prettify.js"></script>
         <script>

@@ -23,16 +23,16 @@
         <div class='clearfix'>
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">92.59% </span>
+                <span class="strong">93.1% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>25/27</span>
+                <span class='fraction'>27/29</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">83.33% </span>
+                <span class="strong">78.57% </span>
                 <span class="quiet">Branches</span>
-                <span class='fraction'>10/12</span>
+                <span class='fraction'>11/14</span>
             </div>
         
             
@@ -44,9 +44,9 @@
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">92.59% </span>
+                <span class="strong">93.1% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>25/27</span>
+                <span class='fraction'>27/29</span>
             </div>
         
             
@@ -221,7 +221,11 @@
 <a name='L156'></a><a href='#L156'>156</a>
 <a name='L157'></a><a href='#L157'>157</a>
 <a name='L158'></a><a href='#L158'>158</a>
-<a name='L159'></a><a href='#L159'>159</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
+<a name='L159'></a><a href='#L159'>159</a>
+<a name='L160'></a><a href='#L160'>160</a>
+<a name='L161'></a><a href='#L161'>161</a>
+<a name='L162'></a><a href='#L162'>162</a>
+<a name='L163'></a><a href='#L163'>163</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -254,6 +258,9 @@
 <span class="cline-any cline-yes">19x</span>
 <span class="cline-any cline-yes">19x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">19x</span>
+<span class="cline-any cline-yes">19x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">19x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -276,16 +283,16 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">10x</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">10x</span>
-<span class="cline-any cline-yes">2x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">10x</span>
 <span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">10x</span>
 <span class="cline-any cline-yes">2x</span>
 <span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-yes">2x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -293,6 +300,7 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -380,7 +388,7 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">import { useState } from "react";
-import { Navigate, useNavigate } from "react-router";
+import { Navigate, useNavigate, useSearchParams } from "react-router";
 import { StateCode } from "shared-types";
 import { UserRole } from "shared-types/events/legacy-user";
 &nbsp;
@@ -412,9 +420,12 @@ export const StateSignup = () =&gt; {
   const { data: userProfile } = useGetUserProfile();
   const currentRole = userDetails?.role;
 &nbsp;
+  const [searchParams] = useSearchParams();
+  const roleKey = searchParams.get("role") as UserRole;
+&nbsp;
   // Determine which role the user is allowed to request based on their current role
   const roleToRequestMap: Partial&lt;Record&lt;UserRole, UserRole&gt;&gt; = {
-    norole: "statesubmitter",
+    norole: roleKey,
     statesubmitter: "statesystemadmin",
     statesystemadmin: "statesubmitter",
   };
@@ -434,7 +445,7 @@ export const StateSignup = () =&gt; {
     return &lt;Navigate to="/profile" /&gt;;
 &nbsp;
   // Statesubmitters can request to be a statesystemadmin for 1 state
-  const isRequestRoleAdmin = currentRole === "statesubmitter";
+  // const isRequestRoleAdmin = currentRole === "statesubmitter";
 &nbsp;
   const onChange = (values: StateCode[]) =&gt; {
     setStateSelected(values);
@@ -451,12 +462,13 @@ export const StateSignup = () =&gt; {
           requestRoleChange: true,
         });
       }
-      navigate("/dashboard");
+      const redirectRoute = currentRole === "norole" ? <span class="branch-0 cbranch-no" title="branch not covered" >"/profile" : "</span>/dashboard";
+      navigate(redirectRoute);
       banner({
         header: "Submission Completed",
         body: "Your submission has been received.",
         variant: "success",
-        pathnameToDisplayOn: "/dashboard",
+        pathnameToDisplayOn: redirectRoute,
       });
     } catch (error) {
       console.error(error);
@@ -492,7 +504,7 @@ export const StateSignup = () =&gt; {
             &lt;/div&gt;
             &lt;div className="py-2"&gt;
               &lt;h2 className="text-xl font-bold mb-2"&gt;Select your State Access&lt;/h2&gt;
-              {isRequestRoleAdmin ? (
+              {roleToRequest === "statesystemadmin" ? (
                 &lt;Select onValueChange={(value: StateCode) =&gt; onChange([value])}&gt;
                   &lt;SelectTrigger aria-label="Select state"&gt;
                     &lt;SelectValue placeholder="Select state here" /&gt;
@@ -516,7 +528,7 @@ export const StateSignup = () =&gt; {
               )}
               {!stateSelected.length &amp;&amp; (
                 &lt;p className="text-red-600 mt-3"&gt;
-                  {isRequestRoleAdmin
+                  {roleToRequest === "statesystemadmin"
                     ? "Please select a state."
                     : "Please select at least one state."}
                 &lt;/p&gt;
@@ -544,7 +556,7 @@ export const StateSignup = () =&gt; {
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2025-05-27T21:10:24.931Z
+                at 2025-05-28T01:25:24.214Z
             </div>
         <script src="../../../../prettify.js"></script>
         <script>
