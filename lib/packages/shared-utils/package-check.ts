@@ -46,6 +46,7 @@ export const PackageCheck = ({
       ...secondClockStatuses,
       SEATOOL_STATUS.PENDING_OFF_THE_CLOCK,
     ]),
+    isInPendingRAIStatus: checkStatus(seatoolStatus, [SEATOOL_STATUS.PENDING_RAI]),
     /** Is in a second clock status and RAI has been received **/
     isInSecondClock:
       !planChecks.authorityIs([Authority.CHIP_SPA]) &&
