@@ -9,14 +9,14 @@ export const FormSectionCard = ({
   title,
   id,
   required,
-  defaultFormat = true,
+  childrenClassName,
 }: {
   children: ReactNode;
   title: string;
   id: string;
   description?: string;
   required?: boolean;
-  defaultFormat?: boolean;
+  childrenClassName?: string;
 }) => {
   return (
     <SectionCard
@@ -26,7 +26,7 @@ export const FormSectionCard = ({
           {title} {required && <RequiredIndicator />}
         </>
       }
-      defaultFormat={defaultFormat}
+      childrenClassName={childrenClassName}
     >
       {children}
     </SectionCard>

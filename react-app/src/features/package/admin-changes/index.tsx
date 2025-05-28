@@ -123,7 +123,7 @@ export const AdminPackageActivities = ({ changelog }: AdminChangesProps) => {
       id="administrative_package_changes"
       title={`Administrative Package Changes (${adminChangelog.length})`}
       description="Administrative changes reflect updates to specific data fields. If you have additional questions, please contact the assigned CPOC."
-      defaultFormat={false}
+      childrenClassName="grid gap-y-8"
     >
       <Accordion
         // There is a cached value (defaultValue) below

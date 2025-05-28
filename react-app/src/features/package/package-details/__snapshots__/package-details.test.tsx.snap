@@ -16,7 +16,7 @@ exports[`package details > render package details for a 1915(c) submission 1`] =
       class="my-6 bg-slate-200"
     />
     <div
-      class=""
+      class="grid gap-y-8"
       data-testid="undefined-child"
     >
       <div>
@@ -206,7 +206,7 @@ exports[`package details > render package details for a 1915(c) submission with 
       class="my-6 bg-slate-200"
     />
     <div
-      class=""
+      class="grid gap-y-8"
       data-testid="undefined-child"
     >
       <div>
@@ -396,7 +396,7 @@ exports[`package details > render package details for a 1915(c) submission with 
       class="my-6 bg-slate-200"
     />
     <div
-      class=""
+      class="grid gap-y-8"
       data-testid="undefined-child"
     >
       <div>
@@ -518,7 +518,7 @@ exports[`package details > renders package details for a 1915(b) submission 1`] 
       class="my-6 bg-slate-200"
     />
     <div
-      class=""
+      class="grid gap-y-8"
       data-testid="undefined-child"
     >
       <div>

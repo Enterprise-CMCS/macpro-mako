@@ -51,7 +51,7 @@ export const PackageDetails = ({ submission }: PackageDetailsProps) => {
   if (isUserLoading) return <LoadingSpinner />;
 
   return (
-    <DetailsSection id="package_details" title={title} defaultFormat={false}>
+    <DetailsSection id="package_details" title={title} childrenClassName="grid gap-y-8">
       <div>
         <PackageDetailsGrid
           details={[

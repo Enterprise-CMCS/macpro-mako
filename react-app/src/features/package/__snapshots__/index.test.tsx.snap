@@ -82,7 +82,7 @@ exports[`package details > makes a package 1`] = `
           class="my-6 bg-slate-200"
         />
         <div
-          class=""
+          class="grid gap-y-8"
           data-testid="undefined-child"
         >
           <div>
@@ -256,7 +256,7 @@ exports[`package details > makes a package 1`] = `
           class="my-6 bg-slate-200"
         />
         <div
-          class=""
+          class="grid gap-y-8"
           data-testid="undefined-child"
         >
           <p
@@ -280,11 +280,11 @@ exports[`package details > makes a package 1`] = `
           class="my-6 bg-slate-200"
         />
         <div
-          class=""
+          class="grid gap-y-8"
           data-testid="undefined-child"
         >
           <p
-            class="text-sm mb-8"
+            class="text-sm"
           >
             Administrative changes reflect updates to specific data fields. If you have additional questions, please contact the assigned CPOC.
           </p>

@@ -209,7 +209,7 @@ export const PackageActivities = ({ id, changelog }: PackageActivitiesProps) => 
           <DownloadAllButton submissionChangelog={changelogWithoutAdminChanges} packageId={id} />
         </div>
       }
-      defaultFormat={false}
+      childrenClassName="grid gap-y-8"
     >
       {changelogWithoutAdminChanges.length > 0 ? (
         <Accordion
