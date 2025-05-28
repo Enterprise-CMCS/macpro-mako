@@ -20,7 +20,7 @@ export const DetailCardWrapper = ({
 }: PropsWithChildren<{
   title: string;
 }>) => (
-  <CardWithTopBorder className="text-wrap my-0 sm:my-6">
+  <CardWithTopBorder className="text-wrap my-0 sm:mt-6">
     <div className="p-4 py-1 min-h-36">
       <h2>{title}</h2>
       {children}
@@ -42,8 +42,8 @@ export const DetailsContent = ({ id }: DetailsContentProps) => {
   const { _source: submission } = record;
 
   return (
-    <div className="w-full py-1 px-4 lg:px-8 two-cols">
-      <section id="package_overview" className="mb-3 sm:mb-0 two-cols-subgrid gap-y-3">
+    <div className="w-full py-1 px-4 lg:px-8 two-cols gap-y-6 sm:gap-y-6">
+      <section id="package_overview" className="sm:mb-0 two-cols-subgrid gap-y-3 sm:gap-y-3">
         <DetailCardWrapper title="Status">
           <PackageStatusCard submission={submission} />
         </DetailCardWrapper>

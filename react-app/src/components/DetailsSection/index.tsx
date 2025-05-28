@@ -6,6 +6,7 @@ interface DetailsSectionProps {
   id: string;
   description?: string;
   className?: string;
+  defaultFormat?: boolean;
 }
 
 export const DetailsSection = ({
@@ -14,9 +15,10 @@ export const DetailsSection = ({
   description,
   id,
   className,
+  defaultFormat = true,
 }: DetailsSectionProps) => {
   return (
-    <SectionCard id={id} title={title} className={className}>
+    <SectionCard id={id} title={title} className={className} defaultFormat={defaultFormat}>
       {description && <p className="text-sm mb-8">{description}</p>}
       {children}
     </SectionCard>

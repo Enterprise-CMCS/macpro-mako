@@ -16,14 +16,12 @@ exports[`package details > render package details for a 1915(c) submission 1`] =
       class="my-6 bg-slate-200"
     />
     <div
-      class="gap-8 flex flex-col"
+      class=""
       data-testid="undefined-child"
     >
-      <div
-        class="flex-col gap-4 max-w-2xl"
-      >
+      <div>
         <div
-          class="grid grid-cols-2 gap-6"
+          class="two-cols gap-y-6 sm:gap-y-6"
         >
           <div>
             <h3
@@ -150,7 +148,7 @@ exports[`package details > render package details for a 1915(c) submission 1`] =
           class="my-4"
         />
         <div
-          class="grid grid-cols-2 gap-6"
+          class="two-cols gap-y-6 sm:gap-y-6"
         >
           <div>
             <h3
@@ -208,14 +206,12 @@ exports[`package details > render package details for a 1915(c) submission with 
       class="my-6 bg-slate-200"
     />
     <div
-      class="gap-8 flex flex-col"
+      class=""
       data-testid="undefined-child"
     >
-      <div
-        class="flex-col gap-4 max-w-2xl"
-      >
+      <div>
         <div
-          class="grid grid-cols-2 gap-6"
+          class="two-cols gap-y-6 sm:gap-y-6"
         >
           <div>
             <h3
@@ -342,7 +338,7 @@ exports[`package details > render package details for a 1915(c) submission with 
           class="my-4"
         />
         <div
-          class="grid grid-cols-2 gap-6"
+          class="two-cols gap-y-6 sm:gap-y-6"
         >
           <div>
             <h3
@@ -400,14 +396,12 @@ exports[`package details > render package details for a 1915(c) submission with 
       class="my-6 bg-slate-200"
     />
     <div
-      class="gap-8 flex flex-col"
+      class=""
       data-testid="undefined-child"
     >
-      <div
-        class="flex-col gap-4 max-w-2xl"
-      >
+      <div>
         <div
-          class="grid grid-cols-2 gap-6"
+          class="two-cols gap-y-6 sm:gap-y-6"
         >
           <div>
             <h3
@@ -482,7 +476,7 @@ exports[`package details > render package details for a 1915(c) submission with 
           class="my-4"
         />
         <div
-          class="grid grid-cols-2 gap-6"
+          class="two-cols gap-y-6 sm:gap-y-6"
         >
           <div>
             <h3
@@ -524,14 +518,12 @@ exports[`package details > renders package details for a 1915(b) submission 1`] 
       class="my-6 bg-slate-200"
     />
     <div
-      class="gap-8 flex flex-col"
+      class=""
       data-testid="undefined-child"
     >
-      <div
-        class="flex-col gap-4 max-w-2xl"
-      >
+      <div>
         <div
-          class="grid grid-cols-2 gap-6"
+          class="two-cols gap-y-6 sm:gap-y-6"
         >
           <div>
             <h3
@@ -658,7 +650,7 @@ exports[`package details > renders package details for a 1915(b) submission 1`] 
           class="my-4"
         />
         <div
-          class="grid grid-cols-2 gap-6"
+          class="two-cols gap-y-6 sm:gap-y-6"
         >
           <div>
             <h3

@@ -29,8 +29,9 @@ const AttachmentDetails = ({ id, attachments, onClick }: AttachmentDetailsProps)
           className="two-cols-subgrid items-center text-left border-b transition-colors hover:bg-muted/50 data-[state=selected]:bg-muted text-sm"
           key={`${id}-${attachment.key}`}
         >
-          <div className="col-left pl-2 py-3">{attachment.title}</div>
-          <div className="col-right pr-2 py-3">
+          <div className="col-left-gutter pl-2 py-3">{attachment.title}</div>
+          <div className="cols-gutter" />
+          <div className="col-right-gutter pr-2 py-3">
             <Button
               className="ml-[-15px] text-left min-h-fit"
               variant="link"
@@ -54,14 +55,15 @@ const Submission = ({ packageActivity }: SubmissionProps) => {
   const { onUrl, loading, onZip } = useAttachmentService({ packageId });
 
   return (
-    <div className="two-cols py-4 gap-y-6">
+    <div className="two-cols-gutter py-4 gap-y-6 sm:gap-y-6">
       <div className="two-cols-subgrid">
         <h2 className="col-span-full font-bold text-lg mb-2">Attachments</h2>
         {attachments && attachments?.length > 0 ? (
-          <div className="two-cols-subgrid border-[1px]">
+          <div className="two-cols-subgrid border-[1px] overflow-auto">
             <div className="border-b text-left font-semibold text-muted-foreground leading-5 two-cols-subgrid">
-              <div className="col-left pl-2">Document Type</div>
-              <div className="col-right pr-2">Attached File</div>
+              <div className="col-left-gutter pl-2">Document Type</div>
+              <div className="col-gutter" />
+              <div className="col-right-gutter pr-2">Attached File</div>
             </div>
             <AttachmentDetails attachments={attachments} id={id} onClick={onUrl} />
           </div>
@@ -183,7 +185,7 @@ const DownloadAllButton = ({ packageId, submissionChangelog }: DownloadAllButton
       loading={loading}
       onClick={onDownloadAll}
       variant="outline"
-      className="max-w-fit justify-self-end"
+      className="max-w-fit min-h-fit justify-self-end"
     >
       Download all attachments
     </Button>
@@ -207,6 +209,7 @@ export const PackageActivities = ({ id, changelog }: PackageActivitiesProps) => 
           <DownloadAllButton submissionChangelog={changelogWithoutAdminChanges} packageId={id} />
         </div>
       }
+      defaultFormat={false}
     >
       {changelogWithoutAdminChanges.length > 0 ? (
         <Accordion
