@@ -82,6 +82,13 @@ export const arDisableWithdrawRaiResponse: ActionRule = {
 export const arWithdrawRaiResponse: ActionRule = {
   action: Action.WITHDRAW_RAI,
   check: (checker, user) => {
+    console.log("!checker.isTempExtension", !checker.isTempExtension);
+    console.log("checker.isInActivePendingStatus", checker.isInActivePendingStatus);
+    console.log("checker.hasCompletedRai", checker.hasCompletedRai);
+    console.log("!checker.hasStatus([SEATOOL_STATUS.PENDING_CONCURRENCE, SEATOOL_STATUS.PENDING_APPROVAL])", !checker.hasStatus([SEATOOL_STATUS.PENDING_CONCURRENCE, SEATOOL_STATUS.PENDING_APPROVAL]));
+    console.log("checker.hasEnabledRaiWithdraw", checker.hasEnabledRaiWithdraw);
+    console.log("isStateUser(user", isStateUser(user));
+    console.log("!checker.isLocked", !checker.isLocked);
     return (
       !checker.isTempExtension &&
       checker.isInActivePendingStatus &&
