@@ -127,18 +127,6 @@ exports[`package details > makes a package 1`] = `
                 <h3
                   class="font-bold"
                 >
-                  Proposed Effective Date
-                </h3>
-                <div
-                  class="py-2"
-                >
-                  Pending
-                </div>
-              </div>
-              <div>
-                <h3
-                  class="font-bold"
-                >
                   Initial Submission Date
                 </h3>
                 <div
@@ -181,6 +169,18 @@ exports[`package details > makes a package 1`] = `
                   class="py-2"
                 >
                   -- --
+                </div>
+              </div>
+              <div>
+                <h3
+                  class="font-bold"
+                >
+                  Proposed Effective Date
+                </h3>
+                <div
+                  class="py-2"
+                >
+                  Pending
                 </div>
               </div>
               <div>

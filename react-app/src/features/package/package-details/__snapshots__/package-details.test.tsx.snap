@@ -75,18 +75,6 @@ exports[`package details > render package details for a 1915(c) submission 1`] =
             <h3
               class="font-bold"
             >
-              Proposed Effective Date
-            </h3>
-            <div
-              class="py-2"
-            >
-              Pending
-            </div>
-          </div>
-          <div>
-            <h3
-              class="font-bold"
-            >
               Initial Submission Date
             </h3>
             <div
@@ -129,6 +117,18 @@ exports[`package details > render package details for a 1915(c) submission 1`] =
               class="py-2"
             >
               -- --
+            </div>
+          </div>
+          <div>
+            <h3
+              class="font-bold"
+            >
+              Proposed Effective Date
+            </h3>
+            <div
+              class="py-2"
+            >
+              Pending
             </div>
           </div>
           <div>
@@ -265,18 +265,6 @@ exports[`package details > render package details for a 1915(c) submission with 
             <h3
               class="font-bold"
             >
-              Proposed Effective Date
-            </h3>
-            <div
-              class="py-2"
-            >
-              Pending
-            </div>
-          </div>
-          <div>
-            <h3
-              class="font-bold"
-            >
               Initial Submission Date
             </h3>
             <div
@@ -319,6 +307,18 @@ exports[`package details > render package details for a 1915(c) submission with 
               class="py-2"
             >
               -- --
+            </div>
+          </div>
+          <div>
+            <h3
+              class="font-bold"
+            >
+              Proposed Effective Date
+            </h3>
+            <div
+              class="py-2"
+            >
+              Pending
             </div>
           </div>
           <div>
@@ -577,18 +577,6 @@ exports[`package details > renders package details for a 1915(b) submission 1`] 
             <h3
               class="font-bold"
             >
-              Proposed Effective Date
-            </h3>
-            <div
-              class="py-2"
-            >
-              Pending
-            </div>
-          </div>
-          <div>
-            <h3
-              class="font-bold"
-            >
               Initial Submission Date
             </h3>
             <div
@@ -631,6 +619,18 @@ exports[`package details > renders package details for a 1915(b) submission 1`] 
               class="py-2"
             >
               -- --
+            </div>
+          </div>
+          <div>
+            <h3
+              class="font-bold"
+            >
+              Proposed Effective Date
+            </h3>
+            <div
+              class="py-2"
+            >
+              Pending
             </div>
           </div>
           <div>
