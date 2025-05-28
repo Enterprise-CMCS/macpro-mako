@@ -1,9 +1,10 @@
-import { motion } from "framer-motion";
 import { Loader, XIcon } from "lucide-react";
-import { FC, useEffect, useState } from "react";
+import { FC, useEffect, useRef, useState } from "react";
 
 import { useDebounce } from "@/hooks";
+import { cn } from "@/utils";
 
+import { Button, Input } from "../Inputs";
 import { OsUrlState } from "../Opensearch";
 
 export const SearchForm: FC<{
@@ -14,6 +15,7 @@ export const SearchForm: FC<{
 }> = ({ handleSearch, urlState, disabled, isSearching }) => {
   const [searchText, setSearchText] = useState(urlState?.search ?? "");
   const debouncedSearchString = useDebounce(searchText, 750);
+  const searchInputRef = useRef(null);
 
   useEffect(() => {
     handleSearch(debouncedSearchString);
@@ -30,14 +32,15 @@ export const SearchForm: FC<{
   };
 
   return (
-    <form onSubmit={handleSubmit} className="flex-1">
-      <div className="relative">
+    <form onSubmit={handleSubmit}>
+      <div className="relative w-full lg:w-[30rem]">
         <svg
           xmlns="http://www.w3.org/2000/svg"
-          className="absolute top-0 bottom-0 w-6 h-6 my-auto text-gray-400 left-3"
+          className="absolute inset-y-0 w-6 h-6 my-auto text-gray-400 left-3"
           fill="none"
           viewBox="0 0 24 24"
           stroke="currentColor"
+          aria-hidden="true"
         >
           <path
             strokeLinecap="round"
@@ -46,38 +49,47 @@ export const SearchForm: FC<{
             d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
           />
         </svg>
-        <label htmlFor="searchInput" className="sr-only">
+        <label htmlFor="search-input" className="sr-only">
           Search by Package ID, CPOC Name, or Submitter Name
         </label>
-        <input
-          id="searchInput"
+        <Input
+          id="search-input"
+          ref={searchInputRef}
           type="text"
-          className="w-full lg:w-[30rem] py-3 pl-12 pr-4 text-gray-500 border border-gray-300 outline-none focus:bg-white focus:border-indigo-600"
+          className="w-full h-auto py-3 pl-12 pr-10 !text-gray-500 border border-gray-300 rounded-none shadow-none text-inherit"
           maxLength={28}
           value={searchText}
           onChange={handleInputChange}
           disabled={disabled}
+          placeholder="Search..."
         />
-        {isSearching && (
-          <motion.div
-            className="absolute inset-y-0 w-6 h-6 my-auto left-[26.5rem] origin-center flex items-center justify-center"
-            animate={{ rotate: "360deg" }}
-            transition={{ repeat: Infinity, duration: 0.5 }}
-          >
-            <Loader className="w-4 h-4 text-slate-950" />
-          </motion.div>
-        )}
-        {!!searchText && (
-          <XIcon
-            className="absolute cursor-pointer top-0 bottom-0 w-6 h-6 my-auto right-0 lg:left-[28rem]"
-            data-testid="close-icon"
-            onClick={() => {
-              setSearchText("");
-              handleSearch("");
-            }}
-            name="close"
+        <div className="flex items-center gap-x-1 absolute inset-y-0 right-0 pr-3">
+          <Loader
+            className={cn("w-4 h-4 text-slate-950 animate-spin", {
+              hidden: isSearching === false,
+            })}
           />
-        )}
+          {searchText && (
+            <Button
+              className="w-auto h-auto p-0"
+              variant="ghost"
+              type="button"
+              aria-label="Clear search input"
+              aria-controls="search-input"
+              data-testid="clear-search-button"
+              onClick={() => {
+                setSearchText("");
+                handleSearch("");
+                if (searchInputRef.current) {
+                  searchInputRef.current.focus();
+                }
+              }}
+              disabled={disabled}
+            >
+              <XIcon className="w-6 h-6" aria-hidden="true" />
+            </Button>
+          )}
+        </div>
       </div>
     </form>
   );
