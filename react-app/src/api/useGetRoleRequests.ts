@@ -1,7 +1,7 @@
 import { useQuery } from "@tanstack/react-query";
 import { API } from "aws-amplify";
 
-import { UserRoleType } from "@/features/user-roles/UserManagement";
+import { UserRoleType } from "@/features/user-roles/utils";
 
 export const getRoleRequests = async (): Promise<UserRoleType[]> => {
   try {

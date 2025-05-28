@@ -123,7 +123,6 @@ export const CMSWelcome = () => {
 
 const CMSWelcomeWrapper = () => {
   const isCmsHomepageEnabled = useFeatureFlag("CMS_HOMEPAGE_FLAG");
-  console.log({ isCmsHomepageEnabled });
 
   return <>{isCmsHomepageEnabled ? <CMSWelcome /> : <Welcome />}</>;
 };

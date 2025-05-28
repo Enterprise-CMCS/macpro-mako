@@ -22,13 +22,15 @@ export const apiHandlers = [
 
 export { errorApiCpocHandler } from "./cpocs";
 export { onceApiItemHandler, errorApiItemHandler, errorApiItemExistsHandler } from "./items";
+export { errorApiNotificationHandler } from "./notifications";
 export { onceApiPackageActionsHandler, errorApiPackageActionsHandler } from "./packageActions";
 export { errorApiSearchHandler } from "./search";
 export { errorApiAttachmentUrlHandler } from "./submissions";
 export { errorApiSubTypesHandler, errorApiTypeHandler } from "./types";
 export { mockCurrentAuthenticatedUser, mockUseGetUser, mockUserAttributes } from "./user";
-export { errorApiRequestBaseCMSAccessHandler } from "./userDetails";
+export { errorApiUserDetailsHandler, errorApiRequestBaseCMSAccessHandler } from "./userDetails";
 export {
+  errorApiUserProfileHandler,
   errorApiGetRoleRequestsHandler,
   errorApiGetCreateUserProfileHandler,
   errorApiOptionSubmitGroupDivisionHandler,
