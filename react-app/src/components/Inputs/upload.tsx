@@ -83,6 +83,7 @@ export const Upload = ({ maxFiles, files, setFiles, dataTestId }: UploadProps) =
   };
   const onDrop = useCallback(
     async (acceptedFiles: File[], fileRejections: FileRejection[]) => {
+      console.log("uploading file");
       setRejectedFiles(fileRejections);
       if (fileRejections.length === 0) {
         setIsUploading(true); // Set uploading to true
