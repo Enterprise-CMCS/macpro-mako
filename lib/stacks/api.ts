@@ -63,6 +63,7 @@ export class Api extends cdk.NestedStack {
     } = props;
 
     const topicName = `${topicNamespace}aws.onemac.migration.cdc`;
+    const draftTopicName = `${topicNamespace}aws.onemac.draft`;
 
     // Define IAM role
     const lambdaRole = new cdk.aws_iam.Role(this, "LambdaExecutionRole", {
@@ -236,6 +237,7 @@ export class Api extends cdk.NestedStack {
         environment: {
           dbInfoSecretName,
           topicName,
+          draftTopicName,
           brokerString,
           osDomain: `https://${openSearchDomainEndpoint}`,
           indexNamespace,
