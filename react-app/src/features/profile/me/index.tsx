@@ -40,7 +40,7 @@ export const MyProfile = () => {
   const [showAddState, setShowAddState] = useState<boolean>(true);
   const [requestedStates, setRequestedStates] = useState<StateCode[]>([]);
   const [pendingRequests, setPendingRequests] = useState<boolean>(false);
-  const statesToRequest: Option[] = useAvailableStates(userProfile?.stateAccess);
+  const statesToRequest: Option[] = useAvailableStates(userDetails?.role, userProfile?.stateAccess);
 
   const filteredStateAccess = useMemo(
     () => filterStateAccess(userDetails, userProfile),
@@ -84,6 +84,7 @@ export const MyProfile = () => {
             value={requestedStates}
             options={statesToRequest}
             onChange={(values: StateCode[]) => setRequestedStates(values)}
+            selectedDisplay="label"
           />
           <div className="block lg:mt-8 lg:mb-2">
             <span>
@@ -201,6 +202,7 @@ export const MyProfile = () => {
                 />
                 {orderedStateAccess?.map((access) => (
                   <StateAccessCard
+                    key={`${access.territory}`}
                     access={access}
                     role={userDetails.role}
                     onClick={() => setSelfRevokeState(access.territory as StateCode)}

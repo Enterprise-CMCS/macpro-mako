@@ -53,15 +53,17 @@ export const renderWithQueryClientAndMemoryRouter = (
   ...routing: Parameters<typeof createMemoryRouter>
 ) => {
   const router = createMemoryRouter(...routing);
+  const queryClient = createTestQueryClient();
   const rendered = render(element, {
     wrapper: () => (
-      <QueryClientProvider client={createTestQueryClient()}>
+      <QueryClientProvider client={queryClient}>
         <RouterProvider router={router} />
       </QueryClientProvider>
     ),
   });
   return {
     router,
+    queryClient,
     ...rendered,
   };
 };
