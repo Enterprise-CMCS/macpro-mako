@@ -60,9 +60,9 @@ AccordionTrigger.displayName = AccordionPrimitive.Trigger.displayName;
 type GridAccordionTriggerProps = {
   className?: string; // Add className to prop type definition
   showPlusMinus?: boolean;
-  col1?: React.ReactNode; // Optional prop for first column
-  col2?: React.ReactNode; // Optional prop for second column
-  col3?: React.ReactNode; // Optional prop for third column
+  col1?: React.ReactNode | string; // Optional prop for first column
+  col2?: React.ReactNode | string; // Optional prop for second column
+  col3?: React.ReactNode | string; // Optional prop for third column
 } & React.ComponentPropsWithoutRef<typeof AccordionPrimitive.Trigger>;
 
 const GridAccordionTrigger = React.forwardRef<
