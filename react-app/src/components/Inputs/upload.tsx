@@ -95,14 +95,18 @@ export const Upload = ({ maxFiles, files, setFiles, dataTestId }: UploadProps) =
       //   labelTextA = (event.currentTarget as HTMLElement)?.getAttribute("data-label");
       // }
 
-      const titleEl = document.querySelector(
-        '[data-testid="undefined-title"]'
-      ) as HTMLElement | null;
+      // const titleEl = document.querySelector(
+      //   '[data-testid="undefined-title"]'
+      // ) as HTMLElement | null;
     
+      const titleEl = document.querySelector(
+        '#package_details h1'
+      ) as HTMLHeadingElement | null;
+      console.log("Page title:", titleEl?.textContent);
 
       const labelTextB = dropzoneRef.current?.getAttribute("data-label");
 
-      console.log("Page title:", titleEl?.textContent);
+      // console.log("Page title:", titleEl?.textContent);
       // console.log("label textA: ", labelTextA);
       console.log("label textA: ", labelTextB);
 
