@@ -114,6 +114,24 @@ describe("handler", () => {
     };
     expect(result).toStrictEqual(expectedResult);
   });
+  it("should fail to recover a package but no topic name", async () => {
+    process.env.topicName = "";
+    const noActionevent = {
+      body: JSON.stringify({
+        packageId: EXISTING_ITEM_ID,
+        action: "recover",
+        changeReason: "Nunya",
+      }),
+    } as APIGatewayEvent;
+
+    const result = await handler(noActionevent);
+
+    const expectedResult = {
+      statusCode: 500,
+      body: { message: "Topic name is not defined" },
+    };
+    expect(result).toStrictEqual(expectedResult);
+  });
   it("should delete a package but no topic name", async () => {
     process.env.topicName = "";
     const noActionevent = {
