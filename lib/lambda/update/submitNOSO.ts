@@ -55,6 +55,7 @@ const sendSubmitMessage = async (item: submitMessageType) => {
     formattedId,
     JSON.stringify({
       ...item,
+      id: formattedId,
       packageId: formattedId,
       origin: "SEATool",
       isAdminChange: true,
