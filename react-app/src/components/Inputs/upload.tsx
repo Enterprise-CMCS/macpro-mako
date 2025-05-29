@@ -1,5 +1,5 @@
 import { X } from "lucide-react";
-import { useCallback, useState } from "react";
+import { useCallback, useState, useRef } from "react";
 import { FileError, FileRejection, useDropzone, DropEvent } from "react-dropzone";
 import { attachmentSchema } from "shared-types";
 import { FILE_TYPES } from "shared-types/uploads";
@@ -48,6 +48,8 @@ type UploadProps = {
  * );
  */
 export const Upload = ({ maxFiles, files, setFiles, dataTestId }: UploadProps) => {
+  const dropzoneRef = useRef<HTMLDivElement | null>(null);
+
   const [isUploading, setIsUploading] = useState(false); // New state for tracking upload status
   const [rejectedFiles, setRejectedFiles] = useState<FileRejection[]>([]);
   const uniqueId = uuidv4();
@@ -191,6 +193,7 @@ export const Upload = ({ maxFiles, files, setFiles, dataTestId }: UploadProps) =
       ) : (
         <div
           {...getRootProps()}
+          ref={dropzoneRef}
           className={cn(
             "w-full flex items-center justify-center border border-dashed border-[#71767a] py-6 rounded-sm",
             isDragActive && "border-blue-700",
