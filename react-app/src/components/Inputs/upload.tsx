@@ -91,14 +91,19 @@ export const Upload = ({ maxFiles, files, setFiles, dataTestId }: UploadProps) =
       console.log("accepted files: " , acceptedFiles);
       console.log("first element: ", acceptedFiles[0])
       let labelTextA;
-      if(event){
-        labelTextA = (event.currentTarget as HTMLElement)?.getAttribute("data-label");
-      }
+      // if(event){
+      //   labelTextA = (event.currentTarget as HTMLElement)?.getAttribute("data-label");
+      // }
+
+      const titleEl = document.querySelector(
+        '[data-testid="undefined-title"]'
+      ) as HTMLElement | null;
+    
 
       const labelTextB = dropzoneRef.current?.getAttribute("data-label");
 
-
-      console.log("label textA: ", labelTextA);
+      console.log("Page title:", titleEl?.textContent);
+      // console.log("label textA: ", labelTextA);
       console.log("label textA: ", labelTextB);
 
       // sendGAEvent("File Upload", "state-user")
