@@ -29,6 +29,7 @@ const sendRecoverMessage = async (currentPackage: ItemResult) => {
     JSON.stringify({
       ...currentPackage._source,
       id: packageId,
+      idToBeUpdated: currentPackage._id,
       deleted: false,
       isAdminChange: true,
       adminChangeType: "update-id",
