@@ -133,7 +133,7 @@ export const AdminPackageActivities = ({ changelog }: AdminChangesProps) => {
         key={adminChangelog[0]._source.id}
         type="multiple"
         defaultValue={[adminChangelog[0]._source.id]}
-        className="two-cols-subgrid gap-y-2"
+        className="grid grid-cols-1 gap-y-2"
       >
         {adminChangelog.map(({ _source: adminActivity }) => (
           <AdminChange key={adminActivity.id} adminActivity={adminActivity} />

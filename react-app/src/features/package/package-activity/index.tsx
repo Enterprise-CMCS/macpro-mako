@@ -22,11 +22,11 @@ type AttachmentDetailsProps = {
 };
 
 const AttachmentDetails = ({ id, attachments, onClick }: AttachmentDetailsProps) => (
-  <div className="two-cols-subgrid [&_div:last-child]:border-0">
+  <div className="[&_div:last-child]:border-0">
     {attachments.map((attachment) => {
       return (
         <div
-          className="two-cols-subgrid items-center text-left border-b transition-colors hover:bg-muted/50 data-[state=selected]:bg-muted text-sm"
+          className="two-cols-gutter items-center text-left border-b transition-colors hover:bg-muted/50 data-[state=selected]:bg-muted text-sm"
           key={`${id}-${attachment.key}`}
         >
           <div className="col-left-gutter pl-2 py-3">{attachment.title}</div>
@@ -55,22 +55,20 @@ const Submission = ({ packageActivity }: SubmissionProps) => {
   const { onUrl, loading, onZip } = useAttachmentService({ packageId });
 
   return (
-    <div className="two-cols-gutter py-4 gap-y-6 sm:gap-y-6">
-      <div className="two-cols-subgrid">
-        <h2 className="col-span-full font-bold text-lg mb-2">Attachments</h2>
-        {attachments && attachments?.length > 0 ? (
-          <div className="two-cols-subgrid border-[1px] overflow-auto">
-            <div className="border-b text-left font-semibold text-muted-foreground leading-5 two-cols-subgrid">
-              <div className="col-left-gutter pl-2">Document Type</div>
-              <div className="col-gutter" />
-              <div className="col-right-gutter pr-2">Attached File</div>
-            </div>
-            <AttachmentDetails attachments={attachments} id={id} onClick={onUrl} />
+    <div className="grid grid-cols-1 py-4 gap-y-6 sm:gap-y-6">
+      <h2 className="font-bold text-lg mb-2">Attachments</h2>
+      {attachments && attachments?.length > 0 ? (
+        <div className="border-[1px] overflow-auto">
+          <div className="border-b text-left font-semibold text-muted-foreground leading-5 two-cols-gutter">
+            <div className="col-left-gutter pl-2">Document Type</div>
+            <div className="col-gutter" />
+            <div className="col-right-gutter pr-2">Attached File</div>
           </div>
-        ) : (
-          <p className="col-span-full">No information submitted</p>
-        )}
-      </div>
+          <AttachmentDetails attachments={attachments} id={id} onClick={onUrl} />
+        </div>
+      ) : (
+        <p>No information submitted</p>
+      )}
 
       {attachments && attachments.length > 1 && (
         <Button
@@ -216,7 +214,7 @@ export const PackageActivities = ({ id, changelog }: PackageActivitiesProps) => 
           // `changelogWithoutAdminChanges[0]._source.id` to re-render the `defaultValue` whenever `keyAndDefaultValue` changes
           key={changelogWithoutAdminChanges[0]._source.id}
           type="multiple"
-          className="two-cols-subgrid gap-y-2"
+          className="grid grid-cols-1 gap-y-2"
           defaultValue={[changelogWithoutAdminChanges[0]._source.id]}
         >
           {changelogWithoutAdminChanges.map(({ _source: packageActivity }) => (

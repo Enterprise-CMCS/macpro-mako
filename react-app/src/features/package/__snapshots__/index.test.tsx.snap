@@ -3,10 +3,10 @@
 exports[`package details > makes a package 1`] = `
 <DocumentFragment>
   <div
-    class="w-full py-1 px-4 lg:px-8 two-cols gap-y-6 sm:gap-y-6"
+    class="w-full py-1 px-4 lg:px-8 grid grid-cols-1 gap-y-6 sm:gap-y-6"
   >
     <section
-      class="sm:mb-0 two-cols-subgrid gap-y-3 sm:gap-y-3"
+      class="sm:mb-0 two-cols gap-y-3 sm:gap-y-3"
       id="package_overview"
     >
       <div
@@ -66,7 +66,7 @@ exports[`package details > makes a package 1`] = `
       </div>
     </section>
     <div
-      class="col-span-full grid gap-y-3"
+      class="grid grid-cols-1 gap-y-3"
     >
       <section
         class="p-4 border rounded-sm border-cardBorder"
@@ -289,7 +289,7 @@ exports[`package details > makes a package 1`] = `
             Administrative changes reflect updates to specific data fields. If you have additional questions, please contact the assigned CPOC.
           </p>
           <div
-            class="two-cols-subgrid gap-y-2"
+            class="grid grid-cols-1 gap-y-2"
             data-orientation="vertical"
           >
             <div

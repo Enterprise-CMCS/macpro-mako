@@ -187,12 +187,6 @@
   grid-column-end: 3;
 }
 
-.two-cols-subgrid {
-  grid-column: 1 / -1;
-  display: grid;
-  grid-template-columns: subgrid;
-}
-
 .two-cols-gutter {
   /* creates 3 columns that match the 2 column grid above, but allows elements to be placed in the gutter */
   display: grid;

@@ -42,8 +42,8 @@ export const DetailsContent = ({ id }: DetailsContentProps) => {
   const { _source: submission } = record;
 
   return (
-    <div className="w-full py-1 px-4 lg:px-8 two-cols gap-y-6 sm:gap-y-6">
-      <section id="package_overview" className="sm:mb-0 two-cols-subgrid gap-y-3 sm:gap-y-3">
+    <div className="w-full py-1 px-4 lg:px-8 grid grid-cols-1 gap-y-6 sm:gap-y-6">
+      <section id="package_overview" className="sm:mb-0 two-cols gap-y-3 sm:gap-y-3">
         <DetailCardWrapper title="Status">
           <PackageStatusCard submission={submission} />
         </DetailCardWrapper>
@@ -51,7 +51,7 @@ export const DetailsContent = ({ id }: DetailsContentProps) => {
           <PackageActionsCard id={id} submission={submission} />
         </DetailCardWrapper>
       </section>
-      <div className="col-span-full grid gap-y-3">
+      <div className="grid grid-cols-1 gap-y-3">
         <PackageDetails submission={submission} />
         <PackageActivities id={id} changelog={submission.changelog} />
         <AdminPackageActivities changelog={submission.changelog} />

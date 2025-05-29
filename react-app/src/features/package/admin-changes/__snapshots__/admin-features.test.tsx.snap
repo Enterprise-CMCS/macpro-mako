@@ -28,7 +28,7 @@ exports[`Admin Features test > finds an admin change admin changes 1`] = `
             Administrative changes reflect updates to specific data fields. If you have additional questions, please contact the assigned CPOC.
           </p>
           <div
-            class="two-cols-subgrid gap-y-2"
+            class="grid grid-cols-1 gap-y-2"
             data-orientation="vertical"
           >
             <div
@@ -881,7 +881,7 @@ exports[`Admin Features test > finds an admin change admin changes 1`] = `
           Administrative changes reflect updates to specific data fields. If you have additional questions, please contact the assigned CPOC.
         </p>
         <div
-          class="two-cols-subgrid gap-y-2"
+          class="grid grid-cols-1 gap-y-2"
           data-orientation="vertical"
         >
           <div
