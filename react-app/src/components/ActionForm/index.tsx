@@ -224,7 +224,7 @@ export const ActionForm = <Schema extends SchemaWithEnforcableProps>({
       />
       {form.formState.isSubmitting && <LoadingSpinner />}
       <Form {...form}>
-        <form onSubmit={onSubmit} className="my-6 space-y-8 mx-auto justify-center flex flex-col">
+        <form className="my-6 space-y-8 mx-auto justify-center flex flex-col">
           <SectionCard testId="detail-section" title={title}>
             <div>
               {areFieldsRequired && <RequiredFieldDescription />}
@@ -269,7 +269,7 @@ export const ActionForm = <Schema extends SchemaWithEnforcableProps>({
               onClick={
                 promptPreSubmission
                   ? () => userPrompt({ ...promptPreSubmission, onAccept: onSubmit })
-                  : undefined
+                  : onSubmit
               }
               disabled={form.formState.isValid === false}
               data-testid="submit-action-form"
