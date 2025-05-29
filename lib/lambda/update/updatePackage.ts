@@ -58,13 +58,32 @@ const sendDeleteMessage = async (currentPackage: ItemResult) => {
   const currentTime = Date.now();
 
   // Making a copy of the previous package and deleting it
+  // await produceMessage(
+  //   topicName,
+  //   packageId,
+  //   JSON.stringify({
+  //     ...currentPackage._source,
+  //     idToBeUpdated: currentPackage._id,
+  //     id: packageId + "-del",
+  //     deleted: false,
+  //     isAdminChange: true,
+  //     adminChangeType: "update-id",
+  //     makoChangedDate: currentTime,
+  //     changedDate: currentTime,
+  //     statusDate: currentTime,
+  //     timestamp: currentTime,
+  //   }),
+  // );
   await produceMessage(
     topicName,
-    packageId,
+    packageId + "-del",
     JSON.stringify({
       ...currentPackage._source,
       id: packageId + "-del",
-      deleted: false,
+      idToBeUpdated: currentPackage._id,
+      origin: "OneMAC",
+      changeMade: "deleted package",
+      changeReason: "deleted package",
       isAdminChange: true,
       adminChangeType: "update-id",
       makoChangedDate: currentTime,
