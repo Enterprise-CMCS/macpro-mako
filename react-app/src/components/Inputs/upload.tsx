@@ -22,6 +22,7 @@ type UploadProps = {
   files: Attachment[];
   setFiles: (files: Attachment[]) => void;
   dataTestId?: string;
+  type?: string; 
 };
 
 /**
@@ -90,7 +91,7 @@ export const Upload = ({ maxFiles, files, setFiles, dataTestId }: UploadProps) =
       console.log("uploading file");
       console.log("accepted files: " , acceptedFiles);
       console.log("first element: ", acceptedFiles[0])
-      let labelTextA;
+      // let labelTextA;
       // if(event){
       //   labelTextA = (event.currentTarget as HTMLElement)?.getAttribute("data-label");
       // }
