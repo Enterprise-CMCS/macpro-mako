@@ -32,6 +32,8 @@ const sendRecoverMessage = async (currentPackage: ItemResult) => {
       deleted: false,
       isAdminChange: true,
       adminChangeType: "update-id",
+      changeMade: "Recovered Package",
+      changeReason: "Recovered package",
       makoChangedDate: currentTime,
       changedDate: currentTime,
       statusDate: currentTime,
