@@ -1,6 +1,6 @@
 import { X } from "lucide-react";
 import { useCallback, useState } from "react";
-import { FileError, FileRejection, useDropzone } from "react-dropzone";
+import { FileError, FileRejection, useDropzone, DropEvent } from "react-dropzone";
 import { attachmentSchema } from "shared-types";
 import { FILE_TYPES } from "shared-types/uploads";
 import { v4 as uuidv4 } from "uuid";
@@ -84,10 +84,14 @@ export const Upload = ({ maxFiles, files, setFiles, dataTestId }: UploadProps) =
     }
   };
   const onDrop = useCallback(
-    async (acceptedFiles: File[], fileRejections: FileRejection[]) => {
+    async (acceptedFiles: File[], fileRejections: FileRejection[],  event: DropEvent) => {
       console.log("uploading file");
       console.log("accepted files: " , acceptedFiles);
       console.log("first element: ", acceptedFiles[0])
+      const labelText = (event.currentTarget as HTMLElement)?.getAttribute("data-label");
+
+      console.log("label text: ", labelText);
+
       // sendGAEvent("File Upload", "state-user")
       setRejectedFiles(fileRejections);
       if (fileRejections.length === 0) {
