@@ -13,6 +13,42 @@ import { getPackageType } from "./getPackageType";
  * @property {string} body.packageId
  * @property {string} body.action
  */
+const sendRecoverMessage = async (currentPackage: ItemResult) => {
+  const topicName = process.env.topicName as string;
+  if (!topicName) {
+    throw new Error("Topic name is not defined");
+  }
+
+  const packageId = currentPackage._source.id.split(/-del/i)[0];
+  const currentTime = Date.now();
+
+  // Making a copy of the previous package and deleting it
+  await produceMessage(
+    topicName,
+    packageId,
+    JSON.stringify({
+      ...currentPackage._source,
+      id: packageId,
+      deleted: false,
+      isAdminChange: true,
+      adminChangeType: "update-id",
+      makoChangedDate: currentTime,
+      changedDate: currentTime,
+      statusDate: currentTime,
+      timestamp: currentTime,
+    }),
+  );
+
+  return response({
+    statusCode: 200,
+    body: { message: `${packageId} has been recovered.` },
+  });
+};
+/** @typedef {object} json
+ * @property {object} body
+ * @property {string} body.packageId
+ * @property {string} body.action
+ */
 const sendDeleteMessage = async (currentPackage: ItemResult) => {
   const topicName = process.env.topicName as string;
   if (!topicName) {
@@ -211,7 +247,7 @@ const sendUpdateIdMessage = async ({
 
 const updatePackageEventBodySchema = z.object({
   packageId: z.string(),
-  action: z.enum(["update-values", "update-id", "delete"]),
+  action: z.enum(["update-values", "update-id", "delete", "recover"]),
   updatedId: z.string().optional(),
   updatedFields: z.record(z.unknown()).optional(),
   changeMade: z.string().optional(),
@@ -264,7 +300,9 @@ export const handler = async (event: APIGatewayEvent) => {
     if (action === "delete") {
       return await sendDeleteMessage(currentPackage);
     }
-
+    if (action === "recover") {
+      return await sendRecoverMessage(currentPackage);
+    }
     if (action === "update-id") {
       return await sendUpdateIdMessage({ currentPackage, updatedId, changeMade, changeReason });
     }
