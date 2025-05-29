@@ -90,9 +90,12 @@ export const Upload = ({ maxFiles, files, setFiles, dataTestId }: UploadProps) =
       console.log("uploading file");
       console.log("accepted files: " , acceptedFiles);
       console.log("first element: ", acceptedFiles[0])
-      const labelText = (event.currentTarget as HTMLElement)?.getAttribute("data-label");
+      const labelTextA = (event.currentTarget as HTMLElement)?.getAttribute("data-label");
+      const labelTextB = dropzoneRef.current?.getAttribute("data-label");
 
-      console.log("label text: ", labelText);
+
+      console.log("label textA: ", labelTextA);
+      console.log("label textA: ", labelTextB);
 
       // sendGAEvent("File Upload", "state-user")
       setRejectedFiles(fileRejections);
