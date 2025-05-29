@@ -16,11 +16,16 @@ export const FilterableSelect: FC<{
   onChange: (values: string[]) => void;
   selectedDisplay?: keyof Option;
 }> = ({ options, value, placeholder, onChange, selectedDisplay = "value" }) => {
+  const getLabel = (value) => {
+    if (selectedDisplay !== "label") return value;
+    const selected = options.filter((option) => option.value === value);
+    return selected[0].label;
+  };
   return (
     <Select<any, any>
       isMulti
-      value={value.map((S) => ({ value: S, label: S }))}
-      onChange={(val) => onChange(val.map((s: any) => s[selectedDisplay]))}
+      value={value.map((selected) => ({ value: selected, label: getLabel(selected) }))}
+      onChange={(value) => onChange(value.map((selected: any) => selected.value))}
       options={options}
       closeMenuOnSelect={false}
       placeholder={placeholder}

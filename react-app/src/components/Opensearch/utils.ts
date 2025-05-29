@@ -90,7 +90,7 @@ export const paginationQueryBuilder = (pagination: opensearch.QueryState<any>["p
   })();
 
   return {
-    size: pagination?.size && pagination?.size > 0 ? pagination?.size : 25,
+    size: pagination?.size && pagination?.size > 0 ? pagination?.size : 100,
     from,
   };
 };
