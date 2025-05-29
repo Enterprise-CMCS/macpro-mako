@@ -64,7 +64,7 @@ const sendDeleteMessage = async (currentPackage: ItemResult) => {
     JSON.stringify({
       ...currentPackage._source,
       id: packageId + "-del",
-      deleted: true,
+      deleted: false,
       isAdminChange: true,
       adminChangeType: "update-id",
       makoChangedDate: currentTime,
