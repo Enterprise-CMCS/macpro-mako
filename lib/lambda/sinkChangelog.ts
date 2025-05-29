@@ -109,6 +109,8 @@ const processAndIndex = async ({
             packageChangelogs.hits.hits.forEach((log) => {
               if (log._source.event !== "delete") {
                 const recordOffset = log._id.split("-").at(-1);
+                console.log("log" + JSON.stringify(log));
+                console.log("id" + id);
                 docs.push({
                   ...log._source,
                   id: `${id}-${recordOffset}`,
@@ -245,5 +247,6 @@ const processAndIndex = async ({
       });
     }
   }
+  console.log("DOCS" + JSON.stringify(docs));
   await bulkUpdateDataWrapper(docs, "changelog");
 };
