@@ -1,6 +1,7 @@
 import { defineConfig, devices, PlaywrightTestConfig } from "@playwright/test";
 
 import { getDeploymentOutput } from "./lib/auth.secrets";
+import { baseURL } from "./lib/baseURLs";
 /**
  * See https://playwright.dev/docs/test-configuration.
  */
@@ -83,7 +84,7 @@ export default defineConfig({
     {
       name: "local",
       use: {
-        baseURL: "http://localhost:5000",
+        baseURL: baseURL.local,
         storageState: "./playwright/.auth/state-user.json",
       },
       dependencies: ["local-setup"],
@@ -100,7 +101,7 @@ export default defineConfig({
     {
       name: "eua-user",
       use: {
-        baseURL: "https://mako.cms.gov",
+        baseURL: baseURL.prod,
         storageState: "./playwright/.auth/eua-user.json",
       },
       dependencies: ["eua-setup"],
@@ -108,7 +109,7 @@ export default defineConfig({
     {
       name: "mfa-user",
       use: {
-        baseURL: "https://mako.cms.gov",
+        baseURL: baseURL.prod,
         storageState: "./playwright/.auth/zzState-user.json",
       },
       dependencies: ["mfa-setup"],
@@ -117,7 +118,7 @@ export default defineConfig({
       name: "smoke-tests",
       testMatch: "**/smoke/**/*.spec.ts",
       use: {
-        baseURL: "https://mako.cms.gov",
+        baseURL: baseURL.prod,
       },
       dependencies: ["smoke-test"],
     },

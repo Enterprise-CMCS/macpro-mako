@@ -1,11 +1,8 @@
 import { test as setup } from "@playwright/test";
 
-import playwrightConfig from "@/playwright.config";
-
-// import { getDeploymentConfig, getSecret } from "./auth.secrets";
 import { generateAuthFile } from "./auth.setup";
+import { baseURL } from "./baseURLs";
 
-const { baseURL } = playwrightConfig.projects[6].use;
 const stage = process.env.STAGE_NAME || "main";
 const project = process.env.PROJECT;
 
@@ -20,7 +17,7 @@ setup("eua auth", async () => {
     console.error("no EUA ID or password provided.");
   } else {
     await generateAuthFile({
-      baseURL,
+      baseURL: baseURL.prod,
       user: EUAID,
       password: EUAPASSWORD,
       storagePath: euaAuthFile,
