@@ -150,6 +150,7 @@ export const Upload = ({ maxFiles, files, setFiles, dataTestId }: UploadProps) =
             >
               <span className="text-sky-700">{file.filename}</span>
               <I.Button
+                type="button"
                 onClick={() =>
                   userPrompt({
                     header: "Delete Attachment?",
