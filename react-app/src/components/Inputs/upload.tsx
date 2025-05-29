@@ -90,7 +90,11 @@ export const Upload = ({ maxFiles, files, setFiles, dataTestId }: UploadProps) =
       console.log("uploading file");
       console.log("accepted files: " , acceptedFiles);
       console.log("first element: ", acceptedFiles[0])
-      const labelTextA = (event.currentTarget as HTMLElement)?.getAttribute("data-label");
+      let labelTextA;
+      if(event){
+        labelTextA = (event.currentTarget as HTMLElement)?.getAttribute("data-label");
+      }
+
       const labelTextB = dropzoneRef.current?.getAttribute("data-label");
 
 
