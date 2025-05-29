@@ -10,6 +10,8 @@ import { userPrompt } from "@/components";
 import * as I from "@/components/Inputs";
 import { LoadingSpinner } from "@/components/LoadingSpinner"; // Import your LoadingSpinner component
 import { cn } from "@/utils";
+import { sendGAEvent } from "@/utils/ReactGA/sendGAEvent";
+// import 
 
 import { extractBucketAndKeyFromUrl, getPresignedUrl, uploadToS3 } from "./uploadUtilities";
 
@@ -84,6 +86,9 @@ export const Upload = ({ maxFiles, files, setFiles, dataTestId }: UploadProps) =
   const onDrop = useCallback(
     async (acceptedFiles: File[], fileRejections: FileRejection[]) => {
       console.log("uploading file");
+      console.log("accepted files: " , acceptedFiles);
+      console.log("first element: ", acceptedFiles[0])
+      // sendGAEvent("File Upload", "state-user")
       setRejectedFiles(fileRejections);
       if (fileRejections.length === 0) {
         setIsUploading(true); // Set uploading to true
@@ -94,6 +99,10 @@ export const Upload = ({ maxFiles, files, setFiles, dataTestId }: UploadProps) =
               const url = await getPresignedUrl(file.name);
               const { bucket, key } = extractBucketAndKeyFromUrl(url);
               await uploadToS3(file, url);
+
+              console.log("bucket: ", bucket);
+              console.log("key: ", key);
+              // console.log()
 
               const attachment: Attachment = {
                 filename: file.name,
