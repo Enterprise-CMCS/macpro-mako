@@ -298,7 +298,7 @@ export const insertOneMacRecordsFromKafkaIntoMako = async (
   );
   const roleRequests = oneMacRecordsForMako
     .filter((record) => record.eventType === "legacy-user-role" || record.eventType === "user-role")
-    .toSorted((a, b) => {
+    .sort((a, b) => {
       return (a.lastModifiedDate as any) - (b.lastModifiedDate as any);
     });
 
