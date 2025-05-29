@@ -9,6 +9,7 @@ import { ATTACHMENT_BUCKET_NAME } from "../consts";
 import type { TestItemResult } from "../index.d";
 export const EXISTING_ITEM_PENDING_ID = "MD-0002.R00.00";
 export const EXISTING_ITEM_APPROVED_NEW_ID = "MD-0000.R00.00";
+export const DELETED_ITEM_ID = "MD-0000.R00.00-del";
 export const VALID_ITEM_TEMPORARY_EXTENSION_ID = "MD-0000.R00.TE00";
 export const VALID_ITEM_EXTENSION_ID = "VA-1111.R11.00";
 export const EXISTING_ITEM_APPROVED_AMEND_ID = "MD-0000.R00.01";
@@ -54,6 +55,17 @@ const items: Record<string, TestItemResult> = {
     found: true,
     _source: {
       id: EXISTING_ITEM_ID,
+      seatoolStatus: SEATOOL_STATUS.APPROVED,
+      stateStatus: statusToDisplayToStateUser[SEATOOL_STATUS.APPROVED],
+      cmsStatus: statusToDisplayToCmsUser[SEATOOL_STATUS.APPROVED],
+      actionType: "New",
+    },
+  },
+  [DELETED_ITEM_ID]: {
+    _id: DELETED_ITEM_ID,
+    found: true,
+    _source: {
+      id: DELETED_ITEM_ID,
       seatoolStatus: SEATOOL_STATUS.APPROVED,
       stateStatus: statusToDisplayToStateUser[SEATOOL_STATUS.APPROVED],
       cmsStatus: statusToDisplayToCmsUser[SEATOOL_STATUS.APPROVED],

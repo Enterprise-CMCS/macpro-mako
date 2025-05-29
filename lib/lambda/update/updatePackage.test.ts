@@ -1,6 +1,7 @@
 import {
   CAPITATED_INITIAL_ITEM_ID,
   CAPITATED_INITIAL_NEW_ITEM_ID,
+  DELETED_ITEM_ID,
   EXISTING_ITEM_ID,
   EXISTING_ITEM_PENDING_ID,
   SIMPLE_ID,
@@ -76,6 +77,40 @@ describe("handler", () => {
     const expectedResult = {
       statusCode: 200,
       body: { message: "MD-00-0000 has been deleted." },
+    };
+    expect(result).toStrictEqual(expectedResult);
+  });
+  it("should recover a package", async () => {
+    const noActionevent = {
+      body: JSON.stringify({
+        packageId: DELETED_ITEM_ID,
+        action: "recover",
+        changeReason: "Nunya",
+      }),
+    } as APIGatewayEvent;
+
+    const result = await handler(noActionevent);
+
+    const expectedResult = {
+      statusCode: 200,
+      body: { message: "MD-0000.R00.00 has been recovered." },
+    };
+    expect(result).toStrictEqual(expectedResult);
+  });
+  it("should fail to recover a package", async () => {
+    const noActionevent = {
+      body: JSON.stringify({
+        packageId: EXISTING_ITEM_ID,
+        action: "recover",
+        changeReason: "Nunya",
+      }),
+    } as APIGatewayEvent;
+
+    const result = await handler(noActionevent);
+
+    const expectedResult = {
+      statusCode: 200,
+      body: { message: "MD-00-0000 is not a deleted package." },
     };
     expect(result).toStrictEqual(expectedResult);
   });

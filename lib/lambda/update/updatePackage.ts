@@ -19,6 +19,12 @@ const sendRecoverMessage = async (currentPackage: ItemResult) => {
     throw new Error("Topic name is not defined");
   }
 
+  if (!currentPackage._source.id.endsWith("del")) {
+    return response({
+      statusCode: 200,
+      body: { message: `${currentPackage._source.id} is not a deleted package.` },
+    });
+  }
   const packageId = currentPackage._source.id.split(/-del/i)[0];
   const currentTime = Date.now();
 
