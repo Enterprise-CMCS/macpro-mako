@@ -48,7 +48,7 @@ type UploadProps = {
  *   />
  * );
  */
-export const Upload = ({ maxFiles, files, setFiles, dataTestId }: UploadProps) => {
+export const Upload = ({ maxFiles, files, setFiles, dataTestId, type }: UploadProps) => {
   const dropzoneRef = useRef<HTMLDivElement | null>(null);
 
   const [isUploading, setIsUploading] = useState(false); // New state for tracking upload status
@@ -100,12 +100,13 @@ export const Upload = ({ maxFiles, files, setFiles, dataTestId }: UploadProps) =
       //   '[data-testid="undefined-title"]'
       // ) as HTMLElement | null;
     
-      const titleEl = document.querySelector(
-        '#package_details h1'
-      ) as HTMLHeadingElement | null;
-      console.log("Page title:", titleEl?.textContent);
+      // const titleEl = document.querySelector(
+      //   '#package_details h1'
+      // ) as HTMLHeadingElement | null;
+      // console.log("Page title:", titleEl?.textContent);
 
       const labelTextB = dropzoneRef.current?.getAttribute("data-label");
+      console.log("type: ", type)
 
       // console.log("Page title:", titleEl?.textContent);
       // console.log("label textA: ", labelTextA);
