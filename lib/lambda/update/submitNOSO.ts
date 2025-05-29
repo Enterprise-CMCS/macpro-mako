@@ -46,23 +46,24 @@ const sendSubmitMessage = async (item: submitMessageType) => {
   }
 
   const currentTime = Date.now();
-  const formatedSubmittedDate = convertStringToTimestamp(item.submissionDate);
-  const formatedProposedDate = convertStringToTimestamp(item.proposedDate);
+  const formattedId = item.id.toUpperCase();
+  const formattedSubmittedDate = convertStringToTimestamp(item.submissionDate);
+  const formattedProposedDate = convertStringToTimestamp(item.proposedDate);
 
   await produceMessage(
     topicName,
-    item.id,
+    formattedId,
     JSON.stringify({
       ...item,
-      packageId: item.id,
+      packageId: formattedId,
       origin: "SEATool",
       isAdminChange: true,
       adminChangeType: "NOSO",
       description: null,
       event: "NOSO",
       state: item.id.substring(0, 2),
-      submissionDate: formatedSubmittedDate,
-      proposedDate: formatedProposedDate,
+      submissionDate: formattedSubmittedDate,
+      proposedDate: formattedProposedDate,
       makoChangedDate: currentTime,
       changedDate: currentTime,
       statusDate: currentTime,
