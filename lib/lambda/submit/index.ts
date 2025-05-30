@@ -41,16 +41,17 @@ export const submit = async (event: APIGatewayEvent) => {
     console.log(eventBody);
     if (eventBody?.isDraft) {
       try {
-        console.log("draft");
+        console.log("create data");
         await os.createData(domain, {
           index: getOsNamespace("main"),
-          id: eventBody.id,
+          // id: eventBody.id,
           body: { doc: eventBody },
         });
       } catch (error) {
         console.error(error);
       }
 
+      console.log("update data time");
       await os.updateData(domain, {
         index: getOsNamespace("main"),
         id: eventBody.id,
