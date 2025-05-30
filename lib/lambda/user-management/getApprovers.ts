@@ -1,24 +1,18 @@
 import { APIGatewayEvent } from "aws-lambda";
-import { getAuthDetails } from "libs/api/auth/user";
+import { getAuthDetails, lookupUserAttributes } from "libs/api/auth/user";
 import { response } from "libs/handler-lib";
-import { StateCode } from "shared-types";
-import { UserRole } from "shared-types/events/legacy-user";
+import { UserRole } from "node_modules/shared-types/events/legacy-user";
+import { StateAccess } from "react-app/src/api";
 
-import { getApproversByRoleState } from "./userManagementService";
+import { getAllUserRolesByEmail, getApproversByRoleState } from "./userManagementService";
 
-type getApproverType = {
-  state: StateCode | "N/A";
+type approverListType = {
   role: UserRole;
+  territory: StateAccess | "N/A";
+  approvers: { email: string; fullName: string }[];
 };
 
 const getApprovers = async (event: APIGatewayEvent) => {
-  if (!event?.body) {
-    return response({
-      statusCode: 400,
-      body: { message: "Event body required" },
-    });
-  }
-
   if (!event?.requestContext) {
     return response({
       statusCode: 400,
@@ -26,8 +20,9 @@ const getApprovers = async (event: APIGatewayEvent) => {
     });
   }
 
+  let authDetails;
   try {
-    getAuthDetails(event);
+    authDetails = getAuthDetails(event);
   } catch (err) {
     console.error(err);
     return response({
@@ -36,16 +31,20 @@ const getApprovers = async (event: APIGatewayEvent) => {
     });
   }
 
-  const { state, role } = JSON.parse(event.body) as getApproverType;
-
-  if (!role) {
-    return response({
-      statusCode: 400,
-      body: { message: "user role required" },
-    });
-  }
   try {
-    const approverList = await getApproversByRoleState(role, state);
+    const { userId, poolId } = authDetails;
+
+    const { email } = await lookupUserAttributes(userId, poolId);
+
+    const userRoles = await getAllUserRolesByEmail(email);
+
+    const approverList: approverListType[] = await Promise.all(
+      userRoles.map(async (roleObj: StateAccess) => {
+        const approvers = await getApproversByRoleState(roleObj.role, roleObj.territory);
+        return { role: roleObj.role, territory: roleObj.territory, approvers: approvers };
+      }),
+    );
+
     return response({
       statusCode: 200,
       body: {
