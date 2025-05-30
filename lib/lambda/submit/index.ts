@@ -3,6 +3,7 @@ import { produceMessage } from "libs/api/kafka";
 import { response } from "libs/handler-lib";
 import * as os from "libs/opensearch-lib";
 import { getDomainAndNamespace } from "libs/utils";
+import { getOsNamespace } from "libs/utils";
 import { BaseSchemas } from "shared-types/events";
 
 import { submissionPayloads } from "./submissionPayloads";
@@ -40,7 +41,11 @@ export const submit = async (event: APIGatewayEvent) => {
     console.log(eventBody);
     if (eventBody?.isDraft) {
       console.log("draft");
-      os.updateData(domain, eventBody);
+      os.updateData(domain, {
+        index: getOsNamespace("main"),
+        id: eventBody.id,
+        body: eventBody,
+      });
     } else {
       await produceMessage(process.env.topicName as string, body.id, JSON.stringify(eventBody));
     }
