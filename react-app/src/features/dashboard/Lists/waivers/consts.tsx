@@ -120,12 +120,8 @@ const getColumns = (props) => {
       field: "raiRequestedDate",
       label: "Formal RAI Requested",
       hidden: true,
-      transform: (data) => {
-        return data.raiRequestedDate
-          ? formatDateToET(data.raiRequestedDate, "MM/dd/yyyy", false)
-          : BLANK_VALUE;
-      },
-      cell: renderCellDate("raiRequestedDate"),
+      cell: (data) =>
+        data?.raiRequestedDate ? formatDateToUTC(data.raiRequestedDate, "MM/dd/yyyy") : BLANK_VALUE,
     },
     {
       field: "raiReceivedDate",
