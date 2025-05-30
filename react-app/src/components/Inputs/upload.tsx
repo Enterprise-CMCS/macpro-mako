@@ -11,6 +11,12 @@ import * as I from "@/components/Inputs";
 import { LoadingSpinner } from "@/components/LoadingSpinner"; // Import your LoadingSpinner component
 import { cn } from "@/utils";
 // import { sendGAEvent } from "@/utils/ReactGA/sendGAEvent";
+import ReactGA from "react-ga4";
+
+
+
+
+
 declare global {
   interface Window { gtag?: (...args: any[]) => void; }
 }
@@ -114,20 +120,32 @@ export const Upload = ({ maxFiles, files, setFiles, dataTestId, type }: UploadPr
 
       const labelTextB = dropzoneRef.current?.getAttribute("data-label");
 
-      if (typeof window.gtag !== "function") return;
+      // if (typeof window.gtag !== "function") return;
 
-      window.gtag("event", "submit_file_upload", {
-        // GA4 event name: arbitrary string
-        submission_type: type,
-        file_type: labelTextB,
-        file_size_bytes: acceptedFiles[0].size
+      // window.gtag("event", "submit_file_upload", {
+      //   // GA4 event name: arbitrary string
+      //   submission_type: type,
+      //   file_type: labelTextB,
+      //   file_size_bytes: acceptedFiles[0].size
+      // });
+
+      // …
+
+      ReactGA.event({
+        name: "submit_file_upload",
+        params: {
+          submission_type: type,
+          file_type: dataTestId,
+          file_size_bytes: acceptedFiles[0].size
+        }
       });
-      
+
       console.log("type: ", type);
 
       // console.log("Page title:", titleEl?.textContent);
       // console.log("label textA: ", labelTextA);
       console.log("label textA: ", labelTextB);
+      console.log("dataTestId: ", dataTestId);
 
       // sendGAEvent("File Upload", "state-user")
       setRejectedFiles(fileRejections);
