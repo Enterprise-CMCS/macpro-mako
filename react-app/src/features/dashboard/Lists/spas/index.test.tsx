@@ -391,7 +391,7 @@ describe("SpasList", () => {
           status: useCmsStatus ? approvedDoc.cmsStatus : approvedDoc.stateStatus,
           submissionDate: "12/31/2023",
           makoChangedDate: "01/31/2024",
-          finalDispositionDate: "04/30/2024",
+          finalDispositionDate: "05/01/2024",
         },
       ],
       [

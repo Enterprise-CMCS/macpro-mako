@@ -411,7 +411,7 @@ describe("WaiversList", () => {
           status: useCmsStatus ? approvedDoc.cmsStatus : approvedDoc.stateStatus,
           submissionDate: "12/31/2023",
           makoChangedDate: "01/31/2024",
-          finalDispositionDate: "04/30/2024",
+          finalDispositionDate: "05/01/2024",
         },
       ],
       [
@@ -434,6 +434,7 @@ describe("WaiversList", () => {
       await user.click(screen.queryByTestId("export-csv-btn"));
 
       const expectedData = getExpectedExportData(useCmsStatus);
+      console.log("what is expected data: ", expectedData);
       expect(spy).toHaveBeenCalledWith(expectedData);
     });
   });
