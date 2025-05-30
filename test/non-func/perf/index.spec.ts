@@ -15,7 +15,7 @@ test.describe("test performance on static routes", { tag: ["@perf"] }, () => {
 
     test(`Largest Contentful Paint for ${route}`, { tag: ["@lcp"] }, async ({ page }) => {
       await page.goto(route);
-      const lcp = await page.evaluate(async () => {
+      const lcp: { startTime: number } = await page.evaluate(async () => {
         return new Promise((resolve) => {
           new PerformanceObserver((entryList) => {
             const entries = entryList.getEntries();
@@ -29,7 +29,7 @@ test.describe("test performance on static routes", { tag: ["@perf"] }, () => {
 
     test(`First Contentful Paint for ${route}`, { tag: ["@fcp"] }, async ({ page }) => {
       await page.goto(route);
-      const fcp = await page.evaluate(async () => {
+      const fcp: { startTime: number } = await page.evaluate(async () => {
         return new Promise((resolve) => {
           new PerformanceObserver((entryList) => {
             const entries = entryList.getEntries();

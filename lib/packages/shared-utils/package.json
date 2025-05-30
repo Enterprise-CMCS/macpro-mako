@@ -2,7 +2,15 @@
   "name": "shared-utils",
   "version": "0.0.0",
   "private": true,
+  "type": "module",
   "license": "MIT",
+  "exports": {
+    ".": "./index.ts",
+    "./regex": "./regex.ts",
+    "./retry": "./retry.ts",
+    "./s3-url-parser": "./s3-url-parser.ts",
+    "./seatool-date-helper": "./seatool-date-helper.ts"
+  },
   "scripts": {
     "test": "vitest",
     "test:coverage": "vitest run --coverage.enabled.true",

@@ -1,4 +1,4 @@
-import { TestRoleDocument, TestRoleResult } from "..";
+import { TestRoleDocument, TestRoleResult } from "../index";
 
 export const roleResults: TestRoleResult[] = [
   {
