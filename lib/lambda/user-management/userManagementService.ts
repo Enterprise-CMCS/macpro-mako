@@ -194,14 +194,18 @@ export const getApproversByRoleState = async (
     size: QUERY_LIMIT,
   });
 
-  const approverRoleList: { id: string; email: string }[] = results.hits.hits.map((hit: any) => ({
-    ...hit._source,
-  }));
+  const approverRoleList: { id: string; email: string }[] = results.hits.hits.map((hit: any) => {
+    const { id, email } = hit._source;
+    return { id, email };
+  });
 
   const approversInfo = [];
   for (const approver of approverRoleList) {
-    const approverUserInfo = await getUserByEmail(approver.email, userDomainNamespace);
-    approversInfo.push(approverUserInfo);
+    if (approver.email) {
+      const userInfo = await getUserByEmail(approver.email, userDomainNamespace);
+      const fullName = userInfo?.fullName ?? "Unknown";
+      approversInfo.push({ email: approver.email, fullName: fullName, id: approver.id });
+    }
   }
 
   return approversInfo;
