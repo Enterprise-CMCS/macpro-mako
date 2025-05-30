@@ -244,6 +244,7 @@ export async function processAndSendEmails(
   config: ProcessEmailConfig,
 ) {
   const templates = await getEmailTemplates(record);
+  console.log("Got email templates for ", id);
 
   if (!templates) {
     console.log(
@@ -253,15 +254,24 @@ export async function processAndSendEmails(
   }
 
   const territory = id.slice(0, 2);
+  console.log("the territory is ", territory);
   const allStateUsers = await getAllStateUsersFromOpenSearch(territory);
+  console.log(
+    "got all state users for the territory of ",
+    territory,
+    " and they are ",
+    allStateUsers,
+  );
 
   const sec = await getSecret(config.emailAddressLookupSecretName);
+  console.log("got secret where emails are stored and they are ", sec);
 
   const item = await retry(
     () => os.getItemAndThrowAllErrors(config.osDomain, getOsNamespace("main"), id),
     10,
     10 * 1000,
   );
+  console.log("tried to get item and got it: ", item);
 
   if (!item?.found || !item?._source) {
     console.log(`The package was not found for id: ${id}. Doing nothing.`);
@@ -269,11 +279,15 @@ export async function processAndSendEmails(
   }
 
   const cpocEmail = [...getCpocEmail(item)];
+  console.log("got cpoc email ", cpocEmail);
   const srtEmails = [...getSrtEmails(item)];
+  console.log("got srt emails ", srtEmails);
 
   const emails: EmailAddresses = JSON.parse(sec);
+  console.log("successfully parsed emails: ", emails);
 
   const allStateUsersEmails = allStateUsers.map((user) => user.formattedEmailAddress);
+  console.log("mappped to formatted email address for all state users: ", allStateUsers);
 
   const templateVariables = {
     ...record,
