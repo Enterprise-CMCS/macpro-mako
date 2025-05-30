@@ -30,9 +30,6 @@ export const handler: Handler<KafkaEvent> = async (event) => {
           case "aws.seatool.debezium.changed_date.SEA.dbo.State_Plan":
             return syncSeatoolRecordDatesFromKafkaWithMako(records, topicPartition);
 
-          case "aws.onemac.draft":
-            return insertDraftOneMacRecordsFromKafkaIntoMako(records, topicPartition);
-
           default:
             logError({ type: ErrorType.BADTOPIC });
             throw new Error(`topic (${topicPartition}) is invalid`);

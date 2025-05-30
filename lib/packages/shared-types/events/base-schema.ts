@@ -1,6 +1,7 @@
 import { z } from "zod";
 
 export const sharedSchema = z.object({
+  isDraft: z.boolean().default(true),
   origin: z.literal("mako").default("mako"),
   submitterName: z.string(),
   submitterEmail: z.string().email(),

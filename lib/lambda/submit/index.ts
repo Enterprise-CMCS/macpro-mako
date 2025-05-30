@@ -1,6 +1,8 @@
 import { APIGatewayEvent } from "aws-lambda";
 import { produceMessage } from "libs/api/kafka";
 import { response } from "libs/handler-lib";
+import * as os from "libs/opensearch-lib";
+import { getDomainAndNamespace } from "libs/utils";
 import { BaseSchemas } from "shared-types/events";
 
 import { submissionPayloads } from "./submissionPayloads";
@@ -32,10 +34,16 @@ export const submit = async (event: APIGatewayEvent) => {
   }
 
   try {
-    const eventBody = await submissionPayloads[body.event](event);
-    const topicName = eventBody?.isDraft ? process.env.draftTopicName : process.env.topicName;
+    const { domain } = getDomainAndNamespace("main");
 
-    await produceMessage(topicName as string, body.id, JSON.stringify(eventBody));
+    const eventBody = await submissionPayloads[body.event](event);
+    console.log(eventBody);
+    if (eventBody?.isDraft) {
+      console.log("draft");
+      os.updateData(domain, eventBody);
+    } else {
+      await produceMessage(process.env.topicName as string, body.id, JSON.stringify(eventBody));
+    }
 
     return response({
       statusCode: 200,
