@@ -206,7 +206,9 @@ export const getApproversByRoleState = async (
   const approversInfo = [];
   for (const approver of approverRoleList) {
     if (approver.email) {
-      const { fullName } = await getUserByEmail(approver.email, userDomainNamespace);
+      const userInfo = await getUserByEmail(approver.email, userDomainNamespace);
+      console.log("User info from getUserByEmail:", userInfo);
+      const fullName = userInfo?.fullName ?? "Unknown";
       approversInfo.push({ email: approver.email, fullName: fullName, id: approver.id });
     }
   }
