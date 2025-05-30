@@ -59,6 +59,8 @@ describe("getApprovers handler", () => {
     const res = await handler(event);
 
     expect(res.statusCode).toEqual(500);
-    expect(res.body).toEqual(JSON.stringify({ message: "Internal server error" }));
+    expect(res.body).toEqual(
+      JSON.stringify({ message: "Internal server error", error: "Response Error" }),
+    );
   });
 });

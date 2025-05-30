@@ -196,10 +196,6 @@ export const getApproversByRoleState = async (
 
   const approverRoleList: { id: string; email: string }[] = results.hits.hits.map((hit: any) => {
     const { id, email } = hit._source;
-    console.log(
-      `Hit #${id} _source shallow:`,
-      JSON.stringify(hit._source, Object.keys(hit._source), 2),
-    );
     return { id, email };
   });
 
@@ -207,7 +203,6 @@ export const getApproversByRoleState = async (
   for (const approver of approverRoleList) {
     if (approver.email) {
       const userInfo = await getUserByEmail(approver.email, userDomainNamespace);
-      console.log("User info from getUserByEmail:", userInfo);
       const fullName = userInfo?.fullName ?? "Unknown";
       approversInfo.push({ email: approver.email, fullName: fullName, id: approver.id });
     }
