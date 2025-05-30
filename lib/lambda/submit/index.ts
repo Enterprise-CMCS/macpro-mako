@@ -35,7 +35,7 @@ export const submit = async (event: APIGatewayEvent) => {
   }
 
   try {
-    const { domain } = getDomainAndNamespace("main");
+    const { domain, index } = getDomainAndNamespace("main");
 
     const eventBody = await submissionPayloads[body.event](event);
     console.log(eventBody);
@@ -43,20 +43,20 @@ export const submit = async (event: APIGatewayEvent) => {
       try {
         console.log("create data");
         await os.createData(domain, {
-          index: getOsNamespace("main"),
-          id: eventBody.id,
+          _index: index,
+          _id: eventBody.id,
           body: eventBody,
         });
       } catch (error) {
         console.error(error);
       }
 
-      console.log("update data time");
-      await os.updateData(domain, {
-        index: getOsNamespace("main"),
-        id: eventBody.id,
-        body: { doc: eventBody, doc_as_upsert: true },
-      });
+      // console.log("update data time");
+      // await os.updateData(domain, {
+      //   index: getOsNamespace("main"),
+      //   id: eventBody.id,
+      //   body: { doc: eventBody, doc_as_upsert: true },
+      // });
     } else {
       await produceMessage(process.env.topicName as string, body.id, JSON.stringify(eventBody));
     }
