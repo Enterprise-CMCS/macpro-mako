@@ -44,8 +44,8 @@ export const submit = async (event: APIGatewayEvent) => {
         console.log("create data");
         await os.createData(domain, {
           index: getOsNamespace("main"),
-          // id: eventBody.id,
-          body: { doc: eventBody },
+          id: eventBody.id,
+          body: eventBody,
         });
       } catch (error) {
         console.error(error);
