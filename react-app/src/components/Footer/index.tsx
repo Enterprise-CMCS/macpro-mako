@@ -1,3 +1,4 @@
+import { useEffect, useState } from "react";
 import { Link } from "react-router";
 import { isStateUser } from "shared-utils";
 
@@ -14,6 +15,11 @@ type Props = {
     zip: number;
   };
   showNavLinks?: boolean;
+};
+
+type MedSpaFooterProps = {
+  onCancel: () => void;
+  onSubmit: () => void;
 };
 
 export const Footer = ({ email, address, showNavLinks }: Props) => {
@@ -116,5 +122,51 @@ export const FAQFooter = () => {
         </Button>
       </Link>
     </Alert>
+  );
+};
+
+export const MedSpaFooter = ({ onCancel, onSubmit }: MedSpaFooterProps) => {
+  const [visible, setVisible] = useState(true);
+
+  useEffect(() => {
+    const target = document.getElementById("form-actions");
+    if (!target) return;
+
+    const observer = new IntersectionObserver(([entry]) => setVisible(!entry.isIntersecting), {
+      threshold: 0.1,
+    });
+
+    observer.observe(target);
+    return () => observer.disconnect();
+  }, []);
+
+  if (!visible) return null;
+
+  return (
+    <div className="fixed bottom-0 left-0 w-full z-40 border-t border-gray-300 bg-white">
+      <div className="max-w-screen-xl mx-auto w-full px-4 py-3 flex flex-col md:flex-row items-center justify-between gap-4 md:gap-0">
+        <div className="w-full md:w-auto text-center md:text-left">
+          <button
+            onClick={onCancel}
+            data-testid="cancel-action-form-footer"
+            className="text-blue-700 font-semibold underline"
+          >
+            Cancel
+          </button>
+        </div>
+        <div className="flex flex-col md:flex-row gap-3 w-full md:w-auto justify-center md:justify-end">
+          <button className="bg-white text-blue-700 border border-blue-700 font-semibold text-sm px-5 py-2 rounded-md w-full md:w-[113px]">
+            Save
+          </button>
+          <button
+            onClick={onSubmit}
+            data-testid="submit-action-form-footer"
+            className="bg-blue-700 text-white font-semibold text-sm px-5 py-2 rounded-md w-full md:w-auto"
+          >
+            Save & Submit
+          </button>
+        </div>
+      </div>
+    </div>
   );
 };

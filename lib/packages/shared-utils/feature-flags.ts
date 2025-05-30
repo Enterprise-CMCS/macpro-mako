@@ -79,4 +79,11 @@ export const featureFlags = {
     flag: "med-spa-card",
     defaultValue: true,
   },
+  /*
+   *  Toggle visibility of save and submit form
+   */
+  MED_SPA_FOOTER: {
+    flag: "med-spa-footer",
+    defaultValue: true,
+  },
 } as const;
