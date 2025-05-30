@@ -40,11 +40,21 @@ export const submit = async (event: APIGatewayEvent) => {
     const eventBody = await submissionPayloads[body.event](event);
     console.log(eventBody);
     if (eventBody?.isDraft) {
-      console.log("draft");
-      os.updateData(domain, {
+      try {
+        console.log("draft");
+        await os.createData(domain, {
+          index: getOsNamespace("main"),
+          id: eventBody.id,
+          body: { doc: eventBody },
+        });
+      } catch (error) {
+        console.error(error);
+      }
+
+      await os.updateData(domain, {
         index: getOsNamespace("main"),
         id: eventBody.id,
-        body: eventBody,
+        body: { doc: eventBody, doc_as_upsert: true },
       });
     } else {
       await produceMessage(process.env.topicName as string, body.id, JSON.stringify(eventBody));

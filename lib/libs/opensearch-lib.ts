@@ -34,10 +34,16 @@ function createAwsConnector(credentials: any) {
   };
 }
 
-export async function updateData(host: string, indexObject: any) {
+export async function createData(host: string, indexObject: any) {
   client = client || (await getClient(host));
   // Add a document to the index.
   await client.index(indexObject);
+}
+
+export async function updateData(host: string, indexObject: any) {
+  client = client || (await getClient(host));
+  // Add a document to the index.
+  await client.update(indexObject);
 }
 
 function sleep(ms: number): Promise<void> {
