@@ -9,6 +9,7 @@ import { isStateUser } from "shared-utils";
 import { z } from "zod";
 
 import { useGetUser } from "@/api";
+import { MedSpaFooter } from "@/components";
 import {
   ActionFormDescription,
   Banner,
@@ -82,6 +83,7 @@ type ActionFormProps<Schema extends SchemaWithEnforcableProps> = {
   preSubmissionMessage?: string;
   showPreSubmissionMessage?: boolean;
   areFieldsRequired?: boolean;
+  showCustomFooter?: boolean;
 };
 
 export const ActionForm = <Schema extends SchemaWithEnforcableProps>({
@@ -118,6 +120,7 @@ export const ActionForm = <Schema extends SchemaWithEnforcableProps>({
   },
   showPreSubmissionMessage = true,
   areFieldsRequired = true,
+  showCustomFooter = false,
 }: ActionFormProps<Schema>) => {
   const { id, authority } = useParams<{
     id: string;
@@ -262,23 +265,9 @@ export const ActionForm = <Schema extends SchemaWithEnforcableProps>({
               preSubmissionMessage={preSubmissionMessage}
             />
           )}
-          <section className="flex justify-end gap-2 p-4 ml-auto">
-            <Button
-              className="px-12"
-              type={promptPreSubmission ? "button" : "submit"}
-              onClick={
-                promptPreSubmission
-                  ? () => userPrompt({ ...promptPreSubmission, onAccept: onSubmit })
-                  : undefined
-              }
-              disabled={form.formState.isValid === false}
-              data-testid="submit-action-form"
-            >
-              Submit
-            </Button>
-            <Button
-              className="px-12"
-              onClick={() =>
+          {showCustomFooter ? (
+            <MedSpaFooter
+              onCancel={() =>
                 userPrompt({
                   ...promptOnLeavingForm,
                   onAccept: () => {
@@ -287,13 +276,48 @@ export const ActionForm = <Schema extends SchemaWithEnforcableProps>({
                   },
                 })
               }
-              variant="outline"
-              type="reset"
-              data-testid="cancel-action-form"
-            >
-              Cancel
-            </Button>
-          </section>
+              onSubmit={() => {
+                if (promptPreSubmission) {
+                  userPrompt({ ...promptPreSubmission, onAccept: onSubmit });
+                } else {
+                  onSubmit();
+                }
+              }}
+            />
+          ) : (
+            <section className="flex justify-end gap-2 p-4 ml-auto">
+              <Button
+                className="px-12"
+                type={promptPreSubmission ? "button" : "submit"}
+                onClick={
+                  promptPreSubmission
+                    ? () => userPrompt({ ...promptPreSubmission, onAccept: onSubmit })
+                    : undefined
+                }
+                disabled={form.formState.isValid === false}
+                data-testid="submit-action-form"
+              >
+                Submit
+              </Button>
+              <Button
+                className="px-12"
+                onClick={() =>
+                  userPrompt({
+                    ...promptOnLeavingForm,
+                    onAccept: () => {
+                      const origin = getFormOrigin({ id, authority });
+                      navigate(origin);
+                    },
+                  })
+                }
+                variant="outline"
+                type="reset"
+                data-testid="cancel-action-form"
+              >
+                Cancel
+              </Button>
+            </section>
+          )}
         </form>
       </Form>
       <FAQFooter />

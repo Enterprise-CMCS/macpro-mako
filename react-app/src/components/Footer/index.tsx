@@ -1,3 +1,4 @@
+import { useEffect, useState } from "react";
 import { Link } from "react-router";
 import { isStateUser } from "shared-utils";
 
@@ -14,6 +15,11 @@ type Props = {
     zip: number;
   };
   showNavLinks?: boolean;
+};
+
+type MedSpaFooterProps = {
+  onCancel: () => void;
+  onSubmit: () => void;
 };
 
 export const Footer = ({ email, address, showNavLinks }: Props) => {
@@ -116,5 +122,53 @@ export const FAQFooter = () => {
         </Button>
       </Link>
     </Alert>
+  );
+};
+
+export const MedSpaFooter = ({ onCancel, onSubmit }: MedSpaFooterProps) => {
+  const [expanded, setExpanded] = useState(true);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      const scrollBottom = window.innerHeight + window.scrollY >= document.body.offsetHeight - 10;
+      setExpanded(!scrollBottom);
+    };
+
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
+
+  return (
+    <div
+      className={`fixed bottom-0 left-0 w-full z-50 transition-all duration-300 border-t-2 border-blue-700 bg-white`}
+      style={{
+        height: expanded ? "80px" : "50px",
+      }}
+    >
+      <div className="max-w-screen-xl mx-auto h-full px-6 flex items-center justify-between">
+        {/* Cancel */}
+        <button
+          data-testid="cancel-action-form"
+          onClick={onCancel}
+          className="bg-blue-700 text-white font-bold text-base px-5 py-3 rounded-md"
+        >
+          Cancel
+        </button>
+
+        {/* Save - no action for now */}
+        <button className="bg-white text-blue-700 border-2 border-blue-700 font-bold text-base px-5 py-3 rounded-md">
+          Save
+        </button>
+
+        {/* Save & Submit */}
+        <button
+          data-testid="submit-action-form"
+          onClick={onSubmit}
+          className="bg-blue-700 text-white font-bold text-base px-5 py-3 rounded-md"
+        >
+          Save & Submit
+        </button>
+      </div>
+    </div>
   );
 };
