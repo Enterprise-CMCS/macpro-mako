@@ -40,23 +40,34 @@ const getApprovers = async (event: APIGatewayEvent) => {
 
     const approverList: approverListType[] = await Promise.all(
       userRoles.map(async (roleObj: StateAccess) => {
-        const approvers = await getApproversByRoleState(roleObj.role, roleObj.territory);
-        return { role: roleObj.role, territory: roleObj.territory, approvers: approvers };
+        try {
+          const approvers = await getApproversByRoleState(roleObj.role, roleObj.territory);
+          return { role: roleObj.role, territory: roleObj.territory, approvers: approvers };
+        } catch (err) {
+          console.error(
+            `Error getting approvers for role ${roleObj.role} and territory ${roleObj.territory}`,
+            err,
+          );
+          return { role: roleObj.role, territory: roleObj.territory, approvers: [] };
+        }
       }),
     );
 
     return response({
       statusCode: 200,
       body: {
-        message: "approver list",
+        message: "Approver list successfully retrieved.",
         approverList: approverList,
       },
     });
   } catch (err: unknown) {
-    console.log("An error occurred: ", err);
+    console.error("Unhandled error in getApprovers:", err);
     return response({
       statusCode: 500,
-      body: { message: "Internal server error" },
+      body: {
+        message: "Internal server error",
+        error: err instanceof Error ? err.message : JSON.stringify(err),
+      },
     });
   }
 };
