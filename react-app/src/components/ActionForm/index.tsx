@@ -265,7 +265,7 @@ export const ActionForm = <Schema extends SchemaWithEnforcableProps>({
               preSubmissionMessage={preSubmissionMessage}
             />
           )}
-          {showCustomFooter ? (
+          {showCustomFooter && (
             <MedSpaFooter
               onCancel={() =>
                 userPrompt({
@@ -284,23 +284,14 @@ export const ActionForm = <Schema extends SchemaWithEnforcableProps>({
                 }
               }}
             />
-          ) : (
-            <section className="flex justify-end gap-2 p-4 ml-auto">
+          )}
+          <section
+            id="form-actions"
+            className="flex flex-col md:flex-row justify-between items-center gap-4 p-4 w-full"
+          >
+            <div className="w-full md:w-auto text-center md:text-left">
               <Button
-                className="px-12"
-                type={promptPreSubmission ? "button" : "submit"}
-                onClick={
-                  promptPreSubmission
-                    ? () => userPrompt({ ...promptPreSubmission, onAccept: onSubmit })
-                    : undefined
-                }
-                disabled={form.formState.isValid === false}
-                data-testid="submit-action-form"
-              >
-                Submit
-              </Button>
-              <Button
-                className="px-12"
+                type="reset"
                 onClick={() =>
                   userPrompt({
                     ...promptOnLeavingForm,
@@ -311,13 +302,31 @@ export const ActionForm = <Schema extends SchemaWithEnforcableProps>({
                   })
                 }
                 variant="outline"
-                type="reset"
                 data-testid="cancel-action-form"
+                className="text-blue-700 font-semibold underline px-0 py-0 bg-transparent shadow-none border-none hover:bg-transparent"
               >
                 Cancel
               </Button>
-            </section>
-          )}
+            </div>
+            <div className="flex flex-col md:flex-row gap-3 w-full md:w-auto justify-center md:justify-end">
+              <Button className="bg-white w-[113px] text-blue-700 border border-blue-700 font-semibold text-sm px-5 py-2 rounded-md">
+                Save
+              </Button>
+              <Button
+                type={promptPreSubmission ? "button" : "submit"}
+                onClick={
+                  promptPreSubmission
+                    ? () => userPrompt({ ...promptPreSubmission, onAccept: onSubmit })
+                    : undefined
+                }
+                disabled={!form.formState.isValid}
+                data-testid="submit-action-form"
+                className="bg-blue-700 text-white font-semibold text-sm px-5 py-2 rounded-md"
+              >
+                Save & Submit
+              </Button>
+            </div>
+          </section>
         </form>
       </Form>
       <FAQFooter />

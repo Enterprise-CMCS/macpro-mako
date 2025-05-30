@@ -206,7 +206,7 @@ export const MedicaidForm = () => {
         property: "id",
         documentChecker: (check) => check.recordExists,
       }}
-      showCustomFooter={true}
+      showCustomFooter={showMedspaFooter}
     />
   );
 };
