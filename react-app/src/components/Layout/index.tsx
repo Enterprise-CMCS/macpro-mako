@@ -373,6 +373,11 @@ const ResponsiveNav = ({ isDesktop }: ResponsiveNavProps) => {
     setIsOpen(false);
   }
 
+  const triggerGAEvent = (event) => {
+    console.log("click nav link")
+    console.log("event",event)
+  }
+
   if (isDesktop) {
     return (
       <>
@@ -383,6 +388,7 @@ const ResponsiveNav = ({ isDesktop }: ResponsiveNavProps) => {
             target={link.link === "/faq" ? "_blank" : "_self"}
             key={link.name}
             className={setClassBasedOnNav}
+            onClick={(event) => triggerGAEvent}
           >
             {link.name}
           </NavLink>
