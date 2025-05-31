@@ -373,9 +373,9 @@ const ResponsiveNav = ({ isDesktop }: ResponsiveNavProps) => {
     setIsOpen(false);
   }
 
-  const triggerGAEvent = (event) => {
+  const triggerGAEvent = (name) => {
     console.log("click nav link")
-    console.log("event",event)
+    console.log("event",name)
   }
 
   if (isDesktop) {
@@ -388,7 +388,7 @@ const ResponsiveNav = ({ isDesktop }: ResponsiveNavProps) => {
             target={link.link === "/faq" ? "_blank" : "_self"}
             key={link.name}
             className={setClassBasedOnNav}
-            onClick={(event) => triggerGAEvent}
+            onClick={() => triggerGAEvent(link.name)}
           >
             {link.name}
           </NavLink>
@@ -453,6 +453,7 @@ const ResponsiveNav = ({ isDesktop }: ResponsiveNavProps) => {
                   className="block py-2 pl-3 pr-4 text-white rounded"
                   to={link.link}
                   target={link.link === "/faq" ? "_blank" : "_self"}
+                  onClick={() => triggerGAEvent(link.name)}
                 >
                   {link.name}
                 </Link>
