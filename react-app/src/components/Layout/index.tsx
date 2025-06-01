@@ -374,8 +374,15 @@ const ResponsiveNav = ({ isDesktop }: ResponsiveNavProps) => {
   }
 
   const triggerGAEvent = (name) => {
-    console.log("click nav link")
-    console.log("event",name)
+
+    console.log("click nav link");
+    console.log("event",name);
+    if (name == 'View FAQs') {
+      window.gtag("event", "home_nav_dashboard");
+    } else if (name == 'Dashboard') {
+      window.gtag("event", "home_nav_support");
+    } 
+
   }
 
   if (isDesktop) {

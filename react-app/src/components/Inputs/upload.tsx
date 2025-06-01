@@ -120,14 +120,16 @@ export const Upload = ({ maxFiles, files, setFiles, dataTestId, type }: UploadPr
 
       const labelTextB = dropzoneRef.current?.getAttribute("data-label");
 
-      if (typeof window.gtag !== "function") return;
+      // if (typeof window.gtag !== "function") return;
+      if (typeof window.gtag == "function") {
+        window.gtag("event", "submit_file_upload", {
+          // GA4 event name: arbitrary string
+          submission_type: type,
+          file_type: labelTextB,
+          file_size_bytes: acceptedFiles[0].size
+        });
+      }
 
-      window.gtag("event", "submit_file_upload", {
-        // GA4 event name: arbitrary string
-        submission_type: type,
-        file_type: labelTextB,
-        file_size_bytes: acceptedFiles[0].size
-      });
 
       // …
 
