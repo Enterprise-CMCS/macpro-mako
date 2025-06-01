@@ -18,7 +18,17 @@ import { beforeEach, describe, expect, it, vi } from "vitest";
 import { mapActionLabel } from "@/utils";
 import { renderFormWithPackageSectionAsync } from "@/utils/test-helpers/renderForm";
 
+import { DetailCardWrapper } from "../../index";
 import { PackageActionsCard } from "./index";
+
+const setup = async (submission: opensearch.main.Document, id: string) => {
+  await renderFormWithPackageSectionAsync(
+    <DetailCardWrapper title="Package Actions">
+      <PackageActionsCard submission={submission} id={id} />
+    </DetailCardWrapper>,
+    id,
+  );
+};
 
 describe("", () => {
   beforeEach(() => {
@@ -28,10 +38,8 @@ describe("", () => {
 
   it("renders nothing if there are no actions", async () => {
     const submission = items[EXISTING_ITEM_ID]?._source as opensearch.main.Document;
-    await renderFormWithPackageSectionAsync(
-      <PackageActionsCard submission={submission} id={EXISTING_ITEM_ID} />,
-      EXISTING_ITEM_ID,
-    );
+    await setup(submission, EXISTING_ITEM_ID);
+
     expect(screen.getByText("Package Actions")).toBeInTheDocument();
     expect(
       screen.getByText("No actions are currently available for this submission."),
@@ -46,10 +54,8 @@ describe("", () => {
         raiRequestedDate: "2024-01-01T00:00:00.000Z",
       };
       mockedServer.use(onceApiPackageActionsHandler(submission as opensearch.main.Document));
-      await renderFormWithPackageSectionAsync(
-        <PackageActionsCard submission={submission} id={TEST_MED_SPA_ITEM._id} />,
-        TEST_MED_SPA_ITEM._id,
-      );
+      await setup(submission, TEST_MED_SPA_ITEM._id);
+
       expect(screen.getByText("Package Actions")).toBeInTheDocument();
       expect(
         screen.getByRole("link", { name: mapActionLabel(Action.RESPOND_TO_RAI) }),
@@ -66,10 +72,8 @@ describe("", () => {
         raiRequestedDate: "2024-01-01T00:00:00.000Z",
       };
       mockedServer.use(onceApiPackageActionsHandler(submission as opensearch.main.Document));
-      await renderFormWithPackageSectionAsync(
-        <PackageActionsCard submission={submission} id={TEST_MED_SPA_RAI_ITEM._id} />,
-        TEST_MED_SPA_RAI_ITEM._id,
-      );
+      await setup(submission, TEST_MED_SPA_RAI_ITEM._id);
+
       expect(screen.getByText("Package Actions")).toBeInTheDocument();
       expect(
         screen.getByRole("link", { name: mapActionLabel(Action.WITHDRAW_PACKAGE) }),
@@ -83,10 +87,8 @@ describe("", () => {
         seatoolStatus: SEATOOL_STATUS.APPROVED,
       };
       mockedServer.use(onceApiPackageActionsHandler(submission as opensearch.main.Document));
-      await renderFormWithPackageSectionAsync(
-        <PackageActionsCard submission={submission} id={TEST_1915B_ITEM._id} />,
-        TEST_1915B_ITEM._id,
-      );
+      await setup(submission, TEST_1915B_ITEM._id);
+
       expect(screen.getByText("Package Actions")).toBeInTheDocument();
       expect(
         screen.getByRole("link", { name: mapActionLabel(Action.TEMP_EXTENSION) }),
@@ -106,10 +108,8 @@ describe("", () => {
         raiWithdrawEnabled: true,
       };
       mockedServer.use(onceApiPackageActionsHandler(submission as opensearch.main.Document));
-      await renderFormWithPackageSectionAsync(
-        <PackageActionsCard submission={submission} id={TEST_MED_SPA_ITEM._id} />,
-        TEST_MED_SPA_ITEM._id,
-      );
+      await setup(submission, TEST_MED_SPA_ITEM._id);
+
       expect(screen.getByText("Package Actions")).toBeInTheDocument();
       expect(
         screen.getByRole("link", { name: mapActionLabel(Action.WITHDRAW_RAI) }),
@@ -130,10 +130,8 @@ describe("", () => {
         raiWithdrawEnabled: true,
       };
       mockedServer.use(onceApiPackageActionsHandler(submission as opensearch.main.Document));
-      await renderFormWithPackageSectionAsync(
-        <PackageActionsCard submission={submission} id={TEST_MED_SPA_ITEM._id} />,
-        TEST_MED_SPA_ITEM._id,
-      );
+      await setup(submission, TEST_MED_SPA_ITEM._id);
+
       expect(screen.getByText("Package Actions")).toBeInTheDocument();
       expect(
         screen.getByRole("link", { name: mapActionLabel(Action.UPLOAD_SUBSEQUENT_DOCUMENTS) }),
@@ -158,10 +156,8 @@ describe("", () => {
         raiReceivedDate: "2024-01-01T00:00:00.000Z",
       };
       mockedServer.use(onceApiPackageActionsHandler(submission as opensearch.main.Document));
-      await renderFormWithPackageSectionAsync(
-        <PackageActionsCard submission={submission} id={TEST_CHIP_SPA_ITEM._id} />,
-        TEST_CHIP_SPA_ITEM._id,
-      );
+      await setup(submission, TEST_CHIP_SPA_ITEM._id);
+
       expect(screen.getByText("Package Actions")).toBeInTheDocument();
       expect(
         screen.getByRole("link", { name: mapActionLabel(Action.ENABLE_RAI_WITHDRAW) }),
@@ -177,10 +173,8 @@ describe("", () => {
         raiReceivedDate: "2024-01-01T00:00:00.000Z",
       };
       mockedServer.use(onceApiPackageActionsHandler(submission as opensearch.main.Document));
-      await renderFormWithPackageSectionAsync(
-        <PackageActionsCard submission={submission} id={TEST_MED_SPA_ITEM._id} />,
-        TEST_MED_SPA_ITEM._id,
-      );
+      await setup(submission, TEST_MED_SPA_ITEM._id);
+
       expect(screen.getByText("Package Actions")).toBeInTheDocument();
       expect(
         screen.getByRole("link", { name: mapActionLabel(Action.ENABLE_RAI_WITHDRAW) }),
@@ -197,10 +191,8 @@ describe("", () => {
         raiWithdrawEnabled: true,
       };
       mockedServer.use(onceApiPackageActionsHandler(submission as opensearch.main.Document));
-      await renderFormWithPackageSectionAsync(
-        <PackageActionsCard submission={submission} id={TEST_CHIP_SPA_ITEM._id} />,
-        TEST_CHIP_SPA_ITEM._id,
-      );
+      await setup(submission, TEST_CHIP_SPA_ITEM._id);
+
       expect(screen.getByText("Package Actions")).toBeInTheDocument();
       expect(
         screen.getByRole("link", { name: mapActionLabel(Action.DISABLE_RAI_WITHDRAW) }),
@@ -217,10 +209,8 @@ describe("", () => {
         raiWithdrawEnabled: true,
       };
       mockedServer.use(onceApiPackageActionsHandler(submission as opensearch.main.Document));
-      await renderFormWithPackageSectionAsync(
-        <PackageActionsCard submission={submission} id={TEST_MED_SPA_ITEM._id} />,
-        TEST_MED_SPA_ITEM._id,
-      );
+      await setup(submission, TEST_MED_SPA_ITEM._id);
+
       expect(screen.getByText("Package Actions")).toBeInTheDocument();
       expect(
         screen.getByRole("link", { name: mapActionLabel(Action.DISABLE_RAI_WITHDRAW) }),
