@@ -13,7 +13,7 @@ const deploymentOutput = await getDeploymentOutput(stage, project);
 export default defineConfig({
   testDir: "./",
   testMatch: "**/*.spec.ts",
-  testIgnore: ["react-app/**", "lib/**", "**/*.test.{ts,tsx}"],
+  testIgnore: "**/*.test.{ts,tsx}",
   globalTeardown: "./lib/global.teardown.ts",
   // need to find a reasonable timeout less than 30s
   // timeout: 10_000,

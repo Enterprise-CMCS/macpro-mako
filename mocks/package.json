@@ -16,7 +16,7 @@
     "./data/submit/changelog": "./data/submit/changelog.ts",
     "./data/types": "./data/types.ts",
     "./handlers/auth.utils": "./handlers/auth.utils.ts",
-    "./helpers": "./helpers/index.ts"
+    "./helpers/kafka.utils": "./helpers/kafka.utils.ts"
   },
   "scripts": {
     "build": "tsc"

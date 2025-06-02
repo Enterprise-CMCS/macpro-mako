@@ -7,7 +7,7 @@ import {
   setMockUsername,
   testNewStateSubmitter,
 } from "mocks";
-import { mockedProducer } from "mocks/helpers";
+import { mockedProducer } from "mocks/helpers/kafka.utils";
 import { beforeEach, describe, expect, it } from "vitest";
 
 import { handler } from "./createUserProfile";
