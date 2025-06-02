@@ -8,7 +8,7 @@ import {
   SEATOOL_STATUS,
   SeatoolOfficer,
   seatoolSchema,
-} from "../../..";
+} from "../../../index";
 
 function getLeadAnalyst(eventData: SeaTool) {
   let leadAnalystOfficerId: null | number = null;

@@ -1,6 +1,6 @@
 import { getLegacyEventType } from "shared-utils";
 
-import { handleLegacyAttachment, legacyEventSchema } from "../../..";
+import { handleLegacyAttachment, legacyEventSchema } from "../../../index";
 import { ONEMAC_LEGACY_ORIGIN } from "../../main/transforms/legacy-transforms";
 
 export const transform = () => {
