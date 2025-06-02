@@ -7,7 +7,6 @@ import {
   BUCKET_REGION,
   IDENTITY_POOL_ID,
   KAFKA_BROKERS,
-  mockedKafka,
   OPENSEARCH_DOMAIN,
   OPENSEARCH_INDEX_NAMESPACE,
   PROJECT,
@@ -18,6 +17,7 @@ import {
   USER_POOL_CLIENT_ID,
   USER_POOL_ID,
 } from "mocks";
+import { mockedKafka } from "mocks/helpers/kafka.utils";
 import { mockedServiceServer as mockedServer } from "mocks/server";
 import { afterAll, afterEach, beforeAll, beforeEach, vi } from "vitest";
 type CreateType<T> = T & { default: T };
