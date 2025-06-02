@@ -185,21 +185,18 @@ export const getApproversByRoleState = async (
           { term: { "territory.keyword": state } },
         ]
       : [{ term: { status: "active" } }, { term: { role: approverRole } }];
+
   const results = await search(domain, index, {
     query: {
       bool: {
         must: queryRequirements,
       },
     },
-    size: QUERY_LIMIT,
+    size: 50,
   });
 
   const approverRoleList: { id: string; email: string }[] = results.hits.hits.map((hit: any) => {
     const { id, email } = hit._source;
-    console.log(
-      `Hit #${id} _source shallow:`,
-      JSON.stringify(hit._source, Object.keys(hit._source), 2),
-    );
     return { id, email };
   });
 
