@@ -58,7 +58,11 @@ export const LatestUpdates: FC = () => {
 
       {latestUpdates.length > 1 && (
         <button
-          onClick={() => setShowMore(!showMore)}
+          onClick={() => {
+            setShowMore(!showMore)
+            console.log("trigger show more updates event");
+            window.gtag("event", "home_updates_banner")
+          }}
           className="flex items-center justify-start gap-2 rounded-md bg-transparent cursor-pointer"
         >
           <span className="pl-4 font-bold text-[#0071bc] leading-[22px] text-center">

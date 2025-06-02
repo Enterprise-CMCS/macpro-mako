@@ -20,6 +20,10 @@ export const PackageSearch = () => {
       }),
     );
     navigate(`/dashboard?os=${compressedValue}`);
+    console.log("google event: ", searchText.substring(0,3))
+    window.gtag("event", "home_search_text", {
+      query_short: searchText.substring(0,3)
+    })
   };
 
   const triggerGAEvent = (eventType, option)=> {

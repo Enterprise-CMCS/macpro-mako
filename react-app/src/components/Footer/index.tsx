@@ -27,30 +27,36 @@ export const Footer = ({ email, address, showNavLinks }: Props) => {
         <section className="bg-[#f0f0f0] text-sm">
           <div className="grid grid-cols-12 gap-4 px-10 py-4 max-w-screen-xl mx-auto">
             <div className="col-span-6 flex gap-8">
-              <a href="/" className="underline font-bold">
+              <a href="/" className="underline font-bold" onClick={()=>{window.gtag("event", "home_footer_link", {link_name: "home"})}}>
                 <p>Home</p>
               </a>
-              <a href="/dashboard" className="underline font-bold">
+              <a href="/dashboard" className="underline font-bold" onClick={()=>{window.gtag("event", "home_footer_link", {link_name: "dashboard"})}}>
                 <p>Dashboard</p>
               </a>
               {isStateHomepage && isStateUser(user.user) && (
-                <a href="/latestupdates" className="underline font-bold">
+                <a href="/latestupdates" className="underline font-bold" onClick={()=>{window.gtag("event", "home_footer_link", {link_name: "latestupdates"})}}>
                   <p>Latest Updates</p>
                 </a>
               )}
-              <a href="/faq" className="underline font-bold">
+              <a href="/faq" className="underline font-bold" onClick={()=>{window.gtag("event", "home_footer_link", {link_name: "support"})}}>
                 <p>Support</p>
               </a>
             </div>
             <div className="col-span-6 flex gap-8 justify-end">
               <p>Help Desk:</p>
               <p>
-                <a href="tel:(833) 228-2540" className="underline">
+                <a href="tel:(833) 228-2540" className="underline" onClick={
+                  ()=> {
+                    console.log("trigger phone link event")
+                    window.gtag("event", "home_help_phone")}}>
                   (833) 228-2540
                 </a>
               </p>
               <p>
-                <a href="mailto:OneMAC_Helpdesk@cms.hhs.gov" className="underline">
+                <a href="mailto:OneMAC_Helpdesk@cms.hhs.gov" className="underline" onClick={
+                  ()=> {
+                    console.log("trigger email link event")
+                    window.gtag("event", "home_help_email")}}>
                   OneMAC_Helpdesk@cms.hhs.gov
                 </a>
               </p>
