@@ -196,17 +196,22 @@ export const getApproversByRoleState = async (
 
   const approverRoleList: { id: string; email: string }[] = results.hits.hits.map((hit: any) => {
     const { id, email } = hit._source;
+    console.log(
+      `Hit #${id} _source shallow:`,
+      JSON.stringify(hit._source, Object.keys(hit._source), 2),
+    );
     return { id, email };
   });
 
-  const approversInfo = [];
-  for (const approver of approverRoleList) {
-    if (approver.email) {
-      const userInfo = await getUserByEmail(approver.email, userDomainNamespace);
-      const fullName = userInfo?.fullName ?? "Unknown";
-      approversInfo.push({ email: approver.email, fullName: fullName, id: approver.id });
-    }
-  }
+  const approversInfo = await Promise.all(
+    approverRoleList
+      .filter((approver) => approver.email)
+      .map(async (approver) => {
+        const userInfo = await getUserByEmail(approver.email, userDomainNamespace);
+        const fullName = userInfo?.fullName ?? "Unknown";
+        return { email: approver.email, fullName, id: approver.id };
+      }),
+  );
 
   return approversInfo;
 };
