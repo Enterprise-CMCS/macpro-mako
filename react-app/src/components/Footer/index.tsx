@@ -158,6 +158,7 @@ export const MedSpaFooter = ({ onCancel, onSubmit }: MedSpaFooterProps) => {
         <div className="flex gap-[10px]">
           {/* Save */}
           <button
+            type="button"
             onClick={() => {}}
             className="w-[128.36px] h-[46.58px] py-[12px] px-[20px] gap-[10px] rounded-[4px] border-[2px] border-blue-700 text-blue-700 bg-white font-semibold text-sm"
           >
