@@ -8,6 +8,7 @@ export const getUserByEmail = async (
   email: string,
   domainNamespace?: { domain: string; index: Index },
 ) => {
+  console.log("Looking up user by email:", email);
   if (!domainNamespace) domainNamespace = getDomainAndNamespace("users");
   const { domain, index } = domainNamespace;
 
@@ -222,6 +223,7 @@ export const getApproversByRole = async (
 
   const approverRole = approvingUserRole[role as keyof typeof approvingUserRole];
 
+  console.log("About to get role: ", approverRole);
   const results = await search(domain, index, {
     query: {
       bool: {
@@ -233,6 +235,7 @@ export const getApproversByRole = async (
 
   const approverRoleList = results.hits.hits.map((hit: any) => {
     const { id, email, territory } = hit._source;
+    console.log("APPROVER ROLE: ", email, territory);
     return { id, email, territory };
   });
 
