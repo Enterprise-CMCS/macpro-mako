@@ -8,7 +8,6 @@ export const getUserByEmail = async (
   email: string,
   domainNamespace?: { domain: string; index: Index },
 ) => {
-  console.log("Looking up user by email:", email);
   if (!domainNamespace) domainNamespace = getDomainAndNamespace("users");
   const { domain, index } = domainNamespace;
 
@@ -186,14 +185,13 @@ export const getApproversByRoleState = async (
           { term: { "territory.keyword": state } },
         ]
       : [{ term: { status: "active" } }, { term: { role: approverRole } }];
-
   const results = await search(domain, index, {
     query: {
       bool: {
         must: queryRequirements,
       },
     },
-    size: 50,
+    size: QUERY_LIMIT,
   });
 
   const approverRoleList: { id: string; email: string }[] = results.hits.hits.map((hit: any) => {
@@ -201,15 +199,14 @@ export const getApproversByRoleState = async (
     return { id, email };
   });
 
-  const approversInfo = await Promise.all(
-    approverRoleList
-      .filter((approver) => approver.email)
-      .map(async (approver) => {
-        const userInfo = await getUserByEmail(approver.email, userDomainNamespace);
-        const fullName = userInfo?.fullName ?? "Unknown";
-        return { email: approver.email, fullName, id: approver.id };
-      }),
-  );
+  const approversInfo = [];
+  for (const approver of approverRoleList) {
+    if (approver.email) {
+      const userInfo = await getUserByEmail(approver.email, userDomainNamespace);
+      const fullName = userInfo?.fullName ?? "Unknown";
+      approversInfo.push({ email: approver.email, fullName: fullName, id: approver.id });
+    }
+  }
 
   return approversInfo;
 };
@@ -255,6 +252,34 @@ export const getApproversByRole = async (
   );
 
   return approversInfo;
+};
+
+export const getActiveStatesForUserByEmail = async (
+  email: string,
+  latestActiveRole?: string,
+): Promise<string[]> => {
+  const { domain, index } = getDomainAndNamespace("roles");
+
+  const result = await search(domain, index, {
+    size: QUERY_LIMIT,
+    query: {
+      bool: {
+        must: [
+          { term: { "email.keyword": email } },
+          { term: { status: "active" } },
+          ...(latestActiveRole ? [{ term: { role: latestActiveRole } }] : []),
+        ],
+        must_not: [{ terms: { territory: ["N/A"] } }],
+      },
+    },
+    _source: ["territory"],
+  });
+
+  const states = result.hits?.hits
+    .map((hit: any) => hit._source.territory)
+    .filter((v: any): v is string => typeof v === "string");
+
+  return Array.from(new Set(states));
 };
 
 export const getStateUsersByState = async (
