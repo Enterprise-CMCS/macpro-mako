@@ -93,7 +93,7 @@ export const handler = async (event: APIGatewayEvent) => {
 
     let status: string = item.status;
     // check if it already exists in onemac - should exist in SEATool
-    const currentPackage: ItemResult | undefined = await getPackage(item.id);
+    const currentPackage: ItemResult | undefined = await getPackage(item.id.toUpperCase());
 
     if (currentPackage && currentPackage.found == true) {
       // we should default to the current status in SEATool, and use entered status as a backup
