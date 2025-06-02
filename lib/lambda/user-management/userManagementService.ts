@@ -156,6 +156,16 @@ export const getLatestActiveRoleByEmail = async (email: string) => {
   return result.hits.hits[0]?._source ?? null;
 };
 
+// TODO: move to shared type bc this is the same code coppied
+const approvingUserRole = {
+  statesubmitter: "statesystemadmin",
+  statesystemadmin: "cmsroleapprover",
+  cmsroleapprover: "systemadmin",
+  defaultcmsuser: "cmsroleapprover",
+  helpdesk: "systemadmin",
+  cmsreviewer: "cmsroleapprover",
+};
+
 export const getApproversByRoleState = async (
   role: string,
   state: string,
@@ -165,17 +175,6 @@ export const getApproversByRoleState = async (
   if (!domainNamespace) domainNamespace = getDomainAndNamespace("roles");
   if (!userDomainNamespace) userDomainNamespace = getDomainAndNamespace("users");
   const { domain, index } = domainNamespace;
-  console.log(`Getting approvers for role: ${role}, state: ${state}`);
-
-  // TODO: move to shared type bc this is the same code coppied
-  const approvingUserRole = {
-    statesubmitter: "statesystemadmin",
-    statesystemadmin: "cmsroleapprover",
-    cmsroleapprover: "systemadmin",
-    defaultcmsuser: "cmsroleapprover",
-    helpdesk: "systemadmin",
-    cmsreviewer: "cmsroleapprover",
-  };
 
   const approverRole = approvingUserRole[role as keyof typeof approvingUserRole];
 
@@ -215,32 +214,47 @@ export const getApproversByRoleState = async (
   return approversInfo;
 };
 
-export const getActiveStatesForUserByEmail = async (
-  email: string,
-  latestActiveRole?: string,
-): Promise<string[]> => {
-  const { domain, index } = getDomainAndNamespace("roles");
+export const getApproversByRole = async (
+  role: string,
+  domainNamespace?: { domain: string; index: Index },
+  userDomainNamespace?: { domain: string; index: Index },
+) => {
+  const resolvedDomain = domainNamespace ?? getDomainAndNamespace("roles");
+  const resolvedUserDomain = userDomainNamespace ?? getDomainAndNamespace("users");
+  const { domain, index } = resolvedDomain;
 
-  const result = await search(domain, index, {
-    size: QUERY_LIMIT,
+  const approverRole = approvingUserRole[role as keyof typeof approvingUserRole];
+
+  const results = await search(domain, index, {
     query: {
       bool: {
-        must: [
-          { term: { "email.keyword": email } },
-          { term: { status: "active" } },
-          ...(latestActiveRole ? [{ term: { role: latestActiveRole } }] : []),
-        ],
-        must_not: [{ terms: { territory: ["N/A"] } }],
+        must: [{ term: { status: "active" } }, { term: { role: approverRole } }],
       },
     },
-    _source: ["territory"],
+    size: QUERY_LIMIT,
   });
 
-  const states = result.hits?.hits
-    .map((hit: any) => hit._source.territory)
-    .filter((v: any): v is string => typeof v === "string");
+  const approverRoleList = results.hits.hits.map((hit: any) => {
+    const { id, email, territory } = hit._source;
+    return { id, email, territory };
+  });
 
-  return Array.from(new Set(states));
+  const approversInfo = await Promise.all(
+    approverRoleList
+      .filter((approver: { id: string; email: string; territory: string }) => approver.email)
+      .map(async (approver: { id: string; email: string; territory: string }) => {
+        const userInfo = await getUserByEmail(approver.email, resolvedUserDomain);
+        const fullName = userInfo?.fullName ?? "Unknown";
+        return {
+          email: approver.email,
+          fullName,
+          id: approver.id,
+          territory: approver.territory,
+        };
+      }),
+  );
+
+  return approversInfo;
 };
 
 export const getStateUsersByState = async (

@@ -4,11 +4,12 @@ import { response } from "libs/handler-lib";
 import { UserRole } from "node_modules/shared-types/events/legacy-user";
 import { StateAccess } from "react-app/src/api";
 
-import { getAllUserRolesByEmail, getApproversByRoleState } from "./userManagementService";
+import { getAllUserRolesByEmail, getApproversByRole } from "./userManagementService";
 
+type Territory = StateAccess | "N/A";
 type approverListType = {
   role: UserRole;
-  territory: StateAccess | "N/A";
+  territory: Territory;
   approvers: { email: string; fullName: string }[];
 };
 
@@ -37,18 +38,32 @@ const getApprovers = async (event: APIGatewayEvent) => {
     const { email } = await lookupUserAttributes(userId, poolId);
 
     const userRoles = await getAllUserRolesByEmail(email);
+    const roleStateMap = new Map<string, Territory[]>();
 
-    const approverList: approverListType[] = await Promise.all(
-      userRoles.map(async (roleObj: StateAccess) => {
+    userRoles.forEach(({ role, territory }: approverListType) => {
+      if (!roleStateMap.has(role)) {
+        roleStateMap.set(role, []);
+      }
+      roleStateMap.get(role)!.push(territory);
+    });
+
+    const approverList = await Promise.all(
+      Array.from(roleStateMap.entries()).map(async ([role, territories]) => {
         try {
-          const approvers = await getApproversByRoleState(roleObj.role, roleObj.territory);
-          return { role: roleObj.role, territory: roleObj.territory, approvers: approvers };
-        } catch (err) {
-          console.error(
-            `Error getting approvers for role ${roleObj.role} and territory ${roleObj.territory}`,
-            err,
+          const allApprovers = await getApproversByRole(role);
+
+          const filtered = allApprovers.filter((approver) =>
+            territories.includes(approver.territory),
           );
-          return { role: roleObj.role, territory: roleObj.territory, approvers: [] };
+
+          return {
+            role,
+            territory: territories,
+            approvers: filtered,
+          };
+        } catch (err) {
+          console.error(`Error getting approvers for role ${role}`, err);
+          return { role, territory: territories, approvers: [] };
         }
       }),
     );
