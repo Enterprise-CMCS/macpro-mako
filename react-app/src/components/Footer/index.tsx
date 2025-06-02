@@ -143,25 +143,32 @@ export const MedSpaFooter = ({ onCancel, onSubmit }: MedSpaFooterProps) => {
   if (!visible) return null;
 
   return (
-    <div className="fixed bottom-0 left-0 w-full z-40 border-t border-gray-300 bg-white">
-      <div className="max-w-screen-xl mx-auto w-full px-4 py-3 flex flex-col md:flex-row items-center justify-between gap-4 md:gap-0">
-        <div className="w-full md:w-auto text-center md:text-left">
+    <div className="fixed bottom-0 left-0 w-full z-40 border-t border-gray-300 bg-white px-[24px]">
+      <div className="flex justify-between items-center w-full py-3">
+        {/* Left: Cancel */}
+        <button
+          onClick={onCancel}
+          data-testid="cancel-action-form-footer"
+          className="w-[93px] h-[48px] py-[12px] px-[20px] text-blue-700 font-semibold underline"
+        >
+          Cancel
+        </button>
+
+        {/* Right: Save / Save & Submit */}
+        <div className="flex gap-[10px]">
+          {/* Save */}
           <button
-            onClick={onCancel}
-            data-testid="cancel-action-form-footer"
-            className="text-blue-700 font-semibold underline"
+            onClick={() => {}}
+            className="w-[128.36px] h-[46.58px] py-[12px] px-[20px] gap-[10px] rounded-[4px] border-[2px] border-blue-700 text-blue-700 bg-white font-semibold text-sm"
           >
-            Cancel
-          </button>
-        </div>
-        <div className="flex flex-col md:flex-row gap-3 w-full md:w-auto justify-center md:justify-end">
-          <button className="bg-white text-blue-700 border border-blue-700 font-semibold text-sm px-5 py-2 rounded-md w-full md:w-[113px]">
             Save
           </button>
+
+          {/* Save & Submit */}
           <button
             onClick={onSubmit}
             data-testid="submit-action-form-footer"
-            className="bg-blue-700 text-white font-semibold text-sm px-5 py-2 rounded-md w-full md:w-auto"
+            className="w-[181.75px] h-[46.58px] py-[12px] px-[20px] gap-[10px] rounded-[4px] bg-blue-700 text-white font-semibold text-sm"
           >
             Save & Submit
           </button>
