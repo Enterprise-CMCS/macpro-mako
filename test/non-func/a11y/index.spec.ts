@@ -1,19 +1,9 @@
 import AxeBuilder from "@axe-core/playwright";
-// import { PROJECT } from "mocks";
-import { ActionType } from "shared-types";
-import { ROLES_ALLOWED_TO_REQUEST } from "shared-types/events/legacy-user";
-import { formatActionType } from "shared-utils";
 
 import { expect, test } from "@/fixtures/mocked";
 import * as routes from "@/fixtures/routes";
 
-// console.log({ PROJECT });
 const STATIC_ROUTES = routes.STATIC;
-console.log({ ROLES_ALLOWED_TO_REQUEST });
-const type: ActionType = "New";
-console.log({ type });
-const formattedType = formatActionType("New");
-console.log({ formattedType });
 
 test.describe("test a11y on static routes", { tag: ["@CI", "@a11y"] }, () => {
   for (const route of STATIC_ROUTES) {

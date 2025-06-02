@@ -1,4 +1,4 @@
-import { mockedProducer } from "mocks";
+import { mockedProducer } from "mocks/helpers";
 import { afterEach, beforeEach, describe, expect, it } from "vitest";
 
 import { getProducer, produceMessage } from "./kafka";

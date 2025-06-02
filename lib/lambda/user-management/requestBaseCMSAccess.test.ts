@@ -5,10 +5,10 @@ import {
   coStateSubmitter,
   errorRoleSearchHandler,
   getRequestContext,
-  mockedProducer,
   setDefaultStateSubmitter,
   setMockUsername,
 } from "mocks";
+import { mockedProducer } from "mocks/helpers";
 import { mockedServiceServer as mockedServer } from "mocks/server";
 import { beforeEach, describe, expect, it } from "vitest";
 

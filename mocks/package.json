@@ -15,7 +15,8 @@
     "./data/submit/base": "./data/submit/base.ts",
     "./data/submit/changelog": "./data/submit/changelog.ts",
     "./data/types": "./data/types.ts",
-    "./handlers/auth.utils": "./handlers/auth.utils.ts"
+    "./handlers/auth.utils": "./handlers/auth.utils.ts",
+    "./helpers": "./helpers/index.ts"
   },
   "scripts": {
     "build": "tsc"

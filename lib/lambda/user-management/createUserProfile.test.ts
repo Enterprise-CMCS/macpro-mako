@@ -3,11 +3,11 @@ import {
   coStateSubmitter,
   getRequestContext,
   makoStateSubmitter,
-  mockedProducer,
   setDefaultStateSubmitter,
   setMockUsername,
   testNewStateSubmitter,
 } from "mocks";
+import { mockedProducer } from "mocks/helpers";
 import { beforeEach, describe, expect, it } from "vitest";
 
 import { handler } from "./createUserProfile";
