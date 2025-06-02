@@ -1108,7 +1108,8 @@ export const oneMACFAQContent: FAQContent[] = [
                     rel="noopener noreferrer"
                     className="text-blue-600"
                   >
-                    {pdf.title}: {pdf.text}
+                    {pdf.title}
+                    {pdf.text && `: ${pdf.text}`}
                   </a>
                   {pdf.subtext && (
                     <ul className="list-disc pl-7 space-y-1">
@@ -1172,7 +1173,8 @@ export const oneMACFAQContent: FAQContent[] = [
                     rel="noopener noreferrer"
                     className="text-blue-600"
                   >
-                    {pdf.title}: {pdf.text}
+                    {pdf.title}
+                    {pdf.text && `: ${pdf.text}`}
                   </a>
                 </li>
               ))}
