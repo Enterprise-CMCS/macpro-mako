@@ -1,10 +1,10 @@
 import {
   defaultCMSUser,
   errorRoleSearchHandler,
-  mockedProducer,
   setDefaultStateSubmitter,
   setMockUsername,
 } from "mocks";
+import { mockedProducer } from "mocks/helpers/kafka.utils";
 import { mockedServiceServer as mockedServer } from "mocks/server";
 import { beforeEach, describe, expect, it } from "vitest";
 
