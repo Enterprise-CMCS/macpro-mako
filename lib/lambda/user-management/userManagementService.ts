@@ -8,6 +8,7 @@ export const getUserByEmail = async (
   email: string,
   domainNamespace?: { domain: string; index: Index },
 ) => {
+  console.log("Looking up user by email:", email);
   if (!domainNamespace) domainNamespace = getDomainAndNamespace("users");
   const { domain, index } = domainNamespace;
 
@@ -164,6 +165,7 @@ export const getApproversByRoleState = async (
   if (!domainNamespace) domainNamespace = getDomainAndNamespace("roles");
   if (!userDomainNamespace) userDomainNamespace = getDomainAndNamespace("users");
   const { domain, index } = domainNamespace;
+  console.log(`Getting approvers for role: ${role}, state: ${state}`);
 
   // TODO: move to shared type bc this is the same code coppied
   const approvingUserRole = {
