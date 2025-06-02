@@ -5,12 +5,11 @@ export function sendGAEvent(eventTitle: string, userRoles: string, userState: st
     ReactGA.event({
       action: eventTitle,
       category: userState,
-      user_role: userRoles,
     });
   } else {
     ReactGA.event({
       action: eventTitle,
-      user_role: userRoles,
+      category: userRoles,
     });
   }
 }
