@@ -215,10 +215,8 @@ export const getApproversByRoleState = async (
 export const getApproversByRole = async (
   role: string,
   domainNamespace?: { domain: string; index: Index },
-  userDomainNamespace?: { domain: string; index: Index },
 ) => {
   const resolvedDomain = domainNamespace ?? getDomainAndNamespace("roles");
-  const resolvedUserDomain = userDomainNamespace ?? getDomainAndNamespace("users");
   const { domain, index } = resolvedDomain;
 
   const approverRole = approvingUserRole[role as keyof typeof approvingUserRole];
@@ -233,26 +231,35 @@ export const getApproversByRole = async (
     size: QUERY_LIMIT,
   });
 
-  const approverRoleList = results.hits.hits.map((hit: any) => {
-    const { id, email, territory } = hit._source;
-    console.log("APPROVER ROLE: ", email, territory);
-    return { id, email, territory };
-  });
+  const approverRoleList: { id: string; email: string; territory: string }[] =
+    results.hits.hits.map((hit: any) => {
+      const { id, email, territory } = hit._source;
+      return { id, email, territory };
+    });
 
-  const approversInfo = await Promise.all(
-    approverRoleList
-      .filter((approver: { id: string; email: string; territory: string }) => approver.email)
-      .map(async (approver: { id: string; email: string; territory: string }) => {
-        const userInfo = await getUserByEmail(approver.email, resolvedUserDomain);
-        const fullName = userInfo?.fullName ?? "Unknown";
-        return {
-          email: approver.email,
-          fullName,
-          id: approver.id,
-          territory: approver.territory,
-        };
-      }),
+  const uniqueEmails = Array.from(
+    new Set(approverRoleList.map((approver) => approver.email).filter(Boolean)),
   );
+
+  console.log("about to get emails:", JSON.stringify(uniqueEmails));
+  const userInfoResults = await getUsersByEmails(uniqueEmails);
+
+  const emailToFullName = new Map<string, string>();
+  for (const user of userInfoResults.hits.hits) {
+    const { email, fullName } = user._source;
+    if (email) {
+      emailToFullName.set(email, fullName ?? "Unknown");
+    }
+  }
+
+  const approversInfo = approverRoleList
+    .filter((approver) => approver.email)
+    .map((approver) => ({
+      id: approver.id,
+      email: approver.email,
+      fullName: emailToFullName.get(approver.email) ?? "Unknown",
+      territory: approver.territory,
+    }));
 
   return approversInfo;
 };

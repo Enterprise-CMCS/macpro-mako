@@ -53,7 +53,7 @@ const getApprovers = async (event: APIGatewayEvent) => {
           const allApprovers = await getApproversByRole(role);
 
           const filtered = allApprovers.filter((approver) =>
-            territories.includes(approver.territory),
+            territories.includes(approver.territory as Territory),
           );
 
           return {
