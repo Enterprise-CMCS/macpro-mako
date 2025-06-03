@@ -239,6 +239,7 @@ export const roleResults: TestRoleResult[] = [
       role: "statesubmitter",
       territory: "CO",
       lastModifiedDate: 1743186342647,
+      approverList: [{ fullName: "CO Approver", email: "COapprover@email.com" }],
     },
   },
   {
@@ -254,6 +255,7 @@ export const roleResults: TestRoleResult[] = [
       role: "statesubmitter",
       territory: "GU",
       lastModifiedDate: 1744941963058,
+      approverList: [{ fullName: "GU Approver", email: "GUapprover@email.com" }],
     },
   },
   {
@@ -269,6 +271,7 @@ export const roleResults: TestRoleResult[] = [
       role: "statesubmitter",
       territory: "AR",
       lastModifiedDate: 1744942254306,
+      approverList: [{ fullName: "AR Approver", email: "ARapprover@email.com" }],
     },
   },
   {
@@ -284,6 +287,7 @@ export const roleResults: TestRoleResult[] = [
       role: "statesubmitter",
       territory: "VA",
       lastModifiedDate: 1743177658586,
+      approverList: [{ fullName: "VA Approver", email: "VAapprover@email.com" }],
     },
   },
   {
@@ -299,6 +303,7 @@ export const roleResults: TestRoleResult[] = [
       role: "statesubmitter",
       territory: "FL",
       lastModifiedDate: 1744833078617,
+      approverList: [{ fullName: "FL Approver", email: "FLapprover@email.com" }],
     },
   },
   {
@@ -314,6 +319,7 @@ export const roleResults: TestRoleResult[] = [
       role: "statesubmitter",
       territory: "DE",
       lastModifiedDate: 1744935356677,
+      approverList: [{ fullName: "DE Approver", email: "DEapprover@email.com" }],
     },
   },
   {
@@ -329,6 +335,7 @@ export const roleResults: TestRoleResult[] = [
       role: "statesubmitter",
       territory: "ID",
       lastModifiedDate: 1745244652809,
+      approverList: [{ fullName: "VA Approver", email: "VAapprover@email.com" }],
     },
   },
   {
@@ -344,6 +351,7 @@ export const roleResults: TestRoleResult[] = [
       role: "statesubmitter",
       territory: "OH",
       lastModifiedDate: 1742509127340,
+      approverList: [{ fullName: "OH Approver", email: "OHapprover@email.com" }],
     },
   },
   {
@@ -359,6 +367,7 @@ export const roleResults: TestRoleResult[] = [
       role: "statesubmitter",
       territory: "AS",
       lastModifiedDate: 1743193353300,
+      approverList: [{ fullName: "AS Approver", email: "ASapprover@email.com" }],
     },
   },
   {
@@ -389,6 +398,7 @@ export const roleResults: TestRoleResult[] = [
       role: "statesubmitter",
       territory: "CA",
       lastModifiedDate: 1744832971754,
+      approverList: [{ fullName: "CA Approver", email: "CAapprover@email.com" }],
     },
   },
   {
@@ -419,6 +429,7 @@ export const roleResults: TestRoleResult[] = [
       role: "statesubmitter",
       territory: "GA",
       lastModifiedDate: 1743619569677,
+      approverList: [{ fullName: "GA Approver", email: "GAapprover@email.com" }],
     },
   },
   {
@@ -434,6 +445,7 @@ export const roleResults: TestRoleResult[] = [
       role: "statesubmitter",
       territory: "AZ",
       lastModifiedDate: 1670448124416,
+      approverList: [{ fullName: "AZ Approver", email: "AZapprover@email.com" }],
     },
   },
   {
@@ -449,6 +461,7 @@ export const roleResults: TestRoleResult[] = [
       role: "statesubmitter",
       territory: "AK",
       lastModifiedDate: 1744764550057,
+      approverList: [{ fullName: "AK Approver", email: "AKapprover@email.com" }],
     },
   },
   {
@@ -464,6 +477,7 @@ export const roleResults: TestRoleResult[] = [
       role: "statesubmitter",
       territory: "AL",
       lastModifiedDate: 1744769716872,
+      approverList: [{ fullName: "AL Approver", email: "ALapprover@email.com" }],
     },
   },
   {
@@ -554,6 +568,7 @@ export const roleResults: TestRoleResult[] = [
       role: "statesubmitter",
       territory: "OH",
       lastModifiedDate: 1745244450266,
+      approverList: [{ fullName: "OH Approver", email: "OHapprover@email.com" }],
     },
   },
   {
@@ -569,6 +584,7 @@ export const roleResults: TestRoleResult[] = [
       role: "statesubmitter",
       territory: "SC",
       lastModifiedDate: 1747764449866,
+      approverList: [{ fullName: "SC Approver", email: "SCapprover@email.com" }],
     },
   },
   {
@@ -584,6 +600,7 @@ export const roleResults: TestRoleResult[] = [
       role: "statesubmitter",
       territory: "CO",
       lastModifiedDate: 1745456449866,
+      approverList: [{ fullName: "CO Approver", email: "COapprover@email.com" }],
     },
   },
   {
@@ -599,6 +616,7 @@ export const roleResults: TestRoleResult[] = [
       role: "statesubmitter",
       territory: "GA",
       lastModifiedDate: 1745223549866,
+      approverList: [{ fullName: "GA Approver", email: "GAapprover@email.com" }],
     },
   },
   {
@@ -614,6 +632,7 @@ export const roleResults: TestRoleResult[] = [
       role: "statesubmitter",
       territory: "MD",
       lastModifiedDate: 1745244568866,
+      approverList: [{ fullName: "MD Approver", email: "MDapprover@email.com" }],
     },
   },
   {
@@ -629,6 +648,7 @@ export const roleResults: TestRoleResult[] = [
       role: "statesubmitter",
       territory: "CA",
       lastModifiedDate: 1745289049866,
+      approverList: [{ fullName: "CA Approver", email: "CAapprover@email.com" }],
     },
   },
   {
@@ -644,6 +664,7 @@ export const roleResults: TestRoleResult[] = [
       role: "statesubmitter",
       territory: "NY",
       lastModifiedDate: 1745255549866,
+      approverList: [{ fullName: "NY Approver", email: "NYapprover@email.com" }],
     },
   },
   {
@@ -659,6 +680,7 @@ export const roleResults: TestRoleResult[] = [
       role: "statesubmitter",
       territory: "MD",
       lastModifiedDate: 1745234449866,
+      approverList: [{ fullName: "MD Approver", email: "MDapprover@email.com" }],
     },
   },
   {

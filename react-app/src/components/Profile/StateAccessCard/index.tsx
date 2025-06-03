@@ -41,9 +41,8 @@ export const StateAccessCard = ({ role, onClick, access }: StateAccessProps) => 
           <span className="font-semibold">
             {role === "cmsroleapprover" ? "CMS Role Approver:" : "State System Admin:"}{" "}
           </span>
-          {!access.approverList.length
-            ? "No Approvers Found"
-            : access.approverList.map((approver, index) => (
+          {access.approverList && access.approverList.length
+            ? access.approverList.map((approver, index) => (
                 <a
                   className="text-blue-600"
                   href={`mailto:${approver.email}`}
@@ -52,7 +51,8 @@ export const StateAccessCard = ({ role, onClick, access }: StateAccessProps) => 
                   {approver.fullName}
                   {index !== access.approverList.length - 1 && ", "}
                 </a>
-              ))}
+              ))
+            : "No Approvers Found"}
         </p>
       </div>
     </CardWithTopBorder>

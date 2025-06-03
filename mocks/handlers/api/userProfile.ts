@@ -223,6 +223,16 @@ export const errorApiSubmitRoleRequestsHandler = http.post(
   async () => new HttpResponse("Response Error", { status: 500 }),
 );
 
+const defaultGetApproversHandler = http.get(
+  "https://test-domain.execute-api.us-east-1.amazonaws.com/mocked-tests/getApprovers",
+  async () => HttpResponse.json([]),
+);
+
+const errorApiGetApproversHandler = http.get(
+  "https://test-domain.execute-api.us-east-1.amazonaws.com/mocked-tests/getApprovers",
+  async () => new HttpResponse("Response Error", { status: 500 }),
+);
+
 export const userProfileHandlers = [
   defaultApiUserProfileHandler,
   defaultApiGetCreateUserProfileHandler,
@@ -230,4 +240,6 @@ export const userProfileHandlers = [
   defaultApiGetSubmitGroupDivisionHandler,
   defaultApiOptionSubmitGroupDivisionHandler,
   defaultApiSubmitRoleRequestsHandler,
+  defaultGetApproversHandler,
+  errorApiGetApproversHandler,
 ];
