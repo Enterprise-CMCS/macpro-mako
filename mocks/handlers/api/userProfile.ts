@@ -225,7 +225,23 @@ export const errorApiSubmitRoleRequestsHandler = http.post(
 
 const defaultGetApproversHandler = http.get(
   "https://test-domain.execute-api.us-east-1.amazonaws.com/mocked-tests/getApprovers",
-  async () => HttpResponse.json([]),
+  async () => {
+    return HttpResponse.json({
+      approverList: [
+        {
+          role: "statesubmitter",
+          territory: ["CA"],
+          approvers: [
+            {
+              email: "approver@example.com",
+              fullName: "Approver Example",
+              territory: "CA",
+            },
+          ],
+        },
+      ],
+    });
+  },
 );
 
 const errorApiGetApproversHandler = http.get(
