@@ -4,7 +4,9 @@
   "version": "0.0.0",
   "type": "module",
   "scripts": {
+    "predev": "bash -lc \"BRANCH=${STAGE:-$(git rev-parse --abbrev-ref HEAD)}; case \\\"$BRANCH\\\" in main|val|production) FINAL_STAGE=$BRANCH ;; *) FINAL_STAGE=main ;; esac; ts-node ../bin/cli/src/lib/write-ui-env-file.ts $FINAL_STAGE\"",
     "dev": "vite --mode development",
+    "prebuild": "bash -lc \"BRANCH=${STAGE:-$(git rev-parse --abbrev-ref HEAD)}; case \\\"$BRANCH\\\" in main|val|production) FINAL_STAGE=$BRANCH ;; *) FINAL_STAGE=main ;; esac; ts-node ../bin/cli/src/lib/write-ui-env-file.ts $FINAL_STAGE\"",
     "build": "tsc && vite build",
     "preview": "vite preview",
     "test": "vitest",
@@ -81,6 +83,7 @@
     "typescript": "5.4.5",
     "vite": "^5.3.5",
     "vite-plugin-checker": "^0.8.0",
-    "vite-plugin-radar": "^0.9.2"
+    "vite-plugin-radar": "^0.9.2",
+    "ts-node": "^10.9.2"
   }
 }
