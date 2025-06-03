@@ -244,23 +244,12 @@ export const getApproversByRole = async (
   console.log("about to get emails:", JSON.stringify(uniqueEmails));
   const userInfoResults = await getUsersByEmails(uniqueEmails);
 
-  const rolesWithName = userInfoResults.map((roleObj: { email: string; fullName?: string }) => {
-    const email = roleObj.email;
-    const fullName = userInfoResults[email]?.fullName || "Unknown";
-
-    return {
-      ...roleObj,
-      email,
-      fullName,
-    };
-  });
-
   const approversInfo = approverRoleList
     .filter((approver) => approver.email)
     .map((approver) => ({
       id: approver.id,
       email: approver.email,
-      fullName: rolesWithName.get(approver.email) ?? "Unknown",
+      fullName: userInfoResults[approver.email] ?? "Unknown",
       territory: approver.territory,
     }));
 
