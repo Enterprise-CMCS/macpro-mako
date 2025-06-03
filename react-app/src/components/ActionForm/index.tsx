@@ -295,6 +295,7 @@ export const ActionForm = <Schema extends SchemaWithEnforcableProps>({
                   onSubmit();
                 }
               }}
+              disabled={!form.formState.isValid}
             />
           )}
 

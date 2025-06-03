@@ -20,6 +20,7 @@ type Props = {
 type MedSpaFooterProps = {
   onCancel: () => void;
   onSubmit: () => void;
+  disabled: boolean;
 };
 
 export const Footer = ({ email, address, showNavLinks }: Props) => {
@@ -125,7 +126,7 @@ export const FAQFooter = () => {
   );
 };
 
-export const MedSpaFooter = ({ onCancel, onSubmit }: MedSpaFooterProps) => {
+export const MedSpaFooter = ({ onCancel, onSubmit, disabled }: MedSpaFooterProps) => {
   const [visible, setVisible] = useState(true);
 
   useEffect(() => {
@@ -168,8 +169,11 @@ export const MedSpaFooter = ({ onCancel, onSubmit }: MedSpaFooterProps) => {
           {/* Save & Submit */}
           <button
             onClick={onSubmit}
+            disabled={disabled}
             data-testid="submit-action-form-footer"
-            className="w-[181.75px] h-[46.58px] py-[12px] px-[20px] gap-[10px] rounded-[4px] bg-blue-700 text-white font-semibold text-sm"
+            className={`w-[181.75px] h-[46.58px] py-[12px] px-[20px] gap-[10px] rounded-[4px] font-semibold text-sm transition
+    ${disabled ? "bg-gray-300 text-white cursor-not-allowed" : "bg-blue-700 text-white hover:bg-blue-800"}
+  `}
           >
             Save & Submit
           </button>

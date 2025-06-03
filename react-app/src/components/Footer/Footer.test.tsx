@@ -156,7 +156,7 @@ describe("MedSpaFooter scroll behavior", () => {
     const onCancel = vi.fn();
     const onSubmit = vi.fn();
 
-    render(<MedSpaFooter onCancel={onCancel} onSubmit={onSubmit} />);
+    render(<MedSpaFooter onCancel={onCancel} onSubmit={onSubmit} disabled={true} />);
 
     // Trigger scroll event
     window.dispatchEvent(new Event("scroll"));
@@ -179,7 +179,7 @@ describe("MedSpaFooter scroll behavior", () => {
     const onCancel = vi.fn();
     const onSubmit = vi.fn();
 
-    render(<MedSpaFooter onCancel={onCancel} onSubmit={onSubmit} />);
+    render(<MedSpaFooter onCancel={onCancel} onSubmit={onSubmit} disabled={true} />);
 
     window.dispatchEvent(new Event("scroll"));
 
@@ -252,5 +252,39 @@ describe("TestComponent visibility based on IntersectionObserver", () => {
     observerInstance.trigger(false); // simulate isIntersecting = false
 
     expect(screen.getByTestId("visible-div")).toBeInTheDocument();
+  });
+});
+
+describe("MedSpaFooter", () => {
+  it("disables Save & Submit button when form is invalid", () => {
+    const onCancel = vi.fn();
+    const onSubmit = vi.fn();
+
+    render(
+      <MedSpaFooter
+        onCancel={onCancel}
+        onSubmit={onSubmit}
+        disabled={true} // <- form is invalid
+      />,
+    );
+
+    const submitBtn = screen.getByTestId("submit-action-form-footer");
+    expect(submitBtn).toBeDisabled();
+  });
+
+  it("enables Save & Submit button when form is valid", () => {
+    const onCancel = vi.fn();
+    const onSubmit = vi.fn();
+
+    render(
+      <MedSpaFooter
+        onCancel={onCancel}
+        onSubmit={onSubmit}
+        disabled={false} // <- form is valid
+      />,
+    );
+
+    const submitBtn = screen.getByTestId("submit-action-form-footer");
+    expect(submitBtn).not.toBeDisabled();
   });
 });
