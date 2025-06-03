@@ -17,9 +17,9 @@ import ReactGA from "react-ga4";
 
 
 
-declare global {
-  interface Window { gtag?: (...args: any[]) => void; }
-}
+// declare global {
+//   interface Window { gtag?: (...args: any[]) => void; }
+// }
 // import 
 
 import { extractBucketAndKeyFromUrl, getPresignedUrl, uploadToS3 } from "./uploadUtilities";
@@ -130,9 +130,7 @@ export const Upload = ({ maxFiles, files, setFiles, dataTestId, type }: UploadPr
         });
       }
 
-
       // …
-
       // ReactGA.event({
       //   name: "submit_file_upload",
       //   params: {
