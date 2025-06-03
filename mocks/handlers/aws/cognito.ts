@@ -1,4 +1,4 @@
-import jwt from "jsonwebtoken";
+import * as jwt from "jsonwebtoken";
 import { http, HttpResponse, passthrough, PathParams } from "msw";
 import { APIGatewayEventRequestContext } from "shared-types";
 

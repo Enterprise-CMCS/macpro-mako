@@ -18,7 +18,7 @@ export const ErrorPage = () => {
           },
           {
             to: "/404",
-            displayText: "Error Page",
+            displayText: "Page not found",
             order: 1,
           },
         ]}

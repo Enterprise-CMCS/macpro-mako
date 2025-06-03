@@ -2,19 +2,37 @@
   "name": "shared-types",
   "version": "0.0.0",
   "private": true,
+  "type": "module",
   "license": "MIT",
-  "devDependencies": {
-    "base-64": "^1.0.0",
-    "eslint": "^8.38.0",
-    "eslint-config-custom-server": "*",
-    "zod": "^3.22.3"
+  "exports": {
+    ".": "./index.ts",
+    "./actions": "./actions.ts",
+    "./authority": "./authority.ts",
+    "./events": "./events/index.ts",
+    "./events/legacy-event": "./events/legacy-event.ts",
+    "./events/legacy-user": "./events/legacy-user.ts",
+    "./events/temporary-extension": "./events/temporary-extension.ts",
+    "./forms": "./forms.ts",
+    "./opensearch": "./opensearch/index.ts",
+    "./opensearch/changelog": "./opensearch/changelog/index.ts",
+    "./opensearch/main": "./opensearch/main/index.ts",
+    "./opensearch/main/transforms/legacy-transforms": "./opensearch/main/transforms/legacy-transforms/index.ts",
+    "./states": "./states.ts",
+    "./uploads": "./uploads.ts",
+    "./user": "./user.ts"
   },
   "scripts": {
     "test": "vitest",
     "test:coverage": "vitest run --coverage.enabled true",
     "test:ui": "vitest --ui"
   },
+  "devDependencies": {
+    "eslint": "^8.38.0",
+    "eslint-config-custom-server": "*"
+  },
   "dependencies": {
-    "s3-url-parser": "^1.0.3"
+    "base-64": "^1.0.0",
+    "s3-url-parser": "^1.0.3",
+    "zod": "^3.22.3"
   }
 }

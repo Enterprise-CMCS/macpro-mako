@@ -3,7 +3,7 @@ import { isCmsUser, isHelpDeskUser } from "shared-utils";
 
 import { useGetUser } from "@/api";
 
-import { DetailCardWrapper } from "..";
+import { DetailCardWrapper } from "../index";
 
 type PackageStatusCardProps = {
   submission: opensearch.main.Document;

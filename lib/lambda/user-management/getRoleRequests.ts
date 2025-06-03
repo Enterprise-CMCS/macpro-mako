@@ -60,27 +60,23 @@ export const getRoleRequests = async (event: APIGatewayEvent) => {
     let roleRequests: StateAccess[] = [];
 
     if (systemAdmin || helpDesk) {
-      // get all of the role requests
       roleRequests = await getAllUserRoles();
-    } else if (cmsRoleApprover) {
-      // get all of the role requests
-      roleRequests = await getAllUserRoles();
+    }
 
-      // filter out other cmsroleapprovers and systemadmins
-      // cmsroleapprovers cannot approve those role requests
-      roleRequests = roleRequests.filter(
-        (roleObj) => !["cmsroleapprover", "systemadmin"].includes(roleObj?.role),
-      );
-    } else if (stateSystemAdmin?.territory) {
+    if (cmsRoleApprover) {
+      roleRequests = await getAllUserRoles();
+      // cmsroleapprovers can only see statesystemadmin requests
+      roleRequests = roleRequests.filter((roleObj) => roleObj?.role === "statesystemadmin");
+    }
+
+    if (stateSystemAdmin) {
       roleRequests = await getAllUserRolesByState(stateSystemAdmin?.territory);
 
-      // filter out other statesystemadmins
-      // statesystemadmins cannot approve those role requests
+      // statesystemadmins cannot update other statesystemadmin requests
       roleRequests = roleRequests.filter((roleObj) => roleObj?.role !== "statesystemadmin");
     }
 
-    // remove the user from the role requests
-    // the user cannot approve their own role requests
+    // filter out the current user from the role requests
     roleRequests = roleRequests.filter((adminRole) => adminRole?.email !== email);
 
     const roleRequestsWithName = await getUserRolesWithNames(roleRequests);

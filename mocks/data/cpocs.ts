@@ -106,4 +106,4 @@ const cpocs: Record<number, TestCpocsItemResult> = {
 
 export default cpocs;
 
-export const cpocsList = Object.values(cpocs);
+export const cpocsList: TestCpocsItemResult[] = Object.values(cpocs);

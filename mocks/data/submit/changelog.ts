@@ -123,9 +123,9 @@ export const newChipDetailsSubmission = {
   proposedEffectiveDate: 1700000000,
   attachments: {
     ...attachments.chipEligibility,
+    ...attachments.coverLetter,
     ...attachments.currentStatePlan,
     ...attachments.amendedLanguage,
-    ...attachments.coverLetter,
     ...attachments.budgetDocuments,
     ...attachments.publicNotice,
     ...attachments.tribalConsultation,

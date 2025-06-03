@@ -111,8 +111,7 @@ describe("getRoleRequests", () => {
     // remove the cmsRoleApprover roles
     const filteredRoles = roleDocs.filter(
       (roleObj) =>
-        !["cmsroleapprover", "systemadmin"].includes(roleObj?.role) &&
-        roleObj?.email !== CMS_ROLE_APPROVER_EMAIL,
+        roleObj?.role === "statesystemadmin" && roleObj?.email !== CMS_ROLE_APPROVER_EMAIL,
     );
     expect(roles.length).toEqual(filteredRoles.length);
   });

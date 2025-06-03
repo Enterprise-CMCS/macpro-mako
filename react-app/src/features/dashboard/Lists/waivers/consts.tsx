@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { CMS_READ_ONLY_ROLES, SEATOOL_STATUS, UserRoles } from "shared-types";
-import { formatActionType, formatDateToET } from "shared-utils";
+import { formatActionType, formatDateToET, formatDateToUTC } from "shared-utils";
 
 import { useGetUser } from "@/api";
 import { OsTableColumn } from "@/components";
@@ -102,11 +102,10 @@ const getColumns = (props) => {
       field: "finalDispositionDate",
       label: "Final Disposition",
       hidden: true,
-      transform: (data) =>
+      cell: (data) =>
         data?.finalDispositionDate
-          ? formatDateToET(data.finalDispositionDate, "MM/dd/yyyy", false)
+          ? formatDateToUTC(data.finalDispositionDate, "MM/dd/yyyy")
           : BLANK_VALUE,
-      cell: renderCellDate("finalDispositionDate"),
     },
     {
       field: "makoChangedDate",
@@ -121,12 +120,8 @@ const getColumns = (props) => {
       field: "raiRequestedDate",
       label: "Formal RAI Requested",
       hidden: true,
-      transform: (data) => {
-        return data.raiRequestedDate
-          ? formatDateToET(data.raiRequestedDate, "MM/dd/yyyy", false)
-          : BLANK_VALUE;
-      },
-      cell: renderCellDate("raiRequestedDate"),
+      cell: (data) =>
+        data?.raiRequestedDate ? formatDateToUTC(data.raiRequestedDate, "MM/dd/yyyy") : BLANK_VALUE,
     },
     {
       field: "raiReceivedDate",
