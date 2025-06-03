@@ -44,9 +44,8 @@
   <script async src="https://www.googletagmanager.com/gtag/js?id=G-03XK6P2CKS"></script>
 
   <script>
-    
-
-    console.log("import.meta.env.VITE_GOOGLE_ANALYTICS_GTAG =", import.meta.env.VITE_GOOGLE_ANALYTICS_GTAG);
+    var GA_ID = import.meta.env.VITE_GOOGLE_ANALYTICS_GTAG;
+    console.log("import.meta.env.VITE_GOOGLE_ANALYTICS_GTAG =", GA_ID);
     // 2. Bootstrapping dataLayer and gtag()
     window.dataLayer = window.dataLayer || [];
     function gtag(){ dataLayer.push(arguments); }
