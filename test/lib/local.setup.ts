@@ -1,11 +1,9 @@
 import { test as setup } from "@playwright/test";
 
-import playwrightConfig from "@/playwright.config";
-
 import { getDeploymentConfig, getSecret } from "./auth.secrets";
 import { generateAuthFile } from "./auth.setup";
+import { baseURL } from "./baseURLs";
 
-const { baseURL } = playwrightConfig.projects[3].use;
 const stage = process.env.STAGE_NAME || "main";
 const project = process.env.PROJECT;
 
@@ -24,14 +22,14 @@ console.log(`[Setup] Stage: ${stage} | Project: ${project} | Base URL: ${baseURL
 
 setup("auth", async () => {
   await generateAuthFile({
-    baseURL,
+    baseURL: baseURL.local,
     user: testUsers.state,
     password,
     storagePath: stateSubmitterAuthFile,
   });
 
   await generateAuthFile({
-    baseURL,
+    baseURL: baseURL.local,
     user: testUsers.reviewer,
     password,
     storagePath: reviewerAuthFile,
