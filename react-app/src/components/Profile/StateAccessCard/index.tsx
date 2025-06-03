@@ -44,7 +44,11 @@ export const StateAccessCard = ({ role, onClick, access }: StateAccessProps) => 
           {!access.approverList.length
             ? "No Approvers Found"
             : access.approverList.map((approver, index) => (
-                <a className="text-blue-600" href={`mailto:${approver.email}`}>
+                <a
+                  className="text-blue-600"
+                  href={`mailto:${approver.email}`}
+                  key={`${approver.fullName}-${index}`}
+                >
                   {approver.fullName}
                   {index !== access.approverList.length - 1 && ", "}
                 </a>
