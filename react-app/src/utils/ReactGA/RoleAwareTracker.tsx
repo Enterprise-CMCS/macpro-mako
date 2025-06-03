@@ -114,10 +114,7 @@ export function RoleAwareTracker({
   }, []);
 
   // Until we know userRole, we render nothing (or a spinner). Once we have it, mount PathTracker.
-  if (userRole === null) {
-    // You could return a <LoadingSpinner /> or null while we figure it out.
-    return null;
-  }
+
 
   return <PathTracker userRole={userRole}>{children}</PathTracker>;
 }
