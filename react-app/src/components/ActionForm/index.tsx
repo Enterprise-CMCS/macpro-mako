@@ -230,7 +230,16 @@ export const ActionForm = <Schema extends SchemaWithEnforcableProps>({
       />
       {form.formState.isSubmitting && <LoadingSpinner />}
       <Form {...form}>
-        <form onSubmit={onSubmit} className="my-6 space-y-8 mx-auto justify-center flex flex-col">
+        <form
+          onSubmit={(e) => {
+            if (shouldShowMedSpaFooter) {
+              e.preventDefault(); // Avoid duplicate submission for MedSpa
+            } else {
+              onSubmit(e); // Normal submission for other forms
+            }
+          }}
+          className="my-6 space-y-8 mx-auto justify-center flex flex-col"
+        >
           <SectionCard testId="detail-section" title={title}>
             <div>
               {areFieldsRequired && <RequiredFieldDescription />}
@@ -317,17 +326,19 @@ export const ActionForm = <Schema extends SchemaWithEnforcableProps>({
                 <Button
                   type="button"
                   onClick={() => {}}
-                  className="bg-white w-[113px] text-blue-700 border border-blue-700 font-semibold text-sm px-5 py-2 rounded-md"
+                  className="bg-white w-[113px] text-blue-700 border border-blue-700 font-semibold text-sm px-5 py-2 rounded-md hover:bg-white hover:text-blue-700 hover:border-blue-700"
                 >
                   Save
                 </Button>
                 <Button
-                  type={promptPreSubmission ? "button" : "submit"}
-                  onClick={
-                    promptPreSubmission
-                      ? () => userPrompt({ ...promptPreSubmission, onAccept: onSubmit })
-                      : undefined
-                  }
+                  type="button"
+                  onClick={() => {
+                    if (promptPreSubmission) {
+                      userPrompt({ ...promptPreSubmission, onAccept: onSubmit });
+                    } else {
+                      onSubmit(); // manually call submit handler
+                    }
+                  }}
                   disabled={!form.formState.isValid}
                   data-testid="submit-action-form"
                   className="bg-blue-700 text-white font-semibold text-sm px-5 py-2 rounded-md"
