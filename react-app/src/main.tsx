@@ -18,8 +18,8 @@ import { router } from "./router";
 // import "../globals";
 
 const ldClientId = config.launchDarkly?.CLIENT_ID;
-// const googleAnalyticsGtag = config.googleAnalytics?.GOOGLE_ANALYTICS_ID;G-PTZMHTCC56
-const googleAnalyticsGtag = "G-03XK6P2CKS"
+const googleAnalyticsGtag = config.googleAnalytics?.GOOGLE_ANALYTICS_ID;
+
 if (ldClientId === undefined) {
   throw new Error("To configure LaunchDarkly, you must set LAUNCHDARKLY_CLIENT_ID");
 }
