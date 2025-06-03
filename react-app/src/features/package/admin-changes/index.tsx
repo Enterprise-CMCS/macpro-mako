@@ -91,7 +91,12 @@ export const AdminChange = ({ adminActivity }: AdminChangeProps) => {
       default:
         return [BLANK_VALUE, AC_Update];
     }
-  }, [adminActivity.event, adminActivity.changeType, adminActivity.raiWithdrawEnabled]);
+  }, [
+    adminActivity.event,
+    adminActivity.changeType,
+    adminActivity.raiWithdrawEnabled,
+    adminActivity.changeMade,
+  ]);
 
   return (
     <AccordionItem value={adminActivity.id}>
