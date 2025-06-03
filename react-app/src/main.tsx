@@ -15,7 +15,7 @@ import { queryClient } from "@/utils";
 import { useFeatureFlag } from "./hooks/useFeatureFlag";
 import { router } from "./router";
 
-import "../globals";
+// import "../globals";
 
 const ldClientId = config.launchDarkly?.CLIENT_ID;
 // const googleAnalyticsGtag = config.googleAnalytics?.GOOGLE_ANALYTICS_ID;G-PTZMHTCC56
