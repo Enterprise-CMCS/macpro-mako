@@ -3,8 +3,6 @@ import { startOfDay } from "date-fns";
 import * as os from "libs/opensearch-lib";
 import * as sink from "libs/sink-lib";
 import {
-  convertObjToBase64,
-  createKafkaRecord,
   errorOSMainMultiDocumentHandler,
   EXISTING_ITEM_TEMPORARY_EXTENSION_ID,
   NOT_FOUND_ITEM_ID,
@@ -23,6 +21,7 @@ import {
   contractingAmendment,
   contractingInitial,
   contractingRenewal,
+  newChipDetailsSubmission,
   newChipSubmission,
   newMedicaidSubmission,
   respondToRai,
@@ -32,6 +31,7 @@ import {
   withdrawPackage,
   withdrawRai,
 } from "mocks/data/submit/base";
+import { convertObjToBase64, createKafkaRecord } from "mocks/helpers/kafka.utils";
 import { mockedServiceServer as mockedServer } from "mocks/server";
 import {
   SEATOOL_STATUS,
@@ -155,6 +155,17 @@ describe("insertOneMacRecordsFromKafkaIntoMako", () => {
         proposedDate: contractingRenewal.proposedEffectiveDate,
         additionalInformation: contractingRenewal.additionalInformation,
         actionType: "Renew",
+        initialIntakeNeeded: true,
+      } as BulkUpdateRequestBody,
+    ],
+    [
+      "new-chip-details-submission",
+      newChipDetailsSubmission,
+      SEATOOL_STATUS.SUBMITTED,
+      {
+        proposedDate: newChipDetailsSubmission.proposedEffectiveDate,
+        additionalInformation: newChipDetailsSubmission.additionalInformation,
+        actionType: "Amend",
         initialIntakeNeeded: true,
       } as BulkUpdateRequestBody,
     ],

@@ -364,7 +364,7 @@ describe("WaiversList", () => {
           status: useCmsStatus ? raiRequestDoc.cmsStatus : raiRequestDoc.stateStatus,
           submissionDate: "12/31/2023",
           makoChangedDate: "01/31/2024",
-          raiRequestedDate: "02/29/2024",
+          raiRequestedDate: "03/01/2024",
         },
       ],
       [
@@ -375,7 +375,7 @@ describe("WaiversList", () => {
           status: useCmsStatus ? raiReceivedDoc.cmsStatus : raiReceivedDoc.stateStatus,
           submissionDate: "12/31/2023",
           makoChangedDate: "01/31/2024",
-          raiRequestedDate: "02/29/2024",
+          raiRequestedDate: "03/01/2024",
           raiReceivedDate: "03/31/2024",
         },
       ],
@@ -387,7 +387,7 @@ describe("WaiversList", () => {
           status: `${useCmsStatus ? withdrawEnabledDoc.cmsStatus : withdrawEnabledDoc.stateStatus}· Withdraw Formal RAI Response - Enabled`,
           submissionDate: "12/31/2023",
           makoChangedDate: "01/31/2024",
-          raiRequestedDate: "02/29/2024",
+          raiRequestedDate: "03/01/2024",
           raiReceivedDate: "03/31/2024",
         },
       ],
@@ -399,7 +399,7 @@ describe("WaiversList", () => {
           status: useCmsStatus ? withdrawDisabledDoc.cmsStatus : withdrawDisabledDoc.stateStatus,
           submissionDate: "12/31/2023",
           makoChangedDate: "01/31/2024",
-          raiRequestedDate: "02/29/2024",
+          raiRequestedDate: "03/01/2024",
           raiReceivedDate: "03/31/2024",
         },
       ],
@@ -411,7 +411,7 @@ describe("WaiversList", () => {
           status: useCmsStatus ? approvedDoc.cmsStatus : approvedDoc.stateStatus,
           submissionDate: "12/31/2023",
           makoChangedDate: "01/31/2024",
-          finalDispositionDate: "04/30/2024",
+          finalDispositionDate: "05/01/2024",
         },
       ],
       [
@@ -434,6 +434,7 @@ describe("WaiversList", () => {
       await user.click(screen.queryByTestId("export-csv-btn"));
 
       const expectedData = getExpectedExportData(useCmsStatus);
+      console.log("what is expected data: ", expectedData);
       expect(spy).toHaveBeenCalledWith(expectedData);
     });
   });

@@ -1,9 +1,8 @@
 import { test as base } from "@playwright/test";
+import { launchDarklyHandlers } from "mocks";
 import { http } from "msw";
 import type { MockServiceWorker } from "playwright-msw";
 import { createWorkerFixture } from "playwright-msw";
-
-import { launchDarklyHandlers } from "./launchDarklyHandler";
 
 export const test = base.extend<{
   worker: MockServiceWorker;

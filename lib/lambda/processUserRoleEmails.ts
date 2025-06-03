@@ -87,6 +87,14 @@ export async function sendUserRoleEmails(
   for (const template of templates) {
     try {
       const filledTemplate = await template(record);
+      const currentCcEmails = filledTemplate?.cc ?? [];
+      // This is used for injecting a test email for higher environments. If this
+      // secret exists it will inject that secrets cc email into the user roles
+      // email templates that get sent out (useful for testing email sending in dev, and val)
+      const userRoleCc = emails.userRoleCc ? [emails.userRoleCc] : [];
+
+      filledTemplate.cc = [...currentCcEmails, ...userRoleCc];
+
       validateEmailTemplate(filledTemplate);
       const params = createEmailParams(
         filledTemplate,

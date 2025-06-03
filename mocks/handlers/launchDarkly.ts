@@ -1,7 +1,7 @@
 import { http, HttpResponse } from "msw";
 
-import { flags } from "./flags";
-import { notifs } from "./notifs";
+import { flags } from "../data/flags";
+import { notifs } from "../data/notifs";
 
 const defaultGetLDGoalsHandler = http.get(
   "https://clientsdk.launchdarkly.us/sdk/goals/*",
