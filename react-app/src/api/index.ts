@@ -15,4 +15,3 @@ export * from "./useGetTypes";
 export * from "./amplifyConfig";
 export * from "./itemExists";
 export * from "./useGetCounties";
-export * from "./useGetApprovers";
