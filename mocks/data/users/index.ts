@@ -1,7 +1,7 @@
-import { convertUserAttributes } from "mocks/handlers/auth.utils";
 import { CognitoUserAttributes } from "shared-types";
 import { UserRole } from "shared-types/events/legacy-user";
 
+import { convertUserAttributes } from "../../handlers/auth.utils";
 import type { TestUserDataWithRole } from "../../index.d";
 import { makoReviewer, reviewers, superReviewer } from "./cmsReviewer";
 import { helpDeskUser, helpDeskUsers } from "./helpDeskUsers";

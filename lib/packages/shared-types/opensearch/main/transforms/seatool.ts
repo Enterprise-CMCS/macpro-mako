@@ -1,9 +1,8 @@
-import { SEATOOL_AUTHORITIES } from "shared-types";
-
 import {
   finalDispositionStatuses,
   getStatus,
   SeaTool,
+  SEATOOL_AUTHORITIES,
   SEATOOL_SPW_STATUS,
   SEATOOL_STATUS,
   SeatoolOfficer,
