@@ -2,12 +2,7 @@ import { useEffect, useMemo, useState } from "react";
 import { Navigate } from "react-router";
 import { StateCode } from "shared-types";
 
-import {
-  useGetApprovers,
-  useGetUserDetails,
-  useGetUserProfile,
-  useSubmitRoleRequests,
-} from "@/api";
+import { useGetUserDetails, useGetUserProfile, useSubmitRoleRequests } from "@/api";
 import {
   banner,
   Button,
@@ -41,7 +36,6 @@ export const MyProfile = () => {
   } = useGetUserProfile();
 
   const { mutateAsync: submitRequest, isLoading: areRolesLoading } = useSubmitRoleRequests();
-  const { data: approverList, isLoading: approversLoading } = useGetApprovers();
 
   const [selfRevokeState, setSelfRevokeState] = useState<StateCode | null>(null);
   const [showAddState, setShowAddState] = useState<boolean>(true);
@@ -58,10 +52,6 @@ export const MyProfile = () => {
     () => orderStateAccess(filteredStateAccess),
     [filteredStateAccess],
   );
-
-  useEffect(() => {
-    console.log("APPROVERS", approverList);
-  }, [approverList, approversLoading]);
 
   // Set initial value of showAddState based on pending roles
   useEffect(() => {

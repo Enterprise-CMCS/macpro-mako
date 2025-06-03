@@ -249,7 +249,7 @@ export const getApproversByRole = async (
     .map((approver) => ({
       id: approver.id,
       email: approver.email,
-      fullName: userInfoResults[approver.email] ?? "Unknown",
+      fullName: userInfoResults[approver.email].fullName ?? "Unknown",
       territory: approver.territory,
     }));
 
