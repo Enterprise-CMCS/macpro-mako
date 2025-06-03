@@ -1,5 +1,4 @@
-// import { toggleWithdrawRaiEnabledSchema } from "../../..";
-import { events } from "../../../events";
+import { events } from "../../../index";
 
 // transform used to take in id: string
 export const transform = () => {
