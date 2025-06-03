@@ -4,9 +4,7 @@
   "version": "0.0.0",
   "type": "module",
   "scripts": {
-    "predev": "bash -lc \"BRANCH=${STAGE:-$(git rev-parse --abbrev-ref HEAD)}; case \\\"$BRANCH\\\" in main|val|production) FINAL_STAGE=$BRANCH ;; *) FINAL_STAGE=main ;; esac; ts-node ../bin/cli/src/lib/write-ui-env-file.ts $FINAL_STAGE\"",
     "dev": "vite --mode development",
-    "prebuild": "bash -lc \"BRANCH=${STAGE:-$(git rev-parse --abbrev-ref HEAD)}; case \\\"$BRANCH\\\" in main|val|production) FINAL_STAGE=$BRANCH ;; *) FINAL_STAGE=main ;; esac; ts-node ../bin/cli/src/lib/write-ui-env-file.ts $FINAL_STAGE\"",
     "build": "tsc && vite build",
     "preview": "vite preview",
     "test": "vitest",
