@@ -24,46 +24,40 @@ if (ldClientId === undefined) {
   throw new Error("To configure LaunchDarkly, you must set LAUNCHDARKLY_CLIENT_ID");
 }
 
-const initializeApp = async () => {
-  // Initialize Google Analytics
-  if (googleAnalyticsGtag) {
-   // 2) Dynamically inject the <script async src="...gtag/js?id=GA_ID">
-   const script = document.createElement("script");
-   script.async = true;
-   script.src = `https://www.googletagmanager.com/gtag/js?id=${googleAnalyticsGtag}`;
-   document.head.appendChild(script);
+if (googleAnalyticsGtag) {
+  // ✅ Define dataLayer and gtag before loading the script
+  window.dataLayer = window.dataLayer || [];
+  function gtag(...args: any[]) {
+    window.dataLayer.push(args);
+  }
+  window.gtag = gtag;
 
-   // 3) Once that external script loads, define dataLayer and gtag(), then config
-   script.onload = () => {
-     // a) Create dataLayer if it doesn’t exist
-     window.dataLayer = window.dataLayer || [];
-     // b) Define gtag function exactly as Google expects
-     function gtag(...args: any[]) {
-       window.dataLayer.push(args);
-     }
-     window.gtag = gtag;
-     
+  // ✅ Inject GA script after defining gtag
+  const script = document.createElement("script");
+  script.async = true;
+  script.src = `https://www.googletagmanager.com/gtag/js?id=${googleAnalyticsGtag}`;
+  document.head.appendChild(script);
 
-     // c) Initialize gtag with your ID
-     window.gtag("js", new Date());
-     window.gtag("config", googleAnalyticsGtag, {
-       send_page_view: false, // or true if you want the automatic page_view
-       debug_mode: true       // set false in prod if you like
-     });
+  script.onload = () => {
+    // ✅ Configure GA only after script loads
+    window.gtag("js", new Date());
+    window.gtag("config", googleAnalyticsGtag, {
+      send_page_view: false,
+      debug_mode: true
+    });
 
-     console.log("✔️  gtag.js loaded and configured:", googleAnalyticsGtag);
-   };
+    console.log("✔️ gtag.js loaded and configured:", googleAnalyticsGtag);
+  };
 
-   script.onerror = () => {
-     console.error("❌  Failed to load gtag.js");
-   };
+  script.onerror = () => {
+    console.error("❌ Failed to load gtag.js");
+  };
 
-    // ReactGA.initialize(googleAnalyticsGtag);
-    // ReactGA.send({ hitType: "pageview", page: window.location.pathname });
-    // ReactGA.set({ debug_mode: true });
-
-    console.log("react GA intialized")
-  } else {
+  console.log("📊 Google Analytics setup started");
+} else {
+  console.warn("Google Analytics Measurement ID is not set.");
+}
+ else {
     console.warn("Google Analytics Measurement ID is not set.");
   }
 
