@@ -42,6 +42,7 @@ const initializeApp = async () => {
        window.dataLayer.push(args);
      }
      window.gtag = gtag;
+     
 
      // c) Initialize gtag with your ID
      window.gtag("js", new Date());
