@@ -5,7 +5,7 @@ const filePath = `../test/fixtures/${fileName}`;
 
 const SS = "ZZ";
 const YY = "25";
-const NNNN = 1205;
+const NNNN = 1200;
 
 const SPAID = `${SS}-${YY}-${NNNN}`;
 

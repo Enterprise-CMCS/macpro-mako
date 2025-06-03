@@ -4,7 +4,7 @@ const fileName = "upload-sample.png";
 const filePath = `../test/fixtures/${fileName}`;
 
 const SS = "ZZ";
-const NNNN = 4005;
+const NNNN = 4000;
 
 const WAIVERID = `${SS}-${NNNN}.R00.01`;
 
