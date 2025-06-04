@@ -312,7 +312,6 @@ exports[`package details > makes a package 1`] = `
                   id="radix-:r0:"
                   type="button"
                 >
-                  Add commentMore actions
                   <p
                     class="flex flex-row gap-2 text-gray-600"
                   >
@@ -394,7 +393,6 @@ exports[`package details > makes a package 1`] = `
                       </p>
                     </div>
                   </div>
-                  Add comment More actions
                 </div>
               </div>
             </div>
@@ -418,7 +416,6 @@ exports[`package details > makes a package 1`] = `
                   id="radix-:r2:"
                   type="button"
                 >
-                  Add commentMore actions
                   <p
                     class="flex flex-row gap-2 text-gray-600"
                   >
@@ -495,7 +492,6 @@ exports[`package details > makes a package 1`] = `
                   id="radix-:r4:"
                   type="button"
                 >
-                  Add commentMore actions
                   <p
                     class="flex flex-row gap-2 text-gray-600"
                   >
@@ -572,7 +568,6 @@ exports[`package details > makes a package 1`] = `
                   id="radix-:r6:"
                   type="button"
                 >
-                  Add commentMore actions
                   <p
                     class="flex flex-row gap-2 text-gray-600"
                   >
@@ -649,7 +644,6 @@ exports[`package details > makes a package 1`] = `
                   id="radix-:r8:"
                   type="button"
                 >
-                  Add commentMore actions
                   <p
                     class="flex flex-row gap-2 text-gray-600"
                   >
@@ -726,7 +720,6 @@ exports[`package details > makes a package 1`] = `
                   id="radix-:ra:"
                   type="button"
                 >
-                  Add commentMore actions
                   <p
                     class="flex flex-row gap-2 text-gray-600"
                   >
@@ -803,7 +796,6 @@ exports[`package details > makes a package 1`] = `
                   id="radix-:rc:"
                   type="button"
                 >
-                  Add commentMore actions
                   <p
                     class="flex flex-row gap-2 text-gray-600"
                   >
@@ -880,7 +872,6 @@ exports[`package details > makes a package 1`] = `
                   id="radix-:re:"
                   type="button"
                 >
-                  Add commentMore actions
                   <p
                     class="flex flex-row gap-2 text-gray-600"
                   >
@@ -957,7 +948,6 @@ exports[`package details > makes a package 1`] = `
                   id="radix-:rg:"
                   type="button"
                 >
-                  Add commentMore actions
                   <p
                     class="flex flex-row gap-2 text-gray-600"
                   >
