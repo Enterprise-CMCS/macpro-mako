@@ -23,16 +23,16 @@
         <div class='clearfix'>
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">80% </span>
+                <span class="strong">87.5% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>4/5</span>
+                <span class='fraction'>7/8</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
                 <span class="strong">100% </span>
                 <span class="quiet">Branches</span>
-                <span class='fraction'>2/2</span>
+                <span class='fraction'>4/4</span>
             </div>
         
             
@@ -44,9 +44,9 @@
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">80% </span>
+                <span class="strong">87.5% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>4/5</span>
+                <span class='fraction'>7/8</span>
             </div>
         
             
@@ -171,7 +171,21 @@
 <a name='L106'></a><a href='#L106'>106</a>
 <a name='L107'></a><a href='#L107'>107</a>
 <a name='L108'></a><a href='#L108'>108</a>
-<a name='L109'></a><a href='#L109'>109</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
+<a name='L109'></a><a href='#L109'>109</a>
+<a name='L110'></a><a href='#L110'>110</a>
+<a name='L111'></a><a href='#L111'>111</a>
+<a name='L112'></a><a href='#L112'>112</a>
+<a name='L113'></a><a href='#L113'>113</a>
+<a name='L114'></a><a href='#L114'>114</a>
+<a name='L115'></a><a href='#L115'>115</a>
+<a name='L116'></a><a href='#L116'>116</a>
+<a name='L117'></a><a href='#L117'>117</a>
+<a name='L118'></a><a href='#L118'>118</a>
+<a name='L119'></a><a href='#L119'>119</a>
+<a name='L120'></a><a href='#L120'>120</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -190,7 +204,13 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">3x</span>
-<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -279,8 +299,12 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">import { Link } from "react-router";
+import { isStateUser } from "shared-utils";
 &nbsp;
+import { useGetUser } from "@/api";
 import {
   ActionForm,
   DatePicker,
@@ -296,97 +320,106 @@ import {
 import { AttachmentFileFormatInstructions } from "@/components/ActionForm/actionForm.components";
 import { FAQ_TAB } from "@/consts";
 import { formSchemas } from "@/formSchemas";
+import { useFeatureFlag } from "@/hooks/useFeatureFlag";
 &nbsp;
-export const MedicaidForm = () =&gt; (
-  &lt;ActionForm
-    schema={formSchemas["new-medicaid-submission"]}
-    title="Medicaid SPA Details"
-    breadcrumbText="Submit new Medicaid SPA"
-    fields={({ control }) =&gt; (
-      &lt;&gt;
-        &lt;FormField
-          control={control}
-          name="id"
-          render={({ field }) =&gt; (
-            &lt;FormItem&gt;
-              &lt;div className="flex gap-4"&gt;
-                &lt;FormLabel className="font-semibold" data-testid="spaid-label"&gt;
-                  SPA ID &lt;RequiredIndicator /&gt;
-                &lt;/FormLabel&gt;
-                &lt;Link
-                  to="/faq/spa-id-format"
-                  target={FAQ_TAB}
-                  rel="noopener noreferrer"
-                  className="text-blue-900 underline"
+export const MedicaidForm = () =&gt; {
+  const { data: user } = useGetUser();
+  const isStateUserFlag = useFeatureFlag("MED_SPA_FOOTER");
+  const isState = isStateUser(user?.user);
+  const showMedspaFooter = isState &amp;&amp; isStateUserFlag;
+&nbsp;
+  return (
+    &lt;ActionForm
+      schema={formSchemas["new-medicaid-submission"]}
+      title="Medicaid SPA Details"
+      breadcrumbText="Submit new Medicaid SPA"
+      fields={({ control }) =&gt; (
+        &lt;&gt;
+          &lt;FormField
+            control={control}
+            name="id"
+            render={({ field }) =&gt; (
+              &lt;FormItem&gt;
+                &lt;div className="flex gap-4"&gt;
+                  &lt;FormLabel className="font-semibold" data-testid="spaid-label"&gt;
+                    SPA ID &lt;RequiredIndicator /&gt;
+                  &lt;/FormLabel&gt;
+                  &lt;Link
+                    to="/faq/spa-id-format"
+                    target={FAQ_TAB}
+                    rel="noopener noreferrer"
+                    className="text-blue-900 underline"
+                  &gt;
+                    What is my SPA ID?
+                  &lt;/Link&gt;
+                &lt;/div&gt;
+                &lt;SpaIdFormattingDesc /&gt;
+                &lt;FormControl&gt;
+                  &lt;Input
+                    className="max-w-sm"
+                    ref={field.ref}
+                    value={field.value}
+                    onChange={(e) =&gt; field.onChange(e.currentTarget.value.toUpperCase())}
+                  /&gt;
+                &lt;/FormControl&gt;
+                &lt;FormMessage /&gt;
+              &lt;/FormItem&gt;
+            )}
+          /&gt;
+          &lt;FormField
+            control={control}
+            name="proposedEffectiveDate"
+            render={({ field }) =&gt; (
+              &lt;FormItem className="max-w-md"&gt;
+                &lt;FormLabel
+                  className="text-lg font-semibold block"
+                  data-testid="proposedEffectiveDate-label"
                 &gt;
-                  What is my SPA ID?
-                &lt;/Link&gt;
-              &lt;/div&gt;
-              &lt;SpaIdFormattingDesc /&gt;
-              &lt;FormControl&gt;
-                &lt;Input
-                  className="max-w-sm"
-                  ref={field.ref}
-                  value={field.value}
-                  onChange={(e) =&gt; field.onChange(e.currentTarget.value.toUpperCase())}
-                /&gt;
-              &lt;/FormControl&gt;
-              &lt;FormMessage /&gt;
-            &lt;/FormItem&gt;
-          )}
-        /&gt;
-        &lt;FormField
-          control={control}
-          name="proposedEffectiveDate"
-          render={({ field }) =&gt; (
-            &lt;FormItem className="max-w-md"&gt;
-              &lt;FormLabel
-                className="text-lg font-semibold block"
-                data-testid="proposedEffectiveDate-label"
-              &gt;
-                Proposed Effective Date of Medicaid SPA &lt;RequiredIndicator /&gt;
-              &lt;/FormLabel&gt;
-              &lt;FormControl&gt;
-                &lt;DatePicker
-                  onChange={(date) =&gt; field.onChange(date.getTime())}
-                  date={field.value ? new Date(field.value) : undefined}
-                  dataTestId="proposedEffectiveDate"
-                /&gt;
-              &lt;/FormControl&gt;
-              &lt;FormMessage /&gt;
-            &lt;/FormItem&gt;
-          )}
-        /&gt;
-      &lt;/&gt;
-    )}
-    defaultValues={{ id: "" }}
-    attachments={{
-      instructions: [
-        &lt;p data-testid="attachments-instructions"&gt;
-          Maximum file size of 80 MB per attachment.{" "}
-          &lt;span className="font-bold"&gt;
-            You can add multiple files per attachment type except for the CMS-179 Form.
-          &lt;/span&gt;{" "}
-          Read the description for each of the attachment types on the{" "}
-          &lt;Link
-            to="/faq/medicaid-spa-attachments"
-            target={FAQ_TAB}
-            rel="noopener noreferrer"
-            className="text-blue-900 underline"
-          &gt;
-            FAQ Page
-          &lt;/Link&gt;
-          .
-        &lt;/p&gt;,
-        &lt;AttachmentFileFormatInstructions /&gt;,
-      ],
-    }}
-    documentPollerArgs={{
-      property: "id",
-      documentChecker: <span class="fstat-no" title="function not covered" >(c</span>heck) =&gt; <span class="cstat-no" title="statement not covered" >check.recordExists,</span>
-    }}
-  /&gt;
-);
+                  Proposed Effective Date of Medicaid SPA &lt;RequiredIndicator /&gt;
+                &lt;/FormLabel&gt;
+                &lt;FormControl&gt;
+                  &lt;DatePicker
+                    onChange={(date) =&gt; field.onChange(date.getTime())}
+                    date={field.value ? new Date(field.value) : undefined}
+                    dataTestId="proposedEffectiveDate"
+                  /&gt;
+                &lt;/FormControl&gt;
+                &lt;FormMessage /&gt;
+              &lt;/FormItem&gt;
+            )}
+          /&gt;
+        &lt;/&gt;
+      )}
+      defaultValues={{ id: "" }}
+      attachments={{
+        instructions: [
+          &lt;p data-testid="attachments-instructions"&gt;
+            Maximum file size of 80 MB per attachment.{" "}
+            &lt;span className="font-bold"&gt;
+              You can add multiple files per attachment type except for the CMS-179 Form.
+            &lt;/span&gt;{" "}
+            Read the description for each of the attachment types on the{" "}
+            &lt;Link
+              to="/faq/medicaid-spa-attachments"
+              target={FAQ_TAB}
+              rel="noopener noreferrer"
+              className="text-blue-900 underline"
+            &gt;
+              FAQ Page
+            &lt;/Link&gt;
+            .
+          &lt;/p&gt;,
+          &lt;AttachmentFileFormatInstructions /&gt;,
+        ],
+      }}
+      documentPollerArgs={{
+        property: "id",
+        documentChecker: <span class="fstat-no" title="function not covered" >(c</span>heck) =&gt; <span class="cstat-no" title="statement not covered" >check.recordExists,</span>
+      }}
+      showCustomFooter={showMedspaFooter}
+    /&gt;
+  );
+};
 &nbsp;</pre></td></tr></table></pre>
 
                 <div class='push'></div><!-- for sticky footer -->
@@ -394,7 +427,7 @@ export const MedicaidForm = () =&gt; (
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2025-06-04T02:17:01.149Z
+                at 2025-06-04T14:32:35.675Z
             </div>
         <script src="../../../../../prettify.js"></script>
         <script>
