@@ -186,7 +186,8 @@
 <a name='L121'></a><a href='#L121'>121</a>
 <a name='L122'></a><a href='#L122'>122</a>
 <a name='L123'></a><a href='#L123'>123</a>
-<a name='L124'></a><a href='#L124'>124</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
+<a name='L124'></a><a href='#L124'>124</a>
+<a name='L125'></a><a href='#L125'>125</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -202,13 +203,13 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">5x</span>
+<span class="cline-any cline-yes">4x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">13x</span>
+<span class="cline-any cline-yes">12x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -220,7 +221,7 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">5x</span>
+<span class="cline-any cline-yes">4x</span>
 <span class="cline-any cline-yes">2x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -252,7 +253,8 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">5x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">4x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
@@ -277,7 +279,7 @@
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">5x</span>
+<span class="cline-any cline-yes">4x</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -296,7 +298,7 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">5x</span>
+<span class="cline-any cline-yes">4x</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -331,7 +333,7 @@ export const DetailCardWrapper = ({
 }: PropsWithChildren&lt;{
   title: string;
 }&gt;) =&gt; (
-  &lt;CardWithTopBorder className="flex-1 min-h-full text-wrap my-0 sm:my-6"&gt;
+  &lt;CardWithTopBorder className="text-wrap my-0 sm:mt-6"&gt;
     &lt;div className="p-4 py-1 min-h-36"&gt;
       &lt;h2&gt;{title}&lt;/h2&gt;
       {children}
@@ -353,15 +355,16 @@ export const DetailsContent = ({ id }: DetailsContentProps) =&gt; {
   const { _source: submission } = record;
 &nbsp;
   return (
-    &lt;div className="w-full py-1 px-4 lg:px-8"&gt;
-      &lt;section
-        id="package_overview"
-        className="flex flex-col sm:flex-row mb-3 sm:mb-0 gap-3 sm:gap-x-[3rem] md:gap-x-[5rem] lg:gap-x-[3rem] xl:gap-x-[6rem]"
-      &gt;
-        &lt;PackageStatusCard submission={submission} /&gt;
-        &lt;PackageActionsCard id={id} submission={submission} /&gt;
+    &lt;div className="w-full py-1 px-4 lg:px-8 grid grid-cols-1 gap-y-6 sm:gap-y-6"&gt;
+      &lt;section id="package_overview" className="sm:mb-0 two-cols gap-y-3 sm:gap-y-3"&gt;
+        &lt;DetailCardWrapper title="Status"&gt;
+          &lt;PackageStatusCard submission={submission} /&gt;
+        &lt;/DetailCardWrapper&gt;
+        &lt;DetailCardWrapper title="Package Actions"&gt;
+          &lt;PackageActionsCard id={id} submission={submission} /&gt;
+        &lt;/DetailCardWrapper&gt;
       &lt;/section&gt;
-      &lt;div className="flex flex-col gap-3"&gt;
+      &lt;div className="grid grid-cols-1 gap-y-3"&gt;
         &lt;PackageDetails submission={submission} /&gt;
         &lt;PackageActivities id={id} changelog={submission.changelog} /&gt;
         &lt;AdminPackageActivities changelog={submission.changelog} /&gt;
@@ -439,7 +442,7 @@ const DetailsSidebar = <span class="fstat-no" title="function not covered" >({</
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2025-06-04T14:32:35.675Z
+                at 2025-06-04T14:50:58.011Z
             </div>
         <script src="../../../../prettify.js"></script>
         <script>
