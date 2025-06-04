@@ -19,7 +19,7 @@ import { useMediaQuery } from "@/hooks";
 import { useFeatureFlag } from "@/hooks/useFeatureFlag";
 import { isFaqPage, isProd } from "@/utils";
 import { cn } from "@/utils";
-import { sendGAEvent } from "@/utils/ReactGA/sendGAEvent";
+// import { sendGAEvent } from "@/utils/ReactGA/sendGAEvent";
 
 import TopBanner from "../Banner/macproBanner";
 import { Footer } from "../Footer";
@@ -243,23 +243,23 @@ export const Layout = () => {
   const isDesktop = useMediaQuery("(min-width: 768px)");
   const { data: user } = useGetUser();
   const customUserRoles = user?.user?.["custom:cms-roles"] || "";
-  const customisMemberOf = user?.user?.["custom:ismemberof"] || "";
+  // const customisMemberOf = user?.user?.["custom:ismemberof"] || "";
 
-  if (customUserRoles.length > 0) {
-    if (
-      customUserRoles.includes("onemac-state-user") ||
-      customUserRoles.includes("onemac-helpdesk") ||
-      customUserRoles.includes("onemac-micro-readonly")
-    ) {
-      // TBD weather to add states to the login event since users may have a states array with multiple states.
-      sendGAEvent("Login", customUserRoles, null);
-    }
-  }
-  if (customisMemberOf.length > 0) {
-    if (customisMemberOf.includes("ONEMAC_USER")) {
-      sendGAEvent("Login", customisMemberOf, null);
-    }
-  }
+  // if (customUserRoles.length > 0) {
+  //   if (
+  //     customUserRoles.includes("onemac-state-user") ||
+  //     customUserRoles.includes("onemac-helpdesk") ||
+  //     customUserRoles.includes("onemac-micro-readonly")
+  //   ) {
+  //     // TBD weather to add states to the login event since users may have a states array with multiple states.
+  //     sendGAEvent("Login", customUserRoles, null);
+  //   }
+  // }
+  // if (customisMemberOf.length > 0) {
+  //   if (customisMemberOf.includes("ONEMAC_USER")) {
+  //     sendGAEvent("Login", customisMemberOf, null);
+  //   }
+  // }
   // TODO: add logic for super user when/if super user goes into effect
 
   return (
