@@ -7,9 +7,15 @@ import {
   Accordion,
   AccordionContent,
   AccordionItem,
+  AccordionTrigger,
   Button,
   DetailsSection,
-  GridAccordionTrigger,
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
 } from "@/components";
 import { BLANK_VALUE } from "@/consts";
 
@@ -22,28 +28,24 @@ type AttachmentDetailsProps = {
 };
 
 const AttachmentDetails = ({ id, attachments, onClick }: AttachmentDetailsProps) => (
-  <div className="[&_div:last-child]:border-0">
+  <TableBody>
     {attachments.map((attachment) => {
       return (
-        <div
-          className="two-cols-gutter items-center text-left border-b transition-colors hover:bg-muted/50 data-[state=selected]:bg-muted text-sm"
-          key={`${id}-${attachment.key}`}
-        >
-          <div className="col-left-gutter pl-2 py-3">{attachment.title}</div>
-          <div className="cols-gutter" />
-          <div className="col-right-gutter pr-2 py-3">
+        <TableRow key={`${id}-${attachment.key}`}>
+          <TableCell>{attachment.title}</TableCell>
+          <TableCell>
             <Button
-              className="ml-[-15px] text-left min-h-fit"
+              className="ml-[-15px]"
               variant="link"
               onClick={() => onClick(attachment).then(window.open)}
             >
               {attachment.filename}
             </Button>
-          </div>
-        </div>
+          </TableCell>
+        </TableRow>
       );
     })}
-  </div>
+  </TableBody>
 );
 
 type SubmissionProps = {
@@ -55,21 +57,26 @@ const Submission = ({ packageActivity }: SubmissionProps) => {
   const { onUrl, loading, onZip } = useAttachmentService({ packageId });
 
   return (
-    <div className="grid grid-cols-1 py-4 gap-y-6 sm:gap-y-6">
-      <h2 className="font-bold text-lg mb-2">Attachments</h2>
-      {attachments && attachments?.length > 0 ? (
-        <div className="border-[1px] overflow-auto">
-          <div className="border-b text-left font-semibold text-muted-foreground leading-5 two-cols-gutter">
-            <div className="col-left-gutter pl-2">Document Type</div>
-            <div className="col-gutter" />
-            <div className="col-right-gutter pr-2">Attached File</div>
-          </div>
-          <AttachmentDetails attachments={attachments} id={id} onClick={onUrl} />
-        </div>
-      ) : (
-        <p>No information submitted</p>
-      )}
+    <div className="flex flex-col gap-6">
+      Add comment More actions
+      <div>
+        <h2 className="font-bold text-lg mb-2">Attachments</h2>
 
+        {attachments && attachments?.length > 0 ? (
+          <Table>
+            <TableHeader>
+              <TableRow>
+                <TableHead className="w-[300px]">Document Type</TableHead>
+                <TableHead>Attached File</TableHead>
+              </TableRow>
+            </TableHeader>
+
+            <AttachmentDetails attachments={attachments} id={id} onClick={onUrl} />
+          </Table>
+        ) : (
+          <p>No information submitted</p>
+        )}
+      </div>
       {attachments && attachments.length > 1 && (
         <Button
           variant="outline"
@@ -80,8 +87,7 @@ const Submission = ({ packageActivity }: SubmissionProps) => {
           Download section attachments
         </Button>
       )}
-
-      <div className="col-span-full">
+      <div>
         <h2 className="font-bold text-lg mb-2">Additional Information</h2>
         <p className="whitespace-pre-line">{additionalInformation || "No information submitted"}</p>
       </div>
@@ -128,22 +134,19 @@ const PackageActivity = ({ packageActivity }: PackageActivityProps) => {
 
   return (
     <AccordionItem value={packageActivity.id}>
-      <GridAccordionTrigger
-        className="bg-gray-100 px-3 text-gray-600"
-        showPlusMinus
-        col1={
-          <strong>
+      <AccordionTrigger className="bg-gray-100 px-3" showPlusMinus>
+        <p className="flex flex-row gap-2 text-gray-600">
+          <strong className="text-left">
             {label} {packageActivity.submitterName ? `By ${packageActivity.submitterName}` : ""}
           </strong>
-        }
-        col2=" - "
-        col3={
-          <span>
+          {" - "}
+          <span className="text-right">
             {packageActivity.timestamp ? formatDateToET(packageActivity.timestamp) : "Unknown"}
+            Add comment More actions
           </span>
-        }
-      />
-      <AccordionContent>
+        </p>
+      </AccordionTrigger>
+      <AccordionContent className="p-4">
         <Submission packageActivity={packageActivity} />
       </AccordionContent>
     </AccordionItem>
@@ -207,14 +210,13 @@ export const PackageActivities = ({ id, changelog }: PackageActivitiesProps) => 
           <DownloadAllButton submissionChangelog={changelogWithoutAdminChanges} packageId={id} />
         </div>
       }
-      childrenClassName="grid gap-y-8"
     >
       {changelogWithoutAdminChanges.length > 0 ? (
         <Accordion
           // `changelogWithoutAdminChanges[0]._source.id` to re-render the `defaultValue` whenever `keyAndDefaultValue` changes
           key={changelogWithoutAdminChanges[0]._source.id}
           type="multiple"
-          className="grid grid-cols-1 gap-y-2"
+          className="flex flex-col gap-2"
           defaultValue={[changelogWithoutAdminChanges[0]._source.id]}
         >
           {changelogWithoutAdminChanges.map(({ _source: packageActivity }) => (

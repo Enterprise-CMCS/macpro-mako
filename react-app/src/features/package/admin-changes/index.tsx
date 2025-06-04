@@ -7,8 +7,8 @@ import {
   Accordion,
   AccordionContent,
   AccordionItem,
+  AccordionTrigger,
   DetailsSection,
-  GridAccordionTrigger,
 } from "@/components";
 import { BLANK_VALUE } from "@/consts";
 
@@ -17,7 +17,7 @@ type AdminChangeProps = {
 };
 
 const AC_WithdrawEnabled = ({ adminActivity }: AdminChangeProps) => (
-  <div className="col-span-full py-4 grid gap-y-2">
+  <div className="flex flex-col gap-2">
     <p className="font-bold">Change made</p>
     <p>
       {adminActivity.submitterName} has enabled State package action to withdraw formal RAI response
@@ -26,7 +26,7 @@ const AC_WithdrawEnabled = ({ adminActivity }: AdminChangeProps) => (
 );
 
 const AC_WithdrawDisabled = ({ adminActivity }: AdminChangeProps) => (
-  <div className="col-span-full py-4 grid gap-y-2">
+  <div className="flex flex-col gap-2">
     <p className="font-bold">Change made</p>
     <p>
       {adminActivity.submitterName} has disabled State package action to withdraw formal RAI
@@ -36,7 +36,7 @@ const AC_WithdrawDisabled = ({ adminActivity }: AdminChangeProps) => (
 );
 
 const AC_LegacyAdminChange = ({ adminActivity }: AdminChangeProps) => (
-  <div className="col-span-full py-4 grid gap-y-6">
+  <div className="flex flex-col gap-6">
     <div>
       <h2 className="font-bold text-lg mb-2">Change Made</h2>
       <p>{adminActivity.changeMade || "No information submitted"}</p>
@@ -100,15 +100,17 @@ export const AdminChange = ({ adminActivity }: AdminChangeProps) => {
 
   return (
     <AccordionItem value={adminActivity.id}>
-      <GridAccordionTrigger
-        className="bg-gray-100 px-3 text-gray-600"
-        showPlusMinus
-        col1={<strong>{label as string}</strong>}
-        col2=" - "
-        col3={formatDateToET(adminActivity.timestamp)}
-      />
-      <AccordionContent>
+      <AccordionTrigger className="bg-gray-100 px-3" showPlusMinus>
+        Add commentMore actions
+        <p className="flex flex-row gap-2 text-gray-600">
+          <strong>{label as string}</strong>
+          {" - "}
+          {formatDateToET(adminActivity.timestamp)}
+        </p>
+      </AccordionTrigger>
+      <AccordionContent className="p-4">
         <Content adminActivity={adminActivity} />
+        Add comment More actions
       </AccordionContent>
     </AccordionItem>
   );
@@ -128,7 +130,6 @@ export const AdminPackageActivities = ({ changelog }: AdminChangesProps) => {
       id="administrative_package_changes"
       title={`Administrative Package Changes (${adminChangelog.length})`}
       description="Administrative changes reflect updates to specific data fields. If you have additional questions, please contact the assigned CPOC."
-      childrenClassName="grid gap-y-8"
     >
       <Accordion
         // There is a cached value (defaultValue) below
@@ -138,7 +139,7 @@ export const AdminPackageActivities = ({ changelog }: AdminChangesProps) => {
         key={adminChangelog[0]._source.id}
         type="multiple"
         defaultValue={[adminChangelog[0]._source.id]}
-        className="grid grid-cols-1 gap-y-2"
+        className="flex flex-col gap-2"
       >
         {adminChangelog.map(({ _source: adminActivity }) => (
           <AdminChange key={adminActivity.id} adminActivity={adminActivity} />

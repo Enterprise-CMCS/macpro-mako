@@ -256,7 +256,7 @@ exports[`package details > makes a package 1`] = `
           class="my-6 bg-slate-200"
         />
         <div
-          class="grid gap-y-8"
+          class="gap-8 flex flex-col"
           data-testid="undefined-child"
         >
           <p
@@ -280,7 +280,7 @@ exports[`package details > makes a package 1`] = `
           class="my-6 bg-slate-200"
         />
         <div
-          class="grid gap-y-8"
+          class="gap-8 flex flex-col"
           data-testid="undefined-child"
         >
           <p
@@ -289,7 +289,7 @@ exports[`package details > makes a package 1`] = `
             Administrative changes reflect updates to specific data fields. If you have additional questions, please contact the assigned CPOC.
           </p>
           <div
-            class="grid grid-cols-1 gap-y-2"
+            class="flex flex-col gap-2"
             data-orientation="vertical"
           >
             <div
@@ -298,80 +298,69 @@ exports[`package details > makes a package 1`] = `
               data-state="open"
             >
               <h3
+                class="flex"
                 data-orientation="vertical"
                 data-state="open"
               >
                 <button
                   aria-controls="radix-:r1:"
                   aria-expanded="true"
-                  class="w-full two-cols-gutter items-center py-4 font-medium transition-all hover:underline group bg-gray-100 px-3 text-gray-600"
+                  class="flex flex-1 items-center justify-between py-4 font-medium transition-all hover:underline group bg-gray-100 px-3"
                   data-orientation="vertical"
                   data-radix-collection-item=""
                   data-state="open"
                   id="radix-:r0:"
                   type="button"
                 >
-                  <div
-                    class="col-left-gutter text-left"
+                  Add commentMore actions
+                  <p
+                    class="flex flex-row gap-2 text-gray-600"
                   >
                     <strong>
                       Package Added
                     </strong>
-                  </div>
-                  <div
-                    class="col-gutter text-center"
+                     - Sun, Jan 1 2023, 09:00:00 AM EST
+                  </p>
+                  <svg
+                    class="lucide lucide-plus h-4 w-4 shrink-0 transition-transform duration-200 group-data-[state=open]:hidden"
+                    fill="none"
+                    height="24"
+                    stroke="currentColor"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                    viewBox="0 0 24 24"
+                    width="24"
+                    xmlns="http://www.w3.org/2000/svg"
                   >
-                     - 
-                  </div>
-                  <div
-                    class="col-right-gutter grid grid-cols-[1fr_1rem] gap-x-4 items-center"
+                    <path
+                      d="M5 12h14"
+                    />
+                    <path
+                      d="M12 5v14"
+                    />
+                  </svg>
+                  <svg
+                    class="lucide lucide-minus h-4 w-4 shrink-0 transition-transform duration-200 group-data-[state=closed]:hidden"
+                    fill="none"
+                    height="24"
+                    stroke="currentColor"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                    viewBox="0 0 24 24"
+                    width="24"
+                    xmlns="http://www.w3.org/2000/svg"
                   >
-                    <div
-                      class="text-left"
-                    >
-                      Sun, Jan 1 2023, 09:00:00 AM EST
-                    </div>
-                    <svg
-                      class="lucide lucide-plus h-4 w-4 shrink-0 transition-transform duration-200 group-data-[state=open]:hidden"
-                      fill="none"
-                      height="24"
-                      stroke="currentColor"
-                      stroke-linecap="round"
-                      stroke-linejoin="round"
-                      stroke-width="2"
-                      viewBox="0 0 24 24"
-                      width="24"
-                      xmlns="http://www.w3.org/2000/svg"
-                    >
-                      <path
-                        d="M5 12h14"
-                      />
-                      <path
-                        d="M12 5v14"
-                      />
-                    </svg>
-                    <svg
-                      class="lucide lucide-minus h-4 w-4 shrink-0 transition-transform duration-200 group-data-[state=closed]:hidden"
-                      fill="none"
-                      height="24"
-                      stroke="currentColor"
-                      stroke-linecap="round"
-                      stroke-linejoin="round"
-                      stroke-width="2"
-                      viewBox="0 0 24 24"
-                      width="24"
-                      xmlns="http://www.w3.org/2000/svg"
-                    >
-                      <path
-                        d="M5 12h14"
-                      />
-                    </svg>
-                  </div>
+                    <path
+                      d="M5 12h14"
+                    />
+                  </svg>
                 </button>
               </h3>
               <div
                 aria-labelledby="radix-:r0:"
-                class="text-sm transition-all px-3"
+                class="text-sm transition-all p-4"
                 data-orientation="vertical"
                 data-state="open"
                 id="radix-:r1:"
@@ -382,7 +371,7 @@ exports[`package details > makes a package 1`] = `
                   class="pb-4 pt-0"
                 >
                   <div
-                    class="col-span-full py-4 grid gap-y-6"
+                    class="flex flex-col gap-6"
                   >
                     <div>
                       <h2
@@ -405,6 +394,7 @@ exports[`package details > makes a package 1`] = `
                       </p>
                     </div>
                   </div>
+                  Add comment More actions
                 </div>
               </div>
             </div>
@@ -414,80 +404,69 @@ exports[`package details > makes a package 1`] = `
               data-state="closed"
             >
               <h3
+                class="flex"
                 data-orientation="vertical"
                 data-state="closed"
               >
                 <button
                   aria-controls="radix-:r3:"
                   aria-expanded="false"
-                  class="w-full two-cols-gutter items-center py-4 font-medium transition-all hover:underline group bg-gray-100 px-3 text-gray-600"
+                  class="flex flex-1 items-center justify-between py-4 font-medium transition-all hover:underline group bg-gray-100 px-3"
                   data-orientation="vertical"
                   data-radix-collection-item=""
                   data-state="closed"
                   id="radix-:r2:"
                   type="button"
                 >
-                  <div
-                    class="col-left-gutter text-left"
+                  Add commentMore actions
+                  <p
+                    class="flex flex-row gap-2 text-gray-600"
                   >
                     <strong>
                       Package Added
                     </strong>
-                  </div>
-                  <div
-                    class="col-gutter text-center"
+                     - Wed, Mar 1 2023, 09:00:00 AM EST
+                  </p>
+                  <svg
+                    class="lucide lucide-plus h-4 w-4 shrink-0 transition-transform duration-200 group-data-[state=open]:hidden"
+                    fill="none"
+                    height="24"
+                    stroke="currentColor"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                    viewBox="0 0 24 24"
+                    width="24"
+                    xmlns="http://www.w3.org/2000/svg"
                   >
-                     - 
-                  </div>
-                  <div
-                    class="col-right-gutter grid grid-cols-[1fr_1rem] gap-x-4 items-center"
+                    <path
+                      d="M5 12h14"
+                    />
+                    <path
+                      d="M12 5v14"
+                    />
+                  </svg>
+                  <svg
+                    class="lucide lucide-minus h-4 w-4 shrink-0 transition-transform duration-200 group-data-[state=closed]:hidden"
+                    fill="none"
+                    height="24"
+                    stroke="currentColor"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                    viewBox="0 0 24 24"
+                    width="24"
+                    xmlns="http://www.w3.org/2000/svg"
                   >
-                    <div
-                      class="text-left"
-                    >
-                      Wed, Mar 1 2023, 09:00:00 AM EST
-                    </div>
-                    <svg
-                      class="lucide lucide-plus h-4 w-4 shrink-0 transition-transform duration-200 group-data-[state=open]:hidden"
-                      fill="none"
-                      height="24"
-                      stroke="currentColor"
-                      stroke-linecap="round"
-                      stroke-linejoin="round"
-                      stroke-width="2"
-                      viewBox="0 0 24 24"
-                      width="24"
-                      xmlns="http://www.w3.org/2000/svg"
-                    >
-                      <path
-                        d="M5 12h14"
-                      />
-                      <path
-                        d="M12 5v14"
-                      />
-                    </svg>
-                    <svg
-                      class="lucide lucide-minus h-4 w-4 shrink-0 transition-transform duration-200 group-data-[state=closed]:hidden"
-                      fill="none"
-                      height="24"
-                      stroke="currentColor"
-                      stroke-linecap="round"
-                      stroke-linejoin="round"
-                      stroke-width="2"
-                      viewBox="0 0 24 24"
-                      width="24"
-                      xmlns="http://www.w3.org/2000/svg"
-                    >
-                      <path
-                        d="M5 12h14"
-                      />
-                    </svg>
-                  </div>
+                    <path
+                      d="M5 12h14"
+                    />
+                  </svg>
                 </button>
               </h3>
               <div
                 aria-labelledby="radix-:r2:"
-                class="text-sm transition-all px-3"
+                class="text-sm transition-all p-4"
                 data-orientation="vertical"
                 data-state="closed"
                 hidden=""
@@ -502,80 +481,69 @@ exports[`package details > makes a package 1`] = `
               data-state="closed"
             >
               <h3
+                class="flex"
                 data-orientation="vertical"
                 data-state="closed"
               >
                 <button
                   aria-controls="radix-:r5:"
                   aria-expanded="false"
-                  class="w-full two-cols-gutter items-center py-4 font-medium transition-all hover:underline group bg-gray-100 px-3 text-gray-600"
+                  class="flex flex-1 items-center justify-between py-4 font-medium transition-all hover:underline group bg-gray-100 px-3"
                   data-orientation="vertical"
                   data-radix-collection-item=""
                   data-state="closed"
                   id="radix-:r4:"
                   type="button"
                 >
-                  <div
-                    class="col-left-gutter text-left"
+                  Add commentMore actions
+                  <p
+                    class="flex flex-row gap-2 text-gray-600"
                   >
                     <strong>
                       Manual Update
                     </strong>
-                  </div>
-                  <div
-                    class="col-gutter text-center"
+                     - Thu, Jun 1 2023, 09:00:00 AM EDT
+                  </p>
+                  <svg
+                    class="lucide lucide-plus h-4 w-4 shrink-0 transition-transform duration-200 group-data-[state=open]:hidden"
+                    fill="none"
+                    height="24"
+                    stroke="currentColor"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                    viewBox="0 0 24 24"
+                    width="24"
+                    xmlns="http://www.w3.org/2000/svg"
                   >
-                     - 
-                  </div>
-                  <div
-                    class="col-right-gutter grid grid-cols-[1fr_1rem] gap-x-4 items-center"
+                    <path
+                      d="M5 12h14"
+                    />
+                    <path
+                      d="M12 5v14"
+                    />
+                  </svg>
+                  <svg
+                    class="lucide lucide-minus h-4 w-4 shrink-0 transition-transform duration-200 group-data-[state=closed]:hidden"
+                    fill="none"
+                    height="24"
+                    stroke="currentColor"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                    viewBox="0 0 24 24"
+                    width="24"
+                    xmlns="http://www.w3.org/2000/svg"
                   >
-                    <div
-                      class="text-left"
-                    >
-                      Thu, Jun 1 2023, 09:00:00 AM EDT
-                    </div>
-                    <svg
-                      class="lucide lucide-plus h-4 w-4 shrink-0 transition-transform duration-200 group-data-[state=open]:hidden"
-                      fill="none"
-                      height="24"
-                      stroke="currentColor"
-                      stroke-linecap="round"
-                      stroke-linejoin="round"
-                      stroke-width="2"
-                      viewBox="0 0 24 24"
-                      width="24"
-                      xmlns="http://www.w3.org/2000/svg"
-                    >
-                      <path
-                        d="M5 12h14"
-                      />
-                      <path
-                        d="M12 5v14"
-                      />
-                    </svg>
-                    <svg
-                      class="lucide lucide-minus h-4 w-4 shrink-0 transition-transform duration-200 group-data-[state=closed]:hidden"
-                      fill="none"
-                      height="24"
-                      stroke="currentColor"
-                      stroke-linecap="round"
-                      stroke-linejoin="round"
-                      stroke-width="2"
-                      viewBox="0 0 24 24"
-                      width="24"
-                      xmlns="http://www.w3.org/2000/svg"
-                    >
-                      <path
-                        d="M5 12h14"
-                      />
-                    </svg>
-                  </div>
+                    <path
+                      d="M5 12h14"
+                    />
+                  </svg>
                 </button>
               </h3>
               <div
                 aria-labelledby="radix-:r4:"
-                class="text-sm transition-all px-3"
+                class="text-sm transition-all p-4"
                 data-orientation="vertical"
                 data-state="closed"
                 hidden=""
@@ -590,80 +558,69 @@ exports[`package details > makes a package 1`] = `
               data-state="closed"
             >
               <h3
+                class="flex"
                 data-orientation="vertical"
                 data-state="closed"
               >
                 <button
                   aria-controls="radix-:r7:"
                   aria-expanded="false"
-                  class="w-full two-cols-gutter items-center py-4 font-medium transition-all hover:underline group bg-gray-100 px-3 text-gray-600"
+                  class="flex flex-1 items-center justify-between py-4 font-medium transition-all hover:underline group bg-gray-100 px-3"
                   data-orientation="vertical"
                   data-radix-collection-item=""
                   data-state="closed"
                   id="radix-:r6:"
                   type="button"
                 >
-                  <div
-                    class="col-left-gutter text-left"
+                  Add commentMore actions
+                  <p
+                    class="flex flex-row gap-2 text-gray-600"
                   >
                     <strong>
                       -- --
                     </strong>
-                  </div>
-                  <div
-                    class="col-gutter text-center"
+                     - Fri, Sep 1 2023, 09:00:00 AM EDT
+                  </p>
+                  <svg
+                    class="lucide lucide-plus h-4 w-4 shrink-0 transition-transform duration-200 group-data-[state=open]:hidden"
+                    fill="none"
+                    height="24"
+                    stroke="currentColor"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                    viewBox="0 0 24 24"
+                    width="24"
+                    xmlns="http://www.w3.org/2000/svg"
                   >
-                     - 
-                  </div>
-                  <div
-                    class="col-right-gutter grid grid-cols-[1fr_1rem] gap-x-4 items-center"
+                    <path
+                      d="M5 12h14"
+                    />
+                    <path
+                      d="M12 5v14"
+                    />
+                  </svg>
+                  <svg
+                    class="lucide lucide-minus h-4 w-4 shrink-0 transition-transform duration-200 group-data-[state=closed]:hidden"
+                    fill="none"
+                    height="24"
+                    stroke="currentColor"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                    viewBox="0 0 24 24"
+                    width="24"
+                    xmlns="http://www.w3.org/2000/svg"
                   >
-                    <div
-                      class="text-left"
-                    >
-                      Fri, Sep 1 2023, 09:00:00 AM EDT
-                    </div>
-                    <svg
-                      class="lucide lucide-plus h-4 w-4 shrink-0 transition-transform duration-200 group-data-[state=open]:hidden"
-                      fill="none"
-                      height="24"
-                      stroke="currentColor"
-                      stroke-linecap="round"
-                      stroke-linejoin="round"
-                      stroke-width="2"
-                      viewBox="0 0 24 24"
-                      width="24"
-                      xmlns="http://www.w3.org/2000/svg"
-                    >
-                      <path
-                        d="M5 12h14"
-                      />
-                      <path
-                        d="M12 5v14"
-                      />
-                    </svg>
-                    <svg
-                      class="lucide lucide-minus h-4 w-4 shrink-0 transition-transform duration-200 group-data-[state=closed]:hidden"
-                      fill="none"
-                      height="24"
-                      stroke="currentColor"
-                      stroke-linecap="round"
-                      stroke-linejoin="round"
-                      stroke-width="2"
-                      viewBox="0 0 24 24"
-                      width="24"
-                      xmlns="http://www.w3.org/2000/svg"
-                    >
-                      <path
-                        d="M5 12h14"
-                      />
-                    </svg>
-                  </div>
+                    <path
+                      d="M5 12h14"
+                    />
+                  </svg>
                 </button>
               </h3>
               <div
                 aria-labelledby="radix-:r6:"
-                class="text-sm transition-all px-3"
+                class="text-sm transition-all p-4"
                 data-orientation="vertical"
                 data-state="closed"
                 hidden=""
@@ -678,80 +635,69 @@ exports[`package details > makes a package 1`] = `
               data-state="closed"
             >
               <h3
+                class="flex"
                 data-orientation="vertical"
                 data-state="closed"
               >
                 <button
                   aria-controls="radix-:r9:"
                   aria-expanded="false"
-                  class="w-full two-cols-gutter items-center py-4 font-medium transition-all hover:underline group bg-gray-100 px-3 text-gray-600"
+                  class="flex flex-1 items-center justify-between py-4 font-medium transition-all hover:underline group bg-gray-100 px-3"
                   data-orientation="vertical"
                   data-radix-collection-item=""
                   data-state="closed"
                   id="radix-:r8:"
                   type="button"
                 >
-                  <div
-                    class="col-left-gutter text-left"
+                  Add commentMore actions
+                  <p
+                    class="flex flex-row gap-2 text-gray-600"
                   >
                     <strong>
                       Enable Formal RAI Response Withdraw
                     </strong>
-                  </div>
-                  <div
-                    class="col-gutter text-center"
+                     - Sat, Dec 31 2022, 07:00:00 PM EST
+                  </p>
+                  <svg
+                    class="lucide lucide-plus h-4 w-4 shrink-0 transition-transform duration-200 group-data-[state=open]:hidden"
+                    fill="none"
+                    height="24"
+                    stroke="currentColor"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                    viewBox="0 0 24 24"
+                    width="24"
+                    xmlns="http://www.w3.org/2000/svg"
                   >
-                     - 
-                  </div>
-                  <div
-                    class="col-right-gutter grid grid-cols-[1fr_1rem] gap-x-4 items-center"
+                    <path
+                      d="M5 12h14"
+                    />
+                    <path
+                      d="M12 5v14"
+                    />
+                  </svg>
+                  <svg
+                    class="lucide lucide-minus h-4 w-4 shrink-0 transition-transform duration-200 group-data-[state=closed]:hidden"
+                    fill="none"
+                    height="24"
+                    stroke="currentColor"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                    viewBox="0 0 24 24"
+                    width="24"
+                    xmlns="http://www.w3.org/2000/svg"
                   >
-                    <div
-                      class="text-left"
-                    >
-                      Sat, Dec 31 2022, 07:00:00 PM EST
-                    </div>
-                    <svg
-                      class="lucide lucide-plus h-4 w-4 shrink-0 transition-transform duration-200 group-data-[state=open]:hidden"
-                      fill="none"
-                      height="24"
-                      stroke="currentColor"
-                      stroke-linecap="round"
-                      stroke-linejoin="round"
-                      stroke-width="2"
-                      viewBox="0 0 24 24"
-                      width="24"
-                      xmlns="http://www.w3.org/2000/svg"
-                    >
-                      <path
-                        d="M5 12h14"
-                      />
-                      <path
-                        d="M12 5v14"
-                      />
-                    </svg>
-                    <svg
-                      class="lucide lucide-minus h-4 w-4 shrink-0 transition-transform duration-200 group-data-[state=closed]:hidden"
-                      fill="none"
-                      height="24"
-                      stroke="currentColor"
-                      stroke-linecap="round"
-                      stroke-linejoin="round"
-                      stroke-width="2"
-                      viewBox="0 0 24 24"
-                      width="24"
-                      xmlns="http://www.w3.org/2000/svg"
-                    >
-                      <path
-                        d="M5 12h14"
-                      />
-                    </svg>
-                  </div>
+                    <path
+                      d="M5 12h14"
+                    />
+                  </svg>
                 </button>
               </h3>
               <div
                 aria-labelledby="radix-:r8:"
-                class="text-sm transition-all px-3"
+                class="text-sm transition-all p-4"
                 data-orientation="vertical"
                 data-state="closed"
                 hidden=""
@@ -766,80 +712,69 @@ exports[`package details > makes a package 1`] = `
               data-state="closed"
             >
               <h3
+                class="flex"
                 data-orientation="vertical"
                 data-state="closed"
               >
                 <button
                   aria-controls="radix-:rb:"
                   aria-expanded="false"
-                  class="w-full two-cols-gutter items-center py-4 font-medium transition-all hover:underline group bg-gray-100 px-3 text-gray-600"
+                  class="flex flex-1 items-center justify-between py-4 font-medium transition-all hover:underline group bg-gray-100 px-3"
                   data-orientation="vertical"
                   data-radix-collection-item=""
                   data-state="closed"
                   id="radix-:ra:"
                   type="button"
                 >
-                  <div
-                    class="col-left-gutter text-left"
+                  Add commentMore actions
+                  <p
+                    class="flex flex-row gap-2 text-gray-600"
                   >
                     <strong>
                       Disable Formal RAI Response Withdraw
                     </strong>
-                  </div>
-                  <div
-                    class="col-gutter text-center"
+                     - Fri, Dec 1 2023, 09:00:00 AM EST
+                  </p>
+                  <svg
+                    class="lucide lucide-plus h-4 w-4 shrink-0 transition-transform duration-200 group-data-[state=open]:hidden"
+                    fill="none"
+                    height="24"
+                    stroke="currentColor"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                    viewBox="0 0 24 24"
+                    width="24"
+                    xmlns="http://www.w3.org/2000/svg"
                   >
-                     - 
-                  </div>
-                  <div
-                    class="col-right-gutter grid grid-cols-[1fr_1rem] gap-x-4 items-center"
+                    <path
+                      d="M5 12h14"
+                    />
+                    <path
+                      d="M12 5v14"
+                    />
+                  </svg>
+                  <svg
+                    class="lucide lucide-minus h-4 w-4 shrink-0 transition-transform duration-200 group-data-[state=closed]:hidden"
+                    fill="none"
+                    height="24"
+                    stroke="currentColor"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                    viewBox="0 0 24 24"
+                    width="24"
+                    xmlns="http://www.w3.org/2000/svg"
                   >
-                    <div
-                      class="text-left"
-                    >
-                      Fri, Dec 1 2023, 09:00:00 AM EST
-                    </div>
-                    <svg
-                      class="lucide lucide-plus h-4 w-4 shrink-0 transition-transform duration-200 group-data-[state=open]:hidden"
-                      fill="none"
-                      height="24"
-                      stroke="currentColor"
-                      stroke-linecap="round"
-                      stroke-linejoin="round"
-                      stroke-width="2"
-                      viewBox="0 0 24 24"
-                      width="24"
-                      xmlns="http://www.w3.org/2000/svg"
-                    >
-                      <path
-                        d="M5 12h14"
-                      />
-                      <path
-                        d="M12 5v14"
-                      />
-                    </svg>
-                    <svg
-                      class="lucide lucide-minus h-4 w-4 shrink-0 transition-transform duration-200 group-data-[state=closed]:hidden"
-                      fill="none"
-                      height="24"
-                      stroke="currentColor"
-                      stroke-linecap="round"
-                      stroke-linejoin="round"
-                      stroke-width="2"
-                      viewBox="0 0 24 24"
-                      width="24"
-                      xmlns="http://www.w3.org/2000/svg"
-                    >
-                      <path
-                        d="M5 12h14"
-                      />
-                    </svg>
-                  </div>
+                    <path
+                      d="M5 12h14"
+                    />
+                  </svg>
                 </button>
               </h3>
               <div
                 aria-labelledby="radix-:ra:"
-                class="text-sm transition-all px-3"
+                class="text-sm transition-all p-4"
                 data-orientation="vertical"
                 data-state="closed"
                 hidden=""
@@ -854,80 +789,69 @@ exports[`package details > makes a package 1`] = `
               data-state="closed"
             >
               <h3
+                class="flex"
                 data-orientation="vertical"
                 data-state="closed"
               >
                 <button
                   aria-controls="radix-:rd:"
                   aria-expanded="false"
-                  class="w-full two-cols-gutter items-center py-4 font-medium transition-all hover:underline group bg-gray-100 px-3 text-gray-600"
+                  class="flex flex-1 items-center justify-between py-4 font-medium transition-all hover:underline group bg-gray-100 px-3"
                   data-orientation="vertical"
                   data-radix-collection-item=""
                   data-state="closed"
                   id="radix-:rc:"
                   type="button"
                 >
-                  <div
-                    class="col-left-gutter text-left"
+                  Add commentMore actions
+                  <p
+                    class="flex flex-row gap-2 text-gray-600"
                   >
                     <strong>
                       Disable Formal RAI Response Withdraw
                     </strong>
-                  </div>
-                  <div
-                    class="col-gutter text-center"
+                     - Fri, Dec 1 2023, 09:00:00 AM EST
+                  </p>
+                  <svg
+                    class="lucide lucide-plus h-4 w-4 shrink-0 transition-transform duration-200 group-data-[state=open]:hidden"
+                    fill="none"
+                    height="24"
+                    stroke="currentColor"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                    viewBox="0 0 24 24"
+                    width="24"
+                    xmlns="http://www.w3.org/2000/svg"
                   >
-                     - 
-                  </div>
-                  <div
-                    class="col-right-gutter grid grid-cols-[1fr_1rem] gap-x-4 items-center"
+                    <path
+                      d="M5 12h14"
+                    />
+                    <path
+                      d="M12 5v14"
+                    />
+                  </svg>
+                  <svg
+                    class="lucide lucide-minus h-4 w-4 shrink-0 transition-transform duration-200 group-data-[state=closed]:hidden"
+                    fill="none"
+                    height="24"
+                    stroke="currentColor"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                    viewBox="0 0 24 24"
+                    width="24"
+                    xmlns="http://www.w3.org/2000/svg"
                   >
-                    <div
-                      class="text-left"
-                    >
-                      Fri, Dec 1 2023, 09:00:00 AM EST
-                    </div>
-                    <svg
-                      class="lucide lucide-plus h-4 w-4 shrink-0 transition-transform duration-200 group-data-[state=open]:hidden"
-                      fill="none"
-                      height="24"
-                      stroke="currentColor"
-                      stroke-linecap="round"
-                      stroke-linejoin="round"
-                      stroke-width="2"
-                      viewBox="0 0 24 24"
-                      width="24"
-                      xmlns="http://www.w3.org/2000/svg"
-                    >
-                      <path
-                        d="M5 12h14"
-                      />
-                      <path
-                        d="M12 5v14"
-                      />
-                    </svg>
-                    <svg
-                      class="lucide lucide-minus h-4 w-4 shrink-0 transition-transform duration-200 group-data-[state=closed]:hidden"
-                      fill="none"
-                      height="24"
-                      stroke="currentColor"
-                      stroke-linecap="round"
-                      stroke-linejoin="round"
-                      stroke-width="2"
-                      viewBox="0 0 24 24"
-                      width="24"
-                      xmlns="http://www.w3.org/2000/svg"
-                    >
-                      <path
-                        d="M5 12h14"
-                      />
-                    </svg>
-                  </div>
+                    <path
+                      d="M5 12h14"
+                    />
+                  </svg>
                 </button>
               </h3>
               <div
                 aria-labelledby="radix-:rc:"
-                class="text-sm transition-all px-3"
+                class="text-sm transition-all p-4"
                 data-orientation="vertical"
                 data-state="closed"
                 hidden=""
@@ -942,80 +866,69 @@ exports[`package details > makes a package 1`] = `
               data-state="closed"
             >
               <h3
+                class="flex"
                 data-orientation="vertical"
                 data-state="closed"
               >
                 <button
                   aria-controls="radix-:rf:"
                   aria-expanded="false"
-                  class="w-full two-cols-gutter items-center py-4 font-medium transition-all hover:underline group bg-gray-100 px-3 text-gray-600"
+                  class="flex flex-1 items-center justify-between py-4 font-medium transition-all hover:underline group bg-gray-100 px-3"
                   data-orientation="vertical"
                   data-radix-collection-item=""
                   data-state="closed"
                   id="radix-:re:"
                   type="button"
                 >
-                  <div
-                    class="col-left-gutter text-left"
+                  Add commentMore actions
+                  <p
+                    class="flex flex-row gap-2 text-gray-600"
                   >
                     <strong>
                       Enable Formal RAI Response Withdraw
                     </strong>
-                  </div>
-                  <div
-                    class="col-gutter text-center"
+                     - Fri, Dec 1 2023, 09:00:00 AM EST
+                  </p>
+                  <svg
+                    class="lucide lucide-plus h-4 w-4 shrink-0 transition-transform duration-200 group-data-[state=open]:hidden"
+                    fill="none"
+                    height="24"
+                    stroke="currentColor"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                    viewBox="0 0 24 24"
+                    width="24"
+                    xmlns="http://www.w3.org/2000/svg"
                   >
-                     - 
-                  </div>
-                  <div
-                    class="col-right-gutter grid grid-cols-[1fr_1rem] gap-x-4 items-center"
+                    <path
+                      d="M5 12h14"
+                    />
+                    <path
+                      d="M12 5v14"
+                    />
+                  </svg>
+                  <svg
+                    class="lucide lucide-minus h-4 w-4 shrink-0 transition-transform duration-200 group-data-[state=closed]:hidden"
+                    fill="none"
+                    height="24"
+                    stroke="currentColor"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                    viewBox="0 0 24 24"
+                    width="24"
+                    xmlns="http://www.w3.org/2000/svg"
                   >
-                    <div
-                      class="text-left"
-                    >
-                      Fri, Dec 1 2023, 09:00:00 AM EST
-                    </div>
-                    <svg
-                      class="lucide lucide-plus h-4 w-4 shrink-0 transition-transform duration-200 group-data-[state=open]:hidden"
-                      fill="none"
-                      height="24"
-                      stroke="currentColor"
-                      stroke-linecap="round"
-                      stroke-linejoin="round"
-                      stroke-width="2"
-                      viewBox="0 0 24 24"
-                      width="24"
-                      xmlns="http://www.w3.org/2000/svg"
-                    >
-                      <path
-                        d="M5 12h14"
-                      />
-                      <path
-                        d="M12 5v14"
-                      />
-                    </svg>
-                    <svg
-                      class="lucide lucide-minus h-4 w-4 shrink-0 transition-transform duration-200 group-data-[state=closed]:hidden"
-                      fill="none"
-                      height="24"
-                      stroke="currentColor"
-                      stroke-linecap="round"
-                      stroke-linejoin="round"
-                      stroke-width="2"
-                      viewBox="0 0 24 24"
-                      width="24"
-                      xmlns="http://www.w3.org/2000/svg"
-                    >
-                      <path
-                        d="M5 12h14"
-                      />
-                    </svg>
-                  </div>
+                    <path
+                      d="M5 12h14"
+                    />
+                  </svg>
                 </button>
               </h3>
               <div
                 aria-labelledby="radix-:re:"
-                class="text-sm transition-all px-3"
+                class="text-sm transition-all p-4"
                 data-orientation="vertical"
                 data-state="closed"
                 hidden=""
@@ -1030,80 +943,69 @@ exports[`package details > makes a package 1`] = `
               data-state="closed"
             >
               <h3
+                class="flex"
                 data-orientation="vertical"
                 data-state="closed"
               >
                 <button
                   aria-controls="radix-:rh:"
                   aria-expanded="false"
-                  class="w-full two-cols-gutter items-center py-4 font-medium transition-all hover:underline group bg-gray-100 px-3 text-gray-600"
+                  class="flex flex-1 items-center justify-between py-4 font-medium transition-all hover:underline group bg-gray-100 px-3"
                   data-orientation="vertical"
                   data-radix-collection-item=""
                   data-state="closed"
                   id="radix-:rg:"
                   type="button"
                 >
-                  <div
-                    class="col-left-gutter text-left"
+                  Add commentMore actions
+                  <p
+                    class="flex flex-row gap-2 text-gray-600"
                   >
                     <strong>
                       Manual Update
                     </strong>
-                  </div>
-                  <div
-                    class="col-gutter text-center"
+                     - Fri, Dec 1 2023, 09:00:00 AM EST
+                  </p>
+                  <svg
+                    class="lucide lucide-plus h-4 w-4 shrink-0 transition-transform duration-200 group-data-[state=open]:hidden"
+                    fill="none"
+                    height="24"
+                    stroke="currentColor"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                    viewBox="0 0 24 24"
+                    width="24"
+                    xmlns="http://www.w3.org/2000/svg"
                   >
-                     - 
-                  </div>
-                  <div
-                    class="col-right-gutter grid grid-cols-[1fr_1rem] gap-x-4 items-center"
+                    <path
+                      d="M5 12h14"
+                    />
+                    <path
+                      d="M12 5v14"
+                    />
+                  </svg>
+                  <svg
+                    class="lucide lucide-minus h-4 w-4 shrink-0 transition-transform duration-200 group-data-[state=closed]:hidden"
+                    fill="none"
+                    height="24"
+                    stroke="currentColor"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                    viewBox="0 0 24 24"
+                    width="24"
+                    xmlns="http://www.w3.org/2000/svg"
                   >
-                    <div
-                      class="text-left"
-                    >
-                      Fri, Dec 1 2023, 09:00:00 AM EST
-                    </div>
-                    <svg
-                      class="lucide lucide-plus h-4 w-4 shrink-0 transition-transform duration-200 group-data-[state=open]:hidden"
-                      fill="none"
-                      height="24"
-                      stroke="currentColor"
-                      stroke-linecap="round"
-                      stroke-linejoin="round"
-                      stroke-width="2"
-                      viewBox="0 0 24 24"
-                      width="24"
-                      xmlns="http://www.w3.org/2000/svg"
-                    >
-                      <path
-                        d="M5 12h14"
-                      />
-                      <path
-                        d="M12 5v14"
-                      />
-                    </svg>
-                    <svg
-                      class="lucide lucide-minus h-4 w-4 shrink-0 transition-transform duration-200 group-data-[state=closed]:hidden"
-                      fill="none"
-                      height="24"
-                      stroke="currentColor"
-                      stroke-linecap="round"
-                      stroke-linejoin="round"
-                      stroke-width="2"
-                      viewBox="0 0 24 24"
-                      width="24"
-                      xmlns="http://www.w3.org/2000/svg"
-                    >
-                      <path
-                        d="M5 12h14"
-                      />
-                    </svg>
-                  </div>
+                    <path
+                      d="M5 12h14"
+                    />
+                  </svg>
                 </button>
               </h3>
               <div
                 aria-labelledby="radix-:rg:"
-                class="text-sm transition-all px-3"
+                class="text-sm transition-all p-4"
                 data-orientation="vertical"
                 data-state="closed"
                 hidden=""
