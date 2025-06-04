@@ -20,7 +20,7 @@ export default function PathTracker({ userRole, children }: PathTrackerProps) {
     if(userRole) {
         console.log("********** has role: " + userRole + " Sending ROUTE CHANGE GA EVENT **********")
         console.log("*********** PAGE PATH: " + path + " *****************")
-        window.gtag?.("event", "page_view", {
+        window.gtag?.("event", "custom_page_view", {
             page_path: path,
             user_role: userRole,
         });
