@@ -101,7 +101,6 @@ export const AdminChange = ({ adminActivity }: AdminChangeProps) => {
   return (
     <AccordionItem value={adminActivity.id}>
       <AccordionTrigger className="bg-gray-100 px-3" showPlusMinus>
-        Add commentMore actions
         <p className="flex flex-row gap-2 text-gray-600">
           <strong>{label as string}</strong>
           {" - "}
@@ -110,7 +109,6 @@ export const AdminChange = ({ adminActivity }: AdminChangeProps) => {
       </AccordionTrigger>
       <AccordionContent className="p-4">
         <Content adminActivity={adminActivity} />
-        Add comment More actions
       </AccordionContent>
     </AccordionItem>
   );

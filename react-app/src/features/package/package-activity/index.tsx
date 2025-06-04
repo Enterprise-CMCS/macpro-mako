@@ -35,7 +35,7 @@ const AttachmentDetails = ({ id, attachments, onClick }: AttachmentDetailsProps)
           <TableCell>{attachment.title}</TableCell>
           <TableCell>
             <Button
-              className="ml-[-15px]"
+              className="ml-[-15px] align-left text-left min-h-fit"
               variant="link"
               onClick={() => onClick(attachment).then(window.open)}
             >
@@ -58,7 +58,6 @@ const Submission = ({ packageActivity }: SubmissionProps) => {
 
   return (
     <div className="flex flex-col gap-6">
-      Add comment More actions
       <div>
         <h2 className="font-bold text-lg mb-2">Attachments</h2>
 
@@ -80,7 +79,7 @@ const Submission = ({ packageActivity }: SubmissionProps) => {
       {attachments && attachments.length > 1 && (
         <Button
           variant="outline"
-          className="w-max col-span-full"
+          className="w-max"
           loading={loading}
           onClick={() => onZip(attachments)}
         >
@@ -142,7 +141,6 @@ const PackageActivity = ({ packageActivity }: PackageActivityProps) => {
           {" - "}
           <span className="text-right">
             {packageActivity.timestamp ? formatDateToET(packageActivity.timestamp) : "Unknown"}
-            Add comment More actions
           </span>
         </p>
       </AccordionTrigger>
