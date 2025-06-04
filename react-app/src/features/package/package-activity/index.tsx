@@ -3,8 +3,14 @@ import { opensearch } from "shared-types";
 import { ItemResult } from "shared-types/opensearch/changelog";
 import { formatDateToET } from "shared-utils";
 
-import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components";
-import * as Table from "@/components";
+import {
+  Accordion,
+  AccordionContent,
+  AccordionItem,
+  Button,
+  DetailsSection,
+  GridAccordionTrigger,
+} from "@/components";
 import { BLANK_VALUE } from "@/consts";
 
 import { Attachments, useAttachmentService } from "./hook";
@@ -16,24 +22,28 @@ type AttachmentDetailsProps = {
 };
 
 const AttachmentDetails = ({ id, attachments, onClick }: AttachmentDetailsProps) => (
-  <Table.TableBody>
+  <div className="[&_div:last-child]:border-0">
     {attachments.map((attachment) => {
       return (
-        <Table.TableRow key={`${id}-${attachment.key}`}>
-          <Table.TableCell>{attachment.title}</Table.TableCell>
-          <Table.TableCell>
-            <Table.Button
-              className="ml-[-15px]"
+        <div
+          className="two-cols-gutter items-center text-left border-b transition-colors hover:bg-muted/50 data-[state=selected]:bg-muted text-sm"
+          key={`${id}-${attachment.key}`}
+        >
+          <div className="col-left-gutter pl-2 py-3">{attachment.title}</div>
+          <div className="cols-gutter" />
+          <div className="col-right-gutter pr-2 py-3">
+            <Button
+              className="ml-[-15px] text-left min-h-fit"
               variant="link"
               onClick={() => onClick(attachment).then(window.open)}
             >
               {attachment.filename}
-            </Table.Button>
-          </Table.TableCell>
-        </Table.TableRow>
+            </Button>
+          </div>
+        </div>
       );
     })}
-  </Table.TableBody>
+  </div>
 );
 
 type SubmissionProps = {
@@ -45,36 +55,33 @@ const Submission = ({ packageActivity }: SubmissionProps) => {
   const { onUrl, loading, onZip } = useAttachmentService({ packageId });
 
   return (
-    <div className="flex flex-col gap-6">
-      <div>
-        <h2 className="font-bold text-lg mb-2">Attachments</h2>
-        {attachments && attachments?.length > 0 ? (
-          <Table.Table>
-            <Table.TableHeader>
-              <Table.TableRow>
-                <Table.TableHead className="w-[300px]">Document Type</Table.TableHead>
-                <Table.TableHead>Attached File</Table.TableHead>
-              </Table.TableRow>
-            </Table.TableHeader>
-            <AttachmentDetails attachments={attachments} id={id} onClick={onUrl} />
-          </Table.Table>
-        ) : (
-          <p>No information submitted</p>
-        )}
-      </div>
+    <div className="grid grid-cols-1 py-4 gap-y-6 sm:gap-y-6">
+      <h2 className="font-bold text-lg mb-2">Attachments</h2>
+      {attachments && attachments?.length > 0 ? (
+        <div className="border-[1px] overflow-auto">
+          <div className="border-b text-left font-semibold text-muted-foreground leading-5 two-cols-gutter">
+            <div className="col-left-gutter pl-2">Document Type</div>
+            <div className="col-gutter" />
+            <div className="col-right-gutter pr-2">Attached File</div>
+          </div>
+          <AttachmentDetails attachments={attachments} id={id} onClick={onUrl} />
+        </div>
+      ) : (
+        <p>No information submitted</p>
+      )}
 
       {attachments && attachments.length > 1 && (
-        <Table.Button
+        <Button
           variant="outline"
-          className="w-max"
+          className="w-max col-span-full"
           loading={loading}
           onClick={() => onZip(attachments)}
         >
           Download section attachments
-        </Table.Button>
+        </Button>
       )}
 
-      <div>
+      <div className="col-span-full">
         <h2 className="font-bold text-lg mb-2">Additional Information</h2>
         <p className="whitespace-pre-line">{additionalInformation || "No information submitted"}</p>
       </div>
@@ -121,18 +128,22 @@ const PackageActivity = ({ packageActivity }: PackageActivityProps) => {
 
   return (
     <AccordionItem value={packageActivity.id}>
-      <AccordionTrigger className="bg-gray-100 px-3" showPlusMinus>
-        <p className="flex flex-row gap-2 text-gray-600">
-          <strong className="text-left">
+      <GridAccordionTrigger
+        className="bg-gray-100 px-3 text-gray-600"
+        showPlusMinus
+        col1={
+          <strong>
             {label} {packageActivity.submitterName ? `By ${packageActivity.submitterName}` : ""}
           </strong>
-          {" - "}
-          <span className="text-right">
+        }
+        col2=" - "
+        col3={
+          <span>
             {packageActivity.timestamp ? formatDateToET(packageActivity.timestamp) : "Unknown"}
           </span>
-        </p>
-      </AccordionTrigger>
-      <AccordionContent className="p-4">
+        }
+      />
+      <AccordionContent>
         <Submission packageActivity={packageActivity} />
       </AccordionContent>
     </AccordionItem>
@@ -168,9 +179,14 @@ const DownloadAllButton = ({ packageId, submissionChangelog }: DownloadAllButton
   };
 
   return (
-    <Table.Button loading={loading} onClick={onDownloadAll} variant="outline">
+    <Button
+      loading={loading}
+      onClick={onDownloadAll}
+      variant="outline"
+      className="max-w-fit min-h-fit justify-self-end"
+    >
       Download all attachments
-    </Table.Button>
+    </Button>
   );
 };
 
@@ -183,7 +199,7 @@ export const PackageActivities = ({ id, changelog }: PackageActivitiesProps) => 
   const changelogWithoutAdminChanges = changelog.filter((item) => !item._source.isAdminChange);
   console.log("Changelog" + changelogWithoutAdminChanges);
   return (
-    <Table.DetailsSection
+    <DetailsSection
       id="package_activity"
       title={
         <div className="flex justify-between">
@@ -191,13 +207,14 @@ export const PackageActivities = ({ id, changelog }: PackageActivitiesProps) => 
           <DownloadAllButton submissionChangelog={changelogWithoutAdminChanges} packageId={id} />
         </div>
       }
+      childrenClassName="grid gap-y-8"
     >
       {changelogWithoutAdminChanges.length > 0 ? (
         <Accordion
           // `changelogWithoutAdminChanges[0]._source.id` to re-render the `defaultValue` whenever `keyAndDefaultValue` changes
           key={changelogWithoutAdminChanges[0]._source.id}
           type="multiple"
-          className="flex flex-col gap-2"
+          className="grid grid-cols-1 gap-y-2"
           defaultValue={[changelogWithoutAdminChanges[0]._source.id]}
         >
           {changelogWithoutAdminChanges.map(({ _source: packageActivity }) => (
@@ -207,6 +224,6 @@ export const PackageActivities = ({ id, changelog }: PackageActivitiesProps) => 
       ) : (
         <p className="text-gray-500">No package activity recorded</p>
       )}
-    </Table.DetailsSection>
+    </DetailsSection>
   );
 };

@@ -3,8 +3,6 @@ import { isCmsUser, isHelpDeskUser } from "shared-utils";
 
 import { useGetUser } from "@/api";
 
-import { DetailCardWrapper } from "../index";
-
 type PackageStatusCardProps = {
   submission: opensearch.main.Document;
 };
@@ -27,29 +25,27 @@ export const PackageStatusCard = ({ submission }: PackageStatusCardProps) => {
   const isInActiveSecondClockStatus = isCmsUser(user.user) && submission.secondClock;
 
   return (
-    <DetailCardWrapper title="Status">
-      <div className="my-3 max-w-2xl font-bold text-xl">
-        <div>
-          {isCmsUser(user.user) && isHelpDeskUser(user.user) === false
-            ? submission.cmsStatus
-            : submission.stateStatus}
-        </div>
-        <div className="flex mt-1 flex-col gap-1 items-start">
-          {isInRAIWithdrawEnabledSubStatus && (
-            <div className="flex flex-row gap-1">
-              <p className="text-xs font-bold opacity-80">·</p>
-              <p className="text-xs opacity-80">Withdraw Formal RAI Response - Enabled</p>
-            </div>
-          )}
-
-          {isInActiveSecondClockStatus && (
-            <div className="flex flex-row gap-1">
-              <p className="text-xs font-bold opacity-80">·</p>
-              <p className="text-xs opacity-80">2nd Clock</p>
-            </div>
-          )}
-        </div>
+    <div className="my-3 font-bold text-xl">
+      <div>
+        {isCmsUser(user.user) && isHelpDeskUser(user.user) === false
+          ? submission.cmsStatus
+          : submission.stateStatus}
       </div>
-    </DetailCardWrapper>
+      <div className="text-xs opacity-80">
+        {isInRAIWithdrawEnabledSubStatus && (
+          <p className="mt-1">
+            <span className="font-bold mr-1">·</span>
+            <span>Withdraw Formal RAI Response - Enabled</span>
+          </p>
+        )}
+
+        {isInActiveSecondClockStatus && (
+          <p className="mt-1">
+            <span className="font-bold mr-1">·</span>
+            <span>2nd Clock</span>
+          </p>
+        )}
+      </div>
+    </div>
   );
 };
