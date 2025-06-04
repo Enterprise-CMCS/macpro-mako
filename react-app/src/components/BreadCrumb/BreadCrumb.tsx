@@ -64,7 +64,7 @@ export const BreadCrumb = ({
           onClick={() =>{
             window.gtag("event", "breadcrumb_click", {
               // GA4 event name: arbitrary string
-              label:  typeof children === "string" ? children : undefined
+              breadcrumb_text:  typeof children === "string" ? children : undefined
             });
           }
             // ReactGA.event({
