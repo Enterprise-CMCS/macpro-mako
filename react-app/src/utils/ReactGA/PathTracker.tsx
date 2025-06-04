@@ -20,10 +20,20 @@ export default function PathTracker({ userRole, children }: PathTrackerProps) {
     if(userRole) {
         console.log("********** has role: " + userRole + " Sending ROUTE CHANGE GA EVENT **********")
         console.log("*********** PAGE PATH: " + path + " *****************")
-        window.gtag?.("event", "custom_page_view", {
-            page_path: path,
-            user_role: userRole,
-        });
+        // window.gtag?.("event", "custom_page_view", {
+        //     page_path: path,
+        //     user_role: userRole,
+        // });
+        if (typeof window.gtag === "function") {
+            console.log("gtag exists")
+            window.gtag("event", "custom_page_view", {
+              page_path: path,
+              user_role: userRole,
+            });
+          } else {
+            console.warn("GA not ready – skipping custom_page_view");
+          }
+          
     }
     };
 
