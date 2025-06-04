@@ -34,6 +34,10 @@ const initializeApp = async () => {
       window.dataLayer.push(args);
     }
     window.gtag = gtag;
+    window.gtag("config", googleAnalyticsGtag, {
+      send_page_view: false, // or true if you want the automatic page_view
+      debug_mode: true       // set false in prod if you like
+    });
    // 2) Dynamically inject the <script async src="...gtag/js?id=GA_ID">
    const script = document.createElement("script");
    script.async = true;
