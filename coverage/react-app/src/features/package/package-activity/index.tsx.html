@@ -329,6 +329,8 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -369,8 +371,11 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -417,10 +422,6 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">4x</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -520,7 +521,6 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">import { useMemo } from "react";
 import { opensearch } from "shared-types";
 import { ItemResult } from "shared-types/opensearch/changelog";
@@ -530,9 +530,15 @@ import {
   Accordion,
   AccordionContent,
   AccordionItem,
+  AccordionTrigger,
   Button,
   DetailsSection,
-  GridAccordionTrigger,
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
 } from "@/components";
 import { BLANK_VALUE } from "@/consts";
 &nbsp;
@@ -545,28 +551,24 @@ type AttachmentDetailsProps = {
 };
 &nbsp;
 const AttachmentDetails = ({ id, attachments, onClick }: AttachmentDetailsProps) =&gt; (
-  &lt;div className="[&amp;_div:last-child]:border-0"&gt;
+  &lt;TableBody&gt;
     {attachments.map((attachment) =&gt; {
       return (
-        &lt;div
-          className="two-cols-gutter items-center text-left border-b transition-colors hover:bg-muted/50 data-[state=selected]:bg-muted text-sm"
-          key={`${id}-${attachment.key}`}
-        &gt;
-          &lt;div className="col-left-gutter pl-2 py-3"&gt;{attachment.title}&lt;/div&gt;
-          &lt;div className="cols-gutter" /&gt;
-          &lt;div className="col-right-gutter pr-2 py-3"&gt;
+        &lt;TableRow key={`${id}-${attachment.key}`}&gt;
+          &lt;TableCell&gt;{attachment.title}&lt;/TableCell&gt;
+          &lt;TableCell&gt;
             &lt;Button
-              className="ml-[-15px] text-left min-h-fit"
+              className="ml-[-15px] align-left text-left min-h-fit"
               variant="link"
               onClick={() =&gt; onClick(attachment).then(window.open)}
             &gt;
               {attachment.filename}
             &lt;/Button&gt;
-          &lt;/div&gt;
-        &lt;/div&gt;
+          &lt;/TableCell&gt;
+        &lt;/TableRow&gt;
       );
     })}
-  &lt;/div&gt;
+  &lt;/TableBody&gt;
 );
 &nbsp;
 type SubmissionProps = {
@@ -578,33 +580,36 @@ const Submission = ({ packageActivity }: SubmissionProps) =&gt; {
   const { onUrl, loading, onZip } = useAttachmentService({ packageId });
 &nbsp;
   return (
-    &lt;div className="grid grid-cols-1 py-4 gap-y-6 sm:gap-y-6"&gt;
-      &lt;h2 className="font-bold text-lg mb-2"&gt;Attachments&lt;/h2&gt;
-      {attachments &amp;&amp; attachments?.length &gt; 0 ? (
-        &lt;div className="border-[1px] overflow-auto"&gt;
-          &lt;div className="border-b text-left font-semibold text-muted-foreground leading-5 two-cols-gutter"&gt;
-            &lt;div className="col-left-gutter pl-2"&gt;Document Type&lt;/div&gt;
-            &lt;div className="col-gutter" /&gt;
-            &lt;div className="col-right-gutter pr-2"&gt;Attached File&lt;/div&gt;
-          &lt;/div&gt;
-          &lt;AttachmentDetails attachments={attachments} id={id} onClick={onUrl} /&gt;
-        &lt;/div&gt;
-      ) : (
-        &lt;p&gt;No information submitted&lt;/p&gt;
-      )}
+    &lt;div className="flex flex-col gap-6"&gt;
+      &lt;div&gt;
+        &lt;h2 className="font-bold text-lg mb-2"&gt;Attachments&lt;/h2&gt;
 &nbsp;
+        {attachments &amp;&amp; attachments?.length &gt; 0 ? (
+          &lt;Table&gt;
+            &lt;TableHeader&gt;
+              &lt;TableRow&gt;
+                &lt;TableHead className="w-[300px]"&gt;Document Type&lt;/TableHead&gt;
+                &lt;TableHead&gt;Attached File&lt;/TableHead&gt;
+              &lt;/TableRow&gt;
+            &lt;/TableHeader&gt;
+&nbsp;
+            &lt;AttachmentDetails attachments={attachments} id={id} onClick={onUrl} /&gt;
+          &lt;/Table&gt;
+        ) : (
+          &lt;p&gt;No information submitted&lt;/p&gt;
+        )}
+      &lt;/div&gt;
       {attachments &amp;&amp; attachments.length &gt; 1 &amp;&amp; (
         &lt;Button
           variant="outline"
-          className="w-max col-span-full"
+          className="w-max"
           loading={loading}
           onClick={() =&gt; onZip(attachments)}
         &gt;
           Download section attachments
         &lt;/Button&gt;
       )}
-&nbsp;
-      &lt;div className="col-span-full"&gt;
+      &lt;div&gt;
         &lt;h2 className="font-bold text-lg mb-2"&gt;Additional Information&lt;/h2&gt;
         &lt;p className="whitespace-pre-line"&gt;{additionalInformation || <span class="branch-1 cbranch-no" title="branch not covered" >"No information submitted"}&lt;/p&gt;</span>
       &lt;/div&gt;
@@ -651,22 +656,18 @@ const PackageActivity = ({ packageActivity }: PackageActivityProps) =&gt; {
 &nbsp;
   return (
     &lt;AccordionItem value={packageActivity.id}&gt;
-      &lt;GridAccordionTrigger
-        className="bg-gray-100 px-3 text-gray-600"
-        showPlusMinus
-        col1={
-          &lt;strong&gt;
+      &lt;AccordionTrigger className="bg-gray-100 px-3" showPlusMinus&gt;
+        &lt;p className="flex flex-row gap-2 text-gray-600"&gt;
+          &lt;strong className="text-left"&gt;
             {label} {packageActivity.submitterName ? `By ${packageActivity.submitterName}` : ""}
           &lt;/strong&gt;
-        }
-        col2=" - "
-        col3={
-          &lt;span&gt;
+          {" - "}
+          &lt;span className="text-right"&gt;
             {packageActivity.timestamp ? formatDateToET(packageActivity.timestamp) : "Unknown"}
           &lt;/span&gt;
-        }
-      /&gt;
-      &lt;AccordionContent&gt;
+        &lt;/p&gt;
+      &lt;/AccordionTrigger&gt;
+      &lt;AccordionContent className="p-4"&gt;
         &lt;Submission packageActivity={packageActivity} /&gt;
       &lt;/AccordionContent&gt;
     &lt;/AccordionItem&gt;
@@ -730,14 +731,13 @@ export const PackageActivities = ({ id, changelog }: PackageActivitiesProps) =&g
           &lt;DownloadAllButton submissionChangelog={changelogWithoutAdminChanges} packageId={id} /&gt;
         &lt;/div&gt;
       }
-      childrenClassName="grid gap-y-8"
     &gt;
       {changelogWithoutAdminChanges.length &gt; 0 ? (
         &lt;Accordion
           // `changelogWithoutAdminChanges[0]._source.id` to re-render the `defaultValue` whenever `keyAndDefaultValue` changes
           key={changelogWithoutAdminChanges[0]._source.id}
           type="multiple"
-          className="grid grid-cols-1 gap-y-2"
+          className="flex flex-col gap-2"
           defaultValue={[changelogWithoutAdminChanges[0]._source.id]}
         &gt;
           {changelogWithoutAdminChanges.map(({ _source: packageActivity }) =&gt; (
@@ -757,7 +757,7 @@ export const PackageActivities = ({ id, changelog }: PackageActivitiesProps) =&g
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2025-06-04T14:50:58.011Z
+                at 2025-06-04T20:42:39.044Z
             </div>
         <script src="../../../../../prettify.js"></script>
         <script>
