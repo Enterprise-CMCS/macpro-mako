@@ -69,6 +69,8 @@ export async function writeUiEnvFile(stage, local = false) {
     .map(([key, value]) => `${key}=${value}`)
     .join("\n");
 
+  console.log("📂 Current working directory from write-ui-env-file.ts: ", process.cwd());
+
   await fs.writeFile(envFilePath, envFileContent);
 
   await fs.writeFile(
