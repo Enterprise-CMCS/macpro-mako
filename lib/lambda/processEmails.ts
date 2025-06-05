@@ -140,6 +140,7 @@ export async function processRecord(kafkaRecord: KafkaRecord, config: ProcessEma
     const safeSeatoolRecord = opensearch.main.seatool.transform(safeID).safeParse(seatoolRecord);
 
     if (safeSeatoolRecord.data?.seatoolStatus === SEATOOL_STATUS.WITHDRAWN) {
+      console.log("in this withdrawn");
       try {
         const item = await os.getItem(config.osDomain, getOsNamespace("main"), safeID);
 
@@ -274,7 +275,7 @@ export async function processAndSendEmails(
   const emails: EmailAddresses = JSON.parse(sec);
 
   const allStateUsersEmails = allStateUsers.map((user) => user.formattedEmailAddress);
-
+  console.log(allStateUsersEmails, "allStateUsersEmails");
   const templateVariables = {
     ...record,
     id,
@@ -288,7 +289,7 @@ export async function processAndSendEmails(
   console.log("Template variables:", JSON.stringify(templateVariables, null, 2));
 
   const results = [];
-
+  console.log(templates, "WHAT ARE TEMPLATES");
   // Process templates sequentially
   for (const template of templates) {
     try {
