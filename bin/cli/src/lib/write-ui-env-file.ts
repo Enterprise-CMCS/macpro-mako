@@ -70,7 +70,8 @@ export async function writeUiEnvFile(stage, local = false) {
   console.log(`📂 Writing .env.local to ${envFilePath}`);
   await fs.writeFile(envFilePath, envFileContent);
 
-  const publicDirPath = path.join(__dirname, "../../../../react-app/public");
+  const publicDirPath = path.resolve(__dirname, "../../../react-app/public");
+
   console.log("📂 Resolved publicDirPath:", publicDirPath);
 
   await fs.mkdir(publicDirPath, { recursive: true });
