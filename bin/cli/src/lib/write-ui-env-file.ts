@@ -71,6 +71,12 @@ export async function writeUiEnvFile(stage, local = false) {
 
   await fs.writeFile(envFilePath, envFileContent);
 
+  await fs.writeFile(
+    path.join(__dirname, "../../../react-app/public/env.json"),
+    JSON.stringify({ VITE_GOOGLE_ANALYTICS_GTAG: googleAnalytics }, null, 2)
+  );
+
+
   console.log(`.env.local file written to ${envFilePath}`);
   return envFilePath;
 }
