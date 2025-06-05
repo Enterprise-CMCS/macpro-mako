@@ -57,7 +57,7 @@
   </script> -->
   <script>
 
-fetch("/env.json")
+fetch("/assets/env.json")
   .then((res) => {
     if (!res.ok) {
       throw new Error(`Failed to load env.json: ${res.statusText}`);
