@@ -119,6 +119,6 @@ describe("StateAccessCard", () => {
       />,
     );
 
-    expect(screen.getByText("No Approvers Found")).toBeInTheDocument();
+    expect(screen.getByText("N/A")).toBeInTheDocument();
   });
 });

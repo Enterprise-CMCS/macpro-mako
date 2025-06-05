@@ -52,7 +52,7 @@ export const StateAccessCard = ({ role, onClick, access }: StateAccessProps) => 
                   {index !== access.approverList.length - 1 && ", "}
                 </a>
               ))
-            : "No Approvers Found"}
+            : "N/A"}
         </p>
       </div>
     </CardWithTopBorder>
