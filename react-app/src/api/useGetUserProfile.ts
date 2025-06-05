@@ -24,11 +24,10 @@ export type OneMacUserProfile = {
   stateAccess?: StateAccess[];
 };
 
-function attachApproversToStateAccess(
+export function attachApproversToStateAccess(
   stateAccess: StateAccess[],
   approverByRole: ApproverRaw[],
 ): StateAccess[] {
-  /// Create a nested map: role -> territory -> approvers[]
   const roleTerritoryApproverMap: Record<
     string,
     Record<string, Omit<Approver, "territory">[]>
@@ -50,7 +49,6 @@ function attachApproversToStateAccess(
     }
   }
 
-  // Map over stateAccess and attach approverList by matching role and territory
   return stateAccess.map((entry) => {
     const roleMap = roleTerritoryApproverMap[entry.role];
     const approverList = roleMap?.[entry.territory] || [];

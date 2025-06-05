@@ -221,7 +221,6 @@ export const getApproversByRole = async (
 
   const approverRole = approvingUserRole[role as keyof typeof approvingUserRole];
 
-  console.log("About to get role: ", approverRole);
   const results = await search(domain, index, {
     query: {
       bool: {
@@ -248,7 +247,8 @@ export const getApproversByRole = async (
     .map((approver) => ({
       id: approver.id,
       email: approver.email,
-      fullName: userInfoResults[approver.email].fullName ?? "Unknown",
+      fullName:
+        (userInfoResults[approver.email] && userInfoResults[approver.email].fullName) ?? "Unknown",
       territory: approver.territory,
     }));
 
