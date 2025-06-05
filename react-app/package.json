@@ -7,7 +7,7 @@
     "dev": "vite --mode development",
     "prebuild": "ts-node ../bin/cli/src/lib/write-ui-env-file.ts",
     "build": "tsc && vite build",
-    "postbuild": "echo Contents of dist && ls -l dist && echo Contents of env.json && cat dist/env.json",
+    "postbuild": "echo '📁 dist directory structure:' && tree dist || echo 'tree not available, falling back to ls' && ls -R dist",
     "preview": "vite preview",
     "test": "vitest",
     "test:coverage": "vitest run --coverage.enabled.true",
