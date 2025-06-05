@@ -285,6 +285,7 @@ export async function processAndSendEmails(
     allStateUsersEmails,
     ...(item._source.actionType && { actionType: formatActionType(item._source.actionType) }),
   };
+  console.log(templateVariables, "template VARIABLES?");
 
   console.log("Template variables:", JSON.stringify(templateVariables, null, 2));
 
@@ -294,6 +295,7 @@ export async function processAndSendEmails(
   for (const template of templates) {
     try {
       const filledTemplate = await template(templateVariables);
+      console.log(filledTemplate, "WHAT IS FILLED TEMPLATE");
       validateEmailTemplate(filledTemplate);
       const params = createEmailParams(
         filledTemplate,
