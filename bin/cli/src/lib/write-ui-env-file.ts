@@ -1,47 +1,46 @@
 import { GetParameterCommand, SSMClient } from "@aws-sdk/client-ssm";
 import { promises as fs } from "fs";
 import path from "path";
-
 import { project, region } from "./consts";
 
 export async function writeUiEnvFile(stage, local = false) {
+  const ssm = new SSMClient({ region: "us-east-1" });
+
   const deploymentOutput = JSON.parse(
     (
-      await new SSMClient({ region: "us-east-1" }).send(
+      await ssm.send(
         new GetParameterCommand({
           Name: `/${project}/${stage}/deployment-output`,
-        }),
+        })
       )
-    ).Parameter!.Value!,
+    ).Parameter!.Value!
   );
 
   const deploymentConfig = JSON.parse(
     (
-      await new SSMClient({ region: "us-east-1" }).send(
+      await ssm.send(
         new GetParameterCommand({
           Name: `/${project}/${stage}/deployment-config`,
-        }),
+        })
       )
-    ).Parameter!.Value!,
+    ).Parameter!.Value!
   );
 
-  let googleAnalytics;
+  let googleAnalytics = "";
   try {
     if (["main", "val", "production"].includes(stage)) {
-      {
-        googleAnalytics = (
-          await new SSMClient({ region: "us-east-1" }).send(
-            new GetParameterCommand({
-              Name: `/${project}/${stage}/google-analytics-id`,
-            }),
-          )
-        ).Parameter!.Value!;
-      }
+      googleAnalytics = (
+        await ssm.send(
+          new GetParameterCommand({
+            Name: `/${project}/${stage}/google-analytics-id`,
+          })
+        )
+      ).Parameter!.Value!;
     }
   } catch {
-    googleAnalytics = "";
-    console.error("Can't find the google analytics ID");
+    console.error("Can't find the Google Analytics ID");
   }
+
   const envVariables = {
     VITE_API_REGION: `"${region}"`,
     VITE_API_URL: deploymentOutput.apiGatewayRestApiUrl,
@@ -64,23 +63,22 @@ export async function writeUiEnvFile(stage, local = false) {
   };
 
   const envFilePath = path.join(__dirname, "../../../react-app", ".env.local");
-  console.log(envFilePath);
   const envFileContent = Object.entries(envVariables)
     .map(([key, value]) => `${key}=${value}`)
     .join("\n");
 
-  console.log("📂 Current working directory from write-ui-env-file.ts: ", process.cwd());
-
+  console.log(`📂 Writing .env.local to ${envFilePath}`);
   await fs.writeFile(envFilePath, envFileContent);
 
-  // const publicDir = path.resolve(process.cwd(), "react-app", "public");
+  const publicDirPath = path.join(__dirname, "../../../../react-app/public");
+  await fs.mkdir(publicDirPath, { recursive: true });
 
+  const jsonPath = path.join(publicDirPath, "env.json");
   await fs.writeFile(
-    path.join(__dirname, "../../../../react-app/public/env.json"),
+    jsonPath,
     JSON.stringify({ VITE_GOOGLE_ANALYTICS_GTAG: googleAnalytics }, null, 2)
   );
 
-
-  console.log(`.env.local file written to ${envFilePath}`);
+  console.log(`📁 env.json written to ${jsonPath}`);
   return envFilePath;
 }
