@@ -71,14 +71,20 @@ export async function writeUiEnvFile(stage, local = false) {
   await fs.writeFile(envFilePath, envFileContent);
 
   const publicDirPath = path.join(__dirname, "../../../../react-app/public");
+  console.log("📂 Resolved publicDirPath:", publicDirPath);
+
   await fs.mkdir(publicDirPath, { recursive: true });
+  console.log("📁 Created public directory (or already existed)");
 
   const jsonPath = path.join(publicDirPath, "env.json");
+  console.log("📝 Attempting to write env.json to:", jsonPath);
+
   await fs.writeFile(
     jsonPath,
     JSON.stringify({ VITE_GOOGLE_ANALYTICS_GTAG: googleAnalytics }, null, 2)
   );
 
-  console.log(`📁 env.json written to ${jsonPath}`);
+  console.log("✅ Successfully wrote env.json");
+
   return envFilePath;
 }
