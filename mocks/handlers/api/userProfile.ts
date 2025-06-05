@@ -13,7 +13,7 @@ import {
 } from "../../data";
 import { SubmitRoleRequestBody, TestRoleDocument, UserProfileRequestBody } from "../../index.d";
 
-const defaultApiUserProfileHandler = http.post<PathParams, UserProfileRequestBody>(
+export const defaultApiUserProfileHandler = http.post<PathParams, UserProfileRequestBody>(
   "https://test-domain.execute-api.us-east-1.amazonaws.com/mocked-tests/getUserProfile",
   async ({ request }) => {
     let email;

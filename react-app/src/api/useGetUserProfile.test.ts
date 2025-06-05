@@ -1,0 +1,39 @@
+import { defaultApiUserProfileHandler, errorApiUserProfileHandler } from "mocks";
+import { mockedApiServer as mockedServer } from "mocks/server";
+import { describe, expect, it } from "vitest";
+
+import { getUserProfile } from "./useGetUserProfile";
+
+describe("getUserProfile", () => {
+  it("should return a user profile with approvers attached", async () => {
+    mockedServer.use(defaultApiUserProfileHandler);
+
+    const result = await getUserProfile("statesubmitter@nightwatch.test");
+
+    expect(result.stateAccess.length).toEqual(23);
+  });
+
+  it("should return an empty object if /getUserProfile fails", async () => {
+    mockedServer.use(errorApiUserProfileHandler);
+
+    const result = await getUserProfile("statesubmitter@nightwatch.test");
+
+    expect(result).toEqual({});
+  });
+
+  it("should return an empty object if /getApprovers fails", async () => {
+    mockedServer.use(errorApiUserProfileHandler);
+
+    const result = await getUserProfile("statesubmitter@nightwatch.test");
+
+    expect(result).toEqual({});
+  });
+
+  it("should work without passing a userEmail", async () => {
+    mockedServer.use(defaultApiUserProfileHandler);
+
+    const result = await getUserProfile();
+
+    expect(result.stateAccess).toBeDefined();
+  });
+});
