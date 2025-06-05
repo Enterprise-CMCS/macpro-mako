@@ -4,6 +4,8 @@ import path from "path";
 import { project, region } from "./consts";
 
 export async function writeUiEnvFile(stage, local = false) {
+  console.log("write-ui-env-file __dirname:", __dirname);
+
   const ssm = new SSMClient({ region: "us-east-1" });
 
   const deploymentOutput = JSON.parse(
@@ -63,6 +65,7 @@ export async function writeUiEnvFile(stage, local = false) {
   };
 
   const envFilePath = path.join(__dirname, "../../../react-app", ".env.local");
+
   const envFileContent = Object.entries(envVariables)
     .map(([key, value]) => `${key}=${value}`)
     .join("\n");
@@ -70,15 +73,17 @@ export async function writeUiEnvFile(stage, local = false) {
   console.log(`📂 Writing .env.local to ${envFilePath}`);
   await fs.writeFile(envFilePath, envFileContent);
 
-  const publicDirPath = path.resolve(__dirname, "../../../react-app/public");
+  const publicDirPath = path.join(__dirname, "../../../react-app/public/env.json");
 
   console.log("📂 Resolved publicDirPath:", publicDirPath);
 
   await fs.mkdir(publicDirPath, { recursive: true });
   console.log("📁 Created public directory (or already existed)");
 
+
   const jsonPath = path.join(publicDirPath, "env.json");
-  console.log("📝 Attempting to write env.json to:", jsonPath);
+  console.log("Will write env.json to:", jsonPath);
+
 
   await fs.writeFile(
     jsonPath,
