@@ -756,4 +756,29 @@ describe("ActionForm", () => {
 
     expect(screen.queryByText(PROGRESS_REMINDER)).not.toBeInTheDocument();
   });
+  test("calls onSubmit directly when `promptPreSubmission` is not defined", async () => {
+    const user = userEvent.setup();
+
+    // Spy on userPrompt to ensure it's NOT called
+    const userPromptSpy = vi.spyOn(components, "userPrompt").mockImplementation(() => undefined);
+
+    await renderFormAsync(
+      <ActionForm
+        title="Test No Prompt"
+        schema={z.object({})}
+        fields={() => null}
+        documentPollerArgs={{
+          property: () => "id",
+          documentChecker: () => true,
+        }}
+        breadcrumbText="Example Breadcrumb"
+        // Mock the real submit logic so we can assert it
+      />,
+    );
+
+    const submitBtn = await screen.findByTestId("submit-action-form");
+    await user.click(submitBtn);
+
+    expect(userPromptSpy).not.toHaveBeenCalled();
+  });
 });

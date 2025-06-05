@@ -3,14 +3,14 @@
 exports[`package details > makes a package 1`] = `
 <DocumentFragment>
   <div
-    class="w-full py-1 px-4 lg:px-8"
+    class="w-full py-1 px-4 lg:px-8 grid grid-cols-1 gap-y-6 sm:gap-y-6"
   >
     <section
-      class="flex flex-col sm:flex-row mb-3 sm:mb-0 gap-3 sm:gap-x-[3rem] md:gap-x-[5rem] lg:gap-x-[3rem] xl:gap-x-[6rem]"
+      class="sm:mb-0 two-cols gap-y-3 sm:gap-y-3"
       id="package_overview"
     >
       <div
-        class="flex flex-col flex-1 min-h-full text-wrap my-0 sm:my-6"
+        class="flex flex-col text-wrap my-0 sm:mt-6"
       >
         <div
           class="h-2 shadow-lg"
@@ -26,18 +26,18 @@ exports[`package details > makes a package 1`] = `
               Status
             </h2>
             <div
-              class="my-3 max-w-2xl font-bold text-xl"
+              class="my-3 font-bold text-xl"
             >
               <div />
               <div
-                class="flex mt-1 flex-col gap-1 items-start"
+                class="text-xs opacity-80"
               />
             </div>
           </div>
         </div>
       </div>
       <div
-        class="flex flex-col flex-1 min-h-full text-wrap my-0 sm:my-6"
+        class="flex flex-col text-wrap my-0 sm:mt-6"
       >
         <div
           class="h-2 shadow-lg"
@@ -66,7 +66,7 @@ exports[`package details > makes a package 1`] = `
       </div>
     </section>
     <div
-      class="flex flex-col gap-3"
+      class="grid grid-cols-1 gap-y-3"
     >
       <section
         class="p-4 border rounded-sm border-cardBorder"
@@ -82,14 +82,12 @@ exports[`package details > makes a package 1`] = `
           class="my-6 bg-slate-200"
         />
         <div
-          class="gap-8 flex flex-col"
+          class="grid gap-y-8"
           data-testid="undefined-child"
         >
-          <div
-            class="flex-col gap-4 max-w-2xl"
-          >
+          <div>
             <div
-              class="grid grid-cols-2 gap-6"
+              class="two-cols gap-y-6 sm:gap-y-6"
             >
               <div>
                 <h3
@@ -202,7 +200,7 @@ exports[`package details > makes a package 1`] = `
               class="my-4"
             />
             <div
-              class="grid grid-cols-2 gap-6"
+              class="two-cols gap-y-6 sm:gap-y-6"
             >
               <div>
                 <h3

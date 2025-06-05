@@ -2,15 +2,13 @@ import { Client } from "@opensearch-project/opensearch";
 import { Context } from "aws-lambda";
 import * as os from "libs/opensearch-lib";
 import {
-  convertObjToBase64,
-  createKafkaEvent,
-  createKafkaRecord,
   errorBulkUpdateDataHandler,
   OPENSEARCH_DOMAIN,
   OPENSEARCH_INDEX_NAMESPACE,
   rateLimitBulkUpdateDataHandler,
 } from "mocks";
 import cpocs, { MUHAMMAD_BASHAR_ID } from "mocks/data/cpocs";
+import { convertObjToBase64, createKafkaEvent, createKafkaRecord } from "mocks/helpers/kafka.utils";
 import { mockedServiceServer as mockedServer } from "mocks/server";
 import { afterEach, describe, expect, it, vi } from "vitest";
 
