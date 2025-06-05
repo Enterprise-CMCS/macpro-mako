@@ -241,7 +241,6 @@ export const getApproversByRole = async (
     new Set(approverRoleList.map((approver) => approver.email).filter(Boolean)),
   );
 
-  console.log("about to get emails:", JSON.stringify(uniqueEmails));
   const userInfoResults = await getUsersByEmails(uniqueEmails);
 
   const approversInfo = approverRoleList

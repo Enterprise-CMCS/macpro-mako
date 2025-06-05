@@ -40,12 +40,14 @@ const getApprovers = async (event: APIGatewayEvent) => {
     const userRoles = await getAllUserRolesByEmail(email);
     const roleStateMap = new Map<string, Territory[]>();
 
-    userRoles.forEach(({ role, territory }: approverListType) => {
-      if (!roleStateMap.has(role)) {
-        roleStateMap.set(role, []);
-      }
-      roleStateMap.get(role)!.push(territory);
-    });
+    if (userRoles) {
+      userRoles.forEach(({ role, territory }: approverListType) => {
+        if (!roleStateMap.has(role)) {
+          roleStateMap.set(role, []);
+        }
+        roleStateMap.get(role)!.push(territory);
+      });
+    }
 
     const approverList = await Promise.all(
       Array.from(roleStateMap.entries()).map(async ([role, territories]) => {
