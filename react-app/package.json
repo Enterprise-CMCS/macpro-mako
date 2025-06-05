@@ -7,7 +7,7 @@
     "dev": "vite --mode development",
     "prebuild": "ts-node ../bin/cli/src/lib/write-ui-env-file.ts",
     "build": "tsc && vite build",
-    "postbuild": "echo '📁 dist directory structure:' && (tree -a react-app || (echo 'tree not available, falling back to ls' && ls -aR dist)) && echo process.cwd from postbuild: && pwd",
+    "postbuild": "echo '📁 dist directory structure:' && (tree -a react-app || (echo 'tree not available, falling back to ls -la react-app/.env.local' && ls -la react-app/.env.local)) && echo process.cwd from postbuild: && pwd",
     "preview": "vite preview",
     "test": "vitest",
     "test:coverage": "vitest run --coverage.enabled.true",
