@@ -5,7 +5,9 @@
   "type": "module",
   "scripts": {
     "dev": "vite --mode development",
+    "prebuild": "ts-node ../bin/cli/src/lib/write-ui-env-file.ts",
     "build": "tsc && vite build",
+    "postbuild": "echo Build finished! && cat public/env.json",
     "preview": "vite preview",
     "test": "vitest",
     "test:coverage": "vitest run --coverage.enabled.true",

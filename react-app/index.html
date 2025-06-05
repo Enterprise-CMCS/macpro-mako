@@ -77,10 +77,10 @@
         gtag("config", gtagId, {
           send_page_view: false,
         });
-  
-        if (location.hostname === "localhost") {
-          gtag("set", { debug_mode: true });
-        }
+        console.log("location.hostname: ", location.hostmane)
+        // if (location.hostname === "localhost") {
+        //   gtag("set", { debug_mode: true });
+        // }
   
         window.gtag = gtag;
       });
