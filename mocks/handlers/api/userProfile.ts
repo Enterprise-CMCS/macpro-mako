@@ -229,11 +229,17 @@ const defaultGetApproversHandler = http.get(
   async () => {
     const username = process.env.MOCK_USER_USERNAME;
     if (!username) {
-      return HttpResponse.json([]);
+      return HttpResponse.json({
+        message: "No username found",
+        approverList: [],
+      });
     }
     const user = getUserByUsername(username);
     if (!user) {
-      return HttpResponse.json([]);
+      return HttpResponse.json({
+        message: "No user found",
+        approverList: [],
+      });
     }
     const email = user?.email;
 

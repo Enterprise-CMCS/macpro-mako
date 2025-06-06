@@ -32,7 +32,8 @@ export function attachApproversToStateAccess(
     string,
     Record<string, Omit<Approver, "territory">[]>
   > = {};
-  if (!approverByRole || approverByRole.length) return stateAccess;
+  if (!approverByRole) return stateAccess;
+  if (!approverByRole.length) return stateAccess;
   for (const input of approverByRole) {
     if (!roleTerritoryApproverMap[input.role]) {
       roleTerritoryApproverMap[input.role] = {};
