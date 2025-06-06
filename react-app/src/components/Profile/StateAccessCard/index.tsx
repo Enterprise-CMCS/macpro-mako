@@ -13,6 +13,7 @@ export type StateAccessProps = {
     status: string;
     doneByName: string;
     doneByEmail: string;
+    approverList?: { fullName: string; email: string }[];
   };
 };
 
@@ -40,9 +41,18 @@ export const StateAccessCard = ({ role, onClick, access }: StateAccessProps) => 
           <span className="font-semibold">
             {role === "cmsroleapprover" ? "CMS Role Approver:" : "State System Admin:"}{" "}
           </span>
-          <a className="text-blue-600" href={`mailto:${access.doneByEmail}`}>
-            {access.doneByName}
-          </a>
+          {access.approverList && access.approverList.length
+            ? access.approverList.map((approver, index) => (
+                <a
+                  className="text-blue-600"
+                  href={`mailto:${approver.email}`}
+                  key={`${approver.fullName}-${index}`}
+                >
+                  {approver.fullName}
+                  {index !== access.approverList.length - 1 && ", "}
+                </a>
+              ))
+            : "N/A"}
         </p>
       </div>
     </CardWithTopBorder>

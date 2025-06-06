@@ -1,9 +1,10 @@
 import { http, HttpResponse, PathParams } from "msw";
-import { canRequestAccess, canUpdateAccess } from "shared-utils";
+import { canRequestAccess, canUpdateAccess, getApprovingRole } from "shared-utils";
 
 import {
   getApprovedRoleByEmailAndState,
   getFilteredRoleDocsByEmail,
+  getFilteredRoleDocsByRole,
   getFilteredRoleDocsByState,
   getFilteredUserDocList,
   getLatestRoleByEmail,
@@ -223,6 +224,44 @@ export const errorApiSubmitRoleRequestsHandler = http.post(
   async () => new HttpResponse("Response Error", { status: 500 }),
 );
 
+const defaultGetApproversHandler = http.get(
+  "https://test-domain.execute-api.us-east-1.amazonaws.com/mocked-tests/getApprovers",
+  async () => {
+    const username = process.env.MOCK_USER_USERNAME;
+    if (!username) {
+      return HttpResponse.json({
+        message: "No username found",
+        approverList: [],
+      });
+    }
+    const user = getUserByUsername(username);
+    if (!user) {
+      return HttpResponse.json({
+        message: "No user found",
+        approverList: [],
+      });
+    }
+    const email = user?.email;
+
+    const roles = getFilteredRoleDocsByEmail(email || "");
+
+    const approvers = roles.forEach((roleItem) => {
+      const approverRole = getApprovingRole(roleItem.role);
+      return getFilteredRoleDocsByRole(approverRole);
+    });
+
+    return HttpResponse.json({
+      message: "Approver List sent successfully.",
+      approverList: approvers,
+    });
+  },
+);
+
+export const errorApiGetApproversHandler = http.get(
+  "https://test-domain.execute-api.us-east-1.amazonaws.com/mocked-tests/getApprovers",
+  async () => new HttpResponse("Response Error", { status: 500 }),
+);
+
 export const userProfileHandlers = [
   defaultApiUserProfileHandler,
   defaultApiGetCreateUserProfileHandler,
@@ -230,4 +269,5 @@ export const userProfileHandlers = [
   defaultApiGetSubmitGroupDivisionHandler,
   defaultApiOptionSubmitGroupDivisionHandler,
   defaultApiSubmitRoleRequestsHandler,
+  defaultGetApproversHandler,
 ];

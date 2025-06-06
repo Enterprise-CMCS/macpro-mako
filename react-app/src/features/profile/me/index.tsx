@@ -88,7 +88,10 @@ export const MyProfile = () => {
           />
           <div className="block lg:mt-8 lg:mb-2">
             <span>
-              <Button disabled={!requestedStates.length} onClick={handleSubmitRequest}>
+              <Button
+                disabled={!(requestedStates && requestedStates.length)}
+                onClick={handleSubmitRequest}
+              >
                 Submit
               </Button>
               {areRolesLoading && <LoadingSpinner />}

@@ -1,6 +1,7 @@
 import { search } from "libs";
 import { getDomainAndNamespace } from "libs/utils";
 import { Index } from "shared-types/opensearch";
+import { getApprovingRole } from "shared-utils";
 
 const QUERY_LIMIT = 2000;
 
@@ -8,6 +9,7 @@ export const getUserByEmail = async (
   email: string,
   domainNamespace?: { domain: string; index: Index },
 ) => {
+  console.log("Looking up user by email:", email);
   if (!domainNamespace) domainNamespace = getDomainAndNamespace("users");
   const { domain, index } = domainNamespace;
 
@@ -165,18 +167,7 @@ export const getApproversByRoleState = async (
   if (!userDomainNamespace) userDomainNamespace = getDomainAndNamespace("users");
   const { domain, index } = domainNamespace;
 
-  // TODO: move to shared type bc this is the same code coppied
-  const approvingUserRole = {
-    statesubmitter: "statesystemadmin",
-    statesystemadmin: "cmsroleapprover",
-    cmsroleapprover: "systemadmin",
-    defaultcmsuser: "cmsroleapprover",
-    helpdesk: "systemadmin",
-    cmsreviewer: "cmsroleapprover",
-  };
-
-  const approverRole = approvingUserRole[role as keyof typeof approvingUserRole];
-
+  const approverRole = getApprovingRole(role);
   const queryRequirements =
     role === "statesubmitter"
       ? [
@@ -194,15 +185,62 @@ export const getApproversByRoleState = async (
     size: QUERY_LIMIT,
   });
 
-  const approverRoleList: { id: string; email: string }[] = results.hits.hits.map((hit: any) => ({
-    ...hit._source,
-  }));
+  const approverRoleList: { id: string; email: string }[] = results.hits.hits.map((hit: any) => {
+    const { id, email } = hit._source;
+    return { id, email };
+  });
 
   const approversInfo = [];
   for (const approver of approverRoleList) {
-    const approverUserInfo = await getUserByEmail(approver.email, userDomainNamespace);
-    approversInfo.push(approverUserInfo);
+    if (approver.email) {
+      const userInfo = await getUserByEmail(approver.email, userDomainNamespace);
+      const fullName = userInfo?.fullName ?? "Unknown";
+      approversInfo.push({ email: approver.email, fullName: fullName, id: approver.id });
+    }
   }
+
+  return approversInfo;
+};
+
+export const getApproversByRole = async (
+  role: string,
+  domainNamespace?: { domain: string; index: Index },
+) => {
+  const resolvedDomain = domainNamespace ?? getDomainAndNamespace("roles");
+  const { domain, index } = resolvedDomain;
+
+  const approverRole = getApprovingRole(role);
+
+  const results = await search(domain, index, {
+    query: {
+      bool: {
+        must: [{ term: { status: "active" } }, { term: { role: approverRole } }],
+      },
+    },
+    size: QUERY_LIMIT,
+  });
+
+  const approverRoleList: { id: string; email: string; territory: string }[] =
+    results.hits.hits.map((hit: any) => {
+      const { id, email, territory } = hit._source;
+      return { id, email, territory };
+    });
+
+  const uniqueEmails = Array.from(
+    new Set(approverRoleList.map((approver) => approver.email).filter(Boolean)),
+  );
+
+  const userInfoResults = await getUsersByEmails(uniqueEmails);
+
+  const approversInfo = approverRoleList
+    .filter((approver) => approver.email)
+    .map((approver) => ({
+      id: approver.id,
+      email: approver.email,
+      fullName:
+        (userInfoResults[approver.email] && userInfoResults[approver.email].fullName) ?? "Unknown",
+      territory: approver.territory,
+    }));
 
   return approversInfo;
 };
