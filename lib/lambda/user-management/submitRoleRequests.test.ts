@@ -3,7 +3,6 @@ import {
   errorRoleSearchHandler,
   getRequestContext,
   helpDeskUser,
-  mockedProducer,
   multiStateSubmitter,
   noStateSubmitter,
   osStateSystemAdmin,
@@ -11,6 +10,7 @@ import {
   setMockUsername,
   systemAdmin,
 } from "mocks";
+import { mockedProducer } from "mocks/helpers/kafka.utils";
 import { mockedServiceServer as mockedServer } from "mocks/server";
 import { beforeEach, describe, expect, it, vi } from "vitest";
 

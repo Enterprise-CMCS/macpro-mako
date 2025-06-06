@@ -1,4 +1,4 @@
-import { Action, legacyAdminChangeSchema } from "../../..";
+import { Action, legacyAdminChangeSchema } from "../../../index";
 
 export const transform = () => {
   return legacyAdminChangeSchema.transform((data) => {

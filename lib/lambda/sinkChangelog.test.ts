@@ -2,9 +2,6 @@ import { Context } from "aws-lambda";
 import * as os from "libs/opensearch-lib";
 import * as sink from "libs/sink-lib";
 import {
-  convertObjToBase64,
-  createKafkaEvent,
-  createKafkaRecord,
   OPENSEARCH_DOMAIN,
   OPENSEARCH_INDEX_NAMESPACE,
   WITHDRAWN_CHANGELOG_ITEM_ID as TEST_ITEM_ID,
@@ -28,6 +25,7 @@ import {
   withdrawPackage,
   withdrawRai,
 } from "mocks/data/submit/changelog";
+import { convertObjToBase64, createKafkaEvent, createKafkaRecord } from "mocks/helpers/kafka.utils";
 import { afterEach, describe, expect, it, vi } from "vitest";
 
 import { handler } from "./sinkChangelog";

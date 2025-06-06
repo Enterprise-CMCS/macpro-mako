@@ -1,4 +1,4 @@
-import { mockedAdmin, TOPIC_ONE, TOPIC_THREE } from "mocks";
+import { mockedAdmin, TOPIC_ONE, TOPIC_THREE } from "mocks/helpers/kafka.utils";
 import { afterEach, describe, expect, it, vi } from "vitest";
 
 import { createTopics, deleteTopics } from "./topics-lib";

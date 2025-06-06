@@ -1,4 +1,4 @@
-import { events, getStatus, SEATOOL_STATUS } from "shared-types";
+import { events, getStatus, SEATOOL_STATUS } from "../../../index";
 
 export const transform = () => {
   return events["withdraw-package"].schema.transform((data) => {

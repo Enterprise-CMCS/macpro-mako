@@ -1,7 +1,7 @@
 import { http, HttpResponse } from "msw";
 
 import { CLOUDFORMATION_NOTIFICATION_DOMAIN } from "../../consts";
-import exports from "../../data/cloudFormationsExports";
+import exportsList from "../../data/cloudFormationsExports";
 
 const defaultCloudFormationHandler = http.post(
   `https://cloudformation.us-east-1.amazonaws.com/`,
@@ -13,7 +13,7 @@ const defaultCloudFormationHandler = http.post(
     <Exports>
   `;
 
-    xmlResponse += exports
+    xmlResponse += exportsList
       .map(
         (val) => `
       <member>

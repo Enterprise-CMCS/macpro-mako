@@ -3,8 +3,21 @@
   "version": "1.0.0",
   "private": true,
   "type": "module",
-  "description": "",
-  "main": "index.ts",
+  "exports": {
+    ".": "./index.ts",
+    "./server": "./server.ts",
+    "./data": "./data/index.ts",
+    "./data/cpocs": "./data/cpocs.ts",
+    "./data/forms/main": "./data/forms/main.ts",
+    "./data/items": "./data/items.ts",
+    "./data/secrets": "./data/secrets.ts",
+    "./data/submit/attachments": "./data/submit/attachments.ts",
+    "./data/submit/base": "./data/submit/base.ts",
+    "./data/submit/changelog": "./data/submit/changelog.ts",
+    "./data/types": "./data/types.ts",
+    "./handlers/auth.utils": "./handlers/auth.utils.ts",
+    "./helpers/kafka.utils": "./helpers/kafka.utils.ts"
+  },
   "scripts": {
     "build": "tsc"
   },

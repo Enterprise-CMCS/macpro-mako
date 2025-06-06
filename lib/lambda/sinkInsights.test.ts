@@ -1,12 +1,7 @@
 import { Context } from "aws-lambda";
 import * as os from "libs/opensearch-lib";
-import {
-  convertObjToBase64,
-  createKafkaEvent,
-  createKafkaRecord,
-  OPENSEARCH_DOMAIN,
-  OPENSEARCH_INDEX_NAMESPACE,
-} from "mocks";
+import { OPENSEARCH_DOMAIN, OPENSEARCH_INDEX_NAMESPACE } from "mocks";
+import { convertObjToBase64, createKafkaEvent, createKafkaRecord } from "mocks/helpers/kafka.utils";
 import { afterEach, describe, expect, it, vi } from "vitest";
 
 import * as sink from "../libs/sink-lib";
