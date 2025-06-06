@@ -1,9 +1,4 @@
-import {
-  errorApiGetApproversHandler,
-  errorApiUserProfileHandler,
-  setMockUsername,
-  stateSubmitter,
-} from "mocks";
+import { errorApiGetApproversHandler, errorApiUserProfileHandler } from "mocks";
 import { mockedApiServer as mockedServer } from "mocks/server";
 import { describe, expect, it } from "vitest";
 
