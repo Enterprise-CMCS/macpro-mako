@@ -1,20 +1,15 @@
 import { APIGatewayEvent } from "aws-lambda";
 import {
-  coStateSubmitter,
+  errorApiGetApproversHandler,
   getRequestContext,
   setDefaultStateSubmitter,
   setMockUsername,
   stateSubmitter,
 } from "mocks";
+import { mockedServiceServer as mockedServer } from "mocks/server";
 import { beforeEach, describe, expect, it, vi } from "vitest";
 
 import { handler } from "./getApprovers";
-import { getAllUserRolesByEmail, getApproversByRole } from "./userManagementService";
-
-vi.mock("./userManagementService", () => ({
-  getApproversByRole: vi.fn(),
-  getAllUserRolesByEmail: vi.fn(),
-}));
 
 describe("getApprovers handler", () => {
   beforeEach(() => {
@@ -57,9 +52,8 @@ describe("getApprovers handler", () => {
   });
 
   it("should return 200 with empty approvers if getApproversByRole fails for one role", async () => {
-    (getApproversByRole as any).mockRejectedValue(new Error("Oops"));
-
     setMockUsername(stateSubmitter);
+    mockedServer.use(errorApiGetApproversHandler);
 
     const event = {
       requestContext: getRequestContext(),
@@ -73,19 +67,6 @@ describe("getApprovers handler", () => {
   });
 
   it("should return filtered approvers by matching territories", async () => {
-    (getApproversByRole as any).mockImplementation(async () => {
-      return [
-        { fullName: "Jane", role: "statesubmitter", territory: "CA" },
-        { fullName: "John", role: "statesubmitter", territory: "CO" },
-      ];
-    });
-
-    (getAllUserRolesByEmail as any).mockImplementation(async () => {
-      return [{ role: "statesubmitter", territory: "CO" }];
-    });
-
-    setMockUsername(coStateSubmitter);
-
     const mockEvent = {
       requestContext: getRequestContext(),
     } as APIGatewayEvent;
@@ -99,13 +80,14 @@ describe("getApprovers handler", () => {
       {
         approvers: [
           {
-            fullName: "John",
-            role: "statesubmitter",
-            territory: "CO",
+            email: "statesystemadmin@nightwatch.test",
+            fullName: "Statesystemadmin Nightwatch",
+            id: "statesystemadmin@nightwatch.test_MD_statesystemadmin",
+            territory: "MD",
           },
         ],
         role: "statesubmitter",
-        territory: ["CO"],
+        territory: ["VA", "OH", "SC", "CO", "GA", "MD"],
       },
     ]);
   });

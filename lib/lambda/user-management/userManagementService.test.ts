@@ -1,4 +1,3 @@
-import * as Libs from "libs";
 import {
   getFilteredRoleDocsByEmail,
   getFilteredRoleDocsByState,
@@ -11,7 +10,6 @@ import {
 } from "mocks";
 import { beforeEach, describe, expect, it, vi } from "vitest";
 
-import * as UserService from "./userManagementService";
 import {
   getAllUserRoles,
   getAllUserRolesByEmail,
@@ -363,91 +361,55 @@ describe("User Management Service", () => {
   });
 
   describe("getApproversByRoleState", () => {
-    const mockSearch = vi.spyOn(Libs, "search");
-    const mockGetUserByEmail = vi.spyOn(UserService, "getUserByEmail");
-
     beforeEach(() => {
       vi.resetAllMocks();
     });
 
     it("should return approvers for statesubmitter in a specific state", async () => {
-      mockSearch.mockResolvedValueOnce({
-        hits: {
-          hits: [
-            { _source: { id: "1", email: "jane@nightwatch.test" } },
-            { _source: { id: "2", email: "john@nightwatch.test" } },
-          ],
-        },
-      });
-
-      mockGetUserByEmail.mockImplementation(async (email) => {
-        return {
-          email,
-          fullName: email === "jane@nightwatch.test" ? "Jane Doe" : "John Smith",
-        };
-      });
-
-      const result = await getApproversByRoleState("statesubmitter", "CA");
+      const result = await getApproversByRoleState("statesubmitter", "MD");
 
       expect(result).toEqual([
         {
-          email: "jane@nightwatch.test",
-          fullName: "Unknown",
-          id: "1",
-        },
-        {
-          email: "john@nightwatch.test",
-          fullName: "Unknown",
-          id: "2",
+          email: "statesystemadmin@nightwatch.test",
+          fullName: "Statesystemadmin Nightwatch",
+          id: "statesystemadmin@nightwatch.test_MD_statesystemadmin",
         },
       ]);
     });
 
     it("should default to fullName 'Unknown' if user not found", async () => {
-      mockSearch.mockResolvedValueOnce({
-        hits: {
-          hits: [{ _source: { id: "3", email: "ghost@nightwatch.test" } }],
-        },
-      });
-
-      mockGetUserByEmail.mockResolvedValueOnce(null);
-
       const result = await getApproversByRoleState("statesubmitter", "CA");
 
       expect(result).toEqual([
         {
-          email: "ghost@nightwatch.test",
+          email: "statesystemadmin@noname.com",
           fullName: "Unknown",
-          id: "3",
+          id: "statesystemadmin@noname.com_CA_statesystemadmin",
         },
       ]);
     });
   });
 
   describe("getApproversByRole", () => {
-    const mockSearch = vi.spyOn(Libs, "search");
-    const mockGetUsersByEmails = vi.spyOn(UserService, "getUsersByEmails");
-
     beforeEach(() => {
       vi.resetAllMocks();
     });
 
     it("should default to fullName 'Unknown' if user not found", async () => {
-      mockSearch.mockResolvedValueOnce({
-        hits: {
-          hits: [{ _source: { id: "3", email: "ghost@nightwatch.test" } }],
-        },
-      });
-
-      mockGetUsersByEmails.mockResolvedValueOnce(null);
-
       const result = await getApproversByRole("statesubmitter");
 
       expect(result).toEqual([
         {
-          email: "ghost@nightwatch.test",
+          email: "statesystemadmin@nightwatch.test",
+          fullName: "Statesystemadmin Nightwatch",
+          id: "statesystemadmin@nightwatch.test_MD_statesystemadmin",
+          territory: "MD",
+        },
+        {
+          email: "statesystemadmin@noname.com",
           fullName: "Unknown",
-          id: "3",
+          id: "statesystemadmin@noname.com_CA_statesystemadmin",
+          territory: "CA",
         },
       ]);
     });

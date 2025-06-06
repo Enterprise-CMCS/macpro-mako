@@ -1,4 +1,4 @@
-import { defaultApiUserProfileHandler, errorApiUserProfileHandler } from "mocks";
+import { errorApiUserProfileHandler } from "mocks";
 import { mockedApiServer as mockedServer } from "mocks/server";
 import { describe, expect, it } from "vitest";
 
@@ -6,8 +6,6 @@ import { getUserProfile } from "./useGetUserProfile";
 
 describe("getUserProfile", () => {
   it("should return a user profile with approvers attached", async () => {
-    mockedServer.use(defaultApiUserProfileHandler);
-
     const result = await getUserProfile("statesubmitter@nightwatch.test");
 
     expect(result.stateAccess.length).toEqual(23);
@@ -30,8 +28,6 @@ describe("getUserProfile", () => {
   });
 
   it("should work without passing a userEmail", async () => {
-    mockedServer.use(defaultApiUserProfileHandler);
-
     const result = await getUserProfile();
 
     expect(result.stateAccess).toBeDefined();

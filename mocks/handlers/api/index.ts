@@ -30,10 +30,10 @@ export { errorApiSubTypesHandler, errorApiTypeHandler } from "./types";
 export { mockCurrentAuthenticatedUser, mockUseGetUser, mockUserAttributes } from "./user";
 export { errorApiUserDetailsHandler, errorApiRequestBaseCMSAccessHandler } from "./userDetails";
 export {
-  defaultApiUserProfileHandler,
   errorApiUserProfileHandler,
   errorApiGetRoleRequestsHandler,
   errorApiGetCreateUserProfileHandler,
   errorApiOptionSubmitGroupDivisionHandler,
   errorApiSubmitRoleRequestsHandler,
+  errorApiGetApproversHandler,
 } from "./userProfile";
