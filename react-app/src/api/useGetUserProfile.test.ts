@@ -1,4 +1,9 @@
-import { errorApiGetApproversHandler, errorApiUserProfileHandler } from "mocks";
+import {
+  errorApiGetApproversHandler,
+  errorApiUserProfileHandler,
+  makoStateSubmitter,
+  setMockUsername,
+} from "mocks";
 import { mockedApiServer as mockedServer } from "mocks/server";
 import { describe, expect, it } from "vitest";
 
@@ -6,7 +11,9 @@ import { getUserProfile } from "./useGetUserProfile";
 
 describe("getUserProfile", () => {
   it("should return a user profile with approvers attached", async () => {
+    setMockUsername(makoStateSubmitter);
     const result = await getUserProfile("statesubmitter@nightwatch.test");
+    console.log("ANDIE - restult", result);
     expect(result.stateAccess.length).toEqual(23);
   });
 

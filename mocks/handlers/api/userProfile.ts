@@ -1,5 +1,5 @@
 import { http, HttpResponse, PathParams } from "msw";
-import { canRequestAccess, canUpdateAccess } from "shared-utils";
+import { canRequestAccess, canUpdateAccess, getApprovingRole } from "shared-utils";
 
 import {
   getApprovedRoleByEmailAndState,
@@ -229,20 +229,19 @@ const defaultGetApproversHandler = http.get(
   async () => {
     const username = process.env.MOCK_USER_USERNAME;
     if (!username) {
-      return HttpResponse.json({ message: "User not authenticated" }, { status: 401 });
+      return HttpResponse.json([]);
     }
     const user = getUserByUsername(username);
     if (!user) {
-      return HttpResponse.json({ message: "User not authenticated" }, { status: 401 });
+      return HttpResponse.json([]);
     }
-    const roles = getFilteredRoleDocsByEmail(user?.email || "");
+    const email = user?.email;
 
-    if (!roles || roles.length) {
-      return HttpResponse.json({ message: "User does not have any roles", approverList: [] });
-    }
+    const roles = getFilteredRoleDocsByEmail(email || "");
 
     const approvers = roles.forEach((roleItem) => {
-      return getFilteredRoleDocsByRole(roleItem.role);
+      const approverRole = getApprovingRole(roleItem.role);
+      return getFilteredRoleDocsByRole(approverRole);
     });
 
     return HttpResponse.json({
