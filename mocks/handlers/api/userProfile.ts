@@ -4,6 +4,7 @@ import { canRequestAccess, canUpdateAccess } from "shared-utils";
 import {
   getApprovedRoleByEmailAndState,
   getFilteredRoleDocsByEmail,
+  getFilteredRoleDocsByRole,
   getFilteredRoleDocsByState,
   getFilteredUserDocList,
   getLatestRoleByEmail,
@@ -226,20 +227,27 @@ export const errorApiSubmitRoleRequestsHandler = http.post(
 const defaultGetApproversHandler = http.get(
   "https://test-domain.execute-api.us-east-1.amazonaws.com/mocked-tests/getApprovers",
   async () => {
+    const username = process.env.MOCK_USER_USERNAME;
+    if (!username) {
+      return HttpResponse.json({ message: "User not authenticated" }, { status: 401 });
+    }
+    const user = getUserByUsername(username);
+    if (!user) {
+      return HttpResponse.json({ message: "User not authenticated" }, { status: 401 });
+    }
+    const roles = getFilteredRoleDocsByEmail(user?.email || "");
+
+    if (!roles || roles.length) {
+      return HttpResponse.json({ message: "User does not have any roles", approverList: [] });
+    }
+
+    const approvers = roles.forEach((roleItem) => {
+      return getFilteredRoleDocsByRole(roleItem.role);
+    });
+
     return HttpResponse.json({
-      approverList: [
-        {
-          role: "statesubmitter",
-          territory: ["CA"],
-          approvers: [
-            {
-              email: "approver@example.com",
-              fullName: "Approver Example",
-              territory: "CA",
-            },
-          ],
-        },
-      ],
+      message: "Approver List sent successfully.",
+      approverList: approvers,
     });
   },
 );

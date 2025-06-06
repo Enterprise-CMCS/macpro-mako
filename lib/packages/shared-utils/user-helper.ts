@@ -58,3 +58,17 @@ export const canSelfRevokeAccess = (
 ) => {
   return currentRole === "statesubmitter" && currentEmail === emailToUpdate;
 };
+
+// gets the role that approves current user
+export function getApprovingRole(role: string) {
+  const approvingUserRole = {
+    statesubmitter: "statesystemadmin",
+    statesystemadmin: "cmsroleapprover",
+    cmsroleapprover: "systemadmin",
+    defaultcmsuser: "cmsroleapprover",
+    helpdesk: "systemadmin",
+    cmsreviewer: "cmsroleapprover",
+  };
+
+  return approvingUserRole[role as keyof typeof approvingUserRole];
+}

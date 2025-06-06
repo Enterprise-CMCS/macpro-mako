@@ -1,6 +1,7 @@
 import { search } from "libs";
 import { getDomainAndNamespace } from "libs/utils";
 import { Index } from "shared-types/opensearch";
+import { getApprovingRole } from "shared-utils";
 
 const QUERY_LIMIT = 2000;
 
@@ -156,16 +157,6 @@ export const getLatestActiveRoleByEmail = async (email: string) => {
   return result.hits.hits[0]?._source ?? null;
 };
 
-// TODO: move to shared type bc this is the same code coppied
-const approvingUserRole = {
-  statesubmitter: "statesystemadmin",
-  statesystemadmin: "cmsroleapprover",
-  cmsroleapprover: "systemadmin",
-  defaultcmsuser: "cmsroleapprover",
-  helpdesk: "systemadmin",
-  cmsreviewer: "cmsroleapprover",
-};
-
 export const getApproversByRoleState = async (
   role: string,
   state: string,
@@ -176,8 +167,7 @@ export const getApproversByRoleState = async (
   if (!userDomainNamespace) userDomainNamespace = getDomainAndNamespace("users");
   const { domain, index } = domainNamespace;
 
-  const approverRole = approvingUserRole[role as keyof typeof approvingUserRole];
-
+  const approverRole = getApprovingRole(role);
   const queryRequirements =
     role === "statesubmitter"
       ? [
@@ -219,7 +209,7 @@ export const getApproversByRole = async (
   const resolvedDomain = domainNamespace ?? getDomainAndNamespace("roles");
   const { domain, index } = resolvedDomain;
 
-  const approverRole = approvingUserRole[role as keyof typeof approvingUserRole];
+  const approverRole = getApprovingRole(role);
 
   const results = await search(domain, index, {
     query: {
