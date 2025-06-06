@@ -164,8 +164,6 @@ export async function processRecord(kafkaRecord: KafkaRecord, config: ProcessEma
           origin: "seatool",
         };
 
-        await processAndSendEmails(recordToPass as Events[keyof Events], safeID, config);
-
         const indexObject = {
           index: getOsNamespace("main"),
           id: safeID,
@@ -177,6 +175,8 @@ export async function processRecord(kafkaRecord: KafkaRecord, config: ProcessEma
         };
 
         await os.updateData(config.osDomain, indexObject);
+
+        await processAndSendEmails(recordToPass as Events[keyof Events], safeID, config);
       } catch (error) {
         console.error("Error processing record:", JSON.stringify(error, null, 2));
         throw error;
