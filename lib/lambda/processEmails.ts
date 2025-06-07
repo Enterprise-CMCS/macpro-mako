@@ -163,6 +163,8 @@ export async function processRecord(kafkaRecord: KafkaRecord, config: ProcessEma
           proposedEffectiveDate: safeSeatoolRecord.data?.proposedDate,
           origin: "seatool",
         };
+        console.log("BEFORE PROCESS AND SEND EMAILS");
+        await processAndSendEmails(recordToPass as Events[keyof Events], safeID, config);
 
         const indexObject = {
           index: getOsNamespace("main"),
@@ -175,8 +177,6 @@ export async function processRecord(kafkaRecord: KafkaRecord, config: ProcessEma
         };
 
         await os.updateData(config.osDomain, indexObject);
-
-        await processAndSendEmails(recordToPass as Events[keyof Events], safeID, config);
       } catch (error) {
         console.error("Error processing record:", JSON.stringify(error, null, 2));
         throw error;
@@ -303,7 +303,7 @@ export async function processAndSendEmails(
         config.applicationEndpointUrl,
         config.isDev,
       );
-
+      console.log("BEFORE SEND IN HERE");
       const result = await sendEmail(params, config.region);
       results.push({ success: true, result });
       console.log(`Successfully sent email for template: ${JSON.stringify(result)}`);
@@ -365,6 +365,7 @@ export async function sendEmail(params: SendEmailCommandInput, region: string): 
   const command = new SendEmailCommand(params);
   try {
     const result = await sesClient.send(command);
+    console.log("SENDING THIS MANY TIMES:");
     return { status: result.$metadata.httpStatusCode };
   } catch (error) {
     console.error("Error sending email:", error);
