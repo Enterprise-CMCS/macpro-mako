@@ -30,7 +30,7 @@ export async function writeUiEnvFile(stage, local = false) {
 
   let googleAnalytics = "";
   try {
-    if (["main", "val", "production"].includes(stage)) {
+    if (["main", "val", "production", "oy2-34750"].includes(stage)) {
       googleAnalytics = (
         await ssm.send(
           new GetParameterCommand({
@@ -72,7 +72,6 @@ export async function writeUiEnvFile(stage, local = false) {
 
   console.log(`📂 Writing .env.local to ${envFilePath}`);
   await fs.writeFile(envFilePath, envFileContent);
-
 
   // const publicDirPath = path.resolve(__dirname, "../../../react-app/public/assets");
 
