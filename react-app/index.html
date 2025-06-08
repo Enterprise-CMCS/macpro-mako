@@ -56,50 +56,19 @@
     window.gtag("set", { debug_mode: true });
   </script> -->
   <script>
-
-fetch("/assets/env.json")
-  .then((res) => {
-    if (!res.ok) {
-      throw new Error(`Failed to load env.json: ${res.statusText}`);
-    }
-    return res.json();
-  })
-  .then((env) => {
-    const gtagId = env.VITE_GOOGLE_ANALYTICS_GTAG?.replace(/"/g, ""); // remove extra quotes
-    console.log("📊 Google Analytics GTAG ID:", gtagId);
-
-    if (!gtagId) {
-      console.warn("⚠️ GTAG ID not found in env.json");
-      return;
-    }
-
-    const script = document.createElement("script");
-    script.src = `https://www.googletagmanager.com/gtag/js?id=${gtagId}`;
-    script.async = true;
-    document.head.appendChild(script);
-
-    window.dataLayer = window.dataLayer || [];
-    function gtag() {
-      window.dataLayer.push(arguments);
-    }
-
-    gtag("js", new Date());
-    gtag("config", gtagId, {
-      send_page_view: false,
-    });
-
-    if (location.hostname === "localhost") {
-      gtag("set", { debug_mode: true });
-    }
-
-    window.gtag = gtag;
-  })
-  .catch((err) => {
-    console.error("❌ Failed to initialize GA:", err);
-  });
-
+    fetch('/env.json')
+      .then(async (res) => {
+        const text = await res.text();
+        try {
+          const json = JSON.parse(text);
+          console.log('✅ Parsed JSON:', json);
+        } catch (e) {
+          console.warn('⚠️ Invalid JSON, printing raw contents:\n', text);
+        }
+      })
+      .catch((err) => {
+        console.error('❌ Failed to load /env.json:', err);
+      });
   </script>
-  
-  
   </body>
 </html>
