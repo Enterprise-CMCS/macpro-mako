@@ -74,7 +74,10 @@ export async function writeUiEnvFile(stage, local = false) {
   await fs.writeFile(envFilePath, envFileContent);
 
 
-  const publicDirPath = path.resolve(__dirname, "../../../react-app/public/assets");
+  // const publicDirPath = path.resolve(__dirname, "../../../react-app/public/assets");
+
+  const publicDirPath = path.resolve(__dirname, "../../../react-app/src/assets");
+
 
 
 
