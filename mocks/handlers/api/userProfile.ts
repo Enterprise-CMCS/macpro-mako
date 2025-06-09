@@ -224,7 +224,7 @@ export const errorApiSubmitRoleRequestsHandler = http.post(
   async () => new HttpResponse("Response Error", { status: 500 }),
 );
 
-const defaultGetApproversHandler = http.get(
+const defaultGetApproversHandler = http.post(
   "https://test-domain.execute-api.us-east-1.amazonaws.com/mocked-tests/getApprovers",
   async () => {
     const username = process.env.MOCK_USER_USERNAME;
@@ -245,19 +245,43 @@ const defaultGetApproversHandler = http.get(
 
     const roles = getFilteredRoleDocsByEmail(email || "");
 
-    const approvers = roles.forEach((roleItem) => {
-      const approverRole = getApprovingRole(roleItem.role);
-      return getFilteredRoleDocsByRole(approverRole);
-    });
+    type ApproverGroup = {
+      territory: string;
+      email: string;
+    };
+    const approverGroups: Record<string, Record<string, ApproverGroup[]>> = {};
+
+    for (const roleItem of roles) {
+      const originalRole = roleItem.role;
+      const approverRole = getApprovingRole(originalRole);
+      const approverDocs = getFilteredRoleDocsByRole(approverRole);
+
+      for (const doc of approverDocs) {
+        const territory = doc.territory;
+        const group = (approverGroups[originalRole] ??= {});
+        (group[territory] ??= []).push({
+          email: doc.email,
+          territory,
+        });
+      }
+    }
+
+    const approverList = Object.entries(approverGroups).flatMap(([originalRole, territoryMap]) =>
+      Object.entries(territoryMap).map(([territory, approvers]) => ({
+        role: originalRole,
+        territory: [territory],
+        approvers,
+      })),
+    );
 
     return HttpResponse.json({
       message: "Approver List sent successfully.",
-      approverList: approvers,
+      approverList,
     });
   },
 );
 
-export const errorApiGetApproversHandler = http.get(
+export const errorApiGetApproversHandler = http.post(
   "https://test-domain.execute-api.us-east-1.amazonaws.com/mocked-tests/getApprovers",
   async () => new HttpResponse("Response Error", { status: 500 }),
 );

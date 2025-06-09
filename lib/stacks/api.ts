@@ -584,7 +584,7 @@ export class Api extends cdk.NestedStack {
       getApprovers: {
         path: "getApprovers",
         lambda: lambdas.getApprovers,
-        method: "GET",
+        method: "POST",
       },
       submitGroupDivision: {
         path: "submitGroupDivision",

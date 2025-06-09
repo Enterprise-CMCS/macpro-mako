@@ -4,6 +4,7 @@ import { response } from "libs/handler-lib";
 import { UserRole } from "node_modules/shared-types/events/legacy-user";
 import { StateAccess } from "react-app/src/api";
 
+import { getUserProfileSchema } from "./getUserProfile";
 import { getAllUserRolesByEmail, getApproversByRole } from "./userManagementService";
 
 type Territory = StateAccess | "N/A";
@@ -34,10 +35,26 @@ const getApprovers = async (event: APIGatewayEvent) => {
 
   try {
     const { userId, poolId } = authDetails;
-
     const { email } = await lookupUserAttributes(userId, poolId);
+    let lookupEmail = email;
 
-    const userRoles = await getAllUserRolesByEmail(email);
+    if (event.body) {
+      const eventBody = typeof event.body === "string" ? JSON.parse(event.body) : event.body;
+      const safeEventBody = getUserProfileSchema.safeParse(eventBody);
+
+      // if the event has a body with a userEmail, the userEmail is not the same as
+      // the current user's email, and the current user is a user manager, then
+      // return the data for the userEmail instead of the current user
+      if (
+        safeEventBody.success &&
+        safeEventBody?.data?.userEmail &&
+        safeEventBody.data.userEmail !== email
+      ) {
+        lookupEmail = safeEventBody.data.userEmail;
+      }
+    }
+
+    const userRoles = await getAllUserRolesByEmail(lookupEmail);
     const roleStateMap = new Map<string, Territory[]>();
 
     if (userRoles) {

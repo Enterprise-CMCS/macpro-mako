@@ -17,7 +17,7 @@ export type StateAccess = {
   status: string;
   role: string;
   territory: string;
-  approvers?: Approver[];
+  approverList?: Approver[];
 };
 
 export type OneMacUserProfile = {
@@ -28,10 +28,7 @@ export function attachApproversToStateAccess(
   stateAccess: StateAccess[],
   approverByRole: ApproverRaw[],
 ): StateAccess[] {
-  const roleTerritoryApproverMap: Record<
-    string,
-    Record<string, Omit<Approver, "territory">[]>
-  > = {};
+  const roleTerritoryApproverMap = {};
   if (!approverByRole) return stateAccess;
   if (!approverByRole.length) return stateAccess;
   for (const input of approverByRole) {
@@ -68,7 +65,11 @@ export const getUserProfile = async (userEmail?: string): Promise<OneMacUserProf
       userEmail ? { body: { userEmail } } : {},
     );
 
-    const approvers = await API.get("os", "/getApprovers", {});
+    const approvers = await API.post(
+      "os",
+      "/getApprovers",
+      userEmail ? { body: { userEmail } } : {},
+    );
     const stateAccessWithApprovers = attachApproversToStateAccess(
       stateAccess,
       approvers.approverList,
