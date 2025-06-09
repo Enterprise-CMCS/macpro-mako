@@ -13,12 +13,15 @@ export const handler: Handler<KafkaEvent> = async (event) => {
 
   console.log(`event: ${prettifiedEventJSON}`);
 
+  // const seenRecords = new Set<string>();
+
   try {
     await Promise.all(
       Object.entries(event.records).map(async ([topicPartition, records]) => {
         const topic = getTopic(topicPartition);
 
         console.log(`topic: ${topic}`);
+        console.log(records, "RECORDS IN SINKMAIN");
 
         switch (topic) {
           case "aws.onemac.migration.cdc":
