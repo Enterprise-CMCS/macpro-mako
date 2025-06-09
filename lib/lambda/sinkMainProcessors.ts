@@ -398,9 +398,17 @@ export const insertNewSeatoolRecordsFromKafkaIntoMako = async (
   const makoDocTimestamps = await getMakoDocTimestamps(kafkaRecords);
   const seatoolRecordsForMako: { id: string; [key: string]: unknown }[] = [];
   console.log(kafkaRecords, "WAT ARE THE RECORDS");
+  const seenRecords = new Set<string>();
+
   for (const kafkaRecord of kafkaRecords) {
     try {
       const { key, value } = kafkaRecord;
+      const recordIdentifier = `${key}${value}`;
+      if (seenRecords.has(recordIdentifier)) {
+        console.log("Skipping duplicate record ", key);
+        continue;
+      }
+      seenRecords.add(recordIdentifier);
 
       if (!key) {
         console.error(`Record without a key property: ${value}`);
