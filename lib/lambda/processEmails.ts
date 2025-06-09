@@ -166,19 +166,37 @@ export async function processRecord(kafkaRecord: KafkaRecord, config: ProcessEma
           origin: "seatool",
         };
         console.log("BEFORE PROCESS AND SEND EMAILS");
-        await processAndSendEmails(recordToPass as Events[keyof Events], safeID, config);
+        // await processAndSendEmails(recordToPass as Events[keyof Events], safeID, config);
 
         const indexObject = {
           index: getOsNamespace("main"),
           id: safeID,
           body: {
-            doc: {
+            script: {
+              lang: "painless",
+              source: `
+                if (ctx._source.withdrawEmailSent == null || ctx._source.withdrawEmailSent == false) {
+                  ctx._source.withdrawEmailSent = true;
+                } else {
+                  ctx.op = "none";
+                }
+              `,
+            },
+            upsert: {
               withdrawEmailSent: true,
             },
           },
         };
 
-        await os.updateData(config.osDomain, indexObject);
+        const updateResponse = await os.updateData(config.osDomain, indexObject);
+
+        if (updateResponse.result === "noop") {
+          console.log("Withdraw email already sent by another concurrent process. Skipping email.");
+          return;
+        }
+        await processAndSendEmails(recordToPass as Events[keyof Events], safeID, config);
+
+        // await os.updateData(config.osDomain, indexObject);
       } catch (error) {
         console.error("Error processing record:", JSON.stringify(error, null, 2));
         throw error;

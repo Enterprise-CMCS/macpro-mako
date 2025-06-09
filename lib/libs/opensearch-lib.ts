@@ -34,7 +34,7 @@ function createAwsConnector(credentials: any) {
   };
 }
 
-export async function updateData(host: string, indexObject: any) {
+export async function updateData(host: string, indexObject: any): Promise<any> {
   client = client || (await getClient(host));
   // Add a document to the index.
   await client.update(indexObject);
@@ -67,21 +67,6 @@ export async function bulkUpdateData(
       body.push({ delete: { _index: index, _id: doc.id } });
     } else {
       body.push({ update: { _index: index, _id: doc.id } }, { doc: doc, doc_as_upsert: true });
-
-      body.push({
-        script: {
-          source: `
-            if (ctx._source.changed_date == null || 
-                params.changed_date == null || 
-                params.changed_date > ctx._source.changed_date) {
-              ctx._source = params;
-            }
-          `,
-          lang: "painless",
-          params: doc,
-        },
-        upsert: doc,
-      });
     }
   }
 
