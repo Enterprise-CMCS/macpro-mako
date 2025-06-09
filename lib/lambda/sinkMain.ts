@@ -17,48 +17,29 @@ export const handler: Handler<KafkaEvent> = async (event) => {
   console.log(event.records, "EVENT RECORDS");
 
   try {
-    for (const [topicPartition, records] of Object.entries(event.records)) {
-      const topic = getTopic(topicPartition);
-      console.log(`topic: ${topic}`);
+    await Promise.all(
+      Object.entries(event.records).map(async ([topicPartition, records]) => {
+        const topic = getTopic(topicPartition);
 
-      switch (topic) {
-        case "aws.onemac.migration.cdc":
-          await insertOneMacRecordsFromKafkaIntoMako(records, topicPartition);
-          break;
-        case "aws.seatool.ksql.onemac.three.agg.State_Plan":
-          await insertNewSeatoolRecordsFromKafkaIntoMako(records, topicPartition);
-          break;
-        case "aws.seatool.debezium.changed_date.SEA.dbo.State_Plan":
-          await syncSeatoolRecordDatesFromKafkaWithMako(records, topicPartition);
-          break;
-        default:
-          logError({ type: ErrorType.BADTOPIC });
-          throw new Error(`topic (${topicPartition}) is invalid`);
-      }
-    }
-    // await Promise.all(
-    //   Object.entries(event.records).map(async ([topicPartition, records]) => {
-    //     const topic = getTopic(topicPartition);
+        console.log(`topic: ${topic}`);
+        console.log(records, "RECORDS IN SINKMAIN");
 
-    //     console.log(`topic: ${topic}`);
-    //     console.log(records, "RECORDS IN SINKMAIN");
+        switch (topic) {
+          case "aws.onemac.migration.cdc":
+            return insertOneMacRecordsFromKafkaIntoMako(records, topicPartition);
 
-    //     switch (topic) {
-    //       case "aws.onemac.migration.cdc":
-    //         return insertOneMacRecordsFromKafkaIntoMako(records, topicPartition);
+          case "aws.seatool.ksql.onemac.three.agg.State_Plan":
+            return insertNewSeatoolRecordsFromKafkaIntoMako(records, topicPartition);
 
-    //       case "aws.seatool.ksql.onemac.three.agg.State_Plan":
-    //         return insertNewSeatoolRecordsFromKafkaIntoMako(records, topicPartition);
+          case "aws.seatool.debezium.changed_date.SEA.dbo.State_Plan":
+            return syncSeatoolRecordDatesFromKafkaWithMako(records, topicPartition);
 
-    //       case "aws.seatool.debezium.changed_date.SEA.dbo.State_Plan":
-    //         return syncSeatoolRecordDatesFromKafkaWithMako(records, topicPartition);
-
-    //       default:
-    //         logError({ type: ErrorType.BADTOPIC });
-    //         throw new Error(`topic (${topicPartition}) is invalid`);
-    //     }
-    //   }),
-    // );
+          default:
+            logError({ type: ErrorType.BADTOPIC });
+            throw new Error(`topic (${topicPartition}) is invalid`);
+        }
+      }),
+    );
   } catch (error) {
     logError({ type: ErrorType.UNKNOWN, metadata: { event: prettifiedEventJSON } });
 
