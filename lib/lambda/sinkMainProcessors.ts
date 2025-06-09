@@ -1,6 +1,5 @@
 import { isBefore } from "date-fns";
-import { getDomainAndNamespace } from "lib/libs/utils";
-import { bulkUpdateDataWrapper, ErrorType, getItem, getItems, logError } from "libs";
+import { bulkUpdateDataWrapper, ErrorType, getItems, logError } from "libs";
 import { getPackage, getPackageChangelog } from "libs/api/package";
 import _ from "lodash";
 import {
