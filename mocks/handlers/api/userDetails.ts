@@ -4,8 +4,9 @@ import { getUserByUsername } from "../../data";
 import { getFilteredUserResultList } from "../../data/osusers";
 import { getFilteredRoleDocsByEmail, getLatestRoleByEmail } from "../../data/roles";
 import { UserDetailsRequestBody } from "../../index.d";
+import { getMockUsername } from "../auth.utils";
 
-const defaultApiUserDetailsHandler = http.post<PathParams, UserDetailsRequestBody>(
+export const defaultApiUserDetailsHandler = http.post<PathParams, UserDetailsRequestBody>(
   "https://test-domain.execute-api.us-east-1.amazonaws.com/mocked-tests/getUserDetails",
   async ({ request }) => {
     let email;
@@ -13,7 +14,7 @@ const defaultApiUserDetailsHandler = http.post<PathParams, UserDetailsRequestBod
       const { userEmail } = await request.json();
       email = userEmail;
     } else {
-      const username = process.env.MOCK_USER_USERNAME;
+      const username = getMockUsername();
       if (!username) {
         return HttpResponse.json({});
       }
@@ -45,7 +46,7 @@ export const errorApiUserDetailsHandler = http.post<PathParams, UserDetailsReque
 const defaultApiRequestBaseCMSAccessHandler = http.get(
   "https://test-domain.execute-api.us-east-1.amazonaws.com/mocked-tests/requestBaseCMSAccess",
   async () => {
-    const username = process.env.MOCK_USER_USERNAME;
+    const username = getMockUsername();
     if (!username) {
       return new HttpResponse("User not authenticated", { status: 401 });
     }

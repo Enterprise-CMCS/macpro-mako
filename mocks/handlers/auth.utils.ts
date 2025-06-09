@@ -3,13 +3,40 @@ import { FullUser } from "shared-types";
 import { makoReviewer, makoStateSubmitter, userResponses } from "../data/users";
 import type { TestUserDataWithRole } from "../index.d";
 
+export const getMockUsername = (): string | null => {
+  if (typeof window === "undefined") {
+    if (process?.env) {
+      return process.env.MOCK_USER_USERNAME || null;
+    }
+  }
+  if (window?.localStorage) {
+    return window.localStorage.getItem("MOCK_USER_USERNAME");
+  }
+  return null;
+};
+
 export const setMockUsername = (user?: TestUserDataWithRole | string | null): void => {
+  let username;
   if (user && typeof user === "string") {
-    process.env.MOCK_USER_USERNAME = user;
+    username = user;
   } else if (user && (user as TestUserDataWithRole).Username !== undefined) {
-    process.env.MOCK_USER_USERNAME = (user as TestUserDataWithRole).Username;
-  } else {
-    delete process.env.MOCK_USER_USERNAME;
+    username = (user as TestUserDataWithRole).Username;
+  }
+
+  if (typeof window === "undefined") {
+    if (process?.env) {
+      if (username) {
+        process.env.MOCK_USER_USERNAME = username;
+      } else {
+        delete process.env.MOCK_USER_USERNAME;
+      }
+    }
+  } else if (window?.localStorage) {
+    if (username) {
+      window.localStorage.setItem("MOCK_USER_USERNAME", username);
+    } else {
+      window.localStorage.removeItem("MOCK_USER_USERNAME");
+    }
   }
 };
 

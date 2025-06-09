@@ -12,6 +12,7 @@ import {
   roleDocs,
 } from "../../data";
 import { SubmitRoleRequestBody, TestRoleDocument, UserProfileRequestBody } from "../../index.d";
+import { getMockUsername } from "../auth.utils";
 
 const defaultApiUserProfileHandler = http.post<PathParams, UserProfileRequestBody>(
   "https://test-domain.execute-api.us-east-1.amazonaws.com/mocked-tests/getUserProfile",
@@ -21,7 +22,7 @@ const defaultApiUserProfileHandler = http.post<PathParams, UserProfileRequestBod
       const { userEmail } = await request.json();
       email = userEmail;
     } else {
-      const username = process.env.MOCK_USER_USERNAME;
+      const username = getMockUsername();
       if (!username) {
         return HttpResponse.json([]);
       }
@@ -48,7 +49,7 @@ export const errorApiUserProfileHandler = http.post<PathParams, UserProfileReque
 const defaultApiGetCreateUserProfileHandler = http.get(
   "https://test-domain.execute-api.us-east-1.amazonaws.com/mocked-tests/createUserProfile",
   async () => {
-    const username = process.env.MOCK_USER_USERNAME;
+    const username = getMockUsername();
     if (!username) {
       return HttpResponse.json([]);
     }
@@ -73,7 +74,7 @@ export const errorApiGetCreateUserProfileHandler = http.get(
 const defaultApiGetRoleRequestsHandler = http.get(
   "https://test-domain.execute-api.us-east-1.amazonaws.com/mocked-tests/getRoleRequests",
   async () => {
-    const username = process.env.MOCK_USER_USERNAME;
+    const username = getMockUsername();
     if (!username) {
       return new HttpResponse("User not authenticated", { status: 401 });
     }
@@ -135,7 +136,7 @@ export const errorApiGetRoleRequestsHandler = http.get(
 const defaultApiGetSubmitGroupDivisionHandler = http.post(
   "https://test-domain.execute-api.us-east-1.amazonaws.com/mocked-tests/submitGroupDivision",
   async () => {
-    const username = process.env.MOCK_USER_USERNAME;
+    const username = getMockUsername();
     if (!username) {
       return HttpResponse.json({ message: "User not authenticated" }, { status: 401 });
     }
@@ -167,7 +168,7 @@ export const errorApiOptionSubmitGroupDivisionHandler = http.post(
 const defaultApiSubmitRoleRequestsHandler = http.post<PathParams, SubmitRoleRequestBody>(
   "https://test-domain.execute-api.us-east-1.amazonaws.com/mocked-tests/submitRoleRequests",
   async ({ request }) => {
-    const username = process.env.MOCK_USER_USERNAME;
+    const username = getMockUsername();
     if (!username) {
       return new HttpResponse("User not authenticated", { status: 401 });
     }

@@ -1,4 +1,4 @@
-import * as jwt from "jsonwebtoken";
+import * as jose from "jose";
 import { http, HttpResponse, passthrough, PathParams } from "msw";
 import { APIGatewayEventRequestContext } from "shared-types";
 
@@ -18,92 +18,101 @@ import type {
   IdpRequestSessionBody,
   TestUserData,
 } from "../../index.d";
-import { findUserByUsername } from "../auth.utils";
+import { findUserByUsername, getMockUsername } from "../auth.utils";
 
-const getUsernameFromAccessToken = (accessToken?: string): string | undefined => {
+const secret = new TextEncoder().encode(SECRET_KEY);
+const alg = "RS256";
+
+const getUsernameFromAccessToken = async (accessToken?: string): Promise<string | undefined> => {
   if (accessToken) {
-    return jwt.decode(accessToken, { json: true })?.get("username");
+    const { payload } = await jose.jwtVerify(accessToken, secret, {
+      issuer: COGNITO_IDP_DOMAIN,
+      audience: USER_POOL_CLIENT_ID,
+    });
+
+    console.log("getUsernameFromAccessToken");
+    return payload.username as string;
   }
   return undefined;
 };
 
-const generateIdToken = (user: TestUserData, authTime: number, expTime: number): string | null => {
-  if (user) {
-    return jwt.sign(
-      {
-        sub: getAttributeFromUser(user, "sub"),
-        email_verified: getAttributeFromUser(user, "email_verified") === "true",
-        iss: COGNITO_IDP_DOMAIN,
-        "cognito:username": user.Username,
-        aud: USER_POOL_CLIENT_ID,
-        token_use: "id",
-        auth_time: authTime,
-        exp: expTime,
-        iat: authTime,
-        email: getAttributeFromUser(user, "email"),
-      },
-      SECRET_KEY,
-      {
-        algorithm: "RS256",
-        expiresIn: "30m",
-        audience: USER_POOL_CLIENT_ID,
-        issuer: COGNITO_IDP_DOMAIN,
-      },
-    );
-  }
-  return null;
-};
-
-const generateAccessToken = (
+const generateIdToken = async (
   user: TestUserData,
   authTime: number,
   expTime: number,
-): string | null => {
+): Promise<string | null> => {
   if (user) {
-    return jwt.sign(
-      {
-        sub: getAttributeFromUser(user, "sub"),
-        iss: COGNITO_IDP_DOMAIN,
-        version: 2,
-        client_id: USER_POOL_CLIENT_ID,
-        token_use: "access",
-        scope: "aws.cognito.signin.user.admin openid email",
-        auth_time: authTime,
-        exp: expTime,
-        iat: authTime,
-        username: user.Username,
-      },
-      SECRET_KEY,
-      {
-        algorithm: "RS256",
-        expiresIn: "30m",
-        audience: USER_POOL_CLIENT_ID,
-        issuer: COGNITO_IDP_DOMAIN,
-      },
-    );
+    const jwt = await new jose.SignJWT({
+      sub: getAttributeFromUser(user, "sub"),
+      email_verified: getAttributeFromUser(user, "email_verified") === "true",
+      iss: COGNITO_IDP_DOMAIN,
+      "cognito:username": user.Username,
+      aud: USER_POOL_CLIENT_ID,
+      token_use: "id",
+      auth_time: authTime,
+      exp: expTime,
+      iat: authTime,
+      email: getAttributeFromUser(user, "email"),
+    })
+      .setProtectedHeader({ alg })
+      .setIssuedAt()
+      .setIssuer(COGNITO_IDP_DOMAIN)
+      .setAudience(USER_POOL_CLIENT_ID)
+      .setExpirationTime("30m")
+      .sign(secret);
+
+    return jwt;
   }
   return null;
 };
 
-const generateRefreshToken = (user: TestUserData): string | null => {
+const generateAccessToken = async (
+  user: TestUserData,
+  authTime: number,
+  expTime: number,
+): Promise<string | null> => {
   if (user) {
-    return jwt.sign(
-      {
-        sub: getAttributeFromUser(user, "sub"),
-        "cognito:username": user.Username,
-      },
-      SECRET_KEY,
-      {
-        expiresIn: "30m",
-      },
-    );
+    const jwt = await new jose.SignJWT({
+      sub: getAttributeFromUser(user, "sub"),
+      iss: COGNITO_IDP_DOMAIN,
+      version: 2,
+      client_id: USER_POOL_CLIENT_ID,
+      token_use: "access",
+      scope: "aws.cognito.signin.user.admin openid email",
+      auth_time: authTime,
+      exp: expTime,
+      iat: authTime,
+      username: user.Username,
+    })
+      .setProtectedHeader({ alg })
+      .setIssuedAt()
+      .setIssuer(COGNITO_IDP_DOMAIN)
+      .setAudience(USER_POOL_CLIENT_ID)
+      .setExpirationTime("30m")
+      .sign(secret);
+
+    return jwt;
+  }
+  return null;
+};
+
+const generateRefreshToken = async (user: TestUserData): Promise<string | null> => {
+  if (user) {
+    const jwt = await new jose.SignJWT({
+      sub: getAttributeFromUser(user, "sub"),
+      "cognito:username": user.Username,
+    })
+      .setExpirationTime("30m")
+      .sign(secret);
+
+    return jwt;
   }
   return null;
 };
 
 const generateSessionToken = (user: TestUserData): string | null => {
   if (user?.Username) {
-    return Buffer.from(JSON.stringify({ username: user?.Username })).toString("base64");
+    return jose.base64url.encode(JSON.stringify({ username: user?.Username }));
   }
   return null;
 };
@@ -127,8 +136,8 @@ export const getRequestContext = (user?: TestUserData | string): APIGatewayEvent
     username = user;
   } else if (user && (user as TestUserData).Username !== undefined) {
     username = (user as TestUserData).Username;
-  } else if (process.env.MOCK_USER_USERNAME) {
-    username = process.env.MOCK_USER_USERNAME;
+  } else {
+    username = getMockUsername();
   }
 
   if (username) {
@@ -145,15 +154,17 @@ export const getRequestContext = (user?: TestUserData | string): APIGatewayEvent
 
 export const signInHandler = http.post(/amazoncognito.com\/oauth2\/token/, async ({ request }) => {
   console.log("signInHandler", { request, headers: request.headers });
-  if (process.env.MOCK_USER_USERNAME) {
-    const user = findUserByUsername(process.env.MOCK_USER_USERNAME);
+  const username = getMockUsername();
+
+  if (username) {
+    const user = findUserByUsername(username);
     if (user) {
       const authTime = Date.now() / 1000;
       const expTime = authTime + 1800;
       return HttpResponse.json({
-        id_token: generateIdToken(user, authTime, expTime),
-        access_token: generateAccessToken(user, authTime, expTime),
-        refresh_token: generateRefreshToken(user),
+        id_token: await generateIdToken(user, authTime, expTime),
+        access_token: await generateAccessToken(user, authTime, expTime),
+        refresh_token: await generateRefreshToken(user),
         expires_in: 1800,
         token_type: "Bearer",
       });
@@ -186,13 +197,17 @@ export const identityServiceHandler = http.post<PathParams, IdentityRequest>(
         let username;
         const { Logins } = await request.json();
         if (Logins?.value) {
-          const payload = jwt.decode(Logins.value);
+          console.log("AWSCognitoIdentityService.GetCredentialsForIdentity");
+          const { payload } = await jose.jwtVerify(Logins.value, secret, {
+            issuer: COGNITO_IDP_DOMAIN,
+            audience: USER_POOL_CLIENT_ID,
+          });
           if (payload && typeof payload !== "string") {
             username = payload["cognito:username"].toString();
           }
         }
         if (!username) {
-          username = process.env.MOCK_USER_USERNAME;
+          username = getMockUsername();
         }
 
         if (username) {
@@ -244,13 +259,17 @@ export const identityProviderServiceHandler = http.post<
     if (target == "AWSCognitoIdentityProviderService.InitiateAuth") {
       const { AuthFlow, AuthParameters } = (await request.json()) as IdpRefreshRequestBody;
       if (AuthFlow === "REFRESH_TOKEN_AUTH" && AuthParameters?.REFRESH_TOKEN) {
-        const payload = jwt.decode(AuthParameters.REFRESH_TOKEN);
+        console.log("AWSCognitoIdentityProviderService.InitiateAuth");
+        const { payload } = await jose.jwtVerify(AuthParameters.REFRESH_TOKEN, secret, {
+          issuer: COGNITO_IDP_DOMAIN,
+          audience: USER_POOL_CLIENT_ID,
+        });
         let username;
         if (payload && typeof payload !== "string") {
           username = payload["cognito:username"].toString();
         }
         if (!username) {
-          username = process.env.MOCK_USER_USERNAME;
+          username = getMockUsername();
         }
 
         if (username) {
@@ -260,14 +279,14 @@ export const identityProviderServiceHandler = http.post<
             const expTime = authTime + 1800;
             return HttpResponse.json({
               AuthenticationResult: {
-                AccessToken: generateAccessToken(user, authTime, expTime),
+                AccessToken: await generateAccessToken(user, authTime, expTime),
                 ExpiresIn: 1800,
-                IdToken: generateIdToken(user, authTime, expTime),
+                IdToken: await generateIdToken(user, authTime, expTime),
                 NewDeviceMetadata: {
                   DeviceGroupKey: "string3",
                   DeviceKey: "string4",
                 },
-                RefreshToken: generateRefreshToken(user),
+                RefreshToken: await generateRefreshToken(user),
                 TokenType: "Bearer",
               },
               AvailableChallenges: ["string7"],
@@ -292,7 +311,7 @@ export const identityProviderServiceHandler = http.post<
     }
     if (target == "AWSCognitoIdentityProviderService.GetUser") {
       const { AccessToken } = (await request.json()) as IdpRequestSessionBody;
-      const username = getUsernameFromAccessToken(AccessToken) || process.env.MOCK_USER_USERNAME;
+      const username = (await getUsernameFromAccessToken(AccessToken)) || getMockUsername();
 
       // const agent = request.headers.get("x-amz-user-agent");
 
@@ -329,7 +348,7 @@ export const identityProviderServiceHandler = http.post<
 
     if (target == "AWSCognitoIdentityProviderService.AdminGetUser") {
       const { Username } = (await request.json()) as AdminGetUserRequestBody;
-      const username = Username || process.env.MOCK_USER_USERNAME;
+      const username = Username || getMockUsername();
 
       if (username) {
         const user = findUserByUsername(username);

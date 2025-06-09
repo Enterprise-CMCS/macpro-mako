@@ -247,8 +247,13 @@ const verifyRow = (
 };
 
 describe("WaiversList", () => {
-  const setup = async (hits: opensearch.Hits<opensearch.main.Document>, queryString: string) => {
+  const setup = async (
+    hits: opensearch.Hits<opensearch.main.Document>,
+    queryString: string,
+    username: string | null,
+  ) => {
     global.localStorage = new Storage();
+    setMockUsername(username);
     const user = userEvent.setup();
     const rendered = renderDashboard(
       <WaiversList />,
@@ -279,13 +284,12 @@ describe("WaiversList", () => {
   });
 
   it("should return no columns if the user is not logged in", async () => {
-    setMockUsername(null);
-
     await setup(
       defaultHits,
       getDashboardQueryString({
         tab: "spas",
       }),
+      null,
     );
 
     const table = screen.getByTestId("os-table");
@@ -302,13 +306,12 @@ describe("WaiversList", () => {
     beforeAll(async () => {
       skipCleanup();
 
-      setMockUsername(username);
-
       ({ user } = await setup(
         defaultHits,
         getDashboardQueryString({
           tab: "spas",
         }),
+        username,
       ));
     });
 
@@ -326,7 +329,6 @@ describe("WaiversList", () => {
       verifyColumns(hasActions);
       verifyPagination(hitCount);
     });
-
     it("should handle showing all of the columns", async () => {
       // show all the hidden columns
       await user.click(screen.queryByRole("button", { name: "Columns (3 hidden)" }));

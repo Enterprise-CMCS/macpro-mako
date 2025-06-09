@@ -21,6 +21,22 @@ if (ldClientId === undefined) {
   throw new Error("To configure LaunchDarkly, you must set LAUNCHDARKLY_CLIENT_ID");
 }
 
+const enableApiMocking = async () => {
+  if (!import.meta.env.DEV) {
+    return;
+  }
+
+  if (import.meta.env.MODE === "mocked") {
+    await import("../mockServiceWorker.js?worker");
+
+    const { mockedWorker } = await import("mocks/browser");
+    await mockedWorker.start({
+      onUnhandledRequest: "bypass",
+      waitUntilReady: true,
+    });
+  }
+};
+
 const initializeApp = async () => {
   // Initialize Google Analytics
   if (googleAnalyticsGtag) {
@@ -41,19 +57,17 @@ const initializeApp = async () => {
     },
   });
 
-  if (import.meta.env.DEV) {
-    await import("../mockServiceWorker.js?worker");
-  }
-
-  ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(
-    <LDProvider>
-      <React.StrictMode>
-        <QueryClientProvider client={queryClient}>
-          <FlagRouter />
-          <ReactQueryDevtools initialIsOpen={false} />
-        </QueryClientProvider>
-      </React.StrictMode>
-    </LDProvider>,
+  enableApiMocking().then(() =>
+    ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(
+      <LDProvider>
+        <React.StrictMode>
+          <QueryClientProvider client={queryClient}>
+            <FlagRouter />
+            <ReactQueryDevtools initialIsOpen={false} />
+          </QueryClientProvider>
+        </React.StrictMode>
+      </LDProvider>,
+    ),
   );
 };
 
