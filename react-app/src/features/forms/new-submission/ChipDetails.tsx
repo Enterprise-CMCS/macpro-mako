@@ -32,7 +32,7 @@ export const ChipDetailsForm = () => {
     <ActionForm
       title="CHIP Eligibility SPA Details"
       schema={formSchemas["new-chip-details-submission"]}
-      breadcrumbText="Submit new CHIP eligibility SPA"
+      breadcrumbText="Submit New CHIP Eligibility SPA"
       fields={({ control }) => (
         <>
           <FormField
@@ -102,7 +102,7 @@ export const ChipDetailsForm = () => {
                         return (
                           <div
                             key={option}
-                            className="flex items-center gap-2 px-4 py-2 cursor-pointer hover:bg-gray-100"
+                            className="flex items-center justify-center gap-2 px-4 py-2 cursor-pointer hover:bg-gray-100"
                             onClick={() => {
                               const updated = isSelected
                                 ? selectedValues.filter((val) => val !== option)
@@ -128,7 +128,7 @@ export const ChipDetailsForm = () => {
             render={({ field }) => (
               <FormItem className="max-w-sm">
                 <FormLabel className="text-lg font-semibold block">
-                  Proposed Effective Date of CHIP SPA <RequiredIndicator />
+                  Proposed Effective Date of CHIP Eligibility SPA <RequiredIndicator />
                 </FormLabel>
                 <FormControl>
                   <DatePicker
@@ -148,7 +148,7 @@ export const ChipDetailsForm = () => {
         instructions: [
           <p data-testid="chip-attachments-instructions">
             Maximum file size of 80 MB per attachment. You can add multiple files per attachment
-            type. <br /> Read the description for each of the attachment types on the{" "}
+            type. Read the description for each of the attachment types on the{" "}
             <Link
               to="/faq/chip-spa-attachments"
               target={FAQ_TAB}
