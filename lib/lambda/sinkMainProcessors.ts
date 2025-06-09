@@ -1,4 +1,4 @@
-import { isBefore } from "date-fns";
+import { isBefore, isEqual } from "date-fns";
 import { bulkUpdateDataWrapper, ErrorType, getItems, logError } from "libs";
 import { getPackage, getPackageChangelog } from "libs/api/package";
 import {
@@ -443,16 +443,17 @@ export const insertNewSeatoolRecordsFromKafkaIntoMako = async (
       const { data: seatoolDocument } = safeSeatoolRecord;
       const makoDocumentTimestamp = makoDocTimestamps.get(seatoolDocument.id);
 
-      if (
-        seatoolDocument.changed_date &&
-        makoDocumentTimestamp &&
-        isBefore(seatoolDocument.changed_date, makoDocumentTimestamp)
-      ) {
-        console.warn(
-          `id: ${seatoolDocument.id} mako: ${makoDocumentTimestamp} seatool: ${seatoolDocument.changed_date} ${seatoolDocument.cmsStatus}`,
-        );
-        console.warn("SKIPPED DUE TO OUT-OF-DATE INFORMATION");
-        continue;
+      if (seatoolDocument.changed_date && makoDocumentTimestamp) {
+        if (
+          isBefore(seatoolDocument.changed_date, makoDocumentTimestamp) ||
+          isEqual(seatoolDocument.changed_date, makoDocumentTimestamp)
+        ) {
+          console.warn(
+            `id: ${seatoolDocument.id} mako: ${makoDocumentTimestamp} seatool: ${seatoolDocument.changed_date} ${seatoolDocument.cmsStatus}`,
+          );
+          console.warn("SKIPPED DUE TO OUT-OF-DATE INFORMATION");
+          continue;
+        }
       }
 
       if (seatoolDocument.authority && seatoolDocument.seatoolStatus !== "Unknown") {
