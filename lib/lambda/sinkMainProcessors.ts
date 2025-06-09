@@ -1,6 +1,8 @@
-import { isBefore, isEqual } from "date-fns";
-import { bulkUpdateDataWrapper, ErrorType, getItems, logError } from "libs";
+import { isBefore } from "date-fns";
+import { getDomainAndNamespace } from "lib/libs/utils";
+import { bulkUpdateDataWrapper, ErrorType, getItem, getItems, logError } from "libs";
 import { getPackage, getPackageChangelog } from "libs/api/package";
+import _ from "lodash";
 import {
   KafkaRecord,
   opensearch,
@@ -397,18 +399,10 @@ export const insertNewSeatoolRecordsFromKafkaIntoMako = async (
 ) => {
   const makoDocTimestamps = await getMakoDocTimestamps(kafkaRecords);
   const seatoolRecordsForMako: { id: string; [key: string]: unknown }[] = [];
-  console.log(kafkaRecords, "WAT ARE THE RECORDS");
-  const seenRecords = new Set<string>();
 
   for (const kafkaRecord of kafkaRecords) {
     try {
       const { key, value } = kafkaRecord;
-      const recordIdentifier = `${key}${value}`;
-      if (seenRecords.has(recordIdentifier)) {
-        console.log("Skipping duplicate record ", key);
-        continue;
-      }
-      seenRecords.add(recordIdentifier);
 
       if (!key) {
         console.error(`Record without a key property: ${value}`);
@@ -443,17 +437,33 @@ export const insertNewSeatoolRecordsFromKafkaIntoMako = async (
       const { data: seatoolDocument } = safeSeatoolRecord;
       const makoDocumentTimestamp = makoDocTimestamps.get(seatoolDocument.id);
 
-      if (seatoolDocument.changed_date && makoDocumentTimestamp) {
-        if (
-          isBefore(seatoolDocument.changed_date, makoDocumentTimestamp) ||
-          isEqual(seatoolDocument.changed_date, makoDocumentTimestamp)
-        ) {
-          console.warn(
-            `id: ${seatoolDocument.id} mako: ${makoDocumentTimestamp} seatool: ${seatoolDocument.changed_date} ${seatoolDocument.cmsStatus}`,
-          );
-          console.warn("SKIPPED DUE TO OUT-OF-DATE INFORMATION");
-          continue;
-        }
+      const { domain, index } = getDomainAndNamespace("main");
+
+      const existingSeatoolDocument = await getItem(domain, index, seatoolDocument.id);
+
+      if (
+        existingSeatoolDocument &&
+        _.isEqual(
+          _.omit(seatoolDocument, "changed_date"),
+          _.omit(existingSeatoolDocument, "changed_date"),
+        )
+      ) {
+        console.warn(
+          `Skipped duplicate seatool record due to unchanged values: ${seatoolDocument.id}`,
+        );
+        continue;
+      }
+
+      if (
+        seatoolDocument.changed_date &&
+        makoDocumentTimestamp &&
+        isBefore(seatoolDocument.changed_date, makoDocumentTimestamp)
+      ) {
+        console.warn(
+          `id: ${seatoolDocument.id} mako: ${makoDocumentTimestamp} seatool: ${seatoolDocument.changed_date} ${seatoolDocument.cmsStatus}`,
+        );
+        console.warn("SKIPPED DUE TO OUT-OF-DATE INFORMATION");
+        continue;
       }
 
       if (seatoolDocument.authority && seatoolDocument.seatoolStatus !== "Unknown") {
