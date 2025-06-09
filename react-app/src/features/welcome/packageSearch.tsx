@@ -20,7 +20,6 @@ export const PackageSearch = () => {
       }),
     );
     navigate(`/dashboard?os=${compressedValue}`);
-    console.log("google event: ", searchText.substring(0,3))
     window.gtag("event", "home_search_text")
   };
 
@@ -42,10 +41,8 @@ export const PackageSearch = () => {
           setTabChoice(e)
           console.log("e: ", e);
           if (e === "spas") {
-            console.log("spas selected");
             triggerGAEvent("home_search_radio", e);
           } else if (e === "waivers") {
-            console.log("waivers selected");
             triggerGAEvent("home_search_radio", e);
           }
         }}

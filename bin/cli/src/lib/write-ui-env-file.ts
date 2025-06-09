@@ -70,32 +70,21 @@ export async function writeUiEnvFile(stage, local = false) {
     .map(([key, value]) => `${key}=${value}`)
     .join("\n");
 
-  console.log(`📂 Writing .env.local to ${envFilePath}`);
+  console.log(`.env.local file written to ${envFilePath}`);
   await fs.writeFile(envFilePath, envFileContent);
 
-  // const publicDirPath = path.resolve(__dirname, "../../../react-app/public/assets");
-
+  // Separate env file creation specific to google analytics
+  // write file so that it is directly accessible from the vite /dist directory
   const publicDirPath = path.resolve(__dirname, "../../../react-app/src/assets");
-
-
-
-
-  console.log("📂 Resolved publicDirPath:", publicDirPath);
-
   await fs.mkdir(publicDirPath, { recursive: true });
-  console.log("📁 Created public directory (or already existed)");
-
-
+  console.log("Created google analytics directory (or already existed)");
   const jsonPath = path.join(publicDirPath, "env.json");
-  console.log("Will write env.json to:", jsonPath);
-
-
+  console.log("Will write GA env.json to:", jsonPath);
   await fs.writeFile(
     jsonPath,
     JSON.stringify({ VITE_GOOGLE_ANALYTICS_GTAG: googleAnalytics }, null, 2)
   );
-
-  console.log("✅ Successfully wrote env.json");
+  console.log("✅ Successfully wrote env.json and ");
 
   return envFilePath;
 }

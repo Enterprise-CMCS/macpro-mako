@@ -40,76 +40,44 @@
 
       window.matchMedia("(prefers-color-scheme: dark)").addEventListener("change", setFavicon);
     </script>
-    <!-- 1. Load the gtag.js script -->
-  <!-- <script async src="https://www.googletagmanager.com/gtag/js?id=G-03XK6P2CKS"></script>
-
-  <script>
-    // var GA_ID = import.meta.env.VITE_GOOGLE_ANALYTICS_GTAG;
-    // 2. Bootstrapping dataLayer and gtag()
-    window.dataLayer = window.dataLayer || [];
-    function gtag(){ dataLayer.push(arguments); }
-    gtag("js", new Date());
-    gtag("config", "G-03XK6P2CKS", {
-      send_page_view: false  // or true—up to you
-    });
-
-    window.gtag("set", { debug_mode: true });
-  </script> -->
-  <!-- <script>
-    fetch('/env.json')
-      .then(async (res) => {
-        const text = await res.text();
-        try {
-          const json = JSON.parse(text);
-          console.log('✅ Parsed JSON:', json);
-        } catch (e) {
-          console.warn('⚠️ Invalid JSON, printing raw contents:\n', text);
-        }
-      })
-      .catch((err) => {
-        console.error('❌ Failed to load /env.json:', err);
-      });
-  </script> -->
-  <script>
-    fetch('/env.json')
-      .then(async (res) => {
-        const text = await res.text();
-        try {
-          const json = JSON.parse(text);
-          const GA_ID = json.VITE_GOOGLE_ANALYTICS_GTAG;
-  
-          if (!GA_ID) {
-            console.warn('⚠️ No GA_ID found in env.json');
-            return;
+    <script>
+      // fetch env.json created by the prebuild script
+      fetch('/env.json')
+        .then(async (res) => {
+          const text = await res.text();
+          try {
+            const json = JSON.parse(text);
+            const GA_ID = json.VITE_GOOGLE_ANALYTICS_GTAG;
+            if (!GA_ID) {
+              console.warn('No GA_ID found in env.json');
+              return;
+            }
+    
+            // Inject the gtag.js script dynamically
+            const script = document.createElement('script');
+            script.src = `https://www.googletagmanager.com/gtag/js?id=${GA_ID}`;
+            script.async = true;
+            document.head.appendChild(script);
+    
+            // Initialize GA
+            window.dataLayer = window.dataLayer || [];
+            function gtag(){ dataLayer.push(arguments); }
+            window.gtag = gtag;
+    
+            gtag('js', new Date());
+            gtag('config', GA_ID, {
+              send_page_view: false, // set to false since we are sending a custom page view with page time 
+            });
+            // should toggle on for development and off before deployment to higher env's
+            gtag('set', { debug_mode: true });
+            console.log('GA initialized with ID:', GA_ID);
+          } catch (e) {
+            console.warn('Invalid JSON, printing raw contents:\n', text);
           }
-  
-          // Inject the gtag.js script dynamically
-          const script = document.createElement('script');
-          script.src = `https://www.googletagmanager.com/gtag/js?id=${GA_ID}`;
-          script.async = true;
-          document.head.appendChild(script);
-  
-          // Initialize GA
-          window.dataLayer = window.dataLayer || [];
-          function gtag(){ dataLayer.push(arguments); }
-          window.gtag = gtag;
-  
-          gtag('js', new Date());
-          gtag('config', GA_ID, {
-            send_page_view: false, // you can toggle this
-          });
-          gtag('set', { debug_mode: true });
-  
-          console.log('✅ GA initialized with ID:', GA_ID);
-  
-        } catch (e) {
-          console.warn('⚠️ Invalid JSON, printing raw contents:\n', text);
-        }
-      })
-      .catch((err) => {
-        console.error('❌ Failed to load /assets/env.json:', err);
-      });
-  </script>
-  
+        })
+        .catch((err) => {
+          console.error('Failed to load /assets/env.json:', err);
+        });
+    </script>
   </body>
 </html>

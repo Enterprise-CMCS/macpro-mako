@@ -10,17 +10,6 @@ import { userPrompt } from "@/components";
 import * as I from "@/components/Inputs";
 import { LoadingSpinner } from "@/components/LoadingSpinner"; // Import your LoadingSpinner component
 import { cn } from "@/utils";
-//  import { sendGAEvent } from "@/utils/ReactGA/sendGAEvent";
-import ReactGA from "react-ga4";
-
-
-
-
-
-// declare global {
-//   interface Window { gtag?: (...args: any[]) => void; }
-// }
-// import 
 
 import { extractBucketAndKeyFromUrl, getPresignedUrl, uploadToS3 } from "./uploadUtilities";
 
@@ -97,57 +86,19 @@ export const Upload = ({ maxFiles, files, setFiles, dataTestId, type }: UploadPr
   };
   const onDrop = useCallback(
     async (acceptedFiles: File[], fileRejections: FileRejection[],  event: DropEvent) => {
-      console.log("uploading file");
-      console.log("accepted files: " , acceptedFiles);
-      console.log("first element: ", acceptedFiles[0]);
-      console.log("file size: ", acceptedFiles[0].size);
 
-
-
-      // let labelTextA;
-      // if(event){
-      //   labelTextA = (event.currentTarget as HTMLElement)?.getAttribute("data-label");
-      // }
-
-      // const titleEl = document.querySelector(
-      //   '[data-testid="undefined-title"]'
-      // ) as HTMLElement | null;
-    
-      // const titleEl = document.querySelector(
-      //   '#package_details h1'
-      // ) as HTMLHeadingElement | null;
-      // console.log("Page title:", titleEl?.textContent);
-
-      const labelTextB = dropzoneRef.current?.getAttribute("data-label");
+      const fileType = dropzoneRef.current?.getAttribute("data-label");
 
       // if (typeof window.gtag !== "function") return;
       if (typeof window.gtag == "function") {
         window.gtag("event", "submit_file_upload", {
           // GA4 event name: arbitrary string
           submission_type: type,
-          file_type: labelTextB,
+          file_type: fileType,
           file_size_bytes: acceptedFiles[0].size
         });
       }
 
-      // …
-      // ReactGA.event({
-      //   name: "submit_file_upload",
-      //   params: {
-      //     submission_type: type,
-      //     file_type: dataTestId,
-      //     file_size_bytes: acceptedFiles[0].size
-      //   }
-      // });
-
-      console.log("type: ", type);
-
-      // console.log("Page title:", titleEl?.textContent);
-      // console.log("label textA: ", labelTextA);
-      console.log("label textA: ", labelTextB);
-      console.log("dataTestId: ", dataTestId);
-
-      // sendGAEvent("File Upload", "state-user")
       setRejectedFiles(fileRejections);
       if (fileRejections.length === 0) {
         setIsUploading(true); // Set uploading to true
@@ -158,11 +109,6 @@ export const Upload = ({ maxFiles, files, setFiles, dataTestId, type }: UploadPr
               const url = await getPresignedUrl(file.name);
               const { bucket, key } = extractBucketAndKeyFromUrl(url);
               await uploadToS3(file, url);
-
-              console.log("bucket: ", bucket);
-              console.log("key: ", key);
-              console.log("file size: ", file.size);
-              // console.log()
 
               const attachment: Attachment = {
                 filename: file.name,

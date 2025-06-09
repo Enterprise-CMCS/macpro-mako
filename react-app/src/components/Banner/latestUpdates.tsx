@@ -60,7 +60,6 @@ export const LatestUpdates: FC = () => {
         <button
           onClick={() => {
             setShowMore(!showMore)
-            console.log("trigger show more updates event");
             window.gtag("event", "home_updates_banner")
           }}
           className="flex items-center justify-start gap-2 rounded-md bg-transparent cursor-pointer"

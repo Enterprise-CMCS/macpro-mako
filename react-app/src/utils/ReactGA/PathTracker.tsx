@@ -1,4 +1,3 @@
-// src/components/PathTracker.tsx
 import { useEffect, useRef } from "react";
 
 type PathTrackerProps = {
@@ -7,20 +6,20 @@ type PathTrackerProps = {
 };
 
 /**
- * Wrap this around your <C.Layout> (or wherever your <Outlet> lives).
+ * Wrap around your <C.Layout>.
  * It will send:
- *   • a `custom_page_view` event on initial mount + every route change
- *   • a `page_duration` event when the user leaves the previous route
+ *   1) a `custom_page_view` event on initial mount or after every route change
+ *   2) a `page_duration` event when the user leaves the previous route
  */
 export default function PathTracker({ userRole, children }: PathTrackerProps) {
-  // keep track of the "last path" so we only send once per change
+  // keep track of the path of the page the user is leaving
   const prevPathRef = useRef<string>(window.location.pathname);
 
   // record when the current route was "entered"
   const startTimeRef = useRef<number>(Date.now());
 
   useEffect(() => {
-    // ── Helper #1: send a `custom_page_view` to GA
+    //for tracking page views
     const sendPageView = (path: string) => {
       if (userRole) {
         window.gtag?.("event", "custom_page_view", {
@@ -30,8 +29,7 @@ export default function PathTracker({ userRole, children }: PathTrackerProps) {
       }
     };
 
-    // ── Helper #2: send a `page_duration` to GA
-    //    timeOnPage is rounded to nearest second.
+    //for tracking duration spent on page
     const sendPageDuration = (path: string, startTs: number) => {
       if (userRole) {
         const now = Date.now();
@@ -46,12 +44,10 @@ export default function PathTracker({ userRole, children }: PathTrackerProps) {
       }
     };
 
-    // ── ON INITIAL MOUNT: 
-    //    • send page_view for the first load
-    //    • startTimeRef is already set to Date.now() by default
+    // send page_view for the first load
     sendPageView(window.location.pathname);
 
-    // ── Called whenever we detect a route change:
+    // when a route change is detected
     const onRouteChange = () => {
       const newPath = window.location.pathname;
       const oldPath = prevPathRef.current;
@@ -85,15 +81,15 @@ export default function PathTracker({ userRole, children }: PathTrackerProps) {
       onRouteChange();
     };
 
-    // ── Also catch Back/Forward buttons
+    //Also catch Back/Forward buttons
     window.addEventListener("popstate", onRouteChange);
 
-    // ── CLEANUP: when PathTracker unmounts (i.e. user leaves the app or hot-reloads)
+    //cleanup- when PathTracker unmounts (i.e. user leaves the app or hot-reloads)
     return () => {
-      // 1) send duration for whichever page we were on
+      //send duration for whichever page user was on
       sendPageDuration(prevPathRef.current, startTimeRef.current);
 
-      // 2) restore history methods and remove listener
+      //restore history methods and remove listener
       window.history.pushState = origPush;
       window.history.replaceState = origReplace;
       window.removeEventListener("popstate", onRouteChange);

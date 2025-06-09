@@ -26,6 +26,7 @@ export const router = (loginFlag = false) => {
     {
       path: "/",
       element: (
+          // For tracking user_role sent with GA events
           <RoleAwareTracker >
             <C.Layout />
           </RoleAwareTracker>

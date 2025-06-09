@@ -30,7 +30,6 @@ import {
 } from "@/components";
 import { getFormOrigin, queryClient } from "@/utils";
 import { CheckDocumentFunction, documentPoller } from "@/utils/Poller/documentPoller";
-import { sendGAEvent } from "@/utils/ReactGA/sendGAEvent";
 
 import { getAttachments } from "./actionForm.utilities";
 import { ActionFormAttachments, AttachmentsOptions } from "./ActionFormAttachments";
@@ -183,7 +182,10 @@ export const ActionForm = <Schema extends SchemaWithEnforcableProps>({
       const eventState = formData.id?.substring(0, 2);
 
       // send package action event
-      sendGAEvent(formData.event, userRoles, eventState);
+      window.gtag("event", formData.event, {
+        user_roles: userRoles,
+        state: eventState
+      })
     } catch (error) {
       console.error(error);
       banner({

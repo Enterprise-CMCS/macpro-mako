@@ -63,15 +63,9 @@ export const BreadCrumb = ({
           className="underline text-sky-700 hover:text-sky-800"
           onClick={() =>{
             window.gtag("event", "breadcrumb_click", {
-              // GA4 event name: arbitrary string
               breadcrumb_text:  typeof children === "string" ? children : undefined
             });
           }
-            // ReactGA.event({
-            //   category: "navigation",
-            //   action: "breadcrumb_click",
-            //   label: typeof children === "string" ? children : undefined,
-          //  })
           }
         >
           {children}

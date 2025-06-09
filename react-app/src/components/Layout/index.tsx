@@ -243,6 +243,8 @@ export const Layout = () => {
   const isDesktop = useMediaQuery("(min-width: 768px)");
   const { data: user } = useGetUser();
   const customUserRoles = user?.user?.["custom:cms-roles"] || "";
+
+  // TODO fix, currently sending 4 events for logins 
   // const customisMemberOf = user?.user?.["custom:ismemberof"] || "";
 
   // if (customUserRoles.length > 0) {
@@ -374,9 +376,6 @@ const ResponsiveNav = ({ isDesktop }: ResponsiveNavProps) => {
   }
 
   const triggerGAEvent = (name) => {
-
-    console.log("click nav link");
-    console.log("event",name);
     if (name == 'View FAQs') {
       window.gtag("event", "home_nav_dashboard");
     } else if (name == 'Dashboard') {
