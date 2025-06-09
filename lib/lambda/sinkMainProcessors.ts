@@ -437,23 +437,6 @@ export const insertNewSeatoolRecordsFromKafkaIntoMako = async (
       const { data: seatoolDocument } = safeSeatoolRecord;
       const makoDocumentTimestamp = makoDocTimestamps.get(seatoolDocument.id);
 
-      const { domain, index } = getDomainAndNamespace("main");
-
-      const existingSeatoolDocument = await getItem(domain, index, seatoolDocument.id);
-
-      if (
-        existingSeatoolDocument &&
-        _.isEqual(
-          _.omit(seatoolDocument, "changed_date"),
-          _.omit(existingSeatoolDocument, "changed_date"),
-        )
-      ) {
-        console.warn(
-          `Skipped duplicate seatool record due to unchanged values: ${seatoolDocument.id}`,
-        );
-        continue;
-      }
-
       if (
         seatoolDocument.changed_date &&
         makoDocumentTimestamp &&
