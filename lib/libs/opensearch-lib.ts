@@ -80,9 +80,8 @@ export async function bulkUpdateData(
           lang: "painless",
           params: doc,
         },
-        upsert: doc, 
+        upsert: doc,
       });
-    }
     }
   }
 
