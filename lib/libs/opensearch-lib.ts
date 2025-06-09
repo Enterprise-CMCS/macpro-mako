@@ -207,6 +207,7 @@ export async function getItemAndThrowAllErrors(
   client = client || (await getClient(host));
   const response = await client.get({ id, index });
   const item = decodeUtf8(response).body;
+  console.log("RETRY CALLED NOW");
   if (item.found === false || !item._source) {
     return undefined;
   }
