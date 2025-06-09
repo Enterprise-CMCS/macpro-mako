@@ -37,6 +37,7 @@ export const PackageDetails = ({ submission }: PackageDetailsProps) => {
   const { data: user, isLoading: isUserLoading } = useGetUser();
   const title = useMemo(() => {
     switch (submission.authority) {
+      //possibly add option for chip eligibility here
       case Authority["1915b"]:
       case Authority["1915c"]:
       case undefined: // Some TEs have no authority

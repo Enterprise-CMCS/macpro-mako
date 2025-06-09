@@ -168,6 +168,7 @@ export const getDescriptionDetails: GetLabelAndValueFromSubmission = (submission
 ];
 
 export const getSubmittedByDetails: GetLabelAndValueFromSubmission = (submission, { user }) => [
+  //possibly add details new drop down here
   {
     label: "Submitted By",
     value: <p className="text-lg">{submission.submitterName || BLANK_VALUE}</p>,
