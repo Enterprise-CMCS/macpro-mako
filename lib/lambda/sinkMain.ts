@@ -14,6 +14,7 @@ export const handler: Handler<KafkaEvent> = async (event) => {
   console.log(`event: ${prettifiedEventJSON}`);
 
   // const seenRecords = new Set<string>();
+  console.log(event.records, "EVENT RECORDS");
 
   try {
     await Promise.all(
