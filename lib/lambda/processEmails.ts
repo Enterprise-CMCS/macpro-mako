@@ -86,6 +86,8 @@ export const handler: Handler<KafkaEvent> = async (event) => {
   console.log("config: ", JSON.stringify(config, null, 2));
 
   try {
+    console.log(event, "EVENTTTTT");
+    console.log(event.records, "EVENT RECORDSSSSS");
     const results = await Promise.allSettled(
       Object.values(event.records)
         .flat()
