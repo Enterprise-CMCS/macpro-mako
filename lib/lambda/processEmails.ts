@@ -128,6 +128,8 @@ export const handler: Handler<KafkaEvent> = async (event) => {
   }
 };
 
+const sentEmailCache = new Set<string>();
+
 export async function processRecord(kafkaRecord: KafkaRecord, config: ProcessEmailConfig) {
   console.log("processRecord called with kafkaRecord: ", JSON.stringify(kafkaRecord, null, 2));
   const { key, value, timestamp } = kafkaRecord;
@@ -135,6 +137,11 @@ export async function processRecord(kafkaRecord: KafkaRecord, config: ProcessEma
 
   if (kafkaRecord.topic === "aws.seatool.ksql.onemac.three.agg.State_Plan") {
     const safeID = id.replace(/^"|"$/g, "").toUpperCase();
+    if (sentEmailCache.has(safeID)) {
+      console.log("Email already sent in this batch");
+      return;
+    }
+
     const seatoolRecord: Document = {
       safeID,
       ...JSON.parse(decodeBase64WithUtf8(value)),
@@ -166,37 +173,20 @@ export async function processRecord(kafkaRecord: KafkaRecord, config: ProcessEma
           origin: "seatool",
         };
         console.log("BEFORE PROCESS AND SEND EMAILS");
-        // await processAndSendEmails(recordToPass as Events[keyof Events], safeID, config);
+        await processAndSendEmails(recordToPass as Events[keyof Events], safeID, config);
+        sentEmailCache.add(safeID);
 
         const indexObject = {
           index: getOsNamespace("main"),
           id: safeID,
           body: {
-            script: {
-              lang: "painless",
-              source: `
-                if (ctx._source.withdrawEmailSent == null || ctx._source.withdrawEmailSent == false) {
-                  ctx._source.withdrawEmailSent = true;
-                } else {
-                  ctx.op = "none";
-                }
-              `,
-            },
-            upsert: {
+            doc: {
               withdrawEmailSent: true,
             },
           },
         };
 
-        const updateResponse = await os.updateData(config.osDomain, indexObject);
-
-        if (updateResponse.result === "noop") {
-          console.log("Withdraw email already sent by another concurrent process. Skipping email.");
-          return;
-        }
-        await processAndSendEmails(recordToPass as Events[keyof Events], safeID, config);
-
-        // await os.updateData(config.osDomain, indexObject);
+        await os.updateData(config.osDomain, indexObject);
       } catch (error) {
         console.error("Error processing record:", JSON.stringify(error, null, 2));
         throw error;
