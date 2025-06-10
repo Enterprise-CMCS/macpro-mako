@@ -12,23 +12,27 @@ export const ChipSpaCMSEmail = ({
   variables,
 }: {
   variables: Events["RespondToRai"] & CommonEmailVariables;
-}) => (
-  <BaseEmailTemplate
-    previewText={`RAI Response for ${variables.id} Submitted`}
-    heading="The OneMAC Submission Portal received a CHIP SPA RAI Response Submission:"
-    applicationEndpointUrl={variables.applicationEndpointUrl}
-    footerContent={<BasicFooter />}
-  >
-    <LoginInstructions appEndpointURL={variables.applicationEndpointUrl} />
-    <PackageDetails
-      details={{
-        "State or Territory": variables.territory,
-        Name: variables.submitterName,
-        "Email Address": variables.submitterEmail,
-        "CHIP SPA Package ID": variables.id,
-        Summary: variables.additionalInformation,
-      }}
-    />
-    <Attachments attachments={variables.attachments} />
-  </BaseEmailTemplate>
-);
+}) => {
+  const chipPrefix = `CHIP${variables.chipEligibility ? " Eligibility" : ""}`;
+
+  return (
+    <BaseEmailTemplate
+      previewText={`RAI Response for ${variables.id} Submitted`}
+      heading={`The OneMAC Submission Portal received a ${chipPrefix} SPA RAI Response Submission:`}
+      applicationEndpointUrl={variables.applicationEndpointUrl}
+      footerContent={<BasicFooter />}
+    >
+      <LoginInstructions appEndpointURL={variables.applicationEndpointUrl} />
+      <PackageDetails
+        details={{
+          "State or Territory": variables.territory,
+          Name: variables.submitterName,
+          "Email Address": variables.submitterEmail,
+          [`${chipPrefix} SPA Package ID`]: variables.id,
+          Summary: variables.additionalInformation,
+        }}
+      />
+      <Attachments attachments={variables.attachments} />
+    </BaseEmailTemplate>
+  );
+};
