@@ -23,7 +23,7 @@ export const transform = (offset: number) => {
       ...data,
       attachments,
       packageId: data.id,
-      chipEligibility: data.chipEligibility
+      chipEligibility: data.chipEligibility,
       id: `${data.id}-${offset}`,
     };
   });
