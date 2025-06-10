@@ -15,6 +15,7 @@ export const transform = () => {
       seatoolStatus: SEATOOL_STATUS.SUBMITTED,
       initialIntakeNeeded: true,
       locked: true,
+      chipEligibility: data.chipEligibility,
     };
   });
 };
