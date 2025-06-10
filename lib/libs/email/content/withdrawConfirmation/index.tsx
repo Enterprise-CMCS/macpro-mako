@@ -20,16 +20,17 @@ const generateWithdrawEmail = async (
 
 export const withdrawConfirmation: AuthoritiesWithUserTypesTemplate = {
   [Authority.MED_SPA]: {
-    state: (variables) =>
-      generateWithdrawEmail(variables, "Medicaid SPA Package", MedSpaStateEmail),
+    state: async (variables) =>
+      await generateWithdrawEmail(variables, "Medicaid SPA Package", MedSpaStateEmail),
   },
   [Authority.CHIP_SPA]: {
-    state: (variables) => generateWithdrawEmail(variables, "CHIP SPA Package", ChipSpaStateEmail),
+    state: async (variables) =>
+      await generateWithdrawEmail(variables, "CHIP SPA Package", ChipSpaStateEmail),
   },
   [Authority["1915b"]]: {
-    state: (variables) => generateWithdrawEmail(variables, "1915(b)", WaiverStateEmail),
+    state: async (variables) => await generateWithdrawEmail(variables, "1915(b)", WaiverStateEmail),
   },
   [Authority["1915c"]]: {
-    state: (variables) => generateWithdrawEmail(variables, "1915(c)", WaiverStateEmail),
+    state: async (variables) => await generateWithdrawEmail(variables, "1915(c)", WaiverStateEmail),
   },
 };
