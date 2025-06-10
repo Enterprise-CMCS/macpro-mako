@@ -160,57 +160,38 @@ export async function processRecord(kafkaRecord: KafkaRecord, config: ProcessEma
             return;
           }
 
-          try {
-            const recordToPass = {
-              timestamp,
-              ...safeSeatoolRecord.data,
-              submitterName: item._source.submitterName,
-              submitterEmail: item._source.submitterEmail,
-              event: "seatool-withdraw",
-              proposedEffectiveDate: safeSeatoolRecord.data?.proposedDate,
-              origin: "seatool",
-            };
-            console.log("BEFORE PROCESS AND SEND EMAILS");
-            await processAndSendEmails(recordToPass as Events[keyof Events], safeID, config);
+          const recordToPass = {
+            timestamp,
+            ...safeSeatoolRecord.data,
+            submitterName: item._source.submitterName,
+            submitterEmail: item._source.submitterEmail,
+            event: "seatool-withdraw",
+            proposedEffectiveDate: safeSeatoolRecord.data?.proposedDate,
+            origin: "seatool",
+          };
+          console.log("BEFORE PROCESS AND SEND EMAILS");
+          await processAndSendEmails(recordToPass as Events[keyof Events], safeID, config);
 
-            const indexObject = {
-              index: getOsNamespace("main"),
-              id: safeID,
-              body: {
-                doc: {
-                  withdrawEmailSent: true,
-                },
+          const { _seq_no, _primary_term } = item;
+
+          const indexObject = {
+            index: getOsNamespace("main"),
+            id: safeID,
+            seq_no: _seq_no,
+            primary_term: _primary_term,
+            body: {
+              doc: {
+                withdrawEmailSent: true,
               },
-            };
+            },
+          };
 
-            await os.updateData(config.osDomain, indexObject);
-          } catch (e) {
-            console.log("WHATS THE ERROR HERE", e);
-          }
-          // const recordToPass = {
-          //   timestamp,
-          //   ...safeSeatoolRecord.data,
-          //   submitterName: item._source.submitterName,
-          //   submitterEmail: item._source.submitterEmail,
-          //   event: "seatool-withdraw",
-          //   proposedEffectiveDate: safeSeatoolRecord.data?.proposedDate,
-          //   origin: "seatool",
-          // };
-          // console.log("BEFORE PROCESS AND SEND EMAILS");
-          // await processAndSendEmails(recordToPass as Events[keyof Events], safeID, config);
-
-          // const indexObject = {
-          //   index: getOsNamespace("main"),
-          //   id: safeID,
-          //   body: {
-          //     doc: {
-          //       withdrawEmailSent: true,
-          //     },
-          //   },
-          // };
-
-          // await os.updateData(config.osDomain, indexObject);
+          await os.updateData(config.osDomain, indexObject);
         } catch (error) {
+          if (error?.meta?.body?.error?.type === "version_conflict_engine_exception") {
+            console.log(`Version conflict on ${safeID}, skipping duplicate email/update.`);
+            return;
+          }
           console.error("Error processing record:", JSON.stringify(error, null, 2));
           throw error;
         }
