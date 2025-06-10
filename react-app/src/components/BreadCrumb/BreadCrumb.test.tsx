@@ -14,6 +14,10 @@ export const LocationDisplay = () => {
 };
 
 describe("Bread Crumb Tests", () => {
+  beforeEach(() => {
+    window.gtag = vi.fn();
+  });
+  
   describe("Bread Crumb Routing", () => {
     test("Sucessfully navigate using breadcrumbs", async () => {
       render(
