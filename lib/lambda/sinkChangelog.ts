@@ -175,7 +175,7 @@ const processAndIndex = async ({
               const recordOffset = changelog._source.timestamp;
               const origID = changelog._id;
               const source = changelog._source;
-              if (source.timestamp <= adminChange.timestamp) {
+              if (source.timestamp <= adminChange.changeTimestamp) {
                 docs.push(
                   { ...source, id: `${ids.afterId}-${recordOffset}`, packageId: ids.afterId },
                   { ...source, id: origID, packageId: `${ids.beforeId}-del` },
@@ -184,7 +184,10 @@ const processAndIndex = async ({
             }
             const copyDocs: Array<(typeof transforms)[keyof typeof transforms]["Schema"]> = [];
             for (const record of docs) {
-              if (record.packageId === ids.beforeId && record.timestamp <= adminChange.timestamp) {
+              if (
+                record.packageId === ids.beforeId &&
+                record.timestamp <= adminChange.changeTimestamp
+              ) {
                 copyDocs.push({
                   ...record,
                   id: `${ids.afterId}-${record.timestamp}`,
