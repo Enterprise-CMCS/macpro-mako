@@ -56,7 +56,7 @@ export const transformDeleteSchema = (offset: number) =>
   }));
 
 const AdminChangeSchema = z.object({
-  changeTimestamp: z.number(),
+  timestamp: z.number(),
   changeReason: z.string(),
   changeMade: z.string(),
 });
