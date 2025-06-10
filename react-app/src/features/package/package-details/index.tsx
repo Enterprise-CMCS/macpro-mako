@@ -17,7 +17,7 @@ type PackageDetailsGridProps = {
 };
 
 const PackageDetailsGrid = ({ details }: PackageDetailsGridProps) => (
-  <div className="grid grid-cols-2 gap-6">
+  <div className="two-cols gap-y-6 sm:gap-y-6">
     {details.map(({ label, value, canView = true }) => {
       return canView ? (
         <div key={label}>
@@ -51,8 +51,8 @@ export const PackageDetails = ({ submission }: PackageDetailsProps) => {
   if (isUserLoading) return <LoadingSpinner />;
 
   return (
-    <DetailsSection id="package_details" title={title}>
-      <div className="flex-col gap-4 max-w-2xl">
+    <DetailsSection id="package_details" title={title} childrenClassName="grid gap-y-8">
+      <div>
         <PackageDetailsGrid
           details={[
             ...getSubmissionDetails(submission, user),

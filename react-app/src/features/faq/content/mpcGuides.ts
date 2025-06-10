@@ -6,6 +6,10 @@ export const MPC_GUIDES: Template[] = [
     href: "/mpc/IG_CostSharingBackground.pdf",
   },
   {
+    title: "P&CS SPA Implementation Guide",
+    href: "/mpc/IG_P&CSSpaImplemntationGuide.pdf",
+  },
+  {
     title: "G 1",
     text: "Cost-Sharing Requirements Implementation Guide",
     href: "/mpc/IG_G1_CostSharingRequirements.pdf",

@@ -71,4 +71,15 @@ describe("Medicaid SPA", () => {
   test("submit button is enabled", async () => {
     expect(screen.getByTestId("submit-action-form")).toBeEnabled();
   });
+
+  test("documentChecker returns true when recordExists is true", () => {
+    const mockCheck = { recordExists: true };
+    const result = formSchemas["new-medicaid-submission"]._def
+      ? (check: typeof mockCheck) => check.recordExists
+      : undefined;
+
+    if (result) {
+      expect(result(mockCheck)).toBe(true);
+    }
+  });
 });

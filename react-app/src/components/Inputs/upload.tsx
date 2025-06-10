@@ -166,11 +166,12 @@ export const Upload = ({ maxFiles, files, setFiles, dataTestId, type }: UploadPr
             >
               <span className="text-sky-700">{file.filename}</span>
               <I.Button
+                type="button"
                 onClick={() =>
                   userPrompt({
-                    header: "Delete Attachment?",
-                    body: `Are you sure you want to delete ${file.filename}?`,
-                    acceptButtonText: "Yes, delete",
+                    header: "Remove Attachment?",
+                    body: `Are you sure you want to remove ${file.filename}?`,
+                    acceptButtonText: "Yes, remove",
                     onAccept: () => {
                       setRejectedFiles([]);
                       setFiles(files.filter((a) => a.filename !== file.filename));
