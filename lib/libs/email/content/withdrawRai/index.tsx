@@ -31,9 +31,11 @@ export const withdrawRai: AuthoritiesWithUserTypesTemplate = {
       variables: Events["WithdrawRai"] & CommonEmailVariables & { emails: EmailAddresses },
     ) => {
       return {
-        to: variables.allStateUsersEmails?.length
-          ? variables.allStateUsersEmails
-          : [`${variables.submitterName} <${variables.submitterEmail}>`],
+        to: [
+          ...variables.emails.cpocEmail,
+          ...variables.emails.srtEmails,
+          `${variables.submitterName} <${variables.submitterEmail}>`,
+        ],
         subject: `Withdraw Formal RAI Response for SPA Package ${variables.id}`,
         body: await render(<MedSpaStateEmail variables={variables} />),
       };
