@@ -177,8 +177,8 @@ export async function processRecord(kafkaRecord: KafkaRecord, config: ProcessEma
           const indexObject = {
             index: getOsNamespace("main"),
             id: safeID,
-            seq_no: _seq_no,
-            primary_term: _primary_term,
+            if_seq_no: _seq_no,
+            if_primary_term: _primary_term,
             body: {
               doc: {
                 withdrawEmailSent: true,
