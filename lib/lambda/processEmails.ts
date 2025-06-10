@@ -129,6 +129,7 @@ export const handler: Handler<KafkaEvent> = async (event) => {
 };
 
 const sentEmailCache = new Set<string>();
+console.log(sentEmailCache, "CACHEEE");
 
 export async function processRecord(kafkaRecord: KafkaRecord, config: ProcessEmailConfig) {
   console.log("processRecord called with kafkaRecord: ", JSON.stringify(kafkaRecord, null, 2));
