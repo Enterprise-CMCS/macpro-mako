@@ -130,107 +130,113 @@ export const handler: Handler<KafkaEvent> = async (event) => {
 };
 
 export async function processRecord(kafkaRecord: KafkaRecord, config: ProcessEmailConfig) {
-  console.log("processRecord called with kafkaRecord: ", JSON.stringify(kafkaRecord, null, 2));
-  const { key, value, timestamp } = kafkaRecord;
-  const id: string = decodeBase64WithUtf8(key);
+  try {
+    console.log("processRecord called with kafkaRecord: ", JSON.stringify(kafkaRecord, null, 2));
+    const { key, value, timestamp } = kafkaRecord;
+    const id: string = decodeBase64WithUtf8(key);
 
-  if (kafkaRecord.topic === "aws.seatool.ksql.onemac.three.agg.State_Plan") {
-    const safeID = id.replace(/^"|"$/g, "").toUpperCase();
+    if (kafkaRecord.topic === "aws.seatool.ksql.onemac.three.agg.State_Plan") {
+      const safeID = id.replace(/^"|"$/g, "").toUpperCase();
 
-    const seatoolRecord: Document = {
-      safeID,
+      const seatoolRecord: Document = {
+        safeID,
+        ...JSON.parse(decodeBase64WithUtf8(value)),
+      };
+      const safeSeatoolRecord = opensearch.main.seatool.transform(safeID).safeParse(seatoolRecord);
+
+      if (safeSeatoolRecord.data?.seatoolStatus === SEATOOL_STATUS.WITHDRAWN) {
+        console.log("in this withdrawn");
+        try {
+          const item = await os.getItem(config.osDomain, getOsNamespace("main"), safeID);
+
+          if (!item?.found || !item?._source) {
+            console.log(`The package was not found for id: ${id} in mako. Doing nothing.`);
+            return;
+          }
+
+          if (item._source.withdrawEmailSent) {
+            console.log("Withdraw email previously sent");
+            return;
+          }
+
+          const recordToPass = {
+            timestamp,
+            ...safeSeatoolRecord.data,
+            submitterName: item._source.submitterName,
+            submitterEmail: item._source.submitterEmail,
+            event: "seatool-withdraw",
+            proposedEffectiveDate: safeSeatoolRecord.data?.proposedDate,
+            origin: "seatool",
+          };
+          console.log("BEFORE PROCESS AND SEND EMAILS");
+          await processAndSendEmails(recordToPass as Events[keyof Events], safeID, config);
+
+          const indexObject = {
+            index: getOsNamespace("main"),
+            id: safeID,
+            body: {
+              doc: {
+                withdrawEmailSent: true,
+              },
+            },
+          };
+
+          await os.updateData(config.osDomain, indexObject);
+        } catch (error) {
+          console.error("Error processing record:", JSON.stringify(error, null, 2));
+          throw error;
+        }
+      }
+      return;
+    }
+
+    if (typeof key !== "string") {
+      console.log("key is not a string ", JSON.stringify(key, null, 2));
+      throw new Error("Key is not a string");
+    }
+
+    if (!value) {
+      console.log("Tombstone detected. Doing nothing for this event");
+      return;
+    }
+
+    const record = {
+      timestamp,
       ...JSON.parse(decodeBase64WithUtf8(value)),
     };
-    const safeSeatoolRecord = opensearch.main.seatool.transform(safeID).safeParse(seatoolRecord);
+    console.log("record: ", JSON.stringify(record, null, 2));
 
-    if (safeSeatoolRecord.data?.seatoolStatus === SEATOOL_STATUS.WITHDRAWN) {
-      console.log("in this withdrawn");
+    const valueParsed = JSON.parse(decodeBase64WithUtf8(value));
+    if (valueParsed.eventType === "user-role" || valueParsed.eventType === "legacy-user-role") {
       try {
-        const item = await os.getItem(config.osDomain, getOsNamespace("main"), safeID);
-
-        if (!item?.found || !item?._source) {
-          console.log(`The package was not found for id: ${id} in mako. Doing nothing.`);
-          return;
-        }
-
-        if (item._source.withdrawEmailSent) {
-          console.log("Withdraw email previously sent");
-          return;
-        }
-
-        const recordToPass = {
-          timestamp,
-          ...safeSeatoolRecord.data,
-          submitterName: item._source.submitterName,
-          submitterEmail: item._source.submitterEmail,
-          event: "seatool-withdraw",
-          proposedEffectiveDate: safeSeatoolRecord.data?.proposedDate,
-          origin: "seatool",
-        };
-        console.log("BEFORE PROCESS AND SEND EMAILS");
-        await processAndSendEmails(recordToPass as Events[keyof Events], safeID, config);
-
-        const indexObject = {
-          index: getOsNamespace("main"),
-          id: safeID,
-          body: {
-            doc: {
-              withdrawEmailSent: true,
-            },
-          },
-        };
-
-        await os.updateData(config.osDomain, indexObject);
+        console.log("Sending user role email...");
+        await sendUserRoleEmails(valueParsed, timestamp, config);
       } catch (error) {
-        console.error("Error processing record:", JSON.stringify(error, null, 2));
+        console.error("Error sending user email", error);
         throw error;
       }
+      return;
     }
-    return;
-  }
 
-  if (typeof key !== "string") {
-    console.log("key is not a string ", JSON.stringify(key, null, 2));
-    throw new Error("Key is not a string");
-  }
+    if (record.origin !== "mako") {
+      console.log("Kafka event is not of mako origin. Doing nothing.");
+      return;
+    }
 
-  if (!value) {
-    console.log("Tombstone detected. Doing nothing for this event");
-    return;
-  }
-
-  const record = {
-    timestamp,
-    ...JSON.parse(decodeBase64WithUtf8(value)),
-  };
-  console.log("record: ", JSON.stringify(record, null, 2));
-
-  const valueParsed = JSON.parse(decodeBase64WithUtf8(value));
-  if (valueParsed.eventType === "user-role" || valueParsed.eventType === "legacy-user-role") {
     try {
-      console.log("Sending user role email...");
-      await sendUserRoleEmails(valueParsed, timestamp, config);
+      console.log("Config:", JSON.stringify(config, null, 2));
+      await processAndSendEmails(record, id, config);
     } catch (error) {
-      console.error("Error sending user email", error);
+      console.error(
+        "Error processing record: { record, id, config }",
+        JSON.stringify({ record, id, config }, null, 2),
+      );
       throw error;
     }
-    return;
-  }
-
-  if (record.origin !== "mako") {
-    console.log("Kafka event is not of mako origin. Doing nothing.");
-    return;
-  }
-
-  try {
-    console.log("Config:", JSON.stringify(config, null, 2));
-    await processAndSendEmails(record, id, config);
-  } catch (error) {
-    console.error(
-      "Error processing record: { record, id, config }",
-      JSON.stringify({ record, id, config }, null, 2),
-    );
-    throw error;
+  } catch (e) {
+    console.log("WE ARE HERE");
+    console.log(e, "error IN PROCESSRECORD");
+    throw e;
   }
 }
 
