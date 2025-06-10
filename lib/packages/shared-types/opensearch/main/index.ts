@@ -96,6 +96,8 @@ export type Document = AppkDocument &
 export type Response = Res<Document>;
 export type ItemResult = Hit<Document> & {
   found: boolean;
+  _seq_no: number;
+  _primary_term: number;
 };
 
 export type Field = keyof Document | `${keyof Document}.keyword`;

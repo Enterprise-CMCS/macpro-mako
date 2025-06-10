@@ -163,29 +163,80 @@ export async function processRecord(kafkaRecord: KafkaRecord, config: ProcessEma
             return;
           }
 
-          const recordToPass = {
-            timestamp,
-            ...safeSeatoolRecord.data,
-            submitterName: item._source.submitterName,
-            submitterEmail: item._source.submitterEmail,
-            event: "seatool-withdraw",
-            proposedEffectiveDate: safeSeatoolRecord.data?.proposedDate,
-            origin: "seatool",
-          };
-          console.log("BEFORE PROCESS AND SEND EMAILS");
-          await processAndSendEmails(recordToPass as Events[keyof Events], safeID, config);
+          const { _source, _seq_no, _primary_term } = item;
 
-          const indexObject = {
-            index: getOsNamespace("main"),
-            id: safeID,
-            body: {
-              doc: {
-                withdrawEmailSent: true,
+          // const recordToPass = {
+          //   timestamp,
+          //   ...safeSeatoolRecord.data,
+          //   submitterName: item._source.submitterName,
+          //   submitterEmail: item._source.submitterEmail,
+          //   event: "seatool-withdraw",
+          //   proposedEffectiveDate: safeSeatoolRecord.data?.proposedDate,
+          //   origin: "seatool",
+          // };
+          // console.log("BEFORE PROCESS AND SEND EMAILS");
+          // await processAndSendEmails(recordToPass as Events[keyof Events], safeID, config);
+
+          try {
+            const indexObject = {
+              index: getOsNamespace("main"),
+              id: safeID,
+              if_seq_no: _seq_no,
+              if_primary_term: _primary_term,
+              body: {
+                script: {
+                  source: `
+                    if (ctx._source.withdrawEmailSent == false) {
+                      ctx._source.withdrawEmailSent = true;
+                    } else {
+                      ctx.op = 'none';
+                    }
+                  `,
+                  lang: "painless",
+                },
               },
-            },
-          };
+            };
 
-          await os.updateData(config.osDomain, indexObject);
+            await os.updateData(config.osDomain, indexObject);
+            const recordToPass = {
+              timestamp,
+              ...safeSeatoolRecord.data,
+              submitterName: item._source.submitterName,
+              submitterEmail: item._source.submitterEmail,
+              event: "seatool-withdraw",
+              proposedEffectiveDate: safeSeatoolRecord.data?.proposedDate,
+              origin: "seatool",
+            };
+            console.log("BEFORE PROCESS AND SEND EMAILS");
+
+            await processAndSendEmails(recordToPass as Events[keyof Events], safeID, config);
+          } catch (e) {
+            if (e.meta?.body?.error?.type === "version_conflict_engine_exception") {
+              console.log("Another Lambda already sent the email. Skipping.");
+              return;
+            }
+            throw e;
+          }
+          // const indexObject = {
+          //   index: getOsNamespace("main"),
+          //   id: safeID,
+          //   if_seq_no: _seq_no,
+          //   if_primary_term: _primary_term,
+          //   body: {
+          //     script: {
+          //       source: `
+          //         if (ctx._source.withdrawEmailSent == false) {
+          //           ctx._source.withdrawEmailSent = true;
+          //         } else {
+          //           ctx.op = 'none';
+          //         }
+          //       `,
+          //       lang: "painless",
+          //     },
+          //   },
+          // };
+
+          // await os.updateData(config.osDomain, indexObject);
         } catch (error) {
           console.error("Error processing record:", JSON.stringify(error, null, 2));
           throw error;
