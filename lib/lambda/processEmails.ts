@@ -84,8 +84,11 @@ export const handler: Handler<KafkaEvent> = async (event) => {
   };
 
   console.log("config: ", JSON.stringify(config, null, 2));
+  let count: number = 0;
 
   try {
+    count++;
+    console.log(count, "WHAT IS THE NUMBER NOW");
     console.log(event, "EVENTTTTT");
     console.log(event.records, "EVENT RECORDSSSSS");
     console.log(Object.values(event.records).flat(), "FLAT OBJECT VALUES");
@@ -143,12 +146,12 @@ export async function processRecord(kafkaRecord: KafkaRecord, config: ProcessEma
         ...JSON.parse(decodeBase64WithUtf8(value)),
       };
       const safeSeatoolRecord = opensearch.main.seatool.transform(safeID).safeParse(seatoolRecord);
-
+      console.log(safeSeatoolRecord, "SAFE SEATOOL RECORD");
       if (safeSeatoolRecord.data?.seatoolStatus === SEATOOL_STATUS.WITHDRAWN) {
         console.log("in this withdrawn");
-        await os.sleep(10000);
         try {
           const item = await os.getItem(config.osDomain, getOsNamespace("main"), safeID);
+          console.log(item, "HOW MANY TIMES GETTING ITEM");
 
           if (!item?.found || !item?._source) {
             console.log(`The package was not found for id: ${id} in mako. Doing nothing.`);
