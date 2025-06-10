@@ -19,7 +19,6 @@ import { useMediaQuery } from "@/hooks";
 import { useFeatureFlag } from "@/hooks/useFeatureFlag";
 import { isFaqPage, isProd } from "@/utils";
 import { cn } from "@/utils";
-// import { sendGAEvent } from "@/utils/ReactGA/sendGAEvent";
 
 import TopBanner from "../Banner/macproBanner";
 import { Footer } from "../Footer";

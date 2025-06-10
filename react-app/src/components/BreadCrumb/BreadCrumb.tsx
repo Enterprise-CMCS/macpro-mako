@@ -1,6 +1,5 @@
 import { ChevronRight } from "lucide-react";
 import { type ReactNode } from "react";
-import ReactGA from "react-ga4";
 import { Link } from "react-router";
 
 type BreadCrumbsProps = {
