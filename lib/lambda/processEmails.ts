@@ -128,9 +128,6 @@ export const handler: Handler<KafkaEvent> = async (event) => {
   }
 };
 
-const sentEmailCache = new Set<string>();
-console.log(sentEmailCache, "CACHEEE");
-
 export async function processRecord(kafkaRecord: KafkaRecord, config: ProcessEmailConfig) {
   console.log("processRecord called with kafkaRecord: ", JSON.stringify(kafkaRecord, null, 2));
   const { key, value, timestamp } = kafkaRecord;
@@ -138,10 +135,6 @@ export async function processRecord(kafkaRecord: KafkaRecord, config: ProcessEma
 
   if (kafkaRecord.topic === "aws.seatool.ksql.onemac.three.agg.State_Plan") {
     const safeID = id.replace(/^"|"$/g, "").toUpperCase();
-    if (sentEmailCache.has(safeID)) {
-      console.log("Email already sent in this batch");
-      return;
-    }
 
     const seatoolRecord: Document = {
       safeID,
@@ -175,7 +168,6 @@ export async function processRecord(kafkaRecord: KafkaRecord, config: ProcessEma
         };
         console.log("BEFORE PROCESS AND SEND EMAILS");
         await processAndSendEmails(recordToPass as Events[keyof Events], safeID, config);
-        sentEmailCache.add(safeID);
 
         const indexObject = {
           index: getOsNamespace("main"),
