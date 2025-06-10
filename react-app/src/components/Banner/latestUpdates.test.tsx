@@ -38,6 +38,7 @@ vi.mock("@/api", async () => {
 
 describe("LatestUpdates Component", () => {
   beforeEach(() => {
+    window.gtag = vi.fn();
     render(<LatestUpdates />);
   });
 
