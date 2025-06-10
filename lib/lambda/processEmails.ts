@@ -146,6 +146,7 @@ export async function processRecord(kafkaRecord: KafkaRecord, config: ProcessEma
 
       if (safeSeatoolRecord.data?.seatoolStatus === SEATOOL_STATUS.WITHDRAWN) {
         console.log("in this withdrawn");
+        await os.sleep(10000);
         try {
           const item = await os.getItem(config.osDomain, getOsNamespace("main"), safeID);
 
@@ -234,8 +235,7 @@ export async function processRecord(kafkaRecord: KafkaRecord, config: ProcessEma
       throw error;
     }
   } catch (e) {
-    console.log("WE ARE HERE");
-    console.log(e, "error IN PROCESSRECORD");
+    console.log("Error in processRecord: ", e);
     throw e;
   }
 }
