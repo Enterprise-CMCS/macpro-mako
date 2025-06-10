@@ -401,7 +401,7 @@ export const insertNewSeatoolRecordsFromKafkaIntoMako = async (
 
   for (const kafkaRecord of kafkaRecords) {
     console.log(kafkaRecords, "RECORDSSS IN SINKMAIN PROCESSOR");
-    console.log(kafkaRecord.length, "RECORD LENGTH");
+    console.log(kafkaRecords.length, "RECORD LENGTH");
     try {
       const { key, value } = kafkaRecord;
 
