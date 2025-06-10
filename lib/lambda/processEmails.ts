@@ -170,23 +170,45 @@ export async function processRecord(kafkaRecord: KafkaRecord, config: ProcessEma
             origin: "seatool",
           };
           console.log("BEFORE PROCESS AND SEND EMAILS");
-          await processAndSendEmails(recordToPass as Events[keyof Events], safeID, config);
 
-          const { _seq_no, _primary_term } = item;
+          try {
+            const { _seq_no, _primary_term } = item;
 
-          const indexObject = {
-            index: getOsNamespace("main"),
-            id: safeID,
-            if_seq_no: _seq_no,
-            if_primary_term: _primary_term,
-            body: {
-              doc: {
-                withdrawEmailSent: true,
+            const indexObject = {
+              index: getOsNamespace("main"),
+              id: safeID,
+              if_seq_no: _seq_no,
+              if_primary_term: _primary_term,
+              body: {
+                doc: {
+                  withdrawEmailSent: true,
+                },
               },
-            },
-          };
+            };
+            await os.updateData(config.osDomain, indexObject);
 
-          await os.updateData(config.osDomain, indexObject);
+            await processAndSendEmails(recordToPass as Events[keyof Events], safeID, config);
+          } catch (e) {
+            console.log("WHATS THE ERROR HERE", e);
+          }
+
+          // await processAndSendEmails(recordToPass as Events[keyof Events], safeID, config);
+
+          // const { _seq_no, _primary_term } = item;
+
+          // const indexObject = {
+          //   index: getOsNamespace("main"),
+          //   id: safeID,
+          //   if_seq_no: _seq_no,
+          //   if_primary_term: _primary_term,
+          //   body: {
+          //     doc: {
+          //       withdrawEmailSent: true,
+          //     },
+          //   },
+          // };
+
+          // await os.updateData(config.osDomain, indexObject);
         } catch (error) {
           if (error?.meta?.body?.error?.type === "version_conflict_engine_exception") {
             console.log(`Version conflict on ${safeID}, skipping duplicate email/update.`);
