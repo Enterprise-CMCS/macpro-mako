@@ -84,11 +84,8 @@ export const handler: Handler<KafkaEvent> = async (event) => {
   };
 
   console.log("config: ", JSON.stringify(config, null, 2));
-  let count: number = 0;
 
   try {
-    count++;
-    console.log(count, "WHAT IS THE NUMBER NOW");
     console.log(event, "EVENTTTTT");
     console.log(event.records, "EVENT RECORDSSSSS");
     console.log(Object.values(event.records).flat(), "FLAT OBJECT VALUES");
@@ -163,80 +160,29 @@ export async function processRecord(kafkaRecord: KafkaRecord, config: ProcessEma
             return;
           }
 
-          const { _source, _seq_no, _primary_term } = item;
+          const recordToPass = {
+            timestamp,
+            ...safeSeatoolRecord.data,
+            submitterName: item._source.submitterName,
+            submitterEmail: item._source.submitterEmail,
+            event: "seatool-withdraw",
+            proposedEffectiveDate: safeSeatoolRecord.data?.proposedDate,
+            origin: "seatool",
+          };
+          console.log("BEFORE PROCESS AND SEND EMAILS");
+          await processAndSendEmails(recordToPass as Events[keyof Events], safeID, config);
 
-          // const recordToPass = {
-          //   timestamp,
-          //   ...safeSeatoolRecord.data,
-          //   submitterName: item._source.submitterName,
-          //   submitterEmail: item._source.submitterEmail,
-          //   event: "seatool-withdraw",
-          //   proposedEffectiveDate: safeSeatoolRecord.data?.proposedDate,
-          //   origin: "seatool",
-          // };
-          // console.log("BEFORE PROCESS AND SEND EMAILS");
-          // await processAndSendEmails(recordToPass as Events[keyof Events], safeID, config);
-
-          try {
-            const indexObject = {
-              index: getOsNamespace("main"),
-              id: safeID,
-              if_seq_no: _seq_no,
-              if_primary_term: _primary_term,
-              body: {
-                script: {
-                  source: `
-                    if (ctx._source.withdrawEmailSent == false) {
-                      ctx._source.withdrawEmailSent = true;
-                    } else {
-                      ctx.op = 'none';
-                    }
-                  `,
-                  lang: "painless",
-                },
+          const indexObject = {
+            index: getOsNamespace("main"),
+            id: safeID,
+            body: {
+              doc: {
+                withdrawEmailSent: true,
               },
-            };
+            },
+          };
 
-            await os.updateData(config.osDomain, indexObject);
-            const recordToPass = {
-              timestamp,
-              ...safeSeatoolRecord.data,
-              submitterName: item._source.submitterName,
-              submitterEmail: item._source.submitterEmail,
-              event: "seatool-withdraw",
-              proposedEffectiveDate: safeSeatoolRecord.data?.proposedDate,
-              origin: "seatool",
-            };
-            console.log("BEFORE PROCESS AND SEND EMAILS");
-
-            await processAndSendEmails(recordToPass as Events[keyof Events], safeID, config);
-          } catch (e) {
-            if (e.meta?.body?.error?.type === "version_conflict_engine_exception") {
-              console.log("Another Lambda already sent the email. Skipping.");
-              return;
-            }
-            throw e;
-          }
-          // const indexObject = {
-          //   index: getOsNamespace("main"),
-          //   id: safeID,
-          //   if_seq_no: _seq_no,
-          //   if_primary_term: _primary_term,
-          //   body: {
-          //     script: {
-          //       source: `
-          //         if (ctx._source.withdrawEmailSent == false) {
-          //           ctx._source.withdrawEmailSent = true;
-          //         } else {
-          //           ctx.op = 'none';
-          //         }
-          //       `,
-          //       lang: "painless",
-          //     },
-          //   },
-          // };
-
-          // await os.updateData(config.osDomain, indexObject);
+          await os.updateData(config.osDomain, indexObject);
         } catch (error) {
           console.error("Error processing record:", JSON.stringify(error, null, 2));
           throw error;
