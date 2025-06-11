@@ -37,7 +37,7 @@ function createAwsConnector(credentials: any) {
 export async function updateData(host: string, indexObject: any): Promise<any> {
   client = client || (await getClient(host));
   // Add a document to the index.
-  await client.update(indexObject);
+  return await client.update(indexObject);
 }
 
 export function sleep(ms: number): Promise<void> {
