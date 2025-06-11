@@ -3,15 +3,6 @@ import { UserRole } from "shared-types/events/legacy-user";
 import { StateAccess } from "@/api";
 import { convertStateAbbrToFullName } from "@/utils";
 
-export const userRoleMap = {
-  defaultcmsuser: "CMS Read-only User",
-  cmsroleapprover: "CMS Role Approver",
-  cmsreviewer: "CMS Read-only User",
-  statesystemadmin: "State System Admin",
-  helpdesk: "Help Desk",
-  statesubmitter: "State Submitter",
-  systemadmin: "CMS System Admin",
-};
 // TODO: rename? all roles should see either a State or Status Access Card
 export const stateAccessRoles: UserRole[] = [
   "statesubmitter",

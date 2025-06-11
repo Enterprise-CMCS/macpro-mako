@@ -1,6 +1,7 @@
 import { useEffect, useMemo, useState } from "react";
 import { Navigate } from "react-router";
 import { StateCode } from "shared-types";
+import { userRoleMap } from "shared-utils";
 
 import { useGetUserDetails, useGetUserProfile, useSubmitRoleRequests } from "@/api";
 import {
@@ -24,7 +25,6 @@ import {
   hasPendingRequests,
   orderStateAccess,
   stateAccessRoles,
-  userRoleMap,
 } from "../utils";
 
 export const MyProfile = () => {

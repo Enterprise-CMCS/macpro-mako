@@ -1,5 +1,6 @@
 import { XIcon } from "lucide-react";
 import { UserRole } from "shared-types/events/legacy-user";
+import { getApprovingRole, userRoleMap } from "shared-utils";
 
 import { CardWithTopBorder } from "@/components";
 import { convertStateAbbrToFullName, stateAccessStatus } from "@/utils";
@@ -39,7 +40,8 @@ export const StateAccessCard = ({ role, onClick, access }: StateAccessProps) => 
         <p className="italic">{stateAccessStatus[access.status]}</p>
         <p className="block lg:mt-8 lg:mb-2">
           <span className="font-semibold">
-            {role === "cmsroleapprover" ? "CMS Role Approver:" : "State System Admin:"}{" "}
+            {userRoleMap[getApprovingRole(role)]}
+            {": "}
           </span>
           {access.approverList && access.approverList.length
             ? access.approverList.map((approver, index) => (

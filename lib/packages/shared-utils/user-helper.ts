@@ -65,10 +65,22 @@ export function getApprovingRole(role: string) {
     statesubmitter: "statesystemadmin",
     statesystemadmin: "cmsroleapprover",
     cmsroleapprover: "systemadmin",
-    defaultcmsuser: "cmsroleapprover",
+    defaultcmsuser: "systemadmin",
     helpdesk: "systemadmin",
-    cmsreviewer: "cmsroleapprover",
+    cmsreviewer: "systemadmin",
+    norole: "systemadmin",
   };
 
   return approvingUserRole[role as keyof typeof approvingUserRole];
 }
+
+export const userRoleMap = {
+  defaultcmsuser: "CMS Read-only User",
+  cmsroleapprover: "CMS Role Approver",
+  cmsreviewer: "CMS Read-only User",
+  statesystemadmin: "State System Admin",
+  helpdesk: "Help Desk",
+  statesubmitter: "State Submitter",
+  systemadmin: "CMS System Admin",
+  norole: "No Role",
+};
