@@ -180,8 +180,15 @@ export async function processRecord(kafkaRecord: KafkaRecord, config: ProcessEma
               if_seq_no: _seq_no,
               if_primary_term: _primary_term,
               body: {
-                doc: {
-                  withdrawEmailSent: true,
+                script: {
+                  source: `
+                    if (ctx._source.withdrawEmailSent == true) {
+                      ctx.op = 'none';
+                    } else {
+                      ctx._source.withdrawEmailSent = true;
+                    }
+                  `,
+                  lang: "painless",
                 },
               },
             };
