@@ -172,13 +172,9 @@ export async function processRecord(kafkaRecord: KafkaRecord, config: ProcessEma
           console.log("BEFORE PROCESS AND SEND EMAILS");
 
           try {
-            const { _seq_no, _primary_term } = item;
-
             const indexObject = {
               index: getOsNamespace("main"),
               id: safeID,
-              if_seq_no: _seq_no,
-              if_primary_term: _primary_term,
               body: {
                 script: {
                   lang: "painless",
