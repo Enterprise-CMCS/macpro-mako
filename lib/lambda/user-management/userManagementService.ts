@@ -220,6 +220,11 @@ export const getApproversByRole = async (
     size: QUERY_LIMIT,
   });
 
+  if (!results) {
+    console.log("ERROR with results");
+    throw Error;
+  }
+
   // format search results to match what is needed
   const approverRoleList: { id: string; email: string; territory: string }[] =
     results.hits.hits.map((hit: any) => {
@@ -234,6 +239,7 @@ export const getApproversByRole = async (
 
   // needed to get fullName
   const userInfoResults = await getUsersByEmails(uniqueEmails);
+  if (!userInfoResults) console.log("ERROR WITH getting full name... continuing anyways.. ");
 
   const approversInfo = approverRoleList
     .filter((approver) => approver.email)

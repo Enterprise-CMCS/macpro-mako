@@ -90,6 +90,7 @@ const getApprovers = async (event: APIGatewayEvent) => {
 
           // save for future check
           savedApprovers.set(approvingRole, allApprovers);
+
           // state submitters should filter approvers for territory
           const filtered = isStateSubmitter
             ? allApprovers.filter((approver) =>
