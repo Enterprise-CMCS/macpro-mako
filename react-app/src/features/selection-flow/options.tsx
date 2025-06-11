@@ -80,8 +80,8 @@ export const useChipSpaOptions = (): OptionData[] => {
   if (useChipForm) {
     return [
       {
-        title: "CHIP eligibility SPA submissions",
-        description: "Create a new CHIP eligibility state plan amendment",
+        title: "CHIP Eligibility SPA Submissions",
+        description: "Create a new CHIP Eligibility State Plan Amendment",
         to: {
           pathname: "/new-submission/spa/chip/create/chip-details",
           search: new URLSearchParams({
