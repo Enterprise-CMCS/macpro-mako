@@ -160,16 +160,16 @@ export async function processRecord(kafkaRecord: KafkaRecord, config: ProcessEma
             return;
           }
 
-          const recordToPass = {
-            timestamp,
-            ...safeSeatoolRecord.data,
-            submitterName: item._source.submitterName,
-            submitterEmail: item._source.submitterEmail,
-            event: "seatool-withdraw",
-            proposedEffectiveDate: safeSeatoolRecord.data?.proposedDate,
-            origin: "seatool",
-          };
-          console.log("BEFORE PROCESS AND SEND EMAILS");
+          // const recordToPass = {
+          //   timestamp,
+          //   ...safeSeatoolRecord.data,
+          //   submitterName: item._source.submitterName,
+          //   submitterEmail: item._source.submitterEmail,
+          //   event: "seatool-withdraw",
+          //   proposedEffectiveDate: safeSeatoolRecord.data?.proposedDate,
+          //   origin: "seatool",
+          // };
+          // console.log("BEFORE PROCESS AND SEND EMAILS");
 
           try {
             const indexObject = {
@@ -196,6 +196,18 @@ export async function processRecord(kafkaRecord: KafkaRecord, config: ProcessEma
             }
             console.log(`OpenSearch updated successfully for ${safeID}`);
             await os.sleep(20000);
+
+            const recordToPass = {
+              timestamp,
+              ...safeSeatoolRecord.data,
+              submitterName: item._source.submitterName,
+              submitterEmail: item._source.submitterEmail,
+              event: "seatool-withdraw",
+              proposedEffectiveDate: safeSeatoolRecord.data?.proposedDate,
+              origin: "seatool",
+            };
+            console.log("BEFORE PROCESS AND SEND EMAILS");
+
             await processAndSendEmails(recordToPass as Events[keyof Events], safeID, config);
             console.log("Email successfully sent for withdrawn record.");
           } catch (e) {
