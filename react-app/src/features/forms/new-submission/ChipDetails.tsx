@@ -32,7 +32,7 @@ export const ChipDetailsForm = () => {
     <ActionForm
       title="CHIP Eligibility SPA Details"
       schema={formSchemas["new-chip-details-submission"]}
-      breadcrumbText="Submit New CHIP Eligibility SPA"
+      breadcrumbText="Submit new CHIP Eligibility SPA"
       fields={({ control }) => (
         <>
           <FormField
