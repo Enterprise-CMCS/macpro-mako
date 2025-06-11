@@ -16,23 +16,6 @@ export async function checkAuthPath(storagePath: string) {
   }
 }
 
-async function checkStoragePath(storagePath: string) {
-  try {
-    await fs.stat(storagePath);
-  } catch (err) {
-    if (err.code === "ENOENT") {
-      let sp;
-      try {
-        sp = await fs.open(storagePath, "w+");
-      } finally {
-        await sp.close();
-      }
-    } else {
-      console.warn("Error with storage path: ", err.message);
-    }
-  }
-}
-
 export async function generateAuthFile({
   baseURL,
   user,
@@ -48,8 +31,6 @@ export async function generateAuthFile({
   eua?: boolean;
   mfa?: boolean;
 }): Promise<void> {
-  await checkStoragePath(storagePath);
-
   const browser = await chromium.launch();
   const context = await browser.newContext({ baseURL });
   const page = await context.newPage();
