@@ -91,6 +91,7 @@ export type Document = AppkDocument &
     mockEvent?: string;
     withdrawEmailSent?: boolean;
     fullName?: string;
+    attachments?: { type: string; [key: string]: any }[];
   };
 
 export type Response = Res<Document>;

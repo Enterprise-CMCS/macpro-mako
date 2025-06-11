@@ -130,16 +130,11 @@ export const getSubmissionDetails: GetLabelAndValueFromSubmission = (submission,
       label: "CHIP Submission Type",
       value:
         Array.isArray(submission.chipSubmissionType) && submission.chipSubmissionType.length > 0 ? (
-          <ul className="list-disc list-outside pl-5">
-            {submission.chipSubmissionType.map((type, i) => (
-              <li key={i}>{type}</li>
-            ))}
-          </ul>
+          <span className="break-words">{submission.chipSubmissionType.join(", ")}</span>
         ) : (
           BLANK_VALUE
         ),
     },
-
     {
       label: "Initial Submission Date",
       value: submission.submissionDate ? formatDateToET(submission.submissionDate) : BLANK_VALUE,
