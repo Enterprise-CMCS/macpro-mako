@@ -21,7 +21,7 @@ import { FAQ_TAB } from "@/consts";
 import { formSchemas } from "@/formSchemas";
 
 export const ChipDetailsForm = () => {
-  const chipOptions = [
+  const chipSubmissionType = [
     "MAGI Eligibility and Methods",
     "Non-Financial Eligibility",
     "XXI Medicaid Expansion",
@@ -97,7 +97,7 @@ export const ChipDetailsForm = () => {
                       </SelectTrigger>
                     </FormControl>
                     <SelectContent>
-                      {chipOptions.map((option) => {
+                      {chipSubmissionType.map((option) => {
                         const isSelected = selectedValues.includes(option);
                         return (
                           <div
