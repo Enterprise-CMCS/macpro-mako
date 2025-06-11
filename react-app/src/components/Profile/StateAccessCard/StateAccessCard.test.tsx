@@ -27,7 +27,7 @@ describe("StateAccessCard", () => {
 
     expect(screen.getByRole("heading", { name: "N/A", level: 3 })).toBeInTheDocument();
     expect(screen.getByText("Access Granted")).toBeInTheDocument();
-    expect(screen.getByText(/CMS Role Approver/)).toBeInTheDocument();
+    expect(screen.getByText(/CMS System Admin/)).toBeInTheDocument();
 
     expect(screen.queryByRole("button", { name: "Self Revoke Access" })).not.toBeInTheDocument();
   });
