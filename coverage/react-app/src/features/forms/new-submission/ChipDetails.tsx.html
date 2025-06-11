@@ -265,7 +265,9 @@
 <a name='L200'></a><a href='#L200'>200</a>
 <a name='L201'></a><a href='#L201'>201</a>
 <a name='L202'></a><a href='#L202'>202</a>
-<a name='L203'></a><a href='#L203'>203</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
+<a name='L203'></a><a href='#L203'>203</a>
+<a name='L204'></a><a href='#L204'>204</a>
+<a name='L205'></a><a href='#L205'>205</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -365,6 +367,9 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">12x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -375,7 +380,6 @@
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -501,7 +505,7 @@ export const ChipDetailsForm = () =&gt; {
     &lt;ActionForm
       title="CHIP Eligibility SPA Details"
       schema={formSchemas["new-chip-details-submission"]}
-      breadcrumbText="Submit new CHIP eligibility SPA"
+      breadcrumbText="Submit new CHIP Eligibility SPA"
       fields={({ control }) =&gt; (
         &lt;&gt;
           &lt;FormField
@@ -541,7 +545,7 @@ export const ChipDetailsForm = () =&gt; {
             render={({ field }) =&gt; {
               const selectedValues = Array.isArray(field.value) ? <span class="branch-0 cbranch-no" title="branch not covered" >field.value </span>: [];
               return (
-                &lt;FormItem className="w-full sm:max-w-[460px]"&gt;
+                &lt;FormItem className="w-full sm:max-w-[460px] relative"&gt;
                   &lt;FormLabel className="font-bold"&gt;CHIP Submission Type&lt;/FormLabel&gt;
                   &lt;Select&gt;
                     &lt;FormControl&gt;
@@ -549,9 +553,12 @@ export const ChipDetailsForm = () =&gt; {
                         showIcon={false}
                         className="relative w-full mt-2 h-[40px] px-[4px] gap-[5px] border border-[#565C65] text-gray-950 flex items-center justify-between rounded-none after:hidden"
                       &gt;
-                        &lt;SelectValue className="truncate text-left w-full"&gt;
-                          {selectedValues.length &gt; 0 ? <span class="branch-0 cbranch-no" title="branch not covered" >selectedValues.join(", ") : "</span>"}
-                        &lt;/SelectValue&gt;
+                        &lt;div className="flex-1 text-left overflow-hidden"&gt;
+                          &lt;SelectValue className="truncate w-full whitespace-nowrap overflow-hidden text-ellipsis"&gt;
+                            {selectedValues.length &gt; 0 ? <span class="branch-0 cbranch-no" title="branch not covered" >selectedValues.join(", ") : "</span>"}
+                          &lt;/SelectValue&gt;
+                        &lt;/div&gt;
+&nbsp;
                         &lt;div className="flex items-center pl-2 pr-3 h-full border-l border-slate-300"&gt;
                           &lt;svg
                             className="w-6 h-6"
@@ -565,13 +572,13 @@ export const ChipDetailsForm = () =&gt; {
                         &lt;/div&gt;
                       &lt;/SelectTrigger&gt;
                     &lt;/FormControl&gt;
-                    &lt;SelectContent&gt;
+                    &lt;SelectContent className=" left-0 top-full mt-1 z-50 w-full bg-white border border-gray-200 shadow-md rounded-md"&gt;
                       {chipOptions.map((option) =&gt; {
                         const isSelected = selectedValues.includes(option);
                         return (
                           &lt;div
                             key={option}
-                            className="flex items-center gap-2 px-4 py-2 cursor-pointer hover:bg-gray-100"
+                            className="flex text-left gap-2 px-4 py-2 cursor-pointer hover:bg-gray-100"
                             onClick={<span class="fstat-no" title="function not covered" >() =&gt; {</span>
                               const updated = <span class="cstat-no" title="statement not covered" >isSelected</span>
                                 ? selectedValues.filter(<span class="fstat-no" title="function not covered" >(v</span>al) =&gt; <span class="cstat-no" title="statement not covered" >val !== option)</span>
@@ -586,7 +593,6 @@ export const ChipDetailsForm = () =&gt; {
                       })}
                     &lt;/SelectContent&gt;
                   &lt;/Select&gt;
-                  &lt;FormMessage /&gt;
                 &lt;/FormItem&gt;
               );
             }}
@@ -596,8 +602,8 @@ export const ChipDetailsForm = () =&gt; {
             name="proposedEffectiveDate"
             render={({ field }) =&gt; (
               &lt;FormItem className="max-w-sm"&gt;
-                &lt;FormLabel className="text-lg font-semibold block"&gt;
-                  Proposed Effective Date of CHIP SPA &lt;RequiredIndicator /&gt;
+                &lt;FormLabel className="text-lg font-semibold whitespace-nowrap block"&gt;
+                  Proposed Effective Date of CHIP Eligibility SPA &lt;RequiredIndicator /&gt;
                 &lt;/FormLabel&gt;
                 &lt;FormControl&gt;
                   &lt;DatePicker
@@ -617,7 +623,7 @@ export const ChipDetailsForm = () =&gt; {
         instructions: [
           &lt;p data-testid="chip-attachments-instructions"&gt;
             Maximum file size of 80 MB per attachment. You can add multiple files per attachment
-            type. &lt;br /&gt; Read the description for each of the attachment types on the{" "}
+            type. Read the description for each of the attachment types on the{" "}
             &lt;Link
               to="/faq/chip-spa-attachments"
               target={FAQ_TAB}
@@ -676,7 +682,7 @@ export const ChipDetailsForm = () =&gt; {
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2025-06-11T02:18:03.326Z
+                at 2025-06-11T21:43:23.304Z
             </div>
         <script src="../../../../../prettify.js"></script>
         <script>
