@@ -48,8 +48,9 @@ export function attachApproversToStateAccess(
   }
 
   return stateAccess.map((entry) => {
+    const territoryLookup = entry.role === "statesubmitter" ? entry.territory : "N/A";
     const roleMap = roleTerritoryApproverMap[entry.role];
-    const approverList = roleMap?.[entry.territory] || [];
+    const approverList = roleMap?.[territoryLookup] || [];
     return {
       ...entry,
       approverList,
@@ -70,6 +71,7 @@ export const getUserProfile = async (userEmail?: string): Promise<OneMacUserProf
       "/getApprovers",
       userEmail ? { body: { userEmail } } : {},
     );
+    console.log("Approvers right after api call", approvers, userEmail);
     const stateAccessWithApprovers = attachApproversToStateAccess(
       stateAccess,
       approvers.approverList,

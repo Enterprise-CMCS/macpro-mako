@@ -220,16 +220,19 @@ export const getApproversByRole = async (
     size: QUERY_LIMIT,
   });
 
+  // format search results to match what is needed
   const approverRoleList: { id: string; email: string; territory: string }[] =
     results.hits.hits.map((hit: any) => {
       const { id, email, territory } = hit._source;
       return { id, email, territory };
     });
 
+  // remove any dups
   const uniqueEmails = Array.from(
     new Set(approverRoleList.map((approver) => approver.email).filter(Boolean)),
   );
 
+  // needed to get fullName
   const userInfoResults = await getUsersByEmails(uniqueEmails);
 
   const approversInfo = approverRoleList
