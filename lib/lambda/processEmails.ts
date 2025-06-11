@@ -186,6 +186,7 @@ export async function processRecord(kafkaRecord: KafkaRecord, config: ProcessEma
           };
           try {
             await os.updateData(config.osDomain, indexObject);
+            await os.sleep(10000);
             console.log(`OpenSearch updated successfully for ${safeID}`);
           } catch (e) {
             if (e?.meta?.body?.error?.type === "version_conflict_engine_exception") {
