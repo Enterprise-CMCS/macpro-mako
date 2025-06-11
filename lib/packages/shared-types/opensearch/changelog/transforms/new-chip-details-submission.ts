@@ -31,7 +31,6 @@ export const transform = (offset: number) => {
       attachments,
       packageId: data.id,
       id: `${data.id}-${offset}`,
-      chipEligibility: true,
     };
   });
 };

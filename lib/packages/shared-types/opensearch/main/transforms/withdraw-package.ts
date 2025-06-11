@@ -13,7 +13,6 @@ export const transform = () => {
       seatoolStatus: SEATOOL_STATUS.WITHDRAW_REQUESTED,
       initialIntakeNeeded: true,
       locked: true,
-      chipEligibility: data.chipEligibility,
     };
   });
 };

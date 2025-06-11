@@ -5,8 +5,6 @@ export const sharedSchema = z.object({
   submitterName: z.string(),
   submitterEmail: z.string().email(),
   timestamp: z.number(),
-  chipEligibility: z.preprocess((val) => val ?? false, z.boolean()),
-  chipSubmissionType: z.array(z.string()).optional().default([]),
 });
 
 export const ammendSchema = sharedSchema.extend({

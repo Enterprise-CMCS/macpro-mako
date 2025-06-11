@@ -30,7 +30,6 @@ export const transform = () => {
       actionType: data.actionType,
       initialIntakeNeeded: true,
       chipSubmissionType: data.chipSubmissionType || [],
-      chipEligibility: true,
     };
   });
 };

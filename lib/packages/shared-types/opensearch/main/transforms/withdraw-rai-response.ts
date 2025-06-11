@@ -13,7 +13,6 @@ export const transform = () => {
       seatoolStatus: SEATOOL_STATUS.RAI_RESPONSE_WITHDRAW_REQUESTED,
       secondClock: false,
       locked: true,
-      chipEligibility: data.chipEligibility,
     };
   });
 };
