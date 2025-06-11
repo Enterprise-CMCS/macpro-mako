@@ -1,6 +1,6 @@
 import { test as setup } from "@playwright/test";
 
-import { generateAuthFile } from "./auth.setup";
+import { checkAuthPath, generateAuthFile } from "./auth.setup";
 import { baseURL } from "./baseURLs";
 
 const STAGE = process.env.STAGE_NAME || "main";
@@ -21,6 +21,8 @@ setup("eua auth", async () => {
   if (!EUAID || !EUAPASSWORD) {
     console.error("no EUA ID or password provided.");
   } else {
+    await checkAuthPath(euaAuthFile);
+
     await generateAuthFile({
       baseURL: baseURL.prod,
       user: EUAID,

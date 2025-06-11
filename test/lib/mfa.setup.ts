@@ -1,6 +1,6 @@
 import { test as setup } from "@playwright/test";
 
-import { generateAuthFile } from "./auth.setup";
+import { checkAuthPath, generateAuthFile } from "./auth.setup";
 import { baseURL } from "./baseURLs";
 
 const stage = process.env.STAGE_NAME || "main";
@@ -16,6 +16,8 @@ setup("mfa auth", async () => {
   if (!ZZSTATEID || !ZZSTATEPASSWORD) {
     console.error("no ZZ State ID or password provided.");
   } else {
+    await checkAuthPath(zzStateAuthFile);
+
     await generateAuthFile({
       baseURL: baseURL.prod,
       user: ZZSTATEID,

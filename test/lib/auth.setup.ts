@@ -1,16 +1,32 @@
 import * as fs from "node:fs/promises";
 
 import { chromium, expect } from "@playwright/test";
+import * as path from "path";
 
 import { LoginPage } from "@/pages";
+
+export async function checkAuthPath(storagePath: string) {
+  try {
+    const projectFolder = path.dirname(path.resolve(storagePath));
+    console.log("Checking for auth directory: ", projectFolder);
+    await fs.mkdir(projectFolder, { recursive: true });
+    return;
+  } catch (err) {
+    console.warn("Error creating auth directory", err);
+  }
+}
 
 async function checkStoragePath(storagePath: string) {
   try {
     await fs.stat(storagePath);
   } catch (err) {
     if (err.code === "ENOENT") {
-      const sp = await fs.open(storagePath, "w+");
-      await sp.close();
+      let sp;
+      try {
+        sp = await fs.open(storagePath, "w+");
+      } finally {
+        await sp.close();
+      }
     } else {
       console.warn("Error with storage path: ", err.message);
     }
