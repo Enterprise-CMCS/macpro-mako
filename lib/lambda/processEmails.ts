@@ -243,6 +243,8 @@ export async function processAndSendEmails(
   id: string,
   config: ProcessEmailConfig,
 ) {
+  console.log("in processandsendemails before get email templates", record, id, config);
+
   const templates = await getEmailTemplates(record);
 
   if (!templates) {
@@ -251,12 +253,13 @@ export async function processAndSendEmails(
     );
     return;
   }
+  console.log("in processandsendemails before territory");
 
   const territory = id.slice(0, 2);
   const allStateUsers = await getAllStateUsersFromOpenSearch(territory);
 
   const sec = await getSecret(config.emailAddressLookupSecretName);
-
+  console.log("b4 items & retry");
   const item = await retry(
     () => os.getItemAndThrowAllErrors(config.osDomain, getOsNamespace("main"), id),
     10,
