@@ -187,7 +187,7 @@ export async function processRecord(kafkaRecord: KafkaRecord, config: ProcessEma
             };
             await os.updateData(config.osDomain, indexObject);
             console.log(`OpenSearch updated successfully for ${safeID}`);
-            await os.sleep(200);
+            await os.sleep(20000);
             await processAndSendEmails(recordToPass as Events[keyof Events], safeID, config);
             console.log("Email successfully sent for withdrawn record.");
           } catch (e) {
