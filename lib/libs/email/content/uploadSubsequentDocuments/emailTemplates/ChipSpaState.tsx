@@ -32,7 +32,8 @@ export const ChipSpaStateEmail = ({
       <Attachments attachments={variables.attachments} />
       <Divider />
       <Text style={{ ...styles.text.base, marginTop: "16px" }}>
-        If you have questions or did not expect this email, please contact your CPOC.
+        If you have questions or did not expect this email, please contact your CPOC. $
+        <pre>{JSON.stringify(variables, null, 2)}</pre>
       </Text>
     </BaseEmailTemplate>
   );
