@@ -100,7 +100,7 @@ export const ChipDetailsForm = () => {
                       </SelectTrigger>
                     </FormControl>
                     <SelectContent className=" left-0 top-full mt-1 z-50 w-full bg-white border border-gray-200 shadow-md rounded-md">
-                      {chipOptions.map((option) => {
+                      {chipSubmissionType.map((option) => {
                         const isSelected = selectedValues.includes(option);
                         return (
                           <div
