@@ -53,8 +53,6 @@ type GetLabelAndValueFromSubmission = (
 ) => LabelAndValue[];
 
 export const getSubmissionDetails: GetLabelAndValueFromSubmission = (submission, { user }) => {
-  console.log("📦 submission:", submission);
-
   return [
     {
       label: "Submission ID",
