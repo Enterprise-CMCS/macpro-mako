@@ -89,4 +89,6 @@ export const useGetUserProfile = () =>
   useQuery({
     queryKey: ["profile"],
     queryFn: () => getUserProfile(),
+    refetchOnMount: false,
+    refetchOnWindowFocus: false,
   });

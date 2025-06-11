@@ -104,8 +104,13 @@ const getApprovers = async (event: APIGatewayEvent) => {
             approvers: filtered,
           };
         } catch (err) {
-          console.error(`Error getting approvers for role ${role}`, err);
-          return { role, territory: territories, approvers: [] };
+          return response({
+            statusCode: 500,
+            body: {
+              message: "Error getting approvers for role",
+              error: err instanceof Error ? err.message : JSON.stringify(err),
+            },
+          });
         }
       }),
     );
