@@ -171,23 +171,25 @@ export async function processRecord(kafkaRecord: KafkaRecord, config: ProcessEma
           };
           console.log("BEFORE PROCESS AND SEND EMAILS");
 
-          const { _seq_no, _primary_term } = item;
-
-          const indexObject = {
-            index: getOsNamespace("main"),
-            id: safeID,
-            if_seq_no: _seq_no,
-            if_primary_term: _primary_term,
-            body: {
-              doc: {
-                withdrawEmailSent: true,
-              },
-            },
-          };
           try {
+            const { _seq_no, _primary_term } = item;
+
+            const indexObject = {
+              index: getOsNamespace("main"),
+              id: safeID,
+              if_seq_no: _seq_no,
+              if_primary_term: _primary_term,
+              body: {
+                doc: {
+                  withdrawEmailSent: true,
+                },
+              },
+            };
             await os.updateData(config.osDomain, indexObject);
-            await os.sleep(10000);
             console.log(`OpenSearch updated successfully for ${safeID}`);
+
+            await processAndSendEmails(recordToPass as Events[keyof Events], safeID, config);
+            console.log("Email successfully sent for withdrawn record.");
           } catch (e) {
             if (e?.meta?.body?.error?.type === "version_conflict_engine_exception") {
               console.log(`Version conflict on ${safeID}, skipping duplicate email/update.`);
@@ -196,9 +198,6 @@ export async function processRecord(kafkaRecord: KafkaRecord, config: ProcessEma
             console.log("WHATS THE ERROR HERE", e);
             throw e;
           }
-
-          await processAndSendEmails(recordToPass as Events[keyof Events], safeID, config);
-          console.log("Email successfully sent for withdrawn record.");
         } catch (error) {
           console.error("Error processing record:", JSON.stringify(error, null, 2));
           throw error;
