@@ -25,7 +25,6 @@ export const legacyEventSchema = legacySharedSchema
       temporaryExtensionType: z.string().nullish(),
       attachments: z.array(legacyAttachmentSchema).nullish(),
       latestRaiResponseTimestamp: z.number().nullish(),
-      chipEligibility: z.boolean(),
     }),
   )
   .transform((data) => {
@@ -58,7 +57,6 @@ export const legacyEventSchema = legacySharedSchema
       submitterEmail: data.submitterEmail,
       submitterName: data.submitterName,
       initialIntakeNeeded: initialIntakeNeeded,
-      chipEligibility: data.chipEligibility,
       raiReceivedDate: data.latestRaiResponseTimestamp
         ? new Date(data.latestRaiResponseTimestamp).toISOString()
         : null,

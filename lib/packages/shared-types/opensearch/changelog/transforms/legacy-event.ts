@@ -25,7 +25,6 @@ export const transform = () => {
       submitterEmail: data.submitterEmail,
       submitterName: data.submitterName,
       origin: ONEMAC_LEGACY_ORIGIN,
-      chipEligibility: data.chipEligibility,
     };
     return transformedData;
   });
