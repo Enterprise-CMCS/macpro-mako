@@ -657,6 +657,7 @@ exports[`WithdrawPackageAction components > renders WithdrawPackageActionWaiver 
                 </label>
                 <div
                   class="w-full flex items-center justify-center border border-dashed border-[#71767a] py-6 rounded-sm"
+                  data-label="supportingDocumentation"
                   role="presentation"
                   tabindex="0"
                 >
