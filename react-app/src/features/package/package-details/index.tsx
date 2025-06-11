@@ -49,7 +49,7 @@ export const PackageDetails = ({ submission }: PackageDetailsProps) => {
   }, [submission]);
 
   if (isUserLoading) return <LoadingSpinner />;
-
+  console.log(submission);
   return (
     <DetailsSection id="package_details" title={title} childrenClassName="grid gap-y-8">
       <div>
