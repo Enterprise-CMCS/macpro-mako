@@ -6,6 +6,7 @@ import { getAllStateUsersFromOpenSearch, getEmailTemplates } from "libs/email";
 import { EMAIL_CONFIG, getCpocEmail, getSrtEmails } from "libs/email/content/email-components";
 import * as os from "libs/opensearch-lib";
 import { getOsNamespace } from "libs/utils";
+import { chipEligibility } from "mocks/data/submit/attachments";
 import {
   EmailAddresses,
   Events,
@@ -158,7 +159,6 @@ export async function processRecord(kafkaRecord: KafkaRecord, config: ProcessEma
           ...safeSeatoolRecord.data,
           submitterName: item._source.submitterName,
           submitterEmail: item._source.submitterEmail,
-          chipEligibility: true,
           event: "seatool-withdraw",
           proposedEffectiveDate: safeSeatoolRecord.data?.proposedDate,
           origin: "seatool",
@@ -280,6 +280,7 @@ export async function processAndSendEmails(
     ...record,
     id,
     applicationEndpointUrl: config.applicationEndpointUrl,
+    chipEligibility: true,
     territory,
     emails: { ...emails, cpocEmail, srtEmails },
     allStateUsersEmails,

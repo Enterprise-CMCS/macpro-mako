@@ -1,3 +1,4 @@
+import { Text } from "@react-email/components";
 import { CommonEmailVariables, Events } from "shared-types";
 
 import {
@@ -6,6 +7,7 @@ import {
   PackageDetails,
   SubDocHowToAccess,
 } from "../../email-components";
+import { styles } from "../../email-styles";
 import { BaseEmailTemplate } from "../../email-templates";
 
 export const ChipSpaCMSEmail = ({
