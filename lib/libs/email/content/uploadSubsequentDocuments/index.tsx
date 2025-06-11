@@ -19,9 +19,11 @@ export const uploadSubsequentDocuments: AuthoritiesWithUserTypesTemplate = {
       variables: Events["UploadSubsequentDocuments"] &
         CommonEmailVariables & { emails: EmailAddresses },
     ) => {
+      const chipPrefix = `CHIP${variables.chipEligibility ? " Eligibility" : ""}`;
+
       return {
         to: [...variables.emails.cpocEmail, ...variables.emails.srtEmails],
-        subject: `Action required: review new documents for ${variables.authority} ${variables.id}`,
+        subject: `Action required: review new documents for ${chipPrefix} ${variables.id}`,
         body: await render(<ChipSpaCMSEmail variables={variables} />),
       };
     },
@@ -29,9 +31,11 @@ export const uploadSubsequentDocuments: AuthoritiesWithUserTypesTemplate = {
       variables: Events["UploadSubsequentDocuments"] &
         CommonEmailVariables & { emails: EmailAddresses },
     ) => {
+      const chipPrefix = `CHIP${variables.chipEligibility ? " Eligibility" : ""}`;
+
       return {
         to: [`${variables.submitterName} <${variables.submitterEmail}>`],
-        subject: `Additional documents submitted for ${variables.authority} ${variables.id}`,
+        subject: `Additional documents submitted for ${chipPrefix} ${variables.id}`,
         body: await render(<ChipSpaStateEmail variables={variables} />),
       };
     },

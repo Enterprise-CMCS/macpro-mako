@@ -24,7 +24,11 @@ export const withdrawConfirmation: AuthoritiesWithUserTypesTemplate = {
       generateWithdrawEmail(variables, "Medicaid SPA Package", MedSpaStateEmail),
   },
   [Authority.CHIP_SPA]: {
-    state: (variables) => generateWithdrawEmail(variables, "CHIP SPA Package", ChipSpaStateEmail),
+    state: (variables) => {
+      const chipPrefix = `CHIP${variables.chipEligibility ? " Eligibility" : ""}`;
+
+      return generateWithdrawEmail(variables, `${chipPrefix} SPA Package`, ChipSpaStateEmail);
+    },
   },
   [Authority["1915b"]]: {
     state: (variables) => generateWithdrawEmail(variables, "1915(b)", WaiverStateEmail),

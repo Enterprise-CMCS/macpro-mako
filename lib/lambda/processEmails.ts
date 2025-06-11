@@ -6,7 +6,6 @@ import { getAllStateUsersFromOpenSearch, getEmailTemplates } from "libs/email";
 import { EMAIL_CONFIG, getCpocEmail, getSrtEmails } from "libs/email/content/email-components";
 import * as os from "libs/opensearch-lib";
 import { getOsNamespace } from "libs/utils";
-import { chipEligibility } from "mocks/data/submit/attachments";
 import {
   EmailAddresses,
   Events,
