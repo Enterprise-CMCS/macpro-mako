@@ -68,12 +68,15 @@ const getApprovers = async (event: APIGatewayEvent) => {
 
     const approverList = await Promise.all(
       Array.from(roleStateMap.entries()).map(async ([role, territories]) => {
+        const isStateSubmitter = role === "statesubmitter";
         try {
           const allApprovers = await getApproversByRole(role);
 
-          const filtered = allApprovers.filter((approver) =>
-            territories.includes(approver.territory as Territory),
-          );
+          const filtered = isStateSubmitter
+            ? allApprovers.filter((approver) =>
+                territories.includes(approver.territory as Territory),
+              )
+            : allApprovers;
 
           return {
             role,
