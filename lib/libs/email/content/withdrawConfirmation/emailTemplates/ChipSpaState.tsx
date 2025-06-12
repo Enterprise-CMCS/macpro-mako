@@ -1,6 +1,8 @@
+import { Text } from "@react-email/components";
 import { CommonEmailVariables, Events } from "shared-types";
 
 import { BasicFooter, FollowUpNotice } from "../../email-components";
+import { styles } from "../../email-styles";
 import { BaseEmailTemplate } from "../../email-templates";
 
 export const ChipSpaStateEmail = (props: {
@@ -16,6 +18,10 @@ export const ChipSpaStateEmail = (props: {
       applicationEndpointUrl={variables.applicationEndpointUrl}
       footerContent={<BasicFooter />}
     >
+      <Text style={{ ...styles.text.base, marginTop: "16px" }}>
+        If you have questions or did not expect this email, please contact your CPOC. $
+        <pre>{JSON.stringify(variables, null, 2)}</pre>
+      </Text>
       <FollowUpNotice isChip includeDidNotExpect={false} />
     </BaseEmailTemplate>
   );
