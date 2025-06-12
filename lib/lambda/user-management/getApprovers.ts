@@ -57,6 +57,7 @@ const getApprovers = async (event: APIGatewayEvent) => {
             approvers: allApprovers,
           };
         } catch (err) {
+          console.log("ERROR: ", err);
           return response({
             statusCode: 500,
             body: {

@@ -208,12 +208,12 @@ export const getApproversByRole = async (
 ) => {
   const resolvedDomain = domainNamespace ?? getDomainAndNamespace("roles");
   const { domain, index } = resolvedDomain;
-
+  console.log("ANDIE 1");
   const approverRole = getApprovingRole(role);
   if (!approverRole) {
     throw new Error(`Approving role not found for role: ${role}`);
   }
-
+  console.log("ANDIE 2");
   const results = await search(domain, index, {
     query: {
       bool: {
@@ -223,10 +223,14 @@ export const getApproversByRole = async (
     size: 50,
   });
 
+  console.log("ANDIE 3");
+
   if (!results) {
     console.log("ERROR with results");
     throw Error;
   }
+
+  console.log("ANDIE 4");
 
   // format search results to match what is needed
   const approverRoleList: { id: string; email: string; territory: string }[] =
@@ -246,6 +250,8 @@ export const getApproversByRole = async (
   // if (!userInfoResults) console.log("ERROR WITH getting full name... continuing anyways.. ");
 
   // (userInfoResults[approver.email] && userInfoResults[approver.email].fullName) ?? "Unknown",
+
+  console.log("ANDIE 5");
   const approversInfo = approverRoleList
     .filter((approver) => approver.email)
     .map((approver) => ({
@@ -254,6 +260,8 @@ export const getApproversByRole = async (
       fullName: "Unknown",
       territory: approver.territory,
     }));
+
+  console.log("ANDIE 6");
 
   return approversInfo;
 };
