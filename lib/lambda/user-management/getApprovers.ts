@@ -48,29 +48,28 @@ const getApprovers = async (event: APIGatewayEvent) => {
 
     // loop through roles
     console.log("ANDIEEE!! before the loop");
+    const approverList = [];
 
-    const approverList = await Promise.all(
-      userRoles.map(async (userRole: { role: string; territories: string[] }) => {
-        console.log("ANDIE - ", userRoles.role);
-        try {
-          const allApprovers = await getApproversByRole(userRole.role); // pass in the role of current user NOT approving role
-          return {
-            role: userRole.role,
-            territory: userRole.territories,
-            approvers: allApprovers,
-          };
-        } catch (err) {
-          console.log("ERROR: ", err);
-          return response({
-            statusCode: 500,
-            body: {
-              message: `Error getting approvers for role: ${userRole.role}`,
-              error: err instanceof Error ? err.message : JSON.stringify(err),
-            },
-          });
-        }
-      }),
-    );
+    for (const userRole of userRoles) {
+      console.log("ANDIE - ", userRole.role);
+      try {
+        const allApprovers = await getApproversByRole(userRole.role); // pass in the role of current user NOT approving role
+        approverList.push({
+          role: userRole.role,
+          territory: userRole.territories,
+          approvers: allApprovers,
+        });
+      } catch (err) {
+        console.log("ERROR: ", err);
+        approverList.push({
+          role: userRole.role,
+          territory: userRole.territories,
+          approvers: [
+            { id: "error", fullName: "Error Fetching Approvers", email: "", territory: "N/A" },
+          ],
+        });
+      }
+    }
 
     console.log("ANDIEEE!! after the loop");
 
