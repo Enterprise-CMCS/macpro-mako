@@ -79,7 +79,6 @@ export const newSubmission: AuthoritiesWithUserTypesTemplate = {
       };
     },
   },
-
   [Authority["1915b"]]: {
     cms: async (
       variables:

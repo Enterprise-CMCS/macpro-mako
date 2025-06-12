@@ -98,14 +98,10 @@ export async function getEmailTemplates(
   if (!record) {
     throw new Error("Invalid record");
   }
-  console.log("b4 event");
   const { event } = record;
-  console.log("b4 email temp", event);
   const emailTemplate = emailTemplates[event as keyof EmailTemplates];
-  console.log("after email temp", emailTemplate);
 
   if (event in emailTemplates && hasAuthority(record)) {
-    console.log("event in email");
     const authorityTemplates = emailTemplate[record.authority.toLowerCase() as Authority];
 
     if (authorityTemplates) {
