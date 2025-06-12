@@ -213,17 +213,17 @@ export const getApproversByRole = async (
   if (!approverRole) {
     throw new Error(`Approving role not found for role: ${role}`);
   }
-  console.log("ANDIE 2");
+  console.log("ANDIE 2", approverRole);
   const results = await search(domain, index, {
     query: {
       bool: {
         must: [{ term: { status: "active" } }, { term: { role: approverRole } }],
       },
     },
-    size: 50,
+    size: 1,
   });
 
-  console.log("ANDIE 3");
+  console.log("ANDIE 3", JSON.stringify(results));
 
   if (!results) {
     console.log("ERROR with results");
