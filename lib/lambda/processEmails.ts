@@ -131,7 +131,8 @@ export const handler: Handler<KafkaEvent> = async (event) => {
 
 export async function processRecord(kafkaRecord: KafkaRecord, config: ProcessEmailConfig) {
   try {
-    console.log("processRecord called with kafkaRecord: ", JSON.stringify(kafkaRecord, null, 2));
+    // console.log("processRecord called with kafkaRecord: ", JSON.stringify(kafkaRecord, null, 2));
+    console.log(`processRecord called with kafkaRecord: ${kafkaRecord.key}`);
     const { key, value, timestamp } = kafkaRecord;
     const id: string = decodeBase64WithUtf8(key);
 
