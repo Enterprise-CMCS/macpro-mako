@@ -46,6 +46,7 @@ const getApprovers = async (event: APIGatewayEvent) => {
     if (!userRoles) throw Error;
 
     // loop through roles
+    console.log("ANDIEEE!! before the loop");
     const approverList = await Promise.all(
       userRoles.map(async (userRole: { role: string; territories: string[] }) => {
         try {
@@ -66,6 +67,8 @@ const getApprovers = async (event: APIGatewayEvent) => {
         }
       }),
     );
+
+    console.log("ANDIEEE!! after the loop");
 
     return response({
       statusCode: 200,

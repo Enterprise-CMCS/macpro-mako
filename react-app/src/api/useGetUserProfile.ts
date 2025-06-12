@@ -97,4 +97,5 @@ export const useGetUserProfile = () =>
     queryKey: ["profile"],
     queryFn: () => getUserProfile(),
     refetchOnWindowFocus: false,
+    refetchOnMount: false,
   });
