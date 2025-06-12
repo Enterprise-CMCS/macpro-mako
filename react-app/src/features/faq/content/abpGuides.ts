@@ -6,7 +6,7 @@ export const ABP_GUIDES: Template[] = [
     href: "/abp/IG_AbpIntroduction.pdf",
   },
   {
-    title: "ABP General Information Implementation guide",
+    title: "ABP General Information Implementation Guide",
     href: "/abp/IG_AbpGeneralInfoImplementationGuide.pdf",
   },
   {

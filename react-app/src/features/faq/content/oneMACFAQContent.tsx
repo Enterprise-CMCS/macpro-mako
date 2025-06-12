@@ -304,11 +304,11 @@ export const oneMACFAQContent: FAQContent[] = [
                 },
                 {
                   href: "#mpc-spa-templates",
-                  text: "Where can I download Medicaid Premiums and Cost Sharing (MPC) SPA templates?",
+                  text: "Where can I download Medicaid Premiums and Cost Sharing SPA templates?",
                 },
                 {
                   href: "#mpc-spa-implementation-guides",
-                  text: "Where can I download Medicaid Premiums and Cost Sharing (MPC) SPA implementation guides?",
+                  text: "Where can I download Medicaid Premiums and Cost Sharing SPA implementation guides?",
                 },
                 {
                   href: "#chip-spa-templates",
@@ -943,13 +943,13 @@ export const oneMACFAQContent: FAQContent[] = [
       },
       {
         anchorText: "mpc-spa-templates",
-        question: "Where can I download Medicaid Premiums and Cost Sharing (MPC) SPA templates?",
+        question: "Where can I download Medicaid Premiums and Cost Sharing SPA templates?",
         answerJSX: (
           <section className="space-y-2">
             <p>
-              Medicaid Premiums and Cost Sharing (MPC) SPA templates can be downloaded at the links
-              below. After downloading and completing the templates you need, upload them as part of
-              the SPA submission.
+              Medicaid Premiums and Cost Sharing SPA templates can be downloaded at the links below.
+              After downloading and completing the templates you need, upload them as part of the
+              SPA submission.
             </p>
             <ul className="list-disc pl-7 space-y-2">
               {MPC_TEMPLATES.map((pdf) => (
@@ -972,12 +972,12 @@ export const oneMACFAQContent: FAQContent[] = [
       {
         anchorText: "mpc-spa-implementation-guides",
         question:
-          "Where can I download Medicaid Premiums and Cost Sharing (MPC) SPA implementation guides?",
+          "Where can I download Medicaid Premiums and Cost Sharing SPA implementation guides?",
         answerJSX: (
           <section className="space-y-2">
             <p>
-              Medicaid Premiums and Cost Sharing (MPC) SPA implementation guides can be downloaded
-              at the links below.
+              Medicaid Premiums and Cost Sharing SPA implementation guides can be downloaded at the
+              links below.
             </p>
             <ul className="list-disc pl-7 space-y-2">
               {MPC_GUIDES.map((pdf) => (
