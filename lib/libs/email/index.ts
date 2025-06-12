@@ -24,6 +24,7 @@ export type AuthoritiesWithUserTypesTemplate = {
 export type EmailTemplates = {
   "new-medicaid-submission": AuthoritiesWithUserTypesTemplate;
   "new-chip-submission": AuthoritiesWithUserTypesTemplate;
+  "new-chip-details-submission": AuthoritiesWithUserTypesTemplate;
   "temporary-extension": AuthoritiesWithUserTypesTemplate;
   "withdraw-package": AuthoritiesWithUserTypesTemplate;
   "withdraw-rai": AuthoritiesWithUserTypesTemplate;
@@ -47,6 +48,7 @@ export type EmailTemplates = {
 const emailTemplates: EmailTemplates = {
   "new-medicaid-submission": EmailContent.newSubmission,
   "new-chip-submission": EmailContent.newSubmission,
+  "new-chip-details-submission": EmailContent.newSubmission,
   "temporary-extension": EmailContent.tempExtension,
   "withdraw-package": EmailContent.withdrawPackage,
   "withdraw-rai": EmailContent.withdrawRai,
