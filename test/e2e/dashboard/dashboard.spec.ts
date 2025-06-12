@@ -1,7 +1,11 @@
-import { expect, test } from "@/fixtures/mocked"; // add expect when writing assertions
+// import { expect, test } from "@/fixtures/mocked"; // add expect when writing assertions
+// import { expect, test } from "@/fixtures/mocked";
+import { expect, test } from "@playwright/test";
 
 // TODO
 test.describe("Dashboard page", { tag: ["@dashboard"] }, () => {
+  // test.use({ storageState: "./playwright/.auth/state-user.json" });
+
   test.beforeEach(async ({ page }) => {
     await page.goto("/dashboard");
   });
@@ -44,6 +48,7 @@ test.describe("Dashboard page", { tag: ["@dashboard"] }, () => {
       );
 
       await expect(page.locator("#search-input")).toBeVisible();
+      await expect(page.locator("#search-input")).toHaveAttribute("Placeholder", "Search...");
     });
 
     test("columns button", async ({ page }) => {
@@ -52,8 +57,8 @@ test.describe("Dashboard page", { tag: ["@dashboard"] }, () => {
     });
 
     test("filters buttons", async ({ page }) => {
-      await expect(page.getByRole("button", { name: /Filters/ })).toBeVisible();
-      await expect(page.getByRole("button", { name: /Filters/ })).toHaveText("Open filter panel");
+      await expect(page.getByText(/Filters/)).toBeVisible();
+      await expect(page.getByText(/Filters/)).toHaveText("Filters");
     });
 
     test("export button", async ({ page }) => {

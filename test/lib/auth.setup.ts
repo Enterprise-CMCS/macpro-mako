@@ -54,7 +54,9 @@ export async function generateAuthFile({
   }
 
   await expect(page).toHaveURL(/dashboard/);
+  // await expect(page.getByTestId("Dashboard-d")).toBeVisible();
   await context.storageState({ path: storagePath });
+  console.log(`base url: ${baseURL}`);
   console.log(`${storagePath} written`);
 
   await browser.close();
