@@ -15,7 +15,7 @@ const EUAPASSWORD = process.env.EUAPASSWORD;
 const ZZSTATEID = process.env.ZZSTATEID;
 const ZZSTATEPASSWORD = process.env.ZZSTATEPASSWORD;
 
-console.log(`[Setup] Stage: ${STAGE} | Project: ${PROJECT} | Base URL: ${baseURL.prod}`);
+console.log(`[Smoke Setup] Stage: ${STAGE} | Project: ${PROJECT} | Base URL: ${baseURL.prod}`);
 
 setup("eua auth", async () => {
   if (!EUAID || !EUAPASSWORD) {

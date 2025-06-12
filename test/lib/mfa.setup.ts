@@ -10,7 +10,7 @@ const zzStateAuthFile = "./playwright/.auth/zzState-user.json";
 const ZZSTATEID = process.env.ZZSTATEID;
 const ZZSTATEPASSWORD = process.env.ZZSTATEPASSWORD;
 
-console.log(`[Setup] Stage: ${stage} | Project: ${project} | Base URL: ${baseURL}`);
+console.log(`[MFA Setup] Stage: ${stage} | Project: ${project} | Base URL: ${baseURL}`);
 
 setup("mfa auth", async () => {
   if (!ZZSTATEID || !ZZSTATEPASSWORD) {

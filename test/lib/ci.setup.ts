@@ -18,7 +18,7 @@ const testUsers = {
   reviewer: "reviewer@example.com",
 };
 
-console.log(`[Setup] Stage: ${stage} | Project: ${project} | Base URL: ${baseURL}`);
+console.log(`[CI Setup] Stage: ${stage} | Project: ${project} | Base URL: ${baseURL}`);
 
 setup("auth", async () => {
   await checkAuthPath(stateSubmitterAuthFile);

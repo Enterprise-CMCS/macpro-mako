@@ -10,7 +10,7 @@ const euaAuthFile = "./playwright/.auth/eua-user.json";
 const EUAID = process.env.EUAID;
 const EUAPASSWORD = process.env.EUAPASSWORD;
 
-console.log(`[Setup] Stage: ${stage} | Project: ${project} | Base URL: ${baseURL}`);
+console.log(`[EUA Setup] Stage: ${stage} | Project: ${project} | Base URL: ${baseURL}`);
 
 setup("eua auth", async () => {
   if (!EUAID || !EUAPASSWORD) {
