@@ -131,15 +131,17 @@ export async function processRecord(kafkaRecord: KafkaRecord, config: ProcessEma
   const { key, value, timestamp } = kafkaRecord;
   const id: string = decodeBase64WithUtf8(key);
 
+  const safeID = id.replace(/^"|"$/g, "").toUpperCase();
+  const seatoolRecord: Document = {
+    safeID,
+    ...JSON.parse(decodeBase64WithUtf8(value)),
+  };
+  const safeSeatoolRecord = opensearch.main.seatool.transform(safeID).safeParse(seatoolRecord);
+
+  const item = await os.getItem(config.osDomain, getOsNamespace("main"), safeID);
+  console.log("mytests:", item, seatoolRecord);
+
   if (kafkaRecord.topic === "aws.seatool.ksql.onemac.three.agg.State_Plan") {
-    const safeID = id.replace(/^"|"$/g, "").toUpperCase();
-    const seatoolRecord: Document = {
-      safeID,
-      ...JSON.parse(decodeBase64WithUtf8(value)),
-    };
-    const safeSeatoolRecord = opensearch.main.seatool.transform(safeID).safeParse(seatoolRecord);
-    const item = await os.getItem(config.osDomain, getOsNamespace("main"), safeID);
-    console.log("mytests:", item, seatoolRecord);
     if (safeSeatoolRecord.data?.seatoolStatus === SEATOOL_STATUS.WITHDRAWN) {
       try {
         // const item = await os.getItem(config.osDomain, getOsNamespace("main"), safeID);
