@@ -235,22 +235,23 @@ export const getApproversByRole = async (
       return { id, email, territory };
     });
 
+  // removing the email lookup to test
   // remove any dups
-  const uniqueEmails = Array.from(
-    new Set(approverRoleList.map((approver) => approver.email).filter(Boolean)),
-  );
+  // const uniqueEmails = Array.from(
+  //   new Set(approverRoleList.map((approver) => approver.email).filter(Boolean)),
+  // );
 
-  // needed to get fullName
-  const userInfoResults = await getUsersByEmails(uniqueEmails);
-  if (!userInfoResults) console.log("ERROR WITH getting full name... continuing anyways.. ");
+  // // needed to get fullName
+  // const userInfoResults = await getUsersByEmails(uniqueEmails);
+  // if (!userInfoResults) console.log("ERROR WITH getting full name... continuing anyways.. ");
 
+  // (userInfoResults[approver.email] && userInfoResults[approver.email].fullName) ?? "Unknown",
   const approversInfo = approverRoleList
     .filter((approver) => approver.email)
     .map((approver) => ({
       id: approver.id,
       email: approver.email,
-      fullName:
-        (userInfoResults[approver.email] && userInfoResults[approver.email].fullName) ?? "Unknown",
+      fullName: "Unknown",
       territory: approver.territory,
     }));
 

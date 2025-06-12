@@ -17,12 +17,17 @@ describe("getUserProfile", () => {
     expect(result).toEqual({});
   });
 
-  it("should return an empty object if /getApprovers fails", async () => {
+  it("should return stateAccess without approvers when approvers fails", async () => {
     mockedServer.use(errorApiGetApproversHandler);
 
     const result = await getUserProfile("statesubmitter@nightwatch.test");
 
-    expect(result).toEqual({});
+    expect(result.stateAccess).toBeDefined();
+    expect(result.stateAccess.length).toBeGreaterThan(0);
+
+    for (const item of result.stateAccess) {
+      expect(item).not.toHaveProperty("approverList");
+    }
   });
 
   it("should work without passing a userEmail", async () => {
