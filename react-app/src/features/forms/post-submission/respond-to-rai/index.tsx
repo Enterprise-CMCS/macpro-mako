@@ -88,6 +88,7 @@ export const RespondToRaiWaiver = () => {
 export const RespondToRaiChip = () => {
   const { authority, id } = useParams();
   return (
+    //add for chip eligibility here
     <ActionForm
       schema={formSchemas["respond-to-rai-chip"]}
       title={`${authority} Formal RAI Response Details`}
