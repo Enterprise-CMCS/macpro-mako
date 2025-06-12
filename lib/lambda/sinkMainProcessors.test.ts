@@ -166,6 +166,7 @@ describe("insertOneMacRecordsFromKafkaIntoMako", () => {
         proposedDate: newChipDetailsSubmission.proposedEffectiveDate,
         additionalInformation: newChipDetailsSubmission.additionalInformation,
         actionType: "Amend",
+        chipSubmissionType: [],
         initialIntakeNeeded: true,
       } as BulkUpdateRequestBody,
     ],
