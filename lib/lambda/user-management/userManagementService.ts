@@ -220,7 +220,7 @@ export const getApproversByRole = async (
         must: [{ term: { status: "active" } }, { term: { role: approverRole } }],
       },
     },
-    size: QUERY_LIMIT,
+    size: 50,
   });
 
   if (!results) {
