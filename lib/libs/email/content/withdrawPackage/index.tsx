@@ -39,7 +39,7 @@ export const withdrawPackage: AuthoritiesWithUserTypesTemplate = {
     cms: async (
       variables: Events["WithdrawPackage"] & CommonEmailVariables & { emails: EmailAddresses },
     ) => {
-      const chipPrefix = `CHIP${variables.chipEligibility ? " Eligibility" : ""}`;
+      const chipPrefix = `CHIP${variables.isChipEligibility ? " Eligibility" : ""}`;
 
       return {
         to: [
@@ -55,7 +55,7 @@ export const withdrawPackage: AuthoritiesWithUserTypesTemplate = {
     state: async (
       variables: Events["WithdrawPackage"] & CommonEmailVariables & { emails: EmailAddresses },
     ) => {
-      const chipPrefix = `CHIP${variables.chipEligibility ? " Eligibility" : ""}`;
+      const chipPrefix = `CHIP${variables.isChipEligibility ? " Eligibility" : ""}`;
 
       return {
         to: variables.allStateUsersEmails?.length

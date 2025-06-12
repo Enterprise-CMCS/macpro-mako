@@ -8,7 +8,7 @@ export const ChipSpaCMSEmail = ({
 }: {
   variables: Events["WithdrawRai"] & CommonEmailVariables;
 }) => {
-  const chipPrefix = `CHIP${variables.chipEligibility ? " Eligibility" : ""}`;
+  const chipPrefix = `CHIP${variables.isChipEligibility ? " Eligibility" : ""}`;
 
   return (
     <BaseEmailTemplate

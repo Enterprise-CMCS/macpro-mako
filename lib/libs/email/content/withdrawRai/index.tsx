@@ -45,7 +45,7 @@ export const withdrawRai: AuthoritiesWithUserTypesTemplate = {
     cms: async (
       variables: Events["WithdrawRai"] & CommonEmailVariables & { emails: EmailAddresses },
     ) => {
-      const chipPrefix = `CHIP${variables.chipEligibility ? " Eligibility" : ""}`;
+      const chipPrefix = `CHIP${variables.isChipEligibility ? " Eligibility" : ""}`;
 
       return {
         to: [
@@ -61,7 +61,7 @@ export const withdrawRai: AuthoritiesWithUserTypesTemplate = {
     state: async (
       variables: Events["WithdrawRai"] & CommonEmailVariables & { emails: EmailAddresses },
     ) => {
-      const chipPrefix = `CHIP${variables.chipEligibility ? " Eligibility" : ""}`;
+      const chipPrefix = `CHIP${variables.isChipEligibility ? " Eligibility" : ""}`;
 
       return {
         to: variables.allStateUsersEmails?.length

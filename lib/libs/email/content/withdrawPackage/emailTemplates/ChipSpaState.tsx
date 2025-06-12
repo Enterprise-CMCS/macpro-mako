@@ -8,7 +8,7 @@ export const ChipSpaStateEmail = ({
 }: {
   variables: Events["WithdrawPackage"] & CommonEmailVariables;
 }) => {
-  const chipPrefix = `CHIP${variables.chipEligibility ? " Eligibility" : ""}`;
+  const chipPrefix = `CHIP${variables.isChipEligibility ? " Eligibility" : ""}`;
 
   return (
     <BaseEmailTemplate

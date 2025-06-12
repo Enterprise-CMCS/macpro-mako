@@ -19,7 +19,7 @@ export const uploadSubsequentDocuments: AuthoritiesWithUserTypesTemplate = {
       variables: Events["UploadSubsequentDocuments"] &
         CommonEmailVariables & { emails: EmailAddresses },
     ) => {
-      const chipPrefix = `CHIP${variables.chipEligibility ? " Eligibility" : ""}`;
+      const chipPrefix = `CHIP${variables.isChipEligibility ? " Eligibility" : ""}`;
 
       return {
         to: [...variables.emails.cpocEmail, ...variables.emails.srtEmails],
@@ -31,7 +31,7 @@ export const uploadSubsequentDocuments: AuthoritiesWithUserTypesTemplate = {
       variables: Events["UploadSubsequentDocuments"] &
         CommonEmailVariables & { emails: EmailAddresses },
     ) => {
-      const chipPrefix = `CHIP${variables.chipEligibility ? " Eligibility" : ""}`;
+      const chipPrefix = `CHIP${variables.isChipEligibility ? " Eligibility" : ""}`;
 
       return {
         to: [`${variables.submitterName} <${variables.submitterEmail}>`],
