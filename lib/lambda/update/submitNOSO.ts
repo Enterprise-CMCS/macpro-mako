@@ -46,23 +46,25 @@ const sendSubmitMessage = async (item: submitMessageType) => {
   }
 
   const currentTime = Date.now();
-  const formatedSubmittedDate = convertStringToTimestamp(item.submissionDate);
-  const formatedProposedDate = convertStringToTimestamp(item.proposedDate);
+  const formattedId = item.id.toUpperCase();
+  const formattedSubmittedDate = convertStringToTimestamp(item.submissionDate);
+  const formattedProposedDate = convertStringToTimestamp(item.proposedDate);
 
   await produceMessage(
     topicName,
-    item.id,
+    formattedId,
     JSON.stringify({
       ...item,
-      packageId: item.id,
+      id: formattedId,
+      packageId: formattedId,
       origin: "SEATool",
       isAdminChange: true,
       adminChangeType: "NOSO",
       description: null,
       event: "NOSO",
       state: item.id.substring(0, 2),
-      submissionDate: formatedSubmittedDate,
-      proposedDate: formatedProposedDate,
+      submissionDate: formattedSubmittedDate,
+      proposedDate: formattedProposedDate,
       makoChangedDate: currentTime,
       changedDate: currentTime,
       statusDate: currentTime,
@@ -91,7 +93,7 @@ export const handler = async (event: APIGatewayEvent) => {
 
     let status: string = item.status;
     // check if it already exists in onemac - should exist in SEATool
-    const currentPackage: ItemResult | undefined = await getPackage(item.id);
+    const currentPackage: ItemResult | undefined = await getPackage(item.id.toUpperCase());
 
     if (currentPackage && currentPackage.found == true) {
       // we should default to the current status in SEATool, and use entered status as a backup

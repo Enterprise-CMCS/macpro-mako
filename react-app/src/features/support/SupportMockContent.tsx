@@ -348,7 +348,7 @@ export const oneMACStateFAQContent: FAQContentType[] = [
       },
       {
         anchorText: "mpc-spa",
-        question: "Medicaid Premiums and Cost Sharing (MPC) SPA templates",
+        question: "Medicaid Premiums and Cost Sharing SPA templates",
         answerJSX: (
           <section>
             <p>
@@ -364,7 +364,7 @@ export const oneMACStateFAQContent: FAQContentType[] = [
       },
       {
         anchorText: "mpc-spa2",
-        question: "Medicaid Premiums and Cost Sharing (MPC) SPA implementation guides",
+        question: "Medicaid Premiums and Cost Sharing SPA implementation guides",
         answerJSX: (
           <section>
             <p>
@@ -1029,7 +1029,7 @@ export const oneMACCMSContent: FAQContentType[] = [
       },
       {
         anchorText: "mpc-spa",
-        question: "Medicaid Premiums and Cost Sharing (MPC) SPA templates",
+        question: "Medicaid Premiums and Cost Sharing SPA templates",
         answerJSX: (
           <section>
             <p>
@@ -1045,7 +1045,7 @@ export const oneMACCMSContent: FAQContentType[] = [
       },
       {
         anchorText: "mpc-spa2",
-        question: "Medicaid Premiums and Cost Sharing (MPC) SPA implementation guides",
+        question: "Medicaid Premiums and Cost Sharing SPA implementation guides",
         answerJSX: (
           <section>
             <p>

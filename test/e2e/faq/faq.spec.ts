@@ -186,7 +186,7 @@ test.describe("FAQ page", { tag: ["@e2e", "@smoke", "@faq"] }, () => {
       test("displays download MPC SPA templates FAQ", async () => {
         await expect(faqPage.mpcSpaTemplates).toBeVisible();
         await expect(faqPage.mpcSpaTemplates).toHaveText(
-          "Where can I download Medicaid Premiums and Cost Sharing (MPC) SPA templates?",
+          "Where can I download Medicaid Premiums and Cost Sharing  SPA templates?",
         );
 
         await expect(faqPage.mpcSpaTemplates.locator("div:nth-child(1)")).not.toBeVisible();
@@ -195,7 +195,7 @@ test.describe("FAQ page", { tag: ["@e2e", "@smoke", "@faq"] }, () => {
       test("displays download MPC SPA implementation guides FAQ", async () => {
         await expect(faqPage.mpcSpaGuides).toBeVisible();
         await expect(faqPage.mpcSpaGuides).toHaveText(
-          "Where can I download Medicaid Premiums and Cost Sharing (MPC) SPA implementation guides?",
+          "Where can I download Medicaid Premiums and Cost Sharing  SPA implementation guides?",
         );
 
         await expect(faqPage.mpcSpaGuides.locator("div:nth-child(1)")).not.toBeVisible();

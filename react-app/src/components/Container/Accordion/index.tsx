@@ -21,6 +21,18 @@ type AccordionTriggerProps = {
   showPlusMinus?: boolean;
 } & React.ComponentPropsWithoutRef<typeof AccordionPrimitive.Trigger>;
 
+const TriggerIcon = ({ showPlusMinus }: { showPlusMinus?: boolean }) => {
+  if (showPlusMinus) {
+    return (
+      <>
+        <Plus className="h-4 w-4 shrink-0 transition-transform duration-200 group-data-[state=open]:hidden" />
+        <Minus className="h-4 w-4 shrink-0 transition-transform duration-200 group-data-[state=closed]:hidden" />
+      </>
+    );
+  }
+  return <ChevronDown className="h-4 w-4 shrink-0 transition-transform duration-200" />;
+};
+
 const AccordionTrigger = React.forwardRef<
   React.ElementRef<typeof AccordionPrimitive.Trigger>,
   AccordionTriggerProps
@@ -38,19 +50,48 @@ const AccordionTrigger = React.forwardRef<
         {...props}
       >
         {children}
-        {showPlusMinus ? (
-          <>
-            <Plus className="h-4 w-4 shrink-0 transition-transform duration-200 group-data-[state=open]:hidden" />
-            <Minus className="h-4 w-4 shrink-0 transition-transform duration-200 group-data-[state=closed]:hidden" />
-          </>
-        ) : (
-          <ChevronDown className="h-4 w-4 shrink-0 transition-transform duration-200" />
-        )}
+        <TriggerIcon showPlusMinus={showPlusMinus} />
       </AccordionPrimitive.Trigger>
     </AccordionPrimitive.Header>
   );
 });
 AccordionTrigger.displayName = AccordionPrimitive.Trigger.displayName;
+
+type GridAccordionTriggerProps = {
+  className?: string; // Add className to prop type definition
+  showPlusMinus?: boolean;
+  col1?: React.ReactNode | string; // Optional prop for first column
+  col2?: React.ReactNode | string; // Optional prop for second column
+  col3?: React.ReactNode | string; // Optional prop for third column
+} & React.ComponentPropsWithoutRef<typeof AccordionPrimitive.Trigger>;
+
+const GridAccordionTrigger = React.forwardRef<
+  React.ElementRef<typeof AccordionPrimitive.Trigger>,
+  GridAccordionTriggerProps
+>(({ className, showPlusMinus, col1, col2, col3, ...props }, ref) => {
+  const animationClass = showPlusMinus ? "group" : "[&[data-state=open]>svg]:rotate-180";
+  return (
+    <AccordionPrimitive.Header>
+      <AccordionPrimitive.Trigger
+        ref={ref}
+        className={cn(
+          "w-full two-cols-gutter items-center py-4 font-medium transition-all hover:underline",
+          animationClass,
+          className,
+        )}
+        {...props}
+      >
+        <div className="col-left-gutter text-left">{col1}</div>
+        <div className="col-gutter text-center">{col2}</div>
+        <div className="col-right-gutter grid grid-cols-[1fr_1rem] gap-x-4 items-center">
+          <div className="text-left">{col3}</div>
+          <TriggerIcon showPlusMinus={showPlusMinus} />
+        </div>
+      </AccordionPrimitive.Trigger>
+    </AccordionPrimitive.Header>
+  );
+});
+GridAccordionTrigger.displayName = `Grid${AccordionPrimitive.Trigger.displayName}`;
 
 type AccordionContentProps = {
   className?: string; // Add className to prop type definition
@@ -70,4 +111,4 @@ const AccordionContent = React.forwardRef<
 ));
 AccordionContent.displayName = AccordionPrimitive.Content.displayName;
 
-export { Accordion, AccordionItem, AccordionTrigger, AccordionContent };
+export { Accordion, AccordionItem, AccordionTrigger, GridAccordionTrigger, AccordionContent };

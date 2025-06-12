@@ -6,7 +6,7 @@ import { describe, expect, test } from "vitest";
 import { renderWithQueryClient } from "@/utils/test-helpers";
 
 import { Form } from "../../Inputs";
-import { documentInitializer, RHFDocument } from "..";
+import { documentInitializer, RHFDocument } from "../index";
 
 const TestWrapper = (props: { data: FormSchema }) => {
   const form = useForm({ defaultValues: documentInitializer(props.data) });

@@ -83,7 +83,7 @@ const abp_forms: Guide[] = [
   },
   {
     title: "ABP4",
-    linkTitle: "Alternative Benefit Plan Cost-Sharing",
+    linkTitle: "Alternative Benefit Plan Cost Sharing",
     href: "/forms/abp/IG_ABP4_AbpCostSharing.doc",
   },
   {

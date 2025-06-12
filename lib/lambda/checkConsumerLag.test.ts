@@ -1,6 +1,5 @@
 import { Context } from "aws-lambda";
 import {
-  mockedAdmin,
   TEST_FUNCTION_NAME,
   TEST_MISSING_CONSUMER_FUNCTION_NAME,
   TEST_MISSING_CONSUMER_TOPIC_NAME,
@@ -10,6 +9,7 @@ import {
   TEST_NONEXISTENT_TOPIC_NAME,
   TEST_TOPIC_NAME,
 } from "mocks";
+import { mockedAdmin } from "mocks/helpers/kafka.utils";
 import { describe, expect, it, vi } from "vitest";
 
 import { handler } from "./checkConsumerLag";
