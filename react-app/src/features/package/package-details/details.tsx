@@ -53,6 +53,26 @@ type GetLabelAndValueFromSubmission = (
 ) => LabelAndValue[];
 
 export const getSubmissionDetails: GetLabelAndValueFromSubmission = (submission, { user }) => {
+  const hasChipEligibilityAttachment =
+    Array.isArray(submission.attachments?.chipEligibility?.files) &&
+    submission.attachments.chipEligibility.files.length > 0;
+
+  const hasChipSubmissionType =
+    Array.isArray(submission.chipSubmissionType) && submission.chipSubmissionType.length > 0;
+
+  const chipSubmissionTypeField: LabelAndValue[] =
+    hasChipEligibilityAttachment || hasChipSubmissionType
+      ? [
+          {
+            label: "CHIP Submission Type",
+            value: hasChipSubmissionType ? (
+              <span className="break-words">{submission.chipSubmissionType.join(", ")}</span>
+            ) : (
+              BLANK_VALUE
+            ),
+          },
+        ]
+      : [];
   return [
     {
       label: "Submission ID",
@@ -124,15 +144,7 @@ export const getSubmissionDetails: GetLabelAndValueFromSubmission = (submission,
       value: submission.originalWaiverNumber,
       canView: submission.actionType === "Extend",
     },
-    {
-      label: "CHIP Submission Type",
-      value:
-        Array.isArray(submission.chipSubmissionType) && submission.chipSubmissionType.length > 0 ? (
-          <span className="break-words">{submission.chipSubmissionType.join(", ")}</span>
-        ) : (
-          BLANK_VALUE
-        ),
-    },
+    ...chipSubmissionTypeField,
     {
       label: "Initial Submission Date",
       value: submission.submissionDate ? formatDateToET(submission.submissionDate) : BLANK_VALUE,
