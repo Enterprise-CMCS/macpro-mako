@@ -47,8 +47,10 @@ const getApprovers = async (event: APIGatewayEvent) => {
 
     // loop through roles
     console.log("ANDIEEE!! before the loop");
+
     const approverList = await Promise.all(
       userRoles.map(async (userRole: { role: string; territories: string[] }) => {
+        console.log("ANDIE - ", userRoles.role);
         try {
           const allApprovers = await getApproversByRole(userRole.role); // pass in the role of current user NOT approving role
           return {

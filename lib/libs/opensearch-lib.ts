@@ -168,6 +168,7 @@ export async function mapRole(
 
 export async function search(host: string, index: opensearch.Index, query: any) {
   client = client || (await getClient(host));
+  console.log("ANDIE - QUERY", query);
   const response = await client.search({
     index: index,
     body: query,

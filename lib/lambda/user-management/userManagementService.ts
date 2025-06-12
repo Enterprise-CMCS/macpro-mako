@@ -208,7 +208,7 @@ export const getApproversByRole = async (
 ) => {
   const resolvedDomain = domainNamespace ?? getDomainAndNamespace("roles");
   const { domain, index } = resolvedDomain;
-  console.log("ANDIE 1");
+  console.log("ANDIE 1", role);
   const approverRole = getApprovingRole(role);
   if (!approverRole) {
     throw new Error(`Approving role not found for role: ${role}`);
