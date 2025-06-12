@@ -107,7 +107,7 @@ const getApprovers = async (event: APIGatewayEvent) => {
           return response({
             statusCode: 500,
             body: {
-              message: "Error getting approvers for role",
+              message: `Error getting approvers for role: ${role}`,
               error: err instanceof Error ? err.message : JSON.stringify(err),
             },
           });

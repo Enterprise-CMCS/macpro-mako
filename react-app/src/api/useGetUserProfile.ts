@@ -5,6 +5,7 @@ import { StateCode } from "shared-types";
 type Approver = { email: string; fullName: string; territory: StateCode | "N/A" };
 type ApproverRaw = {
   role: string;
+  statusCode?: number;
   territory: (StateCode | "N/A")[];
   approvers: Approver[];
 };
@@ -31,12 +32,17 @@ export function attachApproversToStateAccess(
   const roleTerritoryApproverMap = {};
   if (!approverByRole) return stateAccess;
   if (!approverByRole.length) return stateAccess;
+
   for (const input of approverByRole) {
     if (!roleTerritoryApproverMap[input.role]) {
       roleTerritoryApproverMap[input.role] = {};
     }
 
     const mapByTerritory = roleTerritoryApproverMap[input.role];
+    if (!input.approvers && input.statusCode) {
+      console.log("Error - missing approvers", input);
+      continue;
+    }
 
     for (const approver of input.approvers) {
       const { territory, ...rest } = approver;
@@ -66,21 +72,22 @@ export const getUserProfile = async (userEmail?: string): Promise<OneMacUserProf
       userEmail ? { body: { userEmail } } : {},
     );
 
-    const approvers = await API.post(
-      "os",
-      "/getApprovers",
-      userEmail ? { body: { userEmail } } : {},
-    );
-    console.log("Approvers right after api call", approvers, userEmail);
+    let approvers: any = { approverList: [] };
+    try {
+      approvers = await API.post("os", "/getApprovers", userEmail ? { body: { userEmail } } : {});
+    } catch (approverError) {
+      console.log("Error fetching approvers:", approverError);
+    }
+
     const stateAccessWithApprovers = attachApproversToStateAccess(
       stateAccess,
-      approvers.approverList,
+      approvers.approverList || [],
     );
     return {
       stateAccess: stateAccessWithApprovers,
     } as OneMacUserProfile;
   } catch (e) {
-    console.log({ e });
+    console.error("Error in getUserProfile:", e);
     return {};
   }
 };
@@ -89,6 +96,5 @@ export const useGetUserProfile = () =>
   useQuery({
     queryKey: ["profile"],
     queryFn: () => getUserProfile(),
-    refetchOnMount: false,
     refetchOnWindowFocus: false,
   });
