@@ -2230,6 +2230,11 @@ exports[`Upload Subsequent Document CMS Email Snapshot Test > renders a ChipSPA 
                       style="width: 100%; border-top: 1px solid #0071BD; margin: 16px 0px;"
                     />
                     <p
+                      style="font-size: 14px; line-height: 1.4; margin: 16px 0px 12px 0px; color: rgb(51, 51, 51);"
+                    >
+                      If you have questions or did not expect this email, please contact your CPOC.
+                    </p>
+                    <p
                       style="font-size: 14px; line-height: 1.4; margin: 12px 0px; color: rgb(51, 51, 51);"
                     >
                       Thank you.
@@ -3127,6 +3132,11 @@ exports[`Upload Subsequent Document CMS Email Snapshot Test > renders a ChipSPA 
                   <hr
                     style="width: 100%; border-top: 1px solid #0071BD; margin: 16px 0px;"
                   />
+                  <p
+                    style="font-size: 14px; line-height: 1.4; margin: 16px 0px 12px 0px; color: rgb(51, 51, 51);"
+                  >
+                    If you have questions or did not expect this email, please contact your CPOC.
+                  </p>
                   <p
                     style="font-size: 14px; line-height: 1.4; margin: 12px 0px; color: rgb(51, 51, 51);"
                   >
@@ -4524,6 +4534,11 @@ exports[`Upload Subsequent Document CMS Email Snapshot Test > renders a Medicaid
                     <hr
                       style="width: 100%; border-top: 1px solid #0071BD; margin: 16px 0px;"
                     />
+                    <p
+                      style="font-size: 14px; line-height: 1.4; margin: 16px 0px 12px 0px; color: rgb(51, 51, 51);"
+                    >
+                      If you have questions or did not expect this email, please contact your CPOC.
+                    </p>
                     <p
                       style="font-size: 14px; line-height: 1.4; margin: 12px 0px; color: rgb(51, 51, 51);"
                     >
@@ -7720,6 +7735,11 @@ exports[`Upload Subsequent Document CMS Email Snapshot Test > renders a Waiver C
                     <hr
                       style="width: 100%; border-top: 1px solid #0071BD; margin: 16px 0px;"
                     />
+                    <p
+                      style="font-size: 14px; line-height: 1.4; margin: 16px 0px 12px 0px; color: rgb(51, 51, 51);"
+                    >
+                      If you have questions or did not expect this email, please contact your CPOC.
+                    </p>
                     <p
                       style="font-size: 14px; line-height: 1.4; margin: 12px 0px; color: rgb(51, 51, 51);"
                     >

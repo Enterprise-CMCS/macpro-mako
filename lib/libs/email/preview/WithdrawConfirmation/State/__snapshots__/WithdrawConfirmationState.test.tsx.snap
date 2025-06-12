@@ -1346,54 +1346,6 @@ exports[`Withdraw Confirmation State Email Snapshot Test > renders a Medicaid_SP
                     >
                       This email is to confirm Medicaid SPA CO-1234.R21.00 was withdrawn by George Harrison. The review of Medicaid SPA CO-1234.R21.00 has concluded.
                     </h1>
-                    <p
-                      style="font-size: 14px; line-height: 1.4; margin: 16px 0px 12px 0px; color: rgb(51, 51, 51);"
-                    >
-                      If you have questions or did not expect this email, please contact your CPOC. $
-                      <pre>
-                        {
-  "territory": "CO",
-  "applicationEndpointUrl": "https://mako-dev.cms.gov/",
-  "timestamp": 1672560000000,
-  "submitterName": "George Harrison",
-  "submitterEmail": "george@example.com",
-  "additionalInformation": "This submission includes necessary documentation for requested updates to the state’s Medicaid plan, in alignment with CMS requirements.",
-  "origin": "mako",
-  "appkParentId": null,
-  "proposedEffectiveDate": 1677744000000,
-  "event": "withdraw-package",
-  "id": "CO-1234.R21.00",
-  "authority": "1915(b)",
-  "actionType": "Amend",
-  "attachments": {
-    "officialWithdrawalLetter": {
-      "files": [
-        {
-          "filename": "official_withdrawal_letter.pdf",
-          "title": "Withdrawal Letter",
-          "bucket": "mako-outbox-attachments-635052997545",
-          "key": "8d02fabb-9c01-41b4-a75d-e365bbed3d6a.pdf",
-          "uploadDate": 1672560000000
-        }
-      ],
-      "label": "Official Withdrawal Letter"
-    },
-    "supportingDocumentation": {
-      "files": [
-        {
-          "filename": "supporting_documentation.pdf",
-          "title": "Supporting Documentation",
-          "bucket": "mako-outbox-attachments-635052997545",
-          "key": "8d02fabb-9c01-41b4-a75d-e365bbed3d6a.pdf",
-          "uploadDate": 1672560000000
-        }
-      ],
-      "label": "Supporting Documentation"
-    }
-  }
-}
-                      </pre>
-                    </p>
                     <hr
                       style="width: 100%; border-top: 1px solid #0071BD; margin: 16px 0px;"
                     />
@@ -1559,54 +1511,6 @@ exports[`Withdraw Confirmation State Email Snapshot Test > renders a Medicaid_SP
                   >
                     This email is to confirm Medicaid SPA CO-1234.R21.00 was withdrawn by George Harrison. The review of Medicaid SPA CO-1234.R21.00 has concluded.
                   </h1>
-                  <p
-                    style="font-size: 14px; line-height: 1.4; margin: 16px 0px 12px 0px; color: rgb(51, 51, 51);"
-                  >
-                    If you have questions or did not expect this email, please contact your CPOC. $
-                    <pre>
-                      {
-  "territory": "CO",
-  "applicationEndpointUrl": "https://mako-dev.cms.gov/",
-  "timestamp": 1672560000000,
-  "submitterName": "George Harrison",
-  "submitterEmail": "george@example.com",
-  "additionalInformation": "This submission includes necessary documentation for requested updates to the state’s Medicaid plan, in alignment with CMS requirements.",
-  "origin": "mako",
-  "appkParentId": null,
-  "proposedEffectiveDate": 1677744000000,
-  "event": "withdraw-package",
-  "id": "CO-1234.R21.00",
-  "authority": "1915(b)",
-  "actionType": "Amend",
-  "attachments": {
-    "officialWithdrawalLetter": {
-      "files": [
-        {
-          "filename": "official_withdrawal_letter.pdf",
-          "title": "Withdrawal Letter",
-          "bucket": "mako-outbox-attachments-635052997545",
-          "key": "8d02fabb-9c01-41b4-a75d-e365bbed3d6a.pdf",
-          "uploadDate": 1672560000000
-        }
-      ],
-      "label": "Official Withdrawal Letter"
-    },
-    "supportingDocumentation": {
-      "files": [
-        {
-          "filename": "supporting_documentation.pdf",
-          "title": "Supporting Documentation",
-          "bucket": "mako-outbox-attachments-635052997545",
-          "key": "8d02fabb-9c01-41b4-a75d-e365bbed3d6a.pdf",
-          "uploadDate": 1672560000000
-        }
-      ],
-      "label": "Supporting Documentation"
-    }
-  }
-}
-                    </pre>
-                  </p>
                   <hr
                     style="width: 100%; border-top: 1px solid #0071BD; margin: 16px 0px;"
                   />
@@ -2157,54 +2061,6 @@ exports[`Withdraw Confirmation State Email Snapshot Test > renders a Waiver Prev
                     >
                       This email is to confirm Medicaid SPA CO-1234.R21.00 was withdrawn by George Harrison. The review of Medicaid SPA CO-1234.R21.00 has concluded.
                     </h1>
-                    <p
-                      style="font-size: 14px; line-height: 1.4; margin: 16px 0px 12px 0px; color: rgb(51, 51, 51);"
-                    >
-                      If you have questions or did not expect this email, please contact your CPOC. $
-                      <pre>
-                        {
-  "territory": "CO",
-  "applicationEndpointUrl": "https://mako-dev.cms.gov/",
-  "timestamp": 1672560000000,
-  "submitterName": "George Harrison",
-  "submitterEmail": "george@example.com",
-  "additionalInformation": "This submission includes necessary documentation for requested updates to the state’s Medicaid plan, in alignment with CMS requirements.",
-  "origin": "mako",
-  "appkParentId": null,
-  "proposedEffectiveDate": 1677744000000,
-  "event": "withdraw-package",
-  "id": "CO-1234.R21.00",
-  "authority": "1915(b)",
-  "actionType": "Amend",
-  "attachments": {
-    "officialWithdrawalLetter": {
-      "files": [
-        {
-          "filename": "official_withdrawal_letter.pdf",
-          "title": "Withdrawal Letter",
-          "bucket": "mako-outbox-attachments-635052997545",
-          "key": "8d02fabb-9c01-41b4-a75d-e365bbed3d6a.pdf",
-          "uploadDate": 1672560000000
-        }
-      ],
-      "label": "Official Withdrawal Letter"
-    },
-    "supportingDocumentation": {
-      "files": [
-        {
-          "filename": "supporting_documentation.pdf",
-          "title": "Supporting Documentation",
-          "bucket": "mako-outbox-attachments-635052997545",
-          "key": "8d02fabb-9c01-41b4-a75d-e365bbed3d6a.pdf",
-          "uploadDate": 1672560000000
-        }
-      ],
-      "label": "Supporting Documentation"
-    }
-  }
-}
-                      </pre>
-                    </p>
                     <hr
                       style="width: 100%; border-top: 1px solid #0071BD; margin: 16px 0px;"
                     />
