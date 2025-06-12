@@ -1,19 +1,9 @@
 import { APIGatewayEvent } from "aws-lambda";
 import { getAuthDetails, lookupUserAttributes } from "libs/api/auth/user";
 import { response } from "libs/handler-lib";
-import { StateAccess } from "react-app/src/api";
-import { UserRole } from "shared-types/events/legacy-user";
-import { getApprovingRole } from "shared-utils";
 
 import { getUserProfileSchema } from "./getUserProfile";
 import { getAllUserRolesByEmail, getApproversByRole } from "./userManagementService";
-
-type Territory = StateAccess | "N/A";
-type approverListType = {
-  role: UserRole;
-  territory: Territory;
-  approvers: { email: string; fullName: string }[];
-};
 
 const getApprovers = async (event: APIGatewayEvent) => {
   if (!event?.requestContext) {
@@ -43,9 +33,6 @@ const getApprovers = async (event: APIGatewayEvent) => {
       const eventBody = typeof event.body === "string" ? JSON.parse(event.body) : event.body;
       const safeEventBody = getUserProfileSchema.safeParse(eventBody);
 
-      // if the event has a body with a userEmail, the userEmail is not the same as
-      // the current user's email, and the current user is a user manager, then
-      // return the data for the userEmail instead of the current user
       if (
         safeEventBody.success &&
         safeEventBody?.data?.userEmail &&
@@ -56,54 +43,17 @@ const getApprovers = async (event: APIGatewayEvent) => {
     }
 
     const userRoles = await getAllUserRolesByEmail(lookupEmail);
+    if (!userRoles) throw Error;
 
-    // this is used for state submitters to filter out the territory AFTER the search
-    const roleStateMap = new Map<string, Territory[]>();
-    // this is used for all other role types because there are many overlapping approver roles
-    // and we want to minimize number of search calls
-    const savedApprovers = new Map<string, { email: string; fullName: string }[]>();
-
-    if (userRoles) {
-      userRoles.forEach(({ role, territory }: approverListType) => {
-        if (!roleStateMap.has(role)) {
-          roleStateMap.set(role, []);
-        }
-        roleStateMap.get(role)!.push(territory);
-      });
-    }
-
+    // loop through roles
     const approverList = await Promise.all(
-      // it will loop through each role a user has
-      Array.from(roleStateMap.entries()).map(async ([role, territories]) => {
-        const isStateSubmitter = role === "statesubmitter";
-        const approvingRole = getApprovingRole(role);
-
-        // if we already queried for this role than we don't need to do so again
-        if (savedApprovers.has(approvingRole)) {
-          console.log(`Using cached approvers for approvingRole: ${approvingRole}`);
-          return {
-            role,
-            territory: territories,
-            approvers: savedApprovers.get(approvingRole)!,
-          };
-        }
+      userRoles.map(async (userRole: { role: string; territories: string[] }) => {
         try {
-          const allApprovers = await getApproversByRole(role); // pass in the role of current user NOT approving role
-
-          // save for future check
-          savedApprovers.set(approvingRole, allApprovers);
-
-          // state submitters should filter approvers for territory
-          const filtered = isStateSubmitter
-            ? allApprovers.filter((approver) =>
-                territories.includes(approver.territory as Territory),
-              )
-            : allApprovers;
-
+          const allApprovers = await getApproversByRole(userRole.role); // pass in the role of current user NOT approving role
           return {
-            role,
-            territory: territories,
-            approvers: filtered,
+            role: userRole.role,
+            territory: userRole.territories,
+            approvers: allApprovers,
           };
         } catch (err) {
           return response({
