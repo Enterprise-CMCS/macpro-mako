@@ -171,20 +171,17 @@ export async function processRecord(kafkaRecord: KafkaRecord, config: ProcessEma
           };
           console.log("BEFORE PROCESS AND SEND EMAILS");
 
+          const { _seq_no, _primary_term } = item;
+
           try {
             const indexObject = {
               index: getOsNamespace("main"),
               id: safeID,
+              if_seq_no: _seq_no,
+              if_primary_term: _primary_term,
               body: {
-                script: {
-                  lang: "painless",
-                  source: `
-                    if (ctx._source.withdrawEmailSent == true) {
-                      ctx.op = 'none';
-                    } else {
-                      ctx._source.withdrawEmailSent = true;
-                    }
-                  `,
+                doc: {
+                  withdrawEmailSent: true,
                 },
               },
             };
@@ -195,7 +192,7 @@ export async function processRecord(kafkaRecord: KafkaRecord, config: ProcessEma
               return;
             }
             console.log(`OpenSearch updated successfully for ${safeID}`);
-            await os.sleep(50000);
+            // await os.sleep(50000);
             await processAndSendEmails(recordToPass as Events[keyof Events], safeID, config);
             console.log("Email successfully sent for withdrawn record.");
           } catch (e) {
