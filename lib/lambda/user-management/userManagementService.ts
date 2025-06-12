@@ -213,7 +213,7 @@ export const getApproversByRole = async (
   if (!approverRole) {
     throw new Error(`Approving role not found for role: ${role}`);
   }
-  console.log("ANDIE 2", approverRole);
+  console.log("ANDIE 2", role, approverRole);
   const results = await search(domain, index, {
     query: {
       bool: {
@@ -223,14 +223,14 @@ export const getApproversByRole = async (
     size: 1,
   });
 
-  console.log("ANDIE 3", JSON.stringify(results));
+  console.log("ANDIE 3", role, JSON.stringify(results));
 
   if (!results) {
     console.log("ERROR with results");
     throw Error;
   }
 
-  console.log("ANDIE 4");
+  console.log("ANDIE 4", role);
 
   // format search results to match what is needed
   const approverRoleList: { id: string; email: string; territory: string }[] =

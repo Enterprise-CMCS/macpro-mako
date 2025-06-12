@@ -43,6 +43,7 @@ const getApprovers = async (event: APIGatewayEvent) => {
     }
 
     const userRoles = await getAllUserRolesByEmail(lookupEmail);
+    console.log("ANDIE - USER ROLES: ", userRoles);
     if (!userRoles) throw Error;
 
     // loop through roles
