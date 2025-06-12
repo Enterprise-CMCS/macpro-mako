@@ -103,6 +103,7 @@ describe("syncing Changelog events", () => {
       newChipDetailsSubmission,
       {
         actionType: "Amend",
+        chipSubmissionType: [],
       },
     ],
     [

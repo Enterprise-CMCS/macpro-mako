@@ -10,7 +10,7 @@ export const baseSchema = z.object({
   attachments: z.object({
     chipEligibility: z.object({
       files: attachmentArraySchema(),
-      label: z.string().default("CHIP eligibility template"),
+      label: z.string().default("CHIP Eligibility Template"),
     }),
     coverLetter: z.object({
       files: attachmentArraySchema(),
