@@ -138,10 +138,11 @@ export async function processRecord(kafkaRecord: KafkaRecord, config: ProcessEma
       ...JSON.parse(decodeBase64WithUtf8(value)),
     };
     const safeSeatoolRecord = opensearch.main.seatool.transform(safeID).safeParse(seatoolRecord);
-
+    const item = await os.getItem(config.osDomain, getOsNamespace("main"), safeID);
+    console.log("mytests:", item, seatoolRecord);
     if (safeSeatoolRecord.data?.seatoolStatus === SEATOOL_STATUS.WITHDRAWN) {
       try {
-        const item = await os.getItem(config.osDomain, getOsNamespace("main"), safeID);
+        // const item = await os.getItem(config.osDomain, getOsNamespace("main"), safeID);
 
         if (!item?.found || !item?._source) {
           console.log(`The package was not found for id: ${id} in mako. Doing nothing.`);
