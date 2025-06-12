@@ -131,20 +131,23 @@ export async function processRecord(kafkaRecord: KafkaRecord, config: ProcessEma
   const { key, value, timestamp } = kafkaRecord;
   const id: string = decodeBase64WithUtf8(key);
 
-  const safeID = id.replace(/^"|"$/g, "").toUpperCase();
-  const seatoolRecord: Document = {
-    safeID,
-    ...JSON.parse(decodeBase64WithUtf8(value)),
-  };
-  const safeSeatoolRecord = opensearch.main.seatool.transform(safeID).safeParse(seatoolRecord);
-
-  const item = await os.getItem(config.osDomain, getOsNamespace("main"), safeID);
-  console.log("mytests:", item, seatoolRecord);
-
   if (kafkaRecord.topic === "aws.seatool.ksql.onemac.three.agg.State_Plan") {
+    const safeID = id.replace(/^"|"$/g, "").toUpperCase();
+    const seatoolRecord: Document = {
+      safeID,
+      ...JSON.parse(decodeBase64WithUtf8(value)),
+    };
+    const safeSeatoolRecord = opensearch.main.seatool.transform(safeID).safeParse(seatoolRecord);
+    const item = await os.getItem(config.osDomain, getOsNamespace("main"), safeID);
+
+    if (!item?.found || !item?._source) {
+      console.log(`The package was not found for id: ${id} in mako. Doing nothing.`);
+      return;
+    }
+
     if (safeSeatoolRecord.data?.seatoolStatus === SEATOOL_STATUS.WITHDRAWN) {
       try {
-        // const item = await os.getItem(config.osDomain, getOsNamespace("main"), safeID);
+        const item = await os.getItem(config.osDomain, getOsNamespace("main"), safeID);
 
         if (!item?.found || !item?._source) {
           console.log(`The package was not found for id: ${id} in mako. Doing nothing.`);
@@ -280,8 +283,8 @@ export async function processAndSendEmails(
   const emails: EmailAddresses = JSON.parse(sec);
 
   const allStateUsersEmails = allStateUsers.map((user) => user.formattedEmailAddress);
-  const isChipEligibility = !!(record as any).attachments?.chipEligibility;
-
+  const isChipEligibility = item._source?.chipSubmissionType ?? false;
+  console.log("item source before templatevars", item);
   const templateVariables = {
     ...record,
     id,
