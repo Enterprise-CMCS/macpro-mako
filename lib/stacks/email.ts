@@ -252,8 +252,8 @@ export class Email extends cdk.NestedStack {
     });
 
     new CfnEventSourceMapping(this, "SinkSESTriggerSEATool", {
-      batchSize: 1,
-      maximumBatchingWindowInSeconds: 30,
+      batchSize: 50,
+      maximumBatchingWindowInSeconds: 5,
       enabled: true,
       selfManagedEventSource: {
         endpoints: {
