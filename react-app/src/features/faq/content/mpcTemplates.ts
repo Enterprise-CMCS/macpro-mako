@@ -2,7 +2,7 @@ import { Template } from "./chpRenderSection";
 
 export const MPC_TEMPLATES: Template[] = [
   {
-    title: "P&CS SPA templates",
+    title: "Premium and Cost Sharing SPA templates",
     href: "/mpc/P&CSSPATemplates.pdf",
   },
   {
