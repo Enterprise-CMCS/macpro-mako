@@ -181,6 +181,50 @@ export async function processRecord(kafkaRecord: KafkaRecord, config: ProcessEma
     }
     return;
   }
+
+  if (typeof key !== "string") {
+    console.log("key is not a string ", JSON.stringify(key, null, 2));
+    throw new Error("Key is not a string");
+  }
+
+  if (!value) {
+    console.log("Tombstone detected. Doing nothing for this event");
+    return;
+  }
+
+  const record = {
+    timestamp,
+    ...JSON.parse(decodeBase64WithUtf8(value)),
+  };
+  console.log("record: ", JSON.stringify(record, null, 2));
+
+  const valueParsed = JSON.parse(decodeBase64WithUtf8(value));
+  if (valueParsed.eventType === "user-role" || valueParsed.eventType === "legacy-user-role") {
+    try {
+      console.log("Sending user role email...");
+      await sendUserRoleEmails(valueParsed, timestamp, config);
+    } catch (error) {
+      console.error("Error sending user email", error);
+      throw error;
+    }
+    return;
+  }
+
+  if (record.origin !== "mako") {
+    console.log("Kafka event is not of mako origin. Doing nothing.");
+    return;
+  }
+
+  try {
+    console.log("Config:", JSON.stringify(config, null, 2));
+    await processAndSendEmails(record, id, config);
+  } catch (error) {
+    console.error(
+      "Error processing record: { record, id, config }",
+      JSON.stringify({ record, id, config }, null, 2),
+    );
+    throw error;
+  }
 }
 
 export function validateEmailTemplate(template: any) {
