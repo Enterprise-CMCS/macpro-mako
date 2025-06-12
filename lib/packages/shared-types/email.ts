@@ -20,6 +20,7 @@ export interface CommonEmailVariables {
   actionType: string;
   allStateUsersEmails?: string[];
   title?: string;
+  chipEligibility?: boolean;
 }
 
 export interface RelatedEventType {
