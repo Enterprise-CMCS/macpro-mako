@@ -71,7 +71,7 @@ export function getApprovingRole(role: string) {
     norole: "systemadmin",
   };
 
-  return approvingUserRole[role as keyof typeof approvingUserRole];
+  return approvingUserRole[role as keyof typeof approvingUserRole] ?? role;
 }
 
 export const userRoleMap = {

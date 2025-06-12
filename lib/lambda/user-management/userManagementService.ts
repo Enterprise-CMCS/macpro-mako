@@ -210,6 +210,9 @@ export const getApproversByRole = async (
   const { domain, index } = resolvedDomain;
 
   const approverRole = getApprovingRole(role);
+  if (!approverRole) {
+    throw new Error(`Approving role not found for role: ${role}`);
+  }
 
   const results = await search(domain, index, {
     query: {

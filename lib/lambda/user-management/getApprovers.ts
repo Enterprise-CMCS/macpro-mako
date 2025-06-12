@@ -77,12 +77,14 @@ const getApprovers = async (event: APIGatewayEvent) => {
       Array.from(roleStateMap.entries()).map(async ([role, territories]) => {
         const isStateSubmitter = role === "statesubmitter";
         const approvingRole = getApprovingRole(role);
+
         // if we already queried for this role than we don't need to do so again
         if (savedApprovers.has(approvingRole)) {
+          console.log(`Using cached approvers for approvingRole: ${approvingRole}`);
           return {
             role,
             territory: territories,
-            approvers: savedApprovers.get(approvingRole),
+            approvers: savedApprovers.get(approvingRole)!,
           };
         }
         try {
