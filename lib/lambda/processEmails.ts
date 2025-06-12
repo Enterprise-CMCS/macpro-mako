@@ -17,8 +17,6 @@ import {
 import { decodeBase64WithUtf8, formatActionType, getSecret } from "shared-utils";
 import { retry } from "shared-utils/retry";
 
-import { sendUserRoleEmails } from "./processUserRoleEmails";
-
 class TemporaryError extends Error {
   constructor(message: string) {
     super(message);
