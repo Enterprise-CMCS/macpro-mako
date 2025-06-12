@@ -36,13 +36,24 @@ type PackageDetailsProps = {
 export const PackageDetails = ({ submission }: PackageDetailsProps) => {
   const { data: user, isLoading: isUserLoading } = useGetUser();
   const title = useMemo(() => {
+    const hasChipSubmissionType =
+      Array.isArray(submission.chipSubmissionType) && submission.chipSubmissionType.length > 0;
+
+    const hasChipEligibilityAttachment =
+      Array.isArray(submission.attachments) &&
+      submission.attachments.some((attachment) => attachment.type === "chipEligibility");
+
+    if (hasChipSubmissionType || hasChipEligibilityAttachment) {
+      return "CHIP Eligibility SPA Package Details";
+    }
+
     switch (submission.authority) {
       case Authority["1915b"]:
       case Authority["1915c"]:
-      case undefined: // Some TEs have no authority
-        if (submission.actionType == "Amend" && submission.authority === Authority["1915c"])
+      case undefined:
+        if (submission.actionType === "Amend" && submission.authority === Authority["1915c"])
           return "1915(c) Appendix K Amendment Package Details";
-        if (submission.actionType == "Extend") return "Temporary Extension Request Details";
+        if (submission.actionType === "Extend") return "Temporary Extension Request Details";
     }
 
     return `${submission.authority} Package Details`;
