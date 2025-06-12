@@ -69,6 +69,7 @@ export const ChipDetailsForm = () => {
           <FormField
             control={control}
             name="chipSubmissionType"
+            data-testid="HERE"
             render={({ field }) => {
               const selectedValues = Array.isArray(field.value) ? field.value : [];
               return (
@@ -80,7 +81,10 @@ export const ChipDetailsForm = () => {
                         showIcon={false}
                         className="relative w-full mt-2 h-[40px] px-[4px] gap-[5px] border border-[#565C65] text-gray-950 flex items-center justify-between rounded-none after:hidden"
                       >
-                        <SelectValue className="truncate text-left w-full">
+                        <SelectValue
+                          data-testid="selected-value-chip"
+                          className="truncate text-left w-full"
+                        >
                           {selectedValues.length > 0 ? selectedValues.join(", ") : ""}
                         </SelectValue>
                         <div className="flex items-center pl-2 pr-3 h-full border-l border-slate-300">
@@ -101,6 +105,7 @@ export const ChipDetailsForm = () => {
                         const isSelected = selectedValues.includes(option);
                         return (
                           <div
+                            data-testid={option.replace(/ /g, "-").toLowerCase()}
                             key={option}
                             className="flex items-center gap-2 px-4 py-2 cursor-pointer hover:bg-gray-100"
                             onClick={() => {
