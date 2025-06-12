@@ -55,7 +55,7 @@ export const newSubmission: AuthoritiesWithUserTypesTemplate = {
       return {
         to: variables.emails.chipInbox,
         cc: variables.emails.chipCcList,
-        subject: `New CHIP SPA ${variables.id} Submitted`,
+        subject: `New ${`CHIP${variables.isChipEligibility ? " Eligibility" : ""}`} SPA ${variables.id} Submitted`,
         body,
       };
     },
@@ -74,7 +74,7 @@ export const newSubmission: AuthoritiesWithUserTypesTemplate = {
 
       return {
         to: [`${variables.submitterName} <${variables.submitterEmail}>`],
-        subject: `Your CHIP SPA ${variables.id} has been submitted to CMS`,
+        subject: `Your ${`CHIP${variables.isChipEligibility ? " Eligibility" : ""}`} SPA ${variables.id} has been submitted to CMS`,
         body,
       };
     },
