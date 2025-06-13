@@ -8,27 +8,27 @@ import {
 } from "../../email-components";
 import { BaseEmailTemplate } from "../../email-templates";
 
-export const ChipSpaCMSEmail = ({
+export const ChipSpaDetailsCMSEmail = ({
   variables,
 }: {
-  variables: Events["RespondToRai"] & CommonEmailVariables;
+  variables: Events["NewChipDetailsSubmission"] & CommonEmailVariables;
 }) => {
-  const chipPrefix = `CHIP${variables.isChipEligibility ? " Eligibility" : ""}`;
-
+  const previewText = `CHIP Eligibility SPA ${variables.id} Submitted`;
+  const heading = "The OneMAC Submission Portal received a CHIP Eligibility State Plan Amendment:";
   return (
     <BaseEmailTemplate
-      previewText={`RAI Response for ${variables.id} Submitted`}
-      heading={`The OneMAC Submission Portal received a ${chipPrefix} SPA RAI Response Submission:`}
+      previewText={previewText}
+      heading={heading}
       applicationEndpointUrl={variables.applicationEndpointUrl}
       footerContent={<BasicFooter />}
     >
-      <LoginInstructions appEndpointURL={variables.applicationEndpointUrl} />
+      <LoginInstructions appEndpointURL={variables.applicationEndpointUrl} useThisLink />
       <PackageDetails
         details={{
           "State or Territory": variables.territory,
           Name: variables.submitterName,
           "Email Address": variables.submitterEmail,
-          [`${chipPrefix} SPA Package ID`]: variables.id,
+          "CHIP Eligibility SPA Package ID": variables.id,
           Summary: variables.additionalInformation,
         }}
       />

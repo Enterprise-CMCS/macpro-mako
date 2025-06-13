@@ -362,3 +362,18 @@ export const supportingDocumentation = {
   ],
   label: "Supporting Documentation",
 };
+
+export const chipEligibility = {
+  files: [
+    {
+      filename: "chip_eligibility.pdf",
+      title: "Chip Eligibility",
+      bucket: "mako-outbox-attachments-635052997545",
+      key: "8d02fabb-9c01-41b4-a75d-e365bbed3d6a.pdf",
+      get uploadDate() {
+        return Date.now();
+      },
+    },
+  ],
+  label: "Supporting Documentation",
+};
