@@ -1,6 +1,6 @@
 import { test as setup } from "@playwright/test";
 
-import { generateAuthFile } from "./auth.setup";
+import { checkAuthPath, generateAuthFile } from "./auth.setup";
 import { baseURL } from "./baseURLs";
 
 const STAGE = process.env.STAGE_NAME || "main";
@@ -15,12 +15,14 @@ const EUAPASSWORD = process.env.EUAPASSWORD;
 const ZZSTATEID = process.env.ZZSTATEID;
 const ZZSTATEPASSWORD = process.env.ZZSTATEPASSWORD;
 
-console.log(`[Setup] Stage: ${STAGE} | Project: ${PROJECT} | Base URL: ${baseURL.prod}`);
+console.log(`[Smoke Setup] Stage: ${STAGE} | Project: ${PROJECT} | Base URL: ${baseURL.prod}`);
 
 setup("eua auth", async () => {
   if (!EUAID || !EUAPASSWORD) {
     console.error("no EUA ID or password provided.");
   } else {
+    await checkAuthPath(euaAuthFile);
+
     await generateAuthFile({
       baseURL: baseURL.prod,
       user: EUAID,

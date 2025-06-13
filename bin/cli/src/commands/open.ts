@@ -6,7 +6,13 @@ import { checkIfAuthenticated, openUrl, project, setStageFromBranch } from "../l
 const createOpenCommand = (name: string, describe: string, exportName: string) => ({
   command: name,
   describe: describe,
-  builder: (yargs: Argv) => yargs.option("stage", { type: "string", demandOption: false }),
+  builder: (yargs: Argv) =>
+    yargs.option("stage", {
+      type: "string",
+      demandOption: false,
+      describe: "Stage environment in AWS",
+      defaultDescription: "current branch name",
+    }),
   handler: async (options: { stage?: string }) => {
     await checkIfAuthenticated();
     const stage = options.stage || (await setStageFromBranch());
@@ -25,12 +31,12 @@ const createOpenCommand = (name: string, describe: string, exportName: string) =
 
 export const openApp = createOpenCommand(
   "open-app",
-  "Open the app in a browser.",
+  "Open the application url for the Stage environment in a browser. \n\n** Requires MACPro Application Admin or MACPro ReadOnly AWS credentials **\n",
   "applicationEndpointUrl",
 );
 
 export const openKibana = createOpenCommand(
   "open-kibana",
-  "Open the Kibana dashboard, the frontend for OpenSearch.",
+  "Open the Kibana dashboard, the frontend for OpenSearch, for the Stage environment in a browser. \n\n** Requires MACPro Application Admin or MACPro ReadOnly AWS credentials **\n",
   "kibanaUrl",
 );
