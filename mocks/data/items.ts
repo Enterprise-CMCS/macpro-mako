@@ -59,6 +59,9 @@ const items: Record<string, TestItemResult> = {
       stateStatus: statusToDisplayToStateUser[SEATOOL_STATUS.APPROVED],
       cmsStatus: statusToDisplayToCmsUser[SEATOOL_STATUS.APPROVED],
       actionType: "New",
+      statusDate: "2024-05-26T09:17:21.557Z",
+      changedDate: "2024-05-26T09:17:21.557Z",
+      makoChangedDate: "2024-05-26T09:17:21.557Z",
     },
   },
   [DELETED_ITEM_ID]: {
@@ -93,6 +96,9 @@ const items: Record<string, TestItemResult> = {
       id: EXISTING_ITEM_ID,
       seatoolStatus: SEATOOL_STATUS.APPROVED,
       actionType: "New",
+      statusDate: "2024-12-25T09:17:21.557Z",
+      changedDate: "2024-12-25T09:17:21.557Z",
+      makoChangedDate: "2024-12-25T09:17:21.557Z",
     },
   },
   [WITHDRAW_EMAIL_SENT]: {
@@ -193,6 +199,9 @@ const items: Record<string, TestItemResult> = {
       actionType: "New",
       origin: "SEATool",
       state: "MD",
+      statusDate: "2023-11-26T17:17:21.557Z",
+      changedDate: "2023-11-26T17:17:21.557Z",
+      makoChangedDate: "2023-11-26T17:17:21.557Z",
     },
   },
   [CAPITATED_AMEND_ITEM_ID]: {
@@ -521,6 +530,7 @@ const items: Record<string, TestItemResult> = {
       actionType: "New",
       state: "MD",
       origin: "OneMAC",
+      statusDate: "2024-11-26T18:17:21.557Z",
       changedDate: "2024-11-26T18:17:21.557Z",
       makoChangedDate: "2024-11-26T18:17:21.557Z",
       changelog: [
@@ -729,6 +739,9 @@ const items: Record<string, TestItemResult> = {
       authority: "1915(b)",
       origin: "OneMAC",
       state: "MD",
+      statusDate: "2025-06-10T13:17:21.557Z",
+      changedDate: "2025-06-10T13:17:21.557Z",
+      makoChangedDate: "2025-06-10T13:17:21.557Z",
       changelog: [
         {
           _id: `${CAPITATED_INITIAL_ITEM_ID}-0001`,
