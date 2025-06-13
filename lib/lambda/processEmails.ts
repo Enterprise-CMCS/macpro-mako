@@ -163,7 +163,9 @@ export async function processRecord(kafkaRecord: KafkaRecord, config: ProcessEma
           origin: "seatool",
         };
 
-        await processAndSendEmails(recordToPass as Events[keyof Events], safeID, config);
+        if (!config.isDev) {
+          await processAndSendEmails(recordToPass as Events[keyof Events], safeID, config);
+        }
 
         const indexObject = {
           index: getOsNamespace("main"),
