@@ -1,6 +1,7 @@
 import { defineConfig, devices, PlaywrightTestConfig } from "@playwright/test";
 
 import { getDeploymentOutput } from "./lib/auth.secrets";
+import { baseURL } from "./lib/baseURLs";
 /**
  * See https://playwright.dev/docs/test-configuration.
  */
@@ -21,10 +22,12 @@ export default defineConfig({
   /* Fail the build on CI if you accidentally left test.only in the source code. */
   forbidOnly: !!process.env.CI,
   /* Retry on CI only */
-  retries: process.env.CI ? 2 : 0,
+  // retries: process.env.CI ? 2 : 0,
+  retries: 0,
+  // Limit the number of failures on CI to save resources
+  maxFailures: process.env.CI ? 10 : undefined,
   /* Opt out of parallel tests on CI. */
-  // workers: process.env.CI ? 1 : undefined,
-  workers: 1,
+  workers: process.env.CI ? 1 : undefined,
   /* Reporter to use. See https://playwright.dev/docs/test-reporters */
   // reporter: [["dot"], ["html"]],
   reporter: process.env.CI
@@ -65,6 +68,10 @@ export default defineConfig({
       testMatch: /ci\.setup\.ts/,
     },
     {
+      name: "val-setup",
+      testMatch: /val\.setup\.ts/,
+    },
+    {
       name: "eua-setup",
       testMatch: /eua\.setup\.ts/,
     },
@@ -73,9 +80,13 @@ export default defineConfig({
       testMatch: /mfa\.setup\.ts/,
     },
     {
+      name: "smoke-test",
+      testMatch: /smoke\.setup\.ts/,
+    },
+    {
       name: "local",
       use: {
-        baseURL: "http://localhost:5000",
+        baseURL: baseURL.local,
         storageState: "./playwright/.auth/state-user.json",
       },
       dependencies: ["local-setup"],
@@ -83,15 +94,15 @@ export default defineConfig({
     {
       name: "ci",
       use: {
-        storageState: "./playwright/.auth/state-user.json",
         baseURL: deploymentOutput.applicationEndpointUrl,
+        storageState: "./playwright/.auth/state-user.json",
       },
       dependencies: ["ci-setup"],
     },
     {
       name: "eua-user",
       use: {
-        baseURL: "https://mako.cms.gov",
+        baseURL: baseURL.prod,
         storageState: "./playwright/.auth/eua-user.json",
       },
       dependencies: ["eua-setup"],
@@ -99,10 +110,18 @@ export default defineConfig({
     {
       name: "mfa-user",
       use: {
-        baseURL: "https://mako.cms.gov",
+        baseURL: baseURL.prod,
         storageState: "./playwright/.auth/zzState-user.json",
       },
       dependencies: ["mfa-setup"],
+    },
+    {
+      name: "smoke-tests",
+      testMatch: "**/smoke/**/*.spec.ts",
+      use: {
+        baseURL: baseURL.prod,
+      },
+      dependencies: ["smoke-test"],
     },
   ],
 }) satisfies PlaywrightTestConfig;

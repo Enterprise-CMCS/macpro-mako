@@ -9,6 +9,7 @@ import { ATTACHMENT_BUCKET_NAME } from "../consts";
 import type { TestItemResult } from "../index.d";
 export const EXISTING_ITEM_PENDING_ID = "MD-0002.R00.00";
 export const EXISTING_ITEM_APPROVED_NEW_ID = "MD-0000.R00.00";
+export const DELETED_ITEM_ID = "MD-0000.R00.00-del";
 export const VALID_ITEM_TEMPORARY_EXTENSION_ID = "MD-0000.R00.TE00";
 export const VALID_ITEM_EXTENSION_ID = "VA-1111.R11.00";
 export const EXISTING_ITEM_APPROVED_AMEND_ID = "MD-0000.R00.01";
@@ -58,6 +59,20 @@ const items: Record<string, TestItemResult> = {
       stateStatus: statusToDisplayToStateUser[SEATOOL_STATUS.APPROVED],
       cmsStatus: statusToDisplayToCmsUser[SEATOOL_STATUS.APPROVED],
       actionType: "New",
+      statusDate: "2024-05-26T09:17:21.557Z",
+      changedDate: "2024-05-26T09:17:21.557Z",
+      makoChangedDate: "2024-05-26T09:17:21.557Z",
+    },
+  },
+  [DELETED_ITEM_ID]: {
+    _id: DELETED_ITEM_ID,
+    found: true,
+    _source: {
+      id: DELETED_ITEM_ID,
+      seatoolStatus: SEATOOL_STATUS.APPROVED,
+      stateStatus: statusToDisplayToStateUser[SEATOOL_STATUS.APPROVED],
+      cmsStatus: statusToDisplayToCmsUser[SEATOOL_STATUS.APPROVED],
+      actionType: "New",
     },
   },
   [SIMPLE_ID]: {
@@ -81,6 +96,9 @@ const items: Record<string, TestItemResult> = {
       id: EXISTING_ITEM_ID,
       seatoolStatus: SEATOOL_STATUS.APPROVED,
       actionType: "New",
+      statusDate: "2024-12-25T09:17:21.557Z",
+      changedDate: "2024-12-25T09:17:21.557Z",
+      makoChangedDate: "2024-12-25T09:17:21.557Z",
     },
   },
   [WITHDRAW_EMAIL_SENT]: {
@@ -181,6 +199,9 @@ const items: Record<string, TestItemResult> = {
       actionType: "New",
       origin: "SEATool",
       state: "MD",
+      statusDate: "2023-11-26T17:17:21.557Z",
+      changedDate: "2023-11-26T17:17:21.557Z",
+      makoChangedDate: "2023-11-26T17:17:21.557Z",
     },
   },
   [CAPITATED_AMEND_ITEM_ID]: {
@@ -509,6 +530,7 @@ const items: Record<string, TestItemResult> = {
       actionType: "New",
       state: "MD",
       origin: "OneMAC",
+      statusDate: "2024-11-26T18:17:21.557Z",
       changedDate: "2024-11-26T18:17:21.557Z",
       makoChangedDate: "2024-11-26T18:17:21.557Z",
       changelog: [
@@ -717,6 +739,9 @@ const items: Record<string, TestItemResult> = {
       authority: "1915(b)",
       origin: "OneMAC",
       state: "MD",
+      statusDate: "2025-06-10T13:17:21.557Z",
+      changedDate: "2025-06-10T13:17:21.557Z",
+      makoChangedDate: "2025-06-10T13:17:21.557Z",
       changelog: [
         {
           _id: `${CAPITATED_INITIAL_ITEM_ID}-0001`,

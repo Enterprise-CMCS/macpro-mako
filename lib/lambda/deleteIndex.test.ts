@@ -30,7 +30,11 @@ describe("Lambda Handler", () => {
       `${OPENSEARCH_INDEX_NAMESPACE}subtypes`,
       `${OPENSEARCH_INDEX_NAMESPACE}legacyinsights`,
       `${OPENSEARCH_INDEX_NAMESPACE}cpocs`,
+      `${OPENSEARCH_INDEX_NAMESPACE}users`,
+      `${OPENSEARCH_INDEX_NAMESPACE}roles`,
     ];
+
+    expect(deleteIndexSpy).toHaveBeenCalledTimes(expectedIndices.length);
 
     expectedIndices.forEach((index) => {
       expect(deleteIndexSpy).toHaveBeenCalledWith(OPENSEARCH_DOMAIN, index);
@@ -51,15 +55,65 @@ describe("Lambda Handler", () => {
     });
   });
 
-  it("should handle errors during index deletion", async () => {
-    mockedServer.use(errorDeleteIndexHandler);
+  it("should handle error on first try and success on retry during index deletion", async () => {
+    mockedServer.use(errorDeleteIndexHandler());
 
     const event = {
-      osDomain: "test-domain",
-      indexNamespace: "test-namespace-",
+      osDomain: OPENSEARCH_DOMAIN,
+      indexNamespace: OPENSEARCH_INDEX_NAMESPACE,
     };
 
     await handler(event, {} as Context, callback);
+
+    const expectedIndices = [
+      `${OPENSEARCH_INDEX_NAMESPACE}main`,
+      `${OPENSEARCH_INDEX_NAMESPACE}changelog`,
+      `${OPENSEARCH_INDEX_NAMESPACE}insights`,
+      `${OPENSEARCH_INDEX_NAMESPACE}types`,
+      `${OPENSEARCH_INDEX_NAMESPACE}subtypes`,
+      `${OPENSEARCH_INDEX_NAMESPACE}legacyinsights`,
+      `${OPENSEARCH_INDEX_NAMESPACE}cpocs`,
+      `${OPENSEARCH_INDEX_NAMESPACE}users`,
+      `${OPENSEARCH_INDEX_NAMESPACE}roles`,
+    ];
+
+    // should have been called one extra time because it retried after the first failure.
+    expect(deleteIndexSpy).toHaveBeenCalledTimes(expectedIndices.length + 1);
+    expectedIndices.forEach((index) => {
+      expect(deleteIndexSpy).toHaveBeenCalledWith(OPENSEARCH_DOMAIN, index);
+    });
+
+    expect(callback).toHaveBeenCalledWith(null, { statusCode: 200 });
+  });
+
+  it("should handle error on retry during index deletion", async () => {
+    mockedServer.use(errorDeleteIndexHandler(), errorDeleteIndexHandler());
+
+    const event = {
+      osDomain: OPENSEARCH_DOMAIN,
+      indexNamespace: OPENSEARCH_INDEX_NAMESPACE,
+    };
+
+    await handler(event, {} as Context, callback);
+
+    const expectedIndices = [
+      `${OPENSEARCH_INDEX_NAMESPACE}main`,
+      `${OPENSEARCH_INDEX_NAMESPACE}changelog`,
+      `${OPENSEARCH_INDEX_NAMESPACE}insights`,
+      `${OPENSEARCH_INDEX_NAMESPACE}types`,
+      `${OPENSEARCH_INDEX_NAMESPACE}subtypes`,
+      `${OPENSEARCH_INDEX_NAMESPACE}legacyinsights`,
+      `${OPENSEARCH_INDEX_NAMESPACE}cpocs`,
+      `${OPENSEARCH_INDEX_NAMESPACE}users`,
+      `${OPENSEARCH_INDEX_NAMESPACE}roles`,
+    ];
+
+    // should have been called one extra time because it retried after the first failure.
+    expect(deleteIndexSpy).toHaveBeenCalledTimes(expectedIndices.length + 1);
+
+    expectedIndices.forEach((index) => {
+      expect(deleteIndexSpy).toHaveBeenCalledWith(OPENSEARCH_DOMAIN, index);
+    });
 
     expect(callback).toHaveBeenCalledWith(expect.any(Error), {
       statusCode: 500,

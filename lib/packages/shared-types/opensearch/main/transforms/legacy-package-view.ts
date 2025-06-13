@@ -3,7 +3,7 @@ import {
   LegacyPackageAction,
   legacyPackageViewSchema,
   SEATOOL_STATUS,
-} from "../../..";
+} from "../../../index";
 
 export const transform = (id: string) => {
   return legacyPackageViewSchema.transform((data) => {

@@ -1,7 +1,7 @@
 import { render } from "@react-email/render";
 import { Authority, CommonEmailVariables, EmailAddresses, Events } from "shared-types";
 
-import { AuthoritiesWithUserTypesTemplate } from "../..";
+import { AuthoritiesWithUserTypesTemplate } from "../../index";
 import {
   ChipSpaCMSEmail,
   ChipSpaStateEmail,
@@ -39,6 +39,8 @@ export const withdrawPackage: AuthoritiesWithUserTypesTemplate = {
     cms: async (
       variables: Events["WithdrawPackage"] & CommonEmailVariables & { emails: EmailAddresses },
     ) => {
+      const chipPrefix = `CHIP${variables.isChipEligibility ? " Eligibility" : ""}`;
+
       return {
         to: [
           ...variables.emails.chipInbox,
@@ -46,18 +48,20 @@ export const withdrawPackage: AuthoritiesWithUserTypesTemplate = {
           ...variables.emails.srtEmails,
         ],
         cc: variables.emails.chipCcList,
-        subject: `CHIP SPA Package ${variables.id} Withdraw Requested`,
+        subject: `${chipPrefix} SPA Package ${variables.id} Withdraw Requested`,
         body: await render(<ChipSpaCMSEmail variables={variables} />),
       };
     },
     state: async (
       variables: Events["WithdrawPackage"] & CommonEmailVariables & { emails: EmailAddresses },
     ) => {
+      const chipPrefix = `CHIP${variables.isChipEligibility ? " Eligibility" : ""}`;
+
       return {
         to: variables.allStateUsersEmails?.length
           ? variables.allStateUsersEmails
           : [`${variables.submitterName} <${variables.submitterEmail}>`],
-        subject: `CHIP SPA Package ${variables.id} Withdraw Requested`,
+        subject: `${chipPrefix} SPA Package ${variables.id} Withdraw Requested`,
         body: await render(<ChipSpaStateEmail variables={variables} />),
       };
     },

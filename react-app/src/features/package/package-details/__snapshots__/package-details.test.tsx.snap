@@ -16,14 +16,12 @@ exports[`package details > render package details for a 1915(c) submission 1`] =
       class="my-6 bg-slate-200"
     />
     <div
-      class="gap-8 flex flex-col"
+      class="grid gap-y-8"
       data-testid="undefined-child"
     >
-      <div
-        class="flex-col gap-4 max-w-2xl"
-      >
+      <div>
         <div
-          class="grid grid-cols-2 gap-6"
+          class="two-cols gap-y-6 sm:gap-y-6"
         >
           <div>
             <h3
@@ -71,18 +69,6 @@ exports[`package details > render package details for a 1915(c) submission 1`] =
               class="py-2"
             >
               Maryland
-            </div>
-          </div>
-          <div>
-            <h3
-              class="font-bold"
-            >
-              Proposed Effective Date
-            </h3>
-            <div
-              class="py-2"
-            >
-              Pending
             </div>
           </div>
           <div>
@@ -137,6 +123,18 @@ exports[`package details > render package details for a 1915(c) submission 1`] =
             <h3
               class="font-bold"
             >
+              Proposed Effective Date
+            </h3>
+            <div
+              class="py-2"
+            >
+              Pending
+            </div>
+          </div>
+          <div>
+            <h3
+              class="font-bold"
+            >
               Approved Effective Date
             </h3>
             <div
@@ -150,7 +148,7 @@ exports[`package details > render package details for a 1915(c) submission 1`] =
           class="my-4"
         />
         <div
-          class="grid grid-cols-2 gap-6"
+          class="two-cols gap-y-6 sm:gap-y-6"
         >
           <div>
             <h3
@@ -208,14 +206,12 @@ exports[`package details > render package details for a 1915(c) submission with 
       class="my-6 bg-slate-200"
     />
     <div
-      class="gap-8 flex flex-col"
+      class="grid gap-y-8"
       data-testid="undefined-child"
     >
-      <div
-        class="flex-col gap-4 max-w-2xl"
-      >
+      <div>
         <div
-          class="grid grid-cols-2 gap-6"
+          class="two-cols gap-y-6 sm:gap-y-6"
         >
           <div>
             <h3
@@ -263,18 +259,6 @@ exports[`package details > render package details for a 1915(c) submission with 
               class="py-2"
             >
               Maryland
-            </div>
-          </div>
-          <div>
-            <h3
-              class="font-bold"
-            >
-              Proposed Effective Date
-            </h3>
-            <div
-              class="py-2"
-            >
-              Pending
             </div>
           </div>
           <div>
@@ -329,6 +313,18 @@ exports[`package details > render package details for a 1915(c) submission with 
             <h3
               class="font-bold"
             >
+              Proposed Effective Date
+            </h3>
+            <div
+              class="py-2"
+            >
+              Pending
+            </div>
+          </div>
+          <div>
+            <h3
+              class="font-bold"
+            >
               Approved Effective Date
             </h3>
             <div
@@ -342,7 +338,7 @@ exports[`package details > render package details for a 1915(c) submission with 
           class="my-4"
         />
         <div
-          class="grid grid-cols-2 gap-6"
+          class="two-cols gap-y-6 sm:gap-y-6"
         >
           <div>
             <h3
@@ -400,14 +396,12 @@ exports[`package details > render package details for a 1915(c) submission with 
       class="my-6 bg-slate-200"
     />
     <div
-      class="gap-8 flex flex-col"
+      class="grid gap-y-8"
       data-testid="undefined-child"
     >
-      <div
-        class="flex-col gap-4 max-w-2xl"
-      >
+      <div>
         <div
-          class="grid grid-cols-2 gap-6"
+          class="two-cols gap-y-6 sm:gap-y-6"
         >
           <div>
             <h3
@@ -482,7 +476,7 @@ exports[`package details > render package details for a 1915(c) submission with 
           class="my-4"
         />
         <div
-          class="grid grid-cols-2 gap-6"
+          class="two-cols gap-y-6 sm:gap-y-6"
         >
           <div>
             <h3
@@ -524,14 +518,12 @@ exports[`package details > renders package details for a 1915(b) submission 1`] 
       class="my-6 bg-slate-200"
     />
     <div
-      class="gap-8 flex flex-col"
+      class="grid gap-y-8"
       data-testid="undefined-child"
     >
-      <div
-        class="flex-col gap-4 max-w-2xl"
-      >
+      <div>
         <div
-          class="grid grid-cols-2 gap-6"
+          class="two-cols gap-y-6 sm:gap-y-6"
         >
           <div>
             <h3
@@ -579,18 +571,6 @@ exports[`package details > renders package details for a 1915(b) submission 1`] 
               class="py-2"
             >
               Maryland
-            </div>
-          </div>
-          <div>
-            <h3
-              class="font-bold"
-            >
-              Proposed Effective Date
-            </h3>
-            <div
-              class="py-2"
-            >
-              Pending
             </div>
           </div>
           <div>
@@ -645,6 +625,18 @@ exports[`package details > renders package details for a 1915(b) submission 1`] 
             <h3
               class="font-bold"
             >
+              Proposed Effective Date
+            </h3>
+            <div
+              class="py-2"
+            >
+              Pending
+            </div>
+          </div>
+          <div>
+            <h3
+              class="font-bold"
+            >
               Approved Effective Date
             </h3>
             <div
@@ -658,7 +650,7 @@ exports[`package details > renders package details for a 1915(b) submission 1`] 
           class="my-4"
         />
         <div
-          class="grid grid-cols-2 gap-6"
+          class="two-cols gap-y-6 sm:gap-y-6"
         >
           <div>
             <h3

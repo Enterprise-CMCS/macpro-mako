@@ -21,7 +21,7 @@ import { FAQ_TAB } from "@/consts";
 import { formSchemas } from "@/formSchemas";
 
 export const ChipDetailsForm = () => {
-  const chipOptions = [
+  const chipSubmissionType = [
     "MAGI Eligibility and Methods",
     "Non-Financial Eligibility",
     "XXI Medicaid Expansion",
@@ -32,7 +32,7 @@ export const ChipDetailsForm = () => {
     <ActionForm
       title="CHIP Eligibility SPA Details"
       schema={formSchemas["new-chip-details-submission"]}
-      breadcrumbText="Submit new CHIP eligibility SPA"
+      breadcrumbText="Submit new CHIP Eligibility SPA"
       fields={({ control }) => (
         <>
           <FormField
@@ -45,7 +45,7 @@ export const ChipDetailsForm = () => {
                     SPA ID <RequiredIndicator />
                   </FormLabel>
                   <Link
-                    to="/support"
+                    to="/faq/spa-id-format"
                     target={FAQ_TAB}
                     rel="noopener noreferrer"
                     className="text-blue-900 underline"
@@ -72,7 +72,7 @@ export const ChipDetailsForm = () => {
             render={({ field }) => {
               const selectedValues = Array.isArray(field.value) ? field.value : [];
               return (
-                <FormItem className="w-full sm:max-w-[460px]">
+                <FormItem className="w-full sm:max-w-[460px] relative">
                   <FormLabel className="font-bold">CHIP Submission Type</FormLabel>
                   <Select>
                     <FormControl>
@@ -80,9 +80,12 @@ export const ChipDetailsForm = () => {
                         showIcon={false}
                         className="relative w-full mt-2 h-[40px] px-[4px] gap-[5px] border border-[#565C65] text-gray-950 flex items-center justify-between rounded-none after:hidden"
                       >
-                        <SelectValue className="truncate text-left w-full">
-                          {selectedValues.length > 0 ? selectedValues.join(", ") : ""}
-                        </SelectValue>
+                        <div className="flex-1 text-left overflow-hidden">
+                          <SelectValue className="truncate w-full whitespace-nowrap overflow-hidden text-ellipsis">
+                            {selectedValues.length > 0 ? selectedValues.join(", ") : ""}
+                          </SelectValue>
+                        </div>
+
                         <div className="flex items-center pl-2 pr-3 h-full border-l border-slate-300">
                           <svg
                             className="w-6 h-6"
@@ -96,13 +99,13 @@ export const ChipDetailsForm = () => {
                         </div>
                       </SelectTrigger>
                     </FormControl>
-                    <SelectContent>
-                      {chipOptions.map((option) => {
+                    <SelectContent className=" left-0 top-full mt-1 z-50 w-full bg-white border border-gray-200 shadow-md rounded-md">
+                      {chipSubmissionType.map((option) => {
                         const isSelected = selectedValues.includes(option);
                         return (
                           <div
                             key={option}
-                            className="flex items-center gap-2 px-4 py-2 cursor-pointer hover:bg-gray-100"
+                            className="flex text-left gap-2 px-4 py-2 cursor-pointer hover:bg-gray-100"
                             onClick={() => {
                               const updated = isSelected
                                 ? selectedValues.filter((val) => val !== option)
@@ -117,7 +120,6 @@ export const ChipDetailsForm = () => {
                       })}
                     </SelectContent>
                   </Select>
-                  <FormMessage />
                 </FormItem>
               );
             }}
@@ -127,8 +129,8 @@ export const ChipDetailsForm = () => {
             name="proposedEffectiveDate"
             render={({ field }) => (
               <FormItem className="max-w-sm">
-                <FormLabel className="text-lg font-semibold block">
-                  Proposed Effective Date of CHIP SPA <RequiredIndicator />
+                <FormLabel className="text-lg font-semibold whitespace-nowrap block">
+                  Proposed Effective Date of CHIP Eligibility SPA <RequiredIndicator />
                 </FormLabel>
                 <FormControl>
                   <DatePicker
@@ -148,9 +150,9 @@ export const ChipDetailsForm = () => {
         instructions: [
           <p data-testid="chip-attachments-instructions">
             Maximum file size of 80 MB per attachment. You can add multiple files per attachment
-            type. <br /> Read the description for each of the attachment types on the{" "}
+            type. Read the description for each of the attachment types on the{" "}
             <Link
-              to="/support"
+              to="/faq/chip-spa-attachments"
               target={FAQ_TAB}
               rel="noopener noreferrer"
               className="text-blue-900 underline"
@@ -163,7 +165,7 @@ export const ChipDetailsForm = () => {
             We accept the following file formats:{" "}
             <span className="font-bold">.doc, .docx, .pdf, .jpg, .odp, and more. </span>{" "}
             <Link
-              to={"/support"}
+              to={"/faq/acceptable-file-formats"}
               target={FAQ_TAB}
               rel="noopener noreferrer"
               className="text-blue-900 underline"
@@ -175,7 +177,7 @@ export const ChipDetailsForm = () => {
           <p data-testid="chip-attachments-instructions">
             View all{" "}
             <Link
-              to="/support"
+              to="/faq/chip-spa-templates"
               target={FAQ_TAB}
               rel="noopener noreferrer"
               className="text-blue-900 underline"

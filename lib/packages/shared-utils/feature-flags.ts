@@ -72,4 +72,18 @@ export const featureFlags = {
     flag: "webform-tab",
     defaultValue: true,
   },
+  /*
+   *  Toggle visibility of mmdl medspa card
+   */
+  MED_SPA_CARD: {
+    flag: "med-spa-card",
+    defaultValue: true,
+  },
+  /*
+   *  Toggle visibility of save and submit form
+   */
+  MED_SPA_FOOTER: {
+    flag: "med-spa-footer",
+    defaultValue: true,
+  },
 } as const;
