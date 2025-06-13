@@ -181,24 +181,17 @@ export async function processRecord(kafkaRecord: KafkaRecord, config: ProcessEma
               if_seq_no: _seq_no,
               if_primary_term: _primary_term,
               body: {
-                script: {
-                  lang: "painless",
-                  source: `
-                    if (ctx._source.withdrawEmailSent == true) {
-                      ctx.op = 'none';
-                    } else {
-                      ctx._source.withdrawEmailSent = true;
-                    }
-                  `,
+                doc: {
+                  withdrawEmailSent: true,
                 },
               },
             };
 
-            const updateResponse = await os.updateData(config.osDomain, indexObject);
-            if (updateResponse.result === "noop") {
-              console.log(`Withdraw email already sent for ${safeID}. Skipping.`);
-              return;
-            }
+            await os.updateData(config.osDomain, indexObject);
+            // if (updateResponse.result === "noop") {
+            //   console.log(`Withdraw email already sent for ${safeID}. Skipping.`);
+            //   return;
+            // }
             console.log(`OpenSearch updated successfully for ${safeID}`);
             // await os.sleep(50000);
             await processAndSendEmails(recordToPass as Events[keyof Events], safeID, config);
