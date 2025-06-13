@@ -66,7 +66,7 @@ export const formSchema = events["temporary-extension"].baseSchema
               message:
                 "The Approved Initial or Renewal Waiver Number and the Temporary Extension Request Number must be identical until the last period.",
               code: z.ZodIssueCode.custom,
-              fatal: true,
+              fatal: false,
               path: ["id"],
             });
           }
