@@ -4,6 +4,7 @@ import LZ from "lz-string";
 import { useEffect, useMemo, useState } from "react";
 import { Link } from "react-router";
 import { formatDate, formatDateToET } from "shared-utils";
+import { userRoleMap } from "shared-utils";
 
 import { RoleRequest, useGetRoleRequests, useGetUserDetails, useSubmitRoleRequests } from "@/api";
 import {
@@ -24,7 +25,6 @@ import {
 } from "@/components";
 import { cn } from "@/utils";
 
-import { userRoleMap } from "../profile";
 import { initSortUserData, sortUserData, UserRoleType } from "./utils";
 
 type headingType = { [key: string]: keyof UserRoleType | null };

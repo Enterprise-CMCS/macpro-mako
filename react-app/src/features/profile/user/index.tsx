@@ -1,11 +1,12 @@
 import LZ from "lz-string";
 import { useMemo } from "react";
 import { LoaderFunctionArgs, redirect, useLoaderData } from "react-router";
+import { userRoleMap } from "shared-utils";
 
 import { getUserDetails, getUserProfile, OneMacUserProfile, UserDetails } from "@/api";
 import { GroupAndDivision, StateAccessCard, SubNavHeader, UserInformation } from "@/components";
 
-import { filterStateAccess, orderStateAccess, userRoleMap } from "../utils";
+import { filterStateAccess, orderStateAccess } from "../utils";
 
 type LoaderData = {
   userDetails: UserDetails;

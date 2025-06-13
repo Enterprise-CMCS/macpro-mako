@@ -3,7 +3,9 @@ import { http, HttpResponse, PathParams } from "msw";
 import {
   getApprovedRoleByEmailAndState,
   getFilteredRolesByEmail,
+  getFilteredRolesByRole,
   getFilteredRolesByState,
+  getFilteredRolesByStateAndRole,
   getLatestRoleByEmail,
   roleResults,
 } from "../../data/roles";
@@ -34,8 +36,16 @@ const defaultRoleSearchHandler = http.post<PathParams, SearchQueryBody>(
       const email = getFilterValueAsString(query.bool.must, "term", "email.keyword") || "";
       const role = getFilterValueAsString(query.bool.must, "term", "role") || "";
       const state = getFilterValueAsString(query.bool.must, "term", "territory.keyword") || "";
-      const approvedRole = getApprovedRoleByEmailAndState(email, state, role);
-      hits = approvedRole ? [approvedRole] : [];
+      if (email) {
+        const approvedRole = getApprovedRoleByEmailAndState(email, state, role);
+        hits = approvedRole ? [approvedRole] : [];
+      } else if (state) {
+        const approvers = getFilteredRolesByStateAndRole(state, role);
+        hits = approvers || [];
+      } else {
+        const approvers = getFilteredRolesByRole(role);
+        hits = approvers || [];
+      }
     } else if (query?.match_all) {
       hits = roleResults;
     } else {

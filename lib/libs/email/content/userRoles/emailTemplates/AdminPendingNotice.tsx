@@ -1,8 +1,9 @@
+import { userRoleMap } from "shared-utils";
+
 import { BasicFooter } from "../../email-components";
 import { BaseEmailTemplate } from "../../email-templates";
 import { UserRoleEmailType } from "../index";
 import { statesMap } from "../roleHelper";
-import { userRoleMap } from "../roleHelper";
 
 export const AdminPendingNoticeEmail = ({ variables }: { variables: UserRoleEmailType }) => {
   const stateAccess =

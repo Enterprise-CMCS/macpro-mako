@@ -1,5 +1,6 @@
 import { XIcon } from "lucide-react";
 import { UserRole } from "shared-types/events/legacy-user";
+import { getApprovingRole, userRoleMap } from "shared-utils";
 
 import { CardWithTopBorder } from "@/components";
 import { convertStateAbbrToFullName, stateAccessStatus } from "@/utils";
@@ -13,11 +14,13 @@ export type StateAccessProps = {
     status: string;
     doneByName: string;
     doneByEmail: string;
+    approverList?: { fullName: string; email: string }[];
   };
 };
 
 export const StateAccessCard = ({ role, onClick, access }: StateAccessProps) => {
   if (!access) return null;
+  const hideAprovers = role === "norole" && access.status !== "pending";
   return (
     <CardWithTopBorder key={`${access.territory}-${access.role}`}>
       <div className="p-8 min-h-36">
@@ -36,14 +39,26 @@ export const StateAccessCard = ({ role, onClick, access }: StateAccessProps) => 
           )}
         </div>
         <p className="italic">{stateAccessStatus[access.status]}</p>
-        <p className="block lg:mt-8 lg:mb-2">
-          <span className="font-semibold">
-            {role === "cmsroleapprover" ? "CMS Role Approver:" : "State System Admin:"}{" "}
-          </span>
-          <a className="text-blue-600" href={`mailto:${access.doneByEmail}`}>
-            {access.doneByName}
-          </a>
-        </p>
+        {!hideAprovers && (
+          <p className="block lg:mt-8 lg:mb-2">
+            <span className="font-semibold">
+              {userRoleMap[getApprovingRole(access.role)]}
+              {": "}
+            </span>
+            {access.approverList && access.approverList.length
+              ? access.approverList.map((approver, index) => (
+                  <a
+                    className="text-blue-600"
+                    href={`mailto:${approver.email}`}
+                    key={`${approver.fullName}-${index}`}
+                  >
+                    {approver.fullName}
+                    {index !== access.approverList.length - 1 && ", "}
+                  </a>
+                ))
+              : "N/A"}
+          </p>
+        )}
       </div>
     </CardWithTopBorder>
   );

@@ -1,8 +1,10 @@
+import { userRoleMap } from "shared-utils";
+
 import { BasicFooter } from "../../email-components";
 import { BaseEmailTemplate } from "../../email-templates";
 import { UserRoleEmailType } from "../index";
 import { statesMap } from "../roleHelper";
-import { getApprovingUserRoleLabel, statusMap, userRoleMap } from "../roleHelper";
+import { getApprovingUserRoleLabel, statusMap } from "../roleHelper";
 
 export const AccessChangeNoticeEmail = ({ variables }: { variables: UserRoleEmailType }) => {
   const stateAccess = variables.territory === "N/A" ? "" : ` for ${statesMap[variables.territory]}`;

@@ -1,4 +1,5 @@
-// TODO: this should probably go in shared types
+import { UserRole } from "shared-types/events/legacy-user";
+import { getApprovingRole, userRoleMap } from "shared-utils";
 
 export enum userRoleType {
   defaultcmsuser = "defaultcmsuser",
@@ -17,27 +18,8 @@ export const statusMap = {
   revoked: "revoked",
 };
 
-export const userRoleMap: Record<userRoleType, string> = {
-  defaultcmsuser: "Default CMS User Placeholder",
-  cmsroleapprover: "CMS Role Approver",
-  cmsreviewer: "CMS Reviewer",
-  statesystemadmin: "State System Admin",
-  systemadmin: "System Admin",
-  helpdesk: "Helpdesk",
-  statesubmitter: "State Submitter",
-};
-
-export const approvingUserRole: Partial<Record<userRoleType, userRoleType>> = {
-  statesubmitter: userRoleType.statesystemadmin,
-  statesystemadmin: userRoleType.cmsroleapprover,
-  cmsroleapprover: userRoleType.systemadmin,
-  defaultcmsuser: userRoleType.statesystemadmin,
-  helpdesk: userRoleType.systemadmin,
-  cmsreviewer: userRoleType.cmsroleapprover,
-};
-
-export function getApprovingUserRoleLabel(role: userRoleType): string | undefined {
-  const approvingRole = approvingUserRole[role];
+export function getApprovingUserRoleLabel(role: userRoleType) {
+  const approvingRole = getApprovingRole(role) as UserRole;
   if (!approvingRole) return undefined;
   return userRoleMap[approvingRole];
 }
