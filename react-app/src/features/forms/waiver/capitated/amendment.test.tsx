@@ -1,4 +1,4 @@
-import { screen } from "@testing-library/react";
+import { screen, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import {
   CAPITATED_AMEND_ITEM_ID,
@@ -64,10 +64,14 @@ describe("Capitated Amendment", () => {
     // validate id errors
     // item exists validation error occurs
     await userEvent.type(waiverAmendmentInput, EXISTING_ITEM_APPROVED_AMEND_ID);
-    const itemExistsErrorMessage = screen.getByText(
-      "According to our records, this 1915(b) Waiver Number already exists. Please check the 1915(b) Waiver Number and try entering it again.",
+
+    await waitFor(() =>
+      expect(
+        screen.getByText(
+          "According to our records, this 1915(b) Waiver Number already exists. Please check the 1915(b) Waiver Number and try entering it again.",
+        ),
+      ).toBeInTheDocument(),
     );
-    expect(itemExistsErrorMessage).toBeInTheDocument();
     await userEvent.clear(waiverAmendmentInput);
     // state error occurs
     await userEvent.type(waiverAmendmentInput, "AK-0000.R00.01");
@@ -103,8 +107,8 @@ describe("Capitated Amendment", () => {
     expect(costEffectivenessSpreadsheets).not.toHaveClass("text-destructive");
   });
 
-  test("submit button is enabled", () => {
-    expect(screen.getByTestId("submit-action-form")).toBeEnabled();
+  test("submit button is enabled", async () => {
+    await waitFor(() => expect(screen.getByTestId("submit-action-form")).toBeEnabled());
   });
 });
 
