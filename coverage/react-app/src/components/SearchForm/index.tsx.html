@@ -25,14 +25,14 @@
             <div class='fl pad1y space-right2'>
                 <span class="strong">100% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>13/13</span>
+                <span class='fraction'>16/16</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">100% </span>
+                <span class="strong">80% </span>
                 <span class="quiet">Branches</span>
-                <span class='fraction'>4/4</span>
+                <span class='fraction'>4/5</span>
             </div>
         
             
@@ -46,7 +46,7 @@
             <div class='fl pad1y space-right2'>
                 <span class="strong">100% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>13/13</span>
+                <span class='fraction'>16/16</span>
             </div>
         
             
@@ -147,7 +147,21 @@
 <a name='L82'></a><a href='#L82'>82</a>
 <a name='L83'></a><a href='#L83'>83</a>
 <a name='L84'></a><a href='#L84'>84</a>
-<a name='L85'></a><a href='#L85'>85</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
+<a name='L85'></a><a href='#L85'>85</a>
+<a name='L86'></a><a href='#L86'>86</a>
+<a name='L87'></a><a href='#L87'>87</a>
+<a name='L88'></a><a href='#L88'>88</a>
+<a name='L89'></a><a href='#L89'>89</a>
+<a name='L90'></a><a href='#L90'>90</a>
+<a name='L91'></a><a href='#L91'>91</a>
+<a name='L92'></a><a href='#L92'>92</a>
+<a name='L93'></a><a href='#L93'>93</a>
+<a name='L94'></a><a href='#L94'>94</a>
+<a name='L95'></a><a href='#L95'>95</a>
+<a name='L96'></a><a href='#L96'>96</a>
+<a name='L97'></a><a href='#L97'>97</a>
+<a name='L98'></a><a href='#L98'>98</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -161,19 +175,20 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">93x</span>
-<span class="cline-any cline-yes">227x</span>
-<span class="cline-any cline-yes">227x</span>
+<span class="cline-any cline-yes">226x</span>
+<span class="cline-any cline-yes">226x</span>
+<span class="cline-any cline-yes">226x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">227x</span>
+<span class="cline-any cline-yes">226x</span>
 <span class="cline-any cline-yes">50x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">227x</span>
+<span class="cline-any cline-yes">226x</span>
 <span class="cline-any cline-yes">2x</span>
 <span class="cline-any cline-yes">2x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">227x</span>
+<span class="cline-any cline-yes">226x</span>
 <span class="cline-any cline-yes">12x</span>
 <span class="cline-any cline-yes">12x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -221,6 +236,13 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -231,12 +253,17 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">import { motion } from "framer-motion";
-import { Loader, XIcon } from "lucide-react";
-import { FC, useEffect, useState } from "react";
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">import { Loader, XIcon } from "lucide-react";
+import { FC, useEffect, useRef, useState } from "react";
 &nbsp;
 import { useDebounce } from "@/hooks";
+import { cn } from "@/utils";
 &nbsp;
+import { Button, Input } from "../Inputs";
 import { OsUrlState } from "../Opensearch";
 &nbsp;
 export const SearchForm: FC&lt;{
@@ -247,6 +274,7 @@ export const SearchForm: FC&lt;{
 }&gt; = ({ handleSearch, urlState, disabled, isSearching }) =&gt; {
   const [searchText, setSearchText] = useState(urlState?.search ?? "");
   const debouncedSearchString = useDebounce(searchText, 750);
+  const searchInputRef = useRef(null);
 &nbsp;
   useEffect(() =&gt; {
     handleSearch(debouncedSearchString);
@@ -263,14 +291,15 @@ export const SearchForm: FC&lt;{
   };
 &nbsp;
   return (
-    &lt;form onSubmit={handleSubmit} className="flex-1"&gt;
-      &lt;div className="relative"&gt;
+    &lt;form onSubmit={handleSubmit}&gt;
+      &lt;div className="relative w-full lg:w-[30rem]"&gt;
         &lt;svg
           xmlns="http://www.w3.org/2000/svg"
-          className="absolute top-0 bottom-0 w-6 h-6 my-auto text-gray-400 left-3"
+          className="absolute inset-y-0 w-6 h-6 my-auto text-gray-400 left-3"
           fill="none"
           viewBox="0 0 24 24"
           stroke="currentColor"
+          aria-hidden="true"
         &gt;
           &lt;path
             strokeLinecap="round"
@@ -279,38 +308,48 @@ export const SearchForm: FC&lt;{
             d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
           /&gt;
         &lt;/svg&gt;
-        &lt;label htmlFor="searchInput" className="sr-only"&gt;
+        &lt;label htmlFor="search-input" className="sr-only"&gt;
           Search by Package ID, CPOC Name, or Submitter Name
         &lt;/label&gt;
-        &lt;input
-          id="searchInput"
+        &lt;Input
+          id="search-input"
+          ref={searchInputRef}
           type="text"
-          className="w-full lg:w-[30rem] py-3 pl-12 pr-4 text-gray-500 border border-gray-300 outline-none focus:bg-white focus:border-indigo-600"
+          className="w-full h-auto py-3 pl-12 pr-10 !text-gray-500 border border-gray-300 rounded-none shadow-none text-inherit"
           maxLength={28}
           value={searchText}
           onChange={handleInputChange}
           disabled={disabled}
+          placeholder="Search..."
         /&gt;
-        {isSearching &amp;&amp; (
-          &lt;motion.div
-            className="absolute inset-y-0 w-6 h-6 my-auto left-[26.5rem] origin-center flex items-center justify-center"
-            animate={{ rotate: "360deg" }}
-            transition={{ repeat: Infinity, duration: 0.5 }}
-          &gt;
-            &lt;Loader className="w-4 h-4 text-slate-950" /&gt;
-          &lt;/motion.div&gt;
-        )}
-        {!!searchText &amp;&amp; (
-          &lt;XIcon
-            className="absolute cursor-pointer top-0 bottom-0 w-6 h-6 my-auto right-0 lg:left-[28rem]"
-            data-testid="close-icon"
-            onClick={() =&gt; {
-              setSearchText("");
-              handleSearch("");
-            }}
-            name="close"
+        &lt;div className="flex items-center gap-x-1 absolute inset-y-0 right-0 pr-3"&gt;
+          &lt;Loader
+            aria-hidden="true"
+            className={cn("w-4 h-4 text-slate-950 animate-spin", {
+              hidden: isSearching === false,
+            })}
           /&gt;
-        )}
+          {searchText &amp;&amp; (
+            &lt;Button
+              className="w-auto h-auto p-0"
+              variant="ghost"
+              type="button"
+              aria-label="Clear search input"
+              aria-controls="search-input"
+              data-testid="clear-search-button"
+              onClick={() =&gt; {
+                setSearchText("");
+                handleSearch("");
+                <span class="missing-if-branch" title="else path not taken" >E</span>if (searchInputRef.current) {
+                  searchInputRef.current.focus();
+                }
+              }}
+              disabled={disabled}
+            &gt;
+              &lt;XIcon className="w-6 h-6" aria-hidden="true" /&gt;
+            &lt;/Button&gt;
+          )}
+        &lt;/div&gt;
       &lt;/div&gt;
     &lt;/form&gt;
   );
@@ -322,7 +361,7 @@ export const SearchForm: FC&lt;{
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2025-06-13T16:29:25.419Z
+                at 2025-06-13T19:39:12.808Z
             </div>
         <script src="../../../../prettify.js"></script>
         <script>
