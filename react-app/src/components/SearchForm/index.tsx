@@ -65,6 +65,7 @@ export const SearchForm: FC<{
         />
         <div className="flex items-center gap-x-1 absolute inset-y-0 right-0 pr-3">
           <Loader
+            aria-hidden="true"
             className={cn("w-4 h-4 text-slate-950 animate-spin", {
               hidden: isSearching === false,
             })}
