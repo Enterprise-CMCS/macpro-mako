@@ -47,7 +47,6 @@ const getApprovers = async (event: APIGatewayEvent) => {
     }
 
     const userRoles = await getAllUserRolesByEmail(lookupEmail);
-    console.log("ANDIE - USER ROLES: ", userRoles);
     if (!userRoles) throw Error;
 
     const roleStateMap = new Map<string, Territory[]>();
@@ -63,11 +62,9 @@ const getApprovers = async (event: APIGatewayEvent) => {
     }
 
     // loop through roles
-    console.log("ANDIEEE!! before the loop", JSON.stringify(roleStateMap));
     const approverList = [];
 
     for (const [role, territories] of roleStateMap.entries()) {
-      console.log("ANDIE - ", role);
       try {
         const allApprovers = await getApproversByRole(role); // pass in the role of current user NOT approving role
         const filtered =
@@ -92,8 +89,6 @@ const getApprovers = async (event: APIGatewayEvent) => {
         });
       }
     }
-
-    console.log("ANDIEEE!! after the loop");
 
     return response({
       statusCode: 200,

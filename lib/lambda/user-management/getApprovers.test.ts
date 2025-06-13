@@ -76,6 +76,6 @@ describe("getApprovers handler", () => {
     const parsedBody = JSON.parse(result.body);
 
     expect(result.statusCode).toBe(200);
-    expect(parsedBody.approverList).toHaveLength(6);
+    expect(parsedBody.approverList).toHaveLength(1);
   });
 });

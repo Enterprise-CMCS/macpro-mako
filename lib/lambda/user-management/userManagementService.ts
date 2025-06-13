@@ -208,12 +208,10 @@ export const getApproversByRole = async (
 ) => {
   const resolvedDomain = domainNamespace ?? getDomainAndNamespace("roles");
   const { domain, index } = resolvedDomain;
-  console.log("ANDIE 1", role);
   const approverRole = getApprovingRole(role);
   if (!approverRole) {
     throw new Error(`Approving role not found for role: ${role}`);
   }
-  console.log("ANDIE 2", role, approverRole);
   const results = await search(domain, index, {
     query: {
       bool: {
@@ -223,15 +221,11 @@ export const getApproversByRole = async (
     size: QUERY_LIMIT,
   });
 
-  console.log("ANDIE 3", role, JSON.stringify(results));
-
   if (!results) {
     console.log("ERROR with results");
     throw Error;
   }
   // this is used for state submitters to filter out the territory AFTER the search
-
-  console.log("ANDIE 4", role);
 
   // format search results to match what is needed
   const approverRoleList: { id: string; email: string; territory: string }[] =
@@ -249,7 +243,6 @@ export const getApproversByRole = async (
   const userInfoResults = await getUsersByEmails(uniqueEmails);
   if (!userInfoResults) console.log("ERROR WITH getting full name... continuing anyways.. ");
 
-  console.log("ANDIE 5");
   const approversInfo = approverRoleList
     .filter((approver) => approver.email)
     .map((approver) => ({
@@ -259,8 +252,6 @@ export const getApproversByRole = async (
         (userInfoResults[approver.email] && userInfoResults[approver.email].fullName) ?? "Unknown",
       territory: approver.territory,
     }));
-
-  console.log("ANDIE 6");
 
   return approversInfo;
 };
