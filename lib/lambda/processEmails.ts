@@ -274,7 +274,7 @@ export async function processAndSendEmails(
   const emails: EmailAddresses = JSON.parse(sec);
 
   const allStateUsersEmails = allStateUsers.map((user) => user.formattedEmailAddress);
-  const isChipEligibility = !!item._source?.chipSubmissionType;
+  const isChipEligibility = record.authority === "CHIP SPA" && !!item._source?.chipSubmissionType;
 
   const templateVariables = {
     ...record,
