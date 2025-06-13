@@ -229,6 +229,7 @@ export const getApproversByRole = async (
     console.log("ERROR with results");
     throw Error;
   }
+  // this is used for state submitters to filter out the territory AFTER the search
 
   console.log("ANDIE 4", role);
 

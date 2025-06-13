@@ -1,9 +1,13 @@
 import { APIGatewayEvent } from "aws-lambda";
 import { getAuthDetails, lookupUserAttributes } from "libs/api/auth/user";
 import { response } from "libs/handler-lib";
+import { StateCode } from "shared-types";
 
 import { getUserProfileSchema } from "./getUserProfile";
 import { getAllUserRolesByEmail, getApproversByRole } from "./userManagementService";
+
+type Territory = StateCode | "N/A";
+type approverListType = { id: string; role: string; email: string; territory: Territory };
 
 const getApprovers = async (event: APIGatewayEvent) => {
   if (!event?.requestContext) {
@@ -46,24 +50,42 @@ const getApprovers = async (event: APIGatewayEvent) => {
     console.log("ANDIE - USER ROLES: ", userRoles);
     if (!userRoles) throw Error;
 
+    const roleStateMap = new Map<string, Territory[]>();
+
+    // we make a map for state submitters but also use the roles for all other users
+    if (userRoles) {
+      userRoles.forEach(({ role, territory }: approverListType) => {
+        if (!roleStateMap.has(role)) {
+          roleStateMap.set(role, []);
+        }
+        roleStateMap.get(role)!.push(territory);
+      });
+    }
+
     // loop through roles
-    console.log("ANDIEEE!! before the loop");
+    console.log("ANDIEEE!! before the loop", JSON.stringify(roleStateMap));
     const approverList = [];
 
-    for (const userRole of userRoles) {
-      console.log("ANDIE - ", userRole.role);
+    for (const [role, territories] of roleStateMap.entries()) {
+      console.log("ANDIE - ", role);
       try {
-        const allApprovers = await getApproversByRole(userRole.role); // pass in the role of current user NOT approving role
+        const allApprovers = await getApproversByRole(role); // pass in the role of current user NOT approving role
+        const filtered =
+          role === "statesubmitter"
+            ? allApprovers.filter((approver) =>
+                territories.includes(approver.territory as Territory),
+              )
+            : allApprovers;
         approverList.push({
-          role: userRole.role,
-          territory: userRole.territories,
-          approvers: allApprovers,
+          role: role,
+          territory: territories,
+          approvers: filtered,
         });
       } catch (err) {
         console.log("ERROR: ", err);
         approverList.push({
-          role: userRole.role,
-          territory: userRole.territories,
+          role: role,
+          territory: territories,
           approvers: [
             { id: "error", fullName: "Error Fetching Approvers", email: "", territory: "N/A" },
           ],
