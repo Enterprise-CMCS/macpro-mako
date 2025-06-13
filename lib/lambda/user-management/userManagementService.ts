@@ -220,7 +220,7 @@ export const getApproversByRole = async (
         must: [{ term: { status: "active" } }, { term: { role: approverRole } }],
       },
     },
-    size: 1,
+    size: QUERY_LIMIT,
   });
 
   console.log("ANDIE 3", role, JSON.stringify(results));
