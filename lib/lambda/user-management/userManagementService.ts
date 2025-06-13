@@ -248,15 +248,14 @@ export const getApproversByRole = async (
   const userInfoResults = await getUsersByEmails(uniqueEmails);
   if (!userInfoResults) console.log("ERROR WITH getting full name... continuing anyways.. ");
 
-  // (userInfoResults[approver.email] && userInfoResults[approver.email].fullName) ?? "Unknown",
-
   console.log("ANDIE 5");
   const approversInfo = approverRoleList
     .filter((approver) => approver.email)
     .map((approver) => ({
       id: approver.id,
       email: approver.email,
-      fullName: "Unknown",
+      fullName:
+        (userInfoResults[approver.email] && userInfoResults[approver.email].fullName) ?? "Unknown",
       territory: approver.territory,
     }));
 
