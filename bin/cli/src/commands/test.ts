@@ -4,16 +4,16 @@ import { runCommand } from "../lib";
 
 export const test = {
   command: "test",
-  describe: "run all available tests.",
+  describe: "Run the unit tests.\n",
   builder: (yargs: Argv) => {
     return yargs
       .option("coverage", {
         type: "boolean",
-        describe: "Run tests and generate a coverage report.",
+        describe: "Generate a coverage report",
       })
       .option("ui", {
         type: "boolean",
-        describe: "Run tests with Vitest UI",
+        describe: "Run the tests in the Vitest UI view",
       })
       .check((argv) => {
         if (argv.coverage && argv.ui) {
