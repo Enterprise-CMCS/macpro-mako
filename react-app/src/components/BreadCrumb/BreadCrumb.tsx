@@ -29,7 +29,7 @@ export const BreadCrumbs = ({ options }: BreadCrumbsProps) => {
         .toSorted((option, prevOption) => option.order - prevOption.order)
         .map(({ displayText, to }, index, optionsArray) => {
           return (
-            <BreadCrumb key={displayText} to={to} active={index !== optionsArray.length - 1}>
+            <BreadCrumb key={displayText} to={to} active={index === optionsArray.length - 1}>
               {displayText}
             </BreadCrumb>
           );
@@ -49,33 +49,34 @@ export const BreadCrumb = ({
   to,
   seperator = <BreadCrumbSeperator />,
   showSeperator = true,
-  active = true,
+  active,
   children,
 }: React.PropsWithChildren<BreadCrumbProps>) => {
   return (
     <li className="flex items-center text-sm">
       {showSeperator && <span>{seperator}</span>}
 
-      {active && (
+      {active ? (
+        <span className="whitespace-nowrap" aria-current="page">
+          {children}
+        </span>
+      ) : (
         <Link to={to} className="underline text-sky-700 hover:text-sky-800">
           {children}
         </Link>
-      )}
-      {!active && (
-        <span className="whitespace-nowrap" aria-disabled>
-          {children}
-        </span>
       )}
     </li>
   );
 };
 
-export const BreadCrumbSeperator = () => <ChevronRight className="w-5 h-5" />;
+export const BreadCrumbSeperator = () => (
+  <ChevronRight className="w-5 h-5" focusable={false} aria-hidden />
+);
 
 export const BreadCrumbBar = ({ children }: React.PropsWithChildren) => {
   return (
-    <nav role="navigation" aria-label="breadcrumbs for spa or waiver choices" className="my-4">
-      <ul className="flex flex-wrap gap-1">{children}</ul>
+    <nav aria-label="breadcrumb" className="my-4">
+      <ol className="flex flex-wrap gap-1">{children}</ol>
     </nav>
   );
 };
