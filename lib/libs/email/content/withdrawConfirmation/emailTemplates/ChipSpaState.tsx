@@ -7,10 +7,12 @@ export const ChipSpaStateEmail = (props: {
   variables: Events["WithdrawPackage"] & CommonEmailVariables;
 }) => {
   const variables = props.variables;
+  const chipPrefix = `CHIP${variables.isChipEligibility ? " Eligibility" : ""}`;
+
   return (
     <BaseEmailTemplate
-      previewText={`CHIP SPA Package ${variables.id} Withdrawal Confirmation`}
-      heading={`This email is to confirm CHIP SPA ${variables.id} was withdrawn by ${variables.submitterName}. The review of CHIP SPA ${variables.id} has concluded.`}
+      previewText={`${chipPrefix} SPA Package ${variables.id} Withdrawal Confirmation`}
+      heading={`This email is to confirm ${chipPrefix} SPA ${variables.id} was withdrawn by ${variables.submitterName}. The review of ${chipPrefix} SPA ${variables.id} has concluded.`}
       applicationEndpointUrl={variables.applicationEndpointUrl}
       footerContent={<BasicFooter />}
     >
