@@ -25,7 +25,7 @@ export const withdrawConfirmation: AuthoritiesWithUserTypesTemplate = {
   },
   [Authority.CHIP_SPA]: {
     state: (variables) => {
-      const chipPrefix = `CHIP${variables.isChipEligibility ? " Eligibility" : ""}`;
+      const chipPrefix = `CHIP${variables.isChipEligibility ? " Eligibility" : ""} Testing on my branch duplicate-wthdraw-emails2`;
 
       return generateWithdrawEmail(variables, `${chipPrefix} SPA Package`, ChipSpaStateEmail);
     },
