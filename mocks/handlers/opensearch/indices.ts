@@ -48,10 +48,12 @@ const defaultDeleteIndexHandler = http.delete(
   },
 );
 
-export const errorDeleteIndexHandler = http.delete(
-  "https://vpc-opensearchdomain-mock-domain.us-east-1.es.amazonaws.com/:index",
-  () => new HttpResponse("Internal server error", { status: 500 }),
-);
+export const errorDeleteIndexHandler = () =>
+  http.delete(
+    "https://vpc-opensearchdomain-mock-domain.us-east-1.es.amazonaws.com/:index",
+    () => new HttpResponse("Internal server error", { status: 500 }),
+    { once: true },
+  );
 
 export const indexHandlers = [
   defaultCreateIndexHandler,
