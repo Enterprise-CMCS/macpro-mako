@@ -20,6 +20,7 @@ export type StateAccessProps = {
 
 export const StateAccessCard = ({ role, onClick, access }: StateAccessProps) => {
   if (!access) return null;
+  const hideAprovers = role === "norole" && access.status === "revoked";
   return (
     <CardWithTopBorder key={`${access.territory}-${access.role}`}>
       <div className="p-8 min-h-36">
@@ -38,24 +39,26 @@ export const StateAccessCard = ({ role, onClick, access }: StateAccessProps) => 
           )}
         </div>
         <p className="italic">{stateAccessStatus[access.status]}</p>
-        <p className="block lg:mt-8 lg:mb-2">
-          <span className="font-semibold">
-            {userRoleMap[getApprovingRole(role)]}
-            {": "}
-          </span>
-          {access.approverList && access.approverList.length
-            ? access.approverList.map((approver, index) => (
-                <a
-                  className="text-blue-600"
-                  href={`mailto:${approver.email}`}
-                  key={`${approver.fullName}-${index}`}
-                >
-                  {approver.fullName}
-                  {index !== access.approverList.length - 1 && ", "}
-                </a>
-              ))
-            : "N/A"}
-        </p>
+        {!hideAprovers && (
+          <p className="block lg:mt-8 lg:mb-2">
+            <span className="font-semibold">
+              {userRoleMap[getApprovingRole(access.role)]}
+              {": "}
+            </span>
+            {access.approverList && access.approverList.length
+              ? access.approverList.map((approver, index) => (
+                  <a
+                    className="text-blue-600"
+                    href={`mailto:${approver.email}`}
+                    key={`${approver.fullName}-${index}`}
+                  >
+                    {approver.fullName}
+                    {index !== access.approverList.length - 1 && ", "}
+                  </a>
+                ))
+              : "N/A"}
+          </p>
+        )}
       </div>
     </CardWithTopBorder>
   );

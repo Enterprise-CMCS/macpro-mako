@@ -67,7 +67,7 @@ export function getApprovingRole(role: string) {
     cmsroleapprover: "systemadmin",
     defaultcmsuser: "systemadmin",
     helpdesk: "systemadmin",
-    cmsreviewer: "systemadmin",
+    cmsreviewer: "cmsroleapprover",
     norole: "systemadmin",
   };
 
