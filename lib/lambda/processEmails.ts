@@ -143,6 +143,7 @@ export async function processRecord(kafkaRecord: KafkaRecord, config: ProcessEma
         safeID,
         ...JSON.parse(decodeBase64WithUtf8(value)),
       };
+      console.log(seatoolRecord, "SEATOOL RECORD IN PROCESSEMAILS");
       const safeSeatoolRecord = opensearch.main.seatool.transform(safeID).safeParse(seatoolRecord);
       console.log(safeSeatoolRecord, "SAFE SEATOOL RECORD");
       if (safeSeatoolRecord.data?.seatoolStatus === SEATOOL_STATUS.WITHDRAWN) {

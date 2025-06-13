@@ -421,6 +421,7 @@ export const insertNewSeatoolRecordsFromKafkaIntoMako = async (
         id,
         ...JSON.parse(decodeBase64WithUtf8(value)),
       };
+      console.log(seatoolRecord, "SEATOOL RECORD IN SINKMAIN");
 
       seatoolRecord.STATE_PLAN.SPW_STATUS_ID = await oneMacSeatoolStatusCheck(seatoolRecord);
 
