@@ -65,7 +65,7 @@ export function getApprovingRole(role: string) {
     statesubmitter: "statesystemadmin",
     statesystemadmin: "cmsroleapprover",
     cmsroleapprover: "systemadmin",
-    defaultcmsuser: "systemadmin",
+    defaultcmsuser: "cmsroleapprover",
     helpdesk: "systemadmin",
     cmsreviewer: "cmsroleapprover",
     norole: "systemadmin",
