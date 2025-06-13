@@ -4,9 +4,15 @@ import { checkIfAuthenticated, runCommand, setStageFromBranch, writeUiEnvFile } 
 
 export const watch = {
   command: "watch",
-  describe: "watch the project for changes",
+  describe:
+    "Continuously watch a local AWS CDK project for changes to perform deployments and hotswaps. \n\n** Requires MACPro Application Admin AWS credentials **\n",
   builder: (yargs: Argv) => {
-    return yargs.option("stage", { type: "string", demandOption: false });
+    return yargs.option("stage", {
+      type: "string",
+      demandOption: false,
+      describe: "Stage environment in AWS",
+      defaultDescription: "current branch name",
+    });
   },
   handler: async (args: { stage?: string }) => {
     await checkIfAuthenticated();
