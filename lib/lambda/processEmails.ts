@@ -2,6 +2,7 @@ import { SendEmailCommand, SendEmailCommandInput, SESClient } from "@aws-sdk/cli
 import { SendMessageCommand, SQSClient } from "@aws-sdk/client-sqs";
 import { Handler } from "aws-lambda";
 import { htmlToText, HtmlToTextOptions } from "html-to-text";
+import { ItemResult } from "lib/packages/shared-types/opensearch/main";
 import { getAllStateUsersFromOpenSearch, getEmailTemplates } from "libs/email";
 import { EMAIL_CONFIG, getCpocEmail, getSrtEmails } from "libs/email/content/email-components";
 import * as os from "libs/opensearch-lib";
@@ -195,7 +196,7 @@ export async function processRecord(kafkaRecord: KafkaRecord, config: ProcessEma
             // }
             console.log(`OpenSearch updated successfully for ${safeID}`);
             // await os.sleep(50000);
-            await processAndSendEmails(recordToPass as Events[keyof Events], safeID, config);
+            await processAndSendEmails(recordToPass as Events[keyof Events], safeID, config, item);
             console.log("Email successfully sent for withdrawn record.");
           } catch (e) {
             if (e?.meta?.body?.error?.type === "version_conflict_engine_exception") {
@@ -275,6 +276,7 @@ export async function processAndSendEmails(
   record: Events[keyof Events],
   id: string,
   config: ProcessEmailConfig,
+  updatedItemFromOpensearch?: ItemResult,
 ) {
   const templates = await getEmailTemplates(record);
 
@@ -290,11 +292,13 @@ export async function processAndSendEmails(
 
   const sec = await getSecret(config.emailAddressLookupSecretName);
 
-  const item = await retry(
-    () => os.getItemAndThrowAllErrors(config.osDomain, getOsNamespace("main"), id),
-    10,
-    10 * 1000,
-  );
+  const item =
+    updatedItemFromOpensearch ??
+    (await retry(
+      () => os.getItemAndThrowAllErrors(config.osDomain, getOsNamespace("main"), id),
+      10,
+      10 * 1000,
+    ));
 
   if (!item?.found || !item?._source) {
     console.log(`The package was not found for id: ${id}. Doing nothing.`);
