@@ -43,7 +43,7 @@ test.describe("Dashboard page", { tag: ["@dashboard"] }, () => {
         "Search by Package ID, CPOC Name, or Submitter Name",
       );
 
-      await expect(page.locator("#searchInput")).toBeVisible();
+      await expect(page.locator("#search-input")).toBeVisible();
     });
 
     test("columns button", async ({ page }) => {

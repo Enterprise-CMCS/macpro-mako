@@ -61,7 +61,7 @@ describe("Search Component", () => {
     const input = screen.getByLabelText("Search by Package ID, CPOC Name, or Submitter Name");
     fireEvent.change(input, { target: { value: "Test query" } });
 
-    const xButton = screen.getByTestId("close-icon");
+    const xButton = screen.getByTestId("clear-search-button");
     expect(xButton).toBeInTheDocument();
   });
 
@@ -70,7 +70,7 @@ describe("Search Component", () => {
     const input = screen.getByLabelText("Search by Package ID, CPOC Name, or Submitter Name");
     fireEvent.change(input, { target: { value: "Test query" } });
 
-    const xButton = screen.getByTestId("close-icon");
+    const xButton = screen.getByTestId("clear-search-button");
     expect(xButton).toBeInTheDocument();
 
     fireEvent.click(xButton);
