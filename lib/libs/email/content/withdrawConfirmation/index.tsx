@@ -1,7 +1,7 @@
 import { render } from "@react-email/render";
 import { Authority, CommonEmailVariables, EmailAddresses, Events } from "shared-types";
 
-import { AuthoritiesWithUserTypesTemplate } from "../..";
+import { AuthoritiesWithUserTypesTemplate } from "../../index";
 import { ChipSpaStateEmail, MedSpaStateEmail, WaiverStateEmail } from "./emailTemplates";
 
 const generateWithdrawEmail = async (
@@ -24,7 +24,11 @@ export const withdrawConfirmation: AuthoritiesWithUserTypesTemplate = {
       generateWithdrawEmail(variables, "Medicaid SPA Package", MedSpaStateEmail),
   },
   [Authority.CHIP_SPA]: {
-    state: (variables) => generateWithdrawEmail(variables, "CHIP SPA Package", ChipSpaStateEmail),
+    state: (variables) => {
+      const chipPrefix = `CHIP${variables.isChipEligibility ? " Eligibility" : ""}`;
+
+      return generateWithdrawEmail(variables, `${chipPrefix} SPA Package`, ChipSpaStateEmail);
+    },
   },
   [Authority["1915b"]]: {
     state: (variables) => generateWithdrawEmail(variables, "1915(b)", WaiverStateEmail),

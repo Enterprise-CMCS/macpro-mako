@@ -41,4 +41,5 @@ export {
 
 export * from "./api";
 export * from "./aws";
+export * from "./launchDarkly";
 export * from "./opensearch";

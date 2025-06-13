@@ -13,12 +13,19 @@ import { getPackageType } from "./getPackageType";
  * @property {string} body.packageId
  * @property {string} body.action
  */
-const sendDeleteMessage = async (currentPackage: ItemResult) => {
+const sendRecoverMessage = async (currentPackage: ItemResult) => {
   const topicName = process.env.topicName as string;
   if (!topicName) {
     throw new Error("Topic name is not defined");
   }
-  const packageId = currentPackage._source.id;
+
+  if (!currentPackage._source.id.endsWith("del")) {
+    return response({
+      statusCode: 200,
+      body: { message: `${currentPackage._source.id} is not a deleted package.` },
+    });
+  }
+  const packageId = currentPackage._source.id.split(/-del/i)[0];
   const currentTime = Date.now();
 
   // Making a copy of the previous package and deleting it
@@ -27,8 +34,51 @@ const sendDeleteMessage = async (currentPackage: ItemResult) => {
     packageId,
     JSON.stringify({
       ...currentPackage._source,
+      id: packageId,
+      idToBeUpdated: currentPackage._id,
+      deleted: false,
+      isAdminChange: true,
+      adminChangeType: "update-id",
+      changeMade: "Recovered Package.",
+      changeReason: "Recovered package.",
+      makoChangedDate: currentTime,
+      changedDate: currentTime,
+      statusDate: currentTime,
+      timestamp: currentTime,
+    }),
+  );
+
+  return response({
+    statusCode: 200,
+    body: { message: `${packageId} has been recovered.` },
+  });
+};
+/** @typedef {object} json
+ * @property {object} body
+ * @property {string} body.packageId
+ * @property {string} body.action
+ */
+const sendDeleteMessage = async (currentPackage: ItemResult, timestamp?: number) => {
+  const topicName = process.env.topicName as string;
+  if (!topicName) {
+    throw new Error("Topic name is not defined");
+  }
+  const packageId = currentPackage._source.id;
+  const currentTime = timestamp || Date.now();
+
+  // Making a copy of the previous package and deleting it
+
+  await produceMessage(
+    topicName,
+    packageId + "-del",
+    JSON.stringify({
+      ...currentPackage._source,
       id: packageId + "-del",
       deleted: true,
+      idToBeUpdated: currentPackage._id,
+      origin: "OneMAC",
+      changeMade: "Deleted package.",
+      changeReason: "Deleted package.",
       isAdminChange: true,
       adminChangeType: "update-id",
       makoChangedDate: currentTime,
@@ -109,7 +159,6 @@ const sendUpdateValuesMessage = async ({
     currentPackage._id,
     JSON.stringify({
       id: currentPackage._id,
-      ...updatedFields,
       isAdminChange: true,
       adminChangeType: "update-values",
       changeMade,
@@ -118,6 +167,7 @@ const sendUpdateValuesMessage = async ({
       changedDate: currentTime,
       statusDate: currentTime,
       timestamp: currentTime,
+      ...updatedFields,
     }),
   );
 
@@ -184,6 +234,7 @@ const sendUpdateIdMessage = async ({
   }
 
   const currentTime = Date.now();
+
   await produceMessage(
     topicName,
     updatedId,
@@ -202,7 +253,7 @@ const sendUpdateIdMessage = async ({
       timestamp: currentTime,
     }),
   );
-  await sendDeleteMessage(currentPackage);
+  await sendDeleteMessage(currentPackage, currentTime);
   return response({
     statusCode: 200,
     body: { message: `The ID of package ${currentPackage._id} has been updated to ${updatedId}.` },
@@ -211,7 +262,7 @@ const sendUpdateIdMessage = async ({
 
 const updatePackageEventBodySchema = z.object({
   packageId: z.string(),
-  action: z.enum(["update-values", "update-id", "delete"]),
+  action: z.enum(["update-values", "update-id", "delete", "recover"]),
   updatedId: z.string().optional(),
   updatedFields: z.record(z.unknown()).optional(),
   changeMade: z.string().optional(),
@@ -264,7 +315,9 @@ export const handler = async (event: APIGatewayEvent) => {
     if (action === "delete") {
       return await sendDeleteMessage(currentPackage);
     }
-
+    if (action === "recover") {
+      return await sendRecoverMessage(currentPackage);
+    }
     if (action === "update-id") {
       return await sendUpdateIdMessage({ currentPackage, updatedId, changeMade, changeReason });
     }

@@ -158,7 +158,7 @@ export const useOsUrl = () => {
       filters: [],
       search: "",
       tab: "spas",
-      pagination: { number: 0, size: 25 },
+      pagination: { number: 0, size: 100 },
       sort: { field: "makoChangedDate", order: "desc" },
       ...queryObject,
     },

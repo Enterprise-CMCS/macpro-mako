@@ -7,7 +7,7 @@ import { describe, expect, test } from "vitest";
 import { renderWithQueryClient } from "@/utils/test-helpers";
 
 import { Form, FormField } from "../../Inputs";
-import { RHFSlot } from "..";
+import { RHFSlot } from "../index";
 
 const TestWrapper = (props: RHFSlotProps & { defaultValues?: any }) => {
   const form = useForm<any>({

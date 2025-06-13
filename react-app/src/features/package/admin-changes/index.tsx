@@ -91,7 +91,12 @@ export const AdminChange = ({ adminActivity }: AdminChangeProps) => {
       default:
         return [BLANK_VALUE, AC_Update];
     }
-  }, [adminActivity.event, adminActivity.changeType, adminActivity.raiWithdrawEnabled]);
+  }, [
+    adminActivity.event,
+    adminActivity.changeType,
+    adminActivity.raiWithdrawEnabled,
+    adminActivity.changeMade,
+  ]);
 
   return (
     <AccordionItem value={adminActivity.id}>
@@ -134,9 +139,9 @@ export const AdminPackageActivities = ({ changelog }: AdminChangesProps) => {
         defaultValue={[adminChangelog[0]._source.id]}
         className="flex flex-col gap-2"
       >
-        {adminChangelog.map(({ _source: adminActivity }) => {
-          return <AdminChange key={adminActivity.id} adminActivity={adminActivity} />;
-        })}
+        {adminChangelog.map(({ _source: adminActivity }) => (
+          <AdminChange key={adminActivity.id} adminActivity={adminActivity} />
+        ))}
       </Accordion>
     </DetailsSection>
   );

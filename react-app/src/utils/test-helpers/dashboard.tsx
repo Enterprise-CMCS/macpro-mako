@@ -136,7 +136,7 @@ export const getDashboardQueryString = ({
       tab: tab || "spas",
       pagination: pagination || {
         number: 0,
-        size: 25,
+        size: 100,
       },
       sort: sort || {
         field: "makoChangedDate",
@@ -225,10 +225,10 @@ export const verifyChips = (labels: string[]) => {
 export const verifyPagination = (recordCount: number) => {
   const pagination = screen.getByTestId("pagination");
   expect(within(screen.getByTestId("pagination")).getByLabelText("Records per page:")).toHaveValue(
-    "25",
+    "100",
   );
   expect(within(pagination).getByTestId("page-location").textContent).toEqual(
-    `1-${recordCount < 25 ? recordCount : 25}of${recordCount}records`,
+    `1-${recordCount < 100 ? recordCount : 100}of${recordCount}records`,
   );
   expect(within(pagination).getByLabelText("Pagination")).toBeInTheDocument();
 };
@@ -261,8 +261,8 @@ export const PENDING_SUBMITTED_ITEM_EXPORT = {
   State: PENDING_SUBMITTED_ITEM._source.state,
   "Submitted By": PENDING_SUBMITTED_ITEM._source.submitterName,
   "CPOC Name": PENDING_SUBMITTED_ITEM._source.leadAnalystName,
-  "Final Disposition": "-- --",
-  "Formal RAI Requested": "-- --",
+  // "Final Disposition": "-- --",
+  // "Formal RAI Requested": "-- --",
 };
 
 export const PENDING_RAI_REQUEST_ITEM = {
@@ -286,8 +286,8 @@ export const PENDING_RAI_REQUEST_ITEM_EXPORT = {
   State: PENDING_RAI_REQUEST_ITEM._source.state,
   "Submitted By": PENDING_RAI_REQUEST_ITEM._source.submitterName,
   "CPOC Name": PENDING_RAI_REQUEST_ITEM._source.leadAnalystName,
-  "Final Disposition": "-- --",
-  "Formal RAI Requested": "02/29/2024",
+  // "Final Disposition": "-- --",
+  // "Formal RAI Requested": "02/29/2024",
 };
 
 export const PENDING_RAI_RECEIVED_ITEM = {
@@ -312,8 +312,8 @@ export const PENDING_RAI_RECEIVED_ITEM_EXPORT = {
   State: PENDING_RAI_RECEIVED_ITEM._source.state,
   "Submitted By": PENDING_RAI_RECEIVED_ITEM._source.submitterName,
   "CPOC Name": PENDING_RAI_RECEIVED_ITEM._source.leadAnalystName,
-  "Final Disposition": "-- --",
-  "Formal RAI Requested": "02/29/2024",
+  // "Final Disposition": "-- --",
+  // "Formal RAI Requested": "02/29/2024",
 };
 
 export const RAI_WITHDRAW_ENABLED_ITEM = {
@@ -339,8 +339,8 @@ export const RAI_WITHDRAW_ENABLED_ITEM_EXPORT = {
   State: RAI_WITHDRAW_ENABLED_ITEM._source.state,
   "Submitted By": RAI_WITHDRAW_ENABLED_ITEM._source.submitterName,
   "CPOC Name": RAI_WITHDRAW_ENABLED_ITEM._source.leadAnalystName,
-  "Final Disposition": "-- --",
-  "Formal RAI Requested": "02/29/2024",
+  // "Final Disposition": "-- --",
+  // "Formal RAI Requested": "02/29/2024",
 };
 
 export const RAI_WITHDRAW_DISABLED_ITEM = {
@@ -366,8 +366,8 @@ export const RAI_WITHDRAW_DISABLED_ITEM_EXPORT = {
   State: RAI_WITHDRAW_DISABLED_ITEM._source.state,
   "Submitted By": RAI_WITHDRAW_DISABLED_ITEM._source.submitterName,
   "CPOC Name": RAI_WITHDRAW_DISABLED_ITEM._source.leadAnalystName,
-  "Final Disposition": "-- --",
-  "Formal RAI Requested": "02/29/2024",
+  // "Final Disposition": "-- --",
+  // "Formal RAI Requested": "02/29/2024",
 };
 
 export const APPROVED_ITEM = {
@@ -391,8 +391,8 @@ export const APPROVED_ITEM_EXPORT = {
   State: APPROVED_ITEM._source.state,
   "Submitted By": APPROVED_ITEM._source.submitterName,
   "CPOC Name": APPROVED_ITEM._source.leadAnalystName,
-  "Final Disposition": "04/30/2024",
-  "Formal RAI Requested": "-- --",
+  // "Final Disposition": "04/30/2024",
+  // "Formal RAI Requested": "-- --",
 };
 
 export const BLANK_ITEM = {
@@ -414,6 +414,6 @@ export const BLANK_ITEM_EXPORT = {
   State: "-- --",
   "Submitted By": "-- --",
   "CPOC Name": "-- --",
-  "Final Disposition": "-- --",
-  "Formal RAI Requested": "-- --",
+  // "Final Disposition": "-- --",
+  // "Formal RAI Requested": "-- --",
 };
