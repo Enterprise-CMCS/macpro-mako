@@ -244,7 +244,7 @@
                 {
                   "workerIndex": 0,
                   "status": "passed",
-                  "duration": 10404,
+                  "duration": 16951,
                   "errors": [],
                   "stdout": [
                     {
@@ -265,7 +265,7 @@
                   ],
                   "stderr": [],
                   "retry": 0,
-                  "startTime": "2025-06-13T14:57:54.600Z",
+                  "startTime": "2025-06-13T16:28:34.834Z",
                   "attachments": []
                 }
               ],
@@ -318,12 +318,12 @@
                         {
                           "workerIndex": 1,
                           "status": "passed",
-                          "duration": 1893,
+                          "duration": 4916,
                           "errors": [],
                           "stdout": [],
                           "stderr": [],
                           "retry": 0,
-                          "startTime": "2025-06-13T14:58:06.460Z",
+                          "startTime": "2025-06-13T16:28:53.338Z",
                           "attachments": []
                         }
                       ],
@@ -354,12 +354,12 @@
                         {
                           "workerIndex": 1,
                           "status": "passed",
-                          "duration": 2127,
+                          "duration": 2942,
                           "errors": [],
                           "stdout": [],
                           "stderr": [],
                           "retry": 0,
-                          "startTime": "2025-06-13T14:58:08.536Z",
+                          "startTime": "2025-06-13T16:28:58.403Z",
                           "attachments": []
                         }
                       ],
@@ -390,12 +390,12 @@
                         {
                           "workerIndex": 1,
                           "status": "passed",
-                          "duration": 2100,
+                          "duration": 4196,
                           "errors": [],
                           "stdout": [],
                           "stderr": [],
                           "retry": 0,
-                          "startTime": "2025-06-13T14:58:10.671Z",
+                          "startTime": "2025-06-13T16:29:01.352Z",
                           "attachments": []
                         }
                       ],
@@ -426,12 +426,12 @@
                         {
                           "workerIndex": 1,
                           "status": "passed",
-                          "duration": 1975,
+                          "duration": 4096,
                           "errors": [],
                           "stdout": [],
                           "stderr": [],
                           "retry": 0,
-                          "startTime": "2025-06-13T14:58:12.779Z",
+                          "startTime": "2025-06-13T16:29:05.557Z",
                           "attachments": []
                         }
                       ],
@@ -462,12 +462,12 @@
                         {
                           "workerIndex": 1,
                           "status": "passed",
-                          "duration": 2011,
+                          "duration": 4104,
                           "errors": [],
                           "stdout": [],
                           "stderr": [],
                           "retry": 0,
-                          "startTime": "2025-06-13T14:58:14.761Z",
+                          "startTime": "2025-06-13T16:29:09.662Z",
                           "attachments": []
                         }
                       ],
@@ -498,12 +498,12 @@
                         {
                           "workerIndex": 1,
                           "status": "passed",
-                          "duration": 1931,
+                          "duration": 2994,
                           "errors": [],
                           "stdout": [],
                           "stderr": [],
                           "retry": 0,
-                          "startTime": "2025-06-13T14:58:16.779Z",
+                          "startTime": "2025-06-13T16:29:13.774Z",
                           "attachments": []
                         }
                       ],
@@ -534,12 +534,12 @@
                         {
                           "workerIndex": 1,
                           "status": "passed",
-                          "duration": 1971,
+                          "duration": 2837,
                           "errors": [],
                           "stdout": [],
                           "stderr": [],
                           "retry": 0,
-                          "startTime": "2025-06-13T14:58:18.716Z",
+                          "startTime": "2025-06-13T16:29:16.775Z",
                           "attachments": []
                         }
                       ],
@@ -585,12 +585,12 @@
                                 {
                                   "workerIndex": 1,
                                   "status": "passed",
-                                  "duration": 814,
+                                  "duration": 933,
                                   "errors": [],
                                   "stdout": [],
                                   "stderr": [],
                                   "retry": 0,
-                                  "startTime": "2025-06-13T14:58:20.694Z",
+                                  "startTime": "2025-06-13T16:29:19.619Z",
                                   "attachments": []
                                 }
                               ],
@@ -621,12 +621,12 @@
                                 {
                                   "workerIndex": 1,
                                   "status": "passed",
-                                  "duration": 2735,
+                                  "duration": 2690,
                                   "errors": [],
                                   "stdout": [],
                                   "stderr": [],
                                   "retry": 0,
-                                  "startTime": "2025-06-13T14:58:21.515Z",
+                                  "startTime": "2025-06-13T16:29:20.559Z",
                                   "attachments": []
                                 }
                               ],
@@ -657,12 +657,12 @@
                                 {
                                   "workerIndex": 1,
                                   "status": "passed",
-                                  "duration": 1846,
+                                  "duration": 3073,
                                   "errors": [],
                                   "stdout": [],
                                   "stderr": [],
                                   "retry": 0,
-                                  "startTime": "2025-06-13T14:58:24.258Z",
+                                  "startTime": "2025-06-13T16:29:23.256Z",
                                   "attachments": []
                                 }
                               ],
@@ -684,7 +684,7 @@
                       "specs": [
                         {
                           "title": "column headers",
-                          "ok": false,
+                          "ok": true,
                           "tags": [
                             "dashboard",
                             "CI",
@@ -700,52 +700,17 @@
                               "results": [
                                 {
                                   "workerIndex": 1,
-                                  "status": "failed",
-                                  "duration": 3116,
-                                  "error": {
-                                    "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoEqual\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // deep equality\u001b[22m\n\nExpected: \u001b[32m\"Submitted By\"\u001b[39m\nReceived: \u001b[31m\"Formal RAI Response\"\u001b[39m",
-                                    "stack": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoEqual\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // deep equality\u001b[22m\n\nExpected: \u001b[32m\"Submitted By\"\u001b[39m\nReceived: \u001b[31m\"Formal RAI Response\"\u001b[39m\n    at /home/runner/work/macpro-mako/macpro-mako/test/e2e/dashboard/dashboard.spec.ts:120:61",
-                                    "location": {
-                                      "file": "/home/runner/work/macpro-mako/macpro-mako/test/e2e/dashboard/dashboard.spec.ts",
-                                      "column": 61,
-                                      "line": 120
-                                    },
-                                    "snippet": "\u001b[0m \u001b[90m 118 |\u001b[39m           \u001b[36mfor\u001b[39m (\u001b[36mlet\u001b[39m i \u001b[33m=\u001b[39m \u001b[35m0\u001b[39m\u001b[33m;\u001b[39m i \u001b[33m<\u001b[39m count\u001b[33m;\u001b[39m i\u001b[33m++\u001b[39m) {\n \u001b[90m 119 |\u001b[39m             \u001b[36mawait\u001b[39m expect(\u001b[36mawait\u001b[39m header\u001b[33m.\u001b[39mnth(i))\u001b[33m.\u001b[39mtoBeVisible()\u001b[33m;\u001b[39m\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 120 |\u001b[39m             \u001b[36mawait\u001b[39m expect(\u001b[36mawait\u001b[39m header\u001b[33m.\u001b[39mnth(i)\u001b[33m.\u001b[39mtextContent())\u001b[33m.\u001b[39mtoEqual(headerValues[i])\u001b[33m;\u001b[39m\n \u001b[90m     |\u001b[39m                                                             \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 121 |\u001b[39m           }\n \u001b[90m 122 |\u001b[39m         })\u001b[33m;\u001b[39m\n \u001b[90m 123 |\u001b[39m\u001b[0m"
-                                  },
-                                  "errors": [
-                                    {
-                                      "location": {
-                                        "file": "/home/runner/work/macpro-mako/macpro-mako/test/e2e/dashboard/dashboard.spec.ts",
-                                        "column": 61,
-                                        "line": 120
-                                      },
-                                      "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoEqual\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // deep equality\u001b[22m\n\nExpected: \u001b[32m\"Submitted By\"\u001b[39m\nReceived: \u001b[31m\"Formal RAI Response\"\u001b[39m\n\n\u001b[0m \u001b[90m 118 |\u001b[39m           \u001b[36mfor\u001b[39m (\u001b[36mlet\u001b[39m i \u001b[33m=\u001b[39m \u001b[35m0\u001b[39m\u001b[33m;\u001b[39m i \u001b[33m<\u001b[39m count\u001b[33m;\u001b[39m i\u001b[33m++\u001b[39m) {\n \u001b[90m 119 |\u001b[39m             \u001b[36mawait\u001b[39m expect(\u001b[36mawait\u001b[39m header\u001b[33m.\u001b[39mnth(i))\u001b[33m.\u001b[39mtoBeVisible()\u001b[33m;\u001b[39m\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 120 |\u001b[39m             \u001b[36mawait\u001b[39m expect(\u001b[36mawait\u001b[39m header\u001b[33m.\u001b[39mnth(i)\u001b[33m.\u001b[39mtextContent())\u001b[33m.\u001b[39mtoEqual(headerValues[i])\u001b[33m;\u001b[39m\n \u001b[90m     |\u001b[39m                                                             \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 121 |\u001b[39m           }\n \u001b[90m 122 |\u001b[39m         })\u001b[33m;\u001b[39m\n \u001b[90m 123 |\u001b[39m\u001b[0m\n\n    at /home/runner/work/macpro-mako/macpro-mako/test/e2e/dashboard/dashboard.spec.ts:120:61"
-                                    }
-                                  ],
+                                  "status": "passed",
+                                  "duration": 3809,
+                                  "errors": [],
                                   "stdout": [],
                                   "stderr": [],
                                   "retry": 0,
-                                  "startTime": "2025-06-13T14:58:26.112Z",
-                                  "attachments": [
-                                    {
-                                      "name": "video",
-                                      "contentType": "video/webm",
-                                      "path": "/home/runner/work/macpro-mako/macpro-mako/test/test-results/e2e-dashboard-dashboard-Da-d503b-able-waivers-column-headers-ci/video.webm"
-                                    },
-                                    {
-                                      "name": "trace",
-                                      "contentType": "application/zip",
-                                      "path": "/home/runner/work/macpro-mako/macpro-mako/test/test-results/e2e-dashboard-dashboard-Da-d503b-able-waivers-column-headers-ci/trace.zip"
-                                    }
-                                  ],
-                                  "errorLocation": {
-                                    "file": "/home/runner/work/macpro-mako/macpro-mako/test/e2e/dashboard/dashboard.spec.ts",
-                                    "column": 61,
-                                    "line": 120
-                                  }
+                                  "startTime": "2025-06-13T16:29:26.339Z",
+                                  "attachments": []
                                 }
                               ],
-                              "status": "unexpected"
+                              "status": "expected"
                             }
                           ],
                           "id": "100b0891d08a31cb23fb-0806ffed22afd0f21e10",
@@ -770,14 +735,14 @@
                               "projectName": "ci",
                               "results": [
                                 {
-                                  "workerIndex": 2,
+                                  "workerIndex": 1,
                                   "status": "passed",
-                                  "duration": 2394,
+                                  "duration": 3476,
                                   "errors": [],
                                   "stdout": [],
                                   "stderr": [],
                                   "retry": 0,
-                                  "startTime": "2025-06-13T14:58:30.739Z",
+                                  "startTime": "2025-06-13T16:29:30.154Z",
                                   "attachments": []
                                 }
                               ],
@@ -806,14 +771,14 @@
                               "projectName": "ci",
                               "results": [
                                 {
-                                  "workerIndex": 2,
+                                  "workerIndex": 1,
                                   "status": "passed",
-                                  "duration": 2311,
+                                  "duration": 3684,
                                   "errors": [],
                                   "stdout": [],
                                   "stderr": [],
                                   "retry": 0,
-                                  "startTime": "2025-06-13T14:58:33.304Z",
+                                  "startTime": "2025-06-13T16:29:33.637Z",
                                   "attachments": []
                                 }
                               ],
@@ -880,14 +845,14 @@
                           "projectName": "ci",
                           "results": [
                             {
-                              "workerIndex": 2,
+                              "workerIndex": 1,
                               "status": "passed",
-                              "duration": 1827,
+                              "duration": 4073,
                               "errors": [],
                               "stdout": [],
                               "stderr": [],
                               "retry": 0,
-                              "startTime": "2025-06-13T14:58:35.646Z",
+                              "startTime": "2025-06-13T16:29:37.354Z",
                               "attachments": []
                             }
                           ],
@@ -925,14 +890,14 @@
                           "projectName": "ci",
                           "results": [
                             {
-                              "workerIndex": 2,
+                              "workerIndex": 1,
                               "status": "passed",
-                              "duration": 2717,
+                              "duration": 4836,
                               "errors": [],
                               "stdout": [],
                               "stderr": [],
                               "retry": 0,
-                              "startTime": "2025-06-13T14:58:37.480Z",
+                              "startTime": "2025-06-13T16:29:41.433Z",
                               "attachments": []
                             }
                           ],
@@ -962,14 +927,14 @@
                           "projectName": "ci",
                           "results": [
                             {
-                              "workerIndex": 2,
+                              "workerIndex": 1,
                               "status": "passed",
-                              "duration": 2664,
+                              "duration": 3857,
                               "errors": [],
                               "stdout": [],
                               "stderr": [],
                               "retry": 0,
-                              "startTime": "2025-06-13T14:58:40.204Z",
+                              "startTime": "2025-06-13T16:29:46.275Z",
                               "attachments": []
                             }
                           ],
@@ -999,14 +964,14 @@
                           "projectName": "ci",
                           "results": [
                             {
-                              "workerIndex": 2,
+                              "workerIndex": 1,
                               "status": "passed",
-                              "duration": 2701,
+                              "duration": 2995,
                               "errors": [],
                               "stdout": [],
                               "stderr": [],
                               "retry": 0,
-                              "startTime": "2025-06-13T14:58:42.874Z",
+                              "startTime": "2025-06-13T16:29:50.138Z",
                               "attachments": []
                             }
                           ],
@@ -1036,14 +1001,14 @@
                           "projectName": "ci",
                           "results": [
                             {
-                              "workerIndex": 2,
+                              "workerIndex": 1,
                               "status": "passed",
-                              "duration": 2736,
+                              "duration": 3857,
                               "errors": [],
                               "stdout": [],
                               "stderr": [],
                               "retry": 0,
-                              "startTime": "2025-06-13T14:58:45.582Z",
+                              "startTime": "2025-06-13T16:29:53.139Z",
                               "attachments": []
                             }
                           ],
@@ -1073,14 +1038,14 @@
                           "projectName": "ci",
                           "results": [
                             {
-                              "workerIndex": 2,
+                              "workerIndex": 1,
                               "status": "passed",
-                              "duration": 2747,
+                              "duration": 3863,
                               "errors": [],
                               "stdout": [],
                               "stderr": [],
                               "retry": 0,
-                              "startTime": "2025-06-13T14:58:48.324Z",
+                              "startTime": "2025-06-13T16:29:57.002Z",
                               "attachments": []
                             }
                           ],
@@ -1110,14 +1075,14 @@
                           "projectName": "ci",
                           "results": [
                             {
-                              "workerIndex": 2,
+                              "workerIndex": 1,
                               "status": "passed",
-                              "duration": 1776,
+                              "duration": 3854,
                               "errors": [],
                               "stdout": [],
                               "stderr": [],
                               "retry": 0,
-                              "startTime": "2025-06-13T14:58:51.079Z",
+                              "startTime": "2025-06-13T16:30:00.870Z",
                               "attachments": []
                             }
                           ],
@@ -1147,14 +1112,14 @@
                           "projectName": "ci",
                           "results": [
                             {
-                              "workerIndex": 2,
+                              "workerIndex": 1,
                               "status": "passed",
-                              "duration": 2712,
+                              "duration": 3822,
                               "errors": [],
                               "stdout": [],
                               "stderr": [],
                               "retry": 0,
-                              "startTime": "2025-06-13T14:58:52.865Z",
+                              "startTime": "2025-06-13T16:30:04.730Z",
                               "attachments": []
                             }
                           ],
@@ -1192,14 +1157,14 @@
                           "projectName": "ci",
                           "results": [
                             {
-                              "workerIndex": 2,
+                              "workerIndex": 1,
                               "status": "passed",
-                              "duration": 2878,
+                              "duration": 3857,
                               "errors": [],
                               "stdout": [],
                               "stderr": [],
                               "retry": 0,
-                              "startTime": "2025-06-13T14:58:55.583Z",
+                              "startTime": "2025-06-13T16:30:08.558Z",
                               "attachments": []
                             }
                           ],
@@ -1229,14 +1194,14 @@
                           "projectName": "ci",
                           "results": [
                             {
-                              "workerIndex": 2,
+                              "workerIndex": 1,
                               "status": "passed",
-                              "duration": 2656,
+                              "duration": 2978,
                               "errors": [],
                               "stdout": [],
                               "stderr": [],
                               "retry": 0,
-                              "startTime": "2025-06-13T14:58:58.469Z",
+                              "startTime": "2025-06-13T16:30:12.422Z",
                               "attachments": []
                             }
                           ],
@@ -1266,14 +1231,14 @@
                           "projectName": "ci",
                           "results": [
                             {
-                              "workerIndex": 2,
+                              "workerIndex": 1,
                               "status": "passed",
-                              "duration": 2626,
+                              "duration": 2996,
                               "errors": [],
                               "stdout": [],
                               "stderr": [],
                               "retry": 0,
-                              "startTime": "2025-06-13T14:59:01.131Z",
+                              "startTime": "2025-06-13T16:30:15.406Z",
                               "attachments": []
                             }
                           ],
@@ -1303,14 +1268,14 @@
                           "projectName": "ci",
                           "results": [
                             {
-                              "workerIndex": 2,
+                              "workerIndex": 1,
                               "status": "passed",
-                              "duration": 2724,
+                              "duration": 3838,
                               "errors": [],
                               "stdout": [],
                               "stderr": [],
                               "retry": 0,
-                              "startTime": "2025-06-13T14:59:03.763Z",
+                              "startTime": "2025-06-13T16:30:18.409Z",
                               "attachments": []
                             }
                           ],
@@ -1340,14 +1305,14 @@
                           "projectName": "ci",
                           "results": [
                             {
-                              "workerIndex": 2,
+                              "workerIndex": 1,
                               "status": "passed",
-                              "duration": 2652,
+                              "duration": 3863,
                               "errors": [],
                               "stdout": [],
                               "stderr": [],
                               "retry": 0,
-                              "startTime": "2025-06-13T14:59:06.493Z",
+                              "startTime": "2025-06-13T16:30:22.253Z",
                               "attachments": []
                             }
                           ],
@@ -1377,14 +1342,14 @@
                           "projectName": "ci",
                           "results": [
                             {
-                              "workerIndex": 2,
+                              "workerIndex": 1,
                               "status": "passed",
-                              "duration": 2705,
+                              "duration": 2930,
                               "errors": [],
                               "stdout": [],
                               "stderr": [],
                               "retry": 0,
-                              "startTime": "2025-06-13T14:59:09.152Z",
+                              "startTime": "2025-06-13T16:30:26.121Z",
                               "attachments": []
                             }
                           ],
@@ -1414,14 +1379,14 @@
                           "projectName": "ci",
                           "results": [
                             {
-                              "workerIndex": 2,
+                              "workerIndex": 1,
                               "status": "passed",
-                              "duration": 2678,
+                              "duration": 3869,
                               "errors": [],
                               "stdout": [],
                               "stderr": [],
                               "retry": 0,
-                              "startTime": "2025-06-13T14:59:11.863Z",
+                              "startTime": "2025-06-13T16:30:29.057Z",
                               "attachments": []
                             }
                           ],
@@ -1451,14 +1416,14 @@
                           "projectName": "ci",
                           "results": [
                             {
-                              "workerIndex": 2,
+                              "workerIndex": 1,
                               "status": "passed",
-                              "duration": 1829,
+                              "duration": 2867,
                               "errors": [],
                               "stdout": [],
                               "stderr": [],
                               "retry": 0,
-                              "startTime": "2025-06-13T14:59:14.547Z",
+                              "startTime": "2025-06-13T16:30:32.932Z",
                               "attachments": []
                             }
                           ],
@@ -1488,14 +1453,14 @@
                           "projectName": "ci",
                           "results": [
                             {
-                              "workerIndex": 2,
+                              "workerIndex": 1,
                               "status": "passed",
-                              "duration": 1771,
+                              "duration": 3870,
                               "errors": [],
                               "stdout": [],
                               "stderr": [],
                               "retry": 0,
-                              "startTime": "2025-06-13T14:59:16.382Z",
+                              "startTime": "2025-06-13T16:30:35.806Z",
                               "attachments": []
                             }
                           ],
@@ -1525,14 +1490,14 @@
                           "projectName": "ci",
                           "results": [
                             {
-                              "workerIndex": 2,
+                              "workerIndex": 1,
                               "status": "passed",
-                              "duration": 1759,
+                              "duration": 2987,
                               "errors": [],
                               "stdout": [],
                               "stderr": [],
                               "retry": 0,
-                              "startTime": "2025-06-13T14:59:18.160Z",
+                              "startTime": "2025-06-13T16:30:39.685Z",
                               "attachments": []
                             }
                           ],
@@ -1562,14 +1527,14 @@
                           "projectName": "ci",
                           "results": [
                             {
-                              "workerIndex": 2,
+                              "workerIndex": 1,
                               "status": "passed",
-                              "duration": 2694,
+                              "duration": 2912,
                               "errors": [],
                               "stdout": [],
                               "stderr": [],
                               "retry": 0,
-                              "startTime": "2025-06-13T14:59:19.926Z",
+                              "startTime": "2025-06-13T16:30:42.680Z",
                               "attachments": []
                             }
                           ],
@@ -1599,14 +1564,14 @@
                           "projectName": "ci",
                           "results": [
                             {
-                              "workerIndex": 2,
+                              "workerIndex": 1,
                               "status": "passed",
-                              "duration": 2691,
+                              "duration": 2878,
                               "errors": [],
                               "stdout": [],
                               "stderr": [],
                               "retry": 0,
-                              "startTime": "2025-06-13T14:59:22.627Z",
+                              "startTime": "2025-06-13T16:30:45.598Z",
                               "attachments": []
                             }
                           ],
@@ -1636,14 +1601,14 @@
                           "projectName": "ci",
                           "results": [
                             {
-                              "workerIndex": 2,
+                              "workerIndex": 1,
                               "status": "passed",
-                              "duration": 1786,
+                              "duration": 3888,
                               "errors": [],
                               "stdout": [],
                               "stderr": [],
                               "retry": 0,
-                              "startTime": "2025-06-13T14:59:25.324Z",
+                              "startTime": "2025-06-13T16:30:48.483Z",
                               "attachments": []
                             }
                           ],
@@ -1673,14 +1638,14 @@
                           "projectName": "ci",
                           "results": [
                             {
-                              "workerIndex": 2,
+                              "workerIndex": 1,
                               "status": "passed",
-                              "duration": 2681,
+                              "duration": 3746,
                               "errors": [],
                               "stdout": [],
                               "stderr": [],
                               "retry": 0,
-                              "startTime": "2025-06-13T14:59:27.118Z",
+                              "startTime": "2025-06-13T16:30:52.376Z",
                               "attachments": []
                             }
                           ],
@@ -1710,14 +1675,14 @@
                           "projectName": "ci",
                           "results": [
                             {
-                              "workerIndex": 2,
+                              "workerIndex": 1,
                               "status": "passed",
-                              "duration": 1814,
+                              "duration": 3867,
                               "errors": [],
                               "stdout": [],
                               "stderr": [],
                               "retry": 0,
-                              "startTime": "2025-06-13T14:59:29.804Z",
+                              "startTime": "2025-06-13T16:30:56.127Z",
                               "attachments": []
                             }
                           ],
@@ -1747,14 +1712,14 @@
                           "projectName": "ci",
                           "results": [
                             {
-                              "workerIndex": 2,
+                              "workerIndex": 1,
                               "status": "passed",
-                              "duration": 1787,
+                              "duration": 3890,
                               "errors": [],
                               "stdout": [],
                               "stderr": [],
                               "retry": 0,
-                              "startTime": "2025-06-13T14:59:31.625Z",
+                              "startTime": "2025-06-13T16:31:00.000Z",
                               "attachments": []
                             }
                           ],
@@ -1792,14 +1757,14 @@
                           "projectName": "ci",
                           "results": [
                             {
-                              "workerIndex": 2,
+                              "workerIndex": 1,
                               "status": "passed",
-                              "duration": 2677,
+                              "duration": 2963,
                               "errors": [],
                               "stdout": [],
                               "stderr": [],
                               "retry": 0,
-                              "startTime": "2025-06-13T14:59:33.418Z",
+                              "startTime": "2025-06-13T16:31:03.896Z",
                               "attachments": []
                             }
                           ],
@@ -1829,14 +1794,14 @@
                           "projectName": "ci",
                           "results": [
                             {
-                              "workerIndex": 2,
+                              "workerIndex": 1,
                               "status": "passed",
-                              "duration": 1718,
+                              "duration": 2833,
                               "errors": [],
                               "stdout": [],
                               "stderr": [],
                               "retry": 0,
-                              "startTime": "2025-06-13T14:59:36.100Z",
+                              "startTime": "2025-06-13T16:31:06.866Z",
                               "attachments": []
                             }
                           ],
@@ -1866,14 +1831,14 @@
                           "projectName": "ci",
                           "results": [
                             {
-                              "workerIndex": 2,
+                              "workerIndex": 1,
                               "status": "passed",
-                              "duration": 2667,
+                              "duration": 3869,
                               "errors": [],
                               "stdout": [],
                               "stderr": [],
                               "retry": 0,
-                              "startTime": "2025-06-13T14:59:37.824Z",
+                              "startTime": "2025-06-13T16:31:09.704Z",
                               "attachments": []
                             }
                           ],
@@ -1903,14 +1868,14 @@
                           "projectName": "ci",
                           "results": [
                             {
-                              "workerIndex": 2,
+                              "workerIndex": 1,
                               "status": "passed",
-                              "duration": 2665,
+                              "duration": 3895,
                               "errors": [],
                               "stdout": [],
                               "stderr": [],
                               "retry": 0,
-                              "startTime": "2025-06-13T14:59:40.496Z",
+                              "startTime": "2025-06-13T16:31:13.579Z",
                               "attachments": []
                             }
                           ],
@@ -1940,14 +1905,14 @@
                           "projectName": "ci",
                           "results": [
                             {
-                              "workerIndex": 2,
+                              "workerIndex": 1,
                               "status": "passed",
-                              "duration": 1763,
+                              "duration": 3747,
                               "errors": [],
                               "stdout": [],
                               "stderr": [],
                               "retry": 0,
-                              "startTime": "2025-06-13T14:59:43.168Z",
+                              "startTime": "2025-06-13T16:31:17.480Z",
                               "attachments": []
                             }
                           ],
@@ -1977,14 +1942,14 @@
                           "projectName": "ci",
                           "results": [
                             {
-                              "workerIndex": 2,
+                              "workerIndex": 1,
                               "status": "passed",
-                              "duration": 1800,
+                              "duration": 3850,
                               "errors": [],
                               "stdout": [],
                               "stderr": [],
                               "retry": 0,
-                              "startTime": "2025-06-13T14:59:44.937Z",
+                              "startTime": "2025-06-13T16:31:21.232Z",
                               "attachments": []
                             }
                           ],
@@ -2014,14 +1979,14 @@
                           "projectName": "ci",
                           "results": [
                             {
-                              "workerIndex": 2,
+                              "workerIndex": 1,
                               "status": "passed",
-                              "duration": 1751,
+                              "duration": 3855,
                               "errors": [],
                               "stdout": [],
                               "stderr": [],
                               "retry": 0,
-                              "startTime": "2025-06-13T14:59:46.745Z",
+                              "startTime": "2025-06-13T16:31:25.087Z",
                               "attachments": []
                             }
                           ],
@@ -2051,14 +2016,14 @@
                           "projectName": "ci",
                           "results": [
                             {
-                              "workerIndex": 2,
+                              "workerIndex": 1,
                               "status": "passed",
-                              "duration": 2668,
+                              "duration": 3869,
                               "errors": [],
                               "stdout": [],
                               "stderr": [],
                               "retry": 0,
-                              "startTime": "2025-06-13T14:59:48.502Z",
+                              "startTime": "2025-06-13T16:31:28.948Z",
                               "attachments": []
                             }
                           ],
@@ -2088,14 +2053,14 @@
                           "projectName": "ci",
                           "results": [
                             {
-                              "workerIndex": 2,
+                              "workerIndex": 1,
                               "status": "passed",
-                              "duration": 2645,
+                              "duration": 3747,
                               "errors": [],
                               "stdout": [],
                               "stderr": [],
                               "retry": 0,
-                              "startTime": "2025-06-13T14:59:51.175Z",
+                              "startTime": "2025-06-13T16:31:32.822Z",
                               "attachments": []
                             }
                           ],
@@ -2136,7 +2101,7 @@
                               "stdout": [],
                               "stderr": [],
                               "retry": 0,
-                              "startTime": "2025-06-13T14:59:53.825Z",
+                              "startTime": "2025-06-13T16:31:36.574Z",
                               "attachments": []
                             }
                           ],
@@ -2177,7 +2142,7 @@
                               "stdout": [],
                               "stderr": [],
                               "retry": 0,
-                              "startTime": "2025-06-13T14:59:53.825Z",
+                              "startTime": "2025-06-13T16:31:36.574Z",
                               "attachments": []
                             }
                           ],
@@ -2207,14 +2172,14 @@
                           "projectName": "ci",
                           "results": [
                             {
-                              "workerIndex": 2,
+                              "workerIndex": 1,
                               "status": "passed",
-                              "duration": 2670,
+                              "duration": 3872,
                               "errors": [],
                               "stdout": [],
                               "stderr": [],
                               "retry": 0,
-                              "startTime": "2025-06-13T14:59:53.826Z",
+                              "startTime": "2025-06-13T16:31:36.575Z",
                               "attachments": []
                             }
                           ],
@@ -2244,14 +2209,14 @@
                           "projectName": "ci",
                           "results": [
                             {
-                              "workerIndex": 2,
+                              "workerIndex": 1,
                               "status": "passed",
-                              "duration": 2747,
+                              "duration": 3934,
                               "errors": [],
                               "stdout": [],
                               "stderr": [],
                               "retry": 0,
-                              "startTime": "2025-06-13T14:59:56.502Z",
+                              "startTime": "2025-06-13T16:31:40.452Z",
                               "attachments": []
                             }
                           ],
@@ -2281,14 +2246,14 @@
                           "projectName": "ci",
                           "results": [
                             {
-                              "workerIndex": 2,
+                              "workerIndex": 1,
                               "status": "passed",
-                              "duration": 2668,
+                              "duration": 3057,
                               "errors": [],
                               "stdout": [],
                               "stderr": [],
                               "retry": 0,
-                              "startTime": "2025-06-13T14:59:59.255Z",
+                              "startTime": "2025-06-13T16:31:44.392Z",
                               "attachments": []
                             }
                           ],
@@ -2318,14 +2283,14 @@
                           "projectName": "ci",
                           "results": [
                             {
-                              "workerIndex": 2,
+                              "workerIndex": 1,
                               "status": "passed",
-                              "duration": 2680,
+                              "duration": 3751,
                               "errors": [],
                               "stdout": [],
                               "stderr": [],
                               "retry": 0,
-                              "startTime": "2025-06-13T15:00:01.928Z",
+                              "startTime": "2025-06-13T16:31:47.456Z",
                               "attachments": []
                             }
                           ],
@@ -2374,9 +2339,9 @@
                   "projectName": "ci",
                   "results": [
                     {
-                      "workerIndex": 2,
+                      "workerIndex": 1,
                       "status": "passed",
-                      "duration": 3801,
+                      "duration": 3767,
                       "errors": [],
                       "stdout": [
                         {
@@ -2385,7 +2350,7 @@
                       ],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2025-06-13T15:00:04.688Z",
+                      "startTime": "2025-06-13T16:31:51.284Z",
                       "attachments": []
                     }
                   ],
@@ -2413,9 +2378,9 @@
                   "projectName": "ci",
                   "results": [
                     {
-                      "workerIndex": 2,
+                      "workerIndex": 1,
                       "status": "passed",
-                      "duration": 8465,
+                      "duration": 8640,
                       "errors": [],
                       "stdout": [
                         {
@@ -2424,7 +2389,7 @@
                       ],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2025-06-13T15:00:08.495Z",
+                      "startTime": "2025-06-13T16:31:55.057Z",
                       "attachments": []
                     }
                   ],
@@ -2452,9 +2417,9 @@
                   "projectName": "ci",
                   "results": [
                     {
-                      "workerIndex": 2,
+                      "workerIndex": 1,
                       "status": "passed",
-                      "duration": 4549,
+                      "duration": 4339,
                       "errors": [],
                       "stdout": [
                         {
@@ -2463,7 +2428,7 @@
                       ],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2025-06-13T15:00:16.966Z",
+                      "startTime": "2025-06-13T16:32:03.702Z",
                       "attachments": []
                     }
                   ],
@@ -2491,9 +2456,9 @@
                   "projectName": "ci",
                   "results": [
                     {
-                      "workerIndex": 2,
+                      "workerIndex": 1,
                       "status": "passed",
-                      "duration": 3626,
+                      "duration": 3753,
                       "errors": [],
                       "stdout": [
                         {
@@ -2502,7 +2467,7 @@
                       ],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2025-06-13T15:00:21.521Z",
+                      "startTime": "2025-06-13T16:32:08.047Z",
                       "attachments": []
                     }
                   ],
@@ -2530,9 +2495,9 @@
                   "projectName": "ci",
                   "results": [
                     {
-                      "workerIndex": 2,
+                      "workerIndex": 1,
                       "status": "passed",
-                      "duration": 3994,
+                      "duration": 4155,
                       "errors": [],
                       "stdout": [
                         {
@@ -2541,7 +2506,7 @@
                       ],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2025-06-13T15:00:25.152Z",
+                      "startTime": "2025-06-13T16:32:11.805Z",
                       "attachments": []
                     }
                   ],
@@ -2569,9 +2534,9 @@
                   "projectName": "ci",
                   "results": [
                     {
-                      "workerIndex": 2,
+                      "workerIndex": 1,
                       "status": "passed",
-                      "duration": 3710,
+                      "duration": 3798,
                       "errors": [],
                       "stdout": [
                         {
@@ -2580,7 +2545,7 @@
                       ],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2025-06-13T15:00:29.151Z",
+                      "startTime": "2025-06-13T16:32:15.965Z",
                       "attachments": []
                     }
                   ],
@@ -2608,9 +2573,9 @@
                   "projectName": "ci",
                   "results": [
                     {
-                      "workerIndex": 2,
+                      "workerIndex": 1,
                       "status": "passed",
-                      "duration": 3703,
+                      "duration": 3881,
                       "errors": [],
                       "stdout": [
                         {
@@ -2619,7 +2584,7 @@
                       ],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2025-06-13T15:00:32.867Z",
+                      "startTime": "2025-06-13T16:32:19.769Z",
                       "attachments": []
                     }
                   ],
@@ -2647,9 +2612,9 @@
                   "projectName": "ci",
                   "results": [
                     {
-                      "workerIndex": 2,
+                      "workerIndex": 1,
                       "status": "passed",
-                      "duration": 3767,
+                      "duration": 3958,
                       "errors": [],
                       "stdout": [
                         {
@@ -2658,7 +2623,7 @@
                       ],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2025-06-13T15:00:36.576Z",
+                      "startTime": "2025-06-13T16:32:23.655Z",
                       "attachments": []
                     }
                   ],
@@ -2686,9 +2651,9 @@
                   "projectName": "ci",
                   "results": [
                     {
-                      "workerIndex": 2,
+                      "workerIndex": 1,
                       "status": "passed",
-                      "duration": 3736,
+                      "duration": 3821,
                       "errors": [],
                       "stdout": [
                         {
@@ -2697,7 +2662,7 @@
                       ],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2025-06-13T15:00:40.348Z",
+                      "startTime": "2025-06-13T16:32:27.618Z",
                       "attachments": []
                     }
                   ],
@@ -2725,9 +2690,9 @@
                   "projectName": "ci",
                   "results": [
                     {
-                      "workerIndex": 2,
+                      "workerIndex": 1,
                       "status": "passed",
-                      "duration": 3793,
+                      "duration": 3883,
                       "errors": [],
                       "stdout": [
                         {
@@ -2736,7 +2701,7 @@
                       ],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2025-06-13T15:00:44.090Z",
+                      "startTime": "2025-06-13T16:32:31.444Z",
                       "attachments": []
                     }
                   ],
@@ -2764,9 +2729,9 @@
                   "projectName": "ci",
                   "results": [
                     {
-                      "workerIndex": 2,
+                      "workerIndex": 1,
                       "status": "passed",
-                      "duration": 3818,
+                      "duration": 3968,
                       "errors": [],
                       "stdout": [
                         {
@@ -2775,7 +2740,7 @@
                       ],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2025-06-13T15:00:47.889Z",
+                      "startTime": "2025-06-13T16:32:35.332Z",
                       "attachments": []
                     }
                   ],
@@ -2803,9 +2768,9 @@
                   "projectName": "ci",
                   "results": [
                     {
-                      "workerIndex": 2,
+                      "workerIndex": 1,
                       "status": "passed",
-                      "duration": 3894,
+                      "duration": 3874,
                       "errors": [],
                       "stdout": [
                         {
@@ -2814,7 +2779,7 @@
                       ],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2025-06-13T15:00:51.713Z",
+                      "startTime": "2025-06-13T16:32:39.305Z",
                       "attachments": []
                     }
                   ],
@@ -2842,9 +2807,9 @@
                   "projectName": "ci",
                   "results": [
                     {
-                      "workerIndex": 2,
+                      "workerIndex": 1,
                       "status": "passed",
-                      "duration": 3829,
+                      "duration": 3949,
                       "errors": [],
                       "stdout": [
                         {
@@ -2853,7 +2818,7 @@
                       ],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2025-06-13T15:00:55.613Z",
+                      "startTime": "2025-06-13T16:32:43.185Z",
                       "attachments": []
                     }
                   ],
@@ -2881,9 +2846,9 @@
                   "projectName": "ci",
                   "results": [
                     {
-                      "workerIndex": 2,
+                      "workerIndex": 1,
                       "status": "passed",
-                      "duration": 3996,
+                      "duration": 3936,
                       "errors": [],
                       "stdout": [
                         {
@@ -2892,7 +2857,7 @@
                       ],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2025-06-13T15:00:59.449Z",
+                      "startTime": "2025-06-13T16:32:47.138Z",
                       "attachments": []
                     }
                   ],
@@ -2920,9 +2885,9 @@
                   "projectName": "ci",
                   "results": [
                     {
-                      "workerIndex": 2,
+                      "workerIndex": 1,
                       "status": "passed",
-                      "duration": 3854,
+                      "duration": 4008,
                       "errors": [],
                       "stdout": [
                         {
@@ -2931,7 +2896,7 @@
                       ],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2025-06-13T15:01:03.451Z",
+                      "startTime": "2025-06-13T16:32:51.080Z",
                       "attachments": []
                     }
                   ],
@@ -2959,9 +2924,9 @@
                   "projectName": "ci",
                   "results": [
                     {
-                      "workerIndex": 2,
+                      "workerIndex": 1,
                       "status": "passed",
-                      "duration": 3825,
+                      "duration": 3958,
                       "errors": [],
                       "stdout": [
                         {
@@ -2970,7 +2935,7 @@
                       ],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2025-06-13T15:01:07.311Z",
+                      "startTime": "2025-06-13T16:32:55.094Z",
                       "attachments": []
                     }
                   ],
@@ -2984,7 +2949,7 @@
             },
             {
               "title": "/new-submission/spa/chip/create/chip-details should not have any automatically detectable accessibility issues",
-              "ok": true,
+              "ok": false,
               "tags": [
                 "CI",
                 "a11y"
@@ -2998,22 +2963,62 @@
                   "projectName": "ci",
                   "results": [
                     {
-                      "workerIndex": 2,
-                      "status": "passed",
-                      "duration": 4297,
-                      "errors": [],
+                      "workerIndex": 1,
+                      "status": "failed",
+                      "duration": 3731,
+                      "error": {
+                        "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoEqual\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // deep equality\u001b[22m\n\n\u001b[32m- Expected  -  1\u001b[39m\n\u001b[31m+ Received  + 68\u001b[39m\n\n\u001b[32m- Array []\u001b[39m\n\u001b[31m+ Array [\u001b[39m\n\u001b[31m+   Object {\u001b[39m\n\u001b[31m+     \"description\": \"Ensure the document has a main landmark\",\u001b[39m\n\u001b[31m+     \"help\": \"Document should have one main landmark\",\u001b[39m\n\u001b[31m+     \"helpUrl\": \"https://dequeuniversity.com/rules/axe/4.10/landmark-one-main?application=playwright\",\u001b[39m\n\u001b[31m+     \"id\": \"landmark-one-main\",\u001b[39m\n\u001b[31m+     \"impact\": \"moderate\",\u001b[39m\n\u001b[31m+     \"nodes\": Array [\u001b[39m\n\u001b[31m+       Object {\u001b[39m\n\u001b[31m+         \"all\": Array [\u001b[39m\n\u001b[31m+           Object {\u001b[39m\n\u001b[31m+             \"data\": null,\u001b[39m\n\u001b[31m+             \"id\": \"page-has-main\",\u001b[39m\n\u001b[31m+             \"impact\": \"moderate\",\u001b[39m\n\u001b[31m+             \"message\": \"Document does not have a main landmark\",\u001b[39m\n\u001b[31m+             \"relatedNodes\": Array [],\u001b[39m\n\u001b[31m+           },\u001b[39m\n\u001b[31m+         ],\u001b[39m\n\u001b[31m+         \"any\": Array [],\u001b[39m\n\u001b[31m+         \"failureSummary\": \"Fix all of the following:\u001b[39m\n\u001b[31m+   Document does not have a main landmark\",\u001b[39m\n\u001b[31m+         \"html\": \"<html lang=\\\"en\\\" class=\\\"h-full\\\">\",\u001b[39m\n\u001b[31m+         \"impact\": \"moderate\",\u001b[39m\n\u001b[31m+         \"none\": Array [],\u001b[39m\n\u001b[31m+         \"target\": Array [\u001b[39m\n\u001b[31m+           \"html\",\u001b[39m\n\u001b[31m+         ],\u001b[39m\n\u001b[31m+       },\u001b[39m\n\u001b[31m+     ],\u001b[39m\n\u001b[31m+     \"tags\": Array [\u001b[39m\n\u001b[31m+       \"cat.semantics\",\u001b[39m\n\u001b[31m+       \"best-practice\",\u001b[39m\n\u001b[31m+     ],\u001b[39m\n\u001b[31m+   },\u001b[39m\n\u001b[31m+   Object {\u001b[39m\n\u001b[31m+     \"description\": \"Ensure that the page, or at least one of its frames contains a level-one heading\",\u001b[39m\n\u001b[31m+     \"help\": \"Page should contain a level-one heading\",\u001b[39m\n\u001b[31m+     \"helpUrl\": \"https://dequeuniversity.com/rules/axe/4.10/page-has-heading-one?application=playwright\",\u001b[39m\n\u001b[31m+     \"id\": \"page-has-heading-one\",\u001b[39m\n\u001b[31m+     \"impact\": \"moderate\",\u001b[39m\n\u001b[31m+     \"nodes\": Array [\u001b[39m\n\u001b[31m+       Object {\u001b[39m\n\u001b[31m+         \"all\": Array [\u001b[39m\n\u001b[31m+           Object {\u001b[39m\n\u001b[31m+             \"data\": null,\u001b[39m\n\u001b[31m+             \"id\": \"page-has-heading-one\",\u001b[39m\n\u001b[31m+             \"impact\": \"moderate\",\u001b[39m\n\u001b[31m+             \"message\": \"Page must have a level-one heading\",\u001b[39m\n\u001b[31m+             \"relatedNodes\": Array [],\u001b[39m\n\u001b[31m+           },\u001b[39m\n\u001b[31m+         ],\u001b[39m\n\u001b[31m+         \"any\": Array [],\u001b[39m\n\u001b[31m+         \"failureSummary\": \"Fix all of the following:\u001b[39m\n\u001b[31m+   Page must have a level-one heading\",\u001b[39m\n\u001b[31m+         \"html\": \"<html lang=\\\"en\\\" class=\\\"h-full\\\">\",\u001b[39m\n\u001b[31m+         \"impact\": \"moderate\",\u001b[39m\n\u001b[31m+         \"none\": Array [],\u001b[39m\n\u001b[31m+         \"target\": Array [\u001b[39m\n\u001b[31m+           \"html\",\u001b[39m\n\u001b[31m+         ],\u001b[39m\n\u001b[31m+       },\u001b[39m\n\u001b[31m+     ],\u001b[39m\n\u001b[31m+     \"tags\": Array [\u001b[39m\n\u001b[31m+       \"cat.semantics\",\u001b[39m\n\u001b[31m+       \"best-practice\",\u001b[39m\n\u001b[31m+     ],\u001b[39m\n\u001b[31m+   },\u001b[39m\n\u001b[31m+ ]\u001b[39m",
+                        "stack": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoEqual\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // deep equality\u001b[22m\n\n\u001b[32m- Expected  -  1\u001b[39m\n\u001b[31m+ Received  + 68\u001b[39m\n\n\u001b[32m- Array []\u001b[39m\n\u001b[31m+ Array [\u001b[39m\n\u001b[31m+   Object {\u001b[39m\n\u001b[31m+     \"description\": \"Ensure the document has a main landmark\",\u001b[39m\n\u001b[31m+     \"help\": \"Document should have one main landmark\",\u001b[39m\n\u001b[31m+     \"helpUrl\": \"https://dequeuniversity.com/rules/axe/4.10/landmark-one-main?application=playwright\",\u001b[39m\n\u001b[31m+     \"id\": \"landmark-one-main\",\u001b[39m\n\u001b[31m+     \"impact\": \"moderate\",\u001b[39m\n\u001b[31m+     \"nodes\": Array [\u001b[39m\n\u001b[31m+       Object {\u001b[39m\n\u001b[31m+         \"all\": Array [\u001b[39m\n\u001b[31m+           Object {\u001b[39m\n\u001b[31m+             \"data\": null,\u001b[39m\n\u001b[31m+             \"id\": \"page-has-main\",\u001b[39m\n\u001b[31m+             \"impact\": \"moderate\",\u001b[39m\n\u001b[31m+             \"message\": \"Document does not have a main landmark\",\u001b[39m\n\u001b[31m+             \"relatedNodes\": Array [],\u001b[39m\n\u001b[31m+           },\u001b[39m\n\u001b[31m+         ],\u001b[39m\n\u001b[31m+         \"any\": Array [],\u001b[39m\n\u001b[31m+         \"failureSummary\": \"Fix all of the following:\u001b[39m\n\u001b[31m+   Document does not have a main landmark\",\u001b[39m\n\u001b[31m+         \"html\": \"<html lang=\\\"en\\\" class=\\\"h-full\\\">\",\u001b[39m\n\u001b[31m+         \"impact\": \"moderate\",\u001b[39m\n\u001b[31m+         \"none\": Array [],\u001b[39m\n\u001b[31m+         \"target\": Array [\u001b[39m\n\u001b[31m+           \"html\",\u001b[39m\n\u001b[31m+         ],\u001b[39m\n\u001b[31m+       },\u001b[39m\n\u001b[31m+     ],\u001b[39m\n\u001b[31m+     \"tags\": Array [\u001b[39m\n\u001b[31m+       \"cat.semantics\",\u001b[39m\n\u001b[31m+       \"best-practice\",\u001b[39m\n\u001b[31m+     ],\u001b[39m\n\u001b[31m+   },\u001b[39m\n\u001b[31m+   Object {\u001b[39m\n\u001b[31m+     \"description\": \"Ensure that the page, or at least one of its frames contains a level-one heading\",\u001b[39m\n\u001b[31m+     \"help\": \"Page should contain a level-one heading\",\u001b[39m\n\u001b[31m+     \"helpUrl\": \"https://dequeuniversity.com/rules/axe/4.10/page-has-heading-one?application=playwright\",\u001b[39m\n\u001b[31m+     \"id\": \"page-has-heading-one\",\u001b[39m\n\u001b[31m+     \"impact\": \"moderate\",\u001b[39m\n\u001b[31m+     \"nodes\": Array [\u001b[39m\n\u001b[31m+       Object {\u001b[39m\n\u001b[31m+         \"all\": Array [\u001b[39m\n\u001b[31m+           Object {\u001b[39m\n\u001b[31m+             \"data\": null,\u001b[39m\n\u001b[31m+             \"id\": \"page-has-heading-one\",\u001b[39m\n\u001b[31m+             \"impact\": \"moderate\",\u001b[39m\n\u001b[31m+             \"message\": \"Page must have a level-one heading\",\u001b[39m\n\u001b[31m+             \"relatedNodes\": Array [],\u001b[39m\n\u001b[31m+           },\u001b[39m\n\u001b[31m+         ],\u001b[39m\n\u001b[31m+         \"any\": Array [],\u001b[39m\n\u001b[31m+         \"failureSummary\": \"Fix all of the following:\u001b[39m\n\u001b[31m+   Page must have a level-one heading\",\u001b[39m\n\u001b[31m+         \"html\": \"<html lang=\\\"en\\\" class=\\\"h-full\\\">\",\u001b[39m\n\u001b[31m+         \"impact\": \"moderate\",\u001b[39m\n\u001b[31m+         \"none\": Array [],\u001b[39m\n\u001b[31m+         \"target\": Array [\u001b[39m\n\u001b[31m+           \"html\",\u001b[39m\n\u001b[31m+         ],\u001b[39m\n\u001b[31m+       },\u001b[39m\n\u001b[31m+     ],\u001b[39m\n\u001b[31m+     \"tags\": Array [\u001b[39m\n\u001b[31m+       \"cat.semantics\",\u001b[39m\n\u001b[31m+       \"best-practice\",\u001b[39m\n\u001b[31m+     ],\u001b[39m\n\u001b[31m+   },\u001b[39m\n\u001b[31m+ ]\u001b[39m\n    at /home/runner/work/macpro-mako/macpro-mako/test/non-func/a11y/index.spec.ts:26:51",
+                        "location": {
+                          "file": "/home/runner/work/macpro-mako/macpro-mako/test/non-func/a11y/index.spec.ts",
+                          "column": 51,
+                          "line": 26
+                        },
+                        "snippet": "\u001b[0m \u001b[90m 24 |\u001b[39m       \u001b[36mconst\u001b[39m accessibilityScanResults \u001b[33m=\u001b[39m \u001b[36mawait\u001b[39m \u001b[36mnew\u001b[39m \u001b[33mAxeBuilder\u001b[39m({ page })\u001b[33m.\u001b[39manalyze()\u001b[33m;\u001b[39m\n \u001b[90m 25 |\u001b[39m       console\u001b[33m.\u001b[39mlog(\u001b[32m`${route} violations: `\u001b[39m\u001b[33m,\u001b[39m accessibilityScanResults\u001b[33m.\u001b[39mviolations\u001b[33m.\u001b[39mlength)\u001b[33m;\u001b[39m\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 26 |\u001b[39m       expect(accessibilityScanResults\u001b[33m.\u001b[39mviolations)\u001b[33m.\u001b[39mtoEqual([])\u001b[33m;\u001b[39m\n \u001b[90m    |\u001b[39m                                                   \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 27 |\u001b[39m     })\u001b[33m;\u001b[39m\n \u001b[90m 28 |\u001b[39m   }\n \u001b[90m 29 |\u001b[39m })\u001b[33m;\u001b[39m\u001b[0m"
+                      },
+                      "errors": [
+                        {
+                          "location": {
+                            "file": "/home/runner/work/macpro-mako/macpro-mako/test/non-func/a11y/index.spec.ts",
+                            "column": 51,
+                            "line": 26
+                          },
+                          "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoEqual\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // deep equality\u001b[22m\n\n\u001b[32m- Expected  -  1\u001b[39m\n\u001b[31m+ Received  + 68\u001b[39m\n\n\u001b[32m- Array []\u001b[39m\n\u001b[31m+ Array [\u001b[39m\n\u001b[31m+   Object {\u001b[39m\n\u001b[31m+     \"description\": \"Ensure the document has a main landmark\",\u001b[39m\n\u001b[31m+     \"help\": \"Document should have one main landmark\",\u001b[39m\n\u001b[31m+     \"helpUrl\": \"https://dequeuniversity.com/rules/axe/4.10/landmark-one-main?application=playwright\",\u001b[39m\n\u001b[31m+     \"id\": \"landmark-one-main\",\u001b[39m\n\u001b[31m+     \"impact\": \"moderate\",\u001b[39m\n\u001b[31m+     \"nodes\": Array [\u001b[39m\n\u001b[31m+       Object {\u001b[39m\n\u001b[31m+         \"all\": Array [\u001b[39m\n\u001b[31m+           Object {\u001b[39m\n\u001b[31m+             \"data\": null,\u001b[39m\n\u001b[31m+             \"id\": \"page-has-main\",\u001b[39m\n\u001b[31m+             \"impact\": \"moderate\",\u001b[39m\n\u001b[31m+             \"message\": \"Document does not have a main landmark\",\u001b[39m\n\u001b[31m+             \"relatedNodes\": Array [],\u001b[39m\n\u001b[31m+           },\u001b[39m\n\u001b[31m+         ],\u001b[39m\n\u001b[31m+         \"any\": Array [],\u001b[39m\n\u001b[31m+         \"failureSummary\": \"Fix all of the following:\u001b[39m\n\u001b[31m+   Document does not have a main landmark\",\u001b[39m\n\u001b[31m+         \"html\": \"<html lang=\\\"en\\\" class=\\\"h-full\\\">\",\u001b[39m\n\u001b[31m+         \"impact\": \"moderate\",\u001b[39m\n\u001b[31m+         \"none\": Array [],\u001b[39m\n\u001b[31m+         \"target\": Array [\u001b[39m\n\u001b[31m+           \"html\",\u001b[39m\n\u001b[31m+         ],\u001b[39m\n\u001b[31m+       },\u001b[39m\n\u001b[31m+     ],\u001b[39m\n\u001b[31m+     \"tags\": Array [\u001b[39m\n\u001b[31m+       \"cat.semantics\",\u001b[39m\n\u001b[31m+       \"best-practice\",\u001b[39m\n\u001b[31m+     ],\u001b[39m\n\u001b[31m+   },\u001b[39m\n\u001b[31m+   Object {\u001b[39m\n\u001b[31m+     \"description\": \"Ensure that the page, or at least one of its frames contains a level-one heading\",\u001b[39m\n\u001b[31m+     \"help\": \"Page should contain a level-one heading\",\u001b[39m\n\u001b[31m+     \"helpUrl\": \"https://dequeuniversity.com/rules/axe/4.10/page-has-heading-one?application=playwright\",\u001b[39m\n\u001b[31m+     \"id\": \"page-has-heading-one\",\u001b[39m\n\u001b[31m+     \"impact\": \"moderate\",\u001b[39m\n\u001b[31m+     \"nodes\": Array [\u001b[39m\n\u001b[31m+       Object {\u001b[39m\n\u001b[31m+         \"all\": Array [\u001b[39m\n\u001b[31m+           Object {\u001b[39m\n\u001b[31m+             \"data\": null,\u001b[39m\n\u001b[31m+             \"id\": \"page-has-heading-one\",\u001b[39m\n\u001b[31m+             \"impact\": \"moderate\",\u001b[39m\n\u001b[31m+             \"message\": \"Page must have a level-one heading\",\u001b[39m\n\u001b[31m+             \"relatedNodes\": Array [],\u001b[39m\n\u001b[31m+           },\u001b[39m\n\u001b[31m+         ],\u001b[39m\n\u001b[31m+         \"any\": Array [],\u001b[39m\n\u001b[31m+         \"failureSummary\": \"Fix all of the following:\u001b[39m\n\u001b[31m+   Page must have a level-one heading\",\u001b[39m\n\u001b[31m+         \"html\": \"<html lang=\\\"en\\\" class=\\\"h-full\\\">\",\u001b[39m\n\u001b[31m+         \"impact\": \"moderate\",\u001b[39m\n\u001b[31m+         \"none\": Array [],\u001b[39m\n\u001b[31m+         \"target\": Array [\u001b[39m\n\u001b[31m+           \"html\",\u001b[39m\n\u001b[31m+         ],\u001b[39m\n\u001b[31m+       },\u001b[39m\n\u001b[31m+     ],\u001b[39m\n\u001b[31m+     \"tags\": Array [\u001b[39m\n\u001b[31m+       \"cat.semantics\",\u001b[39m\n\u001b[31m+       \"best-practice\",\u001b[39m\n\u001b[31m+     ],\u001b[39m\n\u001b[31m+   },\u001b[39m\n\u001b[31m+ ]\u001b[39m\n\n\u001b[0m \u001b[90m 24 |\u001b[39m       \u001b[36mconst\u001b[39m accessibilityScanResults \u001b[33m=\u001b[39m \u001b[36mawait\u001b[39m \u001b[36mnew\u001b[39m \u001b[33mAxeBuilder\u001b[39m({ page })\u001b[33m.\u001b[39manalyze()\u001b[33m;\u001b[39m\n \u001b[90m 25 |\u001b[39m       console\u001b[33m.\u001b[39mlog(\u001b[32m`${route} violations: `\u001b[39m\u001b[33m,\u001b[39m accessibilityScanResults\u001b[33m.\u001b[39mviolations\u001b[33m.\u001b[39mlength)\u001b[33m;\u001b[39m\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 26 |\u001b[39m       expect(accessibilityScanResults\u001b[33m.\u001b[39mviolations)\u001b[33m.\u001b[39mtoEqual([])\u001b[33m;\u001b[39m\n \u001b[90m    |\u001b[39m                                                   \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 27 |\u001b[39m     })\u001b[33m;\u001b[39m\n \u001b[90m 28 |\u001b[39m   }\n \u001b[90m 29 |\u001b[39m })\u001b[33m;\u001b[39m\u001b[0m\n\n    at /home/runner/work/macpro-mako/macpro-mako/test/non-func/a11y/index.spec.ts:26:51"
+                        }
+                      ],
                       "stdout": [
                         {
-                          "text": "/new-submission/spa/chip/create/chip-details violations:  \u001b[33m0\u001b[39m\n"
+                          "text": "/new-submission/spa/chip/create/chip-details violations:  \u001b[33m2\u001b[39m\n"
                         }
                       ],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2025-06-13T15:01:11.142Z",
-                      "attachments": []
+                      "startTime": "2025-06-13T16:32:59.058Z",
+                      "attachments": [
+                        {
+                          "name": "video",
+                          "contentType": "video/webm",
+                          "path": "/home/runner/work/macpro-mako/macpro-mako/test/test-results/non-func-a11y-index-test-a-81ad0-ctable-accessibility-issues-ci/video.webm"
+                        },
+                        {
+                          "name": "video",
+                          "contentType": "video/webm",
+                          "path": "/home/runner/work/macpro-mako/macpro-mako/test/test-results/non-func-a11y-index-test-a-81ad0-ctable-accessibility-issues-ci/video-1.webm"
+                        },
+                        {
+                          "name": "trace",
+                          "contentType": "application/zip",
+                          "path": "/home/runner/work/macpro-mako/macpro-mako/test/test-results/non-func-a11y-index-test-a-81ad0-ctable-accessibility-issues-ci/trace.zip"
+                        }
+                      ],
+                      "errorLocation": {
+                        "file": "/home/runner/work/macpro-mako/macpro-mako/test/non-func/a11y/index.spec.ts",
+                        "column": 51,
+                        "line": 26
+                      }
                     }
                   ],
-                  "status": "expected"
+                  "status": "unexpected"
                 }
               ],
               "id": "37280e3c1e02c3251f32-fa380068b469ab4e3cde",
@@ -3039,7 +3044,7 @@
                     {
                       "workerIndex": 2,
                       "status": "passed",
-                      "duration": 4393,
+                      "duration": 4354,
                       "errors": [],
                       "stdout": [
                         {
@@ -3048,7 +3053,7 @@
                       ],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2025-06-13T15:01:15.446Z",
+                      "startTime": "2025-06-13T16:33:04.783Z",
                       "attachments": []
                     }
                   ],
@@ -3078,7 +3083,7 @@
                     {
                       "workerIndex": 2,
                       "status": "passed",
-                      "duration": 4219,
+                      "duration": 4195,
                       "errors": [],
                       "stdout": [
                         {
@@ -3087,7 +3092,7 @@
                       ],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2025-06-13T15:01:19.845Z",
+                      "startTime": "2025-06-13T16:33:09.290Z",
                       "attachments": []
                     }
                   ],
@@ -3117,7 +3122,7 @@
                     {
                       "workerIndex": 2,
                       "status": "passed",
-                      "duration": 4091,
+                      "duration": 4128,
                       "errors": [],
                       "stdout": [
                         {
@@ -3126,7 +3131,7 @@
                       ],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2025-06-13T15:01:24.070Z",
+                      "startTime": "2025-06-13T16:33:13.492Z",
                       "attachments": []
                     }
                   ],
@@ -3156,7 +3161,7 @@
                     {
                       "workerIndex": 2,
                       "status": "passed",
-                      "duration": 4140,
+                      "duration": 4139,
                       "errors": [],
                       "stdout": [
                         {
@@ -3165,7 +3170,7 @@
                       ],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2025-06-13T15:01:28.168Z",
+                      "startTime": "2025-06-13T16:33:17.627Z",
                       "attachments": []
                     }
                   ],
@@ -3195,7 +3200,7 @@
                     {
                       "workerIndex": 2,
                       "status": "passed",
-                      "duration": 4105,
+                      "duration": 4233,
                       "errors": [],
                       "stdout": [
                         {
@@ -3204,7 +3209,7 @@
                       ],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2025-06-13T15:01:32.314Z",
+                      "startTime": "2025-06-13T16:33:21.772Z",
                       "attachments": []
                     }
                   ],
@@ -3234,7 +3239,7 @@
                     {
                       "workerIndex": 2,
                       "status": "passed",
-                      "duration": 4173,
+                      "duration": 4175,
                       "errors": [],
                       "stdout": [
                         {
@@ -3243,7 +3248,7 @@
                       ],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2025-06-13T15:01:36.427Z",
+                      "startTime": "2025-06-13T16:33:26.010Z",
                       "attachments": []
                     }
                   ],
@@ -3273,7 +3278,7 @@
                     {
                       "workerIndex": 2,
                       "status": "passed",
-                      "duration": 4206,
+                      "duration": 4149,
                       "errors": [],
                       "stdout": [
                         {
@@ -3282,7 +3287,7 @@
                       ],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2025-06-13T15:01:40.607Z",
+                      "startTime": "2025-06-13T16:33:30.192Z",
                       "attachments": []
                     }
                   ],
@@ -3312,7 +3317,7 @@
                     {
                       "workerIndex": 2,
                       "status": "passed",
-                      "duration": 4382,
+                      "duration": 4209,
                       "errors": [],
                       "stdout": [
                         {
@@ -3321,7 +3326,7 @@
                       ],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2025-06-13T15:01:44.818Z",
+                      "startTime": "2025-06-13T16:33:34.349Z",
                       "attachments": []
                     }
                   ],
@@ -3351,7 +3356,7 @@
                     {
                       "workerIndex": 2,
                       "status": "passed",
-                      "duration": 4142,
+                      "duration": 4087,
                       "errors": [],
                       "stdout": [
                         {
@@ -3360,7 +3365,7 @@
                       ],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2025-06-13T15:01:49.207Z",
+                      "startTime": "2025-06-13T16:33:38.566Z",
                       "attachments": []
                     }
                   ],
@@ -3390,7 +3395,7 @@
                     {
                       "workerIndex": 2,
                       "status": "passed",
-                      "duration": 4025,
+                      "duration": 4137,
                       "errors": [],
                       "stdout": [
                         {
@@ -3399,7 +3404,7 @@
                       ],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2025-06-13T15:01:53.356Z",
+                      "startTime": "2025-06-13T16:33:42.660Z",
                       "attachments": []
                     }
                   ],
@@ -3437,7 +3442,7 @@
                     {
                       "workerIndex": 2,
                       "status": "passed",
-                      "duration": 4024,
+                      "duration": 4185,
                       "errors": [],
                       "stdout": [
                         {
@@ -3446,7 +3451,7 @@
                       ],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2025-06-13T15:01:57.388Z",
+                      "startTime": "2025-06-13T16:33:46.805Z",
                       "attachments": []
                     }
                   ],
@@ -3476,7 +3481,7 @@
                     {
                       "workerIndex": 2,
                       "status": "passed",
-                      "duration": 4919,
+                      "duration": 3914,
                       "errors": [],
                       "stdout": [
                         {
@@ -3485,7 +3490,7 @@
                       ],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2025-06-13T15:02:01.418Z",
+                      "startTime": "2025-06-13T16:33:50.996Z",
                       "attachments": []
                     }
                   ],
@@ -3515,7 +3520,7 @@
                     {
                       "workerIndex": 2,
                       "status": "passed",
-                      "duration": 4214,
+                      "duration": 4470,
                       "errors": [],
                       "stdout": [
                         {
@@ -3524,7 +3529,7 @@
                       ],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2025-06-13T15:02:06.343Z",
+                      "startTime": "2025-06-13T16:33:54.917Z",
                       "attachments": []
                     }
                   ],
@@ -3554,7 +3559,7 @@
                     {
                       "workerIndex": 2,
                       "status": "passed",
-                      "duration": 4286,
+                      "duration": 3987,
                       "errors": [],
                       "stdout": [
                         {
@@ -3563,7 +3568,7 @@
                       ],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2025-06-13T15:02:10.563Z",
+                      "startTime": "2025-06-13T16:33:59.394Z",
                       "attachments": []
                     }
                   ],
@@ -3593,7 +3598,7 @@
                     {
                       "workerIndex": 2,
                       "status": "passed",
-                      "duration": 4331,
+                      "duration": 4378,
                       "errors": [],
                       "stdout": [
                         {
@@ -3602,7 +3607,7 @@
                       ],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2025-06-13T15:02:14.855Z",
+                      "startTime": "2025-06-13T16:34:03.386Z",
                       "attachments": []
                     }
                   ],
@@ -3616,7 +3621,7 @@
             },
             {
               "title": "/webform/cs8/202401 should not have any automatically detectable accessibility issues",
-              "ok": true,
+              "ok": false,
               "tags": [
                 "CI",
                 "a11y"
@@ -3631,21 +3636,61 @@
                   "results": [
                     {
                       "workerIndex": 2,
-                      "status": "passed",
-                      "duration": 4090,
-                      "errors": [],
+                      "status": "failed",
+                      "duration": 3755,
+                      "error": {
+                        "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoEqual\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // deep equality\u001b[22m\n\n\u001b[32m- Expected  -  1\u001b[39m\n\u001b[31m+ Received  + 68\u001b[39m\n\n\u001b[32m- Array []\u001b[39m\n\u001b[31m+ Array [\u001b[39m\n\u001b[31m+   Object {\u001b[39m\n\u001b[31m+     \"description\": \"Ensure the document has a main landmark\",\u001b[39m\n\u001b[31m+     \"help\": \"Document should have one main landmark\",\u001b[39m\n\u001b[31m+     \"helpUrl\": \"https://dequeuniversity.com/rules/axe/4.10/landmark-one-main?application=playwright\",\u001b[39m\n\u001b[31m+     \"id\": \"landmark-one-main\",\u001b[39m\n\u001b[31m+     \"impact\": \"moderate\",\u001b[39m\n\u001b[31m+     \"nodes\": Array [\u001b[39m\n\u001b[31m+       Object {\u001b[39m\n\u001b[31m+         \"all\": Array [\u001b[39m\n\u001b[31m+           Object {\u001b[39m\n\u001b[31m+             \"data\": null,\u001b[39m\n\u001b[31m+             \"id\": \"page-has-main\",\u001b[39m\n\u001b[31m+             \"impact\": \"moderate\",\u001b[39m\n\u001b[31m+             \"message\": \"Document does not have a main landmark\",\u001b[39m\n\u001b[31m+             \"relatedNodes\": Array [],\u001b[39m\n\u001b[31m+           },\u001b[39m\n\u001b[31m+         ],\u001b[39m\n\u001b[31m+         \"any\": Array [],\u001b[39m\n\u001b[31m+         \"failureSummary\": \"Fix all of the following:\u001b[39m\n\u001b[31m+   Document does not have a main landmark\",\u001b[39m\n\u001b[31m+         \"html\": \"<html lang=\\\"en\\\" class=\\\"h-full\\\">\",\u001b[39m\n\u001b[31m+         \"impact\": \"moderate\",\u001b[39m\n\u001b[31m+         \"none\": Array [],\u001b[39m\n\u001b[31m+         \"target\": Array [\u001b[39m\n\u001b[31m+           \"html\",\u001b[39m\n\u001b[31m+         ],\u001b[39m\n\u001b[31m+       },\u001b[39m\n\u001b[31m+     ],\u001b[39m\n\u001b[31m+     \"tags\": Array [\u001b[39m\n\u001b[31m+       \"cat.semantics\",\u001b[39m\n\u001b[31m+       \"best-practice\",\u001b[39m\n\u001b[31m+     ],\u001b[39m\n\u001b[31m+   },\u001b[39m\n\u001b[31m+   Object {\u001b[39m\n\u001b[31m+     \"description\": \"Ensure that the page, or at least one of its frames contains a level-one heading\",\u001b[39m\n\u001b[31m+     \"help\": \"Page should contain a level-one heading\",\u001b[39m\n\u001b[31m+     \"helpUrl\": \"https://dequeuniversity.com/rules/axe/4.10/page-has-heading-one?application=playwright\",\u001b[39m\n\u001b[31m+     \"id\": \"page-has-heading-one\",\u001b[39m\n\u001b[31m+     \"impact\": \"moderate\",\u001b[39m\n\u001b[31m+     \"nodes\": Array [\u001b[39m\n\u001b[31m+       Object {\u001b[39m\n\u001b[31m+         \"all\": Array [\u001b[39m\n\u001b[31m+           Object {\u001b[39m\n\u001b[31m+             \"data\": null,\u001b[39m\n\u001b[31m+             \"id\": \"page-has-heading-one\",\u001b[39m\n\u001b[31m+             \"impact\": \"moderate\",\u001b[39m\n\u001b[31m+             \"message\": \"Page must have a level-one heading\",\u001b[39m\n\u001b[31m+             \"relatedNodes\": Array [],\u001b[39m\n\u001b[31m+           },\u001b[39m\n\u001b[31m+         ],\u001b[39m\n\u001b[31m+         \"any\": Array [],\u001b[39m\n\u001b[31m+         \"failureSummary\": \"Fix all of the following:\u001b[39m\n\u001b[31m+   Page must have a level-one heading\",\u001b[39m\n\u001b[31m+         \"html\": \"<html lang=\\\"en\\\" class=\\\"h-full\\\">\",\u001b[39m\n\u001b[31m+         \"impact\": \"moderate\",\u001b[39m\n\u001b[31m+         \"none\": Array [],\u001b[39m\n\u001b[31m+         \"target\": Array [\u001b[39m\n\u001b[31m+           \"html\",\u001b[39m\n\u001b[31m+         ],\u001b[39m\n\u001b[31m+       },\u001b[39m\n\u001b[31m+     ],\u001b[39m\n\u001b[31m+     \"tags\": Array [\u001b[39m\n\u001b[31m+       \"cat.semantics\",\u001b[39m\n\u001b[31m+       \"best-practice\",\u001b[39m\n\u001b[31m+     ],\u001b[39m\n\u001b[31m+   },\u001b[39m\n\u001b[31m+ ]\u001b[39m",
+                        "stack": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoEqual\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // deep equality\u001b[22m\n\n\u001b[32m- Expected  -  1\u001b[39m\n\u001b[31m+ Received  + 68\u001b[39m\n\n\u001b[32m- Array []\u001b[39m\n\u001b[31m+ Array [\u001b[39m\n\u001b[31m+   Object {\u001b[39m\n\u001b[31m+     \"description\": \"Ensure the document has a main landmark\",\u001b[39m\n\u001b[31m+     \"help\": \"Document should have one main landmark\",\u001b[39m\n\u001b[31m+     \"helpUrl\": \"https://dequeuniversity.com/rules/axe/4.10/landmark-one-main?application=playwright\",\u001b[39m\n\u001b[31m+     \"id\": \"landmark-one-main\",\u001b[39m\n\u001b[31m+     \"impact\": \"moderate\",\u001b[39m\n\u001b[31m+     \"nodes\": Array [\u001b[39m\n\u001b[31m+       Object {\u001b[39m\n\u001b[31m+         \"all\": Array [\u001b[39m\n\u001b[31m+           Object {\u001b[39m\n\u001b[31m+             \"data\": null,\u001b[39m\n\u001b[31m+             \"id\": \"page-has-main\",\u001b[39m\n\u001b[31m+             \"impact\": \"moderate\",\u001b[39m\n\u001b[31m+             \"message\": \"Document does not have a main landmark\",\u001b[39m\n\u001b[31m+             \"relatedNodes\": Array [],\u001b[39m\n\u001b[31m+           },\u001b[39m\n\u001b[31m+         ],\u001b[39m\n\u001b[31m+         \"any\": Array [],\u001b[39m\n\u001b[31m+         \"failureSummary\": \"Fix all of the following:\u001b[39m\n\u001b[31m+   Document does not have a main landmark\",\u001b[39m\n\u001b[31m+         \"html\": \"<html lang=\\\"en\\\" class=\\\"h-full\\\">\",\u001b[39m\n\u001b[31m+         \"impact\": \"moderate\",\u001b[39m\n\u001b[31m+         \"none\": Array [],\u001b[39m\n\u001b[31m+         \"target\": Array [\u001b[39m\n\u001b[31m+           \"html\",\u001b[39m\n\u001b[31m+         ],\u001b[39m\n\u001b[31m+       },\u001b[39m\n\u001b[31m+     ],\u001b[39m\n\u001b[31m+     \"tags\": Array [\u001b[39m\n\u001b[31m+       \"cat.semantics\",\u001b[39m\n\u001b[31m+       \"best-practice\",\u001b[39m\n\u001b[31m+     ],\u001b[39m\n\u001b[31m+   },\u001b[39m\n\u001b[31m+   Object {\u001b[39m\n\u001b[31m+     \"description\": \"Ensure that the page, or at least one of its frames contains a level-one heading\",\u001b[39m\n\u001b[31m+     \"help\": \"Page should contain a level-one heading\",\u001b[39m\n\u001b[31m+     \"helpUrl\": \"https://dequeuniversity.com/rules/axe/4.10/page-has-heading-one?application=playwright\",\u001b[39m\n\u001b[31m+     \"id\": \"page-has-heading-one\",\u001b[39m\n\u001b[31m+     \"impact\": \"moderate\",\u001b[39m\n\u001b[31m+     \"nodes\": Array [\u001b[39m\n\u001b[31m+       Object {\u001b[39m\n\u001b[31m+         \"all\": Array [\u001b[39m\n\u001b[31m+           Object {\u001b[39m\n\u001b[31m+             \"data\": null,\u001b[39m\n\u001b[31m+             \"id\": \"page-has-heading-one\",\u001b[39m\n\u001b[31m+             \"impact\": \"moderate\",\u001b[39m\n\u001b[31m+             \"message\": \"Page must have a level-one heading\",\u001b[39m\n\u001b[31m+             \"relatedNodes\": Array [],\u001b[39m\n\u001b[31m+           },\u001b[39m\n\u001b[31m+         ],\u001b[39m\n\u001b[31m+         \"any\": Array [],\u001b[39m\n\u001b[31m+         \"failureSummary\": \"Fix all of the following:\u001b[39m\n\u001b[31m+   Page must have a level-one heading\",\u001b[39m\n\u001b[31m+         \"html\": \"<html lang=\\\"en\\\" class=\\\"h-full\\\">\",\u001b[39m\n\u001b[31m+         \"impact\": \"moderate\",\u001b[39m\n\u001b[31m+         \"none\": Array [],\u001b[39m\n\u001b[31m+         \"target\": Array [\u001b[39m\n\u001b[31m+           \"html\",\u001b[39m\n\u001b[31m+         ],\u001b[39m\n\u001b[31m+       },\u001b[39m\n\u001b[31m+     ],\u001b[39m\n\u001b[31m+     \"tags\": Array [\u001b[39m\n\u001b[31m+       \"cat.semantics\",\u001b[39m\n\u001b[31m+       \"best-practice\",\u001b[39m\n\u001b[31m+     ],\u001b[39m\n\u001b[31m+   },\u001b[39m\n\u001b[31m+ ]\u001b[39m\n    at /home/runner/work/macpro-mako/macpro-mako/test/non-func/a11y/index.spec.ts:47:51",
+                        "location": {
+                          "file": "/home/runner/work/macpro-mako/macpro-mako/test/non-func/a11y/index.spec.ts",
+                          "column": 51,
+                          "line": 47
+                        },
+                        "snippet": "\u001b[0m \u001b[90m 45 |\u001b[39m       \u001b[36mconst\u001b[39m accessibilityScanResults \u001b[33m=\u001b[39m \u001b[36mawait\u001b[39m \u001b[36mnew\u001b[39m \u001b[33mAxeBuilder\u001b[39m({ page })\u001b[33m.\u001b[39manalyze()\u001b[33m;\u001b[39m\n \u001b[90m 46 |\u001b[39m       console\u001b[33m.\u001b[39mlog(\u001b[32m`${route} violations: `\u001b[39m\u001b[33m,\u001b[39m accessibilityScanResults\u001b[33m.\u001b[39mviolations\u001b[33m.\u001b[39mlength)\u001b[33m;\u001b[39m\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 47 |\u001b[39m       expect(accessibilityScanResults\u001b[33m.\u001b[39mviolations)\u001b[33m.\u001b[39mtoEqual([])\u001b[33m;\u001b[39m\n \u001b[90m    |\u001b[39m                                                   \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 48 |\u001b[39m     })\u001b[33m;\u001b[39m\n \u001b[90m 49 |\u001b[39m   }\n \u001b[90m 50 |\u001b[39m })\u001b[33m;\u001b[39m\u001b[0m"
+                      },
+                      "errors": [
+                        {
+                          "location": {
+                            "file": "/home/runner/work/macpro-mako/macpro-mako/test/non-func/a11y/index.spec.ts",
+                            "column": 51,
+                            "line": 47
+                          },
+                          "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoEqual\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // deep equality\u001b[22m\n\n\u001b[32m- Expected  -  1\u001b[39m\n\u001b[31m+ Received  + 68\u001b[39m\n\n\u001b[32m- Array []\u001b[39m\n\u001b[31m+ Array [\u001b[39m\n\u001b[31m+   Object {\u001b[39m\n\u001b[31m+     \"description\": \"Ensure the document has a main landmark\",\u001b[39m\n\u001b[31m+     \"help\": \"Document should have one main landmark\",\u001b[39m\n\u001b[31m+     \"helpUrl\": \"https://dequeuniversity.com/rules/axe/4.10/landmark-one-main?application=playwright\",\u001b[39m\n\u001b[31m+     \"id\": \"landmark-one-main\",\u001b[39m\n\u001b[31m+     \"impact\": \"moderate\",\u001b[39m\n\u001b[31m+     \"nodes\": Array [\u001b[39m\n\u001b[31m+       Object {\u001b[39m\n\u001b[31m+         \"all\": Array [\u001b[39m\n\u001b[31m+           Object {\u001b[39m\n\u001b[31m+             \"data\": null,\u001b[39m\n\u001b[31m+             \"id\": \"page-has-main\",\u001b[39m\n\u001b[31m+             \"impact\": \"moderate\",\u001b[39m\n\u001b[31m+             \"message\": \"Document does not have a main landmark\",\u001b[39m\n\u001b[31m+             \"relatedNodes\": Array [],\u001b[39m\n\u001b[31m+           },\u001b[39m\n\u001b[31m+         ],\u001b[39m\n\u001b[31m+         \"any\": Array [],\u001b[39m\n\u001b[31m+         \"failureSummary\": \"Fix all of the following:\u001b[39m\n\u001b[31m+   Document does not have a main landmark\",\u001b[39m\n\u001b[31m+         \"html\": \"<html lang=\\\"en\\\" class=\\\"h-full\\\">\",\u001b[39m\n\u001b[31m+         \"impact\": \"moderate\",\u001b[39m\n\u001b[31m+         \"none\": Array [],\u001b[39m\n\u001b[31m+         \"target\": Array [\u001b[39m\n\u001b[31m+           \"html\",\u001b[39m\n\u001b[31m+         ],\u001b[39m\n\u001b[31m+       },\u001b[39m\n\u001b[31m+     ],\u001b[39m\n\u001b[31m+     \"tags\": Array [\u001b[39m\n\u001b[31m+       \"cat.semantics\",\u001b[39m\n\u001b[31m+       \"best-practice\",\u001b[39m\n\u001b[31m+     ],\u001b[39m\n\u001b[31m+   },\u001b[39m\n\u001b[31m+   Object {\u001b[39m\n\u001b[31m+     \"description\": \"Ensure that the page, or at least one of its frames contains a level-one heading\",\u001b[39m\n\u001b[31m+     \"help\": \"Page should contain a level-one heading\",\u001b[39m\n\u001b[31m+     \"helpUrl\": \"https://dequeuniversity.com/rules/axe/4.10/page-has-heading-one?application=playwright\",\u001b[39m\n\u001b[31m+     \"id\": \"page-has-heading-one\",\u001b[39m\n\u001b[31m+     \"impact\": \"moderate\",\u001b[39m\n\u001b[31m+     \"nodes\": Array [\u001b[39m\n\u001b[31m+       Object {\u001b[39m\n\u001b[31m+         \"all\": Array [\u001b[39m\n\u001b[31m+           Object {\u001b[39m\n\u001b[31m+             \"data\": null,\u001b[39m\n\u001b[31m+             \"id\": \"page-has-heading-one\",\u001b[39m\n\u001b[31m+             \"impact\": \"moderate\",\u001b[39m\n\u001b[31m+             \"message\": \"Page must have a level-one heading\",\u001b[39m\n\u001b[31m+             \"relatedNodes\": Array [],\u001b[39m\n\u001b[31m+           },\u001b[39m\n\u001b[31m+         ],\u001b[39m\n\u001b[31m+         \"any\": Array [],\u001b[39m\n\u001b[31m+         \"failureSummary\": \"Fix all of the following:\u001b[39m\n\u001b[31m+   Page must have a level-one heading\",\u001b[39m\n\u001b[31m+         \"html\": \"<html lang=\\\"en\\\" class=\\\"h-full\\\">\",\u001b[39m\n\u001b[31m+         \"impact\": \"moderate\",\u001b[39m\n\u001b[31m+         \"none\": Array [],\u001b[39m\n\u001b[31m+         \"target\": Array [\u001b[39m\n\u001b[31m+           \"html\",\u001b[39m\n\u001b[31m+         ],\u001b[39m\n\u001b[31m+       },\u001b[39m\n\u001b[31m+     ],\u001b[39m\n\u001b[31m+     \"tags\": Array [\u001b[39m\n\u001b[31m+       \"cat.semantics\",\u001b[39m\n\u001b[31m+       \"best-practice\",\u001b[39m\n\u001b[31m+     ],\u001b[39m\n\u001b[31m+   },\u001b[39m\n\u001b[31m+ ]\u001b[39m\n\n\u001b[0m \u001b[90m 45 |\u001b[39m       \u001b[36mconst\u001b[39m accessibilityScanResults \u001b[33m=\u001b[39m \u001b[36mawait\u001b[39m \u001b[36mnew\u001b[39m \u001b[33mAxeBuilder\u001b[39m({ page })\u001b[33m.\u001b[39manalyze()\u001b[33m;\u001b[39m\n \u001b[90m 46 |\u001b[39m       console\u001b[33m.\u001b[39mlog(\u001b[32m`${route} violations: `\u001b[39m\u001b[33m,\u001b[39m accessibilityScanResults\u001b[33m.\u001b[39mviolations\u001b[33m.\u001b[39mlength)\u001b[33m;\u001b[39m\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 47 |\u001b[39m       expect(accessibilityScanResults\u001b[33m.\u001b[39mviolations)\u001b[33m.\u001b[39mtoEqual([])\u001b[33m;\u001b[39m\n \u001b[90m    |\u001b[39m                                                   \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 48 |\u001b[39m     })\u001b[33m;\u001b[39m\n \u001b[90m 49 |\u001b[39m   }\n \u001b[90m 50 |\u001b[39m })\u001b[33m;\u001b[39m\u001b[0m\n\n    at /home/runner/work/macpro-mako/macpro-mako/test/non-func/a11y/index.spec.ts:47:51"
+                        }
+                      ],
                       "stdout": [
                         {
-                          "text": "/webform/cs8/202401 violations:  \u001b[33m0\u001b[39m\n"
+                          "text": "/webform/cs8/202401 violations:  \u001b[33m2\u001b[39m\n"
                         }
                       ],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2025-06-13T15:02:19.191Z",
-                      "attachments": []
+                      "startTime": "2025-06-13T16:34:07.770Z",
+                      "attachments": [
+                        {
+                          "name": "video",
+                          "contentType": "video/webm",
+                          "path": "/home/runner/work/macpro-mako/macpro-mako/test/test-results/non-func-a11y-index-test-a-69022-ctable-accessibility-issues-ci/video-1.webm"
+                        },
+                        {
+                          "name": "video",
+                          "contentType": "video/webm",
+                          "path": "/home/runner/work/macpro-mako/macpro-mako/test/test-results/non-func-a11y-index-test-a-69022-ctable-accessibility-issues-ci/video.webm"
+                        },
+                        {
+                          "name": "trace",
+                          "contentType": "application/zip",
+                          "path": "/home/runner/work/macpro-mako/macpro-mako/test/test-results/non-func-a11y-index-test-a-69022-ctable-accessibility-issues-ci/trace.zip"
+                        }
+                      ],
+                      "errorLocation": {
+                        "file": "/home/runner/work/macpro-mako/macpro-mako/test/non-func/a11y/index.spec.ts",
+                        "column": 51,
+                        "line": 47
+                      }
                     }
                   ],
-                  "status": "expected"
+                  "status": "unexpected"
                 }
               ],
               "id": "37280e3c1e02c3251f32-b04804dee864687efbfc",
@@ -3669,9 +3714,9 @@
                   "projectName": "ci",
                   "results": [
                     {
-                      "workerIndex": 2,
+                      "workerIndex": 3,
                       "status": "passed",
-                      "duration": 3847,
+                      "duration": 4294,
                       "errors": [],
                       "stdout": [
                         {
@@ -3680,7 +3725,7 @@
                       ],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2025-06-13T15:02:23.288Z",
+                      "startTime": "2025-06-13T16:34:13.419Z",
                       "attachments": []
                     }
                   ],
@@ -3708,9 +3753,9 @@
                   "projectName": "ci",
                   "results": [
                     {
-                      "workerIndex": 2,
+                      "workerIndex": 3,
                       "status": "passed",
-                      "duration": 4032,
+                      "duration": 4296,
                       "errors": [],
                       "stdout": [
                         {
@@ -3719,7 +3764,7 @@
                       ],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2025-06-13T15:02:27.142Z",
+                      "startTime": "2025-06-13T16:34:17.864Z",
                       "attachments": []
                     }
                   ],
@@ -3747,9 +3792,9 @@
                   "projectName": "ci",
                   "results": [
                     {
-                      "workerIndex": 2,
+                      "workerIndex": 3,
                       "status": "passed",
-                      "duration": 3818,
+                      "duration": 3879,
                       "errors": [],
                       "stdout": [
                         {
@@ -3758,7 +3803,7 @@
                       ],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2025-06-13T15:02:31.181Z",
+                      "startTime": "2025-06-13T16:34:22.166Z",
                       "attachments": []
                     }
                   ],
@@ -3786,9 +3831,9 @@
                   "projectName": "ci",
                   "results": [
                     {
-                      "workerIndex": 2,
+                      "workerIndex": 3,
                       "status": "passed",
-                      "duration": 3903,
+                      "duration": 4023,
                       "errors": [],
                       "stdout": [
                         {
@@ -3797,7 +3842,7 @@
                       ],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2025-06-13T15:02:35.006Z",
+                      "startTime": "2025-06-13T16:34:26.051Z",
                       "attachments": []
                     }
                   ],
@@ -3825,9 +3870,9 @@
                   "projectName": "ci",
                   "results": [
                     {
-                      "workerIndex": 2,
+                      "workerIndex": 3,
                       "status": "passed",
-                      "duration": 3748,
+                      "duration": 3915,
                       "errors": [],
                       "stdout": [
                         {
@@ -3836,7 +3881,7 @@
                       ],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2025-06-13T15:02:38.915Z",
+                      "startTime": "2025-06-13T16:34:30.080Z",
                       "attachments": []
                     }
                   ],
@@ -3864,9 +3909,9 @@
                   "projectName": "ci",
                   "results": [
                     {
-                      "workerIndex": 2,
+                      "workerIndex": 3,
                       "status": "passed",
-                      "duration": 4065,
+                      "duration": 3844,
                       "errors": [],
                       "stdout": [
                         {
@@ -3875,7 +3920,7 @@
                       ],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2025-06-13T15:02:42.668Z",
+                      "startTime": "2025-06-13T16:34:34.000Z",
                       "attachments": []
                     }
                   ],
@@ -3903,9 +3948,9 @@
                   "projectName": "ci",
                   "results": [
                     {
-                      "workerIndex": 2,
+                      "workerIndex": 3,
                       "status": "passed",
-                      "duration": 4009,
+                      "duration": 3886,
                       "errors": [],
                       "stdout": [
                         {
@@ -3914,7 +3959,7 @@
                       ],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2025-06-13T15:02:46.739Z",
+                      "startTime": "2025-06-13T16:34:37.851Z",
                       "attachments": []
                     }
                   ],
@@ -3942,9 +3987,9 @@
                   "projectName": "ci",
                   "results": [
                     {
-                      "workerIndex": 2,
+                      "workerIndex": 3,
                       "status": "passed",
-                      "duration": 3748,
+                      "duration": 3926,
                       "errors": [],
                       "stdout": [
                         {
@@ -3953,7 +3998,7 @@
                       ],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2025-06-13T15:02:50.753Z",
+                      "startTime": "2025-06-13T16:34:41.742Z",
                       "attachments": []
                     }
                   ],
@@ -3981,9 +4026,9 @@
                   "projectName": "ci",
                   "results": [
                     {
-                      "workerIndex": 2,
+                      "workerIndex": 3,
                       "status": "passed",
-                      "duration": 3827,
+                      "duration": 3906,
                       "errors": [],
                       "stdout": [
                         {
@@ -3992,7 +4037,7 @@
                       ],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2025-06-13T15:02:54.506Z",
+                      "startTime": "2025-06-13T16:34:45.674Z",
                       "attachments": []
                     }
                   ],
@@ -4020,9 +4065,9 @@
                   "projectName": "ci",
                   "results": [
                     {
-                      "workerIndex": 2,
+                      "workerIndex": 3,
                       "status": "passed",
-                      "duration": 3933,
+                      "duration": 4132,
                       "errors": [],
                       "stdout": [
                         {
@@ -4031,7 +4076,7 @@
                       ],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2025-06-13T15:02:58.338Z",
+                      "startTime": "2025-06-13T16:34:49.586Z",
                       "attachments": []
                     }
                   ],
@@ -4059,9 +4104,9 @@
                   "projectName": "ci",
                   "results": [
                     {
-                      "workerIndex": 2,
+                      "workerIndex": 3,
                       "status": "passed",
-                      "duration": 4184,
+                      "duration": 3910,
                       "errors": [],
                       "stdout": [
                         {
@@ -4070,7 +4115,7 @@
                       ],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2025-06-13T15:03:02.276Z",
+                      "startTime": "2025-06-13T16:34:53.723Z",
                       "attachments": []
                     }
                   ],
@@ -4098,9 +4143,9 @@
                   "projectName": "ci",
                   "results": [
                     {
-                      "workerIndex": 2,
+                      "workerIndex": 3,
                       "status": "passed",
-                      "duration": 4244,
+                      "duration": 4256,
                       "errors": [],
                       "stdout": [
                         {
@@ -4109,7 +4154,7 @@
                       ],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2025-06-13T15:03:06.466Z",
+                      "startTime": "2025-06-13T16:34:57.640Z",
                       "attachments": []
                     }
                   ],
@@ -4137,9 +4182,9 @@
                   "projectName": "ci",
                   "results": [
                     {
-                      "workerIndex": 2,
+                      "workerIndex": 3,
                       "status": "passed",
-                      "duration": 4244,
+                      "duration": 4379,
                       "errors": [],
                       "stdout": [
                         {
@@ -4148,7 +4193,7 @@
                       ],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2025-06-13T15:03:10.716Z",
+                      "startTime": "2025-06-13T16:35:01.901Z",
                       "attachments": []
                     }
                   ],
@@ -4176,9 +4221,9 @@
                   "projectName": "ci",
                   "results": [
                     {
-                      "workerIndex": 2,
+                      "workerIndex": 3,
                       "status": "passed",
-                      "duration": 3740,
+                      "duration": 3881,
                       "errors": [],
                       "stdout": [
                         {
@@ -4187,7 +4232,7 @@
                       ],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2025-06-13T15:03:14.965Z",
+                      "startTime": "2025-06-13T16:35:06.286Z",
                       "attachments": []
                     }
                   ],
@@ -4215,9 +4260,9 @@
                   "projectName": "ci",
                   "results": [
                     {
-                      "workerIndex": 2,
+                      "workerIndex": 3,
                       "status": "passed",
-                      "duration": 3827,
+                      "duration": 3990,
                       "errors": [],
                       "stdout": [
                         {
@@ -4226,7 +4271,7 @@
                       ],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2025-06-13T15:03:18.711Z",
+                      "startTime": "2025-06-13T16:35:10.172Z",
                       "attachments": []
                     }
                   ],
@@ -4254,9 +4299,9 @@
                   "projectName": "ci",
                   "results": [
                     {
-                      "workerIndex": 2,
+                      "workerIndex": 3,
                       "status": "passed",
-                      "duration": 3844,
+                      "duration": 4190,
                       "errors": [],
                       "stdout": [
                         {
@@ -4265,7 +4310,7 @@
                       ],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2025-06-13T15:03:22.543Z",
+                      "startTime": "2025-06-13T16:35:14.168Z",
                       "attachments": []
                     }
                   ],
@@ -4284,11 +4329,11 @@
   ],
   "errors": [],
   "stats": {
-    "startTime": "2025-06-13T14:57:50.708Z",
-    "duration": 335811.585,
-    "expected": 99,
+    "startTime": "2025-06-13T16:28:29.887Z",
+    "duration": 408543.891,
+    "expected": 98,
     "skipped": 2,
-    "unexpected": 1,
+    "unexpected": 2,
     "flaky": 0
   }
 }
