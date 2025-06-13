@@ -53,7 +53,12 @@ type GetLabelAndValueFromSubmission = (
 ) => LabelAndValue[];
 
 export const getSubmissionDetails: GetLabelAndValueFromSubmission = (submission, { user }) => {
-  const hasChipEligibilityAttachment = !!submission.attachments?.chipEligibility?.files?.length;
+  const hasChipEligibilityAttachment = Object.values(submission.attachments || {}).some(
+    (attachment) =>
+      attachment.label?.toLowerCase().includes("chip eligibility") &&
+      Array.isArray(attachment.files) &&
+      attachment.files.length > 0,
+  );
 
   const hasChipSubmissionType =
     Array.isArray(submission.chipSubmissionType) && submission.chipSubmissionType.length > 0;
@@ -71,6 +76,10 @@ export const getSubmissionDetails: GetLabelAndValueFromSubmission = (submission,
           },
         ]
       : [];
+  console.log(
+    "All attachment labels:",
+    Object.values(submission.attachments || {}).map((a) => a.label),
+  );
   return [
     {
       label: "Submission ID",
