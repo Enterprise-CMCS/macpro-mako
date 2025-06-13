@@ -5,11 +5,15 @@ import { checkIfAuthenticated, project, setStageFromBranch } from "../lib";
 
 export const getCost = {
   command: "get-cost",
-  describe: "get cost of an environment",
+
+  describe:
+    "Get the costs for the Stage environment in AWS for the last 14 days. \n\n** Requires MACPro Application Admin or MACPro ReadOnly AWS credentials **\n",
   builder: (yargs: Argv) => {
     return yargs.option("stage", {
       type: "string",
       demandOption: false,
+      describe: "Stage environment in AWS",
+      defaultDescription: "current branch name",
     });
   },
   handler: async (options: { stage?: string; stack?: string }) => {
