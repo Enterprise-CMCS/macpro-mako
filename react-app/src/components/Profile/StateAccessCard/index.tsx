@@ -20,7 +20,7 @@ export type StateAccessProps = {
 
 export const StateAccessCard = ({ role, onClick, access }: StateAccessProps) => {
   if (!access) return null;
-  const hideAprovers = role === "norole"; // any case the user has no current role - hide the approver list
+  const hideAprovers = role === "norole" && access.status !== "pending";
   return (
     <CardWithTopBorder key={`${access.territory}-${access.role}`}>
       <div className="p-8 min-h-36">
