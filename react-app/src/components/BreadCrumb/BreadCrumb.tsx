@@ -29,7 +29,7 @@ export const BreadCrumbs = ({ options }: BreadCrumbsProps) => {
         .toSorted((option, prevOption) => option.order - prevOption.order)
         .map(({ displayText, to }, index, optionsArray) => {
           return (
-            <BreadCrumb key={displayText} to={to} active={index !== optionsArray.length - 1}>
+            <BreadCrumb key={displayText} to={to} active={index === optionsArray.length - 1}>
               {displayText}
             </BreadCrumb>
           );
@@ -49,7 +49,7 @@ export const BreadCrumb = ({
   to,
   seperator = <BreadCrumbSeperator />,
   showSeperator = true,
-  active = true,
+  active,
   children,
 }: React.PropsWithChildren<BreadCrumbProps>) => {
   return (
@@ -57,13 +57,13 @@ export const BreadCrumb = ({
       {showSeperator && <span>{seperator}</span>}
 
       {active ? (
-        <Link to={to} className="underline text-sky-700 hover:text-sky-800" aria-current="page">
-          {children}
-        </Link>
-      ) : (
-        <span className="whitespace-nowrap" aria-disabled>
+        <span className="whitespace-nowrap" aria-current="page">
           {children}
         </span>
+      ) : (
+        <Link to={to} className="underline text-sky-700 hover:text-sky-800">
+          {children}
+        </Link>
       )}
     </li>
   );

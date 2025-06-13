@@ -82,7 +82,6 @@ exports[`WithdrawPackageAction components > renders WithdrawPackageActionWaiver 
               </span>
               <span
                 aria-current="page"
-                aria-disabled="true"
                 class="whitespace-nowrap"
               >
                 Withdraw Package
@@ -496,7 +495,6 @@ exports[`WithdrawPackageAction components > renders WithdrawPackageActionWaiver 
             </span>
             <span
               aria-current="page"
-              aria-disabled="true"
               class="whitespace-nowrap"
             >
               Withdraw Package

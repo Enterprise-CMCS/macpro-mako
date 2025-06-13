@@ -48,7 +48,7 @@ describe("Bread Crumb Tests", () => {
           <BreadCrumb data-testid="dashboard" to="/test">
             Test Dashboard
           </BreadCrumb>
-          <BreadCrumb data-testid="item" to="/test/:id" active={false}>
+          <BreadCrumb data-testid="item" to="/test/:id" active={true}>
             Test Item
           </BreadCrumb>
         </BreadCrumbBar>,
