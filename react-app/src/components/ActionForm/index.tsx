@@ -1,7 +1,7 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useMutation } from "@tanstack/react-query";
 import { API } from "aws-amplify";
-import { ReactNode, useMemo } from "react";
+import { ReactNode, useMemo, useEffect } from "react";
 import { DefaultValues, FieldPath, useForm, UseFormReturn } from "react-hook-form";
 import { Navigate, useLocation, useNavigate, useParams } from "react-router";
 import { Authority, CognitoUserAttributes } from "shared-types";
@@ -218,6 +218,9 @@ export const ActionForm = <Schema extends SchemaWithEnforcableProps>({
     return <Navigate to="/" replace />;
   }
 
+  useEffect(()=> {
+    console.log("****** action form loaded ")
+  }, []);
   return (
     <SimplePageContainer>
       <BreadCrumbs
