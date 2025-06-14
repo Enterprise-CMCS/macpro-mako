@@ -2,7 +2,7 @@ import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { BrowserRouter, Route, Routes, useLocation } from "react-router";
 import { Authority } from "shared-types";
-import { beforeEach, describe, expect, test } from "vitest";
+import { beforeEach, describe, expect, test, vi } from "vitest";
 
 import { BreadCrumb, BreadCrumbBar, BreadCrumbs } from "./BreadCrumb";
 import { optionCrumbsFromPath } from "./create-breadcrumbs";
@@ -14,6 +14,10 @@ export const LocationDisplay = () => {
 };
 
 describe("Bread Crumb Tests", () => {
+  beforeEach(() => {
+    window.gtag = vi.fn();
+  });
+  
   describe("Bread Crumb Routing", () => {
     test("Sucessfully navigate using breadcrumbs", async () => {
       render(

@@ -20,7 +20,14 @@ export const PackageSearch = () => {
       }),
     );
     navigate(`/dashboard?os=${compressedValue}`);
+    window.gtag("event", "home_search_text")
   };
+
+  const triggerGAEvent = (eventType, option)=> {
+    window.gtag("event", eventType, {
+      option: option
+    })
+  }
 
   return (
     <div className="w-full h-[202px] space-y-3 flex flex-col items-center text-center justify-center mb-8 mt-8">
@@ -30,8 +37,18 @@ export const PackageSearch = () => {
       </p>
       <RadioGroup
         value={tabChoice}
-        onValueChange={(e) => setTabChoice(e)}
+        onValueChange={(e) => {
+          setTabChoice(e)
+          console.log("e: ", e);
+          if (e === "spas") {
+            triggerGAEvent("home_search_radio", e);
+          } else if (e === "waivers") {
+            triggerGAEvent("home_search_radio", e);
+          }
+        }}
+        
         className="flex space-x-4"
+
       >
         <div className="flex space-x-2">
           <RadioGroupItem value="spas" id="r1" />

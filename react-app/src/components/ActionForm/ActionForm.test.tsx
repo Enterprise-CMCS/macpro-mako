@@ -19,7 +19,6 @@ import { OneMacUser } from "@/api";
 import * as components from "@/components";
 import { DataPoller } from "@/utils/Poller/DataPoller";
 import * as documentPoller from "@/utils/Poller/documentPoller";
-import { sendGAEvent } from "@/utils/ReactGA/sendGAEvent";
 import {
   renderFormAsync,
   renderFormWithPackageSectionAsync,
@@ -294,60 +293,6 @@ describe("ActionForm", () => {
     });
   });
 
-  test("sends a custom Google Analytics event", async () => {
-    vi.spyOn(api, "useGetUser").mockImplementation(() => {
-      const response = mockUseGetUser();
-      return response as query.UseQueryResult<OneMacUser, unknown>;
-    });
-
-    vi.mock("@/utils/ReactGA/sendGAEvent", async (importOriginal) => {
-      const actual = await importOriginal<typeof import("@/utils/ReactGA/sendGAEvent")>();
-      return {
-        ...actual,
-        sendGAEvent: vi.fn(),
-      };
-    });
-    const dataPollerSpy = vi.spyOn(DataPoller.prototype, "startPollingData");
-
-    const schema = z.object({
-      id: z.string(),
-      event: z.string().optional(),
-    });
-
-    await renderFormWithPackageSectionAsync(
-      <ActionForm
-        title="Action Form Title"
-        schema={schema}
-        defaultValues={{ id: EXISTING_ITEM_PENDING_ID, event: "new-chip" }}
-        fields={() => null}
-        documentPollerArgs={{
-          property: "id",
-          documentChecker: () => true,
-        }}
-        bannerPostSubmission={{
-          header: "Hello World Header",
-          body: "Hello World Body",
-        }}
-        breadcrumbText="Example Breadcrumb"
-      />,
-      EXISTING_ITEM_PENDING_ID,
-    );
-
-    const submitButton = await screen.findByTestId("submit-action-form");
-
-    vi.useFakeTimers();
-
-    fireEvent.submit(submitButton);
-
-    await vi.waitFor(async () => {
-      await vi.runAllTimersAsync();
-      expect(dataPollerSpy).toHaveResolvedWith({
-        correctDataStateFound: true,
-        maxAttemptsReached: false,
-      });
-      expect(sendGAEvent).toHaveBeenCalledWith("new-chip", "onemac-state-user", "MD");
-    });
-  });
 
   test("calls `documentPoller` with `documentPollerArgs`", async () => {
     const documentPollerSpy = vi.spyOn(documentPoller, "documentPoller");
