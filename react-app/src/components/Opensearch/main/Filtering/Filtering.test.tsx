@@ -48,7 +48,7 @@ describe("Visibility button", () => {
     expect(search).toBeEnabled();
 
     expect(screen.queryByRole("button", { name: "Columns" })).toBeInTheDocument();
-    expect(screen.queryByRole("button", { name: "Filters" })).toBeInTheDocument();
+    expect(screen.queryByRole("button", { name: "Open filter panel" })).toBeInTheDocument();
 
     const exportBtn = screen.queryByRole("button", { name: "Export" });
     expect(exportBtn).toBeInTheDocument();
@@ -64,7 +64,7 @@ describe("Visibility button", () => {
     expect(search).toBeEnabled();
 
     expect(screen.queryByRole("button", { name: "Columns (1 hidden)" })).toBeInTheDocument();
-    expect(screen.queryByRole("button", { name: "Filters" })).toBeInTheDocument();
+    expect(screen.queryByRole("button", { name: "Open filter panel" })).toBeInTheDocument();
     expect(screen.queryByRole("button", { name: "Export" })).toBeInTheDocument();
   });
 
@@ -77,7 +77,7 @@ describe("Visibility button", () => {
     expect(search).toBeDisabled();
 
     expect(screen.queryByRole("button", { name: "Columns" })).toBeInTheDocument();
-    expect(screen.queryByRole("button", { name: "Filters" })).toBeInTheDocument();
+    expect(screen.queryByRole("button", { name: "Open filter panel" })).toBeInTheDocument();
     expect(screen.queryByRole("button", { name: "Export" })).toBeInTheDocument();
   });
 
@@ -93,7 +93,7 @@ describe("Visibility button", () => {
       screen.queryByLabelText("Search by Package ID, CPOC Name, or Submitter Name"),
     ).toBeInTheDocument();
     expect(screen.queryByRole("button", { name: "Columns" })).toBeInTheDocument();
-    expect(screen.queryByRole("button", { name: "Filters" })).toBeInTheDocument();
+    expect(screen.queryByRole("button", { name: "Open filter panel" })).toBeInTheDocument();
 
     const exportBtn = screen.queryByRole("button", { name: "Export" });
     expect(exportBtn).toBeInTheDocument();
@@ -128,7 +128,7 @@ describe("Visibility button", () => {
     const onToggle = vi.fn();
     setup(DEFAULT_COLUMNS, onToggle, false);
 
-    const filters = screen.getByRole("button", { name: "Filters" });
+    const filters = screen.getByRole("button", { name: "Open filter panel" });
     expect(filters.getAttribute("data-state")).toEqual("closed");
     await user.click(filters);
     expect(screen.getByRole("heading", { name: "Filter by", level: 4 })).toBeInTheDocument();
