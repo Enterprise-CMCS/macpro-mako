@@ -86,4 +86,11 @@ export const featureFlags = {
     flag: "med-spa-footer",
     defaultValue: true,
   },
+  /*
+   *  Toggle visibility of details page of the chip spa eligibility submission
+   */
+  CHIP_SPA_DETAILS: {
+    flag: "chip-spa-details",
+    defaultValue: true,
+  },
 } as const;
