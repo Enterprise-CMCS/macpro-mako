@@ -1,6 +1,4 @@
-import { toggleGetLDEvalStreamHandler, toggleGetLDEvalxHandler } from "mocks";
-
-import { expect, test } from "@/fixtures/mocked";
+import { expect, overrideFlags, test } from "@/fixtures/mocked";
 
 test.describe("Down for maintenance", { tag: ["@home", "@CI"] }, () => {
   test.afterEach(({ worker }) => {
@@ -23,10 +21,7 @@ test.describe("Down for maintenance", { tag: ["@home", "@CI"] }, () => {
     page,
     worker,
   }) => {
-    worker.use(
-      toggleGetLDEvalxHandler({ "site-under-maintenance-banner": "SCHEDULED" }),
-      toggleGetLDEvalStreamHandler({ "site-under-maintenance-banner": "SCHEDULED" }),
-    );
+    worker.use(...overrideFlags({ "site-under-maintenance-banner": "SCHEDULED" }));
     await page.goto("/webforms");
 
     await expect(page.getByRole("heading", { name: "Webforms" })).toBeVisible();
@@ -41,10 +36,7 @@ test.describe("Down for maintenance", { tag: ["@home", "@CI"] }, () => {
     page,
     worker,
   }) => {
-    worker.use(
-      toggleGetLDEvalxHandler({ "site-under-maintenance-banner": "UNSCHEDULED" }),
-      toggleGetLDEvalStreamHandler({ "site-under-maintenance-banner": "UNSCHEDULED" }),
-    );
+    worker.use(...overrideFlags({ "site-under-maintenance-banner": "UNSCHEDULED" }));
 
     await page.goto("/webforms");
 
