@@ -43,18 +43,19 @@ export const BreadCrumb = ({
 }: React.PropsWithChildren<BreadCrumbProps>) => {
   return (
     <li className="flex items-center text-sm">
-      <Link
-        to={to}
-        className={active ? "whitespace-nowrap" : "underline text-sky-700 hover:text-sky-800"}
-        aria-current={active ? "page" : undefined}
-      >
-        {children}
-      </Link>
-
-      {!active && (
-        <span className="ml-1" aria-hidden="true">
-          {separator}
+      {active ? (
+        <span className="whitespace-nowrap" aria-current="page">
+          {children}
         </span>
+      ) : (
+        <>
+          <Link to={to} className="underline text-sky-700 hover:text-sky-800">
+            {children}
+          </Link>
+          <span className="ml-1" aria-hidden="true">
+            {separator}
+          </span>
+        </>
       )}
     </li>
   );

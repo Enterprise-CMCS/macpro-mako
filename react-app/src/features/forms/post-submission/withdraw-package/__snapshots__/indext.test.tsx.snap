@@ -86,14 +86,12 @@ exports[`WithdrawPackageAction components > renders WithdrawPackageActionWaiver 
             <li
               class="flex items-center text-sm"
             >
-              <a
+              <span
                 aria-current="page"
                 class="whitespace-nowrap"
-                data-discover="true"
-                href="/"
               >
                 Withdraw Package
-              </a>
+              </span>
             </li>
           </ol>
         </nav>
@@ -507,14 +505,12 @@ exports[`WithdrawPackageAction components > renders WithdrawPackageActionWaiver 
           <li
             class="flex items-center text-sm"
           >
-            <a
+            <span
               aria-current="page"
               class="whitespace-nowrap"
-              data-discover="true"
-              href="/"
             >
               Withdraw Package
-            </a>
+            </span>
           </li>
         </ol>
       </nav>

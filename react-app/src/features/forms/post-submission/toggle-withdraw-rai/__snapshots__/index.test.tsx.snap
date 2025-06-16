@@ -86,14 +86,12 @@ exports[`Toggle Withdraw Rai components > renders disable withdraw rai correctly
             <li
               class="flex items-center text-sm"
             >
-              <a
+              <span
                 aria-current="page"
                 class="whitespace-nowrap"
-                data-discover="true"
-                href="/"
               >
                 Enable Formal RAI Response Withdraw
-              </a>
+              </span>
             </li>
           </ol>
         </nav>
@@ -281,14 +279,12 @@ exports[`Toggle Withdraw Rai components > renders disable withdraw rai correctly
           <li
             class="flex items-center text-sm"
           >
-            <a
+            <span
               aria-current="page"
               class="whitespace-nowrap"
-              data-discover="true"
-              href="/"
             >
               Enable Formal RAI Response Withdraw
-            </a>
+            </span>
           </li>
         </ol>
       </nav>
@@ -533,14 +529,12 @@ exports[`Toggle Withdraw Rai components > renders disable withdraw rai correctly
             <li
               class="flex items-center text-sm"
             >
-              <a
+              <span
                 aria-current="page"
                 class="whitespace-nowrap"
-                data-discover="true"
-                href="/"
               >
                 Disable Formal RAI Response Withdraw
-              </a>
+              </span>
             </li>
           </ol>
         </nav>
@@ -728,14 +722,12 @@ exports[`Toggle Withdraw Rai components > renders disable withdraw rai correctly
           <li
             class="flex items-center text-sm"
           >
-            <a
+            <span
               aria-current="page"
               class="whitespace-nowrap"
-              data-discover="true"
-              href="/"
             >
               Disable Formal RAI Response Withdraw
-            </a>
+            </span>
           </li>
         </ol>
       </nav>
