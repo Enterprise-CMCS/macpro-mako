@@ -9,7 +9,7 @@ exports[`Toggle Withdraw Rai components > renders disable withdraw rai correctly
         class="max-w-screen-xl mx-auto px-4 lg:px-8"
       >
         <nav
-          aria-label="breadcrumb"
+          aria-label="Breadcrumb"
           class="my-4"
         >
           <ol
@@ -26,6 +26,7 @@ exports[`Toggle Withdraw Rai components > renders disable withdraw rai correctly
                 Dashboard
               </a>
               <span
+                aria-hidden="true"
                 class="ml-1"
               >
                 <svg
@@ -59,6 +60,7 @@ exports[`Toggle Withdraw Rai components > renders disable withdraw rai correctly
                 VA-2234.R11.02
               </a>
               <span
+                aria-hidden="true"
                 class="ml-1"
               >
                 <svg
@@ -202,7 +204,7 @@ exports[`Toggle Withdraw Rai components > renders disable withdraw rai correctly
       class="max-w-screen-xl mx-auto px-4 lg:px-8"
     >
       <nav
-        aria-label="breadcrumb"
+        aria-label="Breadcrumb"
         class="my-4"
       >
         <ol
@@ -219,6 +221,7 @@ exports[`Toggle Withdraw Rai components > renders disable withdraw rai correctly
               Dashboard
             </a>
             <span
+              aria-hidden="true"
               class="ml-1"
             >
               <svg
@@ -252,6 +255,7 @@ exports[`Toggle Withdraw Rai components > renders disable withdraw rai correctly
               VA-2234.R11.02
             </a>
             <span
+              aria-hidden="true"
               class="ml-1"
             >
               <svg
@@ -452,7 +456,7 @@ exports[`Toggle Withdraw Rai components > renders disable withdraw rai correctly
         class="max-w-screen-xl mx-auto px-4 lg:px-8"
       >
         <nav
-          aria-label="breadcrumb"
+          aria-label="Breadcrumb"
           class="my-4"
         >
           <ol
@@ -469,6 +473,7 @@ exports[`Toggle Withdraw Rai components > renders disable withdraw rai correctly
                 Dashboard
               </a>
               <span
+                aria-hidden="true"
                 class="ml-1"
               >
                 <svg
@@ -502,6 +507,7 @@ exports[`Toggle Withdraw Rai components > renders disable withdraw rai correctly
                 VA-2234.R11.02
               </a>
               <span
+                aria-hidden="true"
                 class="ml-1"
               >
                 <svg
@@ -645,7 +651,7 @@ exports[`Toggle Withdraw Rai components > renders disable withdraw rai correctly
       class="max-w-screen-xl mx-auto px-4 lg:px-8"
     >
       <nav
-        aria-label="breadcrumb"
+        aria-label="Breadcrumb"
         class="my-4"
       >
         <ol
@@ -662,6 +668,7 @@ exports[`Toggle Withdraw Rai components > renders disable withdraw rai correctly
               Dashboard
             </a>
             <span
+              aria-hidden="true"
               class="ml-1"
             >
               <svg
@@ -695,6 +702,7 @@ exports[`Toggle Withdraw Rai components > renders disable withdraw rai correctly
               VA-2234.R11.02
             </a>
             <span
+              aria-hidden="true"
               class="ml-1"
             >
               <svg

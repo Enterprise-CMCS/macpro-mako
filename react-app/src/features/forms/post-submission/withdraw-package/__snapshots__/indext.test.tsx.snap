@@ -9,7 +9,7 @@ exports[`WithdrawPackageAction components > renders WithdrawPackageActionWaiver 
         class="max-w-screen-xl mx-auto px-4 lg:px-8"
       >
         <nav
-          aria-label="breadcrumb"
+          aria-label="Breadcrumb"
           class="my-4"
         >
           <ol
@@ -26,6 +26,7 @@ exports[`WithdrawPackageAction components > renders WithdrawPackageActionWaiver 
                 Dashboard
               </a>
               <span
+                aria-hidden="true"
                 class="ml-1"
               >
                 <svg
@@ -59,6 +60,7 @@ exports[`WithdrawPackageAction components > renders WithdrawPackageActionWaiver 
                 VA-2234.R11.01
               </a>
               <span
+                aria-hidden="true"
                 class="ml-1"
               >
                 <svg
@@ -428,7 +430,7 @@ exports[`WithdrawPackageAction components > renders WithdrawPackageActionWaiver 
       class="max-w-screen-xl mx-auto px-4 lg:px-8"
     >
       <nav
-        aria-label="breadcrumb"
+        aria-label="Breadcrumb"
         class="my-4"
       >
         <ol
@@ -445,6 +447,7 @@ exports[`WithdrawPackageAction components > renders WithdrawPackageActionWaiver 
               Dashboard
             </a>
             <span
+              aria-hidden="true"
               class="ml-1"
             >
               <svg
@@ -478,6 +481,7 @@ exports[`WithdrawPackageAction components > renders WithdrawPackageActionWaiver 
               VA-2234.R11.01
             </a>
             <span
+              aria-hidden="true"
               class="ml-1"
             >
               <svg
