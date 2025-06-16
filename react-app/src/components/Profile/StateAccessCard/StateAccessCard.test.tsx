@@ -27,8 +27,7 @@ describe("StateAccessCard", () => {
 
     expect(screen.getByRole("heading", { name: "N/A", level: 3 })).toBeInTheDocument();
     expect(screen.getByText("Access Granted")).toBeInTheDocument();
-    expect(screen.getByText(/CMS Role Approver/)).toBeInTheDocument();
-    expect(screen.getByText("Test Admin")).toBeInTheDocument();
+    expect(screen.getByText(/CMS System Admin/)).toBeInTheDocument();
 
     expect(screen.queryByRole("button", { name: "Self Revoke Access" })).not.toBeInTheDocument();
   });
@@ -49,7 +48,6 @@ describe("StateAccessCard", () => {
     expect(screen.getByRole("heading", { name: "Maryland", level: 3 })).toBeInTheDocument();
     expect(screen.getByText("Pending Access")).toBeInTheDocument();
     expect(screen.getByText(/State System Admin/)).toBeInTheDocument();
-    expect(screen.getByText("Test Admin")).toBeInTheDocument();
 
     const revokeButton = screen.getByRole("button", { name: "Self Revoke Access" });
     expect(revokeButton).toBeInTheDocument();
@@ -81,5 +79,46 @@ describe("StateAccessCard", () => {
     await user.click(revokeButton);
 
     expect(revokeSpy).toHaveBeenCalled();
+  });
+
+  it("should display a list of approvers", async () => {
+    render(
+      <StateAccessCard
+        role="statesubmitter"
+        access={{
+          territory: "CO",
+          role: "statesubmitter",
+          status: "active",
+          doneByEmail: "test@example.com",
+          doneByName: "Test Admin",
+          approverList: [
+            { email: "test@example.com", fullName: "Test Admin" },
+            { email: "test2@example.com", fullName: "Test Admin2" },
+            { email: "test3@example.com", fullName: "Test Admin3" },
+          ],
+        }}
+      />,
+    );
+    expect(screen.getByText("Test Admin,")).toBeInTheDocument();
+    expect(screen.getByText("Test Admin2,")).toBeInTheDocument();
+    expect(screen.getByText("Test Admin3")).toBeInTheDocument();
+  });
+
+  it("should display No Approvers if the approver list is empty", async () => {
+    render(
+      <StateAccessCard
+        role="statesubmitter"
+        access={{
+          territory: "CO",
+          role: "statesubmitter",
+          status: "active",
+          doneByEmail: "test@example.com",
+          doneByName: "Test Admin",
+          approverList: [],
+        }}
+      />,
+    );
+
+    expect(screen.getByText("N/A")).toBeInTheDocument();
   });
 });
