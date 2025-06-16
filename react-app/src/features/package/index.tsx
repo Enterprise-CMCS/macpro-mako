@@ -1,6 +1,7 @@
-import { PropsWithChildren } from "react";
+import { PropsWithChildren, useMemo } from "react";
 import { LoaderFunctionArgs, redirect, useLoaderData } from "react-router";
-import { Authority } from "shared-types";
+import { Authority, opensearch } from "shared-types";
+import { ItemResult } from "shared-types/opensearch/changelog";
 
 import { getItem, useGetItem } from "@/api";
 import { CardWithTopBorder, ErrorAlert, LoadingSpinner } from "@/components";
@@ -32,29 +33,65 @@ type DetailsContentProps = {
   id: string;
 };
 
+const injectChipEligibilityAttachment = (
+  submission: opensearch.main.Document,
+  changelog: ItemResult[],
+): opensearch.main.Document => {
+  const alreadyHasChipEligibility = submission.attachments?.chipEligibility?.files?.length > 0;
+
+  if (alreadyHasChipEligibility) return submission;
+
+  const chipEligibilityAttachment = changelog.find((item) =>
+    item._source.attachments?.some((att) => att.title.toLowerCase().includes("chip eligibility")),
+  );
+
+  if (!chipEligibilityAttachment) return submission;
+
+  const chipAttachment = chipEligibilityAttachment._source.attachments.find((att) =>
+    att.title.toLowerCase().includes("chip eligibility"),
+  );
+
+  if (!chipAttachment) return submission;
+
+  return {
+    ...submission,
+    attachments: {
+      ...submission.attachments,
+      chipEligibility: {
+        files: [chipAttachment],
+        label: "CHIP Eligibility Template",
+      },
+    },
+  };
+};
+
 export const DetailsContent = ({ id }: DetailsContentProps) => {
   const { data: record, isLoading, error } = useGetItem(id);
 
+  const submission = record?._source;
+  const updatedSubmission = useMemo(() => {
+    return submission
+      ? injectChipEligibilityAttachment(submission, submission.changelog)
+      : undefined;
+  }, [submission]);
+
   if (isLoading) return <LoadingSpinner />;
-
-  if (error) return <ErrorAlert error={error} />;
-
-  const { _source: submission } = record;
+  if (error || !record || !updatedSubmission) return <ErrorAlert error={error} />;
 
   return (
     <div className="w-full py-1 px-4 lg:px-8 grid grid-cols-1 gap-y-6 sm:gap-y-6">
       <section id="package_overview" className="sm:mb-0 two-cols gap-y-3 sm:gap-y-3">
         <DetailCardWrapper title="Status">
-          <PackageStatusCard submission={submission} />
+          <PackageStatusCard submission={updatedSubmission} />
         </DetailCardWrapper>
         <DetailCardWrapper title="Package Actions">
-          <PackageActionsCard id={id} submission={submission} />
+          <PackageActionsCard id={id} submission={updatedSubmission} />
         </DetailCardWrapper>
       </section>
       <div className="grid grid-cols-1 gap-y-3">
-        <PackageDetails submission={submission} />
-        <PackageActivities id={id} changelog={submission.changelog} />
-        <AdminPackageActivities changelog={submission.changelog} />
+        <PackageDetails submission={updatedSubmission} />
+        <PackageActivities id={id} changelog={updatedSubmission.changelog} />
+        <AdminPackageActivities changelog={updatedSubmission.changelog} />
       </div>
     </div>
   );
