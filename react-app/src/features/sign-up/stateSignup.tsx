@@ -2,6 +2,7 @@ import { useState } from "react";
 import { Navigate, useNavigate, useSearchParams } from "react-router";
 import { StateCode } from "shared-types";
 import { UserRole } from "shared-types/events/legacy-user";
+import { userRoleMap } from "shared-utils";
 
 import { useGetUserDetails, useGetUserProfile, useSubmitRoleRequests } from "@/api";
 import {
@@ -19,8 +20,6 @@ import {
 } from "@/components";
 import { FilterableSelect, Option } from "@/components/Opensearch/main/Filtering/Drawer/Filterable";
 import { useAvailableStates } from "@/hooks/useAvailableStates";
-
-import { userRoleMap } from "../profile";
 
 export const StateSignup = () => {
   const [stateSelected, setStateSelected] = useState<StateCode[]>([]);
