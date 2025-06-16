@@ -40,8 +40,8 @@ export const PackageDetails = ({ submission }: PackageDetailsProps) => {
       Array.isArray(submission.chipSubmissionType) && submission.chipSubmissionType.length > 0;
 
     const hasChipEligibilityAttachment =
-      Array.isArray(submission.attachments) &&
-      submission.attachments.some((attachment) => attachment.type === "chipEligibility");
+      Array.isArray(submission.attachments?.chipEligibility?.files) &&
+      submission.attachments.chipEligibility.files.length > 0;
 
     if (hasChipSubmissionType || hasChipEligibilityAttachment) {
       return "CHIP Eligibility SPA Package Details";
