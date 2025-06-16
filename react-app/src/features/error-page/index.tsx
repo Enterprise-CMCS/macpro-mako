@@ -14,7 +14,6 @@ export const ErrorPage = () => {
             to: "/",
             displayText: "Home",
             order: 0,
-            default: true,
           },
           {
             to: "/404",
