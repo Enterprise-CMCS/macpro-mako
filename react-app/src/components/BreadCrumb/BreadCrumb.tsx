@@ -43,29 +43,30 @@ export const BreadCrumb = ({
 }: React.PropsWithChildren<BreadCrumbProps>) => {
   return (
     <li className="flex items-center text-sm">
-      {active ? (
-        <Link to={to} className="whitespace-nowrap" aria-current="page">
-          {children}
-        </Link>
-      ) : (
-        <>
-          <Link to={to} className="underline text-sky-700 hover:text-sky-800">
-            {children}
-          </Link>
-          <span className="ml-1">{separator}</span>
-        </>
+      <Link
+        to={to}
+        className={active ? "whitespace-nowrap" : "underline text-sky-700 hover:text-sky-800"}
+        aria-current={active ? "page" : undefined}
+      >
+        {children}
+      </Link>
+
+      {!active && (
+        <span className="ml-1" aria-hidden="true">
+          {separator}
+        </span>
       )}
     </li>
   );
 };
 
 export const BreadCrumbSeparator = () => (
-  <ChevronRight className="w-5 h-5" focusable={false} aria-hidden />
+  <ChevronRight className="w-5 h-5" focusable={false} aria-hidden="true" />
 );
 
 export const BreadCrumbBar = ({ children }: React.PropsWithChildren) => {
   return (
-    <nav aria-label="breadcrumb" className="my-4">
+    <nav aria-label="Breadcrumb" className="my-4">
       <ol className="flex flex-wrap gap-1">{children}</ol>
     </nav>
   );
