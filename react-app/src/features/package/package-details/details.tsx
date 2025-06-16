@@ -50,9 +50,14 @@ export type LabelAndValue = {
 type GetLabelAndValueFromSubmission = (
   submission: opensearch.main.Document,
   user: OneMacUser,
+  chipFlagEnabled: boolean,
 ) => LabelAndValue[];
 
-export const getSubmissionDetails: GetLabelAndValueFromSubmission = (submission, { user }) => {
+export const getSubmissionDetails: GetLabelAndValueFromSubmission = (
+  submission,
+  { user },
+  chipFlagEnabled,
+) => {
   const hasChipEligibilityAttachment = Object.values(submission.attachments || {}).some(
     (attachment) =>
       attachment.label?.toLowerCase().includes("chip eligibility") &&
@@ -64,7 +69,7 @@ export const getSubmissionDetails: GetLabelAndValueFromSubmission = (submission,
     Array.isArray(submission.chipSubmissionType) && submission.chipSubmissionType.length > 0;
 
   const chipSubmissionTypeField: LabelAndValue[] =
-    hasChipEligibilityAttachment || hasChipSubmissionType
+    chipFlagEnabled && (hasChipEligibilityAttachment || hasChipSubmissionType)
       ? [
           {
             label: "CHIP Submission Type",
@@ -76,10 +81,7 @@ export const getSubmissionDetails: GetLabelAndValueFromSubmission = (submission,
           },
         ]
       : [];
-  console.log(
-    "All attachment labels:",
-    Object.values(submission.attachments || {}).map((a) => a.label),
-  );
+
   return [
     {
       label: "Submission ID",
