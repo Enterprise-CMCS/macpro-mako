@@ -68,7 +68,7 @@ export const getSubmissionDetails: GetLabelAndValueFromSubmission = (submission,
             value: hasChipSubmissionType ? (
               <span className="break-words">{submission.chipSubmissionType.join(", ")}</span>
             ) : (
-              BLANK_VALUE
+              <span className="italic text-gray-500">{BLANK_VALUE}</span>
             ),
           },
         ]
