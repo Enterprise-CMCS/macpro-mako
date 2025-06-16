@@ -196,7 +196,11 @@ export async function processRecord(kafkaRecord: KafkaRecord, config: ProcessEma
             // }
             console.log(`OpenSearch updated successfully for ${safeID}`);
             // await os.sleep(50000);
-            await processAndSendEmails(recordToPass as Events[keyof Events], safeID, config, item);
+            // Only fire seatool withdraw emails on non-development envs
+            if (!config.isDev) {
+              await processAndSendEmails(recordToPass as Events[keyof Events], safeID, config);
+            }
+            // await processAndSendEmails(recordToPass as Events[keyof Events], safeID, config, item);
             console.log("Email successfully sent for withdrawn record.");
           } catch (e) {
             if (e?.meta?.body?.error?.type === "version_conflict_engine_exception") {
