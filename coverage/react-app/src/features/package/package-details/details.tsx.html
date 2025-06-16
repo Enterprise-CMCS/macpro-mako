@@ -23,30 +23,30 @@
         <div class='clearfix'>
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">63.15% </span>
+                <span class="strong">60% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>12/19</span>
+                <span class='fraction'>12/20</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">51.61% </span>
+                <span class="strong">49.23% </span>
                 <span class="quiet">Branches</span>
-                <span class='fraction'>32/62</span>
+                <span class='fraction'>32/65</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">50% </span>
+                <span class="strong">44.44% </span>
                 <span class="quiet">Functions</span>
-                <span class='fraction'>4/8</span>
+                <span class='fraction'>4/9</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">56.25% </span>
+                <span class="strong">52.94% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>9/16</span>
+                <span class='fraction'>9/17</span>
             </div>
         
             
@@ -273,7 +273,16 @@
 <a name='L208'></a><a href='#L208'>208</a>
 <a name='L209'></a><a href='#L209'>209</a>
 <a name='L210'></a><a href='#L210'>210</a>
-<a name='L211'></a><a href='#L211'>211</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
+<a name='L211'></a><a href='#L211'>211</a>
+<a name='L212'></a><a href='#L212'>212</a>
+<a name='L213'></a><a href='#L213'>213</a>
+<a name='L214'></a><a href='#L214'>214</a>
+<a name='L215'></a><a href='#L215'>215</a>
+<a name='L216'></a><a href='#L216'>216</a>
+<a name='L217'></a><a href='#L217'>217</a>
+<a name='L218'></a><a href='#L218'>218</a>
+<a name='L219'></a><a href='#L219'>219</a>
+<a name='L220'></a><a href='#L220'>220</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -327,16 +336,25 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">5x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">5x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">5x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">5x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">5x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -535,29 +553,38 @@ export type LabelAndValue = {
 type GetLabelAndValueFromSubmission = (
   submission: opensearch.main.Document,
   user: OneMacUser,
+  chipFlagEnabled: boolean,
 ) =&gt; LabelAndValue[];
 &nbsp;
-export const getSubmissionDetails: GetLabelAndValueFromSubmission = (submission, { user }) =&gt; {
-  const hasChipEligibilityAttachment =
-    Array.isArray(submission.attachments?.chipEligibility?.files) &amp;&amp;
-<span class="branch-1 cbranch-no" title="branch not covered" >    submission.attachments.chipEligibility.files.length &gt; 0;</span>
+export const getSubmissionDetails: GetLabelAndValueFromSubmission = (
+  submission,
+  { user },
+  chipFlagEnabled,
+) =&gt; {
+  const hasChipEligibilityAttachment = Object.values(submission.attachments || {}).some(
+<span class="fstat-no" title="function not covered" >    (a</span>ttachment) =&gt;
+<span class="cstat-no" title="statement not covered" >      attachment.label?.toLowerCase().includes("chip eligibility") &amp;&amp;</span>
+      Array.isArray(attachment.files) &amp;&amp;
+      attachment.files.length &gt; 0,
+  );
 &nbsp;
   const hasChipSubmissionType =
     Array.isArray(submission.chipSubmissionType) &amp;&amp; <span class="branch-1 cbranch-no" title="branch not covered" >submission.chipSubmissionType.length &gt; 0;</span>
 &nbsp;
   const chipSubmissionTypeField: LabelAndValue[] =
-    hasChipEligibilityAttachment || hasChipSubmissionType
+    chipFlagEnabled &amp;&amp; (<span class="branch-1 cbranch-no" title="branch not covered" >hasChipEligibilityAttachment || <span class="branch-2 cbranch-no" title="branch not covered" >h</span>asChipSubmissionType</span>)
       ? <span class="branch-0 cbranch-no" title="branch not covered" >[</span>
           {
             label: "CHIP Submission Type",
             value: hasChipSubmissionType ? (
-              &lt;span className="break-words"&gt;{submission.chipSubmissionType.join(", ")}&lt;/span&gt;
+<span class="branch-0 cbranch-no" title="branch not covered" >              &lt;span className="break-words"&gt;{submission.chipSubmissionType.join(", ")}&lt;/span&gt;</span>
             ) : (
-              BLANK_VALUE
+              &lt;span className="italic text-gray-500"&gt;Included in CHIP Eligibility Template&lt;/span&gt;
             ),
           },
         ]
       : [];
+&nbsp;
   return [
     {
       label: "Submission ID",
@@ -700,7 +727,7 @@ export const getSubmittedByDetails: GetLabelAndValueFromSubmission = (submission
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2025-06-16T15:15:19.046Z
+                at 2025-06-16T19:13:13.901Z
             </div>
         <script src="../../../../../prettify.js"></script>
         <script>
