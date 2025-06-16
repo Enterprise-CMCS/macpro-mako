@@ -25,28 +25,28 @@
             <div class='fl pad1y space-right2'>
                 <span class="strong">100% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>3/3</span>
+                <span class='fraction'>5/5</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">100% </span>
+                <span class="strong">91.66% </span>
                 <span class="quiet">Branches</span>
-                <span class='fraction'>5/5</span>
+                <span class='fraction'>11/12</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
                 <span class="strong">100% </span>
                 <span class="quiet">Functions</span>
-                <span class='fraction'>1/1</span>
+                <span class='fraction'>2/2</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
                 <span class="strong">100% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>2/2</span>
+                <span class='fraction'>4/4</span>
             </div>
         
             
@@ -113,7 +113,24 @@
 <a name='L48'></a><a href='#L48'>48</a>
 <a name='L49'></a><a href='#L49'>49</a>
 <a name='L50'></a><a href='#L50'>50</a>
-<a name='L51'></a><a href='#L51'>51</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
+<a name='L51'></a><a href='#L51'>51</a>
+<a name='L52'></a><a href='#L52'>52</a>
+<a name='L53'></a><a href='#L53'>53</a>
+<a name='L54'></a><a href='#L54'>54</a>
+<a name='L55'></a><a href='#L55'>55</a>
+<a name='L56'></a><a href='#L56'>56</a>
+<a name='L57'></a><a href='#L57'>57</a>
+<a name='L58'></a><a href='#L58'>58</a>
+<a name='L59'></a><a href='#L59'>59</a>
+<a name='L60'></a><a href='#L60'>60</a>
+<a name='L61'></a><a href='#L61'>61</a>
+<a name='L62'></a><a href='#L62'>62</a>
+<a name='L63'></a><a href='#L63'>63</a>
+<a name='L64'></a><a href='#L64'>64</a>
+<a name='L65'></a><a href='#L65'>65</a>
+<a name='L66'></a><a href='#L66'>66</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -132,7 +149,8 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">93x</span>
-<span class="cline-any cline-yes">69x</span>
+<span class="cline-any cline-yes">71x</span>
+<span class="cline-any cline-yes">70x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -148,6 +166,18 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">96x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -165,6 +195,7 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">import { XIcon } from "lucide-react";
 import { UserRole } from "shared-types/events/legacy-user";
+import { getApprovingRole, userRoleMap } from "shared-utils";
 &nbsp;
 import { CardWithTopBorder } from "@/components";
 import { convertStateAbbrToFullName, stateAccessStatus } from "@/utils";
@@ -178,11 +209,13 @@ export type StateAccessProps = {
     status: string;
     doneByName: string;
     doneByEmail: string;
+    approverList?: { fullName: string; email: string }[];
   };
 };
 &nbsp;
 export const StateAccessCard = ({ role, onClick, access }: StateAccessProps) =&gt; {
   if (!access) return null;
+  const hideAprovers = role === "norole" &amp;&amp; <span class="branch-1 cbranch-no" title="branch not covered" >access.status !== "pending";</span>
   return (
     &lt;CardWithTopBorder key={`${access.territory}-${access.role}`}&gt;
       &lt;div className="p-8 min-h-36"&gt;
@@ -201,14 +234,26 @@ export const StateAccessCard = ({ role, onClick, access }: StateAccessProps) =&g
           )}
         &lt;/div&gt;
         &lt;p className="italic"&gt;{stateAccessStatus[access.status]}&lt;/p&gt;
-        &lt;p className="block lg:mt-8 lg:mb-2"&gt;
-          &lt;span className="font-semibold"&gt;
-            {role === "cmsroleapprover" ? "CMS Role Approver:" : "State System Admin:"}{" "}
-          &lt;/span&gt;
-          &lt;a className="text-blue-600" href={`mailto:${access.doneByEmail}`}&gt;
-            {access.doneByName}
-          &lt;/a&gt;
-        &lt;/p&gt;
+        {!hideAprovers &amp;&amp; (
+          &lt;p className="block lg:mt-8 lg:mb-2"&gt;
+            &lt;span className="font-semibold"&gt;
+              {userRoleMap[getApprovingRole(access.role)]}
+              {": "}
+            &lt;/span&gt;
+            {access.approverList &amp;&amp; access.approverList.length
+              ? access.approverList.map((approver, index) =&gt; (
+                  &lt;a
+                    className="text-blue-600"
+                    href={`mailto:${approver.email}`}
+                    key={`${approver.fullName}-${index}`}
+                  &gt;
+                    {approver.fullName}
+                    {index !== access.approverList.length - 1 &amp;&amp; ", "}
+                  &lt;/a&gt;
+                ))
+              : "N/A"}
+          &lt;/p&gt;
+        )}
       &lt;/div&gt;
     &lt;/CardWithTopBorder&gt;
   );
@@ -220,7 +265,7 @@ export const StateAccessCard = ({ role, onClick, access }: StateAccessProps) =&g
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2025-06-16T02:18:53.175Z
+                at 2025-06-16T15:15:19.046Z
             </div>
         <script src="../../../../../prettify.js"></script>
         <script>
