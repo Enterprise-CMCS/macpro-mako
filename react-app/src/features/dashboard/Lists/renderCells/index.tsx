@@ -17,14 +17,26 @@ export type CellIdLinkProps = {
   authority: Authority | string;
 };
 
-export const CellDetailsLink = ({ id, authority }: CellIdLinkProps) => (
-  <Link
-    className="cursor-pointer text-blue-600 hover:underline"
-    to={`/details/${encodeURIComponent(authority)}/${encodeURIComponent(id)}`}
-  >
-    {id}
-  </Link>
-);
+export const CellDetailsLink = ({ id, authority }: CellIdLinkProps) => {
+  const handleLinkClick = () => {
+    if (typeof window.gtag === "function") {
+      window.gtag("event", "dash_package_link", {
+        package_type: authority, // The 'authority' prop is the package type
+        package_id: id, // The 'id' prop is the package_id
+      });
+    }
+  };
+
+  return (
+    <Link
+      className="cursor-pointer text-blue-600 hover:underline"
+      to={`/details/${encodeURIComponent(authority)}/${encodeURIComponent(id)}`}
+      onClick={handleLinkClick} // Track the click event for analytics
+    >
+      {id}
+    </Link>
+  );
+};
 
 export const renderCellActions = (user: FullUser | null) => {
   return function Cell(data: opensearch.main.Document) {
@@ -51,28 +63,39 @@ export const renderCellActions = (user: FullUser | null) => {
           className="flex flex-col bg-white rounded-md shadow-lg p-4 border"
           align="start"
         >
-          {actions.map((action, idx) => (
-            <DropdownMenu.Item
-              key={`${idx}-${action}`}
-              asChild
-              aria-label={`${mapActionLabel(action)} for ${data.id}`}
-            >
-              <Link
-                state={{
-                  from: `${location.pathname}${location.search}`,
-                }}
-                to={{
-                  pathname: `/actions/${action}/${data.authority}/${data.id}`,
-                  search: new URLSearchParams({
-                    [ORIGIN]: DASHBOARD_ORIGIN,
-                  }).toString(),
-                }}
-                className="text-blue-500 flex select-none items-center rounded-sm px-2 py-2 text-sm hover:bg-accent"
+          {actions.map((action, idx) => {
+            const handleActionClick = () => {
+              if (typeof window.gtag === "function") {
+                window.gtag("event", "dash_ellipsis_click", {
+                  action: action,
+                });
+              }
+            };
+
+            return (
+              <DropdownMenu.Item
+                key={`${idx}-${action}`}
+                asChild
+                aria-label={`${mapActionLabel(action)} for ${data.id}`}
               >
-                {mapActionLabel(action)}
-              </Link>
-            </DropdownMenu.Item>
-          ))}
+                <Link
+                  onClick={handleActionClick}
+                  state={{
+                    from: `${location.pathname}${location.search}`,
+                  }}
+                  to={{
+                    pathname: `/actions/${action}/${data.authority}/${data.id}`,
+                    search: new URLSearchParams({
+                      [ORIGIN]: DASHBOARD_ORIGIN,
+                    }).toString(),
+                  }}
+                  className="text-blue-500 flex select-none items-center rounded-sm px-2 py-2 text-sm hover:bg-accent"
+                >
+                  {mapActionLabel(action)}
+                </Link>
+              </DropdownMenu.Item>
+            );
+          })}
         </DropdownMenu.Content>
       </DropdownMenu.Root>
     );

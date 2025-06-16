@@ -243,7 +243,7 @@ export const Layout = () => {
   const { data: user } = useGetUser();
   const customUserRoles = user?.user?.["custom:cms-roles"] || "";
 
-  // TODO fix, currently sending 4 events for logins 
+  // TODO fix, currently sending 4 events for logins
   // const customisMemberOf = user?.user?.["custom:ismemberof"] || "";
 
   // if (customUserRoles.length > 0) {
@@ -375,13 +375,12 @@ const ResponsiveNav = ({ isDesktop }: ResponsiveNavProps) => {
   }
 
   const triggerGAEvent = (name) => {
-    if (name == 'View FAQs') {
+    if (name == "View FAQs") {
       window.gtag("event", "home_nav_dashboard");
-    } else if (name == 'Dashboard') {
+    } else if (name == "Dashboard") {
       window.gtag("event", "home_nav_support");
-    } 
-
-  }
+    }
+  };
 
   if (isDesktop) {
     return (
