@@ -244,7 +244,7 @@
                 {
                   "workerIndex": 0,
                   "status": "passed",
-                  "duration": 10468,
+                  "duration": 12688,
                   "errors": [],
                   "stdout": [
                     {
@@ -265,7 +265,7 @@
                   ],
                   "stderr": [],
                   "retry": 0,
-                  "startTime": "2025-06-16T17:27:20.771Z",
+                  "startTime": "2025-06-16T17:47:57.266Z",
                   "attachments": []
                 }
               ],
@@ -301,7 +301,7 @@
               "specs": [
                 {
                   "title": "nav banner updated",
-                  "ok": false,
+                  "ok": true,
                   "tags": [
                     "dashboard",
                     "CI",
@@ -317,52 +317,17 @@
                       "results": [
                         {
                           "workerIndex": 1,
-                          "status": "failed",
-                          "duration": 8977,
-                          "error": {
-                            "message": "Error: \u001b[31mTimed out 5000ms waiting for \u001b[39m\u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m()\u001b[22m\n\nLocator: getByTestId('Dashboard-d')\nExpected: visible\nReceived: <element(s) not found>\nCall log:\n  \u001b[2m- expect.toBeVisible with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for getByTestId('Dashboard-d')\u001b[22m\n",
-                            "stack": "Error: \u001b[31mTimed out 5000ms waiting for \u001b[39m\u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m()\u001b[22m\n\nLocator: getByTestId('Dashboard-d')\nExpected: visible\nReceived: <element(s) not found>\nCall log:\n  \u001b[2m- expect.toBeVisible with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for getByTestId('Dashboard-d')\u001b[22m\n\n    at /home/runner/work/macpro-mako/macpro-mako/test/e2e/dashboard/dashboard.spec.ts:15:53",
-                            "location": {
-                              "file": "/home/runner/work/macpro-mako/macpro-mako/test/e2e/dashboard/dashboard.spec.ts",
-                              "column": 53,
-                              "line": 15
-                            },
-                            "snippet": "\u001b[0m \u001b[90m 13 |\u001b[39m       \u001b[36mawait\u001b[39m expect(page\u001b[33m.\u001b[39mgetByTestId(\u001b[32m\"Home-d\"\u001b[39m))\u001b[33m.\u001b[39mnot\u001b[33m.\u001b[39mtoHaveClass(\u001b[32m\"underline\"\u001b[39m)\u001b[33m;\u001b[39m\n \u001b[90m 14 |\u001b[39m\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 15 |\u001b[39m       \u001b[36mawait\u001b[39m expect(page\u001b[33m.\u001b[39mgetByTestId(\u001b[32m\"Dashboard-d\"\u001b[39m))\u001b[33m.\u001b[39mtoBeVisible()\u001b[33m;\u001b[39m\n \u001b[90m    |\u001b[39m                                                     \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 16 |\u001b[39m       \u001b[36mawait\u001b[39m expect(page\u001b[33m.\u001b[39mgetByTestId(\u001b[32m\"Dashboard-d\"\u001b[39m))\u001b[33m.\u001b[39mtoHaveText(\u001b[32m\"Dashboard\"\u001b[39m)\u001b[33m;\u001b[39m\n \u001b[90m 17 |\u001b[39m       \u001b[36mawait\u001b[39m expect(page\u001b[33m.\u001b[39mgetByTestId(\u001b[32m\"Dashboard-d\"\u001b[39m))\u001b[33m.\u001b[39mtoHaveClass(\u001b[35m/underline/\u001b[39m)\u001b[33m;\u001b[39m\n \u001b[90m 18 |\u001b[39m\u001b[0m"
-                          },
-                          "errors": [
-                            {
-                              "location": {
-                                "file": "/home/runner/work/macpro-mako/macpro-mako/test/e2e/dashboard/dashboard.spec.ts",
-                                "column": 53,
-                                "line": 15
-                              },
-                              "message": "Error: \u001b[31mTimed out 5000ms waiting for \u001b[39m\u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m()\u001b[22m\n\nLocator: getByTestId('Dashboard-d')\nExpected: visible\nReceived: <element(s) not found>\nCall log:\n  \u001b[2m- expect.toBeVisible with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for getByTestId('Dashboard-d')\u001b[22m\n\n\n\u001b[0m \u001b[90m 13 |\u001b[39m       \u001b[36mawait\u001b[39m expect(page\u001b[33m.\u001b[39mgetByTestId(\u001b[32m\"Home-d\"\u001b[39m))\u001b[33m.\u001b[39mnot\u001b[33m.\u001b[39mtoHaveClass(\u001b[32m\"underline\"\u001b[39m)\u001b[33m;\u001b[39m\n \u001b[90m 14 |\u001b[39m\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 15 |\u001b[39m       \u001b[36mawait\u001b[39m expect(page\u001b[33m.\u001b[39mgetByTestId(\u001b[32m\"Dashboard-d\"\u001b[39m))\u001b[33m.\u001b[39mtoBeVisible()\u001b[33m;\u001b[39m\n \u001b[90m    |\u001b[39m                                                     \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 16 |\u001b[39m       \u001b[36mawait\u001b[39m expect(page\u001b[33m.\u001b[39mgetByTestId(\u001b[32m\"Dashboard-d\"\u001b[39m))\u001b[33m.\u001b[39mtoHaveText(\u001b[32m\"Dashboard\"\u001b[39m)\u001b[33m;\u001b[39m\n \u001b[90m 17 |\u001b[39m       \u001b[36mawait\u001b[39m expect(page\u001b[33m.\u001b[39mgetByTestId(\u001b[32m\"Dashboard-d\"\u001b[39m))\u001b[33m.\u001b[39mtoHaveClass(\u001b[35m/underline/\u001b[39m)\u001b[33m;\u001b[39m\n \u001b[90m 18 |\u001b[39m\u001b[0m\n\n    at /home/runner/work/macpro-mako/macpro-mako/test/e2e/dashboard/dashboard.spec.ts:15:53"
-                            }
-                          ],
+                          "status": "passed",
+                          "duration": 3035,
+                          "errors": [],
                           "stdout": [],
                           "stderr": [],
                           "retry": 0,
-                          "startTime": "2025-06-16T17:27:32.574Z",
-                          "attachments": [
-                            {
-                              "name": "video",
-                              "contentType": "video/webm",
-                              "path": "/home/runner/work/macpro-mako/macpro-mako/test/test-results/e2e-dashboard-dashboard-Da-d3952-idations-nav-banner-updated-ci/video.webm"
-                            },
-                            {
-                              "name": "trace",
-                              "contentType": "application/zip",
-                              "path": "/home/runner/work/macpro-mako/macpro-mako/test/test-results/e2e-dashboard-dashboard-Da-d3952-idations-nav-banner-updated-ci/trace.zip"
-                            }
-                          ],
-                          "errorLocation": {
-                            "file": "/home/runner/work/macpro-mako/macpro-mako/test/e2e/dashboard/dashboard.spec.ts",
-                            "column": 53,
-                            "line": 15
-                          }
+                          "startTime": "2025-06-16T17:48:11.307Z",
+                          "attachments": []
                         }
                       ],
-                      "status": "unexpected"
+                      "status": "expected"
                     }
                   ],
                   "id": "100b0891d08a31cb23fb-76f8cc81557dc0f61241",
@@ -372,7 +337,7 @@
                 },
                 {
                   "title": "page header",
-                  "ok": false,
+                  "ok": true,
                   "tags": [
                     "dashboard",
                     "CI",
@@ -387,53 +352,18 @@
                       "projectName": "ci",
                       "results": [
                         {
-                          "workerIndex": 2,
-                          "status": "failed",
-                          "duration": 6009,
-                          "error": {
-                            "message": "Error: \u001b[31mTimed out 5000ms waiting for \u001b[39m\u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m()\u001b[22m\n\nLocator: getByRole('heading', { name: 'Dashboard' })\nExpected: visible\nReceived: <element(s) not found>\nCall log:\n  \u001b[2m- expect.toBeVisible with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for getByRole('heading', { name: 'Dashboard' })\u001b[22m\n",
-                            "stack": "Error: \u001b[31mTimed out 5000ms waiting for \u001b[39m\u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m()\u001b[22m\n\nLocator: getByRole('heading', { name: 'Dashboard' })\nExpected: visible\nReceived: <element(s) not found>\nCall log:\n  \u001b[2m- expect.toBeVisible with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for getByRole('heading', { name: 'Dashboard' })\u001b[22m\n\n    at /home/runner/work/macpro-mako/macpro-mako/test/e2e/dashboard/dashboard.spec.ts:25:70",
-                            "location": {
-                              "file": "/home/runner/work/macpro-mako/macpro-mako/test/e2e/dashboard/dashboard.spec.ts",
-                              "column": 70,
-                              "line": 25
-                            },
-                            "snippet": "\u001b[0m \u001b[90m 23 |\u001b[39m\n \u001b[90m 24 |\u001b[39m     test(\u001b[32m\"page header\"\u001b[39m\u001b[33m,\u001b[39m \u001b[36masync\u001b[39m ({ page }) \u001b[33m=>\u001b[39m {\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 25 |\u001b[39m       \u001b[36mawait\u001b[39m expect(page\u001b[33m.\u001b[39mgetByRole(\u001b[32m\"heading\"\u001b[39m\u001b[33m,\u001b[39m { name\u001b[33m:\u001b[39m \u001b[32m\"Dashboard\"\u001b[39m }))\u001b[33m.\u001b[39mtoBeVisible()\u001b[33m;\u001b[39m\n \u001b[90m    |\u001b[39m                                                                      \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 26 |\u001b[39m       \u001b[36mawait\u001b[39m expect(page\u001b[33m.\u001b[39mgetByRole(\u001b[32m\"heading\"\u001b[39m\u001b[33m,\u001b[39m { name\u001b[33m:\u001b[39m \u001b[32m\"Dashboard\"\u001b[39m }))\u001b[33m.\u001b[39mtoHaveText(\u001b[32m\"Dashboard\"\u001b[39m)\u001b[33m;\u001b[39m\n \u001b[90m 27 |\u001b[39m\n \u001b[90m 28 |\u001b[39m       \u001b[36mawait\u001b[39m expect(page\u001b[33m.\u001b[39mgetByTestId(\u001b[32m\"new-sub-button\"\u001b[39m))\u001b[33m.\u001b[39mtoBeVisible()\u001b[33m;\u001b[39m\u001b[0m"
-                          },
-                          "errors": [
-                            {
-                              "location": {
-                                "file": "/home/runner/work/macpro-mako/macpro-mako/test/e2e/dashboard/dashboard.spec.ts",
-                                "column": 70,
-                                "line": 25
-                              },
-                              "message": "Error: \u001b[31mTimed out 5000ms waiting for \u001b[39m\u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m()\u001b[22m\n\nLocator: getByRole('heading', { name: 'Dashboard' })\nExpected: visible\nReceived: <element(s) not found>\nCall log:\n  \u001b[2m- expect.toBeVisible with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for getByRole('heading', { name: 'Dashboard' })\u001b[22m\n\n\n\u001b[0m \u001b[90m 23 |\u001b[39m\n \u001b[90m 24 |\u001b[39m     test(\u001b[32m\"page header\"\u001b[39m\u001b[33m,\u001b[39m \u001b[36masync\u001b[39m ({ page }) \u001b[33m=>\u001b[39m {\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 25 |\u001b[39m       \u001b[36mawait\u001b[39m expect(page\u001b[33m.\u001b[39mgetByRole(\u001b[32m\"heading\"\u001b[39m\u001b[33m,\u001b[39m { name\u001b[33m:\u001b[39m \u001b[32m\"Dashboard\"\u001b[39m }))\u001b[33m.\u001b[39mtoBeVisible()\u001b[33m;\u001b[39m\n \u001b[90m    |\u001b[39m                                                                      \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 26 |\u001b[39m       \u001b[36mawait\u001b[39m expect(page\u001b[33m.\u001b[39mgetByRole(\u001b[32m\"heading\"\u001b[39m\u001b[33m,\u001b[39m { name\u001b[33m:\u001b[39m \u001b[32m\"Dashboard\"\u001b[39m }))\u001b[33m.\u001b[39mtoHaveText(\u001b[32m\"Dashboard\"\u001b[39m)\u001b[33m;\u001b[39m\n \u001b[90m 27 |\u001b[39m\n \u001b[90m 28 |\u001b[39m       \u001b[36mawait\u001b[39m expect(page\u001b[33m.\u001b[39mgetByTestId(\u001b[32m\"new-sub-button\"\u001b[39m))\u001b[33m.\u001b[39mtoBeVisible()\u001b[33m;\u001b[39m\u001b[0m\n\n    at /home/runner/work/macpro-mako/macpro-mako/test/e2e/dashboard/dashboard.spec.ts:25:70"
-                            }
-                          ],
+                          "workerIndex": 1,
+                          "status": "passed",
+                          "duration": 2811,
+                          "errors": [],
                           "stdout": [],
                           "stderr": [],
                           "retry": 0,
-                          "startTime": "2025-06-16T17:27:43.143Z",
-                          "attachments": [
-                            {
-                              "name": "video",
-                              "contentType": "video/webm",
-                              "path": "/home/runner/work/macpro-mako/macpro-mako/test/test-results/e2e-dashboard-dashboard-Da-68f0e--UI-validations-page-header-ci/video.webm"
-                            },
-                            {
-                              "name": "trace",
-                              "contentType": "application/zip",
-                              "path": "/home/runner/work/macpro-mako/macpro-mako/test/test-results/e2e-dashboard-dashboard-Da-68f0e--UI-validations-page-header-ci/trace.zip"
-                            }
-                          ],
-                          "errorLocation": {
-                            "file": "/home/runner/work/macpro-mako/macpro-mako/test/e2e/dashboard/dashboard.spec.ts",
-                            "column": 70,
-                            "line": 25
-                          }
+                          "startTime": "2025-06-16T17:48:14.492Z",
+                          "attachments": []
                         }
                       ],
-                      "status": "unexpected"
+                      "status": "expected"
                     }
                   ],
                   "id": "100b0891d08a31cb23fb-5ad29c1ddaa083a63709",
@@ -443,7 +373,7 @@
                 },
                 {
                   "title": "SPA and Waiver tabs",
-                  "ok": false,
+                  "ok": true,
                   "tags": [
                     "dashboard",
                     "CI",
@@ -458,53 +388,18 @@
                       "projectName": "ci",
                       "results": [
                         {
-                          "workerIndex": 3,
-                          "status": "failed",
-                          "duration": 6002,
-                          "error": {
-                            "message": "Error: \u001b[31mTimed out 5000ms waiting for \u001b[39m\u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m()\u001b[22m\n\nLocator: getByRole('tab', { name: 'SPAs' })\nExpected: visible\nReceived: <element(s) not found>\nCall log:\n  \u001b[2m- expect.toBeVisible with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for getByRole('tab', { name: 'SPAs' })\u001b[22m\n",
-                            "stack": "Error: \u001b[31mTimed out 5000ms waiting for \u001b[39m\u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m()\u001b[22m\n\nLocator: getByRole('tab', { name: 'SPAs' })\nExpected: visible\nReceived: <element(s) not found>\nCall log:\n  \u001b[2m- expect.toBeVisible with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for getByRole('tab', { name: 'SPAs' })\u001b[22m\n\n    at /home/runner/work/macpro-mako/macpro-mako/test/e2e/dashboard/dashboard.spec.ts:33:61",
-                            "location": {
-                              "file": "/home/runner/work/macpro-mako/macpro-mako/test/e2e/dashboard/dashboard.spec.ts",
-                              "column": 61,
-                              "line": 33
-                            },
-                            "snippet": "\u001b[0m \u001b[90m 31 |\u001b[39m\n \u001b[90m 32 |\u001b[39m     test(\u001b[32m\"SPA and Waiver tabs\"\u001b[39m\u001b[33m,\u001b[39m \u001b[36masync\u001b[39m ({ page }) \u001b[33m=>\u001b[39m {\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 33 |\u001b[39m       \u001b[36mawait\u001b[39m expect(page\u001b[33m.\u001b[39mgetByRole(\u001b[32m\"tab\"\u001b[39m\u001b[33m,\u001b[39m { name\u001b[33m:\u001b[39m \u001b[32m\"SPAs\"\u001b[39m }))\u001b[33m.\u001b[39mtoBeVisible()\u001b[33m;\u001b[39m\n \u001b[90m    |\u001b[39m                                                             \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 34 |\u001b[39m       \u001b[36mawait\u001b[39m expect(page\u001b[33m.\u001b[39mgetByRole(\u001b[32m\"tab\"\u001b[39m\u001b[33m,\u001b[39m { name\u001b[33m:\u001b[39m \u001b[32m\"SPAs\"\u001b[39m }))\u001b[33m.\u001b[39mtoHaveText(\u001b[32m\"SPAs\"\u001b[39m)\u001b[33m;\u001b[39m\n \u001b[90m 35 |\u001b[39m\n \u001b[90m 36 |\u001b[39m       \u001b[36mawait\u001b[39m expect(page\u001b[33m.\u001b[39mgetByRole(\u001b[32m\"tab\"\u001b[39m\u001b[33m,\u001b[39m { name\u001b[33m:\u001b[39m \u001b[32m\"Waivers\"\u001b[39m }))\u001b[33m.\u001b[39mtoBeVisible()\u001b[33m;\u001b[39m\u001b[0m"
-                          },
-                          "errors": [
-                            {
-                              "location": {
-                                "file": "/home/runner/work/macpro-mako/macpro-mako/test/e2e/dashboard/dashboard.spec.ts",
-                                "column": 61,
-                                "line": 33
-                              },
-                              "message": "Error: \u001b[31mTimed out 5000ms waiting for \u001b[39m\u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m()\u001b[22m\n\nLocator: getByRole('tab', { name: 'SPAs' })\nExpected: visible\nReceived: <element(s) not found>\nCall log:\n  \u001b[2m- expect.toBeVisible with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for getByRole('tab', { name: 'SPAs' })\u001b[22m\n\n\n\u001b[0m \u001b[90m 31 |\u001b[39m\n \u001b[90m 32 |\u001b[39m     test(\u001b[32m\"SPA and Waiver tabs\"\u001b[39m\u001b[33m,\u001b[39m \u001b[36masync\u001b[39m ({ page }) \u001b[33m=>\u001b[39m {\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 33 |\u001b[39m       \u001b[36mawait\u001b[39m expect(page\u001b[33m.\u001b[39mgetByRole(\u001b[32m\"tab\"\u001b[39m\u001b[33m,\u001b[39m { name\u001b[33m:\u001b[39m \u001b[32m\"SPAs\"\u001b[39m }))\u001b[33m.\u001b[39mtoBeVisible()\u001b[33m;\u001b[39m\n \u001b[90m    |\u001b[39m                                                             \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 34 |\u001b[39m       \u001b[36mawait\u001b[39m expect(page\u001b[33m.\u001b[39mgetByRole(\u001b[32m\"tab\"\u001b[39m\u001b[33m,\u001b[39m { name\u001b[33m:\u001b[39m \u001b[32m\"SPAs\"\u001b[39m }))\u001b[33m.\u001b[39mtoHaveText(\u001b[32m\"SPAs\"\u001b[39m)\u001b[33m;\u001b[39m\n \u001b[90m 35 |\u001b[39m\n \u001b[90m 36 |\u001b[39m       \u001b[36mawait\u001b[39m expect(page\u001b[33m.\u001b[39mgetByRole(\u001b[32m\"tab\"\u001b[39m\u001b[33m,\u001b[39m { name\u001b[33m:\u001b[39m \u001b[32m\"Waivers\"\u001b[39m }))\u001b[33m.\u001b[39mtoBeVisible()\u001b[33m;\u001b[39m\u001b[0m\n\n    at /home/runner/work/macpro-mako/macpro-mako/test/e2e/dashboard/dashboard.spec.ts:33:61"
-                            }
-                          ],
+                          "workerIndex": 1,
+                          "status": "passed",
+                          "duration": 2920,
+                          "errors": [],
                           "stdout": [],
                           "stderr": [],
                           "retry": 0,
-                          "startTime": "2025-06-16T17:27:50.741Z",
-                          "attachments": [
-                            {
-                              "name": "video",
-                              "contentType": "video/webm",
-                              "path": "/home/runner/work/macpro-mako/macpro-mako/test/test-results/e2e-dashboard-dashboard-Da-58c7a-dations-SPA-and-Waiver-tabs-ci/video.webm"
-                            },
-                            {
-                              "name": "trace",
-                              "contentType": "application/zip",
-                              "path": "/home/runner/work/macpro-mako/macpro-mako/test/test-results/e2e-dashboard-dashboard-Da-58c7a-dations-SPA-and-Waiver-tabs-ci/trace.zip"
-                            }
-                          ],
-                          "errorLocation": {
-                            "file": "/home/runner/work/macpro-mako/macpro-mako/test/e2e/dashboard/dashboard.spec.ts",
-                            "column": 61,
-                            "line": 33
-                          }
+                          "startTime": "2025-06-16T17:48:17.311Z",
+                          "attachments": []
                         }
                       ],
-                      "status": "unexpected"
+                      "status": "expected"
                     }
                   ],
                   "id": "100b0891d08a31cb23fb-11919b40cdcee1309ee8",
@@ -514,7 +409,7 @@
                 },
                 {
                   "title": "search field",
-                  "ok": false,
+                  "ok": true,
                   "tags": [
                     "dashboard",
                     "CI",
@@ -529,53 +424,18 @@
                       "projectName": "ci",
                       "results": [
                         {
-                          "workerIndex": 4,
-                          "status": "failed",
-                          "duration": 6009,
-                          "error": {
-                            "message": "Error: \u001b[31mTimed out 5000ms waiting for \u001b[39m\u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m()\u001b[22m\n\nLocator: getByTestId('filtering').locator('p')\nExpected: visible\nReceived: <element(s) not found>\nCall log:\n  \u001b[2m- expect.toBeVisible with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for getByTestId('filtering').locator('p')\u001b[22m\n",
-                            "stack": "Error: \u001b[31mTimed out 5000ms waiting for \u001b[39m\u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m()\u001b[22m\n\nLocator: getByTestId('filtering').locator('p')\nExpected: visible\nReceived: <element(s) not found>\nCall log:\n  \u001b[2m- expect.toBeVisible with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for getByTestId('filtering').locator('p')\u001b[22m\n\n    at /home/runner/work/macpro-mako/macpro-mako/test/e2e/dashboard/dashboard.spec.ts:41:64",
-                            "location": {
-                              "file": "/home/runner/work/macpro-mako/macpro-mako/test/e2e/dashboard/dashboard.spec.ts",
-                              "column": 64,
-                              "line": 41
-                            },
-                            "snippet": "\u001b[0m \u001b[90m 39 |\u001b[39m\n \u001b[90m 40 |\u001b[39m     test(\u001b[32m\"search field\"\u001b[39m\u001b[33m,\u001b[39m \u001b[36masync\u001b[39m ({ page }) \u001b[33m=>\u001b[39m {\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 41 |\u001b[39m       \u001b[36mawait\u001b[39m expect(page\u001b[33m.\u001b[39mgetByTestId(\u001b[32m\"filtering\"\u001b[39m)\u001b[33m.\u001b[39mlocator(\u001b[32m\"p\"\u001b[39m))\u001b[33m.\u001b[39mtoBeVisible()\u001b[33m;\u001b[39m\n \u001b[90m    |\u001b[39m                                                                \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 42 |\u001b[39m       \u001b[36mawait\u001b[39m expect(page\u001b[33m.\u001b[39mgetByTestId(\u001b[32m\"filtering\"\u001b[39m)\u001b[33m.\u001b[39mlocator(\u001b[32m\"p\"\u001b[39m))\u001b[33m.\u001b[39mtoHaveText(\n \u001b[90m 43 |\u001b[39m         \u001b[32m\"Search by Package ID, CPOC Name, or Submitter Name\"\u001b[39m\u001b[33m,\u001b[39m\n \u001b[90m 44 |\u001b[39m       )\u001b[33m;\u001b[39m\u001b[0m"
-                          },
-                          "errors": [
-                            {
-                              "location": {
-                                "file": "/home/runner/work/macpro-mako/macpro-mako/test/e2e/dashboard/dashboard.spec.ts",
-                                "column": 64,
-                                "line": 41
-                              },
-                              "message": "Error: \u001b[31mTimed out 5000ms waiting for \u001b[39m\u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m()\u001b[22m\n\nLocator: getByTestId('filtering').locator('p')\nExpected: visible\nReceived: <element(s) not found>\nCall log:\n  \u001b[2m- expect.toBeVisible with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for getByTestId('filtering').locator('p')\u001b[22m\n\n\n\u001b[0m \u001b[90m 39 |\u001b[39m\n \u001b[90m 40 |\u001b[39m     test(\u001b[32m\"search field\"\u001b[39m\u001b[33m,\u001b[39m \u001b[36masync\u001b[39m ({ page }) \u001b[33m=>\u001b[39m {\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 41 |\u001b[39m       \u001b[36mawait\u001b[39m expect(page\u001b[33m.\u001b[39mgetByTestId(\u001b[32m\"filtering\"\u001b[39m)\u001b[33m.\u001b[39mlocator(\u001b[32m\"p\"\u001b[39m))\u001b[33m.\u001b[39mtoBeVisible()\u001b[33m;\u001b[39m\n \u001b[90m    |\u001b[39m                                                                \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 42 |\u001b[39m       \u001b[36mawait\u001b[39m expect(page\u001b[33m.\u001b[39mgetByTestId(\u001b[32m\"filtering\"\u001b[39m)\u001b[33m.\u001b[39mlocator(\u001b[32m\"p\"\u001b[39m))\u001b[33m.\u001b[39mtoHaveText(\n \u001b[90m 43 |\u001b[39m         \u001b[32m\"Search by Package ID, CPOC Name, or Submitter Name\"\u001b[39m\u001b[33m,\u001b[39m\n \u001b[90m 44 |\u001b[39m       )\u001b[33m;\u001b[39m\u001b[0m\n\n    at /home/runner/work/macpro-mako/macpro-mako/test/e2e/dashboard/dashboard.spec.ts:41:64"
-                            }
-                          ],
+                          "workerIndex": 1,
+                          "status": "passed",
+                          "duration": 2729,
+                          "errors": [],
                           "stdout": [],
                           "stderr": [],
                           "retry": 0,
-                          "startTime": "2025-06-16T17:27:58.313Z",
-                          "attachments": [
-                            {
-                              "name": "video",
-                              "contentType": "video/webm",
-                              "path": "/home/runner/work/macpro-mako/macpro-mako/test/test-results/e2e-dashboard-dashboard-Da-23a3d-UI-validations-search-field-ci/video.webm"
-                            },
-                            {
-                              "name": "trace",
-                              "contentType": "application/zip",
-                              "path": "/home/runner/work/macpro-mako/macpro-mako/test/test-results/e2e-dashboard-dashboard-Da-23a3d-UI-validations-search-field-ci/trace.zip"
-                            }
-                          ],
-                          "errorLocation": {
-                            "file": "/home/runner/work/macpro-mako/macpro-mako/test/e2e/dashboard/dashboard.spec.ts",
-                            "column": 64,
-                            "line": 41
-                          }
+                          "startTime": "2025-06-16T17:48:20.240Z",
+                          "attachments": []
                         }
                       ],
-                      "status": "unexpected"
+                      "status": "expected"
                     }
                   ],
                   "id": "100b0891d08a31cb23fb-eb013ef3c4c22ada5e84",
@@ -585,7 +445,7 @@
                 },
                 {
                   "title": "columns button",
-                  "ok": false,
+                  "ok": true,
                   "tags": [
                     "dashboard",
                     "CI",
@@ -600,53 +460,18 @@
                       "projectName": "ci",
                       "results": [
                         {
-                          "workerIndex": 5,
-                          "status": "failed",
-                          "duration": 5995,
-                          "error": {
-                            "message": "Error: \u001b[31mTimed out 5000ms waiting for \u001b[39m\u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m()\u001b[22m\n\nLocator: getByRole('button', { name: /Columns/ })\nExpected: visible\nReceived: <element(s) not found>\nCall log:\n  \u001b[2m- expect.toBeVisible with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for getByRole('button', { name: /Columns/ })\u001b[22m\n",
-                            "stack": "Error: \u001b[31mTimed out 5000ms waiting for \u001b[39m\u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m()\u001b[22m\n\nLocator: getByRole('button', { name: /Columns/ })\nExpected: visible\nReceived: <element(s) not found>\nCall log:\n  \u001b[2m- expect.toBeVisible with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for getByRole('button', { name: /Columns/ })\u001b[22m\n\n    at /home/runner/work/macpro-mako/macpro-mako/test/e2e/dashboard/dashboard.spec.ts:50:67",
-                            "location": {
-                              "file": "/home/runner/work/macpro-mako/macpro-mako/test/e2e/dashboard/dashboard.spec.ts",
-                              "column": 67,
-                              "line": 50
-                            },
-                            "snippet": "\u001b[0m \u001b[90m 48 |\u001b[39m\n \u001b[90m 49 |\u001b[39m     test(\u001b[32m\"columns button\"\u001b[39m\u001b[33m,\u001b[39m \u001b[36masync\u001b[39m ({ page }) \u001b[33m=>\u001b[39m {\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 50 |\u001b[39m       \u001b[36mawait\u001b[39m expect(page\u001b[33m.\u001b[39mgetByRole(\u001b[32m\"button\"\u001b[39m\u001b[33m,\u001b[39m { name\u001b[33m:\u001b[39m \u001b[35m/Columns/\u001b[39m }))\u001b[33m.\u001b[39mtoBeVisible()\u001b[33m;\u001b[39m\n \u001b[90m    |\u001b[39m                                                                   \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 51 |\u001b[39m       \u001b[36mawait\u001b[39m expect(page\u001b[33m.\u001b[39mgetByRole(\u001b[32m\"button\"\u001b[39m\u001b[33m,\u001b[39m { name\u001b[33m:\u001b[39m \u001b[35m/Columns/\u001b[39m }))\u001b[33m.\u001b[39mtoHaveText(\u001b[32m\"Columns (3 hidden)\"\u001b[39m)\u001b[33m;\u001b[39m\n \u001b[90m 52 |\u001b[39m     })\u001b[33m;\u001b[39m\n \u001b[90m 53 |\u001b[39m\u001b[0m"
-                          },
-                          "errors": [
-                            {
-                              "location": {
-                                "file": "/home/runner/work/macpro-mako/macpro-mako/test/e2e/dashboard/dashboard.spec.ts",
-                                "column": 67,
-                                "line": 50
-                              },
-                              "message": "Error: \u001b[31mTimed out 5000ms waiting for \u001b[39m\u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m()\u001b[22m\n\nLocator: getByRole('button', { name: /Columns/ })\nExpected: visible\nReceived: <element(s) not found>\nCall log:\n  \u001b[2m- expect.toBeVisible with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for getByRole('button', { name: /Columns/ })\u001b[22m\n\n\n\u001b[0m \u001b[90m 48 |\u001b[39m\n \u001b[90m 49 |\u001b[39m     test(\u001b[32m\"columns button\"\u001b[39m\u001b[33m,\u001b[39m \u001b[36masync\u001b[39m ({ page }) \u001b[33m=>\u001b[39m {\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 50 |\u001b[39m       \u001b[36mawait\u001b[39m expect(page\u001b[33m.\u001b[39mgetByRole(\u001b[32m\"button\"\u001b[39m\u001b[33m,\u001b[39m { name\u001b[33m:\u001b[39m \u001b[35m/Columns/\u001b[39m }))\u001b[33m.\u001b[39mtoBeVisible()\u001b[33m;\u001b[39m\n \u001b[90m    |\u001b[39m                                                                   \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 51 |\u001b[39m       \u001b[36mawait\u001b[39m expect(page\u001b[33m.\u001b[39mgetByRole(\u001b[32m\"button\"\u001b[39m\u001b[33m,\u001b[39m { name\u001b[33m:\u001b[39m \u001b[35m/Columns/\u001b[39m }))\u001b[33m.\u001b[39mtoHaveText(\u001b[32m\"Columns (3 hidden)\"\u001b[39m)\u001b[33m;\u001b[39m\n \u001b[90m 52 |\u001b[39m     })\u001b[33m;\u001b[39m\n \u001b[90m 53 |\u001b[39m\u001b[0m\n\n    at /home/runner/work/macpro-mako/macpro-mako/test/e2e/dashboard/dashboard.spec.ts:50:67"
-                            }
-                          ],
+                          "workerIndex": 1,
+                          "status": "passed",
+                          "duration": 2768,
+                          "errors": [],
                           "stdout": [],
                           "stderr": [],
                           "retry": 0,
-                          "startTime": "2025-06-16T17:28:05.934Z",
-                          "attachments": [
-                            {
-                              "name": "video",
-                              "contentType": "video/webm",
-                              "path": "/home/runner/work/macpro-mako/macpro-mako/test/test-results/e2e-dashboard-dashboard-Da-26da9--validations-columns-button-ci/video.webm"
-                            },
-                            {
-                              "name": "trace",
-                              "contentType": "application/zip",
-                              "path": "/home/runner/work/macpro-mako/macpro-mako/test/test-results/e2e-dashboard-dashboard-Da-26da9--validations-columns-button-ci/trace.zip"
-                            }
-                          ],
-                          "errorLocation": {
-                            "file": "/home/runner/work/macpro-mako/macpro-mako/test/e2e/dashboard/dashboard.spec.ts",
-                            "column": 67,
-                            "line": 50
-                          }
+                          "startTime": "2025-06-16T17:48:22.976Z",
+                          "attachments": []
                         }
                       ],
-                      "status": "unexpected"
+                      "status": "expected"
                     }
                   ],
                   "id": "100b0891d08a31cb23fb-5aec2b240885fac5da33",
@@ -656,7 +481,7 @@
                 },
                 {
                   "title": "filters buttons",
-                  "ok": false,
+                  "ok": true,
                   "tags": [
                     "dashboard",
                     "CI",
@@ -671,53 +496,18 @@
                       "projectName": "ci",
                       "results": [
                         {
-                          "workerIndex": 6,
-                          "status": "failed",
-                          "duration": 6002,
-                          "error": {
-                            "message": "Error: \u001b[31mTimed out 5000ms waiting for \u001b[39m\u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m()\u001b[22m\n\nLocator: getByRole('button', { name: /Filters/ })\nExpected: visible\nReceived: <element(s) not found>\nCall log:\n  \u001b[2m- expect.toBeVisible with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for getByRole('button', { name: /Filters/ })\u001b[22m\n",
-                            "stack": "Error: \u001b[31mTimed out 5000ms waiting for \u001b[39m\u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m()\u001b[22m\n\nLocator: getByRole('button', { name: /Filters/ })\nExpected: visible\nReceived: <element(s) not found>\nCall log:\n  \u001b[2m- expect.toBeVisible with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for getByRole('button', { name: /Filters/ })\u001b[22m\n\n    at /home/runner/work/macpro-mako/macpro-mako/test/e2e/dashboard/dashboard.spec.ts:55:67",
-                            "location": {
-                              "file": "/home/runner/work/macpro-mako/macpro-mako/test/e2e/dashboard/dashboard.spec.ts",
-                              "column": 67,
-                              "line": 55
-                            },
-                            "snippet": "\u001b[0m \u001b[90m 53 |\u001b[39m\n \u001b[90m 54 |\u001b[39m     test(\u001b[32m\"filters buttons\"\u001b[39m\u001b[33m,\u001b[39m \u001b[36masync\u001b[39m ({ page }) \u001b[33m=>\u001b[39m {\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 55 |\u001b[39m       \u001b[36mawait\u001b[39m expect(page\u001b[33m.\u001b[39mgetByRole(\u001b[32m\"button\"\u001b[39m\u001b[33m,\u001b[39m { name\u001b[33m:\u001b[39m \u001b[35m/Filters/\u001b[39m }))\u001b[33m.\u001b[39mtoBeVisible()\u001b[33m;\u001b[39m\n \u001b[90m    |\u001b[39m                                                                   \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 56 |\u001b[39m       \u001b[36mawait\u001b[39m expect(page\u001b[33m.\u001b[39mgetByRole(\u001b[32m\"button\"\u001b[39m\u001b[33m,\u001b[39m { name\u001b[33m:\u001b[39m \u001b[35m/Filters/\u001b[39m }))\u001b[33m.\u001b[39mtoHaveText(\u001b[32m\"Filters\"\u001b[39m)\u001b[33m;\u001b[39m\n \u001b[90m 57 |\u001b[39m     })\u001b[33m;\u001b[39m\n \u001b[90m 58 |\u001b[39m\u001b[0m"
-                          },
-                          "errors": [
-                            {
-                              "location": {
-                                "file": "/home/runner/work/macpro-mako/macpro-mako/test/e2e/dashboard/dashboard.spec.ts",
-                                "column": 67,
-                                "line": 55
-                              },
-                              "message": "Error: \u001b[31mTimed out 5000ms waiting for \u001b[39m\u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m()\u001b[22m\n\nLocator: getByRole('button', { name: /Filters/ })\nExpected: visible\nReceived: <element(s) not found>\nCall log:\n  \u001b[2m- expect.toBeVisible with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for getByRole('button', { name: /Filters/ })\u001b[22m\n\n\n\u001b[0m \u001b[90m 53 |\u001b[39m\n \u001b[90m 54 |\u001b[39m     test(\u001b[32m\"filters buttons\"\u001b[39m\u001b[33m,\u001b[39m \u001b[36masync\u001b[39m ({ page }) \u001b[33m=>\u001b[39m {\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 55 |\u001b[39m       \u001b[36mawait\u001b[39m expect(page\u001b[33m.\u001b[39mgetByRole(\u001b[32m\"button\"\u001b[39m\u001b[33m,\u001b[39m { name\u001b[33m:\u001b[39m \u001b[35m/Filters/\u001b[39m }))\u001b[33m.\u001b[39mtoBeVisible()\u001b[33m;\u001b[39m\n \u001b[90m    |\u001b[39m                                                                   \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 56 |\u001b[39m       \u001b[36mawait\u001b[39m expect(page\u001b[33m.\u001b[39mgetByRole(\u001b[32m\"button\"\u001b[39m\u001b[33m,\u001b[39m { name\u001b[33m:\u001b[39m \u001b[35m/Filters/\u001b[39m }))\u001b[33m.\u001b[39mtoHaveText(\u001b[32m\"Filters\"\u001b[39m)\u001b[33m;\u001b[39m\n \u001b[90m 57 |\u001b[39m     })\u001b[33m;\u001b[39m\n \u001b[90m 58 |\u001b[39m\u001b[0m\n\n    at /home/runner/work/macpro-mako/macpro-mako/test/e2e/dashboard/dashboard.spec.ts:55:67"
-                            }
-                          ],
+                          "workerIndex": 1,
+                          "status": "passed",
+                          "duration": 2745,
+                          "errors": [],
                           "stdout": [],
                           "stderr": [],
                           "retry": 0,
-                          "startTime": "2025-06-16T17:28:13.577Z",
-                          "attachments": [
-                            {
-                              "name": "video",
-                              "contentType": "video/webm",
-                              "path": "/home/runner/work/macpro-mako/macpro-mako/test/test-results/e2e-dashboard-dashboard-Da-8a5a2-validations-filters-buttons-ci/video.webm"
-                            },
-                            {
-                              "name": "trace",
-                              "contentType": "application/zip",
-                              "path": "/home/runner/work/macpro-mako/macpro-mako/test/test-results/e2e-dashboard-dashboard-Da-8a5a2-validations-filters-buttons-ci/trace.zip"
-                            }
-                          ],
-                          "errorLocation": {
-                            "file": "/home/runner/work/macpro-mako/macpro-mako/test/e2e/dashboard/dashboard.spec.ts",
-                            "column": 67,
-                            "line": 55
-                          }
+                          "startTime": "2025-06-16T17:48:25.750Z",
+                          "attachments": []
                         }
                       ],
-                      "status": "unexpected"
+                      "status": "expected"
                     }
                   ],
                   "id": "100b0891d08a31cb23fb-76fd73727ab1056ed638",
@@ -727,7 +517,7 @@
                 },
                 {
                   "title": "export button",
-                  "ok": false,
+                  "ok": true,
                   "tags": [
                     "dashboard",
                     "CI",
@@ -742,53 +532,18 @@
                       "projectName": "ci",
                       "results": [
                         {
-                          "workerIndex": 7,
-                          "status": "failed",
-                          "duration": 6109,
-                          "error": {
-                            "message": "Error: \u001b[31mTimed out 5000ms waiting for \u001b[39m\u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m()\u001b[22m\n\nLocator: getByRole('button', { name: /Export/ })\nExpected: visible\nReceived: <element(s) not found>\nCall log:\n  \u001b[2m- expect.toBeVisible with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for getByRole('button', { name: /Export/ })\u001b[22m\n",
-                            "stack": "Error: \u001b[31mTimed out 5000ms waiting for \u001b[39m\u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m()\u001b[22m\n\nLocator: getByRole('button', { name: /Export/ })\nExpected: visible\nReceived: <element(s) not found>\nCall log:\n  \u001b[2m- expect.toBeVisible with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for getByRole('button', { name: /Export/ })\u001b[22m\n\n    at /home/runner/work/macpro-mako/macpro-mako/test/e2e/dashboard/dashboard.spec.ts:60:66",
-                            "location": {
-                              "file": "/home/runner/work/macpro-mako/macpro-mako/test/e2e/dashboard/dashboard.spec.ts",
-                              "column": 66,
-                              "line": 60
-                            },
-                            "snippet": "\u001b[0m \u001b[90m 58 |\u001b[39m\n \u001b[90m 59 |\u001b[39m     test(\u001b[32m\"export button\"\u001b[39m\u001b[33m,\u001b[39m \u001b[36masync\u001b[39m ({ page }) \u001b[33m=>\u001b[39m {\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 60 |\u001b[39m       \u001b[36mawait\u001b[39m expect(page\u001b[33m.\u001b[39mgetByRole(\u001b[32m\"button\"\u001b[39m\u001b[33m,\u001b[39m { name\u001b[33m:\u001b[39m \u001b[35m/Export/\u001b[39m }))\u001b[33m.\u001b[39mtoBeVisible()\u001b[33m;\u001b[39m\n \u001b[90m    |\u001b[39m                                                                  \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 61 |\u001b[39m       \u001b[36mawait\u001b[39m expect(page\u001b[33m.\u001b[39mgetByRole(\u001b[32m\"button\"\u001b[39m\u001b[33m,\u001b[39m { name\u001b[33m:\u001b[39m \u001b[35m/Export/\u001b[39m }))\u001b[33m.\u001b[39mtoHaveText(\u001b[32m\"Export\"\u001b[39m)\u001b[33m;\u001b[39m\n \u001b[90m 62 |\u001b[39m     })\u001b[33m;\u001b[39m\n \u001b[90m 63 |\u001b[39m\u001b[0m"
-                          },
-                          "errors": [
-                            {
-                              "location": {
-                                "file": "/home/runner/work/macpro-mako/macpro-mako/test/e2e/dashboard/dashboard.spec.ts",
-                                "column": 66,
-                                "line": 60
-                              },
-                              "message": "Error: \u001b[31mTimed out 5000ms waiting for \u001b[39m\u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m()\u001b[22m\n\nLocator: getByRole('button', { name: /Export/ })\nExpected: visible\nReceived: <element(s) not found>\nCall log:\n  \u001b[2m- expect.toBeVisible with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for getByRole('button', { name: /Export/ })\u001b[22m\n\n\n\u001b[0m \u001b[90m 58 |\u001b[39m\n \u001b[90m 59 |\u001b[39m     test(\u001b[32m\"export button\"\u001b[39m\u001b[33m,\u001b[39m \u001b[36masync\u001b[39m ({ page }) \u001b[33m=>\u001b[39m {\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 60 |\u001b[39m       \u001b[36mawait\u001b[39m expect(page\u001b[33m.\u001b[39mgetByRole(\u001b[32m\"button\"\u001b[39m\u001b[33m,\u001b[39m { name\u001b[33m:\u001b[39m \u001b[35m/Export/\u001b[39m }))\u001b[33m.\u001b[39mtoBeVisible()\u001b[33m;\u001b[39m\n \u001b[90m    |\u001b[39m                                                                  \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 61 |\u001b[39m       \u001b[36mawait\u001b[39m expect(page\u001b[33m.\u001b[39mgetByRole(\u001b[32m\"button\"\u001b[39m\u001b[33m,\u001b[39m { name\u001b[33m:\u001b[39m \u001b[35m/Export/\u001b[39m }))\u001b[33m.\u001b[39mtoHaveText(\u001b[32m\"Export\"\u001b[39m)\u001b[33m;\u001b[39m\n \u001b[90m 62 |\u001b[39m     })\u001b[33m;\u001b[39m\n \u001b[90m 63 |\u001b[39m\u001b[0m\n\n    at /home/runner/work/macpro-mako/macpro-mako/test/e2e/dashboard/dashboard.spec.ts:60:66"
-                            }
-                          ],
+                          "workerIndex": 1,
+                          "status": "passed",
+                          "duration": 2794,
+                          "errors": [],
                           "stdout": [],
                           "stderr": [],
                           "retry": 0,
-                          "startTime": "2025-06-16T17:28:21.174Z",
-                          "attachments": [
-                            {
-                              "name": "video",
-                              "contentType": "video/webm",
-                              "path": "/home/runner/work/macpro-mako/macpro-mako/test/test-results/e2e-dashboard-dashboard-Da-72bef-I-validations-export-button-ci/video.webm"
-                            },
-                            {
-                              "name": "trace",
-                              "contentType": "application/zip",
-                              "path": "/home/runner/work/macpro-mako/macpro-mako/test/test-results/e2e-dashboard-dashboard-Da-72bef-I-validations-export-button-ci/trace.zip"
-                            }
-                          ],
-                          "errorLocation": {
-                            "file": "/home/runner/work/macpro-mako/macpro-mako/test/e2e/dashboard/dashboard.spec.ts",
-                            "column": 66,
-                            "line": 60
-                          }
+                          "startTime": "2025-06-16T17:48:28.503Z",
+                          "attachments": []
                         }
                       ],
-                      "status": "unexpected"
+                      "status": "expected"
                     }
                   ],
                   "id": "100b0891d08a31cb23fb-4663d16124e0d9e12ee5",
@@ -828,14 +583,14 @@
                               "projectName": "ci",
                               "results": [
                                 {
-                                  "workerIndex": 8,
+                                  "workerIndex": 1,
                                   "status": "passed",
-                                  "duration": 797,
+                                  "duration": 667,
                                   "errors": [],
                                   "stdout": [],
                                   "stderr": [],
                                   "retry": 0,
-                                  "startTime": "2025-06-16T17:28:28.866Z",
+                                  "startTime": "2025-06-16T17:48:31.305Z",
                                   "attachments": []
                                 }
                               ],
@@ -849,7 +604,7 @@
                         },
                         {
                           "title": "table data",
-                          "ok": false,
+                          "ok": true,
                           "tags": [
                             "dashboard",
                             "CI",
@@ -864,53 +619,18 @@
                               "projectName": "ci",
                               "results": [
                                 {
-                                  "workerIndex": 8,
-                                  "status": "failed",
-                                  "duration": 5938,
-                                  "error": {
-                                    "message": "Error: \u001b[31mTimed out 5000ms waiting for \u001b[39m\u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m()\u001b[22m\n\nLocator: locator('tbody')\nExpected: visible\nReceived: <element(s) not found>\nCall log:\n  \u001b[2m- expect.toBeVisible with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for locator('tbody')\u001b[22m\n",
-                                    "stack": "Error: \u001b[31mTimed out 5000ms waiting for \u001b[39m\u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m()\u001b[22m\n\nLocator: locator('tbody')\nExpected: visible\nReceived: <element(s) not found>\nCall log:\n  \u001b[2m- expect.toBeVisible with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for locator('tbody')\u001b[22m\n\n    at /home/runner/work/macpro-mako/macpro-mako/test/e2e/dashboard/dashboard.spec.ts:89:47",
-                                    "location": {
-                                      "file": "/home/runner/work/macpro-mako/macpro-mako/test/e2e/dashboard/dashboard.spec.ts",
-                                      "column": 47,
-                                      "line": 89
-                                    },
-                                    "snippet": "\u001b[0m \u001b[90m 87 |\u001b[39m\n \u001b[90m 88 |\u001b[39m         test(\u001b[32m\"table data\"\u001b[39m\u001b[33m,\u001b[39m \u001b[36masync\u001b[39m ({ page }) \u001b[33m=>\u001b[39m {\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 89 |\u001b[39m           \u001b[36mawait\u001b[39m expect(page\u001b[33m.\u001b[39mlocator(\u001b[32m\"tbody\"\u001b[39m))\u001b[33m.\u001b[39mtoBeVisible()\u001b[33m;\u001b[39m\n \u001b[90m    |\u001b[39m                                               \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 90 |\u001b[39m         })\u001b[33m;\u001b[39m\n \u001b[90m 91 |\u001b[39m\n \u001b[90m 92 |\u001b[39m         test(\u001b[32m\"table footer\"\u001b[39m\u001b[33m,\u001b[39m \u001b[36masync\u001b[39m ({ page }) \u001b[33m=>\u001b[39m {\u001b[0m"
-                                  },
-                                  "errors": [
-                                    {
-                                      "location": {
-                                        "file": "/home/runner/work/macpro-mako/macpro-mako/test/e2e/dashboard/dashboard.spec.ts",
-                                        "column": 47,
-                                        "line": 89
-                                      },
-                                      "message": "Error: \u001b[31mTimed out 5000ms waiting for \u001b[39m\u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m()\u001b[22m\n\nLocator: locator('tbody')\nExpected: visible\nReceived: <element(s) not found>\nCall log:\n  \u001b[2m- expect.toBeVisible with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for locator('tbody')\u001b[22m\n\n\n\u001b[0m \u001b[90m 87 |\u001b[39m\n \u001b[90m 88 |\u001b[39m         test(\u001b[32m\"table data\"\u001b[39m\u001b[33m,\u001b[39m \u001b[36masync\u001b[39m ({ page }) \u001b[33m=>\u001b[39m {\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 89 |\u001b[39m           \u001b[36mawait\u001b[39m expect(page\u001b[33m.\u001b[39mlocator(\u001b[32m\"tbody\"\u001b[39m))\u001b[33m.\u001b[39mtoBeVisible()\u001b[33m;\u001b[39m\n \u001b[90m    |\u001b[39m                                               \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 90 |\u001b[39m         })\u001b[33m;\u001b[39m\n \u001b[90m 91 |\u001b[39m\n \u001b[90m 92 |\u001b[39m         test(\u001b[32m\"table footer\"\u001b[39m\u001b[33m,\u001b[39m \u001b[36masync\u001b[39m ({ page }) \u001b[33m=>\u001b[39m {\u001b[0m\n\n    at /home/runner/work/macpro-mako/macpro-mako/test/e2e/dashboard/dashboard.spec.ts:89:47"
-                                    }
-                                  ],
+                                  "workerIndex": 1,
+                                  "status": "passed",
+                                  "duration": 2581,
+                                  "errors": [],
                                   "stdout": [],
                                   "stderr": [],
                                   "retry": 0,
-                                  "startTime": "2025-06-16T17:28:29.829Z",
-                                  "attachments": [
-                                    {
-                                      "name": "video",
-                                      "contentType": "video/webm",
-                                      "path": "/home/runner/work/macpro-mako/macpro-mako/test/test-results/e2e-dashboard-dashboard-Da-023e0-board-table-spas-table-data-ci/video.webm"
-                                    },
-                                    {
-                                      "name": "trace",
-                                      "contentType": "application/zip",
-                                      "path": "/home/runner/work/macpro-mako/macpro-mako/test/test-results/e2e-dashboard-dashboard-Da-023e0-board-table-spas-table-data-ci/trace.zip"
-                                    }
-                                  ],
-                                  "errorLocation": {
-                                    "file": "/home/runner/work/macpro-mako/macpro-mako/test/e2e/dashboard/dashboard.spec.ts",
-                                    "column": 47,
-                                    "line": 89
-                                  }
+                                  "startTime": "2025-06-16T17:48:31.978Z",
+                                  "attachments": []
                                 }
                               ],
-                              "status": "unexpected"
+                              "status": "expected"
                             }
                           ],
                           "id": "100b0891d08a31cb23fb-1e7e5fa732c20d3643d5",
@@ -920,7 +640,7 @@
                         },
                         {
                           "title": "table footer",
-                          "ok": false,
+                          "ok": true,
                           "tags": [
                             "dashboard",
                             "CI",
@@ -935,53 +655,18 @@
                               "projectName": "ci",
                               "results": [
                                 {
-                                  "workerIndex": 9,
-                                  "status": "failed",
-                                  "duration": 6010,
-                                  "error": {
-                                    "message": "Error: \u001b[31mTimed out 5000ms waiting for \u001b[39m\u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m()\u001b[22m\n\nLocator: getByTestId('pagination')\nExpected: visible\nReceived: <element(s) not found>\nCall log:\n  \u001b[2m- expect.toBeVisible with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for getByTestId('pagination')\u001b[22m\n",
-                                    "stack": "Error: \u001b[31mTimed out 5000ms waiting for \u001b[39m\u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m()\u001b[22m\n\nLocator: getByTestId('pagination')\nExpected: visible\nReceived: <element(s) not found>\nCall log:\n  \u001b[2m- expect.toBeVisible with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for getByTestId('pagination')\u001b[22m\n\n    at /home/runner/work/macpro-mako/macpro-mako/test/e2e/dashboard/dashboard.spec.ts:93:56",
-                                    "location": {
-                                      "file": "/home/runner/work/macpro-mako/macpro-mako/test/e2e/dashboard/dashboard.spec.ts",
-                                      "column": 56,
-                                      "line": 93
-                                    },
-                                    "snippet": "\u001b[0m \u001b[90m 91 |\u001b[39m\n \u001b[90m 92 |\u001b[39m         test(\u001b[32m\"table footer\"\u001b[39m\u001b[33m,\u001b[39m \u001b[36masync\u001b[39m ({ page }) \u001b[33m=>\u001b[39m {\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 93 |\u001b[39m           \u001b[36mawait\u001b[39m expect(page\u001b[33m.\u001b[39mgetByTestId(\u001b[32m\"pagination\"\u001b[39m))\u001b[33m.\u001b[39mtoBeVisible()\u001b[33m;\u001b[39m\n \u001b[90m    |\u001b[39m                                                        \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 94 |\u001b[39m         })\u001b[33m;\u001b[39m\n \u001b[90m 95 |\u001b[39m       })\u001b[33m;\u001b[39m\n \u001b[90m 96 |\u001b[39m\u001b[0m"
-                                  },
-                                  "errors": [
-                                    {
-                                      "location": {
-                                        "file": "/home/runner/work/macpro-mako/macpro-mako/test/e2e/dashboard/dashboard.spec.ts",
-                                        "column": 56,
-                                        "line": 93
-                                      },
-                                      "message": "Error: \u001b[31mTimed out 5000ms waiting for \u001b[39m\u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m()\u001b[22m\n\nLocator: getByTestId('pagination')\nExpected: visible\nReceived: <element(s) not found>\nCall log:\n  \u001b[2m- expect.toBeVisible with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for getByTestId('pagination')\u001b[22m\n\n\n\u001b[0m \u001b[90m 91 |\u001b[39m\n \u001b[90m 92 |\u001b[39m         test(\u001b[32m\"table footer\"\u001b[39m\u001b[33m,\u001b[39m \u001b[36masync\u001b[39m ({ page }) \u001b[33m=>\u001b[39m {\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 93 |\u001b[39m           \u001b[36mawait\u001b[39m expect(page\u001b[33m.\u001b[39mgetByTestId(\u001b[32m\"pagination\"\u001b[39m))\u001b[33m.\u001b[39mtoBeVisible()\u001b[33m;\u001b[39m\n \u001b[90m    |\u001b[39m                                                        \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 94 |\u001b[39m         })\u001b[33m;\u001b[39m\n \u001b[90m 95 |\u001b[39m       })\u001b[33m;\u001b[39m\n \u001b[90m 96 |\u001b[39m\u001b[0m\n\n    at /home/runner/work/macpro-mako/macpro-mako/test/e2e/dashboard/dashboard.spec.ts:93:56"
-                                    }
-                                  ],
+                                  "workerIndex": 1,
+                                  "status": "passed",
+                                  "duration": 2649,
+                                  "errors": [],
                                   "stdout": [],
                                   "stderr": [],
                                   "retry": 0,
-                                  "startTime": "2025-06-16T17:28:37.212Z",
-                                  "attachments": [
-                                    {
-                                      "name": "video",
-                                      "contentType": "video/webm",
-                                      "path": "/home/runner/work/macpro-mako/macpro-mako/test/test-results/e2e-dashboard-dashboard-Da-d2ee9-ard-table-spas-table-footer-ci/video.webm"
-                                    },
-                                    {
-                                      "name": "trace",
-                                      "contentType": "application/zip",
-                                      "path": "/home/runner/work/macpro-mako/macpro-mako/test/test-results/e2e-dashboard-dashboard-Da-d2ee9-ard-table-spas-table-footer-ci/trace.zip"
-                                    }
-                                  ],
-                                  "errorLocation": {
-                                    "file": "/home/runner/work/macpro-mako/macpro-mako/test/e2e/dashboard/dashboard.spec.ts",
-                                    "column": 56,
-                                    "line": 93
-                                  }
+                                  "startTime": "2025-06-16T17:48:34.566Z",
+                                  "attachments": []
                                 }
                               ],
-                              "status": "unexpected"
+                              "status": "expected"
                             }
                           ],
                           "id": "100b0891d08a31cb23fb-4ee423d0ee439c542958",
@@ -999,7 +684,7 @@
                       "specs": [
                         {
                           "title": "column headers",
-                          "ok": false,
+                          "ok": true,
                           "tags": [
                             "dashboard",
                             "CI",
@@ -1014,61 +699,18 @@
                               "projectName": "ci",
                               "results": [
                                 {
-                                  "workerIndex": 10,
-                                  "status": "timedOut",
-                                  "duration": 31513,
-                                  "error": {
-                                    "message": "\u001b[31mTest timeout of 30000ms exceeded while running \"beforeEach\" hook.\u001b[39m",
-                                    "stack": "\u001b[31mTest timeout of 30000ms exceeded while running \"beforeEach\" hook.\u001b[39m\n    at /home/runner/work/macpro-mako/macpro-mako/test/e2e/dashboard/dashboard.spec.ts:98:14",
-                                    "location": {
-                                      "file": "/home/runner/work/macpro-mako/macpro-mako/test/e2e/dashboard/dashboard.spec.ts",
-                                      "column": 14,
-                                      "line": 98
-                                    },
-                                    "snippet": "\u001b[0m \u001b[90m  96 |\u001b[39m\n \u001b[90m  97 |\u001b[39m       test\u001b[33m.\u001b[39mdescribe(\u001b[32m\"waivers\"\u001b[39m\u001b[33m,\u001b[39m () \u001b[33m=>\u001b[39m {\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m  98 |\u001b[39m         test\u001b[33m.\u001b[39mbeforeEach(\u001b[36masync\u001b[39m ({ page }) \u001b[33m=>\u001b[39m {\n \u001b[90m     |\u001b[39m              \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m  99 |\u001b[39m           \u001b[36mawait\u001b[39m page\u001b[33m.\u001b[39mgetByRole(\u001b[32m\"tab\"\u001b[39m\u001b[33m,\u001b[39m { name\u001b[33m:\u001b[39m \u001b[32m\"Waivers\"\u001b[39m })\u001b[33m.\u001b[39mclick()\u001b[33m;\u001b[39m\n \u001b[90m 100 |\u001b[39m         })\u001b[33m;\u001b[39m\n \u001b[90m 101 |\u001b[39m\u001b[0m"
-                                  },
-                                  "errors": [
-                                    {
-                                      "location": {
-                                        "file": "/home/runner/work/macpro-mako/macpro-mako/test/e2e/dashboard/dashboard.spec.ts",
-                                        "column": 14,
-                                        "line": 98
-                                      },
-                                      "message": "\u001b[31mTest timeout of 30000ms exceeded while running \"beforeEach\" hook.\u001b[39m\n\n\u001b[0m \u001b[90m  96 |\u001b[39m\n \u001b[90m  97 |\u001b[39m       test\u001b[33m.\u001b[39mdescribe(\u001b[32m\"waivers\"\u001b[39m\u001b[33m,\u001b[39m () \u001b[33m=>\u001b[39m {\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m  98 |\u001b[39m         test\u001b[33m.\u001b[39mbeforeEach(\u001b[36masync\u001b[39m ({ page }) \u001b[33m=>\u001b[39m {\n \u001b[90m     |\u001b[39m              \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m  99 |\u001b[39m           \u001b[36mawait\u001b[39m page\u001b[33m.\u001b[39mgetByRole(\u001b[32m\"tab\"\u001b[39m\u001b[33m,\u001b[39m { name\u001b[33m:\u001b[39m \u001b[32m\"Waivers\"\u001b[39m })\u001b[33m.\u001b[39mclick()\u001b[33m;\u001b[39m\n \u001b[90m 100 |\u001b[39m         })\u001b[33m;\u001b[39m\n \u001b[90m 101 |\u001b[39m\u001b[0m\n\n    at /home/runner/work/macpro-mako/macpro-mako/test/e2e/dashboard/dashboard.spec.ts:98:14"
-                                    },
-                                    {
-                                      "location": {
-                                        "file": "/home/runner/work/macpro-mako/macpro-mako/test/e2e/dashboard/dashboard.spec.ts",
-                                        "column": 60,
-                                        "line": 99
-                                      },
-                                      "message": "Error: locator.click: Test timeout of 30000ms exceeded.\nCall log:\n  \u001b[2m- waiting for getByRole('tab', { name: 'Waivers' })\u001b[22m\n\n\n\u001b[0m \u001b[90m  97 |\u001b[39m       test\u001b[33m.\u001b[39mdescribe(\u001b[32m\"waivers\"\u001b[39m\u001b[33m,\u001b[39m () \u001b[33m=>\u001b[39m {\n \u001b[90m  98 |\u001b[39m         test\u001b[33m.\u001b[39mbeforeEach(\u001b[36masync\u001b[39m ({ page }) \u001b[33m=>\u001b[39m {\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m  99 |\u001b[39m           \u001b[36mawait\u001b[39m page\u001b[33m.\u001b[39mgetByRole(\u001b[32m\"tab\"\u001b[39m\u001b[33m,\u001b[39m { name\u001b[33m:\u001b[39m \u001b[32m\"Waivers\"\u001b[39m })\u001b[33m.\u001b[39mclick()\u001b[33m;\u001b[39m\n \u001b[90m     |\u001b[39m                                                            \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 100 |\u001b[39m         })\u001b[33m;\u001b[39m\n \u001b[90m 101 |\u001b[39m\n \u001b[90m 102 |\u001b[39m         test(\u001b[32m\"column headers\"\u001b[39m\u001b[33m,\u001b[39m \u001b[36masync\u001b[39m ({ page }) \u001b[33m=>\u001b[39m {\u001b[0m\n\n    at /home/runner/work/macpro-mako/macpro-mako/test/e2e/dashboard/dashboard.spec.ts:99:60"
-                                    }
-                                  ],
+                                  "workerIndex": 1,
+                                  "status": "passed",
+                                  "duration": 2760,
+                                  "errors": [],
                                   "stdout": [],
                                   "stderr": [],
                                   "retry": 0,
-                                  "startTime": "2025-06-16T17:28:44.814Z",
-                                  "attachments": [
-                                    {
-                                      "name": "video",
-                                      "contentType": "video/webm",
-                                      "path": "/home/runner/work/macpro-mako/macpro-mako/test/test-results/e2e-dashboard-dashboard-Da-d503b-able-waivers-column-headers-ci/video.webm"
-                                    },
-                                    {
-                                      "name": "trace",
-                                      "contentType": "application/zip",
-                                      "path": "/home/runner/work/macpro-mako/macpro-mako/test/test-results/e2e-dashboard-dashboard-Da-d503b-able-waivers-column-headers-ci/trace.zip"
-                                    }
-                                  ],
-                                  "errorLocation": {
-                                    "file": "/home/runner/work/macpro-mako/macpro-mako/test/e2e/dashboard/dashboard.spec.ts",
-                                    "column": 14,
-                                    "line": 98
-                                  }
+                                  "startTime": "2025-06-16T17:48:37.223Z",
+                                  "attachments": []
                                 }
                               ],
-                              "status": "unexpected"
+                              "status": "expected"
                             }
                           ],
                           "id": "100b0891d08a31cb23fb-0806ffed22afd0f21e10",
@@ -1091,8 +733,20 @@
                               "expectedStatus": "passed",
                               "projectId": "ci",
                               "projectName": "ci",
-                              "results": [],
-                              "status": "skipped"
+                              "results": [
+                                {
+                                  "workerIndex": 1,
+                                  "status": "passed",
+                                  "duration": 2347,
+                                  "errors": [],
+                                  "stdout": [],
+                                  "stderr": [],
+                                  "retry": 0,
+                                  "startTime": "2025-06-16T17:48:39.990Z",
+                                  "attachments": []
+                                }
+                              ],
+                              "status": "expected"
                             }
                           ],
                           "id": "100b0891d08a31cb23fb-3f9fb7478995c03532ad",
@@ -1115,8 +769,20 @@
                               "expectedStatus": "passed",
                               "projectId": "ci",
                               "projectName": "ci",
-                              "results": [],
-                              "status": "skipped"
+                              "results": [
+                                {
+                                  "workerIndex": 1,
+                                  "status": "passed",
+                                  "duration": 2261,
+                                  "errors": [],
+                                  "stdout": [],
+                                  "stderr": [],
+                                  "retry": 0,
+                                  "startTime": "2025-06-16T17:48:42.344Z",
+                                  "attachments": []
+                                }
+                              ],
+                              "status": "expected"
                             }
                           ],
                           "id": "100b0891d08a31cb23fb-b8675e4ae6878c150e0f",
@@ -1177,8 +843,20 @@
                           "expectedStatus": "passed",
                           "projectId": "ci",
                           "projectName": "ci",
-                          "results": [],
-                          "status": "skipped"
+                          "results": [
+                            {
+                              "workerIndex": 1,
+                              "status": "passed",
+                              "duration": 2578,
+                              "errors": [],
+                              "stdout": [],
+                              "stderr": [],
+                              "retry": 0,
+                              "startTime": "2025-06-16T17:48:44.632Z",
+                              "attachments": []
+                            }
+                          ],
+                          "status": "expected"
                         }
                       ],
                       "id": "ea688ac7e25471e4a698-87855c30a40bcc822eba",
@@ -1210,8 +888,20 @@
                           "expectedStatus": "passed",
                           "projectId": "ci",
                           "projectName": "ci",
-                          "results": [],
-                          "status": "skipped"
+                          "results": [
+                            {
+                              "workerIndex": 1,
+                              "status": "passed",
+                              "duration": 2645,
+                              "errors": [],
+                              "stdout": [],
+                              "stderr": [],
+                              "retry": 0,
+                              "startTime": "2025-06-16T17:48:47.216Z",
+                              "attachments": []
+                            }
+                          ],
+                          "status": "expected"
                         }
                       ],
                       "id": "ea688ac7e25471e4a698-1db92d6572ee5f00c877",
@@ -1235,8 +925,20 @@
                           "expectedStatus": "passed",
                           "projectId": "ci",
                           "projectName": "ci",
-                          "results": [],
-                          "status": "skipped"
+                          "results": [
+                            {
+                              "workerIndex": 1,
+                              "status": "passed",
+                              "duration": 2597,
+                              "errors": [],
+                              "stdout": [],
+                              "stderr": [],
+                              "retry": 0,
+                              "startTime": "2025-06-16T17:48:49.868Z",
+                              "attachments": []
+                            }
+                          ],
+                          "status": "expected"
                         }
                       ],
                       "id": "ea688ac7e25471e4a698-e0f7fde1c833601b7f87",
@@ -1260,8 +962,20 @@
                           "expectedStatus": "passed",
                           "projectId": "ci",
                           "projectName": "ci",
-                          "results": [],
-                          "status": "skipped"
+                          "results": [
+                            {
+                              "workerIndex": 1,
+                              "status": "passed",
+                              "duration": 2588,
+                              "errors": [],
+                              "stdout": [],
+                              "stderr": [],
+                              "retry": 0,
+                              "startTime": "2025-06-16T17:48:52.472Z",
+                              "attachments": []
+                            }
+                          ],
+                          "status": "expected"
                         }
                       ],
                       "id": "ea688ac7e25471e4a698-6184ef87ad185b28a952",
@@ -1285,8 +999,20 @@
                           "expectedStatus": "passed",
                           "projectId": "ci",
                           "projectName": "ci",
-                          "results": [],
-                          "status": "skipped"
+                          "results": [
+                            {
+                              "workerIndex": 1,
+                              "status": "passed",
+                              "duration": 2618,
+                              "errors": [],
+                              "stdout": [],
+                              "stderr": [],
+                              "retry": 0,
+                              "startTime": "2025-06-16T17:48:55.067Z",
+                              "attachments": []
+                            }
+                          ],
+                          "status": "expected"
                         }
                       ],
                       "id": "ea688ac7e25471e4a698-9e9ba530f3490becbc63",
@@ -1310,8 +1036,20 @@
                           "expectedStatus": "passed",
                           "projectId": "ci",
                           "projectName": "ci",
-                          "results": [],
-                          "status": "skipped"
+                          "results": [
+                            {
+                              "workerIndex": 1,
+                              "status": "passed",
+                              "duration": 2622,
+                              "errors": [],
+                              "stdout": [],
+                              "stderr": [],
+                              "retry": 0,
+                              "startTime": "2025-06-16T17:48:57.690Z",
+                              "attachments": []
+                            }
+                          ],
+                          "status": "expected"
                         }
                       ],
                       "id": "ea688ac7e25471e4a698-ed1d01e829a9919d6693",
@@ -1335,8 +1073,20 @@
                           "expectedStatus": "passed",
                           "projectId": "ci",
                           "projectName": "ci",
-                          "results": [],
-                          "status": "skipped"
+                          "results": [
+                            {
+                              "workerIndex": 1,
+                              "status": "passed",
+                              "duration": 2642,
+                              "errors": [],
+                              "stdout": [],
+                              "stderr": [],
+                              "retry": 0,
+                              "startTime": "2025-06-16T17:49:00.318Z",
+                              "attachments": []
+                            }
+                          ],
+                          "status": "expected"
                         }
                       ],
                       "id": "ea688ac7e25471e4a698-e9cc264e1909662cffcc",
@@ -1360,8 +1110,20 @@
                           "expectedStatus": "passed",
                           "projectId": "ci",
                           "projectName": "ci",
-                          "results": [],
-                          "status": "skipped"
+                          "results": [
+                            {
+                              "workerIndex": 1,
+                              "status": "passed",
+                              "duration": 2616,
+                              "errors": [],
+                              "stdout": [],
+                              "stderr": [],
+                              "retry": 0,
+                              "startTime": "2025-06-16T17:49:02.964Z",
+                              "attachments": []
+                            }
+                          ],
+                          "status": "expected"
                         }
                       ],
                       "id": "ea688ac7e25471e4a698-165f479f08e04e77a948",
@@ -1393,8 +1155,20 @@
                           "expectedStatus": "passed",
                           "projectId": "ci",
                           "projectName": "ci",
-                          "results": [],
-                          "status": "skipped"
+                          "results": [
+                            {
+                              "workerIndex": 1,
+                              "status": "passed",
+                              "duration": 2640,
+                              "errors": [],
+                              "stdout": [],
+                              "stderr": [],
+                              "retry": 0,
+                              "startTime": "2025-06-16T17:49:05.586Z",
+                              "attachments": []
+                            }
+                          ],
+                          "status": "expected"
                         }
                       ],
                       "id": "ea688ac7e25471e4a698-6a8cbe76a595b8b72815",
@@ -1418,8 +1192,20 @@
                           "expectedStatus": "passed",
                           "projectId": "ci",
                           "projectName": "ci",
-                          "results": [],
-                          "status": "skipped"
+                          "results": [
+                            {
+                              "workerIndex": 1,
+                              "status": "passed",
+                              "duration": 2643,
+                              "errors": [],
+                              "stdout": [],
+                              "stderr": [],
+                              "retry": 0,
+                              "startTime": "2025-06-16T17:49:08.232Z",
+                              "attachments": []
+                            }
+                          ],
+                          "status": "expected"
                         }
                       ],
                       "id": "ea688ac7e25471e4a698-9d1c36868646e8a6990f",
@@ -1443,8 +1229,20 @@
                           "expectedStatus": "passed",
                           "projectId": "ci",
                           "projectName": "ci",
-                          "results": [],
-                          "status": "skipped"
+                          "results": [
+                            {
+                              "workerIndex": 1,
+                              "status": "passed",
+                              "duration": 2588,
+                              "errors": [],
+                              "stdout": [],
+                              "stderr": [],
+                              "retry": 0,
+                              "startTime": "2025-06-16T17:49:10.881Z",
+                              "attachments": []
+                            }
+                          ],
+                          "status": "expected"
                         }
                       ],
                       "id": "ea688ac7e25471e4a698-028987b942159ad30b0b",
@@ -1468,8 +1266,20 @@
                           "expectedStatus": "passed",
                           "projectId": "ci",
                           "projectName": "ci",
-                          "results": [],
-                          "status": "skipped"
+                          "results": [
+                            {
+                              "workerIndex": 1,
+                              "status": "passed",
+                              "duration": 2606,
+                              "errors": [],
+                              "stdout": [],
+                              "stderr": [],
+                              "retry": 0,
+                              "startTime": "2025-06-16T17:49:13.475Z",
+                              "attachments": []
+                            }
+                          ],
+                          "status": "expected"
                         }
                       ],
                       "id": "ea688ac7e25471e4a698-5e73ce456cb7680c7289",
@@ -1493,8 +1303,20 @@
                           "expectedStatus": "passed",
                           "projectId": "ci",
                           "projectName": "ci",
-                          "results": [],
-                          "status": "skipped"
+                          "results": [
+                            {
+                              "workerIndex": 1,
+                              "status": "passed",
+                              "duration": 1766,
+                              "errors": [],
+                              "stdout": [],
+                              "stderr": [],
+                              "retry": 0,
+                              "startTime": "2025-06-16T17:49:16.087Z",
+                              "attachments": []
+                            }
+                          ],
+                          "status": "expected"
                         }
                       ],
                       "id": "ea688ac7e25471e4a698-b26c27bbb7cf0ad1f2e0",
@@ -1518,8 +1340,20 @@
                           "expectedStatus": "passed",
                           "projectId": "ci",
                           "projectName": "ci",
-                          "results": [],
-                          "status": "skipped"
+                          "results": [
+                            {
+                              "workerIndex": 1,
+                              "status": "passed",
+                              "duration": 2628,
+                              "errors": [],
+                              "stdout": [],
+                              "stderr": [],
+                              "retry": 0,
+                              "startTime": "2025-06-16T17:49:17.860Z",
+                              "attachments": []
+                            }
+                          ],
+                          "status": "expected"
                         }
                       ],
                       "id": "ea688ac7e25471e4a698-f3e2fc9ccde2f0eab11b",
@@ -1543,8 +1377,20 @@
                           "expectedStatus": "passed",
                           "projectId": "ci",
                           "projectName": "ci",
-                          "results": [],
-                          "status": "skipped"
+                          "results": [
+                            {
+                              "workerIndex": 1,
+                              "status": "passed",
+                              "duration": 2578,
+                              "errors": [],
+                              "stdout": [],
+                              "stderr": [],
+                              "retry": 0,
+                              "startTime": "2025-06-16T17:49:20.494Z",
+                              "attachments": []
+                            }
+                          ],
+                          "status": "expected"
                         }
                       ],
                       "id": "ea688ac7e25471e4a698-2836d59a187698696658",
@@ -1568,8 +1414,20 @@
                           "expectedStatus": "passed",
                           "projectId": "ci",
                           "projectName": "ci",
-                          "results": [],
-                          "status": "skipped"
+                          "results": [
+                            {
+                              "workerIndex": 1,
+                              "status": "passed",
+                              "duration": 2593,
+                              "errors": [],
+                              "stdout": [],
+                              "stderr": [],
+                              "retry": 0,
+                              "startTime": "2025-06-16T17:49:23.078Z",
+                              "attachments": []
+                            }
+                          ],
+                          "status": "expected"
                         }
                       ],
                       "id": "ea688ac7e25471e4a698-c69cf1bc980abc235883",
@@ -1593,8 +1451,20 @@
                           "expectedStatus": "passed",
                           "projectId": "ci",
                           "projectName": "ci",
-                          "results": [],
-                          "status": "skipped"
+                          "results": [
+                            {
+                              "workerIndex": 1,
+                              "status": "passed",
+                              "duration": 2632,
+                              "errors": [],
+                              "stdout": [],
+                              "stderr": [],
+                              "retry": 0,
+                              "startTime": "2025-06-16T17:49:25.677Z",
+                              "attachments": []
+                            }
+                          ],
+                          "status": "expected"
                         }
                       ],
                       "id": "ea688ac7e25471e4a698-38c46f4f2df031f47894",
@@ -1618,8 +1488,20 @@
                           "expectedStatus": "passed",
                           "projectId": "ci",
                           "projectName": "ci",
-                          "results": [],
-                          "status": "skipped"
+                          "results": [
+                            {
+                              "workerIndex": 1,
+                              "status": "passed",
+                              "duration": 2630,
+                              "errors": [],
+                              "stdout": [],
+                              "stderr": [],
+                              "retry": 0,
+                              "startTime": "2025-06-16T17:49:28.315Z",
+                              "attachments": []
+                            }
+                          ],
+                          "status": "expected"
                         }
                       ],
                       "id": "ea688ac7e25471e4a698-652622d18b8193289468",
@@ -1643,8 +1525,20 @@
                           "expectedStatus": "passed",
                           "projectId": "ci",
                           "projectName": "ci",
-                          "results": [],
-                          "status": "skipped"
+                          "results": [
+                            {
+                              "workerIndex": 1,
+                              "status": "passed",
+                              "duration": 2594,
+                              "errors": [],
+                              "stdout": [],
+                              "stderr": [],
+                              "retry": 0,
+                              "startTime": "2025-06-16T17:49:30.951Z",
+                              "attachments": []
+                            }
+                          ],
+                          "status": "expected"
                         }
                       ],
                       "id": "ea688ac7e25471e4a698-124b5292a95c5a218e56",
@@ -1668,8 +1562,20 @@
                           "expectedStatus": "passed",
                           "projectId": "ci",
                           "projectName": "ci",
-                          "results": [],
-                          "status": "skipped"
+                          "results": [
+                            {
+                              "workerIndex": 1,
+                              "status": "passed",
+                              "duration": 1697,
+                              "errors": [],
+                              "stdout": [],
+                              "stderr": [],
+                              "retry": 0,
+                              "startTime": "2025-06-16T17:49:33.551Z",
+                              "attachments": []
+                            }
+                          ],
+                          "status": "expected"
                         }
                       ],
                       "id": "ea688ac7e25471e4a698-0c3ab2f239e713943d2a",
@@ -1693,8 +1599,20 @@
                           "expectedStatus": "passed",
                           "projectId": "ci",
                           "projectName": "ci",
-                          "results": [],
-                          "status": "skipped"
+                          "results": [
+                            {
+                              "workerIndex": 1,
+                              "status": "passed",
+                              "duration": 2598,
+                              "errors": [],
+                              "stdout": [],
+                              "stderr": [],
+                              "retry": 0,
+                              "startTime": "2025-06-16T17:49:35.254Z",
+                              "attachments": []
+                            }
+                          ],
+                          "status": "expected"
                         }
                       ],
                       "id": "ea688ac7e25471e4a698-6d33b4e65aeec005b344",
@@ -1718,8 +1636,20 @@
                           "expectedStatus": "passed",
                           "projectId": "ci",
                           "projectName": "ci",
-                          "results": [],
-                          "status": "skipped"
+                          "results": [
+                            {
+                              "workerIndex": 1,
+                              "status": "passed",
+                              "duration": 2653,
+                              "errors": [],
+                              "stdout": [],
+                              "stderr": [],
+                              "retry": 0,
+                              "startTime": "2025-06-16T17:49:37.857Z",
+                              "attachments": []
+                            }
+                          ],
+                          "status": "expected"
                         }
                       ],
                       "id": "ea688ac7e25471e4a698-6a0914cd19324e470c91",
@@ -1743,8 +1673,20 @@
                           "expectedStatus": "passed",
                           "projectId": "ci",
                           "projectName": "ci",
-                          "results": [],
-                          "status": "skipped"
+                          "results": [
+                            {
+                              "workerIndex": 1,
+                              "status": "passed",
+                              "duration": 5859,
+                              "errors": [],
+                              "stdout": [],
+                              "stderr": [],
+                              "retry": 0,
+                              "startTime": "2025-06-16T17:49:40.516Z",
+                              "attachments": []
+                            }
+                          ],
+                          "status": "expected"
                         }
                       ],
                       "id": "ea688ac7e25471e4a698-2428563419366ff76057",
@@ -1768,8 +1710,20 @@
                           "expectedStatus": "passed",
                           "projectId": "ci",
                           "projectName": "ci",
-                          "results": [],
-                          "status": "skipped"
+                          "results": [
+                            {
+                              "workerIndex": 1,
+                              "status": "passed",
+                              "duration": 2650,
+                              "errors": [],
+                              "stdout": [],
+                              "stderr": [],
+                              "retry": 0,
+                              "startTime": "2025-06-16T17:49:46.381Z",
+                              "attachments": []
+                            }
+                          ],
+                          "status": "expected"
                         }
                       ],
                       "id": "ea688ac7e25471e4a698-90a4d1b8aed1a9097823",
@@ -1801,8 +1755,20 @@
                           "expectedStatus": "passed",
                           "projectId": "ci",
                           "projectName": "ci",
-                          "results": [],
-                          "status": "skipped"
+                          "results": [
+                            {
+                              "workerIndex": 1,
+                              "status": "passed",
+                              "duration": 2646,
+                              "errors": [],
+                              "stdout": [],
+                              "stderr": [],
+                              "retry": 0,
+                              "startTime": "2025-06-16T17:49:49.037Z",
+                              "attachments": []
+                            }
+                          ],
+                          "status": "expected"
                         }
                       ],
                       "id": "ea688ac7e25471e4a698-9fc39f9687138dce840c",
@@ -1826,8 +1792,20 @@
                           "expectedStatus": "passed",
                           "projectId": "ci",
                           "projectName": "ci",
-                          "results": [],
-                          "status": "skipped"
+                          "results": [
+                            {
+                              "workerIndex": 1,
+                              "status": "passed",
+                              "duration": 2593,
+                              "errors": [],
+                              "stdout": [],
+                              "stderr": [],
+                              "retry": 0,
+                              "startTime": "2025-06-16T17:49:51.688Z",
+                              "attachments": []
+                            }
+                          ],
+                          "status": "expected"
                         }
                       ],
                       "id": "ea688ac7e25471e4a698-bb2475f734ad781ed225",
@@ -1851,8 +1829,20 @@
                           "expectedStatus": "passed",
                           "projectId": "ci",
                           "projectName": "ci",
-                          "results": [],
-                          "status": "skipped"
+                          "results": [
+                            {
+                              "workerIndex": 1,
+                              "status": "passed",
+                              "duration": 2582,
+                              "errors": [],
+                              "stdout": [],
+                              "stderr": [],
+                              "retry": 0,
+                              "startTime": "2025-06-16T17:49:54.287Z",
+                              "attachments": []
+                            }
+                          ],
+                          "status": "expected"
                         }
                       ],
                       "id": "ea688ac7e25471e4a698-81eb0827310d9283360b",
@@ -1876,8 +1866,20 @@
                           "expectedStatus": "passed",
                           "projectId": "ci",
                           "projectName": "ci",
-                          "results": [],
-                          "status": "skipped"
+                          "results": [
+                            {
+                              "workerIndex": 1,
+                              "status": "passed",
+                              "duration": 2703,
+                              "errors": [],
+                              "stdout": [],
+                              "stderr": [],
+                              "retry": 0,
+                              "startTime": "2025-06-16T17:49:56.876Z",
+                              "attachments": []
+                            }
+                          ],
+                          "status": "expected"
                         }
                       ],
                       "id": "ea688ac7e25471e4a698-a3466843f78fa30f66c4",
@@ -1901,8 +1903,20 @@
                           "expectedStatus": "passed",
                           "projectId": "ci",
                           "projectName": "ci",
-                          "results": [],
-                          "status": "skipped"
+                          "results": [
+                            {
+                              "workerIndex": 1,
+                              "status": "passed",
+                              "duration": 2625,
+                              "errors": [],
+                              "stdout": [],
+                              "stderr": [],
+                              "retry": 0,
+                              "startTime": "2025-06-16T17:49:59.586Z",
+                              "attachments": []
+                            }
+                          ],
+                          "status": "expected"
                         }
                       ],
                       "id": "ea688ac7e25471e4a698-1dbf8cd238e13c8d2676",
@@ -1926,8 +1940,20 @@
                           "expectedStatus": "passed",
                           "projectId": "ci",
                           "projectName": "ci",
-                          "results": [],
-                          "status": "skipped"
+                          "results": [
+                            {
+                              "workerIndex": 1,
+                              "status": "passed",
+                              "duration": 2704,
+                              "errors": [],
+                              "stdout": [],
+                              "stderr": [],
+                              "retry": 0,
+                              "startTime": "2025-06-16T17:50:02.217Z",
+                              "attachments": []
+                            }
+                          ],
+                          "status": "expected"
                         }
                       ],
                       "id": "ea688ac7e25471e4a698-fb21a37a4f250ba2a386",
@@ -1951,8 +1977,20 @@
                           "expectedStatus": "passed",
                           "projectId": "ci",
                           "projectName": "ci",
-                          "results": [],
-                          "status": "skipped"
+                          "results": [
+                            {
+                              "workerIndex": 1,
+                              "status": "passed",
+                              "duration": 2570,
+                              "errors": [],
+                              "stdout": [],
+                              "stderr": [],
+                              "retry": 0,
+                              "startTime": "2025-06-16T17:50:04.926Z",
+                              "attachments": []
+                            }
+                          ],
+                          "status": "expected"
                         }
                       ],
                       "id": "ea688ac7e25471e4a698-4e931df0787a3a673ca3",
@@ -1976,8 +2014,20 @@
                           "expectedStatus": "passed",
                           "projectId": "ci",
                           "projectName": "ci",
-                          "results": [],
-                          "status": "skipped"
+                          "results": [
+                            {
+                              "workerIndex": 1,
+                              "status": "passed",
+                              "duration": 2645,
+                              "errors": [],
+                              "stdout": [],
+                              "stderr": [],
+                              "retry": 0,
+                              "startTime": "2025-06-16T17:50:07.501Z",
+                              "attachments": []
+                            }
+                          ],
+                          "status": "expected"
                         }
                       ],
                       "id": "ea688ac7e25471e4a698-7920ff850c062bebb3cd",
@@ -2001,8 +2051,20 @@
                           "expectedStatus": "passed",
                           "projectId": "ci",
                           "projectName": "ci",
-                          "results": [],
-                          "status": "skipped"
+                          "results": [
+                            {
+                              "workerIndex": 1,
+                              "status": "passed",
+                              "duration": 2599,
+                              "errors": [],
+                              "stdout": [],
+                              "stderr": [],
+                              "retry": 0,
+                              "startTime": "2025-06-16T17:50:10.153Z",
+                              "attachments": []
+                            }
+                          ],
+                          "status": "expected"
                         }
                       ],
                       "id": "ea688ac7e25471e4a698-2f8bd96271e84c891255",
@@ -2030,7 +2092,19 @@
                           "expectedStatus": "skipped",
                           "projectId": "ci",
                           "projectName": "ci",
-                          "results": [],
+                          "results": [
+                            {
+                              "workerIndex": -1,
+                              "status": "skipped",
+                              "duration": 0,
+                              "errors": [],
+                              "stdout": [],
+                              "stderr": [],
+                              "retry": 0,
+                              "startTime": "2025-06-16T17:50:12.756Z",
+                              "attachments": []
+                            }
+                          ],
                           "status": "skipped"
                         }
                       ],
@@ -2059,7 +2133,19 @@
                           "expectedStatus": "skipped",
                           "projectId": "ci",
                           "projectName": "ci",
-                          "results": [],
+                          "results": [
+                            {
+                              "workerIndex": -1,
+                              "status": "skipped",
+                              "duration": 0,
+                              "errors": [],
+                              "stdout": [],
+                              "stderr": [],
+                              "retry": 0,
+                              "startTime": "2025-06-16T17:50:12.756Z",
+                              "attachments": []
+                            }
+                          ],
                           "status": "skipped"
                         }
                       ],
@@ -2084,8 +2170,20 @@
                           "expectedStatus": "passed",
                           "projectId": "ci",
                           "projectName": "ci",
-                          "results": [],
-                          "status": "skipped"
+                          "results": [
+                            {
+                              "workerIndex": 1,
+                              "status": "passed",
+                              "duration": 2604,
+                              "errors": [],
+                              "stdout": [],
+                              "stderr": [],
+                              "retry": 0,
+                              "startTime": "2025-06-16T17:50:12.757Z",
+                              "attachments": []
+                            }
+                          ],
+                          "status": "expected"
                         }
                       ],
                       "id": "ea688ac7e25471e4a698-dc8a0612497ecf7f2fd5",
@@ -2109,8 +2207,20 @@
                           "expectedStatus": "passed",
                           "projectId": "ci",
                           "projectName": "ci",
-                          "results": [],
-                          "status": "skipped"
+                          "results": [
+                            {
+                              "workerIndex": 1,
+                              "status": "passed",
+                              "duration": 1726,
+                              "errors": [],
+                              "stdout": [],
+                              "stderr": [],
+                              "retry": 0,
+                              "startTime": "2025-06-16T17:50:15.366Z",
+                              "attachments": []
+                            }
+                          ],
+                          "status": "expected"
                         }
                       ],
                       "id": "ea688ac7e25471e4a698-ab39a6ce877a47767c4d",
@@ -2134,8 +2244,20 @@
                           "expectedStatus": "passed",
                           "projectId": "ci",
                           "projectName": "ci",
-                          "results": [],
-                          "status": "skipped"
+                          "results": [
+                            {
+                              "workerIndex": 1,
+                              "status": "passed",
+                              "duration": 2647,
+                              "errors": [],
+                              "stdout": [],
+                              "stderr": [],
+                              "retry": 0,
+                              "startTime": "2025-06-16T17:50:17.098Z",
+                              "attachments": []
+                            }
+                          ],
+                          "status": "expected"
                         }
                       ],
                       "id": "ea688ac7e25471e4a698-53768ed2bf2c5608d8b5",
@@ -2159,8 +2281,20 @@
                           "expectedStatus": "passed",
                           "projectId": "ci",
                           "projectName": "ci",
-                          "results": [],
-                          "status": "skipped"
+                          "results": [
+                            {
+                              "workerIndex": 1,
+                              "status": "passed",
+                              "duration": 2626,
+                              "errors": [],
+                              "stdout": [],
+                              "stderr": [],
+                              "retry": 0,
+                              "startTime": "2025-06-16T17:50:19.751Z",
+                              "attachments": []
+                            }
+                          ],
+                          "status": "expected"
                         }
                       ],
                       "id": "ea688ac7e25471e4a698-c0ab2966f039a090c50a",
@@ -2203,8 +2337,24 @@
                   "expectedStatus": "passed",
                   "projectId": "ci",
                   "projectName": "ci",
-                  "results": [],
-                  "status": "skipped"
+                  "results": [
+                    {
+                      "workerIndex": 1,
+                      "status": "passed",
+                      "duration": 3798,
+                      "errors": [],
+                      "stdout": [
+                        {
+                          "text": "/ violations:  \u001b[33m0\u001b[39m\n"
+                        }
+                      ],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-06-16T17:50:22.455Z",
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
                 }
               ],
               "id": "37280e3c1e02c3251f32-d15a0876fd2f5a7fc9ea",
@@ -2226,8 +2376,24 @@
                   "expectedStatus": "passed",
                   "projectId": "ci",
                   "projectName": "ci",
-                  "results": [],
-                  "status": "skipped"
+                  "results": [
+                    {
+                      "workerIndex": 1,
+                      "status": "passed",
+                      "duration": 7970,
+                      "errors": [],
+                      "stdout": [
+                        {
+                          "text": "/dashboard violations:  \u001b[33m0\u001b[39m\n"
+                        }
+                      ],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-06-16T17:50:26.258Z",
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
                 }
               ],
               "id": "37280e3c1e02c3251f32-cc045bee0204d07448c8",
@@ -2249,8 +2415,24 @@
                   "expectedStatus": "passed",
                   "projectId": "ci",
                   "projectName": "ci",
-                  "results": [],
-                  "status": "skipped"
+                  "results": [
+                    {
+                      "workerIndex": 1,
+                      "status": "passed",
+                      "duration": 4172,
+                      "errors": [],
+                      "stdout": [
+                        {
+                          "text": "/faq violations:  \u001b[33m0\u001b[39m\n"
+                        }
+                      ],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-06-16T17:50:34.235Z",
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
                 }
               ],
               "id": "37280e3c1e02c3251f32-8740808cb5b08fcef8d2",
@@ -2272,8 +2454,24 @@
                   "expectedStatus": "passed",
                   "projectId": "ci",
                   "projectName": "ci",
-                  "results": [],
-                  "status": "skipped"
+                  "results": [
+                    {
+                      "workerIndex": 1,
+                      "status": "passed",
+                      "duration": 3531,
+                      "errors": [],
+                      "stdout": [
+                        {
+                          "text": "/latestupdates violations:  \u001b[33m0\u001b[39m\n"
+                        }
+                      ],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-06-16T17:50:38.412Z",
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
                 }
               ],
               "id": "37280e3c1e02c3251f32-a3ea009d6645111d7057",
@@ -2295,8 +2493,24 @@
                   "expectedStatus": "passed",
                   "projectId": "ci",
                   "projectName": "ci",
-                  "results": [],
-                  "status": "skipped"
+                  "results": [
+                    {
+                      "workerIndex": 1,
+                      "status": "passed",
+                      "duration": 3767,
+                      "errors": [],
+                      "stdout": [
+                        {
+                          "text": "/profile violations:  \u001b[33m0\u001b[39m\n"
+                        }
+                      ],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-06-16T17:50:41.949Z",
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
                 }
               ],
               "id": "37280e3c1e02c3251f32-1e63b77df142c1aa1023",
@@ -2318,8 +2532,24 @@
                   "expectedStatus": "passed",
                   "projectId": "ci",
                   "projectName": "ci",
-                  "results": [],
-                  "status": "skipped"
+                  "results": [
+                    {
+                      "workerIndex": 1,
+                      "status": "passed",
+                      "duration": 3670,
+                      "errors": [],
+                      "stdout": [
+                        {
+                          "text": "/new-submission violations:  \u001b[33m0\u001b[39m\n"
+                        }
+                      ],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-06-16T17:50:45.720Z",
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
                 }
               ],
               "id": "37280e3c1e02c3251f32-7a76ccf38fc5280795b6",
@@ -2341,8 +2571,24 @@
                   "expectedStatus": "passed",
                   "projectId": "ci",
                   "projectName": "ci",
-                  "results": [],
-                  "status": "skipped"
+                  "results": [
+                    {
+                      "workerIndex": 1,
+                      "status": "passed",
+                      "duration": 3575,
+                      "errors": [],
+                      "stdout": [
+                        {
+                          "text": "/new-submission/spa violations:  \u001b[33m0\u001b[39m\n"
+                        }
+                      ],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-06-16T17:50:49.397Z",
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
                 }
               ],
               "id": "37280e3c1e02c3251f32-efbb95768bff03be545e",
@@ -2364,8 +2610,24 @@
                   "expectedStatus": "passed",
                   "projectId": "ci",
                   "projectName": "ci",
-                  "results": [],
-                  "status": "skipped"
+                  "results": [
+                    {
+                      "workerIndex": 1,
+                      "status": "passed",
+                      "duration": 3645,
+                      "errors": [],
+                      "stdout": [
+                        {
+                          "text": "/new-submission/spa/medicaid violations:  \u001b[33m0\u001b[39m\n"
+                        }
+                      ],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-06-16T17:50:52.978Z",
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
                 }
               ],
               "id": "37280e3c1e02c3251f32-1597a6ac6ec223236303",
@@ -2387,8 +2649,24 @@
                   "expectedStatus": "passed",
                   "projectId": "ci",
                   "projectName": "ci",
-                  "results": [],
-                  "status": "skipped"
+                  "results": [
+                    {
+                      "workerIndex": 1,
+                      "status": "passed",
+                      "duration": 3681,
+                      "errors": [],
+                      "stdout": [
+                        {
+                          "text": "/new-submission/spa/chip violations:  \u001b[33m0\u001b[39m\n"
+                        }
+                      ],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-06-16T17:50:56.628Z",
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
                 }
               ],
               "id": "37280e3c1e02c3251f32-814b5c262aab364b5931",
@@ -2410,8 +2688,24 @@
                   "expectedStatus": "passed",
                   "projectId": "ci",
                   "projectName": "ci",
-                  "results": [],
-                  "status": "skipped"
+                  "results": [
+                    {
+                      "workerIndex": 1,
+                      "status": "passed",
+                      "duration": 3577,
+                      "errors": [],
+                      "stdout": [
+                        {
+                          "text": "/new-submission/waiver violations:  \u001b[33m0\u001b[39m\n"
+                        }
+                      ],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-06-16T17:51:00.314Z",
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
                 }
               ],
               "id": "37280e3c1e02c3251f32-ca14a6d92aaff6e57bd0",
@@ -2433,8 +2727,24 @@
                   "expectedStatus": "passed",
                   "projectId": "ci",
                   "projectName": "ci",
-                  "results": [],
-                  "status": "skipped"
+                  "results": [
+                    {
+                      "workerIndex": 1,
+                      "status": "passed",
+                      "duration": 3696,
+                      "errors": [],
+                      "stdout": [
+                        {
+                          "text": "/new-submission/waiver/b violations:  \u001b[33m0\u001b[39m\n"
+                        }
+                      ],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-06-16T17:51:03.898Z",
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
                 }
               ],
               "id": "37280e3c1e02c3251f32-b6e96816b9200951b93a",
@@ -2456,8 +2766,24 @@
                   "expectedStatus": "passed",
                   "projectId": "ci",
                   "projectName": "ci",
-                  "results": [],
-                  "status": "skipped"
+                  "results": [
+                    {
+                      "workerIndex": 1,
+                      "status": "passed",
+                      "duration": 3646,
+                      "errors": [],
+                      "stdout": [
+                        {
+                          "text": "/new-submission/waiver/b/b4 violations:  \u001b[33m0\u001b[39m\n"
+                        }
+                      ],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-06-16T17:51:07.600Z",
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
                 }
               ],
               "id": "37280e3c1e02c3251f32-f820e686e0f0b165d4d0",
@@ -2479,8 +2805,24 @@
                   "expectedStatus": "passed",
                   "projectId": "ci",
                   "projectName": "ci",
-                  "results": [],
-                  "status": "skipped"
+                  "results": [
+                    {
+                      "workerIndex": 1,
+                      "status": "passed",
+                      "duration": 3570,
+                      "errors": [],
+                      "stdout": [
+                        {
+                          "text": "/new-submission/waiver/b/capitated violations:  \u001b[33m0\u001b[39m\n"
+                        }
+                      ],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-06-16T17:51:11.251Z",
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
                 }
               ],
               "id": "37280e3c1e02c3251f32-8df20010b665d301a1b3",
@@ -2502,8 +2844,24 @@
                   "expectedStatus": "passed",
                   "projectId": "ci",
                   "projectName": "ci",
-                  "results": [],
-                  "status": "skipped"
+                  "results": [
+                    {
+                      "workerIndex": 1,
+                      "status": "passed",
+                      "duration": 3646,
+                      "errors": [],
+                      "stdout": [
+                        {
+                          "text": "/new-submission/spa/medicaid/landing/medicaid-abp violations:  \u001b[33m0\u001b[39m\n"
+                        }
+                      ],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-06-16T17:51:14.827Z",
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
                 }
               ],
               "id": "37280e3c1e02c3251f32-2c08faa80f0614bf1f27",
@@ -2525,8 +2883,24 @@
                   "expectedStatus": "passed",
                   "projectId": "ci",
                   "projectName": "ci",
-                  "results": [],
-                  "status": "skipped"
+                  "results": [
+                    {
+                      "workerIndex": 1,
+                      "status": "passed",
+                      "duration": 3634,
+                      "errors": [],
+                      "stdout": [
+                        {
+                          "text": "/new-submission/spa/medicaid/landing/medicaid-eligibility violations:  \u001b[33m0\u001b[39m\n"
+                        }
+                      ],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-06-16T17:51:18.478Z",
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
                 }
               ],
               "id": "37280e3c1e02c3251f32-47d5c54c892f0577f7ae",
@@ -2548,8 +2922,24 @@
                   "expectedStatus": "passed",
                   "projectId": "ci",
                   "projectName": "ci",
-                  "results": [],
-                  "status": "skipped"
+                  "results": [
+                    {
+                      "workerIndex": 1,
+                      "status": "passed",
+                      "duration": 3647,
+                      "errors": [],
+                      "stdout": [
+                        {
+                          "text": "/new-submission/spa/chip/landing/chip-eligibility violations:  \u001b[33m0\u001b[39m\n"
+                        }
+                      ],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-06-16T17:51:22.118Z",
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
                 }
               ],
               "id": "37280e3c1e02c3251f32-71b3e117425ece5948d9",
@@ -2571,8 +2961,24 @@
                   "expectedStatus": "passed",
                   "projectId": "ci",
                   "projectName": "ci",
-                  "results": [],
-                  "status": "skipped"
+                  "results": [
+                    {
+                      "workerIndex": 1,
+                      "status": "passed",
+                      "duration": 3932,
+                      "errors": [],
+                      "stdout": [
+                        {
+                          "text": "/new-submission/spa/chip/create/chip-details violations:  \u001b[33m0\u001b[39m\n"
+                        }
+                      ],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-06-16T17:51:25.770Z",
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
                 }
               ],
               "id": "37280e3c1e02c3251f32-fa380068b469ab4e3cde",
@@ -2594,8 +3000,24 @@
                   "expectedStatus": "passed",
                   "projectId": "ci",
                   "projectName": "ci",
-                  "results": [],
-                  "status": "skipped"
+                  "results": [
+                    {
+                      "workerIndex": 1,
+                      "status": "passed",
+                      "duration": 3896,
+                      "errors": [],
+                      "stdout": [
+                        {
+                          "text": "/new-submission/waiver/b/capitated/amendment/create violations:  \u001b[33m0\u001b[39m\n"
+                        }
+                      ],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-06-16T17:51:29.707Z",
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
                 }
               ],
               "id": "37280e3c1e02c3251f32-80e032e9433179de29fc",
@@ -2617,8 +3039,24 @@
                   "expectedStatus": "passed",
                   "projectId": "ci",
                   "projectName": "ci",
-                  "results": [],
-                  "status": "skipped"
+                  "results": [
+                    {
+                      "workerIndex": 1,
+                      "status": "passed",
+                      "duration": 3956,
+                      "errors": [],
+                      "stdout": [
+                        {
+                          "text": "/new-submission/waiver/b/capitated/renewal/create violations:  \u001b[33m0\u001b[39m\n"
+                        }
+                      ],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-06-16T17:51:33.609Z",
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
                 }
               ],
               "id": "37280e3c1e02c3251f32-97d28170546fbe09ba49",
@@ -2640,8 +3078,24 @@
                   "expectedStatus": "passed",
                   "projectId": "ci",
                   "projectName": "ci",
-                  "results": [],
-                  "status": "skipped"
+                  "results": [
+                    {
+                      "workerIndex": 1,
+                      "status": "passed",
+                      "duration": 3851,
+                      "errors": [],
+                      "stdout": [
+                        {
+                          "text": "/new-submission/waiver/b/capitated/initial/create violations:  \u001b[33m0\u001b[39m\n"
+                        }
+                      ],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-06-16T17:51:37.570Z",
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
                 }
               ],
               "id": "37280e3c1e02c3251f32-cbd8be170dcc3eb1ed23",
@@ -2663,8 +3117,24 @@
                   "expectedStatus": "passed",
                   "projectId": "ci",
                   "projectName": "ci",
-                  "results": [],
-                  "status": "skipped"
+                  "results": [
+                    {
+                      "workerIndex": 1,
+                      "status": "passed",
+                      "duration": 3738,
+                      "errors": [],
+                      "stdout": [
+                        {
+                          "text": "/new-submission/waiver/b/b4/initial/create violations:  \u001b[33m0\u001b[39m\n"
+                        }
+                      ],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-06-16T17:51:41.429Z",
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
                 }
               ],
               "id": "37280e3c1e02c3251f32-0b3435dfd99ec42efe8b",
@@ -2686,8 +3156,24 @@
                   "expectedStatus": "passed",
                   "projectId": "ci",
                   "projectName": "ci",
-                  "results": [],
-                  "status": "skipped"
+                  "results": [
+                    {
+                      "workerIndex": 1,
+                      "status": "passed",
+                      "duration": 3903,
+                      "errors": [],
+                      "stdout": [
+                        {
+                          "text": "/new-submission/waiver/b/b4/amendment/create violations:  \u001b[33m0\u001b[39m\n"
+                        }
+                      ],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-06-16T17:51:45.172Z",
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
                 }
               ],
               "id": "37280e3c1e02c3251f32-0ca35137a06aece7f89c",
@@ -2709,8 +3195,24 @@
                   "expectedStatus": "passed",
                   "projectId": "ci",
                   "projectName": "ci",
-                  "results": [],
-                  "status": "skipped"
+                  "results": [
+                    {
+                      "workerIndex": 1,
+                      "status": "passed",
+                      "duration": 3831,
+                      "errors": [],
+                      "stdout": [
+                        {
+                          "text": "/new-submission/waiver/b/b4/renewal/create violations:  \u001b[33m0\u001b[39m\n"
+                        }
+                      ],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-06-16T17:51:49.080Z",
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
                 }
               ],
               "id": "37280e3c1e02c3251f32-7a0eb5b63546933b1459",
@@ -2732,8 +3234,24 @@
                   "expectedStatus": "passed",
                   "projectId": "ci",
                   "projectName": "ci",
-                  "results": [],
-                  "status": "skipped"
+                  "results": [
+                    {
+                      "workerIndex": 1,
+                      "status": "passed",
+                      "duration": 3905,
+                      "errors": [],
+                      "stdout": [
+                        {
+                          "text": "/new-submission/spa/medicaid/create violations:  \u001b[33m0\u001b[39m\n"
+                        }
+                      ],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-06-16T17:51:52.916Z",
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
                 }
               ],
               "id": "37280e3c1e02c3251f32-6eebb886182f4aba3c52",
@@ -2755,8 +3273,24 @@
                   "expectedStatus": "passed",
                   "projectId": "ci",
                   "projectName": "ci",
-                  "results": [],
-                  "status": "skipped"
+                  "results": [
+                    {
+                      "workerIndex": 1,
+                      "status": "passed",
+                      "duration": 3956,
+                      "errors": [],
+                      "stdout": [
+                        {
+                          "text": "/new-submission/spa/chip/create violations:  \u001b[33m0\u001b[39m\n"
+                        }
+                      ],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-06-16T17:51:56.826Z",
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
                 }
               ],
               "id": "37280e3c1e02c3251f32-7558b1fb35a572fa4e21",
@@ -2778,8 +3312,24 @@
                   "expectedStatus": "passed",
                   "projectId": "ci",
                   "projectName": "ci",
-                  "results": [],
-                  "status": "skipped"
+                  "results": [
+                    {
+                      "workerIndex": 1,
+                      "status": "passed",
+                      "duration": 3786,
+                      "errors": [],
+                      "stdout": [
+                        {
+                          "text": "/new-submission/waiver/app-k violations:  \u001b[33m0\u001b[39m\n"
+                        }
+                      ],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-06-16T17:52:00.787Z",
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
                 }
               ],
               "id": "37280e3c1e02c3251f32-5aee131542d7c168bae2",
@@ -2801,8 +3351,24 @@
                   "expectedStatus": "passed",
                   "projectId": "ci",
                   "projectName": "ci",
-                  "results": [],
-                  "status": "skipped"
+                  "results": [
+                    {
+                      "workerIndex": 1,
+                      "status": "passed",
+                      "duration": 3914,
+                      "errors": [],
+                      "stdout": [
+                        {
+                          "text": "/new-submission/waiver/temporary-extensions violations:  \u001b[33m0\u001b[39m\n"
+                        }
+                      ],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-06-16T17:52:04.579Z",
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
                 }
               ],
               "id": "37280e3c1e02c3251f32-7fadcee1da6a90e36220",
@@ -2832,8 +3398,24 @@
                   "expectedStatus": "passed",
                   "projectId": "ci",
                   "projectName": "ci",
-                  "results": [],
-                  "status": "skipped"
+                  "results": [
+                    {
+                      "workerIndex": 1,
+                      "status": "passed",
+                      "duration": 3813,
+                      "errors": [],
+                      "stdout": [
+                        {
+                          "text": "/guides/abp violations:  \u001b[33m0\u001b[39m\n"
+                        }
+                      ],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-06-16T17:52:08.498Z",
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
                 }
               ],
               "id": "37280e3c1e02c3251f32-84c7161018402e30a8f6",
@@ -2855,8 +3437,24 @@
                   "expectedStatus": "passed",
                   "projectId": "ci",
                   "projectName": "ci",
-                  "results": [],
-                  "status": "skipped"
+                  "results": [
+                    {
+                      "workerIndex": 1,
+                      "status": "passed",
+                      "duration": 4421,
+                      "errors": [],
+                      "stdout": [
+                        {
+                          "text": "/webform/g3/202401 violations:  \u001b[33m0\u001b[39m\n"
+                        }
+                      ],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-06-16T17:52:12.317Z",
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
                 }
               ],
               "id": "37280e3c1e02c3251f32-d928c3ccfd36a080c0d5",
@@ -2878,8 +3476,24 @@
                   "expectedStatus": "passed",
                   "projectId": "ci",
                   "projectName": "ci",
-                  "results": [],
-                  "status": "skipped"
+                  "results": [
+                    {
+                      "workerIndex": 1,
+                      "status": "passed",
+                      "duration": 3992,
+                      "errors": [],
+                      "stdout": [
+                        {
+                          "text": "/webform/g2b/202401 violations:  \u001b[33m0\u001b[39m\n"
+                        }
+                      ],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-06-16T17:52:16.743Z",
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
                 }
               ],
               "id": "37280e3c1e02c3251f32-05532d32ef144aa6354a",
@@ -2901,8 +3515,24 @@
                   "expectedStatus": "passed",
                   "projectId": "ci",
                   "projectName": "ci",
-                  "results": [],
-                  "status": "skipped"
+                  "results": [
+                    {
+                      "workerIndex": 1,
+                      "status": "passed",
+                      "duration": 3835,
+                      "errors": [],
+                      "stdout": [
+                        {
+                          "text": "/webform/g2a/202401 violations:  \u001b[33m0\u001b[39m\n"
+                        }
+                      ],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-06-16T17:52:20.740Z",
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
                 }
               ],
               "id": "37280e3c1e02c3251f32-4a6fd5b307c1b9652f6c",
@@ -2924,8 +3554,24 @@
                   "expectedStatus": "passed",
                   "projectId": "ci",
                   "projectName": "ci",
-                  "results": [],
-                  "status": "skipped"
+                  "results": [
+                    {
+                      "workerIndex": 1,
+                      "status": "passed",
+                      "duration": 4064,
+                      "errors": [],
+                      "stdout": [
+                        {
+                          "text": "/webform/g1/202401 violations:  \u001b[33m0\u001b[39m\n"
+                        }
+                      ],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-06-16T17:52:24.580Z",
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
                 }
               ],
               "id": "37280e3c1e02c3251f32-06fc42c3d4ce10ddda83",
@@ -2947,8 +3593,24 @@
                   "expectedStatus": "passed",
                   "projectId": "ci",
                   "projectName": "ci",
-                  "results": [],
-                  "status": "skipped"
+                  "results": [
+                    {
+                      "workerIndex": 1,
+                      "status": "passed",
+                      "duration": 3802,
+                      "errors": [],
+                      "stdout": [
+                        {
+                          "text": "/webform/cs8/202401 violations:  \u001b[33m0\u001b[39m\n"
+                        }
+                      ],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-06-16T17:52:28.650Z",
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
                 }
               ],
               "id": "37280e3c1e02c3251f32-b04804dee864687efbfc",
@@ -2970,8 +3632,24 @@
                   "expectedStatus": "passed",
                   "projectId": "ci",
                   "projectName": "ci",
-                  "results": [],
-                  "status": "skipped"
+                  "results": [
+                    {
+                      "workerIndex": 1,
+                      "status": "passed",
+                      "duration": 3548,
+                      "errors": [],
+                      "stdout": [
+                        {
+                          "text": "/webform/cs3/202401 violations:  \u001b[33m0\u001b[39m\n"
+                        }
+                      ],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-06-16T17:52:32.456Z",
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
                 }
               ],
               "id": "37280e3c1e02c3251f32-158ca1adda78a882863d",
@@ -2993,8 +3671,24 @@
                   "expectedStatus": "passed",
                   "projectId": "ci",
                   "projectName": "ci",
-                  "results": [],
-                  "status": "skipped"
+                  "results": [
+                    {
+                      "workerIndex": 1,
+                      "status": "passed",
+                      "duration": 3871,
+                      "errors": [],
+                      "stdout": [
+                        {
+                          "text": "/webform/cs7/202401 violations:  \u001b[33m0\u001b[39m\n"
+                        }
+                      ],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-06-16T17:52:36.009Z",
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
                 }
               ],
               "id": "37280e3c1e02c3251f32-f2acb9406875310abf61",
@@ -3016,8 +3710,24 @@
                   "expectedStatus": "passed",
                   "projectId": "ci",
                   "projectName": "ci",
-                  "results": [],
-                  "status": "skipped"
+                  "results": [
+                    {
+                      "workerIndex": 1,
+                      "status": "passed",
+                      "duration": 3602,
+                      "errors": [],
+                      "stdout": [
+                        {
+                          "text": "/webform/abp11/202401 violations:  \u001b[33m0\u001b[39m\n"
+                        }
+                      ],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-06-16T17:52:39.886Z",
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
                 }
               ],
               "id": "37280e3c1e02c3251f32-414eea7bd9e38993397e",
@@ -3039,8 +3749,24 @@
                   "expectedStatus": "passed",
                   "projectId": "ci",
                   "projectName": "ci",
-                  "results": [],
-                  "status": "skipped"
+                  "results": [
+                    {
+                      "workerIndex": 1,
+                      "status": "passed",
+                      "duration": 3739,
+                      "errors": [],
+                      "stdout": [
+                        {
+                          "text": "/webform/abp10/202401 violations:  \u001b[33m0\u001b[39m\n"
+                        }
+                      ],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-06-16T17:52:43.493Z",
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
                 }
               ],
               "id": "37280e3c1e02c3251f32-9740306a1086a8f364b9",
@@ -3062,8 +3788,24 @@
                   "expectedStatus": "passed",
                   "projectId": "ci",
                   "projectName": "ci",
-                  "results": [],
-                  "status": "skipped"
+                  "results": [
+                    {
+                      "workerIndex": 1,
+                      "status": "passed",
+                      "duration": 3702,
+                      "errors": [],
+                      "stdout": [
+                        {
+                          "text": "/webform/abp9/202401 violations:  \u001b[33m0\u001b[39m\n"
+                        }
+                      ],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-06-16T17:52:47.238Z",
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
                 }
               ],
               "id": "37280e3c1e02c3251f32-93dbfcf3e1c1994e5f19",
@@ -3085,8 +3827,24 @@
                   "expectedStatus": "passed",
                   "projectId": "ci",
                   "projectName": "ci",
-                  "results": [],
-                  "status": "skipped"
+                  "results": [
+                    {
+                      "workerIndex": 1,
+                      "status": "passed",
+                      "duration": 3818,
+                      "errors": [],
+                      "stdout": [
+                        {
+                          "text": "/webform/abp7/202401 violations:  \u001b[33m0\u001b[39m\n"
+                        }
+                      ],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-06-16T17:52:50.945Z",
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
                 }
               ],
               "id": "37280e3c1e02c3251f32-d062bca497c1dc7515ac",
@@ -3108,8 +3866,24 @@
                   "expectedStatus": "passed",
                   "projectId": "ci",
                   "projectName": "ci",
-                  "results": [],
-                  "status": "skipped"
+                  "results": [
+                    {
+                      "workerIndex": 1,
+                      "status": "passed",
+                      "duration": 3856,
+                      "errors": [],
+                      "stdout": [
+                        {
+                          "text": "/webform/abp6/202401 violations:  \u001b[33m0\u001b[39m\n"
+                        }
+                      ],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-06-16T17:52:54.769Z",
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
                 }
               ],
               "id": "37280e3c1e02c3251f32-c4e23cb7587820bdd50d",
@@ -3131,8 +3905,24 @@
                   "expectedStatus": "passed",
                   "projectId": "ci",
                   "projectName": "ci",
-                  "results": [],
-                  "status": "skipped"
+                  "results": [
+                    {
+                      "workerIndex": 1,
+                      "status": "passed",
+                      "duration": 3605,
+                      "errors": [],
+                      "stdout": [
+                        {
+                          "text": "/webform/abp5/202401 violations:  \u001b[33m0\u001b[39m\n"
+                        }
+                      ],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-06-16T17:52:58.630Z",
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
                 }
               ],
               "id": "37280e3c1e02c3251f32-d4e7f018194e47fc72d6",
@@ -3154,8 +3944,24 @@
                   "expectedStatus": "passed",
                   "projectId": "ci",
                   "projectName": "ci",
-                  "results": [],
-                  "status": "skipped"
+                  "results": [
+                    {
+                      "workerIndex": 1,
+                      "status": "passed",
+                      "duration": 3553,
+                      "errors": [],
+                      "stdout": [
+                        {
+                          "text": "/webform/abp4/202401 violations:  \u001b[33m0\u001b[39m\n"
+                        }
+                      ],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-06-16T17:53:02.241Z",
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
                 }
               ],
               "id": "37280e3c1e02c3251f32-5d65f13e2cd47c507673",
@@ -3177,8 +3983,24 @@
                   "expectedStatus": "passed",
                   "projectId": "ci",
                   "projectName": "ci",
-                  "results": [],
-                  "status": "skipped"
+                  "results": [
+                    {
+                      "workerIndex": 1,
+                      "status": "passed",
+                      "duration": 3843,
+                      "errors": [],
+                      "stdout": [
+                        {
+                          "text": "/webform/abp3_1/202401 violations:  \u001b[33m0\u001b[39m\n"
+                        }
+                      ],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-06-16T17:53:05.799Z",
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
                 }
               ],
               "id": "37280e3c1e02c3251f32-2b21a369b54ba5270723",
@@ -3200,8 +4022,24 @@
                   "expectedStatus": "passed",
                   "projectId": "ci",
                   "projectName": "ci",
-                  "results": [],
-                  "status": "skipped"
+                  "results": [
+                    {
+                      "workerIndex": 1,
+                      "status": "passed",
+                      "duration": 3784,
+                      "errors": [],
+                      "stdout": [
+                        {
+                          "text": "/webform/abp3/202401 violations:  \u001b[33m0\u001b[39m\n"
+                        }
+                      ],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-06-16T17:53:09.647Z",
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
                 }
               ],
               "id": "37280e3c1e02c3251f32-cdbd0e777824dfffb4eb",
@@ -3223,8 +4061,24 @@
                   "expectedStatus": "passed",
                   "projectId": "ci",
                   "projectName": "ci",
-                  "results": [],
-                  "status": "skipped"
+                  "results": [
+                    {
+                      "workerIndex": 1,
+                      "status": "passed",
+                      "duration": 4027,
+                      "errors": [],
+                      "stdout": [
+                        {
+                          "text": "/webform/abp2c/202401 violations:  \u001b[33m0\u001b[39m\n"
+                        }
+                      ],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-06-16T17:53:13.437Z",
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
                 }
               ],
               "id": "37280e3c1e02c3251f32-38d4fd1fe7f6f2c607e6",
@@ -3246,8 +4100,24 @@
                   "expectedStatus": "passed",
                   "projectId": "ci",
                   "projectName": "ci",
-                  "results": [],
-                  "status": "skipped"
+                  "results": [
+                    {
+                      "workerIndex": 1,
+                      "status": "passed",
+                      "duration": 4099,
+                      "errors": [],
+                      "stdout": [
+                        {
+                          "text": "/webform/abp2b/202401 violations:  \u001b[33m0\u001b[39m\n"
+                        }
+                      ],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-06-16T17:53:17.469Z",
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
                 }
               ],
               "id": "37280e3c1e02c3251f32-e7689da94797abf612d6",
@@ -3269,8 +4139,24 @@
                   "expectedStatus": "passed",
                   "projectId": "ci",
                   "projectName": "ci",
-                  "results": [],
-                  "status": "skipped"
+                  "results": [
+                    {
+                      "workerIndex": 1,
+                      "status": "passed",
+                      "duration": 3532,
+                      "errors": [],
+                      "stdout": [
+                        {
+                          "text": "/webform/abp2a/202401 violations:  \u001b[33m0\u001b[39m\n"
+                        }
+                      ],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-06-16T17:53:21.574Z",
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
                 }
               ],
               "id": "37280e3c1e02c3251f32-1af192b66969ea57125c",
@@ -3292,8 +4178,24 @@
                   "expectedStatus": "passed",
                   "projectId": "ci",
                   "projectName": "ci",
-                  "results": [],
-                  "status": "skipped"
+                  "results": [
+                    {
+                      "workerIndex": 1,
+                      "status": "passed",
+                      "duration": 3753,
+                      "errors": [],
+                      "stdout": [
+                        {
+                          "text": "/webform/abp1/202401 violations:  \u001b[33m0\u001b[39m\n"
+                        }
+                      ],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-06-16T17:53:25.111Z",
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
                 }
               ],
               "id": "37280e3c1e02c3251f32-de5e473d4c1bdb873f64",
@@ -3315,8 +4217,24 @@
                   "expectedStatus": "passed",
                   "projectId": "ci",
                   "projectName": "ci",
-                  "results": [],
-                  "status": "skipped"
+                  "results": [
+                    {
+                      "workerIndex": 1,
+                      "status": "passed",
+                      "duration": 3726,
+                      "errors": [],
+                      "stdout": [
+                        {
+                          "text": "/webform/abp1/202402 violations:  \u001b[33m0\u001b[39m\n"
+                        }
+                      ],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-06-16T17:53:28.869Z",
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
                 }
               ],
               "id": "37280e3c1e02c3251f32-4938d4a603ba6ad4dd6b",
@@ -3329,17 +4247,13 @@
       ]
     }
   ],
-  "errors": [
-    {
-      "message": "Testing stopped early after 10 maximum allowed failures."
-    }
-  ],
+  "errors": [],
   "stats": {
-    "startTime": "2025-06-16T17:27:17.250Z",
-    "duration": 119364.243,
-    "expected": 2,
-    "skipped": 90,
-    "unexpected": 10,
+    "startTime": "2025-06-16T17:47:53.575Z",
+    "duration": 339155.292,
+    "expected": 100,
+    "skipped": 2,
+    "unexpected": 0,
     "flaky": 0
   }
 }
