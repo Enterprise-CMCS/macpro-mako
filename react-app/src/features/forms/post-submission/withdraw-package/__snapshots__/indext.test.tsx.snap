@@ -25,11 +25,9 @@ exports[`WithdrawPackageAction components > renders WithdrawPackageActionWaiver 
               >
                 Dashboard
               </a>
-            </li>
-            <li
-              class="flex items-center text-sm"
-            >
-              <span>
+              <span
+                class="ml-1"
+              >
                 <svg
                   aria-hidden="true"
                   class="lucide lucide-chevron-right w-5 h-5"
@@ -49,6 +47,10 @@ exports[`WithdrawPackageAction components > renders WithdrawPackageActionWaiver 
                   />
                 </svg>
               </span>
+            </li>
+            <li
+              class="flex items-center text-sm"
+            >
               <a
                 class="underline text-sky-700 hover:text-sky-800"
                 data-discover="true"
@@ -56,11 +58,9 @@ exports[`WithdrawPackageAction components > renders WithdrawPackageActionWaiver 
               >
                 VA-2234.R11.01
               </a>
-            </li>
-            <li
-              class="flex items-center text-sm"
-            >
-              <span>
+              <span
+                class="ml-1"
+              >
                 <svg
                   aria-hidden="true"
                   class="lucide lucide-chevron-right w-5 h-5"
@@ -80,12 +80,18 @@ exports[`WithdrawPackageAction components > renders WithdrawPackageActionWaiver 
                   />
                 </svg>
               </span>
-              <span
+            </li>
+            <li
+              class="flex items-center text-sm"
+            >
+              <a
                 aria-current="page"
                 class="whitespace-nowrap"
+                data-discover="true"
+                href="/"
               >
                 Withdraw Package
-              </span>
+              </a>
             </li>
           </ol>
         </nav>
@@ -438,11 +444,9 @@ exports[`WithdrawPackageAction components > renders WithdrawPackageActionWaiver 
             >
               Dashboard
             </a>
-          </li>
-          <li
-            class="flex items-center text-sm"
-          >
-            <span>
+            <span
+              class="ml-1"
+            >
               <svg
                 aria-hidden="true"
                 class="lucide lucide-chevron-right w-5 h-5"
@@ -462,6 +466,10 @@ exports[`WithdrawPackageAction components > renders WithdrawPackageActionWaiver 
                 />
               </svg>
             </span>
+          </li>
+          <li
+            class="flex items-center text-sm"
+          >
             <a
               class="underline text-sky-700 hover:text-sky-800"
               data-discover="true"
@@ -469,11 +477,9 @@ exports[`WithdrawPackageAction components > renders WithdrawPackageActionWaiver 
             >
               VA-2234.R11.01
             </a>
-          </li>
-          <li
-            class="flex items-center text-sm"
-          >
-            <span>
+            <span
+              class="ml-1"
+            >
               <svg
                 aria-hidden="true"
                 class="lucide lucide-chevron-right w-5 h-5"
@@ -493,12 +499,18 @@ exports[`WithdrawPackageAction components > renders WithdrawPackageActionWaiver 
                 />
               </svg>
             </span>
-            <span
+          </li>
+          <li
+            class="flex items-center text-sm"
+          >
+            <a
               aria-current="page"
               class="whitespace-nowrap"
+              data-discover="true"
+              href="/"
             >
               Withdraw Package
-            </span>
+            </a>
           </li>
         </ol>
       </nav>

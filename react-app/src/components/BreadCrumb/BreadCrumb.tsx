@@ -19,9 +19,7 @@ export const BreadCrumbs = ({ options }: BreadCrumbsProps) => {
   return (
     <BreadCrumbBar>
       {defaultBreadCrumb && (
-        <BreadCrumb to={defaultBreadCrumb.to} showSeperator={false}>
-          {defaultBreadCrumb.displayText}
-        </BreadCrumb>
+        <BreadCrumb to={defaultBreadCrumb.to}>{defaultBreadCrumb.displayText}</BreadCrumb>
       )}
       {/* After this we map over the config and check to see if the breadcrumb needs to be displayed. Proper route paths are important here. It should be hierarchical */}
       {options
@@ -42,28 +40,28 @@ type BreadCrumbProps = {
   to: string;
   active?: boolean;
   showSeperator?: boolean;
-  seperator?: ReactNode;
+  separator?: ReactNode;
 };
 
 export const BreadCrumb = ({
   to,
-  seperator = <BreadCrumbSeperator />,
-  showSeperator = true,
+  separator = <BreadCrumbSeperator />,
   active,
   children,
 }: React.PropsWithChildren<BreadCrumbProps>) => {
   return (
     <li className="flex items-center text-sm">
-      {showSeperator && <span>{seperator}</span>}
-
       {active ? (
-        <span className="whitespace-nowrap" aria-current="page">
-          {children}
-        </span>
-      ) : (
-        <Link to={to} className="underline text-sky-700 hover:text-sky-800">
+        <Link to={to} className="whitespace-nowrap" aria-current="page">
           {children}
         </Link>
+      ) : (
+        <>
+          <Link to={to} className="underline text-sky-700 hover:text-sky-800">
+            {children}
+          </Link>
+          <span className="ml-1">{separator}</span>
+        </>
       )}
     </li>
   );
