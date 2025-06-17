@@ -58,13 +58,13 @@ const sendRecoverMessage = async (currentPackage: ItemResult) => {
  * @property {string} body.packageId
  * @property {string} body.action
  */
-const sendDeleteMessage = async (currentPackage: ItemResult) => {
+const sendDeleteMessage = async (currentPackage: ItemResult, timestamp?: number) => {
   const topicName = process.env.topicName as string;
   if (!topicName) {
     throw new Error("Topic name is not defined");
   }
   const packageId = currentPackage._source.id;
-  const currentTime = Date.now();
+  const currentTime = timestamp || Date.now();
 
   // Making a copy of the previous package and deleting it
 
@@ -159,7 +159,6 @@ const sendUpdateValuesMessage = async ({
     currentPackage._id,
     JSON.stringify({
       id: currentPackage._id,
-      ...updatedFields,
       isAdminChange: true,
       adminChangeType: "update-values",
       changeMade,
@@ -168,6 +167,7 @@ const sendUpdateValuesMessage = async ({
       changedDate: currentTime,
       statusDate: currentTime,
       timestamp: currentTime,
+      ...updatedFields,
     }),
   );
 
@@ -234,6 +234,7 @@ const sendUpdateIdMessage = async ({
   }
 
   const currentTime = Date.now();
+
   await produceMessage(
     topicName,
     updatedId,
@@ -252,7 +253,7 @@ const sendUpdateIdMessage = async ({
       timestamp: currentTime,
     }),
   );
-  await sendDeleteMessage(currentPackage);
+  await sendDeleteMessage(currentPackage, currentTime);
   return response({
     statusCode: 200,
     body: { message: `The ID of package ${currentPackage._id} has been updated to ${updatedId}.` },

@@ -4,11 +4,23 @@ import { checkIfAuthenticated, runCommand, setStageFromBranch, writeUiEnvFile } 
 
 export const ui = {
   command: "ui",
-  describe: "Run react-server locally against an aws backend",
+  describe:
+    "Run the React app locally with the Stage environment as the API. \n\n** Requires MACPro Application Admin or MACPro ReadOnly AWS credentials **\n",
   builder: (yargs: Argv) => {
     return yargs
-      .option("stage", { type: "string", demandOption: false })
-      .option("mocked", { type: "boolean", demandOption: false, default: false });
+      .option("stage", {
+        type: "string",
+        demandOption: false,
+        describe: "Stage environment in AWS",
+        defaultDescription: "current branch name",
+      })
+      .option("mocked", {
+        type: "boolean",
+        demandOption: false,
+        default: false,
+        describe: "Use Mock Service Worker instead of the deployed API",
+        defaultDescription: "false",
+      });
   },
 
   handler: async (options: { stage?: string; mocked?: boolean }) => {

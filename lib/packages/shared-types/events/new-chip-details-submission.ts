@@ -5,12 +5,12 @@ import { sharedSchema } from "./base-schema";
 
 export const baseSchema = z.object({
   event: z.literal("new-chip-details-submission").default("new-chip-details-submission"),
-  chipSubmissionType: z.array(z.string()).optional(),
+  chipSubmissionType: z.array(z.string()).optional().default([]),
   additionalInformation: z.string().max(4000).nullable().default(null).optional(),
   attachments: z.object({
     chipEligibility: z.object({
       files: attachmentArraySchema(),
-      label: z.string().default("CHIP eligibility template"),
+      label: z.string().default("CHIP Eligibility Template"),
     }),
     coverLetter: z.object({
       files: attachmentArraySchema(),
