@@ -36,7 +36,7 @@ describe("useChipSpaOptions", () => {
     const { result } = renderHook(() => useChipSpaOptions());
 
     expect(result.current).toHaveLength(2);
-    expect(result.current[0].title).toBe("CHIP eligibility SPA submissions");
+    expect(result.current[0].title).toBe("CHIP Eligibility SPA Submissions");
     expect(result.current[0].to).toMatchObject({
       pathname: "/new-submission/spa/chip/create/chip-details",
     });

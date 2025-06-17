@@ -1,6 +1,20 @@
+import * as fs from "node:fs/promises";
+
 import { chromium, expect } from "@playwright/test";
+import * as path from "path";
 
 import { LoginPage } from "@/pages";
+
+export async function checkAuthPath(storagePath: string) {
+  try {
+    const projectFolder = path.dirname(path.resolve(storagePath));
+    console.log("Checking for auth directory: ", projectFolder);
+    await fs.mkdir(projectFolder, { recursive: true });
+    return;
+  } catch (err) {
+    console.warn("Error creating auth directory", err);
+  }
+}
 
 export async function generateAuthFile({
   baseURL,

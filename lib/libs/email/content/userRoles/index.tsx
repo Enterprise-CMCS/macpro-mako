@@ -1,4 +1,5 @@
 import { render } from "@react-email/render";
+import { userRoleMap } from "shared-utils";
 
 import {
   AccessChangeNoticeEmail,
@@ -6,7 +7,7 @@ import {
   AdminPendingNoticeEmail,
   SelfRevokeAdminChangeEmail,
 } from "./emailTemplates";
-import { statesMap, statusMap, userRoleMap, userRoleType } from "./roleHelper";
+import { statesMap, statusMap, userRoleType } from "./roleHelper";
 
 export type UserRoleEmailType = {
   role: userRoleType;

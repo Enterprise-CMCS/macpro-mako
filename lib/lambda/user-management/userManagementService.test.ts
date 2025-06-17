@@ -8,12 +8,14 @@ import {
   STATE_SYSTEM_ADMIN_EMAIL,
   STATE_SYSTEM_ADMIN_USER,
 } from "mocks";
-import { describe, expect, it } from "vitest";
+import { beforeEach, describe, expect, it, vi } from "vitest";
 
 import {
   getAllUserRoles,
   getAllUserRolesByEmail,
   getAllUserRolesByState,
+  getApproversByRole,
+  getApproversByRoleState,
   getLatestActiveRoleByEmail,
   getUserByEmail,
   getUserRolesWithNames,
@@ -353,6 +355,61 @@ describe("User Management Service", () => {
           territory: "MD",
           lastModifiedDate: 1745003573565,
           fullName: "Unknown",
+        },
+      ]);
+    });
+  });
+
+  describe("getApproversByRoleState", () => {
+    beforeEach(() => {
+      vi.resetAllMocks();
+    });
+
+    it("should return approvers for statesubmitter in a specific state", async () => {
+      const result = await getApproversByRoleState("statesubmitter", "MD");
+
+      expect(result).toEqual([
+        {
+          email: "statesystemadmin@nightwatch.test",
+          fullName: "Statesystemadmin Nightwatch",
+          id: "statesystemadmin@nightwatch.test_MD_statesystemadmin",
+        },
+      ]);
+    });
+
+    it("should default to fullName 'Unknown' if user not found", async () => {
+      const result = await getApproversByRoleState("statesubmitter", "CA");
+
+      expect(result).toEqual([
+        {
+          email: "statesystemadmin@noname.com",
+          fullName: "Unknown",
+          id: "statesystemadmin@noname.com_CA_statesystemadmin",
+        },
+      ]);
+    });
+  });
+
+  describe("getApproversByRole", () => {
+    beforeEach(() => {
+      vi.resetAllMocks();
+    });
+
+    it("should default to fullName 'Unknown' if user not found", async () => {
+      const result = await getApproversByRole("statesubmitter");
+
+      expect(result).toEqual([
+        {
+          email: "statesystemadmin@nightwatch.test",
+          fullName: "Statesystemadmin Nightwatch",
+          id: "statesystemadmin@nightwatch.test_MD_statesystemadmin",
+          territory: "MD",
+        },
+        {
+          email: "statesystemadmin@noname.com",
+          fullName: "Unknown",
+          id: "statesystemadmin@noname.com_CA_statesystemadmin",
+          territory: "CA",
         },
       ]);
     });
