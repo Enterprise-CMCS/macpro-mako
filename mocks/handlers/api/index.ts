@@ -35,4 +35,5 @@ export {
   errorApiGetCreateUserProfileHandler,
   errorApiOptionSubmitGroupDivisionHandler,
   errorApiSubmitRoleRequestsHandler,
+  errorApiGetApproversHandler,
 } from "./userProfile";
