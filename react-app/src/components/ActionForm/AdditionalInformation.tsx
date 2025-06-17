@@ -19,13 +19,12 @@ export const AdditionalInformation = <Schema extends SchemaWithEnforcableProps>(
 }: AdditionalInformationProps<Schema>) => {
 const [inputValue, setInputValue] =  useState("");
 const handleInputChange = (event)=> {
-  // if (inputValue == "" && event.target.value.length > 1) {
-  //   console.log("user has typed into additional information box, submissionType: ", submissionType);
-  //   window.gtag("event", "submit_additional_info_used", {submission_type: submissionType})
-  // }
-  // setInputValue(event.target.value);
-  // field.onChange(event);
-  console.log("additional information typed")
+  if (event.target.value.length == 1) {
+    console.log("user has typed into additional information box, submissionType: ", submissionType);
+    window.gtag("event", "submit_additional_info_used", {submission_type: submissionType})
+  }
+  setInputValue(event.target.value);
+  field.onChange(event);
 };
 return(
   <FormItem>
