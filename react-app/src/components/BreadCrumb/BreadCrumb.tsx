@@ -83,7 +83,7 @@ export const BreadCrumb = ({
               console.log("send GA event with submission type: ", submissionType);
               window.gtag("event", "submit_breadcrumb_click", {
                 crumb_name:  typeof children === "string" ? children : undefined,
-                submissionType: submissionType
+                submission_type: submissionType
               });
             } else {
               window.gtag("event", "breadcrumb_click", {
