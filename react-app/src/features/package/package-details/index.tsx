@@ -50,6 +50,7 @@ export const PackageDetails = ({ submission }: PackageDetailsProps) => {
     }
 
     switch (submission.authority) {
+      //possibly add option for chip eligibility here
       case Authority["1915b"]:
       case Authority["1915c"]:
       case undefined:
