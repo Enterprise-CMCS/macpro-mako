@@ -17,7 +17,7 @@ export const getUserByEmail = async (
     size: 1,
     query: {
       term: {
-        "email.keyword": email,
+        "email.keyword": email.toLowerCase(),
       },
     },
   });
@@ -35,7 +35,7 @@ export const getUsersByEmails = async (emails: string[]) => {
           ?.filter((email) => email)
           .map((email) => ({
             term: {
-              "email.keyword": email,
+              "email.keyword": email.toLowerCase(),
             },
           })),
       },
@@ -58,7 +58,7 @@ export const getAllUserRolesByEmail = async (email: string) => {
     size: QUERY_LIMIT,
     query: {
       term: {
-        "email.keyword": email,
+        "email.keyword": email.toLowerCase(),
       },
     },
   });
@@ -74,7 +74,7 @@ export const userHasThisRole = async (email: string, state: string, role: string
     query: {
       bool: {
         must: [
-          { term: { "email.keyword": email } },
+          { term: { "email.keyword": email.toLowerCase() } },
           { term: { status: "active" } },
           { term: { role: role } },
           { term: { "territory.keyword": state } },
@@ -142,7 +142,7 @@ export const getLatestActiveRoleByEmail = async (email: string) => {
     size: 1,
     query: {
       bool: {
-        must: [{ term: { "email.keyword": email } }, { term: { status: "active" } }],
+        must: [{ term: { "email.keyword": email.toLowerCase() } }, { term: { status: "active" } }],
       },
     },
     sort: [
@@ -193,9 +193,13 @@ export const getApproversByRoleState = async (
   const approversInfo = [];
   for (const approver of approverRoleList) {
     if (approver.email) {
-      const userInfo = await getUserByEmail(approver.email, userDomainNamespace);
+      const userInfo = await getUserByEmail(approver.email.toLowerCase(), userDomainNamespace);
       const fullName = userInfo?.fullName ?? "Unknown";
-      approversInfo.push({ email: approver.email, fullName: fullName, id: approver.id });
+      approversInfo.push({
+        email: approver.email.toLowerCase(),
+        fullName: fullName,
+        id: approver.id,
+      });
     }
   }
 
@@ -267,7 +271,7 @@ export const getActiveStatesForUserByEmail = async (
     query: {
       bool: {
         must: [
-          { term: { "email.keyword": email } },
+          { term: { "email.keyword": email.toLowerCase() } },
           { term: { status: "active" } },
           ...(latestActiveRole ? [{ term: { role: latestActiveRole } }] : []),
         ],
