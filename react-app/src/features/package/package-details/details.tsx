@@ -50,10 +50,37 @@ export type LabelAndValue = {
 type GetLabelAndValueFromSubmission = (
   submission: opensearch.main.Document,
   user: OneMacUser,
+  chipFlagEnabled: boolean,
 ) => LabelAndValue[];
 
-export const getSubmissionDetails: GetLabelAndValueFromSubmission = (submission, { user }) => {
-  console.log("📦 submission:", submission);
+export const getSubmissionDetails: GetLabelAndValueFromSubmission = (
+  submission,
+  { user },
+  chipFlagEnabled,
+) => {
+  const hasChipEligibilityAttachment = Object.values(submission.attachments || {}).some(
+    (attachment) =>
+      attachment.label?.toLowerCase().includes("chip eligibility") &&
+      Array.isArray(attachment.files) &&
+      attachment.files.length > 0,
+  );
+
+  const hasChipSubmissionType =
+    Array.isArray(submission.chipSubmissionType) && submission.chipSubmissionType.length > 0;
+
+  const chipSubmissionTypeField: LabelAndValue[] =
+    chipFlagEnabled && (hasChipEligibilityAttachment || hasChipSubmissionType)
+      ? [
+          {
+            label: "CHIP Submission Type",
+            value: hasChipSubmissionType ? (
+              <span className="break-words">{submission.chipSubmissionType.join(", ")}</span>
+            ) : (
+              <span className="italic text-gray-500">{BLANK_VALUE}</span>
+            ),
+          },
+        ]
+      : [];
 
   return [
     {
@@ -126,20 +153,7 @@ export const getSubmissionDetails: GetLabelAndValueFromSubmission = (submission,
       value: submission.originalWaiverNumber,
       canView: submission.actionType === "Extend",
     },
-    {
-      label: "CHIP Submission Type",
-      value:
-        Array.isArray(submission.chipSubmissionType) && submission.chipSubmissionType.length > 0 ? (
-          <ul className="list-disc list-outside pl-5">
-            {submission.chipSubmissionType.map((type, i) => (
-              <li key={i}>{type}</li>
-            ))}
-          </ul>
-        ) : (
-          BLANK_VALUE
-        ),
-    },
-
+    ...chipSubmissionTypeField,
     {
       label: "Initial Submission Date",
       value: submission.submissionDate ? formatDateToET(submission.submissionDate) : BLANK_VALUE,

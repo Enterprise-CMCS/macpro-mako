@@ -46,6 +46,8 @@ export const respondToRai: AuthoritiesWithUserTypesTemplate = {
     cms: async (
       variables: Events["RespondToRai"] & CommonEmailVariables & { emails: EmailAddresses },
     ) => {
+      const chipPrefix = `CHIP${variables.isChipEligibility ? " Eligibility" : ""}`;
+
       return {
         to: [
           ...variables.emails.chipInbox,
@@ -53,13 +55,15 @@ export const respondToRai: AuthoritiesWithUserTypesTemplate = {
           ...variables.emails.cpocEmail,
         ],
         cc: variables.emails.chipCcList,
-        subject: `CHIP SPA RAI Response for ${variables.id} Submitted`,
+        subject: `${chipPrefix} SPA RAI Response for ${variables.id} Submitted`,
         body: await render(<ChipSpaCMSEmail variables={variables} />),
       };
     },
     state: async (
       variables: Events["RespondToRai"] & CommonEmailVariables & { emails: EmailAddresses },
     ) => {
+      const chipPrefix = `CHIP${variables.isChipEligibility ? " Eligibility" : ""}`;
+
       return {
         to: [
           `${variables.submitterName} <${variables.submitterEmail}>`,
@@ -68,7 +72,7 @@ export const respondToRai: AuthoritiesWithUserTypesTemplate = {
             (email) => !email.includes(variables.submitterEmail),
           ),
         ],
-        subject: `Your CHIP SPA RAI Response for ${variables.id} has been submitted to CMS`,
+        subject: `Your ${chipPrefix} SPA RAI Response for ${variables.id} has been submitted to CMS`,
         body: await render(<ChipSpaStateEmail variables={variables} />),
       };
     },

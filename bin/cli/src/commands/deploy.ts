@@ -8,9 +8,14 @@ import { checkIfAuthenticated, project, region, runCommand, writeUiEnvFile } fro
 
 export const deploy = {
   command: "deploy",
-  describe: "deploy the project",
+  describe:
+    "Deploy the project stack to the Stage environment in AWS. \n\n** Requires MACPro Application Admin AWS credentials **\n",
   builder: (yargs: Argv) => {
-    return yargs.option("stage", { type: "string", demandOption: true });
+    return yargs.option("stage", {
+      type: "string",
+      demandOption: true,
+      describe: "Stage environment in AWS",
+    });
   },
   handler: async (options: { stage: string; stack?: string }) => {
     await checkIfAuthenticated();
