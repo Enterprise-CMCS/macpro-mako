@@ -1,16 +1,15 @@
-import omit from "lodash/omit";
-import { events } from "shared-types";
+import { events } from "../../../../index";
 
 export const transform = () => {
   return events["legacy-event"].legacyEventSchema.transform((data) => {
-    const cleanData = omit(data, ["parentId"]);
+    const { parentId, ...cleanData } = data;
     return {
       ...cleanData,
       cmsStatus: "Requested",
       stateStatus: "Submitted",
       authority: data.temporaryExtensionType ?? "1915(b)",
       actionType: "Extend",
-      originalWaiverNumber: data.parentId,
+      originalWaiverNumber: parentId,
     };
   });
 };

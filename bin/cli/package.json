@@ -9,6 +9,7 @@
     "@aws-sdk/client-cloudformation": "^3.526.0",
     "@aws-sdk/client-cloudfront": "^3.600.0",
     "@aws-sdk/client-cost-explorer": "^3.613.0",
+    "@aws-sdk/client-ec2": "^3.827.0",
     "@aws-sdk/client-ssm": "^3.613.0",
     "dotenv": "^16.0.3",
     "open": "^10.0.4",

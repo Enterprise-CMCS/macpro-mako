@@ -6,7 +6,7 @@ export default defineConfig({
   test: {
     globals: true,
     include: ["**/*.test.{ts,tsx}"],
-    exclude: ["**/node_modules/**", "test/e2e/**", "**/*.spec.ts"],
+    exclude: ["**/node_modules/**", "test/**", "**/*.spec.{ts,tsx}"],
     server: {
       deps: {
         cacheDir: ".vitest/cache",

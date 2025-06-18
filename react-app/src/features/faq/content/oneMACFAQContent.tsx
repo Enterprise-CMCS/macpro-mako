@@ -101,71 +101,16 @@ export const oneMACFAQContent: FAQContent[] = [
         anchorText: "onemac-roles",
         question: "What are the OneMAC user roles?",
         answerJSX: (
-          <table className="faq-table  border-collapse border border-gray-300 w-full">
-            <thead>
-              <tr>
-                <th className="border border-gray-300 px-4 py-2">OneMAC Role</th>
-                <th className="border border-gray-300 px-4 py-2">System Utilization</th>
-                <th className="border border-gray-300 px-4 py-2">Role Approver</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr>
-                <td className="border border-gray-300 px-4 py-2">CMS Read Only</td>
-                <td className="border border-gray-300 px-4 py-2">
-                  Read only roles within OneMAC Micro
-                </td>
-                <td className="border border-gray-300 px-4 py-2">
-                  CMS System Admin or CMS Role Approver
-                </td>
-              </tr>
-              <tr>
-                <td className="border border-gray-300 px-4 py-2">CMS Reviewer</td>
-                <td className="border border-gray-300 px-4 py-2">
-                  Can take action on packages within OneMAC Micro
-                </td>
-                <td className="border border-gray-300 px-4 py-2">
-                  CMS System Admin or CMS Role Approver
-                </td>
-              </tr>
-              <tr>
-                <td className="border border-gray-300 px-4 py-2">CMS System Admin</td>
-                <td className="border border-gray-300 px-4 py-2">
-                  <span className="underline">Approves All</span> roles within IDM
-                </td>
-                <td className="border border-gray-300 px-4 py-2">IDM Tier 2 Helpdesk</td>
-              </tr>
-              <tr>
-                <td className="border border-gray-300 px-4 py-2">CMS Role Approver</td>
-                <td className="border border-gray-300 px-4 py-2">
-                  <span className="underline">Approves All</span> roles within IDM
-                </td>
-                <td className="border border-gray-300 px-4 py-2">
-                  CMS System Admin or CMS Role Approver{" "}
-                </td>
-              </tr>
-              <tr>
-                <td className="border border-gray-300 px-4 py-2">State Submitter</td>
-                <td className="border border-gray-300 px-4 py-2">
-                  State submitter role within OneMAC can submit, edit, and view packages for the
-                  state in which they are assigned
-                </td>
-                <td className="border border-gray-300 px-4 py-2">
-                  State System Admin or CMS System Admin or CMS Role Approver
-                </td>
-              </tr>
-              <tr>
-                <td className="border border-gray-300 px-4 py-2">State System Admin</td>
-                <td className="border border-gray-300 px-4 py-2">
-                  State System Admin role can approve State Submitter roles for the state in which
-                  they are assigned
-                </td>
-                <td className="border border-gray-300 px-4 py-2">
-                  CMS System Admin or CMS Role Approver
-                </td>
-              </tr>
-            </tbody>
-          </table>
+          <p>
+            Please refer to the State role descriptions that can be found on page 4 of the{" "}
+            <a
+              className="text-blue-800 underline hover:no-underline"
+              href="/onboarding/OneMACStateUserGuide.pdf"
+            >
+              OneMAC State User Guide
+            </a>
+            .
+          </p>
         ),
       },
       {
@@ -359,11 +304,11 @@ export const oneMACFAQContent: FAQContent[] = [
                 },
                 {
                   href: "#mpc-spa-templates",
-                  text: "Where can I download Medicaid Premiums and Cost Sharing (MPC) SPA templates?",
+                  text: "Where can I download Medicaid Premiums and Cost Sharing SPA templates?",
                 },
                 {
                   href: "#mpc-spa-implementation-guides",
-                  text: "Where can I download Medicaid Premiums and Cost Sharing (MPC) SPA implementation guides?",
+                  text: "Where can I download Medicaid Premiums and Cost Sharing SPA implementation guides?",
                 },
                 {
                   href: "#chip-spa-templates",
@@ -950,7 +895,8 @@ export const oneMACFAQContent: FAQContent[] = [
                     rel="noopener noreferrer"
                     className="text-blue-600"
                   >
-                    {pdf.title}: {pdf.text}
+                    {pdf.title}
+                    {pdf.text && `: ${pdf.text}`}
                   </a>
                   {pdf.subtext && (
                     <ul className="list-disc pl-7 space-y-1">
@@ -997,13 +943,13 @@ export const oneMACFAQContent: FAQContent[] = [
       },
       {
         anchorText: "mpc-spa-templates",
-        question: "Where can I download Medicaid Premiums and Cost Sharing (MPC) SPA templates?",
+        question: "Where can I download Medicaid Premiums and Cost Sharing SPA templates?",
         answerJSX: (
           <section className="space-y-2">
             <p>
-              Medicaid Premiums and Cost Sharing (MPC) SPA templates can be downloaded at the links
-              below. After downloading and completing the templates you need, upload them as part of
-              the SPA submission.
+              Medicaid Premiums and Cost Sharing SPA templates can be downloaded at the links below.
+              After downloading and completing the templates you need, upload them as part of the
+              SPA submission.
             </p>
             <ul className="list-disc pl-7 space-y-2">
               {MPC_TEMPLATES.map((pdf) => (
@@ -1014,7 +960,8 @@ export const oneMACFAQContent: FAQContent[] = [
                     rel="noopener noreferrer"
                     className="text-blue-600"
                   >
-                    {pdf.title}: {pdf.text}
+                    {pdf.title}
+                    {pdf.text && `: ${pdf.text}`}
                   </a>
                 </li>
               ))}
@@ -1025,12 +972,12 @@ export const oneMACFAQContent: FAQContent[] = [
       {
         anchorText: "mpc-spa-implementation-guides",
         question:
-          "Where can I download Medicaid Premiums and Cost Sharing (MPC) SPA implementation guides?",
+          "Where can I download Medicaid Premiums and Cost Sharing SPA implementation guides?",
         answerJSX: (
           <section className="space-y-2">
             <p>
-              Medicaid Premiums and Cost Sharing (MPC) SPA implementation guides can be downloaded
-              at the links below.
+              Medicaid Premiums and Cost Sharing SPA implementation guides can be downloaded at the
+              links below.
             </p>
             <ul className="list-disc pl-7 space-y-2">
               {MPC_GUIDES.map((pdf) => (

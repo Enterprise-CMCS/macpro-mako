@@ -79,4 +79,25 @@ export const featureFlags = {
     flag: "med-spa-card",
     defaultValue: true,
   },
+  /*
+   *  Toggle visibility of save and submit form
+   */
+  MED_SPA_FOOTER: {
+    flag: "med-spa-footer",
+    defaultValue: true,
+  },
+  /*
+   *  Toggle visibility of details page of the chip spa eligibility submission
+   */
+  CHIP_SPA_DETAILS: {
+    flag: "chip-spa-details",
+    defaultValue: true,
+  },
+  /*
+   *  Toggle visibility between the enhanced experience and mmdl banner
+   */
+  UPGRADE_MMDL_BANNER: {
+    flag: "upgrade-mmdl-banner",
+    defaultValue: true,
+  },
 } as const;

@@ -50,92 +50,125 @@ export type LabelAndValue = {
 type GetLabelAndValueFromSubmission = (
   submission: opensearch.main.Document,
   user: OneMacUser,
+  chipFlagEnabled: boolean,
 ) => LabelAndValue[];
 
-export const getSubmissionDetails: GetLabelAndValueFromSubmission = (submission, { user }) => [
-  {
-    label: "Submission ID",
-    value: submission.id,
-  },
-  {
-    label: "Authority",
-    value: submission.authority,
-  },
-  {
-    label: "Action Type",
-    value: formatActionType(submission.actionType),
-    canView: ([Authority["1915b"], Authority["1915c"]] as string[]).includes(submission.authority),
-  },
-  {
-    label: "State",
-    value: convertStateAbbrToFullName(submission.state),
-  },
-  {
-    label: "Amendment Title",
-    value: submission.title || BLANK_VALUE,
-    canView: submission.title !== undefined,
-  },
-  {
-    label: "Subject",
-    value: submission.subject || BLANK_VALUE,
-    canView: isCmsUser(user) && submission.actionType !== "Extend",
-  },
-  {
-    label: "Type",
-    value:
-      submission.types && submission.types.length ? (
-        <ul className="list-disc list-outside pl-5">
-          {submission.types
-            .filter((type) => type?.SPA_TYPE_ID && type?.SPA_TYPE_NAME)
-            .map((type) => (
-              <li className="mb-2" key={type?.SPA_TYPE_ID}>
-                {type?.SPA_TYPE_NAME}
-              </li>
-            ))}
-        </ul>
-      ) : (
-        BLANK_VALUE
-      ),
-    canView: submission.actionType !== "Extend" && isStateUser(user) === false,
-  },
+export const getSubmissionDetails: GetLabelAndValueFromSubmission = (
+  submission,
+  { user },
+  chipFlagEnabled,
+) => {
+  const hasChipEligibilityAttachment = Object.values(submission.attachments || {}).some(
+    (attachment) =>
+      attachment.label?.toLowerCase().includes("chip eligibility") &&
+      Array.isArray(attachment.files) &&
+      attachment.files.length > 0,
+  );
 
-  {
-    label: "Subtype",
-    value:
-      submission.subTypes && submission.subTypes.length ? (
-        <ul className="list-disc list-outside pl-5">
-          {submission.subTypes
-            .filter((T) => T?.TYPE_ID && T?.TYPE_NAME)
-            .map((T) => (
-              <li className="mb-2" key={T?.TYPE_ID}>
-                {T?.TYPE_NAME}
-              </li>
-            ))}
-        </ul>
-      ) : (
-        BLANK_VALUE
+  const hasChipSubmissionType =
+    Array.isArray(submission.chipSubmissionType) && submission.chipSubmissionType.length > 0;
+
+  const chipSubmissionTypeField: LabelAndValue[] =
+    chipFlagEnabled && (hasChipEligibilityAttachment || hasChipSubmissionType)
+      ? [
+          {
+            label: "CHIP Submission Type",
+            value: hasChipSubmissionType ? (
+              <span className="break-words">{submission.chipSubmissionType.join(", ")}</span>
+            ) : (
+              <span className="italic text-gray-500">{BLANK_VALUE}</span>
+            ),
+          },
+        ]
+      : [];
+
+  return [
+    {
+      label: "Submission ID",
+      value: submission.id,
+    },
+    {
+      label: "Authority",
+      value: submission.authority,
+    },
+    {
+      label: "Action Type",
+      value: formatActionType(submission.actionType),
+      canView: ([Authority["1915b"], Authority["1915c"]] as string[]).includes(
+        submission.authority,
       ),
-    canView: submission.actionType !== "Extend" && isStateUser(user) === false,
-  },
-  {
-    label: "Approved Initial or Renewal Number",
-    value: submission.originalWaiverNumber,
-    canView: submission.actionType === "Extend",
-  },
-  {
-    label: "Initial Submission Date",
-    value: submission.submissionDate ? formatDateToET(submission.submissionDate) : BLANK_VALUE,
-  },
-  {
-    label: "Latest Package Activity",
-    value: submission.makoChangedDate ? formatDateToET(submission.makoChangedDate) : BLANK_VALUE,
-  },
-  {
-    label: "Formal RAI Response Date",
-    value: submission.raiReceivedDate ? formatDateToET(submission.raiReceivedDate) : BLANK_VALUE,
-    canView: submission.actionType !== "Extend",
-  },
-];
+    },
+    {
+      label: "State",
+      value: convertStateAbbrToFullName(submission.state),
+    },
+    {
+      label: "Amendment Title",
+      value: submission.title || BLANK_VALUE,
+      canView: submission.title !== undefined,
+    },
+    {
+      label: "Subject",
+      value: submission.subject || BLANK_VALUE,
+      canView: isCmsUser(user) && submission.actionType !== "Extend",
+    },
+    {
+      label: "Type",
+      value:
+        submission.types && submission.types.length ? (
+          <ul className="list-disc list-outside pl-5">
+            {submission.types
+              .filter((type) => type?.SPA_TYPE_ID && type?.SPA_TYPE_NAME)
+              .map((type) => (
+                <li className="mb-2" key={type?.SPA_TYPE_ID}>
+                  {type?.SPA_TYPE_NAME}
+                </li>
+              ))}
+          </ul>
+        ) : (
+          BLANK_VALUE
+        ),
+      canView: submission.actionType !== "Extend" && isStateUser(user) === false,
+    },
+    {
+      label: "Subtype",
+      value:
+        submission.subTypes && submission.subTypes.length ? (
+          <ul className="list-disc list-outside pl-5">
+            {submission.subTypes
+              .filter((T) => T?.TYPE_ID && T?.TYPE_NAME)
+              .map((T) => (
+                <li className="mb-2" key={T?.TYPE_ID}>
+                  {T?.TYPE_NAME}
+                </li>
+              ))}
+          </ul>
+        ) : (
+          BLANK_VALUE
+        ),
+      canView: submission.actionType !== "Extend" && isStateUser(user) === false,
+    },
+    {
+      label: "Approved Initial or Renewal Number",
+      value: submission.originalWaiverNumber,
+      canView: submission.actionType === "Extend",
+    },
+    ...chipSubmissionTypeField,
+    {
+      label: "Initial Submission Date",
+      value: submission.submissionDate ? formatDateToET(submission.submissionDate) : BLANK_VALUE,
+    },
+    {
+      label: "Latest Package Activity",
+      value: submission.makoChangedDate ? formatDateToET(submission.makoChangedDate) : BLANK_VALUE,
+    },
+    {
+      label: "Formal RAI Response Date",
+      value: submission.raiReceivedDate ? formatDateToET(submission.raiReceivedDate) : BLANK_VALUE,
+      canView: submission.actionType !== "Extend",
+    },
+  ];
+};
 
 export const getApprovedAndEffectiveDetails: GetLabelAndValueFromSubmission = (submission) => [
   {
@@ -168,6 +201,7 @@ export const getDescriptionDetails: GetLabelAndValueFromSubmission = (submission
 ];
 
 export const getSubmittedByDetails: GetLabelAndValueFromSubmission = (submission, { user }) => [
+  //possibly add details new drop down here
   {
     label: "Submitted By",
     value: <p className="text-lg">{submission.submitterName || BLANK_VALUE}</p>,

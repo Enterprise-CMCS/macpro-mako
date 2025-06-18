@@ -287,11 +287,13 @@ export async function processAndSendEmails(
   console.log("successfully parsed emails: ", emails);
 
   const allStateUsersEmails = allStateUsers.map((user) => user.formattedEmailAddress);
+  const isChipEligibility = record.authority === "CHIP SPA" && !!item._source?.chipSubmissionType;
   console.log("mappped to formatted email address for all state users: ", allStateUsers);
 
   const templateVariables = {
     ...record,
     id,
+    isChipEligibility,
     applicationEndpointUrl: config.applicationEndpointUrl,
     territory,
     emails: { ...emails, cpocEmail, srtEmails },

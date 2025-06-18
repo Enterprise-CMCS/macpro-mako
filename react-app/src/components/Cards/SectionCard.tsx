@@ -8,8 +8,16 @@ interface SectionCardProps {
   title?: ReactNode;
   id?: string;
   testId?: string;
+  childrenClassName?: string;
 }
-export const SectionCard = ({ title, children, className, id, testId }: SectionCardProps) => {
+export const SectionCard = ({
+  title,
+  children,
+  className,
+  id,
+  testId,
+  childrenClassName = "gap-8 flex flex-col",
+}: SectionCardProps) => {
   return (
     <section
       data-testid={testId}
@@ -24,7 +32,7 @@ export const SectionCard = ({ title, children, className, id, testId }: SectionC
           <hr className="my-6 bg-slate-200" />
         </>
       )}
-      <div data-testid={`${testId}-child`} className="gap-8 flex flex-col">
+      <div data-testid={`${testId}-child`} className={childrenClassName}>
         {children}
       </div>
     </section>

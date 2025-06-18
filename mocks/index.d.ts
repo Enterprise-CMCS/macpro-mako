@@ -89,6 +89,7 @@ export type TestRoleResult = {
     role: TestUserRole;
     territory: string;
     lastModifiedDate: number;
+    approverList?: { fullName: string; email: string }[];
   };
 };
 
