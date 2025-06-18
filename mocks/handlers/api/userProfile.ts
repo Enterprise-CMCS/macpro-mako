@@ -19,7 +19,7 @@ const defaultApiUserProfileHandler = http.post<PathParams, UserProfileRequestBod
   "https://test-domain.execute-api.us-east-1.amazonaws.com/mocked-tests/getUserProfile",
   async ({ request }) => {
     let email;
-    if (request.body) {
+    if (Object.hasOwn(request, "body")) {
       const { userEmail } = await request.json();
       email = userEmail;
     } else {

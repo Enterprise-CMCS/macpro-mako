@@ -99,7 +99,7 @@ const generateAccessToken = async (
 const generateRefreshToken = async (user: TestUserData): Promise<string | null> => {
   if (user) {
     const jwt = await new jose.SignJWT({
-      sub: getAttributeFromUser(user, "sub"),
+      sub: getAttributeFromUser(user, "sub") || undefined,
       "cognito:username": user.Username,
     })
       .setExpirationTime("30m")
@@ -152,27 +152,83 @@ export const getRequestContext = (user?: TestUserData | string): APIGatewayEvent
   } as APIGatewayEventRequestContext;
 };
 
-export const signInHandler = http.post(/amazoncognito.com\/oauth2\/token/, async ({ request }) => {
-  console.log("signInHandler", { request, headers: request.headers });
-  const username = getMockUsername();
+// https://compliance-breadcrumbs-login-4e1pcu4tsvjk6r16v67f2hd1vc.auth.us-east-1.amazoncognito.com/oauth2/token
+// https://compliance-breadcrumbs-login-4e1pcu4tsvjk6r16v67f2hd1vc.auth.us-east-1.amazoncognito.com/login
 
-  if (username) {
-    const user = findUserByUsername(username);
-    if (user) {
-      const authTime = Date.now() / 1000;
-      const expTime = authTime + 1800;
-      return HttpResponse.json({
-        id_token: await generateIdToken(user, authTime, expTime),
-        access_token: await generateAccessToken(user, authTime, expTime),
-        refresh_token: await generateRefreshToken(user),
-        expires_in: 1800,
-        token_type: "Bearer",
-      });
+// https://https://mocked-tests-login-userpoolwebclientid.auth.us-east-1.amazoncognito.com/oauth2/authorize?redirect_uri=http://localhost:5000/&response_type=code&client_id=userPoolWebClientId
+//GET Status Code 302 Found
+
+export const authorizeHandler = http.get(
+  /amazoncognito\/oauth2\/authorize/,
+  async ({ request }) => {
+    console.log("authorizeHandler", { request, headers: request.headers });
+    // const url = new URL(request.url);
+
+    return passthrough();
+    // const redirectUri = url.searchParams.get("redirect_uri");
+    // const responseType = url.searchParams.get("response_type");
+    // const clientId = url.searchParams.get("client_id");
+
+    // return new HttpResponse(null, {
+    //   status: 302,
+    //   headers: {
+    //     location: `https://mocked-tests-login-userpoolwebclientid.auth.us-east-1.amazoncognito.com/login?redirect_url=${redirectUri}&response_type=${responseType}&client_id=${clientId}`,
+    //     "set-cookie": `
+    //       XSRF-TOKEN=552623cf-ff5f-4118-bccf-0449ba8704b1; Path=/; Secure; HttpOnly; SameSite=Lax
+    //       csrf-state=""; Expires=Tue, 17-Jun-2025 20:37:56 GMT; Path=/; Secure; HttpOnly; SameSite=None
+    //       csrf-state-legacy=""; Expires=Tue, 17-Jun-2025 20:37:56 GMT; Path=/; Secure; HttpOnly
+    //     `,
+    //   },
+    // });
+  },
+);
+
+export const loginGetHandler = http.get(
+  "https://mocked-tests-login-userpoolwebclientid.auth.us-east-1.amazoncognito.com/login",
+  async () => new HttpResponse(null, { status: 200 }),
+);
+
+export const loginPostHandler = http.post(
+  "https://mocked-tests-login-userpoolwebclientid.auth.us-east-1.amazoncognito.com/login",
+  async ({ request }) => {
+    console.log("loginPostHandler", { request, headers: request.headers });
+    const url = new URL(request.url);
+
+    const redirectUri = url.searchParams.get("redirect_uri");
+
+    return new HttpResponse(null, {
+      status: 302,
+      headers: {
+        location: redirectUri || "http://localhost:5000",
+      },
+    });
+  },
+);
+
+export const tokenHandler = http.post(
+  "https://mocked-tests-login-userpoolwebclientid.auth.us-east-1.amazoncognito.com/oauth2/token",
+  async ({ request }) => {
+    console.log("tokenHandler", { request, headers: request.headers });
+    const username = getMockUsername();
+
+    if (username) {
+      const user = findUserByUsername(username);
+      if (user) {
+        const authTime = Date.now() / 1000;
+        const expTime = authTime + 1800;
+        return HttpResponse.json({
+          id_token: await generateIdToken(user, authTime, expTime),
+          access_token: await generateAccessToken(user, authTime, expTime),
+          refresh_token: await generateRefreshToken(user),
+          expires_in: 1800,
+          token_type: "Bearer",
+        });
+      }
+      return new HttpResponse("No user found with this sub", { status: 404 });
     }
-    return new HttpResponse("No user found with this sub", { status: 404 });
-  }
-  return new HttpResponse("User not set", { status: 401 });
-});
+    return new HttpResponse("User not set", { status: 401 });
+  },
+);
 
 export const identityServiceHandler = http.post<PathParams, IdentityRequest>(
   /cognito-identity/,
@@ -252,9 +308,10 @@ export const identityServiceHandler = http.post<PathParams, IdentityRequest>(
 export const identityProviderServiceHandler = http.post<
   PathParams,
   IdpRequestSessionBody | IdpRefreshRequestBody | IdpListUsersRequestBody | AdminGetUserRequestBody
->(/https:\/\/cognito-idp.\S*.amazonaws.com\//, async ({ request }) => {
+>(/https:\/\/cognito-idp\.\S*.amazonaws\.com\//, async ({ request }) => {
   console.log("identityProviderServiceHandler", { request, headers: request.headers });
   const target = request.headers.get("x-amz-target");
+  console.log({ target });
   if (target) {
     if (target == "AWSCognitoIdentityProviderService.InitiateAuth") {
       const { AuthFlow, AuthParameters } = (await request.json()) as IdpRefreshRequestBody;
@@ -403,7 +460,7 @@ export const identityProviderServiceHandler = http.post<
 export const emptyIdentityProviderServiceHandler = http.post<
   PathParams,
   IdpRequestSessionBody | IdpRefreshRequestBody | IdpListUsersRequestBody | AdminGetUserRequestBody
->(/https:\/\/cognito-idp.\S*.amazonaws.com\//, async ({ request }) => {
+>(/https:\/\/cognito-idp\.\S*.amazonaws\.com\//, async ({ request }) => {
   const target = request.headers.get("x-amz-target");
   if (target == "AWSCognitoIdentityProviderService.ListUsers") {
     const { Filter } = (await request.json()) as IdpListUsersRequestBody;
@@ -439,12 +496,15 @@ export const errorIdentityProviderServiceHandler = http.post<
   PathParams,
   IdpRequestSessionBody | IdpRefreshRequestBody | IdpListUsersRequestBody | AdminGetUserRequestBody
 >(
-  /https:\/\/cognito-idp.\S*.amazonaws.com\//,
+  /https:\/\/cognito-idp\.\S*.amazonaws\.com\//,
   async () => new HttpResponse("Response Error", { status: 500 }),
 );
 
 export const cognitoHandlers = [
-  signInHandler,
+  authorizeHandler,
+  loginGetHandler,
+  loginPostHandler,
+  tokenHandler,
   identityProviderServiceHandler,
   identityServiceHandler,
 ];

@@ -1,6 +1,6 @@
 import { FullUser } from "shared-types";
 
-import { makoReviewer, makoStateSubmitter, userResponses } from "../data/users";
+import { getUserByUsername, makoReviewer, makoStateSubmitter, userResponses } from "../data/users";
 import type { TestUserDataWithRole } from "../index.d";
 
 export const getMockUsername = (): string | null => {
@@ -13,6 +13,18 @@ export const getMockUsername = (): string | null => {
     return window.localStorage.getItem("MOCK_USER_USERNAME");
   }
   return null;
+};
+
+export const getMockUserEmail = (): string | null => {
+  const username = getMockUsername();
+  if (!username) {
+    return null;
+  }
+  const user = getUserByUsername(username);
+  if (!user) {
+    return null;
+  }
+  return user?.email;
 };
 
 export const setMockUsername = (user?: TestUserDataWithRole | string | null): void => {

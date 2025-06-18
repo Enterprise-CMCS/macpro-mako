@@ -4,25 +4,27 @@ import { getUserByUsername } from "../../data";
 import { getFilteredUserResultList } from "../../data/osusers";
 import { getFilteredRoleDocsByEmail, getLatestRoleByEmail } from "../../data/roles";
 import { UserDetailsRequestBody } from "../../index.d";
-import { getMockUsername } from "../auth.utils";
+import { getMockUserEmail, getMockUsername } from "../auth.utils";
 
 export const defaultApiUserDetailsHandler = http.post<PathParams, UserDetailsRequestBody>(
   "https://test-domain.execute-api.us-east-1.amazonaws.com/mocked-tests/getUserDetails",
   async ({ request }) => {
     let email;
-    if (request.body) {
-      const { userEmail } = await request.json();
-      email = userEmail;
+    if (Object.hasOwn(request, "body")) {
+      try {
+        const bodyJSON = await request.json();
+        email = bodyJSON?.userEmail;
+      } catch (err) {
+        console.error(err);
+        email = getMockUserEmail();
+      }
     } else {
-      const username = getMockUsername();
-      if (!username) {
-        return HttpResponse.json({});
-      }
-      const user = getUserByUsername(username);
-      if (!user) {
-        return HttpResponse.json({});
-      }
-      email = user?.email;
+      email = getMockUserEmail();
+    }
+    console.log({ email });
+
+    if (!email) {
+      return HttpResponse.json({});
     }
 
     const userDetails = getFilteredUserResultList([email || ""])?.[0]?._source ?? null;

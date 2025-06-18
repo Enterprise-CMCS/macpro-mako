@@ -30,10 +30,13 @@ const enableApiMocking = async () => {
     await import("../mockServiceWorker.js?worker");
 
     const { mockedWorker } = await import("mocks/browser");
+    const { setDefaultStateSubmitter } = await import("mocks");
+
     await mockedWorker.start({
-      onUnhandledRequest: "bypass",
+      onUnhandledRequest: "warn",
       waitUntilReady: true,
     });
+    setDefaultStateSubmitter();
   }
 };
 

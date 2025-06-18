@@ -21,6 +21,7 @@ export const getUserDetails = async (userEmail?: string): Promise<UserDetails> =
       userEmail ? { body: { userEmail } } : {},
     );
 
+    console.log({ userDetails });
     return userDetails as UserDetails;
   } catch (e) {
     console.log({ e });
