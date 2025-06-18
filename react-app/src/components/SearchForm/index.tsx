@@ -16,10 +16,6 @@ export const SearchForm: FC<{
   const debouncedSearchString = useDebounce(searchText, 750);
 
   useEffect(() => {
-    window.gtag?.("event", "dash_search", {
-      query_short: searchText.slice(0, 2),
-      result_count: "opensearch",
-    });
     handleSearch(debouncedSearchString);
   }, [debouncedSearchString]); // eslint-disable-line react-hooks/exhaustive-deps
 

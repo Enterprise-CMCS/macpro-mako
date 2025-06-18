@@ -23,13 +23,17 @@ export const OsFiltering: FC<{
         <SearchForm
           isSearching={context.isLoading}
           urlState={url.state}
-          handleSearch={(search) =>
+          handleSearch={(search) => {
             url.onSet((s) => ({
               ...s,
               pagination: { ...s.pagination, number: 0 },
               search,
-            }))
-          }
+            }));
+            window.gtag?.("event", "dash_search", {
+              query_short: search.slice(0, 3),
+              result_count: count,
+            });
+          }}
           disabled={!!disabled}
         />
         <div className="flex flex-wrap justify-center gap-2 max-w-full">
