@@ -31,6 +31,7 @@ export const OsFilterDrawer = () => {
         <Button
           variant="outline"
           className="hover:bg-transparent w-full xs:w-fit self-center h-10 flex gap-2"
+          aria-label="Open filter panel"
         >
           <FilterIcon className="w-4 h-4" />
           <span className="prose-sm">Filters</span>

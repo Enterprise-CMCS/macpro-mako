@@ -53,7 +53,7 @@ test.describe("Dashboard page", { tag: ["@dashboard"] }, () => {
 
     test("filters buttons", async ({ page }) => {
       await expect(page.getByRole("button", { name: /Filters/ })).toBeVisible();
-      await expect(page.getByRole("button", { name: /Filters/ })).toHaveText("Filters");
+      await expect(page.getByRole("button", { name: /Filters/ })).toHaveText("Open filter panel");
     });
 
     test("export button", async ({ page }) => {
