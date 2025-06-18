@@ -1,4 +1,4 @@
-import { FC } from "react";
+import { FC, useEffect, useRef, useState } from "react";
 
 import { OsTableColumn, SearchForm } from "@/components";
 import { VisibilityPopover } from "@/components";
@@ -15,6 +15,26 @@ export const OsFiltering: FC<{
 }> = ({ columns, onToggle, disabled, count }) => {
   const url = useOsUrl();
   const context = useOsContext();
+  const [lastSearch, setLastSearch] = useState<string | null>(null);
+  const wasLoading = useRef(false);
+
+  useEffect(() => {
+    // When a search completes and we have a stored query
+    if (wasLoading.current && !context.isLoading && lastSearch) {
+      window.gtag?.("event", "dash_search", {
+        query_short: lastSearch.slice(0, 3),
+        result_count: count ?? 0,
+      });
+
+      wasLoading.current = false;
+      setLastSearch(null); // Prevent repeat firing
+    }
+
+    // Track loading state for transition detection
+    if (context.isLoading) {
+      wasLoading.current = true;
+    }
+  }, [context.isLoading, lastSearch, count]);
 
   return (
     <div className="my-2" data-testid="filtering">
@@ -29,10 +49,7 @@ export const OsFiltering: FC<{
               pagination: { ...s.pagination, number: 0 },
               search,
             }));
-            window.gtag?.("event", "dash_search", {
-              query_short: search.slice(0, 3),
-              result_count: count,
-            });
+            setLastSearch(search);
           }}
           disabled={!!disabled}
         />
