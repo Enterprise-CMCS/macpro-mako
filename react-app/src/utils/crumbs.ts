@@ -36,7 +36,6 @@ export const detailsAndActionsCrumbs = ({
 export const dashboardCrumb = (authority?: Authority): BreadCrumbConfig => ({
   displayText: "Dashboard",
   order: 1,
-  default: true,
   to: authority ? `/dashboard?tab=${getDashboardTabForAuthority(authority)}` : "/dashboard",
 });
 
