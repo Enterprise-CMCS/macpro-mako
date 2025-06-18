@@ -25,28 +25,28 @@
             <div class='fl pad1y space-right2'>
                 <span class="strong">100% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>9/9</span>
+                <span class='fraction'>6/6</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
                 <span class="strong">100% </span>
                 <span class="quiet">Branches</span>
-                <span class='fraction'>7/7</span>
+                <span class='fraction'>2/2</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
                 <span class="strong">100% </span>
                 <span class="quiet">Functions</span>
-                <span class='fraction'>8/8</span>
+                <span class='fraction'>6/6</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
                 <span class="strong">100% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>7/7</span>
+                <span class='fraction'>6/6</span>
             </div>
         
             
@@ -137,15 +137,7 @@
 <a name='L72'></a><a href='#L72'>72</a>
 <a name='L73'></a><a href='#L73'>73</a>
 <a name='L74'></a><a href='#L74'>74</a>
-<a name='L75'></a><a href='#L75'>75</a>
-<a name='L76'></a><a href='#L76'>76</a>
-<a name='L77'></a><a href='#L77'>77</a>
-<a name='L78'></a><a href='#L78'>78</a>
-<a name='L79'></a><a href='#L79'>79</a>
-<a name='L80'></a><a href='#L80'>80</a>
-<a name='L81'></a><a href='#L81'>81</a>
-<a name='L82'></a><a href='#L82'>82</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
+<a name='L75'></a><a href='#L75'>75</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -160,20 +152,11 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">93x</span>
-<span class="cline-any cline-yes">340x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">742x</span>
-<span class="cline-any cline-yes">63x</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">404x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -216,7 +199,10 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">408x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">93x</span>
+<span class="cline-any cline-yes">409x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">93x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -234,29 +220,20 @@ type BreadCrumbsProps = {
 };
 &nbsp;
 export type BreadCrumbConfig = {
-  default?: boolean;
   order: number;
   to: string;
   displayText: string;
 };
 &nbsp;
 export const BreadCrumbs = ({ options }: BreadCrumbsProps) =&gt; {
-  const defaultBreadCrumb = options.find((option) =&gt; option.default);
-&nbsp;
   return (
     &lt;BreadCrumbBar&gt;
-      {defaultBreadCrumb &amp;&amp; (
-        &lt;BreadCrumb to={defaultBreadCrumb.to} showSeperator={false}&gt;
-          {defaultBreadCrumb.displayText}
-        &lt;/BreadCrumb&gt;
-      )}
       {/* After this we map over the config and check to see if the breadcrumb needs to be displayed. Proper route paths are important here. It should be hierarchical */}
       {options
-        .filter((option) =&gt; !option.default)
         .toSorted((option, prevOption) =&gt; option.order - prevOption.order)
         .map(({ displayText, to }, index, optionsArray) =&gt; {
           return (
-            &lt;BreadCrumb key={displayText} to={to} active={index !== optionsArray.length - 1}&gt;
+            &lt;BreadCrumb key={displayText} to={to} active={index === optionsArray.length - 1}&gt;
               {displayText}
             &lt;/BreadCrumb&gt;
           );
@@ -268,41 +245,43 @@ export const BreadCrumbs = ({ options }: BreadCrumbsProps) =&gt; {
 type BreadCrumbProps = {
   to: string;
   active?: boolean;
-  showSeperator?: boolean;
-  seperator?: ReactNode;
+  separator?: ReactNode;
 };
 &nbsp;
 export const BreadCrumb = ({
   to,
-  seperator = &lt;BreadCrumbSeperator /&gt;,
-  showSeperator = true,
-  active = true,
+  separator = &lt;BreadCrumbSeparator /&gt;,
+  active,
   children,
 }: React.PropsWithChildren&lt;BreadCrumbProps&gt;) =&gt; {
   return (
     &lt;li className="flex items-center text-sm"&gt;
-      {showSeperator &amp;&amp; &lt;span&gt;{seperator}&lt;/span&gt;}
-&nbsp;
-      {active &amp;&amp; (
-        &lt;Link to={to} className="underline text-sky-700 hover:text-sky-800"&gt;
-          {children}
-        &lt;/Link&gt;
-      )}
-      {!active &amp;&amp; (
-        &lt;span className="whitespace-nowrap" aria-disabled&gt;
+      {active ? (
+        &lt;span className="whitespace-nowrap" aria-current="page"&gt;
           {children}
         &lt;/span&gt;
+      ) : (
+        &lt;&gt;
+          &lt;Link to={to} className="underline text-sky-700 hover:text-sky-800"&gt;
+            {children}
+          &lt;/Link&gt;
+          &lt;span className="ml-1" aria-hidden="true"&gt;
+            {separator}
+          &lt;/span&gt;
+        &lt;/&gt;
       )}
     &lt;/li&gt;
   );
 };
 &nbsp;
-export const BreadCrumbSeperator = () =&gt; &lt;ChevronRight className="w-5 h-5" /&gt;;
+export const BreadCrumbSeparator = () =&gt; (
+  &lt;ChevronRight className="w-5 h-5" focusable={false} aria-hidden="true" /&gt;
+);
 &nbsp;
 export const BreadCrumbBar = ({ children }: React.PropsWithChildren) =&gt; {
   return (
-    &lt;nav role="navigation" aria-label="breadcrumbs for spa or waiver choices" className="my-4"&gt;
-      &lt;ul className="flex flex-wrap gap-1"&gt;{children}&lt;/ul&gt;
+    &lt;nav aria-label="Breadcrumb" className="my-4"&gt;
+      &lt;ol className="flex flex-wrap gap-1"&gt;{children}&lt;/ol&gt;
     &lt;/nav&gt;
   );
 };
@@ -313,7 +292,7 @@ export const BreadCrumbBar = ({ children }: React.PropsWithChildren) =&gt; {
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2025-06-18T02:17:52.856Z
+                at 2025-06-18T15:59:19.416Z
             </div>
         <script src="../../../../prettify.js"></script>
         <script>
