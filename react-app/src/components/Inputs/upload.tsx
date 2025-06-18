@@ -10,6 +10,7 @@ import { userPrompt } from "@/components";
 import * as I from "@/components/Inputs";
 import { LoadingSpinner } from "@/components/LoadingSpinner"; // Import your LoadingSpinner component
 import { cn } from "@/utils";
+import { mapSubmissionTypeBasedOnActionFormTitle } from "../../utils/ReactGA/Mapper";
 
 import { extractBucketAndKeyFromUrl, getPresignedUrl, uploadToS3 } from "./uploadUtilities";
 
@@ -91,9 +92,11 @@ export const Upload = ({ maxFiles, files, setFiles, dataTestId, type }: UploadPr
 
       // if (typeof window.gtag !== "function") return;
       if (typeof window.gtag == "function") {
+        const submissionType = mapSubmissionTypeBasedOnActionFormTitle(type);
         window.gtag("event", "submit_file_upload", {
+
           // GA4 event name: arbitrary string
-          submission_type: type,
+          submission_type: submissionType,
           file_type: fileType,
           file_size_bytes: acceptedFiles[0].size
         });

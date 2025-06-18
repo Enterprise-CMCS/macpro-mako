@@ -1,6 +1,7 @@
 import { ControllerRenderProps, FieldPath } from "react-hook-form";
 import { z } from "zod";
 import {useState} from "react";
+import {mapSubmissionTypeBasedOnActionFormTitle} from "../../utils/ReactGA/Mapper"
 
 import { FormDescription, FormItem, FormLabel, Textarea } from "../Inputs";
 import { SchemaWithEnforcableProps } from ".";
@@ -8,20 +9,21 @@ import { SchemaWithEnforcableProps } from ".";
 type AdditionalInformationProps<Schema extends SchemaWithEnforcableProps> = {
   label: string;
   field: ControllerRenderProps<z.TypeOf<Schema>, FieldPath<z.TypeOf<Schema>>>;
-  submissionType: string
+  submissionTitle: string
 };
 
 
 export const AdditionalInformation = <Schema extends SchemaWithEnforcableProps>({
   label,
   field,
-  submissionType
+  submissionTitle
 }: AdditionalInformationProps<Schema>) => {
 const [inputValue, setInputValue] =  useState("");
 const handleInputChange = (event)=> {
   if (event.target.value.length == 1) {
-    console.log("user has typed into additional information box, submissionType: ", submissionType);
-    window.gtag("event", "submit_additional_info_used", {submission_type: submissionType})
+    const mappedSubmissionType = mapSubmissionTypeBasedOnActionFormTitle(submissionTitle);
+    console.log("user has typed into additional information box, submissionType: ", mappedSubmissionType);
+    window.gtag("event", "submit_additional_info_used", {submission_type: mappedSubmissionType})
   }
   setInputValue(event.target.value);
   field.onChange(event);

@@ -312,7 +312,7 @@ export const ActionForm = <Schema extends SchemaWithEnforcableProps>({
                 control={form.control}
                 name={"additionalInformation" as FieldPath<z.TypeOf<Schema>>}
                 render={({ field }) => (
-                  <AdditionalInformation label={additionalInformation.label} field={field} submissionType={title} />
+                  <AdditionalInformation label={additionalInformation.label} field={field} submissionTitle={title} />
                 )}
               />
             </SectionCard>
