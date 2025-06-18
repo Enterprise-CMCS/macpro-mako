@@ -93,4 +93,11 @@ export const featureFlags = {
     flag: "chip-spa-details",
     defaultValue: true,
   },
+  /*
+   *  Toggle visibility between the enhanced experience and mmdl banner
+   */
+  UPGRADE_MMDL_BANNER: {
+    flag: "upgrade-mmdl-banner",
+    defaultValue: true,
+  },
 } as const;
