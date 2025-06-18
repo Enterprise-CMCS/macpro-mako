@@ -15,21 +15,17 @@ import { queryClient } from "@/utils";
 import { useFeatureFlag } from "./hooks/useFeatureFlag";
 import { router } from "./router";
 
+// import "../globals";
+
 const ldClientId = config.launchDarkly?.CLIENT_ID;
-const googleAnalyticsGtag = config.googleAnalytics?.GOOGLE_ANALYTICS_ID;
+// const googleAnalyticsGtag = config.googleAnalytics?.GOOGLE_ANALYTICS_ID;
+const googleAnalyticsGtag = "G-03XK6P2CKS"
+
 if (ldClientId === undefined) {
   throw new Error("To configure LaunchDarkly, you must set LAUNCHDARKLY_CLIENT_ID");
 }
 
 const initializeApp = async () => {
-  // Initialize Google Analytics
-  if (googleAnalyticsGtag) {
-    ReactGA.initialize(googleAnalyticsGtag);
-    ReactGA.send({ hitType: "pageview", page: window.location.pathname });
-  } else {
-    console.warn("Google Analytics Measurement ID is not set.");
-  }
-
   // Initialize LaunchDarkly
   const LDProvider = await asyncWithLDProvider({
     clientSideID: ldClientId,

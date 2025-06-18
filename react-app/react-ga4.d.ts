@@ -5,6 +5,7 @@ declare module "react-ga4" {
   export function event(options: UaEventOptions): void;
   export function initialize(trackingId: string, options?: any): void;
   export function send(event: any): void;
+  export function set(options: any): void;
 
   // Add custom dimensions that would otherwise be blocked by typescript
   export type UaEventOptions = {

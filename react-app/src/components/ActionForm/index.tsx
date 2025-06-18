@@ -1,7 +1,7 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useMutation } from "@tanstack/react-query";
 import { API } from "aws-amplify";
-import { ReactNode, useMemo } from "react";
+import { ReactNode, useMemo, useEffect, useState } from "react";
 import { DefaultValues, FieldPath, useForm, UseFormReturn } from "react-hook-form";
 import { Navigate, useLocation, useNavigate, useParams } from "react-router";
 import { Authority, CognitoUserAttributes } from "shared-types";
@@ -31,11 +31,11 @@ import {
 } from "@/components";
 import { getFormOrigin, queryClient } from "@/utils";
 import { CheckDocumentFunction, documentPoller } from "@/utils/Poller/documentPoller";
-import { sendGAEvent } from "@/utils/ReactGA/sendGAEvent";
 
 import { getAttachments } from "./actionForm.utilities";
 import { ActionFormAttachments, AttachmentsOptions } from "./ActionFormAttachments";
 import { AdditionalInformation } from "./AdditionalInformation";
+import { T } from "vitest/dist/chunks/reporters.d.CfRkRKN2.js";
 
 type EnforceSchemaProps<Shape extends z.ZodRawShape> = z.ZodObject<
   Shape & {
@@ -128,7 +128,37 @@ export const ActionForm = <Schema extends SchemaWithEnforcableProps>({
     type: string;
   }>();
   const { pathname } = useLocation();
+  const [startTimePage , setStartTimePage] = useState(Date.now());
 
+  useEffect(()=> {
+    console.log("submit_page_open for title: ", title)
+    let submissionType;
+    if(title.includes("CHIP SPA Details")) {
+      submissionType="chip spa";
+    } else if (title.includes("Medicaid SPA Details")) {
+      submissionType="medicaid spa";
+    } else if (title.includes("Temporary Extension Request Details")) {
+      submissionType="temporary extension";
+    } else if (title.includes("1915(b)(4) FFS Selective Contracting Initial Waiver Details")) {
+      submissionType="1915b(4) initial waiver";
+    } else if (title.includes("1915(b)(4) FFS Selective Contracting Renewal Waiver Details")) {
+      submissionType="1915b(4) waiver renewal";
+    } else if (title.includes("1915(b)(4) FFS Selective Contracting Waiver Amendment Details")) {
+      submissionType="1915b(4) waiver amendment";
+    } else if (title.includes("1915(b) Comprehensive (Capitated) Initial Waiver Details")) {
+      submissionType="1915b capitated inital";
+    } else if (title.includes("1915(b) Comprehensive (Capitated) Renewal Waiver Details")) {
+      submissionType="1915b capitated renewal";
+    } else if (title.includes("1915(b) Comprehensive (Capitated) Waiver Amendment Details")) {
+      submissionType="1915b capitated amendment";
+    } else if (title.includes("1915(c) Appendix K Amendment Details")) {
+      submissionType="1915c app-k"
+    }
+    // send package action event
+    window.gtag("event", "submit_page_open", {
+      submission_type: submissionType ? submissionType : title
+    })
+  }, []);
   const navigate = useNavigate();
   const { data: userObj, isLoading: isUserLoading } = useGetUser();
 
@@ -188,8 +218,23 @@ export const ActionForm = <Schema extends SchemaWithEnforcableProps>({
       const userRoles = customUserRoles || customisMemberOf || "";
       const eventState = formData.id?.substring(0, 2);
 
+      const timeOnPageSec = (Date.now() - startTimePage) /1000; 
+
+
+      console.log(" sumbit page exit event with page duration: ", timeOnPageSec);
+      console.log(" submit click event with event: ", formData.event);
+
       // send package action event
-      sendGAEvent(formData.event, userRoles, eventState);
+      window.gtag("event", "submission_submit_click", {
+        package_type: formData.event
+      });
+
+      window.gtag("event", "submit_page_exit", {
+        submission_type: formData.event, 
+        time_on_page_sec: timeOnPageSec
+      });
+
+
     } catch (error) {
       console.error(error);
       banner({
@@ -215,6 +260,7 @@ export const ActionForm = <Schema extends SchemaWithEnforcableProps>({
   if (!userObj || doesUserHaveAccessToForm === false) {
     return <Navigate to="/" replace />;
   }
+
 
   return (
     <SimplePageContainer>
@@ -250,7 +296,7 @@ export const ActionForm = <Schema extends SchemaWithEnforcableProps>({
             <Fields {...form} />
           </SectionCard>
           {attachmentsFromSchema.length > 0 && (
-            <ActionFormAttachments attachmentsFromSchema={attachmentsFromSchema} {...attachments} />
+            <ActionFormAttachments attachmentsFromSchema={attachmentsFromSchema} {...attachments} type={title}/>
           )}
           {additionalInformation && (
             <SectionCard
@@ -266,7 +312,7 @@ export const ActionForm = <Schema extends SchemaWithEnforcableProps>({
                 control={form.control}
                 name={"additionalInformation" as FieldPath<z.TypeOf<Schema>>}
                 render={({ field }) => (
-                  <AdditionalInformation label={additionalInformation.label} field={field} />
+                  <AdditionalInformation label={additionalInformation.label} field={field} submissionTitle={title} />
                 )}
               />
             </SectionCard>
@@ -307,7 +353,13 @@ export const ActionForm = <Schema extends SchemaWithEnforcableProps>({
               <div className="w-full md:w-auto text-center md:text-left">
                 <Button
                   type="reset"
-                  onClick={() =>
+                  onClick={() =>{
+                    const timeOnPageSec = (Date.now() - startTimePage)/1000;
+                    console.log("sibmit cancel event with submission type: "+ title + "and time on page of: " +timeOnPageSec)
+                    window.gtag("event", "submit_cancel", {
+                      submission_type: title,
+                      time_on_page_sec:timeOnPageSec
+                    });
                     userPrompt({
                       ...promptOnLeavingForm,
                       onAccept: () => {
@@ -315,6 +367,7 @@ export const ActionForm = <Schema extends SchemaWithEnforcableProps>({
                         navigate(origin);
                       },
                     })
+                  }
                   }
                   variant="outline"
                   data-testid="cancel-action-form"
@@ -365,14 +418,21 @@ export const ActionForm = <Schema extends SchemaWithEnforcableProps>({
               </Button>
               <Button
                 className="px-12"
-                onClick={() =>
+                onClick={() => {
                   userPrompt({
                     ...promptOnLeavingForm,
                     onAccept: () => {
                       const origin = getFormOrigin({ id, authority });
                       navigate(origin);
                     },
-                  })
+                  });
+                  const timeOnPageSec = (Date.now() - startTimePage)/1000;
+                  console.log("sibmit cancel event with submission type: "+ title + "and time on page of: " + timeOnPageSec);
+                  window.gtag("event", "submit_cancel", {
+                    submission_type: title,
+                    time_on_page_sec:timeOnPageSec
+                  });
+                }
                 }
                 variant="outline"
                 type="reset"
