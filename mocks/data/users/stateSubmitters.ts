@@ -568,7 +568,7 @@ export const osStateSystemAdmin: TestUserDataWithRole = {
     },
   ],
   Username: "142824f8-f011-703f-c22b-62e027e9435e",
-  role: "statesubmitter",
+  role: "statesystemadmin",
   states: ["MD"],
 };
 

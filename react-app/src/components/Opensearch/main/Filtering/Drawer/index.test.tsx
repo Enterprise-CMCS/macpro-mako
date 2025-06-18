@@ -241,14 +241,16 @@ describe("OsFilterDrawer", () => {
         await user.click(screen.getByRole("button", { name: "Open filter panel" }));
 
         // it should already be expanded if there is a filter already set
-        expect(
-          screen
-            .getByRole("heading", {
-              name: "Authority",
-              level: 3,
-            })
-            .parentElement.getAttribute("data-state"),
-        ).toEqual("open");
+        await waitFor(() =>
+          expect(
+            screen
+              .getByRole("heading", {
+                name: "Authority",
+                level: 3,
+              })
+              .parentElement.getAttribute("data-state"),
+          ).toEqual("open"),
+        );
 
         const chip = screen.queryByLabelText("CHIP SPA");
         expect(chip).toBeInTheDocument();

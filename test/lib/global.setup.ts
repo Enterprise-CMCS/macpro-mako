@@ -1,7 +1,7 @@
 import { FullConfig } from "@playwright/test";
 
 import { getDeploymentConfig, getSecret } from "./auth.secrets";
-import { generateAuthFile } from "./auth.setup";
+import { checkAuthPath, generateAuthFile } from "./auth.setup";
 
 const testUsers = {
   state: "george@example.com",
@@ -35,6 +35,8 @@ async function globalSetup(config: FullConfig) {
 
   const deploymentConfig = await getDeploymentConfig(stage, project);
   const password = await getSecret(deploymentConfig.devPasswordArn);
+
+  await checkAuthPath(stateSubmitterAuthFile);
 
   await generateAuthFile({
     baseURL,
