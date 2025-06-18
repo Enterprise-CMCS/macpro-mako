@@ -1,27 +1,57 @@
 import { http, HttpResponse } from "msw";
+import { featureFlags } from "shared-utils";
 
-import { flags } from "../data/flags";
 import { notifs } from "../data/notifs";
+
+export type FlagToggles = {
+  [key: string]: boolean | string;
+};
+
+export type FlagResponse = {
+  [key: string]: {
+    version: number;
+    flagVersion: number;
+    variation: number;
+    trackEvents: boolean;
+    value: boolean | string;
+  };
+};
+
+const getFlags = (toggleFlags: FlagToggles = {}) =>
+  Object.values(featureFlags).reduce(
+    (flags, { flag, defaultValue }) => ({
+      ...flags,
+      [flag]: {
+        version: 50,
+        flagVersion: 4,
+        variation: 1,
+        trackEvents: false,
+        value: toggleFlags[flag] || defaultValue,
+      },
+    }),
+    {} as FlagResponse,
+  );
 
 const defaultGetLDGoalsHandler = http.get(
   "https://clientsdk.launchdarkly.us/sdk/goals/*",
   async () => HttpResponse.json([]),
 );
 
-const defaultGetLDEvalxHandler = http.get(
-  "https://clientsdk.launchdarkly.us/sdk/evalx/*",
-  async () => HttpResponse.json(flags),
-);
+export const toggleGetLDEvalxHandler = (toggleFlags?: FlagToggles) =>
+  http.get("https://clientsdk.launchdarkly.us/sdk/evalx/*", async () =>
+    HttpResponse.json(getFlags(toggleFlags)),
+  );
 
-const defaultGetLDEvalStreamHandler = http.get(
-  "https://clientstream.launchdarkly.us/eval/*",
-  async () => {
+const defaultGetLDEvalxHandler = toggleGetLDEvalxHandler();
+
+export const toggleGetLDEvalStreamHandler = (toggleFlags?: FlagToggles) =>
+  http.get("https://clientstream.launchdarkly.us/eval/*", async () => {
     const encoder = new TextEncoder();
 
     const stream = new ReadableStream({
       start(controller) {
         // Encode the string chunks using "TextEncoder".
-        controller.enqueue(encoder.encode(JSON.stringify(flags)));
+        controller.enqueue(encoder.encode(JSON.stringify(getFlags(toggleFlags))));
         controller.close();
       },
     });
@@ -32,8 +62,9 @@ const defaultGetLDEvalStreamHandler = http.get(
         "Content-Type": "text/event-stream",
       },
     });
-  },
-);
+  });
+
+const defaultGetLDEvalStreamHandler = toggleGetLDEvalStreamHandler();
 
 const defaultPostLDEventsBulkHandler = http.post(
   "https://events.launchdarkly.us/events/bulk/*",

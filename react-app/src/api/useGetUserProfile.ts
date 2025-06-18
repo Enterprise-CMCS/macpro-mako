@@ -78,7 +78,6 @@ export const getUserProfile = async (userEmail?: string): Promise<OneMacUserProf
     } catch (approverError) {
       console.log("Error fetching approvers:", approverError);
     }
-    console.log("GET APPROVERS", approvers);
     const stateAccessWithApprovers = attachApproversToStateAccess(
       stateAccess,
       approvers.approverList || [],
