@@ -1,3 +1,4 @@
+import { PlusIcon } from "lucide-react";
 import { useEffect, useMemo, useState } from "react";
 import { Navigate } from "react-router";
 import { StateCode } from "shared-types";
@@ -18,6 +19,7 @@ import {
 import { Option } from "@/components/Opensearch/main/Filtering/Drawer/Filterable";
 import { FilterableSelect } from "@/components/Opensearch/main/Filtering/Drawer/Filterable";
 import { useAvailableStates } from "@/hooks/useAvailableStates";
+import { useFeatureFlag } from "@/hooks/useFeatureFlag";
 import { convertStateAbbrToFullName } from "@/utils";
 
 import {
@@ -34,6 +36,10 @@ export const MyProfile = () => {
     isLoading: isProfileLoading,
     refetch: reloadUserProfile,
   } = useGetUserProfile();
+
+  console.log(userProfile);
+
+  const isNewUserRoleDisplay = useFeatureFlag("NEW_USER_ROLE_DISPLAY");
 
   const { mutateAsync: submitRequest, isLoading: areRolesLoading } = useSubmitRoleRequests();
   const [selfRevokeState, setSelfRevokeState] = useState<StateCode | null>(null);
@@ -183,16 +189,24 @@ export const MyProfile = () => {
             fullName={userDetails?.fullName}
             role={userRoleMap[userDetails?.role]}
             email={userDetails?.email}
+            groupDivision={
+              userDetails?.division ? `${userDetails?.group}/${userDetails?.division}` : null
+            }
           />
           <div className="flex flex-col gap-6 md:basis-1/2">
             {/* Status/State Access Management Section */}
             {stateAccessRoles.includes(userDetails?.role) && (
               <div>
-                <h2 className="text-2xl font-bold">
-                  {userDetails.role === "statesubmitter" || userDetails.role === "statesystemadmin"
-                    ? "State Access Management"
-                    : "Status"}
-                </h2>
+                {isNewUserRoleDisplay ? (
+                  <h2 className="text-2xl font-bold">My User Roles</h2>
+                ) : (
+                  <h2 className="text-2xl font-bold">
+                    {userDetails.role === "statesubmitter" ||
+                    userDetails.role === "statesystemadmin"
+                      ? "State Access Management"
+                      : "Status"}
+                  </h2>
+                )}
                 {/* TODO: Get state system admin for that state */}
                 <ConfirmationDialog
                   open={selfRevokeState !== null}
@@ -211,7 +225,16 @@ export const MyProfile = () => {
                     onClick={() => setSelfRevokeState(access.territory as StateCode)}
                   />
                 ))}
-                <StateAccessControls />
+                {isNewUserRoleDisplay ? (
+                  <Button
+                    className="w-full border-dashed p-10 text-black font-normal"
+                    variant="outline"
+                  >
+                    Add another user role <PlusIcon className="ml-3" />
+                  </Button>
+                ) : (
+                  <StateAccessControls />
+                )}
               </div>
             )}
 
