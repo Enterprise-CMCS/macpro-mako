@@ -329,7 +329,7 @@ export const oneMACFAQContent: FAQContent[] = [
                         targetElement.scrollIntoView({ behavior: "smooth", block: "start" });
 
                         const buttonElement = targetElement.querySelector("button");
-                        if (buttonElement) {
+                        if (buttonElement.dataset.state === "closed") {
                           buttonElement.click();
                         }
                       }
@@ -880,7 +880,7 @@ export const oneMACFAQContent: FAQContent[] = [
         anchorText: "abp-spa-templates",
         question: "Where can I download Medicaid Alternative Benefit Plan (ABP) SPA templates?",
         answerJSX: (
-          <section id="abp-spa-templates" className="space-y-2">
+          <section className="space-y-2">
             <p>
               Medicaid Alternative Benefit Plan (ABP) SPA templates can be downloaded at the links
               below. After downloading and completing the templates you need, upload them as part of
