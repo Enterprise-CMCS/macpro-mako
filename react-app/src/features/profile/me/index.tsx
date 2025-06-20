@@ -18,6 +18,7 @@ import {
 import { Option } from "@/components/Opensearch/main/Filtering/Drawer/Filterable";
 import { FilterableSelect } from "@/components/Opensearch/main/Filtering/Drawer/Filterable";
 import { useAvailableStates } from "@/hooks/useAvailableStates";
+import { useFeatureFlag } from "@/hooks/useFeatureFlag";
 import { convertStateAbbrToFullName } from "@/utils";
 
 import {
@@ -34,6 +35,8 @@ export const MyProfile = () => {
     isLoading: isProfileLoading,
     refetch: reloadUserProfile,
   } = useGetUserProfile();
+
+  const isNewUserRoleDisplay = useFeatureFlag("NEW_USER_ROLE_DISPLAY");
 
   const { mutateAsync: submitRequest, isLoading: areRolesLoading } = useSubmitRoleRequests();
   const [selfRevokeState, setSelfRevokeState] = useState<StateCode | null>(null);
@@ -188,11 +191,16 @@ export const MyProfile = () => {
             {/* Status/State Access Management Section */}
             {stateAccessRoles.includes(userDetails?.role) && (
               <div>
-                <h2 className="text-2xl font-bold">
-                  {userDetails.role === "statesubmitter" || userDetails.role === "statesystemadmin"
-                    ? "State Access Management"
-                    : "Status"}
-                </h2>
+                {isNewUserRoleDisplay ? (
+                  <h2 className="text-2xl font-bold">My User Roles</h2>
+                ) : (
+                  <h2 className="text-2xl font-bold">
+                    {userDetails.role === "statesubmitter" ||
+                    userDetails.role === "statesystemadmin"
+                      ? "State Access Management"
+                      : "Status"}
+                  </h2>
+                )}
                 {/* TODO: Get state system admin for that state */}
                 <ConfirmationDialog
                   open={selfRevokeState !== null}

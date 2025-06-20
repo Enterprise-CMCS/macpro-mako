@@ -19,10 +19,12 @@ export const UserInformation = ({ fullName, role, email }: UserInformationProps)
         <p>{fullName}</p>
       </div>
 
-      <div className="leading-9">
-        <h3 className="font-bold">Role</h3>
-        <p>{role}</p>
-      </div>
+      {!isNewUserRoleDisplay && (
+        <div className="leading-9">
+          <h3 className="font-bold">Role</h3>
+          <p>{role}</p>
+        </div>
+      )}
 
       <div className="leading-9">
         <h3 className="font-bold">Email</h3>
