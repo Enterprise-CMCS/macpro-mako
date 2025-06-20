@@ -1,3 +1,4 @@
+import { PlusIcon } from "lucide-react";
 import { useEffect, useMemo, useState } from "react";
 import { Navigate } from "react-router";
 import { StateCode } from "shared-types";
@@ -219,7 +220,13 @@ export const MyProfile = () => {
                     onClick={() => setSelfRevokeState(access.territory as StateCode)}
                   />
                 ))}
-                <StateAccessControls />
+                {isNewUserRoleDisplay ? (
+                  <Button className="w-full border-dashed" variant="outline">
+                    Add another user role <PlusIcon />
+                  </Button>
+                ) : (
+                  <StateAccessControls />
+                )}
               </div>
             )}
 
