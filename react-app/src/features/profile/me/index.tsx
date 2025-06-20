@@ -37,6 +37,8 @@ export const MyProfile = () => {
     refetch: reloadUserProfile,
   } = useGetUserProfile();
 
+  console.log(userDetails);
+
   const isNewUserRoleDisplay = useFeatureFlag("NEW_USER_ROLE_DISPLAY");
 
   const { mutateAsync: submitRequest, isLoading: areRolesLoading } = useSubmitRoleRequests();
@@ -187,6 +189,9 @@ export const MyProfile = () => {
             fullName={userDetails?.fullName}
             role={userRoleMap[userDetails?.role]}
             email={userDetails?.email}
+            groupDivision={
+              userDetails?.division ? `${userDetails?.group}/${userDetails?.division}` : null
+            }
           />
           <div className="flex flex-col gap-6 md:basis-1/2">
             {/* Status/State Access Management Section */}
