@@ -101,6 +101,7 @@ export default defineConfig({
       name: "val",
       use: {
         baseURL: baseURL.val,
+        storageState: "./playwright/.auth/state-user.json",
       },
       dependencies: ["val-setup"],
     },
