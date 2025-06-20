@@ -13,6 +13,7 @@ export type {
 export enum UserRoles {
   DEFAULT_CMS_USER = "defaultcmsuser",
   CMS_REVIEWER = "cmsreviewer",
+  CMS_ROLE_APPROVER = "cmsroleapprover",
   HELPDESK = "helpdesk",
   STATE_SUBMITTER = "statesubmitter",
   SYSTEM_ADMIN = "systemadmin",
