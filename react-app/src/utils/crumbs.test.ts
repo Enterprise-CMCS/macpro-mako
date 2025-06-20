@@ -66,7 +66,6 @@ describe("dashboardCrumb", () => {
     const expected = {
       displayText: "Dashboard",
       order: 1,
-      default: true,
       to: "/dashboard?tab=spas",
     };
     expect(result).toEqual(expected);
@@ -77,7 +76,6 @@ describe("dashboardCrumb", () => {
     const expected = {
       displayText: "Dashboard",
       order: 1,
-      default: true,
       to: "/dashboard",
     };
     expect(result).toEqual(expected);
