@@ -25,7 +25,7 @@ export const StateAccessCard = ({ role, onClick, access }: StateAccessProps) => 
     <CardWithTopBorder key={`${access.territory}-${access.role}`}>
       <div className="p-8 min-h-36">
         <div className="flex justify-between">
-          <h3 className="text-xl font-bold">{convertStateAbbrToFullName(access.territory)}</h3>
+          <h3 className="text-xl font-bold">{`${convertStateAbbrToFullName(access.territory)} - ${access.territory}`}</h3>
           {role === "statesubmitter" && (
             <button
               className="text-blue-700 disabled:text-gray-200"
