@@ -1,0 +1,64 @@
+{
+  "name": "macpro-mako",
+  "description": "The upgraded OneMAC system streamlines the submission process for state users, enabling efficient and accurate Medicaid SPA, CHIP Eligibility SPA, 1915(b) waiver, 1915(c) Appendix K waiver and Temporary Extension applications while ensuring seamless continuity with CMS review workflows.",
+  "longDescription": "",
+  "status": "",
+  "permissions": {
+    "license": [
+      {
+        "name": "",
+        "URL": ""
+      }
+    ],
+    "usageType": "",
+    "exemptionText": ""
+  },
+  "organization": "",
+  "repositoryURL": "https://github.com/Enterprise-CMCS/macpro-mako",
+  "projectURL": "",
+  "repositoryHost": "github",
+  "repositoryVisibility": "",
+  "vcs": "git",
+  "laborHours": 19280,
+  "reuseFrequency": {
+    "forks": 0,
+    "clones": 0
+  },
+  "platforms": [],
+  "categories": [],
+  "softwareType": "",
+  "languages": [
+    "TypeScript",
+    "JavaScript",
+    "CSS",
+    "Shell",
+    "HTML",
+    "Dockerfile"
+  ],
+  "maintenance": "",
+  "contractNumber": "",
+  "date": {
+    "created": "2023-01-23T21:43:54Z",
+    "lastModified": "2025-06-22T05:43:01Z",
+    "metaDataLastUpdated": "2025-06-22T05:46:35.475Z"
+  },
+  "tags": [],
+  "contact": {
+    "email": "",
+    "name": ""
+  },
+  "feedbackMechanisms": [
+    "https://github.com/Enterprise-CMCS/macpro-mako/issues"
+  ],
+  "localisation": false,
+  "repositoryType": "",
+  "userInput": false,
+  "fismaLevel": "",
+  "group": "",
+  "projects": [],
+  "systems": [],
+  "upstream": "",
+  "subsetInHealthcare": [],
+  "userType": [],
+  "maturityModelTier": 0
+}
