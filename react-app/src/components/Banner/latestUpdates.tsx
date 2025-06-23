@@ -60,7 +60,9 @@ export const LatestUpdates: FC = () => {
         <button
           onClick={() => {
             setShowMore(!showMore)
-            window.gtag("event", "home_updates_banner")
+            if(typeof window.gtag == "function") {
+              window.gtag("event", "home_updates_banner");
+            }
           }}
           className="flex items-center justify-start gap-2 rounded-md bg-transparent cursor-pointer"
         >

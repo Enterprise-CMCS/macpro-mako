@@ -132,32 +132,34 @@ export const ActionForm = <Schema extends SchemaWithEnforcableProps>({
 
   useEffect(()=> {
     console.log("submit_page_open for title: ", title)
-    let submissionType;
-    if(title.includes("CHIP SPA Details")) {
-      submissionType="chip spa";
-    } else if (title.includes("Medicaid SPA Details")) {
-      submissionType="medicaid spa";
-    } else if (title.includes("Temporary Extension Request Details")) {
-      submissionType="temporary extension";
-    } else if (title.includes("1915(b)(4) FFS Selective Contracting Initial Waiver Details")) {
-      submissionType="1915b(4) initial waiver";
-    } else if (title.includes("1915(b)(4) FFS Selective Contracting Renewal Waiver Details")) {
-      submissionType="1915b(4) waiver renewal";
-    } else if (title.includes("1915(b)(4) FFS Selective Contracting Waiver Amendment Details")) {
-      submissionType="1915b(4) waiver amendment";
-    } else if (title.includes("1915(b) Comprehensive (Capitated) Initial Waiver Details")) {
-      submissionType="1915b capitated inital";
-    } else if (title.includes("1915(b) Comprehensive (Capitated) Renewal Waiver Details")) {
-      submissionType="1915b capitated renewal";
-    } else if (title.includes("1915(b) Comprehensive (Capitated) Waiver Amendment Details")) {
-      submissionType="1915b capitated amendment";
-    } else if (title.includes("1915(c) Appendix K Amendment Details")) {
-      submissionType="1915c app-k"
+    if (typeof window.gtag == "function"){
+      let submissionType;
+      if(title.includes("CHIP SPA Details")) {
+        submissionType="chip spa";
+      } else if (title.includes("Medicaid SPA Details")) {
+        submissionType="medicaid spa";
+      } else if (title.includes("Temporary Extension Request Details")) {
+        submissionType="temporary extension";
+      } else if (title.includes("1915(b)(4) FFS Selective Contracting Initial Waiver Details")) {
+        submissionType="1915b(4) initial waiver";
+      } else if (title.includes("1915(b)(4) FFS Selective Contracting Renewal Waiver Details")) {
+        submissionType="1915b(4) waiver renewal";
+      } else if (title.includes("1915(b)(4) FFS Selective Contracting Waiver Amendment Details")) {
+        submissionType="1915b(4) waiver amendment";
+      } else if (title.includes("1915(b) Comprehensive (Capitated) Initial Waiver Details")) {
+        submissionType="1915b capitated inital";
+      } else if (title.includes("1915(b) Comprehensive (Capitated) Renewal Waiver Details")) {
+        submissionType="1915b capitated renewal";
+      } else if (title.includes("1915(b) Comprehensive (Capitated) Waiver Amendment Details")) {
+        submissionType="1915b capitated amendment";
+      } else if (title.includes("1915(c) Appendix K Amendment Details")) {
+        submissionType="1915c app-k"
+      }
+      // send package action event
+      window.gtag("event", "submit_page_open", {
+        submission_type: submissionType ? submissionType : title
+      })
     }
-    // send package action event
-    window.gtag("event", "submit_page_open", {
-      submission_type: submissionType ? submissionType : title
-    })
   }, []);
   const navigate = useNavigate();
   const { data: userObj, isLoading: isUserLoading } = useGetUser();

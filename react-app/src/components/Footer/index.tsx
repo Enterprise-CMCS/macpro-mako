@@ -54,14 +54,20 @@ export const Footer = ({ email, address, showNavLinks }: Props) => {
               <p>
                 <a href="tel:(833) 228-2540" className="underline" onClick={
                   ()=> {
-                    window.gtag("event", "home_help_phone")}}>
+                    if(typeof window.gtag == "function") {
+                      window.gtag("event", "home_help_phone")
+                    }
+                  }}>
                   (833) 228-2540
                 </a>
               </p>
               <p>
                 <a href="mailto:OneMAC_Helpdesk@cms.hhs.gov" className="underline" onClick={
                   ()=> {
-                    window.gtag("event", "home_help_email")}}>
+                    if(typeof window.gtag == "function") {
+                      window.gtag("event", "home_help_email");
+                    }
+                   }}>
                   OneMAC_Helpdesk@cms.hhs.gov
                 </a>
               </p>

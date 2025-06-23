@@ -20,6 +20,7 @@ export const PackageSearch = () => {
       }),
     );
     navigate(`/dashboard?os=${compressedValue}`);
+    if(typeof window.gtag == "function")
     window.gtag("event", "home_search_text")
   };
 
