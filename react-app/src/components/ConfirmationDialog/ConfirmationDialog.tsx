@@ -23,6 +23,7 @@ export type ConfirmationModalProps = {
   cancelButtonVisible?: boolean;
   acceptButtonVisible?: boolean;
   cancelVariant?: ButtonProps["variant"];
+  alignLeft?: boolean;
 };
 
 /** A modal with optional Cancel and Accept buttons */
@@ -31,6 +32,7 @@ export function ConfirmationDialog({
   description,
   title,
   areButtonsReversed = false,
+  alignLeft = false,
   body,
   onAccept,
   onCancel,
@@ -40,6 +42,7 @@ export function ConfirmationDialog({
   cancelButtonVisible = true,
   cancelVariant = "outline",
 }: ConfirmationModalProps) {
+  console.log(alignLeft);
   return (
     <Dialog open={open} onOpenChange={onCancel}>
       <DialogContent className="sm:max-w-[425px]" data-testid="dialog-content">
@@ -54,7 +57,8 @@ export function ConfirmationDialog({
         )}
         <DialogFooter
           className={cn({
-            "flex-col sm:flex-row-reverse sm:justify-start": areButtonsReversed,
+            "flex-col sm:flex-row-reverse": areButtonsReversed,
+            "sm:justify-start": areButtonsReversed || alignLeft,
           })}
           data-testid="dialog-footer"
         >

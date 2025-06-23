@@ -12,6 +12,7 @@ export type UserPrompt = {
   acceptButtonText?: string;
   areButtonsReversed?: boolean;
   cancelVariant?: ButtonProps["variant"];
+  alignLeft?: boolean;
   onAccept: () => void;
   onCancel?: () => void;
 };
@@ -84,6 +85,7 @@ export const UserPrompt = () => {
       acceptButtonText={activeUserPrompt.acceptButtonText}
       areButtonsReversed={activeUserPrompt.areButtonsReversed}
       cancelVariant={activeUserPrompt.cancelVariant}
+      alignLeft={activeUserPrompt.alignLeft}
     />
   );
 };

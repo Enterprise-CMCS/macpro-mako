@@ -109,7 +109,7 @@ export const ActionForm = <Schema extends SchemaWithEnforcableProps>({
     body: "",
     acceptButtonText: "Yes, leave",
     cancelButtonText: "Go back",
-    areButtonsReversed: false,
+    areButtonsReversed: true,
     cancelVariant: "link",
   },
   promptPreSubmission,
@@ -292,7 +292,8 @@ export const ActionForm = <Schema extends SchemaWithEnforcableProps>({
               onCancel={() =>
                 userPrompt({
                   ...promptOnLeavingStickyFooterForm,
-                  body: `Unsaved changes to ${watchedId} will be discarded. Go back to save your changes`,
+                  body: `Unsaved changes${watchedId.trim() ? ` to ${watchedId}` : ""} will be discarded. Go back to save your changes`,
+                  alignLeft: true,
                   onAccept: () => {
                     const origin = getFormOrigin({ id, authority });
                     navigate(origin);
@@ -321,7 +322,8 @@ export const ActionForm = <Schema extends SchemaWithEnforcableProps>({
                   onClick={() =>
                     userPrompt({
                       ...promptOnLeavingStickyFooterForm,
-                      body: `Unsaved changes to ${watchedId} will be discarded. Go back to save your changes`,
+                      alignLeft: true,
+                      body: `Unsaved changes${watchedId.trim() ? ` to ${watchedId}` : ""} will be discarded. Go back to save your changes`,
                       onAccept: () => {
                         const origin = getFormOrigin({ id, authority });
                         navigate(origin);
