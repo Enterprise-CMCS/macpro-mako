@@ -1,10 +1,10 @@
 import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
-import { describe, expect, it, vi } from "vitest";
+import { beforeEach, describe, expect, it, vi } from "vitest";
 
 import { RoleStatusCard } from "./index";
 
-const mockUserRoleFeatureFlag = false;
+let mockUserRoleFeatureFlag = false;
 
 vi.mock("@/hooks/useFeatureFlag", () => ({
   useFeatureFlag: (flag: string) => {
@@ -14,10 +14,56 @@ vi.mock("@/hooks/useFeatureFlag", () => ({
 }));
 
 describe("RoleStatusCard", () => {
+  beforeEach(() => {
+    mockUserRoleFeatureFlag = false;
+  });
+
   it("should handle an undefined access", () => {
     // @ts-ignore
     render(<RoleStatusCard />);
     expect(screen.queryByText("State System Admin: ")).toBeNull();
+  });
+
+  it("should show the correct card heading if the user role feature flag is true for a cmsroleapprover", () => {
+    mockUserRoleFeatureFlag = true;
+    render(
+      <RoleStatusCard
+        isNewUserRoleDisplay={mockUserRoleFeatureFlag}
+        role="cmsroleapprover"
+        access={{
+          territory: "N/A",
+          role: "cmsroleapprover",
+          status: "active",
+          doneByEmail: "test@example.com",
+          doneByName: "Test Admin",
+        }}
+      />,
+    );
+
+    expect(
+      screen.getByRole("heading", { name: "CMS Role Approver", level: 3 }),
+    ).toBeInTheDocument();
+  });
+
+  it("should show the correct card heading if the user role feature flag is true for a statesubmitter", () => {
+    mockUserRoleFeatureFlag = true;
+    render(
+      <RoleStatusCard
+        isNewUserRoleDisplay={mockUserRoleFeatureFlag}
+        role="statesubmitter"
+        access={{
+          territory: "CA",
+          role: "statesubmitter",
+          status: "active",
+          doneByEmail: "test@example.com",
+          doneByName: "Test Admin",
+        }}
+      />,
+    );
+
+    expect(
+      screen.getByRole("heading", { name: "State Submitter - CA", level: 3 }),
+    ).toBeInTheDocument();
   });
 
   it("should not show the revoke button if the user is not a state submitter", () => {
@@ -56,7 +102,7 @@ describe("RoleStatusCard", () => {
         }}
       />,
     );
-    expect(screen.getByRole("heading", { name: "MD", level: 3 })).toBeInTheDocument();
+    expect(screen.getByRole("heading", { name: "Maryland", level: 3 })).toBeInTheDocument();
     expect(screen.getByText("Pending Access")).toBeInTheDocument();
     expect(screen.getByText(/State System Admin/)).toBeInTheDocument();
 
@@ -82,7 +128,7 @@ describe("RoleStatusCard", () => {
         onClick={revokeSpy}
       />,
     );
-    expect(screen.getByRole("heading", { name: "CO", level: 3 })).toBeInTheDocument();
+    expect(screen.getByRole("heading", { name: "Colorado", level: 3 })).toBeInTheDocument();
 
     const revokeButton = screen.getByRole("button", { name: "Self Revoke Access" });
     expect(revokeButton).toBeInTheDocument();

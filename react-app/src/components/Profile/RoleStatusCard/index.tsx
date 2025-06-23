@@ -3,7 +3,7 @@ import { UserRole } from "shared-types/events/legacy-user";
 import { getApprovingRole, isStateRole, userRoleMap } from "shared-utils";
 
 import { CardWithTopBorder } from "@/components";
-import { roleAccessStatus } from "@/utils";
+import { convertStateAbbrToFullName, roleAccessStatus } from "@/utils";
 
 export type RoleStatusProps = {
   isNewUserRoleDisplay?: boolean;
@@ -38,7 +38,7 @@ export const RoleStatusCard = ({
                 : `${userRoleMap[access.role]}`}
             </h3>
           ) : (
-            <h3 className="text-xl font-bold">{access.territory}</h3>
+            <h3 className="text-xl font-bold">{convertStateAbbrToFullName(access.territory)}</h3>
           )}
           {role === "statesubmitter" && (
             <button
