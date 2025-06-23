@@ -1,11 +1,12 @@
 import LZ from "lz-string";
 import { useMemo } from "react";
 import { LoaderFunctionArgs, redirect, useLoaderData } from "react-router";
+import { userRoleMap } from "shared-utils";
 
 import { getUserDetails, getUserProfile, OneMacUserProfile, UserDetails } from "@/api";
 import { GroupAndDivision, StateAccessCard, SubNavHeader, UserInformation } from "@/components";
 
-import { filterStateAccess, orderStateAccess, userRoleMap } from "../utils";
+import { filterStateAccess, orderStateAccess } from "../utils";
 
 type LoaderData = {
   userDetails: UserDetails;
@@ -17,8 +18,6 @@ export const userProfileLoader = async ({
 }: LoaderFunctionArgs): Promise<LoaderData | Response> => {
   const { profileId } = params;
 
-  if (!profileId) return redirect("/usermanagement");
-
   try {
     const currUserDetails = await getUserDetails();
     if (
@@ -27,7 +26,7 @@ export const userProfileLoader = async ({
         currUserDetails?.role,
       )
     ) {
-      return redirect("/usermanagement");
+      return redirect("/");
     }
 
     const userEmail = LZ.decompressFromEncodedURIComponent(profileId.replaceAll("_", "+"));

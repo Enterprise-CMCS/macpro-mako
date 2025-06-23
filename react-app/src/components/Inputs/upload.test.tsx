@@ -1,6 +1,8 @@
 import { fireEvent, screen, waitFor } from "@testing-library/react";
+import userEvent from "@testing-library/user-event";
 import { beforeEach, describe, expect, it, vi } from "vitest";
 
+import * as components from "@/components";
 import { renderWithQueryClient } from "@/utils/test-helpers";
 
 import { Upload } from "./upload";
@@ -172,19 +174,24 @@ describe("Upload", () => {
     });
   });
 
-  it("handles file removal on event", () => {
+  it("shows file removal confirmation", async () => {
     const mockSetFiles = vi.fn();
+    const onAcceptMock = vi.fn();
+    const userPromptSpy = vi
+      .spyOn(components, "userPrompt")
+      .mockImplementation((args) => (args.onAccept = onAcceptMock));
+    const user = userEvent.setup();
 
-    // Render the component with necessary props
     renderWithQueryClient(<Upload {...defaultProps} files={files} setFiles={mockSetFiles} />);
 
-    // Simulate the event (e.g., a click on the remove button)
-    const removeButton = screen.getByTestId(`upload-component-remove-file-${FILE_REMOVE}.txt`); // Ensure your component uses this testId
-    fireEvent.click(removeButton);
+    const removeButton = screen.getByTestId(`upload-component-remove-file-${FILE_REMOVE}.txt`);
+    await user.click(removeButton);
 
-    // Assert that setFiles was called with the updated files array
-    expect(mockSetFiles).toHaveBeenCalledWith(
-      files.filter((file) => file.filename !== `${FILE_REMOVE}.txt`),
-    );
+    expect(userPromptSpy).toBeCalledWith({
+      header: "Remove Attachment?",
+      body: `Are you sure you want to remove ${FILE_REMOVE}.txt?`,
+      acceptButtonText: "Yes, remove",
+      onAccept: onAcceptMock,
+    });
   });
 });

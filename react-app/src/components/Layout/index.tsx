@@ -2,7 +2,9 @@ import { AwsCognitoOAuthOpts } from "@aws-amplify/auth/lib-esm/types";
 import { Bars3Icon, XMarkIcon } from "@heroicons/react/24/outline";
 import * as DropdownMenu from "@radix-ui/react-dropdown-menu";
 import { Auth } from "aws-amplify";
+import { LogOutIcon, UserPenIcon, UserPlusIcon } from "lucide-react";
 import { useState } from "react";
+import { createPortal } from "react-dom";
 import { Link, NavLink, NavLinkProps, Outlet, useNavigate, useRouteError } from "react-router";
 import { UserRoles } from "shared-types";
 import { isStateUser } from "shared-utils";
@@ -33,7 +35,7 @@ import { UsaBanner } from "../UsaBanner";
 const useGetLinks = () => {
   const { isLoading: userLoading, data: userObj } = useGetUser();
   const { data: userDetailsData, isLoading: userDetailsLoading } = useGetUserDetails();
-  const hideWebformTab = useFeatureFlag("UAT_HIDE_MMDL_BANNER");
+  const showWebformTab = useFeatureFlag("WEBFORM_TAB_VISIBLE");
   const toggleFaq = useFeatureFlag("TOGGLE_FAQ");
   const showHome = toggleFaq ? userObj.user : true; // if toggleFAQ is on we want to hide home when not logged in
   const isStateHomepage = useFeatureFlag("STATE_HOMEPAGE_FLAG");
@@ -78,7 +80,7 @@ const useGetLinks = () => {
           {
             name: "Webforms",
             link: "/webforms",
-            condition: userObj.user && !isProd && !hideWebformTab,
+            condition: userObj.user && !isProd && showWebformTab,
           },
         ].filter((l) => l.condition);
 
@@ -136,7 +138,6 @@ const UserDropdownMenu = () => {
 
     setTimeout(() => {
       localStorage.clear();
-
       Object.entries(preserved).forEach(([key, value]) => {
         localStorage.setItem(key, value);
       });
@@ -175,7 +176,10 @@ const UserDropdownMenu = () => {
               asChild
               onSelect={handleViewProfile}
             >
-              <li>View Profile</li>
+              <li>
+                <UserPenIcon className="inline mr-2" />
+                Manage Profile
+              </li>
             </DropdownMenu.Item>
             {/* TODO: conditionally show this if the user IS NOT HELPDESK */}
             {/* // helpdesk, system admins, and cms reviewer users don't even see request role as an option */}
@@ -185,7 +189,10 @@ const UserDropdownMenu = () => {
                 asChild
                 onSelect={() => navigate("/signup")}
               >
-                <li>Request a Role Change</li>
+                <li>
+                  <UserPlusIcon className="inline mr-2" />
+                  Request a Role Change
+                </li>
               </DropdownMenu.Item>
             )}
             <DropdownMenu.Item
@@ -193,7 +200,10 @@ const UserDropdownMenu = () => {
               asChild
               onSelect={handleLogout}
             >
-              <li>Sign Out</li>
+              <li>
+                <LogOutIcon className="inline mr-2" />
+                Log Out
+              </li>
             </DropdownMenu.Item>
           </ul>
         </DropdownMenu.Content>
@@ -286,6 +296,8 @@ export const Layout = () => {
         </div>
       </nav>
       <main className="flex-1">
+        {/* Portal target for SubNavHeader */}
+        <div id="subheader-portal-container" />
         <SimplePageContainer>
           <Banner />
         </SimplePageContainer>
@@ -489,15 +501,20 @@ const ResponsiveNav = ({ isDesktop }: ResponsiveNavProps) => {
  *
  * @returns {JSX.Element} The rendered sub-navigation header component.
  */
-export const SubNavHeader = ({ children }: { children: React.ReactNode }) => (
-  <div className="bg-sky-100" data-testid="sub-nav-header">
-    <div className="max-w-screen-xl m-auto px-4 lg:px-8">
-      <div className="flex items-center">
-        <div className="flex align-middle py-4">{children}</div>
+export const SubNavHeader = ({ children }: { children: React.ReactNode }) => {
+  const portalContainer = document.getElementById("subheader-portal-container");
+  const subNavComponent = (
+    <div className="bg-sky-100" data-testid="sub-nav-header">
+      <div className="max-w-screen-xl m-auto px-4 lg:px-8">
+        <div className="flex items-center">
+          <div className="flex align-middle py-4">{children}</div>
+        </div>
       </div>
     </div>
-  </div>
-);
+  );
+  if (!portalContainer) return subNavComponent;
+  return createPortal(subNavComponent, portalContainer);
+};
 
 type SupportSubNavHeaderProps = {
   /*

@@ -3,8 +3,20 @@ import { opensearch } from "shared-types";
 import { ItemResult } from "shared-types/opensearch/changelog";
 import { formatDateToET } from "shared-utils";
 
-import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components";
-import * as Table from "@/components";
+import {
+  Accordion,
+  AccordionContent,
+  AccordionItem,
+  AccordionTrigger,
+  Button,
+  DetailsSection,
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "@/components";
 import { BLANK_VALUE } from "@/consts";
 
 import { Attachments, useAttachmentService } from "./hook";
@@ -16,24 +28,24 @@ type AttachmentDetailsProps = {
 };
 
 const AttachmentDetails = ({ id, attachments, onClick }: AttachmentDetailsProps) => (
-  <Table.TableBody>
+  <TableBody>
     {attachments.map((attachment) => {
       return (
-        <Table.TableRow key={`${id}-${attachment.key}`}>
-          <Table.TableCell>{attachment.title}</Table.TableCell>
-          <Table.TableCell>
-            <Table.Button
-              className="ml-[-15px]"
+        <TableRow key={`${id}-${attachment.key}`}>
+          <TableCell>{attachment.title}</TableCell>
+          <TableCell>
+            <Button
+              className="ml-[-15px] align-left text-left min-h-fit"
               variant="link"
               onClick={() => onClick(attachment).then(window.open)}
             >
               {attachment.filename}
-            </Table.Button>
-          </Table.TableCell>
-        </Table.TableRow>
+            </Button>
+          </TableCell>
+        </TableRow>
       );
     })}
-  </Table.TableBody>
+  </TableBody>
 );
 
 type SubmissionProps = {
@@ -48,32 +60,32 @@ const Submission = ({ packageActivity }: SubmissionProps) => {
     <div className="flex flex-col gap-6">
       <div>
         <h2 className="font-bold text-lg mb-2">Attachments</h2>
+
         {attachments && attachments?.length > 0 ? (
-          <Table.Table>
-            <Table.TableHeader>
-              <Table.TableRow>
-                <Table.TableHead className="w-[300px]">Document Type</Table.TableHead>
-                <Table.TableHead>Attached File</Table.TableHead>
-              </Table.TableRow>
-            </Table.TableHeader>
+          <Table>
+            <TableHeader>
+              <TableRow>
+                <TableHead className="w-[300px]">Document Type</TableHead>
+                <TableHead>Attached File</TableHead>
+              </TableRow>
+            </TableHeader>
+
             <AttachmentDetails attachments={attachments} id={id} onClick={onUrl} />
-          </Table.Table>
+          </Table>
         ) : (
           <p>No information submitted</p>
         )}
       </div>
-
       {attachments && attachments.length > 1 && (
-        <Table.Button
+        <Button
           variant="outline"
           className="w-max"
           loading={loading}
           onClick={() => onZip(attachments)}
         >
           Download section attachments
-        </Table.Button>
+        </Button>
       )}
-
       <div>
         <h2 className="font-bold text-lg mb-2">Additional Information</h2>
         <p className="whitespace-pre-line">{additionalInformation || "No information submitted"}</p>
@@ -168,9 +180,14 @@ const DownloadAllButton = ({ packageId, submissionChangelog }: DownloadAllButton
   };
 
   return (
-    <Table.Button loading={loading} onClick={onDownloadAll} variant="outline">
+    <Button
+      loading={loading}
+      onClick={onDownloadAll}
+      variant="outline"
+      className="max-w-fit min-h-fit justify-self-end"
+    >
       Download all attachments
-    </Table.Button>
+    </Button>
   );
 };
 
@@ -183,7 +200,7 @@ export const PackageActivities = ({ id, changelog }: PackageActivitiesProps) => 
   const changelogWithoutAdminChanges = changelog.filter((item) => !item._source.isAdminChange);
   console.log("Changelog" + changelogWithoutAdminChanges);
   return (
-    <Table.DetailsSection
+    <DetailsSection
       id="package_activity"
       title={
         <div className="flex justify-between">
@@ -207,6 +224,6 @@ export const PackageActivities = ({ id, changelog }: PackageActivitiesProps) => 
       ) : (
         <p className="text-gray-500">No package activity recorded</p>
       )}
-    </Table.DetailsSection>
+    </DetailsSection>
   );
 };

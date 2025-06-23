@@ -1,7 +1,8 @@
 import { useState } from "react";
-import { Navigate, useNavigate } from "react-router";
+import { Navigate, useNavigate, useSearchParams } from "react-router";
 import { StateCode } from "shared-types";
 import { UserRole } from "shared-types/events/legacy-user";
+import { userRoleMap } from "shared-utils";
 
 import { useGetUserDetails, useGetUserProfile, useSubmitRoleRequests } from "@/api";
 import {
@@ -20,23 +21,30 @@ import {
 import { FilterableSelect, Option } from "@/components/Opensearch/main/Filtering/Drawer/Filterable";
 import { useAvailableStates } from "@/hooks/useAvailableStates";
 
-import { userRoleMap } from "../profile";
-
 export const StateSignup = () => {
   const [stateSelected, setStateSelected] = useState<StateCode[]>([]);
   const [showModal, setShowModal] = useState<boolean>(false);
   const navigate = useNavigate();
   const { mutateAsync: submitRequest, isLoading } = useSubmitRoleRequests();
-
   const { data: userDetails } = useGetUserDetails();
   const { data: userProfile } = useGetUserProfile();
-  const statesToRequest: Option[] = useAvailableStates(userProfile?.stateAccess);
+  const currentRole = userDetails?.role;
+
+  const [searchParams] = useSearchParams();
+  const roleKey = searchParams.get("role") as UserRole;
+
+  // Determine which role the user is allowed to request based on their current role
+  const roleToRequestMap: Partial<Record<UserRole, UserRole>> = {
+    norole: roleKey,
+    statesubmitter: "statesystemadmin",
+    statesystemadmin: "statesubmitter",
+  };
+  const roleToRequest = roleToRequestMap[currentRole];
+  const statesToRequest: Option[] = useAvailableStates(roleToRequest, userProfile?.stateAccess);
 
   if (!userDetails) return <LoadingSpinner />;
 
   if (!userDetails?.role) return <Navigate to="/" />;
-
-  const currentRole = userDetails.role;
 
   // Only state users can access this page
   if (
@@ -46,16 +54,8 @@ export const StateSignup = () => {
   )
     return <Navigate to="/profile" />;
 
-  // Determine which role the user is allowed to request based on their current role
-  const roleToRequestMap: Partial<Record<UserRole, UserRole>> = {
-    norole: "statesubmitter",
-    statesubmitter: "statesystemadmin",
-    statesystemadmin: "statesubmitter",
-  };
-  const roleToRequest = roleToRequestMap[currentRole];
-
   // Statesubmitters can request to be a statesystemadmin for 1 state
-  const isRequestRoleAdmin = currentRole === "statesubmitter";
+  // const isRequestRoleAdmin = currentRole === "statesubmitter";
 
   const onChange = (values: StateCode[]) => {
     setStateSelected(values);
@@ -72,12 +72,13 @@ export const StateSignup = () => {
           requestRoleChange: true,
         });
       }
-      navigate("/dashboard");
+      const redirectRoute = currentRole === "norole" ? "/profile" : "/dashboard";
+      navigate(redirectRoute);
       banner({
         header: "Submission Completed",
         body: "Your submission has been received.",
         variant: "success",
-        pathnameToDisplayOn: "/dashboard",
+        pathnameToDisplayOn: redirectRoute,
       });
     } catch (error) {
       console.error(error);
@@ -113,12 +114,12 @@ export const StateSignup = () => {
             </div>
             <div className="py-2">
               <h2 className="text-xl font-bold mb-2">Select your State Access</h2>
-              {isRequestRoleAdmin ? (
+              {roleToRequest === "statesystemadmin" ? (
                 <Select onValueChange={(value: StateCode) => onChange([value])}>
                   <SelectTrigger aria-label="Select state">
                     <SelectValue placeholder="Select state here" />
                   </SelectTrigger>
-                  <SelectContent>
+                  <SelectContent isScrollable>
                     {statesToRequest.map((state) => (
                       <SelectItem value={state.value} key={state.value}>
                         {state.label}
@@ -131,12 +132,13 @@ export const StateSignup = () => {
                   value={stateSelected}
                   options={statesToRequest}
                   onChange={(values: StateCode[]) => onChange(values)}
-                  placeholder={"Select state here"}
+                  placeholder="Select state here"
+                  selectedDisplay="label"
                 />
               )}
               {!stateSelected.length && (
                 <p className="text-red-600 mt-3">
-                  {isRequestRoleAdmin
+                  {roleToRequest === "statesystemadmin"
                     ? "Please select a state."
                     : "Please select at least one state."}
                 </p>

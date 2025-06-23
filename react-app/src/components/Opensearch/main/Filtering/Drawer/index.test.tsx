@@ -1,4 +1,4 @@
-import { screen, waitForElementToBeRemoved, within } from "@testing-library/react";
+import { screen, waitFor, waitForElementToBeRemoved, within } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { opensearch } from "shared-types";
 import { describe, expect, it } from "vitest";
@@ -26,13 +26,13 @@ describe("OsFilterDrawer", () => {
   describe("SPA Filters", () => {
     it("should display the drawer closed initially", () => {
       setup([], "spas");
-      expect(screen.getByRole("button", { name: "Filters" }).getAttribute("data-state")).toEqual(
-        "closed",
-      );
+      expect(
+        screen.getByRole("button", { name: "Open filter panel" }).getAttribute("data-state"),
+      ).toEqual("closed");
     });
     it("should handle clicking the Filter button and opening the drawer", async () => {
       const { user } = setup([], "spas");
-      await user.click(screen.getByRole("button", { name: "Filters" }));
+      await user.click(screen.getByRole("button", { name: "Open filter panel" }));
       expect(screen.getByRole("heading", { name: "Filter by", level: 4 })).toBeInTheDocument();
       expect(screen.queryByRole("button", { name: "Clear all filters" })).toBeInTheDocument();
       expect(screen.queryByRole("button", { name: "Close" })).toBeInTheDocument();
@@ -94,12 +94,12 @@ describe("OsFilterDrawer", () => {
         ],
         "spas",
       );
-      await user.click(screen.getByRole("button", { name: "Filters" }));
+      await user.click(screen.getByRole("button", { name: "Open filter panel" }));
       const state = screen.getByRole("heading", {
         name: "State",
         level: 3,
       }).parentElement;
-      expect(state.getAttribute("data-state")).toEqual("open");
+      await waitFor(() => expect(state.getAttribute("data-state")).toEqual("open"));
       expect(within(state).queryByLabelText("Remove MD")).toBeInTheDocument();
 
       const authority = screen.getByRole("heading", {
@@ -152,17 +152,17 @@ describe("OsFilterDrawer", () => {
     });
     it("should handle clicking the Close button", async () => {
       const { user } = setup([], "spas");
-      await user.click(screen.getByRole("button", { name: "Filters" }));
+      await user.click(screen.getByRole("button", { name: "Open filter panel" }));
       expect(screen.getByRole("heading", { name: "Filter by", level: 4 })).toBeInTheDocument();
       await user.click(screen.queryByRole("button", { name: "Close" }));
-      expect(screen.getByRole("button", { name: "Filters" }).getAttribute("data-state")).toEqual(
-        "closed",
-      );
+      expect(
+        screen.getByRole("button", { name: "Open filter panel" }).getAttribute("data-state"),
+      ).toEqual("closed");
     });
     describe("State filter", () => {
       it("should handle expanding the State filter", async () => {
         const { user } = setup([], "spas");
-        await user.click(screen.getByRole("button", { name: "Filters" }));
+        await user.click(screen.getByRole("button", { name: "Open filter panel" }));
 
         const state = screen.getByRole("heading", {
           name: "State",
@@ -188,13 +188,13 @@ describe("OsFilterDrawer", () => {
           ],
           "spas",
         );
-        await user.click(screen.getByRole("button", { name: "Filters" }));
+        await user.click(screen.getByRole("button", { name: "Open filter panel" }));
 
         const state = screen.getByRole("heading", {
           name: "State",
           level: 3,
         }).parentElement;
-        expect(state.getAttribute("data-state")).toEqual("open");
+        await waitFor(() => expect(state.getAttribute("data-state")).toEqual("open"));
 
         const combo = screen.getByRole("combobox");
         expect(combo).toBeInTheDocument();
@@ -204,7 +204,7 @@ describe("OsFilterDrawer", () => {
     describe("Authority filter", () => {
       it("should handle expanding the Authority filter", async () => {
         const { user } = setup([], "spas");
-        await user.click(screen.getByRole("button", { name: "Filters" }));
+        await user.click(screen.getByRole("button", { name: "Open filter panel" }));
 
         const authority = screen.getByRole("heading", {
           name: "Authority",
@@ -238,17 +238,19 @@ describe("OsFilterDrawer", () => {
           ],
           "spas",
         );
-        await user.click(screen.getByRole("button", { name: "Filters" }));
+        await user.click(screen.getByRole("button", { name: "Open filter panel" }));
 
         // it should already be expanded if there is a filter already set
-        expect(
-          screen
-            .getByRole("heading", {
-              name: "Authority",
-              level: 3,
-            })
-            .parentElement.getAttribute("data-state"),
-        ).toEqual("open");
+        await waitFor(() =>
+          expect(
+            screen
+              .getByRole("heading", {
+                name: "Authority",
+                level: 3,
+              })
+              .parentElement.getAttribute("data-state"),
+          ).toEqual("open"),
+        );
 
         const chip = screen.queryByLabelText("CHIP SPA");
         expect(chip).toBeInTheDocument();
@@ -260,7 +262,7 @@ describe("OsFilterDrawer", () => {
       });
       it("should handle selecting a filter", async () => {
         const { user } = setup([], "spas");
-        await user.click(screen.getByRole("button", { name: "Filters" }));
+        await user.click(screen.getByRole("button", { name: "Open filter panel" }));
 
         await user.click(screen.getByRole("button", { name: "Authority" }));
 
@@ -277,7 +279,7 @@ describe("OsFilterDrawer", () => {
       });
       it("should handle clicking Select All", async () => {
         const { user } = setup([], "spas");
-        await user.click(screen.getByRole("button", { name: "Filters" }));
+        await user.click(screen.getByRole("button", { name: "Open filter panel" }));
 
         await user.click(screen.getByRole("button", { name: "Authority" }));
 
@@ -308,7 +310,7 @@ describe("OsFilterDrawer", () => {
           ],
           "spas",
         );
-        await user.click(screen.getByRole("button", { name: "Filters" }));
+        await user.click(screen.getByRole("button", { name: "Open filter panel" }));
 
         const chip = screen.queryByLabelText("CHIP SPA");
         expect(chip).toBeInTheDocument();
@@ -327,13 +329,13 @@ describe("OsFilterDrawer", () => {
   describe("Waiver Filters", () => {
     it("should display the drawer closed initially", () => {
       setup([], "waivers");
-      expect(screen.getByRole("button", { name: "Filters" }).getAttribute("data-state")).toEqual(
-        "closed",
-      );
+      expect(
+        screen.getByRole("button", { name: "Open filter panel" }).getAttribute("data-state"),
+      ).toEqual("closed");
     });
     it("should open the drawer and show all the filters, if you click the Filter button", async () => {
       const { user } = setup([], "waivers");
-      await user.click(screen.getByRole("button", { name: "Filters" }));
+      await user.click(screen.getByRole("button", { name: "Open filter panel" }));
       expect(screen.getByRole("heading", { name: "Filter by", level: 4 })).toBeInTheDocument();
       expect(screen.queryByRole("button", { name: "Clear all filters" })).toBeInTheDocument();
 
@@ -357,7 +359,7 @@ describe("OsFilterDrawer", () => {
     describe("Authority filter", () => {
       it("should handle clicking the Authority filter", async () => {
         const { user } = setup([], "waivers");
-        await user.click(screen.getByRole("button", { name: "Filters" }));
+        await user.click(screen.getByRole("button", { name: "Open filter panel" }));
 
         const authority = screen.getByRole("heading", {
           name: "Authority",
@@ -391,17 +393,19 @@ describe("OsFilterDrawer", () => {
           ],
           "waivers",
         );
-        await user.click(screen.getByRole("button", { name: "Filters" }));
+        await user.click(screen.getByRole("button", { name: "Open filter panel" }));
 
         // it should already be expanded if there is a filter already set
-        expect(
-          screen
-            .getByRole("heading", {
-              name: "Authority",
-              level: 3,
-            })
-            .parentElement.getAttribute("data-state"),
-        ).toEqual("open");
+        await waitFor(() =>
+          expect(
+            screen
+              .getByRole("heading", {
+                name: "Authority",
+                level: 3,
+              })
+              .parentElement.getAttribute("data-state"),
+          ).toEqual("open"),
+        );
 
         const chip = screen.queryByLabelText("1915(b)");
         expect(chip).toBeInTheDocument();
@@ -416,7 +420,7 @@ describe("OsFilterDrawer", () => {
   it("should show for filters for an invalid tab", async () => {
     // @ts-expect-error
     const { user } = setup([], "invalid");
-    await user.click(screen.getByRole("button", { name: "Filters" }));
+    await user.click(screen.getByRole("button", { name: "Open filter panel" }));
     expect(screen.getAllByRole("button").length).toEqual(2);
     expect(screen.getByRole("button", { name: "Clear all filters" })).toBeInTheDocument();
     expect(screen.getByRole("button", { name: "Close" })).toBeInTheDocument();

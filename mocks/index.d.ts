@@ -59,6 +59,8 @@ export type TestUserResult = {
       | "systemadmin"
       | "norole";
     states?: string[];
+    group?: string;
+    division?: string;
   };
 };
 
@@ -87,6 +89,7 @@ export type TestRoleResult = {
     role: TestUserRole;
     territory: string;
     lastModifiedDate: number;
+    approverList?: { fullName: string; email: string }[];
   };
 };
 
@@ -242,4 +245,12 @@ export type SubmitRoleRequestBody = {
   eventType: string;
   grantAccess?: boolean;
   requestRoleChange: boolean;
+};
+
+export type UserDetailsRequestBody = {
+  userEmail?: string;
+};
+
+export type UserProfileRequestBody = {
+  userEmail?: string;
 };

@@ -1,6 +1,7 @@
 import { useEffect, useMemo, useState } from "react";
 import { Navigate } from "react-router";
 import { StateCode } from "shared-types";
+import { userRoleMap } from "shared-utils";
 
 import { useGetUserDetails, useGetUserProfile, useSubmitRoleRequests } from "@/api";
 import {
@@ -24,7 +25,6 @@ import {
   hasPendingRequests,
   orderStateAccess,
   stateAccessRoles,
-  userRoleMap,
 } from "../utils";
 
 export const MyProfile = () => {
@@ -40,7 +40,7 @@ export const MyProfile = () => {
   const [showAddState, setShowAddState] = useState<boolean>(true);
   const [requestedStates, setRequestedStates] = useState<StateCode[]>([]);
   const [pendingRequests, setPendingRequests] = useState<boolean>(false);
-  const statesToRequest: Option[] = useAvailableStates(userProfile?.stateAccess);
+  const statesToRequest: Option[] = useAvailableStates(userDetails?.role, userProfile?.stateAccess);
 
   const filteredStateAccess = useMemo(
     () => filterStateAccess(userDetails, userProfile),
@@ -84,10 +84,14 @@ export const MyProfile = () => {
             value={requestedStates}
             options={statesToRequest}
             onChange={(values: StateCode[]) => setRequestedStates(values)}
+            selectedDisplay="label"
           />
           <div className="block lg:mt-8 lg:mb-2">
             <span>
-              <Button disabled={!requestedStates.length} onClick={handleSubmitRequest}>
+              <Button
+                disabled={!(requestedStates && requestedStates.length)}
+                onClick={handleSubmitRequest}
+              >
                 Submit
               </Button>
               {areRolesLoading && <LoadingSpinner />}
@@ -201,6 +205,7 @@ export const MyProfile = () => {
                 />
                 {orderedStateAccess?.map((access) => (
                   <StateAccessCard
+                    key={`${access.territory}`}
                     access={access}
                     role={userDetails.role}
                     onClick={() => setSelfRevokeState(access.territory as StateCode)}

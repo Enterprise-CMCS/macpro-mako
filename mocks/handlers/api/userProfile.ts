@@ -1,9 +1,10 @@
 import { http, HttpResponse, PathParams } from "msw";
-import { canRequestAccess, canUpdateAccess } from "shared-utils";
+import { canRequestAccess, canUpdateAccess, getApprovingRole } from "shared-utils";
 
 import {
   getApprovedRoleByEmailAndState,
   getFilteredRoleDocsByEmail,
+  getFilteredRoleDocsByRole,
   getFilteredRoleDocsByState,
   getFilteredUserDocList,
   getLatestRoleByEmail,
@@ -11,22 +12,37 @@ import {
   osUsers,
   roleDocs,
 } from "../../data";
-import { SubmitRoleRequestBody, TestRoleDocument } from "../../index.d";
+import { SubmitRoleRequestBody, TestRoleDocument, UserProfileRequestBody } from "../../index.d";
 
-const defaultApiUserProfileHandler = http.post(
+const defaultApiUserProfileHandler = http.post<PathParams, UserProfileRequestBody>(
   "https://test-domain.execute-api.us-east-1.amazonaws.com/mocked-tests/getUserProfile",
-  async () => {
-    const username = process.env.MOCK_USER_USERNAME;
-    if (!username) {
-      return HttpResponse.json([]);
+  async ({ request }) => {
+    let email;
+    if (request.body) {
+      const { userEmail } = await request.json();
+      email = userEmail;
+    } else {
+      const username = process.env.MOCK_USER_USERNAME;
+      if (!username) {
+        return HttpResponse.json([]);
+      }
+      const user = getUserByUsername(username);
+      if (!user) {
+        return HttpResponse.json([]);
+      }
+      email = user?.email;
     }
-    const user = getUserByUsername(username);
-    if (!user) {
-      return HttpResponse.json([]);
-    }
-    const roles = getFilteredRoleDocsByEmail(user?.email || "");
+    const roles = getFilteredRoleDocsByEmail(email || "");
 
     return HttpResponse.json(roles);
+  },
+);
+
+export const errorApiUserProfileHandler = http.post<PathParams, UserProfileRequestBody>(
+  "https://test-domain.execute-api.us-east-1.amazonaws.com/mocked-tests/getUserProfile",
+  async () => {
+    console.log("throw error");
+    return new HttpResponse("Response Error", { status: 500 });
   },
 );
 
@@ -208,6 +224,68 @@ export const errorApiSubmitRoleRequestsHandler = http.post(
   async () => new HttpResponse("Response Error", { status: 500 }),
 );
 
+const defaultGetApproversHandler = http.post(
+  "https://test-domain.execute-api.us-east-1.amazonaws.com/mocked-tests/getApprovers",
+  async () => {
+    const username = process.env.MOCK_USER_USERNAME;
+    if (!username) {
+      return HttpResponse.json({
+        message: "No username found",
+        approverList: [],
+      });
+    }
+    const user = getUserByUsername(username);
+    if (!user) {
+      return HttpResponse.json({
+        message: "No user found",
+        approverList: [],
+      });
+    }
+    const email = user?.email;
+
+    const roles = getFilteredRoleDocsByEmail(email || "");
+
+    type ApproverGroup = {
+      territory: string;
+      email: string;
+    };
+    const approverGroups: Record<string, Record<string, ApproverGroup[]>> = {};
+
+    for (const roleItem of roles) {
+      const originalRole = roleItem.role;
+      const approverRole = getApprovingRole(originalRole);
+      const approverDocs = getFilteredRoleDocsByRole(approverRole);
+
+      for (const doc of approverDocs) {
+        const territory = doc.territory;
+        const group = (approverGroups[originalRole] ??= {});
+        (group[territory] ??= []).push({
+          email: doc.email,
+          territory,
+        });
+      }
+    }
+
+    const approverList = Object.entries(approverGroups).flatMap(([originalRole, territoryMap]) =>
+      Object.entries(territoryMap).map(([territory, approvers]) => ({
+        role: originalRole,
+        territory: [territory],
+        approvers,
+      })),
+    );
+
+    return HttpResponse.json({
+      message: "Approver List sent successfully.",
+      approverList,
+    });
+  },
+);
+
+export const errorApiGetApproversHandler = http.post(
+  "https://test-domain.execute-api.us-east-1.amazonaws.com/mocked-tests/getApprovers",
+  async () => new HttpResponse("Response Error", { status: 500 }),
+);
+
 export const userProfileHandlers = [
   defaultApiUserProfileHandler,
   defaultApiGetCreateUserProfileHandler,
@@ -215,4 +293,5 @@ export const userProfileHandlers = [
   defaultApiGetSubmitGroupDivisionHandler,
   defaultApiOptionSubmitGroupDivisionHandler,
   defaultApiSubmitRoleRequestsHandler,
+  defaultGetApproversHandler,
 ];

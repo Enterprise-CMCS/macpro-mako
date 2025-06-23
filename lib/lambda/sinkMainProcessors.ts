@@ -296,9 +296,11 @@ export const insertOneMacRecordsFromKafkaIntoMako = async (
   const oneMacUsers = oneMacRecordsForMako.filter(
     (record) => record.eventType === "user-info" || record.eventType === "legacy-user-info",
   );
-  const roleRequests = oneMacRecordsForMako.filter(
-    (record) => record.eventType === "legacy-user-role" || record.eventType === "user-role",
-  );
+  const roleRequests = oneMacRecordsForMako
+    .filter((record) => record.eventType === "legacy-user-role" || record.eventType === "user-role")
+    .sort((a, b) => {
+      return (a.lastModifiedDate as any) - (b.lastModifiedDate as any);
+    });
 
   await bulkUpdateDataWrapper(oneMacRecords, "main");
   await bulkUpdateDataWrapper(oneMacUsers, "users");
@@ -409,7 +411,6 @@ export const insertNewSeatoolRecordsFromKafkaIntoMako = async (
 
       if (!value) {
         console.error(`Record without a value property: ${value}`);
-        seatoolRecordsForMako.push(opensearch.main.seatool.tombstone(id));
         continue;
       }
 

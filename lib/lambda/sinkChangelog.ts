@@ -79,7 +79,7 @@ const processAndIndex = async ({
 
       // Parse the kafka record's value
       const record = JSON.parse(decodeBase64WithUtf8(value));
-
+      console.log(JSON.stringify(record, null, 2));
       if (record.isAdminChange) {
         const schema = transformDeleteSchema(offset)
           .or(transformUpdateValuesSchema(offset))
@@ -94,16 +94,13 @@ const processAndIndex = async ({
             const { id, packageId: _packageId, idToBeUpdated, ...restOfResultData } = result.data;
             // Push doc with content of package being soft deleted
 
-            docs.forEach((log) => {
-              const recordOffset = log.id.split("-").at(-1);
-              docs.push({
-                ...log,
-                id: `${id}-${recordOffset}`,
-                packageId: id,
-                deleted: false,
-                ...restOfResultData,
-              });
+            docs.push({
+              ...restOfResultData,
+              id: id + "-" + result.data.timestamp,
+              packageId: id,
+              event: "update-id",
             });
+
             // Get all changelog entries for the original package ID
             // Filter out any entry regarding the soft deleted event
             // Create copies of the rest of the changelog entries with the new package ID
@@ -135,6 +132,18 @@ const processAndIndex = async ({
                 id: `${result.data.id}-${recordOffset}`,
                 packageId: result.data.id,
               });
+            });
+          } else if (result.data.adminChangeType === "delete") {
+            const { packageId } = result.data;
+            const packageChangelogs = await getPackageChangelog(packageId);
+
+            packageChangelogs.hits.hits.forEach((log) => {
+              if (log._source.event !== "delete") {
+                docs.push({
+                  ...log._source,
+                  packageId: packageId + "-del",
+                });
+              }
             });
           } else {
             docs.push({ ...result.data, proposedDate: null, submissionDate: null });
@@ -173,6 +182,21 @@ const processAndIndex = async ({
                 );
               }
             }
+            const copyDocs: Array<(typeof transforms)[keyof typeof transforms]["Schema"]> = [];
+            for (const record of docs) {
+              if (
+                record.packageId === ids.beforeId &&
+                record.timestamp <= adminChange.changeTimestamp
+              ) {
+                copyDocs.push({
+                  ...record,
+                  id: `${ids.afterId}-${record.timestamp}`,
+                  packageId: ids.afterId,
+                });
+                record.packageId += "-del";
+              }
+            }
+            docs.push(...copyDocs);
           }
         }
 
@@ -221,6 +245,5 @@ const processAndIndex = async ({
       });
     }
   }
-
   await bulkUpdateDataWrapper(docs, "changelog");
 };

@@ -1,4 +1,4 @@
-import { TestRoleDocument, TestRoleResult } from "..";
+import { TestRoleDocument, TestRoleResult } from "../index";
 
 export const roleResults: TestRoleResult[] = [
   {
@@ -178,6 +178,21 @@ export const roleResults: TestRoleResult[] = [
       status: "active",
       role: "statesystemadmin",
       territory: "MD",
+      lastModifiedDate: 1745003573565,
+    },
+  },
+  {
+    _id: "statesystemadmin@noname.com_CA_statesystemadmin",
+    found: true,
+    _source: {
+      id: "statesystemadmin@noname.com_CA_statesystemadmin",
+      eventType: "legacy-user-role",
+      email: "statesystemadmin@noname.com",
+      doneByEmail: "systemadmin@example.com",
+      doneByName: "System Admin",
+      status: "active",
+      role: "statesystemadmin",
+      territory: "CA",
       lastModifiedDate: 1745003573565,
     },
   },
@@ -736,6 +751,22 @@ export const getFilteredRolesByState = (state: string) =>
 
 export const getFilteredRoleDocsByState = (state: string) =>
   getFilteredRolesByState(state).map((role) => role?._source as TestRoleDocument);
+
+export const getFilteredRolesByStateAndRole = (state: string, role: string) =>
+  roleResults.filter(
+    (roleItem) => roleItem?._source?.territory === state && roleItem?._source?.role === role,
+  );
+
+export const getFilteredRoleDocsByStateAndRole = (state: string, role: string) =>
+  getFilteredRolesByStateAndRole(state, role).map(
+    (roleItem) => roleItem?._source as TestRoleDocument,
+  );
+
+export const getFilteredRolesByRole = (role: string) =>
+  roleResults.filter((roleItem) => roleItem?._source?.role === role);
+
+export const getFilteredRoleDocsByRole = (role: string) =>
+  getFilteredRolesByRole(role).map((roleItem) => roleItem?._source as TestRoleDocument);
 
 export const getLatestRoleByEmail = (email: string) =>
   roleResults

@@ -8,6 +8,8 @@ export type EmailAddresses = {
   sourceEmail: string;
   srtEmails: string[];
   cpocEmail: string[];
+  accessEmail: string;
+  userRoleCc?: string;
 };
 
 export interface CommonEmailVariables {
@@ -18,6 +20,7 @@ export interface CommonEmailVariables {
   actionType: string;
   allStateUsersEmails?: string[];
   title?: string;
+  isChipEligibility?: boolean;
 }
 
 export interface RelatedEventType {

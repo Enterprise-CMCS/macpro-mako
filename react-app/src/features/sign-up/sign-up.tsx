@@ -24,14 +24,14 @@ export const SignUp = () => {
       title: "State Submitter",
       description: "Responsible for submitting packages",
       rolesWhoCanView: ["statesystemadmin", "norole"],
-      link: "/signup/state",
+      link: "/signup/state?role=statesubmitter",
     },
     {
       key: "statesystemadmin",
       title: "State System Administrator",
       description: "Ability to approve state submitters and submit packages",
-      rolesWhoCanView: ["statesubmitter"],
-      link: "/signup/state",
+      rolesWhoCanView: ["statesubmitter", "norole"],
+      link: "/signup/state?role=statesystemadmin",
     },
     // TODO: Get language from HCD/CMS. This used to be "CMS Reviewer" in legacy
     {

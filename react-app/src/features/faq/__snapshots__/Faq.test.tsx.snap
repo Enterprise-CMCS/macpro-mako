@@ -74,7 +74,7 @@ exports[`Faq > should display the items expected 1`] = `
                 >
                   What is FAQ 1?
                   <svg
-                    class="h-4 w-4 shrink-0 transition-transform duration-200"
+                    class="lucide lucide-chevron-down h-4 w-4 shrink-0 transition-transform duration-200"
                     fill="none"
                     height="24"
                     stroke="currentColor"
@@ -133,7 +133,7 @@ exports[`Faq > should display the items expected 1`] = `
                 >
                   What is FAQ 2?
                   <svg
-                    class="h-4 w-4 shrink-0 transition-transform duration-200"
+                    class="lucide lucide-chevron-down h-4 w-4 shrink-0 transition-transform duration-200"
                     fill="none"
                     height="24"
                     stroke="currentColor"

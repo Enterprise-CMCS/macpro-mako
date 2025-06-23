@@ -6,6 +6,10 @@ export const ABP_GUIDES: Template[] = [
     href: "/abp/IG_AbpIntroduction.pdf",
   },
   {
+    title: "ABP General Information Implementation Guide",
+    href: "/abp/IG_AbpGeneralInfoImplementationGuide.pdf",
+  },
+  {
     title: "ABP 1",
     text: "Alternative Benefit Plan Populations Implementation Guide",
     href: "/abp/IG_ABP1_AlternativeBenefitPlanPopulations.pdf",

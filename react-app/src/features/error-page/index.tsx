@@ -14,11 +14,10 @@ export const ErrorPage = () => {
             to: "/",
             displayText: "Home",
             order: 0,
-            default: true,
           },
           {
             to: "/404",
-            displayText: "Error Page",
+            displayText: "Page not found",
             order: 1,
           },
         ]}

@@ -45,7 +45,7 @@ jobs:
           for i in "${allsgs[@]}"
           do
               if [[ " ${inusesgs[*]} " =~ " ${i} " ]]; then
-                  echo "Keping $i as it is in use"
+                  echo "Keeping $i as it is in use"
               else
                   echo "Deleting $i as it is not in use..."
                   aws ec2 delete-security-group --group-id $i

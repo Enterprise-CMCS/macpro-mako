@@ -24,6 +24,7 @@ export type AuthoritiesWithUserTypesTemplate = {
 export type EmailTemplates = {
   "new-medicaid-submission": AuthoritiesWithUserTypesTemplate;
   "new-chip-submission": AuthoritiesWithUserTypesTemplate;
+  "new-chip-details-submission": AuthoritiesWithUserTypesTemplate;
   "temporary-extension": AuthoritiesWithUserTypesTemplate;
   "withdraw-package": AuthoritiesWithUserTypesTemplate;
   "withdraw-rai": AuthoritiesWithUserTypesTemplate;
@@ -47,6 +48,7 @@ export type EmailTemplates = {
 const emailTemplates: EmailTemplates = {
   "new-medicaid-submission": EmailContent.newSubmission,
   "new-chip-submission": EmailContent.newSubmission,
+  "new-chip-details-submission": EmailContent.newSubmission,
   "temporary-extension": EmailContent.tempExtension,
   "withdraw-package": EmailContent.withdrawPackage,
   "withdraw-rai": EmailContent.withdrawRai,
@@ -64,6 +66,14 @@ const emailTemplates: EmailTemplates = {
   "seatool-withdraw": EmailContent.withdrawConfirmation,
   "app-k": EmailContent.newSubmission,
   "upload-subsequent-documents": EmailContent.uploadSubsequentDocuments,
+};
+
+// user roles are so different they will be their own thing for now
+export const getUserRoleTemplate = async (
+  userRoleAction: keyof typeof EmailContent.userRoleTemplate,
+): Promise<(variables: EmailContent.UserRoleEmailType) => Promise<EmailTemplate>> => {
+  const userRoleTemplate = EmailContent.userRoleTemplate;
+  return userRoleTemplate[userRoleAction];
 };
 
 // Create a type-safe lookup function
@@ -88,9 +98,7 @@ export async function getEmailTemplates(
   if (!record) {
     throw new Error("Invalid record");
   }
-
   const { event } = record;
-
   const emailTemplate = emailTemplates[event as keyof EmailTemplates];
 
   if (event in emailTemplates && hasAuthority(record)) {
