@@ -3,9 +3,9 @@ import { UserRole } from "shared-types/events/legacy-user";
 import { getApprovingRole, userRoleMap } from "shared-utils";
 
 import { CardWithTopBorder } from "@/components";
-import { stateAccessStatus } from "@/utils";
+import { roleAccessStatus } from "@/utils";
 
-export type StateAccessProps = {
+export type RoleStatusProps = {
   role: UserRole;
   onClick?: () => void;
   access: {
@@ -18,7 +18,7 @@ export type StateAccessProps = {
   };
 };
 
-export const StateAccessCard = ({ role, onClick, access }: StateAccessProps) => {
+export const RoleStatusCard = ({ role, onClick, access }: RoleStatusProps) => {
   if (!access) return null;
   const hideApprovers = role === "norole" && access.status !== "pending";
   return (
@@ -40,7 +40,7 @@ export const StateAccessCard = ({ role, onClick, access }: StateAccessProps) => 
         </div>
         <div className="flex">
           {access.status === "pending" && <Clock />}
-          <p className="italic">{stateAccessStatus[access.status]}</p>
+          <p className="italic">{roleAccessStatus[access.status]}</p>
         </div>
         {!hideApprovers && (
           <p className="block lg:mt-8 lg:mb-2">

@@ -1,4 +1,4 @@
-export const stateAccessStatus = {
+export const roleAccessStatus = {
   active: "Access Granted",
   pending: "Pending Access",
   denied: "Access Denied",

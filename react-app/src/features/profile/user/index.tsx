@@ -4,9 +4,9 @@ import { LoaderFunctionArgs, redirect, useLoaderData } from "react-router";
 import { userRoleMap } from "shared-utils";
 
 import { getUserDetails, getUserProfile, OneMacUserProfile, UserDetails } from "@/api";
-import { GroupAndDivision, StateAccessCard, SubNavHeader, UserInformation } from "@/components";
+import { GroupAndDivision, RoleStatusCard, SubNavHeader, UserInformation } from "@/components";
 
-import { filterStateAccess, orderStateAccess } from "../utils";
+import { filterRoleStatus, orderRoleStatus } from "../utils";
 
 type LoaderData = {
   userDetails: UserDetails;
@@ -50,14 +50,14 @@ export const userProfileLoader = async ({
 export const UserProfile = () => {
   const { userDetails, userProfile } = useLoaderData<LoaderData>();
 
-  const filteredStateAccess = useMemo(
-    () => filterStateAccess(userDetails, userProfile),
+  const filteredRoleStatus = useMemo(
+    () => filterRoleStatus(userDetails, userProfile),
     [userDetails, userProfile],
   );
 
-  const orderedStateAccess = useMemo(
-    () => orderStateAccess(filteredStateAccess),
-    [filteredStateAccess],
+  const orderedRoleStatus = useMemo(
+    () => orderRoleStatus(filteredRoleStatus),
+    [filteredRoleStatus],
   );
 
   return (
@@ -80,8 +80,8 @@ export const UserProfile = () => {
                   ? "State Access Management"
                   : "Status"}
               </h2>
-              {orderedStateAccess?.map((access) => (
-                <StateAccessCard role={userDetails.role} access={access} key={access.id} />
+              {orderedRoleStatus?.map((access) => (
+                <RoleStatusCard role={userDetails.role} access={access} key={access.id} />
               ))}
             </div>
 

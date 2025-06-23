@@ -2,18 +2,18 @@ import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { describe, expect, it, vi } from "vitest";
 
-import { StateAccessCard } from "./index";
+import { RoleStatusCard } from "./index";
 
-describe("StateAccessCard", () => {
+describe("RoleStatusCard", () => {
   it("should handle an undefined access", () => {
     // @ts-ignore
-    render(<StateAccessCard />);
+    render(<RoleStatusCard />);
     expect(screen.queryByText("State System Admin: ")).toBeNull();
   });
 
   it("should not show the revoke button if the user is not a state submitter", () => {
     render(
-      <StateAccessCard
+      <RoleStatusCard
         role="cmsroleapprover"
         access={{
           territory: "N/A",
@@ -34,7 +34,7 @@ describe("StateAccessCard", () => {
 
   it("should display state submitter with pending access and disabled revoke", () => {
     render(
-      <StateAccessCard
+      <RoleStatusCard
         role="statesubmitter"
         access={{
           territory: "MD",
@@ -58,7 +58,7 @@ describe("StateAccessCard", () => {
     const user = userEvent.setup();
     const revokeSpy = vi.fn();
     render(
-      <StateAccessCard
+      <RoleStatusCard
         role="statesubmitter"
         access={{
           territory: "CO",
@@ -83,7 +83,7 @@ describe("StateAccessCard", () => {
 
   it("should display a list of approvers", async () => {
     render(
-      <StateAccessCard
+      <RoleStatusCard
         role="statesubmitter"
         access={{
           territory: "CO",
@@ -106,7 +106,7 @@ describe("StateAccessCard", () => {
 
   it("should display No Approvers if the approver list is empty", async () => {
     render(
-      <StateAccessCard
+      <RoleStatusCard
         role="statesubmitter"
         access={{
           territory: "CO",

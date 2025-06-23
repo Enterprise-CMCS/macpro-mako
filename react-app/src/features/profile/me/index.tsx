@@ -12,7 +12,7 @@ import {
   ConfirmationDialog,
   GroupAndDivision,
   LoadingSpinner,
-  StateAccessCard,
+  RoleStatusCard,
   SubNavHeader,
   UserInformation,
 } from "@/components";
@@ -22,12 +22,7 @@ import { useAvailableStates } from "@/hooks/useAvailableStates";
 import { useFeatureFlag } from "@/hooks/useFeatureFlag";
 import { convertStateAbbrToFullName } from "@/utils";
 
-import {
-  filterStateAccess,
-  hasPendingRequests,
-  orderStateAccess,
-  stateAccessRoles,
-} from "../utils";
+import { filterRoleStatus, hasPendingRequests, orderRoleStatus, stateAccessRoles } from "../utils";
 
 export const MyProfile = () => {
   const { data: userDetails, isLoading: isDetailLoading } = useGetUserDetails();
@@ -36,8 +31,6 @@ export const MyProfile = () => {
     isLoading: isProfileLoading,
     refetch: reloadUserProfile,
   } = useGetUserProfile();
-
-  console.log(userProfile);
 
   const isNewUserRoleDisplay = useFeatureFlag("NEW_USER_ROLE_DISPLAY");
 
@@ -48,14 +41,22 @@ export const MyProfile = () => {
   const [pendingRequests, setPendingRequests] = useState<boolean>(false);
   const statesToRequest: Option[] = useAvailableStates(userDetails?.role, userProfile?.stateAccess);
 
-  const filteredStateAccess = useMemo(
-    () => filterStateAccess(userDetails, userProfile),
-    [userDetails, userProfile],
+  const filteredRoleStatus = useMemo(() => {
+    if (isNewUserRoleDisplay) return userProfile?.stateAccess;
+    return filterRoleStatus(userDetails, userProfile);
+  }, [userDetails, userProfile, isNewUserRoleDisplay]);
+
+  const orderedRoleStatus = useMemo(
+    () => orderRoleStatus(filteredRoleStatus),
+    [filteredRoleStatus],
   );
 
-  const orderedStateAccess = useMemo(
-    () => orderStateAccess(filteredStateAccess),
-    [filteredStateAccess],
+  // this user should not see the "add role button"
+  const isCMSWithManyRoles = useMemo(
+    () =>
+      userProfile?.stateAccess.length > 1 &&
+      userProfile?.stateAccess.filter((x) => x.role.includes("cms")),
+    [userProfile],
   );
 
   // Set initial value of showAddState based on pending roles
@@ -64,7 +65,7 @@ export const MyProfile = () => {
       const pendingRequests = hasPendingRequests(userProfile?.stateAccess);
       setPendingRequests(pendingRequests);
     }
-  }, [isDetailLoading, isProfileLoading, filteredStateAccess, userProfile]);
+  }, [isDetailLoading, isProfileLoading, filteredRoleStatus, userProfile]);
 
   if (isDetailLoading || isProfileLoading) {
     return <LoadingSpinner />;
@@ -217,15 +218,15 @@ export const MyProfile = () => {
                   onAccept={handleSelfRevokeAccess}
                   onCancel={() => setSelfRevokeState(null)}
                 />
-                {orderedStateAccess?.map((access) => (
-                  <StateAccessCard
-                    key={`${access.territory}`}
+                {orderedRoleStatus?.map((access) => (
+                  <RoleStatusCard
+                    key={`${access.territory}-${access.role}`}
                     access={access}
                     role={userDetails.role}
                     onClick={() => setSelfRevokeState(access.territory as StateCode)}
                   />
                 ))}
-                {isNewUserRoleDisplay ? (
+                {isNewUserRoleDisplay && !isCMSWithManyRoles ? (
                   <Button
                     className="w-full border-dashed p-10 text-black font-normal"
                     variant="outline"
@@ -238,7 +239,7 @@ export const MyProfile = () => {
               </div>
             )}
 
-            {userDetails.role === "cmsroleapprover" && (
+            {userDetails.role === "cmsroleapprover" && !isNewUserRoleDisplay && (
               <GroupAndDivision
                 group={userDetails.group}
                 division={userDetails.division}
