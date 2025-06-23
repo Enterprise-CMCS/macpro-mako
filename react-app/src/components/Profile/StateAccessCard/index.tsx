@@ -20,7 +20,7 @@ export type StateAccessProps = {
 
 export const StateAccessCard = ({ role, onClick, access }: StateAccessProps) => {
   if (!access) return null;
-  const hideAprovers = role === "norole" && access.status !== "pending";
+  const hideApprovers = role === "norole" && access.status !== "pending";
   return (
     <CardWithTopBorder key={`${access.territory}-${access.role}`}>
       <div className="p-8 min-h-36">
@@ -42,7 +42,7 @@ export const StateAccessCard = ({ role, onClick, access }: StateAccessProps) => 
           {access.status === "pending" && <Clock />}
           <p className="italic">{stateAccessStatus[access.status]}</p>
         </div>
-        {!hideAprovers && (
+        {!hideApprovers && (
           <p className="block lg:mt-8 lg:mb-2">
             <span className="font-semibold">
               {userRoleMap[getApprovingRole(access.role)]}
