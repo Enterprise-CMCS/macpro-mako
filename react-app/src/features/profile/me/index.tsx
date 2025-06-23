@@ -57,7 +57,7 @@ export const MyProfile = () => {
   const isCMSWithManyRoles = useMemo(
     () =>
       userProfile?.stateAccess.length > 1 &&
-      userProfile?.stateAccess.filter((x) => x.role.includes("cms")),
+      userProfile?.stateAccess.filter((x) => x.role.includes("cms")).length,
     [userProfile],
   );
 
