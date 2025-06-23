@@ -272,7 +272,7 @@
                 {
                   "workerIndex": 0,
                   "status": "passed",
-                  "duration": 9961,
+                  "duration": 9516,
                   "errors": [],
                   "stdout": [
                     {
@@ -290,7 +290,7 @@
                   ],
                   "stderr": [],
                   "retry": 0,
-                  "startTime": "2025-06-23T12:21:13.629Z",
+                  "startTime": "2025-06-23T12:49:21.486Z",
                   "attachments": []
                 }
               ],
@@ -343,7 +343,7 @@
                         {
                           "workerIndex": 1,
                           "status": "failed",
-                          "duration": 8017,
+                          "duration": 9023,
                           "error": {
                             "message": "Error: \u001b[31mTimed out 5000ms waiting for \u001b[39m\u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m()\u001b[22m\n\nLocator: getByTestId('Dashboard-d')\nExpected: visible\nReceived: <element(s) not found>\nCall log:\n  \u001b[2m- expect.toBeVisible with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for getByTestId('Dashboard-d')\u001b[22m\n",
                             "stack": "Error: \u001b[31mTimed out 5000ms waiting for \u001b[39m\u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m()\u001b[22m\n\nLocator: getByTestId('Dashboard-d')\nExpected: visible\nReceived: <element(s) not found>\nCall log:\n  \u001b[2m- expect.toBeVisible with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for getByTestId('Dashboard-d')\u001b[22m\n\n    at /home/runner/work/macpro-mako/macpro-mako/test/e2e/dashboard/dashboard.spec.ts:18:53",
@@ -367,7 +367,7 @@
                           "stdout": [],
                           "stderr": [],
                           "retry": 0,
-                          "startTime": "2025-06-23T12:21:24.920Z",
+                          "startTime": "2025-06-23T12:49:32.347Z",
                           "attachments": [
                             {
                               "name": "video",
@@ -414,7 +414,7 @@
                         {
                           "workerIndex": 2,
                           "status": "failed",
-                          "duration": 6118,
+                          "duration": 6125,
                           "error": {
                             "message": "Error: \u001b[31mTimed out 5000ms waiting for \u001b[39m\u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m()\u001b[22m\n\nLocator: getByRole('heading', { name: 'Dashboard' })\nExpected: visible\nReceived: <element(s) not found>\nCall log:\n  \u001b[2m- expect.toBeVisible with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for getByRole('heading', { name: 'Dashboard' })\u001b[22m\n",
                             "stack": "Error: \u001b[31mTimed out 5000ms waiting for \u001b[39m\u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m()\u001b[22m\n\nLocator: getByRole('heading', { name: 'Dashboard' })\nExpected: visible\nReceived: <element(s) not found>\nCall log:\n  \u001b[2m- expect.toBeVisible with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for getByRole('heading', { name: 'Dashboard' })\u001b[22m\n\n    at /home/runner/work/macpro-mako/macpro-mako/test/e2e/dashboard/dashboard.spec.ts:28:70",
@@ -438,7 +438,7 @@
                           "stdout": [],
                           "stderr": [],
                           "retry": 0,
-                          "startTime": "2025-06-23T12:21:34.494Z",
+                          "startTime": "2025-06-23T12:49:42.996Z",
                           "attachments": [
                             {
                               "name": "video",
@@ -485,7 +485,7 @@
                         {
                           "workerIndex": 3,
                           "status": "failed",
-                          "duration": 5981,
+                          "duration": 6037,
                           "error": {
                             "message": "Error: \u001b[31mTimed out 5000ms waiting for \u001b[39m\u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m()\u001b[22m\n\nLocator: getByRole('tab', { name: 'SPAs' })\nExpected: visible\nReceived: <element(s) not found>\nCall log:\n  \u001b[2m- expect.toBeVisible with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for getByRole('tab', { name: 'SPAs' })\u001b[22m\n",
                             "stack": "Error: \u001b[31mTimed out 5000ms waiting for \u001b[39m\u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m()\u001b[22m\n\nLocator: getByRole('tab', { name: 'SPAs' })\nExpected: visible\nReceived: <element(s) not found>\nCall log:\n  \u001b[2m- expect.toBeVisible with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for getByRole('tab', { name: 'SPAs' })\u001b[22m\n\n    at /home/runner/work/macpro-mako/macpro-mako/test/e2e/dashboard/dashboard.spec.ts:36:61",
@@ -509,7 +509,7 @@
                           "stdout": [],
                           "stderr": [],
                           "retry": 0,
-                          "startTime": "2025-06-23T12:21:42.203Z",
+                          "startTime": "2025-06-23T12:49:50.748Z",
                           "attachments": [
                             {
                               "name": "video",
@@ -556,7 +556,7 @@
                         {
                           "workerIndex": 4,
                           "status": "failed",
-                          "duration": 6040,
+                          "duration": 6027,
                           "error": {
                             "message": "Error: \u001b[31mTimed out 5000ms waiting for \u001b[39m\u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m()\u001b[22m\n\nLocator: getByTestId('filtering').locator('p')\nExpected: visible\nReceived: <element(s) not found>\nCall log:\n  \u001b[2m- expect.toBeVisible with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for getByTestId('filtering').locator('p')\u001b[22m\n",
                             "stack": "Error: \u001b[31mTimed out 5000ms waiting for \u001b[39m\u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m()\u001b[22m\n\nLocator: getByTestId('filtering').locator('p')\nExpected: visible\nReceived: <element(s) not found>\nCall log:\n  \u001b[2m- expect.toBeVisible with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for getByTestId('filtering').locator('p')\u001b[22m\n\n    at /home/runner/work/macpro-mako/macpro-mako/test/e2e/dashboard/dashboard.spec.ts:44:64",
@@ -580,7 +580,7 @@
                           "stdout": [],
                           "stderr": [],
                           "retry": 0,
-                          "startTime": "2025-06-23T12:21:49.755Z",
+                          "startTime": "2025-06-23T12:49:58.366Z",
                           "attachments": [
                             {
                               "name": "video",
@@ -627,7 +627,7 @@
                         {
                           "workerIndex": 5,
                           "status": "failed",
-                          "duration": 6023,
+                          "duration": 6069,
                           "error": {
                             "message": "Error: \u001b[31mTimed out 5000ms waiting for \u001b[39m\u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m()\u001b[22m\n\nLocator: getByRole('button', { name: /Columns/ })\nExpected: visible\nReceived: <element(s) not found>\nCall log:\n  \u001b[2m- expect.toBeVisible with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for getByRole('button', { name: /Columns/ })\u001b[22m\n",
                             "stack": "Error: \u001b[31mTimed out 5000ms waiting for \u001b[39m\u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m()\u001b[22m\n\nLocator: getByRole('button', { name: /Columns/ })\nExpected: visible\nReceived: <element(s) not found>\nCall log:\n  \u001b[2m- expect.toBeVisible with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for getByRole('button', { name: /Columns/ })\u001b[22m\n\n    at /home/runner/work/macpro-mako/macpro-mako/test/e2e/dashboard/dashboard.spec.ts:54:67",
@@ -651,7 +651,7 @@
                           "stdout": [],
                           "stderr": [],
                           "retry": 0,
-                          "startTime": "2025-06-23T12:21:57.360Z",
+                          "startTime": "2025-06-23T12:50:05.965Z",
                           "attachments": [
                             {
                               "name": "video",
@@ -698,7 +698,7 @@
                         {
                           "workerIndex": 6,
                           "status": "failed",
-                          "duration": 6051,
+                          "duration": 6063,
                           "error": {
                             "message": "Error: \u001b[31mTimed out 5000ms waiting for \u001b[39m\u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m()\u001b[22m\n\nLocator: getByText(/Filters/)\nExpected: visible\nReceived: <element(s) not found>\nCall log:\n  \u001b[2m- expect.toBeVisible with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for getByText(/Filters/)\u001b[22m\n",
                             "stack": "Error: \u001b[31mTimed out 5000ms waiting for \u001b[39m\u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m()\u001b[22m\n\nLocator: getByText(/Filters/)\nExpected: visible\nReceived: <element(s) not found>\nCall log:\n  \u001b[2m- expect.toBeVisible with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for getByText(/Filters/)\u001b[22m\n\n    at /home/runner/work/macpro-mako/macpro-mako/test/e2e/dashboard/dashboard.spec.ts:59:47",
@@ -722,7 +722,7 @@
                           "stdout": [],
                           "stderr": [],
                           "retry": 0,
-                          "startTime": "2025-06-23T12:22:04.939Z",
+                          "startTime": "2025-06-23T12:50:13.621Z",
                           "attachments": [
                             {
                               "name": "video",
@@ -769,7 +769,7 @@
                         {
                           "workerIndex": 7,
                           "status": "failed",
-                          "duration": 6034,
+                          "duration": 6033,
                           "error": {
                             "message": "Error: \u001b[31mTimed out 5000ms waiting for \u001b[39m\u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m()\u001b[22m\n\nLocator: getByRole('button', { name: /Export/ })\nExpected: visible\nReceived: <element(s) not found>\nCall log:\n  \u001b[2m- expect.toBeVisible with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for getByRole('button', { name: /Export/ })\u001b[22m\n",
                             "stack": "Error: \u001b[31mTimed out 5000ms waiting for \u001b[39m\u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m()\u001b[22m\n\nLocator: getByRole('button', { name: /Export/ })\nExpected: visible\nReceived: <element(s) not found>\nCall log:\n  \u001b[2m- expect.toBeVisible with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for getByRole('button', { name: /Export/ })\u001b[22m\n\n    at /home/runner/work/macpro-mako/macpro-mako/test/e2e/dashboard/dashboard.spec.ts:64:66",
@@ -793,7 +793,7 @@
                           "stdout": [],
                           "stderr": [],
                           "retry": 0,
-                          "startTime": "2025-06-23T12:22:12.576Z",
+                          "startTime": "2025-06-23T12:50:21.246Z",
                           "attachments": [
                             {
                               "name": "video",
@@ -855,12 +855,12 @@
                                 {
                                   "workerIndex": 8,
                                   "status": "passed",
-                                  "duration": 916,
+                                  "duration": 839,
                                   "errors": [],
                                   "stdout": [],
                                   "stderr": [],
                                   "retry": 0,
-                                  "startTime": "2025-06-23T12:22:20.159Z",
+                                  "startTime": "2025-06-23T12:50:28.846Z",
                                   "attachments": []
                                 }
                               ],
@@ -891,7 +891,7 @@
                                 {
                                   "workerIndex": 8,
                                   "status": "failed",
-                                  "duration": 5941,
+                                  "duration": 5944,
                                   "error": {
                                     "message": "Error: \u001b[31mTimed out 5000ms waiting for \u001b[39m\u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m()\u001b[22m\n\nLocator: locator('tbody')\nExpected: visible\nReceived: <element(s) not found>\nCall log:\n  \u001b[2m- expect.toBeVisible with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for locator('tbody')\u001b[22m\n",
                                     "stack": "Error: \u001b[31mTimed out 5000ms waiting for \u001b[39m\u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m()\u001b[22m\n\nLocator: locator('tbody')\nExpected: visible\nReceived: <element(s) not found>\nCall log:\n  \u001b[2m- expect.toBeVisible with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for locator('tbody')\u001b[22m\n\n    at /home/runner/work/macpro-mako/macpro-mako/test/e2e/dashboard/dashboard.spec.ts:93:47",
@@ -915,7 +915,7 @@
                                   "stdout": [],
                                   "stderr": [],
                                   "retry": 0,
-                                  "startTime": "2025-06-23T12:22:21.239Z",
+                                  "startTime": "2025-06-23T12:50:29.844Z",
                                   "attachments": [
                                     {
                                       "name": "video",
@@ -962,7 +962,7 @@
                                 {
                                   "workerIndex": 9,
                                   "status": "failed",
-                                  "duration": 6051,
+                                  "duration": 6029,
                                   "error": {
                                     "message": "Error: \u001b[31mTimed out 5000ms waiting for \u001b[39m\u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m()\u001b[22m\n\nLocator: getByTestId('pagination')\nExpected: visible\nReceived: <element(s) not found>\nCall log:\n  \u001b[2m- expect.toBeVisible with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for getByTestId('pagination')\u001b[22m\n",
                                     "stack": "Error: \u001b[31mTimed out 5000ms waiting for \u001b[39m\u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m()\u001b[22m\n\nLocator: getByTestId('pagination')\nExpected: visible\nReceived: <element(s) not found>\nCall log:\n  \u001b[2m- expect.toBeVisible with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for getByTestId('pagination')\u001b[22m\n\n    at /home/runner/work/macpro-mako/macpro-mako/test/e2e/dashboard/dashboard.spec.ts:97:56",
@@ -986,7 +986,7 @@
                                   "stdout": [],
                                   "stderr": [],
                                   "retry": 0,
-                                  "startTime": "2025-06-23T12:22:28.591Z",
+                                  "startTime": "2025-06-23T12:50:37.195Z",
                                   "attachments": [
                                     {
                                       "name": "video",
@@ -1041,7 +1041,7 @@
                                 {
                                   "workerIndex": 10,
                                   "status": "timedOut",
-                                  "duration": 31511,
+                                  "duration": 31428,
                                   "error": {
                                     "message": "\u001b[31mTest timeout of 30000ms exceeded while running \"beforeEach\" hook.\u001b[39m",
                                     "stack": "\u001b[31mTest timeout of 30000ms exceeded while running \"beforeEach\" hook.\u001b[39m\n    at /home/runner/work/macpro-mako/macpro-mako/test/e2e/dashboard/dashboard.spec.ts:102:14",
@@ -1073,7 +1073,7 @@
                                   "stdout": [],
                                   "stderr": [],
                                   "retry": 0,
-                                  "startTime": "2025-06-23T12:22:36.192Z",
+                                  "startTime": "2025-06-23T12:50:44.764Z",
                                   "attachments": [
                                     {
                                       "name": "video",
@@ -1120,7 +1120,7 @@
                                 {
                                   "workerIndex": 11,
                                   "status": "timedOut",
-                                  "duration": 31518,
+                                  "duration": 31397,
                                   "error": {
                                     "message": "\u001b[31mTest timeout of 30000ms exceeded while running \"beforeEach\" hook.\u001b[39m",
                                     "stack": "\u001b[31mTest timeout of 30000ms exceeded while running \"beforeEach\" hook.\u001b[39m\n    at /home/runner/work/macpro-mako/macpro-mako/test/e2e/dashboard/dashboard.spec.ts:102:14",
@@ -1152,7 +1152,7 @@
                                   "stdout": [],
                                   "stderr": [],
                                   "retry": 0,
-                                  "startTime": "2025-06-23T12:23:09.273Z",
+                                  "startTime": "2025-06-23T12:51:17.808Z",
                                   "attachments": [
                                     {
                                       "name": "video",
@@ -1199,7 +1199,7 @@
                                 {
                                   "workerIndex": 12,
                                   "status": "timedOut",
-                                  "duration": 31337,
+                                  "duration": 31455,
                                   "error": {
                                     "message": "\u001b[31mTest timeout of 30000ms exceeded while running \"beforeEach\" hook.\u001b[39m",
                                     "stack": "\u001b[31mTest timeout of 30000ms exceeded while running \"beforeEach\" hook.\u001b[39m\n    at /home/runner/work/macpro-mako/macpro-mako/test/e2e/dashboard/dashboard.spec.ts:102:14",
@@ -1231,7 +1231,7 @@
                                   "stdout": [],
                                   "stderr": [],
                                   "retry": 0,
-                                  "startTime": "2025-06-23T12:23:42.339Z",
+                                  "startTime": "2025-06-23T12:51:50.855Z",
                                   "attachments": [
                                     {
                                       "name": "video",
@@ -1316,12 +1316,12 @@
                             {
                               "workerIndex": 13,
                               "status": "passed",
-                              "duration": 2708,
+                              "duration": 2754,
                               "errors": [],
                               "stdout": [],
                               "stderr": [],
                               "retry": 0,
-                              "startTime": "2025-06-23T12:24:15.297Z",
+                              "startTime": "2025-06-23T12:52:24.010Z",
                               "attachments": []
                             }
                           ],
@@ -1361,12 +1361,12 @@
                             {
                               "workerIndex": 13,
                               "status": "passed",
-                              "duration": 2620,
+                              "duration": 2643,
                               "errors": [],
                               "stdout": [],
                               "stderr": [],
                               "retry": 0,
-                              "startTime": "2025-06-23T12:24:18.163Z",
+                              "startTime": "2025-06-23T12:52:26.924Z",
                               "attachments": []
                             }
                           ],
@@ -1398,12 +1398,12 @@
                             {
                               "workerIndex": 13,
                               "status": "passed",
-                              "duration": 2601,
+                              "duration": 2640,
                               "errors": [],
                               "stdout": [],
                               "stderr": [],
                               "retry": 0,
-                              "startTime": "2025-06-23T12:24:20.789Z",
+                              "startTime": "2025-06-23T12:52:29.574Z",
                               "attachments": []
                             }
                           ],
@@ -1435,12 +1435,12 @@
                             {
                               "workerIndex": 13,
                               "status": "passed",
-                              "duration": 2612,
+                              "duration": 2584,
                               "errors": [],
                               "stdout": [],
                               "stderr": [],
                               "retry": 0,
-                              "startTime": "2025-06-23T12:24:23.396Z",
+                              "startTime": "2025-06-23T12:52:32.222Z",
                               "attachments": []
                             }
                           ],
@@ -1472,12 +1472,12 @@
                             {
                               "workerIndex": 13,
                               "status": "passed",
-                              "duration": 2583,
+                              "duration": 2610,
                               "errors": [],
                               "stdout": [],
                               "stderr": [],
                               "retry": 0,
-                              "startTime": "2025-06-23T12:24:26.014Z",
+                              "startTime": "2025-06-23T12:52:34.812Z",
                               "attachments": []
                             }
                           ],
@@ -1509,12 +1509,12 @@
                             {
                               "workerIndex": 13,
                               "status": "passed",
-                              "duration": 2617,
+                              "duration": 2611,
                               "errors": [],
                               "stdout": [],
                               "stderr": [],
                               "retry": 0,
-                              "startTime": "2025-06-23T12:24:28.604Z",
+                              "startTime": "2025-06-23T12:52:37.428Z",
                               "attachments": []
                             }
                           ],
@@ -1546,12 +1546,12 @@
                             {
                               "workerIndex": 13,
                               "status": "passed",
-                              "duration": 2595,
+                              "duration": 2615,
                               "errors": [],
                               "stdout": [],
                               "stderr": [],
                               "retry": 0,
-                              "startTime": "2025-06-23T12:24:31.227Z",
+                              "startTime": "2025-06-23T12:52:40.045Z",
                               "attachments": []
                             }
                           ],
@@ -1583,12 +1583,12 @@
                             {
                               "workerIndex": 13,
                               "status": "passed",
-                              "duration": 2604,
+                              "duration": 2606,
                               "errors": [],
                               "stdout": [],
                               "stderr": [],
                               "retry": 0,
-                              "startTime": "2025-06-23T12:24:33.828Z",
+                              "startTime": "2025-06-23T12:52:42.667Z",
                               "attachments": []
                             }
                           ],
@@ -1628,12 +1628,12 @@
                             {
                               "workerIndex": 13,
                               "status": "passed",
-                              "duration": 2588,
+                              "duration": 2579,
                               "errors": [],
                               "stdout": [],
                               "stderr": [],
                               "retry": 0,
-                              "startTime": "2025-06-23T12:24:36.439Z",
+                              "startTime": "2025-06-23T12:52:45.279Z",
                               "attachments": []
                             }
                           ],
@@ -1665,12 +1665,12 @@
                             {
                               "workerIndex": 13,
                               "status": "passed",
-                              "duration": 2620,
+                              "duration": 2597,
                               "errors": [],
                               "stdout": [],
                               "stderr": [],
                               "retry": 0,
-                              "startTime": "2025-06-23T12:24:39.033Z",
+                              "startTime": "2025-06-23T12:52:47.864Z",
                               "attachments": []
                             }
                           ],
@@ -1702,12 +1702,12 @@
                             {
                               "workerIndex": 13,
                               "status": "passed",
-                              "duration": 2582,
+                              "duration": 2581,
                               "errors": [],
                               "stdout": [],
                               "stderr": [],
                               "retry": 0,
-                              "startTime": "2025-06-23T12:24:41.661Z",
+                              "startTime": "2025-06-23T12:52:50.467Z",
                               "attachments": []
                             }
                           ],
@@ -1739,12 +1739,12 @@
                             {
                               "workerIndex": 13,
                               "status": "passed",
-                              "duration": 2649,
+                              "duration": 2630,
                               "errors": [],
                               "stdout": [],
                               "stderr": [],
                               "retry": 0,
-                              "startTime": "2025-06-23T12:24:44.249Z",
+                              "startTime": "2025-06-23T12:52:53.054Z",
                               "attachments": []
                             }
                           ],
@@ -1776,12 +1776,12 @@
                             {
                               "workerIndex": 13,
                               "status": "passed",
-                              "duration": 2678,
+                              "duration": 2631,
                               "errors": [],
                               "stdout": [],
                               "stderr": [],
                               "retry": 0,
-                              "startTime": "2025-06-23T12:24:46.905Z",
+                              "startTime": "2025-06-23T12:52:55.690Z",
                               "attachments": []
                             }
                           ],
@@ -1813,12 +1813,12 @@
                             {
                               "workerIndex": 13,
                               "status": "passed",
-                              "duration": 1641,
+                              "duration": 2616,
                               "errors": [],
                               "stdout": [],
                               "stderr": [],
                               "retry": 0,
-                              "startTime": "2025-06-23T12:24:49.589Z",
+                              "startTime": "2025-06-23T12:52:58.328Z",
                               "attachments": []
                             }
                           ],
@@ -1850,12 +1850,12 @@
                             {
                               "workerIndex": 13,
                               "status": "passed",
-                              "duration": 1637,
+                              "duration": 2595,
                               "errors": [],
                               "stdout": [],
                               "stderr": [],
                               "retry": 0,
-                              "startTime": "2025-06-23T12:24:51.236Z",
+                              "startTime": "2025-06-23T12:53:00.950Z",
                               "attachments": []
                             }
                           ],
@@ -1887,12 +1887,12 @@
                             {
                               "workerIndex": 13,
                               "status": "passed",
-                              "duration": 2605,
+                              "duration": 1723,
                               "errors": [],
                               "stdout": [],
                               "stderr": [],
                               "retry": 0,
-                              "startTime": "2025-06-23T12:24:52.880Z",
+                              "startTime": "2025-06-23T12:53:03.550Z",
                               "attachments": []
                             }
                           ],
@@ -1924,12 +1924,12 @@
                             {
                               "workerIndex": 13,
                               "status": "passed",
-                              "duration": 2565,
+                              "duration": 2595,
                               "errors": [],
                               "stdout": [],
                               "stderr": [],
                               "retry": 0,
-                              "startTime": "2025-06-23T12:24:55.491Z",
+                              "startTime": "2025-06-23T12:53:05.280Z",
                               "attachments": []
                             }
                           ],
@@ -1961,12 +1961,12 @@
                             {
                               "workerIndex": 13,
                               "status": "passed",
-                              "duration": 2620,
+                              "duration": 2647,
                               "errors": [],
                               "stdout": [],
                               "stderr": [],
                               "retry": 0,
-                              "startTime": "2025-06-23T12:24:58.062Z",
+                              "startTime": "2025-06-23T12:53:07.880Z",
                               "attachments": []
                             }
                           ],
@@ -1998,12 +1998,12 @@
                             {
                               "workerIndex": 13,
                               "status": "passed",
-                              "duration": 1811,
+                              "duration": 1712,
                               "errors": [],
                               "stdout": [],
                               "stderr": [],
                               "retry": 0,
-                              "startTime": "2025-06-23T12:25:00.687Z",
+                              "startTime": "2025-06-23T12:53:10.533Z",
                               "attachments": []
                             }
                           ],
@@ -2035,12 +2035,12 @@
                             {
                               "workerIndex": 13,
                               "status": "passed",
-                              "duration": 2667,
+                              "duration": 2612,
                               "errors": [],
                               "stdout": [],
                               "stderr": [],
                               "retry": 0,
-                              "startTime": "2025-06-23T12:25:02.505Z",
+                              "startTime": "2025-06-23T12:53:12.251Z",
                               "attachments": []
                             }
                           ],
@@ -2072,7 +2072,7 @@
                             {
                               "workerIndex": 13,
                               "status": "failed",
-                              "duration": 6973,
+                              "duration": 7914,
                               "error": {
                                 "message": "Error: \u001b[31mTimed out 5000ms waiting for \u001b[39m\u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoHaveText\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m)\u001b[22m\n\nLocator: locator('#mpc-spa-templates')\nExpected string: \u001b[32m\"Where can I download Medicaid Premiums and Cost Sharing SPA templates?\"\u001b[39m\nReceived string: \u001b[31m\"Where can I download Medicaid Premiums and Cost Sharing\u001b[7m (MPC)\u001b[27m SPA templates?\"\u001b[39m\nCall log:\n  \u001b[2m- expect.toHaveText with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for locator('#mpc-spa-templates')\u001b[22m\n\u001b[2m  -   locator resolved to <div class=\"border-b\" data-state=\"closed\" id=\"mpc-spa-templates\" data-orientation=\"vertical\" data-testid=\"mpc-spa-templates\">…</div>\u001b[22m\n\u001b[2m  -   unexpected value \"Where can I download Medicaid Premiums and Cost Sharing (MPC) SPA templates?\"\u001b[22m\n\u001b[2m  -   locator resolved to <div class=\"border-b\" data-state=\"closed\" id=\"mpc-spa-templates\" data-orientation=\"vertical\" data-testid=\"mpc-spa-templates\">…</div>\u001b[22m\n\u001b[2m  -   unexpected value \"Where can I download Medicaid Premiums and Cost Sharing (MPC) SPA templates?\"\u001b[22m\n\u001b[2m  -   locator resolved to <div class=\"border-b\" data-state=\"closed\" id=\"mpc-spa-templates\" data-orientation=\"vertical\" data-testid=\"mpc-spa-templates\">…</div>\u001b[22m\n\u001b[2m  -   unexpected value \"Where can I download Medicaid Premiums and Cost Sharing (MPC) SPA templates?\"\u001b[22m\n\u001b[2m  -   locator resolved to <div class=\"border-b\" data-state=\"closed\" id=\"mpc-spa-templates\" data-orientation=\"vertical\" data-testid=\"mpc-spa-templates\">…</div>\u001b[22m\n\u001b[2m  -   unexpected value \"Where can I download Medicaid Premiums and Cost Sharing (MPC) SPA templates?\"\u001b[22m\n\u001b[2m  -   locator resolved to <div class=\"border-b\" data-state=\"closed\" id=\"mpc-spa-templates\" data-orientation=\"vertical\" data-testid=\"mpc-spa-templates\">…</div>\u001b[22m\n\u001b[2m  -   unexpected value \"Where can I download Medicaid Premiums and Cost Sharing (MPC) SPA templates?\"\u001b[22m\n\u001b[2m  -   locator resolved to <div class=\"border-b\" data-state=\"closed\" id=\"mpc-spa-templates\" data-orientation=\"vertical\" data-testid=\"mpc-spa-templates\">…</div>\u001b[22m\n\u001b[2m  -   unexpected value \"Where can I download Medicaid Premiums and Cost Sharing (MPC) SPA templates?\"\u001b[22m\n\u001b[2m  -   locator resolved to <div class=\"border-b\" data-state=\"closed\" id=\"mpc-spa-templates\" data-orientation=\"vertical\" data-testid=\"mpc-spa-templates\">…</div>\u001b[22m\n\u001b[2m  -   unexpected value \"Where can I download Medicaid Premiums and Cost Sharing (MPC) SPA templates?\"\u001b[22m\n\u001b[2m  -   locator resolved to <div class=\"border-b\" data-state=\"closed\" id=\"mpc-spa-templates\" data-orientation=\"vertical\" data-testid=\"mpc-spa-templates\">…</div>\u001b[22m\n\u001b[2m  -   unexpected value \"Where can I download Medicaid Premiums and Cost Sharing (MPC) SPA templates?\"\u001b[22m\n\u001b[2m  -   locator resolved to <div class=\"border-b\" data-state=\"closed\" id=\"mpc-spa-templates\" data-orientation=\"vertical\" data-testid=\"mpc-spa-templates\">…</div>\u001b[22m\n\u001b[2m  -   unexpected value \"Where can I download Medicaid Premiums and Cost Sharing (MPC) SPA templates?\"\u001b[22m\n",
                                 "stack": "Error: \u001b[31mTimed out 5000ms waiting for \u001b[39m\u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoHaveText\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m)\u001b[22m\n\nLocator: locator('#mpc-spa-templates')\nExpected string: \u001b[32m\"Where can I download Medicaid Premiums and Cost Sharing SPA templates?\"\u001b[39m\nReceived string: \u001b[31m\"Where can I download Medicaid Premiums and Cost Sharing\u001b[7m (MPC)\u001b[27m SPA templates?\"\u001b[39m\nCall log:\n  \u001b[2m- expect.toHaveText with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for locator('#mpc-spa-templates')\u001b[22m\n\u001b[2m  -   locator resolved to <div class=\"border-b\" data-state=\"closed\" id=\"mpc-spa-templates\" data-orientation=\"vertical\" data-testid=\"mpc-spa-templates\">…</div>\u001b[22m\n\u001b[2m  -   unexpected value \"Where can I download Medicaid Premiums and Cost Sharing (MPC) SPA templates?\"\u001b[22m\n\u001b[2m  -   locator resolved to <div class=\"border-b\" data-state=\"closed\" id=\"mpc-spa-templates\" data-orientation=\"vertical\" data-testid=\"mpc-spa-templates\">…</div>\u001b[22m\n\u001b[2m  -   unexpected value \"Where can I download Medicaid Premiums and Cost Sharing (MPC) SPA templates?\"\u001b[22m\n\u001b[2m  -   locator resolved to <div class=\"border-b\" data-state=\"closed\" id=\"mpc-spa-templates\" data-orientation=\"vertical\" data-testid=\"mpc-spa-templates\">…</div>\u001b[22m\n\u001b[2m  -   unexpected value \"Where can I download Medicaid Premiums and Cost Sharing (MPC) SPA templates?\"\u001b[22m\n\u001b[2m  -   locator resolved to <div class=\"border-b\" data-state=\"closed\" id=\"mpc-spa-templates\" data-orientation=\"vertical\" data-testid=\"mpc-spa-templates\">…</div>\u001b[22m\n\u001b[2m  -   unexpected value \"Where can I download Medicaid Premiums and Cost Sharing (MPC) SPA templates?\"\u001b[22m\n\u001b[2m  -   locator resolved to <div class=\"border-b\" data-state=\"closed\" id=\"mpc-spa-templates\" data-orientation=\"vertical\" data-testid=\"mpc-spa-templates\">…</div>\u001b[22m\n\u001b[2m  -   unexpected value \"Where can I download Medicaid Premiums and Cost Sharing (MPC) SPA templates?\"\u001b[22m\n\u001b[2m  -   locator resolved to <div class=\"border-b\" data-state=\"closed\" id=\"mpc-spa-templates\" data-orientation=\"vertical\" data-testid=\"mpc-spa-templates\">…</div>\u001b[22m\n\u001b[2m  -   unexpected value \"Where can I download Medicaid Premiums and Cost Sharing (MPC) SPA templates?\"\u001b[22m\n\u001b[2m  -   locator resolved to <div class=\"border-b\" data-state=\"closed\" id=\"mpc-spa-templates\" data-orientation=\"vertical\" data-testid=\"mpc-spa-templates\">…</div>\u001b[22m\n\u001b[2m  -   unexpected value \"Where can I download Medicaid Premiums and Cost Sharing (MPC) SPA templates?\"\u001b[22m\n\u001b[2m  -   locator resolved to <div class=\"border-b\" data-state=\"closed\" id=\"mpc-spa-templates\" data-orientation=\"vertical\" data-testid=\"mpc-spa-templates\">…</div>\u001b[22m\n\u001b[2m  -   unexpected value \"Where can I download Medicaid Premiums and Cost Sharing (MPC) SPA templates?\"\u001b[22m\n\u001b[2m  -   locator resolved to <div class=\"border-b\" data-state=\"closed\" id=\"mpc-spa-templates\" data-orientation=\"vertical\" data-testid=\"mpc-spa-templates\">…</div>\u001b[22m\n\u001b[2m  -   unexpected value \"Where can I download Medicaid Premiums and Cost Sharing (MPC) SPA templates?\"\u001b[22m\n\n    at /home/runner/work/macpro-mako/macpro-mako/test/e2e/faq/faq.spec.ts:188:47",
@@ -2096,7 +2096,7 @@
                               "stdout": [],
                               "stderr": [],
                               "retry": 0,
-                              "startTime": "2025-06-23T12:25:05.178Z",
+                              "startTime": "2025-06-23T12:53:14.869Z",
                               "attachments": [
                                 {
                                   "name": "video",
@@ -2144,7 +2144,7 @@
                             {
                               "workerIndex": 14,
                               "status": "failed",
-                              "duration": 7106,
+                              "duration": 8041,
                               "error": {
                                 "message": "Error: \u001b[31mTimed out 5000ms waiting for \u001b[39m\u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoHaveText\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m)\u001b[22m\n\nLocator: locator('#mpc-spa-implementation-guides')\nExpected string: \u001b[32m\"Where can I download Medicaid Premiums and Cost Sharing SPA implementation guides?\"\u001b[39m\nReceived string: \u001b[31m\"Where can I download Medicaid Premiums and Cost Sharing\u001b[7m (MPC)\u001b[27m SPA implementation guides?\"\u001b[39m\nCall log:\n  \u001b[2m- expect.toHaveText with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for locator('#mpc-spa-implementation-guides')\u001b[22m\n\u001b[2m  -   locator resolved to <div class=\"border-b\" data-state=\"closed\" data-orientation=\"vertical\" id=\"mpc-spa-implementation-guides\" data-testid=\"mpc-spa-implementation-guides\">…</div>\u001b[22m\n\u001b[2m  -   unexpected value \"Where can I download Medicaid Premiums and Cost Sharing (MPC) SPA implementation guides?\"\u001b[22m\n\u001b[2m  -   locator resolved to <div class=\"border-b\" data-state=\"closed\" data-orientation=\"vertical\" id=\"mpc-spa-implementation-guides\" data-testid=\"mpc-spa-implementation-guides\">…</div>\u001b[22m\n\u001b[2m  -   unexpected value \"Where can I download Medicaid Premiums and Cost Sharing (MPC) SPA implementation guides?\"\u001b[22m\n\u001b[2m  -   locator resolved to <div class=\"border-b\" data-state=\"closed\" data-orientation=\"vertical\" id=\"mpc-spa-implementation-guides\" data-testid=\"mpc-spa-implementation-guides\">…</div>\u001b[22m\n\u001b[2m  -   unexpected value \"Where can I download Medicaid Premiums and Cost Sharing (MPC) SPA implementation guides?\"\u001b[22m\n\u001b[2m  -   locator resolved to <div class=\"border-b\" data-state=\"closed\" data-orientation=\"vertical\" id=\"mpc-spa-implementation-guides\" data-testid=\"mpc-spa-implementation-guides\">…</div>\u001b[22m\n\u001b[2m  -   unexpected value \"Where can I download Medicaid Premiums and Cost Sharing (MPC) SPA implementation guides?\"\u001b[22m\n\u001b[2m  -   locator resolved to <div class=\"border-b\" data-state=\"closed\" data-orientation=\"vertical\" id=\"mpc-spa-implementation-guides\" data-testid=\"mpc-spa-implementation-guides\">…</div>\u001b[22m\n\u001b[2m  -   unexpected value \"Where can I download Medicaid Premiums and Cost Sharing (MPC) SPA implementation guides?\"\u001b[22m\n\u001b[2m  -   locator resolved to <div class=\"border-b\" data-state=\"closed\" data-orientation=\"vertical\" id=\"mpc-spa-implementation-guides\" data-testid=\"mpc-spa-implementation-guides\">…</div>\u001b[22m\n\u001b[2m  -   unexpected value \"Where can I download Medicaid Premiums and Cost Sharing (MPC) SPA implementation guides?\"\u001b[22m\n\u001b[2m  -   locator resolved to <div class=\"border-b\" data-state=\"closed\" data-orientation=\"vertical\" id=\"mpc-spa-implementation-guides\" data-testid=\"mpc-spa-implementation-guides\">…</div>\u001b[22m\n\u001b[2m  -   unexpected value \"Where can I download Medicaid Premiums and Cost Sharing (MPC) SPA implementation guides?\"\u001b[22m\n\u001b[2m  -   locator resolved to <div class=\"border-b\" data-state=\"closed\" data-orientation=\"vertical\" id=\"mpc-spa-implementation-guides\" data-testid=\"mpc-spa-implementation-guides\">…</div>\u001b[22m\n\u001b[2m  -   unexpected value \"Where can I download Medicaid Premiums and Cost Sharing (MPC) SPA implementation guides?\"\u001b[22m\n\u001b[2m  -   locator resolved to <div class=\"border-b\" data-state=\"closed\" data-orientation=\"vertical\" id=\"mpc-spa-implementation-guides\" data-testid=\"mpc-spa-implementation-guides\">…</div>\u001b[22m\n\u001b[2m  -   unexpected value \"Where can I download Medicaid Premiums and Cost Sharing (MPC) SPA implementation guides?\"\u001b[22m\n",
                                 "stack": "Error: \u001b[31mTimed out 5000ms waiting for \u001b[39m\u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoHaveText\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m)\u001b[22m\n\nLocator: locator('#mpc-spa-implementation-guides')\nExpected string: \u001b[32m\"Where can I download Medicaid Premiums and Cost Sharing SPA implementation guides?\"\u001b[39m\nReceived string: \u001b[31m\"Where can I download Medicaid Premiums and Cost Sharing\u001b[7m (MPC)\u001b[27m SPA implementation guides?\"\u001b[39m\nCall log:\n  \u001b[2m- expect.toHaveText with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for locator('#mpc-spa-implementation-guides')\u001b[22m\n\u001b[2m  -   locator resolved to <div class=\"border-b\" data-state=\"closed\" data-orientation=\"vertical\" id=\"mpc-spa-implementation-guides\" data-testid=\"mpc-spa-implementation-guides\">…</div>\u001b[22m\n\u001b[2m  -   unexpected value \"Where can I download Medicaid Premiums and Cost Sharing (MPC) SPA implementation guides?\"\u001b[22m\n\u001b[2m  -   locator resolved to <div class=\"border-b\" data-state=\"closed\" data-orientation=\"vertical\" id=\"mpc-spa-implementation-guides\" data-testid=\"mpc-spa-implementation-guides\">…</div>\u001b[22m\n\u001b[2m  -   unexpected value \"Where can I download Medicaid Premiums and Cost Sharing (MPC) SPA implementation guides?\"\u001b[22m\n\u001b[2m  -   locator resolved to <div class=\"border-b\" data-state=\"closed\" data-orientation=\"vertical\" id=\"mpc-spa-implementation-guides\" data-testid=\"mpc-spa-implementation-guides\">…</div>\u001b[22m\n\u001b[2m  -   unexpected value \"Where can I download Medicaid Premiums and Cost Sharing (MPC) SPA implementation guides?\"\u001b[22m\n\u001b[2m  -   locator resolved to <div class=\"border-b\" data-state=\"closed\" data-orientation=\"vertical\" id=\"mpc-spa-implementation-guides\" data-testid=\"mpc-spa-implementation-guides\">…</div>\u001b[22m\n\u001b[2m  -   unexpected value \"Where can I download Medicaid Premiums and Cost Sharing (MPC) SPA implementation guides?\"\u001b[22m\n\u001b[2m  -   locator resolved to <div class=\"border-b\" data-state=\"closed\" data-orientation=\"vertical\" id=\"mpc-spa-implementation-guides\" data-testid=\"mpc-spa-implementation-guides\">…</div>\u001b[22m\n\u001b[2m  -   unexpected value \"Where can I download Medicaid Premiums and Cost Sharing (MPC) SPA implementation guides?\"\u001b[22m\n\u001b[2m  -   locator resolved to <div class=\"border-b\" data-state=\"closed\" data-orientation=\"vertical\" id=\"mpc-spa-implementation-guides\" data-testid=\"mpc-spa-implementation-guides\">…</div>\u001b[22m\n\u001b[2m  -   unexpected value \"Where can I download Medicaid Premiums and Cost Sharing (MPC) SPA implementation guides?\"\u001b[22m\n\u001b[2m  -   locator resolved to <div class=\"border-b\" data-state=\"closed\" data-orientation=\"vertical\" id=\"mpc-spa-implementation-guides\" data-testid=\"mpc-spa-implementation-guides\">…</div>\u001b[22m\n\u001b[2m  -   unexpected value \"Where can I download Medicaid Premiums and Cost Sharing (MPC) SPA implementation guides?\"\u001b[22m\n\u001b[2m  -   locator resolved to <div class=\"border-b\" data-state=\"closed\" data-orientation=\"vertical\" id=\"mpc-spa-implementation-guides\" data-testid=\"mpc-spa-implementation-guides\">…</div>\u001b[22m\n\u001b[2m  -   unexpected value \"Where can I download Medicaid Premiums and Cost Sharing (MPC) SPA implementation guides?\"\u001b[22m\n\u001b[2m  -   locator resolved to <div class=\"border-b\" data-state=\"closed\" data-orientation=\"vertical\" id=\"mpc-spa-implementation-guides\" data-testid=\"mpc-spa-implementation-guides\">…</div>\u001b[22m\n\u001b[2m  -   unexpected value \"Where can I download Medicaid Premiums and Cost Sharing (MPC) SPA implementation guides?\"\u001b[22m\n\n    at /home/runner/work/macpro-mako/macpro-mako/test/e2e/faq/faq.spec.ts:197:44",
@@ -2168,7 +2168,7 @@
                               "stdout": [],
                               "stderr": [],
                               "retry": 0,
-                              "startTime": "2025-06-23T12:25:13.601Z",
+                              "startTime": "2025-06-23T12:53:24.191Z",
                               "attachments": [
                                 {
                                   "name": "video",
@@ -2216,12 +2216,12 @@
                             {
                               "workerIndex": 15,
                               "status": "passed",
-                              "duration": 1785,
+                              "duration": 2730,
                               "errors": [],
                               "stdout": [],
                               "stderr": [],
                               "retry": 0,
-                              "startTime": "2025-06-23T12:25:22.323Z",
+                              "startTime": "2025-06-23T12:53:33.835Z",
                               "attachments": []
                             }
                           ],
@@ -2253,12 +2253,12 @@
                             {
                               "workerIndex": 15,
                               "status": "passed",
-                              "duration": 2591,
+                              "duration": 1707,
                               "errors": [],
                               "stdout": [],
                               "stderr": [],
                               "retry": 0,
-                              "startTime": "2025-06-23T12:25:24.257Z",
+                              "startTime": "2025-06-23T12:53:36.720Z",
                               "attachments": []
                             }
                           ],
@@ -2298,12 +2298,12 @@
                             {
                               "workerIndex": 15,
                               "status": "passed",
-                              "duration": 1660,
+                              "duration": 2636,
                               "errors": [],
                               "stdout": [],
                               "stderr": [],
                               "retry": 0,
-                              "startTime": "2025-06-23T12:25:26.854Z",
+                              "startTime": "2025-06-23T12:53:38.433Z",
                               "attachments": []
                             }
                           ],
@@ -2335,12 +2335,12 @@
                             {
                               "workerIndex": 15,
                               "status": "passed",
-                              "duration": 1680,
+                              "duration": 2636,
                               "errors": [],
                               "stdout": [],
                               "stderr": [],
                               "retry": 0,
-                              "startTime": "2025-06-23T12:25:28.521Z",
+                              "startTime": "2025-06-23T12:53:41.076Z",
                               "attachments": []
                             }
                           ],
@@ -2372,12 +2372,12 @@
                             {
                               "workerIndex": 15,
                               "status": "passed",
-                              "duration": 2588,
+                              "duration": 2619,
                               "errors": [],
                               "stdout": [],
                               "stderr": [],
                               "retry": 0,
-                              "startTime": "2025-06-23T12:25:30.208Z",
+                              "startTime": "2025-06-23T12:53:43.720Z",
                               "attachments": []
                             }
                           ],
@@ -2409,12 +2409,12 @@
                             {
                               "workerIndex": 15,
                               "status": "passed",
-                              "duration": 1709,
+                              "duration": 2605,
                               "errors": [],
                               "stdout": [],
                               "stderr": [],
                               "retry": 0,
-                              "startTime": "2025-06-23T12:25:32.802Z",
+                              "startTime": "2025-06-23T12:53:46.345Z",
                               "attachments": []
                             }
                           ],
@@ -2446,12 +2446,12 @@
                             {
                               "workerIndex": 15,
                               "status": "passed",
-                              "duration": 2608,
+                              "duration": 2614,
                               "errors": [],
                               "stdout": [],
                               "stderr": [],
                               "retry": 0,
-                              "startTime": "2025-06-23T12:25:34.518Z",
+                              "startTime": "2025-06-23T12:53:48.956Z",
                               "attachments": []
                             }
                           ],
@@ -2483,12 +2483,12 @@
                             {
                               "workerIndex": 15,
                               "status": "passed",
-                              "duration": 2664,
+                              "duration": 1680,
                               "errors": [],
                               "stdout": [],
                               "stderr": [],
                               "retry": 0,
-                              "startTime": "2025-06-23T12:25:37.132Z",
+                              "startTime": "2025-06-23T12:53:51.576Z",
                               "attachments": []
                             }
                           ],
@@ -2520,12 +2520,12 @@
                             {
                               "workerIndex": 15,
                               "status": "passed",
-                              "duration": 1689,
+                              "duration": 2693,
                               "errors": [],
                               "stdout": [],
                               "stderr": [],
                               "retry": 0,
-                              "startTime": "2025-06-23T12:25:39.802Z",
+                              "startTime": "2025-06-23T12:53:53.265Z",
                               "attachments": []
                             }
                           ],
@@ -2557,12 +2557,12 @@
                             {
                               "workerIndex": 15,
                               "status": "passed",
-                              "duration": 1693,
+                              "duration": 2580,
                               "errors": [],
                               "stdout": [],
                               "stderr": [],
                               "retry": 0,
-                              "startTime": "2025-06-23T12:25:41.498Z",
+                              "startTime": "2025-06-23T12:53:55.965Z",
                               "attachments": []
                             }
                           ],
@@ -2594,12 +2594,12 @@
                             {
                               "workerIndex": 15,
                               "status": "passed",
-                              "duration": 2606,
+                              "duration": 2602,
                               "errors": [],
                               "stdout": [],
                               "stderr": [],
                               "retry": 0,
-                              "startTime": "2025-06-23T12:25:43.199Z",
+                              "startTime": "2025-06-23T12:53:58.552Z",
                               "attachments": []
                             }
                           ],
@@ -2640,7 +2640,7 @@
                               "stdout": [],
                               "stderr": [],
                               "retry": 0,
-                              "startTime": "2025-06-23T12:25:45.812Z",
+                              "startTime": "2025-06-23T12:54:01.160Z",
                               "attachments": []
                             }
                           ],
@@ -2681,7 +2681,7 @@
                               "stdout": [],
                               "stderr": [],
                               "retry": 0,
-                              "startTime": "2025-06-23T12:25:45.812Z",
+                              "startTime": "2025-06-23T12:54:01.160Z",
                               "attachments": []
                             }
                           ],
@@ -2713,12 +2713,12 @@
                             {
                               "workerIndex": 15,
                               "status": "passed",
-                              "duration": 2650,
+                              "duration": 1704,
                               "errors": [],
                               "stdout": [],
                               "stderr": [],
                               "retry": 0,
-                              "startTime": "2025-06-23T12:25:45.813Z",
+                              "startTime": "2025-06-23T12:54:01.160Z",
                               "attachments": []
                             }
                           ],
@@ -2750,12 +2750,12 @@
                             {
                               "workerIndex": 15,
                               "status": "passed",
-                              "duration": 1601,
+                              "duration": 2603,
                               "errors": [],
                               "stdout": [],
                               "stderr": [],
                               "retry": 0,
-                              "startTime": "2025-06-23T12:25:48.469Z",
+                              "startTime": "2025-06-23T12:54:02.870Z",
                               "attachments": []
                             }
                           ],
@@ -2787,12 +2787,12 @@
                             {
                               "workerIndex": 15,
                               "status": "passed",
-                              "duration": 1635,
+                              "duration": 2607,
                               "errors": [],
                               "stdout": [],
                               "stderr": [],
                               "retry": 0,
-                              "startTime": "2025-06-23T12:25:50.075Z",
+                              "startTime": "2025-06-23T12:54:05.479Z",
                               "attachments": []
                             }
                           ],
@@ -2824,12 +2824,12 @@
                             {
                               "workerIndex": 15,
                               "status": "passed",
-                              "duration": 2620,
+                              "duration": 1731,
                               "errors": [],
                               "stdout": [],
                               "stderr": [],
                               "retry": 0,
-                              "startTime": "2025-06-23T12:25:51.717Z",
+                              "startTime": "2025-06-23T12:54:08.092Z",
                               "attachments": []
                             }
                           ],
@@ -2880,7 +2880,7 @@
                     {
                       "workerIndex": 15,
                       "status": "passed",
-                      "duration": 3640,
+                      "duration": 3652,
                       "errors": [],
                       "stdout": [
                         {
@@ -2889,7 +2889,7 @@
                       ],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2025-06-23T12:25:54.411Z",
+                      "startTime": "2025-06-23T12:54:09.899Z",
                       "attachments": []
                     }
                   ],
@@ -2919,7 +2919,7 @@
                     {
                       "workerIndex": 15,
                       "status": "failed",
-                      "duration": 7989,
+                      "duration": 8084,
                       "error": {
                         "message": "Error: \u001b[31mTimed out 5000ms waiting for \u001b[39m\u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoHaveURL\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m)\u001b[22m\n\nLocator: locator(':root')\nExpected pattern: \u001b[32m/\\/dashboard*/\u001b[39m\nReceived string:  \u001b[31m\"https://d1vo1imdstn87w.cloudfront.net/\"\u001b[39m\nCall log:\n  \u001b[2m- expect.toHaveURL with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for locator(':root')\u001b[22m\n\u001b[2m  -   locator resolved to <html lang=\"en\" class=\"h-full\">…</html>\u001b[22m\n\u001b[2m  -   unexpected value \"https://d1vo1imdstn87w.cloudfront.net/\"\u001b[22m\n\u001b[2m  -   locator resolved to <html lang=\"en\" class=\"h-full\">…</html>\u001b[22m\n\u001b[2m  -   unexpected value \"https://d1vo1imdstn87w.cloudfront.net/\"\u001b[22m\n\u001b[2m  -   locator resolved to <html lang=\"en\" class=\"h-full\">…</html>\u001b[22m\n\u001b[2m  -   unexpected value \"https://d1vo1imdstn87w.cloudfront.net/\"\u001b[22m\n\u001b[2m  -   locator resolved to <html lang=\"en\" class=\"h-full\">…</html>\u001b[22m\n\u001b[2m  -   unexpected value \"https://d1vo1imdstn87w.cloudfront.net/\"\u001b[22m\n\u001b[2m  -   locator resolved to <html lang=\"en\" class=\"h-full\">…</html>\u001b[22m\n\u001b[2m  -   unexpected value \"https://d1vo1imdstn87w.cloudfront.net/\"\u001b[22m\n\u001b[2m  -   locator resolved to <html lang=\"en\" class=\"h-full\">…</html>\u001b[22m\n\u001b[2m  -   unexpected value \"https://d1vo1imdstn87w.cloudfront.net/\"\u001b[22m\n\u001b[2m  -   locator resolved to <html lang=\"en\" class=\"h-full\">…</html>\u001b[22m\n\u001b[2m  -   unexpected value \"https://d1vo1imdstn87w.cloudfront.net/\"\u001b[22m\n\u001b[2m  -   locator resolved to <html lang=\"en\" class=\"h-full\">…</html>\u001b[22m\n\u001b[2m  -   unexpected value \"https://d1vo1imdstn87w.cloudfront.net/\"\u001b[22m\n\u001b[2m  -   locator resolved to <html lang=\"en\" class=\"h-full\">…</html>\u001b[22m\n\u001b[2m  -   unexpected value \"https://d1vo1imdstn87w.cloudfront.net/\"\u001b[22m\n",
                         "stack": "Error: \u001b[31mTimed out 5000ms waiting for \u001b[39m\u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoHaveURL\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m)\u001b[22m\n\nLocator: locator(':root')\nExpected pattern: \u001b[32m/\\/dashboard*/\u001b[39m\nReceived string:  \u001b[31m\"https://d1vo1imdstn87w.cloudfront.net/\"\u001b[39m\nCall log:\n  \u001b[2m- expect.toHaveURL with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for locator(':root')\u001b[22m\n\u001b[2m  -   locator resolved to <html lang=\"en\" class=\"h-full\">…</html>\u001b[22m\n\u001b[2m  -   unexpected value \"https://d1vo1imdstn87w.cloudfront.net/\"\u001b[22m\n\u001b[2m  -   locator resolved to <html lang=\"en\" class=\"h-full\">…</html>\u001b[22m\n\u001b[2m  -   unexpected value \"https://d1vo1imdstn87w.cloudfront.net/\"\u001b[22m\n\u001b[2m  -   locator resolved to <html lang=\"en\" class=\"h-full\">…</html>\u001b[22m\n\u001b[2m  -   unexpected value \"https://d1vo1imdstn87w.cloudfront.net/\"\u001b[22m\n\u001b[2m  -   locator resolved to <html lang=\"en\" class=\"h-full\">…</html>\u001b[22m\n\u001b[2m  -   unexpected value \"https://d1vo1imdstn87w.cloudfront.net/\"\u001b[22m\n\u001b[2m  -   locator resolved to <html lang=\"en\" class=\"h-full\">…</html>\u001b[22m\n\u001b[2m  -   unexpected value \"https://d1vo1imdstn87w.cloudfront.net/\"\u001b[22m\n\u001b[2m  -   locator resolved to <html lang=\"en\" class=\"h-full\">…</html>\u001b[22m\n\u001b[2m  -   unexpected value \"https://d1vo1imdstn87w.cloudfront.net/\"\u001b[22m\n\u001b[2m  -   locator resolved to <html lang=\"en\" class=\"h-full\">…</html>\u001b[22m\n\u001b[2m  -   unexpected value \"https://d1vo1imdstn87w.cloudfront.net/\"\u001b[22m\n\u001b[2m  -   locator resolved to <html lang=\"en\" class=\"h-full\">…</html>\u001b[22m\n\u001b[2m  -   unexpected value \"https://d1vo1imdstn87w.cloudfront.net/\"\u001b[22m\n\u001b[2m  -   locator resolved to <html lang=\"en\" class=\"h-full\">…</html>\u001b[22m\n\u001b[2m  -   unexpected value \"https://d1vo1imdstn87w.cloudfront.net/\"\u001b[22m\n\n    at /home/runner/work/macpro-mako/macpro-mako/test/non-func/a11y/index.spec.ts:22:26",
@@ -2943,7 +2943,7 @@
                       "stdout": [],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2025-06-23T12:25:58.056Z",
+                      "startTime": "2025-06-23T12:54:13.556Z",
                       "attachments": [
                         {
                           "name": "video",
@@ -2989,7 +2989,7 @@
                     {
                       "workerIndex": 16,
                       "status": "passed",
-                      "duration": 4627,
+                      "duration": 4292,
                       "errors": [],
                       "stdout": [
                         {
@@ -2998,7 +2998,7 @@
                       ],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2025-06-23T12:26:07.502Z",
+                      "startTime": "2025-06-23T12:54:23.170Z",
                       "attachments": []
                     }
                   ],
@@ -3028,7 +3028,7 @@
                     {
                       "workerIndex": 16,
                       "status": "passed",
-                      "duration": 3450,
+                      "duration": 3475,
                       "errors": [],
                       "stdout": [
                         {
@@ -3037,7 +3037,7 @@
                       ],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2025-06-23T12:26:12.276Z",
+                      "startTime": "2025-06-23T12:54:27.614Z",
                       "attachments": []
                     }
                   ],
@@ -3067,7 +3067,7 @@
                     {
                       "workerIndex": 16,
                       "status": "failed",
-                      "duration": 8228,
+                      "duration": 8294,
                       "error": {
                         "message": "Error: \u001b[31mTimed out 5000ms waiting for \u001b[39m\u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoHaveURL\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m)\u001b[22m\n\nLocator: locator(':root')\nExpected pattern: \u001b[32m/\\/profile*/\u001b[39m\nReceived string:  \u001b[31m\"https://d1vo1imdstn87w.cloudfront.net/\"\u001b[39m\nCall log:\n  \u001b[2m- expect.toHaveURL with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for locator(':root')\u001b[22m\n\u001b[2m  -   locator resolved to <html lang=\"en\" class=\"h-full\">…</html>\u001b[22m\n\u001b[2m  -   unexpected value \"https://d1vo1imdstn87w.cloudfront.net/\"\u001b[22m\n\u001b[2m  -   locator resolved to <html lang=\"en\" class=\"h-full\">…</html>\u001b[22m\n\u001b[2m  -   unexpected value \"https://d1vo1imdstn87w.cloudfront.net/\"\u001b[22m\n\u001b[2m  -   locator resolved to <html lang=\"en\" class=\"h-full\">…</html>\u001b[22m\n\u001b[2m  -   unexpected value \"https://d1vo1imdstn87w.cloudfront.net/\"\u001b[22m\n\u001b[2m  -   locator resolved to <html lang=\"en\" class=\"h-full\">…</html>\u001b[22m\n\u001b[2m  -   unexpected value \"https://d1vo1imdstn87w.cloudfront.net/\"\u001b[22m\n\u001b[2m  -   locator resolved to <html lang=\"en\" class=\"h-full\">…</html>\u001b[22m\n\u001b[2m  -   unexpected value \"https://d1vo1imdstn87w.cloudfront.net/\"\u001b[22m\n\u001b[2m  -   locator resolved to <html lang=\"en\" class=\"h-full\">…</html>\u001b[22m\n\u001b[2m  -   unexpected value \"https://d1vo1imdstn87w.cloudfront.net/\"\u001b[22m\n\u001b[2m  -   locator resolved to <html lang=\"en\" class=\"h-full\">…</html>\u001b[22m\n\u001b[2m  -   unexpected value \"https://d1vo1imdstn87w.cloudfront.net/\"\u001b[22m\n\u001b[2m  -   locator resolved to <html lang=\"en\" class=\"h-full\">…</html>\u001b[22m\n\u001b[2m  -   unexpected value \"https://d1vo1imdstn87w.cloudfront.net/\"\u001b[22m\n\u001b[2m  -   locator resolved to <html lang=\"en\" class=\"h-full\">…</html>\u001b[22m\n\u001b[2m  -   unexpected value \"https://d1vo1imdstn87w.cloudfront.net/\"\u001b[22m\n",
                         "stack": "Error: \u001b[31mTimed out 5000ms waiting for \u001b[39m\u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoHaveURL\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m)\u001b[22m\n\nLocator: locator(':root')\nExpected pattern: \u001b[32m/\\/profile*/\u001b[39m\nReceived string:  \u001b[31m\"https://d1vo1imdstn87w.cloudfront.net/\"\u001b[39m\nCall log:\n  \u001b[2m- expect.toHaveURL with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for locator(':root')\u001b[22m\n\u001b[2m  -   locator resolved to <html lang=\"en\" class=\"h-full\">…</html>\u001b[22m\n\u001b[2m  -   unexpected value \"https://d1vo1imdstn87w.cloudfront.net/\"\u001b[22m\n\u001b[2m  -   locator resolved to <html lang=\"en\" class=\"h-full\">…</html>\u001b[22m\n\u001b[2m  -   unexpected value \"https://d1vo1imdstn87w.cloudfront.net/\"\u001b[22m\n\u001b[2m  -   locator resolved to <html lang=\"en\" class=\"h-full\">…</html>\u001b[22m\n\u001b[2m  -   unexpected value \"https://d1vo1imdstn87w.cloudfront.net/\"\u001b[22m\n\u001b[2m  -   locator resolved to <html lang=\"en\" class=\"h-full\">…</html>\u001b[22m\n\u001b[2m  -   unexpected value \"https://d1vo1imdstn87w.cloudfront.net/\"\u001b[22m\n\u001b[2m  -   locator resolved to <html lang=\"en\" class=\"h-full\">…</html>\u001b[22m\n\u001b[2m  -   unexpected value \"https://d1vo1imdstn87w.cloudfront.net/\"\u001b[22m\n\u001b[2m  -   locator resolved to <html lang=\"en\" class=\"h-full\">…</html>\u001b[22m\n\u001b[2m  -   unexpected value \"https://d1vo1imdstn87w.cloudfront.net/\"\u001b[22m\n\u001b[2m  -   locator resolved to <html lang=\"en\" class=\"h-full\">…</html>\u001b[22m\n\u001b[2m  -   unexpected value \"https://d1vo1imdstn87w.cloudfront.net/\"\u001b[22m\n\u001b[2m  -   locator resolved to <html lang=\"en\" class=\"h-full\">…</html>\u001b[22m\n\u001b[2m  -   unexpected value \"https://d1vo1imdstn87w.cloudfront.net/\"\u001b[22m\n\u001b[2m  -   locator resolved to <html lang=\"en\" class=\"h-full\">…</html>\u001b[22m\n\u001b[2m  -   unexpected value \"https://d1vo1imdstn87w.cloudfront.net/\"\u001b[22m\n\n    at /home/runner/work/macpro-mako/macpro-mako/test/non-func/a11y/index.spec.ts:22:26",
@@ -3091,7 +3091,7 @@
                       "stdout": [],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2025-06-23T12:26:15.732Z",
+                      "startTime": "2025-06-23T12:54:31.096Z",
                       "attachments": [
                         {
                           "name": "video",
@@ -3137,7 +3137,7 @@
                     {
                       "workerIndex": 17,
                       "status": "failed",
-                      "duration": 8163,
+                      "duration": 8189,
                       "error": {
                         "message": "Error: \u001b[31mTimed out 5000ms waiting for \u001b[39m\u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoHaveURL\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m)\u001b[22m\n\nLocator: locator(':root')\nExpected pattern: \u001b[32m/\\/new-submission*/\u001b[39m\nReceived string:  \u001b[31m\"https://d1vo1imdstn87w.cloudfront.net/\"\u001b[39m\nCall log:\n  \u001b[2m- expect.toHaveURL with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for locator(':root')\u001b[22m\n\u001b[2m  -   locator resolved to <html lang=\"en\" class=\"h-full\">…</html>\u001b[22m\n\u001b[2m  -   unexpected value \"https://d1vo1imdstn87w.cloudfront.net/\"\u001b[22m\n\u001b[2m  -   locator resolved to <html lang=\"en\" class=\"h-full\">…</html>\u001b[22m\n\u001b[2m  -   unexpected value \"https://d1vo1imdstn87w.cloudfront.net/\"\u001b[22m\n\u001b[2m  -   locator resolved to <html lang=\"en\" class=\"h-full\">…</html>\u001b[22m\n\u001b[2m  -   unexpected value \"https://d1vo1imdstn87w.cloudfront.net/\"\u001b[22m\n\u001b[2m  -   locator resolved to <html lang=\"en\" class=\"h-full\">…</html>\u001b[22m\n\u001b[2m  -   unexpected value \"https://d1vo1imdstn87w.cloudfront.net/\"\u001b[22m\n\u001b[2m  -   locator resolved to <html lang=\"en\" class=\"h-full\">…</html>\u001b[22m\n\u001b[2m  -   unexpected value \"https://d1vo1imdstn87w.cloudfront.net/\"\u001b[22m\n\u001b[2m  -   locator resolved to <html lang=\"en\" class=\"h-full\">…</html>\u001b[22m\n\u001b[2m  -   unexpected value \"https://d1vo1imdstn87w.cloudfront.net/\"\u001b[22m\n\u001b[2m  -   locator resolved to <html lang=\"en\" class=\"h-full\">…</html>\u001b[22m\n\u001b[2m  -   unexpected value \"https://d1vo1imdstn87w.cloudfront.net/\"\u001b[22m\n\u001b[2m  -   locator resolved to <html lang=\"en\" class=\"h-full\">…</html>\u001b[22m\n\u001b[2m  -   unexpected value \"https://d1vo1imdstn87w.cloudfront.net/\"\u001b[22m\n\u001b[2m  -   locator resolved to <html lang=\"en\" class=\"h-full\">…</html>\u001b[22m\n\u001b[2m  -   unexpected value \"https://d1vo1imdstn87w.cloudfront.net/\"\u001b[22m\n",
                         "stack": "Error: \u001b[31mTimed out 5000ms waiting for \u001b[39m\u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoHaveURL\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m)\u001b[22m\n\nLocator: locator(':root')\nExpected pattern: \u001b[32m/\\/new-submission*/\u001b[39m\nReceived string:  \u001b[31m\"https://d1vo1imdstn87w.cloudfront.net/\"\u001b[39m\nCall log:\n  \u001b[2m- expect.toHaveURL with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for locator(':root')\u001b[22m\n\u001b[2m  -   locator resolved to <html lang=\"en\" class=\"h-full\">…</html>\u001b[22m\n\u001b[2m  -   unexpected value \"https://d1vo1imdstn87w.cloudfront.net/\"\u001b[22m\n\u001b[2m  -   locator resolved to <html lang=\"en\" class=\"h-full\">…</html>\u001b[22m\n\u001b[2m  -   unexpected value \"https://d1vo1imdstn87w.cloudfront.net/\"\u001b[22m\n\u001b[2m  -   locator resolved to <html lang=\"en\" class=\"h-full\">…</html>\u001b[22m\n\u001b[2m  -   unexpected value \"https://d1vo1imdstn87w.cloudfront.net/\"\u001b[22m\n\u001b[2m  -   locator resolved to <html lang=\"en\" class=\"h-full\">…</html>\u001b[22m\n\u001b[2m  -   unexpected value \"https://d1vo1imdstn87w.cloudfront.net/\"\u001b[22m\n\u001b[2m  -   locator resolved to <html lang=\"en\" class=\"h-full\">…</html>\u001b[22m\n\u001b[2m  -   unexpected value \"https://d1vo1imdstn87w.cloudfront.net/\"\u001b[22m\n\u001b[2m  -   locator resolved to <html lang=\"en\" class=\"h-full\">…</html>\u001b[22m\n\u001b[2m  -   unexpected value \"https://d1vo1imdstn87w.cloudfront.net/\"\u001b[22m\n\u001b[2m  -   locator resolved to <html lang=\"en\" class=\"h-full\">…</html>\u001b[22m\n\u001b[2m  -   unexpected value \"https://d1vo1imdstn87w.cloudfront.net/\"\u001b[22m\n\u001b[2m  -   locator resolved to <html lang=\"en\" class=\"h-full\">…</html>\u001b[22m\n\u001b[2m  -   unexpected value \"https://d1vo1imdstn87w.cloudfront.net/\"\u001b[22m\n\u001b[2m  -   locator resolved to <html lang=\"en\" class=\"h-full\">…</html>\u001b[22m\n\u001b[2m  -   unexpected value \"https://d1vo1imdstn87w.cloudfront.net/\"\u001b[22m\n\n    at /home/runner/work/macpro-mako/macpro-mako/test/non-func/a11y/index.spec.ts:22:26",
@@ -3161,7 +3161,7 @@
                       "stdout": [],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2025-06-23T12:26:25.488Z",
+                      "startTime": "2025-06-23T12:54:40.912Z",
                       "attachments": [
                         {
                           "name": "video",
@@ -3207,7 +3207,7 @@
                     {
                       "workerIndex": 18,
                       "status": "failed",
-                      "duration": 8122,
+                      "duration": 8105,
                       "error": {
                         "message": "Error: \u001b[31mTimed out 5000ms waiting for \u001b[39m\u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoHaveURL\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m)\u001b[22m\n\nLocator: locator(':root')\nExpected pattern: \u001b[32m/\\/new-submission\\/spa*/\u001b[39m\nReceived string:  \u001b[31m\"https://d1vo1imdstn87w.cloudfront.net/\"\u001b[39m\nCall log:\n  \u001b[2m- expect.toHaveURL with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for locator(':root')\u001b[22m\n\u001b[2m  -   locator resolved to <html lang=\"en\" class=\"h-full\">…</html>\u001b[22m\n\u001b[2m  -   unexpected value \"https://d1vo1imdstn87w.cloudfront.net/\"\u001b[22m\n\u001b[2m  -   locator resolved to <html lang=\"en\" class=\"h-full\">…</html>\u001b[22m\n\u001b[2m  -   unexpected value \"https://d1vo1imdstn87w.cloudfront.net/\"\u001b[22m\n\u001b[2m  -   locator resolved to <html lang=\"en\" class=\"h-full\">…</html>\u001b[22m\n\u001b[2m  -   unexpected value \"https://d1vo1imdstn87w.cloudfront.net/\"\u001b[22m\n\u001b[2m  -   locator resolved to <html lang=\"en\" class=\"h-full\">…</html>\u001b[22m\n\u001b[2m  -   unexpected value \"https://d1vo1imdstn87w.cloudfront.net/\"\u001b[22m\n\u001b[2m  -   locator resolved to <html lang=\"en\" class=\"h-full\">…</html>\u001b[22m\n\u001b[2m  -   unexpected value \"https://d1vo1imdstn87w.cloudfront.net/\"\u001b[22m\n\u001b[2m  -   locator resolved to <html lang=\"en\" class=\"h-full\">…</html>\u001b[22m\n\u001b[2m  -   unexpected value \"https://d1vo1imdstn87w.cloudfront.net/\"\u001b[22m\n\u001b[2m  -   locator resolved to <html lang=\"en\" class=\"h-full\">…</html>\u001b[22m\n\u001b[2m  -   unexpected value \"https://d1vo1imdstn87w.cloudfront.net/\"\u001b[22m\n\u001b[2m  -   locator resolved to <html lang=\"en\" class=\"h-full\">…</html>\u001b[22m\n\u001b[2m  -   unexpected value \"https://d1vo1imdstn87w.cloudfront.net/\"\u001b[22m\n\u001b[2m  -   locator resolved to <html lang=\"en\" class=\"h-full\">…</html>\u001b[22m\n\u001b[2m  -   unexpected value \"https://d1vo1imdstn87w.cloudfront.net/\"\u001b[22m\n",
                         "stack": "Error: \u001b[31mTimed out 5000ms waiting for \u001b[39m\u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoHaveURL\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m)\u001b[22m\n\nLocator: locator(':root')\nExpected pattern: \u001b[32m/\\/new-submission\\/spa*/\u001b[39m\nReceived string:  \u001b[31m\"https://d1vo1imdstn87w.cloudfront.net/\"\u001b[39m\nCall log:\n  \u001b[2m- expect.toHaveURL with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for locator(':root')\u001b[22m\n\u001b[2m  -   locator resolved to <html lang=\"en\" class=\"h-full\">…</html>\u001b[22m\n\u001b[2m  -   unexpected value \"https://d1vo1imdstn87w.cloudfront.net/\"\u001b[22m\n\u001b[2m  -   locator resolved to <html lang=\"en\" class=\"h-full\">…</html>\u001b[22m\n\u001b[2m  -   unexpected value \"https://d1vo1imdstn87w.cloudfront.net/\"\u001b[22m\n\u001b[2m  -   locator resolved to <html lang=\"en\" class=\"h-full\">…</html>\u001b[22m\n\u001b[2m  -   unexpected value \"https://d1vo1imdstn87w.cloudfront.net/\"\u001b[22m\n\u001b[2m  -   locator resolved to <html lang=\"en\" class=\"h-full\">…</html>\u001b[22m\n\u001b[2m  -   unexpected value \"https://d1vo1imdstn87w.cloudfront.net/\"\u001b[22m\n\u001b[2m  -   locator resolved to <html lang=\"en\" class=\"h-full\">…</html>\u001b[22m\n\u001b[2m  -   unexpected value \"https://d1vo1imdstn87w.cloudfront.net/\"\u001b[22m\n\u001b[2m  -   locator resolved to <html lang=\"en\" class=\"h-full\">…</html>\u001b[22m\n\u001b[2m  -   unexpected value \"https://d1vo1imdstn87w.cloudfront.net/\"\u001b[22m\n\u001b[2m  -   locator resolved to <html lang=\"en\" class=\"h-full\">…</html>\u001b[22m\n\u001b[2m  -   unexpected value \"https://d1vo1imdstn87w.cloudfront.net/\"\u001b[22m\n\u001b[2m  -   locator resolved to <html lang=\"en\" class=\"h-full\">…</html>\u001b[22m\n\u001b[2m  -   unexpected value \"https://d1vo1imdstn87w.cloudfront.net/\"\u001b[22m\n\u001b[2m  -   locator resolved to <html lang=\"en\" class=\"h-full\">…</html>\u001b[22m\n\u001b[2m  -   unexpected value \"https://d1vo1imdstn87w.cloudfront.net/\"\u001b[22m\n\n    at /home/runner/work/macpro-mako/macpro-mako/test/non-func/a11y/index.spec.ts:22:26",
@@ -3231,7 +3231,7 @@
                       "stdout": [],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2025-06-23T12:26:35.303Z",
+                      "startTime": "2025-06-23T12:54:50.791Z",
                       "attachments": [
                         {
                           "name": "video",
@@ -3277,7 +3277,7 @@
                     {
                       "workerIndex": 19,
                       "status": "failed",
-                      "duration": 8134,
+                      "duration": 8253,
                       "error": {
                         "message": "Error: \u001b[31mTimed out 5000ms waiting for \u001b[39m\u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoHaveURL\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m)\u001b[22m\n\nLocator: locator(':root')\nExpected pattern: \u001b[32m/\\/new-submission\\/spa\\/medicaid*/\u001b[39m\nReceived string:  \u001b[31m\"https://d1vo1imdstn87w.cloudfront.net/\"\u001b[39m\nCall log:\n  \u001b[2m- expect.toHaveURL with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for locator(':root')\u001b[22m\n\u001b[2m  -   locator resolved to <html lang=\"en\" class=\"h-full\">…</html>\u001b[22m\n\u001b[2m  -   unexpected value \"https://d1vo1imdstn87w.cloudfront.net/\"\u001b[22m\n\u001b[2m  -   locator resolved to <html lang=\"en\" class=\"h-full\">…</html>\u001b[22m\n\u001b[2m  -   unexpected value \"https://d1vo1imdstn87w.cloudfront.net/\"\u001b[22m\n\u001b[2m  -   locator resolved to <html lang=\"en\" class=\"h-full\">…</html>\u001b[22m\n\u001b[2m  -   unexpected value \"https://d1vo1imdstn87w.cloudfront.net/\"\u001b[22m\n\u001b[2m  -   locator resolved to <html lang=\"en\" class=\"h-full\">…</html>\u001b[22m\n\u001b[2m  -   unexpected value \"https://d1vo1imdstn87w.cloudfront.net/\"\u001b[22m\n\u001b[2m  -   locator resolved to <html lang=\"en\" class=\"h-full\">…</html>\u001b[22m\n\u001b[2m  -   unexpected value \"https://d1vo1imdstn87w.cloudfront.net/\"\u001b[22m\n\u001b[2m  -   locator resolved to <html lang=\"en\" class=\"h-full\">…</html>\u001b[22m\n\u001b[2m  -   unexpected value \"https://d1vo1imdstn87w.cloudfront.net/\"\u001b[22m\n\u001b[2m  -   locator resolved to <html lang=\"en\" class=\"h-full\">…</html>\u001b[22m\n\u001b[2m  -   unexpected value \"https://d1vo1imdstn87w.cloudfront.net/\"\u001b[22m\n\u001b[2m  -   locator resolved to <html lang=\"en\" class=\"h-full\">…</html>\u001b[22m\n\u001b[2m  -   unexpected value \"https://d1vo1imdstn87w.cloudfront.net/\"\u001b[22m\n\u001b[2m  -   locator resolved to <html lang=\"en\" class=\"h-full\">…</html>\u001b[22m\n\u001b[2m  -   unexpected value \"https://d1vo1imdstn87w.cloudfront.net/\"\u001b[22m\n",
                         "stack": "Error: \u001b[31mTimed out 5000ms waiting for \u001b[39m\u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoHaveURL\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m)\u001b[22m\n\nLocator: locator(':root')\nExpected pattern: \u001b[32m/\\/new-submission\\/spa\\/medicaid*/\u001b[39m\nReceived string:  \u001b[31m\"https://d1vo1imdstn87w.cloudfront.net/\"\u001b[39m\nCall log:\n  \u001b[2m- expect.toHaveURL with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for locator(':root')\u001b[22m\n\u001b[2m  -   locator resolved to <html lang=\"en\" class=\"h-full\">…</html>\u001b[22m\n\u001b[2m  -   unexpected value \"https://d1vo1imdstn87w.cloudfront.net/\"\u001b[22m\n\u001b[2m  -   locator resolved to <html lang=\"en\" class=\"h-full\">…</html>\u001b[22m\n\u001b[2m  -   unexpected value \"https://d1vo1imdstn87w.cloudfront.net/\"\u001b[22m\n\u001b[2m  -   locator resolved to <html lang=\"en\" class=\"h-full\">…</html>\u001b[22m\n\u001b[2m  -   unexpected value \"https://d1vo1imdstn87w.cloudfront.net/\"\u001b[22m\n\u001b[2m  -   locator resolved to <html lang=\"en\" class=\"h-full\">…</html>\u001b[22m\n\u001b[2m  -   unexpected value \"https://d1vo1imdstn87w.cloudfront.net/\"\u001b[22m\n\u001b[2m  -   locator resolved to <html lang=\"en\" class=\"h-full\">…</html>\u001b[22m\n\u001b[2m  -   unexpected value \"https://d1vo1imdstn87w.cloudfront.net/\"\u001b[22m\n\u001b[2m  -   locator resolved to <html lang=\"en\" class=\"h-full\">…</html>\u001b[22m\n\u001b[2m  -   unexpected value \"https://d1vo1imdstn87w.cloudfront.net/\"\u001b[22m\n\u001b[2m  -   locator resolved to <html lang=\"en\" class=\"h-full\">…</html>\u001b[22m\n\u001b[2m  -   unexpected value \"https://d1vo1imdstn87w.cloudfront.net/\"\u001b[22m\n\u001b[2m  -   locator resolved to <html lang=\"en\" class=\"h-full\">…</html>\u001b[22m\n\u001b[2m  -   unexpected value \"https://d1vo1imdstn87w.cloudfront.net/\"\u001b[22m\n\u001b[2m  -   locator resolved to <html lang=\"en\" class=\"h-full\">…</html>\u001b[22m\n\u001b[2m  -   unexpected value \"https://d1vo1imdstn87w.cloudfront.net/\"\u001b[22m\n\n    at /home/runner/work/macpro-mako/macpro-mako/test/non-func/a11y/index.spec.ts:22:26",
@@ -3301,7 +3301,7 @@
                       "stdout": [],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2025-06-23T12:26:45.070Z",
+                      "startTime": "2025-06-23T12:55:00.525Z",
                       "attachments": [
                         {
                           "name": "video",
@@ -3347,7 +3347,7 @@
                     {
                       "workerIndex": 20,
                       "status": "failed",
-                      "duration": 8254,
+                      "duration": 8204,
                       "error": {
                         "message": "Error: \u001b[31mTimed out 5000ms waiting for \u001b[39m\u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoHaveURL\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m)\u001b[22m\n\nLocator: locator(':root')\nExpected pattern: \u001b[32m/\\/new-submission\\/spa\\/chip*/\u001b[39m\nReceived string:  \u001b[31m\"https://d1vo1imdstn87w.cloudfront.net/\"\u001b[39m\nCall log:\n  \u001b[2m- expect.toHaveURL with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for locator(':root')\u001b[22m\n\u001b[2m  -   locator resolved to <html lang=\"en\" class=\"h-full\">…</html>\u001b[22m\n\u001b[2m  -   unexpected value \"https://d1vo1imdstn87w.cloudfront.net/\"\u001b[22m\n\u001b[2m  -   locator resolved to <html lang=\"en\" class=\"h-full\">…</html>\u001b[22m\n\u001b[2m  -   unexpected value \"https://d1vo1imdstn87w.cloudfront.net/\"\u001b[22m\n\u001b[2m  -   locator resolved to <html lang=\"en\" class=\"h-full\">…</html>\u001b[22m\n\u001b[2m  -   unexpected value \"https://d1vo1imdstn87w.cloudfront.net/\"\u001b[22m\n\u001b[2m  -   locator resolved to <html lang=\"en\" class=\"h-full\">…</html>\u001b[22m\n\u001b[2m  -   unexpected value \"https://d1vo1imdstn87w.cloudfront.net/\"\u001b[22m\n\u001b[2m  -   locator resolved to <html lang=\"en\" class=\"h-full\">…</html>\u001b[22m\n\u001b[2m  -   unexpected value \"https://d1vo1imdstn87w.cloudfront.net/\"\u001b[22m\n\u001b[2m  -   locator resolved to <html lang=\"en\" class=\"h-full\">…</html>\u001b[22m\n\u001b[2m  -   unexpected value \"https://d1vo1imdstn87w.cloudfront.net/\"\u001b[22m\n\u001b[2m  -   locator resolved to <html lang=\"en\" class=\"h-full\">…</html>\u001b[22m\n\u001b[2m  -   unexpected value \"https://d1vo1imdstn87w.cloudfront.net/\"\u001b[22m\n\u001b[2m  -   locator resolved to <html lang=\"en\" class=\"h-full\">…</html>\u001b[22m\n\u001b[2m  -   unexpected value \"https://d1vo1imdstn87w.cloudfront.net/\"\u001b[22m\n\u001b[2m  -   locator resolved to <html lang=\"en\" class=\"h-full\">…</html>\u001b[22m\n\u001b[2m  -   unexpected value \"https://d1vo1imdstn87w.cloudfront.net/\"\u001b[22m\n",
                         "stack": "Error: \u001b[31mTimed out 5000ms waiting for \u001b[39m\u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoHaveURL\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m)\u001b[22m\n\nLocator: locator(':root')\nExpected pattern: \u001b[32m/\\/new-submission\\/spa\\/chip*/\u001b[39m\nReceived string:  \u001b[31m\"https://d1vo1imdstn87w.cloudfront.net/\"\u001b[39m\nCall log:\n  \u001b[2m- expect.toHaveURL with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for locator(':root')\u001b[22m\n\u001b[2m  -   locator resolved to <html lang=\"en\" class=\"h-full\">…</html>\u001b[22m\n\u001b[2m  -   unexpected value \"https://d1vo1imdstn87w.cloudfront.net/\"\u001b[22m\n\u001b[2m  -   locator resolved to <html lang=\"en\" class=\"h-full\">…</html>\u001b[22m\n\u001b[2m  -   unexpected value \"https://d1vo1imdstn87w.cloudfront.net/\"\u001b[22m\n\u001b[2m  -   locator resolved to <html lang=\"en\" class=\"h-full\">…</html>\u001b[22m\n\u001b[2m  -   unexpected value \"https://d1vo1imdstn87w.cloudfront.net/\"\u001b[22m\n\u001b[2m  -   locator resolved to <html lang=\"en\" class=\"h-full\">…</html>\u001b[22m\n\u001b[2m  -   unexpected value \"https://d1vo1imdstn87w.cloudfront.net/\"\u001b[22m\n\u001b[2m  -   locator resolved to <html lang=\"en\" class=\"h-full\">…</html>\u001b[22m\n\u001b[2m  -   unexpected value \"https://d1vo1imdstn87w.cloudfront.net/\"\u001b[22m\n\u001b[2m  -   locator resolved to <html lang=\"en\" class=\"h-full\">…</html>\u001b[22m\n\u001b[2m  -   unexpected value \"https://d1vo1imdstn87w.cloudfront.net/\"\u001b[22m\n\u001b[2m  -   locator resolved to <html lang=\"en\" class=\"h-full\">…</html>\u001b[22m\n\u001b[2m  -   unexpected value \"https://d1vo1imdstn87w.cloudfront.net/\"\u001b[22m\n\u001b[2m  -   locator resolved to <html lang=\"en\" class=\"h-full\">…</html>\u001b[22m\n\u001b[2m  -   unexpected value \"https://d1vo1imdstn87w.cloudfront.net/\"\u001b[22m\n\u001b[2m  -   locator resolved to <html lang=\"en\" class=\"h-full\">…</html>\u001b[22m\n\u001b[2m  -   unexpected value \"https://d1vo1imdstn87w.cloudfront.net/\"\u001b[22m\n\n    at /home/runner/work/macpro-mako/macpro-mako/test/non-func/a11y/index.spec.ts:22:26",
@@ -3371,7 +3371,7 @@
                       "stdout": [],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2025-06-23T12:26:54.843Z",
+                      "startTime": "2025-06-23T12:55:10.481Z",
                       "attachments": [
                         {
                           "name": "video",
@@ -3417,7 +3417,7 @@
                     {
                       "workerIndex": 21,
                       "status": "failed",
-                      "duration": 8138,
+                      "duration": 8192,
                       "error": {
                         "message": "Error: \u001b[31mTimed out 5000ms waiting for \u001b[39m\u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoHaveURL\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m)\u001b[22m\n\nLocator: locator(':root')\nExpected pattern: \u001b[32m/\\/new-submission\\/waiver*/\u001b[39m\nReceived string:  \u001b[31m\"https://d1vo1imdstn87w.cloudfront.net/\"\u001b[39m\nCall log:\n  \u001b[2m- expect.toHaveURL with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for locator(':root')\u001b[22m\n\u001b[2m  -   locator resolved to <html lang=\"en\" class=\"h-full\">…</html>\u001b[22m\n\u001b[2m  -   unexpected value \"https://d1vo1imdstn87w.cloudfront.net/\"\u001b[22m\n\u001b[2m  -   locator resolved to <html lang=\"en\" class=\"h-full\">…</html>\u001b[22m\n\u001b[2m  -   unexpected value \"https://d1vo1imdstn87w.cloudfront.net/\"\u001b[22m\n\u001b[2m  -   locator resolved to <html lang=\"en\" class=\"h-full\">…</html>\u001b[22m\n\u001b[2m  -   unexpected value \"https://d1vo1imdstn87w.cloudfront.net/\"\u001b[22m\n\u001b[2m  -   locator resolved to <html lang=\"en\" class=\"h-full\">…</html>\u001b[22m\n\u001b[2m  -   unexpected value \"https://d1vo1imdstn87w.cloudfront.net/\"\u001b[22m\n\u001b[2m  -   locator resolved to <html lang=\"en\" class=\"h-full\">…</html>\u001b[22m\n\u001b[2m  -   unexpected value \"https://d1vo1imdstn87w.cloudfront.net/\"\u001b[22m\n\u001b[2m  -   locator resolved to <html lang=\"en\" class=\"h-full\">…</html>\u001b[22m\n\u001b[2m  -   unexpected value \"https://d1vo1imdstn87w.cloudfront.net/\"\u001b[22m\n\u001b[2m  -   locator resolved to <html lang=\"en\" class=\"h-full\">…</html>\u001b[22m\n\u001b[2m  -   unexpected value \"https://d1vo1imdstn87w.cloudfront.net/\"\u001b[22m\n\u001b[2m  -   locator resolved to <html lang=\"en\" class=\"h-full\">…</html>\u001b[22m\n\u001b[2m  -   unexpected value \"https://d1vo1imdstn87w.cloudfront.net/\"\u001b[22m\n\u001b[2m  -   locator resolved to <html lang=\"en\" class=\"h-full\">…</html>\u001b[22m\n\u001b[2m  -   unexpected value \"https://d1vo1imdstn87w.cloudfront.net/\"\u001b[22m\n",
                         "stack": "Error: \u001b[31mTimed out 5000ms waiting for \u001b[39m\u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoHaveURL\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m)\u001b[22m\n\nLocator: locator(':root')\nExpected pattern: \u001b[32m/\\/new-submission\\/waiver*/\u001b[39m\nReceived string:  \u001b[31m\"https://d1vo1imdstn87w.cloudfront.net/\"\u001b[39m\nCall log:\n  \u001b[2m- expect.toHaveURL with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for locator(':root')\u001b[22m\n\u001b[2m  -   locator resolved to <html lang=\"en\" class=\"h-full\">…</html>\u001b[22m\n\u001b[2m  -   unexpected value \"https://d1vo1imdstn87w.cloudfront.net/\"\u001b[22m\n\u001b[2m  -   locator resolved to <html lang=\"en\" class=\"h-full\">…</html>\u001b[22m\n\u001b[2m  -   unexpected value \"https://d1vo1imdstn87w.cloudfront.net/\"\u001b[22m\n\u001b[2m  -   locator resolved to <html lang=\"en\" class=\"h-full\">…</html>\u001b[22m\n\u001b[2m  -   unexpected value \"https://d1vo1imdstn87w.cloudfront.net/\"\u001b[22m\n\u001b[2m  -   locator resolved to <html lang=\"en\" class=\"h-full\">…</html>\u001b[22m\n\u001b[2m  -   unexpected value \"https://d1vo1imdstn87w.cloudfront.net/\"\u001b[22m\n\u001b[2m  -   locator resolved to <html lang=\"en\" class=\"h-full\">…</html>\u001b[22m\n\u001b[2m  -   unexpected value \"https://d1vo1imdstn87w.cloudfront.net/\"\u001b[22m\n\u001b[2m  -   locator resolved to <html lang=\"en\" class=\"h-full\">…</html>\u001b[22m\n\u001b[2m  -   unexpected value \"https://d1vo1imdstn87w.cloudfront.net/\"\u001b[22m\n\u001b[2m  -   locator resolved to <html lang=\"en\" class=\"h-full\">…</html>\u001b[22m\n\u001b[2m  -   unexpected value \"https://d1vo1imdstn87w.cloudfront.net/\"\u001b[22m\n\u001b[2m  -   locator resolved to <html lang=\"en\" class=\"h-full\">…</html>\u001b[22m\n\u001b[2m  -   unexpected value \"https://d1vo1imdstn87w.cloudfront.net/\"\u001b[22m\n\u001b[2m  -   locator resolved to <html lang=\"en\" class=\"h-full\">…</html>\u001b[22m\n\u001b[2m  -   unexpected value \"https://d1vo1imdstn87w.cloudfront.net/\"\u001b[22m\n\n    at /home/runner/work/macpro-mako/macpro-mako/test/non-func/a11y/index.spec.ts:22:26",
@@ -3441,7 +3441,7 @@
                       "stdout": [],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2025-06-23T12:27:04.710Z",
+                      "startTime": "2025-06-23T12:55:20.300Z",
                       "attachments": [
                         {
                           "name": "video",
@@ -3487,7 +3487,7 @@
                     {
                       "workerIndex": 22,
                       "status": "failed",
-                      "duration": 8161,
+                      "duration": 8195,
                       "error": {
                         "message": "Error: \u001b[31mTimed out 5000ms waiting for \u001b[39m\u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoHaveURL\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m)\u001b[22m\n\nLocator: locator(':root')\nExpected pattern: \u001b[32m/\\/new-submission\\/waiver\\/b*/\u001b[39m\nReceived string:  \u001b[31m\"https://d1vo1imdstn87w.cloudfront.net/\"\u001b[39m\nCall log:\n  \u001b[2m- expect.toHaveURL with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for locator(':root')\u001b[22m\n\u001b[2m  -   locator resolved to <html lang=\"en\" class=\"h-full\">…</html>\u001b[22m\n\u001b[2m  -   unexpected value \"https://d1vo1imdstn87w.cloudfront.net/\"\u001b[22m\n\u001b[2m  -   locator resolved to <html lang=\"en\" class=\"h-full\">…</html>\u001b[22m\n\u001b[2m  -   unexpected value \"https://d1vo1imdstn87w.cloudfront.net/\"\u001b[22m\n\u001b[2m  -   locator resolved to <html lang=\"en\" class=\"h-full\">…</html>\u001b[22m\n\u001b[2m  -   unexpected value \"https://d1vo1imdstn87w.cloudfront.net/\"\u001b[22m\n\u001b[2m  -   locator resolved to <html lang=\"en\" class=\"h-full\">…</html>\u001b[22m\n\u001b[2m  -   unexpected value \"https://d1vo1imdstn87w.cloudfront.net/\"\u001b[22m\n\u001b[2m  -   locator resolved to <html lang=\"en\" class=\"h-full\">…</html>\u001b[22m\n\u001b[2m  -   unexpected value \"https://d1vo1imdstn87w.cloudfront.net/\"\u001b[22m\n\u001b[2m  -   locator resolved to <html lang=\"en\" class=\"h-full\">…</html>\u001b[22m\n\u001b[2m  -   unexpected value \"https://d1vo1imdstn87w.cloudfront.net/\"\u001b[22m\n\u001b[2m  -   locator resolved to <html lang=\"en\" class=\"h-full\">…</html>\u001b[22m\n\u001b[2m  -   unexpected value \"https://d1vo1imdstn87w.cloudfront.net/\"\u001b[22m\n\u001b[2m  -   locator resolved to <html lang=\"en\" class=\"h-full\">…</html>\u001b[22m\n\u001b[2m  -   unexpected value \"https://d1vo1imdstn87w.cloudfront.net/\"\u001b[22m\n\u001b[2m  -   locator resolved to <html lang=\"en\" class=\"h-full\">…</html>\u001b[22m\n\u001b[2m  -   unexpected value \"https://d1vo1imdstn87w.cloudfront.net/\"\u001b[22m\n",
                         "stack": "Error: \u001b[31mTimed out 5000ms waiting for \u001b[39m\u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoHaveURL\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m)\u001b[22m\n\nLocator: locator(':root')\nExpected pattern: \u001b[32m/\\/new-submission\\/waiver\\/b*/\u001b[39m\nReceived string:  \u001b[31m\"https://d1vo1imdstn87w.cloudfront.net/\"\u001b[39m\nCall log:\n  \u001b[2m- expect.toHaveURL with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for locator(':root')\u001b[22m\n\u001b[2m  -   locator resolved to <html lang=\"en\" class=\"h-full\">…</html>\u001b[22m\n\u001b[2m  -   unexpected value \"https://d1vo1imdstn87w.cloudfront.net/\"\u001b[22m\n\u001b[2m  -   locator resolved to <html lang=\"en\" class=\"h-full\">…</html>\u001b[22m\n\u001b[2m  -   unexpected value \"https://d1vo1imdstn87w.cloudfront.net/\"\u001b[22m\n\u001b[2m  -   locator resolved to <html lang=\"en\" class=\"h-full\">…</html>\u001b[22m\n\u001b[2m  -   unexpected value \"https://d1vo1imdstn87w.cloudfront.net/\"\u001b[22m\n\u001b[2m  -   locator resolved to <html lang=\"en\" class=\"h-full\">…</html>\u001b[22m\n\u001b[2m  -   unexpected value \"https://d1vo1imdstn87w.cloudfront.net/\"\u001b[22m\n\u001b[2m  -   locator resolved to <html lang=\"en\" class=\"h-full\">…</html>\u001b[22m\n\u001b[2m  -   unexpected value \"https://d1vo1imdstn87w.cloudfront.net/\"\u001b[22m\n\u001b[2m  -   locator resolved to <html lang=\"en\" class=\"h-full\">…</html>\u001b[22m\n\u001b[2m  -   unexpected value \"https://d1vo1imdstn87w.cloudfront.net/\"\u001b[22m\n\u001b[2m  -   locator resolved to <html lang=\"en\" class=\"h-full\">…</html>\u001b[22m\n\u001b[2m  -   unexpected value \"https://d1vo1imdstn87w.cloudfront.net/\"\u001b[22m\n\u001b[2m  -   locator resolved to <html lang=\"en\" class=\"h-full\">…</html>\u001b[22m\n\u001b[2m  -   unexpected value \"https://d1vo1imdstn87w.cloudfront.net/\"\u001b[22m\n\u001b[2m  -   locator resolved to <html lang=\"en\" class=\"h-full\">…</html>\u001b[22m\n\u001b[2m  -   unexpected value \"https://d1vo1imdstn87w.cloudfront.net/\"\u001b[22m\n\n    at /home/runner/work/macpro-mako/macpro-mako/test/non-func/a11y/index.spec.ts:22:26",
@@ -3511,7 +3511,7 @@
                       "stdout": [],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2025-06-23T12:27:14.509Z",
+                      "startTime": "2025-06-23T12:55:30.167Z",
                       "attachments": [
                         {
                           "name": "video",
@@ -3557,7 +3557,7 @@
                     {
                       "workerIndex": 23,
                       "status": "failed",
-                      "duration": 8112,
+                      "duration": 8130,
                       "error": {
                         "message": "Error: \u001b[31mTimed out 5000ms waiting for \u001b[39m\u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoHaveURL\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m)\u001b[22m\n\nLocator: locator(':root')\nExpected pattern: \u001b[32m/\\/new-submission\\/waiver\\/b\\/b4*/\u001b[39m\nReceived string:  \u001b[31m\"https://d1vo1imdstn87w.cloudfront.net/\"\u001b[39m\nCall log:\n  \u001b[2m- expect.toHaveURL with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for locator(':root')\u001b[22m\n\u001b[2m  -   locator resolved to <html lang=\"en\" class=\"h-full\">…</html>\u001b[22m\n\u001b[2m  -   unexpected value \"https://d1vo1imdstn87w.cloudfront.net/\"\u001b[22m\n\u001b[2m  -   locator resolved to <html lang=\"en\" class=\"h-full\">…</html>\u001b[22m\n\u001b[2m  -   unexpected value \"https://d1vo1imdstn87w.cloudfront.net/\"\u001b[22m\n\u001b[2m  -   locator resolved to <html lang=\"en\" class=\"h-full\">…</html>\u001b[22m\n\u001b[2m  -   unexpected value \"https://d1vo1imdstn87w.cloudfront.net/\"\u001b[22m\n\u001b[2m  -   locator resolved to <html lang=\"en\" class=\"h-full\">…</html>\u001b[22m\n\u001b[2m  -   unexpected value \"https://d1vo1imdstn87w.cloudfront.net/\"\u001b[22m\n\u001b[2m  -   locator resolved to <html lang=\"en\" class=\"h-full\">…</html>\u001b[22m\n\u001b[2m  -   unexpected value \"https://d1vo1imdstn87w.cloudfront.net/\"\u001b[22m\n\u001b[2m  -   locator resolved to <html lang=\"en\" class=\"h-full\">…</html>\u001b[22m\n\u001b[2m  -   unexpected value \"https://d1vo1imdstn87w.cloudfront.net/\"\u001b[22m\n\u001b[2m  -   locator resolved to <html lang=\"en\" class=\"h-full\">…</html>\u001b[22m\n\u001b[2m  -   unexpected value \"https://d1vo1imdstn87w.cloudfront.net/\"\u001b[22m\n\u001b[2m  -   locator resolved to <html lang=\"en\" class=\"h-full\">…</html>\u001b[22m\n\u001b[2m  -   unexpected value \"https://d1vo1imdstn87w.cloudfront.net/\"\u001b[22m\n\u001b[2m  -   locator resolved to <html lang=\"en\" class=\"h-full\">…</html>\u001b[22m\n\u001b[2m  -   unexpected value \"https://d1vo1imdstn87w.cloudfront.net/\"\u001b[22m\n",
                         "stack": "Error: \u001b[31mTimed out 5000ms waiting for \u001b[39m\u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoHaveURL\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m)\u001b[22m\n\nLocator: locator(':root')\nExpected pattern: \u001b[32m/\\/new-submission\\/waiver\\/b\\/b4*/\u001b[39m\nReceived string:  \u001b[31m\"https://d1vo1imdstn87w.cloudfront.net/\"\u001b[39m\nCall log:\n  \u001b[2m- expect.toHaveURL with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for locator(':root')\u001b[22m\n\u001b[2m  -   locator resolved to <html lang=\"en\" class=\"h-full\">…</html>\u001b[22m\n\u001b[2m  -   unexpected value \"https://d1vo1imdstn87w.cloudfront.net/\"\u001b[22m\n\u001b[2m  -   locator resolved to <html lang=\"en\" class=\"h-full\">…</html>\u001b[22m\n\u001b[2m  -   unexpected value \"https://d1vo1imdstn87w.cloudfront.net/\"\u001b[22m\n\u001b[2m  -   locator resolved to <html lang=\"en\" class=\"h-full\">…</html>\u001b[22m\n\u001b[2m  -   unexpected value \"https://d1vo1imdstn87w.cloudfront.net/\"\u001b[22m\n\u001b[2m  -   locator resolved to <html lang=\"en\" class=\"h-full\">…</html>\u001b[22m\n\u001b[2m  -   unexpected value \"https://d1vo1imdstn87w.cloudfront.net/\"\u001b[22m\n\u001b[2m  -   locator resolved to <html lang=\"en\" class=\"h-full\">…</html>\u001b[22m\n\u001b[2m  -   unexpected value \"https://d1vo1imdstn87w.cloudfront.net/\"\u001b[22m\n\u001b[2m  -   locator resolved to <html lang=\"en\" class=\"h-full\">…</html>\u001b[22m\n\u001b[2m  -   unexpected value \"https://d1vo1imdstn87w.cloudfront.net/\"\u001b[22m\n\u001b[2m  -   locator resolved to <html lang=\"en\" class=\"h-full\">…</html>\u001b[22m\n\u001b[2m  -   unexpected value \"https://d1vo1imdstn87w.cloudfront.net/\"\u001b[22m\n\u001b[2m  -   locator resolved to <html lang=\"en\" class=\"h-full\">…</html>\u001b[22m\n\u001b[2m  -   unexpected value \"https://d1vo1imdstn87w.cloudfront.net/\"\u001b[22m\n\u001b[2m  -   locator resolved to <html lang=\"en\" class=\"h-full\">…</html>\u001b[22m\n\u001b[2m  -   unexpected value \"https://d1vo1imdstn87w.cloudfront.net/\"\u001b[22m\n\n    at /home/runner/work/macpro-mako/macpro-mako/test/non-func/a11y/index.spec.ts:22:26",
@@ -3581,7 +3581,7 @@
                       "stdout": [],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2025-06-23T12:27:24.317Z",
+                      "startTime": "2025-06-23T12:55:39.966Z",
                       "attachments": [
                         {
                           "name": "video",
@@ -3627,7 +3627,7 @@
                     {
                       "workerIndex": 24,
                       "status": "failed",
-                      "duration": 8106,
+                      "duration": 8190,
                       "error": {
                         "message": "Error: \u001b[31mTimed out 5000ms waiting for \u001b[39m\u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoHaveURL\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m)\u001b[22m\n\nLocator: locator(':root')\nExpected pattern: \u001b[32m/\\/new-submission\\/waiver\\/b\\/capitated*/\u001b[39m\nReceived string:  \u001b[31m\"https://d1vo1imdstn87w.cloudfront.net/\"\u001b[39m\nCall log:\n  \u001b[2m- expect.toHaveURL with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for locator(':root')\u001b[22m\n\u001b[2m  -   locator resolved to <html lang=\"en\" class=\"h-full\">…</html>\u001b[22m\n\u001b[2m  -   unexpected value \"https://d1vo1imdstn87w.cloudfront.net/\"\u001b[22m\n\u001b[2m  -   locator resolved to <html lang=\"en\" class=\"h-full\">…</html>\u001b[22m\n\u001b[2m  -   unexpected value \"https://d1vo1imdstn87w.cloudfront.net/\"\u001b[22m\n\u001b[2m  -   locator resolved to <html lang=\"en\" class=\"h-full\">…</html>\u001b[22m\n\u001b[2m  -   unexpected value \"https://d1vo1imdstn87w.cloudfront.net/\"\u001b[22m\n\u001b[2m  -   locator resolved to <html lang=\"en\" class=\"h-full\">…</html>\u001b[22m\n\u001b[2m  -   unexpected value \"https://d1vo1imdstn87w.cloudfront.net/\"\u001b[22m\n\u001b[2m  -   locator resolved to <html lang=\"en\" class=\"h-full\">…</html>\u001b[22m\n\u001b[2m  -   unexpected value \"https://d1vo1imdstn87w.cloudfront.net/\"\u001b[22m\n\u001b[2m  -   locator resolved to <html lang=\"en\" class=\"h-full\">…</html>\u001b[22m\n\u001b[2m  -   unexpected value \"https://d1vo1imdstn87w.cloudfront.net/\"\u001b[22m\n\u001b[2m  -   locator resolved to <html lang=\"en\" class=\"h-full\">…</html>\u001b[22m\n\u001b[2m  -   unexpected value \"https://d1vo1imdstn87w.cloudfront.net/\"\u001b[22m\n\u001b[2m  -   locator resolved to <html lang=\"en\" class=\"h-full\">…</html>\u001b[22m\n\u001b[2m  -   unexpected value \"https://d1vo1imdstn87w.cloudfront.net/\"\u001b[22m\n\u001b[2m  -   locator resolved to <html lang=\"en\" class=\"h-full\">…</html>\u001b[22m\n\u001b[2m  -   unexpected value \"https://d1vo1imdstn87w.cloudfront.net/\"\u001b[22m\n",
                         "stack": "Error: \u001b[31mTimed out 5000ms waiting for \u001b[39m\u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoHaveURL\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m)\u001b[22m\n\nLocator: locator(':root')\nExpected pattern: \u001b[32m/\\/new-submission\\/waiver\\/b\\/capitated*/\u001b[39m\nReceived string:  \u001b[31m\"https://d1vo1imdstn87w.cloudfront.net/\"\u001b[39m\nCall log:\n  \u001b[2m- expect.toHaveURL with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for locator(':root')\u001b[22m\n\u001b[2m  -   locator resolved to <html lang=\"en\" class=\"h-full\">…</html>\u001b[22m\n\u001b[2m  -   unexpected value \"https://d1vo1imdstn87w.cloudfront.net/\"\u001b[22m\n\u001b[2m  -   locator resolved to <html lang=\"en\" class=\"h-full\">…</html>\u001b[22m\n\u001b[2m  -   unexpected value \"https://d1vo1imdstn87w.cloudfront.net/\"\u001b[22m\n\u001b[2m  -   locator resolved to <html lang=\"en\" class=\"h-full\">…</html>\u001b[22m\n\u001b[2m  -   unexpected value \"https://d1vo1imdstn87w.cloudfront.net/\"\u001b[22m\n\u001b[2m  -   locator resolved to <html lang=\"en\" class=\"h-full\">…</html>\u001b[22m\n\u001b[2m  -   unexpected value \"https://d1vo1imdstn87w.cloudfront.net/\"\u001b[22m\n\u001b[2m  -   locator resolved to <html lang=\"en\" class=\"h-full\">…</html>\u001b[22m\n\u001b[2m  -   unexpected value \"https://d1vo1imdstn87w.cloudfront.net/\"\u001b[22m\n\u001b[2m  -   locator resolved to <html lang=\"en\" class=\"h-full\">…</html>\u001b[22m\n\u001b[2m  -   unexpected value \"https://d1vo1imdstn87w.cloudfront.net/\"\u001b[22m\n\u001b[2m  -   locator resolved to <html lang=\"en\" class=\"h-full\">…</html>\u001b[22m\n\u001b[2m  -   unexpected value \"https://d1vo1imdstn87w.cloudfront.net/\"\u001b[22m\n\u001b[2m  -   locator resolved to <html lang=\"en\" class=\"h-full\">…</html>\u001b[22m\n\u001b[2m  -   unexpected value \"https://d1vo1imdstn87w.cloudfront.net/\"\u001b[22m\n\u001b[2m  -   locator resolved to <html lang=\"en\" class=\"h-full\">…</html>\u001b[22m\n\u001b[2m  -   unexpected value \"https://d1vo1imdstn87w.cloudfront.net/\"\u001b[22m\n\n    at /home/runner/work/macpro-mako/macpro-mako/test/non-func/a11y/index.spec.ts:22:26",
@@ -3651,7 +3651,7 @@
                       "stdout": [],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2025-06-23T12:27:34.082Z",
+                      "startTime": "2025-06-23T12:55:49.727Z",
                       "attachments": [
                         {
                           "name": "video",
@@ -3697,7 +3697,7 @@
                     {
                       "workerIndex": 25,
                       "status": "passed",
-                      "duration": 3678,
+                      "duration": 3749,
                       "errors": [],
                       "stdout": [
                         {
@@ -3706,7 +3706,7 @@
                       ],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2025-06-23T12:27:43.780Z",
+                      "startTime": "2025-06-23T12:55:59.568Z",
                       "attachments": []
                     }
                   ],
@@ -3736,7 +3736,7 @@
                     {
                       "workerIndex": 25,
                       "status": "passed",
-                      "duration": 3567,
+                      "duration": 3596,
                       "errors": [],
                       "stdout": [
                         {
@@ -3745,7 +3745,7 @@
                       ],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2025-06-23T12:27:47.605Z",
+                      "startTime": "2025-06-23T12:56:03.463Z",
                       "attachments": []
                     }
                   ],
@@ -3775,7 +3775,7 @@
                     {
                       "workerIndex": 25,
                       "status": "passed",
-                      "duration": 3525,
+                      "duration": 3589,
                       "errors": [],
                       "stdout": [
                         {
@@ -3784,7 +3784,7 @@
                       ],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2025-06-23T12:27:51.178Z",
+                      "startTime": "2025-06-23T12:56:07.066Z",
                       "attachments": []
                     }
                   ],
@@ -3814,7 +3814,7 @@
                     {
                       "workerIndex": 25,
                       "status": "failed",
-                      "duration": 8001,
+                      "duration": 8072,
                       "error": {
                         "message": "Error: \u001b[31mTimed out 5000ms waiting for \u001b[39m\u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoHaveURL\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m)\u001b[22m\n\nLocator: locator(':root')\nExpected pattern: \u001b[32m/\\/new-submission\\/spa\\/chip\\/create\\/chip-details*/\u001b[39m\nReceived string:  \u001b[31m\"https://d1vo1imdstn87w.cloudfront.net/\"\u001b[39m\nCall log:\n  \u001b[2m- expect.toHaveURL with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for locator(':root')\u001b[22m\n\u001b[2m  -   locator resolved to <html lang=\"en\" class=\"h-full\">…</html>\u001b[22m\n\u001b[2m  -   unexpected value \"https://d1vo1imdstn87w.cloudfront.net/\"\u001b[22m\n\u001b[2m  -   locator resolved to <html lang=\"en\" class=\"h-full\">…</html>\u001b[22m\n\u001b[2m  -   unexpected value \"https://d1vo1imdstn87w.cloudfront.net/\"\u001b[22m\n\u001b[2m  -   locator resolved to <html lang=\"en\" class=\"h-full\">…</html>\u001b[22m\n\u001b[2m  -   unexpected value \"https://d1vo1imdstn87w.cloudfront.net/\"\u001b[22m\n\u001b[2m  -   locator resolved to <html lang=\"en\" class=\"h-full\">…</html>\u001b[22m\n\u001b[2m  -   unexpected value \"https://d1vo1imdstn87w.cloudfront.net/\"\u001b[22m\n\u001b[2m  -   locator resolved to <html lang=\"en\" class=\"h-full\">…</html>\u001b[22m\n\u001b[2m  -   unexpected value \"https://d1vo1imdstn87w.cloudfront.net/\"\u001b[22m\n\u001b[2m  -   locator resolved to <html lang=\"en\" class=\"h-full\">…</html>\u001b[22m\n\u001b[2m  -   unexpected value \"https://d1vo1imdstn87w.cloudfront.net/\"\u001b[22m\n\u001b[2m  -   locator resolved to <html lang=\"en\" class=\"h-full\">…</html>\u001b[22m\n\u001b[2m  -   unexpected value \"https://d1vo1imdstn87w.cloudfront.net/\"\u001b[22m\n\u001b[2m  -   locator resolved to <html lang=\"en\" class=\"h-full\">…</html>\u001b[22m\n\u001b[2m  -   unexpected value \"https://d1vo1imdstn87w.cloudfront.net/\"\u001b[22m\n\u001b[2m  -   locator resolved to <html lang=\"en\" class=\"h-full\">…</html>\u001b[22m\n\u001b[2m  -   unexpected value \"https://d1vo1imdstn87w.cloudfront.net/\"\u001b[22m\n",
                         "stack": "Error: \u001b[31mTimed out 5000ms waiting for \u001b[39m\u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoHaveURL\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m)\u001b[22m\n\nLocator: locator(':root')\nExpected pattern: \u001b[32m/\\/new-submission\\/spa\\/chip\\/create\\/chip-details*/\u001b[39m\nReceived string:  \u001b[31m\"https://d1vo1imdstn87w.cloudfront.net/\"\u001b[39m\nCall log:\n  \u001b[2m- expect.toHaveURL with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for locator(':root')\u001b[22m\n\u001b[2m  -   locator resolved to <html lang=\"en\" class=\"h-full\">…</html>\u001b[22m\n\u001b[2m  -   unexpected value \"https://d1vo1imdstn87w.cloudfront.net/\"\u001b[22m\n\u001b[2m  -   locator resolved to <html lang=\"en\" class=\"h-full\">…</html>\u001b[22m\n\u001b[2m  -   unexpected value \"https://d1vo1imdstn87w.cloudfront.net/\"\u001b[22m\n\u001b[2m  -   locator resolved to <html lang=\"en\" class=\"h-full\">…</html>\u001b[22m\n\u001b[2m  -   unexpected value \"https://d1vo1imdstn87w.cloudfront.net/\"\u001b[22m\n\u001b[2m  -   locator resolved to <html lang=\"en\" class=\"h-full\">…</html>\u001b[22m\n\u001b[2m  -   unexpected value \"https://d1vo1imdstn87w.cloudfront.net/\"\u001b[22m\n\u001b[2m  -   locator resolved to <html lang=\"en\" class=\"h-full\">…</html>\u001b[22m\n\u001b[2m  -   unexpected value \"https://d1vo1imdstn87w.cloudfront.net/\"\u001b[22m\n\u001b[2m  -   locator resolved to <html lang=\"en\" class=\"h-full\">…</html>\u001b[22m\n\u001b[2m  -   unexpected value \"https://d1vo1imdstn87w.cloudfront.net/\"\u001b[22m\n\u001b[2m  -   locator resolved to <html lang=\"en\" class=\"h-full\">…</html>\u001b[22m\n\u001b[2m  -   unexpected value \"https://d1vo1imdstn87w.cloudfront.net/\"\u001b[22m\n\u001b[2m  -   locator resolved to <html lang=\"en\" class=\"h-full\">…</html>\u001b[22m\n\u001b[2m  -   unexpected value \"https://d1vo1imdstn87w.cloudfront.net/\"\u001b[22m\n\u001b[2m  -   locator resolved to <html lang=\"en\" class=\"h-full\">…</html>\u001b[22m\n\u001b[2m  -   unexpected value \"https://d1vo1imdstn87w.cloudfront.net/\"\u001b[22m\n\n    at /home/runner/work/macpro-mako/macpro-mako/test/non-func/a11y/index.spec.ts:22:26",
@@ -3838,7 +3838,7 @@
                       "stdout": [],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2025-06-23T12:27:54.710Z",
+                      "startTime": "2025-06-23T12:56:10.661Z",
                       "attachments": [
                         {
                           "name": "video",
@@ -3884,7 +3884,7 @@
                     {
                       "workerIndex": 26,
                       "status": "failed",
-                      "duration": 8336,
+                      "duration": 8235,
                       "error": {
                         "message": "Error: \u001b[31mTimed out 5000ms waiting for \u001b[39m\u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoHaveURL\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m)\u001b[22m\n\nLocator: locator(':root')\nExpected pattern: \u001b[32m/\\/new-submission\\/waiver\\/b\\/capitated\\/amendment\\/create*/\u001b[39m\nReceived string:  \u001b[31m\"https://d1vo1imdstn87w.cloudfront.net/\"\u001b[39m\nCall log:\n  \u001b[2m- expect.toHaveURL with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for locator(':root')\u001b[22m\n\u001b[2m  -   locator resolved to <html lang=\"en\" class=\"h-full\">…</html>\u001b[22m\n\u001b[2m  -   unexpected value \"https://d1vo1imdstn87w.cloudfront.net/\"\u001b[22m\n\u001b[2m  -   locator resolved to <html lang=\"en\" class=\"h-full\">…</html>\u001b[22m\n\u001b[2m  -   unexpected value \"https://d1vo1imdstn87w.cloudfront.net/\"\u001b[22m\n\u001b[2m  -   locator resolved to <html lang=\"en\" class=\"h-full\">…</html>\u001b[22m\n\u001b[2m  -   unexpected value \"https://d1vo1imdstn87w.cloudfront.net/\"\u001b[22m\n\u001b[2m  -   locator resolved to <html lang=\"en\" class=\"h-full\">…</html>\u001b[22m\n\u001b[2m  -   unexpected value \"https://d1vo1imdstn87w.cloudfront.net/\"\u001b[22m\n\u001b[2m  -   locator resolved to <html lang=\"en\" class=\"h-full\">…</html>\u001b[22m\n\u001b[2m  -   unexpected value \"https://d1vo1imdstn87w.cloudfront.net/\"\u001b[22m\n\u001b[2m  -   locator resolved to <html lang=\"en\" class=\"h-full\">…</html>\u001b[22m\n\u001b[2m  -   unexpected value \"https://d1vo1imdstn87w.cloudfront.net/\"\u001b[22m\n\u001b[2m  -   locator resolved to <html lang=\"en\" class=\"h-full\">…</html>\u001b[22m\n\u001b[2m  -   unexpected value \"https://d1vo1imdstn87w.cloudfront.net/\"\u001b[22m\n\u001b[2m  -   locator resolved to <html lang=\"en\" class=\"h-full\">…</html>\u001b[22m\n\u001b[2m  -   unexpected value \"https://d1vo1imdstn87w.cloudfront.net/\"\u001b[22m\n\u001b[2m  -   locator resolved to <html lang=\"en\" class=\"h-full\">…</html>\u001b[22m\n\u001b[2m  -   unexpected value \"https://d1vo1imdstn87w.cloudfront.net/\"\u001b[22m\n",
                         "stack": "Error: \u001b[31mTimed out 5000ms waiting for \u001b[39m\u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoHaveURL\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m)\u001b[22m\n\nLocator: locator(':root')\nExpected pattern: \u001b[32m/\\/new-submission\\/waiver\\/b\\/capitated\\/amendment\\/create*/\u001b[39m\nReceived string:  \u001b[31m\"https://d1vo1imdstn87w.cloudfront.net/\"\u001b[39m\nCall log:\n  \u001b[2m- expect.toHaveURL with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for locator(':root')\u001b[22m\n\u001b[2m  -   locator resolved to <html lang=\"en\" class=\"h-full\">…</html>\u001b[22m\n\u001b[2m  -   unexpected value \"https://d1vo1imdstn87w.cloudfront.net/\"\u001b[22m\n\u001b[2m  -   locator resolved to <html lang=\"en\" class=\"h-full\">…</html>\u001b[22m\n\u001b[2m  -   unexpected value \"https://d1vo1imdstn87w.cloudfront.net/\"\u001b[22m\n\u001b[2m  -   locator resolved to <html lang=\"en\" class=\"h-full\">…</html>\u001b[22m\n\u001b[2m  -   unexpected value \"https://d1vo1imdstn87w.cloudfront.net/\"\u001b[22m\n\u001b[2m  -   locator resolved to <html lang=\"en\" class=\"h-full\">…</html>\u001b[22m\n\u001b[2m  -   unexpected value \"https://d1vo1imdstn87w.cloudfront.net/\"\u001b[22m\n\u001b[2m  -   locator resolved to <html lang=\"en\" class=\"h-full\">…</html>\u001b[22m\n\u001b[2m  -   unexpected value \"https://d1vo1imdstn87w.cloudfront.net/\"\u001b[22m\n\u001b[2m  -   locator resolved to <html lang=\"en\" class=\"h-full\">…</html>\u001b[22m\n\u001b[2m  -   unexpected value \"https://d1vo1imdstn87w.cloudfront.net/\"\u001b[22m\n\u001b[2m  -   locator resolved to <html lang=\"en\" class=\"h-full\">…</html>\u001b[22m\n\u001b[2m  -   unexpected value \"https://d1vo1imdstn87w.cloudfront.net/\"\u001b[22m\n\u001b[2m  -   locator resolved to <html lang=\"en\" class=\"h-full\">…</html>\u001b[22m\n\u001b[2m  -   unexpected value \"https://d1vo1imdstn87w.cloudfront.net/\"\u001b[22m\n\u001b[2m  -   locator resolved to <html lang=\"en\" class=\"h-full\">…</html>\u001b[22m\n\u001b[2m  -   unexpected value \"https://d1vo1imdstn87w.cloudfront.net/\"\u001b[22m\n\n    at /home/runner/work/macpro-mako/macpro-mako/test/non-func/a11y/index.spec.ts:22:26",
@@ -3908,7 +3908,7 @@
                       "stdout": [],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2025-06-23T12:28:04.310Z",
+                      "startTime": "2025-06-23T12:56:20.207Z",
                       "attachments": [
                         {
                           "name": "video",
@@ -3954,7 +3954,7 @@
                     {
                       "workerIndex": 27,
                       "status": "failed",
-                      "duration": 8113,
+                      "duration": 8116,
                       "error": {
                         "message": "Error: \u001b[31mTimed out 5000ms waiting for \u001b[39m\u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoHaveURL\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m)\u001b[22m\n\nLocator: locator(':root')\nExpected pattern: \u001b[32m/\\/new-submission\\/waiver\\/b\\/capitated\\/renewal\\/create*/\u001b[39m\nReceived string:  \u001b[31m\"https://d1vo1imdstn87w.cloudfront.net/\"\u001b[39m\nCall log:\n  \u001b[2m- expect.toHaveURL with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for locator(':root')\u001b[22m\n\u001b[2m  -   locator resolved to <html lang=\"en\" class=\"h-full\">…</html>\u001b[22m\n\u001b[2m  -   unexpected value \"https://d1vo1imdstn87w.cloudfront.net/\"\u001b[22m\n\u001b[2m  -   locator resolved to <html lang=\"en\" class=\"h-full\">…</html>\u001b[22m\n\u001b[2m  -   unexpected value \"https://d1vo1imdstn87w.cloudfront.net/\"\u001b[22m\n\u001b[2m  -   locator resolved to <html lang=\"en\" class=\"h-full\">…</html>\u001b[22m\n\u001b[2m  -   unexpected value \"https://d1vo1imdstn87w.cloudfront.net/\"\u001b[22m\n\u001b[2m  -   locator resolved to <html lang=\"en\" class=\"h-full\">…</html>\u001b[22m\n\u001b[2m  -   unexpected value \"https://d1vo1imdstn87w.cloudfront.net/\"\u001b[22m\n\u001b[2m  -   locator resolved to <html lang=\"en\" class=\"h-full\">…</html>\u001b[22m\n\u001b[2m  -   unexpected value \"https://d1vo1imdstn87w.cloudfront.net/\"\u001b[22m\n\u001b[2m  -   locator resolved to <html lang=\"en\" class=\"h-full\">…</html>\u001b[22m\n\u001b[2m  -   unexpected value \"https://d1vo1imdstn87w.cloudfront.net/\"\u001b[22m\n\u001b[2m  -   locator resolved to <html lang=\"en\" class=\"h-full\">…</html>\u001b[22m\n\u001b[2m  -   unexpected value \"https://d1vo1imdstn87w.cloudfront.net/\"\u001b[22m\n\u001b[2m  -   locator resolved to <html lang=\"en\" class=\"h-full\">…</html>\u001b[22m\n\u001b[2m  -   unexpected value \"https://d1vo1imdstn87w.cloudfront.net/\"\u001b[22m\n\u001b[2m  -   locator resolved to <html lang=\"en\" class=\"h-full\">…</html>\u001b[22m\n\u001b[2m  -   unexpected value \"https://d1vo1imdstn87w.cloudfront.net/\"\u001b[22m\n",
                         "stack": "Error: \u001b[31mTimed out 5000ms waiting for \u001b[39m\u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoHaveURL\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m)\u001b[22m\n\nLocator: locator(':root')\nExpected pattern: \u001b[32m/\\/new-submission\\/waiver\\/b\\/capitated\\/renewal\\/create*/\u001b[39m\nReceived string:  \u001b[31m\"https://d1vo1imdstn87w.cloudfront.net/\"\u001b[39m\nCall log:\n  \u001b[2m- expect.toHaveURL with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for locator(':root')\u001b[22m\n\u001b[2m  -   locator resolved to <html lang=\"en\" class=\"h-full\">…</html>\u001b[22m\n\u001b[2m  -   unexpected value \"https://d1vo1imdstn87w.cloudfront.net/\"\u001b[22m\n\u001b[2m  -   locator resolved to <html lang=\"en\" class=\"h-full\">…</html>\u001b[22m\n\u001b[2m  -   unexpected value \"https://d1vo1imdstn87w.cloudfront.net/\"\u001b[22m\n\u001b[2m  -   locator resolved to <html lang=\"en\" class=\"h-full\">…</html>\u001b[22m\n\u001b[2m  -   unexpected value \"https://d1vo1imdstn87w.cloudfront.net/\"\u001b[22m\n\u001b[2m  -   locator resolved to <html lang=\"en\" class=\"h-full\">…</html>\u001b[22m\n\u001b[2m  -   unexpected value \"https://d1vo1imdstn87w.cloudfront.net/\"\u001b[22m\n\u001b[2m  -   locator resolved to <html lang=\"en\" class=\"h-full\">…</html>\u001b[22m\n\u001b[2m  -   unexpected value \"https://d1vo1imdstn87w.cloudfront.net/\"\u001b[22m\n\u001b[2m  -   locator resolved to <html lang=\"en\" class=\"h-full\">…</html>\u001b[22m\n\u001b[2m  -   unexpected value \"https://d1vo1imdstn87w.cloudfront.net/\"\u001b[22m\n\u001b[2m  -   locator resolved to <html lang=\"en\" class=\"h-full\">…</html>\u001b[22m\n\u001b[2m  -   unexpected value \"https://d1vo1imdstn87w.cloudfront.net/\"\u001b[22m\n\u001b[2m  -   locator resolved to <html lang=\"en\" class=\"h-full\">…</html>\u001b[22m\n\u001b[2m  -   unexpected value \"https://d1vo1imdstn87w.cloudfront.net/\"\u001b[22m\n\u001b[2m  -   locator resolved to <html lang=\"en\" class=\"h-full\">…</html>\u001b[22m\n\u001b[2m  -   unexpected value \"https://d1vo1imdstn87w.cloudfront.net/\"\u001b[22m\n\n    at /home/runner/work/macpro-mako/macpro-mako/test/non-func/a11y/index.spec.ts:22:26",
@@ -3978,7 +3978,7 @@
                       "stdout": [],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2025-06-23T12:28:14.284Z",
+                      "startTime": "2025-06-23T12:56:30.101Z",
                       "attachments": [
                         {
                           "name": "video",
@@ -4024,7 +4024,7 @@
                     {
                       "workerIndex": 28,
                       "status": "failed",
-                      "duration": 8103,
+                      "duration": 8206,
                       "error": {
                         "message": "Error: \u001b[31mTimed out 5000ms waiting for \u001b[39m\u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoHaveURL\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m)\u001b[22m\n\nLocator: locator(':root')\nExpected pattern: \u001b[32m/\\/new-submission\\/waiver\\/b\\/capitated\\/initial\\/create*/\u001b[39m\nReceived string:  \u001b[31m\"https://d1vo1imdstn87w.cloudfront.net/\"\u001b[39m\nCall log:\n  \u001b[2m- expect.toHaveURL with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for locator(':root')\u001b[22m\n\u001b[2m  -   locator resolved to <html lang=\"en\" class=\"h-full\">…</html>\u001b[22m\n\u001b[2m  -   unexpected value \"https://d1vo1imdstn87w.cloudfront.net/\"\u001b[22m\n\u001b[2m  -   locator resolved to <html lang=\"en\" class=\"h-full\">…</html>\u001b[22m\n\u001b[2m  -   unexpected value \"https://d1vo1imdstn87w.cloudfront.net/\"\u001b[22m\n\u001b[2m  -   locator resolved to <html lang=\"en\" class=\"h-full\">…</html>\u001b[22m\n\u001b[2m  -   unexpected value \"https://d1vo1imdstn87w.cloudfront.net/\"\u001b[22m\n\u001b[2m  -   locator resolved to <html lang=\"en\" class=\"h-full\">…</html>\u001b[22m\n\u001b[2m  -   unexpected value \"https://d1vo1imdstn87w.cloudfront.net/\"\u001b[22m\n\u001b[2m  -   locator resolved to <html lang=\"en\" class=\"h-full\">…</html>\u001b[22m\n\u001b[2m  -   unexpected value \"https://d1vo1imdstn87w.cloudfront.net/\"\u001b[22m\n\u001b[2m  -   locator resolved to <html lang=\"en\" class=\"h-full\">…</html>\u001b[22m\n\u001b[2m  -   unexpected value \"https://d1vo1imdstn87w.cloudfront.net/\"\u001b[22m\n\u001b[2m  -   locator resolved to <html lang=\"en\" class=\"h-full\">…</html>\u001b[22m\n\u001b[2m  -   unexpected value \"https://d1vo1imdstn87w.cloudfront.net/\"\u001b[22m\n\u001b[2m  -   locator resolved to <html lang=\"en\" class=\"h-full\">…</html>\u001b[22m\n\u001b[2m  -   unexpected value \"https://d1vo1imdstn87w.cloudfront.net/\"\u001b[22m\n\u001b[2m  -   locator resolved to <html lang=\"en\" class=\"h-full\">…</html>\u001b[22m\n\u001b[2m  -   unexpected value \"https://d1vo1imdstn87w.cloudfront.net/\"\u001b[22m\n",
                         "stack": "Error: \u001b[31mTimed out 5000ms waiting for \u001b[39m\u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoHaveURL\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m)\u001b[22m\n\nLocator: locator(':root')\nExpected pattern: \u001b[32m/\\/new-submission\\/waiver\\/b\\/capitated\\/initial\\/create*/\u001b[39m\nReceived string:  \u001b[31m\"https://d1vo1imdstn87w.cloudfront.net/\"\u001b[39m\nCall log:\n  \u001b[2m- expect.toHaveURL with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for locator(':root')\u001b[22m\n\u001b[2m  -   locator resolved to <html lang=\"en\" class=\"h-full\">…</html>\u001b[22m\n\u001b[2m  -   unexpected value \"https://d1vo1imdstn87w.cloudfront.net/\"\u001b[22m\n\u001b[2m  -   locator resolved to <html lang=\"en\" class=\"h-full\">…</html>\u001b[22m\n\u001b[2m  -   unexpected value \"https://d1vo1imdstn87w.cloudfront.net/\"\u001b[22m\n\u001b[2m  -   locator resolved to <html lang=\"en\" class=\"h-full\">…</html>\u001b[22m\n\u001b[2m  -   unexpected value \"https://d1vo1imdstn87w.cloudfront.net/\"\u001b[22m\n\u001b[2m  -   locator resolved to <html lang=\"en\" class=\"h-full\">…</html>\u001b[22m\n\u001b[2m  -   unexpected value \"https://d1vo1imdstn87w.cloudfront.net/\"\u001b[22m\n\u001b[2m  -   locator resolved to <html lang=\"en\" class=\"h-full\">…</html>\u001b[22m\n\u001b[2m  -   unexpected value \"https://d1vo1imdstn87w.cloudfront.net/\"\u001b[22m\n\u001b[2m  -   locator resolved to <html lang=\"en\" class=\"h-full\">…</html>\u001b[22m\n\u001b[2m  -   unexpected value \"https://d1vo1imdstn87w.cloudfront.net/\"\u001b[22m\n\u001b[2m  -   locator resolved to <html lang=\"en\" class=\"h-full\">…</html>\u001b[22m\n\u001b[2m  -   unexpected value \"https://d1vo1imdstn87w.cloudfront.net/\"\u001b[22m\n\u001b[2m  -   locator resolved to <html lang=\"en\" class=\"h-full\">…</html>\u001b[22m\n\u001b[2m  -   unexpected value \"https://d1vo1imdstn87w.cloudfront.net/\"\u001b[22m\n\u001b[2m  -   locator resolved to <html lang=\"en\" class=\"h-full\">…</html>\u001b[22m\n\u001b[2m  -   unexpected value \"https://d1vo1imdstn87w.cloudfront.net/\"\u001b[22m\n\n    at /home/runner/work/macpro-mako/macpro-mako/test/non-func/a11y/index.spec.ts:22:26",
@@ -4048,7 +4048,7 @@
                       "stdout": [],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2025-06-23T12:28:24.029Z",
+                      "startTime": "2025-06-23T12:56:39.880Z",
                       "attachments": [
                         {
                           "name": "video",
@@ -4094,7 +4094,7 @@
                     {
                       "workerIndex": 29,
                       "status": "failed",
-                      "duration": 8129,
+                      "duration": 8134,
                       "error": {
                         "message": "Error: \u001b[31mTimed out 5000ms waiting for \u001b[39m\u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoHaveURL\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m)\u001b[22m\n\nLocator: locator(':root')\nExpected pattern: \u001b[32m/\\/new-submission\\/waiver\\/b\\/b4\\/initial\\/create*/\u001b[39m\nReceived string:  \u001b[31m\"https://d1vo1imdstn87w.cloudfront.net/\"\u001b[39m\nCall log:\n  \u001b[2m- expect.toHaveURL with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for locator(':root')\u001b[22m\n\u001b[2m  -   locator resolved to <html lang=\"en\" class=\"h-full\">…</html>\u001b[22m\n\u001b[2m  -   unexpected value \"https://d1vo1imdstn87w.cloudfront.net/\"\u001b[22m\n\u001b[2m  -   locator resolved to <html lang=\"en\" class=\"h-full\">…</html>\u001b[22m\n\u001b[2m  -   unexpected value \"https://d1vo1imdstn87w.cloudfront.net/\"\u001b[22m\n\u001b[2m  -   locator resolved to <html lang=\"en\" class=\"h-full\">…</html>\u001b[22m\n\u001b[2m  -   unexpected value \"https://d1vo1imdstn87w.cloudfront.net/\"\u001b[22m\n\u001b[2m  -   locator resolved to <html lang=\"en\" class=\"h-full\">…</html>\u001b[22m\n\u001b[2m  -   unexpected value \"https://d1vo1imdstn87w.cloudfront.net/\"\u001b[22m\n\u001b[2m  -   locator resolved to <html lang=\"en\" class=\"h-full\">…</html>\u001b[22m\n\u001b[2m  -   unexpected value \"https://d1vo1imdstn87w.cloudfront.net/\"\u001b[22m\n\u001b[2m  -   locator resolved to <html lang=\"en\" class=\"h-full\">…</html>\u001b[22m\n\u001b[2m  -   unexpected value \"https://d1vo1imdstn87w.cloudfront.net/\"\u001b[22m\n\u001b[2m  -   locator resolved to <html lang=\"en\" class=\"h-full\">…</html>\u001b[22m\n\u001b[2m  -   unexpected value \"https://d1vo1imdstn87w.cloudfront.net/\"\u001b[22m\n\u001b[2m  -   locator resolved to <html lang=\"en\" class=\"h-full\">…</html>\u001b[22m\n\u001b[2m  -   unexpected value \"https://d1vo1imdstn87w.cloudfront.net/\"\u001b[22m\n\u001b[2m  -   locator resolved to <html lang=\"en\" class=\"h-full\">…</html>\u001b[22m\n\u001b[2m  -   unexpected value \"https://d1vo1imdstn87w.cloudfront.net/\"\u001b[22m\n",
                         "stack": "Error: \u001b[31mTimed out 5000ms waiting for \u001b[39m\u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoHaveURL\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m)\u001b[22m\n\nLocator: locator(':root')\nExpected pattern: \u001b[32m/\\/new-submission\\/waiver\\/b\\/b4\\/initial\\/create*/\u001b[39m\nReceived string:  \u001b[31m\"https://d1vo1imdstn87w.cloudfront.net/\"\u001b[39m\nCall log:\n  \u001b[2m- expect.toHaveURL with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for locator(':root')\u001b[22m\n\u001b[2m  -   locator resolved to <html lang=\"en\" class=\"h-full\">…</html>\u001b[22m\n\u001b[2m  -   unexpected value \"https://d1vo1imdstn87w.cloudfront.net/\"\u001b[22m\n\u001b[2m  -   locator resolved to <html lang=\"en\" class=\"h-full\">…</html>\u001b[22m\n\u001b[2m  -   unexpected value \"https://d1vo1imdstn87w.cloudfront.net/\"\u001b[22m\n\u001b[2m  -   locator resolved to <html lang=\"en\" class=\"h-full\">…</html>\u001b[22m\n\u001b[2m  -   unexpected value \"https://d1vo1imdstn87w.cloudfront.net/\"\u001b[22m\n\u001b[2m  -   locator resolved to <html lang=\"en\" class=\"h-full\">…</html>\u001b[22m\n\u001b[2m  -   unexpected value \"https://d1vo1imdstn87w.cloudfront.net/\"\u001b[22m\n\u001b[2m  -   locator resolved to <html lang=\"en\" class=\"h-full\">…</html>\u001b[22m\n\u001b[2m  -   unexpected value \"https://d1vo1imdstn87w.cloudfront.net/\"\u001b[22m\n\u001b[2m  -   locator resolved to <html lang=\"en\" class=\"h-full\">…</html>\u001b[22m\n\u001b[2m  -   unexpected value \"https://d1vo1imdstn87w.cloudfront.net/\"\u001b[22m\n\u001b[2m  -   locator resolved to <html lang=\"en\" class=\"h-full\">…</html>\u001b[22m\n\u001b[2m  -   unexpected value \"https://d1vo1imdstn87w.cloudfront.net/\"\u001b[22m\n\u001b[2m  -   locator resolved to <html lang=\"en\" class=\"h-full\">…</html>\u001b[22m\n\u001b[2m  -   unexpected value \"https://d1vo1imdstn87w.cloudfront.net/\"\u001b[22m\n\u001b[2m  -   locator resolved to <html lang=\"en\" class=\"h-full\">…</html>\u001b[22m\n\u001b[2m  -   unexpected value \"https://d1vo1imdstn87w.cloudfront.net/\"\u001b[22m\n\n    at /home/runner/work/macpro-mako/macpro-mako/test/non-func/a11y/index.spec.ts:22:26",
@@ -4118,7 +4118,7 @@
                       "stdout": [],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2025-06-23T12:28:33.747Z",
+                      "startTime": "2025-06-23T12:56:49.765Z",
                       "attachments": [
                         {
                           "name": "video",
@@ -4164,7 +4164,7 @@
                     {
                       "workerIndex": 30,
                       "status": "failed",
-                      "duration": 8177,
+                      "duration": 8127,
                       "error": {
                         "message": "Error: \u001b[31mTimed out 5000ms waiting for \u001b[39m\u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoHaveURL\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m)\u001b[22m\n\nLocator: locator(':root')\nExpected pattern: \u001b[32m/\\/new-submission\\/waiver\\/b\\/b4\\/amendment\\/create*/\u001b[39m\nReceived string:  \u001b[31m\"https://d1vo1imdstn87w.cloudfront.net/\"\u001b[39m\nCall log:\n  \u001b[2m- expect.toHaveURL with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for locator(':root')\u001b[22m\n\u001b[2m  -   locator resolved to <html lang=\"en\" class=\"h-full\">…</html>\u001b[22m\n\u001b[2m  -   unexpected value \"https://d1vo1imdstn87w.cloudfront.net/\"\u001b[22m\n\u001b[2m  -   locator resolved to <html lang=\"en\" class=\"h-full\">…</html>\u001b[22m\n\u001b[2m  -   unexpected value \"https://d1vo1imdstn87w.cloudfront.net/\"\u001b[22m\n\u001b[2m  -   locator resolved to <html lang=\"en\" class=\"h-full\">…</html>\u001b[22m\n\u001b[2m  -   unexpected value \"https://d1vo1imdstn87w.cloudfront.net/\"\u001b[22m\n\u001b[2m  -   locator resolved to <html lang=\"en\" class=\"h-full\">…</html>\u001b[22m\n\u001b[2m  -   unexpected value \"https://d1vo1imdstn87w.cloudfront.net/\"\u001b[22m\n\u001b[2m  -   locator resolved to <html lang=\"en\" class=\"h-full\">…</html>\u001b[22m\n\u001b[2m  -   unexpected value \"https://d1vo1imdstn87w.cloudfront.net/\"\u001b[22m\n\u001b[2m  -   locator resolved to <html lang=\"en\" class=\"h-full\">…</html>\u001b[22m\n\u001b[2m  -   unexpected value \"https://d1vo1imdstn87w.cloudfront.net/\"\u001b[22m\n\u001b[2m  -   locator resolved to <html lang=\"en\" class=\"h-full\">…</html>\u001b[22m\n\u001b[2m  -   unexpected value \"https://d1vo1imdstn87w.cloudfront.net/\"\u001b[22m\n\u001b[2m  -   locator resolved to <html lang=\"en\" class=\"h-full\">…</html>\u001b[22m\n\u001b[2m  -   unexpected value \"https://d1vo1imdstn87w.cloudfront.net/\"\u001b[22m\n\u001b[2m  -   locator resolved to <html lang=\"en\" class=\"h-full\">…</html>\u001b[22m\n\u001b[2m  -   unexpected value \"https://d1vo1imdstn87w.cloudfront.net/\"\u001b[22m\n",
                         "stack": "Error: \u001b[31mTimed out 5000ms waiting for \u001b[39m\u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoHaveURL\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m)\u001b[22m\n\nLocator: locator(':root')\nExpected pattern: \u001b[32m/\\/new-submission\\/waiver\\/b\\/b4\\/amendment\\/create*/\u001b[39m\nReceived string:  \u001b[31m\"https://d1vo1imdstn87w.cloudfront.net/\"\u001b[39m\nCall log:\n  \u001b[2m- expect.toHaveURL with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for locator(':root')\u001b[22m\n\u001b[2m  -   locator resolved to <html lang=\"en\" class=\"h-full\">…</html>\u001b[22m\n\u001b[2m  -   unexpected value \"https://d1vo1imdstn87w.cloudfront.net/\"\u001b[22m\n\u001b[2m  -   locator resolved to <html lang=\"en\" class=\"h-full\">…</html>\u001b[22m\n\u001b[2m  -   unexpected value \"https://d1vo1imdstn87w.cloudfront.net/\"\u001b[22m\n\u001b[2m  -   locator resolved to <html lang=\"en\" class=\"h-full\">…</html>\u001b[22m\n\u001b[2m  -   unexpected value \"https://d1vo1imdstn87w.cloudfront.net/\"\u001b[22m\n\u001b[2m  -   locator resolved to <html lang=\"en\" class=\"h-full\">…</html>\u001b[22m\n\u001b[2m  -   unexpected value \"https://d1vo1imdstn87w.cloudfront.net/\"\u001b[22m\n\u001b[2m  -   locator resolved to <html lang=\"en\" class=\"h-full\">…</html>\u001b[22m\n\u001b[2m  -   unexpected value \"https://d1vo1imdstn87w.cloudfront.net/\"\u001b[22m\n\u001b[2m  -   locator resolved to <html lang=\"en\" class=\"h-full\">…</html>\u001b[22m\n\u001b[2m  -   unexpected value \"https://d1vo1imdstn87w.cloudfront.net/\"\u001b[22m\n\u001b[2m  -   locator resolved to <html lang=\"en\" class=\"h-full\">…</html>\u001b[22m\n\u001b[2m  -   unexpected value \"https://d1vo1imdstn87w.cloudfront.net/\"\u001b[22m\n\u001b[2m  -   locator resolved to <html lang=\"en\" class=\"h-full\">…</html>\u001b[22m\n\u001b[2m  -   unexpected value \"https://d1vo1imdstn87w.cloudfront.net/\"\u001b[22m\n\u001b[2m  -   locator resolved to <html lang=\"en\" class=\"h-full\">…</html>\u001b[22m\n\u001b[2m  -   unexpected value \"https://d1vo1imdstn87w.cloudfront.net/\"\u001b[22m\n\n    at /home/runner/work/macpro-mako/macpro-mako/test/non-func/a11y/index.spec.ts:22:26",
@@ -4188,7 +4188,7 @@
                       "stdout": [],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2025-06-23T12:28:43.514Z",
+                      "startTime": "2025-06-23T12:56:59.590Z",
                       "attachments": [
                         {
                           "name": "video",
@@ -4234,7 +4234,7 @@
                     {
                       "workerIndex": 31,
                       "status": "failed",
-                      "duration": 8175,
+                      "duration": 8229,
                       "error": {
                         "message": "Error: \u001b[31mTimed out 5000ms waiting for \u001b[39m\u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoHaveURL\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m)\u001b[22m\n\nLocator: locator(':root')\nExpected pattern: \u001b[32m/\\/new-submission\\/waiver\\/b\\/b4\\/renewal\\/create*/\u001b[39m\nReceived string:  \u001b[31m\"https://d1vo1imdstn87w.cloudfront.net/\"\u001b[39m\nCall log:\n  \u001b[2m- expect.toHaveURL with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for locator(':root')\u001b[22m\n\u001b[2m  -   locator resolved to <html lang=\"en\" class=\"h-full\">…</html>\u001b[22m\n\u001b[2m  -   unexpected value \"https://d1vo1imdstn87w.cloudfront.net/\"\u001b[22m\n\u001b[2m  -   locator resolved to <html lang=\"en\" class=\"h-full\">…</html>\u001b[22m\n\u001b[2m  -   unexpected value \"https://d1vo1imdstn87w.cloudfront.net/\"\u001b[22m\n\u001b[2m  -   locator resolved to <html lang=\"en\" class=\"h-full\">…</html>\u001b[22m\n\u001b[2m  -   unexpected value \"https://d1vo1imdstn87w.cloudfront.net/\"\u001b[22m\n\u001b[2m  -   locator resolved to <html lang=\"en\" class=\"h-full\">…</html>\u001b[22m\n\u001b[2m  -   unexpected value \"https://d1vo1imdstn87w.cloudfront.net/\"\u001b[22m\n\u001b[2m  -   locator resolved to <html lang=\"en\" class=\"h-full\">…</html>\u001b[22m\n\u001b[2m  -   unexpected value \"https://d1vo1imdstn87w.cloudfront.net/\"\u001b[22m\n\u001b[2m  -   locator resolved to <html lang=\"en\" class=\"h-full\">…</html>\u001b[22m\n\u001b[2m  -   unexpected value \"https://d1vo1imdstn87w.cloudfront.net/\"\u001b[22m\n\u001b[2m  -   locator resolved to <html lang=\"en\" class=\"h-full\">…</html>\u001b[22m\n\u001b[2m  -   unexpected value \"https://d1vo1imdstn87w.cloudfront.net/\"\u001b[22m\n\u001b[2m  -   locator resolved to <html lang=\"en\" class=\"h-full\">…</html>\u001b[22m\n\u001b[2m  -   unexpected value \"https://d1vo1imdstn87w.cloudfront.net/\"\u001b[22m\n\u001b[2m  -   locator resolved to <html lang=\"en\" class=\"h-full\">…</html>\u001b[22m\n\u001b[2m  -   unexpected value \"https://d1vo1imdstn87w.cloudfront.net/\"\u001b[22m\n",
                         "stack": "Error: \u001b[31mTimed out 5000ms waiting for \u001b[39m\u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoHaveURL\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m)\u001b[22m\n\nLocator: locator(':root')\nExpected pattern: \u001b[32m/\\/new-submission\\/waiver\\/b\\/b4\\/renewal\\/create*/\u001b[39m\nReceived string:  \u001b[31m\"https://d1vo1imdstn87w.cloudfront.net/\"\u001b[39m\nCall log:\n  \u001b[2m- expect.toHaveURL with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for locator(':root')\u001b[22m\n\u001b[2m  -   locator resolved to <html lang=\"en\" class=\"h-full\">…</html>\u001b[22m\n\u001b[2m  -   unexpected value \"https://d1vo1imdstn87w.cloudfront.net/\"\u001b[22m\n\u001b[2m  -   locator resolved to <html lang=\"en\" class=\"h-full\">…</html>\u001b[22m\n\u001b[2m  -   unexpected value \"https://d1vo1imdstn87w.cloudfront.net/\"\u001b[22m\n\u001b[2m  -   locator resolved to <html lang=\"en\" class=\"h-full\">…</html>\u001b[22m\n\u001b[2m  -   unexpected value \"https://d1vo1imdstn87w.cloudfront.net/\"\u001b[22m\n\u001b[2m  -   locator resolved to <html lang=\"en\" class=\"h-full\">…</html>\u001b[22m\n\u001b[2m  -   unexpected value \"https://d1vo1imdstn87w.cloudfront.net/\"\u001b[22m\n\u001b[2m  -   locator resolved to <html lang=\"en\" class=\"h-full\">…</html>\u001b[22m\n\u001b[2m  -   unexpected value \"https://d1vo1imdstn87w.cloudfront.net/\"\u001b[22m\n\u001b[2m  -   locator resolved to <html lang=\"en\" class=\"h-full\">…</html>\u001b[22m\n\u001b[2m  -   unexpected value \"https://d1vo1imdstn87w.cloudfront.net/\"\u001b[22m\n\u001b[2m  -   locator resolved to <html lang=\"en\" class=\"h-full\">…</html>\u001b[22m\n\u001b[2m  -   unexpected value \"https://d1vo1imdstn87w.cloudfront.net/\"\u001b[22m\n\u001b[2m  -   locator resolved to <html lang=\"en\" class=\"h-full\">…</html>\u001b[22m\n\u001b[2m  -   unexpected value \"https://d1vo1imdstn87w.cloudfront.net/\"\u001b[22m\n\u001b[2m  -   locator resolved to <html lang=\"en\" class=\"h-full\">…</html>\u001b[22m\n\u001b[2m  -   unexpected value \"https://d1vo1imdstn87w.cloudfront.net/\"\u001b[22m\n\n    at /home/runner/work/macpro-mako/macpro-mako/test/non-func/a11y/index.spec.ts:22:26",
@@ -4258,7 +4258,7 @@
                       "stdout": [],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2025-06-23T12:28:53.289Z",
+                      "startTime": "2025-06-23T12:57:09.394Z",
                       "attachments": [
                         {
                           "name": "video",
@@ -4304,7 +4304,7 @@
                     {
                       "workerIndex": 32,
                       "status": "failed",
-                      "duration": 8153,
+                      "duration": 8222,
                       "error": {
                         "message": "Error: \u001b[31mTimed out 5000ms waiting for \u001b[39m\u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoHaveURL\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m)\u001b[22m\n\nLocator: locator(':root')\nExpected pattern: \u001b[32m/\\/new-submission\\/spa\\/medicaid\\/create*/\u001b[39m\nReceived string:  \u001b[31m\"https://d1vo1imdstn87w.cloudfront.net/\"\u001b[39m\nCall log:\n  \u001b[2m- expect.toHaveURL with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for locator(':root')\u001b[22m\n\u001b[2m  -   locator resolved to <html lang=\"en\" class=\"h-full\">…</html>\u001b[22m\n\u001b[2m  -   unexpected value \"https://d1vo1imdstn87w.cloudfront.net/\"\u001b[22m\n\u001b[2m  -   locator resolved to <html lang=\"en\" class=\"h-full\">…</html>\u001b[22m\n\u001b[2m  -   unexpected value \"https://d1vo1imdstn87w.cloudfront.net/\"\u001b[22m\n\u001b[2m  -   locator resolved to <html lang=\"en\" class=\"h-full\">…</html>\u001b[22m\n\u001b[2m  -   unexpected value \"https://d1vo1imdstn87w.cloudfront.net/\"\u001b[22m\n\u001b[2m  -   locator resolved to <html lang=\"en\" class=\"h-full\">…</html>\u001b[22m\n\u001b[2m  -   unexpected value \"https://d1vo1imdstn87w.cloudfront.net/\"\u001b[22m\n\u001b[2m  -   locator resolved to <html lang=\"en\" class=\"h-full\">…</html>\u001b[22m\n\u001b[2m  -   unexpected value \"https://d1vo1imdstn87w.cloudfront.net/\"\u001b[22m\n\u001b[2m  -   locator resolved to <html lang=\"en\" class=\"h-full\">…</html>\u001b[22m\n\u001b[2m  -   unexpected value \"https://d1vo1imdstn87w.cloudfront.net/\"\u001b[22m\n\u001b[2m  -   locator resolved to <html lang=\"en\" class=\"h-full\">…</html>\u001b[22m\n\u001b[2m  -   unexpected value \"https://d1vo1imdstn87w.cloudfront.net/\"\u001b[22m\n\u001b[2m  -   locator resolved to <html lang=\"en\" class=\"h-full\">…</html>\u001b[22m\n\u001b[2m  -   unexpected value \"https://d1vo1imdstn87w.cloudfront.net/\"\u001b[22m\n\u001b[2m  -   locator resolved to <html lang=\"en\" class=\"h-full\">…</html>\u001b[22m\n\u001b[2m  -   unexpected value \"https://d1vo1imdstn87w.cloudfront.net/\"\u001b[22m\n",
                         "stack": "Error: \u001b[31mTimed out 5000ms waiting for \u001b[39m\u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoHaveURL\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m)\u001b[22m\n\nLocator: locator(':root')\nExpected pattern: \u001b[32m/\\/new-submission\\/spa\\/medicaid\\/create*/\u001b[39m\nReceived string:  \u001b[31m\"https://d1vo1imdstn87w.cloudfront.net/\"\u001b[39m\nCall log:\n  \u001b[2m- expect.toHaveURL with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for locator(':root')\u001b[22m\n\u001b[2m  -   locator resolved to <html lang=\"en\" class=\"h-full\">…</html>\u001b[22m\n\u001b[2m  -   unexpected value \"https://d1vo1imdstn87w.cloudfront.net/\"\u001b[22m\n\u001b[2m  -   locator resolved to <html lang=\"en\" class=\"h-full\">…</html>\u001b[22m\n\u001b[2m  -   unexpected value \"https://d1vo1imdstn87w.cloudfront.net/\"\u001b[22m\n\u001b[2m  -   locator resolved to <html lang=\"en\" class=\"h-full\">…</html>\u001b[22m\n\u001b[2m  -   unexpected value \"https://d1vo1imdstn87w.cloudfront.net/\"\u001b[22m\n\u001b[2m  -   locator resolved to <html lang=\"en\" class=\"h-full\">…</html>\u001b[22m\n\u001b[2m  -   unexpected value \"https://d1vo1imdstn87w.cloudfront.net/\"\u001b[22m\n\u001b[2m  -   locator resolved to <html lang=\"en\" class=\"h-full\">…</html>\u001b[22m\n\u001b[2m  -   unexpected value \"https://d1vo1imdstn87w.cloudfront.net/\"\u001b[22m\n\u001b[2m  -   locator resolved to <html lang=\"en\" class=\"h-full\">…</html>\u001b[22m\n\u001b[2m  -   unexpected value \"https://d1vo1imdstn87w.cloudfront.net/\"\u001b[22m\n\u001b[2m  -   locator resolved to <html lang=\"en\" class=\"h-full\">…</html>\u001b[22m\n\u001b[2m  -   unexpected value \"https://d1vo1imdstn87w.cloudfront.net/\"\u001b[22m\n\u001b[2m  -   locator resolved to <html lang=\"en\" class=\"h-full\">…</html>\u001b[22m\n\u001b[2m  -   unexpected value \"https://d1vo1imdstn87w.cloudfront.net/\"\u001b[22m\n\u001b[2m  -   locator resolved to <html lang=\"en\" class=\"h-full\">…</html>\u001b[22m\n\u001b[2m  -   unexpected value \"https://d1vo1imdstn87w.cloudfront.net/\"\u001b[22m\n\n    at /home/runner/work/macpro-mako/macpro-mako/test/non-func/a11y/index.spec.ts:22:26",
@@ -4328,7 +4328,7 @@
                       "stdout": [],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2025-06-23T12:29:03.062Z",
+                      "startTime": "2025-06-23T12:57:19.314Z",
                       "attachments": [
                         {
                           "name": "video",
@@ -4374,7 +4374,7 @@
                     {
                       "workerIndex": 33,
                       "status": "failed",
-                      "duration": 8230,
+                      "duration": 8229,
                       "error": {
                         "message": "Error: \u001b[31mTimed out 5000ms waiting for \u001b[39m\u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoHaveURL\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m)\u001b[22m\n\nLocator: locator(':root')\nExpected pattern: \u001b[32m/\\/new-submission\\/spa\\/chip\\/create*/\u001b[39m\nReceived string:  \u001b[31m\"https://d1vo1imdstn87w.cloudfront.net/\"\u001b[39m\nCall log:\n  \u001b[2m- expect.toHaveURL with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for locator(':root')\u001b[22m\n\u001b[2m  -   locator resolved to <html lang=\"en\" class=\"h-full\">…</html>\u001b[22m\n\u001b[2m  -   unexpected value \"https://d1vo1imdstn87w.cloudfront.net/\"\u001b[22m\n\u001b[2m  -   locator resolved to <html lang=\"en\" class=\"h-full\">…</html>\u001b[22m\n\u001b[2m  -   unexpected value \"https://d1vo1imdstn87w.cloudfront.net/\"\u001b[22m\n\u001b[2m  -   locator resolved to <html lang=\"en\" class=\"h-full\">…</html>\u001b[22m\n\u001b[2m  -   unexpected value \"https://d1vo1imdstn87w.cloudfront.net/\"\u001b[22m\n\u001b[2m  -   locator resolved to <html lang=\"en\" class=\"h-full\">…</html>\u001b[22m\n\u001b[2m  -   unexpected value \"https://d1vo1imdstn87w.cloudfront.net/\"\u001b[22m\n\u001b[2m  -   locator resolved to <html lang=\"en\" class=\"h-full\">…</html>\u001b[22m\n\u001b[2m  -   unexpected value \"https://d1vo1imdstn87w.cloudfront.net/\"\u001b[22m\n\u001b[2m  -   locator resolved to <html lang=\"en\" class=\"h-full\">…</html>\u001b[22m\n\u001b[2m  -   unexpected value \"https://d1vo1imdstn87w.cloudfront.net/\"\u001b[22m\n\u001b[2m  -   locator resolved to <html lang=\"en\" class=\"h-full\">…</html>\u001b[22m\n\u001b[2m  -   unexpected value \"https://d1vo1imdstn87w.cloudfront.net/\"\u001b[22m\n\u001b[2m  -   locator resolved to <html lang=\"en\" class=\"h-full\">…</html>\u001b[22m\n\u001b[2m  -   unexpected value \"https://d1vo1imdstn87w.cloudfront.net/\"\u001b[22m\n\u001b[2m  -   locator resolved to <html lang=\"en\" class=\"h-full\">…</html>\u001b[22m\n\u001b[2m  -   unexpected value \"https://d1vo1imdstn87w.cloudfront.net/\"\u001b[22m\n",
                         "stack": "Error: \u001b[31mTimed out 5000ms waiting for \u001b[39m\u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoHaveURL\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m)\u001b[22m\n\nLocator: locator(':root')\nExpected pattern: \u001b[32m/\\/new-submission\\/spa\\/chip\\/create*/\u001b[39m\nReceived string:  \u001b[31m\"https://d1vo1imdstn87w.cloudfront.net/\"\u001b[39m\nCall log:\n  \u001b[2m- expect.toHaveURL with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for locator(':root')\u001b[22m\n\u001b[2m  -   locator resolved to <html lang=\"en\" class=\"h-full\">…</html>\u001b[22m\n\u001b[2m  -   unexpected value \"https://d1vo1imdstn87w.cloudfront.net/\"\u001b[22m\n\u001b[2m  -   locator resolved to <html lang=\"en\" class=\"h-full\">…</html>\u001b[22m\n\u001b[2m  -   unexpected value \"https://d1vo1imdstn87w.cloudfront.net/\"\u001b[22m\n\u001b[2m  -   locator resolved to <html lang=\"en\" class=\"h-full\">…</html>\u001b[22m\n\u001b[2m  -   unexpected value \"https://d1vo1imdstn87w.cloudfront.net/\"\u001b[22m\n\u001b[2m  -   locator resolved to <html lang=\"en\" class=\"h-full\">…</html>\u001b[22m\n\u001b[2m  -   unexpected value \"https://d1vo1imdstn87w.cloudfront.net/\"\u001b[22m\n\u001b[2m  -   locator resolved to <html lang=\"en\" class=\"h-full\">…</html>\u001b[22m\n\u001b[2m  -   unexpected value \"https://d1vo1imdstn87w.cloudfront.net/\"\u001b[22m\n\u001b[2m  -   locator resolved to <html lang=\"en\" class=\"h-full\">…</html>\u001b[22m\n\u001b[2m  -   unexpected value \"https://d1vo1imdstn87w.cloudfront.net/\"\u001b[22m\n\u001b[2m  -   locator resolved to <html lang=\"en\" class=\"h-full\">…</html>\u001b[22m\n\u001b[2m  -   unexpected value \"https://d1vo1imdstn87w.cloudfront.net/\"\u001b[22m\n\u001b[2m  -   locator resolved to <html lang=\"en\" class=\"h-full\">…</html>\u001b[22m\n\u001b[2m  -   unexpected value \"https://d1vo1imdstn87w.cloudfront.net/\"\u001b[22m\n\u001b[2m  -   locator resolved to <html lang=\"en\" class=\"h-full\">…</html>\u001b[22m\n\u001b[2m  -   unexpected value \"https://d1vo1imdstn87w.cloudfront.net/\"\u001b[22m\n\n    at /home/runner/work/macpro-mako/macpro-mako/test/non-func/a11y/index.spec.ts:22:26",
@@ -4398,7 +4398,7 @@
                       "stdout": [],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2025-06-23T12:29:12.879Z",
+                      "startTime": "2025-06-23T12:57:29.165Z",
                       "attachments": [
                         {
                           "name": "video",
@@ -4444,7 +4444,7 @@
                     {
                       "workerIndex": 34,
                       "status": "failed",
-                      "duration": 8145,
+                      "duration": 8205,
                       "error": {
                         "message": "Error: \u001b[31mTimed out 5000ms waiting for \u001b[39m\u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoHaveURL\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m)\u001b[22m\n\nLocator: locator(':root')\nExpected pattern: \u001b[32m/\\/new-submission\\/waiver\\/app-k*/\u001b[39m\nReceived string:  \u001b[31m\"https://d1vo1imdstn87w.cloudfront.net/\"\u001b[39m\nCall log:\n  \u001b[2m- expect.toHaveURL with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for locator(':root')\u001b[22m\n\u001b[2m  -   locator resolved to <html lang=\"en\" class=\"h-full\">…</html>\u001b[22m\n\u001b[2m  -   unexpected value \"https://d1vo1imdstn87w.cloudfront.net/\"\u001b[22m\n\u001b[2m  -   locator resolved to <html lang=\"en\" class=\"h-full\">…</html>\u001b[22m\n\u001b[2m  -   unexpected value \"https://d1vo1imdstn87w.cloudfront.net/\"\u001b[22m\n\u001b[2m  -   locator resolved to <html lang=\"en\" class=\"h-full\">…</html>\u001b[22m\n\u001b[2m  -   unexpected value \"https://d1vo1imdstn87w.cloudfront.net/\"\u001b[22m\n\u001b[2m  -   locator resolved to <html lang=\"en\" class=\"h-full\">…</html>\u001b[22m\n\u001b[2m  -   unexpected value \"https://d1vo1imdstn87w.cloudfront.net/\"\u001b[22m\n\u001b[2m  -   locator resolved to <html lang=\"en\" class=\"h-full\">…</html>\u001b[22m\n\u001b[2m  -   unexpected value \"https://d1vo1imdstn87w.cloudfront.net/\"\u001b[22m\n\u001b[2m  -   locator resolved to <html lang=\"en\" class=\"h-full\">…</html>\u001b[22m\n\u001b[2m  -   unexpected value \"https://d1vo1imdstn87w.cloudfront.net/\"\u001b[22m\n\u001b[2m  -   locator resolved to <html lang=\"en\" class=\"h-full\">…</html>\u001b[22m\n\u001b[2m  -   unexpected value \"https://d1vo1imdstn87w.cloudfront.net/\"\u001b[22m\n\u001b[2m  -   locator resolved to <html lang=\"en\" class=\"h-full\">…</html>\u001b[22m\n\u001b[2m  -   unexpected value \"https://d1vo1imdstn87w.cloudfront.net/\"\u001b[22m\n\u001b[2m  -   locator resolved to <html lang=\"en\" class=\"h-full\">…</html>\u001b[22m\n\u001b[2m  -   unexpected value \"https://d1vo1imdstn87w.cloudfront.net/\"\u001b[22m\n",
                         "stack": "Error: \u001b[31mTimed out 5000ms waiting for \u001b[39m\u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoHaveURL\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m)\u001b[22m\n\nLocator: locator(':root')\nExpected pattern: \u001b[32m/\\/new-submission\\/waiver\\/app-k*/\u001b[39m\nReceived string:  \u001b[31m\"https://d1vo1imdstn87w.cloudfront.net/\"\u001b[39m\nCall log:\n  \u001b[2m- expect.toHaveURL with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for locator(':root')\u001b[22m\n\u001b[2m  -   locator resolved to <html lang=\"en\" class=\"h-full\">…</html>\u001b[22m\n\u001b[2m  -   unexpected value \"https://d1vo1imdstn87w.cloudfront.net/\"\u001b[22m\n\u001b[2m  -   locator resolved to <html lang=\"en\" class=\"h-full\">…</html>\u001b[22m\n\u001b[2m  -   unexpected value \"https://d1vo1imdstn87w.cloudfront.net/\"\u001b[22m\n\u001b[2m  -   locator resolved to <html lang=\"en\" class=\"h-full\">…</html>\u001b[22m\n\u001b[2m  -   unexpected value \"https://d1vo1imdstn87w.cloudfront.net/\"\u001b[22m\n\u001b[2m  -   locator resolved to <html lang=\"en\" class=\"h-full\">…</html>\u001b[22m\n\u001b[2m  -   unexpected value \"https://d1vo1imdstn87w.cloudfront.net/\"\u001b[22m\n\u001b[2m  -   locator resolved to <html lang=\"en\" class=\"h-full\">…</html>\u001b[22m\n\u001b[2m  -   unexpected value \"https://d1vo1imdstn87w.cloudfront.net/\"\u001b[22m\n\u001b[2m  -   locator resolved to <html lang=\"en\" class=\"h-full\">…</html>\u001b[22m\n\u001b[2m  -   unexpected value \"https://d1vo1imdstn87w.cloudfront.net/\"\u001b[22m\n\u001b[2m  -   locator resolved to <html lang=\"en\" class=\"h-full\">…</html>\u001b[22m\n\u001b[2m  -   unexpected value \"https://d1vo1imdstn87w.cloudfront.net/\"\u001b[22m\n\u001b[2m  -   locator resolved to <html lang=\"en\" class=\"h-full\">…</html>\u001b[22m\n\u001b[2m  -   unexpected value \"https://d1vo1imdstn87w.cloudfront.net/\"\u001b[22m\n\u001b[2m  -   locator resolved to <html lang=\"en\" class=\"h-full\">…</html>\u001b[22m\n\u001b[2m  -   unexpected value \"https://d1vo1imdstn87w.cloudfront.net/\"\u001b[22m\n\n    at /home/runner/work/macpro-mako/macpro-mako/test/non-func/a11y/index.spec.ts:22:26",
@@ -4468,7 +4468,7 @@
                       "stdout": [],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2025-06-23T12:29:22.692Z",
+                      "startTime": "2025-06-23T12:57:39.004Z",
                       "attachments": [
                         {
                           "name": "video",
@@ -4514,7 +4514,7 @@
                     {
                       "workerIndex": 35,
                       "status": "failed",
-                      "duration": 8145,
+                      "duration": 8159,
                       "error": {
                         "message": "Error: \u001b[31mTimed out 5000ms waiting for \u001b[39m\u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoHaveURL\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m)\u001b[22m\n\nLocator: locator(':root')\nExpected pattern: \u001b[32m/\\/new-submission\\/waiver\\/temporary-extensions*/\u001b[39m\nReceived string:  \u001b[31m\"https://d1vo1imdstn87w.cloudfront.net/\"\u001b[39m\nCall log:\n  \u001b[2m- expect.toHaveURL with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for locator(':root')\u001b[22m\n\u001b[2m  -   locator resolved to <html lang=\"en\" class=\"h-full\">…</html>\u001b[22m\n\u001b[2m  -   unexpected value \"https://d1vo1imdstn87w.cloudfront.net/\"\u001b[22m\n\u001b[2m  -   locator resolved to <html lang=\"en\" class=\"h-full\">…</html>\u001b[22m\n\u001b[2m  -   unexpected value \"https://d1vo1imdstn87w.cloudfront.net/\"\u001b[22m\n\u001b[2m  -   locator resolved to <html lang=\"en\" class=\"h-full\">…</html>\u001b[22m\n\u001b[2m  -   unexpected value \"https://d1vo1imdstn87w.cloudfront.net/\"\u001b[22m\n\u001b[2m  -   locator resolved to <html lang=\"en\" class=\"h-full\">…</html>\u001b[22m\n\u001b[2m  -   unexpected value \"https://d1vo1imdstn87w.cloudfront.net/\"\u001b[22m\n\u001b[2m  -   locator resolved to <html lang=\"en\" class=\"h-full\">…</html>\u001b[22m\n\u001b[2m  -   unexpected value \"https://d1vo1imdstn87w.cloudfront.net/\"\u001b[22m\n\u001b[2m  -   locator resolved to <html lang=\"en\" class=\"h-full\">…</html>\u001b[22m\n\u001b[2m  -   unexpected value \"https://d1vo1imdstn87w.cloudfront.net/\"\u001b[22m\n\u001b[2m  -   locator resolved to <html lang=\"en\" class=\"h-full\">…</html>\u001b[22m\n\u001b[2m  -   unexpected value \"https://d1vo1imdstn87w.cloudfront.net/\"\u001b[22m\n\u001b[2m  -   locator resolved to <html lang=\"en\" class=\"h-full\">…</html>\u001b[22m\n\u001b[2m  -   unexpected value \"https://d1vo1imdstn87w.cloudfront.net/\"\u001b[22m\n\u001b[2m  -   locator resolved to <html lang=\"en\" class=\"h-full\">…</html>\u001b[22m\n\u001b[2m  -   unexpected value \"https://d1vo1imdstn87w.cloudfront.net/\"\u001b[22m\n",
                         "stack": "Error: \u001b[31mTimed out 5000ms waiting for \u001b[39m\u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoHaveURL\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m)\u001b[22m\n\nLocator: locator(':root')\nExpected pattern: \u001b[32m/\\/new-submission\\/waiver\\/temporary-extensions*/\u001b[39m\nReceived string:  \u001b[31m\"https://d1vo1imdstn87w.cloudfront.net/\"\u001b[39m\nCall log:\n  \u001b[2m- expect.toHaveURL with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for locator(':root')\u001b[22m\n\u001b[2m  -   locator resolved to <html lang=\"en\" class=\"h-full\">…</html>\u001b[22m\n\u001b[2m  -   unexpected value \"https://d1vo1imdstn87w.cloudfront.net/\"\u001b[22m\n\u001b[2m  -   locator resolved to <html lang=\"en\" class=\"h-full\">…</html>\u001b[22m\n\u001b[2m  -   unexpected value \"https://d1vo1imdstn87w.cloudfront.net/\"\u001b[22m\n\u001b[2m  -   locator resolved to <html lang=\"en\" class=\"h-full\">…</html>\u001b[22m\n\u001b[2m  -   unexpected value \"https://d1vo1imdstn87w.cloudfront.net/\"\u001b[22m\n\u001b[2m  -   locator resolved to <html lang=\"en\" class=\"h-full\">…</html>\u001b[22m\n\u001b[2m  -   unexpected value \"https://d1vo1imdstn87w.cloudfront.net/\"\u001b[22m\n\u001b[2m  -   locator resolved to <html lang=\"en\" class=\"h-full\">…</html>\u001b[22m\n\u001b[2m  -   unexpected value \"https://d1vo1imdstn87w.cloudfront.net/\"\u001b[22m\n\u001b[2m  -   locator resolved to <html lang=\"en\" class=\"h-full\">…</html>\u001b[22m\n\u001b[2m  -   unexpected value \"https://d1vo1imdstn87w.cloudfront.net/\"\u001b[22m\n\u001b[2m  -   locator resolved to <html lang=\"en\" class=\"h-full\">…</html>\u001b[22m\n\u001b[2m  -   unexpected value \"https://d1vo1imdstn87w.cloudfront.net/\"\u001b[22m\n\u001b[2m  -   locator resolved to <html lang=\"en\" class=\"h-full\">…</html>\u001b[22m\n\u001b[2m  -   unexpected value \"https://d1vo1imdstn87w.cloudfront.net/\"\u001b[22m\n\u001b[2m  -   locator resolved to <html lang=\"en\" class=\"h-full\">…</html>\u001b[22m\n\u001b[2m  -   unexpected value \"https://d1vo1imdstn87w.cloudfront.net/\"\u001b[22m\n\n    at /home/runner/work/macpro-mako/macpro-mako/test/non-func/a11y/index.spec.ts:22:26",
@@ -4538,7 +4538,7 @@
                       "stdout": [],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2025-06-23T12:29:32.462Z",
+                      "startTime": "2025-06-23T12:57:48.862Z",
                       "attachments": [
                         {
                           "name": "video",
@@ -4592,7 +4592,7 @@
                     {
                       "workerIndex": 36,
                       "status": "passed",
-                      "duration": 3812,
+                      "duration": 3810,
                       "errors": [],
                       "stdout": [
                         {
@@ -4601,7 +4601,7 @@
                       ],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2025-06-23T12:29:42.211Z",
+                      "startTime": "2025-06-23T12:57:58.673Z",
                       "attachments": []
                     }
                   ],
@@ -4631,7 +4631,7 @@
                     {
                       "workerIndex": 36,
                       "status": "passed",
-                      "duration": 3986,
+                      "duration": 4011,
                       "errors": [],
                       "stdout": [
                         {
@@ -4640,7 +4640,7 @@
                       ],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2025-06-23T12:29:46.165Z",
+                      "startTime": "2025-06-23T12:58:02.638Z",
                       "attachments": []
                     }
                   ],
@@ -4670,7 +4670,7 @@
                     {
                       "workerIndex": 36,
                       "status": "passed",
-                      "duration": 3722,
+                      "duration": 3730,
                       "errors": [],
                       "stdout": [
                         {
@@ -4679,7 +4679,7 @@
                       ],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2025-06-23T12:29:50.157Z",
+                      "startTime": "2025-06-23T12:58:06.656Z",
                       "attachments": []
                     }
                   ],
@@ -4709,7 +4709,7 @@
                     {
                       "workerIndex": 36,
                       "status": "passed",
-                      "duration": 4104,
+                      "duration": 3755,
                       "errors": [],
                       "stdout": [
                         {
@@ -4718,7 +4718,7 @@
                       ],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2025-06-23T12:29:53.886Z",
+                      "startTime": "2025-06-23T12:58:10.393Z",
                       "attachments": []
                     }
                   ],
@@ -4748,7 +4748,7 @@
                     {
                       "workerIndex": 36,
                       "status": "passed",
-                      "duration": 3809,
+                      "duration": 3796,
                       "errors": [],
                       "stdout": [
                         {
@@ -4757,7 +4757,7 @@
                       ],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2025-06-23T12:29:57.996Z",
+                      "startTime": "2025-06-23T12:58:14.153Z",
                       "attachments": []
                     }
                   ],
@@ -4787,7 +4787,7 @@
                     {
                       "workerIndex": 36,
                       "status": "passed",
-                      "duration": 3669,
+                      "duration": 3679,
                       "errors": [],
                       "stdout": [
                         {
@@ -4796,7 +4796,7 @@
                       ],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2025-06-23T12:30:01.811Z",
+                      "startTime": "2025-06-23T12:58:17.955Z",
                       "attachments": []
                     }
                   ],
@@ -4826,7 +4826,7 @@
                     {
                       "workerIndex": 36,
                       "status": "passed",
-                      "duration": 3521,
+                      "duration": 3528,
                       "errors": [],
                       "stdout": [
                         {
@@ -4835,7 +4835,7 @@
                       ],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2025-06-23T12:30:05.486Z",
+                      "startTime": "2025-06-23T12:58:21.641Z",
                       "attachments": []
                     }
                   ],
@@ -4865,7 +4865,7 @@
                     {
                       "workerIndex": 36,
                       "status": "passed",
-                      "duration": 3656,
+                      "duration": 3734,
                       "errors": [],
                       "stdout": [
                         {
@@ -4874,7 +4874,7 @@
                       ],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2025-06-23T12:30:09.012Z",
+                      "startTime": "2025-06-23T12:58:25.175Z",
                       "attachments": []
                     }
                   ],
@@ -4904,7 +4904,7 @@
                     {
                       "workerIndex": 36,
                       "status": "passed",
-                      "duration": 3492,
+                      "duration": 3560,
                       "errors": [],
                       "stdout": [
                         {
@@ -4913,7 +4913,7 @@
                       ],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2025-06-23T12:30:12.674Z",
+                      "startTime": "2025-06-23T12:58:28.914Z",
                       "attachments": []
                     }
                   ],
@@ -4943,7 +4943,7 @@
                     {
                       "workerIndex": 36,
                       "status": "passed",
-                      "duration": 3602,
+                      "duration": 3567,
                       "errors": [],
                       "stdout": [
                         {
@@ -4952,7 +4952,7 @@
                       ],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2025-06-23T12:30:16.172Z",
+                      "startTime": "2025-06-23T12:58:32.480Z",
                       "attachments": []
                     }
                   ],
@@ -4982,7 +4982,7 @@
                     {
                       "workerIndex": 36,
                       "status": "passed",
-                      "duration": 3541,
+                      "duration": 3578,
                       "errors": [],
                       "stdout": [
                         {
@@ -4991,7 +4991,7 @@
                       ],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2025-06-23T12:30:19.780Z",
+                      "startTime": "2025-06-23T12:58:36.054Z",
                       "attachments": []
                     }
                   ],
@@ -5021,7 +5021,7 @@
                     {
                       "workerIndex": 36,
                       "status": "passed",
-                      "duration": 3777,
+                      "duration": 3786,
                       "errors": [],
                       "stdout": [
                         {
@@ -5030,7 +5030,7 @@
                       ],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2025-06-23T12:30:23.327Z",
+                      "startTime": "2025-06-23T12:58:39.639Z",
                       "attachments": []
                     }
                   ],
@@ -5060,7 +5060,7 @@
                     {
                       "workerIndex": 36,
                       "status": "passed",
-                      "duration": 3654,
+                      "duration": 3655,
                       "errors": [],
                       "stdout": [
                         {
@@ -5069,7 +5069,7 @@
                       ],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2025-06-23T12:30:27.110Z",
+                      "startTime": "2025-06-23T12:58:43.431Z",
                       "attachments": []
                     }
                   ],
@@ -5099,7 +5099,7 @@
                     {
                       "workerIndex": 36,
                       "status": "passed",
-                      "duration": 3460,
+                      "duration": 3531,
                       "errors": [],
                       "stdout": [
                         {
@@ -5108,7 +5108,7 @@
                       ],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2025-06-23T12:30:30.769Z",
+                      "startTime": "2025-06-23T12:58:47.092Z",
                       "attachments": []
                     }
                   ],
@@ -5138,7 +5138,7 @@
                     {
                       "workerIndex": 36,
                       "status": "passed",
-                      "duration": 3484,
+                      "duration": 3537,
                       "errors": [],
                       "stdout": [
                         {
@@ -5147,7 +5147,7 @@
                       ],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2025-06-23T12:30:34.235Z",
+                      "startTime": "2025-06-23T12:58:50.628Z",
                       "attachments": []
                     }
                   ],
@@ -5177,7 +5177,7 @@
                     {
                       "workerIndex": 36,
                       "status": "passed",
-                      "duration": 3615,
+                      "duration": 3598,
                       "errors": [],
                       "stdout": [
                         {
@@ -5186,7 +5186,7 @@
                       ],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2025-06-23T12:30:37.724Z",
+                      "startTime": "2025-06-23T12:58:54.171Z",
                       "attachments": []
                     }
                   ],
@@ -5216,7 +5216,7 @@
                     {
                       "workerIndex": 36,
                       "status": "passed",
-                      "duration": 3631,
+                      "duration": 3765,
                       "errors": [],
                       "stdout": [
                         {
@@ -5225,7 +5225,7 @@
                       ],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2025-06-23T12:30:41.344Z",
+                      "startTime": "2025-06-23T12:58:57.774Z",
                       "attachments": []
                     }
                   ],
@@ -5255,7 +5255,7 @@
                     {
                       "workerIndex": 36,
                       "status": "passed",
-                      "duration": 3901,
+                      "duration": 3853,
                       "errors": [],
                       "stdout": [
                         {
@@ -5264,7 +5264,7 @@
                       ],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2025-06-23T12:30:44.982Z",
+                      "startTime": "2025-06-23T12:59:01.545Z",
                       "attachments": []
                     }
                   ],
@@ -5294,7 +5294,7 @@
                     {
                       "workerIndex": 36,
                       "status": "passed",
-                      "duration": 3886,
+                      "duration": 3777,
                       "errors": [],
                       "stdout": [
                         {
@@ -5303,7 +5303,7 @@
                       ],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2025-06-23T12:30:48.888Z",
+                      "startTime": "2025-06-23T12:59:05.403Z",
                       "attachments": []
                     }
                   ],
@@ -5333,7 +5333,7 @@
                     {
                       "workerIndex": 36,
                       "status": "passed",
-                      "duration": 3493,
+                      "duration": 3502,
                       "errors": [],
                       "stdout": [
                         {
@@ -5342,7 +5342,7 @@
                       ],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2025-06-23T12:30:52.780Z",
+                      "startTime": "2025-06-23T12:59:09.185Z",
                       "attachments": []
                     }
                   ],
@@ -5372,7 +5372,7 @@
                     {
                       "workerIndex": 36,
                       "status": "passed",
-                      "duration": 3540,
+                      "duration": 3676,
                       "errors": [],
                       "stdout": [
                         {
@@ -5381,7 +5381,7 @@
                       ],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2025-06-23T12:30:56.278Z",
+                      "startTime": "2025-06-23T12:59:12.692Z",
                       "attachments": []
                     }
                   ],
@@ -5411,7 +5411,7 @@
                     {
                       "workerIndex": 36,
                       "status": "passed",
-                      "duration": 3643,
+                      "duration": 3567,
                       "errors": [],
                       "stdout": [
                         {
@@ -5420,7 +5420,7 @@
                       ],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2025-06-23T12:30:59.823Z",
+                      "startTime": "2025-06-23T12:59:16.373Z",
                       "attachments": []
                     }
                   ],
@@ -5439,8 +5439,8 @@
   ],
   "errors": [],
   "stats": {
-    "startTime": "2025-06-23T12:21:10.208Z",
-    "duration": 593331.826,
+    "startTime": "2025-06-23T12:49:18.069Z",
+    "duration": 601947.817,
     "expected": 65,
     "skipped": 2,
     "unexpected": 35,
