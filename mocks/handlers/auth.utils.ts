@@ -1,7 +1,131 @@
+import * as jose from "jose";
 import { FullUser } from "shared-types";
 
+import {
+  ALGORITHM,
+  COGNITO_IDP_DOMAIN,
+  PRIVATE_KEY,
+  PUBLIC_KEY,
+  USER_POOL_CLIENT_ID,
+} from "../consts";
 import { getUserByUsername, makoReviewer, makoStateSubmitter, userResponses } from "../data/users";
-import type { TestUserDataWithRole } from "../index.d";
+import type { TestUserData, TestUserDataWithRole } from "../index.d";
+
+export const getUsernameFromAccessToken = async (
+  accessToken?: string,
+): Promise<string | undefined> => {
+  if (accessToken) {
+    const { payload } = await jose.jwtVerify(accessToken, PUBLIC_KEY, {
+      issuer: COGNITO_IDP_DOMAIN,
+      audience: USER_POOL_CLIENT_ID,
+    });
+
+    console.log("getUsernameFromAccessToken", { payload });
+    console.log("getUsernameFromAccessToken", payload.username);
+    return payload.username as string;
+  }
+  return undefined;
+};
+
+export const generateIdToken = async (
+  user: TestUserData,
+  authTime: number,
+  expTime: number,
+): Promise<string | null> => {
+  if (user) {
+    const jwt = await new jose.SignJWT({
+      at_hash: "test_hash_not_sure_how_it_looks",
+      sub: getAttributeFromUser(user, "sub") || undefined,
+      email_verified: getAttributeFromUser(user, "email_verified") === "true",
+      iss: COGNITO_IDP_DOMAIN,
+      "cognito:username": user.Username,
+      origin_jti: "93879f74-bbfa-4db6-8d75-e97b28e7bb5c",
+      aud: USER_POOL_CLIENT_ID,
+      token_use: "id",
+      auth_time: authTime,
+      exp: expTime,
+      iat: authTime,
+      jti: "aa2f38b9-5169-46f4-9982-aaa660e2fc11",
+      email: getAttributeFromUser(user, "email"),
+    })
+      .setProtectedHeader({ alg: ALGORITHM })
+      .setIssuedAt()
+      .setIssuer(COGNITO_IDP_DOMAIN)
+      .setAudience(USER_POOL_CLIENT_ID)
+      .setExpirationTime("30m")
+      .sign(PRIVATE_KEY);
+
+    return jwt;
+  }
+  return null;
+};
+
+export const generateAccessToken = async (
+  user: TestUserData,
+  authTime: number,
+  expTime: number,
+): Promise<string | null> => {
+  if (user) {
+    const jwt = await new jose.SignJWT({
+      sub: getAttributeFromUser(user, "sub") || undefined,
+      iss: COGNITO_IDP_DOMAIN,
+      version: 2,
+      client_id: USER_POOL_CLIENT_ID,
+      origin_jti: "93879f74-bbfa-4db6-8d75-e97b28e7bb5c",
+      token_use: "access",
+      scope: "aws.cognito.signin.user.admin openid email",
+      auth_time: authTime,
+      exp: expTime,
+      iat: authTime,
+      jti: "38ea8a6a-64de-44c8-9257-6981fc26ea41",
+      username: user.Username,
+    })
+      .setProtectedHeader({ alg: ALGORITHM })
+      .setIssuedAt()
+      .setIssuer(COGNITO_IDP_DOMAIN)
+      .setAudience(USER_POOL_CLIENT_ID)
+      .setExpirationTime("30m")
+      .sign(PRIVATE_KEY);
+
+    return jwt;
+  }
+  return null;
+};
+
+export const generateRefreshToken = async (user: TestUserData): Promise<string | null> => {
+  if (user) {
+    const jwt = await new jose.SignJWT({
+      sub: getAttributeFromUser(user, "sub") || undefined,
+      "cognito:username": user.Username,
+    })
+      .setProtectedHeader({ alg: ALGORITHM })
+      .setExpirationTime("30m")
+      .sign(PRIVATE_KEY);
+
+    return jwt;
+  }
+  return null;
+};
+
+export const generateSessionToken = (user: TestUserData): string | null => {
+  if (user?.Username) {
+    return jose.base64url.encode(JSON.stringify({ username: user?.Username }));
+  }
+  return null;
+};
+
+export const getAttributeFromUser = (user: TestUserData, attrName: string): string | null => {
+  if (
+    attrName &&
+    user?.UserAttributes &&
+    Array.isArray(user.UserAttributes) &&
+    user.UserAttributes.length > 0
+  ) {
+    const attribute = user.UserAttributes.find((attr) => attr?.Name == attrName);
+    return attribute?.Value || null;
+  }
+  return null;
+};
 
 export const getMockUsername = (): string | null => {
   if (typeof window === "undefined") {
@@ -10,7 +134,9 @@ export const getMockUsername = (): string | null => {
     }
   }
   if (window?.localStorage) {
-    return window.localStorage.getItem("MOCK_USER_USERNAME");
+    return window.localStorage.getItem(
+      `CognitoIdentityServiceProvider.${USER_POOL_CLIENT_ID}.LastAuthUser`,
+    );
   }
   return null;
 };
@@ -27,7 +153,9 @@ export const getMockUserEmail = (): string | null => {
   return user?.email;
 };
 
-export const setMockUsername = (user?: TestUserDataWithRole | string | null): void => {
+export const setMockUsername = async (
+  user?: TestUserDataWithRole | string | null,
+): Promise<void> => {
   let username;
   if (user && typeof user === "string") {
     username = user;
@@ -45,16 +173,81 @@ export const setMockUsername = (user?: TestUserDataWithRole | string | null): vo
     }
   } else if (window?.localStorage) {
     if (username) {
-      window.localStorage.setItem("MOCK_USER_USERNAME", username);
+      window.localStorage.setItem(
+        `CognitoIdentityServiceProvider.${USER_POOL_CLIENT_ID}.LastAuthUser`,
+        username,
+      );
+      const user = findUserByUsername(username);
+      console.log({ user });
+      if (user) {
+        const authTime = Date.now() / 1000;
+        const expTime = authTime + 1800;
+        const accessToken = await generateAccessToken(user, authTime, expTime);
+        console.log({ accessToken });
+        const idToken = await generateIdToken(user, authTime, expTime);
+        console.log({ idToken });
+        const refreshToken = await generateRefreshToken(user);
+        console.log({ refreshToken });
+
+        window.localStorage.setItem(
+          `CognitoIdentityServiceProvider.${USER_POOL_CLIENT_ID}.${username}.accessToken`,
+          accessToken || "",
+        );
+        window.localStorage.setItem(
+          `CognitoIdentityServiceProvider.${USER_POOL_CLIENT_ID}.${username}.clockDrift`,
+          "0",
+        );
+        window.localStorage.setItem(
+          `CognitoIdentityServiceProvider.${USER_POOL_CLIENT_ID}.${username}.idToken`,
+          idToken || "",
+        );
+        window.localStorage.setItem(
+          `CognitoIdentityServiceProvider.${USER_POOL_CLIENT_ID}.${username}.refreshToken`,
+          refreshToken || "",
+        );
+        window.localStorage.setItem(
+          `CognitoIdentityServiceProvider.${USER_POOL_CLIENT_ID}.${username}.userData`,
+          JSON.stringify({
+            UserAttributes: user.UserAttributes,
+            Username: username,
+          }),
+        );
+      }
+      window.localStorage.setItem("amplify-redirected-from-hosted-ui", "true");
+      window.localStorage.setItem("amplify-signin-with-hostedUI", "true");
     } else {
-      window.localStorage.removeItem("MOCK_USER_USERNAME");
+      const oldUserId = window.localStorage.getItem(
+        `CognitoIdentityServiceProvider.${USER_POOL_CLIENT_ID}.LastAuthUser`,
+      );
+      if (oldUserId) {
+        window.localStorage.removeItem(
+          `CognitoIdentityServiceProvider.${USER_POOL_CLIENT_ID}.${oldUserId}.accessToken`,
+        );
+        window.localStorage.removeItem(
+          `CognitoIdentityServiceProvider.${USER_POOL_CLIENT_ID}.${oldUserId}.clockDrift`,
+        );
+        window.localStorage.removeItem(
+          `CognitoIdentityServiceProvider.${USER_POOL_CLIENT_ID}.${oldUserId}.idToken`,
+        );
+        window.localStorage.removeItem(
+          `CognitoIdentityServiceProvider.${USER_POOL_CLIENT_ID}.${oldUserId}.refreshToken`,
+        );
+        window.localStorage.removeItem(
+          `CognitoIdentityServiceProvider.${USER_POOL_CLIENT_ID}.${oldUserId}.userData`,
+        );
+        window.localStorage.removeItem("amplify-redirected-from-hosted-ui");
+        window.localStorage.removeItem("amplify-signin-with-hostedUI");
+      }
+      window.localStorage.removeItem(
+        `CognitoIdentityServiceProvider.${USER_POOL_CLIENT_ID}.LastAuthUser`,
+      );
     }
   }
 };
 
-export const setDefaultStateSubmitter = () => setMockUsername(makoStateSubmitter);
+export const setDefaultStateSubmitter = async () => setMockUsername(makoStateSubmitter);
 
-export const setDefaultReviewer = () => setMockUsername(makoReviewer);
+export const setDefaultReviewer = async () => setMockUsername(makoReviewer);
 
 export const findUserByUsername = (username: string): TestUserDataWithRole | undefined =>
   userResponses.find((user) => user.Username == username);

@@ -33,10 +33,10 @@ const enableApiMocking = async () => {
     const { setDefaultStateSubmitter } = await import("mocks");
 
     await mockedWorker.start({
-      onUnhandledRequest: "warn",
+      onUnhandledRequest: "error",
       waitUntilReady: true,
     });
-    setDefaultStateSubmitter();
+    await setDefaultStateSubmitter();
   }
 };
 

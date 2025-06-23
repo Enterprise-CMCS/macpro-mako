@@ -24,6 +24,7 @@
   },
   "dependencies": {
     "@opensearch-project/opensearch": "^2.13.0",
+    "@peculiar/webcrypto": "^1.5.0",
     "amazon-cognito-identity-js": "6.3.12",
     "aws-lambda": "1.0.7",
     "jose": "^6.0.11",
