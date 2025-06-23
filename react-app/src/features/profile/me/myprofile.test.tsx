@@ -10,9 +10,19 @@ import {
 import { beforeEach, describe, expect, test, vi } from "vitest";
 
 import * as components from "@/components";
+// import { useFeatureFlag } from "@/hooks/useFeatureFlag";
 import { renderWithQueryClientAndMemoryRouter } from "@/utils/test-helpers";
 
 import { MyProfile } from ".";
+
+const mockUserRoleFeatureFlag = false;
+
+vi.mock("@/hooks/useFeatureFlag", () => ({
+  useFeatureFlag: (flag: string) => {
+    if (flag === "NEW_USER_ROLE_DISPLAY") return mockUserRoleFeatureFlag;
+    return false;
+  },
+}));
 
 describe("MyProfile", () => {
   const bannerSpy = vi.spyOn(components, "banner");
@@ -65,9 +75,9 @@ describe("MyProfile", () => {
 
     await waitFor(() => expect(screen.getByText("Multi State")).toBeInTheDocument());
 
-    expect(screen.queryByText("California")).toBeInTheDocument();
-    expect(screen.queryByText("New York")).toBeInTheDocument();
-    expect(screen.queryByText("Maryland")).toBeInTheDocument();
+    expect(screen.queryByText("CA")).toBeInTheDocument();
+    expect(screen.queryByText("NY")).toBeInTheDocument();
+    expect(screen.queryByText("MD")).toBeInTheDocument();
   });
 
   test("shows Add State button when showAddState is true", async () => {
@@ -153,12 +163,12 @@ describe("MyProfile", () => {
 
     await waitFor(() => expect(screen.getByText("State Submitter")).toBeInTheDocument());
 
-    expect(screen.queryByText("Virginia")).toBeInTheDocument();
-    expect(screen.queryByText("Ohio")).toBeInTheDocument();
-    expect(screen.queryByText("South Carolina")).toBeInTheDocument();
-    expect(screen.queryByText("Colorado")).toBeInTheDocument();
-    expect(screen.queryByText("Georgia")).toBeInTheDocument();
-    expect(screen.queryByText("Maryland")).toBeInTheDocument();
+    expect(screen.queryByText("VA")).toBeInTheDocument();
+    expect(screen.queryByText("OH")).toBeInTheDocument();
+    expect(screen.queryByText("SC")).toBeInTheDocument();
+    expect(screen.queryByText("CO")).toBeInTheDocument();
+    expect(screen.queryByText("GA")).toBeInTheDocument();
+    expect(screen.queryByText("MD")).toBeInTheDocument();
   });
 
   test("renders full name", async () => {

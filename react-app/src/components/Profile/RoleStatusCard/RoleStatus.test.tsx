@@ -4,6 +4,15 @@ import { describe, expect, it, vi } from "vitest";
 
 import { RoleStatusCard } from "./index";
 
+const mockUserRoleFeatureFlag = false;
+
+vi.mock("@/hooks/useFeatureFlag", () => ({
+  useFeatureFlag: (flag: string) => {
+    if (flag === "NEW_USER_ROLE_DISPLAY") return mockUserRoleFeatureFlag;
+    return false;
+  },
+}));
+
 describe("RoleStatusCard", () => {
   it("should handle an undefined access", () => {
     // @ts-ignore
@@ -14,6 +23,7 @@ describe("RoleStatusCard", () => {
   it("should not show the revoke button if the user is not a state submitter", () => {
     render(
       <RoleStatusCard
+        isNewUserRoleDisplay={mockUserRoleFeatureFlag}
         role="cmsroleapprover"
         access={{
           territory: "N/A",
@@ -35,6 +45,7 @@ describe("RoleStatusCard", () => {
   it("should display state submitter with pending access and disabled revoke", () => {
     render(
       <RoleStatusCard
+        isNewUserRoleDisplay={mockUserRoleFeatureFlag}
         role="statesubmitter"
         access={{
           territory: "MD",
@@ -45,7 +56,7 @@ describe("RoleStatusCard", () => {
         }}
       />,
     );
-    expect(screen.getByRole("heading", { name: "Maryland", level: 3 })).toBeInTheDocument();
+    expect(screen.getByRole("heading", { name: "MD", level: 3 })).toBeInTheDocument();
     expect(screen.getByText("Pending Access")).toBeInTheDocument();
     expect(screen.getByText(/State System Admin/)).toBeInTheDocument();
 
@@ -59,6 +70,7 @@ describe("RoleStatusCard", () => {
     const revokeSpy = vi.fn();
     render(
       <RoleStatusCard
+        isNewUserRoleDisplay={mockUserRoleFeatureFlag}
         role="statesubmitter"
         access={{
           territory: "CO",
@@ -70,7 +82,7 @@ describe("RoleStatusCard", () => {
         onClick={revokeSpy}
       />,
     );
-    expect(screen.getByRole("heading", { name: "Colorado", level: 3 })).toBeInTheDocument();
+    expect(screen.getByRole("heading", { name: "CO", level: 3 })).toBeInTheDocument();
 
     const revokeButton = screen.getByRole("button", { name: "Self Revoke Access" });
     expect(revokeButton).toBeInTheDocument();
@@ -84,6 +96,7 @@ describe("RoleStatusCard", () => {
   it("should display a list of approvers", async () => {
     render(
       <RoleStatusCard
+        isNewUserRoleDisplay={mockUserRoleFeatureFlag}
         role="statesubmitter"
         access={{
           territory: "CO",
@@ -107,6 +120,7 @@ describe("RoleStatusCard", () => {
   it("should display No Approvers if the approver list is empty", async () => {
     render(
       <RoleStatusCard
+        isNewUserRoleDisplay={mockUserRoleFeatureFlag}
         role="statesubmitter"
         access={{
           territory: "CO",

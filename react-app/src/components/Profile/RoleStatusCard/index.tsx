@@ -1,11 +1,12 @@
 import { Clock, XIcon } from "lucide-react";
 import { UserRole } from "shared-types/events/legacy-user";
-import { getApprovingRole, userRoleMap } from "shared-utils";
+import { getApprovingRole, isStateRole, userRoleMap } from "shared-utils";
 
 import { CardWithTopBorder } from "@/components";
 import { roleAccessStatus } from "@/utils";
 
 export type RoleStatusProps = {
+  isNewUserRoleDisplay?: boolean;
   role: UserRole;
   onClick?: () => void;
   access: {
@@ -18,14 +19,27 @@ export type RoleStatusProps = {
   };
 };
 
-export const RoleStatusCard = ({ role, onClick, access }: RoleStatusProps) => {
+export const RoleStatusCard = ({
+  isNewUserRoleDisplay,
+  role,
+  onClick,
+  access,
+}: RoleStatusProps) => {
   if (!access) return null;
   const hideApprovers = role === "norole" && access.status !== "pending";
   return (
     <CardWithTopBorder key={`${access.territory}-${access.role}`}>
       <div className="p-8 min-h-36">
         <div className="flex justify-between">
-          <h3 className="text-xl font-bold">{`${userRoleMap[access.role]} - ${access.territory}`}</h3>
+          {isNewUserRoleDisplay ? (
+            <h3 className="text-xl font-bold">
+              {isStateRole(access.role as UserRole)
+                ? `${userRoleMap[access.role]} - ${access.territory}`
+                : `${userRoleMap[access.role]}`}
+            </h3>
+          ) : (
+            <h3 className="text-xl font-bold">{access.territory}</h3>
+          )}
           {role === "statesubmitter" && (
             <button
               className="text-blue-700 disabled:text-gray-200"

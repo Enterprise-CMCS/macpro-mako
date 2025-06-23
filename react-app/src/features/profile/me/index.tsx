@@ -32,6 +32,8 @@ export const MyProfile = () => {
     refetch: reloadUserProfile,
   } = useGetUserProfile();
 
+  // console.log(userProfile);
+
   const isNewUserRoleDisplay = useFeatureFlag("NEW_USER_ROLE_DISPLAY");
 
   const { mutateAsync: submitRequest, isLoading: areRolesLoading } = useSubmitRoleRequests();
@@ -221,6 +223,7 @@ export const MyProfile = () => {
                 {orderedRoleStatus?.map((access) => (
                   <RoleStatusCard
                     key={`${access.territory}-${access.role}`}
+                    isNewUserRoleDisplay={isNewUserRoleDisplay}
                     access={access}
                     role={userDetails.role}
                     onClick={() => setSelfRevokeState(access.territory as StateCode)}

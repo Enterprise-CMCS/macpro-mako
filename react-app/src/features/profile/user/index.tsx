@@ -5,6 +5,7 @@ import { userRoleMap } from "shared-utils";
 
 import { getUserDetails, getUserProfile, OneMacUserProfile, UserDetails } from "@/api";
 import { GroupAndDivision, RoleStatusCard, SubNavHeader, UserInformation } from "@/components";
+import { useFeatureFlag } from "@/hooks/useFeatureFlag";
 
 import { filterRoleStatus, orderRoleStatus } from "../utils";
 
@@ -60,6 +61,8 @@ export const UserProfile = () => {
     [filteredRoleStatus],
   );
 
+  const isNewUserRoleDisplay = useFeatureFlag("NEW_USER_ROLE_DISPLAY");
+
   return (
     <>
       <SubNavHeader>
@@ -81,7 +84,12 @@ export const UserProfile = () => {
                   : "Status"}
               </h2>
               {orderedRoleStatus?.map((access) => (
-                <RoleStatusCard role={userDetails.role} access={access} key={access.id} />
+                <RoleStatusCard
+                  isNewUserRoleDisplay={isNewUserRoleDisplay}
+                  role={userDetails.role}
+                  access={access}
+                  key={access.id}
+                />
               ))}
             </div>
 
