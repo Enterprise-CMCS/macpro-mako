@@ -9,6 +9,7 @@ import {
 } from "mocks";
 import { beforeEach, describe, expect, test, vi } from "vitest";
 
+import { useSubmitRoleRequests } from "@/api";
 import * as components from "@/components";
 import { renderWithQueryClientAndMemoryRouter } from "@/utils/test-helpers";
 
@@ -22,6 +23,19 @@ vi.mock("@/hooks/useFeatureFlag", () => ({
     return false;
   },
 }));
+
+vi.mock("@/api/useSubmitRoleRequests", async () => {
+  const actual = await vi.importActual<typeof import("@/api/useSubmitRoleRequests")>(
+    "@/api/useSubmitRoleRequests",
+  );
+  return {
+    ...actual,
+    useSubmitRoleRequests: () => ({
+      mutateAsync: vi.fn().mockResolvedValue({}),
+      isLoading: false,
+    }),
+  };
+});
 
 describe("MyProfile", () => {
   const bannerSpy = vi.spyOn(components, "banner");
@@ -79,8 +93,6 @@ describe("MyProfile", () => {
     expect(screen.queryByText("New York")).toBeInTheDocument();
     expect(screen.queryByText("Maryland")).toBeInTheDocument();
   });
-
-  test("shows ");
 
   test("shows Add State button when showAddState is true", async () => {
     setMockUsername(multiStateSubmitter);
@@ -149,6 +161,28 @@ describe("MyProfile", () => {
     const revokeStateButton = screen.queryAllByTestId("self-revoke");
     await revokeStateButton[0].click();
     expect(screen.getByRole("dialog", { name: /Withdraw State Access/i })).toBeInTheDocument();
+  });
+
+  test("self revoking removes access to state", async () => {
+    setMockUsername(multiStateSubmitter);
+
+    await setup();
+
+    const revokeStateButton = screen.queryAllByTestId("self-revoke");
+    expect(revokeStateButton.length).toEqual(3);
+
+    await revokeStateButton[1].click();
+    expect(screen.getByRole("dialog", { name: /Withdraw State Access/i })).toBeInTheDocument();
+
+    const confirmRevokeButton = screen.getByTestId("dialog-accept");
+    await confirmRevokeButton.click();
+    await waitFor(() =>
+      expect(bannerSpy).toHaveBeenCalledWith(
+        expect.objectContaining({
+          header: "Submission Completed",
+        }),
+      ),
+    );
   });
 
   test("renders nothing if user has no states", async () => {
