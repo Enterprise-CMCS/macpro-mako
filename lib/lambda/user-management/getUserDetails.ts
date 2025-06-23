@@ -10,7 +10,7 @@ import {
 } from "./userManagementService";
 
 export const getUserDetailsSchema = z.object({
-  userEmail: z.string().email(),
+  userEmail: z.string().email().optional(),
 });
 
 export const getUserDetails = async (event: APIGatewayEvent) => {
@@ -37,36 +37,33 @@ export const getUserDetails = async (event: APIGatewayEvent) => {
     const currUserDetails = await getUserByEmail(currUserAttributes.email);
     const currLatestActiveRoleObj = await getLatestActiveRoleByEmail(currUserAttributes.email);
 
-    if (event.body) {
-      const eventBody = typeof event.body === "string" ? JSON.parse(event.body) : event.body;
-      const safeEventBody = getUserDetailsSchema.safeParse(eventBody);
-      console.log("safeEventBody", JSON.stringify(safeEventBody, null, 2));
+    // if the event has a body with a userEmail, the userEmail is not the same as
+    // the current user's email, and the current user is a user manager, then
+    // return the data for the userEmail instead of the current user
+    const eventBody = typeof event.body === "string" ? JSON.parse(event.body) : event.body;
+    const safeEventBody = getUserDetailsSchema.safeParse(eventBody);
+    console.log("safeEventBody", JSON.stringify(safeEventBody, null, 2));
+    if (
+      safeEventBody.success &&
+      safeEventBody?.data?.userEmail &&
+      safeEventBody.data.userEmail !== currUserDetails.email &&
+      ["systemadmin", "statesystemadmin", "cmsroleapprover", "helpdesk"].includes(
+        currLatestActiveRoleObj?.role,
+      )
+    ) {
+      // retrieving user details for another user
+      const reqUserDetails = await getUserByEmail(safeEventBody.data.userEmail);
+      const reqUserLatestActiveRoleObj = await getLatestActiveRoleByEmail(
+        safeEventBody.data.userEmail,
+      );
 
-      // if the event has a body with a userEmail, the userEmail is not the same as
-      // the current user's email, and the current user is a user manager, then
-      // return the data for the userEmail instead of the current user
-      if (
-        safeEventBody.success &&
-        safeEventBody?.data?.userEmail &&
-        safeEventBody.data.userEmail !== currUserDetails.email &&
-        ["systemadmin", "statesystemadmin", "cmsroleapprover", "helpdesk"].includes(
-          currLatestActiveRoleObj?.role,
-        )
-      ) {
-        // retrieving user details for another user
-        const reqUserDetails = await getUserByEmail(safeEventBody.data.userEmail);
-        const reqUserLatestActiveRoleObj = await getLatestActiveRoleByEmail(
-          safeEventBody.data.userEmail,
-        );
-
-        return response({
-          statusCode: 200,
-          body: {
-            ...reqUserDetails,
-            role: reqUserLatestActiveRoleObj?.role ?? "norole",
-          },
-        });
-      }
+      return response({
+        statusCode: 200,
+        body: {
+          ...reqUserDetails,
+          role: reqUserLatestActiveRoleObj?.role ?? "norole",
+        },
+      });
     }
 
     const statesUserHasAccessTo = await getActiveStatesForUserByEmail(currUserAttributes.email);

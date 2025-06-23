@@ -15,11 +15,8 @@ export type UserDetails = {
 
 export const getUserDetails = async (userEmail?: string): Promise<UserDetails> => {
   try {
-    const userDetails = await API.post(
-      "os",
-      "/getUserDetails",
-      userEmail ? { body: { userEmail } } : {},
-    );
+    console.log("getUserDetails", userEmail);
+    const userDetails = await API.post("os", "/getUserDetails", { body: { userEmail } });
 
     console.log({ userDetails });
     return userDetails as UserDetails;

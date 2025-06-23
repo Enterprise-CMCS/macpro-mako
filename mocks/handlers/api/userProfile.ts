@@ -4,35 +4,30 @@ import { canRequestAccess, canUpdateAccess, getApprovingRole } from "shared-util
 import {
   getApprovedRoleByEmailAndState,
   getFilteredRoleDocsByEmail,
-  getFilteredRoleDocsByRole,
   getFilteredRoleDocsByState,
+  getFilteredRoleDocsByStateAndRole,
   getFilteredUserDocList,
   getLatestRoleByEmail,
   getUserByUsername,
   osUsers,
   roleDocs,
 } from "../../data";
-import { SubmitRoleRequestBody, TestRoleDocument, UserProfileRequestBody } from "../../index.d";
-import { getMockUsername } from "../auth.utils";
+import {
+  SubmitRoleRequestBody,
+  TestRoleDocument,
+  UserDetailsRequestBody,
+  UserProfileRequestBody,
+} from "../../index.d";
+import { getMockUserEmail, getMockUsername } from "../auth.utils";
 
 const defaultApiUserProfileHandler = http.post<PathParams, UserProfileRequestBody>(
   "https://test-domain.execute-api.us-east-1.amazonaws.com/mocked-tests/getUserProfile",
   async ({ request }) => {
-    let email;
-    if (Object.hasOwn(request, "body")) {
-      const { userEmail } = await request.json();
-      email = userEmail;
-    } else {
-      const username = getMockUsername();
-      if (!username) {
-        return HttpResponse.json([]);
-      }
-      const user = getUserByUsername(username);
-      if (!user) {
-        return HttpResponse.json([]);
-      }
-      email = user?.email;
-    }
+    const { userEmail } = await request.json();
+
+    const email = userEmail || getMockUserEmail();
+    console.log({ email });
+
     const roles = getFilteredRoleDocsByEmail(email || "");
 
     return HttpResponse.json(roles);
@@ -225,24 +220,20 @@ export const errorApiSubmitRoleRequestsHandler = http.post(
   async () => new HttpResponse("Response Error", { status: 500 }),
 );
 
-const defaultGetApproversHandler = http.post(
+const defaultGetApproversHandler = http.post<PathParams, UserDetailsRequestBody>(
   "https://test-domain.execute-api.us-east-1.amazonaws.com/mocked-tests/getApprovers",
-  async () => {
-    const username = process.env.MOCK_USER_USERNAME;
-    if (!username) {
-      return HttpResponse.json({
-        message: "No username found",
-        approverList: [],
-      });
-    }
-    const user = getUserByUsername(username);
-    if (!user) {
+  async ({ request }) => {
+    const { userEmail } = await request.json();
+
+    const email = userEmail || getMockUserEmail();
+    console.log({ email });
+
+    if (!email) {
       return HttpResponse.json({
         message: "No user found",
         approverList: [],
       });
     }
-    const email = user?.email;
 
     const roles = getFilteredRoleDocsByEmail(email || "");
 
@@ -253,13 +244,18 @@ const defaultGetApproversHandler = http.post(
     const approverGroups: Record<string, Record<string, ApproverGroup[]>> = {};
 
     for (const roleItem of roles) {
+      const territory = roleItem.territory;
       const originalRole = roleItem.role;
       const approverRole = getApprovingRole(originalRole);
-      const approverDocs = getFilteredRoleDocsByRole(approverRole);
+      const approverDocs = getFilteredRoleDocsByStateAndRole(territory, approverRole);
+
+      const group = (approverGroups[originalRole] ??= {});
+
+      if (approverDocs.length === 0) {
+        group[territory] ??= [];
+      }
 
       for (const doc of approverDocs) {
-        const territory = doc.territory;
-        const group = (approverGroups[originalRole] ??= {});
         (group[territory] ??= []).push({
           email: doc.email,
           territory,

@@ -66,15 +66,12 @@ export function attachApproversToStateAccess(
 
 export const getUserProfile = async (userEmail?: string): Promise<OneMacUserProfile> => {
   try {
-    const stateAccess = await API.post(
-      "os",
-      "/getUserProfile",
-      userEmail ? { body: { userEmail } } : {},
-    );
+    const stateAccess = await API.post("os", "/getUserProfile", { body: { userEmail } });
 
     let approvers: any = { approverList: [] };
     try {
-      approvers = await API.post("os", "/getApprovers", userEmail ? { body: { userEmail } } : {});
+      approvers = await API.post("os", "/getApprovers", { body: { userEmail } });
+      console.log(JSON.stringify(approvers, null, 2));
     } catch (approverError) {
       console.log("Error fetching approvers:", approverError);
     }

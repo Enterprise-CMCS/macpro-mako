@@ -33,17 +33,15 @@ const getApprovers = async (event: APIGatewayEvent) => {
     const { email } = await lookupUserAttributes(userId, poolId);
     let lookupEmail = email;
 
-    if (event.body) {
-      const eventBody = typeof event.body === "string" ? JSON.parse(event.body) : event.body;
-      const safeEventBody = getUserProfileSchema.safeParse(eventBody);
+    const eventBody = typeof event.body === "string" ? JSON.parse(event.body) : event.body;
+    const safeEventBody = getUserProfileSchema.safeParse(eventBody);
 
-      if (
-        safeEventBody.success &&
-        safeEventBody?.data?.userEmail &&
-        safeEventBody.data.userEmail !== email
-      ) {
-        lookupEmail = safeEventBody.data.userEmail;
-      }
+    if (
+      safeEventBody.success &&
+      safeEventBody?.data?.userEmail &&
+      safeEventBody.data.userEmail !== email
+    ) {
+      lookupEmail = safeEventBody.data.userEmail;
     }
 
     const userRoles = await getAllUserRolesByEmail(lookupEmail);

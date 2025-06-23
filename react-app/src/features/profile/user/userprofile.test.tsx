@@ -10,7 +10,7 @@ import {
   systemAdmin,
   TEST_STATE_SUBMITTER_EMAIL,
 } from "mocks";
-import { beforeEach, describe, expect, test } from "vitest";
+import { beforeEach, describe, expect, it } from "vitest";
 
 import { renderWithQueryClientAndMemoryRouter } from "@/utils/test-helpers";
 
@@ -54,13 +54,13 @@ describe("User Profile", () => {
     setMockUsername(systemAdmin);
   });
 
-  test("should redirect to / if the user is not a user manager role", async () => {
+  it("should redirect to / if the user is not a user manager role", async () => {
     setMockUsername(stateSubmitter);
     await setup(TEST_STATE_SUBMITTER_EMAIL);
     expect(screen.queryByText("User Profile")).toBeNull();
   });
 
-  test("renders state access management", async () => {
+  it("renders state access management", async () => {
     await setup(TEST_STATE_SUBMITTER_EMAIL);
     await waitFor(() =>
       expect(
@@ -118,7 +118,7 @@ describe("User Profile", () => {
     expect(screen.queryByRole("heading", { name: "Group & Division", level: 2 })).toBeNull();
   });
 
-  test("renders State Access Management for statesystemadmin", async () => {
+  it("renders State Access Management for statesystemadmin", async () => {
     await setup(STATE_SYSTEM_ADMIN_EMAIL);
     await waitFor(() =>
       expect(
@@ -129,7 +129,7 @@ describe("User Profile", () => {
     expect(screen.queryByRole("heading", { name: "Group & Division", level: 2 })).toBeNull();
   });
 
-  test("renders Status if the user is not a statesubmitter or statesystemadmin", async () => {
+  it("renders Status if the user is not a statesubmitter or statesystemadmin", async () => {
     await setup(DEFAULT_CMS_USER_EMAIL);
     await waitFor(() =>
       expect(screen.getByRole("heading", { name: "Status", level: 2 })).toBeInTheDocument(),
@@ -138,7 +138,7 @@ describe("User Profile", () => {
     expect(screen.queryByRole("heading", { name: "Group & Division", level: 2 })).toBeNull();
   });
 
-  test("renders Status if the user is not a statesubmitter or statesystemadmin", async () => {
+  it("renders Status if the user is not a statesubmitter or statesystemadmin", async () => {
     await setup(SYSTEM_ADMIN_EMAIL);
     await waitFor(() =>
       expect(screen.getByRole("heading", { name: "Status", level: 2 })).toBeInTheDocument(),
@@ -147,7 +147,7 @@ describe("User Profile", () => {
     expect(screen.queryByRole("heading", { name: "Group & Division", level: 2 })).toBeNull();
   });
 
-  test("renders Group & Division if the user is a cmsroleapprover", async () => {
+  it("renders Group & Division if the user is a cmsroleapprover", async () => {
     await setup(CMS_ROLE_APPROVER_EMAIL);
     await waitFor(() =>
       expect(screen.getByRole("heading", { name: "Status", level: 2 })).toBeInTheDocument(),

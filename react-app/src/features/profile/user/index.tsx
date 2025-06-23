@@ -30,11 +30,14 @@ export const userProfileLoader = async ({
     }
 
     const userEmail = LZ.decompressFromEncodedURIComponent(profileId.replaceAll("_", "+"));
+    console.log("in loader", userEmail);
 
     if (!userEmail) return redirect("/usermanagement");
 
     const profileUserDetails = await getUserDetails(userEmail);
+    console.log({ profileUserDetails });
     const profileUserProfile = await getUserProfile(userEmail);
+    console.log({ profileUserProfile });
 
     return { userDetails: profileUserDetails, userProfile: profileUserProfile };
   } catch (error) {

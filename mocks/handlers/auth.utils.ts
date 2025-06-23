@@ -128,10 +128,8 @@ export const getAttributeFromUser = (user: TestUserData, attrName: string): stri
 };
 
 export const getMockUsername = (): string | null => {
-  if (typeof window === "undefined") {
-    if (process?.env) {
-      return process.env.MOCK_USER_USERNAME || null;
-    }
+  if (process?.env) {
+    return process.env.MOCK_USER_USERNAME || null;
   }
   if (window?.localStorage) {
     return window.localStorage.getItem(
@@ -163,15 +161,13 @@ export const setMockUsername = async (
     username = (user as TestUserDataWithRole).Username;
   }
 
-  if (typeof window === "undefined") {
-    if (process?.env) {
-      if (username) {
-        process.env.MOCK_USER_USERNAME = username;
-      } else {
-        delete process.env.MOCK_USER_USERNAME;
-      }
+  if (process?.env) {
+    if (username) {
+      process.env.MOCK_USER_USERNAME = username;
+    } else {
+      delete process.env.MOCK_USER_USERNAME;
     }
-  } else if (window?.localStorage) {
+  } else if (window?.localStorage?.setItem) {
     if (username) {
       window.localStorage.setItem(
         `CognitoIdentityServiceProvider.${USER_POOL_CLIENT_ID}.LastAuthUser`,

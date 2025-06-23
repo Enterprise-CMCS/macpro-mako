@@ -35,7 +35,7 @@ export default defineConfig(({ mode }) => {
       root: "react-app",
       setupFiles: "vitest.setup.ts",
       exclude: ["**/node_modules/**"],
-      environment: "happy-dom",
+      environment: "jsdom",
     },
     resolve: {
       alias: {

@@ -1,4 +1,4 @@
-import { http, HttpResponse, PathParams } from "msw";
+import { http, HttpResponse } from "msw";
 
 import { getUserByUsername } from "../../data";
 import { getFilteredUserResultList } from "../../data/osusers";
@@ -6,21 +6,12 @@ import { getFilteredRoleDocsByEmail, getLatestRoleByEmail } from "../../data/rol
 import { UserDetailsRequestBody } from "../../index.d";
 import { getMockUserEmail, getMockUsername } from "../auth.utils";
 
-export const defaultApiUserDetailsHandler = http.post<PathParams, UserDetailsRequestBody>(
+export const defaultApiUserDetailsHandler = http.post<any, UserDetailsRequestBody>(
   "https://test-domain.execute-api.us-east-1.amazonaws.com/mocked-tests/getUserDetails",
   async ({ request }) => {
-    let email;
-    if (Object.hasOwn(request, "body")) {
-      try {
-        const bodyJSON = await request.json();
-        email = bodyJSON?.userEmail;
-      } catch (err) {
-        console.error(err);
-        email = getMockUserEmail();
-      }
-    } else {
-      email = getMockUserEmail();
-    }
+    const { userEmail } = await request.json();
+
+    const email = userEmail || getMockUserEmail();
     console.log({ email });
 
     if (!email) {
@@ -37,7 +28,7 @@ export const defaultApiUserDetailsHandler = http.post<PathParams, UserDetailsReq
   },
 );
 
-export const errorApiUserDetailsHandler = http.post<PathParams, UserDetailsRequestBody>(
+export const errorApiUserDetailsHandler = http.post<UserDetailsRequestBody, UserDetailsRequestBody>(
   "https://test-domain.execute-api.us-east-1.amazonaws.com/mocked-tests/getUserDetails",
   () => {
     console.log("throw error");

@@ -6,7 +6,7 @@ import { z } from "zod";
 import { getAllUserRolesByEmail, getLatestActiveRoleByEmail } from "./userManagementService";
 
 export const getUserProfileSchema = z.object({
-  userEmail: z.string().email(),
+  userEmail: z.string().email().optional(),
 });
 
 export const getUserProfile = async (event: APIGatewayEvent) => {
@@ -31,32 +31,29 @@ export const getUserProfile = async (event: APIGatewayEvent) => {
     const { userId, poolId } = currAuthDetails;
     const currUserAttributes = await lookupUserAttributes(userId, poolId);
 
-    if (event.body) {
-      const eventBody = typeof event.body === "string" ? JSON.parse(event.body) : event.body;
-      const safeEventBody = getUserProfileSchema.safeParse(eventBody);
-
-      // if the event has a body with a userEmail, the userEmail is not the same as
-      // the current user's email, and the current user is a user manager, then
-      // return the data for the userEmail instead of the current user
+    // if the event has a body with a userEmail, the userEmail is not the same as
+    // the current user's email, and the current user is a user manager, then
+    // return the data for the userEmail instead of the current user
+    const eventBody = typeof event.body === "string" ? JSON.parse(event.body) : event.body;
+    const safeEventBody = getUserProfileSchema.safeParse(eventBody);
+    if (
+      safeEventBody.success &&
+      safeEventBody?.data?.userEmail &&
+      safeEventBody.data.userEmail !== currUserAttributes.email
+    ) {
+      const currUserLatestActiveRoleObj = await getLatestActiveRoleByEmail(
+        currUserAttributes.email,
+      );
       if (
-        safeEventBody.success &&
-        safeEventBody?.data?.userEmail &&
-        safeEventBody.data.userEmail !== currUserAttributes.email
+        ["systemadmin", "statesystemadmin", "cmsroleapprover", "helpdesk"].includes(
+          currUserLatestActiveRoleObj?.role,
+        )
       ) {
-        const currUserLatestActiveRoleObj = await getLatestActiveRoleByEmail(
-          currUserAttributes.email,
-        );
-        if (
-          ["systemadmin", "statesystemadmin", "cmsroleapprover", "helpdesk"].includes(
-            currUserLatestActiveRoleObj?.role,
-          )
-        ) {
-          const opensearchResponse = await getAllUserRolesByEmail(safeEventBody.data.userEmail);
-          return response({
-            statusCode: 200,
-            body: opensearchResponse,
-          });
-        }
+        const opensearchResponse = await getAllUserRolesByEmail(safeEventBody.data.userEmail);
+        return response({
+          statusCode: 200,
+          body: opensearchResponse,
+        });
       }
     }
 

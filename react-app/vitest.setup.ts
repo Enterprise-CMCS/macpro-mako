@@ -1,69 +1,16 @@
-import * as node from "node:util";
-
 import * as matchers from "@testing-library/jest-dom/matchers";
 import { cleanup } from "@testing-library/react";
-// import { Amplify, Auth } from "aws-amplify";
-import { Amplify } from "aws-amplify";
+import { Amplify, Auth } from "aws-amplify";
 import {
   API_CONFIG,
   AUTH_CONFIG,
-  // mockCurrentAuthenticatedUser,
-  // mockUserAttributes,
+  mockCurrentAuthenticatedUser,
+  mockUserAttributes,
   setDefaultStateSubmitter,
-  // setMockUsername,
+  setMockUsername,
 } from "mocks";
 import { mockedApiServer as mockedServer } from "mocks/server";
 import { afterAll, afterEach, beforeAll, expect, vi } from "vitest";
-
-// // JSDom + Vitest don't play well with each other. Long story short - default
-// // TextEncoder produces Uint8Array objects that are _different_ from the global
-// // Uint8Array objects, so some functions that compare their types explode.
-// // https://github.com/vitest-dev/vitest/issues/4043#issuecomment-1905172846
-// class ESBuildAndJSDOMCompatibleTextEncoder extends TextEncoder {
-//   constructor() {
-//     super();
-//   }
-
-//   encode(input: string) {
-//     if (typeof input !== "string") {
-//       throw new TypeError("`input` must be a string");
-//     }
-
-//     const decodedURI = decodeURIComponent(encodeURIComponent(input));
-//     const arr = new Uint8Array(decodedURI.length);
-//     const chars = decodedURI.split("");
-//     for (let i = 0; i < chars.length; i++) {
-//       arr[i] = decodedURI[i].charCodeAt(0);
-//     }
-//     return arr;
-//   }
-// }
-
-global.TextEncoder = node.TextEncoder as any;
-window.TextEncoder = node.TextEncoder as any;
-
-// class ESBuildAndJSDOMCompatibleTextDecoder extends TextDecoder {
-//   constructor() {
-//     super();
-//   }
-
-//   encode(input: Uint8Array<ArrayBuffer>) {
-//     if (typeof input !== "object") {
-//       throw new TypeError("`input` must be an object");
-//     }
-
-//     const encodedURI = encodeURIComponent(decodeURIComponent(input));
-//     const arr = new Uint8Array(encodedURI.length);
-//     const chars = encodedURI.split("");
-//     for (let i = 0; i < chars.length; i++) {
-//       arr[i] = encodedURI[i].charCodeAt(0);
-//     }
-//     return arr;
-//   }
-// }
-
-global.TextDecoder = node.TextDecoder as any;
-window.TextDecoder = node.TextDecoder as any;
 
 // TODO to mock
 // [MSW] Warning: intercepted a request without a matching request handler:
@@ -99,11 +46,11 @@ process.env.TZ = "UTC";
 // Add this to remove all the expected errors in console when running unit tests.
 vi.spyOn(console, "error").mockImplementation(() => {});
 
-// vi.spyOn(Auth, "userAttributes").mockImplementation(mockUserAttributes);
-// vi.spyOn(Auth, "currentAuthenticatedUser").mockImplementation(mockCurrentAuthenticatedUser);
-// vi.spyOn(Auth, "signOut").mockImplementation(async () => {
-//   setMockUsername(null);
-// });
+vi.spyOn(Auth, "userAttributes").mockImplementation(mockUserAttributes);
+vi.spyOn(Auth, "currentAuthenticatedUser").mockImplementation(mockCurrentAuthenticatedUser);
+vi.spyOn(Auth, "signOut").mockImplementation(async () => {
+  setMockUsername(null);
+});
 
 global.ResizeObserver = vi.fn().mockImplementation(() => ({
   observe: vi.fn(),
