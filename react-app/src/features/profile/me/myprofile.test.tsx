@@ -9,7 +9,6 @@ import {
 } from "mocks";
 import { beforeEach, describe, expect, test, vi } from "vitest";
 
-import { useSubmitRoleRequests } from "@/api";
 import * as components from "@/components";
 import { renderWithQueryClientAndMemoryRouter } from "@/utils/test-helpers";
 
