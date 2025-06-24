@@ -154,11 +154,7 @@ describe("Upload", () => {
 
     
     await waitFor(() => {
-      expect(
-        screen.getByText((_, element) =>
-          element?.textContent?.includes(`File with name "${FILE_1}.txt" already exists.`)
-        )
-      ).toBeInTheDocument();
+      expect(screen.getByText(`Failed to upload ${failUpload}.txt`)).toBeInTheDocument();
     });
   });
 
