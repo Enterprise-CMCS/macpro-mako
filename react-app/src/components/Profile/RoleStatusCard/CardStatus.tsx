@@ -14,8 +14,8 @@ export const CardStatus = ({
     : roleAccessStatus[status];
   return (
     <div className="flex items-center gap-2">
-      {status === "denied" && <XCircle className="text-red-500" />}
-      {status === "pending" && <Clock className="text-yellow-500" />}
+      {isNewUserRoleDisplay && status === "denied" && <XCircle className="text-red-500" />}
+      {isNewUserRoleDisplay && status === "pending" && <Clock className="text-yellow-500" />}
       <p className="italic">{statusLanguage}</p>
     </div>
   );
