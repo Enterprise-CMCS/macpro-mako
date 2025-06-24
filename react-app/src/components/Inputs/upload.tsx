@@ -91,11 +91,13 @@ export const Upload = ({ maxFiles, files, setFiles, dataTestId, type }: UploadPr
 
       const fileType = dropzoneRef.current?.getAttribute("data-label");
       const submissionType = mapSubmissionTypeBasedOnActionFormTitle(type);
-      sendGAEvent("submit_file_upload", {
+      if(acceptedFiles[0]) {
+        sendGAEvent("submit_file_upload", {
           submission_type: submissionType,
           file_type: fileType,
           file_size_bytes: acceptedFiles[0].size
         });
+      }
       setRejectedFiles(fileRejections);
       if (fileRejections.length === 0) {
         setIsUploading(true); // Set uploading to true
