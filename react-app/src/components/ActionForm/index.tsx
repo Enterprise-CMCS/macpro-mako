@@ -132,7 +132,6 @@ export const ActionForm = <Schema extends SchemaWithEnforcableProps>({
   const [startTimePage , setStartTimePage] = useState(Date.now());
 
   useEffect(()=> {
-    console.log("submit_page_open for title: ", title)
     if (typeof window.gtag == "function"){
       let submissionType;
       if(title.includes("CHIP SPA Details")) {
@@ -351,7 +350,6 @@ export const ActionForm = <Schema extends SchemaWithEnforcableProps>({
                   type="reset"
                   onClick={() =>{
                     const timeOnPageSec = (Date.now() - startTimePage)/1000;
-                    console.log("sibmit cancel event with submission type: "+ title + "and time on page of: " +timeOnPageSec)
                     sendGAEvent("submit_cancel", {
                         submission_type: title,
                         time_on_page_sec:timeOnPageSec
@@ -423,7 +421,6 @@ export const ActionForm = <Schema extends SchemaWithEnforcableProps>({
                     },
                   });
                   const timeOnPageSec = (Date.now() - startTimePage)/1000;
-                  console.log("sibmit cancel event with submission type: "+ title + "and time on page of: " + timeOnPageSec);
                   sendGAEvent("submit_cancel", {
                       submission_type: title,
                       time_on_page_sec:timeOnPageSec

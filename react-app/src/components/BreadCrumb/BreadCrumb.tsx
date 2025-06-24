@@ -81,7 +81,6 @@ export const BreadCrumb = ({
             }
 
             if (submissionType) {
-              console.log("send GA event with submission type: ", submissionType);
               sendGAEvent("submit_breadcrumb_click", {
                 crumb_name:  typeof children === "string" ? children : undefined,
                 submission_type: submissionType

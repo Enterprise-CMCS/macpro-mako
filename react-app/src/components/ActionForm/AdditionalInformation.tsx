@@ -23,7 +23,6 @@ const [inputValue, setInputValue] =  useState("");
 const handleInputChange = (event)=> {
   if (event.target.value.length == 1) {
     const mappedSubmissionType = mapSubmissionTypeBasedOnActionFormTitle(submissionTitle);
-    console.log("user has typed into additional information box, submissionType: ", mappedSubmissionType);
     sendGAEvent("submit_additional_info_used", {submission_type: mappedSubmissionType})
   }
   setInputValue(event.target.value);

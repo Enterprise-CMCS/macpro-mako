@@ -39,8 +39,7 @@ export const PackageSearch = () => {
       <RadioGroup
         value={tabChoice}
         onValueChange={(e) => {
-          setTabChoice(e)
-          console.log("e: ", e);
+          setTabChoice(e);
           if (e === "spas") {
             triggerGAEvent("home_search_radio", e);
           } else if (e === "waivers") {
