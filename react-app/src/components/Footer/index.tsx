@@ -25,8 +25,8 @@ type MedSpaFooterProps = {
 
 export const Footer = ({ email, address, showNavLinks }: Props) => {
   const shouldShowNavLinks = showNavLinks ?? true;
-  const { isLoading: userLoading, data: user } = useGetUser();
-  const { data: userDetailsData, isLoading: userDetailsLoading } = useGetUserDetails();
+  const { data: user } = useGetUser();
+  const { data: userDetailsData } = useGetUserDetails();
   const showUserManagement = useMemo(() => {
     const role = userDetailsData?.role;
     return ["systemadmin", "statesystemadmin", "cmsroleapprover", "helpdesk"].includes(role);
