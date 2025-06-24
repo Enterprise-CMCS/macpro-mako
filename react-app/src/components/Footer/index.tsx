@@ -1,6 +1,5 @@
 import { useEffect, useMemo, useState } from "react";
 import { Link } from "react-router";
-import { UserRoles } from "shared-types";
 import { isStateUser } from "shared-utils";
 
 import { useGetUser, useGetUserDetails } from "@/api";
@@ -32,12 +31,6 @@ export const Footer = ({ email, address, showNavLinks }: Props) => {
     const role = userDetailsData?.role;
     return ["systemadmin", "statesystemadmin", "cmsroleapprover", "helpdesk"].includes(role);
   }, [userDetailsData]);
-  const showDashboard = useMemo(() => {
-    const role = user?.user?.role as UserRoles | undefined;
-
-    return role && Object.values(UserRoles).includes(role) && role !== UserRoles.CMS_REVIEWER;
-  }, [user]);
-
   const isStateHomepage = useFeatureFlag("STATE_HOMEPAGE_FLAG");
 
   return (
@@ -50,11 +43,10 @@ export const Footer = ({ email, address, showNavLinks }: Props) => {
                 <p>Home</p>
               </a>
 
-              {showDashboard && (
-                <a href="/dashboard" className="underline font-bold">
-                  <p>Dashboard</p>
-                </a>
-              )}
+              <a href="/dashboard" className="underline font-bold">
+                <p>Dashboard</p>
+              </a>
+
               {showUserManagement && (
                 <a href="/usermanagement" className="underline font-bold">
                   <p>User Management</p>
