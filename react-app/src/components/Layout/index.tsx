@@ -56,8 +56,7 @@ const useGetLinks = () => {
               userObj.user &&
               Object.values(UserRoles).some((role) => {
                 return userObj.user.role === role;
-              }) &&
-              userObj.user.role !== "cmsroleapprover",
+              }),
           },
           {
             name: "User Management",
