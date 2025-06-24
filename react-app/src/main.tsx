@@ -6,7 +6,6 @@ import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 import { asyncWithLDProvider } from "launchdarkly-react-client-sdk";
 import React from "react";
 import ReactDOM from "react-dom/client";
-import ReactGA from "react-ga4";
 import { RouterProvider } from "react-router";
 
 import config from "@/config";
@@ -15,11 +14,7 @@ import { queryClient } from "@/utils";
 import { useFeatureFlag } from "./hooks/useFeatureFlag";
 import { router } from "./router";
 
-// import "../globals";
-
 const ldClientId = config.launchDarkly?.CLIENT_ID;
-// const googleAnalyticsGtag = config.googleAnalytics?.GOOGLE_ANALYTICS_ID;
-const googleAnalyticsGtag = "G-03XK6P2CKS"
 
 if (ldClientId === undefined) {
   throw new Error("To configure LaunchDarkly, you must set LAUNCHDARKLY_CLIENT_ID");

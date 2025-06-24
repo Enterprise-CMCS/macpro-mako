@@ -65,11 +65,8 @@
             window.gtag = gtag;
     
             gtag('js', new Date());
-            gtag('config', GA_ID, {
-              send_page_view: false, // set to false since we are sending a custom page view with page time 
-            });
             // should toggle on for development and off before deployment to higher env's
-            gtag('set', { debug_mode: true });
+            gtag('set', { debug_mode: false });
             console.log('GA initialized with ID:', GA_ID);
           } catch (e) {
             console.warn('Invalid JSON, printing raw contents:\n', text);

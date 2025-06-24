@@ -8,6 +8,7 @@ import { Authority, CognitoUserAttributes } from "shared-types";
 import { isStateUser } from "shared-utils";
 import { z } from "zod";
 import { sendGAEvent } from "@/utils/ReactGA/SendGAEvent";
+import {mapSubmissionTypeBasedOnActionFormTitle} from "../../utils/ReactGA/Mapper";
 
 import { useGetUser } from "@/api";
 import { MedSpaFooter } from "@/components";
@@ -133,28 +134,7 @@ export const ActionForm = <Schema extends SchemaWithEnforcableProps>({
 
   useEffect(()=> {
     if (typeof window.gtag == "function"){
-      let submissionType;
-      if(title.includes("CHIP SPA Details")) {
-        submissionType="chip spa";
-      } else if (title.includes("Medicaid SPA Details")) {
-        submissionType="medicaid spa";
-      } else if (title.includes("Temporary Extension Request Details")) {
-        submissionType="temporary extension";
-      } else if (title.includes("1915(b)(4) FFS Selective Contracting Initial Waiver Details")) {
-        submissionType="1915b(4) initial waiver";
-      } else if (title.includes("1915(b)(4) FFS Selective Contracting Renewal Waiver Details")) {
-        submissionType="1915b(4) waiver renewal";
-      } else if (title.includes("1915(b)(4) FFS Selective Contracting Waiver Amendment Details")) {
-        submissionType="1915b(4) waiver amendment";
-      } else if (title.includes("1915(b) Comprehensive (Capitated) Initial Waiver Details")) {
-        submissionType="1915b capitated inital";
-      } else if (title.includes("1915(b) Comprehensive (Capitated) Renewal Waiver Details")) {
-        submissionType="1915b capitated renewal";
-      } else if (title.includes("1915(b) Comprehensive (Capitated) Waiver Amendment Details")) {
-        submissionType="1915b capitated amendment";
-      } else if (title.includes("1915(c) Appendix K Amendment Details")) {
-        submissionType="1915c app-k"
-      }
+      let submissionType = mapSubmissionTypeBasedOnActionFormTitle(title);
       // send package action event
       sendGAEvent("submit_page_open", { submission_type: submissionType ? submissionType : title })
     }
@@ -220,10 +200,6 @@ export const ActionForm = <Schema extends SchemaWithEnforcableProps>({
 
       const timeOnPageSec = (Date.now() - startTimePage) /1000; 
 
-
-      console.log(" sumbit page exit event with page duration: ", timeOnPageSec);
-      console.log(" submit click event with event: ", formData.event);
-
       sendGAEvent("submission_submit_click", { package_type: formData.event });
       sendGAEvent( "submit_page_exit", {
         submission_type: formData.event, 
@@ -255,7 +231,6 @@ export const ActionForm = <Schema extends SchemaWithEnforcableProps>({
   if (!userObj || doesUserHaveAccessToForm === false) {
     return <Navigate to="/" replace />;
   }
-
 
   return (
     <SimplePageContainer>
