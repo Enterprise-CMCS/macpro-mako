@@ -2,13 +2,13 @@ import { APIGatewayEvent } from "aws-lambda";
 import {
   errorRoleSearchHandler,
   getRequestContext,
+  MAKO_STATE_SUBMITTER_EMAIL,
   makoStateSubmitter,
   noStateSubmitter,
+  OS_STATE_SYSTEM_ADMIN_EMAIL,
   osStateSystemAdmin,
   setDefaultStateSubmitter,
   setMockUsername,
-  STATE_SYSTEM_ADMIN_EMAIL,
-  TEST_STATE_SUBMITTER_EMAIL,
 } from "mocks";
 import { mockedServiceServer as mockedServer } from "mocks/server";
 import { beforeEach, describe, expect, it } from "vitest";
@@ -89,7 +89,7 @@ describe("getUserDetails handler", () => {
     const event = {
       requestContext: getRequestContext(),
       body: JSON.stringify({
-        userEmail: TEST_STATE_SUBMITTER_EMAIL,
+        userEmail: MAKO_STATE_SUBMITTER_EMAIL,
       }),
     } as APIGatewayEvent;
 
@@ -98,9 +98,9 @@ describe("getUserDetails handler", () => {
     expect(res.statusCode).toEqual(200);
     expect(res.body).toEqual(
       JSON.stringify({
-        id: TEST_STATE_SUBMITTER_EMAIL,
+        id: MAKO_STATE_SUBMITTER_EMAIL,
         eventType: "user-info",
-        email: TEST_STATE_SUBMITTER_EMAIL,
+        email: MAKO_STATE_SUBMITTER_EMAIL,
         fullName: "Stateuser Tester",
         role: "statesubmitter",
         states: ["VA", "OH", "SC", "CO", "GA", "MD"],
@@ -114,7 +114,7 @@ describe("getUserDetails handler", () => {
     const event = {
       requestContext: getRequestContext(),
       body: JSON.stringify({
-        userEmail: STATE_SYSTEM_ADMIN_EMAIL,
+        userEmail: OS_STATE_SYSTEM_ADMIN_EMAIL,
       }),
     } as APIGatewayEvent;
 
@@ -123,9 +123,9 @@ describe("getUserDetails handler", () => {
     expect(res.statusCode).toEqual(200);
     expect(res.body).toEqual(
       JSON.stringify({
-        id: STATE_SYSTEM_ADMIN_EMAIL,
+        id: OS_STATE_SYSTEM_ADMIN_EMAIL,
         eventType: "user-info",
-        email: STATE_SYSTEM_ADMIN_EMAIL,
+        email: OS_STATE_SYSTEM_ADMIN_EMAIL,
         fullName: "Statesystemadmin Nightwatch",
         role: "statesystemadmin",
         states: ["MD"],
@@ -137,7 +137,7 @@ describe("getUserDetails handler", () => {
     const event = {
       requestContext: getRequestContext(),
       body: JSON.stringify({
-        userEmail: STATE_SYSTEM_ADMIN_EMAIL,
+        userEmail: OS_STATE_SYSTEM_ADMIN_EMAIL,
       }),
     } as APIGatewayEvent;
 
@@ -146,9 +146,9 @@ describe("getUserDetails handler", () => {
     expect(res.statusCode).toEqual(200);
     expect(res.body).toEqual(
       JSON.stringify({
-        id: TEST_STATE_SUBMITTER_EMAIL,
+        id: MAKO_STATE_SUBMITTER_EMAIL,
         eventType: "user-info",
-        email: TEST_STATE_SUBMITTER_EMAIL,
+        email: MAKO_STATE_SUBMITTER_EMAIL,
         fullName: "Stateuser Tester",
         role: "statesubmitter",
         states: ["VA", "OH", "SC", "CO", "GA", "MD"],

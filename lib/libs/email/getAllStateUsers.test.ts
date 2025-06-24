@@ -13,28 +13,22 @@ describe("getAllStateUsers", () => {
     const result = await getAllStateUsers({ userPoolId: USER_POOL_ID, state: "CA" });
     expect(result).toEqual([
       {
-        firstName: "George",
-        lastName: "Harrison",
-        email: "george@example.com",
-        formattedEmailAddress: "George Harrison <george@example.com>",
-      },
-      {
         firstName: "Multi",
         lastName: "State",
         email: "multistate@example.com",
         formattedEmailAddress: "Multi State <multistate@example.com>",
       },
       {
-        firstName: "Otto",
-        lastName: "State",
-        email: "automated-state@example.com",
-        formattedEmailAddress: "Otto State <automated-state@example.com>",
-      },
-      {
         email: "statesubmitter@nightwatch.test",
         firstName: "State",
         formattedEmailAddress: "State Submitter Test <statesubmitter@nightwatch.test>",
         lastName: "Submitter Test",
+      },
+      {
+        firstName: "George",
+        lastName: "Harrison",
+        email: "george@example.com",
+        formattedEmailAddress: "George Harrison <george@example.com>",
       },
     ]);
   });
