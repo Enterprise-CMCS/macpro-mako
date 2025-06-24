@@ -107,7 +107,7 @@ const UserDropdownMenu = () => {
   const navigate = useNavigate();
   const { data: userDetails, isLoading } = useGetUserDetails();
   const { data: userProfile } = useGetUserProfile();
-  const isNewUserRoleDisplay = useFeatureFlag("NEW_USER_ROLE_DISPLAY");
+  const isNewUserRoleDisplay = useFeatureFlag("SHOW_USER_ROLE_UPDATE");
 
   // Disable page if user has a pending request
   // Certain roles cannot be changed

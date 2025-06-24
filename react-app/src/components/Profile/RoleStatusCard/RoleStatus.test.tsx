@@ -8,7 +8,7 @@ let mockUserRoleFeatureFlag = false;
 
 vi.mock("@/hooks/useFeatureFlag", () => ({
   useFeatureFlag: (flag: string) => {
-    if (flag === "NEW_USER_ROLE_DISPLAY") return mockUserRoleFeatureFlag;
+    if (flag === "SHOW_USER_ROLE_UPDATE") return mockUserRoleFeatureFlag;
     return false;
   },
 }));

@@ -34,7 +34,7 @@ export const MyProfile = () => {
 
   // console.log(userProfile);
 
-  const isNewUserRoleDisplay = useFeatureFlag("NEW_USER_ROLE_DISPLAY");
+  const isNewUserRoleDisplay = useFeatureFlag("SHOW_USER_ROLE_UPDATE");
 
   const { mutateAsync: submitRequest, isLoading: areRolesLoading } = useSubmitRoleRequests();
   const [selfRevokeState, setSelfRevokeState] = useState<StateCode | null>(null);

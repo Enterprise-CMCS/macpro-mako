@@ -9,7 +9,7 @@ export type UserInformationProps = {
 };
 
 export const UserInformation = ({ fullName, role, email, groupDivision }: UserInformationProps) => {
-  const isNewUserRoleDisplay = useFeatureFlag("NEW_USER_ROLE_DISPLAY");
+  const isNewUserRoleDisplay = useFeatureFlag("SHOW_USER_ROLE_UPDATE");
 
   return (
     <div className="flex flex-col gap-6 md:basis-1/2">

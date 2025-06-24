@@ -61,7 +61,7 @@ export const UserProfile = () => {
     [filteredRoleStatus],
   );
 
-  const isNewUserRoleDisplay = useFeatureFlag("NEW_USER_ROLE_DISPLAY");
+  const isNewUserRoleDisplay = useFeatureFlag("SHOW_USER_ROLE_UPDATE");
 
   return (
     <>
