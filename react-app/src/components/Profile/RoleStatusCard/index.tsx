@@ -35,7 +35,7 @@ const StateUserRoleCard = ({
       <div className="flex justify-between">
         <h3 className="text-xl font-bold">
           {isNewUserRoleDisplay
-            ? userRoleMap[access.role]
+            ? `${userRoleMap[access.role]} - ${access.territory}`
             : convertStateAbbrToFullName(access.territory)}
         </h3>
         {role === "statesubmitter" && (

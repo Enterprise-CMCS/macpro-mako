@@ -13,5 +13,7 @@ export const useFeatureFlag = (flagKey: keyof typeof featureFlags): boolean => {
     featureFlags[flagKey].defaultValue,
   );
 
+  console.log("Flag key:", flagKey, featureFlags[flagKey].flag, flagValue);
+
   return flagValue === "on" || flagValue === true;
 };
