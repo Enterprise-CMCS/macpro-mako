@@ -7,6 +7,7 @@ import { Navigate, useLocation, useNavigate, useParams } from "react-router";
 import { Authority, CognitoUserAttributes } from "shared-types";
 import { isStateUser } from "shared-utils";
 import { z } from "zod";
+import { sendGAEvent } from "@/utils/ReactGA/SendGAEvent";
 
 import { useGetUser } from "@/api";
 import { MedSpaFooter } from "@/components";
@@ -156,9 +157,7 @@ export const ActionForm = <Schema extends SchemaWithEnforcableProps>({
         submissionType="1915c app-k"
       }
       // send package action event
-      window.gtag("event", "submit_page_open", {
-        submission_type: submissionType ? submissionType : title
-      })
+      sendGAEvent("submit_page_open", { submission_type: submissionType ? submissionType : title })
     }
   }, []);
   const navigate = useNavigate();
@@ -226,16 +225,11 @@ export const ActionForm = <Schema extends SchemaWithEnforcableProps>({
       console.log(" sumbit page exit event with page duration: ", timeOnPageSec);
       console.log(" submit click event with event: ", formData.event);
 
-      // send package action event
-      window.gtag("event", "submission_submit_click", {
-        package_type: formData.event
-      });
-
-      window.gtag("event", "submit_page_exit", {
+      sendGAEvent("submission_submit_click", { package_type: formData.event });
+      sendGAEvent( "submit_page_exit", {
         submission_type: formData.event, 
         time_on_page_sec: timeOnPageSec
-      });
-
+      })
 
     } catch (error) {
       console.error(error);
@@ -358,10 +352,10 @@ export const ActionForm = <Schema extends SchemaWithEnforcableProps>({
                   onClick={() =>{
                     const timeOnPageSec = (Date.now() - startTimePage)/1000;
                     console.log("sibmit cancel event with submission type: "+ title + "and time on page of: " +timeOnPageSec)
-                    window.gtag("event", "submit_cancel", {
-                      submission_type: title,
-                      time_on_page_sec:timeOnPageSec
-                    });
+                    sendGAEvent("submit_cancel", {
+                        submission_type: title,
+                        time_on_page_sec:timeOnPageSec
+                      });
                     userPrompt({
                       ...promptOnLeavingForm,
                       onAccept: () => {
@@ -430,10 +424,10 @@ export const ActionForm = <Schema extends SchemaWithEnforcableProps>({
                   });
                   const timeOnPageSec = (Date.now() - startTimePage)/1000;
                   console.log("sibmit cancel event with submission type: "+ title + "and time on page of: " + timeOnPageSec);
-                  window.gtag("event", "submit_cancel", {
-                    submission_type: title,
-                    time_on_page_sec:timeOnPageSec
-                  });
+                  sendGAEvent("submit_cancel", {
+                      submission_type: title,
+                      time_on_page_sec:timeOnPageSec
+                    });
                 }
                 }
                 variant="outline"

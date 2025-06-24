@@ -7,6 +7,7 @@ import { useOsContext } from "../Provider";
 import { useOsUrl } from "../useOpensearch";
 import { OsFilterDrawer } from "./Drawer";
 import { OsExportData } from "./Export";
+import { sendGAEvent } from "@/utils/ReactGA/SendGAEvent";
 export const OsFiltering: FC<{
   columns: OsTableColumn[];
   onToggle: (field: string) => void;
@@ -21,11 +22,10 @@ export const OsFiltering: FC<{
   useEffect(() => {
     // When a search completes and we have a stored query
     if (wasLoading.current && !context.isLoading && lastSearch) {
-      window.gtag?.("event", "dash_search", {
+      sendGAEvent("dash_search", {
         query_short: lastSearch.slice(0, 3),
         result_count: count ?? 0,
       });
-
       wasLoading.current = false;
       setLastSearch(null); // Prevent repeat firing
     }

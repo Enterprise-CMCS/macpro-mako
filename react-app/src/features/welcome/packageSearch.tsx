@@ -3,6 +3,7 @@ import { useState } from "react";
 import { Link, useNavigate } from "react-router";
 
 import { Button, RadioGroup, RadioGroupItem } from "@/components";
+import { sendGAEvent } from "@/utils/ReactGA/SendGAEvent";
 
 export const PackageSearch = () => {
   const [searchText, setSearchText] = useState("");
@@ -20,14 +21,13 @@ export const PackageSearch = () => {
       }),
     );
     navigate(`/dashboard?os=${compressedValue}`);
-    if(typeof window.gtag == "function")
-    window.gtag("event", "home_search_text")
+    sendGAEvent("home_search_text", null);
   };
 
   const triggerGAEvent = (eventType, option)=> {
-    window.gtag("event", eventType, {
+    sendGAEvent(eventType, {
       option: option
-    })
+    });
   }
 
   return (

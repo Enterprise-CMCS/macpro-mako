@@ -23,6 +23,7 @@ import { cn } from "@/utils";
 import TopBanner from "../Banner/macproBanner";
 import { Footer } from "../Footer";
 import { UsaBanner } from "../UsaBanner";
+import { sendGAEvent } from "@/utils/ReactGA/SendGAEvent";
 
 /**
  * Custom hook that generates a list of navigation links based on the user's status and whether the current page is the FAQ page.
@@ -243,25 +244,6 @@ export const Layout = () => {
   const { data: user } = useGetUser();
   const customUserRoles = user?.user?.["custom:cms-roles"] || "";
 
-  // TODO fix, currently sending 4 events for logins
-  // const customisMemberOf = user?.user?.["custom:ismemberof"] || "";
-
-  // if (customUserRoles.length > 0) {
-  //   if (
-  //     customUserRoles.includes("onemac-state-user") ||
-  //     customUserRoles.includes("onemac-helpdesk") ||
-  //     customUserRoles.includes("onemac-micro-readonly")
-  //   ) {
-  //     // TBD weather to add states to the login event since users may have a states array with multiple states.
-  //     sendGAEvent("Login", customUserRoles, null);
-  //   }
-  // }
-  // if (customisMemberOf.length > 0) {
-  //   if (customisMemberOf.includes("ONEMAC_USER")) {
-  //     sendGAEvent("Login", customisMemberOf, null);
-  //   }
-  // }
-  // TODO: add logic for super user when/if super user goes into effect
 
   return (
     <div className="min-h-full flex flex-col">
@@ -375,12 +357,13 @@ const ResponsiveNav = ({ isDesktop }: ResponsiveNavProps) => {
   }
 
   const triggerGAEvent = (name) => {
-    if (name == "View FAQs") {
-      window.gtag("event", "home_nav_dashboard");
-    } else if (name == "Dashboard") {
-      window.gtag("event", "home_nav_support");
-    }
-  };
+    if (name == 'View FAQs') {
+      sendGAEvent("home_nav_dashboard", null);
+    } else if (name == 'Dashboard') {
+      sendGAEvent("home_nav_support", null);
+    } 
+
+  }
 
   if (isDesktop) {
     return (

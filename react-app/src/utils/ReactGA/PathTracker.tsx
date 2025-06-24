@@ -1,4 +1,5 @@
 import { useEffect, useRef } from "react";
+import { sendGAEvent } from "./SendGAEvent";
 
 type PathTrackerProps = {
   userRole: "cms" | "state";
@@ -22,7 +23,7 @@ export default function PathTracker({ userRole, children }: PathTrackerProps) {
     //for tracking page views
     const sendPageView = (path: string) => {
       if (userRole) {
-        window.gtag?.("event", "custom_page_view", {
+        sendGAEvent("custom_page_view", {
           page_path: path,
           user_role: userRole,
         });
@@ -35,11 +36,10 @@ export default function PathTracker({ userRole, children }: PathTrackerProps) {
         const now = Date.now();
         const deltaMs = now - startTs;
         const timeOnPageSec = Math.round(deltaMs / 1000); // nearest second
-
-        window.gtag?.("event", "page_duration", {
-          page_path: path,
-          user_role: userRole,
-          time_on_page_sec: timeOnPageSec,
+        sendGAEvent("page_duration", {
+                  page_path: path,
+                  user_role: userRole,
+                  time_on_page_sec: timeOnPageSec,
         });
       }
     };

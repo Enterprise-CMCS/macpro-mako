@@ -13,6 +13,7 @@ import { cn } from "@/utils";
 import { mapSubmissionTypeBasedOnActionFormTitle } from "../../utils/ReactGA/Mapper";
 
 import { extractBucketAndKeyFromUrl, getPresignedUrl, uploadToS3 } from "./uploadUtilities";
+import { sendGAEvent } from "@/utils/ReactGA/SendGAEvent";
 
 type Attachment = z.infer<typeof attachmentSchema>;
 
@@ -89,19 +90,12 @@ export const Upload = ({ maxFiles, files, setFiles, dataTestId, type }: UploadPr
     async (acceptedFiles: File[], fileRejections: FileRejection[],  event: DropEvent) => {
 
       const fileType = dropzoneRef.current?.getAttribute("data-label");
-
-      // if (typeof window.gtag !== "function") return;
-      if (typeof window.gtag == "function") {
-        const submissionType = mapSubmissionTypeBasedOnActionFormTitle(type);
-        window.gtag("event", "submit_file_upload", {
-
-          // GA4 event name: arbitrary string
+      const submissionType = mapSubmissionTypeBasedOnActionFormTitle(type);
+      sendGAEvent("submit_file_upload", {
           submission_type: submissionType,
           file_type: fileType,
           file_size_bytes: acceptedFiles[0].size
         });
-      }
-
       setRejectedFiles(fileRejections);
       if (fileRejections.length === 0) {
         setIsUploading(true); // Set uploading to true

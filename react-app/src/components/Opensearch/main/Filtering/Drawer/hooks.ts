@@ -7,6 +7,7 @@ import { useLabelMapping } from "@/hooks";
 
 import { useFilterDrawerContext } from "../FilterProvider";
 import * as C from "./consts";
+import { sendGAEvent } from "@/utils/ReactGA/SendGAEvent";
 
 type FilterGroup = Partial<Record<opensearch.main.Field, C.DrawerFilterableGroup>>;
 
@@ -94,14 +95,10 @@ export const useFilterDrawer = () => {
           eventValue = JSON.stringify(value);
         }
 
-        // Send the event to Google Analytics.
-        if (typeof window.gtag === "function") {
-          window.gtag("event", "dash_filter_change", {
-            filter_key: filterKey,
-            value: eventValue,
-          });
-        }
-
+        sendGAEvent("dash_filter_change", {
+          filter_key: filterKey,
+          value: eventValue,
+        })
         const updateState = { ...state, [field]: { ...state[field], value } };
         // find all filter values to update
         const updateFilters = Object.values(updateState).filter((FIL) => {

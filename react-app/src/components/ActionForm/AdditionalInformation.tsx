@@ -1,7 +1,8 @@
 import { ControllerRenderProps, FieldPath } from "react-hook-form";
 import { z } from "zod";
 import {useState} from "react";
-import {mapSubmissionTypeBasedOnActionFormTitle} from "../../utils/ReactGA/Mapper"
+import {mapSubmissionTypeBasedOnActionFormTitle} from "../../utils/ReactGA/Mapper";
+import { sendGAEvent } from "../../utils/ReactGA/SendGAEvent";
 
 import { FormDescription, FormItem, FormLabel, Textarea } from "../Inputs";
 import { SchemaWithEnforcableProps } from ".";
@@ -23,7 +24,7 @@ const handleInputChange = (event)=> {
   if (event.target.value.length == 1) {
     const mappedSubmissionType = mapSubmissionTypeBasedOnActionFormTitle(submissionTitle);
     console.log("user has typed into additional information box, submissionType: ", mappedSubmissionType);
-    window.gtag("event", "submit_additional_info_used", {submission_type: mappedSubmissionType})
+    sendGAEvent("submit_additional_info_used", {submission_type: mappedSubmissionType})
   }
   setInputValue(event.target.value);
   field.onChange(event);

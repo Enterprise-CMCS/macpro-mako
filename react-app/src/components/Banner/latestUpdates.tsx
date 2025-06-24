@@ -1,6 +1,7 @@
 import { FC, useState } from "react";
 
 import { useGetSystemNotifs } from "@/api";
+import { sendGAEvent } from "@/utils/ReactGA/SendGAEvent";
 
 export const LatestUpdates: FC = () => {
   const [showMore, setShowMore] = useState(false);
@@ -59,10 +60,8 @@ export const LatestUpdates: FC = () => {
       {latestUpdates.length > 1 && (
         <button
           onClick={() => {
-            setShowMore(!showMore)
-            if(typeof window.gtag == "function") {
-              window.gtag("event", "home_updates_banner");
-            }
+            setShowMore(!showMore);
+            sendGAEvent("home_updates_banner", null)
           }}
           className="flex items-center justify-start gap-2 rounded-md bg-transparent cursor-pointer"
         >

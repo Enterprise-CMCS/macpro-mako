@@ -5,6 +5,7 @@ import { Authority, FullUser, opensearch } from "shared-types";
 import { formatDateToET, getAvailableActions } from "shared-utils";
 
 import { DASHBOARD_ORIGIN, mapActionLabel, ORIGIN } from "@/utils";
+import { sendGAEvent } from "@/utils/ReactGA/SendGAEvent";
 
 export const renderCellDate = (key: keyof opensearch.main.Document) =>
   function Cell(data: opensearch.main.Document) {
@@ -18,13 +19,10 @@ export type CellIdLinkProps = {
 };
 
 export const CellDetailsLink = ({ id, authority }: CellIdLinkProps) => {
-  const handleLinkClick = () => {
-    if (typeof window.gtag === "function") {
-      window.gtag("event", "dash_package_link", {
+  const handleLinkClick = () => {sendGAEvent("dash_package_link", {
         package_type: authority, // The 'authority' prop is the package type
         package_id: id, // The 'id' prop is the package_id
       });
-    }
   };
 
   return (
@@ -65,11 +63,9 @@ export const renderCellActions = (user: FullUser | null) => {
         >
           {actions.map((action, idx) => {
             const handleActionClick = () => {
-              if (typeof window.gtag === "function") {
-                window.gtag("event", "dash_ellipsis_click", {
+              sendGAEvent("dash_ellipsis_click", {
                   action: action,
                 });
-              }
             };
 
             return (

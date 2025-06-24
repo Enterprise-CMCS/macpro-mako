@@ -1,6 +1,7 @@
 import { ChevronRight } from "lucide-react";
 import { type ReactNode } from "react";
 import { Link } from "react-router";
+import { sendGAEvent } from "@/utils/ReactGA/SendGAEvent";
 
 type BreadCrumbsProps = {
   options: BreadCrumbConfig[];
@@ -81,12 +82,12 @@ export const BreadCrumb = ({
 
             if (submissionType) {
               console.log("send GA event with submission type: ", submissionType);
-              window.gtag("event", "submit_breadcrumb_click", {
+              sendGAEvent("submit_breadcrumb_click", {
                 crumb_name:  typeof children === "string" ? children : undefined,
                 submission_type: submissionType
-              });
+              })
             } else {
-              window.gtag("event", "breadcrumb_click", {
+              sendGAEvent("breadcrumb_click", {
                 breadcrumb_text:  typeof children === "string" ? children : undefined
               });
             }

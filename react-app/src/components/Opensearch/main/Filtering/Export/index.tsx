@@ -19,6 +19,7 @@ import {
 import { ConfirmationDialog } from "@/components/ConfirmationDialog";
 
 import { DEFAULT_FILTERS } from "../../useOpensearch";
+import { sendGAEvent } from "@/utils/ReactGA/SendGAEvent";
 
 const EXPORT_LIMIT = 10000;
 
@@ -60,14 +61,9 @@ export const OsExportData: FC<{
 
     csvExporter.generateCsv(exportData);
 
-    // --- GA4 Event Tracking Logic ---
-    if (typeof window.gtag === "function") {
-      window.gtag("event", "dash_export_csv", {
+   sendGAEvent("dash_export_csv", {
         row_count: exportData.length,
       });
-    }
-    // --- End of GA Logic ---
-
     setLoading(false);
   };
 
