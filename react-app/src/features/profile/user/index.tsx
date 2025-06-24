@@ -50,18 +50,17 @@ export const userProfileLoader = async ({
 
 export const UserProfile = () => {
   const { userDetails, userProfile } = useLoaderData<LoaderData>();
+  const isNewUserRoleDisplay = useFeatureFlag("SHOW_USER_ROLE_UPDATE");
 
-  const filteredRoleStatus = useMemo(
-    () => filterRoleStatus(userDetails, userProfile),
-    [userDetails, userProfile],
-  );
+  const filteredRoleStatus = useMemo(() => {
+    if (isNewUserRoleDisplay) return userProfile?.stateAccess;
+    return filterRoleStatus(userDetails, userProfile);
+  }, [userDetails, userProfile, isNewUserRoleDisplay]);
 
   const orderedRoleStatus = useMemo(
     () => orderRoleStatus(filteredRoleStatus),
     [filteredRoleStatus],
   );
-
-  const isNewUserRoleDisplay = useFeatureFlag("SHOW_USER_ROLE_UPDATE");
 
   return (
     <>
@@ -84,12 +83,7 @@ export const UserProfile = () => {
                   : "Status"}
               </h2>
               {orderedRoleStatus?.map((access) => (
-                <RoleStatusCard
-                  isNewUserRoleDisplay={isNewUserRoleDisplay}
-                  role={userDetails.role}
-                  access={access}
-                  key={access.id}
-                />
+                <RoleStatusCard role={userDetails.role} access={access} key={access.id} />
               ))}
             </div>
 

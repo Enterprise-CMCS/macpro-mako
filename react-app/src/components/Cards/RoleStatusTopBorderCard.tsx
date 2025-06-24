@@ -12,20 +12,15 @@ interface RoleStatusTopBorderCardProps {
 export const RoleStatusTopBorderCard: FC<RoleStatusTopBorderCardProps> = ({
   children,
   className,
-  isNewUserRoleDisplay,
   status,
 }) => {
-  const isSolidHeader = isNewUserRoleDisplay && (status === "pending" || status === "denied");
+  const isSolidHeader = status === "pending" || status === "denied";
 
   const headerStyle = isSolidHeader
     ? { background: "#3D4551" }
-    : isNewUserRoleDisplay
-      ? {
-          background: "linear-gradient(90.11deg,#0071BC 49.91%,#004370 66.06%)",
-        }
-      : {
-          background: "linear-gradient(90.11deg,#0071bc 49.91%,#02bfe7 66.06%)",
-        };
+    : {
+        background: "linear-gradient(90.11deg,#0071BC 49.91%,#004370 66.06%)",
+      };
 
   return (
     <div className={cn("my-6 flex flex-col", className)}>
