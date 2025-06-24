@@ -152,8 +152,13 @@ describe("Upload", () => {
 
     fireEvent.drop(dropzone);
 
+    
     await waitFor(() => {
-      expect(screen.getByText(`Failed to upload ${failUpload}.txt`)).toBeInTheDocument();
+      expect(
+        screen.getByText((content) =>
+          content.includes(`File with name "${FILE_1}.txt" already exists.`)
+        )
+      ).toBeInTheDocument();
     });
   });
 
