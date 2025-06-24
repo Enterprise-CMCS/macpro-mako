@@ -13,6 +13,7 @@ const defaultProps = {
   files: [],
   setFiles: vi.fn(),
   setErrorMessage: vi.fn(),
+  type: "",
 };
 const FILE_1 = "file-1";
 const FILE_2 = "file-2";
