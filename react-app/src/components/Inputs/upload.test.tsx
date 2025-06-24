@@ -155,8 +155,8 @@ describe("Upload", () => {
     
     await waitFor(() => {
       expect(
-        screen.getByText((content) =>
-          content.includes(`File with name "${FILE_1}.txt" already exists.`)
+        screen.getByText((_, element) =>
+          element?.textContent?.includes(`File with name "${FILE_1}.txt" already exists.`)
         )
       ).toBeInTheDocument();
     });
