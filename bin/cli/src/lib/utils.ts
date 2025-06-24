@@ -1,6 +1,6 @@
 import * as readlineSync from "readline-sync";
 
-export function confirmDestroyCommand(stack) {
+export function confirmDestroyCommand(stack: string) {
   const orange = "\x1b[38;5;208m";
   const reset = "\x1b[0m";
 

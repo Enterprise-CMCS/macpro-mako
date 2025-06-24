@@ -1,21 +1,27 @@
 import * as jose from "jose";
 import { FullUser } from "shared-types";
 
-import {
-  ALGORITHM,
-  COGNITO_IDP_DOMAIN,
-  PRIVATE_KEY,
-  PUBLIC_KEY,
-  USER_POOL_CLIENT_ID,
-} from "../consts";
+import { ALGORITHM, COGNITO_IDP_DOMAIN, JWK, KEY, USER_POOL_CLIENT_ID } from "../consts";
 import { getUserByUsername, makoReviewer, makoStateSubmitter, userResponses } from "../data/users";
 import type { TestUserData, TestUserDataWithRole } from "../index.d";
+
+let privateKey: jose.CryptoKey | Uint8Array; // pragma: allowlist secret
+
+const getPrivateKey = async (): Promise<jose.CryptoKey | Uint8Array> => {
+  if (privateKey) {
+    return privateKey;
+  }
+  privateKey = await jose.importJWK(JWK, ALGORITHM); // pragma: allowlist secret
+  return privateKey;
+};
 
 export const getUsernameFromAccessToken = async (
   accessToken?: string,
 ): Promise<string | undefined> => {
+  const publicKey = jose.createLocalJWKSet({ keys: [KEY] }); // pragma: allowlist secret
+
   if (accessToken) {
-    const { payload } = await jose.jwtVerify(accessToken, PUBLIC_KEY, {
+    const { payload } = await jose.jwtVerify(accessToken, publicKey, {
       issuer: COGNITO_IDP_DOMAIN,
       audience: USER_POOL_CLIENT_ID,
     });
@@ -53,7 +59,7 @@ export const generateIdToken = async (
       .setIssuer(COGNITO_IDP_DOMAIN)
       .setAudience(USER_POOL_CLIENT_ID)
       .setExpirationTime("30m")
-      .sign(PRIVATE_KEY);
+      .sign(await getPrivateKey());
 
     return jwt;
   }
@@ -85,7 +91,7 @@ export const generateAccessToken = async (
       .setIssuer(COGNITO_IDP_DOMAIN)
       .setAudience(USER_POOL_CLIENT_ID)
       .setExpirationTime("30m")
-      .sign(PRIVATE_KEY);
+      .sign(await getPrivateKey());
 
     return jwt;
   }
@@ -100,7 +106,7 @@ export const generateRefreshToken = async (user: TestUserData): Promise<string |
     })
       .setProtectedHeader({ alg: ALGORITHM })
       .setExpirationTime("30m")
-      .sign(PRIVATE_KEY);
+      .sign(await getPrivateKey());
 
     return jwt;
   }
@@ -131,7 +137,9 @@ export const getMockUsername = (): string | null => {
   if (typeof process !== "undefined" && process?.env) {
     return process.env.MOCK_USER_USERNAME || null;
   }
-  if (window?.localStorage) {
+  // @ts-ignore ignore window being undefined because this is a check for that
+  if (typeof window !== "undefined" && window?.localStorage) {
+    // @ts-ignore checked that window is defined above
     return window.localStorage.getItem(
       `CognitoIdentityServiceProvider.${USER_POOL_CLIENT_ID}.LastAuthUser`,
     );
@@ -167,40 +175,43 @@ export const setMockUsername = async (
     } else {
       delete process.env.MOCK_USER_USERNAME;
     }
-  } else if (window?.localStorage?.setItem) {
+    // @ts-ignore ignore window being undefined because this is a check for that
+  } else if (typeof window !== "undefined" && window?.localStorage?.setItem) {
     if (username) {
+      // @ts-ignore checked that window is defined above
       window.localStorage.setItem(
         `CognitoIdentityServiceProvider.${USER_POOL_CLIENT_ID}.LastAuthUser`,
         username,
       );
       const user = findUserByUsername(username);
-      console.log({ user });
       if (user) {
         const authTime = Date.now() / 1000;
         const expTime = authTime + 1800;
         const accessToken = await generateAccessToken(user, authTime, expTime);
-        console.log({ accessToken });
         const idToken = await generateIdToken(user, authTime, expTime);
-        console.log({ idToken });
         const refreshToken = await generateRefreshToken(user);
-        console.log({ refreshToken });
 
+        // @ts-ignore checked that window is defined above
         window.localStorage.setItem(
           `CognitoIdentityServiceProvider.${USER_POOL_CLIENT_ID}.${username}.accessToken`,
           accessToken || "",
         );
+        // @ts-ignore checked that window is defined above
         window.localStorage.setItem(
           `CognitoIdentityServiceProvider.${USER_POOL_CLIENT_ID}.${username}.clockDrift`,
           "0",
         );
+        // @ts-ignore checked that window is defined above
         window.localStorage.setItem(
           `CognitoIdentityServiceProvider.${USER_POOL_CLIENT_ID}.${username}.idToken`,
           idToken || "",
         );
+        // @ts-ignore checked that window is defined above
         window.localStorage.setItem(
           `CognitoIdentityServiceProvider.${USER_POOL_CLIENT_ID}.${username}.refreshToken`,
           refreshToken || "",
         );
+        // @ts-ignore checked that window is defined above
         window.localStorage.setItem(
           `CognitoIdentityServiceProvider.${USER_POOL_CLIENT_ID}.${username}.userData`,
           JSON.stringify({
@@ -209,31 +220,42 @@ export const setMockUsername = async (
           }),
         );
       }
+      // @ts-ignore checked that window is defined above
       window.localStorage.setItem("amplify-redirected-from-hosted-ui", "true");
+      // @ts-ignore checked that window is defined above
       window.localStorage.setItem("amplify-signin-with-hostedUI", "true");
     } else {
+      // @ts-ignore checked that window is defined above
       const oldUserId = window.localStorage.getItem(
         `CognitoIdentityServiceProvider.${USER_POOL_CLIENT_ID}.LastAuthUser`,
       );
       if (oldUserId) {
+        // @ts-ignore checked that window is defined above
         window.localStorage.removeItem(
           `CognitoIdentityServiceProvider.${USER_POOL_CLIENT_ID}.${oldUserId}.accessToken`,
         );
+        // @ts-ignore checked that window is defined above
         window.localStorage.removeItem(
           `CognitoIdentityServiceProvider.${USER_POOL_CLIENT_ID}.${oldUserId}.clockDrift`,
         );
+        // @ts-ignore checked that window is defined above
         window.localStorage.removeItem(
           `CognitoIdentityServiceProvider.${USER_POOL_CLIENT_ID}.${oldUserId}.idToken`,
         );
+        // @ts-ignore checked that window is defined above
         window.localStorage.removeItem(
           `CognitoIdentityServiceProvider.${USER_POOL_CLIENT_ID}.${oldUserId}.refreshToken`,
         );
+        // @ts-ignore checked that window is defined above
         window.localStorage.removeItem(
           `CognitoIdentityServiceProvider.${USER_POOL_CLIENT_ID}.${oldUserId}.userData`,
         );
+        // @ts-ignore checked that window is defined above
         window.localStorage.removeItem("amplify-redirected-from-hosted-ui");
+        // @ts-ignore checked that window is defined above
         window.localStorage.removeItem("amplify-signin-with-hostedUI");
       }
+      // @ts-ignore checked that window is defined above
       window.localStorage.removeItem(
         `CognitoIdentityServiceProvider.${USER_POOL_CLIENT_ID}.LastAuthUser`,
       );

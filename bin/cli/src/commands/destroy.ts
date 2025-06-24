@@ -10,7 +10,7 @@ import {
 } from "@aws-sdk/client-ec2";
 import { Argv } from "yargs";
 
-import { checkIfAuthenticated, confirmDestroyCommand, project, region } from "../lib";
+import { checkIfAuthenticated, confirmDestroyCommand, project, region } from "../lib/index.js";
 
 const waitForStackDeleteComplete = async (client: CloudFormationClient, stackName: string) => {
   return waitUntilStackDeleteComplete({ client, maxWaitTime: 3600 }, { StackName: stackName });

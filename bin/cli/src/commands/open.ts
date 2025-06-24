@@ -1,7 +1,7 @@
 import { GetParameterCommand, SSMClient } from "@aws-sdk/client-ssm";
 import { Argv } from "yargs";
 
-import { checkIfAuthenticated, openUrl, project, setStageFromBranch } from "../lib";
+import { checkIfAuthenticated, openUrl, project, setStageFromBranch } from "../lib/index.js";
 
 const createOpenCommand = (name: string, describe: string, exportName: string) => ({
   command: name,

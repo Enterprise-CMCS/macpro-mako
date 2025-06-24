@@ -1,6 +1,6 @@
 import { Argv } from "yargs";
 
-import { runCommand } from "../lib";
+import { runCommand } from "../lib/index.js";
 
 export const test = {
   command: "test",
@@ -22,12 +22,12 @@ export const test = {
         return true;
       });
   },
-  handler: async (argv) => {
+  handler: async (options: { coverage?: boolean; ui?: boolean }) => {
     let testCommand = "test";
-    if (argv.coverage) {
+    if (options.coverage) {
       testCommand = "test:coverage";
     }
-    if (argv.ui) {
+    if (options.ui) {
       testCommand = "test:ui";
     }
     await runCommand("bun", ["run", testCommand], ".");

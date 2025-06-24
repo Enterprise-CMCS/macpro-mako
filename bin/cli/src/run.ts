@@ -13,11 +13,13 @@ import {
   openKibana,
   test,
   ui,
+  uiLocalOnly,
   watch,
-} from "./commands";
+} from "./commands/index.js";
 
 yargs
-  .fail((msg, err) => {
+  // @ts-ignore
+  .fail((msg: string | null, err: Error | string | null) => {
     if (err) throw err;
     if (msg) console.error(msg);
     process.exit(1);
@@ -33,6 +35,7 @@ yargs
   .command(openKibana)
   .command(test)
   .command(ui)
+  .command(uiLocalOnly)
   .command(emails)
   .command(getCost)
   .strict()

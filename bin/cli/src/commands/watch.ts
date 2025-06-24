@@ -1,6 +1,11 @@
 import { Argv } from "yargs";
 
-import { checkIfAuthenticated, runCommand, setStageFromBranch, writeUiEnvFile } from "../lib/";
+import {
+  checkIfAuthenticated,
+  runCommand,
+  setStageFromBranch,
+  writeUiEnvFile,
+} from "../lib/index.js";
 
 export const watch = {
   command: "watch",

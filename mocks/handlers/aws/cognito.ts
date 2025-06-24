@@ -6,7 +6,7 @@ import {
   ACCESS_KEY_ID,
   COGNITO_IDP_DOMAIN,
   IDENTITY_POOL_ID,
-  PUBLIC_KEY,
+  KEY,
   SECRET_KEY,
   USER_POOL_CLIENT_ID,
 } from "../../consts";
@@ -154,7 +154,9 @@ export const identityServiceHandler = http.post<PathParams, IdentityRequest>(
         const { Logins } = await request.json();
         if (Logins?.value) {
           console.log("AWSCognitoIdentityService.GetCredentialsForIdentity");
-          const { payload } = await jose.jwtVerify(Logins.value, PUBLIC_KEY, {
+          const publicKey = jose.createLocalJWKSet({ keys: [KEY] }); // pragma: allowlist secret
+
+          const { payload } = await jose.jwtVerify(Logins.value, publicKey, {
             issuer: COGNITO_IDP_DOMAIN,
             audience: USER_POOL_CLIENT_ID,
           });
@@ -215,7 +217,8 @@ export const identityProviderServiceHandler = http.post<
       const { AuthFlow, AuthParameters } = (await request.json()) as IdpRefreshRequestBody;
       if (AuthFlow === "REFRESH_TOKEN_AUTH" && AuthParameters?.REFRESH_TOKEN) {
         console.log("AWSCognitoIdentityProviderService.InitiateAuth");
-        const { payload } = await jose.jwtVerify(AuthParameters.REFRESH_TOKEN, PUBLIC_KEY, {
+        const publicKey = jose.createLocalJWKSet({ keys: [KEY] }); // pragma: allowlist secret
+        const { payload } = await jose.jwtVerify(AuthParameters.REFRESH_TOKEN, publicKey, {
           issuer: COGNITO_IDP_DOMAIN,
           audience: USER_POOL_CLIENT_ID,
         });

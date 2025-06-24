@@ -1,6 +1,6 @@
 import { Argv } from "yargs";
 
-import { runCommand } from "../lib";
+import { runCommand } from "../lib/index.js";
 
 export const docs = {
   command: "docs",

@@ -1,7 +1,6 @@
 export * from "./consts";
-export * from "./data";
-export * from "./handlers";
-export * from "./index.d";
+export * from "./data/index";
+export * from "./handlers/index";
 
 export { http, HttpResponse } from "msw";
 

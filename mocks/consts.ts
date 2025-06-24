@@ -1,5 +1,3 @@
-import * as jose from "jose";
-
 export const PROJECT = "mako";
 export const REGION = "us-east-1";
 export const STAGE = "mocked-tests";
@@ -9,6 +7,8 @@ export const USER_POOL_ID = `${REGION}_userPool1`;
 export const USER_POOL_CLIENT_ID = "userPoolWebClientId";
 export const USER_POOL_CLIENT_DOMAIN = `mocked-tests-login-${USER_POOL_CLIENT_ID}.auth.${REGION}.amazoncognito.com`;
 export const COGNITO_IDP_DOMAIN = `https://cognito-idp.${REGION}.amazonaws.com/${USER_POOL_ID}`;
+export const IDM_HOME_URL = "https://test.home.idm.cms.gov";
+export const LAUNCHDARKLY_CLIENT_ID = "6638280397c1bc569aea5f3f";
 export const OPENSEARCH_DOMAIN = `https://vpc-opensearchdomain-mock-domain.${REGION}.es.amazonaws.com`;
 export const OPENSEARCH_INDEX_NAMESPACE = "test-namespace-";
 export const CLOUDFORMATION_NOTIFICATION_DOMAIN = "https://test-cfn.amazonaws.com";
@@ -26,7 +26,8 @@ const KTY = "RSA"; // pragma: allowlist secret
 const E = "AQAB"; // pragma: allowlist secret
 const N =
   "whYOFK2Ocbbpb_zVypi9SeKiNUqKQH0zTKN1-6fpCTu6ZalGI82s7XK3tan4dJt90ptUPKD2zvxqTzFNfx4HHHsrYCf2-FMLn1VTJfQazA2BvJqAwcpW1bqRUEty8tS_Yv4hRvWfQPcc2Gc3-_fQOOW57zVy-rNoJc744kb30NjQxdGp03J2S3GLQu7oKtSDDPooQHD38PEMNnITf0pj-KgDPjymkMGoJlO3aKppsjfbt_AH6GGdRghYRLOUwQU-h-ofWHR3lbYiKtXPn5dN24kiHy61e3VAQ9_YAZlwXC_99GGtw_NpghFAuM4P1JDn0DppJldy3PGFC0GfBCZASw"; // pragma: allowlist secret
-const JWK = {
+
+export const JWK = {
   kty: KTY,
   n: N,
   e: E,
@@ -38,18 +39,12 @@ const JWK = {
   qi: "iYltkV_4PmQDfZfGFpzn2UtYEKyhy-9t3Vy8Mw2VHLAADKGwJvVK5ficQAr2atIF1-agXY2bd6KV-w52zR8rmZfTr0gobzYIyqHczOm13t7uXJv2WygY7QEC2OGjdxa2Fr9RnvS99ozMa5nomZBqTqT7z5QV33czjPRCjvg6FcE",
 };
 
-export const PRIVATE_KEY = await jose.importJWK(JWK, ALGORITHM); // pragma: allowlist secret
-
-export const PUBLIC_KEY = jose.createLocalJWKSet({
-  keys: [
-    {
-      kty: KTY,
-      e: E,
-      n: N,
-      alg: ALGORITHM,
-    },
-  ],
-}); // pragma: allowlist secret
+export const KEY = {
+  kty: KTY,
+  e: E,
+  n: N,
+  alg: ALGORITHM,
+};
 
 export const API_CONFIG = {
   endpoints: [

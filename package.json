@@ -2,8 +2,9 @@
   "name": "mako",
   "version": "0.0.0-managed-by-semantic-release",
   "private": true,
+  "type": "module",
   "bin": {
-    "mako": "bin/app.js"
+    "mako": "bin/app.ts"
   },
   "scripts": {
     "build": "tsc",

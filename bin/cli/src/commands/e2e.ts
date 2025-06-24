@@ -1,6 +1,6 @@
 import { Argv } from "yargs";
 
-import { checkIfAuthenticated, runCommand } from "../lib";
+import { checkIfAuthenticated, runCommand } from "../lib/index.js";
 
 export const e2e = {
   command: "e2e",

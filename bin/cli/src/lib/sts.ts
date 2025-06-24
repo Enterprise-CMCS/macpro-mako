@@ -1,6 +1,6 @@
 import { GetCallerIdentityCommand, STSClient } from "@aws-sdk/client-sts";
 
-import { region } from "./consts";
+import { region } from "./consts.js";
 
 export async function checkIfAuthenticated(): Promise<void> {
   try {

@@ -1,4 +1,4 @@
-import { checkIfAuthenticated, runCommand } from "../lib";
+import { checkIfAuthenticated, runCommand } from "../lib/index.js";
 
 export const emails = {
   command: "emails",

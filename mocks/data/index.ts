@@ -8,4 +8,4 @@ export * from "./lambdas";
 export * from "./notifs";
 export * from "./secrets";
 export * from "./types";
-export * from "./users";
+export * from "./users/index";
