@@ -42,7 +42,6 @@ export function ConfirmationDialog({
   cancelButtonVisible = true,
   cancelVariant = "outline",
 }: ConfirmationModalProps) {
-  console.log(alignLeft);
   return (
     <Dialog open={open} onOpenChange={onCancel}>
       <DialogContent className="sm:max-w-[425px]" data-testid="dialog-content">
