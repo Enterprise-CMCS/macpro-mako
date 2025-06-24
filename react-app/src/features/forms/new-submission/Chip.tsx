@@ -48,6 +48,7 @@ export const ChipForm = () => (
                   className="max-w-sm"
                   ref={field.ref}
                   value={field.value}
+                  aria-labelledby="spa-id-formatting-desc"
                   onChange={(e) => field.onChange(e.currentTarget.value.toUpperCase())}
                 />
               </FormControl>
