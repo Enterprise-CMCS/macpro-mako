@@ -75,7 +75,7 @@ const CmsUserRoleCard = ({
       </div>
       <CardStatus status={access.status} isNewUserRoleDisplay={isNewUserRoleDisplay} />
       {!hideApprovers &&
-        (role === "defaultcmsuser" || role === "cmsreviewer" ? (
+        (isNewUserRoleDisplay && (role === "defaultcmsuser" || role === "cmsreviewer") ? (
           <ApproverDefaultCMS isNewUserRoleDisplay={isNewUserRoleDisplay} />
         ) : (
           <ApproverInfo access={access} isNewUserRoleDisplay={isNewUserRoleDisplay} />

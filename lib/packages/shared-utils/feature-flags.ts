@@ -104,6 +104,6 @@ export const featureFlags = {
   // toggle visibility between new and old user role UI's
   NEW_USER_ROLE_DISPLAY: {
     flag: "show-new-user-role-ui",
-    defaultValue: true,
+    defaultValue: false,
   },
 } as const;
