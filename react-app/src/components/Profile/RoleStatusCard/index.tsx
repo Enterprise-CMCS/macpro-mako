@@ -1,14 +1,18 @@
-import { Clock, XIcon } from "lucide-react";
+import { XIcon } from "lucide-react";
 import { UserRole } from "shared-types/events/legacy-user";
-import { getApprovingRole, isStateRole, userRoleMap } from "shared-utils";
+import { isStateRole, userRoleMap } from "shared-utils";
 
-import { CardWithTopBorder } from "@/components";
-import { convertStateAbbrToFullName, roleAccessStatus } from "@/utils";
+import { RoleStatusTopBorderCard } from "@/components";
+import { convertStateAbbrToFullName } from "@/utils";
+
+import { ApproverDefaultCMS, ApproverInfo } from "./ApproverInfo";
+import { CardStatus } from "./CardStatus";
 
 export type RoleStatusProps = {
   isNewUserRoleDisplay?: boolean;
   role: UserRole;
   onClick?: () => void;
+  hideApprovers?: boolean;
   access: {
     territory: string;
     role: string;
@@ -19,64 +23,83 @@ export type RoleStatusProps = {
   };
 };
 
-export const RoleStatusCard = ({
+const StateUserRoleCard = ({
   isNewUserRoleDisplay,
   role,
   onClick,
   access,
+  hideApprovers,
 }: RoleStatusProps) => {
-  if (!access) return null;
-  const hideApprovers = role === "norole" && access.status !== "pending";
   return (
-    <CardWithTopBorder key={`${access.territory}-${access.role}`}>
-      <div className="p-8 min-h-36">
-        <div className="flex justify-between">
-          {isNewUserRoleDisplay ? (
-            <h3 className="text-xl font-bold">
-              {isStateRole(access.role as UserRole)
-                ? `${userRoleMap[access.role]} - ${access.territory}`
-                : `${userRoleMap[access.role]}`}
-            </h3>
-          ) : (
-            <h3 className="text-xl font-bold">{convertStateAbbrToFullName(access.territory)}</h3>
-          )}
-          {role === "statesubmitter" && (
-            <button
-              className="text-blue-700 disabled:text-gray-200"
-              disabled={!onClick}
-              data-testid="self-revoke"
-              title="Self Revoke Access"
-              onClick={onClick}
-            >
-              <XIcon size={30} />
-            </button>
-          )}
-        </div>
-        <div className="flex">
-          {access.status === "pending" && <Clock />}
-          <p className="italic">{roleAccessStatus[access.status]}</p>
-        </div>
-        {!hideApprovers && (
-          <p className="block lg:mt-8 lg:mb-2">
-            <span className="font-semibold">
-              {userRoleMap[getApprovingRole(access.role)]}
-              {": "}
-            </span>
-            {access.approverList && access.approverList.length
-              ? access.approverList.map((approver, index) => (
-                  <a
-                    className="text-blue-600"
-                    href={`mailto:${approver.email}`}
-                    key={`${approver.fullName}-${index}`}
-                  >
-                    {approver.fullName}
-                    {index !== access.approverList.length - 1 && ", "}
-                  </a>
-                ))
-              : "N/A"}
-          </p>
+    <div className="p-8 min-h-36">
+      <div className="flex justify-between">
+        <h3 className="text-xl font-bold">
+          {isNewUserRoleDisplay
+            ? userRoleMap[access.role]
+            : convertStateAbbrToFullName(access.territory)}
+        </h3>
+        {role === "statesubmitter" && (
+          <button
+            className="text-blue-700 disabled:text-gray-200"
+            disabled={!onClick}
+            data-testid="self-revoke"
+            title="Self Revoke Access"
+            onClick={onClick}
+          >
+            <XIcon size={30} />
+          </button>
         )}
       </div>
-    </CardWithTopBorder>
+      <CardStatus status={access.status} isNewUserRoleDisplay={isNewUserRoleDisplay} />
+      {!hideApprovers && (
+        <ApproverInfo access={access} isNewUserRoleDisplay={isNewUserRoleDisplay} />
+      )}
+    </div>
+  );
+};
+
+const CmsUserRoleCard = ({
+  isNewUserRoleDisplay,
+  role,
+  access,
+  hideApprovers,
+}: RoleStatusProps) => {
+  return (
+    <div className="p-8 min-h-36">
+      <div className="flex justify-between">
+        <h3 className="text-xl font-bold">
+          {isNewUserRoleDisplay
+            ? userRoleMap[access.role]
+            : convertStateAbbrToFullName(access.territory)}
+        </h3>
+      </div>
+      <CardStatus status={access.status} isNewUserRoleDisplay={isNewUserRoleDisplay} />
+      {!hideApprovers &&
+        (role === "defaultcmsuser" || role === "cmsreviewer" ? (
+          <ApproverDefaultCMS isNewUserRoleDisplay={isNewUserRoleDisplay} />
+        ) : (
+          <ApproverInfo access={access} isNewUserRoleDisplay={isNewUserRoleDisplay} />
+        ))}
+    </div>
+  );
+};
+
+export const RoleStatusCard = (props: RoleStatusProps) => {
+  const { role, access, isNewUserRoleDisplay } = props;
+  if (!access) return null;
+  const hideApprovers = role === "norole" && access.status !== "pending";
+  const isState = isStateRole(access.role as UserRole);
+  return (
+    <RoleStatusTopBorderCard
+      isNewUserRoleDisplay={isNewUserRoleDisplay}
+      status={access.status}
+      key={`${access.territory}-${access.role}`}
+    >
+      {isState ? (
+        <StateUserRoleCard hideApprovers={hideApprovers} {...props} />
+      ) : (
+        <CmsUserRoleCard hideApprovers={hideApprovers} {...props} />
+      )}
+    </RoleStatusTopBorderCard>
   );
 };

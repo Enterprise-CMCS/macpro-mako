@@ -4,3 +4,10 @@ export const roleAccessStatus = {
   denied: "Access Denied",
   revoked: "Access Revoked",
 };
+
+export const updatedRoleAccessStatus = {
+  active: "Approved",
+  pending: "Pending Approval",
+  denied: "Not Approved",
+  revoked: "Access Revoked",
+};
