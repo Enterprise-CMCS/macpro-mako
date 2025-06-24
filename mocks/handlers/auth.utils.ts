@@ -128,7 +128,7 @@ export const getAttributeFromUser = (user: TestUserData, attrName: string): stri
 };
 
 export const getMockUsername = (): string | null => {
-  if (process?.env) {
+  if (typeof process !== "undefined" && process?.env) {
     return process.env.MOCK_USER_USERNAME || null;
   }
   if (window?.localStorage) {
@@ -161,7 +161,7 @@ export const setMockUsername = async (
     username = (user as TestUserDataWithRole).Username;
   }
 
-  if (process?.env) {
+  if (typeof process !== "undefined" && process?.env) {
     if (username) {
       process.env.MOCK_USER_USERNAME = username;
     } else {
