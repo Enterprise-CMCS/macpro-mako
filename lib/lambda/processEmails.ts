@@ -238,6 +238,21 @@ export function validateEmailTemplate(template: any) {
   }
 }
 
+function extractEmails(addresses: string[] | undefined): string[] {
+  const emailRegex = /([a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,})/g;
+  const filteredArray = [];
+  if (addresses) {
+    for (var i = 0; i < addresses.length; i++) {
+      const matches = addresses[i].match(emailRegex);
+      if (matches) {
+        filteredArray.push(matches[0])
+      }
+    }
+    return filteredArray
+  }
+  return [];
+}
+
 export async function processAndSendEmails(
   record: Events[keyof Events],
   id: string,
@@ -338,8 +353,8 @@ export function createEmailParams(
     Destination: {
       ToAddresses: filledTemplate.to,
       CcAddresses: isDev
-        ? [...(filledTemplate.cc || []), `State Submitter <${EMAIL_CONFIG.DEV_EMAIL}>`]
-        : filledTemplate.cc,
+        ? [...(extractEmails(filledTemplate.cc) || []), `State Submitter <${EMAIL_CONFIG.DEV_EMAIL}>`]
+        : extractEmails(filledTemplate.cc),
     },
     Message: {
       Body: {
