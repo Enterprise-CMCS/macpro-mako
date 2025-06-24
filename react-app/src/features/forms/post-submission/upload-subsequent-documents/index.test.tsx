@@ -26,9 +26,7 @@ describe("Upload Subsequent Documents (for Medicaid SPA)", () => {
   });
 
   test("ADDITIONAL INFORMATION", async () => {
-    const additionalInfoInput = screen.getByLabelText(
-      /Explain why additional documents are being submitted/,
-    );
+    const additionalInfoInput = screen.getByTestId("additional-info-input");
     const additionalInfoLabel = screen.getByTestId("addl-info-label");
 
     await userEvent.type(additionalInfoInput, "this is additional information in the test");
