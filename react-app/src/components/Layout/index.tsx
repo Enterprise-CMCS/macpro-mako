@@ -19,11 +19,11 @@ import { useMediaQuery } from "@/hooks";
 import { useFeatureFlag } from "@/hooks/useFeatureFlag";
 import { isFaqPage, isProd } from "@/utils";
 import { cn } from "@/utils";
+import { sendGAEvent } from "@/utils/ReactGA/SendGAEvent";
 
 import TopBanner from "../Banner/macproBanner";
 import { Footer } from "../Footer";
 import { UsaBanner } from "../UsaBanner";
-import { sendGAEvent } from "@/utils/ReactGA/SendGAEvent";
 
 /**
  * Custom hook that generates a list of navigation links based on the user's status and whether the current page is the FAQ page.
@@ -244,7 +244,6 @@ export const Layout = () => {
   const { data: user } = useGetUser();
   const customUserRoles = user?.user?.["custom:cms-roles"] || "";
 
-
   return (
     <div className="min-h-full flex flex-col">
       <ScrollToTop />
@@ -357,13 +356,12 @@ const ResponsiveNav = ({ isDesktop }: ResponsiveNavProps) => {
   }
 
   const triggerGAEvent = (name) => {
-    if (name == 'View FAQs') {
+    if (name == "View FAQs") {
       sendGAEvent("home_nav_dashboard", null);
-    } else if (name == 'Dashboard') {
+    } else if (name == "Dashboard") {
       sendGAEvent("home_nav_support", null);
-    } 
-
-  }
+    }
+  };
 
   if (isDesktop) {
     return (

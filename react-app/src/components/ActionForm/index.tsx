@@ -1,14 +1,12 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useMutation } from "@tanstack/react-query";
 import { API } from "aws-amplify";
-import { ReactNode, useMemo, useEffect, useState } from "react";
+import { ReactNode, useEffect, useMemo } from "react";
 import { DefaultValues, FieldPath, useForm, UseFormReturn } from "react-hook-form";
 import { Navigate, useLocation, useNavigate, useParams } from "react-router";
 import { Authority, CognitoUserAttributes } from "shared-types";
 import { isStateUser } from "shared-utils";
 import { z } from "zod";
-import { sendGAEvent } from "@/utils/ReactGA/SendGAEvent";
-import {mapSubmissionTypeBasedOnActionFormTitle} from "../../utils/ReactGA/Mapper";
 
 import { useGetUser } from "@/api";
 import { MedSpaFooter } from "@/components";
@@ -33,11 +31,12 @@ import {
 } from "@/components";
 import { getFormOrigin, queryClient } from "@/utils";
 import { CheckDocumentFunction, documentPoller } from "@/utils/Poller/documentPoller";
+import { sendGAEvent } from "@/utils/ReactGA/SendGAEvent";
 
+import { mapSubmissionTypeBasedOnActionFormTitle } from "../../utils/ReactGA/Mapper";
 import { getAttachments } from "./actionForm.utilities";
 import { ActionFormAttachments, AttachmentsOptions } from "./ActionFormAttachments";
 import { AdditionalInformation } from "./AdditionalInformation";
-import { T } from "vitest/dist/chunks/reporters.d.CfRkRKN2.js";
 
 type EnforceSchemaProps<Shape extends z.ZodRawShape> = z.ZodObject<
   Shape & {
@@ -130,15 +129,15 @@ export const ActionForm = <Schema extends SchemaWithEnforcableProps>({
     type: string;
   }>();
   const { pathname } = useLocation();
-  const [startTimePage , setStartTimePage] = useState(Date.now());
+  const startTimePage = Date.now();
 
-  useEffect(()=> {
-    if (typeof window.gtag == "function"){
-      let submissionType = mapSubmissionTypeBasedOnActionFormTitle(title);
+  useEffect(() => {
+    if (typeof window.gtag == "function") {
+      const submissionType = mapSubmissionTypeBasedOnActionFormTitle(title);
       // send package action event
-      sendGAEvent("submit_page_open", { submission_type: submissionType ? submissionType : title })
+      sendGAEvent("submit_page_open", { submission_type: submissionType ? submissionType : title });
     }
-  }, []);
+  }, [title]);
   const navigate = useNavigate();
   const { data: userObj, isLoading: isUserLoading } = useGetUser();
 
@@ -193,19 +192,13 @@ export const ActionForm = <Schema extends SchemaWithEnforcableProps>({
       await queryClient.invalidateQueries({ queryKey: ["record"] });
       navigate(formOrigins);
 
-      const customUserRoles = userObj?.user?.["custom:cms-roles"];
-      const customisMemberOf = userObj?.user?.["custom:ismemberof"];
-      const userRoles = customUserRoles || customisMemberOf || "";
-      const eventState = formData.id?.substring(0, 2);
-
-      const timeOnPageSec = (Date.now() - startTimePage) /1000; 
+      const timeOnPageSec = (Date.now() - startTimePage) / 1000;
 
       sendGAEvent("submission_submit_click", { package_type: formData.event });
-      sendGAEvent( "submit_page_exit", {
-        submission_type: formData.event, 
-        time_on_page_sec: timeOnPageSec
-      })
-
+      sendGAEvent("submit_page_exit", {
+        submission_type: formData.event,
+        time_on_page_sec: timeOnPageSec,
+      });
     } catch (error) {
       console.error(error);
       banner({
@@ -266,7 +259,11 @@ export const ActionForm = <Schema extends SchemaWithEnforcableProps>({
             <Fields {...form} />
           </SectionCard>
           {attachmentsFromSchema.length > 0 && (
-            <ActionFormAttachments attachmentsFromSchema={attachmentsFromSchema} {...attachments} type={title}/>
+            <ActionFormAttachments
+              attachmentsFromSchema={attachmentsFromSchema}
+              {...attachments}
+              type={title}
+            />
           )}
           {additionalInformation && (
             <SectionCard
@@ -282,7 +279,11 @@ export const ActionForm = <Schema extends SchemaWithEnforcableProps>({
                 control={form.control}
                 name={"additionalInformation" as FieldPath<z.TypeOf<Schema>>}
                 render={({ field }) => (
-                  <AdditionalInformation label={additionalInformation.label} field={field} submissionTitle={title} />
+                  <AdditionalInformation
+                    label={additionalInformation.label}
+                    field={field}
+                    submissionTitle={title}
+                  />
                 )}
               />
             </SectionCard>
@@ -323,21 +324,20 @@ export const ActionForm = <Schema extends SchemaWithEnforcableProps>({
               <div className="w-full md:w-auto text-center md:text-left">
                 <Button
                   type="reset"
-                  onClick={() =>{
-                    const timeOnPageSec = (Date.now() - startTimePage)/1000;
+                  onClick={() => {
+                    const timeOnPageSec = (Date.now() - startTimePage) / 1000;
                     sendGAEvent("submit_cancel", {
-                        submission_type: title,
-                        time_on_page_sec:timeOnPageSec
-                      });
+                      submission_type: title,
+                      time_on_page_sec: timeOnPageSec,
+                    });
                     userPrompt({
                       ...promptOnLeavingForm,
                       onAccept: () => {
                         const origin = getFormOrigin({ id, authority });
                         navigate(origin);
                       },
-                    })
-                  }
-                  }
+                    });
+                  }}
                   variant="outline"
                   data-testid="cancel-action-form"
                   className="text-blue-700 font-semibold underline px-0 py-0 bg-transparent shadow-none border-none hover:bg-transparent"
@@ -395,13 +395,12 @@ export const ActionForm = <Schema extends SchemaWithEnforcableProps>({
                       navigate(origin);
                     },
                   });
-                  const timeOnPageSec = (Date.now() - startTimePage)/1000;
+                  const timeOnPageSec = (Date.now() - startTimePage) / 1000;
                   sendGAEvent("submit_cancel", {
-                      submission_type: title,
-                      time_on_page_sec:timeOnPageSec
-                    });
-                }
-                }
+                    submission_type: title,
+                    time_on_page_sec: timeOnPageSec,
+                  });
+                }}
                 variant="outline"
                 type="reset"
                 data-testid="cancel-action-form"

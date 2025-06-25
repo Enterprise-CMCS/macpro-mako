@@ -4,10 +4,10 @@ import { opensearch } from "shared-types";
 import { useGetUser } from "@/api";
 import { checkMultiFilter, useOsAggregate, useOsUrl } from "@/components";
 import { useLabelMapping } from "@/hooks";
+import { sendGAEvent } from "@/utils/ReactGA/SendGAEvent";
 
 import { useFilterDrawerContext } from "../FilterProvider";
 import * as C from "./consts";
-import { sendGAEvent } from "@/utils/ReactGA/SendGAEvent";
 
 type FilterGroup = Partial<Record<opensearch.main.Field, C.DrawerFilterableGroup>>;
 
@@ -98,7 +98,7 @@ export const useFilterDrawer = () => {
         sendGAEvent("dash_filter_change", {
           filter_key: filterKey,
           value: eventValue,
-        })
+        });
         const updateState = { ...state, [field]: { ...state[field], value } };
         // find all filter values to update
         const updateFilters = Object.values(updateState).filter((FIL) => {

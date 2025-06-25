@@ -17,9 +17,9 @@ import {
   useOsUrl,
 } from "@/components";
 import { ConfirmationDialog } from "@/components/ConfirmationDialog";
+import { sendGAEvent } from "@/utils/ReactGA/SendGAEvent";
 
 import { DEFAULT_FILTERS } from "../../useOpensearch";
-import { sendGAEvent } from "@/utils/ReactGA/SendGAEvent";
 
 const EXPORT_LIMIT = 10000;
 
@@ -61,9 +61,9 @@ export const OsExportData: FC<{
 
     csvExporter.generateCsv(exportData);
 
-   sendGAEvent("dash_export_csv", {
-        row_count: exportData.length,
-      });
+    sendGAEvent("dash_export_csv", {
+      row_count: exportData.length,
+    });
     setLoading(false);
   };
 

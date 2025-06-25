@@ -1,7 +1,7 @@
 // src/components/RoleAwareTracker.tsx
 import { useEffect, useState } from "react";
-import  PathTracker  from "./PathTracker"; // adjust path if needed
-import * as C from "@/components";            // so we can render <C.Layout />
+
+import PathTracker from "./PathTracker"; // adjust path if needed
 
 type UserRole = "cms" | "state";
 
@@ -12,19 +12,14 @@ type UserRole = "cms" | "state";
  * 2) Extracts either "custom:cms-roles" or "custom:ismemberof".
  * 3) Maps that attribute string into either "state" or "cms".
  */
-export function RoleAwareTracker({
-  children,
-}: {
-  children: React.ReactNode;
-}) {
+export function RoleAwareTracker({ children }: { children: React.ReactNode }) {
   const [userRole, setUserRole] = useState<UserRole | null>(null);
 
   useEffect(() => {
     // 1) Find the Local Storage key that contains "CognitoIdentityServiceProvider.*.userData"
     const allKeys = Object.keys(localStorage);
-    const userDataKey = allKeys.find((k) =>
-      k.endsWith(".userData") &&
-      k.startsWith("CognitoIdentityServiceProvider.")
+    const userDataKey = allKeys.find(
+      (k) => k.endsWith(".userData") && k.startsWith("CognitoIdentityServiceProvider."),
     );
 
     if (!userDataKey) {
@@ -50,8 +45,8 @@ export function RoleAwareTracker({
       const rawRoleString = cmsRolesAttr
         ? cmsRolesAttr.Value
         : isMemberOfAttr
-        ? isMemberOfAttr.Value
-        : "";
+          ? isMemberOfAttr.Value
+          : "";
 
       // state specific roles
       const stateKeywords = new Set([
@@ -90,6 +85,7 @@ export function RoleAwareTracker({
         setUserRole(null);
       }
     } catch (e) {
+      console.error("There was an error", e);
       // If parsing fails for or roles dont exist yet (initial page load before login)
       setUserRole("state");
     }

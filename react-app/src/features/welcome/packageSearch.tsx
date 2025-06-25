@@ -24,11 +24,11 @@ export const PackageSearch = () => {
     sendGAEvent("home_search_text", null);
   };
 
-  const triggerGAEvent = (eventType, option)=> {
+  const triggerGAEvent = (eventType, option) => {
     sendGAEvent(eventType, {
-      option: option
+      option: option,
     });
-  }
+  };
 
   return (
     <div className="w-full h-[202px] space-y-3 flex flex-col items-center text-center justify-center mb-8 mt-8">
@@ -46,9 +46,7 @@ export const PackageSearch = () => {
             triggerGAEvent("home_search_radio", e);
           }
         }}
-        
         className="flex space-x-4"
-
       >
         <div className="flex space-x-2">
           <RadioGroupItem value="spas" id="r1" />

@@ -38,7 +38,7 @@ export const ActionFormAttachments = ({
   requiredIndicatorForTitle,
   instructions,
   callout,
-  type
+  type,
 }: ActionFormAttachmentsProps) => {
   const form = useFormContext();
 
@@ -83,7 +83,12 @@ export const ActionFormAttachments = ({
                   {value.shape.files instanceof z.ZodOptional ? null : <RequiredIndicator />}
                 </FormLabel>
                 <AttachmentInstructions fileValidation={value.shape.files._def} />
-                <Upload files={field.value ?? []} setFiles={field.onChange} dataTestId={key} type={type}/>
+                <Upload
+                  files={field.value ?? []}
+                  setFiles={field.onChange}
+                  dataTestId={key}
+                  type={type}
+                />
                 <FormMessage />
               </FormItem>
             )}
