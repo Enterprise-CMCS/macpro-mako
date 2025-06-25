@@ -1,4 +1,4 @@
-import { http, HttpResponse } from "msw";
+import { delay, http, HttpResponse } from "msw";
 import { featureFlags } from "shared-utils";
 
 import { notifs } from "../data/notifs";
@@ -49,10 +49,12 @@ export const toggleGetLDEvalStreamHandler = (toggleFlags?: FlagToggles) =>
     const encoder = new TextEncoder();
 
     const stream = new ReadableStream({
-      start(controller) {
+      async start(controller) {
         // Encode the string chunks using "TextEncoder".
-        controller.enqueue(encoder.encode(JSON.stringify(getFlags(toggleFlags))));
-        controller.close();
+        while (true) {
+          controller.enqueue(encoder.encode(JSON.stringify(getFlags(toggleFlags))));
+          await delay(10000);
+        }
       },
     });
 
