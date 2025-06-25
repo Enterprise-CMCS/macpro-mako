@@ -1,46 +1,17 @@
 import { TestUserDataWithRole } from "../../index.d";
 
-export const systemAdmin: TestUserDataWithRole = {
-  UserAttributes: [
-    {
-      Name: "email",
-      Value: "systemadmin@example.com",
-    },
-    {
-      Name: "email_verified",
-      Value: "true",
-    },
-    {
-      Name: "given_name",
-      Value: "System",
-    },
-    {
-      Name: "family_name",
-      Value: "Admin",
-    },
-    {
-      Name: "custom:state",
-      Value: "",
-    },
-    {
-      Name: "custom:ismemberof",
-      Value: "ONEMAC_USER_D",
-    },
-    {
-      Name: "sub",
-      Value: "bd3fb35d-6495-4665-8bab-d00693796e91",
-    },
-  ],
-  Username: "bd3fb35d-6495-4665-8bab-d00693796e91",
-  role: "systemadmin",
-  states: [],
-};
+export const CMS_ROLE_APPROVER_EMAIL = "cmsroleapprover@example.com";
+export const CMS_ROLE_APPROVER_USERNAME = "dc891f53-d20c-484a-bc40-447fce719658";
+export const DEFAULT_CMS_USER_EMAIL = "defaultcmsuser@example.com";
+export const DEFAULT_CMS_USER_USERNAME = "cd613967-c034-4e02-baad-03221840a35d";
+export const SYSTEM_ADMIN_EMAIL = "systemadmin@example.com";
+export const SYSTEM_ADMIN_USERNAME = "bd3fb35d-6495-4665-8bab-d00693796e91";
 
 export const cmsRoleApprover: TestUserDataWithRole = {
   UserAttributes: [
     {
       Name: "email",
-      Value: "cmsroleapprover@example.com",
+      Value: CMS_ROLE_APPROVER_EMAIL,
     },
     {
       Name: "email_verified",
@@ -64,10 +35,10 @@ export const cmsRoleApprover: TestUserDataWithRole = {
     },
     {
       Name: "sub",
-      Value: "dc891f53-d20c-484a-bc40-447fce719658",
+      Value: CMS_ROLE_APPROVER_USERNAME,
     },
   ],
-  Username: "dc891f53-d20c-484a-bc40-447fce719658",
+  Username: CMS_ROLE_APPROVER_USERNAME,
   role: "cmsroleapprover",
   states: [],
 };
@@ -76,7 +47,7 @@ export const defaultCMSUser: TestUserDataWithRole = {
   UserAttributes: [
     {
       Name: "email",
-      Value: "defaultcmsuser@example.com",
+      Value: DEFAULT_CMS_USER_EMAIL,
     },
     {
       Name: "email_verified",
@@ -100,12 +71,54 @@ export const defaultCMSUser: TestUserDataWithRole = {
     },
     {
       Name: "sub",
-      Value: "cd613967-c034-4e02-baad-03221840a35d",
+      Value: DEFAULT_CMS_USER_USERNAME,
     },
   ],
-  Username: "cd613967-c034-4e02-baad-03221840a35d",
+  Username: DEFAULT_CMS_USER_USERNAME,
   role: "defaultcmsuser",
   states: [],
 };
 
-export const cmsUsers: TestUserDataWithRole[] = [systemAdmin, cmsRoleApprover, defaultCMSUser];
+export const systemAdmin: TestUserDataWithRole = {
+  UserAttributes: [
+    {
+      Name: "email",
+      Value: SYSTEM_ADMIN_EMAIL,
+    },
+    {
+      Name: "email_verified",
+      Value: "true",
+    },
+    {
+      Name: "given_name",
+      Value: "System",
+    },
+    {
+      Name: "family_name",
+      Value: "Admin",
+    },
+    {
+      Name: "custom:state",
+      Value: "",
+    },
+    {
+      Name: "custom:ismemberof",
+      Value: "ONEMAC_USER_D",
+    },
+    {
+      Name: "sub",
+      Value: SYSTEM_ADMIN_USERNAME,
+    },
+  ],
+  Username: SYSTEM_ADMIN_USERNAME,
+  role: "systemadmin",
+  states: [],
+};
+
+export const cmsUserUsernamesByEmail = {
+  [CMS_ROLE_APPROVER_EMAIL]: CMS_ROLE_APPROVER_USERNAME,
+  [DEFAULT_CMS_USER_EMAIL]: DEFAULT_CMS_USER_USERNAME,
+  [SYSTEM_ADMIN_EMAIL]: SYSTEM_ADMIN_USERNAME,
+};
+
+export const cmsUsers: TestUserDataWithRole[] = [cmsRoleApprover, defaultCMSUser, systemAdmin];

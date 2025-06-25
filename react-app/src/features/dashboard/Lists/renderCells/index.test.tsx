@@ -4,8 +4,8 @@ import {
   TEST_1915B_ITEM,
   TEST_1915C_ITEM,
   TEST_CHIP_SPA_ITEM,
-  TEST_CMS_REVIEWER_USER,
   TEST_MED_SPA_ITEM,
+  TEST_REVIEWER_USER,
   TEST_STATE_SUBMITTER_USER,
 } from "mocks";
 import { Action, CognitoUserAttributes, opensearch, SEATOOL_STATUS } from "shared-types";
@@ -189,7 +189,7 @@ describe("renderCells", () => {
 
     describe("as a CMS Reviewer", () => {
       it(`should handle a button click and display [${Action.ENABLE_RAI_WITHDRAW}]`, async () => {
-        const { user } = setup(TEST_CMS_REVIEWER_USER, "cmsreviewer", {
+        const { user } = setup(TEST_REVIEWER_USER, "cmsreviewer", {
           ...TEST_CHIP_SPA_ITEM._source,
           seatoolStatus: SEATOOL_STATUS.PENDING,
           actionType: "New",
@@ -205,7 +205,7 @@ describe("renderCells", () => {
       });
 
       it(`should handle a button click and display [${Action.DISABLE_RAI_WITHDRAW}]`, async () => {
-        const { user } = setup(TEST_CMS_REVIEWER_USER, "cmsreviewer", {
+        const { user } = setup(TEST_REVIEWER_USER, "cmsreviewer", {
           ...TEST_MED_SPA_ITEM._source,
           seatoolStatus: SEATOOL_STATUS.PENDING,
           actionType: "New",

@@ -1,6 +1,6 @@
 import { FullUser } from "shared-types";
 
-import { makoReviewer, makoStateSubmitter, userResponses } from "../data/users";
+import { testReviewer, testStateSubmitter, userResponses } from "../data/users";
 import type { TestUserDataWithRole } from "../index.d";
 
 export const setMockUsername = (user?: TestUserDataWithRole | string | null): void => {
@@ -13,9 +13,9 @@ export const setMockUsername = (user?: TestUserDataWithRole | string | null): vo
   }
 };
 
-export const setDefaultStateSubmitter = () => setMockUsername(makoStateSubmitter);
+export const setDefaultStateSubmitter = () => setMockUsername(testStateSubmitter);
 
-export const setDefaultReviewer = () => setMockUsername(makoReviewer);
+export const setDefaultReviewer = () => setMockUsername(testReviewer);
 
 export const findUserByUsername = (username: string): TestUserDataWithRole | undefined =>
   userResponses.find((user) => user.Username == username);
