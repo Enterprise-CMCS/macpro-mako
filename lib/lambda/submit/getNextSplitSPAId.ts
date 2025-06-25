@@ -1,7 +1,9 @@
+import { ItemResult } from "lib/packages/shared-types/opensearch/main";
 import { search } from "libs/opensearch-lib";
 import { getDomainAndNamespace } from "libs/utils";
-import { cpocs } from "shared-types/opensearch";
 
+// Split SPAs can be created before or after existing in SEAtool.
+// If the latest split SPA comes from SEAtool, keep that suffix. If coming from OneMAC, increment letter
 export const getNextSplitSPAId = async (spaId: string) => {
   const { domain, index } = getDomainAndNamespace("main");
   const query = {
@@ -14,20 +16,36 @@ export const getNextSplitSPAId = async (spaId: string) => {
   };
   // Get existing split SPAs for this package id
   const { hits } = await search(domain, index, query);
+
   // Extract suffixes from existing split SPA IDs
   // If there are no split SPAs yet, start at the ASCII character before "A" ("@")
   // Convert to ASCII char codes to get latest suffix
-  const latestSuffixCharCode = hits.hits.reduce((maxCharCode: number, hit: cpocs.ItemResult) => {
-    const suffix = hit._source.id.toString().split("-").at(-1) ?? "@";
-    return Math.max(maxCharCode, suffix.charCodeAt(0));
-  }, "@".charCodeAt(0));
+  let latestSplitSpa: ItemResult | null = null;
+  let latestSuffixCharCode = "@".charCodeAt(0);
 
-  // Increment letter but not past "Z"
+  for (const hit of hits.hits) {
+    const suffix = hit._source.id.toString().split("-").at(-1) ?? "@";
+    const currentCharCode = suffix.charCodeAt(0);
+
+    if (currentCharCode > latestSuffixCharCode) {
+      latestSuffixCharCode = currentCharCode;
+      latestSplitSpa = hit;
+    }
+  }
+
+  // If a package was initially created in SEAtool, origin is undefined
+  const isFromOneMAC = latestSplitSpa?._source.origin === "OneMAC";
+
+  // Increment letter if latest split SPA exists in OneMAC but not past "Z"
   // "A-Z" is 65-90 in ASCII
-  if (latestSuffixCharCode >= 90) {
+  if (latestSuffixCharCode === 90 && isFromOneMAC) {
     throw new Error("This package can't be further split.");
   }
-  const nextSuffix = String.fromCharCode(latestSuffixCharCode + 1);
+
+  // Keep the suffix for the SEAtool package to create this package in OneMAC
+  const nextSuffix = isFromOneMAC
+    ? String.fromCharCode(latestSuffixCharCode) + 1
+    : String.fromCharCode(latestSuffixCharCode);
 
   return `${spaId}-${nextSuffix}`;
 };
