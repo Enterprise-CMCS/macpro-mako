@@ -113,13 +113,21 @@ export const Faq = () => {
               <div>
                 <b>Phone Number</b>
                 <p className="mb-4 text-primary">
-                  <a className="underline" href={`tel:${helpDeskContact.phone}`}>
+                  <a
+                    className="underline"
+                    href={`tel:${helpDeskContact.phone}`}
+                    onClick={() => window.gtag("event", "support_contact_phone")}
+                  >
                     {helpDeskContact.phone}
                   </a>
                 </p>
                 <b>Email</b>
                 <p className="text-primary">
-                  <a className="underline" href={`mailto:${helpDeskContact.email}`}>
+                  <a
+                    className="underline"
+                    href={`mailto:${helpDeskContact.email}`}
+                    onClick={() => window.gtag("event", "support_contact_email")}
+                  >
                     {helpDeskContact.email}
                   </a>
                 </p>

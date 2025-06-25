@@ -172,7 +172,14 @@ export const oneMACFAQContent: FAQContent[] = [
                 Watch this video for an overview on how to upload subsequent documentation to a
                 package under review.
               </p>
-              <video controls>
+              <video
+                controls
+                onPlay={() =>
+                  window.gtag("event", "support_video_play", {
+                    event_label: "Upload Subsequent Documentation Overview",
+                  })
+                }
+              >
                 <source src="/onboarding/UploadSubsequentDocumentationDemo.mp4" type="video/mp4" />
                 Your browser does not support the video tag.
               </video>
