@@ -59,10 +59,14 @@ describe("CMSSignup", () => {
   };
 
   it("should navigate to / if the user is not logged in", async () => {
+    console.log("setting mock username to null");
     setMockUsername(null);
+    console.log("mock username should be null");
     await setup();
+    console.log("finished setting up the component");
 
     expect(screen.getByText("Home")).toBeInTheDocument();
+    console.log("after test");
   });
 
   it("should navigate to /profile if the user is not a CMS default user or approver", async () => {

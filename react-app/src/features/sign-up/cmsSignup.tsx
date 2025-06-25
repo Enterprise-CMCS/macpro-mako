@@ -40,7 +40,7 @@ export const CMSSignup = () => {
 
   const navigate = useNavigate();
 
-  const { data: userDetails } = useGetUserDetails();
+  const { data: userDetails, isLoading: isUserDetailsLoading } = useGetUserDetails();
   const currentRole = userDetails?.role;
 
   const onSubmit = async () => {
@@ -51,8 +51,8 @@ export const CMSSignup = () => {
         role: isCMSRoleApprover ? "defaultcmsuser" : "cmsroleapprover",
         eventType: "user-role",
         requestRoleChange: true,
-        group: !isCMSRoleApprover ? group.abbr : null,
-        division: !isCMSRoleApprover ? division.abbr : null,
+        group: !isCMSRoleApprover ? group?.abbr : null,
+        division: !isCMSRoleApprover ? division?.abbr : null,
       });
 
       if (isCMSRoleApprover) navigate("/usermanagement");
@@ -92,7 +92,7 @@ export const CMSSignup = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  if (!userDetails) return <LoadingSpinner />;
+  if (isUserDetailsLoading) return <LoadingSpinner />;
 
   if (!userDetails?.role) return <Navigate to="/" />;
 
