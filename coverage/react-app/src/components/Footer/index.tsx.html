@@ -23,30 +23,30 @@
         <div class='clearfix'>
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">71.42% </span>
+                <span class="strong">76% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>15/21</span>
+                <span class='fraction'>19/25</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">84.61% </span>
+                <span class="strong">85.71% </span>
                 <span class="quiet">Branches</span>
-                <span class='fraction'>11/13</span>
+                <span class='fraction'>12/14</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">57.14% </span>
+                <span class="strong">62.5% </span>
                 <span class="quiet">Functions</span>
-                <span class='fraction'>4/7</span>
+                <span class='fraction'>5/8</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">81.25% </span>
+                <span class="strong">85% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>13/16</span>
+                <span class='fraction'>17/20</span>
             </div>
         
             
@@ -247,7 +247,19 @@
 <a name='L182'></a><a href='#L182'>182</a>
 <a name='L183'></a><a href='#L183'>183</a>
 <a name='L184'></a><a href='#L184'>184</a>
-<a name='L185'></a><a href='#L185'>185</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
+<a name='L185'></a><a href='#L185'>185</a>
+<a name='L186'></a><a href='#L186'>186</a>
+<a name='L187'></a><a href='#L187'>187</a>
+<a name='L188'></a><a href='#L188'>188</a>
+<a name='L189'></a><a href='#L189'>189</a>
+<a name='L190'></a><a href='#L190'>190</a>
+<a name='L191'></a><a href='#L191'>191</a>
+<a name='L192'></a><a href='#L192'>192</a>
+<a name='L193'></a><a href='#L193'>193</a>
+<a name='L194'></a><a href='#L194'>194</a>
+<a name='L195'></a><a href='#L195'>195</a>
+<a name='L196'></a><a href='#L196'>196</a>
+<a name='L197'></a><a href='#L197'>197</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -276,6 +288,18 @@
 <span class="cline-any cline-yes">3x</span>
 <span class="cline-any cline-yes">3x</span>
 <span class="cline-any cline-yes">3x</span>
+<span class="cline-any cline-yes">3x</span>
+<span class="cline-any cline-yes">3x</span>
+<span class="cline-any cline-yes">3x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">3x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -357,8 +381,8 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">93x</span>
-<span class="cline-any cline-yes">334x</span>
-<span class="cline-any cline-yes">334x</span>
+<span class="cline-any cline-yes">333x</span>
+<span class="cline-any cline-yes">333x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -431,11 +455,11 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">import { useEffect, useState } from "react";
+<span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">import { useEffect, useMemo, useState } from "react";
 import { Link } from "react-router";
 import { isStateUser } from "shared-utils";
 &nbsp;
-import { useGetUser } from "@/api";
+import { useGetUser, useGetUserDetails } from "@/api";
 import { Alert, Button } from "@/components";
 import { useFeatureFlag } from "@/hooks/useFeatureFlag";
 &nbsp;
@@ -459,6 +483,11 @@ type MedSpaFooterProps = {
 export const Footer = ({ email, address, showNavLinks }: Props) =&gt; {
   const shouldShowNavLinks = showNavLinks ?? true;
   const { data: user } = useGetUser();
+  const { data: userDetailsData } = useGetUserDetails();
+  const showUserManagement = useMemo(() =&gt; {
+    const role = userDetailsData?.role;
+    return ["systemadmin", "statesystemadmin", "cmsroleapprover", "helpdesk"].includes(role);
+  }, [userDetailsData]);
   const isStateHomepage = useFeatureFlag("STATE_HOMEPAGE_FLAG");
 &nbsp;
   return (
@@ -470,9 +499,16 @@ export const Footer = ({ email, address, showNavLinks }: Props) =&gt; {
               &lt;a href="/" className="underline font-bold"&gt;
                 &lt;p&gt;Home&lt;/p&gt;
               &lt;/a&gt;
+&nbsp;
               &lt;a href="/dashboard" className="underline font-bold"&gt;
                 &lt;p&gt;Dashboard&lt;/p&gt;
               &lt;/a&gt;
+&nbsp;
+              {showUserManagement &amp;&amp; (
+                &lt;a href="/usermanagement" className="underline font-bold"&gt;
+                  &lt;p&gt;User Management&lt;/p&gt;
+                &lt;/a&gt;
+              )}
               {isStateHomepage &amp;&amp; isStateUser(user.user) &amp;&amp; (
                 &lt;a href="/latestupdates" className="underline font-bold"&gt;
                   &lt;p&gt;Latest Updates&lt;/p&gt;
@@ -622,7 +658,7 @@ export const MedSpaFooter = ({ onCancel, onSubmit, disabled }: MedSpaFooterProps
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2025-06-25T02:18:53.006Z
+                at 2025-06-25T13:53:54.518Z
             </div>
         <script src="../../../../prettify.js"></script>
         <script>
