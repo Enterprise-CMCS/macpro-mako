@@ -256,7 +256,7 @@ function extractEmails(addresses: string[] | undefined): string[] {
   console.log("addresses: ", addresses)
   const filteredArray = [];
   if (addresses) {
-    for (var i = 0; i < addresses.length; i++) {
+    for (var i = 0; i < addresses.length - 1; i++) {
       console.log("address being iterated: ", addresses[i]);
       const email = addresses[i].split("<")[1].split(">")[0];
       console.log("stripped email: ", email)
