@@ -114,10 +114,10 @@ export const Dashboard = () => {
               isLoading: osData.isLoading,
             }}
           >
-            <TabsContent value="spas">
+            <TabsContent value="spas" tabIndex={undefined}>
               <SpasList oneMacUser={oneMacUser} />
             </TabsContent>
-            <TabsContent value="waivers">
+            <TabsContent value="waivers" tabIndex={undefined}>
               <WaiversList oneMacUser={oneMacUser} />
             </TabsContent>
           </OsProvider>
