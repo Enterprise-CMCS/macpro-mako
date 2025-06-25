@@ -5,7 +5,6 @@ import { cn } from "@/utils";
 interface RoleStatusTopBorderCardProps {
   children: ReactNode;
   className?: string;
-  isNewUserRoleDisplay?: boolean;
   status?: "pending" | "denied" | string;
 }
 
