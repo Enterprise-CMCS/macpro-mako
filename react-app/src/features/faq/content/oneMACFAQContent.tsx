@@ -266,7 +266,16 @@ export const oneMACFAQContent: FAQContent[] = [
     qanda: [
       {
         anchorText: "spa-admendments",
-        question: "Which state plan amendments (SPAs) can I submit in OneMAC?",
+        question: (
+          <div className="flex items-center gap-2">
+            <span className="inline-block bg-green-600 text-white text-xs font-semibold px-2 py-0.5 rounded">
+              Updated
+            </span>
+            <span className="text-left">
+              Which state plan amendments (SPAs) can I submit in OneMAC?
+            </span>
+          </div>
+        ),
         answerJSX: (
           <div className="w-full space-y-2">
             <p>
@@ -879,7 +888,7 @@ export const oneMACFAQContent: FAQContent[] = [
       {
         anchorText: "abp-spa-templates",
         question: (
-          <div className="flex items-center gap-7">
+          <div className="flex items-center gap-2">
             <span className="inline-block bg-blue-600 text-white text-xs font-semibold px-2 py-0.5 rounded">
               New
             </span>
@@ -926,8 +935,8 @@ export const oneMACFAQContent: FAQContent[] = [
         anchorText: "abp-implementation-guides-spa",
         question: (
           <div className="flex items-center gap-2">
-            <span className="inline-block bg-green-600 text-white text-xs font-semibold px-2 py-0.5 rounded">
-              Updated
+            <span className="inline-block bg-blue-600 text-white text-xs font-semibold px-2 py-0.5 rounded">
+              New
             </span>
             <span className="text-left">
               Where can I download Medicaid Alternative Benefit Plan (ABP) SPA implementation
@@ -961,7 +970,16 @@ export const oneMACFAQContent: FAQContent[] = [
       },
       {
         anchorText: "mpc-spa-templates",
-        question: "Where can I download Medicaid Premiums and Cost Sharing SPA templates?",
+        question: (
+          <div className="flex items-center gap-2">
+            <span className="inline-block bg-blue-600 text-white text-xs font-semibold px-2 py-0.5 rounded">
+              New
+            </span>
+            <span className="text-left">
+              Where can I download Medicaid Premiums and Cost Sharing SPA templates?
+            </span>
+          </div>
+        ),
         answerJSX: (
           <section className="space-y-2">
             <p>
@@ -989,8 +1007,16 @@ export const oneMACFAQContent: FAQContent[] = [
       },
       {
         anchorText: "mpc-spa-implementation-guides",
-        question:
-          "Where can I download Medicaid Premiums and Cost Sharing SPA implementation guides?",
+        question: (
+          <div className="flex items-center gap-2">
+            <span className="inline-block bg-blue-600 text-white text-xs font-semibold px-2 py-0.5 rounded">
+              New
+            </span>
+            <span className="text-left">
+              Where can I download Medicaid Premiums and Cost Sharing SPA implementation guides?
+            </span>
+          </div>
+        ),
         answerJSX: (
           <section className="space-y-2">
             <p>
@@ -1017,7 +1043,14 @@ export const oneMACFAQContent: FAQContent[] = [
       },
       {
         anchorText: "chip-spa-templates",
-        question: "Where can I download CHIP eligibility SPA templates?",
+        question: (
+          <div className="flex items-center gap-2">
+            <span className="inline-block bg-blue-600 text-white text-xs font-semibold px-2 py-0.5 rounded">
+              New
+            </span>
+            <span className="text-left">Where can I download CHIP eligibility SPA templates?</span>
+          </div>
+        ),
         answerJSX: (
           <section>
             <p>
@@ -1077,7 +1110,16 @@ export const oneMACFAQContent: FAQContent[] = [
       },
       {
         anchorText: "chip-spa-implentation-guides",
-        question: "Where can I download CHIP eligibility SPA implementation guides?",
+        question: (
+          <div className="flex items-center gap-2">
+            <span className="inline-block bg-blue-600 text-white text-xs font-semibold px-2 py-0.5 rounded">
+              New
+            </span>
+            <span className="text-left">
+              Where can I download CHIP eligibility SPA implementation guides?
+            </span>
+          </div>
+        ),
         answerJSX: (
           <div>
             <section className="space-y-2">
