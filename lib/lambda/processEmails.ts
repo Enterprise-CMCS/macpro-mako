@@ -237,28 +237,24 @@ export function validateEmailTemplate(template: any) {
   }
 }
 
+
 function extractEmails(addresses: string[] | undefined): string[] {
-  console.log("addresses: ", addresses)
   const filteredArray = [];
   if (addresses) {
     for (var i = 0; i < addresses.length; i++) {
       if (addresses[i].includes("<") && addresses[i].includes(">")) {
-        console.log("address being iterated: ", addresses[i]);
+        //addresses typically follow the format: "CHIP Inbox <CHIPSPASubmissionMailBox@cms.hhs.gov>"
         const email = addresses[i].split("<")[1].split(">")[0];
         console.log("stripped email: ", email)
         filteredArray.push(email)
-        // const matches = addresses[i].match(emailRegex);
-        // if (matches) {
-        //   filteredArray.push(matches[0])
-        // }
       } else {
         //guard against unusual email addresses
         filteredArray.push(addresses[i]);
       }
-
     }
     return filteredArray
   }
+  // if no addresses return an empty array
   return [];
 }
 
