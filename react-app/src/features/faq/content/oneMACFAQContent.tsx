@@ -295,12 +295,16 @@ export const oneMACFAQContent: FAQContent[] = [
             <ul className="ml-8 list-disc space-y-2 text-blue-600">
               {[
                 {
+                  //add new here
                   href: "#abp-spa-templates",
                   text: "Where can I download Medicaid Alternative Benefit Plan (ABP) SPA templates?",
+                  label: "New",
                 },
                 {
+                  //add updated here
                   href: "#abp-implementation-guides-spa",
                   text: "Where can I download Medicaid Alternative Benefit Plan (ABP) SPA implementation guides?",
+                  label: "Updated",
                 },
                 {
                   href: "#mpc-spa-templates",
@@ -318,7 +322,7 @@ export const oneMACFAQContent: FAQContent[] = [
                   href: "#chip-spa-implentation-guides",
                   text: "Where can I download CHIP eligibility SPA implementation guides?",
                 },
-              ].map(({ href, text }) => (
+              ].map(({ href, text, label }) => (
                 <li key={href}>
                   <a
                     href={href}
@@ -334,8 +338,18 @@ export const oneMACFAQContent: FAQContent[] = [
                         }
                       }
                     }}
+                    className="text-blue-600 hover:underline flex items-center space-x-2"
                   >
-                    {text}
+                    {label && (
+                      <span
+                        className={`inline-block text-white text-xs font-semibold px-2 py-0.5 rounded ${
+                          label === "New" ? "bg-blue-600" : "bg-green-600"
+                        }`}
+                      >
+                        {label}
+                      </span>
+                    )}
+                    <span>{text}</span>
                   </a>
                 </li>
               ))}
