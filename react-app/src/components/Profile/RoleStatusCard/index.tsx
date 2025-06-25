@@ -1,5 +1,6 @@
 import { UserRole } from "shared-types/events/legacy-user";
 
+import { StateAccess } from "@/api";
 import { useFeatureFlag } from "@/hooks/useFeatureFlag";
 
 import { RoleStatusCardLegacy } from "./RoleStatusCardLegacy";
@@ -9,14 +10,7 @@ export type RoleStatusProps = {
   isNewUserRoleDisplay?: boolean;
   role: UserRole;
   onClick?: () => void;
-  access: {
-    territory: string;
-    role: string;
-    status: string;
-    doneByName: string;
-    doneByEmail: string;
-    approverList?: { fullName: string; email: string }[];
-  };
+  access: Omit<StateAccess, "id" | "eventType" | "email">;
 };
 
 export const RoleStatusCard = (props: RoleStatusProps) => {

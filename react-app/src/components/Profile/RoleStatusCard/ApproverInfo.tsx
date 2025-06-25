@@ -7,18 +7,20 @@ type ApproverInfoProps = {
 };
 
 export const ApproverInfo = ({ access }: ApproverInfoProps) => {
-  const showApprovers = !(access.status !== "pending" && access.role === "norole");
+  const { role, status, approverList = [] } = access;
+
+  const showApprovers = !(status !== "pending" && role === "norole");
 
   if (!showApprovers) return null;
 
   return (
     <>
       <span className="font-semibold">
-        {userRoleMap[getApprovingRole(access.role)]}
+        {userRoleMap[getApprovingRole(role)]}
         {": "}
       </span>
-      {access.approverList && access.approverList.length
-        ? access.approverList.map((approver, index) => (
+      {approverList.length
+        ? approverList.map((approver, index) => (
             <a
               className="text-blue-600"
               href={`mailto:${approver.email}`}

@@ -2,7 +2,7 @@ import { useQuery } from "@tanstack/react-query";
 import { API } from "aws-amplify";
 import { StateCode } from "shared-types";
 
-type Approver = { email: string; fullName: string; territory: StateCode | "N/A" };
+export type Approver = { email: string; fullName: string; territory: StateCode | "N/A" };
 type ApproverRaw = {
   role: string;
   statusCode?: number;

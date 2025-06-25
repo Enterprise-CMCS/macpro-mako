@@ -121,6 +121,9 @@ const UserDropdownMenu = () => {
     return excludedRoles.includes(currentRole);
   };
 
+  const showRequestRoleChangeButton =
+    !disableRoleChange() && !isLoading && userDetails && !isNewUserRoleDisplay;
+
   const handleViewProfile = () => {
     navigate("/profile");
   };
@@ -182,8 +185,7 @@ const UserDropdownMenu = () => {
               </li>
             </DropdownMenu.Item>
             {/* TODO: conditionally show this if the user IS NOT HELPDESK */}
-            {/* // helpdesk, system admins, and cms reviewer users don't even see request role as an option */}
-            {!disableRoleChange() && !isLoading && userDetails && !isNewUserRoleDisplay && (
+            {showRequestRoleChangeButton && (
               <DropdownMenu.Item
                 className="text-primary hover:text-primary/70 cursor-pointer"
                 asChild
