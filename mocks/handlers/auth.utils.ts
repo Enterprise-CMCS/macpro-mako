@@ -15,19 +15,32 @@ const getPrivateKey = async (): Promise<jose.CryptoKey | Uint8Array> => {
   return privateKey;
 };
 
+const getPublicKey = async () => jose.createLocalJWKSet({ keys: [KEY] }); // pragma: allowlist secret
+
+export const getPayloadFromAccessToken = async (
+  accessToken?: string,
+): Promise<jose.JWTPayload | undefined> => {
+  if (!accessToken) {
+    return undefined;
+  }
+
+  const publicKey = await getPublicKey();
+  const { payload } = await jose.jwtVerify(accessToken, publicKey, {
+    issuer: COGNITO_IDP_DOMAIN,
+    audience: USER_POOL_CLIENT_ID,
+  });
+  return payload;
+};
+
 export const getUsernameFromAccessToken = async (
   accessToken?: string,
 ): Promise<string | undefined> => {
-  const publicKey = jose.createLocalJWKSet({ keys: [KEY] }); // pragma: allowlist secret
+  const payload = await getPayloadFromAccessToken(accessToken);
 
-  if (accessToken) {
-    const { payload } = await jose.jwtVerify(accessToken, publicKey, {
-      issuer: COGNITO_IDP_DOMAIN,
-      audience: USER_POOL_CLIENT_ID,
-    });
-
-    return payload.username as string;
+  if (payload) {
+    return payload?.username as string;
   }
+
   return undefined;
 };
 
