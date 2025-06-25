@@ -121,8 +121,4 @@ export const reviewerUsernamesByEmail = {
   [TEST_REVIEWER_EMAIL]: TEST_REVIEWER_USERNAME,
 };
 
-export const reviewers: TestUserDataWithRole[] = [
-  automatedReviewer,
-  reviewer,
-  testReviewer,
-];
+export const reviewers: TestUserDataWithRole[] = [automatedReviewer, reviewer, testReviewer];
