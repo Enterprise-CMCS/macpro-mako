@@ -194,7 +194,7 @@ export type SearchQueryBody = {
     match_all?: MatchAllQuery;
     regexp?: Record<string, string>;
   };
-  aggs?: QueryAggs[];
+  aggs?: Record<string, QueryAggs>;
   size?: number;
   sortDirection?: string;
   sortField?: string;
