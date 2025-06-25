@@ -1,4 +1,4 @@
-import { MAKO_REVIEWER_USERNAME, MAKO_STATE_SUBMITTER_USERNAME, usernamesByEmail } from "mocks";
+import { TEST_REVIEWER_USERNAME, TEST_STATE_SUBMITTER_USERNAME, usernamesByEmail } from "mocks";
 import prompts from "prompts";
 import { Argv } from "yargs";
 
@@ -45,9 +45,9 @@ export const uiLocalOnly = {
   handler: async (options: { statesubmitter?: boolean; reviewer?: boolean; userId?: string }) => {
     let userId;
     if (options.statesubmitter) {
-      userId = MAKO_STATE_SUBMITTER_USERNAME;
+      userId = TEST_STATE_SUBMITTER_USERNAME;
     } else if (options.reviewer) {
-      userId = MAKO_REVIEWER_USERNAME;
+      userId = TEST_REVIEWER_USERNAME;
     } else if (options.userId) {
       userId = options.userId;
     } else {
