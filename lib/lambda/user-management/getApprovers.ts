@@ -4,7 +4,11 @@ import { response } from "libs/handler-lib";
 import { StateCode } from "shared-types";
 
 import { getUserProfileSchema } from "./getUserProfile";
-import { getAllUserRolesByEmail, getApproversByRole } from "./userManagementService";
+import {
+  getAllUserRolesByEmail,
+  getApproversByRole,
+  getLatestActiveRoleByEmail,
+} from "./userManagementService";
 
 type Territory = StateCode | "N/A";
 type approverListType = { id: string; role: string; email: string; territory: Territory };
@@ -31,6 +35,7 @@ const getApprovers = async (event: APIGatewayEvent) => {
   try {
     const { userId, poolId } = authDetails;
     const { email } = await lookupUserAttributes(userId, poolId);
+
     let lookupEmail = email;
 
     const eventBody = typeof event.body === "string" ? JSON.parse(event.body) : event.body;
@@ -41,7 +46,14 @@ const getApprovers = async (event: APIGatewayEvent) => {
       safeEventBody?.data?.userEmail &&
       safeEventBody.data.userEmail !== email
     ) {
-      lookupEmail = safeEventBody.data.userEmail;
+      const currUserLatestActiveRoleObj = await getLatestActiveRoleByEmail(email);
+      if (
+        ["systemadmin", "statesystemadmin", "cmsroleapprover", "helpdesk"].includes(
+          currUserLatestActiveRoleObj?.role,
+        )
+      ) {
+        lookupEmail = safeEventBody.data.userEmail;
+      }
     }
 
     const userRoles = await getAllUserRolesByEmail(lookupEmail);

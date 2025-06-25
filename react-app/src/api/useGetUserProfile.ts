@@ -29,7 +29,7 @@ export function attachApproversToStateAccess(
   stateAccess: StateAccess[],
   approverByRole: ApproverRaw[],
 ): StateAccess[] {
-  const roleTerritoryApproverMap = {};
+  const roleTerritoryApproverMap: { [key: string]: any } = {};
   if (!approverByRole) return stateAccess;
   if (!approverByRole.length) return stateAccess;
 
@@ -71,7 +71,6 @@ export const getUserProfile = async (userEmail?: string): Promise<OneMacUserProf
     let approvers: any = { approverList: [] };
     try {
       approvers = await API.post("os", "/getApprovers", { body: { userEmail } });
-      console.log(JSON.stringify(approvers, null, 2));
     } catch (approverError) {
       console.log("Error fetching approvers:", approverError);
     }

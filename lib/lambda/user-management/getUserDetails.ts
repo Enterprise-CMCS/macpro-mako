@@ -35,45 +35,48 @@ export const getUserDetails = async (event: APIGatewayEvent) => {
     const { userId, poolId } = currAuthDetails;
     const currUserAttributes = await lookupUserAttributes(userId, poolId);
     const currUserDetails = await getUserByEmail(currUserAttributes.email);
-    const currLatestActiveRoleObj = await getLatestActiveRoleByEmail(currUserAttributes.email);
+    const currUserLatestActiveRoleObj = await getLatestActiveRoleByEmail(currUserAttributes.email);
+
+    const eventBody = typeof event.body === "string" ? JSON.parse(event.body) : event.body;
+    const safeEventBody = getUserDetailsSchema.safeParse(eventBody);
+    console.log("safeEventBody", JSON.stringify(safeEventBody, null, 2));
 
     // if the event has a body with a userEmail, the userEmail is not the same as
     // the current user's email, and the current user is a user manager, then
     // return the data for the userEmail instead of the current user
-    const eventBody = typeof event.body === "string" ? JSON.parse(event.body) : event.body;
-    const safeEventBody = getUserDetailsSchema.safeParse(eventBody);
-    console.log("safeEventBody", JSON.stringify(safeEventBody, null, 2));
     if (
       safeEventBody.success &&
       safeEventBody?.data?.userEmail &&
       safeEventBody.data.userEmail !== currUserDetails.email &&
       ["systemadmin", "statesystemadmin", "cmsroleapprover", "helpdesk"].includes(
-        currLatestActiveRoleObj?.role,
+        currUserLatestActiveRoleObj?.role,
       )
     ) {
-      // retrieving user details for another user
+      // retrieving user details for the requested user
       const reqUserDetails = await getUserByEmail(safeEventBody.data.userEmail);
       const reqUserLatestActiveRoleObj = await getLatestActiveRoleByEmail(
         safeEventBody.data.userEmail,
       );
+      const reqUserActiveStates = await getActiveStatesForUserByEmail(currUserAttributes.email);
 
       return response({
         statusCode: 200,
         body: {
           ...reqUserDetails,
           role: reqUserLatestActiveRoleObj?.role ?? "norole",
+          states: reqUserActiveStates,
         },
       });
     }
 
-    const statesUserHasAccessTo = await getActiveStatesForUserByEmail(currUserAttributes.email);
+    const currUserActiveStates = await getActiveStatesForUserByEmail(currUserAttributes.email);
 
     return response({
       statusCode: 200,
       body: {
         ...currUserDetails,
-        role: currLatestActiveRoleObj?.role ?? "norole",
-        states: statesUserHasAccessTo,
+        role: currUserLatestActiveRoleObj?.role ?? "norole",
+        states: currUserActiveStates,
       },
     });
   } catch (err: unknown) {
