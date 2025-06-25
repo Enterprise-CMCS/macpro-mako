@@ -41,15 +41,12 @@ export const MyProfile = () => {
   const [pendingRequests, setPendingRequests] = useState<boolean>(false);
   const statesToRequest: Option[] = useAvailableStates(userDetails?.role, userProfile?.stateAccess);
 
-  const filteredRoleStatus = useMemo(() => {
-    if (isNewUserRoleDisplay) return userProfile?.stateAccess;
-    return filterRoleStatus(userDetails, userProfile);
+  const orderedRoleStatus = useMemo(() => {
+    const filteredRoleStatus = isNewUserRoleDisplay
+      ? userProfile?.stateAccess
+      : filterRoleStatus(userDetails, userProfile);
+    return orderRoleStatus(filteredRoleStatus);
   }, [userDetails, userProfile, isNewUserRoleDisplay]);
-
-  const orderedRoleStatus = useMemo(
-    () => orderRoleStatus(filteredRoleStatus),
-    [filteredRoleStatus],
-  );
 
   // this user should not see the "add role button"
   const isCMSWithManyRoles = useMemo(
@@ -65,7 +62,7 @@ export const MyProfile = () => {
       const pendingRequests = hasPendingRequests(userProfile?.stateAccess);
       setPendingRequests(pendingRequests);
     }
-  }, [isDetailLoading, isProfileLoading, filteredRoleStatus, userProfile]);
+  }, [isDetailLoading, isProfileLoading, userProfile]);
 
   if (isDetailLoading || isProfileLoading) {
     return <LoadingSpinner />;

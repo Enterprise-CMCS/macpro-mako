@@ -52,15 +52,12 @@ export const UserProfile = () => {
   const { userDetails, userProfile } = useLoaderData<LoaderData>();
   const isNewUserRoleDisplay = useFeatureFlag("SHOW_USER_ROLE_UPDATE");
 
-  const filteredRoleStatus = useMemo(() => {
-    if (isNewUserRoleDisplay) return userProfile?.stateAccess;
-    return filterRoleStatus(userDetails, userProfile);
+  const orderedRoleStatus = useMemo(() => {
+    const filteredRoleStatus = isNewUserRoleDisplay
+      ? userProfile?.stateAccess
+      : filterRoleStatus(userDetails, userProfile);
+    return orderRoleStatus(filteredRoleStatus);
   }, [userDetails, userProfile, isNewUserRoleDisplay]);
-
-  const orderedRoleStatus = useMemo(
-    () => orderRoleStatus(filteredRoleStatus),
-    [filteredRoleStatus],
-  );
 
   return (
     <>
