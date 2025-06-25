@@ -40,7 +40,8 @@
 
       window.matchMedia("(prefers-color-scheme: dark)").addEventListener("change", setFavicon);
     </script>
-    <script>
+    <script type="module" src="/src/initializeGA.ts"></script>
+    <!-- <script>
       // fetch env.json created by the prebuild script
       fetch('/env.json')
         .then(async (res) => {
@@ -75,6 +76,6 @@
         .catch((err) => {
           console.error('Failed to load /assets/env.json:', err);
         });
-    </script>
+    </script> -->
   </body>
 </html>
