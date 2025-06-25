@@ -12,7 +12,11 @@ import {
 } from "@/components";
 import { useFeatureFlag } from "@/hooks/useFeatureFlag";
 
-import { helpDeskContact, oneMACFAQContent } from "./content/oneMACFAQContent";
+import {
+  handleSupportLinkClick,
+  helpDeskContact,
+  oneMACFAQContent,
+} from "./content/oneMACFAQContent";
 
 export const Faq = () => {
   const isFAQHidden = useFeatureFlag("TOGGLE_FAQ");
@@ -77,7 +81,13 @@ export const Faq = () => {
           <article className="mb-8">
             {/* BUTTON */}
             <Button
-              onClick={expandAll}
+              onClick={() => {
+                expandAll();
+                window.gtag("event", "support_click_general_expand-all", {
+                  event_category: "Support",
+                  event_label: "Expand All",
+                });
+              }}
               variant="outline"
               data-testid="expand-all"
               className="w-full xs:w-fit hover:bg-transparent mb-5"
@@ -97,7 +107,12 @@ export const Faq = () => {
                       key={anchorText}
                       data-testid={anchorText}
                     >
-                      <AccordionTrigger className="text-left">{question}</AccordionTrigger>
+                      <AccordionTrigger
+                        className="text-left"
+                        onClick={handleSupportLinkClick("faq")}
+                      >
+                        {question}
+                      </AccordionTrigger>
                       <AccordionContent>{answerJSX}</AccordionContent>
                     </AccordionItem>
                   ))}

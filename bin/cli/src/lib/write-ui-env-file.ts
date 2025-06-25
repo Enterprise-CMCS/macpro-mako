@@ -1,6 +1,7 @@
 import { GetParameterCommand, SSMClient } from "@aws-sdk/client-ssm";
 import { promises as fs } from "fs";
 import path from "path";
+
 import { project, region } from "./consts";
 
 export async function writeUiEnvFile(stage, local = false) {
@@ -13,9 +14,9 @@ export async function writeUiEnvFile(stage, local = false) {
       await ssm.send(
         new GetParameterCommand({
           Name: `/${project}/${stage}/deployment-output`,
-        })
+        }),
       )
-    ).Parameter!.Value!
+    ).Parameter!.Value!,
   );
 
   const deploymentConfig = JSON.parse(
@@ -23,9 +24,9 @@ export async function writeUiEnvFile(stage, local = false) {
       await ssm.send(
         new GetParameterCommand({
           Name: `/${project}/${stage}/deployment-config`,
-        })
+        }),
       )
-    ).Parameter!.Value!
+    ).Parameter!.Value!,
   );
 
   let googleAnalytics = "";
@@ -34,8 +35,8 @@ export async function writeUiEnvFile(stage, local = false) {
       googleAnalytics = (
         await ssm.send(
           new GetParameterCommand({
-            Name: `/${project}/${stage}/google-analytics-id`,
-          })
+            Name: `/${project}/oy2-34750/google-analytics-id`,
+          }),
         )
       ).Parameter!.Value!;
     }
@@ -82,7 +83,7 @@ export async function writeUiEnvFile(stage, local = false) {
   console.log("Will write GA env.json to:", jsonPath);
   await fs.writeFile(
     jsonPath,
-    JSON.stringify({ VITE_GOOGLE_ANALYTICS_GTAG: googleAnalytics }, null, 2)
+    JSON.stringify({ VITE_GOOGLE_ANALYTICS_GTAG: googleAnalytics }, null, 2),
   );
   console.log("✅ Successfully wrote env.json and ");
 
