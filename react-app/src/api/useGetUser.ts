@@ -14,15 +14,12 @@ export type OneMacUser = {
 export const getUser = async (): Promise<OneMacUser> => {
   try {
     const currentAuthenticatedUser = await Auth.currentAuthenticatedUser();
-    console.log("getUser", { currentAuthenticatedUser });
     const userDetails = await getUserDetails();
-    console.log("getUser", { userDetails });
 
     if (!currentAuthenticatedUser) {
       return { user: null } satisfies OneMacUser;
     }
     const userAttributesArray = (await Auth.userAttributes(currentAuthenticatedUser)) || [];
-    console.log("getUser", { userAttributesArray });
 
     // Set object up with key/values from attributes array
     const userAttributesObj = userAttributesArray.reduce(

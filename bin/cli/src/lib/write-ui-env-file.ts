@@ -2,9 +2,9 @@ import { GetParameterCommand, SSMClient } from "@aws-sdk/client-ssm";
 import { promises as fs } from "fs";
 import path from "path";
 
-import { mockEnvs, project, region } from "./consts.js";
+import { project, region } from "./consts";
 
-export async function writeUiEnvFile(stage: string, local: boolean = false) {
+export async function writeUiEnvFile(stage, local = false) {
   const deploymentOutput = JSON.parse(
     (
       await new SSMClient({ region: "us-east-1" }).send(
@@ -63,33 +63,7 @@ export async function writeUiEnvFile(stage: string, local: boolean = false) {
     VITE_LAUNCHDARKLY_CLIENT_ID: `"${deploymentConfig.launchDarklyClientId}"`,
   };
 
-  return writeFile(envVariables, ".env.local");
-}
-
-export async function writeUiEnvMockedApiFile(username: string) {
-  const envVariables = {
-    VITE_API_REGION: `"${mockEnvs.REGION}"`,
-    VITE_API_URL: `"${mockEnvs.API_ENDPOINT}"`,
-    VITE_NODE_ENV: `"development"`,
-    VITE_COGNITO_REGION: `"${mockEnvs.REGION}"`,
-    VITE_COGNITO_IDENTITY_POOL_ID: `"${mockEnvs.IDENTITY_POOL_ID}"`,
-    VITE_COGNITO_USER_POOL_ID: `"${mockEnvs.USER_POOL_ID}"`,
-    VITE_COGNITO_USER_POOL_CLIENT_ID: `"${mockEnvs.USER_POOL_CLIENT_ID}"`,
-    VITE_COGNITO_USER_POOL_CLIENT_DOMAIN: `"${mockEnvs.USER_POOL_CLIENT_DOMAIN}"`,
-    VITE_COGNITO_REDIRECT_SIGNIN: `"http://localhost:5000/dashboard"`,
-    VITE_COGNITO_REDIRECT_SIGNOUT: `"http://localhost:5000/"`,
-    VITE_IDM_HOME_URL: `"${mockEnvs.IDM_HOME_URL}"`,
-    VITE_GOOGLE_ANALYTICS_GTAG: `""`,
-    VITE_GOOGLE_ANALYTICS_DISABLE: `"true"`,
-    VITE_LAUNCHDARKLY_CLIENT_ID: `"${mockEnvs.LAUNCHDARKLY_CLIENT_ID}"`,
-    VITE_MOCK_USER_USERNAME: `"${username}"`,
-  };
-
-  return writeFile(envVariables, ".env.mocked.local");
-}
-
-async function writeFile(envVariables: { [key: string]: string }, filename: string) {
-  const envFilePath = path.join(__dirname, "../../../react-app", filename);
+  const envFilePath = path.join(__dirname, "../../../react-app", ".env.local");
   console.log(envFilePath);
   const envFileContent = Object.entries(envVariables)
     .map(([key, value]) => `${key}=${value}`)
@@ -97,6 +71,6 @@ async function writeFile(envVariables: { [key: string]: string }, filename: stri
 
   await fs.writeFile(envFilePath, envFileContent);
 
-  console.log(`${filename} file written to ${envFilePath}`);
+  console.log(`.env.local file written to ${envFilePath}`);
   return envFilePath;
 }

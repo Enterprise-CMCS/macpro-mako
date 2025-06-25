@@ -91,7 +91,6 @@ const getFinalDispositionDate = (status: string, record: SeaTool) => {
 
 const isInSecondClock = (
   raiReceivedDate: any,
-  // @ts-ignore do we still need raiWithdrawnDate, it's not being used
   raiWithdrawnDate: any,
   seatoolStatus: any,
   authority: any,

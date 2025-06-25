@@ -8,4 +8,4 @@ export * from "./osusers";
 export * from "./roles";
 export * from "./secrets";
 export * from "./types";
-export * from "./users/index";
+export * from "./users";
