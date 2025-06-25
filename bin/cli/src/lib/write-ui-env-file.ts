@@ -29,7 +29,7 @@ export async function writeUiEnvFile(stage, local = false) {
     ).Parameter!.Value!,
   );
 
-  let googleAnalytics = "";
+  let googleAnalytics = "G-PTZMHTCC56"; // default value for local development
   try {
     if (["main", "val", "production", "oy2-34750"].includes(stage)) {
       googleAnalytics = (
