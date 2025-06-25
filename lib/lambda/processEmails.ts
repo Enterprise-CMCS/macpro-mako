@@ -239,7 +239,7 @@ export function validateEmailTemplate(template: any) {
 }
 
 function extractEmails(addresses: string[] | undefined): string[] {
-  const emailRegex = /([a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,})/g;
+  console.log("addresses: ", addresses)
   const filteredArray = [];
   if (addresses) {
     for (var i = 0; i < addresses.length; i++) {
@@ -355,10 +355,8 @@ export function createEmailParams(
 ): SendEmailCommandInput {
   const params: SendEmailCommandInput = {
     Destination: {
-      ToAddresses: filledTemplate.to,
-      CcAddresses: isDev
-        ? [...(extractEmails(filledTemplate.cc) || []), `State Submitter <${EMAIL_CONFIG.DEV_EMAIL}>`]
-        : extractEmails(filledTemplate.cc),
+      ToAddresses: extractEmails(filledTemplate.to),
+      CcAddresses: extractEmails(filledTemplate.cc),
     },
     Message: {
       Body: {
