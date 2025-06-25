@@ -1,8 +1,8 @@
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { Link } from "react-router";
 import { isStateUser } from "shared-utils";
 
-import { useGetUser } from "@/api";
+import { useGetUser, useGetUserDetails } from "@/api";
 import { Alert, Button } from "@/components";
 import { useFeatureFlag } from "@/hooks/useFeatureFlag";
 
@@ -26,6 +26,11 @@ type MedSpaFooterProps = {
 export const Footer = ({ email, address, showNavLinks }: Props) => {
   const shouldShowNavLinks = showNavLinks ?? true;
   const { data: user } = useGetUser();
+  const { data: userDetailsData } = useGetUserDetails();
+  const showUserManagement = useMemo(() => {
+    const role = userDetailsData?.role;
+    return ["systemadmin", "statesystemadmin", "cmsroleapprover", "helpdesk"].includes(role);
+  }, [userDetailsData]);
   const isStateHomepage = useFeatureFlag("STATE_HOMEPAGE_FLAG");
 
   return (
@@ -37,9 +42,16 @@ export const Footer = ({ email, address, showNavLinks }: Props) => {
               <a href="/" className="underline font-bold">
                 <p>Home</p>
               </a>
+
               <a href="/dashboard" className="underline font-bold">
                 <p>Dashboard</p>
               </a>
+
+              {showUserManagement && (
+                <a href="/usermanagement" className="underline font-bold">
+                  <p>User Management</p>
+                </a>
+              )}
               {isStateHomepage && isStateUser(user.user) && (
                 <a href="/latestupdates" className="underline font-bold">
                   <p>Latest Updates</p>

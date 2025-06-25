@@ -3,8 +3,8 @@ import LZ from "lz-string";
 import {
   CMS_ROLE_APPROVER_EMAIL,
   DEFAULT_CMS_USER_EMAIL,
+  OS_STATE_SYSTEM_ADMIN_EMAIL,
   setMockUsername,
-  STATE_SYSTEM_ADMIN_EMAIL,
   stateSubmitter,
   SYSTEM_ADMIN_EMAIL,
   systemAdmin,
@@ -118,8 +118,8 @@ describe("User Profile", () => {
     expect(screen.queryByRole("heading", { name: "Group & Division", level: 2 })).toBeNull();
   });
 
-  it("renders State Access Management for statesystemadmin", async () => {
-    await setup(STATE_SYSTEM_ADMIN_EMAIL);
+  test("renders State Access Management for statesystemadmin", async () => {
+    await setup(OS_STATE_SYSTEM_ADMIN_EMAIL);
     await waitFor(() =>
       expect(
         screen.getByRole("heading", { name: "State Access Management", level: 2 }),

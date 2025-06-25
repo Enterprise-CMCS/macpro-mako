@@ -2,8 +2,8 @@ import * as jose from "jose";
 import { FullUser } from "shared-types";
 
 import { ALGORITHM, COGNITO_IDP_DOMAIN, JWK, KEY, USER_POOL_CLIENT_ID } from "../consts";
-import { getUserByUsername, makoReviewer, makoStateSubmitter, userResponses } from "../data/users";
-import type { TestUserData, TestUserDataWithRole } from "../index.d";
+import { getUserByUsername, testReviewer, testStateSubmitter, userResponses } from "../data/users";
+import type { TestUserDataWithRole } from "../index.d";
 
 let privateKey: jose.CryptoKey | Uint8Array; // pragma: allowlist secret
 
@@ -34,7 +34,7 @@ export const getUsernameFromAccessToken = async (
 };
 
 export const generateIdToken = async (
-  user: TestUserData,
+  user: TestUserDataWithRole,
   authTime: number,
   expTime: number,
 ): Promise<string | null> => {
@@ -67,7 +67,7 @@ export const generateIdToken = async (
 };
 
 export const generateAccessToken = async (
-  user: TestUserData,
+  user: TestUserDataWithRole,
   authTime: number,
   expTime: number,
 ): Promise<string | null> => {
@@ -98,7 +98,7 @@ export const generateAccessToken = async (
   return null;
 };
 
-export const generateRefreshToken = async (user: TestUserData): Promise<string | null> => {
+export const generateRefreshToken = async (user: TestUserDataWithRole): Promise<string | null> => {
   if (user) {
     const jwt = await new jose.SignJWT({
       sub: getAttributeFromUser(user, "sub") || undefined,
@@ -113,14 +113,17 @@ export const generateRefreshToken = async (user: TestUserData): Promise<string |
   return null;
 };
 
-export const generateSessionToken = (user: TestUserData): string | null => {
+export const generateSessionToken = (user: TestUserDataWithRole): string | null => {
   if (user?.Username) {
     return jose.base64url.encode(JSON.stringify({ username: user?.Username }));
   }
   return null;
 };
 
-export const getAttributeFromUser = (user: TestUserData, attrName: string): string | null => {
+export const getAttributeFromUser = (
+  user: TestUserDataWithRole,
+  attrName: string,
+): string | null => {
   if (
     attrName &&
     user?.UserAttributes &&
@@ -263,9 +266,9 @@ export const setMockUsername = async (
   }
 };
 
-export const setDefaultStateSubmitter = async () => setMockUsername(makoStateSubmitter);
+export const setDefaultStateSubmitter = async () => setMockUsername(testStateSubmitter);
 
-export const setDefaultReviewer = async () => setMockUsername(makoReviewer);
+export const setDefaultReviewer = async () => setMockUsername(testReviewer);
 
 export const findUserByUsername = (username: string): TestUserDataWithRole | undefined =>
   userResponses.find((user) => user.Username == username);

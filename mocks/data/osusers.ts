@@ -6,8 +6,6 @@ import {
   DENIED_STATE_SUBMITTER_EMAIL,
   HELP_DESK_USER_EMAIL,
   INVALID_EMAIL_STATE_SUBMITTER_EMAIL,
-  MAKO_REVIEWER_EMAIL,
-  MAKO_STATE_SUBMITTER_EMAIL,
   MULTI_STATE_SUBMITTER_EMAIL,
   NO_STATE_SUBMITTER_EMAIL,
   NULL_STATE_SUBMITTER_EMAIL,
@@ -17,9 +15,9 @@ import {
   REVIEWER_EMAIL,
   REVOKED_STATE_SUBMITTER_EMAIL,
   STATE_SUBMITTER_EMAIL,
-  SUPER_REVIEWER_EMAIL,
   SYSTEM_ADMIN_EMAIL,
-  TEST_NEW_STATE_SUBMITTER_EMAIL,
+  TEST_REVIEWER_EMAIL,
+  TEST_STATE_SUBMITTER_EMAIL,
 } from "./users/index";
 
 export const osUsers: Record<string, TestUserResult> = {
@@ -95,30 +93,6 @@ export const osUsers: Record<string, TestUserResult> = {
       fullName: "Test Submitter",
       role: "statesubmitter",
       states: ["AK"],
-    },
-  },
-  [MAKO_REVIEWER_EMAIL]: {
-    _id: MAKO_REVIEWER_EMAIL,
-    found: true,
-    _source: {
-      id: MAKO_REVIEWER_EMAIL,
-      eventType: "user-info",
-      email: MAKO_REVIEWER_EMAIL,
-      fullName: "CMSReviewer Tester",
-      role: "cmsreviewer",
-      states: [],
-    },
-  },
-  [MAKO_STATE_SUBMITTER_EMAIL]: {
-    _id: MAKO_STATE_SUBMITTER_EMAIL,
-    found: true,
-    _source: {
-      id: MAKO_STATE_SUBMITTER_EMAIL,
-      eventType: "user-info",
-      email: MAKO_STATE_SUBMITTER_EMAIL,
-      fullName: "Stateuser Tester",
-      role: "statesubmitter",
-      states: ["VA", "OH", "SC", "CO", "GA", "MD"],
     },
   },
   [MULTI_STATE_SUBMITTER_EMAIL]: {
@@ -229,18 +203,6 @@ export const osUsers: Record<string, TestUserResult> = {
       states: ["VA", "OH", "SC", "CO", "CA", "MD"],
     },
   },
-  [SUPER_REVIEWER_EMAIL]: {
-    _id: SUPER_REVIEWER_EMAIL,
-    found: true,
-    _source: {
-      id: SUPER_REVIEWER_EMAIL,
-      eventType: "user-info",
-      email: SUPER_REVIEWER_EMAIL,
-      fullName: "Superduper Paratrooper",
-      role: "cmsreviewer",
-      states: [],
-    },
-  },
   [SYSTEM_ADMIN_EMAIL]: {
     _id: SYSTEM_ADMIN_EMAIL,
     found: true,
@@ -253,22 +215,34 @@ export const osUsers: Record<string, TestUserResult> = {
       states: [],
     },
   },
-  [TEST_NEW_STATE_SUBMITTER_EMAIL]: {
-    _id: TEST_NEW_STATE_SUBMITTER_EMAIL,
+  [TEST_REVIEWER_EMAIL]: {
+    _id: TEST_REVIEWER_EMAIL,
     found: true,
     _source: {
-      id: TEST_NEW_STATE_SUBMITTER_EMAIL,
+      id: TEST_REVIEWER_EMAIL,
       eventType: "user-info",
-      email: TEST_NEW_STATE_SUBMITTER_EMAIL,
-      fullName: "Test Submitter",
+      email: TEST_REVIEWER_EMAIL,
+      fullName: "CMSReviewer Tester",
+      role: "cmsreviewer",
+      states: [],
+    },
+  },
+  [TEST_STATE_SUBMITTER_EMAIL]: {
+    _id: TEST_STATE_SUBMITTER_EMAIL,
+    found: true,
+    _source: {
+      id: TEST_STATE_SUBMITTER_EMAIL,
+      eventType: "user-info",
+      email: TEST_STATE_SUBMITTER_EMAIL,
+      fullName: "Stateuser Tester",
       role: "statesubmitter",
-      states: ["VA"],
+      states: ["VA", "OH", "SC", "CO", "GA", "MD"],
     },
   },
 };
 
-export const STATE_SYSTEM_ADMIN_USER = osUsers[OS_STATE_SYSTEM_ADMIN_EMAIL];
-export const STATE_SUBMITTER_USER = osUsers[OS_STATE_SUBMITTER_EMAIL];
+export const OS_STATE_SYSTEM_ADMIN_USER = osUsers[OS_STATE_SYSTEM_ADMIN_EMAIL];
+export const OS_STATE_SUBMITTER_USER = osUsers[OS_STATE_SUBMITTER_EMAIL];
 export const MULTI_STATE_SUBMITTER_USER = osUsers[MULTI_STATE_SUBMITTER_EMAIL];
 export const NO_STATE_SUBMITTER_USER = osUsers[NO_STATE_SUBMITTER_EMAIL];
 

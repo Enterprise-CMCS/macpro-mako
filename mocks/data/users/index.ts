@@ -3,7 +3,7 @@ import { UserRole } from "shared-types/events/legacy-user";
 
 import { convertUserAttributes } from "../../handlers/auth.utils";
 import type { TestUserDataWithRole } from "../../index.d";
-import { makoReviewer, reviewers, reviewerUsernamesByEmail, superReviewer } from "./cmsReviewer";
+import { reviewers, reviewerUsernamesByEmail, testReviewer } from "./cmsReviewer";
 import { helpDeskUser, helpDeskUsers, helpDeskUserUsernamesByEmail } from "./helpDeskUsers";
 import {
   cmsRoleApprover,
@@ -14,9 +14,9 @@ import {
 } from "./otherCMSUsers";
 import {
   coStateSubmitter,
-  makoStateSubmitter,
   stateSubmitters,
   stateSubmitterUsernamesByEmail,
+  testStateSubmitter,
 } from "./stateSubmitters";
 
 export const NO_ROLE_USER_EMAIL = "badfootball@example.com";
@@ -52,18 +52,18 @@ export const noRoleUser: TestUserDataWithRole = {
 
 // return all of the possible responses
 export const userResponses: TestUserDataWithRole[] = [
-  ...stateSubmitters,
-  ...reviewers,
   ...cmsUsers,
   ...helpDeskUsers,
+  ...reviewers,
+  ...stateSubmitters,
   noRoleUser,
 ];
 
 export const usernamesByEmail = {
-  ...stateSubmitterUsernamesByEmail,
-  ...reviewerUsernamesByEmail,
   ...cmsUserUsernamesByEmail,
   ...helpDeskUserUsernamesByEmail,
+  ...reviewerUsernamesByEmail,
+  ...stateSubmitterUsernamesByEmail,
   [NO_ROLE_USER_EMAIL]: NO_ROLE_USER_USERNAME,
 };
 
@@ -78,18 +78,16 @@ export const getUserByUsername = (id: string) => {
   return {} as CognitoUserAttributes;
 };
 
-export const TEST_STATE_SUBMITTER_USER = convertUserAttributes(makoStateSubmitter);
-export const TEST_CO_STATE_SUBMITTER_USER = convertUserAttributes(coStateSubmitter);
-export const TEST_CMS_REVIEWER_USER = convertUserAttributes(makoReviewer);
-export const TEST_HELP_DESK_USER = convertUserAttributes(helpDeskUser);
-export const TEST_DEFAULT_CMS_USER = convertUserAttributes(defaultCMSUser);
-export const TEST_CMS_ROLE_APPROVER_USER = convertUserAttributes(cmsRoleApprover);
+export const TEST_REVIEWER_USER = convertUserAttributes(testReviewer);
+export const CMS_ROLE_APPROVER_USER = convertUserAttributes(cmsRoleApprover);
+export const CO_STATE_SUBMITTER_USER = convertUserAttributes(coStateSubmitter);
+export const DEFAULT_CMS_USER = convertUserAttributes(defaultCMSUser);
+export const HELP_DESK_USER = convertUserAttributes(helpDeskUser);
+export const TEST_STATE_SUBMITTER_USER = convertUserAttributes(testStateSubmitter);
 export const TEST_SYSTEM_ADMIN_USER = convertUserAttributes(systemAdmin);
-export const TEST_SUPER_USER = convertUserAttributes(superReviewer);
 
 export * from "./cmsReviewer";
 export * from "./helpDeskUsers";
-export * from "./mockStorage";
+export * from "./idmUsers";
 export * from "./otherCMSUsers";
 export * from "./stateSubmitters";
-export * from "./idmUsers";
