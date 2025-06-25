@@ -243,10 +243,14 @@ function extractEmails(addresses: string[] | undefined): string[] {
   const filteredArray = [];
   if (addresses) {
     for (var i = 0; i < addresses.length; i++) {
-      const matches = addresses[i].match(emailRegex);
-      if (matches) {
-        filteredArray.push(matches[0])
-      }
+      console.log("address being iterated: ", addresses[i]);
+      const email = addresses[i].split("<")[1].split(">")[0];
+      console.log("stripped email: ", email)
+      filteredArray.push(email)
+      // const matches = addresses[i].match(emailRegex);
+      // if (matches) {
+      //   filteredArray.push(matches[0])
+      // }
     }
     return filteredArray
   }
