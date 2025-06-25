@@ -11,7 +11,7 @@ import { MPC_TEMPLATES } from "@/features/faq/content/mpcTemplates";
 
 export type QuestionAnswer = {
   anchorText: string;
-  question: string;
+  question: string | JSX.Element;
   answerJSX: JSX.Element;
 };
 
@@ -295,16 +295,12 @@ export const oneMACFAQContent: FAQContent[] = [
             <ul className="ml-8 list-disc space-y-2 text-blue-600">
               {[
                 {
-                  //add new here
                   href: "#abp-spa-templates",
                   text: "Where can I download Medicaid Alternative Benefit Plan (ABP) SPA templates?",
-                  label: "New",
                 },
                 {
-                  //add updated here
                   href: "#abp-implementation-guides-spa",
                   text: "Where can I download Medicaid Alternative Benefit Plan (ABP) SPA implementation guides?",
-                  label: "Updated",
                 },
                 {
                   href: "#mpc-spa-templates",
@@ -322,7 +318,7 @@ export const oneMACFAQContent: FAQContent[] = [
                   href: "#chip-spa-implentation-guides",
                   text: "Where can I download CHIP eligibility SPA implementation guides?",
                 },
-              ].map(({ href, text, label }) => (
+              ].map(({ href, text }) => (
                 <li key={href}>
                   <a
                     href={href}
@@ -338,18 +334,8 @@ export const oneMACFAQContent: FAQContent[] = [
                         }
                       }
                     }}
-                    className="text-blue-600 hover:underline flex items-center space-x-2"
                   >
-                    {label && (
-                      <span
-                        className={`inline-block text-white text-xs font-semibold px-2 py-0.5 rounded ${
-                          label === "New" ? "bg-blue-600" : "bg-green-600"
-                        }`}
-                      >
-                        {label}
-                      </span>
-                    )}
-                    <span>{text}</span>
+                    {text}
                   </a>
                 </li>
               ))}
@@ -892,7 +878,16 @@ export const oneMACFAQContent: FAQContent[] = [
       },
       {
         anchorText: "abp-spa-templates",
-        question: "Where can I download Medicaid Alternative Benefit Plan (ABP) SPA templates?",
+        question: (
+          <div className="flex items-center gap-7">
+            <span className="inline-block bg-blue-600 text-white text-xs font-semibold px-2 py-0.5 rounded">
+              New
+            </span>
+            <span className="text-left">
+              Where can I download Medicaid Alternative Benefit Plan (ABP) SPA templates?
+            </span>
+          </div>
+        ),
         answerJSX: (
           <section className="space-y-2">
             <p>
@@ -929,8 +924,17 @@ export const oneMACFAQContent: FAQContent[] = [
       },
       {
         anchorText: "abp-implementation-guides-spa",
-        question:
-          "Where can I download Medicaid Alternative Benefit Plan (ABP) SPA implementation guides?",
+        question: (
+          <div className="flex items-center gap-2">
+            <span className="inline-block bg-green-600 text-white text-xs font-semibold px-2 py-0.5 rounded">
+              Updated
+            </span>
+            <span className="text-left">
+              Where can I download Medicaid Alternative Benefit Plan (ABP) SPA implementation
+              guides?
+            </span>
+          </div>
+        ),
         answerJSX: (
           <section className="space-y-2">
             <p>
