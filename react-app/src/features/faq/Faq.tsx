@@ -44,6 +44,7 @@ export const Faq = () => {
 
   // Get the flag value for hiding the MMDL banner.
   const isBannerHidden = useFeatureFlag("UAT_HIDE_MMDL_BANNER");
+  const isUpdateNewLabel = useFeatureFlag("UPGRADE_NEW_LABEL");
   const anchorsToHide = [
     "spa-admendments",
     "abp-spa-templates",
@@ -90,14 +91,31 @@ export const Faq = () => {
               {filteredFAQContent.map(({ sectionTitle, qanda }) => (
                 <article key={sectionTitle} className="mb-8">
                   <h2 className="text-2xl mb-4 text-primary">{sectionTitle}</h2>
-                  {qanda.map(({ anchorText, answerJSX, question }) => (
+                  {qanda.map(({ anchorText, answerJSX, question, label, labelColor }) => (
                     <AccordionItem
                       value={anchorText}
                       id={anchorText}
                       key={anchorText}
                       data-testid={anchorText}
                     >
-                      <AccordionTrigger className="text-left">{question}</AccordionTrigger>
+                      <AccordionTrigger className="text-left">
+                        <div className="flex items-center gap-2">
+                          {isUpdateNewLabel && label && (
+                            <span
+                              className={`inline-block text-white text-xs font-semibold px-2 py-0.5 rounded ${
+                                labelColor === "green"
+                                  ? "bg-green-600"
+                                  : labelColor === "blue"
+                                    ? "bg-blue-600"
+                                    : "bg-gray-500"
+                              }`}
+                            >
+                              {label}
+                            </span>
+                          )}
+                          <span>{question}</span>
+                        </div>
+                      </AccordionTrigger>
                       <AccordionContent>{answerJSX}</AccordionContent>
                     </AccordionItem>
                   ))}

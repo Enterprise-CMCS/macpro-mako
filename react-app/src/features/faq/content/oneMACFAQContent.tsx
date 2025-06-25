@@ -13,6 +13,8 @@ export type QuestionAnswer = {
   anchorText: string;
   question: string | JSX.Element;
   answerJSX: JSX.Element;
+  label?: string;
+  labelColor?: "green" | "blue" | string;
 };
 
 type FAQContent = {
@@ -266,16 +268,9 @@ export const oneMACFAQContent: FAQContent[] = [
     qanda: [
       {
         anchorText: "spa-admendments",
-        question: (
-          <div className="flex items-center gap-2">
-            <span className="inline-block bg-green-600 text-white text-xs font-semibold px-2 py-0.5 rounded">
-              Updated
-            </span>
-            <span className="text-left">
-              Which state plan amendments (SPAs) can I submit in OneMAC?
-            </span>
-          </div>
-        ),
+        question: "Which state plan amendments (SPAs) can I submit in OneMAC?",
+        label: "Updated", // Add a `label` field for LD faq
+        labelColor: "green",
         answerJSX: (
           <div className="w-full space-y-2">
             <p>
@@ -298,8 +293,8 @@ export const oneMACFAQContent: FAQContent[] = [
               MMDL.
             </p>
             <p>
-              Templates and implementation guides for ABP, Medicaid Premiums & Cost Sharing, and
-              CHIP Eligibility SPAs can be downloaded from the respective FAQ:
+              Templates and implementation guides for OneMac SPAs can be downloaded from the
+              respective FAQ:
             </p>
             <ul className="ml-8 list-disc space-y-2 text-blue-600">
               {[
@@ -887,16 +882,9 @@ export const oneMACFAQContent: FAQContent[] = [
       },
       {
         anchorText: "abp-spa-templates",
-        question: (
-          <div className="flex items-center gap-2">
-            <span className="inline-block bg-blue-600 text-white text-xs font-semibold px-2 py-0.5 rounded">
-              New
-            </span>
-            <span className="text-left">
-              Where can I download Medicaid Alternative Benefit Plan (ABP) SPA templates?
-            </span>
-          </div>
-        ),
+        question: "Where can I download Medicaid Alternative Benefit Plan (ABP) SPA templates?",
+        label: "New",
+        labelColor: "blue",
         answerJSX: (
           <section className="space-y-2">
             <p>
@@ -933,17 +921,10 @@ export const oneMACFAQContent: FAQContent[] = [
       },
       {
         anchorText: "abp-implementation-guides-spa",
-        question: (
-          <div className="flex items-center gap-2">
-            <span className="inline-block bg-blue-600 text-white text-xs font-semibold px-2 py-0.5 rounded">
-              New
-            </span>
-            <span className="text-left">
-              Where can I download Medicaid Alternative Benefit Plan (ABP) SPA implementation
-              guides?
-            </span>
-          </div>
-        ),
+        question:
+          "Where can I download Medicaid Alternative Benefit Plan (ABP) SPA implementation guides?",
+        label: "New",
+        labelColor: "blue",
         answerJSX: (
           <section className="space-y-2">
             <p>
@@ -970,16 +951,9 @@ export const oneMACFAQContent: FAQContent[] = [
       },
       {
         anchorText: "mpc-spa-templates",
-        question: (
-          <div className="flex items-center gap-2">
-            <span className="inline-block bg-blue-600 text-white text-xs font-semibold px-2 py-0.5 rounded">
-              New
-            </span>
-            <span className="text-left">
-              Where can I download Medicaid Premiums and Cost Sharing SPA templates?
-            </span>
-          </div>
-        ),
+        question: "Where can I download Medicaid Premiums and Cost Sharing SPA templates?",
+        label: "New",
+        labelColor: "blue",
         answerJSX: (
           <section className="space-y-2">
             <p>
@@ -1007,16 +981,10 @@ export const oneMACFAQContent: FAQContent[] = [
       },
       {
         anchorText: "mpc-spa-implementation-guides",
-        question: (
-          <div className="flex items-center gap-2">
-            <span className="inline-block bg-blue-600 text-white text-xs font-semibold px-2 py-0.5 rounded">
-              New
-            </span>
-            <span className="text-left">
-              Where can I download Medicaid Premiums and Cost Sharing SPA implementation guides?
-            </span>
-          </div>
-        ),
+        question:
+          "Where can I download Medicaid Premiums and Cost Sharing SPA implementation guides?",
+        label: "New",
+        labelColor: "blue",
         answerJSX: (
           <section className="space-y-2">
             <p>
@@ -1043,14 +1011,9 @@ export const oneMACFAQContent: FAQContent[] = [
       },
       {
         anchorText: "chip-spa-templates",
-        question: (
-          <div className="flex items-center gap-2">
-            <span className="inline-block bg-blue-600 text-white text-xs font-semibold px-2 py-0.5 rounded">
-              New
-            </span>
-            <span className="text-left">Where can I download CHIP eligibility SPA templates?</span>
-          </div>
-        ),
+        question: "Where can I download CHIP eligibility SPA templates?",
+        label: "New",
+        labelColor: "blue",
         answerJSX: (
           <section>
             <p>
@@ -1110,16 +1073,9 @@ export const oneMACFAQContent: FAQContent[] = [
       },
       {
         anchorText: "chip-spa-implentation-guides",
-        question: (
-          <div className="flex items-center gap-2">
-            <span className="inline-block bg-blue-600 text-white text-xs font-semibold px-2 py-0.5 rounded">
-              New
-            </span>
-            <span className="text-left">
-              Where can I download CHIP eligibility SPA implementation guides?
-            </span>
-          </div>
-        ),
+        question: "Where can I download CHIP eligibility SPA implementation guides?",
+        label: "New",
+        labelColor: "blue",
         answerJSX: (
           <div>
             <section className="space-y-2">
