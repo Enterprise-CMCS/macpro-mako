@@ -6,7 +6,7 @@ import {
   SEATOOL_STATUS,
 } from "shared-types";
 
-import { isCmsSuperUser, isCmsWriteUser, isStateUser } from "../user-helper";
+import { isCmsWriteUser, isStateUser } from "../user-helper";
 
 export const arRespondToRai: ActionRule = {
   action: Action.RESPOND_TO_RAI,
@@ -106,11 +106,11 @@ export const arWithdrawPackage: ActionRule = {
     !checker.isPlaceholderStatus,
 };
 
-const arUpdateId: ActionRule = {
-  action: Action.UPDATE_ID,
-  check: (checker, user) =>
-    isCmsSuperUser(user) && !checker.hasStatus(finalDispositionStatuses) && false,
-};
+// const arUpdateId: ActionRule = {
+//   action: Action.UPDATE_ID,
+//   check: (checker, user) =>
+//     isCmsSuperUser(user) && !checker.hasStatus(finalDispositionStatuses) && false,
+// };
 
 const arRemoveAppkChild: ActionRule = {
   action: Action.REMOVE_APPK_CHILD,
@@ -156,7 +156,7 @@ export default [
   arWithdrawPackage,
   arTempExtension,
   arAmend,
-  arUpdateId,
+  // arUpdateId,
   arRemoveAppkChild,
   arUploadSubsequentDocuments,
 ];

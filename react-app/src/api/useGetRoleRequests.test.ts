@@ -2,7 +2,7 @@ import {
   CMS_ROLE_APPROVER_EMAIL,
   cmsRoleApprover,
   errorApiGetRoleRequestsHandler,
-  HELP_DESK_EMAIL,
+  HELP_DESK_USER_EMAIL,
   helpDeskUser,
   osStateSystemAdmin,
   roleDocs,
@@ -27,7 +27,7 @@ describe("useGetRoleRequests", () => {
     setMockUsername(helpDeskUser);
     const result = await getRoleRequests();
     // remove the helpDesk roles
-    const filterRoles = roleDocs.filter((roleObj) => roleObj?.email !== HELP_DESK_EMAIL);
+    const filterRoles = roleDocs.filter((roleObj) => roleObj?.email !== HELP_DESK_USER_EMAIL);
     expect(result.length).toEqual(filterRoles.length);
   });
   it("should return all the role requests except for the cmsroleapprovers, systemadmins, and the current user for cmsRoleApprover", async () => {

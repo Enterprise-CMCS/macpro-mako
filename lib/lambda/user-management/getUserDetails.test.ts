@@ -2,13 +2,13 @@ import { APIGatewayEvent } from "aws-lambda";
 import {
   errorRoleSearchHandler,
   getRequestContext,
-  makoStateSubmitter,
   noStateSubmitter,
+  OS_STATE_SYSTEM_ADMIN_EMAIL,
   osStateSystemAdmin,
   setDefaultStateSubmitter,
   setMockUsername,
-  STATE_SYSTEM_ADMIN_EMAIL,
   TEST_STATE_SUBMITTER_EMAIL,
+  testStateSubmitter,
 } from "mocks";
 import { mockedServiceServer as mockedServer } from "mocks/server";
 import { beforeEach, describe, expect, it } from "vitest";
@@ -84,7 +84,7 @@ describe("getUserDetails handler", () => {
   });
 
   it("should return 200 and the user details for the email in the body if the user is a user manager", async () => {
-    setMockUsername(makoStateSubmitter);
+    setMockUsername(testStateSubmitter);
 
     const event = {
       requestContext: getRequestContext(),
@@ -114,7 +114,7 @@ describe("getUserDetails handler", () => {
     const event = {
       requestContext: getRequestContext(),
       body: JSON.stringify({
-        userEmail: STATE_SYSTEM_ADMIN_EMAIL,
+        userEmail: OS_STATE_SYSTEM_ADMIN_EMAIL,
       }),
     } as APIGatewayEvent;
 
@@ -123,9 +123,9 @@ describe("getUserDetails handler", () => {
     expect(res.statusCode).toEqual(200);
     expect(res.body).toEqual(
       JSON.stringify({
-        id: STATE_SYSTEM_ADMIN_EMAIL,
+        id: OS_STATE_SYSTEM_ADMIN_EMAIL,
         eventType: "user-info",
-        email: STATE_SYSTEM_ADMIN_EMAIL,
+        email: OS_STATE_SYSTEM_ADMIN_EMAIL,
         fullName: "Statesystemadmin Nightwatch",
         role: "statesystemadmin",
         states: ["MD"],
@@ -137,7 +137,7 @@ describe("getUserDetails handler", () => {
     const event = {
       requestContext: getRequestContext(),
       body: JSON.stringify({
-        userEmail: STATE_SYSTEM_ADMIN_EMAIL,
+        userEmail: OS_STATE_SYSTEM_ADMIN_EMAIL,
       }),
     } as APIGatewayEvent;
 
