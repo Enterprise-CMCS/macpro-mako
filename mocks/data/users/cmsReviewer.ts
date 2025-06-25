@@ -1,82 +1,17 @@
 import { TestUserDataWithRole } from "../../index.d";
 
-export const makoReviewer: TestUserDataWithRole = {
-  UserAttributes: [
-    {
-      Name: "email",
-      Value: "mako.cmsuser@outlook.com",
-    },
-    {
-      Name: "email_verified",
-      Value: "true",
-    },
-    {
-      Name: "given_name",
-      Value: "CMSReviewer",
-    },
-    {
-      Name: "family_name",
-      Value: "Tester",
-    },
-    {
-      Name: "custom:state",
-      Value: "",
-    },
-    {
-      Name: "custom:ismemberof",
-      Value: "ONEMAC_USER_D",
-    },
-    {
-      Name: "sub",
-      Value: "53832e35-1fbe-4c74-9111-4a0cd29ce2cf",
-    },
-  ],
-  Username: "53832e35-1fbe-4c74-9111-4a0cd29ce2cf",
-  role: "cmsreviewer",
-  states: [],
-};
-
-export const reviewer: TestUserDataWithRole = {
-  UserAttributes: [
-    {
-      Name: "email",
-      Value: "reviewer@example.com",
-    },
-    {
-      Name: "email_verified",
-      Value: "true",
-    },
-    {
-      Name: "given_name",
-      Value: "CMS",
-    },
-    {
-      Name: "family_name",
-      Value: "Reviewer",
-    },
-    {
-      Name: "custom:state",
-      Value: "",
-    },
-    {
-      Name: "custom:ismemberof",
-      Value: "ONEMAC_USER_D",
-    },
-    {
-      Name: "sub",
-      Value: "07a2519e-0bdd-4bf6-8ec0-6f88ffa684fc",
-    },
-  ],
-  Username: "07a2519e-0bdd-4bf6-8ec0-6f88ffa684fc",
-  role: "cmsreviewer",
-  states: [],
-};
+export const AUTOMATED_REVIEWER_EMAIL = "automated-reviewer@example.com";
+export const AUTOMATED_REVIEWER_USERNAME = "e04f3cc5-4cd6-4acb-9fff-210b469bc934";
+export const REVIEWER_EMAIL = "reviewer@example.com";
+export const REVIEWER_USERNAME = "07a2519e-0bdd-4bf6-8ec0-6f88ffa684fc";
+export const TEST_REVIEWER_EMAIL = "mako.cmsuser@outlook.com";
+export const TEST_REVIEWER_USERNAME = "53832e35-1fbe-4c74-9111-4a0cd29ce2cf";
 
 export const automatedReviewer: TestUserDataWithRole = {
   UserAttributes: [
     {
       Name: "email",
-      Value: "automated-reviewer@example.com",
+      Value: AUTOMATED_REVIEWER_EMAIL,
     },
     {
       Name: "email_verified",
@@ -100,19 +35,19 @@ export const automatedReviewer: TestUserDataWithRole = {
     },
     {
       Name: "sub",
-      Value: "e04f3cc5-4cd6-4acb-9fff-210b469bc934",
+      Value: AUTOMATED_REVIEWER_USERNAME,
     },
   ],
-  Username: "e04f3cc5-4cd6-4acb-9fff-210b469bc934",
+  Username: AUTOMATED_REVIEWER_USERNAME,
   role: "cmsreviewer",
   states: [],
 };
 
-export const superReviewer: TestUserDataWithRole = {
+export const reviewer: TestUserDataWithRole = {
   UserAttributes: [
     {
       Name: "email",
-      Value: "super@example.com",
+      Value: REVIEWER_EMAIL,
     },
     {
       Name: "email_verified",
@@ -120,37 +55,70 @@ export const superReviewer: TestUserDataWithRole = {
     },
     {
       Name: "given_name",
-      Value: "Superduper",
+      Value: "CMS",
     },
     {
       Name: "family_name",
-      Value: "Paratrooper",
+      Value: "Reviewer",
     },
     {
       Name: "custom:state",
       Value: "",
     },
     {
-      Name: "custom:cms-roles",
-      Value: "onemac-micro-reviewer,onemac-micro-super",
-    },
-    {
       Name: "custom:ismemberof",
-      Value: "ONEMAC_USER_D_SUPER",
+      Value: "ONEMAC_USER_D",
     },
     {
       Name: "sub",
-      Value: "1bddab21-ddc0-4e5b-8ee1-fe16a7883673",
+      Value: REVIEWER_USERNAME,
     },
   ],
-  Username: "1bddab21-ddc0-4e5b-8ee1-fe16a7883673",
+  Username: REVIEWER_USERNAME,
   role: "cmsreviewer",
   states: [],
 };
 
-export const reviewers: TestUserDataWithRole[] = [
-  makoReviewer,
-  reviewer,
-  automatedReviewer,
-  superReviewer,
-];
+export const testReviewer: TestUserDataWithRole = {
+  UserAttributes: [
+    {
+      Name: "email",
+      Value: TEST_REVIEWER_EMAIL,
+    },
+    {
+      Name: "email_verified",
+      Value: "true",
+    },
+    {
+      Name: "given_name",
+      Value: "CMSReviewer",
+    },
+    {
+      Name: "family_name",
+      Value: "Tester",
+    },
+    {
+      Name: "custom:state",
+      Value: "",
+    },
+    {
+      Name: "custom:ismemberof",
+      Value: "ONEMAC_USER_D",
+    },
+    {
+      Name: "sub",
+      Value: TEST_REVIEWER_USERNAME,
+    },
+  ],
+  Username: TEST_REVIEWER_USERNAME,
+  role: "cmsreviewer",
+  states: [],
+};
+
+export const reviewerUsernamesByEmail = {
+  [AUTOMATED_REVIEWER_EMAIL]: AUTOMATED_REVIEWER_USERNAME,
+  [REVIEWER_EMAIL]: REVIEWER_USERNAME,
+  [TEST_REVIEWER_EMAIL]: TEST_REVIEWER_USERNAME,
+};
+
+export const reviewers: TestUserDataWithRole[] = [automatedReviewer, reviewer, testReviewer];

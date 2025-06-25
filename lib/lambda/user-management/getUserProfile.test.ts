@@ -2,13 +2,13 @@ import { APIGatewayEvent } from "aws-lambda";
 import {
   errorRoleSearchHandler,
   getRequestContext,
-  makoStateSubmitter,
   noStateSubmitter,
+  OS_STATE_SYSTEM_ADMIN_EMAIL,
   osStateSystemAdmin,
   setDefaultStateSubmitter,
   setMockUsername,
-  STATE_SYSTEM_ADMIN_EMAIL,
   TEST_STATE_SUBMITTER_EMAIL,
+  testStateSubmitter,
 } from "mocks";
 import { mockedServiceServer as mockedServer } from "mocks/server";
 import { beforeEach, describe, expect, it } from "vitest";
@@ -123,7 +123,7 @@ describe("getUserProfile handler", () => {
   });
 
   it("should return 200 and the users details for the email in the body if the user is a user manager", async () => {
-    setMockUsername(makoStateSubmitter);
+    setMockUsername(testStateSubmitter);
     const event = {
       requestContext: getRequestContext(),
       body: JSON.stringify({
@@ -211,7 +211,7 @@ describe("getUserProfile handler", () => {
     const event = {
       requestContext: getRequestContext(),
       body: JSON.stringify({
-        userEmail: STATE_SYSTEM_ADMIN_EMAIL,
+        userEmail: OS_STATE_SYSTEM_ADMIN_EMAIL,
       }),
     } as APIGatewayEvent;
 
@@ -239,7 +239,7 @@ describe("getUserProfile handler", () => {
     const event = {
       requestContext: getRequestContext(),
       body: JSON.stringify({
-        userEmail: STATE_SYSTEM_ADMIN_EMAIL,
+        userEmail: OS_STATE_SYSTEM_ADMIN_EMAIL,
       }),
     } as APIGatewayEvent;
 
