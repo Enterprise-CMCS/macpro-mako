@@ -1,4 +1,5 @@
 import yargs from "yargs";
+import { hideBin } from "yargs/helpers";
 
 import {
   deploy,
@@ -16,7 +17,7 @@ import {
   watch,
 } from "./commands";
 
-yargs
+yargs(hideBin(process.argv))
   .fail((msg, err) => {
     if (err) throw err;
     if (msg) console.error(msg);

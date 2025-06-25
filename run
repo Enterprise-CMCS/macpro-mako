@@ -33,4 +33,4 @@ fi
 bun install
 
 # build and run dev.ts
-bun build:cli && node ./.build_run/src/run.js "$@"
+bun bin/cli/src/run.ts "$@"
