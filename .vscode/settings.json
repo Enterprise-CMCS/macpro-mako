@@ -4,6 +4,5 @@
   },
   "editor.formatOnSave": true,
   "tailwindCSS.experimental.classRegex": [["cva\\(([^)]*)\\)", "[\"'`]([^\"'`]*).*?[\"'`]"]],
-  "typescript.tsdk": "node_modules/typescript/lib",
-  "cSpell.words": ["cmsroleapprover", "helpdesk", "statesystemadmin", "systemadmin"]
+  "typescript.tsdk": "node_modules/typescript/lib"
 }
