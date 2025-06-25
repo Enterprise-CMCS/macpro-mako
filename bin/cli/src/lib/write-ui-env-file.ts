@@ -35,7 +35,7 @@ export async function writeUiEnvFile(stage, local = false) {
       googleAnalytics = (
         await ssm.send(
           new GetParameterCommand({
-            Name: `/${project}/oy2-34750/google-analytics-id`,
+            Name: `/${project}/${stage}/google-analytics-id`,
           }),
         )
       ).Parameter!.Value!;
