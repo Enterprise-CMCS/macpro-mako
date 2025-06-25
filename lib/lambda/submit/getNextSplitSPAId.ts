@@ -17,19 +17,22 @@ export const getNextSplitSPAId = async (spaId: string) => {
   // Get existing split SPAs for this package id
   const { hits } = await search(domain, index, query);
 
-  // If no split SPAs found, start at A
+  // If no split SPAs exist, start at 'A'
   if (!hits.hits.length) {
     return `${spaId}-A`;
   }
 
-  // Extract suffixes from existing split SPA IDs
-  // If there are no split SPAs yet, start at the ASCII character before "A" ("@")
-  // Convert to ASCII char codes to get latest suffix
+  // Set latest ASCII character code to character before "A" ("@")
+  // Extract suffixes from existing split SPA IDs to get latest split SPA
   let latestSplitSpa: ItemResult | null = null;
-  let latestSuffixCharCode = "@".charCodeAt(0);
+  let latestSuffixCharCode = "A".charCodeAt(0) - 1;
 
   for (const hit of hits.hits) {
     const suffix = hit._source.id.toString().split("-").at(-1) ?? "@";
+
+    // skip non-letter or multi-letter suffixes if query returned invalid ID
+    if (!/^[A-Z]$/.test(suffix)) continue;
+
     const currentCharCode = suffix.charCodeAt(0);
 
     if (currentCharCode > latestSuffixCharCode) {
