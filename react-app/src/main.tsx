@@ -30,14 +30,13 @@ const enableApiMocking = async () => {
     await import("../mockServiceWorker.js?worker");
 
     const { mockedWorker } = await import("mocks/browser");
-    const { setMockUsername } = await import("mocks");
+    const { setMockUsername, TEST_STATE_SUBMITTER_USERNAME } = await import("mocks");
 
     await mockedWorker.start({
       onUnhandledRequest: "error",
       waitUntilReady: true,
     });
-    console.log("MOCK_USER_USERNAME", import.meta.env.MOCK_USER_USERNAME);
-    await setMockUsername(import.meta.env.MOCK_USER_USERNAME);
+    await setMockUsername(import.meta.env.VITE_MOCK_USER_USERNAME || TEST_STATE_SUBMITTER_USERNAME);
   }
 };
 
