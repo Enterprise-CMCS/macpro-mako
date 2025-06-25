@@ -6,8 +6,6 @@ export const DENIED_STATE_SUBMITTER_EMAIL = "denied@example.com";
 export const DENIED_STATE_SUBMITTER_USERNAME = "d1e1c173-5c37-4bb0-a29a-f67eefa23465";
 export const INVALID_EMAIL_STATE_SUBMITTER_EMAIL = "bademail-";
 export const INVALID_EMAIL_STATE_SUBMITTER_USERNAME = "f8e64f73-d121-4252-b9e3-1f4df902a1c2";
-export const MAKO_STATE_SUBMITTER_EMAIL = "mako.stateuser@gmail.com";
-export const MAKO_STATE_SUBMITTER_USERNAME = "cd400c39-9e7c-4341-b62f-234e2ecb339d";
 export const MULTI_STATE_SUBMITTER_EMAIL = "multistate@example.com";
 export const MULTI_STATE_SUBMITTER_USERNAME = "3de7904e-fc0a-498f-9527-8e39044edf4c";
 export const NO_EMAIL_STATE_SUBMITTER_USERNAME = "f8e64f73-d121-4252-b9e3-1f4df902a1c2";
@@ -27,6 +25,8 @@ export const STATE_SUBMITTER_EMAIL = "george@example.com";
 export const STATE_SUBMITTER_USERNAME = "c4087448-d0e1-70c1-3d74-4f8bd1fa13fd";
 export const TEST_NEW_STATE_SUBMITTER_EMAIL = "new-state-submitter@example.com";
 export const TEST_NEW_STATE_SUBMITTER_USERNAME = "f8e64f73-d121-4252-b9e3-1f4df902a1c1";
+export const TEST_STATE_SUBMITTER_EMAIL = "mako.stateuser@gmail.com";
+export const TEST_STATE_SUBMITTER_USERNAME = "cd400c39-9e7c-4341-b62f-234e2ecb339d";
 
 export const coStateSubmitter: TestUserDataWithRole = {
   UserAttributes: [
@@ -134,42 +134,6 @@ export const invalidEmailStateSubmitter: TestUserDataWithRole = {
   Username: INVALID_EMAIL_STATE_SUBMITTER_USERNAME,
   role: "statesubmitter",
   states: ["AK"],
-};
-
-export const makoStateSubmitter: TestUserDataWithRole = {
-  UserAttributes: [
-    {
-      Name: "email",
-      Value: MAKO_STATE_SUBMITTER_EMAIL,
-    },
-    {
-      Name: "email_verified",
-      Value: "true",
-    },
-    {
-      Name: "given_name",
-      Value: "Stateuser",
-    },
-    {
-      Name: "family_name",
-      Value: "Tester",
-    },
-    {
-      Name: "custom:state",
-      Value: "VA,OH,SC,CO,GA,MD",
-    },
-    {
-      Name: "custom:cms-roles",
-      Value: "onemac-state-user",
-    },
-    {
-      Name: "sub",
-      Value: MAKO_STATE_SUBMITTER_USERNAME,
-    },
-  ],
-  Username: MAKO_STATE_SUBMITTER_USERNAME,
-  role: "statesubmitter",
-  states: ["VA", "OH", "SC", "CO", "GA", "MD"],
 };
 
 export const multiStateSubmitter: TestUserDataWithRole = {
@@ -524,11 +488,46 @@ export const testNewStateSubmitter: TestUserDataWithRole = {
   states: ["VA"],
 };
 
+export const testStateSubmitter: TestUserDataWithRole = {
+  UserAttributes: [
+    {
+      Name: "email",
+      Value: TEST_STATE_SUBMITTER_EMAIL,
+    },
+    {
+      Name: "email_verified",
+      Value: "true",
+    },
+    {
+      Name: "given_name",
+      Value: "Stateuser",
+    },
+    {
+      Name: "family_name",
+      Value: "Tester",
+    },
+    {
+      Name: "custom:state",
+      Value: "VA,OH,SC,CO,GA,MD",
+    },
+    {
+      Name: "custom:cms-roles",
+      Value: "onemac-state-user",
+    },
+    {
+      Name: "sub",
+      Value: TEST_STATE_SUBMITTER_USERNAME,
+    },
+  ],
+  Username: TEST_STATE_SUBMITTER_USERNAME,
+  role: "statesubmitter",
+  states: ["VA", "OH", "SC", "CO", "GA", "MD"],
+};
+
 export const stateSubmitterUsernamesByEmail = {
   [CO_STATE_SUBMITTER_EMAIL]: CO_STATE_SUBMITTER_USERNAME,
   [DENIED_STATE_SUBMITTER_EMAIL]: DENIED_STATE_SUBMITTER_USERNAME,
   [INVALID_EMAIL_STATE_SUBMITTER_EMAIL]: INVALID_EMAIL_STATE_SUBMITTER_USERNAME,
-  [MAKO_STATE_SUBMITTER_EMAIL]: MAKO_STATE_SUBMITTER_USERNAME,
   [MULTI_STATE_SUBMITTER_EMAIL]: MULTI_STATE_SUBMITTER_USERNAME,
   "no-email": NO_EMAIL_STATE_SUBMITTER_USERNAME,
   [NO_STATE_SUBMITTER_EMAIL]: NO_STATE_SUBMITTER_USERNAME,
@@ -539,13 +538,13 @@ export const stateSubmitterUsernamesByEmail = {
   [REVOKED_STATE_SUBMITTER_EMAIL]: REVOKED_STATE_SUBMITTER_USERNAME,
   [STATE_SUBMITTER_EMAIL]: STATE_SUBMITTER_USERNAME,
   [TEST_NEW_STATE_SUBMITTER_EMAIL]: TEST_NEW_STATE_SUBMITTER_USERNAME,
+  [TEST_STATE_SUBMITTER_EMAIL]: TEST_STATE_SUBMITTER_USERNAME,
 };
 
 export const stateSubmitters: TestUserDataWithRole[] = [
   coStateSubmitter,
   deniedStateSubmitter,
   invalidEmailStateSubmitter,
-  makoStateSubmitter,
   multiStateSubmitter,
   noEmailStateSubmitter,
   noStateSubmitter,
@@ -556,4 +555,5 @@ export const stateSubmitters: TestUserDataWithRole[] = [
   revokedStateSubmitter,
   stateSubmitter,
   testNewStateSubmitter,
+  testStateSubmitter,
 ];

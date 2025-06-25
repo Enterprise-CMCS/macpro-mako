@@ -3,9 +3,9 @@ import userEvent, { UserEvent } from "@testing-library/user-event";
 import { ExportToCsv } from "export-to-csv";
 import {
   setMockUsername,
-  TEST_CMS_REVIEWER_USER,
-  TEST_DEFAULT_CMS_USER,
-  TEST_HELP_DESK_USER,
+  TEST_REVIEWER_USER,
+  DEFAULT_CMS_USER,
+  HELP_DESK_USER,
   TEST_STATE_SUBMITTER_USER,
 } from "mocks";
 import { opensearch } from "shared-types";
@@ -274,9 +274,9 @@ describe("SpasList", () => {
 
   describe.each([
     ["State Submitter", TEST_STATE_SUBMITTER_USER.username, true, false],
-    ["CMS Reviewer", TEST_CMS_REVIEWER_USER.username, true, true],
-    ["Default CMS User", TEST_DEFAULT_CMS_USER.username, true, true],
-    ["CMS Help Desk User", TEST_HELP_DESK_USER.username, false, false],
+    ["CMS Reviewer", TEST_REVIEWER_USER.username, true, true],
+    ["Default CMS User", DEFAULT_CMS_USER.username, true, true],
+    ["CMS Help Desk User", HELP_DESK_USER.username, false, false],
   ])("as a %s", async (_title, username, hasActions, useCmsStatus) => {
     let user: UserEvent;
     beforeAll(async () => {

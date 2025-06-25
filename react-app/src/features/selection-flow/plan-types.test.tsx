@@ -1,5 +1,5 @@
 import { render, screen, waitForElementToBeRemoved } from "@testing-library/react";
-import { makoReviewer, setDefaultStateSubmitter, setMockUsername } from "mocks";
+import { testReviewer, setDefaultStateSubmitter, setMockUsername } from "mocks";
 import React, { ReactElement } from "react";
 import { beforeEach, describe, expect, it } from "vitest";
 
@@ -65,7 +65,7 @@ describe("plan-types", () => {
     });
 
     it("should navigate cms users to /", async () => {
-      setMockUsername(makoReviewer);
+      setMockUsername(testReviewer);
       await setup(<NewSubmissionInitialOptions />, "/new-submission");
       expect(screen.getByText("Home")).toBeInTheDocument();
     });

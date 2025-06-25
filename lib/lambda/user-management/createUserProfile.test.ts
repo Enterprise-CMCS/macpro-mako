@@ -2,7 +2,7 @@ import { APIGatewayEvent } from "aws-lambda";
 import {
   coStateSubmitter,
   getRequestContext,
-  makoStateSubmitter,
+  testStateSubmitter,
   setDefaultStateSubmitter,
   setMockUsername,
   testNewStateSubmitter,
@@ -65,7 +65,7 @@ describe("createUserProfile handler", () => {
   });
 
   it("should return 200 and not create the user role if it is already in kafka", async () => {
-    setMockUsername(makoStateSubmitter);
+    setMockUsername(testStateSubmitter);
 
     const event = {
       requestContext: getRequestContext(),

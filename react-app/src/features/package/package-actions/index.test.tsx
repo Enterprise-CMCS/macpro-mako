@@ -1,7 +1,7 @@
 import { screen } from "@testing-library/react";
 import {
   EXISTING_ITEM_ID,
-  makoReviewer,
+  testReviewer,
   onceApiPackageActionsHandler,
   setDefaultStateSubmitter,
   setMockUsername,
@@ -144,7 +144,7 @@ describe("", () => {
 
   describe("as a cms reviewer", () => {
     beforeEach(() => {
-      setMockUsername(makoReviewer);
+      setMockUsername(testReviewer);
     });
 
     it(`should return actions: [${Action.ENABLE_RAI_WITHDRAW}] for CHIP SPA`, async () => {

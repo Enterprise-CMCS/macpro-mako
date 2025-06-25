@@ -3,7 +3,7 @@ import LZ from "lz-string";
 import {
   CMS_ROLE_APPROVER_EMAIL,
   DEFAULT_CMS_USER_EMAIL,
-  MAKO_STATE_SUBMITTER_EMAIL,
+  TEST_STATE_SUBMITTER_EMAIL,
   OS_STATE_SYSTEM_ADMIN_EMAIL,
   setMockUsername,
   stateSubmitter,
@@ -56,12 +56,12 @@ describe("User Profile", () => {
 
   test("should redirect to / if the user is not a user manager role", async () => {
     setMockUsername(stateSubmitter);
-    await setup(MAKO_STATE_SUBMITTER_EMAIL);
+    await setup(TEST_STATE_SUBMITTER_EMAIL);
     expect(screen.queryByText("User Profile")).toBeNull();
   });
 
   test("renders state access management", async () => {
-    await setup(MAKO_STATE_SUBMITTER_EMAIL);
+    await setup(TEST_STATE_SUBMITTER_EMAIL);
     await waitFor(() =>
       expect(
         screen.getByRole("heading", { name: "Profile Information", level: 2 }),
@@ -72,7 +72,7 @@ describe("User Profile", () => {
     expect(screen.getByRole("heading", { name: "Role", level: 3 })).toBeInTheDocument();
     expect(screen.getByText("State Submitter")).toBeInTheDocument();
     expect(screen.getByRole("heading", { name: "Email", level: 3 })).toBeInTheDocument();
-    expect(screen.getByText(MAKO_STATE_SUBMITTER_EMAIL)).toBeInTheDocument();
+    expect(screen.getByText(TEST_STATE_SUBMITTER_EMAIL)).toBeInTheDocument();
 
     expect(screen.getByText("State Access Management")).toBeInTheDocument();
 

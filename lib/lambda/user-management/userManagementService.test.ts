@@ -3,10 +3,10 @@ import {
   getFilteredRoleDocsByState,
   getLatestRoleByEmail,
   OS_STATE_SUBMITTER_EMAIL,
+  OS_STATE_SUBMITTER_USER,
   OS_STATE_SYSTEM_ADMIN_EMAIL,
+  OS_STATE_SYSTEM_ADMIN_USER,
   roleDocs,
-  STATE_SUBMITTER_USER,
-  STATE_SYSTEM_ADMIN_USER,
 } from "mocks";
 import { beforeEach, describe, expect, it, vi } from "vitest";
 
@@ -45,11 +45,11 @@ describe("User Management Service", () => {
     });
     it("should return the state submitter when searching for their email", async () => {
       const result = await getUserByEmail(OS_STATE_SUBMITTER_EMAIL);
-      expect(result).toEqual(STATE_SUBMITTER_USER._source);
+      expect(result).toEqual(OS_STATE_SUBMITTER_USER._source);
     });
     it("should return the state sysadmin when searching for their email", async () => {
       const result = await getUserByEmail(OS_STATE_SYSTEM_ADMIN_EMAIL);
-      expect(result).toEqual(STATE_SYSTEM_ADMIN_USER._source);
+      expect(result).toEqual(OS_STATE_SYSTEM_ADMIN_USER._source);
     });
   });
 
@@ -75,13 +75,13 @@ describe("User Management Service", () => {
     it("should return the state submitter when searching for their email", async () => {
       const result = await getUsersByEmails([OS_STATE_SUBMITTER_EMAIL]);
       expect(result).toEqual({
-        [OS_STATE_SUBMITTER_EMAIL]: STATE_SUBMITTER_USER._source,
+        [OS_STATE_SUBMITTER_EMAIL]: OS_STATE_SUBMITTER_USER._source,
       });
     });
     it("should return the state sysadmin when searching for their email", async () => {
       const result = await getUsersByEmails([OS_STATE_SYSTEM_ADMIN_EMAIL]);
       expect(result).toEqual({
-        [OS_STATE_SYSTEM_ADMIN_EMAIL]: STATE_SYSTEM_ADMIN_USER._source,
+        [OS_STATE_SYSTEM_ADMIN_EMAIL]: OS_STATE_SYSTEM_ADMIN_USER._source,
       });
     });
     it("should multiple users that match email search", async () => {
@@ -90,8 +90,8 @@ describe("User Management Service", () => {
         OS_STATE_SYSTEM_ADMIN_EMAIL,
       ]);
       expect(result).toEqual({
-        [OS_STATE_SUBMITTER_EMAIL]: STATE_SUBMITTER_USER._source,
-        [OS_STATE_SYSTEM_ADMIN_EMAIL]: STATE_SYSTEM_ADMIN_USER._source,
+        [OS_STATE_SUBMITTER_EMAIL]: OS_STATE_SUBMITTER_USER._source,
+        [OS_STATE_SYSTEM_ADMIN_EMAIL]: OS_STATE_SYSTEM_ADMIN_USER._source,
       });
     });
     it("should handle an undefined email in search", async () => {
@@ -100,8 +100,8 @@ describe("User Management Service", () => {
       emails.push(undefined);
       const result = await getUsersByEmails(emails);
       expect(result).toEqual({
-        [OS_STATE_SUBMITTER_EMAIL]: STATE_SUBMITTER_USER._source,
-        [OS_STATE_SYSTEM_ADMIN_EMAIL]: STATE_SYSTEM_ADMIN_USER._source,
+        [OS_STATE_SUBMITTER_EMAIL]: OS_STATE_SUBMITTER_USER._source,
+        [OS_STATE_SYSTEM_ADMIN_EMAIL]: OS_STATE_SYSTEM_ADMIN_USER._source,
       });
     });
     it("should handle a null email in search", async () => {
@@ -110,8 +110,8 @@ describe("User Management Service", () => {
       emails.push(null);
       const result = await getUsersByEmails(emails);
       expect(result).toEqual({
-        [OS_STATE_SUBMITTER_EMAIL]: STATE_SUBMITTER_USER._source,
-        [OS_STATE_SYSTEM_ADMIN_EMAIL]: STATE_SYSTEM_ADMIN_USER._source,
+        [OS_STATE_SUBMITTER_EMAIL]: OS_STATE_SUBMITTER_USER._source,
+        [OS_STATE_SYSTEM_ADMIN_EMAIL]: OS_STATE_SYSTEM_ADMIN_USER._source,
       });
     });
     it("should handle an empty string email in search", async () => {
@@ -121,8 +121,8 @@ describe("User Management Service", () => {
         "",
       ]);
       expect(result).toEqual({
-        [OS_STATE_SUBMITTER_EMAIL]: STATE_SUBMITTER_USER._source,
-        [OS_STATE_SYSTEM_ADMIN_EMAIL]: STATE_SYSTEM_ADMIN_USER._source,
+        [OS_STATE_SUBMITTER_EMAIL]: OS_STATE_SUBMITTER_USER._source,
+        [OS_STATE_SYSTEM_ADMIN_EMAIL]: OS_STATE_SYSTEM_ADMIN_USER._source,
       });
     });
     it("should handle an invalid email in search", async () => {
@@ -132,8 +132,8 @@ describe("User Management Service", () => {
         "invalid@email.com",
       ]);
       expect(result).toEqual({
-        [OS_STATE_SUBMITTER_EMAIL]: STATE_SUBMITTER_USER._source,
-        [OS_STATE_SYSTEM_ADMIN_EMAIL]: STATE_SYSTEM_ADMIN_USER._source,
+        [OS_STATE_SUBMITTER_EMAIL]: OS_STATE_SUBMITTER_USER._source,
+        [OS_STATE_SYSTEM_ADMIN_EMAIL]: OS_STATE_SYSTEM_ADMIN_USER._source,
       });
     });
   });
@@ -317,7 +317,7 @@ describe("User Management Service", () => {
         {
           ...roleObj?._source,
           email: OS_STATE_SUBMITTER_EMAIL,
-          fullName: STATE_SUBMITTER_USER._source.fullName,
+          fullName: OS_STATE_SUBMITTER_USER._source.fullName,
         },
       ]);
     });
@@ -332,7 +332,7 @@ describe("User Management Service", () => {
         {
           ...roleObj?._source,
           email: OS_STATE_SYSTEM_ADMIN_EMAIL,
-          fullName: STATE_SYSTEM_ADMIN_USER._source.fullName,
+          fullName: OS_STATE_SYSTEM_ADMIN_USER._source.fullName,
         },
       ]);
     });

@@ -2,7 +2,7 @@ import {
   TEST_1915B_ITEM,
   TEST_1915C_ITEM,
   TEST_CHIP_SPA_ITEM,
-  TEST_CMS_REVIEWER_USER,
+  TEST_REVIEWER_USER,
   TEST_MED_SPA_ITEM,
   TEST_STATE_SUBMITTER_USER,
   TEST_TEMP_EXT_ITEM,
@@ -71,7 +71,7 @@ describe("package actions rules tests", () => {
         seatoolStatus: SEATOOL_STATUS.PENDING_RAI,
         raiRequestedDate: "2024-01-01T00:00:00.000Z",
       });
-      expect(arRespondToRai.check(check, TEST_CMS_REVIEWER_USER)).toBe(false);
+      expect(arRespondToRai.check(check, TEST_REVIEWER_USER)).toBe(false);
     });
     it("should return false for a package that is locked", () => {
       const check = PackageCheck({
@@ -139,7 +139,7 @@ describe("package actions rules tests", () => {
         seatoolStatus: SEATOOL_STATUS.APPROVED,
         actionType: "New",
       });
-      expect(arTempExtension.check(check, TEST_CMS_REVIEWER_USER)).toBe(false);
+      expect(arTempExtension.check(check, TEST_REVIEWER_USER)).toBe(false);
     });
   });
 
@@ -204,7 +204,7 @@ describe("package actions rules tests", () => {
         seatoolStatus: SEATOOL_STATUS.APPROVED,
         actionType: "Renew",
       });
-      expect(arAmend.check(check, TEST_CMS_REVIEWER_USER)).toBe(false);
+      expect(arAmend.check(check, TEST_REVIEWER_USER)).toBe(false);
     });
   });
 
@@ -217,7 +217,7 @@ describe("package actions rules tests", () => {
         raiRequestedDate: "2024-01-01T00:00:00.000Z",
         raiReceivedDate: "2024-01-01T00:00:00.000Z",
       });
-      expect(arEnableWithdrawRaiResponse.check(check, TEST_CMS_REVIEWER_USER)).toBe(true);
+      expect(arEnableWithdrawRaiResponse.check(check, TEST_REVIEWER_USER)).toBe(true);
     });
     it("should return false for a temporary extension package CHIP SPA", () => {
       const check = PackageCheck({
@@ -227,7 +227,7 @@ describe("package actions rules tests", () => {
         raiRequestedDate: "2024-01-01T00:00:00.000Z",
         raiReceivedDate: "2024-01-01T00:00:00.000Z",
       });
-      expect(arEnableWithdrawRaiResponse.check(check, TEST_CMS_REVIEWER_USER)).toBe(false);
+      expect(arEnableWithdrawRaiResponse.check(check, TEST_REVIEWER_USER)).toBe(false);
     });
     it("should return false for a package with a Withdrawn status CHIP SPA", () => {
       const check = PackageCheck({
@@ -237,7 +237,7 @@ describe("package actions rules tests", () => {
         raiRequestedDate: "2024-01-01T00:00:00.000Z",
         raiReceivedDate: "2024-01-01T00:00:00.000Z",
       });
-      expect(arEnableWithdrawRaiResponse.check(check, TEST_CMS_REVIEWER_USER)).toBe(false);
+      expect(arEnableWithdrawRaiResponse.check(check, TEST_REVIEWER_USER)).toBe(false);
     });
     it("should return false for a package that has an rai response CHIP SPA", () => {
       const check = PackageCheck({
@@ -248,7 +248,7 @@ describe("package actions rules tests", () => {
         raiReceivedDate: "2024-01-01T00:00:00.000Z",
         raiWithdrawnDate: "2024-01-01T00:00:00.000Z",
       });
-      expect(arEnableWithdrawRaiResponse.check(check, TEST_CMS_REVIEWER_USER)).toBe(false);
+      expect(arEnableWithdrawRaiResponse.check(check, TEST_REVIEWER_USER)).toBe(false);
     });
     it("should return false for a package with an rai withdraw enabled CHIP SPA", () => {
       const check = PackageCheck({
@@ -259,7 +259,7 @@ describe("package actions rules tests", () => {
         raiReceivedDate: "2024-01-01T00:00:00.000Z",
         raiWithdrawEnabled: true,
       });
-      expect(arEnableWithdrawRaiResponse.check(check, TEST_CMS_REVIEWER_USER)).toBe(false);
+      expect(arEnableWithdrawRaiResponse.check(check, TEST_REVIEWER_USER)).toBe(false);
     });
     it("should return false for a package with a state submitter CHIP SPA", () => {
       const check = PackageCheck({
@@ -279,7 +279,7 @@ describe("package actions rules tests", () => {
         raiRequestedDate: "2024-01-01T00:00:00.000Z",
         raiReceivedDate: "2024-01-01T00:00:00.000Z",
       });
-      expect(arEnableWithdrawRaiResponse.check(check, TEST_CMS_REVIEWER_USER)).toBe(false);
+      expect(arEnableWithdrawRaiResponse.check(check, TEST_REVIEWER_USER)).toBe(false);
     });
     it("should return false for a package with a Pending-Approved status CHIP SPA", () => {
       const check = PackageCheck({
@@ -289,7 +289,7 @@ describe("package actions rules tests", () => {
         raiRequestedDate: "2024-01-01T00:00:00.000Z",
         raiReceivedDate: "2024-01-01T00:00:00.000Z",
       });
-      expect(arEnableWithdrawRaiResponse.check(check, TEST_CMS_REVIEWER_USER)).toBe(false);
+      expect(arEnableWithdrawRaiResponse.check(check, TEST_REVIEWER_USER)).toBe(false);
     });
     it("should return false for a package with a Submitted status CHIP SPA", () => {
       const check = PackageCheck({
@@ -299,7 +299,7 @@ describe("package actions rules tests", () => {
         raiRequestedDate: "2024-01-01T00:00:00.000Z",
         raiReceivedDate: "2024-01-01T00:00:00.000Z",
       });
-      expect(arEnableWithdrawRaiResponse.check(check, TEST_CMS_REVIEWER_USER)).toBe(false);
+      expect(arEnableWithdrawRaiResponse.check(check, TEST_REVIEWER_USER)).toBe(false);
     });
 
     it("should return true for a valid package 1915(b)", () => {
@@ -310,7 +310,7 @@ describe("package actions rules tests", () => {
         raiRequestedDate: "2024-01-01T00:00:00.000Z",
         raiReceivedDate: "2024-01-01T00:00:00.000Z",
       });
-      expect(arEnableWithdrawRaiResponse.check(check, TEST_CMS_REVIEWER_USER)).toBe(true);
+      expect(arEnableWithdrawRaiResponse.check(check, TEST_REVIEWER_USER)).toBe(true);
     });
     it("should return false for a temporary extension package 1915(b)", () => {
       const check = PackageCheck({
@@ -320,7 +320,7 @@ describe("package actions rules tests", () => {
         raiRequestedDate: "2024-01-01T00:00:00.000Z",
         raiReceivedDate: "2024-01-01T00:00:00.000Z",
       });
-      expect(arEnableWithdrawRaiResponse.check(check, TEST_CMS_REVIEWER_USER)).toBe(false);
+      expect(arEnableWithdrawRaiResponse.check(check, TEST_REVIEWER_USER)).toBe(false);
     });
     it("should return false for a package with a Withdrawn status 1915(b)", () => {
       const check = PackageCheck({
@@ -330,7 +330,7 @@ describe("package actions rules tests", () => {
         raiRequestedDate: "2024-01-01T00:00:00.000Z",
         raiReceivedDate: "2024-01-01T00:00:00.000Z",
       });
-      expect(arEnableWithdrawRaiResponse.check(check, TEST_CMS_REVIEWER_USER)).toBe(false);
+      expect(arEnableWithdrawRaiResponse.check(check, TEST_REVIEWER_USER)).toBe(false);
     });
     it("should return false for a package that has an rai withdraw 1915(b)", () => {
       const check = PackageCheck({
@@ -342,7 +342,7 @@ describe("package actions rules tests", () => {
         raiWithdrawnDate: "2024-01-01T00:00:00.000Z",
         raiWithdrawEnabled: true,
       });
-      expect(arEnableWithdrawRaiResponse.check(check, TEST_CMS_REVIEWER_USER)).toBe(false);
+      expect(arEnableWithdrawRaiResponse.check(check, TEST_REVIEWER_USER)).toBe(false);
     });
     it("should return false for a package with an rai withdraw enabled 1915(b)", () => {
       const check = PackageCheck({
@@ -353,7 +353,7 @@ describe("package actions rules tests", () => {
         raiReceivedDate: "2024-01-01T00:00:00.000Z",
         raiWithdrawEnabled: true,
       });
-      expect(arEnableWithdrawRaiResponse.check(check, TEST_CMS_REVIEWER_USER)).toBe(false);
+      expect(arEnableWithdrawRaiResponse.check(check, TEST_REVIEWER_USER)).toBe(false);
     });
     it("should return false for a package with a state submitter 1915(b)", () => {
       const check = PackageCheck({
@@ -373,7 +373,7 @@ describe("package actions rules tests", () => {
         raiRequestedDate: "2024-01-01T00:00:00.000Z",
         raiReceivedDate: "2024-01-01T00:00:00.000Z",
       });
-      expect(arEnableWithdrawRaiResponse.check(check, TEST_CMS_REVIEWER_USER)).toBe(false);
+      expect(arEnableWithdrawRaiResponse.check(check, TEST_REVIEWER_USER)).toBe(false);
     });
     it("should return false for a package with a Pending-Approved status 1915(b)", () => {
       const check = PackageCheck({
@@ -383,7 +383,7 @@ describe("package actions rules tests", () => {
         raiRequestedDate: "2024-01-01T00:00:00.000Z",
         raiReceivedDate: "2024-01-01T00:00:00.000Z",
       });
-      expect(arEnableWithdrawRaiResponse.check(check, TEST_CMS_REVIEWER_USER)).toBe(false);
+      expect(arEnableWithdrawRaiResponse.check(check, TEST_REVIEWER_USER)).toBe(false);
     });
     it("should return false for a package with a Terminated status 1915(b)", () => {
       const check = PackageCheck({
@@ -393,7 +393,7 @@ describe("package actions rules tests", () => {
         raiRequestedDate: "2024-01-01T00:00:00.000Z",
         raiReceivedDate: "2024-01-01T00:00:00.000Z",
       });
-      expect(arEnableWithdrawRaiResponse.check(check, TEST_CMS_REVIEWER_USER)).toBe(false);
+      expect(arEnableWithdrawRaiResponse.check(check, TEST_REVIEWER_USER)).toBe(false);
     });
   });
 
@@ -407,7 +407,7 @@ describe("package actions rules tests", () => {
         raiReceivedDate: "2024-01-01T00:00:00.000Z",
         raiWithdrawEnabled: true,
       });
-      expect(arDisableWithdrawRaiResponse.check(check, TEST_CMS_REVIEWER_USER)).toBe(true);
+      expect(arDisableWithdrawRaiResponse.check(check, TEST_REVIEWER_USER)).toBe(true);
     });
     it("should return false for a temporary extension package", () => {
       const check = PackageCheck({
@@ -418,7 +418,7 @@ describe("package actions rules tests", () => {
         raiReceivedDate: "2024-01-01T00:00:00.000Z",
         raiWithdrawEnabled: true,
       });
-      expect(arDisableWithdrawRaiResponse.check(check, TEST_CMS_REVIEWER_USER)).toBe(false);
+      expect(arDisableWithdrawRaiResponse.check(check, TEST_REVIEWER_USER)).toBe(false);
     });
     it("should return false for a package with a Withdrawn status", () => {
       const check = PackageCheck({
@@ -429,7 +429,7 @@ describe("package actions rules tests", () => {
         raiReceivedDate: "2024-01-01T00:00:00.000Z",
         raiWithdrawEnabled: true,
       });
-      expect(arDisableWithdrawRaiResponse.check(check, TEST_CMS_REVIEWER_USER)).toBe(false);
+      expect(arDisableWithdrawRaiResponse.check(check, TEST_REVIEWER_USER)).toBe(false);
     });
     it("should return false for a package that has an rai response", () => {
       const check = PackageCheck({
@@ -441,7 +441,7 @@ describe("package actions rules tests", () => {
         raiWithdrawnDate: "2024-01-01T00:00:00.000Z",
         raiWithdrawEnabled: true,
       });
-      expect(arDisableWithdrawRaiResponse.check(check, TEST_CMS_REVIEWER_USER)).toBe(false);
+      expect(arDisableWithdrawRaiResponse.check(check, TEST_REVIEWER_USER)).toBe(false);
     });
     it("should return false for a package with an rai withdraw enabled", () => {
       const check = PackageCheck({
@@ -452,7 +452,7 @@ describe("package actions rules tests", () => {
         raiReceivedDate: "2024-01-01T00:00:00.000Z",
         raiWithdrawEnabled: false,
       });
-      expect(arDisableWithdrawRaiResponse.check(check, TEST_CMS_REVIEWER_USER)).toBe(false);
+      expect(arDisableWithdrawRaiResponse.check(check, TEST_REVIEWER_USER)).toBe(false);
     });
     it("should return false for a package with a state submitter", () => {
       const check = PackageCheck({
@@ -474,7 +474,7 @@ describe("package actions rules tests", () => {
         raiReceivedDate: "2024-01-01T00:00:00.000Z",
         raiWithdrawEnabled: true,
       });
-      expect(arDisableWithdrawRaiResponse.check(check, TEST_CMS_REVIEWER_USER)).toBe(false);
+      expect(arDisableWithdrawRaiResponse.check(check, TEST_REVIEWER_USER)).toBe(false);
     });
     it("should return false for a package with a Pending-Approved status", () => {
       const check = PackageCheck({
@@ -485,7 +485,7 @@ describe("package actions rules tests", () => {
         raiReceivedDate: "2024-01-01T00:00:00.000Z",
         raiWithdrawEnabled: true,
       });
-      expect(arDisableWithdrawRaiResponse.check(check, TEST_CMS_REVIEWER_USER)).toBe(false);
+      expect(arDisableWithdrawRaiResponse.check(check, TEST_REVIEWER_USER)).toBe(false);
     });
     it("should return false for a package with a Unsubmitted status", () => {
       const check = PackageCheck({
@@ -496,7 +496,7 @@ describe("package actions rules tests", () => {
         raiReceivedDate: "2024-01-01T00:00:00.000Z",
         raiWithdrawEnabled: true,
       });
-      expect(arDisableWithdrawRaiResponse.check(check, TEST_CMS_REVIEWER_USER)).toBe(false);
+      expect(arDisableWithdrawRaiResponse.check(check, TEST_REVIEWER_USER)).toBe(false);
     });
   });
 
@@ -577,7 +577,7 @@ describe("package actions rules tests", () => {
         raiReceivedDate: "2024-01-01T00:00:00.000Z",
         raiWithdrawEnabled: true,
       });
-      expect(arWithdrawRaiResponse.check(check, TEST_CMS_REVIEWER_USER)).toBe(false);
+      expect(arWithdrawRaiResponse.check(check, TEST_REVIEWER_USER)).toBe(false);
     });
     it("should return false for a package that is locked", () => {
       const check = PackageCheck({
@@ -632,7 +632,7 @@ describe("package actions rules tests", () => {
         actionType: "New",
         seatoolStatus: SEATOOL_STATUS.PENDING,
       });
-      expect(arWithdrawPackage.check(check, TEST_CMS_REVIEWER_USER)).toBe(false);
+      expect(arWithdrawPackage.check(check, TEST_REVIEWER_USER)).toBe(false);
     });
   });
 
@@ -651,7 +651,7 @@ describe("package actions rules tests", () => {
         actionType: "New",
         seatoolStatus: SEATOOL_STATUS.PENDING,
       });
-      expect(arUploadSubsequentDocuments.check(check, TEST_CMS_REVIEWER_USER)).toBe(false);
+      expect(arUploadSubsequentDocuments.check(check, TEST_REVIEWER_USER)).toBe(false);
     });
     it("should return false for a package that needs intake", () => {
       const check = PackageCheck({
