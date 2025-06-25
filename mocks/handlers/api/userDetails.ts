@@ -8,9 +8,10 @@ import { UserDetailsRequestBody } from "../../index.d";
 const defaultApiUserDetailsHandler = http.post<PathParams, UserDetailsRequestBody>(
   "https://test-domain.execute-api.us-east-1.amazonaws.com/mocked-tests/getUserDetails",
   async ({ request }) => {
-    let email;
-    if (request.body) {
-      const { userEmail } = await request.json();
+    const { userEmail } = await request.json();
+
+    let email: string;
+    if (userEmail) {
       email = userEmail;
     } else {
       const username = process.env.MOCK_USER_USERNAME;
@@ -22,6 +23,10 @@ const defaultApiUserDetailsHandler = http.post<PathParams, UserDetailsRequestBod
         return HttpResponse.json({});
       }
       email = user?.email;
+    }
+
+    if (!email) {
+      return HttpResponse.json({});
     }
 
     const userDetails = getFilteredUserResultList([email || ""])?.[0]?._source ?? null;

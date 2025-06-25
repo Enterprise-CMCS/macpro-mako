@@ -17,9 +17,10 @@ import { SubmitRoleRequestBody, TestRoleDocument, UserProfileRequestBody } from 
 const defaultApiUserProfileHandler = http.post<PathParams, UserProfileRequestBody>(
   "https://test-domain.execute-api.us-east-1.amazonaws.com/mocked-tests/getUserProfile",
   async ({ request }) => {
-    let email;
-    if (request.body) {
-      const { userEmail } = await request.json();
+    const { userEmail } = await request.json();
+
+    let email: string;
+    if (userEmail) {
       email = userEmail;
     } else {
       const username = process.env.MOCK_USER_USERNAME;
@@ -32,6 +33,11 @@ const defaultApiUserProfileHandler = http.post<PathParams, UserProfileRequestBod
       }
       email = user?.email;
     }
+
+    if (!email) {
+      return HttpResponse.json([]);
+    }
+
     const roles = getFilteredRoleDocsByEmail(email || "");
 
     return HttpResponse.json(roles);
@@ -224,24 +230,38 @@ export const errorApiSubmitRoleRequestsHandler = http.post(
   async () => new HttpResponse("Response Error", { status: 500 }),
 );
 
-const defaultGetApproversHandler = http.post(
+const defaultGetApproversHandler = http.post<PathParams, UserProfileRequestBody>(
   "https://test-domain.execute-api.us-east-1.amazonaws.com/mocked-tests/getApprovers",
-  async () => {
-    const username = process.env.MOCK_USER_USERNAME;
-    if (!username) {
-      return HttpResponse.json({
-        message: "No username found",
-        approverList: [],
-      });
+  async ({ request }) => {
+    const { userEmail } = await request.json();
+
+    let email: string;
+    if (userEmail) {
+      email = userEmail;
+    } else {
+      const username = process.env.MOCK_USER_USERNAME;
+      if (!username) {
+        return HttpResponse.json({
+          message: "No username found",
+          approverList: [],
+        });
+      }
+      const user = getUserByUsername(username);
+      if (!user) {
+        return HttpResponse.json({
+          message: "No user found",
+          approverList: [],
+        });
+      }
+      email = user?.email;
     }
-    const user = getUserByUsername(username);
-    if (!user) {
+
+    if (!email) {
       return HttpResponse.json({
         message: "No user found",
         approverList: [],
       });
     }
-    const email = user?.email;
 
     const roles = getFilteredRoleDocsByEmail(email || "");
 

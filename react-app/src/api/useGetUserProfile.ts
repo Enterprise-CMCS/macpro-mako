@@ -29,7 +29,7 @@ export function attachApproversToStateAccess(
   stateAccess: StateAccess[],
   approverByRole: ApproverRaw[],
 ): StateAccess[] {
-  const roleTerritoryApproverMap = {};
+  const roleTerritoryApproverMap: { [key: string]: any } = {};
   if (!approverByRole) return stateAccess;
   if (!approverByRole.length) return stateAccess;
 
