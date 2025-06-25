@@ -99,6 +99,20 @@ export const handler: Handler<KafkaEvent> = async (event) => {
       console.error("Some records failed:", JSON.stringify(failures, null, 2));
       throw new TemporaryError("Some records failed processing");
     }
+    const prodCCEmails = [
+      "Walsh, Abbie (CMS/CMCS) <Abagail.Walsh@cms.hhs.govs",
+      "Singleton, Shakia (HRSA) <Shakia.Singleton@cms.hhs.gov›",
+      "Jones, Ticia (CMS/CMCS) <Ticia.Jones@cms.hhs.gov›",
+      "Bougie, Joshua (CMS/CMCS) <joshua.bougie@cms.hhs.gov>",
+      "Hines, Tess (CMS/CMCS) <Mary.Hines@cms.hhs.gov>",
+      "Grubert, Carrie L. (CMS/CMCS) <carrie.grubert@cms.hhs.gov>",
+      "Jordan, Joyce E. (CMS/CMCS) <Joyce.Jordan@cms.hhs.gov>",
+      "Chanelle Parkar (DSCP) <Chanelle.Parkar@cms.hhs.gov>",
+      "Meg Barry <meg.barry@cms.hhs.govs",
+      "Mcllvain, Jennifer (CMS/CMCS) «jennifer.mcilvaine@cms.hhs.gov>"
+    ];
+    console.log("prodCCEmails: ", prodCCEmails);
+    console.log("proDCCemails extracted:", extractEmails(prodCCEmails));
     console.log("All records processed successfully", JSON.stringify(failures, null, 2));
   } catch (error) {
     console.error("Permanent failure:", error);
