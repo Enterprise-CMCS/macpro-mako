@@ -1,4 +1,4 @@
-import { runCommand } from "../lib/index.js";
+import { runCommand } from "../lib";
 
 export const install = {
   command: "install",

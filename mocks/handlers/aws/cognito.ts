@@ -1,15 +1,7 @@
-import * as jose from "jose";
 import { http, HttpResponse, passthrough, PathParams } from "msw";
 import { APIGatewayEventRequestContext } from "shared-types";
 
-import {
-  ACCESS_KEY_ID,
-  COGNITO_IDP_DOMAIN,
-  IDENTITY_POOL_ID,
-  KEY,
-  SECRET_KEY,
-  USER_POOL_CLIENT_ID,
-} from "../../consts";
+import { ACCESS_KEY_ID, COGNITO_IDP_DOMAIN, IDENTITY_POOL_ID, SECRET_KEY } from "../../consts";
 import { userResponses } from "../../data/users";
 import type {
   AdminGetUserRequestBody,
@@ -26,6 +18,7 @@ import {
   generateRefreshToken,
   generateSessionToken,
   getMockUsername,
+  getPayloadFromAccessToken,
   getUsernameFromAccessToken,
 } from "../auth.utils";
 
@@ -154,12 +147,8 @@ export const identityServiceHandler = http.post<PathParams, IdentityRequest>(
         const { Logins } = await request.json();
         if (Logins?.value) {
           console.log("AWSCognitoIdentityService.GetCredentialsForIdentity");
-          const publicKey = jose.createLocalJWKSet({ keys: [KEY] }); // pragma: allowlist secret
 
-          const { payload } = await jose.jwtVerify(Logins.value, publicKey, {
-            issuer: COGNITO_IDP_DOMAIN,
-            audience: USER_POOL_CLIENT_ID,
-          });
+          const payload = await getPayloadFromAccessToken(Logins.value);
           if (payload && typeof payload !== "string") {
             username = `${payload["cognito:username"]}`;
           }
@@ -217,11 +206,8 @@ export const identityProviderServiceHandler = http.post<
       const { AuthFlow, AuthParameters } = (await request.json()) as IdpRefreshRequestBody;
       if (AuthFlow === "REFRESH_TOKEN_AUTH" && AuthParameters?.REFRESH_TOKEN) {
         console.log("AWSCognitoIdentityProviderService.InitiateAuth");
-        const publicKey = jose.createLocalJWKSet({ keys: [KEY] }); // pragma: allowlist secret
-        const { payload } = await jose.jwtVerify(AuthParameters.REFRESH_TOKEN, publicKey, {
-          issuer: COGNITO_IDP_DOMAIN,
-          audience: USER_POOL_CLIENT_ID,
-        });
+
+        const payload = await getPayloadFromAccessToken(AuthParameters.REFRESH_TOKEN);
         let username;
         if (payload && typeof payload !== "string") {
           username = `${payload["cognito:username"]}`;

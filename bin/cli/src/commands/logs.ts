@@ -11,13 +11,7 @@ import {
 import prompts from "prompts";
 import { Argv } from "yargs";
 
-import {
-  checkIfAuthenticated,
-  project,
-  region,
-  runCommand,
-  setStageFromBranch,
-} from "../lib/index.js";
+import { checkIfAuthenticated, project, region, runCommand, setStageFromBranch } from "../lib/";
 
 const lambdaClient = new LambdaClient({ region });
 

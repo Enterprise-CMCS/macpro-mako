@@ -4,7 +4,7 @@ import { execSync } from "child_process";
 import path from "path";
 import { Argv } from "yargs";
 
-import { checkIfAuthenticated, project, region, runCommand, writeUiEnvFile } from "../lib/index.js";
+import { checkIfAuthenticated, project, region, runCommand, writeUiEnvFile } from "../lib/";
 
 export const deploy = {
   command: "deploy",
