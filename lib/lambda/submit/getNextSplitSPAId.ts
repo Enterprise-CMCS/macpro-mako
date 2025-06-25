@@ -52,7 +52,7 @@ export const getNextSplitSPAId = async (spaId: string) => {
 
   // Keep the suffix for the SEAtool package to create this package in OneMAC
   const nextSuffix = isFromOneMAC
-    ? String.fromCharCode(latestSuffixCharCode) + 1
+    ? String.fromCharCode(latestSuffixCharCode + 1)
     : String.fromCharCode(latestSuffixCharCode);
 
   return `${spaId}-${nextSuffix}`;
