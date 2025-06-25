@@ -1,7 +1,7 @@
 import { render, screen, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { Auth } from "aws-amplify";
-import { AUTH_CONFIG, testStateSubmitter, noRoleUser, setMockUsername } from "mocks";
+import { AUTH_CONFIG, noRoleUser, setMockUsername, testStateSubmitter } from "mocks";
 import { afterAll, beforeAll, beforeEach, describe, expect, it, vi } from "vitest";
 
 import * as api from "@/api";

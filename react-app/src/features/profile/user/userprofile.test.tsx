@@ -3,12 +3,12 @@ import LZ from "lz-string";
 import {
   CMS_ROLE_APPROVER_EMAIL,
   DEFAULT_CMS_USER_EMAIL,
-  TEST_STATE_SUBMITTER_EMAIL,
   OS_STATE_SYSTEM_ADMIN_EMAIL,
   setMockUsername,
   stateSubmitter,
   SYSTEM_ADMIN_EMAIL,
   systemAdmin,
+  TEST_STATE_SUBMITTER_EMAIL,
 } from "mocks";
 import { beforeEach, describe, expect, test } from "vitest";
 

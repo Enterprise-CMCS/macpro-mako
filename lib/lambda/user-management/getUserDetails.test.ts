@@ -2,13 +2,13 @@ import { APIGatewayEvent } from "aws-lambda";
 import {
   errorRoleSearchHandler,
   getRequestContext,
-  TEST_STATE_SUBMITTER_EMAIL,
-  testStateSubmitter,
   noStateSubmitter,
   OS_STATE_SYSTEM_ADMIN_EMAIL,
   osStateSystemAdmin,
   setDefaultStateSubmitter,
   setMockUsername,
+  TEST_STATE_SUBMITTER_EMAIL,
+  testStateSubmitter,
 } from "mocks";
 import { mockedServiceServer as mockedServer } from "mocks/server";
 import { beforeEach, describe, expect, it } from "vitest";

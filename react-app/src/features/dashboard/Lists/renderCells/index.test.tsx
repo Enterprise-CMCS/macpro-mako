@@ -4,8 +4,8 @@ import {
   TEST_1915B_ITEM,
   TEST_1915C_ITEM,
   TEST_CHIP_SPA_ITEM,
-  TEST_REVIEWER_USER,
   TEST_MED_SPA_ITEM,
+  TEST_REVIEWER_USER,
   TEST_STATE_SUBMITTER_USER,
 } from "mocks";
 import { Action, CognitoUserAttributes, opensearch, SEATOOL_STATUS } from "shared-types";

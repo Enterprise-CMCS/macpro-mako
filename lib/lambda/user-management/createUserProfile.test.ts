@@ -2,10 +2,10 @@ import { APIGatewayEvent } from "aws-lambda";
 import {
   coStateSubmitter,
   getRequestContext,
-  testStateSubmitter,
   setDefaultStateSubmitter,
   setMockUsername,
   testNewStateSubmitter,
+  testStateSubmitter,
 } from "mocks";
 import { mockedProducer } from "mocks/helpers/kafka.utils";
 import { beforeEach, describe, expect, it } from "vitest";

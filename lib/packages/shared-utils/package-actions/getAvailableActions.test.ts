@@ -1,9 +1,9 @@
 import {
   TEST_1915B_ITEM,
   TEST_CHIP_SPA_ITEM,
-  TEST_REVIEWER_USER,
   TEST_MED_SPA_ITEM,
   TEST_MED_SPA_RAI_ITEM,
+  TEST_REVIEWER_USER,
   TEST_STATE_SUBMITTER_USER,
 } from "mocks";
 import { Action, SEATOOL_STATUS } from "shared-types";

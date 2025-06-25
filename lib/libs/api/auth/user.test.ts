@@ -2,10 +2,10 @@ import { APIGatewayEvent } from "aws-lambda";
 import {
   convertUserAttributes,
   getRequestContext,
-  testReviewer,
-  testStateSubmitter,
   nullStateSubmitter,
   setMockUsername,
+  testReviewer,
+  testStateSubmitter,
   USER_POOL_ID,
 } from "mocks";
 import { afterAll, describe, expect, it } from "vitest";

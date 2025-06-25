@@ -1,5 +1,5 @@
 import { Context } from "aws-lambda";
-import { testStateSubmitter, setMockUsername, TEST_IDM_USERS, USER_POOL_ID } from "mocks";
+import { setMockUsername, TEST_IDM_USERS, testStateSubmitter, USER_POOL_ID } from "mocks";
 import { afterAll, describe, expect, it, vi } from "vitest";
 
 import { handler } from "./postAuth";

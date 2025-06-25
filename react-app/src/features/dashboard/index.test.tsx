@@ -7,11 +7,11 @@ import {
 } from "@testing-library/react";
 import userEvent, { UserEvent } from "@testing-library/user-event";
 import {
+  DEFAULT_CMS_USER,
   errorApiSearchHandler,
+  HELP_DESK_USER,
   setMockUsername,
   TEST_REVIEWER_USER,
-  DEFAULT_CMS_USER,
-  HELP_DESK_USER,
   TEST_STATE_SUBMITTER_USER,
 } from "mocks";
 import { mockedApiServer as mockedServer } from "mocks/server";

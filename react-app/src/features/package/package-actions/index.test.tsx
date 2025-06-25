@@ -1,7 +1,6 @@
 import { screen } from "@testing-library/react";
 import {
   EXISTING_ITEM_ID,
-  testReviewer,
   onceApiPackageActionsHandler,
   setDefaultStateSubmitter,
   setMockUsername,
@@ -9,6 +8,7 @@ import {
   TEST_CHIP_SPA_ITEM,
   TEST_MED_SPA_ITEM,
   TEST_MED_SPA_RAI_ITEM,
+  testReviewer,
 } from "mocks";
 import items from "mocks/data/items";
 import { mockedApiServer as mockedServer } from "mocks/server";

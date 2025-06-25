@@ -1,10 +1,10 @@
 import {
+  CMS_ROLE_APPROVER_USER,
   cmsRoleApprover,
   defaultCMSUser,
-  testStateSubmitter,
   setMockUsername,
-  CMS_ROLE_APPROVER_USER,
   TEST_STATE_SUBMITTER_USER,
+  testStateSubmitter,
 } from "mocks";
 import { describe, expect, it } from "vitest";
 

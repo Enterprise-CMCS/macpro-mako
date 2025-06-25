@@ -1,5 +1,5 @@
 import { render, screen, waitForElementToBeRemoved } from "@testing-library/react";
-import { testReviewer, setDefaultStateSubmitter, setMockUsername } from "mocks";
+import { setDefaultStateSubmitter, setMockUsername, testReviewer } from "mocks";
 import React, { ReactElement } from "react";
 import { beforeEach, describe, expect, it } from "vitest";
 

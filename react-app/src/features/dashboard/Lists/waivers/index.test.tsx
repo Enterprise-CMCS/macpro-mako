@@ -2,10 +2,10 @@ import { cleanup, screen, waitForElementToBeRemoved, within } from "@testing-lib
 import userEvent, { UserEvent } from "@testing-library/user-event";
 import { ExportToCsv } from "export-to-csv";
 import {
-  setMockUsername,
-  TEST_REVIEWER_USER,
   DEFAULT_CMS_USER,
   HELP_DESK_USER,
+  setMockUsername,
+  TEST_REVIEWER_USER,
   TEST_STATE_SUBMITTER_USER,
 } from "mocks";
 import { opensearch } from "shared-types";
