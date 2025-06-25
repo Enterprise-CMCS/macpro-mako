@@ -151,9 +151,9 @@ describe("RoleStatusCard", () => {
           doneByEmail: "test@example.com",
           doneByName: "Test Admin",
           approverList: [
-            { email: "test@example.com", fullName: "Test Admin" },
-            { email: "test2@example.com", fullName: "Test Admin2" },
-            { email: "test3@example.com", fullName: "Test Admin3" },
+            { email: "test@example.com", fullName: "Test Admin", territory: "MD" },
+            { email: "test2@example.com", fullName: "Test Admin2", territory: "MD" },
+            { email: "test3@example.com", fullName: "Test Admin3", territory: "MD" },
           ],
         }}
       />,
