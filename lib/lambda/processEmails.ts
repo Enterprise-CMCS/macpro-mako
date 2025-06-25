@@ -100,9 +100,9 @@ export const handler: Handler<KafkaEvent> = async (event) => {
       throw new TemporaryError("Some records failed processing");
     }
     const prodCCEmails = [
-      "Walsh, Abbie (CMS/CMCS) <Abagail.Walsh@cms.hhs.govs",
-      "Singleton, Shakia (HRSA) <Shakia.Singleton@cms.hhs.gov›",
-      "Jones, Ticia (CMS/CMCS) <Ticia.Jones@cms.hhs.gov›",
+      "Walsh, Abbie (CMS/CMCS) <Abagail.Walsh@cms.hhs.govs>",
+      "Singleton, Shakia (HRSA) <Shakia.Singleton@cms.hhs.gov>",
+      "Jones, Ticia (CMS/CMCS) <Ticia.Jones@cms.hhs.gov>",
       "Bougie, Joshua (CMS/CMCS) <joshua.bougie@cms.hhs.gov>",
       "Hines, Tess (CMS/CMCS) <Mary.Hines@cms.hhs.gov>",
       "Grubert, Carrie L. (CMS/CMCS) <carrie.grubert@cms.hhs.gov>",
@@ -256,15 +256,21 @@ function extractEmails(addresses: string[] | undefined): string[] {
   console.log("addresses: ", addresses)
   const filteredArray = [];
   if (addresses) {
-    for (var i = 0; i < addresses.length - 1; i++) {
-      console.log("address being iterated: ", addresses[i]);
-      const email = addresses[i].split("<")[1].split(">")[0];
-      console.log("stripped email: ", email)
-      filteredArray.push(email)
-      // const matches = addresses[i].match(emailRegex);
-      // if (matches) {
-      //   filteredArray.push(matches[0])
-      // }
+    for (var i = 0; i < addresses.length; i++) {
+      if (addresses[i].includes("<") && addresses[i].includes(">")) {
+        console.log("address being iterated: ", addresses[i]);
+        const email = addresses[i].split("<")[1].split(">")[0];
+        console.log("stripped email: ", email)
+        filteredArray.push(email)
+        // const matches = addresses[i].match(emailRegex);
+        // if (matches) {
+        //   filteredArray.push(matches[0])
+        // }
+      } else {
+        //guard against unusual email addresses
+        filteredArray.push(addresses[i]);
+      }
+
     }
     return filteredArray
   }
