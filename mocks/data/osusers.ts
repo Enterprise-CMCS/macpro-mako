@@ -1,7 +1,6 @@
 import { TestUserDocument, TestUserResult } from "../index.d";
 import {
   CMS_ROLE_APPROVER_EMAIL,
-  CO_STATE_SUBMITTER_EMAIL,
   DEFAULT_CMS_USER_EMAIL,
   DENIED_STATE_SUBMITTER_EMAIL,
   HELP_DESK_USER_EMAIL,
@@ -33,18 +32,6 @@ export const osUsers: Record<string, TestUserResult> = {
       group: "Group 1",
       division: "Division 1",
       states: [],
-    },
-  },
-  [CO_STATE_SUBMITTER_EMAIL]: {
-    _id: CO_STATE_SUBMITTER_EMAIL,
-    found: true,
-    _source: {
-      id: CO_STATE_SUBMITTER_EMAIL,
-      eventType: "user-info",
-      email: CO_STATE_SUBMITTER_EMAIL,
-      fullName: "State Submitter",
-      role: "statesubmitter",
-      states: ["CO"],
     },
   },
   [DEFAULT_CMS_USER_EMAIL]: {

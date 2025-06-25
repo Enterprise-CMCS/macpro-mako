@@ -118,7 +118,7 @@ describe("User Profile", () => {
     expect(screen.queryByRole("heading", { name: "Group & Division", level: 2 })).toBeNull();
   });
 
-  test("renders State Access Management for statesystemadmin", async () => {
+  it("renders State Access Management for statesystemadmin", async () => {
     await setup(OS_STATE_SYSTEM_ADMIN_EMAIL);
     await waitFor(() =>
       expect(
