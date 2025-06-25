@@ -1,9 +1,9 @@
 import { http, HttpResponse, PathParams } from "msw";
 
-import { getUserByUsername } from "../../data";
 import { getFilteredUserResultList } from "../../data/osusers";
 import { getFilteredRoleDocsByEmail, getLatestRoleByEmail } from "../../data/roles";
 import { UserDetailsRequestBody } from "../../index.d";
+import { getMockUser, getMockUserEmail } from "../auth.utils";
 
 const defaultApiUserDetailsHandler = http.post<PathParams, UserDetailsRequestBody>(
   "https://test-domain.execute-api.us-east-1.amazonaws.com/mocked-tests/getUserDetails",
@@ -13,15 +13,13 @@ const defaultApiUserDetailsHandler = http.post<PathParams, UserDetailsRequestBod
       const { userEmail } = await request.json();
       email = userEmail;
     } else {
-      const username = process.env.MOCK_USER_USERNAME;
-      if (!username) {
-        return HttpResponse.json({});
+      email = getMockUserEmail();
+      if (email === null) {
+        return new HttpResponse("User not authenticated", { status: 401 });
       }
-      const user = getUserByUsername(username);
-      if (!user) {
-        return HttpResponse.json({});
-      }
-      email = user?.email;
+    }
+    if (!email) {
+      return HttpResponse.json({});
     }
 
     const userDetails = getFilteredUserResultList([email || ""])?.[0]?._source ?? null;
@@ -45,11 +43,7 @@ export const errorApiUserDetailsHandler = http.post<PathParams, UserDetailsReque
 const defaultApiRequestBaseCMSAccessHandler = http.get(
   "https://test-domain.execute-api.us-east-1.amazonaws.com/mocked-tests/requestBaseCMSAccess",
   async () => {
-    const username = process.env.MOCK_USER_USERNAME;
-    if (!username) {
-      return new HttpResponse("User not authenticated", { status: 401 });
-    }
-    const user = getUserByUsername(username);
+    const user = getMockUser();
     if (!user) {
       return new HttpResponse("User not authenticated", { status: 401 });
     }

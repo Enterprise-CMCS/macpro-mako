@@ -289,8 +289,8 @@ export const oneMACFAQContent: FAQContent[] = [
               MMDL.
             </p>
             <p>
-              Templates and implementation guides for OneMac SPAs can be downloaded from the
-              respective FAQ:
+              Templates and implementation guides for ABP, Medicaid Premiums & Cost Sharing, and
+              CHIP Eligibility SPAs can be downloaded from the respective FAQ:
             </p>
             <ul className="ml-8 list-disc space-y-2 text-blue-600">
               {[
