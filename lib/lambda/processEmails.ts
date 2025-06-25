@@ -108,7 +108,7 @@ export const handler: Handler<KafkaEvent> = async (event) => {
       "Grubert, Carrie L. (CMS/CMCS) <carrie.grubert@cms.hhs.gov>",
       "Jordan, Joyce E. (CMS/CMCS) <Joyce.Jordan@cms.hhs.gov>",
       "Chanelle Parkar (DSCP) <Chanelle.Parkar@cms.hhs.gov>",
-      "Meg Barry <meg.barry@cms.hhs.govs",
+      "Meg Barry <meg.barry@cms.hhs.gov>",
       "Mcllvain, Jennifer (CMS/CMCS) «jennifer.mcilvaine@cms.hhs.gov>"
     ];
     console.log("prodCCEmails: ", prodCCEmails);
