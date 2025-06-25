@@ -24,6 +24,9 @@ export const SECRET_KEY = "UWKCFxhrgbPnixgLnL1JKwFEwiK9ZKvTAtpk8cGa"; // pragma:
 export const ALGORITHM = "RS256"; // pragma: allowlist secret
 const KTY = "RSA"; // pragma: allowlist secret
 const E = "AQAB"; // pragma: allowlist secret
+
+// these these keys come from the jose example here https://github.com/panva/jose/blob/main/docs/jwt/sign/classes/SignJWT.md
+// they are not real keys
 const N =
   "whYOFK2Ocbbpb_zVypi9SeKiNUqKQH0zTKN1-6fpCTu6ZalGI82s7XK3tan4dJt90ptUPKD2zvxqTzFNfx4HHHsrYCf2-FMLn1VTJfQazA2BvJqAwcpW1bqRUEty8tS_Yv4hRvWfQPcc2Gc3-_fQOOW57zVy-rNoJc744kb30NjQxdGp03J2S3GLQu7oKtSDDPooQHD38PEMNnITf0pj-KgDPjymkMGoJlO3aKppsjfbt_AH6GGdRghYRLOUwQU-h-ofWHR3lbYiKtXPn5dN24kiHy61e3VAQ9_YAZlwXC_99GGtw_NpghFAuM4P1JDn0DppJldy3PGFC0GfBCZASw"; // pragma: allowlist secret
 
