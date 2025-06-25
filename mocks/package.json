@@ -5,6 +5,8 @@
   "type": "module",
   "exports": {
     ".": "./index.ts",
+    "./browser": "./browser.ts",
+    "./consts": "./consts.ts",
     "./server": "./server.ts",
     "./data": "./data/index.ts",
     "./data/cpocs": "./data/cpocs.ts",
@@ -23,10 +25,9 @@
   },
   "dependencies": {
     "@opensearch-project/opensearch": "^2.13.0",
-    "@types/jsonwebtoken": "9.0.7",
     "amazon-cognito-identity-js": "6.3.12",
     "aws-lambda": "1.0.7",
-    "jsonwebtoken": "9.0.2",
+    "jose": "^6.0.11",
     "msw": "^2.3.1",
     "shared-types": "*",
     "shared-utils": "*"

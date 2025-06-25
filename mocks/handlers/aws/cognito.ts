@@ -1,14 +1,7 @@
-import * as jwt from "jsonwebtoken";
 import { http, HttpResponse, passthrough, PathParams } from "msw";
 import { APIGatewayEventRequestContext } from "shared-types";
 
-import {
-  ACCESS_KEY_ID,
-  COGNITO_IDP_DOMAIN,
-  IDENTITY_POOL_ID,
-  SECRET_KEY,
-  USER_POOL_CLIENT_ID,
-} from "../../consts";
+import { ACCESS_KEY_ID, COGNITO_IDP_DOMAIN, IDENTITY_POOL_ID, SECRET_KEY } from "../../consts";
 import { userResponses } from "../../data/users";
 import type {
   AdminGetUserRequestBody,
@@ -18,108 +11,16 @@ import type {
   IdpRequestSessionBody,
   TestUserData,
 } from "../../index.d";
-import { findUserByUsername } from "../auth.utils";
-
-const getUsernameFromAccessToken = (accessToken?: string): string | undefined => {
-  if (accessToken) {
-    return jwt.decode(accessToken, { json: true })?.get("username");
-  }
-  return undefined;
-};
-
-const generateIdToken = (user: TestUserData, authTime: number, expTime: number): string | null => {
-  if (user) {
-    return jwt.sign(
-      {
-        sub: getAttributeFromUser(user, "sub"),
-        email_verified: getAttributeFromUser(user, "email_verified") === "true",
-        iss: COGNITO_IDP_DOMAIN,
-        "cognito:username": user.Username,
-        aud: USER_POOL_CLIENT_ID,
-        token_use: "id",
-        auth_time: authTime,
-        exp: expTime,
-        iat: authTime,
-        email: getAttributeFromUser(user, "email"),
-      },
-      SECRET_KEY,
-      {
-        algorithm: "RS256",
-        expiresIn: "30m",
-        audience: USER_POOL_CLIENT_ID,
-        issuer: COGNITO_IDP_DOMAIN,
-      },
-    );
-  }
-  return null;
-};
-
-const generateAccessToken = (
-  user: TestUserData,
-  authTime: number,
-  expTime: number,
-): string | null => {
-  if (user) {
-    return jwt.sign(
-      {
-        sub: getAttributeFromUser(user, "sub"),
-        iss: COGNITO_IDP_DOMAIN,
-        version: 2,
-        client_id: USER_POOL_CLIENT_ID,
-        token_use: "access",
-        scope: "aws.cognito.signin.user.admin openid email",
-        auth_time: authTime,
-        exp: expTime,
-        iat: authTime,
-        username: user.Username,
-      },
-      SECRET_KEY,
-      {
-        algorithm: "RS256",
-        expiresIn: "30m",
-        audience: USER_POOL_CLIENT_ID,
-        issuer: COGNITO_IDP_DOMAIN,
-      },
-    );
-  }
-  return null;
-};
-
-const generateRefreshToken = (user: TestUserData): string | null => {
-  if (user) {
-    return jwt.sign(
-      {
-        sub: getAttributeFromUser(user, "sub"),
-        "cognito:username": user.Username,
-      },
-      SECRET_KEY,
-      {
-        expiresIn: "30m",
-      },
-    );
-  }
-  return null;
-};
-
-const generateSessionToken = (user: TestUserData): string | null => {
-  if (user?.Username) {
-    return Buffer.from(JSON.stringify({ username: user?.Username })).toString("base64");
-  }
-  return null;
-};
-
-const getAttributeFromUser = (user: TestUserData, attrName: string): string | null => {
-  if (
-    attrName &&
-    user?.UserAttributes &&
-    Array.isArray(user.UserAttributes) &&
-    user.UserAttributes.length > 0
-  ) {
-    const attribute = user.UserAttributes.find((attr) => attr?.Name == attrName);
-    return attribute?.Value || null;
-  }
-  return null;
-};
+import {
+  findUserByUsername,
+  generateAccessToken,
+  generateIdToken,
+  generateRefreshToken,
+  generateSessionToken,
+  getMockUsername,
+  getPayloadFromAccessToken,
+  getUsernameFromAccessToken,
+} from "../auth.utils";
 
 export const getRequestContext = (user?: TestUserData | string): APIGatewayEventRequestContext => {
   let username;
@@ -127,8 +28,8 @@ export const getRequestContext = (user?: TestUserData | string): APIGatewayEvent
     username = user;
   } else if (user && (user as TestUserData).Username !== undefined) {
     username = (user as TestUserData).Username;
-  } else if (process.env.MOCK_USER_USERNAME) {
-    username = process.env.MOCK_USER_USERNAME;
+  } else {
+    username = getMockUsername();
   }
 
   if (username) {
@@ -143,17 +44,75 @@ export const getRequestContext = (user?: TestUserData | string): APIGatewayEvent
   } as APIGatewayEventRequestContext;
 };
 
-export const signInHandler = http.post(/amazoncognito.com\/oauth2\/token/, async ({ request }) => {
-  console.log("signInHandler", { request, headers: request.headers });
-  if (process.env.MOCK_USER_USERNAME) {
-    const user = findUserByUsername(process.env.MOCK_USER_USERNAME);
+// https://compliance-breadcrumbs-login-4e1pcu4tsvjk6r16v67f2hd1vc.auth.us-east-1.amazoncognito.com/oauth2/token
+// https://compliance-breadcrumbs-login-4e1pcu4tsvjk6r16v67f2hd1vc.auth.us-east-1.amazoncognito.com/login
+
+// https://https://mocked-tests-login-userpoolwebclientid.auth.us-east-1.amazoncognito.com/oauth2/authorize?redirect_uri=http://localhost:5000/&response_type=code&client_id=userPoolWebClientId
+//GET Status Code 302 Found
+
+export const amplifyHandler = http.get(
+  "http://localhost:5000/node_modules/.vite/deps/aws-amplify.js",
+  ({ request }) => {
+    console.log("amplifyHandler", { request, headers: request.headers });
+  },
+);
+
+export const authorizeHandler = http.get(
+  /amazoncognito\.com\/oauth2\/authorize/,
+  async ({ request }) => {
+    console.log("authorizeHandler", { request, headers: request.headers });
+    const url = new URL(request.url);
+
+    const redirectUri = url.searchParams.get("redirect_uri");
+    const responseType = url.searchParams.get("response_type");
+    const clientId = url.searchParams.get("client_id");
+
+    return new HttpResponse(null, {
+      status: 302,
+      headers: {
+        location: `https://mocked-tests-login-userpoolwebclientid.auth.us-east-1.amazoncognito.com/login?redirect_url=${redirectUri}&response_type=${responseType}&client_id=${clientId}`,
+        "set-cookie": `
+          XSRF-TOKEN=552623cf-ff5f-4118-bccf-0449ba8704b1; Path=/; Secure; HttpOnly; SameSite=Lax
+          csrf-state=""; Expires=Tue, 17-Jun-2025 20:37:56 GMT; Path=/; Secure; HttpOnly; SameSite=None
+          csrf-state-legacy=""; Expires=Tue, 17-Jun-2025 20:37:56 GMT; Path=/; Secure; HttpOnly
+        `,
+      },
+    });
+  },
+);
+
+export const loginGetHandler = http.get(
+  /amazoncognito\.com\/login/,
+  async () => new HttpResponse(null, { status: 200 }),
+);
+
+export const loginPostHandler = http.post(/amazoncognito\.com\/login/, async ({ request }) => {
+  console.log("loginPostHandler", { request, headers: request.headers });
+  const url = new URL(request.url);
+
+  const redirectUri = url.searchParams.get("redirect_uri");
+
+  return new HttpResponse(null, {
+    status: 302,
+    headers: {
+      location: redirectUri || "http://localhost:5000",
+    },
+  });
+});
+
+export const tokenHandler = http.post(/amazoncognito\.com\/oauth2\/token/, async ({ request }) => {
+  console.log("tokenHandler", { request, headers: request.headers });
+  const username = getMockUsername();
+
+  if (username) {
+    const user = findUserByUsername(username);
     if (user) {
       const authTime = Date.now() / 1000;
       const expTime = authTime + 1800;
       return HttpResponse.json({
-        id_token: generateIdToken(user, authTime, expTime),
-        access_token: generateAccessToken(user, authTime, expTime),
-        refresh_token: generateRefreshToken(user),
+        id_token: await generateIdToken(user, authTime, expTime),
+        access_token: await generateAccessToken(user, authTime, expTime),
+        refresh_token: await generateRefreshToken(user),
         expires_in: 1800,
         token_type: "Bearer",
       });
@@ -170,14 +129,15 @@ export const identityServiceHandler = http.post<PathParams, IdentityRequest>(
     const target = request.headers.get("x-amz-target");
     if (target) {
       if (target == "AWSCognitoIdentityService.GetId") {
-        const responseBuffer = Buffer.from(JSON.stringify({ IdentityId: IDENTITY_POOL_ID }));
-        const responseEncoded = responseBuffer.toString("base64");
+        const responseString = JSON.stringify({ IdentityId: IDENTITY_POOL_ID });
 
-        return new HttpResponse(responseEncoded, {
+        return new HttpResponse(responseString, {
           headers: {
+            "Content-Length": btoa(responseString).length.toString(),
+            "Access-Control-Allow-Origin": "*",
             "Content-Type": "application/x-amz-json-1.1",
             "Content-Encoding": "base64",
-            "Content-Length": responseBuffer.byteLength.toString(),
+            Date: new Date().toUTCString(),
           },
         });
       }
@@ -186,38 +146,38 @@ export const identityServiceHandler = http.post<PathParams, IdentityRequest>(
         let username;
         const { Logins } = await request.json();
         if (Logins?.value) {
-          const payload = jwt.decode(Logins.value);
+          console.log("AWSCognitoIdentityService.GetCredentialsForIdentity");
+
+          const payload = await getPayloadFromAccessToken(Logins.value);
           if (payload && typeof payload !== "string") {
-            username = payload["cognito:username"].toString();
+            username = `${payload["cognito:username"]}`;
           }
         }
         if (!username) {
-          username = process.env.MOCK_USER_USERNAME;
+          username = getMockUsername();
         }
 
         if (username) {
           const user = findUserByUsername(username);
 
           if (user) {
-            const responseBuffer = Buffer.from(
-              JSON.stringify({
-                Credentials: {
-                  AccessKeyId: ACCESS_KEY_ID,
-                  Expiration: 1.73,
-                  SecretKey: SECRET_KEY,
-                  SessionToken: generateSessionToken(user),
-                },
-                IdentityId: IDENTITY_POOL_ID,
-              }),
-            );
+            const responseString = JSON.stringify({
+              Credentials: {
+                AccessKeyId: ACCESS_KEY_ID,
+                Expiration: 1.73,
+                SecretKey: SECRET_KEY,
+                SessionToken: generateSessionToken(user),
+              },
+              IdentityId: IDENTITY_POOL_ID,
+            });
 
-            const responseEncoded = responseBuffer.toString("base64");
-
-            return new HttpResponse(responseEncoded, {
+            return new HttpResponse(responseString, {
               headers: {
+                "Content-Length": btoa(responseString).length.toString(),
+                "Access-Control-Allow-Origin": "*",
                 "Content-Type": "application/x-amz-json-1.1",
                 "Content-Encoding": "base64",
-                "Content-Length": responseBuffer.byteLength.toString(),
+                Date: new Date().toUTCString(),
               },
             });
           }
@@ -237,20 +197,23 @@ export const identityServiceHandler = http.post<PathParams, IdentityRequest>(
 export const identityProviderServiceHandler = http.post<
   PathParams,
   IdpRequestSessionBody | IdpRefreshRequestBody | IdpListUsersRequestBody | AdminGetUserRequestBody
->(/https:\/\/cognito-idp.\S*.amazonaws.com\//, async ({ request }) => {
+>(/https:\/\/cognito-idp\.\S*.amazonaws\.com\//, async ({ request }) => {
   console.log("identityProviderServiceHandler", { request, headers: request.headers });
   const target = request.headers.get("x-amz-target");
+  console.log({ target });
   if (target) {
     if (target == "AWSCognitoIdentityProviderService.InitiateAuth") {
       const { AuthFlow, AuthParameters } = (await request.json()) as IdpRefreshRequestBody;
       if (AuthFlow === "REFRESH_TOKEN_AUTH" && AuthParameters?.REFRESH_TOKEN) {
-        const payload = jwt.decode(AuthParameters.REFRESH_TOKEN);
+        console.log("AWSCognitoIdentityProviderService.InitiateAuth");
+
+        const payload = await getPayloadFromAccessToken(AuthParameters.REFRESH_TOKEN);
         let username;
         if (payload && typeof payload !== "string") {
-          username = payload["cognito:username"].toString();
+          username = `${payload["cognito:username"]}`;
         }
         if (!username) {
-          username = process.env.MOCK_USER_USERNAME;
+          username = getMockUsername();
         }
 
         if (username) {
@@ -260,14 +223,14 @@ export const identityProviderServiceHandler = http.post<
             const expTime = authTime + 1800;
             return HttpResponse.json({
               AuthenticationResult: {
-                AccessToken: generateAccessToken(user, authTime, expTime),
+                AccessToken: await generateAccessToken(user, authTime, expTime),
                 ExpiresIn: 1800,
-                IdToken: generateIdToken(user, authTime, expTime),
+                IdToken: await generateIdToken(user, authTime, expTime),
                 NewDeviceMetadata: {
                   DeviceGroupKey: "string3",
                   DeviceKey: "string4",
                 },
-                RefreshToken: generateRefreshToken(user),
+                RefreshToken: await generateRefreshToken(user),
                 TokenType: "Bearer",
               },
               AvailableChallenges: ["string7"],
@@ -292,7 +255,8 @@ export const identityProviderServiceHandler = http.post<
     }
     if (target == "AWSCognitoIdentityProviderService.GetUser") {
       const { AccessToken } = (await request.json()) as IdpRequestSessionBody;
-      const username = getUsernameFromAccessToken(AccessToken) || process.env.MOCK_USER_USERNAME;
+      const username = (await getUsernameFromAccessToken(AccessToken)) || getMockUsername();
+      console.log("AWSCognitoIdentityProviderService.GetUser", { username });
 
       // const agent = request.headers.get("x-amz-user-agent");
 
@@ -304,14 +268,19 @@ export const identityProviderServiceHandler = http.post<
 
       if (username) {
         const user = findUserByUsername(username);
-        if (user) {
-          const encodedUser = Buffer.from(JSON.stringify(user)).toString("base64");
 
-          return new HttpResponse(encodedUser, {
+        if (user) {
+          const responseString = JSON.stringify(user);
+
+          return new HttpResponse(responseString, {
             headers: {
+              "Content-Length": btoa(responseString).length.toString(),
+              "Access-Control-Allow-Origin": "*",
               "Content-Type": "application/x-amz-json-1.1",
               "Content-Encoding": "base64",
+              Date: new Date().toUTCString(),
             },
+            status: 200,
           });
         }
         return new HttpResponse("No user found with this sub", { status: 404 });
@@ -329,7 +298,7 @@ export const identityProviderServiceHandler = http.post<
 
     if (target == "AWSCognitoIdentityProviderService.AdminGetUser") {
       const { Username } = (await request.json()) as AdminGetUserRequestBody;
-      const username = Username || process.env.MOCK_USER_USERNAME;
+      const username = Username || getMockUsername();
 
       if (username) {
         const user = findUserByUsername(username);
@@ -384,7 +353,7 @@ export const identityProviderServiceHandler = http.post<
 export const emptyIdentityProviderServiceHandler = http.post<
   PathParams,
   IdpRequestSessionBody | IdpRefreshRequestBody | IdpListUsersRequestBody | AdminGetUserRequestBody
->(/https:\/\/cognito-idp.\S*.amazonaws.com\//, async ({ request }) => {
+>(/https:\/\/cognito-idp\.\S*.amazonaws\.com\//, async ({ request }) => {
   const target = request.headers.get("x-amz-target");
   if (target == "AWSCognitoIdentityProviderService.ListUsers") {
     const { Filter } = (await request.json()) as IdpListUsersRequestBody;
@@ -420,12 +389,15 @@ export const errorIdentityProviderServiceHandler = http.post<
   PathParams,
   IdpRequestSessionBody | IdpRefreshRequestBody | IdpListUsersRequestBody | AdminGetUserRequestBody
 >(
-  /https:\/\/cognito-idp.\S*.amazonaws.com\//,
+  /https:\/\/cognito-idp\.\S*.amazonaws\.com\//,
   async () => new HttpResponse("Response Error", { status: 500 }),
 );
 
 export const cognitoHandlers = [
-  signInHandler,
+  authorizeHandler,
+  loginGetHandler,
+  loginPostHandler,
+  tokenHandler,
   identityProviderServiceHandler,
   identityServiceHandler,
 ];

@@ -26,8 +26,8 @@ export const StateSignup = () => {
   const [showModal, setShowModal] = useState<boolean>(false);
   const navigate = useNavigate();
   const { mutateAsync: submitRequest, isLoading } = useSubmitRoleRequests();
-  const { data: userDetails } = useGetUserDetails();
-  const { data: userProfile } = useGetUserProfile();
+  const { data: userDetails, isLoading: isUserDetailsLoading } = useGetUserDetails();
+  const { data: userProfile, isLoading: isUserProfileLoading } = useGetUserProfile();
   const currentRole = userDetails?.role;
 
   const [searchParams] = useSearchParams();
@@ -42,7 +42,7 @@ export const StateSignup = () => {
   const roleToRequest = roleToRequestMap[currentRole];
   const statesToRequest: Option[] = useAvailableStates(roleToRequest, userProfile?.stateAccess);
 
-  if (!userDetails) return <LoadingSpinner />;
+  if (isUserDetailsLoading || isUserProfileLoading) return <LoadingSpinner />;
 
   if (!userDetails?.role) return <Navigate to="/" />;
 
