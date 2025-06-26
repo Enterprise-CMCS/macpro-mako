@@ -370,7 +370,7 @@ export function createEmailParams(
   const params: SendEmailCommandInput = {
     Destination: {
       ToAddresses: extractEmails(filledTemplate.to),
-      CcAddresses: mockCCaddresses
+      CcAddresses: extractEmails(mockCCaddresses)
       // isDev
       //   ? [...(extractEmails(filledTemplate.cc) || []), `State Submitter <${EMAIL_CONFIG.DEV_EMAIL}>`]
       //   : extractEmails(filledTemplate.cc),
