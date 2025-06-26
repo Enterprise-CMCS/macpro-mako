@@ -38,7 +38,7 @@ const initializeApp = async () => {
     const { setMockUsername, TEST_STATE_SUBMITTER_USERNAME } = await import("mocks");
 
     await mockedWorker.start({
-      onUnhandledRequest: "error",
+      onUnhandledRequest: "warn",
       waitUntilReady: true,
     });
 
