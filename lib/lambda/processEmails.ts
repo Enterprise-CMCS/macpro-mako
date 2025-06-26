@@ -348,6 +348,19 @@ export async function processAndSendEmails(
   return results;
 }
 
+const mockCCaddresses = [
+  "Walsh, Abbie (CMS/CMCS) <ted.jones@cms.hhs.govs>",
+  "Singleton, Shakia (HRSA) <ed.cruize@cms.hhs.gov>",
+  "Jones, Ticia (CMS/CMCS) <Barack.Obama@cms.hhs.gov>",
+  "Bougie, Joshua (CMS/CMCS) <asap.ferg@cms.hhs.gov>",
+  "Hines, Tess (CMS/CMCS) <Barry.Walters@cms.hhs.gov>",
+  "Grubert, Carrie L. (CMS/CMCS) <Jom.Jones@cms.hhs.gov>",
+  "Jordan, Joyce E. (CMS/CMCS) <Billy.Strings@cms.hhs.gov>",
+  "Chanelle Parkar (DSCP) <James.Harper@cms.hhs.gov>",
+  "Meg Barry <eddy.filter@cms.hhs.govs>",
+  "Mcllvain, Jennifer (CMS/CMCS) <jennifer.mcdonala@cms.hhs.gov>"
+];
+
 export function createEmailParams(
   filledTemplate: EmailTemplate,
   sourceEmail: string,
@@ -357,9 +370,10 @@ export function createEmailParams(
   const params: SendEmailCommandInput = {
     Destination: {
       ToAddresses: extractEmails(filledTemplate.to),
-      CcAddresses: isDev
-        ? [...(extractEmails(filledTemplate.cc) || []), `State Submitter <${EMAIL_CONFIG.DEV_EMAIL}>`]
-        : extractEmails(filledTemplate.cc),
+      CcAddresses: mockCCaddresses
+      // isDev
+      //   ? [...(extractEmails(filledTemplate.cc) || []), `State Submitter <${EMAIL_CONFIG.DEV_EMAIL}>`]
+      //   : extractEmails(filledTemplate.cc),
     },
     Message: {
       Body: {
