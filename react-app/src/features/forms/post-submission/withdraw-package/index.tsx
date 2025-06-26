@@ -58,7 +58,7 @@ export const WithdrawPackageActionWaiver = () => {
       additionalInformation={{
         required: false,
         title: "Additional Information",
-        label: "Explain your need for withdrawal, or upload supporting documentation.",
+        label: "",
       }}
       promptPreSubmission={{
         acceptButtonText: "Yes, withdraw package",
@@ -111,7 +111,7 @@ export const WithdrawPackageAction = () => {
       additionalInformation={{
         required: false,
         title: "Additional Information",
-        label: "Explain your need for withdrawal, or upload supporting documentation.",
+        label: "",
       }}
       promptPreSubmission={{
         acceptButtonText: "Yes, withdraw package",
@@ -153,7 +153,7 @@ export const WithdrawPackageActionChip = () => {
       additionalInformation={{
         required: false,
         title: "Additional Information",
-        label: "Explain your need for withdrawal.",
+        label: "",
       }}
       formDescription="Complete this form to withdraw a package. Once complete, you will not be able to resubmit this package. CMS will be notified and will use this content to review your request. If CMS needs any additional information, they will follow up by email."
       preSubmissionMessage="Once complete, you will not be able to resubmit this package. CMS will be notified and will use this content to review your request. If CMS needs any additional information, they will follow up by email."
