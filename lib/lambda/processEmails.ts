@@ -99,6 +99,7 @@ export const handler: Handler<KafkaEvent> = async (event) => {
       console.error("Some records failed:", JSON.stringify(failures, null, 2));
       throw new TemporaryError("Some records failed processing");
     }
+    console.log("All records processed successfully", JSON.stringify(failures, null, 2));
   } catch (error) {
     console.error("Permanent failure:", error);
 
