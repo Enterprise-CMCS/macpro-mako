@@ -358,9 +358,9 @@ export function createEmailParams(
       ToAddresses: extractEmails(filledTemplate.to),
       CcAddresses: isDev
         ? [
-          ...(extractEmails(filledTemplate.cc) || []),
-          `State Submitter <${EMAIL_CONFIG.DEV_EMAIL}>`,
-        ]
+            ...(extractEmails(filledTemplate.cc) || []),
+            `State Submitter <${EMAIL_CONFIG.DEV_EMAIL}>`,
+          ]
         : extractEmails(filledTemplate.cc),
     },
     Message: {
