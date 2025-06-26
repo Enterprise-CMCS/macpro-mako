@@ -21,12 +21,17 @@ if (ldClientId === undefined) {
   throw new Error("To configure LaunchDarkly, you must set LAUNCHDARKLY_CLIENT_ID");
 }
 
-const enableApiMocking = async () => {
-  if (!import.meta.env.DEV) {
-    return;
+const initializeApp = async () => {
+  // Initialize Google Analytics
+  if (googleAnalyticsGtag) {
+    ReactGA.initialize(googleAnalyticsGtag);
+    ReactGA.send({ hitType: "pageview", page: window.location.pathname });
+  } else {
+    console.warn("Google Analytics Measurement ID is not set.");
   }
 
-  if (import.meta.env.MODE === "mocked") {
+  // Start the MSW server if in the DEV environment and the mocked flag is on
+  if (import.meta.env.DEV && import.meta.env.MODE === "mocked") {
     await import("../mockServiceWorker.js?worker");
 
     const { mockedWorker } = await import("mocks/browser");
@@ -37,16 +42,6 @@ const enableApiMocking = async () => {
       waitUntilReady: true,
     });
     await setMockUsername(import.meta.env.VITE_MOCK_USER_USERNAME || TEST_STATE_SUBMITTER_USERNAME);
-  }
-};
-
-const initializeApp = async () => {
-  // Initialize Google Analytics
-  if (googleAnalyticsGtag) {
-    ReactGA.initialize(googleAnalyticsGtag);
-    ReactGA.send({ hitType: "pageview", page: window.location.pathname });
-  } else {
-    console.warn("Google Analytics Measurement ID is not set.");
   }
 
   // Initialize LaunchDarkly
@@ -60,17 +55,15 @@ const initializeApp = async () => {
     },
   });
 
-  enableApiMocking().then(() =>
-    ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(
-      <LDProvider>
-        <React.StrictMode>
-          <QueryClientProvider client={queryClient}>
-            <FlagRouter />
-            <ReactQueryDevtools initialIsOpen={false} />
-          </QueryClientProvider>
-        </React.StrictMode>
-      </LDProvider>,
-    ),
+  ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(
+    <LDProvider>
+      <React.StrictMode>
+        <QueryClientProvider client={queryClient}>
+          <FlagRouter />
+          <ReactQueryDevtools initialIsOpen={false} />
+        </QueryClientProvider>
+      </React.StrictMode>
+    </LDProvider>,
   );
 };
 

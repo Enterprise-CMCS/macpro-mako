@@ -227,13 +227,8 @@ const verifyRow = (
 };
 
 describe("SpasList", () => {
-  const setup = async (
-    hits: opensearch.Hits<opensearch.main.Document>,
-    queryString: string,
-    username: string | null,
-  ) => {
+  const setup = async (hits: opensearch.Hits<opensearch.main.Document>, queryString: string) => {
     global.localStorage = new Storage();
-    setMockUsername(username);
     const user = userEvent.setup();
     const rendered = renderDashboard(
       <SpasList />,
@@ -264,12 +259,13 @@ describe("SpasList", () => {
   });
 
   it("should return no columns if the user is not logged in", async () => {
+    setMockUsername(null);
+
     await setup(
       defaultHits,
       getDashboardQueryString({
         tab: "spas",
       }),
-      null,
     );
 
     const table = screen.getByTestId("os-table");
@@ -286,12 +282,13 @@ describe("SpasList", () => {
     beforeAll(async () => {
       skipCleanup();
 
+      setMockUsername(username);
+
       ({ user } = await setup(
         defaultHits,
         getDashboardQueryString({
           tab: "spas",
         }),
-        username,
       ));
     });
 

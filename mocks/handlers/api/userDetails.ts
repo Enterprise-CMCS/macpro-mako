@@ -1,11 +1,11 @@
-import { http, HttpResponse } from "msw";
+import { http, HttpResponse, PathParams } from "msw";
 
 import { getFilteredUserResultList } from "../../data/osusers";
 import { getFilteredRoleDocsByEmail, getLatestRoleByEmail } from "../../data/roles";
 import { UserDetailsRequestBody } from "../../index.d";
 import { getMockUser } from "../auth.utils";
 
-export const defaultApiUserDetailsHandler = http.post<any, UserDetailsRequestBody>(
+const defaultApiUserDetailsHandler = http.post<PathParams, UserDetailsRequestBody>(
   "https://test-domain.execute-api.us-east-1.amazonaws.com/mocked-tests/getUserDetails",
   async ({ request }) => {
     const currUser = getMockUser();
@@ -27,7 +27,7 @@ export const defaultApiUserDetailsHandler = http.post<any, UserDetailsRequestBod
   },
 );
 
-export const errorApiUserDetailsHandler = http.post<UserDetailsRequestBody, UserDetailsRequestBody>(
+export const errorApiUserDetailsHandler = http.post<PathParams, UserDetailsRequestBody>(
   "https://test-domain.execute-api.us-east-1.amazonaws.com/mocked-tests/getUserDetails",
   () => {
     return new HttpResponse("Response Error", { status: 500 });

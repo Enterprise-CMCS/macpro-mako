@@ -111,8 +111,8 @@ test.describe("Dashboard page", { tag: ["@dashboard"] }, () => {
             "Status",
             "Initial Submission",
             "Latest Package Activity",
-            "Submitted By",
             "Formal RAI Response",
+            "Submitted By",
           ];
 
           for (let i = 0; i < count; i++) {

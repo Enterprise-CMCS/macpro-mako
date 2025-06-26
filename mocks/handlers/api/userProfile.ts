@@ -4,8 +4,8 @@ import { canRequestAccess, canUpdateAccess, getApprovingRole } from "shared-util
 import {
   getApprovedRoleByEmailAndState,
   getFilteredRoleDocsByEmail,
+  getFilteredRoleDocsByRole,
   getFilteredRoleDocsByState,
-  getFilteredRoleDocsByStateAndRole,
   getFilteredUserDocList,
   getLatestRoleByEmail,
   osUsers,
@@ -218,18 +218,13 @@ const defaultGetApproversHandler = http.post<PathParams, UserProfileRequestBody>
     const approverGroups: Record<string, Record<string, ApproverGroup[]>> = {};
 
     for (const roleItem of roles) {
-      const territory = roleItem.territory;
       const originalRole = roleItem.role;
       const approverRole = getApprovingRole(originalRole);
-      const approverDocs = getFilteredRoleDocsByStateAndRole(territory, approverRole);
-
-      const group = (approverGroups[originalRole] ??= {});
-
-      if (approverDocs.length === 0) {
-        group[territory] ??= [];
-      }
+      const approverDocs = getFilteredRoleDocsByRole(approverRole);
 
       for (const doc of approverDocs) {
+        const territory = doc.territory;
+        const group = (approverGroups[originalRole] ??= {});
         (group[territory] ??= []).push({
           email: doc.email,
           territory,

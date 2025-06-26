@@ -17,7 +17,6 @@ export const getUserDetails = async (userEmail?: string): Promise<UserDetails | 
   try {
     const userDetails = await API.post("os", "/getUserDetails", { body: { userEmail } });
 
-    console.log({ userDetails });
     return userDetails as UserDetails;
   } catch (e) {
     console.log({ e });
