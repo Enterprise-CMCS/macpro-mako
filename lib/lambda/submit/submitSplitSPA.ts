@@ -73,7 +73,6 @@ const sendSubmitSplitSPAMessage = async ({
   });
 };
 
-// authority should be medicaid, mockevent should be medicaidspa
 export const handler = async (event: APIGatewayEvent) => {
   if (!event.body) {
     return response({
@@ -90,8 +89,10 @@ export const handler = async (event: APIGatewayEvent) => {
 
     // if new split spa id exists and origin is undefined, it exists in seatool. copy data over
     const existingNewPackage = await getPackage(newSplitSPAId);
+    console.log(existingNewPackage, "EXISTING NEW PACKAGE");
     if (existingNewPackage) {
       // if exists in seatool, create NOSO
+      console.log("PACKAGE EXISTS", existingNewPackage);
       if (existingNewPackage?._source?.origin !== "OneMAC") {
         try {
           const submitNOSOEventBody = submitSplitSPANOSOAdminSchema.parse({
@@ -131,7 +132,7 @@ export const handler = async (event: APIGatewayEvent) => {
 
     // if new new package ID doesnt exist, check if original package exists and create a new one
     const existingPackage = await getPackage(id);
-    if (!existingPackage || existingPackage.found == false) {
+    if (existingPackage === undefined || !existingPackage.found) {
       return response({
         statusCode: 404,
         body: { message: "No record found for the given ID" },
