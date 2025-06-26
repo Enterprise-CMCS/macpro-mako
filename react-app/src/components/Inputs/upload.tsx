@@ -1,6 +1,6 @@
 import { X } from "lucide-react";
-import { useCallback, useState, useRef } from "react";
-import { FileError, FileRejection, useDropzone, DropEvent } from "react-dropzone";
+import { useCallback, useRef, useState } from "react";
+import { DropEvent, FileError, FileRejection, useDropzone } from "react-dropzone";
 import { attachmentSchema } from "shared-types";
 import { FILE_TYPES } from "shared-types/uploads";
 import { v4 as uuidv4 } from "uuid";
@@ -10,10 +10,10 @@ import { userPrompt } from "@/components";
 import * as I from "@/components/Inputs";
 import { LoadingSpinner } from "@/components/LoadingSpinner"; // Import your LoadingSpinner component
 import { cn } from "@/utils";
-import { mapSubmissionTypeBasedOnActionFormTitle } from "../../utils/ReactGA/Mapper";
-
-import { extractBucketAndKeyFromUrl, getPresignedUrl, uploadToS3 } from "./uploadUtilities";
 import { sendGAEvent } from "@/utils/ReactGA/SendGAEvent";
+
+import { mapSubmissionTypeBasedOnActionFormTitle } from "../../utils/ReactGA/Mapper";
+import { extractBucketAndKeyFromUrl, getPresignedUrl, uploadToS3 } from "./uploadUtilities";
 
 type Attachment = z.infer<typeof attachmentSchema>;
 
@@ -22,7 +22,7 @@ type UploadProps = {
   files: Attachment[];
   setFiles: (files: Attachment[]) => void;
   dataTestId?: string;
-  type?: string; 
+  type?: string;
 };
 
 /**
@@ -87,15 +87,14 @@ export const Upload = ({ maxFiles, files, setFiles, dataTestId, type }: UploadPr
     }
   };
   const onDrop = useCallback(
-    async (acceptedFiles: File[], fileRejections: FileRejection[],  event: DropEvent) => {
-
+    async (acceptedFiles: File[], fileRejections: FileRejection[]) => {
       const fileType = dropzoneRef.current?.getAttribute("data-label");
       const submissionType = mapSubmissionTypeBasedOnActionFormTitle(type);
-      if(acceptedFiles[0]) {
+      if (acceptedFiles[0]) {
         sendGAEvent("submit_file_upload", {
           submission_type: submissionType,
           file_type: fileType,
-          file_size_bytes: acceptedFiles[0].size
+          file_size_bytes: acceptedFiles[0].size,
         });
       }
       setRejectedFiles(fileRejections);

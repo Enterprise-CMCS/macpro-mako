@@ -1,4 +1,5 @@
 import { useEffect, useRef } from "react";
+
 import { sendGAEvent } from "./SendGAEvent";
 
 type PathTrackerProps = {
@@ -37,9 +38,9 @@ export default function PathTracker({ userRole, children }: PathTrackerProps) {
         const deltaMs = now - startTs;
         const timeOnPageSec = Math.round(deltaMs / 1000); // nearest second
         sendGAEvent("page_duration", {
-                  page_path: path,
-                  user_role: userRole,
-                  time_on_page_sec: timeOnPageSec,
+          page_path: path,
+          user_role: userRole,
+          time_on_page_sec: timeOnPageSec,
         });
       }
     };

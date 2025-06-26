@@ -17,10 +17,10 @@ import {
   useOsData,
 } from "@/components";
 import { useLocalStorage } from "@/hooks/useLocalStorage";
+import { sendGAEvent } from "@/utils/ReactGA/SendGAEvent";
 
 import { SpasList } from "./Lists/spas";
 import { WaiversList } from "./Lists/waivers";
-import { sendGAEvent } from "@/utils/ReactGA/SendGAEvent";
 
 const loader = (queryClient: QueryClient, loginFlag?: boolean) => {
   return async () => {
@@ -83,9 +83,13 @@ export const Dashboard = () => {
               <Link
                 to="/new-submission"
                 className="flex items-center text-white font-bold bg-primary border-none px-10 py-2 rounded cursor-pointer"
-                onClick={()=>{sendGAEvent( "new_submission_click", 
-                  {event_category: "Dashboard", event_label: "from_dashboard"});
-                }}>
+                onClick={() => {
+                  sendGAEvent("new_submission_click", {
+                    event_category: "Dashboard",
+                    event_label: "from_dashboard",
+                  });
+                }}
+              >
                 <span data-testid="new-sub-button" className="mr-2">
                   New Submission
                 </span>

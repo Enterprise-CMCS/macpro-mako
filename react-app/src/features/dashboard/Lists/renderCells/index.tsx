@@ -19,10 +19,11 @@ export type CellIdLinkProps = {
 };
 
 export const CellDetailsLink = ({ id, authority }: CellIdLinkProps) => {
-  const handleLinkClick = () => {sendGAEvent("dash_package_link", {
-        package_type: authority, // The 'authority' prop is the package type
-        package_id: id, // The 'id' prop is the package_id
-      });
+  const handleLinkClick = () => {
+    sendGAEvent("dash_package_link", {
+      package_type: authority, // The 'authority' prop is the package type
+      package_id: id, // The 'id' prop is the package_id
+    });
   };
 
   return (
@@ -64,8 +65,8 @@ export const renderCellActions = (user: FullUser | null) => {
           {actions.map((action, idx) => {
             const handleActionClick = () => {
               sendGAEvent("dash_ellipsis_click", {
-                  action: action,
-                });
+                action: action,
+              });
             };
 
             return (

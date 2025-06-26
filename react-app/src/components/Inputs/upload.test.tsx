@@ -13,7 +13,7 @@ const defaultProps = {
   files: [],
   setFiles: vi.fn(),
   setErrorMessage: vi.fn(),
-  type: "CHIP Eligibility SPA Details", 
+  type: "CHIP Eligibility SPA Details",
 };
 const FILE_1 = "file-1";
 const FILE_2 = "file-2";
@@ -152,7 +152,6 @@ describe("Upload", () => {
 
     fireEvent.drop(dropzone);
 
-    
     await waitFor(() => {
       expect(screen.getByText(`Failed to upload ${failUpload}.txt`)).toBeInTheDocument();
     });
