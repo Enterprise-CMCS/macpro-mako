@@ -173,10 +173,10 @@ export const getMockUser = (): CognitoUserAttributes | null => {
   return user;
 };
 
-export const getMockUserEmail = (): string | null => {
+export const getMockUserEmail = (): string | undefined => {
   const user = getMockUser();
   if (!user) {
-    return null;
+    return undefined;
   }
   return user.email;
 };

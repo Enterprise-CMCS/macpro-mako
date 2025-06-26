@@ -3,24 +3,19 @@ import { http, HttpResponse, PathParams } from "msw";
 import { getFilteredUserResultList } from "../../data/osusers";
 import { getFilteredRoleDocsByEmail, getLatestRoleByEmail } from "../../data/roles";
 import { UserDetailsRequestBody } from "../../index.d";
-import { getMockUser, getMockUserEmail } from "../auth.utils";
+import { getMockUser } from "../auth.utils";
 
 const defaultApiUserDetailsHandler = http.post<PathParams, UserDetailsRequestBody>(
   "https://test-domain.execute-api.us-east-1.amazonaws.com/mocked-tests/getUserDetails",
   async ({ request }) => {
-    let email;
-    if (request.body) {
-      const { userEmail } = await request.json();
-      email = userEmail;
-    } else {
-      email = getMockUserEmail();
-      if (email === null) {
-        return new HttpResponse("User not authenticated", { status: 401 });
-      }
+    const currUser = getMockUser();
+    if (!currUser) {
+      return new HttpResponse("User not authenticated", { status: 401 });
     }
-    if (!email) {
-      return HttpResponse.json({});
-    }
+
+    const { userEmail: reqUserEmail } = await request.json();
+
+    const email = reqUserEmail || currUser?.email;
 
     const userDetails = getFilteredUserResultList([email || ""])?.[0]?._source ?? null;
     const userRoles = getLatestRoleByEmail(email || "")?.[0]?._source ?? null;
@@ -35,7 +30,6 @@ const defaultApiUserDetailsHandler = http.post<PathParams, UserDetailsRequestBod
 export const errorApiUserDetailsHandler = http.post<PathParams, UserDetailsRequestBody>(
   "https://test-domain.execute-api.us-east-1.amazonaws.com/mocked-tests/getUserDetails",
   () => {
-    console.log("throw error");
     return new HttpResponse("Response Error", { status: 500 });
   },
 );
