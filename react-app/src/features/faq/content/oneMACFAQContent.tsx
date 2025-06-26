@@ -289,8 +289,8 @@ export const oneMACFAQContent: FAQContent[] = [
               MMDL.
             </p>
             <p>
-              Templates and implementation guides for OneMac SPAs can be downloaded from the
-              respective FAQ:
+              Templates and implementation guides for ABP, Medicaid Premiums & Cost Sharing, and
+              CHIP Eligibility SPAs can be downloaded from the respective FAQ:
             </p>
             <ul className="ml-8 list-disc space-y-2 text-blue-600">
               {[
@@ -329,7 +329,7 @@ export const oneMACFAQContent: FAQContent[] = [
                         targetElement.scrollIntoView({ behavior: "smooth", block: "start" });
 
                         const buttonElement = targetElement.querySelector("button");
-                        if (buttonElement) {
+                        if (buttonElement.dataset.state === "closed") {
                           buttonElement.click();
                         }
                       }
@@ -880,7 +880,7 @@ export const oneMACFAQContent: FAQContent[] = [
         anchorText: "abp-spa-templates",
         question: "Where can I download Medicaid Alternative Benefit Plan (ABP) SPA templates?",
         answerJSX: (
-          <section id="abp-spa-templates" className="space-y-2">
+          <section className="space-y-2">
             <p>
               Medicaid Alternative Benefit Plan (ABP) SPA templates can be downloaded at the links
               below. After downloading and completing the templates you need, upload them as part of

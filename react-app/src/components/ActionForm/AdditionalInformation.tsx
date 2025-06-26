@@ -25,6 +25,7 @@ export const AdditionalInformation = <Schema extends SchemaWithEnforcableProps>(
       aria-multiline={true}
       className="h-[200px] resize-none"
       id="additional-info"
+      data-testid="additional-info-input"
     />
     <FormDescription>
       <span
