@@ -197,6 +197,7 @@ export const setMockUsername = async (
     } else {
       delete process.env.MOCK_USER_USERNAME;
     }
+    console.log("process.env.MOCK_USER_USERNAME", username);
     // @ts-ignore ignore window being undefined because this is a check for that
   } else if (typeof window !== "undefined" && window?.localStorage?.setItem) {
     if (username) {
@@ -282,6 +283,12 @@ export const setMockUsername = async (
         `CognitoIdentityServiceProvider.${USER_POOL_CLIENT_ID}.LastAuthUser`,
       );
     }
+    console.log(
+      "`CognitoIdentityServiceProvider.${USER_POOL_CLIENT_ID}.LastAuthUser`",
+      window.localStorage.getItem(
+        `CognitoIdentityServiceProvider.${USER_POOL_CLIENT_ID}.LastAuthUser`,
+      ),
+    );
   }
 };
 

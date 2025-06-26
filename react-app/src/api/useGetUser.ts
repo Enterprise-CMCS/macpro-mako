@@ -43,7 +43,7 @@ export const getUser = async (): Promise<OneMacUser> => {
       isCms: isCmsUser({ ...userAttributesObj, role: userDetails.role }),
     } satisfies OneMacUser;
   } catch (e) {
-    console.error("Error getting user: ", e);
+    console.log({ e });
     return { user: null } satisfies OneMacUser;
   }
 };
