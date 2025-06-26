@@ -8,7 +8,7 @@ import {
   TEST_REVIEWER_USER,
   TEST_STATE_SUBMITTER_USER,
 } from "mocks";
-import { opensearch } from "shared-types";
+import { FullUser, opensearch } from "shared-types";
 import { afterAll, afterEach, beforeAll, beforeEach, describe, expect, it, vi } from "vitest";
 
 import * as api from "@/api";
@@ -227,11 +227,16 @@ const verifyRow = (
 };
 
 describe("SpasList", () => {
-  const setup = async (hits: opensearch.Hits<opensearch.main.Document>, queryString: string) => {
+  const setup = async (
+    hits: opensearch.Hits<opensearch.main.Document>,
+    queryString: string,
+    oneMacUser: FullUser,
+    isCms: boolean,
+  ) => {
     global.localStorage = new Storage();
     const user = userEvent.setup();
     const rendered = renderDashboard(
-      <SpasList />,
+      <SpasList oneMacUser={{ user: oneMacUser, isCms }} />,
       {
         data: hits,
         isLoading: false,
@@ -266,6 +271,8 @@ describe("SpasList", () => {
       getDashboardQueryString({
         tab: "spas",
       }),
+      null,
+      false,
     );
 
     const table = screen.getByTestId("os-table");
@@ -273,27 +280,29 @@ describe("SpasList", () => {
   });
 
   describe.each([
-    ["State Submitter", TEST_STATE_SUBMITTER_USER.username, true, false],
-    ["CMS Reviewer", TEST_REVIEWER_USER.username, true, true],
-    ["Default CMS User", DEFAULT_CMS_USER.username, true, true],
-    ["CMS Help Desk User", HELP_DESK_USER.username, false, false],
-  ])("as a %s", async (_title, username, hasActions, useCmsStatus) => {
+    ["State Submitter", TEST_STATE_SUBMITTER_USER, true, false],
+    ["CMS Reviewer", TEST_REVIEWER_USER, true, true],
+    ["Default CMS User", DEFAULT_CMS_USER, true, true],
+    ["CMS Help Desk User", HELP_DESK_USER, false, false],
+  ])("as a %s", async (_title, oneMacUser, hasActions, useCmsStatus) => {
     let user: UserEvent;
     beforeAll(async () => {
       skipCleanup();
 
-      setMockUsername(username);
+      setMockUsername(oneMacUser.username);
 
       ({ user } = await setup(
         defaultHits,
         getDashboardQueryString({
           tab: "spas",
         }),
+        oneMacUser,
+        useCmsStatus,
       ));
     });
 
     beforeEach(() => {
-      setMockUsername(username);
+      setMockUsername(oneMacUser.username);
     });
 
     afterAll(() => {
