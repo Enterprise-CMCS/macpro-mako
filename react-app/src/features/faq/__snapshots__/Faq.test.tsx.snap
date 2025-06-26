@@ -72,7 +72,13 @@ exports[`Faq > should display the items expected 1`] = `
                   id="radix-:r8:"
                   type="button"
                 >
-                  What is FAQ 1?
+                  <div
+                    class="flex items-center gap-2"
+                  >
+                    <span>
+                      What is FAQ 1?
+                    </span>
+                  </div>
                   <svg
                     class="lucide lucide-chevron-down h-4 w-4 shrink-0 transition-transform duration-200"
                     fill="none"
@@ -131,7 +137,13 @@ exports[`Faq > should display the items expected 1`] = `
                   id="radix-:ra:"
                   type="button"
                 >
-                  What is FAQ 2?
+                  <div
+                    class="flex items-center gap-2"
+                  >
+                    <span>
+                      What is FAQ 2?
+                    </span>
+                  </div>
                   <svg
                     class="lucide lucide-chevron-down h-4 w-4 shrink-0 transition-transform duration-200"
                     fill="none"
