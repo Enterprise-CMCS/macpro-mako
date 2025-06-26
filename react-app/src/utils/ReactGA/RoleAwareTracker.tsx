@@ -85,7 +85,7 @@ export function RoleAwareTracker({ children }: { children: React.ReactNode }) {
         setUserRole(null);
       }
     } catch (e) {
-      console.log("error obtaining user roles for path tracking", e)
+      console.log("error obtaining user roles for path tracking", e);
       // If parsing fails for or roles dont exist yet (initial page load before login)
       setUserRole("state");
     }

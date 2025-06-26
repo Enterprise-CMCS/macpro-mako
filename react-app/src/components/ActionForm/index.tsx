@@ -1,7 +1,7 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useMutation } from "@tanstack/react-query";
 import { API } from "aws-amplify";
-import { ReactNode, useEffect, useMemo, useState } from "react";
+import { ReactNode, useEffect, useMemo } from "react";
 import { DefaultValues, FieldPath, useForm, UseFormReturn } from "react-hook-form";
 import { Navigate, useLocation, useNavigate, useParams } from "react-router";
 import { Authority, CognitoUserAttributes } from "shared-types";
@@ -129,15 +129,14 @@ export const ActionForm = <Schema extends SchemaWithEnforcableProps>({
     type: string;
   }>();
   const { pathname } = useLocation();
-  const [startTimePage, setStartTimePage] = useState(Date.now());
-
+  const startTimePage = Date.now();
   useEffect(() => {
     if (typeof window.gtag == "function") {
       const submissionType = mapSubmissionTypeBasedOnActionFormTitle(title);
       // send package action event
       sendGAEvent("submit_page_open", { submission_type: submissionType ? submissionType : title });
     }
-  }, []);
+  }, [title]);
   const navigate = useNavigate();
   const { data: userObj, isLoading: isUserLoading } = useGetUser();
 
@@ -191,7 +190,6 @@ export const ActionForm = <Schema extends SchemaWithEnforcableProps>({
       // Prevent stale data from displaying on formOrigins page
       await queryClient.invalidateQueries({ queryKey: ["record"] });
       navigate(formOrigins);
-
 
       const timeOnPageSec = (Date.now() - startTimePage) / 1000;
 

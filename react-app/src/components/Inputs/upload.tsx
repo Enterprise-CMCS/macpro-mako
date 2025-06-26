@@ -1,6 +1,6 @@
 import { X } from "lucide-react";
 import { useCallback, useRef, useState } from "react";
-import { DropEvent, FileError, FileRejection, useDropzone } from "react-dropzone";
+import { FileError, FileRejection, useDropzone } from "react-dropzone";
 import { attachmentSchema } from "shared-types";
 import { FILE_TYPES } from "shared-types/uploads";
 import { v4 as uuidv4 } from "uuid";
