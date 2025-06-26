@@ -1,3 +1,4 @@
+import { events } from "shared-types/events";
 import { z } from "zod";
 
 export const deleteAdminChangeSchema = z
@@ -27,18 +28,6 @@ export const updateIdAdminChangeSchema = z
   .object({
     id: z.string(),
     adminChangeType: z.literal("update-id"),
-    idToBeUpdated: z.string(),
-    makoChangedDate: z.number(),
-    changedDate: z.number(),
-    statusDate: z.number(),
-    timestamp: z.number(),
-  })
-  .and(z.record(z.string(), z.any()));
-
-export const splitSPAAdminChangeSchema = z
-  .object({
-    id: z.string(),
-    adminChangeType: z.literal("split-spa"),
     idToBeUpdated: z.string(),
     makoChangedDate: z.number(),
     changedDate: z.number(),
@@ -88,6 +77,40 @@ export const transformedUpdateIdSchema = updateIdAdminChangeSchema.transform((da
   packageId: data.id,
   id: `${data.id}`,
 }));
+
+// Split SPAs
+export const submitSplitSPAAdminSchema = z.object({
+  id: events["new-medicaid-submission"].baseSchema.shape.id,
+  newPackageIdSuffix: z.string().regex(/^[a-zA-Z0-9]+$/, {
+    message: "New package ID suffix must be alphanumeric",
+  }),
+  changeMade: z.string().optional(),
+  changeReason: z.string().optional(),
+});
+
+// Split SPAs made from records only existing in SEAtool are NOSOs
+export const submitSplitSPANOSOAdminSchema = submitSplitSPAAdminSchema.extend({
+  authority: z.literal("Medicaid"),
+  status: z.string(),
+  submitterEmail: z.string(),
+  submitterName: z.string(),
+  adminChangeType: z.literal("NOSO"),
+  mockEvent: z.literal("new-medicaid-submission"),
+  submissionDate: z.string(),
+  proposedDate: z.string(),
+});
+
+export const splitSPAAdminChangeSchema = z
+  .object({
+    id: z.string(),
+    adminChangeType: z.literal("split-spa"),
+    idToBeUpdated: z.string(),
+    makoChangedDate: z.number(),
+    changedDate: z.number(),
+    statusDate: z.number(),
+    timestamp: z.number(),
+  })
+  .and(z.record(z.string(), z.any()));
 
 export const transformedSplitSPASchema = splitSPAAdminChangeSchema.transform((data) => ({
   ...data,

@@ -1,24 +1,40 @@
+import { InvokeCommand, LambdaClient } from "@aws-sdk/client-lambda";
 import { APIGatewayEvent } from "aws-lambda";
 import { produceMessage } from "libs/api/kafka";
 import { getPackage } from "libs/api/package";
 import { response } from "libs/handler-lib";
-import { events } from "shared-types/events";
+// import { events } from "shared-types/events";
 import { ItemResult } from "shared-types/opensearch/main";
 import { z } from "zod";
 
-import { getNextSplitSPAId } from "./getNextSplitSPAId";
+import {
+  submitNOSOAdminSchema,
+  submitSplitSPAAdminSchema,
+  submitSplitSPANOSOAdminSchema,
+} from "../update/adminChangeSchemas";
+
+// import { getNextSplitSPAId } from "./getNextSplitSPAId";
 
 /** @typedef {object} json
  * @property {object} body
- * @property {string} body.packageId
+ * @property {string} body.id
+ * @property {string} body.newPackageIdSuffix
+ * @property {string} body.changeMade
+ * @property {string} body.changeReason
+ * @property {string} body.status
+ * @property {string} body.submitterEmail
+ * @property {string} body.submitterName
+ * @property {string} body.adminChangeType
  */
 
 const sendSubmitSplitSPAMessage = async ({
-  currentPackage,
+  existingPackage,
+  newSplitSPAId,
   changeMade,
   changeReason,
 }: {
-  currentPackage: ItemResult;
+  existingPackage: ItemResult;
+  newSplitSPAId: string;
   changeMade?: string;
   changeReason?: string;
 }) => {
@@ -26,27 +42,17 @@ const sendSubmitSplitSPAMessage = async ({
   if (!topicName) {
     throw new Error("Topic name is not defined");
   }
-  const newId = await getNextSplitSPAId(currentPackage._id);
-  if (!newId) {
-    throw new Error("Error getting next Split SPA Id");
-  }
-
   const currentTime = Date.now();
 
-  // ID and changeMade are excluded; the rest of the object has to be spread into the new package
-  const {
-    id: _id,
-    changeMade: _changeMade,
-    origin: _origin,
-    ...remainingFields
-  } = currentPackage._source;
+  // ID and origin are excluded; the rest of the object has to be spread into the new package
+  const { id: _id, origin: _origin, ...remainingFields } = existingPackage._source;
 
   await produceMessage(
     topicName,
-    newId,
+    newSplitSPAId,
     JSON.stringify({
-      id: newId,
-      idToBeUpdated: currentPackage._id,
+      id: newSplitSPAId,
+      idToBeUpdated: existingPackage._id,
       ...remainingFields,
       makoChangedDate: currentTime,
       changedDate: currentTime,
@@ -63,16 +69,11 @@ const sendSubmitSplitSPAMessage = async ({
 
   return response({
     statusCode: 200,
-    body: { message: `New Medicaid Split SPA ${newId} has been created.` },
+    body: { message: `New Medicaid Split SPA ${newSplitSPAId} has been created.` },
   });
 };
 
-const splitSPAEventBodySchema = z.object({
-  packageId: events["new-medicaid-submission"].baseSchema.shape.id,
-  changeMade: z.string().optional(),
-  changeReason: z.string().optional(),
-});
-
+// authority should be medicaid, mockevent should be medicaidspa
 export const handler = async (event: APIGatewayEvent) => {
   if (!event.body) {
     return response({
@@ -82,24 +83,69 @@ export const handler = async (event: APIGatewayEvent) => {
   }
   try {
     const body = typeof event.body === "string" ? JSON.parse(event.body) : event.body;
-    const { packageId, changeMade, changeReason } = splitSPAEventBodySchema.parse(body);
+    const { id, newPackageIdSuffix, changeMade, changeReason } =
+      submitSplitSPAAdminSchema.parse(body);
 
-    const currentPackage = await getPackage(packageId);
-    if (!currentPackage || currentPackage.found == false) {
+    const newSplitSPAId = `${id}-${newPackageIdSuffix}`;
+
+    // if new split spa id exists and origin is undefined, it exists in seatool. copy data over
+    const existingNewPackage = await getPackage(newSplitSPAId);
+    if (existingNewPackage) {
+      // if exists in seatool, create NOSO
+      if (existingNewPackage?._source?.origin !== "OneMAC") {
+        try {
+          const submitNOSOEventBody = submitSplitSPANOSOAdminSchema.parse({
+            id: newSplitSPAId,
+            authority: "Medicaid SPA",
+            mockEvent: "new-medicaid-submission",
+            adminChangeType: "NOSO",
+            ...body,
+          });
+          console.log(submitNOSOEventBody, "NOSO EVENT BODY");
+          const lambdaClient = new LambdaClient({
+            region: process.env.region,
+          });
+          const invokeCommandInput = {
+            FunctionName: "submitNOSO",
+            Payload: Buffer.from(JSON.stringify(submitNOSOEventBody)),
+          };
+          const invokeSubmitNOSO = await lambdaClient.send(new InvokeCommand(invokeCommandInput));
+          console.log(invokeSubmitNOSO, "INVOKE SUBMIT NOSO");
+          return response({
+            statusCode: invokeSubmitNOSO.StatusCode,
+            body: { message: invokeSubmitNOSO.Payload },
+          });
+        } catch (error) {
+          return response({
+            statusCode: 500,
+            body: { message: error },
+          });
+        }
+      } else {
+        return response({
+          statusCode: 400,
+          body: { message: "This split SPA ID already exists in OneMAC" },
+        });
+      }
+    }
+
+    // if new new package ID doesnt exist, check if original package exists and create a new one
+    const existingPackage = await getPackage(id);
+    if (!existingPackage || existingPackage.found == false) {
       return response({
         statusCode: 404,
-        body: { message: "No record found for the given id" },
+        body: { message: "No record found for the given ID" },
       });
     }
 
-    if (currentPackage._source.authority !== "Medicaid SPA") {
+    if (existingPackage._source.authority !== "Medicaid SPA") {
       return response({
         statusCode: 400,
         body: { message: "Record must be a Medicaid SPA" },
       });
     }
 
-    return sendSubmitSplitSPAMessage({ currentPackage, changeMade, changeReason });
+    return sendSubmitSplitSPAMessage({ existingPackage, newSplitSPAId, changeMade, changeReason });
   } catch (err) {
     console.error("Error has occured modifying package:", err);
     if (err instanceof z.ZodError) {
