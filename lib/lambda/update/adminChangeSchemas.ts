@@ -90,7 +90,7 @@ export const submitSplitSPAAdminSchema = z.object({
 
 // Split SPAs made from records only existing in SEAtool are NOSOs
 export const submitSplitSPANOSOAdminSchema = submitSplitSPAAdminSchema.extend({
-  authority: z.literal("Medicaid"),
+  authority: z.literal("Medicaid SPA"),
   status: z.string(),
   submitterEmail: z.string(),
   submitterName: z.string(),
