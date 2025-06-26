@@ -12,26 +12,19 @@ import {
   roleDocs,
 } from "../../data";
 import { SubmitRoleRequestBody, TestRoleDocument, UserProfileRequestBody } from "../../index.d";
-import { getMockUser, getMockUserEmail } from "../auth.utils";
+import { getMockUser } from "../auth.utils";
 
 const defaultApiUserProfileHandler = http.post<PathParams, UserProfileRequestBody>(
   "https://test-domain.execute-api.us-east-1.amazonaws.com/mocked-tests/getUserProfile",
   async ({ request }) => {
-    let email;
-    if (request.body) {
-      const { userEmail } = await request.json();
-      email = userEmail;
-    } else {
-      email = getMockUserEmail();
-      if (email === null) {
-        return new HttpResponse("User not authenticated", { status: 401 });
-      }
-    }
-    if (!email) {
+    const currUser = getMockUser();
+    if (!currUser) {
       return new HttpResponse("User not authenticated", { status: 401 });
     }
 
-    const roles = getFilteredRoleDocsByEmail(email || "");
+    const { userEmail: reqUserEmail } = await request.json();
+
+    const roles = getFilteredRoleDocsByEmail(reqUserEmail || currUser?.email || "");
 
     return HttpResponse.json(roles);
   },
@@ -40,7 +33,6 @@ const defaultApiUserProfileHandler = http.post<PathParams, UserProfileRequestBod
 export const errorApiUserProfileHandler = http.post<PathParams, UserProfileRequestBody>(
   "https://test-domain.execute-api.us-east-1.amazonaws.com/mocked-tests/getUserProfile",
   async () => {
-    console.log("throw error");
     return new HttpResponse("Response Error", { status: 500 });
   },
 );
@@ -48,12 +40,12 @@ export const errorApiUserProfileHandler = http.post<PathParams, UserProfileReque
 const defaultApiGetCreateUserProfileHandler = http.get(
   "https://test-domain.execute-api.us-east-1.amazonaws.com/mocked-tests/createUserProfile",
   async () => {
-    const email = getMockUserEmail();
-    if (!email) {
+    const user = getMockUser();
+    if (!user?.email) {
       return new HttpResponse("User not authenticated", { status: 401 });
     }
 
-    const profile = getFilteredUserDocList([email || ""]);
+    const profile = getFilteredUserDocList([user.email || ""]);
 
     if (profile.length) {
       return HttpResponse.json({ message: "User profile already exists" });
@@ -70,12 +62,12 @@ export const errorApiGetCreateUserProfileHandler = http.get(
 const defaultApiGetRoleRequestsHandler = http.get(
   "https://test-domain.execute-api.us-east-1.amazonaws.com/mocked-tests/getRoleRequests",
   async () => {
-    const email = getMockUserEmail();
-    if (!email) {
+    const user = getMockUser();
+    if (!user) {
       return new HttpResponse("User not authenticated", { status: 401 });
     }
 
-    const profile = getLatestRoleByEmail(email || "");
+    const profile = getLatestRoleByEmail(user.email || "");
 
     const role = profile?.[0]?._source?.role;
 
@@ -103,7 +95,7 @@ const defaultApiGetRoleRequestsHandler = http.get(
 
     const rolesWithNames = roles
       // remove the current user from the list
-      .filter((roleObj) => roleObj.email !== email)
+      .filter((roleObj) => roleObj.email !== user.email)
       // add the email and fullName to each role in the list
       .map((roleObj) => {
         const email = roleObj?.id?.split("_")[0];
@@ -128,12 +120,12 @@ export const errorApiGetRoleRequestsHandler = http.get(
 const defaultApiGetSubmitGroupDivisionHandler = http.post(
   "https://test-domain.execute-api.us-east-1.amazonaws.com/mocked-tests/submitGroupDivision",
   async () => {
-    const email = getMockUserEmail();
-    if (!email) {
+    const user = getMockUser();
+    if (!user?.email) {
       return HttpResponse.json({ message: "User not authenticated" }, { status: 401 });
     }
 
-    const isRole = getApprovedRoleByEmailAndState(email, "N/A", "defaultcmsuser");
+    const isRole = getApprovedRoleByEmailAndState(user.email, "N/A", "defaultcmsuser");
 
     if (!isRole) {
       return HttpResponse.json({ message: "User is not a default CMS user" }, { status: 403 });
@@ -207,18 +199,17 @@ export const errorApiSubmitRoleRequestsHandler = http.post(
   async () => new HttpResponse("Response Error", { status: 500 }),
 );
 
-const defaultGetApproversHandler = http.post(
+const defaultGetApproversHandler = http.post<PathParams, UserProfileRequestBody>(
   "https://test-domain.execute-api.us-east-1.amazonaws.com/mocked-tests/getApprovers",
-  async () => {
-    const email = getMockUserEmail();
-    if (!email) {
-      return HttpResponse.json({
-        message: "No user found",
-        approverList: [],
-      });
+  async ({ request }) => {
+    const currUser = getMockUser();
+    if (!currUser) {
+      return new HttpResponse("User not authenticated", { status: 401 });
     }
 
-    const roles = getFilteredRoleDocsByEmail(email || "");
+    const { userEmail: reqUserEmail } = await request.json();
+
+    const roles = getFilteredRoleDocsByEmail(reqUserEmail || currUser?.email || "");
 
     type ApproverGroup = {
       territory: string;
