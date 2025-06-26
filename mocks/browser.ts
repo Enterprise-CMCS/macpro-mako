@@ -1,9 +1,5 @@
 import { setupWorker } from "msw/browser";
 
-import { cognitoHandlers, defaultApiHandlers, launchDarklyHandlers } from "./handlers";
+import { cognitoHandlers, defaultApiHandlers } from "./handlers";
 
-export const mockedWorker = setupWorker(
-  ...defaultApiHandlers,
-  ...launchDarklyHandlers,
-  ...cognitoHandlers,
-);
+export const mockedWorker = setupWorker(...defaultApiHandlers, ...cognitoHandlers);
