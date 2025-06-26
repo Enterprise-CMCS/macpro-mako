@@ -238,22 +238,20 @@ export function validateEmailTemplate(template: any) {
   }
 }
 
-
 function extractEmails(addresses: string[] | undefined): string[] {
   const filteredArray = [];
   if (addresses) {
-    for (var i = 0; i < addresses.length; i++) {
+    for (let i = 0; i < addresses.length; i++) {
       if (addresses[i].includes("<") && addresses[i].includes(">")) {
         //addresses typically follow the format: "CHIP Inbox <CHIPSPASubmissionMailBox@cms.hhs.gov>"
         const email = addresses[i].split("<")[1].split(">")[0];
-        console.log("stripped email: ", email)
-        filteredArray.push(email)
+        filteredArray.push(email);
       } else {
         //guard against unusual email addresses
         filteredArray.push(addresses[i]);
       }
     }
-    return filteredArray
+    return filteredArray;
   }
   // if no addresses return an empty array
   return [];
@@ -359,8 +357,11 @@ export function createEmailParams(
     Destination: {
       ToAddresses: extractEmails(filledTemplate.to),
       CcAddresses: isDev
-        ? [...(extractEmails(filledTemplate.cc) || []), `State Submitter <${EMAIL_CONFIG.DEV_EMAIL}>`]
-        : extractEmails(filledTemplate.cc)
+        ? [
+          ...(extractEmails(filledTemplate.cc) || []),
+          `State Submitter <${EMAIL_CONFIG.DEV_EMAIL}>`,
+        ]
+        : extractEmails(filledTemplate.cc),
     },
     Message: {
       Body: {
