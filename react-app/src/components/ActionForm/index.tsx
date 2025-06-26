@@ -109,7 +109,7 @@ export const ActionForm = <Schema extends SchemaWithEnforcableProps>({
     body: "",
     acceptButtonText: "Yes, leave",
     cancelButtonText: "Go back",
-    areButtonsReversed: false,
+    areButtonsReversed: true,
     cancelVariant: "link",
   },
   promptPreSubmission,
