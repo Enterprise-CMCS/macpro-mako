@@ -41,6 +41,7 @@ const initializeApp = async () => {
       onUnhandledRequest: "error",
       waitUntilReady: true,
     });
+
     await setMockUsername(import.meta.env.VITE_MOCK_USER_USERNAME || TEST_STATE_SUBMITTER_USERNAME);
   }
 

@@ -1,6 +1,12 @@
 import { Argv } from "yargs";
 
-import { checkIfAuthenticated, runCommand, setStageFromBranch, writeUiEnvFile } from "../lib";
+import {
+  checkIfAuthenticated,
+  runCommand,
+  setStageFromBranch,
+  writeMockedUiEnvFile,
+  writeUiEnvFile,
+} from "../lib";
 
 export const ui = {
   command: "ui",
@@ -20,11 +26,20 @@ export const ui = {
         default: false,
         describe: "Use Mock Service Worker instead of the deployed API",
         defaultDescription: "false",
+      })
+      .option("mockedUsername", {
+        alias: "u",
+        type: "string",
+        demandOption: false,
+        default: "cd400c39-9e7c-4341-b62f-234e2ecb339d", // TEST_STATE_SUBMITTER_USERNAME can't currently import from mocks into cli, once that is fixed we can use the variable
+        describe: "Username of mock user to login as",
+        defaultDescription: "Test State Submitter",
       });
   },
 
-  handler: async (options: { stage?: string; mocked?: boolean }) => {
+  handler: async (options: { stage?: string; mocked?: boolean; mockedUsername?: string }) => {
     if (options.mocked) {
+      await writeMockedUiEnvFile(options.mockedUsername);
       await runCommand("bun", ["run", "build"], "react-app");
       await runCommand(`bun`, ["run", "mocked"], "react-app");
     } else {
