@@ -1,5 +1,6 @@
 import * as cdk from "aws-cdk-lib";
 import { AnyPrincipal, Effect, PolicyStatement } from "aws-cdk-lib/aws-iam";
+import * as iam from "aws-cdk-lib/aws-iam";
 import { NodejsFunction } from "aws-cdk-lib/aws-lambda-nodejs";
 import { BlockPublicAccess, Bucket, BucketEncryption } from "aws-cdk-lib/aws-s3";
 import { Construct } from "constructs";
@@ -455,6 +456,13 @@ export class Api extends cdk.NestedStack {
         return acc;
       },
       {} as { [key: string]: NodejsFunction },
+    );
+
+    lambdas.submitSplitSPA.role?.addToPrincipalPolicy(
+      new iam.PolicyStatement({
+        actions: ["lambda:InvokeFunction"],
+        resources: [lambdas.submitNOSO.functionArn],
+      }),
     );
 
     // Create IAM role for API Gateway to invoke Lambda functions
