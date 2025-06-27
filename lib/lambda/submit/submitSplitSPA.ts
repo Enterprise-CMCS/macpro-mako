@@ -107,9 +107,10 @@ export const handler = async (event: APIGatewayEvent) => {
             region: process.env.region,
           });
           const invokeCommandInput = {
-            FunctionName: "submitNOSO",
+            FunctionName: `${process.env.project}-${process.env.stage}-${process.env.stack}-submitNOSO`,
             Payload: Buffer.from(JSON.stringify(submitNOSOEventBody)),
           };
+          console.log(invokeCommandInput, "OKKKKKK");
           const invokeSubmitNOSO = await lambdaClient.send(new InvokeCommand(invokeCommandInput));
           console.log(invokeSubmitNOSO, "INVOKE SUBMIT NOSO");
           return response({
