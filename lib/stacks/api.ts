@@ -125,13 +125,6 @@ export class Api extends cdk.NestedStack {
                 `arn:aws:secretsmanager:${this.region}:${this.account}:secret:${notificationSecretName}-*`,
               ],
             }),
-            new cdk.aws_iam.PolicyStatement({
-              effect: cdk.aws_iam.Effect.ALLOW,
-              actions: ["lambda:InvokeFunction"],
-              resources: [
-                `arn:aws:lambda:${this.region}:${this.account}:function:${props.project}-${props.stage}-${props.stack}-submitNOSO`,
-              ],
-            }),
           ],
         }),
       },
@@ -456,6 +449,8 @@ export class Api extends cdk.NestedStack {
       },
       {} as { [key: string]: NodejsFunction },
     );
+
+    lambdas.submitNOSO.grantInvoke(lambdas.submitSplitSPA);
 
     // Create IAM role for API Gateway to invoke Lambda functions
     const apiGatewayRole = new cdk.aws_iam.Role(this, "ApiGatewayRole", {
