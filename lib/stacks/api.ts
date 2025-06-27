@@ -126,13 +126,6 @@ export class Api extends cdk.NestedStack {
                 `arn:aws:secretsmanager:${this.region}:${this.account}:secret:${notificationSecretName}-*`,
               ],
             }),
-            // new cdk.aws_iam.PolicyStatement({
-            //   effect: cdk.aws_iam.Effect.ALLOW,
-            //   actions: ["lambda:InvokeFunction"],
-            //   resources: [
-            //     `arn:aws:lambda:${this.region}:${this.account}:function:${props.project}-${props.stage}-${props.stack}-submitNOSO`,
-            //   ],
-            // }),
           ],
         }),
       },
