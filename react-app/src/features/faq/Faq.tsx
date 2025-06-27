@@ -102,7 +102,7 @@ export const Faq = () => {
                         <div className="flex items-center gap-2">
                           {isUpdateNewLabel && label && (
                             <span
-                              className={`inline-block text-white text-xs font-semibold px-2 py-0.5 rounded ${
+                              className={`text-white text-xs font-semibold px-2 py-0.5 rounded no-underline hover:no-underline ${
                                 labelColor === "green"
                                   ? "bg-green-600"
                                   : labelColor === "blue"
@@ -113,7 +113,7 @@ export const Faq = () => {
                               {label}
                             </span>
                           )}
-                          <span>{question}</span>
+                          <span className="hover:underline">{question}</span>
                         </div>
                       </AccordionTrigger>
                       <AccordionContent>{answerJSX}</AccordionContent>
