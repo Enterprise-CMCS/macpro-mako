@@ -48,13 +48,13 @@ export const MyProfile = () => {
     return orderRoleStatus(filteredRoleStatus);
   }, [userDetails, userProfile, isNewUserRoleDisplay]);
 
-  // this user should not see the "add role button"
-  const isCMSWithManyRoles = useMemo(
-    () =>
+  const hideAddRoleButton = useMemo(() => {
+    const isCMSWithManyRoles =
       userProfile?.stateAccess.length > 1 &&
-      userProfile?.stateAccess.filter((x) => x.role.includes("cms")).length,
-    [userProfile],
-  );
+      userProfile?.stateAccess.filter((x) => x.role.includes("cms")).length;
+    const isHelpDesk = userProfile?.stateAccess.filter((x) => x.role === "helpdesk").length;
+    return isCMSWithManyRoles || isHelpDesk;
+  }, [userProfile]);
 
   // Set initial value of showAddState based on pending roles
   useEffect(() => {
@@ -174,6 +174,9 @@ export const MyProfile = () => {
       window.scrollTo(0, 0);
     }
   };
+  const showAllStateAccess = isNewUserRoleDisplay
+    ? true
+    : stateAccessRoles.includes(userDetails?.role);
 
   return (
     <>
@@ -193,7 +196,7 @@ export const MyProfile = () => {
           />
           <div className="flex flex-col gap-6 md:basis-1/2">
             {/* Status/State Access Management Section */}
-            {stateAccessRoles.includes(userDetails?.role) && (
+            {showAllStateAccess && (
               <div>
                 {isNewUserRoleDisplay ? (
                   <h2 className="text-2xl font-bold">My User Roles</h2>
@@ -223,7 +226,7 @@ export const MyProfile = () => {
                     onClick={() => setSelfRevokeState(access.territory as StateCode)}
                   />
                 ))}
-                {isNewUserRoleDisplay && !isCMSWithManyRoles ? (
+                {isNewUserRoleDisplay && !hideAddRoleButton ? (
                   <Button
                     className="w-full border-dashed p-10 text-black font-normal"
                     variant="outline"

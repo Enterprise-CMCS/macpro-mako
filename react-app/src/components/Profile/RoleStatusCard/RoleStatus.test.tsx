@@ -34,8 +34,6 @@ describe("RoleStatusCard", () => {
           territory: "N/A",
           role: "cmsroleapprover",
           status: "active",
-          doneByEmail: "test@example.com",
-          doneByName: "Test Admin",
         }}
       />,
     );
@@ -55,8 +53,6 @@ describe("RoleStatusCard", () => {
           territory: "CA",
           role: "statesubmitter",
           status: "active",
-          doneByEmail: "test@example.com",
-          doneByName: "Test Admin",
         }}
       />,
     );
@@ -75,8 +71,6 @@ describe("RoleStatusCard", () => {
           territory: "N/A",
           role: "cmsroleapprover",
           status: "active",
-          doneByEmail: "test@example.com",
-          doneByName: "Test Admin",
         }}
       />,
     );
@@ -97,8 +91,6 @@ describe("RoleStatusCard", () => {
           territory: "MD",
           role: "statesubmitter",
           status: "pending",
-          doneByEmail: "test@example.com",
-          doneByName: "Test Admin",
         }}
       />,
     );
@@ -122,8 +114,6 @@ describe("RoleStatusCard", () => {
           territory: "CO",
           role: "statesubmitter",
           status: "active",
-          doneByEmail: "test@example.com",
-          doneByName: "Test Admin",
         }}
         onClick={revokeSpy}
       />,
@@ -148,8 +138,6 @@ describe("RoleStatusCard", () => {
           territory: "CO",
           role: "statesubmitter",
           status: "active",
-          doneByEmail: "test@example.com",
-          doneByName: "Test Admin",
           approverList: [
             { email: "test@example.com", fullName: "Test Admin", territory: "MD" },
             { email: "test2@example.com", fullName: "Test Admin2", territory: "MD" },
@@ -172,8 +160,6 @@ describe("RoleStatusCard", () => {
           territory: "CO",
           role: "statesubmitter",
           status: "active",
-          doneByEmail: "test@example.com",
-          doneByName: "Test Admin",
           approverList: [],
         }}
       />,

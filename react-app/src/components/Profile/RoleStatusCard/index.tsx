@@ -10,7 +10,7 @@ export type RoleStatusProps = {
   isNewUserRoleDisplay?: boolean;
   role: UserRole;
   onClick?: () => void;
-  access: Omit<StateAccess, "id" | "eventType" | "email">;
+  access: Omit<StateAccess, "id" | "eventType" | "email" | "doneByName" | "doneByEmail">;
 };
 
 export const RoleStatusCard = (props: RoleStatusProps) => {

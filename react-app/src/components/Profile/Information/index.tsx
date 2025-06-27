@@ -36,7 +36,7 @@ export const UserInformation = ({ fullName, role, email, groupDivision }: UserIn
 
       {isNewUserRoleDisplay && groupDivision && (
         <div className="leading-9">
-          <h3 className="font-bold display-flex items-center">
+          <h3 className="font-bold flex items-center cursor-pointer">
             Group & Division <LucidePencil className="ml-1 w-5" />
           </h3>
           <p>{groupDivision}</p>

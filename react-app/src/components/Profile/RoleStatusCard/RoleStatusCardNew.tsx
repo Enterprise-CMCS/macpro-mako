@@ -1,6 +1,6 @@
 import { Clock, XCircle, XIcon } from "lucide-react";
 import { UserRole } from "shared-types/events/legacy-user";
-import { isStateRole, userRoleMap } from "shared-utils";
+import { isStateRole, newUserRoleMap } from "shared-utils";
 
 import { RoleStatusTopBorderCard } from "@/components/Cards";
 import { updatedRoleAccessStatus } from "@/utils";
@@ -32,8 +32,8 @@ export const RoleStatusCardNew = ({
         <div className="flex justify-between">
           <h3 className="text-xl font-bold">
             {isState
-              ? `${userRoleMap[access.role]} - ${access.territory}`
-              : userRoleMap[access.role]}
+              ? `${newUserRoleMap[access.role]} - ${access.territory}`
+              : newUserRoleMap[access.role]}
           </h3>
           {role === "statesubmitter" && (
             <button
@@ -48,7 +48,7 @@ export const RoleStatusCardNew = ({
           )}
         </div>
         <CardStatus status={access.status} />
-        {role === "defaultcmsuser" || role === "cmsreviewer" ? (
+        {access.role === "defaultcmsuser" || access.role === "cmsreviewer" ? (
           <div className="block lg:mt-8 lg:mb-2">
             <strong>Approvers</strong>
             <br />
