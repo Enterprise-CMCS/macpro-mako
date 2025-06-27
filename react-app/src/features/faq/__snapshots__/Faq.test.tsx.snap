@@ -65,7 +65,7 @@ exports[`Faq > should display the items expected 1`] = `
                 <button
                   aria-controls="radix-:r9:"
                   aria-expanded="true"
-                  class="flex flex-1 items-center justify-between py-4 font-medium transition-all hover:underline [&[data-state=open]>svg]:rotate-180 text-left"
+                  class="flex flex-1 items-center justify-between py-4 font-medium transition-all [&[data-state=open]>svg]:rotate-180 text-left"
                   data-orientation="vertical"
                   data-radix-collection-item=""
                   data-state="open"
@@ -75,7 +75,9 @@ exports[`Faq > should display the items expected 1`] = `
                   <div
                     class="flex items-center gap-2"
                   >
-                    <span>
+                    <span
+                      class="hover:underline"
+                    >
                       What is FAQ 1?
                     </span>
                   </div>
@@ -130,7 +132,7 @@ exports[`Faq > should display the items expected 1`] = `
                 <button
                   aria-controls="radix-:rb:"
                   aria-expanded="false"
-                  class="flex flex-1 items-center justify-between py-4 font-medium transition-all hover:underline [&[data-state=open]>svg]:rotate-180 text-left"
+                  class="flex flex-1 items-center justify-between py-4 font-medium transition-all [&[data-state=open]>svg]:rotate-180 text-left"
                   data-orientation="vertical"
                   data-radix-collection-item=""
                   data-state="closed"
@@ -140,7 +142,9 @@ exports[`Faq > should display the items expected 1`] = `
                   <div
                     class="flex items-center gap-2"
                   >
-                    <span>
+                    <span
+                      class="hover:underline"
+                    >
                       What is FAQ 2?
                     </span>
                   </div>
