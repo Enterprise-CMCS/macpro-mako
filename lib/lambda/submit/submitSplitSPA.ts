@@ -105,7 +105,7 @@ export const handler = async (event: APIGatewayEvent) => {
           });
           console.log(submitNOSOEventBody, "NOSO EVENT BODY");
 
-          submitNOSOHandler({ ...event, body: JSON.stringify(submitNOSOEventBody) });
+          await submitNOSOHandler({ ...event, body: JSON.stringify(submitNOSOEventBody) });
           return response({
             statusCode: 200,
             body: { message: "sent" },
