@@ -461,7 +461,9 @@ export class Api extends cdk.NestedStack {
     lambdas.submitSplitSPA.role?.addToPrincipalPolicy(
       new iam.PolicyStatement({
         actions: ["lambda:InvokeFunction"],
-        resources: [lambdas.submitNOSO.functionName],
+        resources: [
+          `arn:aws:lambda:${this.region}:${this.account}:function:${props.project}-${props.stage}-${props.stack}-submitNOSO`,
+        ],
       }),
     );
 
