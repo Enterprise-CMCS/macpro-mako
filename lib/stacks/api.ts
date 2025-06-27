@@ -172,6 +172,17 @@ export class Api extends cdk.NestedStack {
         bundling: commonBundlingOptions,
       });
 
+      if (id === "submitSplitSPA") {
+        fn.role?.addToPrincipalPolicy(
+          new iam.PolicyStatement({
+            actions: ["lambda:InvokeFunction"],
+            resources: [
+              `arn:aws:lambda:${this.region}:${this.account}:function:${project}-${stage}-${stack}-submitNOSO`,
+            ],
+          }),
+        );
+      }
+
       if (provisionedConcurrency > 0) {
         const version = fn.currentVersion;
 
@@ -451,17 +462,14 @@ export class Api extends cdk.NestedStack {
       {} as { [key: string]: NodejsFunction },
     );
 
-    lambdas.submitSplitSPA.role?.addToPrincipalPolicy(
-      new iam.PolicyStatement({
-        actions: ["lambda:InvokeFunction"],
-        resources: [
-          `arn:aws:lambda:${this.region}:${this.account}:function:${props.project}-${props.stage}:*`,
-        ],
-      }),
-    );
-    console.log(
-      `arn:aws:lambda:${this.region}:${this.account}:function:${props.project}-${props.stage}-${props.stack}-submitNOSO`,
-    );
+    // lambdas.submitSplitSPA.role?.addToPrincipalPolicy(
+    //   new iam.PolicyStatement({
+    //     actions: ["lambda:InvokeFunction"],
+    //     resources: [
+    //       `arn:aws:lambda:${this.region}:${this.account}:function:${props.project}-${props.stage}-${props.stack}-submitNOSO`,
+    //     ],
+    //   }),
+    // );
 
     // Create IAM role for API Gateway to invoke Lambda functions
     const apiGatewayRole = new cdk.aws_iam.Role(this, "ApiGatewayRole", {
