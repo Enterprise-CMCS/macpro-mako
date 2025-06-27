@@ -519,11 +519,10 @@ export const oneMACFAQContent: FAQContent[] = [
                   </td>
                 </tr>
                 <tr>
-                  <td className="border border-gray-300 px-4 py-2">Amended State Plan Language*</td>
+                  <td className="border border-gray-300 px-4 py-2">Amended State Plan Pages*</td>
                   <td className="border border-gray-300 px-4 py-2">
-                    Redline version of proposed changes to the existing CHIP state plan pages. State
-                    to provide a redline version and a clean version of the CHIP state plan pages
-                    being amended.
+                    Track changes to only the current approved CHIP state plan pages that the State
+                    is proposing to amend
                   </td>
                 </tr>
                 <tr>
@@ -557,7 +556,61 @@ export const oneMACFAQContent: FAQContent[] = [
                 <tr>
                   <td className="border border-gray-300 px-4 py-2">Other</td>
                   <td className="border border-gray-300 px-4 py-2">
-                    Other document(s) needed to process the CHIP SPA submission
+                    Other supporting document(s) needed to process the CHIP SPA submission
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+            <p>Note: “*” indicates a required attachment.</p>
+            <table className="faq-eligibility-table  border-collapse border border-gray-300 w-full ">
+              <tbody>
+                <tr>
+                  <th className="border border-gray-300 px-4 py-2">Attachment Name</th>
+                  <th className="border border-gray-300 px-4 py-2">Description</th>
+                </tr>
+                <tr>
+                  <td className="border border-gray-300 px-4 py-2">
+                    CHIP Eligibilty SPA Template*
+                  </td>
+                  <td className="border border-gray-300 px-4 py-2">
+                    Admendment to the eligibility section of the CHIP state plan using a PDF
+                    template repository, including statutory and regulatory background, required
+                    information, and minimum review criteria
+                  </td>
+                </tr>
+                <tr>
+                  <td className="border border-gray-300 px-4 py-2">Cover Letter*</td>
+                  <td className="border border-gray-300 px-4 py-2">
+                    Cover letter to CMS with an authorized signature that outlines the purpose of
+                    the CHIP SPA submission
+                  </td>
+                </tr>
+                <tr>
+                  <td className="border border-gray-300 px-4 py-2">Budget Documents</td>
+                  <td className="border border-gray-300 px-4 py-2">
+                    Updated 1-year budget if applicable of the State's planned expenditures if the
+                    CHIP SPA submission has a significant impact on the approved budget
+                  </td>
+                </tr>
+                <tr>
+                  <td className="border border-gray-300 px-4 py-2">Public Notice</td>
+                  <td className="border border-gray-300 px-4 py-2">
+                    Process used by the State if applicable to accomplish involvement of the public
+                    that occurred specifically for this CHIP SPA submission
+                  </td>
+                </tr>
+                <tr>
+                  <td className="border border-gray-300 px-4 py-2">Tribal Consultation</td>
+                  <td className="border border-gray-300 px-4 py-2">
+                    Consultation process with Indian Tribes if applicable that occurred specifically
+                    for this CHIP SPA submission
+                  </td>
+                </tr>
+                <tr>
+                  <td className="border border-gray-300 px-4 py-2">Other</td>
+                  <td className="border border-gray-300 px-4 py-2">
+                    Other supporting document(s) needed to process the CHIP Eligibility SPA
+                    submission
                   </td>
                 </tr>
               </tbody>
