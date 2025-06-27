@@ -11,8 +11,10 @@ import { MPC_TEMPLATES } from "@/features/faq/content/mpcTemplates";
 
 export type QuestionAnswer = {
   anchorText: string;
-  question: string;
+  question: string | JSX.Element;
   answerJSX: JSX.Element;
+  label?: string;
+  labelColor?: "green" | "blue" | string;
 };
 
 type FAQContent = {
@@ -267,6 +269,8 @@ export const oneMACFAQContent: FAQContent[] = [
       {
         anchorText: "spa-admendments",
         question: "Which state plan amendments (SPAs) can I submit in OneMAC?",
+        label: "Updated", // Add a `label` field for LD faq
+        labelColor: "green",
         answerJSX: (
           <div className="w-full space-y-2">
             <p>
@@ -289,8 +293,8 @@ export const oneMACFAQContent: FAQContent[] = [
               MMDL.
             </p>
             <p>
-              Templates and implementation guides for ABP, Medicaid Premiums & Cost Sharing, and
-              CHIP Eligibility SPAs can be downloaded from the respective FAQ:
+              Templates and implementation guides for OneMac SPAs can be downloaded from the
+              respective FAQ:
             </p>
             <ul className="ml-8 list-disc space-y-2 text-blue-600">
               {[
@@ -936,6 +940,8 @@ export const oneMACFAQContent: FAQContent[] = [
       {
         anchorText: "abp-spa-templates",
         question: "Where can I download Medicaid Alternative Benefit Plan (ABP) SPA templates?",
+        label: "New",
+        labelColor: "blue",
         answerJSX: (
           <section className="space-y-2">
             <p>
@@ -974,6 +980,8 @@ export const oneMACFAQContent: FAQContent[] = [
         anchorText: "abp-implementation-guides-spa",
         question:
           "Where can I download Medicaid Alternative Benefit Plan (ABP) SPA implementation guides?",
+        label: "New",
+        labelColor: "blue",
         answerJSX: (
           <section className="space-y-2">
             <p>
@@ -1001,6 +1009,8 @@ export const oneMACFAQContent: FAQContent[] = [
       {
         anchorText: "mpc-spa-templates",
         question: "Where can I download Medicaid Premiums and Cost Sharing SPA templates?",
+        label: "New",
+        labelColor: "blue",
         answerJSX: (
           <section className="space-y-2">
             <p>
@@ -1030,6 +1040,8 @@ export const oneMACFAQContent: FAQContent[] = [
         anchorText: "mpc-spa-implementation-guides",
         question:
           "Where can I download Medicaid Premiums and Cost Sharing SPA implementation guides?",
+        label: "New",
+        labelColor: "blue",
         answerJSX: (
           <section className="space-y-2">
             <p>
@@ -1057,6 +1069,8 @@ export const oneMACFAQContent: FAQContent[] = [
       {
         anchorText: "chip-spa-templates",
         question: "Where can I download CHIP eligibility SPA templates?",
+        label: "New",
+        labelColor: "blue",
         answerJSX: (
           <section>
             <p>
@@ -1117,6 +1131,8 @@ export const oneMACFAQContent: FAQContent[] = [
       {
         anchorText: "chip-spa-implentation-guides",
         question: "Where can I download CHIP eligibility SPA implementation guides?",
+        label: "New",
+        labelColor: "blue",
         answerJSX: (
           <div>
             <section className="space-y-2">
