@@ -1,6 +1,6 @@
 // import { expect, test } from "@/fixtures/mocked"; // add expect when writing assertions
-// import { expect, test } from "@/fixtures/mocked";
-import { expect, test } from "@playwright/test";
+import { expect, test } from "@/fixtures/mocked";
+// import { expect, test } from "@playwright/test";
 
 // TODO
 test.describe("Dashboard page", { tag: ["@dashboard"] }, () => {
