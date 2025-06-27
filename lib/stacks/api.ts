@@ -457,8 +457,6 @@ export class Api extends cdk.NestedStack {
       {} as { [key: string]: NodejsFunction },
     );
 
-    lambdas.submitNOSO.grantInvoke(lambdas.submitSplitSPA);
-
     // Create IAM role for API Gateway to invoke Lambda functions
     const apiGatewayRole = new cdk.aws_iam.Role(this, "ApiGatewayRole", {
       assumedBy: new cdk.aws_iam.ServicePrincipal("apigateway.amazonaws.com"),
