@@ -1,4 +1,4 @@
-import { InvokeCommand, LambdaClient } from "@aws-sdk/client-lambda";
+// import { InvokeCommand, LambdaClient } from "@aws-sdk/client-lambda";
 import { APIGatewayEvent } from "aws-lambda";
 import { produceMessage } from "libs/api/kafka";
 import { getPackage } from "libs/api/package";
@@ -8,10 +8,11 @@ import { ItemResult } from "shared-types/opensearch/main";
 import { z } from "zod";
 
 import {
-  submitNOSOAdminSchema,
+  // submitNOSOAdminSchema,
   submitSplitSPAAdminSchema,
   submitSplitSPANOSOAdminSchema,
 } from "../update/adminChangeSchemas";
+import { handler as submitNOSOHandler } from "../update/submitNOSO";
 
 // import { getNextSplitSPAId } from "./getNextSplitSPAId";
 
@@ -103,18 +104,11 @@ export const handler = async (event: APIGatewayEvent) => {
             ...body,
           });
           console.log(submitNOSOEventBody, "NOSO EVENT BODY");
-          const lambdaClient = new LambdaClient({
-            region: process.env.region,
-          });
-          const invokeCommandInput = {
-            FunctionName: "submitNOSO",
-            Payload: Buffer.from(JSON.stringify(submitNOSOEventBody)),
-          };
-          const invokeSubmitNOSO = await lambdaClient.send(new InvokeCommand(invokeCommandInput));
-          console.log(invokeSubmitNOSO, "INVOKE SUBMIT NOSO");
+
+          submitNOSOHandler({ ...event, body: JSON.stringify(submitNOSOEventBody) });
           return response({
-            statusCode: invokeSubmitNOSO.StatusCode,
-            body: { message: invokeSubmitNOSO.Payload },
+            statusCode: 200,
+            body: { message: "sent" },
           });
         } catch (error) {
           return response({
