@@ -454,8 +454,13 @@ export class Api extends cdk.NestedStack {
     lambdas.submitSplitSPA.role?.addToPrincipalPolicy(
       new iam.PolicyStatement({
         actions: ["lambda:InvokeFunction"],
-        resources: [lambdas.submitNOSO.functionArn],
+        resources: [
+          `arn:aws:lambda:${this.region}:${this.account}:function:${props.project}-${props.stage}-${props.stack}-submitNOSO`,
+        ],
       }),
+    );
+    console.log(
+      `arn:aws:lambda:${this.region}:${this.account}:function:${props.project}-${props.stage}-${props.stack}-submitNOSO`,
     );
 
     // Create IAM role for API Gateway to invoke Lambda functions
