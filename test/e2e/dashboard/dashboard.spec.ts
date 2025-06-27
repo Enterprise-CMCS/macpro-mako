@@ -82,6 +82,7 @@ test.describe("Dashboard page", { tag: ["@dashboard"] }, () => {
           ];
 
           for (let i = 0; i < count; i++) {
+            console.log("column: ", i + 1);
             await expect(await header.nth(i)).toBeVisible();
             await expect(await header.nth(i).textContent()).toEqual(headerValues[i]);
           }
