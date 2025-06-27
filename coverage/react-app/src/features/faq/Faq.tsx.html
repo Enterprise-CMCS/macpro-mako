@@ -23,16 +23,16 @@
         <div class='clearfix'>
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">91.66% </span>
+                <span class="strong">92% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>22/24</span>
+                <span class='fraction'>23/25</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">70% </span>
+                <span class="strong">50% </span>
                 <span class="quiet">Branches</span>
-                <span class='fraction'>7/10</span>
+                <span class='fraction'>8/16</span>
             </div>
         
             
@@ -44,9 +44,9 @@
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">91.3% </span>
+                <span class="strong">91.66% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>21/23</span>
+                <span class='fraction'>22/24</span>
             </div>
         
             
@@ -196,7 +196,25 @@
 <a name='L131'></a><a href='#L131'>131</a>
 <a name='L132'></a><a href='#L132'>132</a>
 <a name='L133'></a><a href='#L133'>133</a>
-<a name='L134'></a><a href='#L134'>134</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
+<a name='L134'></a><a href='#L134'>134</a>
+<a name='L135'></a><a href='#L135'>135</a>
+<a name='L136'></a><a href='#L136'>136</a>
+<a name='L137'></a><a href='#L137'>137</a>
+<a name='L138'></a><a href='#L138'>138</a>
+<a name='L139'></a><a href='#L139'>139</a>
+<a name='L140'></a><a href='#L140'>140</a>
+<a name='L141'></a><a href='#L141'>141</a>
+<a name='L142'></a><a href='#L142'>142</a>
+<a name='L143'></a><a href='#L143'>143</a>
+<a name='L144'></a><a href='#L144'>144</a>
+<a name='L145'></a><a href='#L145'>145</a>
+<a name='L146'></a><a href='#L146'>146</a>
+<a name='L147'></a><a href='#L147'>147</a>
+<a name='L148'></a><a href='#L148'>148</a>
+<a name='L149'></a><a href='#L149'>149</a>
+<a name='L150'></a><a href='#L150'>150</a>
+<a name='L151'></a><a href='#L151'>151</a>
+<a name='L152'></a><a href='#L152'>152</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -243,6 +261,7 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">8x</span>
 <span class="cline-any cline-yes">8x</span>
+<span class="cline-any cline-yes">8x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -263,6 +282,23 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">8x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -375,6 +411,7 @@ export const Faq = () =&gt; {
 &nbsp;
   // Get the flag value for hiding the MMDL banner.
   const isBannerHidden = useFeatureFlag("UAT_HIDE_MMDL_BANNER");
+  const isUpdateNewLabel = useFeatureFlag("UPGRADE_NEW_LABEL");
   const anchorsToHide = [
     "spa-admendments",
     "abp-spa-templates",
@@ -421,14 +458,31 @@ export const Faq = () =&gt; {
               {filteredFAQContent.map(({ sectionTitle, qanda }) =&gt; (
                 &lt;article key={sectionTitle} className="mb-8"&gt;
                   &lt;h2 className="text-2xl mb-4 text-primary"&gt;{sectionTitle}&lt;/h2&gt;
-                  {qanda.map(({ anchorText, answerJSX, question }) =&gt; (
+                  {qanda.map(({ anchorText, answerJSX, question, label, labelColor }) =&gt; (
                     &lt;AccordionItem
                       value={anchorText}
                       id={anchorText}
                       key={anchorText}
                       data-testid={anchorText}
                     &gt;
-                      &lt;AccordionTrigger className="text-left"&gt;{question}&lt;/AccordionTrigger&gt;
+                      &lt;AccordionTrigger className="text-left"&gt;
+                        &lt;div className="flex items-center gap-2"&gt;
+                          {isUpdateNewLabel &amp;&amp; <span class="branch-1 cbranch-no" title="branch not covered" >label &amp;&amp; (</span>
+                            &lt;span
+                              className={`text-white text-xs font-semibold px-2 py-0.5 rounded no-underline hover:no-underline ${
+                                labelColor === "green"
+                                  ? "bg-green-600"
+                                  : labelColor === "blue"
+                                    ? "bg-blue-600"
+                                    : "bg-gray-500"
+                              }`}
+                            &gt;
+                              {label}
+                            &lt;/span&gt;
+                          )}
+                          &lt;span className="hover:underline"&gt;{question}&lt;/span&gt;
+                        &lt;/div&gt;
+                      &lt;/AccordionTrigger&gt;
                       &lt;AccordionContent&gt;{answerJSX}&lt;/AccordionContent&gt;
                     &lt;/AccordionItem&gt;
                   ))}
@@ -469,7 +523,7 @@ export const Faq = () =&gt; {
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2025-06-27T02:18:33.220Z
+                at 2025-06-27T17:24:53.971Z
             </div>
         <script src="../../../../prettify.js"></script>
         <script>

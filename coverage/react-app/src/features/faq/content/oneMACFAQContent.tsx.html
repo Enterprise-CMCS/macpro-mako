@@ -1695,7 +1695,25 @@
 <a name='L1630'></a><a href='#L1630'>1630</a>
 <a name='L1631'></a><a href='#L1631'>1631</a>
 <a name='L1632'></a><a href='#L1632'>1632</a>
-<a name='L1633'></a><a href='#L1633'>1633</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
+<a name='L1633'></a><a href='#L1633'>1633</a>
+<a name='L1634'></a><a href='#L1634'>1634</a>
+<a name='L1635'></a><a href='#L1635'>1635</a>
+<a name='L1636'></a><a href='#L1636'>1636</a>
+<a name='L1637'></a><a href='#L1637'>1637</a>
+<a name='L1638'></a><a href='#L1638'>1638</a>
+<a name='L1639'></a><a href='#L1639'>1639</a>
+<a name='L1640'></a><a href='#L1640'>1640</a>
+<a name='L1641'></a><a href='#L1641'>1641</a>
+<a name='L1642'></a><a href='#L1642'>1642</a>
+<a name='L1643'></a><a href='#L1643'>1643</a>
+<a name='L1644'></a><a href='#L1644'>1644</a>
+<a name='L1645'></a><a href='#L1645'>1645</a>
+<a name='L1646'></a><a href='#L1646'>1646</a>
+<a name='L1647'></a><a href='#L1647'>1647</a>
+<a name='L1648'></a><a href='#L1648'>1648</a>
+<a name='L1649'></a><a href='#L1649'>1649</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -2020,6 +2038,8 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
@@ -2028,6 +2048,16 @@
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -2738,6 +2768,8 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">60x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -3340,8 +3372,10 @@ import { MPC_TEMPLATES } from "@/features/faq/content/mpcTemplates";
 &nbsp;
 export type QuestionAnswer = {
   anchorText: string;
-  question: string;
+  question: string | JSX.Element;
   answerJSX: JSX.Element;
+  label?: string;
+  labelColor?: "green" | "blue" | string;
 };
 &nbsp;
 type FAQContent = {
@@ -3596,6 +3630,8 @@ export const oneMACFAQContent: FAQContent[] = [
       {
         anchorText: "spa-admendments",
         question: "Which state plan amendments (SPAs) can I submit in OneMAC?",
+        label: "Updated", // Add a `label` field for LD faq
+        labelColor: "green",
         answerJSX: (
           &lt;div className="w-full space-y-2"&gt;
             &lt;p&gt;
@@ -3618,8 +3654,8 @@ export const oneMACFAQContent: FAQContent[] = [
               MMDL.
             &lt;/p&gt;
             &lt;p&gt;
-              Templates and implementation guides for ABP, Medicaid Premiums &amp; Cost Sharing, and
-              CHIP Eligibility SPAs can be downloaded from the respective FAQ:
+              Templates and implementation guides for OneMac SPAs can be downloaded from the
+              respective FAQ:
             &lt;/p&gt;
             &lt;ul className="ml-8 list-disc space-y-2 text-blue-600"&gt;
               {[
@@ -4208,6 +4244,8 @@ export const oneMACFAQContent: FAQContent[] = [
       {
         anchorText: "abp-spa-templates",
         question: "Where can I download Medicaid Alternative Benefit Plan (ABP) SPA templates?",
+        label: "New",
+        labelColor: "blue",
         answerJSX: (
           &lt;section className="space-y-2"&gt;
             &lt;p&gt;
@@ -4246,6 +4284,8 @@ export const oneMACFAQContent: FAQContent[] = [
         anchorText: "abp-implementation-guides-spa",
         question:
           "Where can I download Medicaid Alternative Benefit Plan (ABP) SPA implementation guides?",
+        label: "New",
+        labelColor: "blue",
         answerJSX: (
           &lt;section className="space-y-2"&gt;
             &lt;p&gt;
@@ -4273,6 +4313,8 @@ export const oneMACFAQContent: FAQContent[] = [
       {
         anchorText: "mpc-spa-templates",
         question: "Where can I download Medicaid Premiums and Cost Sharing SPA templates?",
+        label: "New",
+        labelColor: "blue",
         answerJSX: (
           &lt;section className="space-y-2"&gt;
             &lt;p&gt;
@@ -4302,6 +4344,8 @@ export const oneMACFAQContent: FAQContent[] = [
         anchorText: "mpc-spa-implementation-guides",
         question:
           "Where can I download Medicaid Premiums and Cost Sharing SPA implementation guides?",
+        label: "New",
+        labelColor: "blue",
         answerJSX: (
           &lt;section className="space-y-2"&gt;
             &lt;p&gt;
@@ -4329,6 +4373,8 @@ export const oneMACFAQContent: FAQContent[] = [
       {
         anchorText: "chip-spa-templates",
         question: "Where can I download CHIP eligibility SPA templates?",
+        label: "New",
+        labelColor: "blue",
         answerJSX: (
           &lt;section&gt;
             &lt;p&gt;
@@ -4389,6 +4435,8 @@ export const oneMACFAQContent: FAQContent[] = [
       {
         anchorText: "chip-spa-implentation-guides",
         question: "Where can I download CHIP eligibility SPA implementation guides?",
+        label: "New",
+        labelColor: "blue",
         answerJSX: (
           &lt;div&gt;
             &lt;section className="space-y-2"&gt;
@@ -4966,7 +5014,7 @@ export const oneMACFAQContent: FAQContent[] = [
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2025-06-27T02:18:33.220Z
+                at 2025-06-27T17:24:53.971Z
             </div>
         <script src="../../../../../prettify.js"></script>
         <script>
