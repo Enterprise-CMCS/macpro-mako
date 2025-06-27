@@ -504,8 +504,9 @@ export const oneMACFAQContent: FAQContent[] = [
         question: "What are the attachments for a CHIP SPA?",
         answerJSX: (
           <>
-            <p>Note: “*” indicates a required attachment.</p>
-            <table className="faq-table  border-collapse border border-gray-300 w-full ">
+            <p className="font-bold"> CHIP SPA Attachment Types: </p>
+            <p className="ml-12"> Note: “*” indicates a required attachment.</p>
+            <table className="faq-table ml-12 border-collapse border border-gray-300 w-full ">
               <tbody>
                 <tr>
                   <th className="border border-gray-300 px-4 py-2">Attachment Name</th>
@@ -519,7 +520,9 @@ export const oneMACFAQContent: FAQContent[] = [
                   </td>
                 </tr>
                 <tr>
-                  <td className="border border-gray-300 px-4 py-2">Amended State Plan Pages*</td>
+                  <td className="border border-gray-300 px-4 py-2 whitespace-nowrap">
+                    Amended State Plan Pages*
+                  </td>
                   <td className="border border-gray-300 px-4 py-2">
                     Track changes to only the current approved CHIP state plan pages that the State
                     is proposing to amend
@@ -561,15 +564,16 @@ export const oneMACFAQContent: FAQContent[] = [
                 </tr>
               </tbody>
             </table>
-            <p>Note: “*” indicates a required attachment.</p>
-            <table className="faq-eligibility-table  border-collapse border border-gray-300 w-full ">
+            <p className="font-bold mt-12 "> CHIP Eligibility SPA Attachment Types:</p>
+            <p className="ml-12">Note: “*” indicates a required attachment.</p>
+            <table className="faq-eligibility-table ml-12 border-collapse border border-gray-300 w-full ">
               <tbody>
                 <tr>
                   <th className="border border-gray-300 px-4 py-2">Attachment Name</th>
                   <th className="border border-gray-300 px-4 py-2">Description</th>
                 </tr>
                 <tr>
-                  <td className="border border-gray-300 px-4 py-2">
+                  <td className="border border-gray-300 px-4 py-2 whitespace-nowrap">
                     CHIP Eligibilty SPA Template*
                   </td>
                   <td className="border border-gray-300 px-4 py-2">
