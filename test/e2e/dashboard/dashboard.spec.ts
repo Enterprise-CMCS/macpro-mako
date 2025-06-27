@@ -9,8 +9,6 @@ test.describe("Dashboard page", { tag: ["@dashboard"] }, () => {
 
   test.describe("UI validations", { tag: ["@CI", "@smoke"] }, () => {
     test("nav banner updated", async ({ page }) => {
-      const url = await page.url();
-      console.log("am here: ", url);
       await expect(page.getByTestId("Home-d")).toBeVisible();
       await expect(page.getByTestId("Home-d")).toHaveText("Home");
       await expect(page.getByTestId("Home-d")).not.toHaveClass("underline");
