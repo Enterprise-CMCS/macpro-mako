@@ -56,6 +56,8 @@ export const MyProfile = () => {
     return isCMSWithManyRoles || isHelpDesk;
   }, [userProfile]);
 
+  const currentRoleObj = userProfile?.stateAccess.find((x) => x.role === userDetails.role);
+
   // Set initial value of showAddState based on pending roles
   useEffect(() => {
     if (!isDetailLoading && !isProfileLoading) {
@@ -191,7 +193,7 @@ export const MyProfile = () => {
             role={userRoleMap[userDetails?.role]}
             email={userDetails?.email}
             groupDivision={
-              userDetails?.division ? `${userDetails?.group}/${userDetails?.division}` : null
+              currentRoleObj.group ? `${currentRoleObj?.group}/${currentRoleObj?.division}` : null
             }
           />
           <div className="flex flex-col gap-6 md:basis-1/2">

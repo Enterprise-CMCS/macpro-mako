@@ -19,6 +19,8 @@ export type StateAccess = {
   role: string;
   territory: string;
   approverList?: Approver[];
+  group?: string;
+  division?: string;
 };
 
 export type OneMacUserProfile = {
