@@ -107,7 +107,7 @@ export const handler = async (event: APIGatewayEvent, context: any) => {
             region: process.env.region,
           });
           const invokeCommandInput = {
-            FunctionName: `${process.env.PROJECT}-${process.env.STAGE}-api-submitNOSO`,
+            FunctionName: `${process.env.project}-${process.env.stage}-api-submitNOSO`,
             Payload: Buffer.from(JSON.stringify(submitNOSOEventBody)),
           };
           console.log(invokeCommandInput, "OKKKKKK");

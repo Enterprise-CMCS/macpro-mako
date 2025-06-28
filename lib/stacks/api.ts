@@ -422,6 +422,8 @@ export class Api extends cdk.NestedStack {
           brokerString,
           osDomain: `https://${openSearchDomainEndpoint}`,
           indexNamespace,
+          project,
+          stage,
         },
         provisionedConcurrency: 2,
       },
