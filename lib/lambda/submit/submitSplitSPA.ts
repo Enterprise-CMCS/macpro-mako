@@ -95,11 +95,11 @@ export const handler = async (event: APIGatewayEvent, context: any) => {
       if (existingNewPackage?._source?.origin !== "OneMAC") {
         try {
           const splitSPANOSOEventBody = submitSplitSPANOSOAdminSchema.parse({
+            ...body,
             id: newSplitSPAId,
             authority: "Medicaid SPA",
             mockEvent: "new-medicaid-submission",
             adminChangeType: "NOSO",
-            ...body,
           });
 
           const submitNOSOEventBody = submitNOSOAdminSchema.parse(splitSPANOSOEventBody);
