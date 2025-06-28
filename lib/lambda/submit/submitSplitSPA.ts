@@ -89,10 +89,9 @@ export const handler = async (event: APIGatewayEvent, context: any) => {
 
     // if new split spa id exists and origin is undefined, it exists in seatool. copy data over
     const existingNewPackage = await getPackage(newSplitSPAId);
-    console.log(existingNewPackage, "EXISTING NEW PACKAGE");
+
     if (existingNewPackage) {
       // if exists in seatool, create NOSO
-      console.log("PACKAGE EXISTS", existingNewPackage);
       if (existingNewPackage?._source?.origin !== "OneMAC") {
         try {
           const submitNOSOEventBody = submitSplitSPANOSOAdminSchema.parse({
@@ -100,7 +99,12 @@ export const handler = async (event: APIGatewayEvent, context: any) => {
             authority: "Medicaid SPA",
             mockEvent: "new-medicaid-submission",
             adminChangeType: "NOSO",
-            ...body,
+            status: body.status,
+            submitterEmail: body.submitterEmail,
+            submissionDate: body.submissionDate,
+            proposedDate: body.proposedDate,
+            changeMade,
+            changeReason,
           });
           console.log(submitNOSOEventBody, "NOSO EVENT BODY");
           const lambdaClient = new LambdaClient({
