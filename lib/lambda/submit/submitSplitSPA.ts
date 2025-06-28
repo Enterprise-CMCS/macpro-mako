@@ -73,7 +73,7 @@ const sendSubmitSplitSPAMessage = async ({
   });
 };
 
-export const handler = async (event: APIGatewayEvent) => {
+export const handler = async (event: APIGatewayEvent, context: any) => {
   if (!event.body) {
     return response({
       statusCode: 400,
@@ -107,7 +107,7 @@ export const handler = async (event: APIGatewayEvent) => {
             region: process.env.region,
           });
           const invokeCommandInput = {
-            FunctionName: `${process.env.project}-${process.env.stage}-${process.env.stack}-submitNOSO`,
+            FunctionName: `${process.env.PROJECT}-${process.env.STAGE}-api-submitNOSO`,
             Payload: Buffer.from(JSON.stringify(submitNOSOEventBody)),
           };
           console.log(invokeCommandInput, "OKKKKKK");
