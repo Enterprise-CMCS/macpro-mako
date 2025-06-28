@@ -94,18 +94,15 @@ export const handler = async (event: APIGatewayEvent, context: any) => {
       // if exists in seatool, create NOSO
       if (existingNewPackage?._source?.origin !== "OneMAC") {
         try {
-          const submitNOSOEventBody = submitSplitSPANOSOAdminSchema.parse({
+          const splitSPANOSOEventBody = submitSplitSPANOSOAdminSchema.parse({
             id: newSplitSPAId,
             authority: "Medicaid SPA",
             mockEvent: "new-medicaid-submission",
             adminChangeType: "NOSO",
-            status: body.status,
-            submitterEmail: body.submitterEmail,
-            submissionDate: body.submissionDate,
-            proposedDate: body.proposedDate,
-            changeMade,
-            changeReason,
+            ...body,
           });
+
+          const submitNOSOEventBody = submitNOSOAdminSchema.parse(splitSPANOSOEventBody);
           console.log(submitNOSOEventBody, "NOSO EVENT BODY");
           const lambdaClient = new LambdaClient({
             region: process.env.region,
