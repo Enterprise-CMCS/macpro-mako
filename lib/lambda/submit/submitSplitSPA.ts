@@ -106,9 +106,11 @@ export const handler = async (event: APIGatewayEvent, context: any) => {
           const lambdaClient = new LambdaClient({
             region: process.env.region,
           });
+
+          const eventPayload = { body: JSON.stringify(submitNOSOEventBody) };
           const invokeCommandInput = {
             FunctionName: `${process.env.project}-${process.env.stage}-api-submitNOSO`,
-            Payload: Buffer.from(JSON.stringify(submitNOSOEventBody)),
+            Payload: Buffer.from(JSON.stringify(eventPayload)),
           };
           console.log(invokeCommandInput, "OKKKKKK");
           const invokeSubmitNOSO = await lambdaClient.send(new InvokeCommand(invokeCommandInput));
