@@ -100,4 +100,11 @@ export const featureFlags = {
     flag: "upgrade-mmdl-banner",
     defaultValue: true,
   },
+  /*
+   *  Toggle visibility between the new and upgrade faq labels
+   */
+  UPGRADE_NEW_LABEL: {
+    flag: "upgade-new-label",
+    defaultValue: true,
+  },
 } as const;
