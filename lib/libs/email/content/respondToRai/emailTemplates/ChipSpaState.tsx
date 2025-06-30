@@ -26,14 +26,14 @@ export const ChipSpaStateEmail = ({
           Name: variables.submitterName,
           "Email Address": variables.submitterEmail,
           [`${chipPrefix} SPA Package ID`]: variables.id,
-          "90th Day Deadline": formatNinetyDaysDate(variables.timestamp),
+          "90th Day Deadline": new Date(variables.timestamp).toString(),
           Summary: variables.additionalInformation,
         }}
       />
       <Text style={styles.text.description}>
         {`This response confirms receipt of your CHIP State Plan Amendment (SPA or your response to a
         SPA Request for Additional Information (RAI)). You can expect a formal response to your
-        submittal to be issued within 90 days, before ${formatNinetyDaysDate(variables.timestamp)}.`}
+        submittal to be issued within 90 days, before ${new Date(variables.timestamp).toString()}.`}
       </Text>
       <FollowUpNotice isChip withDivider={false} />
     </BaseEmailTemplate>
