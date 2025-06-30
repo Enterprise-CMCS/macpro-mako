@@ -144,7 +144,7 @@ export async function processRecord(kafkaRecord: KafkaRecord, config: ProcessEma
 
   if (isChipSpaRespondRAIEvent(parsedRecord)) {
     console.log("respond to rai event for package: ", parsedRecord.id);
-    ninetyDayExpirationClock = calculate90dayExpiration(parsedRecord, config);
+    ninetyDayExpirationClock = await calculate90dayExpiration(parsedRecord, config);
   }
 
   if (kafkaRecord.topic === "aws.seatool.ksql.onemac.three.agg.State_Plan") {
