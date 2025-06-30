@@ -8,7 +8,7 @@ import {
   DialogHeader,
   DialogTitle,
 } from "../Dialog";
-import { Button } from "../Inputs";
+import { Button, ButtonProps } from "../Inputs";
 
 export type ConfirmationModalProps = {
   open: boolean;
@@ -22,6 +22,7 @@ export type ConfirmationModalProps = {
   acceptButtonText?: string;
   cancelButtonVisible?: boolean;
   acceptButtonVisible?: boolean;
+  cancelVariant?: ButtonProps["variant"];
 };
 
 /** A modal with optional Cancel and Accept buttons */
@@ -37,6 +38,7 @@ export function ConfirmationDialog({
   cancelButtonText = "Cancel",
   acceptButtonVisible = true,
   cancelButtonVisible = true,
+  cancelVariant = "outline",
 }: ConfirmationModalProps) {
   return (
     <Dialog open={open} onOpenChange={onCancel}>
@@ -64,7 +66,7 @@ export function ConfirmationDialog({
           {cancelButtonVisible && (
             <Button
               type="button"
-              variant={"outline"}
+              variant={cancelVariant}
               onClick={onCancel}
               data-testid="dialog-cancel"
             >
