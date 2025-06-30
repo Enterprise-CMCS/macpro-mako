@@ -65,14 +65,22 @@ exports[`Faq > should display the items expected 1`] = `
                 <button
                   aria-controls="radix-:r9:"
                   aria-expanded="true"
-                  class="flex flex-1 items-center justify-between py-4 font-medium transition-all hover:underline [&[data-state=open]>svg]:rotate-180 text-left"
+                  class="flex flex-1 items-center justify-between py-4 font-medium transition-all [&[data-state=open]>svg]:rotate-180 text-left"
                   data-orientation="vertical"
                   data-radix-collection-item=""
                   data-state="open"
                   id="radix-:r8:"
                   type="button"
                 >
-                  What is FAQ 1?
+                  <div
+                    class="flex items-center gap-2"
+                  >
+                    <span
+                      class="hover:underline"
+                    >
+                      What is FAQ 1?
+                    </span>
+                  </div>
                   <svg
                     class="lucide lucide-chevron-down h-4 w-4 shrink-0 transition-transform duration-200"
                     fill="none"
@@ -124,14 +132,22 @@ exports[`Faq > should display the items expected 1`] = `
                 <button
                   aria-controls="radix-:rb:"
                   aria-expanded="false"
-                  class="flex flex-1 items-center justify-between py-4 font-medium transition-all hover:underline [&[data-state=open]>svg]:rotate-180 text-left"
+                  class="flex flex-1 items-center justify-between py-4 font-medium transition-all [&[data-state=open]>svg]:rotate-180 text-left"
                   data-orientation="vertical"
                   data-radix-collection-item=""
                   data-state="closed"
                   id="radix-:ra:"
                   type="button"
                 >
-                  What is FAQ 2?
+                  <div
+                    class="flex items-center gap-2"
+                  >
+                    <span
+                      class="hover:underline"
+                    >
+                      What is FAQ 2?
+                    </span>
+                  </div>
                   <svg
                     class="lucide lucide-chevron-down h-4 w-4 shrink-0 transition-transform duration-200"
                     fill="none"
