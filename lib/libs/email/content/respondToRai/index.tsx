@@ -46,6 +46,7 @@ export const respondToRai: AuthoritiesWithUserTypesTemplate = {
     cms: async (
       variables: Events["RespondToRai"] & CommonEmailVariables & { emails: EmailAddresses },
     ) => {
+      console.log("SENDING CMS Email")
       const chipPrefix = `CHIP${variables.isChipEligibility ? " Eligibility" : ""}`;
 
       return {
@@ -62,6 +63,7 @@ export const respondToRai: AuthoritiesWithUserTypesTemplate = {
     state: async (
       variables: Events["RespondToRai"] & CommonEmailVariables & { emails: EmailAddresses },
     ) => {
+      console.log("Sending State Email")
       const chipPrefix = `CHIP${variables.isChipEligibility ? " Eligibility" : ""}`;
 
       return {
