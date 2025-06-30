@@ -3,7 +3,6 @@ import { APIGatewayEvent } from "aws-lambda";
 import { produceMessage } from "libs/api/kafka";
 import { getPackage } from "libs/api/package";
 import { response } from "libs/handler-lib";
-// import { events } from "shared-types/events";
 import { ItemResult } from "shared-types/opensearch/main";
 import { z } from "zod";
 
@@ -12,8 +11,6 @@ import {
   submitSplitSPAAdminSchema,
   submitSplitSPANOSOAdminSchema,
 } from "../update/adminChangeSchemas";
-
-// import { getNextSplitSPAId } from "./getNextSplitSPAId";
 
 /** @typedef {object} json
  * @property {object} body
@@ -86,8 +83,6 @@ export const handler = async (event: APIGatewayEvent) => {
       submitSplitSPAAdminSchema.parse(body);
 
     const newSplitSPAId = `${id}-${newPackageIdSuffix}`;
-
-    // if new split spa id exists and origin is undefined, it exists in seatool. copy data over
     const existingNewPackage = await getPackage(newSplitSPAId);
 
     if (existingNewPackage) {
@@ -103,19 +98,18 @@ export const handler = async (event: APIGatewayEvent) => {
           });
 
           const submitNOSOEventBody = submitNOSOAdminSchema.parse(splitSPANOSOEventBody);
-          console.log(submitNOSOEventBody, "NOSO EVENT BODY");
+
           const lambdaClient = new LambdaClient({
             region: process.env.region,
           });
-
           const eventPayload = { body: JSON.stringify(submitNOSOEventBody) };
           const invokeCommandInput = {
             FunctionName: `${process.env.project}-${process.env.stage}-api-submitNOSO`,
             Payload: Buffer.from(JSON.stringify(eventPayload)),
           };
-          console.log(invokeCommandInput, "OKKKKKK");
+
           const invokeSubmitNOSO = await lambdaClient.send(new InvokeCommand(invokeCommandInput));
-          console.log(invokeSubmitNOSO, "INVOKE SUBMIT NOSO");
+
           return response({
             statusCode: invokeSubmitNOSO.StatusCode,
             body: { message: invokeSubmitNOSO.Payload },
