@@ -1,7 +1,7 @@
 import { Request } from "@middy/core";
 import { createError } from "@middy/util";
 import { getAuthDetails, lookupUserAttributes } from "libs/api/auth/user";
-import { FullUser, opensearch } from "shared-types";
+import { FullUser } from "shared-types";
 import { isCmsUser } from "shared-utils";
 
 import {
@@ -9,12 +9,7 @@ import {
   getLatestActiveRoleByEmail,
   getUserByEmail,
 } from "../user-management/userManagementService";
-
-export type MiddyUser = {
-  cognitoUser: FullUser;
-  userDetails: opensearch.users.Document | null;
-  userProfile: opensearch.roles.Document[];
-};
+import { setUser } from "./utils";
 
 export const isAuthenticated = () => ({
   before: async (request: Request) => {
@@ -59,12 +54,13 @@ export const isAuthenticated = () => ({
       );
     }
 
-    Object.assign(request.internal, {
-      user: {
+    setUser(
+      {
         cognitoUser,
         userDetails,
         userProfile,
-      } as MiddyUser,
-    });
+      },
+      request,
+    );
   },
 });

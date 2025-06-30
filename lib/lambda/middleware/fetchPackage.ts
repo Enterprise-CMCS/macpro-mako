@@ -2,6 +2,8 @@ import { Request } from "@middy/core";
 import { createError } from "@middy/util";
 import { getPackage } from "libs/api/package";
 
+import { setPackage } from "./utils";
+
 const defaults = {
   allowNotFound: false,
   setToContext: false,
@@ -31,11 +33,7 @@ export const fetchPackage = (opts: { allowNotFound?: boolean; setToContext?: boo
         throw createError(404, JSON.stringify({ message: "No record found for the given id" }));
       }
 
-      Object.assign(request.internal, { packageResult });
-
-      if (options.setToContext) {
-        Object.assign(request.context, { packageResult });
-      }
+      setPackage(packageResult, request, options.setToContext);
     },
   };
 };

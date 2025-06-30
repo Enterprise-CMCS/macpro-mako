@@ -1,7 +1,9 @@
 import { Request } from "@middy/core";
-import { createError, getInternal } from "@middy/util";
+import { createError } from "@middy/util";
 import { getPackageChangelog } from "libs/api/package";
-import { changelog, main } from "shared-types/opensearch";
+import { changelog } from "shared-types/opensearch";
+
+import { getPackage, setPackage } from "./utils";
 
 const defaults = {
   setToContext: false,
@@ -12,12 +14,12 @@ export const fetchChangelog = (opts: { setToContext?: boolean } = {}) => {
 
   return {
     before: async (request: Request) => {
-      const { packageResult } = (await getInternal("packageResult", request)) as {
-        packageResult: main.ItemResult;
-      };
+      const packageResult = await getPackage(request);
 
       if (!packageResult?._id) {
-        throw createError(500, JSON.stringify({ message: "Internal server error" }));
+        throw createError(500, JSON.stringify({ message: "Internal server error" }), {
+          expose: true,
+        });
       }
 
       const filter = [];
@@ -35,19 +37,17 @@ export const fetchChangelog = (opts: { setToContext?: boolean } = {}) => {
 
       const changelog = await getPackageChangelog(packageResult._id, filter);
 
-      const updatedPackage: main.ItemResult = {
-        ...packageResult,
-        _source: {
-          ...packageResult._source,
-          changelog: changelog.hits.hits as changelog.ItemResult[],
+      setPackage(
+        {
+          ...packageResult,
+          _source: {
+            ...packageResult._source,
+            changelog: changelog.hits.hits as changelog.ItemResult[],
+          },
         },
-      };
-
-      Object.assign(request.internal, { packageResult: updatedPackage });
-
-      if (options.setToContext) {
-        Object.assign(request.context, { packageResult: updatedPackage });
-      }
+        request,
+        options.setToContext,
+      );
     },
   };
 };

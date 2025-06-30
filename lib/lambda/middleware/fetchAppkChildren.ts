@@ -1,7 +1,9 @@
 import { Request } from "@middy/core";
-import { createError, getInternal } from "@middy/util";
+import { createError } from "@middy/util";
 import { getAppkChildren } from "libs/api/package";
 import { ItemResult } from "shared-types/opensearch/main";
+
+import { getPackage } from "./utils";
 
 const defaults = {
   setToContext: false,
@@ -12,12 +14,12 @@ export const fetchAppkChildren = (opts: { setToContext?: boolean } = {}) => {
 
   return {
     before: async (request: Request) => {
-      const { packageResult } = (await getInternal("packageResult", request)) as {
-        packageResult: ItemResult;
-      };
+      const packageResult = await getPackage(request);
 
       if (!packageResult?._id) {
-        throw createError(500, JSON.stringify({ message: "Internal server error" }));
+        throw createError(500, JSON.stringify({ message: "Internal server error" }), {
+          expose: true,
+        });
       }
 
       let appkChildren: any[] = [];
