@@ -73,7 +73,7 @@ const sendSubmitSplitSPAMessage = async ({
   });
 };
 
-export const handler = async (event: APIGatewayEvent, context: any) => {
+export const handler = async (event: APIGatewayEvent) => {
   if (!event.body) {
     return response({
       statusCode: 400,
@@ -156,7 +156,7 @@ export const handler = async (event: APIGatewayEvent, context: any) => {
     if (err instanceof z.ZodError) {
       return response({
         statusCode: 400,
-        body: { message: err.errors },
+        body: { message: err },
       });
     }
     return response({
