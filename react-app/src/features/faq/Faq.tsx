@@ -56,11 +56,25 @@ export const Faq = () => {
   ];
 
   const filteredFAQContent = oneMACFAQContent.map((section) => {
-    if (section.sectionTitle === "State Plan Amendments (SPAs)" && isBannerHidden) {
-      return {
-        ...section,
-        qanda: section.qanda.filter((qa) => !anchorsToHide.includes(qa.anchorText)),
-      };
+    if (section.sectionTitle === "State Plan Amendments (SPAs)") {
+      const filteredQanda = isBannerHidden
+        ? section.qanda.filter((qa) => !anchorsToHide.includes(qa.anchorText))
+        : section.qanda;
+
+      const existingQanda = filteredQanda.filter((qa) => qa.anchorText !== "chip-spa-attachments");
+
+      // Find the correct index for chip-spa-attachments to appear before RAI question
+      const raiIndex = existingQanda.findIndex(
+        (qa) => qa.anchorText === "chip-spa-rai-attachments",
+      );
+
+      const updatedQanda = [
+        ...existingQanda.slice(0, raiIndex),
+        chipSpaFAQ,
+        ...existingQanda.slice(raiIndex),
+      ];
+
+      return { ...section, qanda: updatedQanda };
     }
     return section;
   });
