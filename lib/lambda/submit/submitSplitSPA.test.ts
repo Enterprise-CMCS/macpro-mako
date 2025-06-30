@@ -2,7 +2,7 @@ import {
   getRequestContext,
   TEST_CHIP_SPA_ITEM,
   TEST_MED_SPA_ITEM,
-  TEST_SPA_ITEM_TO_SPLIT,
+  TEST_SPA_ITEM_FROM_SEATOOL,
 } from "mocks";
 import { APIGatewayEvent } from "shared-types";
 import { beforeEach, describe, expect, it, vi } from "vitest";
@@ -29,7 +29,7 @@ describe("handler", () => {
 
   it("should return 404 if package ID is not found", async () => {
     const invalidPackage = {
-      body: JSON.stringify({ packageId: "MD-25-9999" }),
+      body: JSON.stringify({ id: "MD-25-9999", newPackageIdSuffix: "A" }),
     } as unknown as APIGatewayEvent;
 
     const result = await handler(invalidPackage);
@@ -39,7 +39,7 @@ describe("handler", () => {
 
   it("should throw an error if not Medicaid SPA", async () => {
     const chipSPAPackage = {
-      body: JSON.stringify({ packageId: TEST_CHIP_SPA_ITEM._id }),
+      body: JSON.stringify({ id: TEST_CHIP_SPA_ITEM._id, newPackageIdSuffix: "A" }),
       requestContext: getRequestContext(),
     } as APIGatewayEvent;
 
@@ -63,7 +63,8 @@ describe("handler", () => {
 
     const noActionevent = {
       body: JSON.stringify({
-        packageId: TEST_MED_SPA_ITEM._id,
+        id: TEST_MED_SPA_ITEM._id,
+        newPackageIdSuffix: "A",
       }),
     } as APIGatewayEvent;
 
@@ -72,18 +73,29 @@ describe("handler", () => {
 
   it("should create a split SPA", async () => {
     const medSPAPackage = {
-      body: JSON.stringify({ packageId: TEST_MED_SPA_ITEM._id }),
+      body: JSON.stringify({ id: TEST_MED_SPA_ITEM._id, newPackageIdSuffix: "A" }),
     } as unknown as APIGatewayEvent;
 
     const result = await handler(medSPAPackage);
     expect(result?.statusCode).toEqual(200);
   });
 
-  it("should fail if unable to get next split SPA suffix", async () => {
+  it("should create a NOSO if package exists in SEAtool", async () => {
     const medSPAPackage = {
-      body: JSON.stringify({ packageId: TEST_SPA_ITEM_TO_SPLIT }),
+      body: JSON.stringify({
+        id: TEST_SPA_ITEM_FROM_SEATOOL._id,
+        newPackageIdSuffix: "A",
+        changeMade: "Test change reason",
+        changeReason: "This is a test",
+        status: "Submitted",
+        submitterEmail: "[george@example.com](mailto:george@example.com)",
+        submitterName: "George Harrison",
+        submissionDate: "06/26/2025 11:00:00 AM",
+        proposedDate: "06/26/2025",
+      }),
     } as unknown as APIGatewayEvent;
 
-    await expect(handler(medSPAPackage)).rejects.toThrow("This package can't be further split.");
+    const result = await handler(medSPAPackage);
+    expect(result?.statusCode).toEqual(200);
   });
 });

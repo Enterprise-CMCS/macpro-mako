@@ -1,5 +1,6 @@
 import * as cdk from "aws-cdk-lib";
 import { AnyPrincipal, Effect, PolicyStatement } from "aws-cdk-lib/aws-iam";
+import * as iam from "aws-cdk-lib/aws-iam";
 import { NodejsFunction } from "aws-cdk-lib/aws-lambda-nodejs";
 import { BlockPublicAccess, Bucket, BucketEncryption } from "aws-cdk-lib/aws-s3";
 import { Construct } from "constructs";
@@ -170,6 +171,17 @@ export class Api extends cdk.NestedStack {
         logGroup,
         bundling: commonBundlingOptions,
       });
+
+      // if (id === "submitSplitSPA") {
+      //   fn.role?.addToPrincipalPolicy(
+      //     new iam.PolicyStatement({
+      //       actions: ["lambda:InvokeFunction"],
+      //       resources: [
+      //         `arn:aws:lambda:${this.region}:${this.account}:function:${project}-${stage}-${stack}-submitNOSO`,
+      //       ],
+      //     }),
+      //   );
+      // }
 
       if (provisionedConcurrency > 0) {
         const version = fn.currentVersion;
@@ -410,6 +422,8 @@ export class Api extends cdk.NestedStack {
           brokerString,
           osDomain: `https://${openSearchDomainEndpoint}`,
           indexNamespace,
+          project,
+          stage,
         },
         provisionedConcurrency: 2,
       },
@@ -448,6 +462,15 @@ export class Api extends cdk.NestedStack {
         return acc;
       },
       {} as { [key: string]: NodejsFunction },
+    );
+
+    lambdas.submitSplitSPA.role?.addToPrincipalPolicy(
+      new iam.PolicyStatement({
+        actions: ["lambda:InvokeFunction"],
+        resources: [
+          `arn:aws:lambda:${this.region}:${this.account}:function:${project}-${stage}-${stack}-submitNOSO`,
+        ],
+      }),
     );
 
     // Create IAM role for API Gateway to invoke Lambda functions

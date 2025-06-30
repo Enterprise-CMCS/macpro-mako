@@ -24,8 +24,9 @@ export const RAI_WITHDRAWAL_ID = "MD-0005.R01.07";
 export const TEST_SPA_ITEM_ID = "MD-11-2020";
 export const TEST_SPA_ITEM_RAI_ID = "MD-11-2022";
 export const TEST_PACKAGE_STATUS_ID = "MD-11-2021";
-export const TEST_SPA_ITEM_TO_SPLIT = "MD-12-2020";
-export const TEST_SPLIT_SPA_ITEM_ID = "MD-12-2020-Z";
+export const TEST_SPA_ITEM_FROM_SEATOOL_ID = "MD-12-2022";
+// export const TEST_SPA_ITEM_TO_SPLIT = "MD-12-2020";
+// export const TEST_SPLIT_SPA_ITEM_ID = "MD-12-2020-Z";
 export const EXISTING_ITEM_TEMPORARY_EXTENSION_ID = "MD-0005.R01.TE00";
 export const HI_TEST_ITEM_ID = "HI-0000.R00.00";
 export const CAPITATED_INITIAL_ITEM_ID = "SS-2234.R00.00";
@@ -647,52 +648,25 @@ const items: Record<string, TestItemResult> = {
       authority: "Medicaid SPA",
     },
   },
-  [TEST_SPA_ITEM_TO_SPLIT]: {
-    _id: TEST_SPA_ITEM_TO_SPLIT,
+  [TEST_SPA_ITEM_FROM_SEATOOL_ID]: {
+    _id: TEST_SPA_ITEM_FROM_SEATOOL_ID,
     found: true,
     _source: {
-      id: TEST_SPA_ITEM_TO_SPLIT,
+      id: TEST_SPA_ITEM_FROM_SEATOOL_ID,
       seatoolStatus: SEATOOL_STATUS.APPROVED,
       stateStatus: statusToDisplayToStateUser[SEATOOL_STATUS.APPROVED],
       cmsStatus: statusToDisplayToCmsUser[SEATOOL_STATUS.APPROVED],
       actionType: "New",
       state: "MD",
-      origin: "OneMAC",
       changedDate: "2024-11-26T18:17:21.557Z",
       makoChangedDate: "2024-11-26T18:17:21.557Z",
       changelog: [
         {
-          _id: `${TEST_SPA_ITEM_TO_SPLIT}-001`,
+          _id: `${TEST_SPA_ITEM_FROM_SEATOOL_ID}-001`,
           _source: {
-            id: `${TEST_SPA_ITEM_TO_SPLIT}-0001`,
+            id: `${TEST_SPA_ITEM_FROM_SEATOOL_ID}-0001`,
             event: "new-medicaid-submission",
-            packageId: TEST_SPA_ITEM_TO_SPLIT,
-          },
-        },
-      ],
-      authority: "Medicaid SPA",
-    },
-  },
-  [TEST_SPLIT_SPA_ITEM_ID]: {
-    _id: TEST_SPLIT_SPA_ITEM_ID,
-    found: true,
-    _source: {
-      id: TEST_SPLIT_SPA_ITEM_ID,
-      seatoolStatus: SEATOOL_STATUS.APPROVED,
-      stateStatus: statusToDisplayToStateUser[SEATOOL_STATUS.APPROVED],
-      cmsStatus: statusToDisplayToCmsUser[SEATOOL_STATUS.APPROVED],
-      actionType: "New",
-      state: "MD",
-      origin: "OneMAC",
-      changedDate: "2024-11-26T18:17:21.557Z",
-      makoChangedDate: "2024-11-26T18:17:21.557Z",
-      changelog: [
-        {
-          _id: `${TEST_SPLIT_SPA_ITEM_ID}-001`,
-          _source: {
-            id: `${TEST_SPLIT_SPA_ITEM_ID}-0001`,
-            event: "new-medicaid-submission",
-            packageId: TEST_SPLIT_SPA_ITEM_ID,
+            packageId: TEST_SPA_ITEM_FROM_SEATOOL_ID,
           },
         },
       ],
@@ -1408,6 +1382,9 @@ const items: Record<string, TestItemResult> = {
   },
 };
 export const TEST_PACKAGE_STATUS_ITEM = items[TEST_PACKAGE_STATUS_ID] as opensearch.main.ItemResult;
+export const TEST_SPA_ITEM_FROM_SEATOOL = items[
+  TEST_SPA_ITEM_FROM_SEATOOL_ID
+] as opensearch.main.ItemResult;
 export const TEST_MED_SPA_ITEM = items[TEST_SPA_ITEM_ID] as opensearch.main.ItemResult;
 export const TEST_MED_SPA_RAI_ITEM = items[TEST_SPA_ITEM_RAI_ID] as opensearch.main.ItemResult;
 export const TEST_CHIP_SPA_ITEM = items[WITHDRAWN_CHANGELOG_ITEM_ID] as opensearch.main.ItemResult;
