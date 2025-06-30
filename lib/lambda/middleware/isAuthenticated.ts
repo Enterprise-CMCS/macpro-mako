@@ -1,0 +1,68 @@
+import { Request } from "@middy/core";
+import { createError } from "@middy/util";
+import { getAuthDetails, lookupUserAttributes } from "libs/api/auth/user";
+import { FullUser, opensearch } from "shared-types";
+import { isCmsUser } from "shared-utils";
+
+import {
+  getAllUserRolesByEmail,
+  getLatestActiveRoleByEmail,
+  getUserByEmail,
+} from "../user-management/userManagementService";
+
+export type MiddyUser = {
+  cognitoUser: FullUser;
+  userDetails: opensearch.users.Document | null;
+  userProfile: opensearch.roles.Document[];
+};
+
+export const isAuthenticated = () => ({
+  before: async (request: Request) => {
+    if (!request?.event?.requestContext?.identity?.cognitoAuthenticationProvider) {
+      // if you don't use the expose option here, you won't be able to see the error message
+      throw createError(500, JSON.stringify({ message: "No auth provider!" }), { expose: true });
+    }
+
+    const { userId, poolId } = getAuthDetails(request.event);
+    if (!userId || !poolId) {
+      throw createError(401, JSON.stringify({ message: "User not authenticated" }));
+    }
+
+    const userAttributes = await lookupUserAttributes(userId, poolId);
+    if (!userAttributes?.email) {
+      // if you don't use the expose option here, you won't be able to see the error message
+      throw createError(500, JSON.stringify({ message: "User is not valid" }), { expose: true });
+    }
+    const { email } = userAttributes;
+
+    const latestActiveRole = await getLatestActiveRoleByEmail(email);
+    if (!latestActiveRole) {
+      throw createError(403, JSON.stringify({ message: "User is not authorized" }));
+    }
+
+    const userProfile = await getAllUserRolesByEmail(email);
+    const activeRoles = userProfile.filter((role) => role.status === "active");
+
+    const userDetails = await getUserByEmail(email);
+
+    const cognitoUser: FullUser = {
+      ...userAttributes,
+      role: latestActiveRole.role ?? "norole",
+      states: [],
+    };
+
+    if (!isCmsUser(cognitoUser)) {
+      cognitoUser.states = Array.from(
+        new Set(activeRoles.map((role) => role.territory.toUpperCase())),
+      );
+    }
+
+    Object.assign(request.internal, {
+      user: {
+        cognitoUser,
+        userDetails,
+        userProfile,
+      } as MiddyUser,
+    });
+  },
+});

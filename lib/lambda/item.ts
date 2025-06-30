@@ -1,79 +1,56 @@
-import { APIGatewayEvent } from "aws-lambda";
-import { validateEnvVariable } from "shared-utils";
+import middy from "@middy/core";
+import httpErrorHandler from "@middy/http-error-handler";
+import httpJsonBodyParser from "@middy/http-json-body-parser";
+import validator from "@middy/validator";
+import { transpileSchema } from "@middy/validator/transpile";
+import { APIGatewayEvent, Context } from "aws-lambda";
+import { response } from "libs/handler-lib";
+import { ItemResult } from "shared-types/opensearch/main";
 
-import { getStateFilter } from "../libs/api/auth/user";
-import { getAppkChildren, getPackage, getPackageChangelog } from "../libs/api/package";
-import { response } from "../libs/handler-lib";
-import { handleOpensearchError } from "./utils";
+import {
+  canViewPackage,
+  fetchAppkChildren,
+  fetchChangelog,
+  fetchPackage,
+  isAuthenticated,
+  normalizeEvent,
+} from "./middleware";
 
-export const getItemData = async (event: APIGatewayEvent) => {
-  validateEnvVariable("osDomain");
-  if (!event.body) {
-    return response({
-      statusCode: 400,
-      body: { message: "Event body required" },
-    });
-  }
-
-  try {
-    const body = JSON.parse(event.body);
-
-    const packageResult = await getPackage(body.id);
-    if (packageResult === undefined || !packageResult.found) {
-      return response({
-        statusCode: 404,
-        body: { message: "No record found for the given id" },
-      });
-    }
-
-    const stateFilter = await getStateFilter(event);
-    if (
-      stateFilter &&
-      (!packageResult?._source.state ||
-        !stateFilter.terms.state.includes(packageResult._source.state.toLocaleLowerCase()))
-    ) {
-      return response({
-        statusCode: 401,
-        body: { message: "Not authorized to view this resource" },
-      });
-    }
-
-    let appkChildren: any[] = [];
-    if (packageResult?._source?.appkParent) {
-      const children = await getAppkChildren(body.id);
-      appkChildren = children.hits.hits;
-    }
-    const filter = [];
-    // This is to handle hard deletes in legacy
-    if (
-      packageResult?._source?.legacySubmissionTimestamp !== null &&
-      packageResult?._source?.legacySubmissionTimestamp !== undefined
-    ) {
-      filter.push({
-        range: {
-          timestamp: {
-            gte: new Date(packageResult._source.legacySubmissionTimestamp).getTime(),
-          },
-        },
-      });
-    }
-
-    const changelog = await getPackageChangelog(body.id, filter);
-
-    return response<unknown>({
-      statusCode: 200,
-      body: {
-        ...packageResult,
-        _source: {
-          ...packageResult._source,
-          ...(!!appkChildren.length && { appkChildren }),
-          changelog: changelog.hits.hits,
+const eventSchema = {
+  type: "object",
+  properties: {
+    body: {
+      type: "object",
+      required: ["id"],
+      properties: {
+        id: {
+          type: "string",
         },
       },
-    });
-  } catch (error) {
-    return response(handleOpensearchError(error));
-  }
+    },
+  },
 };
 
-export const handler = getItemData;
+export const handler = middy()
+  .use(httpErrorHandler())
+  .use(normalizeEvent({ opensearch: true }))
+  .use(httpJsonBodyParser())
+  .use(validator({ eventSchema: transpileSchema(eventSchema) }))
+  .use(isAuthenticated())
+  .use(fetchPackage({ setToContext: true }))
+  .use(canViewPackage())
+  .use(fetchAppkChildren({ setToContext: true }))
+  .use(fetchChangelog({ setToContext: true }))
+  .handler(
+    async (
+      event: APIGatewayEvent & { body: { id: string } },
+      context: Context & { packageResult: ItemResult },
+    ) => {
+      const { packageResult } = context;
+
+      return response<unknown>({
+        statusCode: 200,
+        body: packageResult,
+      });
+    },
+  );

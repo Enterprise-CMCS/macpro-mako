@@ -772,10 +772,12 @@ export const getLatestRoleByEmail = (email: string) =>
   roleResults
     .filter((role) => role?._source?.email === email && role?._source?.status === "active")
     .sort((a, b) => {
-      if (a?._source?.lastModifiedDate > b?._source?.lastModifiedDate) {
+      const lastModifiedDateA = a?._source?.lastModifiedDate || 0;
+      const lastModifiedDateB = b?._source?.lastModifiedDate || 0;
+      if (lastModifiedDateA > lastModifiedDateB) {
         return -1;
       }
-      if (a?._source?.lastModifiedDate < b?._source?.lastModifiedDate) {
+      if (lastModifiedDateA < lastModifiedDateB) {
         return 1;
       }
       return 0;

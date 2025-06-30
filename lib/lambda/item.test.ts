@@ -1,9 +1,10 @@
-import { APIGatewayEvent } from "aws-lambda";
+import { APIGatewayEvent, Context } from "aws-lambda";
 import {
   GET_ERROR_ITEM_ID,
   getRequestContext,
   HI_TEST_ITEM_ID,
   NOT_FOUND_ITEM_ID,
+  setMockUsername,
   WITHDRAWN_CHANGELOG_ITEM_ID,
 } from "mocks";
 import items from "mocks/data/items";
@@ -15,23 +16,37 @@ describe("getItemData Handler", () => {
   it("should return 400 if event body is missing", async () => {
     const event = {} as APIGatewayEvent;
 
-    const res = await handler(event);
+    const res = await handler(event, {} as Context);
 
     expect(res).toBeTruthy();
     expect(res.statusCode).toEqual(400);
     expect(res.body).toEqual(JSON.stringify({ message: "Event body required" }));
   });
 
-  it("should return 401 if not authorized to view this resource", async () => {
+  it("should return 401 if not authenticated", async () => {
+    setMockUsername(null);
     const event = {
       body: JSON.stringify({ id: HI_TEST_ITEM_ID }),
       requestContext: getRequestContext(),
     } as APIGatewayEvent;
 
-    const res = await handler(event);
+    const res = await handler(event, {} as Context);
 
     expect(res).toBeTruthy();
     expect(res.statusCode).toEqual(401);
+    expect(res.body).toEqual(JSON.stringify({ message: "User not authenticated" }));
+  });
+
+  it("should return 403 if not authorized to view this resource", async () => {
+    const event = {
+      body: JSON.stringify({ id: HI_TEST_ITEM_ID }),
+      requestContext: getRequestContext(),
+    } as APIGatewayEvent;
+
+    const res = await handler(event, {} as Context);
+
+    expect(res).toBeTruthy();
+    expect(res.statusCode).toEqual(403);
     expect(res.body).toEqual(JSON.stringify({ message: "Not authorized to view this resource" }));
   });
 
@@ -41,7 +56,7 @@ describe("getItemData Handler", () => {
       requestContext: getRequestContext(),
     } as APIGatewayEvent;
 
-    const res = await handler(event);
+    const res = await handler(event, {} as Context);
 
     expect(res).toBeTruthy();
     expect(res.statusCode).toEqual(404);
@@ -56,7 +71,7 @@ describe("getItemData Handler", () => {
       requestContext: getRequestContext(),
     } as APIGatewayEvent;
 
-    const res = await handler(event);
+    const res = await handler(event, {} as Context);
 
     expect(res).toBeTruthy();
     expect(res.statusCode).toEqual(200);
@@ -69,7 +84,7 @@ describe("getItemData Handler", () => {
       requestContext: getRequestContext(),
     } as APIGatewayEvent;
 
-    const res = await handler(event);
+    const res = await handler(event, {} as Context);
 
     expect(res).toBeTruthy();
     expect(res.statusCode).toEqual(500);

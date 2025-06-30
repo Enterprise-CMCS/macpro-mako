@@ -1,4 +1,4 @@
-import { APIGatewayEvent } from "aws-lambda";
+import { APIGatewayEvent, Context } from "aws-lambda";
 import { GET_ERROR_ITEM_ID, NOT_EXISTING_ITEM_ID, NOT_FOUND_ITEM_ID, TEST_ITEM_ID } from "mocks";
 import { describe, expect, it } from "vitest";
 
@@ -8,7 +8,7 @@ describe("Handler for checking if record exists", () => {
   it("should return 400 if event body is missing", async () => {
     const event = {} as APIGatewayEvent;
 
-    const res = await handler(event);
+    const res = await handler(event, {} as Context);
 
     expect(res).toBeTruthy();
     expect(res.statusCode).toEqual(400);
@@ -19,7 +19,7 @@ describe("Handler for checking if record exists", () => {
       body: JSON.stringify({ id: TEST_ITEM_ID }),
     } as APIGatewayEvent;
 
-    const res = await handler(event);
+    const res = await handler(event, {} as Context);
 
     expect(res).toBeTruthy();
     expect(res.statusCode).toEqual(200);
@@ -33,7 +33,7 @@ describe("Handler for checking if record exists", () => {
       body: JSON.stringify({ id: NOT_FOUND_ITEM_ID }),
     } as APIGatewayEvent;
 
-    const res = await handler(event);
+    const res = await handler(event, {} as Context);
 
     expect(res).toBeTruthy();
     expect(res.statusCode).toEqual(200);
@@ -47,7 +47,7 @@ describe("Handler for checking if record exists", () => {
       body: JSON.stringify({ id: NOT_EXISTING_ITEM_ID }),
     } as APIGatewayEvent;
 
-    const res = await handler(event);
+    const res = await handler(event, {} as Context);
 
     expect(res).toBeTruthy();
     expect(res.statusCode).toEqual(200);
@@ -61,7 +61,7 @@ describe("Handler for checking if record exists", () => {
       body: JSON.stringify({ id: GET_ERROR_ITEM_ID }),
     } as APIGatewayEvent;
 
-    const res = await handler(event);
+    const res = await handler(event, {} as Context);
 
     expect(res).toBeTruthy();
     expect(res.statusCode).toEqual(200);
