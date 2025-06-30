@@ -4,7 +4,6 @@ import httpJsonBodyParser from "@middy/http-json-body-parser";
 import validator from "@middy/validator";
 import { transpileSchema } from "@middy/validator/transpile";
 import { APIGatewayEvent, Context } from "aws-lambda";
-import { response } from "libs/handler-lib";
 import { ItemResult } from "shared-types/opensearch/main";
 
 import {
@@ -48,9 +47,9 @@ export const handler = middy()
     ) => {
       const { packageResult } = context;
 
-      return response<unknown>({
+      return {
         statusCode: 200,
-        body: packageResult,
-      });
+        body: JSON.stringify(packageResult),
+      };
     },
   );

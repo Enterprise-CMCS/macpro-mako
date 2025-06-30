@@ -40,9 +40,7 @@ export const getRequestContext = (user?: TestUserData | string): APIGatewayEvent
     } as APIGatewayEventRequestContext;
   }
   return {
-    identity: {
-      cognitoAuthenticationProvider: `${COGNITO_IDP_DOMAIN},${COGNITO_IDP_DOMAIN}:`,
-    },
+    identity: {},
   } as APIGatewayEventRequestContext;
 };
 

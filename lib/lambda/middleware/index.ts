@@ -1,5 +1,5 @@
-export * from "./canViewPackage";
-export * from "./normalizeEvent";
+export * from "./hasPermissions";
+export * from "./normalizations";
 export * from "./isAuthenticated";
 export * from "./fetchAppkChildren";
 export * from "./fetchChangelog";

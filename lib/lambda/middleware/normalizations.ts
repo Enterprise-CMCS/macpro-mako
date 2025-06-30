@@ -4,9 +4,10 @@ import { validateEnvVariable } from "shared-utils";
 
 const defaults = {
   opensearch: false,
+  disableCors: false,
 };
 
-export const normalizeEvent = (opts: { opensearch?: boolean } = {}) => {
+export const normalizeEvent = (opts: { opensearch?: boolean; disableCors?: boolean } = {}) => {
   const options = { ...defaults, ...opts };
 
   return {
@@ -37,6 +38,16 @@ export const normalizeEvent = (opts: { opensearch?: boolean } = {}) => {
         request.event.headers = {
           ...request.event.headers,
           "Content-Type": "application/json",
+        };
+      }
+    },
+    after: async (request: Request) => {
+      if (!options.disableCors) {
+        request.response.headers = {
+          ...request.response.headers,
+          "Access-Control-Allow-Headers": "Content-Type",
+          "Access-Control-Allow-Origin": "*",
+          "Access-Control-Allow-Methods": "OPTIONS,POST,GET,PUT,DELETE",
         };
       }
     },
