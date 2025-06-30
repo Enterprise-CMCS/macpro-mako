@@ -1,6 +1,7 @@
 import { events } from "shared-types/events";
 import { z } from "zod";
 
+// Update package
 export const deleteAdminChangeSchema = z
   .object({
     id: z.string(),
@@ -36,14 +37,6 @@ export const updateIdAdminChangeSchema = z
   })
   .and(z.record(z.string(), z.any()));
 
-export const transformDeleteSchema = (offset: number) =>
-  deleteAdminChangeSchema.transform((data) => ({
-    ...data,
-    event: "delete",
-    packageId: data.id,
-    id: `${data.id}-${offset}`,
-  }));
-
 const AdminChangeSchema = z.object({
   changeTimestamp: z.number(),
   changeReason: z.string(),
@@ -62,6 +55,14 @@ export const legacyEventIdUpdateSchema = z.object({
   eventTimestamp: z.number(),
   submitterEmail: z.string().email(),
 });
+
+export const transformDeleteSchema = (offset: number) =>
+  deleteAdminChangeSchema.transform((data) => ({
+    ...data,
+    event: "delete",
+    packageId: data.id,
+    id: `${data.id}-${offset}`,
+  }));
 
 export const transformUpdateValuesSchema = (offset: number) =>
   updateValuesAdminChangeSchema.transform((data) => ({
@@ -87,6 +88,7 @@ export const submitSplitSPAAdminSchema = z.object({
   changeMade: z.string().optional(),
   changeReason: z.string().optional(),
 });
+export type SplitSPASubmission = z.infer<typeof submitSplitSPAAdminSchema>;
 
 // Split SPAs made from records only existing in SEAtool are NOSOs
 export const submitSplitSPANOSOAdminSchema = submitSplitSPAAdminSchema.extend({
@@ -119,6 +121,7 @@ export const transformedSplitSPASchema = splitSPAAdminChangeSchema.transform((da
   id: `${data.id}`,
 }));
 
+// NOSOs
 export const submitNOSOAdminSchema = z.object({
   id: z.string(),
   authority: z.string(),

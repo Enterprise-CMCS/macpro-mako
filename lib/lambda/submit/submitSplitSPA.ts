@@ -7,6 +7,7 @@ import { ItemResult } from "shared-types/opensearch/main";
 import { z } from "zod";
 
 import {
+  SplitSPASubmission,
   submitNOSOAdminSchema,
   submitSplitSPAAdminSchema,
   submitSplitSPANOSOAdminSchema,
@@ -42,15 +43,16 @@ const sendSubmitSplitSPAMessage = async ({
   const currentTime = Date.now();
 
   // ID and origin are excluded; the rest of the object has to be spread into the new package
-  const { id: _id, origin: _origin, ...remainingFields } = existingPackage._source;
+  // const { id: _id, origin: _origin, ...remainingFields } = existingPackage._source;
 
   await produceMessage(
     topicName,
     newSplitSPAId,
     JSON.stringify({
+      ...existingPackage._source,
       id: newSplitSPAId,
       idToBeUpdated: existingPackage._id,
-      ...remainingFields,
+      // ...remainingFields,
       makoChangedDate: currentTime,
       changedDate: currentTime,
       timestamp: currentTime,
@@ -70,6 +72,48 @@ const sendSubmitSplitSPAMessage = async ({
   });
 };
 
+const submitNOSOSplitSPAFromSeatool = async (
+  eventBody: SplitSPASubmission,
+  newSplitSPAId: string,
+) => {
+  try {
+    const splitSPANOSOEventBody = submitSplitSPANOSOAdminSchema.parse({
+      ...eventBody,
+      id: newSplitSPAId,
+      authority: "Medicaid SPA",
+      mockEvent: "new-medicaid-submission",
+      adminChangeType: "NOSO",
+    });
+
+    const submitNOSOEventBody = submitNOSOAdminSchema.parse(splitSPANOSOEventBody);
+
+    const lambdaClient = new LambdaClient({
+      region: process.env.region,
+    });
+    const eventPayload = { body: JSON.stringify(submitNOSOEventBody) };
+    const invokeCommandInput = {
+      FunctionName: `${process.env.project}-${process.env.stage}-api-submitNOSO`,
+      Payload: Buffer.from(JSON.stringify(eventPayload)),
+    };
+
+    const invokeSubmitNOSO = await lambdaClient.send(new InvokeCommand(invokeCommandInput));
+
+    return response({
+      statusCode: invokeSubmitNOSO.StatusCode,
+      body: { message: `New Medicaid Split SPA ${newSplitSPAId} has been created.` },
+    });
+  } catch (error) {
+    return response({
+      statusCode: 500,
+      body: { message: error },
+    });
+  }
+};
+
+const isFromSeatool = (existingPackage: ItemResult): boolean => {
+  return existingPackage?._source.origin !== "OneMAC";
+};
+
 export const handler = async (event: APIGatewayEvent) => {
   if (!event.body) {
     return response({
@@ -87,48 +131,16 @@ export const handler = async (event: APIGatewayEvent) => {
 
     if (existingNewPackage) {
       // if exists in seatool, create NOSO
-      if (existingNewPackage?._source?.origin !== "OneMAC") {
-        try {
-          const splitSPANOSOEventBody = submitSplitSPANOSOAdminSchema.parse({
-            ...body,
-            id: newSplitSPAId,
-            authority: "Medicaid SPA",
-            mockEvent: "new-medicaid-submission",
-            adminChangeType: "NOSO",
-          });
-
-          const submitNOSOEventBody = submitNOSOAdminSchema.parse(splitSPANOSOEventBody);
-
-          const lambdaClient = new LambdaClient({
-            region: process.env.region,
-          });
-          const eventPayload = { body: JSON.stringify(submitNOSOEventBody) };
-          const invokeCommandInput = {
-            FunctionName: `${process.env.project}-${process.env.stage}-api-submitNOSO`,
-            Payload: Buffer.from(JSON.stringify(eventPayload)),
-          };
-
-          const invokeSubmitNOSO = await lambdaClient.send(new InvokeCommand(invokeCommandInput));
-
-          return response({
-            statusCode: invokeSubmitNOSO.StatusCode,
-            body: { message: invokeSubmitNOSO.Payload },
-          });
-        } catch (error) {
-          return response({
-            statusCode: 500,
-            body: { message: error },
-          });
-        }
-      } else {
-        return response({
-          statusCode: 400,
-          body: { message: "This split SPA ID already exists in OneMAC" },
-        });
+      if (isFromSeatool(existingNewPackage)) {
+        return await submitNOSOSplitSPAFromSeatool(body, newSplitSPAId);
       }
+      return response({
+        statusCode: 400,
+        body: { message: "This split SPA ID already exists in OneMAC" },
+      });
     }
 
-    // if new new package ID doesnt exist, check if original package exists and create a new one
+    // if new package ID doesnt exist, check if original package exists and create a new one
     const existingPackage = await getPackage(id);
     if (existingPackage === undefined || !existingPackage.found) {
       return response({
@@ -146,11 +158,11 @@ export const handler = async (event: APIGatewayEvent) => {
 
     return sendSubmitSplitSPAMessage({ existingPackage, newSplitSPAId, changeMade, changeReason });
   } catch (err) {
-    console.error("Error has occured modifying package:", err);
+    console.error("Error has occurred modifying package:", err);
     if (err instanceof z.ZodError) {
       return response({
         statusCode: 400,
-        body: { message: err },
+        body: { message: "Zod validation failed", issues: err.issues },
       });
     }
     return response({
