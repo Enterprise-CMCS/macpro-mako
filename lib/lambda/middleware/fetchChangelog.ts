@@ -17,10 +17,7 @@ export const fetchChangelog = (opts: { setToContext?: boolean } = {}) => {
       };
 
       if (!packageResult?._id) {
-        // if you don't use the expose option here, you won't be able to see the error message
-        throw createError(500, JSON.stringify({ message: "Internal server error" }), {
-          expose: true,
-        });
+        throw createError(500, JSON.stringify({ message: "Internal server error" }));
       }
 
       const filter = [];
