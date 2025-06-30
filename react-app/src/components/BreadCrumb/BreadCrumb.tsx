@@ -45,6 +45,38 @@ type BreadCrumbProps = {
   active?: boolean;
   showSeperator?: boolean;
   seperator?: ReactNode;
+  children?: string;
+};
+
+const triggerGAEvent = (children: string | undefined) => {
+  const pathName = window.location.pathname;
+  let submissionType;
+  if (pathName.includes("chip")) {
+    submissionType = "chip";
+  } else if (pathName.includes("medicaid")) {
+    submissionType = "medicaid";
+  } else if (pathName.includes("temporary-extensions")) {
+    submissionType = "temporary-extension";
+  } else if (pathName.includes("/waiver/b/b4/initial")) {
+    submissionType = "1915b_waiver_initial";
+  } else if (pathName.includes("/waiver/b/b4/renewal/")) {
+    submissionType = "1915b_waiver_renewal";
+  } else if (pathName.includes("/waiver/b/b4/amendment/")) {
+    submissionType = "1915b_waiver_ammendment";
+  } else if (pathName.includes("/waiver/app-k")) {
+    submissionType = "app-k";
+  }
+
+  if (submissionType) {
+    sendGAEvent("submit_breadcrumb_click", {
+      crumb_name: typeof children === "string" ? children : undefined,
+      submission_type: submissionType,
+    });
+  } else {
+    sendGAEvent("breadcrumb_click", {
+      breadcrumb_text: typeof children === "string" ? children : undefined,
+    });
+  }
 };
 
 export const BreadCrumb = ({
@@ -63,34 +95,7 @@ export const BreadCrumb = ({
           to={to}
           className="underline text-sky-700 hover:text-sky-800"
           onClick={() => {
-            const pathName = window.location.pathname;
-            let submissionType;
-            if (pathName.includes("chip")) {
-              submissionType = "chip";
-            } else if (pathName.includes("medicaid")) {
-              submissionType = "medicaid";
-            } else if (pathName.includes("temporary-extensions")) {
-              submissionType = "temporary-extension";
-            } else if (pathName.includes("/waiver/b/b4/initial")) {
-              submissionType = "1915b_waiver_initial";
-            } else if (pathName.includes("/waiver/b/b4/renewal/")) {
-              submissionType = "1915b_waiver_renewal";
-            } else if (pathName.includes("/waiver/b/b4/amendment/")) {
-              submissionType = "1915b_waiver_ammendment";
-            } else if (pathName.includes("/waiver/app-k")) {
-              submissionType = "app-k";
-            }
-
-            if (submissionType) {
-              sendGAEvent("submit_breadcrumb_click", {
-                crumb_name: typeof children === "string" ? children : undefined,
-                submission_type: submissionType,
-              });
-            } else {
-              sendGAEvent("breadcrumb_click", {
-                breadcrumb_text: typeof children === "string" ? children : undefined,
-              });
-            }
+            triggerGAEvent(children);
           }}
         >
           {children}

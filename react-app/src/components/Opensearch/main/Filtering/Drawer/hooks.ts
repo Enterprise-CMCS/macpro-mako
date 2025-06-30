@@ -61,6 +61,35 @@ export const useFilterState = () => {
   return useState(filters);
 };
 
+const triggerGAEvent = (field: opensearch.main.Field, value: opensearch.FilterValue) => {
+  // --- GA4 Event Tracking Logic ---
+  const filterKey = field;
+  let eventValue: string;
+
+  // Format the `value` parameter based on its data type.
+  if (typeof value === "string") {
+    eventValue = value;
+  } else if (Array.isArray(value)) {
+    // For a 'terms' filter, join the array. If empty, the filter was cleared.
+    eventValue = value.length > 0 ? value.join(", ") : "(cleared)";
+  } else if (value && typeof value === "object" && ("gte" in value || "lte" in value)) {
+    // For a 'range' filter, create a readable string.
+    const range = value as opensearch.RangeValue;
+    eventValue = `${range.gte ?? "min"} - ${range.lte ?? "max"}`;
+  } else if (value === null || value === undefined) {
+    // Handle cases where the filter is explicitly cleared.
+    eventValue = "(cleared)";
+  } else {
+    // Fallback for any other data types.
+    eventValue = JSON.stringify(value);
+  }
+
+  sendGAEvent("dash_filter_change", {
+    filter_key: filterKey,
+    value: eventValue,
+  });
+};
+
 export const useFilterDrawer = () => {
   const url = useOsUrl();
   const drawer = useFilterDrawerContext();
@@ -73,32 +102,8 @@ export const useFilterDrawer = () => {
   const onFilterChange = (field: opensearch.main.Field) => {
     return (value: opensearch.FilterValue) => {
       setFilters((state) => {
-        // --- GA4 Event Tracking Logic ---
-        const filterKey = field;
-        let eventValue: string;
+        triggerGAEvent(field, value);
 
-        // Format the `value` parameter based on its data type.
-        if (typeof value === "string") {
-          eventValue = value;
-        } else if (Array.isArray(value)) {
-          // For a 'terms' filter, join the array. If empty, the filter was cleared.
-          eventValue = value.length > 0 ? value.join(", ") : "(cleared)";
-        } else if (value && typeof value === "object" && ("gte" in value || "lte" in value)) {
-          // For a 'range' filter, create a readable string.
-          const range = value as opensearch.RangeValue;
-          eventValue = `${range.gte ?? "min"} - ${range.lte ?? "max"}`;
-        } else if (value === null || value === undefined) {
-          // Handle cases where the filter is explicitly cleared.
-          eventValue = "(cleared)";
-        } else {
-          // Fallback for any other data types.
-          eventValue = JSON.stringify(value);
-        }
-
-        sendGAEvent("dash_filter_change", {
-          filter_key: filterKey,
-          value: eventValue,
-        });
         const updateState = { ...state, [field]: { ...state[field], value } };
         // find all filter values to update
         const updateFilters = Object.values(updateState).filter((FIL) => {

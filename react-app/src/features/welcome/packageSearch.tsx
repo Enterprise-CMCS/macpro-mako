@@ -40,11 +40,7 @@ export const PackageSearch = () => {
         value={tabChoice}
         onValueChange={(e) => {
           setTabChoice(e);
-          if (e === "spas") {
-            triggerGAEvent("home_search_radio", e);
-          } else if (e === "waivers") {
-            triggerGAEvent("home_search_radio", e);
-          }
+          triggerGAEvent("home_search_radio", e);
         }}
         className="flex space-x-4"
       >

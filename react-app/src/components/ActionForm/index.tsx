@@ -130,7 +130,6 @@ export const ActionForm = <Schema extends SchemaWithEnforcableProps>({
   }>();
   const { pathname } = useLocation();
   const startTimePage = Date.now();
-
   useEffect(() => {
     if (typeof window.gtag == "function") {
       const submissionType = mapSubmissionTypeBasedOnActionFormTitle(title);
