@@ -1,7 +1,6 @@
 import { screen } from "@testing-library/react";
 import {
   EXISTING_ITEM_ID,
-  makoReviewer,
   onceApiPackageActionsHandler,
   setDefaultStateSubmitter,
   setMockUsername,
@@ -9,6 +8,7 @@ import {
   TEST_CHIP_SPA_ITEM,
   TEST_MED_SPA_ITEM,
   TEST_MED_SPA_RAI_ITEM,
+  testReviewer,
 } from "mocks";
 import items from "mocks/data/items";
 import { mockedApiServer as mockedServer } from "mocks/server";
@@ -144,7 +144,7 @@ describe("", () => {
 
   describe("as a cms reviewer", () => {
     beforeEach(() => {
-      setMockUsername(makoReviewer);
+      setMockUsername(testReviewer);
     });
 
     it(`should return actions: [${Action.ENABLE_RAI_WITHDRAW}] for CHIP SPA`, async () => {

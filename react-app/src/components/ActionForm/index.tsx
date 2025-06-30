@@ -65,6 +65,7 @@ type ActionFormProps<Schema extends SchemaWithEnforcableProps> = {
   bannerPostSubmission?: Omit<Banner, "pathnameToDisplayOn">;
   promptPreSubmission?: Omit<UserPrompt, "onAccept">;
   promptOnLeavingForm?: Omit<UserPrompt, "onAccept">;
+  promptOnLeavingStickyFooterForm?: Omit<UserPrompt, "onAccept">;
   attachments?: AttachmentsOptions;
   additionalInformation?:
     | {
@@ -103,6 +104,14 @@ export const ActionForm = <Schema extends SchemaWithEnforcableProps>({
     cancelButtonText: "Return to form",
     areButtonsReversed: true,
   },
+  promptOnLeavingStickyFooterForm = {
+    header: "Leave this page?",
+    body: "",
+    acceptButtonText: "Yes, leave",
+    cancelButtonText: "Go back",
+    areButtonsReversed: true,
+    cancelVariant: "link",
+  },
   promptPreSubmission,
   documentPollerArgs,
   attachments,
@@ -115,7 +124,7 @@ export const ActionForm = <Schema extends SchemaWithEnforcableProps>({
   preSubmissionMessage,
   additionalInformation = {
     required: false,
-    label: "Add anything else you would like to share with CMS.",
+    label: "",
     title: "Additional Information",
   },
   showPreSubmissionMessage = true,
@@ -141,6 +150,7 @@ export const ActionForm = <Schema extends SchemaWithEnforcableProps>({
       ...defaultValues,
     },
   });
+  const watchedId = form.watch("id" as FieldPath<z.infer<Schema>>);
 
   const { mutateAsync } = useMutation({
     mutationFn: (formData: z.TypeOf<Schema>) =>
@@ -281,7 +291,8 @@ export const ActionForm = <Schema extends SchemaWithEnforcableProps>({
             <MedSpaFooter
               onCancel={() =>
                 userPrompt({
-                  ...promptOnLeavingForm,
+                  ...promptOnLeavingStickyFooterForm,
+                  body: `Unsaved changes${watchedId.trim() ? ` to ${watchedId}` : ""} will be discarded. Go back to save your changes.`,
                   onAccept: () => {
                     const origin = getFormOrigin({ id, authority });
                     navigate(origin);
@@ -309,7 +320,8 @@ export const ActionForm = <Schema extends SchemaWithEnforcableProps>({
                   type="reset"
                   onClick={() =>
                     userPrompt({
-                      ...promptOnLeavingForm,
+                      ...promptOnLeavingStickyFooterForm,
+                      body: `Unsaved changes${watchedId.trim() ? ` to ${watchedId}` : ""} will be discarded. Go back to save your changes.`,
                       onAccept: () => {
                         const origin = getFormOrigin({ id, authority });
                         navigate(origin);

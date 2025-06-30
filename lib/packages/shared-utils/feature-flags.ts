@@ -100,10 +100,18 @@ export const featureFlags = {
     flag: "upgrade-mmdl-banner",
     defaultValue: true,
   },
-
-  // toggle visibility between new and old user role UI's
+  /*
+   *  Toggle visibility between new and old user role UI's
+   */
   SHOW_USER_ROLE_UPDATE: {
     flag: "show-user-role-updates",
     defaultValue: false,
+  },
+  /*
+   *  Toggle visibility between the new and upgrade faq labels
+   */
+  UPGRADE_NEW_LABEL: {
+    flag: "upgade-new-label",
+    defaultValue: true,
   },
 } as const;

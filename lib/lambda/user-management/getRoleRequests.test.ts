@@ -4,7 +4,7 @@ import {
   cmsRoleApprover,
   errorRoleSearchHandler,
   getRequestContext,
-  HELP_DESK_EMAIL,
+  HELP_DESK_USER_EMAIL,
   helpDeskUser,
   noStateSubmitter,
   osStateSystemAdmin,
@@ -94,7 +94,7 @@ describe("getRoleRequests", () => {
     expect(res.statusCode).toEqual(200);
     const roles = JSON.parse(res.body);
     // remove the helpDesk roles
-    const filteredRoles = roleDocs.filter((roleObj) => roleObj?.email !== HELP_DESK_EMAIL);
+    const filteredRoles = roleDocs.filter((roleObj) => roleObj?.email !== HELP_DESK_USER_EMAIL);
     expect(roles.length).toEqual(filteredRoles.length);
   });
 
