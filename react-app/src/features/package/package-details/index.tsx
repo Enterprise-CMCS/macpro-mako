@@ -1,4 +1,4 @@
-import { useEffect, useMemo } from "react";
+import { useEffect, useMemo, useRef } from "react";
 import { Authority, opensearch } from "shared-types";
 import { isCmsUser } from "shared-utils";
 
@@ -37,6 +37,7 @@ type PackageDetailsProps = {
 
 export const PackageDetails = ({ submission }: PackageDetailsProps) => {
   const { data: user, isLoading: isUserLoading } = useGetUser();
+  const didSetGATag = useRef(false);
   const title = useMemo(() => {
     switch (submission.authority) {
       case Authority["1915b"]:
@@ -51,7 +52,7 @@ export const PackageDetails = ({ submission }: PackageDetailsProps) => {
   }, [submission]);
 
   useEffect(() => {
-    if (!isUserLoading && typeof window.gtag == "function") {
+    if (!isUserLoading && typeof window.gtag == "function" && !didSetGATag.current) {
       const isWaiver = (authority) =>
         authority === Authority["1915c"] || authority === Authority["1915b"];
       sendGAEvent("package_details_view", {
@@ -59,8 +60,9 @@ export const PackageDetails = ({ submission }: PackageDetailsProps) => {
         package_type: isWaiver(submission.authority) ? "waiver" : "spa",
         user_role: isCmsUser(user.user) ? "cms" : "state",
       });
+      didSetGATag.current = true;
     }
-  }, [isUserLoading, user.user, submission.id, submission.authority]);
+  }, [isUserLoading, user.user, submission.id, submission.authority, didSetGATag]);
 
   if (isUserLoading) return <LoadingSpinner />;
 
