@@ -22,6 +22,7 @@ vi.mock("./content/oneMACFAQContent", () => ({
     phone: "123-456-7890",
     email: "help@example.com",
   },
+  handleSupportLinkClick: vi.fn(() => () => {}),
 }));
 
 describe("Faq", () => {
