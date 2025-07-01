@@ -8,6 +8,7 @@ import { renderSection } from "@/features/faq/content/chpRenderSection";
 import { CHP_TEMPLATES } from "@/features/faq/content/chpTemplates";
 import { MPC_GUIDES } from "@/features/faq/content/mpcGuides";
 import { MPC_TEMPLATES } from "@/features/faq/content/mpcTemplates";
+import { sendGAEvent } from "@/utils/ReactGA/SendGAEvent";
 
 export type QuestionAnswer = {
   anchorText: string;
@@ -92,7 +93,7 @@ export const oneMACFAQContent: FAQContent[] = [
             <a
               className="text-blue-800 underline hover:no-underline "
               href={`mailto:${helpDeskContact.email}`}
-              onClick={() => window.gtag("event", "support_contact_email")}
+              onClick={() => sendGAEvent("support_contact_email")}
             >
               {helpDeskContact.email}
             </a>{" "}
@@ -194,7 +195,7 @@ export const oneMACFAQContent: FAQContent[] = [
               <video
                 controls
                 onPlay={() =>
-                  window.gtag("event", "support_video_play", {
+                  sendGAEvent("support_video_play", {
                     event_label: "Upload Subsequent Documentation Overview",
                   })
                 }

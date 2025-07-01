@@ -11,6 +11,7 @@ import {
   SubNavHeader,
 } from "@/components";
 import { useFeatureFlag } from "@/hooks/useFeatureFlag";
+import { sendGAEvent } from "@/utils/ReactGA/SendGAEvent";
 
 import {
   handleSupportLinkClick,
@@ -83,7 +84,7 @@ export const Faq = () => {
             <Button
               onClick={() => {
                 expandAll();
-                window.gtag("event", "support_click_general_expand-all", {
+                sendGAEvent("support_click_general_expand-all", {
                   event_category: "Support",
                   event_label: "Expand All",
                 });
@@ -131,7 +132,7 @@ export const Faq = () => {
                   <a
                     className="underline"
                     href={`tel:${helpDeskContact.phone}`}
-                    onClick={() => window.gtag("event", "support_contact_phone")}
+                    onClick={() => sendGAEvent("support_contact_phone")}
                   >
                     {helpDeskContact.phone}
                   </a>
@@ -141,7 +142,7 @@ export const Faq = () => {
                   <a
                     className="underline"
                     href={`mailto:${helpDeskContact.email}`}
-                    onClick={() => window.gtag("event", "support_contact_email")}
+                    onClick={() => sendGAEvent("support_contact_email")}
                   >
                     {helpDeskContact.email}
                   </a>
