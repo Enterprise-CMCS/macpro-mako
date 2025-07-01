@@ -2,7 +2,20 @@ import { GetParameterCommand, SSMClient } from "@aws-sdk/client-ssm";
 import { promises as fs } from "fs";
 import path from "path";
 
-import { project, region } from "./consts";
+import { mockEnvVariables, project, region } from "./consts";
+
+async function writeEnvVarsToFile(envVariables, filename) {
+  const envFilePath = path.join(__dirname, "../../../react-app", filename);
+  console.log(envFilePath);
+  const envFileContent = Object.entries(envVariables)
+    .map(([key, value]) => `${key}=${value}`)
+    .join("\n");
+
+  await fs.writeFile(envFilePath, envFileContent);
+
+  console.log(`${filename} file written to ${envFilePath}`);
+  return envFilePath;
+}
 
 export async function writeUiEnvFile(stage, local = false) {
   const deploymentOutput = JSON.parse(
@@ -28,20 +41,20 @@ export async function writeUiEnvFile(stage, local = false) {
   let googleAnalytics;
   try {
     if (["main", "val", "production"].includes(stage)) {
-      {
-        googleAnalytics = (
-          await new SSMClient({ region: "us-east-1" }).send(
-            new GetParameterCommand({
-              Name: `/${project}/${stage}/google-analytics-id`,
-            }),
-          )
-        ).Parameter!.Value!;
-      }
+      googleAnalytics = (
+        await new SSMClient({ region: "us-east-1" }).send(
+          new GetParameterCommand({
+            Name: `/${project}/${stage}/google-analytics-id`,
+          }),
+        )
+      ).Parameter!.Value!;
     }
+    googleAnalytics = "";
   } catch {
     googleAnalytics = "";
     console.error("Can't find the google analytics ID");
   }
+
   const envVariables = {
     VITE_API_REGION: `"${region}"`,
     VITE_API_URL: deploymentOutput.apiGatewayRestApiUrl,
@@ -63,14 +76,14 @@ export async function writeUiEnvFile(stage, local = false) {
     VITE_LAUNCHDARKLY_CLIENT_ID: `"${deploymentConfig.launchDarklyClientId}"`,
   };
 
-  const envFilePath = path.join(__dirname, "../../../react-app", ".env.local");
-  console.log(envFilePath);
-  const envFileContent = Object.entries(envVariables)
-    .map(([key, value]) => `${key}=${value}`)
-    .join("\n");
+  return writeEnvVarsToFile(envVariables, ".env.local");
+}
 
-  await fs.writeFile(envFilePath, envFileContent);
+export async function writeMockedUiEnvFile(username) {
+  const envVariables = {
+    ...mockEnvVariables,
+    VITE_MOCK_USER_USERNAME: `"${username}"`,
+  };
 
-  console.log(`.env.local file written to ${envFilePath}`);
-  return envFilePath;
+  return writeEnvVarsToFile(envVariables, ".env.mocked.local");
 }
