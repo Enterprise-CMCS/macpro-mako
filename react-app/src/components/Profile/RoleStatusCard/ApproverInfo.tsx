@@ -9,7 +9,7 @@ type ApproverInfoProps = {
 export const ApproverInfo = ({ access }: ApproverInfoProps) => {
   const { role, status, approverList = [] } = access;
 
-  const hideApprovers = role === "systemadmin" || (status !== "pending" && role === "norole");
+  const hideApprovers = status !== "pending" && role === "norole";
 
   if (hideApprovers) return null;
 
