@@ -45,18 +45,25 @@ export const MyProfile = () => {
     const filteredRoleStatus = isNewUserRoleDisplay
       ? userProfile?.stateAccess
       : filterRoleStatus(userDetails, userProfile);
+
     return orderRoleStatus(filteredRoleStatus);
   }, [userDetails, userProfile, isNewUserRoleDisplay]);
 
-  const hideAddRoleButton = useMemo(() => {
-    const isCMSWithManyRoles =
-      userProfile?.stateAccess.length > 1 &&
-      userProfile?.stateAccess.filter((x) => x.role.includes("cms")).length;
-    const isHelpDesk = userProfile?.stateAccess.filter((x) => x.role === "helpdesk").length;
-    return isCMSWithManyRoles || isHelpDesk;
-  }, [userProfile]);
-
   const currentRoleObj = userProfile?.stateAccess.find((x) => x.role === userDetails.role);
+
+  const hideAddRoleButton = useMemo(() => {
+    if (!userProfile) return true;
+
+    const isCMSWithManyRoles = userProfile?.stateAccess.filter((x) => {
+      if (x.role === "defaultcmsuser" || x.role === "cmsreviewer") return false;
+      if (x.role.includes("cms") || x.role === "systemadmin")
+        return x.status === "active" || x.status === "pending";
+      return false;
+    });
+
+    const isHelpDesk = userProfile?.stateAccess.filter((x) => x.role === "helpdesk").length;
+    return isCMSWithManyRoles.length || isHelpDesk;
+  }, [userProfile]);
 
   // Set initial value of showAddState based on pending roles
   useEffect(() => {

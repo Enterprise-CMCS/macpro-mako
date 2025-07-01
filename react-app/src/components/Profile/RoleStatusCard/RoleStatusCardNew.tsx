@@ -25,6 +25,7 @@ export const RoleStatusCardNew = ({
 }: Omit<RoleStatusProps, "isNewUserRoleDisplay">) => {
   if (!access) return null;
   const isState = isStateRole(access.role as UserRole);
+  const hideApprovers = role === "systemadmin" || (status !== "pending" && role === "norole");
 
   return (
     <RoleStatusTopBorderCard status={access.status}>
@@ -57,9 +58,7 @@ export const RoleStatusCardNew = ({
           </div>
         ) : (
           <div className="block lg:mt-8 lg:mb-2">
-            <p className="mb-2">
-              <strong>Approvers</strong>
-            </p>
+            <p className="mb-2">{!hideApprovers && <strong>Approvers</strong>}</p>
 
             <ApproverInfo access={access} />
           </div>
