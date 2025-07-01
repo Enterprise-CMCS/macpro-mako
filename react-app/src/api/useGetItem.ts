@@ -4,7 +4,7 @@ import { API } from "aws-amplify";
 import { opensearch, ReactQueryApiError, SEATOOL_STATUS } from "shared-types";
 
 export const getItem = async (id: string): Promise<opensearch.main.ItemResult> =>
-  await API.post("os", "/item", { body: { id } });
+  await API.post("os", "/item", { body: { id } }).catch(() => sendGAEvent("api_error", { message: "package not found" }));
 
 export const idIsApproved = async (id: string) => {
   try {
@@ -33,14 +33,6 @@ export const useGetItem = (
   return useQuery<opensearch.main.ItemResult, ReactQueryApiError>(
     ["record", id],
     () => getItem(id),
-    {
-      ...options,
-      onError: (error) => {
-        console.log("useGetItem onError fired with:", error);
-        sendGAEvent("api_error", {
-          error: "error getting item",
-        });
-      },
-    },
+    options
   );
 };
