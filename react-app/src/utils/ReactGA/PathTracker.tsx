@@ -1,4 +1,5 @@
 import { useEffect, useRef } from "react";
+
 import { sendGAEvent } from "./SendGAEvent";
 
 type PathTrackerProps = {
@@ -22,12 +23,11 @@ export default function PathTracker({ userRole, children }: PathTrackerProps) {
   useEffect(() => {
     //for tracking page views
     const sendPageView = (path: string) => {
-      if (userRole) {
-        sendGAEvent("custom_page_view", {
-          page_path: path,
-          user_role: userRole,
-        });
-      }
+      sendGAEvent("page_view", {
+        page_path: path,
+        referrer: prevPathRef.current || "",
+        ...(userRole && { user_role: userRole }),
+      });
     };
 
     //for tracking duration spent on page
@@ -37,9 +37,9 @@ export default function PathTracker({ userRole, children }: PathTrackerProps) {
         const deltaMs = now - startTs;
         const timeOnPageSec = Math.round(deltaMs / 1000); // nearest second
         sendGAEvent("page_duration", {
-                  page_path: path,
-                  user_role: userRole,
-                  time_on_page_sec: timeOnPageSec,
+          page_path: path,
+          user_role: userRole,
+          time_on_page_sec: timeOnPageSec,
         });
       }
     };
