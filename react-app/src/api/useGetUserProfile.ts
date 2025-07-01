@@ -28,7 +28,7 @@ export const getUserProfile = async (userEmail?: string): Promise<OneMacUserProf
       stateAccess,
     } as OneMacUserProfile;
   } catch (e) {
-    sendGAEvent("error", {
+    sendGAEvent("api_error", {
       message: "error getting user profile",
     });
     console.log({ e });

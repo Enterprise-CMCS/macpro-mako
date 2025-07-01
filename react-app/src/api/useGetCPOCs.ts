@@ -10,7 +10,7 @@ export async function fetchCpocData() {
     const results = response.hits?.hits || [];
     return results.map((hit: cpocs.ItemResult) => hit._source);
   } catch (error) {
-    sendGAEvent("error", {
+    sendGAEvent("api_error", {
       message: "error fetching cpocs",
     });
     console.error("Error fetching CPOCs:", error);

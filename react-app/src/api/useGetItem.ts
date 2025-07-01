@@ -37,7 +37,7 @@ export const useGetItem = (
       ...options,
       onError: (error) => {
         if (error?.response?.data.message === "No record found for the given id") {
-          sendGAEvent("error", {
+          sendGAEvent("api_error", {
             error: "error getting item",
           });
         }
