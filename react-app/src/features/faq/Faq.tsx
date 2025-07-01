@@ -142,7 +142,7 @@ export const Faq = () => {
                   </td>
                 </tr>
                 <tr>
-                  <td className="border border-gray-300 px-4 py-2">Current State Plan*</td>
+                  <td className="border border-gray-300 px-4 py-2">Current State Plan</td>
                   <td className="border border-gray-300 px-4 py-2">
                     Current version of the CHIP state plan that details how the State operates its
                     CHIP program
@@ -150,7 +150,7 @@ export const Faq = () => {
                 </tr>
                 <tr>
                   <td className="border border-gray-300 px-4 py-2 whitespace-nowrap">
-                    Amended State Plan Pages*
+                    Amended State Plan Pages
                   </td>
                   <td className="border border-gray-300 px-4 py-2">
                     Track changes to <span className="underline">only</span> the currently approved
