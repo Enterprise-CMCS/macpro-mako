@@ -1,14 +1,15 @@
-import { Link } from "react-router";
 import { useEffect } from "react";
-import { sendGAEvent } from "@/utils/ReactGA/SendGAEvent";
+import { Link } from "react-router";
+
 import { BreadCrumbs, SimplePageContainer } from "@/components";
 import { useFeatureFlag } from "@/hooks/useFeatureFlag";
+import { sendGAEvent } from "@/utils/ReactGA/SendGAEvent";
 
 export const ErrorPage = () => {
   const isFAQEnabled = useFeatureFlag("TOGGLE_FAQ");
-  useEffect(()=>{
+  useEffect(() => {
     sendGAEvent("err_404", null);
-   },[]);
+  }, []);
   return (
     <SimplePageContainer>
       <BreadCrumbs
