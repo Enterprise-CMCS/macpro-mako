@@ -2,6 +2,7 @@ import { useQuery, UseQueryOptions } from "@tanstack/react-query";
 import { API } from "aws-amplify";
 import { ReactQueryApiError } from "shared-types";
 import { cpocs } from "shared-types/opensearch";
+import { sendGAEvent } from "@/utils/ReactGA/SendGAEvent";
 
 export async function fetchCpocData() {
   try {
@@ -9,6 +10,9 @@ export async function fetchCpocData() {
     const results = response.hits?.hits || [];
     return results.map((hit: cpocs.ItemResult) => hit._source);
   } catch (error) {
+    sendGAEvent("error", {
+      error: "error fetching cpocs",
+    });
     console.error("Error fetching CPOCs:", error);
   }
 }

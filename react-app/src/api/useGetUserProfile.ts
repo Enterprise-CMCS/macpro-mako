@@ -1,6 +1,6 @@
 import { useQuery } from "@tanstack/react-query";
 import { API } from "aws-amplify";
-
+import { sendGAEvent } from "@/utils/ReactGA/SendGAEvent";
 export type StateAccess = {
   id: string;
   eventType: string;
@@ -28,6 +28,9 @@ export const getUserProfile = async (userEmail?: string): Promise<OneMacUserProf
       stateAccess,
     } as OneMacUserProfile;
   } catch (e) {
+    sendGAEvent("error", {
+      error: "error getting user profile",
+    });
     console.log({ e });
     return {};
   }

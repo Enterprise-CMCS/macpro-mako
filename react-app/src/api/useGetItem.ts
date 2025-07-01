@@ -1,3 +1,4 @@
+import { sendGAEvent } from "@/utils/ReactGA/SendGAEvent";
 import { useQuery, UseQueryOptions } from "@tanstack/react-query";
 import { API } from "aws-amplify";
 import { opensearch, ReactQueryApiError, SEATOOL_STATUS } from "shared-types";
@@ -32,6 +33,15 @@ export const useGetItem = (
   return useQuery<opensearch.main.ItemResult, ReactQueryApiError>(
     ["record", id],
     () => getItem(id),
-    options,
+    {
+      ...options,
+      onError: (error) => {
+        if (error?.response?.data.message === "No record found for the given id") {
+          sendGAEvent("err_404", {
+            error: "unknown_package",
+          });
+        }
+      },
+    },
   );
 };

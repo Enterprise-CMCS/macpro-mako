@@ -1,5 +1,5 @@
 import { API } from "aws-amplify";
-
+import { sendGAEvent } from "@/utils/ReactGA/SendGAEvent";
 export const getAttachmentUrl = async (
   id: string,
   bucket: string,
@@ -14,5 +14,10 @@ export const getAttachmentUrl = async (
       filename,
     },
   });
+  if (!response.url) {
+    sendGAEvent("err_404", {
+      error: "error retrieving attachments",
+    });
+  }
   return response.url as string;
 };

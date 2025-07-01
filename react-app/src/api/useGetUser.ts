@@ -2,7 +2,7 @@ import { useQuery } from "@tanstack/react-query";
 import { Auth } from "aws-amplify";
 import { CognitoUserAttributes, FullUser } from "shared-types";
 import { isCmsUser } from "shared-utils";
-
+import { sendGAEvent } from "@/utils/ReactGA/SendGAEvent";
 import { getUserDetails } from "./useGetUserDetails";
 
 export type OneMacUser = {
@@ -26,9 +26,9 @@ export const getUser = async (): Promise<OneMacUser> => {
       (obj, item) =>
         item?.Name && item?.Value
           ? {
-              ...obj,
-              [item.Name]: item.Value,
-            }
+            ...obj,
+            [item.Name]: item.Value,
+          }
           : obj,
       {} as CognitoUserAttributes,
     );
@@ -44,6 +44,9 @@ export const getUser = async (): Promise<OneMacUser> => {
     } satisfies OneMacUser;
   } catch (e) {
     console.log({ e });
+    sendGAEvent("err_404", {
+      error: "error getting user",
+    });
     return { user: null } satisfies OneMacUser;
   }
 };

@@ -1,7 +1,7 @@
 import { useMutation } from "@tanstack/react-query";
 import { API } from "aws-amplify";
 import { UserRole } from "shared-types/events/legacy-user";
-
+import { sendGAEvent } from "@/utils/ReactGA/SendGAEvent";
 export type UserDetails = {
   id: string;
   eventType: string;
@@ -16,6 +16,9 @@ export const requestBaseCMSAccess = async (): Promise<unknown> => {
 
     return userDetails as UserDetails;
   } catch (e) {
+    sendGAEvent("error", {
+      error: "error requesting base cms access",
+    });
     console.log({ e });
     return null;
   }
