@@ -18,7 +18,6 @@ export const AdditionalInformation = <Schema extends SchemaWithEnforcableProps>(
   submissionTitle,
 }: AdditionalInformationProps<Schema>) => {
   const handleInputChange = (event) => {
-    //only send event after typing first character
     if (event.target.value.length == 1) {
       const mappedSubmissionType = mapSubmissionTypeBasedOnActionFormTitle(submissionTitle);
       sendGAEvent("submit_additional_info_used", { submission_type: mappedSubmissionType });

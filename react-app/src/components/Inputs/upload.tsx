@@ -140,7 +140,7 @@ export const Upload = ({ maxFiles, files, setFiles, dataTestId, type }: UploadPr
         setIsUploading(false); // Set uploading to false when done
       }
     },
-    [files, setFiles],
+    [files, setFiles, type],
   );
 
   const { getRootProps, getInputProps, isDragActive } = useDropzone({
