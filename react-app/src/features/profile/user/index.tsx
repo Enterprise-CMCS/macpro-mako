@@ -71,6 +71,11 @@ export const UserProfile = () => {
             fullName={userDetails?.fullName || "Unknown"}
             role={userRoleMap[userDetails?.role]}
             email={userDetails?.email}
+            groupDivision={
+              userDetails && userDetails.group
+                ? `${userDetails.group}/${userDetails.division}`
+                : null
+            }
           />
           <div className="flex flex-col gap-6 md:basis-1/2">
             <div>
@@ -84,7 +89,7 @@ export const UserProfile = () => {
               ))}
             </div>
 
-            {userDetails.role === "cmsroleapprover" && (
+            {userDetails.role === "cmsroleapprover" && !isNewUserRoleDisplay && (
               <GroupAndDivision
                 group={userDetails.group}
                 division={userDetails.division}
