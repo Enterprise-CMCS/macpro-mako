@@ -49,10 +49,13 @@ export const MyProfile = () => {
     return orderRoleStatus(filteredRoleStatus);
   }, [userDetails, userProfile, isNewUserRoleDisplay]);
 
-  const currentRoleObj = userProfile?.stateAccess.find((x) => x.role === userDetails.role);
+  const currentRoleObj = useMemo(() => {
+    if (!userProfile || !userProfile.stateAccess) return { group: null, division: null };
+    return userProfile?.stateAccess.find((x) => x.role === userDetails.role);
+  }, [userProfile, userDetails]);
 
   const hideAddRoleButton = useMemo(() => {
-    if (!userProfile) return true;
+    if (!userProfile || !userProfile.stateAccess) return true;
 
     const isCMSWithManyRoles = userProfile?.stateAccess.filter((x) => {
       if (x.role === "defaultcmsuser" || x.role === "cmsreviewer") return false;
