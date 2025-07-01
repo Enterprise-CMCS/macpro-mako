@@ -356,11 +356,12 @@ const ResponsiveNav = ({ isDesktop }: ResponsiveNavProps) => {
   }
 
   const triggerGAEvent = (name) => {
-    if (name == "View FAQs") {
-      sendGAEvent("home_nav_dashboard", null);
-    } else if (name == "Dashboard") {
-      sendGAEvent("home_nav_support", null);
-    }
+    const eventName = `home_nav_${name.toLowerCase().replace(/\s+/g, "_")}`;
+
+    sendGAEvent(eventName, {
+      event_category: "Navigation",
+      event_label: name,
+    });
   };
 
   if (isDesktop) {

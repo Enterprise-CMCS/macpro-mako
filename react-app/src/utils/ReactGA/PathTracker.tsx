@@ -23,12 +23,11 @@ export default function PathTracker({ userRole, children }: PathTrackerProps) {
   useEffect(() => {
     //for tracking page views
     const sendPageView = (path: string) => {
-      if (userRole) {
-        sendGAEvent("custom_page_view", {
-          page_path: path,
-          user_role: userRole,
-        });
-      }
+      sendGAEvent("page_view", {
+        page_path: path,
+        referrer: prevPathRef.current || "",
+        ...(userRole && { user_role: userRole }),
+      });
     };
 
     //for tracking duration spent on page
