@@ -2,6 +2,7 @@ import { FC, useState } from "react";
 
 import { Pagination } from "@/components/Pagination";
 import { useLocalStorage } from "@/hooks/useLocalStorage";
+import { sendGAEvent } from "@/utils/ReactGA/SendGAEvent";
 
 import { OsFiltering } from "./Filtering";
 import { FilterChips } from "./Filtering";
@@ -9,7 +10,6 @@ import { useOsContext } from "./Provider";
 import { OsTable } from "./Table";
 import { OsTableColumn } from "./types";
 import { useOsData, useOsUrl } from "./useOpensearch";
-import { sendGAEvent } from "@/utils/ReactGA/SendGAEvent";
 
 const createLSColumns = (columns: OsTableColumn[]): string[] =>
   columns.filter((col) => col.hidden).map((col) => col.field ?? "");
@@ -39,10 +39,10 @@ export const OsMainView: FC<{ columns: OsTableColumn[] }> = (props) => {
 
   const onToggle = (field: string) => {
     const isBecomingVisible = !localStorageCol[currentTab].includes(field);
-    sendGAEvent( "dash_column_toggle", {
+    sendGAEvent("dash_column_toggle", {
       column_name: field,
       visible: isBecomingVisible,
-    })
+    });
     setLocalStorageCol((prev) => ({
       ...prev,
       [currentTab]: prev[currentTab].includes(field)

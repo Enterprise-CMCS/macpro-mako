@@ -362,6 +362,7 @@ const ResponsiveNav = ({ isDesktop }: ResponsiveNavProps) => {
       event_category: "Navigation",
       event_label: name,
     });
+
   };
 
   if (isDesktop) {

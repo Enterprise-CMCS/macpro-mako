@@ -1,6 +1,6 @@
 import { X } from "lucide-react";
 import { useCallback, useRef, useState } from "react";
-import { DropEvent, FileError, FileRejection, useDropzone } from "react-dropzone";
+import { FileError, FileRejection, useDropzone } from "react-dropzone";
 import { attachmentSchema } from "shared-types";
 import { FILE_TYPES } from "shared-types/uploads";
 import { v4 as uuidv4 } from "uuid";
@@ -87,7 +87,7 @@ export const Upload = ({ maxFiles, files, setFiles, dataTestId, type }: UploadPr
     }
   };
   const onDrop = useCallback(
-    async (acceptedFiles: File[], fileRejections: FileRejection[], event: DropEvent) => {
+    async (acceptedFiles: File[], fileRejections: FileRejection[]) => {
       const fileType = dropzoneRef.current?.getAttribute("data-label");
       const submissionType = mapSubmissionTypeBasedOnActionFormTitle(type);
       if (acceptedFiles[0]) {

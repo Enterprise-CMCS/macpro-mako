@@ -2,12 +2,12 @@ import { FC, useEffect, useRef, useState } from "react";
 
 import { OsTableColumn, SearchForm } from "@/components";
 import { VisibilityPopover } from "@/components";
+import { sendGAEvent } from "@/utils/ReactGA/SendGAEvent";
 
 import { useOsContext } from "../Provider";
 import { useOsUrl } from "../useOpensearch";
 import { OsFilterDrawer } from "./Drawer";
 import { OsExportData } from "./Export";
-import { sendGAEvent } from "@/utils/ReactGA/SendGAEvent";
 export const OsFiltering: FC<{
   columns: OsTableColumn[];
   onToggle: (field: string) => void;

@@ -1,4 +1,3 @@
-import * as query from "@tanstack/react-query";
 import { fireEvent, screen, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import {
@@ -8,14 +7,11 @@ import {
   SUBMISSION_ERROR_ITEM_ID,
 } from "mocks";
 import { EXISTING_ITEM_PENDING_ID } from "mocks";
-import { mockUseGetUser } from "mocks";
 import { attachmentArraySchemaOptional, SEATOOL_STATUS } from "shared-types";
 import { isCmsReadonlyUser } from "shared-utils";
 import { beforeEach, describe, expect, test, vi } from "vitest";
 import { z } from "zod";
 
-import * as api from "@/api";
-import { OneMacUser } from "@/api";
 import * as components from "@/components";
 import { DataPoller } from "@/utils/Poller/DataPoller";
 import * as documentPoller from "@/utils/Poller/documentPoller";
@@ -292,7 +288,6 @@ describe("ActionForm", () => {
       onAccept: onAcceptMock,
     });
   });
-
 
   test("calls `documentPoller` with `documentPollerArgs`", async () => {
     const documentPollerSpy = vi.spyOn(documentPoller, "documentPoller");
