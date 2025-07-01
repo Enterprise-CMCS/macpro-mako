@@ -202,6 +202,7 @@ export const MyProfile = () => {
             fullName={userDetails?.fullName}
             role={userRoleMap[userDetails?.role]}
             email={userDetails?.email}
+            allowEdits
             groupDivision={
               currentRoleObj && currentRoleObj.group
                 ? `${currentRoleObj?.group}/${currentRoleObj?.division}`
