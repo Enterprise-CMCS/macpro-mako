@@ -61,7 +61,7 @@ export const LatestUpdates: FC = () => {
         <button
           onClick={() => {
             setShowMore(!showMore);
-            sendGAEvent("home_updates_banner", null)
+            sendGAEvent("home_updates_banner", null);
           }}
           className="flex items-center justify-start gap-2 rounded-md bg-transparent cursor-pointer"
         >
