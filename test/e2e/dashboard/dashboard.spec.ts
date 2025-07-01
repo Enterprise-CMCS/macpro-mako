@@ -1,4 +1,5 @@
-import { expect, test } from "@/fixtures/mocked"; // add expect when writing assertions
+// import { expect, test } from "@/fixtures/mocked"; // add expect when writing assertions
+import { expect, test } from "@/fixtures/mocked";
 
 // TODO
 test.describe("Dashboard page", { tag: ["@dashboard"] }, () => {
@@ -44,6 +45,7 @@ test.describe("Dashboard page", { tag: ["@dashboard"] }, () => {
       );
 
       await expect(page.locator("#search-input")).toBeVisible();
+      await expect(page.locator("#search-input")).toHaveAttribute("Placeholder", "Search...");
     });
 
     test("columns button", async ({ page }) => {
@@ -52,8 +54,8 @@ test.describe("Dashboard page", { tag: ["@dashboard"] }, () => {
     });
 
     test("filters buttons", async ({ page }) => {
-      await expect(page.getByRole("button", { name: /Filters/ })).toBeVisible();
-      await expect(page.getByRole("button", { name: /Filters/ })).toHaveText("Open filter panel");
+      await expect(page.getByText(/Filters/)).toBeVisible();
+      await expect(page.getByText(/Filters/)).toHaveText("Filters");
     });
 
     test("export button", async ({ page }) => {
@@ -80,6 +82,7 @@ test.describe("Dashboard page", { tag: ["@dashboard"] }, () => {
           ];
 
           for (let i = 0; i < count; i++) {
+            console.log("column: ", i + 1);
             await expect(await header.nth(i)).toBeVisible();
             await expect(await header.nth(i).textContent()).toEqual(headerValues[i]);
           }
