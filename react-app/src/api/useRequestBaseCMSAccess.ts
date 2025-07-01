@@ -17,7 +17,7 @@ export const requestBaseCMSAccess = async (): Promise<unknown> => {
     return userDetails as UserDetails;
   } catch (e) {
     sendGAEvent("error", {
-      error: "error requesting base cms access",
+      message: "error requesting base cms access",
     });
     console.log({ e });
     return null;

@@ -15,8 +15,8 @@ export const getAttachmentUrl = async (
     },
   });
   if (!response.url) {
-    sendGAEvent("err_404", {
-      error: "error retrieving attachments",
+    sendGAEvent("error", {
+      message: "error retrieving attachments",
     });
   }
   return response.url as string;

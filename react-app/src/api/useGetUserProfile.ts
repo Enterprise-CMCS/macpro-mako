@@ -29,7 +29,7 @@ export const getUserProfile = async (userEmail?: string): Promise<OneMacUserProf
     } as OneMacUserProfile;
   } catch (e) {
     sendGAEvent("error", {
-      error: "error getting user profile",
+      message: "error getting user profile",
     });
     console.log({ e });
     return {};

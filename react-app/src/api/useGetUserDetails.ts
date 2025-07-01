@@ -24,7 +24,7 @@ export const getUserDetails = async (userEmail?: string): Promise<UserDetails> =
     return userDetails as UserDetails;
   } catch (e) {
     sendGAEvent("error", {
-      error: "error getting user details",
+      message: "error getting user details",
     });
     console.log({ e });
     return null;

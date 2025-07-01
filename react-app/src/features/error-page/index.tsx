@@ -7,9 +7,9 @@ import { sendGAEvent } from "@/utils/ReactGA/SendGAEvent";
 
 export const ErrorPage = () => {
   const isFAQEnabled = useFeatureFlag("TOGGLE_FAQ");
-  useEffect(() => {
-    sendGAEvent("err_404", null);
-  }, []);
+  useEffect(()=>{
+    sendGAEvent("error", {message: "404 page not found"});
+   },[]);
   return (
     <SimplePageContainer>
       <BreadCrumbs

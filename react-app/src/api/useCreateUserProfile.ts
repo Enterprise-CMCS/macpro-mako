@@ -17,7 +17,7 @@ export const createUserProfile = async (): Promise<unknown> => {
     return userDetails as UserDetails;
   } catch (e) {
     sendGAEvent("error", {
-      error: "error creating user profile",
+      message: "error creating user profile",
     });
     console.log({ e });
     return null;
