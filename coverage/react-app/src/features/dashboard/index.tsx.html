@@ -30,9 +30,9 @@
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">89.47% </span>
+                <span class="strong">88.88% </span>
                 <span class="quiet">Branches</span>
-                <span class='fraction'>17/19</span>
+                <span class='fraction'>16/18</span>
             </div>
         
             
@@ -235,35 +235,27 @@
 <span class="cline-any cline-yes">4x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">4x</span>
-<span class="cline-any cline-yes">98x</span>
-<span class="cline-any cline-yes">98x</span>
-<span class="cline-any cline-yes">98x</span>
+<span class="cline-any cline-yes">91x</span>
+<span class="cline-any cline-yes">91x</span>
+<span class="cline-any cline-yes">91x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">98x</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">98x</span>
-<span class="cline-any cline-yes">79x</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">244x</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">98x</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">81x</span>
+<span class="cline-any cline-yes">91x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">91x</span>
+<span class="cline-any cline-yes">80x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">247x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">91x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">82x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -294,6 +286,14 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">8x</span>
 <span class="cline-any cline-yes">8x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -363,7 +363,7 @@ const loader = (queryClient: QueryClient, loginFlag?: boolean) =&gt; {
 export const dashboardLoader = loader;
 &nbsp;
 export const Dashboard = () =&gt; {
-  const { data: userObj, isLoading } = useGetUser();
+  const { data: oneMacUser, isLoading: isOneMacUserLoading } = useGetUser();
   const { data: userDetails, isLoading: isUserDetailsLoading } = useGetUserDetails();
   const osData = useOsData();
 &nbsp;
@@ -374,77 +374,77 @@ export const Dashboard = () =&gt; {
 &nbsp;
   const isAbleToAccessDashboard = () =&gt; {
     return (
-      (userObj.user["custom:cms-roles"] || userObj.user["custom:ismemberof"]) &amp;&amp;
-      Object.values(UserRoles).some((role) =&gt; userObj.user.role === role)
+      (oneMacUser.user["custom:cms-roles"] || oneMacUser.user["custom:ismemberof"]) &amp;&amp;
+      Object.values(UserRoles).some((role) =&gt; oneMacUser.user.role === role)
     );
   };
 &nbsp;
-  if (isLoading || isUserDetailsLoading || osData.tabLoading) {
+  if (isOneMacUserLoading || isUserDetailsLoading) {
     return &lt;LoadingSpinner /&gt;;
   }
 &nbsp;
-  if (!userObj?.user || !isAbleToAccessDashboard()) {
+  if (!oneMacUser?.user || !isAbleToAccessDashboard()) {
     return &lt;Navigate to="/" /&gt;;
   }
 &nbsp;
   return (
-    &lt;OsProvider
-      value={{
-        data: osData.data,
-        error: osData.error,
-        isLoading: osData.isLoading,
-      }}
-    &gt;
-      &lt;div&gt;
+    &lt;&gt;
+      &lt;div className="flex flex-col w-full self-center mx-auto max-w-screen-xl xs:flex-row justify-between p-4 lg:px-8"&gt;
+        &lt;h1 className="text-xl font-bold mb-4 md:mb-0"&gt;Dashboard&lt;/h1&gt;
+        {isStateUser({ ...oneMacUser.user, role: userDetails.role }) &amp;&amp; (
+          &lt;Link
+            to="/new-submission"
+            className="flex items-center text-white font-bold bg-primary border-none px-10 py-2 rounded cursor-pointer"
+          &gt;
+            &lt;span data-testid="new-sub-button" className="mr-2"&gt;
+              New Submission
+            &lt;/span&gt;
+            &lt;PlusIcon className="w-4 h-4" /&gt;
+          &lt;/Link&gt;
+        )}
+      &lt;/div&gt;
+&nbsp;
+      &lt;Tabs
+        value={osData.state.tab}
+        onValueChange={(tab) =&gt; {
+          setLocalStorageCol((prev) =&gt; ({
+            ...prev,
+            [osData.state.tab]: osData.state,
+          }));
+&nbsp;
+          osData.onSet(
+            (prev) =&gt; ({
+              ...prev,
+              ...localStorageCol[tab],
+            }),
+            true,
+          );
+        }}
+      &gt;
+        &lt;div className="max-w-screen-xl mx-auto px-4 lg:px-8"&gt;
+          &lt;TabsList&gt;
+            &lt;TabsTrigger value="spas"&gt;SPAs&lt;/TabsTrigger&gt;
+            &lt;TabsTrigger value="waivers"&gt;Waivers&lt;/TabsTrigger&gt;
+          &lt;/TabsList&gt;
+        &lt;/div&gt;
         &lt;FilterDrawerProvider&gt;
-          &lt;div className="flex flex-col w-full self-center mx-auto max-w-screen-xl xs:flex-row justify-between p-4 lg:px-8"&gt;
-            &lt;h1 className="text-xl font-bold mb-4 md:mb-0"&gt;Dashboard&lt;/h1&gt;
-            {isStateUser({ ...userObj.user, role: userDetails.role }) &amp;&amp; (
-              &lt;Link
-                to="/new-submission"
-                className="flex items-center text-white font-bold bg-primary border-none px-10 py-2 rounded cursor-pointer"
-              &gt;
-                &lt;span data-testid="new-sub-button" className="mr-2"&gt;
-                  New Submission
-                &lt;/span&gt;
-                &lt;PlusIcon className="w-4 h-4" /&gt;
-              &lt;/Link&gt;
-            )}
-          &lt;/div&gt;
-&nbsp;
-          &lt;Tabs
-            value={osData.state.tab}
-            onValueChange={(tab) =&gt; {
-              setLocalStorageCol((prev) =&gt; ({
-                ...prev,
-                [osData.state.tab]: osData.state,
-              }));
-&nbsp;
-              osData.onSet(
-                (prev) =&gt; ({
-                  ...prev,
-                  ...localStorageCol[tab],
-                }),
-                true,
-              );
+          &lt;OsProvider
+            value={{
+              data: osData.data,
+              error: osData.error,
+              isLoading: osData.isLoading,
             }}
           &gt;
-            &lt;div className="max-w-screen-xl mx-auto px-4 lg:px-8"&gt;
-              &lt;TabsList&gt;
-                &lt;TabsTrigger value="spas"&gt;SPAs&lt;/TabsTrigger&gt;
-                &lt;TabsTrigger value="waivers"&gt;Waivers&lt;/TabsTrigger&gt;
-              &lt;/TabsList&gt;
-            &lt;/div&gt;
-            &lt;TabsContent value="spas"&gt;
-              &lt;SpasList /&gt;
+            &lt;TabsContent value="spas" tabIndex={undefined}&gt;
+              &lt;SpasList oneMacUser={oneMacUser} /&gt;
             &lt;/TabsContent&gt;
-            &lt;TabsContent value="waivers"&gt;
-              &lt;WaiversList /&gt;
+            &lt;TabsContent value="waivers" tabIndex={undefined}&gt;
+              &lt;WaiversList oneMacUser={oneMacUser} /&gt;
             &lt;/TabsContent&gt;
-          &lt;/Tabs&gt;
+          &lt;/OsProvider&gt;
         &lt;/FilterDrawerProvider&gt;
-      &lt;/div&gt;
-    &lt;/OsProvider&gt;
+      &lt;/Tabs&gt;
+    &lt;/&gt;
   );
 };
 &nbsp;</pre></td></tr></table></pre>
@@ -454,7 +454,7 @@ export const Dashboard = () =&gt; {
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2025-07-01T02:19:30.973Z
+                at 2025-07-01T19:05:12.814Z
             </div>
         <script src="../../../../prettify.js"></script>
         <script>
