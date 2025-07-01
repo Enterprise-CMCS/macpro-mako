@@ -3,12 +3,15 @@ import { useEffect, useState } from "react";
 import { ConfirmationDialog } from "@/components/ConfirmationDialog";
 import { Observer } from "@/utils/basic-observable";
 
+import { ButtonProps } from "../Inputs";
+
 export type UserPrompt = {
   header: string;
   body: string;
   cancelButtonText?: string;
   acceptButtonText?: string;
   areButtonsReversed?: boolean;
+  cancelVariant?: ButtonProps["variant"];
   onAccept: () => void;
   onCancel?: () => void;
 };
@@ -80,6 +83,7 @@ export const UserPrompt = () => {
       cancelButtonText={activeUserPrompt.cancelButtonText}
       acceptButtonText={activeUserPrompt.acceptButtonText}
       areButtonsReversed={activeUserPrompt.areButtonsReversed}
+      cancelVariant={activeUserPrompt.cancelVariant}
     />
   );
 };

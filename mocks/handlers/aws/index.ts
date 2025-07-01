@@ -20,6 +20,7 @@ export const awsHandlers = [
 
 export { errorCloudFormationHandler } from "./cloudFormation";
 export {
+  cognitoHandlers,
   getRequestContext,
   identityProviderServiceHandler,
   emptyIdentityProviderServiceHandler,
