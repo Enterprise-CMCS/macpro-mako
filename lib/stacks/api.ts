@@ -172,17 +172,6 @@ export class Api extends cdk.NestedStack {
         bundling: commonBundlingOptions,
       });
 
-      // if (id === "submitSplitSPA") {
-      //   fn.role?.addToPrincipalPolicy(
-      //     new iam.PolicyStatement({
-      //       actions: ["lambda:InvokeFunction"],
-      //       resources: [
-      //         `arn:aws:lambda:${this.region}:${this.account}:function:${project}-${stage}-${stack}-submitNOSO`,
-      //       ],
-      //     }),
-      //   );
-      // }
-
       if (provisionedConcurrency > 0) {
         const version = fn.currentVersion;
 
