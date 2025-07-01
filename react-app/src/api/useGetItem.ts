@@ -36,6 +36,7 @@ export const useGetItem = (
     {
       ...options,
       onError: (error) => {
+        console.log("useGetItem onError fired with:", error);
         sendGAEvent("api_error", {
           error: "error getting item",
         });
