@@ -3,12 +3,12 @@ import { useEffect } from "react";
 import { sendGAEvent } from "@/utils/ReactGA/SendGAEvent";
 import { BreadCrumbs, SimplePageContainer } from "@/components";
 import { useFeatureFlag } from "@/hooks/useFeatureFlag";
-useEffect(()=>{
-  sendGAEvent("err_404", null);
- },[]);
+
 export const ErrorPage = () => {
   const isFAQEnabled = useFeatureFlag("TOGGLE_FAQ");
-
+  useEffect(()=>{
+    sendGAEvent("err_404", null);
+   },[]);
   return (
     <SimplePageContainer>
       <BreadCrumbs
