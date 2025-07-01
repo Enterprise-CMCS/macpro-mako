@@ -24,6 +24,7 @@ const eventSchema = {
 };
 
 export const handler = middy()
+  .use(httpErrorHandler()) // handles common http errors and returns proper responses
   .use(normalizeEvent({ opensearch: true })) // calls the middleware that checks for event body and adds the context type if it is missing
   .use(
     httpJsonBodyParser(), // parses the request body when it's a JSON and converts it to an object
@@ -31,7 +32,6 @@ export const handler = middy()
   .use(
     validator({ eventSchema: transpileSchema(eventSchema) }), // validates the event
   )
-  .use(httpErrorHandler()) // handles common http errors and returns proper responses
   .use(fetchPackage({ allowNotFound: true, setToContext: true }))
   .handler(
     async (

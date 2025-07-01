@@ -195,7 +195,7 @@ export type PackageActionsRequestBody = {
 export type SubmitRoleRequestBody = {
   email: string;
   state: string;
-  role: TestUserRole;
+  role: UserRole;
   eventType: string;
   grantAccess?: boolean;
   requestRoleChange: boolean;

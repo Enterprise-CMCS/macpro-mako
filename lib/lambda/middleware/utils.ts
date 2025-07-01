@@ -15,7 +15,7 @@ export const setPackage = (
   }
 };
 
-export const getPackage = async (request: Request): Promise<main.ItemResult> => {
+export const getPackage = async (request: Request): Promise<main.ItemResult | undefined> => {
   const { packageResult } = (await getInternal("packageResult", request)) as {
     packageResult: main.ItemResult;
   };
@@ -36,7 +36,7 @@ export const setUser = (user: MiddyUser, request: Request, setToContext?: boolea
   }
 };
 
-export const getUser = async (request: Request): Promise<MiddyUser> => {
+export const getUser = async (request: Request): Promise<MiddyUser | undefined> => {
   const { user } = (await getInternal("user", request)) as { user: MiddyUser };
   return user;
 };

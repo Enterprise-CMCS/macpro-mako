@@ -5,11 +5,19 @@ import { changelog } from "shared-types/opensearch";
 
 import { getPackage, setPackage } from "./utils";
 
-const defaults = {
+export type FetchChangelogOptions = { setToContext?: boolean };
+
+const defaults: FetchChangelogOptions = {
   setToContext: false,
 };
 
-export const fetchChangelog = (opts: { setToContext?: boolean } = {}) => {
+/**
+ * Fetches the changelog for the package, if there is any, and adds it to the package in internal storage.
+ * @param {object} opts Options for running the middleware
+ * @param {boolean} opts.setToContext [false] if true, also store the fetched data in the context so the data can be accessed in the handler
+ * @returns {MiddlewareObj} middleware to fetch the changelog before the handler runs
+ */
+export const fetchChangelog = (opts: FetchChangelogOptions = {}) => {
   const options = { ...defaults, ...opts };
 
   return {

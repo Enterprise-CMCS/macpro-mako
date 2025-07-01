@@ -34,7 +34,7 @@ describe("getItemData Handler", () => {
 
     expect(res).toBeTruthy();
     expect(res.statusCode).toEqual(401);
-    expect(res.body).toEqual(JSON.stringify({ message: "User not authenticated" }));
+    expect(res.body).toEqual(JSON.stringify({ message: "User is not authenticated" }));
   });
 
   it("should return 403 if not authorized to view this resource", async () => {
