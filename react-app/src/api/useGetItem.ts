@@ -37,8 +37,8 @@ export const useGetItem = (
       ...options,
       onError: (error) => {
         if (error?.response?.data.message === "No record found for the given id") {
-          sendGAEvent("err_404", {
-            error: "unknown_package",
+          sendGAEvent("error", {
+            error: "error getting item",
           });
         }
       },
