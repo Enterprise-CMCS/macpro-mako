@@ -62,7 +62,7 @@ export const PackageDetails = ({ submission }: PackageDetailsProps) => {
       });
       didSetGATag.current = true;
     }
-  }, [isUserLoading, user.user, submission.id, submission.authority, didSetGATag]);
+  }, [isUserLoading, user?.user, submission.id, submission.authority, didSetGATag]);
 
   if (isUserLoading) return <LoadingSpinner />;
 
