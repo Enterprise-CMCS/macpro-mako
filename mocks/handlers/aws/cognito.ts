@@ -100,7 +100,7 @@ export const loginPostHandler = http.post(/amazoncognito\.com\/login/, async ({ 
   });
 });
 
-export const tokenHandler = http.post(/amazoncognito\.com\/oauth2\/token/, async ({ request }) => {
+export const tokenHandler = http.post(/amazoncognito\.com\/oauth2\/token/, async () => {
   // console.log("tokenHandler", { request, headers: request.headers });
   const username = getMockUsername();
 
