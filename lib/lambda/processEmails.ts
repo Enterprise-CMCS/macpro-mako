@@ -16,9 +16,9 @@ import {
 } from "shared-types";
 import { decodeBase64WithUtf8, formatActionType, getSecret } from "shared-utils";
 import { retry } from "shared-utils/retry";
-import { calculate90dayExpiration, isChipSpaRespondRAIEvent } from "./utils";
 
 import { sendUserRoleEmails } from "./processUserRoleEmails";
+import { calculate90dayExpiration, isChipSpaRespondRAIEvent } from "./utils";
 
 class TemporaryError extends Error {
   constructor(message: string) {
@@ -38,8 +38,6 @@ export interface ProcessEmailConfig {
   configurationSetName: string;
   isDev: boolean;
 }
-
-
 
 interface EmailTemplate {
   to: string[];
@@ -146,10 +144,7 @@ export async function processRecord(kafkaRecord: KafkaRecord, config: ProcessEma
       safeID,
       ...JSON.parse(decodeBase64WithUtf8(value)),
     };
-
-
     const safeSeatoolRecord = opensearch.main.seatool.transform(safeID).safeParse(seatoolRecord);
-
 
     if (safeSeatoolRecord.data?.seatoolStatus === SEATOOL_STATUS.WITHDRAWN) {
       try {
@@ -206,11 +201,8 @@ export async function processRecord(kafkaRecord: KafkaRecord, config: ProcessEma
     return;
   }
 
-  console.log("made it this far")
   let record;
   if (isChipSpaRespondRAIEvent(parsedRecord)) {
-    console.log("send with modified timestamp")
-    console.log("ninetyDayExpirationClock: ", ninetyDayExpirationClock);
     record = {
       timestamp: ninetyDayExpirationClock,
       ...JSON.parse(decodeBase64WithUtf8(value)),

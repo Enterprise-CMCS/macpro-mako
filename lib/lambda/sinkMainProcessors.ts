@@ -396,7 +396,7 @@ export const insertNewSeatoolRecordsFromKafkaIntoMako = async (
   topicPartition: string,
 ) => {
   const makoDocTimestamps = await getMakoDocTimestamps(kafkaRecords);
-  const seatoolRecordsForMako: { id: string;[key: string]: unknown }[] = [];
+  const seatoolRecordsForMako: { id: string; [key: string]: unknown }[] = [];
 
   for (const kafkaRecord of kafkaRecords) {
     try {
