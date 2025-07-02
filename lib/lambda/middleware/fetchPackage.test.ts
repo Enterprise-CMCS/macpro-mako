@@ -8,7 +8,7 @@ import { main } from "shared-types/opensearch";
 import { describe, expect, it } from "vitest";
 
 import { fetchPackage, FetchPackageOptions } from "./fetchPackage";
-import { getPackage } from "./utils";
+import { getPackageFromRequest } from "./utils";
 
 const setupHandler = ({
   expectedPackage = undefined,
@@ -25,7 +25,7 @@ const setupHandler = ({
     .use(httpJsonBodyParser())
     .use(fetchPackage(options))
     .before(async (request: Request) => {
-      const packageResult = await getPackage(request);
+      const packageResult = await getPackageFromRequest(request);
       expect(packageResult).toEqual(expectedPackage);
     })
     .handler((event: APIGatewayEvent, context: Context & { packageResult?: main.ItemResult }) => {

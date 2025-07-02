@@ -16,7 +16,7 @@ import { main, roles, users } from "shared-types/opensearch";
 import { describe, expect, it } from "vitest";
 
 import { canViewPackage } from "./hasPermissions";
-import { MiddyUser, setPackage, setUser } from "./utils";
+import { MiddyUser, storePackageInRequest, storeUserInRequest } from "./utils";
 
 const TEST_ITEM = items[TEST_ITEM_ID] as main.ItemResult;
 const HI_TEST_ITEM = items[HI_TEST_ITEM_ID] as main.ItemResult;
@@ -57,10 +57,10 @@ const setupHandler = (opts: { user?: MiddyUser; packageResult?: main.ItemResult 
     .use(httpErrorHandler())
     .before(async (request: Request) => {
       if (options.user) {
-        setUser(options.user, request, false);
+        storeUserInRequest(options.user, request, false);
       }
       if (options.packageResult) {
-        setPackage(options.packageResult, request, false);
+        storePackageInRequest(options.packageResult, request, false);
       }
     })
     .use(canViewPackage())

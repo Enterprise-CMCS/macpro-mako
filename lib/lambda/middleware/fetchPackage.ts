@@ -2,7 +2,7 @@ import { MiddlewareObj, Request } from "@middy/core";
 import { createError } from "@middy/util";
 import { getPackage } from "libs/api/package";
 
-import { setPackage } from "./utils";
+import { storePackageInRequest } from "./utils";
 
 export type FetchPackageOptions = {
   allowNotFound?: boolean;
@@ -46,7 +46,7 @@ export const fetchPackage = (opts: FetchPackageOptions = {}): MiddlewareObj => {
         throw createError(404, JSON.stringify({ message: "No record found for the given id" }));
       }
 
-      setPackage(packageResult, request, options.setToContext);
+      storePackageInRequest(packageResult, request, options.setToContext);
     },
   };
 };

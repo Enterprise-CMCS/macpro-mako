@@ -1,7 +1,7 @@
 import { MiddlewareObj, Request } from "@middy/core";
 import { getAppkChildren } from "libs/api/package";
 
-import { getPackage, setPackage } from "./utils";
+import { getPackageFromRequest, storePackageInRequest } from "./utils";
 
 export type FetchAppkChildrenOptions = { setToContext?: boolean };
 
@@ -20,7 +20,7 @@ export const fetchAppkChildren = (opts: FetchAppkChildrenOptions = {}): Middlewa
 
   return {
     before: async (request: Request) => {
-      const packageResult = await getPackage(request);
+      const packageResult = await getPackageFromRequest(request);
 
       if (packageResult?._id) {
         let appkChildren: any[] = [];
@@ -31,7 +31,7 @@ export const fetchAppkChildren = (opts: FetchAppkChildrenOptions = {}): Middlewa
         }
 
         if (appkChildren.length > 0) {
-          setPackage(
+          storePackageInRequest(
             {
               ...packageResult,
               _source: {

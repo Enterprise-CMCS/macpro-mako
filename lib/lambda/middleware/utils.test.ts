@@ -10,7 +10,13 @@ import items from "mocks/data/items";
 import { main, roles, users } from "shared-types/opensearch";
 import { describe, expect, it } from "vitest";
 
-import { getPackage, getUser, MiddyUser, setPackage, setUser } from "./utils";
+import {
+  getPackageFromRequest,
+  getUserFromRequest,
+  MiddyUser,
+  storePackageInRequest,
+  storeUserInRequest,
+} from "./utils";
 
 const TEST_ITEM = items[TEST_ITEM_ID] as main.ItemResult;
 const TEST_USER: MiddyUser = {
@@ -20,13 +26,13 @@ const TEST_USER: MiddyUser = {
 };
 
 describe("Middleware Utils", () => {
-  describe("getPackage", () => {
+  describe("getPackageFromRequest", () => {
     it("should get the package if it is stored internally", async () => {
       const request = {
         internal: { packageResult: TEST_ITEM },
         context: {},
       } as Request & { internal: { packageResult: main.ItemResult } };
-      expect(await getPackage(request)).toEqual(TEST_ITEM);
+      expect(await getPackageFromRequest(request)).toEqual(TEST_ITEM);
     });
 
     it("should return undefined if the package is not stored internally", async () => {
@@ -34,17 +40,17 @@ describe("Middleware Utils", () => {
         internal: {},
         context: {},
       } as Request;
-      expect(await getPackage(request)).toBeUndefined();
+      expect(await getPackageFromRequest(request)).toBeUndefined();
     });
   });
 
-  describe("setPackage", () => {
+  describe("storePackageInRequest", () => {
     it("should set the package only internally if the setToContext is not defined", () => {
       const request = {
         internal: {},
         context: {},
       } as Request;
-      setPackage(TEST_ITEM, request);
+      storePackageInRequest(TEST_ITEM, request);
       expect(request).toEqual({
         internal: { packageResult: TEST_ITEM },
         context: {},
@@ -56,7 +62,7 @@ describe("Middleware Utils", () => {
         internal: {},
         context: {},
       } as Request;
-      setPackage(TEST_ITEM, request, false);
+      storePackageInRequest(TEST_ITEM, request, false);
       expect(request).toEqual({
         internal: { packageResult: TEST_ITEM },
         context: {},
@@ -68,7 +74,7 @@ describe("Middleware Utils", () => {
         internal: {},
         context: {},
       } as Request;
-      setPackage(TEST_ITEM, request, true);
+      storePackageInRequest(TEST_ITEM, request, true);
       expect(request).toEqual({
         internal: { packageResult: TEST_ITEM },
         context: { packageResult: TEST_ITEM },
@@ -76,13 +82,13 @@ describe("Middleware Utils", () => {
     });
   });
 
-  describe("getUser", () => {
+  describe("getUserFromRequest", () => {
     it("should get the user if it is stored internally", async () => {
       const request = {
         internal: { user: TEST_USER },
         context: {},
       } as Request & { internal: { user: MiddyUser } };
-      expect(await getUser(request)).toEqual(TEST_USER);
+      expect(await getUserFromRequest(request)).toEqual(TEST_USER);
     });
 
     it("should return undefined if the user is not stored internally", async () => {
@@ -90,17 +96,17 @@ describe("Middleware Utils", () => {
         internal: {},
         context: {},
       } as Request;
-      expect(await getUser(request)).toBeUndefined();
+      expect(await getUserFromRequest(request)).toBeUndefined();
     });
   });
 
-  describe("setUser", () => {
+  describe("storeUserInRequest", () => {
     it("should set the package only internally if the setToContext is not defined", () => {
       const request = {
         internal: {},
         context: {},
       } as Request;
-      setUser(TEST_USER, request);
+      storeUserInRequest(TEST_USER, request);
       expect(request).toEqual({
         internal: { user: TEST_USER },
         context: {},
@@ -112,7 +118,7 @@ describe("Middleware Utils", () => {
         internal: {},
         context: {},
       } as Request;
-      setUser(TEST_USER, request, false);
+      storeUserInRequest(TEST_USER, request, false);
       expect(request).toEqual({
         internal: { user: TEST_USER },
         context: {},
@@ -124,7 +130,7 @@ describe("Middleware Utils", () => {
         internal: {},
         context: {},
       } as Request;
-      setUser(TEST_USER, request, true);
+      storeUserInRequest(TEST_USER, request, true);
       expect(request).toEqual({
         internal: { user: TEST_USER },
         context: { user: TEST_USER },

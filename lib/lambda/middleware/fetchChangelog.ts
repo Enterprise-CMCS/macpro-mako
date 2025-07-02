@@ -2,7 +2,7 @@ import { Request } from "@middy/core";
 import { getPackageChangelog } from "libs/api/package";
 import { changelog } from "shared-types/opensearch";
 
-import { getPackage, setPackage } from "./utils";
+import { getPackageFromRequest, storePackageInRequest } from "./utils";
 
 export type FetchChangelogOptions = { setToContext?: boolean };
 
@@ -21,7 +21,7 @@ export const fetchChangelog = (opts: FetchChangelogOptions = {}) => {
 
   return {
     before: async (request: Request) => {
-      const packageResult = await getPackage(request);
+      const packageResult = await getPackageFromRequest(request);
 
       if (packageResult?._id) {
         const filter = [];
@@ -39,7 +39,7 @@ export const fetchChangelog = (opts: FetchChangelogOptions = {}) => {
 
         const changelog = await getPackageChangelog(packageResult._id, filter);
 
-        setPackage(
+        storePackageInRequest(
           {
             ...packageResult,
             _source: {

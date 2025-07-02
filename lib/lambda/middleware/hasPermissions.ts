@@ -2,7 +2,7 @@ import { MiddlewareObj, Request } from "@middy/core";
 import { createError } from "@middy/util";
 import { isCmsUser } from "shared-utils";
 
-import { getPackage, getUser } from "./utils";
+import { getPackageFromRequest, getUserFromRequest } from "./utils";
 
 /**
  * Checks the user's permissions to determine if they can access the package.
@@ -11,8 +11,8 @@ import { getPackage, getUser } from "./utils";
 export const canViewPackage = (): MiddlewareObj => ({
   before: async (request: Request) => {
     // Get the user to check if they are authorized to see the package
-    const user = await getUser(request);
-    const packageResult = await getPackage(request);
+    const user = await getUserFromRequest(request);
+    const packageResult = await getPackageFromRequest(request);
 
     if (!user?.cognitoUser || !packageResult) {
       throw createError(500, JSON.stringify({ message: "Internal server error" }), {

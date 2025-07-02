@@ -10,7 +10,7 @@ import {
   getLatestActiveRoleByEmail,
   getUserByEmail,
 } from "../user-management/userManagementService";
-import { setUser } from "./utils";
+import { storeUserInRequest } from "./utils";
 
 export type IsAuthenticatedOptions = {
   setToContext?: boolean;
@@ -81,7 +81,7 @@ export const isAuthenticated = (opts: IsAuthenticatedOptions = {}): MiddlewareOb
         }
       }
 
-      setUser(
+      storeUserInRequest(
         {
           cognitoUser,
           userDetails,

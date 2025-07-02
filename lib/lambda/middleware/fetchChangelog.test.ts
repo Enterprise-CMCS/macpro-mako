@@ -7,7 +7,7 @@ import { changelog, main } from "shared-types/opensearch";
 import { describe, expect, it } from "vitest";
 
 import { fetchChangelog, FetchChangelogOptions } from "./fetchChangelog";
-import { getPackage, setPackage } from "./utils";
+import { getPackageFromRequest, storePackageInRequest } from "./utils";
 
 const setupHandler = ({
   packageResult = undefined,
@@ -24,12 +24,12 @@ const setupHandler = ({
     .use(httpErrorHandler())
     .before(async (request: Request) => {
       if (packageResult) {
-        setPackage(packageResult, request, options.setToContext);
+        storePackageInRequest(packageResult, request, options.setToContext);
       }
     })
     .use(fetchChangelog(options))
     .before(async (request: Request) => {
-      const updatedPackage = await getPackage(request);
+      const updatedPackage = await getPackageFromRequest(request);
       expect(updatedPackage).toEqual(expectedPackage);
     })
     .handler((event: APIGatewayEvent, context: Context & { packageResult?: main.ItemResult }) => {

@@ -22,7 +22,7 @@ import { roles, users } from "shared-types/opensearch";
 import { describe, expect, it } from "vitest";
 
 import { isAuthenticated, IsAuthenticatedOptions } from "./isAuthenticated";
-import { getUser, MiddyUser } from "./utils";
+import { getUserFromRequest, MiddyUser } from "./utils";
 
 const testStateSubmitterDetails: users.Document = osUsers[TEST_STATE_SUBMITTER_EMAIL]
   ._source as users.Document;
@@ -62,7 +62,7 @@ const setupHandler = ({
     .use(httpErrorHandler())
     .use(isAuthenticated(options))
     .before(async (request: Request) => {
-      const user = await getUser(request);
+      const user = await getUserFromRequest(request);
       expect(user).toEqual(expectedUser);
     })
     .handler((event: APIGatewayEvent, context: Context & { user?: MiddyUser }) => {

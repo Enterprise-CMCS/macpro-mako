@@ -4,12 +4,12 @@ import { FullUser } from "shared-types";
 import { main, roles, users } from "shared-types/opensearch";
 
 /**
- * Sets the package in the request internal storage
+ * Stores the package in the request internal storage
  * @param {main.ItemResult} packageResult package to store
  * @param {Request} request request to store the package in
  * @param {boolean} setToContext [false] if the package should also be stored in the request context so that it is available in the handler
  */
-export const setPackage = (
+export const storePackageInRequest = (
   packageResult: main.ItemResult | undefined,
   request: Request,
   setToContext?: boolean,
@@ -26,7 +26,9 @@ export const setPackage = (
  * @param {Request} request request the package is stored in
  * @returns {main.ItemResult} the package or undefined if not found
  */
-export const getPackage = async (request: Request): Promise<main.ItemResult | undefined> => {
+export const getPackageFromRequest = async (
+  request: Request,
+): Promise<main.ItemResult | undefined> => {
   const { packageResult } = (await getInternal("packageResult", request)) as {
     packageResult: main.ItemResult;
   };
@@ -40,12 +42,16 @@ export type MiddyUser = {
 };
 
 /**
- * Sets the user in the request internal storage
+ * Stores the user in the request internal storage
  * @param {MiddyUser} user user to store in internal storage
  * @param {Request} request request to store the user in
  * @param {boolean} setToContext [false] if the user should also be stored in the request context so that it is available in the handler
  */
-export const setUser = (user: MiddyUser, request: Request, setToContext?: boolean): void => {
+export const storeUserInRequest = (
+  user: MiddyUser,
+  request: Request,
+  setToContext?: boolean,
+): void => {
   Object.assign(request.internal, { user });
 
   if (setToContext) {
@@ -58,7 +64,7 @@ export const setUser = (user: MiddyUser, request: Request, setToContext?: boolea
  * @param {Request} request request the user is stored in
  * @returns {MiddyUser} the user or undefined if not found
  */
-export const getUser = async (request: Request): Promise<MiddyUser | undefined> => {
+export const getUserFromRequest = async (request: Request): Promise<MiddyUser | undefined> => {
   const { user } = (await getInternal("user", request)) as { user: MiddyUser };
   return user;
 };
