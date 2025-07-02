@@ -14,8 +14,9 @@ import {
   opensearch,
   SEATOOL_STATUS,
 } from "shared-types";
-import { decodeBase64WithUtf8, formatActionType, getSecret } from "shared-utils"
+import { decodeBase64WithUtf8, formatActionType, getSecret } from "shared-utils";
 import { retry } from "shared-utils/retry";
+import { calculate90dayExpiration, isChipSpaRespondRAIEvent } from "./utils";
 
 import { sendUserRoleEmails } from "./processUserRoleEmails";
 
@@ -38,11 +39,7 @@ export interface ProcessEmailConfig {
   isDev: boolean;
 }
 
-interface ParseKafkaEvent {
-  id: string;
-  event?: string;
-  authority?: string;
-}
+
 
 interface EmailTemplate {
   to: string[];
@@ -134,16 +131,12 @@ export const handler: Handler<KafkaEvent> = async (event) => {
 
 export async function processRecord(kafkaRecord: KafkaRecord, config: ProcessEmailConfig) {
   let ninetyDayExpirationClock;
-  console.log("processRecord called with kafkaRecord: ", JSON.stringify(kafkaRecord, null, 2));
-
   const { key, value, timestamp } = kafkaRecord;
   const id: string = decodeBase64WithUtf8(key);
   const logRecord = decodeBase64WithUtf8(value);
-  console.log("logRecord: ", logRecord);
   const parsedRecord = JSON.parse(logRecord);
 
   if (isChipSpaRespondRAIEvent(parsedRecord)) {
-    console.log("respond to rai event for package: ", parsedRecord.id);
     ninetyDayExpirationClock = await calculate90dayExpiration(parsedRecord, config);
   }
 
@@ -449,47 +442,3 @@ const htmlToTextOptions = (baseUrl: string): HtmlToTextOptions => ({
     wrapCharacters: ["-", "/"],
   },
 });
-const isChipSpaRespondRAIEvent = (parsedRecord: ParseKafkaEvent) => {
-  return parsedRecord?.event == "respond-to-rai" && parsedRecord?.authority == "CHIP SPA";
-}
-const calculate90dayExpiration = async (parsedRecord: ParseKafkaEvent, config: ProcessEmailConfig) => {
-  let ninetyDayExpirationClock;
-  console.log("respond to rai event for package: ", parsedRecord.id);
-  const item = await os.getItem(config.osDomain, getOsNamespace("main"), parsedRecord.id);
-  // const item = await os.getItem(getDomain(), getOsNamespace("main"), parsedResult.data.id);
-  // const osRecord = await getPackage(parsedRecord.id);
-  console.log("returned open search record: ", item);
-  // if (!item?.found || !item?._source) {
-  const submissionDate = item?._source.submissionDate || "";
-  console.log("submission date: ", submissionDate);
-  const raiRequestedDate = item?._source.raiRequestedDate || "";
-  console.log("raiRequestedDate: ", raiRequestedDate);
-  const alert90DaysDate = item?._source.alert90daysDate || "";
-  console.log("alert90DaysDate: ", alert90DaysDate);
-  const submissionMS = new Date(submissionDate).getTime();
-  const raiMS = new Date(raiRequestedDate).getTime();
-  if (!submissionDate || !raiRequestedDate) {
-    console.error("error parsing os record")
-  }
-  const now = Date.now();
-
-  if (raiRequestedDate) {
-    const pausedDuration = now - raiMS;
-
-    // 90 days in milliseconds
-    const ninetyDays = 90 * 24 * 60 * 60 * 1000;
-
-    // The due date = submission timestamp + 90 days + the paused duration
-
-    if (!alert90DaysDate) {
-      ninetyDayExpirationClock = submissionMS + ninetyDays + pausedDuration;
-    } else {
-      // for scenarios where there are multiple RAI's use the previous 90day exp clock and add the most recent paused duration
-      console.log("alert 90 days date found");
-      ninetyDayExpirationClock = alert90DaysDate + pausedDuration
-    }
-    console.log("ninety day expiration: ", ninetyDayExpirationClock);
-    console.log("ninety day formatted: ", new Date(ninetyDayExpirationClock));
-  }
-  return ninetyDayExpirationClock;
-};
