@@ -1,27 +1,23 @@
+import { zodValidator } from "@dannywrayuk/middy-zod-validator";
 import middy from "@middy/core";
 import httpErrorHandler from "@middy/http-error-handler";
 import httpJsonBodyParser from "@middy/http-json-body-parser";
-import validator from "@middy/validator";
-import { transpileSchema } from "@middy/validator/transpile";
-import { APIGatewayEvent, Context } from "aws-lambda";
-import { ItemResult } from "shared-types/opensearch/main";
+import { APIGatewayEvent } from "shared-types";
+import { z } from "zod";
 
-import { fetchPackage, normalizeEvent } from "./middleware";
+import { ContextWithPackage, fetchPackage, normalizeEvent } from "./middleware";
 
-const eventSchema = {
-  type: "object",
-  properties: {
-    body: {
-      type: "object",
-      required: ["id"],
-      properties: {
-        id: {
-          type: "string",
-        },
-      },
-    },
-  },
-};
+const itemExistsEventSchema = z
+  .object({
+    body: z
+      .object({
+        id: z.string(),
+      })
+      .strict(),
+  })
+  .passthrough();
+
+export type ItemExistsEvent = APIGatewayEvent & z.infer<typeof itemExistsEventSchema>;
 
 export const handler = middy()
   .use(httpErrorHandler()) // handles common http errors and returns proper responses
@@ -30,23 +26,18 @@ export const handler = middy()
     httpJsonBodyParser(), // parses the request body when it's a JSON and converts it to an object
   )
   .use(
-    validator({ eventSchema: transpileSchema(eventSchema) }), // validates the event
+    zodValidator({ eventSchema: itemExistsEventSchema }), // validates the event
   )
   .use(fetchPackage({ allowNotFound: true, setToContext: true }))
-  .handler(
-    async (
-      event: APIGatewayEvent & { body: { id: string } },
-      context: Context & { packageResult: ItemResult },
-    ) => {
-      const { packageResult } = context;
+  .handler(async (event: ItemExistsEvent, context: ContextWithPackage) => {
+    const { packageResult } = context;
 
-      const exists = !(packageResult === undefined || !packageResult.found);
-      return {
-        statusCode: 200,
-        body: JSON.stringify({
-          message: exists ? "Record found for the given id" : "No record found for the given id",
-          exists,
-        }),
-      };
-    },
-  );
+    const exists = !(packageResult === undefined || !packageResult.found);
+    return {
+      statusCode: 200,
+      body: JSON.stringify({
+        message: exists ? "Record found for the given id" : "No record found for the given id",
+        exists,
+      }),
+    };
+  });

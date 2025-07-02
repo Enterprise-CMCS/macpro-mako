@@ -1,7 +1,17 @@
 import { Request } from "@middy/core";
 import { getInternal } from "@middy/util";
+import { Context } from "aws-lambda";
 import { FullUser } from "shared-types";
 import { main, roles, users } from "shared-types/opensearch";
+
+export type MiddyUser = {
+  cognitoUser: FullUser;
+  userDetails: users.Document | null;
+  userProfile: roles.Document[];
+};
+
+export type ContextWithPackage = Context & { packageResult?: main.ItemResult };
+export type ContextWithUser = Context & { user?: MiddyUser };
 
 /**
  * Stores the package in the request internal storage
@@ -33,12 +43,6 @@ export const getPackageFromRequest = async (
     packageResult: main.ItemResult;
   };
   return packageResult;
-};
-
-export type MiddyUser = {
-  cognitoUser: FullUser;
-  userDetails: users.Document | null;
-  userProfile: roles.Document[];
 };
 
 /**

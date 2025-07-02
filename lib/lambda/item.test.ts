@@ -23,6 +23,20 @@ describe("getItemData Handler", () => {
     expect(res.body).toEqual(JSON.stringify({ message: "Event body required" }));
   });
 
+  it("should return 400 if event body is not valid", async () => {
+    const event = {
+      body: JSON.stringify({ test: "bad " }),
+    } as APIGatewayEvent;
+
+    const res = await handler(event, {} as Context);
+
+    expect(res).toBeTruthy();
+    expect(res.statusCode).toEqual(400);
+    expect(JSON.parse(res.body)).toEqual(
+      expect.objectContaining({ message: "Event failed validation" }),
+    );
+  });
+
   it("should return 401 if not authenticated", async () => {
     setMockUsername(null);
     const event = {
