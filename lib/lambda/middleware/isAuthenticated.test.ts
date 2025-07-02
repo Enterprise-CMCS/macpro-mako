@@ -294,7 +294,7 @@ describe("isAuthenticated", () => {
         cognitoUser: {
           ...TEST_STATE_SUBMITTER_USER,
           role: "statesubmitter",
-          states: [],
+          states: testStateSubmitterStates,
         },
         userDetails: testStateSubmitterDetails,
         userProfile: [],
