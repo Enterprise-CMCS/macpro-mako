@@ -6,6 +6,7 @@ import { roles, users } from "shared-types/opensearch";
 import { isCmsUser } from "shared-utils";
 
 import {
+  getActiveStatesForUserByEmail,
   getAllUserRolesByEmail,
   getLatestActiveRoleByEmail,
   getUserByEmail,
@@ -29,7 +30,7 @@ const defaults: IsAuthenticatedOptions = {
  * @param {object} opts Options for running the middleware
  * @param {boolean} opts.setToContext [false] if true, also stores the package in context, so it can be accessed in the handler
  * @param {boolean} opts.withDetails [true] if false, skip fetching the user's details
- * @param {boolean} opts.withRoles [true] if false, skip fetching the user's role and active states
+ * @param {boolean} opts.withRoles [true] if false, skip fetching the user's role
  * @returns {MiddleObj} middleware to authenticate the user before the handler runs
  */
 export const isAuthenticated = (opts: IsAuthenticatedOptions = {}): MiddlewareObj => {
@@ -64,6 +65,10 @@ export const isAuthenticated = (opts: IsAuthenticatedOptions = {}): MiddlewareOb
         states: [],
       };
 
+      if (!isCmsUser(cognitoUser)) {
+        cognitoUser.states = await getActiveStatesForUserByEmail(email, latestActiveRole?.role);
+      }
+
       let userDetails: users.Document | null = null;
       if (options.withDetails) {
         userDetails = await getUserByEmail(email);
@@ -72,13 +77,6 @@ export const isAuthenticated = (opts: IsAuthenticatedOptions = {}): MiddlewareOb
       let userProfile: roles.Document[] = [];
       if (options.withRoles) {
         userProfile = await getAllUserRolesByEmail(email);
-        const activeRoles = userProfile.filter((role) => role.status === "active");
-
-        if (!isCmsUser(cognitoUser)) {
-          cognitoUser.states = Array.from(
-            new Set(activeRoles.map((role) => role.territory.toUpperCase())),
-          );
-        }
       }
 
       storeUserInRequest(
