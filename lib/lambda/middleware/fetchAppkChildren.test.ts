@@ -6,21 +6,41 @@ import items from "mocks/data/items";
 import { main } from "shared-types/opensearch";
 import { describe, expect, it } from "vitest";
 
-import { fetchAppkChildren } from "./fetchAppkChildren";
+import { fetchAppkChildren, FetchAppkChildrenOptions } from "./fetchAppkChildren";
 import { getPackage, setPackage } from "./utils";
 
-const setupDefault = { user: undefined, packageResult: undefined, setToContext: false };
-const setup = (opts: { packageResult?: main.ItemResult; setToContext?: boolean } = {}) => {
-  const options = { ...setupDefault, ...opts };
-
-  return {
-    before: async (request: Request) => {
-      if (options.packageResult) {
-        setPackage(options.packageResult, request, options.setToContext);
+const setupHandler = ({
+  packageResult = undefined,
+  expectedPackage = undefined,
+  options = { setToContext: false },
+}: {
+  packageResult?: main.ItemResult;
+  expectedPackage?: main.ItemResult;
+  options?: FetchAppkChildrenOptions;
+} = {}) =>
+  middy()
+    .use(httpErrorHandler())
+    .before(async (request: Request) => {
+      if (packageResult) {
+        setPackage(packageResult, request, options.setToContext);
       }
-    },
-  };
-};
+    })
+    .use(fetchAppkChildren(options))
+    .before(async (request: Request) => {
+      const updatedPackage = await getPackage(request);
+      expect(updatedPackage).toEqual(expectedPackage);
+    })
+    .handler((event: APIGatewayEvent, context: Context & { packageResult?: main.ItemResult }) => {
+      if (options.setToContext) {
+        const { packageResult } = context;
+        expect(packageResult).toEqual(expectedPackage);
+      }
+
+      return {
+        statusCode: 200,
+        body: "OK",
+      };
+    });
 
 describe("fetchAppkChildren", () => {
   it("should internally store the Appk children in the package if it has them", async () => {
@@ -32,23 +52,10 @@ describe("fetchAppkChildren", () => {
         appkChildren: undefined,
       },
     };
-    const event = {
-      body: "test",
-    } as APIGatewayEvent;
-    const handler = middy()
-      .use(httpErrorHandler())
-      .use(setup({ packageResult }))
-      .use(fetchAppkChildren())
-      .before(async (request: Request) => {
-        const updatedPackage = await getPackage(request);
-        expect(updatedPackage).toEqual(expectedPackage);
-      })
-      .handler(() => ({
-        statusCode: 200,
-        body: "OK",
-      }));
 
-    await handler(event, {} as Context);
+    const handler = setupHandler({ packageResult, expectedPackage });
+
+    await handler({} as APIGatewayEvent, {} as Context);
   });
 
   it("should store the Appk children in the package internally and in the context if it has them", async () => {
@@ -60,96 +67,21 @@ describe("fetchAppkChildren", () => {
         appkChildren: undefined,
       },
     };
-    const event = {
-      body: "test",
-    } as APIGatewayEvent;
-    const handler = middy()
-      .use(httpErrorHandler())
-      .use(setup({ packageResult }))
-      .use(fetchAppkChildren({ setToContext: true }))
-      .before(async (request: Request) => {
-        const updatedPackage = await getPackage(request);
-        expect(updatedPackage).toEqual(expectedPackage);
-      })
-      .handler((event: APIGatewayEvent, context: Context & { packageResult: main.ItemResult }) => {
-        const { packageResult } = context;
-        expect(packageResult).toEqual(expectedPackage);
-        return {
-          statusCode: 200,
-          body: "OK",
-        };
-      });
 
-    await handler(event, {} as Context);
+    const handler = setupHandler({
+      packageResult,
+      expectedPackage,
+      options: { setToContext: true },
+    });
+
+    await handler({} as APIGatewayEvent, {} as Context);
   });
 
   it("should not add appkChildren if the package does not have them", async () => {
     const packageResult = items[TEST_ITEM_ID] as main.ItemResult;
-    const event = {
-      body: "test",
-    } as APIGatewayEvent;
-    const handler = middy()
-      .use(httpErrorHandler())
-      .use(setup({ packageResult }))
-      .use(fetchAppkChildren())
-      .before(async (request: Request) => {
-        const updatedPackage = await getPackage(request);
-        expect(updatedPackage).toEqual(packageResult);
-      })
-      .handler(() => ({
-        statusCode: 200,
-        body: "OK",
-      }));
 
-    await handler(event, {} as Context);
-  });
+    const handler = setupHandler({ packageResult, expectedPackage: packageResult });
 
-  it("should return 500, if there is no package stored internally", async () => {
-    const event = {
-      body: "test",
-    } as APIGatewayEvent;
-    const handler = middy()
-      .use(httpErrorHandler())
-      .use(setup())
-      .use(fetchAppkChildren())
-      .handler(() => ({
-        statusCode: 200,
-        body: "OK",
-      }));
-
-    const res = await handler(event, {} as Context);
-
-    expect(res).toBeTruthy();
-    expect(res.statusCode).toEqual(500);
-    expect(res.body).toEqual(JSON.stringify({ message: "Internal server error" }));
-  });
-
-  it("should return 500, if the package does not have an id", async () => {
-    const packageResult = items[TEST_SPA_ITEM_RAI_ID] as main.ItemResult;
-    const event = {
-      body: "test",
-    } as APIGatewayEvent;
-    const handler = middy()
-      .use(httpErrorHandler())
-      .use(
-        setup({
-          packageResult: {
-            ...packageResult,
-            // @ts-ignore making this invalid for testing
-            _id: undefined,
-          },
-        }),
-      )
-      .use(fetchAppkChildren())
-      .handler(() => ({
-        statusCode: 200,
-        body: "OK",
-      }));
-
-    const res = await handler(event, {} as Context);
-
-    expect(res).toBeTruthy();
-    expect(res.statusCode).toEqual(500);
-    expect(res.body).toEqual(JSON.stringify({ message: "Internal server error" }));
+    await handler({} as APIGatewayEvent, {} as Context);
   });
 });

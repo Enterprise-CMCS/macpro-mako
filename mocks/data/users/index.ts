@@ -78,6 +78,7 @@ export const getUserByUsername = (id: string) => {
   return {} as CognitoUserAttributes;
 };
 
+// @ts-ignore
 export const TEST_REVIEWER_USER = convertUserAttributes(testReviewer);
 export const CMS_ROLE_APPROVER_USER = convertUserAttributes(cmsRoleApprover);
 export const CO_STATE_SUBMITTER_USER = convertUserAttributes(coStateSubmitter);

@@ -52,15 +52,15 @@ export const getRequestContext = (user?: TestUserData | string): APIGatewayEvent
 
 export const amplifyHandler = http.get(
   "http://localhost:5000/node_modules/.vite/deps/aws-amplify.js",
-  ({ request }) => {
-    console.log("amplifyHandler", { request, headers: request.headers });
+  () => {
+    // console.log("amplifyHandler", { request, headers: request.headers });
   },
 );
 
 export const authorizeHandler = http.get(
   /amazoncognito\.com\/oauth2\/authorize/,
   async ({ request }) => {
-    console.log("authorizeHandler", { request, headers: request.headers });
+    // console.log("authorizeHandler", { request, headers: request.headers });
     const url = new URL(request.url);
 
     const redirectUri = url.searchParams.get("redirect_uri");
@@ -87,7 +87,7 @@ export const loginGetHandler = http.get(
 );
 
 export const loginPostHandler = http.post(/amazoncognito\.com\/login/, async ({ request }) => {
-  console.log("loginPostHandler", { request, headers: request.headers });
+  // console.log("loginPostHandler", { request, headers: request.headers });
   const url = new URL(request.url);
 
   const redirectUri = url.searchParams.get("redirect_uri");
@@ -101,7 +101,7 @@ export const loginPostHandler = http.post(/amazoncognito\.com\/login/, async ({ 
 });
 
 export const tokenHandler = http.post(/amazoncognito\.com\/oauth2\/token/, async ({ request }) => {
-  console.log("tokenHandler", { request, headers: request.headers });
+  // console.log("tokenHandler", { request, headers: request.headers });
   const username = getMockUsername();
 
   if (username) {
@@ -125,7 +125,7 @@ export const tokenHandler = http.post(/amazoncognito\.com\/oauth2\/token/, async
 export const identityServiceHandler = http.post<PathParams, IdentityRequest>(
   /cognito-identity/,
   async ({ request }) => {
-    console.log("identityServiceHandler", { request, headers: request.headers });
+    // console.log("identityServiceHandler", { request, headers: request.headers });
     const target = request.headers.get("x-amz-target");
     if (target) {
       if (target == "AWSCognitoIdentityService.GetId") {
@@ -146,8 +146,6 @@ export const identityServiceHandler = http.post<PathParams, IdentityRequest>(
         let username;
         const { Logins } = await request.json();
         if (Logins?.value) {
-          console.log("AWSCognitoIdentityService.GetCredentialsForIdentity");
-
           const payload = await getPayloadFromAccessToken(Logins.value);
           if (payload && typeof payload !== "string") {
             username = `${payload["cognito:username"]}`;
@@ -198,15 +196,13 @@ export const identityProviderServiceHandler = http.post<
   PathParams,
   IdpRequestSessionBody | IdpRefreshRequestBody | IdpListUsersRequestBody | AdminGetUserRequestBody
 >(/https:\/\/cognito-idp\.\S*.amazonaws\.com\//, async ({ request }) => {
-  console.log("identityProviderServiceHandler", { request, headers: request.headers });
+  // console.log("identityProviderServiceHandler", { request, headers: request.headers });
   const target = request.headers.get("x-amz-target");
-  console.log({ target });
+  // console.log({ target });
   if (target) {
     if (target == "AWSCognitoIdentityProviderService.InitiateAuth") {
       const { AuthFlow, AuthParameters } = (await request.json()) as IdpRefreshRequestBody;
       if (AuthFlow === "REFRESH_TOKEN_AUTH" && AuthParameters?.REFRESH_TOKEN) {
-        console.log("AWSCognitoIdentityProviderService.InitiateAuth");
-
         const payload = await getPayloadFromAccessToken(AuthParameters.REFRESH_TOKEN);
         let username;
         if (payload && typeof payload !== "string") {
@@ -256,7 +252,6 @@ export const identityProviderServiceHandler = http.post<
     if (target == "AWSCognitoIdentityProviderService.GetUser") {
       const { AccessToken } = (await request.json()) as IdpRequestSessionBody;
       const username = (await getUsernameFromAccessToken(AccessToken)) || getMockUsername();
-      console.log("AWSCognitoIdentityProviderService.GetUser", { username });
 
       // const agent = request.headers.get("x-amz-user-agent");
 

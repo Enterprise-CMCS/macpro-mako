@@ -50,19 +50,24 @@ const TEST_CMS_USER: MiddyUser = {
 };
 
 const setupDefault = { user: undefined, packageResult: undefined };
-const setup = (opts: { user?: MiddyUser; packageResult?: main.ItemResult } = {}) => {
+const setupHandler = (opts: { user?: MiddyUser; packageResult?: main.ItemResult }) => {
   const options = { ...setupDefault, ...opts };
 
-  return {
-    before: async (request: Request) => {
+  return middy()
+    .use(httpErrorHandler())
+    .before(async (request: Request) => {
       if (options.user) {
         setUser(options.user, request, false);
       }
       if (options.packageResult) {
         setPackage(options.packageResult, request, false);
       }
-    },
-  };
+    })
+    .use(canViewPackage())
+    .handler(() => ({
+      statusCode: 200,
+      body: "OK",
+    }));
 };
 
 describe("Permissions middleware", () => {
@@ -71,14 +76,8 @@ describe("Permissions middleware", () => {
       const event = {
         body: "test",
       } as APIGatewayEvent;
-      const handler = middy()
-        .use(httpErrorHandler())
-        .use(setup({ user: TEST_STATE_USER, packageResult: TEST_ITEM }))
-        .use(canViewPackage())
-        .handler(() => ({
-          statusCode: 200,
-          body: "OK",
-        }));
+
+      const handler = setupHandler({ user: TEST_STATE_USER, packageResult: TEST_ITEM });
 
       const res = await handler(event, {} as Context);
 
@@ -91,14 +90,8 @@ describe("Permissions middleware", () => {
       const event = {
         body: "test",
       } as APIGatewayEvent;
-      const handler = middy()
-        .use(httpErrorHandler())
-        .use(setup({ user: TEST_CMS_USER, packageResult: TEST_ITEM }))
-        .use(canViewPackage())
-        .handler(() => ({
-          statusCode: 200,
-          body: "OK",
-        }));
+
+      const handler = setupHandler({ user: TEST_CMS_USER, packageResult: TEST_ITEM });
 
       const res = await handler(event, {} as Context);
 
@@ -112,14 +105,8 @@ describe("Permissions middleware", () => {
     const event = {
       body: "test",
     } as APIGatewayEvent;
-    const handler = middy()
-      .use(httpErrorHandler())
-      .use(setup({ packageResult: TEST_ITEM }))
-      .use(canViewPackage())
-      .handler(() => ({
-        statusCode: 200,
-        body: "OK",
-      }));
+
+    const handler = setupHandler({ packageResult: TEST_ITEM });
 
     const res = await handler(event, {} as Context);
 
@@ -132,14 +119,8 @@ describe("Permissions middleware", () => {
     const event = {
       body: "test",
     } as APIGatewayEvent;
-    const handler = middy()
-      .use(httpErrorHandler())
-      .use(setup({ user: TEST_STATE_USER }))
-      .use(canViewPackage())
-      .handler(() => ({
-        statusCode: 200,
-        body: "OK",
-      }));
+
+    const handler = setupHandler({ user: TEST_STATE_USER });
 
     const res = await handler(event, {} as Context);
 
@@ -152,14 +133,8 @@ describe("Permissions middleware", () => {
     const event = {
       body: "test",
     } as APIGatewayEvent;
-    const handler = middy()
-      .use(httpErrorHandler())
-      .use(setup({ user: TEST_STATE_USER, packageResult: HI_TEST_ITEM }))
-      .use(canViewPackage())
-      .handler(() => ({
-        statusCode: 200,
-        body: "OK",
-      }));
+
+    const handler = setupHandler({ user: TEST_STATE_USER, packageResult: HI_TEST_ITEM });
 
     const res = await handler(event, {} as Context);
 

@@ -3,6 +3,12 @@ import { getInternal } from "@middy/util";
 import { FullUser } from "shared-types";
 import { main, roles, users } from "shared-types/opensearch";
 
+/**
+ * Sets the package in the request internal storage
+ * @param {main.ItemResult} packageResult package to store
+ * @param {Request} request request to store the package in
+ * @param {boolean} setToContext [false] if the package should also be stored in the request context so that it is available in the handler
+ */
 export const setPackage = (
   packageResult: main.ItemResult | undefined,
   request: Request,
@@ -15,6 +21,11 @@ export const setPackage = (
   }
 };
 
+/**
+ * Gets the package from the request internal storage
+ * @param {Request} request request the package is stored in
+ * @returns {main.ItemResult} the package or undefined if not found
+ */
 export const getPackage = async (request: Request): Promise<main.ItemResult | undefined> => {
   const { packageResult } = (await getInternal("packageResult", request)) as {
     packageResult: main.ItemResult;
@@ -28,6 +39,12 @@ export type MiddyUser = {
   userProfile: roles.Document[];
 };
 
+/**
+ * Sets the user in the request internal storage
+ * @param {MiddyUser} user user to store in internal storage
+ * @param {Request} request request to store the user in
+ * @param {boolean} setToContext [false] if the user should also be stored in the request context so that it is available in the handler
+ */
 export const setUser = (user: MiddyUser, request: Request, setToContext?: boolean): void => {
   Object.assign(request.internal, { user });
 
@@ -36,6 +53,11 @@ export const setUser = (user: MiddyUser, request: Request, setToContext?: boolea
   }
 };
 
+/**
+ * Gets the user from the request internal storage
+ * @param {Request} request request the user is stored in
+ * @returns {MiddyUser} the user or undefined if not found
+ */
 export const getUser = async (request: Request): Promise<MiddyUser | undefined> => {
   const { user } = (await getInternal("user", request)) as { user: MiddyUser };
   return user;

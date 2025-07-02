@@ -7,8 +7,37 @@ import items from "mocks/data/items";
 import { main } from "shared-types/opensearch";
 import { describe, expect, it } from "vitest";
 
-import { fetchPackage } from "./fetchPackage";
+import { fetchPackage, FetchPackageOptions } from "./fetchPackage";
 import { getPackage } from "./utils";
+
+const setupHandler = ({
+  expectedPackage = undefined,
+  options = {
+    allowNotFound: false,
+    setToContext: false,
+  },
+}: {
+  expectedPackage?: main.ItemResult;
+  options?: FetchPackageOptions;
+} = {}) =>
+  middy()
+    .use(httpErrorHandler())
+    .use(httpJsonBodyParser())
+    .use(fetchPackage(options))
+    .before(async (request: Request) => {
+      const packageResult = await getPackage(request);
+      expect(packageResult).toEqual(expectedPackage);
+    })
+    .handler((event: APIGatewayEvent, context: Context & { packageResult?: main.ItemResult }) => {
+      if (options.setToContext) {
+        const { packageResult } = context;
+        expect(packageResult).toEqual(expectedPackage);
+      }
+      return {
+        statusCode: 200,
+        body: "OK",
+      };
+    });
 
 describe("fetchPackage", () => {
   it("should return 500, if there is an error retrieving the package", async () => {
@@ -19,7 +48,7 @@ describe("fetchPackage", () => {
       } as APIGatewayProxyEventHeaders,
     } as APIGatewayEvent;
 
-    const handler = middy().use(httpErrorHandler()).use(httpJsonBodyParser()).use(fetchPackage());
+    const handler = setupHandler();
 
     const res = await handler(event, {} as Context);
 
@@ -36,18 +65,7 @@ describe("fetchPackage", () => {
       } as APIGatewayProxyEventHeaders,
     } as APIGatewayEvent;
 
-    const handler = middy()
-      .use(httpErrorHandler())
-      .use(httpJsonBodyParser())
-      .use(fetchPackage({ allowNotFound: true }))
-      .before(async (request: Request) => {
-        const packageResult = await getPackage(request);
-        expect(packageResult).toBeUndefined();
-      })
-      .handler(() => ({
-        statusCode: 200,
-        body: "OK",
-      }));
+    const handler = setupHandler({ options: { allowNotFound: true } });
 
     const res = await handler(event, {} as Context);
 
@@ -64,7 +82,7 @@ describe("fetchPackage", () => {
       } as APIGatewayProxyEventHeaders,
     } as APIGatewayEvent;
 
-    const handler = middy().use(httpErrorHandler()).use(httpJsonBodyParser()).use(fetchPackage());
+    const handler = setupHandler();
 
     const res = await handler(event, {} as Context);
 
@@ -81,18 +99,7 @@ describe("fetchPackage", () => {
       } as APIGatewayProxyEventHeaders,
     } as APIGatewayEvent;
 
-    const handler = middy()
-      .use(httpErrorHandler())
-      .use(httpJsonBodyParser())
-      .use(fetchPackage({ allowNotFound: true }))
-      .before(async (request: Request) => {
-        const packageResult = await getPackage(request);
-        expect(packageResult).toBeUndefined();
-      })
-      .handler(() => ({
-        statusCode: 200,
-        body: "OK",
-      }));
+    const handler = setupHandler({ options: { allowNotFound: true } });
 
     const res = await handler(event, {} as Context);
 
@@ -101,33 +108,16 @@ describe("fetchPackage", () => {
     expect(res.body).toEqual("OK");
   });
 
-  it("should store the package only internally if setToContext is true", async () => {
+  it("should store the package internally and in the context if setToContext is true", async () => {
     const event = {
       body: JSON.stringify({ id: TEST_ITEM_ID }),
       headers: {
         "Content-Type": "application/json",
       } as APIGatewayProxyEventHeaders,
     } as APIGatewayEvent;
+    const expectedPackage = items[TEST_ITEM_ID] as main.ItemResult;
 
-    const expectedItem = items[TEST_ITEM_ID];
-    const handler = middy()
-      .use(httpErrorHandler())
-      .use(httpJsonBodyParser())
-      .use(fetchPackage({ setToContext: true }))
-      .before(async (request: Request) => {
-        const packageResult = await getPackage(request);
-        expect(packageResult).toEqual(expectedItem);
-      })
-      .handler(
-        async (event: APIGatewayEvent, context: Context & { packageResult?: main.ItemResult }) => {
-          const { packageResult } = context;
-          expect(packageResult).toEqual(expectedItem);
-          return {
-            statusCode: 200,
-            body: "OK",
-          };
-        },
-      );
+    const handler = setupHandler({ expectedPackage, options: { setToContext: true } });
 
     const res = await handler(event, {} as Context);
 

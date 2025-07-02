@@ -2,6 +2,7 @@ import middy, { Request } from "@middy/core";
 import httpErrorHandler from "@middy/http-error-handler";
 import { APIGatewayEvent, APIGatewayEventRequestContext, Context } from "aws-lambda";
 import {
+  CO_STATE_SUBMITTER_USER,
   CO_STATE_SUBMITTER_USERNAME,
   COGNITO_IDP_DOMAIN,
   getFilteredRoleDocsByEmail,
@@ -9,16 +10,72 @@ import {
   NO_EMAIL_STATE_SUBMITTER_USERNAME,
   osUsers,
   setMockUsername,
+  TEST_REVIEWER_EMAIL,
+  TEST_REVIEWER_USER,
   TEST_REVIEWER_USERNAME,
   TEST_STATE_SUBMITTER_EMAIL,
   TEST_STATE_SUBMITTER_USER,
   TEST_STATE_SUBMITTER_USERNAME,
 } from "mocks";
-import { roles } from "shared-types/opensearch";
+import { FullUser } from "shared-types";
+import { roles, users } from "shared-types/opensearch";
 import { describe, expect, it } from "vitest";
 
-import { isAuthenticated } from "./isAuthenticated";
+import { isAuthenticated, IsAuthenticatedOptions } from "./isAuthenticated";
 import { getUser, MiddyUser } from "./utils";
+
+const testStateSubmitterDetails: users.Document = osUsers[TEST_STATE_SUBMITTER_EMAIL]
+  ._source as users.Document;
+const testStateSubmitterProfile: roles.Document[] =
+  (getFilteredRoleDocsByEmail(TEST_STATE_SUBMITTER_EMAIL) as roles.Document[]) || [];
+const testStateSubmitterStates: string[] = Array.from(
+  new Set(
+    testStateSubmitterProfile
+      .filter((role) => role.status === "active")
+      .map((role) => role.territory.toUpperCase()),
+  ),
+);
+const testStateSubmitterCognitoUser: FullUser = {
+  ...TEST_STATE_SUBMITTER_USER,
+  role: "statesubmitter",
+  states: testStateSubmitterStates,
+};
+
+const testStateSubmitterUser: MiddyUser = {
+  cognitoUser: testStateSubmitterCognitoUser,
+  userDetails: testStateSubmitterDetails,
+  userProfile: testStateSubmitterProfile,
+};
+
+const setupHandler = ({
+  expectedUser = undefined,
+  options = {
+    setToContext: false,
+    withDetails: true,
+    withRoles: true,
+  },
+}: {
+  expectedUser?: MiddyUser;
+  options?: IsAuthenticatedOptions;
+} = {}) => {
+  return middy()
+    .use(httpErrorHandler())
+    .use(isAuthenticated(options))
+    .before(async (request: Request) => {
+      const user = await getUser(request);
+      expect(user).toEqual(expectedUser);
+    })
+    .handler((event: APIGatewayEvent, context: Context & { user?: MiddyUser }) => {
+      if (options.setToContext) {
+        const { user } = context;
+        expect(user).toEqual(expectedUser);
+      }
+      return {
+        statusCode: 200,
+        body: "OK",
+      };
+    });
+};
 
 describe("isAuthenticated", () => {
   it("should return 401, if there is no request context", async () => {
@@ -26,7 +83,7 @@ describe("isAuthenticated", () => {
       body: "test",
     } as APIGatewayEvent;
 
-    const handler = middy().use(httpErrorHandler()).use(isAuthenticated());
+    const handler = setupHandler();
 
     const res = await handler(event, {} as Context);
 
@@ -43,7 +100,7 @@ describe("isAuthenticated", () => {
       requestContext: getRequestContext(),
     } as APIGatewayEvent;
 
-    const handler = middy().use(httpErrorHandler()).use(isAuthenticated());
+    const handler = setupHandler();
 
     const res = await handler(event, {} as Context);
 
@@ -63,7 +120,7 @@ describe("isAuthenticated", () => {
       } as APIGatewayEventRequestContext,
     } as APIGatewayEvent;
 
-    const handler = middy().use(httpErrorHandler()).use(isAuthenticated());
+    const handler = setupHandler();
 
     const res = await handler(event, {} as Context);
 
@@ -84,7 +141,7 @@ describe("isAuthenticated", () => {
       } as APIGatewayEventRequestContext,
     } as APIGatewayEvent;
 
-    const handler = middy().use(httpErrorHandler()).use(isAuthenticated());
+    const handler = setupHandler();
 
     const res = await handler(event, {} as Context);
 
@@ -101,7 +158,7 @@ describe("isAuthenticated", () => {
       requestContext: getRequestContext(),
     } as APIGatewayEvent;
 
-    const handler = middy().use(httpErrorHandler()).use(isAuthenticated());
+    const handler = setupHandler();
 
     const res = await handler(event, {} as Context);
 
@@ -118,16 +175,17 @@ describe("isAuthenticated", () => {
       requestContext: getRequestContext(),
     } as APIGatewayEvent;
 
-    const handler = middy()
-      .use(isAuthenticated())
-      .before(async (request: Request) => {
-        const user = await getUser(request);
-        expect(user?.cognitoUser.role).toEqual("norole");
-      })
-      .handler(() => ({
-        statusCode: 200,
-        body: "OK",
-      }));
+    const handler = setupHandler({
+      expectedUser: {
+        cognitoUser: {
+          ...CO_STATE_SUBMITTER_USER,
+          role: "norole",
+          states: [],
+        },
+        userDetails: null,
+        userProfile: [],
+      },
+    });
 
     const res = await handler(event, {} as Context);
 
@@ -142,24 +200,9 @@ describe("isAuthenticated", () => {
       requestContext: getRequestContext(),
     } as APIGatewayEvent;
 
-    const states: string[] = Array.from(
-      new Set(
-        ((getFilteredRoleDocsByEmail(TEST_STATE_SUBMITTER_EMAIL) as roles.Document[]) || [])
-          .filter((role) => role.status === "active")
-          .map((role) => role.territory.toUpperCase()),
-      ),
-    );
-
-    const handler = middy()
-      .use(isAuthenticated())
-      .before(async (request: Request) => {
-        const user = await getUser(request);
-        expect(user?.cognitoUser.states).toEqual(states);
-      })
-      .handler(() => ({
-        statusCode: 200,
-        body: "OK",
-      }));
+    const handler = setupHandler({
+      expectedUser: testStateSubmitterUser,
+    });
 
     const res = await handler(event, {} as Context);
 
@@ -176,16 +219,21 @@ describe("isAuthenticated", () => {
       requestContext: getRequestContext(),
     } as APIGatewayEvent;
 
-    const handler = middy()
-      .use(isAuthenticated())
-      .before(async (request: Request) => {
-        const user = await getUser(request);
-        expect(user?.cognitoUser.states).toEqual([]);
-      })
-      .handler(() => ({
-        statusCode: 200,
-        body: "OK",
-      }));
+    const handler = setupHandler({
+      expectedUser: {
+        cognitoUser: {
+          ...TEST_REVIEWER_USER,
+          // @ts-ignore not added in lookupUserAttributes
+          "custom:cms-roles": undefined,
+          // @ts-ignore
+          "custom:ismemberof": "ONEMAC_USER_D",
+          role: "cmsreviewer",
+          states: [],
+        },
+        userDetails: osUsers[TEST_REVIEWER_EMAIL]._source as users.Document,
+        userProfile: (getFilteredRoleDocsByEmail(TEST_REVIEWER_EMAIL) as roles.Document[]) || [],
+      },
+    });
 
     const res = await handler(event, {} as Context);
 
@@ -200,34 +248,9 @@ describe("isAuthenticated", () => {
       requestContext: getRequestContext(),
     } as APIGatewayEvent;
 
-    const userProfile =
-      (getFilteredRoleDocsByEmail(TEST_STATE_SUBMITTER_EMAIL) as roles.Document[]) || [];
-    const states: string[] = Array.from(
-      new Set(
-        userProfile
-          .filter((role) => role.status === "active")
-          .map((role) => role.territory.toUpperCase()),
-      ),
-    );
-
-    const handler = middy()
-      .use(isAuthenticated())
-      .before(async (request: Request) => {
-        const user = await getUser(request);
-        expect(user).toEqual({
-          cognitoUser: {
-            ...TEST_STATE_SUBMITTER_USER,
-            role: "statesubmitter",
-            states,
-          },
-          userDetails: osUsers[TEST_STATE_SUBMITTER_EMAIL]._source,
-          userProfile,
-        });
-      })
-      .handler(() => ({
-        statusCode: 200,
-        body: "OK",
-      }));
+    const handler = setupHandler({
+      expectedUser: testStateSubmitterUser,
+    });
 
     const res = await handler(event, {} as Context);
 
@@ -242,34 +265,16 @@ describe("isAuthenticated", () => {
       requestContext: getRequestContext(),
     } as APIGatewayEvent;
 
-    const userProfile =
-      (getFilteredRoleDocsByEmail(TEST_STATE_SUBMITTER_EMAIL) as roles.Document[]) || [];
-    const states: string[] = Array.from(
-      new Set(
-        userProfile
-          .filter((role) => role.status === "active")
-          .map((role) => role.territory.toUpperCase()),
-      ),
-    );
-
-    const handler = middy()
-      .use(isAuthenticated({ withDetails: false }))
-      .before(async (request: Request) => {
-        const user = await getUser(request);
-        expect(user).toEqual({
-          cognitoUser: {
-            ...TEST_STATE_SUBMITTER_USER,
-            role: "statesubmitter",
-            states,
-          },
-          userDetails: null,
-          userProfile,
-        });
-      })
-      .handler(() => ({
-        statusCode: 200,
-        body: "OK",
-      }));
+    const handler = setupHandler({
+      expectedUser: {
+        cognitoUser: testStateSubmitterCognitoUser,
+        userDetails: null,
+        userProfile: testStateSubmitterProfile,
+      },
+      options: {
+        withDetails: false,
+      },
+    });
 
     const res = await handler(event, {} as Context);
 
@@ -284,24 +289,20 @@ describe("isAuthenticated", () => {
       requestContext: getRequestContext(),
     } as APIGatewayEvent;
 
-    const handler = middy()
-      .use(isAuthenticated({ withRoles: false }))
-      .before(async (request: Request) => {
-        const user = await getUser(request);
-        expect(user).toEqual({
-          cognitoUser: {
-            ...TEST_STATE_SUBMITTER_USER,
-            role: "statesubmitter",
-            states: [],
-          },
-          userDetails: osUsers[TEST_STATE_SUBMITTER_EMAIL]._source,
-          userProfile: [],
-        });
-      })
-      .handler(() => ({
-        statusCode: 200,
-        body: "OK",
-      }));
+    const handler = setupHandler({
+      expectedUser: {
+        cognitoUser: {
+          ...TEST_STATE_SUBMITTER_USER,
+          role: "statesubmitter",
+          states: [],
+        },
+        userDetails: testStateSubmitterDetails,
+        userProfile: [],
+      },
+      options: {
+        withRoles: false,
+      },
+    });
 
     const res = await handler(event, {} as Context);
 
@@ -316,40 +317,10 @@ describe("isAuthenticated", () => {
       requestContext: getRequestContext(),
     } as APIGatewayEvent;
 
-    const userProfile =
-      (getFilteredRoleDocsByEmail(TEST_STATE_SUBMITTER_EMAIL) as roles.Document[]) || [];
-    const states: string[] = Array.from(
-      new Set(
-        userProfile
-          .filter((role) => role.status === "active")
-          .map((role) => role.territory.toUpperCase()),
-      ),
-    );
-
-    const expectedUser = {
-      cognitoUser: {
-        ...TEST_STATE_SUBMITTER_USER,
-        role: "statesubmitter",
-        states,
-      },
-      userDetails: osUsers[TEST_STATE_SUBMITTER_EMAIL]._source,
-      userProfile,
-    };
-
-    const handler = middy()
-      .use(isAuthenticated({ setToContext: true }))
-      .before(async (request: Request) => {
-        const user = await getUser(request);
-        expect(user).toEqual(expectedUser);
-      })
-      .handler((event: APIGatewayEvent, context: Context & { user: MiddyUser }) => {
-        const { user } = context;
-        expect(user).toEqual(expectedUser);
-        return {
-          statusCode: 200,
-          body: "OK",
-        };
-      });
+    const handler = setupHandler({
+      expectedUser: testStateSubmitterUser,
+      options: { setToContext: true },
+    });
 
     const res = await handler(event, {} as Context);
 

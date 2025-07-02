@@ -27,7 +27,7 @@ const defaults: IsAuthenticatedOptions = {
 /**
  * Authenticates the user and sets their details and roles in internal storage.
  * @param {object} opts Options for running the middleware
- * @param {boolean} opts.setToContext [false] if true, also store the user in the context so the data can be accessed in the handler
+ * @param {boolean} opts.setToContext [false] if true, also stores the package in context, so it can be accessed in the handler
  * @param {boolean} opts.withDetails [true] if false, skip fetching the user's details
  * @param {boolean} opts.withRoles [true] if false, skip fetching the user's role and active states
  * @returns {MiddleObj} middleware to authenticate the user before the handler runs
@@ -50,7 +50,6 @@ export const isAuthenticated = (opts: IsAuthenticatedOptions = {}): MiddlewareOb
 
       const { userId, poolId } = authDetails;
       const userAttributes = await lookupUserAttributes(userId, poolId);
-      console.log({ userAttributes });
       if (!userAttributes?.email) {
         // if you don't use the expose option here, you won't be able to see the error message
         throw createError(500, JSON.stringify({ message: "User is not valid" }), { expose: true });

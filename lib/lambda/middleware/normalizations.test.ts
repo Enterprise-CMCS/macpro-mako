@@ -1,9 +1,32 @@
-import middy, { Request } from "@middy/core";
+import middy from "@middy/core";
 import httpErrorHandler from "@middy/http-error-handler";
 import { APIGatewayEvent, APIGatewayProxyEventHeaders, Context } from "aws-lambda";
 import { describe, expect, it } from "vitest";
 
-import { normalizeEvent } from "./normalizations";
+import { normalizeEvent, NormalizeEventOptions } from "./normalizations";
+
+const setupHandler = ({
+  expectedEvent = undefined,
+  options = {
+    opensearch: false,
+    disableCors: false,
+  },
+}: {
+  expectedEvent?: APIGatewayEvent;
+  options?: NormalizeEventOptions;
+} = {}) =>
+  middy()
+    .use(httpErrorHandler())
+    .use(normalizeEvent(options))
+    .handler((event: APIGatewayEvent) => {
+      if (expectedEvent) {
+        expect(event).toEqual(expectedEvent);
+      }
+      return {
+        statusCode: 200,
+        body: "OK",
+      };
+    });
 
 describe("normalizeEvent middleware", () => {
   it("should add the default headers if the headers are missing", async () => {
@@ -11,20 +34,14 @@ describe("normalizeEvent middleware", () => {
       body: "test",
     } as APIGatewayEvent;
 
-    const handler = middy()
-      .use(normalizeEvent())
-      .handler((request: Request) => {
-        expect(request).toEqual({
-          body: "test",
-          headers: {
-            "Content-Type": "application/json",
-          },
-        });
-        return {
-          statusCode: 200,
-          body: "OK",
-        };
-      });
+    const handler = setupHandler({
+      expectedEvent: {
+        body: "test",
+        headers: {
+          "Content-Type": "application/json",
+        } as APIGatewayProxyEventHeaders,
+      } as APIGatewayEvent,
+    });
 
     await handler(event, {} as Context);
   });
@@ -37,21 +54,15 @@ describe("normalizeEvent middleware", () => {
       } as APIGatewayProxyEventHeaders,
     } as APIGatewayEvent;
 
-    const handler = middy()
-      .use(normalizeEvent())
-      .handler((request: Request) => {
-        expect(request).toEqual({
-          body: "test",
-          headers: {
-            "Content-Type": "application/json",
-            Host: "developer.mozilla.org",
-          },
-        });
-        return {
-          statusCode: 200,
-          body: "OK",
-        };
-      });
+    const handler = setupHandler({
+      expectedEvent: {
+        body: "test",
+        headers: {
+          "Content-Type": "application/json",
+          Host: "developer.mozilla.org",
+        } as APIGatewayProxyEventHeaders,
+      } as APIGatewayEvent,
+    });
 
     await handler(event, {} as Context);
   });
@@ -64,20 +75,14 @@ describe("normalizeEvent middleware", () => {
       } as APIGatewayProxyEventHeaders,
     } as APIGatewayEvent;
 
-    const handler = middy()
-      .use(normalizeEvent())
-      .handler((request: Request) => {
-        expect(request).toEqual({
-          body: "test",
-          headers: {
-            "Content-Type": "text/html; charset=utf-8",
-          },
-        });
-        return {
-          statusCode: 200,
-          body: "OK",
-        };
-      });
+    const handler = setupHandler({
+      expectedEvent: {
+        body: "test",
+        headers: {
+          "Content-Type": "text/html; charset=utf-8",
+        } as APIGatewayProxyEventHeaders,
+      } as APIGatewayEvent,
+    });
 
     await handler(event, {} as Context);
   });
@@ -90,20 +95,14 @@ describe("normalizeEvent middleware", () => {
       } as APIGatewayProxyEventHeaders,
     } as APIGatewayEvent;
 
-    const handler = middy()
-      .use(normalizeEvent())
-      .handler((request: Request) => {
-        expect(request).toEqual({
-          body: "test",
-          headers: {
-            "content-TYPE": "text/html; charset=utf-8",
-          },
-        });
-        return {
-          statusCode: 200,
-          body: "OK",
-        };
-      });
+    const handler = setupHandler({
+      expectedEvent: {
+        body: "test",
+        headers: {
+          "content-TYPE": "text/html; charset=utf-8",
+        } as APIGatewayProxyEventHeaders,
+      } as APIGatewayEvent,
+    });
 
     await handler(event, {} as Context);
   });
@@ -113,7 +112,7 @@ describe("normalizeEvent middleware", () => {
 
     // using the `httpErrorHandler` middleware here to handle the error
     // throw by `normalizeEvent` when the event body is not defined
-    const handler = middy().use(httpErrorHandler()).use(normalizeEvent());
+    const handler = setupHandler();
 
     const res = await handler(event, {} as Context);
 
@@ -132,9 +131,7 @@ describe("normalizeEvent middleware", () => {
 
     // using the `httpErrorHandler` middleware here to handle the error
     // throw by `normalizeEvent` when the event body is not defined
-    const handler = middy()
-      .use(httpErrorHandler())
-      .use(normalizeEvent({ opensearch: true }));
+    const handler = setupHandler({ options: { opensearch: true } });
 
     const res = await handler(event, {} as Context);
 
@@ -155,9 +152,7 @@ describe("normalizeEvent middleware", () => {
 
     // using the `httpErrorHandler` middleware here to handle the error
     // throw by `normalizeEvent` when the event body is not defined
-    const handler = middy()
-      .use(httpErrorHandler())
-      .use(normalizeEvent({ opensearch: true }));
+    const handler = setupHandler({ options: { opensearch: true } });
 
     const res = await handler(event, {} as Context);
 
@@ -180,9 +175,7 @@ describe("normalizeEvent middleware", () => {
 
     // using the `httpErrorHandler` middleware here to handle the error
     // throw by `normalizeEvent` when the event body is not defined
-    const handler = middy()
-      .use(httpErrorHandler())
-      .use(normalizeEvent({ opensearch: true }));
+    const handler = setupHandler({ options: { opensearch: true } });
 
     const res = await handler(event, {} as Context);
 
@@ -204,12 +197,7 @@ describe("normalizeEvent middleware", () => {
       body: "test",
     } as APIGatewayEvent;
 
-    const handler = middy()
-      .use(normalizeEvent())
-      .handler(() => ({
-        statusCode: 200,
-        body: "OK",
-      }));
+    const handler = setupHandler();
 
     const res = await handler(event, {} as Context);
 
@@ -231,12 +219,7 @@ describe("normalizeEvent middleware", () => {
       body: "test",
     } as APIGatewayEvent;
 
-    const handler = middy()
-      .use(normalizeEvent({ opensearch: false }))
-      .handler(() => ({
-        statusCode: 200,
-        body: "OK",
-      }));
+    const handler = setupHandler({ options: { opensearch: false } });
 
     const res = await handler(event, {} as Context);
 
@@ -253,12 +236,7 @@ describe("normalizeEvent middleware", () => {
       body: "test",
     } as APIGatewayEvent;
 
-    const handler = middy()
-      .use(normalizeEvent())
-      .handler(() => ({
-        statusCode: 200,
-        body: "OK",
-      }));
+    const handler = setupHandler();
 
     const res = await handler(event, {} as Context);
 
@@ -277,12 +255,7 @@ describe("normalizeEvent middleware", () => {
       body: "test",
     } as APIGatewayEvent;
 
-    const handler = middy()
-      .use(normalizeEvent({ disableCors: false }))
-      .handler(() => ({
-        statusCode: 200,
-        body: "OK",
-      }));
+    const handler = setupHandler({ options: { disableCors: false } });
 
     const res = await handler(event, {} as Context);
 
@@ -301,12 +274,7 @@ describe("normalizeEvent middleware", () => {
       body: "test",
     } as APIGatewayEvent;
 
-    const handler = middy()
-      .use(normalizeEvent({ disableCors: true }))
-      .handler(() => ({
-        statusCode: 200,
-        body: "OK",
-      }));
+    const handler = setupHandler({ options: { disableCors: true } });
 
     const res = await handler(event, {} as Context);
 

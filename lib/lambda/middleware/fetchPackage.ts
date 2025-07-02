@@ -18,7 +18,7 @@ const defaults: FetchPackageOptions = {
  * Fetches a package and adds it to internal storage.
  * @param {object} opts Options for running the middleware
  * @param {boolean} opts.allowNotFound [false] if true, do not error if the package is not found
- * @param {boolean} opts.setToContext [false] if true, also store the fetched data in the context so the data can be accessed in the handler
+ * @param {boolean} opts.setToContext [false] if true, also stores the package in context, so it can be accessed in the handler
  * @returns {MiddlewareObj} middleware to fetch a package before the handler runs
  */
 export const fetchPackage = (opts: FetchPackageOptions = {}): MiddlewareObj => {
