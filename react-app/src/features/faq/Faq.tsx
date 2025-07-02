@@ -72,7 +72,7 @@ export const Faq = () => {
                 </tr>
                 <tr>
                   <td className="border border-gray-300 px-4 py-2 whitespace-nowrap">
-                    Amended State Plan Pages*
+                    Amended State Plan Language*
                   </td>
                   <td className="border border-gray-300 px-4 py-2">
                     Track changes to <span className="underline">only</span> the currently approved
@@ -126,7 +126,7 @@ export const Faq = () => {
                 </tr>
                 <tr>
                   <td className="border border-gray-300 px-4 py-2 whitespace-nowrap">
-                    CHIP Eligibility SPA Template*
+                    CHIP Eligibility Template*
                   </td>
                   <td className="border border-gray-300 px-4 py-2">
                     Amendment to the eligibility section of the CHIP state plan using a PDF template
@@ -150,7 +150,7 @@ export const Faq = () => {
                 </tr>
                 <tr>
                   <td className="border border-gray-300 px-4 py-2 whitespace-nowrap">
-                    Amended State Plan Pages
+                    Amended State Plan Language
                   </td>
                   <td className="border border-gray-300 px-4 py-2">
                     Track changes to <span className="underline">only</span> the currently approved
