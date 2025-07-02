@@ -16,7 +16,7 @@ export const getAttachmentUrl = async (
   });
   if (!response.url) {
     sendGAEvent("api_error", {
-      message: "error retrieving attachments",
+      message: "failure /getAttachmentUrl",
     });
   }
   return response.url as string;
