@@ -11,7 +11,6 @@ export const featureFlags = {
     flag: "site-under-maintenance-banner",
     defaultValue: "OFF",
   },
-
   /**
    * Toggles the clear data button on webforms
    */
@@ -19,7 +18,6 @@ export const featureFlags = {
     flag: "clear-data-button",
     defaultValue: false,
   },
-
   /**
    * Toggles the legacy FAQ and oneMAC support page
    */
@@ -27,7 +25,6 @@ export const featureFlags = {
     flag: "toggleFaq",
     defaultValue: false,
   },
-
   /**
    * Toggles the visibility of the MMDL Alert Banner
    */
@@ -35,17 +32,15 @@ export const featureFlags = {
     flag: "uat-hide-mmdl-banner",
     defaultValue: "OFF",
   },
-
   /**
-   * Toggles the visibility of the CMS Hompage
+   * Toggles the visibility of the CMS Homepage
    */
   CMS_HOMEPAGE_FLAG: {
     flag: "cms-home-page",
     defaultValue: "OFF",
   },
-
   /**
-   * Toggles the visibility of the CMS Hompage
+   * Toggles the visibility of the STATE Homepage
    */
   STATE_HOMEPAGE_FLAG: {
     flag: "state-home-page",
@@ -98,6 +93,13 @@ export const featureFlags = {
    */
   UPGRADE_MMDL_BANNER: {
     flag: "upgrade-mmdl-banner",
+    defaultValue: true,
+  },
+  /*
+   *  Toggle visibility between the new and upgrade faq labels
+   */
+  UPGRADE_NEW_LABEL: {
+    flag: "upgade-new-label",
     defaultValue: true,
   },
 } as const;
