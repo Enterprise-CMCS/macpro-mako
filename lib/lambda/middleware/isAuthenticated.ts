@@ -2,35 +2,26 @@ import { MiddlewareObj, Request } from "@middy/core";
 import { createError } from "@middy/util";
 import { getAuthDetails, lookupUserAttributes } from "libs/api/auth/user";
 import { FullUser } from "shared-types";
-import { roles, users } from "shared-types/opensearch";
 import { isCmsUser } from "shared-utils";
 
 import {
   getActiveStatesForUserByEmail,
-  getAllUserRolesByEmail,
   getLatestActiveRoleByEmail,
-  getUserByEmail,
 } from "../user-management/userManagementService";
-import { storeUserInRequest } from "./utils";
+import { storeAuthUserInRequest } from "./utils";
 
 export type IsAuthenticatedOptions = {
   setToContext?: boolean;
-  withDetails?: boolean;
-  withRoles?: boolean;
 };
 
 const defaults: IsAuthenticatedOptions = {
   setToContext: false,
-  withDetails: true,
-  withRoles: true,
 };
 
 /**
- * Authenticates the user and sets their details and roles in internal storage.
+ * Authenticates the user and stores their data in internal storage.
  * @param {object} opts Options for running the middleware
  * @param {boolean} opts.setToContext [false] if true, also stores the package in context, so it can be accessed in the handler
- * @param {boolean} opts.withDetails [true] if false, skip fetching the user's details
- * @param {boolean} opts.withRoles [true] if false, skip fetching the user's role
  * @returns {MiddleObj} middleware to authenticate the user before the handler runs
  */
 export const isAuthenticated = (opts: IsAuthenticatedOptions = {}): MiddlewareObj => {
@@ -59,35 +50,17 @@ export const isAuthenticated = (opts: IsAuthenticatedOptions = {}): MiddlewareOb
 
       const latestActiveRole = await getLatestActiveRoleByEmail(email);
 
-      const cognitoUser: FullUser = {
+      const user: FullUser = {
         ...userAttributes,
         role: latestActiveRole?.role ?? "norole",
         states: [],
       };
 
-      if (!isCmsUser(cognitoUser)) {
-        cognitoUser.states = await getActiveStatesForUserByEmail(email, latestActiveRole?.role);
+      if (!isCmsUser(user)) {
+        user.states = await getActiveStatesForUserByEmail(email, latestActiveRole?.role);
       }
 
-      let userDetails: users.Document | null = null;
-      if (options.withDetails) {
-        userDetails = await getUserByEmail(email);
-      }
-
-      let userProfile: roles.Document[] = [];
-      if (options.withRoles) {
-        userProfile = await getAllUserRolesByEmail(email);
-      }
-
-      storeUserInRequest(
-        {
-          cognitoUser,
-          userDetails,
-          userProfile,
-        },
-        request,
-        options.setToContext,
-      );
+      storeAuthUserInRequest(user, request, options.setToContext);
     },
   };
 };

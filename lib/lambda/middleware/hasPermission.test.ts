@@ -2,65 +2,48 @@ import middy, { Request } from "@middy/core";
 import httpErrorHandler from "@middy/http-error-handler";
 import { APIGatewayEvent, Context } from "aws-lambda";
 import {
-  getFilteredRoleDocsByEmail,
+  getActiveStatesForUserByEmail,
   HI_TEST_ITEM_ID,
-  osUsers,
   TEST_ITEM_ID,
-  TEST_REVIEWER_EMAIL,
   TEST_REVIEWER_USER,
   TEST_STATE_SUBMITTER_EMAIL,
   TEST_STATE_SUBMITTER_USER,
 } from "mocks";
 import items from "mocks/data/items";
-import { main, roles, users } from "shared-types/opensearch";
+import { FullUser } from "shared-types";
+import { main } from "shared-types/opensearch";
 import { describe, expect, it } from "vitest";
 
 import { canViewPackage } from "./hasPermissions";
-import { MiddyUser, storePackageInRequest, storeUserInRequest } from "./utils";
+import { storeAuthUserInRequest, storePackageInRequest } from "./utils";
 
 const TEST_ITEM = items[TEST_ITEM_ID] as main.ItemResult;
 const HI_TEST_ITEM = items[HI_TEST_ITEM_ID] as main.ItemResult;
-const stateUserProfile =
-  (getFilteredRoleDocsByEmail(TEST_STATE_SUBMITTER_EMAIL) as roles.Document[]) || [];
-const states: string[] = Array.from(
-  new Set(
-    stateUserProfile
-      .filter((role) => role.status === "active")
-      .map((role) => role.territory.toUpperCase()),
-  ),
-);
-const TEST_STATE_USER: MiddyUser = {
-  cognitoUser: {
-    ...TEST_STATE_SUBMITTER_USER,
-    role: "statesubmitter",
-    states,
-  },
-  userDetails: osUsers[TEST_STATE_SUBMITTER_EMAIL]._source as users.Document,
-  userProfile: stateUserProfile,
-};
-const cmsUserProfile = (getFilteredRoleDocsByEmail(TEST_REVIEWER_EMAIL) as roles.Document[]) || [];
-const TEST_CMS_USER: MiddyUser = {
-  cognitoUser: {
-    ...TEST_REVIEWER_USER,
-    role: "cmsreviewer",
-    states: [],
-  },
-  userDetails: osUsers[TEST_REVIEWER_EMAIL]._source as users.Document,
-  userProfile: cmsUserProfile,
+
+const TEST_STATE_USER: FullUser = {
+  ...TEST_STATE_SUBMITTER_USER,
+  role: "statesubmitter",
+  states: getActiveStatesForUserByEmail(TEST_STATE_SUBMITTER_EMAIL, "statesubmitter") || [],
 };
 
-const setupDefault = { user: undefined, packageResult: undefined };
-const setupHandler = (opts: { user?: MiddyUser; packageResult?: main.ItemResult }) => {
-  const options = { ...setupDefault, ...opts };
+const TEST_CMS_USER: FullUser = {
+  ...TEST_REVIEWER_USER,
+  role: "cmsreviewer",
+  states: [],
+};
 
-  return middy()
+const setupHandler = ({
+  user = undefined,
+  packageResult = undefined,
+}: { user?: FullUser; packageResult?: main.ItemResult } = {}) =>
+  middy()
     .use(httpErrorHandler())
     .before(async (request: Request) => {
-      if (options.user) {
-        storeUserInRequest(options.user, request, false);
+      if (user) {
+        storeAuthUserInRequest(user, request, false);
       }
-      if (options.packageResult) {
-        storePackageInRequest(options.packageResult, request, false);
+      if (packageResult) {
+        storePackageInRequest(packageResult, request, false);
       }
     })
     .use(canViewPackage())
@@ -68,7 +51,6 @@ const setupHandler = (opts: { user?: MiddyUser; packageResult?: main.ItemResult 
       statusCode: 200,
       body: "OK",
     }));
-};
 
 describe("Permissions middleware", () => {
   describe("canViewPackage", () => {

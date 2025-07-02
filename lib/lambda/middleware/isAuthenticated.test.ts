@@ -5,12 +5,10 @@ import {
   CO_STATE_SUBMITTER_USER,
   CO_STATE_SUBMITTER_USERNAME,
   COGNITO_IDP_DOMAIN,
-  getFilteredRoleDocsByEmail,
+  getActiveStatesForUserByEmail,
   getRequestContext,
   NO_EMAIL_STATE_SUBMITTER_USERNAME,
-  osUsers,
   setMockUsername,
-  TEST_REVIEWER_EMAIL,
   TEST_REVIEWER_USER,
   TEST_REVIEWER_USERNAME,
   TEST_STATE_SUBMITTER_EMAIL,
@@ -18,57 +16,39 @@ import {
   TEST_STATE_SUBMITTER_USERNAME,
 } from "mocks";
 import { FullUser } from "shared-types";
-import { roles, users } from "shared-types/opensearch";
 import { describe, expect, it } from "vitest";
 
 import { isAuthenticated, IsAuthenticatedOptions } from "./isAuthenticated";
-import { getUserFromRequest, MiddyUser } from "./utils";
+import { ContextWithCurrUser, getAuthUserFromRequest } from "./utils";
 
-const testStateSubmitterDetails: users.Document = osUsers[TEST_STATE_SUBMITTER_EMAIL]
-  ._source as users.Document;
-const testStateSubmitterProfile: roles.Document[] =
-  (getFilteredRoleDocsByEmail(TEST_STATE_SUBMITTER_EMAIL) as roles.Document[]) || [];
-const testStateSubmitterStates: string[] = Array.from(
-  new Set(
-    testStateSubmitterProfile
-      .filter((role) => role.status === "active")
-      .map((role) => role.territory.toUpperCase()),
-  ),
-);
-const testStateSubmitterCognitoUser: FullUser = {
+const testStateSubmitterStates: string[] =
+  getActiveStatesForUserByEmail(TEST_STATE_SUBMITTER_EMAIL, "statesubmitter") || [];
+const testStateSubmitterUser: FullUser = {
   ...TEST_STATE_SUBMITTER_USER,
   role: "statesubmitter",
   states: testStateSubmitterStates,
-};
-
-const testStateSubmitterUser: MiddyUser = {
-  cognitoUser: testStateSubmitterCognitoUser,
-  userDetails: testStateSubmitterDetails,
-  userProfile: testStateSubmitterProfile,
 };
 
 const setupHandler = ({
   expectedUser = undefined,
   options = {
     setToContext: false,
-    withDetails: true,
-    withRoles: true,
   },
 }: {
-  expectedUser?: MiddyUser;
+  expectedUser?: FullUser;
   options?: IsAuthenticatedOptions;
 } = {}) => {
   return middy()
     .use(httpErrorHandler())
     .use(isAuthenticated(options))
     .before(async (request: Request) => {
-      const user = await getUserFromRequest(request);
+      const user = await getAuthUserFromRequest(request);
       expect(user).toEqual(expectedUser);
     })
-    .handler((event: APIGatewayEvent, context: Context & { user?: MiddyUser }) => {
+    .handler((event: APIGatewayEvent, context: Context & { currUser?: ContextWithCurrUser }) => {
       if (options.setToContext) {
-        const { user } = context;
-        expect(user).toEqual(expectedUser);
+        const { currUser } = context;
+        expect(currUser).toEqual(expectedUser);
       }
       return {
         statusCode: 200,
@@ -177,13 +157,9 @@ describe("isAuthenticated", () => {
 
     const handler = setupHandler({
       expectedUser: {
-        cognitoUser: {
-          ...CO_STATE_SUBMITTER_USER,
-          role: "norole",
-          states: [],
-        },
-        userDetails: null,
-        userProfile: [],
+        ...CO_STATE_SUBMITTER_USER,
+        role: "norole",
+        states: [],
       },
     });
 
@@ -221,17 +197,13 @@ describe("isAuthenticated", () => {
 
     const handler = setupHandler({
       expectedUser: {
-        cognitoUser: {
-          ...TEST_REVIEWER_USER,
-          // @ts-ignore not added in lookupUserAttributes
-          "custom:cms-roles": undefined,
-          // @ts-ignore
-          "custom:ismemberof": "ONEMAC_USER_D",
-          role: "cmsreviewer",
-          states: [],
-        },
-        userDetails: osUsers[TEST_REVIEWER_EMAIL]._source as users.Document,
-        userProfile: (getFilteredRoleDocsByEmail(TEST_REVIEWER_EMAIL) as roles.Document[]) || [],
+        ...TEST_REVIEWER_USER,
+        // @ts-ignore not added in lookupUserAttributes
+        "custom:cms-roles": undefined,
+        // @ts-ignore
+        "custom:ismemberof": "ONEMAC_USER_D",
+        role: "cmsreviewer",
+        states: [],
       },
     });
 
@@ -250,58 +222,6 @@ describe("isAuthenticated", () => {
 
     const handler = setupHandler({
       expectedUser: testStateSubmitterUser,
-    });
-
-    const res = await handler(event, {} as Context);
-
-    expect(res).toBeTruthy();
-    expect(res.statusCode).toEqual(200);
-    expect(res.body).toEqual("OK");
-  });
-
-  it("should not get the user details, if withDetails is false", async () => {
-    const event = {
-      body: "test",
-      requestContext: getRequestContext(),
-    } as APIGatewayEvent;
-
-    const handler = setupHandler({
-      expectedUser: {
-        cognitoUser: testStateSubmitterCognitoUser,
-        userDetails: null,
-        userProfile: testStateSubmitterProfile,
-      },
-      options: {
-        withDetails: false,
-      },
-    });
-
-    const res = await handler(event, {} as Context);
-
-    expect(res).toBeTruthy();
-    expect(res.statusCode).toEqual(200);
-    expect(res.body).toEqual("OK");
-  });
-
-  it("should not get the user roles, if withProfile is false", async () => {
-    const event = {
-      body: "test",
-      requestContext: getRequestContext(),
-    } as APIGatewayEvent;
-
-    const handler = setupHandler({
-      expectedUser: {
-        cognitoUser: {
-          ...TEST_STATE_SUBMITTER_USER,
-          role: "statesubmitter",
-          states: testStateSubmitterStates,
-        },
-        userDetails: testStateSubmitterDetails,
-        userProfile: [],
-      },
-      options: {
-        withRoles: false,
-      },
     });
 
     const res = await handler(event, {} as Context);

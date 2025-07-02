@@ -1,28 +1,22 @@
 import { Request } from "@middy/core";
-import {
-  getFilteredRoleDocsByEmail,
-  osUsers,
-  TEST_ITEM_ID,
-  TEST_STATE_SUBMITTER_EMAIL,
-  TEST_STATE_SUBMITTER_USER,
-} from "mocks";
+import { TEST_ITEM_ID, TEST_STATE_SUBMITTER_USER } from "mocks";
 import items from "mocks/data/items";
-import { main, roles, users } from "shared-types/opensearch";
+import { FullUser } from "shared-types";
+import { main } from "shared-types/opensearch";
 import { describe, expect, it } from "vitest";
 
 import {
+  getAuthUserFromRequest,
   getPackageFromRequest,
-  getUserFromRequest,
-  MiddyUser,
+  storeAuthUserInRequest,
   storePackageInRequest,
-  storeUserInRequest,
 } from "./utils";
 
 const TEST_ITEM = items[TEST_ITEM_ID] as main.ItemResult;
-const TEST_USER: MiddyUser = {
-  cognitoUser: TEST_STATE_SUBMITTER_USER,
-  userDetails: osUsers[TEST_STATE_SUBMITTER_EMAIL]._source as users.Document,
-  userProfile: (getFilteredRoleDocsByEmail(TEST_STATE_SUBMITTER_EMAIL) as roles.Document[]) || [],
+const TEST_USER: FullUser = {
+  ...TEST_STATE_SUBMITTER_USER,
+  role: "statesubmitter",
+  states: ["VA", "OH", "SC", "CO", "GA", "MD"],
 };
 
 describe("Middleware Utils", () => {
@@ -82,13 +76,13 @@ describe("Middleware Utils", () => {
     });
   });
 
-  describe("getUserFromRequest", () => {
+  describe("getAuthUserFromRequest", () => {
     it("should get the user if it is stored internally", async () => {
       const request = {
-        internal: { user: TEST_USER },
+        internal: { currUser: TEST_USER },
         context: {},
-      } as Request & { internal: { user: MiddyUser } };
-      expect(await getUserFromRequest(request)).toEqual(TEST_USER);
+      } as Request & { internal: { currUser: FullUser } };
+      expect(await getAuthUserFromRequest(request)).toEqual(TEST_USER);
     });
 
     it("should return undefined if the user is not stored internally", async () => {
@@ -96,19 +90,19 @@ describe("Middleware Utils", () => {
         internal: {},
         context: {},
       } as Request;
-      expect(await getUserFromRequest(request)).toBeUndefined();
+      expect(await getAuthUserFromRequest(request)).toBeUndefined();
     });
   });
 
-  describe("storeUserInRequest", () => {
+  describe("storeAuthUserInRequest", () => {
     it("should set the package only internally if the setToContext is not defined", () => {
       const request = {
         internal: {},
         context: {},
       } as Request;
-      storeUserInRequest(TEST_USER, request);
+      storeAuthUserInRequest(TEST_USER, request);
       expect(request).toEqual({
-        internal: { user: TEST_USER },
+        internal: { currUser: TEST_USER },
         context: {},
       });
     });
@@ -118,9 +112,9 @@ describe("Middleware Utils", () => {
         internal: {},
         context: {},
       } as Request;
-      storeUserInRequest(TEST_USER, request, false);
+      storeAuthUserInRequest(TEST_USER, request, false);
       expect(request).toEqual({
-        internal: { user: TEST_USER },
+        internal: { currUser: TEST_USER },
         context: {},
       });
     });
@@ -130,10 +124,10 @@ describe("Middleware Utils", () => {
         internal: {},
         context: {},
       } as Request;
-      storeUserInRequest(TEST_USER, request, true);
+      storeAuthUserInRequest(TEST_USER, request, true);
       expect(request).toEqual({
-        internal: { user: TEST_USER },
-        context: { user: TEST_USER },
+        internal: { currUser: TEST_USER },
+        context: { currUser: TEST_USER },
       });
     });
   });

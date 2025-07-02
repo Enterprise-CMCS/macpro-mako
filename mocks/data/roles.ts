@@ -784,6 +784,22 @@ export const getLatestRoleByEmail = (email: string) =>
     })
     ?.slice(0, 1);
 
+export const getActiveStatesForUserByEmail = (email: string, role?: string) =>
+  Array.from(
+    new Set(
+      roleResults
+        .filter(
+          (roleItem) =>
+            roleItem &&
+            roleItem._source?.email === email &&
+            (!role || roleItem._source?.role === role) &&
+            roleItem._source?.status === "active",
+        )
+        .map((roleItem) => roleItem?._source?.territory)
+        .filter((territory) => territory !== undefined && territory !== "N/A") || [],
+    ),
+  );
+
 export const getApprovedRoleByEmailAndState = (email: string, state: string, role: string) =>
   roleResults.find(
     (roleItem) =>
