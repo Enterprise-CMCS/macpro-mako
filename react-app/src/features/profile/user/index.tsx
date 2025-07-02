@@ -52,6 +52,11 @@ export const UserProfile = () => {
   const { userDetails, userProfile } = useLoaderData<LoaderData>();
   const isNewUserRoleDisplay = useFeatureFlag("SHOW_USER_ROLE_UPDATE");
 
+  const currentRoleObj = useMemo(() => {
+    if (!userProfile || !userProfile.stateAccess) return { group: null, division: null };
+    return userProfile?.stateAccess.find((x) => x.role === userDetails.role);
+  }, [userProfile, userDetails]);
+
   const orderedRoleStatus = useMemo(() => {
     const filteredRoleStatus = isNewUserRoleDisplay
       ? userProfile?.stateAccess
@@ -72,8 +77,8 @@ export const UserProfile = () => {
             role={userRoleMap[userDetails?.role]}
             email={userDetails?.email}
             groupDivision={
-              userDetails && userDetails.group
-                ? `${userDetails.group}/${userDetails.division}`
+              currentRoleObj && currentRoleObj.group
+                ? `${currentRoleObj?.group}/${currentRoleObj?.division}`
                 : null
             }
           />
