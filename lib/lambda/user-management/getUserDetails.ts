@@ -4,10 +4,9 @@ import httpErrorHandler from "@middy/http-error-handler";
 import httpJsonBodyParser from "@middy/http-json-body-parser";
 import { createError } from "@middy/util";
 import { APIGatewayEvent } from "shared-types";
-import { isUserManagerUser } from "shared-utils";
 import { z } from "zod";
 
-import { ContextWithUser, isAuthenticated, normalizeEvent } from "../middleware";
+import { canViewUser, ContextWithCurrUser, isAuthenticated, normalizeEvent } from "../middleware";
 import {
   getActiveStatesForUserByEmail,
   getLatestActiveRoleByEmail,
@@ -24,52 +23,34 @@ export const getUserDetailsEventSchema = z
 
 export type GetUserDetailsEvent = APIGatewayEvent & z.infer<typeof getUserDetailsEventSchema>;
 
-export const getUserDetails = middy()
+export const handler = middy()
   .use(httpErrorHandler())
   .use(normalizeEvent({ opensearch: true }))
   .use(httpJsonBodyParser())
   .use(zodValidator({ eventSchema: getUserDetailsEventSchema }))
-  .use(isAuthenticated({ withRoles: false, setToContext: true }))
-  .handler(async (event: GetUserDetailsEvent, context: ContextWithUser) => {
-    const { user } = context;
-    const { userEmail } = event.body;
+  .use(isAuthenticated({ setToContext: true }))
+  .use(canViewUser())
+  .handler(async (event: GetUserDetailsEvent, context: ContextWithCurrUser) => {
+    const email = event?.body?.userEmail || context?.currUser?.email;
+    console.log({ email });
 
-    // if the user wasn't set in context throw an error
-    if (!user || !user.userDetails) {
-      console.error("User was not set to context and isn't available");
-      throw createError(500, JSON.stringify({ message: "Internal server error" }));
+    if (!email) {
+      console.error("Email is undefined");
+      throw createError(500, JSON.stringify({ message: "Internal server error" }), {
+        expose: true,
+      });
     }
 
-    // if the userEmail wasn't set or it's the same as the authenticated user
-    // return the details for the authenticated user
-    if (!userEmail || user.userDetails.email === userEmail) {
-      return {
-        statusCode: 200,
-        body: {
-          ...user.userDetails,
-          role: user.cognitoUser.role,
-          states: user.cognitoUser.states,
-        },
-      };
-    }
-
-    // if the userEmail was set but the authenticated user does not have
-    // authorization to view another user's details, throw an error
-    if (!isUserManagerUser(user.cognitoUser)) {
-      throw createError(403, JSON.stringify({ message: "Not authorized to view this resource" }));
-    }
-
-    // otherwise, return the userEmail user's details
-    const reqUserDetails = await getUserByEmail(userEmail);
-    const reqUserLatestActiveRoleObj = await getLatestActiveRoleByEmail(userEmail);
-    const reqUserActiveStates = await getActiveStatesForUserByEmail(userEmail);
+    const userDetails = await getUserByEmail(email);
+    const latestActiveRoleObj = await getLatestActiveRoleByEmail(email);
+    const activeStates = await getActiveStatesForUserByEmail(email);
 
     return {
       statusCode: 200,
-      body: {
-        ...reqUserDetails,
-        role: reqUserLatestActiveRoleObj?.role ?? "norole",
-        states: reqUserActiveStates,
-      },
+      body: JSON.stringify({
+        ...userDetails,
+        role: latestActiveRoleObj?.role ?? "norole",
+        states: activeStates,
+      }),
     };
   });

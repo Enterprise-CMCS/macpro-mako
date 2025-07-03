@@ -1,4 +1,5 @@
 import { MiddlewareObj, Request } from "@middy/core";
+import { createError } from "@middy/util";
 import { getAppkChildren } from "libs/api/package";
 
 import { getPackageFromRequest, storePackageInRequest } from "./utils";
@@ -23,25 +24,31 @@ export const fetchAppkChildren = (opts: FetchAppkChildrenOptions = {}): Middlewa
       const packageResult = await getPackageFromRequest(request);
 
       if (packageResult?._id) {
-        let appkChildren: any[] = [];
         // @ts-ignore appkParent is a legacy field
         if (packageResult?._source?.appkParent) {
-          const children = await getAppkChildren(packageResult._id);
-          appkChildren = children.hits.hits;
-        }
+          let children;
+          try {
+            children = await getAppkChildren(packageResult._id);
+          } catch (err) {
+            console.error(err);
+            throw createError(500, JSON.stringify({ message: "Internal server error" }), {
+              expose: true,
+            });
+          }
 
-        if (appkChildren.length > 0) {
-          storePackageInRequest(
-            {
-              ...packageResult,
-              _source: {
-                ...packageResult._source,
-                appkChildren,
+          if (children?.hits?.hits?.length > 0) {
+            storePackageInRequest(
+              {
+                ...packageResult,
+                _source: {
+                  ...packageResult._source,
+                  appkChildren: children.hits.hits,
+                },
               },
-            },
-            request,
-            options.setToContext,
-          );
+              request,
+              options.setToContext,
+            );
+          }
         }
       }
     },

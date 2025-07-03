@@ -39,16 +39,32 @@ export const isAuthenticated = (opts: IsAuthenticatedOptions = {}): MiddlewareOb
         console.error(err);
         throw createError(401, JSON.stringify({ message: "User is not authenticated" }));
       }
-
       const { userId, poolId } = authDetails;
-      const userAttributes = await lookupUserAttributes(userId, poolId);
+
+      let userAttributes;
+      try {
+        userAttributes = await lookupUserAttributes(userId, poolId);
+      } catch (err) {
+        console.error(err);
+        throw createError(500, JSON.stringify({ message: "Internal server error" }), {
+          expose: true,
+        });
+      }
       if (!userAttributes?.email) {
         // if you don't use the expose option here, you won't be able to see the error message
-        throw createError(500, JSON.stringify({ message: "User is not valid" }), { expose: true });
+        throw createError(500, JSON.stringify({ message: "User is invalid" }), { expose: true });
       }
       const { email } = userAttributes;
 
-      const latestActiveRole = await getLatestActiveRoleByEmail(email);
+      let latestActiveRole;
+      try {
+        latestActiveRole = await getLatestActiveRoleByEmail(email);
+      } catch (err) {
+        console.error(err);
+        throw createError(500, JSON.stringify({ message: "Internal server error" }), {
+          expose: true,
+        });
+      }
 
       const user: FullUser = {
         ...userAttributes,
@@ -57,7 +73,14 @@ export const isAuthenticated = (opts: IsAuthenticatedOptions = {}): MiddlewareOb
       };
 
       if (!isCmsUser(user)) {
-        user.states = await getActiveStatesForUserByEmail(email, latestActiveRole?.role);
+        try {
+          user.states = await getActiveStatesForUserByEmail(email, latestActiveRole?.role);
+        } catch (err) {
+          console.error(err);
+          throw createError(500, JSON.stringify({ message: "Internal server error" }), {
+            expose: true,
+          });
+        }
       }
 
       storeAuthUserInRequest(user, request, options.setToContext);

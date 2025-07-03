@@ -22,6 +22,7 @@ const defaults: NormalizeEventOptions = {
  *
  * *After handler*: adds the CORS headers to the response, unless the disableCors option is true
  * @param {object} opts Options for running the middleware
+ * @param {boolean} opts.bodyRequired [true] if false, does not validate that the event does not have a body
  * @param {boolean} opts.opensearch [false] if true, validate opensearch environment variables
  * @param {boolean} opts.disableCors [false] if true, disable the CORS headers on the response
  * @returns {MiddlewareObj} middleware with the input and output normalizations
