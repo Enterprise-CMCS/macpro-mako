@@ -1,4 +1,4 @@
-import { APIGatewayEvent } from "aws-lambda";
+import { APIGatewayEvent, Context } from "aws-lambda";
 import {
   CMS_ROLE_APPROVER_EMAIL,
   cmsRoleApprover,
@@ -24,57 +24,68 @@ describe("getRoleRequests", () => {
     setDefaultStateSubmitter();
   });
 
-  it("should return 400 if the request context is missing", async () => {
+  it("should return 400, if the event body is missing", async () => {
     const event = {} as APIGatewayEvent;
 
-    const res = await handler(event);
+    const res = await handler(event, {} as Context);
 
     expect(res.statusCode).toEqual(400);
-    expect(res.body).toEqual(JSON.stringify({ message: "Request context required" }));
+    expect(res.body).toEqual(JSON.stringify({ message: "Event body required" }));
   });
 
-  it("should return 401 if user isn't authenticated", async () => {
+  it("should return 401, if user isn't authenticated", async () => {
     setMockUsername(null);
+
     const event = {
+      body: JSON.stringify({}),
       requestContext: getRequestContext(),
     } as APIGatewayEvent;
 
-    const res = await handler(event);
+    const res = await handler(event, {} as Context);
 
     expect(res.statusCode).toEqual(401);
-    expect(res.body).toEqual(JSON.stringify({ message: "User not authenticated" }));
+    expect(res.body).toEqual(JSON.stringify({ message: "User is not authenticated" }));
   });
 
-  it("should return 403 if user doesn't have roles", async () => {
+  it("should return 403, if user doesn't have roles", async () => {
     setMockUsername(noStateSubmitter);
+
     const event = {
+      body: JSON.stringify({}),
       requestContext: getRequestContext(),
     } as APIGatewayEvent;
 
-    const res = await handler(event);
+    const res = await handler(event, {} as Context);
 
     expect(res.statusCode).toEqual(403);
-    expect(res.body).toEqual(JSON.stringify({ message: "User not authorized to approve roles" }));
+    expect(res.body).toEqual(
+      JSON.stringify({ message: "User is not authorized to approve roles" }),
+    );
   });
 
-  it("should return 403 if the user is a state submitter", async () => {
+  it("should return 403, if the user is a state submitter", async () => {
     const event = {
+      body: JSON.stringify({}),
       requestContext: getRequestContext(),
     } as APIGatewayEvent;
 
-    const res = await handler(event);
+    const res = await handler(event, {} as Context);
 
     expect(res.statusCode).toEqual(403);
-    expect(res.body).toEqual(JSON.stringify({ message: "User not authorized to approve roles" }));
+    expect(res.body).toEqual(
+      JSON.stringify({ message: "User is not authorized to approve roles" }),
+    );
   });
 
-  it("should return 200 and get all role requests if user is a System Admin", async () => {
+  it("should return 200 and get all role requests, if user is a System Admin", async () => {
     setMockUsername(systemAdmin);
+
     const event = {
+      body: JSON.stringify({}),
       requestContext: getRequestContext(),
     } as APIGatewayEvent;
 
-    const res = await handler(event);
+    const res = await handler(event, {} as Context);
 
     expect(res.statusCode).toEqual(200);
     const roles = JSON.parse(res.body);
@@ -83,13 +94,15 @@ describe("getRoleRequests", () => {
     expect(roles.length).toEqual(filteredRoles.length);
   });
 
-  it("should return 200 and get all role requests if user is a Help Desk User", async () => {
+  it("should return 200 and get all role requests, if user is a Help Desk User", async () => {
     setMockUsername(helpDeskUser);
+
     const event = {
+      body: JSON.stringify({}),
       requestContext: getRequestContext(),
     } as APIGatewayEvent;
 
-    const res = await handler(event);
+    const res = await handler(event, {} as Context);
 
     expect(res.statusCode).toEqual(200);
     const roles = JSON.parse(res.body);
@@ -98,13 +111,15 @@ describe("getRoleRequests", () => {
     expect(roles.length).toEqual(filteredRoles.length);
   });
 
-  it("should return 200 and get all state role requests if user is a CMS role approver", async () => {
+  it("should return 200 and get all state role requests, if user is a CMS role approver", async () => {
     setMockUsername(cmsRoleApprover);
+
     const event = {
+      body: JSON.stringify({}),
       requestContext: getRequestContext(),
     } as APIGatewayEvent;
 
-    const res = await handler(event);
+    const res = await handler(event, {} as Context);
 
     expect(res.statusCode).toEqual(200);
     const roles = JSON.parse(res.body);
@@ -116,13 +131,15 @@ describe("getRoleRequests", () => {
     expect(roles.length).toEqual(filteredRoles.length);
   });
 
-  it("should return 200 and get corresponding state role requests if user is a state system admin", async () => {
+  it("should return 200 and get corresponding state role requests, if user is a state system admin", async () => {
     setMockUsername(osStateSystemAdmin);
+
     const event = {
+      body: JSON.stringify({}),
       requestContext: getRequestContext(),
     } as APIGatewayEvent;
 
-    const res = await handler(event);
+    const res = await handler(event, {} as Context);
 
     expect(res.statusCode).toEqual(200);
     expect(JSON.parse(res.body)).toEqual([
@@ -201,14 +218,15 @@ describe("getRoleRequests", () => {
     ]);
   });
 
-  it("should return 500 if there is an error getting the roles", async () => {
+  it("should return 500, if there is an error getting the roles", async () => {
     mockedServer.use(errorRoleSearchHandler);
     setMockUsername(osStateSystemAdmin);
     const event = {
+      body: JSON.stringify({}),
       requestContext: getRequestContext(),
     } as APIGatewayEvent;
 
-    const res = await handler(event);
+    const res = await handler(event, {} as Context);
 
     expect(res.statusCode).toEqual(500);
     expect(res.body).toEqual(JSON.stringify({ message: "Internal server error" }));

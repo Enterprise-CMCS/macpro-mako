@@ -4,11 +4,13 @@ import { validateEnvVariable } from "shared-utils";
 
 export type NormalizeEventOptions = {
   opensearch?: boolean;
+  kafka?: boolean;
   disableCors?: boolean;
 };
 
 const defaults: NormalizeEventOptions = {
   opensearch: false,
+  kafka: false,
   disableCors: false,
 };
 
@@ -22,8 +24,8 @@ const defaults: NormalizeEventOptions = {
  *
  * *After handler*: adds the CORS headers to the response, unless the disableCors option is true
  * @param {object} opts Options for running the middleware
- * @param {boolean} opts.bodyRequired [true] if false, does not validate that the event does not have a body
  * @param {boolean} opts.opensearch [false] if true, validate opensearch environment variables
+ * @param {boolean} opts.kafka [false] if true, validate kafka topic name environment variable
  * @param {boolean} opts.disableCors [false] if true, disable the CORS headers on the response
  * @returns {MiddlewareObj} middleware with the input and output normalizations
  */
@@ -36,6 +38,18 @@ export const normalizeEvent = (opts: NormalizeEventOptions = {}): MiddlewareObj 
         try {
           validateEnvVariable("osDomain");
           validateEnvVariable("indexNamespace");
+        } catch (err) {
+          console.error(err);
+          // if you don't use the expose option here, you won't be able to see the error message
+          throw createError(500, JSON.stringify({ message: "Internal server error" }), {
+            expose: true,
+          });
+        }
+      }
+
+      if (options.kafka) {
+        try {
+          validateEnvVariable("topicName");
         } catch (err) {
           console.error(err);
           // if you don't use the expose option here, you won't be able to see the error message

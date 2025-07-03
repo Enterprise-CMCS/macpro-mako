@@ -1,69 +1,66 @@
-import { APIGatewayEvent } from "aws-lambda";
-import { getAuthDetails, lookupUserAttributes } from "libs/api/auth/user";
+import middy from "@middy/core";
+import httpErrorHandler from "@middy/http-error-handler";
+import httpJsonBodyParser from "@middy/http-json-body-parser";
+import { createError } from "@middy/util";
 import { produceMessage } from "libs/api/kafka";
-import { response } from "libs/handler-lib";
+import { APIGatewayEvent } from "shared-types";
 
+import { ContextWithCurrUser, isAuthenticated, normalizeEvent } from "../middleware";
 import { getUserByEmail } from "./userManagementService";
 
-export const createUserProfile = async (event: APIGatewayEvent) => {
-  if (!event?.requestContext) {
-    return response({
-      statusCode: 400,
-      body: { message: "Request context required" },
-    });
-  }
+export const handler = middy()
+  .use(httpErrorHandler())
+  .use(normalizeEvent({ opensearch: true, kafka: true }))
+  .use(httpJsonBodyParser())
+  .use(isAuthenticated({ setToContext: true }))
+  .handler(async (event: APIGatewayEvent, context: ContextWithCurrUser) => {
+    const { currUser } = context;
 
-  const topicName = process.env.topicName as string;
-  if (!topicName) {
-    throw new Error("Topic name is not defined");
-  }
-
-  let authDetails;
-  try {
-    authDetails = getAuthDetails(event);
-  } catch (err) {
-    console.error(err);
-    return response({
-      statusCode: 401,
-      body: { message: "User not authenticated" },
-    });
-  }
-
-  try {
-    const { userId, poolId } = authDetails;
-    const userAttributes = await lookupUserAttributes(userId, poolId);
-    const userInfo = await getUserByEmail(userAttributes.email);
-
-    const id = `${userAttributes.email}_user-information`;
-
-    if (!userInfo) {
-      await produceMessage(
-        topicName,
-        id,
-        JSON.stringify({
-          eventType: "user-info",
-          email: userAttributes.email,
-          fullName: `${userAttributes.given_name} ${userAttributes.family_name}`,
-        }),
-      );
-
-      return response({
-        statusCode: 200,
-        body: { message: "User profile created" },
+    if (!currUser?.email) {
+      console.error("Email is undefined");
+      throw createError(500, JSON.stringify({ message: "Internal server error" }), {
+        expose: true,
       });
     }
 
-    return response({
-      statusCode: 200,
-      body: { message: `User profile already exists` },
-    });
-  } catch (err: unknown) {
-    console.log("An error occurred: ", err);
-    return response({
-      statusCode: 500,
-      body: { message: "Internal server error" },
-    });
-  }
-};
+    let userInfo;
+    try {
+      userInfo = await getUserByEmail(currUser.email);
+    } catch (err) {
+      console.error(err);
+      throw createError(500, JSON.stringify({ message: "Internal server error" }), {
+        expose: true,
+      });
+    }
 
-export const handler = createUserProfile;
+    const id = `${currUser.email}_user-information`;
+
+    if (!userInfo) {
+      try {
+        await produceMessage(
+          process.env.topicName || "",
+          id,
+          JSON.stringify({
+            eventType: "user-info",
+            email: currUser.email,
+            fullName: `${currUser.given_name} ${currUser.family_name}`,
+          }),
+        );
+      } catch (err) {
+        console.error(err);
+        throw createError(500, JSON.stringify({ message: "Internal server error" }), {
+          expose: true,
+        });
+      }
+
+      return {
+        statusCode: 200,
+        body: JSON.stringify({ message: "User profile created" }),
+      };
+    }
+
+    return {
+      statusCode: 200,
+      body: JSON.stringify({ message: `User profile already exists` }),
+    };
+  });

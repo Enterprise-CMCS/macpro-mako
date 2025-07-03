@@ -1,4 +1,4 @@
-import { APIGatewayEvent } from "aws-lambda";
+import { APIGatewayEvent, Context } from "aws-lambda";
 import {
   errorApiGetApproversHandler,
   getRequestContext,
@@ -18,48 +18,51 @@ describe("getApprovers handler", () => {
     process.env.topicName = "get-approvers";
   });
 
-  it("should return 400 if the request context is missing", async () => {
+  it("should return 400, if the event body is missing", async () => {
     const event = {} as APIGatewayEvent;
 
-    const res = await handler(event);
+    const res = await handler(event, {} as Context);
 
     expect(res.statusCode).toEqual(400);
-    expect(res.body).toEqual(JSON.stringify({ message: "Request context required" }));
+    expect(res.body).toEqual(JSON.stringify({ message: "Event body required" }));
   });
 
-  it("should return 401 if the user is not authenticated", async () => {
+  it("should return 401, if the user is not authenticated", async () => {
     setMockUsername(null);
 
     const event = {
+      body: JSON.stringify({}),
       requestContext: getRequestContext(),
     } as APIGatewayEvent;
 
-    const res = await handler(event);
+    const res = await handler(event, {} as Context);
 
     expect(res.statusCode).toEqual(401);
-    expect(res.body).toEqual(JSON.stringify({ message: "User not authenticated" }));
+    expect(res.body).toEqual(JSON.stringify({ message: "User is not authenticated" }));
   });
 
-  it("should return 200 and return the approver list", async () => {
+  it("should return 200 and the approver list", async () => {
     const event = {
+      body: JSON.stringify({}),
       requestContext: getRequestContext(),
     } as APIGatewayEvent;
 
-    const result = await handler(event);
+    const result = await handler(event, {} as Context);
     console.log("RESULT", result);
 
     expect(result.statusCode).toBe(200);
   });
 
-  it("should return 200 with empty approvers if getApproversByRole fails for one role", async () => {
+  it("should return 200 with empty approvers, if getApproversByRole fails for one role", async () => {
     setMockUsername(stateSubmitter);
     mockedServer.use(errorApiGetApproversHandler);
 
     const event = {
+      body: JSON.stringify({}),
       requestContext: getRequestContext(),
     } as APIGatewayEvent;
 
-    const res = await handler(event);
+    const res = await handler(event, {} as Context);
     const parsed = JSON.parse(res.body);
 
     expect(res.statusCode).toEqual(200);
@@ -68,10 +71,11 @@ describe("getApprovers handler", () => {
 
   it("should return filtered approvers by matching territories", async () => {
     const mockEvent = {
+      body: JSON.stringify({}),
       requestContext: getRequestContext(),
     } as APIGatewayEvent;
 
-    const result = await handler(mockEvent);
+    const result = await handler(mockEvent, {} as Context);
     console.log("Handler result:", result);
     const parsedBody = JSON.parse(result.body);
 
