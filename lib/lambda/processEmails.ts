@@ -131,12 +131,6 @@ export async function processRecord(kafkaRecord: KafkaRecord, config: ProcessEma
   let ninetyDayExpirationClock;
   const { key, value, timestamp } = kafkaRecord;
   const id: string = decodeBase64WithUtf8(key);
-  const logRecord = decodeBase64WithUtf8(value);
-  const parsedRecord = JSON.parse(logRecord);
-
-  if (isChipSpaRespondRAIEvent(parsedRecord)) {
-    ninetyDayExpirationClock = await calculate90dayExpiration(parsedRecord, config);
-  }
 
   if (kafkaRecord.topic === "aws.seatool.ksql.onemac.three.agg.State_Plan") {
     const safeID = id.replace(/^"|"$/g, "").toUpperCase();
@@ -200,6 +194,12 @@ export async function processRecord(kafkaRecord: KafkaRecord, config: ProcessEma
     console.log("Tombstone detected. Doing nothing for this event");
     return;
   }
+  const logRecord = decodeBase64WithUtf8(value);
+  const parsedRecord = JSON.parse(logRecord);
+
+  if (isChipSpaRespondRAIEvent(parsedRecord)) {
+    ninetyDayExpirationClock = await calculate90dayExpiration(parsedRecord, config);
+  }
 
   let record;
   if (isChipSpaRespondRAIEvent(parsedRecord)) {
@@ -209,6 +209,7 @@ export async function processRecord(kafkaRecord: KafkaRecord, config: ProcessEma
     };
     record.timestamp = ninetyDayExpirationClock;
   } else {
+
     record = {
       timestamp,
       ...JSON.parse(decodeBase64WithUtf8(value)),

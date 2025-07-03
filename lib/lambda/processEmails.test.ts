@@ -124,6 +124,7 @@ describe("process emails Handler", () => {
       records: {
         "mock-topic": [
           {
+            value: undefined,
             key: Buffer.from("VA").toString("base64"),
             headers: {},
             timestamp: 1732645041557,
@@ -247,7 +248,7 @@ describe("process emails Handler", () => {
     };
 
     const sendSpy = vi.spyOn(SESClient.prototype, "send");
-    const consoleErrorSpy = vi.spyOn(console, "error").mockImplementation(() => {});
+    const consoleErrorSpy = vi.spyOn(console, "error").mockImplementation(() => { });
 
     await expect(handler(mockEvent, {} as Context, callback)).rejects.toThrowError();
     expect(consoleErrorSpy).toHaveBeenCalledWith("Error sending user email", error);
