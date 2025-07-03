@@ -59,7 +59,7 @@ describe("getUserDetails handler", () => {
     expect(res.body).toEqual(JSON.stringify({ message: "User is invalid" }));
   });
 
-  it("should return 200 and the authenticated user's details, if there is no userEmail in the request body", async () => {
+  it("should return 200 and the authenticated user's details, if there is no userEmail in the event body", async () => {
     const event = {
       body: JSON.stringify({}),
       requestContext: getRequestContext(),
@@ -97,7 +97,7 @@ describe("getUserDetails handler", () => {
     expect(res.body).toEqual(JSON.stringify(expectedUser));
   });
 
-  it("should return 200 and the authenticated user's details, if the userEmail in the request body matches and the authenticated user's email", async () => {
+  it("should return 200 and the authenticated user's details, if the userEmail in the event body matches and the authenticated user's email", async () => {
     const event = {
       requestContext: getRequestContext(),
       body: JSON.stringify({
@@ -117,7 +117,7 @@ describe("getUserDetails handler", () => {
     expect(res.body).toEqual(JSON.stringify(expectedUser));
   });
 
-  it("should return 200 and the user details for the userEmail in the request body, if the authenticated user is a user manager", async () => {
+  it("should return 200 and the user details for the userEmail in the event body, if the authenticated user is a user manager", async () => {
     setMockUsername(TEST_STATE_SUBMITTER_USERNAME);
 
     const event = {
@@ -139,7 +139,7 @@ describe("getUserDetails handler", () => {
     expect(res.body).toEqual(JSON.stringify(expectedUser));
   });
 
-  it("should return 403, if userEmail in the request body does not match the authenticated user's email and the authenticated user is not a user manager", async () => {
+  it("should return 403, if userEmail in the event body does not match the authenticated user's email and the authenticated user is not a user manager", async () => {
     const event = {
       requestContext: getRequestContext(),
       body: JSON.stringify({

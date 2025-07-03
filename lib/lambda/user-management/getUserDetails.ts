@@ -32,7 +32,6 @@ export const handler = middy()
   .use(canViewUser())
   .handler(async (event: GetUserDetailsEvent, context: ContextWithCurrUser) => {
     const email = event?.body?.userEmail || context?.currUser?.email;
-    console.log({ email });
 
     if (!email) {
       console.error("Email is undefined");
