@@ -1,6 +1,7 @@
 import { getAuthDetails, lookupUserAttributes } from "libs/api/auth/user";
 import { response } from "libs/handler-lib";
 import { APIGatewayEvent } from "shared-types";
+import { isUserManagerUser } from "shared-utils";
 import { z } from "zod";
 
 import { getAllUserRolesByEmail, getLatestActiveRoleByEmail } from "./userManagementService";
@@ -46,10 +47,12 @@ export const getUserProfile = async (event: APIGatewayEvent) => {
       const currUserLatestActiveRoleObj = await getLatestActiveRoleByEmail(
         currUserAttributes.email,
       );
+      const currUserRole = currUserLatestActiveRoleObj?.role ?? "norole";
       if (
-        ["systemadmin", "statesystemadmin", "cmsroleapprover", "helpdesk"].includes(
-          currUserLatestActiveRoleObj?.role,
-        )
+        isUserManagerUser({
+          ...currUserAttributes,
+          role: currUserRole,
+        })
       ) {
         const reqUserRoles = await getAllUserRolesByEmail(safeEventBody.data.userEmail);
         return response({

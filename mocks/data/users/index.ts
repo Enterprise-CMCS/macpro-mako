@@ -14,6 +14,7 @@ import {
 } from "./otherCMSUsers";
 import {
   coStateSubmitter,
+  osStateSystemAdmin,
   stateSubmitters,
   stateSubmitterUsernamesByEmail,
   testStateSubmitter,
@@ -84,6 +85,7 @@ export const CO_STATE_SUBMITTER_USER = convertUserAttributes(coStateSubmitter);
 export const DEFAULT_CMS_USER = convertUserAttributes(defaultCMSUser);
 export const HELP_DESK_USER = convertUserAttributes(helpDeskUser);
 export const TEST_STATE_SUBMITTER_USER = convertUserAttributes(testStateSubmitter);
+export const TEST_STATE_SYSTEM_ADMIN_USER = convertUserAttributes(osStateSystemAdmin);
 export const TEST_SYSTEM_ADMIN_USER = convertUserAttributes(systemAdmin);
 
 export * from "./cmsReviewer";

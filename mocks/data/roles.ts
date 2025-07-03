@@ -772,15 +772,33 @@ export const getLatestRoleByEmail = (email: string) =>
   roleResults
     .filter((role) => role?._source?.email === email && role?._source?.status === "active")
     .sort((a, b) => {
-      if (a?._source?.lastModifiedDate > b?._source?.lastModifiedDate) {
+      const lastModifiedDateA = a?._source?.lastModifiedDate || 0;
+      const lastModifiedDateB = b?._source?.lastModifiedDate || 0;
+      if (lastModifiedDateA > lastModifiedDateB) {
         return -1;
       }
-      if (a?._source?.lastModifiedDate < b?._source?.lastModifiedDate) {
+      if (lastModifiedDateA < lastModifiedDateB) {
         return 1;
       }
       return 0;
     })
     ?.slice(0, 1);
+
+export const getActiveStatesForUserByEmail = (email: string, role?: string) =>
+  Array.from(
+    new Set(
+      roleResults
+        .filter(
+          (roleItem) =>
+            roleItem &&
+            roleItem._source?.email === email &&
+            (!role || roleItem._source?.role === role) &&
+            roleItem._source?.status === "active",
+        )
+        .map((roleItem) => roleItem?._source?.territory)
+        .filter((territory) => territory !== undefined && territory !== "N/A") || [],
+    ),
+  );
 
 export const getApprovedRoleByEmailAndState = (email: string, state: string, role: string) =>
   roleResults.find(

@@ -1,6 +1,11 @@
 import { z } from "zod";
 
-const userRoles = z.enum([
+import { STATE_CODES } from "../states";
+
+export const territory = z.enum([...STATE_CODES, "N/A"]);
+export type Territory = z.infer<typeof territory>;
+
+export const userRoles = z.enum([
   "defaultcmsuser",
   "cmsroleapprover",
   "cmsreviewer",
@@ -44,7 +49,7 @@ const skPattern = /^v[0-9]+#[a-z]+#(N\/A|[A-Z]{2})$/;
 export const baseUserRoleRequestSchema = z.object({
   email: z.string().email().optional(),
   status: userStatus,
-  territory: z.string(),
+  territory: territory,
   role: userRoles,
   doneByEmail: z.string(),
   doneByName: z.string(),

@@ -1,6 +1,7 @@
 import { getAuthDetails, lookupUserAttributes } from "libs/api/auth/user";
 import { response } from "libs/handler-lib";
 import { APIGatewayEvent } from "shared-types";
+import { isUserManagerUser } from "shared-utils";
 import { z } from "zod";
 
 import {
@@ -36,6 +37,7 @@ export const getUserDetails = async (event: APIGatewayEvent) => {
     const currUserAttributes = await lookupUserAttributes(userId, poolId);
     const currUserDetails = await getUserByEmail(currUserAttributes.email);
     const currUserLatestActiveRoleObj = await getLatestActiveRoleByEmail(currUserAttributes.email);
+    const currUserRole = currUserLatestActiveRoleObj?.role ?? "norole";
 
     const eventBody = typeof event.body === "string" ? JSON.parse(event.body) : event.body;
     const safeEventBody = getUserDetailsSchema.safeParse(eventBody);
@@ -47,10 +49,11 @@ export const getUserDetails = async (event: APIGatewayEvent) => {
     if (
       safeEventBody.success &&
       safeEventBody?.data?.userEmail &&
-      safeEventBody.data.userEmail !== currUserDetails.email &&
-      ["systemadmin", "statesystemadmin", "cmsroleapprover", "helpdesk"].includes(
-        currUserLatestActiveRoleObj?.role,
-      )
+      safeEventBody.data.userEmail !== currUserAttributes.email &&
+      isUserManagerUser({
+        ...currUserAttributes,
+        role: currUserRole,
+      })
     ) {
       // retrieving user details for the requested user
       const reqUserDetails = await getUserByEmail(safeEventBody.data.userEmail);
@@ -75,7 +78,7 @@ export const getUserDetails = async (event: APIGatewayEvent) => {
       statusCode: 200,
       body: {
         ...currUserDetails,
-        role: currUserLatestActiveRoleObj?.role ?? "norole",
+        role: currUserRole,
         states: currUserActiveStates,
       },
     });
