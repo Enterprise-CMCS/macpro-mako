@@ -23,16 +23,16 @@
         <div class='clearfix'>
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">86.2% </span>
+                <span class="strong">86.51% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>75/87</span>
+                <span class='fraction'>77/89</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">74.44% </span>
+                <span class="strong">75% </span>
                 <span class="quiet">Branches</span>
-                <span class='fraction'>67/90</span>
+                <span class='fraction'>69/92</span>
             </div>
         
             
@@ -44,9 +44,9 @@
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">87.65% </span>
+                <span class="strong">87.95% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>71/81</span>
+                <span class='fraction'>73/83</span>
             </div>
         
             
@@ -595,7 +595,10 @@
 <a name='L530'></a><a href='#L530'>530</a>
 <a name='L531'></a><a href='#L531'>531</a>
 <a name='L532'></a><a href='#L532'>532</a>
-<a name='L533'></a><a href='#L533'>533</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
+<a name='L533'></a><a href='#L533'>533</a>
+<a name='L534'></a><a href='#L534'>534</a>
+<a name='L535'></a><a href='#L535'>535</a>
+<a name='L536'></a><a href='#L536'>536</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -703,6 +706,7 @@
 <span class="cline-any cline-yes">44x</span>
 <span class="cline-any cline-yes">44x</span>
 <span class="cline-any cline-yes">44x</span>
+<span class="cline-any cline-yes">44x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -716,6 +720,9 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">44x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">44x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">44x</span>
 <span class="cline-any cline-yes">1x</span>
@@ -743,7 +750,6 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">44x</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -1098,7 +1104,7 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">94x</span>
-<span class="cline-any cline-yes">53x</span>
+<span class="cline-any cline-yes">56x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -1108,7 +1114,7 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">53x</span>
+<span class="cline-any cline-yes">56x</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -1235,6 +1241,7 @@ const UserDropdownMenu = () =&gt; {
   const navigate = useNavigate();
   const { data: userDetails, isLoading } = useGetUserDetails();
   const { data: userProfile } = useGetUserProfile();
+  const isNewUserRoleDisplay = useFeatureFlag("SHOW_USER_ROLE_UPDATE");
 &nbsp;
   // Disable page if user has a pending request
   // Certain roles cannot be changed
@@ -1248,6 +1255,9 @@ const UserDropdownMenu = () =&gt; {
 &nbsp;
     return excludedRoles.includes(currentRole);
   };
+&nbsp;
+  const showRequestRoleChangeButton =
+    !disableRoleChange() &amp;&amp; !isLoading &amp;&amp; userDetails &amp;&amp; !isNewUserRoleDisplay;
 &nbsp;
   const handleViewProfile = () =&gt; {
     navigate("/profile");
@@ -1310,8 +1320,7 @@ const UserDropdownMenu = () =&gt; {
               &lt;/li&gt;
             &lt;/DropdownMenu.Item&gt;
             {/* TODO: conditionally show this if the user IS NOT HELPDESK */}
-            {/* // helpdesk, system admins, and cms reviewer users don't even see request role as an option */}
-            {!disableRoleChange() &amp;&amp; !isLoading &amp;&amp; userDetails &amp;&amp; (
+            {showRequestRoleChangeButton &amp;&amp; (
               &lt;DropdownMenu.Item
                 className="text-primary hover:text-primary/70 cursor-pointer"
                 asChild
@@ -1666,7 +1675,7 @@ export const SupportSubNavHeader = ({ children, className }: SupportSubNavHeader
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2025-07-03T02:18:48.258Z
+                at 2025-07-03T14:42:48.481Z
             </div>
         <script src="../../../../prettify.js"></script>
         <script>
