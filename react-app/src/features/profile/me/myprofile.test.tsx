@@ -14,6 +14,28 @@ import { renderWithQueryClientAndMemoryRouter } from "@/utils/test-helpers";
 
 import { MyProfile } from ".";
 
+let mockUserRoleFeatureFlag = false;
+
+vi.mock("@/hooks/useFeatureFlag", () => ({
+  useFeatureFlag: (flag: string) => {
+    if (flag === "isNewUserRoleDisplay") return mockUserRoleFeatureFlag;
+    return false;
+  },
+}));
+
+vi.mock("@/api/useSubmitRoleRequests", async () => {
+  const actual = await vi.importActual<typeof import("@/api/useSubmitRoleRequests")>(
+    "@/api/useSubmitRoleRequests",
+  );
+  return {
+    ...actual,
+    useSubmitRoleRequests: () => ({
+      mutateAsync: vi.fn().mockResolvedValue({}),
+      isLoading: false,
+    }),
+  };
+});
+
 describe("MyProfile", () => {
   const bannerSpy = vi.spyOn(components, "banner");
 
@@ -46,6 +68,7 @@ describe("MyProfile", () => {
 
   beforeEach(() => {
     setDefaultStateSubmitter();
+    mockUserRoleFeatureFlag = false;
   });
 
   test("redirects to / for non-authenticated users", async () => {
@@ -137,6 +160,28 @@ describe("MyProfile", () => {
     const revokeStateButton = screen.queryAllByTestId("self-revoke");
     await revokeStateButton[0].click();
     expect(screen.getByRole("dialog", { name: /Withdraw State Access/i })).toBeInTheDocument();
+  });
+
+  test("self revoking removes access to state", async () => {
+    setMockUsername(multiStateSubmitter);
+
+    await setup();
+
+    const revokeStateButton = screen.queryAllByTestId("self-revoke");
+    expect(revokeStateButton.length).toEqual(3);
+
+    await revokeStateButton[1].click();
+    expect(screen.getByRole("dialog", { name: /Withdraw State Access/i })).toBeInTheDocument();
+
+    const confirmRevokeButton = screen.getByTestId("dialog-accept");
+    await confirmRevokeButton.click();
+    await waitFor(() =>
+      expect(bannerSpy).toHaveBeenCalledWith(
+        expect.objectContaining({
+          header: "Submission Completed",
+        }),
+      ),
+    );
   });
 
   test("renders nothing if user has no states", async () => {
