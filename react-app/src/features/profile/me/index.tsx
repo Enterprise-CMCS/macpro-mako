@@ -1,3 +1,4 @@
+import { PlusIcon } from "lucide-react";
 import { useEffect, useMemo, useState } from "react";
 import { Navigate } from "react-router";
 import { StateCode } from "shared-types";
@@ -11,21 +12,17 @@ import {
   ConfirmationDialog,
   GroupAndDivision,
   LoadingSpinner,
-  StateAccessCard,
+  RoleStatusCard,
   SubNavHeader,
   UserInformation,
 } from "@/components";
 import { Option } from "@/components/Opensearch/main/Filtering/Drawer/Filterable";
 import { FilterableSelect } from "@/components/Opensearch/main/Filtering/Drawer/Filterable";
 import { useAvailableStates } from "@/hooks/useAvailableStates";
+import { useFeatureFlag } from "@/hooks/useFeatureFlag";
 import { convertStateAbbrToFullName } from "@/utils";
 
-import {
-  filterStateAccess,
-  hasPendingRequests,
-  orderStateAccess,
-  stateAccessRoles,
-} from "../utils";
+import { filterRoleStatus, hasPendingRequests, orderRoleStatus, stateAccessRoles } from "../utils";
 
 export const MyProfile = () => {
   const { data: userDetails, isLoading: isDetailLoading } = useGetUserDetails();
@@ -35,6 +32,8 @@ export const MyProfile = () => {
     refetch: reloadUserProfile,
   } = useGetUserProfile();
 
+  const isNewUserRoleDisplay = useFeatureFlag("SHOW_USER_ROLE_UPDATE");
+
   const { mutateAsync: submitRequest, isLoading: areRolesLoading } = useSubmitRoleRequests();
   const [selfRevokeState, setSelfRevokeState] = useState<StateCode | null>(null);
   const [showAddState, setShowAddState] = useState<boolean>(true);
@@ -42,15 +41,32 @@ export const MyProfile = () => {
   const [pendingRequests, setPendingRequests] = useState<boolean>(false);
   const statesToRequest: Option[] = useAvailableStates(userDetails?.role, userProfile?.stateAccess);
 
-  const filteredStateAccess = useMemo(
-    () => filterStateAccess(userDetails, userProfile),
-    [userDetails, userProfile],
-  );
+  const orderedRoleStatus = useMemo(() => {
+    const filteredRoleStatus = isNewUserRoleDisplay
+      ? userProfile?.stateAccess
+      : filterRoleStatus(userDetails, userProfile);
 
-  const orderedStateAccess = useMemo(
-    () => orderStateAccess(filteredStateAccess),
-    [filteredStateAccess],
-  );
+    return orderRoleStatus(filteredRoleStatus);
+  }, [userDetails, userProfile, isNewUserRoleDisplay]);
+
+  const currentRoleObj = useMemo(() => {
+    if (!userProfile || !userProfile.stateAccess) return { group: null, division: null };
+    return userProfile?.stateAccess.find((x) => x.role === userDetails.role);
+  }, [userProfile, userDetails]);
+
+  const hideAddRoleButton = useMemo(() => {
+    if (!userProfile || !userProfile.stateAccess) return true;
+
+    const isCMSWithManyRoles = userProfile?.stateAccess.filter((x) => {
+      if (x.role === "defaultcmsuser" || x.role === "cmsreviewer") return false;
+      if (x.role.includes("cms") || x.role === "systemadmin")
+        return x.status === "active" || x.status === "pending";
+      return false;
+    });
+
+    const isHelpDesk = userProfile?.stateAccess.filter((x) => x.role === "helpdesk").length;
+    return isCMSWithManyRoles.length || isHelpDesk;
+  }, [userProfile]);
 
   // Set initial value of showAddState based on pending roles
   useEffect(() => {
@@ -58,7 +74,7 @@ export const MyProfile = () => {
       const pendingRequests = hasPendingRequests(userProfile?.stateAccess);
       setPendingRequests(pendingRequests);
     }
-  }, [isDetailLoading, isProfileLoading, filteredStateAccess, userProfile]);
+  }, [isDetailLoading, isProfileLoading, userProfile]);
 
   if (isDetailLoading || isProfileLoading) {
     return <LoadingSpinner />;
@@ -170,6 +186,9 @@ export const MyProfile = () => {
       window.scrollTo(0, 0);
     }
   };
+  const showAllStateAccess = isNewUserRoleDisplay
+    ? true
+    : stateAccessRoles.includes(userDetails?.role);
 
   return (
     <>
@@ -183,16 +202,27 @@ export const MyProfile = () => {
             fullName={userDetails?.fullName}
             role={userRoleMap[userDetails?.role]}
             email={userDetails?.email}
+            allowEdits
+            groupDivision={
+              currentRoleObj && currentRoleObj.group
+                ? `${currentRoleObj?.group}/${currentRoleObj?.division}`
+                : null
+            }
           />
           <div className="flex flex-col gap-6 md:basis-1/2">
             {/* Status/State Access Management Section */}
-            {stateAccessRoles.includes(userDetails?.role) && (
+            {showAllStateAccess && (
               <div>
-                <h2 className="text-2xl font-bold">
-                  {userDetails.role === "statesubmitter" || userDetails.role === "statesystemadmin"
-                    ? "State Access Management"
-                    : "Status"}
-                </h2>
+                {isNewUserRoleDisplay ? (
+                  <h2 className="text-2xl font-bold">My User Roles</h2>
+                ) : (
+                  <h2 className="text-2xl font-bold">
+                    {userDetails.role === "statesubmitter" ||
+                    userDetails.role === "statesystemadmin"
+                      ? "State Access Management"
+                      : "Status"}
+                  </h2>
+                )}
                 {/* TODO: Get state system admin for that state */}
                 <ConfirmationDialog
                   open={selfRevokeState !== null}
@@ -203,19 +233,28 @@ export const MyProfile = () => {
                   onAccept={handleSelfRevokeAccess}
                   onCancel={() => setSelfRevokeState(null)}
                 />
-                {orderedStateAccess?.map((access) => (
-                  <StateAccessCard
-                    key={`${access.territory}`}
+                {orderedRoleStatus?.map((access) => (
+                  <RoleStatusCard
+                    key={`${access.territory}-${access.role}`}
                     access={access}
                     role={userDetails.role}
                     onClick={() => setSelfRevokeState(access.territory as StateCode)}
                   />
                 ))}
-                <StateAccessControls />
+                {isNewUserRoleDisplay && !hideAddRoleButton ? (
+                  <Button
+                    className="w-full border-dashed p-10 text-black font-normal"
+                    variant="outline"
+                  >
+                    Add another user role <PlusIcon className="ml-3" />
+                  </Button>
+                ) : (
+                  <StateAccessControls />
+                )}
               </div>
             )}
 
-            {userDetails.role === "cmsroleapprover" && (
+            {userDetails.role === "cmsroleapprover" && !isNewUserRoleDisplay && (
               <GroupAndDivision
                 group={userDetails.group}
                 division={userDetails.division}

@@ -1,12 +1,12 @@
 import { http, HttpResponse } from "msw";
 
 import { ACCESS_KEY_ID, SECRET_KEY } from "../../consts";
+import { getMockUsername } from "../auth.utils";
 
 const generateSessionToken = (): string | null => {
-  if (process.env.MOCK_USER_USERNAME) {
-    return Buffer.from(JSON.stringify({ username: process.env.MOCK_USER_USERNAME })).toString(
-      "base64",
-    );
+  const username = getMockUsername();
+  if (username) {
+    return Buffer.from(JSON.stringify({ username })).toString("base64");
   }
   return null;
 };
