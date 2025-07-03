@@ -437,12 +437,12 @@ describe("calculate90dayExpiration", () => {
   } as any;
 
   const parsedRecord = {
-    id: "OH-123-456",
+    id: "OH-1234-56",
   };
 
   beforeEach(() => {
-    vi.restoreAllMocks(); // reset all mocks before each test
-    vi.useFakeTimers();   // enables you to control Date.now()
+    vi.restoreAllMocks();
+    vi.useFakeTimers();
   });
 
   afterEach(() => {
@@ -454,7 +454,7 @@ describe("calculate90dayExpiration", () => {
     const submissionDate = "2025-01-01T00:00:00Z";
     const raiRequestedDate = "2025-01-31T00:00:00Z";
 
-    const expectedNow = new Date("2025-03-01T00:00:00Z").getTime(); // pretend it's March 1st
+    const expectedNow = new Date("2025-03-01T00:00:00Z").getTime();
     vi.setSystemTime(expectedNow);
 
     vi.spyOn(os, "getItem").mockResolvedValue({
@@ -463,8 +463,6 @@ describe("calculate90dayExpiration", () => {
         raiRequestedDate,
       },
     } as any);
-
-    vi.spyOn(require("libs/utils"), "getOsNamespace").mockReturnValue("main");
 
     const result = await calculate90dayExpiration(parsedRecord as any, mockConfig);
 
@@ -482,12 +480,10 @@ describe("calculate90dayExpiration", () => {
 
     vi.spyOn(os, "getItem").mockResolvedValue({
       _source: {
-        submissionDate: "", // Missing submission date
-        raiRequestedDate: "2025-01-31T00:00:00Z",
+        submissionDate: "2025-01-31T00:00:00Z",
+        raiRequestedDate: null, // Missing RAI date
       },
     } as any);
-
-    vi.spyOn(require("libs/utils"), "getOsNamespace").mockReturnValue("main");
 
     const result = await calculate90dayExpiration(parsedRecord as any, mockConfig);
 

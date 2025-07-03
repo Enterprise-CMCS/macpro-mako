@@ -58,7 +58,7 @@ export const calculate90dayExpiration = async (
   }
   const now = Date.now();
 
-  if (raiRequestedDate) {
+  if (raiRequestedDate && submissionDate) {
     // length of time from when the RAI was requested until now
     const pausedDuration = now - raiMS;
     // 90 days in milliseconds
@@ -67,6 +67,7 @@ export const calculate90dayExpiration = async (
     const ninetyDayExpirationClock = submissionMS + ninetyDays + pausedDuration;
     return ninetyDayExpirationClock;
   }
+  return undefined;
 };
 
 export const isChipSpaRespondRAIEvent = (parsedRecord: ParseKafkaEvent) => {
