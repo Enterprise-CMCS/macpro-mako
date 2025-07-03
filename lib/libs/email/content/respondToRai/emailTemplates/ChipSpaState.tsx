@@ -1,6 +1,6 @@
 import { Text } from "@react-email/components";
-import { CommonEmailVariables, Events } from "shared-types";
 import { format } from "date-fns";
+import { CommonEmailVariables, Events } from "shared-types";
 
 import { BasicFooter, FollowUpNotice, PackageDetails } from "../../email-components";
 import { styles } from "../../email-styles";
@@ -33,7 +33,7 @@ export const ChipSpaStateEmail = ({
       <Text style={styles.text.description}>
         {`This response confirms receipt of your CHIP State Plan Amendment (SPA or your response to a
         SPA Request for Additional Information (RAI)). You can expect a formal response to your
-        submittal to be issued within 90 days, before ${format( new Date(variables.timestamp), `MMM d, yyyy '@ 11:59pm EST'`)}.`}
+        submittal to be issued within 90 days, before ${format(new Date(variables.timestamp), `MMM d, yyyy '@ 11:59pm EST'`)}.`}
       </Text>
       <FollowUpNotice isChip withDivider={false} />
     </BaseEmailTemplate>

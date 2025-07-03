@@ -209,7 +209,6 @@ export async function processRecord(kafkaRecord: KafkaRecord, config: ProcessEma
     };
     record.timestamp = ninetyDayExpirationClock;
   } else {
-
     record = {
       timestamp,
       ...JSON.parse(decodeBase64WithUtf8(value)),
