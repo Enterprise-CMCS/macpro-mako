@@ -144,7 +144,7 @@ describe("isAuthenticated", () => {
 
     expect(res).toBeTruthy();
     expect(res.statusCode).toEqual(500);
-    expect(res.body).toEqual(JSON.stringify({ message: "User is not valid" }));
+    expect(res.body).toEqual(JSON.stringify({ message: "User is invalid" }));
   });
 
   it("should set the user's role to `norole`, if they do not have an active role", async () => {
