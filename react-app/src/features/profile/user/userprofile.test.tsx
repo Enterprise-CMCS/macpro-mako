@@ -10,11 +10,20 @@ import {
   systemAdmin,
   TEST_STATE_SUBMITTER_EMAIL,
 } from "mocks";
-import { beforeEach, describe, expect, test } from "vitest";
+import { beforeEach, describe, expect, test, vi } from "vitest";
 
 import { renderWithQueryClientAndMemoryRouter } from "@/utils/test-helpers";
 
 import { UserProfile, userProfileLoader } from ".";
+
+let mockUserRoleFeatureFlag = false;
+
+vi.mock("@/hooks/useFeatureFlag", () => ({
+  useFeatureFlag: (flag: string) => {
+    if (flag === "isNewUserRoleDisplay") return mockUserRoleFeatureFlag;
+    return false;
+  },
+}));
 
 describe("User Profile", () => {
   const setup = async (userEmail) => {
@@ -52,6 +61,7 @@ describe("User Profile", () => {
 
   beforeEach(() => {
     setMockUsername(systemAdmin);
+    mockUserRoleFeatureFlag = false;
   });
 
   test("should redirect to / if the user is not a user manager role", async () => {
