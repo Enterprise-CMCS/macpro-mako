@@ -1,80 +1,53 @@
-import { getAuthDetails, lookupUserAttributes } from "libs/api/auth/user";
-import { response } from "libs/handler-lib";
+import { zodValidator } from "@dannywrayuk/middy-zod-validator";
+import middy from "@middy/core";
+import httpErrorHandler from "@middy/http-error-handler";
+import httpJsonBodyParser from "@middy/http-json-body-parser";
+import { createError } from "@middy/util";
 import { APIGatewayEvent } from "shared-types";
-import { isUserManagerUser } from "shared-utils";
 import { z } from "zod";
 
-import { getAllUserRolesByEmail, getLatestActiveRoleByEmail } from "./userManagementService";
+import { canViewUser, ContextWithCurrUser, isAuthenticated, normalizeEvent } from "../middleware";
+import { getAllUserRolesByEmail } from "./userManagementService";
 
-export const getUserProfileSchema = z.object({
-  userEmail: z.string().email().optional(),
-});
+export const getUserProfileEventSchema = z
+  .object({
+    body: z.object({
+      userEmail: z.string().email().optional(),
+    }),
+  })
+  .passthrough();
 
-export const getUserProfile = async (event: APIGatewayEvent) => {
-  if (!event?.requestContext) {
-    return response({
-      statusCode: 400,
-      body: { message: "Request context required" },
-    });
-  }
-  let currAuthDetails;
-  try {
-    currAuthDetails = getAuthDetails(event);
-  } catch (err) {
-    console.error(err);
-    return response({
-      statusCode: 401,
-      body: { message: "User not authenticated" },
-    });
-  }
+export type GetUserProfileEvent = APIGatewayEvent & z.infer<typeof getUserProfileEventSchema>;
 
-  try {
-    const { userId, poolId } = currAuthDetails;
-    const currUserAttributes = await lookupUserAttributes(userId, poolId);
+export const handler = middy()
+  .use(httpErrorHandler())
+  .use(normalizeEvent({ opensearch: true }))
+  .use(httpJsonBodyParser())
+  .use(zodValidator({ eventSchema: getUserProfileEventSchema }))
+  .use(isAuthenticated({ setToContext: true }))
+  .use(canViewUser())
+  .handler(async (event: GetUserProfileEvent, context: ContextWithCurrUser) => {
+    const email = event?.body?.userEmail || context?.currUser?.email;
 
-    const eventBody = typeof event.body === "string" ? JSON.parse(event.body) : event.body;
-    const safeEventBody = getUserProfileSchema.safeParse(eventBody);
-    console.log("safeEventBody", JSON.stringify(safeEventBody, null, 2));
-
-    // if the event has a body with a userEmail, the userEmail is not the same as
-    // the current user's email, and the current user is a user manager, then
-    // return the data for the userEmail instead of the current user
-    if (
-      safeEventBody.success &&
-      safeEventBody?.data?.userEmail &&
-      safeEventBody.data.userEmail !== currUserAttributes.email
-    ) {
-      const currUserLatestActiveRoleObj = await getLatestActiveRoleByEmail(
-        currUserAttributes.email,
-      );
-      const currUserRole = currUserLatestActiveRoleObj?.role ?? "norole";
-      if (
-        isUserManagerUser({
-          ...currUserAttributes,
-          role: currUserRole,
-        })
-      ) {
-        const reqUserRoles = await getAllUserRolesByEmail(safeEventBody.data.userEmail);
-        return response({
-          statusCode: 200,
-          body: reqUserRoles,
-        });
-      }
+    if (!email) {
+      console.error("Email is undefined");
+      throw createError(500, JSON.stringify({ message: "Internal server error" }), {
+        expose: true,
+      });
     }
 
-    const currUserRoles = await getAllUserRolesByEmail(currUserAttributes.email);
+    let userRoles;
+    try {
+      userRoles = await getAllUserRolesByEmail(email);
+    } catch (err) {
+      console.error(err);
+      throw createError(500, JSON.stringify({ message: "Internal server error" }), {
+        expose: true,
+      });
+    }
 
-    return response({
+    return {
       statusCode: 200,
-      body: currUserRoles,
-    });
-  } catch (err: unknown) {
-    console.log("An error occurred: ", err);
-    return response({
-      statusCode: 500,
-      body: { message: `Error: ${err}` },
-    });
-  }
-};
-
-export const handler = getUserProfile;
+      body: JSON.stringify(userRoles),
+    };
+  });

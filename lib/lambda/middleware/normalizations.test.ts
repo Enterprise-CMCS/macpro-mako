@@ -9,6 +9,7 @@ const setupHandler = ({
   expectedEvent = undefined,
   options = {
     opensearch: false,
+    kafka: false,
     disableCors: false,
   },
 }: {
@@ -229,6 +230,63 @@ describe("normalizeEvent middleware", () => {
 
     process.env.osDomain = osDomain;
     process.env.indexNamespace = indexNamespace;
+  });
+
+  it("should return 500 if the kafka option is true and topicName is not set", async () => {
+    const topicName = process.env.topicName;
+    delete process.env.topicName;
+
+    const event = {
+      body: "test",
+    } as APIGatewayEvent;
+
+    const handler = setupHandler({ options: { kafka: true } });
+
+    const res = await handler(event, {} as Context);
+
+    expect(res).toBeTruthy();
+    expect(res.statusCode).toEqual(500);
+    expect(res.body).toEqual(JSON.stringify({ message: "Internal server error" }));
+
+    process.env.topicName = topicName;
+  });
+
+  it("should not check for topicName if the kafka option is undefined", async () => {
+    const topicName = process.env.topicName;
+    delete process.env.topicName;
+
+    const event = {
+      body: "test",
+    } as APIGatewayEvent;
+
+    const handler = setupHandler();
+
+    const res = await handler(event, {} as Context);
+
+    expect(res).toBeTruthy();
+    expect(res.statusCode).toEqual(200);
+    expect(res.body).toEqual("OK");
+
+    process.env.topicName = topicName;
+  });
+
+  it("should not check for topicName if the kafka option is false", async () => {
+    const topicName = process.env.topicName;
+    delete process.env.topicName;
+
+    const event = {
+      body: "test",
+    } as APIGatewayEvent;
+
+    const handler = setupHandler({ options: { kafka: false } });
+
+    const res = await handler(event, {} as Context);
+
+    expect(res).toBeTruthy();
+    expect(res.statusCode).toEqual(200);
+    expect(res.body).toEqual("OK");
+
+    process.env.topicName = topicName;
   });
 
   it("should add CORS headers to the response if disableCors is undefined", async () => {

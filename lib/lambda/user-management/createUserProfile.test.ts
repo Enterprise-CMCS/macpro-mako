@@ -1,4 +1,4 @@
-import { APIGatewayEvent } from "aws-lambda";
+import { APIGatewayEvent, Context } from "aws-lambda";
 import {
   coStateSubmitter,
   getRequestContext,
@@ -18,36 +18,42 @@ describe("createUserProfile handler", () => {
     process.env.topicName = "create-user-profile";
   });
 
-  it("should return 400 if the request context is missing", async () => {
+  it("should return 400 if the event body is missing", async () => {
     const event = {} as APIGatewayEvent;
 
-    const res = await handler(event);
+    const res = await handler(event, {} as Context);
 
     expect(res.statusCode).toEqual(400);
-    expect(res.body).toEqual(JSON.stringify({ message: "Request context required" }));
+    expect(res.body).toEqual(JSON.stringify({ message: "Event body required" }));
   });
 
   it("should throw an error if the topicName is not set", async () => {
     delete process.env.topicName;
 
     const event = {
+      body: JSON.stringify({}),
       requestContext: getRequestContext(),
     } as APIGatewayEvent;
 
-    expect(() => handler(event)).rejects.toThrowError("Topic name is not defined");
+    const res = await handler(event, {} as Context);
+
+    expect(res).toBeTruthy();
+    expect(res.statusCode).toEqual(500);
+    expect(res.body).toEqual(JSON.stringify({ message: "Internal server error" }));
   });
 
   it("should return 401 if the user is not authenticated", async () => {
     setMockUsername(null);
 
     const event = {
+      body: JSON.stringify({}),
       requestContext: getRequestContext(),
     } as APIGatewayEvent;
 
-    const res = await handler(event);
+    const res = await handler(event, {} as Context);
 
     expect(res.statusCode).toEqual(401);
-    expect(res.body).toEqual(JSON.stringify({ message: "User not authenticated" }));
+    expect(res.body).toEqual(JSON.stringify({ message: "User is not authenticated" }));
   });
 
   it("should return 200 and create the user role if the user role is not in kafka", async () => {
@@ -55,10 +61,11 @@ describe("createUserProfile handler", () => {
     setMockUsername(coStateSubmitter);
 
     const event = {
+      body: JSON.stringify({}),
       requestContext: getRequestContext(),
     } as APIGatewayEvent;
 
-    const res = await handler(event);
+    const res = await handler(event, {} as Context);
 
     expect(res.statusCode).toEqual(200);
     expect(res.body).toEqual(JSON.stringify({ message: "User profile created" }));
@@ -68,10 +75,11 @@ describe("createUserProfile handler", () => {
     setMockUsername(testStateSubmitter);
 
     const event = {
+      body: JSON.stringify({}),
       requestContext: getRequestContext(),
     } as APIGatewayEvent;
 
-    const res = await handler(event);
+    const res = await handler(event, {} as Context);
 
     expect(res.statusCode).toEqual(200);
     expect(res.body).toEqual(JSON.stringify({ message: "User profile already exists" }));
@@ -82,10 +90,11 @@ describe("createUserProfile handler", () => {
     setMockUsername(testNewStateSubmitter);
 
     const event = {
+      body: JSON.stringify({}),
       requestContext: getRequestContext(),
     } as APIGatewayEvent;
 
-    const res = await handler(event);
+    const res = await handler(event, {} as Context);
 
     expect(res.statusCode).toEqual(500);
     expect(res.body).toEqual(JSON.stringify({ message: "Internal server error" }));
