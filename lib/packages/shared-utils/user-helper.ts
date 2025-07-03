@@ -37,6 +37,11 @@ export const isStateUser = (user: FullUser | null) => userHasAuthorizedRole(user
 /** Confirms user is an IDM user */
 export const isIDM = (user: FullUser | null) => user?.username.startsWith("IDM_");
 
+/** Checks if role is a state role */
+export const isStateRole = (role: UserRole): boolean => {
+  return STATE_ROLES.includes(role as (typeof STATE_ROLES)[number]);
+};
+
 // Check if current user can update access for a certain role
 export const canUpdateAccess = (currentUserRole: UserRole, roleToUpdate: UserRole): boolean => {
   if (ROLES_ALLOWED_TO_UPDATE.includes(currentUserRole)) {
@@ -78,6 +83,17 @@ export const userRoleMap = {
   defaultcmsuser: "CMS Read-only User",
   cmsroleapprover: "CMS Role Approver",
   cmsreviewer: "CMS Read-only User",
+  statesystemadmin: "State System Admin",
+  helpdesk: "Help Desk",
+  statesubmitter: "State Submitter",
+  systemadmin: "CMS System Admin",
+  norole: "No Role",
+};
+
+export const newUserRoleMap = {
+  defaultcmsuser: "CMS Read Only",
+  cmsroleapprover: "CMS Role Approver",
+  cmsreviewer: "CMS Read Only",
   statesystemadmin: "State System Admin",
   helpdesk: "Help Desk",
   statesubmitter: "State Submitter",

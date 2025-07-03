@@ -1,26 +1,76 @@
 import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
-import { describe, expect, it, vi } from "vitest";
+import { beforeEach, describe, expect, it, vi } from "vitest";
 
-import { StateAccessCard } from "./index";
+import { RoleStatusCard } from "./index";
 
-describe("StateAccessCard", () => {
+let mockUserRoleFeatureFlag = false;
+
+vi.mock("@/hooks/useFeatureFlag", () => ({
+  useFeatureFlag: (flag: string) => {
+    if (flag === "SHOW_USER_ROLE_UPDATE") return mockUserRoleFeatureFlag;
+    return false;
+  },
+}));
+
+describe("RoleStatusCard", () => {
+  beforeEach(() => {
+    mockUserRoleFeatureFlag = false;
+  });
+
   it("should handle an undefined access", () => {
     // @ts-ignore
-    render(<StateAccessCard />);
+    render(<RoleStatusCard />);
     expect(screen.queryByText("State System Admin: ")).toBeNull();
   });
 
-  it("should not show the revoke button if the user is not a state submitter", () => {
+  it("should show the correct card heading if the user role feature flag is true for a cmsroleapprover", () => {
+    mockUserRoleFeatureFlag = true;
     render(
-      <StateAccessCard
+      <RoleStatusCard
+        isNewUserRoleDisplay={mockUserRoleFeatureFlag}
         role="cmsroleapprover"
         access={{
           territory: "N/A",
           role: "cmsroleapprover",
           status: "active",
-          doneByEmail: "test@example.com",
-          doneByName: "Test Admin",
+        }}
+      />,
+    );
+
+    expect(
+      screen.getByRole("heading", { name: "CMS Role Approver", level: 3 }),
+    ).toBeInTheDocument();
+  });
+
+  it("should show the correct card heading if the user role feature flag is true for a statesubmitter", () => {
+    mockUserRoleFeatureFlag = true;
+    render(
+      <RoleStatusCard
+        isNewUserRoleDisplay={mockUserRoleFeatureFlag}
+        role="statesubmitter"
+        access={{
+          territory: "CA",
+          role: "statesubmitter",
+          status: "active",
+        }}
+      />,
+    );
+
+    expect(
+      screen.getByRole("heading", { name: "State Submitter - CA", level: 3 }),
+    ).toBeInTheDocument();
+  });
+
+  it("should not show the revoke button if the user is not a state submitter", () => {
+    render(
+      <RoleStatusCard
+        isNewUserRoleDisplay={mockUserRoleFeatureFlag}
+        role="cmsroleapprover"
+        access={{
+          territory: "N/A",
+          role: "cmsroleapprover",
+          status: "active",
         }}
       />,
     );
@@ -34,14 +84,13 @@ describe("StateAccessCard", () => {
 
   it("should display state submitter with pending access and disabled revoke", () => {
     render(
-      <StateAccessCard
+      <RoleStatusCard
+        isNewUserRoleDisplay={mockUserRoleFeatureFlag}
         role="statesubmitter"
         access={{
           territory: "MD",
           role: "statesubmitter",
           status: "pending",
-          doneByEmail: "test@example.com",
-          doneByName: "Test Admin",
         }}
       />,
     );
@@ -58,14 +107,13 @@ describe("StateAccessCard", () => {
     const user = userEvent.setup();
     const revokeSpy = vi.fn();
     render(
-      <StateAccessCard
+      <RoleStatusCard
+        isNewUserRoleDisplay={mockUserRoleFeatureFlag}
         role="statesubmitter"
         access={{
           territory: "CO",
           role: "statesubmitter",
           status: "active",
-          doneByEmail: "test@example.com",
-          doneByName: "Test Admin",
         }}
         onClick={revokeSpy}
       />,
@@ -83,18 +131,17 @@ describe("StateAccessCard", () => {
 
   it("should display a list of approvers", async () => {
     render(
-      <StateAccessCard
+      <RoleStatusCard
+        isNewUserRoleDisplay={mockUserRoleFeatureFlag}
         role="statesubmitter"
         access={{
           territory: "CO",
           role: "statesubmitter",
           status: "active",
-          doneByEmail: "test@example.com",
-          doneByName: "Test Admin",
           approverList: [
-            { email: "test@example.com", fullName: "Test Admin" },
-            { email: "test2@example.com", fullName: "Test Admin2" },
-            { email: "test3@example.com", fullName: "Test Admin3" },
+            { email: "test@example.com", fullName: "Test Admin", territory: "MD" },
+            { email: "test2@example.com", fullName: "Test Admin2", territory: "MD" },
+            { email: "test3@example.com", fullName: "Test Admin3", territory: "MD" },
           ],
         }}
       />,
@@ -106,14 +153,13 @@ describe("StateAccessCard", () => {
 
   it("should display No Approvers if the approver list is empty", async () => {
     render(
-      <StateAccessCard
+      <RoleStatusCard
+        isNewUserRoleDisplay={mockUserRoleFeatureFlag}
         role="statesubmitter"
         access={{
           territory: "CO",
           role: "statesubmitter",
           status: "active",
-          doneByEmail: "test@example.com",
-          doneByName: "Test Admin",
           approverList: [],
         }}
       />,

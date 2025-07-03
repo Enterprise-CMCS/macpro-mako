@@ -30,6 +30,21 @@ const initializeApp = async () => {
     console.warn("Google Analytics Measurement ID is not set.");
   }
 
+  // Start the MSW server if in the DEV environment and the mocked flag is on
+  if (import.meta.env.DEV && import.meta.env.MODE === "mocked") {
+    await import("../mockServiceWorker.js?worker");
+
+    const { mockedWorker } = await import("mocks/browser");
+    const { setMockUsername, TEST_STATE_SUBMITTER_USERNAME } = await import("mocks");
+
+    await mockedWorker.start({
+      onUnhandledRequest: "warn",
+      waitUntilReady: true,
+    });
+
+    await setMockUsername(import.meta.env.VITE_MOCK_USER_USERNAME || TEST_STATE_SUBMITTER_USERNAME);
+  }
+
   // Initialize LaunchDarkly
   const LDProvider = await asyncWithLDProvider({
     clientSideID: ldClientId,
@@ -40,10 +55,6 @@ const initializeApp = async () => {
       eventsUrl: "https://events.launchdarkly.us",
     },
   });
-
-  if (import.meta.env.DEV) {
-    await import("../mockServiceWorker.js?worker");
-  }
 
   ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(
     <LDProvider>
