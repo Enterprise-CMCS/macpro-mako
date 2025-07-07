@@ -19,14 +19,19 @@ import {
   renderFormAsync,
   renderFormWithPackageSectionAsync,
 } from "@/utils/test-helpers/renderForm";
+import * as ReactHookForm from "react-hook-form";
+    // Then in your test:
+
+import type { UseFormReturn, FieldValues } from "react-hook-form";
 
 import { ActionForm } from "./index";
 const PROGRESS_REMINDER = /If you leave this page, you will lose your progress on this form./;
-
+const sendGAEventSpy = vi.spyOn(await import("@/utils/ReactGA/SendGAEvent"), "sendGAEvent");
 describe("ActionForm", () => {
   beforeEach(() => {
     setDefaultStateSubmitter();
     vi.clearAllMocks();
+    window.gtag = vi.fn();
   });
 
   test("renders `breadcrumbText`", async () => {
@@ -249,6 +254,13 @@ describe("ActionForm", () => {
       body: "Hello World Body",
       onAccept: onAcceptMock,
     });
+    expect(sendGAEventSpy).toHaveBeenCalledWith(
+      "submit_cancel",
+      expect.objectContaining({
+        submission_type: "Action Form Title",
+        time_on_page_sec: expect.any(Number),
+      }),
+    );
   });
 
   test("renders custom `promptPreSubmission` when clicking Submit", async () => {
@@ -311,6 +323,13 @@ describe("ActionForm", () => {
       />,
     );
 
+    expect(sendGAEventSpy).toHaveBeenCalledWith(
+      "submit_page_open",
+      expect.objectContaining({
+        submission_type: "Action Form Title", 
+      }),
+    );
+
     fireEvent.submit(await screen.findByTestId("submit-action-form"));
 
     await waitFor(() =>
@@ -327,6 +346,7 @@ describe("ActionForm", () => {
         title="Action Form Title"
         schema={z.object({
           id: z.string(),
+          // event: z.string()
         })}
         defaultValues={{ id: EXISTING_ITEM_PENDING_ID }}
         fields={() => null}
@@ -346,7 +366,7 @@ describe("ActionForm", () => {
     const submitButton = await screen.findByTestId("submit-action-form");
 
     vi.useFakeTimers();
-
+    
     fireEvent.submit(submitButton);
 
     await vi.waitFor(async () => {
@@ -364,7 +384,8 @@ describe("ActionForm", () => {
         pathnameToDisplayOn: "/dashboard",
       }),
     );
-
+    expect(sendGAEventSpy).toHaveBeenCalledWith("submission_submit_click", expect.anything());
+    expect(sendGAEventSpy).toHaveBeenCalledWith("submit_page_exit", expect.anything());
     vi.useRealTimers();
   });
 
@@ -445,7 +466,7 @@ describe("ActionForm", () => {
           value: {
             correctDataStateFound: false,
             maxAttemptsReached: true,
-            message: "Error fetching data: Request failed with status code 500",
+            message: "Error polling data: Correct data state not found, after max attempts reached",
           },
         },
       ]);
@@ -454,7 +475,7 @@ describe("ActionForm", () => {
     await vi.waitFor(() =>
       expect(bannerSpy).toBeCalledWith({
         header: "An unexpected error has occurred:",
-        body: "Error fetching data: Request failed with status code 500",
+        body: "Error polling data: Correct data state not found, after max attempts reached",
         pathnameToDisplayOn: "/",
         variant: "destructive",
       }),
