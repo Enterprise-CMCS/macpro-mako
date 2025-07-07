@@ -19,10 +19,7 @@ export const handler = authedMiddy({ opensearch: true, setToContext: true }).han
     const { currUser } = context;
 
     if (!currUser?.email) {
-      console.error("Email is undefined");
-      throw createError(500, JSON.stringify({ message: "Internal server error" }), {
-        expose: true,
-      });
+      throw new Error("Email is undefined");
     }
 
     // get all of the roles for the current user
@@ -34,10 +31,10 @@ export const handler = authedMiddy({ opensearch: true, setToContext: true }).han
     );
 
     if (approverRoles.length <= 0) {
-      return {
-        statusCode: 403,
-        body: JSON.stringify({ message: "User is not authorized to approve roles" }),
-      };
+      throw createError(
+        403,
+        JSON.stringify({ message: "User is not authorized to approve roles" }),
+      );
     }
 
     let roleRequests: roles.Document[] = [];
@@ -65,7 +62,7 @@ export const handler = authedMiddy({ opensearch: true, setToContext: true }).han
     if (!roleRequests.length) {
       return {
         statusCode: 200,
-        body: JSON.stringify([]),
+        body: [],
       };
     }
 
@@ -73,7 +70,7 @@ export const handler = authedMiddy({ opensearch: true, setToContext: true }).han
 
     return {
       statusCode: 200,
-      body: JSON.stringify(roleRequestsWithName),
+      body: roleRequestsWithName,
     };
   },
 );

@@ -36,6 +36,6 @@ export const handler = authedMiddy({
 
     return {
       statusCode: 200,
-      body: JSON.stringify(packageResult),
+      body: packageResult,
     };
   });

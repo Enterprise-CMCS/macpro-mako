@@ -54,6 +54,6 @@ export const handler = baseMiddy({
 
   return {
     statusCode: 200,
-    body: JSON.stringify({ message: "Roles have been updated." }),
+    body: { message: "Roles have been updated." },
   };
 });

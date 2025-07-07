@@ -148,7 +148,11 @@ describe("Permissions middleware", () => {
   describe("canViewUser", () => {
     const setupHandler = ({ user = undefined }: { user?: FullUser } = {}) =>
       middy()
-        .use(httpErrorHandler())
+        .use(
+          httpErrorHandler({
+            fallbackMessage: JSON.stringify({ message: "Internal server error" }),
+          }),
+        )
         .before(async (request: Request) => {
           if (user) {
             storeAuthUserInRequest(user, request, false);

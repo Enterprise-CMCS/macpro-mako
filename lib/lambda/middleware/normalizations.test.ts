@@ -27,7 +27,7 @@ const setupHandler = ({
       }
       return {
         statusCode: 200,
-        body: "OK",
+        body: { message: "OK" },
       };
     });
 
@@ -206,7 +206,7 @@ describe("normalizeEvent middleware", () => {
 
     expect(res).toBeTruthy();
     expect(res.statusCode).toEqual(200);
-    expect(res.body).toEqual("OK");
+    expect(res.body).toEqual(JSON.stringify({ message: "OK" }));
 
     process.env.osDomain = osDomain;
     process.env.indexNamespace = indexNamespace;
@@ -228,7 +228,7 @@ describe("normalizeEvent middleware", () => {
 
     expect(res).toBeTruthy();
     expect(res.statusCode).toEqual(200);
-    expect(res.body).toEqual("OK");
+    expect(res.body).toEqual(JSON.stringify({ message: "OK" }));
 
     process.env.osDomain = osDomain;
     process.env.indexNamespace = indexNamespace;
@@ -267,7 +267,7 @@ describe("normalizeEvent middleware", () => {
 
     expect(res).toBeTruthy();
     expect(res.statusCode).toEqual(200);
-    expect(res.body).toEqual("OK");
+    expect(res.body).toEqual(JSON.stringify({ message: "OK" }));
 
     process.env.topicName = topicName;
   });
@@ -286,9 +286,45 @@ describe("normalizeEvent middleware", () => {
 
     expect(res).toBeTruthy();
     expect(res.statusCode).toEqual(200);
-    expect(res.body).toEqual("OK");
+    expect(res.body).toEqual(JSON.stringify({ message: "OK" }));
 
     process.env.topicName = topicName;
+  });
+
+  it("should convert the response body to a string if it is an object", async () => {
+    const event = {
+      body: "test",
+    } as APIGatewayEvent;
+
+    const handler = setupHandler();
+
+    const res = await handler(event, {} as Context);
+
+    expect(res).toBeTruthy();
+    expect(res.statusCode).toEqual(200);
+    expect(res.body).toEqual(JSON.stringify({ message: "OK" }));
+  });
+
+  it("should not convert the response body if it is a string", async () => {
+    const event = {
+      body: "test",
+    } as APIGatewayEvent;
+
+    const handler = middy()
+      .use(
+        httpErrorHandler({ fallbackMessage: JSON.stringify({ message: "Internal server error" }) }),
+      )
+      .use(normalizeEvent())
+      .handler(() => ({
+        statusCode: 200,
+        body: "OK",
+      }));
+
+    const res = await handler(event, {} as Context);
+
+    expect(res).toBeTruthy();
+    expect(res.statusCode).toBe(200);
+    expect(res.body).toEqual("OK");
   });
 
   it("should add CORS headers to the response if disableCors is undefined", async () => {
@@ -302,7 +338,7 @@ describe("normalizeEvent middleware", () => {
 
     expect(res).toBeTruthy();
     expect(res.statusCode).toEqual(200);
-    expect(res.body).toEqual("OK");
+    expect(res.body).toEqual(JSON.stringify({ message: "OK" }));
     expect(res.headers).toEqual({
       "Access-Control-Allow-Headers": "Content-Type",
       "Access-Control-Allow-Origin": "*",
@@ -321,7 +357,7 @@ describe("normalizeEvent middleware", () => {
 
     expect(res).toBeTruthy();
     expect(res.statusCode).toEqual(200);
-    expect(res.body).toEqual("OK");
+    expect(res.body).toEqual(JSON.stringify({ message: "OK" }));
     expect(res.headers).toEqual({
       "Access-Control-Allow-Headers": "Content-Type",
       "Access-Control-Allow-Origin": "*",
@@ -340,7 +376,7 @@ describe("normalizeEvent middleware", () => {
 
     expect(res).toBeTruthy();
     expect(res.statusCode).toEqual(200);
-    expect(res.body).toEqual("OK");
+    expect(res.body).toEqual(JSON.stringify({ message: "OK" }));
     expect(res.headers).toBeUndefined();
   });
 });

@@ -23,9 +23,9 @@ export const handler = baseMiddy({ opensearch: true, eventSchema: itemExistsEven
     const exists = !(packageResult === undefined || !packageResult.found);
     return {
       statusCode: 200,
-      body: JSON.stringify({
+      body: {
         message: exists ? "Record found for the given id" : "No record found for the given id",
         exists,
-      }),
+      },
     };
   });

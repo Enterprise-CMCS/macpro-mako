@@ -1,4 +1,3 @@
-import { createError } from "@middy/util";
 import { APIGatewayEvent } from "aws-lambda";
 import { produceMessage } from "libs/api/kafka";
 
@@ -10,10 +9,7 @@ export const handler = authedMiddy({ opensearch: true, kafka: true, setToContext
     const { currUser } = context;
 
     if (!currUser?.email) {
-      console.error("Email is undefined");
-      throw createError(500, JSON.stringify({ message: "Internal server error" }), {
-        expose: true,
-      });
+      throw new Error("Email is undefined");
     }
 
     const userInfo = await getUserByEmail(currUser.email);
@@ -22,7 +18,7 @@ export const handler = authedMiddy({ opensearch: true, kafka: true, setToContext
     if (userRoles.length) {
       return {
         statusCode: 200,
-        body: JSON.stringify({ message: "User roles already created" }),
+        body: { message: "User roles already created" },
       };
     }
 
@@ -50,9 +46,7 @@ export const handler = authedMiddy({ opensearch: true, kafka: true, setToContext
 
       return {
         statusCode: 200,
-        body: JSON.stringify({
-          message: "User role updated, because no default role found",
-        }),
+        body: { message: "User role updated, because no default role found" },
       };
     }
 
@@ -76,15 +70,13 @@ export const handler = authedMiddy({ opensearch: true, kafka: true, setToContext
 
       return {
         statusCode: 200,
-        body: JSON.stringify({
-          message: "User role updated, because no default role found",
-        }),
+        body: { message: "User role updated, because no default role found" },
       };
     }
 
     return {
       statusCode: 200,
-      body: JSON.stringify({ message: "User role not updated" }),
+      body: { message: "User role not updated" },
     };
   },
 );

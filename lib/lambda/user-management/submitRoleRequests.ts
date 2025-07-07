@@ -37,10 +37,7 @@ export const handler = authedMiddy({
   } = event.body;
 
   if (!currUser?.email) {
-    console.error("Email is undefined");
-    throw createError(500, JSON.stringify({ message: "Internal server error" }), {
-      expose: true,
-    });
+    throw new Error("Email is undefined");
   }
 
   const userInfo = await getUserByEmail(currUser.email);
@@ -64,10 +61,10 @@ export const handler = authedMiddy({
   } else {
     console.warn(`Unauthorized action attempt by ${userInfo?.email}`);
 
-    return {
-      statusCode: 403,
-      body: JSON.stringify({ message: "You are not authorized to perform this action." }),
-    };
+    throw createError(
+      403,
+      JSON.stringify({ message: "You are not authorized to perform this action." }),
+    );
   }
 
   const id = `${email}_${state}_${roleToUpdate}`;
@@ -113,7 +110,7 @@ export const handler = authedMiddy({
 
   return {
     statusCode: 200,
-    body: JSON.stringify({
+    body: {
       message: `Request to access ${state} has been submitted.`,
       eventType,
       email,
@@ -123,6 +120,6 @@ export const handler = authedMiddy({
       doneByEmail,
       doneByName,
       date,
-    }),
+    },
   };
 });

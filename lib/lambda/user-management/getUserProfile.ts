@@ -1,4 +1,3 @@
-import { createError } from "@middy/util";
 import { APIGatewayEvent } from "shared-types";
 import { z } from "zod";
 
@@ -25,24 +24,13 @@ export const handler = authedMiddy({
     const email = event?.body?.userEmail || context?.currUser?.email;
 
     if (!email) {
-      console.error("Email is undefined");
-      throw createError(500, JSON.stringify({ message: "Internal server error" }), {
-        expose: true,
-      });
+      throw new Error("Email is undefined");
     }
 
-    let userRoles;
-    try {
-      userRoles = await getAllUserRolesByEmail(email);
-    } catch (err) {
-      console.error(err);
-      throw createError(500, JSON.stringify({ message: "Internal server error" }), {
-        expose: true,
-      });
-    }
+    const userRoles = await getAllUserRolesByEmail(email);
 
     return {
       statusCode: 200,
-      body: JSON.stringify(userRoles),
+      body: userRoles,
     };
   });

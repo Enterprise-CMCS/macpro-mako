@@ -35,28 +35,12 @@ export const normalizeEvent = (opts: NormalizeEventOptions = {}): MiddlewareObj 
   return {
     before: async (request: Request) => {
       if (options.opensearch) {
-        try {
-          validateEnvVariable("osDomain");
-          validateEnvVariable("indexNamespace");
-        } catch (err) {
-          console.error(err);
-          // if you don't use the expose option here, you won't be able to see the error message
-          throw createError(500, JSON.stringify({ message: "Internal server error" }), {
-            expose: true,
-          });
-        }
+        validateEnvVariable("osDomain");
+        validateEnvVariable("indexNamespace");
       }
 
       if (options.kafka) {
-        try {
-          validateEnvVariable("topicName");
-        } catch (err) {
-          console.error(err);
-          // if you don't use the expose option here, you won't be able to see the error message
-          throw createError(500, JSON.stringify({ message: "Internal server error" }), {
-            expose: true,
-          });
-        }
+        validateEnvVariable("topicName");
       }
 
       if (!request?.event?.body) {
@@ -78,6 +62,10 @@ export const normalizeEvent = (opts: NormalizeEventOptions = {}): MiddlewareObj 
       }
     },
     after: async (request: Request) => {
+      if (typeof request.response.body === "object") {
+        request.response.body = JSON.stringify(request.response.body);
+      }
+
       if (!options.disableCors) {
         request.response.headers = {
           ...request.response.headers,

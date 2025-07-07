@@ -1,4 +1,3 @@
-import { createError } from "@middy/util";
 import { APIGatewayEvent } from "shared-types";
 import { Territory } from "shared-types/events/legacy-user";
 import { z } from "zod";
@@ -26,10 +25,7 @@ export const handler = authedMiddy({
     const email = event?.body?.userEmail || context?.currUser?.email;
 
     if (!email) {
-      console.error("Email is undefined");
-      throw createError(500, JSON.stringify({ message: "Internal server error" }), {
-        expose: true,
-      });
+      throw new Error("Email is undefined");
     }
 
     const userRoles = await getAllUserRolesByEmail(email);
@@ -77,9 +73,9 @@ export const handler = authedMiddy({
 
     return {
       statusCode: 200,
-      body: JSON.stringify({
+      body: {
         message: "Approver list successfully retrieved.",
         approverList: approverList,
-      }),
+      },
     };
   });

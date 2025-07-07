@@ -15,9 +15,7 @@ export const canViewPackage = (): MiddlewareObj => ({
     const packageResult = await getPackageFromRequest(request);
 
     if (!user || !packageResult) {
-      throw createError(500, JSON.stringify({ message: "Internal server error" }), {
-        expose: true,
-      });
+      throw new Error("User or package were not stored on the request");
     }
 
     if (
@@ -41,10 +39,7 @@ export const canViewUser = (): MiddlewareObj => ({
 
     // if the user wasn't set in context throw an error
     if (!currUser || !currUser?.email) {
-      console.error("User was not set to context and isn't available");
-      throw createError(500, JSON.stringify({ message: "Internal server error" }), {
-        expose: true,
-      });
+      throw new Error("User was not stored on the request");
     }
 
     // if the userEmail was set but the authenticated user does not have

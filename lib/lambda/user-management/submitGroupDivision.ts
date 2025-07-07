@@ -1,4 +1,3 @@
-import { createError } from "@middy/util";
 import { APIGatewayEvent } from "aws-lambda";
 import { produceMessage } from "libs/api/kafka";
 import { z } from "zod";
@@ -32,19 +31,13 @@ export const handler = authedMiddy({
     const email = userEmail || currUser?.email;
 
     if (!email) {
-      console.error("Email is undefined");
-      throw createError(500, JSON.stringify({ message: "Internal server error" }), {
-        expose: true,
-      });
+      throw new Error("Email is undefined");
     }
 
     const userInfo = await getUserByEmail(email);
 
     if (!userInfo) {
-      console.error("User is undefined");
-      throw createError(500, JSON.stringify({ message: "Internal server error" }), {
-        expose: true,
-      });
+      throw new Error("User is undefined");
     }
 
     await produceMessage(
@@ -61,6 +54,6 @@ export const handler = authedMiddy({
 
     return {
       statusCode: 200,
-      body: JSON.stringify({ message: "Group and division submitted successfully." }),
+      body: { message: "Group and division submitted successfully." },
     };
   });
