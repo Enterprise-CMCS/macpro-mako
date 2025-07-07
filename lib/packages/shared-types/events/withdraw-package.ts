@@ -22,6 +22,7 @@ export const baseSchema = z.object({
   authority: z.string(),
   additionalInformation: z.string().trim().max(4000).optional(),
   attachments: attachmentsDefault.or(attachmentsChip),
+  eventDoneBy: z.string(),
 });
 
 export const schema = baseSchema.merge(sharedSchema);

@@ -90,6 +90,7 @@ export type Document = Omit<AppkDocument, "event"> &
       | "delete"
       | "split-spa"
       | "NOSO";
+    eventDoneBy?: string;
   };
 
 export type Response = Res<Document>;
