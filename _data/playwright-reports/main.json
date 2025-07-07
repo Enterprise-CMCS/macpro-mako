@@ -244,7 +244,7 @@
                 {
                   "workerIndex": 0,
                   "status": "passed",
-                  "duration": 19711,
+                  "duration": 11830,
                   "errors": [],
                   "stdout": [
                     {
@@ -265,7 +265,7 @@
                   ],
                   "stderr": [],
                   "retry": 0,
-                  "startTime": "2025-07-07T14:09:39.509Z",
+                  "startTime": "2025-07-07T17:45:56.674Z",
                   "attachments": []
                 }
               ],
@@ -318,12 +318,12 @@
                         {
                           "workerIndex": 1,
                           "status": "passed",
-                          "duration": 4972,
+                          "duration": 2767,
                           "errors": [],
                           "stdout": [],
                           "stderr": [],
                           "retry": 0,
-                          "startTime": "2025-07-07T14:10:00.899Z",
+                          "startTime": "2025-07-07T17:46:09.949Z",
                           "attachments": []
                         }
                       ],
@@ -354,12 +354,12 @@
                         {
                           "workerIndex": 1,
                           "status": "passed",
-                          "duration": 3885,
+                          "duration": 2868,
                           "errors": [],
                           "stdout": [],
                           "stderr": [],
                           "retry": 0,
-                          "startTime": "2025-07-07T14:10:06.018Z",
+                          "startTime": "2025-07-07T17:46:12.879Z",
                           "attachments": []
                         }
                       ],
@@ -390,12 +390,12 @@
                         {
                           "workerIndex": 1,
                           "status": "passed",
-                          "duration": 4021,
+                          "duration": 2788,
                           "errors": [],
                           "stdout": [],
                           "stderr": [],
                           "retry": 0,
-                          "startTime": "2025-07-07T14:10:09.910Z",
+                          "startTime": "2025-07-07T17:46:15.756Z",
                           "attachments": []
                         }
                       ],
@@ -426,12 +426,12 @@
                         {
                           "workerIndex": 1,
                           "status": "passed",
-                          "duration": 2798,
+                          "duration": 2651,
                           "errors": [],
                           "stdout": [],
                           "stderr": [],
                           "retry": 0,
-                          "startTime": "2025-07-07T14:10:13.937Z",
+                          "startTime": "2025-07-07T17:46:18.551Z",
                           "attachments": []
                         }
                       ],
@@ -462,12 +462,12 @@
                         {
                           "workerIndex": 1,
                           "status": "passed",
-                          "duration": 3835,
+                          "duration": 2686,
                           "errors": [],
                           "stdout": [],
                           "stderr": [],
                           "retry": 0,
-                          "startTime": "2025-07-07T14:10:16.742Z",
+                          "startTime": "2025-07-07T17:46:21.208Z",
                           "attachments": []
                         }
                       ],
@@ -498,7 +498,7 @@
                         {
                           "workerIndex": 1,
                           "status": "failed",
-                          "duration": 6113,
+                          "duration": 5925,
                           "error": {
                             "message": "Error: \u001b[31mTimed out 5000ms waiting for \u001b[39m\u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m()\u001b[22m\n\nLocator: getByRole('button', { name: /Filters/ })\nExpected: visible\nReceived: <element(s) not found>\nCall log:\n  \u001b[2m- expect.toBeVisible with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for getByRole('button', { name: /Filters/ })\u001b[22m\n",
                             "stack": "Error: \u001b[31mTimed out 5000ms waiting for \u001b[39m\u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m()\u001b[22m\n\nLocator: getByRole('button', { name: /Filters/ })\nExpected: visible\nReceived: <element(s) not found>\nCall log:\n  \u001b[2m- expect.toBeVisible with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for getByRole('button', { name: /Filters/ })\u001b[22m\n\n    at /home/runner/work/macpro-mako/macpro-mako/test/e2e/dashboard/dashboard.spec.ts:55:67",
@@ -522,7 +522,7 @@
                           "stdout": [],
                           "stderr": [],
                           "retry": 0,
-                          "startTime": "2025-07-07T14:10:20.583Z",
+                          "startTime": "2025-07-07T17:46:23.902Z",
                           "attachments": [
                             {
                               "name": "video",
@@ -569,12 +569,12 @@
                         {
                           "workerIndex": 2,
                           "status": "passed",
-                          "duration": 4048,
+                          "duration": 2812,
                           "errors": [],
                           "stdout": [],
                           "stderr": [],
                           "retry": 0,
-                          "startTime": "2025-07-07T14:10:28.440Z",
+                          "startTime": "2025-07-07T17:46:31.343Z",
                           "attachments": []
                         }
                       ],
@@ -620,12 +620,12 @@
                                 {
                                   "workerIndex": 2,
                                   "status": "passed",
-                                  "duration": 718,
+                                  "duration": 668,
                                   "errors": [],
                                   "stdout": [],
                                   "stderr": [],
                                   "retry": 0,
-                                  "startTime": "2025-07-07T14:10:32.644Z",
+                                  "startTime": "2025-07-07T17:46:34.318Z",
                                   "attachments": []
                                 }
                               ],
@@ -656,12 +656,12 @@
                                 {
                                   "workerIndex": 2,
                                   "status": "passed",
-                                  "duration": 3831,
+                                  "duration": 2606,
                                   "errors": [],
                                   "stdout": [],
                                   "stderr": [],
                                   "retry": 0,
-                                  "startTime": "2025-07-07T14:10:33.369Z",
+                                  "startTime": "2025-07-07T17:46:34.993Z",
                                   "attachments": []
                                 }
                               ],
@@ -692,12 +692,12 @@
                                 {
                                   "workerIndex": 2,
                                   "status": "passed",
-                                  "duration": 3859,
+                                  "duration": 1658,
                                   "errors": [],
                                   "stdout": [],
                                   "stderr": [],
                                   "retry": 0,
-                                  "startTime": "2025-07-07T14:10:37.207Z",
+                                  "startTime": "2025-07-07T17:46:37.605Z",
                                   "attachments": []
                                 }
                               ],
@@ -736,12 +736,12 @@
                                 {
                                   "workerIndex": 2,
                                   "status": "passed",
-                                  "duration": 4000,
+                                  "duration": 2561,
                                   "errors": [],
                                   "stdout": [],
                                   "stderr": [],
                                   "retry": 0,
-                                  "startTime": "2025-07-07T14:10:41.074Z",
+                                  "startTime": "2025-07-07T17:46:39.274Z",
                                   "attachments": []
                                 }
                               ],
@@ -772,12 +772,12 @@
                                 {
                                   "workerIndex": 2,
                                   "status": "passed",
-                                  "duration": 3811,
+                                  "duration": 2284,
                                   "errors": [],
                                   "stdout": [],
                                   "stderr": [],
                                   "retry": 0,
-                                  "startTime": "2025-07-07T14:10:45.081Z",
+                                  "startTime": "2025-07-07T17:46:41.842Z",
                                   "attachments": []
                                 }
                               ],
@@ -808,12 +808,12 @@
                                 {
                                   "workerIndex": 2,
                                   "status": "passed",
-                                  "duration": 3426,
+                                  "duration": 2260,
                                   "errors": [],
                                   "stdout": [],
                                   "stderr": [],
                                   "retry": 0,
-                                  "startTime": "2025-07-07T14:10:48.899Z",
+                                  "startTime": "2025-07-07T17:46:44.133Z",
                                   "attachments": []
                                 }
                               ],
@@ -882,12 +882,12 @@
                             {
                               "workerIndex": 2,
                               "status": "passed",
-                              "duration": 3814,
+                              "duration": 2610,
                               "errors": [],
                               "stdout": [],
                               "stderr": [],
                               "retry": 0,
-                              "startTime": "2025-07-07T14:10:52.353Z",
+                              "startTime": "2025-07-07T17:46:46.421Z",
                               "attachments": []
                             }
                           ],
@@ -927,12 +927,12 @@
                             {
                               "workerIndex": 2,
                               "status": "passed",
-                              "duration": 3768,
+                              "duration": 2592,
                               "errors": [],
                               "stdout": [],
                               "stderr": [],
                               "retry": 0,
-                              "startTime": "2025-07-07T14:10:56.174Z",
+                              "startTime": "2025-07-07T17:46:49.037Z",
                               "attachments": []
                             }
                           ],
@@ -964,7 +964,7 @@
                             {
                               "workerIndex": 2,
                               "status": "failed",
-                              "duration": 9079,
+                              "duration": 7914,
                               "error": {
                                 "message": "Error: \u001b[31mTimed out 5000ms waiting for \u001b[39m\u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mnot\u001b[2m.\u001b[22mtoBeVisible\u001b[2m()\u001b[22m\n\nLocator: locator('#browsers').locator('div:nth-child(1)')\nExpected: not visible\nReceived: visible\nCall log:\n  \u001b[2m- expect.not.toBeVisible with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for locator('#browsers').locator('div:nth-child(1)')\u001b[22m\n\u001b[2m  -   locator resolved to <div class=\"flex items-center gap-2\">…</div>\u001b[22m\n\u001b[2m  -   unexpected value \"visible\"\u001b[22m\n\u001b[2m  -   locator resolved to <div class=\"flex items-center gap-2\">…</div>\u001b[22m\n\u001b[2m  -   unexpected value \"visible\"\u001b[22m\n\u001b[2m  -   locator resolved to <div class=\"flex items-center gap-2\">…</div>\u001b[22m\n\u001b[2m  -   unexpected value \"visible\"\u001b[22m\n\u001b[2m  -   locator resolved to <div class=\"flex items-center gap-2\">…</div>\u001b[22m\n\u001b[2m  -   unexpected value \"visible\"\u001b[22m\n\u001b[2m  -   locator resolved to <div class=\"flex items-center gap-2\">…</div>\u001b[22m\n\u001b[2m  -   unexpected value \"visible\"\u001b[22m\n\u001b[2m  -   locator resolved to <div class=\"flex items-center gap-2\">…</div>\u001b[22m\n\u001b[2m  -   unexpected value \"visible\"\u001b[22m\n\u001b[2m  -   locator resolved to <div class=\"flex items-center gap-2\">…</div>\u001b[22m\n\u001b[2m  -   unexpected value \"visible\"\u001b[22m\n\u001b[2m  -   locator resolved to <div class=\"flex items-center gap-2\">…</div>\u001b[22m\n\u001b[2m  -   unexpected value \"visible\"\u001b[22m\n\u001b[2m  -   locator resolved to <div class=\"flex items-center gap-2\">…</div>\u001b[22m\n\u001b[2m  -   unexpected value \"visible\"\u001b[22m\n",
                                 "stack": "Error: \u001b[31mTimed out 5000ms waiting for \u001b[39m\u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mnot\u001b[2m.\u001b[22mtoBeVisible\u001b[2m()\u001b[22m\n\nLocator: locator('#browsers').locator('div:nth-child(1)')\nExpected: not visible\nReceived: visible\nCall log:\n  \u001b[2m- expect.not.toBeVisible with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for locator('#browsers').locator('div:nth-child(1)')\u001b[22m\n\u001b[2m  -   locator resolved to <div class=\"flex items-center gap-2\">…</div>\u001b[22m\n\u001b[2m  -   unexpected value \"visible\"\u001b[22m\n\u001b[2m  -   locator resolved to <div class=\"flex items-center gap-2\">…</div>\u001b[22m\n\u001b[2m  -   unexpected value \"visible\"\u001b[22m\n\u001b[2m  -   locator resolved to <div class=\"flex items-center gap-2\">…</div>\u001b[22m\n\u001b[2m  -   unexpected value \"visible\"\u001b[22m\n\u001b[2m  -   locator resolved to <div class=\"flex items-center gap-2\">…</div>\u001b[22m\n\u001b[2m  -   unexpected value \"visible\"\u001b[22m\n\u001b[2m  -   locator resolved to <div class=\"flex items-center gap-2\">…</div>\u001b[22m\n\u001b[2m  -   unexpected value \"visible\"\u001b[22m\n\u001b[2m  -   locator resolved to <div class=\"flex items-center gap-2\">…</div>\u001b[22m\n\u001b[2m  -   unexpected value \"visible\"\u001b[22m\n\u001b[2m  -   locator resolved to <div class=\"flex items-center gap-2\">…</div>\u001b[22m\n\u001b[2m  -   unexpected value \"visible\"\u001b[22m\n\u001b[2m  -   locator resolved to <div class=\"flex items-center gap-2\">…</div>\u001b[22m\n\u001b[2m  -   unexpected value \"visible\"\u001b[22m\n\u001b[2m  -   locator resolved to <div class=\"flex items-center gap-2\">…</div>\u001b[22m\n\u001b[2m  -   unexpected value \"visible\"\u001b[22m\n\n    at /home/runner/work/macpro-mako/macpro-mako/test/e2e/faq/faq.spec.ts:34:72",
@@ -988,7 +988,7 @@
                               "stdout": [],
                               "stderr": [],
                               "retry": 0,
-                              "startTime": "2025-07-07T14:10:59.948Z",
+                              "startTime": "2025-07-07T17:46:51.636Z",
                               "attachments": [
                                 {
                                   "name": "video",
@@ -1036,7 +1036,7 @@
                             {
                               "workerIndex": 3,
                               "status": "failed",
-                              "duration": 9194,
+                              "duration": 8239,
                               "error": {
                                 "message": "Error: \u001b[31mTimed out 5000ms waiting for \u001b[39m\u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mnot\u001b[2m.\u001b[22mtoBeVisible\u001b[2m()\u001b[22m\n\nLocator: locator('#confirm-email').locator('div:nth-child(1)')\nExpected: not visible\nReceived: visible\nCall log:\n  \u001b[2m- expect.not.toBeVisible with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for locator('#confirm-email').locator('div:nth-child(1)')\u001b[22m\n\u001b[2m  -   locator resolved to <div class=\"flex items-center gap-2\">…</div>\u001b[22m\n\u001b[2m  -   unexpected value \"visible\"\u001b[22m\n\u001b[2m  -   locator resolved to <div class=\"flex items-center gap-2\">…</div>\u001b[22m\n\u001b[2m  -   unexpected value \"visible\"\u001b[22m\n\u001b[2m  -   locator resolved to <div class=\"flex items-center gap-2\">…</div>\u001b[22m\n\u001b[2m  -   unexpected value \"visible\"\u001b[22m\n\u001b[2m  -   locator resolved to <div class=\"flex items-center gap-2\">…</div>\u001b[22m\n\u001b[2m  -   unexpected value \"visible\"\u001b[22m\n\u001b[2m  -   locator resolved to <div class=\"flex items-center gap-2\">…</div>\u001b[22m\n\u001b[2m  -   unexpected value \"visible\"\u001b[22m\n\u001b[2m  -   locator resolved to <div class=\"flex items-center gap-2\">…</div>\u001b[22m\n\u001b[2m  -   unexpected value \"visible\"\u001b[22m\n\u001b[2m  -   locator resolved to <div class=\"flex items-center gap-2\">…</div>\u001b[22m\n\u001b[2m  -   unexpected value \"visible\"\u001b[22m\n\u001b[2m  -   locator resolved to <div class=\"flex items-center gap-2\">…</div>\u001b[22m\n\u001b[2m  -   unexpected value \"visible\"\u001b[22m\n\u001b[2m  -   locator resolved to <div class=\"flex items-center gap-2\">…</div>\u001b[22m\n\u001b[2m  -   unexpected value \"visible\"\u001b[22m\n",
                                 "stack": "Error: \u001b[31mTimed out 5000ms waiting for \u001b[39m\u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mnot\u001b[2m.\u001b[22mtoBeVisible\u001b[2m()\u001b[22m\n\nLocator: locator('#confirm-email').locator('div:nth-child(1)')\nExpected: not visible\nReceived: visible\nCall log:\n  \u001b[2m- expect.not.toBeVisible with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for locator('#confirm-email').locator('div:nth-child(1)')\u001b[22m\n\u001b[2m  -   locator resolved to <div class=\"flex items-center gap-2\">…</div>\u001b[22m\n\u001b[2m  -   unexpected value \"visible\"\u001b[22m\n\u001b[2m  -   locator resolved to <div class=\"flex items-center gap-2\">…</div>\u001b[22m\n\u001b[2m  -   unexpected value \"visible\"\u001b[22m\n\u001b[2m  -   locator resolved to <div class=\"flex items-center gap-2\">…</div>\u001b[22m\n\u001b[2m  -   unexpected value \"visible\"\u001b[22m\n\u001b[2m  -   locator resolved to <div class=\"flex items-center gap-2\">…</div>\u001b[22m\n\u001b[2m  -   unexpected value \"visible\"\u001b[22m\n\u001b[2m  -   locator resolved to <div class=\"flex items-center gap-2\">…</div>\u001b[22m\n\u001b[2m  -   unexpected value \"visible\"\u001b[22m\n\u001b[2m  -   locator resolved to <div class=\"flex items-center gap-2\">…</div>\u001b[22m\n\u001b[2m  -   unexpected value \"visible\"\u001b[22m\n\u001b[2m  -   locator resolved to <div class=\"flex items-center gap-2\">…</div>\u001b[22m\n\u001b[2m  -   unexpected value \"visible\"\u001b[22m\n\u001b[2m  -   locator resolved to <div class=\"flex items-center gap-2\">…</div>\u001b[22m\n\u001b[2m  -   unexpected value \"visible\"\u001b[22m\n\u001b[2m  -   locator resolved to <div class=\"flex items-center gap-2\">…</div>\u001b[22m\n\u001b[2m  -   unexpected value \"visible\"\u001b[22m\n\n    at /home/runner/work/macpro-mako/macpro-mako/test/e2e/faq/faq.spec.ts:43:76",
@@ -1060,7 +1060,7 @@
                               "stdout": [],
                               "stderr": [],
                               "retry": 0,
-                              "startTime": "2025-07-07T14:11:10.757Z",
+                              "startTime": "2025-07-07T17:47:01.024Z",
                               "attachments": [
                                 {
                                   "name": "video",
@@ -1108,7 +1108,7 @@
                             {
                               "workerIndex": 4,
                               "status": "failed",
-                              "duration": 9205,
+                              "duration": 8011,
                               "error": {
                                 "message": "Error: \u001b[31mTimed out 5000ms waiting for \u001b[39m\u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mnot\u001b[2m.\u001b[22mtoBeVisible\u001b[2m()\u001b[22m\n\nLocator: locator('#is-official').locator('div:nth-child(1)')\nExpected: not visible\nReceived: visible\nCall log:\n  \u001b[2m- expect.not.toBeVisible with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for locator('#is-official').locator('div:nth-child(1)')\u001b[22m\n\u001b[2m  -   locator resolved to <div class=\"flex items-center gap-2\">…</div>\u001b[22m\n\u001b[2m  -   unexpected value \"visible\"\u001b[22m\n\u001b[2m  -   locator resolved to <div class=\"flex items-center gap-2\">…</div>\u001b[22m\n\u001b[2m  -   unexpected value \"visible\"\u001b[22m\n\u001b[2m  -   locator resolved to <div class=\"flex items-center gap-2\">…</div>\u001b[22m\n\u001b[2m  -   unexpected value \"visible\"\u001b[22m\n\u001b[2m  -   locator resolved to <div class=\"flex items-center gap-2\">…</div>\u001b[22m\n\u001b[2m  -   unexpected value \"visible\"\u001b[22m\n\u001b[2m  -   locator resolved to <div class=\"flex items-center gap-2\">…</div>\u001b[22m\n\u001b[2m  -   unexpected value \"visible\"\u001b[22m\n\u001b[2m  -   locator resolved to <div class=\"flex items-center gap-2\">…</div>\u001b[22m\n\u001b[2m  -   unexpected value \"visible\"\u001b[22m\n\u001b[2m  -   locator resolved to <div class=\"flex items-center gap-2\">…</div>\u001b[22m\n\u001b[2m  -   unexpected value \"visible\"\u001b[22m\n\u001b[2m  -   locator resolved to <div class=\"flex items-center gap-2\">…</div>\u001b[22m\n\u001b[2m  -   unexpected value \"visible\"\u001b[22m\n\u001b[2m  -   locator resolved to <div class=\"flex items-center gap-2\">…</div>\u001b[22m\n\u001b[2m  -   unexpected value \"visible\"\u001b[22m\n",
                                 "stack": "Error: \u001b[31mTimed out 5000ms waiting for \u001b[39m\u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mnot\u001b[2m.\u001b[22mtoBeVisible\u001b[2m()\u001b[22m\n\nLocator: locator('#is-official').locator('div:nth-child(1)')\nExpected: not visible\nReceived: visible\nCall log:\n  \u001b[2m- expect.not.toBeVisible with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for locator('#is-official').locator('div:nth-child(1)')\u001b[22m\n\u001b[2m  -   locator resolved to <div class=\"flex items-center gap-2\">…</div>\u001b[22m\n\u001b[2m  -   unexpected value \"visible\"\u001b[22m\n\u001b[2m  -   locator resolved to <div class=\"flex items-center gap-2\">…</div>\u001b[22m\n\u001b[2m  -   unexpected value \"visible\"\u001b[22m\n\u001b[2m  -   locator resolved to <div class=\"flex items-center gap-2\">…</div>\u001b[22m\n\u001b[2m  -   unexpected value \"visible\"\u001b[22m\n\u001b[2m  -   locator resolved to <div class=\"flex items-center gap-2\">…</div>\u001b[22m\n\u001b[2m  -   unexpected value \"visible\"\u001b[22m\n\u001b[2m  -   locator resolved to <div class=\"flex items-center gap-2\">…</div>\u001b[22m\n\u001b[2m  -   unexpected value \"visible\"\u001b[22m\n\u001b[2m  -   locator resolved to <div class=\"flex items-center gap-2\">…</div>\u001b[22m\n\u001b[2m  -   unexpected value \"visible\"\u001b[22m\n\u001b[2m  -   locator resolved to <div class=\"flex items-center gap-2\">…</div>\u001b[22m\n\u001b[2m  -   unexpected value \"visible\"\u001b[22m\n\u001b[2m  -   locator resolved to <div class=\"flex items-center gap-2\">…</div>\u001b[22m\n\u001b[2m  -   unexpected value \"visible\"\u001b[22m\n\u001b[2m  -   locator resolved to <div class=\"flex items-center gap-2\">…</div>\u001b[22m\n\u001b[2m  -   unexpected value \"visible\"\u001b[22m\n\n    at /home/runner/work/macpro-mako/macpro-mako/test/e2e/faq/faq.spec.ts:52:72",
@@ -1132,7 +1132,7 @@
                               "stdout": [],
                               "stderr": [],
                               "retry": 0,
-                              "startTime": "2025-07-07T14:11:21.844Z",
+                              "startTime": "2025-07-07T17:47:10.898Z",
                               "attachments": [
                                 {
                                   "name": "video",
@@ -1180,7 +1180,7 @@
                             {
                               "workerIndex": 5,
                               "status": "failed",
-                              "duration": 9163,
+                              "duration": 8037,
                               "error": {
                                 "message": "Error: \u001b[31mTimed out 5000ms waiting for \u001b[39m\u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mnot\u001b[2m.\u001b[22mtoBeVisible\u001b[2m()\u001b[22m\n\nLocator: locator('#onemac-roles').locator('div:nth-child(1)')\nExpected: not visible\nReceived: visible\nCall log:\n  \u001b[2m- expect.not.toBeVisible with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for locator('#onemac-roles').locator('div:nth-child(1)')\u001b[22m\n\u001b[2m  -   locator resolved to <div class=\"flex items-center gap-2\">…</div>\u001b[22m\n\u001b[2m  -   unexpected value \"visible\"\u001b[22m\n\u001b[2m  -   locator resolved to <div class=\"flex items-center gap-2\">…</div>\u001b[22m\n\u001b[2m  -   unexpected value \"visible\"\u001b[22m\n\u001b[2m  -   locator resolved to <div class=\"flex items-center gap-2\">…</div>\u001b[22m\n\u001b[2m  -   unexpected value \"visible\"\u001b[22m\n\u001b[2m  -   locator resolved to <div class=\"flex items-center gap-2\">…</div>\u001b[22m\n\u001b[2m  -   unexpected value \"visible\"\u001b[22m\n\u001b[2m  -   locator resolved to <div class=\"flex items-center gap-2\">…</div>\u001b[22m\n\u001b[2m  -   unexpected value \"visible\"\u001b[22m\n\u001b[2m  -   locator resolved to <div class=\"flex items-center gap-2\">…</div>\u001b[22m\n\u001b[2m  -   unexpected value \"visible\"\u001b[22m\n\u001b[2m  -   locator resolved to <div class=\"flex items-center gap-2\">…</div>\u001b[22m\n\u001b[2m  -   unexpected value \"visible\"\u001b[22m\n\u001b[2m  -   locator resolved to <div class=\"flex items-center gap-2\">…</div>\u001b[22m\n\u001b[2m  -   unexpected value \"visible\"\u001b[22m\n\u001b[2m  -   locator resolved to <div class=\"flex items-center gap-2\">…</div>\u001b[22m\n\u001b[2m  -   unexpected value \"visible\"\u001b[22m\n",
                                 "stack": "Error: \u001b[31mTimed out 5000ms waiting for \u001b[39m\u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mnot\u001b[2m.\u001b[22mtoBeVisible\u001b[2m()\u001b[22m\n\nLocator: locator('#onemac-roles').locator('div:nth-child(1)')\nExpected: not visible\nReceived: visible\nCall log:\n  \u001b[2m- expect.not.toBeVisible with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for locator('#onemac-roles').locator('div:nth-child(1)')\u001b[22m\n\u001b[2m  -   locator resolved to <div class=\"flex items-center gap-2\">…</div>\u001b[22m\n\u001b[2m  -   unexpected value \"visible\"\u001b[22m\n\u001b[2m  -   locator resolved to <div class=\"flex items-center gap-2\">…</div>\u001b[22m\n\u001b[2m  -   unexpected value \"visible\"\u001b[22m\n\u001b[2m  -   locator resolved to <div class=\"flex items-center gap-2\">…</div>\u001b[22m\n\u001b[2m  -   unexpected value \"visible\"\u001b[22m\n\u001b[2m  -   locator resolved to <div class=\"flex items-center gap-2\">…</div>\u001b[22m\n\u001b[2m  -   unexpected value \"visible\"\u001b[22m\n\u001b[2m  -   locator resolved to <div class=\"flex items-center gap-2\">…</div>\u001b[22m\n\u001b[2m  -   unexpected value \"visible\"\u001b[22m\n\u001b[2m  -   locator resolved to <div class=\"flex items-center gap-2\">…</div>\u001b[22m\n\u001b[2m  -   unexpected value \"visible\"\u001b[22m\n\u001b[2m  -   locator resolved to <div class=\"flex items-center gap-2\">…</div>\u001b[22m\n\u001b[2m  -   unexpected value \"visible\"\u001b[22m\n\u001b[2m  -   locator resolved to <div class=\"flex items-center gap-2\">…</div>\u001b[22m\n\u001b[2m  -   unexpected value \"visible\"\u001b[22m\n\u001b[2m  -   locator resolved to <div class=\"flex items-center gap-2\">…</div>\u001b[22m\n\u001b[2m  -   unexpected value \"visible\"\u001b[22m\n\n    at /home/runner/work/macpro-mako/macpro-mako/test/e2e/faq/faq.spec.ts:59:75",
@@ -1204,7 +1204,7 @@
                               "stdout": [],
                               "stderr": [],
                               "retry": 0,
-                              "startTime": "2025-07-07T14:11:32.897Z",
+                              "startTime": "2025-07-07T17:47:20.615Z",
                               "attachments": [
                                 {
                                   "name": "video",
@@ -1252,7 +1252,7 @@
                             {
                               "workerIndex": 6,
                               "status": "failed",
-                              "duration": 9204,
+                              "duration": 8035,
                               "error": {
                                 "message": "Error: \u001b[31mTimed out 5000ms waiting for \u001b[39m\u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mnot\u001b[2m.\u001b[22mtoBeVisible\u001b[2m()\u001b[22m\n\nLocator: locator('#acceptable-file-formats').locator('div:nth-child(1)')\nExpected: not visible\nReceived: visible\nCall log:\n  \u001b[2m- expect.not.toBeVisible with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for locator('#acceptable-file-formats').locator('div:nth-child(1)')\u001b[22m\n\u001b[2m  -   locator resolved to <div class=\"flex items-center gap-2\">…</div>\u001b[22m\n\u001b[2m  -   unexpected value \"visible\"\u001b[22m\n\u001b[2m  -   locator resolved to <div class=\"flex items-center gap-2\">…</div>\u001b[22m\n\u001b[2m  -   unexpected value \"visible\"\u001b[22m\n\u001b[2m  -   locator resolved to <div class=\"flex items-center gap-2\">…</div>\u001b[22m\n\u001b[2m  -   unexpected value \"visible\"\u001b[22m\n\u001b[2m  -   locator resolved to <div class=\"flex items-center gap-2\">…</div>\u001b[22m\n\u001b[2m  -   unexpected value \"visible\"\u001b[22m\n\u001b[2m  -   locator resolved to <div class=\"flex items-center gap-2\">…</div>\u001b[22m\n\u001b[2m  -   unexpected value \"visible\"\u001b[22m\n\u001b[2m  -   locator resolved to <div class=\"flex items-center gap-2\">…</div>\u001b[22m\n\u001b[2m  -   unexpected value \"visible\"\u001b[22m\n\u001b[2m  -   locator resolved to <div class=\"flex items-center gap-2\">…</div>\u001b[22m\n\u001b[2m  -   unexpected value \"visible\"\u001b[22m\n\u001b[2m  -   locator resolved to <div class=\"flex items-center gap-2\">…</div>\u001b[22m\n\u001b[2m  -   unexpected value \"visible\"\u001b[22m\n\u001b[2m  -   locator resolved to <div class=\"flex items-center gap-2\">…</div>\u001b[22m\n\u001b[2m  -   unexpected value \"visible\"\u001b[22m\n",
                                 "stack": "Error: \u001b[31mTimed out 5000ms waiting for \u001b[39m\u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mnot\u001b[2m.\u001b[22mtoBeVisible\u001b[2m()\u001b[22m\n\nLocator: locator('#acceptable-file-formats').locator('div:nth-child(1)')\nExpected: not visible\nReceived: visible\nCall log:\n  \u001b[2m- expect.not.toBeVisible with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for locator('#acceptable-file-formats').locator('div:nth-child(1)')\u001b[22m\n\u001b[2m  -   locator resolved to <div class=\"flex items-center gap-2\">…</div>\u001b[22m\n\u001b[2m  -   unexpected value \"visible\"\u001b[22m\n\u001b[2m  -   locator resolved to <div class=\"flex items-center gap-2\">…</div>\u001b[22m\n\u001b[2m  -   unexpected value \"visible\"\u001b[22m\n\u001b[2m  -   locator resolved to <div class=\"flex items-center gap-2\">…</div>\u001b[22m\n\u001b[2m  -   unexpected value \"visible\"\u001b[22m\n\u001b[2m  -   locator resolved to <div class=\"flex items-center gap-2\">…</div>\u001b[22m\n\u001b[2m  -   unexpected value \"visible\"\u001b[22m\n\u001b[2m  -   locator resolved to <div class=\"flex items-center gap-2\">…</div>\u001b[22m\n\u001b[2m  -   unexpected value \"visible\"\u001b[22m\n\u001b[2m  -   locator resolved to <div class=\"flex items-center gap-2\">…</div>\u001b[22m\n\u001b[2m  -   unexpected value \"visible\"\u001b[22m\n\u001b[2m  -   locator resolved to <div class=\"flex items-center gap-2\">…</div>\u001b[22m\n\u001b[2m  -   unexpected value \"visible\"\u001b[22m\n\u001b[2m  -   locator resolved to <div class=\"flex items-center gap-2\">…</div>\u001b[22m\n\u001b[2m  -   unexpected value \"visible\"\u001b[22m\n\u001b[2m  -   locator resolved to <div class=\"flex items-center gap-2\">…</div>\u001b[22m\n\u001b[2m  -   unexpected value \"visible\"\u001b[22m\n\n    at /home/runner/work/macpro-mako/macpro-mako/test/e2e/faq/faq.spec.ts:68:75",
@@ -1276,7 +1276,7 @@
                               "stdout": [],
                               "stderr": [],
                               "retry": 0,
-                              "startTime": "2025-07-07T14:11:43.917Z",
+                              "startTime": "2025-07-07T17:47:30.267Z",
                               "attachments": [
                                 {
                                   "name": "video",
@@ -1324,7 +1324,7 @@
                             {
                               "workerIndex": 7,
                               "status": "failed",
-                              "duration": 9218,
+                              "duration": 8019,
                               "error": {
                                 "message": "Error: \u001b[31mTimed out 5000ms waiting for \u001b[39m\u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mnot\u001b[2m.\u001b[22mtoBeVisible\u001b[2m()\u001b[22m\n\nLocator: locator('#onboarding-materials').locator('div:nth-child(1)')\nExpected: not visible\nReceived: visible\nCall log:\n  \u001b[2m- expect.not.toBeVisible with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for locator('#onboarding-materials').locator('div:nth-child(1)')\u001b[22m\n\u001b[2m  -   locator resolved to <div class=\"flex items-center gap-2\">…</div>\u001b[22m\n\u001b[2m  -   unexpected value \"visible\"\u001b[22m\n\u001b[2m  -   locator resolved to <div class=\"flex items-center gap-2\">…</div>\u001b[22m\n\u001b[2m  -   unexpected value \"visible\"\u001b[22m\n\u001b[2m  -   locator resolved to <div class=\"flex items-center gap-2\">…</div>\u001b[22m\n\u001b[2m  -   unexpected value \"visible\"\u001b[22m\n\u001b[2m  -   locator resolved to <div class=\"flex items-center gap-2\">…</div>\u001b[22m\n\u001b[2m  -   unexpected value \"visible\"\u001b[22m\n\u001b[2m  -   locator resolved to <div class=\"flex items-center gap-2\">…</div>\u001b[22m\n\u001b[2m  -   unexpected value \"visible\"\u001b[22m\n\u001b[2m  -   locator resolved to <div class=\"flex items-center gap-2\">…</div>\u001b[22m\n\u001b[2m  -   unexpected value \"visible\"\u001b[22m\n\u001b[2m  -   locator resolved to <div class=\"flex items-center gap-2\">…</div>\u001b[22m\n\u001b[2m  -   unexpected value \"visible\"\u001b[22m\n\u001b[2m  -   locator resolved to <div class=\"flex items-center gap-2\">…</div>\u001b[22m\n\u001b[2m  -   unexpected value \"visible\"\u001b[22m\n\u001b[2m  -   locator resolved to <div class=\"flex items-center gap-2\">…</div>\u001b[22m\n\u001b[2m  -   unexpected value \"visible\"\u001b[22m\n",
                                 "stack": "Error: \u001b[31mTimed out 5000ms waiting for \u001b[39m\u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mnot\u001b[2m.\u001b[22mtoBeVisible\u001b[2m()\u001b[22m\n\nLocator: locator('#onboarding-materials').locator('div:nth-child(1)')\nExpected: not visible\nReceived: visible\nCall log:\n  \u001b[2m- expect.not.toBeVisible with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for locator('#onboarding-materials').locator('div:nth-child(1)')\u001b[22m\n\u001b[2m  -   locator resolved to <div class=\"flex items-center gap-2\">…</div>\u001b[22m\n\u001b[2m  -   unexpected value \"visible\"\u001b[22m\n\u001b[2m  -   locator resolved to <div class=\"flex items-center gap-2\">…</div>\u001b[22m\n\u001b[2m  -   unexpected value \"visible\"\u001b[22m\n\u001b[2m  -   locator resolved to <div class=\"flex items-center gap-2\">…</div>\u001b[22m\n\u001b[2m  -   unexpected value \"visible\"\u001b[22m\n\u001b[2m  -   locator resolved to <div class=\"flex items-center gap-2\">…</div>\u001b[22m\n\u001b[2m  -   unexpected value \"visible\"\u001b[22m\n\u001b[2m  -   locator resolved to <div class=\"flex items-center gap-2\">…</div>\u001b[22m\n\u001b[2m  -   unexpected value \"visible\"\u001b[22m\n\u001b[2m  -   locator resolved to <div class=\"flex items-center gap-2\">…</div>\u001b[22m\n\u001b[2m  -   unexpected value \"visible\"\u001b[22m\n\u001b[2m  -   locator resolved to <div class=\"flex items-center gap-2\">…</div>\u001b[22m\n\u001b[2m  -   unexpected value \"visible\"\u001b[22m\n\u001b[2m  -   locator resolved to <div class=\"flex items-center gap-2\">…</div>\u001b[22m\n\u001b[2m  -   unexpected value \"visible\"\u001b[22m\n\u001b[2m  -   locator resolved to <div class=\"flex items-center gap-2\">…</div>\u001b[22m\n\u001b[2m  -   unexpected value \"visible\"\u001b[22m\n\n    at /home/runner/work/macpro-mako/macpro-mako/test/e2e/faq/faq.spec.ts:75:83",
@@ -1348,7 +1348,7 @@
                               "stdout": [],
                               "stderr": [],
                               "retry": 0,
-                              "startTime": "2025-07-07T14:11:55.038Z",
+                              "startTime": "2025-07-07T17:47:39.940Z",
                               "attachments": [
                                 {
                                   "name": "video",
@@ -1404,7 +1404,7 @@
                             {
                               "workerIndex": 8,
                               "status": "failed",
-                              "duration": 9158,
+                              "duration": 7974,
                               "error": {
                                 "message": "Error: \u001b[31mTimed out 5000ms waiting for \u001b[39m\u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mnot\u001b[2m.\u001b[22mtoBeVisible\u001b[2m()\u001b[22m\n\nLocator: locator('#spa-id-format').locator('div:nth-child(1)')\nExpected: not visible\nReceived: visible\nCall log:\n  \u001b[2m- expect.not.toBeVisible with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for locator('#spa-id-format').locator('div:nth-child(1)')\u001b[22m\n\u001b[2m  -   locator resolved to <div class=\"flex items-center gap-2\">…</div>\u001b[22m\n\u001b[2m  -   unexpected value \"visible\"\u001b[22m\n\u001b[2m  -   locator resolved to <div class=\"flex items-center gap-2\">…</div>\u001b[22m\n\u001b[2m  -   unexpected value \"visible\"\u001b[22m\n\u001b[2m  -   locator resolved to <div class=\"flex items-center gap-2\">…</div>\u001b[22m\n\u001b[2m  -   unexpected value \"visible\"\u001b[22m\n\u001b[2m  -   locator resolved to <div class=\"flex items-center gap-2\">…</div>\u001b[22m\n\u001b[2m  -   unexpected value \"visible\"\u001b[22m\n\u001b[2m  -   locator resolved to <div class=\"flex items-center gap-2\">…</div>\u001b[22m\n\u001b[2m  -   unexpected value \"visible\"\u001b[22m\n\u001b[2m  -   locator resolved to <div class=\"flex items-center gap-2\">…</div>\u001b[22m\n\u001b[2m  -   unexpected value \"visible\"\u001b[22m\n\u001b[2m  -   locator resolved to <div class=\"flex items-center gap-2\">…</div>\u001b[22m\n\u001b[2m  -   unexpected value \"visible\"\u001b[22m\n\u001b[2m  -   locator resolved to <div class=\"flex items-center gap-2\">…</div>\u001b[22m\n\u001b[2m  -   unexpected value \"visible\"\u001b[22m\n\u001b[2m  -   locator resolved to <div class=\"flex items-center gap-2\">…</div>\u001b[22m\n\u001b[2m  -   unexpected value \"visible\"\u001b[22m\n",
                                 "stack": "Error: \u001b[31mTimed out 5000ms waiting for \u001b[39m\u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mnot\u001b[2m.\u001b[22mtoBeVisible\u001b[2m()\u001b[22m\n\nLocator: locator('#spa-id-format').locator('div:nth-child(1)')\nExpected: not visible\nReceived: visible\nCall log:\n  \u001b[2m- expect.not.toBeVisible with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for locator('#spa-id-format').locator('div:nth-child(1)')\u001b[22m\n\u001b[2m  -   locator resolved to <div class=\"flex items-center gap-2\">…</div>\u001b[22m\n\u001b[2m  -   unexpected value \"visible\"\u001b[22m\n\u001b[2m  -   locator resolved to <div class=\"flex items-center gap-2\">…</div>\u001b[22m\n\u001b[2m  -   unexpected value \"visible\"\u001b[22m\n\u001b[2m  -   locator resolved to <div class=\"flex items-center gap-2\">…</div>\u001b[22m\n\u001b[2m  -   unexpected value \"visible\"\u001b[22m\n\u001b[2m  -   locator resolved to <div class=\"flex items-center gap-2\">…</div>\u001b[22m\n\u001b[2m  -   unexpected value \"visible\"\u001b[22m\n\u001b[2m  -   locator resolved to <div class=\"flex items-center gap-2\">…</div>\u001b[22m\n\u001b[2m  -   unexpected value \"visible\"\u001b[22m\n\u001b[2m  -   locator resolved to <div class=\"flex items-center gap-2\">…</div>\u001b[22m\n\u001b[2m  -   unexpected value \"visible\"\u001b[22m\n\u001b[2m  -   locator resolved to <div class=\"flex items-center gap-2\">…</div>\u001b[22m\n\u001b[2m  -   unexpected value \"visible\"\u001b[22m\n\u001b[2m  -   locator resolved to <div class=\"flex items-center gap-2\">…</div>\u001b[22m\n\u001b[2m  -   unexpected value \"visible\"\u001b[22m\n\u001b[2m  -   locator resolved to <div class=\"flex items-center gap-2\">…</div>\u001b[22m\n\u001b[2m  -   unexpected value \"visible\"\u001b[22m\n\n    at /home/runner/work/macpro-mako/macpro-mako/test/e2e/faq/faq.spec.ts:84:75",
@@ -1428,7 +1428,7 @@
                               "stdout": [],
                               "stderr": [],
                               "retry": 0,
-                              "startTime": "2025-07-07T14:12:06.140Z",
+                              "startTime": "2025-07-07T17:47:49.597Z",
                               "attachments": [
                                 {
                                   "name": "video",
@@ -1476,7 +1476,7 @@
                             {
                               "workerIndex": 9,
                               "status": "failed",
-                              "duration": 9213,
+                              "duration": 8051,
                               "error": {
                                 "message": "Error: \u001b[31mTimed out 5000ms waiting for \u001b[39m\u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mnot\u001b[2m.\u001b[22mtoBeVisible\u001b[2m()\u001b[22m\n\nLocator: locator('#medicaid-spa-attachments').locator('div:nth-child(1)')\nExpected: not visible\nReceived: visible\nCall log:\n  \u001b[2m- expect.not.toBeVisible with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for locator('#medicaid-spa-attachments').locator('div:nth-child(1)')\u001b[22m\n\u001b[2m  -   locator resolved to <div class=\"flex items-center gap-2\">…</div>\u001b[22m\n\u001b[2m  -   unexpected value \"visible\"\u001b[22m\n\u001b[2m  -   locator resolved to <div class=\"flex items-center gap-2\">…</div>\u001b[22m\n\u001b[2m  -   unexpected value \"visible\"\u001b[22m\n\u001b[2m  -   locator resolved to <div class=\"flex items-center gap-2\">…</div>\u001b[22m\n\u001b[2m  -   unexpected value \"visible\"\u001b[22m\n\u001b[2m  -   locator resolved to <div class=\"flex items-center gap-2\">…</div>\u001b[22m\n\u001b[2m  -   unexpected value \"visible\"\u001b[22m\n\u001b[2m  -   locator resolved to <div class=\"flex items-center gap-2\">…</div>\u001b[22m\n\u001b[2m  -   unexpected value \"visible\"\u001b[22m\n\u001b[2m  -   locator resolved to <div class=\"flex items-center gap-2\">…</div>\u001b[22m\n\u001b[2m  -   unexpected value \"visible\"\u001b[22m\n\u001b[2m  -   locator resolved to <div class=\"flex items-center gap-2\">…</div>\u001b[22m\n\u001b[2m  -   unexpected value \"visible\"\u001b[22m\n\u001b[2m  -   locator resolved to <div class=\"flex items-center gap-2\">…</div>\u001b[22m\n\u001b[2m  -   unexpected value \"visible\"\u001b[22m\n\u001b[2m  -   locator resolved to <div class=\"flex items-center gap-2\">…</div>\u001b[22m\n\u001b[2m  -   unexpected value \"visible\"\u001b[22m\n",
                                 "stack": "Error: \u001b[31mTimed out 5000ms waiting for \u001b[39m\u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mnot\u001b[2m.\u001b[22mtoBeVisible\u001b[2m()\u001b[22m\n\nLocator: locator('#medicaid-spa-attachments').locator('div:nth-child(1)')\nExpected: not visible\nReceived: visible\nCall log:\n  \u001b[2m- expect.not.toBeVisible with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for locator('#medicaid-spa-attachments').locator('div:nth-child(1)')\u001b[22m\n\u001b[2m  -   locator resolved to <div class=\"flex items-center gap-2\">…</div>\u001b[22m\n\u001b[2m  -   unexpected value \"visible\"\u001b[22m\n\u001b[2m  -   locator resolved to <div class=\"flex items-center gap-2\">…</div>\u001b[22m\n\u001b[2m  -   unexpected value \"visible\"\u001b[22m\n\u001b[2m  -   locator resolved to <div class=\"flex items-center gap-2\">…</div>\u001b[22m\n\u001b[2m  -   unexpected value \"visible\"\u001b[22m\n\u001b[2m  -   locator resolved to <div class=\"flex items-center gap-2\">…</div>\u001b[22m\n\u001b[2m  -   unexpected value \"visible\"\u001b[22m\n\u001b[2m  -   locator resolved to <div class=\"flex items-center gap-2\">…</div>\u001b[22m\n\u001b[2m  -   unexpected value \"visible\"\u001b[22m\n\u001b[2m  -   locator resolved to <div class=\"flex items-center gap-2\">…</div>\u001b[22m\n\u001b[2m  -   unexpected value \"visible\"\u001b[22m\n\u001b[2m  -   locator resolved to <div class=\"flex items-center gap-2\">…</div>\u001b[22m\n\u001b[2m  -   unexpected value \"visible\"\u001b[22m\n\u001b[2m  -   locator resolved to <div class=\"flex items-center gap-2\">…</div>\u001b[22m\n\u001b[2m  -   unexpected value \"visible\"\u001b[22m\n\u001b[2m  -   locator resolved to <div class=\"flex items-center gap-2\">…</div>\u001b[22m\n\u001b[2m  -   unexpected value \"visible\"\u001b[22m\n\n    at /home/runner/work/macpro-mako/macpro-mako/test/e2e/faq/faq.spec.ts:93:86",
@@ -1500,7 +1500,7 @@
                               "stdout": [],
                               "stderr": [],
                               "retry": 0,
-                              "startTime": "2025-07-07T14:12:17.184Z",
+                              "startTime": "2025-07-07T17:47:59.207Z",
                               "attachments": [
                                 {
                                   "name": "video",
@@ -1548,7 +1548,7 @@
                             {
                               "workerIndex": 10,
                               "status": "failed",
-                              "duration": 9221,
+                              "duration": 8216,
                               "error": {
                                 "message": "Error: \u001b[31mTimed out 5000ms waiting for \u001b[39m\u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mnot\u001b[2m.\u001b[22mtoBeVisible\u001b[2m()\u001b[22m\n\nLocator: locator('#medicaid-spa-rai-attachments').locator('div:nth-child(1)')\nExpected: not visible\nReceived: visible\nCall log:\n  \u001b[2m- expect.not.toBeVisible with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for locator('#medicaid-spa-rai-attachments').locator('div:nth-child(1)')\u001b[22m\n\u001b[2m  -   locator resolved to <div class=\"flex items-center gap-2\">…</div>\u001b[22m\n\u001b[2m  -   unexpected value \"visible\"\u001b[22m\n\u001b[2m  -   locator resolved to <div class=\"flex items-center gap-2\">…</div>\u001b[22m\n\u001b[2m  -   unexpected value \"visible\"\u001b[22m\n\u001b[2m  -   locator resolved to <div class=\"flex items-center gap-2\">…</div>\u001b[22m\n\u001b[2m  -   unexpected value \"visible\"\u001b[22m\n\u001b[2m  -   locator resolved to <div class=\"flex items-center gap-2\">…</div>\u001b[22m\n\u001b[2m  -   unexpected value \"visible\"\u001b[22m\n\u001b[2m  -   locator resolved to <div class=\"flex items-center gap-2\">…</div>\u001b[22m\n\u001b[2m  -   unexpected value \"visible\"\u001b[22m\n\u001b[2m  -   locator resolved to <div class=\"flex items-center gap-2\">…</div>\u001b[22m\n\u001b[2m  -   unexpected value \"visible\"\u001b[22m\n\u001b[2m  -   locator resolved to <div class=\"flex items-center gap-2\">…</div>\u001b[22m\n\u001b[2m  -   unexpected value \"visible\"\u001b[22m\n\u001b[2m  -   locator resolved to <div class=\"flex items-center gap-2\">…</div>\u001b[22m\n\u001b[2m  -   unexpected value \"visible\"\u001b[22m\n\u001b[2m  -   locator resolved to <div class=\"flex items-center gap-2\">…</div>\u001b[22m\n\u001b[2m  -   unexpected value \"visible\"\u001b[22m\n",
                                 "stack": "Error: \u001b[31mTimed out 5000ms waiting for \u001b[39m\u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mnot\u001b[2m.\u001b[22mtoBeVisible\u001b[2m()\u001b[22m\n\nLocator: locator('#medicaid-spa-rai-attachments').locator('div:nth-child(1)')\nExpected: not visible\nReceived: visible\nCall log:\n  \u001b[2m- expect.not.toBeVisible with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for locator('#medicaid-spa-rai-attachments').locator('div:nth-child(1)')\u001b[22m\n\u001b[2m  -   locator resolved to <div class=\"flex items-center gap-2\">…</div>\u001b[22m\n\u001b[2m  -   unexpected value \"visible\"\u001b[22m\n\u001b[2m  -   locator resolved to <div class=\"flex items-center gap-2\">…</div>\u001b[22m\n\u001b[2m  -   unexpected value \"visible\"\u001b[22m\n\u001b[2m  -   locator resolved to <div class=\"flex items-center gap-2\">…</div>\u001b[22m\n\u001b[2m  -   unexpected value \"visible\"\u001b[22m\n\u001b[2m  -   locator resolved to <div class=\"flex items-center gap-2\">…</div>\u001b[22m\n\u001b[2m  -   unexpected value \"visible\"\u001b[22m\n\u001b[2m  -   locator resolved to <div class=\"flex items-center gap-2\">…</div>\u001b[22m\n\u001b[2m  -   unexpected value \"visible\"\u001b[22m\n\u001b[2m  -   locator resolved to <div class=\"flex items-center gap-2\">…</div>\u001b[22m\n\u001b[2m  -   unexpected value \"visible\"\u001b[22m\n\u001b[2m  -   locator resolved to <div class=\"flex items-center gap-2\">…</div>\u001b[22m\n\u001b[2m  -   unexpected value \"visible\"\u001b[22m\n\u001b[2m  -   locator resolved to <div class=\"flex items-center gap-2\">…</div>\u001b[22m\n\u001b[2m  -   unexpected value \"visible\"\u001b[22m\n\u001b[2m  -   locator resolved to <div class=\"flex items-center gap-2\">…</div>\u001b[22m\n\u001b[2m  -   unexpected value \"visible\"\u001b[22m\n\n    at /home/runner/work/macpro-mako/macpro-mako/test/e2e/faq/faq.spec.ts:102:78",
@@ -1572,7 +1572,7 @@
                               "stdout": [],
                               "stderr": [],
                               "retry": 0,
-                              "startTime": "2025-07-07T14:12:28.352Z",
+                              "startTime": "2025-07-07T17:48:08.865Z",
                               "attachments": [
                                 {
                                   "name": "video",
@@ -3569,8 +3569,8 @@
     }
   ],
   "stats": {
-    "startTime": "2025-07-07T14:09:34.213Z",
-    "duration": 183605.526,
+    "startTime": "2025-07-07T17:45:52.946Z",
+    "duration": 144385.711,
     "expected": 15,
     "skipped": 80,
     "unexpected": 10,
