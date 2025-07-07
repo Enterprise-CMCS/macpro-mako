@@ -128,7 +128,6 @@ export const handler: Handler<KafkaEvent> = async (event) => {
 };
 
 export async function processRecord(kafkaRecord: KafkaRecord, config: ProcessEmailConfig) {
-  let ninetyDayExpirationClock;
   const { key, value, timestamp } = kafkaRecord;
   const id: string = decodeBase64WithUtf8(key);
 
@@ -196,7 +195,7 @@ export async function processRecord(kafkaRecord: KafkaRecord, config: ProcessEma
   }
   const logRecord = decodeBase64WithUtf8(value);
   const parsedRecord = JSON.parse(logRecord);
-
+  let ninetyDayExpirationClock;
   if (isChipSpaRespondRAIEvent(parsedRecord)) {
     ninetyDayExpirationClock = await calculate90dayExpiration(parsedRecord, config);
   }

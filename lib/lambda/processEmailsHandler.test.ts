@@ -12,7 +12,7 @@ import {
 } from "mocks";
 import { KafkaEvent, KafkaRecord } from "shared-types";
 import { Authority } from "shared-types";
-import { describe, expect, it, vi, beforeEach, afterEach } from "vitest";
+import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 
 import { handler } from "./processEmails";
 const nms = "new-medicaid-submission";
@@ -25,8 +25,6 @@ const withdrawRai = "withdraw-rai";
 const respondToRai = "respond-to-rai";
 const uploadSubsequentDocuments = "upload-subsequent-documents";
 import { calculate90dayExpiration } from "./utils";
-
-
 
 describe("process emails  Handler", () => {
   it.each([
@@ -476,7 +474,7 @@ describe("calculate90dayExpiration", () => {
   });
 
   it("should log an error if submissionDate or raiRequestedDate is missing", async () => {
-    const consoleSpy = vi.spyOn(console, "error").mockImplementation(() => { });
+    const consoleSpy = vi.spyOn(console, "error").mockImplementation(() => {});
 
     vi.spyOn(os, "getItem").mockResolvedValue({
       _source: {
