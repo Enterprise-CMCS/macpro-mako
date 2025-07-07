@@ -612,10 +612,12 @@ const items: Record<string, TestItemResult> = {
       submissionDate: "2024-10-27T18:17:21.557Z",
       changedDate: "2024-11-26T18:17:21.557Z",
       makoChangedDate: "2024-11-26T18:17:21.557Z",
+      appkParent: true,
       appkChildren: [
         {
           _source: {
-            id: WITHDRAW_RAI_ITEM_C,
+            // @ts-ignore appk is legacy and will not continue to be supported
+            appkParentId: TEST_SPA_ITEM_RAI_ID,
             seatoolStatus: SEATOOL_STATUS.PENDING_RAI,
             stateStatus: statusToDisplayToStateUser[SEATOOL_STATUS.PENDING_RAI],
             cmsStatus: statusToDisplayToCmsUser[SEATOOL_STATUS.PENDING_RAI],
