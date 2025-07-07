@@ -120,6 +120,16 @@ describe("fetchChangelog", () => {
     await handler({} as APIGatewayEvent, {} as Context);
   });
 
+  it("should not throw an error if the package was not stored in the request", async () => {
+    const handler = setupHandler();
+
+    const res = await handler({} as APIGatewayEvent, {} as Context);
+
+    expect(res).toBeTruthy();
+    expect(res.statusCode).toBe(200);
+    expect(res.body).toEqual("OK");
+  });
+
   it("should return a 500 if there is an error retrieving the changelog", async () => {
     mockedServer.use(errorOSChangelogSearchHandler);
 

@@ -2,6 +2,7 @@ import { APIGatewayEvent, Context } from "aws-lambda";
 import {
   coStateSubmitter,
   getRequestContext,
+  NO_EMAIL_STATE_SUBMITTER_USERNAME,
   setDefaultStateSubmitter,
   setMockUsername,
   testNewStateSubmitter,
@@ -54,6 +55,20 @@ describe("createUserProfile handler", () => {
 
     expect(res.statusCode).toEqual(401);
     expect(res.body).toEqual(JSON.stringify({ message: "User is not authenticated" }));
+  });
+
+  it("should return 500 if the user does not have an email", async () => {
+    setMockUsername(NO_EMAIL_STATE_SUBMITTER_USERNAME);
+
+    const event = {
+      body: JSON.stringify({}),
+      requestContext: getRequestContext(),
+    } as APIGatewayEvent;
+
+    const res = await handler(event, {} as Context);
+
+    expect(res.statusCode).toEqual(500);
+    expect(res.body).toEqual(JSON.stringify({ message: "User is invalid" }));
   });
 
   it("should return 200 and create the user role if the user role is not in kafka", async () => {

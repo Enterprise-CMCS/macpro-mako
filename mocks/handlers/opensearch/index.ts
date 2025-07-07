@@ -30,7 +30,7 @@ export {
   errorDeleteIndexHandler,
 } from "./indices";
 export { errorOSMainMultiDocumentHandler, errorOSMainSearchHandler } from "./main";
-export { errorRoleSearchHandler } from "./roles";
+export { errorRoleSearchHandler, errorOnSearchTypeRoleSearchHandler } from "./roles";
 export { errorSecurityRolesMappingHandler } from "./security";
 export { errorOSSubtypeSearchHandler } from "./subtypes";
 export { errorOSTypeSearchHandler } from "./types";

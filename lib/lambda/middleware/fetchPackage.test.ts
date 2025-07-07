@@ -76,6 +76,23 @@ describe("fetchPackage", () => {
     expect(res.body).toEqual("OK");
   });
 
+  it("should return 500, if there is an error retrieving the package and allowNotFound is false", async () => {
+    const event = {
+      body: JSON.stringify({ id: GET_ERROR_ITEM_ID }),
+      headers: {
+        "Content-Type": "application/json",
+      } as APIGatewayProxyEventHeaders,
+    } as APIGatewayEvent;
+
+    const handler = setupHandler();
+
+    const res = await handler(event, {} as Context);
+
+    expect(res).toBeTruthy();
+    expect(res.statusCode).toEqual(500);
+    expect(res.body).toEqual(JSON.stringify({ message: "Internal server error" }));
+  });
+
   it("should return 404, if the package is not found", async () => {
     const event = {
       body: JSON.stringify({ id: NOT_FOUND_ITEM_ID }),
