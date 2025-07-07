@@ -1,8 +1,9 @@
 import middy, { Request } from "@middy/core";
 import httpErrorHandler from "@middy/http-error-handler";
 import { APIGatewayEvent, Context } from "aws-lambda";
-import { TEST_ITEM_ID, TEST_SPA_ITEM_RAI_ID } from "mocks";
+import { errorOSMainSearchHandler, TEST_ITEM_ID, TEST_SPA_ITEM_RAI_ID } from "mocks";
 import items from "mocks/data/items";
+import { mockedServiceServer as mockedServer } from "mocks/server";
 import { main } from "shared-types/opensearch";
 import { describe, expect, it } from "vitest";
 
@@ -19,7 +20,9 @@ const setupHandler = ({
   options?: FetchAppkChildrenOptions;
 } = {}) =>
   middy()
-    .use(httpErrorHandler())
+    .use(
+      httpErrorHandler({ fallbackMessage: JSON.stringify({ message: "Internal server error" }) }),
+    )
     .before(async (request: Request) => {
       if (packageResult) {
         storePackageInRequest(packageResult, request, options.setToContext);
@@ -83,5 +86,26 @@ describe("fetchAppkChildren", () => {
     const handler = setupHandler({ packageResult, expectedPackage: packageResult });
 
     await handler({} as APIGatewayEvent, {} as Context);
+  });
+
+  it("should return 500 if there is an error getting the appkChildren", async () => {
+    mockedServer.use(errorOSMainSearchHandler);
+
+    const expectedPackage = items[TEST_SPA_ITEM_RAI_ID] as main.ItemResult;
+    const packageResult = {
+      ...expectedPackage,
+      _source: {
+        ...expectedPackage._source,
+        appkChildren: undefined,
+      },
+    };
+
+    const handler = setupHandler({ packageResult, expectedPackage });
+
+    const res = await handler({} as APIGatewayEvent, {} as Context);
+
+    expect(res).toBeTruthy();
+    expect(res.statusCode).toBe(500);
+    expect(res.body).toEqual(JSON.stringify({ message: "Internal server error" }));
   });
 });

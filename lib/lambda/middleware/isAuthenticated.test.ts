@@ -5,6 +5,8 @@ import {
   CO_STATE_SUBMITTER_USER,
   CO_STATE_SUBMITTER_USERNAME,
   COGNITO_IDP_DOMAIN,
+  errorIdentityProviderServiceHandler,
+  errorRoleSearchHandler,
   getActiveStatesForUserByEmail,
   getRequestContext,
   NO_EMAIL_STATE_SUBMITTER_USERNAME,
@@ -15,6 +17,7 @@ import {
   TEST_STATE_SUBMITTER_USER,
   TEST_STATE_SUBMITTER_USERNAME,
 } from "mocks";
+import { mockedServiceServer as mockedServer } from "mocks/server";
 import { FullUser } from "shared-types";
 import { describe, expect, it } from "vitest";
 
@@ -39,7 +42,9 @@ const setupHandler = ({
   options?: IsAuthenticatedOptions;
 } = {}) => {
   return middy()
-    .use(httpErrorHandler())
+    .use(
+      httpErrorHandler({ fallbackMessage: JSON.stringify({ message: "Internal server error" }) }),
+    )
     .use(isAuthenticated(options))
     .before(async (request: Request) => {
       const user = await getAuthUserFromRequest(request);
@@ -128,6 +133,44 @@ describe("isAuthenticated", () => {
     expect(res).toBeTruthy();
     expect(res.statusCode).toEqual(401);
     expect(res.body).toEqual(JSON.stringify({ message: "User is not authenticated" }));
+  });
+
+  it("should return 500, if there is an error getting the user's attributes", async () => {
+    mockedServer.use(errorIdentityProviderServiceHandler);
+
+    const event = {
+      body: "test",
+      requestContext: getRequestContext(),
+    } as APIGatewayEvent;
+
+    const handler = setupHandler({
+      expectedUser: testStateSubmitterUser,
+    });
+
+    const res = await handler(event, {} as Context);
+
+    expect(res).toBeTruthy();
+    expect(res.statusCode).toEqual(500);
+    expect(res.body).toEqual(JSON.stringify({ message: "Internal server error" }));
+  });
+
+  it("should return 500, if there is an error getting the user's states", async () => {
+    mockedServer.use(errorRoleSearchHandler);
+
+    const event = {
+      body: "test",
+      requestContext: getRequestContext(),
+    } as APIGatewayEvent;
+
+    const handler = setupHandler({
+      expectedUser: testStateSubmitterUser,
+    });
+
+    const res = await handler(event, {} as Context);
+
+    expect(res).toBeTruthy();
+    expect(res.statusCode).toEqual(500);
+    expect(res.body).toEqual(JSON.stringify({ message: "Internal server error" }));
   });
 
   it("should return 500, if the user does not have an email", async () => {

@@ -1,13 +1,9 @@
-import { zodValidator } from "@dannywrayuk/middy-zod-validator";
-import middy from "@middy/core";
-import httpErrorHandler from "@middy/http-error-handler";
-import httpJsonBodyParser from "@middy/http-json-body-parser";
 import { createError } from "@middy/util";
 import { APIGatewayEvent } from "shared-types";
 import { Territory } from "shared-types/events/legacy-user";
 import { z } from "zod";
 
-import { canViewUser, ContextWithCurrUser, isAuthenticated, normalizeEvent } from "../middleware";
+import { authedMiddy, canViewUser, ContextWithCurrUser } from "../middleware";
 import { getAllUserRolesByEmail, getApproversByRole } from "./userManagementService";
 
 export const getApproversEventSchema = z
@@ -20,12 +16,11 @@ export const getApproversEventSchema = z
 
 export type GetApproversEvent = APIGatewayEvent & z.infer<typeof getApproversEventSchema>;
 
-export const handler = middy()
-  .use(httpErrorHandler())
-  .use(normalizeEvent({ opensearch: true }))
-  .use(httpJsonBodyParser())
-  .use(zodValidator({ eventSchema: getApproversEventSchema }))
-  .use(isAuthenticated({ setToContext: true }))
+export const handler = authedMiddy({
+  opensearch: true,
+  setToContext: true,
+  eventSchema: getApproversEventSchema,
+})
   .use(canViewUser())
   .handler(async (event: GetApproversEvent, context: ContextWithCurrUser) => {
     const email = event?.body?.userEmail || context?.currUser?.email;
@@ -37,15 +32,7 @@ export const handler = middy()
       });
     }
 
-    let userRoles;
-    try {
-      userRoles = await getAllUserRolesByEmail(email);
-    } catch (err) {
-      console.error(err);
-      throw createError(500, JSON.stringify({ message: "Internal server error" }), {
-        expose: true,
-      });
-    }
+    const userRoles = await getAllUserRolesByEmail(email);
 
     const roleStateMap = new Map<string, Territory[]>();
 

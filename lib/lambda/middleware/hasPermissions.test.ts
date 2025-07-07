@@ -55,7 +55,11 @@ describe("Permissions middleware", () => {
       packageResult = undefined,
     }: { user?: FullUser; packageResult?: main.ItemResult } = {}) =>
       middy()
-        .use(httpErrorHandler())
+        .use(
+          httpErrorHandler({
+            fallbackMessage: JSON.stringify({ message: "Internal server error" }),
+          }),
+        )
         .before(async (request: Request) => {
           if (user) {
             storeAuthUserInRequest(user, request, false);

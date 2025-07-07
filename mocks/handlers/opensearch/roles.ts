@@ -27,7 +27,7 @@ const defaultRoleSearchHandler = http.post<PathParams, SearchQueryBody>(
     } else if (query?.bool?.must && query?.bool?.must_not && _source) {
       const email = getFilterValueAsString(query.bool.must, "term", "email.keyword") || "";
       hits = getFilteredRolesByEmail(email).filter(
-        (roleObj) => roleObj._source.status === "active",
+        (roleObj) => roleObj._source?.status === "active",
       );
     } else if (query?.bool?.must && size === 1) {
       const email = getFilterValueAsString(query.bool.must, "term", "email.keyword") || "";

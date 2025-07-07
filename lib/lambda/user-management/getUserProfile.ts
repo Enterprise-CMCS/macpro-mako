@@ -1,12 +1,8 @@
-import { zodValidator } from "@dannywrayuk/middy-zod-validator";
-import middy from "@middy/core";
-import httpErrorHandler from "@middy/http-error-handler";
-import httpJsonBodyParser from "@middy/http-json-body-parser";
 import { createError } from "@middy/util";
 import { APIGatewayEvent } from "shared-types";
 import { z } from "zod";
 
-import { canViewUser, ContextWithCurrUser, isAuthenticated, normalizeEvent } from "../middleware";
+import { authedMiddy, canViewUser, ContextWithCurrUser } from "../middleware";
 import { getAllUserRolesByEmail } from "./userManagementService";
 
 export const getUserProfileEventSchema = z
@@ -19,12 +15,11 @@ export const getUserProfileEventSchema = z
 
 export type GetUserProfileEvent = APIGatewayEvent & z.infer<typeof getUserProfileEventSchema>;
 
-export const handler = middy()
-  .use(httpErrorHandler())
-  .use(normalizeEvent({ opensearch: true }))
-  .use(httpJsonBodyParser())
-  .use(zodValidator({ eventSchema: getUserProfileEventSchema }))
-  .use(isAuthenticated({ setToContext: true }))
+export const handler = authedMiddy({
+  opensearch: true,
+  setToContext: true,
+  eventSchema: getUserProfileEventSchema,
+})
   .use(canViewUser())
   .handler(async (event: GetUserProfileEvent, context: ContextWithCurrUser) => {
     const email = event?.body?.userEmail || context?.currUser?.email;

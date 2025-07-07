@@ -8,7 +8,7 @@ import { main } from "shared-types/opensearch";
 import { describe, expect, it } from "vitest";
 
 import { fetchPackage, FetchPackageOptions } from "./fetchPackage";
-import { getPackageFromRequest } from "./utils";
+import { ContextWithPackage, getPackageFromRequest } from "./utils";
 
 const setupHandler = ({
   expectedPackage = undefined,
@@ -21,14 +21,16 @@ const setupHandler = ({
   options?: FetchPackageOptions;
 } = {}) =>
   middy()
-    .use(httpErrorHandler())
+    .use(
+      httpErrorHandler({ fallbackMessage: JSON.stringify({ message: "Internal server error" }) }),
+    )
     .use(httpJsonBodyParser())
     .use(fetchPackage(options))
     .before(async (request: Request) => {
       const packageResult = await getPackageFromRequest(request);
       expect(packageResult).toEqual(expectedPackage);
     })
-    .handler((event: APIGatewayEvent, context: Context & { packageResult?: main.ItemResult }) => {
+    .handler((event: APIGatewayEvent, context: ContextWithPackage) => {
       if (options.setToContext) {
         const { packageResult } = context;
         expect(packageResult).toEqual(expectedPackage);

@@ -1,147 +1,128 @@
+import { createError } from "@middy/util";
 import { APIGatewayEvent } from "aws-lambda";
-import { getAuthDetails, lookupUserAttributes } from "libs/api/auth/user";
 import { produceMessage } from "libs/api/kafka";
-import { response } from "libs/handler-lib";
-import { RoleRequest } from "react-app/src/api";
+import { baseRoleInformationSchema } from "shared-types/events/legacy-user";
 import { canRequestAccess, canSelfRevokeAccess, canUpdateAccess } from "shared-utils";
+import { z } from "zod";
 
-import { submitGroupDivision } from "./submitGroupDivision";
-import { getLatestActiveRoleByEmail, getUserByEmail } from "./userManagementService";
+import { authedMiddy, ContextWithCurrUser } from "../middleware";
+import { getUserByEmail } from "./userManagementService";
 
 type RoleStatus = "active" | "denied" | "pending" | "revoked";
 
-export const submitRoleRequests = async (event: APIGatewayEvent) => {
-  if (!event?.body) {
-    return response({
-      statusCode: 400,
-      body: { message: "Event body required" },
+export const submitRoleRequestEventSchema = z
+  .object({
+    body: baseRoleInformationSchema,
+  })
+  .passthrough();
+
+export type SubmitRoleRequestEvent = APIGatewayEvent & z.infer<typeof submitRoleRequestEventSchema>;
+
+export const handler = authedMiddy({
+  opensearch: true,
+  kafka: true,
+  setToContext: true,
+  eventSchema: submitRoleRequestEventSchema,
+}).handler(async (event: SubmitRoleRequestEvent, context: ContextWithCurrUser) => {
+  const { currUser } = context;
+  const {
+    email,
+    state,
+    role: roleToUpdate,
+    eventType,
+    grantAccess = "pending",
+    requestRoleChange,
+    group = null,
+    division = null,
+  } = event.body;
+
+  if (!currUser?.email) {
+    console.error("Email is undefined");
+    throw createError(500, JSON.stringify({ message: "Internal server error" }), {
+      expose: true,
     });
   }
 
-  if (!event?.requestContext) {
-    return response({
-      statusCode: 400,
-      body: { message: "Request context required" },
-    });
+  const userInfo = await getUserByEmail(currUser.email);
+
+  let status: RoleStatus;
+  // Determine the status based on the user's role and action
+  // Not a role request change; user is updating another role access request
+  if (!requestRoleChange && canUpdateAccess(currUser.role, roleToUpdate)) {
+    status = grantAccess;
+  } else if (
+    !requestRoleChange &&
+    grantAccess === "revoked" &&
+    userInfo?.email &&
+    canSelfRevokeAccess(currUser.role, userInfo.email, email)
+  ) {
+    // Not a role request change; user is revoking their own access
+    status = "revoked";
+  } else if (requestRoleChange && canRequestAccess(currUser.role)) {
+    // User is permitted to request a role change
+    status = "pending";
+  } else {
+    console.warn(`Unauthorized action attempt by ${userInfo?.email}`);
+
+    return {
+      statusCode: 403,
+      body: JSON.stringify({ message: "You are not authorized to perform this action." }),
+    };
   }
 
-  const topicName = process.env.topicName as string;
-  if (!topicName) {
-    throw new Error("Topic name is not defined");
-  }
+  const id = `${email}_${state}_${roleToUpdate}`;
+  const date = Date.now(); // correct time format?
+  const doneByEmail = userInfo?.email || currUser.email;
+  const doneByName = userInfo?.fullName || `${currUser.given_name} ${currUser.family_name}`; // full name of current user. Cognito (userAttributes) may have a different full name
 
-  let authDetails;
-  try {
-    authDetails = getAuthDetails(event);
-  } catch (err) {
-    console.error(err);
-    return response({
-      statusCode: 401,
-      body: { message: "User not authenticated" },
-    });
-  }
-
-  try {
-    const { userId, poolId } = authDetails;
-    const userAttributes = await lookupUserAttributes(userId, poolId);
-    const userInfo = await getUserByEmail(userAttributes?.email);
-    const latestActiveRole =
-      (await getLatestActiveRoleByEmail(userAttributes.email))?.role ?? "norole";
-
-    // if (!latestActiveRoleObj) {
-    //   return response({
-    //     statusCode: 403,
-    //     body: { message: "No active role found for user" },
-    //   });
-    // }
-
-    const {
-      email,
-      state,
-      role: roleToUpdate,
+  await produceMessage(
+    process?.env?.topicName || "",
+    id,
+    JSON.stringify({
       eventType,
-      grantAccess = "pending",
-      requestRoleChange,
-      group = null,
-      division = null,
-    } = JSON.parse(event.body) as RoleRequest;
+      email,
+      status,
+      territory: state,
+      role: roleToUpdate, // role for this state or newly requested role
+      doneByEmail,
+      doneByName,
+      date,
+      group,
+      division,
+    }),
+  );
 
-    let status: RoleStatus;
-
-    // Determine the status based on the user's role and action
-    // Not a role request change; user is updating another role access request
-    if (!requestRoleChange && canUpdateAccess(latestActiveRole, roleToUpdate)) {
-      status = grantAccess;
-    } else if (
-      !requestRoleChange &&
-      grantAccess === "revoked" &&
-      canSelfRevokeAccess(latestActiveRole, userInfo.email, email)
-    ) {
-      // Not a role request change; user is revoking their own access
-      status = "revoked";
-    } else if (requestRoleChange && canRequestAccess(latestActiveRole)) {
-      // User is permitted to request a role change
-      status = "pending";
-    } else {
-      console.warn(`Unauthorized action attempt by ${userInfo.email}`);
-
-      return response({
-        statusCode: 403,
-        body: { message: "You are not authorized to perform this action." },
-      });
-    }
-
-    const id = `${email}_${state}_${roleToUpdate}`;
-    const date = Date.now(); // correct time format?
-
+  if (
+    canUpdateAccess(currUser.role, roleToUpdate) &&
+    grantAccess === "active" &&
+    group &&
+    division
+  ) {
     await produceMessage(
-      topicName,
-      id,
+      process.env.topicName || "",
+      userInfo?.id || id,
       JSON.stringify({
-        eventType,
-        email,
-        status,
-        territory: state,
-        role: roleToUpdate, // role for this state or newly requested role
-        doneByEmail: userInfo.email,
-        doneByName: userInfo.fullName, // full name of current user. Cognito (userAttributes) may have a different full name
-        date,
+        eventType: "user-info",
+        email: doneByEmail,
         group,
         division,
+        fullName: doneByName,
       }),
     );
-
-    // Update group and division info for new cmsroleapprovers
-    if (
-      canUpdateAccess(latestActiveRole, roleToUpdate) &&
-      grantAccess === "active" &&
-      group &&
-      division
-    ) {
-      await submitGroupDivision({ userEmail: email, group, division });
-    }
-
-    return response({
-      statusCode: 200,
-      body: {
-        message: `Request to access ${state} has been submitted.`,
-        eventType,
-        email,
-        status,
-        territory: state,
-        role: roleToUpdate, // role for this state
-        doneByEmail: userAttributes.email,
-        doneByName: userInfo.fullName, // full name of current user. Cognito (userAttributes) may have a different full name
-        date,
-      },
-    });
-  } catch (err: unknown) {
-    console.log("An error occurred: ", err);
-    return response({
-      statusCode: 500,
-      body: { message: "Internal server error" },
-    });
   }
-};
 
-export const handler = submitRoleRequests;
+  return {
+    statusCode: 200,
+    body: JSON.stringify({
+      message: `Request to access ${state} has been submitted.`,
+      eventType,
+      email,
+      status,
+      territory: state,
+      role: roleToUpdate, // role for this state
+      doneByEmail,
+      doneByName,
+      date,
+    }),
+  };
+});

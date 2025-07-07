@@ -17,7 +17,9 @@ const setupHandler = ({
   options?: NormalizeEventOptions;
 } = {}) =>
   middy()
-    .use(httpErrorHandler())
+    .use(
+      httpErrorHandler({ fallbackMessage: JSON.stringify({ message: "Internal server error" }) }),
+    )
     .use(normalizeEvent(options))
     .handler((event: APIGatewayEvent) => {
       if (expectedEvent) {

@@ -29,7 +29,7 @@ export {
   rateLimitBulkUpdateDataHandler,
   errorDeleteIndexHandler,
 } from "./indices";
-export { errorOSMainMultiDocumentHandler } from "./main";
+export { errorOSMainMultiDocumentHandler, errorOSMainSearchHandler } from "./main";
 export { errorRoleSearchHandler } from "./roles";
 export { errorSecurityRolesMappingHandler } from "./security";
 export { errorOSSubtypeSearchHandler } from "./subtypes";
