@@ -40,7 +40,6 @@ export const ui = {
   handler: async (options: { stage?: string; mocked?: boolean; mockedUsername?: string }) => {
     if (options.mocked) {
       await writeMockedUiEnvFile(options.mockedUsername);
-      await runCommand("bun", ["run", "build"], "react-app");
       await runCommand(`bun`, ["run", "mocked"], "react-app");
     } else {
       await checkIfAuthenticated();
