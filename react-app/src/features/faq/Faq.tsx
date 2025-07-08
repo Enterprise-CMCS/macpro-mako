@@ -72,11 +72,11 @@ export const Faq = () => {
                 </tr>
                 <tr>
                   <td className="border border-gray-300 px-4 py-2 whitespace-nowrap">
-                    Amended State Plan Pages*
+                    Amended State Plan Language*
                   </td>
                   <td className="border border-gray-300 px-4 py-2">
-                    Track changes to only the current approved CHIP state plan pages that the State
-                    is proposing to amend
+                    Track changes to <span className="underline">only</span> the currently approved
+                    CHIP state plan pages that the State is proposing to amend
                   </td>
                 </tr>
                 <tr>
@@ -126,7 +126,7 @@ export const Faq = () => {
                 </tr>
                 <tr>
                   <td className="border border-gray-300 px-4 py-2 whitespace-nowrap">
-                    CHIP Eligibility SPA Template*
+                    CHIP Eligibility Template*
                   </td>
                   <td className="border border-gray-300 px-4 py-2">
                     Amendment to the eligibility section of the CHIP state plan using a PDF template
@@ -139,6 +139,22 @@ export const Faq = () => {
                   <td className="border border-gray-300 px-4 py-2">
                     Cover letter to CMS with an authorized signature that outlines the purpose of
                     the CHIP SPA submission
+                  </td>
+                </tr>
+                <tr>
+                  <td className="border border-gray-300 px-4 py-2">Current State Plan</td>
+                  <td className="border border-gray-300 px-4 py-2">
+                    Current version of the CHIP state plan that details how the State operates its
+                    CHIP program
+                  </td>
+                </tr>
+                <tr>
+                  <td className="border border-gray-300 px-4 py-2 whitespace-nowrap">
+                    Amended State Plan Language
+                  </td>
+                  <td className="border border-gray-300 px-4 py-2">
+                    Track changes to <span className="underline">only</span> the currently approved
+                    CHIP state plan pages that the State is proposing to amend
                   </td>
                 </tr>
                 <tr>
@@ -335,7 +351,7 @@ export const Faq = () => {
           </article>
         </div>
         <div>
-          <CardWithTopBorder>
+          <CardWithTopBorder className="sticky top-5">
             <div className="p-4">
               <h3 className="text-lg text-bold mb-4">OneMAC Help Desk Contact Info</h3>
               <div>
