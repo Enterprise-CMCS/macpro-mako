@@ -147,6 +147,8 @@ export const getUserRolesWithNames = async (roleRequests: any[]) => {
 };
 
 export const getLatestActiveRoleByEmail = async (email: string): Promise<roles.Document | null> => {
+  if (!email) return null;
+
   const { domain, index } = getDomainAndNamespace("roles");
 
   const result = await search(domain, index, {
