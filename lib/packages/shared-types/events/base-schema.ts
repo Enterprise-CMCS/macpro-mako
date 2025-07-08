@@ -5,6 +5,7 @@ export const sharedSchema = z.object({
   submitterName: z.string(),
   submitterEmail: z.string().email(),
   timestamp: z.number(),
+  eventDoneBy: z.string().optional(),
 });
 
 export const ammendSchema = sharedSchema.extend({
