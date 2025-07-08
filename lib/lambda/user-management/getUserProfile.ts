@@ -1,12 +1,13 @@
 import { getAuthDetails, lookupUserAttributes } from "libs/api/auth/user";
 import { response } from "libs/handler-lib";
 import { APIGatewayEvent } from "shared-types";
+import { isUserManagerUser } from "shared-utils";
 import { z } from "zod";
 
 import { getAllUserRolesByEmail, getLatestActiveRoleByEmail } from "./userManagementService";
 
 export const getUserProfileSchema = z.object({
-  userEmail: z.string().email(),
+  userEmail: z.string().email().optional(),
 });
 
 export const getUserProfile = async (event: APIGatewayEvent) => {
@@ -31,40 +32,41 @@ export const getUserProfile = async (event: APIGatewayEvent) => {
     const { userId, poolId } = currAuthDetails;
     const currUserAttributes = await lookupUserAttributes(userId, poolId);
 
-    if (event.body) {
-      const eventBody = typeof event.body === "string" ? JSON.parse(event.body) : event.body;
-      const safeEventBody = getUserProfileSchema.safeParse(eventBody);
+    const eventBody = typeof event.body === "string" ? JSON.parse(event.body) : event.body;
+    const safeEventBody = getUserProfileSchema.safeParse(eventBody);
+    console.log("safeEventBody", JSON.stringify(safeEventBody, null, 2));
 
-      // if the event has a body with a userEmail, the userEmail is not the same as
-      // the current user's email, and the current user is a user manager, then
-      // return the data for the userEmail instead of the current user
+    // if the event has a body with a userEmail, the userEmail is not the same as
+    // the current user's email, and the current user is a user manager, then
+    // return the data for the userEmail instead of the current user
+    if (
+      safeEventBody.success &&
+      safeEventBody?.data?.userEmail &&
+      safeEventBody.data.userEmail !== currUserAttributes.email
+    ) {
+      const currUserLatestActiveRoleObj = await getLatestActiveRoleByEmail(
+        currUserAttributes.email,
+      );
+      const currUserRole = currUserLatestActiveRoleObj?.role ?? "norole";
       if (
-        safeEventBody.success &&
-        safeEventBody?.data?.userEmail &&
-        safeEventBody.data.userEmail !== currUserAttributes.email
+        isUserManagerUser({
+          ...currUserAttributes,
+          role: currUserRole,
+        })
       ) {
-        const currUserLatestActiveRoleObj = await getLatestActiveRoleByEmail(
-          currUserAttributes.email,
-        );
-        if (
-          ["systemadmin", "statesystemadmin", "cmsroleapprover", "helpdesk"].includes(
-            currUserLatestActiveRoleObj?.role,
-          )
-        ) {
-          const opensearchResponse = await getAllUserRolesByEmail(safeEventBody.data.userEmail);
-          return response({
-            statusCode: 200,
-            body: opensearchResponse,
-          });
-        }
+        const reqUserRoles = await getAllUserRolesByEmail(safeEventBody.data.userEmail);
+        return response({
+          statusCode: 200,
+          body: reqUserRoles,
+        });
       }
     }
 
-    const opensearchResponse = await getAllUserRolesByEmail(currUserAttributes.email);
+    const currUserRoles = await getAllUserRolesByEmail(currUserAttributes.email);
 
     return response({
       statusCode: 200,
-      body: opensearchResponse,
+      body: currUserRoles,
     });
   } catch (err: unknown) {
     console.log("An error occurred: ", err);

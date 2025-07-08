@@ -1,5 +1,5 @@
 import { APIGatewayEvent, APIGatewayProxyEventPathParameters } from "aws-lambda";
-import { getRequestContext, makoStateSubmitter } from "mocks";
+import { getRequestContext, testStateSubmitter } from "mocks";
 import { describe, expect, it } from "vitest";
 
 import { handler } from "./search";
@@ -19,7 +19,7 @@ describe("getSearchData Handler", () => {
     const event = {
       body: JSON.stringify({ query: { match_all: {} } }),
       pathParameters: { index: "main" } as APIGatewayProxyEventPathParameters,
-      requestContext: getRequestContext(makoStateSubmitter),
+      requestContext: getRequestContext(testStateSubmitter),
     } as APIGatewayEvent;
 
     const res = await handler(event);
@@ -37,7 +37,7 @@ describe("getSearchData Handler", () => {
     const event = {
       body: JSON.stringify({ query: { match_all: { id: "throw-error" } } }),
       pathParameters: { index: "main" } as APIGatewayProxyEventPathParameters,
-      requestContext: getRequestContext(makoStateSubmitter),
+      requestContext: getRequestContext(testStateSubmitter),
     } as APIGatewayEvent;
 
     const res = await handler(event);

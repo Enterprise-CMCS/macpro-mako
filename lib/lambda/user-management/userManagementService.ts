@@ -1,6 +1,6 @@
 import { search } from "libs";
 import { getDomainAndNamespace } from "libs/utils";
-import { Index } from "shared-types/opensearch";
+import { Index, roles, users } from "shared-types/opensearch";
 import { getApprovingRole } from "shared-utils";
 
 const QUERY_LIMIT = 2000;
@@ -8,7 +8,7 @@ const QUERY_LIMIT = 2000;
 export const getUserByEmail = async (
   email: string,
   domainNamespace?: { domain: string; index: Index },
-) => {
+): Promise<users.Document | null> => {
   console.log("Looking up user by email:", email);
   if (!email) return null;
   if (!domainNamespace) domainNamespace = getDomainAndNamespace("users");
@@ -26,7 +26,9 @@ export const getUserByEmail = async (
   return result.hits.hits[0]?._source ?? null;
 };
 
-export const getUsersByEmails = async (emails: string[]) => {
+export const getUsersByEmails = async (
+  emails: string[],
+): Promise<Record<string, { fullName?: string }>> => {
   const { domain, index } = getDomainAndNamespace("users");
   const results = await search(domain, index, {
     size: QUERY_LIMIT,
@@ -52,8 +54,9 @@ export const getUsersByEmails = async (emails: string[]) => {
   );
 };
 
-export const getAllUserRolesByEmail = async (email: string) => {
+export const getAllUserRolesByEmail = async (email: string): Promise<roles.Document[]> => {
   if (!email) return [];
+
   const { domain, index } = getDomainAndNamespace("roles");
 
   const result = await search(domain, index, {
@@ -68,8 +71,13 @@ export const getAllUserRolesByEmail = async (email: string) => {
   return result.hits.hits.map((hit: any) => ({ ...hit._source }));
 };
 
-export const userHasThisRole = async (email: string, state: string, role: string) => {
+export const userHasThisRole = async (
+  email: string,
+  state: string,
+  role: string,
+): Promise<boolean> => {
   if (!email || !state || !role) return false;
+
   const { domain, index } = getDomainAndNamespace("roles");
 
   const result = await search(domain, index, {
@@ -88,7 +96,7 @@ export const userHasThisRole = async (email: string, state: string, role: string
   return result.hits.hits.length > 0;
 };
 
-export const getAllUserRoles = async () => {
+export const getAllUserRoles = async (): Promise<roles.Document[]> => {
   const { domain, index } = getDomainAndNamespace("roles");
 
   const results = await search(domain, index, {
@@ -101,7 +109,7 @@ export const getAllUserRoles = async () => {
   return results.hits.hits.map((hit: any) => ({ ...hit._source }));
 };
 
-export const getAllUserRolesByState = async (state: string) => {
+export const getAllUserRolesByState = async (state: string): Promise<roles.Document[]> => {
   const { domain, index } = getDomainAndNamespace("roles");
 
   const results = await search(domain, index, {
@@ -138,8 +146,7 @@ export const getUserRolesWithNames = async (roleRequests: any[]) => {
   return rolesWithName;
 };
 
-export const getLatestActiveRoleByEmail = async (email: string) => {
-  if (!email) return null;
+export const getLatestActiveRoleByEmail = async (email: string): Promise<roles.Document | null> => {
   const { domain, index } = getDomainAndNamespace("roles");
 
   const result = await search(domain, index, {
@@ -166,7 +173,13 @@ export const getApproversByRoleState = async (
   state: string,
   domainNamespace?: { domain: string; index: Index },
   userDomainNamespace?: { domain: string; index: Index },
-) => {
+): Promise<
+  {
+    email: string;
+    fullName: string;
+    id: string;
+  }[]
+> => {
   if (!domainNamespace) domainNamespace = getDomainAndNamespace("roles");
   if (!userDomainNamespace) userDomainNamespace = getDomainAndNamespace("users");
   const { domain, index } = domainNamespace;
@@ -213,7 +226,14 @@ export const getApproversByRoleState = async (
 export const getApproversByRole = async (
   role: string,
   domainNamespace?: { domain: string; index: Index },
-) => {
+): Promise<
+  {
+    id: string;
+    email: string;
+    fullName: string;
+    territory: string;
+  }[]
+> => {
   const resolvedDomain = domainNamespace ?? getDomainAndNamespace("roles");
   const { domain, index } = resolvedDomain;
   const approverRole = getApprovingRole(role);

@@ -14,7 +14,10 @@ export const stateAccessRoles: UserRole[] = [
   "norole",
 ];
 
-export const orderStateAccess = (accesses: StateAccess[]) => {
+// In the backend we named the prop "StateAcess", but this is used for both state and CMS users
+// it is confusing me so on the frontend we will convert StateAcess -> RoleStatus as that is the more appropriate name
+
+export const orderRoleStatus = (accesses: StateAccess[]) => {
   if (!accesses || !accesses.length) return;
   // sort revoked states seprately and add to
   const activeStates = accesses.filter((x: StateAccess) => x.status != "revoked");
@@ -36,7 +39,7 @@ export const orderStateAccess = (accesses: StateAccess[]) => {
 
 // if user has no active roles, show pending state(s)
 // show state(s) for latest active role
-export const filterStateAccess = (userDetails, userProfile) => {
+export const filterRoleStatus = (userDetails, userProfile) => {
   if (!userProfile?.stateAccess || userProfile.stateAccess.length < 1) return [];
   return userDetails?.role && userDetails?.role !== "norole"
     ? userProfile.stateAccess.filter((access: StateAccess) => access.role === userDetails.role)

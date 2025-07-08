@@ -3,18 +3,27 @@ import LZ from "lz-string";
 import {
   CMS_ROLE_APPROVER_EMAIL,
   DEFAULT_CMS_USER_EMAIL,
+  OS_STATE_SYSTEM_ADMIN_EMAIL,
   setMockUsername,
-  STATE_SYSTEM_ADMIN_EMAIL,
   stateSubmitter,
   SYSTEM_ADMIN_EMAIL,
   systemAdmin,
   TEST_STATE_SUBMITTER_EMAIL,
 } from "mocks";
-import { beforeEach, describe, expect, test } from "vitest";
+import { beforeEach, describe, expect, test, vi } from "vitest";
 
 import { renderWithQueryClientAndMemoryRouter } from "@/utils/test-helpers";
 
 import { UserProfile, userProfileLoader } from ".";
+
+let mockUserRoleFeatureFlag = false;
+
+vi.mock("@/hooks/useFeatureFlag", () => ({
+  useFeatureFlag: (flag: string) => {
+    if (flag === "isNewUserRoleDisplay") return mockUserRoleFeatureFlag;
+    return false;
+  },
+}));
 
 describe("User Profile", () => {
   const setup = async (userEmail) => {
@@ -52,6 +61,7 @@ describe("User Profile", () => {
 
   beforeEach(() => {
     setMockUsername(systemAdmin);
+    mockUserRoleFeatureFlag = false;
   });
 
   test("should redirect to / if the user is not a user manager role", async () => {
@@ -119,7 +129,7 @@ describe("User Profile", () => {
   });
 
   test("renders State Access Management for statesystemadmin", async () => {
-    await setup(STATE_SYSTEM_ADMIN_EMAIL);
+    await setup(OS_STATE_SYSTEM_ADMIN_EMAIL);
     await waitFor(() =>
       expect(
         screen.getByRole("heading", { name: "State Access Management", level: 2 }),

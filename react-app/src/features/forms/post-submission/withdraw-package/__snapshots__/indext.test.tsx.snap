@@ -9,11 +9,10 @@ exports[`WithdrawPackageAction components > renders WithdrawPackageActionWaiver 
         class="max-w-screen-xl mx-auto px-4 lg:px-8"
       >
         <nav
-          aria-label="breadcrumbs for spa or waiver choices"
+          aria-label="Breadcrumb"
           class="my-4"
-          role="navigation"
         >
-          <ul
+          <ol
             class="flex flex-wrap gap-1"
           >
             <li
@@ -26,14 +25,15 @@ exports[`WithdrawPackageAction components > renders WithdrawPackageActionWaiver 
               >
                 Dashboard
               </a>
-            </li>
-            <li
-              class="flex items-center text-sm"
-            >
-              <span>
+              <span
+                aria-hidden="true"
+                class="ml-1"
+              >
                 <svg
+                  aria-hidden="true"
                   class="lucide lucide-chevron-right w-5 h-5"
                   fill="none"
+                  focusable="false"
                   height="24"
                   stroke="currentColor"
                   stroke-linecap="round"
@@ -48,6 +48,10 @@ exports[`WithdrawPackageAction components > renders WithdrawPackageActionWaiver 
                   />
                 </svg>
               </span>
+            </li>
+            <li
+              class="flex items-center text-sm"
+            >
               <a
                 class="underline text-sky-700 hover:text-sky-800"
                 data-discover="true"
@@ -55,14 +59,15 @@ exports[`WithdrawPackageAction components > renders WithdrawPackageActionWaiver 
               >
                 VA-2234.R11.01
               </a>
-            </li>
-            <li
-              class="flex items-center text-sm"
-            >
-              <span>
+              <span
+                aria-hidden="true"
+                class="ml-1"
+              >
                 <svg
+                  aria-hidden="true"
                   class="lucide lucide-chevron-right w-5 h-5"
                   fill="none"
+                  focusable="false"
                   height="24"
                   stroke="currentColor"
                   stroke-linecap="round"
@@ -77,14 +82,18 @@ exports[`WithdrawPackageAction components > renders WithdrawPackageActionWaiver 
                   />
                 </svg>
               </span>
+            </li>
+            <li
+              class="flex items-center text-sm"
+            >
               <span
-                aria-disabled="true"
+                aria-current="page"
                 class="whitespace-nowrap"
               >
                 Withdraw Package
               </span>
             </li>
-          </ul>
+          </ol>
         </nav>
         <form
           class="my-6 space-y-8 mx-auto justify-center flex flex-col"
@@ -302,14 +311,13 @@ exports[`WithdrawPackageAction components > renders WithdrawPackageActionWaiver 
                   class="text-base leading-normal peer-disabled:cursor-not-allowed peer-disabled:opacity-70 font-normal"
                   data-testid="addl-info-label"
                   for="additional-info"
-                >
-                  Explain your need for withdrawal, or upload supporting documentation.
-                </label>
+                />
                 <textarea
                   aria-describedby="character-count"
                   aria-live="off"
                   aria-multiline="true"
                   class="flex min-h-[76px] w-full rounded-sm border border-black bg-transparent px-3 py-2 text-sm shadow-sm placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:cursor-not-allowed disabled:opacity-50 h-[200px] resize-none"
+                  data-testid="additional-info-input"
                   id="additional-info"
                   maxlength="4000"
                   name="additionalInformation"
@@ -419,11 +427,10 @@ exports[`WithdrawPackageAction components > renders WithdrawPackageActionWaiver 
       class="max-w-screen-xl mx-auto px-4 lg:px-8"
     >
       <nav
-        aria-label="breadcrumbs for spa or waiver choices"
+        aria-label="Breadcrumb"
         class="my-4"
-        role="navigation"
       >
-        <ul
+        <ol
           class="flex flex-wrap gap-1"
         >
           <li
@@ -436,14 +443,15 @@ exports[`WithdrawPackageAction components > renders WithdrawPackageActionWaiver 
             >
               Dashboard
             </a>
-          </li>
-          <li
-            class="flex items-center text-sm"
-          >
-            <span>
+            <span
+              aria-hidden="true"
+              class="ml-1"
+            >
               <svg
+                aria-hidden="true"
                 class="lucide lucide-chevron-right w-5 h-5"
                 fill="none"
+                focusable="false"
                 height="24"
                 stroke="currentColor"
                 stroke-linecap="round"
@@ -458,6 +466,10 @@ exports[`WithdrawPackageAction components > renders WithdrawPackageActionWaiver 
                 />
               </svg>
             </span>
+          </li>
+          <li
+            class="flex items-center text-sm"
+          >
             <a
               class="underline text-sky-700 hover:text-sky-800"
               data-discover="true"
@@ -465,14 +477,15 @@ exports[`WithdrawPackageAction components > renders WithdrawPackageActionWaiver 
             >
               VA-2234.R11.01
             </a>
-          </li>
-          <li
-            class="flex items-center text-sm"
-          >
-            <span>
+            <span
+              aria-hidden="true"
+              class="ml-1"
+            >
               <svg
+                aria-hidden="true"
                 class="lucide lucide-chevron-right w-5 h-5"
                 fill="none"
+                focusable="false"
                 height="24"
                 stroke="currentColor"
                 stroke-linecap="round"
@@ -487,14 +500,18 @@ exports[`WithdrawPackageAction components > renders WithdrawPackageActionWaiver 
                 />
               </svg>
             </span>
+          </li>
+          <li
+            class="flex items-center text-sm"
+          >
             <span
-              aria-disabled="true"
+              aria-current="page"
               class="whitespace-nowrap"
             >
               Withdraw Package
             </span>
           </li>
-        </ul>
+        </ol>
       </nav>
       <form
         class="my-6 space-y-8 mx-auto justify-center flex flex-col"
@@ -712,14 +729,13 @@ exports[`WithdrawPackageAction components > renders WithdrawPackageActionWaiver 
                 class="text-base leading-normal peer-disabled:cursor-not-allowed peer-disabled:opacity-70 font-normal"
                 data-testid="addl-info-label"
                 for="additional-info"
-              >
-                Explain your need for withdrawal, or upload supporting documentation.
-              </label>
+              />
               <textarea
                 aria-describedby="character-count"
                 aria-live="off"
                 aria-multiline="true"
                 class="flex min-h-[76px] w-full rounded-sm border border-black bg-transparent px-3 py-2 text-sm shadow-sm placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:cursor-not-allowed disabled:opacity-50 h-[200px] resize-none"
+                data-testid="additional-info-input"
                 id="additional-info"
                 maxlength="4000"
                 name="additionalInformation"

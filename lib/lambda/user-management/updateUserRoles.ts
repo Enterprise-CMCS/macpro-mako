@@ -48,6 +48,8 @@ export const updateUserRoles = async (event: APIGatewayEvent) => {
             doneByName: updatedRole.doneByName,
             date: Date.now(),
             eventType: updatedRole.eventType,
+            group: updatedRole.group ?? null,
+            division: updatedRole.division ?? null,
           }),
         );
       }),
