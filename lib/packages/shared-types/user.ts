@@ -56,6 +56,13 @@ export const CMS_WRITE_ROLES = [
 
 export const CMS_READ_ONLY_ROLES = ["helpdesk"] satisfies UserRole[];
 
+export const USER_MANAGER_ROLES = [
+  "systemadmin",
+  "statesystemadmin",
+  "cmsroleapprover",
+  "helpdesk",
+] satisfies UserRole[];
+
 export const STATE_ROLES = ["statesubmitter", "statesystemadmin"] satisfies UserRole[];
 
 export const RoleDescriptionStrings: { [key: string]: string } = {
