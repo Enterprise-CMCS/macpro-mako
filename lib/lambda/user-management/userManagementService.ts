@@ -10,6 +10,7 @@ export const getUserByEmail = async (
   domainNamespace?: { domain: string; index: Index },
 ) => {
   console.log("Looking up user by email:", email);
+  if (!email) return null;
   if (!domainNamespace) domainNamespace = getDomainAndNamespace("users");
   const { domain, index } = domainNamespace;
 
@@ -52,6 +53,7 @@ export const getUsersByEmails = async (emails: string[]) => {
 };
 
 export const getAllUserRolesByEmail = async (email: string) => {
+  if (!email) return [];
   const { domain, index } = getDomainAndNamespace("roles");
 
   const result = await search(domain, index, {
@@ -67,6 +69,7 @@ export const getAllUserRolesByEmail = async (email: string) => {
 };
 
 export const userHasThisRole = async (email: string, state: string, role: string) => {
+  if (!email || !state || !role) return false;
   const { domain, index } = getDomainAndNamespace("roles");
 
   const result = await search(domain, index, {
@@ -136,6 +139,7 @@ export const getUserRolesWithNames = async (roleRequests: any[]) => {
 };
 
 export const getLatestActiveRoleByEmail = async (email: string) => {
+  if (!email) return null;
   const { domain, index } = getDomainAndNamespace("roles");
 
   const result = await search(domain, index, {
@@ -264,6 +268,7 @@ export const getActiveStatesForUserByEmail = async (
   email: string,
   latestActiveRole?: string,
 ): Promise<string[]> => {
+  if (!email) return [];
   const { domain, index } = getDomainAndNamespace("roles");
 
   const result = await search(domain, index, {
