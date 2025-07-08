@@ -183,7 +183,7 @@ exports[`Faq > should display the items expected 1`] = `
     </div>
     <div>
       <div
-        class="my-6 flex flex-col"
+        class="my-6 flex flex-col sticky top-5"
       >
         <div
           class="h-2 shadow-lg"
