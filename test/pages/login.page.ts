@@ -25,10 +25,10 @@ export class LoginPage {
     await this.page.waitForTimeout(2000);
   }
 
-  async euaLogin(userId, password) {
+  async euaLogin(euaId, password) {
     await this.goto();
     await this.page.waitForURL(/idm.cms.gov/);
-    await this.page.locator("#input28").fill(userId);
+    await this.page.locator("#input28").fill(euaId);
     await this.page.locator("#input36").fill(password);
     await this.page.locator("#tandc").check();
     await this.page.getByRole("button", { name: "Sign In" }).click();

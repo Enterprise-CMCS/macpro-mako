@@ -14,6 +14,7 @@ export default defineConfig({
   testDir: "./",
   testMatch: "**/*.spec.ts",
   testIgnore: "**/*.test.{ts,tsx}",
+  globalSetup: "./lib/global.setup.ts",
   globalTeardown: "./lib/global.teardown.ts",
   // need to find a reasonable timeout less than 30s
   // timeout: 10_000,
@@ -122,6 +123,13 @@ export default defineConfig({
         baseURL: baseURL.prod,
       },
       dependencies: ["smoke-test"],
+    },
+    {
+      name: "shared",
+      testMatch: "**/e2e/specs/*.spec.ts",
+      use: {
+        baseURL: baseURL.local,
+      },
     },
   ],
 }) satisfies PlaywrightTestConfig;
