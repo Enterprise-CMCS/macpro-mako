@@ -1027,7 +1027,7 @@ export const oneMACFAQContent: FAQContent[] = [
               message, download the PDF and open it with Adobe Reader or Acrobat, instead of within
               your browser.
             </p>
-            <ul className="list-disc pl-7 space-y-2">
+            <ul className="list-disc pl-7 space-y-2 py-4">
               {renderSection(
                 "MAGI Eligibility & Methods",
                 CHP_TEMPLATES,
