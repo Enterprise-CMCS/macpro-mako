@@ -41,7 +41,6 @@ export const withdrawPackage = async (event: APIGatewayEvent) => {
     submitterName: user.fullName,
     submitterEmail: user.email,
     timestamp: Date.now(),
-    eventDoneBy: submitterEmail,
   });
 
   return transformedData;
