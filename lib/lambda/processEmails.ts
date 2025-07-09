@@ -151,6 +151,7 @@ export async function processRecord(kafkaRecord: KafkaRecord, config: ProcessEma
         const withdrawPackageMakoEvents = await getPackageChangelog(safeID, changelogFilter);
         console.log(withdrawPackageMakoEvents, "WITHDRAW EVNETS");
         const latestwithdrawPackageEvent = withdrawPackageMakoEvents.hits.hits[0]._source;
+        console.log(latestwithdrawPackageEvent, "LATEST WITHDRAW EVENT");
 
         if (!item?.found || !item?._source) {
           console.log(`The package was not found for id: ${id} in mako. Doing nothing.`);
