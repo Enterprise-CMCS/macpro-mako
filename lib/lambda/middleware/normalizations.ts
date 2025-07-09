@@ -48,6 +48,7 @@ export const normalizeEvent = (opts: NormalizeEventOptions = {}): MiddlewareObj 
         throw createError(400, JSON.stringify({ message: "Event body required" }));
       }
 
+      console.log("before", { headers: request?.event?.headers });
       if (
         !request?.event?.headers ||
         !Object.keys(request.event.headers)
@@ -60,6 +61,7 @@ export const normalizeEvent = (opts: NormalizeEventOptions = {}): MiddlewareObj 
           "Content-Type": "application/json",
         };
       }
+      console.log("after", { headers: request?.event?.headers });
     },
     after: async (request: Request) => {
       if (typeof request.response.body === "object") {
