@@ -1,7 +1,6 @@
 import { PlusIcon } from "lucide-react";
 import { useEffect, useMemo, useState } from "react";
-import { Navigate } from "react-router";
-import { useNavigate } from "react-router-dom";
+import { Navigate, useNavigate } from "react-router";
 import { StateCode } from "shared-types";
 import { userRoleMap } from "shared-utils";
 
