@@ -2,8 +2,7 @@ import { APIGatewayEvent } from "aws-lambda";
 import { produceMessage } from "libs/api/kafka";
 import { z } from "zod";
 
-// import { authenticatedMiddy, canViewUser, ContextWithAuthenticatedUser } from "../middleware";
-import { nonAuthenticatedMiddy } from "../middleware";
+import { authenticatedMiddy, canViewUser, ContextWithAuthenticatedUser } from "../middleware";
 import { getUserByEmail } from "./userManagementService";
 
 export const submitGroupDivisionEventSchema = z
@@ -19,18 +18,17 @@ export const submitGroupDivisionEventSchema = z
 export type SubmitGroupDivisionEvent = APIGatewayEvent &
   z.infer<typeof submitGroupDivisionEventSchema>;
 
-// export const handler = authenticatedMiddy({
-export const handler = nonAuthenticatedMiddy({
+export const handler = authenticatedMiddy({
   opensearch: true,
   kafka: true,
-  // setToContext: true,
+  setToContext: true,
   eventSchema: submitGroupDivisionEventSchema,
 })
-  // .use(canViewUser())
-  // .handler(async (event: SubmitGroupDivisionEvent, context: ContextWithAuthenticatedUser) => {
-  .handler(async (event: SubmitGroupDivisionEvent) => {
+  .use(canViewUser())
+  .handler(async (event: SubmitGroupDivisionEvent, context: ContextWithAuthenticatedUser) => {
+    const { authenticatedUser } = context;
     const { userEmail, group, division } = event.body;
-    const email = userEmail; // || authenticatedUser?.email;
+    const email = userEmail || authenticatedUser?.email;
 
     if (!email) {
       throw new Error("Email is undefined");
