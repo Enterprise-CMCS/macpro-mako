@@ -6,10 +6,12 @@ import {
   NOT_FOUND_ITEM_ID,
   TEST_ITEM_ID,
 } from "mocks";
-import { describe, expect, it, vi } from "vitest";
 import { errorApiItemHandler } from "mocks";
 import { mockedApiServer as mockedServer } from "mocks/server";
+import { describe, expect, it, vi } from "vitest";
+
 import * as gaModule from "@/utils/ReactGA/SendGAEvent";
+
 import * as unit from "./useGetItem";
 vi.mock("@/utils/ReactGA/SendGAEvent", () => ({
   sendGAEvent: vi.fn(),

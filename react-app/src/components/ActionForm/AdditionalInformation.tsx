@@ -38,6 +38,7 @@ export const AdditionalInformation = <Schema extends SchemaWithEnforcableProps>(
         className="h-[200px] resize-none"
         id="additional-info"
         onChange={handleInputChange}
+        data-testid="additional-info-input"
       />
       <FormDescription>
         <span

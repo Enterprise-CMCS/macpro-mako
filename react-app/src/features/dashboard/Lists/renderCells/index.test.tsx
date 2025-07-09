@@ -1,4 +1,4 @@
-import { screen, render } from "@testing-library/react";
+import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import {
   TEST_1915B_ITEM,
@@ -44,7 +44,6 @@ describe("CellDetailsLink GA event", () => {
 
 describe("renderCellActions GA event", () => {
   it("should send GA event when an action is clicked", async () => {
-
     const user = userEvent.setup();
 
     const item: opensearch.main.Document = {
@@ -67,7 +66,6 @@ describe("renderCellActions GA event", () => {
     });
   });
 });
-
 
 describe("renderCells", () => {
   describe("renderCellDate", () => {

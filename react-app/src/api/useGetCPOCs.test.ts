@@ -2,7 +2,9 @@ import { errorApiCpocHandler } from "mocks";
 import { cpocsList } from "mocks/data/cpocs";
 import { mockedApiServer as mockedServer } from "mocks/server";
 import { describe, expect, it, vi } from "vitest";
+
 import * as gaModule from "@/utils/ReactGA/SendGAEvent";
+
 import { fetchCpocData } from "./useGetCPOCs";
 vi.mock("@/utils/ReactGA/SendGAEvent", () => ({
   sendGAEvent: vi.fn(),

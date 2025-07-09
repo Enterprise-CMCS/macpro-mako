@@ -1,9 +1,10 @@
 import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
-import { vi, describe, it, expect, beforeEach } from "vitest";
-import { AdditionalInformation } from "./AdditionalInformation";
-import { sendGAEvent } from "../../utils/ReactGA/SendGAEvent";
 import React from "react";
+import { beforeEach, describe, expect, it, vi } from "vitest";
+
+import { sendGAEvent } from "../../utils/ReactGA/SendGAEvent";
+import { AdditionalInformation } from "./AdditionalInformation";
 
 // Mocks
 vi.mock("../../utils/ReactGA/SendGAEvent", () => ({
@@ -13,7 +14,7 @@ vi.mock("../../utils/ReactGA/Mapper", () => ({
   mapSubmissionTypeBasedOnActionFormTitle: vi.fn(() => "chip_spa"),
 }));
 
-// since this component uses various form inputs 
+// since this component uses various form inputs
 vi.mock("../Inputs", () => ({
   FormItem: ({ children }) => <div>{children}</div>,
   FormLabel: ({ children, htmlFor }) => <label htmlFor={htmlFor}>{children}</label>,

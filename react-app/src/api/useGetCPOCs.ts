@@ -2,6 +2,7 @@ import { useQuery, UseQueryOptions } from "@tanstack/react-query";
 import { API } from "aws-amplify";
 import { ReactQueryApiError } from "shared-types";
 import { cpocs } from "shared-types/opensearch";
+
 import { sendGAEvent } from "@/utils/ReactGA/SendGAEvent";
 
 export async function fetchCpocData() {

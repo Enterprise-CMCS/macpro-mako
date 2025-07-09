@@ -1,7 +1,8 @@
 import { useQuery } from "@tanstack/react-query";
 import { API } from "aws-amplify";
-import { sendGAEvent } from "@/utils/ReactGA/SendGAEvent";
 import { StateCode } from "shared-types";
+
+import { sendGAEvent } from "@/utils/ReactGA/SendGAEvent";
 
 export type Approver = { email: string; fullName: string; territory: StateCode | "N/A" };
 type ApproverRaw = {

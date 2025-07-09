@@ -6,8 +6,10 @@ import {
 } from "mocks";
 import { mockedApiServer as mockedServer } from "mocks/server";
 import { describe, expect, it, vi } from "vitest";
-import { itemExists } from "./itemExists";
+
 import * as gaModule from "@/utils/ReactGA/SendGAEvent";
+
+import { itemExists } from "./itemExists";
 vi.mock("@/utils/ReactGA/SendGAEvent", () => {
   return {
     sendGAEvent: vi.fn(),

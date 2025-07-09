@@ -111,5 +111,4 @@ export async function writeMockedUiEnvFile(username) {
   };
 
   return writeEnvVarsToFile(envVariables, ".env.mocked.local");
-
 }

@@ -1,6 +1,6 @@
-import { describe, it, expect, vi, beforeEach, afterEach } from "vitest";
+import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 
-import { slugify, handleSupportLinkClick } from "./oneMACFAQContent";
+import { handleSupportLinkClick, slugify } from "./oneMACFAQContent";
 
 describe("slugify", () => {
   it("should convert a simple string to a slug", () => {
@@ -20,7 +20,6 @@ describe("slugify", () => {
     expect(slugify(longString).length).toBeLessThanOrEqual(40);
   });
 });
-
 
 describe("handleSupportLinkClick", () => {
   let gtagSpy: ReturnType<typeof vi.fn>;
@@ -45,14 +44,10 @@ describe("handleSupportLinkClick", () => {
     const clickHandler = handleSupportLinkClick("faq");
     clickHandler(event);
 
-    expect(gtagSpy).toHaveBeenCalledWith(
-      "event",
-      "support_click_faq_faq-question-number-1",
-      {
-        event_category: "Support",
-        event_label: "FAQ Question Number 1!",
-      },
-    );
+    expect(gtagSpy).toHaveBeenCalledWith("event", "support_click_faq_faq-question-number-1", {
+      event_category: "Support",
+      event_label: "FAQ Question Number 1!",
+    });
   });
 
   it("should use 'unknown' if textContent is empty", () => {
@@ -65,13 +60,9 @@ describe("handleSupportLinkClick", () => {
     const clickHandler = handleSupportLinkClick("faq");
     clickHandler(event);
 
-    expect(gtagSpy).toHaveBeenCalledWith(
-      "event",
-      "support_click_faq_unknown",
-      {
-        event_category: "Support",
-        event_label: "unknown",
-      },
-    );
+    expect(gtagSpy).toHaveBeenCalledWith("event", "support_click_faq_unknown", {
+      event_category: "Support",
+      event_label: "unknown",
+    });
   });
 });

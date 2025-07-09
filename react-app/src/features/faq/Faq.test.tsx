@@ -1,9 +1,9 @@
 import { fireEvent, render, screen } from "@testing-library/react";
 import { describe, expect, it, vi } from "vitest";
 
-import { Faq } from "./Faq";
-
 import { sendGAEvent } from "@/utils/ReactGA/SendGAEvent";
+
+import { Faq } from "./Faq";
 vi.mock("react-router", async () => ({
   ...(await vi.importActual<Record<string, unknown>>("react-router")),
   useParams: vi.fn().mockReturnValue({ id: "q1" }),

@@ -1,9 +1,11 @@
 import { render, screen } from "@testing-library/react";
 import { MemoryRouter } from "react-router";
-import {  describe, it, expect, vi } from "vitest";
+import { describe, expect, it, vi } from "vitest";
+
 import { useFeatureFlag } from "@/hooks/useFeatureFlag";
-import { ErrorPage } from "./index";
 import * as ReactGA from "@/utils/ReactGA/SendGAEvent";
+
+import { ErrorPage } from "./index";
 const sendGAEventSpy = vi.spyOn(ReactGA, "sendGAEvent");
 // Mock feature flag hook
 vi.mock("@/hooks/useFeatureFlag", () => ({
@@ -13,7 +15,7 @@ const mockedUseFeatureFlag = useFeatureFlag as ReturnType<typeof vi.fn>;
 describe("ErrorPage", () => {
   it("should send a GA event on mount", () => {
     mockedUseFeatureFlag.mockReturnValue(false);
-    
+
     render(
       <MemoryRouter>
         <ErrorPage />

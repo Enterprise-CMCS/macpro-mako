@@ -1,9 +1,11 @@
-import { screen, waitFor, render } from "@testing-library/react";
+import { screen, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { ExportToCsv } from "export-to-csv";
 import { getFilteredDocList } from "mocks";
-import { describe, expect, it, vi, beforeEach } from "vitest";
+import { describe, expect, it, vi } from "vitest";
+
 import { OsExportData, OsTableColumn } from "@/components";
+import * as ga from "@/utils/ReactGA/SendGAEvent";
 import {
   DEFAULT_COLUMNS,
   getDashboardQueryString,
@@ -11,9 +13,6 @@ import {
   NO_TRANSFORM_COLUMN,
   renderFilterDrawer,
 } from "@/utils/test-helpers";
-
-import { getMainExportData } from "@/api";
-import * as ga from "@/utils/ReactGA/SendGAEvent";
 
 const columns: OsTableColumn[] = [...DEFAULT_COLUMNS, NO_TRANSFORM_COLUMN, HIDDEN_COLUMN];
 
@@ -56,21 +55,20 @@ describe("Tooltip component within export button", () => {
   it("should export on click if button is enabled", async () => {
     const spy = vi.spyOn(ExportToCsv.prototype, "generateCsv").mockImplementation(() => {});
     const gaSpy = vi.spyOn(ga, "sendGAEvent").mockImplementation(() => {});
-  
+
     const expected = getFilteredDocList(["CHIP SPA", "Medicaid SPA"]).map((doc) => ({
       Authority: doc.authority,
       "SPA ID": doc.id,
       State: doc.state,
     }));
-  
+
     const { user } = setup(false);
-  
+
     await user.click(screen.queryByTestId("export-csv-btn"));
-  
+
     expect(spy).toHaveBeenCalledWith(expected);
-    expect(gaSpy).toHaveBeenCalledWith("dash_export_csv", { row_count: 11 }); 
+    expect(gaSpy).toHaveBeenCalledWith("dash_export_csv", { row_count: 11 });
   });
-  
 
   it("should show modal when count is greater than 10000", async () => {
     const { user } = setup(false, 10001);
@@ -119,6 +117,3 @@ describe("Tooltip component within export button", () => {
     expect(screen.queryByText("Export limit reached")).not.toBeInTheDocument();
   });
 });
-
-
-

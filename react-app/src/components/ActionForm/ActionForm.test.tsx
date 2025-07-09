@@ -322,7 +322,7 @@ describe("ActionForm", () => {
     expect(sendGAEventSpy).toHaveBeenCalledWith(
       "submit_page_open",
       expect.objectContaining({
-        submission_type: "Action Form Title", 
+        submission_type: "Action Form Title",
       }),
     );
 
@@ -362,7 +362,7 @@ describe("ActionForm", () => {
     const submitButton = await screen.findByTestId("submit-action-form");
 
     vi.useFakeTimers();
-    
+
     fireEvent.submit(submitButton);
 
     await vi.waitFor(async () => {

@@ -8,6 +8,7 @@ import { mockedApiServer as mockedServer } from "mocks/server";
 import { describe, expect, it, vi } from "vitest";
 
 import * as gaModule from "@/utils/ReactGA/SendGAEvent";
+
 import { createUserProfile } from "./useCreateUserProfile";
 vi.mock("@/utils/ReactGA/SendGAEvent", () => ({
   sendGAEvent: vi.fn(),

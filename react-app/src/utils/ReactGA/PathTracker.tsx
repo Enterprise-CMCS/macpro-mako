@@ -51,23 +51,22 @@ export default function PathTracker({ userRole, children }: PathTrackerProps) {
     const onRouteChange = () => {
       const newPath = window.location.pathname;
       const oldPath = prevPathRef.current;
-    
+
       // if the path didn’t actually change, do nothing
       if (newPath === oldPath) {
         return;
       }
-    
+
       // 1) send page_duration for the *old* path
       sendPageDuration(oldPath, startTimeRef.current);
-    
+
       // 2) send a new page_view for the new path, with referrer = old path
       sendPageView(newPath);
-    
+
       // 3) update prevPath and reset startTime for the new page
       prevPathRef.current = newPath;
       startTimeRef.current = Date.now();
     };
-    
 
     // ── Monkey‐patch pushState/replaceState so we catch in‐app navigation
     const origPush = window.history.pushState;

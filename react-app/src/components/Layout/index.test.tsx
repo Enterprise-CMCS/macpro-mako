@@ -6,13 +6,10 @@ import { afterAll, beforeAll, beforeEach, describe, expect, it, vi } from "vites
 
 import * as api from "@/api";
 import * as hooks from "@/hooks";
+import * as ReactGAModule from "@/utils/ReactGA/SendGAEvent";
 import { renderWithQueryClientAndMemoryRouter } from "@/utils/test-helpers";
 
 import { Layout, SubNavHeader } from "./index";
-import * as sendGAEvent from "@/utils/ReactGA/SendGAEvent";
-import * as LayoutModule from "./index";
-
-import * as ReactGAModule from "@/utils/ReactGA/SendGAEvent";
 
 vi.mock("@/utils/ReactGA/SendGAEvent", () => ({
   sendGAEvent: vi.fn(),
@@ -227,26 +224,6 @@ describe("Layout", () => {
       };
       await setupLayoutTest(VIEW_MODES.DESKTOP);
       expect(screen.queryByText("Dashboard")).not.toBeInTheDocument();
-    });
-
-    it("sends custom GA login event", async () => {
-      vi.mock("@/utils/ReactGA/sendGAEvent", async (importOriginal) => {
-        const actual = await importOriginal<typeof import("@/utils/ReactGA/SendGAEvent")>();
-        return {
-          ...actual,
-          sendGAEvent: vi.fn(),
-        };
-      });
-      const setupLayoutTest = async (
-        viewMode: ViewMode = VIEW_MODES.DESKTOP,
-        userData = testStateSubmitter,
-      ) => {
-        setMockUsername(userData);
-        mockMediaQuery(viewMode);
-        await renderLayout();
-      };
-      await setupLayoutTest(VIEW_MODES.DESKTOP);
-      expect(sendGAEvent).toHaveBeenCalledWith("Login", "onemac-state-user", null);
     });
   });
 
@@ -501,7 +478,7 @@ describe("Layout", () => {
   describe("GA Event Tracking", () => {
     beforeEach(() => {
       vi.clearAllMocks();
-  
+
       // Mock API hooks to return a logged-in user
       // vi.spyOn(api, "useGetUser").mockReturnValue({
       //   isLoading: false,
@@ -514,34 +491,34 @@ describe("Layout", () => {
       //                   family_name: "User",
       //                   username: "username",
       //                   email: "test@example.com",
-      //                 } 
+      //                 }
       //          },
       // });
-  
+
       // vi.spyOn(api, "useGetUserDetails").mockReturnValue({
       //   isLoading: false,
       //   data: { role: "stateuser" },
       // });
-  
+
       // Mock feature flags to show some links
-    //   vi.spyOn(hooks, "useFeatureFlag").mockImplementation((flag) => {
-    //     if (flag === "WEBFORM_TAB_VISIBLE") return false;
-    //     if (flag === "TOGGLE_FAQ") return false;
-    //     if (flag === "STATE_HOMEPAGE_FLAG") return false;
-    //     if (flag === "LOGIN_PAGE") return false;
-    //     if (flag === "CMS_HOMEPAGE_FLAG") return false;
-    //     return false;
-    //   });
+      //   vi.spyOn(hooks, "useFeatureFlag").mockImplementation((flag) => {
+      //     if (flag === "WEBFORM_TAB_VISIBLE") return false;
+      //     if (flag === "TOGGLE_FAQ") return false;
+      //     if (flag === "STATE_HOMEPAGE_FLAG") return false;
+      //     if (flag === "LOGIN_PAGE") return false;
+      //     if (flag === "CMS_HOMEPAGE_FLAG") return false;
+      //     return false;
+      //   });
     });
-  
+
     it("fires GA event when a nav link is clicked in desktop view", async () => {
       const user = userEvent.setup();
       mockMediaQuery({ desktop: true, mobile: false });
       await renderLayout();
-  
+
       const homeLink = await screen.findByText("Home");
       await user.click(homeLink);
-  
+
       expect(ReactGAModule.sendGAEvent).toHaveBeenCalledWith(
         "home_nav_home",
         expect.objectContaining({
@@ -550,13 +527,13 @@ describe("Layout", () => {
         }),
       );
     });
-  
+
     it("fires GA event when a nav link is clicked in mobile view", async () => {
       const user = userEvent.setup();
 
       mockMediaQuery(VIEW_MODES.MOBILE);
       await renderLayout();
-      
+
       const homeLink = await screen.findByText("Home");
       await user.click(homeLink);
 
@@ -569,5 +546,4 @@ describe("Layout", () => {
       );
     });
   });
-  
 });

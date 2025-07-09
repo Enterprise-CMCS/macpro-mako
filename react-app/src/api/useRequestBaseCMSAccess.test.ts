@@ -7,8 +7,10 @@ import {
 } from "mocks";
 import { mockedApiServer as mockedServer } from "mocks/server";
 import { describe, expect, it, vi } from "vitest";
-import { requestBaseCMSAccess } from "./useRequestBaseCMSAccess";
+
 import * as gaModule from "@/utils/ReactGA/SendGAEvent";
+
+import { requestBaseCMSAccess } from "./useRequestBaseCMSAccess";
 vi.mock("@/utils/ReactGA/SendGAEvent", () => ({
   sendGAEvent: vi.fn(),
 }));

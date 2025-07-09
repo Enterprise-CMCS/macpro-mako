@@ -13,11 +13,7 @@ import {
 import { useFeatureFlag } from "@/hooks/useFeatureFlag";
 import { sendGAEvent } from "@/utils/ReactGA/SendGAEvent";
 
-import {
-  handleSupportLinkClick,
-  helpDeskContact,
-  oneMACFAQContent,
-} from "./content/oneMACFAQContent";
+import { helpDeskContact, oneMACFAQContent } from "./content/oneMACFAQContent";
 
 export const Faq = () => {
   const isFAQHidden = useFeatureFlag("TOGGLE_FAQ");
@@ -335,13 +331,6 @@ export const Faq = () => {
                       key={anchorText}
                       data-testid={anchorText}
                     >
-<<<<<<< HEAD
-                      <AccordionTrigger
-                        className="text-left"
-                        onClick={handleSupportLinkClick("faq")}
-                      >
-                        {question}
-=======
                       <AccordionTrigger className="text-left">
                         <div className="flex items-center gap-2">
                           {isUpdateNewLabel && label && (
@@ -359,7 +348,6 @@ export const Faq = () => {
                           )}
                           <span className="hover:underline">{question}</span>
                         </div>
->>>>>>> main
                       </AccordionTrigger>
                       <AccordionContent>{answerJSX}</AccordionContent>
                     </AccordionItem>

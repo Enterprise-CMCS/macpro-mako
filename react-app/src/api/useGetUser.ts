@@ -2,6 +2,7 @@ import { useQuery } from "@tanstack/react-query";
 import { Auth } from "aws-amplify";
 import { CognitoUserAttributes, FullUser } from "shared-types";
 import { isCmsUser } from "shared-utils";
+
 import { getUserDetails } from "./useGetUserDetails";
 
 export type OneMacUser = {
@@ -25,9 +26,9 @@ export const getUser = async (): Promise<OneMacUser> => {
       (obj, item) =>
         item?.Name && item?.Value
           ? {
-            ...obj,
-            [item.Name]: item.Value,
-          }
+              ...obj,
+              [item.Name]: item.Value,
+            }
           : obj,
       {} as CognitoUserAttributes,
     );

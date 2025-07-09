@@ -7,10 +7,12 @@ import {
 } from "mocks";
 import items from "mocks/data/items";
 import { opensearch } from "shared-types";
-import { describe, it, expect, vi, beforeEach, afterEach } from "vitest";
-import { renderWithQueryClient } from "@/utils/test-helpers";
-import { PackageDetails } from ".";
+import { beforeEach, describe, expect, it, vi } from "vitest";
+
 import * as gaUtils from "@/utils";
+import { renderWithQueryClient } from "@/utils/test-helpers";
+
+import { PackageDetails } from ".";
 const sendGAEventSpy = vi.spyOn(gaUtils, "sendGAEvent");
 
 vi.mock("@/api/useGetUser", () => ({
@@ -23,7 +25,7 @@ vi.mock("shared-utils", async (importOriginal) => {
   const actual = await importOriginal<typeof import("shared-utils")>();
   return {
     ...actual,
-    isCmsUser: () => false, 
+    isCmsUser: () => false,
   };
 });
 
@@ -66,7 +68,7 @@ describe("package details", () => {
 describe("PackageDetails GA tracking", () => {
   beforeEach(() => {
     sendGAEventSpy.mockClear();
-    window.gtag = vi.fn(); 
+    window.gtag = vi.fn();
   });
 
   it("should send a GA event on load", () => {

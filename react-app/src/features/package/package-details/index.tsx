@@ -4,11 +4,8 @@ import { isCmsUser } from "shared-utils";
 
 import { useGetUser } from "@/api/useGetUser";
 import { DetailsSection, LoadingSpinner } from "@/components";
-<<<<<<< HEAD
-import { sendGAEvent } from "@/utils";
-=======
 import { useFeatureFlag } from "@/hooks/useFeatureFlag";
->>>>>>> main
+import { sendGAEvent } from "@/utils";
 
 import {
   getApprovedAndEffectiveDetails,
@@ -41,11 +38,8 @@ type PackageDetailsProps = {
 
 export const PackageDetails = ({ submission }: PackageDetailsProps) => {
   const { data: user, isLoading: isUserLoading } = useGetUser();
-<<<<<<< HEAD
   const didSetGATag = useRef(false);
-=======
   const isCHIPDetailsEnabled = useFeatureFlag("CHIP_SPA_DETAILS");
->>>>>>> main
   const title = useMemo(() => {
     const hasChipSubmissionType =
       Array.isArray(submission.chipSubmissionType) && submission.chipSubmissionType.length > 0;

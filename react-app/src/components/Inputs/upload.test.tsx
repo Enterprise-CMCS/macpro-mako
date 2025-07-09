@@ -3,11 +3,11 @@ import userEvent from "@testing-library/user-event";
 import { beforeEach, describe, expect, it, vi } from "vitest";
 
 import * as components from "@/components";
+import { sendGAEvent } from "@/utils/ReactGA/SendGAEvent";
 import { renderWithQueryClient } from "@/utils/test-helpers";
 
 import { Upload } from "./upload";
 import * as upUtil from "./uploadUtilities";
-import { sendGAEvent } from "@/utils/ReactGA/SendGAEvent";
 vi.mock("@/utils/ReactGA/SendGAEvent", () => ({
   sendGAEvent: vi.fn(),
 }));
@@ -206,21 +206,21 @@ describe("Upload", () => {
       bucket: "hello",
       key: "world",
     });
-  
+
     renderWithQueryClient(<Upload {...defaultProps} type="CHIP SPA Details" />);
-    
+
     const dropzone = screen.getByRole("presentation");
     dropzone.setAttribute("data-label", "attachment"); // for file_type value
-  
+
     const file = new File(["file contents"], "file.pdf", { type: "application/pdf" });
-  
+
     Object.defineProperty(dropzone, "files", {
       value: [file],
       writable: false,
     });
-  
+
     fireEvent.drop(dropzone);
-  
+
     await waitFor(() => {
       expect(defaultProps.setFiles).toHaveBeenCalledWith([
         {
@@ -232,7 +232,7 @@ describe("Upload", () => {
         },
       ]);
     });
-  
+
     expect(sendGAEvent).toHaveBeenCalledWith("submit_file_upload", {
       submission_type: "chip spa",
       file_type: "attachment",

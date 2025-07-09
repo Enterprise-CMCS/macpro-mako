@@ -1,4 +1,5 @@
 import { API } from "aws-amplify";
+
 import { sendGAEvent } from "@/utils/ReactGA/SendGAEvent";
 export const getAttachmentUrl = async (
   id: string,

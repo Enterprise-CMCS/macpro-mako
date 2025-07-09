@@ -1,7 +1,9 @@
-import { describe, expect, it, vi, beforeEach } from "vitest";
 import { fireEvent, render, screen } from "@testing-library/react";
 import { MemoryRouter } from "react-router";
+import { beforeEach, describe, expect, it, vi } from "vitest";
+
 import * as ReactGA from "@/utils/ReactGA/SendGAEvent";
+
 import { PackageSearch } from "./packageSearch";
 
 describe("PackageSearch", () => {
@@ -14,21 +16,21 @@ describe("PackageSearch", () => {
 
   it("renders search input and button", () => {
     render(
-        <MemoryRouter>
-          <PackageSearch />
-        </MemoryRouter>
-      );
-      
+      <MemoryRouter>
+        <PackageSearch />
+      </MemoryRouter>,
+    );
+
     expect(screen.getByRole("textbox")).toBeInTheDocument();
     expect(screen.getByRole("button", { name: /search/i })).toBeInTheDocument();
   });
 
   it("updates search text and calls GA on radio button change", () => {
     render(
-        <MemoryRouter>
-          <PackageSearch />
-        </MemoryRouter>
-      );
+      <MemoryRouter>
+        <PackageSearch />
+      </MemoryRouter>,
+    );
 
     fireEvent.change(screen.getByRole("textbox"), { target: { value: "test search" } });
     expect(screen.getByRole("textbox")).toHaveValue("test search");
@@ -39,10 +41,10 @@ describe("PackageSearch", () => {
 
   it("navigates to dashboard and fires GA event on search", () => {
     render(
-        <MemoryRouter>
-          <PackageSearch />
-        </MemoryRouter>
-      );
+      <MemoryRouter>
+        <PackageSearch />
+      </MemoryRouter>,
+    );
 
     fireEvent.change(screen.getByRole("textbox"), { target: { value: "SPA 1234" } });
     fireEvent.click(screen.getByRole("button", { name: /search/i }));
