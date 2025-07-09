@@ -1,4 +1,4 @@
-import { defaultCMSUser, helpDeskUser, reviewer, stateSubmitter, superReviewer } from "mocks";
+import { defaultCMSUser, helpDeskUser, reviewer, stateSubmitter } from "mocks";
 import type { FullUser } from "shared-types";
 import { describe, expect, it } from "vitest";
 
@@ -6,7 +6,6 @@ import {
   canRequestAccess,
   canUpdateAccess,
   isCmsReadonlyUser,
-  isCmsSuperUser,
   isCmsUser,
   isCmsWriteUser,
   isIDM,
@@ -24,7 +23,6 @@ describe("isCmsUser", () => {
     expect(isCmsUser(helpDeskUser as FullUser)).toEqual(true);
     expect(isCmsUser(defaultCMSUser as FullUser)).toEqual(true);
     expect(isCmsUser(reviewer as FullUser)).toEqual(true);
-    expect(isCmsUser(superReviewer as FullUser)).toEqual(true);
   });
   it("returns false for State users", () => {
     expect(isCmsUser(stateSubmitter as FullUser)).toEqual(false);
@@ -70,12 +68,6 @@ describe("isStateUser", () => {
   // Maybe we should refactor to eliminate this
   it("returns false for null args", () => {
     expect(isStateUser(null)).toBe(false);
-  });
-});
-
-describe("isCmsSuperUser", () => {
-  it("returns false because there is no longer a CMS Super User role", () => {
-    expect(isCmsSuperUser(superReviewer as FullUser)).toEqual(false);
   });
 });
 

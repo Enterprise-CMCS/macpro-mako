@@ -39,7 +39,7 @@ export const OsFiltering: FC<{
   return (
     <div className="my-2" data-testid="filtering">
       <p className="mb-1 text-sm">{"Search by Package ID, CPOC Name, or Submitter Name"}</p>
-      <div className="flex w-full lg:flex-row flex-col flex-grow content-between gap-2">
+      <div className="flex w-full lg:flex-row flex-col flex-grow justify-between gap-2">
         <SearchForm
           isSearching={context.isLoading}
           urlState={url.state}

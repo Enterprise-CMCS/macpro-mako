@@ -2,6 +2,7 @@ import { useState } from "react";
 import { Navigate, useNavigate, useSearchParams } from "react-router";
 import { StateCode } from "shared-types";
 import { UserRole } from "shared-types/events/legacy-user";
+import { userRoleMap } from "shared-utils";
 
 import { useGetUserDetails, useGetUserProfile, useSubmitRoleRequests } from "@/api";
 import {
@@ -20,15 +21,13 @@ import {
 import { FilterableSelect, Option } from "@/components/Opensearch/main/Filtering/Drawer/Filterable";
 import { useAvailableStates } from "@/hooks/useAvailableStates";
 
-import { userRoleMap } from "../profile";
-
 export const StateSignup = () => {
   const [stateSelected, setStateSelected] = useState<StateCode[]>([]);
   const [showModal, setShowModal] = useState<boolean>(false);
   const navigate = useNavigate();
   const { mutateAsync: submitRequest, isLoading } = useSubmitRoleRequests();
-  const { data: userDetails } = useGetUserDetails();
-  const { data: userProfile } = useGetUserProfile();
+  const { data: userDetails, isLoading: isUserDetailsLoading } = useGetUserDetails();
+  const { data: userProfile, isLoading: isUserProfileLoading } = useGetUserProfile();
   const currentRole = userDetails?.role;
 
   const [searchParams] = useSearchParams();
@@ -43,7 +42,7 @@ export const StateSignup = () => {
   const roleToRequest = roleToRequestMap[currentRole];
   const statesToRequest: Option[] = useAvailableStates(roleToRequest, userProfile?.stateAccess);
 
-  if (!userDetails) return <LoadingSpinner />;
+  if (isUserDetailsLoading || isUserProfileLoading) return <LoadingSpinner />;
 
   if (!userDetails?.role) return <Navigate to="/" />;
 

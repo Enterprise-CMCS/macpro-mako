@@ -43,7 +43,7 @@ test.describe("Dashboard page", { tag: ["@dashboard"] }, () => {
         "Search by Package ID, CPOC Name, or Submitter Name",
       );
 
-      await expect(page.locator("#searchInput")).toBeVisible();
+      await expect(page.locator("#search-input")).toBeVisible();
     });
 
     test("columns button", async ({ page }) => {
@@ -53,7 +53,7 @@ test.describe("Dashboard page", { tag: ["@dashboard"] }, () => {
 
     test("filters buttons", async ({ page }) => {
       await expect(page.getByRole("button", { name: /Filters/ })).toBeVisible();
-      await expect(page.getByRole("button", { name: /Filters/ })).toHaveText("Filters");
+      await expect(page.getByRole("button", { name: /Filters/ })).toHaveText("Open filter panel");
     });
 
     test("export button", async ({ page }) => {

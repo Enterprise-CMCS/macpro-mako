@@ -2,7 +2,20 @@ import { GetParameterCommand, SSMClient } from "@aws-sdk/client-ssm";
 import { promises as fs } from "fs";
 import path from "path";
 
-import { project, region } from "./consts";
+import { mockEnvVariables, project, region } from "./consts";
+
+async function writeEnvVarsToFile(envVariables, filename) {
+  const envFilePath = path.join(__dirname, "../../../react-app", filename);
+  console.log(envFilePath);
+  const envFileContent = Object.entries(envVariables)
+    .map(([key, value]) => `${key}=${value}`)
+    .join("\n");
+
+  await fs.writeFile(envFilePath, envFileContent);
+
+  console.log(`${filename} file written to ${envFilePath}`);
+  return envFilePath;
+}
 
 export async function writeUiEnvFile(stage, local = false) {
   console.log("write-ui-env-file __dirname:", __dirname);
@@ -40,6 +53,7 @@ export async function writeUiEnvFile(stage, local = false) {
         )
       ).Parameter!.Value!;
     }
+    googleAnalytics = "";
   } catch {
     console.error("Can't find the Google Analytics ID");
   }
@@ -88,4 +102,14 @@ export async function writeUiEnvFile(stage, local = false) {
   console.log("✅ Successfully wrote env.json and ");
 
   return envFilePath;
+}
+
+export async function writeMockedUiEnvFile(username) {
+  const envVariables = {
+    ...mockEnvVariables,
+    VITE_MOCK_USER_USERNAME: `"${username}"`,
+  };
+
+  return writeEnvVarsToFile(envVariables, ".env.mocked.local");
+
 }

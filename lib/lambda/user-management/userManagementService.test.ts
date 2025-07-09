@@ -2,18 +2,20 @@ import {
   getFilteredRoleDocsByEmail,
   getFilteredRoleDocsByState,
   getLatestRoleByEmail,
+  OS_STATE_SUBMITTER_EMAIL,
+  OS_STATE_SUBMITTER_USER,
+  OS_STATE_SYSTEM_ADMIN_EMAIL,
+  OS_STATE_SYSTEM_ADMIN_USER,
   roleDocs,
-  STATE_SUBMITTER_EMAIL,
-  STATE_SUBMITTER_USER,
-  STATE_SYSTEM_ADMIN_EMAIL,
-  STATE_SYSTEM_ADMIN_USER,
 } from "mocks";
-import { describe, expect, it } from "vitest";
+import { beforeEach, describe, expect, it, vi } from "vitest";
 
 import {
   getAllUserRoles,
   getAllUserRolesByEmail,
   getAllUserRolesByState,
+  getApproversByRole,
+  getApproversByRoleState,
   getLatestActiveRoleByEmail,
   getUserByEmail,
   getUserRolesWithNames,
@@ -42,12 +44,12 @@ describe("User Management Service", () => {
       expect(result).toBeNull();
     });
     it("should return the state submitter when searching for their email", async () => {
-      const result = await getUserByEmail(STATE_SUBMITTER_EMAIL);
-      expect(result).toEqual(STATE_SUBMITTER_USER._source);
+      const result = await getUserByEmail(OS_STATE_SUBMITTER_EMAIL);
+      expect(result).toEqual(OS_STATE_SUBMITTER_USER._source);
     });
     it("should return the state sysadmin when searching for their email", async () => {
-      const result = await getUserByEmail(STATE_SYSTEM_ADMIN_EMAIL);
-      expect(result).toEqual(STATE_SYSTEM_ADMIN_USER._source);
+      const result = await getUserByEmail(OS_STATE_SYSTEM_ADMIN_EMAIL);
+      expect(result).toEqual(OS_STATE_SYSTEM_ADMIN_USER._source);
     });
   });
 
@@ -71,60 +73,67 @@ describe("User Management Service", () => {
       expect(result).toEqual({});
     });
     it("should return the state submitter when searching for their email", async () => {
-      const result = await getUsersByEmails([STATE_SUBMITTER_EMAIL]);
+      const result = await getUsersByEmails([OS_STATE_SUBMITTER_EMAIL]);
       expect(result).toEqual({
-        [STATE_SUBMITTER_EMAIL]: STATE_SUBMITTER_USER._source,
+        [OS_STATE_SUBMITTER_EMAIL]: OS_STATE_SUBMITTER_USER._source,
       });
     });
     it("should return the state sysadmin when searching for their email", async () => {
-      const result = await getUsersByEmails([STATE_SYSTEM_ADMIN_EMAIL]);
+      const result = await getUsersByEmails([OS_STATE_SYSTEM_ADMIN_EMAIL]);
       expect(result).toEqual({
-        [STATE_SYSTEM_ADMIN_EMAIL]: STATE_SYSTEM_ADMIN_USER._source,
+        [OS_STATE_SYSTEM_ADMIN_EMAIL]: OS_STATE_SYSTEM_ADMIN_USER._source,
       });
     });
     it("should multiple users that match email search", async () => {
-      const result = await getUsersByEmails([STATE_SUBMITTER_EMAIL, STATE_SYSTEM_ADMIN_EMAIL]);
+      const result = await getUsersByEmails([
+        OS_STATE_SUBMITTER_EMAIL,
+        OS_STATE_SYSTEM_ADMIN_EMAIL,
+      ]);
       expect(result).toEqual({
-        [STATE_SUBMITTER_EMAIL]: STATE_SUBMITTER_USER._source,
-        [STATE_SYSTEM_ADMIN_EMAIL]: STATE_SYSTEM_ADMIN_USER._source,
+        [OS_STATE_SUBMITTER_EMAIL]: OS_STATE_SUBMITTER_USER._source,
+        [OS_STATE_SYSTEM_ADMIN_EMAIL]: OS_STATE_SYSTEM_ADMIN_USER._source,
       });
     });
     it("should handle an undefined email in search", async () => {
-      const emails = [STATE_SUBMITTER_EMAIL, STATE_SYSTEM_ADMIN_EMAIL];
+      const emails = [OS_STATE_SUBMITTER_EMAIL, OS_STATE_SYSTEM_ADMIN_EMAIL];
       // @ts-ignore testing undefined email
       emails.push(undefined);
       const result = await getUsersByEmails(emails);
       expect(result).toEqual({
-        [STATE_SUBMITTER_EMAIL]: STATE_SUBMITTER_USER._source,
-        [STATE_SYSTEM_ADMIN_EMAIL]: STATE_SYSTEM_ADMIN_USER._source,
+        [OS_STATE_SUBMITTER_EMAIL]: OS_STATE_SUBMITTER_USER._source,
+        [OS_STATE_SYSTEM_ADMIN_EMAIL]: OS_STATE_SYSTEM_ADMIN_USER._source,
       });
     });
     it("should handle a null email in search", async () => {
-      const emails = [STATE_SUBMITTER_EMAIL, STATE_SYSTEM_ADMIN_EMAIL];
+      const emails = [OS_STATE_SUBMITTER_EMAIL, OS_STATE_SYSTEM_ADMIN_EMAIL];
       // @ts-ignore testing a null email
       emails.push(null);
       const result = await getUsersByEmails(emails);
       expect(result).toEqual({
-        [STATE_SUBMITTER_EMAIL]: STATE_SUBMITTER_USER._source,
-        [STATE_SYSTEM_ADMIN_EMAIL]: STATE_SYSTEM_ADMIN_USER._source,
+        [OS_STATE_SUBMITTER_EMAIL]: OS_STATE_SUBMITTER_USER._source,
+        [OS_STATE_SYSTEM_ADMIN_EMAIL]: OS_STATE_SYSTEM_ADMIN_USER._source,
       });
     });
     it("should handle an empty string email in search", async () => {
-      const result = await getUsersByEmails([STATE_SUBMITTER_EMAIL, STATE_SYSTEM_ADMIN_EMAIL, ""]);
+      const result = await getUsersByEmails([
+        OS_STATE_SUBMITTER_EMAIL,
+        OS_STATE_SYSTEM_ADMIN_EMAIL,
+        "",
+      ]);
       expect(result).toEqual({
-        [STATE_SUBMITTER_EMAIL]: STATE_SUBMITTER_USER._source,
-        [STATE_SYSTEM_ADMIN_EMAIL]: STATE_SYSTEM_ADMIN_USER._source,
+        [OS_STATE_SUBMITTER_EMAIL]: OS_STATE_SUBMITTER_USER._source,
+        [OS_STATE_SYSTEM_ADMIN_EMAIL]: OS_STATE_SYSTEM_ADMIN_USER._source,
       });
     });
     it("should handle an invalid email in search", async () => {
       const result = await getUsersByEmails([
-        STATE_SUBMITTER_EMAIL,
-        STATE_SYSTEM_ADMIN_EMAIL,
+        OS_STATE_SUBMITTER_EMAIL,
+        OS_STATE_SYSTEM_ADMIN_EMAIL,
         "invalid@email.com",
       ]);
       expect(result).toEqual({
-        [STATE_SUBMITTER_EMAIL]: STATE_SUBMITTER_USER._source,
-        [STATE_SYSTEM_ADMIN_EMAIL]: STATE_SYSTEM_ADMIN_USER._source,
+        [OS_STATE_SUBMITTER_EMAIL]: OS_STATE_SUBMITTER_USER._source,
+        [OS_STATE_SYSTEM_ADMIN_EMAIL]: OS_STATE_SYSTEM_ADMIN_USER._source,
       });
     });
   });
@@ -149,12 +158,12 @@ describe("User Management Service", () => {
       expect(result).toEqual([]);
     });
     it("should return the correct roles for the state submitter", async () => {
-      const result = await getAllUserRolesByEmail(STATE_SUBMITTER_EMAIL);
-      expect(result).toEqual(getFilteredRoleDocsByEmail(STATE_SUBMITTER_EMAIL));
+      const result = await getAllUserRolesByEmail(OS_STATE_SUBMITTER_EMAIL);
+      expect(result).toEqual(getFilteredRoleDocsByEmail(OS_STATE_SUBMITTER_EMAIL));
     });
     it("should return the correct roles for the state sysadmin", async () => {
-      const result = await getAllUserRolesByEmail(STATE_SYSTEM_ADMIN_EMAIL);
-      expect(result).toEqual(getFilteredRoleDocsByEmail(STATE_SYSTEM_ADMIN_EMAIL));
+      const result = await getAllUserRolesByEmail(OS_STATE_SYSTEM_ADMIN_EMAIL);
+      expect(result).toEqual(getFilteredRoleDocsByEmail(OS_STATE_SYSTEM_ADMIN_EMAIL));
     });
   });
 
@@ -174,15 +183,15 @@ describe("User Management Service", () => {
       expect(result).toBeFalsy();
     });
     it("should return false if the email and state record exist but for a different role", async () => {
-      const result = await userHasThisRole(STATE_SYSTEM_ADMIN_EMAIL, "MD", "statesubmitter");
+      const result = await userHasThisRole(OS_STATE_SYSTEM_ADMIN_EMAIL, "MD", "statesubmitter");
       expect(result).toBeFalsy();
     });
     it("should return false if the email and role record exist but for a different state", async () => {
-      const result = await userHasThisRole(STATE_SYSTEM_ADMIN_EMAIL, "SC", "statesystemadmin");
+      const result = await userHasThisRole(OS_STATE_SYSTEM_ADMIN_EMAIL, "SC", "statesystemadmin");
       expect(result).toBeFalsy();
     });
     it("should return true if the email, state, and role record exist", async () => {
-      const result = await userHasThisRole(STATE_SYSTEM_ADMIN_EMAIL, "MD", "statesystemadmin");
+      const result = await userHasThisRole(OS_STATE_SYSTEM_ADMIN_EMAIL, "MD", "statesystemadmin");
       expect(result).toBeTruthy();
     });
   });
@@ -243,13 +252,13 @@ describe("User Management Service", () => {
       expect(result).toBeNull();
     });
     it("should return the latest role for the state submitter", async () => {
-      const [role] = getLatestRoleByEmail(STATE_SUBMITTER_EMAIL);
-      const result = await getLatestActiveRoleByEmail(STATE_SUBMITTER_EMAIL);
+      const [role] = getLatestRoleByEmail(OS_STATE_SUBMITTER_EMAIL);
+      const result = await getLatestActiveRoleByEmail(OS_STATE_SUBMITTER_EMAIL);
       expect(result).toEqual(role._source);
     });
     it("should return the latest role for the state sysadmin", async () => {
-      const [role] = getLatestRoleByEmail(STATE_SYSTEM_ADMIN_EMAIL);
-      const result = await getLatestActiveRoleByEmail(STATE_SYSTEM_ADMIN_EMAIL);
+      const [role] = getLatestRoleByEmail(OS_STATE_SYSTEM_ADMIN_EMAIL);
+      const result = await getLatestActiveRoleByEmail(OS_STATE_SYSTEM_ADMIN_EMAIL);
       expect(result).toEqual(role._source);
     });
   });
@@ -298,7 +307,7 @@ describe("User Management Service", () => {
       ]);
     });
     it("should return the role record with the email and full name for state submitter", async () => {
-      const [roleObj] = getLatestRoleByEmail(STATE_SUBMITTER_EMAIL);
+      const [roleObj] = getLatestRoleByEmail(OS_STATE_SUBMITTER_EMAIL);
       const result = await getUserRolesWithNames([
         {
           ...roleObj?._source,
@@ -307,13 +316,13 @@ describe("User Management Service", () => {
       expect(result).toEqual([
         {
           ...roleObj?._source,
-          email: STATE_SUBMITTER_EMAIL,
-          fullName: STATE_SUBMITTER_USER._source.fullName,
+          email: OS_STATE_SUBMITTER_EMAIL,
+          fullName: OS_STATE_SUBMITTER_USER._source.fullName,
         },
       ]);
     });
     it("should return the role record with the email and full name for state sysadmin", async () => {
-      const [roleObj] = getLatestRoleByEmail(STATE_SYSTEM_ADMIN_EMAIL);
+      const [roleObj] = getLatestRoleByEmail(OS_STATE_SYSTEM_ADMIN_EMAIL);
       const result = await getUserRolesWithNames([
         {
           ...roleObj?._source,
@@ -322,8 +331,8 @@ describe("User Management Service", () => {
       expect(result).toEqual([
         {
           ...roleObj?._source,
-          email: STATE_SYSTEM_ADMIN_EMAIL,
-          fullName: STATE_SYSTEM_ADMIN_USER._source.fullName,
+          email: OS_STATE_SYSTEM_ADMIN_EMAIL,
+          fullName: OS_STATE_SYSTEM_ADMIN_USER._source.fullName,
         },
       ]);
     });
@@ -353,6 +362,61 @@ describe("User Management Service", () => {
           territory: "MD",
           lastModifiedDate: 1745003573565,
           fullName: "Unknown",
+        },
+      ]);
+    });
+  });
+
+  describe("getApproversByRoleState", () => {
+    beforeEach(() => {
+      vi.resetAllMocks();
+    });
+
+    it("should return approvers for statesubmitter in a specific state", async () => {
+      const result = await getApproversByRoleState("statesubmitter", "MD");
+
+      expect(result).toEqual([
+        {
+          email: "statesystemadmin@nightwatch.test",
+          fullName: "Statesystemadmin Nightwatch",
+          id: "statesystemadmin@nightwatch.test_MD_statesystemadmin",
+        },
+      ]);
+    });
+
+    it("should default to fullName 'Unknown' if user not found", async () => {
+      const result = await getApproversByRoleState("statesubmitter", "CA");
+
+      expect(result).toEqual([
+        {
+          email: "statesystemadmin@noname.com",
+          fullName: "Unknown",
+          id: "statesystemadmin@noname.com_CA_statesystemadmin",
+        },
+      ]);
+    });
+  });
+
+  describe("getApproversByRole", () => {
+    beforeEach(() => {
+      vi.resetAllMocks();
+    });
+
+    it("should default to fullName 'Unknown' if user not found", async () => {
+      const result = await getApproversByRole("statesubmitter");
+
+      expect(result).toEqual([
+        {
+          email: "statesystemadmin@nightwatch.test",
+          fullName: "Statesystemadmin Nightwatch",
+          id: "statesystemadmin@nightwatch.test_MD_statesystemadmin",
+          territory: "MD",
+        },
+        {
+          email: "statesystemadmin@noname.com",
+          fullName: "Unknown",
+          id: "statesystemadmin@noname.com_CA_statesystemadmin",
+          territory: "CA",
         },
       ]);
     });

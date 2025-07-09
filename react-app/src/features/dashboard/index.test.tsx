@@ -7,11 +7,11 @@ import {
 } from "@testing-library/react";
 import userEvent, { UserEvent } from "@testing-library/user-event";
 import {
+  DEFAULT_CMS_USER,
   errorApiSearchHandler,
+  HELP_DESK_USER,
   setMockUsername,
-  TEST_CMS_REVIEWER_USER,
-  TEST_DEFAULT_CMS_USER,
-  TEST_HELP_DESK_USER,
+  TEST_REVIEWER_USER,
   TEST_STATE_SUBMITTER_USER,
 } from "mocks";
 import { mockedApiServer as mockedServer } from "mocks/server";
@@ -227,9 +227,9 @@ describe("Dashboard", () => {
   });
 
   describe.each([
-    ["CMS Reviewer", TEST_CMS_REVIEWER_USER.username, true],
-    ["Default CMS User", TEST_DEFAULT_CMS_USER.username, true],
-    ["CMS Help Desk User", TEST_HELP_DESK_USER.username, false],
+    ["CMS Reviewer", TEST_REVIEWER_USER.username, true],
+    ["Default CMS User", DEFAULT_CMS_USER.username, true],
+    ["CMS Help Desk User", HELP_DESK_USER.username, false],
   ])("as a %s", (_title, username, hasActions) => {
     let user: UserEvent;
     beforeAll(async () => {
@@ -317,9 +317,9 @@ describe("Dashboard", () => {
     vi.mock("react-router", { spy: true });
     it.each([
       ["State Submitter", TEST_STATE_SUBMITTER_USER, false],
-      ["CMS Reviewer", TEST_CMS_REVIEWER_USER, true],
-      ["Default CMS Reviewer", TEST_DEFAULT_CMS_USER, true],
-      ["CMS Help Desk User", TEST_HELP_DESK_USER, true],
+      ["CMS Reviewer", TEST_REVIEWER_USER, true],
+      ["Default CMS Reviewer", DEFAULT_CMS_USER, true],
+      ["CMS Help Desk User", HELP_DESK_USER, true],
     ])("should load a %s", async (title, user, isCms) => {
       const queryClient = createTestQueryClient();
       setMockUsername(user.username);

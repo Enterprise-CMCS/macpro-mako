@@ -17,13 +17,24 @@ const lambdaClient = new LambdaClient({ region });
 
 export const logs = {
   command: "logs",
-  describe: "Stream a lambda's cloudwatch logs.",
+  describe: `Stream the CloudWatch logs for a Lambda function. If multiple Lambda functions match the function name, the user will be prompted to select one.
+  
+  ** Requires MACPro Application Admin or MACPro ReadOnly AWS credentials **
+  `,
   builder: (yargs: Argv) =>
-    yargs.option("stage", { type: "string", demandOption: false }).option("functionName", {
-      alias: "f",
-      type: "string",
-      demandOption: true,
-    }),
+    yargs
+      .option("stage", {
+        type: "string",
+        demandOption: false,
+        describe: "Stage environment in AWS",
+        defaultDescription: "current branch name",
+      })
+      .option("functionName", {
+        alias: "f",
+        type: "string",
+        demandOption: true,
+        describe: "Lambda function name",
+      }),
   handler: async (options: { stage?: string; functionName: string }) => {
     await checkIfAuthenticated();
     const stage = options.stage || (await setStageFromBranch());

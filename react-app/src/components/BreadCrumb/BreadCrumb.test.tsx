@@ -55,7 +55,7 @@ describe("Bread Crumb Tests", () => {
           <BreadCrumb data-testid="dashboard" to="/test">
             Test Dashboard
           </BreadCrumb>
-          <BreadCrumb data-testid="item" to="/test/:id" active={false}>
+          <BreadCrumb data-testid="item" to="/test/:id" active={true}>
             Test Item
           </BreadCrumb>
         </BreadCrumbBar>,
@@ -99,13 +99,13 @@ describe("Bread Crumb Tests", () => {
 
     test("optionCrumbsFromPath creates config passed into component & displays correct bread crumbs ", () => {
       const path = "/details/Medicaid%20SPA/MD-24-0114-P";
-      const testConfig = optionCrumbsFromPath(path, "Medicaid SPA" as Authority);
+      const testConfig = optionCrumbsFromPath(path, "Medicaid SPA" as Authority, "MD-24-0114-P");
 
       render(<BreadCrumbs options={[...testConfig]} />, { wrapper: BrowserRouter });
 
-      const dashboardBreadCrum = screen.getByRole("link", { name: "Dashboard" });
-      expect(dashboardBreadCrum).toBeInTheDocument();
-      expect(dashboardBreadCrum).toHaveAttribute("href", "/dashboard?tab=spas");
+      const dashboardBreadCrumb = screen.getByRole("link", { name: "Dashboard" });
+      expect(dashboardBreadCrumb).toBeInTheDocument();
+      expect(dashboardBreadCrumb).toHaveAttribute("href", "/dashboard?tab=spas");
     });
   });
 

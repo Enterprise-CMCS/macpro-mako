@@ -41,56 +41,11 @@ export type TestCpocsItemResult = DeepPartial<opensearch.cpocs.ItemResult>;
 
 export type TestCpocsDocument = TestCpocsItemResult["_source"];
 
-export type TestUserResult = {
-  _id: string;
-  found: boolean;
-  _source: {
-    id: string;
-    eventType: "user-info" | "legacy-user-info";
-    email: string;
-    fullName: string;
-    role:
-      | "defaultcmsuser"
-      | "cmsroleapprover"
-      | "cmsreviewer"
-      | "statesystemadmin"
-      | "helpdesk"
-      | "statesubmitter"
-      | "systemadmin"
-      | "norole";
-    states?: string[];
-    group?: string;
-    division?: string;
-  };
-};
+export type TestUserResult = DeepPartial<opensearch.users.ItemResult>;
 
 export type TestUserDocument = TestUserResult["_source"];
 
-export type TestUserRole =
-  | "defaultcmsuser"
-  | "cmsroleapprover"
-  | "cmsreviewer"
-  | "statesystemadmin"
-  | "helpdesk"
-  | "statesubmitter"
-  | "systemadmin"
-  | "norole";
-
-export type TestRoleResult = {
-  _id: string;
-  found: boolean;
-  _source: {
-    id: string;
-    eventType: "user-role" | "legacy-user-role";
-    email: string;
-    doneByEmail: string;
-    doneByName: string;
-    status: "active" | "pending" | "revoked" | "denied";
-    role: TestUserRole;
-    territory: string;
-    lastModifiedDate: number;
-  };
-};
+export type TestRoleResult = DeepPartial<opensearch.roles.ItemResult>;
 
 export type TestRoleDocument = TestRoleResult["_source"];
 
@@ -193,7 +148,7 @@ export type SearchQueryBody = {
     match_all?: MatchAllQuery;
     regexp?: Record<string, string>;
   };
-  aggs?: Record<QueryAggs>;
+  aggs?: Record<string, QueryAggs>;
   size?: number;
   sortDirection?: string;
   sortField?: string;
@@ -240,7 +195,7 @@ export type PackageActionsRequestBody = {
 export type SubmitRoleRequestBody = {
   email: string;
   state: string;
-  role: TestUserRole;
+  role: UserRole;
   eventType: string;
   grantAccess?: boolean;
   requestRoleChange: boolean;

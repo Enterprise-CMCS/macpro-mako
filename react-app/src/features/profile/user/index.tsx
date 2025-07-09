@@ -1,11 +1,13 @@
 import LZ from "lz-string";
 import { useMemo } from "react";
 import { LoaderFunctionArgs, redirect, useLoaderData } from "react-router";
+import { userRoleMap } from "shared-utils";
 
 import { getUserDetails, getUserProfile, OneMacUserProfile, UserDetails } from "@/api";
-import { GroupAndDivision, StateAccessCard, SubNavHeader, UserInformation } from "@/components";
+import { GroupAndDivision, RoleStatusCard, SubNavHeader, UserInformation } from "@/components";
+import { useFeatureFlag } from "@/hooks/useFeatureFlag";
 
-import { filterStateAccess, orderStateAccess, userRoleMap } from "../utils";
+import { filterRoleStatus, orderRoleStatus } from "../utils";
 
 type LoaderData = {
   userDetails: UserDetails;
@@ -48,16 +50,19 @@ export const userProfileLoader = async ({
 
 export const UserProfile = () => {
   const { userDetails, userProfile } = useLoaderData<LoaderData>();
+  const isNewUserRoleDisplay = useFeatureFlag("SHOW_USER_ROLE_UPDATE");
 
-  const filteredStateAccess = useMemo(
-    () => filterStateAccess(userDetails, userProfile),
-    [userDetails, userProfile],
-  );
+  const currentRoleObj = useMemo(() => {
+    if (!userProfile || !userProfile.stateAccess) return { group: null, division: null };
+    return userProfile?.stateAccess.find((x) => x.role === userDetails.role);
+  }, [userProfile, userDetails]);
 
-  const orderedStateAccess = useMemo(
-    () => orderStateAccess(filteredStateAccess),
-    [filteredStateAccess],
-  );
+  const orderedRoleStatus = useMemo(() => {
+    const filteredRoleStatus = isNewUserRoleDisplay
+      ? userProfile?.stateAccess
+      : filterRoleStatus(userDetails, userProfile);
+    return orderRoleStatus(filteredRoleStatus);
+  }, [userDetails, userProfile, isNewUserRoleDisplay]);
 
   return (
     <>
@@ -71,6 +76,11 @@ export const UserProfile = () => {
             fullName={userDetails?.fullName || "Unknown"}
             role={userRoleMap[userDetails?.role]}
             email={userDetails?.email}
+            groupDivision={
+              currentRoleObj && currentRoleObj.group
+                ? `${currentRoleObj?.group}/${currentRoleObj?.division}`
+                : null
+            }
           />
           <div className="flex flex-col gap-6 md:basis-1/2">
             <div>
@@ -79,12 +89,12 @@ export const UserProfile = () => {
                   ? "State Access Management"
                   : "Status"}
               </h2>
-              {orderedStateAccess?.map((access) => (
-                <StateAccessCard role={userDetails.role} access={access} key={access.id} />
+              {orderedRoleStatus?.map((access) => (
+                <RoleStatusCard role={userDetails.role} access={access} key={access.id} />
               ))}
             </div>
 
-            {userDetails.role === "cmsroleapprover" && (
+            {userDetails.role === "cmsroleapprover" && !isNewUserRoleDisplay && (
               <GroupAndDivision
                 group={userDetails.group}
                 division={userDetails.division}

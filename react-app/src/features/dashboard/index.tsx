@@ -43,7 +43,7 @@ const loader = (queryClient: QueryClient, loginFlag?: boolean) => {
 export const dashboardLoader = loader;
 
 export const Dashboard = () => {
-  const { data: userObj, isLoading } = useGetUser();
+  const { data: oneMacUser, isLoading: isOneMacUserLoading } = useGetUser();
   const { data: userDetails, isLoading: isUserDetailsLoading } = useGetUserDetails();
   const osData = useOsData();
 
@@ -54,16 +54,16 @@ export const Dashboard = () => {
 
   const isAbleToAccessDashboard = () => {
     return (
-      (userObj.user["custom:cms-roles"] || userObj.user["custom:ismemberof"]) &&
-      Object.values(UserRoles).some((role) => userObj.user.role === role)
+      (oneMacUser.user["custom:cms-roles"] || oneMacUser.user["custom:ismemberof"]) &&
+      Object.values(UserRoles).some((role) => oneMacUser.user.role === role)
     );
   };
 
-  if (isLoading || isUserDetailsLoading || osData.tabLoading) {
+  if (isOneMacUserLoading || isUserDetailsLoading || osData.tabLoading) {
     return <LoadingSpinner />;
   }
 
-  if (!userObj?.user || !isAbleToAccessDashboard()) {
+  if (!oneMacUser?.user || !isAbleToAccessDashboard()) {
     return <Navigate to="/" />;
   }
 
@@ -79,7 +79,7 @@ export const Dashboard = () => {
         <FilterDrawerProvider>
           <div className="flex flex-col w-full self-center mx-auto max-w-screen-xl xs:flex-row justify-between p-4 lg:px-8">
             <h1 className="text-xl font-bold mb-4 md:mb-0">Dashboard</h1>
-            {isStateUser({ ...userObj.user, role: userDetails.role }) && (
+            {isStateUser({ ...oneMacUser.user, role: userDetails.role }) && (
               <Link
                 to="/new-submission"
                 className="flex items-center text-white font-bold bg-primary border-none px-10 py-2 rounded cursor-pointer"
@@ -122,10 +122,10 @@ export const Dashboard = () => {
               </TabsList>
             </div>
             <TabsContent value="spas">
-              <SpasList />
+              <SpasList oneMacUser={oneMacUser} />
             </TabsContent>
             <TabsContent value="waivers">
-              <WaiversList />
+              <WaiversList oneMacUser={oneMacUser} />
             </TabsContent>
           </Tabs>
         </FilterDrawerProvider>

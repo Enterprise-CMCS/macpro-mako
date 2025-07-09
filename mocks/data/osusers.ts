@@ -1,46 +1,25 @@
 import { TestUserDocument, TestUserResult } from "../index.d";
-
-export const SYSTEM_ADMIN_EMAIL = "systemadmin@example.com";
-export const HELP_DESK_EMAIL = "helpdesk@example.com";
-export const CMS_ROLE_APPROVER_EMAIL = "cmsroleapprover@example.com";
-export const DEFAULT_CMS_USER_EMAIL = "defaultcmsuser@example.com";
-export const CMS_REVIEWER_EMAIL = "reviewer@example.com";
-export const TEST_CMS_REVIEWER_EMAIL = "mako.cmsuser@outlook.com";
-export const STATE_SYSTEM_ADMIN_EMAIL = "statesystemadmin@nightwatch.test";
-export const STATE_SUBMITTER_EMAIL = "statesubmitter@nightwatch.test";
-export const TEST_STATE_SUBMITTER_EMAIL = "mako.stateuser@gmail.com";
-export const MULTI_STATE_SUBMITTER_EMAIL = "multistate@example.com";
-export const NULL_STATE_SUBMITTER_EMAIL = "nullstate@example.com";
-export const NO_STATE_SUBMITTER_EMAIL = "nostate@example.com";
-export const PENDING_SUBMITTER_EMAIL = "pending@example.com";
-export const DENIED_SUBMITTER_EMAIL = "denied@example.com";
-export const REVOKED_SUBMITTER_EMAIL = "revoked@example.com";
+import {
+  CMS_ROLE_APPROVER_EMAIL,
+  DEFAULT_CMS_USER_EMAIL,
+  DENIED_STATE_SUBMITTER_EMAIL,
+  HELP_DESK_USER_EMAIL,
+  INVALID_EMAIL_STATE_SUBMITTER_EMAIL,
+  MULTI_STATE_SUBMITTER_EMAIL,
+  NO_STATE_SUBMITTER_EMAIL,
+  NULL_STATE_SUBMITTER_EMAIL,
+  OS_STATE_SUBMITTER_EMAIL,
+  OS_STATE_SYSTEM_ADMIN_EMAIL,
+  PENDING_STATE_SUBMITTER_EMAIL,
+  REVIEWER_EMAIL,
+  REVOKED_STATE_SUBMITTER_EMAIL,
+  STATE_SUBMITTER_EMAIL,
+  SYSTEM_ADMIN_EMAIL,
+  TEST_REVIEWER_EMAIL,
+  TEST_STATE_SUBMITTER_EMAIL,
+} from "./users/index";
 
 export const osUsers: Record<string, TestUserResult> = {
-  [SYSTEM_ADMIN_EMAIL]: {
-    _id: SYSTEM_ADMIN_EMAIL,
-    found: true,
-    _source: {
-      id: SYSTEM_ADMIN_EMAIL,
-      eventType: "user-info",
-      email: SYSTEM_ADMIN_EMAIL,
-      fullName: "System Admin",
-      role: "systemadmin",
-      states: [],
-    },
-  },
-  [HELP_DESK_EMAIL]: {
-    _id: HELP_DESK_EMAIL,
-    found: true,
-    _source: {
-      id: HELP_DESK_EMAIL,
-      eventType: "user-info",
-      email: HELP_DESK_EMAIL,
-      fullName: "CMS Helpdesk",
-      role: "helpdesk",
-      states: [],
-    },
-  },
   [CMS_ROLE_APPROVER_EMAIL]: {
     _id: CMS_ROLE_APPROVER_EMAIL,
     found: true,
@@ -67,64 +46,40 @@ export const osUsers: Record<string, TestUserResult> = {
       states: [],
     },
   },
-  [CMS_REVIEWER_EMAIL]: {
-    _id: CMS_REVIEWER_EMAIL,
+  [DENIED_STATE_SUBMITTER_EMAIL]: {
+    _id: DENIED_STATE_SUBMITTER_EMAIL,
     found: true,
     _source: {
-      id: CMS_REVIEWER_EMAIL,
+      id: DENIED_STATE_SUBMITTER_EMAIL,
       eventType: "user-info",
-      email: CMS_REVIEWER_EMAIL,
-      fullName: "CMS Reviewer",
-      role: "cmsreviewer",
-      states: [],
-    },
-  },
-  [TEST_CMS_REVIEWER_EMAIL]: {
-    _id: TEST_CMS_REVIEWER_EMAIL,
-    found: true,
-    _source: {
-      id: TEST_CMS_REVIEWER_EMAIL,
-      eventType: "user-info",
-      email: TEST_CMS_REVIEWER_EMAIL,
-      fullName: "CMSReviewer Tester",
-      role: "cmsreviewer",
-      states: [],
-    },
-  },
-  [STATE_SYSTEM_ADMIN_EMAIL]: {
-    _id: STATE_SYSTEM_ADMIN_EMAIL,
-    found: true,
-    _source: {
-      id: STATE_SYSTEM_ADMIN_EMAIL,
-      eventType: "user-info",
-      email: STATE_SYSTEM_ADMIN_EMAIL,
-      fullName: "Statesystemadmin Nightwatch",
-      role: "statesystemadmin",
-      states: [],
-    },
-  },
-  [STATE_SUBMITTER_EMAIL]: {
-    _id: STATE_SUBMITTER_EMAIL,
-    found: true,
-    _source: {
-      id: STATE_SUBMITTER_EMAIL,
-      eventType: "user-info",
-      email: STATE_SUBMITTER_EMAIL,
-      fullName: "Statesubmitter Nightwatch",
+      email: DENIED_STATE_SUBMITTER_EMAIL,
+      fullName: "Denied State",
       role: "statesubmitter",
-      states: ["VA", "OH", "SC", "CO", "GA", "MD"],
+      states: [],
     },
   },
-  [TEST_STATE_SUBMITTER_EMAIL]: {
-    _id: TEST_STATE_SUBMITTER_EMAIL,
+  [HELP_DESK_USER_EMAIL]: {
+    _id: HELP_DESK_USER_EMAIL,
     found: true,
     _source: {
-      id: TEST_STATE_SUBMITTER_EMAIL,
+      id: HELP_DESK_USER_EMAIL,
       eventType: "user-info",
-      email: TEST_STATE_SUBMITTER_EMAIL,
-      fullName: "Stateuser Tester",
+      email: HELP_DESK_USER_EMAIL,
+      fullName: "CMS Helpdesk",
+      role: "helpdesk",
+      states: [],
+    },
+  },
+  [INVALID_EMAIL_STATE_SUBMITTER_EMAIL]: {
+    _id: INVALID_EMAIL_STATE_SUBMITTER_EMAIL,
+    found: true,
+    _source: {
+      id: INVALID_EMAIL_STATE_SUBMITTER_EMAIL,
+      eventType: "user-info",
+      email: INVALID_EMAIL_STATE_SUBMITTER_EMAIL,
+      fullName: "Test Submitter",
       role: "statesubmitter",
-      states: ["VA", "OH", "SC", "CO", "GA", "MD"],
+      states: ["AK"],
     },
   },
   [MULTI_STATE_SUBMITTER_EMAIL]: {
@@ -163,46 +118,118 @@ export const osUsers: Record<string, TestUserResult> = {
       states: [],
     },
   },
-  [PENDING_SUBMITTER_EMAIL]: {
-    _id: PENDING_SUBMITTER_EMAIL,
+  [OS_STATE_SUBMITTER_EMAIL]: {
+    _id: OS_STATE_SUBMITTER_EMAIL,
     found: true,
     _source: {
-      id: PENDING_SUBMITTER_EMAIL,
+      id: OS_STATE_SUBMITTER_EMAIL,
       eventType: "user-info",
-      email: PENDING_SUBMITTER_EMAIL,
+      email: OS_STATE_SUBMITTER_EMAIL,
+      fullName: "Statesubmitter Nightwatch",
+      role: "statesubmitter",
+      states: ["VA", "OH", "SC", "CO", "GA", "MD"],
+    },
+  },
+  [OS_STATE_SYSTEM_ADMIN_EMAIL]: {
+    _id: OS_STATE_SYSTEM_ADMIN_EMAIL,
+    found: true,
+    _source: {
+      id: OS_STATE_SYSTEM_ADMIN_EMAIL,
+      eventType: "user-info",
+      email: OS_STATE_SYSTEM_ADMIN_EMAIL,
+      fullName: "Statesystemadmin Nightwatch",
+      role: "statesystemadmin",
+      states: [],
+    },
+  },
+  [PENDING_STATE_SUBMITTER_EMAIL]: {
+    _id: PENDING_STATE_SUBMITTER_EMAIL,
+    found: true,
+    _source: {
+      id: PENDING_STATE_SUBMITTER_EMAIL,
+      eventType: "user-info",
+      email: PENDING_STATE_SUBMITTER_EMAIL,
       fullName: "Pending State",
       role: "statesubmitter",
       states: [],
     },
   },
-  [DENIED_SUBMITTER_EMAIL]: {
-    _id: DENIED_SUBMITTER_EMAIL,
+  [REVIEWER_EMAIL]: {
+    _id: REVIEWER_EMAIL,
     found: true,
     _source: {
-      id: DENIED_SUBMITTER_EMAIL,
+      id: REVIEWER_EMAIL,
       eventType: "user-info",
-      email: DENIED_SUBMITTER_EMAIL,
-      fullName: "Denied State",
-      role: "statesubmitter",
+      email: REVIEWER_EMAIL,
+      fullName: "CMS Reviewer",
+      role: "cmsreviewer",
       states: [],
     },
   },
-  [REVOKED_SUBMITTER_EMAIL]: {
-    _id: REVOKED_SUBMITTER_EMAIL,
+  [REVOKED_STATE_SUBMITTER_EMAIL]: {
+    _id: REVOKED_STATE_SUBMITTER_EMAIL,
     found: true,
     _source: {
-      id: REVOKED_SUBMITTER_EMAIL,
+      id: REVOKED_STATE_SUBMITTER_EMAIL,
       eventType: "user-info",
-      email: REVOKED_SUBMITTER_EMAIL,
+      email: REVOKED_STATE_SUBMITTER_EMAIL,
       fullName: "Revoked State",
       role: "statesubmitter",
       states: [],
     },
   },
+  [STATE_SUBMITTER_EMAIL]: {
+    _id: STATE_SUBMITTER_EMAIL,
+    found: true,
+    _source: {
+      id: STATE_SUBMITTER_EMAIL,
+      eventType: "user-info",
+      email: STATE_SUBMITTER_EMAIL,
+      fullName: "George Harrison",
+      role: "statesubmitter",
+      states: ["VA", "OH", "SC", "CO", "CA", "MD"],
+    },
+  },
+  [SYSTEM_ADMIN_EMAIL]: {
+    _id: SYSTEM_ADMIN_EMAIL,
+    found: true,
+    _source: {
+      id: SYSTEM_ADMIN_EMAIL,
+      eventType: "user-info",
+      email: SYSTEM_ADMIN_EMAIL,
+      fullName: "System Admin",
+      role: "systemadmin",
+      states: [],
+    },
+  },
+  [TEST_REVIEWER_EMAIL]: {
+    _id: TEST_REVIEWER_EMAIL,
+    found: true,
+    _source: {
+      id: TEST_REVIEWER_EMAIL,
+      eventType: "user-info",
+      email: TEST_REVIEWER_EMAIL,
+      fullName: "CMSReviewer Tester",
+      role: "cmsreviewer",
+      states: [],
+    },
+  },
+  [TEST_STATE_SUBMITTER_EMAIL]: {
+    _id: TEST_STATE_SUBMITTER_EMAIL,
+    found: true,
+    _source: {
+      id: TEST_STATE_SUBMITTER_EMAIL,
+      eventType: "user-info",
+      email: TEST_STATE_SUBMITTER_EMAIL,
+      fullName: "Stateuser Tester",
+      role: "statesubmitter",
+      states: ["VA", "OH", "SC", "CO", "GA", "MD"],
+    },
+  },
 };
 
-export const STATE_SYSTEM_ADMIN_USER = osUsers[STATE_SYSTEM_ADMIN_EMAIL];
-export const STATE_SUBMITTER_USER = osUsers[STATE_SUBMITTER_EMAIL];
+export const OS_STATE_SYSTEM_ADMIN_USER = osUsers[OS_STATE_SYSTEM_ADMIN_EMAIL];
+export const OS_STATE_SUBMITTER_USER = osUsers[OS_STATE_SUBMITTER_EMAIL];
 export const MULTI_STATE_SUBMITTER_USER = osUsers[MULTI_STATE_SUBMITTER_EMAIL];
 export const NO_STATE_SUBMITTER_USER = osUsers[NO_STATE_SUBMITTER_EMAIL];
 

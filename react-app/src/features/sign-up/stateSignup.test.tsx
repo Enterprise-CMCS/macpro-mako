@@ -63,7 +63,7 @@ describe("StateSignup", () => {
     setMockUsername(null);
     await setup();
 
-    expect(screen.getByText("Home")).toBeInTheDocument();
+    await waitFor(() => expect(screen.getByText("Home")).toBeInTheDocument());
   });
 
   it("should navigate to /profile if the user is not a State user", async () => {

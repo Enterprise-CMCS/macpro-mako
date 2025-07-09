@@ -20,9 +20,15 @@ vi.mock("@/api", () => ({
   useGetUser: () => ({
     data: {
       user: {
+        role: "statesubmitter",
         "custom:ismemberof": "ONEMAC_USER",
-        "custom:cms-roles": "", // Not a CMS role
+        "custom:cms-roles": "",
       },
+    },
+  }),
+  useGetUserDetails: () => ({
+    data: {
+      role: "statesubmitter",
     },
   }),
 }));

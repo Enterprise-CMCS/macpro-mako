@@ -182,6 +182,21 @@ export const roleResults: TestRoleResult[] = [
     },
   },
   {
+    _id: "statesystemadmin@noname.com_CA_statesystemadmin",
+    found: true,
+    _source: {
+      id: "statesystemadmin@noname.com_CA_statesystemadmin",
+      eventType: "legacy-user-role",
+      email: "statesystemadmin@noname.com",
+      doneByEmail: "systemadmin@example.com",
+      doneByName: "System Admin",
+      status: "active",
+      role: "statesystemadmin",
+      territory: "CA",
+      lastModifiedDate: 1745003573565,
+    },
+  },
+  {
     _id: "statesubmitter@nightwatch.test_ZZ_statesubmitter",
     found: true,
     _source: {
@@ -737,19 +752,53 @@ export const getFilteredRolesByState = (state: string) =>
 export const getFilteredRoleDocsByState = (state: string) =>
   getFilteredRolesByState(state).map((role) => role?._source as TestRoleDocument);
 
+export const getFilteredRolesByStateAndRole = (state: string, role: string) =>
+  roleResults.filter(
+    (roleItem) => roleItem?._source?.territory === state && roleItem?._source?.role === role,
+  );
+
+export const getFilteredRoleDocsByStateAndRole = (state: string, role: string) =>
+  getFilteredRolesByStateAndRole(state, role).map(
+    (roleItem) => roleItem?._source as TestRoleDocument,
+  );
+
+export const getFilteredRolesByRole = (role: string) =>
+  roleResults.filter((roleItem) => roleItem?._source?.role === role);
+
+export const getFilteredRoleDocsByRole = (role: string) =>
+  getFilteredRolesByRole(role).map((roleItem) => roleItem?._source as TestRoleDocument);
+
 export const getLatestRoleByEmail = (email: string) =>
   roleResults
     .filter((role) => role?._source?.email === email && role?._source?.status === "active")
     .sort((a, b) => {
-      if (a?._source?.lastModifiedDate > b?._source?.lastModifiedDate) {
+      const lastModifiedDateA = a?._source?.lastModifiedDate || 0;
+      const lastModifiedDateB = b?._source?.lastModifiedDate || 0;
+      if (lastModifiedDateA > lastModifiedDateB) {
         return -1;
       }
-      if (a?._source?.lastModifiedDate < b?._source?.lastModifiedDate) {
+      if (lastModifiedDateA < lastModifiedDateB) {
         return 1;
       }
       return 0;
     })
     ?.slice(0, 1);
+
+export const getActiveStatesForUserByEmail = (email: string, role?: string) =>
+  Array.from(
+    new Set(
+      roleResults
+        .filter(
+          (roleItem) =>
+            roleItem &&
+            roleItem._source?.email === email &&
+            (!role || roleItem._source?.role === role) &&
+            roleItem._source?.status === "active",
+        )
+        .map((roleItem) => roleItem?._source?.territory)
+        .filter((territory) => territory !== undefined && territory !== "N/A") || [],
+    ),
+  );
 
 export const getApprovedRoleByEmailAndState = (email: string, state: string, role: string) =>
   roleResults.find(

@@ -12,8 +12,10 @@ import { sendGAEvent } from "@/utils/ReactGA/SendGAEvent";
 
 export type QuestionAnswer = {
   anchorText: string;
-  question: string;
+  question: string | JSX.Element;
   answerJSX: JSX.Element;
+  label?: string;
+  labelColor?: "green" | "blue" | string;
 };
 
 type FAQContent = {
@@ -295,6 +297,8 @@ export const oneMACFAQContent: FAQContent[] = [
       {
         anchorText: "spa-admendments",
         question: "Which state plan amendments (SPAs) can I submit in OneMAC?",
+        label: "Updated", // Add a `label` field for LD faq
+        labelColor: "green",
         answerJSX: (
           <div className="w-full space-y-2">
             <p>
@@ -332,11 +336,11 @@ export const oneMACFAQContent: FAQContent[] = [
                 },
                 {
                   href: "#mpc-spa-templates",
-                  text: "Where can I download Medicaid Premiums and Cost Sharing (MPC) SPA templates?",
+                  text: "Where can I download Medicaid Premiums and Cost Sharing SPA templates?",
                 },
                 {
                   href: "#mpc-spa-implementation-guides",
-                  text: "Where can I download Medicaid Premiums and Cost Sharing (MPC) SPA implementation guides?",
+                  text: "Where can I download Medicaid Premiums and Cost Sharing SPA implementation guides?",
                 },
                 {
                   href: "#chip-spa-templates",
@@ -357,7 +361,7 @@ export const oneMACFAQContent: FAQContent[] = [
                         targetElement.scrollIntoView({ behavior: "smooth", block: "start" });
 
                         const buttonElement = targetElement.querySelector("button");
-                        if (buttonElement) {
+                        if (buttonElement.dataset.state === "closed") {
                           buttonElement.click();
                         }
                       }
@@ -908,12 +912,16 @@ export const oneMACFAQContent: FAQContent[] = [
       {
         anchorText: "abp-spa-templates",
         question: "Where can I download Medicaid Alternative Benefit Plan (ABP) SPA templates?",
+        label: "New",
+        labelColor: "blue",
         answerJSX: (
-          <section id="abp-spa-templates" className="space-y-2">
+          <section className="space-y-2">
             <p>
               Medicaid Alternative Benefit Plan (ABP) SPA templates can be downloaded at the links
               below. After downloading and completing the templates you need, upload them as part of
-              the SPA submission.
+              the SPA submission. If you have trouble opening a SPA PDF within your web browser and
+              receive a "Please Wait" message, download the PDF and open it with Adobe Reader or
+              Acrobat, instead of within your browser.
             </p>
             <ul className="list-disc pl-7 space-y-2">
               {ABP_TEMPLATES.map((pdf) => (
@@ -947,6 +955,8 @@ export const oneMACFAQContent: FAQContent[] = [
         anchorText: "abp-implementation-guides-spa",
         question:
           "Where can I download Medicaid Alternative Benefit Plan (ABP) SPA implementation guides?",
+        label: "New",
+        labelColor: "blue",
         answerJSX: (
           <section className="space-y-2">
             <p>
@@ -974,13 +984,17 @@ export const oneMACFAQContent: FAQContent[] = [
       },
       {
         anchorText: "mpc-spa-templates",
-        question: "Where can I download Medicaid Premiums and Cost Sharing (MPC) SPA templates?",
+        question: "Where can I download Medicaid Premiums and Cost Sharing SPA templates?",
+        label: "New",
+        labelColor: "blue",
         answerJSX: (
           <section className="space-y-2">
             <p>
-              Medicaid Premiums and Cost Sharing (MPC) SPA templates can be downloaded at the links
-              below. After downloading and completing the templates you need, upload them as part of
-              the SPA submission.
+              Medicaid Premiums and Cost Sharing SPA templates can be downloaded at the links below.
+              After downloading and completing the templates you need, upload them as part of the
+              SPA submission. If you have trouble opening a SPA PDF within your web browser and
+              receive a "Please Wait" message, download the PDF and open it with Adobe Reader or
+              Acrobat, instead of within your browser.
             </p>
             <ul className="list-disc pl-7 space-y-2">
               {MPC_TEMPLATES.map((pdf) => (
@@ -1004,12 +1018,14 @@ export const oneMACFAQContent: FAQContent[] = [
       {
         anchorText: "mpc-spa-implementation-guides",
         question:
-          "Where can I download Medicaid Premiums and Cost Sharing (MPC) SPA implementation guides?",
+          "Where can I download Medicaid Premiums and Cost Sharing SPA implementation guides?",
+        label: "New",
+        labelColor: "blue",
         answerJSX: (
           <section className="space-y-2">
             <p>
-              Medicaid Premiums and Cost Sharing (MPC) SPA implementation guides can be downloaded
-              at the links below.
+              Medicaid Premiums and Cost Sharing SPA implementation guides can be downloaded at the
+              links below.
             </p>
             <ul className="list-disc pl-7 space-y-2">
               {MPC_GUIDES.map((pdf) => (
@@ -1033,11 +1049,16 @@ export const oneMACFAQContent: FAQContent[] = [
       {
         anchorText: "chip-spa-templates",
         question: "Where can I download CHIP eligibility SPA templates?",
+        label: "New",
+        labelColor: "blue",
         answerJSX: (
           <section>
             <p>
               CHIP eligibility SPA templates can be downloaded at the links below. After downloading
-              and completing the templates you need, upload them as part of the SPA submission.
+              and completing the templates you need, upload them as part of the SPA submission. If
+              you have trouble opening a SPA PDF within your web browser and receive a "Please Wait"
+              message, download the PDF and open it with Adobe Reader or Acrobat, instead of within
+              your browser.
             </p>
             <ul className="list-disc pl-7 space-y-2">
               {renderSection(
@@ -1093,6 +1114,8 @@ export const oneMACFAQContent: FAQContent[] = [
       {
         anchorText: "chip-spa-implentation-guides",
         question: "Where can I download CHIP eligibility SPA implementation guides?",
+        label: "New",
+        labelColor: "blue",
         answerJSX: (
           <div>
             <section className="space-y-2">

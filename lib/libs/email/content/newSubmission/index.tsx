@@ -7,6 +7,8 @@ import {
   AppKCMSEmail,
   AppKStateEmail,
   ChipSpaCMSEmail,
+  ChipSpaDetailsCMSEmail,
+  ChipSpaDetailsStateEmail,
   ChipSpaStateEmail,
   MedSpaCMSEmail,
   MedSpaStateEmail,
@@ -39,22 +41,41 @@ export const newSubmission: AuthoritiesWithUserTypesTemplate = {
   },
   [Authority.CHIP_SPA]: {
     cms: async (
-      variables: Events["NewChipSubmission"] & CommonEmailVariables & { emails: EmailAddresses },
+      variables: (Events["NewChipSubmission"] | Events["NewChipDetailsSubmission"]) &
+        CommonEmailVariables & { emails: EmailAddresses },
     ) => {
+      let body;
+
+      if (variables.event === "new-chip-details-submission") {
+        body = await render(<ChipSpaDetailsCMSEmail variables={variables} />);
+      } else {
+        body = await render(<ChipSpaCMSEmail variables={variables} />);
+      }
+
       return {
         to: variables.emails.chipInbox,
         cc: variables.emails.chipCcList,
-        subject: `New CHIP SPA ${variables.id} Submitted`,
-        body: await render(<ChipSpaCMSEmail variables={variables} />),
+        subject: `New ${`CHIP${variables.isChipEligibility ? " Eligibility" : ""}`} SPA ${variables.id} Submitted`,
+        body,
       };
     },
+
     state: async (
-      variables: Events["NewChipSubmission"] & CommonEmailVariables & { emails: EmailAddresses },
+      variables: (Events["NewChipSubmission"] | Events["NewChipDetailsSubmission"]) &
+        CommonEmailVariables & { emails: EmailAddresses },
     ) => {
+      let body;
+
+      if (variables.event === "new-chip-details-submission") {
+        body = await render(<ChipSpaDetailsStateEmail variables={variables} />);
+      } else {
+        body = await render(<ChipSpaStateEmail variables={variables} />);
+      }
+
       return {
         to: [`${variables.submitterName} <${variables.submitterEmail}>`],
-        subject: `Your CHIP SPA ${variables.id} has been submitted to CMS`,
-        body: await render(<ChipSpaStateEmail variables={variables} />),
+        subject: `Your ${`CHIP${variables.isChipEligibility ? " Eligibility" : ""}`} SPA ${variables.id} has been submitted to CMS`,
+        body,
       };
     },
   },

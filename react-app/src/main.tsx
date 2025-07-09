@@ -32,10 +32,6 @@ const initializeApp = async () => {
     },
   });
 
-  if (import.meta.env.DEV) {
-    await import("../mockServiceWorker.js?worker");
-  }
-
   ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(
     <LDProvider>
       <React.StrictMode>
