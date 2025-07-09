@@ -47,8 +47,10 @@ export const normalizeEvent = (opts: NormalizeEventOptions = {}): MiddlewareObj 
         // check that the event has a body
         throw createError(400, JSON.stringify({ message: "Event body required" }));
       }
+      if (typeof request.event.body === "object") {
+        request.event.body = JSON.stringify(request.event.body);
+      }
 
-      console.log("before", { headers: request?.event?.headers });
       if (
         !request?.event?.headers ||
         !Object.keys(request.event.headers)
@@ -61,11 +63,6 @@ export const normalizeEvent = (opts: NormalizeEventOptions = {}): MiddlewareObj 
           "Content-Type": "application/json",
         };
       }
-      console.log(JSON.stringify(request?.event, null, 2));
-      console.log({ body: request?.event?.body });
-      console.log("typeof body", typeof request?.event?.body);
-      console.log("isBase64Encoded", request?.event?.isBase64Encoded);
-      console.log("parse", JSON.parse(request?.event?.body));
     },
     after: async (request: Request) => {
       if (typeof request.response.body === "object") {
