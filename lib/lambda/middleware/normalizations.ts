@@ -61,7 +61,9 @@ export const normalizeEvent = (opts: NormalizeEventOptions = {}): MiddlewareObj 
           "Content-Type": "application/json",
         };
       }
-      console.log("after", { headers: request?.event?.headers });
+      console.log(JSON.stringify(request?.event, null, 2));
+      console.log({ body: request?.event?.body });
+      console.log("typeof body", typeof request?.event?.body);
     },
     after: async (request: Request) => {
       if (typeof request.response.body === "object") {
