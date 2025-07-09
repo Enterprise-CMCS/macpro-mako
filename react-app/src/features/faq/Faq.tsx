@@ -351,7 +351,7 @@ export const Faq = () => {
           </article>
         </div>
         <div>
-          <CardWithTopBorder>
+          <CardWithTopBorder className="sticky top-5">
             <div className="p-4">
               <h3 className="text-lg text-bold mb-4">OneMAC Help Desk Contact Info</h3>
               <div>

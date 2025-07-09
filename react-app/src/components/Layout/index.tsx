@@ -106,6 +106,7 @@ const UserDropdownMenu = () => {
   const navigate = useNavigate();
   const { data: userDetails, isLoading } = useGetUserDetails();
   const { data: userProfile } = useGetUserProfile();
+  const isNewUserRoleDisplay = useFeatureFlag("SHOW_USER_ROLE_UPDATE");
 
   // Disable page if user has a pending request
   // Certain roles cannot be changed
@@ -119,6 +120,9 @@ const UserDropdownMenu = () => {
 
     return excludedRoles.includes(currentRole);
   };
+
+  const showRequestRoleChangeButton =
+    !disableRoleChange() && !isLoading && userDetails && !isNewUserRoleDisplay;
 
   const handleViewProfile = () => {
     navigate("/profile");
@@ -181,8 +185,7 @@ const UserDropdownMenu = () => {
               </li>
             </DropdownMenu.Item>
             {/* TODO: conditionally show this if the user IS NOT HELPDESK */}
-            {/* // helpdesk, system admins, and cms reviewer users don't even see request role as an option */}
-            {!disableRoleChange() && !isLoading && userDetails && (
+            {showRequestRoleChangeButton && (
               <DropdownMenu.Item
                 className="text-primary hover:text-primary/70 cursor-pointer"
                 asChild
