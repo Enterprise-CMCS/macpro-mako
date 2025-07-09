@@ -143,12 +143,15 @@ export async function processRecord(kafkaRecord: KafkaRecord, config: ProcessEma
     if (safeSeatoolRecord.data?.seatoolStatus === SEATOOL_STATUS.WITHDRAWN) {
       try {
         const item = await os.getItem(config.osDomain, getOsNamespace("main"), safeID);
-
-        const changelogFilter = [
-          { term: { "event.keyword": "withdraw-package" } },
-          { term: { "origin.keyword": "mako" } },
-        ];
-        const withdrawPackageMakoEvents = await getPackageChangelog(safeID, changelogFilter);
+        const withdrawPackageMakoEvents = item?._source.changelog;
+        console.log(withdrawPackageMakoEvents, "CHANGELOG FOR PACKAGE");
+        // const changelogFilter = [
+        //   { term: { "event.keyword": "withdraw-package" } },
+        //   { term: { "origin.keyword": "mako" } },
+        // ];
+        // const withdrawPackageMakoEvents = await getPackageChangelog(safeID, changelogFilter);
+        // console.log(withdrawPackageMakoEvents, "WITHDRAW EVNETS");
+        // const latestwithdrawPackageEvent = withdrawPackageMakoEvents.hits.hits[0]._source;
 
         if (!item?.found || !item?._source) {
           console.log(`The package was not found for id: ${id} in mako. Doing nothing.`);
@@ -163,8 +166,10 @@ export async function processRecord(kafkaRecord: KafkaRecord, config: ProcessEma
         const recordToPass = {
           timestamp,
           ...safeSeatoolRecord.data,
-          submitterName: withdrawPackageMakoEvents.hits.hits[0]._source.submitterName,
-          submitterEmail: withdrawPackageMakoEvents.hits.hits[0]._source.submitterEmail,
+          submitterName: item._source.submitterName,
+          submitterEmail: item._source.submitterEmail,
+          // submitterName: latestwithdrawPackageEvent.submitterName ?? item._source.submitterName,
+          // submitterEmail: latestwithdrawPackageEvent.submitterEmail ?? item._source.submitterEmail,
           event: "seatool-withdraw",
           proposedEffectiveDate: safeSeatoolRecord.data?.proposedDate,
           origin: "seatool",
