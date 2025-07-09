@@ -29,7 +29,7 @@ export const nonAuthenticatedMiddy = (opts: NonAuthenticatedMiddyOptions = {}) =
       httpErrorHandler({ fallbackMessage: JSON.stringify({ message: "Internal server error" }) }),
     )
     .use(normalizeEvent(normalizeEventOptions))
-    .use(httpJsonBodyParser());
+    .use(httpJsonBodyParser({ disableContentTypeError: true }));
 
   if (eventSchema) {
     handler = handler.use(zodValidator({ eventSchema }));
