@@ -24,7 +24,6 @@ for (const [role, user] of Object.entries(users)) {
 
       test.describe("UI validations", {}, () => {
         test("navigation banner updates", async () => {
-          // here
           await expect(dashboardPage.homeLink).toBeVisible();
           await expect(dashboardPage.homeLink).toHaveText("Home");
           await expect(dashboardPage.homeLink).not.toHaveClass("underline");
@@ -36,6 +35,120 @@ for (const [role, user] of Object.entries(users)) {
           await expect(dashboardPage.faqLink).toBeVisible();
           await expect(dashboardPage.faqLink).toHaveText("View FAQs");
           await expect(dashboardPage.faqLink).not.toHaveClass("underline");
+        });
+
+        test("page header", async ({ page }) => {
+          await expect(page.getByRole("heading", { name: "Dashboard" })).toBeVisible();
+          await expect(page.getByRole("heading", { name: "Dashboard" })).toHaveText("Dashboard");
+
+          if (role.includes("state")) {
+            await expect(page.getByTestId("new-sub-button")).toBeVisible();
+            await expect(page.getByTestId("new-sub-button")).toHaveText("New Submission");
+          }
+        });
+
+        test("SPA and Waiver tabs", async ({ page }) => {
+          await expect(page.getByRole("tab", { name: "SPAs" })).toBeVisible();
+          await expect(page.getByRole("tab", { name: "SPAs" })).toHaveText("SPAs");
+
+          await expect(page.getByRole("tab", { name: "Waivers" })).toBeVisible();
+          await expect(page.getByRole("tab", { name: "Waivers" })).toHaveText("Waivers");
+        });
+
+        test("search field", async ({ page }) => {
+          await expect(page.getByTestId("filtering").locator("p")).toBeVisible();
+          await expect(page.getByTestId("filtering").locator("p")).toHaveText(
+            "Search by Package ID, CPOC Name, or Submitter Name",
+          );
+
+          await expect(page.locator("#search-input")).toBeVisible();
+        });
+
+        test("columns button", async ({ page }) => {
+          await expect(page.getByRole("button", { name: /Columns/ })).toBeVisible();
+          await expect(page.getByRole("button", { name: /Columns/ })).toHaveText(
+            "Columns (3 hidden)",
+          );
+        });
+
+        test("filters buttons", async ({ page }) => {
+          await expect(page.getByText(/Filters/)).toBeVisible();
+          await expect(page.getByText(/Filters/)).toHaveText("Filters");
+        });
+
+        test("export button", async ({ page }) => {
+          await expect(page.getByRole("button", { name: /Export/ })).toBeVisible();
+          await expect(page.getByRole("button", { name: /Export/ })).toHaveText("Export");
+        });
+
+        test.describe("dashboard table", () => {
+          test.describe("spas", () => {
+            test("column headers", async ({ page }) => {
+              const header = await page.locator("th");
+              const count = await header.count();
+
+              const headerValues = [
+                "Actions",
+                "SPA ID",
+                "State",
+                "Authority",
+                "Status",
+                "Initial Submission",
+                "Latest Package Activity",
+                "Formal RAI Response",
+                "Submitted By",
+              ];
+
+              for (let i = 0; i < count; i++) {
+                await expect(await header.nth(i)).toBeVisible();
+                await expect(await header.nth(i).textContent()).toEqual(headerValues[i]);
+              }
+            });
+
+            test("table data", async ({ page }) => {
+              await expect(page.locator("tbody")).toBeVisible();
+            });
+
+            test("table footer", async ({ page }) => {
+              await expect(page.getByTestId("pagination")).toBeVisible();
+            });
+          });
+
+          test.describe("waivers", () => {
+            test.beforeEach(async ({ page }) => {
+              await page.getByRole("tab", { name: "Waivers" }).click();
+            });
+
+            test("column headers", async ({ page }) => {
+              const header = await page.locator("th");
+              const count = await header.count();
+
+              const headerValues = [
+                "Actions",
+                "SPA ID",
+                "State",
+                "Authority",
+                "Status",
+                "Initial Submission",
+                "Latest Package Activity",
+                "Formal RAI Response",
+                "Submitted By",
+              ];
+
+              for (let i = 0; i < count; i++) {
+                await expect(await header.nth(i)).toBeVisible();
+                await expect(await header.nth(i).textContent()).toEqual(headerValues[i]);
+              }
+            });
+
+            test("table data", async ({ page }) => {
+              await expect(page.locator("tbody")).toBeVisible();
+            });
+
+            test("table footer", async ({ page }) => {
+              await expect(page.getByTestId("pagination")).toBeVisible();
+            });
+          });
         });
       });
     });

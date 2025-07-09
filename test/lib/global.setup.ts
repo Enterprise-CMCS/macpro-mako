@@ -83,15 +83,27 @@
  * Repurpose section
  */
 
+import { getDeploymentOutput } from "./auth.secrets";
 import { baseURL } from "./baseURLs";
 import { createStorageState } from "./createStorageState";
 import { envRoleUsers } from "./envRoleUsers";
 
 const ENV = process.env.ENV || "local";
+const stage = process.env.STAGE_NAME || "main";
+const project = process.env.PROJECT;
+const deploymentOutput = await getDeploymentOutput(stage, project);
+
+let rootURL;
+
+if (ENV === "CI") {
+  rootURL = deploymentOutput.applicationEndpointUrl;
+} else {
+  rootURL = baseURL[ENV];
+}
 
 export default async function globalSetup() {
   const roles = Object.keys(envRoleUsers[ENV] || {});
   for (const role of roles) {
-    await createStorageState(ENV, baseURL[ENV], role);
+    await createStorageState(ENV, rootURL, role);
   }
 }
