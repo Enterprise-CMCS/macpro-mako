@@ -9,6 +9,15 @@ import * as hooks from "@/hooks";
 import { renderWithQueryClientAndMemoryRouter } from "@/utils/test-helpers";
 
 import { Layout, SubNavHeader } from "./index";
+import * as sendGA from "@/utils/ReactGA/SendGAEvent";
+import * as LayoutModule from "./index";
+
+import * as ReactGAModule from "@/utils/ReactGA/SendGAEvent";
+
+vi.mock("@/utils/ReactGA/SendGAEvent", () => ({
+  sendGAEvent: vi.fn(),
+}));
+
 /**
  * Mock Configurations
  * -------------------
@@ -468,4 +477,77 @@ describe("Layout", () => {
       expect(subNavHeaderDiv).toHaveClass("bg-sky-100");
     });
   });
+
+  describe("GA Event Tracking", () => {
+    beforeEach(() => {
+      vi.clearAllMocks();
+  
+      // Mock API hooks to return a logged-in user
+      // vi.spyOn(api, "useGetUser").mockReturnValue({
+      //   isLoading: false,
+      //   data: { user: { role: "statesubmitter",
+      //                   states: ["TX"],
+      //                   sub: "mock-sub",
+      //                   "custom:cms-roles": "statesystemadmin",
+      //                   email_verified: true,
+      //                   given_name: "Test",
+      //                   family_name: "User",
+      //                   username: "username",
+      //                   email: "test@example.com",
+      //                 } 
+      //          },
+      // });
+  
+      // vi.spyOn(api, "useGetUserDetails").mockReturnValue({
+      //   isLoading: false,
+      //   data: { role: "stateuser" },
+      // });
+  
+      // Mock feature flags to show some links
+    //   vi.spyOn(hooks, "useFeatureFlag").mockImplementation((flag) => {
+    //     if (flag === "WEBFORM_TAB_VISIBLE") return false;
+    //     if (flag === "TOGGLE_FAQ") return false;
+    //     if (flag === "STATE_HOMEPAGE_FLAG") return false;
+    //     if (flag === "LOGIN_PAGE") return false;
+    //     if (flag === "CMS_HOMEPAGE_FLAG") return false;
+    //     return false;
+    //   });
+    });
+  
+    it("fires GA event when a nav link is clicked in desktop view", async () => {
+      const user = userEvent.setup();
+      mockMediaQuery({ desktop: true, mobile: false });
+      await renderLayout();
+  
+      const homeLink = await screen.findByText("Home");
+      await user.click(homeLink);
+  
+      expect(ReactGAModule.sendGAEvent).toHaveBeenCalledWith(
+        "home_nav_home",
+        expect.objectContaining({
+          event_category: "Navigation",
+          event_label: "Home",
+        }),
+      );
+    });
+  
+    it("fires GA event when a nav link is clicked in mobile view", async () => {
+      const user = userEvent.setup();
+
+      mockMediaQuery(VIEW_MODES.MOBILE);
+      await renderLayout();
+      
+      const homeLink = await screen.findByText("Home");
+      await user.click(homeLink);
+
+      expect(ReactGAModule.sendGAEvent).toHaveBeenCalledWith(
+        "home_nav_home",
+        expect.objectContaining({
+          event_category: "Navigation",
+          event_label: "Home",
+        }),
+      );
+    });
+  });
+  
 });

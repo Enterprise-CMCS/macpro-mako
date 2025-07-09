@@ -5,10 +5,13 @@ import {
   setMockUsername,
 } from "mocks";
 import { mockedApiServer as mockedServer } from "mocks/server";
-import { describe, expect, it } from "vitest";
+import { describe, expect, it, vi } from "vitest";
 
+import * as gaModule from "@/utils/ReactGA/SendGAEvent";
 import { createUserProfile } from "./useCreateUserProfile";
-
+vi.mock("@/utils/ReactGA/SendGAEvent", () => ({
+  sendGAEvent: vi.fn(),
+}));
 describe("useCreateUserProfile", () => {
   it("should return that the user profile has been created for coStateSubmitter", async () => {
     setMockUsername(coStateSubmitter);
@@ -24,5 +27,11 @@ describe("useCreateUserProfile", () => {
     mockedServer.use(errorApiGetCreateUserProfileHandler);
     const result = await createUserProfile();
     expect(result).toBeNull();
+    expect(gaModule.sendGAEvent).toHaveBeenCalledWith(
+      "api_error",
+      expect.objectContaining({
+        message: "failure /createUserProfile",
+      }),
+    );
   });
 });

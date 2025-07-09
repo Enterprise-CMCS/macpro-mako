@@ -19,10 +19,6 @@ import {
   renderFormAsync,
   renderFormWithPackageSectionAsync,
 } from "@/utils/test-helpers/renderForm";
-import * as ReactHookForm from "react-hook-form";
-    // Then in your test:
-
-import type { UseFormReturn, FieldValues } from "react-hook-form";
 
 import { ActionForm } from "./index";
 const PROGRESS_REMINDER = /If you leave this page, you will lose your progress on this form./;

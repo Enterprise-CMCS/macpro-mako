@@ -17,7 +17,7 @@ import {
 import { mockedApiServer as mockedServer } from "mocks/server";
 import { redirect } from "react-router";
 import { afterAll, afterEach, beforeAll, beforeEach, describe, expect, it, vi } from "vitest";
-
+import * as ReactGA from "@/utils/ReactGA/SendGAEvent";
 import {
   createTestQueryClient,
   getFilteredHits,
@@ -27,12 +27,10 @@ import {
   verifyFiltering,
   verifyPagination,
 } from "@/utils/test-helpers";
-
 import { Dashboard, dashboardLoader } from "./index";
 
 const spaHits = getFilteredHits(["Medicaid SPA", "CHIP SPA"]);
 const waiverHits = getFilteredHits(["1915(b)", "1915(c)"]);
-
 const verifyColumns = (table, hasActions: boolean, isWaiver: boolean, hitCount: number) => {
   let columnCount = 8;
   if (hasActions) columnCount++;
@@ -342,6 +340,30 @@ describe("Dashboard", () => {
       await dashboardLoader(queryClient)();
 
       expect(redirect).toHaveBeenCalledWith("/login");
+    });
+  });
+});
+
+describe("GA events", () => {
+  beforeEach(() => {
+    vi.resetModules(); 
+  });
+
+  it("should send GA event when New Submission is clicked", async () => {
+    const sendGAEventSpy = vi.spyOn(ReactGA, "sendGAEvent").mockImplementation(() => {});
+
+    const user = userEvent.setup();
+    renderWithQueryClientAndMemoryRouter(<Dashboard />, [ { path: "/dashboard", element: <Dashboard /> },], { initialEntries: ["/dashboard"] });
+
+    // wait for the dashboard to load
+    await screen.findByRole("heading", { name: "Dashboard" });
+
+    const button = screen.getByTestId("new-sub-button");
+    await user.click(button);
+
+    expect(sendGAEventSpy).toHaveBeenCalledWith("new_submission_click", {
+      event_category: "Dashboard",
+      event_label: "from_dashboard",
     });
   });
 });

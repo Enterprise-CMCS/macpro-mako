@@ -7,11 +7,25 @@ import {
 } from "mocks";
 import items from "mocks/data/items";
 import { opensearch } from "shared-types";
-import { describe, expect, it } from "vitest";
-
+import { describe, it, expect, vi, beforeEach, afterEach } from "vitest";
 import { renderWithQueryClient } from "@/utils/test-helpers";
-
 import { PackageDetails } from ".";
+import * as gaUtils from "@/utils";
+const sendGAEventSpy = vi.spyOn(gaUtils, "sendGAEvent");
+
+vi.mock("@/api/useGetUser", () => ({
+  useGetUser: () => ({
+    data: { user: { name: "fake user" } },
+    isLoading: false,
+  }),
+}));
+vi.mock("shared-utils", async (importOriginal) => {
+  const actual = await importOriginal<typeof import("shared-utils")>();
+  return {
+    ...actual,
+    isCmsUser: () => false, 
+  };
+});
 
 describe("package details", () => {
   const setup = async (submission: opensearch.main.Document) => {
@@ -46,5 +60,24 @@ describe("package details", () => {
     const { asFragment } = await setup(item._source);
     expect(screen.getByText("Temporary Extension Request Details")).toBeInTheDocument();
     expect(asFragment()).toMatchSnapshot();
+  });
+});
+
+describe("PackageDetails GA tracking", () => {
+  beforeEach(() => {
+    sendGAEventSpy.mockClear();
+    window.gtag = vi.fn(); 
+  });
+
+  it("should send a GA event on load", () => {
+    renderWithQueryClient(<PackageDetails submission={TEST_1915B_ITEM._source} />);
+
+    expect(sendGAEventSpy).toHaveBeenCalledWith("package_details_view", {
+      package_id: TEST_1915B_ITEM._source.id,
+      package_type: "waiver", // because it's 1915b
+      user_role: "state", // mocked useGetUser isCmsUser() returned false
+    });
+
+    expect(screen.getByText("1915(b) Package Details")).toBeInTheDocument();
   });
 });

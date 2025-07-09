@@ -61,7 +61,7 @@ export const useFilterState = () => {
   return useState(filters);
 };
 
-const triggerGAEvent = (field: opensearch.main.Field, value: opensearch.FilterValue) => {
+export const triggerGAEvent = (field: opensearch.main.Field, value: opensearch.FilterValue) => {
   // --- GA4 Event Tracking Logic ---
   const filterKey = field;
   let eventValue: string;

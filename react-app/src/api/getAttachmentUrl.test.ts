@@ -1,13 +1,18 @@
+import { describe, expect, it, vi } from "vitest";
+import { getAttachmentUrl } from "./getAttachmentUrl";
 import {
   ATTACHMENT_BUCKET_NAME,
   ATTACHMENT_BUCKET_REGION,
   errorApiAttachmentUrlHandler,
 } from "mocks";
 import { mockedApiServer as mockedServer } from "mocks/server";
-import { describe, expect, it } from "vitest";
-
-import { getAttachmentUrl } from "./getAttachmentUrl";
-
+import * as gaModule from "@/utils/ReactGA/SendGAEvent";
+import { API } from "aws-amplify";
+vi.mock("@/utils/ReactGA/SendGAEvent", () => {
+  return {
+    sendGAEvent: vi.fn(),
+  };
+});
 describe("getAttachmentUrl tests", () => {
   const id = "1234";
   const key = "test-key";
@@ -26,5 +31,18 @@ describe("getAttachmentUrl tests", () => {
     await expect(() =>
       getAttachmentUrl(id, ATTACHMENT_BUCKET_NAME, key, filename),
     ).rejects.toThrowError();
+  });
+
+  it("should send a GA event if the response has no URL", async () => {
+    vi.spyOn(API, "post").mockResolvedValue({});
+
+    await expect(getAttachmentUrl(id, ATTACHMENT_BUCKET_NAME, key, filename)).resolves.toBeUndefined();
+
+    expect(gaModule.sendGAEvent).toHaveBeenCalledWith(
+      "api_error",
+      expect.objectContaining({
+        message: "failure /getAttachmentUrl",
+      }),
+    );
   });
 });

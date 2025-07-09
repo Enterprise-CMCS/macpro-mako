@@ -1,8 +1,8 @@
 import { screen, waitFor, within } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { opensearch } from "shared-types";
-import { beforeEach, describe, expect, it } from "vitest";
-
+import { beforeEach, describe, expect, it, vi } from "vitest";
+import * as ReactGA from "@/utils/ReactGA/SendGAEvent";
 import { OsMainView, OsTableColumn } from "@/components";
 import {
   DEFAULT_COLUMNS,
@@ -52,10 +52,39 @@ describe("OsMainView", () => {
     };
   };
 
+ 
   beforeEach(() => {
     global.localStorage.clear();
   });
   describe("SPAs", () => {
+    it("should send GA event when toggling a column", async () => {
+      const user = userEvent.setup();
+      const spy = vi.spyOn(ReactGA, "sendGAEvent").mockImplementation(() => {});
+      const spaHits = getFilteredHits(["CHIP SPA", "Medicaid SPA"]);
+      const rendered = renderDashboard(
+        <OsMainView columns={DEFAULT_COLUMNS} />,
+        {
+          data: spaHits,
+          isLoading: false,
+          error: null,
+        },
+        getDashboardQueryString({
+          tab: "spas",
+        }),
+      );
+  
+      // Open the columns menu
+      await user.click(screen.queryByRole("button", { name: "Columns" }));
+  
+      // Click on the "State" column to toggle it
+      const columns = screen.queryByRole("menu");
+      await user.click(within(columns).getByText("State"));
+  
+      expect(spy).toHaveBeenCalledWith("dash_column_toggle", {
+        column_name: "state.keyword",
+        visible: true, 
+      });
+    });
     it("should display without filters", async () => {
       const spaHits = getFilteredHits(["CHIP SPA", "Medicaid SPA"]);
       const recordCount = spaHits.hits.length;

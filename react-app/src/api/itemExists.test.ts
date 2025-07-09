@@ -5,9 +5,14 @@ import {
   TEST_ITEM_ID,
 } from "mocks";
 import { mockedApiServer as mockedServer } from "mocks/server";
-import { describe, expect, it } from "vitest";
-
+import { describe, expect, it, vi } from "vitest";
 import { itemExists } from "./itemExists";
+import * as gaModule from "@/utils/ReactGA/SendGAEvent";
+vi.mock("@/utils/ReactGA/SendGAEvent", () => {
+  return {
+    sendGAEvent: vi.fn(),
+  };
+});
 
 describe("itemExists test", () => {
   it("should return true if the item exists", async () => {
@@ -30,5 +35,19 @@ describe("itemExists test", () => {
 
     const found = await itemExists(TEST_ITEM_ID);
     expect(found).toBeFalsy();
+  });
+
+  it("should return false and send GA event if there is an error getting the item", async () => {
+    mockedServer.use(errorApiItemExistsHandler);
+
+    const found = await itemExists(TEST_ITEM_ID);
+    expect(found).toBeFalsy();
+
+    expect(gaModule.sendGAEvent).toHaveBeenCalledWith(
+      "api_errror", // note: your original code has a typo in "api_errror"
+      expect.objectContaining({
+        error: "failure /itemExists",
+      }),
+    );
   });
 });

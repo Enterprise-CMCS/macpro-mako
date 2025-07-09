@@ -6,10 +6,12 @@ import {
   setMockUsername,
 } from "mocks";
 import { mockedApiServer as mockedServer } from "mocks/server";
-import { describe, expect, it } from "vitest";
-
+import { describe, expect, it, vi } from "vitest";
 import { requestBaseCMSAccess } from "./useRequestBaseCMSAccess";
-
+import * as gaModule from "@/utils/ReactGA/SendGAEvent";
+vi.mock("@/utils/ReactGA/SendGAEvent", () => ({
+  sendGAEvent: vi.fn(),
+}));
 describe("useRequestBaseCMSAccess", () => {
   it("should return null if the user is not logged in", async () => {
     setMockUsername(null);
@@ -21,6 +23,12 @@ describe("useRequestBaseCMSAccess", () => {
     mockedServer.use(errorApiRequestBaseCMSAccessHandler);
     const result = await requestBaseCMSAccess();
     expect(result).toBeNull();
+    expect(gaModule.sendGAEvent).toHaveBeenCalledWith(
+      "api_error",
+      expect.objectContaining({
+        message: "failure /requestBaseCMSAccess",
+      }),
+    );
   });
 
   it("should return a success message if the user already has roles", async () => {
