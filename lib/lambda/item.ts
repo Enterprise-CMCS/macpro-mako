@@ -2,7 +2,7 @@ import { APIGatewayEvent } from "shared-types";
 import { z } from "zod";
 
 import {
-  authedMiddy,
+  authenticatedMiddy,
   canViewPackage,
   ContextWithPackage,
   fetchAppkChildren,
@@ -22,7 +22,7 @@ const itemEventSchema = z
 
 export type ItemEvent = APIGatewayEvent & z.infer<typeof itemEventSchema>;
 
-export const handler = authedMiddy({
+export const handler = authenticatedMiddy({
   opensearch: true,
   setToContext: true,
   eventSchema: itemEventSchema,

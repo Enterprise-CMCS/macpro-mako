@@ -11,15 +11,15 @@ import {
   NormalizeEventOptions,
 } from "./index";
 
-export type BaseMiddyOptions = NormalizeEventOptions & {
+export type NonAuthenticatedMiddyOptions = NormalizeEventOptions & {
   eventSchema?: z.ZodTypeAny;
 };
 
-const defaults: BaseMiddyOptions = {
+const defaults: NonAuthenticatedMiddyOptions = {
   eventSchema: undefined,
 };
 
-export const baseMiddy = (opts: BaseMiddyOptions = {}) => {
+export const nonAuthenticatedMiddy = (opts: NonAuthenticatedMiddyOptions = {}) => {
   const options = { ...defaults, ...opts };
 
   const { eventSchema, ...normalizeEventOptions } = options;
@@ -38,15 +38,15 @@ export const baseMiddy = (opts: BaseMiddyOptions = {}) => {
   return handler;
 };
 
-export type AuthedMiddyOptions = NormalizeEventOptions &
+export type AuthenticatedMiddyOptions = NormalizeEventOptions &
   IsAuthenticatedOptions & {
     eventSchema?: z.ZodTypeAny;
   };
 
-export const authedMiddy = (opts: AuthedMiddyOptions = {}) => {
+export const authenticatedMiddy = (opts: AuthenticatedMiddyOptions = {}) => {
   const options = { ...defaults, ...opts };
 
   const { setToContext, ...baseMiddyOptions } = options;
 
-  return baseMiddy(baseMiddyOptions).use(isAuthenticated({ setToContext }));
+  return nonAuthenticatedMiddy(baseMiddyOptions).use(isAuthenticated({ setToContext }));
 };

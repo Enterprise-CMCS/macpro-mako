@@ -34,17 +34,21 @@ export const canViewPackage = (): MiddlewareObj => ({
 export const canViewUser = (): MiddlewareObj => ({
   before: async (request: Request) => {
     // Get the user to check if they are authorized to see the user
-    const currUser = await getAuthUserFromRequest(request);
+    const authenticatedUser = await getAuthUserFromRequest(request);
     const { userEmail } = request.event.body;
 
     // if the user wasn't set in context throw an error
-    if (!currUser || !currUser?.email) {
+    if (!authenticatedUser || !authenticatedUser?.email) {
       throw new Error("User was not stored on the request");
     }
 
     // if the userEmail was set but the authenticated user does not have
     // authorization to view another user's details, throw an error
-    if (userEmail && currUser.email !== userEmail && !isUserManagerUser(currUser)) {
+    if (
+      userEmail &&
+      authenticatedUser.email !== userEmail &&
+      !isUserManagerUser(authenticatedUser)
+    ) {
       throw createError(403, JSON.stringify({ message: "Not authorized to view this resource" }));
     }
   },

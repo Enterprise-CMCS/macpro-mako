@@ -22,7 +22,7 @@ import { FullUser } from "shared-types";
 import { describe, expect, it } from "vitest";
 
 import { isAuthenticated, IsAuthenticatedOptions } from "./isAuthenticated";
-import { ContextWithCurrUser, getAuthUserFromRequest } from "./utils";
+import { ContextWithAuthenticatedUser, getAuthUserFromRequest } from "./utils";
 
 const testStateSubmitterStates: string[] =
   getActiveStatesForUserByEmail(TEST_STATE_SUBMITTER_EMAIL, "statesubmitter") || [];
@@ -50,16 +50,21 @@ const setupHandler = ({
       const user = await getAuthUserFromRequest(request);
       expect(user).toEqual(expectedUser);
     })
-    .handler((event: APIGatewayEvent, context: Context & { currUser?: ContextWithCurrUser }) => {
-      if (options.setToContext) {
-        const { currUser } = context;
-        expect(currUser).toEqual(expectedUser);
-      }
-      return {
-        statusCode: 200,
-        body: "OK",
-      };
-    });
+    .handler(
+      (
+        event: APIGatewayEvent,
+        context: Context & { authenticatedUser?: ContextWithAuthenticatedUser },
+      ) => {
+        if (options.setToContext) {
+          const { authenticatedUser } = context;
+          expect(authenticatedUser).toEqual(expectedUser);
+        }
+        return {
+          statusCode: 200,
+          body: "OK",
+        };
+      },
+    );
 };
 
 describe("isAuthenticated", () => {

@@ -5,7 +5,7 @@ import { baseRoleInformationSchema } from "shared-types/events/legacy-user";
 import { canRequestAccess, canSelfRevokeAccess, canUpdateAccess } from "shared-utils";
 import { z } from "zod";
 
-import { authedMiddy, ContextWithCurrUser } from "../middleware";
+import { authenticatedMiddy, ContextWithAuthenticatedUser } from "../middleware";
 import { getUserByEmail } from "./userManagementService";
 
 type RoleStatus = "active" | "denied" | "pending" | "revoked";
@@ -18,13 +18,13 @@ export const submitRoleRequestEventSchema = z
 
 export type SubmitRoleRequestEvent = APIGatewayEvent & z.infer<typeof submitRoleRequestEventSchema>;
 
-export const handler = authedMiddy({
+export const handler = authenticatedMiddy({
   opensearch: true,
   kafka: true,
   setToContext: true,
   eventSchema: submitRoleRequestEventSchema,
-}).handler(async (event: SubmitRoleRequestEvent, context: ContextWithCurrUser) => {
-  const { currUser } = context;
+}).handler(async (event: SubmitRoleRequestEvent, context: ContextWithAuthenticatedUser) => {
+  const { authenticatedUser } = context;
   const {
     email,
     state,
@@ -36,26 +36,26 @@ export const handler = authedMiddy({
     division = null,
   } = event.body;
 
-  if (!currUser?.email) {
+  if (!authenticatedUser?.email) {
     throw new Error("Email is undefined");
   }
 
-  const userInfo = await getUserByEmail(currUser.email);
+  const userInfo = await getUserByEmail(authenticatedUser.email);
 
   let status: RoleStatus;
   // Determine the status based on the user's role and action
   // Not a role request change; user is updating another role access request
-  if (!requestRoleChange && canUpdateAccess(currUser.role, roleToUpdate)) {
+  if (!requestRoleChange && canUpdateAccess(authenticatedUser.role, roleToUpdate)) {
     status = grantAccess;
   } else if (
     !requestRoleChange &&
     grantAccess === "revoked" &&
     userInfo?.email &&
-    canSelfRevokeAccess(currUser.role, userInfo.email, email)
+    canSelfRevokeAccess(authenticatedUser.role, userInfo.email, email)
   ) {
     // Not a role request change; user is revoking their own access
     status = "revoked";
-  } else if (requestRoleChange && canRequestAccess(currUser.role)) {
+  } else if (requestRoleChange && canRequestAccess(authenticatedUser.role)) {
     // User is permitted to request a role change
     status = "pending";
   } else {
@@ -69,8 +69,9 @@ export const handler = authedMiddy({
 
   const id = `${email}_${state}_${roleToUpdate}`;
   const date = Date.now(); // correct time format?
-  const doneByEmail = userInfo?.email || currUser.email;
-  const doneByName = userInfo?.fullName || `${currUser.given_name} ${currUser.family_name}`; // full name of current user. Cognito (userAttributes) may have a different full name
+  const doneByEmail = userInfo?.email || authenticatedUser.email;
+  const doneByName =
+    userInfo?.fullName || `${authenticatedUser.given_name} ${authenticatedUser.family_name}`; // full name of current user. Cognito (userAttributes) may have a different full name
 
   await produceMessage(
     process?.env?.topicName || "",
@@ -90,7 +91,7 @@ export const handler = authedMiddy({
   );
 
   if (
-    canUpdateAccess(currUser.role, roleToUpdate) &&
+    canUpdateAccess(authenticatedUser.role, roleToUpdate) &&
     grantAccess === "active" &&
     group &&
     division

@@ -2,7 +2,7 @@ import { APIGatewayEvent } from "shared-types";
 import { Territory } from "shared-types/events/legacy-user";
 import { z } from "zod";
 
-import { authedMiddy, canViewUser, ContextWithCurrUser } from "../middleware";
+import { authenticatedMiddy, canViewUser, ContextWithAuthenticatedUser } from "../middleware";
 import { getAllUserRolesByEmail, getApproversByRole } from "./userManagementService";
 
 export const getApproversEventSchema = z
@@ -15,14 +15,14 @@ export const getApproversEventSchema = z
 
 export type GetApproversEvent = APIGatewayEvent & z.infer<typeof getApproversEventSchema>;
 
-export const handler = authedMiddy({
+export const handler = authenticatedMiddy({
   opensearch: true,
   setToContext: true,
   eventSchema: getApproversEventSchema,
 })
   .use(canViewUser())
-  .handler(async (event: GetApproversEvent, context: ContextWithCurrUser) => {
-    const email = event?.body?.userEmail || context?.currUser?.email;
+  .handler(async (event: GetApproversEvent, context: ContextWithAuthenticatedUser) => {
+    const email = event?.body?.userEmail || context?.authenticatedUser?.email;
 
     if (!email) {
       throw new Error("Email is undefined");

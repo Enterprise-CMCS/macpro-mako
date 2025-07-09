@@ -3,7 +3,7 @@ import { APIGatewayEvent } from "shared-types";
 import { roles } from "shared-types/opensearch";
 import { isUserManagerUser } from "shared-utils";
 
-import { authedMiddy, ContextWithCurrUser } from "../middleware";
+import { authenticatedMiddy, ContextWithAuthenticatedUser } from "../middleware";
 import {
   getAllUserRoles,
   getAllUserRolesByEmail,
@@ -14,20 +14,21 @@ import {
 const getActiveRole = (roles: roles.Document[], roleName: string) =>
   roles.find((roleObj) => roleObj.role === roleName && roleObj.status === "active");
 
-export const handler = authedMiddy({ opensearch: true, setToContext: true }).handler(
-  async (event: APIGatewayEvent, context: ContextWithCurrUser) => {
-    const { currUser } = context;
+export const handler = authenticatedMiddy({ opensearch: true, setToContext: true }).handler(
+  async (event: APIGatewayEvent, context: ContextWithAuthenticatedUser) => {
+    const { authenticatedUser } = context;
 
-    if (!currUser?.email) {
+    if (!authenticatedUser?.email) {
       throw new Error("Email is undefined");
     }
 
     // get all of the roles for the current user
-    const userRoles = await getAllUserRolesByEmail(currUser.email);
+    const userRoles = await getAllUserRolesByEmail(authenticatedUser.email);
 
     const approverRoles = userRoles.filter(
       (roleObj) =>
-        isUserManagerUser({ ...currUser, role: roleObj.role }) && roleObj?.status === "active",
+        isUserManagerUser({ ...authenticatedUser, role: roleObj.role }) &&
+        roleObj?.status === "active",
     );
 
     if (approverRoles.length <= 0) {
@@ -57,7 +58,7 @@ export const handler = authedMiddy({ opensearch: true, setToContext: true }).han
     }
 
     // filter out the current user from the role requests
-    roleRequests = roleRequests.filter((adminRole) => adminRole?.email !== currUser.email);
+    roleRequests = roleRequests.filter((adminRole) => adminRole?.email !== authenticatedUser.email);
 
     if (!roleRequests.length) {
       return {

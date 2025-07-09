@@ -3,7 +3,7 @@ import { produceMessage } from "libs/api/kafka";
 import { baseUserRoleRequestSchema } from "shared-types/events/legacy-user";
 import { z } from "zod";
 
-import { baseMiddy } from "../middleware";
+import { nonAuthenticatedMiddy } from "../middleware";
 
 export const updateUserRolesEventSchema = z
   .object({
@@ -15,7 +15,7 @@ export const updateUserRolesEventSchema = z
 
 export type UpdateUserRolesEvent = APIGatewayEvent & z.infer<typeof updateUserRolesEventSchema>;
 
-export const handler = baseMiddy({
+export const handler = nonAuthenticatedMiddy({
   opensearch: true,
   kafka: true,
   eventSchema: updateUserRolesEventSchema,
