@@ -1,6 +1,7 @@
 import { PlusIcon } from "lucide-react";
 import { useEffect, useMemo, useState } from "react";
 import { Navigate } from "react-router";
+import { useNavigate } from "react-router-dom";
 import { StateCode } from "shared-types";
 import { userRoleMap } from "shared-utils";
 
@@ -31,6 +32,7 @@ export const MyProfile = () => {
     isLoading: isProfileLoading,
     refetch: reloadUserProfile,
   } = useGetUserProfile();
+  const navigate = useNavigate();
 
   const isNewUserRoleDisplay = useFeatureFlag("SHOW_USER_ROLE_UPDATE");
 
@@ -245,6 +247,7 @@ export const MyProfile = () => {
                   <Button
                     className="w-full border-dashed p-10 text-black font-normal"
                     variant="outline"
+                    onClick={() => navigate("/signup")}
                   >
                     Add another user role <PlusIcon className="ml-3" />
                   </Button>
