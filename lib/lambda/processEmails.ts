@@ -2,6 +2,7 @@ import { SendEmailCommand, SendEmailCommandInput, SESClient } from "@aws-sdk/cli
 import { SendMessageCommand, SQSClient } from "@aws-sdk/client-sqs";
 import { Handler } from "aws-lambda";
 import { htmlToText, HtmlToTextOptions } from "html-to-text";
+import { ItemResult } from "lib/packages/shared-types/opensearch/changelog";
 import { getPackageChangelog } from "libs/api/package";
 import { getAllStateUsersFromOpenSearch, getEmailTemplates } from "libs/email";
 import { EMAIL_CONFIG, getCpocEmail, getSrtEmails } from "libs/email/content/email-components";
@@ -144,15 +145,6 @@ export async function processRecord(kafkaRecord: KafkaRecord, config: ProcessEma
       try {
         const item = await os.getItem(config.osDomain, getOsNamespace("main"), safeID);
 
-        const changelogFilter = [
-          { term: { "event.keyword": "withdraw-package" } },
-          { term: { "origin.keyword": "mako" } },
-        ];
-        const withdrawPackageMakoEvents = await getPackageChangelog(safeID, changelogFilter);
-        console.log(withdrawPackageMakoEvents, "WITHDRAW EVNETS");
-        const latestwithdrawPackageEvent = withdrawPackageMakoEvents.hits.hits[0]._source;
-        console.log(latestwithdrawPackageEvent, "LATEST WITHDRAW EVENT");
-
         if (!item?.found || !item?._source) {
           console.log(`The package was not found for id: ${id} in mako. Doing nothing.`);
           return;
@@ -163,13 +155,18 @@ export async function processRecord(kafkaRecord: KafkaRecord, config: ProcessEma
           return;
         }
 
+        const changelogFilter = [
+          { term: { "event.keyword": "withdraw-package" } },
+          { term: { "origin.keyword": "mako" } },
+        ];
+        const withdrawPackageMakoEvents = await getPackageChangelog(safeID, changelogFilter);
+        const latestwithdrawPackageEvent = withdrawPackageMakoEvents.hits.hits[0]?._source;
+
         const recordToPass = {
           timestamp,
           ...safeSeatoolRecord.data,
-          // submitterName: item._source.submitterName,
-          // submitterEmail: item._source.submitterEmail,
-          submitterName: latestwithdrawPackageEvent.submitterName ?? item._source.submitterName,
-          submitterEmail: latestwithdrawPackageEvent.submitterEmail ?? item._source.submitterEmail,
+          submitterName: latestwithdrawPackageEvent?.submitterName ?? item._source.submitterName,
+          submitterEmail: latestwithdrawPackageEvent?.submitterEmail ?? item._source.submitterEmail,
           event: "seatool-withdraw",
           proposedEffectiveDate: safeSeatoolRecord.data?.proposedDate,
           origin: "seatool",
