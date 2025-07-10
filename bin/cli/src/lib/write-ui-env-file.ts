@@ -53,7 +53,6 @@ export async function writeUiEnvFile(stage, local = false) {
         )
       ).Parameter!.Value!;
     }
-    googleAnalytics = "";
   } catch {
     console.error("Can't find the Google Analytics ID");
   }
