@@ -1,10 +1,9 @@
 import { screen, waitFor, within } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { opensearch } from "shared-types";
-import { beforeEach, describe, expect, it, vi } from "vitest";
+import { beforeEach, describe, expect, it } from "vitest";
 
 import { OsMainView, OsTableColumn } from "@/components";
-import * as ReactGA from "@/utils/ReactGA/SendGAEvent";
 import {
   DEFAULT_COLUMNS,
   DEFAULT_FILTERS,

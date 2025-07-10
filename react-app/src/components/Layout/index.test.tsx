@@ -476,7 +476,6 @@ describe("Layout", () => {
   });
 
   describe("GA Event Tracking", () => {
-
     it("fires GA event when a nav link is clicked in desktop view", async () => {
       const user = userEvent.setup();
       mockMediaQuery({ desktop: true, mobile: false });
