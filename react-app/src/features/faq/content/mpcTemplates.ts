@@ -2,8 +2,8 @@ import { Template } from "./chpRenderSection";
 
 export const MPC_TEMPLATES: Template[] = [
   {
-    title: "Premiums and Cost Sharing SPA templates",
-    href: "/mpc/P&CSSPATemplates.pdf",
+    title: "Premiums and Cost Sharing Public Notice and General Information",
+    href: "/mpc/P&CSPN&GI.pdf",
   },
   {
     title: "G 1",
