@@ -44,7 +44,7 @@ export async function writeUiEnvFile(stage, local = false) {
 
   let googleAnalytics = "";
   try {
-    if (["main", "val", "production", "oy2-34750"].includes(stage)) {
+    if (["main", "val", "production"].includes(stage)) {
       googleAnalytics = (
         await ssm.send(
           new GetParameterCommand({

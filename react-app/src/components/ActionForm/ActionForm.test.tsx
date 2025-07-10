@@ -342,7 +342,6 @@ describe("ActionForm", () => {
         title="Action Form Title"
         schema={z.object({
           id: z.string(),
-          // event: z.string()
         })}
         defaultValues={{ id: EXISTING_ITEM_PENDING_ID }}
         fields={() => null}

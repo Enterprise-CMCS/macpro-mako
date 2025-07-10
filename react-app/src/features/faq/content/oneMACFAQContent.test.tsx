@@ -25,7 +25,6 @@ describe("handleSupportLinkClick", () => {
   let gtagSpy: ReturnType<typeof vi.fn>;
 
   beforeEach(() => {
-    // Mock window.gtag
     gtagSpy = vi.fn();
     (window as any).gtag = gtagSpy;
   });

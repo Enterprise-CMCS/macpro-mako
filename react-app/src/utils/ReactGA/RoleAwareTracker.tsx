@@ -23,57 +23,11 @@ export function RoleAwareTracker({ children }: { children: React.ReactNode }) {
     );
 
     if (!userDataKey) {
-      // No userData in localStorage → maybe not logged in yet.
-      // You could set a default, or do nothing until login populates it.
+      // No userData in localStorage or not logged in yet.t.
       return;
     }
 
     try {
-      // const raw = localStorage.getItem(userDataKey);
-      // if (!raw) {
-      //   return;
-      // }
-      // const obj = JSON.parse(raw);
-      // const attrs: { Name: string; Value: string }[] = obj.UserAttributes || [];
-
-      // // 2) Try to find either "custom:cms-roles" or fallback to "custom:ismemberof"
-      // const cmsRolesAttr = attrs.find((a) => a.Name === "custom:cms-roles");
-      // const isMemberOfAttr = attrs.find((a) => a.Name === "custom:ismemberof");
-
-      // // Pick whichever exists but if both exist, prefer custom:cms-roles
-      // // TODO: determine if both esist in production and if so which takes priority
-      // const rawRoleString = cmsRolesAttr
-      //   ? cmsRolesAttr.Value
-      //   : isMemberOfAttr
-      //   ? isMemberOfAttr.Value
-      //   : "";
-
-      // // state specific roles
-      // const stateKeywords = new Set([
-      //   "statesubmitter",
-      //   "statesystemadmin",
-      //   "norole",
-      //   "onemac-state-user",
-      // ]);
-
-      // // cms specific roles
-      // const cmsKeywords = new Set([
-      //   "cmsroleapprover",
-      //   "cmsreviewer",
-      //   "helpdesk",
-      //   "onemac-helpdesk",
-      //   "defaultcmsuser",
-      //   "ONEMAC_USER_D",
-      //   "onemac-micro-readonly",
-      //   "ONEMAC_USER_D_SUPER",
-      // ]);
-
-      // // Split the rawRoleString and extract the role
-      // const candidates = rawRoleString.split(",").map((s: string) => s.trim());
-
-      // const isState = candidates.some((c) => stateKeywords.has(c));
-      // const isCMS = candidates.some((c) => cmsKeywords.has(c));
-
       if (isStateUser && !isCmsUser) {
         setUserRole("state");
       } else if (isCmsUser && !isStateUser) {

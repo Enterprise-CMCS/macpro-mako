@@ -112,12 +112,10 @@ describe("Bread Crumb Tests", () => {
 
   describe("BreadCrumb GA Events", () => {
     beforeEach(() => {
-      // Reset mocks before each test
       vi.resetAllMocks();
     });
 
     afterEach(() => {
-      // Reset pathname after each test
       window.history.pushState({}, "", "/");
     });
 

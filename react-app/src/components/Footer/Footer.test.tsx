@@ -14,7 +14,6 @@ vi.mock("@/utils/ReactGA/SendGAEvent", () => ({
 
 import { sendGAEvent } from "@/utils/ReactGA/SendGAEvent";
 
-// === MOCKS ===
 vi.mock("@/api", () => ({
   useGetUser: () => ({
     data: {
