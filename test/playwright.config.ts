@@ -6,9 +6,19 @@ import { baseURL } from "./lib/baseURLs";
  * See https://playwright.dev/docs/test-configuration.
  */
 
+const ENV = process.env.ENV || "local";
 const stage = process.env.STAGE_NAME || "main";
 const project = process.env.PROJECT;
 const deploymentOutput = await getDeploymentOutput(stage, project);
+
+let rootURL;
+
+if (process.env.CI) {
+  process.env.ENV = "ci";
+  rootURL = deploymentOutput.applicationEndpointUrl;
+} else {
+  rootURL = baseURL[ENV];
+}
 
 export default defineConfig({
   testDir: "./",
@@ -128,7 +138,7 @@ export default defineConfig({
       name: "shared",
       testMatch: "**/e2e/specs/*.spec.ts",
       use: {
-        baseURL: baseURL.local,
+        baseURL: rootURL,
       },
     },
   ],

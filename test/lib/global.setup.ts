@@ -95,7 +95,8 @@ const deploymentOutput = await getDeploymentOutput(stage, project);
 
 let rootURL;
 
-if (ENV === "CI") {
+if (process.env.CI) {
+  process.env.ENV = "ci";
   rootURL = deploymentOutput.applicationEndpointUrl;
 } else {
   rootURL = baseURL[ENV];

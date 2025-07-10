@@ -4,7 +4,7 @@ import path from "path";
 import { envRoleUsers } from "@/lib/envRoleUsers";
 import { DashboardPage } from "@/pages/dashboard.page";
 
-let dashboardPage;
+let dashboardPage: DashboardPage;
 const ENV = process.env.ENV || "local";
 const users = envRoleUsers[ENV];
 
