@@ -33,12 +33,8 @@ export const fetchPackage = (opts: FetchPackageOptions = {}): MiddlewareObj => {
       try {
         packageResult = await getPackage(id);
       } catch (err) {
-        console.error(err);
         if (!options.allowNotFound) {
-          // if you don't use the expose option here, you won't be able to see the error message
-          throw createError(500, JSON.stringify({ message: "Internal server error" }), {
-            expose: true,
-          });
+          throw err;
         }
       }
 

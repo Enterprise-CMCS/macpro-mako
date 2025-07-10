@@ -1,4 +1,4 @@
-import { APIGatewayEvent } from "aws-lambda";
+import { APIGatewayEvent, Context } from "aws-lambda";
 import { errorRoleSearchHandler, getRequestContext, setDefaultStateSubmitter } from "mocks";
 import { mockedProducer } from "mocks/helpers/kafka.utils";
 import { mockedServiceServer as mockedServer } from "mocks/server";
@@ -12,29 +12,35 @@ describe("updateUserRoles handler", () => {
     process.env.topicName = "create-user-profile";
   });
 
-  it("should throw an error if the topicName is not set", async () => {
+  it("should return 500, if the topicName is not set", async () => {
     delete process.env.topicName;
 
     const event = {
+      body: JSON.stringify({}),
       requestContext: getRequestContext(),
     } as APIGatewayEvent;
 
-    expect(() => handler(event)).rejects.toThrowError("Topic name is not defined");
+    const res = await handler(event, {} as Context);
+
+    expect(res).toBeTruthy();
+    expect(res.statusCode).toEqual(500);
+    expect(res.body).toEqual(JSON.stringify({ message: "Internal server error" }));
   });
 
-  it("should return 400 if the request context is missing", async () => {
+  it("should return 400, if the event body is missing", async () => {
     const event = {} as APIGatewayEvent;
 
-    const res = await handler(event);
+    const res = await handler(event, {} as Context);
 
+    expect(res).toBeTruthy();
     expect(res.statusCode).toEqual(400);
     expect(res.body).toEqual(JSON.stringify({ message: "Event body required" }));
   });
 
-  it("should return 400 if the event body is invalid", async () => {
+  it("should return 400, if the event body is invalid", async () => {
     // @ts-ignore ignore invalid format for test
     const event = {
-      body: {
+      body: JSON.stringify({
         updatedRoles: [
           {
             id: "multistate@example.com_MD_statesubmitter",
@@ -48,19 +54,15 @@ describe("updateUserRoles handler", () => {
             lastModifiedDate: 1745234449866,
           },
         ],
-      },
+      }),
       requestContext: getRequestContext(),
     } as APIGatewayEvent;
 
-    const res = await handler(event);
+    const res = await handler(event, {} as Context);
 
     expect(res.statusCode).toEqual(400);
-    expect(res.body).toEqual(
-      JSON.stringify({
-        message: "Incorrect role object format",
-        error:
-          '[\n  {\n    "received": "state",\n    "code": "invalid_enum_value",\n    "options": [\n      "defaultcmsuser",\n      "cmsroleapprover",\n      "cmsreviewer",\n      "statesystemadmin",\n      "helpdesk",\n      "statesubmitter",\n      "systemadmin",\n      "norole"\n    ],\n    "path": [\n      "updatedRoles",\n      0,\n      "role"\n    ],\n    "message": "Invalid enum value. Expected \'defaultcmsuser\' | \'cmsroleapprover\' | \'cmsreviewer\' | \'statesystemadmin\' | \'helpdesk\' | \'statesubmitter\' | \'systemadmin\' | \'norole\', received \'state\'"\n  }\n]',
-      }),
+    expect(JSON.parse(res.body)).toEqual(
+      expect.objectContaining({ message: "Event failed validation" }),
     );
   });
 
@@ -68,7 +70,7 @@ describe("updateUserRoles handler", () => {
     mockedProducer.send.mockResolvedValueOnce([{ message: "sent" }]);
     // @ts-ignore
     const event = {
-      body: {
+      body: JSON.stringify({
         updatedRoles: [
           {
             id: "multistate@example.com_MD_statesubmitter",
@@ -82,22 +84,22 @@ describe("updateUserRoles handler", () => {
             lastModifiedDate: 1745234449866,
           },
         ],
-      },
+      }),
       requestContext: getRequestContext(),
     } as APIGatewayEvent;
 
-    const res = await handler(event);
+    const res = await handler(event, {} as Context);
 
     expect(res.statusCode).toEqual(200);
     expect(res.body).toEqual(JSON.stringify({ message: "Roles have been updated." }));
   });
 
-  it("should return 500 if there is an error getting the roles", async () => {
+  it("should return 500, if there is an error getting the roles", async () => {
     mockedServer.use(errorRoleSearchHandler);
 
     // @ts-ignore
     const event = {
-      body: {
+      body: JSON.stringify({
         updatedRoles: [
           {
             id: "multistate@example.com_MD_statesubmitter",
@@ -111,11 +113,11 @@ describe("updateUserRoles handler", () => {
             lastModifiedDate: 1745234449866,
           },
         ],
-      },
+      }),
       requestContext: getRequestContext(),
     } as APIGatewayEvent;
 
-    const res = await handler(event);
+    const res = await handler(event, {} as Context);
 
     expect(res.statusCode).toEqual(500);
     expect(res.body).toEqual(JSON.stringify({ message: "Internal server error" }));
@@ -126,7 +128,7 @@ describe("updateUserRoles handler", () => {
 
     // @ts-ignore
     const event = {
-      body: {
+      body: JSON.stringify({
         updatedRoles: [
           {
             id: "multistate@example.com_MD_statesubmitter",
@@ -140,11 +142,11 @@ describe("updateUserRoles handler", () => {
             lastModifiedDate: 1745234449866,
           },
         ],
-      },
+      }),
       requestContext: getRequestContext(),
     } as APIGatewayEvent;
 
-    const res = await handler(event);
+    const res = await handler(event, {} as Context);
 
     expect(res.statusCode).toEqual(500);
     expect(res.body).toEqual(JSON.stringify({ message: "Internal server error" }));

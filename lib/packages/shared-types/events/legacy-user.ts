@@ -46,6 +46,17 @@ const roleEvent = z.enum(["user-role", "legacy-user-role"]);
 const userInfoEvent = z.enum(["user-info", "legacy-user-info"]);
 const skPattern = /^v[0-9]+#[a-z]+#(N\/A|[A-Z]{2})$/;
 
+export const baseRoleInformationSchema = z.object({
+  email: z.string().email(),
+  state: territory,
+  role: userRoles,
+  eventType: roleEvent,
+  requestRoleChange: z.boolean().optional(),
+  grantAccess: userStatus.optional(),
+  group: z.string().optional(),
+  division: z.string().optional(),
+});
+
 export const baseUserRoleRequestSchema = z.object({
   email: z.string().email().optional(),
   status: userStatus,

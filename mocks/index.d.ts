@@ -139,15 +139,17 @@ type BoolQuery = QueryBase & {
 
 export type QueryAggs = opensearch.main.Aggs;
 
+export type Query = {
+  term?: Record<string, string>;
+  bool?: BoolQuery;
+  match_all?: MatchAllQuery;
+  regexp?: Record<string, string>;
+};
+
 export type SearchQueryBody = {
   from?: number;
   search?: string;
-  query?: {
-    term?: Record<string, string>;
-    bool?: BoolQuery;
-    match_all?: MatchAllQuery;
-    regexp?: Record<string, string>;
-  };
+  query?: Query;
   aggs?: Record<string, QueryAggs>;
   size?: number;
   sortDirection?: string;

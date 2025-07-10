@@ -1,69 +1,40 @@
-import { APIGatewayEvent } from "aws-lambda";
-import { getAuthDetails, lookupUserAttributes } from "libs/api/auth/user";
-import { response } from "libs/handler-lib";
-import { StateCode } from "shared-types";
+import { APIGatewayEvent } from "shared-types";
+import { Territory } from "shared-types/events/legacy-user";
+import { z } from "zod";
 
-import { getUserProfileSchema } from "./getUserProfile";
-import {
-  getAllUserRolesByEmail,
-  getApproversByRole,
-  getLatestActiveRoleByEmail,
-} from "./userManagementService";
+import { authenticatedMiddy, canViewUser, ContextWithAuthenticatedUser } from "../middleware";
+import { getAllUserRolesByEmail, getApproversByRole } from "./userManagementService";
 
-type Territory = StateCode | "N/A";
-type approverListType = { id: string; role: string; email: string; territory: Territory };
+export const getApproversEventSchema = z
+  .object({
+    body: z.object({
+      userEmail: z.string().email().optional(),
+    }),
+  })
+  .passthrough();
 
-const getApprovers = async (event: APIGatewayEvent) => {
-  if (!event?.requestContext) {
-    return response({
-      statusCode: 400,
-      body: { message: "Request context required" },
-    });
-  }
+export type GetApproversEvent = APIGatewayEvent & z.infer<typeof getApproversEventSchema>;
 
-  let authDetails;
-  try {
-    authDetails = getAuthDetails(event);
-  } catch (err) {
-    console.error(err);
-    return response({
-      statusCode: 401,
-      body: { message: "User not authenticated" },
-    });
-  }
+export const handler = authenticatedMiddy({
+  opensearch: true,
+  setToContext: true,
+  eventSchema: getApproversEventSchema,
+})
+  .use(canViewUser())
+  .handler(async (event: GetApproversEvent, context: ContextWithAuthenticatedUser) => {
+    const email = event?.body?.userEmail || context?.authenticatedUser?.email;
 
-  try {
-    const { userId, poolId } = authDetails;
-    const { email } = await lookupUserAttributes(userId, poolId);
-
-    let lookupEmail = email;
-
-    const eventBody = typeof event.body === "string" ? JSON.parse(event.body) : event.body;
-    const safeEventBody = getUserProfileSchema.safeParse(eventBody);
-
-    if (
-      safeEventBody.success &&
-      safeEventBody?.data?.userEmail &&
-      safeEventBody.data.userEmail !== email
-    ) {
-      const currUserLatestActiveRoleObj = await getLatestActiveRoleByEmail(email);
-      if (
-        ["systemadmin", "statesystemadmin", "cmsroleapprover", "helpdesk"].includes(
-          currUserLatestActiveRoleObj?.role,
-        )
-      ) {
-        lookupEmail = safeEventBody.data.userEmail;
-      }
+    if (!email) {
+      throw new Error("Email is undefined");
     }
 
-    const userRoles = await getAllUserRolesByEmail(lookupEmail);
-    if (!userRoles) throw Error;
+    const userRoles = await getAllUserRolesByEmail(email);
 
     const roleStateMap = new Map<string, Territory[]>();
 
     // we make a map for state submitters but also use the roles for all other users
     if (userRoles) {
-      userRoles.forEach(({ role, territory }: approverListType) => {
+      userRoles.forEach(({ role, territory }) => {
         if (!roleStateMap.has(role)) {
           roleStateMap.set(role, []);
         }
@@ -80,7 +51,7 @@ const getApprovers = async (event: APIGatewayEvent) => {
         const filtered =
           role === "statesubmitter"
             ? allApprovers.filter((approver) =>
-                territories.includes(approver.territory as Territory),
+                territories.includes(approver.territory.toUpperCase() as Territory),
               )
             : allApprovers;
         approverList.push({
@@ -100,23 +71,11 @@ const getApprovers = async (event: APIGatewayEvent) => {
       }
     }
 
-    return response({
+    return {
       statusCode: 200,
       body: {
         message: "Approver list successfully retrieved.",
         approverList: approverList,
       },
-    });
-  } catch (err: unknown) {
-    console.error("Unhandled error in getApprovers:", err);
-    return response({
-      statusCode: 500,
-      body: {
-        message: "Internal server error",
-        error: err instanceof Error ? err.message : JSON.stringify(err),
-      },
-    });
-  }
-};
-
-export const handler = getApprovers;
+    };
+  });

@@ -1,8 +1,9 @@
-import { getAuthDetails, lookupUserAttributes } from "libs/api/auth/user";
-import { response } from "libs/handler-lib";
-import { StateAccess } from "react-app/src/api";
+import { createError } from "@middy/util";
 import { APIGatewayEvent } from "shared-types";
+import { roles } from "shared-types/opensearch";
+import { isUserManagerUser } from "shared-utils";
 
+import { authenticatedMiddy, ContextWithAuthenticatedUser } from "../middleware";
 import {
   getAllUserRoles,
   getAllUserRolesByEmail,
@@ -10,88 +11,67 @@ import {
   getUserRolesWithNames,
 } from "./userManagementService";
 
-const getActiveRole = (roles: StateAccess[], roleName: string) =>
+const getActiveRole = (roles: roles.Document[], roleName: string) =>
   roles.find((roleObj) => roleObj.role === roleName && roleObj.status === "active");
 
-export const getRoleRequests = async (event: APIGatewayEvent) => {
-  if (!event?.requestContext) {
-    return response({
-      statusCode: 400,
-      body: { message: "Request context required" },
-    });
-  }
+export const handler = authenticatedMiddy({ opensearch: true, setToContext: true }).handler(
+  async (event: APIGatewayEvent, context: ContextWithAuthenticatedUser) => {
+    const { authenticatedUser } = context;
 
-  let authDetails;
-  try {
-    authDetails = getAuthDetails(event);
-  } catch (err) {
-    console.error(err);
-    return response({
-      statusCode: 401,
-      body: { message: "User not authenticated" },
-    });
-  }
-
-  try {
-    const { userId, poolId } = authDetails;
-    const { email } = await lookupUserAttributes(userId, poolId);
+    if (!authenticatedUser?.email) {
+      throw new Error("Email is undefined");
+    }
 
     // get all of the roles for the current user
-    const userRoles = await getAllUserRolesByEmail(email);
+    const userRoles = await getAllUserRolesByEmail(authenticatedUser.email);
+
     const approverRoles = userRoles.filter(
-      (roleObj: StateAccess) =>
-        ["cmsroleapprover", "systemadmin", "helpdesk", "statesystemadmin"].includes(
-          roleObj?.role,
-        ) && roleObj?.status === "active",
+      (roleObj) =>
+        isUserManagerUser({ ...authenticatedUser, role: roleObj.role }) &&
+        roleObj?.status === "active",
     );
 
-    if (!approverRoles.length) {
-      return response({
-        statusCode: 403,
-        body: { message: "User not authorized to approve roles" },
-      });
+    if (approverRoles.length <= 0) {
+      throw createError(
+        403,
+        JSON.stringify({ message: "User is not authorized to approve roles" }),
+      );
     }
 
-    const cmsRoleApprover = getActiveRole(approverRoles, "cmsroleapprover");
-    const systemAdmin = getActiveRole(approverRoles, "systemadmin");
-    const helpDesk = getActiveRole(approverRoles, "helpdesk");
-    const stateSystemAdmin = getActiveRole(approverRoles, "statesystemadmin");
-
-    let roleRequests: StateAccess[] = [];
-
-    if (systemAdmin || helpDesk) {
+    let roleRequests: roles.Document[] = [];
+    if (getActiveRole(approverRoles, "systemadmin") || getActiveRole(approverRoles, "helpdesk")) {
       roleRequests = await getAllUserRoles();
-    }
-
-    if (cmsRoleApprover) {
+    } else if (getActiveRole(approverRoles, "cmsroleapprover")) {
       roleRequests = await getAllUserRoles();
+
       // cmsroleapprovers can only see statesystemadmin requests
       roleRequests = roleRequests.filter((roleObj) => roleObj?.role === "statesystemadmin");
-    }
+    } else {
+      const stateSystemAdmin = getActiveRole(approverRoles, "statesystemadmin");
 
-    if (stateSystemAdmin) {
-      roleRequests = await getAllUserRolesByState(stateSystemAdmin?.territory);
+      if (stateSystemAdmin) {
+        roleRequests = await getAllUserRolesByState(stateSystemAdmin?.territory);
 
-      // statesystemadmins cannot update other statesystemadmin requests
-      roleRequests = roleRequests.filter((roleObj) => roleObj?.role !== "statesystemadmin");
+        // statesystemadmins cannot update other statesystemadmin requests
+        roleRequests = roleRequests.filter((roleObj) => roleObj?.role !== "statesystemadmin");
+      }
     }
 
     // filter out the current user from the role requests
-    roleRequests = roleRequests.filter((adminRole) => adminRole?.email !== email);
+    roleRequests = roleRequests.filter((adminRole) => adminRole?.email !== authenticatedUser.email);
+
+    if (!roleRequests.length) {
+      return {
+        statusCode: 200,
+        body: [],
+      };
+    }
 
     const roleRequestsWithName = await getUserRolesWithNames(roleRequests);
 
-    return response({
+    return {
       statusCode: 200,
       body: roleRequestsWithName,
-    });
-  } catch (err: unknown) {
-    console.log("An error occurred: ", err);
-    return response({
-      statusCode: 500,
-      body: { message: "Internal server error" },
-    });
-  }
-};
-
-export const handler = getRoleRequests;
+    };
+  },
+);
