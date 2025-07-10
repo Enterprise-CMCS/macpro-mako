@@ -26,11 +26,8 @@ export const withdrawPackage = async (event: APIGatewayEvent) => {
 
   const authDetails = getAuthDetails(event);
   const userAttr = await lookupUserAttributes(authDetails.userId, authDetails.poolId);
-  console.log(userAttr, "USER ATTTRRR");
   const submitterEmail = userAttr.email;
-  console.log(submitterEmail, "SUBMITTER EMAILLL");
   const user = await getUserByEmail(submitterEmail);
-  console.log(user, "WHAT IS THE USER??");
 
   if (!user) {
     throw new Error("User does not exist in User OpenSearch Index");
