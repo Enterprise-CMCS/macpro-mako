@@ -78,7 +78,7 @@ describe("PathTracker", () => {
       "page_view",
       expect.objectContaining({
         page_path: "/new-path",
-        referrer: "/", // the prevPathRef has already been updated
+        referrer: "/", 
         user_role: "state",
       }),
     );
@@ -157,7 +157,7 @@ describe("PathTracker", () => {
     const samePath = window.location.pathname;
     window.history.pushState({}, "", samePath);
 
-    // Should not call sendGAEvent again
-    expect(sendGAEventMock).toHaveBeenCalledTimes(1); // only initial page_view
+    // Should not call sendGAEvent again (only the initial page view)
+    expect(sendGAEventMock).toHaveBeenCalledTimes(1); 
   });
 });

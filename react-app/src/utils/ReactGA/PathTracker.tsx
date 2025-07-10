@@ -57,7 +57,7 @@ export default function PathTracker({ userRole, children }: PathTrackerProps) {
         return;
       }
 
-      // 1) send page_duration for the *old* path
+      // 1) send page_duration for the old path
       sendPageDuration(oldPath, startTimeRef.current);
 
       // 2) send a new page_view for the new path, with referrer = old path
@@ -68,7 +68,7 @@ export default function PathTracker({ userRole, children }: PathTrackerProps) {
       startTimeRef.current = Date.now();
     };
 
-    // ── Monkey‐patch pushState/replaceState so we catch in‐app navigation
+    //pushState/replaceState so we catch in‐app ract navigation
     const origPush = window.history.pushState;
     const origReplace = window.history.replaceState;
 
@@ -81,10 +81,10 @@ export default function PathTracker({ userRole, children }: PathTrackerProps) {
       onRouteChange();
     };
 
-    //Also catch Back/Forward buttons
+    //Also catch Back/Forward browser buttons
     window.addEventListener("popstate", onRouteChange);
 
-    //cleanup- when PathTracker unmounts (i.e. user leaves the app or hot-reloads)
+    //cleanup- when PathTracker unmounts
     return () => {
       //send duration for whichever page user was on
       sendPageDuration(prevPathRef.current, startTimeRef.current);

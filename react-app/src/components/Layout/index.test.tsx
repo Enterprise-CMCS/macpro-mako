@@ -476,40 +476,6 @@ describe("Layout", () => {
   });
 
   describe("GA Event Tracking", () => {
-    beforeEach(() => {
-      vi.clearAllMocks();
-
-      // Mock API hooks to return a logged-in user
-      // vi.spyOn(api, "useGetUser").mockReturnValue({
-      //   isLoading: false,
-      //   data: { user: { role: "statesubmitter",
-      //                   states: ["TX"],
-      //                   sub: "mock-sub",
-      //                   "custom:cms-roles": "statesystemadmin",
-      //                   email_verified: true,
-      //                   given_name: "Test",
-      //                   family_name: "User",
-      //                   username: "username",
-      //                   email: "test@example.com",
-      //                 }
-      //          },
-      // });
-
-      // vi.spyOn(api, "useGetUserDetails").mockReturnValue({
-      //   isLoading: false,
-      //   data: { role: "stateuser" },
-      // });
-
-      // Mock feature flags to show some links
-      //   vi.spyOn(hooks, "useFeatureFlag").mockImplementation((flag) => {
-      //     if (flag === "WEBFORM_TAB_VISIBLE") return false;
-      //     if (flag === "TOGGLE_FAQ") return false;
-      //     if (flag === "STATE_HOMEPAGE_FLAG") return false;
-      //     if (flag === "LOGIN_PAGE") return false;
-      //     if (flag === "CMS_HOMEPAGE_FLAG") return false;
-      //     return false;
-      //   });
-    });
 
     it("fires GA event when a nav link is clicked in desktop view", async () => {
       const user = userEvent.setup();

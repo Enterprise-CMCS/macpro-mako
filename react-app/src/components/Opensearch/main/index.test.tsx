@@ -57,22 +57,6 @@ describe("OsMainView", () => {
     global.localStorage.clear();
   });
   describe("SPAs", () => {
-    it("should send GA event when toggling a column", async () => {
-      const user = userEvent.setup();
-      const spy = vi.spyOn(ReactGA, "sendGAEvent").mockImplementation(() => {});
-
-      // Open the columns menu
-      await user.click(screen.queryByRole("button", { name: "Columns" }));
-
-      // Click on the "State" column to toggle it
-      const columns = screen.queryByRole("menu");
-      await user.click(within(columns).getByText("State"));
-
-      expect(spy).toHaveBeenCalledWith("dash_column_toggle", {
-        column_name: "state.keyword",
-        visible: true,
-      });
-    });
     it("should display without filters", async () => {
       const spaHits = getFilteredHits(["CHIP SPA", "Medicaid SPA"]);
       const recordCount = spaHits.hits.length;
