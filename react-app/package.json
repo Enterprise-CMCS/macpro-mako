@@ -7,7 +7,7 @@
     "dev": "vite --mode development",
     "prebuild": "ts-node ../bin/cli/src/lib/write-ui-env-file.ts",
     "mocked": "vite --mode mocked",
-    "build": "tsc && vite build",
+    "build":  "npm run prebuild && tsc && vite build",
     "preview": "vite preview",
     "test": "vitest",
     "test:coverage": "vitest run --coverage.enabled.true",
