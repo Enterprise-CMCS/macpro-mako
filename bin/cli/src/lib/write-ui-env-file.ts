@@ -99,7 +99,7 @@ export async function writeUiEnvFile(stage, local = false) {
     jsonPath,
     JSON.stringify({ VITE_GOOGLE_ANALYTICS_GTAG: googleAnalytics }, null, 2),
   );
-  console.log("✅ Successfully wrote env.json and ");
+  console.log("✅ Successfully wrote env.json and gtag = ", googleAnalytics);
 
   return envFilePath;
 }
