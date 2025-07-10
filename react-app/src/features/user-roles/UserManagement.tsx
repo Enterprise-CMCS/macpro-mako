@@ -239,7 +239,7 @@ export const UserManagement = () => {
       Email: role.email,
       State: role.territory,
       Status: role.status,
-      Role: role.role,
+      Role: userRoleMap[role.role],
       ["Last Modified"]: formatDate(role.lastModifiedDate),
       ["Modified By"]: role.doneByName,
     }));
