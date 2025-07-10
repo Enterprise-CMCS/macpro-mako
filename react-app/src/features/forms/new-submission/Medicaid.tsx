@@ -1,10 +1,13 @@
-import { Link } from "react-router";
+import { useEffect, useState } from "react";
+import { Link, useNavigate, useParams } from "react-router";
+import { Authority } from "shared-types";
 import { isStateUser } from "shared-utils";
 
 import { useGetUser } from "@/api";
 import {
   ActionForm,
   DatePicker,
+  FormArg,
   FormControl,
   FormField,
   FormItem,
@@ -13,17 +16,154 @@ import {
   Input,
   RequiredIndicator,
   SpaIdFormattingDesc,
+  userPrompt,
 } from "@/components";
 import { AttachmentFileFormatInstructions } from "@/components/ActionForm/actionForm.components";
 import { FAQ_TAB } from "@/consts";
 import { formSchemas } from "@/formSchemas";
 import { useFeatureFlag } from "@/hooks/useFeatureFlag";
+import { getFormOrigin } from "@/utils";
+
+type MedSpaFooterProps = {
+  form: FormArg<(typeof formSchemas)["new-medicaid-submission"]>;
+  onSubmit: () => void;
+};
+
+const MedSpaFooter = ({ form, onSubmit }: MedSpaFooterProps) => {
+  const { id, authority } = useParams<{ id: string; authority: Authority }>();
+
+  const navigate = useNavigate();
+  const [isFooterFixed, setIsFooterFixed] = useState(false);
+  const watchedId = form.watch("id");
+
+  useEffect(() => {
+    const target = document.getElementById("footer-trigger");
+    if (!target) return;
+
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        setIsFooterFixed(!entry.isIntersecting);
+      },
+      { threshold: 0.2 },
+    );
+
+    observer.observe(target);
+    return () => observer.disconnect();
+  }, []);
+
+  const onCancel = () =>
+    userPrompt({
+      header: "Leave this page?",
+      body: `Unsaved changes${
+        watchedId.trim() ? ` to ${watchedId}` : ""
+      } will be discarded. Go back to save your changes.`,
+      acceptButtonText: "Yes, leave",
+      cancelButtonText: "Go back",
+      areButtonsReversed: true,
+      cancelVariant: "link",
+      onAccept: () => {
+        const origin = getFormOrigin({ id, authority });
+        navigate(origin);
+      },
+    });
+
+  const onSaveAndSubmit = () =>
+    userPrompt({
+      header: "Stop form submission?",
+      body: "All information you've entered on this form will be lost if you leave this page.",
+      acceptButtonText: "Yes, leave form",
+      cancelButtonText: "Return to form",
+      areButtonsReversed: true,
+      onAccept: onSubmit,
+    });
+
+  if (isFooterFixed) {
+    return (
+      <section
+        className="fixed bottom-0 left-0 w-full z-40 border-t border-gray-300 bg-white px-6"
+        id="form-actions"
+        data-testid="medicaid-form-footer"
+      >
+        <div className="flex justify-between items-center w-full py-3">
+          <button
+            onClick={onCancel}
+            data-testid="cancel-action-form-footer"
+            className="w-24 py-3 px-5 text-blue-700 font-semibold underline"
+            type="button"
+          >
+            Cancel
+          </button>
+
+          <div className="flex gap-2.5">
+            <button
+              type="button"
+              className="w-[128.36px] py-3 px-5 gap-2.5 rounded border-2 border-blue-700 text-blue-700 bg-white font-semibold text-sm"
+            >
+              Save
+            </button>
+            <button
+              onClick={onSaveAndSubmit}
+              disabled={!form.formState.isValid}
+              data-testid="submit-action-form"
+              className={`w-[181.75px] py-3 px-5 gap-2.5 rounded font-semibold text-sm transition ${
+                !form.formState.isValid
+                  ? "bg-gray-300 text-white cursor-not-allowed"
+                  : "bg-blue-700 text-white hover:bg-blue-800"
+              }`}
+            >
+              Save & Submit
+            </button>
+          </div>
+        </div>
+      </section>
+    );
+  }
+
+  return (
+    <section
+      className="flex flex-col md:flex-row justify-between items-center gap-4 p-4 w-full"
+      data-testid="medicaid-form-footer"
+    >
+      <div className="flex justify-between items-center w-full py-3">
+        <button
+          onClick={onCancel}
+          data-testid="cancel-action-form-footer"
+          className="w-24 py-3 px-5 text-blue-700 font-semibold underline"
+          type="button"
+        >
+          Cancel
+        </button>
+
+        <div className="flex gap-2.5">
+          <button
+            type="button"
+            className="w-[128.36px] py-3 px-5 gap-2.5 rounded border-2 border-blue-700 text-blue-700 bg-white font-semibold text-sm"
+          >
+            Save
+          </button>
+          <button
+            onClick={onSaveAndSubmit}
+            disabled={!form.formState.isValid}
+            data-testid="submit-action-form"
+            className={`w-[181.75px] py-3 px-5 gap-2.5 rounded font-semibold text-sm transition ${
+              !form.formState.isValid
+                ? "bg-gray-300 text-white cursor-not-allowed"
+                : "bg-blue-700 text-white hover:bg-blue-800"
+            }`}
+          >
+            Save & Submit
+          </button>
+        </div>
+      </div>
+    </section>
+  );
+};
 
 export const MedicaidForm = () => {
   const { data: user } = useGetUser();
   const isStateUserFlag = useFeatureFlag("MED_SPA_FOOTER");
   const isState = isStateUser(user?.user);
-  const showMedspaFooter = isState && isStateUserFlag;
+  const isMedSpaFooterShown = isState && isStateUserFlag;
 
   return (
     <ActionForm
@@ -113,7 +253,16 @@ export const MedicaidForm = () => {
         property: "id",
         documentChecker: (check) => check.recordExists,
       }}
-      showCustomFooter={showMedspaFooter}
+      footer={
+        isMedSpaFooterShown
+          ? ({ form, onSubmit }) => (
+              <section>
+                <div id="footer-trigger" />
+                <MedSpaFooter form={form} onSubmit={onSubmit} />
+              </section>
+            )
+          : undefined
+      }
     />
   );
 };
