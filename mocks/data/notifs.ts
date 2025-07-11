@@ -24,7 +24,7 @@ export const notifs = [
     header: "Latest Updates",
     pubDate: "2025-01-07T12:20:56.160Z",
     expDate: "2025-03-07T11:21:50.210Z",
-    body: "Medicaid Alternative Benefit Plan, Premiums and Cost Sharing, and CHIP Eligibility SPA templates and implementation guides are now available in OneMAC. New submissions for these SPA types are submitted through the OneMAC system effective [date].",
+    body: "Medicaid Alternative Benefit Plan, Premiums and Cost Sharing, and CHIP Eligibility SPA templates and implementation guides are now available in OneMAC. New submissions for these SPA types are submitted through the OneMAC system effective July 28, 2025.",
     buttonLink: "",
   },
   {
@@ -32,7 +32,7 @@ export const notifs = [
     header: "Latest Updates",
     pubDate: "2025-01-06T10:00:00.000Z",
     expDate: "2025-01-01T00:00:00.000Z",
-    body: "Medicaid Alternative Benefit Plan, Premiums and Cost Sharing, and CHIP Eligibility SPA templates and implementation guides are now available in OneMAC. New submissions for these SPA types are submitted through the OneMAC system effective [date].",
+    body: "Medicaid Alternative Benefit Plan, Premiums and Cost Sharing, and CHIP Eligibility SPA templates and implementation guides are now available in OneMAC. New submissions for these SPA types are submitted through the OneMAC system effective July 28, 2025.",
     buttonLink: "",
   },
   {
@@ -40,7 +40,7 @@ export const notifs = [
     header: "Latest Updates",
     pubDate: "2025-01-05T09:00:00.000Z",
     expDate: "2025-01-30T00:00:00.000Z",
-    body: "Medicaid Alternative Benefit Plan, Premiums and Cost Sharing, and CHIP Eligibility SPA templates and implementation guides are now available in OneMAC. New submissions for these SPA types are submitted through the OneMAC system effective [date].",
+    body: "Medicaid Alternative Benefit Plan, Premiums and Cost Sharing, and CHIP Eligibility SPA templates and implementation guides are now available in OneMAC. New submissions for these SPA types are submitted through the OneMAC system effective July 28, 2025.",
     buttonLink: "",
   },
 ];
