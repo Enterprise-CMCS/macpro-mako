@@ -1,10 +1,12 @@
 import { screen, waitFor, waitForElementToBeRemoved, within } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { opensearch } from "shared-types";
-import { describe, expect, it } from "vitest";
+import { describe, expect, it, vi } from "vitest";
 
+import { sendGAEvent } from "@/utils/ReactGA/SendGAEvent";
 import { getDashboardQueryString, renderFilterDrawer } from "@/utils/test-helpers";
 
+import { triggerGAEvent } from "./hooks";
 import { OsFilterDrawer } from "./index";
 
 const setup = (
@@ -424,5 +426,36 @@ describe("OsFilterDrawer", () => {
     expect(screen.getAllByRole("button").length).toEqual(2);
     expect(screen.getByRole("button", { name: "Clear all filters" })).toBeInTheDocument();
     expect(screen.getByRole("button", { name: "Close" })).toBeInTheDocument();
+  });
+
+  // Mock the GA utility
+  vi.mock("@/utils/ReactGA/SendGAEvent", () => ({
+    sendGAEvent: vi.fn(),
+  }));
+
+  describe("triggerGAEvent", () => {
+    it("sends a GA event for string values", () => {
+      triggerGAEvent("authority.keyword", "Medicaid SPA");
+      expect(sendGAEvent).toHaveBeenCalledWith("dash_filter_change", {
+        filter_key: "authority.keyword",
+        value: "Medicaid SPA",
+      });
+    });
+
+    it("sends a GA event for array values", () => {
+      triggerGAEvent("state.keyword", ["MD", "VA"]);
+      expect(sendGAEvent).toHaveBeenCalledWith("dash_filter_change", {
+        filter_key: "state.keyword",
+        value: "MD, VA",
+      });
+    });
+
+    it("sends a cleared GA event for empty arrays", () => {
+      triggerGAEvent("state.keyword", []);
+      expect(sendGAEvent).toHaveBeenCalledWith("dash_filter_change", {
+        filter_key: "state.keyword",
+        value: "(cleared)",
+      });
+    });
   });
 });

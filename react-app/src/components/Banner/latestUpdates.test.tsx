@@ -1,6 +1,8 @@
 import { fireEvent, render, screen } from "@testing-library/react";
 import { beforeEach, describe, expect, test, vi } from "vitest";
 
+import * as ReactGA from "@/utils/ReactGA/SendGAEvent";
+
 import { LatestUpdates } from "./latestUpdates";
 
 vi.mock("@/api", async () => {
@@ -38,6 +40,7 @@ vi.mock("@/api", async () => {
 
 describe("LatestUpdates Component", () => {
   beforeEach(() => {
+    window.gtag = vi.fn();
     render(<LatestUpdates />);
   });
 
@@ -52,11 +55,13 @@ describe("LatestUpdates Component", () => {
   });
 
   test("shows all updates after clicking 'Show more updates'", () => {
+    const sendGAEventSpy = vi.spyOn(ReactGA, "sendGAEvent");
     fireEvent.click(screen.getByText("Show more updates"));
     expect(screen.getByText(/Body content 1/i)).toBeInTheDocument();
     expect(screen.getByText(/Body content 2/i)).toBeInTheDocument();
     expect(screen.getByText(/Body content 3/i)).toBeInTheDocument();
     expect(screen.getByText("Hide additional updates")).toBeInTheDocument();
+    expect(sendGAEventSpy).toHaveBeenCalledWith("home_updates_banner", null);
   });
 
   test("hides updates again after clicking 'Hide additional updates'", () => {
