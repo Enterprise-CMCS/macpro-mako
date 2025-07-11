@@ -890,9 +890,9 @@ export const oneMACFAQContent: FAQContent[] = [
             <p>
               Medicaid Alternative Benefit Plan (ABP) SPA templates can be downloaded at the links
               below. After downloading and completing the templates you need, upload them as part of
-              the SPA submission. If you have trouble opening a SPA PDF within your web browser and
-              receive a "Please Wait" message, download the PDF and open it with Adobe Reader or
-              Acrobat, instead of within your browser.
+              the SPA submission. If you have trouble opening a PDF within your web browser,
+              download the PDF and open it with Adobe Reader or Acrobat, instead of within your
+              browser.
             </p>
             <ul className="list-disc pl-7 space-y-2">
               {ABP_TEMPLATES.map((pdf) => (
@@ -961,9 +961,8 @@ export const oneMACFAQContent: FAQContent[] = [
             <p>
               Medicaid Premiums and Cost Sharing SPA templates can be downloaded at the links below.
               After downloading and completing the templates you need, upload them as part of the
-              SPA submission. If you have trouble opening a SPA PDF within your web browser and
-              receive a "Please Wait" message, download the PDF and open it with Adobe Reader or
-              Acrobat, instead of within your browser.
+              SPA submission. If you have trouble opening a PDF within your web browser, download
+              the PDF and open it with Adobe Reader or Acrobat, instead of within your browser.
             </p>
             <ul className="list-disc pl-7 space-y-2">
               {MPC_TEMPLATES.map((pdf) => (
@@ -1023,9 +1022,8 @@ export const oneMACFAQContent: FAQContent[] = [
             <p>
               CHIP eligibility SPA templates can be downloaded at the links below. After downloading
               and completing the templates you need, upload them as part of the SPA submission. If
-              you have trouble opening a SPA PDF within your web browser and receive a "Please Wait"
-              message, download the PDF and open it with Adobe Reader or Acrobat, instead of within
-              your browser.
+              you have trouble opening a PDF within your web browser, download the PDF and open it
+              with Adobe Reader or Acrobat, instead of within your browser.
             </p>
             <ul className="list-disc pl-7 space-y-2 py-4">
               {renderSection(
