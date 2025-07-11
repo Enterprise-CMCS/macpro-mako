@@ -8,6 +8,7 @@ import { renderSection } from "@/features/faq/content/chpRenderSection";
 import { CHP_TEMPLATES } from "@/features/faq/content/chpTemplates";
 import { MPC_GUIDES } from "@/features/faq/content/mpcGuides";
 import { MPC_TEMPLATES } from "@/features/faq/content/mpcTemplates";
+import { sendGAEvent } from "@/utils/ReactGA/SendGAEvent";
 
 export type QuestionAnswer = {
   anchorText: string;
@@ -25,6 +26,21 @@ type FAQContent = {
 export const helpDeskContact = {
   email: "OneMAC_Helpdesk@cms.hhs.gov",
   phone: "(833) 228-2540",
+};
+
+export const slugify = (text: string) =>
+  text
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, "-")
+    .replace(/(^-|-$)/g, "")
+    .substring(0, 40);
+
+export const handleSupportLinkClick = (type: string) => (e: React.MouseEvent<HTMLElement>) => {
+  const text = e.currentTarget.textContent?.trim() || "unknown";
+  window.gtag("event", `support_click_${type}_${slugify(text)}`, {
+    event_category: "Support",
+    event_label: text,
+  });
 };
 
 export const oneMACFAQContent: FAQContent[] = [
@@ -51,6 +67,7 @@ export const oneMACFAQContent: FAQContent[] = [
                   href="/onboarding/eligibility-crosswalk-paper-based-state-plan-macpro.pdf"
                   rel="noopener noreferrer"
                   target="_blank"
+                  onClick={handleSupportLinkClick("general")}
                 >
                   Crosswalk from Paper-based State Plan to MACPro and MMDL.pdf
                 </a>
@@ -78,6 +95,7 @@ export const oneMACFAQContent: FAQContent[] = [
             <a
               className="text-blue-800 underline hover:no-underline "
               href={`mailto:${helpDeskContact.email}`}
+              onClick={() => sendGAEvent("support_contact_email")}
             >
               {helpDeskContact.email}
             </a>{" "}
@@ -108,6 +126,7 @@ export const oneMACFAQContent: FAQContent[] = [
             <a
               className="text-blue-800 underline hover:no-underline"
               href="/onboarding/OneMACStateUserGuide.pdf"
+              onClick={handleSupportLinkClick("general")}
             >
               OneMAC State User Guide
             </a>
@@ -162,6 +181,7 @@ export const oneMACFAQContent: FAQContent[] = [
                     href={file}
                     rel="noopener noreferrer"
                     target="_blank"
+                    onClick={handleSupportLinkClick("general")}
                   >
                     {label}
                   </a>
@@ -174,7 +194,14 @@ export const oneMACFAQContent: FAQContent[] = [
                 Watch this video for an overview on how to upload subsequent documentation to a
                 package under review.
               </p>
-              <video controls>
+              <video
+                controls
+                onPlay={() =>
+                  sendGAEvent("support_video_play", {
+                    event_label: "Upload Subsequent Documentation Overview",
+                  })
+                }
+              >
                 <source src="/onboarding/UploadSubsequentDocumentationDemo.mp4" type="video/mp4" />
                 Your browser does not support the video tag.
               </video>
@@ -194,6 +221,7 @@ export const oneMACFAQContent: FAQContent[] = [
                   <AccordionTrigger
                     className="text-lg flex justify-center text-primary py-3 [&>svg]:hidden"
                     id="video-trigger-2"
+                    onClick={handleSupportLinkClick("general")}
                   >
                     Show Transcript
                   </AccordionTrigger>
@@ -380,6 +408,7 @@ export const oneMACFAQContent: FAQContent[] = [
                 href="https://www.ecfr.gov/cgi-bin/text-idx?SID=7d639b87112e05a57ff40731d647bd05&mc=true&node=se42.4.430_112&rgn=div8"
                 target="_blank"
                 rel="noopener noreferrer"
+                onClick={handleSupportLinkClick("general")}
               >
                 42 C.F.R. §430.12.
               </a>
@@ -902,6 +931,7 @@ export const oneMACFAQContent: FAQContent[] = [
                     target="_blank"
                     rel="noopener noreferrer"
                     className="text-blue-600"
+                    onClick={handleSupportLinkClick("template")}
                   >
                     {pdf.title}
                     {pdf.text && `: ${pdf.text}`}
@@ -941,6 +971,7 @@ export const oneMACFAQContent: FAQContent[] = [
                     target="_blank"
                     rel="noopener noreferrer"
                     className="text-blue-600"
+                    onClick={handleSupportLinkClick("template")}
                   >
                     {pdf.title}
                     {pdf.text && `: ${pdf.text}`}
@@ -972,6 +1003,7 @@ export const oneMACFAQContent: FAQContent[] = [
                     target="_blank"
                     rel="noopener noreferrer"
                     className="text-blue-600"
+                    onClick={handleSupportLinkClick("template")}
                   >
                     {pdf.title}
                     {pdf.text && `: ${pdf.text}`}
@@ -1002,6 +1034,7 @@ export const oneMACFAQContent: FAQContent[] = [
                     target="_blank"
                     rel="noopener noreferrer"
                     className="text-blue-600"
+                    onClick={handleSupportLinkClick("template")}
                   >
                     {pdf.title}
                     {pdf.text && `: ${pdf.text}`}
@@ -1094,6 +1127,7 @@ export const oneMACFAQContent: FAQContent[] = [
                     target="_blank"
                     rel="noopener noreferrer"
                     className="text-blue-600"
+                    onClick={handleSupportLinkClick("template")}
                   >
                     CHIP Eligibility Introduction
                   </a>
@@ -1235,7 +1269,11 @@ export const oneMACFAQContent: FAQContent[] = [
         answerJSX: (
           <p>
             Email{" "}
-            <a className="text-blue-800 " href="mailto:MCOGDMCOActions@cms.hhs.gov">
+            <a
+              className="text-blue-800 "
+              href="mailto:MCOGDMCOActions@cms.hhs.gov"
+              onClick={handleSupportLinkClick("general")}
+            >
               MCOGDMCOActions@cms.hhs.gov
             </a>{" "}
             to get support with determining the correct 1915(b) Waiver Number.
