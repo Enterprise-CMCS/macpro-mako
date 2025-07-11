@@ -1,5 +1,5 @@
 import { type FC } from "react";
-import Select from "react-select";
+import Select, { components } from "react-select";
 
 export interface Option {
   readonly value: string;
@@ -19,9 +19,16 @@ export const FilterableSelect: FC<{
 }> = ({ options, value, placeholder, onChange, selectedDisplay = "value", ariaLabel }) => {
   const getLabel = (value) => {
     if (selectedDisplay !== "label") return value;
-    const selected = options.filter((option) => option.value === value);
+    const selected = options.filter((option: Option) => option.value === value) as Option[];
     return selected[0].label;
   };
+
+  const Input = (props) => {
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    const { tabIndex, ...rest } = props;
+    return <components.Input {...rest} />;
+  };
+
   return (
     <Select<any, any>
       isMulti
@@ -33,6 +40,9 @@ export const FilterableSelect: FC<{
       autoFocus
       tabSelectsValue={false}
       aria-label={ariaLabel}
+      components={{
+        Input,
+      }}
     />
   );
 };
