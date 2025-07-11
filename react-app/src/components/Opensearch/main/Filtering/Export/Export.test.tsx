@@ -5,6 +5,7 @@ import { getFilteredDocList } from "mocks";
 import { describe, expect, it, vi } from "vitest";
 
 import { OsExportData, OsTableColumn } from "@/components";
+import * as ga from "@/utils/ReactGA/SendGAEvent";
 import {
   DEFAULT_COLUMNS,
   getDashboardQueryString,
@@ -53,6 +54,8 @@ describe("Tooltip component within export button", () => {
 
   it("should export on click if button is enabled", async () => {
     const spy = vi.spyOn(ExportToCsv.prototype, "generateCsv").mockImplementation(() => {});
+    const gaSpy = vi.spyOn(ga, "sendGAEvent").mockImplementation(() => {});
+
     const expected = getFilteredDocList(["CHIP SPA", "Medicaid SPA"]).map((doc) => ({
       Authority: doc.authority,
       "SPA ID": doc.id,
@@ -64,6 +67,7 @@ describe("Tooltip component within export button", () => {
     await user.click(screen.queryByTestId("export-csv-btn"));
 
     expect(spy).toHaveBeenCalledWith(expected);
+    expect(gaSpy).toHaveBeenCalledWith("dash_export_csv", { row_count: 11 });
   });
 
   it("should show modal when count is greater than 10000", async () => {

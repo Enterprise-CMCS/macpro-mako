@@ -44,6 +44,7 @@ export const getUser = async (): Promise<OneMacUser> => {
     } satisfies OneMacUser;
   } catch (e) {
     console.log({ e });
+
     return { user: null } satisfies OneMacUser;
   }
 };
