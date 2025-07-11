@@ -20,7 +20,9 @@ for (const [role, user] of Object.entries(users)) {
 
     test.describe(`${role} on static routes`, {}, () => {
       for (const route of STATIC_ROUTES) {
-        test(`${route} should not have any automatically detectable accessibility issues`, async ({ page }) => {
+        test(`${route} should not have any automatically detectable accessibility issues`, async ({
+          page,
+        }) => {
           await page.goto(route);
           await page.waitForTimeout(2000);
 
@@ -41,7 +43,9 @@ for (const [role, user] of Object.entries(users)) {
 
     test.describe(`${role} on webform routes`, {}, () => {
       for (const route of WEBFORM_ROUTES) {
-        test(`${route} should not have any automatically detectable accessibility issues`, async ({ page }) => {
+        test(`${route} should not have any automatically detectable accessibility issues`, async ({
+          page,
+        }) => {
           await page.goto(route);
           await page.waitForTimeout(2000);
 

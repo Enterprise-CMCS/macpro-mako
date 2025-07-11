@@ -29,7 +29,7 @@ export const envRoleUsers: Record<string, Record<string, RoleUser>> = {
   ci: {
     stateSubmitter: {
       username: "george@example.com",
-      capabilities: ["dashboard", "profile"],
+      capabilities: ["dashboard", "profile", "a11y"],
     },
     cmsReviewer: {
       username: "reviewer@example.com",
