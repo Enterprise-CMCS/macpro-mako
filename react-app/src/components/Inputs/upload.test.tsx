@@ -3,16 +3,20 @@ import userEvent from "@testing-library/user-event";
 import { beforeEach, describe, expect, it, vi } from "vitest";
 
 import * as components from "@/components";
+import { sendGAEvent } from "@/utils/ReactGA/SendGAEvent";
 import { renderWithQueryClient } from "@/utils/test-helpers";
 
 import { Upload } from "./upload";
 import * as upUtil from "./uploadUtilities";
-
+vi.mock("@/utils/ReactGA/SendGAEvent", () => ({
+  sendGAEvent: vi.fn(),
+}));
 const defaultProps = {
   dataTestId: "upload-component",
   files: [],
   setFiles: vi.fn(),
   setErrorMessage: vi.fn(),
+  type: "CHIP Eligibility SPA Details",
 };
 const FILE_1 = "file-1";
 const FILE_2 = "file-2";
@@ -192,6 +196,47 @@ describe("Upload", () => {
       body: `Are you sure you want to remove ${FILE_REMOVE}.txt?`,
       acceptButtonText: "Yes, remove",
       onAccept: onAcceptMock,
+    });
+  });
+
+  it("uploads files correctly and triggers GA event for", async () => {
+    vi.spyOn(upUtil, "getPresignedUrl").mockResolvedValue("https://bucket.s3.amazonaws.com/world");
+    vi.spyOn(upUtil, "uploadToS3").mockResolvedValue(undefined);
+    vi.spyOn(upUtil, "extractBucketAndKeyFromUrl").mockReturnValue({
+      bucket: "hello",
+      key: "world",
+    });
+
+    renderWithQueryClient(<Upload {...defaultProps} type="CHIP SPA Details" />);
+
+    const dropzone = screen.getByRole("presentation");
+    dropzone.setAttribute("data-label", "attachment"); // for file_type value
+
+    const file = new File(["file contents"], "file.pdf", { type: "application/pdf" });
+
+    Object.defineProperty(dropzone, "files", {
+      value: [file],
+      writable: false,
+    });
+
+    fireEvent.drop(dropzone);
+
+    await waitFor(() => {
+      expect(defaultProps.setFiles).toHaveBeenCalledWith([
+        {
+          bucket: "hello",
+          key: "world",
+          filename: "file.pdf",
+          title: "file",
+          uploadDate: expect.any(Number),
+        },
+      ]);
+    });
+
+    expect(sendGAEvent).toHaveBeenCalledWith("submit_file_upload", {
+      submission_type: "chip spa",
+      file_type: "attachment",
+      file_size_bytes: file.size,
     });
   });
 });

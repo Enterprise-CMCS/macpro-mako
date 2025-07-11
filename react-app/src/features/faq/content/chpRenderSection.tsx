@@ -1,6 +1,8 @@
 import { type ClassValue, clsx } from "clsx";
 import { twMerge } from "tailwind-merge";
 
+import { handleSupportLinkClick } from "./oneMACFAQContent";
+
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
 }
@@ -27,6 +29,7 @@ export const renderSection = (
             target="_blank"
             rel="noopener noreferrer"
             className="text-blue-600"
+            onClick={handleSupportLinkClick("template")}
           >
             {template.title}: {template.text}
           </a>

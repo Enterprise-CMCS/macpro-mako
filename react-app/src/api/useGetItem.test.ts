@@ -6,10 +6,16 @@ import {
   NOT_FOUND_ITEM_ID,
   TEST_ITEM_ID,
 } from "mocks";
-import { describe, expect, it } from "vitest";
+import { errorApiItemHandler } from "mocks";
+import { mockedApiServer as mockedServer } from "mocks/server";
+import { describe, expect, it, vi } from "vitest";
+
+import * as gaModule from "@/utils/ReactGA/SendGAEvent";
 
 import * as unit from "./useGetItem";
-
+vi.mock("@/utils/ReactGA/SendGAEvent", () => ({
+  sendGAEvent: vi.fn(),
+}));
 describe("getItem", () => {
   it("makes an AWS Amplify post request", async () => {
     const item = await unit.getItem(TEST_ITEM_ID);
@@ -43,6 +49,21 @@ describe("zod schema helpers", () => {
     });
     it("returns false if an item is Amend actionType", async () => {
       expect(await unit.canBeRenewedOrAmended(EXISTING_ITEM_APPROVED_AMEND_ID)).toBe(false);
+    });
+  });
+
+  describe("getItem tests", () => {
+    it("should call sendGAEvent when the API throws an error", async () => {
+      mockedServer.use(errorApiItemHandler);
+
+      await expect(unit.getItem("TEST_ID")).resolves.toBeUndefined();
+
+      expect(gaModule.sendGAEvent).toHaveBeenCalledWith(
+        "api_error",
+        expect.objectContaining({
+          message: "failure /item",
+        }),
+      );
     });
   });
 });
