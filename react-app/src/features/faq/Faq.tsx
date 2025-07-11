@@ -11,6 +11,7 @@ import {
   SubNavHeader,
 } from "@/components";
 import { useFeatureFlag } from "@/hooks/useFeatureFlag";
+import { sendGAEvent } from "@/utils/ReactGA/SendGAEvent";
 
 import { helpDeskContact, oneMACFAQContent } from "./content/oneMACFAQContent";
 
@@ -304,7 +305,13 @@ export const Faq = () => {
           <article className="mb-8">
             {/* BUTTON */}
             <Button
-              onClick={expandAll}
+              onClick={() => {
+                expandAll();
+                sendGAEvent("support_click_general_expand-all", {
+                  event_category: "Support",
+                  event_label: "Expand All",
+                });
+              }}
               variant="outline"
               data-testid="expand-all"
               className="w-full xs:w-fit hover:bg-transparent mb-5"
@@ -357,13 +364,21 @@ export const Faq = () => {
               <div>
                 <b>Phone Number</b>
                 <p className="mb-4 text-primary">
-                  <a className="underline" href={`tel:${helpDeskContact.phone}`}>
+                  <a
+                    className="underline"
+                    href={`tel:${helpDeskContact.phone}`}
+                    onClick={() => sendGAEvent("support_contact_phone")}
+                  >
                     {helpDeskContact.phone}
                   </a>
                 </p>
                 <b>Email</b>
                 <p className="text-primary">
-                  <a className="underline" href={`mailto:${helpDeskContact.email}`}>
+                  <a
+                    className="underline"
+                    href={`mailto:${helpDeskContact.email}`}
+                    onClick={() => sendGAEvent("support_contact_email")}
+                  >
                     {helpDeskContact.email}
                   </a>
                 </p>
