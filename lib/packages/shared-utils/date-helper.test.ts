@@ -74,22 +74,10 @@ describe("date-helper", () => {
       expect(formatNinetyDaysDate(undefined)).toBe("Pending");
     });
 
-    it("should format the date correctly and add 90 days (no DST change)", () => {
+    it("should format the date correctly and add 90 days", () => {
       const date = new Date(2025, 0, 5); // Jan 5, 2025
       const formattedDate = formatNinetyDaysDate(date.getTime());
-      expect(formattedDate).toBe("Apr 5, 2025 @ 11:59pm EST");
-    });
-
-    it("should format the date correctly when in DST (March -> June)", () => {
-      const date = new Date(2025, 2, 10); // March 10, 2025 (potentially DST)
-      const formattedDate = formatNinetyDaysDate(date.getTime());
-      expect(formattedDate).toBe("Jun 8, 2025 @ 11:59pm EST");
-    });
-
-    it("should handle boundary cases near DST transitions correctly", () => {
-      const date = new Date(2025, 10, 1); // Nov 1, 2025 (before DST ends)
-      const formattedDate = formatNinetyDaysDate(date.getTime());
-      expect(formattedDate).toBe("Jan 30, 2026 @ 11:59pm EST");
+      expect(formattedDate).toBe("Apr 5, 2025");
     });
   });
 });

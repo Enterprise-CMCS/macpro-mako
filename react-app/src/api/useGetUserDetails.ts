@@ -2,6 +2,7 @@ import { useQuery } from "@tanstack/react-query";
 import { API } from "aws-amplify";
 import { UserRole } from "shared-types/events/legacy-user";
 
+import { sendGAEvent } from "@/utils/ReactGA/SendGAEvent";
 export type UserDetails = {
   id: string;
   eventType: string;
@@ -19,6 +20,9 @@ export const getUserDetails = async (userEmail?: string): Promise<UserDetails | 
 
     return userDetails as UserDetails;
   } catch (e) {
+    sendGAEvent("api_error", {
+      message: "failure /getUserDetails",
+    });
     console.log({ e });
     return null;
   }

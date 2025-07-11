@@ -2,6 +2,7 @@ import { SendEmailCommand, SendEmailCommandInput, SESClient } from "@aws-sdk/cli
 import { SendMessageCommand, SQSClient } from "@aws-sdk/client-sqs";
 import { Handler } from "aws-lambda";
 import { htmlToText, HtmlToTextOptions } from "html-to-text";
+import { getPackageChangelog } from "libs/api/package";
 import { getAllStateUsersFromOpenSearch, getEmailTemplates } from "libs/email";
 import { EMAIL_CONFIG, getCpocEmail, getSrtEmails } from "libs/email/content/email-components";
 import * as os from "libs/opensearch-lib";
@@ -153,11 +154,18 @@ export async function processRecord(kafkaRecord: KafkaRecord, config: ProcessEma
           return;
         }
 
+        const changelogFilter = [
+          { term: { "event.keyword": "withdraw-package" } },
+          { term: { "origin.keyword": "mako" } },
+        ];
+        const withdrawPackageMakoEvents = await getPackageChangelog(safeID, changelogFilter);
+        const latestwithdrawPackageEvent = withdrawPackageMakoEvents.hits.hits[0]?._source;
+
         const recordToPass = {
           timestamp,
           ...safeSeatoolRecord.data,
-          submitterName: item._source.submitterName,
-          submitterEmail: item._source.submitterEmail,
+          submitterName: latestwithdrawPackageEvent?.submitterName ?? item._source.submitterName,
+          submitterEmail: latestwithdrawPackageEvent?.submitterEmail ?? item._source.submitterEmail,
           event: "seatool-withdraw",
           proposedEffectiveDate: safeSeatoolRecord.data?.proposedDate,
           origin: "seatool",

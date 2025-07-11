@@ -18,9 +18,13 @@ async function writeEnvVarsToFile(envVariables, filename) {
 }
 
 export async function writeUiEnvFile(stage, local = false) {
+  console.log("write-ui-env-file __dirname:", __dirname);
+
+  const ssm = new SSMClient({ region: "us-east-1" });
+
   const deploymentOutput = JSON.parse(
     (
-      await new SSMClient({ region: "us-east-1" }).send(
+      await ssm.send(
         new GetParameterCommand({
           Name: `/${project}/${stage}/deployment-output`,
         }),
@@ -30,7 +34,7 @@ export async function writeUiEnvFile(stage, local = false) {
 
   const deploymentConfig = JSON.parse(
     (
-      await new SSMClient({ region: "us-east-1" }).send(
+      await ssm.send(
         new GetParameterCommand({
           Name: `/${project}/${stage}/deployment-config`,
         }),
@@ -38,21 +42,19 @@ export async function writeUiEnvFile(stage, local = false) {
     ).Parameter!.Value!,
   );
 
-  let googleAnalytics;
+  let googleAnalytics = "";
   try {
     if (["main", "val", "production"].includes(stage)) {
       googleAnalytics = (
-        await new SSMClient({ region: "us-east-1" }).send(
+        await ssm.send(
           new GetParameterCommand({
             Name: `/${project}/${stage}/google-analytics-id`,
           }),
         )
       ).Parameter!.Value!;
     }
-    googleAnalytics = "";
   } catch {
-    googleAnalytics = "";
-    console.error("Can't find the google analytics ID");
+    console.error("Can't find the Google Analytics ID");
   }
 
   const envVariables = {
@@ -76,7 +78,29 @@ export async function writeUiEnvFile(stage, local = false) {
     VITE_LAUNCHDARKLY_CLIENT_ID: `"${deploymentConfig.launchDarklyClientId}"`,
   };
 
-  return writeEnvVarsToFile(envVariables, ".env.local");
+  const envFilePath = path.join(__dirname, "../../../react-app", ".env.local");
+
+  const envFileContent = Object.entries(envVariables)
+    .map(([key, value]) => `${key}=${value}`)
+    .join("\n");
+
+  console.log(`.env.local file written to ${envFilePath}`);
+  await fs.writeFile(envFilePath, envFileContent);
+
+  // Separate env file creation specific to google analytics
+  // write file so that it is directly accessible from the vite /dist directory
+  const publicDirPath = path.resolve(__dirname, "../../../react-app/src/assets");
+  await fs.mkdir(publicDirPath, { recursive: true });
+  console.log("Created google analytics directory (or already existed)");
+  const jsonPath = path.join(publicDirPath, "env.json");
+  console.log("Will write GA env.json to:", jsonPath);
+  await fs.writeFile(
+    jsonPath,
+    JSON.stringify({ VITE_GOOGLE_ANALYTICS_GTAG: googleAnalytics }, null, 2),
+  );
+  console.log("✅ Successfully wrote env.json and gtag = ", googleAnalytics);
+
+  return envFilePath;
 }
 
 export async function writeMockedUiEnvFile(username) {
