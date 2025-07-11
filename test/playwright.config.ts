@@ -20,6 +20,8 @@ if (process.env.CI) {
   rootURL = baseURL[ENV];
 }
 
+console.log(rootURL);
+
 export default defineConfig({
   testDir: "./",
   testMatch: "**/*.spec.ts",
@@ -136,7 +138,7 @@ export default defineConfig({
     },
     {
       name: "shared",
-      testMatch: "**/e2e/specs/*.spec.ts",
+      testMatch: "**/e2e/e2e/**/*.spec.ts",
       use: {
         baseURL: rootURL,
       },
