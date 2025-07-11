@@ -17,6 +17,7 @@
     "./data/submit/base": "./data/submit/base.ts",
     "./data/submit/changelog": "./data/submit/changelog.ts",
     "./data/types": "./data/types.ts",
+    "./data/users": "./data/users/index.ts",
     "./handlers/auth.utils": "./handlers/auth.utils.ts",
     "./helpers/kafka.utils": "./helpers/kafka.utils.ts"
   },
