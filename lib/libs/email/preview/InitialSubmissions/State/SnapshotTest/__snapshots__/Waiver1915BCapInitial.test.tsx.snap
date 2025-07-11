@@ -332,7 +332,7 @@ exports[`Initial Submission State Email Snapshot Test > renders a Initial Capita
                             <p
                               style="font-size: 14px; line-height: 1.4; margin: 4px 0px 4px 0px; color: rgb(51, 51, 51);"
                             >
-                              Apr 1, 2023 @ 11:59pm EST
+                              Apr 1, 2023
                             </p>
                           </td>
                         </tr>
@@ -381,7 +381,7 @@ exports[`Initial Submission State Email Snapshot Test > renders a Initial Capita
               This response confirms the receipt of your Waiver request or your response to a Waiver Request for Additional Information (RAI). You
               can expect a formal response to your submittal to be issued within
               90 days, before
-              Apr 1, 2023 @ 11:59pm EST
+              Apr 1, 2023
               .
             </p>
             <p

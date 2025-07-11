@@ -279,7 +279,7 @@ export const oneMACFAQContent: FAQContent[] = [
               (MACPro), must be submitted in OneMac.
             </p>
             <p>
-              Starting [month,date,year,] Medicaid Model Data Lab (MMDL) no longer accepts new
+              Starting July 28, 2025 Medicaid Model Data Lab (MMDL) no longer accepts new
               submissions for these SPAs, including:
             </p>
             <ul className="ml-8 list-disc space-y-2">
@@ -288,12 +288,11 @@ export const oneMACFAQContent: FAQContent[] = [
               <li>CHIP Eligibility</li>
             </ul>
             <p>
-              Pending SPAs submitted in MMDL before [month, day, year,] including those on RAI
-              (request for additional information) status, will continue to be processed through
-              MMDL.
+              Pending SPAs submitted in MMDL before July 28, 2025 including those on RAI (request
+              for additional information) status, will continue to be processed through MMDL.
             </p>
             <p>
-              Templates and implementation guides for OneMac SPAs can be downloaded from the
+              Templates and implementation guides for OneMAC SPAs can be downloaded from the
               respective FAQ:
             </p>
             <ul className="ml-8 list-disc space-y-2 text-blue-600">
@@ -344,7 +343,6 @@ export const oneMACFAQContent: FAQContent[] = [
                 </li>
               ))}
             </ul>
-            <p>For more information, refer to CMCS Information Bulletin #25-TBD.</p>
           </div>
         ),
       },
@@ -402,7 +400,9 @@ export const oneMACFAQContent: FAQContent[] = [
                     </p>
                   </td>
                   <td className="border border-gray-300 px-4 py-2">
-                    CMS-179 template that contains specific information for SPA submission
+                    CMS-179 template that contains specific information for SPA submission. The
+                    CMS-179 template is required for all Alternative Benefit Plan and Premiums and
+                    Cost Sharing SPA submissions.
                   </td>
                 </tr>
                 <tr>
@@ -1027,7 +1027,7 @@ export const oneMACFAQContent: FAQContent[] = [
               message, download the PDF and open it with Adobe Reader or Acrobat, instead of within
               your browser.
             </p>
-            <ul className="list-disc pl-7 space-y-2">
+            <ul className="list-disc pl-7 space-y-2 py-4">
               {renderSection(
                 "MAGI Eligibility & Methods",
                 CHP_TEMPLATES,
