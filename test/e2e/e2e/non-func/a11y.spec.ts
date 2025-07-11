@@ -1,7 +1,7 @@
 import AxeBuilder from "@axe-core/playwright";
-import { expect, test } from "@playwright/test";
 import path from "path";
 
+import { expect, test } from "@/fixtures/mocked";
 import * as routes from "@/fixtures/routes";
 import { envRoleUsers } from "@/lib/envRoleUsers";
 
