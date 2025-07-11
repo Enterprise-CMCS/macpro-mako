@@ -20,6 +20,7 @@ type ExtractAttachmentKeys<TSchema extends SchemaWithEnforcableProps> =
 export const uploadFiles = <TSchema extends SchemaWithEnforcableProps>() => {
   type AttachmentKey = ExtractAttachmentKeys<TSchema>;
 
+  console.log("file uploaded!");
   return async (attachmentKey: AttachmentKey) => {
     const EXAMPLE_FILE = new File(["¯\\_(ツ)_/¯"], "proposal.png", {
       type: "image/png",
