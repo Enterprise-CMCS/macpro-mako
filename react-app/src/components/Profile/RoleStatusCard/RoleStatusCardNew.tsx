@@ -1,4 +1,5 @@
-import { Clock, XCircle, XIcon } from "lucide-react";
+import * as DropdownMenu from "@radix-ui/react-dropdown-menu";
+import { Clock, EllipsisVertical, XCircle, XIcon } from "lucide-react";
 import { UserRole } from "shared-types/events/legacy-user";
 import { isStateRole, newUserRoleMap } from "shared-utils";
 
@@ -40,6 +41,37 @@ export const RoleStatusCardNew = ({
               ? `${newUserRoleMap[access.role]} - ${access.territory}`
               : newUserRoleMap[access.role]}
           </h3>
+
+          {/* in OY2-35201 we can remove !isState*/}
+          {!isState && access.status === "pending" && (
+            <DropdownMenu.Root>
+              <DropdownMenu.DropdownMenuTrigger
+                aria-label="Role Status Options"
+                data-testid="role-status-actions"
+                asChild
+              >
+                <button
+                  className="disabled:text-gray-200"
+                  data-testid="self-revoke"
+                  title="Self Revoke Access"
+                >
+                  <EllipsisVertical size={30} />
+                </button>
+              </DropdownMenu.DropdownMenuTrigger>
+
+              <DropdownMenu.Content
+                className="flex flex-col bg-white rounded-md shadow-lg p-4 border"
+                align="start"
+              >
+                <DropdownMenu.Item asChild>
+                  <button className="text-primary" onClick={onClick}>
+                    Cancel Request
+                  </button>
+                </DropdownMenu.Item>
+              </DropdownMenu.Content>
+            </DropdownMenu.Root>
+          )}
+
           {role === "statesubmitter" && (
             <button
               className="text-blue-700 disabled:text-gray-200"
