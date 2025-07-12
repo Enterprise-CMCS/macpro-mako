@@ -125,7 +125,7 @@ export const ActionForm = <Schema extends SchemaWithEnforcableProps>({
   preSubmissionMessage,
   additionalInformation = {
     required: false,
-    label: "",
+    label: "Add anything else you would like to share with CMS.",
     title: "Additional Information",
   },
   showPreSubmissionMessage = true,
