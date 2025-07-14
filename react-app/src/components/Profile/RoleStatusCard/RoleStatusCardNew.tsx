@@ -54,6 +54,7 @@ export const RoleStatusCardNew = ({
                   className="disabled:text-gray-200"
                   data-testid="self-revoke"
                   title="Self Revoke Access"
+                  type="button"
                 >
                   <EllipsisVertical size={30} />
                 </button>
@@ -64,7 +65,7 @@ export const RoleStatusCardNew = ({
                 align="start"
               >
                 <DropdownMenu.Item asChild>
-                  <button className="text-primary" onClick={onClick}>
+                  <button className="text-primary" onClick={onClick} type="button">
                     Cancel Request
                   </button>
                 </DropdownMenu.Item>
@@ -79,6 +80,7 @@ export const RoleStatusCardNew = ({
               data-testid="self-revoke"
               title="Self Revoke Access"
               onClick={onClick}
+              type="button"
             >
               <XIcon size={30} />
             </button>
