@@ -25,11 +25,16 @@ export const orderRoleStatus = (accesses: StateAccess[]) => {
   const revokedStates = accesses.filter((x: StateAccess) => x.status == "revoked");
 
   const compare = (a: StateAccess, b: StateAccess) => {
-    const stateA = convertStateAbbrToFullName(a.territory);
-    const stateB = convertStateAbbrToFullName(b.territory);
+    if (a.territory !== "N/A" && b.territory !== "N/A") {
+      const stateA = convertStateAbbrToFullName(a.territory);
+      const stateB = convertStateAbbrToFullName(b.territory);
 
-    if (stateA < stateB) return -1;
-    if (stateA > stateB) return 1;
+      if (stateA < stateB) return -1;
+      if (stateA > stateB) return 1;
+      return 0;
+    }
+    if (a.role === "defaultcmsuser") return 1;
+    if (b.role === "defaultcmsuser") return -1;
     return 0;
   };
 
