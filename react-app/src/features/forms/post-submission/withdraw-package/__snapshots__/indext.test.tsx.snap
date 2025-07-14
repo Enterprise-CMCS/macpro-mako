@@ -321,13 +321,14 @@ exports[`WithdrawPackageAction components > renders WithdrawPackageActionWaiver 
                   class="text-base leading-normal peer-disabled:cursor-not-allowed peer-disabled:opacity-70 font-normal"
                   data-testid="addl-info-label"
                   for="additional-info"
-                />
+                >
+                  Explain your need for withdrawal, or upload supporting documentation.
+                </label>
                 <textarea
                   aria-describedby="character-count"
                   aria-live="off"
                   aria-multiline="true"
                   class="flex min-h-[76px] w-full rounded-sm border border-black bg-transparent px-3 py-2 text-sm shadow-sm placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:cursor-not-allowed disabled:opacity-50 h-[200px] resize-none"
-                  data-testid="additional-info-input"
                   id="additional-info"
                   maxlength="4000"
                   name="additionalInformation"
@@ -749,13 +750,14 @@ exports[`WithdrawPackageAction components > renders WithdrawPackageActionWaiver 
                 class="text-base leading-normal peer-disabled:cursor-not-allowed peer-disabled:opacity-70 font-normal"
                 data-testid="addl-info-label"
                 for="additional-info"
-              />
+              >
+                Explain your need for withdrawal, or upload supporting documentation.
+              </label>
               <textarea
                 aria-describedby="character-count"
                 aria-live="off"
                 aria-multiline="true"
                 class="flex min-h-[76px] w-full rounded-sm border border-black bg-transparent px-3 py-2 text-sm shadow-sm placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:cursor-not-allowed disabled:opacity-50 h-[200px] resize-none"
-                data-testid="additional-info-input"
                 id="additional-info"
                 maxlength="4000"
                 name="additionalInformation"
