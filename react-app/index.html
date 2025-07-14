@@ -75,6 +75,9 @@
             gtag('js', new Date());
             // should toggle on for development and off before deployment to higher env's
             gtag('set', { debug_mode: false });
+            gtag('config', GA_ID, {
+              send_page_view: true,
+            });
             console.log('GA initialized with ID:', GA_ID);
           } catch (e) {
             console.warn('Invalid JSON, printing raw contents:\n', text);
