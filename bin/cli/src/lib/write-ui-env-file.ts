@@ -75,7 +75,8 @@ export async function writeUiEnvFile(stage, local = false) {
       : deploymentOutput.applicationEndpointUrl,
     VITE_IDM_HOME_URL: deploymentOutput.idmHomeUrl,
     VITE_GOOGLE_ANALYTICS_GTAG: `"${googleAnalytics}"`,
-    VITE_GOOGLE_ANALYTICS_DISABLE: `"${deploymentConfig.googleAnalyticsDisable}"`,
+    VITE_GOOGLE_ANALYTICS_DISABLE: `"false"`,
+    // VITE_GOOGLE_ANALYTICS_DISABLE: `"${deploymentConfig.googleAnalyticsDisable}"`,
     VITE_LAUNCHDARKLY_CLIENT_ID: `"${deploymentConfig.launchDarklyClientId}"`,
   };
 
