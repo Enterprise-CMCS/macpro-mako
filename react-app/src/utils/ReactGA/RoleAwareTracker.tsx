@@ -6,6 +6,16 @@ import PathTracker from "./PathTracker"; // adjust path if needed
 
 type UserRole = "cms" | "state";
 
+function setGAUserRoleOnce(role: string) {
+  if (typeof window === "undefined" || !window.gtag) return;
+
+  // Prevent setting it multiple times
+  if (window.__gaUserRoleSet) return;
+
+  window.gtag("set", { user_role: role });
+  window.__gaUserRoleSet = true; // Custom flag on window to track setting
+}
+
 /**
  * RoleAwareTracker
  *
@@ -28,15 +38,18 @@ export function RoleAwareTracker({ children }: { children: React.ReactNode }) {
     }
 
     try {
+      let role: UserRole | null = null;
       if (isStateUser && !isCmsUser) {
-        setUserRole("state");
+        role = "state";
       } else if (isCmsUser && !isStateUser) {
-        setUserRole("cms");
+        role = "cms";
       } else if (isStateUser && isCmsUser) {
-        // should never happen
-        setUserRole("cms");
-      } else {
-        setUserRole(null);
+        role = "cms"; 
+      }
+
+      if (role) {
+        setUserRole(role);
+        setGAUserRoleOnce(role);
       }
     } catch (e) {
       console.log("error obtaining user roles for path tracking", e);
