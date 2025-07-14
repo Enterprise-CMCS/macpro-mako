@@ -70,6 +70,9 @@ export const getRaiDate = (data: SeaTool) => {
   };
 };
 
+const getAlert90DaysDate = (data: SeaTool) => {
+  return data.STATE_PLAN?.ALERT_90_DAYS_DATE?.toString() || "";
+}
 const getDateStringOrNullFromEpoc = (epocDate: number | null | undefined) =>
   epocDate !== null && epocDate !== undefined ? new Date(epocDate).toISOString() : null;
 
@@ -78,9 +81,9 @@ const compileSrtList = (
 ): { name: string; email: string }[] =>
   officers?.length
     ? officers.map((o) => ({
-        name: `${o.FIRST_NAME || ""} ${o.LAST_NAME || ""}`,
-        email: o.EMAIL || "",
-      }))
+      name: `${o.FIRST_NAME || ""} ${o.LAST_NAME || ""}`,
+      email: o.EMAIL || "",
+    }))
     : [];
 
 const getFinalDispositionDate = (status: string, record: SeaTool) => {
@@ -113,6 +116,7 @@ export const transform = (id: string) => {
   return seatoolSchema.transform((data) => {
     const { leadAnalystName, leadAnalystOfficerId, leadAnalystEmail } = getLeadAnalyst(data);
     const { raiReceivedDate, raiRequestedDate, raiWithdrawnDate } = getRaiDate(data);
+    const alert90DaysDate = getAlert90DaysDate(data);
     const seatoolStatus = data?.STATE_PLAN?.SPW_STATUS_ID
       ? SEATOOL_SPW_STATUS[data?.STATE_PLAN?.SPW_STATUS_ID]
       : "Unknown";
@@ -179,6 +183,7 @@ export const transform = (id: string) => {
       subject: data.STATE_PLAN.TITLE_NAME,
       secondClock: isInSecondClock(raiReceivedDate, raiWithdrawnDate, seatoolStatus, authority),
       raiWithdrawEnabled: finalDispositionStatuses.includes(seatoolStatus) ? false : undefined,
+      alert90DaysDate
     };
     return resp;
   });
