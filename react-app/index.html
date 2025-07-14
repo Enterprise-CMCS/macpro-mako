@@ -22,7 +22,41 @@
           t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i;
           y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);
       })(window, document, "clarity", "script", "sddgrwxvtn");
-  </script>
+    </script>
+    <script>
+      // 1. Define gtag early
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){ dataLayer.push(arguments); }
+      window.gtag = gtag;
+    
+      // 2. Fetch GA ID
+      fetch('/env.json')
+        .then(res => res.json())
+        .then(json => {
+          const GA_ID = json.VITE_GOOGLE_ANALYTICS_GTAG;
+          if (!GA_ID) {
+            console.warn('No GA_ID found in env.json');
+            return;
+          }
+    
+          // 3. Inject GA script
+          const script = document.createElement('script');
+          script.src = `https://www.googletagmanager.com/gtag/js?id=${GA_ID}`;
+          script.async = true;
+          script.onload = () => {
+            gtag('js', new Date());
+            gtag('config', GA_ID, {
+              send_page_view: true,
+              debug_mode: false
+            });
+            console.log('GA initialized with ID:', GA_ID);
+          };
+          document.head.appendChild(script);
+        })
+        .catch((err) => {
+          console.error('Failed to load /assets/env.json:', err);
+        });
+    </script>  
   </head>
 
   <body class="h-full">
@@ -47,45 +81,6 @@
 
       window.matchMedia("(prefers-color-scheme: dark)").addEventListener("change", setFavicon);
     </script>
-    <script>
-      // fetch env.json created by the prebuild script
-      fetch('/env.json')
-        .then(async (res) => {
-          const text = await res.text();
-          console.log("res text: ", text)
-          try {
-            const json = JSON.parse(text);
-            const GA_ID = json.VITE_GOOGLE_ANALYTICS_GTAG;
-            if (!GA_ID) {
-              console.warn('No GA_ID found in env.json');
-              return;
-            }
-    
-            // Inject the gtag.js script dynamically
-            const script = document.createElement('script');
-            script.src = `https://www.googletagmanager.com/gtag/js?id=${GA_ID}`;
-            script.async = true;
-            document.head.appendChild(script);
-    
-            // Initialize GA
-            window.dataLayer = window.dataLayer || [];
-            function gtag(){ dataLayer.push(arguments); }
-            window.gtag = gtag;
-    
-            gtag('js', new Date());
-            // should toggle on for development and off before deployment to higher env's
-            gtag('set', { debug_mode: false });
-            gtag('config', GA_ID, {
-              send_page_view: true,
-            });
-            console.log('GA initialized with ID:', GA_ID);
-          } catch (e) {
-            console.warn('Invalid JSON, printing raw contents:\n', text);
-          }
-        })
-        .catch((err) => {
-          console.error('Failed to load /assets/env.json:', err);
-        });
-    </script>
+
   </body>
 </html>
