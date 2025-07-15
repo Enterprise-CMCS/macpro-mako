@@ -3,16 +3,16 @@ import { expect, test } from "@/fixtures/mocked";
 const fileName = "upload-sample.png";
 const filePath = `../test/fixtures/${fileName}`;
 
-const SS = "CO";
+const SS = "ZZ";
 const YY = "25";
-let NNNN = 1313; // increment by 2 after each use.
+let NNNN = 1300; // increment by 2 after each use.
 
 const WSPAID = `${SS}-${YY}-${NNNN}`;
 ++NNNN;
 const WOSPAID = `${SS}-${YY}-${NNNN}`;
 
-test.describe("CHIP Eligibility SPA", { tag: ["@only"] }, () => {
-  test.use({ storageState: "./playwright/.auth/state-user.json" });
+test.describe("CHIP Eligibility SPA", {}, () => {
+  test.use({ storageState: "./playwright/.auth/zzState-user.json" });
 
   test.beforeEach(async ({ page }) => {
     await page.goto("/dashboard");
@@ -171,7 +171,7 @@ test.describe("CHIP Eligibility SPA", { tag: ["@only"] }, () => {
   });
 
   test.describe("CMS Dashboard Validation", () => {
-    test.use({ storageState: "./playwright/.auth/reviewer-user.json" });
+    test.use({ storageState: "./playwright/.auth/eua-user.json" });
 
     test.beforeEach(async ({ page }) => {
       await page.goto("/dashboard");
