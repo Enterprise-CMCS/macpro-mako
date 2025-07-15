@@ -231,7 +231,7 @@ export const MyProfile = () => {
         <div className="flex flex-col md:flex-row">
           <UserInformation
             fullName={userDetails?.fullName}
-            role={userRoleMap[userDetails?.role]}
+            role={userRoleMap[userDetails?.role] ?? "No role requested"}
             email={userDetails?.email}
             allowEdits
             groupDivision={
