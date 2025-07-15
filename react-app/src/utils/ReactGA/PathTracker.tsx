@@ -37,7 +37,7 @@ export default function PathTracker({ children }: PathTrackerProps) {
 
     const sendPageView = (path: string) => {
       console.log("page_view sent with role:", role);
-      sendGAEvent("custom_page_view", {
+      sendGAEvent("page_view", {
         page_path: path,
         referrer: prevPathRef.current || "",
         user_role: role,
