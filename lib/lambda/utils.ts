@@ -51,20 +51,30 @@ export const calculate90dayExpiration = async (
   const item = await os.getItem(config.osDomain, getOsNamespace("main"), parsedRecord.id);
   const submissionDate = item?._source.submissionDate || "";
   const raiRequestedDate = item?._source.raiRequestedDate || "";
+  // seatool calculates this date once an RAI response date is entered, this is the 90 day experiation clock of the first RAI
+  const alert90DaysDate = item?._source.alert90DaysDate || "";
   const submissionMS = new Date(submissionDate).getTime();
   const raiMS = new Date(raiRequestedDate).getTime();
   if (!submissionDate || !raiRequestedDate) {
     console.error("error parsing os record");
   }
   const now = Date.now();
+  // length of time from when the RAI was requested until now
+  const pausedDuration = now - raiMS;
+  //first RAI 
+  if (raiRequestedDate && submissionDate && !alert90DaysDate) {
 
-  if (raiRequestedDate && submissionDate) {
-    // length of time from when the RAI was requested until now
-    const pausedDuration = now - raiMS;
+
     // 90 days in milliseconds
     const ninetyDays = 90 * 24 * 60 * 60 * 1000;
 
     const ninetyDayExpirationClock = submissionMS + ninetyDays + pausedDuration;
+    return ninetyDayExpirationClock;
+
+    // one RAI response has already been submitted, paused duration should be added to the first 90 day expiration
+  } else if (raiRequestedDate && submissionDate && alert90DaysDate) {
+    console.log("made it inside second if");
+    const ninetyDayExpirationClock = alert90DaysDate + pausedDuration;
     return ninetyDayExpirationClock;
   }
   return undefined;
