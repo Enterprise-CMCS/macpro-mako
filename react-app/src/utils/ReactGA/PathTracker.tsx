@@ -23,6 +23,7 @@ export default function PathTracker({ userRole, children }: PathTrackerProps) {
   useEffect(() => {
     //for tracking page views
     const sendPageView = (path: string) => {
+      console.log("page view event sent Path Tracker, role: ", userRole);
       sendGAEvent("page_view", {
         page_path: path,
         referrer: prevPathRef.current || "",
