@@ -1,3 +1,4 @@
+import { StateCode } from "shared-types";
 import { UserRole } from "shared-types/events/legacy-user";
 
 import { StateAccess } from "@/api";
@@ -24,11 +25,16 @@ export const orderRoleStatus = (accesses: StateAccess[]) => {
   const revokedStates = accesses.filter((x: StateAccess) => x.status == "revoked");
 
   const compare = (a: StateAccess, b: StateAccess) => {
-    const stateA = convertStateAbbrToFullName(a.territory);
-    const stateB = convertStateAbbrToFullName(b.territory);
+    if (a.territory !== "N/A" && b.territory !== "N/A") {
+      const stateA = convertStateAbbrToFullName(a.territory);
+      const stateB = convertStateAbbrToFullName(b.territory);
 
-    if (stateA < stateB) return -1;
-    if (stateA > stateB) return 1;
+      if (stateA < stateB) return -1;
+      if (stateA > stateB) return 1;
+      return 0;
+    }
+    if (a.role === "defaultcmsuser") return 1;
+    if (b.role === "defaultcmsuser") return -1;
     return 0;
   };
 
@@ -49,4 +55,33 @@ export const filterRoleStatus = (userDetails, userProfile) => {
 export const hasPendingRequests = (stateAccess) => {
   if (!stateAccess || stateAccess.length < 1) return false;
   return stateAccess.some((role) => role.status === "pending");
+};
+
+// get which confirmation text to use
+export const getConfirmationModalText = (
+  selfRevokeState: StateCode | null,
+  selfWithdrawPending: boolean,
+) => {
+  if (selfRevokeState) {
+    return {
+      dialogTitle: "Withdraw State Access?",
+      dialogBody: `This action cannot be undone. ${convertStateAbbrToFullName(
+        selfRevokeState,
+      )} State System Admin will be notified.`,
+      ariaLabelledBy: "Self Revoke Access Modal",
+    };
+  }
+  if (selfWithdrawPending) {
+    return {
+      dialogTitle: "Withdraw Role Request?",
+      dialogBody: "This role is still pending approval. Withdrawing it will cancel your request.",
+      ariaLabelledBy: "Self Withdraw Pending Access Modal",
+    };
+  }
+
+  return {
+    dialogTitle: "",
+    dialogBody: "",
+    ariaLabelledBy: "",
+  };
 };
