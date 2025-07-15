@@ -7,7 +7,7 @@ type PathTrackerProps = {
   children: React.ReactNode;
 };
 
-export default function PathTracker({ userRole, children }: PathTrackerProps) {
+export default function PathTracker({ children }: PathTrackerProps) {
   const prevPathRef = useRef<string>(window.location.pathname);
   const startTimeRef = useRef<number>(Date.now());
 
@@ -22,7 +22,7 @@ export default function PathTracker({ userRole, children }: PathTrackerProps) {
       } else if (isCmsUser && !isStateUser) {
         detectedRole = "cms";
       } else if (isStateUser && isCmsUser) {
-        detectedRole = "cms";
+        detectedRole = "state";
       }
       setRole(detectedRole);
     } catch (e) {
