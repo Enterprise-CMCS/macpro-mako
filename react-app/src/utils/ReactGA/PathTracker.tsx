@@ -1,9 +1,9 @@
-import { useEffect, useRef } from "react";
-
+import { useEffect, useRef, useState } from "react";
 import { sendGAEvent } from "./SendGAEvent";
+import { isCmsUser, isStateUser } from "shared-utils";
 
 type PathTrackerProps = {
-  userRole: "cms" | "state";
+  userRole: "state" | "cms";
   children: React.ReactNode;
 };
 
@@ -19,6 +19,32 @@ export default function PathTracker({ userRole, children }: PathTrackerProps) {
 
   // record when the current route was "entered"
   const startTimeRef = useRef<number>(Date.now());
+
+  const [role, setRole] = useState(userRole);
+
+  try {
+    let role; 
+    if (isStateUser && !isCmsUser) {
+      console.log("first if")
+      role = "state";
+    } else if (isCmsUser && !isStateUser) {
+      console.log("second if")
+      role = "cms";
+    } else if (isStateUser && isCmsUser) {
+      console.log("third if")
+      role = "cms"; 
+    } else {
+      console.log("None Caught");
+      role = "state";
+    }
+    setRole(role)
+  }  catch (e) {
+    console.log("error obtaining user roles for path tracking", e);
+    // If parsing fails for or roles dont exist yet (initial page load before login)
+    setRole("state");
+  }
+
+
 
   useEffect(() => {
     //for tracking page views
@@ -95,7 +121,7 @@ export default function PathTracker({ userRole, children }: PathTrackerProps) {
       window.history.replaceState = origReplace;
       window.removeEventListener("popstate", onRouteChange);
     };
-  }, [userRole]);
+  }, [role]);
 
   // Render children as usual
   return <>{children}</>;
