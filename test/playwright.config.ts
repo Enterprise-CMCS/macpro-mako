@@ -13,7 +13,7 @@ const deploymentOutput = await getDeploymentOutput(stage, project);
 export default defineConfig({
   testDir: "./",
   testMatch: "**/*.spec.ts",
-  testIgnore: "**/*.test.{ts,tsx}",
+  testIgnore: ["**/*.test.{ts,tsx}", "**/smoke/**/*.spec.ts"],
   globalTeardown: "./lib/global.teardown.ts",
   // need to find a reasonable timeout less than 30s
   // timeout: 10_000,
@@ -98,6 +98,14 @@ export default defineConfig({
         storageState: "./playwright/.auth/state-user.json",
       },
       dependencies: ["ci-setup"],
+    },
+    {
+      name: "val",
+      use: {
+        baseURL: baseURL.val,
+        storageState: "./playwright/.auth/state-user.json",
+      },
+      dependencies: ["val-setup"],
     },
     {
       name: "eua-user",
