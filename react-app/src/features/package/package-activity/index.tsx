@@ -2,6 +2,7 @@ import { useMemo } from "react";
 import { opensearch } from "shared-types";
 import { ItemResult } from "shared-types/opensearch/changelog";
 import { formatDateToET } from "shared-utils";
+import { sendGAEvent } from "@/utils";
 
 import {
   Accordion,
@@ -177,6 +178,10 @@ const DownloadAllButton = ({ packageId, submissionChangelog }: DownloadAllButton
     }
 
     onZip(attachmentsAggregate);
+    sendGAEvent("all_attachments_download", {
+      number_attachments: attachmentsAggregate.length,
+      package_id: packageId,
+    });
   };
 
   return (

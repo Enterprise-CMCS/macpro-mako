@@ -14,6 +14,7 @@ import { PackageActionsCard } from "./package-actions";
 import { PackageActivities } from "./package-activity";
 import { PackageDetails } from "./package-details";
 import { PackageStatusCard } from "./package-status";
+import { sendGAEvent } from "@/utils";
 
 export const DetailCardWrapper = ({
   title,
@@ -147,12 +148,22 @@ type DetailsSidebarProps = {
 };
 
 const DetailsSidebar = ({ id }: DetailsSidebarProps) => {
+  const handleSidebarClick = (linkId: string) => {
+    if (linkId === "package_activity" || linkId === "package_details") {
+      sendGAEvent("package_detail_sidebar_link_click", {
+        link: linkId,
+      });
+    }
+  };
   const links = useDetailsSidebarLinks(id);
 
   return (
     <aside className="min-w-56 flex-none font-semibold mt-6">
       {links.map(({ id, href, displayName }) => (
-        <a className="block mb-2 text-blue-900 hover:underline" key={id} href={href}>
+        <a className="block mb-2 text-blue-900 hover:underline" 
+           key={id} 
+           href={href}
+           onClick={() => handleSidebarClick(id)}>
           {displayName}
         </a>
       ))}
