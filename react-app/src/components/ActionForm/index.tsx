@@ -207,8 +207,12 @@ export const ActionForm = <Schema extends SchemaWithEnforcableProps>({
       sendGAEvent("submit_page_exit", {
         submission_type: formData.event,
         time_on_page_sec: timeOnPageSec,
-    
       });
+      if(formData.event == "upload-subsequent-documents") {
+        sendGAEvent("upload-subsequent-documents", { package_id: id });
+      } else if (formData.event == "withdraw-package") {
+        sendGAEvent("withdraw-package", { package_id: id });
+      }
     } catch (error) {
       console.error(error);
       banner({
