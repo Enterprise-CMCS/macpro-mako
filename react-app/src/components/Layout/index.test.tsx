@@ -1,15 +1,20 @@
 import { render, screen, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { Auth } from "aws-amplify";
-import { AUTH_CONFIG, makoStateSubmitter, noRoleUser, setMockUsername } from "mocks";
+import { AUTH_CONFIG, noRoleUser, setMockUsername, testStateSubmitter } from "mocks";
 import { afterAll, beforeAll, beforeEach, describe, expect, it, vi } from "vitest";
 
 import * as api from "@/api";
 import * as hooks from "@/hooks";
-import { sendGAEvent } from "@/utils/ReactGA/sendGAEvent";
+import * as ReactGAModule from "@/utils/ReactGA/SendGAEvent";
 import { renderWithQueryClientAndMemoryRouter } from "@/utils/test-helpers";
 
 import { Layout, SubNavHeader } from "./index";
+
+vi.mock("@/utils/ReactGA/SendGAEvent", () => ({
+  sendGAEvent: vi.fn(),
+}));
+
 /**
  * Mock Configurations
  * -------------------
@@ -198,7 +203,7 @@ describe("Layout", () => {
     it("navigates to dashboard if user has appropriate roles", async () => {
       const setupLayoutTest = async (
         viewMode: ViewMode = VIEW_MODES.DESKTOP,
-        userData = makoStateSubmitter,
+        userData = testStateSubmitter,
       ) => {
         setMockUsername(userData);
         mockMediaQuery(viewMode);
@@ -219,26 +224,6 @@ describe("Layout", () => {
       };
       await setupLayoutTest(VIEW_MODES.DESKTOP);
       expect(screen.queryByText("Dashboard")).not.toBeInTheDocument();
-    });
-
-    it("sends custom GA login event", async () => {
-      vi.mock("@/utils/ReactGA/sendGAEvent", async (importOriginal) => {
-        const actual = await importOriginal<typeof import("@/utils/ReactGA/sendGAEvent")>();
-        return {
-          ...actual,
-          sendGAEvent: vi.fn(),
-        };
-      });
-      const setupLayoutTest = async (
-        viewMode: ViewMode = VIEW_MODES.DESKTOP,
-        userData = makoStateSubmitter,
-      ) => {
-        setMockUsername(userData);
-        mockMediaQuery(viewMode);
-        await renderLayout();
-      };
-      await setupLayoutTest(VIEW_MODES.DESKTOP);
-      expect(sendGAEvent).toHaveBeenCalledWith("Login", "onemac-state-user", null);
     });
   });
 
@@ -270,7 +255,7 @@ describe("Layout", () => {
   describe("Navigation links and mobile view", () => {
     const setupLayoutTest = async (
       viewMode: ViewMode = VIEW_MODES.DESKTOP,
-      userData = makoStateSubmitter,
+      userData = testStateSubmitter,
     ) => {
       setMockUsername(userData);
       mockMediaQuery(viewMode);
@@ -487,6 +472,43 @@ describe("Layout", () => {
 
       const subNavHeaderDiv = screen.getByTestId("sub-nav-header");
       expect(subNavHeaderDiv).toHaveClass("bg-sky-100");
+    });
+  });
+
+  describe("GA Event Tracking", () => {
+    it("fires GA event when a nav link is clicked in desktop view", async () => {
+      const user = userEvent.setup();
+      mockMediaQuery({ desktop: true, mobile: false });
+      await renderLayout();
+
+      const homeLink = await screen.findByText("Home");
+      await user.click(homeLink);
+
+      expect(ReactGAModule.sendGAEvent).toHaveBeenCalledWith(
+        "home_nav_home",
+        expect.objectContaining({
+          event_category: "Navigation",
+          event_label: "Home",
+        }),
+      );
+    });
+
+    it("fires GA event when a nav link is clicked in mobile view", async () => {
+      const user = userEvent.setup();
+
+      mockMediaQuery(VIEW_MODES.MOBILE);
+      await renderLayout();
+
+      const homeLink = await screen.findByText("Home");
+      await user.click(homeLink);
+
+      expect(ReactGAModule.sendGAEvent).toHaveBeenCalledWith(
+        "home_nav_home",
+        expect.objectContaining({
+          event_category: "Navigation",
+          event_label: "Home",
+        }),
+      );
     });
   });
 });

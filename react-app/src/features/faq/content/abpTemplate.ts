@@ -2,7 +2,7 @@ import { Template } from "./chpRenderSection";
 
 export const ABP_TEMPLATES: Template[] = [
   {
-    title: "ABP SPA Templates",
+    title: "ABP General Information",
     href: "/abp/IG_ABPSPATemplates.pdf",
   },
   {

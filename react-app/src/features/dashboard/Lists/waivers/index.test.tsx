@@ -2,13 +2,13 @@ import { cleanup, screen, waitForElementToBeRemoved, within } from "@testing-lib
 import userEvent, { UserEvent } from "@testing-library/user-event";
 import { ExportToCsv } from "export-to-csv";
 import {
+  DEFAULT_CMS_USER,
+  HELP_DESK_USER,
   setMockUsername,
-  TEST_CMS_REVIEWER_USER,
-  TEST_DEFAULT_CMS_USER,
-  TEST_HELP_DESK_USER,
+  TEST_REVIEWER_USER,
   TEST_STATE_SUBMITTER_USER,
 } from "mocks";
-import { opensearch } from "shared-types";
+import { FullUser, opensearch } from "shared-types";
 import { formatActionType } from "shared-utils";
 import { afterAll, afterEach, beforeAll, beforeEach, describe, expect, it, vi } from "vitest";
 
@@ -247,11 +247,16 @@ const verifyRow = (
 };
 
 describe("WaiversList", () => {
-  const setup = async (hits: opensearch.Hits<opensearch.main.Document>, queryString: string) => {
+  const setup = async (
+    hits: opensearch.Hits<opensearch.main.Document>,
+    queryString: string,
+    oneMacUser: FullUser,
+    isCms: boolean,
+  ) => {
     global.localStorage = new Storage();
     const user = userEvent.setup();
     const rendered = renderDashboard(
-      <WaiversList />,
+      <WaiversList oneMacUser={{ user: oneMacUser, isCms }} />,
       {
         data: hits,
         isLoading: false,
@@ -286,6 +291,8 @@ describe("WaiversList", () => {
       getDashboardQueryString({
         tab: "spas",
       }),
+      null,
+      false,
     );
 
     const table = screen.getByTestId("os-table");
@@ -293,27 +300,29 @@ describe("WaiversList", () => {
   });
 
   describe.each([
-    ["State Submitter", TEST_STATE_SUBMITTER_USER.username, true, false],
-    ["CMS Reviewer", TEST_CMS_REVIEWER_USER.username, true, true],
-    ["Default CMS User", TEST_DEFAULT_CMS_USER.username, true, true],
-    ["CMS Help Desk User", TEST_HELP_DESK_USER.username, false, false],
-  ])("as a %s", (_title, username, hasActions, useCmsStatus) => {
+    ["State Submitter", TEST_STATE_SUBMITTER_USER, true, false],
+    ["CMS Reviewer", TEST_REVIEWER_USER, true, true],
+    ["Default CMS User", DEFAULT_CMS_USER, true, true],
+    ["CMS Help Desk User", HELP_DESK_USER, false, false],
+  ])("as a %s", (_title, oneMacUser, hasActions, useCmsStatus) => {
     let user: UserEvent;
     beforeAll(async () => {
       skipCleanup();
 
-      setMockUsername(username);
+      setMockUsername(oneMacUser.username);
 
       ({ user } = await setup(
         defaultHits,
         getDashboardQueryString({
           tab: "spas",
         }),
+        oneMacUser,
+        useCmsStatus,
       ));
     });
 
     beforeEach(() => {
-      setMockUsername(username);
+      setMockUsername(oneMacUser.username);
     });
 
     afterAll(() => {

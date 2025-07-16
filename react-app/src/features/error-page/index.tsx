@@ -1,11 +1,15 @@
+import { useEffect } from "react";
 import { Link } from "react-router";
 
 import { BreadCrumbs, SimplePageContainer } from "@/components";
 import { useFeatureFlag } from "@/hooks/useFeatureFlag";
+import { sendGAEvent } from "@/utils/ReactGA/SendGAEvent";
 
 export const ErrorPage = () => {
   const isFAQEnabled = useFeatureFlag("TOGGLE_FAQ");
-
+  useEffect(() => {
+    sendGAEvent("error_404", { message: "404 page not found" });
+  }, []);
   return (
     <SimplePageContainer>
       <BreadCrumbs
@@ -14,7 +18,6 @@ export const ErrorPage = () => {
             to: "/",
             displayText: "Home",
             order: 0,
-            default: true,
           },
           {
             to: "/404",

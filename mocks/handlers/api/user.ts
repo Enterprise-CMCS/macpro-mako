@@ -2,12 +2,13 @@ import { CognitoUserAttribute } from "amazon-cognito-identity-js";
 import { isCmsUser } from "shared-utils";
 
 import type { TestUserDataWithRole } from "../../index";
-import { convertUserAttributes, findUserByUsername } from "../auth.utils";
+import { convertUserAttributes, findUserByUsername, getMockUsername } from "../auth.utils";
 
 // using `any` type here because the function that this is mocking uses any
 export const mockCurrentAuthenticatedUser = (): TestUserDataWithRole | any => {
-  if (process.env.MOCK_USER_USERNAME) {
-    return findUserByUsername(process.env.MOCK_USER_USERNAME);
+  const username = getMockUsername();
+  if (username) {
+    return findUserByUsername(username);
   }
   return undefined;
 };
@@ -18,16 +19,18 @@ export const mockUserAttributes = async (user: any): Promise<CognitoUserAttribut
     return (user as TestUserDataWithRole).UserAttributes as CognitoUserAttribute[];
   }
 
-  if (process.env.MOCK_USER_USERNAME) {
-    const defaultUser = findUserByUsername(process.env.MOCK_USER_USERNAME);
+  const username = getMockUsername();
+  if (username) {
+    const defaultUser = findUserByUsername(username);
     return defaultUser?.UserAttributes as CognitoUserAttribute[];
   }
   return {} as CognitoUserAttribute[];
 };
 
 export const mockUseGetUser = () => {
-  if (process.env.MOCK_USER_USERNAME) {
-    const user = findUserByUsername(process.env.MOCK_USER_USERNAME);
+  const username = getMockUsername();
+  if (username) {
+    const user = findUserByUsername(username);
     if (user) {
       // Copied from useGetUser.getUser
       // Set object up with key/values from attributes array

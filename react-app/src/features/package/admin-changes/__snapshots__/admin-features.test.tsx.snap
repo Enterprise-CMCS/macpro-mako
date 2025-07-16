@@ -44,7 +44,7 @@ exports[`Admin Features test > finds an admin change admin changes 1`] = `
                 <button
                   aria-controls="radix-:r1:"
                   aria-expanded="true"
-                  class="flex flex-1 items-center justify-between py-4 font-medium transition-all hover:underline group bg-gray-100 px-3"
+                  class="flex flex-1 items-center justify-between py-4 font-medium transition-all group bg-gray-100 px-3"
                   data-orientation="vertical"
                   data-radix-collection-item=""
                   data-state="open"
@@ -149,7 +149,7 @@ exports[`Admin Features test > finds an admin change admin changes 1`] = `
                 <button
                   aria-controls="radix-:r3:"
                   aria-expanded="false"
-                  class="flex flex-1 items-center justify-between py-4 font-medium transition-all hover:underline group bg-gray-100 px-3"
+                  class="flex flex-1 items-center justify-between py-4 font-medium transition-all group bg-gray-100 px-3"
                   data-orientation="vertical"
                   data-radix-collection-item=""
                   data-state="closed"
@@ -226,7 +226,7 @@ exports[`Admin Features test > finds an admin change admin changes 1`] = `
                 <button
                   aria-controls="radix-:r5:"
                   aria-expanded="false"
-                  class="flex flex-1 items-center justify-between py-4 font-medium transition-all hover:underline group bg-gray-100 px-3"
+                  class="flex flex-1 items-center justify-between py-4 font-medium transition-all group bg-gray-100 px-3"
                   data-orientation="vertical"
                   data-radix-collection-item=""
                   data-state="closed"
@@ -303,7 +303,7 @@ exports[`Admin Features test > finds an admin change admin changes 1`] = `
                 <button
                   aria-controls="radix-:r7:"
                   aria-expanded="false"
-                  class="flex flex-1 items-center justify-between py-4 font-medium transition-all hover:underline group bg-gray-100 px-3"
+                  class="flex flex-1 items-center justify-between py-4 font-medium transition-all group bg-gray-100 px-3"
                   data-orientation="vertical"
                   data-radix-collection-item=""
                   data-state="closed"
@@ -380,7 +380,7 @@ exports[`Admin Features test > finds an admin change admin changes 1`] = `
                 <button
                   aria-controls="radix-:r9:"
                   aria-expanded="false"
-                  class="flex flex-1 items-center justify-between py-4 font-medium transition-all hover:underline group bg-gray-100 px-3"
+                  class="flex flex-1 items-center justify-between py-4 font-medium transition-all group bg-gray-100 px-3"
                   data-orientation="vertical"
                   data-radix-collection-item=""
                   data-state="closed"
@@ -457,7 +457,7 @@ exports[`Admin Features test > finds an admin change admin changes 1`] = `
                 <button
                   aria-controls="radix-:rb:"
                   aria-expanded="false"
-                  class="flex flex-1 items-center justify-between py-4 font-medium transition-all hover:underline group bg-gray-100 px-3"
+                  class="flex flex-1 items-center justify-between py-4 font-medium transition-all group bg-gray-100 px-3"
                   data-orientation="vertical"
                   data-radix-collection-item=""
                   data-state="closed"
@@ -534,7 +534,7 @@ exports[`Admin Features test > finds an admin change admin changes 1`] = `
                 <button
                   aria-controls="radix-:rd:"
                   aria-expanded="false"
-                  class="flex flex-1 items-center justify-between py-4 font-medium transition-all hover:underline group bg-gray-100 px-3"
+                  class="flex flex-1 items-center justify-between py-4 font-medium transition-all group bg-gray-100 px-3"
                   data-orientation="vertical"
                   data-radix-collection-item=""
                   data-state="closed"
@@ -611,7 +611,7 @@ exports[`Admin Features test > finds an admin change admin changes 1`] = `
                 <button
                   aria-controls="radix-:rf:"
                   aria-expanded="false"
-                  class="flex flex-1 items-center justify-between py-4 font-medium transition-all hover:underline group bg-gray-100 px-3"
+                  class="flex flex-1 items-center justify-between py-4 font-medium transition-all group bg-gray-100 px-3"
                   data-orientation="vertical"
                   data-radix-collection-item=""
                   data-state="closed"
@@ -688,7 +688,7 @@ exports[`Admin Features test > finds an admin change admin changes 1`] = `
                 <button
                   aria-controls="radix-:rh:"
                   aria-expanded="false"
-                  class="flex flex-1 items-center justify-between py-4 font-medium transition-all hover:underline group bg-gray-100 px-3"
+                  class="flex flex-1 items-center justify-between py-4 font-medium transition-all group bg-gray-100 px-3"
                   data-orientation="vertical"
                   data-radix-collection-item=""
                   data-state="closed"
@@ -798,7 +798,7 @@ exports[`Admin Features test > finds an admin change admin changes 1`] = `
               <button
                 aria-controls="radix-:r1:"
                 aria-expanded="true"
-                class="flex flex-1 items-center justify-between py-4 font-medium transition-all hover:underline group bg-gray-100 px-3"
+                class="flex flex-1 items-center justify-between py-4 font-medium transition-all group bg-gray-100 px-3"
                 data-orientation="vertical"
                 data-radix-collection-item=""
                 data-state="open"
@@ -903,7 +903,7 @@ exports[`Admin Features test > finds an admin change admin changes 1`] = `
               <button
                 aria-controls="radix-:r3:"
                 aria-expanded="false"
-                class="flex flex-1 items-center justify-between py-4 font-medium transition-all hover:underline group bg-gray-100 px-3"
+                class="flex flex-1 items-center justify-between py-4 font-medium transition-all group bg-gray-100 px-3"
                 data-orientation="vertical"
                 data-radix-collection-item=""
                 data-state="closed"
@@ -980,7 +980,7 @@ exports[`Admin Features test > finds an admin change admin changes 1`] = `
               <button
                 aria-controls="radix-:r5:"
                 aria-expanded="false"
-                class="flex flex-1 items-center justify-between py-4 font-medium transition-all hover:underline group bg-gray-100 px-3"
+                class="flex flex-1 items-center justify-between py-4 font-medium transition-all group bg-gray-100 px-3"
                 data-orientation="vertical"
                 data-radix-collection-item=""
                 data-state="closed"
@@ -1057,7 +1057,7 @@ exports[`Admin Features test > finds an admin change admin changes 1`] = `
               <button
                 aria-controls="radix-:r7:"
                 aria-expanded="false"
-                class="flex flex-1 items-center justify-between py-4 font-medium transition-all hover:underline group bg-gray-100 px-3"
+                class="flex flex-1 items-center justify-between py-4 font-medium transition-all group bg-gray-100 px-3"
                 data-orientation="vertical"
                 data-radix-collection-item=""
                 data-state="closed"
@@ -1134,7 +1134,7 @@ exports[`Admin Features test > finds an admin change admin changes 1`] = `
               <button
                 aria-controls="radix-:r9:"
                 aria-expanded="false"
-                class="flex flex-1 items-center justify-between py-4 font-medium transition-all hover:underline group bg-gray-100 px-3"
+                class="flex flex-1 items-center justify-between py-4 font-medium transition-all group bg-gray-100 px-3"
                 data-orientation="vertical"
                 data-radix-collection-item=""
                 data-state="closed"
@@ -1211,7 +1211,7 @@ exports[`Admin Features test > finds an admin change admin changes 1`] = `
               <button
                 aria-controls="radix-:rb:"
                 aria-expanded="false"
-                class="flex flex-1 items-center justify-between py-4 font-medium transition-all hover:underline group bg-gray-100 px-3"
+                class="flex flex-1 items-center justify-between py-4 font-medium transition-all group bg-gray-100 px-3"
                 data-orientation="vertical"
                 data-radix-collection-item=""
                 data-state="closed"
@@ -1288,7 +1288,7 @@ exports[`Admin Features test > finds an admin change admin changes 1`] = `
               <button
                 aria-controls="radix-:rd:"
                 aria-expanded="false"
-                class="flex flex-1 items-center justify-between py-4 font-medium transition-all hover:underline group bg-gray-100 px-3"
+                class="flex flex-1 items-center justify-between py-4 font-medium transition-all group bg-gray-100 px-3"
                 data-orientation="vertical"
                 data-radix-collection-item=""
                 data-state="closed"
@@ -1365,7 +1365,7 @@ exports[`Admin Features test > finds an admin change admin changes 1`] = `
               <button
                 aria-controls="radix-:rf:"
                 aria-expanded="false"
-                class="flex flex-1 items-center justify-between py-4 font-medium transition-all hover:underline group bg-gray-100 px-3"
+                class="flex flex-1 items-center justify-between py-4 font-medium transition-all group bg-gray-100 px-3"
                 data-orientation="vertical"
                 data-radix-collection-item=""
                 data-state="closed"
@@ -1442,7 +1442,7 @@ exports[`Admin Features test > finds an admin change admin changes 1`] = `
               <button
                 aria-controls="radix-:rh:"
                 aria-expanded="false"
-                class="flex flex-1 items-center justify-between py-4 font-medium transition-all hover:underline group bg-gray-100 px-3"
+                class="flex flex-1 items-center justify-between py-4 font-medium transition-all group bg-gray-100 px-3"
                 data-orientation="vertical"
                 data-radix-collection-item=""
                 data-state="closed"

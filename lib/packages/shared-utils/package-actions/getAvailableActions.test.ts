@@ -1,9 +1,9 @@
 import {
   TEST_1915B_ITEM,
   TEST_CHIP_SPA_ITEM,
-  TEST_CMS_REVIEWER_USER,
   TEST_MED_SPA_ITEM,
   TEST_MED_SPA_RAI_ITEM,
+  TEST_REVIEWER_USER,
   TEST_STATE_SUBMITTER_USER,
 } from "mocks";
 import { Action, SEATOOL_STATUS } from "shared-types";
@@ -38,7 +38,7 @@ describe("getAvailableActions tests", () => {
   });
 
   it(`should return actions: [${Action.ENABLE_RAI_WITHDRAW}] for CHIP SPA`, () => {
-    const result = getAvailableActions(TEST_CMS_REVIEWER_USER, {
+    const result = getAvailableActions(TEST_REVIEWER_USER, {
       ...TEST_CHIP_SPA_ITEM._source,
       seatoolStatus: SEATOOL_STATUS.PENDING,
       actionType: "New",
@@ -49,7 +49,7 @@ describe("getAvailableActions tests", () => {
   });
 
   it(`should return actions: [${Action.ENABLE_RAI_WITHDRAW}] for Medicaid SPA`, () => {
-    const result = getAvailableActions(TEST_CMS_REVIEWER_USER, {
+    const result = getAvailableActions(TEST_REVIEWER_USER, {
       ...TEST_MED_SPA_ITEM._source,
       seatoolStatus: SEATOOL_STATUS.PENDING,
       actionType: "New",
@@ -60,7 +60,7 @@ describe("getAvailableActions tests", () => {
   });
 
   it(`should return actions: [${Action.DISABLE_RAI_WITHDRAW}] for CHIP SPA`, () => {
-    const result = getAvailableActions(TEST_CMS_REVIEWER_USER, {
+    const result = getAvailableActions(TEST_REVIEWER_USER, {
       ...TEST_CHIP_SPA_ITEM._source,
       seatoolStatus: SEATOOL_STATUS.PENDING,
       actionType: "New",
@@ -72,7 +72,7 @@ describe("getAvailableActions tests", () => {
   });
 
   it(`should return actions: [${Action.DISABLE_RAI_WITHDRAW}] for Medicaid SPA`, () => {
-    const result = getAvailableActions(TEST_CMS_REVIEWER_USER, {
+    const result = getAvailableActions(TEST_REVIEWER_USER, {
       ...TEST_MED_SPA_ITEM._source,
       seatoolStatus: SEATOOL_STATUS.PENDING,
       actionType: "New",

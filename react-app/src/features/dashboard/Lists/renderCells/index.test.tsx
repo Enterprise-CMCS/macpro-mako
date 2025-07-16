@@ -1,20 +1,71 @@
-import { screen } from "@testing-library/react";
+import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import {
   TEST_1915B_ITEM,
   TEST_1915C_ITEM,
   TEST_CHIP_SPA_ITEM,
-  TEST_CMS_REVIEWER_USER,
   TEST_MED_SPA_ITEM,
+  TEST_REVIEWER_USER,
   TEST_STATE_SUBMITTER_USER,
 } from "mocks";
 import { Action, CognitoUserAttributes, opensearch, SEATOOL_STATUS } from "shared-types";
 import { UserRole } from "shared-types/events/legacy-user";
-import { describe, expect, it } from "vitest";
+import { describe, expect, it, vi } from "vitest";
 
 import { renderWithMemoryRouter } from "@/utils/test-helpers";
 
 import { CellDetailsLink, renderCellActions, renderCellDate } from "./index";
+vi.mock("@/utils/ReactGA/SendGAEvent", () => ({
+  sendGAEvent: vi.fn(),
+}));
+const { sendGAEvent } = await import("@/utils/ReactGA/SendGAEvent");
+import { MemoryRouter } from "react-router";
+
+describe("CellDetailsLink GA event", () => {
+  it("should send GA event when link is clicked", async () => {
+    const user = userEvent.setup();
+    const item = TEST_MED_SPA_ITEM._source;
+
+    render(
+      <MemoryRouter>
+        <CellDetailsLink id={item.id} authority={item.authority} />
+      </MemoryRouter>,
+    );
+
+    const link = screen.getByRole("link", { name: item.id });
+    await user.click(link);
+
+    expect(sendGAEvent).toHaveBeenCalledWith("dash_package_link", {
+      package_type: item.authority,
+      package_id: item.id,
+    });
+  });
+});
+
+describe("renderCellActions GA event", () => {
+  it("should send GA event when an action is clicked", async () => {
+    const user = userEvent.setup();
+
+    const item: opensearch.main.Document = {
+      ...TEST_MED_SPA_ITEM._source,
+      seatoolStatus: SEATOOL_STATUS.PENDING_RAI,
+      raiRequestedDate: "2024-01-01T00:00:00.000Z",
+    };
+
+    const cell = renderCellActions({ ...TEST_STATE_SUBMITTER_USER, role: "statesubmitter" })(item);
+
+    render(<MemoryRouter>{cell}</MemoryRouter>);
+
+    await user.click(screen.getByLabelText("Available package actions"));
+
+    const actionLink = screen.getByText("Respond to Formal RAI");
+    await user.click(actionLink);
+
+    expect(sendGAEvent).toHaveBeenCalledWith("dash_ellipsis_click", {
+      action: Action.RESPOND_TO_RAI,
+    });
+  });
+});
 
 describe("renderCells", () => {
   describe("renderCellDate", () => {
@@ -189,7 +240,7 @@ describe("renderCells", () => {
 
     describe("as a CMS Reviewer", () => {
       it(`should handle a button click and display [${Action.ENABLE_RAI_WITHDRAW}]`, async () => {
-        const { user } = setup(TEST_CMS_REVIEWER_USER, "cmsreviewer", {
+        const { user } = setup(TEST_REVIEWER_USER, "cmsreviewer", {
           ...TEST_CHIP_SPA_ITEM._source,
           seatoolStatus: SEATOOL_STATUS.PENDING,
           actionType: "New",
@@ -205,7 +256,7 @@ describe("renderCells", () => {
       });
 
       it(`should handle a button click and display [${Action.DISABLE_RAI_WITHDRAW}]`, async () => {
-        const { user } = setup(TEST_CMS_REVIEWER_USER, "cmsreviewer", {
+        const { user } = setup(TEST_REVIEWER_USER, "cmsreviewer", {
           ...TEST_MED_SPA_ITEM._source,
           seatoolStatus: SEATOOL_STATUS.PENDING,
           actionType: "New",

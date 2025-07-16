@@ -1,5 +1,6 @@
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { render, screen, waitFor } from "@testing-library/react";
+import userEvent from "@testing-library/user-event";
 import { useEffect, useRef, useState } from "react";
 import { BrowserRouter } from "react-router";
 import { beforeEach, describe, expect, it, vi } from "vitest";
@@ -7,14 +8,25 @@ import { beforeEach, describe, expect, it, vi } from "vitest";
 import { MedSpaFooter } from "./index";
 import { Footer } from "./index";
 
-// === MOCKS ===
+vi.mock("@/utils/ReactGA/SendGAEvent", () => ({
+  sendGAEvent: vi.fn(),
+}));
+
+import { sendGAEvent } from "@/utils/ReactGA/SendGAEvent";
+
 vi.mock("@/api", () => ({
   useGetUser: () => ({
     data: {
       user: {
+        role: "statesubmitter",
         "custom:ismemberof": "ONEMAC_USER",
-        "custom:cms-roles": "", // Not a CMS role
+        "custom:cms-roles": "",
       },
+    },
+  }),
+  useGetUserDetails: () => ({
+    data: {
+      role: "statesubmitter",
     },
   }),
 }));
@@ -286,5 +298,89 @@ describe("MedSpaFooter", () => {
 
     const submitBtn = screen.getByTestId("submit-action-form-footer");
     expect(submitBtn).not.toBeDisabled();
+  });
+});
+
+describe("Footer GA Events", () => {
+  beforeEach(() => {
+    vi.clearAllMocks();
+  });
+
+  it("sends GA event when 'Home' link is clicked", async () => {
+    renderWithProviders(
+      <Footer
+        email="test@example.com"
+        address={{ city: "City", state: "ST", street: "Street", zip: 12345 }}
+      />,
+    );
+
+    await userEvent.click(screen.getByRole("link", { name: /Home/i }));
+
+    expect(sendGAEvent).toHaveBeenCalledWith("home_footer_link", { link_name: "home" });
+  });
+
+  it("sends GA event when 'Dashboard' link is clicked", async () => {
+    renderWithProviders(
+      <Footer
+        email="test@example.com"
+        address={{ city: "City", state: "ST", street: "Street", zip: 12345 }}
+      />,
+    );
+
+    await userEvent.click(screen.getByRole("link", { name: /Dashboard/i }));
+
+    expect(sendGAEvent).toHaveBeenCalledWith("home_footer_link", { link_name: "dashboard" });
+  });
+
+  it("sends GA event when 'Latest Updates' link is clicked (state user)", async () => {
+    renderWithProviders(
+      <Footer
+        email="test@example.com"
+        address={{ city: "City", state: "ST", street: "Street", zip: 12345 }}
+      />,
+    );
+
+    await userEvent.click(screen.getByRole("link", { name: /Latest Updates/i }));
+
+    expect(sendGAEvent).toHaveBeenCalledWith("home_footer_link", { link_name: "latestupdates" });
+  });
+
+  it("sends GA event when 'Support' link is clicked", async () => {
+    renderWithProviders(
+      <Footer
+        email="test@example.com"
+        address={{ city: "City", state: "ST", street: "Street", zip: 12345 }}
+      />,
+    );
+
+    await userEvent.click(screen.getByRole("link", { name: /Support/i }));
+
+    expect(sendGAEvent).toHaveBeenCalledWith("home_footer_link", { link_name: "support" });
+  });
+
+  it("sends GA event when Help Desk phone link is clicked", async () => {
+    renderWithProviders(
+      <Footer
+        email="test@example.com"
+        address={{ city: "City", state: "ST", street: "Street", zip: 12345 }}
+      />,
+    );
+
+    await userEvent.click(screen.getByRole("link", { name: /\(833\) 228-2540/i }));
+
+    expect(sendGAEvent).toHaveBeenCalledWith("home_help_phone", null);
+  });
+
+  it("sends GA event when Help Desk email link is clicked", async () => {
+    renderWithProviders(
+      <Footer
+        email="test@example.com"
+        address={{ city: "City", state: "ST", street: "Street", zip: 12345 }}
+      />,
+    );
+
+    await userEvent.click(screen.getByRole("link", { name: /OneMAC_Helpdesk@cms\.hhs\.gov/i }));
+
+    expect(sendGAEvent).toHaveBeenCalledWith("home_help_email", null);
   });
 });

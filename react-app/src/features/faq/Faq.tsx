@@ -11,6 +11,7 @@ import {
   SubNavHeader,
 } from "@/components";
 import { useFeatureFlag } from "@/hooks/useFeatureFlag";
+import { sendGAEvent } from "@/utils/ReactGA/SendGAEvent";
 
 import { helpDeskContact, oneMACFAQContent } from "./content/oneMACFAQContent";
 
@@ -44,6 +45,219 @@ export const Faq = () => {
 
   // Get the flag value for hiding the MMDL banner.
   const isBannerHidden = useFeatureFlag("UAT_HIDE_MMDL_BANNER");
+  const isUpdateNewLabel = useFeatureFlag("UPGRADE_NEW_LABEL");
+  const isChipSpaDetailsEnabled = useFeatureFlag("CHIP_SPA_DETAILS");
+
+  const chipSpaFAQ = isChipSpaDetailsEnabled
+    ? {
+        anchorText: "chip-spa-attachments",
+        question: "What are the attachments for a CHIP SPA?",
+        label: null,
+        labelColor: null,
+        answerJSX: (
+          <>
+            <p className="font-bold">CHIP SPA Attachment Types:</p>
+            <p className="ml-12">Note: “*” indicates a required attachment.</p>
+            <table className="faq-table ml-12 border-collapse border border-gray-300 w-full ">
+              <tbody>
+                <tr>
+                  <th className="border border-gray-300 px-4 py-2">Attachment Name</th>
+                  <th className="border border-gray-300 px-4 py-2">Description</th>
+                </tr>
+                <tr>
+                  <td className="border border-gray-300 px-4 py-2">Current State Plan*</td>
+                  <td className="border border-gray-300 px-4 py-2">
+                    Current version of the CHIP state plan that details how the State operates its
+                    CHIP program
+                  </td>
+                </tr>
+                <tr>
+                  <td className="border border-gray-300 px-4 py-2 whitespace-nowrap">
+                    Amended State Plan Language*
+                  </td>
+                  <td className="border border-gray-300 px-4 py-2">
+                    Track changes to <span className="underline">only</span> the currently approved
+                    CHIP state plan pages that the State is proposing to amend
+                  </td>
+                </tr>
+                <tr>
+                  <td className="border border-gray-300 px-4 py-2">Cover Letter*</td>
+                  <td className="border border-gray-300 px-4 py-2">
+                    Cover letter to CMS with an authorized signature that outlines the purpose of
+                    the CHIP SPA submission
+                  </td>
+                </tr>
+                <tr>
+                  <td className="border border-gray-300 px-4 py-2">Budget Documents</td>
+                  <td className="border border-gray-300 px-4 py-2">
+                    Updated 1-year budget if applicable of the State's planned expenditures if the
+                    CHIP SPA submission has a significant impact on the approved budget
+                  </td>
+                </tr>
+                <tr>
+                  <td className="border border-gray-300 px-4 py-2">Public Notice</td>
+                  <td className="border border-gray-300 px-4 py-2">
+                    Process used by the State if applicable to accomplish involvement of the public
+                    that occurred specifically for this CHIP SPA submission
+                  </td>
+                </tr>
+                <tr>
+                  <td className="border border-gray-300 px-4 py-2">Tribal Consultation</td>
+                  <td className="border border-gray-300 px-4 py-2">
+                    Consultation process with Indian Tribes if applicable that occurred specifically
+                    for this CHIP SPA submission
+                  </td>
+                </tr>
+                <tr>
+                  <td className="border border-gray-300 px-4 py-2">Other</td>
+                  <td className="border border-gray-300 px-4 py-2">
+                    Other supporting document(s) needed to process the CHIP SPA submission
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+
+            <p className="font-bold mt-12">CHIP Eligibility SPA Attachment Types:</p>
+            <p className="ml-12">Note: “*” indicates a required attachment.</p>
+            <table className="faq-eligibility-table ml-12 border-collapse border border-gray-300 w-full ">
+              <tbody>
+                <tr>
+                  <th className="border border-gray-300 px-4 py-2">Attachment Name</th>
+                  <th className="border border-gray-300 px-4 py-2">Description</th>
+                </tr>
+                <tr>
+                  <td className="border border-gray-300 px-4 py-2 whitespace-nowrap">
+                    CHIP Eligibility Template*
+                  </td>
+                  <td className="border border-gray-300 px-4 py-2">
+                    Amendment to the eligibility section of the CHIP state plan using a PDF template
+                    repository, including statutory and regulatory background, required information,
+                    and minimum review criteria
+                  </td>
+                </tr>
+                <tr>
+                  <td className="border border-gray-300 px-4 py-2">Cover Letter*</td>
+                  <td className="border border-gray-300 px-4 py-2">
+                    Cover letter to CMS with an authorized signature that outlines the purpose of
+                    the CHIP SPA submission
+                  </td>
+                </tr>
+                <tr>
+                  <td className="border border-gray-300 px-4 py-2">Current State Plan</td>
+                  <td className="border border-gray-300 px-4 py-2">
+                    Current version of the CHIP state plan that details how the State operates its
+                    CHIP program
+                  </td>
+                </tr>
+                <tr>
+                  <td className="border border-gray-300 px-4 py-2 whitespace-nowrap">
+                    Amended State Plan Language
+                  </td>
+                  <td className="border border-gray-300 px-4 py-2">
+                    Track changes to <span className="underline">only</span> the currently approved
+                    CHIP state plan pages that the State is proposing to amend
+                  </td>
+                </tr>
+                <tr>
+                  <td className="border border-gray-300 px-4 py-2">Budget Documents</td>
+                  <td className="border border-gray-300 px-4 py-2">
+                    Updated 1-year budget if applicable of the State's planned expenditures if the
+                    CHIP SPA submission has a significant impact on the approved budget
+                  </td>
+                </tr>
+                <tr>
+                  <td className="border border-gray-300 px-4 py-2">Public Notice</td>
+                  <td className="border border-gray-300 px-4 py-2">
+                    Process used by the State if applicable to accomplish involvement of the public
+                    that occurred specifically for this CHIP SPA submission
+                  </td>
+                </tr>
+                <tr>
+                  <td className="border border-gray-300 px-4 py-2">Tribal Consultation</td>
+                  <td className="border border-gray-300 px-4 py-2">
+                    Consultation process with Indian Tribes if applicable that occurred specifically
+                    for this CHIP SPA submission
+                  </td>
+                </tr>
+                <tr>
+                  <td className="border border-gray-300 px-4 py-2">Other</td>
+                  <td className="border border-gray-300 px-4 py-2">
+                    Other supporting document(s) needed to process the CHIP Eligibility SPA
+                    submission
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </>
+        ),
+      }
+    : {
+        anchorText: "chip-spa-attachments",
+        question: "What are the attachments for a CHIP SPA?",
+        answerJSX: (
+          <>
+            <p>Note: “*” indicates a required attachment.</p>
+            <table className="faq-table border-collapse border border-gray-300 w-full ">
+              <tbody>
+                <tr>
+                  <th className="border border-gray-300 px-4 py-2">Attachment Name</th>
+                  <th className="border border-gray-300 px-4 py-2">Description</th>
+                </tr>
+                <tr>
+                  <td className="border border-gray-300 px-4 py-2">Current State Plan*</td>
+                  <td className="border border-gray-300 px-4 py-2">
+                    Current version of the CHIP state plan that details how the State operates its
+                    CHIP program
+                  </td>
+                </tr>
+                <tr>
+                  <td className="border border-gray-300 px-4 py-2">Amended State Plan Language*</td>
+                  <td className="border border-gray-300 px-4 py-2">
+                    Redline version of proposed changes to the existing CHIP state plan pages. State
+                    to provide a redline version and a clean version of the CHIP state plan pages
+                    being amended.
+                  </td>
+                </tr>
+                <tr>
+                  <td className="border border-gray-300 px-4 py-2">Cover Letter*</td>
+                  <td className="border border-gray-300 px-4 py-2">
+                    Cover letter to CMS with an authorized signature that outlines the purpose of
+                    the CHIP SPA submission
+                  </td>
+                </tr>
+                <tr>
+                  <td className="border border-gray-300 px-4 py-2">Budget Documents</td>
+                  <td className="border border-gray-300 px-4 py-2">
+                    Updated 1-year budget if applicable of the State's planned expenditures if the
+                    CHIP SPA submission has a significant impact on the approved budget
+                  </td>
+                </tr>
+                <tr>
+                  <td className="border border-gray-300 px-4 py-2">Public Notice</td>
+                  <td className="border border-gray-300 px-4 py-2">
+                    Process used by the State if applicable to accomplish involvement of the public
+                    that occurred specifically for this CHIP SPA submission
+                  </td>
+                </tr>
+                <tr>
+                  <td className="border border-gray-300 px-4 py-2">Tribal Consultation</td>
+                  <td className="border border-gray-300 px-4 py-2">
+                    Consultation process with Indian Tribes if applicable that occurred specifically
+                    for this CHIP SPA submission
+                  </td>
+                </tr>
+                <tr>
+                  <td className="border border-gray-300 px-4 py-2">Other</td>
+                  <td className="border border-gray-300 px-4 py-2">
+                    Other document(s) needed to process the CHIP SPA submission
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </>
+        ),
+      };
+
   const anchorsToHide = [
     "spa-admendments",
     "abp-spa-templates",
@@ -55,11 +269,25 @@ export const Faq = () => {
   ];
 
   const filteredFAQContent = oneMACFAQContent.map((section) => {
-    if (section.sectionTitle === "State Plan Amendments (SPAs)" && isBannerHidden) {
-      return {
-        ...section,
-        qanda: section.qanda.filter((qa) => !anchorsToHide.includes(qa.anchorText)),
-      };
+    if (section.sectionTitle === "State Plan Amendments (SPAs)") {
+      const filteredQanda = isBannerHidden
+        ? section.qanda.filter((qa) => !anchorsToHide.includes(qa.anchorText))
+        : section.qanda;
+
+      const existingQanda = filteredQanda.filter((qa) => qa.anchorText !== "chip-spa-attachments");
+
+      // Find the correct index for chip-spa-attachments to appear before RAI question
+      const raiIndex = existingQanda.findIndex(
+        (qa) => qa.anchorText === "chip-spa-rai-attachments",
+      );
+
+      const updatedQanda = [
+        ...existingQanda.slice(0, raiIndex),
+        chipSpaFAQ,
+        ...existingQanda.slice(raiIndex),
+      ];
+
+      return { ...section, qanda: updatedQanda };
     }
     return section;
   });
@@ -77,7 +305,13 @@ export const Faq = () => {
           <article className="mb-8">
             {/* BUTTON */}
             <Button
-              onClick={expandAll}
+              onClick={() => {
+                expandAll();
+                sendGAEvent("support_click_general_expand-all", {
+                  event_category: "Support",
+                  event_label: "Expand All",
+                });
+              }}
               variant="outline"
               data-testid="expand-all"
               className="w-full xs:w-fit hover:bg-transparent mb-5"
@@ -90,14 +324,31 @@ export const Faq = () => {
               {filteredFAQContent.map(({ sectionTitle, qanda }) => (
                 <article key={sectionTitle} className="mb-8">
                   <h2 className="text-2xl mb-4 text-primary">{sectionTitle}</h2>
-                  {qanda.map(({ anchorText, answerJSX, question }) => (
+                  {qanda.map(({ anchorText, answerJSX, question, label, labelColor }) => (
                     <AccordionItem
                       value={anchorText}
                       id={anchorText}
                       key={anchorText}
                       data-testid={anchorText}
                     >
-                      <AccordionTrigger className="text-left">{question}</AccordionTrigger>
+                      <AccordionTrigger className="text-left">
+                        <div className="flex items-center gap-2">
+                          {isUpdateNewLabel && label && (
+                            <span
+                              className={`text-white text-xs font-semibold px-2 py-0.5 rounded no-underline hover:no-underline ${
+                                labelColor === "green"
+                                  ? "bg-green-600"
+                                  : labelColor === "blue"
+                                    ? "bg-blue-600"
+                                    : "bg-gray-500"
+                              }`}
+                            >
+                              {label}
+                            </span>
+                          )}
+                          <span className="hover:underline">{question}</span>
+                        </div>
+                      </AccordionTrigger>
                       <AccordionContent>{answerJSX}</AccordionContent>
                     </AccordionItem>
                   ))}
@@ -107,19 +358,27 @@ export const Faq = () => {
           </article>
         </div>
         <div>
-          <CardWithTopBorder>
+          <CardWithTopBorder className="sticky top-5">
             <div className="p-4">
               <h3 className="text-lg text-bold mb-4">OneMAC Help Desk Contact Info</h3>
               <div>
                 <b>Phone Number</b>
                 <p className="mb-4 text-primary">
-                  <a className="underline" href={`tel:${helpDeskContact.phone}`}>
+                  <a
+                    className="underline"
+                    href={`tel:${helpDeskContact.phone}`}
+                    onClick={() => sendGAEvent("support_contact_phone")}
+                  >
                     {helpDeskContact.phone}
                   </a>
                 </p>
                 <b>Email</b>
                 <p className="text-primary">
-                  <a className="underline" href={`mailto:${helpDeskContact.email}`}>
+                  <a
+                    className="underline"
+                    href={`mailto:${helpDeskContact.email}`}
+                    onClick={() => sendGAEvent("support_contact_email")}
+                  >
                     {helpDeskContact.email}
                   </a>
                 </p>

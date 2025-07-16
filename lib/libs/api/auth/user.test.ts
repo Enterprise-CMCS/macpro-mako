@@ -2,10 +2,10 @@ import { APIGatewayEvent } from "aws-lambda";
 import {
   convertUserAttributes,
   getRequestContext,
-  makoReviewer,
-  makoStateSubmitter,
   nullStateSubmitter,
   setMockUsername,
+  testReviewer,
+  testStateSubmitter,
   USER_POOL_ID,
 } from "mocks";
 import { afterAll, describe, expect, it } from "vitest";
@@ -20,16 +20,16 @@ import {
 
 describe("Auth functions", () => {
   afterAll(() => {
-    setMockUsername(makoStateSubmitter);
+    setMockUsername(testStateSubmitter);
   });
 
   describe("getAuthDetails", () => {
     it("should return the correct auth details", () => {
       const authDetails = getAuthDetails({
-        requestContext: getRequestContext(makoStateSubmitter),
+        requestContext: getRequestContext(testStateSubmitter),
       } as APIGatewayEvent);
       expect(authDetails).toEqual({
-        userId: makoStateSubmitter.Username,
+        userId: testStateSubmitter.Username,
         poolId: USER_POOL_ID,
       });
     });
@@ -48,10 +48,10 @@ describe("Auth functions", () => {
   describe("lookupUserAttributes", () => {
     it("should return user attributes", async () => {
       const userAttributes = await lookupUserAttributes(
-        makoStateSubmitter.Username || "",
+        testStateSubmitter.Username || "",
         USER_POOL_ID,
       );
-      const expectedAttributes = convertUserAttributes(makoStateSubmitter);
+      const expectedAttributes = convertUserAttributes(testStateSubmitter);
       expect(userAttributes).toEqual({
         ...expectedAttributes,
         role: undefined,
@@ -69,7 +69,7 @@ describe("Auth functions", () => {
   describe("isAuthorized", () => {
     it("should return true for a CMS user", async () => {
       const result = await isAuthorized({
-        requestContext: getRequestContext(makoReviewer),
+        requestContext: getRequestContext(testReviewer),
       } as APIGatewayEvent);
       expect(result).toBe(true);
     });
@@ -77,7 +77,7 @@ describe("Auth functions", () => {
     it("should return true for a state user with matching stateCode", async () => {
       const result = await isAuthorized(
         {
-          requestContext: getRequestContext(makoStateSubmitter),
+          requestContext: getRequestContext(testStateSubmitter),
         } as APIGatewayEvent,
         "MD",
       );
@@ -87,7 +87,7 @@ describe("Auth functions", () => {
     it("should return false for a state user without matching stateCode", async () => {
       const result = await isAuthorized(
         {
-          requestContext: getRequestContext(makoStateSubmitter),
+          requestContext: getRequestContext(testStateSubmitter),
         } as APIGatewayEvent,
         "CA",
       );
@@ -98,7 +98,7 @@ describe("Auth functions", () => {
   describe("isAuthorizedToGetPackageActions", () => {
     it("should return true for a CMS write user", async () => {
       const result = await isAuthorizedToGetPackageActions({
-        requestContext: getRequestContext(makoReviewer),
+        requestContext: getRequestContext(testReviewer),
       } as APIGatewayEvent);
       expect(result).toBe(true);
     });
@@ -106,7 +106,7 @@ describe("Auth functions", () => {
     it("should return true for a state user with matching stateCode", async () => {
       const result = await isAuthorizedToGetPackageActions(
         {
-          requestContext: getRequestContext(makoStateSubmitter),
+          requestContext: getRequestContext(testStateSubmitter),
         } as APIGatewayEvent,
         "MD",
       );
@@ -116,7 +116,7 @@ describe("Auth functions", () => {
     it("should return false for a state user without matching stateCode", async () => {
       const result = await isAuthorizedToGetPackageActions(
         {
-          requestContext: getRequestContext(makoStateSubmitter),
+          requestContext: getRequestContext(testStateSubmitter),
         } as APIGatewayEvent,
         "CA",
       );
@@ -127,12 +127,12 @@ describe("Auth functions", () => {
   describe("getStateFilter", () => {
     it("should return state filter for a state user", async () => {
       const stateString =
-        makoStateSubmitter.UserAttributes?.find((attr) => attr?.Name == "custom:state")?.Value ||
+        testStateSubmitter.UserAttributes?.find((attr) => attr?.Name == "custom:state")?.Value ||
         "";
       const states = stateString.split(",").map((state) => state.toLocaleLowerCase());
 
       const result = await getStateFilter({
-        requestContext: getRequestContext(makoStateSubmitter),
+        requestContext: getRequestContext(testStateSubmitter),
       } as APIGatewayEvent);
       expect(result).toEqual({
         terms: {
@@ -151,7 +151,7 @@ describe("Auth functions", () => {
 
     it("should return null for a CMS user", async () => {
       const result = await getStateFilter({
-        requestContext: getRequestContext(makoReviewer),
+        requestContext: getRequestContext(testReviewer),
       } as APIGatewayEvent);
       expect(result).toBeNull();
     });

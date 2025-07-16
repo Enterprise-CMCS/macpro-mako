@@ -63,16 +63,24 @@ exports[`Faq > should display the items expected 1`] = `
                 data-state="open"
               >
                 <button
-                  aria-controls="radix-:r9:"
+                  aria-controls="radix-:rh:"
                   aria-expanded="true"
-                  class="flex flex-1 items-center justify-between py-4 font-medium transition-all hover:underline [&[data-state=open]>svg]:rotate-180 text-left"
+                  class="flex flex-1 items-center justify-between py-4 font-medium transition-all [&[data-state=open]>svg]:rotate-180 text-left"
                   data-orientation="vertical"
                   data-radix-collection-item=""
                   data-state="open"
-                  id="radix-:r8:"
+                  id="radix-:rg:"
                   type="button"
                 >
-                  What is FAQ 1?
+                  <div
+                    class="flex items-center gap-2"
+                  >
+                    <span
+                      class="hover:underline"
+                    >
+                      What is FAQ 1?
+                    </span>
+                  </div>
                   <svg
                     class="lucide lucide-chevron-down h-4 w-4 shrink-0 transition-transform duration-200"
                     fill="none"
@@ -92,11 +100,11 @@ exports[`Faq > should display the items expected 1`] = `
                 </button>
               </h3>
               <div
-                aria-labelledby="radix-:r8:"
+                aria-labelledby="radix-:rg:"
                 class="text-sm transition-all px-3"
                 data-orientation="vertical"
                 data-state="open"
-                id="radix-:r9:"
+                id="radix-:rh:"
                 role="region"
                 style="--radix-accordion-content-height: var(--radix-collapsible-content-height); --radix-accordion-content-width: var(--radix-collapsible-content-width);"
               >
@@ -122,16 +130,24 @@ exports[`Faq > should display the items expected 1`] = `
                 data-state="closed"
               >
                 <button
-                  aria-controls="radix-:rb:"
+                  aria-controls="radix-:rj:"
                   aria-expanded="false"
-                  class="flex flex-1 items-center justify-between py-4 font-medium transition-all hover:underline [&[data-state=open]>svg]:rotate-180 text-left"
+                  class="flex flex-1 items-center justify-between py-4 font-medium transition-all [&[data-state=open]>svg]:rotate-180 text-left"
                   data-orientation="vertical"
                   data-radix-collection-item=""
                   data-state="closed"
-                  id="radix-:ra:"
+                  id="radix-:ri:"
                   type="button"
                 >
-                  What is FAQ 2?
+                  <div
+                    class="flex items-center gap-2"
+                  >
+                    <span
+                      class="hover:underline"
+                    >
+                      What is FAQ 2?
+                    </span>
+                  </div>
                   <svg
                     class="lucide lucide-chevron-down h-4 w-4 shrink-0 transition-transform duration-200"
                     fill="none"
@@ -151,12 +167,12 @@ exports[`Faq > should display the items expected 1`] = `
                 </button>
               </h3>
               <div
-                aria-labelledby="radix-:ra:"
+                aria-labelledby="radix-:ri:"
                 class="text-sm transition-all px-3"
                 data-orientation="vertical"
                 data-state="closed"
                 hidden=""
-                id="radix-:rb:"
+                id="radix-:rj:"
                 role="region"
                 style="--radix-accordion-content-height: var(--radix-collapsible-content-height); --radix-accordion-content-width: var(--radix-collapsible-content-width);"
               />
@@ -167,7 +183,7 @@ exports[`Faq > should display the items expected 1`] = `
     </div>
     <div>
       <div
-        class="my-6 flex flex-col"
+        class="my-6 flex flex-col sticky top-5"
       >
         <div
           class="h-2 shadow-lg"

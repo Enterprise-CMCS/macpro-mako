@@ -2,7 +2,9 @@ import { useQuery } from "@tanstack/react-query";
 import { API } from "aws-amplify";
 import { StateCode } from "shared-types";
 
-type Approver = { email: string; fullName: string; territory: StateCode | "N/A" };
+import { sendGAEvent } from "@/utils/ReactGA/SendGAEvent";
+
+export type Approver = { email: string; fullName: string; territory: StateCode | "N/A" };
 type ApproverRaw = {
   role: string;
   statusCode?: number;
@@ -19,6 +21,8 @@ export type StateAccess = {
   role: string;
   territory: string;
   approverList?: Approver[];
+  group?: string;
+  division?: string;
 };
 
 export type OneMacUserProfile = {
@@ -29,7 +33,7 @@ export function attachApproversToStateAccess(
   stateAccess: StateAccess[],
   approverByRole: ApproverRaw[],
 ): StateAccess[] {
-  const roleTerritoryApproverMap = {};
+  const roleTerritoryApproverMap: { [key: string]: any } = {};
   if (!approverByRole) return stateAccess;
   if (!approverByRole.length) return stateAccess;
 
@@ -66,15 +70,11 @@ export function attachApproversToStateAccess(
 
 export const getUserProfile = async (userEmail?: string): Promise<OneMacUserProfile> => {
   try {
-    const stateAccess = await API.post(
-      "os",
-      "/getUserProfile",
-      userEmail ? { body: { userEmail } } : {},
-    );
+    const stateAccess = await API.post("os", "/getUserProfile", { body: { userEmail } });
 
     let approvers: any = { approverList: [] };
     try {
-      approvers = await API.post("os", "/getApprovers", userEmail ? { body: { userEmail } } : {});
+      approvers = await API.post("os", "/getApprovers", { body: { userEmail } });
     } catch (approverError) {
       console.log("Error fetching approvers:", approverError);
     }
@@ -86,6 +86,9 @@ export const getUserProfile = async (userEmail?: string): Promise<OneMacUserProf
       stateAccess: stateAccessWithApprovers,
     } as OneMacUserProfile;
   } catch (e) {
+    sendGAEvent("api_error", {
+      message: "failure /getUserDetails",
+    });
     console.error("Error in getUserProfile:", e);
     return {};
   }

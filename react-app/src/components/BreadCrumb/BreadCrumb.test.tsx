@@ -2,18 +2,26 @@ import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { BrowserRouter, Route, Routes, useLocation } from "react-router";
 import { Authority } from "shared-types";
-import { beforeEach, describe, expect, test } from "vitest";
+import { afterEach, beforeEach, describe, expect, it, test, vi } from "vitest";
+
+import * as gaModule from "@/utils/ReactGA/SendGAEvent";
 
 import { BreadCrumb, BreadCrumbBar, BreadCrumbs } from "./BreadCrumb";
 import { optionCrumbsFromPath } from "./create-breadcrumbs";
-
 export const LocationDisplay = () => {
   const location = useLocation();
 
   return <div data-testid="location-display">{location.pathname}</div>;
 };
+vi.mock("@/utils/ReactGA/SendGAEvent", () => ({
+  sendGAEvent: vi.fn(),
+}));
 
 describe("Bread Crumb Tests", () => {
+  beforeEach(() => {
+    window.gtag = vi.fn();
+  });
+
   describe("Bread Crumb Routing", () => {
     test("Sucessfully navigate using breadcrumbs", async () => {
       render(
@@ -92,13 +100,73 @@ describe("Bread Crumb Tests", () => {
 
     test("optionCrumbsFromPath creates config passed into component & displays correct bread crumbs ", () => {
       const path = "/details/Medicaid%20SPA/MD-24-0114-P";
-      const testConfig = optionCrumbsFromPath(path, "Medicaid SPA" as Authority);
+      const testConfig = optionCrumbsFromPath(path, "Medicaid SPA" as Authority, "MD-24-0114-P");
 
       render(<BreadCrumbs options={[...testConfig]} />, { wrapper: BrowserRouter });
 
-      const dashboardBreadCrum = screen.getByRole("link", { name: "Dashboard" });
-      expect(dashboardBreadCrum).toBeInTheDocument();
-      expect(dashboardBreadCrum).toHaveAttribute("href", "/dashboard?tab=spas");
+      const dashboardBreadCrumb = screen.getByRole("link", { name: "Dashboard" });
+      expect(dashboardBreadCrumb).toBeInTheDocument();
+      expect(dashboardBreadCrumb).toHaveAttribute("href", "/dashboard?tab=spas");
+    });
+  });
+
+  describe("BreadCrumb GA Events", () => {
+    beforeEach(() => {
+      vi.resetAllMocks();
+    });
+
+    afterEach(() => {
+      window.history.pushState({}, "", "/");
+    });
+
+    it("sends submit_breadcrumb_click for chip submission", async () => {
+      window.history.pushState({}, "", "/details/chip/something");
+      render(
+        <BreadCrumbBar>
+          <BreadCrumb to="/chip">Chip Crumb</BreadCrumb>
+        </BreadCrumbBar>,
+        { wrapper: BrowserRouter },
+      );
+
+      await userEvent.click(screen.getByText("Chip Crumb"));
+
+      expect(gaModule.sendGAEvent).toHaveBeenCalledWith("submit_breadcrumb_click", {
+        crumb_name: "Chip Crumb",
+        submission_type: "chip",
+      });
+    });
+
+    it("sends breadcrumb_click if no submission type found", async () => {
+      window.history.pushState({}, "", "/random/path");
+      render(
+        <BreadCrumbBar>
+          <BreadCrumb to="/something">Generic Crumb</BreadCrumb>
+        </BreadCrumbBar>,
+        { wrapper: BrowserRouter },
+      );
+
+      await userEvent.click(screen.getByText("Generic Crumb"));
+
+      expect(gaModule.sendGAEvent).toHaveBeenCalledWith("breadcrumb_click", {
+        breadcrumb_text: "Generic Crumb",
+      });
+    });
+
+    it("sends submit_breadcrumb_click for 1915b_waiver_renewal", async () => {
+      window.history.pushState({}, "", "/waiver/b/b4/renewal/some-id");
+      render(
+        <BreadCrumbBar>
+          <BreadCrumb to="/renewal">Waiver Renewal</BreadCrumb>
+        </BreadCrumbBar>,
+        { wrapper: BrowserRouter },
+      );
+
+      await userEvent.click(screen.getByText("Waiver Renewal"));
+
+      expect(gaModule.sendGAEvent).toHaveBeenCalledWith("submit_breadcrumb_click", {
+        crumb_name: "Waiver Renewal",
+        submission_type: "1915b_waiver_renewal",
+      });
     });
   });
 });

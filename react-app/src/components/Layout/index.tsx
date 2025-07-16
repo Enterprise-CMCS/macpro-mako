@@ -19,7 +19,7 @@ import { useMediaQuery } from "@/hooks";
 import { useFeatureFlag } from "@/hooks/useFeatureFlag";
 import { isFaqPage, isProd } from "@/utils";
 import { cn } from "@/utils";
-import { sendGAEvent } from "@/utils/ReactGA/sendGAEvent";
+import { sendGAEvent } from "@/utils/ReactGA/SendGAEvent";
 
 import TopBanner from "../Banner/macproBanner";
 import { Footer } from "../Footer";
@@ -56,8 +56,7 @@ const useGetLinks = () => {
               userObj.user &&
               Object.values(UserRoles).some((role) => {
                 return userObj.user.role === role;
-              }) &&
-              userObj.user.role !== "cmsroleapprover",
+              }),
           },
           {
             name: "User Management",
@@ -107,6 +106,7 @@ const UserDropdownMenu = () => {
   const navigate = useNavigate();
   const { data: userDetails, isLoading } = useGetUserDetails();
   const { data: userProfile } = useGetUserProfile();
+  const isNewUserRoleDisplay = useFeatureFlag("SHOW_USER_ROLE_UPDATE");
 
   // Disable page if user has a pending request
   // Certain roles cannot be changed
@@ -120,6 +120,9 @@ const UserDropdownMenu = () => {
 
     return excludedRoles.includes(currentRole);
   };
+
+  const showRequestRoleChangeButton =
+    !disableRoleChange() && !isLoading && userDetails && !isNewUserRoleDisplay;
 
   const handleViewProfile = () => {
     navigate("/profile");
@@ -182,8 +185,7 @@ const UserDropdownMenu = () => {
               </li>
             </DropdownMenu.Item>
             {/* TODO: conditionally show this if the user IS NOT HELPDESK */}
-            {/* // helpdesk, system admins, and cms reviewer users don't even see request role as an option */}
-            {!disableRoleChange() && !isLoading && userDetails && (
+            {showRequestRoleChangeButton && (
               <DropdownMenu.Item
                 className="text-primary hover:text-primary/70 cursor-pointer"
                 asChild
@@ -243,24 +245,6 @@ export const Layout = () => {
   const isDesktop = useMediaQuery("(min-width: 768px)");
   const { data: user } = useGetUser();
   const customUserRoles = user?.user?.["custom:cms-roles"] || "";
-  const customisMemberOf = user?.user?.["custom:ismemberof"] || "";
-
-  if (customUserRoles.length > 0) {
-    if (
-      customUserRoles.includes("onemac-state-user") ||
-      customUserRoles.includes("onemac-helpdesk") ||
-      customUserRoles.includes("onemac-micro-readonly")
-    ) {
-      // TBD weather to add states to the login event since users may have a states array with multiple states.
-      sendGAEvent("Login", customUserRoles, null);
-    }
-  }
-  if (customisMemberOf.length > 0) {
-    if (customisMemberOf.includes("ONEMAC_USER")) {
-      sendGAEvent("Login", customisMemberOf, null);
-    }
-  }
-  // TODO: add logic for super user when/if super user goes into effect
 
   return (
     <div className="min-h-full flex flex-col">
@@ -373,6 +357,15 @@ const ResponsiveNav = ({ isDesktop }: ResponsiveNavProps) => {
     setIsOpen(false);
   }
 
+  const triggerGAEvent = (name) => {
+    const eventName = `home_nav_${name.toLowerCase().replace(/\s+/g, "_")}`;
+
+    sendGAEvent(eventName, {
+      event_category: "Navigation",
+      event_label: name,
+    });
+  };
+
   if (isDesktop) {
     return (
       <>
@@ -383,6 +376,7 @@ const ResponsiveNav = ({ isDesktop }: ResponsiveNavProps) => {
             target={link.link === "/faq" ? "_blank" : "_self"}
             key={link.name}
             className={setClassBasedOnNav}
+            onClick={() => triggerGAEvent(link.name)}
           >
             {link.name}
           </NavLink>
@@ -447,6 +441,7 @@ const ResponsiveNav = ({ isDesktop }: ResponsiveNavProps) => {
                   className="block py-2 pl-3 pr-4 text-white rounded"
                   to={link.link}
                   target={link.link === "/faq" ? "_blank" : "_self"}
+                  onClick={() => triggerGAEvent(link.name)}
                 >
                   {link.name}
                 </Link>

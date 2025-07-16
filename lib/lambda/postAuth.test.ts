@@ -1,11 +1,5 @@
 import { Context } from "aws-lambda";
-import {
-  makoStateSubmitter,
-  setMockUsername,
-  superUser,
-  TEST_IDM_USERS,
-  USER_POOL_ID,
-} from "mocks";
+import { setMockUsername, TEST_IDM_USERS, testStateSubmitter, USER_POOL_ID } from "mocks";
 import { afterAll, describe, expect, it, vi } from "vitest";
 
 import { handler } from "./postAuth";
@@ -13,7 +7,7 @@ import { handler } from "./postAuth";
 const callback = vi.fn();
 describe("process emails Handler", () => {
   afterAll(() => {
-    setMockUsername(makoStateSubmitter);
+    setMockUsername(testStateSubmitter);
   });
   it("should return an error due to missing arn", async () => {
     delete process.env.idmAuthzApiKeyArn;
@@ -80,20 +74,20 @@ describe("process emails Handler", () => {
         request: {
           userAttributes: TEST_IDM_USERS.testStateIDMUserGood,
         },
-        userName: superUser.Username,
+        userName: testStateSubmitter.Username,
         userPoolId: USER_POOL_ID,
       },
       {} as Context,
       callback,
     );
     expect(consoleSpy).toBeCalledWith(
-      `Attributes for user ${superUser.Username} updated successfully.`,
+      `Attributes for user ${testStateSubmitter.Username} updated successfully.`,
     );
     expect(validUser).toStrictEqual({
       request: {
         userAttributes: TEST_IDM_USERS.testStateIDMUserGood,
       },
-      userName: superUser.Username,
+      userName: testStateSubmitter.Username,
       userPoolId: USER_POOL_ID,
     });
   });

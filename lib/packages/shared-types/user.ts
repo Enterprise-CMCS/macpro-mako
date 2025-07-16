@@ -13,6 +13,7 @@ export type {
 export enum UserRoles {
   DEFAULT_CMS_USER = "defaultcmsuser",
   CMS_REVIEWER = "cmsreviewer",
+  CMS_ROLE_APPROVER = "cmsroleapprover",
   HELPDESK = "helpdesk",
   STATE_SUBMITTER = "statesubmitter",
   SYSTEM_ADMIN = "systemadmin",
@@ -54,6 +55,13 @@ export const CMS_WRITE_ROLES = [
 ] satisfies UserRole[];
 
 export const CMS_READ_ONLY_ROLES = ["helpdesk"] satisfies UserRole[];
+
+export const USER_MANAGER_ROLES = [
+  "systemadmin",
+  "statesystemadmin",
+  "cmsroleapprover",
+  "helpdesk",
+] satisfies UserRole[];
 
 export const STATE_ROLES = ["statesubmitter", "statesystemadmin"] satisfies UserRole[];
 

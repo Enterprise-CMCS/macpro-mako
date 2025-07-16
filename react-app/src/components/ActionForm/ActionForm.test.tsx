@@ -1,4 +1,3 @@
-import * as query from "@tanstack/react-query";
 import { fireEvent, screen, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import {
@@ -8,18 +7,14 @@ import {
   SUBMISSION_ERROR_ITEM_ID,
 } from "mocks";
 import { EXISTING_ITEM_PENDING_ID } from "mocks";
-import { mockUseGetUser } from "mocks";
 import { attachmentArraySchemaOptional, SEATOOL_STATUS } from "shared-types";
 import { isCmsReadonlyUser } from "shared-utils";
 import { beforeEach, describe, expect, test, vi } from "vitest";
 import { z } from "zod";
 
-import * as api from "@/api";
-import { OneMacUser } from "@/api";
 import * as components from "@/components";
 import { DataPoller } from "@/utils/Poller/DataPoller";
 import * as documentPoller from "@/utils/Poller/documentPoller";
-import { sendGAEvent } from "@/utils/ReactGA/sendGAEvent";
 import {
   renderFormAsync,
   renderFormWithPackageSectionAsync,
@@ -27,11 +22,12 @@ import {
 
 import { ActionForm } from "./index";
 const PROGRESS_REMINDER = /If you leave this page, you will lose your progress on this form./;
-
+const sendGAEventSpy = vi.spyOn(await import("@/utils/ReactGA/SendGAEvent"), "sendGAEvent");
 describe("ActionForm", () => {
   beforeEach(() => {
     setDefaultStateSubmitter();
     vi.clearAllMocks();
+    window.gtag = vi.fn();
   });
 
   test("renders `breadcrumbText`", async () => {
@@ -254,6 +250,13 @@ describe("ActionForm", () => {
       body: "Hello World Body",
       onAccept: onAcceptMock,
     });
+    expect(sendGAEventSpy).toHaveBeenCalledWith(
+      "submit_cancel",
+      expect.objectContaining({
+        submission_type: "Action Form Title",
+        time_on_page_sec: expect.any(Number),
+      }),
+    );
   });
 
   test("renders custom `promptPreSubmission` when clicking Submit", async () => {
@@ -294,61 +297,6 @@ describe("ActionForm", () => {
     });
   });
 
-  test("sends a custom Google Analytics event", async () => {
-    vi.spyOn(api, "useGetUser").mockImplementation(() => {
-      const response = mockUseGetUser();
-      return response as query.UseQueryResult<OneMacUser, unknown>;
-    });
-
-    vi.mock("@/utils/ReactGA/sendGAEvent", async (importOriginal) => {
-      const actual = await importOriginal<typeof import("@/utils/ReactGA/sendGAEvent")>();
-      return {
-        ...actual,
-        sendGAEvent: vi.fn(),
-      };
-    });
-    const dataPollerSpy = vi.spyOn(DataPoller.prototype, "startPollingData");
-
-    const schema = z.object({
-      id: z.string(),
-      event: z.string().optional(),
-    });
-
-    await renderFormWithPackageSectionAsync(
-      <ActionForm
-        title="Action Form Title"
-        schema={schema}
-        defaultValues={{ id: EXISTING_ITEM_PENDING_ID, event: "new-chip" }}
-        fields={() => null}
-        documentPollerArgs={{
-          property: "id",
-          documentChecker: () => true,
-        }}
-        bannerPostSubmission={{
-          header: "Hello World Header",
-          body: "Hello World Body",
-        }}
-        breadcrumbText="Example Breadcrumb"
-      />,
-      EXISTING_ITEM_PENDING_ID,
-    );
-
-    const submitButton = await screen.findByTestId("submit-action-form");
-
-    vi.useFakeTimers();
-
-    fireEvent.submit(submitButton);
-
-    await vi.waitFor(async () => {
-      await vi.runAllTimersAsync();
-      expect(dataPollerSpy).toHaveResolvedWith({
-        correctDataStateFound: true,
-        maxAttemptsReached: false,
-      });
-      expect(sendGAEvent).toHaveBeenCalledWith("new-chip", "onemac-state-user", "MD");
-    });
-  });
-
   test("calls `documentPoller` with `documentPollerArgs`", async () => {
     const documentPollerSpy = vi.spyOn(documentPoller, "documentPoller");
     const documentChecker: documentPoller.CheckDocumentFunction = (checker) =>
@@ -369,6 +317,13 @@ describe("ActionForm", () => {
         }}
         breadcrumbText="Example Breadcrumb"
       />,
+    );
+
+    expect(sendGAEventSpy).toHaveBeenCalledWith(
+      "submit_page_open",
+      expect.objectContaining({
+        submission_type: "Action Form Title",
+      }),
     );
 
     fireEvent.submit(await screen.findByTestId("submit-action-form"));
@@ -424,7 +379,8 @@ describe("ActionForm", () => {
         pathnameToDisplayOn: "/dashboard",
       }),
     );
-
+    expect(sendGAEventSpy).toHaveBeenCalledWith("submission_submit_click", expect.anything());
+    expect(sendGAEventSpy).toHaveBeenCalledWith("submit_page_exit", expect.anything());
     vi.useRealTimers();
   });
 
@@ -505,7 +461,7 @@ describe("ActionForm", () => {
           value: {
             correctDataStateFound: false,
             maxAttemptsReached: true,
-            message: "Error fetching data: Request failed with status code 500",
+            message: "Error polling data: Correct data state not found, after max attempts reached",
           },
         },
       ]);
@@ -514,7 +470,7 @@ describe("ActionForm", () => {
     await vi.waitFor(() =>
       expect(bannerSpy).toBeCalledWith({
         header: "An unexpected error has occurred:",
-        body: "Error fetching data: Request failed with status code 500",
+        body: "Error polling data: Correct data state not found, after max attempts reached",
         pathnameToDisplayOn: "/",
         variant: "destructive",
       }),
