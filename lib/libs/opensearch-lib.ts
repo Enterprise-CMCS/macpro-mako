@@ -66,7 +66,22 @@ export async function bulkUpdateData(
     if (doc.adminChangeType === "delete") {
       body.push({ delete: { _index: index, _id: doc.id } });
     } else {
-      body.push({ update: { _index: index, _id: doc.id } }, { doc: doc, doc_as_upsert: true });
+      // ✅ Make a copy so we don't mutate the original object
+      const updatedDoc = { ...doc };
+
+      // ✅ Remove ALERT_90_DAYS_DATE if undefined
+      if (
+        updatedDoc.STATE_PLAN &&
+        typeof updatedDoc.STATE_PLAN === "object" &&
+        updatedDoc.STATE_PLAN.ALERT_90_DAYS_DATE === undefined
+      ) {
+        delete updatedDoc.STATE_PLAN.ALERT_90_DAYS_DATE;
+      }
+
+      body.push(
+        { update: { _index: index, _id: doc.id } },
+        { doc: updatedDoc, doc_as_upsert: true }
+      );
     }
   }
 
@@ -74,7 +89,6 @@ export async function bulkUpdateData(
     try {
       const response = await client.bulk({ refresh: true, body: body });
       if (response.body.errors) {
-        // Check for 429 status within response errors
         const hasRateLimitErrors = response.body.items.some(
           (item: any) => item.update.status === 429,
         );
@@ -82,10 +96,9 @@ export async function bulkUpdateData(
         if (hasRateLimitErrors && retries > 0) {
           console.log(`Rate limit exceeded, retrying in ${delay}ms...`);
           await sleep(delay);
-          return attemptBulkUpdate(retries - 1, delay * 2); // Exponential backoff
+          return attemptBulkUpdate(retries - 1, delay * 2);
         }
         if (!hasRateLimitErrors) {
-          // Handle or throw other errors normally
           console.error("Bulk update errors:", JSON.stringify(response.body.items, null, 2));
         }
       } else {
@@ -95,7 +108,7 @@ export async function bulkUpdateData(
       if (error.statusCode === 429 && retries > 0) {
         console.log(`Rate limit exceeded, retrying in ${delay}ms...`, error.message);
         await sleep(delay);
-        return attemptBulkUpdate(retries - 1, delay * 2); // Exponential backoff
+        return attemptBulkUpdate(retries - 1, delay * 2);
       }
       console.error("An error occurred:", error);
       throw error;
@@ -104,6 +117,7 @@ export async function bulkUpdateData(
 
   await attemptBulkUpdate();
 }
+
 
 export async function deleteIndex(host: string, index: opensearch.Index) {
   client = client || (await getClient(host));
