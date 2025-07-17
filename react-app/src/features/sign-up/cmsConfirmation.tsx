@@ -44,6 +44,7 @@ export const CMSConfirmation = () => {
 
       // invalidate cache to allow future freshness on profile page
       await queryClient.invalidateQueries({ queryKey: ["profile"] });
+      await queryClient.refetchQueries({ queryKey: ["profile"] });
 
       const redirectPath = "/profile";
       banner({
