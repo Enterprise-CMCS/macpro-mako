@@ -42,9 +42,8 @@ export const CMSConfirmation = () => {
         requestRoleChange: true,
       });
 
-      // Invalidate cached user details so the profile page shows the updated role
-      await queryClient.invalidateQueries({ queryKey: ["userDetails"] });
-      await queryClient.refetchQueries({ queryKey: ["userDetails"] });
+      // invalidate cache to allow future freshness on profile page
+      await queryClient.invalidateQueries({ queryKey: ["userProfile"] });
 
       const redirectPath = "/profile";
       banner({

@@ -58,9 +58,9 @@ export const SignUp = () => {
   return (
     <div>
       <SubNavHeader>
-        <h1 className="text-xl font-medium">Registration: User Role</h1>
+        <h1 className="text-xl font-medium">Select A Role</h1>
       </SubNavHeader>
-      <OptionFieldset legend={"Select the role for which you are registering"}>
+      <OptionFieldset legend={"Available Roles to add"}>
         {displayRoleOptions.map((role) => (
           <OptionCard
             description={role.description}
