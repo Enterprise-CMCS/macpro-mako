@@ -71,8 +71,11 @@ export const getRaiDate = (data: SeaTool) => {
 };
 
 const getAlert90DaysDate = (data: SeaTool) => {
-  return data.STATE_PLAN?.ALERT_90_DAYS_DATE?.toString() || "";
+  return typeof data.STATE_PLAN?.ALERT_90_DAYS_DATE === "number"
+    ? data.STATE_PLAN.ALERT_90_DAYS_DATE.toString()
+    : undefined;
 };
+
 
 const getDateStringOrNullFromEpoc = (epocDate: number | null | undefined) =>
   epocDate !== null && epocDate !== undefined ? new Date(epocDate).toISOString() : null;
@@ -82,9 +85,9 @@ const compileSrtList = (
 ): { name: string; email: string }[] =>
   officers?.length
     ? officers.map((o) => ({
-        name: `${o.FIRST_NAME || ""} ${o.LAST_NAME || ""}`,
-        email: o.EMAIL || "",
-      }))
+      name: `${o.FIRST_NAME || ""} ${o.LAST_NAME || ""}`,
+      email: o.EMAIL || "",
+    }))
     : [];
 
 const getFinalDispositionDate = (status: string, record: SeaTool) => {
