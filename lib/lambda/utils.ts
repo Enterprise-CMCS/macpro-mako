@@ -61,10 +61,8 @@ export const calculate90dayExpiration = async (
   const now = Date.now();
   // length of time from when the RAI was requested until now
   const pausedDuration = now - raiMS;
-  //first RAI 
+  //first RAI
   if (raiRequestedDate && submissionDate && !alert90DaysDate) {
-
-
     // 90 days in milliseconds
     const ninetyDays = 90 * 24 * 60 * 60 * 1000;
 
@@ -72,7 +70,8 @@ export const calculate90dayExpiration = async (
     return ninetyDayExpirationClock;
 
     // one RAI response has already been submitted, paused duration should be added to the first 90 day expiration
-  } else if (raiRequestedDate && submissionDate && alert90DaysDate) {
+  }
+  if (raiRequestedDate && submissionDate && alert90DaysDate) {
     console.log("made it inside second if");
     const ninetyDayExpirationClock = alert90DaysDate + pausedDuration;
     return ninetyDayExpirationClock;

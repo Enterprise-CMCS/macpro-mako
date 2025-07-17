@@ -422,7 +422,7 @@ export const insertNewSeatoolRecordsFromKafkaIntoMako = async (
       seatoolRecord.STATE_PLAN.SPW_STATUS_ID = await oneMacSeatoolStatusCheck(seatoolRecord);
 
       const safeSeatoolRecord = opensearch.main.seatool.transform(id).safeParse(seatoolRecord);
-
+      console.log("safeSeatoolRecord #1: ", safeSeatoolRecord);
       if (!safeSeatoolRecord.success) {
         logError({
           type: ErrorType.VALIDATION,
@@ -450,6 +450,7 @@ export const insertNewSeatoolRecordsFromKafkaIntoMako = async (
       if (seatoolDocument.authority && seatoolDocument.seatoolStatus !== "Unknown") {
         seatoolRecordsForMako.push(seatoolDocument);
       }
+      console.log("seatoolRecordsForMako: ", seatoolRecordsForMako);
     } catch (error) {
       logError({
         type: ErrorType.BADPARSE,

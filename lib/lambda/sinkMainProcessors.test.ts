@@ -813,6 +813,7 @@ describe("insertNewSeatoolRecordsFromKafkaIntoMako", () => {
         raiRequestedDate: null,
         raiWithdrawEnabled: false,
         raiWithdrawnDate: null,
+        alert90DaysDate: "",
         reviewTeam: [
           {
             email: "john.doe@medicaid.gov",
@@ -1047,6 +1048,7 @@ describe("insertNewSeatoolRecordsFromKafkaIntoMako", () => {
         raiRequestedDate: null,
         raiWithdrawEnabled: false,
         raiWithdrawnDate: null,
+        alert90DaysDate: "",
         reviewTeam: [
           {
             email: "john.doe@medicaid.gov",
@@ -1158,6 +1160,7 @@ describe("insertNewSeatoolRecordsFromKafkaIntoMako", () => {
         raiRequestedDate: null,
         raiWithdrawEnabled: false,
         raiWithdrawnDate: null,
+        alert90DaysDate: "",
         reviewTeam: [
           {
             email: "john.doe@medicaid.gov",
@@ -1271,6 +1274,7 @@ describe("insertNewSeatoolRecordsFromKafkaIntoMako", () => {
         raiRequestedDate: null,
         raiWithdrawEnabled: false,
         raiWithdrawnDate: null,
+        alert90DaysDate: "",
         reviewTeam: [
           {
             email: "john.doe@medicaid.gov",
@@ -1689,6 +1693,7 @@ describe("insertNewSeatoolRecordsFromKafkaIntoMako", () => {
         state: "10",
         stateStatus: "Withdrawal Requested",
         statusDate: EARLIER_ISO_DATETIME,
+        alert90DaysDate: "",
         subTypes: [
           {
             TYPE_ID: 1,
@@ -1792,6 +1797,7 @@ describe("insertNewSeatoolRecordsFromKafkaIntoMako", () => {
         raiRequestedDate: "2023-01-31T00:00:00.000Z",
         raiWithdrawEnabled: undefined,
         raiWithdrawnDate: null,
+        alert90DaysDate: "",
         reviewTeam: [
           {
             email: "john.doe@medicaid.gov",
@@ -1910,6 +1916,7 @@ describe("insertNewSeatoolRecordsFromKafkaIntoMako", () => {
         raiRequestedDate: "2023-01-31T00:00:00.000Z",
         raiWithdrawEnabled: undefined,
         raiWithdrawnDate: null,
+        alert90DaysDate: "",
         reviewTeam: [
           {
             email: "john.doe@medicaid.gov",
@@ -1990,6 +1997,7 @@ describe("insertNewSeatoolRecordsFromKafkaIntoMako", () => {
               ACTUAL_EFFECTIVE_DATE: null,
               PROPOSED_DATE: null,
               STATE_CODE: "10",
+              ALERT_90_DAYS_DATE: 1234567,
             },
             RAI: [
               {
@@ -2028,6 +2036,7 @@ describe("insertNewSeatoolRecordsFromKafkaIntoMako", () => {
         raiRequestedDate: "2023-01-31T00:00:00.000Z",
         raiWithdrawEnabled: false,
         raiWithdrawnDate: null,
+        alert90DaysDate: "1234567",
         reviewTeam: [
           {
             email: "john.doe@medicaid.gov",
@@ -2146,6 +2155,7 @@ describe("insertNewSeatoolRecordsFromKafkaIntoMako", () => {
         raiRequestedDate: "2023-01-31T00:00:00.000Z",
         raiWithdrawEnabled: false,
         raiWithdrawnDate: null,
+        alert90DaysDate: "",
         reviewTeam: [
           {
             email: "john.doe@medicaid.gov",
@@ -2264,6 +2274,7 @@ describe("insertNewSeatoolRecordsFromKafkaIntoMako", () => {
         raiRequestedDate: "2023-01-31T00:00:00.000Z",
         raiWithdrawEnabled: false,
         raiWithdrawnDate: null,
+        alert90DaysDate: "",
         reviewTeam: [
           {
             email: "john.doe@medicaid.gov",
