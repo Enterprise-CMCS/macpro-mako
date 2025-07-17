@@ -47,7 +47,10 @@ export const seatoolSchema = z.object({
     SUMMARY_MEMO: z.string().nullish(),
     TITLE_NAME: z.string().nullish(),
     CHANGED_DATE: z.number().optional(),
-    ALERT_90_DAYS_DATE: z.number().nullish(),
+    ALERT_90_DAYS_DATE: z
+      .union([z.number(), z.null()])
+      .transform((val) => (typeof val === "number" && val > 0 ? val : undefined))
+      .optional(),
   }),
   RAI: z
     .array(
@@ -69,3 +72,5 @@ export const seatoolSchema = z.object({
     .nullable(),
 });
 export type SeaTool = z.infer<typeof seatoolSchema>;
+
+
