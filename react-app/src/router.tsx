@@ -11,7 +11,7 @@ import { userProfileLoader } from "@/features/profile/user";
 import { SignUp } from "@/features/sign-up/sign-up";
 import { queryClient } from "@/utils";
 
-import { CMSSignup, StateSignup } from "./features/sign-up";
+import { CMSConfirmation, CMSSignup, StateSignup } from "./features/sign-up";
 
 const RoutesWithTimeout = () => (
   <>
@@ -47,6 +47,7 @@ export const router = (loginFlag = false) => {
             // { path: "/signup/state", element: <StateSignup /> },
             { path: "/signup/state", element: <StateSignup /> },
             { path: "/signup/cms", element: <CMSSignup /> },
+            { path: "/signup/cms/confirm", element: <CMSConfirmation /> },
             {
               path: "/dashboard",
               element: <F.Dashboard />,

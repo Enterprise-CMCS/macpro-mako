@@ -46,7 +46,7 @@ export const SignUp = () => {
       title: "CMS Role Approver",
       description: "Responsible for managing CMS Read-only Users and State System Admins",
       rolesWhoCanView: ["defaultcmsuser", "cmsreviewer"],
-      link: "/signup/cms",
+      link: "/signup/cms/confirm",
     },
   ] satisfies RoleOptions[];
 
