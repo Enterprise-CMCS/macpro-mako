@@ -4,6 +4,7 @@ import {
   CMS_WRITE_ROLES,
   FullUser,
   STATE_ROLES,
+  USER_MANAGER_ROLES,
 } from "shared-types";
 import {
   ROLES_ALLOWED_TO_REQUEST,
@@ -30,6 +31,9 @@ export const isCmsWriteUser = (user: FullUser | null) =>
 /** Confirms user is a CMS user who can only view data */
 export const isCmsReadonlyUser = (user: FullUser | null) =>
   userHasAuthorizedRole(user, CMS_READ_ONLY_ROLES);
+/** Confirms user can manage other users */
+export const isUserManagerUser = (user: FullUser | null) =>
+  userHasAuthorizedRole(user, USER_MANAGER_ROLES);
 /** Confirms user is a State user */
 export const isStateUser = (user: FullUser | null) => userHasAuthorizedRole(user, STATE_ROLES);
 /** Confirms user is a State user */
