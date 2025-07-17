@@ -396,7 +396,7 @@ export const insertNewSeatoolRecordsFromKafkaIntoMako = async (
   topicPartition: string,
 ) => {
   const makoDocTimestamps = await getMakoDocTimestamps(kafkaRecords);
-  const seatoolRecordsForMako: { id: string; [key: string]: unknown }[] = [];
+  const seatoolRecordsForMako: { id: string;[key: string]: unknown }[] = [];
 
   for (const kafkaRecord of kafkaRecords) {
     try {
@@ -422,7 +422,7 @@ export const insertNewSeatoolRecordsFromKafkaIntoMako = async (
       seatoolRecord.STATE_PLAN.SPW_STATUS_ID = await oneMacSeatoolStatusCheck(seatoolRecord);
 
       const safeSeatoolRecord = opensearch.main.seatool.transform(id).safeParse(seatoolRecord);
-      console.log("safeSeatoolRecord #1: ", safeSeatoolRecord);
+
       if (!safeSeatoolRecord.success) {
         logError({
           type: ErrorType.VALIDATION,
