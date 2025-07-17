@@ -43,7 +43,8 @@ export const CMSConfirmation = () => {
       });
 
       // Invalidate cached user details so the profile page shows the updated role
-      await queryClient.invalidateQueries({ queryKey: ["getUserDetails"] });
+      await queryClient.invalidateQueries({ queryKey: ["userDetails"] });
+      await queryClient.refetchQueries({ queryKey: ["userDetails"] });
 
       const redirectPath = "/profile";
       banner({
@@ -72,7 +73,7 @@ export const CMSConfirmation = () => {
         <div className="flex justify-center p-5">
           <div className="w-1/2">
             <p className="text-lg font-semibold mb-4">You are requesting the following role:</p>
-            <p className="italic mb-6">${matchedRoleOption.title}</p>
+            <p className="italic mb-6">{matchedRoleOption.title}</p>
             <div className="flex space-x-4">
               <Button onClick={onSubmit}>Submit</Button>
               <Button variant="outline" onClick={() => navigate("/profile")}>
