@@ -1,5 +1,5 @@
 import * as DropdownMenu from "@radix-ui/react-dropdown-menu";
-import { Clock, EllipsisVertical, XCircle, XIcon } from "lucide-react";
+import { Clock, EllipsisVertical, XCircle } from "lucide-react";
 import { UserRole } from "shared-types/events/legacy-user";
 import { isStateRole, newUserRoleMap } from "shared-utils";
 
@@ -32,6 +32,8 @@ export const RoleStatusCardNew = ({
     access.role !== "cmsreviewer" &&
     access.role !== "systemadmin";
 
+  const isPending = access.status === "pending";
+
   return (
     <RoleStatusTopBorderCard status={access.status}>
       <div className="p-8 min-h-36">
@@ -42,8 +44,7 @@ export const RoleStatusCardNew = ({
               : newUserRoleMap[access.role]}
           </h3>
 
-          {/* in OY2-35201 we can remove !isState*/}
-          {!isState && access.status === "pending" && (
+          {(isPending || access.status === "active") && (
             <DropdownMenu.Root>
               <DropdownMenu.DropdownMenuTrigger
                 aria-label="Role Status Options"
@@ -66,24 +67,11 @@ export const RoleStatusCardNew = ({
               >
                 <DropdownMenu.Item asChild>
                   <button className="text-primary" onClick={onClick} type="button">
-                    Cancel Request
+                    {isPending ? "Cancel Request" : "Remove User Role"}
                   </button>
                 </DropdownMenu.Item>
               </DropdownMenu.Content>
             </DropdownMenu.Root>
-          )}
-
-          {role === "statesubmitter" && (
-            <button
-              className="text-blue-700 disabled:text-gray-200"
-              disabled={!onClick}
-              data-testid="self-revoke"
-              title="Self Revoke Access"
-              onClick={onClick}
-              type="button"
-            >
-              <XIcon size={30} />
-            </button>
           )}
         </div>
         <CardStatus status={access.status} />
