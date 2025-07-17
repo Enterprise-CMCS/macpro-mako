@@ -1,8 +1,11 @@
 import { useQueryClient } from "@tanstack/react-query";
-import { useNavigate } from "react-router";
+import { Navigate, useNavigate, useSearchParams } from "react-router";
+import { UserRole } from "shared-types/events/legacy-user";
 
 import { useGetUserDetails, useSubmitRoleRequests } from "@/api";
 import { banner, Button, LoadingSpinner, SimplePageContainer, SubNavHeader } from "@/components";
+
+import { roleOptions } from "./sign-up";
 
 export const CMSConfirmation = () => {
   const navigate = useNavigate();
@@ -10,14 +13,31 @@ export const CMSConfirmation = () => {
   const { mutateAsync: submitRequest } = useSubmitRoleRequests();
   const queryClient = useQueryClient();
 
+  const [searchParams] = useSearchParams();
+  const roleKey = searchParams.get("role") as UserRole;
+
   if (isLoading) return <LoadingSpinner />;
+
+  if (!userDetails?.role || roleKey === null) return <Navigate to="/" />;
+
+  // Find the role option matching the query param
+  const matchedRoleOption = roleOptions.find((opt) => opt.key === roleKey);
+
+  // Convert roles to strings to avoid  TS 'never' type issues
+  const isAllowedToRequestRole = (matchedRoleOption?.rolesWhoCanView.map(String) ?? []).includes(
+    String(userDetails.role),
+  );
+
+  if (!isAllowedToRequestRole) {
+    return <Navigate to="/profile" />;
+  }
 
   const onSubmit = async () => {
     try {
       await submitRequest({
         email: userDetails.email,
         state: "N/A",
-        role: "cmsroleapprover",
+        role: matchedRoleOption.key,
         eventType: "user-role",
         requestRoleChange: true,
       });
@@ -50,10 +70,10 @@ export const CMSConfirmation = () => {
       </SubNavHeader>
       <SimplePageContainer>
         <div className="flex justify-center p-5">
-          <div className="w-1/2 text-center">
+          <div className="w-1/2">
             <p className="text-lg font-semibold mb-4">You are requesting the following role:</p>
-            <p className="italic mb-6">CMS Role Approver</p>
-            <div className="flex justify-center space-x-4">
+            <p className="italic mb-6">${matchedRoleOption.title}</p>
+            <div className="flex space-x-4">
               <Button onClick={onSubmit}>Submit</Button>
               <Button variant="outline" onClick={() => navigate("/profile")}>
                 Cancel
