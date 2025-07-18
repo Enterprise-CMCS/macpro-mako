@@ -75,7 +75,9 @@ export const calculate90dayExpiration = async (
   if (raiRequestedDate && submissionDate && alert90DaysDate) {
     console.log("made it inside second if");
     const alert90DaysDateMS = new Date(alert90DaysDate).getTime();
+    console.log("alert90DaysDateMS: ", alert90DaysDateMS)
     const ninetyDayExpirationClock = alert90DaysDateMS + pausedDuration;
+    console.log("90 day expiration clock")
     return ninetyDayExpirationClock;
   }
   return undefined;
