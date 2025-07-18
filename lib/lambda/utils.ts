@@ -55,6 +55,7 @@ export const calculate90dayExpiration = async (
   const alert90DaysDate = item?._source.alert90DaysDate || "";
   const submissionMS = new Date(submissionDate).getTime();
   const raiMS = new Date(raiRequestedDate).getTime();
+
   if (!submissionDate || !raiRequestedDate) {
     console.error("error parsing os record");
   }
@@ -73,7 +74,8 @@ export const calculate90dayExpiration = async (
   }
   if (raiRequestedDate && submissionDate && alert90DaysDate) {
     console.log("made it inside second if");
-    const ninetyDayExpirationClock = alert90DaysDate + pausedDuration;
+    const alert90DaysDateMS = new Date(alert90DaysDate).getTime();
+    const ninetyDayExpirationClock = alert90DaysDateMS + pausedDuration;
     return ninetyDayExpirationClock;
   }
   return undefined;
