@@ -10,14 +10,28 @@ import { isCmsWriteUser, isStateUser } from "../user-helper";
 
 export const arRespondToRai: ActionRule = {
   action: Action.RESPOND_TO_RAI,
-  check: (checker, user) =>
-    !checker.isTempExtension &&
-    checker.hasStatus(SEATOOL_STATUS.PENDING_RAI) &&
-    checker.hasLatestRai &&
-    // safety; prevent bad status from causing overwrite
-    (!checker.hasRaiResponse || checker.hasRaiWithdrawal) &&
-    isStateUser(user) &&
-    !checker.isLocked,
+  check: (checker, user) => {
+    if (checker.authorityIs([Authority["CHIP_SPA"]])) {
+      return (
+        !checker.isTempExtension &&
+        (checker.hasStatus(SEATOOL_STATUS.PENDING_RAI) || checker.hasStatus(SEATOOL_STATUS.PENDING)) &&
+        checker.hasLatestRai &&
+        // safety; prevent bad status from causing overwrite
+        (!checker.hasRaiResponse || checker.hasRaiWithdrawal) &&
+        isStateUser(user) &&
+        !checker.isLocked
+      );
+    }
+    return (
+      !checker.isTempExtension &&
+      checker.hasStatus(SEATOOL_STATUS.PENDING_RAI) &&
+      checker.hasLatestRai &&
+      // safety; prevent bad status from causing overwrite
+      (!checker.hasRaiResponse || checker.hasRaiWithdrawal) &&
+      isStateUser(user) &&
+      !checker.isLocked
+    );
+  }
 };
 
 export const arTempExtension: ActionRule = {
