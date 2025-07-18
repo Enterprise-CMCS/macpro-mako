@@ -71,6 +71,7 @@ export const getRaiDate = (data: SeaTool) => {
 };
 
 const getAlert90DaysDate = (data: SeaTool) => {
+  console.log("type of alert 90 days date: ", typeof data.STATE_PLAN?.ALERT_90_DAYS_DATE)
   return typeof data.STATE_PLAN?.ALERT_90_DAYS_DATE === "number"
     ? data.STATE_PLAN.ALERT_90_DAYS_DATE.toString()
     : undefined;
