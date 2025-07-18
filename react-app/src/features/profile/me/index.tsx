@@ -2,6 +2,7 @@ import { PlusIcon } from "lucide-react";
 import { useEffect, useMemo, useState } from "react";
 import { Navigate } from "react-router";
 import { StateCode } from "shared-types";
+import { UserRole } from "shared-types/events/legacy-user";
 import { userRoleMap } from "shared-utils";
 
 import { useGetUserDetails, useGetUserProfile, useSubmitRoleRequests } from "@/api";
@@ -42,6 +43,7 @@ export const MyProfile = () => {
   const { mutateAsync: submitRequest, isLoading: areRolesLoading } = useSubmitRoleRequests();
   const [selfRevokeState, setSelfRevokeState] = useState<StateCode | null>(null);
   const [selfWithdrawPending, setSelfWithdrawPending] = useState<boolean>(false);
+  const [selfRevokeRole, setSelfRevokeRole] = useState<UserRole | null>(null);
   const [showAddState, setShowAddState] = useState<boolean>(true);
   const [requestedStates, setRequestedStates] = useState<StateCode[]>([]);
   const [pendingRequests, setPendingRequests] = useState<boolean>(false);
@@ -193,19 +195,25 @@ export const MyProfile = () => {
     }
   };
 
-  const handleRoleStatusClick = (status: string, territory: StateCode) => {
+  const handleRoleStatusClick = (status: string, territory: StateCode, role: UserRole) => {
     if (status === "pending" && isNewUserRoleDisplay) return setSelfWithdrawPending(true);
+    if (status === "active" && isNewUserRoleDisplay) return setSelfRevokeRole(role);
     return setSelfRevokeState(territory);
   };
 
-  const { dialogTitle, dialogBody, ariaLabelledBy } = getConfirmationModalText(
+  const { dialogTitle, dialogBody, ariaLabelledBy, dialogConfirm } = getConfirmationModalText(
     selfRevokeState,
     selfWithdrawPending,
+    selfRevokeRole,
   );
 
   const handleDialogOnAccept = async () => {
-    if (selfRevokeState) await handleSelfRevokeAccess();
-    else {
+    if (selfRevokeState) {
+      await handleSelfRevokeAccess();
+    } else if (selfRevokeRole) {
+      console.log("self revoke role");
+      setSelfRevokeRole(null);
+    } else {
       // TODO: add in the logic to remove pending request move state change into that function
       console.log("Withdraw pending request");
       setSelfWithdrawPending(false);
@@ -215,6 +223,7 @@ export const MyProfile = () => {
   const handleDialogOnCancel = () => {
     setSelfRevokeState(null);
     setSelfWithdrawPending(false);
+    setSelfRevokeRole(null);
   };
 
   const showAllStateAccess = isNewUserRoleDisplay
@@ -256,10 +265,10 @@ export const MyProfile = () => {
                 )}
                 {/* TODO: Get state system admin for that state */}
                 <ConfirmationDialog
-                  open={selfRevokeState !== null || selfWithdrawPending}
+                  open={selfRevokeState !== null || selfWithdrawPending || selfRevokeRole !== null}
                   title={dialogTitle}
                   body={dialogBody}
-                  acceptButtonText="Confirm"
+                  acceptButtonText={dialogConfirm}
                   aria-labelledby={ariaLabelledBy}
                   onAccept={handleDialogOnAccept}
                   onCancel={handleDialogOnCancel}
@@ -270,7 +279,11 @@ export const MyProfile = () => {
                     access={access}
                     role={userDetails.role}
                     onClick={() =>
-                      handleRoleStatusClick(access.status, access.territory as StateCode)
+                      handleRoleStatusClick(
+                        access.status,
+                        access.territory as StateCode,
+                        access.role as UserRole,
+                      )
                     }
                   />
                 ))}
