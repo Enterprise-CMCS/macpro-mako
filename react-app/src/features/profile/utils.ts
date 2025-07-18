@@ -1,5 +1,6 @@
 import { StateCode } from "shared-types";
 import { UserRole } from "shared-types/events/legacy-user";
+import { getApprovingRole, newUserRoleMap } from "shared-utils";
 
 import { StateAccess } from "@/api";
 import { convertStateAbbrToFullName } from "@/utils";
@@ -57,10 +58,43 @@ export const hasPendingRequests = (stateAccess) => {
   return stateAccess.some((role) => role.status === "pending");
 };
 
+/* 
+
+  CMS pending -
+
+  dialogTitle: "Withdraw Role Request?",
+  dialogBody: "This role is still pending approval. Withdrawing it will cancel your request.",
+  ariaLabelledBy: "Self Withdraw Pending Access Modal",
+  acceptButtonText: "Withdraw request" 
+
+
+  CMS remove - 
+
+  dialogTitle:  "Withdraw [Insert role name] Access?"
+  dialogBody: This action cannot be undone. The [CMS Approver Role Name] will be notified of this change. 
+  ariaLabelledBy: "Self Withdraw Access Modal",
+  acceptButtonText: Confirm
+
+
+  State Pending withdraw - 
+  dialogTitle: "Withdraw role request?"
+  dialogBody: "This role is still pending approval. Withdrawing it will cancel your request." 
+  acceptButtonText: "Withdraw request" 
+
+
+  State remove -
+  dialogTitle:  "Withdraw [Insert role name] Access?"
+  dialogBody: This action cannot be undone. The [CMS Approver Role Name] will be notified of this change. 
+  ariaLabelledBy: "Self Withdraw Access Modal",
+  acceptButtonText: Confirm
+
+*/
+
 // get which confirmation text to use
 export const getConfirmationModalText = (
   selfRevokeState: StateCode | null,
   selfWithdrawPending: boolean,
+  selfRemoveRole: UserRole | null,
 ) => {
   if (selfRevokeState) {
     return {
@@ -69,6 +103,7 @@ export const getConfirmationModalText = (
         selfRevokeState,
       )} State System Admin will be notified.`,
       ariaLabelledBy: "Self Revoke Access Modal",
+      dialogConfirm: "Confirm",
     };
   }
   if (selfWithdrawPending) {
@@ -76,6 +111,16 @@ export const getConfirmationModalText = (
       dialogTitle: "Withdraw Role Request?",
       dialogBody: "This role is still pending approval. Withdrawing it will cancel your request.",
       ariaLabelledBy: "Self Withdraw Pending Access Modal",
+      dialogConfirm: "Withdraw request",
+    };
+  }
+  if (selfRemoveRole) {
+    const approvingRole = getApprovingRole(selfRemoveRole);
+    return {
+      dialogTitle: `Withdraw Role ${newUserRoleMap[selfRemoveRole]} Access?`,
+      dialogBody: `This action cannot be undone. The ${newUserRoleMap[approvingRole]} will be notified of this change.`,
+      ariaLabelledBy: "Self Remove Role Modal",
+      dialogConfirm: "Confirm",
     };
   }
 
@@ -83,5 +128,6 @@ export const getConfirmationModalText = (
     dialogTitle: "",
     dialogBody: "",
     ariaLabelledBy: "",
+    dialogConfirm: "Confirm",
   };
 };
