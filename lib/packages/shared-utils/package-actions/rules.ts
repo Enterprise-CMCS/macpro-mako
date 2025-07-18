@@ -12,6 +12,13 @@ export const arRespondToRai: ActionRule = {
   action: Action.RESPOND_TO_RAI,
   check: (checker, user) => {
     if (checker.authorityIs([Authority["CHIP_SPA"]])) {
+      console.log("1st check", !checker.isTempExtension)
+      console.log("2nd check", (checker.hasStatus(SEATOOL_STATUS.PENDING_RAI) || checker.hasStatus(SEATOOL_STATUS.PENDING)))
+      console.log("3rd check", checker.hasLatestRai)
+      console.log("4th check ", (!checker.hasRaiResponse || checker.hasRaiWithdrawal))
+      console.log("5th check", isStateUser(user))
+      console.log("last check", !checker.isLocked)
+      console.log("has rai withdrawl", checker.hasRaiWithdrawal)
       return (
         !checker.isTempExtension &&
         (checker.hasStatus(SEATOOL_STATUS.PENDING_RAI) || checker.hasStatus(SEATOOL_STATUS.PENDING)) &&
