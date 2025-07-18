@@ -1,10 +1,9 @@
-import { expect, test } from "@playwright/test";
+import { test } from "@playwright/test";
 import path from "path";
 
 import { envRoleUsers } from "@/lib/envRoleUsers";
 
 // add page objects here
-
 
 const ENV = process.env.PW_ENV || "local";
 const users = envRoleUsers[ENV];
@@ -19,7 +18,6 @@ for (const [role, user] of Object.entries(users)) {
 
     test.describe(`${role} test description`, () => {
       // new tests go here
-      
     });
   });
 }
