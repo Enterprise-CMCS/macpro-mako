@@ -31,6 +31,27 @@ export const PackageCheck = ({
     SEATOOL_STATUS.PENDING_CONCURRENCE,
   ];
 
+  let raiReceivedDateMS;
+  let raiRequestedDateMS;
+  if (raiRequestedDate) {
+    raiRequestedDateMS = new Date(String(raiRequestedDate)).getTime();
+    console.log("raiRequestedDateMS:  ", raiRequestedDateMS);
+  }
+  if (raiReceivedDate) {
+    raiReceivedDateMS = new Date(String(raiReceivedDate)).getTime();
+    console.log("raiReceivedDateMS:  ", raiReceivedDateMS);
+  }
+
+  let subsequentRAI
+  if (raiReceivedDateMS && raiRequestedDateMS) {
+    if (raiRequestedDateMS > raiReceivedDateMS) {
+      subsequentRAI = true;
+    } else if (raiReceivedDateMS > raiRequestedDateMS) {
+      subsequentRAI = false;
+    }
+  }
+
+
   const planChecks = {
     isSpa: checkAuthority(authority, [Authority.MED_SPA, Authority.CHIP_SPA]),
     isWaiver: checkAuthority(authority, [Authority["1915b"], Authority["1915c"]]),
@@ -85,6 +106,8 @@ export const PackageCheck = ({
     hasRaiWithdrawal: !!raiWithdrawnDate,
     /** RAI Withdraw has been enabled **/
     hasEnabledRaiWithdraw: raiWithdrawEnabled,
+
+    isSubsequentRAI: subsequentRAI
   };
 
   const actionTypeChecks = {
