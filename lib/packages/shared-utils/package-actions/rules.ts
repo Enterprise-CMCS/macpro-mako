@@ -24,7 +24,7 @@ export const arRespondToRai: ActionRule = {
         (checker.hasStatus(SEATOOL_STATUS.PENDING_RAI) || checker.hasStatus(SEATOOL_STATUS.PENDING)) &&
         checker.hasLatestRai &&
         // safety; prevent bad status from causing overwrite
-        (!checker.hasRaiResponse || checker.hasRaiWithdrawal) &&
+        // (!checker.hasRaiResponse || checker.hasRaiWithdrawal) &&
         isStateUser(user) &&
         !checker.isLocked
       );
