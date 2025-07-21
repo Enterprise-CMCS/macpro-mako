@@ -128,6 +128,8 @@ export const MyProfile = () => {
     );
   };
 
+  const delay = (milliseconds) => new Promise((resolve) => setTimeout(resolve, milliseconds));
+
   const handleSubmitRequest = async () => {
     try {
       for (const state of requestedStates) {
@@ -142,6 +144,7 @@ export const MyProfile = () => {
 
       setShowAddState(true);
       setRequestedStates([]);
+      await delay(500);
       await reloadUserProfile();
 
       banner({
@@ -174,14 +177,8 @@ export const MyProfile = () => {
       });
 
       setSelfRevokeState(null);
-
-      let updatedIndex = -1;
-      while (updatedIndex === -1) {
-        const { data } = await reloadUserProfile();
-        updatedIndex = data?.stateAccess?.findIndex(
-          (role: StateAccess) => role.territory === selfRevokeState && role.status === "revoked",
-        );
-      }
+      await delay(500);
+      await reloadUserProfile();
 
       banner({
         header: "Submission Completed",
