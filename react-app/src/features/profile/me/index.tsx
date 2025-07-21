@@ -264,7 +264,7 @@ export const MyProfile = () => {
                   onAccept={handleDialogOnAccept}
                   onCancel={handleDialogOnCancel}
                 />
-                {orderedRoleStatus ? (
+                {orderedRoleStatus && orderedRoleStatus.length ? (
                   orderedRoleStatus?.map((access) => (
                     <RoleStatusCard
                       key={`${access.territory}-${access.role}`}
