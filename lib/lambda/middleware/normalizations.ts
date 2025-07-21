@@ -36,6 +36,7 @@ export const normalizeEvent = (opts: NormalizeEventOptions = {}): MiddlewareObj 
 
   return {
     before: async (request: Request) => {
+      console.log(JSON.stringify(request?.event, null, 2));
       if (options.opensearch) {
         validateEnvVariable("osDomain");
         validateEnvVariable("indexNamespace");
