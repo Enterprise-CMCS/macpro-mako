@@ -4,7 +4,7 @@ import { Navigate } from "react-router";
 import { StateCode } from "shared-types";
 import { userRoleMap } from "shared-utils";
 
-import { useGetUserDetails, useGetUserProfile, useSubmitRoleRequests } from "@/api";
+import { StateAccess, useGetUserDetails, useGetUserProfile, useSubmitRoleRequests } from "@/api";
 import {
   banner,
   Button,
@@ -34,6 +34,7 @@ export const MyProfile = () => {
   const {
     data: userProfile,
     isLoading: isProfileLoading,
+    isRefetching: isProfileRefetching,
     refetch: reloadUserProfile,
   } = useGetUserProfile();
 
@@ -48,12 +49,13 @@ export const MyProfile = () => {
   const statesToRequest: Option[] = useAvailableStates(userDetails?.role, userProfile?.stateAccess);
 
   const orderedRoleStatus = useMemo(() => {
+    console.log({ userProfile });
     const filteredRoleStatus = isNewUserRoleDisplay
       ? userProfile?.stateAccess
       : filterRoleStatus(userDetails, userProfile);
 
     return orderRoleStatus(filteredRoleStatus);
-  }, [userDetails, userProfile, isNewUserRoleDisplay]);
+  }, [userDetails, userProfile, userProfile?.stateAccess, isNewUserRoleDisplay]);
 
   const currentRoleObj = useMemo(() => {
     if (!userProfile || !userProfile.stateAccess) return { group: null, division: null };
@@ -80,9 +82,9 @@ export const MyProfile = () => {
       const pendingRequests = hasPendingRequests(userProfile?.stateAccess);
       setPendingRequests(pendingRequests);
     }
-  }, [isDetailLoading, isProfileLoading, userProfile]);
+  }, [isDetailLoading, isProfileLoading, userProfile, userProfile?.stateAccess]);
 
-  if (isDetailLoading || isProfileLoading) {
+  if (isDetailLoading || isProfileLoading || isProfileRefetching) {
     return <LoadingSpinner />;
   }
 
@@ -173,7 +175,14 @@ export const MyProfile = () => {
       });
 
       setSelfRevokeState(null);
-      await reloadUserProfile();
+
+      let updatedIndex = -1;
+      while (updatedIndex === -1) {
+        const { data } = await reloadUserProfile();
+        updatedIndex = data?.stateAccess?.findIndex(
+          (role: StateAccess) => role.territory === selfRevokeState && role.status === "revoked",
+        );
+      }
 
       banner({
         header: "Submission Completed",
