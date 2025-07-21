@@ -71,7 +71,7 @@ export const getRaiDate = (data: SeaTool) => {
 };
 
 const getAlert90DaysDate = (data: SeaTool) => {
-  console.log("type of alert 90 days date: ", typeof data.STATE_PLAN?.ALERT_90_DAYS_DATE)
+  console.log("type of alert 90 days date: ", typeof data.STATE_PLAN?.ALERT_90_DAYS_DATE);
   return typeof data.STATE_PLAN?.ALERT_90_DAYS_DATE === "number"
     ? data.STATE_PLAN.ALERT_90_DAYS_DATE.toString()
     : undefined;
@@ -177,6 +177,7 @@ export const transform = (id: string) => {
         }) || [],
       proposedDate: getDateStringOrNullFromEpoc(data.STATE_PLAN.PROPOSED_DATE),
       raiRequestedDate,
+      raiReceivedDate,
       raiWithdrawnDate,
       reviewTeam: compileSrtList(data.ACTION_OFFICERS),
       state: data.STATE_PLAN.STATE_CODE,
