@@ -53,8 +53,8 @@ export const baseRoleInformationSchema = z.object({
   eventType: roleEvent,
   requestRoleChange: z.boolean().optional(),
   grantAccess: userStatus.optional(),
-  group: z.string().optional(),
-  division: z.string().optional(),
+  group: z.string().nullish(),
+  division: z.string().nullish(),
 });
 
 export const baseUserRoleRequestSchema = z.object({
