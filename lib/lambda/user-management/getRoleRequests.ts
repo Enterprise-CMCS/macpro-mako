@@ -19,7 +19,7 @@ export const handler = authenticatedMiddy({ opensearch: true, setToContext: true
     const { authenticatedUser } = context;
 
     if (!authenticatedUser?.email) {
-      throw new Error("Email is undefined");
+      throw createError(401, JSON.stringify({ message: "Email is undefined" }));
     }
 
     // get all of the roles for the current user
@@ -30,6 +30,7 @@ export const handler = authenticatedMiddy({ opensearch: true, setToContext: true
         isUserManagerUser({ ...authenticatedUser, role: roleObj.role }) &&
         roleObj?.status === "active",
     );
+    console.log({ approverRoles });
 
     if (approverRoles.length <= 0) {
       throw createError(
@@ -59,6 +60,7 @@ export const handler = authenticatedMiddy({ opensearch: true, setToContext: true
 
     // filter out the current user from the role requests
     roleRequests = roleRequests.filter((adminRole) => adminRole?.email !== authenticatedUser.email);
+    console.log({ roleRequests });
 
     if (!roleRequests.length) {
       return {
