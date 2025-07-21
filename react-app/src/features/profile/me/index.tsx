@@ -54,7 +54,7 @@ export const MyProfile = () => {
       : filterRoleStatus(userDetails, userProfile);
 
     return orderRoleStatus(filteredRoleStatus);
-  }, [userDetails, userProfile, userProfile?.stateAccess, isNewUserRoleDisplay]);
+  }, [userDetails, userProfile, isNewUserRoleDisplay]);
 
   const currentRoleObj = useMemo(() => {
     if (!userProfile || !userProfile.stateAccess) return { group: null, division: null };
