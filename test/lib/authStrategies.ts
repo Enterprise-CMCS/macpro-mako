@@ -37,7 +37,6 @@ export const authStrategyMap: Record<string, Record<string, LoginFn>> = {
     cmsRoleApprover: cognitoLogin,
     systemAdmin: cognitoLogin,
     helpDesk: cognitoLogin,
-    
   },
   dev: {
     stateSubmitter: cognitoLogin,

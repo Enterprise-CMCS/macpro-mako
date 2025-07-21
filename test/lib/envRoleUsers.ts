@@ -34,7 +34,6 @@ export const envRoleUsers: Record<string, Record<string, RoleUser>> = {
       username: "helpdesk@example.com",
       capabilities: ["dashboard", "profile"],
     },
-
   },
   dev: {},
   val: {
