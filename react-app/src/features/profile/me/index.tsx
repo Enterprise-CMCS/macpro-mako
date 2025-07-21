@@ -49,7 +49,6 @@ export const MyProfile = () => {
   const statesToRequest: Option[] = useAvailableStates(userDetails?.role, userProfile?.stateAccess);
 
   const orderedRoleStatus = useMemo(() => {
-    console.log({ userProfile });
     const filteredRoleStatus = isNewUserRoleDisplay
       ? userProfile?.stateAccess
       : filterRoleStatus(userDetails, userProfile);
