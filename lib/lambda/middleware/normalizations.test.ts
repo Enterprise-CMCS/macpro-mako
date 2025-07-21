@@ -11,6 +11,7 @@ const setupHandler = ({
     opensearch: false,
     kafka: false,
     disableCors: false,
+    body: true,
   },
 }: {
   expectedEvent?: APIGatewayEvent;
@@ -122,6 +123,18 @@ describe("normalizeEvent middleware", () => {
     expect(res).toBeTruthy();
     expect(res.statusCode).toEqual(400);
     expect(res.body).toEqual(JSON.stringify({ message: "Event body required" }));
+  });
+
+  it("should not check for event body if the body option is false", async () => {
+    const event = {} as APIGatewayEvent;
+
+    const handler = setupHandler({ options: { body: false } });
+
+    const res = await handler(event, {} as Context);
+
+    expect(res).toBeTruthy();
+    expect(res.statusCode).toEqual(200);
+    expect(res.body).toEqual(JSON.stringify({ message: "OK" }));
   });
 
   it("should not check for event body if the method is GET", async () => {

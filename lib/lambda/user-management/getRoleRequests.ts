@@ -17,6 +17,7 @@ const getActiveRole = (roles: roles.Document[], roleName: string) =>
 export const handler = authenticatedMiddy({
   opensearch: true,
   setToContext: true,
+  body: false,
 }).handler(async (event: APIGatewayEvent, context: ContextWithAuthenticatedUser) => {
   const { authenticatedUser } = context;
 

@@ -6,12 +6,14 @@ export type NormalizeEventOptions = {
   opensearch?: boolean;
   kafka?: boolean;
   disableCors?: boolean;
+  body?: boolean;
 };
 
 const defaults: NormalizeEventOptions = {
   opensearch: false,
   kafka: false,
   disableCors: false,
+  body: true,
 };
 
 /**
@@ -43,7 +45,11 @@ export const normalizeEvent = (opts: NormalizeEventOptions = {}): MiddlewareObj 
         validateEnvVariable("topicName");
       }
 
-      if (request?.event?.httpMethod !== "GET" && request?.event?.httpMethod !== "HEAD") {
+      if (
+        options.body &&
+        request?.event?.httpMethod !== "GET" &&
+        request?.event?.httpMethod !== "HEAD"
+      ) {
         if (!request?.event?.body) {
           // check that the event has a body
           throw createError(400, JSON.stringify({ message: "Event body required" }));

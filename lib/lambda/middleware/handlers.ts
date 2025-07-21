@@ -17,6 +17,7 @@ export type NonAuthenticatedMiddyOptions = NormalizeEventOptions & {
 
 const defaults: NonAuthenticatedMiddyOptions = {
   eventSchema: undefined,
+  body: true,
 };
 
 export const nonAuthenticatedMiddy = (opts: NonAuthenticatedMiddyOptions = {}) => {
@@ -28,11 +29,13 @@ export const nonAuthenticatedMiddy = (opts: NonAuthenticatedMiddyOptions = {}) =
     .use(
       httpErrorHandler({ fallbackMessage: JSON.stringify({ message: "Internal server error" }) }),
     )
-    .use(normalizeEvent(normalizeEventOptions))
-    .use(httpJsonBodyParser({ disableContentTypeError: true }));
+    .use(normalizeEvent(normalizeEventOptions));
+  if (options.body) {
+    handler = handler.use(httpJsonBodyParser({ disableContentTypeError: true }));
 
-  if (eventSchema) {
-    handler = handler.use(zodValidator({ eventSchema }));
+    if (eventSchema) {
+      handler = handler.use(zodValidator({ eventSchema }));
+    }
   }
 
   return handler;
