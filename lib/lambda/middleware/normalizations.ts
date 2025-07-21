@@ -6,12 +6,14 @@ export type NormalizeEventOptions = {
   opensearch?: boolean;
   kafka?: boolean;
   disableCors?: boolean;
+  body?: boolean;
 };
 
 const defaults: NormalizeEventOptions = {
   opensearch: false,
   kafka: false,
   disableCors: false,
+  body: true,
 };
 
 /**
@@ -43,25 +45,28 @@ export const normalizeEvent = (opts: NormalizeEventOptions = {}): MiddlewareObj 
         validateEnvVariable("topicName");
       }
 
-      if (!request?.event?.body) {
-        // check that the event has a body
-        throw createError(400, JSON.stringify({ message: "Event body required" }));
-      }
-      if (typeof request.event.body === "object") {
-        request.event.body = JSON.stringify(request.event.body);
-      }
+      console.log(JSON.stringify(request.event, null, 2));
+      if (options.body) {
+        if (!request?.event?.body) {
+          // check that the event has a body
+          throw createError(400, JSON.stringify({ message: "Event body required" }));
+        }
+        if (typeof request.event.body === "object") {
+          request.event.body = JSON.stringify(request.event.body);
+        }
 
-      if (
-        !request?.event?.headers ||
-        !Object.keys(request.event.headers)
-          .map((header) => header.toLowerCase())
-          .includes("content-type")
-      ) {
-        // if the headers don't have the Content-Type set, set it
-        request.event.headers = {
-          ...request.event.headers,
-          "Content-Type": "application/json",
-        };
+        if (
+          !request?.event?.headers ||
+          !Object.keys(request.event.headers)
+            .map((header) => header.toLowerCase())
+            .includes("content-type")
+        ) {
+          // if the headers don't have the Content-Type set, set it
+          request.event.headers = {
+            ...request.event.headers,
+            "Content-Type": "application/json",
+          };
+        }
       }
     },
     after: async (request: Request) => {
