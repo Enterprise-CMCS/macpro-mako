@@ -17,7 +17,6 @@ const getActiveRole = (roles: roles.Document[], roleName: string) =>
 export const handler = authenticatedMiddy({
   opensearch: true,
   setToContext: true,
-  body: false,
 }).handler(async (event: APIGatewayEvent, context: ContextWithAuthenticatedUser) => {
   const { authenticatedUser } = context;
 
@@ -33,7 +32,6 @@ export const handler = authenticatedMiddy({
       isUserManagerUser({ ...authenticatedUser, role: roleObj.role }) &&
       roleObj?.status === "active",
   );
-  console.log({ approverRoles });
 
   if (approverRoles.length <= 0) {
     throw createError(403, JSON.stringify({ message: "User is not authorized to approve roles" }));
@@ -60,7 +58,6 @@ export const handler = authenticatedMiddy({
 
   // filter out the current user from the role requests
   roleRequests = roleRequests.filter((adminRole) => adminRole?.email !== authenticatedUser.email);
-  console.log({ roleRequests });
 
   if (!roleRequests.length) {
     return {
