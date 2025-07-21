@@ -19,6 +19,10 @@ export const arRespondToRai: ActionRule = {
       console.log("5th check", isStateUser(user))
       console.log("last check", !checker.isLocked)
       console.log("has rai withdrawl", checker.hasRaiWithdrawal)
+      console.log("checker.isSubsequentRAI", checker.isSubsequentRAI)
+      console.log("!checker.hasRaiResponse", !checker.hasRaiResponse)
+      console.log("raiRequestedDateMS", checker.raiRequestedDateMS)
+      console.log("raiReceivedDateMS", checker.raiReceivedDateMS)
       return (
         !checker.isTempExtension &&
         (checker.hasStatus(SEATOOL_STATUS.PENDING_RAI) || checker.hasStatus(SEATOOL_STATUS.PENDING)) &&

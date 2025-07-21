@@ -107,7 +107,11 @@ export const PackageCheck = ({
     /** RAI Withdraw has been enabled **/
     hasEnabledRaiWithdraw: raiWithdrawEnabled,
 
-    isSubsequentRAI: subsequentRAI
+    isSubsequentRAI: subsequentRAI,
+
+    raiRequestedDateMS: raiRequestedDateMS,
+
+    raiReceivedDateMS: raiReceivedDateMS,
   };
 
   const actionTypeChecks = {
