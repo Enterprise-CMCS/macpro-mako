@@ -24,20 +24,11 @@ describe("getRoleRequests", () => {
     setDefaultStateSubmitter();
   });
 
-  it("should return 400, if the event body is missing", async () => {
-    const event = {} as APIGatewayEvent;
-
-    const res = await handler(event, {} as Context);
-
-    expect(res.statusCode).toEqual(400);
-    expect(res.body).toEqual(JSON.stringify({ message: "Event body required" }));
-  });
-
   it("should return 401, if user isn't authenticated", async () => {
     setMockUsername(null);
 
     const event = {
-      body: JSON.stringify({}),
+      httpMethod: "GET",
       requestContext: getRequestContext(),
     } as APIGatewayEvent;
 
@@ -51,7 +42,7 @@ describe("getRoleRequests", () => {
     setMockUsername(noStateSubmitter);
 
     const event = {
-      body: JSON.stringify({}),
+      httpMethod: "GET",
       requestContext: getRequestContext(),
     } as APIGatewayEvent;
 
@@ -65,7 +56,7 @@ describe("getRoleRequests", () => {
 
   it("should return 403, if the user is a state submitter", async () => {
     const event = {
-      body: JSON.stringify({}),
+      httpMethod: "GET",
       requestContext: getRequestContext(),
     } as APIGatewayEvent;
 
@@ -81,7 +72,7 @@ describe("getRoleRequests", () => {
     setMockUsername(systemAdmin);
 
     const event = {
-      body: JSON.stringify({}),
+      httpMethod: "GET",
       requestContext: getRequestContext(),
     } as APIGatewayEvent;
 
@@ -98,7 +89,7 @@ describe("getRoleRequests", () => {
     setMockUsername(helpDeskUser);
 
     const event = {
-      body: JSON.stringify({}),
+      httpMethod: "GET",
       requestContext: getRequestContext(),
     } as APIGatewayEvent;
 
@@ -115,7 +106,7 @@ describe("getRoleRequests", () => {
     setMockUsername(cmsRoleApprover);
 
     const event = {
-      body: JSON.stringify({}),
+      httpMethod: "GET",
       requestContext: getRequestContext(),
     } as APIGatewayEvent;
 
@@ -135,7 +126,7 @@ describe("getRoleRequests", () => {
     setMockUsername(osStateSystemAdmin);
 
     const event = {
-      body: JSON.stringify({}),
+      httpMethod: "GET",
       requestContext: getRequestContext(),
     } as APIGatewayEvent;
 
@@ -222,7 +213,7 @@ describe("getRoleRequests", () => {
     mockedServer.use(errorRoleSearchHandler);
     setMockUsername(osStateSystemAdmin);
     const event = {
-      body: JSON.stringify({}),
+      httpMethod: "GET",
       requestContext: getRequestContext(),
     } as APIGatewayEvent;
 
