@@ -43,7 +43,7 @@ export const normalizeEvent = (opts: NormalizeEventOptions = {}): MiddlewareObj 
         validateEnvVariable("topicName");
       }
 
-      if (request?.event?.httpMethod !== "GET") {
+      if (request?.event?.httpMethod !== "GET" && request?.event?.httpMethod !== "HEAD") {
         if (!request?.event?.body) {
           // check that the event has a body
           throw createError(400, JSON.stringify({ message: "Event body required" }));
