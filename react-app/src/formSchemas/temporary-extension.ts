@@ -52,30 +52,6 @@ export const formSchema = events["temporary-extension"].baseSchema
             "According to our records, this Temporary Extension Request Number already exists. Please check the Temporary Extension Request Number and try entering it again.",
         }),
     }),
-    // .superRefine(async (data, ctx) => {
-    //   try {
-    //     // Check that the original waiver and temp extension have the same id up to the last period
-    //     const waiverNumberPrefix = data.validAuthority.waiverNumber.substring(
-    //       0,
-    //       data.validAuthority.waiverNumber.lastIndexOf("."),
-    //     );
-    //     const idPrefix = data.id.substring(0, data.id.lastIndexOf("."));
-    //     if (waiverNumberPrefix !== idPrefix) {
-    //       ctx.addIssue({
-    //         message:
-    //           "The Approved Initial or Renewal Waiver Number and the Temporary Extension Request Number must be identical until the last period.",
-    //         code: z.ZodIssueCode.custom,
-    //         fatal: false,
-    //         path: ["id"],
-    //       });
-    //     }
-    //     return z.never;
-    //   } catch (error) {
-    //     // If we've failed here, the item does not exist, and the originalWaiverNumberSchema validation will throw the correct errors.
-    //     console.error(error);
-    //     return z.never;
-    //   }
-    // }),
   })
   .transform((data) => {
     const {

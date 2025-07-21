@@ -10,3 +10,4 @@ export * from "./user";
 export * from "./userProfile";
 export * from "./utils";
 export * from "./zod";
+export * from "./ReactGA/SendGAEvent";

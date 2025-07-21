@@ -1,10 +1,14 @@
 import { errorApiCpocHandler } from "mocks";
 import { cpocsList } from "mocks/data/cpocs";
 import { mockedApiServer as mockedServer } from "mocks/server";
-import { describe, expect, it } from "vitest";
+import { describe, expect, it, vi } from "vitest";
+
+import * as gaModule from "@/utils/ReactGA/SendGAEvent";
 
 import { fetchCpocData } from "./useGetCPOCs";
-
+vi.mock("@/utils/ReactGA/SendGAEvent", () => ({
+  sendGAEvent: vi.fn(),
+}));
 describe("useGetCPOCs test", () => {
   describe("fetchCpocData tests", () => {
     it("should return CPOCs", async () => {
@@ -17,6 +21,12 @@ describe("useGetCPOCs test", () => {
 
       const result = await fetchCpocData();
       expect(result).toBeUndefined();
+      expect(gaModule.sendGAEvent).toHaveBeenCalledWith(
+        "api_error",
+        expect.objectContaining({
+          message: "failure /getCpocs",
+        }),
+      );
     });
   });
 });

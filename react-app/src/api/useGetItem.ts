@@ -2,8 +2,12 @@ import { useQuery, UseQueryOptions } from "@tanstack/react-query";
 import { API } from "aws-amplify";
 import { opensearch, ReactQueryApiError, SEATOOL_STATUS } from "shared-types";
 
+import { sendGAEvent } from "@/utils/ReactGA/SendGAEvent";
+
 export const getItem = async (id: string): Promise<opensearch.main.ItemResult> =>
-  await API.post("os", "/item", { body: { id } });
+  await API.post("os", "/item", { body: { id } }).catch(() =>
+    sendGAEvent("api_error", { message: "failure /item" }),
+  );
 
 export const idIsApproved = async (id: string) => {
   try {

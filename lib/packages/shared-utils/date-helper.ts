@@ -15,8 +15,7 @@ export function formatNinetyDaysDate(date: number | null | undefined): string {
   const baseDate = new Date(date);
   const ninetyDaysLater = add(baseDate, { days: 90 });
 
-  const timezoneAbbreviation = isDST(ninetyDaysLater) ? "EDT" : "EST";
-  return format(ninetyDaysLater, `MMM d, yyyy '@ 11:59pm ${timezoneAbbreviation}'`);
+  return format(ninetyDaysLater, "MMM d, yyyy");
 }
 
 export function formatDate(dateValue: string | number) {
