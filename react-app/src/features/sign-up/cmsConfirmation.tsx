@@ -42,8 +42,7 @@ export const CMSConfirmation = () => {
         requestRoleChange: true,
       });
 
-      // invalidate cache to allow future freshness on profile page
-      await queryClient.invalidateQueries({ queryKey: ["profile"] });
+      // refetch profile into cache to ensure we show new role request on profile page
       await queryClient.refetchQueries({ queryKey: ["profile"] });
 
       const redirectPath = "/profile";
