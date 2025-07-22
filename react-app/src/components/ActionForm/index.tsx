@@ -29,6 +29,7 @@ import {
   UserPrompt,
   userPrompt,
 } from "@/components";
+import { useNavigationPrompt } from "@/hooks";
 import { getFormOrigin, queryClient } from "@/utils";
 import { CheckDocumentFunction, documentPoller } from "@/utils/Poller/documentPoller";
 import { sendGAEvent } from "@/utils/ReactGA/SendGAEvent";
@@ -146,6 +147,7 @@ export const ActionForm = <Schema extends SchemaWithEnforcableProps>({
       sendGAEvent("submit_page_open", { submission_type: submissionType ? submissionType : title });
     }
   }, [title]);
+
   const navigate = useNavigate();
   const { data: userObj, isLoading: isUserLoading } = useGetUser();
 
@@ -159,6 +161,23 @@ export const ActionForm = <Schema extends SchemaWithEnforcableProps>({
     },
   });
   const watchedId = form.watch("id" as FieldPath<z.infer<Schema>>);
+  const hasRealChanges = Object.keys(form.formState.dirtyFields).length > 0;
+
+  useNavigationPrompt({
+    shouldBlock: hasRealChanges && !form.formState.isSubmitting,
+    prompt: promptOnLeavingForm,
+  });
+
+  useEffect(() => {
+    const handleBeforeUnload = (e: BeforeUnloadEvent) => {
+      if (form.formState.isDirty && !form.formState.isSubmitting) {
+        e.preventDefault();
+      }
+    };
+
+    window.addEventListener("beforeunload", handleBeforeUnload);
+    return () => window.removeEventListener("beforeunload", handleBeforeUnload);
+  }, [form.formState.isDirty, form.formState.isSubmitting]);
 
   const { mutateAsync } = useMutation({
     mutationFn: (formData: z.TypeOf<Schema>) =>
