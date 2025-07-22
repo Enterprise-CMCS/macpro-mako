@@ -4,7 +4,7 @@ import { Navigate } from "react-router";
 import { StateCode } from "shared-types";
 import { userRoleMap } from "shared-utils";
 
-import { StateAccess, useGetUserDetails, useGetUserProfile, useSubmitRoleRequests } from "@/api";
+import { useGetUserDetails, useGetUserProfile, useSubmitRoleRequests } from "@/api";
 import {
   banner,
   Button,
