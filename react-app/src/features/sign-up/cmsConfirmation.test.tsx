@@ -39,7 +39,7 @@ describe("CMSConfirmation", () => {
   });
 
   it("should navigate to /profile if role is not allowed", async () => {
-    setMockUsername({ ...defaultCMSUser, role: "UNAUTHORIZED_ROLE" });
+    setMockUsername({ ...defaultCMSUser, role: "norole" });
     await setup();
 
     await waitFor(() => expect(screen.getByText("Profile")).toBeInTheDocument());
