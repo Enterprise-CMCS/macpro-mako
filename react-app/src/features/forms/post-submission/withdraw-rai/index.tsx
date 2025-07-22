@@ -44,7 +44,7 @@ export const WithdrawRaiForm = () => {
       additionalInformation={{
         required: true,
         title: "Additional Information",
-        label: "",
+        label: "Explain your need for withdrawal.",
       }}
       promptPreSubmission={{
         header: "Withdraw Formal RAI response?",

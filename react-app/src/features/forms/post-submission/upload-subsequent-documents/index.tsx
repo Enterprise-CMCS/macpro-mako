@@ -166,7 +166,7 @@ export const UploadSubsequentDocuments = () => {
       additionalInformation={{
         required: true,
         title: "Reason for Subsequent Documents",
-        label: "",
+        label: "Explain why additional documents are being submitted.",
       }}
     />
   );
