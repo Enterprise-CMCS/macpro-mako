@@ -2,10 +2,10 @@ import { PlusIcon } from "lucide-react";
 import { useEffect, useMemo, useState } from "react";
 import { Navigate } from "react-router";
 import { StateCode } from "shared-types";
-import { UserRole } from "shared-types/events/legacy-user";
+import { Territory } from "shared-types/events/legacy-user";
 import { userRoleMap } from "shared-utils";
 
-import { useGetUserDetails, useGetUserProfile, useSubmitRoleRequests } from "@/api";
+import { StateAccess, useGetUserDetails, useGetUserProfile, useSubmitRoleRequests } from "@/api";
 import {
   banner,
   Button,
@@ -30,6 +30,10 @@ import {
   stateAccessRoles,
 } from "../utils";
 
+export interface SelfRevokeAcess extends StateAccess {
+  isNewUserRoleDisplay: boolean;
+}
+
 export const MyProfile = () => {
   const { data: userDetails, isLoading: isDetailLoading } = useGetUserDetails();
   const {
@@ -41,9 +45,9 @@ export const MyProfile = () => {
   const isNewUserRoleDisplay = useFeatureFlag("SHOW_USER_ROLE_UPDATE");
 
   const { mutateAsync: submitRequest, isLoading: areRolesLoading } = useSubmitRoleRequests();
-  const [selfRevokeState, setSelfRevokeState] = useState<StateCode | null>(null);
-  const [selfWithdrawPending, setSelfWithdrawPending] = useState<boolean>(false);
-  const [selfRevokeRole, setSelfRevokeRole] = useState<UserRole | null>(null);
+
+  const [selfRevokeRole, setSelfRevokeRole] = useState<SelfRevokeAcess | null>(null);
+
   const [showAddState, setShowAddState] = useState<boolean>(true);
   const [requestedStates, setRequestedStates] = useState<StateCode[]>([]);
   const [pendingRequests, setPendingRequests] = useState<boolean>(false);
@@ -167,14 +171,14 @@ export const MyProfile = () => {
     try {
       await submitRequest({
         email: userDetails.email,
-        state: selfRevokeState,
+        state: selfRevokeRole.territory as Territory,
         role: userDetails.role,
         eventType: "user-role",
         requestRoleChange: false,
         grantAccess: "revoked",
       });
 
-      setSelfRevokeState(null);
+      setSelfRevokeRole(null);
       await reloadUserProfile();
 
       banner({
@@ -195,34 +199,31 @@ export const MyProfile = () => {
     }
   };
 
-  const handleRoleStatusClick = (status: string, territory: StateCode, role: UserRole) => {
-    if (status === "pending" && isNewUserRoleDisplay) return setSelfWithdrawPending(true);
-    if (status === "active" && isNewUserRoleDisplay) return setSelfRevokeRole(role);
-    return setSelfRevokeState(territory);
+  const handleRoleStatusClick = (access: StateAccess) => {
+    setSelfRevokeRole({ isNewUserRoleDisplay, ...access });
   };
 
-  const { dialogTitle, dialogBody, ariaLabelledBy, dialogConfirm } = getConfirmationModalText(
-    selfRevokeState,
-    selfWithdrawPending,
-    selfRevokeRole,
-  );
+  const { dialogTitle, dialogBody, ariaLabelledBy, dialogConfirm } =
+    getConfirmationModalText(selfRevokeRole);
 
   const handleDialogOnAccept = async () => {
-    if (selfRevokeState) {
+    if (
+      !selfRevokeRole.isNewUserRoleDisplay ||
+      (selfRevokeRole.status !== "pending" && selfRevokeRole.role === "statesubmitter")
+    ) {
       await handleSelfRevokeAccess();
-    } else if (selfRevokeRole) {
+    } else if (selfRevokeRole.status !== "pending") {
+      // TODO: add in logic for other users to be able to self revoke
       console.log("self revoke role");
       setSelfRevokeRole(null);
     } else {
       // TODO: add in the logic to remove pending request move state change into that function
       console.log("Withdraw pending request");
-      setSelfWithdrawPending(false);
+      setSelfRevokeRole(null);
     }
   };
 
   const handleDialogOnCancel = () => {
-    setSelfRevokeState(null);
-    setSelfWithdrawPending(false);
     setSelfRevokeRole(null);
   };
 
@@ -265,7 +266,7 @@ export const MyProfile = () => {
                 )}
                 {/* TODO: Get state system admin for that state */}
                 <ConfirmationDialog
-                  open={selfRevokeState !== null || selfWithdrawPending || selfRevokeRole !== null}
+                  open={selfRevokeRole !== null}
                   title={dialogTitle}
                   body={dialogBody}
                   acceptButtonText={dialogConfirm}
@@ -278,13 +279,7 @@ export const MyProfile = () => {
                     key={`${access.territory}-${access.role}`}
                     access={access}
                     role={userDetails.role}
-                    onClick={() =>
-                      handleRoleStatusClick(
-                        access.status,
-                        access.territory as StateCode,
-                        access.role as UserRole,
-                      )
-                    }
+                    onClick={() => handleRoleStatusClick(access)}
                   />
                 ))}
                 {isNewUserRoleDisplay && !hideAddRoleButton ? (
