@@ -1,6 +1,11 @@
 import { describe, expect, it } from "vitest";
 
-import { filterRoleStatus, hasPendingRequests, orderRoleStatus } from "./utils";
+import {
+  filterRoleStatus,
+  getConfirmationModalText,
+  hasPendingRequests,
+  orderRoleStatus,
+} from "./utils";
 
 const baseRole = {
   eventType: "user-role",
@@ -248,5 +253,52 @@ describe("Profile utils", () => {
       // @ts-ignore
       expect(hasPendingRequests(stateAccessArray)).toBe(true);
     });
+  });
+});
+
+describe("Get Confirmation Modal Text", () => {
+  const BaseRoleAccess = {
+    id: "1",
+    eventType: "user-role",
+    email: "",
+    doneByEmail: "",
+    doneByName: "",
+  };
+  it("should return empty title when selfRemoveRole is null", () => {
+    const modalText = getConfirmationModalText(null);
+    expect(modalText.dialogTitle).toBe("");
+  });
+
+  it("should return Withdraw State Access, when the flag is off (passed in)", () => {
+    const modalText = getConfirmationModalText({
+      isNewUserRoleDisplay: false,
+      role: "statesubmitter",
+      territory: "CA",
+      status: "active",
+      ...BaseRoleAccess,
+    });
+    expect(modalText.dialogTitle).toBe("Withdraw State Access?");
+  });
+
+  it("should return title Withdraw Role Request, when the flag is on and is pending status", () => {
+    const modalText = getConfirmationModalText({
+      isNewUserRoleDisplay: true,
+      role: "statesubmitter",
+      territory: "CA",
+      status: "pending",
+      ...BaseRoleAccess,
+    });
+    expect(modalText.dialogTitle).toBe("Withdraw Role Request?");
+  });
+
+  it("should return title Withdraw California State Submitter Access, when the flag is on and is active status", () => {
+    const modalText = getConfirmationModalText({
+      isNewUserRoleDisplay: true,
+      role: "statesubmitter",
+      territory: "CA",
+      status: "active",
+      ...BaseRoleAccess,
+    });
+    expect(modalText.dialogTitle).toBe("Withdraw  California State Submitter Access?");
   });
 });

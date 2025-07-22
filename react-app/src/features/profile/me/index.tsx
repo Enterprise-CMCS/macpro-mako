@@ -223,10 +223,6 @@ export const MyProfile = () => {
     }
   };
 
-  const handleDialogOnCancel = () => {
-    setSelfRevokeRole(null);
-  };
-
   const showAllStateAccess = isNewUserRoleDisplay
     ? true
     : stateAccessRoles.includes(userDetails?.role);
@@ -272,7 +268,7 @@ export const MyProfile = () => {
                   acceptButtonText={dialogConfirm}
                   aria-labelledby={ariaLabelledBy}
                   onAccept={handleDialogOnAccept}
-                  onCancel={handleDialogOnCancel}
+                  onCancel={() => setSelfRevokeRole(null)}
                 />
                 {orderedRoleStatus?.map((access) => (
                   <RoleStatusCard
