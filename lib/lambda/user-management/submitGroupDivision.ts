@@ -19,6 +19,13 @@ export const submitGroupDivision = async (body: SubmitGroupDivisionBody) => {
     const { userEmail, group, division } = body;
     const userInfo = await getUserByEmail(userEmail);
 
+    if (userInfo === null) {
+      return response({
+        statusCode: 404,
+        body: { message: `User with email ${userEmail} not found.` },
+      });
+    }
+
     await produceMessage(
       topicName,
       userInfo.id,
