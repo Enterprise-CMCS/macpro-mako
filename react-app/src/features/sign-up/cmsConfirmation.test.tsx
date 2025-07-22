@@ -1,11 +1,6 @@
 import { screen, waitFor, waitForElementToBeRemoved } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
-import {
-  defaultCMSUser,
-  errorApiSubmitRoleRequestsHandler,
-  setMockUsername,
-  successApiSubmitRoleRequestsHandler,
-} from "mocks";
+import { defaultCMSUser, errorApiSubmitRoleRequestsHandler, setMockUsername } from "mocks";
 import { mockedApiServer as mockedServer } from "mocks/server";
 import { describe, expect, it } from "vitest";
 
@@ -20,18 +15,9 @@ describe("CMSConfirmation", () => {
     const rendered = renderWithQueryClientAndMemoryRouter(
       <CMSConfirmation />,
       [
-        {
-          path: "/",
-          element: <div>Home</div>,
-        },
-        {
-          path: "/profile",
-          element: <div>Profile</div>,
-        },
-        {
-          path: "/signup/cms/confirm",
-          element: <CMSConfirmation />,
-        },
+        { path: "/", element: <div>Home</div> },
+        { path: "/profile", element: <div>Profile</div> },
+        { path: "/signup/cms/confirm", element: <CMSConfirmation /> },
       ],
       {
         initialEntries: [{ pathname: "/signup/cms/confirm", search: query }],
@@ -42,10 +28,7 @@ describe("CMSConfirmation", () => {
       await waitForElementToBeRemoved(() => screen.getByLabelText("three-dots-loading"));
     }
 
-    return {
-      ...rendered,
-      user,
-    };
+    return { ...rendered, user };
   };
 
   it("should navigate to / if userDetails or role param is missing", async () => {
@@ -72,7 +55,6 @@ describe("CMSConfirmation", () => {
   });
 
   it("should submit and redirect to /profile", async () => {
-    mockedServer.use(successApiSubmitRoleRequestsHandler);
     const { user } = await setup();
 
     await user.click(screen.getByRole("button", { name: "Submit" }));

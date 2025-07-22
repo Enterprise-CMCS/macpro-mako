@@ -99,8 +99,8 @@ export const featureFlags = {
    *  Toggle visibility between new and old user role UI's
    */
   SHOW_USER_ROLE_UPDATE: {
-    flag: "show-user-role-updates-invalid", //temp short circuit since i dont have permmissions to change the flag
-    defaultValue: true,
+    flag: "show-user-role-updates",
+    defaultValue: false,
   },
   /*
    *  Toggle visibility between the new and upgrade faq labels
