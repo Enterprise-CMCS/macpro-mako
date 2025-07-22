@@ -234,11 +234,8 @@ export const MyProfile = () => {
             role={userRoleMap[userDetails?.role]}
             email={userDetails?.email}
             allowEdits
-            groupDivision={
-              currentRoleObj && currentRoleObj.group
-                ? `${currentRoleObj?.group}/${currentRoleObj?.division}`
-                : null
-            }
+            group={currentRoleObj?.group}
+            division={currentRoleObj?.division}
           />
           <div className="flex flex-col gap-6 md:basis-1/2">
             {/* Status/State Access Management Section */}

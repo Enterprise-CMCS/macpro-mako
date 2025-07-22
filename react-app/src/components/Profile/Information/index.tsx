@@ -1,11 +1,12 @@
-import { LucidePencil } from "lucide-react";
-
 import { useFeatureFlag } from "@/hooks/useFeatureFlag";
+
+import { EditableGroupAndDivision } from "./EditableGroupAndDivision";
 export type UserInformationProps = {
   fullName: string;
   role: string;
   email: string;
-  groupDivision?: string;
+  group?: string;
+  division?: string;
   allowEdits?: boolean;
 };
 
@@ -13,7 +14,8 @@ export const UserInformation = ({
   fullName,
   role,
   email,
-  groupDivision,
+  group,
+  division,
   allowEdits,
 }: UserInformationProps) => {
   const isNewUserRoleDisplay = useFeatureFlag("SHOW_USER_ROLE_UPDATE");
@@ -41,14 +43,12 @@ export const UserInformation = ({
         <p>{email}</p>
       </div>
 
-      {isNewUserRoleDisplay && groupDivision && (
-        <div className="leading-9">
-          <h3 className="font-bold flex items-center cursor-pointer">
-            Group & Division {allowEdits && <LucidePencil className="ml-1 w-5" />}
-          </h3>
-          <p>{groupDivision}</p>
-        </div>
-      )}
+      <EditableGroupAndDivision
+        group={group}
+        division={division}
+        email={email}
+        allowEdits={allowEdits}
+      />
     </div>
   );
 };

@@ -76,11 +76,8 @@ export const UserProfile = () => {
             fullName={userDetails?.fullName || "Unknown"}
             role={userRoleMap[userDetails?.role]}
             email={userDetails?.email}
-            groupDivision={
-              currentRoleObj && currentRoleObj.group
-                ? `${currentRoleObj?.group}/${currentRoleObj?.division}`
-                : null
-            }
+            group={currentRoleObj?.group}
+            division={currentRoleObj?.division}
           />
           <div className="flex flex-col gap-6 md:basis-1/2">
             <div>
