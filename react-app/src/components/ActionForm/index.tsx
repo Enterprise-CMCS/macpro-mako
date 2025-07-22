@@ -147,7 +147,6 @@ export const ActionForm = <Schema extends SchemaWithEnforcableProps>({
       sendGAEvent("submit_page_open", { submission_type: submissionType ? submissionType : title });
     }
   }, [title]);
-
   const navigate = useNavigate();
   const { data: userObj, isLoading: isUserLoading } = useGetUser();
 
