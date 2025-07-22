@@ -20,9 +20,14 @@ import { Option } from "@/components/Opensearch/main/Filtering/Drawer/Filterable
 import { FilterableSelect } from "@/components/Opensearch/main/Filtering/Drawer/Filterable";
 import { useAvailableStates } from "@/hooks/useAvailableStates";
 import { useFeatureFlag } from "@/hooks/useFeatureFlag";
-import { convertStateAbbrToFullName } from "@/utils";
 
-import { filterRoleStatus, hasPendingRequests, orderRoleStatus, stateAccessRoles } from "../utils";
+import {
+  filterRoleStatus,
+  getConfirmationModalText,
+  hasPendingRequests,
+  orderRoleStatus,
+  stateAccessRoles,
+} from "../utils";
 
 export const MyProfile = () => {
   const { data: userDetails, isLoading: isDetailLoading } = useGetUserDetails();
@@ -37,6 +42,7 @@ export const MyProfile = () => {
 
   const { mutateAsync: submitRequest, isLoading: areRolesLoading } = useSubmitRoleRequests();
   const [selfRevokeState, setSelfRevokeState] = useState<StateCode | null>(null);
+  const [selfWithdrawPending, setSelfWithdrawPending] = useState<boolean>(false);
   const [showAddState, setShowAddState] = useState<boolean>(true);
   const [requestedStates, setRequestedStates] = useState<StateCode[]>([]);
   const [pendingRequests, setPendingRequests] = useState<boolean>(false);
@@ -187,6 +193,31 @@ export const MyProfile = () => {
       window.scrollTo(0, 0);
     }
   };
+
+  const handleRoleStatusClick = (status: string, territory: StateCode) => {
+    if (status === "pending" && isNewUserRoleDisplay) return setSelfWithdrawPending(true);
+    return setSelfRevokeState(territory);
+  };
+
+  const { dialogTitle, dialogBody, ariaLabelledBy } = getConfirmationModalText(
+    selfRevokeState,
+    selfWithdrawPending,
+  );
+
+  const handleDialogOnAccept = async () => {
+    if (selfRevokeState) await handleSelfRevokeAccess();
+    else {
+      // TODO: add in the logic to remove pending request move state change into that function
+      console.log("Withdraw pending request");
+      setSelfWithdrawPending(false);
+    }
+  };
+
+  const handleDialogOnCancel = () => {
+    setSelfRevokeState(null);
+    setSelfWithdrawPending(false);
+  };
+
   const showAllStateAccess = isNewUserRoleDisplay
     ? true
     : stateAccessRoles.includes(userDetails?.role);
@@ -226,20 +257,22 @@ export const MyProfile = () => {
                 )}
                 {/* TODO: Get state system admin for that state */}
                 <ConfirmationDialog
-                  open={selfRevokeState !== null}
-                  title="Withdraw State Access?"
-                  body={`This action cannot be undone. ${convertStateAbbrToFullName(selfRevokeState)} State System Admin will be notified.`}
+                  open={selfRevokeState !== null || selfWithdrawPending}
+                  title={dialogTitle}
+                  body={dialogBody}
                   acceptButtonText="Confirm"
-                  aria-labelledby="Self Revoke Access Modal"
-                  onAccept={handleSelfRevokeAccess}
-                  onCancel={() => setSelfRevokeState(null)}
+                  aria-labelledby={ariaLabelledBy}
+                  onAccept={handleDialogOnAccept}
+                  onCancel={handleDialogOnCancel}
                 />
                 {orderedRoleStatus?.map((access) => (
                   <RoleStatusCard
                     key={`${access.territory}-${access.role}`}
                     access={access}
                     role={userDetails.role}
-                    onClick={() => setSelfRevokeState(access.territory as StateCode)}
+                    onClick={() =>
+                      handleRoleStatusClick(access.status, access.territory as StateCode)
+                    }
                   />
                 ))}
                 {isNewUserRoleDisplay && !hideAddRoleButton ? (

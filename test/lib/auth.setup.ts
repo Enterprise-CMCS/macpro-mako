@@ -55,6 +55,7 @@ export async function generateAuthFile({
 
   await expect(page).toHaveURL(/dashboard/);
   await context.storageState({ path: storagePath });
+  console.log(`base url: ${baseURL}`);
   console.log(`${storagePath} written`);
 
   await browser.close();
