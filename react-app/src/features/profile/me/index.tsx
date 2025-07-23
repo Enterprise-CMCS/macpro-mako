@@ -55,11 +55,6 @@ export const MyProfile = () => {
     return orderRoleStatus(filteredRoleStatus);
   }, [userDetails, userProfile, isNewUserRoleDisplay]);
 
-  const currentRoleObj = useMemo(() => {
-    if (!userProfile || !userProfile.stateAccess) return { group: null, division: null };
-    return userProfile?.stateAccess.find((x) => x.role === userDetails.role);
-  }, [userProfile, userDetails]);
-
   const hideAddRoleButton = useMemo(() => {
     if (!userProfile || !userProfile.stateAccess) return true;
 
@@ -234,8 +229,8 @@ export const MyProfile = () => {
             role={userRoleMap[userDetails?.role]}
             email={userDetails?.email}
             allowEdits
-            group={currentRoleObj?.group}
-            division={currentRoleObj?.division}
+            group={userDetails.group}
+            division={userDetails.division}
           />
           <div className="flex flex-col gap-6 md:basis-1/2">
             {/* Status/State Access Management Section */}

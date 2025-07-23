@@ -214,7 +214,7 @@ export const EditableGroupAndDivision = ({
       });
     },
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["user-profile"] });
+      queryClient.invalidateQueries({ queryKey: ["userDetails"] });
       setIsDialogOpen(false);
     },
   });

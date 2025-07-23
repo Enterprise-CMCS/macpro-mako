@@ -28,16 +28,18 @@ export const submitGroupDivision = async (event: APIGatewayEvent) => {
       });
     }
 
+    const { fullName, email, id } = userInfo;
+
     await produceMessage(
       topicName,
       userInfo.id,
       JSON.stringify({
-        id: userInfo.id,
-        eventType: "user-info",
-        email: userInfo.email,
+        id,
+        email,
         group,
         division,
-        fullName: userInfo.fullName,
+        fullName,
+        eventType: "user-info",
       }),
     );
 
