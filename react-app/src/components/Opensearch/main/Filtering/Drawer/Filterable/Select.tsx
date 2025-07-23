@@ -1,3 +1,4 @@
+import { type FC } from "react";
 import Select from "react-select";
 
 export interface Option {
@@ -8,23 +9,14 @@ export interface Option {
   readonly isDisabled?: boolean;
 }
 
-export type FilterableSelectProps = {
+export const FilterableSelect: FC<{
   options: Option[];
   value: string[];
   placeholder?: string;
   onChange: (values: string[]) => void;
   selectedDisplay?: keyof Option;
   ariaLabel?: string;
-};
-
-export const FilterableSelect = ({
-  options,
-  value,
-  placeholder,
-  onChange,
-  selectedDisplay,
-  ariaLabel,
-}: FilterableSelectProps) => {
+}> = ({ options, value, placeholder, onChange, selectedDisplay = "value", ariaLabel }) => {
   const getLabel = (value) => {
     if (selectedDisplay !== "label") return value;
     const selected = options.filter((option: Option) => option.value === value) as Option[];
