@@ -32,6 +32,7 @@ export const submitGroupDivision = async (event: APIGatewayEvent) => {
       topicName,
       userInfo.id,
       JSON.stringify({
+        id: userInfo.id,
         eventType: "user-info",
         email: userInfo.email,
         group,
