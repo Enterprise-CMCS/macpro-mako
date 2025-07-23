@@ -3,6 +3,7 @@ import { useState } from "react";
 import { Link, useNavigate } from "react-router";
 
 import { Button, RadioGroup, RadioGroupItem } from "@/components";
+import { sendGAEvent } from "@/utils/ReactGA/SendGAEvent";
 
 export const PackageSearch = () => {
   const [searchText, setSearchText] = useState("");
@@ -20,6 +21,13 @@ export const PackageSearch = () => {
       }),
     );
     navigate(`/dashboard?os=${compressedValue}`);
+    sendGAEvent("home_search_text", null);
+  };
+
+  const triggerGAEvent = (eventType, option) => {
+    sendGAEvent(eventType, {
+      option: option,
+    });
   };
 
   return (
@@ -30,7 +38,10 @@ export const PackageSearch = () => {
       </p>
       <RadioGroup
         value={tabChoice}
-        onValueChange={(e) => setTabChoice(e)}
+        onValueChange={(e) => {
+          setTabChoice(e);
+          triggerGAEvent("home_search_radio", e);
+        }}
         className="flex space-x-4"
       >
         <div className="flex space-x-2">

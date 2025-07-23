@@ -31,13 +31,7 @@ export const baseSchema = z.object({
     }),
   }),
   additionalInformation: z.string().max(4000).nullable().default(null).optional(),
-  waiverNumber: z
-    .string()
-    .min(1, { message: "Required" })
-    .refine((id) => /^[A-Z]{2}-\d{4,5}\.R\d{2}\.\d{2}$/.test(id), {
-      message:
-        "The approved 1915(b) Initial or Renewal Number must be in the format of SS-####.R##.## or SS-#####.R##.##.",
-    }),
+  waiverNumber: z.string().min(1, { message: "Required" }),
 });
 
 export const schema = baseSchema.merge(ammendSchema);

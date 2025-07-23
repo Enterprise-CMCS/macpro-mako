@@ -2,6 +2,8 @@ import { useQuery } from "@tanstack/react-query";
 import { API } from "aws-amplify";
 import { StateCode } from "shared-types";
 
+import { sendGAEvent } from "@/utils/ReactGA/SendGAEvent";
+
 export type Approver = { email: string; fullName: string; territory: StateCode | "N/A" };
 type ApproverRaw = {
   role: string;
@@ -84,6 +86,9 @@ export const getUserProfile = async (userEmail?: string): Promise<OneMacUserProf
       stateAccess: stateAccessWithApprovers,
     } as OneMacUserProfile;
   } catch (e) {
+    sendGAEvent("api_error", {
+      message: "failure /getUserDetails",
+    });
     console.error("Error in getUserProfile:", e);
     return {};
   }
