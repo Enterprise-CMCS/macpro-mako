@@ -76,7 +76,7 @@ export const RenewalForm = () => {
                     What is my 1915(b) Waiver Renewal Number?
                   </Link>
                 </div>
-                <p className="text-neutral-500">
+                <p className="text-neutral-500" id="waiver-number-format">
                   The Waiver Number must be in the format of SS-####.R##.00 or SS-#####.R##.00. For
                   renewals, the {"'R##'"} starts with {" 'R01'"} and ascends.
                 </p>
@@ -85,6 +85,7 @@ export const RenewalForm = () => {
                     ref={field.ref}
                     value={field.value}
                     onChange={(e) => field.onChange(e.currentTarget.value.toUpperCase())}
+                    aria-describedby="waiver-number-format"
                   />
                 </FormControl>
                 <FormMessage />
