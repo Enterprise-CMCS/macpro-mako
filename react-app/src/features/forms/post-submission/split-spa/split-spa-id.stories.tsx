@@ -4,7 +4,7 @@ import { fn } from "storybook/test";
 import { SplitSpaId } from "./split-spa-id";
 
 const meta = {
-  title: "Component/SplitSpa",
+  title: "Component/SplitSpaId",
   component: SplitSpaId,
   args: { onValueChange: fn() },
 } satisfies Meta<typeof SplitSpaId>;
