@@ -10,25 +10,19 @@ import {
   banner,
   Button,
   CardWithTopBorder,
-  ConfirmationDialog,
   GroupAndDivision,
   LoadingSpinner,
   RoleStatusCard,
   SubNavHeader,
   UserInformation,
+  WithdrawRoleModal,
 } from "@/components";
 import { Option } from "@/components/Opensearch/main/Filtering/Drawer/Filterable";
 import { FilterableSelect } from "@/components/Opensearch/main/Filtering/Drawer/Filterable";
 import { useAvailableStates } from "@/hooks/useAvailableStates";
 import { useFeatureFlag } from "@/hooks/useFeatureFlag";
 
-import {
-  filterRoleStatus,
-  getConfirmationModalText,
-  hasPendingRequests,
-  orderRoleStatus,
-  stateAccessRoles,
-} from "../utils";
+import { filterRoleStatus, hasPendingRequests, orderRoleStatus, stateAccessRoles } from "../utils";
 
 export interface SelfRevokeAcess extends StateAccess {
   isNewUserRoleDisplay: boolean;
@@ -203,9 +197,6 @@ export const MyProfile = () => {
     setSelfRevokeRole({ isNewUserRoleDisplay, ...access });
   };
 
-  const { dialogTitle, dialogBody, ariaLabelledBy, dialogConfirm } =
-    getConfirmationModalText(selfRevokeRole);
-
   const handleDialogOnAccept = async () => {
     if (
       !selfRevokeRole.isNewUserRoleDisplay ||
@@ -261,12 +252,9 @@ export const MyProfile = () => {
                   </h2>
                 )}
                 {/* TODO: Get state system admin for that state */}
-                <ConfirmationDialog
+                <WithdrawRoleModal
                   open={selfRevokeRole !== null}
-                  title={dialogTitle}
-                  body={dialogBody}
-                  acceptButtonText={dialogConfirm}
-                  aria-labelledby={ariaLabelledBy}
+                  selfRevokeRole={selfRevokeRole}
                   onAccept={handleDialogOnAccept}
                   onCancel={() => setSelfRevokeRole(null)}
                 />
