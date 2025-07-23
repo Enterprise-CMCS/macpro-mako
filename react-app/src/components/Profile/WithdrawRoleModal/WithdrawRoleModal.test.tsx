@@ -1,5 +1,6 @@
 import { render, screen } from "@testing-library/react";
 import React from "react";
+import { vi } from "vitest";
 
 import { SelfRevokeAcess } from "@/features";
 
@@ -15,8 +16,8 @@ const BaseRoleAccess: Partial<SelfRevokeAcess> = {
 
 const defaultProps = {
   open: true,
-  onAccept: jest.fn(),
-  onCancel: jest.fn(),
+  onAccept: vi.fn(),
+  onCancel: vi.fn(),
 };
 
 describe("WithdrawRoleModal", () => {
