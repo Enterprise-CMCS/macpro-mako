@@ -58,9 +58,9 @@ test.describe("User Profile", { tag: ["@smprod"] }, () => {
     test("navigate to Role change page", async ({ page }) => {
       await page.getByRole("menuitem", { name: "Request a Role Change" }).click();
 
-      await expect(page.getByRole("heading", { name: "Registration: User Role" })).toBeVisible();
-      await expect(page.getByRole("heading", { name: "Registration: User Role" })).toHaveText(
-        "Registration: User Role",
+      await expect(page.getByRole("heading", { name: "Select A Role" })).toBeVisible();
+      await expect(page.getByRole("heading", { name: "Select A Role" })).toHaveText(
+        "Select A Role",
       );
 
       await expect(page.getByTestId("card-inner-wrapper")).toBeVisible();
