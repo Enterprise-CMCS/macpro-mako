@@ -1,10 +1,10 @@
 import { PlusIcon } from "lucide-react";
 import { useEffect, useMemo, useState } from "react";
-import { Navigate } from "react-router";
+import { Navigate, useNavigate } from "react-router";
 import { StateCode } from "shared-types";
-import { userRoleMap } from "shared-utils";
+import { isStateUser, userRoleMap } from "shared-utils";
 
-import { useGetUserDetails, useGetUserProfile, useSubmitRoleRequests } from "@/api";
+import { useGetUser, useGetUserDetails, useGetUserProfile, useSubmitRoleRequests } from "@/api";
 import {
   banner,
   Button,
@@ -30,7 +30,9 @@ import {
 } from "../utils";
 
 export const MyProfile = () => {
+  const navigate = useNavigate();
   const { data: userDetails, isLoading: isDetailLoading } = useGetUserDetails();
+  const { data: user } = useGetUser();
   const {
     data: userProfile,
     isLoading: isProfileLoading,
@@ -278,6 +280,9 @@ export const MyProfile = () => {
                   <Button
                     className="w-full border-dashed p-10 text-black font-normal"
                     variant="outline"
+                    onClick={() =>
+                      isStateUser(user.user) ? navigate("/signup/state") : navigate("/signup")
+                    }
                   >
                     Add another user role <PlusIcon className="ml-3" />
                   </Button>

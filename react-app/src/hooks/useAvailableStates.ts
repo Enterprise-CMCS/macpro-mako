@@ -1,26 +1,33 @@
 import { useMemo } from "react";
-import { FULL_CENSUS_STATES } from "shared-types";
+import { FULL_CENSUS_STATES, STATE_ROLES } from "shared-types";
 import { UserRole } from "shared-types/events/legacy-user";
 
 import { StateAccess } from "@/api";
 
-// Get available states for the role to be requested
-// eslint-disable-next-line prettier/prettier
-export function useAvailableStates(roleToRequest: UserRole, stateAccessList: StateAccess[] | undefined) {
+import { useFeatureFlag } from "./useFeatureFlag";
+import { useStateAccessMap } from "./useStateAccessMap";
+
+export function useAvailableStates(
+  roleToRequest: UserRole,
+  stateAccessList: StateAccess[] | undefined,
+) {
+  const isNewUserRoleDisplay = useFeatureFlag("SHOW_USER_ROLE_UPDATE");
+  const stateAccessMap = useStateAccessMap(stateAccessList ?? []);
   return useMemo(() => {
     if (!stateAccessList) {
       return FULL_CENSUS_STATES.map(({ label, value }) => ({ label, value }));
     }
 
-    const validAccess = stateAccessList.filter(
-      ({ role, territory }) => role === roleToRequest && territory !== "ZZ",
-    );
-    const accessedStates = new Set(validAccess.map(({ territory }) => territory));
+    return FULL_CENSUS_STATES.filter(({ value }) => {
+      const assignedRoles = stateAccessMap[value] ?? new Set();
 
-    const availableStates = FULL_CENSUS_STATES.filter(
-      ({ value }) => !accessedStates.has(value) && value !== "ZZ",
-    ).map(({ label, value }) => ({ label, value }));
+      // Show states user doesn't have access to for role being requested
+      if (!isNewUserRoleDisplay) {
+        return !assignedRoles.has(roleToRequest);
+      }
 
-    return availableStates;
-  }, [roleToRequest, stateAccessList]);
+      // Check if user has all possible roles for this state
+      return !STATE_ROLES.every((role) => assignedRoles.has(role));
+    }).map(({ label, value }) => ({ label, value }));
+  }, [roleToRequest, stateAccessList, stateAccessMap, isNewUserRoleDisplay]);
 }

@@ -11,7 +11,7 @@ import { userProfileLoader } from "@/features/profile/user";
 import { SignUp } from "@/features/sign-up/sign-up";
 import { queryClient } from "@/utils";
 
-import { CMSSignup, StateSignup } from "./features/sign-up";
+import { CMSSignup, StateRoleSignup, StateRoleSignupSubmit, StateSignup } from "./features/sign-up";
 import { RoleAwareTracker } from "./utils/ReactGA/RoleAwareTracker";
 
 const RoutesWithTimeout = () => (
@@ -50,8 +50,9 @@ export const router = (loginFlag = false) => {
               path: "/signup",
               element: <SignUp />,
             },
-            // { path: "/signup/state", element: <StateSignup /> },
             { path: "/signup/state", element: <StateSignup /> },
+            { path: "/signup/state/role", element: <StateRoleSignup /> },
+            { path: "/signup/state/role/submit", element: <StateRoleSignupSubmit /> },
             { path: "/signup/cms", element: <CMSSignup /> },
             {
               path: "/dashboard",

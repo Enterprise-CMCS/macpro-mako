@@ -1,6 +1,7 @@
 import { useQuery } from "@tanstack/react-query";
 import { API } from "aws-amplify";
 import { StateCode } from "shared-types";
+import { UserRole } from "shared-types/events/legacy-user";
 
 import { sendGAEvent } from "@/utils/ReactGA/SendGAEvent";
 
@@ -18,7 +19,7 @@ export type StateAccess = {
   doneByEmail: string;
   doneByName: string;
   status: string;
-  role: string;
+  role: UserRole;
   territory: string;
   approverList?: Approver[];
   group?: string;

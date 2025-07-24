@@ -33,7 +33,6 @@ export const SignUp = () => {
       rolesWhoCanView: ["statesubmitter", "norole"],
       link: "/signup/state?role=statesystemadmin",
     },
-    // TODO: Get language from HCD/CMS. This used to be "CMS Reviewer" in legacy
     {
       key: "defaultcmsuser",
       title: "CMS Read-only",
