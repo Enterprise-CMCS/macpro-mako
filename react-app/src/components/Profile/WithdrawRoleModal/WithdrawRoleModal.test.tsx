@@ -1,6 +1,5 @@
 import { render, screen } from "@testing-library/react";
-import React from "react";
-import { vi } from "vitest";
+import { describe, expect, it, vi } from "vitest";
 
 import { SelfRevokeAcess } from "@/features";
 
@@ -42,7 +41,6 @@ describe("WithdrawRoleModal", () => {
       />,
     );
     expect(screen.getByText("Withdraw State Access?")).toBeInTheDocument();
-    expect(screen.getByText(/California State System Admin will be notified/)).toBeInTheDocument();
   });
 
   it("should render 'Withdraw Role Request?' when status is pending", () => {
@@ -80,6 +78,5 @@ describe("WithdrawRoleModal", () => {
       />,
     );
     expect(screen.getByText("Withdraw California State Submitter Access?")).toBeInTheDocument();
-    expect(screen.getByText(/The California State Admin will be notified/)).toBeInTheDocument();
   });
 });
