@@ -37,11 +37,7 @@ export const handler = authenticatedMiddy({
 
     const userInfo = await getUserByEmail(lookupEmail);
 
-    if (!userInfo) {
-      throw new Error("User is undefined");
-    }
-
-    if (userInfo === null) {
+    if (!userInfo || userInfo === null) {
       throw createError(
         404,
         JSON.stringify({ message: `User with email ${userEmail} not found.` }),
