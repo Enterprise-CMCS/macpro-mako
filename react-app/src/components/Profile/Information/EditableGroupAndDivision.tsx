@@ -6,6 +6,7 @@ import { useEffect, useMemo, useState } from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 
+import { UserDetails } from "@/api";
 import {
   Button,
   Dialog,
@@ -86,10 +87,16 @@ const GroupAndDivisionForm = ({
     }
   };
 
+  const handleInteractOutside = (event: Event) => {
+    if (isGroupSelectOpen || isDivisionSelectOpen) {
+      event.preventDefault();
+    }
+  };
+
   const isButtonDisabled = !selectedGroup || !selectedDivision;
 
   return (
-    <DialogContent onEscapeKeyDown={handleEscapeKeyDown}>
+    <DialogContent onEscapeKeyDown={handleEscapeKeyDown} onInteractOutside={handleInteractOutside}>
       <DialogHeader>
         <DialogTitle>Select your Group and Division</DialogTitle>
       </DialogHeader>
@@ -115,7 +122,7 @@ const GroupAndDivisionForm = ({
                   onOpenChange={setIsGroupSelectOpen}
                 >
                   <FormControl>
-                    <SelectTrigger>
+                    <SelectTrigger data-testid="group-select">
                       <SelectValue placeholder="Select a group" />
                     </SelectTrigger>
                   </FormControl>
@@ -148,7 +155,7 @@ const GroupAndDivisionForm = ({
                   disabled={!selectedGroup || availableDivisions.length === 0}
                 >
                   <FormControl>
-                    <SelectTrigger>
+                    <SelectTrigger data-testid="division-select">
                       <SelectValue placeholder="Select a division" />
                     </SelectTrigger>
                   </FormControl>
@@ -201,7 +208,7 @@ export const EditableGroupAndDivision = ({
   email,
 }: EditableGroupAndDivisionProps) => {
   const [isDialogOpen, setIsDialogOpen] = useState(false);
-  const [formKey, setFormKey] = useState(0);
+
   const queryClient = useQueryClient();
 
   const { mutate: submitGroupDivision } = useMutation({
@@ -213,14 +220,32 @@ export const EditableGroupAndDivision = ({
         },
       });
     },
+    onMutate: async (newData) => {
+      await queryClient.cancelQueries({ queryKey: ["userDetails"] });
+      const previousUserDetails = queryClient.getQueryData(["userDetails"]);
+
+      if (previousUserDetails) {
+        queryClient.setQueryData(["userDetails"], (old: UserDetails) => ({
+          ...old,
+          group: newData.group,
+          division: newData.division,
+        }));
+      }
+
+      return { previousUserDetails };
+    },
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["userDetails"] });
+      setIsDialogOpen(false);
+    },
+    onError: (_err, _newData, context) => {
+      if (context?.previousUserDetails) {
+        queryClient.setQueryData(["userDetails"], context.previousUserDetails);
+      }
       setIsDialogOpen(false);
     },
   });
 
   const handleOpenDialog = () => {
-    setFormKey((prevKey) => prevKey + 1);
     setIsDialogOpen(true);
   };
 
@@ -255,7 +280,7 @@ export const EditableGroupAndDivision = ({
 
       <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
         <GroupAndDivisionForm
-          key={formKey}
+          key={String(isDialogOpen)}
           group={group}
           division={division}
           onSubmit={handleSubmit}
