@@ -33,7 +33,7 @@ export const PackageActionsCard = ({ submission, id }: PackageActionsCardProps) 
     <div className="my-3 sm:text-nowrap sm:min-w-min">
       <ul className="my-3">
         {data.actions.map((type, idx) => (
-          <li className="py-2">
+          <li className="py-2" key={`${type}-${idx}`}>
             <Link
               key={`${idx}-${type}`}
               state={{

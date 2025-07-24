@@ -1,0 +1,33 @@
+{
+  "describe": {
+    "scope": "javascript, typescript",
+    "prefix": "pw_describe",
+    "body": [
+      "import { expect, test } from \"@playwright/test\";",
+      "import path from \"path\";",
+      "",
+      "import { envRoleUsers } from \"@/lib/envRoleUsers\";",
+      "",
+      "// add page objects here",
+      "$1",
+      "",
+      "const ENV = process.env.PW_ENV || \"${2:local}\";",
+      "const users = envRoleUsers[ENV];",
+      "",
+      "for (const [role, user] of Object.entries(users)) {",
+        "\tif (!user.capabilities.includes(\"${3:capabilityString}\")) continue;",
+        "",
+        "\ttest.describe(\"${4:page/capability under test}\", () => {",
+        "\t\ttest.use({",
+        "\t\t\tstorageState: path.resolve(`.auth/${$ENV}/${$role}.json`),",
+        "\t\t});\n",
+        "\t\ttest.describe(`${$role} test description`, () => {",
+        "\t\t\t// new tests go here",
+        "\t\t\t$0",
+        "\t\t});",
+        "\t});",
+      "}\n",
+    ],
+    "description": "This snippet is used to quickly scaffold env, role, and capability based playwright tests for OneMAC."
+  },
+}
