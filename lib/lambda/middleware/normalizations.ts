@@ -5,15 +5,15 @@ import { validateEnvVariable } from "shared-utils";
 export type NormalizeEventOptions = {
   opensearch?: boolean;
   kafka?: boolean;
-  disableCors?: boolean;
   body?: boolean;
+  disableCors?: boolean;
 };
 
 const defaults: NormalizeEventOptions = {
   opensearch: false,
   kafka: false,
-  disableCors: false,
   body: true,
+  disableCors: false,
 };
 
 /**
@@ -21,13 +21,18 @@ const defaults: NormalizeEventOptions = {
  *
  * *Before handler*: performs normalizations and validations on the event, including:
  * - (optionally) validates that the opensearch environment variables are set, if the opensearch option is true
- * - validates that the event has a body
+ * - (optionally) validates that the kafka environment variables are set, if the kafka option is true
+ * - validates that the event has a body, unless the body option is false
  * - adds `"Content-Type": "application/json"` to the headers, if it is missing, this is required to use the `httpJsonBodyParser` middleware
  *
+ *
  * *After handler*: adds the CORS headers to the response, unless the disableCors option is true
+ *
+ *
  * @param {object} opts Options for running the middleware
  * @param {boolean} opts.opensearch [false] if true, validate opensearch environment variables
  * @param {boolean} opts.kafka [false] if true, validate kafka topic name environment variable
+ * @param {boolean} opts.body [true] if false, skips validating the event body
  * @param {boolean} opts.disableCors [false] if true, disable the CORS headers on the response
  * @returns {MiddlewareObj} middleware with the input and output normalizations
  */
