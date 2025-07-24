@@ -1,4 +1,5 @@
 import type { Meta, StoryObj } from "@storybook/react-vite";
+import { TEST_STATE_SUBMITTER_USERNAME } from "mocks";
 
 import { withQueryClientAndMemoryRouter } from "../../../../../.storybook/decorators";
 import { SplitSpaForm } from "./index";
@@ -25,6 +26,7 @@ const meta = {
     routeOptions: {
       initialEntries: ["/test/42/Medicaid SPA"],
     },
+    username: TEST_STATE_SUBMITTER_USERNAME,
   },
 } satisfies Meta<typeof SplitSpaForm>;
 

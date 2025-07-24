@@ -1,5 +1,5 @@
 import type { Preview } from "@storybook/react-vite";
-import { initialize } from "msw-storybook-addon";
+import { initialize, mswLoader } from "msw-storybook-addon";
 import { cognitoHandlers, defaultApiHandlers, launchDarklyHandlers } from "mocks";
 
 import "../src/index.css";
@@ -30,6 +30,8 @@ const preview: Preview = {
       test: "todo",
     },
   },
+  // Provide the MSW addon loader globally
+  loaders: [mswLoader],
 };
 
 export default preview;
