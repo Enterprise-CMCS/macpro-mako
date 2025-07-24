@@ -187,6 +187,11 @@ const defaultOSMainSearchHandler = http.post<PathParams, SearchQueryBody>(
   },
 );
 
+export const errorOSMainSearchHandler = http.post<PathParams, SearchQueryBody>(
+  "https://vpc-opensearchdomain-mock-domain.us-east-1.es.amazonaws.com/test-namespace-main/_search",
+  async () => new HttpResponse("Internal server error", { status: 500 }),
+);
+
 export const mainSearchHandlers = [
   defaultOSMainDocumentHandler,
   defaultOSMainMultiDocumentHandler,

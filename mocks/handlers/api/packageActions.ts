@@ -20,14 +20,14 @@ const defaultApiPackageActionsHandler = http.post<PathParams, PackageActionsRequ
       return HttpResponse.json({ message: "No record found for the given id" }, { status: 404 });
     }
 
-    const currUser = mockUseGetUser()?.data?.user;
-    if (!currUser) {
+    const authenticatedUser = mockUseGetUser()?.data?.user;
+    if (!authenticatedUser) {
       return HttpResponse.json({ message: "User not authenticated" }, { status: 401 });
     }
 
     const passedStateAuth =
-      isCmsWriteUser(currUser) ||
-      (item?._source?.state && currUser["custom:state"]?.includes(item._source.state));
+      isCmsWriteUser(authenticatedUser) ||
+      (item?._source?.state && authenticatedUser["custom:state"]?.includes(item._source.state));
 
     if (!passedStateAuth) {
       return HttpResponse.json(
@@ -37,7 +37,8 @@ const defaultApiPackageActionsHandler = http.post<PathParams, PackageActionsRequ
     }
 
     return HttpResponse.json({
-      actions: getAvailableActions(currUser, item._source as opensearch.main.Document) || [],
+      actions:
+        getAvailableActions(authenticatedUser, item._source as opensearch.main.Document) || [],
     });
   },
 );
@@ -50,13 +51,14 @@ export const onceApiPackageActionsHandler = (doc: opensearch.main.Document) =>
         return HttpResponse.json([]);
       }
 
-      const currUser = mockUseGetUser()?.data?.user;
-      if (!currUser) {
+      const authenticatedUser = mockUseGetUser()?.data?.user;
+      if (!authenticatedUser) {
         return HttpResponse.json({ message: "User not authenticated" }, { status: 401 });
       }
 
       const passedStateAuth =
-        isCmsWriteUser(currUser) || (doc?.state && currUser["custom:state"]?.includes(doc.state));
+        isCmsWriteUser(authenticatedUser) ||
+        (doc?.state && authenticatedUser["custom:state"]?.includes(doc.state));
 
       if (!passedStateAuth) {
         return HttpResponse.json(
@@ -66,7 +68,7 @@ export const onceApiPackageActionsHandler = (doc: opensearch.main.Document) =>
       }
 
       return HttpResponse.json({
-        actions: getAvailableActions(currUser, doc) || [],
+        actions: getAvailableActions(authenticatedUser, doc) || [],
       });
     },
     { once: true },
