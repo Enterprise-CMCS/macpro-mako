@@ -30,8 +30,9 @@ export const StateRoleSignupSubmit = () => {
   return (
     <div>
       <SubNavHeader>
+        {/* Fix styling */}
         <ChevronLeft
-          className="text-sky-700 w-8 h-8 cursor-pointer"
+          className="text-sky-700 w-7 h-7 items-center cursor-pointer"
           onClick={() => navigate(roleSelectionPath)}
         />
         <h1 className="text-xl font-medium">Submit Role Request</h1>

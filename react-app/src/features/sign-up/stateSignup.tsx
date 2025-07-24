@@ -95,7 +95,7 @@ export const StateSignup = () => {
     <div>
       <SubNavHeader>
         <h1 className="text-xl font-medium">
-          {isNewUserRoleDisplay ? "Choose States for Access" : "Registration: State Access"}
+          {isNewUserRoleDisplay ? "Choose States For Access" : "Registration: State Access"}
         </h1>
       </SubNavHeader>
       <ConfirmationDialog
@@ -175,7 +175,10 @@ export const StateSignup = () => {
                   </Button>
                 )}
                 {isLoading && <LoadingSpinner />}
-                <Button variant="outline" onClick={() => setShowModal(true)}>
+                <Button
+                  variant={isNewUserRoleDisplay ? "link" : "outline"}
+                  onClick={() => setShowModal(true)}
+                >
                   Cancel
                 </Button>
               </div>

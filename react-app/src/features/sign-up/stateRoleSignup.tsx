@@ -75,11 +75,12 @@ export const StateRoleSignup = () => {
   return (
     <div>
       <SubNavHeader>
+        {/* Fix styling */}
         <ChevronLeft
-          className="text-sky-700 w-8 h-8 cursor-pointer"
+          className="text-sky-700 w-7 h-7 items-center cursor-pointer"
           onClick={() => navigate("/signup/state")}
         />
-        <h1 className="text-xl font-medium">Select a Role</h1>
+        <h1 className="text-xl font-medium">Select A Role</h1>
       </SubNavHeader>
       <SimplePageContainer>
         {/* Fix styling */}
