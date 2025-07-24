@@ -1,3 +1,7 @@
+vi.mock("react-router", () => ({
+  useBlocker: vi.fn(),
+}));
+
 import { render } from "@testing-library/react";
 import { useBlocker } from "react-router";
 import { beforeEach, describe, expect, it, vi } from "vitest";
@@ -5,17 +9,10 @@ import { beforeEach, describe, expect, it, vi } from "vitest";
 import { userPrompt } from "@/components";
 
 import { useNavigationPrompt } from "./useNavigationPrompt";
-vi.mock("@/components", async () => {
-  return {
-    userPrompt: vi.fn(),
-  };
-});
 
-vi.mock("react-router", async () => {
-  return {
-    useBlocker: vi.fn(),
-  };
-});
+vi.mock("@/components", () => ({
+  userPrompt: vi.fn(),
+}));
 
 describe("useNavigationPrompt", () => {
   const mockProceed = vi.fn();
@@ -36,7 +33,6 @@ describe("useNavigationPrompt", () => {
       shouldBlock,
       prompt: promptProps,
     });
-
     return null;
   }
 
