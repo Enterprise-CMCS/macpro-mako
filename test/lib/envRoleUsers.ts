@@ -10,8 +10,28 @@ export const envRoleUsers: Record<string, Record<string, RoleUser>> = {
       username: "george@example.com",
       capabilities: ["dashboard", "profile", "stateCHIPSPA", "a11y"],
     },
+    submitter: {
+      username: "submitter@example.com",
+      capabilities: [],
+    },
+    stateSystemAdmin: {
+      username: "statesystemadmin.com",
+      capabilities: ["dashboard", "profile", "stateCHIPSPA"],
+    },
     cmsReviewer: {
       username: "reviewer@example.com",
+      capabilities: ["dashboard", "profile"],
+    },
+    cmsRoleApprover: {
+      username: "cmsroleapprover@example.com",
+      capabilities: ["dashboard", "profile"],
+    },
+    systemAdmin: {
+      username: "systemadmin@example.com",
+      capabilities: ["dashboard", "profile"],
+    },
+    helpDesk: {
+      username: "helpdesk@example.com",
       capabilities: ["dashboard", "profile"],
     },
   },

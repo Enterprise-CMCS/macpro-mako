@@ -1,5 +1,4 @@
 import { Request } from "@middy/core";
-import { createError } from "@middy/util";
 import { getPackageChangelog } from "libs/api/package";
 import { changelog } from "shared-types/opensearch";
 
@@ -38,15 +37,7 @@ export const fetchChangelog = (opts: FetchChangelogOptions = {}) => {
           });
         }
 
-        let changelog;
-        try {
-          changelog = await getPackageChangelog(packageResult._id, filter);
-        } catch (err) {
-          console.error(err);
-          throw createError(500, JSON.stringify({ message: "Internal server error" }), {
-            expose: true,
-          });
-        }
+        const changelog = await getPackageChangelog(packageResult._id, filter);
 
         storePackageInRequest(
           {

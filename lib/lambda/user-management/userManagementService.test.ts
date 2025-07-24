@@ -317,7 +317,7 @@ describe("User Management Service", () => {
         {
           ...roleObj?._source,
           email: OS_STATE_SUBMITTER_EMAIL,
-          fullName: OS_STATE_SUBMITTER_USER._source.fullName,
+          fullName: OS_STATE_SUBMITTER_USER._source?.fullName,
         },
       ]);
     });
@@ -332,7 +332,7 @@ describe("User Management Service", () => {
         {
           ...roleObj?._source,
           email: OS_STATE_SYSTEM_ADMIN_EMAIL,
-          fullName: OS_STATE_SYSTEM_ADMIN_USER._source.fullName,
+          fullName: OS_STATE_SYSTEM_ADMIN_USER?._source?.fullName,
         },
       ]);
     });
