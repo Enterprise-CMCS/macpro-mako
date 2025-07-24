@@ -6,8 +6,8 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "e2e": "playwright test --project=ci",
-    "e2e:ui": "playwright test --ui --project=ci",
+    "e2e": "playwright test --project=shared",
+    "e2e:ui": "playwright test --ui --project=shared",
     "e2e:local": "playwright test --project=local",
     "e2e:local:ui": "playwright test --ui --project=local"
   },

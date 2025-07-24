@@ -1,37 +1,57 @@
+import { createError } from "@middy/util";
 import { APIGatewayEvent } from "aws-lambda";
 import { produceMessage } from "libs/api/kafka";
-import { response } from "libs/handler-lib";
+import { z } from "zod";
 
+import { authenticatedMiddy, canViewUser, ContextWithAuthenticatedUser } from "../middleware";
 import { getUserByEmail } from "./userManagementService";
 
-export const submitGroupDivision = async (event: APIGatewayEvent) => {
-  try {
-    if (!event.body) {
-      return response({
-        statusCode: 400,
-        body: { message: "Event body required" },
-      });
+export const submitGroupDivisionEventSchema = z
+  .object({
+    body: z.object({
+      userEmail: z.string(),
+      group: z.string(),
+      division: z.string(),
+    }),
+  })
+  .passthrough();
+
+export type SubmitGroupDivisionEvent = APIGatewayEvent &
+  z.infer<typeof submitGroupDivisionEventSchema>;
+
+export const handler = authenticatedMiddy({
+  opensearch: true,
+  kafka: true,
+  setToContext: true,
+  eventSchema: submitGroupDivisionEventSchema,
+})
+  .use(canViewUser())
+  .handler(async (event: SubmitGroupDivisionEvent, context: ContextWithAuthenticatedUser) => {
+    const { authenticatedUser } = context;
+    const { userEmail, group, division } = event.body;
+    const lookupEmail = userEmail || authenticatedUser?.email;
+
+    if (!lookupEmail) {
+      throw new Error("Email is undefined");
     }
 
-    const topicName = process.env.topicName as string;
-    if (!topicName) {
-      throw new Error("Topic name is not defined");
-    }
+    const userInfo = await getUserByEmail(lookupEmail);
 
-    const { userEmail, group, division } = JSON.parse(event.body);
-    const userInfo = await getUserByEmail(userEmail);
+    if (!userInfo) {
+      throw new Error("User is undefined");
+    }
 
     if (userInfo === null) {
-      return response({
-        statusCode: 404,
-        body: { message: `User with email ${userEmail} not found.` },
-      });
+      throw createError(
+        404,
+        JSON.stringify({ message: `User with email ${userEmail} not found.` }),
+      );
     }
 
     const { fullName, email, id } = userInfo;
 
     await produceMessage(
-      topicName,
+      process?.env?.topicName || "",
       userInfo.id,
       JSON.stringify({
         id,
@@ -43,17 +63,8 @@ export const submitGroupDivision = async (event: APIGatewayEvent) => {
       }),
     );
 
-    return response({
+    return {
       statusCode: 200,
       body: { message: "Group and division submitted successfully." },
-    });
-  } catch (error) {
-    console.error("Error submitting group and division:", { error });
-    return response({
-      statusCode: 500,
-      body: { message: `Internal Server Error: ${error.message}` },
-    });
-  }
-};
-
-export const handler = submitGroupDivision;
+    };
+  });
