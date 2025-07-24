@@ -79,9 +79,9 @@ describe("Middleware Utils", () => {
   describe("getAuthUserFromRequest", () => {
     it("should get the user if it is stored internally", async () => {
       const request = {
-        internal: { currUser: TEST_USER },
+        internal: { authenticatedUser: TEST_USER },
         context: {},
-      } as Request & { internal: { currUser: FullUser } };
+      } as Request & { internal: { authenticatedUser: FullUser } };
       expect(await getAuthUserFromRequest(request)).toEqual(TEST_USER);
     });
 
@@ -102,7 +102,7 @@ describe("Middleware Utils", () => {
       } as Request;
       storeAuthUserInRequest(TEST_USER, request);
       expect(request).toEqual({
-        internal: { currUser: TEST_USER },
+        internal: { authenticatedUser: TEST_USER },
         context: {},
       });
     });
@@ -114,7 +114,7 @@ describe("Middleware Utils", () => {
       } as Request;
       storeAuthUserInRequest(TEST_USER, request, false);
       expect(request).toEqual({
-        internal: { currUser: TEST_USER },
+        internal: { authenticatedUser: TEST_USER },
         context: {},
       });
     });
@@ -126,8 +126,8 @@ describe("Middleware Utils", () => {
       } as Request;
       storeAuthUserInRequest(TEST_USER, request, true);
       expect(request).toEqual({
-        internal: { currUser: TEST_USER },
-        context: { currUser: TEST_USER },
+        internal: { authenticatedUser: TEST_USER },
+        context: { authenticatedUser: TEST_USER },
       });
     });
   });
