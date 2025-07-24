@@ -1,6 +1,15 @@
+import type { Preview } from "@storybook/react-vite";
+import { initialize } from "msw-storybook-addon";
+import { cognitoHandlers, defaultApiHandlers, launchDarklyHandlers } from "mocks";
+
 import "../src/index.css";
 
-import type { Preview } from "@storybook/react-vite";
+initialize(
+  {
+    onUnhandledRequest: "bypass",
+  },
+  [...cognitoHandlers, ...defaultApiHandlers, ...launchDarklyHandlers],
+);
 
 const preview: Preview = {
   // ...rest of preview
