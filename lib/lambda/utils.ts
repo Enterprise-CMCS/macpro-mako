@@ -48,6 +48,7 @@ export const calculate90dayExpiration = async (
   parsedRecord: ParseKafkaEvent,
   config: ProcessEmailConfig,
 ) => {
+  const MS_PER_DAY = 24 * 60 * 60 * 1000;
   const item = await os.getItem(config.osDomain, getOsNamespace("main"), parsedRecord.id);
   const submissionDate = item?._source.submissionDate || "";
   const submissionDateIsoString = toStartOfUTCDayISOString(submissionDate);
@@ -55,7 +56,7 @@ export const calculate90dayExpiration = async (
   const raiRequestedDate = item?._source.raiRequestedDate || "";
   // seatool calculates this date once an RAI response date is entered, this is the 90 day experiation clock of the first RAI
   const alert90DaysDate = item?._source.alert90DaysDate || "";
-  const submissionMS = new Date(submissionDateIsoString).getTime();
+  const submissionMS = new Date(submissionDateIsoString).getTime() + MS_PER_DAY;
   const raiMS = new Date(raiRequestedDate).getTime();
 
   if (!submissionDate || !raiRequestedDate) {
@@ -68,7 +69,7 @@ export const calculate90dayExpiration = async (
   //first RAI
   if (raiRequestedDate && submissionDate && !alert90DaysDate) {
     // 90 days in milliseconds
-    const MS_PER_DAY = 24 * 60 * 60 * 1000;
+
     const ninetyDays = 90 * MS_PER_DAY;
 
 
@@ -80,14 +81,14 @@ export const calculate90dayExpiration = async (
 
 
     let ninetyDayExpirationClock = submissionMS + ninetyDays + pausedDuration;
-    const holidayAdjustment = adjustPausedDurationForHolidays(
-      submissionMS,
-      raiMS,
-      now, // `now` is today at midnight
-      ninetyDayExpirationClock
-    );
-    console.log("holliday adustment: ", holidayAdjustment);
-    ninetyDayExpirationClock += holidayAdjustment;
+    // const holidayAdjustment = adjustPausedDurationForHolidays(
+    //   submissionMS,
+    //   raiMS,
+    //   now, // `now` is today at midnight
+    //   ninetyDayExpirationClock
+    // );
+    // console.log("holliday adustment: ", holidayAdjustment);
+    // ninetyDayExpirationClock += holidayAdjustment;
 
     return ninetyDayExpirationClock;
 
@@ -163,6 +164,7 @@ const adjustPausedDurationForHolidays = (
     }
 
     if (isBetweenSubmissionAndExpiration && !isDuringPausedWindow) {
+      console.log("holliday: " + holiday + "falls inside 90 day window and outside clock pause")
       additionalPause += MS_PER_DAY;
     }
   }
