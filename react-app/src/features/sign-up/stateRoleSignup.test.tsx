@@ -82,6 +82,6 @@ describe("StateRoleSignup", () => {
     expect(screen.getByText(/Select A Role/)).toBeInTheDocument();
     expect(screen.getByText("State:")).toBeInTheDocument();
     expect(screen.getByText("State Submitter")).toBeInTheDocument();
-    expect(screen.getByText("State System Administrator")).not.toBeInTheDocument();
+    expect(screen.queryByText("State System Administrator")).not.toBeInTheDocument();
   });
 });
