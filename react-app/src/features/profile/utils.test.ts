@@ -1,3 +1,4 @@
+import { UserRole } from "shared-types/events/legacy-user";
 import { describe, expect, it } from "vitest";
 
 import { filterRoleStatus, hasPendingRequests, orderRoleStatus } from "./utils";
@@ -7,7 +8,7 @@ const baseRole = {
   email: "statesubmitter@nightwatch.test",
   doneByEmail: "approver@example.com",
   doneByName: "State Approver",
-  role: "statesubmitter",
+  role: "statesubmitter" as UserRole,
   lastModifiedDate: 1744942254306,
 };
 

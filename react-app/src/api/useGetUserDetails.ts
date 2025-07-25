@@ -29,7 +29,7 @@ export const getUserDetails = async (userEmail?: string): Promise<UserDetails | 
 };
 
 export const useGetUserDetails = () =>
-  useQuery({
+  useQuery<UserDetails | null>({
     queryKey: ["userDetails"],
     queryFn: () => getUserDetails(),
   });
