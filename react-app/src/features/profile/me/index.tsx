@@ -181,6 +181,7 @@ export const MyProfile = () => {
       });
 
       setSelfRevokeRole(null);
+      await delay(500);
       await reloadUserProfile();
 
       banner({
