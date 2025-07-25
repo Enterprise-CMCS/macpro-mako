@@ -1,9 +1,11 @@
 import { ChevronLeft } from "lucide-react";
-import { useEffect, useMemo } from "react";
+import { useMemo } from "react";
 import { Navigate, useNavigate, useSearchParams } from "react-router";
+import { StateCode } from "shared-types";
 import { UserRole } from "shared-types/events/legacy-user";
+import { isStateRole } from "shared-utils";
 
-import { useGetUserDetails, useGetUserProfile } from "@/api";
+import { useGetUserDetails, useGetUserProfile, UserDetails } from "@/api";
 import {
   LoadingSpinner,
   OptionCard,
@@ -25,21 +27,17 @@ type RoleOptions = {
 export const StateRoleSignup = () => {
   const isNewUserRoleDisplay = useFeatureFlag("SHOW_USER_ROLE_UPDATE");
   const navigate = useNavigate();
-  const [searchParams] = useSearchParams();
 
-  const statesParam = searchParams.get("states");
+  const [searchParams] = useSearchParams();
+  const statesParam = searchParams.get("states") as StateCode;
+
   const statesRequested = useMemo(() => statesParam?.split(",") ?? [], [statesParam]);
 
-  const { data: userDetails } = useGetUserDetails();
+  const { data, isLoading: isUserDetailsLoading } = useGetUserDetails();
+  const userDetails = data as UserDetails | null;
   const { data: userProfile } = useGetUserProfile();
 
   const stateAccessMap = useStateAccessMap(userProfile?.stateAccess);
-
-  useEffect(() => {
-    if (!statesParam) {
-      navigate("/signup/state");
-    }
-  }, [navigate, statesParam]);
 
   const encodedStatesQuery = encodeURIComponent(statesParam ?? "");
 
@@ -48,13 +46,13 @@ export const StateRoleSignup = () => {
       key: "statesubmitter",
       title: "State Submitter",
       description: "Responsible for submitting packages",
-      link: `/signup/state/role/submit?role=statesubmitter&states=${encodedStatesQuery}`,
+      link: `/signup/state/role/confirm?role=statesubmitter&states=${encodedStatesQuery}`,
     },
     {
       key: "statesystemadmin",
       title: "State System Administrator",
       description: "Ability to approve state submitters and submit packages",
-      link: `/signup/state/role/submit?role=statesystemadmin&states=${encodedStatesQuery}`,
+      link: `/signup/state/role/confirm?role=statesystemadmin&states=${encodedStatesQuery}`,
     },
   ] satisfies RoleOptions[];
 
@@ -70,7 +68,12 @@ export const StateRoleSignup = () => {
   }, [roleOptions, statesRequested, stateAccessMap]);
 
   if (!isNewUserRoleDisplay) return <Navigate to="/signup" replace />;
-  if (!userDetails) return <LoadingSpinner />;
+  if (!statesParam) return <Navigate to="/signup/state" />;
+  if (isUserDetailsLoading) return <LoadingSpinner />;
+  if (!userDetails) return <Navigate to="/" />;
+  if (userDetails.role && !isStateRole(userDetails.role)) {
+    return <Navigate to="/profile" />;
+  }
 
   return (
     <div>
@@ -86,7 +89,7 @@ export const StateRoleSignup = () => {
         {/* Fix styling */}
         <section className="max-w-3xl mx-auto mt-8">
           <h2 className="text-xl font-bold mb-2">
-            {statesRequested.length ? "States:" : "State:"}
+            {statesRequested.length > 1 ? "States:" : "State:"}
           </h2>
           <p className="text-xl italic">
             {statesRequested.map((state) => convertStateAbbrToFullName(state)).join(", ")}

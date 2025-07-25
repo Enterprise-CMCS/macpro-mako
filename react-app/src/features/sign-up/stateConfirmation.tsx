@@ -1,6 +1,5 @@
 import { ChevronLeft } from "lucide-react";
-import { useEffect } from "react";
-import { useNavigate, useSearchParams } from "react-router";
+import { Navigate, useNavigate, useSearchParams } from "react-router";
 import { StateCode } from "shared-types";
 import { UserRole } from "shared-types/events/legacy-user";
 import { userRoleMap } from "shared-utils";
@@ -8,7 +7,7 @@ import { userRoleMap } from "shared-utils";
 import { Button, SimplePageContainer, SubNavHeader } from "@/components";
 import { convertStateAbbrToFullName } from "@/utils";
 
-export const StateRoleSignupSubmit = () => {
+export const StateConfirmation = () => {
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
 
@@ -19,13 +18,7 @@ export const StateRoleSignupSubmit = () => {
 
   const roleSelectionPath = `/signup/state/role?states=${statesParam}`;
 
-  useEffect(() => {
-    if (!roleToRequest) {
-      navigate(roleSelectionPath);
-    }
-  }, [roleToRequest, statesParam, navigate, roleSelectionPath]);
-
-  if (!roleToRequest) return null;
+  if (!roleToRequest) return <Navigate to={roleSelectionPath} />;
 
   return (
     <div>
@@ -48,10 +41,17 @@ export const StateRoleSignupSubmit = () => {
               <p className="text-xl italic">
                 {statesToRequest.map((state) => convertStateAbbrToFullName(state)).join(", ")}
               </p>
+            </div>
+            <div className="py-2">
               <h2 className="text-xl font-bold mb-2">User Role:</h2>
               <p className="text-xl italic">{userRoleMap[roleToRequest]}</p>
-              <Button className="mr-3">Submit</Button>
-              <Button variant="link">Cancel</Button>
+
+              <div className="py-4">
+                <Button className="mr-3">Submit</Button>
+                <Button variant="link" onClick={() => navigate(roleSelectionPath)}>
+                  Cancel
+                </Button>
+              </div>
             </div>
           </div>
         </div>
