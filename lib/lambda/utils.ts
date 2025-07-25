@@ -56,7 +56,7 @@ export const calculate90dayExpiration = async (
   const raiRequestedDate = item?._source.raiRequestedDate || "";
   // seatool calculates this date once an RAI response date is entered, this is the 90 day experiation clock of the first RAI
   const alert90DaysDate = item?._source.alert90DaysDate || "";
-  const submissionMS = new Date(submissionDateIsoString).getTime() + MS_PER_DAY;
+  const submissionMS = new Date(submissionDateIsoString).getTime();
   const raiMS = new Date(raiRequestedDate).getTime();
 
   if (!submissionDate || !raiRequestedDate) {
