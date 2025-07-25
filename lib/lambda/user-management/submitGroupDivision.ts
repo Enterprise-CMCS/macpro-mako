@@ -1,3 +1,4 @@
+import { createError } from "@middy/util";
 import { APIGatewayEvent } from "aws-lambda";
 import { produceMessage } from "libs/api/kafka";
 import { z } from "zod";
@@ -28,27 +29,33 @@ export const handler = authenticatedMiddy({
   .handler(async (event: SubmitGroupDivisionEvent, context: ContextWithAuthenticatedUser) => {
     const { authenticatedUser } = context;
     const { userEmail, group, division } = event.body;
-    const email = userEmail || authenticatedUser?.email;
+    const lookupEmail = userEmail || authenticatedUser?.email;
 
-    if (!email) {
+    if (!lookupEmail) {
       throw new Error("Email is undefined");
     }
 
-    const userInfo = await getUserByEmail(email);
+    const userInfo = await getUserByEmail(lookupEmail);
 
-    if (!userInfo) {
-      throw new Error("User is undefined");
+    if (!userInfo || userInfo === null) {
+      throw createError(
+        404,
+        JSON.stringify({ message: `User with email ${userEmail} not found.` }),
+      );
     }
+
+    const { fullName, email, id } = userInfo;
 
     await produceMessage(
       process?.env?.topicName || "",
       userInfo.id,
       JSON.stringify({
-        eventType: "user-info",
+        id,
         email,
         group,
         division,
-        fullName: userInfo.fullName,
+        fullName,
+        eventType: "user-info",
       }),
     );
 

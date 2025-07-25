@@ -2,7 +2,6 @@ import { http, HttpResponse, PathParams } from "msw";
 import { canRequestAccess, canUpdateAccess, getApprovingRole } from "shared-utils";
 
 import {
-  getApprovedRoleByEmailAndState,
   getFilteredRoleDocsByEmail,
   getFilteredRoleDocsByRole,
   getFilteredRoleDocsByState,
@@ -117,18 +116,26 @@ export const errorApiGetRoleRequestsHandler = http.get(
   async () => new HttpResponse("Response Error", { status: 500 }),
 );
 
-const defaultApiGetSubmitGroupDivisionHandler = http.post(
+const defaultApiGetSubmitGroupDivisionHandler = http.post<PathParams, UserProfileRequestBody>(
   "https://test-domain.execute-api.us-east-1.amazonaws.com/mocked-tests/submitGroupDivision",
-  async () => {
-    const user = getMockUser();
-    if (!user?.email) {
-      return HttpResponse.json({ message: "User not authenticated" }, { status: 401 });
+  async ({ request }) => {
+    const authenticatedUser = getMockUser();
+    if (!authenticatedUser) {
+      return new HttpResponse("User not authenticated", { status: 401 });
     }
 
-    const isRole = getApprovedRoleByEmailAndState(user.email, "N/A", "defaultcmsuser");
+    const { userEmail } = await request.json();
 
-    if (!isRole) {
-      return HttpResponse.json({ message: "User is not a default CMS user" }, { status: 403 });
+    const email = userEmail || authenticatedUser.email;
+
+    if (!email) {
+      return HttpResponse.json({ message: "Email is undefined" }, { status: 500 });
+    }
+
+    const user = osUsers[email];
+
+    if (!user) {
+      return HttpResponse.json({ message: `User with email ${email} not found.` }, { status: 404 });
     }
 
     return HttpResponse.json({ message: "Group and division submitted successfully." });

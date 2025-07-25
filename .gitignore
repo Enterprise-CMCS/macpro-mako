@@ -18,6 +18,7 @@ DS_Store
 .serverless
 ./src
 .env*
+env.json
 
 # tests
 coverage

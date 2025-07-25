@@ -10,9 +10,10 @@ import {
 } from "mocks";
 import { mockedProducer } from "mocks/helpers/kafka.utils";
 import { mockedServiceServer as mockedServer } from "mocks/server";
-import { beforeEach, describe, expect, it } from "vitest";
+import { beforeEach, describe, expect, it, vi } from "vitest";
 
 import { handler } from "./submitGroupDivision";
+import * as UserManagementService from "./userManagementService";
 
 describe("submitGroupDivision handler", () => {
   beforeEach(() => {
@@ -77,6 +78,34 @@ describe("submitGroupDivision handler", () => {
     expect(res.body).toEqual(
       JSON.stringify({ message: "Group and division submitted successfully." }),
     );
+  });
+
+  it("should return a 404 if the user is not found", async () => {
+    vi.spyOn(UserManagementService, "getUserByEmail").mockResolvedValueOnce(null);
+
+    const event = {
+      body: JSON.stringify({
+        userEmail: "test@test.com",
+        group: "Group1",
+        division: "Division1",
+      }),
+    };
+
+    const res = await handler(event, {} as Context);
+
+    expect(res.statusCode).toEqual(404);
+    expect(res.body).toEqual(
+      JSON.stringify({ message: "User with email test@test.com not found." }),
+    );
+  });
+
+  it("should return a 400 if the event body is missing", async () => {
+    const event = {};
+
+    const res = await handler(event, {} as Context);
+
+    expect(res.statusCode).toEqual(400);
+    expect(res.body).toEqual(JSON.stringify({ message: "Event body required" }));
   });
 
   it("should return a 500 if there is an error", async () => {
