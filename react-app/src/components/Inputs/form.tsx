@@ -130,8 +130,8 @@ FormDescription.displayName = "FormDescription";
 
 const FormMessage = React.forwardRef<
   HTMLParagraphElement,
-  React.HTMLAttributes<HTMLParagraphElement> & { className?: string }
->(({ className, children, ...props }, ref) => {
+  React.HTMLAttributes<HTMLParagraphElement> & { className?: string; assertive?: boolean }
+>(({ className, children, assertive, ...props }, ref) => {
   const { error, formMessageId } = useFormField();
   const body = error && !Array.isArray(error) ? String(error?.message) : children;
 
@@ -143,7 +143,8 @@ const FormMessage = React.forwardRef<
     <p
       ref={ref}
       id={formMessageId}
-      aria-live="polite"
+      role={assertive ? "alert" : null}
+      aria-live={assertive ? "assertive" : "polite"}
       className={cn("text-[0.8rem] font-medium text-destructive", className)}
       {...props}
     >
