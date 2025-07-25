@@ -145,8 +145,22 @@ const adjustPausedDurationForHolidays = (
     const isBetweenSubmissionAndExpiration =
       holidayMS > submissionMS && holidayMS <= currentNinetyDayExpirationMS;
 
+    if (holidayMS > submissionMS && holidayMS <= currentNinetyDayExpirationMS) {
+      console.log("holliday: " + holiday + "falls withinin submission date and toady")
+      console.log("holliday milliseconds: ", holidayMS);
+      console.log("submissionMS: ", submissionMS);
+      console.log("currentDay 90 day exp MS ", currentNinetyDayExpirationMS);
+    }
+
     const isDuringPausedWindow =
       holidayMS >= raiRequestedMS && holidayMS <= todayMidnightMS;
+
+    if (holidayMS >= raiRequestedMS && holidayMS <= todayMidnightMS) {
+      console.log("holliday: " + holiday + "falls within RAI window");
+      console.log("holliday milliseconds: ", holidayMS);
+      console.log("raiRequestedMS: ", raiRequestedMS);
+      console.log("todayMidnightMS ", todayMidnightMS)
+    }
 
     if (isBetweenSubmissionAndExpiration && !isDuringPausedWindow) {
       additionalPause += MS_PER_DAY;
