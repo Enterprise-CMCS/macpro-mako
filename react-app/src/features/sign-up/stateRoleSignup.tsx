@@ -5,7 +5,7 @@ import { StateCode } from "shared-types";
 import { UserRole } from "shared-types/events/legacy-user";
 import { isStateRole } from "shared-utils";
 
-import { useGetUserDetails, useGetUserProfile, UserDetails } from "@/api";
+import { useGetUserDetails, useGetUserProfile, UserDetails, useStateAccessMap } from "@/api";
 import {
   LoadingSpinner,
   OptionCard,
@@ -14,7 +14,6 @@ import {
   SubNavHeader,
 } from "@/components";
 import { useFeatureFlag } from "@/hooks/useFeatureFlag";
-import { useStateAccessMap } from "@/hooks/useStateAccessMap";
 import { convertStateAbbrToFullName } from "@/utils";
 
 type RoleOptions = {

@@ -15,7 +15,7 @@ vi.mock("@/hooks/useFeatureFlag", () => ({
 }));
 
 describe("StateRoleSignup", () => {
-  const setup = async () => {
+  const setup = async (statesListString: string) => {
     const user = userEvent.setup();
     const rendered = renderWithQueryClientAndMemoryRouter(
       <StateRoleSignup />,
@@ -37,7 +37,7 @@ describe("StateRoleSignup", () => {
         initialEntries: [
           {
             pathname: "/signup/state/role",
-            search: "?states=CA",
+            search: `?states=${statesListString}`,
           },
         ],
       },
@@ -53,25 +53,35 @@ describe("StateRoleSignup", () => {
 
   it("should navigate to / if the user is not logged in", async () => {
     setMockUsername(null);
-    await setup();
+    await setup("CA");
 
     await waitFor(() => expect(screen.getByText("Home")).toBeInTheDocument());
   });
 
   it("should navigate to /profile if the user is not a State user", async () => {
     setMockUsername(defaultCMSUser);
-    await setup();
+    await setup("CA");
 
     expect(screen.getByText("Profile")).toBeInTheDocument();
   });
 
   it("should show the available roles to request if the user selected at least one state", async () => {
     setMockUsername(osStateSystemAdmin);
-    await setup();
+    await setup("CA");
 
     expect(screen.getByText(/Select A Role/)).toBeInTheDocument();
     expect(screen.getByText("State:")).toBeInTheDocument();
     expect(screen.getByText("State Submitter")).toBeInTheDocument();
     expect(screen.getByText("State System Administrator")).toBeInTheDocument();
+  });
+
+  it("should hide role if user has existing role for all selected states ", async () => {
+    setMockUsername(osStateSystemAdmin);
+    await setup("MD");
+
+    expect(screen.getByText(/Select A Role/)).toBeInTheDocument();
+    expect(screen.getByText("State:")).toBeInTheDocument();
+    expect(screen.getByText("State Submitter")).toBeInTheDocument();
+    expect(screen.getByText("State System Administrator")).not.toBeInTheDocument();
   });
 });
