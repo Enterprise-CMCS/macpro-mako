@@ -9,7 +9,7 @@ import {
   AccordionItem,
   AccordionTrigger,
   BreadCrumbBar,
-  BreadCrumbSeperator,
+  BreadCrumbSeparator,
   ContactHelpDesk,
   ExpandCollapseBtn,
   LeftNavigation,
@@ -214,7 +214,7 @@ export const SupportPage = () => {
                     Support
                   </a>
                 </li>
-                <BreadCrumbSeperator />
+                <BreadCrumbSeparator />
                 <li className="flex items-center text-sm">Search Results</li>
               </BreadCrumbBar>
             )}
