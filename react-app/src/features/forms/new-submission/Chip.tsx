@@ -30,7 +30,7 @@ export const ChipForm = () => (
           render={({ field }) => (
             <FormItem>
               <div className="flex gap-4">
-                <FormLabel htmlFor="spa-id" className="font-semibold" data-testid="spaid-label">
+                <FormLabel className="font-semibold" data-testid="spaid-label">
                   SPA ID <RequiredIndicator />
                 </FormLabel>
                 <Link
@@ -45,11 +45,9 @@ export const ChipForm = () => (
               <SpaIdFormattingDesc />
               <FormControl>
                 <Input
-                  id="spa-id"
                   className="max-w-sm"
                   ref={field.ref}
                   value={field.value}
-                  aria-describedby="spa-id-formatting-desc"
                   onChange={(e) => field.onChange(e.currentTarget.value.toUpperCase())}
                 />
               </FormControl>
