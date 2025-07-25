@@ -4,8 +4,8 @@ import { UserRole } from "shared-types/events/legacy-user";
 
 import { StateAccess } from "@/api";
 
+import { useStateAccessMap } from "../api/useStateAccessMap";
 import { useFeatureFlag } from "./useFeatureFlag";
-import { useStateAccessMap } from "./useStateAccessMap";
 
 export function useAvailableStates(
   roleToRequest: UserRole,
