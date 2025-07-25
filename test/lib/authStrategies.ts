@@ -48,7 +48,12 @@ export const authStrategyMap: Record<string, Record<string, LoginFn>> = {
   },
   ci: {
     stateSubmitter: cognitoLogin,
+    submitter: cognitoLogin,
+    stateSystemAdmin: cognitoLogin,
     cmsReviewer: cognitoLogin,
+    cmsRoleApprover: cognitoLogin,
+    systemAdmin: cognitoLogin,
+    helpDesk: cognitoLogin,
   },
   prod: {
     stateSubmitter: mfaLogin,
