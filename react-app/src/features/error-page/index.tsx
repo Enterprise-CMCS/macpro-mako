@@ -19,7 +19,7 @@ export const ErrorPage = () => {
     setInputValue(e.target.value)
   }
   const handleButtonClick = async() => {
-    const response = await API.post("os", "/getUploadUrl", {
+    const response = await API.post("os", "/softDeletePackage", {
       body: { id: inputValue },
     });
 
