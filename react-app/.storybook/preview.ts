@@ -1,8 +1,10 @@
-import type { Preview } from "@storybook/react-vite";
-import { initialize, mswLoader } from "msw-storybook-addon";
-import { cognitoHandlers, defaultApiHandlers, launchDarklyHandlers } from "mocks";
-
 import "../src/index.css";
+
+import type { Preview } from "@storybook/react-vite";
+import { cognitoHandlers, defaultApiHandlers, launchDarklyHandlers } from "mocks";
+import { initialize, mswLoader } from "msw-storybook-addon";
+
+import { withQueryClient } from "./decorators";
 
 initialize(
   {
@@ -13,8 +15,11 @@ initialize(
 
 const preview: Preview = {
   // ...rest of preview
+  // Provide the MSW addon loader globally
+  loaders: [mswLoader],
   //👇 Enables auto-generated documentation for all stories
   tags: ["autodocs"],
+  decorators: [withQueryClient],
   parameters: {
     controls: {
       matchers: {
@@ -30,8 +35,6 @@ const preview: Preview = {
       test: "todo",
     },
   },
-  // Provide the MSW addon loader globally
-  loaders: [mswLoader],
 };
 
 export default preview;

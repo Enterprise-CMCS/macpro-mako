@@ -81,11 +81,12 @@ type ActionFormProps<Schema extends SchemaWithEnforcableProps> = {
   };
   conditionsDeterminingUserAccess?: ((user: CognitoUserAttributes | null) => boolean)[];
   breadcrumbText: string;
-  formDescription?: string;
+  formDescription?: string | React.ReactNode;
   preSubmissionMessage?: string;
   showPreSubmissionMessage?: boolean;
   areFieldsRequired?: boolean;
   showCustomFooter?: boolean;
+  showFAQFooter?: boolean;
 };
 
 export const ActionForm = <Schema extends SchemaWithEnforcableProps>({
@@ -131,6 +132,7 @@ export const ActionForm = <Schema extends SchemaWithEnforcableProps>({
   showPreSubmissionMessage = true,
   areFieldsRequired = true,
   showCustomFooter = false,
+  showFAQFooter = true,
 }: ActionFormProps<Schema>) => {
   const { id, authority } = useParams<{
     id: string;
@@ -422,7 +424,7 @@ export const ActionForm = <Schema extends SchemaWithEnforcableProps>({
           )}
         </form>
       </Form>
-      <FAQFooter />
+      {showFAQFooter && <FAQFooter />}
     </SimplePageContainer>
   );
 };

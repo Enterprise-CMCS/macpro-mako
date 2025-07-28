@@ -1,32 +1,24 @@
 import type { Meta, StoryObj } from "@storybook/react-vite";
-import { TEST_STATE_SUBMITTER_USERNAME } from "mocks";
+import { TEST_REVIEWER_USERNAME, TEST_STATE_SUBMITTER_USERNAME } from "mocks";
+import { reactRouterParameters, withRouter } from "storybook-addon-remix-react-router";
 
-import { withQueryClientAndMemoryRouter } from "../../../../../.storybook/decorators";
 import { SplitSpaForm } from "./index";
 
 const meta = {
   title: "Form/SplitSpa",
   component: SplitSpaForm,
-  decorators: [withQueryClientAndMemoryRouter],
+  render: () => <SplitSpaForm />,
+  decorators: [withRouter],
   parameters: {
-    routes: [
-      {
-        path: "/",
-        element: <h1>home</h1>,
+    reactRouter: reactRouterParameters({
+      location: {
+        pathParams: { id: "NY-23-0007", authority: "Medicaid SPA" },
       },
-      {
-        path: "/dashboard",
-        element: <h1>dashboard test</h1>,
-      },
-      {
+      routing: {
         path: "/test/:id/:authority",
-        element: <SplitSpaForm />,
       },
-    ],
-    routeOptions: {
-      initialEntries: ["/test/42/Medicaid SPA"],
-    },
-    username: TEST_STATE_SUBMITTER_USERNAME,
+    }),
+    username: TEST_REVIEWER_USERNAME,
   },
 } satisfies Meta<typeof SplitSpaForm>;
 
