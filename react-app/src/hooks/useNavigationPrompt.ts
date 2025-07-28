@@ -13,7 +13,7 @@ export function useNavigationPrompt({
   const blocker = useBlocker(shouldBlock);
 
   useEffect(() => {
-    if (blocker.state === "blocked") {
+    if (blocker?.state === "blocked") {
       userPrompt({
         ...prompt,
         onAccept: () => {
@@ -21,5 +21,5 @@ export function useNavigationPrompt({
         },
       });
     }
-  }, [blocker.state, blocker, prompt]);
+  }, [blocker?.state, blocker, prompt]);
 }

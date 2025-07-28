@@ -10,6 +10,7 @@ import { EXISTING_ITEM_PENDING_ID } from "mocks";
 import { attachmentArraySchemaOptional, SEATOOL_STATUS } from "shared-types";
 import { isCmsReadonlyUser } from "shared-utils";
 import { beforeEach, describe, expect, test, vi } from "vitest";
+import { vi } from "vitest";
 import { z } from "zod";
 
 import * as components from "@/components";
@@ -23,6 +24,15 @@ import {
 import { ActionForm } from "./index";
 const PROGRESS_REMINDER = /If you leave this page, you will lose your progress on this form./;
 const sendGAEventSpy = vi.spyOn(await import("@/utils/ReactGA/SendGAEvent"), "sendGAEvent");
+
+vi.mock("react-router", async () => {
+  const actual = await vi.importActual<any>("react-router");
+  return {
+    ...actual,
+    useBlocker: vi.fn(() => ({ state: "unblocked", proceed: vi.fn() })),
+  };
+});
+
 describe("ActionForm", () => {
   beforeEach(() => {
     setDefaultStateSubmitter();
