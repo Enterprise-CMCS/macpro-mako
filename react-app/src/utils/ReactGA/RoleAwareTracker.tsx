@@ -40,14 +40,11 @@ export function RoleAwareTracker({ children }: { children: React.ReactNode }) {
     try {
       let role: UserRole | null = null;
       if (isStateUser && !isCmsUser) {
-        console.log("first if")
         role = "state";
       } else if (isCmsUser && !isStateUser) {
-        console.log("second if")
         role = "cms";
       } else if (isStateUser && isCmsUser) {
-        console.log("third if")
-        role = "state"; 
+        role = "cms"; 
       } 
 
       if (role) {

@@ -13,7 +13,6 @@ export default function PathTracker({ children }: PathTrackerProps) {
 
   const [role, setRole] = useState<"state" | "cms" | null>(null);
 
-  // 🔹 Detect user role
   useEffect(() => {
     try {
       let detectedRole: "state" | "cms" = "state";
@@ -31,7 +30,6 @@ export default function PathTracker({ children }: PathTrackerProps) {
     }
   }, []);
 
-  // 🔹 Page view and duration tracking
   useEffect(() => {
     if (!role) return; // wait for role to be detected before tracking
 
@@ -88,7 +86,7 @@ export default function PathTracker({ children }: PathTrackerProps) {
       window.history.replaceState = origReplace;
       window.removeEventListener("popstate", onRouteChange);
     };
-  }, [role]); // ✅ depend on state `role`
+  }, [role]); 
 
   return <>{children}</>;
 }
