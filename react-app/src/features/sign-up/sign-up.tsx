@@ -1,7 +1,9 @@
+import { sub } from "date-fns";
 import { UserRole } from "shared-types/events/legacy-user";
 
 import { useGetUserDetails } from "@/api";
 import { LoadingSpinner, OptionCard, OptionFieldset, SubNavHeader } from "@/components";
+import { useFeatureFlag } from "@/hooks/useFeatureFlag";
 
 export type UserRoleWithNoRole = UserRole;
 export type RoleOptions = {
@@ -45,11 +47,20 @@ export const roleOptions = [
 ] satisfies RoleOptions[];
 
 export const SignUp = () => {
+  const isNewUserRoleDisplay = useFeatureFlag("SHOW_USER_ROLE_UPDATE");
+
   const { data: userDetails } = useGetUserDetails();
   if (!userDetails) return <LoadingSpinner />;
 
   const role = userDetails.role;
   // helpdesk, system admins, and cms reviewer users don't even see request role as an option
+
+  let subHeaderText = "Registration: User Role";
+  let optionsText = "Select the role for which you are registering";
+  if (isNewUserRoleDisplay) {
+    subHeaderText = "Select A Role";
+    optionsText = "Available Roles to add";
+  }
 
   const displayRoleOptions = roleOptions.filter((roleOption) => {
     return roleOption.rolesWhoCanView.find((validRole) => validRole === role);
@@ -58,9 +69,9 @@ export const SignUp = () => {
   return (
     <div>
       <SubNavHeader>
-        <h1 className="text-xl font-medium">Select A Role</h1>
+        <h1 className="text-xl font-medium">${subHeaderText}</h1>
       </SubNavHeader>
-      <OptionFieldset legend={"Available Roles to add"}>
+      <OptionFieldset legend={optionsText}>
         {displayRoleOptions.map((role) => (
           <OptionCard
             description={role.description}

@@ -8,7 +8,7 @@ import {
   setMockUsername,
 } from "mocks";
 import { mockedApiServer as mockedServer } from "mocks/server";
-import { describe, expect, it } from "vitest";
+import { describe, expect, it, vi } from "vitest";
 
 import { renderWithQueryClientAndMemoryRouter } from "@/utils/test-helpers";
 
@@ -109,6 +109,16 @@ describe("StateSignup", () => {
   });
 
   it("should handle cancelling the form", async () => {
+    // mock useNavigate
+    const mockNavigate = vi.fn();
+    vi.mock("react-router", async () => {
+      const actual = await vi.importActual<Record<string, unknown>>("react-router");
+      return {
+        ...actual,
+        useNavigate: () => mockNavigate,
+      };
+    });
+
     setMockUsername(osStateSubmitter);
     const { user } = await setup();
 
@@ -122,7 +132,8 @@ describe("StateSignup", () => {
     const confirmButton = screen.getByRole("button", { name: "Confirm" });
     await user.click(confirmButton);
 
-    expect(screen.getByText(/Select A Role/)).toBeInTheDocument();
+    //better to test navigation to correct page rather than text on that page
+    expect(mockNavigate).toHaveBeenCalledWith("/signup");
   });
 
   it("should show an error if there was an error submitting the request", async () => {

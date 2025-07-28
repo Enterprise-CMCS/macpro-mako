@@ -1,8 +1,7 @@
-import { useQueryClient } from "@tanstack/react-query";
 import { Navigate, useNavigate, useSearchParams } from "react-router";
 import { UserRole } from "shared-types/events/legacy-user";
 
-import { useGetUserDetails, useSubmitRoleRequests } from "@/api";
+import { useGetUserDetails, useGetUserProfile, useSubmitRoleRequests } from "@/api";
 import { banner, Button, LoadingSpinner, SimplePageContainer, SubNavHeader } from "@/components";
 
 import { roleOptions } from "./sign-up";
@@ -11,7 +10,7 @@ export const CMSConfirmation = () => {
   const navigate = useNavigate();
   const { data: userDetails, isLoading } = useGetUserDetails();
   const { mutateAsync: submitRequest } = useSubmitRoleRequests();
-  const queryClient = useQueryClient();
+  const { refetch: reloadUserProfile } = useGetUserProfile();
 
   const [searchParams] = useSearchParams();
   const roleKey = searchParams.get("role") as UserRole;
@@ -43,8 +42,7 @@ export const CMSConfirmation = () => {
       });
 
       // refetch profile into cache to ensure we show new role request on profile page
-      await queryClient.invalidateQueries({ queryKey: ["profile"] });
-      await queryClient.refetchQueries({ queryKey: ["profile"] });
+      await reloadUserProfile();
 
       const redirectPath = "/profile";
       banner({
