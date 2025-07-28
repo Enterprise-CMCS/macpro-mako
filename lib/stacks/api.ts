@@ -188,7 +188,11 @@ export class Api extends cdk.NestedStack {
       {
         id: "softDeletePackage",
         entry: join(__dirname, "../lambda/softDeletePackage.ts"),
-        environment: {},
+        environment: {
+          osDomain: `https://${openSearchDomainEndpoint}`,
+          indexNamespace,
+          dbInfoSecretName,
+        },
       },
       {
         id: "getUploadUrl",
