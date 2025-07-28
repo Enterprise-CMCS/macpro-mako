@@ -1,3 +1,11 @@
+import { useBlocker } from "react-router";
+import { beforeEach, describe, expect, it, vi } from "vitest";
+
+import { userPrompt } from "@/components";
+import { renderWithQueryClientAndMemoryRouter } from "@/utils/test-helpers/render";
+
+import { useNavigationPrompt } from "./useNavigationPrompt";
+
 vi.mock("react-router", () => ({
   useBlocker: vi.fn(),
 }));
@@ -5,14 +13,6 @@ vi.mock("react-router", () => ({
 vi.mock("@/components", () => ({
   userPrompt: vi.fn(),
 }));
-
-import { render } from "@testing-library/react";
-import { useBlocker } from "react-router";
-import { beforeEach, describe, expect, it, vi } from "vitest";
-
-import { userPrompt } from "@/components";
-
-import { useNavigationPrompt } from "./useNavigationPrompt";
 
 describe("useNavigationPrompt", () => {
   const mockProceed = vi.fn();
@@ -39,7 +39,10 @@ describe("useNavigationPrompt", () => {
   it("does not trigger prompt when shouldBlock is false", () => {
     (useBlocker as any).mockReturnValue({ state: "unblocked" });
 
-    render(<TestComponent shouldBlock={false} />);
+    renderWithQueryClientAndMemoryRouter(<TestComponent shouldBlock={false} />, [
+      { path: "/", element: <TestComponent shouldBlock={false} /> },
+    ]);
+
     expect(userPrompt).not.toHaveBeenCalled();
   });
 
@@ -49,7 +52,9 @@ describe("useNavigationPrompt", () => {
       proceed: mockProceed,
     });
 
-    render(<TestComponent shouldBlock={true} />);
+    renderWithQueryClientAndMemoryRouter(<TestComponent shouldBlock={true} />, [
+      { path: "/", element: <TestComponent shouldBlock={true} /> },
+    ]);
 
     expect(userPrompt).toHaveBeenCalledTimes(1);
     expect(userPrompt).toHaveBeenCalledWith({
