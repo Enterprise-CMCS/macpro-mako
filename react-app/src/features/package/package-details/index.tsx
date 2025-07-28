@@ -2,7 +2,7 @@ import { useEffect, useMemo, useRef } from "react";
 import { Authority, opensearch } from "shared-types";
 import { isCmsUser } from "shared-utils";
 
-import { useGetUser } from "@/api";
+import { useGetUser } from "@/api/useGetUser";
 import { DetailsSection, LoadingSpinner } from "@/components";
 import { useFeatureFlag } from "@/hooks/useFeatureFlag";
 import { sendGAEvent } from "@/utils";

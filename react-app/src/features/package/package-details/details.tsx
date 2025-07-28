@@ -8,7 +8,7 @@ import {
   isStateUser,
 } from "shared-utils";
 
-import { OneMacUser } from "@/api";
+import { OneMacUser } from "@/api/useGetUser";
 import { BLANK_VALUE } from "@/consts";
 import { convertStateAbbrToFullName } from "@/utils";
 

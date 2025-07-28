@@ -37,12 +37,13 @@ export const SplitSpaForm = () => {
       title={`Split SPA ${authorityType} ${id}`}
       breadcrumbText="Create new split SPA(s)"
       formDescription={
-        <span>
-          <p className="font-semibold">Split this SPA into multiple records.</p>
-          <br />
-          When you split a SPA, all attachments from the original SPA will be copied into each new
-          record.
-        </span>
+        // <span>
+        //   <p className="font-semibold">Split this SPA into multiple records.</p>
+        //   <br />
+        //   When you split a SPA, all attachments from the original SPA will be copied into each new
+        //   record.
+        // </span>
+        `Split this SPA into multiple records.`
       }
       fields={({ control, setValue }) => (
         <>
@@ -107,7 +108,7 @@ export const SplitSpaForm = () => {
       additionalInformation={false}
       conditionsDeterminingUserAccess={[isCmsWriteUser]}
       showPreSubmissionMessage={false}
-      showFAQFooter={false}
+      // showFAQFooter={false}
     />
   );
 };

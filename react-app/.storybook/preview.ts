@@ -14,7 +14,6 @@ initialize(
 );
 
 const preview: Preview = {
-  // ...rest of preview
   // Provide the MSW addon loader globally
   loaders: [mswLoader],
   //👇 Enables auto-generated documentation for all stories
