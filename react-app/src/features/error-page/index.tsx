@@ -1,15 +1,31 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { Link } from "react-router";
 
 import { BreadCrumbs, SimplePageContainer } from "@/components";
 import { useFeatureFlag } from "@/hooks/useFeatureFlag";
 import { sendGAEvent } from "@/utils/ReactGA/SendGAEvent";
-
+import { Button, Input } from "../../components/Inputs";
+import { API } from "aws-amplify";
 export const ErrorPage = () => {
   const isFAQEnabled = useFeatureFlag("TOGGLE_FAQ");
   useEffect(() => {
     sendGAEvent("error_404", { message: "404 page not found" });
   }, []);
+
+  const [inputValue, setInputValue] = useState("")
+
+  const handleInputChange = (e)=> {
+    console.log("input value: ", e.target.value)
+    setInputValue(e.target.value)
+  }
+  const handleButtonClick = async() => {
+    const response = await API.post("os", "/getUploadUrl", {
+      body: { id: inputValue },
+    });
+
+    console.log("response: ", response);
+  }
+
   return (
     <SimplePageContainer>
       <BreadCrumbs
@@ -31,6 +47,14 @@ export const ErrorPage = () => {
           <h1 className="text-5xl font-[Merriweather] font-bold">
             Sorry, we couldn't find that page.
           </h1>
+
+          <Input
+            onChange={handleInputChange}
+          />
+          <Button
+           onClick={handleButtonClick}
+          />
+
 
           <div className="pt-10 flex gap-x-20">
             <Link className="text-2xl p-0 text-primary hover:underline font-bold" to="/">
