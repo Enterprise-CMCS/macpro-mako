@@ -44,7 +44,10 @@ export const RoleStatusCardNew = ({
               : newUserRoleMap[access.role]}
           </h3>
 
-          {(isPending || (access.status === "active" && access.role !== "defaultcmsuser")) && (
+          {(isPending ||
+            (access.status === "active" &&
+              access.role !== "defaultcmsuser" &&
+              access.role !== "systemadmin")) && (
             <DropdownMenu.Root>
               <DropdownMenu.DropdownMenuTrigger
                 aria-label="Role Status Options"

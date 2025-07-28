@@ -40,13 +40,18 @@ const WithdrawPendingRoleModal = ({ open, onAccept, onCancel }: ModalProps) => (
 const RemoveActiveRoleModal = ({ open, selfRevokeRole, onAccept, onCancel }: ModalProps) => {
   const approvingRole = getApprovingRole(selfRevokeRole.role);
   const stateDisplay =
-    selfRevokeRole.territory !== "N/A"
+    selfRevokeRole.role === "statesubmitter"
       ? `${convertStateAbbrToFullName(selfRevokeRole.territory)} `
       : "";
   return (
     <ConfirmationDialog
       open={open}
-      title={`Withdraw ${stateDisplay}${newUserRoleMap[selfRevokeRole.role]} Access?`}
+      title={
+        <div className="mr-4">
+          Withdraw {stateDisplay}
+          {newUserRoleMap[selfRevokeRole.role]} Access?
+        </div>
+      }
       body={`This action cannot be undone. The ${stateDisplay}${newUserRoleMap[approvingRole]} will be notified of this change.`}
       aria-labelledby="Self Remove Role Modal"
       acceptButtonText="Confirm"

@@ -184,12 +184,22 @@ export const MyProfile = () => {
       await delay(500);
       await reloadUserProfile();
 
-      banner({
-        header: "Submission Completed",
-        body: "Your submission has been received.",
-        variant: "success",
-        pathnameToDisplayOn: window.location.pathname,
-      });
+      if (isNewUserRoleDisplay) {
+        banner({
+          header: "Role Removed",
+          body: "You have successfully removed this role from your account.",
+          variant: "success",
+          pathnameToDisplayOn: window.location.pathname,
+        });
+      } else {
+        banner({
+          header: "Submission Completed",
+          body: "Your submission has been received.",
+          variant: "success",
+          pathnameToDisplayOn: window.location.pathname,
+        });
+      }
+
       window.scrollTo(0, 0);
     } catch (error) {
       banner({
