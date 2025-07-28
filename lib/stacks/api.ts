@@ -186,6 +186,11 @@ export class Api extends cdk.NestedStack {
 
     const lambdaDefinitions = [
       {
+        id: "softDeletePackage",
+        entry: join(__dirname, "../lambda/softDeletePackage.ts"),
+        environment: {},
+      },
+      {
         id: "getUploadUrl",
         entry: join(__dirname, "../lambda/getUploadUrl.ts"),
         environment: {
@@ -541,6 +546,11 @@ export class Api extends cdk.NestedStack {
     });
 
     const apiResources = {
+      softDeletePackage: {
+        path: "softDeletePackage",
+        lambda: lambdas.softDeletePackage,
+        method: "POST"
+      },
       search: {
         path: "search/{index}",
         lambda: lambdas.search,

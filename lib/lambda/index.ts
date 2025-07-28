@@ -1,3 +1,5 @@
+import { softDeletePackage } from "./softDeletePackage";
+
 export * as createTriggers from "./createTriggers";
 export * as deleteIndex from "./deleteIndex";
 export * as getAttachmentUrl from "./getAttachmentUrl";
@@ -18,3 +20,4 @@ export * as deleteTriggers from "./deleteTriggers";
 export * as sinkChangelog from "./sinkChangelog";
 export * as item from "./item";
 export * as postAuth from "./postAuth";
+export * as softDeletePackage from "./softDeletePackage";
