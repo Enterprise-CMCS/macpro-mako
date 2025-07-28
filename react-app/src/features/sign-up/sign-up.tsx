@@ -1,4 +1,3 @@
-import { sub } from "date-fns";
 import { UserRole } from "shared-types/events/legacy-user";
 
 import { useGetUserDetails } from "@/api";
