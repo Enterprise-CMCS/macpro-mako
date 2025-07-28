@@ -52,11 +52,6 @@ export const UserProfile = () => {
   const { userDetails, userProfile } = useLoaderData<LoaderData>();
   const isNewUserRoleDisplay = useFeatureFlag("SHOW_USER_ROLE_UPDATE");
 
-  const currentRoleObj = useMemo(() => {
-    if (!userProfile || !userProfile.stateAccess) return { group: null, division: null };
-    return userProfile?.stateAccess.find((x) => x.role === userDetails.role);
-  }, [userProfile, userDetails]);
-
   const orderedRoleStatus = useMemo(() => {
     const filteredRoleStatus = isNewUserRoleDisplay
       ? userProfile?.stateAccess
@@ -76,8 +71,8 @@ export const UserProfile = () => {
             fullName={userDetails?.fullName || "Unknown"}
             role={userRoleMap[userDetails?.role]}
             email={userDetails?.email}
-            group={currentRoleObj?.group}
-            division={currentRoleObj?.division}
+            group={userDetails.group}
+            division={userDetails.division}
           />
           <div className="flex flex-col gap-6 md:basis-1/2">
             <div>
