@@ -61,7 +61,7 @@ export const MedicaidForm = () => {
                     onChange={(e) => field.onChange(e.currentTarget.value.toUpperCase())}
                   />
                 </FormControl>
-                <FormMessage assertive={true} />
+                <FormMessage />
               </FormItem>
             )}
           />
