@@ -3,7 +3,7 @@ import { sendGAEvent } from "./SendGAEvent";
 import { isCmsUser, isStateUser } from "shared-utils";
 
 type PathTrackerProps = {
-  userRole: "state" | "cms"; // optional if you prefer to derive only
+  userRole: "state" | "cms"; 
   children: React.ReactNode;
 };
 
@@ -15,7 +15,7 @@ export default function PathTracker({ children }: PathTrackerProps) {
 
   useEffect(() => {
     try {
-      let detectedRole: "state" | "cms" = "state";
+      let detectedRole;
       if (isStateUser && !isCmsUser) {
         detectedRole = "state";
       } else if (isCmsUser && !isStateUser) {
