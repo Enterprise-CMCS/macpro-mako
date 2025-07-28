@@ -20,5 +20,12 @@
       "@/*": ["src/*"]
     }
   },
-  "include": ["src", "e2e", "src/assets/_.d.ts", "../lib/react-ga.d.ts", "globals.d.ts"]
+  "include": [
+    "src",
+    "e2e",
+    "src/assets/_.d.ts",
+    "../lib/react-ga.d.ts",
+    "globals.d.ts",
+    ".storybook"
+  ]
 }
