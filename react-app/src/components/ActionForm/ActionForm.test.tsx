@@ -10,7 +10,6 @@ import { EXISTING_ITEM_PENDING_ID } from "mocks";
 import { attachmentArraySchemaOptional, SEATOOL_STATUS } from "shared-types";
 import { isCmsReadonlyUser } from "shared-utils";
 import { beforeEach, describe, expect, test, vi } from "vitest";
-import { vi } from "vitest";
 import { z } from "zod";
 
 import * as components from "@/components";
