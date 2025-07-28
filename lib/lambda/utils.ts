@@ -49,6 +49,7 @@ export const calculate90dayExpiration = async (
   config: ProcessEmailConfig,
 ) => {
   const MS_PER_DAY = 24 * 60 * 60 * 1000;
+  const UTC_ADJUSTMENT = 4 * 60 * 60 * 1000;
   const item = await os.getItem(config.osDomain, getOsNamespace("main"), parsedRecord.id);
   const submissionDate = item?._source.submissionDate || "";
   const submissionDateIsoString = toStartOfUTCDayISOString(submissionDate);
@@ -82,7 +83,7 @@ export const calculate90dayExpiration = async (
     // console.log("holliday adustment: ", holidayAdjustment);
     // ninetyDayExpirationClock += holidayAdjustment;
 
-    return adjustToNextMondayIfWeekend(ninetyDayExpirationClock);
+    return adjustToNextMondayIfWeekend(ninetyDayExpirationClock - UTC_ADJUSTMENT);
 
     // one RAI response has already been submitted, paused duration should be added to the first 90 day expiration
   }
@@ -100,7 +101,7 @@ export const calculate90dayExpiration = async (
     // );
     // console.log("holliday adustment: ", holidayAdjustment);
     // ninetyDayExpirationClock += holidayAdjustment;
-    return adjustToNextMondayIfWeekend(ninetyDayExpirationClock);
+    return adjustToNextMondayIfWeekend(ninetyDayExpirationClock - UTC_ADJUSTMENT);
   }
   return undefined;
 };
