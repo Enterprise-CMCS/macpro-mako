@@ -15,23 +15,11 @@ import { z } from "zod";
 import * as components from "@/components";
 import { DataPoller } from "@/utils/Poller/DataPoller";
 import * as documentPoller from "@/utils/Poller/documentPoller";
-import {
-  renderFormAsync,
-  renderFormWithPackageSectionAsync,
-} from "@/utils/test-helpers/renderForm";
+import { renderFormWithPackageSectionAsync } from "@/utils/test-helpers/renderForm";
 
 import { ActionForm } from "./index";
 const PROGRESS_REMINDER = /If you leave this page, you will lose your progress on this form./;
 const sendGAEventSpy = vi.spyOn(await import("@/utils/ReactGA/SendGAEvent"), "sendGAEvent");
-
-vi.mock("react-router", async () => {
-  const actual = await vi.importActual<any>("react-router");
-  return {
-    ...actual,
-    useBlocker: vi.fn(() => ({ state: "unblocked", proceed: vi.fn() })),
-  };
-});
-
 describe("ActionForm", () => {
   beforeEach(() => {
     setDefaultStateSubmitter();
@@ -40,7 +28,7 @@ describe("ActionForm", () => {
   });
 
   test("renders `breadcrumbText`", async () => {
-    await renderFormAsync(
+    await renderFormWithPackageSectionAsync(
       <ActionForm
         title="Action Form Title"
         schema={z.object({})}
@@ -51,13 +39,14 @@ describe("ActionForm", () => {
         }}
         breadcrumbText="Example Breadcrumb"
       />,
+      EXISTING_ITEM_PENDING_ID,
     );
 
     expect(screen.queryByText("Example Breadcrumb")).toBeInTheDocument();
   });
 
   test("renders `title`", async () => {
-    await renderFormAsync(
+    await renderFormWithPackageSectionAsync(
       <ActionForm
         title="Action Form Title"
         schema={z.object({})}
@@ -68,13 +57,14 @@ describe("ActionForm", () => {
         }}
         breadcrumbText="Example Breadcrumb"
       />,
+      EXISTING_ITEM_PENDING_ID,
     );
 
     expect(screen.queryByText("Action Form Title")).toBeInTheDocument();
   });
 
   test("renders `attachments.faqLink`", async () => {
-    await renderFormAsync(
+    await renderFormWithPackageSectionAsync(
       <ActionForm
         title="Action Form Title"
         schema={z.object({
@@ -93,13 +83,14 @@ describe("ActionForm", () => {
         attachments={{ faqLink: "hello-world-link" }}
         breadcrumbText="Example Breadcrumb"
       />,
+      EXISTING_ITEM_PENDING_ID,
     );
 
     expect(screen.queryByText("FAQ Page")).toHaveAttribute("href", "/hello-world-link");
   });
 
   test("renders `attachments.title`", async () => {
-    await renderFormAsync(
+    await renderFormWithPackageSectionAsync(
       <ActionForm
         title="Action Form Title"
         schema={z.object({
@@ -118,6 +109,7 @@ describe("ActionForm", () => {
         attachments={{ title: "this is an attachments title" }}
         breadcrumbText="Example Breadcrumb"
       />,
+      EXISTING_ITEM_PENDING_ID,
     );
 
     expect(screen.queryByText("this is an attachments title")).toBeInTheDocument();
@@ -126,7 +118,7 @@ describe("ActionForm", () => {
   test("doesn't render form if user access is denied", async () => {
     setDefaultReviewer();
 
-    await renderFormAsync(
+    await renderFormWithPackageSectionAsync(
       <ActionForm
         title="Action Form Title"
         schema={z.object({
@@ -146,6 +138,7 @@ describe("ActionForm", () => {
         conditionsDeterminingUserAccess={[isCmsReadonlyUser]}
         breadcrumbText="Example Breadcrumb"
       />,
+      EXISTING_ITEM_PENDING_ID,
     );
 
     expect(screen.queryByText("Action Form Title")).not.toBeInTheDocument();
@@ -153,7 +146,7 @@ describe("ActionForm", () => {
   });
 
   test("renders `defaultValues` in appropriate input", async () => {
-    await renderFormAsync(
+    await renderFormWithPackageSectionAsync(
       <ActionForm
         title="Action Form Title"
         schema={z.object({
@@ -167,13 +160,14 @@ describe("ActionForm", () => {
         defaultValues={{ id: "default value for id" }}
         breadcrumbText="Example Breadcrumb"
       />,
+      EXISTING_ITEM_PENDING_ID,
     );
 
     expect(screen.queryByDisplayValue("default value for id")).toBeInTheDocument();
   });
 
   test("renders `attachments.instructions`", async () => {
-    await renderFormAsync(
+    await renderFormWithPackageSectionAsync(
       <ActionForm
         title="Action Form Title"
         schema={z.object({
@@ -194,13 +188,14 @@ describe("ActionForm", () => {
         }}
         breadcrumbText="Example Breadcrumb"
       />,
+      EXISTING_ITEM_PENDING_ID,
     );
 
     expect(screen.queryByText(/hello world special instructions./)).toBeInTheDocument();
   });
 
   test("renders `attachments.callout`", async () => {
-    await renderFormAsync(
+    await renderFormWithPackageSectionAsync(
       <ActionForm
         title="Action Form Title"
         schema={z.object({
@@ -221,6 +216,7 @@ describe("ActionForm", () => {
         }}
         breadcrumbText="Example Breadcrumb"
       />,
+      EXISTING_ITEM_PENDING_ID,
     );
 
     expect(screen.queryByText(/this is a callout/)).toBeInTheDocument();
@@ -234,7 +230,7 @@ describe("ActionForm", () => {
       .spyOn(components, "userPrompt")
       .mockImplementation((args) => (args.onAccept = onAcceptMock));
 
-    await renderFormAsync(
+    await renderFormWithPackageSectionAsync(
       <ActionForm
         title="Action Form Title"
         schema={z.object({})}
@@ -249,6 +245,7 @@ describe("ActionForm", () => {
         }}
         breadcrumbText="Example Breadcrumb"
       />,
+      EXISTING_ITEM_PENDING_ID,
     );
 
     const cancelBtn = await screen.findByTestId("cancel-action-form");
@@ -276,7 +273,7 @@ describe("ActionForm", () => {
       .spyOn(components, "userPrompt")
       .mockImplementation((args) => (args.onAccept = onAcceptMock));
 
-    await renderFormAsync(
+    await renderFormWithPackageSectionAsync(
       <ActionForm
         title="Action Form Title"
         schema={z.object({
@@ -294,6 +291,7 @@ describe("ActionForm", () => {
         }}
         breadcrumbText="Example Breadcrumb"
       />,
+      EXISTING_ITEM_PENDING_ID,
     );
 
     const submitBtn = await screen.findByTestId("submit-action-form");
@@ -311,7 +309,7 @@ describe("ActionForm", () => {
     const documentChecker: documentPoller.CheckDocumentFunction = (checker) =>
       checker.hasStatus(SEATOOL_STATUS.PENDING);
 
-    await renderFormAsync(
+    await renderFormWithPackageSectionAsync(
       <ActionForm
         title="Action Form Title"
         schema={z.object({
@@ -326,6 +324,7 @@ describe("ActionForm", () => {
         }}
         breadcrumbText="Example Breadcrumb"
       />,
+      EXISTING_ITEM_PENDING_ID,
     );
 
     expect(sendGAEventSpy).toHaveBeenCalledWith(
@@ -546,7 +545,7 @@ describe("ActionForm", () => {
   }, 30000);
 
   test("renders all attachment properties within `attachments`", async () => {
-    await renderFormAsync(
+    await renderFormWithPackageSectionAsync(
       <ActionForm
         title="Action Form Title"
         schema={z.object({
@@ -572,6 +571,7 @@ describe("ActionForm", () => {
         }}
         breadcrumbText="Example Breadcrumb"
       />,
+      EXISTING_ITEM_PENDING_ID,
     );
 
     const otherAttachmentLabels = screen.queryAllByText("Other");
@@ -580,7 +580,7 @@ describe("ActionForm", () => {
   });
 
   test("renders Additional Information if `additionalInformation` is defined in schema", async () => {
-    await renderFormAsync(
+    await renderFormWithPackageSectionAsync(
       <ActionForm
         title="Action Form Title"
         schema={z.object({
@@ -593,13 +593,14 @@ describe("ActionForm", () => {
         }}
         breadcrumbText="Example Breadcrumb"
       />,
+      EXISTING_ITEM_PENDING_ID,
     );
 
     expect(screen.queryByText("Additional Information")).toBeInTheDocument();
   });
 
   test("doesn't render Additional Information if `additionalInformation` is undefined in schema", async () => {
-    await renderFormAsync(
+    await renderFormWithPackageSectionAsync(
       <ActionForm
         title="Action Form Title"
         schema={z.object({})}
@@ -611,13 +612,14 @@ describe("ActionForm", () => {
         additionalInformation={false}
         breadcrumbText="Example Breadcrumb"
       />,
+      EXISTING_ITEM_PENDING_ID,
     );
 
     expect(screen.queryByText("Additional Information")).not.toBeInTheDocument();
   });
 
   test("renders Attachments if `attachments` is defined in schema", async () => {
-    await renderFormAsync(
+    await renderFormWithPackageSectionAsync(
       <ActionForm
         title="Action Form Title"
         schema={z.object({
@@ -635,6 +637,7 @@ describe("ActionForm", () => {
         }}
         breadcrumbText="Example Breadcrumb"
       />,
+      EXISTING_ITEM_PENDING_ID,
     );
 
     expect(screen.queryByText("Attachments")).toBeInTheDocument();
@@ -642,7 +645,7 @@ describe("ActionForm", () => {
   });
 
   test("doesn't render Attachments if `attachments` is undefined in schema", async () => {
-    await renderFormAsync(
+    await renderFormWithPackageSectionAsync(
       <ActionForm
         title="Action Form Title"
         schema={z.object({})}
@@ -653,13 +656,14 @@ describe("ActionForm", () => {
         }}
         breadcrumbText="Example Breadcrumb"
       />,
+      EXISTING_ITEM_PENDING_ID,
     );
 
     expect(screen.queryByText("Attachments")).not.toBeInTheDocument();
   });
 
   test("renders ProgressReminder if schema has `attachments` property", async () => {
-    await renderFormAsync(
+    await renderFormWithPackageSectionAsync(
       <ActionForm
         title="Action Form Title"
         schema={z.object({
@@ -677,13 +681,14 @@ describe("ActionForm", () => {
         }}
         breadcrumbText="Example Breadcrumb"
       />,
+      EXISTING_ITEM_PENDING_ID,
     );
 
     expect(screen.queryAllByText(PROGRESS_REMINDER).length).toBe(2);
   });
 
   test("renders ProgressReminder if `areFieldsRequired` property is undefined", async () => {
-    await renderFormAsync(
+    await renderFormWithPackageSectionAsync(
       <ActionForm
         title="Action Form Title"
         schema={z.object({})}
@@ -699,13 +704,14 @@ describe("ActionForm", () => {
         }}
         breadcrumbText="Example Breadcrumb"
       />,
+      EXISTING_ITEM_PENDING_ID,
     );
 
     expect(screen.queryAllByText(PROGRESS_REMINDER).length).toBe(2);
   });
 
   test("doesn't render ProgressReminder if `areFieldsRequired` is false", async () => {
-    await renderFormAsync(
+    await renderFormWithPackageSectionAsync(
       <ActionForm
         title="Action Form Title"
         schema={z.object({})}
@@ -717,6 +723,7 @@ describe("ActionForm", () => {
         breadcrumbText="Example Breadcrumb"
         areFieldsRequired={false}
       />,
+      EXISTING_ITEM_PENDING_ID,
     );
 
     expect(screen.queryByText(PROGRESS_REMINDER)).not.toBeInTheDocument();
@@ -727,7 +734,7 @@ describe("ActionForm", () => {
     // Spy on userPrompt to ensure it's NOT called
     const userPromptSpy = vi.spyOn(components, "userPrompt").mockImplementation(() => undefined);
 
-    await renderFormAsync(
+    await renderFormWithPackageSectionAsync(
       <ActionForm
         title="Test No Prompt"
         schema={z.object({})}
@@ -739,6 +746,7 @@ describe("ActionForm", () => {
         breadcrumbText="Example Breadcrumb"
         // Mock the real submit logic so we can assert it
       />,
+      EXISTING_ITEM_PENDING_ID,
     );
 
     const submitBtn = await screen.findByTestId("submit-action-form");
