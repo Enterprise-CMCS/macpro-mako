@@ -23,26 +23,26 @@ export const StateConfirmation = () => {
   return (
     <div>
       <SubNavHeader>
-        {/* Fix styling */}
-        <ChevronLeft
-          className="text-sky-700 w-7 h-7 items-center cursor-pointer"
-          onClick={() => navigate(roleSelectionPath)}
-        />
-        <h1 className="text-xl font-medium">Submit Role Request</h1>
+        <div className="flex items-center">
+          <ChevronLeft
+            className="text-sky-700 w-6 h-6 mr-2 cursor-pointer"
+            onClick={() => navigate("/signup/state")}
+          />
+          <h1 className="text-xl font-medium">Submit Role Request</h1>
+        </div>
       </SubNavHeader>
-      {/* Fix styling */}
       <SimplePageContainer>
-        <div className="flex justify-center p-5">
+        <div className="flex justify-center p-5 my-10 pb-10">
           <div className="w-1/3">
-            <div className="py-2">
+            <div className="py-3">
               <h2 className="text-xl font-bold mb-2">
-                {statesToRequest.length ? "States:" : "State:"}
+                {statesToRequest.length > 1 ? "States:" : "State:"}
               </h2>
               <p className="text-xl italic">
                 {statesToRequest.map((state) => convertStateAbbrToFullName(state)).join(", ")}
               </p>
             </div>
-            <div className="py-2">
+            <div className="py-3">
               <h2 className="text-xl font-bold mb-2">User Role:</h2>
               <p className="text-xl italic">{userRoleMap[roleToRequest]}</p>
 

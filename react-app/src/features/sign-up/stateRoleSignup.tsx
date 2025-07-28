@@ -77,34 +77,37 @@ export const StateRoleSignup = () => {
   return (
     <div>
       <SubNavHeader>
-        {/* Fix styling */}
-        <ChevronLeft
-          className="text-sky-700 w-7 h-7 items-center cursor-pointer"
-          onClick={() => navigate("/signup/state")}
-        />
-        <h1 className="text-xl font-medium">Select A Role</h1>
+        <div className="flex items-center">
+          <ChevronLeft
+            className="text-sky-700 w-6 h-6 mr-2 cursor-pointer"
+            onClick={() => navigate("/signup/state")}
+          />
+          <h1 className="text-xl font-medium">Select A Role</h1>
+        </div>
       </SubNavHeader>
       <SimplePageContainer>
-        {/* Fix styling */}
-        <section className="max-w-3xl mx-auto mt-8">
-          <h2 className="text-xl font-bold mb-2">
-            {statesRequested.length > 1 ? "States:" : "State:"}
-          </h2>
-          <p className="text-xl italic">
-            {statesRequested.map((state) => convertStateAbbrToFullName(state)).join(", ")}
-          </p>
-          {/* Fix styling */}
-          <h2 className="text-xl font-bold mt-4">Available roles to add</h2>
-          <OptionFieldset>
-            {filteredRoleOptions.map((role) => (
-              <OptionCard
-                description={role.description}
-                title={role.title}
-                to={role.link}
-                key={role.key}
-              />
-            ))}
-          </OptionFieldset>
+        <section className="max-w-3xl mx-auto">
+          <div className="py-10">
+            <h2 className="text-xl font-bold">
+              {statesRequested.length > 1 ? "States:" : "State:"}
+            </h2>
+            <p className="text-xl italic">
+              {statesRequested.map((state) => convertStateAbbrToFullName(state)).join(", ")}
+            </p>
+          </div>
+          <div className="pb-10">
+            <h2 className="text-xl font-bold">Available roles to add</h2>
+            <OptionFieldset>
+              {filteredRoleOptions.map((role) => (
+                <OptionCard
+                  description={role.description}
+                  title={role.title}
+                  to={role.link}
+                  key={role.key}
+                />
+              ))}
+            </OptionFieldset>
+          </div>
         </section>
       </SimplePageContainer>
     </div>
