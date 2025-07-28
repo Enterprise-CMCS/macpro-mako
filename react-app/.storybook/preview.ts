@@ -1,10 +1,10 @@
+import "../src/index.css";
+
 import type { Preview } from "@storybook/react-vite";
 import { cognitoHandlers, defaultApiHandlers, launchDarklyHandlers } from "mocks";
 import { initialize, mswLoader } from "msw-storybook-addon";
 
 import { withQueryClient } from "./decorators";
-
-import "../src/index.css";
 
 initialize(
   {
