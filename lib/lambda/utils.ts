@@ -83,7 +83,7 @@ export const calculate90dayExpiration = async (
     // console.log("holliday adustment: ", holidayAdjustment);
     // ninetyDayExpirationClock += holidayAdjustment;
 
-    return adjustToNextMondayIfWeekend(ninetyDayExpirationClock - UTC_ADJUSTMENT);
+    return adjustToNextMondayIfWeekend(ninetyDayExpirationClock);
 
     // one RAI response has already been submitted, paused duration should be added to the first 90 day expiration
   }
@@ -101,7 +101,7 @@ export const calculate90dayExpiration = async (
     // );
     // console.log("holliday adustment: ", holidayAdjustment);
     // ninetyDayExpirationClock += holidayAdjustment;
-    return adjustToNextMondayIfWeekend(ninetyDayExpirationClock - UTC_ADJUSTMENT);
+    return adjustToNextMondayIfWeekend(ninetyDayExpirationClock);
   }
   return undefined;
 };
