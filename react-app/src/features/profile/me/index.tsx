@@ -34,6 +34,7 @@ export const MyProfile = () => {
   const {
     data: userProfile,
     isLoading: isProfileLoading,
+    isRefetching: isProfileRefetching,
     refetch: reloadUserProfile,
   } = useGetUserProfile();
 
@@ -80,9 +81,9 @@ export const MyProfile = () => {
       const pendingRequests = hasPendingRequests(userProfile?.stateAccess);
       setPendingRequests(pendingRequests);
     }
-  }, [isDetailLoading, isProfileLoading, userProfile]);
+  }, [isDetailLoading, isProfileLoading, userProfile, userProfile?.stateAccess]);
 
-  if (isDetailLoading || isProfileLoading) {
+  if (isDetailLoading || isProfileLoading || isProfileRefetching) {
     return <LoadingSpinner />;
   }
 
@@ -127,6 +128,8 @@ export const MyProfile = () => {
     );
   };
 
+  const delay = (milliseconds) => new Promise((resolve) => setTimeout(resolve, milliseconds));
+
   const handleSubmitRequest = async () => {
     try {
       for (const state of requestedStates) {
@@ -141,6 +144,7 @@ export const MyProfile = () => {
 
       setShowAddState(true);
       setRequestedStates([]);
+      await delay(500);
       await reloadUserProfile();
 
       banner({
@@ -173,6 +177,7 @@ export const MyProfile = () => {
       });
 
       setSelfRevokeState(null);
+      await delay(500);
       await reloadUserProfile();
 
       banner({

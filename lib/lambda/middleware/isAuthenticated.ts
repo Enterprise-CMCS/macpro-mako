@@ -39,32 +39,18 @@ export const isAuthenticated = (opts: IsAuthenticatedOptions = {}): MiddlewareOb
         console.error(err);
         throw createError(401, JSON.stringify({ message: "User is not authenticated" }));
       }
+
       const { userId, poolId } = authDetails;
 
-      let userAttributes;
-      try {
-        userAttributes = await lookupUserAttributes(userId, poolId);
-      } catch (err) {
-        console.error(err);
-        throw createError(500, JSON.stringify({ message: "Internal server error" }), {
-          expose: true,
-        });
-      }
+      const userAttributes = await lookupUserAttributes(userId, poolId);
+
       if (!userAttributes?.email) {
         // if you don't use the expose option here, you won't be able to see the error message
         throw createError(500, JSON.stringify({ message: "User is invalid" }), { expose: true });
       }
       const { email } = userAttributes;
 
-      let latestActiveRole;
-      try {
-        latestActiveRole = await getLatestActiveRoleByEmail(email);
-      } catch (err) {
-        console.error(err);
-        throw createError(500, JSON.stringify({ message: "Internal server error" }), {
-          expose: true,
-        });
-      }
+      const latestActiveRole = await getLatestActiveRoleByEmail(email);
 
       const user: FullUser = {
         ...userAttributes,
@@ -73,14 +59,7 @@ export const isAuthenticated = (opts: IsAuthenticatedOptions = {}): MiddlewareOb
       };
 
       if (!isCmsUser(user)) {
-        try {
-          user.states = await getActiveStatesForUserByEmail(email, latestActiveRole?.role);
-        } catch (err) {
-          console.error(err);
-          throw createError(500, JSON.stringify({ message: "Internal server error" }), {
-            expose: true,
-          });
-        }
+        user.states = await getActiveStatesForUserByEmail(email, user.role);
       }
 
       storeAuthUserInRequest(user, request, options.setToContext);
