@@ -25,6 +25,7 @@ export const RoleStatusCardNew = ({
   onClick,
 }: Omit<RoleStatusProps, "isNewUserRoleDisplay">) => {
   if (!access) return null;
+  console.log(access.role, onClick);
   const isState = isStateRole(access.role as UserRole);
   const hideApprovers = status !== "pending" && role === "norole";
   const showApproverInfo =
@@ -33,7 +34,9 @@ export const RoleStatusCardNew = ({
     access.role !== "systemadmin";
 
   const isPending = access.status === "pending";
+  const showActions = !!onClick;
 
+  console.log(access.role, showActions);
   return (
     <RoleStatusTopBorderCard status={access.status}>
       <div className="p-8 min-h-36">
@@ -44,38 +47,40 @@ export const RoleStatusCardNew = ({
               : newUserRoleMap[access.role]}
           </h3>
 
-          {(isPending ||
-            (access.status === "active" &&
-              access.role !== "defaultcmsuser" &&
-              access.role !== "systemadmin")) && (
-            <DropdownMenu.Root>
-              <DropdownMenu.DropdownMenuTrigger
-                aria-label="Role Status Options"
-                data-testid="role-status-actions"
-                asChild
-              >
-                <button
-                  className="disabled:text-gray-200"
-                  data-testid="self-revoke"
-                  title="Self Revoke Access"
-                  type="button"
+          {showActions &&
+            (isPending ||
+              (access.status === "active" &&
+                access.role !== "defaultcmsuser" &&
+                access.role !== "cmsreviewer" &&
+                access.role !== "systemadmin")) && (
+              <DropdownMenu.Root>
+                <DropdownMenu.DropdownMenuTrigger
+                  aria-label="Role Status Options"
+                  data-testid="role-status-actions"
+                  asChild
                 >
-                  <EllipsisVertical size={30} />
-                </button>
-              </DropdownMenu.DropdownMenuTrigger>
-
-              <DropdownMenu.Content
-                className="flex flex-col bg-white rounded-md shadow-lg p-4 border"
-                align="start"
-              >
-                <DropdownMenu.Item asChild>
-                  <button className="text-primary" onClick={onClick} type="button">
-                    {isPending ? "Cancel Request" : "Remove User Role"}
+                  <button
+                    className="disabled:text-gray-200"
+                    data-testid="self-revoke"
+                    title="Self Revoke Access"
+                    type="button"
+                  >
+                    <EllipsisVertical size={30} />
                   </button>
-                </DropdownMenu.Item>
-              </DropdownMenu.Content>
-            </DropdownMenu.Root>
-          )}
+                </DropdownMenu.DropdownMenuTrigger>
+
+                <DropdownMenu.Content
+                  className="flex flex-col bg-white rounded-md shadow-lg p-4 border"
+                  align="start"
+                >
+                  <DropdownMenu.Item asChild>
+                    <button className="text-primary" onClick={onClick} type="button">
+                      {isPending ? "Cancel Request" : "Remove User Role"}
+                    </button>
+                  </DropdownMenu.Item>
+                </DropdownMenu.Content>
+              </DropdownMenu.Root>
+            )}
         </div>
         <CardStatus status={access.status} />
         {access.role === "systemadmin" && (
