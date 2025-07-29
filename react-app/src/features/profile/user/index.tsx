@@ -84,11 +84,15 @@ export const UserProfile = () => {
           />
           <div className="flex flex-col gap-6 md:basis-1/2">
             <div>
-              <h2 className="text-2xl font-bold">
-                {userDetails.role === "statesubmitter" || userDetails.role === "statesystemadmin"
-                  ? "State Access Management"
-                  : "Status"}
-              </h2>
+              {isNewUserRoleDisplay ? (
+                <h2 className="text-2xl font-bold">My User Roles</h2>
+              ) : (
+                <h2 className="text-2xl font-bold">
+                  {userDetails.role === "statesubmitter" || userDetails.role === "statesystemadmin"
+                    ? "State Access Management"
+                    : "Status"}
+                </h2>
+              )}
               {orderedRoleStatus?.map((access) => (
                 <RoleStatusCard role={userDetails.role} access={access} key={access.id} />
               ))}
