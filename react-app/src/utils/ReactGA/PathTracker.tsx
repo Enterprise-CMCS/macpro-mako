@@ -1,9 +1,10 @@
 import { useEffect, useRef, useState } from "react";
-import { sendGAEvent } from "./SendGAEvent";
 import { isCmsUser, isStateUser } from "shared-utils";
 
+import { sendGAEvent } from "./SendGAEvent";
+
 type PathTrackerProps = {
-  userRole: "state" | "cms"; 
+  userRole: "state" | "cms";
   children: React.ReactNode;
 };
 
@@ -85,7 +86,7 @@ export default function PathTracker({ children }: PathTrackerProps) {
       window.history.replaceState = origReplace;
       window.removeEventListener("popstate", onRouteChange);
     };
-  }, [role]); 
+  }, [role]);
 
   return <>{children}</>;
 }

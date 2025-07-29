@@ -2,7 +2,6 @@ import { useMemo } from "react";
 import { opensearch } from "shared-types";
 import { ItemResult } from "shared-types/opensearch/changelog";
 import { formatDateToET } from "shared-utils";
-import { sendGAEvent } from "@/utils";
 
 import {
   Accordion,
@@ -19,6 +18,7 @@ import {
   TableRow,
 } from "@/components";
 import { BLANK_VALUE } from "@/consts";
+import { sendGAEvent } from "@/utils";
 
 import { Attachments, useAttachmentService } from "./hook";
 

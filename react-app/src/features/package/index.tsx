@@ -7,6 +7,7 @@ import { getItem, useGetItem } from "@/api";
 import { CardWithTopBorder, ErrorAlert, LoadingSpinner } from "@/components";
 import { BreadCrumbs } from "@/components/BreadCrumb";
 import { detailsAndActionsCrumbs } from "@/utils";
+import { sendGAEvent } from "@/utils";
 
 import { AdminPackageActivities } from "./admin-changes";
 import { useDetailsSidebarLinks } from "./hooks";
@@ -14,7 +15,6 @@ import { PackageActionsCard } from "./package-actions";
 import { PackageActivities } from "./package-activity";
 import { PackageDetails } from "./package-details";
 import { PackageStatusCard } from "./package-status";
-import { sendGAEvent } from "@/utils";
 
 export const DetailCardWrapper = ({
   title,
@@ -160,10 +160,12 @@ const DetailsSidebar = ({ id }: DetailsSidebarProps) => {
   return (
     <aside className="min-w-56 flex-none font-semibold mt-6">
       {links.map(({ id, href, displayName }) => (
-        <a className="block mb-2 text-blue-900 hover:underline" 
-           key={id} 
-           href={href}
-           onClick={() => handleSidebarClick(id)}>
+        <a
+          className="block mb-2 text-blue-900 hover:underline"
+          key={id}
+          href={href}
+          onClick={() => handleSidebarClick(id)}
+        >
           {displayName}
         </a>
       ))}

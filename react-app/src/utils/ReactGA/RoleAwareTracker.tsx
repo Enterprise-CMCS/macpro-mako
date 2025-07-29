@@ -11,7 +11,6 @@ function setGAUserRoleOnce(role: string) {
 
   // Prevent setting it multiple times
   if (window.__gaUserRoleSet) return;
-  console.log("from the role awareness tracker useEffect, role: ", role)
   window.gtag("set", { user_role: role });
   window.__gaUserRoleSet = true; // Custom flag on window to track setting
 }
@@ -44,8 +43,8 @@ export function RoleAwareTracker({ children }: { children: React.ReactNode }) {
       } else if (isCmsUser && !isStateUser) {
         role = "cms";
       } else if (isStateUser && isCmsUser) {
-        role = "cms"; 
-      } 
+        role = "cms";
+      }
 
       if (role) {
         setUserRole(role);
