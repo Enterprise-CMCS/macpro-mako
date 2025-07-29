@@ -7,6 +7,7 @@ import {
   getRequestContext,
   setDefaultStateSubmitter,
   setMockUsername,
+  STATE_SUBMITTER_USERNAME,
 } from "mocks";
 import { mockedProducer } from "mocks/helpers/kafka.utils";
 import { mockedServiceServer as mockedServer } from "mocks/server";
@@ -79,15 +80,29 @@ describe("submitGroupDivision handler", () => {
     );
   });
 
+  it("should return a 401 if the user is a statesubmitter", async () => {
+    setMockUsername(STATE_SUBMITTER_USERNAME);
+
+    const event = {
+      body: JSON.stringify({
+        userEmail: "mako.stateuser@gmail.com",
+        group: "Group1",
+        division: "Division1",
+      }),
+      requestContext: getRequestContext(),
+    } as APIGatewayEvent;
+
+    const res = await handler(event, {} as Context);
+
+    expect(res.statusCode).toEqual(403);
+    expect(res.body).toEqual(JSON.stringify({ message: "Not authorized to view this resource" }));
+  });
+
   it("should return a 404 if the user is not found", async () => {
     setMockUsername(CMS_ROLE_APPROVER_USERNAME);
 
     const event = {
-      body: JSON.stringify({
-        userEmail: "test@test.com",
-        group: "Group1",
-        division: "Division1",
-      }),
+      body: JSON.stringify({ userEmail: "test@test.com", group: "Group1", division: "Division1" }),
       requestContext: getRequestContext(),
     };
 
