@@ -148,9 +148,8 @@ const sendUpdateValuesMessage = async ({
   }
 
   const fieldNames = Object.keys(updatedFields).join(", ");
-  const changeMadeText = `${fieldNames} ${
-    Object.keys(updatedFields).length > 1 ? "have" : "has"
-  } been updated`;
+  const changeMadeText = `${fieldNames} ${Object.keys(updatedFields).length > 1 ? "have" : "has"
+    } been updated`;
 
   const currentTime = Date.now();
 
@@ -269,7 +268,7 @@ const updatePackageEventBodySchema = z.object({
   changeReason: z.string().optional(),
 });
 
-export const handler = async (event: APIGatewayEvent) => {
+export const updatePackage = async (event: APIGatewayEvent) => {
   if (!event.body) {
     return response({
       statusCode: 400,
@@ -313,6 +312,7 @@ export const handler = async (event: APIGatewayEvent) => {
     }
 
     if (action === "delete") {
+      console.log("delete package called with package Id: ", packageId);
       return await sendDeleteMessage(currentPackage);
     }
     if (action === "recover") {
@@ -338,3 +338,5 @@ export const handler = async (event: APIGatewayEvent) => {
     });
   }
 };
+
+export const handler = updatePackage;

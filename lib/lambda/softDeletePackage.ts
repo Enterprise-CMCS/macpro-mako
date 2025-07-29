@@ -1,5 +1,6 @@
 import { APIGatewayEvent } from "aws-lambda";
 import { response } from "libs/handler-lib";
+import { updatePackage } from "./update/updatePackage";
 // import { getAvailableActions } from "shared-utils";
 
 import {
@@ -23,7 +24,15 @@ export const softDeletePackage = async (event: APIGatewayEvent) => {
     try {
         const body = JSON.parse(event.body);
         console.log("event body: ", event.body);
-
+        console.log("package id from API Gateway Event: ", body.id);
+        let updatedEventBody = {
+            packageId: body.id,
+            action: "delete",
+        };
+        event.body = JSON.stringify(updatedEventBody);
+        const resp = await updatePackage(event).then(() => {
+            console.log("response gtom updatePackage lambda: ", resp);
+        })
         // const result = await getPackage(body.id);
 
         // if (result === undefined || !result.found) {
