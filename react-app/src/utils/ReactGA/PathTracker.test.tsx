@@ -34,7 +34,7 @@ describe("PathTracker", () => {
     expect(sendGAEventMock).toHaveBeenCalledWith("page_view", {
       page_path: window.location.pathname,
       referrer: window.location.pathname,
-      user_role: "state",
+      user_role: "cms",
     });
   });
 
@@ -57,7 +57,7 @@ describe("PathTracker", () => {
       expect.objectContaining({
         page_path: "/",
         referrer: "/",
-        user_role: "state",
+        user_role: "cms",
       }),
     );
 
@@ -68,7 +68,7 @@ describe("PathTracker", () => {
       expect.objectContaining({
         page_path: "/",
         time_on_page_sec: 3,
-        user_role: "state",
+        user_role: "cms",
       }),
     );
 
@@ -79,7 +79,7 @@ describe("PathTracker", () => {
       expect.objectContaining({
         page_path: "/new-path",
         referrer: "/",
-        user_role: "state",
+        user_role: "cms",
       }),
     );
   });
@@ -101,7 +101,7 @@ describe("PathTracker", () => {
       expect.objectContaining({
         page_path: "/new-path",
         referrer: "/new-path",
-        user_role: "state",
+        user_role: "cms",
       }),
     );
 
@@ -111,7 +111,7 @@ describe("PathTracker", () => {
       expect.objectContaining({
         page_path: "/new-path",
         time_on_page_sec: 5,
-        user_role: "state",
+        user_role: "cms",
       }),
     );
 
@@ -121,7 +121,7 @@ describe("PathTracker", () => {
       expect.objectContaining({
         page_path: "/another-path",
         referrer: "/new-path",
-        user_role: "state",
+        user_role: "cms",
       }),
     );
   });
@@ -140,7 +140,7 @@ describe("PathTracker", () => {
       "page_duration",
       expect.objectContaining({
         page_path: window.location.pathname,
-        user_role: "state",
+        user_role: "cms",
         time_on_page_sec: 4,
       }),
     );

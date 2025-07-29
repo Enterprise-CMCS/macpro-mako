@@ -22,7 +22,7 @@ export default function PathTracker({ children }: PathTrackerProps) {
       } else if (isCmsUser && !isStateUser) {
         detectedRole = "cms";
       } else if (isStateUser && isCmsUser) {
-        detectedRole = "state";
+        detectedRole = "cms";
       }
       setRole(detectedRole);
     } catch (e) {
