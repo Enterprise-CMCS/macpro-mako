@@ -22,7 +22,6 @@ function getAbsolutePath(value: string): any {
 const config: StorybookConfig = {
   env: (config) => ({
     ...config,
-    VITE_MODE: "storybook",
     VITE_API_REGION: REGION,
     VITE_API_URL: API_ENDPOINT,
     VITE_NODE_ENV: "development",
