@@ -14,6 +14,11 @@ export function useAvailableStates(
   const isNewUserRoleDisplay = useFeatureFlag("SHOW_USER_ROLE_UPDATE");
   const stateAccessMap = useStateAccessMap(stateAccessList ?? []);
   return useMemo(() => {
+    const formatOption = ({ label, value }: (typeof FULL_CENSUS_STATES)[number]) => ({
+      label: isNewUserRoleDisplay ? `${label}, ${value}` : label,
+      value,
+    });
+
     if (!stateAccessList) {
       return FULL_CENSUS_STATES.map(({ label, value }) => ({
         label: isNewUserRoleDisplay ? `${label}, ${value}` : label,
@@ -21,19 +26,15 @@ export function useAvailableStates(
       }));
     }
 
-    return FULL_CENSUS_STATES.filter(({ value }) => {
-      const assignedRoles = stateAccessMap[value] ?? new Set();
+    // Check if user has all possible roles for this state (Feature Flag ON)
+    // Show states user doesn't have access to for role being requested (Feature Flag OFF)
+    const shouldIncludeState = (stateCode: string) => {
+      const activeStates = stateAccessMap[stateCode] ?? new Set<UserRole>();
+      return isNewUserRoleDisplay
+        ? !STATE_ROLES.every((role) => activeStates.has(role))
+        : !activeStates.has(roleToRequest);
+    };
 
-      // Show states user doesn't have access to for role being requested
-      if (!isNewUserRoleDisplay) {
-        return !assignedRoles.has(roleToRequest);
-      }
-
-      // Check if user has all possible roles for this state
-      return !STATE_ROLES.every((role) => assignedRoles.has(role));
-    }).map(({ label, value }) => ({
-      label: isNewUserRoleDisplay ? `${label}, ${value}` : label,
-      value,
-    }));
+    return FULL_CENSUS_STATES.filter(({ value }) => shouldIncludeState(value)).map(formatOption);
   }, [roleToRequest, stateAccessList, stateAccessMap, isNewUserRoleDisplay]);
 }
