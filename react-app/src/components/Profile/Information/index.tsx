@@ -1,9 +1,13 @@
+import { UserRole } from "shared-types/events/legacy-user";
+import { userRoleMap } from "shared-utils";
+
 import { useFeatureFlag } from "@/hooks/useFeatureFlag";
 
 import { EditableGroupAndDivision } from "./EditableGroupAndDivision";
+
 export type UserInformationProps = {
   fullName: string;
-  role: string;
+  role: UserRole;
   email: string;
   group?: string;
   division?: string;
@@ -34,7 +38,7 @@ export const UserInformation = ({
       {!isNewUserRoleDisplay && (
         <div className="leading-9">
           <h3 className="font-bold">Role</h3>
-          <p>{role}</p>
+          <p>{userRoleMap[role]}</p>
         </div>
       )}
 
@@ -43,12 +47,14 @@ export const UserInformation = ({
         <p>{email}</p>
       </div>
 
-      <EditableGroupAndDivision
-        group={group}
-        division={division}
-        email={email}
-        allowEdits={allowEdits}
-      />
+      {role !== "statesubmitter" && role !== "helpdesk" && role !== "statesystemadmin" && (
+        <EditableGroupAndDivision
+          group={group}
+          division={division}
+          email={email}
+          allowEdits={allowEdits}
+        />
+      )}
     </div>
   );
 };

@@ -29,6 +29,7 @@ import {
   DialogHeader,
   DialogTitle,
 } from "@/components/Dialog";
+import { BLANK_VALUE } from "@/consts";
 import { divisionsType, groupDivision } from "@/features/sign-up/groupDivision";
 
 const groupDivisionSchema = z.object({
@@ -98,7 +99,7 @@ const GroupAndDivisionForm = ({
   return (
     <DialogContent onEscapeKeyDown={handleEscapeKeyDown} onInteractOutside={handleInteractOutside}>
       <DialogHeader>
-        <DialogTitle>Select your Group and Division</DialogTitle>
+        <DialogTitle>Select a Group and Division</DialogTitle>
       </DialogHeader>
       <DialogDescription className="sr-only">
         This form will collect the necessary details to edit your group and division. Please fill
@@ -274,9 +275,7 @@ export const EditableGroupAndDivision = ({
         )}
       </h3>
 
-      <p>
-        {group || "N/A"}/{division || "N/A"}
-      </p>
+      <p>{group && division ? `${group}/${division}` : `${BLANK_VALUE} ${BLANK_VALUE}`}</p>
 
       <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
         <GroupAndDivisionForm

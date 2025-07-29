@@ -2,7 +2,6 @@ import { PlusIcon } from "lucide-react";
 import { useEffect, useMemo, useState } from "react";
 import { Navigate } from "react-router";
 import { StateCode } from "shared-types";
-import { userRoleMap } from "shared-utils";
 
 import { useGetUserDetails, useGetUserProfile, useSubmitRoleRequests } from "@/api";
 import {
@@ -231,7 +230,7 @@ export const MyProfile = () => {
         <div className="flex flex-col md:flex-row">
           <UserInformation
             fullName={userDetails?.fullName}
-            role={userRoleMap[userDetails?.role]}
+            role={userDetails?.role}
             email={userDetails?.email}
             allowEdits
             group={userDetails.group}
