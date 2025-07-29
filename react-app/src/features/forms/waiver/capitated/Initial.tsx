@@ -61,7 +61,7 @@ export const InitialForm = () => (
                   ref={field.ref}
                   value={field.value}
                   onChange={(e) => field.onChange(e.currentTarget.value.toUpperCase())}
-                  id="waiver-number-format"
+                  aria-describedby="waiver-number-format"
                 />
               </FormControl>
               <FormMessage />

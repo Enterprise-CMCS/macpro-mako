@@ -1,6 +1,7 @@
 import type * as LabelPrimitive from "@radix-ui/react-label";
 import { Slot } from "@radix-ui/react-slot";
 import * as React from "react";
+import { useEffect, useRef, useState } from "react";
 import {
   Controller,
   ControllerProps,
@@ -128,12 +129,33 @@ const FormDescription = React.forwardRef<
 });
 FormDescription.displayName = "FormDescription";
 
+// Screen readers re-read a live region only if its text content changes.
+// When announceOn changes, it triggers re-announce
 const FormMessage = React.forwardRef<
   HTMLParagraphElement,
-  React.HTMLAttributes<HTMLParagraphElement> & { className?: string }
->(({ className, children, ...props }, ref) => {
+  React.HTMLAttributes<HTMLParagraphElement> & {
+    className?: string;
+    announceOn?: unknown;
+    debounceMs?: number;
+  }
+>(({ className, children, announceOn, debounceMs = 1000, ...props }, ref) => {
   const { error, formMessageId } = useFormField();
+  const [announceCounter, setAnnounceCounter] = useState(0);
+  const timeoutRef = useRef<number | null>(null);
+
   const body = error && !Array.isArray(error) ? String(error?.message) : children;
+  const shouldAnnounce = !!body;
+
+  useEffect(() => {
+    if (!shouldAnnounce) return;
+    if (timeoutRef.current) clearTimeout(timeoutRef.current);
+    timeoutRef.current = window.setTimeout(() => {
+      setAnnounceCounter((n) => n + 1);
+    }, debounceMs) as unknown as number;
+    return () => {
+      if (timeoutRef.current) clearTimeout(timeoutRef.current);
+    };
+  }, [announceOn, body, shouldAnnounce, debounceMs]);
 
   if (!body) {
     return null;
@@ -143,11 +165,14 @@ const FormMessage = React.forwardRef<
     <p
       ref={ref}
       id={formMessageId}
+      role="status"
       aria-live="polite"
       className={cn("text-[0.8rem] font-medium text-destructive", className)}
       {...props}
     >
       {body}
+      {/* Invisible text that changes every keystroke so screen recoders re-read error */}
+      {shouldAnnounce && <span className="sr-only">invalid {announceCounter}</span>}
     </p>
   );
 });
