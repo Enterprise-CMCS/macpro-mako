@@ -28,7 +28,7 @@ const LegacyWithdrawRoleModal = ({ open, selfRevokeRole, onAccept, onCancel }: M
 const WithdrawPendingRoleModal = ({ open, onAccept, onCancel }: ModalProps) => (
   <ConfirmationDialog
     open={open}
-    title="Withdraw Role Request?"
+    title="Withdraw role request?"
     body="This role is still pending approval. Withdrawing it will cancel your request."
     aria-labelledby="Self Withdraw Pending Access Modal"
     acceptButtonText="Withdraw request"
@@ -49,7 +49,7 @@ const RemoveActiveRoleModal = ({ open, selfRevokeRole, onAccept, onCancel }: Mod
       title={
         <div className="mr-4">
           Withdraw {stateDisplay}
-          {newUserRoleMap[selfRevokeRole.role]} Access?
+          {newUserRoleMap[selfRevokeRole.role].toLowerCase()} access?
         </div>
       }
       body={`This action cannot be undone. The ${stateDisplay}${newUserRoleMap[approvingRole]} will be notified of this change.`}
