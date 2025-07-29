@@ -28,13 +28,13 @@ export function useAvailableStates(
 
     // Check if user has all possible roles for this state (Feature Flag ON)
     // Show states user doesn't have access to for role being requested (Feature Flag OFF)
-    const shouldIncludeState = (stateCode: string) => {
+    const statesToRequest = (stateCode: string) => {
       const activeStates = stateAccessMap[stateCode] ?? new Set<UserRole>();
       return isNewUserRoleDisplay
         ? !STATE_ROLES.every((role) => activeStates.has(role))
         : !activeStates.has(roleToRequest);
     };
 
-    return FULL_CENSUS_STATES.filter(({ value }) => shouldIncludeState(value)).map(formatOption);
+    return FULL_CENSUS_STATES.filter(({ value }) => statesToRequest(value)).map(formatOption);
   }, [roleToRequest, stateAccessList, stateAccessMap, isNewUserRoleDisplay]);
 }
