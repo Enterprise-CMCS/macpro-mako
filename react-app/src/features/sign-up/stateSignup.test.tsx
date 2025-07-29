@@ -101,8 +101,8 @@ describe("StateSignup", () => {
     const { user } = await setup();
 
     await user.click(screen.getByRole("combobox"));
-    await waitFor(() => expect(screen.getByText("California")).toBeInTheDocument());
-    await user.click(screen.getByText("California"));
+    await waitFor(() => expect(screen.getByText("California, CA")).toBeInTheDocument());
+    await user.click(screen.getByText("California, CA"));
 
     const continueButton = screen.getByRole("button", { name: "Continue" });
 
