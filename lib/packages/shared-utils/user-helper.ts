@@ -98,9 +98,9 @@ export const newUserRoleMap = {
   defaultcmsuser: "CMS Read Only",
   cmsroleapprover: "CMS Role Approver",
   cmsreviewer: "CMS Read Only",
-  statesystemadmin: "State System Admin",
+  statesystemadmin: "State System Administrator",
   helpdesk: "Help Desk",
   statesubmitter: "State Submitter",
-  systemadmin: "CMS System Admin",
+  systemadmin: "CMS System Administrator",
   norole: "No Role",
 };
