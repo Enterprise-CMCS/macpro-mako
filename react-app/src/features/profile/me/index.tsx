@@ -34,6 +34,7 @@ export const MyProfile = () => {
   const {
     data: userProfile,
     isLoading: isProfileLoading,
+    isRefetching: isProfileRefetching,
     refetch: reloadUserProfile,
   } = useGetUserProfile();
 
@@ -80,9 +81,9 @@ export const MyProfile = () => {
       const pendingRequests = hasPendingRequests(userProfile?.stateAccess);
       setPendingRequests(pendingRequests);
     }
-  }, [isDetailLoading, isProfileLoading, userProfile]);
+  }, [isDetailLoading, isProfileLoading, userProfile, userProfile?.stateAccess]);
 
-  if (isDetailLoading || isProfileLoading) {
+  if (isDetailLoading || isProfileLoading || isProfileRefetching) {
     return <LoadingSpinner />;
   }
 
@@ -127,6 +128,8 @@ export const MyProfile = () => {
     );
   };
 
+  const delay = (milliseconds) => new Promise((resolve) => setTimeout(resolve, milliseconds));
+
   const handleSubmitRequest = async () => {
     try {
       for (const state of requestedStates) {
@@ -141,6 +144,7 @@ export const MyProfile = () => {
 
       setShowAddState(true);
       setRequestedStates([]);
+      await delay(500);
       await reloadUserProfile();
 
       banner({
@@ -173,6 +177,7 @@ export const MyProfile = () => {
       });
 
       setSelfRevokeState(null);
+      await delay(500);
       await reloadUserProfile();
 
       banner({
@@ -231,7 +236,7 @@ export const MyProfile = () => {
         <div className="flex flex-col md:flex-row">
           <UserInformation
             fullName={userDetails?.fullName}
-            role={userRoleMap[userDetails?.role]}
+            role={userRoleMap[userDetails?.role] ?? "No role requested"}
             email={userDetails?.email}
             allowEdits
             groupDivision={
@@ -264,16 +269,20 @@ export const MyProfile = () => {
                   onAccept={handleDialogOnAccept}
                   onCancel={handleDialogOnCancel}
                 />
-                {orderedRoleStatus?.map((access) => (
-                  <RoleStatusCard
-                    key={`${access.territory}-${access.role}`}
-                    access={access}
-                    role={userDetails.role}
-                    onClick={() =>
-                      handleRoleStatusClick(access.status, access.territory as StateCode)
-                    }
-                  />
-                ))}
+                {orderedRoleStatus && orderedRoleStatus.length ? (
+                  orderedRoleStatus?.map((access) => (
+                    <RoleStatusCard
+                      key={`${access.territory}-${access.role}`}
+                      access={access}
+                      role={userDetails.role}
+                      onClick={() =>
+                        handleRoleStatusClick(access.status, access.territory as StateCode)
+                      }
+                    />
+                  ))
+                ) : (
+                  <p className="my-6">No role requested</p>
+                )}
                 {isNewUserRoleDisplay && !hideAddRoleButton ? (
                   <Button
                     className="w-full border-dashed p-10 text-black font-normal"
