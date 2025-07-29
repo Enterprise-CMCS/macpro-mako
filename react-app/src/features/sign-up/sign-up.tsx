@@ -1,7 +1,9 @@
+import { Navigate } from "react-router";
 import { UserRole } from "shared-types/events/legacy-user";
 
 import { useGetUserDetails } from "@/api";
 import { LoadingSpinner, OptionCard, OptionFieldset, SubNavHeader } from "@/components";
+import { useFeatureFlag } from "@/hooks/useFeatureFlag";
 
 type UserRoleWithNoRole = UserRole;
 type RoleOptions = {
@@ -14,9 +16,12 @@ type RoleOptions = {
 
 export const SignUp = () => {
   const { data: userDetails } = useGetUserDetails();
+  const isNewUserRoleDisplay = useFeatureFlag("SHOW_USER_ROLE_UPDATE");
   if (!userDetails) return <LoadingSpinner />;
 
   const role = userDetails.role;
+  if (role && isNewUserRoleDisplay) return <Navigate to="/profile" />;
+
   // helpdesk, system admins, and cms reviewer users don't even see request role as an option
   const roleOptions = [
     {

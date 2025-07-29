@@ -102,7 +102,7 @@ export const StateSignup = () => {
         open={showModal}
         title="Cancel role request?"
         body="Changes you made will not be saved."
-        onAccept={() => navigate("/signup")}
+        onAccept={() => navigate(isNewUserRoleDisplay ? "/profile" : "/signup")}
         onCancel={() => setShowModal(false)}
         cancelButtonText="Stay on Page"
         acceptButtonText="Confirm"
