@@ -10,10 +10,9 @@ import {
 } from "mocks";
 import { mockedProducer } from "mocks/helpers/kafka.utils";
 import { mockedServiceServer as mockedServer } from "mocks/server";
-import { beforeEach, describe, expect, it, vi } from "vitest";
+import { beforeEach, describe, expect, it } from "vitest";
 
 import { handler } from "./submitGroupDivision";
-import * as UserManagementService from "./userManagementService";
 
 describe("submitGroupDivision handler", () => {
   beforeEach(() => {
@@ -81,7 +80,7 @@ describe("submitGroupDivision handler", () => {
   });
 
   it("should return a 404 if the user is not found", async () => {
-    vi.spyOn(UserManagementService, "getUserByEmail").mockResolvedValueOnce(null);
+    setMockUsername(CMS_ROLE_APPROVER_USERNAME);
 
     const event = {
       body: JSON.stringify({
@@ -89,6 +88,7 @@ describe("submitGroupDivision handler", () => {
         group: "Group1",
         division: "Division1",
       }),
+      requestContext: getRequestContext(),
     };
 
     const res = await handler(event, {} as Context);
