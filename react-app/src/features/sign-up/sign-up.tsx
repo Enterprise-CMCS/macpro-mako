@@ -68,7 +68,7 @@ export const SignUp = () => {
   return (
     <div>
       <SubNavHeader>
-        <h1 className="text-xl font-medium">${subHeaderText}</h1>
+        <h1 className="text-xl font-medium">{subHeaderText}</h1>
       </SubNavHeader>
       <OptionFieldset legend={optionsText}>
         {displayRoleOptions.map((role) => (
