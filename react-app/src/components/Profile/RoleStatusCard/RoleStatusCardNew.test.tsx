@@ -1,6 +1,6 @@
 import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
-import { describe, expect, it } from "vitest";
+import { describe, expect, it, vi } from "vitest";
 
 import { RoleStatusCardNew } from "./RoleStatusCardNew";
 
@@ -14,6 +14,7 @@ describe("RoleStatusCardNew", () => {
           role: "defaultcmsuser",
           status: "active",
         }}
+        onClick={vi.fn()}
       />,
     );
     expect(screen.queryByTestId("self-revoke")).toBeNull();
@@ -28,6 +29,7 @@ describe("RoleStatusCardNew", () => {
           role: "cmsroleapprover",
           status: "pending",
         }}
+        onClick={vi.fn()}
       />,
     );
     expect(screen.getByTestId("self-revoke")).toBeInTheDocument();
@@ -42,6 +44,7 @@ describe("RoleStatusCardNew", () => {
           role: "statesubmitter",
           status: "active",
         }}
+        onClick={vi.fn()}
       />,
     );
     expect(screen.getByTestId("self-revoke")).toBeInTheDocument();
@@ -57,6 +60,7 @@ describe("RoleStatusCardNew", () => {
           role: "cmsroleapprover",
           status: "pending",
         }}
+        onClick={vi.fn()}
       />,
     );
     await user.click(screen.getByTestId("self-revoke"));
@@ -73,6 +77,7 @@ describe("RoleStatusCardNew", () => {
           role: "statesubmitter",
           status: "active",
         }}
+        onClick={vi.fn()}
       />,
     );
     await user.click(screen.getByTestId("self-revoke"));
