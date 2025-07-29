@@ -2,35 +2,32 @@ import { PlusIcon } from "lucide-react";
 import { useEffect, useMemo, useState } from "react";
 import { Navigate } from "react-router";
 import { StateCode } from "shared-types";
-import { Territory } from "shared-types/events/legacy-user";
 import { userRoleMap } from "shared-utils";
 
-import { StateAccess, useGetUserDetails, useGetUserProfile, useSubmitRoleRequests } from "@/api";
+import { useGetUserDetails, useGetUserProfile, useSubmitRoleRequests } from "@/api";
 import {
   banner,
   Button,
   CardWithTopBorder,
+  ConfirmationDialog,
   GroupAndDivision,
   LoadingSpinner,
   RoleStatusCard,
   SubNavHeader,
   UserInformation,
-  WithdrawRoleModal,
 } from "@/components";
 import { Option } from "@/components/Opensearch/main/Filtering/Drawer/Filterable";
 import { FilterableSelect } from "@/components/Opensearch/main/Filtering/Drawer/Filterable";
 import { useAvailableStates } from "@/hooks/useAvailableStates";
 import { useFeatureFlag } from "@/hooks/useFeatureFlag";
 
-import { filterRoleStatus, hasPendingRequests, orderRoleStatus, stateAccessRoles } from "../utils";
-
-export interface SelfRevokeAcess extends StateAccess {
-  isNewUserRoleDisplay: boolean;
-}
-
-export interface SelfRevokeAcess extends StateAccess {
-  isNewUserRoleDisplay: boolean;
-}
+import {
+  filterRoleStatus,
+  getConfirmationModalText,
+  hasPendingRequests,
+  orderRoleStatus,
+  stateAccessRoles,
+} from "../utils";
 
 export const MyProfile = () => {
   const { data: userDetails, isLoading: isDetailLoading } = useGetUserDetails();
@@ -44,9 +41,8 @@ export const MyProfile = () => {
   const isNewUserRoleDisplay = useFeatureFlag("SHOW_USER_ROLE_UPDATE");
 
   const { mutateAsync: submitRequest, isLoading: areRolesLoading } = useSubmitRoleRequests();
-
-  const [selfRevokeRole, setSelfRevokeRole] = useState<SelfRevokeAcess | null>(null);
-
+  const [selfRevokeState, setSelfRevokeState] = useState<StateCode | null>(null);
+  const [selfWithdrawPending, setSelfWithdrawPending] = useState<boolean>(false);
   const [showAddState, setShowAddState] = useState<boolean>(true);
   const [requestedStates, setRequestedStates] = useState<StateCode[]>([]);
   const [pendingRequests, setPendingRequests] = useState<boolean>(false);
@@ -173,33 +169,23 @@ export const MyProfile = () => {
     try {
       await submitRequest({
         email: userDetails.email,
-        state: selfRevokeRole.territory as Territory,
+        state: selfRevokeState,
         role: userDetails.role,
         eventType: "user-role",
         requestRoleChange: false,
         grantAccess: "revoked",
       });
 
-      setSelfRevokeRole(null);
+      setSelfRevokeState(null);
       await delay(500);
       await reloadUserProfile();
 
-      if (isNewUserRoleDisplay) {
-        banner({
-          header: "Role Removed",
-          body: "You have successfully removed this role from your account.",
-          variant: "success",
-          pathnameToDisplayOn: window.location.pathname,
-        });
-      } else {
-        banner({
-          header: "Submission Completed",
-          body: "Your submission has been received.",
-          variant: "success",
-          pathnameToDisplayOn: window.location.pathname,
-        });
-      }
-
+      banner({
+        header: "Submission Completed",
+        body: "Your submission has been received.",
+        variant: "success",
+        pathnameToDisplayOn: window.location.pathname,
+      });
       window.scrollTo(0, 0);
     } catch (error) {
       banner({
@@ -212,25 +198,28 @@ export const MyProfile = () => {
     }
   };
 
-  const handleRoleStatusClick = (access: StateAccess) => {
-    setSelfRevokeRole({ isNewUserRoleDisplay, ...access });
+  const handleRoleStatusClick = (status: string, territory: StateCode) => {
+    if (status === "pending" && isNewUserRoleDisplay) return setSelfWithdrawPending(true);
+    return setSelfRevokeState(territory);
   };
 
+  const { dialogTitle, dialogBody, ariaLabelledBy } = getConfirmationModalText(
+    selfRevokeState,
+    selfWithdrawPending,
+  );
+
   const handleDialogOnAccept = async () => {
-    if (
-      !selfRevokeRole.isNewUserRoleDisplay ||
-      (selfRevokeRole.status !== "pending" && selfRevokeRole.role === "statesubmitter")
-    ) {
-      await handleSelfRevokeAccess();
-    } else if (selfRevokeRole.status !== "pending") {
-      // TODO: add in logic for other users to be able to self revoke
-      console.log("self revoke role");
-      setSelfRevokeRole(null);
-    } else {
+    if (selfRevokeState) await handleSelfRevokeAccess();
+    else {
       // TODO: add in the logic to remove pending request move state change into that function
       console.log("Withdraw pending request");
-      setSelfRevokeRole(null);
+      setSelfWithdrawPending(false);
     }
+  };
+
+  const handleDialogOnCancel = () => {
+    setSelfRevokeState(null);
+    setSelfWithdrawPending(false);
   };
 
   const showAllStateAccess = isNewUserRoleDisplay
@@ -271,20 +260,24 @@ export const MyProfile = () => {
                   </h2>
                 )}
                 {/* TODO: Get state system admin for that state */}
-                <WithdrawRoleModal
-                  open={selfRevokeRole !== null}
-                  selfRevokeRole={selfRevokeRole}
+                <ConfirmationDialog
+                  open={selfRevokeState !== null || selfWithdrawPending}
+                  title={dialogTitle}
+                  body={dialogBody}
+                  acceptButtonText="Confirm"
+                  aria-labelledby={ariaLabelledBy}
                   onAccept={handleDialogOnAccept}
-                  onCancel={() => setSelfRevokeRole(null)}
+                  onCancel={handleDialogOnCancel}
                 />
-
                 {orderedRoleStatus && orderedRoleStatus.length ? (
                   orderedRoleStatus?.map((access) => (
                     <RoleStatusCard
                       key={`${access.territory}-${access.role}`}
                       access={access}
                       role={userDetails.role}
-                      onClick={() => handleRoleStatusClick(access)}
+                      onClick={() =>
+                        handleRoleStatusClick(access.status, access.territory as StateCode)
+                      }
                     />
                   ))
                 ) : (
