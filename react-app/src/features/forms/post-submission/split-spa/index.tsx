@@ -21,17 +21,11 @@ import {
 import { formSchemas } from "@/formSchemas";
 
 export const SplitSpaForm = () => {
-  const { data: user } = useGetUser();
   const { authority, id } = useParams();
 
   const authorityType = useMemo(() => authority.replace("SPA", "").trim(), [authority]);
 
   return (
-    // <div>
-    //   <div>Id: {id}</div>
-    //   <div>Authority: {authority}</div>
-    //   <div>User: {JSON.stringify(user)}</div>
-    // </div>
     <ActionForm
       schema={formSchemas["split-spa"]}
       title={`Split SPA ${authorityType} ${id}`}
@@ -47,14 +41,16 @@ export const SplitSpaForm = () => {
       }
       fields={({ control, setValue }) => (
         <>
-          <div className="-mb-4">
-            <p className="font-semibold">SPA ID</p>
-            <div className="leading-[1.62]">{id}</div>
-          </div>
-          <div className="-mb-4">
-            <p className="font-semibold">Type</p>
-            <div className="leading-[1.62]">{authority}</div>
-          </div>
+          <section className="flex flex-col space-y-8">
+            <div>
+              <p className="font-bold">SPA ID</p>
+              <p className="text-xl">{id}</p>
+            </div>
+            <div>
+              <p className="font-bold">Type</p>
+              <p className="text-xl">{authority}</p>
+            </div>
+          </section>
           <FormField
             control={control}
             name="split"
@@ -108,7 +104,8 @@ export const SplitSpaForm = () => {
       additionalInformation={false}
       conditionsDeterminingUserAccess={[isCmsWriteUser]}
       showPreSubmissionMessage={false}
-      // showFAQFooter={false}
+      shouldShowMedSpaFooter
+      showFAQFooter={false}
     />
   );
 };
