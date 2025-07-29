@@ -15,12 +15,14 @@ export const FilterableSelect: FC<{
   placeholder?: string;
   onChange: (values: string[]) => void;
   selectedDisplay?: keyof Option;
-}> = ({ options, value, placeholder, onChange, selectedDisplay = "value" }) => {
+  ariaLabel?: string;
+}> = ({ options, value, placeholder, onChange, selectedDisplay = "value", ariaLabel }) => {
   const getLabel = (value) => {
     if (selectedDisplay !== "label") return value;
-    const selected = options.filter((option) => option.value === value);
+    const selected = options.filter((option: Option) => option.value === value) as Option[];
     return selected[0].label;
   };
+
   return (
     <Select<any, any>
       isMulti
@@ -28,7 +30,15 @@ export const FilterableSelect: FC<{
       onChange={(value) => onChange(value.map((selected: any) => selected.value))}
       options={options}
       closeMenuOnSelect={false}
+      blurInputOnSelect={false}
       placeholder={placeholder}
+      autoFocus
+      tabSelectsValue={false}
+      aria-label={ariaLabel}
+      onBlur={(event) => {
+        const header = document.getElementById(event.relatedTarget.id);
+        header?.focus();
+      }}
     />
   );
 };
