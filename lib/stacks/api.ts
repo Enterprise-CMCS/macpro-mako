@@ -192,7 +192,8 @@ export class Api extends cdk.NestedStack {
           osDomain: `https://${openSearchDomainEndpoint}`,
           indexNamespace,
           dbInfoSecretName,
-          topicName
+          topicName,
+          brokerString
         },
       },
       {
