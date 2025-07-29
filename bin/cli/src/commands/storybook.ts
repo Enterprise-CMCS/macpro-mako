@@ -26,8 +26,11 @@ export const storybook = {
   handler: async (options: { "start-only"?: boolean; "build-only"?: boolean }) => {
     if (options["start-only"]) {
       await runCommand("bun", ["run", "storybook"], "react-app");
+    } else if (options["build-only"]) {
+      await runCommand("bun", ["run", "build-storybook"], "react-app");
     } else {
       await runCommand("bun", ["run", "build-storybook"], "react-app");
+      await runCommand("bun", ["run", "storybook"], "react-app");
     }
   },
 };
