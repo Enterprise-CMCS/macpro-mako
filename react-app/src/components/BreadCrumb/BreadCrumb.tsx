@@ -21,7 +21,7 @@ export const BreadCrumbs = ({ options }: BreadCrumbsProps) => {
   return (
     <BreadCrumbBar>
       {defaultBreadCrumb && (
-        <BreadCrumb to={defaultBreadCrumb.to} showSeperator={false}>
+        <BreadCrumb to={defaultBreadCrumb.to} showSeparator={false}>
           {defaultBreadCrumb.displayText}
         </BreadCrumb>
       )}
@@ -43,8 +43,8 @@ export const BreadCrumbs = ({ options }: BreadCrumbsProps) => {
 type BreadCrumbProps = {
   to: string;
   active?: boolean;
-  showSeperator?: boolean;
-  seperator?: ReactNode;
+  showSeparator?: boolean;
+  separator?: ReactNode;
   children?: string;
 };
 
@@ -81,14 +81,14 @@ const triggerGAEvent = (children: string | undefined) => {
 
 export const BreadCrumb = ({
   to,
-  seperator = <BreadCrumbSeperator />,
-  showSeperator = true,
+  separator = <BreadCrumbSeparator />,
+  showSeparator = true,
   active = true,
   children,
 }: React.PropsWithChildren<BreadCrumbProps>) => {
   return (
     <li className="flex items-center text-sm">
-      {showSeperator && <span>{seperator}</span>}
+      {showSeparator && <span>{separator}</span>}
 
       {active && (
         <Link
@@ -110,7 +110,7 @@ export const BreadCrumb = ({
   );
 };
 
-export const BreadCrumbSeperator = () => <ChevronRight className="w-5 h-5" />;
+export const BreadCrumbSeparator = () => <ChevronRight className="w-5 h-5" />;
 
 export const BreadCrumbBar = ({ children }: React.PropsWithChildren) => {
   return (

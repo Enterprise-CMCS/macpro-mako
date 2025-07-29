@@ -247,7 +247,7 @@ export const MyProfile = () => {
         <div className="flex flex-col md:flex-row">
           <UserInformation
             fullName={userDetails?.fullName}
-            role={userRoleMap[userDetails?.role]}
+            role={userRoleMap[userDetails?.role] ?? "No role requested"}
             email={userDetails?.email}
             allowEdits
             groupDivision={
@@ -277,14 +277,22 @@ export const MyProfile = () => {
                   onAccept={handleDialogOnAccept}
                   onCancel={() => setSelfRevokeRole(null)}
                 />
-                {orderedRoleStatus?.map((access) => (
-                  <RoleStatusCard
-                    key={`${access.territory}-${access.role}`}
-                    access={access}
-                    role={userDetails.role}
-                    onClick={() => handleRoleStatusClick(access)}
-                  />
-                ))}
+
+                {orderedRoleStatus && orderedRoleStatus.length ? (
+                  orderedRoleStatus?.map((access) => (
+                    <RoleStatusCard
+                      key={`${access.territory}-${access.role}`}
+                      access={access}
+                      role={userDetails.role}
+                      onClick={() =>
+                        handleRoleStatusClick(access.status, access.territory as StateCode)
+                      }
+                    />
+                  ))
+                ) : (
+                  <p className="my-6">No role requested</p>
+                )}
+                
                 {isNewUserRoleDisplay && !hideAddRoleButton ? (
                   <Button
                     className="w-full border-dashed p-10 text-black font-normal"
