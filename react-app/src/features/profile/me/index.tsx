@@ -284,15 +284,12 @@ export const MyProfile = () => {
                       key={`${access.territory}-${access.role}`}
                       access={access}
                       role={userDetails.role}
-                      onClick={() =>
-                        handleRoleStatusClick(access.status, access.territory as StateCode)
-                      }
+                      onClick={() => handleRoleStatusClick(access)}
                     />
                   ))
                 ) : (
                   <p className="my-6">No role requested</p>
                 )}
-                
                 {isNewUserRoleDisplay && !hideAddRoleButton ? (
                   <Button
                     className="w-full border-dashed p-10 text-black font-normal"
