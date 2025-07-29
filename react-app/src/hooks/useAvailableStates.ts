@@ -15,7 +15,10 @@ export function useAvailableStates(
   const stateAccessMap = useStateAccessMap(stateAccessList ?? []);
   return useMemo(() => {
     if (!stateAccessList) {
-      return FULL_CENSUS_STATES.map(({ label, value }) => ({ label, value }));
+      return FULL_CENSUS_STATES.map(({ label, value }) => ({
+        label: isNewUserRoleDisplay ? `${label}, ${value}` : label,
+        value,
+      }));
     }
 
     return FULL_CENSUS_STATES.filter(({ value }) => {
@@ -28,6 +31,9 @@ export function useAvailableStates(
 
       // Check if user has all possible roles for this state
       return !STATE_ROLES.every((role) => assignedRoles.has(role));
-    }).map(({ label, value }) => ({ label, value }));
+    }).map(({ label, value }) => ({
+      label: isNewUserRoleDisplay ? `${label}, ${value}` : label,
+      value,
+    }));
   }, [roleToRequest, stateAccessList, stateAccessMap, isNewUserRoleDisplay]);
 }
