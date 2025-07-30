@@ -3,6 +3,7 @@ import { UserRole } from "shared-types/events/legacy-user";
 
 import { useGetUserDetails, useGetUserProfile, useSubmitRoleRequests } from "@/api";
 import { banner, Button, LoadingSpinner, SimplePageContainer, SubNavHeader } from "@/components";
+import { queryClient } from "@/utils";
 
 import { roleOptions } from "./sign-up";
 
@@ -42,6 +43,7 @@ export const CMSConfirmation = () => {
       });
 
       // refetch profile into cache to ensure we show new role request on profile page
+      queryClient.invalidateQueries({ queryKey: ["profile"] });
       await reloadUserProfile();
 
       const redirectPath = "/profile";
