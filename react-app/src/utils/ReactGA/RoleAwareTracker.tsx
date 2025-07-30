@@ -1,7 +1,8 @@
 // src/components/RoleAwareTracker.tsx
 import { useEffect, useState } from "react";
 import { isCmsUser, isStateUser } from "shared-utils";
-
+import { useGetUser } from "@/api";
+const { data: userObj } = useGetUser();
 import PathTracker from "./PathTracker"; // adjust path if needed
 
 type UserRole = "cms" | "state";
@@ -38,14 +39,11 @@ export function RoleAwareTracker({ children }: { children: React.ReactNode }) {
 
     try {
       let role: UserRole | null = null;
-      if (isStateUser && !isCmsUser) {
+      if (isCmsUser(userObj.user)) {
+        role = "cms";
+      } else if (isStateUser(userObj.user)) {
         role = "state";
-      } else if (isCmsUser && !isStateUser) {
-        role = "cms";
-      } else if (isStateUser && isCmsUser) {
-        role = "cms";
-      }
-
+      } 
       if (role) {
         setUserRole(role);
         setGAUserRoleOnce(role);

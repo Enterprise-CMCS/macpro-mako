@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import { isCmsUser, isStateUser } from "shared-utils";
-
+import { useGetUser } from "@/api";
+const { data: userObj } = useGetUser();
 import { sendGAEvent } from "./SendGAEvent";
 
 type PathTrackerProps = {
@@ -12,17 +13,15 @@ export default function PathTracker({ children }: PathTrackerProps) {
   const prevPathRef = useRef<string>(window.location.pathname);
   const startTimeRef = useRef<number>(Date.now());
 
-  const [role, setRole] = useState<"state" | "cms" | null>(null);
+  const [role, setRole] = useState(null);
 
   useEffect(() => {
     try {
       let detectedRole;
-      if (isStateUser && !isCmsUser) {
+      if (isCmsUser(userObj.user)) {
+        detectedRole = "cms";
+      } else if (isStateUser(userObj.user)) {
         detectedRole = "state";
-      } else if (isCmsUser && !isStateUser) {
-        detectedRole = "cms";
-      } else if (isStateUser && isCmsUser) {
-        detectedRole = "cms";
       }
       setRole(detectedRole);
     } catch (e) {
@@ -38,7 +37,7 @@ export default function PathTracker({ children }: PathTrackerProps) {
       sendGAEvent("page_view", {
         page_path: path,
         referrer: prevPathRef.current || "",
-        user_role: role,
+        user_role: role
       });
     };
 
