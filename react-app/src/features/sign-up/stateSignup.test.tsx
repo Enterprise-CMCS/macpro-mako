@@ -8,14 +8,27 @@ import {
   setMockUsername,
 } from "mocks";
 import { mockedApiServer as mockedServer } from "mocks/server";
-import { describe, expect, it } from "vitest";
+import { beforeEach, describe, expect, it, vi } from "vitest";
 
 import { renderWithQueryClientAndMemoryRouter } from "@/utils/test-helpers";
 
 import { SignUp } from "./sign-up";
 import { StateSignup } from "./stateSignup";
 
+let mockUserRoleFeatureFlag = false;
+
+vi.mock("@/hooks/useFeatureFlag", () => ({
+  useFeatureFlag: (flag: string) => {
+    if (flag === "SHOW_USER_ROLE_UPDATE") return mockUserRoleFeatureFlag;
+    return false;
+  },
+}));
+
 describe("StateSignup", () => {
+  beforeEach(() => {
+    mockUserRoleFeatureFlag = false;
+  });
+
   const setup = async () => {
     const user = userEvent.setup();
     const rendered = renderWithQueryClientAndMemoryRouter(
@@ -71,6 +84,29 @@ describe("StateSignup", () => {
     await setup();
 
     expect(screen.getByText("Profile")).toBeInTheDocument();
+  });
+
+  it("should show the form if SHOW_USER_ROLE_UPDATE is enabled", async () => {
+    mockUserRoleFeatureFlag = true;
+    setMockUsername(osStateSystemAdmin);
+    await setup();
+
+    expect(screen.getByText("Choose States For Access")).toBeInTheDocument();
+    expect(screen.getByText("Select your State Access")).toBeInTheDocument();
+  });
+
+  it("should show continue signup if SHOW_USER_ROLE_UPDATE is enabled and user selects at least one state", async () => {
+    mockUserRoleFeatureFlag = true;
+    setMockUsername(osStateSystemAdmin);
+    const { user } = await setup();
+
+    await user.click(screen.getByRole("combobox"));
+    await waitFor(() => expect(screen.getByText("California, CA")).toBeInTheDocument());
+    await user.click(screen.getByText("California, CA"));
+
+    const continueButton = screen.getByRole("button", { name: "Continue" });
+
+    await user.click(continueButton);
   });
 
   it("should show the form if the user is a statesystemadmin", async () => {
