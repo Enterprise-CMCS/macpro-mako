@@ -99,7 +99,7 @@ export const AmendmentForm = ({ waiverId }: AmendmentFormProps) => {
                     aria-describedby="waiver-number-format"
                   />
                 </FormControl>
-                <FormMessage />
+                <FormMessage announceOn={field.value} />
               </FormItem>
             )}
           />

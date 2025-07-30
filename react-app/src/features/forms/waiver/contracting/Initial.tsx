@@ -62,7 +62,7 @@ export const InitialForm = () => {
                     aria-describedby="waiver-number-format"
                   />
                 </FormControl>
-                <FormMessage />
+                <FormMessage announceOn={field.value} />
               </FormItem>
             )}
           />

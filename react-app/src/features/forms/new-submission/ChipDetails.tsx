@@ -64,7 +64,7 @@ export const ChipDetailsForm = () => {
                     onChange={(e) => field.onChange(e.currentTarget.value.toUpperCase())}
                   />
                 </FormControl>
-                <FormMessage />
+                <FormMessage announceOn={field.value} />
               </FormItem>
             )}
           />
