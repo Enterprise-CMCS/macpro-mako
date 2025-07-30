@@ -119,7 +119,7 @@ export const oneMACFAQContent: FAQContent[] = [
       },
       {
         anchorText: "onemac-roles",
-        question: "What are the OneMAC user roles?",
+        question: "What are the OneMAC State user roles??",
         answerJSX: (
           <p>
             Please refer to the State role descriptions that can be found on page 4 of the{" "}
