@@ -51,9 +51,9 @@ jobs:
         uses: davelosert/vitest-coverage-report-action@v2
         with:
           json-summary-compare-path: main-coverage/coverage-summary.json
-          file-coverage-mode: all
+          file-coverage-mode: changes
       - name: Report Coverage (only PR)
         if: ${{ failure() }}
         uses: davelosert/vitest-coverage-report-action@v2
         with:
-          file-coverage-mode: all
+          file-coverage-mode: changes
