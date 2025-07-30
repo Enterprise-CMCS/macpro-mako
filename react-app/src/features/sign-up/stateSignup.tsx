@@ -151,11 +151,7 @@ export const StateSignup = () => {
                   />
                 ))}
               {!stateSelected.length && (
-                <p className="text-red-600 mt-3">
-                  {roleToRequest === "statesystemadmin"
-                    ? "Please select a state."
-                    : "Please select at least one state."}
-                </p>
+                <p className="text-red-600 mt-3">Please select at least one state.</p>
               )}
               <div className="py-4">
                 {isNewUserRoleDisplay ? (
