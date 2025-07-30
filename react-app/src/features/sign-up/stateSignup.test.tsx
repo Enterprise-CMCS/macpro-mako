@@ -12,7 +12,6 @@ import { describe, expect, it } from "vitest";
 
 import { renderWithQueryClientAndMemoryRouter } from "@/utils/test-helpers";
 
-import { SignUp } from "./sign-up";
 import { StateSignup } from "./stateSignup";
 
 describe("StateSignup", () => {
@@ -35,7 +34,7 @@ describe("StateSignup", () => {
         },
         {
           path: "/signup",
-          element: <SignUp />,
+          element: <div>Signup</div>,
         },
         {
           path: "/signup/state",
@@ -122,7 +121,7 @@ describe("StateSignup", () => {
     const confirmButton = screen.getByRole("button", { name: "Confirm" });
     await user.click(confirmButton);
 
-    expect(screen.getByText(/Registration: User Role/)).toBeInTheDocument();
+    await waitFor(() => expect(screen.getByText("Signup")).toBeInTheDocument());
   });
 
   it("should show an error if there was an error submitting the request", async () => {
