@@ -5,7 +5,6 @@ const { data: userObj } = useGetUser();
 import { sendGAEvent } from "./SendGAEvent";
 
 type PathTrackerProps = {
-  userRole: "state" | "cms";
   children: React.ReactNode;
 };
 

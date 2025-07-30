@@ -5,7 +5,6 @@ import { useGetUser } from "@/api";
 const { data: userObj } = useGetUser();
 import PathTracker from "./PathTracker"; // adjust path if needed
 
-type UserRole = "cms" | "state";
 
 function setGAUserRoleOnce(role: string) {
   if (typeof window === "undefined" || !window.gtag) return;
@@ -24,7 +23,7 @@ function setGAUserRoleOnce(role: string) {
  * 3) Maps that attribute string into either "state" or "cms".
  */
 export function RoleAwareTracker({ children }: { children: React.ReactNode }) {
-  const [userRole, setUserRole] = useState<UserRole | null>(null);
+  const [userRole, setUserRole] = useState("");
   useEffect(() => {
     // 1) Find the Local Storage key that contains "CognitoIdentityServiceProvider.*.userData"
     const allKeys = Object.keys(localStorage);
@@ -38,7 +37,7 @@ export function RoleAwareTracker({ children }: { children: React.ReactNode }) {
     }
 
     try {
-      let role: UserRole | null = null;
+      let role;
       if (isCmsUser(userObj.user)) {
         role = "cms";
       } else if (isStateUser(userObj.user)) {
@@ -54,5 +53,5 @@ export function RoleAwareTracker({ children }: { children: React.ReactNode }) {
       setUserRole("state");
     }
   }, []);
-  return <PathTracker userRole={userRole}>{children}</PathTracker>;
+  return <PathTracker>{children}</PathTracker>;
 }
