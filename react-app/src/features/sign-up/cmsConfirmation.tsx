@@ -1,7 +1,7 @@
 import { Navigate, useNavigate, useSearchParams } from "react-router";
 import { UserRole } from "shared-types/events/legacy-user";
 
-import { useGetUserDetails, useGetUserProfile, useSubmitRoleRequests } from "@/api";
+import { getUserProfile, useGetUserDetails, useGetUserProfile, useSubmitRoleRequests } from "@/api";
 import { banner, Button, LoadingSpinner, SimplePageContainer, SubNavHeader } from "@/components";
 import { queryClient } from "@/utils";
 
@@ -43,8 +43,9 @@ export const CMSConfirmation = () => {
       });
 
       // refetch profile into cache to ensure we show new role request on profile page
-      queryClient.invalidateQueries({ queryKey: ["profile"] });
-      await reloadUserProfile();
+      const freshProfile = await getUserProfile();
+      // Update the cache with the new data
+      queryClient.setQueryData(["profile"], freshProfile);
 
       const redirectPath = "/profile";
       banner({
