@@ -54,7 +54,7 @@ test.describe("FAQ page", { tag: ["@e2e", "@smoke", "@faq"] }, () => {
 
       test("displays OneMac user roles FAQ", async () => {
         await expect(faqPage.onemacRoles).toBeVisible();
-        await expect(faqPage.onemacRoles).toHaveText("What are the OneMAC State user roles??");
+        await expect(faqPage.onemacRoles).toHaveText("What are the OneMAC State user roles?");
 
         await expect(faqPage.onemacRoles.locator("div:nth-child(1)")).not.toBeVisible();
       });
