@@ -64,7 +64,7 @@ export const AmendmentForm = ({ waiverId }: AmendmentFormProps) => {
                       onChange={(e) => field.onChange(e.currentTarget.value.toUpperCase())}
                     />
                   </FormControl>
-                  <FormMessage />
+                  <FormMessage announceOn={field.value} />
                 </FormItem>
               )}
             />
