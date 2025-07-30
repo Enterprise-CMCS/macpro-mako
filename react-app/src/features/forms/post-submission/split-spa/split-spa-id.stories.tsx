@@ -1,13 +1,13 @@
 import type { Meta, StoryObj } from "@storybook/react-vite";
 import { fn } from "storybook/test";
 
-import { SplitSpaId } from "./split-spa-id";
+import { SplitSpaIdInput } from "./SplitSpaIdInput";
 
 const meta = {
   title: "Component/SplitSpaId",
-  component: SplitSpaId,
-  args: { onValueChange: fn() },
-} satisfies Meta<typeof SplitSpaId>;
+  component: SplitSpaIdInput,
+  args: { onChange: fn() },
+} satisfies Meta<typeof SplitSpaIdInput>;
 
 export default meta;
 type Story = StoryObj<typeof meta>;

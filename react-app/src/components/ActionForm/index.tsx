@@ -63,6 +63,7 @@ type ActionFormProps<Schema extends SchemaWithEnforcableProps> = {
   defaultValues?: DefaultValues<z.infer<InferUntransformedSchema<Schema>>>;
   title: string;
   fields: (form: UseFormReturn<z.infer<InferUntransformedSchema<Schema>>>) => ReactNode;
+  submitButtonLabel?: string;
   bannerPostSubmission?: Omit<Banner, "pathnameToDisplayOn">;
   promptPreSubmission?: Omit<UserPrompt, "onAccept">;
   promptOnLeavingForm?: Omit<UserPrompt, "onAccept">;
@@ -94,6 +95,7 @@ export const ActionForm = <Schema extends SchemaWithEnforcableProps>({
   defaultValues = {} as DefaultValues<z.TypeOf<InferUntransformedSchema<Schema>>>,
   title,
   fields: Fields,
+  submitButtonLabel = "Submit",
   bannerPostSubmission = {
     header: "Package submitted",
     body: "Your submission has been received.",
@@ -396,7 +398,7 @@ export const ActionForm = <Schema extends SchemaWithEnforcableProps>({
                 disabled={!form.formState.isValid}
                 data-testid="submit-action-form"
               >
-                Submit
+                {submitButtonLabel}
               </Button>
               <Button
                 className="px-12"
