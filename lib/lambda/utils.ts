@@ -98,15 +98,35 @@ export const isChipSpaRespondRAIEvent = (parsedRecord: ParseKafkaEvent) => {
   return parsedRecord?.event == "respond-to-rai" && parsedRecord?.authority == "CHIP SPA";
 };
 
+// const toStartOfUTCDayISOString = (dateString: string): string => {
+//   const date = new Date(dateString);
+//   const localYear = date.getFullYear();
+//   const localMonth = date.getMonth();
+//   const localDate = date.getDate();
+//   const submissionDateIsoString = new Date(localYear, localMonth, localDate).toISOString();
+//   console.log("submission date ISO string:", submissionDateIsoString)
+//   return submissionDateIsoString;
+// };
+
 const toStartOfUTCDayISOString = (dateString: string): string => {
   const date = new Date(dateString);
+
+  // Adjust for local time zone offset to get start of *local* day in UTC
   const localYear = date.getFullYear();
   const localMonth = date.getMonth();
-  const localDate = date.getDate();
-  const submissionDateIsoString = new Date(localYear, localMonth, localDate).toISOString();
+  const localDay = date.getDate();
+
+  // This creates a date at midnight LOCAL time
+  const localMidnight = new Date(localYear, localMonth, localDay);
+
+  // Get the UTC timestamp that corresponds to that local midnight
+  const utcEquivalent = new Date(localMidnight.getTime() - localMidnight.getTimezoneOffset() * 60000);
+
+  const submissionDateIsoString = utcEquivalent.toISOString();
   console.log("submission date ISO string:", submissionDateIsoString)
   return submissionDateIsoString;
 };
+
 
 // const getTodayMidnightUTCMillis = (): number => {
 //   const now = new Date();
@@ -120,15 +140,15 @@ const toStartOfUTCDayISOString = (dateString: string): string => {
 
 const getLocalDayAsUTCMidnightISOString = () => {
   const now = new Date();
-  // Get the local year, month, and date
-  const localYear = now.getFullYear();
-  const localMonth = now.getMonth();
-  const localDate = now.getDate();
 
-  // Create a new Date at local midnight
-  const todaysDateUTC = new Date(localYear, localMonth, localDate).getTime();
-  console.log("todays date timestamp converted to UTC: ", todaysDateUTC)
-  return todaysDateUTC;
+  // This gives you midnight in local time
+  const localMidnight = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+
+  // Adjust for the timezone offset to get the equivalent UTC timestamp
+  const utcEquivalent = new Date(localMidnight.getTime() - localMidnight.getTimezoneOffset() * 60000);
+
+  console.log("Today's local day represented as UTC midnight ISO:", utcEquivalent.toISOString());
+  return utcEquivalent.toISOString();
 };
 
 
