@@ -144,12 +144,16 @@ const FormMessage = React.forwardRef<
   const timeoutRef = useRef<number | null>(null);
 
   const body = error && !Array.isArray(error) ? String(error?.message) : children;
-  const shouldAnnounce = !!body;
+  const shouldAnnounce = announceOn !== null && !!body;
 
+  // Increasing announceCounter forces re-render; the live-region now has “new” content
+  // Forcing screen readers to reannounce error on every keystroke.
   useEffect(() => {
     if (!shouldAnnounce) return;
+
     if (timeoutRef.current) clearTimeout(timeoutRef.current);
-    timeoutRef.current = window.setTimeout(() => {
+
+    timeoutRef.current = setTimeout(() => {
       setAnnounceCounter((n) => n + 1);
     }, debounceMs) as unknown as number;
     return () => {
