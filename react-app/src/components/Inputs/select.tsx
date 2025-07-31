@@ -1,6 +1,7 @@
-import { CaretSortIcon, CheckIcon } from "@radix-ui/react-icons";
+import { CheckIcon } from "@radix-ui/react-icons";
 import * as ScrollAreaPrimitive from "@radix-ui/react-scroll-area";
 import * as SelectPrimitive from "@radix-ui/react-select";
+import { ChevronDownIcon } from "lucide-react";
 import * as React from "react";
 
 import { cn } from "@/utils";
@@ -19,7 +20,7 @@ const SelectTrigger = React.forwardRef<
   <SelectPrimitive.Trigger
     ref={ref}
     className={cn(
-      "flex w-full items-center justify-between rounded-sm border border-gray-300 bg-transparent px-3 py-2 text-sm shadow-sm ring-offset-background placeholder:text-muted-foreground focus:outline-none focus:ring-1 focus:ring-ring disabled:cursor-not-allowed disabled:opacity-50",
+      "group flex w-full items-center justify-between rounded-sm border border-gray-300 bg-transparent px-3 py-2 text-sm shadow-sm ring-offset-background placeholder:text-muted-foreground focus:outline-none focus:border-transparent focus:ring-2 focus:ring-[#2684FF] disabled:cursor-not-allowed disabled:opacity-50",
       className,
     )}
     aria-label="Select option"
@@ -28,7 +29,7 @@ const SelectTrigger = React.forwardRef<
     {children}
     {showIcon && (
       <SelectPrimitive.Icon asChild>
-        <CaretSortIcon className="h-4 w-4 opacity-50" />
+        <ChevronDownIcon className="h-4 w-4 opacity-50 group-focus:opacity-100" />
       </SelectPrimitive.Icon>
     )}
   </SelectPrimitive.Trigger>
