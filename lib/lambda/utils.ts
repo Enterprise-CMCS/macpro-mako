@@ -102,14 +102,32 @@ const toStartOfUTCDayISOString = (dateString: string): string => {
   return new Date(Date.UTC(date.getUTCFullYear(), date.getUTCMonth(), date.getUTCDate())).toISOString();
 };
 
+// const getTodayMidnightUTCMillis = (): number => {
+//   const now = new Date();
+//   const midnightUTC = Date.UTC(
+//     now.getUTCFullYear(),
+//     now.getUTCMonth(),
+//     now.getUTCDate()
+//   );
+//   return midnightUTC;
+// };
+
 const getTodayMidnightUTCMillis = (): number => {
   const now = new Date();
-  const midnightUTC = Date.UTC(
-    now.getUTCFullYear(),
-    now.getUTCMonth(),
-    now.getUTCDate()
+
+  // Create a date string in local time at midnight
+  const localMidnight = new Date(
+    now.getFullYear(),
+    now.getMonth(),
+    now.getDate(),
+    0, 0, 0, 0
   );
-  return midnightUTC;
+
+  // Convert local midnight to UTC
+  const utcMidnightISOString = new Date(localMidnight).toISOString();
+
+  // Return the timestamp in milliseconds
+  return new Date(utcMidnightISOString).getTime();
 };
 
 
