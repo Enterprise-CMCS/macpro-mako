@@ -15,7 +15,7 @@ export const envRoleUsers: Record<string, Record<string, RoleUser>> = {
       capabilities: [],
     },
     stateSystemAdmin: {
-      username: "statesystemadmin.com",
+      username: "statesystemadmin@example.com",
       capabilities: ["dashboard", "profile", "stateCHIPSPA"],
     },
     cmsReviewer: {
@@ -54,6 +54,18 @@ export const envRoleUsers: Record<string, Record<string, RoleUser>> = {
     cmsReviewer: {
       username: "reviewer@example.com",
       capabilities: ["dashboard", "profile"],
+    },
+  },
+  prod: {
+    stateSubmitter: {
+      username: process.env.ZZSTATE,
+      password: process.env.ZZSTATEPW,
+      capabilities: ["prod"],
+    },
+    cmsReviewer: {
+      username: process.env.EUAID,
+      password: process.env.EUAPW,
+      capabilities: ["prod"],
     },
   },
 };

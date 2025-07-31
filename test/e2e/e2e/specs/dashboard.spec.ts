@@ -2,16 +2,18 @@ import { expect, test } from "@playwright/test";
 import path from "path";
 
 import { envRoleUsers } from "@/lib/envRoleUsers";
+import { getMetadataByFile } from "@/lib/metadata.handler";
 import { DashboardPage } from "@/pages/dashboard.page";
 
 let dashboardPage: DashboardPage;
+
 const ENV = process.env.PW_ENV || "local";
 const users = envRoleUsers[ENV];
 
 for (const [role, user] of Object.entries(users)) {
   if (!user.capabilities.includes("dashboard")) continue;
 
-  test.describe("Dashboard page", () => {
+  test.describe("Dashboard page", { tag: ["@CI"] }, () => {
     test.use({
       storageState: path.resolve(`.auth/${ENV}/${role}.json`),
     });
@@ -87,17 +89,32 @@ for (const [role, user] of Object.entries(users)) {
               const header = await page.locator("th");
               const count = await header.count();
 
-              const headerValues = [
-                "Actions",
-                "SPA ID",
-                "State",
-                "Authority",
-                "Status",
-                "Initial Submission",
-                "Latest Package Activity",
-                "Formal RAI Response",
-                "Submitted By",
-              ];
+              let headerValues = [];
+
+              if (role === "helpDesk") {
+                headerValues = [
+                  "SPA ID",
+                  "State",
+                  "Authority",
+                  "Status",
+                  "Initial Submission",
+                  "Latest Package Activity",
+                  "Formal RAI Response",
+                  "Submitted By",
+                ];
+              } else {
+                headerValues = [
+                  "Actions",
+                  "SPA ID",
+                  "State",
+                  "Authority",
+                  "Status",
+                  "Initial Submission",
+                  "Latest Package Activity",
+                  "Formal RAI Response",
+                  "Submitted By",
+                ];
+              }
 
               for (let i = 0; i < count; i++) {
                 await expect(await header.nth(i)).toBeVisible();
@@ -123,17 +140,32 @@ for (const [role, user] of Object.entries(users)) {
               const header = await page.locator("th");
               const count = await header.count();
 
-              const headerValues = [
-                "Actions",
-                "SPA ID",
-                "State",
-                "Authority",
-                "Status",
-                "Initial Submission",
-                "Latest Package Activity",
-                "Formal RAI Response",
-                "Submitted By",
-              ];
+              let headerValues = [];
+
+              if (role === "helpDesk") {
+                headerValues = [
+                  "SPA ID",
+                  "State",
+                  "Authority",
+                  "Status",
+                  "Initial Submission",
+                  "Latest Package Activity",
+                  "Formal RAI Response",
+                  "Submitted By",
+                ];
+              } else {
+                headerValues = [
+                  "Actions",
+                  "SPA ID",
+                  "State",
+                  "Authority",
+                  "Status",
+                  "Initial Submission",
+                  "Latest Package Activity",
+                  "Formal RAI Response",
+                  "Submitted By",
+                ];
+              }
 
               for (let i = 0; i < count; i++) {
                 await expect(await header.nth(i)).toBeVisible();
@@ -148,6 +180,31 @@ for (const [role, user] of Object.entries(users)) {
             test("table footer", async ({ page }) => {
               await expect(page.getByTestId("pagination")).toBeVisible();
             });
+          });
+        });
+      });
+
+      test.describe("Interactions", () => {
+        test(`Download Exports for ${role} user`, async ({ page }, testInfo) => {
+          const meta = getMetadataByFile(testInfo.file!);
+
+          if (meta) {
+            testInfo.attach("metadata", {
+              body: JSON.stringify(meta, null, 2),
+              contentType: "application/json",
+            });
+          }
+
+          const today = new Date();
+          const yyyy = today.getFullYear();
+          const mm = String(today.getMonth() + 1).padStart(2, "0");
+          const dd = String(today.getDate()).padStart(2, "0");
+          const expectedFilename = `spas-export-${mm}_${dd}_${yyyy}.csv`;
+
+          await dashboardPage.validateDownload(page, {
+            role: role,
+            triggerSelector: "export-csv-btn",
+            expectedFilename: expectedFilename,
           });
         });
       });
