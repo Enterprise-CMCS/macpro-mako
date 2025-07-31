@@ -129,15 +129,18 @@ export const isChipSpaRespondRAIEvent = (parsedRecord: ParseKafkaEvent) => {
 const toStartOfUTCDayISOString = (dateString: string): string => {
   const date = new Date(dateString);
 
-  // Get milliseconds from the original date
-  const originalMillis = date.getTime();
+  // Convert to local date parts
+  const localYear = date.getFullYear();
+  const localMonth = date.getMonth();
+  const localDay = date.getDate();
 
-  // Subtract the local timezone offset in milliseconds
-  const adjustedMillis = originalMillis - date.getTimezoneOffset() * 60000;
+  // Create a Date at local midnight (00:00:00.000 local time)
+  const localMidnight = new Date(localYear, localMonth, localDay);
 
-  const adjustedDateISOString = new Date(adjustedMillis).toISOString();
-  console.log("submission date ISO string:", adjustedDateISOString);
-  return adjustedDateISOString;
+  // Convert that to UTC ISO string
+  const utcMidnightISOString = localMidnight.toISOString();
+  console.log("submission date ISO string:", utcMidnightISOString);
+  return utcMidnightISOString;
 };
 
 
