@@ -129,8 +129,6 @@ const FormDescription = React.forwardRef<
 });
 FormDescription.displayName = "FormDescription";
 
-// Screen readers re-read a live region only if its text content changes.
-// When announceOn changes, it triggers re-announce
 const FormMessage = React.forwardRef<
   HTMLParagraphElement,
   React.HTMLAttributes<HTMLParagraphElement> & {
@@ -146,8 +144,13 @@ const FormMessage = React.forwardRef<
   const body = error && !Array.isArray(error) ? String(error?.message) : children;
   const shouldAnnounce = announceOn !== null && !!body;
 
+  // Screen readers re-read a live region only if its text content changes.
   // Increasing announceCounter forces re-render; the live-region now has “new” content
   // Forcing screen readers to reannounce error on every keystroke.
+
+  // Debounce: every keystroke clears & restarts the timer.
+  // After debounceMs of silence, we increment announceCounter → re-render,
+  // so the screen reader reads the latest error once.
   useEffect(() => {
     if (!shouldAnnounce) return;
 
