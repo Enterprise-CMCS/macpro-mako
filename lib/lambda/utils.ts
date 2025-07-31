@@ -145,10 +145,10 @@ const getLocalDayAsUTCMidnightISOString = () => {
   const localMidnight = new Date(now.getFullYear(), now.getMonth(), now.getDate());
 
   // Adjust for the timezone offset to get the equivalent UTC timestamp
-  const utcEquivalent = new Date(localMidnight.getTime() - localMidnight.getTimezoneOffset() * 60000);
+  const utcEquivalent = new Date(localMidnight.getTime() - localMidnight.getTimezoneOffset() * 60000).getTime();
 
-  console.log("Today's local day represented as UTC midnight ISO:", utcEquivalent.toISOString());
-  return utcEquivalent.toISOString();
+  console.log("Today's local day represented as UTC midnight ISO:", utcEquivalent);
+  return utcEquivalent;
 };
 
 
