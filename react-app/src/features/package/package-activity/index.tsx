@@ -18,6 +18,7 @@ import {
   TableRow,
 } from "@/components";
 import { BLANK_VALUE } from "@/consts";
+import { sendGAEvent } from "@/utils";
 
 import { Attachments, useAttachmentService } from "./hook";
 
@@ -177,6 +178,10 @@ const DownloadAllButton = ({ packageId, submissionChangelog }: DownloadAllButton
     }
 
     onZip(attachmentsAggregate);
+    sendGAEvent("all_attachments_download", {
+      number_attachments: attachmentsAggregate.length,
+      package_id: packageId,
+    });
   };
 
   return (

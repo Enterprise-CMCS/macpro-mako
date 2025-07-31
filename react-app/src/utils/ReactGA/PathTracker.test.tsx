@@ -57,7 +57,7 @@ describe("PathTracker", () => {
       expect.objectContaining({
         page_path: "/",
         referrer: "/",
-        user_role: "state",
+        user_role: "cms",
       }),
     );
 
@@ -68,7 +68,7 @@ describe("PathTracker", () => {
       expect.objectContaining({
         page_path: "/",
         time_on_page_sec: 3,
-        user_role: "state",
+        user_role: "cms",
       }),
     );
 
@@ -79,7 +79,7 @@ describe("PathTracker", () => {
       expect.objectContaining({
         page_path: "/new-path",
         referrer: "/",
-        user_role: "state",
+        user_role: "cms",
       }),
     );
   });
