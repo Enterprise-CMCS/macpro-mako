@@ -120,7 +120,7 @@ export const TemporaryExtensionForm = () => {
                         onChange={(e) => field.onChange(e.currentTarget.value.toUpperCase())}
                       />
                     </FormControl>
-                    <FormMessage announceOn={field.value} />
+                    <FormMessage />
                   </FormItem>
                 );
               }}
