@@ -181,7 +181,7 @@ jobs:
           retention-days: 30
 
   publish:
-    needs: [e2e]
+    needs: [e2e, test]
     uses: ./.github/workflows/push-to-gh-pages.yml
     if: ${{ github.ref != 'refs/heads/production' }} && ${{ github.ref != 'refs/heads/val' }}
     with:
