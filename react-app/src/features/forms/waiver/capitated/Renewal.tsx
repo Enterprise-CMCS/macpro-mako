@@ -53,7 +53,7 @@ export const Renewal = () => (
                   onChange={(e) => field.onChange(e.currentTarget.value.toUpperCase())}
                 />
               </FormControl>
-              <FormMessage />
+              <FormMessage announceOn={field.value} />
             </FormItem>
           )}
         />
@@ -86,7 +86,7 @@ export const Renewal = () => (
                   onChange={(e) => field.onChange(e.currentTarget.value.toUpperCase())}
                 />
               </FormControl>
-              <FormMessage />
+              <FormMessage announceOn={field.value} />
             </FormItem>
           )}
         />
