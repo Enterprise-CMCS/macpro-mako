@@ -64,7 +64,7 @@ export const AmendmentForm = ({ waiverId }: AmendmentFormProps) => {
                       onChange={(e) => field.onChange(e.currentTarget.value.toUpperCase())}
                     />
                   </FormControl>
-                  <FormMessage />
+                  <FormMessage announceOn={field.value} />
                 </FormItem>
               )}
             />
@@ -87,7 +87,7 @@ export const AmendmentForm = ({ waiverId }: AmendmentFormProps) => {
                     What is my 1915(b) Waiver Amendment Number?
                   </Link>
                 </div>
-                <p className="text-neutral-500">
+                <p className="text-neutral-500" id="waiver-number-format">
                   The Waiver Number must be in the format of SS-####.R##.## or SS-#####.R##.##. For
                   amendments, the last two digits start with {"'01'"} and ascends.
                 </p>
@@ -96,9 +96,10 @@ export const AmendmentForm = ({ waiverId }: AmendmentFormProps) => {
                     ref={field.ref}
                     value={field.value}
                     onChange={(e) => field.onChange(e.currentTarget.value.toUpperCase())}
+                    aria-describedby="waiver-number-format"
                   />
                 </FormControl>
-                <FormMessage />
+                <FormMessage announceOn={field.value} />
               </FormItem>
             )}
           />

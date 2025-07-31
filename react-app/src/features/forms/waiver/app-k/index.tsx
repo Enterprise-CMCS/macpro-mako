@@ -94,9 +94,10 @@ export const AppKAmendmentForm = () => (
                   ref={field.ref}
                   value={field.value}
                   onChange={(e) => field.onChange(e.currentTarget.value.toUpperCase())}
+                  aria-describedby="waiver-number-format"
                 />
               </FormControl>
-              <FormMessage />
+              <FormMessage announceOn={field.value} />
             </FormItem>
           )}
         />
