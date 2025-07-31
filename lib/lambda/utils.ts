@@ -63,7 +63,7 @@ export const calculate90dayExpiration = async (
   if (!submissionDate || !raiRequestedDate) {
     console.error("error parsing os record");
   }
-  const now = getTodayMidnightUTCMillis();
+  const now = getLocalDayAsUTCMidnightISOString();
   console.log("now milliseconds: ", now);
   // length of time from when the RAI was requested until now
   const pausedDuration = now - raiMS;
@@ -112,22 +112,15 @@ const toStartOfUTCDayISOString = (dateString: string): string => {
 //   return midnightUTC;
 // };
 
-const getTodayMidnightUTCMillis = (): number => {
+const getLocalDayAsUTCMidnightISOString = () => {
   const now = new Date();
+  // Get the local year, month, and date
+  const localYear = now.getFullYear();
+  const localMonth = now.getMonth();
+  const localDate = now.getDate();
 
-  // Create a date string in local time at midnight
-  const localMidnight = new Date(
-    now.getFullYear(),
-    now.getMonth(),
-    now.getDate(),
-    0, 0, 0, 0
-  );
-
-  // Convert local midnight to UTC
-  const utcMidnightISOString = new Date(localMidnight).toISOString();
-
-  // Return the timestamp in milliseconds
-  return new Date(utcMidnightISOString).getTime();
+  // Create a new Date at local midnight
+  return new Date(localYear, localMonth, localDate).getTime();
 };
 
 
