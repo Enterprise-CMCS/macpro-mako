@@ -243,7 +243,7 @@ export const MyProfile = () => {
             fullName={userDetails?.fullName}
             role={userDetails?.role}
             email={userDetails?.email}
-            allowEdits
+            allowEdits={isNewUserRoleDisplay}
             group={userDetails.group}
             division={userDetails.division}
           />
