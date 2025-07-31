@@ -1,3 +1,7 @@
+/**
+ * Creates the storagestate needed to auth OneMAC
+ */
+
 import { chromium } from "@playwright/test";
 import fs from "fs/promises";
 import path from "path";

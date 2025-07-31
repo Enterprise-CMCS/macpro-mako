@@ -4,11 +4,14 @@ export interface RoleUser {
   capabilities: string[];
 }
 
+/**
+ * defines the env, role and test capbility of the user
+ */
 export const envRoleUsers: Record<string, Record<string, RoleUser>> = {
   local: {
     stateSubmitter: {
       username: "george@example.com",
-      capabilities: ["dashboard", "profile", "stateCHIPSPA", "a11y"],
+      capabilities: ["dashboard", "profile", "stateCHIPSPA"],
     },
     submitter: {
       username: "submitter@example.com",

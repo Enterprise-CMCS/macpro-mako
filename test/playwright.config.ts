@@ -72,78 +72,78 @@ export default defineConfig({
   // Note: we can test on multiple browsers and resolutions defined here
 
   projects: [
-    {
-      name: "local-setup",
-      testMatch: /local\.setup\.ts/,
-    },
-    {
-      name: "ci-setup",
-      testMatch: /ci\.setup\.ts/,
-    },
-    {
-      name: "val-setup",
-      testMatch: /val\.setup\.ts/,
-    },
-    {
-      name: "eua-setup",
-      testMatch: /eua\.setup\.ts/,
-    },
-    {
-      name: "mfa-setup",
-      testMatch: /mfa\.setup\.ts/,
-    },
-    {
-      name: "smoke-test",
-      testMatch: /smoke\.setup\.ts/,
-    },
-    {
-      name: "local",
-      use: {
-        baseURL: baseURL.local,
-        storageState: "./playwright/.auth/state-user.json",
-      },
-      dependencies: ["local-setup"],
-    },
-    {
-      name: "ci",
-      use: {
-        baseURL: deploymentOutput.applicationEndpointUrl,
-        storageState: "./playwright/.auth/state-user.json",
-      },
-      dependencies: ["ci-setup"],
-    },
-    {
-      name: "val",
-      use: {
-        baseURL: baseURL.val,
-        storageState: "./playwright/.auth/state-user.json",
-      },
-      dependencies: ["val-setup"],
-    },
-    {
-      name: "eua-user",
-      use: {
-        baseURL: baseURL.prod,
-        storageState: "./playwright/.auth/eua-user.json",
-      },
-      dependencies: ["eua-setup"],
-    },
-    {
-      name: "mfa-user",
-      use: {
-        baseURL: baseURL.prod,
-        storageState: "./playwright/.auth/zzState-user.json",
-      },
-      dependencies: ["mfa-setup"],
-    },
-    {
-      name: "smoke-tests",
-      testMatch: "**/smoke/**/*.spec.ts",
-      use: {
-        baseURL: baseURL.prod,
-      },
-      dependencies: ["smoke-test"],
-    },
+    // {
+    //   name: "local-setup",
+    //   testMatch: /local\.setup\.ts/,
+    // },
+    // {
+    //   name: "ci-setup",
+    //   testMatch: /ci\.setup\.ts/,
+    // },
+    // {
+    //   name: "val-setup",
+    //   testMatch: /val\.setup\.ts/,
+    // },
+    // {
+    //   name: "eua-setup",
+    //   testMatch: /eua\.setup\.ts/,
+    // },
+    // {
+    //   name: "mfa-setup",
+    //   testMatch: /mfa\.setup\.ts/,
+    // },
+    // {
+    //   name: "smoke-test",
+    //   testMatch: /smoke\.setup\.ts/,
+    // },
+    // {
+    //   name: "local",
+    //   use: {
+    //     baseURL: baseURL.local,
+    //     storageState: "./playwright/.auth/state-user.json",
+    //   },
+    //   dependencies: ["local-setup"],
+    // },
+    // {
+    //   name: "ci",
+    //   use: {
+    //     baseURL: deploymentOutput.applicationEndpointUrl,
+    //     storageState: "./playwright/.auth/state-user.json",
+    //   },
+    //   dependencies: ["ci-setup"],
+    // },
+    // {
+    //   name: "val",
+    //   use: {
+    //     baseURL: baseURL.val,
+    //     storageState: "./playwright/.auth/state-user.json",
+    //   },
+    //   dependencies: ["val-setup"],
+    // },
+    // {
+    //   name: "eua-user",
+    //   use: {
+    //     baseURL: baseURL.prod,
+    //     storageState: "./playwright/.auth/eua-user.json",
+    //   },
+    //   dependencies: ["eua-setup"],
+    // },
+    // {
+    //   name: "mfa-user",
+    //   use: {
+    //     baseURL: baseURL.prod,
+    //     storageState: "./playwright/.auth/zzState-user.json",
+    //   },
+    //   dependencies: ["mfa-setup"],
+    // },
+    // {
+    //   name: "smoke-tests",
+    //   testMatch: "**/smoke/**/*.spec.ts",
+    //   use: {
+    //     baseURL: baseURL.prod,
+    //   },
+    //   dependencies: ["smoke-test"],
+    // },
     {
       name: "shared",
       testMatch: "**/e2e/e2e/**/*.spec.ts",

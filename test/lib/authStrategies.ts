@@ -28,6 +28,10 @@ export const mfaLogin: LoginFn = async (page, username, password) => {
   await loginPage.mfaLogin(username, password);
 };
 
+/**
+ * defines the environment and the method of authentication
+ */
+
 export const authStrategyMap: Record<string, Record<string, LoginFn>> = {
   local: {
     stateSubmitter: cognitoLogin,
