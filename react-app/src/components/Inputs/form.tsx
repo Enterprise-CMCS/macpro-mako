@@ -129,8 +129,6 @@ const FormDescription = React.forwardRef<
 });
 FormDescription.displayName = "FormDescription";
 
-// Screen readers re-read a live region only if its text content changes.
-// When announceOn changes, it triggers re-announce
 const FormMessage = React.forwardRef<
   HTMLParagraphElement,
   React.HTMLAttributes<HTMLParagraphElement> & {
