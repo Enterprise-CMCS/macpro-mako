@@ -5,6 +5,10 @@ import { cn } from "@/utils";
 
 const Input = React.forwardRef<HTMLInputElement, InputProps>(
   ({ className, icon, iconRight, ...props }, ref) => {
+    React.useEffect(() => {
+      console.log({ ref });
+    }, [ref]);
+
     return (
       <div className={cn("relative", icon && !className?.includes("w-full") && "w-fit")}>
         {icon && (

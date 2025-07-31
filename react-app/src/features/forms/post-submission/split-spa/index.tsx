@@ -1,14 +1,17 @@
-import { useMemo, useState } from "react";
+import * as React from "react";
 import { useParams } from "react-router";
+// import { InputProps } from "shared-types";
 import { isCmsWriteUser } from "shared-utils";
 
 import {
   ActionForm,
+  EditableText,
   FormControl,
+  FormDescription,
   FormField,
   FormItem,
   FormLabel,
-  // Input,
+  Input,
   RequiredIndicator,
   Select,
   SelectContent,
@@ -18,32 +21,63 @@ import {
 } from "@/components";
 import { formSchemas } from "@/formSchemas";
 
-import { SplitSpaIdInput } from "./SplitSpaIdInput";
+import { SplitSpaIdForm } from "./SplitSpaIdForm";
 
 const SPLIT_COUNT_START = 2;
 const SPLIT_COUNT_END = 8;
 
-const DEFAULT_SUFFIXES = {
-  2: "A",
-  3: "B",
-  4: "C",
-  5: "D",
-  6: "E",
-  7: "F",
-  8: "G",
-};
+// const DEFAULT_SUFFIXES = {
+//   1: "A",
+//   2: "B",
+//   3: "C",
+//   4: "D",
+//   5: "E",
+//   6: "F",
+//   7: "G",
+// };
+
+const SPLIT_COUNT_OPTIONS = [...Array(SPLIT_COUNT_END - SPLIT_COUNT_START + 1).keys()].map(
+  (x) => `${x + SPLIT_COUNT_START}`,
+);
+
+export const SplitSpaIdInput = ({ index, spaId, value, onChange, register, ...props }) => (
+  <div className="items-center flex leading-[2.25]">
+    <span className="font-bold mr-4">{index}.</span>
+    <span>{spaId}</span>
+    {!value ? (
+      <span className="flex ml-1">
+        (<span className="font-bold">Base SPA</span>)
+      </span>
+    ) : (
+      <span className="flex">
+        -
+        <EditableText
+          key={props.id}
+          name={props.id}
+          value={value}
+          onValueChange={onChange}
+          {...props}
+          {...register(`${props.id}`)}
+        />
+      </span>
+    )}
+  </div>
+);
 
 export const SplitSpaForm = () => {
   const { authority, id } = useParams();
-  const [splitCount, setSplitCount] = useState<number>();
+  const [splitCount, setSplitCount] = React.useState<number>();
 
-  const authorityType = useMemo(() => authority.replace("SPA", "").trim(), [authority]);
+  const authorityType = React.useMemo(() => authority.replace("SPA", "").trim(), [authority]);
 
   return (
     <ActionForm
       schema={formSchemas["split-spa"]}
       title={`Split SPA ${authorityType} ${id}`}
       breadcrumbText="Create new split SPA(s)"
+      defaultValues={{
+        spaIds: [],
+      }}
       formDescription={
         <span>
           <p className="font-semibold">Split this SPA into multiple records.</p>
@@ -54,8 +88,9 @@ export const SplitSpaForm = () => {
           </p>
         </span>
       }
-      fields={({ control, getValues }) => {
+      fields={({ control, getValues, formState }) => {
         console.log({ getValues: getValues() });
+        console.log({ formState });
         return (
           <>
             <section className="flex flex-col space-y-8">
@@ -78,61 +113,63 @@ export const SplitSpaForm = () => {
                       {`How many split records do you want to create from base SPA ${id}?`}{" "}
                       <RequiredIndicator />
                     </FormLabel>
-                    <FormLabel>
+                    <FormDescription>
                       Each new record will automatically be named with the base SPA ID + suffix.
-                    </FormLabel>
+                    </FormDescription>
                   </div>
-                  <FormControl>
-                    <Select
-                      onValueChange={(value) => {
-                        field.onChange(value);
-                        setSplitCount(parseInt(value));
-                      }}
-                      defaultValue={`${field.value}`}
-                    >
-                      <SelectTrigger aria-label="Select number of splits">
-                        <SelectValue />
-                      </SelectTrigger>
-                      <SelectContent>
-                        {[...Array(SPLIT_COUNT_END - SPLIT_COUNT_START + 1).keys()]
-                          .map((x) => `${x + SPLIT_COUNT_START}`)
-                          .map((index) => (
+                  <div className="max-w-sm">
+                    <FormControl>
+                      <Select
+                        onValueChange={(value) => {
+                          field.onChange(value);
+                          setSplitCount(parseInt(value));
+                        }}
+                        defaultValue={`${field.value}`}
+                      >
+                        <SelectTrigger aria-label="Select number of splits">
+                          <SelectValue />
+                        </SelectTrigger>
+                        <SelectContent>
+                          {SPLIT_COUNT_OPTIONS.map((index) => (
                             <SelectItem value={index} key={index}>
                               {index}
                             </SelectItem>
                           ))}
-                      </SelectContent>
-                    </Select>
-                  </FormControl>
+                        </SelectContent>
+                      </Select>
+                    </FormControl>
+                  </div>
                 </FormItem>
               )}
             />
+            <SplitSpaIdForm control={control} spaId={id} splitCount={splitCount} />
             {splitCount && (
               <section className="flex flex-col space-y-2">
-                <div className="font-bold">SPAs after split</div>
-                {[...Array(splitCount).keys()]
-                  .map((x) => x + 1)
-                  .map((index) => (
-                    <FormField
-                      control={control}
-                      name={`spaIds.${index}`}
-                      key={`spaIds-${index}`}
-                      render={({ field }) => (
-                        <FormItem className="max-w-sm">
-                          <FormControl>
-                            <div className="items-center flex leading-[2.25]">
-                              <span className="font-bold mr-4">{index}.</span>
-                              <SplitSpaIdInput
-                                spaId={id}
-                                suffix={DEFAULT_SUFFIXES[index]}
-                                {...field}
-                              />
-                            </div>
-                          </FormControl>
-                        </FormItem>
-                      )}
-                    />
-                  ))}
+                <FormField
+                  control={control}
+                  name="request"
+                  render={({ field }) => (
+                    <FormItem>
+                      <div className="flex flex-col gap-y-2">
+                        <FormLabel className="font-bold">
+                          These packages were added to OneMAC per request from <RequiredIndicator />
+                        </FormLabel>
+                        <FormDescription className="italic text-gray-500 text-sm">
+                          CMS person who request this action on behalf of the state
+                        </FormDescription>
+                      </div>
+                      <FormControl>
+                        <Input
+                          className="max-w-sm"
+                          // ref={field.ref}
+                          value={field.value}
+                          onChange={field.onChange}
+                          {...field}
+                        />
+                      </FormControl>
+                    </FormItem>
+                  )}
+                />
               </section>
             )}
           </>
