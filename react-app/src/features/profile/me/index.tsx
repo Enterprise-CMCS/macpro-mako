@@ -3,7 +3,7 @@ import { useEffect, useMemo, useState } from "react";
 import { Navigate, useNavigate } from "react-router";
 import { StateCode } from "shared-types";
 import { Territory } from "shared-types/events/legacy-user";
-import { isStateUser, userRoleMap } from "shared-utils";
+import { isStateUser } from "shared-utils";
 
 import {
   StateAccess,
@@ -67,11 +67,6 @@ export const MyProfile = () => {
 
     return orderRoleStatus(filteredRoleStatus);
   }, [userDetails, userProfile, isNewUserRoleDisplay]);
-
-  const currentRoleObj = useMemo(() => {
-    if (!userProfile || !userProfile.stateAccess) return { group: null, division: null };
-    return userProfile?.stateAccess.find((x) => x.role === userDetails.role);
-  }, [userProfile, userDetails]);
 
   const hideAddRoleButton = useMemo(() => {
     if (!userProfile || !userProfile.stateAccess) return true;
@@ -255,14 +250,11 @@ export const MyProfile = () => {
         <div className="flex flex-col md:flex-row">
           <UserInformation
             fullName={userDetails?.fullName}
-            role={userRoleMap[userDetails?.role] ?? "No role requested"}
+            role={userDetails?.role}
             email={userDetails?.email}
-            allowEdits
-            groupDivision={
-              currentRoleObj && currentRoleObj.group
-                ? `${currentRoleObj?.group}/${currentRoleObj?.division}`
-                : null
-            }
+            allowEdits={isNewUserRoleDisplay}
+            group={userDetails.group}
+            division={userDetails.division}
           />
           <div className="flex flex-col gap-6 md:basis-1/2">
             {/* Status/State Access Management Section */}
