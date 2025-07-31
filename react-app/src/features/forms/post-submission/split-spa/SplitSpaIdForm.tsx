@@ -27,24 +27,18 @@ const SplitSpaId = ({ spaId, control, index, ...props }) => (
             <div className="items-center flex leading-[2.25]">
               <span className="font-bold mr-4">{index}.</span>
               <span>{spaId}</span>
-              {!field.value ? (
-                <span className="flex ml-1">
-                  (<span className="font-bold">Base SPA</span>)
-                </span>
-              ) : (
-                <span className="flex">
-                  -
-                  <EditableText
-                    ref={field.ref}
-                    id={field.name}
-                    key={field.name}
-                    name={field.name}
-                    value={field.value}
-                    onValueChange={field.onChange}
-                    onBlur={field.onBlur}
-                  />
-                </span>
-              )}
+              <span className="flex">
+                -
+                <EditableText
+                  ref={field.ref}
+                  id={field.name}
+                  key={field.name}
+                  name={field.name}
+                  value={field.value}
+                  onValueChange={field.onChange}
+                  onBlur={field.onBlur}
+                />
+              </span>
             </div>
           </FormControl>
           <FormMessage />
@@ -62,7 +56,7 @@ export const SplitSpaIdForm = ({ control, spaId, splitCount }) => {
 
   useEffect(() => {
     remove();
-    [...Array(splitCount).keys()].map((index) => {
+    [...Array(splitCount).keys()].splice(1).map((index) => {
       const value = DEFAULT_SUFFIXES[index];
       append({ suffix: value });
     });
@@ -77,6 +71,13 @@ export const SplitSpaIdForm = ({ control, spaId, splitCount }) => {
   return (
     <section className="flex flex-col space-y-2">
       <div className="font-bold">SPAs after split</div>
+      <div className="items-center flex leading-[2.25]">
+        <span className="font-bold mr-4">1.</span>
+        <span>{spaId}</span>
+        <span className="flex ml-1">
+          (<span className="font-bold">Base SPA</span>)
+        </span>
+      </div>
       {fields.map((field, index) => (
         <SplitSpaId key={field.id} spaId={spaId} {...{ control, index }} />
       ))}

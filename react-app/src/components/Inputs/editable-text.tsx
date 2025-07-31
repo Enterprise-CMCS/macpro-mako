@@ -19,17 +19,17 @@ const EditableText = React.forwardRef<HTMLInputElement, EditableTextProps>(
 
     return (
       <div className={cn(className, "flex gap-x-4 items-center leading-[2.25]")}>
-        <BaseInput
-          ref={ref}
-          key={id}
-          type={edit ? "text" : "hidden"}
-          defaultValue={edit ? defaultValue || value : undefined}
-          value={newValue}
-          onChange={(event) => setNewValue(event.target.value)}
-          {...props}
-        />
         {edit ? (
           <>
+            <BaseInput
+              ref={ref}
+              key={id}
+              type="text"
+              defaultValue={defaultValue || value}
+              value={newValue}
+              onChange={(event) => setNewValue(event.target.value)}
+              {...props}
+            />
             <button
               onClick={() => {
                 onValueChange(newValue);
@@ -51,7 +51,7 @@ const EditableText = React.forwardRef<HTMLInputElement, EditableTextProps>(
           </>
         ) : (
           <>
-            <div ref={ref} {...props}>
+            <div ref={ref} {...props} className="text-left">
               {newValue}
             </div>
             <button onClick={() => setEdit(true)} aria-label="Edit">
