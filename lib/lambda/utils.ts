@@ -108,23 +108,36 @@ export const isChipSpaRespondRAIEvent = (parsedRecord: ParseKafkaEvent) => {
 //   return submissionDateIsoString;
 // };
 
+// const toStartOfUTCDayISOString = (dateString: string): string => {
+//   const date = new Date(dateString);
+
+//   // Adjust for local time zone offset to get start of *local* day in UTC
+//   const localYear = date.getFullYear();
+//   const localMonth = date.getMonth();
+//   const localDay = date.getDate();
+
+//   // This creates a date at midnight LOCAL time
+//   const localMidnight = new Date(localYear, localMonth, localDay);
+
+//   // Get the UTC timestamp that corresponds to that local midnight
+//   const utcEquivalent = new Date(localMidnight.getTime() - localMidnight.getTimezoneOffset() * 60000);
+
+//   const submissionDateIsoString = utcEquivalent.toISOString();
+//   console.log("submission date ISO string:", submissionDateIsoString)
+//   return submissionDateIsoString;
+// };
 const toStartOfUTCDayISOString = (dateString: string): string => {
   const date = new Date(dateString);
 
-  // Adjust for local time zone offset to get start of *local* day in UTC
-  const localYear = date.getFullYear();
-  const localMonth = date.getMonth();
-  const localDay = date.getDate();
+  // Get milliseconds from the original date
+  const originalMillis = date.getTime();
 
-  // This creates a date at midnight LOCAL time
-  const localMidnight = new Date(localYear, localMonth, localDay);
+  // Subtract the local timezone offset in milliseconds
+  const adjustedMillis = originalMillis - date.getTimezoneOffset() * 60000;
 
-  // Get the UTC timestamp that corresponds to that local midnight
-  const utcEquivalent = new Date(localMidnight.getTime() - localMidnight.getTimezoneOffset() * 60000);
-
-  const submissionDateIsoString = utcEquivalent.toISOString();
-  console.log("submission date ISO string:", submissionDateIsoString)
-  return submissionDateIsoString;
+  const adjustedDateISOString = new Date(adjustedMillis).toISOString();
+  console.log("submission date ISO string:", adjustedDateISOString);
+  return adjustedDateISOString;
 };
 
 
