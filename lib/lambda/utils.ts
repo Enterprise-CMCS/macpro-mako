@@ -59,6 +59,7 @@ export const calculate90dayExpiration = async (
   const alert90DaysDate = item?._source.alert90DaysDate || "";
   const submissionMS = new Date(submissionDateIsoString).getTime();
   const raiMS = new Date(raiRequestedDate).getTime();
+  console.log("raiMS: ", raiMS);
 
   if (!submissionDate || !raiRequestedDate) {
     console.error("error parsing os record");
@@ -99,7 +100,12 @@ export const isChipSpaRespondRAIEvent = (parsedRecord: ParseKafkaEvent) => {
 
 const toStartOfUTCDayISOString = (dateString: string): string => {
   const date = new Date(dateString);
-  return new Date(Date.UTC(date.getUTCFullYear(), date.getUTCMonth(), date.getUTCDate())).toISOString();
+  const localYear = date.getFullYear();
+  const localMonth = date.getMonth();
+  const localDate = date.getDate();
+  const submissionDateIsoString = new Date(localYear, localMonth, localDate).toISOString();
+  console.log("submission date ISO string:", submissionDateIsoString)
+  return submissionDateIsoString;
 };
 
 // const getTodayMidnightUTCMillis = (): number => {
@@ -120,7 +126,9 @@ const getLocalDayAsUTCMidnightISOString = () => {
   const localDate = now.getDate();
 
   // Create a new Date at local midnight
-  return new Date(localYear, localMonth, localDate).getTime();
+  const todaysDateUTC = new Date(localYear, localMonth, localDate).getTime();
+  console.log("todays date timestamp converted to UTC: ", todaysDateUTC)
+  return todaysDateUTC;
 };
 
 
