@@ -35,13 +35,13 @@ export const FormIntroTextForAppK = () => (
 );
 
 export const SpaIdFormattingDesc = () => (
-  <div id="spa-id-formatting-desc" aria-live="off">
+  <>
     <p>Must follow the format SS-YY-NNNN or SS-YY-NNNN-XXXX.</p>
     <p className="text-neutral-500">
       Reminder - CMS recommends that all SPA numbers start with the year in which the package is
       submitted.
     </p>
-  </div>
+  </>
 );
 
 type PreSubmissionMessageProps = {

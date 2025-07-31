@@ -35,37 +35,33 @@ export const MedicaidForm = () => {
           <FormField
             control={control}
             name="id"
-            render={({ field }) => {
-              return (
-                <FormItem>
-                  <div className="flex gap-4">
-                    <FormLabel htmlFor="spa-id" className="font-semibold" data-testid="spaid-label">
-                      SPA ID <RequiredIndicator />
-                    </FormLabel>
-                    <Link
-                      to="/faq/spa-id-format"
-                      target={FAQ_TAB}
-                      rel="noopener noreferrer"
-                      className="text-blue-900 underline"
-                    >
-                      What is my SPA ID?
-                    </Link>
-                  </div>
-                  <SpaIdFormattingDesc />
-                  <FormControl>
-                    <Input
-                      id="spa-id"
-                      className="max-w-sm"
-                      ref={field.ref}
-                      value={field.value}
-                      aria-describedby="spa-id-formatting-desc"
-                      onChange={(e) => field.onChange(e.currentTarget.value.toUpperCase())}
-                    />
-                  </FormControl>
-                  <FormMessage announceOn={field.value} />
-                </FormItem>
-              );
-            }}
+            render={({ field }) => (
+              <FormItem>
+                <div className="flex gap-4">
+                  <FormLabel className="font-semibold" data-testid="spaid-label">
+                    SPA ID <RequiredIndicator />
+                  </FormLabel>
+                  <Link
+                    to="/faq/spa-id-format"
+                    target={FAQ_TAB}
+                    rel="noopener noreferrer"
+                    className="text-blue-900 underline"
+                  >
+                    What is my SPA ID?
+                  </Link>
+                </div>
+                <SpaIdFormattingDesc />
+                <FormControl>
+                  <Input
+                    className="max-w-sm"
+                    ref={field.ref}
+                    value={field.value}
+                    onChange={(e) => field.onChange(e.currentTarget.value.toUpperCase())}
+                  />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
           />
           <FormField
             control={control}
