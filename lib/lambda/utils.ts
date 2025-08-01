@@ -162,18 +162,23 @@ const toStartOfUTCDayISOString = (dateString: string): string => {
 //   return midnightUTC;
 // };
 
+
 const getLocalDayAsUTCMidnightISOString = () => {
   const now = new Date();
 
-  // This gives you midnight in local time
+  // Create a new Date object set to local midnight
   const localMidnight = new Date(now.getFullYear(), now.getMonth(), now.getDate());
 
-  // Adjust for the timezone offset to get the equivalent UTC timestamp
-  const utcEquivalent = new Date(localMidnight.getTime() - localMidnight.getTimezoneOffset() * 60000).getTime();
+  // Convert local midnight to an ISO string (which represents it in UTC)
+  const isoString = localMidnight.toISOString();
 
-  console.log("Today's local day represented as UTC midnight ISO:", utcEquivalent);
-  return utcEquivalent;
+  console.log("Today's local day represented as UTC midnight ISO:", isoString);
+  const todayUTC = new Date(isoString).getTime();
+  console.log("Timestamp:", todayUTC);
+  return todayUTC;
 };
+
+
 
 
 const adjustToNextMondayIfWeekend = (timestamp: number): number => {
