@@ -1,11 +1,9 @@
 import * as React from "react";
 import { useParams } from "react-router";
-// import { InputProps } from "shared-types";
 import { isCmsWriteUser } from "shared-utils";
 
 import {
   ActionForm,
-  EditableText,
   FormControl,
   FormDescription,
   FormField,
@@ -26,42 +24,8 @@ import { SplitSpaIdForm } from "./SplitSpaIdForm";
 const SPLIT_COUNT_START = 2;
 const SPLIT_COUNT_END = 8;
 
-// const DEFAULT_SUFFIXES = {
-//   1: "A",
-//   2: "B",
-//   3: "C",
-//   4: "D",
-//   5: "E",
-//   6: "F",
-//   7: "G",
-// };
-
 const SPLIT_COUNT_OPTIONS = [...Array(SPLIT_COUNT_END - SPLIT_COUNT_START + 1).keys()].map(
   (x) => `${x + SPLIT_COUNT_START}`,
-);
-
-export const SplitSpaIdInput = ({ index, spaId, value, onChange, register, ...props }) => (
-  <div className="items-center flex leading-[2.25]">
-    <span className="font-bold mr-4">{index}.</span>
-    <span>{spaId}</span>
-    {!value ? (
-      <span className="flex ml-1">
-        (<span className="font-bold">Base SPA</span>)
-      </span>
-    ) : (
-      <span className="flex">
-        -
-        <EditableText
-          key={props.id}
-          name={props.id}
-          value={value}
-          onValueChange={onChange}
-          {...props}
-          {...register(`${props.id}`)}
-        />
-      </span>
-    )}
-  </div>
 );
 
 export const SplitSpaForm = () => {
@@ -144,33 +108,31 @@ export const SplitSpaForm = () => {
             />
             <SplitSpaIdForm control={control} spaId={id} splitCount={splitCount} />
             {splitCount && (
-              <section className="flex flex-col space-y-2">
-                <FormField
-                  control={control}
-                  name="request"
-                  render={({ field }) => (
-                    <FormItem>
-                      <div className="flex flex-col gap-y-2">
-                        <FormLabel className="font-bold">
-                          These packages were added to OneMAC per request from <RequiredIndicator />
-                        </FormLabel>
-                        <FormDescription className="italic text-gray-500 text-sm">
-                          CMS person who request this action on behalf of the state
-                        </FormDescription>
-                      </div>
-                      <FormControl>
-                        <Input
-                          className="max-w-sm"
-                          // ref={field.ref}
-                          value={field.value}
-                          onChange={field.onChange}
-                          {...field}
-                        />
-                      </FormControl>
-                    </FormItem>
-                  )}
-                />
-              </section>
+              <FormField
+                control={control}
+                name="request"
+                render={({ field }) => (
+                  <FormItem>
+                    <div className="flex flex-col gap-y-2">
+                      <FormLabel className="font-bold">
+                        These packages were added to OneMAC per request from <RequiredIndicator />
+                      </FormLabel>
+                      <FormDescription className="italic text-gray-500 text-sm">
+                        CMS person who request this action on behalf of the state
+                      </FormDescription>
+                    </div>
+                    <FormControl>
+                      <Input
+                        className="max-w-sm"
+                        // ref={field.ref}
+                        value={field.value}
+                        onChange={field.onChange}
+                        {...field}
+                      />
+                    </FormControl>
+                  </FormItem>
+                )}
+              />
             )}
           </>
         );

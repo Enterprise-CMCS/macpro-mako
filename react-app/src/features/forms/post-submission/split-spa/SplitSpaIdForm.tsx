@@ -19,32 +19,29 @@ const SplitSpaId = ({ spaId, control, index, ...props }) => (
     control={control}
     name={`spaIds.${index}.suffix`}
     key={`spaIds.${index}`}
-    render={({ field }) => {
-      console.log({ field });
-      return (
-        <FormItem className="max-w-sm">
-          <FormControl>
-            <div className="items-center flex leading-[2.25]">
-              <span className="font-bold mr-4">{index}.</span>
-              <span>{spaId}</span>
-              <span className="flex">
-                -
-                <EditableText
-                  ref={field.ref}
-                  id={field.name}
-                  key={field.name}
-                  name={field.name}
-                  value={field.value}
-                  onValueChange={field.onChange}
-                  onBlur={field.onBlur}
-                />
-              </span>
-            </div>
-          </FormControl>
-          <FormMessage />
-        </FormItem>
-      );
-    }}
+    render={({ field }) => (
+      <FormItem className="max-w-sm">
+        <FormControl>
+          <div className="items-center flex leading-[2.25]">
+            <span className="font-bold mr-4">{index}.</span>
+            <span>{spaId}</span>
+            <span className="flex">
+              -
+              <EditableText
+                ref={field.ref}
+                id={field.name}
+                key={field.name}
+                name={field.name}
+                value={field.value}
+                onValueChange={field.onChange}
+                onBlur={field.onBlur}
+              />
+            </span>
+          </div>
+        </FormControl>
+        <FormMessage />
+      </FormItem>
+    )}
   />
 );
 
@@ -61,8 +58,6 @@ export const SplitSpaIdForm = ({ control, spaId, splitCount }) => {
       append({ suffix: value });
     });
   }, [splitCount]); // eslint-disable-line react-hooks/exhaustive-deps
-
-  console.log({ splitCount });
 
   if (!splitCount) {
     return;
