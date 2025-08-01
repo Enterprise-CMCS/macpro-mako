@@ -137,37 +137,27 @@ const toStartOfUTCDayISOString = (dateString: string): string => {
   const osSubmissionDate = new Date(dateString).getTime() - offsetInMilliseconds;
   const date = new Date(osSubmissionDate);
 
-  // Convert to local date parts
-  const localYear = date.getFullYear();
-  const localMonth = date.getMonth();
-  const localDay = date.getDate();
+  // // Convert to local date parts
+  // const localYear = date.getFullYear();
+  // const localMonth = date.getMonth();
+  // const localDay = date.getDate();
 
-  // Create a Date at local midnight (00:00:00.000 local time)
-  const localMidnight = new Date(localYear, localMonth, localDay);
+  // // Create a Date at local midnight (00:00:00.000 local time)
+  // const localMidnight = new Date(localYear, localMonth, localDay);
 
   // Convert that to UTC ISO string
-  const utcMidnightISOString = localMidnight.toISOString();
+  const utcMidnightISOString = date.toISOString();
   console.log("submission date ISO string:", utcMidnightISOString);
   return utcMidnightISOString;
 };
 
-
-// const getTodayMidnightUTCMillis = (): number => {
-//   const now = new Date();
-//   const midnightUTC = Date.UTC(
-//     now.getUTCFullYear(),
-//     now.getUTCMonth(),
-//     now.getUTCDate()
-//   );
-//   return midnightUTC;
-// };
-
-
 const getLocalDayAsUTCMidnightISOString = () => {
-  const now = new Date();
-
+  const now = new Date().getTime();
+  //calculate the UTC offset
+  const offsetInMinutes = new Date().getTimezoneOffset();
+  const offsetInMilliseconds = offsetInMinutes * 60 * 1000;
   // Create a new Date object set to local midnight
-  const localMidnight = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+  const localMidnight = new Date(now - offsetInMilliseconds);
 
   // Convert local midnight to an ISO string (which represents it in UTC)
   const isoString = localMidnight.toISOString();
