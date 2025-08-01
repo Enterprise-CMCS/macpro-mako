@@ -1,6 +1,7 @@
 import { errors as OpensearchErrors } from "@opensearch-project/opensearch";
 import * as os from "libs/opensearch-lib";
 import { getOsNamespace } from "libs/utils";
+import { off } from "process";
 
 export type ErrorResponse = {
   statusCode: number;
@@ -127,7 +128,14 @@ export const isChipSpaRespondRAIEvent = (parsedRecord: ParseKafkaEvent) => {
 //   return submissionDateIsoString;
 // };
 const toStartOfUTCDayISOString = (dateString: string): string => {
-  const date = new Date(dateString);
+
+  //calculate the UTC offset
+  const offsetInMinutes = new Date().getTimezoneOffset();
+  const offsetInMilliseconds = offsetInMinutes * 60 * 1000;
+
+
+  const osSubmissionDate = new Date(dateString).getTime() - offsetInMilliseconds;
+  const date = new Date(osSubmissionDate);
 
   // Convert to local date parts
   const localYear = date.getFullYear();
