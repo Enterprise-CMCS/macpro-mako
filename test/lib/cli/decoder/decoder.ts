@@ -1,0 +1,45 @@
+// import base32url from "base32url";
+// import base64url from "base64url";
+import protobuf from "protobufjs";
+import { URL } from "url";
+
+// Load the migration.proto file to define the structure
+protobuf.load("migration.proto", async (err, root) => {
+  if (err) {
+    console.error("Error loading proto file:", err);
+    return;
+  }
+
+  // Get the MigrationPayload and OTPParameters types from the proto
+  const MigrationPayload = root.lookupType("MigrationPayload");
+  const OTPParameters = root.lookupType("OTPParameters");
+
+  // use an online resource to gather the URI from the QR code
+  const uri = process.env.QRURI;
+  const url = new URL(uri);
+  const dataParam = url.searchParams.get("data"); // Get the "data" query param
+
+  // Decode the URL-safe Base64 data
+  const decodedBuffer = Buffer.from(dataParam).toString("base64");
+
+  // Parse the decoded protobuf data
+  const payload = MigrationPayload.decode(decodedBuffer);
+
+  // Check for otpParameters (capitalized) and iterate over it
+  if (Array.isArray(payload.otpParameters)) {
+    console.log("Found otpParameters (capitalized):");
+    for (const entry of payload.otpParameters) {
+      console.log(entry.secret);
+      const secret = base32url.encode(entry.secret); // Convert binary secret to Base32
+      console.log(`Name: ${entry.name}`);
+      console.log(`Issuer: ${entry.issuer}`);
+      console.log(`Secret (Base32): ${secret}`);
+
+      // Generate an otpauth URI for Playwright (this URI can be used to configure the TOTP in Google Authenticator or similar)
+      const otpauthUri = `otpauth://totp/${encodeURIComponent(entry.issuer)}:${encodeURIComponent(entry.name)}?secret=${secret}&issuer=${encodeURIComponent(entry.issuer)}`;
+      console.log(`Generated otpauth URI: ${otpauthUri}`);
+    }
+  } else {
+    console.error("No otpParameters found in the decoded payload.");
+  }
+});
