@@ -7,11 +7,11 @@ import * as OTPAuth from "otpauth";
 
 const totp = new OTPAuth.TOTP({
   issuer: "idm.cms.gov",
-      label: process.env.MFAUSER, // must be a string
-      algorithm: "SHA1",
-      digits: 6,
-      period: 30,
-      secret: process.env.TOTPSECRET, // must be a string
+  label: process.env.MFAUSER, // must be a string
+  algorithm: "SHA1",
+  digits: 6,
+  period: 30,
+  secret: process.env.TOTPSECRET, // must be a string
 });
 
 const token = totp.generate();
