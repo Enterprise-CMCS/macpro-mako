@@ -143,12 +143,14 @@ export const isChipSpaRespondRAIEvent = (parsedRecord: ParseKafkaEvent) => {
 const toStartOfUTCDayISOString = (dateString: string) => {
   const inputDate = new Date(dateString);
 
+  // Hardcoded Central Time offset (in minutes)
+  const CENTRAL_TIME_OFFSET_MINUTES = 300;
+
   // Step 1: Get timestamp in milliseconds
   const originalMillis = inputDate.getTime();
 
-  // Step 2: Subtract local timezone offset
-  const offsetInMinutes = inputDate.getTimezoneOffset();
-  const offsetInMilliseconds = offsetInMinutes * 60 * 1000;
+  // Step 2: Subtract fixed offset (5 hours * 60 mins * 60 secs * 1000 ms)
+  const offsetInMilliseconds = CENTRAL_TIME_OFFSET_MINUTES * 60 * 1000;
   const adjustedMillis = originalMillis - offsetInMilliseconds;
 
   // Step 3: Create new Date from adjusted timestamp
@@ -187,20 +189,25 @@ const toStartOfUTCDayISOString = (dateString: string) => {
 const getPretendUTCMidnightISOString = () => {
   const now = new Date();
 
-  // Get the local date components
-  const year = now.getFullYear();
-  const month = now.getMonth();
-  const day = now.getDate();
+  // Hardcoded Central Time offset (5 hours in milliseconds)
+  const CENTRAL_TIME_OFFSET_MS = 5 * 60 * 60 * 1000;
 
-  // Create a local midnight timestamp
-  const localMidnight = new Date(year, month, day);
+  // Subtract 5 hours from current UTC time to get 'pretend' local time
+  const pretendLocalTimeMillis = now.getTime() - CENTRAL_TIME_OFFSET_MS;
+  const pretendLocalDate = new Date(pretendLocalTimeMillis);
 
-  // This treats local midnight as if it were UTC midnight
+  // Extract pretend local date components
+  const year = pretendLocalDate.getUTCFullYear();
+  const month = pretendLocalDate.getUTCMonth();
+  const day = pretendLocalDate.getUTCDate();
+
+  // Create a Date treated as UTC midnight for the pretend local day
   const pretendUTCString = new Date(Date.UTC(year, month, day)).toISOString();
 
   console.log("Pretending local date is UTC midnight:", pretendUTCString);
-  const prtendUTCStringTimestamp = new Date(pretendUTCString).getTime();
-  return prtendUTCStringTimestamp;
+
+  // Return timestamp for that pretend UTC midnight
+  return new Date(pretendUTCString).getTime();
 };
 
 
