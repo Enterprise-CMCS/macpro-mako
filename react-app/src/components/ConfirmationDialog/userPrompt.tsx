@@ -18,6 +18,10 @@ export type UserPrompt = {
 
 class UserPromptObserver extends Observer<UserPrompt> {
   create = (data: UserPrompt) => {
+    if (this.observed) {
+      return;
+    }
+
     this.publish(data);
     this.observed = { ...data };
   };
