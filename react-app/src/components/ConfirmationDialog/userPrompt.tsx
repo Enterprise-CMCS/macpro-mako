@@ -77,6 +77,7 @@ export const UserPrompt = () => {
     <ConfirmationDialog
       open={isOpen}
       title={activeUserPrompt.header}
+      description="Dialog for user confirmation"
       body={activeUserPrompt.body}
       onAccept={onAccept}
       onCancel={onCancel}
