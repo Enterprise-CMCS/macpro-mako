@@ -68,9 +68,10 @@
     "zod": "^3.22.3"
   },
   "devDependencies": {
-    "@storybook/addon-a11y": "^9.0.18",
-    "@storybook/addon-docs": "^9.0.18",
-    "@storybook/react-vite": "^9.0.18",
+    "@storybook/addon-a11y": "^9.1.1",
+    "@storybook/addon-docs": "^9.1.1",
+    "@storybook/react-vite": "^9.1.1",
+    "@storybook/addon-vitest": "^9.1.1",
     "@tailwindcss/typography": "^0.5.10",
     "@testing-library/jest-dom": "^5.16.5",
     "@testing-library/react": "^14.0.0",
@@ -80,19 +81,21 @@
     "@types/react": "^18.0.28",
     "@types/react-dom": "^18.0.11",
     "@vitejs/plugin-react-swc": "^3.0.0",
+    "@vitest/browser": "^3.2.4",
     "autoprefixer": "^10.4.14",
-    "eslint-plugin-storybook": "^9.0.18",
+    "eslint-plugin-storybook": "^9.1.1",
     "jsdom": "^21.1.1",
     "msw": "^2.3.1",
     "msw-storybook-addon": "^2.0.5",
     "postcss": "^8.4.31",
-    "storybook": "^9.0.18",
+    "storybook": "^9.1.1",
     "storybook-addon-remix-react-router": "^5.0.0",
     "tailwindcss": "^3.3.1",
     "ts-node": "^10.9.2",
     "typescript": "5.4.5",
     "vite": "^5.3.5",
     "vite-plugin-checker": "^0.8.0",
-    "vite-plugin-radar": "^0.9.2"
+    "vite-plugin-radar": "^0.9.2",
+    "vitest": "^3.2.4"
   }
 }
