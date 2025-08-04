@@ -137,7 +137,7 @@ describe("StateSignup", () => {
 
     await waitFor(() => expect(screen.getByText("Maine")).toBeInTheDocument());
     await user.click(screen.getByText("Maine"));
-    expect(submitButton).toBeEnabled();
+    await waitFor(() => expect(submitButton).toBeEnabled());
 
     await user.click(submitButton);
 

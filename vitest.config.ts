@@ -7,6 +7,27 @@ export default defineConfig({
     globals: true,
     include: ["**/*.test.{ts,tsx}"],
     exclude: ["**/node_modules/**", "test/**", "**/*.spec.{ts,tsx}"],
+    projects: [
+      {
+        test: {
+          name: "lib",
+          root: "./lib/",
+          setupFiles: ["vitest.setup.ts"],
+          exclude: ["**/node_modules/**", "./libs/email/**"],
+          environment: "node",
+        },
+      },
+      {
+        test: {
+          name: "email",
+          root: "./lib/libs/email/",
+          setupFiles: ["vitest.setup.ts"],
+          exclude: ["**/node_modules/**"],
+          environment: "jsdom",
+        },
+      },
+      "react-app",
+    ],
     server: {
       deps: {
         cacheDir: ".vitest/cache",
