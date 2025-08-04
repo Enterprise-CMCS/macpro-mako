@@ -6,14 +6,22 @@ import { UserPrompt, userPrompt } from "@/components";
 export function useNavigationPrompt({
   shouldBlock,
   prompt,
+  shouldSkipBlockingRef,
 }: {
   shouldBlock: boolean;
   prompt: Omit<UserPrompt, "onAccept">;
+  shouldSkipBlockingRef?: React.MutableRefObject<boolean>;
 }) {
   const blocker = useBlocker(shouldBlock);
 
   useEffect(() => {
     if (blocker?.state === "blocked") {
+      if (shouldSkipBlockingRef?.current) {
+        shouldSkipBlockingRef.current = false;
+        blocker.proceed?.();
+        return;
+      }
+
       userPrompt({
         ...prompt,
         onAccept: () => {
@@ -21,5 +29,5 @@ export function useNavigationPrompt({
         },
       });
     }
-  }, [blocker?.state, blocker, prompt]);
+  }, [blocker?.state, blocker, prompt, shouldSkipBlockingRef]);
 }

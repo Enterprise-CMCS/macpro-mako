@@ -1,7 +1,7 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useMutation } from "@tanstack/react-query";
 import { API } from "aws-amplify";
-import { ReactNode, useEffect, useMemo } from "react";
+import { ReactNode, useEffect, useMemo, useRef } from "react";
 import { DefaultValues, FieldPath, useForm, UseFormReturn } from "react-hook-form";
 import { Navigate, useLocation, useNavigate, useParams } from "react-router";
 import { Authority, CognitoUserAttributes } from "shared-types";
@@ -134,15 +134,10 @@ export const ActionForm = <Schema extends SchemaWithEnforcableProps>({
   }>();
   const { pathname } = useLocation();
   const startTimePage = Date.now();
-  useEffect(() => {
-    if (typeof window.gtag == "function") {
-      const submissionType = mapSubmissionTypeBasedOnActionFormTitle(title);
-      // send package action event
-      sendGAEvent("submit_page_open", { submission_type: submissionType ? submissionType : title });
-    }
-  }, [title]);
+
   const navigate = useNavigate();
   const { data: userObj, isLoading: isUserLoading } = useGetUser();
+  const skipNavigationPromptRef = useRef(false);
 
   const breadcrumbs = optionCrumbsFromPath(pathname, authority, id);
 
@@ -159,6 +154,7 @@ export const ActionForm = <Schema extends SchemaWithEnforcableProps>({
   useNavigationPrompt({
     shouldBlock: hasRealChanges && !form.formState.isSubmitting,
     prompt: promptOnLeavingForm,
+    shouldSkipBlockingRef: skipNavigationPromptRef,
   });
 
   useEffect(() => {
@@ -171,6 +167,14 @@ export const ActionForm = <Schema extends SchemaWithEnforcableProps>({
     window.addEventListener("beforeunload", handleBeforeUnload);
     return () => window.removeEventListener("beforeunload", handleBeforeUnload);
   }, [form.formState.isDirty, form.formState.isSubmitting]);
+
+  useEffect(() => {
+    if (typeof window.gtag == "function") {
+      const submissionType = mapSubmissionTypeBasedOnActionFormTitle(title);
+      // send package action event
+      sendGAEvent("submit_page_open", { submission_type: submissionType ? submissionType : title });
+    }
+  }, [title]);
 
   const { mutateAsync } = useMutation({
     mutationFn: (formData: z.TypeOf<Schema>) =>
@@ -324,6 +328,8 @@ export const ActionForm = <Schema extends SchemaWithEnforcableProps>({
               <Button
                 className="px-12"
                 onClick={() => {
+                  skipNavigationPromptRef.current = true;
+
                   userPrompt({
                     ...promptOnLeavingForm,
                     onAccept: () => {
@@ -331,6 +337,7 @@ export const ActionForm = <Schema extends SchemaWithEnforcableProps>({
                       navigate(origin);
                     },
                   });
+
                   const timeOnPageSec = (Date.now() - startTimePage) / 1000;
                   sendGAEvent("submit_cancel", {
                     submission_type: title,
