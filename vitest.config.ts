@@ -26,7 +26,7 @@ export default defineConfig({
           environment: "jsdom",
         },
       },
-      "react-app",
+      "./react-app",
     ],
     server: {
       deps: {

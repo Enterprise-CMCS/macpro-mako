@@ -32,7 +32,7 @@ export default defineConfig(({ mode }) => {
       port: 5000,
     },
     test: {
-      root: "react-app",
+      name: "ui",
       setupFiles: "vitest.setup.ts",
       exclude: ["**/node_modules/**"],
       environment: "jsdom",
