@@ -1,7 +1,7 @@
 import { CAPITATED_AMEND_ITEM_ID } from "mocks";
 import { describe, expect, it, vi } from "vitest";
 
-import { renderFormAsync } from "@/utils/test-helpers/renderForm";
+import { renderFormWithPackageSectionAsync } from "@/utils/test-helpers/renderForm";
 
 import { WithdrawPackageActionWaiver } from ".";
 
@@ -11,7 +11,7 @@ vi.mock("react-router", async () => ({
 }));
 describe("WithdrawPackageAction components", () => {
   it("renders WithdrawPackageActionWaiver correctly", async () => {
-    const container = renderFormAsync(<WithdrawPackageActionWaiver />);
+    const container = renderFormWithPackageSectionAsync(<WithdrawPackageActionWaiver />);
 
     expect(await container).toMatchSnapshot();
   });

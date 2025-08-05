@@ -4,7 +4,7 @@ import { describe, expect, it, vi } from "vitest";
 
 import * as api from "@/api/useGetUser";
 import { OneMacUser } from "@/api/useGetUser";
-import { renderFormAsync } from "@/utils/test-helpers";
+import { renderFormWithPackageSectionAsync } from "@/utils/test-helpers";
 
 import { DetailsContent } from ".";
 
@@ -14,7 +14,7 @@ describe("package details", () => {
       const response = mockUseGetUser();
       return response as UseQueryResult<OneMacUser, unknown>;
     });
-    const { asFragment } = await renderFormAsync(<DetailsContent id={ADMIN_ITEM_ID} />);
+    const { asFragment } = await renderFormWithPackageSectionAsync(<DetailsContent id={ADMIN_ITEM_ID} />);
 
     expect(asFragment()).toMatchSnapshot();
   });

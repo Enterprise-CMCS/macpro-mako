@@ -349,49 +349,52 @@ exports[`WithdrawPackageAction components > renders WithdrawPackageActionWaiver 
               </div>
             </div>
           </section>
-          <div
-            class="relative w-full border p-4 [&>svg~*]:pl-7 [&>svg+div]:translate-y-[-3px] [&>svg]:absolute [&>svg]:left-4 [&>svg]:top-4 [&>svg]:text-foreground border-l-[6px] border-y-0 border-r-0 border-cyan-500 bg-cyan-300/10 rounded-none my-2 flex-row text-sm"
-            role="alert"
-          >
-            <svg
-              class="lucide lucide-info"
-              fill="none"
-              height="24"
-              stroke="currentColor"
-              stroke-linecap="round"
-              stroke-linejoin="round"
-              stroke-width="2"
-              viewBox="0 0 24 24"
-              width="24"
-              xmlns="http://www.w3.org/2000/svg"
+          <section>
+            <div
+              class="relative w-full border p-4 [&>svg~*]:pl-7 [&>svg+div]:translate-y-[-3px] [&>svg]:absolute [&>svg]:left-4 [&>svg]:top-4 [&>svg]:text-foreground border-l-[6px] border-y-0 border-r-0 border-cyan-500 bg-cyan-300/10 rounded-none flex-row text-sm"
+              role="alert"
             >
-              <circle
-                cx="12"
-                cy="12"
-                r="10"
-              />
-              <path
-                d="M12 16v-4"
-              />
-              <path
-                d="M12 8h.01"
-              />
-            </svg>
-            <p
-              class="ml-2"
-            >
-              Once complete, you will not be able to resubmit this package. CMS will be notified and will use this content to review your request. If CMS needs any additional information, they will follow up by email.
-            </p>
-            <p
-              class="font-bold ml-2"
-            >
-              If you leave this page, you will lose your progress on this form.
-            </p>
-          </div>
+              <svg
+                class="lucide lucide-info"
+                fill="none"
+                height="24"
+                stroke="currentColor"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                viewBox="0 0 24 24"
+                width="24"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <circle
+                  cx="12"
+                  cy="12"
+                  r="10"
+                />
+                <path
+                  d="M12 16v-4"
+                />
+                <path
+                  d="M12 8h.01"
+                />
+              </svg>
+              <p
+                class="ml-2"
+              >
+                Once complete, you will not be able to resubmit this package. CMS will be notified and will use this content to review your request. If CMS needs any additional information, they will follow up by email.
+              </p>
+              <p
+                class="font-bold ml-2"
+              >
+                If you leave this page, you will lose your progress on this form.
+              </p>
+            </div>
+          </section>
           <section
             class="flex justify-end gap-2 p-4 ml-auto"
           >
             <button
+              aria-disabled="true"
               class="inline-flex items-center justify-center rounded-md text-[16px] font-bold ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none bg-primary text-slate-50 hover:bg-primary-dark disabled:bg-[#E3E3E3] disabled:text-[#4F4F4F] h-10 py-2 px-12"
               data-testid="submit-action-form"
               disabled=""
@@ -430,7 +433,6 @@ exports[`WithdrawPackageAction components > renders WithdrawPackageActionWaiver 
           </a>
         </div>
       </div>
-      ,
     </div>
   </body>,
   "container": <div>
@@ -778,49 +780,52 @@ exports[`WithdrawPackageAction components > renders WithdrawPackageActionWaiver 
             </div>
           </div>
         </section>
-        <div
-          class="relative w-full border p-4 [&>svg~*]:pl-7 [&>svg+div]:translate-y-[-3px] [&>svg]:absolute [&>svg]:left-4 [&>svg]:top-4 [&>svg]:text-foreground border-l-[6px] border-y-0 border-r-0 border-cyan-500 bg-cyan-300/10 rounded-none my-2 flex-row text-sm"
-          role="alert"
-        >
-          <svg
-            class="lucide lucide-info"
-            fill="none"
-            height="24"
-            stroke="currentColor"
-            stroke-linecap="round"
-            stroke-linejoin="round"
-            stroke-width="2"
-            viewBox="0 0 24 24"
-            width="24"
-            xmlns="http://www.w3.org/2000/svg"
+        <section>
+          <div
+            class="relative w-full border p-4 [&>svg~*]:pl-7 [&>svg+div]:translate-y-[-3px] [&>svg]:absolute [&>svg]:left-4 [&>svg]:top-4 [&>svg]:text-foreground border-l-[6px] border-y-0 border-r-0 border-cyan-500 bg-cyan-300/10 rounded-none flex-row text-sm"
+            role="alert"
           >
-            <circle
-              cx="12"
-              cy="12"
-              r="10"
-            />
-            <path
-              d="M12 16v-4"
-            />
-            <path
-              d="M12 8h.01"
-            />
-          </svg>
-          <p
-            class="ml-2"
-          >
-            Once complete, you will not be able to resubmit this package. CMS will be notified and will use this content to review your request. If CMS needs any additional information, they will follow up by email.
-          </p>
-          <p
-            class="font-bold ml-2"
-          >
-            If you leave this page, you will lose your progress on this form.
-          </p>
-        </div>
+            <svg
+              class="lucide lucide-info"
+              fill="none"
+              height="24"
+              stroke="currentColor"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              viewBox="0 0 24 24"
+              width="24"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <circle
+                cx="12"
+                cy="12"
+                r="10"
+              />
+              <path
+                d="M12 16v-4"
+              />
+              <path
+                d="M12 8h.01"
+              />
+            </svg>
+            <p
+              class="ml-2"
+            >
+              Once complete, you will not be able to resubmit this package. CMS will be notified and will use this content to review your request. If CMS needs any additional information, they will follow up by email.
+            </p>
+            <p
+              class="font-bold ml-2"
+            >
+              If you leave this page, you will lose your progress on this form.
+            </p>
+          </div>
+        </section>
         <section
           class="flex justify-end gap-2 p-4 ml-auto"
         >
           <button
+            aria-disabled="true"
             class="inline-flex items-center justify-center rounded-md text-[16px] font-bold ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none bg-primary text-slate-50 hover:bg-primary-dark disabled:bg-[#E3E3E3] disabled:text-[#4F4F4F] h-10 py-2 px-12"
             data-testid="submit-action-form"
             disabled=""
@@ -859,7 +864,6 @@ exports[`WithdrawPackageAction components > renders WithdrawPackageActionWaiver 
         </a>
       </div>
     </div>
-    ,
   </div>,
   "debug": [Function],
   "findAllByAltText": [Function],
@@ -910,7 +914,1637 @@ exports[`WithdrawPackageAction components > renders WithdrawPackageActionWaiver 
   "queryByTestId": [Function],
   "queryByText": [Function],
   "queryByTitle": [Function],
+  "queryClient": QueryClient {
+    "defaultOptions": {
+      "queries": {
+        "retry": false,
+      },
+    },
+    "logger": {
+      "error": [Function],
+      "log": [Function],
+      "warn": [Function],
+    },
+    "mountCount": 1,
+    "mutationCache": MutationCache {
+      "config": {},
+      "listeners": Set {},
+      "mutationId": 0,
+      "mutations": [],
+      "subscribe": [Function],
+    },
+    "mutationDefaults": [],
+    "queryCache": QueryCache {
+      "config": {},
+      "listeners": Set {},
+      "queries": [
+        Query {
+          "abortSignalConsumed": false,
+          "cache": [Circular],
+          "cacheTime": 300000,
+          "defaultOptions": undefined,
+          "gcTimeout": Timeout {
+            "_destroyed": false,
+            "_idleNext": TimersList {
+              "_idleNext": Timeout {
+                "_destroyed": false,
+                "_idleNext": [Circular],
+                "_idlePrev": [Circular],
+                "_idleStart": 3488,
+                "_idleTimeout": 300000,
+                "_onTimeout": [Function],
+                "_repeat": null,
+                "_timerArgs": undefined,
+                Symbol(refed): true,
+                Symbol(kHasPrimitive): false,
+                Symbol(asyncId): 8823,
+                Symbol(triggerId): 0,
+              },
+              "_idlePrev": [Circular],
+              "expiry": 303464,
+              "id": -9007199254740977,
+              "msecs": 300000,
+              "priorityQueuePosition": 3,
+            },
+            "_idlePrev": Timeout {
+              "_destroyed": false,
+              "_idleNext": [Circular],
+              "_idlePrev": TimersList {
+                "_idleNext": [Circular],
+                "_idlePrev": [Circular],
+                "expiry": 303464,
+                "id": -9007199254740977,
+                "msecs": 300000,
+                "priorityQueuePosition": 3,
+              },
+              "_idleStart": 3488,
+              "_idleTimeout": 300000,
+              "_onTimeout": [Function],
+              "_repeat": null,
+              "_timerArgs": undefined,
+              Symbol(refed): true,
+              Symbol(kHasPrimitive): false,
+              Symbol(asyncId): 8823,
+              Symbol(triggerId): 0,
+            },
+            "_idleStart": 3464,
+            "_idleTimeout": 300000,
+            "_onTimeout": [Function],
+            "_repeat": null,
+            "_timerArgs": undefined,
+            Symbol(refed): true,
+            Symbol(kHasPrimitive): false,
+            Symbol(asyncId): 8812,
+            Symbol(triggerId): 0,
+          },
+          "initialState": {
+            "data": undefined,
+            "dataUpdateCount": 0,
+            "dataUpdatedAt": 0,
+            "error": null,
+            "errorUpdateCount": 0,
+            "errorUpdatedAt": 0,
+            "fetchFailureCount": 0,
+            "fetchFailureReason": null,
+            "fetchMeta": null,
+            "fetchStatus": "idle",
+            "isInvalidated": false,
+            "status": "loading",
+          },
+          "isFetchingOptimistic": false,
+          "logger": {
+            "error": [Function],
+            "log": [Function],
+            "warn": [Function],
+          },
+          "observers": [
+            QueryObserver {
+              "client": [Circular],
+              "currentQuery": [Circular],
+              "currentQueryInitialState": {
+                "data": undefined,
+                "dataUpdateCount": 0,
+                "dataUpdatedAt": 0,
+                "error": null,
+                "errorUpdateCount": 0,
+                "errorUpdatedAt": 0,
+                "fetchFailureCount": 0,
+                "fetchFailureReason": null,
+                "fetchMeta": null,
+                "fetchStatus": "idle",
+                "isInvalidated": false,
+                "status": "loading",
+              },
+              "currentRefetchInterval": false,
+              "currentResult": {
+                "data": {
+                  "_id": "VA-2234.R11.01",
+                  "_source": {
+                    "actionType": "New",
+                    "changelog": [
+                      {
+                        "_id": "VA-2234.R11.01-001",
+                        "_source": {
+                          "additionalInformation": "Supporting documents uploaded as follow-up.",
+                          "attachments": [
+                            {
+                              "bucket": "uploads-test-attachment-bucket",
+                              "filename": "followup_docs.zip",
+                              "key": "subdoc001",
+                              "title": "Follow-Up Documents",
+                            },
+                          ],
+                          "authority": "Medicaid SPA",
+                          "event": "upload-subsequent-documents",
+                          "id": "VA-2234.R11.01-0001",
+                          "packageId": "VA-2234.R11.01",
+                          "timestamp": 1677715200000,
+                        },
+                      },
+                      {
+                        "_id": "VA-2234.R11.01-003",
+                        "_source": {
+                          "additionalInformation": "Supporting documents uploaded as follow-up.",
+                          "attachments": [
+                            {
+                              "bucket": "uploads-test-attachment-bucket",
+                              "filename": "followup_docs.zip",
+                              "key": "subdoc003",
+                              "title": "Follow-Up Documents",
+                            },
+                          ],
+                          "authority": "Medicaid SPA",
+                          "event": "upload-subsequent-documents",
+                          "id": "VA-2234.R11.01-0003",
+                          "packageId": "VA-2234.R11.01",
+                          "timestamp": 1678715205000,
+                        },
+                      },
+                      {
+                        "_id": "VA-2234.R11.01-002",
+                        "_source": {
+                          "additionalInformation": "Supporting documents uploaded as follow-up.",
+                          "attachments": [
+                            {
+                              "bucket": "uploads-test-attachment-bucket",
+                              "filename": "followup_docs.zip",
+                              "key": "subdoc002",
+                              "title": "Follow-Up Documents",
+                            },
+                          ],
+                          "authority": "Medicaid SPA",
+                          "event": "upload-subsequent-documents",
+                          "id": "VA-2234.R11.01-0002",
+                          "packageId": "VA-2234.R11.01",
+                          "timestamp": 1678515205000,
+                        },
+                      },
+                      {
+                        "_id": "VA-2234.R11.01-004",
+                      },
+                    ],
+                    "cmsStatus": "Pending",
+                    "id": "VA-2234.R11.01",
+                    "origin": "SEATool",
+                    "seatoolStatus": "Pending",
+                    "state": "MD",
+                    "stateStatus": "Under Review",
+                  },
+                  "found": true,
+                },
+                "dataUpdatedAt": 1754411859811,
+                "error": null,
+                "errorUpdateCount": 0,
+                "errorUpdatedAt": 0,
+                "failureCount": 0,
+                "failureReason": null,
+                "fetchStatus": "idle",
+                "isError": false,
+                "isFetched": true,
+                "isFetchedAfterMount": true,
+                "isFetching": false,
+                "isInitialLoading": false,
+                "isLoading": false,
+                "isLoadingError": false,
+                "isPaused": false,
+                "isPlaceholderData": false,
+                "isPreviousData": false,
+                "isRefetchError": false,
+                "isRefetching": false,
+                "isStale": true,
+                "isSuccess": true,
+                "refetch": [Function],
+                "remove": [Function],
+                "status": "success",
+              },
+              "currentResultOptions": {
+                "_defaulted": true,
+                "_optimisticResults": "optimistic",
+                "queryFn": [Function],
+                "queryHash": "["record","VA-2234.R11.01"]",
+                "queryKey": [
+                  "record",
+                  "VA-2234.R11.01",
+                ],
+                "refetchOnReconnect": true,
+                "retry": false,
+                "useErrorBoundary": false,
+              },
+              "currentResultState": {
+                "data": {
+                  "_id": "VA-2234.R11.01",
+                  "_source": {
+                    "actionType": "New",
+                    "changelog": [
+                      {
+                        "_id": "VA-2234.R11.01-001",
+                        "_source": {
+                          "additionalInformation": "Supporting documents uploaded as follow-up.",
+                          "attachments": [
+                            {
+                              "bucket": "uploads-test-attachment-bucket",
+                              "filename": "followup_docs.zip",
+                              "key": "subdoc001",
+                              "title": "Follow-Up Documents",
+                            },
+                          ],
+                          "authority": "Medicaid SPA",
+                          "event": "upload-subsequent-documents",
+                          "id": "VA-2234.R11.01-0001",
+                          "packageId": "VA-2234.R11.01",
+                          "timestamp": 1677715200000,
+                        },
+                      },
+                      {
+                        "_id": "VA-2234.R11.01-003",
+                        "_source": {
+                          "additionalInformation": "Supporting documents uploaded as follow-up.",
+                          "attachments": [
+                            {
+                              "bucket": "uploads-test-attachment-bucket",
+                              "filename": "followup_docs.zip",
+                              "key": "subdoc003",
+                              "title": "Follow-Up Documents",
+                            },
+                          ],
+                          "authority": "Medicaid SPA",
+                          "event": "upload-subsequent-documents",
+                          "id": "VA-2234.R11.01-0003",
+                          "packageId": "VA-2234.R11.01",
+                          "timestamp": 1678715205000,
+                        },
+                      },
+                      {
+                        "_id": "VA-2234.R11.01-002",
+                        "_source": {
+                          "additionalInformation": "Supporting documents uploaded as follow-up.",
+                          "attachments": [
+                            {
+                              "bucket": "uploads-test-attachment-bucket",
+                              "filename": "followup_docs.zip",
+                              "key": "subdoc002",
+                              "title": "Follow-Up Documents",
+                            },
+                          ],
+                          "authority": "Medicaid SPA",
+                          "event": "upload-subsequent-documents",
+                          "id": "VA-2234.R11.01-0002",
+                          "packageId": "VA-2234.R11.01",
+                          "timestamp": 1678515205000,
+                        },
+                      },
+                      {
+                        "_id": "VA-2234.R11.01-004",
+                      },
+                    ],
+                    "cmsStatus": "Pending",
+                    "id": "VA-2234.R11.01",
+                    "origin": "SEATool",
+                    "seatoolStatus": "Pending",
+                    "state": "MD",
+                    "stateStatus": "Under Review",
+                  },
+                  "found": true,
+                },
+                "dataUpdateCount": 1,
+                "dataUpdatedAt": 1754411859811,
+                "error": null,
+                "errorUpdateCount": 0,
+                "errorUpdatedAt": 0,
+                "fetchFailureCount": 0,
+                "fetchFailureReason": null,
+                "fetchMeta": null,
+                "fetchStatus": "idle",
+                "isInvalidated": false,
+                "status": "success",
+              },
+              "listeners": Set {
+                {
+                  "listener": [Function],
+                },
+              },
+              "options": {
+                "_defaulted": true,
+                "_optimisticResults": "optimistic",
+                "queryFn": [Function],
+                "queryHash": "["record","VA-2234.R11.01"]",
+                "queryKey": [
+                  "record",
+                  "VA-2234.R11.01",
+                ],
+                "refetchOnReconnect": true,
+                "retry": false,
+                "useErrorBoundary": false,
+              },
+              "previousQueryResult": undefined,
+              "refetch": [Function],
+              "remove": [Function],
+              "selectError": null,
+              "subscribe": [Function],
+              "trackedProps": Set {
+                "data",
+                "isLoading",
+              },
+            },
+          ],
+          "options": {
+            "_defaulted": true,
+            "_optimisticResults": "optimistic",
+            "queryFn": [Function],
+            "queryHash": "["record","VA-2234.R11.01"]",
+            "queryKey": [
+              "record",
+              "VA-2234.R11.01",
+            ],
+            "refetchOnReconnect": true,
+            "retry": false,
+            "useErrorBoundary": false,
+          },
+          "promise": Promise {},
+          "queryHash": "["record","VA-2234.R11.01"]",
+          "queryKey": [
+            "record",
+            "VA-2234.R11.01",
+          ],
+          "retryer": {
+            "cancel": [Function],
+            "cancelRetry": [Function],
+            "continue": [Function],
+            "continueRetry": [Function],
+            "promise": Promise {},
+          },
+          "revertState": {
+            "data": undefined,
+            "dataUpdateCount": 0,
+            "dataUpdatedAt": 0,
+            "error": null,
+            "errorUpdateCount": 0,
+            "errorUpdatedAt": 0,
+            "fetchFailureCount": 0,
+            "fetchFailureReason": null,
+            "fetchMeta": null,
+            "fetchStatus": "idle",
+            "isInvalidated": false,
+            "status": "loading",
+          },
+          "state": {
+            "data": {
+              "_id": "VA-2234.R11.01",
+              "_source": {
+                "actionType": "New",
+                "changelog": [
+                  {
+                    "_id": "VA-2234.R11.01-001",
+                    "_source": {
+                      "additionalInformation": "Supporting documents uploaded as follow-up.",
+                      "attachments": [
+                        {
+                          "bucket": "uploads-test-attachment-bucket",
+                          "filename": "followup_docs.zip",
+                          "key": "subdoc001",
+                          "title": "Follow-Up Documents",
+                        },
+                      ],
+                      "authority": "Medicaid SPA",
+                      "event": "upload-subsequent-documents",
+                      "id": "VA-2234.R11.01-0001",
+                      "packageId": "VA-2234.R11.01",
+                      "timestamp": 1677715200000,
+                    },
+                  },
+                  {
+                    "_id": "VA-2234.R11.01-003",
+                    "_source": {
+                      "additionalInformation": "Supporting documents uploaded as follow-up.",
+                      "attachments": [
+                        {
+                          "bucket": "uploads-test-attachment-bucket",
+                          "filename": "followup_docs.zip",
+                          "key": "subdoc003",
+                          "title": "Follow-Up Documents",
+                        },
+                      ],
+                      "authority": "Medicaid SPA",
+                      "event": "upload-subsequent-documents",
+                      "id": "VA-2234.R11.01-0003",
+                      "packageId": "VA-2234.R11.01",
+                      "timestamp": 1678715205000,
+                    },
+                  },
+                  {
+                    "_id": "VA-2234.R11.01-002",
+                    "_source": {
+                      "additionalInformation": "Supporting documents uploaded as follow-up.",
+                      "attachments": [
+                        {
+                          "bucket": "uploads-test-attachment-bucket",
+                          "filename": "followup_docs.zip",
+                          "key": "subdoc002",
+                          "title": "Follow-Up Documents",
+                        },
+                      ],
+                      "authority": "Medicaid SPA",
+                      "event": "upload-subsequent-documents",
+                      "id": "VA-2234.R11.01-0002",
+                      "packageId": "VA-2234.R11.01",
+                      "timestamp": 1678515205000,
+                    },
+                  },
+                  {
+                    "_id": "VA-2234.R11.01-004",
+                  },
+                ],
+                "cmsStatus": "Pending",
+                "id": "VA-2234.R11.01",
+                "origin": "SEATool",
+                "seatoolStatus": "Pending",
+                "state": "MD",
+                "stateStatus": "Under Review",
+              },
+              "found": true,
+            },
+            "dataUpdateCount": 1,
+            "dataUpdatedAt": 1754411859811,
+            "error": null,
+            "errorUpdateCount": 0,
+            "errorUpdatedAt": 0,
+            "fetchFailureCount": 0,
+            "fetchFailureReason": null,
+            "fetchMeta": null,
+            "fetchStatus": "idle",
+            "isInvalidated": false,
+            "status": "success",
+          },
+        },
+        Query {
+          "abortSignalConsumed": false,
+          "cache": [Circular],
+          "cacheTime": 300000,
+          "defaultOptions": undefined,
+          "gcTimeout": Timeout {
+            "_destroyed": false,
+            "_idleNext": Timeout {
+              "_destroyed": false,
+              "_idleNext": TimersList {
+                "_idleNext": [Circular],
+                "_idlePrev": [Circular],
+                "expiry": 303464,
+                "id": -9007199254740977,
+                "msecs": 300000,
+                "priorityQueuePosition": 3,
+              },
+              "_idlePrev": [Circular],
+              "_idleStart": 3464,
+              "_idleTimeout": 300000,
+              "_onTimeout": [Function],
+              "_repeat": null,
+              "_timerArgs": undefined,
+              Symbol(refed): true,
+              Symbol(kHasPrimitive): false,
+              Symbol(asyncId): 8812,
+              Symbol(triggerId): 0,
+            },
+            "_idlePrev": TimersList {
+              "_idleNext": [Circular],
+              "_idlePrev": Timeout {
+                "_destroyed": false,
+                "_idleNext": [Circular],
+                "_idlePrev": [Circular],
+                "_idleStart": 3464,
+                "_idleTimeout": 300000,
+                "_onTimeout": [Function],
+                "_repeat": null,
+                "_timerArgs": undefined,
+                Symbol(refed): true,
+                Symbol(kHasPrimitive): false,
+                Symbol(asyncId): 8812,
+                Symbol(triggerId): 0,
+              },
+              "expiry": 303464,
+              "id": -9007199254740977,
+              "msecs": 300000,
+              "priorityQueuePosition": 3,
+            },
+            "_idleStart": 3488,
+            "_idleTimeout": 300000,
+            "_onTimeout": [Function],
+            "_repeat": null,
+            "_timerArgs": undefined,
+            Symbol(refed): true,
+            Symbol(kHasPrimitive): false,
+            Symbol(asyncId): 8823,
+            Symbol(triggerId): 0,
+          },
+          "initialState": {
+            "data": undefined,
+            "dataUpdateCount": 0,
+            "dataUpdatedAt": 0,
+            "error": null,
+            "errorUpdateCount": 0,
+            "errorUpdatedAt": 0,
+            "fetchFailureCount": 0,
+            "fetchFailureReason": null,
+            "fetchMeta": null,
+            "fetchStatus": "idle",
+            "isInvalidated": false,
+            "status": "loading",
+          },
+          "isFetchingOptimistic": false,
+          "logger": {
+            "error": [Function],
+            "log": [Function],
+            "warn": [Function],
+          },
+          "observers": [
+            QueryObserver {
+              "client": [Circular],
+              "currentQuery": [Circular],
+              "currentQueryInitialState": {
+                "data": undefined,
+                "dataUpdateCount": 0,
+                "dataUpdatedAt": 0,
+                "error": null,
+                "errorUpdateCount": 0,
+                "errorUpdatedAt": 0,
+                "fetchFailureCount": 0,
+                "fetchFailureReason": null,
+                "fetchMeta": null,
+                "fetchStatus": "idle",
+                "isInvalidated": false,
+                "status": "loading",
+              },
+              "currentRefetchInterval": false,
+              "currentResult": {
+                "data": {
+                  "isCms": false,
+                  "user": {
+                    "custom:cms-roles": "onemac-state-user",
+                    "custom:state": "VA,OH,SC,CO,GA,MD",
+                    "email": "mako.stateuser@gmail.com",
+                    "email_verified": "true",
+                    "family_name": "Tester",
+                    "given_name": "Stateuser",
+                    "role": "statesubmitter",
+                    "states": [
+                      "VA",
+                      "OH",
+                      "SC",
+                      "CO",
+                      "GA",
+                      "MD",
+                    ],
+                    "sub": "cd400c39-9e7c-4341-b62f-234e2ecb339d",
+                    "username": "cd400c39-9e7c-4341-b62f-234e2ecb339d",
+                  },
+                },
+                "dataUpdatedAt": 1754411859835,
+                "error": null,
+                "errorUpdateCount": 0,
+                "errorUpdatedAt": 0,
+                "failureCount": 0,
+                "failureReason": null,
+                "fetchStatus": "idle",
+                "isError": false,
+                "isFetched": true,
+                "isFetchedAfterMount": true,
+                "isFetching": false,
+                "isInitialLoading": false,
+                "isLoading": false,
+                "isLoadingError": false,
+                "isPaused": false,
+                "isPlaceholderData": false,
+                "isPreviousData": false,
+                "isRefetchError": false,
+                "isRefetching": false,
+                "isStale": true,
+                "isSuccess": true,
+                "refetch": [Function],
+                "remove": [Function],
+                "status": "success",
+              },
+              "currentResultOptions": {
+                "_defaulted": true,
+                "_optimisticResults": "optimistic",
+                "queryFn": [Function],
+                "queryHash": "["user"]",
+                "queryKey": [
+                  "user",
+                ],
+                "refetchOnReconnect": true,
+                "retry": false,
+                "useErrorBoundary": false,
+              },
+              "currentResultState": {
+                "data": {
+                  "isCms": false,
+                  "user": {
+                    "custom:cms-roles": "onemac-state-user",
+                    "custom:state": "VA,OH,SC,CO,GA,MD",
+                    "email": "mako.stateuser@gmail.com",
+                    "email_verified": "true",
+                    "family_name": "Tester",
+                    "given_name": "Stateuser",
+                    "role": "statesubmitter",
+                    "states": [
+                      "VA",
+                      "OH",
+                      "SC",
+                      "CO",
+                      "GA",
+                      "MD",
+                    ],
+                    "sub": "cd400c39-9e7c-4341-b62f-234e2ecb339d",
+                    "username": "cd400c39-9e7c-4341-b62f-234e2ecb339d",
+                  },
+                },
+                "dataUpdateCount": 1,
+                "dataUpdatedAt": 1754411859835,
+                "error": null,
+                "errorUpdateCount": 0,
+                "errorUpdatedAt": 0,
+                "fetchFailureCount": 0,
+                "fetchFailureReason": null,
+                "fetchMeta": null,
+                "fetchStatus": "idle",
+                "isInvalidated": false,
+                "status": "success",
+              },
+              "listeners": Set {
+                {
+                  "listener": [Function],
+                },
+              },
+              "options": {
+                "_defaulted": true,
+                "_optimisticResults": "optimistic",
+                "queryFn": [Function],
+                "queryHash": "["user"]",
+                "queryKey": [
+                  "user",
+                ],
+                "refetchOnReconnect": true,
+                "retry": false,
+                "useErrorBoundary": false,
+              },
+              "previousQueryResult": undefined,
+              "refetch": [Function],
+              "remove": [Function],
+              "selectError": null,
+              "subscribe": [Function],
+              "trackedProps": Set {
+                "data",
+                "isLoading",
+              },
+            },
+          ],
+          "options": {
+            "_defaulted": true,
+            "_optimisticResults": "optimistic",
+            "queryFn": [Function],
+            "queryHash": "["user"]",
+            "queryKey": [
+              "user",
+            ],
+            "refetchOnReconnect": true,
+            "retry": false,
+            "useErrorBoundary": false,
+          },
+          "promise": Promise {},
+          "queryHash": "["user"]",
+          "queryKey": [
+            "user",
+          ],
+          "retryer": {
+            "cancel": [Function],
+            "cancelRetry": [Function],
+            "continue": [Function],
+            "continueRetry": [Function],
+            "promise": Promise {},
+          },
+          "revertState": {
+            "data": undefined,
+            "dataUpdateCount": 0,
+            "dataUpdatedAt": 0,
+            "error": null,
+            "errorUpdateCount": 0,
+            "errorUpdatedAt": 0,
+            "fetchFailureCount": 0,
+            "fetchFailureReason": null,
+            "fetchMeta": null,
+            "fetchStatus": "idle",
+            "isInvalidated": false,
+            "status": "loading",
+          },
+          "state": {
+            "data": {
+              "isCms": false,
+              "user": {
+                "custom:cms-roles": "onemac-state-user",
+                "custom:state": "VA,OH,SC,CO,GA,MD",
+                "email": "mako.stateuser@gmail.com",
+                "email_verified": "true",
+                "family_name": "Tester",
+                "given_name": "Stateuser",
+                "role": "statesubmitter",
+                "states": [
+                  "VA",
+                  "OH",
+                  "SC",
+                  "CO",
+                  "GA",
+                  "MD",
+                ],
+                "sub": "cd400c39-9e7c-4341-b62f-234e2ecb339d",
+                "username": "cd400c39-9e7c-4341-b62f-234e2ecb339d",
+              },
+            },
+            "dataUpdateCount": 1,
+            "dataUpdatedAt": 1754411859835,
+            "error": null,
+            "errorUpdateCount": 0,
+            "errorUpdatedAt": 0,
+            "fetchFailureCount": 0,
+            "fetchFailureReason": null,
+            "fetchMeta": null,
+            "fetchStatus": "idle",
+            "isInvalidated": false,
+            "status": "success",
+          },
+        },
+      ],
+      "queriesMap": {
+        "["record","VA-2234.R11.01"]": Query {
+          "abortSignalConsumed": false,
+          "cache": [Circular],
+          "cacheTime": 300000,
+          "defaultOptions": undefined,
+          "gcTimeout": Timeout {
+            "_destroyed": false,
+            "_idleNext": TimersList {
+              "_idleNext": Timeout {
+                "_destroyed": false,
+                "_idleNext": [Circular],
+                "_idlePrev": [Circular],
+                "_idleStart": 3488,
+                "_idleTimeout": 300000,
+                "_onTimeout": [Function],
+                "_repeat": null,
+                "_timerArgs": undefined,
+                Symbol(refed): true,
+                Symbol(kHasPrimitive): false,
+                Symbol(asyncId): 8823,
+                Symbol(triggerId): 0,
+              },
+              "_idlePrev": [Circular],
+              "expiry": 303464,
+              "id": -9007199254740977,
+              "msecs": 300000,
+              "priorityQueuePosition": 3,
+            },
+            "_idlePrev": Timeout {
+              "_destroyed": false,
+              "_idleNext": [Circular],
+              "_idlePrev": TimersList {
+                "_idleNext": [Circular],
+                "_idlePrev": [Circular],
+                "expiry": 303464,
+                "id": -9007199254740977,
+                "msecs": 300000,
+                "priorityQueuePosition": 3,
+              },
+              "_idleStart": 3488,
+              "_idleTimeout": 300000,
+              "_onTimeout": [Function],
+              "_repeat": null,
+              "_timerArgs": undefined,
+              Symbol(refed): true,
+              Symbol(kHasPrimitive): false,
+              Symbol(asyncId): 8823,
+              Symbol(triggerId): 0,
+            },
+            "_idleStart": 3464,
+            "_idleTimeout": 300000,
+            "_onTimeout": [Function],
+            "_repeat": null,
+            "_timerArgs": undefined,
+            Symbol(refed): true,
+            Symbol(kHasPrimitive): false,
+            Symbol(asyncId): 8812,
+            Symbol(triggerId): 0,
+          },
+          "initialState": {
+            "data": undefined,
+            "dataUpdateCount": 0,
+            "dataUpdatedAt": 0,
+            "error": null,
+            "errorUpdateCount": 0,
+            "errorUpdatedAt": 0,
+            "fetchFailureCount": 0,
+            "fetchFailureReason": null,
+            "fetchMeta": null,
+            "fetchStatus": "idle",
+            "isInvalidated": false,
+            "status": "loading",
+          },
+          "isFetchingOptimistic": false,
+          "logger": {
+            "error": [Function],
+            "log": [Function],
+            "warn": [Function],
+          },
+          "observers": [
+            QueryObserver {
+              "client": [Circular],
+              "currentQuery": [Circular],
+              "currentQueryInitialState": {
+                "data": undefined,
+                "dataUpdateCount": 0,
+                "dataUpdatedAt": 0,
+                "error": null,
+                "errorUpdateCount": 0,
+                "errorUpdatedAt": 0,
+                "fetchFailureCount": 0,
+                "fetchFailureReason": null,
+                "fetchMeta": null,
+                "fetchStatus": "idle",
+                "isInvalidated": false,
+                "status": "loading",
+              },
+              "currentRefetchInterval": false,
+              "currentResult": {
+                "data": {
+                  "_id": "VA-2234.R11.01",
+                  "_source": {
+                    "actionType": "New",
+                    "changelog": [
+                      {
+                        "_id": "VA-2234.R11.01-001",
+                        "_source": {
+                          "additionalInformation": "Supporting documents uploaded as follow-up.",
+                          "attachments": [
+                            {
+                              "bucket": "uploads-test-attachment-bucket",
+                              "filename": "followup_docs.zip",
+                              "key": "subdoc001",
+                              "title": "Follow-Up Documents",
+                            },
+                          ],
+                          "authority": "Medicaid SPA",
+                          "event": "upload-subsequent-documents",
+                          "id": "VA-2234.R11.01-0001",
+                          "packageId": "VA-2234.R11.01",
+                          "timestamp": 1677715200000,
+                        },
+                      },
+                      {
+                        "_id": "VA-2234.R11.01-003",
+                        "_source": {
+                          "additionalInformation": "Supporting documents uploaded as follow-up.",
+                          "attachments": [
+                            {
+                              "bucket": "uploads-test-attachment-bucket",
+                              "filename": "followup_docs.zip",
+                              "key": "subdoc003",
+                              "title": "Follow-Up Documents",
+                            },
+                          ],
+                          "authority": "Medicaid SPA",
+                          "event": "upload-subsequent-documents",
+                          "id": "VA-2234.R11.01-0003",
+                          "packageId": "VA-2234.R11.01",
+                          "timestamp": 1678715205000,
+                        },
+                      },
+                      {
+                        "_id": "VA-2234.R11.01-002",
+                        "_source": {
+                          "additionalInformation": "Supporting documents uploaded as follow-up.",
+                          "attachments": [
+                            {
+                              "bucket": "uploads-test-attachment-bucket",
+                              "filename": "followup_docs.zip",
+                              "key": "subdoc002",
+                              "title": "Follow-Up Documents",
+                            },
+                          ],
+                          "authority": "Medicaid SPA",
+                          "event": "upload-subsequent-documents",
+                          "id": "VA-2234.R11.01-0002",
+                          "packageId": "VA-2234.R11.01",
+                          "timestamp": 1678515205000,
+                        },
+                      },
+                      {
+                        "_id": "VA-2234.R11.01-004",
+                      },
+                    ],
+                    "cmsStatus": "Pending",
+                    "id": "VA-2234.R11.01",
+                    "origin": "SEATool",
+                    "seatoolStatus": "Pending",
+                    "state": "MD",
+                    "stateStatus": "Under Review",
+                  },
+                  "found": true,
+                },
+                "dataUpdatedAt": 1754411859811,
+                "error": null,
+                "errorUpdateCount": 0,
+                "errorUpdatedAt": 0,
+                "failureCount": 0,
+                "failureReason": null,
+                "fetchStatus": "idle",
+                "isError": false,
+                "isFetched": true,
+                "isFetchedAfterMount": true,
+                "isFetching": false,
+                "isInitialLoading": false,
+                "isLoading": false,
+                "isLoadingError": false,
+                "isPaused": false,
+                "isPlaceholderData": false,
+                "isPreviousData": false,
+                "isRefetchError": false,
+                "isRefetching": false,
+                "isStale": true,
+                "isSuccess": true,
+                "refetch": [Function],
+                "remove": [Function],
+                "status": "success",
+              },
+              "currentResultOptions": {
+                "_defaulted": true,
+                "_optimisticResults": "optimistic",
+                "queryFn": [Function],
+                "queryHash": "["record","VA-2234.R11.01"]",
+                "queryKey": [
+                  "record",
+                  "VA-2234.R11.01",
+                ],
+                "refetchOnReconnect": true,
+                "retry": false,
+                "useErrorBoundary": false,
+              },
+              "currentResultState": {
+                "data": {
+                  "_id": "VA-2234.R11.01",
+                  "_source": {
+                    "actionType": "New",
+                    "changelog": [
+                      {
+                        "_id": "VA-2234.R11.01-001",
+                        "_source": {
+                          "additionalInformation": "Supporting documents uploaded as follow-up.",
+                          "attachments": [
+                            {
+                              "bucket": "uploads-test-attachment-bucket",
+                              "filename": "followup_docs.zip",
+                              "key": "subdoc001",
+                              "title": "Follow-Up Documents",
+                            },
+                          ],
+                          "authority": "Medicaid SPA",
+                          "event": "upload-subsequent-documents",
+                          "id": "VA-2234.R11.01-0001",
+                          "packageId": "VA-2234.R11.01",
+                          "timestamp": 1677715200000,
+                        },
+                      },
+                      {
+                        "_id": "VA-2234.R11.01-003",
+                        "_source": {
+                          "additionalInformation": "Supporting documents uploaded as follow-up.",
+                          "attachments": [
+                            {
+                              "bucket": "uploads-test-attachment-bucket",
+                              "filename": "followup_docs.zip",
+                              "key": "subdoc003",
+                              "title": "Follow-Up Documents",
+                            },
+                          ],
+                          "authority": "Medicaid SPA",
+                          "event": "upload-subsequent-documents",
+                          "id": "VA-2234.R11.01-0003",
+                          "packageId": "VA-2234.R11.01",
+                          "timestamp": 1678715205000,
+                        },
+                      },
+                      {
+                        "_id": "VA-2234.R11.01-002",
+                        "_source": {
+                          "additionalInformation": "Supporting documents uploaded as follow-up.",
+                          "attachments": [
+                            {
+                              "bucket": "uploads-test-attachment-bucket",
+                              "filename": "followup_docs.zip",
+                              "key": "subdoc002",
+                              "title": "Follow-Up Documents",
+                            },
+                          ],
+                          "authority": "Medicaid SPA",
+                          "event": "upload-subsequent-documents",
+                          "id": "VA-2234.R11.01-0002",
+                          "packageId": "VA-2234.R11.01",
+                          "timestamp": 1678515205000,
+                        },
+                      },
+                      {
+                        "_id": "VA-2234.R11.01-004",
+                      },
+                    ],
+                    "cmsStatus": "Pending",
+                    "id": "VA-2234.R11.01",
+                    "origin": "SEATool",
+                    "seatoolStatus": "Pending",
+                    "state": "MD",
+                    "stateStatus": "Under Review",
+                  },
+                  "found": true,
+                },
+                "dataUpdateCount": 1,
+                "dataUpdatedAt": 1754411859811,
+                "error": null,
+                "errorUpdateCount": 0,
+                "errorUpdatedAt": 0,
+                "fetchFailureCount": 0,
+                "fetchFailureReason": null,
+                "fetchMeta": null,
+                "fetchStatus": "idle",
+                "isInvalidated": false,
+                "status": "success",
+              },
+              "listeners": Set {
+                {
+                  "listener": [Function],
+                },
+              },
+              "options": {
+                "_defaulted": true,
+                "_optimisticResults": "optimistic",
+                "queryFn": [Function],
+                "queryHash": "["record","VA-2234.R11.01"]",
+                "queryKey": [
+                  "record",
+                  "VA-2234.R11.01",
+                ],
+                "refetchOnReconnect": true,
+                "retry": false,
+                "useErrorBoundary": false,
+              },
+              "previousQueryResult": undefined,
+              "refetch": [Function],
+              "remove": [Function],
+              "selectError": null,
+              "subscribe": [Function],
+              "trackedProps": Set {
+                "data",
+                "isLoading",
+              },
+            },
+          ],
+          "options": {
+            "_defaulted": true,
+            "_optimisticResults": "optimistic",
+            "queryFn": [Function],
+            "queryHash": "["record","VA-2234.R11.01"]",
+            "queryKey": [
+              "record",
+              "VA-2234.R11.01",
+            ],
+            "refetchOnReconnect": true,
+            "retry": false,
+            "useErrorBoundary": false,
+          },
+          "promise": Promise {},
+          "queryHash": "["record","VA-2234.R11.01"]",
+          "queryKey": [
+            "record",
+            "VA-2234.R11.01",
+          ],
+          "retryer": {
+            "cancel": [Function],
+            "cancelRetry": [Function],
+            "continue": [Function],
+            "continueRetry": [Function],
+            "promise": Promise {},
+          },
+          "revertState": {
+            "data": undefined,
+            "dataUpdateCount": 0,
+            "dataUpdatedAt": 0,
+            "error": null,
+            "errorUpdateCount": 0,
+            "errorUpdatedAt": 0,
+            "fetchFailureCount": 0,
+            "fetchFailureReason": null,
+            "fetchMeta": null,
+            "fetchStatus": "idle",
+            "isInvalidated": false,
+            "status": "loading",
+          },
+          "state": {
+            "data": {
+              "_id": "VA-2234.R11.01",
+              "_source": {
+                "actionType": "New",
+                "changelog": [
+                  {
+                    "_id": "VA-2234.R11.01-001",
+                    "_source": {
+                      "additionalInformation": "Supporting documents uploaded as follow-up.",
+                      "attachments": [
+                        {
+                          "bucket": "uploads-test-attachment-bucket",
+                          "filename": "followup_docs.zip",
+                          "key": "subdoc001",
+                          "title": "Follow-Up Documents",
+                        },
+                      ],
+                      "authority": "Medicaid SPA",
+                      "event": "upload-subsequent-documents",
+                      "id": "VA-2234.R11.01-0001",
+                      "packageId": "VA-2234.R11.01",
+                      "timestamp": 1677715200000,
+                    },
+                  },
+                  {
+                    "_id": "VA-2234.R11.01-003",
+                    "_source": {
+                      "additionalInformation": "Supporting documents uploaded as follow-up.",
+                      "attachments": [
+                        {
+                          "bucket": "uploads-test-attachment-bucket",
+                          "filename": "followup_docs.zip",
+                          "key": "subdoc003",
+                          "title": "Follow-Up Documents",
+                        },
+                      ],
+                      "authority": "Medicaid SPA",
+                      "event": "upload-subsequent-documents",
+                      "id": "VA-2234.R11.01-0003",
+                      "packageId": "VA-2234.R11.01",
+                      "timestamp": 1678715205000,
+                    },
+                  },
+                  {
+                    "_id": "VA-2234.R11.01-002",
+                    "_source": {
+                      "additionalInformation": "Supporting documents uploaded as follow-up.",
+                      "attachments": [
+                        {
+                          "bucket": "uploads-test-attachment-bucket",
+                          "filename": "followup_docs.zip",
+                          "key": "subdoc002",
+                          "title": "Follow-Up Documents",
+                        },
+                      ],
+                      "authority": "Medicaid SPA",
+                      "event": "upload-subsequent-documents",
+                      "id": "VA-2234.R11.01-0002",
+                      "packageId": "VA-2234.R11.01",
+                      "timestamp": 1678515205000,
+                    },
+                  },
+                  {
+                    "_id": "VA-2234.R11.01-004",
+                  },
+                ],
+                "cmsStatus": "Pending",
+                "id": "VA-2234.R11.01",
+                "origin": "SEATool",
+                "seatoolStatus": "Pending",
+                "state": "MD",
+                "stateStatus": "Under Review",
+              },
+              "found": true,
+            },
+            "dataUpdateCount": 1,
+            "dataUpdatedAt": 1754411859811,
+            "error": null,
+            "errorUpdateCount": 0,
+            "errorUpdatedAt": 0,
+            "fetchFailureCount": 0,
+            "fetchFailureReason": null,
+            "fetchMeta": null,
+            "fetchStatus": "idle",
+            "isInvalidated": false,
+            "status": "success",
+          },
+        },
+        "["user"]": Query {
+          "abortSignalConsumed": false,
+          "cache": [Circular],
+          "cacheTime": 300000,
+          "defaultOptions": undefined,
+          "gcTimeout": Timeout {
+            "_destroyed": false,
+            "_idleNext": Timeout {
+              "_destroyed": false,
+              "_idleNext": TimersList {
+                "_idleNext": [Circular],
+                "_idlePrev": [Circular],
+                "expiry": 303464,
+                "id": -9007199254740977,
+                "msecs": 300000,
+                "priorityQueuePosition": 3,
+              },
+              "_idlePrev": [Circular],
+              "_idleStart": 3464,
+              "_idleTimeout": 300000,
+              "_onTimeout": [Function],
+              "_repeat": null,
+              "_timerArgs": undefined,
+              Symbol(refed): true,
+              Symbol(kHasPrimitive): false,
+              Symbol(asyncId): 8812,
+              Symbol(triggerId): 0,
+            },
+            "_idlePrev": TimersList {
+              "_idleNext": [Circular],
+              "_idlePrev": Timeout {
+                "_destroyed": false,
+                "_idleNext": [Circular],
+                "_idlePrev": [Circular],
+                "_idleStart": 3464,
+                "_idleTimeout": 300000,
+                "_onTimeout": [Function],
+                "_repeat": null,
+                "_timerArgs": undefined,
+                Symbol(refed): true,
+                Symbol(kHasPrimitive): false,
+                Symbol(asyncId): 8812,
+                Symbol(triggerId): 0,
+              },
+              "expiry": 303464,
+              "id": -9007199254740977,
+              "msecs": 300000,
+              "priorityQueuePosition": 3,
+            },
+            "_idleStart": 3488,
+            "_idleTimeout": 300000,
+            "_onTimeout": [Function],
+            "_repeat": null,
+            "_timerArgs": undefined,
+            Symbol(refed): true,
+            Symbol(kHasPrimitive): false,
+            Symbol(asyncId): 8823,
+            Symbol(triggerId): 0,
+          },
+          "initialState": {
+            "data": undefined,
+            "dataUpdateCount": 0,
+            "dataUpdatedAt": 0,
+            "error": null,
+            "errorUpdateCount": 0,
+            "errorUpdatedAt": 0,
+            "fetchFailureCount": 0,
+            "fetchFailureReason": null,
+            "fetchMeta": null,
+            "fetchStatus": "idle",
+            "isInvalidated": false,
+            "status": "loading",
+          },
+          "isFetchingOptimistic": false,
+          "logger": {
+            "error": [Function],
+            "log": [Function],
+            "warn": [Function],
+          },
+          "observers": [
+            QueryObserver {
+              "client": [Circular],
+              "currentQuery": [Circular],
+              "currentQueryInitialState": {
+                "data": undefined,
+                "dataUpdateCount": 0,
+                "dataUpdatedAt": 0,
+                "error": null,
+                "errorUpdateCount": 0,
+                "errorUpdatedAt": 0,
+                "fetchFailureCount": 0,
+                "fetchFailureReason": null,
+                "fetchMeta": null,
+                "fetchStatus": "idle",
+                "isInvalidated": false,
+                "status": "loading",
+              },
+              "currentRefetchInterval": false,
+              "currentResult": {
+                "data": {
+                  "isCms": false,
+                  "user": {
+                    "custom:cms-roles": "onemac-state-user",
+                    "custom:state": "VA,OH,SC,CO,GA,MD",
+                    "email": "mako.stateuser@gmail.com",
+                    "email_verified": "true",
+                    "family_name": "Tester",
+                    "given_name": "Stateuser",
+                    "role": "statesubmitter",
+                    "states": [
+                      "VA",
+                      "OH",
+                      "SC",
+                      "CO",
+                      "GA",
+                      "MD",
+                    ],
+                    "sub": "cd400c39-9e7c-4341-b62f-234e2ecb339d",
+                    "username": "cd400c39-9e7c-4341-b62f-234e2ecb339d",
+                  },
+                },
+                "dataUpdatedAt": 1754411859835,
+                "error": null,
+                "errorUpdateCount": 0,
+                "errorUpdatedAt": 0,
+                "failureCount": 0,
+                "failureReason": null,
+                "fetchStatus": "idle",
+                "isError": false,
+                "isFetched": true,
+                "isFetchedAfterMount": true,
+                "isFetching": false,
+                "isInitialLoading": false,
+                "isLoading": false,
+                "isLoadingError": false,
+                "isPaused": false,
+                "isPlaceholderData": false,
+                "isPreviousData": false,
+                "isRefetchError": false,
+                "isRefetching": false,
+                "isStale": true,
+                "isSuccess": true,
+                "refetch": [Function],
+                "remove": [Function],
+                "status": "success",
+              },
+              "currentResultOptions": {
+                "_defaulted": true,
+                "_optimisticResults": "optimistic",
+                "queryFn": [Function],
+                "queryHash": "["user"]",
+                "queryKey": [
+                  "user",
+                ],
+                "refetchOnReconnect": true,
+                "retry": false,
+                "useErrorBoundary": false,
+              },
+              "currentResultState": {
+                "data": {
+                  "isCms": false,
+                  "user": {
+                    "custom:cms-roles": "onemac-state-user",
+                    "custom:state": "VA,OH,SC,CO,GA,MD",
+                    "email": "mako.stateuser@gmail.com",
+                    "email_verified": "true",
+                    "family_name": "Tester",
+                    "given_name": "Stateuser",
+                    "role": "statesubmitter",
+                    "states": [
+                      "VA",
+                      "OH",
+                      "SC",
+                      "CO",
+                      "GA",
+                      "MD",
+                    ],
+                    "sub": "cd400c39-9e7c-4341-b62f-234e2ecb339d",
+                    "username": "cd400c39-9e7c-4341-b62f-234e2ecb339d",
+                  },
+                },
+                "dataUpdateCount": 1,
+                "dataUpdatedAt": 1754411859835,
+                "error": null,
+                "errorUpdateCount": 0,
+                "errorUpdatedAt": 0,
+                "fetchFailureCount": 0,
+                "fetchFailureReason": null,
+                "fetchMeta": null,
+                "fetchStatus": "idle",
+                "isInvalidated": false,
+                "status": "success",
+              },
+              "listeners": Set {
+                {
+                  "listener": [Function],
+                },
+              },
+              "options": {
+                "_defaulted": true,
+                "_optimisticResults": "optimistic",
+                "queryFn": [Function],
+                "queryHash": "["user"]",
+                "queryKey": [
+                  "user",
+                ],
+                "refetchOnReconnect": true,
+                "retry": false,
+                "useErrorBoundary": false,
+              },
+              "previousQueryResult": undefined,
+              "refetch": [Function],
+              "remove": [Function],
+              "selectError": null,
+              "subscribe": [Function],
+              "trackedProps": Set {
+                "data",
+                "isLoading",
+              },
+            },
+          ],
+          "options": {
+            "_defaulted": true,
+            "_optimisticResults": "optimistic",
+            "queryFn": [Function],
+            "queryHash": "["user"]",
+            "queryKey": [
+              "user",
+            ],
+            "refetchOnReconnect": true,
+            "retry": false,
+            "useErrorBoundary": false,
+          },
+          "promise": Promise {},
+          "queryHash": "["user"]",
+          "queryKey": [
+            "user",
+          ],
+          "retryer": {
+            "cancel": [Function],
+            "cancelRetry": [Function],
+            "continue": [Function],
+            "continueRetry": [Function],
+            "promise": Promise {},
+          },
+          "revertState": {
+            "data": undefined,
+            "dataUpdateCount": 0,
+            "dataUpdatedAt": 0,
+            "error": null,
+            "errorUpdateCount": 0,
+            "errorUpdatedAt": 0,
+            "fetchFailureCount": 0,
+            "fetchFailureReason": null,
+            "fetchMeta": null,
+            "fetchStatus": "idle",
+            "isInvalidated": false,
+            "status": "loading",
+          },
+          "state": {
+            "data": {
+              "isCms": false,
+              "user": {
+                "custom:cms-roles": "onemac-state-user",
+                "custom:state": "VA,OH,SC,CO,GA,MD",
+                "email": "mako.stateuser@gmail.com",
+                "email_verified": "true",
+                "family_name": "Tester",
+                "given_name": "Stateuser",
+                "role": "statesubmitter",
+                "states": [
+                  "VA",
+                  "OH",
+                  "SC",
+                  "CO",
+                  "GA",
+                  "MD",
+                ],
+                "sub": "cd400c39-9e7c-4341-b62f-234e2ecb339d",
+                "username": "cd400c39-9e7c-4341-b62f-234e2ecb339d",
+              },
+            },
+            "dataUpdateCount": 1,
+            "dataUpdatedAt": 1754411859835,
+            "error": null,
+            "errorUpdateCount": 0,
+            "errorUpdatedAt": 0,
+            "fetchFailureCount": 0,
+            "fetchFailureReason": null,
+            "fetchMeta": null,
+            "fetchStatus": "idle",
+            "isInvalidated": false,
+            "status": "success",
+          },
+        },
+      },
+      "subscribe": [Function],
+    },
+    "queryDefaults": [],
+    "unsubscribeFocus": [Function],
+    "unsubscribeOnline": [Function],
+  },
   "rerender": [Function],
+  "router": {
+    "_internalFetchControllers": Map {},
+    "_internalSetRoutes": [Function],
+    "basename": "/",
+    "createHref": [Function],
+    "deleteBlocker": [Function],
+    "deleteFetcher": [Function],
+    "dispose": [Function],
+    "enableScrollRestoration": [Function],
+    "encodeLocation": [Function],
+    "fetch": [Function],
+    "future": {},
+    "getBlocker": [Function],
+    "getFetcher": [Function],
+    "initialize": [Function],
+    "navigate": [Function],
+    "patchRoutes": [Function],
+    "revalidate": [Function],
+    "routes": [
+      {
+        "children": undefined,
+        "element": <h1>
+          dashboard test
+        </h1>,
+        "hasErrorBoundary": false,
+        "id": "0",
+        "path": "/dashboard",
+      },
+      {
+        "children": undefined,
+        "element": <WithdrawPackageActionWaiver />,
+        "hasErrorBoundary": false,
+        "id": "1",
+        "path": "/test/:authority",
+      },
+      {
+        "children": undefined,
+        "element": <WithdrawPackageActionWaiver />,
+        "hasErrorBoundary": false,
+        "id": "2",
+        "path": "/test/:id/:authority",
+      },
+    ],
+    "state": {
+      "actionData": null,
+      "blockers": Map {},
+      "errors": null,
+      "fetchers": Map {},
+      "historyAction": "POP",
+      "initialized": true,
+      "loaderData": {},
+      "location": {
+        "hash": "",
+        "key": "default",
+        "pathname": "/test/Medicaid SPA",
+        "search": "",
+        "state": null,
+      },
+      "matches": [
+        {
+          "params": {
+            "authority": "Medicaid SPA",
+          },
+          "pathname": "/test/Medicaid SPA",
+          "pathnameBase": "/test/Medicaid SPA",
+          "route": {
+            "children": undefined,
+            "element": <WithdrawPackageActionWaiver />,
+            "hasErrorBoundary": false,
+            "id": "1",
+            "path": "/test/:authority",
+          },
+        },
+      ],
+      "navigation": {
+        "formAction": undefined,
+        "formData": undefined,
+        "formEncType": undefined,
+        "formMethod": undefined,
+        "json": undefined,
+        "location": undefined,
+        "state": "idle",
+        "text": undefined,
+      },
+      "preventScrollReset": false,
+      "restoreScrollPosition": null,
+      "revalidation": "idle",
+    },
+    "subscribe": [Function],
+    "window": [Object],
+  },
   "unmount": [Function],
 }
 `;

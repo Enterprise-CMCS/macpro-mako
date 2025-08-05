@@ -1,7 +1,7 @@
 import { WITHDRAW_RAI_ITEM_B } from "mocks";
 import { describe, expect, it, vi } from "vitest";
 
-import { renderFormAsync } from "@/utils/test-helpers/renderForm";
+import { renderFormWithPackageSectionAsync } from "@/utils/test-helpers/renderForm";
 
 import { DisableWithdrawRaiForm, EnableWithdrawRaiForm } from ".";
 
@@ -19,12 +19,12 @@ vi.mock("shared-utils", async (importOriginal) => {
 
 describe("Toggle Withdraw Rai components", () => {
   it("renders disable withdraw rai correctly", async () => {
-    const container = renderFormAsync(<EnableWithdrawRaiForm />);
+    const container = renderFormWithPackageSectionAsync(<EnableWithdrawRaiForm />);
 
     expect(await container).toMatchSnapshot();
   });
   it("renders disable withdraw rai correctly", async () => {
-    const container = renderFormAsync(<DisableWithdrawRaiForm />);
+    const container = renderFormWithPackageSectionAsync(<DisableWithdrawRaiForm />);
 
     expect(await container).toMatchSnapshot();
   });

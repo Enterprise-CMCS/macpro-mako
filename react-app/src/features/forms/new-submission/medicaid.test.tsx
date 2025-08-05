@@ -4,7 +4,7 @@ import { EXISTING_ITEM_ID } from "mocks";
 import { beforeAll, describe, expect, test, vi } from "vitest";
 
 import { formSchemas } from "@/formSchemas";
-import { renderFormAsync } from "@/utils/test-helpers/renderForm";
+import { renderFormWithPackageSectionAsync } from "@/utils/test-helpers";
 import { mockApiRefinements, skipCleanup } from "@/utils/test-helpers/skipCleanup";
 import { uploadFiles } from "@/utils/test-helpers/uploadFiles";
 
@@ -37,7 +37,7 @@ describe("Medicaid SPA", () => {
     skipCleanup();
     mockApiRefinements();
 
-    await renderFormAsync(<MedicaidForm />);
+    await renderFormWithPackageSectionAsync(<MedicaidForm />);
   });
 
   test("SPA ID", async () => {
