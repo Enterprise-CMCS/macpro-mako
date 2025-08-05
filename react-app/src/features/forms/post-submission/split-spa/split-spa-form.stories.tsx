@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from "@storybook/react-vite";
-import { TEST_REVIEWER_USERNAME, TEST_STATE_SUBMITTER_USERNAME } from "mocks";
+import { TEST_REVIEWER_USERNAME } from "mocks";
 import { reactRouterParameters, withRouter } from "storybook-addon-remix-react-router";
 
 import { SplitSpaForm } from "./index";
