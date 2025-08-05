@@ -47,8 +47,8 @@ export const SplitSpaIdForm = ({
   splitCount: number;
 }) => {
   const { fields, append, remove } = useFieldArray({
-    control, // control props comes from useForm (optional: if you are using FormProvider)
-    name: "spaIds", // unique name for your Field Array
+    control,
+    name: "spaIds",
   });
 
   useEffect(() => {

@@ -2,7 +2,7 @@ import { useCallback, useEffect, useMemo, useState } from "react";
 import { Navigate, useNavigate, useParams } from "react-router";
 import { isCmsUser } from "shared-utils";
 
-import { useGetUser } from "@/api";
+import { useGetUser } from "@/api/useGetUser";
 import {
   Accordion,
   AccordionContent,
