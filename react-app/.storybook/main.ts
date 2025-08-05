@@ -1,14 +1,14 @@
 import type { StorybookConfig } from "@storybook/react-vite";
-import {
-  API_ENDPOINT,
-  IDENTITY_POOL_ID,
-  IDM_HOME_URL,
-  LAUNCHDARKLY_CLIENT_ID,
-  REGION,
-  USER_POOL_CLIENT_DOMAIN,
-  USER_POOL_CLIENT_ID,
-  USER_POOL_ID,
-} from "mocks";
+// import {
+//   API_ENDPOINT,
+//   IDENTITY_POOL_ID,
+//   IDM_HOME_URL,
+//   LAUNCHDARKLY_CLIENT_ID,
+//   REGION,
+//   USER_POOL_CLIENT_DOMAIN,
+//   USER_POOL_CLIENT_ID,
+//   USER_POOL_ID,
+// } from "mocks";
 import { dirname, join } from "path";
 
 /**
@@ -20,24 +20,25 @@ function getAbsolutePath(value: string): any {
 }
 
 const config: StorybookConfig = {
-  env: (config) => ({
-    ...config,
-    VITE_API_REGION: REGION,
-    VITE_API_URL: API_ENDPOINT,
-    VITE_NODE_ENV: "development",
-    VITE_COGNITO_REGION: REGION,
-    VITE_COGNITO_IDENTITY_POOL_ID: IDENTITY_POOL_ID,
-    VITE_COGNITO_USER_POOL_ID: USER_POOL_ID,
-    VITE_COGNITO_USER_POOL_CLIENT_ID: USER_POOL_CLIENT_ID,
-    VITE_COGNITO_USER_POOL_CLIENT_DOMAIN: USER_POOL_CLIENT_DOMAIN,
-    VITE_COGNITO_REDIRECT_SIGNIN: "http://localhost:5000/dashboard",
-    VITE_COGNITO_REDIRECT_SIGNOUT: "http://localhost:5000/",
-    VITE_IDM_HOME_URL: IDM_HOME_URL,
-    VITE_GOOGLE_ANALYTICS_GTAG: "",
-    VITE_GOOGLE_ANALYTICS_DISABLE: "true",
-    VITE_LAUNCHDARKLY_CLIENT_ID: LAUNCHDARKLY_CLIENT_ID,
-  }),
-  stories: ["../src/**/*.mdx", "../src/**/*.stories.@(js|jsx|mjs|ts|tsx)"],
+  // env: (config) => ({
+  //   ...config,
+  //   VITE_API_REGION: REGION,
+  //   VITE_API_URL: API_ENDPOINT,
+  //   VITE_NODE_ENV: "development",
+  //   VITE_COGNITO_REGION: REGION,
+  //   VITE_COGNITO_IDENTITY_POOL_ID: IDENTITY_POOL_ID,
+  //   VITE_COGNITO_USER_POOL_ID: USER_POOL_ID,
+  //   VITE_COGNITO_USER_POOL_CLIENT_ID: USER_POOL_CLIENT_ID,
+  //   VITE_COGNITO_USER_POOL_CLIENT_DOMAIN: USER_POOL_CLIENT_DOMAIN,
+  //   VITE_COGNITO_REDIRECT_SIGNIN: "http://localhost:5000/dashboard",
+  //   VITE_COGNITO_REDIRECT_SIGNOUT: "http://localhost:5000/",
+  //   VITE_IDM_HOME_URL: IDM_HOME_URL,
+  //   VITE_GOOGLE_ANALYTICS_GTAG: "",
+  //   VITE_GOOGLE_ANALYTICS_DISABLE: "true",
+  //   VITE_LAUNCHDARKLY_CLIENT_ID: LAUNCHDARKLY_CLIENT_ID,
+  // }),
+  stories: ["../src/**/*.mdx", "../src/**/*.stories.{js,jsx,mjs,ts,tsx}"],
+  staticDirs: ["../public", "../dist"],
   addons: [
     getAbsolutePath("@storybook/addon-a11y"),
     getAbsolutePath("@storybook/addon-docs"),
@@ -47,6 +48,26 @@ const config: StorybookConfig = {
   framework: {
     name: getAbsolutePath("@storybook/react-vite"),
     options: {},
+  },
+  core: {
+    builder: "@storybook/builder-vite",
+  },
+  async viteFinal(config) {
+    // Merge custom configuration into the default config
+    const { mergeConfig, defineConfig } = await import("vite");
+    const viteConfig = await import("../vite.config");
+
+    return defineConfig((configEnv) =>
+      mergeConfig(
+        viteConfig({ ...configEnv, mode: "test" }),
+        defineConfig({
+          // Add dependencies to pre-optimization
+          optimizeDeps: {
+            include: ["storybook-dark-mode"],
+          },
+        }),
+      ),
+    );
   },
 };
 export default config;

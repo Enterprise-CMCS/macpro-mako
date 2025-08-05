@@ -6,12 +6,9 @@ import { initialize, mswLoader } from "msw-storybook-addon";
 
 import { withQueryClient } from "./decorators";
 
-initialize(
-  {
-    onUnhandledRequest: "bypass",
-  },
-  [...cognitoHandlers, ...defaultApiHandlers, ...launchDarklyHandlers],
-);
+initialize({
+  onUnhandledRequest: "bypass",
+});
 
 const preview: Preview = {
   // Provide the MSW addon loader globally
@@ -26,12 +23,31 @@ const preview: Preview = {
         date: /Date$/i,
       },
     },
+    msw: {
+      handlers: [...cognitoHandlers, ...defaultApiHandlers, ...launchDarklyHandlers],
+    },
 
     a11y: {
-      // 'todo' - show a11y violations in the test UI only
-      // 'error' - fail CI on a11y violations
-      // 'off' - skip a11y checks entirely
-      test: "todo",
+      /*
+       * Axe's context parameter
+       * See https://github.com/dequelabs/axe-core/blob/develop/doc/API.md#context-parameter
+       * to learn more. Typically, this is the CSS selector for the part of the DOM you want to analyze.
+       */
+      context: "body",
+      /*
+       * Axe's configuration
+       * See https://github.com/dequelabs/axe-core/blob/develop/doc/API.md#api-name-axeconfigure
+       * to learn more about the available properties.
+       */
+      config: {},
+      /*
+       * Axe's options parameter
+       * See https://github.com/dequelabs/axe-core/blob/develop/doc/API.md#options-parameter
+       * to learn more about the available options.
+       */
+      options: {},
+      // 👇 Fail all accessibility tests when violations are found
+      test: "error",
     },
   },
 };
