@@ -1,5 +1,5 @@
 import { useEffect } from "react";
-import { useFieldArray } from "react-hook-form";
+import { Control, useFieldArray } from "react-hook-form";
 
 import { EditableText, FormControl, FormField, FormItem, FormMessage } from "@/components";
 
@@ -23,19 +23,11 @@ const SplitSpaId = ({ spaId, control, index, ...props }) => (
       <FormItem className="max-w-sm">
         <FormControl>
           <div className="items-center flex leading-[2.25]">
-            <span className="font-bold mr-4">{index}.</span>
+            <span className="font-bold mr-4">{index + 2}.</span>
             <span>{spaId}</span>
             <span className="flex">
               -
-              <EditableText
-                ref={field.ref}
-                id={field.name}
-                key={field.name}
-                name={field.name}
-                value={field.value}
-                onValueChange={field.onChange}
-                onBlur={field.onBlur}
-              />
+              <EditableText onValueChange={field.onChange} {...field} />
             </span>
           </div>
         </FormControl>
@@ -45,7 +37,15 @@ const SplitSpaId = ({ spaId, control, index, ...props }) => (
   />
 );
 
-export const SplitSpaIdForm = ({ control, spaId, splitCount }) => {
+export const SplitSpaIdForm = ({
+  control,
+  spaId,
+  splitCount,
+}: {
+  control: Control;
+  spaId: string;
+  splitCount: number;
+}) => {
   const { fields, append, remove } = useFieldArray({
     control, // control props comes from useForm (optional: if you are using FormProvider)
     name: "spaIds", // unique name for your Field Array

@@ -2,7 +2,7 @@ import { Check, Pencil, X } from "lucide-react";
 import * as React from "react";
 import { InputProps } from "shared-types";
 
-import { Input as BaseInput } from "@/components";
+import { Input } from "@/components";
 import { cn } from "@/utils";
 
 interface EditableTextProps extends InputProps {
@@ -21,16 +21,16 @@ const EditableText = React.forwardRef<HTMLInputElement, EditableTextProps>(
       <div className={cn(className, "flex gap-x-4 items-center leading-[2.25]")}>
         {edit ? (
           <>
-            <BaseInput
+            <Input
               ref={ref}
               key={id}
               type="text"
-              defaultValue={defaultValue || value}
               value={newValue}
               onChange={(event) => setNewValue(event.target.value)}
               {...props}
             />
             <button
+              type="button"
               onClick={() => {
                 onValueChange(newValue);
                 setEdit(false);
@@ -40,6 +40,7 @@ const EditableText = React.forwardRef<HTMLInputElement, EditableTextProps>(
               <Check className="text-[#0071BC]" />
             </button>
             <button
+              type="button"
               onClick={() => {
                 setNewValue(value);
                 setEdit(false);
@@ -54,7 +55,7 @@ const EditableText = React.forwardRef<HTMLInputElement, EditableTextProps>(
             <div ref={ref} {...props} className="text-left">
               {newValue}
             </div>
-            <button onClick={() => setEdit(true)} aria-label="Edit">
+            <button type="button" onClick={() => setEdit(true)} aria-label="Edit">
               <Pencil />
             </button>
           </>

@@ -3,7 +3,7 @@ import { z } from "zod";
 import { sharedSchema } from "./base-schema";
 
 export const baseSchema = z.object({
-  split: z.string().regex(/^[2-8]$/),
+  splitCount: z.string().regex(/^[2-8]$/),
   spaIds: z
     .array(
       z.object({
@@ -12,7 +12,7 @@ export const baseSchema = z.object({
     )
     .min(2)
     .max(8),
-  requestor: z.string(),
+  requestor: z.string().min(1),
 });
 
 export const schema = baseSchema.merge(sharedSchema);

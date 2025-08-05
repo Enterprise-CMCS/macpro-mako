@@ -52,91 +52,86 @@ export const SplitSpaForm = () => {
           </p>
         </span>
       }
-      fields={({ control, getValues, formState }) => {
-        console.log({ getValues: getValues() });
-        console.log({ formState });
-        return (
-          <>
-            <section className="flex flex-col space-y-8">
-              <div>
-                <p className="font-bold">SPA ID</p>
-                <p className="text-xl">{id}</p>
-              </div>
-              <div>
-                <p className="font-bold">Type</p>
-                <p className="text-xl">{authority}</p>
-              </div>
-            </section>
+      fields={({ control }) => (
+        <>
+          <section className="flex flex-col space-y-8">
+            <div>
+              <p className="font-bold">SPA ID</p>
+              <p className="text-xl">{id}</p>
+            </div>
+            <div>
+              <p className="font-bold">Type</p>
+              <p className="text-xl">{authority}</p>
+            </div>
+          </section>
+          <FormField
+            control={control}
+            name="splitCount"
+            render={({ field }) => (
+              <FormItem>
+                <div className="flex flex-col gap-4 mb-2">
+                  <FormLabel className="font-semibold">
+                    {`How many split records do you want to create from base SPA ${id}?`}{" "}
+                    <RequiredIndicator />
+                  </FormLabel>
+                  <FormDescription>
+                    Each new record will automatically be named with the base SPA ID + suffix.
+                  </FormDescription>
+                </div>
+                <div className="max-w-sm">
+                  <FormControl>
+                    <Select
+                      onValueChange={(value) => {
+                        field.onChange(value);
+                        setSplitCount(parseInt(value));
+                      }}
+                      defaultValue={`${field.value}`}
+                    >
+                      <SelectTrigger aria-label="Select number of splits">
+                        <SelectValue />
+                      </SelectTrigger>
+                      <SelectContent>
+                        {SPLIT_COUNT_OPTIONS.map((index) => (
+                          <SelectItem value={index} key={index}>
+                            {index}
+                          </SelectItem>
+                        ))}
+                      </SelectContent>
+                    </Select>
+                  </FormControl>
+                </div>
+              </FormItem>
+            )}
+          />
+          <SplitSpaIdForm control={control} spaId={id} splitCount={splitCount} />
+          {splitCount && (
             <FormField
               control={control}
-              name="split"
+              name="requestor"
               render={({ field }) => (
                 <FormItem>
-                  <div className="flex flex-col gap-4 mb-2">
-                    <FormLabel className="font-semibold">
-                      {`How many split records do you want to create from base SPA ${id}?`}{" "}
-                      <RequiredIndicator />
+                  <div className="flex flex-col gap-y-2">
+                    <FormLabel className="font-bold">
+                      These packages were added to OneMAC per request from <RequiredIndicator />
                     </FormLabel>
-                    <FormDescription>
-                      Each new record will automatically be named with the base SPA ID + suffix.
+                    <FormDescription className="italic text-gray-500 text-sm">
+                      CMS person who request this action on behalf of the state
                     </FormDescription>
                   </div>
-                  <div className="max-w-sm">
-                    <FormControl>
-                      <Select
-                        onValueChange={(value) => {
-                          field.onChange(value);
-                          setSplitCount(parseInt(value));
-                        }}
-                        defaultValue={`${field.value}`}
-                      >
-                        <SelectTrigger aria-label="Select number of splits">
-                          <SelectValue />
-                        </SelectTrigger>
-                        <SelectContent>
-                          {SPLIT_COUNT_OPTIONS.map((index) => (
-                            <SelectItem value={index} key={index}>
-                              {index}
-                            </SelectItem>
-                          ))}
-                        </SelectContent>
-                      </Select>
-                    </FormControl>
-                  </div>
+                  <FormControl>
+                    <Input
+                      className="max-w-sm"
+                      value={field.value}
+                      onChange={field.onChange}
+                      {...field}
+                    />
+                  </FormControl>
                 </FormItem>
               )}
             />
-            <SplitSpaIdForm control={control} spaId={id} splitCount={splitCount} />
-            {splitCount && (
-              <FormField
-                control={control}
-                name="request"
-                render={({ field }) => (
-                  <FormItem>
-                    <div className="flex flex-col gap-y-2">
-                      <FormLabel className="font-bold">
-                        These packages were added to OneMAC per request from <RequiredIndicator />
-                      </FormLabel>
-                      <FormDescription className="italic text-gray-500 text-sm">
-                        CMS person who request this action on behalf of the state
-                      </FormDescription>
-                    </div>
-                    <FormControl>
-                      <Input
-                        className="max-w-sm"
-                        // ref={field.ref}
-                        value={field.value}
-                        onChange={field.onChange}
-                        {...field}
-                      />
-                    </FormControl>
-                  </FormItem>
-                )}
-              />
-            )}
-          </>
-        );
-      }}
+          )}
+        </>
+      )}
       submitButtonLabel="Confirm & Split SPA"
       documentPollerArgs={{ property: "spaIds", documentChecker: () => true }}
       additionalInformation={false}
