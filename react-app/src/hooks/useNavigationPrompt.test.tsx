@@ -6,9 +6,13 @@ import { renderWithQueryClientAndMemoryRouter } from "@/utils/test-helpers/rende
 
 import { useNavigationPrompt } from "./useNavigationPrompt";
 
-vi.mock("react-router", () => ({
-  useBlocker: vi.fn(),
-}));
+vi.mock("react-router", async (importOriginal) => {
+  const actual = await importOriginal<typeof import("react-router")>();
+  return {
+    ...actual,
+    useBlocker: vi.fn(),
+  };
+});
 
 vi.mock("@/components", () => ({
   userPrompt: vi.fn(),
