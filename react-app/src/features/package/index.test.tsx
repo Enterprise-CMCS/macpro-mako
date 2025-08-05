@@ -14,7 +14,9 @@ describe("package details", () => {
       const response = mockUseGetUser();
       return response as UseQueryResult<OneMacUser, unknown>;
     });
-    const { asFragment } = await renderFormWithPackageSectionAsync(<DetailsContent id={ADMIN_ITEM_ID} />);
+    const { asFragment } = await renderFormWithPackageSectionAsync(
+      <DetailsContent id={ADMIN_ITEM_ID} />,
+    );
 
     expect(asFragment()).toMatchSnapshot();
   });
