@@ -1,11 +1,17 @@
 import { PlusIcon } from "lucide-react";
 import { useEffect, useMemo, useState } from "react";
-import { Navigate } from "react-router";
+import { Navigate, useNavigate } from "react-router";
 import { StateCode } from "shared-types";
 import { Territory } from "shared-types/events/legacy-user";
-import { userRoleMap } from "shared-utils";
+import { isStateUser } from "shared-utils";
 
-import { StateAccess, useGetUserDetails, useGetUserProfile, useSubmitRoleRequests } from "@/api";
+import {
+  StateAccess,
+  useGetUser,
+  useGetUserDetails,
+  useGetUserProfile,
+  useSubmitRoleRequests,
+} from "@/api";
 import {
   banner,
   Button,
@@ -33,7 +39,9 @@ export interface SelfRevokeAcess extends StateAccess {
 }
 
 export const MyProfile = () => {
+  const navigate = useNavigate();
   const { data: userDetails, isLoading: isDetailLoading } = useGetUserDetails();
+  const { data: user } = useGetUser();
   const {
     data: userProfile,
     isLoading: isProfileLoading,
@@ -59,11 +67,6 @@ export const MyProfile = () => {
 
     return orderRoleStatus(filteredRoleStatus);
   }, [userDetails, userProfile, isNewUserRoleDisplay]);
-
-  const currentRoleObj = useMemo(() => {
-    if (!userProfile || !userProfile.stateAccess) return { group: null, division: null };
-    return userProfile?.stateAccess.find((x) => x.role === userDetails.role);
-  }, [userProfile, userDetails]);
 
   const hideAddRoleButton = useMemo(() => {
     if (!userProfile || !userProfile.stateAccess) return true;
@@ -247,14 +250,11 @@ export const MyProfile = () => {
         <div className="flex flex-col md:flex-row">
           <UserInformation
             fullName={userDetails?.fullName}
-            role={userRoleMap[userDetails?.role] ?? "No role requested"}
+            role={userDetails?.role}
             email={userDetails?.email}
-            allowEdits
-            groupDivision={
-              currentRoleObj && currentRoleObj.group
-                ? `${currentRoleObj?.group}/${currentRoleObj?.division}`
-                : null
-            }
+            allowEdits={isNewUserRoleDisplay}
+            group={userDetails.group}
+            division={userDetails.division}
           />
           <div className="flex flex-col gap-6 md:basis-1/2">
             {/* Status/State Access Management Section */}
@@ -294,6 +294,9 @@ export const MyProfile = () => {
                   <Button
                     className="w-full border-dashed p-10 text-black font-normal"
                     variant="outline"
+                    onClick={() =>
+                      isStateUser(user.user) ? navigate("/signup/state") : navigate("/signup")
+                    }
                   >
                     Add another user role <PlusIcon className="ml-3" />
                   </Button>
