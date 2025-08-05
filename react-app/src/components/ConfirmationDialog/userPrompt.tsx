@@ -34,9 +34,15 @@ class UserPromptObserver extends Observer<UserPrompt> {
 
 const userPromptState = new UserPromptObserver();
 
-export const userPrompt = (newUserPrompt: UserPrompt) => {
+const userPromptFn = (newUserPrompt: UserPrompt) => {
   return userPromptState.create(newUserPrompt);
 };
+
+export const userPrompt = Object.assign(userPromptFn, {
+  dismiss: () => {
+    userPromptState.dismiss();
+  },
+});
 
 export const UserPrompt = () => {
   const [activeUserPrompt, setActiveUserPrompt] = useState<UserPrompt | null>(null);
