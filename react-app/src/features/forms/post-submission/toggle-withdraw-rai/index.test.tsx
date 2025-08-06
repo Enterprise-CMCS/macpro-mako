@@ -9,6 +9,7 @@ vi.mock("react-router", async () => ({
   ...(await vi.importActual<Record<string, unknown>>("react-router")),
   useParams: vi.fn().mockReturnValue({ authority: "1915(b)", id: WITHDRAW_RAI_ITEM_B }),
 }));
+
 vi.mock("shared-utils", async (importOriginal) => {
   const actual = await importOriginal();
   return {
@@ -18,14 +19,15 @@ vi.mock("shared-utils", async (importOriginal) => {
 });
 
 describe("Toggle Withdraw Rai components", () => {
-  it("renders disable withdraw rai correctly", async () => {
-    const container = renderFormWithPackageSectionAsync(<EnableWithdrawRaiForm />);
+  it("renders enable withdraw rai correctly", async () => {
+    const { asFragment } = await renderFormWithPackageSectionAsync(<DisableWithdrawRaiForm />);
 
-    expect(await container).toMatchSnapshot();
+    expect(asFragment()).toMatchSnapshot();
   });
-  it("renders disable withdraw rai correctly", async () => {
-    const container = renderFormWithPackageSectionAsync(<DisableWithdrawRaiForm />);
 
-    expect(await container).toMatchSnapshot();
+  it("renders disable withdraw rai correctly", async () => {
+    const { asFragment } = await renderFormWithPackageSectionAsync(<EnableWithdrawRaiForm />);
+
+    expect(asFragment()).toMatchSnapshot();
   });
 });
