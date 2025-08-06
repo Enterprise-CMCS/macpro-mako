@@ -1,15 +1,19 @@
+import path from "node:path";
+import { fileURLToPath } from "node:url";
+
 import { storybookTest } from "@storybook/addon-vitest/vitest-plugin";
 import { defineConfig, mergeConfig } from "vitest/config";
 
 import viteConfig from "./vite.config";
+
+const dirname =
+  typeof __dirname !== "undefined" ? __dirname : path.dirname(fileURLToPath(import.meta.url));
 
 export default mergeConfig(
   viteConfig({ command: "serve", mode: "test" }),
   defineConfig({
     plugins: [
       storybookTest({
-        // The location of your Storybook config, main.js|ts
-        configDir: "./.storybook",
         // This should match your package.json script to run Storybook
         // The --ci flag will skip prompts and not open a browser
         storybookScript: "bun storybook --ci",
@@ -28,7 +32,7 @@ export default mergeConfig(
       browser: {
         enabled: true,
         provider: "playwright",
-        // headless: true,
+        headless: true,
         // https://vitest.dev/guide/browser/playwright
         instances: [{ browser: "chromium" }],
       },
