@@ -14,7 +14,7 @@
     "test:ui": "vitest --ui",
     "storybook": "storybook dev -p 6006",
     "build-storybook": "storybook build",
-    "test-storybook": "vitest --config=vitest.storybook.config.ts --project=storybook"
+    "test-storybook": "vitest --project=storybook --config=vitest.storybook.config.ts"
   },
   "dependencies": {
     "@aws-amplify/auth": "^5.4.0",

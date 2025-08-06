@@ -34,6 +34,7 @@ const meta = {
       },
     }),
     username: TEST_STATE_SUBMITTER_USERNAME,
+    a11y: { test: "error" },
   },
 } satisfies Meta<typeof ActionForm>;
 

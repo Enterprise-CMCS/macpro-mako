@@ -19,7 +19,7 @@
     "paths": {
       "@/*": ["src/*"]
     },
-    "types": ["@vitest/browser/providers/playwright", "vitest/globals"]
+    "types": ["vitest/globals", "@vitest/browser/providers/playwright"]
   },
   "include": ["src", "e2e", "src/assets/_.d.ts", "../lib/react-ga.d.ts", "globals.d.ts"]
 }

@@ -1,9 +1,5 @@
-import { storybookTest } from "@storybook/addon-vitest/vitest-plugin";
-import react from "@vitejs/plugin-react-swc";
 import { cpus } from "os";
 import { join } from "path";
-import { fileURLToPath } from "url";
-import checker from "vite-plugin-checker";
 import { configDefaults, defineConfig } from "vitest/config";
 
 export default defineConfig({
