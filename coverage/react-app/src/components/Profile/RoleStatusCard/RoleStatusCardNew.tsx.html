@@ -23,16 +23,16 @@
         <div class='clearfix'>
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">85.71% </span>
+                <span class="strong">90.9% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>6/7</span>
+                <span class='fraction'>10/11</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">94.73% </span>
+                <span class="strong">95.83% </span>
                 <span class="quiet">Branches</span>
-                <span class='fraction'>18/19</span>
+                <span class='fraction'>23/24</span>
             </div>
         
             
@@ -46,7 +46,7 @@
             <div class='fl pad1y space-right2'>
                 <span class="strong">100% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>6/6</span>
+                <span class='fraction'>10/10</span>
             </div>
         
             
@@ -175,11 +175,7 @@
 <a name='L110'></a><a href='#L110'>110</a>
 <a name='L111'></a><a href='#L111'>111</a>
 <a name='L112'></a><a href='#L112'>112</a>
-<a name='L113'></a><a href='#L113'>113</a>
-<a name='L114'></a><a href='#L114'>114</a>
-<a name='L115'></a><a href='#L115'>115</a>
-<a name='L116'></a><a href='#L116'>116</a>
-<a name='L117'></a><a href='#L117'>117</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
+<a name='L113'></a><a href='#L113'>113</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -190,7 +186,7 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">97x</span>
+<span class="cline-any cline-yes">102x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -200,28 +196,24 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">97x</span>
+<span class="cline-any cline-yes">102x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">6x</span>
-<span class="cline-any cline-yes">6x</span>
-<span class="cline-any cline-yes">6x</span>
+<span class="cline-any cline-yes">11x</span>
+<span class="cline-any cline-yes">11x</span>
+<span class="cline-any cline-yes">11x</span>
+<span class="cline-any cline-yes">11x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">6x</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">11x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">11x</span>
+<span class="cline-any cline-yes">11x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">11x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -296,7 +288,7 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">import * as DropdownMenu from "@radix-ui/react-dropdown-menu";
-import { Clock, EllipsisVertical, XCircle, XIcon } from "lucide-react";
+import { Clock, EllipsisVertical, XCircle } from "lucide-react";
 import { UserRole } from "shared-types/events/legacy-user";
 import { isStateRole, newUserRoleMap } from "shared-utils";
 &nbsp;
@@ -322,6 +314,7 @@ export const RoleStatusCardNew = ({
   onClick,
 }: Omit&lt;RoleStatusProps, "isNewUserRoleDisplay"&gt;) =&gt; {
   <span class="missing-if-branch" title="if path not taken" >I</span>if (!access) <span class="cstat-no" title="statement not covered" >return null;</span>
+  console.log(access.role, onClick);
   const isState = isStateRole(access.role as UserRole);
   const hideApprovers = status !== "pending" &amp;&amp; role === "norole";
   const showApproverInfo =
@@ -329,6 +322,10 @@ export const RoleStatusCardNew = ({
     access.role !== "cmsreviewer" &amp;&amp;
     access.role !== "systemadmin";
 &nbsp;
+  const isPending = access.status === "pending";
+  const showActions = !!onClick;
+&nbsp;
+  console.log(access.role, showActions);
   return (
     &lt;RoleStatusTopBorderCard status={access.status}&gt;
       &lt;div className="p-8 min-h-36"&gt;
@@ -339,49 +336,40 @@ export const RoleStatusCardNew = ({
               : newUserRoleMap[access.role]}
           &lt;/h3&gt;
 &nbsp;
-          {/* in OY2-35201 we can remove !isState*/}
-          {!isState &amp;&amp; access.status === "pending" &amp;&amp; (
-            &lt;DropdownMenu.Root&gt;
-              &lt;DropdownMenu.DropdownMenuTrigger
-                aria-label="Role Status Options"
-                data-testid="role-status-actions"
-                asChild
-              &gt;
-                &lt;button
-                  className="disabled:text-gray-200"
-                  data-testid="self-revoke"
-                  title="Self Revoke Access"
-                  type="button"
+          {showActions &amp;&amp;
+            (isPending ||
+              (access.status === "active" &amp;&amp;
+                access.role !== "defaultcmsuser" &amp;&amp;
+                access.role !== "cmsreviewer" &amp;&amp;
+                access.role !== "systemadmin")) &amp;&amp; (
+              &lt;DropdownMenu.Root&gt;
+                &lt;DropdownMenu.DropdownMenuTrigger
+                  aria-label="Role Status Options"
+                  data-testid="role-status-actions"
+                  asChild
                 &gt;
-                  &lt;EllipsisVertical size={30} /&gt;
-                &lt;/button&gt;
-              &lt;/DropdownMenu.DropdownMenuTrigger&gt;
-&nbsp;
-              &lt;DropdownMenu.Content
-                className="flex flex-col bg-white rounded-md shadow-lg p-4 border"
-                align="start"
-              &gt;
-                &lt;DropdownMenu.Item asChild&gt;
-                  &lt;button className="text-primary" onClick={onClick} type="button"&gt;
-                    Cancel Request
+                  &lt;button
+                    className="disabled:text-gray-200"
+                    data-testid="self-revoke"
+                    title="Self Revoke Access"
+                    type="button"
+                  &gt;
+                    &lt;EllipsisVertical size={30} /&gt;
                   &lt;/button&gt;
-                &lt;/DropdownMenu.Item&gt;
-              &lt;/DropdownMenu.Content&gt;
-            &lt;/DropdownMenu.Root&gt;
-          )}
+                &lt;/DropdownMenu.DropdownMenuTrigger&gt;
 &nbsp;
-          {role === "statesubmitter" &amp;&amp; (
-            &lt;button
-              className="text-blue-700 disabled:text-gray-200"
-              disabled={!onClick}
-              data-testid="self-revoke"
-              title="Self Revoke Access"
-              onClick={onClick}
-              type="button"
-            &gt;
-              &lt;XIcon size={30} /&gt;
-            &lt;/button&gt;
-          )}
+                &lt;DropdownMenu.Content
+                  className="flex flex-col bg-white rounded-md shadow-lg p-4 border"
+                  align="start"
+                &gt;
+                  &lt;DropdownMenu.Item asChild&gt;
+                    &lt;button className="text-primary" onClick={onClick} type="button"&gt;
+                      {isPending ? "Cancel Request" : "Remove User Role"}
+                    &lt;/button&gt;
+                  &lt;/DropdownMenu.Item&gt;
+                &lt;/DropdownMenu.Content&gt;
+              &lt;/DropdownMenu.Root&gt;
+            )}
         &lt;/div&gt;
         &lt;CardStatus status={access.status} /&gt;
         {access.role === "systemadmin" &amp;&amp; (
@@ -418,7 +406,7 @@ export const RoleStatusCardNew = ({
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2025-07-18T15:10:32.119Z
+                at 2025-08-06T02:20:08.392Z
             </div>
         <script src="../../../../../prettify.js"></script>
         <script>

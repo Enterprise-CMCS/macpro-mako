@@ -23,30 +23,30 @@
         <div class='clearfix'>
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">74.07% </span>
+                <span class="strong">72.72% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>20/27</span>
+                <span class='fraction'>16/22</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">69.23% </span>
+                <span class="strong">63.15% </span>
                 <span class="quiet">Branches</span>
-                <span class='fraction'>18/26</span>
+                <span class='fraction'>12/19</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
                 <span class="strong">100% </span>
                 <span class="quiet">Functions</span>
-                <span class='fraction'>5/5</span>
+                <span class='fraction'>3/3</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">79.16% </span>
+                <span class="strong">76.19% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>19/24</span>
+                <span class='fraction'>16/21</span>
             </div>
         
             
@@ -167,13 +167,7 @@
 <a name='L102'></a><a href='#L102'>102</a>
 <a name='L103'></a><a href='#L103'>103</a>
 <a name='L104'></a><a href='#L104'>104</a>
-<a name='L105'></a><a href='#L105'>105</a>
-<a name='L106'></a><a href='#L106'>106</a>
-<a name='L107'></a><a href='#L107'>107</a>
-<a name='L108'></a><a href='#L108'>108</a>
-<a name='L109'></a><a href='#L109'>109</a>
-<a name='L110'></a><a href='#L110'>110</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
+<a name='L105'></a><a href='#L105'>105</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -228,14 +222,10 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">5x</span>
 <span class="cline-any cline-yes">5x</span>
-<span class="cline-any cline-yes">7x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">5x</span>
-<span class="cline-any cline-yes">5x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">5x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -284,7 +274,6 @@
 <span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">import LZ from "lz-string";
 import { useMemo } from "react";
 import { LoaderFunctionArgs, redirect, useLoaderData } from "react-router";
-import { userRoleMap } from "shared-utils";
 &nbsp;
 import { getUserDetails, getUserProfile, OneMacUserProfile, UserDetails } from "@/api";
 import { GroupAndDivision, RoleStatusCard, SubNavHeader, UserInformation } from "@/components";
@@ -335,11 +324,6 @@ export const UserProfile = () =&gt; {
   const { userDetails, userProfile } = useLoaderData&lt;LoaderData&gt;();
   const isNewUserRoleDisplay = useFeatureFlag("SHOW_USER_ROLE_UPDATE");
 &nbsp;
-  const currentRoleObj = useMemo(() =&gt; {
-    <span class="missing-if-branch" title="if path not taken" >I</span>if (!userProfile || !userProfile.stateAccess) <span class="cstat-no" title="statement not covered" >return { group: null, division: null };</span>
-    return userProfile?.stateAccess.find((x) =&gt; x.role === userDetails.role);
-  }, [userProfile, userDetails]);
-&nbsp;
   const orderedRoleStatus = useMemo(() =&gt; {
     const filteredRoleStatus = isNewUserRoleDisplay
       ? <span class="branch-0 cbranch-no" title="branch not covered" >userProfile?.stateAccess</span>
@@ -357,21 +341,22 @@ export const UserProfile = () =&gt; {
         &lt;div className="flex flex-col md:flex-row"&gt;
           &lt;UserInformation
             fullName={userDetails?.fullName || <span class="branch-1 cbranch-no" title="branch not covered" >"Unknown"}</span>
-            role={userRoleMap[userDetails?.role]}
+            role={userDetails.role}
             email={userDetails?.email}
-            groupDivision={
-              currentRoleObj &amp;&amp; currentRoleObj.group
-                ? <span class="branch-0 cbranch-no" title="branch not covered" >`${currentRoleObj?.group}/${currentRoleObj?.division}`</span>
-                : null
-            }
+            group={userDetails.group}
+            division={userDetails.division}
           /&gt;
           &lt;div className="flex flex-col gap-6 md:basis-1/2"&gt;
             &lt;div&gt;
-              &lt;h2 className="text-2xl font-bold"&gt;
-                {userDetails.role === "statesubmitter" || userDetails.role === "statesystemadmin"
-                  ? "State Access Management"
-                  : "Status"}
-              &lt;/h2&gt;
+              {isNewUserRoleDisplay ? (
+<span class="branch-0 cbranch-no" title="branch not covered" >                &lt;h2 className="text-2xl font-bold"&gt;My User Roles&lt;/h2&gt;</span>
+              ) : (
+                &lt;h2 className="text-2xl font-bold"&gt;
+                  {userDetails.role === "statesubmitter" || userDetails.role === "statesystemadmin"
+                    ? "State Access Management"
+                    : "Status"}
+                &lt;/h2&gt;
+              )}
               {orderedRoleStatus?.map((access) =&gt; (
                 &lt;RoleStatusCard role={userDetails.role} access={access} key={access.id} /&gt;
               ))}
@@ -397,7 +382,7 @@ export const UserProfile = () =&gt; {
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2025-07-18T15:10:32.119Z
+                at 2025-08-06T02:20:08.392Z
             </div>
         <script src="../../../../../prettify.js"></script>
         <script>

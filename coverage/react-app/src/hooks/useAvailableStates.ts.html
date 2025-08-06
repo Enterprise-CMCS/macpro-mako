@@ -23,30 +23,30 @@
         <div class='clearfix'>
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">91.66% </span>
+                <span class="strong">100% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>11/12</span>
+                <span class='fraction'>14/14</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">83.33% </span>
+                <span class="strong">100% </span>
                 <span class="quiet">Branches</span>
-                <span class='fraction'>5/6</span>
+                <span class='fraction'>12/12</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">85.71% </span>
+                <span class="strong">100% </span>
                 <span class="quiet">Functions</span>
-                <span class='fraction'>6/7</span>
+                <span class='fraction'>7/7</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
                 <span class="strong">100% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>10/10</span>
+                <span class='fraction'>11/11</span>
             </div>
         
             
@@ -89,7 +89,21 @@
 <a name='L24'></a><a href='#L24'>24</a>
 <a name='L25'></a><a href='#L25'>25</a>
 <a name='L26'></a><a href='#L26'>26</a>
-<a name='L27'></a><a href='#L27'>27</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
+<a name='L27'></a><a href='#L27'>27</a>
+<a name='L28'></a><a href='#L28'>28</a>
+<a name='L29'></a><a href='#L29'>29</a>
+<a name='L30'></a><a href='#L30'>30</a>
+<a name='L31'></a><a href='#L31'>31</a>
+<a name='L32'></a><a href='#L32'>32</a>
+<a name='L33'></a><a href='#L33'>33</a>
+<a name='L34'></a><a href='#L34'>34</a>
+<a name='L35'></a><a href='#L35'>35</a>
+<a name='L36'></a><a href='#L36'>36</a>
+<a name='L37'></a><a href='#L37'>37</a>
+<a name='L38'></a><a href='#L38'>38</a>
+<a name='L39'></a><a href='#L39'>39</a>
+<a name='L40'></a><a href='#L40'>40</a>
+<a name='L41'></a><a href='#L41'>41</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -98,48 +112,76 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">19x</span>
-<span class="cline-any cline-yes">13x</span>
-<span class="cline-any cline-yes">392x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">6x</span>
-<span class="cline-any cline-yes">94x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">6x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">6x</span>
-<span class="cline-any cline-yes">336x</span>
-<span class="cline-any cline-yes">336x</span>
+<span class="cline-any cline-yes">24x</span>
+<span class="cline-any cline-yes">24x</span>
+<span class="cline-any cline-yes">24x</span>
+<span class="cline-any cline-yes">448x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">6x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">18x</span>
+<span class="cline-any cline-yes">560x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">8x</span>
+<span class="cline-any cline-yes">448x</span>
+<span class="cline-any cline-yes">448x</span>
+<span class="cline-any cline-yes">112x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">448x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">import { useMemo } from "react";
-import { FULL_CENSUS_STATES } from "shared-types";
+import { FULL_CENSUS_STATES, STATE_ROLES } from "shared-types";
 import { UserRole } from "shared-types/events/legacy-user";
 &nbsp;
 import { StateAccess } from "@/api";
 &nbsp;
-// Get available states for the role to be requested
-// eslint-disable-next-line prettier/prettier
-export function useAvailableStates(roleToRequest: UserRole, stateAccessList: StateAccess[] | undefined) {
+import { useStateAccessMap } from "../api/useStateAccessMap";
+import { useFeatureFlag } from "./useFeatureFlag";
+&nbsp;
+export function useAvailableStates(
+  roleToRequest: UserRole,
+  stateAccessList: StateAccess[] | undefined,
+) {
+  const isNewUserRoleDisplay = useFeatureFlag("SHOW_USER_ROLE_UPDATE");
+  const stateAccessMap = useStateAccessMap(stateAccessList ?? []);
   return useMemo(() =&gt; {
+    const formatOption = ({ label, value }: (typeof FULL_CENSUS_STATES)[number]) =&gt; ({
+      label: isNewUserRoleDisplay ? `${label}, ${value}` : label,
+      value,
+    });
+&nbsp;
     if (!stateAccessList) {
-      return FULL_CENSUS_STATES.map(({ label, value }) =&gt; ({ label, value }));
+      return FULL_CENSUS_STATES.map(({ label, value }) =&gt; ({
+        label: isNewUserRoleDisplay ? `${label}, ${value}` : label,
+        value,
+      }));
     }
 &nbsp;
-    const validAccess = stateAccessList.filter(
-      ({ role, territory }) =&gt; role === roleToRequest &amp;&amp; <span class="branch-1 cbranch-no" title="branch not covered" >territory !== "ZZ",</span>
-    );
-    const accessedStates = new Set(validAccess.map(<span class="fstat-no" title="function not covered" >({</span> territory }) =&gt; <span class="cstat-no" title="statement not covered" >territory));</span>
+    // Check if user has all possible roles for this state (Feature Flag ON)
+    // Show states user doesn't have access to for role being requested (Feature Flag OFF)
+    const statesToRequest = (stateCode: string) =&gt; {
+      const activeStates = stateAccessMap[stateCode] ?? new Set&lt;UserRole&gt;();
+      return isNewUserRoleDisplay
+        ? !STATE_ROLES.every((role) =&gt; activeStates.has(role))
+        : !activeStates.has(roleToRequest);
+    };
 &nbsp;
-    const availableStates = FULL_CENSUS_STATES.filter(
-      ({ value }) =&gt; !accessedStates.has(value) &amp;&amp; value !== "ZZ",
-    ).map(({ label, value }) =&gt; ({ label, value }));
-&nbsp;
-    return availableStates;
-  }, [roleToRequest, stateAccessList]);
+    return FULL_CENSUS_STATES.filter(({ value }) =&gt; statesToRequest(value)).map(formatOption);
+  }, [roleToRequest, stateAccessList, stateAccessMap, isNewUserRoleDisplay]);
 }
 &nbsp;</pre></td></tr></table></pre>
 
@@ -148,7 +190,7 @@ export function useAvailableStates(roleToRequest: UserRole, stateAccessList: Sta
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2025-07-18T15:10:32.119Z
+                at 2025-08-06T02:20:08.392Z
             </div>
         <script src="../../../prettify.js"></script>
         <script>
