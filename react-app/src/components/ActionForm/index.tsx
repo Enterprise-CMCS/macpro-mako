@@ -55,7 +55,6 @@ export type SchemaWithEnforcableProps<Shape extends z.ZodRawShape = z.ZodRawShap
   | z.ZodEffects<EnforceSchemaProps<Shape>>
   | EnforceSchemaProps<Shape>;
 
-// Utility type to handle Zod schema with or without a transform
 export type InferUntransformedSchema<T> = T extends z.ZodEffects<infer U> ? U : T;
 
 export type FormArg<Schema extends SchemaWithEnforcableProps> = UseFormReturn<
@@ -88,7 +87,11 @@ type ActionFormProps<Schema extends SchemaWithEnforcableProps> = {
   preSubmissionMessage?: string;
   showPreSubmissionMessage?: boolean;
   areFieldsRequired?: boolean;
-  footer?: (args: { form: FormArg<Schema>; onSubmit: () => void }) => ReactNode;
+  footer?: (args: {
+    form: FormArg<Schema>;
+    onSubmit: () => void;
+    onCancel: (promptOverride?: Partial<Omit<UserPrompt, "onAccept">>) => void;
+  }) => ReactNode;
 };
 
 export const ActionForm = <Schema extends SchemaWithEnforcableProps>({
@@ -171,7 +174,6 @@ export const ActionForm = <Schema extends SchemaWithEnforcableProps>({
   useEffect(() => {
     if (typeof window.gtag == "function") {
       const submissionType = mapSubmissionTypeBasedOnActionFormTitle(title);
-      // send package action event
       sendGAEvent("submit_page_open", { submission_type: submissionType ? submissionType : title });
     }
   }, [title]);
@@ -210,7 +212,6 @@ export const ActionForm = <Schema extends SchemaWithEnforcableProps>({
         pathnameToDisplayOn: formOrigins.pathname,
       });
 
-      // Prevent stale data from displaying on formOrigins page
       await queryClient.invalidateQueries({ queryKey: ["record"] });
       navigate(formOrigins);
 
@@ -234,6 +235,25 @@ export const ActionForm = <Schema extends SchemaWithEnforcableProps>({
   });
 
   const attachmentsFromSchema = useMemo(() => getAttachments(schema), [schema]);
+
+  const handleCancel = (promptOverride?: Partial<Omit<UserPrompt, "onAccept">>) => {
+    skipNavigationPromptRef.current = true;
+
+    userPrompt({
+      ...promptOnLeavingForm,
+      ...promptOverride,
+      onAccept: () => {
+        const origin = getFormOrigin({ id, authority });
+        navigate(origin);
+      },
+    });
+
+    const timeOnPageSec = (Date.now() - startTimePage) / 1000;
+    sendGAEvent("submit_cancel", {
+      submission_type: title,
+      time_on_page_sec: timeOnPageSec,
+    });
+  };
 
   if (isUserLoading === true) {
     return <LoadingSpinner />;
@@ -308,7 +328,7 @@ export const ActionForm = <Schema extends SchemaWithEnforcableProps>({
             />
           )}
           {Footer ? (
-            <Footer form={form} onSubmit={onSubmit} />
+            <Footer form={form} onSubmit={onSubmit} onCancel={handleCancel} />
           ) : (
             <section className="flex justify-end gap-2 p-4 ml-auto">
               <Button
@@ -327,23 +347,7 @@ export const ActionForm = <Schema extends SchemaWithEnforcableProps>({
               </Button>
               <Button
                 className="px-12"
-                onClick={() => {
-                  skipNavigationPromptRef.current = true;
-
-                  userPrompt({
-                    ...promptOnLeavingForm,
-                    onAccept: () => {
-                      const origin = getFormOrigin({ id, authority });
-                      navigate(origin);
-                    },
-                  });
-
-                  const timeOnPageSec = (Date.now() - startTimePage) / 1000;
-                  sendGAEvent("submit_cancel", {
-                    submission_type: title,
-                    time_on_page_sec: timeOnPageSec,
-                  });
-                }}
+                onClick={() => handleCancel()}
                 variant="outline"
                 type="reset"
                 data-testid="cancel-action-form"

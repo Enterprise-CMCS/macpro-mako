@@ -1,6 +1,5 @@
 import { useEffect, useState } from "react";
-import { Link, useNavigate, useParams } from "react-router";
-import { Authority } from "shared-types";
+import { Link } from "react-router";
 import { isStateUser } from "shared-utils";
 
 import { useGetUser } from "@/api";
@@ -16,23 +15,21 @@ import {
   Input,
   RequiredIndicator,
   SpaIdFormattingDesc,
+  UserPrompt as UserPromptType,
   userPrompt,
 } from "@/components";
 import { AttachmentFileFormatInstructions } from "@/components/ActionForm/actionForm.components";
 import { FAQ_TAB } from "@/consts";
 import { formSchemas } from "@/formSchemas";
 import { useFeatureFlag } from "@/hooks/useFeatureFlag";
-import { getFormOrigin } from "@/utils";
 
 type MedSpaFooterProps = {
   form: FormArg<(typeof formSchemas)["new-medicaid-submission"]>;
   onSubmit: () => void;
+  onCancel: (promptOverride?: Partial<Omit<UserPromptType, "onAccept">>) => void;
 };
 
-const MedSpaFooter = ({ form, onSubmit }: MedSpaFooterProps) => {
-  const { id, authority } = useParams<{ id: string; authority: Authority }>();
-
-  const navigate = useNavigate();
+const MedSpaFooter = ({ form, onSubmit, onCancel }: MedSpaFooterProps) => {
   const [isFooterFixed, setIsFooterFixed] = useState(false);
   const watchedId = form.watch("id");
 
@@ -50,22 +47,6 @@ const MedSpaFooter = ({ form, onSubmit }: MedSpaFooterProps) => {
     observer.observe(target);
     return () => observer.disconnect();
   }, []);
-
-  const onCancel = () =>
-    userPrompt({
-      header: "Leave this page?",
-      body: `Unsaved changes${
-        watchedId.trim() ? ` to ${watchedId}` : ""
-      } will be discarded. Go back to save your changes.`,
-      acceptButtonText: "Yes, leave",
-      cancelButtonText: "Go back",
-      areButtonsReversed: true,
-      cancelVariant: "link",
-      onAccept: () => {
-        const origin = getFormOrigin({ id, authority });
-        navigate(origin);
-      },
-    });
 
   const onSaveAndSubmit = () =>
     userPrompt({
@@ -86,7 +67,18 @@ const MedSpaFooter = ({ form, onSubmit }: MedSpaFooterProps) => {
       >
         <div className="flex justify-between items-center w-full py-3">
           <button
-            onClick={onCancel}
+            onClick={() =>
+              onCancel({
+                header: "Leave this page?",
+                body: `Unsaved changes${
+                  watchedId.trim() ? ` to ${watchedId}` : ""
+                } will be discarded. Go back to save your changes.`,
+                acceptButtonText: "Yes, leave",
+                cancelButtonText: "Go back",
+                areButtonsReversed: true,
+                cancelVariant: "link",
+              })
+            }
             data-testid="cancel-action-form-footer"
             className="w-24 py-3 px-5 text-blue-700 font-semibold underline"
             type="button"
@@ -126,7 +118,18 @@ const MedSpaFooter = ({ form, onSubmit }: MedSpaFooterProps) => {
     >
       <div className="flex justify-between items-center w-full py-3">
         <button
-          onClick={onCancel}
+          onClick={() =>
+            onCancel({
+              header: "Leave this page?",
+              body: `Unsaved changes${
+                watchedId.trim() ? ` to ${watchedId}` : ""
+              } will be discarded. Go back to save your changes.`,
+              acceptButtonText: "Yes, leave",
+              cancelButtonText: "Go back",
+              areButtonsReversed: true,
+              cancelVariant: "link",
+            })
+          }
           data-testid="cancel-action-form-footer"
           className="w-24 py-3 px-5 text-blue-700 font-semibold underline"
           type="button"
@@ -255,10 +258,10 @@ export const MedicaidForm = () => {
       }}
       footer={
         isMedSpaFooterShown
-          ? ({ form, onSubmit }) => (
+          ? ({ form, onSubmit, onCancel }) => (
               <section>
                 <div id="footer-trigger" />
-                <MedSpaFooter form={form} onSubmit={onSubmit} />
+                <MedSpaFooter form={form} onSubmit={onSubmit} onCancel={onCancel} />
               </section>
             )
           : undefined
