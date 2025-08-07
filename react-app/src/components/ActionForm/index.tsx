@@ -1,7 +1,7 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useMutation } from "@tanstack/react-query";
 import { API } from "aws-amplify";
-import { ReactNode, useEffect, useMemo } from "react";
+import { ReactNode, useEffect, useMemo, useRef } from "react";
 import { DefaultValues, FieldPath, useForm, UseFormReturn } from "react-hook-form";
 import { Navigate, useLocation, useNavigate, useParams } from "react-router";
 import { Authority, CognitoUserAttributes } from "shared-types";
@@ -9,7 +9,6 @@ import { isStateUser } from "shared-utils";
 import { z } from "zod";
 
 import { useGetUser } from "@/api";
-import { MedSpaFooter } from "@/components";
 import {
   ActionFormDescription,
   Banner,
@@ -29,6 +28,7 @@ import {
   UserPrompt,
   userPrompt,
 } from "@/components";
+import { useNavigationPrompt } from "@/hooks";
 import { getFormOrigin, queryClient } from "@/utils";
 import { CheckDocumentFunction, documentPoller } from "@/utils/Poller/documentPoller";
 import { sendGAEvent } from "@/utils/ReactGA/SendGAEvent";
@@ -55,19 +55,21 @@ export type SchemaWithEnforcableProps<Shape extends z.ZodRawShape = z.ZodRawShap
   | z.ZodEffects<EnforceSchemaProps<Shape>>
   | EnforceSchemaProps<Shape>;
 
-// Utility type to handle Zod schema with or without a transform
-type InferUntransformedSchema<T> = T extends z.ZodEffects<infer U> ? U : T;
+export type InferUntransformedSchema<T> = T extends z.ZodEffects<infer U> ? U : T;
+
+export type FormArg<Schema extends SchemaWithEnforcableProps> = UseFormReturn<
+  z.infer<InferUntransformedSchema<Schema>>
+>;
 
 type ActionFormProps<Schema extends SchemaWithEnforcableProps> = {
   schema: Schema;
   defaultValues?: DefaultValues<z.infer<InferUntransformedSchema<Schema>>>;
   title: string;
-  fields: (form: UseFormReturn<z.infer<InferUntransformedSchema<Schema>>>) => ReactNode;
+  fields: (form: FormArg<Schema>) => ReactNode;
   submitButtonLabel?: string;
   bannerPostSubmission?: Omit<Banner, "pathnameToDisplayOn">;
   promptPreSubmission?: Omit<UserPrompt, "onAccept">;
   promptOnLeavingForm?: Omit<UserPrompt, "onAccept">;
-  promptOnLeavingStickyFooterForm?: Omit<UserPrompt, "onAccept">;
   attachments?: AttachmentsOptions;
   additionalInformation?:
     | {
@@ -86,8 +88,12 @@ type ActionFormProps<Schema extends SchemaWithEnforcableProps> = {
   preSubmissionMessage?: string;
   showPreSubmissionMessage?: boolean;
   areFieldsRequired?: boolean;
-  showCustomFooter?: boolean;
   showFAQFooter?: boolean;
+  footer?: (args: {
+    form: FormArg<Schema>;
+    onSubmit: () => void;
+    onCancel: (promptOverride?: Partial<Omit<UserPrompt, "onAccept">>) => void;
+  }) => ReactNode;
 };
 
 export const ActionForm = <Schema extends SchemaWithEnforcableProps>({
@@ -108,14 +114,6 @@ export const ActionForm = <Schema extends SchemaWithEnforcableProps>({
     cancelButtonText: "Return to form",
     areButtonsReversed: true,
   },
-  promptOnLeavingStickyFooterForm = {
-    header: "Leave this page?",
-    body: "",
-    acceptButtonText: "Yes, leave",
-    cancelButtonText: "Go back",
-    areButtonsReversed: true,
-    cancelVariant: "link",
-  },
   promptPreSubmission,
   documentPollerArgs,
   attachments,
@@ -133,8 +131,8 @@ export const ActionForm = <Schema extends SchemaWithEnforcableProps>({
   },
   showPreSubmissionMessage = true,
   areFieldsRequired = true,
-  showCustomFooter = false,
   showFAQFooter = true,
+  footer: Footer,
 }: ActionFormProps<Schema>) => {
   const { id, authority } = useParams<{
     id: string;
@@ -143,15 +141,10 @@ export const ActionForm = <Schema extends SchemaWithEnforcableProps>({
   }>();
   const { pathname } = useLocation();
   const startTimePage = Date.now();
-  useEffect(() => {
-    if (typeof window.gtag == "function") {
-      const submissionType = mapSubmissionTypeBasedOnActionFormTitle(title);
-      // send package action event
-      sendGAEvent("submit_page_open", { submission_type: submissionType ? submissionType : title });
-    }
-  }, [title]);
+
   const navigate = useNavigate();
   const { data: userObj, isLoading: isUserLoading } = useGetUser();
+  const skipNavigationPromptRef = useRef(false);
 
   const breadcrumbs = optionCrumbsFromPath(pathname, authority, id);
 
@@ -162,7 +155,32 @@ export const ActionForm = <Schema extends SchemaWithEnforcableProps>({
       ...defaultValues,
     },
   });
-  const watchedId = form.watch("id" as FieldPath<z.infer<Schema>>);
+
+  const hasRealChanges = Object.keys(form.formState.dirtyFields).length > 0;
+
+  useNavigationPrompt({
+    shouldBlock: hasRealChanges && !form.formState.isSubmitting,
+    prompt: promptOnLeavingForm,
+    shouldSkipBlockingRef: skipNavigationPromptRef,
+  });
+
+  useEffect(() => {
+    const handleBeforeUnload = (e: BeforeUnloadEvent) => {
+      if (form.formState.isDirty && !form.formState.isSubmitting) {
+        e.preventDefault();
+      }
+    };
+
+    window.addEventListener("beforeunload", handleBeforeUnload);
+    return () => window.removeEventListener("beforeunload", handleBeforeUnload);
+  }, [form.formState.isDirty, form.formState.isSubmitting]);
+
+  useEffect(() => {
+    if (typeof window.gtag == "function") {
+      const submissionType = mapSubmissionTypeBasedOnActionFormTitle(title);
+      sendGAEvent("submit_page_open", { submission_type: submissionType ? submissionType : title });
+    }
+  }, [title]);
 
   const { mutateAsync } = useMutation({
     mutationFn: (formData: z.TypeOf<Schema>) =>
@@ -170,9 +188,6 @@ export const ActionForm = <Schema extends SchemaWithEnforcableProps>({
         body: formData,
       }),
   });
-
-  const shouldShowMedSpaFooter =
-    showCustomFooter && pathname.startsWith("/new-submission/spa/medicaid");
 
   const onSubmit = form.handleSubmit(async (formData) => {
     try {
@@ -201,7 +216,6 @@ export const ActionForm = <Schema extends SchemaWithEnforcableProps>({
         pathnameToDisplayOn: formOrigins.pathname,
       });
 
-      // Prevent stale data from displaying on formOrigins page
       await queryClient.invalidateQueries({ queryKey: ["record"] });
       navigate(formOrigins);
 
@@ -225,6 +239,25 @@ export const ActionForm = <Schema extends SchemaWithEnforcableProps>({
   });
 
   const attachmentsFromSchema = useMemo(() => getAttachments(schema), [schema]);
+
+  const handleCancel = (promptOverride?: Partial<Omit<UserPrompt, "onAccept">>) => {
+    skipNavigationPromptRef.current = true;
+
+    userPrompt({
+      ...promptOnLeavingForm,
+      ...promptOverride,
+      onAccept: () => {
+        const origin = getFormOrigin({ id, authority });
+        navigate(origin);
+      },
+    });
+
+    const timeOnPageSec = (Date.now() - startTimePage) / 1000;
+    sendGAEvent("submit_cancel", {
+      submission_type: title,
+      time_on_page_sec: timeOnPageSec,
+    });
+  };
 
   if (isUserLoading === true) {
     return <LoadingSpinner />;
@@ -252,16 +285,7 @@ export const ActionForm = <Schema extends SchemaWithEnforcableProps>({
       />
       {form.formState.isSubmitting && <LoadingSpinner />}
       <Form {...form}>
-        <form
-          onSubmit={(e) => {
-            if (shouldShowMedSpaFooter) {
-              e.preventDefault(); // Avoid duplicate submission for MedSpa
-            } else {
-              onSubmit(e); // Normal submission for other forms
-            }
-          }}
-          className="my-6 space-y-8 mx-auto justify-center flex flex-col"
-        >
+        <form onSubmit={onSubmit} className="my-6 space-y-8 mx-auto justify-center flex flex-col">
           <SectionCard testId="detail-section" title={title}>
             <div>
               {areFieldsRequired && <RequiredFieldDescription />}
@@ -307,84 +331,8 @@ export const ActionForm = <Schema extends SchemaWithEnforcableProps>({
               preSubmissionMessage={preSubmissionMessage}
             />
           )}
-          {shouldShowMedSpaFooter && (
-            <MedSpaFooter
-              onCancel={() =>
-                userPrompt({
-                  ...promptOnLeavingStickyFooterForm,
-                  body: `Unsaved changes${watchedId.trim() ? ` to ${watchedId}` : ""} will be discarded. Go back to save your changes.`,
-                  onAccept: () => {
-                    const origin = getFormOrigin({ id, authority });
-                    navigate(origin);
-                  },
-                })
-              }
-              onSubmit={() => {
-                if (promptPreSubmission) {
-                  userPrompt({ ...promptPreSubmission, onAccept: onSubmit });
-                } else {
-                  onSubmit();
-                }
-              }}
-              disabled={!form.formState.isValid}
-            />
-          )}
-
-          {shouldShowMedSpaFooter ? (
-            <section
-              id="form-actions"
-              className="flex flex-col md:flex-row justify-between items-center gap-4 p-4 w-full"
-            >
-              <div className="w-full md:w-auto text-center md:text-left">
-                <Button
-                  type="reset"
-                  onClick={() => {
-                    const timeOnPageSec = (Date.now() - startTimePage) / 1000;
-                    sendGAEvent("submit_cancel", {
-                      submission_type: title,
-                      time_on_page_sec: timeOnPageSec,
-                    });
-                    userPrompt({
-                      ...promptOnLeavingStickyFooterForm,
-                      body: `Unsaved changes${watchedId.trim() ? ` to ${watchedId}` : ""} will be discarded. Go back to save your changes.`,
-                      onAccept: () => {
-                        const origin = getFormOrigin({ id, authority });
-                        navigate(origin);
-                      },
-                    });
-                  }}
-                  variant="outline"
-                  data-testid="cancel-action-form"
-                  className="text-blue-700 font-semibold underline px-0 py-0 bg-transparent shadow-none border-none hover:bg-transparent"
-                >
-                  Cancel
-                </Button>
-              </div>
-              <div className="flex flex-col md:flex-row gap-3 w-full md:w-auto justify-center md:justify-end">
-                <Button
-                  type="button"
-                  onClick={() => {}}
-                  className="bg-white w-[113px] text-blue-700 border border-blue-700 font-semibold text-sm px-5 py-2 rounded-md hover:bg-white hover:text-blue-700 hover:border-blue-700"
-                >
-                  Save
-                </Button>
-                <Button
-                  type="button"
-                  onClick={() => {
-                    if (promptPreSubmission) {
-                      userPrompt({ ...promptPreSubmission, onAccept: onSubmit });
-                    } else {
-                      onSubmit(); // manually call submit handler
-                    }
-                  }}
-                  disabled={!form.formState.isValid}
-                  data-testid="submit-action-form"
-                  className="bg-blue-700 text-white font-semibold text-sm px-5 py-2 rounded-md"
-                >
-                  Save & Submit
-                </Button>
-              </div>
-            </section>
+          {Footer ? (
+            <Footer form={form} onSubmit={onSubmit} onCancel={handleCancel} />
           ) : (
             <section className="flex justify-end gap-2 p-4 ml-auto">
               <Button
@@ -396,26 +344,14 @@ export const ActionForm = <Schema extends SchemaWithEnforcableProps>({
                     : undefined
                 }
                 disabled={!form.formState.isValid}
+                aria-disabled={!form.formState.isValid}
                 data-testid="submit-action-form"
               >
                 {submitButtonLabel}
               </Button>
               <Button
                 className="px-12"
-                onClick={() => {
-                  userPrompt({
-                    ...promptOnLeavingForm,
-                    onAccept: () => {
-                      const origin = getFormOrigin({ id, authority });
-                      navigate(origin);
-                    },
-                  });
-                  const timeOnPageSec = (Date.now() - startTimePage) / 1000;
-                  sendGAEvent("submit_cancel", {
-                    submission_type: title,
-                    time_on_page_sec: timeOnPageSec,
-                  });
-                }}
+                onClick={() => handleCancel()}
                 variant="outline"
                 type="reset"
                 data-testid="cancel-action-form"

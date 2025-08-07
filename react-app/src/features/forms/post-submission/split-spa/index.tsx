@@ -137,7 +137,6 @@ export const SplitSpaForm = () => {
       additionalInformation={false}
       conditionsDeterminingUserAccess={[isCmsWriteUser]}
       showPreSubmissionMessage={false}
-      showFAQFooter={false}
     />
   );
 };
