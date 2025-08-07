@@ -16,7 +16,6 @@ import {
   RequiredIndicator,
   SpaIdFormattingDesc,
   UserPrompt as UserPromptType,
-  userPrompt,
 } from "@/components";
 import { AttachmentFileFormatInstructions } from "@/components/ActionForm/actionForm.components";
 import { FAQ_TAB } from "@/consts";
@@ -47,16 +46,6 @@ const MedSpaFooter = ({ form, onSubmit, onCancel }: MedSpaFooterProps) => {
     observer.observe(target);
     return () => observer.disconnect();
   }, []);
-
-  const onSaveAndSubmit = () =>
-    userPrompt({
-      header: "Stop form submission?",
-      body: "All information you've entered on this form will be lost if you leave this page.",
-      acceptButtonText: "Yes, leave form",
-      cancelButtonText: "Return to form",
-      areButtonsReversed: true,
-      onAccept: onSubmit,
-    });
 
   if (isFooterFixed) {
     return (
@@ -94,7 +83,7 @@ const MedSpaFooter = ({ form, onSubmit, onCancel }: MedSpaFooterProps) => {
               Save
             </button>
             <button
-              onClick={onSaveAndSubmit}
+              onClick={onSubmit}
               disabled={!form.formState.isValid}
               data-testid="submit-action-form"
               className={`w-[181.75px] py-3 px-5 gap-2.5 rounded font-semibold text-sm transition ${
@@ -145,7 +134,7 @@ const MedSpaFooter = ({ form, onSubmit, onCancel }: MedSpaFooterProps) => {
             Save
           </button>
           <button
-            onClick={onSaveAndSubmit}
+            onClick={onSubmit}
             disabled={!form.formState.isValid}
             data-testid="submit-action-form"
             className={`w-[181.75px] py-3 px-5 gap-2.5 rounded font-semibold text-sm transition ${
