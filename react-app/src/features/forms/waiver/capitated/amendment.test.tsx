@@ -10,7 +10,7 @@ import {
 import { beforeAll, describe, expect, test } from "vitest";
 
 import { formSchemas } from "@/formSchemas";
-import { renderFormAsync } from "@/utils/test-helpers/renderForm";
+import { renderFormWithPackageSectionAsync } from "@/utils/test-helpers/renderForm";
 import { mockApiRefinements, skipCleanup } from "@/utils/test-helpers/skipCleanup";
 import { uploadFiles } from "@/utils/test-helpers/uploadFiles";
 
@@ -23,7 +23,7 @@ describe("Capitated Amendment", () => {
     skipCleanup();
     mockApiRefinements();
 
-    await renderFormAsync(<AmendmentForm />);
+    await renderFormWithPackageSectionAsync(<AmendmentForm />);
   });
 
   test("EXISTING WAIVER NUMBER TO AMEND", async () => {
@@ -118,7 +118,7 @@ describe("AMENDMENT CAPITATED WAIVER WITH EXISTING WAIVERID", () => {
     mockApiRefinements();
   });
   test("waiver id is rendered on page", async () => {
-    await renderFormAsync(<AmendmentForm waiverId={CAPITATED_AMEND_ITEM_ID} />);
+    await renderFormWithPackageSectionAsync(<AmendmentForm waiverId={CAPITATED_AMEND_ITEM_ID} />);
 
     const existingWaiverId = screen.getByTestId("existing-waiver-id");
     expect(existingWaiverId).toHaveTextContent(CAPITATED_AMEND_ITEM_ID);

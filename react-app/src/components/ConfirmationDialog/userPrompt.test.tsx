@@ -1,10 +1,14 @@
 import { act, render } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
-import { describe, expect, test, vi } from "vitest";
+import { afterEach, describe, expect, test, vi } from "vitest";
 
 import { UserPrompt, userPrompt } from "./userPrompt";
 
 describe("userPrompt", () => {
+  afterEach(() => {
+    userPrompt.dismiss();
+  });
+
   test("Hidden on initial render", () => {
     const { container } = render(<UserPrompt />);
 
