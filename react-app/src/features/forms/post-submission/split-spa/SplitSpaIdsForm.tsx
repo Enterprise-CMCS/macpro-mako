@@ -20,7 +20,7 @@ const DEFAULT_SUFFIXES = {
   7: "G",
 };
 
-const SplitSpaId = ({ spaId, control, index, ...props }) => (
+const SplitSpaId = ({ control, index, spaId, ...props }) => (
   <FormField
     {...props}
     control={control}
@@ -90,7 +90,7 @@ export const SplitSpaIdsForm = ({
         </span>
       </div>
       {fields.map((field, index) => (
-        <SplitSpaId key={field.id} spaId={spaId} {...{ control, index }} />
+        <SplitSpaId control={control} index={index} spaId={spaId} {...field} />
       ))}
     </section>
   );

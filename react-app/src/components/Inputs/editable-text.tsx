@@ -14,7 +14,7 @@ interface EditableTextProps extends InputProps {
 
 const EditableText = React.forwardRef<HTMLInputElement, EditableTextProps>(
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  ({ className, label, id, value, defaultValue, onValueChange, onChange, ...props }, ref) => {
+  ({ className, label, id, value, onValueChange, onChange, ...props }, ref) => {
     const [edit, setEdit] = React.useState<boolean>(false);
     const [newValue, setNewValue] = React.useState<string | number | readonly string[]>(value);
 

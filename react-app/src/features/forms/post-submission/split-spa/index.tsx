@@ -71,7 +71,7 @@ export const SplitSpaForm = () => {
               <FormItem>
                 <div className="flex flex-col gap-4 mb-2">
                   <FormLabel className="font-semibold">
-                    {`How many split records do you want to create from base SPA ${id}?`}{" "}
+                    How many split records do you want to create from base SPA {id}?{" "}
                     <RequiredIndicator />
                   </FormLabel>
                   <FormDescription>
