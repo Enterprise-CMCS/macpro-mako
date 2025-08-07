@@ -1,7 +1,14 @@
 import { useEffect } from "react";
 import { Control, useFieldArray } from "react-hook-form";
 
-import { EditableText, FormControl, FormField, FormItem, FormMessage } from "@/components";
+import {
+  EditableText,
+  FormControl,
+  FormDescription,
+  FormField,
+  FormItem,
+  FormMessage,
+} from "@/components";
 
 const DEFAULT_SUFFIXES = {
   1: "A",
@@ -22,12 +29,21 @@ const SplitSpaId = ({ spaId, control, index, ...props }) => (
     render={({ field }) => (
       <FormItem className="max-w-sm">
         <FormControl>
-          <div className="items-center flex leading-[2.25]">
-            <span className="font-bold mr-4">{index + 2}.</span>
-            <span>{spaId}</span>
+          <div
+            className="items-center flex leading-[2.25]"
+            data-testid={`${index + 2}. ${spaId}-${field.value}`}
+          >
+            <FormDescription>
+              <span className="font-bold mr-4">{index + 2}.</span>
+              <span>{spaId}</span>
+            </FormDescription>
             <span className="flex">
               -
-              <EditableText onValueChange={field.onChange} {...field} />
+              <EditableText
+                label={`${spaId} split number ${index + 2}`}
+                onValueChange={field.onChange}
+                {...field}
+              />
             </span>
           </div>
         </FormControl>
@@ -37,7 +53,7 @@ const SplitSpaId = ({ spaId, control, index, ...props }) => (
   />
 );
 
-export const SplitSpaIdForm = ({
+export const SplitSpaIdsForm = ({
   control,
   spaId,
   splitCount,
@@ -53,20 +69,20 @@ export const SplitSpaIdForm = ({
 
   useEffect(() => {
     remove();
-    [...Array(splitCount).keys()].splice(1).map((index) => {
-      const value = DEFAULT_SUFFIXES[index];
-      append({ suffix: value });
-    });
+    const fields = [...Array(splitCount).keys()]
+      .splice(1)
+      .map((index) => ({ suffix: DEFAULT_SUFFIXES[index] }));
+    append(fields);
   }, [splitCount]); // eslint-disable-line react-hooks/exhaustive-deps
 
-  if (!splitCount) {
+  if (!spaId || !splitCount || splitCount < 2 || splitCount > 8) {
     return;
   }
 
   return (
     <section className="flex flex-col space-y-2">
       <div className="font-bold">SPAs after split</div>
-      <div className="items-center flex leading-[2.25]">
+      <div className="items-center flex leading-[2.25]" data-testid={`1. ${spaId} (Base SPA)`}>
         <span className="font-bold mr-4">1.</span>
         <span>{spaId}</span>
         <span className="flex ml-1">

@@ -7,13 +7,14 @@ import { cn } from "@/utils";
 
 interface EditableTextProps extends InputProps {
   className?: string;
+  label: string;
   value: string | number | readonly string[];
   onValueChange: (value: string | number | readonly string[]) => void;
 }
 
 const EditableText = React.forwardRef<HTMLInputElement, EditableTextProps>(
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  ({ className, id, value, defaultValue, onValueChange, onChange, ...props }, ref) => {
+  ({ className, label, id, value, defaultValue, onValueChange, onChange, ...props }, ref) => {
     const [edit, setEdit] = React.useState<boolean>(false);
     const [newValue, setNewValue] = React.useState<string | number | readonly string[]>(value);
 
@@ -27,6 +28,7 @@ const EditableText = React.forwardRef<HTMLInputElement, EditableTextProps>(
               type="text"
               value={newValue}
               onChange={(event) => setNewValue(event.target.value)}
+              aria-label={label}
               {...props}
             />
             <button

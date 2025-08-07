@@ -15,5 +15,6 @@ type Story = StoryObj<typeof meta>;
 export const Base: Story = {
   args: {
     value: "Testing",
+    label: "Test Input",
   },
 };

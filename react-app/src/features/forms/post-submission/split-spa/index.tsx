@@ -19,7 +19,7 @@ import {
 } from "@/components";
 import { formSchemas } from "@/formSchemas";
 
-import { SplitSpaIdForm } from "./SplitSpaIdForm";
+import { SplitSpaIdsForm } from "./SplitSpaIdsForm";
 
 const SPLIT_COUNT_START = 2;
 const SPLIT_COUNT_END = 8;
@@ -103,7 +103,7 @@ export const SplitSpaForm = () => {
               </FormItem>
             )}
           />
-          <SplitSpaIdForm control={control} spaId={id} splitCount={splitCount} />
+          <SplitSpaIdsForm control={control} spaId={id} splitCount={splitCount} />
           {splitCount && (
             <FormField
               control={control}
