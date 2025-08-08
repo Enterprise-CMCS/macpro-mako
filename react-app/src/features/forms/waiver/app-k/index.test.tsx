@@ -3,7 +3,7 @@ import userEvent from "@testing-library/user-event";
 import { beforeAll, describe, expect, test } from "vitest";
 
 import { formSchemas } from "@/formSchemas";
-import { renderFormAsync } from "@/utils/test-helpers/renderForm";
+import { renderFormWithPackageSectionAsync } from "@/utils/test-helpers/renderForm";
 import { mockApiRefinements, skipCleanup } from "@/utils/test-helpers/skipCleanup";
 import { uploadFiles } from "@/utils/test-helpers/uploadFiles";
 
@@ -15,7 +15,7 @@ describe("Appendix K", () => {
     skipCleanup();
     mockApiRefinements();
 
-    await renderFormAsync(<AppKAmendmentForm />);
+    await renderFormWithPackageSectionAsync(<AppKAmendmentForm />);
   });
 
   test("Amendment title", async () => {
