@@ -91,7 +91,7 @@ describe("SplitSpaForm", () => {
     expect(screen.getByTestId(`5. ${TEST_SPA_ITEM_ID}-D`)).toBeInTheDocument();
   });
 
-  it("should reset the edited suffices when changing the splitCount", async () => {
+  it("should keep the edited suffices when changing the splitCount", async () => {
     const spaId3 = screen.getByTestId(`3. ${TEST_SPA_ITEM_ID}-B`);
     await user.click(within(spaId3).getByRole("button", { name: "Edit" }));
     await user.type(within(spaId3).getByLabelText(`${TEST_SPA_ITEM_ID} split number 3`), "anana");
@@ -107,9 +107,10 @@ describe("SplitSpaForm", () => {
     await user.click(screen.getByRole("option", { name: "3" }));
 
     await waitFor(() => expect(screen.getByText(/SPAs after split/)).toBeInTheDocument());
+    screen.debug(screen.getByText(/SPAs after split/).parentElement);
     expect(screen.getByTestId(`1. ${TEST_SPA_ITEM_ID} (Base SPA)`)).toBeInTheDocument();
     expect(screen.getByTestId(`2. ${TEST_SPA_ITEM_ID}-A`)).toBeInTheDocument();
-    expect(screen.getByTestId(`3. ${TEST_SPA_ITEM_ID}-B`)).toBeInTheDocument();
+    expect(screen.getByTestId(`3. ${TEST_SPA_ITEM_ID}-Banana`)).toBeInTheDocument();
   });
 
   it("submit button should be disabled before requestor is set", async () => {

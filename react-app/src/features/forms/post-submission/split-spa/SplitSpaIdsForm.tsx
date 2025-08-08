@@ -62,17 +62,17 @@ export const SplitSpaIdsForm = ({
   spaId: string;
   splitCount: number;
 }) => {
-  const { fields, append, remove } = useFieldArray({
+  const { fields, remove, append } = useFieldArray({
     control,
     name: "spaIds",
   });
 
   useEffect(() => {
     remove();
-    const fields = [...Array(splitCount).keys()]
+    const fieldData = [...Array(splitCount).keys()]
       .splice(1)
       .map((index) => ({ suffix: DEFAULT_SUFFIXES[index] }));
-    append(fields);
+    append(fieldData);
   }, [splitCount]); // eslint-disable-line react-hooks/exhaustive-deps
 
   if (!spaId || !splitCount || splitCount < 2 || splitCount > 8) {
