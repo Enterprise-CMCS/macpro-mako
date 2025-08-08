@@ -62,7 +62,7 @@ describe("CMSSignup", () => {
     setMockUsername(null);
     await setup();
 
-    expect(screen.getByText("Home")).toBeInTheDocument();
+    await waitFor(() => expect(screen.getByText("Home")).toBeInTheDocument());
   });
 
   it("should navigate to /profile if the user is not a CMS default user or approver", async () => {

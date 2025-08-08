@@ -66,6 +66,7 @@ type ActionFormProps<Schema extends SchemaWithEnforcableProps> = {
   defaultValues?: DefaultValues<z.infer<InferUntransformedSchema<Schema>>>;
   title: string;
   fields: (form: FormArg<Schema>) => ReactNode;
+  submitButtonLabel?: string;
   bannerPostSubmission?: Omit<Banner, "pathnameToDisplayOn">;
   promptPreSubmission?: Omit<UserPrompt, "onAccept">;
   promptOnLeavingForm?: Omit<UserPrompt, "onAccept">;
@@ -83,10 +84,11 @@ type ActionFormProps<Schema extends SchemaWithEnforcableProps> = {
   };
   conditionsDeterminingUserAccess?: ((user: CognitoUserAttributes | null) => boolean)[];
   breadcrumbText: string;
-  formDescription?: string;
+  formDescription?: string | React.ReactNode;
   preSubmissionMessage?: string;
   showPreSubmissionMessage?: boolean;
   areFieldsRequired?: boolean;
+  showFAQFooter?: boolean;
   footer?: (args: {
     form: FormArg<Schema>;
     onSubmit: () => void;
@@ -99,6 +101,7 @@ export const ActionForm = <Schema extends SchemaWithEnforcableProps>({
   defaultValues = {} as DefaultValues<z.TypeOf<InferUntransformedSchema<Schema>>>,
   title,
   fields: Fields,
+  submitButtonLabel = "Submit",
   bannerPostSubmission = {
     header: "Package submitted",
     body: "Your submission has been received.",
@@ -128,6 +131,7 @@ export const ActionForm = <Schema extends SchemaWithEnforcableProps>({
   },
   showPreSubmissionMessage = true,
   areFieldsRequired = true,
+  showFAQFooter = true,
   footer: Footer,
 }: ActionFormProps<Schema>) => {
   const { id, authority } = useParams<{
@@ -343,7 +347,7 @@ export const ActionForm = <Schema extends SchemaWithEnforcableProps>({
                 aria-disabled={!form.formState.isValid}
                 data-testid="submit-action-form"
               >
-                Submit
+                {submitButtonLabel}
               </Button>
               <Button
                 className="px-12"
@@ -358,7 +362,7 @@ export const ActionForm = <Schema extends SchemaWithEnforcableProps>({
           )}
         </form>
       </Form>
-      <FAQFooter />
+      {showFAQFooter && <FAQFooter />}
     </SimplePageContainer>
   );
 };
