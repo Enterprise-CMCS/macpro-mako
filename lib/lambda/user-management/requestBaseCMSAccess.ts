@@ -38,7 +38,7 @@ export const handler = authenticatedMiddy({
       id,
       JSON.stringify({
         eventType: "user-role",
-        email: authenticatedUser.email,
+        email: authenticatedUser.email.toLowerCase(),
         status: "active",
         territory: "N/A",
         role: "defaultcmsuser", // role for this state
@@ -62,7 +62,7 @@ export const handler = authenticatedMiddy({
       id,
       JSON.stringify({
         eventType: "user-role",
-        email: authenticatedUser.email,
+        email: authenticatedUser.email.toLowerCase(),
         status: "active",
         territory: "N/A",
         role: "helpdesk", // role for this state

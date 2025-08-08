@@ -10,11 +10,8 @@ import {
 import { afterEach, beforeAll, describe, expect, test, vi } from "vitest";
 
 import { formSchemas } from "@/formSchemas";
-import {
-  renderFormAsync,
-  renderFormWithPackageSectionAsync,
-} from "@/utils/test-helpers/renderForm";
-import { skipCleanup } from "@/utils/test-helpers/skipCleanup";
+import { skipCleanup } from "@/utils/test-helpers";
+import { renderFormWithPackageSectionAsync } from "@/utils/test-helpers/renderForm";
 import { uploadFiles } from "@/utils/test-helpers/uploadFiles";
 
 import { TemporaryExtensionForm } from "./index";
@@ -59,7 +56,7 @@ describe("Temporary Extension", () => {
     beforeAll(async () => {
       skipCleanup();
 
-      await renderFormAsync(<TemporaryExtensionForm />);
+      await renderFormWithPackageSectionAsync(<TemporaryExtensionForm />);
     });
 
     test("TEMPORARY EXTENSION TYPE 1915(c)", async () => {
