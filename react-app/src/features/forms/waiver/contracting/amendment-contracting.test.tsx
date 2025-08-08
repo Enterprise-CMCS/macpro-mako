@@ -10,7 +10,7 @@ import {
 import { beforeAll, describe, expect, test } from "vitest";
 
 import { formSchemas } from "@/formSchemas";
-import { renderFormAsync } from "@/utils/test-helpers/renderForm";
+import { renderFormWithPackageSectionAsync } from "@/utils/test-helpers/renderForm";
 import { skipCleanup } from "@/utils/test-helpers/skipCleanup";
 import { uploadFiles } from "@/utils/test-helpers/uploadFiles";
 
@@ -22,7 +22,7 @@ describe("AMENDMENT CONTRACTING WAIVER", () => {
   beforeAll(async () => {
     skipCleanup();
 
-    await renderFormAsync(<AmendmentForm />);
+    await renderFormWithPackageSectionAsync(<AmendmentForm />);
   });
 
   test("WAIVER ID EXISTING", async () => {
@@ -112,7 +112,7 @@ describe("AMENDMENT CONTRACTING WAIVER", () => {
 
 describe("Contracting Amendment with existing waiver Id", () => {
   test("existing waiver id is filled out", async () => {
-    await renderFormAsync(<AmendmentForm waiverId={CONTRACTING_AMEND_ITEM_ID} />);
+    await renderFormWithPackageSectionAsync(<AmendmentForm waiverId={CONTRACTING_AMEND_ITEM_ID} />);
 
     const existingWaiverId = screen.getByTestId("existing-waiver-id");
     expect(existingWaiverId).toHaveTextContent(CONTRACTING_AMEND_ITEM_ID);
