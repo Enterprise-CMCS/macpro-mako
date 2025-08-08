@@ -6,7 +6,7 @@ import { UserRole } from "shared-types/events/legacy-user";
 import { userRoleMap } from "shared-utils";
 
 import { useGetUserDetails, useSubmitRoleRequests } from "@/api";
-import { banner, Button, SimplePageContainer, SubNavHeader } from "@/components";
+import { banner, Button, LoadingSpinner, SimplePageContainer, SubNavHeader } from "@/components";
 import { convertStateAbbrToFullName } from "@/utils";
 
 export const StateConfirmation = () => {
@@ -15,7 +15,7 @@ export const StateConfirmation = () => {
   const [searchParams] = useSearchParams();
 
   const { mutateAsync } = useSubmitRoleRequests();
-  const { data: userDetails } = useGetUserDetails();
+  const { data: userDetails, isLoading: isUserLoading } = useGetUserDetails();
 
   const roleToRequest = searchParams.get("role") as UserRole;
   const statesParam = searchParams.get("states");
@@ -23,6 +23,11 @@ export const StateConfirmation = () => {
   const statesToRequest: StateCode[] = statesParam ? (statesParam.split(",") as StateCode[]) : [];
 
   const roleSelectionPath = `/signup/state/role?states=${statesParam}`;
+
+  if (isUserLoading) return <LoadingSpinner />;
+
+  // TODO ASHARON
+  if (!userDetails) return <Navigate to="/" />;
 
   if (!roleToRequest) return <Navigate to={roleSelectionPath} />;
 
@@ -73,7 +78,7 @@ export const StateConfirmation = () => {
         </div>
       </SubNavHeader>
       <SimplePageContainer>
-        <form className="flex justify-center p-5 my-10 pb-10" onSubmit={onSubmit}>
+        <div className="flex justify-center p-5 my-10 pb-10">
           <div className="w-1/3">
             <div className="py-3">
               <h2 className="text-xl font-bold mb-2">
@@ -88,7 +93,12 @@ export const StateConfirmation = () => {
               <p className="text-xl italic">{userRoleMap[roleToRequest]}</p>
 
               <div className="py-4">
-                <Button className="mr-3" type="submit" aria-label="Submit role request">
+                <Button
+                  className="mr-3"
+                  type="submit"
+                  aria-label="Submit role request"
+                  onClick={onSubmit}
+                >
                   Submit
                 </Button>
                 <Button
@@ -102,7 +112,7 @@ export const StateConfirmation = () => {
               </div>
             </div>
           </div>
-        </form>
+        </div>
       </SimplePageContainer>
     </div>
   );
