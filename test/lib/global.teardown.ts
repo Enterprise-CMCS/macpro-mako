@@ -5,6 +5,10 @@ const __dirname = new URL("..", import.meta.url).pathname;
 const ENV = process.env.PW_ENV || "local";
 const authDir: string = path.join(__dirname, ".auth", `${ENV}`);
 
+/**
+ * delete session data after the run is done.
+ */
+
 async function deleteAuthFiles(): Promise<void> {
   console.log("\n[Teardown]");
   try {
