@@ -221,11 +221,16 @@ export const ActionForm = <Schema extends SchemaWithEnforcableProps>({
 
       const timeOnPageSec = (Date.now() - startTimePage) / 1000;
 
-      sendGAEvent("submission_submit_click", { package_type: formData.event });
+      sendGAEvent("submission_submit_click", { package_type: formData.event, package_id: id });
       sendGAEvent("submit_page_exit", {
         submission_type: formData.event,
         time_on_page_sec: timeOnPageSec,
       });
+      if (formData.event == "upload-subsequent-documents") {
+        sendGAEvent("upload-subsequent-documents", { package_id: id });
+      } else if (formData.event == "withdraw-package") {
+        sendGAEvent("withdraw-package", { package_id: id });
+      }
     } catch (error) {
       console.error(error);
       banner({

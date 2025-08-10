@@ -1,101 +1,90 @@
-import { useEffect, useRef } from "react";
-
+import { useEffect, useRef, useState } from "react";
+import { isCmsUser, isStateUser } from "shared-utils";
+import { useGetUser } from "@/api";
+const { data: userObj } = useGetUser();
 import { sendGAEvent } from "./SendGAEvent";
 
 type PathTrackerProps = {
-  userRole: "cms" | "state";
   children: React.ReactNode;
 };
 
-/**
- * Wrap around your <C.Layout>.
- * It will send:
- *   1) a `custom_page_view` event on initial mount or after every route change
- *   2) a `page_duration` event when the user leaves the previous route
- */
-export default function PathTracker({ userRole, children }: PathTrackerProps) {
-  // keep track of the path of the page the user is leaving
+export default function PathTracker({ children }: PathTrackerProps) {
   const prevPathRef = useRef<string>(window.location.pathname);
-
-  // record when the current route was "entered"
   const startTimeRef = useRef<number>(Date.now());
 
+  const [role, setRole] = useState(null);
+
   useEffect(() => {
-    //for tracking page views
+    try {
+      let detectedRole;
+      if (isCmsUser(userObj.user)) {
+        detectedRole = "cms";
+      } else if (isStateUser(userObj.user)) {
+        detectedRole = "state";
+      }
+      setRole(detectedRole);
+    } catch (e) {
+      console.error("error obtaining user roles for path tracking", e);
+      setRole("state");
+    }
+  }, []);
+
+  useEffect(() => {
+    if (!role) return; // wait for role to be detected before tracking
+
     const sendPageView = (path: string) => {
       sendGAEvent("page_view", {
         page_path: path,
         referrer: prevPathRef.current || "",
-        ...(userRole && { user_role: userRole }),
+        user_role: role
       });
     };
 
-    //for tracking duration spent on page
     const sendPageDuration = (path: string, startTs: number) => {
-      if (userRole) {
-        const now = Date.now();
-        const deltaMs = now - startTs;
-        const timeOnPageSec = Math.round(deltaMs / 1000); // nearest second
-        sendGAEvent("page_duration", {
-          page_path: path,
-          user_role: userRole,
-          time_on_page_sec: timeOnPageSec,
-        });
-      }
+      const now = Date.now();
+      const deltaMs = now - startTs;
+      const timeOnPageSec = Math.round(deltaMs / 1000);
+      sendGAEvent("page_duration", {
+        page_path: path,
+        user_role: role,
+        time_on_page_sec: timeOnPageSec,
+      });
     };
 
-    // send page_view for the first load
     sendPageView(window.location.pathname);
 
-    // when a route change is detected
     const onRouteChange = () => {
       const newPath = window.location.pathname;
       const oldPath = prevPathRef.current;
-
-      // if the path didn’t actually change, do nothing
-      if (newPath === oldPath) {
-        return;
+      if (newPath !== oldPath) {
+        sendPageDuration(oldPath, startTimeRef.current);
+        sendPageView(newPath);
+        prevPathRef.current = newPath;
+        startTimeRef.current = Date.now();
       }
-
-      // 1) send page_duration for the old path
-      sendPageDuration(oldPath, startTimeRef.current);
-
-      // 2) send a new page_view for the new path, with referrer = old path
-      sendPageView(newPath);
-
-      // 3) update prevPath and reset startTime for the new page
-      prevPathRef.current = newPath;
-      startTimeRef.current = Date.now();
     };
 
-    //pushState/replaceState so we catch in‐app ract navigation
     const origPush = window.history.pushState;
     const origReplace = window.history.replaceState;
 
-    window.history.pushState = function (this: History, ...args: any[]) {
+    window.history.pushState = function (...args) {
       origPush.apply(this, args);
       onRouteChange();
     };
-    window.history.replaceState = function (this: History, ...args: any[]) {
+    window.history.replaceState = function (...args) {
       origReplace.apply(this, args);
       onRouteChange();
     };
 
-    //Also catch Back/Forward browser buttons
     window.addEventListener("popstate", onRouteChange);
 
-    //cleanup- when PathTracker unmounts
     return () => {
-      //send duration for whichever page user was on
       sendPageDuration(prevPathRef.current, startTimeRef.current);
-
-      //restore history methods and remove listener
       window.history.pushState = origPush;
       window.history.replaceState = origReplace;
       window.removeEventListener("popstate", onRouteChange);
     };
-  }, [userRole]);
+  }, [role]);
 
-  // Render children as usual
   return <>{children}</>;
 }
