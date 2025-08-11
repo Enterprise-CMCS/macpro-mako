@@ -9,15 +9,6 @@ import {
   USER_POOL_CLIENT_ID,
   USER_POOL_ID,
 } from "mocks";
-import { dirname, join } from "path";
-
-/**
- * This function is used to resolve the absolute path of a package.
- * It is needed in projects that use Yarn PnP or are set up within a monorepo.
- */
-function getAbsolutePath(value: string): any {
-  return dirname(require.resolve(join(value, "package.json")));
-}
 
 const config: StorybookConfig = {
   env: (config) => ({
@@ -38,16 +29,31 @@ const config: StorybookConfig = {
     VITE_LAUNCHDARKLY_CLIENT_ID: LAUNCHDARKLY_CLIENT_ID,
   }),
   stories: ["../src/**/*.mdx", "../src/**/*.stories.{js,jsx,mjs,ts,tsx}"],
+  typescript: { check: true },
   staticDirs: ["../public", "../dist"],
   addons: [
-    getAbsolutePath("@storybook/addon-a11y"),
-    getAbsolutePath("@storybook/addon-docs"),
-    getAbsolutePath("@storybook/addon-vitest"),
-    getAbsolutePath("storybook-addon-remix-react-router"),
+    "@storybook/addon-a11y",
+    "@storybook/addon-docs",
+    "@storybook/addon-vitest",
+    "storybook-addon-remix-react-router",
   ],
   framework: {
-    name: getAbsolutePath("@storybook/react-vite"),
+    name: "@storybook/react-vite",
     options: {},
+  },
+  core: {
+    builder: "@storybook/builder-vite",
+  },
+  async viteFinal(config) {
+    // Merge custom configuration into the default config
+    const { mergeConfig } = await import("vite");
+
+    return mergeConfig(config, {
+      // Add dependencies to pre-optimization
+      optimizeDeps: {
+        include: ["storybook-dark-mode"],
+      },
+    });
   },
   features: {
     developmentModeForBuild: true,

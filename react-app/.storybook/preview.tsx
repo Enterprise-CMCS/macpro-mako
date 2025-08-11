@@ -4,8 +4,8 @@ import type { Preview } from "@storybook/react-vite";
 import { cognitoHandlers, defaultApiHandlers, launchDarklyHandlers } from "mocks";
 import { initialize, mswLoader } from "msw-storybook-addon";
 
+// import * as React from "react";
 import { withQueryClient } from "./decorators";
-
 initialize({
   onUnhandledRequest: "bypass",
 });
@@ -28,9 +28,6 @@ const preview: Preview = {
     },
 
     a11y: {
-      context: {
-        include: ["body"],
-      },
       // 👇 Fail all accessibility tests when violations are found
       test: "error",
     },
