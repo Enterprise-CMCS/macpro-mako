@@ -14,7 +14,8 @@ export const StateConfirmation = () => {
   const { pathname } = useLocation();
   const [searchParams] = useSearchParams();
 
-  const { mutateAsync } = useSubmitRoleRequests();
+  const { mutateAsync: submitUserRequest, isLoading: isSubmitUserRequestLoading } =
+    useSubmitRoleRequests();
   const { data: userDetails, isLoading: isUserLoading } = useGetUserDetails();
 
   const roleToRequest = searchParams.get("role") as UserRole;
@@ -24,10 +25,13 @@ export const StateConfirmation = () => {
 
   const roleSelectionPath = `/signup/state/role?states=${statesParam}`;
 
-  if (isUserLoading) return <LoadingSpinner />;
+  if (isUserLoading) {
+    return <LoadingSpinner />;
+  }
 
-  // TODO ASHARON
-  if (!userDetails) return <Navigate to="/" />;
+  if (!userDetails) {
+    return <Navigate to="/" />;
+  }
 
   if (!roleToRequest) return <Navigate to={roleSelectionPath} />;
 
@@ -35,7 +39,7 @@ export const StateConfirmation = () => {
     event.preventDefault();
 
     const roleRequests = statesToRequest.map((state) =>
-      mutateAsync({
+      submitUserRequest({
         email: userDetails.email,
         role: roleToRequest,
         state,
@@ -98,6 +102,8 @@ export const StateConfirmation = () => {
                   type="submit"
                   aria-label="Submit role request"
                   onClick={onSubmit}
+                  disabled={isSubmitUserRequestLoading}
+                  loading={isSubmitUserRequestLoading}
                 >
                   Submit
                 </Button>
@@ -106,6 +112,7 @@ export const StateConfirmation = () => {
                   onClick={() => navigate(roleSelectionPath)}
                   type="button"
                   aria-label="Cancel role request"
+                  disabled={isSubmitUserRequestLoading}
                 >
                   Cancel
                 </Button>
