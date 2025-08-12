@@ -1,4 +1,4 @@
-name: UI Tests
+name: Accessibility Tests
 
 on:
   pull_request:
@@ -17,12 +17,8 @@ jobs:
       # https://playwright.dev/docs/docker#pull-the-image
       image: mcr.microsoft.com/playwright:v1.54.0-noble
     steps:
-      - uses: actions/checkout@v4
-
+      - name: Checkout
+        uses: actions/checkout@v4
       - uses: ./.github/actions/setup
-
-      - name: Install Dependencies
-        run: run install
-
       - name: Run tests
         run: run test --storybook
