@@ -37,23 +37,9 @@ const config: StorybookConfig = {
     "@storybook/addon-vitest",
     "storybook-addon-remix-react-router",
   ],
-  framework: {
-    name: "@storybook/react-vite",
-    options: {},
-  },
+  framework: "@storybook/react-vite",
   core: {
     builder: "@storybook/builder-vite",
-  },
-  async viteFinal(config) {
-    // Merge custom configuration into the default config
-    const { mergeConfig } = await import("vite");
-
-    return mergeConfig(config, {
-      // Add dependencies to pre-optimization
-      optimizeDeps: {
-        include: ["storybook-dark-mode"],
-      },
-    });
   },
   features: {
     developmentModeForBuild: true,

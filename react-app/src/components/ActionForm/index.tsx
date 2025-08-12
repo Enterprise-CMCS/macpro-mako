@@ -284,6 +284,7 @@ export const ActionForm = <Schema extends SchemaWithEnforcableProps>({
         ]}
       />
       {form.formState.isSubmitting && <LoadingSpinner />}
+      <p aria-role="combobox">Hello</p>
       <Form {...form}>
         <form onSubmit={onSubmit} className="my-6 space-y-8 mx-auto justify-center flex flex-col">
           <SectionCard testId="detail-section" title={title}>
