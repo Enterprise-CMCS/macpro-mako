@@ -15,6 +15,10 @@ export const test = {
         type: "boolean",
         describe: "Run the tests in the Vitest UI view",
       })
+      .option("storybook", {
+        type: "boolean",
+        describe: "Run the Storybook tests",
+      })
       .check((argv) => {
         if (argv.coverage && argv.ui) {
           throw new Error("You cannot use both --watch and --ui at the same time.");
