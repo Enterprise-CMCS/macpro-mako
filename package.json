@@ -19,7 +19,7 @@
     "test": "vitest --project=lib --project=email --project=ui",
     "test:coverage": "bun run test --coverage",
     "test:ui": "bun run test --ui",
-    "test:storybook": "vitest --project=storybook",
+    "test:storybook": "cd react-app && bun run test-storybook",
     "cdk:watch": "cdk watch -c stage=${STAGE:-local} --no-rollback",
     "bun:dev": "cd react-app && bun run dev"
   },

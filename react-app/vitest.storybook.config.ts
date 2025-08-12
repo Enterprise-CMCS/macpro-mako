@@ -3,10 +3,10 @@ import path from "node:path";
 import { storybookTest } from "@storybook/addon-vitest/vitest-plugin";
 import { defineConfig, mergeConfig } from "vitest/config";
 
-import viteConfig from "./vite.config";
+import viteConfig from "./.storybook/vite.config";
 
 export default mergeConfig(
-  viteConfig({ command: "serve", mode: "test" }),
+  viteConfig,
   defineConfig({
     plugins: [
       storybookTest({
@@ -17,22 +17,6 @@ export default mergeConfig(
       }),
     ],
     test: {
-      globals: true,
-      name: "storybook",
-      exclude: [
-        "**/node_modules",
-        "**/*.test.{ts,tsx}",
-        "test/**",
-        "**/.spec.{ts,tsx}",
-        "**/*.mdx",
-      ],
-      browser: {
-        enabled: true,
-        provider: "playwright",
-        headless: true,
-        // https://vitest.dev/guide/browser/playwright
-        instances: [{ browser: "chromium" }],
-      },
       setupFiles: "./.storybook/vitest.setup.ts",
     },
   }),

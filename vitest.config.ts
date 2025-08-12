@@ -1,3 +1,6 @@
+import path from "node:path";
+
+import { storybookTest } from "@storybook/addon-vitest/vitest-plugin";
 import { cpus } from "os";
 import { join } from "path";
 import { configDefaults, defineConfig } from "vitest/config";
@@ -38,7 +41,22 @@ export default defineConfig({
           environment: "jsdom",
         },
       },
-      "./react-app/vitest.storybook.config.ts",
+      {
+        extends: "./react-app/.storybook/vite.config.ts",
+        plugins: [
+          storybookTest({
+            configDir: path.join(__dirname, "./react-app/.storybook"),
+            // This should match your package.json script to run Storybook
+            // The --ci flag will skip prompts and not open a browser
+            storybookScript: "run storybook --ci",
+          }),
+        ],
+        test: {
+          name: "storybook",
+          root: "./react-app",
+          setupFiles: "./.storybook/vitest.setup.ts",
+        },
+      },
     ],
     server: {
       deps: {
