@@ -104,7 +104,7 @@ export const StateConfirmation = () => {
           <div className="w-1/3">
             <div className="py-3">
               <h2 className="text-xl font-bold mb-2">
-                {statesToRequest.length > 1 ? "States:" : "State:"}
+                {statesToRequest.length > 1 ? "States / Territories:" : "State / Territory:"}
               </h2>
               <p className="text-xl italic">
                 {statesToRequest.map((state) => convertStateAbbrToFullName(state)).join(", ")}
