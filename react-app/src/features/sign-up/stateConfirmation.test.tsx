@@ -18,6 +18,7 @@ vi.mock("@/api", async (importOriginal) => {
 });
 
 const bannerSpy = vi.spyOn(component, "banner");
+const promptSpy = vi.spyOn(component, "userPrompt");
 
 describe("StateConfirmation", () => {
   beforeEach(() => {
@@ -54,7 +55,14 @@ describe("StateConfirmation", () => {
 
     await user.click(screen.getByRole("button", { name: "Cancel role request" }));
 
-    expect(screen.getByText("State Role")).toBeInTheDocument();
+    expect(promptSpy).toBeCalledWith({
+      header: "Cancel role request?",
+      body: "Changes you made will not be saved.",
+      onAccept: expect.any(Function),
+      onCancel: expect.any(Function),
+      acceptButtonText: "Confirm",
+      cancelButtonText: "Stay on Page",
+    });
   });
 
   it("should call mutate for each state and navigate to home on success", async () => {
