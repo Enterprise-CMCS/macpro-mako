@@ -6,7 +6,14 @@ import { UserRole } from "shared-types/events/legacy-user";
 import { userRoleMap } from "shared-utils";
 
 import { useGetUserDetails, useSubmitRoleRequests } from "@/api";
-import { banner, Button, LoadingSpinner, SimplePageContainer, SubNavHeader } from "@/components";
+import {
+  banner,
+  Button,
+  LoadingSpinner,
+  SimplePageContainer,
+  SubNavHeader,
+  userPrompt,
+} from "@/components";
 import { convertStateAbbrToFullName } from "@/utils";
 
 export const StateConfirmation = () => {
@@ -70,6 +77,17 @@ export const StateConfirmation = () => {
     return navigate("/profile");
   };
 
+  const onCancel = () => {
+    userPrompt({
+      header: "Cancel role request?",
+      body: "Changes you made will not be saved.",
+      onAccept: () => navigate(roleSelectionPath),
+      onCancel: () => {},
+      acceptButtonText: "Confirm",
+      cancelButtonText: "Stay on Page",
+    });
+  };
+
   return (
     <div>
       <SubNavHeader>
@@ -109,7 +127,7 @@ export const StateConfirmation = () => {
                 </Button>
                 <Button
                   variant="link"
-                  onClick={() => navigate(roleSelectionPath)}
+                  onClick={onCancel}
                   type="button"
                   aria-label="Cancel role request"
                   disabled={isSubmitUserRequestLoading}
