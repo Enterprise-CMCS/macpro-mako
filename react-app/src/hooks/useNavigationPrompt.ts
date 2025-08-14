@@ -27,6 +27,9 @@ export function useNavigationPrompt({
         onAccept: () => {
           blocker.proceed?.();
         },
+        onCancel: () => {
+          blocker.reset?.();
+        },
       });
     }
   }, [blocker?.state, blocker, prompt, shouldSkipBlockingRef]);
