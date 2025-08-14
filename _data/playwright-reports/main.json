@@ -303,7 +303,7 @@
                         {
                           "workerIndex": 0,
                           "status": "passed",
-                          "duration": 3916,
+                          "duration": 3939,
                           "errors": [],
                           "stdout": [
                             {
@@ -312,7 +312,7 @@
                           ],
                           "stderr": [],
                           "retry": 0,
-                          "startTime": "2025-08-07T17:00:50.811Z",
+                          "startTime": "2025-08-14T14:53:05.099Z",
                           "attachments": []
                         }
                       ],
@@ -339,7 +339,7 @@
                         {
                           "workerIndex": 0,
                           "status": "failed",
-                          "duration": 8376,
+                          "duration": 8322,
                           "error": {
                             "message": "Error: \u001b[31mTimed out 5000ms waiting for \u001b[39m\u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoHaveURL\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m)\u001b[22m\n\nLocator: locator(':root')\nExpected pattern: \u001b[32m/\\/dashboard*/\u001b[39m\nReceived string:  \u001b[31m\"https://mako-dev.cms.gov/\"\u001b[39m\nCall log:\n  \u001b[2m- expect.toHaveURL with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for locator(':root')\u001b[22m\n\u001b[2m  -   locator resolved to <html lang=\"en\" class=\"h-full\">…</html>\u001b[22m\n\u001b[2m  -   unexpected value \"https://mako-dev.cms.gov/\"\u001b[22m\n\u001b[2m  -   locator resolved to <html lang=\"en\" class=\"h-full\">…</html>\u001b[22m\n\u001b[2m  -   unexpected value \"https://mako-dev.cms.gov/\"\u001b[22m\n\u001b[2m  -   locator resolved to <html lang=\"en\" class=\"h-full\">…</html>\u001b[22m\n\u001b[2m  -   unexpected value \"https://mako-dev.cms.gov/\"\u001b[22m\n\u001b[2m  -   locator resolved to <html lang=\"en\" class=\"h-full\">…</html>\u001b[22m\n\u001b[2m  -   unexpected value \"https://mako-dev.cms.gov/\"\u001b[22m\n\u001b[2m  -   locator resolved to <html lang=\"en\" class=\"h-full\">…</html>\u001b[22m\n\u001b[2m  -   unexpected value \"https://mako-dev.cms.gov/\"\u001b[22m\n\u001b[2m  -   locator resolved to <html lang=\"en\" class=\"h-full\">…</html>\u001b[22m\n\u001b[2m  -   unexpected value \"https://mako-dev.cms.gov/\"\u001b[22m\n\u001b[2m  -   locator resolved to <html lang=\"en\" class=\"h-full\">…</html>\u001b[22m\n\u001b[2m  -   unexpected value \"https://mako-dev.cms.gov/\"\u001b[22m\n\u001b[2m  -   locator resolved to <html lang=\"en\" class=\"h-full\">…</html>\u001b[22m\n\u001b[2m  -   unexpected value \"https://mako-dev.cms.gov/\"\u001b[22m\n\u001b[2m  -   locator resolved to <html lang=\"en\" class=\"h-full\">…</html>\u001b[22m\n\u001b[2m  -   unexpected value \"https://mako-dev.cms.gov/\"\u001b[22m\n",
                             "stack": "Error: \u001b[31mTimed out 5000ms waiting for \u001b[39m\u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoHaveURL\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m)\u001b[22m\n\nLocator: locator(':root')\nExpected pattern: \u001b[32m/\\/dashboard*/\u001b[39m\nReceived string:  \u001b[31m\"https://mako-dev.cms.gov/\"\u001b[39m\nCall log:\n  \u001b[2m- expect.toHaveURL with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for locator(':root')\u001b[22m\n\u001b[2m  -   locator resolved to <html lang=\"en\" class=\"h-full\">…</html>\u001b[22m\n\u001b[2m  -   unexpected value \"https://mako-dev.cms.gov/\"\u001b[22m\n\u001b[2m  -   locator resolved to <html lang=\"en\" class=\"h-full\">…</html>\u001b[22m\n\u001b[2m  -   unexpected value \"https://mako-dev.cms.gov/\"\u001b[22m\n\u001b[2m  -   locator resolved to <html lang=\"en\" class=\"h-full\">…</html>\u001b[22m\n\u001b[2m  -   unexpected value \"https://mako-dev.cms.gov/\"\u001b[22m\n\u001b[2m  -   locator resolved to <html lang=\"en\" class=\"h-full\">…</html>\u001b[22m\n\u001b[2m  -   unexpected value \"https://mako-dev.cms.gov/\"\u001b[22m\n\u001b[2m  -   locator resolved to <html lang=\"en\" class=\"h-full\">…</html>\u001b[22m\n\u001b[2m  -   unexpected value \"https://mako-dev.cms.gov/\"\u001b[22m\n\u001b[2m  -   locator resolved to <html lang=\"en\" class=\"h-full\">…</html>\u001b[22m\n\u001b[2m  -   unexpected value \"https://mako-dev.cms.gov/\"\u001b[22m\n\u001b[2m  -   locator resolved to <html lang=\"en\" class=\"h-full\">…</html>\u001b[22m\n\u001b[2m  -   unexpected value \"https://mako-dev.cms.gov/\"\u001b[22m\n\u001b[2m  -   locator resolved to <html lang=\"en\" class=\"h-full\">…</html>\u001b[22m\n\u001b[2m  -   unexpected value \"https://mako-dev.cms.gov/\"\u001b[22m\n\u001b[2m  -   locator resolved to <html lang=\"en\" class=\"h-full\">…</html>\u001b[22m\n\u001b[2m  -   unexpected value \"https://mako-dev.cms.gov/\"\u001b[22m\n\n    at /home/runner/work/macpro-mako/macpro-mako/test/e2e/e2e/non-func/a11y.spec.ts:35:30",
@@ -363,7 +363,7 @@
                           "stdout": [],
                           "stderr": [],
                           "retry": 0,
-                          "startTime": "2025-08-07T17:00:54.828Z",
+                          "startTime": "2025-08-14T14:53:09.141Z",
                           "attachments": [
                             {
                               "name": "video",
@@ -406,7 +406,7 @@
                         {
                           "workerIndex": 1,
                           "status": "failed",
-                          "duration": 4728,
+                          "duration": 4802,
                           "error": {
                             "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoEqual\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // deep equality\u001b[22m\n\n\u001b[32m- Expected  -  1\u001b[39m\n\u001b[31m+ Received  + 56\u001b[39m\n\n\u001b[32m- Array []\u001b[39m\n\u001b[31m+ Array [\u001b[39m\n\u001b[31m+   Object {\u001b[39m\n\u001b[31m+     \"description\": \"Ensure the contrast between foreground and background colors meets WCAG 2 AA minimum contrast ratio thresholds\",\u001b[39m\n\u001b[31m+     \"help\": \"Elements must meet minimum color contrast ratio thresholds\",\u001b[39m\n\u001b[31m+     \"helpUrl\": \"https://dequeuniversity.com/rules/axe/4.10/color-contrast?application=playwright\",\u001b[39m\n\u001b[31m+     \"id\": \"color-contrast\",\u001b[39m\n\u001b[31m+     \"impact\": \"serious\",\u001b[39m\n\u001b[31m+     \"nodes\": Array [\u001b[39m\n\u001b[31m+       Object {\u001b[39m\n\u001b[31m+         \"all\": Array [],\u001b[39m\n\u001b[31m+         \"any\": Array [\u001b[39m\n\u001b[31m+           Object {\u001b[39m\n\u001b[31m+             \"data\": Object {\u001b[39m\n\u001b[31m+               \"bgColor\": \"#16a34a\",\u001b[39m\n\u001b[31m+               \"contrastRatio\": 3.29,\u001b[39m\n\u001b[31m+               \"expectedContrastRatio\": \"4.5:1\",\u001b[39m\n\u001b[31m+               \"fgColor\": \"#ffffff\",\u001b[39m\n\u001b[31m+               \"fontSize\": \"9.0pt (12px)\",\u001b[39m\n\u001b[31m+               \"fontWeight\": \"normal\",\u001b[39m\n\u001b[31m+               \"messageKey\": null,\u001b[39m\n\u001b[31m+             },\u001b[39m\n\u001b[31m+             \"id\": \"color-contrast\",\u001b[39m\n\u001b[31m+             \"impact\": \"serious\",\u001b[39m\n\u001b[31m+             \"message\": \"Element has insufficient color contrast of 3.29 (foreground color: #ffffff, background color: #16a34a, font size: 9.0pt (12px), font weight: normal). Expected contrast ratio of 4.5:1\",\u001b[39m\n\u001b[31m+             \"relatedNodes\": Array [\u001b[39m\n\u001b[31m+               Object {\u001b[39m\n\u001b[31m+                 \"html\": \"<span class=\\\"text-white text-xs font-semibold px-2 py-0.5 rounded no-underline hover:no-underline bg-green-600\\\">Updated</span>\",\u001b[39m\n\u001b[31m+                 \"target\": Array [\u001b[39m\n\u001b[31m+                   \".bg-green-600\",\u001b[39m\n\u001b[31m+                 ],\u001b[39m\n\u001b[31m+               },\u001b[39m\n\u001b[31m+             ],\u001b[39m\n\u001b[31m+           },\u001b[39m\n\u001b[31m+         ],\u001b[39m\n\u001b[31m+         \"failureSummary\": \"Fix any of the following:\u001b[39m\n\u001b[31m+   Element has insufficient color contrast of 3.29 (foreground color: #ffffff, background color: #16a34a, font size: 9.0pt (12px), font weight: normal). Expected contrast ratio of 4.5:1\",\u001b[39m\n\u001b[31m+         \"html\": \"<span class=\\\"text-white text-xs font-semibold px-2 py-0.5 rounded no-underline hover:no-underline bg-green-600\\\">Updated</span>\",\u001b[39m\n\u001b[31m+         \"impact\": \"serious\",\u001b[39m\n\u001b[31m+         \"none\": Array [],\u001b[39m\n\u001b[31m+         \"target\": Array [\u001b[39m\n\u001b[31m+           \".bg-green-600\",\u001b[39m\n\u001b[31m+         ],\u001b[39m\n\u001b[31m+       },\u001b[39m\n\u001b[31m+     ],\u001b[39m\n\u001b[31m+     \"tags\": Array [\u001b[39m\n\u001b[31m+       \"cat.color\",\u001b[39m\n\u001b[31m+       \"wcag2aa\",\u001b[39m\n\u001b[31m+       \"wcag143\",\u001b[39m\n\u001b[31m+       \"TTv5\",\u001b[39m\n\u001b[31m+       \"TT13.c\",\u001b[39m\n\u001b[31m+       \"EN-301-549\",\u001b[39m\n\u001b[31m+       \"EN-9.1.4.3\",\u001b[39m\n\u001b[31m+       \"ACT\",\u001b[39m\n\u001b[31m+     ],\u001b[39m\n\u001b[31m+   },\u001b[39m\n\u001b[31m+ ]\u001b[39m",
                             "stack": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoEqual\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // deep equality\u001b[22m\n\n\u001b[32m- Expected  -  1\u001b[39m\n\u001b[31m+ Received  + 56\u001b[39m\n\n\u001b[32m- Array []\u001b[39m\n\u001b[31m+ Array [\u001b[39m\n\u001b[31m+   Object {\u001b[39m\n\u001b[31m+     \"description\": \"Ensure the contrast between foreground and background colors meets WCAG 2 AA minimum contrast ratio thresholds\",\u001b[39m\n\u001b[31m+     \"help\": \"Elements must meet minimum color contrast ratio thresholds\",\u001b[39m\n\u001b[31m+     \"helpUrl\": \"https://dequeuniversity.com/rules/axe/4.10/color-contrast?application=playwright\",\u001b[39m\n\u001b[31m+     \"id\": \"color-contrast\",\u001b[39m\n\u001b[31m+     \"impact\": \"serious\",\u001b[39m\n\u001b[31m+     \"nodes\": Array [\u001b[39m\n\u001b[31m+       Object {\u001b[39m\n\u001b[31m+         \"all\": Array [],\u001b[39m\n\u001b[31m+         \"any\": Array [\u001b[39m\n\u001b[31m+           Object {\u001b[39m\n\u001b[31m+             \"data\": Object {\u001b[39m\n\u001b[31m+               \"bgColor\": \"#16a34a\",\u001b[39m\n\u001b[31m+               \"contrastRatio\": 3.29,\u001b[39m\n\u001b[31m+               \"expectedContrastRatio\": \"4.5:1\",\u001b[39m\n\u001b[31m+               \"fgColor\": \"#ffffff\",\u001b[39m\n\u001b[31m+               \"fontSize\": \"9.0pt (12px)\",\u001b[39m\n\u001b[31m+               \"fontWeight\": \"normal\",\u001b[39m\n\u001b[31m+               \"messageKey\": null,\u001b[39m\n\u001b[31m+             },\u001b[39m\n\u001b[31m+             \"id\": \"color-contrast\",\u001b[39m\n\u001b[31m+             \"impact\": \"serious\",\u001b[39m\n\u001b[31m+             \"message\": \"Element has insufficient color contrast of 3.29 (foreground color: #ffffff, background color: #16a34a, font size: 9.0pt (12px), font weight: normal). Expected contrast ratio of 4.5:1\",\u001b[39m\n\u001b[31m+             \"relatedNodes\": Array [\u001b[39m\n\u001b[31m+               Object {\u001b[39m\n\u001b[31m+                 \"html\": \"<span class=\\\"text-white text-xs font-semibold px-2 py-0.5 rounded no-underline hover:no-underline bg-green-600\\\">Updated</span>\",\u001b[39m\n\u001b[31m+                 \"target\": Array [\u001b[39m\n\u001b[31m+                   \".bg-green-600\",\u001b[39m\n\u001b[31m+                 ],\u001b[39m\n\u001b[31m+               },\u001b[39m\n\u001b[31m+             ],\u001b[39m\n\u001b[31m+           },\u001b[39m\n\u001b[31m+         ],\u001b[39m\n\u001b[31m+         \"failureSummary\": \"Fix any of the following:\u001b[39m\n\u001b[31m+   Element has insufficient color contrast of 3.29 (foreground color: #ffffff, background color: #16a34a, font size: 9.0pt (12px), font weight: normal). Expected contrast ratio of 4.5:1\",\u001b[39m\n\u001b[31m+         \"html\": \"<span class=\\\"text-white text-xs font-semibold px-2 py-0.5 rounded no-underline hover:no-underline bg-green-600\\\">Updated</span>\",\u001b[39m\n\u001b[31m+         \"impact\": \"serious\",\u001b[39m\n\u001b[31m+         \"none\": Array [],\u001b[39m\n\u001b[31m+         \"target\": Array [\u001b[39m\n\u001b[31m+           \".bg-green-600\",\u001b[39m\n\u001b[31m+         ],\u001b[39m\n\u001b[31m+       },\u001b[39m\n\u001b[31m+     ],\u001b[39m\n\u001b[31m+     \"tags\": Array [\u001b[39m\n\u001b[31m+       \"cat.color\",\u001b[39m\n\u001b[31m+       \"wcag2aa\",\u001b[39m\n\u001b[31m+       \"wcag143\",\u001b[39m\n\u001b[31m+       \"TTv5\",\u001b[39m\n\u001b[31m+       \"TT13.c\",\u001b[39m\n\u001b[31m+       \"EN-301-549\",\u001b[39m\n\u001b[31m+       \"EN-9.1.4.3\",\u001b[39m\n\u001b[31m+       \"ACT\",\u001b[39m\n\u001b[31m+     ],\u001b[39m\n\u001b[31m+   },\u001b[39m\n\u001b[31m+ ]\u001b[39m\n    at /home/runner/work/macpro-mako/macpro-mako/test/e2e/e2e/non-func/a11y.spec.ts:39:55",
@@ -434,7 +434,7 @@
                           ],
                           "stderr": [],
                           "retry": 0,
-                          "startTime": "2025-08-07T17:01:05.010Z",
+                          "startTime": "2025-08-14T14:53:19.231Z",
                           "attachments": [
                             {
                               "name": "video",
@@ -482,7 +482,7 @@
                         {
                           "workerIndex": 2,
                           "status": "passed",
-                          "duration": 3913,
+                          "duration": 3950,
                           "errors": [],
                           "stdout": [
                             {
@@ -491,7 +491,7 @@
                           ],
                           "stderr": [],
                           "retry": 0,
-                          "startTime": "2025-08-07T17:01:11.832Z",
+                          "startTime": "2025-08-14T14:53:26.101Z",
                           "attachments": []
                         }
                       ],
@@ -518,7 +518,7 @@
                         {
                           "workerIndex": 2,
                           "status": "failed",
-                          "duration": 8437,
+                          "duration": 8449,
                           "error": {
                             "message": "Error: \u001b[31mTimed out 5000ms waiting for \u001b[39m\u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoHaveURL\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m)\u001b[22m\n\nLocator: locator(':root')\nExpected pattern: \u001b[32m/\\/profile*/\u001b[39m\nReceived string:  \u001b[31m\"https://mako-dev.cms.gov/\"\u001b[39m\nCall log:\n  \u001b[2m- expect.toHaveURL with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for locator(':root')\u001b[22m\n\u001b[2m  -   locator resolved to <html lang=\"en\" class=\"h-full\">…</html>\u001b[22m\n\u001b[2m  -   unexpected value \"https://mako-dev.cms.gov/\"\u001b[22m\n\u001b[2m  -   locator resolved to <html lang=\"en\" class=\"h-full\">…</html>\u001b[22m\n\u001b[2m  -   unexpected value \"https://mako-dev.cms.gov/\"\u001b[22m\n\u001b[2m  -   locator resolved to <html lang=\"en\" class=\"h-full\">…</html>\u001b[22m\n\u001b[2m  -   unexpected value \"https://mako-dev.cms.gov/\"\u001b[22m\n\u001b[2m  -   locator resolved to <html lang=\"en\" class=\"h-full\">…</html>\u001b[22m\n\u001b[2m  -   unexpected value \"https://mako-dev.cms.gov/\"\u001b[22m\n\u001b[2m  -   locator resolved to <html lang=\"en\" class=\"h-full\">…</html>\u001b[22m\n\u001b[2m  -   unexpected value \"https://mako-dev.cms.gov/\"\u001b[22m\n\u001b[2m  -   locator resolved to <html lang=\"en\" class=\"h-full\">…</html>\u001b[22m\n\u001b[2m  -   unexpected value \"https://mako-dev.cms.gov/\"\u001b[22m\n\u001b[2m  -   locator resolved to <html lang=\"en\" class=\"h-full\">…</html>\u001b[22m\n\u001b[2m  -   unexpected value \"https://mako-dev.cms.gov/\"\u001b[22m\n\u001b[2m  -   locator resolved to <html lang=\"en\" class=\"h-full\">…</html>\u001b[22m\n\u001b[2m  -   unexpected value \"https://mako-dev.cms.gov/\"\u001b[22m\n\u001b[2m  -   locator resolved to <html lang=\"en\" class=\"h-full\">…</html>\u001b[22m\n\u001b[2m  -   unexpected value \"https://mako-dev.cms.gov/\"\u001b[22m\n",
                             "stack": "Error: \u001b[31mTimed out 5000ms waiting for \u001b[39m\u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoHaveURL\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m)\u001b[22m\n\nLocator: locator(':root')\nExpected pattern: \u001b[32m/\\/profile*/\u001b[39m\nReceived string:  \u001b[31m\"https://mako-dev.cms.gov/\"\u001b[39m\nCall log:\n  \u001b[2m- expect.toHaveURL with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for locator(':root')\u001b[22m\n\u001b[2m  -   locator resolved to <html lang=\"en\" class=\"h-full\">…</html>\u001b[22m\n\u001b[2m  -   unexpected value \"https://mako-dev.cms.gov/\"\u001b[22m\n\u001b[2m  -   locator resolved to <html lang=\"en\" class=\"h-full\">…</html>\u001b[22m\n\u001b[2m  -   unexpected value \"https://mako-dev.cms.gov/\"\u001b[22m\n\u001b[2m  -   locator resolved to <html lang=\"en\" class=\"h-full\">…</html>\u001b[22m\n\u001b[2m  -   unexpected value \"https://mako-dev.cms.gov/\"\u001b[22m\n\u001b[2m  -   locator resolved to <html lang=\"en\" class=\"h-full\">…</html>\u001b[22m\n\u001b[2m  -   unexpected value \"https://mako-dev.cms.gov/\"\u001b[22m\n\u001b[2m  -   locator resolved to <html lang=\"en\" class=\"h-full\">…</html>\u001b[22m\n\u001b[2m  -   unexpected value \"https://mako-dev.cms.gov/\"\u001b[22m\n\u001b[2m  -   locator resolved to <html lang=\"en\" class=\"h-full\">…</html>\u001b[22m\n\u001b[2m  -   unexpected value \"https://mako-dev.cms.gov/\"\u001b[22m\n\u001b[2m  -   locator resolved to <html lang=\"en\" class=\"h-full\">…</html>\u001b[22m\n\u001b[2m  -   unexpected value \"https://mako-dev.cms.gov/\"\u001b[22m\n\u001b[2m  -   locator resolved to <html lang=\"en\" class=\"h-full\">…</html>\u001b[22m\n\u001b[2m  -   unexpected value \"https://mako-dev.cms.gov/\"\u001b[22m\n\u001b[2m  -   locator resolved to <html lang=\"en\" class=\"h-full\">…</html>\u001b[22m\n\u001b[2m  -   unexpected value \"https://mako-dev.cms.gov/\"\u001b[22m\n\n    at /home/runner/work/macpro-mako/macpro-mako/test/e2e/e2e/non-func/a11y.spec.ts:35:30",
@@ -542,7 +542,7 @@
                           "stdout": [],
                           "stderr": [],
                           "retry": 0,
-                          "startTime": "2025-08-07T17:01:15.847Z",
+                          "startTime": "2025-08-14T14:53:30.147Z",
                           "attachments": [
                             {
                               "name": "video",
@@ -585,7 +585,7 @@
                         {
                           "workerIndex": 3,
                           "status": "failed",
-                          "duration": 8432,
+                          "duration": 8457,
                           "error": {
                             "message": "Error: \u001b[31mTimed out 5000ms waiting for \u001b[39m\u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoHaveURL\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m)\u001b[22m\n\nLocator: locator(':root')\nExpected pattern: \u001b[32m/\\/new-submission*/\u001b[39m\nReceived string:  \u001b[31m\"https://mako-dev.cms.gov/\"\u001b[39m\nCall log:\n  \u001b[2m- expect.toHaveURL with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for locator(':root')\u001b[22m\n\u001b[2m  -   locator resolved to <html lang=\"en\" class=\"h-full\">…</html>\u001b[22m\n\u001b[2m  -   unexpected value \"https://mako-dev.cms.gov/\"\u001b[22m\n\u001b[2m  -   locator resolved to <html lang=\"en\" class=\"h-full\">…</html>\u001b[22m\n\u001b[2m  -   unexpected value \"https://mako-dev.cms.gov/\"\u001b[22m\n\u001b[2m  -   locator resolved to <html lang=\"en\" class=\"h-full\">…</html>\u001b[22m\n\u001b[2m  -   unexpected value \"https://mako-dev.cms.gov/\"\u001b[22m\n\u001b[2m  -   locator resolved to <html lang=\"en\" class=\"h-full\">…</html>\u001b[22m\n\u001b[2m  -   unexpected value \"https://mako-dev.cms.gov/\"\u001b[22m\n\u001b[2m  -   locator resolved to <html lang=\"en\" class=\"h-full\">…</html>\u001b[22m\n\u001b[2m  -   unexpected value \"https://mako-dev.cms.gov/\"\u001b[22m\n\u001b[2m  -   locator resolved to <html lang=\"en\" class=\"h-full\">…</html>\u001b[22m\n\u001b[2m  -   unexpected value \"https://mako-dev.cms.gov/\"\u001b[22m\n\u001b[2m  -   locator resolved to <html lang=\"en\" class=\"h-full\">…</html>\u001b[22m\n\u001b[2m  -   unexpected value \"https://mako-dev.cms.gov/\"\u001b[22m\n\u001b[2m  -   locator resolved to <html lang=\"en\" class=\"h-full\">…</html>\u001b[22m\n\u001b[2m  -   unexpected value \"https://mako-dev.cms.gov/\"\u001b[22m\n\u001b[2m  -   locator resolved to <html lang=\"en\" class=\"h-full\">…</html>\u001b[22m\n\u001b[2m  -   unexpected value \"https://mako-dev.cms.gov/\"\u001b[22m\n",
                             "stack": "Error: \u001b[31mTimed out 5000ms waiting for \u001b[39m\u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoHaveURL\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m)\u001b[22m\n\nLocator: locator(':root')\nExpected pattern: \u001b[32m/\\/new-submission*/\u001b[39m\nReceived string:  \u001b[31m\"https://mako-dev.cms.gov/\"\u001b[39m\nCall log:\n  \u001b[2m- expect.toHaveURL with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for locator(':root')\u001b[22m\n\u001b[2m  -   locator resolved to <html lang=\"en\" class=\"h-full\">…</html>\u001b[22m\n\u001b[2m  -   unexpected value \"https://mako-dev.cms.gov/\"\u001b[22m\n\u001b[2m  -   locator resolved to <html lang=\"en\" class=\"h-full\">…</html>\u001b[22m\n\u001b[2m  -   unexpected value \"https://mako-dev.cms.gov/\"\u001b[22m\n\u001b[2m  -   locator resolved to <html lang=\"en\" class=\"h-full\">…</html>\u001b[22m\n\u001b[2m  -   unexpected value \"https://mako-dev.cms.gov/\"\u001b[22m\n\u001b[2m  -   locator resolved to <html lang=\"en\" class=\"h-full\">…</html>\u001b[22m\n\u001b[2m  -   unexpected value \"https://mako-dev.cms.gov/\"\u001b[22m\n\u001b[2m  -   locator resolved to <html lang=\"en\" class=\"h-full\">…</html>\u001b[22m\n\u001b[2m  -   unexpected value \"https://mako-dev.cms.gov/\"\u001b[22m\n\u001b[2m  -   locator resolved to <html lang=\"en\" class=\"h-full\">…</html>\u001b[22m\n\u001b[2m  -   unexpected value \"https://mako-dev.cms.gov/\"\u001b[22m\n\u001b[2m  -   locator resolved to <html lang=\"en\" class=\"h-full\">…</html>\u001b[22m\n\u001b[2m  -   unexpected value \"https://mako-dev.cms.gov/\"\u001b[22m\n\u001b[2m  -   locator resolved to <html lang=\"en\" class=\"h-full\">…</html>\u001b[22m\n\u001b[2m  -   unexpected value \"https://mako-dev.cms.gov/\"\u001b[22m\n\u001b[2m  -   locator resolved to <html lang=\"en\" class=\"h-full\">…</html>\u001b[22m\n\u001b[2m  -   unexpected value \"https://mako-dev.cms.gov/\"\u001b[22m\n\n    at /home/runner/work/macpro-mako/macpro-mako/test/e2e/e2e/non-func/a11y.spec.ts:35:30",
@@ -609,7 +609,7 @@
                           "stdout": [],
                           "stderr": [],
                           "retry": 0,
-                          "startTime": "2025-08-07T17:01:26.002Z",
+                          "startTime": "2025-08-14T14:53:40.355Z",
                           "attachments": [
                             {
                               "name": "video",
@@ -652,7 +652,7 @@
                         {
                           "workerIndex": 4,
                           "status": "failed",
-                          "duration": 8715,
+                          "duration": 8483,
                           "error": {
                             "message": "Error: \u001b[31mTimed out 5000ms waiting for \u001b[39m\u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoHaveURL\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m)\u001b[22m\n\nLocator: locator(':root')\nExpected pattern: \u001b[32m/\\/new-submission\\/spa*/\u001b[39m\nReceived string:  \u001b[31m\"https://mako-dev.cms.gov/\"\u001b[39m\nCall log:\n  \u001b[2m- expect.toHaveURL with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for locator(':root')\u001b[22m\n\u001b[2m  -   locator resolved to <html lang=\"en\" class=\"h-full\">…</html>\u001b[22m\n\u001b[2m  -   unexpected value \"https://mako-dev.cms.gov/\"\u001b[22m\n\u001b[2m  -   locator resolved to <html lang=\"en\" class=\"h-full\">…</html>\u001b[22m\n\u001b[2m  -   unexpected value \"https://mako-dev.cms.gov/\"\u001b[22m\n\u001b[2m  -   locator resolved to <html lang=\"en\" class=\"h-full\">…</html>\u001b[22m\n\u001b[2m  -   unexpected value \"https://mako-dev.cms.gov/\"\u001b[22m\n\u001b[2m  -   locator resolved to <html lang=\"en\" class=\"h-full\">…</html>\u001b[22m\n\u001b[2m  -   unexpected value \"https://mako-dev.cms.gov/\"\u001b[22m\n\u001b[2m  -   locator resolved to <html lang=\"en\" class=\"h-full\">…</html>\u001b[22m\n\u001b[2m  -   unexpected value \"https://mako-dev.cms.gov/\"\u001b[22m\n\u001b[2m  -   locator resolved to <html lang=\"en\" class=\"h-full\">…</html>\u001b[22m\n\u001b[2m  -   unexpected value \"https://mako-dev.cms.gov/\"\u001b[22m\n\u001b[2m  -   locator resolved to <html lang=\"en\" class=\"h-full\">…</html>\u001b[22m\n\u001b[2m  -   unexpected value \"https://mako-dev.cms.gov/\"\u001b[22m\n\u001b[2m  -   locator resolved to <html lang=\"en\" class=\"h-full\">…</html>\u001b[22m\n\u001b[2m  -   unexpected value \"https://mako-dev.cms.gov/\"\u001b[22m\n\u001b[2m  -   locator resolved to <html lang=\"en\" class=\"h-full\">…</html>\u001b[22m\n\u001b[2m  -   unexpected value \"https://mako-dev.cms.gov/\"\u001b[22m\n",
                             "stack": "Error: \u001b[31mTimed out 5000ms waiting for \u001b[39m\u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoHaveURL\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m)\u001b[22m\n\nLocator: locator(':root')\nExpected pattern: \u001b[32m/\\/new-submission\\/spa*/\u001b[39m\nReceived string:  \u001b[31m\"https://mako-dev.cms.gov/\"\u001b[39m\nCall log:\n  \u001b[2m- expect.toHaveURL with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for locator(':root')\u001b[22m\n\u001b[2m  -   locator resolved to <html lang=\"en\" class=\"h-full\">…</html>\u001b[22m\n\u001b[2m  -   unexpected value \"https://mako-dev.cms.gov/\"\u001b[22m\n\u001b[2m  -   locator resolved to <html lang=\"en\" class=\"h-full\">…</html>\u001b[22m\n\u001b[2m  -   unexpected value \"https://mako-dev.cms.gov/\"\u001b[22m\n\u001b[2m  -   locator resolved to <html lang=\"en\" class=\"h-full\">…</html>\u001b[22m\n\u001b[2m  -   unexpected value \"https://mako-dev.cms.gov/\"\u001b[22m\n\u001b[2m  -   locator resolved to <html lang=\"en\" class=\"h-full\">…</html>\u001b[22m\n\u001b[2m  -   unexpected value \"https://mako-dev.cms.gov/\"\u001b[22m\n\u001b[2m  -   locator resolved to <html lang=\"en\" class=\"h-full\">…</html>\u001b[22m\n\u001b[2m  -   unexpected value \"https://mako-dev.cms.gov/\"\u001b[22m\n\u001b[2m  -   locator resolved to <html lang=\"en\" class=\"h-full\">…</html>\u001b[22m\n\u001b[2m  -   unexpected value \"https://mako-dev.cms.gov/\"\u001b[22m\n\u001b[2m  -   locator resolved to <html lang=\"en\" class=\"h-full\">…</html>\u001b[22m\n\u001b[2m  -   unexpected value \"https://mako-dev.cms.gov/\"\u001b[22m\n\u001b[2m  -   locator resolved to <html lang=\"en\" class=\"h-full\">…</html>\u001b[22m\n\u001b[2m  -   unexpected value \"https://mako-dev.cms.gov/\"\u001b[22m\n\u001b[2m  -   locator resolved to <html lang=\"en\" class=\"h-full\">…</html>\u001b[22m\n\u001b[2m  -   unexpected value \"https://mako-dev.cms.gov/\"\u001b[22m\n\n    at /home/runner/work/macpro-mako/macpro-mako/test/e2e/e2e/non-func/a11y.spec.ts:35:30",
@@ -676,7 +676,7 @@
                           "stdout": [],
                           "stderr": [],
                           "retry": 0,
-                          "startTime": "2025-08-07T17:01:36.292Z",
+                          "startTime": "2025-08-14T14:53:50.626Z",
                           "attachments": [
                             {
                               "name": "video",
@@ -719,7 +719,7 @@
                         {
                           "workerIndex": 5,
                           "status": "failed",
-                          "duration": 8456,
+                          "duration": 8467,
                           "error": {
                             "message": "Error: \u001b[31mTimed out 5000ms waiting for \u001b[39m\u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoHaveURL\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m)\u001b[22m\n\nLocator: locator(':root')\nExpected pattern: \u001b[32m/\\/new-submission\\/spa\\/medicaid*/\u001b[39m\nReceived string:  \u001b[31m\"https://mako-dev.cms.gov/\"\u001b[39m\nCall log:\n  \u001b[2m- expect.toHaveURL with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for locator(':root')\u001b[22m\n\u001b[2m  -   locator resolved to <html lang=\"en\" class=\"h-full\">…</html>\u001b[22m\n\u001b[2m  -   unexpected value \"https://mako-dev.cms.gov/\"\u001b[22m\n\u001b[2m  -   locator resolved to <html lang=\"en\" class=\"h-full\">…</html>\u001b[22m\n\u001b[2m  -   unexpected value \"https://mako-dev.cms.gov/\"\u001b[22m\n\u001b[2m  -   locator resolved to <html lang=\"en\" class=\"h-full\">…</html>\u001b[22m\n\u001b[2m  -   unexpected value \"https://mako-dev.cms.gov/\"\u001b[22m\n\u001b[2m  -   locator resolved to <html lang=\"en\" class=\"h-full\">…</html>\u001b[22m\n\u001b[2m  -   unexpected value \"https://mako-dev.cms.gov/\"\u001b[22m\n\u001b[2m  -   locator resolved to <html lang=\"en\" class=\"h-full\">…</html>\u001b[22m\n\u001b[2m  -   unexpected value \"https://mako-dev.cms.gov/\"\u001b[22m\n\u001b[2m  -   locator resolved to <html lang=\"en\" class=\"h-full\">…</html>\u001b[22m\n\u001b[2m  -   unexpected value \"https://mako-dev.cms.gov/\"\u001b[22m\n\u001b[2m  -   locator resolved to <html lang=\"en\" class=\"h-full\">…</html>\u001b[22m\n\u001b[2m  -   unexpected value \"https://mako-dev.cms.gov/\"\u001b[22m\n\u001b[2m  -   locator resolved to <html lang=\"en\" class=\"h-full\">…</html>\u001b[22m\n\u001b[2m  -   unexpected value \"https://mako-dev.cms.gov/\"\u001b[22m\n\u001b[2m  -   locator resolved to <html lang=\"en\" class=\"h-full\">…</html>\u001b[22m\n\u001b[2m  -   unexpected value \"https://mako-dev.cms.gov/\"\u001b[22m\n",
                             "stack": "Error: \u001b[31mTimed out 5000ms waiting for \u001b[39m\u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoHaveURL\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m)\u001b[22m\n\nLocator: locator(':root')\nExpected pattern: \u001b[32m/\\/new-submission\\/spa\\/medicaid*/\u001b[39m\nReceived string:  \u001b[31m\"https://mako-dev.cms.gov/\"\u001b[39m\nCall log:\n  \u001b[2m- expect.toHaveURL with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for locator(':root')\u001b[22m\n\u001b[2m  -   locator resolved to <html lang=\"en\" class=\"h-full\">…</html>\u001b[22m\n\u001b[2m  -   unexpected value \"https://mako-dev.cms.gov/\"\u001b[22m\n\u001b[2m  -   locator resolved to <html lang=\"en\" class=\"h-full\">…</html>\u001b[22m\n\u001b[2m  -   unexpected value \"https://mako-dev.cms.gov/\"\u001b[22m\n\u001b[2m  -   locator resolved to <html lang=\"en\" class=\"h-full\">…</html>\u001b[22m\n\u001b[2m  -   unexpected value \"https://mako-dev.cms.gov/\"\u001b[22m\n\u001b[2m  -   locator resolved to <html lang=\"en\" class=\"h-full\">…</html>\u001b[22m\n\u001b[2m  -   unexpected value \"https://mako-dev.cms.gov/\"\u001b[22m\n\u001b[2m  -   locator resolved to <html lang=\"en\" class=\"h-full\">…</html>\u001b[22m\n\u001b[2m  -   unexpected value \"https://mako-dev.cms.gov/\"\u001b[22m\n\u001b[2m  -   locator resolved to <html lang=\"en\" class=\"h-full\">…</html>\u001b[22m\n\u001b[2m  -   unexpected value \"https://mako-dev.cms.gov/\"\u001b[22m\n\u001b[2m  -   locator resolved to <html lang=\"en\" class=\"h-full\">…</html>\u001b[22m\n\u001b[2m  -   unexpected value \"https://mako-dev.cms.gov/\"\u001b[22m\n\u001b[2m  -   locator resolved to <html lang=\"en\" class=\"h-full\">…</html>\u001b[22m\n\u001b[2m  -   unexpected value \"https://mako-dev.cms.gov/\"\u001b[22m\n\u001b[2m  -   locator resolved to <html lang=\"en\" class=\"h-full\">…</html>\u001b[22m\n\u001b[2m  -   unexpected value \"https://mako-dev.cms.gov/\"\u001b[22m\n\n    at /home/runner/work/macpro-mako/macpro-mako/test/e2e/e2e/non-func/a11y.spec.ts:35:30",
@@ -743,7 +743,7 @@
                           "stdout": [],
                           "stderr": [],
                           "retry": 0,
-                          "startTime": "2025-08-07T17:01:46.869Z",
+                          "startTime": "2025-08-14T14:54:00.933Z",
                           "attachments": [
                             {
                               "name": "video",
@@ -786,7 +786,7 @@
                         {
                           "workerIndex": 6,
                           "status": "failed",
-                          "duration": 8423,
+                          "duration": 8555,
                           "error": {
                             "message": "Error: \u001b[31mTimed out 5000ms waiting for \u001b[39m\u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoHaveURL\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m)\u001b[22m\n\nLocator: locator(':root')\nExpected pattern: \u001b[32m/\\/new-submission\\/spa\\/chip*/\u001b[39m\nReceived string:  \u001b[31m\"https://mako-dev.cms.gov/\"\u001b[39m\nCall log:\n  \u001b[2m- expect.toHaveURL with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for locator(':root')\u001b[22m\n\u001b[2m  -   locator resolved to <html lang=\"en\" class=\"h-full\">…</html>\u001b[22m\n\u001b[2m  -   unexpected value \"https://mako-dev.cms.gov/\"\u001b[22m\n\u001b[2m  -   locator resolved to <html lang=\"en\" class=\"h-full\">…</html>\u001b[22m\n\u001b[2m  -   unexpected value \"https://mako-dev.cms.gov/\"\u001b[22m\n\u001b[2m  -   locator resolved to <html lang=\"en\" class=\"h-full\">…</html>\u001b[22m\n\u001b[2m  -   unexpected value \"https://mako-dev.cms.gov/\"\u001b[22m\n\u001b[2m  -   locator resolved to <html lang=\"en\" class=\"h-full\">…</html>\u001b[22m\n\u001b[2m  -   unexpected value \"https://mako-dev.cms.gov/\"\u001b[22m\n\u001b[2m  -   locator resolved to <html lang=\"en\" class=\"h-full\">…</html>\u001b[22m\n\u001b[2m  -   unexpected value \"https://mako-dev.cms.gov/\"\u001b[22m\n\u001b[2m  -   locator resolved to <html lang=\"en\" class=\"h-full\">…</html>\u001b[22m\n\u001b[2m  -   unexpected value \"https://mako-dev.cms.gov/\"\u001b[22m\n\u001b[2m  -   locator resolved to <html lang=\"en\" class=\"h-full\">…</html>\u001b[22m\n\u001b[2m  -   unexpected value \"https://mako-dev.cms.gov/\"\u001b[22m\n\u001b[2m  -   locator resolved to <html lang=\"en\" class=\"h-full\">…</html>\u001b[22m\n\u001b[2m  -   unexpected value \"https://mako-dev.cms.gov/\"\u001b[22m\n\u001b[2m  -   locator resolved to <html lang=\"en\" class=\"h-full\">…</html>\u001b[22m\n\u001b[2m  -   unexpected value \"https://mako-dev.cms.gov/\"\u001b[22m\n",
                             "stack": "Error: \u001b[31mTimed out 5000ms waiting for \u001b[39m\u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoHaveURL\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m)\u001b[22m\n\nLocator: locator(':root')\nExpected pattern: \u001b[32m/\\/new-submission\\/spa\\/chip*/\u001b[39m\nReceived string:  \u001b[31m\"https://mako-dev.cms.gov/\"\u001b[39m\nCall log:\n  \u001b[2m- expect.toHaveURL with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for locator(':root')\u001b[22m\n\u001b[2m  -   locator resolved to <html lang=\"en\" class=\"h-full\">…</html>\u001b[22m\n\u001b[2m  -   unexpected value \"https://mako-dev.cms.gov/\"\u001b[22m\n\u001b[2m  -   locator resolved to <html lang=\"en\" class=\"h-full\">…</html>\u001b[22m\n\u001b[2m  -   unexpected value \"https://mako-dev.cms.gov/\"\u001b[22m\n\u001b[2m  -   locator resolved to <html lang=\"en\" class=\"h-full\">…</html>\u001b[22m\n\u001b[2m  -   unexpected value \"https://mako-dev.cms.gov/\"\u001b[22m\n\u001b[2m  -   locator resolved to <html lang=\"en\" class=\"h-full\">…</html>\u001b[22m\n\u001b[2m  -   unexpected value \"https://mako-dev.cms.gov/\"\u001b[22m\n\u001b[2m  -   locator resolved to <html lang=\"en\" class=\"h-full\">…</html>\u001b[22m\n\u001b[2m  -   unexpected value \"https://mako-dev.cms.gov/\"\u001b[22m\n\u001b[2m  -   locator resolved to <html lang=\"en\" class=\"h-full\">…</html>\u001b[22m\n\u001b[2m  -   unexpected value \"https://mako-dev.cms.gov/\"\u001b[22m\n\u001b[2m  -   locator resolved to <html lang=\"en\" class=\"h-full\">…</html>\u001b[22m\n\u001b[2m  -   unexpected value \"https://mako-dev.cms.gov/\"\u001b[22m\n\u001b[2m  -   locator resolved to <html lang=\"en\" class=\"h-full\">…</html>\u001b[22m\n\u001b[2m  -   unexpected value \"https://mako-dev.cms.gov/\"\u001b[22m\n\u001b[2m  -   locator resolved to <html lang=\"en\" class=\"h-full\">…</html>\u001b[22m\n\u001b[2m  -   unexpected value \"https://mako-dev.cms.gov/\"\u001b[22m\n\n    at /home/runner/work/macpro-mako/macpro-mako/test/e2e/e2e/non-func/a11y.spec.ts:35:30",
@@ -810,7 +810,7 @@
                           "stdout": [],
                           "stderr": [],
                           "retry": 0,
-                          "startTime": "2025-08-07T17:01:57.174Z",
+                          "startTime": "2025-08-14T14:54:11.208Z",
                           "attachments": [
                             {
                               "name": "video",
@@ -853,7 +853,7 @@
                         {
                           "workerIndex": 7,
                           "status": "failed",
-                          "duration": 8507,
+                          "duration": 8467,
                           "error": {
                             "message": "Error: \u001b[31mTimed out 5000ms waiting for \u001b[39m\u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoHaveURL\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m)\u001b[22m\n\nLocator: locator(':root')\nExpected pattern: \u001b[32m/\\/new-submission\\/waiver*/\u001b[39m\nReceived string:  \u001b[31m\"https://mako-dev.cms.gov/\"\u001b[39m\nCall log:\n  \u001b[2m- expect.toHaveURL with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for locator(':root')\u001b[22m\n\u001b[2m  -   locator resolved to <html lang=\"en\" class=\"h-full\">…</html>\u001b[22m\n\u001b[2m  -   unexpected value \"https://mako-dev.cms.gov/\"\u001b[22m\n\u001b[2m  -   locator resolved to <html lang=\"en\" class=\"h-full\">…</html>\u001b[22m\n\u001b[2m  -   unexpected value \"https://mako-dev.cms.gov/\"\u001b[22m\n\u001b[2m  -   locator resolved to <html lang=\"en\" class=\"h-full\">…</html>\u001b[22m\n\u001b[2m  -   unexpected value \"https://mako-dev.cms.gov/\"\u001b[22m\n\u001b[2m  -   locator resolved to <html lang=\"en\" class=\"h-full\">…</html>\u001b[22m\n\u001b[2m  -   unexpected value \"https://mako-dev.cms.gov/\"\u001b[22m\n\u001b[2m  -   locator resolved to <html lang=\"en\" class=\"h-full\">…</html>\u001b[22m\n\u001b[2m  -   unexpected value \"https://mako-dev.cms.gov/\"\u001b[22m\n\u001b[2m  -   locator resolved to <html lang=\"en\" class=\"h-full\">…</html>\u001b[22m\n\u001b[2m  -   unexpected value \"https://mako-dev.cms.gov/\"\u001b[22m\n\u001b[2m  -   locator resolved to <html lang=\"en\" class=\"h-full\">…</html>\u001b[22m\n\u001b[2m  -   unexpected value \"https://mako-dev.cms.gov/\"\u001b[22m\n\u001b[2m  -   locator resolved to <html lang=\"en\" class=\"h-full\">…</html>\u001b[22m\n\u001b[2m  -   unexpected value \"https://mako-dev.cms.gov/\"\u001b[22m\n\u001b[2m  -   locator resolved to <html lang=\"en\" class=\"h-full\">…</html>\u001b[22m\n\u001b[2m  -   unexpected value \"https://mako-dev.cms.gov/\"\u001b[22m\n",
                             "stack": "Error: \u001b[31mTimed out 5000ms waiting for \u001b[39m\u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoHaveURL\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m)\u001b[22m\n\nLocator: locator(':root')\nExpected pattern: \u001b[32m/\\/new-submission\\/waiver*/\u001b[39m\nReceived string:  \u001b[31m\"https://mako-dev.cms.gov/\"\u001b[39m\nCall log:\n  \u001b[2m- expect.toHaveURL with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for locator(':root')\u001b[22m\n\u001b[2m  -   locator resolved to <html lang=\"en\" class=\"h-full\">…</html>\u001b[22m\n\u001b[2m  -   unexpected value \"https://mako-dev.cms.gov/\"\u001b[22m\n\u001b[2m  -   locator resolved to <html lang=\"en\" class=\"h-full\">…</html>\u001b[22m\n\u001b[2m  -   unexpected value \"https://mako-dev.cms.gov/\"\u001b[22m\n\u001b[2m  -   locator resolved to <html lang=\"en\" class=\"h-full\">…</html>\u001b[22m\n\u001b[2m  -   unexpected value \"https://mako-dev.cms.gov/\"\u001b[22m\n\u001b[2m  -   locator resolved to <html lang=\"en\" class=\"h-full\">…</html>\u001b[22m\n\u001b[2m  -   unexpected value \"https://mako-dev.cms.gov/\"\u001b[22m\n\u001b[2m  -   locator resolved to <html lang=\"en\" class=\"h-full\">…</html>\u001b[22m\n\u001b[2m  -   unexpected value \"https://mako-dev.cms.gov/\"\u001b[22m\n\u001b[2m  -   locator resolved to <html lang=\"en\" class=\"h-full\">…</html>\u001b[22m\n\u001b[2m  -   unexpected value \"https://mako-dev.cms.gov/\"\u001b[22m\n\u001b[2m  -   locator resolved to <html lang=\"en\" class=\"h-full\">…</html>\u001b[22m\n\u001b[2m  -   unexpected value \"https://mako-dev.cms.gov/\"\u001b[22m\n\u001b[2m  -   locator resolved to <html lang=\"en\" class=\"h-full\">…</html>\u001b[22m\n\u001b[2m  -   unexpected value \"https://mako-dev.cms.gov/\"\u001b[22m\n\u001b[2m  -   locator resolved to <html lang=\"en\" class=\"h-full\">…</html>\u001b[22m\n\u001b[2m  -   unexpected value \"https://mako-dev.cms.gov/\"\u001b[22m\n\n    at /home/runner/work/macpro-mako/macpro-mako/test/e2e/e2e/non-func/a11y.spec.ts:35:30",
@@ -877,7 +877,7 @@
                           "stdout": [],
                           "stderr": [],
                           "retry": 0,
-                          "startTime": "2025-08-07T17:02:07.465Z",
+                          "startTime": "2025-08-14T14:54:21.633Z",
                           "attachments": [
                             {
                               "name": "video",
@@ -920,7 +920,7 @@
                         {
                           "workerIndex": 8,
                           "status": "failed",
-                          "duration": 8519,
+                          "duration": 8479,
                           "error": {
                             "message": "Error: \u001b[31mTimed out 5000ms waiting for \u001b[39m\u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoHaveURL\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m)\u001b[22m\n\nLocator: locator(':root')\nExpected pattern: \u001b[32m/\\/new-submission\\/waiver\\/b*/\u001b[39m\nReceived string:  \u001b[31m\"https://mako-dev.cms.gov/\"\u001b[39m\nCall log:\n  \u001b[2m- expect.toHaveURL with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for locator(':root')\u001b[22m\n\u001b[2m  -   locator resolved to <html lang=\"en\" class=\"h-full\">…</html>\u001b[22m\n\u001b[2m  -   unexpected value \"https://mako-dev.cms.gov/\"\u001b[22m\n\u001b[2m  -   locator resolved to <html lang=\"en\" class=\"h-full\">…</html>\u001b[22m\n\u001b[2m  -   unexpected value \"https://mako-dev.cms.gov/\"\u001b[22m\n\u001b[2m  -   locator resolved to <html lang=\"en\" class=\"h-full\">…</html>\u001b[22m\n\u001b[2m  -   unexpected value \"https://mako-dev.cms.gov/\"\u001b[22m\n\u001b[2m  -   locator resolved to <html lang=\"en\" class=\"h-full\">…</html>\u001b[22m\n\u001b[2m  -   unexpected value \"https://mako-dev.cms.gov/\"\u001b[22m\n\u001b[2m  -   locator resolved to <html lang=\"en\" class=\"h-full\">…</html>\u001b[22m\n\u001b[2m  -   unexpected value \"https://mako-dev.cms.gov/\"\u001b[22m\n\u001b[2m  -   locator resolved to <html lang=\"en\" class=\"h-full\">…</html>\u001b[22m\n\u001b[2m  -   unexpected value \"https://mako-dev.cms.gov/\"\u001b[22m\n\u001b[2m  -   locator resolved to <html lang=\"en\" class=\"h-full\">…</html>\u001b[22m\n\u001b[2m  -   unexpected value \"https://mako-dev.cms.gov/\"\u001b[22m\n\u001b[2m  -   locator resolved to <html lang=\"en\" class=\"h-full\">…</html>\u001b[22m\n\u001b[2m  -   unexpected value \"https://mako-dev.cms.gov/\"\u001b[22m\n\u001b[2m  -   locator resolved to <html lang=\"en\" class=\"h-full\">…</html>\u001b[22m\n\u001b[2m  -   unexpected value \"https://mako-dev.cms.gov/\"\u001b[22m\n",
                             "stack": "Error: \u001b[31mTimed out 5000ms waiting for \u001b[39m\u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoHaveURL\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m)\u001b[22m\n\nLocator: locator(':root')\nExpected pattern: \u001b[32m/\\/new-submission\\/waiver\\/b*/\u001b[39m\nReceived string:  \u001b[31m\"https://mako-dev.cms.gov/\"\u001b[39m\nCall log:\n  \u001b[2m- expect.toHaveURL with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for locator(':root')\u001b[22m\n\u001b[2m  -   locator resolved to <html lang=\"en\" class=\"h-full\">…</html>\u001b[22m\n\u001b[2m  -   unexpected value \"https://mako-dev.cms.gov/\"\u001b[22m\n\u001b[2m  -   locator resolved to <html lang=\"en\" class=\"h-full\">…</html>\u001b[22m\n\u001b[2m  -   unexpected value \"https://mako-dev.cms.gov/\"\u001b[22m\n\u001b[2m  -   locator resolved to <html lang=\"en\" class=\"h-full\">…</html>\u001b[22m\n\u001b[2m  -   unexpected value \"https://mako-dev.cms.gov/\"\u001b[22m\n\u001b[2m  -   locator resolved to <html lang=\"en\" class=\"h-full\">…</html>\u001b[22m\n\u001b[2m  -   unexpected value \"https://mako-dev.cms.gov/\"\u001b[22m\n\u001b[2m  -   locator resolved to <html lang=\"en\" class=\"h-full\">…</html>\u001b[22m\n\u001b[2m  -   unexpected value \"https://mako-dev.cms.gov/\"\u001b[22m\n\u001b[2m  -   locator resolved to <html lang=\"en\" class=\"h-full\">…</html>\u001b[22m\n\u001b[2m  -   unexpected value \"https://mako-dev.cms.gov/\"\u001b[22m\n\u001b[2m  -   locator resolved to <html lang=\"en\" class=\"h-full\">…</html>\u001b[22m\n\u001b[2m  -   unexpected value \"https://mako-dev.cms.gov/\"\u001b[22m\n\u001b[2m  -   locator resolved to <html lang=\"en\" class=\"h-full\">…</html>\u001b[22m\n\u001b[2m  -   unexpected value \"https://mako-dev.cms.gov/\"\u001b[22m\n\u001b[2m  -   locator resolved to <html lang=\"en\" class=\"h-full\">…</html>\u001b[22m\n\u001b[2m  -   unexpected value \"https://mako-dev.cms.gov/\"\u001b[22m\n\n    at /home/runner/work/macpro-mako/macpro-mako/test/e2e/e2e/non-func/a11y.spec.ts:35:30",
@@ -944,7 +944,7 @@
                           "stdout": [],
                           "stderr": [],
                           "retry": 0,
-                          "startTime": "2025-08-07T17:02:17.781Z",
+                          "startTime": "2025-08-14T14:54:31.943Z",
                           "attachments": [
                             {
                               "name": "video",
@@ -987,7 +987,7 @@
                         {
                           "workerIndex": 9,
                           "status": "failed",
-                          "duration": 8443,
+                          "duration": 8440,
                           "error": {
                             "message": "Error: \u001b[31mTimed out 5000ms waiting for \u001b[39m\u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoHaveURL\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m)\u001b[22m\n\nLocator: locator(':root')\nExpected pattern: \u001b[32m/\\/new-submission\\/waiver\\/b\\/b4*/\u001b[39m\nReceived string:  \u001b[31m\"https://mako-dev.cms.gov/\"\u001b[39m\nCall log:\n  \u001b[2m- expect.toHaveURL with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for locator(':root')\u001b[22m\n\u001b[2m  -   locator resolved to <html lang=\"en\" class=\"h-full\">…</html>\u001b[22m\n\u001b[2m  -   unexpected value \"https://mako-dev.cms.gov/\"\u001b[22m\n\u001b[2m  -   locator resolved to <html lang=\"en\" class=\"h-full\">…</html>\u001b[22m\n\u001b[2m  -   unexpected value \"https://mako-dev.cms.gov/\"\u001b[22m\n\u001b[2m  -   locator resolved to <html lang=\"en\" class=\"h-full\">…</html>\u001b[22m\n\u001b[2m  -   unexpected value \"https://mako-dev.cms.gov/\"\u001b[22m\n\u001b[2m  -   locator resolved to <html lang=\"en\" class=\"h-full\">…</html>\u001b[22m\n\u001b[2m  -   unexpected value \"https://mako-dev.cms.gov/\"\u001b[22m\n\u001b[2m  -   locator resolved to <html lang=\"en\" class=\"h-full\">…</html>\u001b[22m\n\u001b[2m  -   unexpected value \"https://mako-dev.cms.gov/\"\u001b[22m\n\u001b[2m  -   locator resolved to <html lang=\"en\" class=\"h-full\">…</html>\u001b[22m\n\u001b[2m  -   unexpected value \"https://mako-dev.cms.gov/\"\u001b[22m\n\u001b[2m  -   locator resolved to <html lang=\"en\" class=\"h-full\">…</html>\u001b[22m\n\u001b[2m  -   unexpected value \"https://mako-dev.cms.gov/\"\u001b[22m\n\u001b[2m  -   locator resolved to <html lang=\"en\" class=\"h-full\">…</html>\u001b[22m\n\u001b[2m  -   unexpected value \"https://mako-dev.cms.gov/\"\u001b[22m\n\u001b[2m  -   locator resolved to <html lang=\"en\" class=\"h-full\">…</html>\u001b[22m\n\u001b[2m  -   unexpected value \"https://mako-dev.cms.gov/\"\u001b[22m\n",
                             "stack": "Error: \u001b[31mTimed out 5000ms waiting for \u001b[39m\u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoHaveURL\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m)\u001b[22m\n\nLocator: locator(':root')\nExpected pattern: \u001b[32m/\\/new-submission\\/waiver\\/b\\/b4*/\u001b[39m\nReceived string:  \u001b[31m\"https://mako-dev.cms.gov/\"\u001b[39m\nCall log:\n  \u001b[2m- expect.toHaveURL with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for locator(':root')\u001b[22m\n\u001b[2m  -   locator resolved to <html lang=\"en\" class=\"h-full\">…</html>\u001b[22m\n\u001b[2m  -   unexpected value \"https://mako-dev.cms.gov/\"\u001b[22m\n\u001b[2m  -   locator resolved to <html lang=\"en\" class=\"h-full\">…</html>\u001b[22m\n\u001b[2m  -   unexpected value \"https://mako-dev.cms.gov/\"\u001b[22m\n\u001b[2m  -   locator resolved to <html lang=\"en\" class=\"h-full\">…</html>\u001b[22m\n\u001b[2m  -   unexpected value \"https://mako-dev.cms.gov/\"\u001b[22m\n\u001b[2m  -   locator resolved to <html lang=\"en\" class=\"h-full\">…</html>\u001b[22m\n\u001b[2m  -   unexpected value \"https://mako-dev.cms.gov/\"\u001b[22m\n\u001b[2m  -   locator resolved to <html lang=\"en\" class=\"h-full\">…</html>\u001b[22m\n\u001b[2m  -   unexpected value \"https://mako-dev.cms.gov/\"\u001b[22m\n\u001b[2m  -   locator resolved to <html lang=\"en\" class=\"h-full\">…</html>\u001b[22m\n\u001b[2m  -   unexpected value \"https://mako-dev.cms.gov/\"\u001b[22m\n\u001b[2m  -   locator resolved to <html lang=\"en\" class=\"h-full\">…</html>\u001b[22m\n\u001b[2m  -   unexpected value \"https://mako-dev.cms.gov/\"\u001b[22m\n\u001b[2m  -   locator resolved to <html lang=\"en\" class=\"h-full\">…</html>\u001b[22m\n\u001b[2m  -   unexpected value \"https://mako-dev.cms.gov/\"\u001b[22m\n\u001b[2m  -   locator resolved to <html lang=\"en\" class=\"h-full\">…</html>\u001b[22m\n\u001b[2m  -   unexpected value \"https://mako-dev.cms.gov/\"\u001b[22m\n\n    at /home/runner/work/macpro-mako/macpro-mako/test/e2e/e2e/non-func/a11y.spec.ts:35:30",
@@ -1011,7 +1011,7 @@
                           "stdout": [],
                           "stderr": [],
                           "retry": 0,
-                          "startTime": "2025-08-07T17:02:28.174Z",
+                          "startTime": "2025-08-14T14:54:42.250Z",
                           "attachments": [
                             {
                               "name": "video",
@@ -1054,7 +1054,7 @@
                         {
                           "workerIndex": 10,
                           "status": "failed",
-                          "duration": 8576,
+                          "duration": 8693,
                           "error": {
                             "message": "Error: \u001b[31mTimed out 5000ms waiting for \u001b[39m\u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoHaveURL\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m)\u001b[22m\n\nLocator: locator(':root')\nExpected pattern: \u001b[32m/\\/new-submission\\/waiver\\/b\\/capitated*/\u001b[39m\nReceived string:  \u001b[31m\"https://mako-dev.cms.gov/\"\u001b[39m\nCall log:\n  \u001b[2m- expect.toHaveURL with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for locator(':root')\u001b[22m\n\u001b[2m  -   locator resolved to <html lang=\"en\" class=\"h-full\">…</html>\u001b[22m\n\u001b[2m  -   unexpected value \"https://mako-dev.cms.gov/\"\u001b[22m\n\u001b[2m  -   locator resolved to <html lang=\"en\" class=\"h-full\">…</html>\u001b[22m\n\u001b[2m  -   unexpected value \"https://mako-dev.cms.gov/\"\u001b[22m\n\u001b[2m  -   locator resolved to <html lang=\"en\" class=\"h-full\">…</html>\u001b[22m\n\u001b[2m  -   unexpected value \"https://mako-dev.cms.gov/\"\u001b[22m\n\u001b[2m  -   locator resolved to <html lang=\"en\" class=\"h-full\">…</html>\u001b[22m\n\u001b[2m  -   unexpected value \"https://mako-dev.cms.gov/\"\u001b[22m\n\u001b[2m  -   locator resolved to <html lang=\"en\" class=\"h-full\">…</html>\u001b[22m\n\u001b[2m  -   unexpected value \"https://mako-dev.cms.gov/\"\u001b[22m\n\u001b[2m  -   locator resolved to <html lang=\"en\" class=\"h-full\">…</html>\u001b[22m\n\u001b[2m  -   unexpected value \"https://mako-dev.cms.gov/\"\u001b[22m\n\u001b[2m  -   locator resolved to <html lang=\"en\" class=\"h-full\">…</html>\u001b[22m\n\u001b[2m  -   unexpected value \"https://mako-dev.cms.gov/\"\u001b[22m\n\u001b[2m  -   locator resolved to <html lang=\"en\" class=\"h-full\">…</html>\u001b[22m\n\u001b[2m  -   unexpected value \"https://mako-dev.cms.gov/\"\u001b[22m\n\u001b[2m  -   locator resolved to <html lang=\"en\" class=\"h-full\">…</html>\u001b[22m\n\u001b[2m  -   unexpected value \"https://mako-dev.cms.gov/\"\u001b[22m\n",
                             "stack": "Error: \u001b[31mTimed out 5000ms waiting for \u001b[39m\u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoHaveURL\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m)\u001b[22m\n\nLocator: locator(':root')\nExpected pattern: \u001b[32m/\\/new-submission\\/waiver\\/b\\/capitated*/\u001b[39m\nReceived string:  \u001b[31m\"https://mako-dev.cms.gov/\"\u001b[39m\nCall log:\n  \u001b[2m- expect.toHaveURL with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for locator(':root')\u001b[22m\n\u001b[2m  -   locator resolved to <html lang=\"en\" class=\"h-full\">…</html>\u001b[22m\n\u001b[2m  -   unexpected value \"https://mako-dev.cms.gov/\"\u001b[22m\n\u001b[2m  -   locator resolved to <html lang=\"en\" class=\"h-full\">…</html>\u001b[22m\n\u001b[2m  -   unexpected value \"https://mako-dev.cms.gov/\"\u001b[22m\n\u001b[2m  -   locator resolved to <html lang=\"en\" class=\"h-full\">…</html>\u001b[22m\n\u001b[2m  -   unexpected value \"https://mako-dev.cms.gov/\"\u001b[22m\n\u001b[2m  -   locator resolved to <html lang=\"en\" class=\"h-full\">…</html>\u001b[22m\n\u001b[2m  -   unexpected value \"https://mako-dev.cms.gov/\"\u001b[22m\n\u001b[2m  -   locator resolved to <html lang=\"en\" class=\"h-full\">…</html>\u001b[22m\n\u001b[2m  -   unexpected value \"https://mako-dev.cms.gov/\"\u001b[22m\n\u001b[2m  -   locator resolved to <html lang=\"en\" class=\"h-full\">…</html>\u001b[22m\n\u001b[2m  -   unexpected value \"https://mako-dev.cms.gov/\"\u001b[22m\n\u001b[2m  -   locator resolved to <html lang=\"en\" class=\"h-full\">…</html>\u001b[22m\n\u001b[2m  -   unexpected value \"https://mako-dev.cms.gov/\"\u001b[22m\n\u001b[2m  -   locator resolved to <html lang=\"en\" class=\"h-full\">…</html>\u001b[22m\n\u001b[2m  -   unexpected value \"https://mako-dev.cms.gov/\"\u001b[22m\n\u001b[2m  -   locator resolved to <html lang=\"en\" class=\"h-full\">…</html>\u001b[22m\n\u001b[2m  -   unexpected value \"https://mako-dev.cms.gov/\"\u001b[22m\n\n    at /home/runner/work/macpro-mako/macpro-mako/test/e2e/e2e/non-func/a11y.spec.ts:35:30",
@@ -1078,7 +1078,7 @@
                           "stdout": [],
                           "stderr": [],
                           "retry": 0,
-                          "startTime": "2025-08-07T17:02:38.514Z",
+                          "startTime": "2025-08-14T14:54:52.552Z",
                           "attachments": [
                             {
                               "name": "video",
@@ -1121,7 +1121,7 @@
                         {
                           "workerIndex": 11,
                           "status": "passed",
-                          "duration": 4032,
+                          "duration": 4072,
                           "errors": [],
                           "stdout": [
                             {
@@ -1130,7 +1130,7 @@
                           ],
                           "stderr": [],
                           "retry": 0,
-                          "startTime": "2025-08-07T17:02:48.974Z",
+                          "startTime": "2025-08-14T14:55:03.095Z",
                           "attachments": []
                         }
                       ],
@@ -1157,7 +1157,7 @@
                         {
                           "workerIndex": 11,
                           "status": "passed",
-                          "duration": 3887,
+                          "duration": 3923,
                           "errors": [],
                           "stdout": [
                             {
@@ -1166,7 +1166,7 @@
                           ],
                           "stderr": [],
                           "retry": 0,
-                          "startTime": "2025-08-07T17:02:53.106Z",
+                          "startTime": "2025-08-14T14:55:07.266Z",
                           "attachments": []
                         }
                       ],
@@ -1193,7 +1193,7 @@
                         {
                           "workerIndex": 11,
                           "status": "passed",
-                          "duration": 3913,
+                          "duration": 3925,
                           "errors": [],
                           "stdout": [
                             {
@@ -1202,7 +1202,7 @@
                           ],
                           "stderr": [],
                           "retry": 0,
-                          "startTime": "2025-08-07T17:02:57.000Z",
+                          "startTime": "2025-08-14T14:55:11.195Z",
                           "attachments": []
                         }
                       ],
@@ -1229,7 +1229,7 @@
                         {
                           "workerIndex": 11,
                           "status": "failed",
-                          "duration": 8414,
+                          "duration": 8329,
                           "error": {
                             "message": "Error: \u001b[31mTimed out 5000ms waiting for \u001b[39m\u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoHaveURL\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m)\u001b[22m\n\nLocator: locator(':root')\nExpected pattern: \u001b[32m/\\/new-submission\\/spa\\/chip\\/create\\/chip-details*/\u001b[39m\nReceived string:  \u001b[31m\"https://mako-dev.cms.gov/\"\u001b[39m\nCall log:\n  \u001b[2m- expect.toHaveURL with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for locator(':root')\u001b[22m\n\u001b[2m  -   locator resolved to <html lang=\"en\" class=\"h-full\">…</html>\u001b[22m\n\u001b[2m  -   unexpected value \"https://mako-dev.cms.gov/\"\u001b[22m\n\u001b[2m  -   locator resolved to <html lang=\"en\" class=\"h-full\">…</html>\u001b[22m\n\u001b[2m  -   unexpected value \"https://mako-dev.cms.gov/\"\u001b[22m\n\u001b[2m  -   locator resolved to <html lang=\"en\" class=\"h-full\">…</html>\u001b[22m\n\u001b[2m  -   unexpected value \"https://mako-dev.cms.gov/\"\u001b[22m\n\u001b[2m  -   locator resolved to <html lang=\"en\" class=\"h-full\">…</html>\u001b[22m\n\u001b[2m  -   unexpected value \"https://mako-dev.cms.gov/\"\u001b[22m\n\u001b[2m  -   locator resolved to <html lang=\"en\" class=\"h-full\">…</html>\u001b[22m\n\u001b[2m  -   unexpected value \"https://mako-dev.cms.gov/\"\u001b[22m\n\u001b[2m  -   locator resolved to <html lang=\"en\" class=\"h-full\">…</html>\u001b[22m\n\u001b[2m  -   unexpected value \"https://mako-dev.cms.gov/\"\u001b[22m\n\u001b[2m  -   locator resolved to <html lang=\"en\" class=\"h-full\">…</html>\u001b[22m\n\u001b[2m  -   unexpected value \"https://mako-dev.cms.gov/\"\u001b[22m\n\u001b[2m  -   locator resolved to <html lang=\"en\" class=\"h-full\">…</html>\u001b[22m\n\u001b[2m  -   unexpected value \"https://mako-dev.cms.gov/\"\u001b[22m\n\u001b[2m  -   locator resolved to <html lang=\"en\" class=\"h-full\">…</html>\u001b[22m\n\u001b[2m  -   unexpected value \"https://mako-dev.cms.gov/\"\u001b[22m\n",
                             "stack": "Error: \u001b[31mTimed out 5000ms waiting for \u001b[39m\u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoHaveURL\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m)\u001b[22m\n\nLocator: locator(':root')\nExpected pattern: \u001b[32m/\\/new-submission\\/spa\\/chip\\/create\\/chip-details*/\u001b[39m\nReceived string:  \u001b[31m\"https://mako-dev.cms.gov/\"\u001b[39m\nCall log:\n  \u001b[2m- expect.toHaveURL with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for locator(':root')\u001b[22m\n\u001b[2m  -   locator resolved to <html lang=\"en\" class=\"h-full\">…</html>\u001b[22m\n\u001b[2m  -   unexpected value \"https://mako-dev.cms.gov/\"\u001b[22m\n\u001b[2m  -   locator resolved to <html lang=\"en\" class=\"h-full\">…</html>\u001b[22m\n\u001b[2m  -   unexpected value \"https://mako-dev.cms.gov/\"\u001b[22m\n\u001b[2m  -   locator resolved to <html lang=\"en\" class=\"h-full\">…</html>\u001b[22m\n\u001b[2m  -   unexpected value \"https://mako-dev.cms.gov/\"\u001b[22m\n\u001b[2m  -   locator resolved to <html lang=\"en\" class=\"h-full\">…</html>\u001b[22m\n\u001b[2m  -   unexpected value \"https://mako-dev.cms.gov/\"\u001b[22m\n\u001b[2m  -   locator resolved to <html lang=\"en\" class=\"h-full\">…</html>\u001b[22m\n\u001b[2m  -   unexpected value \"https://mako-dev.cms.gov/\"\u001b[22m\n\u001b[2m  -   locator resolved to <html lang=\"en\" class=\"h-full\">…</html>\u001b[22m\n\u001b[2m  -   unexpected value \"https://mako-dev.cms.gov/\"\u001b[22m\n\u001b[2m  -   locator resolved to <html lang=\"en\" class=\"h-full\">…</html>\u001b[22m\n\u001b[2m  -   unexpected value \"https://mako-dev.cms.gov/\"\u001b[22m\n\u001b[2m  -   locator resolved to <html lang=\"en\" class=\"h-full\">…</html>\u001b[22m\n\u001b[2m  -   unexpected value \"https://mako-dev.cms.gov/\"\u001b[22m\n\u001b[2m  -   locator resolved to <html lang=\"en\" class=\"h-full\">…</html>\u001b[22m\n\u001b[2m  -   unexpected value \"https://mako-dev.cms.gov/\"\u001b[22m\n\n    at /home/runner/work/macpro-mako/macpro-mako/test/e2e/e2e/non-func/a11y.spec.ts:35:30",
@@ -1253,7 +1253,7 @@
                           "stdout": [],
                           "stderr": [],
                           "retry": 0,
-                          "startTime": "2025-08-07T17:03:00.920Z",
+                          "startTime": "2025-08-14T14:55:15.126Z",
                           "attachments": [
                             {
                               "name": "video",
@@ -1296,7 +1296,7 @@
                         {
                           "workerIndex": 12,
                           "status": "failed",
-                          "duration": 8489,
+                          "duration": 8499,
                           "error": {
                             "message": "Error: \u001b[31mTimed out 5000ms waiting for \u001b[39m\u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoHaveURL\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m)\u001b[22m\n\nLocator: locator(':root')\nExpected pattern: \u001b[32m/\\/new-submission\\/waiver\\/b\\/capitated\\/amendment\\/create*/\u001b[39m\nReceived string:  \u001b[31m\"https://mako-dev.cms.gov/\"\u001b[39m\nCall log:\n  \u001b[2m- expect.toHaveURL with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for locator(':root')\u001b[22m\n\u001b[2m  -   locator resolved to <html lang=\"en\" class=\"h-full\">…</html>\u001b[22m\n\u001b[2m  -   unexpected value \"https://mako-dev.cms.gov/\"\u001b[22m\n\u001b[2m  -   locator resolved to <html lang=\"en\" class=\"h-full\">…</html>\u001b[22m\n\u001b[2m  -   unexpected value \"https://mako-dev.cms.gov/\"\u001b[22m\n\u001b[2m  -   locator resolved to <html lang=\"en\" class=\"h-full\">…</html>\u001b[22m\n\u001b[2m  -   unexpected value \"https://mako-dev.cms.gov/\"\u001b[22m\n\u001b[2m  -   locator resolved to <html lang=\"en\" class=\"h-full\">…</html>\u001b[22m\n\u001b[2m  -   unexpected value \"https://mako-dev.cms.gov/\"\u001b[22m\n\u001b[2m  -   locator resolved to <html lang=\"en\" class=\"h-full\">…</html>\u001b[22m\n\u001b[2m  -   unexpected value \"https://mako-dev.cms.gov/\"\u001b[22m\n\u001b[2m  -   locator resolved to <html lang=\"en\" class=\"h-full\">…</html>\u001b[22m\n\u001b[2m  -   unexpected value \"https://mako-dev.cms.gov/\"\u001b[22m\n\u001b[2m  -   locator resolved to <html lang=\"en\" class=\"h-full\">…</html>\u001b[22m\n\u001b[2m  -   unexpected value \"https://mako-dev.cms.gov/\"\u001b[22m\n\u001b[2m  -   locator resolved to <html lang=\"en\" class=\"h-full\">…</html>\u001b[22m\n\u001b[2m  -   unexpected value \"https://mako-dev.cms.gov/\"\u001b[22m\n\u001b[2m  -   locator resolved to <html lang=\"en\" class=\"h-full\">…</html>\u001b[22m\n\u001b[2m  -   unexpected value \"https://mako-dev.cms.gov/\"\u001b[22m\n",
                             "stack": "Error: \u001b[31mTimed out 5000ms waiting for \u001b[39m\u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoHaveURL\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m)\u001b[22m\n\nLocator: locator(':root')\nExpected pattern: \u001b[32m/\\/new-submission\\/waiver\\/b\\/capitated\\/amendment\\/create*/\u001b[39m\nReceived string:  \u001b[31m\"https://mako-dev.cms.gov/\"\u001b[39m\nCall log:\n  \u001b[2m- expect.toHaveURL with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for locator(':root')\u001b[22m\n\u001b[2m  -   locator resolved to <html lang=\"en\" class=\"h-full\">…</html>\u001b[22m\n\u001b[2m  -   unexpected value \"https://mako-dev.cms.gov/\"\u001b[22m\n\u001b[2m  -   locator resolved to <html lang=\"en\" class=\"h-full\">…</html>\u001b[22m\n\u001b[2m  -   unexpected value \"https://mako-dev.cms.gov/\"\u001b[22m\n\u001b[2m  -   locator resolved to <html lang=\"en\" class=\"h-full\">…</html>\u001b[22m\n\u001b[2m  -   unexpected value \"https://mako-dev.cms.gov/\"\u001b[22m\n\u001b[2m  -   locator resolved to <html lang=\"en\" class=\"h-full\">…</html>\u001b[22m\n\u001b[2m  -   unexpected value \"https://mako-dev.cms.gov/\"\u001b[22m\n\u001b[2m  -   locator resolved to <html lang=\"en\" class=\"h-full\">…</html>\u001b[22m\n\u001b[2m  -   unexpected value \"https://mako-dev.cms.gov/\"\u001b[22m\n\u001b[2m  -   locator resolved to <html lang=\"en\" class=\"h-full\">…</html>\u001b[22m\n\u001b[2m  -   unexpected value \"https://mako-dev.cms.gov/\"\u001b[22m\n\u001b[2m  -   locator resolved to <html lang=\"en\" class=\"h-full\">…</html>\u001b[22m\n\u001b[2m  -   unexpected value \"https://mako-dev.cms.gov/\"\u001b[22m\n\u001b[2m  -   locator resolved to <html lang=\"en\" class=\"h-full\">…</html>\u001b[22m\n\u001b[2m  -   unexpected value \"https://mako-dev.cms.gov/\"\u001b[22m\n\u001b[2m  -   locator resolved to <html lang=\"en\" class=\"h-full\">…</html>\u001b[22m\n\u001b[2m  -   unexpected value \"https://mako-dev.cms.gov/\"\u001b[22m\n\n    at /home/runner/work/macpro-mako/macpro-mako/test/e2e/e2e/non-func/a11y.spec.ts:35:30",
@@ -1320,7 +1320,7 @@
                           "stdout": [],
                           "stderr": [],
                           "retry": 0,
-                          "startTime": "2025-08-07T17:03:11.138Z",
+                          "startTime": "2025-08-14T14:55:25.164Z",
                           "attachments": [
                             {
                               "name": "video",
@@ -1363,7 +1363,7 @@
                         {
                           "workerIndex": 13,
                           "status": "failed",
-                          "duration": 8503,
+                          "duration": 8473,
                           "error": {
                             "message": "Error: \u001b[31mTimed out 5000ms waiting for \u001b[39m\u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoHaveURL\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m)\u001b[22m\n\nLocator: locator(':root')\nExpected pattern: \u001b[32m/\\/new-submission\\/waiver\\/b\\/capitated\\/renewal\\/create*/\u001b[39m\nReceived string:  \u001b[31m\"https://mako-dev.cms.gov/\"\u001b[39m\nCall log:\n  \u001b[2m- expect.toHaveURL with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for locator(':root')\u001b[22m\n\u001b[2m  -   locator resolved to <html lang=\"en\" class=\"h-full\">…</html>\u001b[22m\n\u001b[2m  -   unexpected value \"https://mako-dev.cms.gov/\"\u001b[22m\n\u001b[2m  -   locator resolved to <html lang=\"en\" class=\"h-full\">…</html>\u001b[22m\n\u001b[2m  -   unexpected value \"https://mako-dev.cms.gov/\"\u001b[22m\n\u001b[2m  -   locator resolved to <html lang=\"en\" class=\"h-full\">…</html>\u001b[22m\n\u001b[2m  -   unexpected value \"https://mako-dev.cms.gov/\"\u001b[22m\n\u001b[2m  -   locator resolved to <html lang=\"en\" class=\"h-full\">…</html>\u001b[22m\n\u001b[2m  -   unexpected value \"https://mako-dev.cms.gov/\"\u001b[22m\n\u001b[2m  -   locator resolved to <html lang=\"en\" class=\"h-full\">…</html>\u001b[22m\n\u001b[2m  -   unexpected value \"https://mako-dev.cms.gov/\"\u001b[22m\n\u001b[2m  -   locator resolved to <html lang=\"en\" class=\"h-full\">…</html>\u001b[22m\n\u001b[2m  -   unexpected value \"https://mako-dev.cms.gov/\"\u001b[22m\n\u001b[2m  -   locator resolved to <html lang=\"en\" class=\"h-full\">…</html>\u001b[22m\n\u001b[2m  -   unexpected value \"https://mako-dev.cms.gov/\"\u001b[22m\n\u001b[2m  -   locator resolved to <html lang=\"en\" class=\"h-full\">…</html>\u001b[22m\n\u001b[2m  -   unexpected value \"https://mako-dev.cms.gov/\"\u001b[22m\n\u001b[2m  -   locator resolved to <html lang=\"en\" class=\"h-full\">…</html>\u001b[22m\n\u001b[2m  -   unexpected value \"https://mako-dev.cms.gov/\"\u001b[22m\n",
                             "stack": "Error: \u001b[31mTimed out 5000ms waiting for \u001b[39m\u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoHaveURL\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m)\u001b[22m\n\nLocator: locator(':root')\nExpected pattern: \u001b[32m/\\/new-submission\\/waiver\\/b\\/capitated\\/renewal\\/create*/\u001b[39m\nReceived string:  \u001b[31m\"https://mako-dev.cms.gov/\"\u001b[39m\nCall log:\n  \u001b[2m- expect.toHaveURL with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for locator(':root')\u001b[22m\n\u001b[2m  -   locator resolved to <html lang=\"en\" class=\"h-full\">…</html>\u001b[22m\n\u001b[2m  -   unexpected value \"https://mako-dev.cms.gov/\"\u001b[22m\n\u001b[2m  -   locator resolved to <html lang=\"en\" class=\"h-full\">…</html>\u001b[22m\n\u001b[2m  -   unexpected value \"https://mako-dev.cms.gov/\"\u001b[22m\n\u001b[2m  -   locator resolved to <html lang=\"en\" class=\"h-full\">…</html>\u001b[22m\n\u001b[2m  -   unexpected value \"https://mako-dev.cms.gov/\"\u001b[22m\n\u001b[2m  -   locator resolved to <html lang=\"en\" class=\"h-full\">…</html>\u001b[22m\n\u001b[2m  -   unexpected value \"https://mako-dev.cms.gov/\"\u001b[22m\n\u001b[2m  -   locator resolved to <html lang=\"en\" class=\"h-full\">…</html>\u001b[22m\n\u001b[2m  -   unexpected value \"https://mako-dev.cms.gov/\"\u001b[22m\n\u001b[2m  -   locator resolved to <html lang=\"en\" class=\"h-full\">…</html>\u001b[22m\n\u001b[2m  -   unexpected value \"https://mako-dev.cms.gov/\"\u001b[22m\n\u001b[2m  -   locator resolved to <html lang=\"en\" class=\"h-full\">…</html>\u001b[22m\n\u001b[2m  -   unexpected value \"https://mako-dev.cms.gov/\"\u001b[22m\n\u001b[2m  -   locator resolved to <html lang=\"en\" class=\"h-full\">…</html>\u001b[22m\n\u001b[2m  -   unexpected value \"https://mako-dev.cms.gov/\"\u001b[22m\n\u001b[2m  -   locator resolved to <html lang=\"en\" class=\"h-full\">…</html>\u001b[22m\n\u001b[2m  -   unexpected value \"https://mako-dev.cms.gov/\"\u001b[22m\n\n    at /home/runner/work/macpro-mako/macpro-mako/test/e2e/e2e/non-func/a11y.spec.ts:35:30",
@@ -1387,7 +1387,7 @@
                           "stdout": [],
                           "stderr": [],
                           "retry": 0,
-                          "startTime": "2025-08-07T17:03:21.544Z",
+                          "startTime": "2025-08-14T14:55:35.504Z",
                           "attachments": [
                             {
                               "name": "video",
@@ -1430,7 +1430,7 @@
                         {
                           "workerIndex": 14,
                           "status": "failed",
-                          "duration": 8587,
+                          "duration": 8486,
                           "error": {
                             "message": "Error: \u001b[31mTimed out 5000ms waiting for \u001b[39m\u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoHaveURL\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m)\u001b[22m\n\nLocator: locator(':root')\nExpected pattern: \u001b[32m/\\/new-submission\\/waiver\\/b\\/capitated\\/initial\\/create*/\u001b[39m\nReceived string:  \u001b[31m\"https://mako-dev.cms.gov/\"\u001b[39m\nCall log:\n  \u001b[2m- expect.toHaveURL with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for locator(':root')\u001b[22m\n\u001b[2m  -   locator resolved to <html lang=\"en\" class=\"h-full\">…</html>\u001b[22m\n\u001b[2m  -   unexpected value \"https://mako-dev.cms.gov/\"\u001b[22m\n\u001b[2m  -   locator resolved to <html lang=\"en\" class=\"h-full\">…</html>\u001b[22m\n\u001b[2m  -   unexpected value \"https://mako-dev.cms.gov/\"\u001b[22m\n\u001b[2m  -   locator resolved to <html lang=\"en\" class=\"h-full\">…</html>\u001b[22m\n\u001b[2m  -   unexpected value \"https://mako-dev.cms.gov/\"\u001b[22m\n\u001b[2m  -   locator resolved to <html lang=\"en\" class=\"h-full\">…</html>\u001b[22m\n\u001b[2m  -   unexpected value \"https://mako-dev.cms.gov/\"\u001b[22m\n\u001b[2m  -   locator resolved to <html lang=\"en\" class=\"h-full\">…</html>\u001b[22m\n\u001b[2m  -   unexpected value \"https://mako-dev.cms.gov/\"\u001b[22m\n\u001b[2m  -   locator resolved to <html lang=\"en\" class=\"h-full\">…</html>\u001b[22m\n\u001b[2m  -   unexpected value \"https://mako-dev.cms.gov/\"\u001b[22m\n\u001b[2m  -   locator resolved to <html lang=\"en\" class=\"h-full\">…</html>\u001b[22m\n\u001b[2m  -   unexpected value \"https://mako-dev.cms.gov/\"\u001b[22m\n\u001b[2m  -   locator resolved to <html lang=\"en\" class=\"h-full\">…</html>\u001b[22m\n\u001b[2m  -   unexpected value \"https://mako-dev.cms.gov/\"\u001b[22m\n\u001b[2m  -   locator resolved to <html lang=\"en\" class=\"h-full\">…</html>\u001b[22m\n\u001b[2m  -   unexpected value \"https://mako-dev.cms.gov/\"\u001b[22m\n",
                             "stack": "Error: \u001b[31mTimed out 5000ms waiting for \u001b[39m\u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoHaveURL\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m)\u001b[22m\n\nLocator: locator(':root')\nExpected pattern: \u001b[32m/\\/new-submission\\/waiver\\/b\\/capitated\\/initial\\/create*/\u001b[39m\nReceived string:  \u001b[31m\"https://mako-dev.cms.gov/\"\u001b[39m\nCall log:\n  \u001b[2m- expect.toHaveURL with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for locator(':root')\u001b[22m\n\u001b[2m  -   locator resolved to <html lang=\"en\" class=\"h-full\">…</html>\u001b[22m\n\u001b[2m  -   unexpected value \"https://mako-dev.cms.gov/\"\u001b[22m\n\u001b[2m  -   locator resolved to <html lang=\"en\" class=\"h-full\">…</html>\u001b[22m\n\u001b[2m  -   unexpected value \"https://mako-dev.cms.gov/\"\u001b[22m\n\u001b[2m  -   locator resolved to <html lang=\"en\" class=\"h-full\">…</html>\u001b[22m\n\u001b[2m  -   unexpected value \"https://mako-dev.cms.gov/\"\u001b[22m\n\u001b[2m  -   locator resolved to <html lang=\"en\" class=\"h-full\">…</html>\u001b[22m\n\u001b[2m  -   unexpected value \"https://mako-dev.cms.gov/\"\u001b[22m\n\u001b[2m  -   locator resolved to <html lang=\"en\" class=\"h-full\">…</html>\u001b[22m\n\u001b[2m  -   unexpected value \"https://mako-dev.cms.gov/\"\u001b[22m\n\u001b[2m  -   locator resolved to <html lang=\"en\" class=\"h-full\">…</html>\u001b[22m\n\u001b[2m  -   unexpected value \"https://mako-dev.cms.gov/\"\u001b[22m\n\u001b[2m  -   locator resolved to <html lang=\"en\" class=\"h-full\">…</html>\u001b[22m\n\u001b[2m  -   unexpected value \"https://mako-dev.cms.gov/\"\u001b[22m\n\u001b[2m  -   locator resolved to <html lang=\"en\" class=\"h-full\">…</html>\u001b[22m\n\u001b[2m  -   unexpected value \"https://mako-dev.cms.gov/\"\u001b[22m\n\u001b[2m  -   locator resolved to <html lang=\"en\" class=\"h-full\">…</html>\u001b[22m\n\u001b[2m  -   unexpected value \"https://mako-dev.cms.gov/\"\u001b[22m\n\n    at /home/runner/work/macpro-mako/macpro-mako/test/e2e/e2e/non-func/a11y.spec.ts:35:30",
@@ -1454,7 +1454,7 @@
                           "stdout": [],
                           "stderr": [],
                           "retry": 0,
-                          "startTime": "2025-08-07T17:03:31.984Z",
+                          "startTime": "2025-08-14T14:55:45.855Z",
                           "attachments": [
                             {
                               "name": "video",
@@ -1521,7 +1521,7 @@
                           "stdout": [],
                           "stderr": [],
                           "retry": 0,
-                          "startTime": "2025-08-07T17:03:42.414Z",
+                          "startTime": "2025-08-14T14:55:56.157Z",
                           "attachments": [
                             {
                               "name": "video",
@@ -1564,7 +1564,7 @@
                         {
                           "workerIndex": 16,
                           "status": "failed",
-                          "duration": 8485,
+                          "duration": 8486,
                           "error": {
                             "message": "Error: \u001b[31mTimed out 5000ms waiting for \u001b[39m\u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoHaveURL\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m)\u001b[22m\n\nLocator: locator(':root')\nExpected pattern: \u001b[32m/\\/new-submission\\/waiver\\/b\\/b4\\/amendment\\/create*/\u001b[39m\nReceived string:  \u001b[31m\"https://mako-dev.cms.gov/\"\u001b[39m\nCall log:\n  \u001b[2m- expect.toHaveURL with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for locator(':root')\u001b[22m\n\u001b[2m  -   locator resolved to <html lang=\"en\" class=\"h-full\">…</html>\u001b[22m\n\u001b[2m  -   unexpected value \"https://mako-dev.cms.gov/\"\u001b[22m\n\u001b[2m  -   locator resolved to <html lang=\"en\" class=\"h-full\">…</html>\u001b[22m\n\u001b[2m  -   unexpected value \"https://mako-dev.cms.gov/\"\u001b[22m\n\u001b[2m  -   locator resolved to <html lang=\"en\" class=\"h-full\">…</html>\u001b[22m\n\u001b[2m  -   unexpected value \"https://mako-dev.cms.gov/\"\u001b[22m\n\u001b[2m  -   locator resolved to <html lang=\"en\" class=\"h-full\">…</html>\u001b[22m\n\u001b[2m  -   unexpected value \"https://mako-dev.cms.gov/\"\u001b[22m\n\u001b[2m  -   locator resolved to <html lang=\"en\" class=\"h-full\">…</html>\u001b[22m\n\u001b[2m  -   unexpected value \"https://mako-dev.cms.gov/\"\u001b[22m\n\u001b[2m  -   locator resolved to <html lang=\"en\" class=\"h-full\">…</html>\u001b[22m\n\u001b[2m  -   unexpected value \"https://mako-dev.cms.gov/\"\u001b[22m\n\u001b[2m  -   locator resolved to <html lang=\"en\" class=\"h-full\">…</html>\u001b[22m\n\u001b[2m  -   unexpected value \"https://mako-dev.cms.gov/\"\u001b[22m\n\u001b[2m  -   locator resolved to <html lang=\"en\" class=\"h-full\">…</html>\u001b[22m\n\u001b[2m  -   unexpected value \"https://mako-dev.cms.gov/\"\u001b[22m\n\u001b[2m  -   locator resolved to <html lang=\"en\" class=\"h-full\">…</html>\u001b[22m\n\u001b[2m  -   unexpected value \"https://mako-dev.cms.gov/\"\u001b[22m\n",
                             "stack": "Error: \u001b[31mTimed out 5000ms waiting for \u001b[39m\u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoHaveURL\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m)\u001b[22m\n\nLocator: locator(':root')\nExpected pattern: \u001b[32m/\\/new-submission\\/waiver\\/b\\/b4\\/amendment\\/create*/\u001b[39m\nReceived string:  \u001b[31m\"https://mako-dev.cms.gov/\"\u001b[39m\nCall log:\n  \u001b[2m- expect.toHaveURL with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for locator(':root')\u001b[22m\n\u001b[2m  -   locator resolved to <html lang=\"en\" class=\"h-full\">…</html>\u001b[22m\n\u001b[2m  -   unexpected value \"https://mako-dev.cms.gov/\"\u001b[22m\n\u001b[2m  -   locator resolved to <html lang=\"en\" class=\"h-full\">…</html>\u001b[22m\n\u001b[2m  -   unexpected value \"https://mako-dev.cms.gov/\"\u001b[22m\n\u001b[2m  -   locator resolved to <html lang=\"en\" class=\"h-full\">…</html>\u001b[22m\n\u001b[2m  -   unexpected value \"https://mako-dev.cms.gov/\"\u001b[22m\n\u001b[2m  -   locator resolved to <html lang=\"en\" class=\"h-full\">…</html>\u001b[22m\n\u001b[2m  -   unexpected value \"https://mako-dev.cms.gov/\"\u001b[22m\n\u001b[2m  -   locator resolved to <html lang=\"en\" class=\"h-full\">…</html>\u001b[22m\n\u001b[2m  -   unexpected value \"https://mako-dev.cms.gov/\"\u001b[22m\n\u001b[2m  -   locator resolved to <html lang=\"en\" class=\"h-full\">…</html>\u001b[22m\n\u001b[2m  -   unexpected value \"https://mako-dev.cms.gov/\"\u001b[22m\n\u001b[2m  -   locator resolved to <html lang=\"en\" class=\"h-full\">…</html>\u001b[22m\n\u001b[2m  -   unexpected value \"https://mako-dev.cms.gov/\"\u001b[22m\n\u001b[2m  -   locator resolved to <html lang=\"en\" class=\"h-full\">…</html>\u001b[22m\n\u001b[2m  -   unexpected value \"https://mako-dev.cms.gov/\"\u001b[22m\n\u001b[2m  -   locator resolved to <html lang=\"en\" class=\"h-full\">…</html>\u001b[22m\n\u001b[2m  -   unexpected value \"https://mako-dev.cms.gov/\"\u001b[22m\n\n    at /home/runner/work/macpro-mako/macpro-mako/test/e2e/e2e/non-func/a11y.spec.ts:35:30",
@@ -1588,7 +1588,7 @@
                           "stdout": [],
                           "stderr": [],
                           "retry": 0,
-                          "startTime": "2025-08-07T17:03:52.889Z",
+                          "startTime": "2025-08-14T14:56:06.562Z",
                           "attachments": [
                             {
                               "name": "video",
@@ -1631,7 +1631,7 @@
                         {
                           "workerIndex": 17,
                           "status": "failed",
-                          "duration": 8416,
+                          "duration": 8455,
                           "error": {
                             "message": "Error: \u001b[31mTimed out 5000ms waiting for \u001b[39m\u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoHaveURL\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m)\u001b[22m\n\nLocator: locator(':root')\nExpected pattern: \u001b[32m/\\/new-submission\\/waiver\\/b\\/b4\\/renewal\\/create*/\u001b[39m\nReceived string:  \u001b[31m\"https://mako-dev.cms.gov/\"\u001b[39m\nCall log:\n  \u001b[2m- expect.toHaveURL with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for locator(':root')\u001b[22m\n\u001b[2m  -   locator resolved to <html lang=\"en\" class=\"h-full\">…</html>\u001b[22m\n\u001b[2m  -   unexpected value \"https://mako-dev.cms.gov/\"\u001b[22m\n\u001b[2m  -   locator resolved to <html lang=\"en\" class=\"h-full\">…</html>\u001b[22m\n\u001b[2m  -   unexpected value \"https://mako-dev.cms.gov/\"\u001b[22m\n\u001b[2m  -   locator resolved to <html lang=\"en\" class=\"h-full\">…</html>\u001b[22m\n\u001b[2m  -   unexpected value \"https://mako-dev.cms.gov/\"\u001b[22m\n\u001b[2m  -   locator resolved to <html lang=\"en\" class=\"h-full\">…</html>\u001b[22m\n\u001b[2m  -   unexpected value \"https://mako-dev.cms.gov/\"\u001b[22m\n\u001b[2m  -   locator resolved to <html lang=\"en\" class=\"h-full\">…</html>\u001b[22m\n\u001b[2m  -   unexpected value \"https://mako-dev.cms.gov/\"\u001b[22m\n\u001b[2m  -   locator resolved to <html lang=\"en\" class=\"h-full\">…</html>\u001b[22m\n\u001b[2m  -   unexpected value \"https://mako-dev.cms.gov/\"\u001b[22m\n\u001b[2m  -   locator resolved to <html lang=\"en\" class=\"h-full\">…</html>\u001b[22m\n\u001b[2m  -   unexpected value \"https://mako-dev.cms.gov/\"\u001b[22m\n\u001b[2m  -   locator resolved to <html lang=\"en\" class=\"h-full\">…</html>\u001b[22m\n\u001b[2m  -   unexpected value \"https://mako-dev.cms.gov/\"\u001b[22m\n\u001b[2m  -   locator resolved to <html lang=\"en\" class=\"h-full\">…</html>\u001b[22m\n\u001b[2m  -   unexpected value \"https://mako-dev.cms.gov/\"\u001b[22m\n",
                             "stack": "Error: \u001b[31mTimed out 5000ms waiting for \u001b[39m\u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoHaveURL\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m)\u001b[22m\n\nLocator: locator(':root')\nExpected pattern: \u001b[32m/\\/new-submission\\/waiver\\/b\\/b4\\/renewal\\/create*/\u001b[39m\nReceived string:  \u001b[31m\"https://mako-dev.cms.gov/\"\u001b[39m\nCall log:\n  \u001b[2m- expect.toHaveURL with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for locator(':root')\u001b[22m\n\u001b[2m  -   locator resolved to <html lang=\"en\" class=\"h-full\">…</html>\u001b[22m\n\u001b[2m  -   unexpected value \"https://mako-dev.cms.gov/\"\u001b[22m\n\u001b[2m  -   locator resolved to <html lang=\"en\" class=\"h-full\">…</html>\u001b[22m\n\u001b[2m  -   unexpected value \"https://mako-dev.cms.gov/\"\u001b[22m\n\u001b[2m  -   locator resolved to <html lang=\"en\" class=\"h-full\">…</html>\u001b[22m\n\u001b[2m  -   unexpected value \"https://mako-dev.cms.gov/\"\u001b[22m\n\u001b[2m  -   locator resolved to <html lang=\"en\" class=\"h-full\">…</html>\u001b[22m\n\u001b[2m  -   unexpected value \"https://mako-dev.cms.gov/\"\u001b[22m\n\u001b[2m  -   locator resolved to <html lang=\"en\" class=\"h-full\">…</html>\u001b[22m\n\u001b[2m  -   unexpected value \"https://mako-dev.cms.gov/\"\u001b[22m\n\u001b[2m  -   locator resolved to <html lang=\"en\" class=\"h-full\">…</html>\u001b[22m\n\u001b[2m  -   unexpected value \"https://mako-dev.cms.gov/\"\u001b[22m\n\u001b[2m  -   locator resolved to <html lang=\"en\" class=\"h-full\">…</html>\u001b[22m\n\u001b[2m  -   unexpected value \"https://mako-dev.cms.gov/\"\u001b[22m\n\u001b[2m  -   locator resolved to <html lang=\"en\" class=\"h-full\">…</html>\u001b[22m\n\u001b[2m  -   unexpected value \"https://mako-dev.cms.gov/\"\u001b[22m\n\u001b[2m  -   locator resolved to <html lang=\"en\" class=\"h-full\">…</html>\u001b[22m\n\u001b[2m  -   unexpected value \"https://mako-dev.cms.gov/\"\u001b[22m\n\n    at /home/runner/work/macpro-mako/macpro-mako/test/e2e/e2e/non-func/a11y.spec.ts:35:30",
@@ -1655,7 +1655,7 @@
                           "stdout": [],
                           "stderr": [],
                           "retry": 0,
-                          "startTime": "2025-08-07T17:04:03.203Z",
+                          "startTime": "2025-08-14T14:56:16.871Z",
                           "attachments": [
                             {
                               "name": "video",
@@ -1698,7 +1698,7 @@
                         {
                           "workerIndex": 18,
                           "status": "failed",
-                          "duration": 8511,
+                          "duration": 8455,
                           "error": {
                             "message": "Error: \u001b[31mTimed out 5000ms waiting for \u001b[39m\u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoHaveURL\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m)\u001b[22m\n\nLocator: locator(':root')\nExpected pattern: \u001b[32m/\\/new-submission\\/spa\\/medicaid\\/create*/\u001b[39m\nReceived string:  \u001b[31m\"https://mako-dev.cms.gov/\"\u001b[39m\nCall log:\n  \u001b[2m- expect.toHaveURL with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for locator(':root')\u001b[22m\n\u001b[2m  -   locator resolved to <html lang=\"en\" class=\"h-full\">…</html>\u001b[22m\n\u001b[2m  -   unexpected value \"https://mako-dev.cms.gov/\"\u001b[22m\n\u001b[2m  -   locator resolved to <html lang=\"en\" class=\"h-full\">…</html>\u001b[22m\n\u001b[2m  -   unexpected value \"https://mako-dev.cms.gov/\"\u001b[22m\n\u001b[2m  -   locator resolved to <html lang=\"en\" class=\"h-full\">…</html>\u001b[22m\n\u001b[2m  -   unexpected value \"https://mako-dev.cms.gov/\"\u001b[22m\n\u001b[2m  -   locator resolved to <html lang=\"en\" class=\"h-full\">…</html>\u001b[22m\n\u001b[2m  -   unexpected value \"https://mako-dev.cms.gov/\"\u001b[22m\n\u001b[2m  -   locator resolved to <html lang=\"en\" class=\"h-full\">…</html>\u001b[22m\n\u001b[2m  -   unexpected value \"https://mako-dev.cms.gov/\"\u001b[22m\n\u001b[2m  -   locator resolved to <html lang=\"en\" class=\"h-full\">…</html>\u001b[22m\n\u001b[2m  -   unexpected value \"https://mako-dev.cms.gov/\"\u001b[22m\n\u001b[2m  -   locator resolved to <html lang=\"en\" class=\"h-full\">…</html>\u001b[22m\n\u001b[2m  -   unexpected value \"https://mako-dev.cms.gov/\"\u001b[22m\n\u001b[2m  -   locator resolved to <html lang=\"en\" class=\"h-full\">…</html>\u001b[22m\n\u001b[2m  -   unexpected value \"https://mako-dev.cms.gov/\"\u001b[22m\n\u001b[2m  -   locator resolved to <html lang=\"en\" class=\"h-full\">…</html>\u001b[22m\n\u001b[2m  -   unexpected value \"https://mako-dev.cms.gov/\"\u001b[22m\n",
                             "stack": "Error: \u001b[31mTimed out 5000ms waiting for \u001b[39m\u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoHaveURL\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m)\u001b[22m\n\nLocator: locator(':root')\nExpected pattern: \u001b[32m/\\/new-submission\\/spa\\/medicaid\\/create*/\u001b[39m\nReceived string:  \u001b[31m\"https://mako-dev.cms.gov/\"\u001b[39m\nCall log:\n  \u001b[2m- expect.toHaveURL with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for locator(':root')\u001b[22m\n\u001b[2m  -   locator resolved to <html lang=\"en\" class=\"h-full\">…</html>\u001b[22m\n\u001b[2m  -   unexpected value \"https://mako-dev.cms.gov/\"\u001b[22m\n\u001b[2m  -   locator resolved to <html lang=\"en\" class=\"h-full\">…</html>\u001b[22m\n\u001b[2m  -   unexpected value \"https://mako-dev.cms.gov/\"\u001b[22m\n\u001b[2m  -   locator resolved to <html lang=\"en\" class=\"h-full\">…</html>\u001b[22m\n\u001b[2m  -   unexpected value \"https://mako-dev.cms.gov/\"\u001b[22m\n\u001b[2m  -   locator resolved to <html lang=\"en\" class=\"h-full\">…</html>\u001b[22m\n\u001b[2m  -   unexpected value \"https://mako-dev.cms.gov/\"\u001b[22m\n\u001b[2m  -   locator resolved to <html lang=\"en\" class=\"h-full\">…</html>\u001b[22m\n\u001b[2m  -   unexpected value \"https://mako-dev.cms.gov/\"\u001b[22m\n\u001b[2m  -   locator resolved to <html lang=\"en\" class=\"h-full\">…</html>\u001b[22m\n\u001b[2m  -   unexpected value \"https://mako-dev.cms.gov/\"\u001b[22m\n\u001b[2m  -   locator resolved to <html lang=\"en\" class=\"h-full\">…</html>\u001b[22m\n\u001b[2m  -   unexpected value \"https://mako-dev.cms.gov/\"\u001b[22m\n\u001b[2m  -   locator resolved to <html lang=\"en\" class=\"h-full\">…</html>\u001b[22m\n\u001b[2m  -   unexpected value \"https://mako-dev.cms.gov/\"\u001b[22m\n\u001b[2m  -   locator resolved to <html lang=\"en\" class=\"h-full\">…</html>\u001b[22m\n\u001b[2m  -   unexpected value \"https://mako-dev.cms.gov/\"\u001b[22m\n\n    at /home/runner/work/macpro-mako/macpro-mako/test/e2e/e2e/non-func/a11y.spec.ts:35:30",
@@ -1722,7 +1722,7 @@
                           "stdout": [],
                           "stderr": [],
                           "retry": 0,
-                          "startTime": "2025-08-07T17:04:13.512Z",
+                          "startTime": "2025-08-14T14:56:27.143Z",
                           "attachments": [
                             {
                               "name": "video",
@@ -1765,7 +1765,7 @@
                         {
                           "workerIndex": 19,
                           "status": "failed",
-                          "duration": 8388,
+                          "duration": 8452,
                           "error": {
                             "message": "Error: \u001b[31mTimed out 5000ms waiting for \u001b[39m\u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoHaveURL\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m)\u001b[22m\n\nLocator: locator(':root')\nExpected pattern: \u001b[32m/\\/new-submission\\/spa\\/chip\\/create*/\u001b[39m\nReceived string:  \u001b[31m\"https://mako-dev.cms.gov/\"\u001b[39m\nCall log:\n  \u001b[2m- expect.toHaveURL with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for locator(':root')\u001b[22m\n\u001b[2m  -   locator resolved to <html lang=\"en\" class=\"h-full\">…</html>\u001b[22m\n\u001b[2m  -   unexpected value \"https://mako-dev.cms.gov/\"\u001b[22m\n\u001b[2m  -   locator resolved to <html lang=\"en\" class=\"h-full\">…</html>\u001b[22m\n\u001b[2m  -   unexpected value \"https://mako-dev.cms.gov/\"\u001b[22m\n\u001b[2m  -   locator resolved to <html lang=\"en\" class=\"h-full\">…</html>\u001b[22m\n\u001b[2m  -   unexpected value \"https://mako-dev.cms.gov/\"\u001b[22m\n\u001b[2m  -   locator resolved to <html lang=\"en\" class=\"h-full\">…</html>\u001b[22m\n\u001b[2m  -   unexpected value \"https://mako-dev.cms.gov/\"\u001b[22m\n\u001b[2m  -   locator resolved to <html lang=\"en\" class=\"h-full\">…</html>\u001b[22m\n\u001b[2m  -   unexpected value \"https://mako-dev.cms.gov/\"\u001b[22m\n\u001b[2m  -   locator resolved to <html lang=\"en\" class=\"h-full\">…</html>\u001b[22m\n\u001b[2m  -   unexpected value \"https://mako-dev.cms.gov/\"\u001b[22m\n\u001b[2m  -   locator resolved to <html lang=\"en\" class=\"h-full\">…</html>\u001b[22m\n\u001b[2m  -   unexpected value \"https://mako-dev.cms.gov/\"\u001b[22m\n\u001b[2m  -   locator resolved to <html lang=\"en\" class=\"h-full\">…</html>\u001b[22m\n\u001b[2m  -   unexpected value \"https://mako-dev.cms.gov/\"\u001b[22m\n\u001b[2m  -   locator resolved to <html lang=\"en\" class=\"h-full\">…</html>\u001b[22m\n\u001b[2m  -   unexpected value \"https://mako-dev.cms.gov/\"\u001b[22m\n",
                             "stack": "Error: \u001b[31mTimed out 5000ms waiting for \u001b[39m\u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoHaveURL\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m)\u001b[22m\n\nLocator: locator(':root')\nExpected pattern: \u001b[32m/\\/new-submission\\/spa\\/chip\\/create*/\u001b[39m\nReceived string:  \u001b[31m\"https://mako-dev.cms.gov/\"\u001b[39m\nCall log:\n  \u001b[2m- expect.toHaveURL with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for locator(':root')\u001b[22m\n\u001b[2m  -   locator resolved to <html lang=\"en\" class=\"h-full\">…</html>\u001b[22m\n\u001b[2m  -   unexpected value \"https://mako-dev.cms.gov/\"\u001b[22m\n\u001b[2m  -   locator resolved to <html lang=\"en\" class=\"h-full\">…</html>\u001b[22m\n\u001b[2m  -   unexpected value \"https://mako-dev.cms.gov/\"\u001b[22m\n\u001b[2m  -   locator resolved to <html lang=\"en\" class=\"h-full\">…</html>\u001b[22m\n\u001b[2m  -   unexpected value \"https://mako-dev.cms.gov/\"\u001b[22m\n\u001b[2m  -   locator resolved to <html lang=\"en\" class=\"h-full\">…</html>\u001b[22m\n\u001b[2m  -   unexpected value \"https://mako-dev.cms.gov/\"\u001b[22m\n\u001b[2m  -   locator resolved to <html lang=\"en\" class=\"h-full\">…</html>\u001b[22m\n\u001b[2m  -   unexpected value \"https://mako-dev.cms.gov/\"\u001b[22m\n\u001b[2m  -   locator resolved to <html lang=\"en\" class=\"h-full\">…</html>\u001b[22m\n\u001b[2m  -   unexpected value \"https://mako-dev.cms.gov/\"\u001b[22m\n\u001b[2m  -   locator resolved to <html lang=\"en\" class=\"h-full\">…</html>\u001b[22m\n\u001b[2m  -   unexpected value \"https://mako-dev.cms.gov/\"\u001b[22m\n\u001b[2m  -   locator resolved to <html lang=\"en\" class=\"h-full\">…</html>\u001b[22m\n\u001b[2m  -   unexpected value \"https://mako-dev.cms.gov/\"\u001b[22m\n\u001b[2m  -   locator resolved to <html lang=\"en\" class=\"h-full\">…</html>\u001b[22m\n\u001b[2m  -   unexpected value \"https://mako-dev.cms.gov/\"\u001b[22m\n\n    at /home/runner/work/macpro-mako/macpro-mako/test/e2e/e2e/non-func/a11y.spec.ts:35:30",
@@ -1789,7 +1789,7 @@
                           "stdout": [],
                           "stderr": [],
                           "retry": 0,
-                          "startTime": "2025-08-07T17:04:23.870Z",
+                          "startTime": "2025-08-14T14:56:37.432Z",
                           "attachments": [
                             {
                               "name": "video",
@@ -1832,7 +1832,7 @@
                         {
                           "workerIndex": 20,
                           "status": "failed",
-                          "duration": 8481,
+                          "duration": 8421,
                           "error": {
                             "message": "Error: \u001b[31mTimed out 5000ms waiting for \u001b[39m\u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoHaveURL\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m)\u001b[22m\n\nLocator: locator(':root')\nExpected pattern: \u001b[32m/\\/new-submission\\/waiver\\/app-k*/\u001b[39m\nReceived string:  \u001b[31m\"https://mako-dev.cms.gov/\"\u001b[39m\nCall log:\n  \u001b[2m- expect.toHaveURL with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for locator(':root')\u001b[22m\n\u001b[2m  -   locator resolved to <html lang=\"en\" class=\"h-full\">…</html>\u001b[22m\n\u001b[2m  -   unexpected value \"https://mako-dev.cms.gov/\"\u001b[22m\n\u001b[2m  -   locator resolved to <html lang=\"en\" class=\"h-full\">…</html>\u001b[22m\n\u001b[2m  -   unexpected value \"https://mako-dev.cms.gov/\"\u001b[22m\n\u001b[2m  -   locator resolved to <html lang=\"en\" class=\"h-full\">…</html>\u001b[22m\n\u001b[2m  -   unexpected value \"https://mako-dev.cms.gov/\"\u001b[22m\n\u001b[2m  -   locator resolved to <html lang=\"en\" class=\"h-full\">…</html>\u001b[22m\n\u001b[2m  -   unexpected value \"https://mako-dev.cms.gov/\"\u001b[22m\n\u001b[2m  -   locator resolved to <html lang=\"en\" class=\"h-full\">…</html>\u001b[22m\n\u001b[2m  -   unexpected value \"https://mako-dev.cms.gov/\"\u001b[22m\n\u001b[2m  -   locator resolved to <html lang=\"en\" class=\"h-full\">…</html>\u001b[22m\n\u001b[2m  -   unexpected value \"https://mako-dev.cms.gov/\"\u001b[22m\n\u001b[2m  -   locator resolved to <html lang=\"en\" class=\"h-full\">…</html>\u001b[22m\n\u001b[2m  -   unexpected value \"https://mako-dev.cms.gov/\"\u001b[22m\n\u001b[2m  -   locator resolved to <html lang=\"en\" class=\"h-full\">…</html>\u001b[22m\n\u001b[2m  -   unexpected value \"https://mako-dev.cms.gov/\"\u001b[22m\n\u001b[2m  -   locator resolved to <html lang=\"en\" class=\"h-full\">…</html>\u001b[22m\n\u001b[2m  -   unexpected value \"https://mako-dev.cms.gov/\"\u001b[22m\n",
                             "stack": "Error: \u001b[31mTimed out 5000ms waiting for \u001b[39m\u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoHaveURL\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m)\u001b[22m\n\nLocator: locator(':root')\nExpected pattern: \u001b[32m/\\/new-submission\\/waiver\\/app-k*/\u001b[39m\nReceived string:  \u001b[31m\"https://mako-dev.cms.gov/\"\u001b[39m\nCall log:\n  \u001b[2m- expect.toHaveURL with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for locator(':root')\u001b[22m\n\u001b[2m  -   locator resolved to <html lang=\"en\" class=\"h-full\">…</html>\u001b[22m\n\u001b[2m  -   unexpected value \"https://mako-dev.cms.gov/\"\u001b[22m\n\u001b[2m  -   locator resolved to <html lang=\"en\" class=\"h-full\">…</html>\u001b[22m\n\u001b[2m  -   unexpected value \"https://mako-dev.cms.gov/\"\u001b[22m\n\u001b[2m  -   locator resolved to <html lang=\"en\" class=\"h-full\">…</html>\u001b[22m\n\u001b[2m  -   unexpected value \"https://mako-dev.cms.gov/\"\u001b[22m\n\u001b[2m  -   locator resolved to <html lang=\"en\" class=\"h-full\">…</html>\u001b[22m\n\u001b[2m  -   unexpected value \"https://mako-dev.cms.gov/\"\u001b[22m\n\u001b[2m  -   locator resolved to <html lang=\"en\" class=\"h-full\">…</html>\u001b[22m\n\u001b[2m  -   unexpected value \"https://mako-dev.cms.gov/\"\u001b[22m\n\u001b[2m  -   locator resolved to <html lang=\"en\" class=\"h-full\">…</html>\u001b[22m\n\u001b[2m  -   unexpected value \"https://mako-dev.cms.gov/\"\u001b[22m\n\u001b[2m  -   locator resolved to <html lang=\"en\" class=\"h-full\">…</html>\u001b[22m\n\u001b[2m  -   unexpected value \"https://mako-dev.cms.gov/\"\u001b[22m\n\u001b[2m  -   locator resolved to <html lang=\"en\" class=\"h-full\">…</html>\u001b[22m\n\u001b[2m  -   unexpected value \"https://mako-dev.cms.gov/\"\u001b[22m\n\u001b[2m  -   locator resolved to <html lang=\"en\" class=\"h-full\">…</html>\u001b[22m\n\u001b[2m  -   unexpected value \"https://mako-dev.cms.gov/\"\u001b[22m\n\n    at /home/runner/work/macpro-mako/macpro-mako/test/e2e/e2e/non-func/a11y.spec.ts:35:30",
@@ -1856,7 +1856,7 @@
                           "stdout": [],
                           "stderr": [],
                           "retry": 0,
-                          "startTime": "2025-08-07T17:04:34.153Z",
+                          "startTime": "2025-08-14T14:56:47.734Z",
                           "attachments": [
                             {
                               "name": "video",
@@ -1899,7 +1899,7 @@
                         {
                           "workerIndex": 21,
                           "status": "failed",
-                          "duration": 8511,
+                          "duration": 8648,
                           "error": {
                             "message": "Error: \u001b[31mTimed out 5000ms waiting for \u001b[39m\u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoHaveURL\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m)\u001b[22m\n\nLocator: locator(':root')\nExpected pattern: \u001b[32m/\\/new-submission\\/waiver\\/temporary-extensions*/\u001b[39m\nReceived string:  \u001b[31m\"https://mako-dev.cms.gov/\"\u001b[39m\nCall log:\n  \u001b[2m- expect.toHaveURL with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for locator(':root')\u001b[22m\n\u001b[2m  -   locator resolved to <html lang=\"en\" class=\"h-full\">…</html>\u001b[22m\n\u001b[2m  -   unexpected value \"https://mako-dev.cms.gov/\"\u001b[22m\n\u001b[2m  -   locator resolved to <html lang=\"en\" class=\"h-full\">…</html>\u001b[22m\n\u001b[2m  -   unexpected value \"https://mako-dev.cms.gov/\"\u001b[22m\n\u001b[2m  -   locator resolved to <html lang=\"en\" class=\"h-full\">…</html>\u001b[22m\n\u001b[2m  -   unexpected value \"https://mako-dev.cms.gov/\"\u001b[22m\n\u001b[2m  -   locator resolved to <html lang=\"en\" class=\"h-full\">…</html>\u001b[22m\n\u001b[2m  -   unexpected value \"https://mako-dev.cms.gov/\"\u001b[22m\n\u001b[2m  -   locator resolved to <html lang=\"en\" class=\"h-full\">…</html>\u001b[22m\n\u001b[2m  -   unexpected value \"https://mako-dev.cms.gov/\"\u001b[22m\n\u001b[2m  -   locator resolved to <html lang=\"en\" class=\"h-full\">…</html>\u001b[22m\n\u001b[2m  -   unexpected value \"https://mako-dev.cms.gov/\"\u001b[22m\n\u001b[2m  -   locator resolved to <html lang=\"en\" class=\"h-full\">…</html>\u001b[22m\n\u001b[2m  -   unexpected value \"https://mako-dev.cms.gov/\"\u001b[22m\n\u001b[2m  -   locator resolved to <html lang=\"en\" class=\"h-full\">…</html>\u001b[22m\n\u001b[2m  -   unexpected value \"https://mako-dev.cms.gov/\"\u001b[22m\n\u001b[2m  -   locator resolved to <html lang=\"en\" class=\"h-full\">…</html>\u001b[22m\n\u001b[2m  -   unexpected value \"https://mako-dev.cms.gov/\"\u001b[22m\n",
                             "stack": "Error: \u001b[31mTimed out 5000ms waiting for \u001b[39m\u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoHaveURL\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m)\u001b[22m\n\nLocator: locator(':root')\nExpected pattern: \u001b[32m/\\/new-submission\\/waiver\\/temporary-extensions*/\u001b[39m\nReceived string:  \u001b[31m\"https://mako-dev.cms.gov/\"\u001b[39m\nCall log:\n  \u001b[2m- expect.toHaveURL with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for locator(':root')\u001b[22m\n\u001b[2m  -   locator resolved to <html lang=\"en\" class=\"h-full\">…</html>\u001b[22m\n\u001b[2m  -   unexpected value \"https://mako-dev.cms.gov/\"\u001b[22m\n\u001b[2m  -   locator resolved to <html lang=\"en\" class=\"h-full\">…</html>\u001b[22m\n\u001b[2m  -   unexpected value \"https://mako-dev.cms.gov/\"\u001b[22m\n\u001b[2m  -   locator resolved to <html lang=\"en\" class=\"h-full\">…</html>\u001b[22m\n\u001b[2m  -   unexpected value \"https://mako-dev.cms.gov/\"\u001b[22m\n\u001b[2m  -   locator resolved to <html lang=\"en\" class=\"h-full\">…</html>\u001b[22m\n\u001b[2m  -   unexpected value \"https://mako-dev.cms.gov/\"\u001b[22m\n\u001b[2m  -   locator resolved to <html lang=\"en\" class=\"h-full\">…</html>\u001b[22m\n\u001b[2m  -   unexpected value \"https://mako-dev.cms.gov/\"\u001b[22m\n\u001b[2m  -   locator resolved to <html lang=\"en\" class=\"h-full\">…</html>\u001b[22m\n\u001b[2m  -   unexpected value \"https://mako-dev.cms.gov/\"\u001b[22m\n\u001b[2m  -   locator resolved to <html lang=\"en\" class=\"h-full\">…</html>\u001b[22m\n\u001b[2m  -   unexpected value \"https://mako-dev.cms.gov/\"\u001b[22m\n\u001b[2m  -   locator resolved to <html lang=\"en\" class=\"h-full\">…</html>\u001b[22m\n\u001b[2m  -   unexpected value \"https://mako-dev.cms.gov/\"\u001b[22m\n\u001b[2m  -   locator resolved to <html lang=\"en\" class=\"h-full\">…</html>\u001b[22m\n\u001b[2m  -   unexpected value \"https://mako-dev.cms.gov/\"\u001b[22m\n\n    at /home/runner/work/macpro-mako/macpro-mako/test/e2e/e2e/non-func/a11y.spec.ts:35:30",
@@ -1923,7 +1923,7 @@
                           "stdout": [],
                           "stderr": [],
                           "retry": 0,
-                          "startTime": "2025-08-07T17:04:44.501Z",
+                          "startTime": "2025-08-14T14:56:58.016Z",
                           "attachments": [
                             {
                               "name": "video",
@@ -1974,7 +1974,7 @@
                         {
                           "workerIndex": 22,
                           "status": "passed",
-                          "duration": 4168,
+                          "duration": 4100,
                           "errors": [],
                           "stdout": [
                             {
@@ -1983,7 +1983,7 @@
                           ],
                           "stderr": [],
                           "retry": 0,
-                          "startTime": "2025-08-07T17:04:54.884Z",
+                          "startTime": "2025-08-14T14:57:08.511Z",
                           "attachments": []
                         }
                       ],
@@ -2010,7 +2010,7 @@
                         {
                           "workerIndex": 22,
                           "status": "passed",
-                          "duration": 3825,
+                          "duration": 3840,
                           "errors": [],
                           "stdout": [
                             {
@@ -2019,7 +2019,7 @@
                           ],
                           "stderr": [],
                           "retry": 0,
-                          "startTime": "2025-08-07T17:04:59.148Z",
+                          "startTime": "2025-08-14T14:57:12.711Z",
                           "attachments": []
                         }
                       ],
@@ -2046,7 +2046,7 @@
                         {
                           "workerIndex": 22,
                           "status": "passed",
-                          "duration": 4006,
+                          "duration": 3876,
                           "errors": [],
                           "stdout": [
                             {
@@ -2055,7 +2055,7 @@
                           ],
                           "stderr": [],
                           "retry": 0,
-                          "startTime": "2025-08-07T17:05:02.981Z",
+                          "startTime": "2025-08-14T14:57:16.559Z",
                           "attachments": []
                         }
                       ],
@@ -2082,7 +2082,7 @@
                         {
                           "workerIndex": 22,
                           "status": "passed",
-                          "duration": 3816,
+                          "duration": 3831,
                           "errors": [],
                           "stdout": [
                             {
@@ -2091,7 +2091,7 @@
                           ],
                           "stderr": [],
                           "retry": 0,
-                          "startTime": "2025-08-07T17:05:06.994Z",
+                          "startTime": "2025-08-14T14:57:20.441Z",
                           "attachments": []
                         }
                       ],
@@ -2118,7 +2118,7 @@
                         {
                           "workerIndex": 22,
                           "status": "passed",
-                          "duration": 3835,
+                          "duration": 3800,
                           "errors": [],
                           "stdout": [
                             {
@@ -2127,7 +2127,7 @@
                           ],
                           "stderr": [],
                           "retry": 0,
-                          "startTime": "2025-08-07T17:05:10.818Z",
+                          "startTime": "2025-08-14T14:57:24.280Z",
                           "attachments": []
                         }
                       ],
@@ -2154,7 +2154,7 @@
                         {
                           "workerIndex": 22,
                           "status": "passed",
-                          "duration": 3760,
+                          "duration": 3787,
                           "errors": [],
                           "stdout": [
                             {
@@ -2163,7 +2163,7 @@
                           ],
                           "stderr": [],
                           "retry": 0,
-                          "startTime": "2025-08-07T17:05:14.660Z",
+                          "startTime": "2025-08-14T14:57:28.087Z",
                           "attachments": []
                         }
                       ],
@@ -2190,7 +2190,7 @@
                         {
                           "workerIndex": 22,
                           "status": "passed",
-                          "duration": 3778,
+                          "duration": 3797,
                           "errors": [],
                           "stdout": [
                             {
@@ -2199,7 +2199,7 @@
                           ],
                           "stderr": [],
                           "retry": 0,
-                          "startTime": "2025-08-07T17:05:18.427Z",
+                          "startTime": "2025-08-14T14:57:31.881Z",
                           "attachments": []
                         }
                       ],
@@ -2226,7 +2226,7 @@
                         {
                           "workerIndex": 22,
                           "status": "passed",
-                          "duration": 3819,
+                          "duration": 3778,
                           "errors": [],
                           "stdout": [
                             {
@@ -2235,7 +2235,7 @@
                           ],
                           "stderr": [],
                           "retry": 0,
-                          "startTime": "2025-08-07T17:05:22.212Z",
+                          "startTime": "2025-08-14T14:57:35.687Z",
                           "attachments": []
                         }
                       ],
@@ -2262,7 +2262,7 @@
                         {
                           "workerIndex": 22,
                           "status": "passed",
-                          "duration": 3761,
+                          "duration": 3792,
                           "errors": [],
                           "stdout": [
                             {
@@ -2271,7 +2271,7 @@
                           ],
                           "stderr": [],
                           "retry": 0,
-                          "startTime": "2025-08-07T17:05:26.037Z",
+                          "startTime": "2025-08-14T14:57:39.471Z",
                           "attachments": []
                         }
                       ],
@@ -2298,7 +2298,7 @@
                         {
                           "workerIndex": 22,
                           "status": "passed",
-                          "duration": 3753,
+                          "duration": 3772,
                           "errors": [],
                           "stdout": [
                             {
@@ -2307,7 +2307,7 @@
                           ],
                           "stderr": [],
                           "retry": 0,
-                          "startTime": "2025-08-07T17:05:29.805Z",
+                          "startTime": "2025-08-14T14:57:43.270Z",
                           "attachments": []
                         }
                       ],
@@ -2334,7 +2334,7 @@
                         {
                           "workerIndex": 22,
                           "status": "passed",
-                          "duration": 3763,
+                          "duration": 3781,
                           "errors": [],
                           "stdout": [
                             {
@@ -2343,7 +2343,7 @@
                           ],
                           "stderr": [],
                           "retry": 0,
-                          "startTime": "2025-08-07T17:05:33.566Z",
+                          "startTime": "2025-08-14T14:57:47.050Z",
                           "attachments": []
                         }
                       ],
@@ -2370,7 +2370,7 @@
                         {
                           "workerIndex": 22,
                           "status": "passed",
-                          "duration": 3817,
+                          "duration": 3847,
                           "errors": [],
                           "stdout": [
                             {
@@ -2379,7 +2379,7 @@
                           ],
                           "stderr": [],
                           "retry": 0,
-                          "startTime": "2025-08-07T17:05:37.338Z",
+                          "startTime": "2025-08-14T14:57:50.842Z",
                           "attachments": []
                         }
                       ],
@@ -2406,7 +2406,7 @@
                         {
                           "workerIndex": 22,
                           "status": "passed",
-                          "duration": 3857,
+                          "duration": 3866,
                           "errors": [],
                           "stdout": [
                             {
@@ -2415,7 +2415,7 @@
                           ],
                           "stderr": [],
                           "retry": 0,
-                          "startTime": "2025-08-07T17:05:41.165Z",
+                          "startTime": "2025-08-14T14:57:54.695Z",
                           "attachments": []
                         }
                       ],
@@ -2442,7 +2442,7 @@
                         {
                           "workerIndex": 22,
                           "status": "passed",
-                          "duration": 3877,
+                          "duration": 3961,
                           "errors": [],
                           "stdout": [
                             {
@@ -2451,7 +2451,7 @@
                           ],
                           "stderr": [],
                           "retry": 0,
-                          "startTime": "2025-08-07T17:05:45.032Z",
+                          "startTime": "2025-08-14T14:57:58.568Z",
                           "attachments": []
                         }
                       ],
@@ -2478,7 +2478,7 @@
                         {
                           "workerIndex": 22,
                           "status": "passed",
-                          "duration": 3886,
+                          "duration": 3825,
                           "errors": [],
                           "stdout": [
                             {
@@ -2487,7 +2487,7 @@
                           ],
                           "stderr": [],
                           "retry": 0,
-                          "startTime": "2025-08-07T17:05:48.916Z",
+                          "startTime": "2025-08-14T14:58:02.539Z",
                           "attachments": []
                         }
                       ],
@@ -2514,7 +2514,7 @@
                         {
                           "workerIndex": 22,
                           "status": "passed",
-                          "duration": 3798,
+                          "duration": 3875,
                           "errors": [],
                           "stdout": [
                             {
@@ -2523,7 +2523,7 @@
                           ],
                           "stderr": [],
                           "retry": 0,
-                          "startTime": "2025-08-07T17:05:52.811Z",
+                          "startTime": "2025-08-14T14:58:06.370Z",
                           "attachments": []
                         }
                       ],
@@ -2550,7 +2550,7 @@
                         {
                           "workerIndex": 22,
                           "status": "passed",
-                          "duration": 3804,
+                          "duration": 3800,
                           "errors": [],
                           "stdout": [
                             {
@@ -2559,7 +2559,7 @@
                           ],
                           "stderr": [],
                           "retry": 0,
-                          "startTime": "2025-08-07T17:05:56.616Z",
+                          "startTime": "2025-08-14T14:58:10.251Z",
                           "attachments": []
                         }
                       ],
@@ -2586,7 +2586,7 @@
                         {
                           "workerIndex": 22,
                           "status": "passed",
-                          "duration": 3828,
+                          "duration": 3832,
                           "errors": [],
                           "stdout": [
                             {
@@ -2595,7 +2595,7 @@
                           ],
                           "stderr": [],
                           "retry": 0,
-                          "startTime": "2025-08-07T17:06:00.427Z",
+                          "startTime": "2025-08-14T14:58:14.058Z",
                           "attachments": []
                         }
                       ],
@@ -2622,7 +2622,7 @@
                         {
                           "workerIndex": 22,
                           "status": "passed",
-                          "duration": 4016,
+                          "duration": 3841,
                           "errors": [],
                           "stdout": [
                             {
@@ -2631,7 +2631,7 @@
                           ],
                           "stderr": [],
                           "retry": 0,
-                          "startTime": "2025-08-07T17:06:04.261Z",
+                          "startTime": "2025-08-14T14:58:17.895Z",
                           "attachments": []
                         }
                       ],
@@ -2658,7 +2658,7 @@
                         {
                           "workerIndex": 22,
                           "status": "passed",
-                          "duration": 4052,
+                          "duration": 3825,
                           "errors": [],
                           "stdout": [
                             {
@@ -2667,7 +2667,7 @@
                           ],
                           "stderr": [],
                           "retry": 0,
-                          "startTime": "2025-08-07T17:06:08.283Z",
+                          "startTime": "2025-08-14T14:58:21.743Z",
                           "attachments": []
                         }
                       ],
@@ -2694,7 +2694,7 @@
                         {
                           "workerIndex": 22,
                           "status": "passed",
-                          "duration": 4068,
+                          "duration": 3814,
                           "errors": [],
                           "stdout": [
                             {
@@ -2703,7 +2703,7 @@
                           ],
                           "stderr": [],
                           "retry": 0,
-                          "startTime": "2025-08-07T17:06:12.343Z",
+                          "startTime": "2025-08-14T14:58:25.574Z",
                           "attachments": []
                         }
                       ],
@@ -2730,7 +2730,7 @@
                         {
                           "workerIndex": 22,
                           "status": "passed",
-                          "duration": 3910,
+                          "duration": 3924,
                           "errors": [],
                           "stdout": [
                             {
@@ -2739,7 +2739,7 @@
                           ],
                           "stderr": [],
                           "retry": 0,
-                          "startTime": "2025-08-07T17:06:16.419Z",
+                          "startTime": "2025-08-14T14:58:29.394Z",
                           "attachments": []
                         }
                       ],
@@ -2801,7 +2801,7 @@
                             {
                               "workerIndex": 22,
                               "status": "failed",
-                              "duration": 8236,
+                              "duration": 8129,
                               "error": {
                                 "message": "Error: \u001b[31mTimed out 5000ms waiting for \u001b[39m\u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m()\u001b[22m\n\nLocator: getByTestId('Dashboard-d')\nExpected: visible\nReceived: <element(s) not found>\nCall log:\n  \u001b[2m- expect.toBeVisible with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for getByTestId('Dashboard-d')\u001b[22m\n",
                                 "stack": "Error: \u001b[31mTimed out 5000ms waiting for \u001b[39m\u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m()\u001b[22m\n\nLocator: getByTestId('Dashboard-d')\nExpected: visible\nReceived: <element(s) not found>\nCall log:\n  \u001b[2m- expect.toBeVisible with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for getByTestId('Dashboard-d')\u001b[22m\n\n    at /home/runner/work/macpro-mako/macpro-mako/test/e2e/e2e/specs/dashboard.spec.ts:33:53",
@@ -2825,7 +2825,7 @@
                               "stdout": [],
                               "stderr": [],
                               "retry": 0,
-                              "startTime": "2025-08-07T17:06:20.350Z",
+                              "startTime": "2025-08-14T14:58:33.338Z",
                               "attachments": [
                                 {
                                   "name": "video",
@@ -2870,7 +2870,7 @@
                             {
                               "workerIndex": 23,
                               "status": "failed",
-                              "duration": 6291,
+                              "duration": 6164,
                               "error": {
                                 "message": "Error: \u001b[31mTimed out 5000ms waiting for \u001b[39m\u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m()\u001b[22m\n\nLocator: getByRole('heading', { name: 'Dashboard' })\nExpected: visible\nReceived: <element(s) not found>\nCall log:\n  \u001b[2m- expect.toBeVisible with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for getByRole('heading', { name: 'Dashboard' })\u001b[22m\n",
                                 "stack": "Error: \u001b[31mTimed out 5000ms waiting for \u001b[39m\u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m()\u001b[22m\n\nLocator: getByRole('heading', { name: 'Dashboard' })\nExpected: visible\nReceived: <element(s) not found>\nCall log:\n  \u001b[2m- expect.toBeVisible with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for getByRole('heading', { name: 'Dashboard' })\u001b[22m\n\n    at /home/runner/work/macpro-mako/macpro-mako/test/e2e/e2e/specs/dashboard.spec.ts:43:74",
@@ -2894,7 +2894,7 @@
                               "stdout": [],
                               "stderr": [],
                               "retry": 0,
-                              "startTime": "2025-08-07T17:06:29.691Z",
+                              "startTime": "2025-08-14T14:58:42.516Z",
                               "attachments": [
                                 {
                                   "name": "video",
@@ -2939,7 +2939,7 @@
                             {
                               "workerIndex": 24,
                               "status": "failed",
-                              "duration": 6349,
+                              "duration": 6159,
                               "error": {
                                 "message": "Error: \u001b[31mTimed out 5000ms waiting for \u001b[39m\u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m()\u001b[22m\n\nLocator: getByRole('tab', { name: 'SPAs' })\nExpected: visible\nReceived: <element(s) not found>\nCall log:\n  \u001b[2m- expect.toBeVisible with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for getByRole('tab', { name: 'SPAs' })\u001b[22m\n",
                                 "stack": "Error: \u001b[31mTimed out 5000ms waiting for \u001b[39m\u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m()\u001b[22m\n\nLocator: getByRole('tab', { name: 'SPAs' })\nExpected: visible\nReceived: <element(s) not found>\nCall log:\n  \u001b[2m- expect.toBeVisible with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for getByRole('tab', { name: 'SPAs' })\u001b[22m\n\n    at /home/runner/work/macpro-mako/macpro-mako/test/e2e/e2e/specs/dashboard.spec.ts:53:65",
@@ -2963,7 +2963,7 @@
                               "stdout": [],
                               "stderr": [],
                               "retry": 0,
-                              "startTime": "2025-08-07T17:06:37.116Z",
+                              "startTime": "2025-08-14T14:58:49.733Z",
                               "attachments": [
                                 {
                                   "name": "video",
@@ -3008,7 +3008,7 @@
                             {
                               "workerIndex": 25,
                               "status": "failed",
-                              "duration": 6289,
+                              "duration": 6174,
                               "error": {
                                 "message": "Error: \u001b[31mTimed out 5000ms waiting for \u001b[39m\u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m()\u001b[22m\n\nLocator: getByTestId('filtering').locator('p')\nExpected: visible\nReceived: <element(s) not found>\nCall log:\n  \u001b[2m- expect.toBeVisible with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for getByTestId('filtering').locator('p')\u001b[22m\n",
                                 "stack": "Error: \u001b[31mTimed out 5000ms waiting for \u001b[39m\u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m()\u001b[22m\n\nLocator: getByTestId('filtering').locator('p')\nExpected: visible\nReceived: <element(s) not found>\nCall log:\n  \u001b[2m- expect.toBeVisible with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for getByTestId('filtering').locator('p')\u001b[22m\n\n    at /home/runner/work/macpro-mako/macpro-mako/test/e2e/e2e/specs/dashboard.spec.ts:61:68",
@@ -3032,7 +3032,7 @@
                               "stdout": [],
                               "stderr": [],
                               "retry": 0,
-                              "startTime": "2025-08-07T17:06:44.579Z",
+                              "startTime": "2025-08-14T14:58:56.945Z",
                               "attachments": [
                                 {
                                   "name": "video",
@@ -3077,7 +3077,7 @@
                             {
                               "workerIndex": 26,
                               "status": "failed",
-                              "duration": 6324,
+                              "duration": 6237,
                               "error": {
                                 "message": "Error: \u001b[31mTimed out 5000ms waiting for \u001b[39m\u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m()\u001b[22m\n\nLocator: getByRole('button', { name: /Columns/ })\nExpected: visible\nReceived: <element(s) not found>\nCall log:\n  \u001b[2m- expect.toBeVisible with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for getByRole('button', { name: /Columns/ })\u001b[22m\n",
                                 "stack": "Error: \u001b[31mTimed out 5000ms waiting for \u001b[39m\u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m()\u001b[22m\n\nLocator: getByRole('button', { name: /Columns/ })\nExpected: visible\nReceived: <element(s) not found>\nCall log:\n  \u001b[2m- expect.toBeVisible with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for getByRole('button', { name: /Columns/ })\u001b[22m\n\n    at /home/runner/work/macpro-mako/macpro-mako/test/e2e/e2e/specs/dashboard.spec.ts:70:71",
@@ -3101,7 +3101,7 @@
                               "stdout": [],
                               "stderr": [],
                               "retry": 0,
-                              "startTime": "2025-08-07T17:06:51.975Z",
+                              "startTime": "2025-08-14T14:59:04.162Z",
                               "attachments": [
                                 {
                                   "name": "video",
@@ -3146,7 +3146,7 @@
                             {
                               "workerIndex": 27,
                               "status": "failed",
-                              "duration": 6188,
+                              "duration": 6208,
                               "error": {
                                 "message": "Error: \u001b[31mTimed out 5000ms waiting for \u001b[39m\u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m()\u001b[22m\n\nLocator: getByText(/Filters/)\nExpected: visible\nReceived: <element(s) not found>\nCall log:\n  \u001b[2m- expect.toBeVisible with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for getByText(/Filters/)\u001b[22m\n",
                                 "stack": "Error: \u001b[31mTimed out 5000ms waiting for \u001b[39m\u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m()\u001b[22m\n\nLocator: getByText(/Filters/)\nExpected: visible\nReceived: <element(s) not found>\nCall log:\n  \u001b[2m- expect.toBeVisible with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for getByText(/Filters/)\u001b[22m\n\n    at /home/runner/work/macpro-mako/macpro-mako/test/e2e/e2e/specs/dashboard.spec.ts:77:51",
@@ -3170,7 +3170,7 @@
                               "stdout": [],
                               "stderr": [],
                               "retry": 0,
-                              "startTime": "2025-08-07T17:06:59.394Z",
+                              "startTime": "2025-08-14T14:59:11.451Z",
                               "attachments": [
                                 {
                                   "name": "video",
@@ -3215,7 +3215,7 @@
                             {
                               "workerIndex": 28,
                               "status": "failed",
-                              "duration": 6211,
+                              "duration": 6195,
                               "error": {
                                 "message": "Error: \u001b[31mTimed out 5000ms waiting for \u001b[39m\u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m()\u001b[22m\n\nLocator: getByRole('button', { name: /Export/ })\nExpected: visible\nReceived: <element(s) not found>\nCall log:\n  \u001b[2m- expect.toBeVisible with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for getByRole('button', { name: /Export/ })\u001b[22m\n",
                                 "stack": "Error: \u001b[31mTimed out 5000ms waiting for \u001b[39m\u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m()\u001b[22m\n\nLocator: getByRole('button', { name: /Export/ })\nExpected: visible\nReceived: <element(s) not found>\nCall log:\n  \u001b[2m- expect.toBeVisible with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for getByRole('button', { name: /Export/ })\u001b[22m\n\n    at /home/runner/work/macpro-mako/macpro-mako/test/e2e/e2e/specs/dashboard.spec.ts:82:70",
@@ -3239,7 +3239,7 @@
                               "stdout": [],
                               "stderr": [],
                               "retry": 0,
-                              "startTime": "2025-08-07T17:07:06.687Z",
+                              "startTime": "2025-08-14T14:59:18.693Z",
                               "attachments": [
                                 {
                                   "name": "video",
@@ -3299,12 +3299,12 @@
                                     {
                                       "workerIndex": 29,
                                       "status": "passed",
-                                      "duration": 1026,
+                                      "duration": 977,
                                       "errors": [],
                                       "stdout": [],
                                       "stderr": [],
                                       "retry": 0,
-                                      "startTime": "2025-08-07T17:07:13.978Z",
+                                      "startTime": "2025-08-14T14:59:25.947Z",
                                       "attachments": []
                                     }
                                   ],
@@ -3333,7 +3333,7 @@
                                     {
                                       "workerIndex": 29,
                                       "status": "failed",
-                                      "duration": 6093,
+                                      "duration": 6016,
                                       "error": {
                                         "message": "Error: \u001b[31mTimed out 5000ms waiting for \u001b[39m\u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m()\u001b[22m\n\nLocator: locator('tbody')\nExpected: visible\nReceived: <element(s) not found>\nCall log:\n  \u001b[2m- expect.toBeVisible with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for locator('tbody')\u001b[22m\n",
                                         "stack": "Error: \u001b[31mTimed out 5000ms waiting for \u001b[39m\u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m()\u001b[22m\n\nLocator: locator('tbody')\nExpected: visible\nReceived: <element(s) not found>\nCall log:\n  \u001b[2m- expect.toBeVisible with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for locator('tbody')\u001b[22m\n\n    at /home/runner/work/macpro-mako/macpro-mako/test/e2e/e2e/specs/dashboard.spec.ts:126:51",
@@ -3357,7 +3357,7 @@
                                       "stdout": [],
                                       "stderr": [],
                                       "retry": 0,
-                                      "startTime": "2025-08-07T17:07:15.103Z",
+                                      "startTime": "2025-08-14T14:59:27.024Z",
                                       "attachments": [
                                         {
                                           "name": "video",
@@ -3402,7 +3402,7 @@
                                     {
                                       "workerIndex": 30,
                                       "status": "failed",
-                                      "duration": 6206,
+                                      "duration": 6208,
                                       "error": {
                                         "message": "Error: \u001b[31mTimed out 5000ms waiting for \u001b[39m\u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m()\u001b[22m\n\nLocator: getByTestId('pagination')\nExpected: visible\nReceived: <element(s) not found>\nCall log:\n  \u001b[2m- expect.toBeVisible with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for getByTestId('pagination')\u001b[22m\n",
                                         "stack": "Error: \u001b[31mTimed out 5000ms waiting for \u001b[39m\u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m()\u001b[22m\n\nLocator: getByTestId('pagination')\nExpected: visible\nReceived: <element(s) not found>\nCall log:\n  \u001b[2m- expect.toBeVisible with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for getByTestId('pagination')\u001b[22m\n\n    at /home/runner/work/macpro-mako/macpro-mako/test/e2e/e2e/specs/dashboard.spec.ts:130:60",
@@ -3426,7 +3426,7 @@
                                       "stdout": [],
                                       "stderr": [],
                                       "retry": 0,
-                                      "startTime": "2025-08-07T17:07:22.201Z",
+                                      "startTime": "2025-08-14T14:59:34.002Z",
                                       "attachments": [
                                         {
                                           "name": "video",
@@ -3479,7 +3479,7 @@
                                     {
                                       "workerIndex": 31,
                                       "status": "timedOut",
-                                      "duration": 31498,
+                                      "duration": 31320,
                                       "error": {
                                         "message": "\u001b[31mTest timeout of 30000ms exceeded while running \"beforeEach\" hook.\u001b[39m",
                                         "stack": "\u001b[31mTest timeout of 30000ms exceeded while running \"beforeEach\" hook.\u001b[39m\n    at /home/runner/work/macpro-mako/macpro-mako/test/e2e/e2e/specs/dashboard.spec.ts:135:18",
@@ -3511,7 +3511,7 @@
                                       "stdout": [],
                                       "stderr": [],
                                       "retry": 0,
-                                      "startTime": "2025-08-07T17:07:29.545Z",
+                                      "startTime": "2025-08-14T14:59:41.281Z",
                                       "attachments": [
                                         {
                                           "name": "video",
@@ -3556,7 +3556,7 @@
                                     {
                                       "workerIndex": 32,
                                       "status": "timedOut",
-                                      "duration": 31385,
+                                      "duration": 31476,
                                       "error": {
                                         "message": "\u001b[31mTest timeout of 30000ms exceeded while running \"beforeEach\" hook.\u001b[39m",
                                         "stack": "\u001b[31mTest timeout of 30000ms exceeded while running \"beforeEach\" hook.\u001b[39m\n    at /home/runner/work/macpro-mako/macpro-mako/test/e2e/e2e/specs/dashboard.spec.ts:135:18",
@@ -3588,7 +3588,7 @@
                                       "stdout": [],
                                       "stderr": [],
                                       "retry": 0,
-                                      "startTime": "2025-08-07T17:08:02.202Z",
+                                      "startTime": "2025-08-14T15:00:13.693Z",
                                       "attachments": [
                                         {
                                           "name": "video",
@@ -3633,7 +3633,7 @@
                                     {
                                       "workerIndex": 33,
                                       "status": "timedOut",
-                                      "duration": 31323,
+                                      "duration": 31360,
                                       "error": {
                                         "message": "\u001b[31mTest timeout of 30000ms exceeded while running \"beforeEach\" hook.\u001b[39m",
                                         "stack": "\u001b[31mTest timeout of 30000ms exceeded while running \"beforeEach\" hook.\u001b[39m\n    at /home/runner/work/macpro-mako/macpro-mako/test/e2e/e2e/specs/dashboard.spec.ts:135:18",
@@ -3665,7 +3665,7 @@
                                       "stdout": [],
                                       "stderr": [],
                                       "retry": 0,
-                                      "startTime": "2025-08-07T17:08:34.721Z",
+                                      "startTime": "2025-08-14T15:00:46.280Z",
                                       "attachments": [
                                         {
                                           "name": "video",
@@ -3722,7 +3722,7 @@
                             {
                               "workerIndex": 34,
                               "status": "timedOut",
-                              "duration": 31370,
+                              "duration": 31296,
                               "error": {
                                 "message": "\u001b[31mTest timeout of 30000ms exceeded.\u001b[39m",
                                 "stack": "\u001b[31mTest timeout of 30000ms exceeded.\u001b[39m"
@@ -3743,7 +3743,7 @@
                               "stdout": [],
                               "stderr": [],
                               "retry": 0,
-                              "startTime": "2025-08-07T17:09:07.200Z",
+                              "startTime": "2025-08-14T15:01:18.739Z",
                               "attachments": [
                                 {
                                   "name": "metadata",
@@ -3805,12 +3805,12 @@
                             {
                               "workerIndex": 35,
                               "status": "passed",
-                              "duration": 6008,
+                              "duration": 5940,
                               "errors": [],
                               "stdout": [],
                               "stderr": [],
                               "retry": 0,
-                              "startTime": "2025-08-07T17:09:39.732Z",
+                              "startTime": "2025-08-14T15:01:51.155Z",
                               "attachments": []
                             }
                           ],
@@ -3839,12 +3839,12 @@
                             {
                               "workerIndex": 35,
                               "status": "passed",
-                              "duration": 3874,
+                              "duration": 3900,
                               "errors": [],
                               "stdout": [],
                               "stderr": [],
                               "retry": 0,
-                              "startTime": "2025-08-07T17:09:45.837Z",
+                              "startTime": "2025-08-14T15:01:57.199Z",
                               "attachments": []
                             }
                           ],
@@ -3873,12 +3873,12 @@
                             {
                               "workerIndex": 35,
                               "status": "passed",
-                              "duration": 4007,
+                              "duration": 4037,
                               "errors": [],
                               "stdout": [],
                               "stderr": [],
                               "retry": 0,
-                              "startTime": "2025-08-07T17:09:49.718Z",
+                              "startTime": "2025-08-14T15:02:01.106Z",
                               "attachments": []
                             }
                           ],
@@ -3907,12 +3907,12 @@
                             {
                               "workerIndex": 35,
                               "status": "passed",
-                              "duration": 3985,
+                              "duration": 2811,
                               "errors": [],
                               "stdout": [],
                               "stderr": [],
                               "retry": 0,
-                              "startTime": "2025-08-07T17:09:53.732Z",
+                              "startTime": "2025-08-14T15:02:05.148Z",
                               "attachments": []
                             }
                           ],
@@ -3941,12 +3941,12 @@
                             {
                               "workerIndex": 35,
                               "status": "passed",
-                              "duration": 3938,
+                              "duration": 3828,
                               "errors": [],
                               "stdout": [],
                               "stderr": [],
                               "retry": 0,
-                              "startTime": "2025-08-07T17:09:57.723Z",
+                              "startTime": "2025-08-14T15:02:07.966Z",
                               "attachments": []
                             }
                           ],
@@ -3975,12 +3975,12 @@
                             {
                               "workerIndex": 35,
                               "status": "passed",
-                              "duration": 3967,
+                              "duration": 3837,
                               "errors": [],
                               "stdout": [],
                               "stderr": [],
                               "retry": 0,
-                              "startTime": "2025-08-07T17:10:01.666Z",
+                              "startTime": "2025-08-14T15:02:11.800Z",
                               "attachments": []
                             }
                           ],
@@ -4009,12 +4009,12 @@
                             {
                               "workerIndex": 35,
                               "status": "passed",
-                              "duration": 4105,
+                              "duration": 3829,
                               "errors": [],
                               "stdout": [],
                               "stderr": [],
                               "retry": 0,
-                              "startTime": "2025-08-07T17:10:05.639Z",
+                              "startTime": "2025-08-14T15:02:15.644Z",
                               "attachments": []
                             }
                           ],
@@ -4058,12 +4058,12 @@
                                     {
                                       "workerIndex": 35,
                                       "status": "passed",
-                                      "duration": 1138,
+                                      "duration": 926,
                                       "errors": [],
                                       "stdout": [],
                                       "stderr": [],
                                       "retry": 0,
-                                      "startTime": "2025-08-07T17:10:09.749Z",
+                                      "startTime": "2025-08-14T15:02:19.478Z",
                                       "attachments": []
                                     }
                                   ],
@@ -4092,12 +4092,12 @@
                                     {
                                       "workerIndex": 35,
                                       "status": "passed",
-                                      "duration": 3894,
+                                      "duration": 3864,
                                       "errors": [],
                                       "stdout": [],
                                       "stderr": [],
                                       "retry": 0,
-                                      "startTime": "2025-08-07T17:10:10.892Z",
+                                      "startTime": "2025-08-14T15:02:20.409Z",
                                       "attachments": []
                                     }
                                   ],
@@ -4126,12 +4126,12 @@
                                     {
                                       "workerIndex": 35,
                                       "status": "passed",
-                                      "duration": 4077,
+                                      "duration": 3902,
                                       "errors": [],
                                       "stdout": [],
                                       "stderr": [],
                                       "retry": 0,
-                                      "startTime": "2025-08-07T17:10:14.793Z",
+                                      "startTime": "2025-08-14T15:02:24.280Z",
                                       "attachments": []
                                     }
                                   ],
@@ -4168,12 +4168,12 @@
                                     {
                                       "workerIndex": 35,
                                       "status": "passed",
-                                      "duration": 4073,
+                                      "duration": 5119,
                                       "errors": [],
                                       "stdout": [],
                                       "stderr": [],
                                       "retry": 0,
-                                      "startTime": "2025-08-07T17:10:18.876Z",
+                                      "startTime": "2025-08-14T15:02:28.187Z",
                                       "attachments": []
                                     }
                                   ],
@@ -4202,12 +4202,12 @@
                                     {
                                       "workerIndex": 35,
                                       "status": "passed",
-                                      "duration": 3819,
+                                      "duration": 4142,
                                       "errors": [],
                                       "stdout": [],
                                       "stderr": [],
                                       "retry": 0,
-                                      "startTime": "2025-08-07T17:10:22.956Z",
+                                      "startTime": "2025-08-14T15:02:33.314Z",
                                       "attachments": []
                                     }
                                   ],
@@ -4236,12 +4236,12 @@
                                     {
                                       "workerIndex": 35,
                                       "status": "passed",
-                                      "duration": 3747,
+                                      "duration": 4552,
                                       "errors": [],
                                       "stdout": [],
                                       "stderr": [],
                                       "retry": 0,
-                                      "startTime": "2025-08-07T17:10:26.781Z",
+                                      "startTime": "2025-08-14T15:02:37.462Z",
                                       "attachments": []
                                     }
                                   ],
@@ -4282,16 +4282,16 @@
                             {
                               "workerIndex": 35,
                               "status": "passed",
-                              "duration": 9778,
+                              "duration": 10768,
                               "errors": [],
                               "stdout": [
                                 {
-                                  "text": "[Download] for cmsReviewer Filename suggested by browser: spas-export-08_07_2025.csv\"\n"
+                                  "text": "[Download] for cmsReviewer Filename suggested by browser: spas-export-08_14_2025.csv\"\n"
                                 }
                               ],
                               "stderr": [],
                               "retry": 0,
-                              "startTime": "2025-08-07T17:10:30.534Z",
+                              "startTime": "2025-08-14T15:02:42.020Z",
                               "attachments": [
                                 {
                                   "name": "metadata",
@@ -4320,8 +4320,8 @@
   ],
   "errors": [],
   "stats": {
-    "startTime": "2025-08-07T17:00:33.145Z",
-    "duration": 607239.194,
+    "startTime": "2025-08-14T14:52:47.708Z",
+    "duration": 605141.321,
     "expected": 42,
     "skipped": 0,
     "unexpected": 35,
