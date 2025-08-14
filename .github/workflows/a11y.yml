@@ -25,11 +25,13 @@ jobs:
         run: run install
 
       - name: Install playwright dependencies
-        run: bunx playwright install --with-deps chromium
+        working-directory: react-app
+        run: bunx playwright install --with-deps chromium --force
 
       - name: Build UI
         working-directory: react-app
         run: bun run build
 
       - name: Run tests
-        run: run test --storybook
+        working-directory: react-app
+        run: bun run test-storybook
