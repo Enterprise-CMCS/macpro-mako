@@ -89,7 +89,7 @@ export const StateRoleSignup = () => {
         <section className="max-w-3xl mx-auto">
           <div className="py-10">
             <h2 className="text-xl font-bold">
-              {statesRequested.length > 1 ? "States:" : "State:"}
+              {statesRequested.length > 1 ? "States / Territories:" : "State / Territory:"}
             </h2>
             <p className="text-xl italic">
               {statesRequested.map((state) => convertStateAbbrToFullName(state)).join(", ")}
