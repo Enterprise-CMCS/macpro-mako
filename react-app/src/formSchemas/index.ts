@@ -9,6 +9,7 @@ import * as newChipDetailsSubmission from "./new-chip-details-submission";
 import * as newChipSubmission from "./new-chip-submission";
 import * as newMedicaidSubmission from "./new-medicaid-submission";
 import * as respondtoRAI from "./respond-to-rai";
+import * as splitSpa from "./split-spa";
 import * as temporaryExtension from "./temporary-extension";
 import * as toggleWithdrawRai from "./toggle-withdraw-rai";
 import * as uploadSubsequentDocuments from "./upload-subsequent-documents";
@@ -35,4 +36,5 @@ export const formSchemas = {
   "respond-to-rai-medicaid": respondtoRAI.formSchemaMedicaid,
   "app-k": appK.formSchema,
   "upload-subsequent-documents": uploadSubsequentDocuments.formSchema,
+  "split-spa": splitSpa.formSchema,
 };

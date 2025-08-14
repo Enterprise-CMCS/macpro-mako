@@ -70,7 +70,7 @@ describe("StateRoleSignup", () => {
     await setup("CA");
 
     expect(screen.getByText(/Select A Role/)).toBeInTheDocument();
-    expect(screen.getByText("State:")).toBeInTheDocument();
+    expect(screen.getByText("State / Territory:")).toBeInTheDocument();
     expect(screen.getByText("State Submitter")).toBeInTheDocument();
     expect(screen.getByText("State System Administrator")).toBeInTheDocument();
   });
@@ -80,7 +80,7 @@ describe("StateRoleSignup", () => {
     await setup("MD");
 
     expect(screen.getByText(/Select A Role/)).toBeInTheDocument();
-    expect(screen.getByText("State:")).toBeInTheDocument();
+    expect(screen.getByText("State / Territory:")).toBeInTheDocument();
     expect(screen.getByText("State Submitter")).toBeInTheDocument();
     expect(screen.queryByText("State System Administrator")).not.toBeInTheDocument();
   });
