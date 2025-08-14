@@ -23,9 +23,9 @@
         <div class='clearfix'>
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">78.57% </span>
+                <span class="strong">80.48% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>33/42</span>
+                <span class='fraction'>33/41</span>
             </div>
         
             
@@ -44,9 +44,9 @@
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">82.05% </span>
+                <span class="strong">84.21% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>32/39</span>
+                <span class='fraction'>32/38</span>
             </div>
         
             
@@ -61,7 +61,7 @@
             </div>
         </template>
     </div>
-    <div class='status-line medium'></div>
+    <div class='status-line high'></div>
     <pre><table class="coverage">
 <tr><td class="line-count quiet"><a name='L1'></a><a href='#L1'>1</a>
 <a name='L2'></a><a href='#L2'>2</a>
@@ -301,12 +301,22 @@
 <span class="cline-any cline-yes">18x</span>
 <span class="cline-any cline-yes">18x</span>
 <span class="cline-any cline-yes">18x</span>
-<span class="cline-any cline-yes">18x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">18x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">18x</span>
 <span class="cline-any cline-yes">18x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">18x</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">18x</span>
 <span class="cline-any cline-yes">2x</span>
@@ -382,16 +392,6 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -452,7 +452,7 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -474,7 +474,6 @@ import {
 import {
   banner,
   Button,
-  ConfirmationDialog,
   LoadingSpinner,
   Select,
   SelectContent,
@@ -483,6 +482,7 @@ import {
   SelectValue,
   SimplePageContainer,
   SubNavHeader,
+  userPrompt,
 } from "@/components";
 &nbsp;
 import { divisionsType, groupDivision, groupDivisionType } from "./groupDivision";
@@ -498,7 +498,6 @@ const groupSortFn = (groupA, groupB) =&gt; {
 };
 &nbsp;
 export const CMSSignup = () =&gt; {
-  const [showModal, setShowModal] = useState&lt;boolean&gt;(false);
   const [group, setGroup] = useState&lt;groupDivisionType | null&gt;(null);
   const [division, setDivision] = useState&lt;divisionsType | null&gt;(null);
   const { mutateAsync: submitRequest } = useSubmitRoleRequests();
@@ -507,6 +506,17 @@ export const CMSSignup = () =&gt; {
 &nbsp;
   const { data: userDetails, isLoading: isUserDetailsLoading } = useGetUserDetails();
   const currentRole = userDetails?.role;
+&nbsp;
+  const onCancel = <span class="fstat-no" title="function not covered" >() =&gt; {</span>
+<span class="cstat-no" title="statement not covered" >    userPrompt({</span>
+      header: "Cancel role request?",
+      body: "Changes you made will not be saved.",
+      onAccept: <span class="fstat-no" title="function not covered" >() =&gt; <span class="cstat-no" title="statement not covered" >n</span>avigate("/signup"),</span>
+      onCancel: <span class="fstat-no" title="function not covered" >() =&gt; {}</span>,
+      acceptButtonText: "Confirm",
+      cancelButtonText: "Stay on Page",
+    });
+  };
 &nbsp;
   const onSubmit = async () =&gt; {
     try {
@@ -578,16 +588,6 @@ export const CMSSignup = () =&gt; {
       &lt;/SubNavHeader&gt;
       {!isCMSRoleApprover &amp;&amp; (
         &lt;SimplePageContainer&gt;
-          &lt;ConfirmationDialog
-            open={showModal}
-            title="Cancel role request?"
-            body="Changes you made will not be saved."
-            onAccept={<span class="fstat-no" title="function not covered" >() =&gt; <span class="cstat-no" title="statement not covered" >n</span>avigate("/signup")}</span>
-            onCancel={<span class="fstat-no" title="function not covered" >() =&gt; <span class="cstat-no" title="statement not covered" >s</span>etShowModal(false)}</span>
-            cancelButtonText="Stay on Page"
-            acceptButtonText="Confirm"
-          /&gt;
-&nbsp;
           &lt;div className="flex justify-center p-5"&gt;
             &lt;div className="w-1/2"&gt;
               &lt;div className="py-2"&gt;
@@ -652,7 +652,7 @@ export const CMSSignup = () =&gt; {
                 &lt;Button className="mr-3" disabled={division == null} onClick={onSubmit}&gt;
                   Submit
                 &lt;/Button&gt;
-                &lt;Button variant="outline" onClick={<span class="fstat-no" title="function not covered" >() =&gt; <span class="cstat-no" title="statement not covered" >s</span>etShowModal(true)}&gt;</span>
+                &lt;Button variant="outline" onClick={onCancel}&gt;
                   Cancel
                 &lt;/Button&gt;
               &lt;/div&gt;
@@ -670,7 +670,7 @@ export const CMSSignup = () =&gt; {
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2025-08-14T02:19:37.268Z
+                at 2025-08-14T14:54:50.069Z
             </div>
         <script src="../../../../prettify.js"></script>
         <script>
