@@ -925,8 +925,8 @@ export const oneMACFAQContent: FAQContent[] = [
               {ABP_TEMPLATES.map((pdf) => (
                 <li key={pdf.title}>
                   <a
-                    download={pdf.href}
                     href={pdf.href}
+                    download={pdf.title}
                     rel="noopener noreferrer"
                     className="text-blue-600"
                     onClick={handleSupportLinkClick("template")}
@@ -996,8 +996,8 @@ export const oneMACFAQContent: FAQContent[] = [
               {MPC_TEMPLATES.map((pdf) => (
                 <li key={pdf.title}>
                   <a
-                    download={pdf.href}
                     href={pdf.href}
+                    download={pdf.title}
                     rel="noopener noreferrer"
                     className="text-blue-600"
                     onClick={handleSupportLinkClick("template")}

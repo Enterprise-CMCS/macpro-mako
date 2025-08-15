@@ -27,8 +27,8 @@ export const renderSection = (
         <li key={template.title}>
           {download ? (
             <a
-              download={template.href}
               href={template.href}
+              download={template.title}
               rel="noopener noreferrer"
               className="text-blue-600"
               onClick={handleSupportLinkClick("template")}
