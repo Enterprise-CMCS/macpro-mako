@@ -26,7 +26,6 @@ export const renderSection = (
         <li key={template.title}>
           <a
             href={template.href}
-            download={template.title}
             target="_blank"
             rel="noopener noreferrer"
             className="text-blue-600"
