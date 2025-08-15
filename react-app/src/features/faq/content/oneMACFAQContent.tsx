@@ -65,6 +65,7 @@ export const oneMACFAQContent: FAQContent[] = [
                 <a
                   className="text-blue-800 underline hover:no-underline "
                   href="/onboarding/eligibility-crosswalk-paper-based-state-plan-macpro.pdf"
+                  download="EligibilityCrosswalkPaperBasedStatePlanMACPro.pdf"
                   rel="noopener noreferrer"
                   target="_blank"
                   onClick={handleSupportLinkClick("general")}
@@ -81,8 +82,18 @@ export const oneMACFAQContent: FAQContent[] = [
         question: "What browsers can I use to access the system?",
         answerJSX: (
           <p>
-            The submission portal works best on Google Chrome (Version 91.0.4472.77 or later),
-            Firefox (Version 89.0 or later).
+            The submission portal works best on Google Chrome (Version 91.0.4472.77 or later) or
+            Firefox (Version 89.0 or later). Firefox users may need to adjust their browser settings
+            to enable PDFs to download automatically —{" "}
+            <a
+              href="https://support.mozilla.org/en-US/kb/change-firefox-behavior-when-open-file"
+              rel="noopener noreferrer"
+              target="_blank"
+              className="text-blue-800 underline hover:no-underline"
+            >
+              learn how
+            </a>
+            .
           </p>
         ),
       },
@@ -126,6 +137,7 @@ export const oneMACFAQContent: FAQContent[] = [
             <a
               className="text-blue-800 underline hover:no-underline"
               href="/onboarding/OneMACStateUserGuide.pdf"
+              download="OneMACStateUserGuide.pdf"
               onClick={handleSupportLinkClick("general")}
             >
               OneMAC State User Guide
@@ -179,6 +191,7 @@ export const oneMACFAQContent: FAQContent[] = [
                   <a
                     className="text-blue-800 underline hover:no-underline "
                     href={file}
+                    download={`${label}.pdf`}
                     rel="noopener noreferrer"
                     target="_blank"
                     onClick={handleSupportLinkClick("general")}
@@ -919,15 +932,14 @@ export const oneMACFAQContent: FAQContent[] = [
             <p>
               Medicaid Alternative Benefit Plan (ABP) SPA templates can be downloaded at the links
               below. After downloading and completing the templates you need, upload them as part of
-              the SPA submission. If you have trouble opening a PDF within your web browser,
-              download the PDF and open it with Adobe Reader or Acrobat, instead of within your
-              browser.
+              the SPA submission.
             </p>
             <ul className="list-disc pl-7 space-y-2">
               {ABP_TEMPLATES.map((pdf) => (
                 <li key={pdf.title}>
                   <a
                     href={pdf.href}
+                    download={pdf.title}
                     target="_blank"
                     rel="noopener noreferrer"
                     className="text-blue-600"
@@ -968,6 +980,7 @@ export const oneMACFAQContent: FAQContent[] = [
                 <li key={pdf.title}>
                   <a
                     href={pdf.href}
+                    download={pdf.title}
                     target="_blank"
                     rel="noopener noreferrer"
                     className="text-blue-600"
@@ -992,14 +1005,14 @@ export const oneMACFAQContent: FAQContent[] = [
             <p>
               Medicaid Premiums and Cost Sharing SPA templates can be downloaded at the links below.
               After downloading and completing the templates you need, upload them as part of the
-              SPA submission. If you have trouble opening a PDF within your web browser, download
-              the PDF and open it with Adobe Reader or Acrobat, instead of within your browser.
+              SPA submission.
             </p>
             <ul className="list-disc pl-7 space-y-2">
               {MPC_TEMPLATES.map((pdf) => (
                 <li key={pdf.title}>
                   <a
                     href={pdf.href}
+                    download={pdf.title}
                     target="_blank"
                     rel="noopener noreferrer"
                     className="text-blue-600"
@@ -1031,6 +1044,7 @@ export const oneMACFAQContent: FAQContent[] = [
                 <li key={pdf.title}>
                   <a
                     href={pdf.href}
+                    download={pdf.title}
                     target="_blank"
                     rel="noopener noreferrer"
                     className="text-blue-600"
@@ -1054,9 +1068,7 @@ export const oneMACFAQContent: FAQContent[] = [
           <section>
             <p>
               CHIP eligibility SPA templates can be downloaded at the links below. After downloading
-              and completing the templates you need, upload them as part of the SPA submission. If
-              you have trouble opening a PDF within your web browser, download the PDF and open it
-              with Adobe Reader or Acrobat, instead of within your browser.
+              and completing the templates you need, upload them as part of the SPA submission.
             </p>
             <ul className="list-disc pl-7 space-y-2 py-4">
               {renderSection(
@@ -1125,6 +1137,7 @@ export const oneMACFAQContent: FAQContent[] = [
                 <li>
                   <a
                     href="/chp/IG_ChipEligibilityIntroduction.pdf"
+                    download="IG_ChipEligibilityIntroduction.pdf"
                     target="_blank"
                     rel="noopener noreferrer"
                     className="text-blue-600"
