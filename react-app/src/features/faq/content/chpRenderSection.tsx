@@ -25,8 +25,8 @@ export const renderSection = (
       {templates.filter(filterCondition).map((template) => (
         <li key={template.title}>
           <a
+            download
             href={template.href}
-            target="_blank"
             rel="noopener noreferrer"
             className="text-blue-600"
             onClick={handleSupportLinkClick("template")}
