@@ -64,7 +64,8 @@ export const useMedSpaOptions = (): OptionData[] => {
     },
     {
       title: "All Other Medicaid SPA Submissions",
-      description: "Create a new Medicaid State Plan Amendment",
+      description:
+        "Create a new Medicaid State Plan Amendment. This includes Alternative Benefit Plan SPAs and Premiums and Cost Sharing SPAs.",
       to: {
         pathname: "/new-submission/spa/medicaid/create",
         search: new URLSearchParams({
