@@ -109,7 +109,7 @@ export const CHP_TEMPLATES: Template[] = [
   },
   {
     title: "CS 31",
-    text: "Incarcerated CHIP Beneficiaries Template",
+    text: "Incarcerated CHIP Beneficiaries",
     href: "/chp/CS31.pdf",
   },
 ];
