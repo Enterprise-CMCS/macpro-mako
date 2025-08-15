@@ -107,4 +107,9 @@ export const CHP_TEMPLATES: Template[] = [
     text: "General Eligibility - Presumptive Eligibility for Pregnant Women",
     href: "/chp/CS29.pdf",
   },
+  {
+    title: "CS 31",
+    text: "Incarcerated CHIP Beneficiaries",
+    href: "/chp/CS31.pdf",
+  },
 ];

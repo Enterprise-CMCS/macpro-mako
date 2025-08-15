@@ -1102,6 +1102,7 @@ export const oneMACFAQContent: FAQContent[] = [
                     "CS 27",
                     "CS 28",
                     "CS 29",
+                    "CS 31",
                   ].includes(template.title),
                 "list-disc pl-7 space-y-2",
               )}
@@ -1177,6 +1178,7 @@ export const oneMACFAQContent: FAQContent[] = [
                       "CS 27",
                       "CS 28",
                       "CS 29",
+                      "CS 31",
                     ].includes(guide.title),
                   "list-disc pl-6 space-y-2",
                 )}
