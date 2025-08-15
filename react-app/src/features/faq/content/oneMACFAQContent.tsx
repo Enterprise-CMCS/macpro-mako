@@ -65,6 +65,7 @@ export const oneMACFAQContent: FAQContent[] = [
                 <a
                   className="text-blue-800 underline hover:no-underline "
                   href="/onboarding/eligibility-crosswalk-paper-based-state-plan-macpro.pdf"
+                  download="EligibilityCrosswalkPaperBasedStatePlanMACPro.pdf"
                   rel="noopener noreferrer"
                   target="_blank"
                   onClick={handleSupportLinkClick("general")}
@@ -126,6 +127,7 @@ export const oneMACFAQContent: FAQContent[] = [
             <a
               className="text-blue-800 underline hover:no-underline"
               href="/onboarding/OneMACStateUserGuide.pdf"
+              download="OneMACStateUserGuide.pdf"
               onClick={handleSupportLinkClick("general")}
             >
               OneMAC State User Guide
@@ -179,6 +181,7 @@ export const oneMACFAQContent: FAQContent[] = [
                   <a
                     className="text-blue-800 underline hover:no-underline "
                     href={file}
+                    download={`${label}.pdf`}
                     rel="noopener noreferrer"
                     target="_blank"
                     onClick={handleSupportLinkClick("general")}
@@ -927,6 +930,7 @@ export const oneMACFAQContent: FAQContent[] = [
                   <a
                     href={pdf.href}
                     download={pdf.title}
+                    target="_blank"
                     rel="noopener noreferrer"
                     className="text-blue-600"
                     onClick={handleSupportLinkClick("template")}
@@ -966,6 +970,7 @@ export const oneMACFAQContent: FAQContent[] = [
                 <li key={pdf.title}>
                   <a
                     href={pdf.href}
+                    download={pdf.title}
                     target="_blank"
                     rel="noopener noreferrer"
                     className="text-blue-600"
@@ -998,6 +1003,7 @@ export const oneMACFAQContent: FAQContent[] = [
                   <a
                     href={pdf.href}
                     download={pdf.title}
+                    target="_blank"
                     rel="noopener noreferrer"
                     className="text-blue-600"
                     onClick={handleSupportLinkClick("template")}
@@ -1028,6 +1034,7 @@ export const oneMACFAQContent: FAQContent[] = [
                 <li key={pdf.title}>
                   <a
                     href={pdf.href}
+                    download={pdf.title}
                     target="_blank"
                     rel="noopener noreferrer"
                     className="text-blue-600"
@@ -1070,21 +1077,18 @@ export const oneMACFAQContent: FAQContent[] = [
                     "CS 16",
                   ].includes(template.title),
                 "list-disc pl-7 space-y-2",
-                true,
               )}
               {renderSection(
                 "XXI Medicaid Expansion",
                 CHP_TEMPLATES,
                 (template) => template.title === "CS 3",
                 "list-disc pl-7 space-y-2",
-                true,
               )}
               {renderSection(
                 "Eligibility Processing",
                 CHP_TEMPLATES,
                 (template) => template.title === "CS 24",
                 "list-disc pl-7 space-y-2",
-                true,
               )}
               {renderSection(
                 "Non-Financial Eligibility",
@@ -1102,7 +1106,6 @@ export const oneMACFAQContent: FAQContent[] = [
                     "CS 29",
                   ].includes(template.title),
                 "list-disc pl-7 space-y-2",
-                true,
               )}
             </ul>
           </section>
@@ -1123,6 +1126,7 @@ export const oneMACFAQContent: FAQContent[] = [
                 <li>
                   <a
                     href="/chp/IG_ChipEligibilityIntroduction.pdf"
+                    download="IG_ChipEligibilityIntroduction.pdf"
                     target="_blank"
                     rel="noopener noreferrer"
                     className="text-blue-600"

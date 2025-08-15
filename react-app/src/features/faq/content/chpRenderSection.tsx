@@ -18,34 +18,22 @@ export const renderSection = (
   templates: Template[],
   filterCondition: (template: Template) => boolean,
   ulClassName: string = "",
-  download: boolean = false,
 ) => (
   <>
     <p>{title}</p>
     <ul className={cn("list-disc pl-6 space-y-2", ulClassName)}>
       {templates.filter(filterCondition).map((template) => (
         <li key={template.title}>
-          {download ? (
-            <a
-              href={template.href}
-              download={template.title}
-              rel="noopener noreferrer"
-              className="text-blue-600"
-              onClick={handleSupportLinkClick("template")}
-            >
-              {template.title}: {template.text}
-            </a>
-          ) : (
-            <a
-              href={template.href}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="text-blue-600"
-              onClick={handleSupportLinkClick("template")}
-            >
-              {template.title}: {template.text}
-            </a>
-          )}
+          <a
+            href={template.href}
+            download={template.title}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="text-blue-600"
+            onClick={handleSupportLinkClick("template")}
+          >
+            {template.title}: {template.text}
+          </a>
           {template.subtext && template.subtext.length > 0 && (
             <ul className="list-disc pl-6 space-y-1">
               {template.subtext.map((sub, index) => (
