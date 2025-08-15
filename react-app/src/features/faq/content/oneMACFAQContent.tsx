@@ -925,7 +925,7 @@ export const oneMACFAQContent: FAQContent[] = [
               {ABP_TEMPLATES.map((pdf) => (
                 <li key={pdf.title}>
                   <a
-                    download
+                    download={pdf.href}
                     href={pdf.href}
                     rel="noopener noreferrer"
                     className="text-blue-600"
@@ -965,8 +965,8 @@ export const oneMACFAQContent: FAQContent[] = [
               {ABP_GUIDES.map((pdf) => (
                 <li key={pdf.title}>
                   <a
-                    download
                     href={pdf.href}
+                    target="_blank"
                     rel="noopener noreferrer"
                     className="text-blue-600"
                     onClick={handleSupportLinkClick("template")}
@@ -996,7 +996,7 @@ export const oneMACFAQContent: FAQContent[] = [
               {MPC_TEMPLATES.map((pdf) => (
                 <li key={pdf.title}>
                   <a
-                    download
+                    download={pdf.href}
                     href={pdf.href}
                     rel="noopener noreferrer"
                     className="text-blue-600"
@@ -1027,8 +1027,8 @@ export const oneMACFAQContent: FAQContent[] = [
               {MPC_GUIDES.map((pdf) => (
                 <li key={pdf.title}>
                   <a
-                    download
                     href={pdf.href}
+                    target="_blank"
                     rel="noopener noreferrer"
                     className="text-blue-600"
                     onClick={handleSupportLinkClick("template")}
@@ -1070,18 +1070,21 @@ export const oneMACFAQContent: FAQContent[] = [
                     "CS 16",
                   ].includes(template.title),
                 "list-disc pl-7 space-y-2",
+                true,
               )}
               {renderSection(
                 "XXI Medicaid Expansion",
                 CHP_TEMPLATES,
                 (template) => template.title === "CS 3",
                 "list-disc pl-7 space-y-2",
+                true,
               )}
               {renderSection(
                 "Eligibility Processing",
                 CHP_TEMPLATES,
                 (template) => template.title === "CS 24",
                 "list-disc pl-7 space-y-2",
+                true,
               )}
               {renderSection(
                 "Non-Financial Eligibility",
@@ -1099,6 +1102,7 @@ export const oneMACFAQContent: FAQContent[] = [
                     "CS 29",
                   ].includes(template.title),
                 "list-disc pl-7 space-y-2",
+                true,
               )}
             </ul>
           </section>
