@@ -52,8 +52,8 @@ export const Faq = () => {
     ? {
         anchorText: "chip-spa-attachments",
         question: "What are the attachments for a CHIP SPA?",
-        label: null,
-        labelColor: null,
+        label: "Updated",
+        labelColor: "green",
         answerJSX: (
           <>
             <p className="font-bold">CHIP SPA Attachment Types:</p>
