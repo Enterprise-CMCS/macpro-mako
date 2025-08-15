@@ -618,9 +618,8 @@ export const oneMACFAQContent: FAQContent[] = [
                     Revised Amended State Plan Language*
                   </td>
                   <td className="border border-gray-300 px-4 py-2">
-                    Revision made to the amended state plan language of the CHIP SPA submission.
-                    State to provide a redline version and a clean version of the revised amended
-                    state plan pages
+                    Track changes to <span className="underline">only</span> the currently approved
+                    CHIP state plan pages that the State is proposing to amend
                   </td>
                 </tr>
                 <tr>
