@@ -4,14 +4,11 @@ import type { Preview } from "@storybook/react-vite";
 import { cognitoHandlers, defaultApiHandlers, launchDarklyHandlers } from "mocks";
 import { initialize, mswLoader } from "msw-storybook-addon";
 
+// import * as React from "react";
 import { withQueryClient } from "./decorators";
-
-initialize(
-  {
-    onUnhandledRequest: "bypass",
-  },
-  [...cognitoHandlers, ...defaultApiHandlers, ...launchDarklyHandlers],
-);
+initialize({
+  onUnhandledRequest: "bypass",
+});
 
 const preview: Preview = {
   // Provide the MSW addon loader globally
@@ -26,12 +23,13 @@ const preview: Preview = {
         date: /Date$/i,
       },
     },
+    msw: {
+      handlers: [...cognitoHandlers, ...defaultApiHandlers, ...launchDarklyHandlers],
+    },
 
     a11y: {
-      // 'todo' - show a11y violations in the test UI only
-      // 'error' - fail CI on a11y violations
-      // 'off' - skip a11y checks entirely
-      test: "todo",
+      // 👇 Fail all accessibility tests when violations are found
+      test: "error",
     },
   },
 };

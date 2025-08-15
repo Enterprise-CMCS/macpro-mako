@@ -39,6 +39,17 @@ export type FullUser = CognitoUserAttributes & {
   states?: string[];
 };
 
+export type UserDetails = {
+  id: string;
+  eventType: string;
+  email: string;
+  fullName: string;
+  role: UserRole;
+  states?: string[];
+  division: string;
+  group: string;
+};
+
 export const CMS_ROLES = [
   "cmsreviewer",
   "cmsroleapprover",

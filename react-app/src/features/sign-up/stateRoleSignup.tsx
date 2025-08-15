@@ -1,11 +1,11 @@
 import { ChevronLeft } from "lucide-react";
 import { useMemo } from "react";
 import { Navigate, useNavigate, useSearchParams } from "react-router";
-import { StateCode } from "shared-types";
+import { StateCode, UserDetails } from "shared-types";
 import { UserRole } from "shared-types/events/legacy-user";
 import { isStateRole } from "shared-utils";
 
-import { useGetUserDetails, useGetUserProfile, UserDetails, useStateAccessMap } from "@/api";
+import { useGetUserDetails, useGetUserProfile, useStateAccessMap } from "@/api";
 import {
   LoadingSpinner,
   OptionCard,

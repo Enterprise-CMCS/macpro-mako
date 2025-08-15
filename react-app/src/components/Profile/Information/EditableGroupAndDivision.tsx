@@ -4,9 +4,9 @@ import { API } from "aws-amplify";
 import { LucidePencil } from "lucide-react";
 import { useEffect, useMemo, useState } from "react";
 import { useForm } from "react-hook-form";
+import { UserDetails } from "shared-types";
 import { z } from "zod";
 
-import { UserDetails } from "@/api";
 import {
   Button,
   Dialog,

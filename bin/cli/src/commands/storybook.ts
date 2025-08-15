@@ -20,17 +20,29 @@ export const storybook = {
         default: false,
         describe: "Build the Storybook site without starting it",
         defaultDescription: "false",
+      })
+      .option("ci", {
+        type: "boolean",
+        demandOption: false,
+        default: false,
+        describe: "Start the Storybook site without opening the browser",
+        defaultDescription: "false",
       });
   },
 
-  handler: async (options: { "start-only"?: boolean; "build-only"?: boolean }) => {
+  handler: async (options: { "start-only"?: boolean; "build-only"?: boolean; ci?: boolean }) => {
+    const storybookCommand = ["run", "storybook"];
+    if (options.ci) {
+      storybookCommand.push("--ci");
+    }
+
     if (options["start-only"]) {
-      await runCommand("bun", ["run", "storybook"], "react-app");
+      await runCommand("bun", storybookCommand, "react-app");
     } else if (options["build-only"]) {
       await runCommand("bun", ["run", "build-storybook"], "react-app");
     } else {
       await runCommand("bun", ["run", "build-storybook"], "react-app");
-      await runCommand("bun", ["run", "storybook"], "react-app");
+      await runCommand("bun", storybookCommand, "react-app");
     }
   },
 };

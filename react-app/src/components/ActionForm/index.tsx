@@ -4,11 +4,11 @@ import { API } from "aws-amplify";
 import { ReactNode, useEffect, useMemo, useRef } from "react";
 import { DefaultValues, FieldPath, useForm, UseFormReturn } from "react-hook-form";
 import { Navigate, useLocation, useNavigate, useParams } from "react-router";
-import { Authority, CognitoUserAttributes } from "shared-types";
+import { Authority, UserDetails } from "shared-types";
 import { isStateUser } from "shared-utils";
 import { z } from "zod";
 
-import { useGetUser } from "@/api";
+import { useGetUserDetails } from "@/api";
 import {
   ActionFormDescription,
   Banner,
@@ -82,7 +82,7 @@ type ActionFormProps<Schema extends SchemaWithEnforcableProps> = {
     property: (keyof z.TypeOf<Schema> & string) | ((values: z.TypeOf<Schema>) => string);
     documentChecker: CheckDocumentFunction;
   };
-  conditionsDeterminingUserAccess?: ((user: CognitoUserAttributes | null) => boolean)[];
+  conditionsDeterminingUserAccess?: ((user: UserDetails | null) => boolean)[];
   breadcrumbText: string;
   formDescription?: string | React.ReactNode;
   preSubmissionMessage?: string;
@@ -143,7 +143,7 @@ export const ActionForm = <Schema extends SchemaWithEnforcableProps>({
   const startTimePage = Date.now();
 
   const navigate = useNavigate();
-  const { data: userObj, isLoading: isUserLoading } = useGetUser();
+  const { data: userObj, isLoading: isUserLoading } = useGetUserDetails();
   const skipNavigationPromptRef = useRef(false);
 
   const breadcrumbs = optionCrumbsFromPath(pathname, authority, id);
@@ -264,7 +264,7 @@ export const ActionForm = <Schema extends SchemaWithEnforcableProps>({
   }
 
   const doesUserHaveAccessToForm = conditionsDeterminingUserAccess.some((condition) =>
-    condition(userObj?.user || null),
+    condition(userObj || null),
   );
 
   if (!userObj || doesUserHaveAccessToForm === false) {
