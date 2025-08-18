@@ -1,6 +1,5 @@
 import { useEffect, useMemo, useRef } from "react";
 import { Authority, opensearch } from "shared-types";
-import { isCmsUser } from "shared-utils";
 
 import { useGetUser } from "@/api/useGetUser";
 import { DetailsSection, LoadingSpinner } from "@/components";
@@ -67,16 +66,22 @@ export const PackageDetails = ({ submission }: PackageDetailsProps) => {
 
   useEffect(() => {
     if (!isUserLoading && typeof window.gtag == "function" && !didSetGATag.current) {
-      const isWaiver = (authority) =>
-        authority === Authority["1915c"] || authority === Authority["1915b"];
       sendGAEvent("package_details_view", {
         package_id: submission.id,
-        package_type: isWaiver(submission.authority) ? "waiver" : "spa",
-        user_role: isCmsUser(user.user) ? "cms" : "state",
+        package_type: submission.authority,
+        user_role: user.user.role,
+        state: submission.state,
       });
       didSetGATag.current = true;
     }
-  }, [isUserLoading, user?.user, submission.id, submission.authority, didSetGATag]);
+  }, [
+    isUserLoading,
+    user?.user,
+    submission.id,
+    submission.authority,
+    submission.state,
+    didSetGATag,
+  ]);
 
   if (isUserLoading) return <LoadingSpinner />;
 

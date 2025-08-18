@@ -5,8 +5,8 @@ import { opensearch, ReactQueryApiError, SEATOOL_STATUS } from "shared-types";
 import { sendGAEvent } from "@/utils/ReactGA/SendGAEvent";
 
 export const getItem = async (id: string): Promise<opensearch.main.ItemResult> =>
-  await API.post("os", "/item", { body: { id } }).catch(() =>
-    sendGAEvent("api_error", { message: "failure /item" }),
+  await API.post("os", "/item", { body: { id } }).catch((e) =>
+    sendGAEvent("api_error", { message: `failure /item ${id}: ${e}` }),
   );
 
 export const idIsApproved = async (id: string) => {
