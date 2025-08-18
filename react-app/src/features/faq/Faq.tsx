@@ -76,8 +76,9 @@ export const Faq = () => {
                     Amended State Plan Language*
                   </td>
                   <td className="border border-gray-300 px-4 py-2">
-                    Track changes to <span className="underline">only</span> the currently approved
-                    CHIP state plan pages that the State is proposing to amend
+                    Redline version of proposed changes to the existing CHIP state plan pages. State
+                    to provide a redline version and a clean version of the CHIP state plan pages
+                    being amended.
                   </td>
                 </tr>
                 <tr>
@@ -154,8 +155,9 @@ export const Faq = () => {
                     Amended State Plan Language
                   </td>
                   <td className="border border-gray-300 px-4 py-2">
-                    Track changes to <span className="underline">only</span> the currently approved
-                    CHIP state plan pages that the State is proposing to amend
+                    Redline version of proposed changes to the existing CHIP state plan pages. State
+                    to provide a redline version and a clean version of the CHIP state plan pages
+                    being amended.
                   </td>
                 </tr>
                 <tr>
@@ -213,8 +215,9 @@ export const Faq = () => {
                 <tr>
                   <td className="border border-gray-300 px-4 py-2">Amended State Plan Language*</td>
                   <td className="border border-gray-300 px-4 py-2">
-                    Track changes to <span className="underline">only</span> the currently approved
-                    CHIP state plan pages that the State is proposing to amend
+                    Redline version of proposed changes to the existing CHIP state plan pages. State
+                    to provide a redline version and a clean version of the CHIP state plan pages
+                    being amended.
                   </td>
                 </tr>
                 <tr>
