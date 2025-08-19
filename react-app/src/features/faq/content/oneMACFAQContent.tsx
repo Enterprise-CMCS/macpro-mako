@@ -933,7 +933,8 @@ export const oneMACFAQContent: FAQContent[] = [
             <p>
               Medicaid Alternative Benefit Plan (ABP) SPA templates can be downloaded at the links
               below. After downloading and completing the templates you need, upload them as part of
-              the SPA submission.
+              the SPA submission. The template PDFs can only be opened using Adobe Reader or
+              Acrobat.
             </p>
             <ul className="list-disc pl-7 space-y-2">
               {ABP_TEMPLATES.map((pdf) => (
@@ -1006,7 +1007,7 @@ export const oneMACFAQContent: FAQContent[] = [
             <p>
               Medicaid Premiums and Cost Sharing SPA templates can be downloaded at the links below.
               After downloading and completing the templates you need, upload them as part of the
-              SPA submission.
+              SPA submission. The template PDFs can only be opened using Adobe Reader or Acrobat.
             </p>
             <ul className="list-disc pl-7 space-y-2">
               {MPC_TEMPLATES.map((pdf) => (
@@ -1069,7 +1070,8 @@ export const oneMACFAQContent: FAQContent[] = [
           <section>
             <p>
               CHIP eligibility SPA templates can be downloaded at the links below. After downloading
-              and completing the templates you need, upload them as part of the SPA submission.
+              and completing the templates you need, upload them as part of the SPA submission. The
+              template PDFs can only be opened using Adobe Reader or Acrobat.
             </p>
             <ul className="list-disc pl-7 space-y-2 py-4">
               {renderSection(
