@@ -15,12 +15,6 @@ import { renderWithQueryClient } from "@/utils/test-helpers";
 import { PackageDetails } from ".";
 const sendGAEventSpy = vi.spyOn(gaUtils, "sendGAEvent");
 
-vi.mock("@/api/useGetUser", () => ({
-  useGetUser: () => ({
-    data: { user: { name: "fake user" } },
-    isLoading: false,
-  }),
-}));
 vi.mock("shared-utils", async (importOriginal) => {
   const actual = await importOriginal<typeof import("shared-utils")>();
   return {

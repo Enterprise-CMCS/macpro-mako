@@ -137,7 +137,7 @@ describe("StateSignup", () => {
 
     await waitFor(() => expect(screen.getByText("Maine")).toBeInTheDocument());
     await user.click(screen.getByText("Maine"));
-    expect(submitButton).toBeEnabled();
+    await waitFor(() => expect(submitButton).toBeEnabled());
 
     await user.click(submitButton);
 
@@ -158,7 +158,7 @@ describe("StateSignup", () => {
     const confirmButton = screen.getByRole("button", { name: "Confirm" });
     await user.click(confirmButton);
 
-    expect(screen.getByText(/Registration: User Role/)).toBeInTheDocument();
+    await waitFor(() => expect(screen.getByText(/Registration: User Role/)).toBeInTheDocument());
   });
 
   it("should show an error if there was an error submitting the request", async () => {
