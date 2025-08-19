@@ -25,7 +25,7 @@
     "rootDir": "./",
     "paths": {
       "*": ["./*"]
-    },
+    }
   },
   "exclude": ["node_modules", "cdk.out", ".cdk"],
   "include": ["lib/**/*", "react-app/**/*", "test/**/*", "mocks/**/*"]
