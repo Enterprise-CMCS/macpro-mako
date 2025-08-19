@@ -191,7 +191,7 @@ export const oneMACFAQContent: FAQContent[] = [
                   <a
                     className="text-blue-800 underline hover:no-underline "
                     href={file}
-                    download={`${label}.pdf`}
+                    download={label}
                     rel="noopener noreferrer"
                     target="_blank"
                     onClick={handleSupportLinkClick("general")}
