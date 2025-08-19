@@ -1,8 +1,9 @@
 import LZ from "lz-string";
 import { useMemo } from "react";
 import { LoaderFunctionArgs, redirect, useLoaderData } from "react-router";
+import { UserDetails } from "shared-types";
 
-import { getUserDetails, getUserProfile, OneMacUserProfile, UserDetails } from "@/api";
+import { getUserDetails, getUserProfile, OneMacUserProfile } from "@/api";
 import { GroupAndDivision, RoleStatusCard, SubNavHeader, UserInformation } from "@/components";
 import { useFeatureFlag } from "@/hooks/useFeatureFlag";
 
