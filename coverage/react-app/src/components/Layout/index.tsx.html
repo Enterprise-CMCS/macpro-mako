@@ -597,7 +597,9 @@
 <a name='L532'></a><a href='#L532'>532</a>
 <a name='L533'></a><a href='#L533'>533</a>
 <a name='L534'></a><a href='#L534'>534</a>
-<a name='L535'></a><a href='#L535'>535</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
+<a name='L535'></a><a href='#L535'>535</a>
+<a name='L536'></a><a href='#L536'>536</a>
+<a name='L537'></a><a href='#L537'>537</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -931,6 +933,8 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">106x</span>
 <span class="cline-any cline-yes">94x</span>
 <span class="cline-any cline-yes">94x</span>
@@ -1150,8 +1154,8 @@ import { ErrorPage } from "@/features/error-page";
 import { hasPendingRequests } from "@/features/profile/utils";
 import { useMediaQuery } from "@/hooks";
 import { useFeatureFlag } from "@/hooks/useFeatureFlag";
-import { isFaqPage, isProd } from "@/utils";
-import { cn } from "@/utils";
+import { cn, isFaqPage, isProd } from "@/utils";
+import { PathTracker } from "@/utils/ReactGA/PathTracker";
 import { sendGAEvent } from "@/utils/ReactGA/SendGAEvent";
 &nbsp;
 import TopBanner from "../Banner/macproBanner";
@@ -1387,55 +1391,57 @@ export const Layout = () =&gt; {
 &nbsp;
   return (
     &lt;div className="min-h-full flex flex-col"&gt;
-      &lt;ScrollToTop /&gt;
-      &lt;UserPrompt /&gt;
-      {user?.user &amp;&amp; !isFaqPage &amp;&amp; &lt;MMDLAlertBanner /&gt;}
-      &lt;UsaBanner isUserMissingRole={user?.user &amp;&amp; customUserRoles === undefined} /&gt;
-      &lt;TopBanner /&gt;
-      &lt;nav data-testid="nav-banner-d" className="bg-primary"&gt;
-        &lt;div className="max-w-screen-xl mx-auto px-4 lg:px-8"&gt;
-          &lt;div className="h-[70px] relative flex gap-12 items-center text-white"&gt;
-            {!isFaqPage ? (
-              // This is the original Link component
-              &lt;Link to={user?.user || hideLogin ? "/" : "/login"}&gt;
-                &lt;img
-                  className="h-10 w-28 min-w-[112px] resize-none"
-                  src="/onemac-logo.png"
-                  alt="onemac site logo"
-                /&gt;
-              &lt;/Link&gt;
-            ) : (
-              // This is a non-clickable element that looks the same
-              &lt;div&gt;
-                &lt;img
-                  className="h-10 w-28 min-w-[112px] resize-none"
-                  src="/onemac-logo.png"
-                  alt="onemac site logo"
-                /&gt;
-              &lt;/div&gt;
-            )}
-            &lt;ResponsiveNav isDesktop={isDesktop} /&gt;
+      &lt;PathTracker userRole={user?.user?.role}&gt;
+        &lt;ScrollToTop /&gt;
+        &lt;UserPrompt /&gt;
+        {user?.user &amp;&amp; !isFaqPage &amp;&amp; &lt;MMDLAlertBanner /&gt;}
+        &lt;UsaBanner isUserMissingRole={user?.user &amp;&amp; customUserRoles === undefined} /&gt;
+        &lt;TopBanner /&gt;
+        &lt;nav data-testid="nav-banner-d" className="bg-primary"&gt;
+          &lt;div className="max-w-screen-xl mx-auto px-4 lg:px-8"&gt;
+            &lt;div className="h-[70px] relative flex gap-12 items-center text-white"&gt;
+              {!isFaqPage ? (
+                // This is the original Link component
+                &lt;Link to={user?.user || hideLogin ? "/" : "/login"}&gt;
+                  &lt;img
+                    className="h-10 w-28 min-w-[112px] resize-none"
+                    src="/onemac-logo.png"
+                    alt="onemac site logo"
+                  /&gt;
+                &lt;/Link&gt;
+              ) : (
+                // This is a non-clickable element that looks the same
+                &lt;div&gt;
+                  &lt;img
+                    className="h-10 w-28 min-w-[112px] resize-none"
+                    src="/onemac-logo.png"
+                    alt="onemac site logo"
+                  /&gt;
+                &lt;/div&gt;
+              )}
+              &lt;ResponsiveNav isDesktop={isDesktop} /&gt;
+            &lt;/div&gt;
           &lt;/div&gt;
-        &lt;/div&gt;
-      &lt;/nav&gt;
-      &lt;main className="flex-1"&gt;
-        {/* Portal target for SubNavHeader */}
-        &lt;div id="subheader-portal-container" /&gt;
-        &lt;SimplePageContainer&gt;
-          &lt;Banner /&gt;
-        &lt;/SimplePageContainer&gt;
-        {error ? &lt;ErrorPage /&gt; : &lt;Outlet /&gt;}
-      &lt;/main&gt;
-      &lt;Footer
-        email="OneMAC_Helpdesk@cms.hhs.gov"
-        address={{
-          city: "Baltimore",
-          state: "MD",
-          street: "7500 Security Boulevard",
-          zip: 21244,
-        }}
-        showNavLinks={cmsHomeFlag &amp;&amp; <span class="branch-1 cbranch-no" title="branch not covered" >stateHomeFlag &amp;&amp; <span class="branch-2 cbranch-no" title="branch not covered" >!</span>!user.user}</span>
-      /&gt;
+        &lt;/nav&gt;
+        &lt;main className="flex-1"&gt;
+          {/* Portal target for SubNavHeader */}
+          &lt;div id="subheader-portal-container" /&gt;
+          &lt;SimplePageContainer&gt;
+            &lt;Banner /&gt;
+          &lt;/SimplePageContainer&gt;
+          {error ? &lt;ErrorPage /&gt; : &lt;Outlet /&gt;}
+        &lt;/main&gt;
+        &lt;Footer
+          email="OneMAC_Helpdesk@cms.hhs.gov"
+          address={{
+            city: "Baltimore",
+            state: "MD",
+            street: "7500 Security Boulevard",
+            zip: 21244,
+          }}
+          showNavLinks={cmsHomeFlag &amp;&amp; <span class="branch-1 cbranch-no" title="branch not covered" >stateHomeFlag &amp;&amp; <span class="branch-2 cbranch-no" title="branch not covered" >!</span>!user.user}</span>
+        /&gt;
+      &lt;/PathTracker&gt;
     &lt;/div&gt;
   );
 };
@@ -1672,7 +1678,7 @@ export const SupportSubNavHeader = ({ children, className }: SupportSubNavHeader
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2025-08-19T16:48:50.006Z
+                at 2025-08-19T19:46:50.637Z
             </div>
         <script src="../../../../prettify.js"></script>
         <script>
