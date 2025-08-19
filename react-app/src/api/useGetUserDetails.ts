@@ -11,7 +11,7 @@ export const getUserDetails = async (userEmail?: string): Promise<UserDetails | 
     return userDetails as UserDetails;
   } catch (e) {
     sendGAEvent("api_error", {
-      message: `failure /getUserDetails ${userEmail}`,
+      message: `failure /getUserDetails ${userEmail || ""}`,
     });
     console.log({ e });
     return null;
