@@ -18,7 +18,7 @@ export const requestBaseCMSAccess = async (): Promise<unknown> => {
     return userDetails as UserDetails;
   } catch (e) {
     sendGAEvent("api_error", {
-      message: `failure /requestBaseCMSAccess: ${e}`,
+      message: "failure /requestBaseCMSAccess",
     });
     console.log({ e });
     return null;

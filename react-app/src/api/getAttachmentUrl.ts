@@ -17,7 +17,7 @@ export const getAttachmentUrl = async (
   });
   if (!response.url) {
     sendGAEvent("api_error", {
-      message: "failure /getAttachmentUrl",
+      message: `failure /getAttachmentUrl getting ${key}/${filename} for ${id} from bucket ${bucket}`,
     });
   }
   return response.url as string;
