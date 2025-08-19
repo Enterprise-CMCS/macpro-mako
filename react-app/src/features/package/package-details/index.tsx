@@ -37,7 +37,7 @@ type PackageDetailsProps = {
 
 export const PackageDetails = ({ submission }: PackageDetailsProps) => {
   const { data: user, isLoading: isUserLoading } = useGetUser();
-  const didSetGATag = useRef(false);
+  const didSetGATag = useRef<boolean>(false);
   const isCHIPDetailsEnabled = useFeatureFlag("CHIP_SPA_DETAILS");
   const title = useMemo(() => {
     const hasChipSubmissionType =
@@ -69,19 +69,13 @@ export const PackageDetails = ({ submission }: PackageDetailsProps) => {
       sendGAEvent("package_details_view", {
         package_id: submission.id,
         package_type: submission.authority,
-        user_role: user.user.role,
         state: submission.state,
+        ...(user?.user?.role && { user_role: user?.user?.role }),
       });
       didSetGATag.current = true;
     }
-  }, [
-    isUserLoading,
-    user?.user,
-    submission.id,
-    submission.authority,
-    submission.state,
-    didSetGATag,
-  ]);
+  }, [isUserLoading]); // eslint-disable-line react-hooks/exhaustive-deps
+  // we only want this to run when the user finishes loading
 
   if (isUserLoading) return <LoadingSpinner />;
 

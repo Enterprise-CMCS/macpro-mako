@@ -39,7 +39,7 @@ export const PathTracker = ({ userRole, children }: PathTrackerProps) => {
         const timeOnPageSec = Math.round(deltaMs / 1000); // nearest second
         sendGAEvent("page_duration", {
           page_path: path,
-          user_role: userRole,
+          ...(userRole && { user_role: userRole }),
           time_on_page_sec: timeOnPageSec,
         });
       }
