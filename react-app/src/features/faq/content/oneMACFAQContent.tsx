@@ -79,6 +79,8 @@ export const oneMACFAQContent: FAQContent[] = [
       },
       {
         anchorText: "browsers",
+        label: "Updated",
+        labelColor: "green",
         question: "What browsers can I use to access the system?",
         answerJSX: (
           <p>
