@@ -46,7 +46,7 @@
             <div class='fl pad1y space-right2'>
                 <span class="strong">100% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>28/28</span>
+                <span class='fraction'>31/31</span>
             </div>
         
             
@@ -169,7 +169,11 @@
 <a name='L104'></a><a href='#L104'>104</a>
 <a name='L105'></a><a href='#L105'>105</a>
 <a name='L106'></a><a href='#L106'>106</a>
-<a name='L107'></a><a href='#L107'>107</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
+<a name='L107'></a><a href='#L107'>107</a>
+<a name='L108'></a><a href='#L108'>108</a>
+<a name='L109'></a><a href='#L109'>109</a>
+<a name='L110'></a><a href='#L110'>110</a>
+<a name='L111'></a><a href='#L111'>111</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -183,19 +187,22 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">282x</span>
+<span class="cline-any cline-yes">7273x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">7268x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">282x</span>
-<span class="cline-any cline-yes">7321x</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">7316x</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">2160x</span>
+<span class="cline-any cline-yes">2108x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">282x</span>
+<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">282x</span>
 <span class="cline-any cline-yes">225x</span>
@@ -206,7 +213,8 @@
 <span class="cline-any cline-yes">282x</span>
 <span class="cline-any cline-yes">20x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">4911x</span>
+<span class="cline-any cline-yes">282x</span>
+<span class="cline-any cline-yes">4915x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -282,6 +290,7 @@
   FullUser,
   STATE_ROLES,
   USER_MANAGER_ROLES,
+  UserDetails,
 } from "shared-types";
 import {
   ROLES_ALLOWED_TO_REQUEST,
@@ -292,27 +301,30 @@ import {
 &nbsp;
 /** Function receives a user's cognito attributes and list of authorized roles,
  * and will confirm the user has one or more authorized UserRoles */
-const userHasAuthorizedRole = (user: FullUser | null, authorized: UserRole[]) =&gt; {
+const userHasAuthorizedRole = (user: FullUser | UserDetails | null, authorized: UserRole[]) =&gt; {
   if (!user) return false;
 &nbsp;
   return authorized.includes(user.role);
 };
 &nbsp;
 /** Confirms user is any kind of CMS user */
-export const isCmsUser = (user: FullUser | null) =&gt; userHasAuthorizedRole(user, CMS_ROLES);
+export const isCmsUser = (user: FullUser | UserDetails | null) =&gt;
+  userHasAuthorizedRole(user, CMS_ROLES);
 /** Confirms user is help desk user */
-export const isHelpDeskUser = <span class="fstat-no" title="function not covered" >(u</span>ser: FullUser | null) =&gt; <span class="cstat-no" title="statement not covered" >userHasAuthorizedRole(user, ["helpdesk"]);</span>
+export const isHelpDeskUser = <span class="fstat-no" title="function not covered" >(u</span>ser: FullUser | UserDetails | null) =&gt;
+<span class="cstat-no" title="statement not covered" >  userHasAuthorizedRole(user, ["helpdesk"]);</span>
 /** Confirms user is a CMS user who can create data */
-export const isCmsWriteUser = (user: FullUser | null) =&gt;
+export const isCmsWriteUser = (user: FullUser | UserDetails | null) =&gt;
   userHasAuthorizedRole(user, CMS_WRITE_ROLES);
 /** Confirms user is a CMS user who can only view data */
-export const isCmsReadonlyUser = (user: FullUser | null) =&gt;
+export const isCmsReadonlyUser = (user: FullUser | UserDetails | null) =&gt;
   userHasAuthorizedRole(user, CMS_READ_ONLY_ROLES);
 /** Confirms user can manage other users */
-export const isUserManagerUser = (user: FullUser | null) =&gt;
+export const isUserManagerUser = (user: FullUser | UserDetails | null) =&gt;
   userHasAuthorizedRole(user, USER_MANAGER_ROLES);
 /** Confirms user is a State user */
-export const isStateUser = (user: FullUser | null) =&gt; userHasAuthorizedRole(user, STATE_ROLES);
+export const isStateUser = (user: FullUser | UserDetails | null) =&gt;
+  userHasAuthorizedRole(user, STATE_ROLES);
 /** Confirms user is a State user */
 // export const isCmsSuperUser = (user: FullUser | null) =&gt; userHasAuthorizedRole(user, []);
 /** Confirms user is an IDM user */
@@ -388,7 +400,7 @@ export const newUserRoleMap = {
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2025-08-19T02:16:12.619Z
+                at 2025-08-19T13:49:51.566Z
             </div>
         <script src="../../../prettify.js"></script>
         <script>
