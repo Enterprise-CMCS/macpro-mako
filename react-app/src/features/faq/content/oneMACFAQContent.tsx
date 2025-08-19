@@ -535,6 +535,8 @@ export const oneMACFAQContent: FAQContent[] = [
       {
         anchorText: "chip-spa-attachments",
         question: "What are the attachments for a CHIP SPA?",
+        label: "Updated", // Add a `label` field for LD faq
+        labelColor: "green",
         answerJSX: (
           <>
             <p>Note: “*” indicates a required attachment.</p>
@@ -554,9 +556,8 @@ export const oneMACFAQContent: FAQContent[] = [
                 <tr>
                   <td className="border border-gray-300 px-4 py-2">Amended State Plan Language*</td>
                   <td className="border border-gray-300 px-4 py-2">
-                    Redline version of proposed changes to the existing CHIP state plan pages. State
-                    to provide a redline version and a clean version of the CHIP state plan pages
-                    being amended.
+                    Track changes to <span className="underline">only</span> the currently approved
+                    CHIP state plan pages that the State is proposing to amend
                   </td>
                 </tr>
                 <tr>
@@ -912,8 +913,8 @@ export const oneMACFAQContent: FAQContent[] = [
       {
         anchorText: "abp-spa-templates",
         question: "Where can I download Medicaid Alternative Benefit Plan (ABP) SPA templates?",
-        label: "New",
-        labelColor: "blue",
+        label: "Updated",
+        labelColor: "green",
         answerJSX: (
           <section className="space-y-2">
             <p>
@@ -1102,6 +1103,7 @@ export const oneMACFAQContent: FAQContent[] = [
                     "CS 27",
                     "CS 28",
                     "CS 29",
+                    "CS 31",
                   ].includes(template.title),
                 "list-disc pl-7 space-y-2",
               )}
@@ -1177,6 +1179,7 @@ export const oneMACFAQContent: FAQContent[] = [
                       "CS 27",
                       "CS 28",
                       "CS 29",
+                      "CS 31",
                     ].includes(guide.title),
                   "list-disc pl-6 space-y-2",
                 )}
