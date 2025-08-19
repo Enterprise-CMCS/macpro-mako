@@ -112,7 +112,7 @@ export const Faq = () => {
                 <tr>
                   <td className="border border-gray-300 px-4 py-2">Other</td>
                   <td className="border border-gray-300 px-4 py-2">
-                    Other supporting document(s) needed to process the CHIP SPA submission
+                    Other document(s) needed to process the CHIP SPA submission
                   </td>
                 </tr>
               </tbody>
@@ -184,8 +184,7 @@ export const Faq = () => {
                 <tr>
                   <td className="border border-gray-300 px-4 py-2">Other</td>
                   <td className="border border-gray-300 px-4 py-2">
-                    Other supporting document(s) needed to process the CHIP Eligibility SPA
-                    submission
+                    Other document(s) needed to process the CHIP Eligibility SPA submission
                   </td>
                 </tr>
               </tbody>
