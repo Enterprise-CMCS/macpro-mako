@@ -35,7 +35,7 @@ export const Welcome = () => {
               Medicaid Alternative Benefit Plan, Premiums and Cost Sharing, and CHIP Eligibility SPA
               templates and implementation guides are now available in OneMAC. New submissions for
               these SPA types are submitted through the OneMAC system effective July 28, 2025. As of
-              August 22, 2025, the CS31 SPA Template and Implementation guide are now available.{" "}
+              August 27, 2025, the CS31 SPA Template and Implementation guide are now available.{" "}
               <Link to="/faq/spa-admendments" target={FAQ_TAB} className="underline text-[#0071bc]">
                 Learn more
               </Link>
