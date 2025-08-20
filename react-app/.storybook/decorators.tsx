@@ -10,7 +10,7 @@ const queryClient = new QueryClient({
 });
 
 export const withQueryClient = (Story, { parameters }) => {
-  if (parameters.username) {
+  if (parameters.username === null || parameters.username) {
     setMockUsername(parameters.username);
   }
 
