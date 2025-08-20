@@ -2,10 +2,11 @@ import { errorApiUserDetailsHandler } from "mocks";
 import { mockedApiServer as mockedServer } from "mocks/server";
 import { describe, expect, it, vi } from "vitest";
 
+import * as gaModule from "@/utils/ReactGA/SendGAEvent";
+
 vi.mock("@/utils/ReactGA/SendGAEvent", () => ({
   sendGAEvent: vi.fn(),
 }));
-import * as gaModule from "@/utils/ReactGA/SendGAEvent";
 
 import { getUserDetails } from "./useGetUserDetails";
 
@@ -31,7 +32,7 @@ describe("getUserDetails tests", () => {
     expect(gaModule.sendGAEvent).toHaveBeenCalledWith(
       "api_error",
       expect.objectContaining({
-        message: "failure /getUserDetails",
+        message: "failure /getUserDetails ",
       }),
     );
   });

@@ -1,9 +1,10 @@
 import { useEffect, useRef } from "react";
+import { UserRole } from "shared-types/events/legacy-user";
 
 import { sendGAEvent } from "./SendGAEvent";
 
 type PathTrackerProps = {
-  userRole: "cms" | "state";
+  userRole: UserRole;
   children: React.ReactNode;
 };
 
@@ -13,7 +14,7 @@ type PathTrackerProps = {
  *   1) a `custom_page_view` event on initial mount or after every route change
  *   2) a `page_duration` event when the user leaves the previous route
  */
-export default function PathTracker({ userRole, children }: PathTrackerProps) {
+export const PathTracker = ({ userRole, children }: PathTrackerProps) => {
   // keep track of the path of the page the user is leaving
   const prevPathRef = useRef<string>(window.location.pathname);
 
@@ -38,7 +39,7 @@ export default function PathTracker({ userRole, children }: PathTrackerProps) {
         const timeOnPageSec = Math.round(deltaMs / 1000); // nearest second
         sendGAEvent("page_duration", {
           page_path: path,
-          user_role: userRole,
+          ...(userRole && { user_role: userRole }),
           time_on_page_sec: timeOnPageSec,
         });
       }
@@ -98,4 +99,4 @@ export default function PathTracker({ userRole, children }: PathTrackerProps) {
 
   // Render children as usual
   return <>{children}</>;
-}
+};
