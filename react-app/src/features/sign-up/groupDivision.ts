@@ -13,16 +13,16 @@ export type groupDivisionType = {
 export const groupDivision = [
   {
     id: 0,
-    abbr: "DEHPG",
+    abbr: "MBHPG",
     name: "Disabled & Elderly Health Programs Group",
     divisions: [
       { id: 9, abbr: "DMCP", name: "Div of Managed Care Policy" },
-      { id: 10, abbr: "DHPC", name: "Div of Health Homes, Pace & Cob/Tpl" },
+      { id: 10, abbr: "DHPC", name: "Div of Health Homes, PACE & COB/TPL" },
       { id: 11, abbr: "DBC", name: "Div of Benefits & Coverage" },
       { id: 12, abbr: "DLTSS", name: "Div of Long Term Services & Supports" },
       { id: 13, abbr: "DCST", name: "Div of Community Systems Transformation" },
       { id: 14, abbr: "DP", name: "Div of Pharmacy" },
-      { id: 15, name: "DEHPG - Office of Group Director" },
+      { id: 15, abbr: "MBHPG", name: "MBHPG - Office of Group Director" },
     ],
   },
   {
@@ -35,7 +35,7 @@ export const groupDivision = [
       { id: 18, abbr: "DMEP", name: "Div of Medicaid Eligibility Policy" },
       { id: 19, abbr: "DEPO", name: "Div of Enrollment Policy & Operations" },
       { id: 20, abbr: "DTA", name: "Div of Tribal Affairs" },
-      { id: 21, name: "CAHPG - Office of Group Director" },
+      { id: 21, abbr: "CAHPG", name: "CAHPG - Office of Group Director" },
     ],
   },
   {
@@ -48,7 +48,7 @@ export const groupDivision = [
       { id: 25, abbr: "DFOE", name: "Div of Financial Operations East" },
       { id: 26, abbr: "DFOW", name: "Div of Financial Operations West" },
       { id: 27, abbr: "DFP", name: "Div of Financial Policy" },
-      { id: 28, name: "FMG - Office of Group Director" },
+      { id: 28, abbr: "FMG", name: "FMG - Office of Group Director" },
     ],
   },
   {
@@ -61,7 +61,7 @@ export const groupDivision = [
       { id: 31, abbr: "DBES", name: "Div of Business Essential Systems" },
       { id: 32, abbr: "DBDA", name: "Div of Business & Data Analysis" },
       { id: 33, abbr: "DHM", name: "Div of Hitech & Mmis" },
-      { id: 34, name: "DSG - Office of Group Director" },
+      { id: 34, abbr: "DSG", name: "DSG - Office of Group Director" },
     ],
   },
   {
@@ -73,7 +73,7 @@ export const groupDivision = [
       { id: 36, abbr: "DOES", name: "Div of Operations & Executive Support" },
       { id: 37, abbr: "DHC", name: "Div of Human Capital" },
       { id: 38, abbr: "DCO", name: "Div of Communications & Outreach" },
-      { id: 39, name: "OSG - Office of Group Director" },
+      { id: 39, abbr: "OSG", name: "OSG - Office of Group Director" },
     ],
   },
   {
@@ -84,7 +84,7 @@ export const groupDivision = [
       { id: 40, abbr: "DECD", name: "Div of Eligibility & Coverage Demonstrations" },
       { id: 41, abbr: "DSRD", name: "Div of System Reform Demonstrations" },
       { id: 42, abbr: "DDME", name: "Div of Demonstration Monitoring & Evaluation" },
-      { id: 43, name: "SDG - Office of Group Director" },
+      { id: 43, abbr: "SDG", name: "SDG - Office of Group Director" },
     ],
   },
   {
@@ -94,14 +94,23 @@ export const groupDivision = [
     divisions: [
       { id: 44, abbr: "DPO", name: "Div of Program Operations" },
       { id: 45, abbr: "DMCO", name: "Div of Managed Care Operations" },
-      { id: 46, abbr: "DHCBSO", name: "Div of Hcbs Operations & Oversight" },
-      { id: 47, name: "MCOG - Office of Group Director" },
+      { id: 46, abbr: "DHCBSO", name: "Div of HCBS Operations & Oversight" },
+      { id: 47, abbr: "MCOG", name: "MCOG - Office of Group Director" },
     ],
   },
   {
     id: 8,
     abbr: "OCD",
     name: "Office of Center Director",
-    divisions: [{ id: 48, name: "OCD - Office of Group Director" }],
+    divisions: [{ id: 48, abbr: "OCD", name: "OCD - Office of Group Director" }],
+  },
+  {
+    id: 9,
+    abbr: "MCG",
+    name: "Managed Care Group",
+    divisions: [
+      { id: 49, abbr: "DMCP", name: "Div of Managed Care Policy" },
+      { id: 50, abbr: "DMCO", name: "Div of Managed Care Operations" },
+    ],
   },
 ];
