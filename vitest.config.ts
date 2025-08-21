@@ -1,3 +1,4 @@
+import { storybookTest } from "@storybook/addon-vitest/vitest-plugin";
 import { cpus } from "os";
 import { join } from "path";
 import { configDefaults, defineConfig } from "vitest/config";
@@ -7,6 +8,52 @@ export default defineConfig({
     globals: true,
     include: ["**/*.test.{ts,tsx}"],
     exclude: ["**/node_modules/**", "test/**", "**/*.spec.{ts,tsx}"],
+    projects: [
+      {
+        test: {
+          name: "lib",
+          root: "./lib/",
+          setupFiles: ["vitest.setup.ts"],
+          exclude: ["**/node_modules/**", "./libs/email/**"],
+          environment: "node",
+        },
+      },
+      {
+        test: {
+          name: "email",
+          root: "./lib/libs/email/",
+          setupFiles: ["vitest.setup.ts"],
+          exclude: ["**/node_modules/**"],
+          environment: "jsdom",
+        },
+      },
+      {
+        extends: "./react-app/vite.config.ts",
+        test: {
+          name: "ui",
+          root: "./react-app",
+          setupFiles: "vitest.setup.ts",
+          exclude: ["**/node_modules/**"],
+          environment: "jsdom",
+        },
+      },
+      {
+        extends: "./react-app/.storybook/vite.config.ts",
+        plugins: [
+          storybookTest({
+            configDir: join(__dirname, "./react-app/.storybook"),
+            // This should match your package.json script to run Storybook
+            // The --ci flag will skip prompts and not open a browser
+            storybookScript: "run storybook --ci",
+          }),
+        ],
+        test: {
+          name: "storybook",
+          root: "./react-app",
+          setupFiles: "./.storybook/vitest.setup.ts",
+        },
+      },
+    ],
     server: {
       deps: {
         cacheDir: ".vitest/cache",
@@ -62,6 +109,7 @@ export default defineConfig({
         "mocks/**",
         "node_modules/**",
         "**/node_modules/**",
+        "react-app/.storybook/**",
         "react-app/src/components/ScrollToTop/**",
         "react-app/src/features/webforms/**",
         "react-app/src/main.tsx",
@@ -73,6 +121,9 @@ export default defineConfig({
         "**/*.config.{ts,js,cjs}",
         "**/*.js",
         "**/*.json",
+        "**/*.mdx",
+        "**/*.stories.ts",
+        "**/*.stories.tsx",
         "**/*.test.ts",
         "**/*.test.tsx",
         "**/assets/**",

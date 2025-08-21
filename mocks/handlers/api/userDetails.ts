@@ -1,7 +1,11 @@
 import { http, HttpResponse, PathParams } from "msw";
 
 import { getFilteredUserResultList } from "../../data/osusers";
-import { getFilteredRoleDocsByEmail, getLatestRoleByEmail } from "../../data/roles";
+import {
+  getActiveStatesForUserByEmail,
+  getFilteredRoleDocsByEmail,
+  getLatestRoleByEmail,
+} from "../../data/roles";
 import { UserDetailsRequestBody } from "../../index.d";
 import { getMockUser } from "../auth.utils";
 
@@ -18,11 +22,17 @@ const defaultApiUserDetailsHandler = http.post<PathParams, UserDetailsRequestBod
     const email = reqUserEmail || authenticatedUser?.email;
 
     const userDetails = getFilteredUserResultList([email || ""])?.[0]?._source ?? null;
+    if (!userDetails) {
+      return new HttpResponse("User not found", { status: 404 });
+    }
+
     const userRoles = getLatestRoleByEmail(email || "")?.[0]?._source ?? null;
+    const states = getActiveStatesForUserByEmail(email || "");
 
     return HttpResponse.json({
       ...userDetails,
       role: userRoles?.role ?? "norole",
+      states,
     });
   },
 );

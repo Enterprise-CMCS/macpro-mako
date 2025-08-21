@@ -53,10 +53,7 @@ export const Dashboard = () => {
   });
 
   const isAbleToAccessDashboard = () => {
-    return (
-      (oneMacUser.user["custom:cms-roles"] || oneMacUser.user["custom:ismemberof"]) &&
-      Object.values(UserRoles).some((role) => oneMacUser.user.role === role)
-    );
+    return Object.values(UserRoles).some((role) => userDetails.role === role);
   };
 
   if (isOneMacUserLoading || isUserDetailsLoading || osData.tabLoading) {

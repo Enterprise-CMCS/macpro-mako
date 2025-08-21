@@ -108,4 +108,9 @@ export const CHP_GUIDES: Template[] = [
     text: "General Eligibility - Presumptive Eligibility for Pregnant Women Implementation Guide",
     href: "/chp/IG_CS29_PresumptiveEligibilityForPregnantWomen.pdf",
   },
+  {
+    title: "CS 31",
+    text: "Incarcerated CHIP Beneficiaries Implementation Guide",
+    href: "/chp/IG_CS31_IncarceratedCHIPBeneficiaries.pdf",
+  },
 ];

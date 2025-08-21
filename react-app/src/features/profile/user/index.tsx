@@ -1,9 +1,9 @@
 import LZ from "lz-string";
 import { useMemo } from "react";
 import { LoaderFunctionArgs, redirect, useLoaderData } from "react-router";
-import { userRoleMap } from "shared-utils";
+import { UserDetails } from "shared-types";
 
-import { getUserDetails, getUserProfile, OneMacUserProfile, UserDetails } from "@/api";
+import { getUserDetails, getUserProfile, OneMacUserProfile } from "@/api";
 import { GroupAndDivision, RoleStatusCard, SubNavHeader, UserInformation } from "@/components";
 import { useFeatureFlag } from "@/hooks/useFeatureFlag";
 
@@ -52,11 +52,6 @@ export const UserProfile = () => {
   const { userDetails, userProfile } = useLoaderData<LoaderData>();
   const isNewUserRoleDisplay = useFeatureFlag("SHOW_USER_ROLE_UPDATE");
 
-  const currentRoleObj = useMemo(() => {
-    if (!userProfile || !userProfile.stateAccess) return { group: null, division: null };
-    return userProfile?.stateAccess.find((x) => x.role === userDetails.role);
-  }, [userProfile, userDetails]);
-
   const orderedRoleStatus = useMemo(() => {
     const filteredRoleStatus = isNewUserRoleDisplay
       ? userProfile?.stateAccess
@@ -74,13 +69,10 @@ export const UserProfile = () => {
         <div className="flex flex-col md:flex-row">
           <UserInformation
             fullName={userDetails?.fullName || "Unknown"}
-            role={userRoleMap[userDetails?.role]}
+            role={userDetails.role}
             email={userDetails?.email}
-            groupDivision={
-              currentRoleObj && currentRoleObj.group
-                ? `${currentRoleObj?.group}/${currentRoleObj?.division}`
-                : null
-            }
+            group={userDetails.group}
+            division={userDetails.division}
           />
           <div className="flex flex-col gap-6 md:basis-1/2">
             <div>
