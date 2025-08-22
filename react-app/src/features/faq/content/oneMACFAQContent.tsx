@@ -65,7 +65,7 @@ export const oneMACFAQContent: FAQContent[] = [
                 <a
                   className="text-blue-800 underline hover:no-underline "
                   href="/onboarding/eligibility-crosswalk-paper-based-state-plan-macpro.pdf"
-                  download="EligibilityCrosswalkPaperBasedStatePlanMACPro.pdf"
+                  download
                   rel="noopener noreferrer"
                   target="_blank"
                   onClick={handleSupportLinkClick("general")}
@@ -139,7 +139,7 @@ export const oneMACFAQContent: FAQContent[] = [
             <a
               className="text-blue-800 underline hover:no-underline"
               href="/onboarding/OneMACStateUserGuide.pdf"
-              download="OneMACStateUserGuide.pdf"
+              download
               onClick={handleSupportLinkClick("general")}
             >
               OneMAC State User Guide
@@ -193,7 +193,7 @@ export const oneMACFAQContent: FAQContent[] = [
                   <a
                     className="text-blue-800 underline hover:no-underline "
                     href={file}
-                    download={label}
+                    download
                     rel="noopener noreferrer"
                     target="_blank"
                     onClick={handleSupportLinkClick("general")}
@@ -943,7 +943,7 @@ export const oneMACFAQContent: FAQContent[] = [
                 <li key={pdf.title}>
                   <a
                     href={pdf.href}
-                    download={pdf.title}
+                    download
                     target="_blank"
                     rel="noopener noreferrer"
                     className="text-blue-600"
@@ -984,7 +984,7 @@ export const oneMACFAQContent: FAQContent[] = [
                 <li key={pdf.title}>
                   <a
                     href={pdf.href}
-                    download={pdf.title}
+                    download
                     target="_blank"
                     rel="noopener noreferrer"
                     className="text-blue-600"
@@ -1016,7 +1016,7 @@ export const oneMACFAQContent: FAQContent[] = [
                 <li key={pdf.title}>
                   <a
                     href={pdf.href}
-                    download={pdf.title}
+                    download
                     target="_blank"
                     rel="noopener noreferrer"
                     className="text-blue-600"
@@ -1048,7 +1048,7 @@ export const oneMACFAQContent: FAQContent[] = [
                 <li key={pdf.title}>
                   <a
                     href={pdf.href}
-                    download={pdf.title}
+                    download
                     target="_blank"
                     rel="noopener noreferrer"
                     className="text-blue-600"
@@ -1066,8 +1066,8 @@ export const oneMACFAQContent: FAQContent[] = [
       {
         anchorText: "chip-spa-templates",
         question: "Where can I download CHIP eligibility SPA templates?",
-        label: "New",
-        labelColor: "blue",
+        label: "Updated",
+        labelColor: "green",
         answerJSX: (
           <section>
             <p>
@@ -1130,8 +1130,8 @@ export const oneMACFAQContent: FAQContent[] = [
       {
         anchorText: "chip-spa-implentation-guides",
         question: "Where can I download CHIP eligibility SPA implementation guides?",
-        label: "New",
-        labelColor: "blue",
+        label: "Updated",
+        labelColor: "green",
         answerJSX: (
           <div>
             <section className="space-y-2">
@@ -1142,7 +1142,7 @@ export const oneMACFAQContent: FAQContent[] = [
                 <li>
                   <a
                     href="/chp/IG_ChipEligibilityIntroduction.pdf"
-                    download="IG_ChipEligibilityIntroduction.pdf"
+                    download
                     target="_blank"
                     rel="noopener noreferrer"
                     className="text-blue-600"
