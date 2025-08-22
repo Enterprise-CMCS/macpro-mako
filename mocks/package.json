@@ -28,7 +28,6 @@
     "@opensearch-project/opensearch": "^2.13.0",
     "amazon-cognito-identity-js": "6.3.12",
     "aws-lambda": "1.0.7",
-    "lib/lambda": "*",
     "jose": "^6.0.11",
     "msw": "^2.3.1",
     "shared-types": "*",
