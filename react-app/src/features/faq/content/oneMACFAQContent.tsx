@@ -1066,8 +1066,8 @@ export const oneMACFAQContent: FAQContent[] = [
       {
         anchorText: "chip-spa-templates",
         question: "Where can I download CHIP eligibility SPA templates?",
-        label: "New",
-        labelColor: "blue",
+        label: "Updated",
+        labelColor: "green",
         answerJSX: (
           <section>
             <p>
@@ -1130,8 +1130,8 @@ export const oneMACFAQContent: FAQContent[] = [
       {
         anchorText: "chip-spa-implentation-guides",
         question: "Where can I download CHIP eligibility SPA implementation guides?",
-        label: "New",
-        labelColor: "blue",
+        label: "Updated",
+        labelColor: "green",
         answerJSX: (
           <div>
             <section className="space-y-2">
