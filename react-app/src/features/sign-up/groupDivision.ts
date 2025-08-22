@@ -16,7 +16,6 @@ export const groupDivision = [
     abbr: "MBHPG",
     name: "Disabled & Elderly Health Programs Group",
     divisions: [
-      { id: 9, abbr: "DMCP", name: "Div of Managed Care Policy" },
       { id: 10, abbr: "DHPC", name: "Div of Health Homes, PACE & COB/TPL" },
       { id: 11, abbr: "DBC", name: "Div of Benefits & Coverage" },
       { id: 12, abbr: "DLTSS", name: "Div of Long Term Services & Supports" },
@@ -93,7 +92,6 @@ export const groupDivision = [
     name: "Medicaid & CHIP Operations Group",
     divisions: [
       { id: 44, abbr: "DPO", name: "Div of Program Operations" },
-      { id: 45, abbr: "DMCO", name: "Div of Managed Care Operations" },
       { id: 46, abbr: "DHCBSO", name: "Div of HCBS Operations & Oversight" },
       { id: 47, abbr: "MCOG", name: "MCOG - Office of Group Director" },
     ],
