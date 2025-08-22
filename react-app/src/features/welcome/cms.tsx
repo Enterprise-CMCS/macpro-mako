@@ -88,7 +88,7 @@ export const CMSWelcome = () => {
         <PackageSearch />
         <div className="flex flex-col items-center w-full mb-8">
           <div className="h-[115px] border border-[#DFE1E2]" />
-          <span className="my-2 text-sm text-[#5e6269]">or</span>
+          <span className="my-2 text-sm text-[#72767A]">or</span>
           <div className="h-[115px] border border-[#DFE1E2]" />
         </div>
         <BrowseDash />
