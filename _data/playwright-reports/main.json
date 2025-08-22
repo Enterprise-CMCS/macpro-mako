@@ -303,7 +303,7 @@
                         {
                           "workerIndex": 0,
                           "status": "failed",
-                          "duration": 3750,
+                          "duration": 3583,
                           "error": {
                             "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoEqual\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // deep equality\u001b[22m\n\n\u001b[32m- Expected  -  1\u001b[39m\n\u001b[31m+ Received  + 68\u001b[39m\n\n\u001b[32m- Array []\u001b[39m\n\u001b[31m+ Array [\u001b[39m\n\u001b[31m+   Object {\u001b[39m\n\u001b[31m+     \"description\": \"Ensure the document has a main landmark\",\u001b[39m\n\u001b[31m+     \"help\": \"Document should have one main landmark\",\u001b[39m\n\u001b[31m+     \"helpUrl\": \"https://dequeuniversity.com/rules/axe/4.10/landmark-one-main?application=playwright\",\u001b[39m\n\u001b[31m+     \"id\": \"landmark-one-main\",\u001b[39m\n\u001b[31m+     \"impact\": \"moderate\",\u001b[39m\n\u001b[31m+     \"nodes\": Array [\u001b[39m\n\u001b[31m+       Object {\u001b[39m\n\u001b[31m+         \"all\": Array [\u001b[39m\n\u001b[31m+           Object {\u001b[39m\n\u001b[31m+             \"data\": null,\u001b[39m\n\u001b[31m+             \"id\": \"page-has-main\",\u001b[39m\n\u001b[31m+             \"impact\": \"moderate\",\u001b[39m\n\u001b[31m+             \"message\": \"Document does not have a main landmark\",\u001b[39m\n\u001b[31m+             \"relatedNodes\": Array [],\u001b[39m\n\u001b[31m+           },\u001b[39m\n\u001b[31m+         ],\u001b[39m\n\u001b[31m+         \"any\": Array [],\u001b[39m\n\u001b[31m+         \"failureSummary\": \"Fix all of the following:\u001b[39m\n\u001b[31m+   Document does not have a main landmark\",\u001b[39m\n\u001b[31m+         \"html\": \"<html lang=\\\"en\\\" class=\\\"h-full\\\">\",\u001b[39m\n\u001b[31m+         \"impact\": \"moderate\",\u001b[39m\n\u001b[31m+         \"none\": Array [],\u001b[39m\n\u001b[31m+         \"target\": Array [\u001b[39m\n\u001b[31m+           \"html\",\u001b[39m\n\u001b[31m+         ],\u001b[39m\n\u001b[31m+       },\u001b[39m\n\u001b[31m+     ],\u001b[39m\n\u001b[31m+     \"tags\": Array [\u001b[39m\n\u001b[31m+       \"cat.semantics\",\u001b[39m\n\u001b[31m+       \"best-practice\",\u001b[39m\n\u001b[31m+     ],\u001b[39m\n\u001b[31m+   },\u001b[39m\n\u001b[31m+   Object {\u001b[39m\n\u001b[31m+     \"description\": \"Ensure that the page, or at least one of its frames contains a level-one heading\",\u001b[39m\n\u001b[31m+     \"help\": \"Page should contain a level-one heading\",\u001b[39m\n\u001b[31m+     \"helpUrl\": \"https://dequeuniversity.com/rules/axe/4.10/page-has-heading-one?application=playwright\",\u001b[39m\n\u001b[31m+     \"id\": \"page-has-heading-one\",\u001b[39m\n\u001b[31m+     \"impact\": \"moderate\",\u001b[39m\n\u001b[31m+     \"nodes\": Array [\u001b[39m\n\u001b[31m+       Object {\u001b[39m\n\u001b[31m+         \"all\": Array [\u001b[39m\n\u001b[31m+           Object {\u001b[39m\n\u001b[31m+             \"data\": null,\u001b[39m\n\u001b[31m+             \"id\": \"page-has-heading-one\",\u001b[39m\n\u001b[31m+             \"impact\": \"moderate\",\u001b[39m\n\u001b[31m+             \"message\": \"Page must have a level-one heading\",\u001b[39m\n\u001b[31m+             \"relatedNodes\": Array [],\u001b[39m\n\u001b[31m+           },\u001b[39m\n\u001b[31m+         ],\u001b[39m\n\u001b[31m+         \"any\": Array [],\u001b[39m\n\u001b[31m+         \"failureSummary\": \"Fix all of the following:\u001b[39m\n\u001b[31m+   Page must have a level-one heading\",\u001b[39m\n\u001b[31m+         \"html\": \"<html lang=\\\"en\\\" class=\\\"h-full\\\">\",\u001b[39m\n\u001b[31m+         \"impact\": \"moderate\",\u001b[39m\n\u001b[31m+         \"none\": Array [],\u001b[39m\n\u001b[31m+         \"target\": Array [\u001b[39m\n\u001b[31m+           \"html\",\u001b[39m\n\u001b[31m+         ],\u001b[39m\n\u001b[31m+       },\u001b[39m\n\u001b[31m+     ],\u001b[39m\n\u001b[31m+     \"tags\": Array [\u001b[39m\n\u001b[31m+       \"cat.semantics\",\u001b[39m\n\u001b[31m+       \"best-practice\",\u001b[39m\n\u001b[31m+     ],\u001b[39m\n\u001b[31m+   },\u001b[39m\n\u001b[31m+ ]\u001b[39m",
                             "stack": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoEqual\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // deep equality\u001b[22m\n\n\u001b[32m- Expected  -  1\u001b[39m\n\u001b[31m+ Received  + 68\u001b[39m\n\n\u001b[32m- Array []\u001b[39m\n\u001b[31m+ Array [\u001b[39m\n\u001b[31m+   Object {\u001b[39m\n\u001b[31m+     \"description\": \"Ensure the document has a main landmark\",\u001b[39m\n\u001b[31m+     \"help\": \"Document should have one main landmark\",\u001b[39m\n\u001b[31m+     \"helpUrl\": \"https://dequeuniversity.com/rules/axe/4.10/landmark-one-main?application=playwright\",\u001b[39m\n\u001b[31m+     \"id\": \"landmark-one-main\",\u001b[39m\n\u001b[31m+     \"impact\": \"moderate\",\u001b[39m\n\u001b[31m+     \"nodes\": Array [\u001b[39m\n\u001b[31m+       Object {\u001b[39m\n\u001b[31m+         \"all\": Array [\u001b[39m\n\u001b[31m+           Object {\u001b[39m\n\u001b[31m+             \"data\": null,\u001b[39m\n\u001b[31m+             \"id\": \"page-has-main\",\u001b[39m\n\u001b[31m+             \"impact\": \"moderate\",\u001b[39m\n\u001b[31m+             \"message\": \"Document does not have a main landmark\",\u001b[39m\n\u001b[31m+             \"relatedNodes\": Array [],\u001b[39m\n\u001b[31m+           },\u001b[39m\n\u001b[31m+         ],\u001b[39m\n\u001b[31m+         \"any\": Array [],\u001b[39m\n\u001b[31m+         \"failureSummary\": \"Fix all of the following:\u001b[39m\n\u001b[31m+   Document does not have a main landmark\",\u001b[39m\n\u001b[31m+         \"html\": \"<html lang=\\\"en\\\" class=\\\"h-full\\\">\",\u001b[39m\n\u001b[31m+         \"impact\": \"moderate\",\u001b[39m\n\u001b[31m+         \"none\": Array [],\u001b[39m\n\u001b[31m+         \"target\": Array [\u001b[39m\n\u001b[31m+           \"html\",\u001b[39m\n\u001b[31m+         ],\u001b[39m\n\u001b[31m+       },\u001b[39m\n\u001b[31m+     ],\u001b[39m\n\u001b[31m+     \"tags\": Array [\u001b[39m\n\u001b[31m+       \"cat.semantics\",\u001b[39m\n\u001b[31m+       \"best-practice\",\u001b[39m\n\u001b[31m+     ],\u001b[39m\n\u001b[31m+   },\u001b[39m\n\u001b[31m+   Object {\u001b[39m\n\u001b[31m+     \"description\": \"Ensure that the page, or at least one of its frames contains a level-one heading\",\u001b[39m\n\u001b[31m+     \"help\": \"Page should contain a level-one heading\",\u001b[39m\n\u001b[31m+     \"helpUrl\": \"https://dequeuniversity.com/rules/axe/4.10/page-has-heading-one?application=playwright\",\u001b[39m\n\u001b[31m+     \"id\": \"page-has-heading-one\",\u001b[39m\n\u001b[31m+     \"impact\": \"moderate\",\u001b[39m\n\u001b[31m+     \"nodes\": Array [\u001b[39m\n\u001b[31m+       Object {\u001b[39m\n\u001b[31m+         \"all\": Array [\u001b[39m\n\u001b[31m+           Object {\u001b[39m\n\u001b[31m+             \"data\": null,\u001b[39m\n\u001b[31m+             \"id\": \"page-has-heading-one\",\u001b[39m\n\u001b[31m+             \"impact\": \"moderate\",\u001b[39m\n\u001b[31m+             \"message\": \"Page must have a level-one heading\",\u001b[39m\n\u001b[31m+             \"relatedNodes\": Array [],\u001b[39m\n\u001b[31m+           },\u001b[39m\n\u001b[31m+         ],\u001b[39m\n\u001b[31m+         \"any\": Array [],\u001b[39m\n\u001b[31m+         \"failureSummary\": \"Fix all of the following:\u001b[39m\n\u001b[31m+   Page must have a level-one heading\",\u001b[39m\n\u001b[31m+         \"html\": \"<html lang=\\\"en\\\" class=\\\"h-full\\\">\",\u001b[39m\n\u001b[31m+         \"impact\": \"moderate\",\u001b[39m\n\u001b[31m+         \"none\": Array [],\u001b[39m\n\u001b[31m+         \"target\": Array [\u001b[39m\n\u001b[31m+           \"html\",\u001b[39m\n\u001b[31m+         ],\u001b[39m\n\u001b[31m+       },\u001b[39m\n\u001b[31m+     ],\u001b[39m\n\u001b[31m+     \"tags\": Array [\u001b[39m\n\u001b[31m+       \"cat.semantics\",\u001b[39m\n\u001b[31m+       \"best-practice\",\u001b[39m\n\u001b[31m+     ],\u001b[39m\n\u001b[31m+   },\u001b[39m\n\u001b[31m+ ]\u001b[39m\n    at /home/runner/work/macpro-mako/macpro-mako/test/e2e/e2e/non-func/a11y.spec.ts:39:55",
@@ -331,7 +331,7 @@
                           ],
                           "stderr": [],
                           "retry": 0,
-                          "startTime": "2025-08-22T15:39:19.653Z",
+                          "startTime": "2025-08-22T21:00:52.895Z",
                           "attachments": [
                             {
                               "name": "video",
@@ -379,7 +379,7 @@
                         {
                           "workerIndex": 1,
                           "status": "passed",
-                          "duration": 11825,
+                          "duration": 10380,
                           "errors": [],
                           "stdout": [
                             {
@@ -388,7 +388,7 @@
                           ],
                           "stderr": [],
                           "retry": 0,
-                          "startTime": "2025-08-22T15:39:25.319Z",
+                          "startTime": "2025-08-22T21:00:58.240Z",
                           "attachments": []
                         }
                       ],
@@ -415,7 +415,7 @@
                         {
                           "workerIndex": 1,
                           "status": "failed",
-                          "duration": 4883,
+                          "duration": 4432,
                           "error": {
                             "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoEqual\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // deep equality\u001b[22m\n\n\u001b[32m- Expected  -   1\u001b[39m\n\u001b[31m+ Received  + 231\u001b[39m\n\n\u001b[32m- Array []\u001b[39m\n\u001b[31m+ Array [\u001b[39m\n\u001b[31m+   Object {\u001b[39m\n\u001b[31m+     \"description\": \"Ensure the contrast between foreground and background colors meets WCAG 2 AA minimum contrast ratio thresholds\",\u001b[39m\n\u001b[31m+     \"help\": \"Elements must meet minimum color contrast ratio thresholds\",\u001b[39m\n\u001b[31m+     \"helpUrl\": \"https://dequeuniversity.com/rules/axe/4.10/color-contrast?application=playwright\",\u001b[39m\n\u001b[31m+     \"id\": \"color-contrast\",\u001b[39m\n\u001b[31m+     \"impact\": \"serious\",\u001b[39m\n\u001b[31m+     \"nodes\": Array [\u001b[39m\n\u001b[31m+       Object {\u001b[39m\n\u001b[31m+         \"all\": Array [],\u001b[39m\n\u001b[31m+         \"any\": Array [\u001b[39m\n\u001b[31m+           Object {\u001b[39m\n\u001b[31m+             \"data\": Object {\u001b[39m\n\u001b[31m+               \"bgColor\": \"#16a34a\",\u001b[39m\n\u001b[31m+               \"contrastRatio\": 3.29,\u001b[39m\n\u001b[31m+               \"expectedContrastRatio\": \"4.5:1\",\u001b[39m\n\u001b[31m+               \"fgColor\": \"#ffffff\",\u001b[39m\n\u001b[31m+               \"fontSize\": \"9.0pt (12px)\",\u001b[39m\n\u001b[31m+               \"fontWeight\": \"normal\",\u001b[39m\n\u001b[31m+               \"messageKey\": null,\u001b[39m\n\u001b[31m+             },\u001b[39m\n\u001b[31m+             \"id\": \"color-contrast\",\u001b[39m\n\u001b[31m+             \"impact\": \"serious\",\u001b[39m\n\u001b[31m+             \"message\": \"Element has insufficient color contrast of 3.29 (foreground color: #ffffff, background color: #16a34a, font size: 9.0pt (12px), font weight: normal). Expected contrast ratio of 4.5:1\",\u001b[39m\n\u001b[31m+             \"relatedNodes\": Array [\u001b[39m\n\u001b[31m+               Object {\u001b[39m\n\u001b[31m+                 \"html\": \"<span class=\\\"text-white text-xs font-semibold px-2 py-0.5 rounded no-underline hover:no-underline bg-green-600\\\">Updated</span>\",\u001b[39m\n\u001b[31m+                 \"target\": Array [\u001b[39m\n\u001b[31m+                   \"#radix-\\\\:r2\\\\: > .gap-2.items-center.flex > .bg-green-600.font-semibold.px-2\",\u001b[39m\n\u001b[31m+                 ],\u001b[39m\n\u001b[31m+               },\u001b[39m\n\u001b[31m+             ],\u001b[39m\n\u001b[31m+           },\u001b[39m\n\u001b[31m+         ],\u001b[39m\n\u001b[31m+         \"failureSummary\": \"Fix any of the following:\u001b[39m\n\u001b[31m+   Element has insufficient color contrast of 3.29 (foreground color: #ffffff, background color: #16a34a, font size: 9.0pt (12px), font weight: normal). Expected contrast ratio of 4.5:1\",\u001b[39m\n\u001b[31m+         \"html\": \"<span class=\\\"text-white text-xs font-semibold px-2 py-0.5 rounded no-underline hover:no-underline bg-green-600\\\">Updated</span>\",\u001b[39m\n\u001b[31m+         \"impact\": \"serious\",\u001b[39m\n\u001b[31m+         \"none\": Array [],\u001b[39m\n\u001b[31m+         \"target\": Array [\u001b[39m\n\u001b[31m+           \"#radix-\\\\:r2\\\\: > .gap-2.items-center.flex > .bg-green-600.font-semibold.px-2\",\u001b[39m\n\u001b[31m+         ],\u001b[39m\n\u001b[31m+       },\u001b[39m\n\u001b[31m+       Object {\u001b[39m\n\u001b[31m+         \"all\": Array [],\u001b[39m\n\u001b[31m+         \"any\": Array [\u001b[39m\n\u001b[31m+           Object {\u001b[39m\n\u001b[31m+             \"data\": Object {\u001b[39m\n\u001b[31m+               \"bgColor\": \"#16a34a\",\u001b[39m\n\u001b[31m+               \"contrastRatio\": 3.29,\u001b[39m\n\u001b[31m+               \"expectedContrastRatio\": \"4.5:1\",\u001b[39m\n\u001b[31m+               \"fgColor\": \"#ffffff\",\u001b[39m\n\u001b[31m+               \"fontSize\": \"9.0pt (12px)\",\u001b[39m\n\u001b[31m+               \"fontWeight\": \"normal\",\u001b[39m\n\u001b[31m+               \"messageKey\": null,\u001b[39m\n\u001b[31m+             },\u001b[39m\n\u001b[31m+             \"id\": \"color-contrast\",\u001b[39m\n\u001b[31m+             \"impact\": \"serious\",\u001b[39m\n\u001b[31m+             \"message\": \"Element has insufficient color contrast of 3.29 (foreground color: #ffffff, background color: #16a34a, font size: 9.0pt (12px), font weight: normal). Expected contrast ratio of 4.5:1\",\u001b[39m\n\u001b[31m+             \"relatedNodes\": Array [\u001b[39m\n\u001b[31m+               Object {\u001b[39m\n\u001b[31m+                 \"html\": \"<span class=\\\"text-white text-xs font-semibold px-2 py-0.5 rounded no-underline hover:no-underline bg-green-600\\\">Updated</span>\",\u001b[39m\n\u001b[31m+                 \"target\": Array [\u001b[39m\n\u001b[31m+                   \"#radix-\\\\:re\\\\: > .gap-2.items-center.flex > .bg-green-600.font-semibold.px-2\",\u001b[39m\n\u001b[31m+                 ],\u001b[39m\n\u001b[31m+               },\u001b[39m\n\u001b[31m+             ],\u001b[39m\n\u001b[31m+           },\u001b[39m\n\u001b[31m+         ],\u001b[39m\n\u001b[31m+         \"failureSummary\": \"Fix any of the following:\u001b[39m\n\u001b[31m+   Element has insufficient color contrast of 3.29 (foreground color: #ffffff, background color: #16a34a, font size: 9.0pt (12px), font weight: normal). Expected contrast ratio of 4.5:1\",\u001b[39m\n\u001b[31m+         \"html\": \"<span class=\\\"text-white text-xs font-semibold px-2 py-0.5 rounded no-underline hover:no-underline bg-green-600\\\">Updated</span>\",\u001b[39m\n\u001b[31m+         \"impact\": \"serious\",\u001b[39m\n\u001b[31m+         \"none\": Array [],\u001b[39m\n\u001b[31m+         \"target\": Array [\u001b[39m\n\u001b[31m+           \"#radix-\\\\:re\\\\: > .gap-2.items-center.flex > .bg-green-600.font-semibold.px-2\",\u001b[39m\n\u001b[31m+         ],\u001b[39m\n\u001b[31m+       },\u001b[39m\n\u001b[31m+       Object {\u001b[39m\n\u001b[31m+         \"all\": Array [],\u001b[39m\n\u001b[31m+         \"any\": Array [\u001b[39m\n\u001b[31m+           Object {\u001b[39m\n\u001b[31m+             \"data\": Object {\u001b[39m\n\u001b[31m+               \"bgColor\": \"#16a34a\",\u001b[39m\n\u001b[31m+               \"contrastRatio\": 3.29,\u001b[39m\n\u001b[31m+               \"expectedContrastRatio\": \"4.5:1\",\u001b[39m\n\u001b[31m+               \"fgColor\": \"#ffffff\",\u001b[39m\n\u001b[31m+               \"fontSize\": \"9.0pt (12px)\",\u001b[39m\n\u001b[31m+               \"fontWeight\": \"normal\",\u001b[39m\n\u001b[31m+               \"messageKey\": null,\u001b[39m\n\u001b[31m+             },\u001b[39m\n\u001b[31m+             \"id\": \"color-contrast\",\u001b[39m\n\u001b[31m+             \"impact\": \"serious\",\u001b[39m\n\u001b[31m+             \"message\": \"Element has insufficient color contrast of 3.29 (foreground color: #ffffff, background color: #16a34a, font size: 9.0pt (12px), font weight: normal). Expected contrast ratio of 4.5:1\",\u001b[39m\n\u001b[31m+             \"relatedNodes\": Array [\u001b[39m\n\u001b[31m+               Object {\u001b[39m\n\u001b[31m+                 \"html\": \"<span class=\\\"text-white text-xs font-semibold px-2 py-0.5 rounded no-underline hover:no-underline bg-green-600\\\">Updated</span>\",\u001b[39m\n\u001b[31m+                 \"target\": Array [\u001b[39m\n\u001b[31m+                   \"#radix-\\\\:rm\\\\: > .gap-2.items-center.flex > .bg-green-600.font-semibold.px-2\",\u001b[39m\n\u001b[31m+                 ],\u001b[39m\n\u001b[31m+               },\u001b[39m\n\u001b[31m+             ],\u001b[39m\n\u001b[31m+           },\u001b[39m\n\u001b[31m+         ],\u001b[39m\n\u001b[31m+         \"failureSummary\": \"Fix any of the following:\u001b[39m\n\u001b[31m+   Element has insufficient color contrast of 3.29 (foreground color: #ffffff, background color: #16a34a, font size: 9.0pt (12px), font weight: normal). Expected contrast ratio of 4.5:1\",\u001b[39m\n\u001b[31m+         \"html\": \"<span class=\\\"text-white text-xs font-semibold px-2 py-0.5 rounded no-underline hover:no-underline bg-green-600\\\">Updated</span>\",\u001b[39m\n\u001b[31m+         \"impact\": \"serious\",\u001b[39m\n\u001b[31m+         \"none\": Array [],\u001b[39m\n\u001b[31m+         \"target\": Array [\u001b[39m\n\u001b[31m+           \"#radix-\\\\:rm\\\\: > .gap-2.items-center.flex > .bg-green-600.font-semibold.px-2\",\u001b[39m\n\u001b[31m+         ],\u001b[39m\n\u001b[31m+       },\u001b[39m\n\u001b[31m+       Object {\u001b[39m\n\u001b[31m+         \"all\": Array [],\u001b[39m\n\u001b[31m+         \"any\": Array [\u001b[39m\n\u001b[31m+           Object {\u001b[39m\n\u001b[31m+             \"data\": Object {\u001b[39m\n\u001b[31m+               \"bgColor\": \"#16a34a\",\u001b[39m\n\u001b[31m+               \"contrastRatio\": 3.29,\u001b[39m\n\u001b[31m+               \"expectedContrastRatio\": \"4.5:1\",\u001b[39m\n\u001b[31m+               \"fgColor\": \"#ffffff\",\u001b[39m\n\u001b[31m+               \"fontSize\": \"9.0pt (12px)\",\u001b[39m\n\u001b[31m+               \"fontWeight\": \"normal\",\u001b[39m\n\u001b[31m+               \"messageKey\": null,\u001b[39m\n\u001b[31m+             },\u001b[39m\n\u001b[31m+             \"id\": \"color-contrast\",\u001b[39m\n\u001b[31m+             \"impact\": \"serious\",\u001b[39m\n\u001b[31m+             \"message\": \"Element has insufficient color contrast of 3.29 (foreground color: #ffffff, background color: #16a34a, font size: 9.0pt (12px), font weight: normal). Expected contrast ratio of 4.5:1\",\u001b[39m\n\u001b[31m+             \"relatedNodes\": Array [\u001b[39m\n\u001b[31m+               Object {\u001b[39m\n\u001b[31m+                 \"html\": \"<span class=\\\"text-white text-xs font-semibold px-2 py-0.5 rounded no-underline hover:no-underline bg-green-600\\\">Updated</span>\",\u001b[39m\n\u001b[31m+                 \"target\": Array [\u001b[39m\n\u001b[31m+                   \"#radix-\\\\:r18\\\\: > .gap-2.items-center.flex > .bg-green-600.font-semibold.px-2\",\u001b[39m\n\u001b[31m+                 ],\u001b[39m\n\u001b[31m+               },\u001b[39m\n\u001b[31m+             ],\u001b[39m\n\u001b[31m+           },\u001b[39m\n\u001b[31m+         ],\u001b[39m\n\u001b[31m+         \"failureSummary\": \"Fix any of the following:\u001b[39m\n\u001b[31m+   Element has insufficient color contrast of 3.29 (foreground color: #ffffff, background color: #16a34a, font size: 9.0pt (12px), font weight: normal). Expected contrast ratio of 4.5:1\",\u001b[39m\n\u001b[31m+         \"html\": \"<span class=\\\"text-white text-xs font-semibold px-2 py-0.5 rounded no-underline hover:no-underline bg-green-600\\\">Updated</span>\",\u001b[39m\n\u001b[31m+         \"impact\": \"serious\",\u001b[39m\n\u001b[31m+         \"none\": Array [],\u001b[39m\n\u001b[31m+         \"target\": Array [\u001b[39m\n\u001b[31m+           \"#radix-\\\\:r18\\\\: > .gap-2.items-center.flex > .bg-green-600.font-semibold.px-2\",\u001b[39m\n\u001b[31m+         ],\u001b[39m\n\u001b[31m+       },\u001b[39m\n\u001b[31m+       Object {\u001b[39m\n\u001b[31m+         \"all\": Array [],\u001b[39m\n\u001b[31m+         \"any\": Array [\u001b[39m\n\u001b[31m+           Object {\u001b[39m\n\u001b[31m+             \"data\": Object {\u001b[39m\n\u001b[31m+               \"bgColor\": \"#16a34a\",\u001b[39m\n\u001b[31m+               \"contrastRatio\": 3.29,\u001b[39m\n\u001b[31m+               \"expectedContrastRatio\": \"4.5:1\",\u001b[39m\n\u001b[31m+               \"fgColor\": \"#ffffff\",\u001b[39m\n\u001b[31m+               \"fontSize\": \"9.0pt (12px)\",\u001b[39m\n\u001b[31m+               \"fontWeight\": \"normal\",\u001b[39m\n\u001b[31m+               \"messageKey\": null,\u001b[39m\n\u001b[31m+             },\u001b[39m\n\u001b[31m+             \"id\": \"color-contrast\",\u001b[39m\n\u001b[31m+             \"impact\": \"serious\",\u001b[39m\n\u001b[31m+             \"message\": \"Element has insufficient color contrast of 3.29 (foreground color: #ffffff, background color: #16a34a, font size: 9.0pt (12px), font weight: normal). Expected contrast ratio of 4.5:1\",\u001b[39m\n\u001b[31m+             \"relatedNodes\": Array [\u001b[39m\n\u001b[31m+               Object {\u001b[39m\n\u001b[31m+                 \"html\": \"<span class=\\\"text-white text-xs font-semibold px-2 py-0.5 rounded no-underline hover:no-underline bg-green-600\\\">Updated</span>\",\u001b[39m\n\u001b[31m+                 \"target\": Array [\u001b[39m\n\u001b[31m+                   \"#radix-\\\\:r1g\\\\: > .gap-2.items-center.flex > .bg-green-600.font-semibold.px-2\",\u001b[39m\n\u001b[31m+                 ],\u001b[39m\n\u001b[31m+               },\u001b[39m\n\u001b[31m+             ],\u001b[39m\n\u001b[31m+           },\u001b[39m\n\u001b[31m+         ],\u001b[39m\n\u001b[31m+         \"failureSummary\": \"Fix any of the following:\u001b[39m\n\u001b[31m+   Element has insufficient color contrast of 3.29 (foreground color: #ffffff, background color: #16a34a, font size: 9.0pt (12px), font weight: normal). Expected contrast ratio of 4.5:1\",\u001b[39m\n\u001b[31m+         \"html\": \"<span class=\\\"text-white text-xs font-semibold px-2 py-0.5 rounded no-underline hover:no-underline bg-green-600\\\">Updated</span>\",\u001b[39m\n\u001b[31m+         \"impact\": \"serious\",\u001b[39m\n\u001b[31m+         \"none\": Array [],\u001b[39m\n\u001b[31m+         \"target\": Array [\u001b[39m\n\u001b[31m+           \"#radix-\\\\:r1g\\\\: > .gap-2.items-center.flex > .bg-green-600.font-semibold.px-2\",\u001b[39m\n\u001b[31m+         ],\u001b[39m\n\u001b[31m+       },\u001b[39m\n\u001b[31m+       Object {\u001b[39m\n\u001b[31m+         \"all\": Array [],\u001b[39m\n\u001b[31m+         \"any\": Array [\u001b[39m\n\u001b[31m+           Object {\u001b[39m\n\u001b[31m+             \"data\": Object {\u001b[39m\n\u001b[31m+               \"bgColor\": \"#16a34a\",\u001b[39m\n\u001b[31m+               \"contrastRatio\": 3.29,\u001b[39m\n\u001b[31m+               \"expectedContrastRatio\": \"4.5:1\",\u001b[39m\n\u001b[31m+               \"fgColor\": \"#ffffff\",\u001b[39m\n\u001b[31m+               \"fontSize\": \"9.0pt (12px)\",\u001b[39m\n\u001b[31m+               \"fontWeight\": \"normal\",\u001b[39m\n\u001b[31m+               \"messageKey\": null,\u001b[39m\n\u001b[31m+             },\u001b[39m\n\u001b[31m+             \"id\": \"color-contrast\",\u001b[39m\n\u001b[31m+             \"impact\": \"serious\",\u001b[39m\n\u001b[31m+             \"message\": \"Element has insufficient color contrast of 3.29 (foreground color: #ffffff, background color: #16a34a, font size: 9.0pt (12px), font weight: normal). Expected contrast ratio of 4.5:1\",\u001b[39m\n\u001b[31m+             \"relatedNodes\": Array [\u001b[39m\n\u001b[31m+               Object {\u001b[39m\n\u001b[31m+                 \"html\": \"<span class=\\\"text-white text-xs font-semibold px-2 py-0.5 rounded no-underline hover:no-underline bg-green-600\\\">Updated</span>\",\u001b[39m\n\u001b[31m+                 \"target\": Array [\u001b[39m\n\u001b[31m+                   \"#radix-\\\\:r1i\\\\: > .gap-2.items-center.flex > .bg-green-600.font-semibold.px-2\",\u001b[39m\n\u001b[31m+                 ],\u001b[39m\n\u001b[31m+               },\u001b[39m\n\u001b[31m+             ],\u001b[39m\n\u001b[31m+           },\u001b[39m\n\u001b[31m+         ],\u001b[39m\n\u001b[31m+         \"failureSummary\": \"Fix any of the following:\u001b[39m\n\u001b[31m+   Element has insufficient color contrast of 3.29 (foreground color: #ffffff, background color: #16a34a, font size: 9.0pt (12px), font weight: normal). Expected contrast ratio of 4.5:1\",\u001b[39m\n\u001b[31m+         \"html\": \"<span class=\\\"text-white text-xs font-semibold px-2 py-0.5 rounded no-underline hover:no-underline bg-green-600\\\">Updated</span>\",\u001b[39m\n\u001b[31m+         \"impact\": \"serious\",\u001b[39m\n\u001b[31m+         \"none\": Array [],\u001b[39m\n\u001b[31m+         \"target\": Array [\u001b[39m\n\u001b[31m+           \"#radix-\\\\:r1i\\\\: > .gap-2.items-center.flex > .bg-green-600.font-semibold.px-2\",\u001b[39m\n\u001b[31m+         ],\u001b[39m\n\u001b[31m+       },\u001b[39m\n\u001b[31m+     ],\u001b[39m\n\u001b[31m+     \"tags\": Array [\u001b[39m\n\u001b[31m+       \"cat.color\",\u001b[39m\n\u001b[31m+       \"wcag2aa\",\u001b[39m\n\u001b[31m+       \"wcag143\",\u001b[39m\n\u001b[31m+       \"TTv5\",\u001b[39m\n\u001b[31m+       \"TT13.c\",\u001b[39m\n\u001b[31m+       \"EN-301-549\",\u001b[39m\n\u001b[31m+       \"EN-9.1.4.3\",\u001b[39m\n\u001b[31m+       \"ACT\",\u001b[39m\n\u001b[31m+     ],\u001b[39m\n\u001b[31m+   },\u001b[39m\n\u001b[31m+ ]\u001b[39m",
                             "stack": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoEqual\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // deep equality\u001b[22m\n\n\u001b[32m- Expected  -   1\u001b[39m\n\u001b[31m+ Received  + 231\u001b[39m\n\n\u001b[32m- Array []\u001b[39m\n\u001b[31m+ Array [\u001b[39m\n\u001b[31m+   Object {\u001b[39m\n\u001b[31m+     \"description\": \"Ensure the contrast between foreground and background colors meets WCAG 2 AA minimum contrast ratio thresholds\",\u001b[39m\n\u001b[31m+     \"help\": \"Elements must meet minimum color contrast ratio thresholds\",\u001b[39m\n\u001b[31m+     \"helpUrl\": \"https://dequeuniversity.com/rules/axe/4.10/color-contrast?application=playwright\",\u001b[39m\n\u001b[31m+     \"id\": \"color-contrast\",\u001b[39m\n\u001b[31m+     \"impact\": \"serious\",\u001b[39m\n\u001b[31m+     \"nodes\": Array [\u001b[39m\n\u001b[31m+       Object {\u001b[39m\n\u001b[31m+         \"all\": Array [],\u001b[39m\n\u001b[31m+         \"any\": Array [\u001b[39m\n\u001b[31m+           Object {\u001b[39m\n\u001b[31m+             \"data\": Object {\u001b[39m\n\u001b[31m+               \"bgColor\": \"#16a34a\",\u001b[39m\n\u001b[31m+               \"contrastRatio\": 3.29,\u001b[39m\n\u001b[31m+               \"expectedContrastRatio\": \"4.5:1\",\u001b[39m\n\u001b[31m+               \"fgColor\": \"#ffffff\",\u001b[39m\n\u001b[31m+               \"fontSize\": \"9.0pt (12px)\",\u001b[39m\n\u001b[31m+               \"fontWeight\": \"normal\",\u001b[39m\n\u001b[31m+               \"messageKey\": null,\u001b[39m\n\u001b[31m+             },\u001b[39m\n\u001b[31m+             \"id\": \"color-contrast\",\u001b[39m\n\u001b[31m+             \"impact\": \"serious\",\u001b[39m\n\u001b[31m+             \"message\": \"Element has insufficient color contrast of 3.29 (foreground color: #ffffff, background color: #16a34a, font size: 9.0pt (12px), font weight: normal). Expected contrast ratio of 4.5:1\",\u001b[39m\n\u001b[31m+             \"relatedNodes\": Array [\u001b[39m\n\u001b[31m+               Object {\u001b[39m\n\u001b[31m+                 \"html\": \"<span class=\\\"text-white text-xs font-semibold px-2 py-0.5 rounded no-underline hover:no-underline bg-green-600\\\">Updated</span>\",\u001b[39m\n\u001b[31m+                 \"target\": Array [\u001b[39m\n\u001b[31m+                   \"#radix-\\\\:r2\\\\: > .gap-2.items-center.flex > .bg-green-600.font-semibold.px-2\",\u001b[39m\n\u001b[31m+                 ],\u001b[39m\n\u001b[31m+               },\u001b[39m\n\u001b[31m+             ],\u001b[39m\n\u001b[31m+           },\u001b[39m\n\u001b[31m+         ],\u001b[39m\n\u001b[31m+         \"failureSummary\": \"Fix any of the following:\u001b[39m\n\u001b[31m+   Element has insufficient color contrast of 3.29 (foreground color: #ffffff, background color: #16a34a, font size: 9.0pt (12px), font weight: normal). Expected contrast ratio of 4.5:1\",\u001b[39m\n\u001b[31m+         \"html\": \"<span class=\\\"text-white text-xs font-semibold px-2 py-0.5 rounded no-underline hover:no-underline bg-green-600\\\">Updated</span>\",\u001b[39m\n\u001b[31m+         \"impact\": \"serious\",\u001b[39m\n\u001b[31m+         \"none\": Array [],\u001b[39m\n\u001b[31m+         \"target\": Array [\u001b[39m\n\u001b[31m+           \"#radix-\\\\:r2\\\\: > .gap-2.items-center.flex > .bg-green-600.font-semibold.px-2\",\u001b[39m\n\u001b[31m+         ],\u001b[39m\n\u001b[31m+       },\u001b[39m\n\u001b[31m+       Object {\u001b[39m\n\u001b[31m+         \"all\": Array [],\u001b[39m\n\u001b[31m+         \"any\": Array [\u001b[39m\n\u001b[31m+           Object {\u001b[39m\n\u001b[31m+             \"data\": Object {\u001b[39m\n\u001b[31m+               \"bgColor\": \"#16a34a\",\u001b[39m\n\u001b[31m+               \"contrastRatio\": 3.29,\u001b[39m\n\u001b[31m+               \"expectedContrastRatio\": \"4.5:1\",\u001b[39m\n\u001b[31m+               \"fgColor\": \"#ffffff\",\u001b[39m\n\u001b[31m+               \"fontSize\": \"9.0pt (12px)\",\u001b[39m\n\u001b[31m+               \"fontWeight\": \"normal\",\u001b[39m\n\u001b[31m+               \"messageKey\": null,\u001b[39m\n\u001b[31m+             },\u001b[39m\n\u001b[31m+             \"id\": \"color-contrast\",\u001b[39m\n\u001b[31m+             \"impact\": \"serious\",\u001b[39m\n\u001b[31m+             \"message\": \"Element has insufficient color contrast of 3.29 (foreground color: #ffffff, background color: #16a34a, font size: 9.0pt (12px), font weight: normal). Expected contrast ratio of 4.5:1\",\u001b[39m\n\u001b[31m+             \"relatedNodes\": Array [\u001b[39m\n\u001b[31m+               Object {\u001b[39m\n\u001b[31m+                 \"html\": \"<span class=\\\"text-white text-xs font-semibold px-2 py-0.5 rounded no-underline hover:no-underline bg-green-600\\\">Updated</span>\",\u001b[39m\n\u001b[31m+                 \"target\": Array [\u001b[39m\n\u001b[31m+                   \"#radix-\\\\:re\\\\: > .gap-2.items-center.flex > .bg-green-600.font-semibold.px-2\",\u001b[39m\n\u001b[31m+                 ],\u001b[39m\n\u001b[31m+               },\u001b[39m\n\u001b[31m+             ],\u001b[39m\n\u001b[31m+           },\u001b[39m\n\u001b[31m+         ],\u001b[39m\n\u001b[31m+         \"failureSummary\": \"Fix any of the following:\u001b[39m\n\u001b[31m+   Element has insufficient color contrast of 3.29 (foreground color: #ffffff, background color: #16a34a, font size: 9.0pt (12px), font weight: normal). Expected contrast ratio of 4.5:1\",\u001b[39m\n\u001b[31m+         \"html\": \"<span class=\\\"text-white text-xs font-semibold px-2 py-0.5 rounded no-underline hover:no-underline bg-green-600\\\">Updated</span>\",\u001b[39m\n\u001b[31m+         \"impact\": \"serious\",\u001b[39m\n\u001b[31m+         \"none\": Array [],\u001b[39m\n\u001b[31m+         \"target\": Array [\u001b[39m\n\u001b[31m+           \"#radix-\\\\:re\\\\: > .gap-2.items-center.flex > .bg-green-600.font-semibold.px-2\",\u001b[39m\n\u001b[31m+         ],\u001b[39m\n\u001b[31m+       },\u001b[39m\n\u001b[31m+       Object {\u001b[39m\n\u001b[31m+         \"all\": Array [],\u001b[39m\n\u001b[31m+         \"any\": Array [\u001b[39m\n\u001b[31m+           Object {\u001b[39m\n\u001b[31m+             \"data\": Object {\u001b[39m\n\u001b[31m+               \"bgColor\": \"#16a34a\",\u001b[39m\n\u001b[31m+               \"contrastRatio\": 3.29,\u001b[39m\n\u001b[31m+               \"expectedContrastRatio\": \"4.5:1\",\u001b[39m\n\u001b[31m+               \"fgColor\": \"#ffffff\",\u001b[39m\n\u001b[31m+               \"fontSize\": \"9.0pt (12px)\",\u001b[39m\n\u001b[31m+               \"fontWeight\": \"normal\",\u001b[39m\n\u001b[31m+               \"messageKey\": null,\u001b[39m\n\u001b[31m+             },\u001b[39m\n\u001b[31m+             \"id\": \"color-contrast\",\u001b[39m\n\u001b[31m+             \"impact\": \"serious\",\u001b[39m\n\u001b[31m+             \"message\": \"Element has insufficient color contrast of 3.29 (foreground color: #ffffff, background color: #16a34a, font size: 9.0pt (12px), font weight: normal). Expected contrast ratio of 4.5:1\",\u001b[39m\n\u001b[31m+             \"relatedNodes\": Array [\u001b[39m\n\u001b[31m+               Object {\u001b[39m\n\u001b[31m+                 \"html\": \"<span class=\\\"text-white text-xs font-semibold px-2 py-0.5 rounded no-underline hover:no-underline bg-green-600\\\">Updated</span>\",\u001b[39m\n\u001b[31m+                 \"target\": Array [\u001b[39m\n\u001b[31m+                   \"#radix-\\\\:rm\\\\: > .gap-2.items-center.flex > .bg-green-600.font-semibold.px-2\",\u001b[39m\n\u001b[31m+                 ],\u001b[39m\n\u001b[31m+               },\u001b[39m\n\u001b[31m+             ],\u001b[39m\n\u001b[31m+           },\u001b[39m\n\u001b[31m+         ],\u001b[39m\n\u001b[31m+         \"failureSummary\": \"Fix any of the following:\u001b[39m\n\u001b[31m+   Element has insufficient color contrast of 3.29 (foreground color: #ffffff, background color: #16a34a, font size: 9.0pt (12px), font weight: normal). Expected contrast ratio of 4.5:1\",\u001b[39m\n\u001b[31m+         \"html\": \"<span class=\\\"text-white text-xs font-semibold px-2 py-0.5 rounded no-underline hover:no-underline bg-green-600\\\">Updated</span>\",\u001b[39m\n\u001b[31m+         \"impact\": \"serious\",\u001b[39m\n\u001b[31m+         \"none\": Array [],\u001b[39m\n\u001b[31m+         \"target\": Array [\u001b[39m\n\u001b[31m+           \"#radix-\\\\:rm\\\\: > .gap-2.items-center.flex > .bg-green-600.font-semibold.px-2\",\u001b[39m\n\u001b[31m+         ],\u001b[39m\n\u001b[31m+       },\u001b[39m\n\u001b[31m+       Object {\u001b[39m\n\u001b[31m+         \"all\": Array [],\u001b[39m\n\u001b[31m+         \"any\": Array [\u001b[39m\n\u001b[31m+           Object {\u001b[39m\n\u001b[31m+             \"data\": Object {\u001b[39m\n\u001b[31m+               \"bgColor\": \"#16a34a\",\u001b[39m\n\u001b[31m+               \"contrastRatio\": 3.29,\u001b[39m\n\u001b[31m+               \"expectedContrastRatio\": \"4.5:1\",\u001b[39m\n\u001b[31m+               \"fgColor\": \"#ffffff\",\u001b[39m\n\u001b[31m+               \"fontSize\": \"9.0pt (12px)\",\u001b[39m\n\u001b[31m+               \"fontWeight\": \"normal\",\u001b[39m\n\u001b[31m+               \"messageKey\": null,\u001b[39m\n\u001b[31m+             },\u001b[39m\n\u001b[31m+             \"id\": \"color-contrast\",\u001b[39m\n\u001b[31m+             \"impact\": \"serious\",\u001b[39m\n\u001b[31m+             \"message\": \"Element has insufficient color contrast of 3.29 (foreground color: #ffffff, background color: #16a34a, font size: 9.0pt (12px), font weight: normal). Expected contrast ratio of 4.5:1\",\u001b[39m\n\u001b[31m+             \"relatedNodes\": Array [\u001b[39m\n\u001b[31m+               Object {\u001b[39m\n\u001b[31m+                 \"html\": \"<span class=\\\"text-white text-xs font-semibold px-2 py-0.5 rounded no-underline hover:no-underline bg-green-600\\\">Updated</span>\",\u001b[39m\n\u001b[31m+                 \"target\": Array [\u001b[39m\n\u001b[31m+                   \"#radix-\\\\:r18\\\\: > .gap-2.items-center.flex > .bg-green-600.font-semibold.px-2\",\u001b[39m\n\u001b[31m+                 ],\u001b[39m\n\u001b[31m+               },\u001b[39m\n\u001b[31m+             ],\u001b[39m\n\u001b[31m+           },\u001b[39m\n\u001b[31m+         ],\u001b[39m\n\u001b[31m+         \"failureSummary\": \"Fix any of the following:\u001b[39m\n\u001b[31m+   Element has insufficient color contrast of 3.29 (foreground color: #ffffff, background color: #16a34a, font size: 9.0pt (12px), font weight: normal). Expected contrast ratio of 4.5:1\",\u001b[39m\n\u001b[31m+         \"html\": \"<span class=\\\"text-white text-xs font-semibold px-2 py-0.5 rounded no-underline hover:no-underline bg-green-600\\\">Updated</span>\",\u001b[39m\n\u001b[31m+         \"impact\": \"serious\",\u001b[39m\n\u001b[31m+         \"none\": Array [],\u001b[39m\n\u001b[31m+         \"target\": Array [\u001b[39m\n\u001b[31m+           \"#radix-\\\\:r18\\\\: > .gap-2.items-center.flex > .bg-green-600.font-semibold.px-2\",\u001b[39m\n\u001b[31m+         ],\u001b[39m\n\u001b[31m+       },\u001b[39m\n\u001b[31m+       Object {\u001b[39m\n\u001b[31m+         \"all\": Array [],\u001b[39m\n\u001b[31m+         \"any\": Array [\u001b[39m\n\u001b[31m+           Object {\u001b[39m\n\u001b[31m+             \"data\": Object {\u001b[39m\n\u001b[31m+               \"bgColor\": \"#16a34a\",\u001b[39m\n\u001b[31m+               \"contrastRatio\": 3.29,\u001b[39m\n\u001b[31m+               \"expectedContrastRatio\": \"4.5:1\",\u001b[39m\n\u001b[31m+               \"fgColor\": \"#ffffff\",\u001b[39m\n\u001b[31m+               \"fontSize\": \"9.0pt (12px)\",\u001b[39m\n\u001b[31m+               \"fontWeight\": \"normal\",\u001b[39m\n\u001b[31m+               \"messageKey\": null,\u001b[39m\n\u001b[31m+             },\u001b[39m\n\u001b[31m+             \"id\": \"color-contrast\",\u001b[39m\n\u001b[31m+             \"impact\": \"serious\",\u001b[39m\n\u001b[31m+             \"message\": \"Element has insufficient color contrast of 3.29 (foreground color: #ffffff, background color: #16a34a, font size: 9.0pt (12px), font weight: normal). Expected contrast ratio of 4.5:1\",\u001b[39m\n\u001b[31m+             \"relatedNodes\": Array [\u001b[39m\n\u001b[31m+               Object {\u001b[39m\n\u001b[31m+                 \"html\": \"<span class=\\\"text-white text-xs font-semibold px-2 py-0.5 rounded no-underline hover:no-underline bg-green-600\\\">Updated</span>\",\u001b[39m\n\u001b[31m+                 \"target\": Array [\u001b[39m\n\u001b[31m+                   \"#radix-\\\\:r1g\\\\: > .gap-2.items-center.flex > .bg-green-600.font-semibold.px-2\",\u001b[39m\n\u001b[31m+                 ],\u001b[39m\n\u001b[31m+               },\u001b[39m\n\u001b[31m+             ],\u001b[39m\n\u001b[31m+           },\u001b[39m\n\u001b[31m+         ],\u001b[39m\n\u001b[31m+         \"failureSummary\": \"Fix any of the following:\u001b[39m\n\u001b[31m+   Element has insufficient color contrast of 3.29 (foreground color: #ffffff, background color: #16a34a, font size: 9.0pt (12px), font weight: normal). Expected contrast ratio of 4.5:1\",\u001b[39m\n\u001b[31m+         \"html\": \"<span class=\\\"text-white text-xs font-semibold px-2 py-0.5 rounded no-underline hover:no-underline bg-green-600\\\">Updated</span>\",\u001b[39m\n\u001b[31m+         \"impact\": \"serious\",\u001b[39m\n\u001b[31m+         \"none\": Array [],\u001b[39m\n\u001b[31m+         \"target\": Array [\u001b[39m\n\u001b[31m+           \"#radix-\\\\:r1g\\\\: > .gap-2.items-center.flex > .bg-green-600.font-semibold.px-2\",\u001b[39m\n\u001b[31m+         ],\u001b[39m\n\u001b[31m+       },\u001b[39m\n\u001b[31m+       Object {\u001b[39m\n\u001b[31m+         \"all\": Array [],\u001b[39m\n\u001b[31m+         \"any\": Array [\u001b[39m\n\u001b[31m+           Object {\u001b[39m\n\u001b[31m+             \"data\": Object {\u001b[39m\n\u001b[31m+               \"bgColor\": \"#16a34a\",\u001b[39m\n\u001b[31m+               \"contrastRatio\": 3.29,\u001b[39m\n\u001b[31m+               \"expectedContrastRatio\": \"4.5:1\",\u001b[39m\n\u001b[31m+               \"fgColor\": \"#ffffff\",\u001b[39m\n\u001b[31m+               \"fontSize\": \"9.0pt (12px)\",\u001b[39m\n\u001b[31m+               \"fontWeight\": \"normal\",\u001b[39m\n\u001b[31m+               \"messageKey\": null,\u001b[39m\n\u001b[31m+             },\u001b[39m\n\u001b[31m+             \"id\": \"color-contrast\",\u001b[39m\n\u001b[31m+             \"impact\": \"serious\",\u001b[39m\n\u001b[31m+             \"message\": \"Element has insufficient color contrast of 3.29 (foreground color: #ffffff, background color: #16a34a, font size: 9.0pt (12px), font weight: normal). Expected contrast ratio of 4.5:1\",\u001b[39m\n\u001b[31m+             \"relatedNodes\": Array [\u001b[39m\n\u001b[31m+               Object {\u001b[39m\n\u001b[31m+                 \"html\": \"<span class=\\\"text-white text-xs font-semibold px-2 py-0.5 rounded no-underline hover:no-underline bg-green-600\\\">Updated</span>\",\u001b[39m\n\u001b[31m+                 \"target\": Array [\u001b[39m\n\u001b[31m+                   \"#radix-\\\\:r1i\\\\: > .gap-2.items-center.flex > .bg-green-600.font-semibold.px-2\",\u001b[39m\n\u001b[31m+                 ],\u001b[39m\n\u001b[31m+               },\u001b[39m\n\u001b[31m+             ],\u001b[39m\n\u001b[31m+           },\u001b[39m\n\u001b[31m+         ],\u001b[39m\n\u001b[31m+         \"failureSummary\": \"Fix any of the following:\u001b[39m\n\u001b[31m+   Element has insufficient color contrast of 3.29 (foreground color: #ffffff, background color: #16a34a, font size: 9.0pt (12px), font weight: normal). Expected contrast ratio of 4.5:1\",\u001b[39m\n\u001b[31m+         \"html\": \"<span class=\\\"text-white text-xs font-semibold px-2 py-0.5 rounded no-underline hover:no-underline bg-green-600\\\">Updated</span>\",\u001b[39m\n\u001b[31m+         \"impact\": \"serious\",\u001b[39m\n\u001b[31m+         \"none\": Array [],\u001b[39m\n\u001b[31m+         \"target\": Array [\u001b[39m\n\u001b[31m+           \"#radix-\\\\:r1i\\\\: > .gap-2.items-center.flex > .bg-green-600.font-semibold.px-2\",\u001b[39m\n\u001b[31m+         ],\u001b[39m\n\u001b[31m+       },\u001b[39m\n\u001b[31m+     ],\u001b[39m\n\u001b[31m+     \"tags\": Array [\u001b[39m\n\u001b[31m+       \"cat.color\",\u001b[39m\n\u001b[31m+       \"wcag2aa\",\u001b[39m\n\u001b[31m+       \"wcag143\",\u001b[39m\n\u001b[31m+       \"TTv5\",\u001b[39m\n\u001b[31m+       \"TT13.c\",\u001b[39m\n\u001b[31m+       \"EN-301-549\",\u001b[39m\n\u001b[31m+       \"EN-9.1.4.3\",\u001b[39m\n\u001b[31m+       \"ACT\",\u001b[39m\n\u001b[31m+     ],\u001b[39m\n\u001b[31m+   },\u001b[39m\n\u001b[31m+ ]\u001b[39m\n    at /home/runner/work/macpro-mako/macpro-mako/test/e2e/e2e/non-func/a11y.spec.ts:39:55",
@@ -443,7 +443,7 @@
                           ],
                           "stderr": [],
                           "retry": 0,
-                          "startTime": "2025-08-22T15:39:37.246Z",
+                          "startTime": "2025-08-22T21:01:08.719Z",
                           "attachments": [
                             {
                               "name": "video",
@@ -491,7 +491,7 @@
                         {
                           "workerIndex": 2,
                           "status": "passed",
-                          "duration": 4382,
+                          "duration": 3628,
                           "errors": [],
                           "stdout": [
                             {
@@ -500,7 +500,7 @@
                           ],
                           "stderr": [],
                           "retry": 0,
-                          "startTime": "2025-08-22T15:39:44.181Z",
+                          "startTime": "2025-08-22T21:01:14.899Z",
                           "attachments": []
                         }
                       ],
@@ -527,7 +527,7 @@
                         {
                           "workerIndex": 2,
                           "status": "passed",
-                          "duration": 4011,
+                          "duration": 4730,
                           "errors": [],
                           "stdout": [
                             {
@@ -536,7 +536,7 @@
                           ],
                           "stderr": [],
                           "retry": 0,
-                          "startTime": "2025-08-22T15:39:48.686Z",
+                          "startTime": "2025-08-22T21:01:18.626Z",
                           "attachments": []
                         }
                       ],
@@ -550,7 +550,7 @@
                 },
                 {
                   "title": "/new-submission should not have any automatically detectable accessibility issues",
-                  "ok": false,
+                  "ok": true,
                   "tags": [],
                   "tests": [
                     {
@@ -562,61 +562,21 @@
                       "results": [
                         {
                           "workerIndex": 2,
-                          "status": "failed",
-                          "duration": 4851,
-                          "error": {
-                            "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoEqual\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // deep equality\u001b[22m\n\n\u001b[32m- Expected  -  1\u001b[39m\n\u001b[31m+ Received  + 68\u001b[39m\n\n\u001b[32m- Array []\u001b[39m\n\u001b[31m+ Array [\u001b[39m\n\u001b[31m+   Object {\u001b[39m\n\u001b[31m+     \"description\": \"Ensure the document has a main landmark\",\u001b[39m\n\u001b[31m+     \"help\": \"Document should have one main landmark\",\u001b[39m\n\u001b[31m+     \"helpUrl\": \"https://dequeuniversity.com/rules/axe/4.10/landmark-one-main?application=playwright\",\u001b[39m\n\u001b[31m+     \"id\": \"landmark-one-main\",\u001b[39m\n\u001b[31m+     \"impact\": \"moderate\",\u001b[39m\n\u001b[31m+     \"nodes\": Array [\u001b[39m\n\u001b[31m+       Object {\u001b[39m\n\u001b[31m+         \"all\": Array [\u001b[39m\n\u001b[31m+           Object {\u001b[39m\n\u001b[31m+             \"data\": null,\u001b[39m\n\u001b[31m+             \"id\": \"page-has-main\",\u001b[39m\n\u001b[31m+             \"impact\": \"moderate\",\u001b[39m\n\u001b[31m+             \"message\": \"Document does not have a main landmark\",\u001b[39m\n\u001b[31m+             \"relatedNodes\": Array [],\u001b[39m\n\u001b[31m+           },\u001b[39m\n\u001b[31m+         ],\u001b[39m\n\u001b[31m+         \"any\": Array [],\u001b[39m\n\u001b[31m+         \"failureSummary\": \"Fix all of the following:\u001b[39m\n\u001b[31m+   Document does not have a main landmark\",\u001b[39m\n\u001b[31m+         \"html\": \"<html lang=\\\"en\\\" class=\\\"h-full\\\">\",\u001b[39m\n\u001b[31m+         \"impact\": \"moderate\",\u001b[39m\n\u001b[31m+         \"none\": Array [],\u001b[39m\n\u001b[31m+         \"target\": Array [\u001b[39m\n\u001b[31m+           \"html\",\u001b[39m\n\u001b[31m+         ],\u001b[39m\n\u001b[31m+       },\u001b[39m\n\u001b[31m+     ],\u001b[39m\n\u001b[31m+     \"tags\": Array [\u001b[39m\n\u001b[31m+       \"cat.semantics\",\u001b[39m\n\u001b[31m+       \"best-practice\",\u001b[39m\n\u001b[31m+     ],\u001b[39m\n\u001b[31m+   },\u001b[39m\n\u001b[31m+   Object {\u001b[39m\n\u001b[31m+     \"description\": \"Ensure that the page, or at least one of its frames contains a level-one heading\",\u001b[39m\n\u001b[31m+     \"help\": \"Page should contain a level-one heading\",\u001b[39m\n\u001b[31m+     \"helpUrl\": \"https://dequeuniversity.com/rules/axe/4.10/page-has-heading-one?application=playwright\",\u001b[39m\n\u001b[31m+     \"id\": \"page-has-heading-one\",\u001b[39m\n\u001b[31m+     \"impact\": \"moderate\",\u001b[39m\n\u001b[31m+     \"nodes\": Array [\u001b[39m\n\u001b[31m+       Object {\u001b[39m\n\u001b[31m+         \"all\": Array [\u001b[39m\n\u001b[31m+           Object {\u001b[39m\n\u001b[31m+             \"data\": null,\u001b[39m\n\u001b[31m+             \"id\": \"page-has-heading-one\",\u001b[39m\n\u001b[31m+             \"impact\": \"moderate\",\u001b[39m\n\u001b[31m+             \"message\": \"Page must have a level-one heading\",\u001b[39m\n\u001b[31m+             \"relatedNodes\": Array [],\u001b[39m\n\u001b[31m+           },\u001b[39m\n\u001b[31m+         ],\u001b[39m\n\u001b[31m+         \"any\": Array [],\u001b[39m\n\u001b[31m+         \"failureSummary\": \"Fix all of the following:\u001b[39m\n\u001b[31m+   Page must have a level-one heading\",\u001b[39m\n\u001b[31m+         \"html\": \"<html lang=\\\"en\\\" class=\\\"h-full\\\">\",\u001b[39m\n\u001b[31m+         \"impact\": \"moderate\",\u001b[39m\n\u001b[31m+         \"none\": Array [],\u001b[39m\n\u001b[31m+         \"target\": Array [\u001b[39m\n\u001b[31m+           \"html\",\u001b[39m\n\u001b[31m+         ],\u001b[39m\n\u001b[31m+       },\u001b[39m\n\u001b[31m+     ],\u001b[39m\n\u001b[31m+     \"tags\": Array [\u001b[39m\n\u001b[31m+       \"cat.semantics\",\u001b[39m\n\u001b[31m+       \"best-practice\",\u001b[39m\n\u001b[31m+     ],\u001b[39m\n\u001b[31m+   },\u001b[39m\n\u001b[31m+ ]\u001b[39m",
-                            "stack": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoEqual\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // deep equality\u001b[22m\n\n\u001b[32m- Expected  -  1\u001b[39m\n\u001b[31m+ Received  + 68\u001b[39m\n\n\u001b[32m- Array []\u001b[39m\n\u001b[31m+ Array [\u001b[39m\n\u001b[31m+   Object {\u001b[39m\n\u001b[31m+     \"description\": \"Ensure the document has a main landmark\",\u001b[39m\n\u001b[31m+     \"help\": \"Document should have one main landmark\",\u001b[39m\n\u001b[31m+     \"helpUrl\": \"https://dequeuniversity.com/rules/axe/4.10/landmark-one-main?application=playwright\",\u001b[39m\n\u001b[31m+     \"id\": \"landmark-one-main\",\u001b[39m\n\u001b[31m+     \"impact\": \"moderate\",\u001b[39m\n\u001b[31m+     \"nodes\": Array [\u001b[39m\n\u001b[31m+       Object {\u001b[39m\n\u001b[31m+         \"all\": Array [\u001b[39m\n\u001b[31m+           Object {\u001b[39m\n\u001b[31m+             \"data\": null,\u001b[39m\n\u001b[31m+             \"id\": \"page-has-main\",\u001b[39m\n\u001b[31m+             \"impact\": \"moderate\",\u001b[39m\n\u001b[31m+             \"message\": \"Document does not have a main landmark\",\u001b[39m\n\u001b[31m+             \"relatedNodes\": Array [],\u001b[39m\n\u001b[31m+           },\u001b[39m\n\u001b[31m+         ],\u001b[39m\n\u001b[31m+         \"any\": Array [],\u001b[39m\n\u001b[31m+         \"failureSummary\": \"Fix all of the following:\u001b[39m\n\u001b[31m+   Document does not have a main landmark\",\u001b[39m\n\u001b[31m+         \"html\": \"<html lang=\\\"en\\\" class=\\\"h-full\\\">\",\u001b[39m\n\u001b[31m+         \"impact\": \"moderate\",\u001b[39m\n\u001b[31m+         \"none\": Array [],\u001b[39m\n\u001b[31m+         \"target\": Array [\u001b[39m\n\u001b[31m+           \"html\",\u001b[39m\n\u001b[31m+         ],\u001b[39m\n\u001b[31m+       },\u001b[39m\n\u001b[31m+     ],\u001b[39m\n\u001b[31m+     \"tags\": Array [\u001b[39m\n\u001b[31m+       \"cat.semantics\",\u001b[39m\n\u001b[31m+       \"best-practice\",\u001b[39m\n\u001b[31m+     ],\u001b[39m\n\u001b[31m+   },\u001b[39m\n\u001b[31m+   Object {\u001b[39m\n\u001b[31m+     \"description\": \"Ensure that the page, or at least one of its frames contains a level-one heading\",\u001b[39m\n\u001b[31m+     \"help\": \"Page should contain a level-one heading\",\u001b[39m\n\u001b[31m+     \"helpUrl\": \"https://dequeuniversity.com/rules/axe/4.10/page-has-heading-one?application=playwright\",\u001b[39m\n\u001b[31m+     \"id\": \"page-has-heading-one\",\u001b[39m\n\u001b[31m+     \"impact\": \"moderate\",\u001b[39m\n\u001b[31m+     \"nodes\": Array [\u001b[39m\n\u001b[31m+       Object {\u001b[39m\n\u001b[31m+         \"all\": Array [\u001b[39m\n\u001b[31m+           Object {\u001b[39m\n\u001b[31m+             \"data\": null,\u001b[39m\n\u001b[31m+             \"id\": \"page-has-heading-one\",\u001b[39m\n\u001b[31m+             \"impact\": \"moderate\",\u001b[39m\n\u001b[31m+             \"message\": \"Page must have a level-one heading\",\u001b[39m\n\u001b[31m+             \"relatedNodes\": Array [],\u001b[39m\n\u001b[31m+           },\u001b[39m\n\u001b[31m+         ],\u001b[39m\n\u001b[31m+         \"any\": Array [],\u001b[39m\n\u001b[31m+         \"failureSummary\": \"Fix all of the following:\u001b[39m\n\u001b[31m+   Page must have a level-one heading\",\u001b[39m\n\u001b[31m+         \"html\": \"<html lang=\\\"en\\\" class=\\\"h-full\\\">\",\u001b[39m\n\u001b[31m+         \"impact\": \"moderate\",\u001b[39m\n\u001b[31m+         \"none\": Array [],\u001b[39m\n\u001b[31m+         \"target\": Array [\u001b[39m\n\u001b[31m+           \"html\",\u001b[39m\n\u001b[31m+         ],\u001b[39m\n\u001b[31m+       },\u001b[39m\n\u001b[31m+     ],\u001b[39m\n\u001b[31m+     \"tags\": Array [\u001b[39m\n\u001b[31m+       \"cat.semantics\",\u001b[39m\n\u001b[31m+       \"best-practice\",\u001b[39m\n\u001b[31m+     ],\u001b[39m\n\u001b[31m+   },\u001b[39m\n\u001b[31m+ ]\u001b[39m\n    at /home/runner/work/macpro-mako/macpro-mako/test/e2e/e2e/non-func/a11y.spec.ts:39:55",
-                            "location": {
-                              "file": "/home/runner/work/macpro-mako/macpro-mako/test/e2e/e2e/non-func/a11y.spec.ts",
-                              "column": 55,
-                              "line": 39
-                            },
-                            "snippet": "\u001b[0m \u001b[90m 37 |\u001b[39m           \u001b[36mconst\u001b[39m accessibilityScanResults \u001b[33m=\u001b[39m \u001b[36mawait\u001b[39m \u001b[36mnew\u001b[39m \u001b[33mAxeBuilder\u001b[39m({ page })\u001b[33m.\u001b[39manalyze()\u001b[33m;\u001b[39m\n \u001b[90m 38 |\u001b[39m           console\u001b[33m.\u001b[39mlog(\u001b[32m`${route} violations: `\u001b[39m\u001b[33m,\u001b[39m accessibilityScanResults\u001b[33m.\u001b[39mviolations\u001b[33m.\u001b[39mlength)\u001b[33m;\u001b[39m\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 39 |\u001b[39m           expect(accessibilityScanResults\u001b[33m.\u001b[39mviolations)\u001b[33m.\u001b[39mtoEqual([])\u001b[33m;\u001b[39m\n \u001b[90m    |\u001b[39m                                                       \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 40 |\u001b[39m         })\u001b[33m;\u001b[39m\n \u001b[90m 41 |\u001b[39m       }\n \u001b[90m 42 |\u001b[39m     })\u001b[33m;\u001b[39m\u001b[0m"
-                          },
-                          "errors": [
-                            {
-                              "location": {
-                                "file": "/home/runner/work/macpro-mako/macpro-mako/test/e2e/e2e/non-func/a11y.spec.ts",
-                                "column": 55,
-                                "line": 39
-                              },
-                              "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoEqual\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // deep equality\u001b[22m\n\n\u001b[32m- Expected  -  1\u001b[39m\n\u001b[31m+ Received  + 68\u001b[39m\n\n\u001b[32m- Array []\u001b[39m\n\u001b[31m+ Array [\u001b[39m\n\u001b[31m+   Object {\u001b[39m\n\u001b[31m+     \"description\": \"Ensure the document has a main landmark\",\u001b[39m\n\u001b[31m+     \"help\": \"Document should have one main landmark\",\u001b[39m\n\u001b[31m+     \"helpUrl\": \"https://dequeuniversity.com/rules/axe/4.10/landmark-one-main?application=playwright\",\u001b[39m\n\u001b[31m+     \"id\": \"landmark-one-main\",\u001b[39m\n\u001b[31m+     \"impact\": \"moderate\",\u001b[39m\n\u001b[31m+     \"nodes\": Array [\u001b[39m\n\u001b[31m+       Object {\u001b[39m\n\u001b[31m+         \"all\": Array [\u001b[39m\n\u001b[31m+           Object {\u001b[39m\n\u001b[31m+             \"data\": null,\u001b[39m\n\u001b[31m+             \"id\": \"page-has-main\",\u001b[39m\n\u001b[31m+             \"impact\": \"moderate\",\u001b[39m\n\u001b[31m+             \"message\": \"Document does not have a main landmark\",\u001b[39m\n\u001b[31m+             \"relatedNodes\": Array [],\u001b[39m\n\u001b[31m+           },\u001b[39m\n\u001b[31m+         ],\u001b[39m\n\u001b[31m+         \"any\": Array [],\u001b[39m\n\u001b[31m+         \"failureSummary\": \"Fix all of the following:\u001b[39m\n\u001b[31m+   Document does not have a main landmark\",\u001b[39m\n\u001b[31m+         \"html\": \"<html lang=\\\"en\\\" class=\\\"h-full\\\">\",\u001b[39m\n\u001b[31m+         \"impact\": \"moderate\",\u001b[39m\n\u001b[31m+         \"none\": Array [],\u001b[39m\n\u001b[31m+         \"target\": Array [\u001b[39m\n\u001b[31m+           \"html\",\u001b[39m\n\u001b[31m+         ],\u001b[39m\n\u001b[31m+       },\u001b[39m\n\u001b[31m+     ],\u001b[39m\n\u001b[31m+     \"tags\": Array [\u001b[39m\n\u001b[31m+       \"cat.semantics\",\u001b[39m\n\u001b[31m+       \"best-practice\",\u001b[39m\n\u001b[31m+     ],\u001b[39m\n\u001b[31m+   },\u001b[39m\n\u001b[31m+   Object {\u001b[39m\n\u001b[31m+     \"description\": \"Ensure that the page, or at least one of its frames contains a level-one heading\",\u001b[39m\n\u001b[31m+     \"help\": \"Page should contain a level-one heading\",\u001b[39m\n\u001b[31m+     \"helpUrl\": \"https://dequeuniversity.com/rules/axe/4.10/page-has-heading-one?application=playwright\",\u001b[39m\n\u001b[31m+     \"id\": \"page-has-heading-one\",\u001b[39m\n\u001b[31m+     \"impact\": \"moderate\",\u001b[39m\n\u001b[31m+     \"nodes\": Array [\u001b[39m\n\u001b[31m+       Object {\u001b[39m\n\u001b[31m+         \"all\": Array [\u001b[39m\n\u001b[31m+           Object {\u001b[39m\n\u001b[31m+             \"data\": null,\u001b[39m\n\u001b[31m+             \"id\": \"page-has-heading-one\",\u001b[39m\n\u001b[31m+             \"impact\": \"moderate\",\u001b[39m\n\u001b[31m+             \"message\": \"Page must have a level-one heading\",\u001b[39m\n\u001b[31m+             \"relatedNodes\": Array [],\u001b[39m\n\u001b[31m+           },\u001b[39m\n\u001b[31m+         ],\u001b[39m\n\u001b[31m+         \"any\": Array [],\u001b[39m\n\u001b[31m+         \"failureSummary\": \"Fix all of the following:\u001b[39m\n\u001b[31m+   Page must have a level-one heading\",\u001b[39m\n\u001b[31m+         \"html\": \"<html lang=\\\"en\\\" class=\\\"h-full\\\">\",\u001b[39m\n\u001b[31m+         \"impact\": \"moderate\",\u001b[39m\n\u001b[31m+         \"none\": Array [],\u001b[39m\n\u001b[31m+         \"target\": Array [\u001b[39m\n\u001b[31m+           \"html\",\u001b[39m\n\u001b[31m+         ],\u001b[39m\n\u001b[31m+       },\u001b[39m\n\u001b[31m+     ],\u001b[39m\n\u001b[31m+     \"tags\": Array [\u001b[39m\n\u001b[31m+       \"cat.semantics\",\u001b[39m\n\u001b[31m+       \"best-practice\",\u001b[39m\n\u001b[31m+     ],\u001b[39m\n\u001b[31m+   },\u001b[39m\n\u001b[31m+ ]\u001b[39m\n\n\u001b[0m \u001b[90m 37 |\u001b[39m           \u001b[36mconst\u001b[39m accessibilityScanResults \u001b[33m=\u001b[39m \u001b[36mawait\u001b[39m \u001b[36mnew\u001b[39m \u001b[33mAxeBuilder\u001b[39m({ page })\u001b[33m.\u001b[39manalyze()\u001b[33m;\u001b[39m\n \u001b[90m 38 |\u001b[39m           console\u001b[33m.\u001b[39mlog(\u001b[32m`${route} violations: `\u001b[39m\u001b[33m,\u001b[39m accessibilityScanResults\u001b[33m.\u001b[39mviolations\u001b[33m.\u001b[39mlength)\u001b[33m;\u001b[39m\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 39 |\u001b[39m           expect(accessibilityScanResults\u001b[33m.\u001b[39mviolations)\u001b[33m.\u001b[39mtoEqual([])\u001b[33m;\u001b[39m\n \u001b[90m    |\u001b[39m                                                       \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 40 |\u001b[39m         })\u001b[33m;\u001b[39m\n \u001b[90m 41 |\u001b[39m       }\n \u001b[90m 42 |\u001b[39m     })\u001b[33m;\u001b[39m\u001b[0m\n\n    at /home/runner/work/macpro-mako/macpro-mako/test/e2e/e2e/non-func/a11y.spec.ts:39:55"
-                            }
-                          ],
+                          "status": "passed",
+                          "duration": 3572,
+                          "errors": [],
                           "stdout": [
                             {
-                              "text": "/new-submission violations:  \u001b[33m2\u001b[39m\n"
+                              "text": "/new-submission violations:  \u001b[33m0\u001b[39m\n"
                             }
                           ],
                           "stderr": [],
                           "retry": 0,
-                          "startTime": "2025-08-22T15:39:52.703Z",
-                          "attachments": [
-                            {
-                              "name": "video",
-                              "contentType": "video/webm",
-                              "path": "/home/runner/work/macpro-mako/macpro-mako/test/test-results/e2e-e2e-non-func-a11y-ally-8d111-ctable-accessibility-issues-shared/video-1.webm"
-                            },
-                            {
-                              "name": "video",
-                              "contentType": "video/webm",
-                              "path": "/home/runner/work/macpro-mako/macpro-mako/test/test-results/e2e-e2e-non-func-a11y-ally-8d111-ctable-accessibility-issues-shared/video.webm"
-                            },
-                            {
-                              "name": "trace",
-                              "contentType": "application/zip",
-                              "path": "/home/runner/work/macpro-mako/macpro-mako/test/test-results/e2e-e2e-non-func-a11y-ally-8d111-ctable-accessibility-issues-shared/trace.zip"
-                            }
-                          ],
-                          "errorLocation": {
-                            "file": "/home/runner/work/macpro-mako/macpro-mako/test/e2e/e2e/non-func/a11y.spec.ts",
-                            "column": 55,
-                            "line": 39
-                          }
+                          "startTime": "2025-08-22T21:01:23.362Z",
+                          "attachments": []
                         }
                       ],
-                      "status": "unexpected"
+                      "status": "expected"
                     }
                   ],
                   "id": "b274f2e1b173d96a0c2b-bc0e322187db637ce96c",
@@ -637,9 +597,9 @@
                       "projectName": "shared",
                       "results": [
                         {
-                          "workerIndex": 3,
+                          "workerIndex": 2,
                           "status": "passed",
-                          "duration": 4484,
+                          "duration": 3561,
                           "errors": [],
                           "stdout": [
                             {
@@ -648,7 +608,7 @@
                           ],
                           "stderr": [],
                           "retry": 0,
-                          "startTime": "2025-08-22T15:39:59.394Z",
+                          "startTime": "2025-08-22T21:01:26.941Z",
                           "attachments": []
                         }
                       ],
@@ -673,9 +633,9 @@
                       "projectName": "shared",
                       "results": [
                         {
-                          "workerIndex": 3,
+                          "workerIndex": 2,
                           "status": "passed",
-                          "duration": 3951,
+                          "duration": 3619,
                           "errors": [],
                           "stdout": [
                             {
@@ -684,7 +644,7 @@
                           ],
                           "stderr": [],
                           "retry": 0,
-                          "startTime": "2025-08-22T15:40:03.977Z",
+                          "startTime": "2025-08-22T21:01:30.508Z",
                           "attachments": []
                         }
                       ],
@@ -709,9 +669,9 @@
                       "projectName": "shared",
                       "results": [
                         {
-                          "workerIndex": 3,
+                          "workerIndex": 2,
                           "status": "passed",
-                          "duration": 4022,
+                          "duration": 3556,
                           "errors": [],
                           "stdout": [
                             {
@@ -720,7 +680,7 @@
                           ],
                           "stderr": [],
                           "retry": 0,
-                          "startTime": "2025-08-22T15:40:07.934Z",
+                          "startTime": "2025-08-22T21:01:34.133Z",
                           "attachments": []
                         }
                       ],
@@ -745,9 +705,9 @@
                       "projectName": "shared",
                       "results": [
                         {
-                          "workerIndex": 3,
+                          "workerIndex": 2,
                           "status": "passed",
-                          "duration": 4505,
+                          "duration": 3678,
                           "errors": [],
                           "stdout": [
                             {
@@ -756,7 +716,7 @@
                           ],
                           "stderr": [],
                           "retry": 0,
-                          "startTime": "2025-08-22T15:40:11.967Z",
+                          "startTime": "2025-08-22T21:01:37.696Z",
                           "attachments": []
                         }
                       ],
@@ -781,9 +741,9 @@
                       "projectName": "shared",
                       "results": [
                         {
-                          "workerIndex": 3,
+                          "workerIndex": 2,
                           "status": "passed",
-                          "duration": 3850,
+                          "duration": 3722,
                           "errors": [],
                           "stdout": [
                             {
@@ -792,7 +752,7 @@
                           ],
                           "stderr": [],
                           "retry": 0,
-                          "startTime": "2025-08-22T15:40:16.480Z",
+                          "startTime": "2025-08-22T21:01:41.380Z",
                           "attachments": []
                         }
                       ],
@@ -817,9 +777,9 @@
                       "projectName": "shared",
                       "results": [
                         {
-                          "workerIndex": 3,
+                          "workerIndex": 2,
                           "status": "passed",
-                          "duration": 4506,
+                          "duration": 3643,
                           "errors": [],
                           "stdout": [
                             {
@@ -828,7 +788,7 @@
                           ],
                           "stderr": [],
                           "retry": 0,
-                          "startTime": "2025-08-22T15:40:20.337Z",
+                          "startTime": "2025-08-22T21:01:45.110Z",
                           "attachments": []
                         }
                       ],
@@ -853,9 +813,9 @@
                       "projectName": "shared",
                       "results": [
                         {
-                          "workerIndex": 3,
+                          "workerIndex": 2,
                           "status": "passed",
-                          "duration": 4076,
+                          "duration": 3852,
                           "errors": [],
                           "stdout": [
                             {
@@ -864,7 +824,7 @@
                           ],
                           "stderr": [],
                           "retry": 0,
-                          "startTime": "2025-08-22T15:40:24.850Z",
+                          "startTime": "2025-08-22T21:01:48.759Z",
                           "attachments": []
                         }
                       ],
@@ -889,9 +849,9 @@
                       "projectName": "shared",
                       "results": [
                         {
-                          "workerIndex": 3,
+                          "workerIndex": 2,
                           "status": "passed",
-                          "duration": 4557,
+                          "duration": 3722,
                           "errors": [],
                           "stdout": [
                             {
@@ -900,7 +860,7 @@
                           ],
                           "stderr": [],
                           "retry": 0,
-                          "startTime": "2025-08-22T15:40:28.933Z",
+                          "startTime": "2025-08-22T21:01:52.618Z",
                           "attachments": []
                         }
                       ],
@@ -925,9 +885,9 @@
                       "projectName": "shared",
                       "results": [
                         {
-                          "workerIndex": 3,
+                          "workerIndex": 2,
                           "status": "passed",
-                          "duration": 3933,
+                          "duration": 3620,
                           "errors": [],
                           "stdout": [
                             {
@@ -936,7 +896,7 @@
                           ],
                           "stderr": [],
                           "retry": 0,
-                          "startTime": "2025-08-22T15:40:33.506Z",
+                          "startTime": "2025-08-22T21:01:56.347Z",
                           "attachments": []
                         }
                       ],
@@ -961,9 +921,9 @@
                       "projectName": "shared",
                       "results": [
                         {
-                          "workerIndex": 3,
+                          "workerIndex": 2,
                           "status": "passed",
-                          "duration": 4020,
+                          "duration": 3667,
                           "errors": [],
                           "stdout": [
                             {
@@ -972,7 +932,7 @@
                           ],
                           "stderr": [],
                           "retry": 0,
-                          "startTime": "2025-08-22T15:40:37.451Z",
+                          "startTime": "2025-08-22T21:01:59.974Z",
                           "attachments": []
                         }
                       ],
@@ -997,9 +957,9 @@
                       "projectName": "shared",
                       "results": [
                         {
-                          "workerIndex": 3,
+                          "workerIndex": 2,
                           "status": "passed",
-                          "duration": 4538,
+                          "duration": 3981,
                           "errors": [],
                           "stdout": [
                             {
@@ -1008,7 +968,7 @@
                           ],
                           "stderr": [],
                           "retry": 0,
-                          "startTime": "2025-08-22T15:40:41.478Z",
+                          "startTime": "2025-08-22T21:02:03.647Z",
                           "attachments": []
                         }
                       ],
@@ -1033,9 +993,9 @@
                       "projectName": "shared",
                       "results": [
                         {
-                          "workerIndex": 3,
+                          "workerIndex": 2,
                           "status": "passed",
-                          "duration": 4273,
+                          "duration": 3846,
                           "errors": [],
                           "stdout": [
                             {
@@ -1044,7 +1004,7 @@
                           ],
                           "stderr": [],
                           "retry": 0,
-                          "startTime": "2025-08-22T15:40:46.023Z",
+                          "startTime": "2025-08-22T21:02:07.634Z",
                           "attachments": []
                         }
                       ],
@@ -1069,9 +1029,9 @@
                       "projectName": "shared",
                       "results": [
                         {
-                          "workerIndex": 3,
+                          "workerIndex": 2,
                           "status": "passed",
-                          "duration": 4098,
+                          "duration": 3851,
                           "errors": [],
                           "stdout": [
                             {
@@ -1080,7 +1040,7 @@
                           ],
                           "stderr": [],
                           "retry": 0,
-                          "startTime": "2025-08-22T15:40:50.302Z",
+                          "startTime": "2025-08-22T21:02:11.486Z",
                           "attachments": []
                         }
                       ],
@@ -1105,9 +1065,9 @@
                       "projectName": "shared",
                       "results": [
                         {
-                          "workerIndex": 3,
+                          "workerIndex": 2,
                           "status": "passed",
-                          "duration": 4617,
+                          "duration": 3823,
                           "errors": [],
                           "stdout": [
                             {
@@ -1116,7 +1076,7 @@
                           ],
                           "stderr": [],
                           "retry": 0,
-                          "startTime": "2025-08-22T15:40:54.407Z",
+                          "startTime": "2025-08-22T21:02:15.343Z",
                           "attachments": []
                         }
                       ],
@@ -1141,9 +1101,9 @@
                       "projectName": "shared",
                       "results": [
                         {
-                          "workerIndex": 3,
+                          "workerIndex": 2,
                           "status": "passed",
-                          "duration": 4436,
+                          "duration": 3852,
                           "errors": [],
                           "stdout": [
                             {
@@ -1152,7 +1112,7 @@
                           ],
                           "stderr": [],
                           "retry": 0,
-                          "startTime": "2025-08-22T15:40:59.033Z",
+                          "startTime": "2025-08-22T21:02:19.173Z",
                           "attachments": []
                         }
                       ],
@@ -1177,9 +1137,9 @@
                       "projectName": "shared",
                       "results": [
                         {
-                          "workerIndex": 3,
+                          "workerIndex": 2,
                           "status": "passed",
-                          "duration": 4366,
+                          "duration": 3973,
                           "errors": [],
                           "stdout": [
                             {
@@ -1188,7 +1148,7 @@
                           ],
                           "stderr": [],
                           "retry": 0,
-                          "startTime": "2025-08-22T15:41:03.481Z",
+                          "startTime": "2025-08-22T21:02:23.030Z",
                           "attachments": []
                         }
                       ],
@@ -1213,9 +1173,9 @@
                       "projectName": "shared",
                       "results": [
                         {
-                          "workerIndex": 3,
+                          "workerIndex": 2,
                           "status": "passed",
-                          "duration": 4397,
+                          "duration": 3856,
                           "errors": [],
                           "stdout": [
                             {
@@ -1224,7 +1184,7 @@
                           ],
                           "stderr": [],
                           "retry": 0,
-                          "startTime": "2025-08-22T15:41:07.853Z",
+                          "startTime": "2025-08-22T21:02:27.010Z",
                           "attachments": []
                         }
                       ],
@@ -1249,9 +1209,9 @@
                       "projectName": "shared",
                       "results": [
                         {
-                          "workerIndex": 3,
+                          "workerIndex": 2,
                           "status": "passed",
-                          "duration": 4985,
+                          "duration": 3925,
                           "errors": [],
                           "stdout": [
                             {
@@ -1260,7 +1220,7 @@
                           ],
                           "stderr": [],
                           "retry": 0,
-                          "startTime": "2025-08-22T15:41:12.256Z",
+                          "startTime": "2025-08-22T21:02:30.872Z",
                           "attachments": []
                         }
                       ],
@@ -1285,9 +1245,9 @@
                       "projectName": "shared",
                       "results": [
                         {
-                          "workerIndex": 3,
+                          "workerIndex": 2,
                           "status": "passed",
-                          "duration": 4175,
+                          "duration": 3842,
                           "errors": [],
                           "stdout": [
                             {
@@ -1296,7 +1256,7 @@
                           ],
                           "stderr": [],
                           "retry": 0,
-                          "startTime": "2025-08-22T15:41:17.247Z",
+                          "startTime": "2025-08-22T21:02:34.803Z",
                           "attachments": []
                         }
                       ],
@@ -1321,9 +1281,9 @@
                       "projectName": "shared",
                       "results": [
                         {
-                          "workerIndex": 3,
+                          "workerIndex": 2,
                           "status": "passed",
-                          "duration": 4237,
+                          "duration": 3771,
                           "errors": [],
                           "stdout": [
                             {
@@ -1332,7 +1292,7 @@
                           ],
                           "stderr": [],
                           "retry": 0,
-                          "startTime": "2025-08-22T15:41:21.428Z",
+                          "startTime": "2025-08-22T21:02:38.650Z",
                           "attachments": []
                         }
                       ],
@@ -1357,9 +1317,9 @@
                       "projectName": "shared",
                       "results": [
                         {
-                          "workerIndex": 3,
+                          "workerIndex": 2,
                           "status": "passed",
-                          "duration": 4383,
+                          "duration": 3857,
                           "errors": [],
                           "stdout": [
                             {
@@ -1368,7 +1328,7 @@
                           ],
                           "stderr": [],
                           "retry": 0,
-                          "startTime": "2025-08-22T15:41:25.671Z",
+                          "startTime": "2025-08-22T21:02:42.426Z",
                           "attachments": []
                         }
                       ],
@@ -1401,9 +1361,9 @@
                       "projectName": "shared",
                       "results": [
                         {
-                          "workerIndex": 3,
+                          "workerIndex": 2,
                           "status": "passed",
-                          "duration": 4007,
+                          "duration": 3725,
                           "errors": [],
                           "stdout": [
                             {
@@ -1412,7 +1372,7 @@
                           ],
                           "stderr": [],
                           "retry": 0,
-                          "startTime": "2025-08-22T15:41:30.060Z",
+                          "startTime": "2025-08-22T21:02:46.288Z",
                           "attachments": []
                         }
                       ],
@@ -1437,9 +1397,9 @@
                       "projectName": "shared",
                       "results": [
                         {
-                          "workerIndex": 3,
+                          "workerIndex": 2,
                           "status": "passed",
-                          "duration": 4229,
+                          "duration": 3691,
                           "errors": [],
                           "stdout": [
                             {
@@ -1448,7 +1408,7 @@
                           ],
                           "stderr": [],
                           "retry": 0,
-                          "startTime": "2025-08-22T15:41:34.073Z",
+                          "startTime": "2025-08-22T21:02:50.019Z",
                           "attachments": []
                         }
                       ],
@@ -1473,9 +1433,9 @@
                       "projectName": "shared",
                       "results": [
                         {
-                          "workerIndex": 3,
+                          "workerIndex": 2,
                           "status": "passed",
-                          "duration": 4463,
+                          "duration": 4005,
                           "errors": [],
                           "stdout": [
                             {
@@ -1484,7 +1444,7 @@
                           ],
                           "stderr": [],
                           "retry": 0,
-                          "startTime": "2025-08-22T15:41:38.309Z",
+                          "startTime": "2025-08-22T21:02:53.716Z",
                           "attachments": []
                         }
                       ],
@@ -1509,9 +1469,9 @@
                       "projectName": "shared",
                       "results": [
                         {
-                          "workerIndex": 3,
+                          "workerIndex": 2,
                           "status": "passed",
-                          "duration": 4196,
+                          "duration": 3948,
                           "errors": [],
                           "stdout": [
                             {
@@ -1520,7 +1480,7 @@
                           ],
                           "stderr": [],
                           "retry": 0,
-                          "startTime": "2025-08-22T15:41:42.778Z",
+                          "startTime": "2025-08-22T21:02:57.726Z",
                           "attachments": []
                         }
                       ],
@@ -1545,9 +1505,9 @@
                       "projectName": "shared",
                       "results": [
                         {
-                          "workerIndex": 3,
+                          "workerIndex": 2,
                           "status": "passed",
-                          "duration": 4840,
+                          "duration": 3966,
                           "errors": [],
                           "stdout": [
                             {
@@ -1556,7 +1516,7 @@
                           ],
                           "stderr": [],
                           "retry": 0,
-                          "startTime": "2025-08-22T15:41:46.980Z",
+                          "startTime": "2025-08-22T21:03:01.680Z",
                           "attachments": []
                         }
                       ],
@@ -1581,9 +1541,9 @@
                       "projectName": "shared",
                       "results": [
                         {
-                          "workerIndex": 3,
+                          "workerIndex": 2,
                           "status": "passed",
-                          "duration": 4271,
+                          "duration": 3944,
                           "errors": [],
                           "stdout": [
                             {
@@ -1592,7 +1552,7 @@
                           ],
                           "stderr": [],
                           "retry": 0,
-                          "startTime": "2025-08-22T15:41:51.827Z",
+                          "startTime": "2025-08-22T21:03:05.651Z",
                           "attachments": []
                         }
                       ],
@@ -1617,9 +1577,9 @@
                       "projectName": "shared",
                       "results": [
                         {
-                          "workerIndex": 3,
+                          "workerIndex": 2,
                           "status": "passed",
-                          "duration": 3908,
+                          "duration": 3656,
                           "errors": [],
                           "stdout": [
                             {
@@ -1628,7 +1588,7 @@
                           ],
                           "stderr": [],
                           "retry": 0,
-                          "startTime": "2025-08-22T15:41:56.104Z",
+                          "startTime": "2025-08-22T21:03:09.603Z",
                           "attachments": []
                         }
                       ],
@@ -1653,9 +1613,9 @@
                       "projectName": "shared",
                       "results": [
                         {
-                          "workerIndex": 3,
+                          "workerIndex": 2,
                           "status": "passed",
-                          "duration": 4319,
+                          "duration": 3824,
                           "errors": [],
                           "stdout": [
                             {
@@ -1664,7 +1624,7 @@
                           ],
                           "stderr": [],
                           "retry": 0,
-                          "startTime": "2025-08-22T15:42:00.018Z",
+                          "startTime": "2025-08-22T21:03:13.266Z",
                           "attachments": []
                         }
                       ],
@@ -1689,9 +1649,9 @@
                       "projectName": "shared",
                       "results": [
                         {
-                          "workerIndex": 3,
+                          "workerIndex": 2,
                           "status": "passed",
-                          "duration": 3813,
+                          "duration": 3602,
                           "errors": [],
                           "stdout": [
                             {
@@ -1700,7 +1660,7 @@
                           ],
                           "stderr": [],
                           "retry": 0,
-                          "startTime": "2025-08-22T15:42:04.344Z",
+                          "startTime": "2025-08-22T21:03:17.095Z",
                           "attachments": []
                         }
                       ],
@@ -1725,9 +1685,9 @@
                       "projectName": "shared",
                       "results": [
                         {
-                          "workerIndex": 3,
+                          "workerIndex": 2,
                           "status": "passed",
-                          "duration": 3962,
+                          "duration": 3635,
                           "errors": [],
                           "stdout": [
                             {
@@ -1736,7 +1696,7 @@
                           ],
                           "stderr": [],
                           "retry": 0,
-                          "startTime": "2025-08-22T15:42:08.163Z",
+                          "startTime": "2025-08-22T21:03:20.703Z",
                           "attachments": []
                         }
                       ],
@@ -1761,9 +1721,9 @@
                       "projectName": "shared",
                       "results": [
                         {
-                          "workerIndex": 3,
+                          "workerIndex": 2,
                           "status": "passed",
-                          "duration": 4162,
+                          "duration": 3593,
                           "errors": [],
                           "stdout": [
                             {
@@ -1772,7 +1732,7 @@
                           ],
                           "stderr": [],
                           "retry": 0,
-                          "startTime": "2025-08-22T15:42:12.136Z",
+                          "startTime": "2025-08-22T21:03:24.344Z",
                           "attachments": []
                         }
                       ],
@@ -1797,9 +1757,9 @@
                       "projectName": "shared",
                       "results": [
                         {
-                          "workerIndex": 3,
+                          "workerIndex": 2,
                           "status": "passed",
-                          "duration": 4313,
+                          "duration": 3825,
                           "errors": [],
                           "stdout": [
                             {
@@ -1808,7 +1768,7 @@
                           ],
                           "stderr": [],
                           "retry": 0,
-                          "startTime": "2025-08-22T15:42:16.304Z",
+                          "startTime": "2025-08-22T21:03:27.942Z",
                           "attachments": []
                         }
                       ],
@@ -1833,9 +1793,9 @@
                       "projectName": "shared",
                       "results": [
                         {
-                          "workerIndex": 3,
+                          "workerIndex": 2,
                           "status": "passed",
-                          "duration": 4265,
+                          "duration": 3745,
                           "errors": [],
                           "stdout": [
                             {
@@ -1844,7 +1804,7 @@
                           ],
                           "stderr": [],
                           "retry": 0,
-                          "startTime": "2025-08-22T15:42:20.623Z",
+                          "startTime": "2025-08-22T21:03:31.772Z",
                           "attachments": []
                         }
                       ],
@@ -1869,9 +1829,9 @@
                       "projectName": "shared",
                       "results": [
                         {
-                          "workerIndex": 3,
+                          "workerIndex": 2,
                           "status": "passed",
-                          "duration": 4011,
+                          "duration": 3573,
                           "errors": [],
                           "stdout": [
                             {
@@ -1880,7 +1840,7 @@
                           ],
                           "stderr": [],
                           "retry": 0,
-                          "startTime": "2025-08-22T15:42:24.894Z",
+                          "startTime": "2025-08-22T21:03:35.523Z",
                           "attachments": []
                         }
                       ],
@@ -1905,9 +1865,9 @@
                       "projectName": "shared",
                       "results": [
                         {
-                          "workerIndex": 3,
+                          "workerIndex": 2,
                           "status": "passed",
-                          "duration": 4403,
+                          "duration": 3723,
                           "errors": [],
                           "stdout": [
                             {
@@ -1916,7 +1876,7 @@
                           ],
                           "stderr": [],
                           "retry": 0,
-                          "startTime": "2025-08-22T15:42:28.910Z",
+                          "startTime": "2025-08-22T21:03:39.101Z",
                           "attachments": []
                         }
                       ],
@@ -1941,9 +1901,9 @@
                       "projectName": "shared",
                       "results": [
                         {
-                          "workerIndex": 3,
+                          "workerIndex": 2,
                           "status": "passed",
-                          "duration": 4052,
+                          "duration": 3866,
                           "errors": [],
                           "stdout": [
                             {
@@ -1952,7 +1912,7 @@
                           ],
                           "stderr": [],
                           "retry": 0,
-                          "startTime": "2025-08-22T15:42:33.319Z",
+                          "startTime": "2025-08-22T21:03:42.830Z",
                           "attachments": []
                         }
                       ],
@@ -1977,9 +1937,9 @@
                       "projectName": "shared",
                       "results": [
                         {
-                          "workerIndex": 3,
+                          "workerIndex": 2,
                           "status": "passed",
-                          "duration": 4097,
+                          "duration": 3800,
                           "errors": [],
                           "stdout": [
                             {
@@ -1988,7 +1948,7 @@
                           ],
                           "stderr": [],
                           "retry": 0,
-                          "startTime": "2025-08-22T15:42:37.377Z",
+                          "startTime": "2025-08-22T21:03:46.704Z",
                           "attachments": []
                         }
                       ],
@@ -2013,9 +1973,9 @@
                       "projectName": "shared",
                       "results": [
                         {
-                          "workerIndex": 3,
+                          "workerIndex": 2,
                           "status": "passed",
-                          "duration": 4301,
+                          "duration": 3994,
                           "errors": [],
                           "stdout": [
                             {
@@ -2024,7 +1984,7 @@
                           ],
                           "stderr": [],
                           "retry": 0,
-                          "startTime": "2025-08-22T15:42:41.479Z",
+                          "startTime": "2025-08-22T21:03:50.510Z",
                           "attachments": []
                         }
                       ],
@@ -2049,9 +2009,9 @@
                       "projectName": "shared",
                       "results": [
                         {
-                          "workerIndex": 3,
+                          "workerIndex": 2,
                           "status": "passed",
-                          "duration": 4218,
+                          "duration": 3958,
                           "errors": [],
                           "stdout": [
                             {
@@ -2060,7 +2020,7 @@
                           ],
                           "stderr": [],
                           "retry": 0,
-                          "startTime": "2025-08-22T15:42:45.786Z",
+                          "startTime": "2025-08-22T21:03:54.509Z",
                           "attachments": []
                         }
                       ],
@@ -2085,9 +2045,9 @@
                       "projectName": "shared",
                       "results": [
                         {
-                          "workerIndex": 3,
+                          "workerIndex": 2,
                           "status": "passed",
-                          "duration": 3830,
+                          "duration": 3573,
                           "errors": [],
                           "stdout": [
                             {
@@ -2096,7 +2056,7 @@
                           ],
                           "stderr": [],
                           "retry": 0,
-                          "startTime": "2025-08-22T15:42:50.009Z",
+                          "startTime": "2025-08-22T21:03:58.473Z",
                           "attachments": []
                         }
                       ],
@@ -2121,9 +2081,9 @@
                       "projectName": "shared",
                       "results": [
                         {
-                          "workerIndex": 3,
+                          "workerIndex": 2,
                           "status": "passed",
-                          "duration": 4006,
+                          "duration": 3748,
                           "errors": [],
                           "stdout": [
                             {
@@ -2132,7 +2092,7 @@
                           ],
                           "stderr": [],
                           "retry": 0,
-                          "startTime": "2025-08-22T15:42:53.845Z",
+                          "startTime": "2025-08-22T21:04:02.051Z",
                           "attachments": []
                         }
                       ],
@@ -2157,9 +2117,9 @@
                       "projectName": "shared",
                       "results": [
                         {
-                          "workerIndex": 3,
+                          "workerIndex": 2,
                           "status": "passed",
-                          "duration": 4083,
+                          "duration": 3716,
                           "errors": [],
                           "stdout": [
                             {
@@ -2168,7 +2128,7 @@
                           ],
                           "stderr": [],
                           "retry": 0,
-                          "startTime": "2025-08-22T15:42:57.856Z",
+                          "startTime": "2025-08-22T21:04:05.804Z",
                           "attachments": []
                         }
                       ],
@@ -2228,14 +2188,14 @@
                           "projectName": "shared",
                           "results": [
                             {
-                              "workerIndex": 3,
+                              "workerIndex": 2,
                               "status": "passed",
-                              "duration": 2825,
+                              "duration": 2911,
                               "errors": [],
                               "stdout": [],
                               "stderr": [],
                               "retry": 0,
-                              "startTime": "2025-08-22T15:43:01.956Z",
+                              "startTime": "2025-08-22T21:04:09.538Z",
                               "attachments": []
                             }
                           ],
@@ -2262,14 +2222,14 @@
                           "projectName": "shared",
                           "results": [
                             {
-                              "workerIndex": 3,
+                              "workerIndex": 2,
                               "status": "passed",
-                              "duration": 3053,
+                              "duration": 2903,
                               "errors": [],
                               "stdout": [],
                               "stderr": [],
                               "retry": 0,
-                              "startTime": "2025-08-22T15:43:04.788Z",
+                              "startTime": "2025-08-22T21:04:12.455Z",
                               "attachments": []
                             }
                           ],
@@ -2296,14 +2256,14 @@
                           "projectName": "shared",
                           "results": [
                             {
-                              "workerIndex": 3,
+                              "workerIndex": 2,
                               "status": "passed",
-                              "duration": 2934,
+                              "duration": 2816,
                               "errors": [],
                               "stdout": [],
                               "stderr": [],
                               "retry": 0,
-                              "startTime": "2025-08-22T15:43:07.847Z",
+                              "startTime": "2025-08-22T21:04:15.365Z",
                               "attachments": []
                             }
                           ],
@@ -2330,14 +2290,14 @@
                           "projectName": "shared",
                           "results": [
                             {
-                              "workerIndex": 3,
+                              "workerIndex": 2,
                               "status": "passed",
-                              "duration": 4312,
+                              "duration": 2776,
                               "errors": [],
                               "stdout": [],
                               "stderr": [],
                               "retry": 0,
-                              "startTime": "2025-08-22T15:43:10.786Z",
+                              "startTime": "2025-08-22T21:04:18.186Z",
                               "attachments": []
                             }
                           ],
@@ -2364,14 +2324,14 @@
                           "projectName": "shared",
                           "results": [
                             {
-                              "workerIndex": 3,
+                              "workerIndex": 2,
                               "status": "passed",
-                              "duration": 4274,
+                              "duration": 2725,
                               "errors": [],
                               "stdout": [],
                               "stderr": [],
                               "retry": 0,
-                              "startTime": "2025-08-22T15:43:15.103Z",
+                              "startTime": "2025-08-22T21:04:20.967Z",
                               "attachments": []
                             }
                           ],
@@ -2398,14 +2358,14 @@
                           "projectName": "shared",
                           "results": [
                             {
-                              "workerIndex": 3,
+                              "workerIndex": 2,
                               "status": "passed",
-                              "duration": 3894,
+                              "duration": 2761,
                               "errors": [],
                               "stdout": [],
                               "stderr": [],
                               "retry": 0,
-                              "startTime": "2025-08-22T15:43:19.382Z",
+                              "startTime": "2025-08-22T21:04:23.698Z",
                               "attachments": []
                             }
                           ],
@@ -2432,14 +2392,14 @@
                           "projectName": "shared",
                           "results": [
                             {
-                              "workerIndex": 3,
+                              "workerIndex": 2,
                               "status": "passed",
-                              "duration": 2979,
+                              "duration": 2759,
                               "errors": [],
                               "stdout": [],
                               "stderr": [],
                               "retry": 0,
-                              "startTime": "2025-08-22T15:43:23.282Z",
+                              "startTime": "2025-08-22T21:04:26.464Z",
                               "attachments": []
                             }
                           ],
@@ -2481,14 +2441,14 @@
                                   "projectName": "shared",
                                   "results": [
                                     {
-                                      "workerIndex": 3,
+                                      "workerIndex": 2,
                                       "status": "passed",
-                                      "duration": 897,
+                                      "duration": 694,
                                       "errors": [],
                                       "stdout": [],
                                       "stderr": [],
                                       "retry": 0,
-                                      "startTime": "2025-08-22T15:43:26.267Z",
+                                      "startTime": "2025-08-22T21:04:29.227Z",
                                       "attachments": []
                                     }
                                   ],
@@ -2515,14 +2475,14 @@
                                   "projectName": "shared",
                                   "results": [
                                     {
-                                      "workerIndex": 3,
+                                      "workerIndex": 2,
                                       "status": "passed",
-                                      "duration": 2782,
+                                      "duration": 2678,
                                       "errors": [],
                                       "stdout": [],
                                       "stderr": [],
                                       "retry": 0,
-                                      "startTime": "2025-08-22T15:43:27.170Z",
+                                      "startTime": "2025-08-22T21:04:29.926Z",
                                       "attachments": []
                                     }
                                   ],
@@ -2549,14 +2509,14 @@
                                   "projectName": "shared",
                                   "results": [
                                     {
-                                      "workerIndex": 3,
+                                      "workerIndex": 2,
                                       "status": "passed",
-                                      "duration": 2873,
+                                      "duration": 2620,
                                       "errors": [],
                                       "stdout": [],
                                       "stderr": [],
                                       "retry": 0,
-                                      "startTime": "2025-08-22T15:43:29.957Z",
+                                      "startTime": "2025-08-22T21:04:32.610Z",
                                       "attachments": []
                                     }
                                   ],
@@ -2591,14 +2551,14 @@
                                   "projectName": "shared",
                                   "results": [
                                     {
-                                      "workerIndex": 3,
+                                      "workerIndex": 2,
                                       "status": "passed",
-                                      "duration": 3350,
+                                      "duration": 2650,
                                       "errors": [],
                                       "stdout": [],
                                       "stderr": [],
                                       "retry": 0,
-                                      "startTime": "2025-08-22T15:43:32.836Z",
+                                      "startTime": "2025-08-22T21:04:35.234Z",
                                       "attachments": []
                                     }
                                   ],
@@ -2625,14 +2585,14 @@
                                   "projectName": "shared",
                                   "results": [
                                     {
-                                      "workerIndex": 3,
+                                      "workerIndex": 2,
                                       "status": "passed",
-                                      "duration": 3142,
+                                      "duration": 2399,
                                       "errors": [],
                                       "stdout": [],
                                       "stderr": [],
                                       "retry": 0,
-                                      "startTime": "2025-08-22T15:43:36.192Z",
+                                      "startTime": "2025-08-22T21:04:37.890Z",
                                       "attachments": []
                                     }
                                   ],
@@ -2659,14 +2619,14 @@
                                   "projectName": "shared",
                                   "results": [
                                     {
-                                      "workerIndex": 3,
+                                      "workerIndex": 2,
                                       "status": "passed",
-                                      "duration": 3117,
+                                      "duration": 2407,
                                       "errors": [],
                                       "stdout": [],
                                       "stderr": [],
                                       "retry": 0,
-                                      "startTime": "2025-08-22T15:43:39.340Z",
+                                      "startTime": "2025-08-22T21:04:40.293Z",
                                       "attachments": []
                                     }
                                   ],
@@ -2705,9 +2665,9 @@
                           "projectName": "shared",
                           "results": [
                             {
-                              "workerIndex": 3,
+                              "workerIndex": 2,
                               "status": "passed",
-                              "duration": 6759,
+                              "duration": 4905,
                               "errors": [],
                               "stdout": [
                                 {
@@ -2716,7 +2676,7 @@
                               ],
                               "stderr": [],
                               "retry": 0,
-                              "startTime": "2025-08-22T15:43:42.464Z",
+                              "startTime": "2025-08-22T21:04:42.705Z",
                               "attachments": [
                                 {
                                   "name": "metadata",
@@ -2766,14 +2726,14 @@
                           "projectName": "shared",
                           "results": [
                             {
-                              "workerIndex": 3,
+                              "workerIndex": 2,
                               "status": "passed",
-                              "duration": 3196,
+                              "duration": 2761,
                               "errors": [],
                               "stdout": [],
                               "stderr": [],
                               "retry": 0,
-                              "startTime": "2025-08-22T15:43:49.230Z",
+                              "startTime": "2025-08-22T21:04:47.618Z",
                               "attachments": []
                             }
                           ],
@@ -2800,14 +2760,14 @@
                           "projectName": "shared",
                           "results": [
                             {
-                              "workerIndex": 3,
+                              "workerIndex": 2,
                               "status": "passed",
-                              "duration": 3012,
+                              "duration": 2650,
                               "errors": [],
                               "stdout": [],
                               "stderr": [],
                               "retry": 0,
-                              "startTime": "2025-08-22T15:43:52.434Z",
+                              "startTime": "2025-08-22T21:04:50.384Z",
                               "attachments": []
                             }
                           ],
@@ -2834,14 +2794,14 @@
                           "projectName": "shared",
                           "results": [
                             {
-                              "workerIndex": 3,
+                              "workerIndex": 2,
                               "status": "passed",
-                              "duration": 3087,
+                              "duration": 2689,
                               "errors": [],
                               "stdout": [],
                               "stderr": [],
                               "retry": 0,
-                              "startTime": "2025-08-22T15:43:55.458Z",
+                              "startTime": "2025-08-22T21:04:53.038Z",
                               "attachments": []
                             }
                           ],
@@ -2868,14 +2828,14 @@
                           "projectName": "shared",
                           "results": [
                             {
-                              "workerIndex": 3,
+                              "workerIndex": 2,
                               "status": "passed",
-                              "duration": 2959,
+                              "duration": 2667,
                               "errors": [],
                               "stdout": [],
                               "stderr": [],
                               "retry": 0,
-                              "startTime": "2025-08-22T15:43:58.559Z",
+                              "startTime": "2025-08-22T21:04:55.732Z",
                               "attachments": []
                             }
                           ],
@@ -2902,14 +2862,14 @@
                           "projectName": "shared",
                           "results": [
                             {
-                              "workerIndex": 3,
+                              "workerIndex": 2,
                               "status": "passed",
-                              "duration": 3612,
+                              "duration": 1901,
                               "errors": [],
                               "stdout": [],
                               "stderr": [],
                               "retry": 0,
-                              "startTime": "2025-08-22T15:44:01.534Z",
+                              "startTime": "2025-08-22T21:04:58.403Z",
                               "attachments": []
                             }
                           ],
@@ -2936,14 +2896,14 @@
                           "projectName": "shared",
                           "results": [
                             {
-                              "workerIndex": 3,
+                              "workerIndex": 2,
                               "status": "passed",
-                              "duration": 3052,
+                              "duration": 2677,
                               "errors": [],
                               "stdout": [],
                               "stderr": [],
                               "retry": 0,
-                              "startTime": "2025-08-22T15:44:05.155Z",
+                              "startTime": "2025-08-22T21:05:00.308Z",
                               "attachments": []
                             }
                           ],
@@ -2970,14 +2930,14 @@
                           "projectName": "shared",
                           "results": [
                             {
-                              "workerIndex": 3,
+                              "workerIndex": 2,
                               "status": "passed",
-                              "duration": 2935,
+                              "duration": 2694,
                               "errors": [],
                               "stdout": [],
                               "stderr": [],
                               "retry": 0,
-                              "startTime": "2025-08-22T15:44:08.214Z",
+                              "startTime": "2025-08-22T21:05:02.991Z",
                               "attachments": []
                             }
                           ],
@@ -3019,14 +2979,14 @@
                                   "projectName": "shared",
                                   "results": [
                                     {
-                                      "workerIndex": 3,
+                                      "workerIndex": 2,
                                       "status": "passed",
-                                      "duration": 915,
+                                      "duration": 743,
                                       "errors": [],
                                       "stdout": [],
                                       "stderr": [],
                                       "retry": 0,
-                                      "startTime": "2025-08-22T15:44:11.154Z",
+                                      "startTime": "2025-08-22T21:05:05.689Z",
                                       "attachments": []
                                     }
                                   ],
@@ -3053,14 +3013,14 @@
                                   "projectName": "shared",
                                   "results": [
                                     {
-                                      "workerIndex": 3,
+                                      "workerIndex": 2,
                                       "status": "passed",
-                                      "duration": 2885,
+                                      "duration": 2641,
                                       "errors": [],
                                       "stdout": [],
                                       "stderr": [],
                                       "retry": 0,
-                                      "startTime": "2025-08-22T15:44:12.075Z",
+                                      "startTime": "2025-08-22T21:05:06.436Z",
                                       "attachments": []
                                     }
                                   ],
@@ -3087,14 +3047,14 @@
                                   "projectName": "shared",
                                   "results": [
                                     {
-                                      "workerIndex": 3,
+                                      "workerIndex": 2,
                                       "status": "passed",
-                                      "duration": 2863,
+                                      "duration": 1677,
                                       "errors": [],
                                       "stdout": [],
                                       "stderr": [],
                                       "retry": 0,
-                                      "startTime": "2025-08-22T15:44:14.965Z",
+                                      "startTime": "2025-08-22T21:05:09.083Z",
                                       "attachments": []
                                     }
                                   ],
@@ -3129,14 +3089,14 @@
                                   "projectName": "shared",
                                   "results": [
                                     {
-                                      "workerIndex": 3,
+                                      "workerIndex": 2,
                                       "status": "passed",
-                                      "duration": 3164,
+                                      "duration": 2513,
                                       "errors": [],
                                       "stdout": [],
                                       "stderr": [],
                                       "retry": 0,
-                                      "startTime": "2025-08-22T15:44:17.835Z",
+                                      "startTime": "2025-08-22T21:05:10.765Z",
                                       "attachments": []
                                     }
                                   ],
@@ -3163,14 +3123,14 @@
                                   "projectName": "shared",
                                   "results": [
                                     {
-                                      "workerIndex": 3,
+                                      "workerIndex": 2,
                                       "status": "passed",
-                                      "duration": 3192,
+                                      "duration": 2284,
                                       "errors": [],
                                       "stdout": [],
                                       "stderr": [],
                                       "retry": 0,
-                                      "startTime": "2025-08-22T15:44:21.004Z",
+                                      "startTime": "2025-08-22T21:05:13.283Z",
                                       "attachments": []
                                     }
                                   ],
@@ -3197,14 +3157,14 @@
                                   "projectName": "shared",
                                   "results": [
                                     {
-                                      "workerIndex": 3,
+                                      "workerIndex": 2,
                                       "status": "passed",
-                                      "duration": 2826,
+                                      "duration": 2400,
                                       "errors": [],
                                       "stdout": [],
                                       "stderr": [],
                                       "retry": 0,
-                                      "startTime": "2025-08-22T15:44:24.203Z",
+                                      "startTime": "2025-08-22T21:05:15.574Z",
                                       "attachments": []
                                     }
                                   ],
@@ -3243,9 +3203,9 @@
                           "projectName": "shared",
                           "results": [
                             {
-                              "workerIndex": 3,
+                              "workerIndex": 2,
                               "status": "passed",
-                              "duration": 6089,
+                              "duration": 4827,
                               "errors": [],
                               "stdout": [
                                 {
@@ -3254,7 +3214,7 @@
                               ],
                               "stderr": [],
                               "retry": 0,
-                              "startTime": "2025-08-22T15:44:27.034Z",
+                              "startTime": "2025-08-22T21:05:17.979Z",
                               "attachments": [
                                 {
                                   "name": "metadata",
@@ -3283,11 +3243,11 @@
   ],
   "errors": [],
   "stats": {
-    "startTime": "2025-08-22T15:39:04.226Z",
-    "duration": 329036.9,
-    "expected": 74,
+    "startTime": "2025-08-22T21:00:39.259Z",
+    "duration": 283695.654,
+    "expected": 75,
     "skipped": 0,
-    "unexpected": 3,
+    "unexpected": 2,
     "flaky": 0
   }
 }
