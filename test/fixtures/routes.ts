@@ -27,27 +27,3 @@ export const STATIC = [
   "/new-submission/waiver/app-k",
   "/new-submission/waiver/temporary-extensions",
 ];
-
-export const WEBFORM = [
-  "/webform/g3/202401",
-  "/webform/g2b/202401",
-  "/webform/g2a/202401",
-  "/webform/g1/202401",
-  "/webform/cs8/202401",
-  "/webform/cs3/202401",
-  "/webform/cs7/202401",
-  "/webform/abp11/202401",
-  "/webform/abp10/202401",
-  "/webform/abp9/202401",
-  "/webform/abp7/202401",
-  "/webform/abp6/202401",
-  "/webform/abp5/202401",
-  "/webform/abp4/202401",
-  "/webform/abp3_1/202401",
-  "/webform/abp3/202401",
-  "/webform/abp2c/202401",
-  "/webform/abp2b/202401",
-  "/webform/abp2a/202401",
-  "/webform/abp1/202401",
-  "/webform/abp1/202402",
-];
