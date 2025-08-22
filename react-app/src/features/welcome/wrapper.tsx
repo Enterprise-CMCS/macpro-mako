@@ -6,7 +6,6 @@ import { useFeatureFlag } from "@/hooks/useFeatureFlag";
 
 export const WelcomeWrapper = () => {
   const { data: user } = useGetUser();
-  console.log({ user });
   const isCMSEnabled = useFeatureFlag("CMS_HOMEPAGE_FLAG");
   const isStateEnabled = useFeatureFlag("STATE_HOMEPAGE_FLAG");
 
