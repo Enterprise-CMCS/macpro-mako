@@ -29,7 +29,6 @@ export const STATIC = [
 ];
 
 export const WEBFORM = [
-  "/guides/abp",
   "/webform/g3/202401",
   "/webform/g2b/202401",
   "/webform/g2a/202401",
