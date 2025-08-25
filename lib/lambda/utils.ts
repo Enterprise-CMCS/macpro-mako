@@ -1,5 +1,6 @@
 import { UTCDate } from "@date-fns/utc";
 import { errors as OpensearchErrors } from "@opensearch-project/opensearch";
+import { add, differenceInDays, startOfDay } from "date-fns";
 import * as os from "libs/opensearch-lib";
 import { getOsNamespace } from "libs/utils";
 
@@ -49,29 +50,33 @@ export const calculate90dayExpiration = async (
   parsedRecord: ParseKafkaEvent,
   config: ProcessEmailConfig,
 ): Promise<number | undefined> => {
+  if (
+    !(
+      parsedRecord?.event === "respond-to-rai" &&
+      parsedRecord?.authority?.toUpperCase() === "CHIP SPA"
+    )
+  ) {
+    return undefined;
+  }
+
   const item = await os.getItem(config.osDomain, getOsNamespace("main"), parsedRecord.id);
   const submissionDate = item?._source.submissionDate || "";
   const raiRequestedDate = item?._source.raiRequestedDate || "";
-  console.log({ submissionDate, raiRequestedDate });
-  const submissionMS = new UTCDate(submissionDate).getTime();
-  const raiMS = new UTCDate(raiRequestedDate).getTime();
-  console.log({ submissionMS, raiMS });
+
   if (!submissionDate || !raiRequestedDate) {
-    console.error("error parsing os record");
+    return undefined;
   }
-  const now = UTCDate.now();
-  console.log({ now });
 
-  if (raiRequestedDate && submissionDate) {
-    // length of time from when the RAI was requested until now
-    const pausedDuration = now - raiMS;
-    // 90 days in milliseconds
-    const ninetyDays = 90 * 24 * 60 * 60 * 1000;
+  // length of time from when the RAI was requested until now
+  const pausedDuration = differenceInDays(
+    startOfDay(new UTCDate()), // now
+    new UTCDate(raiRequestedDate), // original RAI Requested Date
+  );
 
-    const ninetyDayExpirationClock = submissionMS + ninetyDays + pausedDuration;
-    return ninetyDayExpirationClock;
-  }
-  return undefined;
+  const ninetyDayExpirationClock = add(new UTCDate(submissionDate), {
+    days: 90 + pausedDuration,
+  });
+  return ninetyDayExpirationClock.getTime();
 };
 
 export const isChipSpaRespondRAIEvent = (parsedRecord: ParseKafkaEvent) => {

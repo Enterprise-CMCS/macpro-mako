@@ -1244,6 +1244,7 @@ const items: Record<string, TestItemResult> = {
       cmsStatus: statusToDisplayToCmsUser[SEATOOL_STATUS.PENDING],
       actionType: "respond-to-rai",
       authority: "1915(b)",
+      submissionDate: "2023-12-31T00:00:00.000Z",
       state: "MD",
       origin: "OneMAC",
       changelog: [
