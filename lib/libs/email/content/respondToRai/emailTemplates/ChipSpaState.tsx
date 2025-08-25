@@ -1,3 +1,4 @@
+import { UTCDate } from "@date-fns/utc";
 import { Text } from "@react-email/components";
 import { format } from "date-fns";
 import { CommonEmailVariables, Events } from "shared-types";
@@ -27,7 +28,7 @@ export const ChipSpaStateEmail = ({
           "Email Address": variables.submitterEmail,
           [`${chipPrefix} SPA Package ID`]: variables.id,
           // this variables.timestamp comes in with the 90th day already calculated, do not use `formatNinetyDaysDate` here
-          "90th Day Deadline": format(new Date(variables.timestamp), "MMM d, yyyy"),
+          "90th Day Deadline": format(new UTCDate(variables.timestamp), "MMM d, yyyy"),
           Summary: variables.additionalInformation,
         }}
       />
@@ -36,7 +37,7 @@ export const ChipSpaStateEmail = ({
           // this variables.timestamp comes in with the 90th day already calculated, do not use `formatNinetyDaysDate` here
           `This response confirms receipt of your CHIP State Plan Amendment (SPA or your response to a
         SPA Request for Additional Information (RAI)). You can expect a formal response to your
-        submittal to be issued within 90 days, before ${format(new Date(variables.timestamp), "MMM d, yyyy")}.`
+        submittal to be issued within 90 days, before ${format(new UTCDate(variables.timestamp), "MMM d, yyyy")}.`
         }
       </Text>
       <FollowUpNotice isChip withDivider={false} />

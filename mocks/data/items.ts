@@ -1267,6 +1267,7 @@ const items: Record<string, TestItemResult> = {
       stateStatus: statusToDisplayToStateUser[SEATOOL_STATUS.PENDING_RAI],
       cmsStatus: statusToDisplayToCmsUser[SEATOOL_STATUS.PENDING_RAI],
       actionType: "respond-to-rai",
+      submissionDate: "2023-12-31T00:00:00.000Z",
       raiRequestedDate: "2024-01-01T00:00:00.000Z",
       authority: "1915(c)",
       state: "MD",

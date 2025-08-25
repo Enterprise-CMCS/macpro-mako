@@ -1,3 +1,4 @@
+import { UTCDate } from "@date-fns/utc";
 import { errors as OpensearchErrors } from "@opensearch-project/opensearch";
 import * as os from "libs/opensearch-lib";
 import { getOsNamespace } from "libs/utils";
@@ -47,12 +48,12 @@ export const handleOpensearchError = (error: unknown): ErrorResponse => {
 export const calculate90dayExpiration = async (
   parsedRecord: ParseKafkaEvent,
   config: ProcessEmailConfig,
-) => {
+): Promise<number | undefined> => {
   const item = await os.getItem(config.osDomain, getOsNamespace("main"), parsedRecord.id);
   const submissionDate = item?._source.submissionDate || "";
   const raiRequestedDate = item?._source.raiRequestedDate || "";
-  const submissionMS = new Date(submissionDate).getTime();
-  const raiMS = new Date(raiRequestedDate).getTime();
+  const submissionMS = new UTCDate(submissionDate).getTime();
+  const raiMS = new UTCDate(raiRequestedDate).getTime();
   if (!submissionDate || !raiRequestedDate) {
     console.error("error parsing os record");
   }
@@ -71,5 +72,7 @@ export const calculate90dayExpiration = async (
 };
 
 export const isChipSpaRespondRAIEvent = (parsedRecord: ParseKafkaEvent) => {
-  return parsedRecord?.event == "respond-to-rai" && parsedRecord?.authority == "CHIP SPA";
+  return (
+    parsedRecord?.event == "respond-to-rai" && parsedRecord?.authority?.toUpperCase() == "CHIP SPA"
+  );
 };

@@ -131,9 +131,9 @@ export const handler: Handler<KafkaEvent> = async (event) => {
 export async function processRecord(kafkaRecord: KafkaRecord, config: ProcessEmailConfig) {
   const { key, value, timestamp } = kafkaRecord;
   const id: string = decodeBase64WithUtf8(key);
+  const safeID = id.replace(/^"|"$/g, "").toUpperCase();
 
   if (kafkaRecord.topic === "aws.seatool.ksql.onemac.three.agg.State_Plan") {
-    const safeID = id.replace(/^"|"$/g, "").toUpperCase();
     const seatoolRecord: Document = {
       safeID,
       ...JSON.parse(decodeBase64WithUtf8(value)),
@@ -201,34 +201,17 @@ export async function processRecord(kafkaRecord: KafkaRecord, config: ProcessEma
     console.log("Tombstone detected. Doing nothing for this event");
     return;
   }
-  const logRecord = decodeBase64WithUtf8(value);
-  const parsedRecord = JSON.parse(logRecord);
-  let ninetyDayExpirationClock;
-  if (isChipSpaRespondRAIEvent(parsedRecord)) {
-    ninetyDayExpirationClock = await calculate90dayExpiration(parsedRecord, config);
-  }
-
-  let record;
-  if (isChipSpaRespondRAIEvent(parsedRecord)) {
-    record = {
-      timestamp: ninetyDayExpirationClock,
-      ...JSON.parse(decodeBase64WithUtf8(value)),
-    };
-    record.timestamp = ninetyDayExpirationClock;
-  } else {
-    record = {
-      timestamp,
-      ...JSON.parse(decodeBase64WithUtf8(value)),
-    };
-  }
-
-  console.log("record: ", JSON.stringify(record, null, 2));
 
   const valueParsed = JSON.parse(decodeBase64WithUtf8(value));
+
+  const calcTimestamp = isChipSpaRespondRAIEvent(valueParsed)
+    ? (await calculate90dayExpiration(valueParsed, config)) || timestamp
+    : timestamp;
+
   if (valueParsed.eventType === "user-role" || valueParsed.eventType === "legacy-user-role") {
     try {
       console.log("Sending user role email...");
-      await sendUserRoleEmails(valueParsed, timestamp, config);
+      await sendUserRoleEmails(valueParsed, calcTimestamp, config);
     } catch (error) {
       console.error("Error sending user email", error);
       throw error;
@@ -236,18 +219,22 @@ export async function processRecord(kafkaRecord: KafkaRecord, config: ProcessEma
     return;
   }
 
-  if (record.origin !== "mako") {
+  if (valueParsed.origin !== "mako") {
     console.log("Kafka event is not of mako origin. Doing nothing.");
     return;
   }
 
+  const record = {
+    ...valueParsed,
+    timestamp: calcTimestamp,
+  };
   try {
     console.log("Config:", JSON.stringify(config, null, 2));
-    await processAndSendEmails(record, id, config);
+    await processAndSendEmails(record, safeID, config);
   } catch (error) {
     console.error(
       "Error processing record: { record, id, config }",
-      JSON.stringify({ record, id, config }, null, 2),
+      JSON.stringify({ record, safeID, config }, null, 2),
     );
     throw error;
   }
