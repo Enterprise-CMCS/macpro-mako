@@ -19,7 +19,7 @@ import { decodeBase64WithUtf8, formatActionType, getSecret } from "shared-utils"
 import { retry } from "shared-utils/retry";
 
 import { sendUserRoleEmails } from "./processUserRoleEmails";
-import { calculate90dayExpiration, isChipSpaRespondRAIEvent } from "./utils";
+import { calculate90dayExpiration } from "./utils";
 
 class TemporaryError extends Error {
   constructor(message: string) {
@@ -204,9 +204,7 @@ export async function processRecord(kafkaRecord: KafkaRecord, config: ProcessEma
 
   const valueParsed = JSON.parse(decodeBase64WithUtf8(value));
 
-  const calcTimestamp = isChipSpaRespondRAIEvent(valueParsed)
-    ? (await calculate90dayExpiration(valueParsed, config)) || timestamp
-    : timestamp;
+  const calcTimestamp = (await calculate90dayExpiration(valueParsed, config)) || timestamp;
 
   if (valueParsed.eventType === "user-role" || valueParsed.eventType === "legacy-user-role") {
     try {
