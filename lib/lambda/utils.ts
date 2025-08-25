@@ -52,12 +52,15 @@ export const calculate90dayExpiration = async (
   const item = await os.getItem(config.osDomain, getOsNamespace("main"), parsedRecord.id);
   const submissionDate = item?._source.submissionDate || "";
   const raiRequestedDate = item?._source.raiRequestedDate || "";
+  console.log({ submissionDate, raiRequestedDate });
   const submissionMS = new UTCDate(submissionDate).getTime();
   const raiMS = new UTCDate(raiRequestedDate).getTime();
+  console.log({ submissionMS, raiMS });
   if (!submissionDate || !raiRequestedDate) {
     console.error("error parsing os record");
   }
-  const now = Date.now();
+  const now = UTCDate.now();
+  console.log({ now });
 
   if (raiRequestedDate && submissionDate) {
     // length of time from when the RAI was requested until now
