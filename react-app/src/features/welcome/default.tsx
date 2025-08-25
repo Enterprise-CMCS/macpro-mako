@@ -37,7 +37,7 @@ export const Welcome = () => {
               these SPA types are submitted through the OneMAC system effective July 28, 2025.
               <br />
               <br />
-              As of August 27, 2025, the CS31 SPA Template and Implementation guide are now
+              As of August 27, 2025, the CS31 SPA template and implementation guide are now
               available.{" "}
               <Link to="/faq/spa-admendments" target={FAQ_TAB} className="underline text-[#0071bc]">
                 Learn more
