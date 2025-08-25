@@ -23,30 +23,30 @@
         <div class='clearfix'>
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">47.36% </span>
+                <span class="strong">42.85% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>18/38</span>
+                <span class='fraction'>18/42</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">31.81% </span>
+                <span class="strong">26.92% </span>
                 <span class="quiet">Branches</span>
-                <span class='fraction'>7/22</span>
+                <span class='fraction'>7/26</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">60% </span>
+                <span class="strong">50% </span>
                 <span class="quiet">Functions</span>
-                <span class='fraction'>6/10</span>
+                <span class='fraction'>6/12</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">47.05% </span>
+                <span class="strong">42.1% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>16/34</span>
+                <span class='fraction'>16/38</span>
             </div>
         
             
@@ -224,7 +224,19 @@
 <a name='L159'></a><a href='#L159'>159</a>
 <a name='L160'></a><a href='#L160'>160</a>
 <a name='L161'></a><a href='#L161'>161</a>
-<a name='L162'></a><a href='#L162'>162</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
+<a name='L162'></a><a href='#L162'>162</a>
+<a name='L163'></a><a href='#L163'>163</a>
+<a name='L164'></a><a href='#L164'>164</a>
+<a name='L165'></a><a href='#L165'>165</a>
+<a name='L166'></a><a href='#L166'>166</a>
+<a name='L167'></a><a href='#L167'>167</a>
+<a name='L168'></a><a href='#L168'>168</a>
+<a name='L169'></a><a href='#L169'>169</a>
+<a name='L170'></a><a href='#L170'>170</a>
+<a name='L171'></a><a href='#L171'>171</a>
+<a name='L172'></a><a href='#L172'>172</a>
+<a name='L173'></a><a href='#L173'>173</a>
+<a name='L174'></a><a href='#L174'>174</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -374,10 +386,22 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">4x</span>
 <span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -393,7 +417,7 @@ import { ItemResult } from "shared-types/opensearch/changelog";
 import { getItem, useGetItem } from "@/api";
 import { CardWithTopBorder, ErrorAlert, LoadingSpinner } from "@/components";
 import { BreadCrumbs } from "@/components/BreadCrumb";
-import { detailsAndActionsCrumbs } from "@/utils";
+import { detailsAndActionsCrumbs, sendGAEvent } from "@/utils";
 &nbsp;
 import { AdminPackageActivities } from "./admin-changes";
 import { useDetailsSidebarLinks } from "./hooks";
@@ -535,11 +559,23 @@ type DetailsSidebarProps = {
 &nbsp;
 const DetailsSidebar = <span class="fstat-no" title="function not covered" >({</span> id }: DetailsSidebarProps) =&gt; {
   const links = <span class="cstat-no" title="statement not covered" >useDetailsSidebarLinks(id);</span>
+  const handleSidebarClick = <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >(l</span>inkId: string) =&gt; {</span>
+<span class="cstat-no" title="statement not covered" >    if (linkId === "package_activity" || linkId === "package_details") {</span>
+<span class="cstat-no" title="statement not covered" >      sendGAEvent("package_detail_sidebar_link_click", {</span>
+        link: linkId,
+      });
+    }
+  };
 &nbsp;
   return (
     &lt;aside className="min-w-56 flex-none font-semibold mt-6"&gt;
       {links.map(({ id, href, displayName }) =&gt; (
-        &lt;a className="block mb-2 text-blue-900 hover:underline" key={id} href={href}&gt;
+        &lt;a
+          className="block mb-2 text-blue-900 hover:underline"
+          key={id}
+          href={href}
+          onClick={<span class="fstat-no" title="function not covered" >() =&gt; <span class="cstat-no" title="statement not covered" >h</span>andleSidebarClick(id)}</span>
+        &gt;
           {displayName}
         &lt;/a&gt;
       ))}
@@ -553,7 +589,7 @@ const DetailsSidebar = <span class="fstat-no" title="function not covered" >({</
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2025-08-25T15:34:23.683Z
+                at 2025-08-25T15:49:05.443Z
             </div>
         <script src="../../../../prettify.js"></script>
         <script>
