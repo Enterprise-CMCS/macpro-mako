@@ -104,8 +104,10 @@ describe("CMSSignup", () => {
     await user.click(screen.getByRole("combobox", { name: /Select division/ }));
     expect(submitButton).toBeDisabled();
 
-    await waitFor(() => expect(screen.getByText("Div of Managed Care Policy")).toBeInTheDocument());
-    await user.click(screen.getByText("Div of Managed Care Policy"));
+    await waitFor(() =>
+      expect(screen.getByText("Div of Health Homes, PACE & COB/TPL")).toBeInTheDocument(),
+    );
+    await user.click(screen.getByText("Div of Health Homes, PACE & COB/TPL"));
     expect(submitButton).toBeEnabled();
 
     await user.click(submitButton);
@@ -133,8 +135,10 @@ describe("CMSSignup", () => {
     await user.click(screen.getByRole("combobox", { name: /Select division/ }));
     expect(submitButton).toBeDisabled();
 
-    await waitFor(() => expect(screen.getByText("Div of Managed Care Policy")).toBeInTheDocument());
-    await user.click(screen.getByText("Div of Managed Care Policy"));
+    await waitFor(() =>
+      expect(screen.getByText("Div of Health Homes, PACE & COB/TPL")).toBeInTheDocument(),
+    );
+    await user.click(screen.getByText("Div of Health Homes, PACE & COB/TPL"));
     expect(submitButton).toBeEnabled();
 
     await user.click(submitButton);
