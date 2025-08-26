@@ -146,7 +146,7 @@ export default defineConfig({
     },
     {
       name: "shared",
-      testMatch: "**/e2e/specs/**/*.spec.t",
+      testMatch: "e2e/specs/**/*.spec.ts",
       use: {
         baseURL: rootURL,
       },
