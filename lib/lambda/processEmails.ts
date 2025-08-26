@@ -143,8 +143,23 @@ export async function processRecord(kafkaRecord: KafkaRecord, config: ProcessEma
     console.log("Tombstone detected. Doing nothing for this event");
     return;
   }
-
   const valueParsed = JSON.parse(decodeBase64WithUtf8(value));
+
+  if (valueParsed.eventType === "user-role" || valueParsed.eventType === "legacy-user-role") {
+    try {
+      console.log("Sending user role email...");
+      await sendUserRoleEmails(valueParsed, timestamp, config);
+    } catch (error) {
+      console.error("Error sending user email", error);
+      throw error;
+    }
+    return;
+  }
+
+  if (valueParsed.origin !== "mako") {
+    console.log("Kafka event is not of mako origin. Doing nothing.");
+    return;
+  }
 
   let item;
   try {
@@ -214,22 +229,6 @@ export async function processRecord(kafkaRecord: KafkaRecord, config: ProcessEma
   // then we need to add the pause duration.
   // If the record does not match the criteria, the original timestamp is returned.
   const updatedTimestamp = await addPauseDurationToTimestamp(valueParsed, item, timestamp);
-
-  if (valueParsed.eventType === "user-role" || valueParsed.eventType === "legacy-user-role") {
-    try {
-      console.log("Sending user role email...");
-      await sendUserRoleEmails(valueParsed, updatedTimestamp, config);
-    } catch (error) {
-      console.error("Error sending user email", error);
-      throw error;
-    }
-    return;
-  }
-
-  if (valueParsed.origin !== "mako") {
-    console.log("Kafka event is not of mako origin. Doing nothing.");
-    return;
-  }
 
   const record = {
     ...valueParsed,
