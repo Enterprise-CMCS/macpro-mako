@@ -1,8 +1,7 @@
 import { UTCDate } from "@date-fns/utc";
 import { errors as OpensearchErrors } from "@opensearch-project/opensearch";
 import { add, differenceInDays, startOfDay } from "date-fns";
-import * as os from "libs/opensearch-lib";
-import { getOsNamespace } from "libs/utils";
+import { ItemResult } from "shared-types/opensearch/main";
 
 export type ErrorResponse = {
   statusCode: number;
@@ -46,41 +45,39 @@ export const handleOpensearchError = (error: unknown): ErrorResponse => {
   };
 };
 
-export const calculate90dayExpiration = async (
+export const addPauseDurationToTimestamp = async (
   parsedRecord: ParseKafkaEvent,
-  config: ProcessEmailConfig,
-): Promise<number | undefined> => {
+  item: ItemResult,
+  timestamp: number,
+): Promise<number> => {
+  console.log({ parsedRecord });
   if (
     !(
       parsedRecord?.event === "respond-to-rai" &&
       parsedRecord?.authority?.toUpperCase() === "CHIP SPA"
     )
   ) {
-    return undefined;
+    return timestamp;
   }
 
-  const item = await os.getItem(config.osDomain, getOsNamespace("main"), parsedRecord.id);
   const submissionDate = item?._source.submissionDate || "";
   const raiRequestedDate = item?._source.raiRequestedDate || "";
+  console.log({ submissionDate, raiRequestedDate });
 
   if (!submissionDate || !raiRequestedDate) {
-    return undefined;
+    console.error("error parsing os record");
+    return timestamp;
   }
 
   // length of time from when the RAI was requested until now
   const pausedDuration = differenceInDays(
     startOfDay(new UTCDate()), // now
-    new UTCDate(raiRequestedDate), // original RAI Requested Date
+    startOfDay(new UTCDate(raiRequestedDate)), // original RAI Requested Date
   );
 
-  const ninetyDayExpirationClock = add(new UTCDate(submissionDate), {
-    days: 90 + pausedDuration,
+  const submissionDateWithPauseDuration = add(new UTCDate(submissionDate), {
+    days: pausedDuration,
   });
-  return ninetyDayExpirationClock.getTime();
-};
 
-export const isChipSpaRespondRAIEvent = (parsedRecord: ParseKafkaEvent) => {
-  return (
-    parsedRecord?.event == "respond-to-rai" && parsedRecord?.authority?.toUpperCase() == "CHIP SPA"
-  );
+  return submissionDateWithPauseDuration.getTime();
 };

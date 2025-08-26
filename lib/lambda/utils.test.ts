@@ -1,25 +1,14 @@
 import { UTCDate } from "@date-fns/utc";
-import {
-  OPENSEARCH_DOMAIN,
-  OPENSEARCH_INDEX_NAMESPACE,
-  REGION,
-  WITHDRAW_RAI_ITEM_B,
-  WITHDRAW_RAI_ITEM_C,
-  WITHDRAW_RAI_ITEM_D,
-} from "mocks";
+import { WITHDRAW_RAI_ITEM_B, WITHDRAW_RAI_ITEM_C, WITHDRAW_RAI_ITEM_D } from "mocks";
+import items from "mocks/data/items";
 import { Authority } from "shared-types";
+import { ItemResult } from "shared-types/opensearch/main";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 
-import { calculate90dayExpiration } from "./utils";
+import { addPauseDurationToTimestamp } from "./utils";
 
 describe("utils", () => {
-  describe.only("calculate90dayExpiration", () => {
-    const mockConfig = {
-      osDomain: OPENSEARCH_DOMAIN,
-      indexNamespace: OPENSEARCH_INDEX_NAMESPACE,
-      region: REGION,
-    } as any;
-
+  describe.only("addPauseDurationToTimestamp", () => {
     beforeEach(() => {
       vi.useFakeTimers();
       const now = new Date(2024, 2, 1);
@@ -30,69 +19,83 @@ describe("utils", () => {
       vi.useRealTimers();
     });
 
-    it("should return undefined if the event type is not respond-to-rai", async () => {
+    it("should return the original timestamp if the event type is not respond-to-rai", async () => {
+      const timestamp = Date.now();
+
       expect(
-        await calculate90dayExpiration(
+        await addPauseDurationToTimestamp(
           {
             id: WITHDRAW_RAI_ITEM_C,
             event: "new-chip-submission",
             authority: Authority.CHIP_SPA as string,
           },
-          mockConfig,
+          items[WITHDRAW_RAI_ITEM_C] as ItemResult,
+          timestamp,
         ),
-      ).toBeUndefined();
+      ).toEqual(timestamp);
     });
 
-    it("should return undefined if the event type is respond-to-rai event but not a CHIP SPA", async () => {
+    it("should return the original timestamp if the event type is respond-to-rai event but not a CHIP SPA", async () => {
+      const timestamp = Date.now();
+
       expect(
-        await calculate90dayExpiration(
+        await addPauseDurationToTimestamp(
           {
             id: WITHDRAW_RAI_ITEM_C,
             event: "respond-to-rai",
             authority: Authority.MED_SPA as string,
           },
-          mockConfig,
+          items[WITHDRAW_RAI_ITEM_C] as ItemResult,
+          timestamp,
         ),
-      ).toBeUndefined();
+      ).toEqual(timestamp);
     });
 
-    it("should return undefined if the raiRequestedDate is not set", async () => {
+    it("should return the original timestamp if the raiRequestedDate is not set", async () => {
+      const timestamp = Date.now();
+
       expect(
-        await calculate90dayExpiration(
+        await addPauseDurationToTimestamp(
           {
             id: WITHDRAW_RAI_ITEM_B,
             event: "respond-to-rai",
             authority: Authority.CHIP_SPA as string,
           },
-          mockConfig,
+          items[WITHDRAW_RAI_ITEM_B] as ItemResult,
+          timestamp,
         ),
-      ).toBeUndefined();
+      ).toEqual(timestamp);
     });
 
-    it("should return undefined if the submissionDate is not set", async () => {
+    it("should return the original timestamp if the submissionDate is not set", async () => {
+      const timestamp = Date.now();
+
       expect(
-        await calculate90dayExpiration(
+        await addPauseDurationToTimestamp(
           {
             id: WITHDRAW_RAI_ITEM_D,
             event: "respond-to-rai",
             authority: Authority.CHIP_SPA as string,
           },
-          mockConfig,
+          items[WITHDRAW_RAI_ITEM_D] as ItemResult,
+          timestamp,
         ),
-      ).toBeUndefined();
+      ).toEqual(timestamp);
     });
 
-    it("should calculate the 90 expiration date for a respond-to-rai event", async () => {
+    it("should add the pause duration to the timestamp for a respond-to-rai event", async () => {
+      const timestamp = Date.now();
       expect(
-        await calculate90dayExpiration(
+        await addPauseDurationToTimestamp(
           {
             id: WITHDRAW_RAI_ITEM_C,
             event: "respond-to-rai",
             authority: Authority.CHIP_SPA as string,
           },
-          mockConfig,
+          items[WITHDRAW_RAI_ITEM_C] as ItemResult,
+          timestamp,
         ),
-      ).toEqual(new UTCDate(2024, 4, 29).getTime());
+      ).toEqual(new UTCDate(2024, 1, 29).getTime());
     });
   });
 });

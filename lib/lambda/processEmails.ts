@@ -19,7 +19,7 @@ import { decodeBase64WithUtf8, formatActionType, getSecret } from "shared-utils"
 import { retry } from "shared-utils/retry";
 
 import { sendUserRoleEmails } from "./processUserRoleEmails";
-import { calculate90dayExpiration } from "./utils";
+import { addPauseDurationToTimestamp } from "./utils";
 
 class TemporaryError extends Error {
   constructor(message: string) {
@@ -130,25 +130,43 @@ export const handler: Handler<KafkaEvent> = async (event) => {
 
 export async function processRecord(kafkaRecord: KafkaRecord, config: ProcessEmailConfig) {
   const { key, value, timestamp } = kafkaRecord;
+
+  if (typeof key !== "string") {
+    console.log("key is not a string ", JSON.stringify(key, null, 2));
+    throw new Error("Key is not a string");
+  }
+
   const id: string = decodeBase64WithUtf8(key);
   const safeID = id.replace(/^"|"$/g, "").toUpperCase();
+
+  if (!value) {
+    console.log("Tombstone detected. Doing nothing for this event");
+    return;
+  }
+
+  const valueParsed = JSON.parse(decodeBase64WithUtf8(value));
+
+  let item;
+  try {
+    item = await os.getItem(config.osDomain, getOsNamespace("main"), safeID);
+  } catch (err) {
+    console.error("Error getting item: ", err);
+  }
+
+  if (!item?.found || !item?._source) {
+    console.log(`The package was not found for id: ${id} in mako. Doing nothing.`);
+    return;
+  }
 
   if (kafkaRecord.topic === "aws.seatool.ksql.onemac.three.agg.State_Plan") {
     const seatoolRecord: Document = {
       safeID,
-      ...JSON.parse(decodeBase64WithUtf8(value)),
+      ...valueParsed,
     };
     const safeSeatoolRecord = opensearch.main.seatool.transform(safeID).safeParse(seatoolRecord);
 
     if (safeSeatoolRecord.data?.seatoolStatus === SEATOOL_STATUS.WITHDRAWN) {
       try {
-        const item = await os.getItem(config.osDomain, getOsNamespace("main"), safeID);
-
-        if (!item?.found || !item?._source) {
-          console.log(`The package was not found for id: ${id} in mako. Doing nothing.`);
-          return;
-        }
-
         if (item._source.withdrawEmailSent) {
           console.log("Withdraw email previously sent");
           return;
@@ -192,24 +210,15 @@ export async function processRecord(kafkaRecord: KafkaRecord, config: ProcessEma
     return;
   }
 
-  if (typeof key !== "string") {
-    console.log("key is not a string ", JSON.stringify(key, null, 2));
-    throw new Error("Key is not a string");
-  }
-
-  if (!value) {
-    console.log("Tombstone detected. Doing nothing for this event");
-    return;
-  }
-
-  const valueParsed = JSON.parse(decodeBase64WithUtf8(value));
-
-  const calcTimestamp = (await calculate90dayExpiration(valueParsed, config)) || timestamp;
+  // If the record is a CHIP SPA and the event is a respond-to-rai,
+  // then we need to add the pause duration.
+  // If the record does not match the criteria, the original timestamp is returned.
+  const updatedTimestamp = await addPauseDurationToTimestamp(valueParsed, item, timestamp);
 
   if (valueParsed.eventType === "user-role" || valueParsed.eventType === "legacy-user-role") {
     try {
       console.log("Sending user role email...");
-      await sendUserRoleEmails(valueParsed, calcTimestamp, config);
+      await sendUserRoleEmails(valueParsed, updatedTimestamp, config);
     } catch (error) {
       console.error("Error sending user email", error);
       throw error;
@@ -224,7 +233,7 @@ export async function processRecord(kafkaRecord: KafkaRecord, config: ProcessEma
 
   const record = {
     ...valueParsed,
-    timestamp: calcTimestamp,
+    timestamp: updatedTimestamp,
   };
   try {
     console.log("Config:", JSON.stringify(config, null, 2));

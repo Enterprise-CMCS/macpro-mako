@@ -96,6 +96,8 @@ const items: Record<string, TestItemResult> = {
       id: EXISTING_ITEM_ID,
       seatoolStatus: SEATOOL_STATUS.APPROVED,
       actionType: "New",
+      submissionDate: "2024-12-01T09:17:21.557Z",
+      raiRequestedDate: "2024-12-25T09:17:21.557Z",
       statusDate: "2024-12-25T09:17:21.557Z",
       changedDate: "2024-12-25T09:17:21.557Z",
       makoChangedDate: "2024-12-25T09:17:21.557Z",

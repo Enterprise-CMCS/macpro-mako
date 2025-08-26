@@ -1,4 +1,4 @@
-import { sub } from "date-fns";
+import { add, sub } from "date-fns";
 
 export const emailTemplateValue = {
   event: "respond-to-rai" as const,
@@ -19,9 +19,9 @@ export const emailTemplateValue = {
     return sub(Date.now(), { days: 20 });
   },
   get raiRequestedDate() {
-    return sub(Date.now(), { days: 10 }); // pauseDuration
+    return sub(Date.now(), { days: 7 }); // pauseDuration
   },
   get proposedEffectiveDate() {
-    return Date.now() + 5184000000;
+    return add(Date.now(), { days: 60 });
   },
 };

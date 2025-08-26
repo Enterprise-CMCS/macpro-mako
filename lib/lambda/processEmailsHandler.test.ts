@@ -3,9 +3,6 @@ import { Context } from "aws-lambda";
 import * as os from "libs/opensearch-lib";
 import {
   NOT_FOUND_ITEM_ID,
-  OPENSEARCH_DOMAIN,
-  OPENSEARCH_INDEX_NAMESPACE,
-  REGION,
   SIMPLE_ID,
   WITHDRAW_EMAIL_SENT,
   WITHDRAW_RAI_ITEM_B,
@@ -14,10 +11,9 @@ import {
   WITHDRAW_RAI_ITEM_E,
 } from "mocks";
 import { Authority, KafkaEvent, KafkaRecord } from "shared-types";
-import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
+import { describe, expect, it, vi } from "vitest";
 
 import { handler } from "./processEmails";
-import { calculate90dayExpiration } from "./utils";
 const nms = "new-medicaid-submission";
 const ncs = "new-chip-submission";
 const tempExtension = "temporary-extension";
@@ -426,50 +422,5 @@ describe("process emails  Handler for seatool", () => {
     };
     await handler(mockEvent, {} as Context, callback);
     expect(consoleSpy).toHaveBeenCalledWith("Withdraw email previously sent");
-  });
-});
-
-describe("calculate90dayExpiration", () => {
-  const mockConfig = {
-    osDomain: OPENSEARCH_DOMAIN,
-    indexNamespace: OPENSEARCH_INDEX_NAMESPACE,
-    region: REGION,
-  } as any;
-
-  beforeEach(() => {
-    vi.useFakeTimers();
-    const now = new Date(2024, 2, 1);
-    vi.setSystemTime(now);
-  });
-
-  afterEach(() => {
-    vi.useRealTimers();
-  });
-
-  it("should calculate 90-day expiration date with paused duration", async () => {
-    const result = await calculate90dayExpiration(
-      {
-        id: WITHDRAW_RAI_ITEM_C,
-      } as any,
-      mockConfig,
-    );
-
-    expect(result).toBe(new Date(2024, 4, 30).getTime());
-  });
-
-  it("should log an error if submissionDate or raiRequestedDate is missing", async () => {
-    const consoleSpy = vi.spyOn(console, "error").mockImplementation(() => {});
-
-    vi.spyOn(os, "getItem").mockResolvedValue({
-      _source: {
-        submissionDate: "2025-01-31T00:00:00Z",
-        raiRequestedDate: null, // Missing RAI date
-      },
-    } as any);
-
-    const result = await calculate90dayExpiration(parsedRecord as any, mockConfig);
-
-    expect(consoleSpy).toHaveBeenCalledWith("error parsing os record");
-    expect(result).toBeUndefined();
   });
 });
