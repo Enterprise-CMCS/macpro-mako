@@ -8,7 +8,7 @@ import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import { addPauseDurationToTimestamp } from "./utils";
 
 describe("utils", () => {
-  describe.only("addPauseDurationToTimestamp", () => {
+  describe("addPauseDurationToTimestamp", () => {
     beforeEach(() => {
       vi.useFakeTimers();
       const now = new Date(2024, 2, 1);
