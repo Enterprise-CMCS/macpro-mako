@@ -124,7 +124,6 @@ describe("process emails Handler", () => {
       records: {
         "mock-topic": [
           {
-            value: undefined,
             key: Buffer.from("VA").toString("base64"),
             headers: {},
             timestamp: 1732645041557,
