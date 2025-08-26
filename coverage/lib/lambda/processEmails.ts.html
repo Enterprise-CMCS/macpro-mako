@@ -23,16 +23,16 @@
         <div class='clearfix'>
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">88.81% </span>
+                <span class="strong">90.41% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>135/152</span>
+                <span class='fraction'>132/146</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">80.76% </span>
+                <span class="strong">83.33% </span>
                 <span class="quiet">Branches</span>
-                <span class='fraction'>42/52</span>
+                <span class='fraction'>40/48</span>
             </div>
         
             
@@ -44,9 +44,9 @@
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">88.96% </span>
+                <span class="strong">90.64% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>129/145</span>
+                <span class='fraction'>126/139</span>
             </div>
         
             
@@ -490,24 +490,7 @@
 <a name='L425'></a><a href='#L425'>425</a>
 <a name='L426'></a><a href='#L426'>426</a>
 <a name='L427'></a><a href='#L427'>427</a>
-<a name='L428'></a><a href='#L428'>428</a>
-<a name='L429'></a><a href='#L429'>429</a>
-<a name='L430'></a><a href='#L430'>430</a>
-<a name='L431'></a><a href='#L431'>431</a>
-<a name='L432'></a><a href='#L432'>432</a>
-<a name='L433'></a><a href='#L433'>433</a>
-<a name='L434'></a><a href='#L434'>434</a>
-<a name='L435'></a><a href='#L435'>435</a>
-<a name='L436'></a><a href='#L436'>436</a>
-<a name='L437'></a><a href='#L437'>437</a>
-<a name='L438'></a><a href='#L438'>438</a>
-<a name='L439'></a><a href='#L439'>439</a>
-<a name='L440'></a><a href='#L440'>440</a>
-<a name='L441'></a><a href='#L441'>441</a>
-<a name='L442'></a><a href='#L442'>442</a>
-<a name='L443'></a><a href='#L443'>443</a>
-<a name='L444'></a><a href='#L444'>444</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
+<a name='L428'></a><a href='#L428'>428</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -639,6 +622,7 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">34x</span>
 <span class="cline-any cline-yes">34x</span>
+<span class="cline-any cline-yes">34x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">34x</span>
 <span class="cline-any cline-yes">6x</span>
@@ -709,24 +693,8 @@
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">27x</span>
-<span class="cline-any cline-yes">27x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">27x</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">27x</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">27x</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -970,7 +938,6 @@ import { decodeBase64WithUtf8, formatActionType, getSecret } from "shared-utils"
 import { retry } from "shared-utils/retry";
 &nbsp;
 import { sendUserRoleEmails } from "./processUserRoleEmails";
-import { calculate90dayExpiration, isChipSpaRespondRAIEvent } from "./utils";
 &nbsp;
 class TemporaryError extends Error {
   constructor(message: string) {
@@ -1080,6 +1047,7 @@ export const handler: Handler&lt;KafkaEvent&gt; = async (event) =&gt; {
 };
 &nbsp;
 export async function processRecord(kafkaRecord: KafkaRecord, config: ProcessEmailConfig) {
+  console.log("processRecord called with kafkaRecord: ", JSON.stringify(kafkaRecord, null, 2));
   const { key, value, timestamp } = kafkaRecord;
   const id: string = decodeBase64WithUtf8(key);
 &nbsp;
@@ -1152,27 +1120,11 @@ export async function processRecord(kafkaRecord: KafkaRecord, config: ProcessEma
     console.log("Tombstone detected. Doing nothing for this event");
     return;
   }
-  const logRecord = decodeBase64WithUtf8(value);
-  const parsedRecord = JSON.parse(logRecord);
-  let ninetyDayExpirationClock;
-  <span class="missing-if-branch" title="if path not taken" >I</span>if (isChipSpaRespondRAIEvent(parsedRecord)) {
-<span class="cstat-no" title="statement not covered" >    ninetyDayExpirationClock = await calculate90dayExpiration(parsedRecord, config);</span>
-  }
 &nbsp;
-  let record;
-  <span class="missing-if-branch" title="if path not taken" >I</span>if (isChipSpaRespondRAIEvent(parsedRecord)) {
-<span class="cstat-no" title="statement not covered" >    record = {</span>
-      timestamp: ninetyDayExpirationClock,
-      ...JSON.parse(decodeBase64WithUtf8(value)),
-    };
-<span class="cstat-no" title="statement not covered" >    record.timestamp = ninetyDayExpirationClock;</span>
-  } else {
-    record = {
-      timestamp,
-      ...JSON.parse(decodeBase64WithUtf8(value)),
-    };
-  }
-&nbsp;
+  const record = {
+    timestamp,
+    ...JSON.parse(decodeBase64WithUtf8(value)),
+  };
   console.log("record: ", JSON.stringify(record, null, 2));
 &nbsp;
   const valueParsed = JSON.parse(decodeBase64WithUtf8(value));
@@ -1399,7 +1351,7 @@ const htmlToTextOptions = (baseUrl: string): HtmlToTextOptions =&gt; ({
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2025-08-26T02:15:35.410Z
+                at 2025-08-26T19:34:02.945Z
             </div>
         <script src="../../prettify.js"></script>
         <script>
