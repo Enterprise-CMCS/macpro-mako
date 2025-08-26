@@ -1,5 +1,3 @@
-import { add, sub } from "date-fns";
-
 export const emailTemplateValue = {
   event: "respond-to-rai" as const,
   applicationEndpointUrl: "https://mako-dev.cms.gov/",
@@ -16,12 +14,9 @@ export const emailTemplateValue = {
   submitterName: "George Harrison",
   submitterEmail: "george@example.com",
   get submissionDate() {
-    return sub(Date.now(), { days: 20 });
-  },
-  get raiRequestedDate() {
-    return sub(Date.now(), { days: 7 }); // pauseDuration
+    return Date.now();
   },
   get proposedEffectiveDate() {
-    return add(Date.now(), { days: 60 });
+    return Date.now() + 5184000000;
   },
 };

@@ -1,6 +1,6 @@
 import { UTCDate } from "@date-fns/utc";
 import { errors as OpensearchErrors } from "@opensearch-project/opensearch";
-import { add, differenceInDays, startOfDay } from "date-fns";
+import { add, differenceInDays } from "date-fns";
 import { ItemResult } from "shared-types/opensearch/main";
 
 export type ErrorResponse = {
@@ -71,8 +71,8 @@ export const addPauseDurationToTimestamp = async (
 
   // length of time from when the RAI was requested until now
   const pausedDuration = differenceInDays(
-    startOfDay(new UTCDate()), // now
-    startOfDay(new UTCDate(raiRequestedDate)), // original RAI Requested Date
+    new UTCDate(), // now
+    new UTCDate(raiRequestedDate), // original RAI Requested Date
   );
 
   const submissionDateWithPauseDuration = add(new UTCDate(submissionDate), {
