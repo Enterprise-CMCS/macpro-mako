@@ -5,10 +5,10 @@ import { Authority } from "shared-types";
 import { ItemResult } from "shared-types/opensearch/main";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 
-import { addPauseDurationToTimestamp } from "./utils";
+import { adjustTimestamp } from "./utils";
 
 describe("utils", () => {
-  describe("addPauseDurationToTimestamp", () => {
+  describe("adjustTimestamp", () => {
     beforeEach(() => {
       vi.useFakeTimers();
       const now = new Date(2024, 2, 1);
@@ -23,7 +23,7 @@ describe("utils", () => {
       const timestamp = Date.now();
 
       expect(
-        await addPauseDurationToTimestamp(
+        await adjustTimestamp(
           {
             id: WITHDRAW_RAI_ITEM_C,
             event: "new-chip-submission",
@@ -39,7 +39,7 @@ describe("utils", () => {
       const timestamp = Date.now();
 
       expect(
-        await addPauseDurationToTimestamp(
+        await adjustTimestamp(
           {
             id: WITHDRAW_RAI_ITEM_C,
             event: "respond-to-rai",
@@ -55,7 +55,7 @@ describe("utils", () => {
       const timestamp = Date.now();
 
       expect(
-        await addPauseDurationToTimestamp(
+        await adjustTimestamp(
           {
             id: WITHDRAW_RAI_ITEM_B,
             event: "respond-to-rai",
@@ -71,7 +71,7 @@ describe("utils", () => {
       const timestamp = Date.now();
 
       expect(
-        await addPauseDurationToTimestamp(
+        await adjustTimestamp(
           {
             id: WITHDRAW_RAI_ITEM_D,
             event: "respond-to-rai",
@@ -86,7 +86,7 @@ describe("utils", () => {
     it("should add the pause duration to the timestamp for a respond-to-rai event", async () => {
       const timestamp = Date.now();
       expect(
-        await addPauseDurationToTimestamp(
+        await adjustTimestamp(
           {
             id: WITHDRAW_RAI_ITEM_C,
             event: "respond-to-rai",

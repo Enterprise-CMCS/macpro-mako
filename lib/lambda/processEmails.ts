@@ -19,7 +19,7 @@ import { decodeBase64WithUtf8, formatActionType, getSecret } from "shared-utils"
 import { retry } from "shared-utils/retry";
 
 import { sendUserRoleEmails } from "./processUserRoleEmails";
-import { addPauseDurationToTimestamp } from "./utils";
+import { adjustTimestamp } from "./utils";
 
 class TemporaryError extends Error {
   constructor(message: string) {
@@ -143,12 +143,12 @@ export async function processRecord(kafkaRecord: KafkaRecord, config: ProcessEma
     console.log("Tombstone detected. Doing nothing for this event");
     return;
   }
-  const valueParsed = JSON.parse(decodeBase64WithUtf8(value));
+  const parsedValue = JSON.parse(decodeBase64WithUtf8(value));
 
-  if (valueParsed.eventType === "user-role" || valueParsed.eventType === "legacy-user-role") {
+  if (parsedValue.eventType === "user-role" || parsedValue.eventType === "legacy-user-role") {
     try {
       console.log("Sending user role email...");
-      await sendUserRoleEmails(valueParsed, timestamp, config);
+      await sendUserRoleEmails(parsedValue, timestamp, config);
     } catch (error) {
       console.error("Error sending user email", error);
       throw error;
@@ -171,7 +171,7 @@ export async function processRecord(kafkaRecord: KafkaRecord, config: ProcessEma
   if (kafkaRecord.topic === "aws.seatool.ksql.onemac.three.agg.State_Plan") {
     const seatoolRecord: Document = {
       safeID,
-      ...valueParsed,
+      ...parsedValue,
     };
     const safeSeatoolRecord = opensearch.main.seatool.transform(safeID).safeParse(seatoolRecord);
 
@@ -220,18 +220,16 @@ export async function processRecord(kafkaRecord: KafkaRecord, config: ProcessEma
     return;
   }
 
-  if (valueParsed.origin !== "mako") {
+  if (parsedValue.origin !== "mako") {
     console.log("Kafka event is not of mako origin. Doing nothing.");
     return;
   }
 
-  // If the record is a CHIP SPA and the event is a respond-to-rai,
-  // then we need to add the pause duration.
-  // If the record does not match the criteria, the original timestamp is returned.
-  const updatedTimestamp = await addPauseDurationToTimestamp(valueParsed, item, timestamp);
+  // Adjust timestamp if needed before sending it to the email template
+  const updatedTimestamp = await adjustTimestamp(parsedValue, item, timestamp);
 
   const record = {
-    ...valueParsed,
+    ...parsedValue,
     timestamp: updatedTimestamp,
   };
   try {

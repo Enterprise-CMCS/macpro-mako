@@ -45,7 +45,18 @@ export const handleOpensearchError = (error: unknown): ErrorResponse => {
   };
 };
 
-export const addPauseDurationToTimestamp = async (
+/**
+ * Adjusts the timestamp, if needed, to provide the email template with the correct date.
+ * For example:
+ * - The 90 day date for a respond to RAI events for CHIP SPAs should not be the timestamp
+ * the call to the handler, but the submission date plus the number of days between the
+ * RAI request and response.
+ * @param parsedRecord the Kafka value parsed as a JSON object
+ * @param item the OpenSearch item matching the Kafka key
+ * @param timestamp the timestamp of the call to the handler
+ * @returns the original timestamp, unless the record is a Respond to RAI event for a CHIP SPA.
+ */
+export const adjustTimestamp = async (
   parsedRecord: ParseKafkaEvent,
   item: ItemResult,
   timestamp: number,
@@ -61,7 +72,6 @@ export const addPauseDurationToTimestamp = async (
 
   const submissionDate = item?._source.submissionDate || "";
   const raiRequestedDate = item?._source.raiRequestedDate || "";
-  console.log({ submissionDate, raiRequestedDate });
 
   if (!submissionDate || !raiRequestedDate) {
     console.error("error parsing os record");
