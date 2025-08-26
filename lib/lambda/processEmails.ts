@@ -156,11 +156,6 @@ export async function processRecord(kafkaRecord: KafkaRecord, config: ProcessEma
     return;
   }
 
-  if (valueParsed.origin !== "mako") {
-    console.log("Kafka event is not of mako origin. Doing nothing.");
-    return;
-  }
-
   let item;
   try {
     item = await os.getItem(config.osDomain, getOsNamespace("main"), safeID);
@@ -222,6 +217,11 @@ export async function processRecord(kafkaRecord: KafkaRecord, config: ProcessEma
         throw error;
       }
     }
+    return;
+  }
+
+  if (valueParsed.origin !== "mako") {
+    console.log("Kafka event is not of mako origin. Doing nothing.");
     return;
   }
 
