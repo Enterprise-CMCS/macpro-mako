@@ -1,4 +1,4 @@
-import { UTCDate } from "@date-fns/utc";
+import { TZDate } from "@date-fns/tz";
 
 import {
   finalDispositionStatuses,
@@ -57,13 +57,22 @@ export const getRaiDate = (data: SeaTool) => {
     })[data.RAI.length - 1] ?? null;
 
   if (raiDate && raiDate.RAI_RECEIVED_DATE) {
-    raiReceivedDate = new UTCDate(raiDate.RAI_RECEIVED_DATE).toISOString();
+    raiReceivedDate = new TZDate(
+      new Date(raiDate.RAI_RECEIVED_DATE).toISOString(),
+      "America/New_York",
+    ).toISOString();
   }
   if (raiDate && raiDate.RAI_REQUESTED_DATE) {
-    raiRequestedDate = new UTCDate(raiDate.RAI_REQUESTED_DATE).toISOString();
+    raiRequestedDate = new TZDate(
+      new Date(raiDate.RAI_REQUESTED_DATE).toISOString(),
+      "America/New_York",
+    ).toISOString();
   }
   if (raiDate && raiDate.RAI_WITHDRAWN_DATE) {
-    raiWithdrawnDate = new UTCDate(raiDate.RAI_WITHDRAWN_DATE).toISOString();
+    raiWithdrawnDate = new TZDate(
+      new Date(raiDate.RAI_WITHDRAWN_DATE).toISOString(),
+      "America/New_York",
+    ).toISOString();
   }
   return {
     raiReceivedDate,
