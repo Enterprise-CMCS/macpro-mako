@@ -50,7 +50,6 @@ export const addPauseDurationToTimestamp = async (
   item: ItemResult,
   timestamp: number,
 ): Promise<number> => {
-  console.log({ parsedRecord });
   if (
     !(
       parsedRecord?.event === "respond-to-rai" &&
