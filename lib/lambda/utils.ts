@@ -16,18 +16,6 @@ interface ParseKafkaEvent {
   authority?: string;
 }
 
-export interface ProcessEmailConfig {
-  emailAddressLookupSecretName: string;
-  applicationEndpointUrl: string;
-  osDomain: string;
-  indexNamespace?: string;
-  region: string;
-  DLQ_URL: string;
-  userPoolId: string;
-  configurationSetName: string;
-  isDev: boolean;
-}
-
 export const handleOpensearchError = (error: unknown): ErrorResponse => {
   console.error({ error });
   if (error instanceof OpensearchErrors.ResponseError) {
