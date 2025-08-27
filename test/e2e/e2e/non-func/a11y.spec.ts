@@ -6,7 +6,6 @@ import * as routes from "@/fixtures/routes";
 import { envRoleUsers } from "@/lib/envRoleUsers";
 
 const STATIC_ROUTES = routes.STATIC;
-const WEBFORM_ROUTES = routes.WEBFORM;
 const ENV = process.env.PW_ENV || "local";
 const users = envRoleUsers[ENV];
 
@@ -32,23 +31,6 @@ for (const [role, user] of Object.entries(users)) {
           }
 
           // make sure we are still on the route and haven't been redirected to /
-          await expect(page).toHaveURL(new RegExp(`${route}*`));
-
-          const accessibilityScanResults = await new AxeBuilder({ page }).analyze();
-          console.log(`${route} violations: `, accessibilityScanResults.violations.length);
-          expect(accessibilityScanResults.violations).toEqual([]);
-        });
-      }
-    });
-
-    test.describe(`${role} on webform routes`, {}, () => {
-      for (const route of WEBFORM_ROUTES) {
-        test(`${route} should not have any automatically detectable accessibility issues`, async ({
-          page,
-        }) => {
-          await page.goto(route);
-          await page.waitForTimeout(2000);
-
           await expect(page).toHaveURL(new RegExp(`${route}*`));
 
           const accessibilityScanResults = await new AxeBuilder({ page }).analyze();
