@@ -6,7 +6,7 @@ import { ItemResult } from "shared-types/opensearch/changelog";
 import { getItem, useGetItem } from "@/api";
 import { CardWithTopBorder, ErrorAlert, LoadingSpinner } from "@/components";
 import { BreadCrumbs } from "@/components/BreadCrumb";
-import { detailsAndActionsCrumbs } from "@/utils";
+import { detailsAndActionsCrumbs, sendGAEvent } from "@/utils";
 
 import { AdminPackageActivities } from "./admin-changes";
 import { useDetailsSidebarLinks } from "./hooks";
@@ -148,11 +148,23 @@ type DetailsSidebarProps = {
 
 const DetailsSidebar = ({ id }: DetailsSidebarProps) => {
   const links = useDetailsSidebarLinks(id);
+  const handleSidebarClick = (linkId: string) => {
+    if (linkId === "package_activity" || linkId === "package_details") {
+      sendGAEvent("package_detail_sidebar_link_click", {
+        link: linkId,
+      });
+    }
+  };
 
   return (
     <aside className="min-w-56 flex-none font-semibold mt-6">
       {links.map(({ id, href, displayName }) => (
-        <a className="block mb-2 text-blue-900 hover:underline" key={id} href={href}>
+        <a
+          className="block mb-2 text-blue-900 hover:underline"
+          key={id}
+          href={href}
+          onClick={() => handleSidebarClick(id)}
+        >
           {displayName}
         </a>
       ))}

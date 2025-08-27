@@ -18,16 +18,18 @@ import {
   TableRow,
 } from "@/components";
 import { BLANK_VALUE } from "@/consts";
+import { sendGAEvent } from "@/utils";
 
 import { Attachments, useAttachmentService } from "./hook";
 
 type AttachmentDetailsProps = {
   id: string;
+  packageId: string;
   attachments: opensearch.changelog.Document["attachments"];
   onClick: (attachment: Attachments[number]) => Promise<string>;
 };
 
-const AttachmentDetails = ({ id, attachments, onClick }: AttachmentDetailsProps) => (
+const AttachmentDetails = ({ id, packageId, attachments, onClick }: AttachmentDetailsProps) => (
   <TableBody>
     {attachments.map((attachment) => {
       return (
@@ -37,7 +39,13 @@ const AttachmentDetails = ({ id, attachments, onClick }: AttachmentDetailsProps)
             <Button
               className="ml-[-15px] align-left text-left min-h-fit"
               variant="link"
-              onClick={() => onClick(attachment).then(window.open)}
+              onClick={() => {
+                onClick(attachment).then(window.open);
+                sendGAEvent("attachment_download", {
+                  document_type: attachment.title,
+                  package_id: packageId,
+                });
+              }}
             >
               {attachment.filename}
             </Button>
@@ -70,7 +78,12 @@ const Submission = ({ packageActivity }: SubmissionProps) => {
               </TableRow>
             </TableHeader>
 
-            <AttachmentDetails attachments={attachments} id={id} onClick={onUrl} />
+            <AttachmentDetails
+              attachments={attachments}
+              id={id}
+              packageId={packageId}
+              onClick={onUrl}
+            />
           </Table>
         ) : (
           <p>No information submitted</p>
@@ -81,7 +94,13 @@ const Submission = ({ packageActivity }: SubmissionProps) => {
           variant="outline"
           className="w-max"
           loading={loading}
-          onClick={() => onZip(attachments)}
+          onClick={() => {
+            onZip(attachments);
+            sendGAEvent("section_attachments_download", {
+              number_attachments: attachments.length,
+              package_id: packageId,
+            });
+          }}
         >
           Download section attachments
         </Button>
@@ -177,6 +196,10 @@ const DownloadAllButton = ({ packageId, submissionChangelog }: DownloadAllButton
     }
 
     onZip(attachmentsAggregate);
+    sendGAEvent("all_attachments_download", {
+      number_attachments: attachmentsAggregate.length,
+      package_id: packageId,
+    });
   };
 
   return (
