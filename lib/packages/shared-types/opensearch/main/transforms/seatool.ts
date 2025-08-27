@@ -1,17 +1,17 @@
 import { UTCDate } from "@date-fns/utc";
 
 import {
+  finalDispositionStatuses,
+  getStatus,
+  SeaTool,
   SEATOOL_AUTHORITIES,
   SEATOOL_SPW_STATUS,
   SEATOOL_STATUS,
-  SeaTool,
-  finalDispositionStatuses,
-  getStatus,
-  seatoolSchema,
   SeatoolOfficer,
+  seatoolSchema,
 } from "../../../index";
 
-import { SkippableValidationError } from "..";
+import { SkippableValidationError } from ".."
 
 
 function getLeadAnalyst(eventData: SeaTool) {
@@ -130,11 +130,7 @@ export const transform = (id: string) => {
     ) {
       throw new SkippableValidationError(
         "Validation failed: Pending status requires both subject and description to be non-empty",
-        {
-          seatoolStatus,
-          hasTitle: !!data.STATE_PLAN.TITLE_NAME,
-          hasDescription: !!data.STATE_PLAN.SUMMARY_MEMO,
-        },
+        { seatoolStatus, hasTitle: !!data.STATE_PLAN.TITLE_NAME, hasDescription: !!data.STATE_PLAN.SUMMARY_MEMO }
       );
     }
     const authority =
