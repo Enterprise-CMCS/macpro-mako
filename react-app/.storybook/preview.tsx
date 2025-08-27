@@ -8,6 +8,11 @@ import { initialize, mswLoader } from "msw-storybook-addon";
 import { withQueryClient } from "./decorators";
 initialize({
   onUnhandledRequest: "bypass",
+  serviceWorker: {
+    options: {
+      updateViaCache: "none",
+    },
+  },
 });
 
 const preview: Preview = {

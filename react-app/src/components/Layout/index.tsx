@@ -6,7 +6,7 @@ import { LogOutIcon, UserPenIcon, UserPlusIcon } from "lucide-react";
 import { useState } from "react";
 import { createPortal } from "react-dom";
 import { Link, NavLink, NavLinkProps, Outlet, useNavigate, useRouteError } from "react-router";
-import { UserRole } from "shared-types/events/legacy-user";
+import { UserRoles } from "shared-types";
 import { isStateUser } from "shared-utils";
 
 import { useGetUser, useGetUserDetails, useGetUserProfile } from "@/api";
@@ -52,17 +52,11 @@ const useGetLinks = () => {
           {
             name: "Dashboard",
             link: "/dashboard",
-            condition: (
-              [
-                "cmsreviewer",
-                "cmsroleapprover",
-                "defaultcmsuser",
-                "helpdesk",
-                "statesubmitter",
-                "statesystemadmin",
-                "systemadmin",
-              ] as UserRole[]
-            ).includes(userDetailsData?.role),
+            condition:
+              userObj.user &&
+              Object.values(UserRoles).some((role) => {
+                return userObj.user.role === role;
+              }),
           },
           {
             name: "User Management",

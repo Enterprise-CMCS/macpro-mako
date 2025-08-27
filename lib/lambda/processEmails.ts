@@ -227,7 +227,7 @@ export async function processRecord(kafkaRecord: KafkaRecord, config: ProcessEma
   }
 
   // Adjust timestamp if needed before sending it to the email template
-  const updatedTimestamp = await adjustTimestamp(parsedValue, item, timestamp);
+  const updatedTimestamp = adjustTimestamp(parsedValue, item, timestamp);
 
   const record = {
     ...parsedValue,
