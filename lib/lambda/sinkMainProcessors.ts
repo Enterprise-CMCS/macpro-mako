@@ -14,7 +14,13 @@ import {
   userInformation,
   userRoleRequest,
 } from "shared-types/events/legacy-user";
-import { Document, legacyTransforms, seatool, transforms, SkippableValidationError } from "shared-types/opensearch/main";
+import {
+  Document,
+  legacyTransforms,
+  seatool,
+  SkippableValidationError,
+  transforms,
+} from "shared-types/opensearch/main";
 import { decodeBase64WithUtf8 } from "shared-utils";
 
 import {
@@ -41,8 +47,10 @@ const shouldSkipRecord = (error: Error): boolean => {
     return true;
   }
 
-  if (error.message.includes("Missing required field") ||
-    error.message.includes("Invalid format")) {
+  if (
+    error.message.includes("Missing required field") ||
+    error.message.includes("Invalid format")
+  ) {
     return true;
   }
 
@@ -413,7 +421,7 @@ export const insertNewSeatoolRecordsFromKafkaIntoMako = async (
   topicPartition: string,
 ) => {
   const makoDocTimestamps = await getMakoDocTimestamps(kafkaRecords);
-  const seatoolRecordsForMako: { id: string;[key: string]: unknown }[] = [];
+  const seatoolRecordsForMako: { id: string; [key: string]: unknown }[] = [];
 
   for (const kafkaRecord of kafkaRecords) {
     try {
@@ -444,7 +452,8 @@ export const insertNewSeatoolRecordsFromKafkaIntoMako = async (
       } catch (error) {
         if (error instanceof Error && shouldSkipRecord(error)) {
           // Log the error and skip the record, allowing the process to continue
-          const skipReason = error instanceof SkippableValidationError ? "validation_error" : "graceful_skip";
+          const skipReason =
+            error instanceof SkippableValidationError ? "validation_error" : "graceful_skip";
           console.warn(`Skipping record ${id} due to validation error: ${error.message}`);
           logError({
             type: ErrorType.VALIDATION,
@@ -454,7 +463,10 @@ export const insertNewSeatoolRecordsFromKafkaIntoMako = async (
               kafkaRecord,
               record: seatoolRecord,
               skipReason,
-              errorMetadata: error instanceof SkippableValidationError ? (error as SkippableValidationError).metadata : undefined
+              errorMetadata:
+                error instanceof SkippableValidationError
+                  ? (error as SkippableValidationError).metadata
+                  : undefined,
             },
           });
           continue;
