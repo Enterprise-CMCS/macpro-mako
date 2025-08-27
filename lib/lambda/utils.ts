@@ -10,7 +10,7 @@ export type ErrorResponse = {
   };
 };
 
-interface ParseKafkaEvent {
+interface ParsedKafkaEvent {
   id: string;
   event?: string;
   authority?: string;
@@ -45,7 +45,7 @@ export const handleOpensearchError = (error: unknown): ErrorResponse => {
  * @returns the original timestamp, unless the record is a Respond to RAI event for a CHIP SPA.
  */
 export const adjustTimestamp = (
-  parsedRecord: ParseKafkaEvent,
+  parsedRecord: ParsedKafkaEvent,
   item: ItemResult,
   timestamp: number,
 ): number => {
