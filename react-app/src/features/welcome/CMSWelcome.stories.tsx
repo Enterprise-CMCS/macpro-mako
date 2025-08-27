@@ -1,25 +1,21 @@
 import type { Meta, StoryObj } from "@storybook/react-vite";
 import { reactRouterParameters, withRouter } from "storybook-addon-remix-react-router";
 
-import { asCmsReviewer } from "../../../../../.storybook/decorators";
-import { SplitSpaForm } from "./index";
+import { asCmsReviewer } from "../../../.storybook/decorators";
+import { CMSWelcome } from "./cms";
 
 const meta = {
-  title: "Form/SplitSpa",
-  component: SplitSpaForm,
-  render: () => <SplitSpaForm />,
+  title: "Feature/CMSWelcome",
+  component: CMSWelcome,
   decorators: [withRouter, asCmsReviewer],
   parameters: {
     reactRouter: reactRouterParameters({
-      location: {
-        pathParams: { id: "NY-23-0007", authority: "Medicaid SPA" },
-      },
       routing: {
-        path: "/test/:id/:authority",
+        path: "/",
       },
     }),
   },
-} satisfies Meta<typeof SplitSpaForm>;
+} satisfies Meta<typeof CMSWelcome>;
 
 export default meta;
 type Story = StoryObj<typeof meta>;
