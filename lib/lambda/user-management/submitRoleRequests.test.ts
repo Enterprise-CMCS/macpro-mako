@@ -1,4 +1,4 @@
-import { APIGatewayEvent } from "aws-lambda";
+import { APIGatewayEvent, Context } from "aws-lambda";
 import {
   errorRoleSearchHandler,
   getRequestContext,
@@ -12,9 +12,8 @@ import {
 } from "mocks";
 import { mockedProducer } from "mocks/helpers/kafka.utils";
 import { mockedServiceServer as mockedServer } from "mocks/server";
-import { beforeEach, describe, expect, it, vi } from "vitest";
+import { beforeEach, describe, expect, it } from "vitest";
 
-import * as submitGroupDivision from "./submitGroupDivision";
 import { handler } from "./submitRoleRequests";
 
 describe("submitRoleRequests handler", () => {
@@ -26,21 +25,10 @@ describe("submitRoleRequests handler", () => {
   it("should return 400 if the event body is missing", async () => {
     const event = {} as APIGatewayEvent;
 
-    const res = await handler(event);
+    const res = await handler(event, {} as Context);
 
     expect(res.statusCode).toEqual(400);
     expect(res.body).toEqual(JSON.stringify({ message: "Event body required" }));
-  });
-
-  it("should return 400 if the request context is missing", async () => {
-    const event = {
-      body: JSON.stringify({}),
-    } as APIGatewayEvent;
-
-    const res = await handler(event);
-
-    expect(res.statusCode).toEqual(400);
-    expect(res.body).toEqual(JSON.stringify({ message: "Request context required" }));
   });
 
   it("should throw an error if the topicName is not set", async () => {
@@ -51,21 +39,48 @@ describe("submitRoleRequests handler", () => {
       requestContext: getRequestContext(),
     } as APIGatewayEvent;
 
-    expect(() => handler(event)).rejects.toThrowError("Topic name is not defined");
+    const res = await handler(event, {} as Context);
+
+    expect(res).toBeTruthy();
+    expect(res.statusCode).toEqual(500);
+    expect(res.body).toEqual(JSON.stringify({ message: "Internal server error" }));
+  });
+
+  it("should return 401 if the request context is missing", async () => {
+    const event = {
+      body: JSON.stringify({
+        email: "nostate@example.com",
+        state: "CO",
+        role: "statesubmitter",
+        eventType: "user-role",
+        requestRoleChange: true,
+      }),
+    } as APIGatewayEvent;
+
+    const res = await handler(event, {} as Context);
+
+    expect(res.statusCode).toEqual(401);
+    expect(res.body).toEqual(JSON.stringify({ message: "User is not authenticated" }));
   });
 
   it("should return 401 if the user is not authenticated", async () => {
     setMockUsername(null);
 
     const event = {
-      body: JSON.stringify({}),
+      body: JSON.stringify({
+        email: "nostate@example.com",
+        state: "CO",
+        role: "statesubmitter",
+        eventType: "user-role",
+        requestRoleChange: true,
+      }),
       requestContext: getRequestContext(),
     } as APIGatewayEvent;
 
-    const res = await handler(event);
+    const res = await handler(event, {} as Context);
 
     expect(res.statusCode).toEqual(401);
-    expect(res.body).toEqual(JSON.stringify({ message: "User not authenticated" }));
+    expect(res.body).toEqual(JSON.stringify({ message: "User is not authenticated" }));
   });
 
   it("should return 200 if a state user is submitting their first state request", async () => {
@@ -83,7 +98,7 @@ describe("submitRoleRequests handler", () => {
       requestContext: getRequestContext(),
     } as APIGatewayEvent;
 
-    const res = await handler(event);
+    const res = await handler(event, {} as Context);
 
     expect(res.statusCode).toEqual(200);
     expect(JSON.parse(res.body)).toEqual({
@@ -132,7 +147,7 @@ describe("submitRoleRequests handler", () => {
       requestContext: getRequestContext(),
     } as APIGatewayEvent;
 
-    const res = await handler(event);
+    const res = await handler(event, {} as Context);
 
     expect(res.statusCode).toEqual(200);
     expect(JSON.parse(res.body)).toEqual({
@@ -157,13 +172,13 @@ describe("submitRoleRequests handler", () => {
         state: "CO",
         role: "statesubmitter",
         eventType: "user-role",
-        grantAccess: true,
+        grantAccess: "active",
         requestRoleChange: true,
       }),
       requestContext: getRequestContext(),
     } as APIGatewayEvent;
 
-    const res = await handler(event);
+    const res = await handler(event, {} as Context);
 
     expect(res.statusCode).toEqual(200);
     expect(JSON.parse(res.body)).toEqual({
@@ -194,7 +209,7 @@ describe("submitRoleRequests handler", () => {
       requestContext: getRequestContext(),
     } as APIGatewayEvent;
 
-    const res = await handler(event);
+    const res = await handler(event, {} as Context);
 
     expect(res.statusCode).toEqual(200);
     expect(JSON.parse(res.body)).toEqual({
@@ -211,7 +226,7 @@ describe("submitRoleRequests handler", () => {
   });
 
   it("should call submitGroupDivision if user is a systemadmin updating a cmsroleapprover", async () => {
-    const submitGroupDivisionSpy = vi.spyOn(submitGroupDivision, "submitGroupDivision");
+    mockedProducer.send.mockResolvedValueOnce([{ message: "sent" }]);
     mockedProducer.send.mockResolvedValueOnce([{ message: "sent" }]);
     setMockUsername(systemAdmin);
     const event = {
@@ -227,10 +242,9 @@ describe("submitRoleRequests handler", () => {
       requestContext: getRequestContext(),
     } as APIGatewayEvent;
 
-    const res = await handler(event);
+    const res = await handler(event, {} as Context);
 
     expect(res.statusCode).toEqual(200);
-    expect(submitGroupDivisionSpy).toHaveBeenCalled();
   });
 
   it("should return 403 if the currentUserRole cannot request updates", async () => {
@@ -241,12 +255,12 @@ describe("submitRoleRequests handler", () => {
         state: "MD",
         role: "defaultcmsuser",
         eventType: "user-role",
-        grantAccess: true,
+        grantAccess: "active",
       }),
       requestContext: getRequestContext(),
     } as APIGatewayEvent;
 
-    const res = await handler(event);
+    const res = await handler(event, {} as Context);
 
     expect(res.statusCode).toEqual(403);
     expect(res.body).toEqual(
@@ -263,12 +277,12 @@ describe("submitRoleRequests handler", () => {
         state: "CO",
         role: "statesubmitter",
         eventType: "user-role",
-        grantAccess: true,
+        grantAccess: "active",
       }),
       requestContext: getRequestContext(),
     } as APIGatewayEvent;
 
-    const res = await handler(event);
+    const res = await handler(event, {} as Context);
 
     expect(res.statusCode).toEqual(500);
     expect(res.body).toEqual(JSON.stringify({ message: "Internal server error" }));

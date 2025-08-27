@@ -1,9 +1,13 @@
+/**
+ * MOVED to shared project.
+ */
+
 import { expect, test } from "@/fixtures/mocked";
 import { FAQPage } from "@/pages";
 
 let faqPage: FAQPage;
 
-test.describe("FAQ page", { tag: ["@e2e", "@smoke", "@faq"] }, () => {
+test.describe.skip("FAQ page", { tag: ["@e2e", "@smoke", "@faq"] }, () => {
   test.beforeEach(async ({ page }) => {
     faqPage = new FAQPage(page);
     await page.goto("/faq");
@@ -54,7 +58,7 @@ test.describe("FAQ page", { tag: ["@e2e", "@smoke", "@faq"] }, () => {
 
       test("displays OneMac user roles FAQ", async () => {
         await expect(faqPage.onemacRoles).toBeVisible();
-        await expect(faqPage.onemacRoles).toHaveText("What are the OneMAC user roles?");
+        await expect(faqPage.onemacRoles).toHaveText("What are the OneMAC State user roles?");
 
         await expect(faqPage.onemacRoles.locator("div:nth-child(1)")).not.toBeVisible();
       });

@@ -1009,6 +1009,5 @@ exports[`package details > makes a package 1`] = `
       </section>
     </div>
   </div>
-  ,
 </DocumentFragment>
 `;

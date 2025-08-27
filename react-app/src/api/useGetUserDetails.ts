@@ -1,18 +1,8 @@
 import { useQuery } from "@tanstack/react-query";
 import { API } from "aws-amplify";
-import { UserRole } from "shared-types/events/legacy-user";
+import { UserDetails } from "shared-types";
 
 import { sendGAEvent } from "@/utils/ReactGA/SendGAEvent";
-export type UserDetails = {
-  id: string;
-  eventType: string;
-  email: string;
-  fullName: string;
-  role?: UserRole;
-  states?: string[];
-  division: string;
-  group: string;
-};
 
 export const getUserDetails = async (userEmail?: string): Promise<UserDetails | null> => {
   try {
@@ -21,7 +11,7 @@ export const getUserDetails = async (userEmail?: string): Promise<UserDetails | 
     return userDetails as UserDetails;
   } catch (e) {
     sendGAEvent("api_error", {
-      message: "failure /getUserDetails",
+      message: `failure /getUserDetails ${userEmail || ""}`,
     });
     console.log({ e });
     return null;
@@ -29,7 +19,7 @@ export const getUserDetails = async (userEmail?: string): Promise<UserDetails | 
 };
 
 export const useGetUserDetails = () =>
-  useQuery({
+  useQuery<UserDetails | null>({
     queryKey: ["userDetails"],
     queryFn: () => getUserDetails(),
   });

@@ -1,8 +1,9 @@
 import middy, { Request } from "@middy/core";
 import httpErrorHandler from "@middy/http-error-handler";
 import { APIGatewayEvent, Context } from "aws-lambda";
-import { ADMIN_ITEM_ID, EXISTING_ITEM_PENDING_ID } from "mocks";
+import { ADMIN_ITEM_ID, errorOSChangelogSearchHandler, EXISTING_ITEM_PENDING_ID } from "mocks";
 import items from "mocks/data/items";
+import { mockedServiceServer as mockedServer } from "mocks/server";
 import { changelog, main } from "shared-types/opensearch";
 import { describe, expect, it } from "vitest";
 
@@ -21,7 +22,9 @@ const setupHandler = ({
   options?: FetchChangelogOptions;
 } = {}) =>
   middy()
-    .use(httpErrorHandler())
+    .use(
+      httpErrorHandler({ fallbackMessage: JSON.stringify({ message: "Internal server error" }) }),
+    )
     .before(async (request: Request) => {
       if (packageResult) {
         storePackageInRequest(packageResult, request, options.setToContext);
@@ -115,5 +118,40 @@ describe("fetchChangelog", () => {
     const handler = setupHandler({ packageResult, expectedPackage: packageResult });
 
     await handler({} as APIGatewayEvent, {} as Context);
+  });
+
+  it("should not throw an error if the package was not stored in the request", async () => {
+    const handler = setupHandler();
+
+    const res = await handler({} as APIGatewayEvent, {} as Context);
+
+    expect(res).toBeTruthy();
+    expect(res.statusCode).toBe(200);
+    expect(res.body).toEqual("OK");
+  });
+
+  it("should return a 500 if there is an error retrieving the changelog", async () => {
+    mockedServer.use(errorOSChangelogSearchHandler);
+
+    const expectedPackage = items[ADMIN_ITEM_ID] as main.ItemResult;
+    const packageResult = {
+      ...expectedPackage,
+      _source: {
+        ...expectedPackage._source,
+        changelog: undefined,
+      },
+    };
+
+    const handler = setupHandler({ packageResult, expectedPackage });
+
+    const res = await handler({} as APIGatewayEvent, {} as Context);
+
+    expect(res).toBeTruthy();
+    expect(res.statusCode).toBe(500);
+    expect(res.body).toEqual(
+      JSON.stringify({
+        message: "Internal server error",
+      }),
+    );
   });
 });

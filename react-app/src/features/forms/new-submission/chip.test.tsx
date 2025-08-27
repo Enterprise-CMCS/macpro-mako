@@ -4,7 +4,7 @@ import { EXISTING_ITEM_ID } from "mocks";
 import { beforeAll, describe, expect, test } from "vitest";
 
 import { formSchemas } from "@/formSchemas";
-import { renderFormAsync } from "@/utils/test-helpers/renderForm";
+import { renderFormWithPackageSectionAsync } from "@/utils/test-helpers/renderForm";
 import { skipCleanup } from "@/utils/test-helpers/skipCleanup";
 import { uploadFiles } from "@/utils/test-helpers/uploadFiles";
 
@@ -16,7 +16,7 @@ describe("CHIP SPA", () => {
   beforeAll(async () => {
     skipCleanup();
 
-    await renderFormAsync(<ChipForm />);
+    await renderFormWithPackageSectionAsync(<ChipForm />);
   });
 
   test("SPA ID", async () => {

@@ -28,6 +28,20 @@ describe("Handler for checking if record exists", () => {
     );
   });
 
+  it("should return 400 if the item id not valid", async () => {
+    const event = {
+      body: JSON.stringify({ id: false }),
+    } as APIGatewayEvent;
+
+    const res = await handler(event, {} as Context);
+
+    expect(res).toBeTruthy();
+    expect(res.statusCode).toEqual(400);
+    expect(JSON.parse(res.body)).toEqual(
+      expect.objectContaining({ message: "Event failed validation" }),
+    );
+  });
+
   it("should return 200 and exists: true if record is found", async () => {
     const event = {
       body: JSON.stringify({ id: TEST_ITEM_ID }),

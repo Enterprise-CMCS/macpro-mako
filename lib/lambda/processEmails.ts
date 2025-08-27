@@ -19,7 +19,6 @@ import { decodeBase64WithUtf8, formatActionType, getSecret } from "shared-utils"
 import { retry } from "shared-utils/retry";
 
 import { sendUserRoleEmails } from "./processUserRoleEmails";
-import { calculate90dayExpiration, isChipSpaRespondRAIEvent } from "./utils";
 
 class TemporaryError extends Error {
   constructor(message: string) {
@@ -129,6 +128,7 @@ export const handler: Handler<KafkaEvent> = async (event) => {
 };
 
 export async function processRecord(kafkaRecord: KafkaRecord, config: ProcessEmailConfig) {
+  console.log("processRecord called with kafkaRecord: ", JSON.stringify(kafkaRecord, null, 2));
   const { key, value, timestamp } = kafkaRecord;
   const id: string = decodeBase64WithUtf8(key);
 
@@ -201,27 +201,11 @@ export async function processRecord(kafkaRecord: KafkaRecord, config: ProcessEma
     console.log("Tombstone detected. Doing nothing for this event");
     return;
   }
-  const logRecord = decodeBase64WithUtf8(value);
-  const parsedRecord = JSON.parse(logRecord);
-  let ninetyDayExpirationClock;
-  if (isChipSpaRespondRAIEvent(parsedRecord)) {
-    ninetyDayExpirationClock = await calculate90dayExpiration(parsedRecord, config);
-  }
 
-  let record;
-  if (isChipSpaRespondRAIEvent(parsedRecord)) {
-    record = {
-      timestamp: ninetyDayExpirationClock,
-      ...JSON.parse(decodeBase64WithUtf8(value)),
-    };
-    record.timestamp = ninetyDayExpirationClock;
-  } else {
-    record = {
-      timestamp,
-      ...JSON.parse(decodeBase64WithUtf8(value)),
-    };
-  }
-
+  const record = {
+    timestamp,
+    ...JSON.parse(decodeBase64WithUtf8(value)),
+  };
   console.log("record: ", JSON.stringify(record, null, 2));
 
   const valueParsed = JSON.parse(decodeBase64WithUtf8(value));
