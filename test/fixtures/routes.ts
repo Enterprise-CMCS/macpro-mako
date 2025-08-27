@@ -1,4 +1,4 @@
-export const STATIC = ["/", "/dashboard", "/faq", "/latestupdates", "/profile"];
+export const STATIC = [];
 
 export const WEBFORM = [
   "/guides/abp",
