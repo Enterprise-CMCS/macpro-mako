@@ -1,5 +1,5 @@
 import { UTCDate } from "@date-fns/utc";
-
+import { SkippableValidationError } from "..";
 import {
   finalDispositionStatuses,
   getStatus,
@@ -10,8 +10,6 @@ import {
   SeatoolOfficer,
   seatoolSchema,
 } from "../../../index";
-
-import { SkippableValidationError } from ".."
 
 
 function getLeadAnalyst(eventData: SeaTool) {
