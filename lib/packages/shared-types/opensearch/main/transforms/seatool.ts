@@ -11,6 +11,9 @@ import {
   seatoolSchema,
 } from "../../../index";
 
+import { SkippableValidationError } from ".."
+
+
 function getLeadAnalyst(eventData: SeaTool) {
   let leadAnalystOfficerId: null | number = null;
   let leadAnalystName: null | string = null;
@@ -80,9 +83,9 @@ const compileSrtList = (
 ): { name: string; email: string }[] =>
   officers?.length
     ? officers.map((o) => ({
-        name: `${o.FIRST_NAME || ""} ${o.LAST_NAME || ""}`,
-        email: o.EMAIL || "",
-      }))
+      name: `${o.FIRST_NAME || ""} ${o.LAST_NAME || ""}`,
+      email: o.EMAIL || "",
+    }))
     : [];
 
 const getFinalDispositionDate = (status: string, record: SeaTool) => {
@@ -125,8 +128,9 @@ export const transform = (id: string) => {
         !data.STATE_PLAN.SUMMARY_MEMO ||
         data.STATE_PLAN.SUMMARY_MEMO.trim() === "")
     ) {
-      throw new Error(
+      throw new SkippableValidationError(
         "Validation failed: Pending status requires both subject and description to be non-empty",
+        { seatoolStatus, hasTitle: !!data.STATE_PLAN.TITLE_NAME, hasDescription: !!data.STATE_PLAN.SUMMARY_MEMO }
       );
     }
     const authority =

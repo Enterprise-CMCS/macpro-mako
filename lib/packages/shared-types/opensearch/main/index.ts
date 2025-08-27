@@ -1,6 +1,14 @@
 import { z } from "zod";
 
 import { SeaTool } from "../../events";
+
+// Custom error class for validation errors that should be handled gracefully
+export class SkippableValidationError extends Error {
+  constructor(message: string, public metadata?: any) {
+    super(message);
+    this.name = 'SkippableValidationError';
+  }
+}
 import { ItemResult as Changelog } from "../changelog";
 import { AggQuery, Filterable as FIL, Hit, QueryState, Response as Res } from "./../_";
 import {
