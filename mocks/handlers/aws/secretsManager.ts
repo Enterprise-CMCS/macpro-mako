@@ -6,7 +6,6 @@ import type { SecretManagerRequestBody } from "../../index";
 const defaultSecretHandler = http.post<PathParams, SecretManagerRequestBody>(
   `https://secretsmanager.us-east-1.amazonaws.com`,
   async ({ request }) => {
-    console.log("defaultSecretHandler", { request, headers: request });
     const { SecretId } = await request.json();
     if (!SecretId) {
       return HttpResponse.json({
