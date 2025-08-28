@@ -19,6 +19,7 @@ import {
   legacyTransforms,
   seatool,
   SkippableValidationError,
+  isSkippableError,
   transforms,
 } from "shared-types/opensearch/main";
 import { decodeBase64WithUtf8 } from "shared-utils";
@@ -39,21 +40,9 @@ const adminRecordSchema = deleteAdminChangeSchema
   .or(extendSubmitNOSOAdminSchema);
 
 const shouldSkipRecord = (error: Error): boolean => {
-  if (error instanceof SkippableValidationError) {
+  if (isSkippableError(error)) {
     return true;
   }
-
-  if (error.message.includes("Validation failed")) {
-    return true;
-  }
-
-  if (
-    error.message.includes("Missing required field") ||
-    error.message.includes("Invalid format")
-  ) {
-    return true;
-  }
-
   return false;
 };
 
@@ -421,7 +410,7 @@ export const insertNewSeatoolRecordsFromKafkaIntoMako = async (
   topicPartition: string,
 ) => {
   const makoDocTimestamps = await getMakoDocTimestamps(kafkaRecords);
-  const seatoolRecordsForMako: { id: string; [key: string]: unknown }[] = [];
+  const seatoolRecordsForMako: { id: string;[key: string]: unknown }[] = [];
 
   for (const kafkaRecord of kafkaRecords) {
     try {

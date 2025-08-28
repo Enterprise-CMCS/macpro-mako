@@ -2,10 +2,14 @@ import { z } from "zod";
 
 import { SeaTool } from "../../events";
 
-export class SkippableValidationError extends Error {
+export const isSkippableError = (error: unknown): error is SkippableValidationError => {
+  return error instanceof SkippableValidationError;
+};
+
+export class SkippableValidationError<TMetadata = unknown> extends Error {
   constructor(
     message: string,
-    public metadata?: any,
+    public metadata?: TMetadata,
   ) {
     super(message);
     this.name = "SkippableValidationError";
