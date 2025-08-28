@@ -2,19 +2,6 @@ import { z } from "zod";
 
 import { SeaTool } from "../../events";
 
-export const isSkippableError = (error: unknown): error is SkippableValidationError => {
-  return error instanceof SkippableValidationError;
-};
-
-export class SkippableValidationError<TMetadata = unknown> extends Error {
-  constructor(
-    message: string,
-    public metadata?: TMetadata,
-  ) {
-    super(message);
-    this.name = "SkippableValidationError";
-  }
-}
 import { ItemResult as Changelog } from "../changelog";
 import { AggQuery, Filterable as FIL, Hit, QueryState, Response as Res } from "./../_";
 import {
@@ -160,4 +147,18 @@ export const legacyTransforms = {
   waiverextensionb: legacyTemporaryExtension,
   waiverextensionc: legacyTemporaryExtension,
   waiverextension: legacyTemporaryExtension,
+};
+
+export class SkippableValidationError<TMetadata = unknown> extends Error {
+  constructor(
+    message: string,
+    public metadata?: TMetadata,
+  ) {
+    super(message);
+    this.name = "SkippableValidationError";
+  }
+}
+
+export const isSkippableError = (error: unknown): error is SkippableValidationError => {
+  return error instanceof SkippableValidationError;
 };

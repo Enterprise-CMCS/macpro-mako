@@ -39,13 +39,6 @@ const adminRecordSchema = deleteAdminChangeSchema
   .or(splitSPAAdminChangeSchema)
   .or(extendSubmitNOSOAdminSchema);
 
-const shouldSkipRecord = (error: Error): boolean => {
-  if (isSkippableError(error)) {
-    return true;
-  }
-  return false;
-};
-
 type OneMacRecord = {
   id: string;
   [key: string]: unknown | undefined;
@@ -439,7 +432,7 @@ export const insertNewSeatoolRecordsFromKafkaIntoMako = async (
       try {
         safeSeatoolRecord = opensearch.main.seatool.transform(id).safeParse(seatoolRecord);
       } catch (error) {
-        if (error instanceof Error && shouldSkipRecord(error)) {
+        if (error instanceof Error && isSkippableError(error)) {
           // Log the error and skip the record, allowing the process to continue
           const skipReason =
             error instanceof SkippableValidationError ? "validation_error" : "graceful_skip";
