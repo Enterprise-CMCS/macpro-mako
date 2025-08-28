@@ -90,7 +90,6 @@ export const renderCellActions = (
       division: userRole.division ?? null,
       requestRoleChange: false,
     });
-    console.log(userRole.role, "USERROLE");
   };
   return (
     <Popover>
@@ -269,7 +268,7 @@ export const UserManagement = () => {
         <div className="max-w-screen-xl m-auto px-4 lg:px-8 flex items-center py-4 justify-between">
           <h1 className="text-xl font-medium">User Management</h1>
           {(isHelpDesk || isSystemAdmin) && (
-            <Button variant="outline" onClick={handleExport}>
+            <Button variant="default" onClick={handleExport}>
               Export to Excel (CSV)
             </Button>
           )}
@@ -304,7 +303,7 @@ export const UserManagement = () => {
                   <TableCell>
                     <Link
                       to={`/profile/${LZ.compressToEncodedURIComponent(userRole.email).replaceAll("+", "_")}`}
-                      className="text-blue-500 flex select-none items-center px-2 py-2"
+                      className="cursor-pointer text-blue-600 hover:underline flex select-none items-center px-2 py-2"
                     >
                       {userRole.fullName}
                     </Link>
