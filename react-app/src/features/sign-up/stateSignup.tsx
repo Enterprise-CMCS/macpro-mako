@@ -120,6 +120,7 @@ export const StateSignup = () => {
               <h2 className="text-xl font-bold mb-2">Select your State Access</h2>
               {isNewUserRoleDisplay && (
                 <FilterableSelect
+                  ariaLabel="Select state"
                   value={stateSelected}
                   options={statesToRequest}
                   onChange={(values: StateCode[]) => onChange(values)}
@@ -143,6 +144,7 @@ export const StateSignup = () => {
                   </Select>
                 ) : (
                   <FilterableSelect
+                    ariaLabel="Select state"
                     value={stateSelected}
                     options={statesToRequest}
                     onChange={(values: StateCode[]) => onChange(values)}

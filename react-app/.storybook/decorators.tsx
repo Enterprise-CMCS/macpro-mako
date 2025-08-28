@@ -1,13 +1,17 @@
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { asyncWithLDProvider } from "launchdarkly-react-client-sdk";
 import {
   CMS_ROLE_APPROVER_USERNAME,
   DEFAULT_CMS_USER_EMAIL,
   HELP_DESK_USER_USERNAME,
+  LAUNCHDARKLY_CLIENT_ID,
   OS_STATE_SYSTEM_ADMIN_USERNAME,
   setMockUsername,
   SYSTEM_ADMIN_USERNAME,
   TEST_REVIEWER_USERNAME,
   TEST_STATE_SUBMITTER_USERNAME,
+  toggleGetLDEvalStreamHandler,
+  toggleGetLDEvalxHandler,
 } from "mocks";
 
 const queryClient = new QueryClient({
@@ -18,9 +22,27 @@ const queryClient = new QueryClient({
   },
 });
 
+// Initialize LaunchDarkly
+const LDProvider = await asyncWithLDProvider({
+  clientSideID: LAUNCHDARKLY_CLIENT_ID,
+  options: {
+    bootstrap: "localStorage",
+    baseUrl: "https://clientsdk.launchdarkly.us",
+    streamUrl: "https://clientstream.launchdarkly.us",
+    eventsUrl: "https://events.launchdarkly.us",
+  },
+});
+
 export const withQueryClient = (Story) => (
   <QueryClientProvider client={queryClient}>{Story()}</QueryClientProvider>
 );
+
+export const withLaunchDarkly = (Story, { parameters }) => {
+  toggleGetLDEvalStreamHandler(parameters.flags);
+  toggleGetLDEvalxHandler(parameters.flags);
+
+  return <LDProvider>{Story()}</LDProvider>;
+};
 
 export const asLoggedOut = (Story) => {
   setMockUsername(null);
