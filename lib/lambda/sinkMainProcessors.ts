@@ -16,10 +16,9 @@ import {
 } from "shared-types/events/legacy-user";
 import {
   Document,
+  isSkippableError,
   legacyTransforms,
   seatool,
-  SkippableValidationError,
-  isSkippableError,
   transforms,
 } from "shared-types/opensearch/main";
 import { decodeBase64WithUtf8 } from "shared-utils";
@@ -403,7 +402,7 @@ export const insertNewSeatoolRecordsFromKafkaIntoMako = async (
   topicPartition: string,
 ) => {
   const makoDocTimestamps = await getMakoDocTimestamps(kafkaRecords);
-  const seatoolRecordsForMako: { id: string;[key: string]: unknown }[] = [];
+  const seatoolRecordsForMako: { id: string; [key: string]: unknown }[] = [];
 
   for (const kafkaRecord of kafkaRecords) {
     try {
@@ -432,10 +431,7 @@ export const insertNewSeatoolRecordsFromKafkaIntoMako = async (
       try {
         safeSeatoolRecord = opensearch.main.seatool.transform(id).safeParse(seatoolRecord);
       } catch (error) {
-        if (error instanceof Error && isSkippableError(error)) {
-          // Log the error and skip the record, allowing the process to continue
-          const skipReason =
-            error instanceof SkippableValidationError ? "validation_error" : "graceful_skip";
+        if (isSkippableError(error)) {
           console.warn(`Skipping record ${id} due to validation error: ${error.message}`);
           logError({
             type: ErrorType.VALIDATION,
@@ -444,11 +440,8 @@ export const insertNewSeatoolRecordsFromKafkaIntoMako = async (
               topicPartition,
               kafkaRecord,
               record: seatoolRecord,
-              skipReason,
-              errorMetadata:
-                error instanceof SkippableValidationError
-                  ? (error as SkippableValidationError).metadata
-                  : undefined,
+              skipReason: "validation_error",
+              errorMetadata: error.metadata,
             },
           });
           continue;
