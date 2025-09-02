@@ -14,7 +14,13 @@ import {
   userInformation,
   userRoleRequest,
 } from "shared-types/events/legacy-user";
-import { Document, legacyTransforms, seatool, transforms } from "shared-types/opensearch/main";
+import {
+  Document,
+  isSkippableError,
+  legacyTransforms,
+  seatool,
+  transforms,
+} from "shared-types/opensearch/main";
 import { decodeBase64WithUtf8 } from "shared-utils";
 
 import {
@@ -421,7 +427,28 @@ export const insertNewSeatoolRecordsFromKafkaIntoMako = async (
 
       seatoolRecord.STATE_PLAN.SPW_STATUS_ID = await oneMacSeatoolStatusCheck(seatoolRecord);
 
-      const safeSeatoolRecord = opensearch.main.seatool.transform(id).safeParse(seatoolRecord);
+      let safeSeatoolRecord;
+      try {
+        safeSeatoolRecord = opensearch.main.seatool.transform(id).safeParse(seatoolRecord);
+      } catch (error) {
+        if (isSkippableError(error)) {
+          console.warn(`Skipping record ${id} due to validation error: ${error.message}`);
+          logError({
+            type: ErrorType.VALIDATION,
+            error: error.message,
+            metadata: {
+              topicPartition,
+              kafkaRecord,
+              record: seatoolRecord,
+              skipReason: "validation_error",
+              errorMetadata: error.metadata,
+            },
+          });
+          continue;
+        }
+        // Re-throw errors that should cause the process to fail
+        throw error;
+      }
 
       if (!safeSeatoolRecord.success) {
         logError({

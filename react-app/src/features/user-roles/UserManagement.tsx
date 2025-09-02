@@ -264,11 +264,11 @@ export const UserManagement = () => {
         onAccept={onAcceptRoleChange}
         onCancel={() => setModalText(null)}
       />
-      <div className="bg-sky-100" data-testid="sub-nav-header">
+      <div className="bg-sky-100/75" data-testid="sub-nav-header">
         <div className="max-w-screen-xl m-auto px-4 lg:px-8 flex items-center py-4 justify-between">
           <h1 className="text-xl font-medium">User Management</h1>
           {(isHelpDesk || isSystemAdmin) && (
-            <Button variant="default" onClick={handleExport}>
+            <Button variant="outline" onClick={handleExport}>
               Export to Excel (CSV)
             </Button>
           )}

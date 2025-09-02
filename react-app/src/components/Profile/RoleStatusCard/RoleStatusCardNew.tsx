@@ -25,7 +25,6 @@ export const RoleStatusCardNew = ({
   onClick,
 }: Omit<RoleStatusProps, "isNewUserRoleDisplay">) => {
   if (!access) return null;
-  console.log(access.role, onClick);
   const isState = isStateRole(access.role as UserRole);
   const hideApprovers = status !== "pending" && role === "norole";
   const showApproverInfo =
@@ -36,7 +35,6 @@ export const RoleStatusCardNew = ({
   const isPending = access.status === "pending";
   const showActions = !!onClick;
 
-  console.log(access.role, showActions);
   return (
     <RoleStatusTopBorderCard status={access.status}>
       <div className="p-8 min-h-36">
