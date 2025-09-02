@@ -1,7 +1,7 @@
 import type { Meta, StoryObj } from "@storybook/react-vite";
 import { reactRouterParameters, withRouter } from "storybook-addon-remix-react-router";
 
-import { asStateSubmitter } from "../../../.storybook/decorators";
+import { asStateSubmitter, updateFlags } from "../../../.storybook/decorators";
 import { StateRoleSignup } from "./stateRoleSignup";
 
 const meta = {
@@ -14,8 +14,10 @@ const meta = {
         path: "/signup/state/role",
       },
     }),
-    flags: {
-      "show-user-role-updates": true,
+    msw: {
+      handlers: {
+        flags: updateFlags({ "show-user-role-updates": true }),
+      },
     },
   },
 } satisfies Meta<typeof StateRoleSignup>;

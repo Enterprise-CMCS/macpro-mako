@@ -5,6 +5,7 @@ import {
   DEFAULT_CMS_USER_EMAIL,
   HELP_DESK_USER_USERNAME,
   LAUNCHDARKLY_CLIENT_ID,
+  launchDarklyHandlers,
   OS_STATE_SYSTEM_ADMIN_USERNAME,
   setMockUsername,
   SYSTEM_ADMIN_USERNAME,
@@ -37,14 +38,10 @@ export const withQueryClient = (Story) => (
   <QueryClientProvider client={queryClient}>{Story()}</QueryClientProvider>
 );
 
-export const withLaunchDarkly = (Story) => {
-  // toggleGetLDEvalStreamHandler(parameters.flags);
-  // toggleGetLDEvalxHandler(parameters.flags);
-
-  return <LDProvider>{Story()}</LDProvider>;
-};
+export const withLaunchDarkly = (Story) => <LDProvider>{Story()}</LDProvider>;
 
 export const updateFlags = (toggleFlags) => [
+  ...launchDarklyHandlers,
   toggleGetLDEvalStreamHandler(toggleFlags),
   toggleGetLDEvalxHandler(toggleFlags),
 ];

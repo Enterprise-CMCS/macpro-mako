@@ -1,7 +1,12 @@
 import type { Meta, StoryObj } from "@storybook/react-vite";
 import { reactRouterParameters, withRouter } from "storybook-addon-remix-react-router";
 
-import { asCmsReviewer, asLoggedOut, asStateSubmitter } from "../../../.storybook/decorators";
+import {
+  asCmsReviewer,
+  asLoggedOut,
+  asStateSubmitter,
+  updateFlags,
+} from "../../../.storybook/decorators";
 import { WelcomeWrapper } from "./wrapper";
 
 const meta = {
@@ -29,8 +34,10 @@ export const CMSWelcome: Story = {
   name: "CMS Welcome",
   decorators: [asCmsReviewer],
   parameters: {
-    flags: {
-      "cms-home-page": "ON",
+    msw: {
+      handlers: {
+        flags: updateFlags({ "cms-home-page": "ON" }),
+      },
     },
   },
 };
@@ -39,8 +46,10 @@ export const StateWelcome: Story = {
   name: "State Welcome",
   decorators: [asStateSubmitter],
   parameters: {
-    flags: {
-      "state-home-page": "ON",
+    msw: {
+      handlers: {
+        flags: updateFlags({ "state-home-page": "ON" }),
+      },
     },
   },
 };
