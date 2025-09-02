@@ -37,12 +37,17 @@ export const withQueryClient = (Story) => (
   <QueryClientProvider client={queryClient}>{Story()}</QueryClientProvider>
 );
 
-export const withLaunchDarkly = (Story, { parameters }) => {
-  toggleGetLDEvalStreamHandler(parameters.flags);
-  toggleGetLDEvalxHandler(parameters.flags);
+export const withLaunchDarkly = (Story) => {
+  // toggleGetLDEvalStreamHandler(parameters.flags);
+  // toggleGetLDEvalxHandler(parameters.flags);
 
   return <LDProvider>{Story()}</LDProvider>;
 };
+
+export const updateFlags = (toggleFlags) => [
+  toggleGetLDEvalStreamHandler(toggleFlags),
+  toggleGetLDEvalxHandler(toggleFlags),
+];
 
 export const asLoggedOut = (Story) => {
   setMockUsername(null);

@@ -7,7 +7,7 @@ import { initialize, mswLoader } from "msw-storybook-addon";
 // import * as React from "react";
 import { withLaunchDarkly, withQueryClient } from "./decorators";
 initialize({
-  onUnhandledRequest: "warn",
+  onUnhandledRequest: "bypass",
   serviceWorker: {
     options: {
       updateViaCache: "none",
