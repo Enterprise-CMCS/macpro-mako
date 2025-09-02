@@ -2,20 +2,20 @@ import type { Meta, StoryObj } from "@storybook/react-vite";
 import { reactRouterParameters, withRouter } from "storybook-addon-remix-react-router";
 
 import { asStateSubmitter } from "../../../.storybook/decorators";
-import { StateWelcome } from "./state";
+import { StateSignup } from "./stateSignup";
 
 const meta = {
-  title: "Feature/StateWelcome",
-  component: StateWelcome,
+  title: "Feature/State Sign Up",
+  component: StateSignup,
   decorators: [withRouter, asStateSubmitter],
   parameters: {
     reactRouter: reactRouterParameters({
       routing: {
-        path: "/",
+        path: "/signup/state",
       },
     }),
   },
-} satisfies Meta<typeof StateWelcome>;
+} satisfies Meta<typeof StateSignup>;
 
 export default meta;
 type Story = StoryObj<typeof meta>;
