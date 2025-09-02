@@ -10,6 +10,13 @@ import {
   SeatoolOfficer,
   seatoolSchema,
 } from "../../../index";
+import { SkippableValidationError } from "..";
+
+type PendingValidationMetadata = {
+  seatoolStatus: string;
+  hasTitle: boolean;
+  hasDescription: boolean;
+};
 
 function getLeadAnalyst(eventData: SeaTool) {
   let leadAnalystOfficerId: null | number = null;
@@ -125,8 +132,13 @@ export const transform = (id: string) => {
         !data.STATE_PLAN.SUMMARY_MEMO ||
         data.STATE_PLAN.SUMMARY_MEMO.trim() === "")
     ) {
-      throw new Error(
+      throw new SkippableValidationError<PendingValidationMetadata>(
         "Validation failed: Pending status requires both subject and description to be non-empty",
+        {
+          seatoolStatus,
+          hasTitle: !!data.STATE_PLAN.TITLE_NAME,
+          hasDescription: !!data.STATE_PLAN.SUMMARY_MEMO,
+        },
       );
     }
     const authority =
