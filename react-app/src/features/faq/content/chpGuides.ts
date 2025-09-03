@@ -1,4 +1,4 @@
-import { Template } from "./chpRenderSection";
+import { Template } from "../faqs/utils";
 
 export const CHP_GUIDES: Template[] = [
   // MAGI Eligibility & Methods

@@ -1,6 +1,6 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 
-import { handleSupportLinkClick, slugify } from "./oneMACFAQContent";
+import { handleSupportLinkClick, slugify } from "./utils";
 
 describe("slugify", () => {
   it("should convert a simple string to a slug", () => {
