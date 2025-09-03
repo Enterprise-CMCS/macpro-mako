@@ -4,6 +4,7 @@ on:
   push:
     branches:
       - main
+      - fix-code-cov
   schedule:
     - cron: "30 01 * * *"
   workflow_dispatch:
@@ -37,11 +38,10 @@ jobs:
         run: run test --coverage
       - name: Report coverage to Code Climate
         if: always()
-        uses: paambaati/codeclimate-action@v9.0.0
-        env:
-          CC_TEST_REPORTER_ID: ${{ secrets.CC_TEST_REPORTER_ID }}
+        uses: qltysh/qlty-action/coverage@v2
         with:
-          coverageLocations: coverage/lcov.info:lcov
+          token: ${{ secrets.QLTY_COVERAGE_TOKEN }}
+          files: coverage/lcov.info
       - name: Upload Coverage Summary
         if: ${{ !cancelled() }}
         uses: actions/upload-artifact@v4
