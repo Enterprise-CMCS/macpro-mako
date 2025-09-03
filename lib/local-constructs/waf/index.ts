@@ -92,10 +92,7 @@ export class WafConstruct extends Construct {
           managedRuleGroupStatement: {
             vendorName: "AWS",
             name: "AWSManagedRulesCommonRuleSet",
-            excludedRules: [
-              ...generateExcludeRuleList(awsCommonExcludeRules),
-              { name: "SizeRestrictions_BODY" },
-            ],
+            excludedRules: generateExcludeRuleList(awsCommonExcludeRules),
           },
         },
         visibilityConfig: {
