@@ -116,7 +116,7 @@
     ]
   },
   {
-    "username": "george@example.com",
+    "username": "ringo@example.com",
     "attributes": [
       {
         "Name": "email",
@@ -136,7 +136,7 @@
       },
       {
         "Name": "custom:state",
-        "Value": "VA,OH,SC,CO,GA,MD,CA"
+        "Value": "NE"
       },
       {
         "Name": "custom:cms-roles",
