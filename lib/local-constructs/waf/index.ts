@@ -92,7 +92,10 @@ export class WafConstruct extends Construct {
           managedRuleGroupStatement: {
             vendorName: "AWS",
             name: "AWSManagedRulesCommonRuleSet",
-            excludedRules: generateExcludeRuleList(awsCommonExcludeRules),
+            excludedRules: [
+              ...generateExcludeRuleList(awsCommonExcludeRules),
+              { name: "SizeRestrictions_BODY" },
+            ],
           },
         },
         visibilityConfig: {
@@ -133,6 +136,26 @@ export class WafConstruct extends Construct {
           sampledRequestsEnabled: true,
           cloudWatchMetricsEnabled: true,
           metricName: `${name}-AWSManagedRulesKnownBadInputsRuleSetMetric`,
+        },
+      },
+      {
+        name: "RequestBodySizeLimit",
+        priority: 45,
+        action: { block: {} },
+        statement: {
+          sizeConstraintStatement: {
+            fieldToMatch: {
+              body: {},
+            },
+            comparisonOperator: "GT",
+            size: 65536, // 64 KB
+            textTransformations: [{ priority: 0, type: "NONE" }],
+          },
+        },
+        visibilityConfig: {
+          sampledRequestsEnabled: true,
+          cloudWatchMetricsEnabled: true,
+          metricName: `${name}-RequestBodySizeLimitMetric`,
         },
       },
       {
