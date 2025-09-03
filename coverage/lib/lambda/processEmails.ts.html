@@ -23,9 +23,9 @@
         <div class='clearfix'>
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">89.86% </span>
+                <span class="strong">90.41% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>133/148</span>
+                <span class='fraction'>132/146</span>
             </div>
         
             
@@ -44,9 +44,9 @@
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">90.07% </span>
+                <span class="strong">90.64% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>127/141</span>
+                <span class='fraction'>126/139</span>
             </div>
         
             
@@ -495,10 +495,7 @@
 <a name='L430'></a><a href='#L430'>430</a>
 <a name='L431'></a><a href='#L431'>431</a>
 <a name='L432'></a><a href='#L432'>432</a>
-<a name='L433'></a><a href='#L433'>433</a>
-<a name='L434'></a><a href='#L434'>434</a>
-<a name='L435'></a><a href='#L435'>435</a>
-<a name='L436'></a><a href='#L436'>436</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
+<a name='L433'></a><a href='#L433'>433</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -657,27 +654,22 @@
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">31x</span>
-<span class="cline-any cline-yes">31x</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">6x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">31x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">6x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">6x</span>
+<span class="cline-any cline-yes">6x</span>
+<span class="cline-any cline-yes">6x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">6x</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">30x</span>
-<span class="cline-any cline-yes">5x</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">5x</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">5x</span>
-<span class="cline-any cline-yes">5x</span>
 <span class="cline-any cline-yes">5x</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
@@ -726,10 +718,8 @@
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">24x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">24x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -793,7 +783,11 @@
 <span class="cline-any cline-yes">26x</span>
 <span class="cline-any cline-yes">26x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">26x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">26x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -1092,18 +1086,6 @@ export async function processRecord(kafkaRecord: KafkaRecord, config: ProcessEma
     return;
   }
 &nbsp;
-  let item;
-  try {
-    item = await os.getItem(config.osDomain, getOsNamespace("main"), safeID);
-  } catch (err) {
-<span class="cstat-no" title="statement not covered" >    console.error("Error getting item: ", err);</span>
-  }
-&nbsp;
-  if (!item?.found || !item?._source) {
-    console.log(`The package was not found for id: ${id} in mako. Doing nothing.`);
-    return;
-  }
-&nbsp;
   if (kafkaRecord.topic === "aws.seatool.ksql.onemac.three.agg.State_Plan") {
     const seatoolRecord: Document = {
       safeID,
@@ -1113,6 +1095,13 @@ export async function processRecord(kafkaRecord: KafkaRecord, config: ProcessEma
 &nbsp;
     <span class="missing-if-branch" title="else path not taken" >E</span>if (safeSeatoolRecord.data?.seatoolStatus === SEATOOL_STATUS.WITHDRAWN) {
       try {
+        const item = await os.getItem(config.osDomain, getOsNamespace("main"), safeID);
+&nbsp;
+        if (!item?.found || !item?._source) {
+          console.log(`The package was not found for id: ${id} in mako. Doing nothing.`);
+          return;
+        }
+&nbsp;
         if (item._source.withdrawEmailSent) {
           console.log("Withdraw email previously sent");
           return;
@@ -1161,13 +1150,11 @@ export async function processRecord(kafkaRecord: KafkaRecord, config: ProcessEma
     return;
   }
 &nbsp;
-  // Adjust timestamp if needed before sending it to the email template
-  const updatedTimestamp = adjustTimestamp(parsedValue, item, timestamp);
-&nbsp;
   const record = {
     ...parsedValue,
-    timestamp: updatedTimestamp,
+    timestamp,
   };
+&nbsp;
   try {
     console.log("Config:", JSON.stringify(config, null, 2));
     await processAndSendEmails(record, safeID, config);
@@ -1226,11 +1213,15 @@ export async function processAndSendEmails(
 &nbsp;
   const allStateUsersEmails = allStateUsers.map(<span class="fstat-no" title="function not covered" >(u</span>ser) =&gt; <span class="cstat-no" title="statement not covered" >user.formattedEmailAddress)</span>;
   const isChipEligibility = record.authority === "CHIP SPA" &amp;&amp; <span class="branch-1 cbranch-no" title="branch not covered" >!!item._source?.chipSubmissionType;</span>
-  console.log("mappped to formatted email address for all state users: ", allStateUsers);
+  console.log("mapped to formatted email address for all state users: ", allStateUsers);
+&nbsp;
+  // Adjust timestamp if needed before sending it to the email template
+  const updatedTimestamp = adjustTimestamp(record, item);
 &nbsp;
   const templateVariables = {
     ...record,
     id,
+    timestamp: updatedTimestamp,
     isChipEligibility,
     applicationEndpointUrl: config.applicationEndpointUrl,
     territory,
@@ -1375,7 +1366,7 @@ const htmlToTextOptions = (baseUrl: string): HtmlToTextOptions =&gt; ({
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2025-08-28T13:27:39.047Z
+                at 2025-09-03T15:15:44.613Z
             </div>
         <script src="../../prettify.js"></script>
         <script>
