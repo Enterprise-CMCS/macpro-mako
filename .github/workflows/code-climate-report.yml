@@ -1,10 +1,9 @@
-name: Code Climate Report
+name: Code Coverage Report
 
 on:
   push:
     branches:
       - main
-      - fix-code-cov
   schedule:
     - cron: "30 01 * * *"
   workflow_dispatch:
@@ -36,7 +35,7 @@ jobs:
       - name: Test
         continue-on-error: true
         run: run test --coverage
-      - name: Report coverage to Code Climate
+      - name: Report coverage to Qlty
         if: always()
         uses: qltysh/qlty-action/coverage@v2
         with:
