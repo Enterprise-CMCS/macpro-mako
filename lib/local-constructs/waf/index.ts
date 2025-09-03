@@ -142,7 +142,9 @@ export class WafConstruct extends Construct {
         statement: {
           sizeConstraintStatement: {
             fieldToMatch: {
-              body: {},
+              body: {
+                oversizeHandling: "MATCH",
+              },
             },
             comparisonOperator: "GT",
             size: 65536, // 64 KB
