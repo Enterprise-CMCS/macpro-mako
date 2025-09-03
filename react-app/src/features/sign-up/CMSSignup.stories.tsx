@@ -1,21 +1,20 @@
 import type { Meta, StoryObj } from "@storybook/react-vite";
 import { reactRouterParameters, withRouter } from "storybook-addon-remix-react-router";
 
-import { asCmsReviewer } from "../../../.storybook/decorators";
-import { CMSWelcome } from "./cms";
+import { CMSSignup } from "./cmsSignup";
 
 const meta = {
-  title: "Feature/CMSWelcome",
-  component: CMSWelcome,
-  decorators: [withRouter, asCmsReviewer],
+  title: "Feature/CMS Sign Up",
+  component: CMSSignup,
+  decorators: [withRouter],
   parameters: {
     reactRouter: reactRouterParameters({
       routing: {
-        path: "/",
+        path: "/signup/cms",
       },
     }),
   },
-} satisfies Meta<typeof CMSWelcome>;
+} satisfies Meta<typeof CMSSignup>;
 
 export default meta;
 type Story = StoryObj<typeof meta>;
