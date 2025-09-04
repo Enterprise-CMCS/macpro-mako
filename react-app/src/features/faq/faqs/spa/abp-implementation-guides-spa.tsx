@@ -1,4 +1,4 @@
-import { Template } from "../faqs/utils";
+import { PdfList, Template } from "../utils";
 
 export const ABP_GUIDES: Template[] = [
   {
@@ -80,3 +80,13 @@ export const ABP_GUIDES: Template[] = [
     href: "/abp/IG_ABP11_PaymentMethodology.pdf",
   },
 ];
+
+export const AbpImplementationGuidesSpa = () => (
+  <section className="space-y-2">
+    <p>
+      Medicaid Alternative Benefit Plan (ABP) SPA implementation guides can be downloaded at the
+      links below.
+    </p>
+    <PdfList list={ABP_GUIDES} label="template" />
+  </section>
+);

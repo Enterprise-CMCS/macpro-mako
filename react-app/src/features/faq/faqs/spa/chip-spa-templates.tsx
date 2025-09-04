@@ -1,7 +1,7 @@
-import { Template } from "../faqs/utils";
+import { PdfList, Template } from "../utils";
 
-export const CHP_TEMPLATES: Template[] = [
-  // MAGI Eligibility & Methods
+// MAGI Eligibility & Methods
+export const CHP_MAGI_TEMPLATES: Template[] = [
   {
     title: "CS 7",
     text: "Eligibility - Targeted Low-Income Children",
@@ -47,21 +47,28 @@ export const CHP_TEMPLATES: Template[] = [
     text: "Other Eligibility Criteria - Spenddowns",
     href: "/chp/CS16.pdf",
   },
+];
 
-  // XXI Medicaid Expansion
+// XXI Medicaid Expansion
+export const CHP_MED_EXPANSION_TEMPLATES: Template[] = [
   {
     title: "CS 3",
     text: "Eligibility for Medicaid Expansion Program",
     href: "/chp/CS3.pdf",
   },
-  // Eligibility Processing
+];
+
+// Eligibility Processing
+export const CHP_ELIGIBILITY_TEMPLATE: Template[] = [
   {
     title: "CS 24",
     text: "General Eligibility - Eligibility Processing",
     href: "/chp/CS24.pdf",
   },
+];
 
-  // Non-Financial Eligibility
+// Non-Financial Eligibility
+export const CHP_NON_FIN_TEMPLATE: Template[] = [
   {
     title: "CS 17",
     text: "Non-Financial Eligibility - Residency",
@@ -113,3 +120,47 @@ export const CHP_TEMPLATES: Template[] = [
     href: "/chp/CS31.pdf",
   },
 ];
+
+export const ChipSpaTemplates = () => (
+  <section>
+    <p>
+      CHIP eligibility SPA templates can be downloaded at the links below. After downloading and
+      completing the templates you need, upload them as part of the SPA submission. The template
+      PDFs can only be opened using Adobe Reader or Acrobat.
+    </p>
+    <ul className="pl-7 space-y-2 py-4">
+      <li className="space-y-2">
+        <p>MAGI Eligibility & Methods</p>
+        <PdfList
+          list={CHP_MAGI_TEMPLATES}
+          label="template"
+          ulClassName="list-disc pl-7 space-y-2"
+        />
+      </li>
+      <li className="space-y-2">
+        <p>XXI Medicaid Expansion</p>
+        <PdfList
+          list={CHP_MED_EXPANSION_TEMPLATES}
+          label="template"
+          ulClassName="list-disc pl-7 space-y-2"
+        />
+      </li>
+      <li className="space-y-2">
+        <p>Eligibility Processing</p>
+        <PdfList
+          list={CHP_ELIGIBILITY_TEMPLATE}
+          label="template"
+          ulClassName="list-disc pl-7 space-y-2"
+        />
+      </li>
+      <li className="space-y-2">
+        <p>Non-Financial Eligibility</p>
+        <PdfList
+          list={CHP_NON_FIN_TEMPLATE}
+          label="template"
+          ulClassName="list-disc pl-7 space-y-2"
+        />
+      </li>
+    </ul>
+  </section>
+);

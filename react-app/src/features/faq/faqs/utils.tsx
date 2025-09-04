@@ -56,13 +56,13 @@ export const PdfLink = ({
 export const PdfList = ({
   list,
   label,
-  ulClassName = "",
+  ulClassName = "list-disc pl-6 space-y-2",
 }: {
   list: Template[];
   label: string;
   ulClassName?: string;
 }) => (
-  <ul className={cn("list-disc pl-6 space-y-2", ulClassName)}>
+  <ul className={ulClassName}>
     {list.map((pdf) => (
       <li key={pdf.title}>
         <PdfLink href={pdf.href} title={pdf.title} text={pdf.text} label={label} className="" />
@@ -78,16 +78,4 @@ export const PdfList = ({
       </li>
     ))}
   </ul>
-);
-
-export const renderSection = (
-  title: string,
-  templates: Template[],
-  filterCondition: (template: Template) => boolean,
-  ulClassName: string = "",
-) => (
-  <>
-    <p>{title}</p>
-    <PdfList list={templates.filter(filterCondition)} label="template" ulClassName={ulClassName} />
-  </>
 );

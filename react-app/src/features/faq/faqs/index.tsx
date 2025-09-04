@@ -1,6 +1,6 @@
-import { generalContent } from "./generalFAQ";
-import { spaContent } from "./spaFAQ";
-import { waiverContent } from "./waiverFAQ";
+import { generalContent } from "./general";
+import { spaContent } from "./spa";
+import { waiverContent } from "./waiver";
 
 export type QuestionAnswer = {
   anchorText: string;
