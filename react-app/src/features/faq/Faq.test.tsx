@@ -12,7 +12,7 @@ vi.mock("@/utils/ReactGA/SendGAEvent", () => ({
   sendGAEvent: vi.fn(),
 }));
 vi.mock("./faqs", () => ({
-  oneMACFAQContent: vi.fn().mockReturnValue([
+  oneMACFAQContent: [
     {
       sectionTitle: "Section 1",
       qanda: [
@@ -20,7 +20,7 @@ vi.mock("./faqs", () => ({
         { anchorText: "q2", question: "What is FAQ 2?", answerJSX: <p>Answer 2</p> },
       ],
     },
-  ]),
+  ],
 }));
 
 it("should expand all FAQ items when the 'Expand all' button is clicked and send GA event", () => {
