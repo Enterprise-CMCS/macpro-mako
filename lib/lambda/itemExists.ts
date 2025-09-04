@@ -20,8 +20,8 @@ export const handler = authenticatedMiddy({
   setToContext: true,
   eventSchema: itemExistsEventSchema,
 })
-  .use(canViewPackage())
   .use(fetchPackage({ allowNotFound: true, setToContext: true }))
+  .use(canViewPackage())
   .handler(async (event: ItemExistsEvent, context: ContextWithPackage) => {
     const { packageResult } = context;
 
