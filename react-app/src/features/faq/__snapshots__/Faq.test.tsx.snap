@@ -209,9 +209,9 @@ exports[`Faq > should display the items expected 1`] = `
               >
                 <a
                   class="underline"
-                  href="tel:123-456-7890"
+                  href="tel:(833) 228-2540"
                 >
-                  123-456-7890
+                  (833) 228-2540
                 </a>
               </p>
               <b>
@@ -222,9 +222,9 @@ exports[`Faq > should display the items expected 1`] = `
               >
                 <a
                   class="underline"
-                  href="mailto:help@example.com"
+                  href="mailto:OneMAC_Helpdesk@cms.hhs.gov"
                 >
-                  help@example.com
+                  OneMAC_Helpdesk@cms.hhs.gov
                 </a>
               </p>
             </div>
