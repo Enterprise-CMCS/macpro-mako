@@ -1,16 +1,24 @@
-import { act, render, screen } from "@testing-library/react";
-import userEvent from "@testing-library/user-event";
-import { describe, expect, test, vi } from "vitest";
+import { act, fireEvent, render, screen } from "@testing-library/react";
+import { afterEach, beforeEach, describe, expect, test, vi } from "vitest";
 
 import { UserPrompt, userPrompt } from "./userPrompt";
 
 describe("userPrompt", () => {
-  test("Hidden on initial render", () => {
+  beforeEach(() => {
+    vi.useFakeTimers();
+  });
+
+  afterEach(() => {
+    vi.useRealTimers();
+  });
+
+  test("Hidden on initial render", async () => {
     const { container } = render(<UserPrompt />);
 
     expect(container).toBeEmptyDOMElement();
 
     userPrompt.dismiss();
+    await vi.runAllTimers();
   });
 
   test("Create a simple user prompt", async () => {
@@ -29,6 +37,7 @@ describe("userPrompt", () => {
     expect(getByTestId("dialog-content")).toBeInTheDocument();
 
     userPrompt.dismiss();
+    await vi.runAllTimers();
   });
 
   test("User prompt header matches", async () => {
@@ -46,6 +55,8 @@ describe("userPrompt", () => {
     expect(getByTestId("dialog-title")).toHaveTextContent("Testing");
 
     userPrompt.dismiss();
+
+    await vi.runAllTimers();
   });
 
   test("User prompt body matches", async () => {
@@ -63,6 +74,8 @@ describe("userPrompt", () => {
     expect(getByTestId("dialog-body")).toHaveTextContent("testing body");
 
     userPrompt.dismiss();
+
+    await vi.runAllTimers();
   });
 
   test("Custom Accept and Cancel button texts are applied", async () => {
@@ -88,11 +101,10 @@ describe("userPrompt", () => {
     expect(dialogFooterChildren.item(1).textContent).toEqual("Custom Cancel");
 
     userPrompt.dismiss();
+    await vi.runAllTimers();
   });
 
   test("Clicking Accept successfully closes the user prompt", async () => {
-    const user = userEvent.setup();
-
     const { container, getByTestId } = render(<UserPrompt />);
 
     await act(() =>
@@ -104,16 +116,15 @@ describe("userPrompt", () => {
       }),
     );
 
-    user.click(getByTestId("dialog-accept"));
+    fireEvent.click(getByTestId("dialog-accept"));
 
     expect(container).toBeEmptyDOMElement();
 
     userPrompt.dismiss();
+    await vi.runAllTimers();
   });
 
   test("Clicking Cancel successfully closes the user prompt", async () => {
-    const user = userEvent.setup();
-
     const { container, getByTestId } = render(<UserPrompt />);
 
     await act(() =>
@@ -125,14 +136,13 @@ describe("userPrompt", () => {
       }),
     );
 
-    await user.click(getByTestId("dialog-cancel"));
+    fireEvent.click(getByTestId("dialog-cancel"));
 
     expect(container).toBeEmptyDOMElement();
+    await vi.runAllTimers();
   });
 
   test("Clicking Accept successfully calls the onAccept callback", async () => {
-    const user = userEvent.setup();
-
     const { getByTestId } = render(<UserPrompt />);
 
     const mockOnAccept = vi.fn(() => {});
@@ -146,14 +156,13 @@ describe("userPrompt", () => {
       }),
     );
 
-    await user.click(getByTestId("dialog-accept"));
+    fireEvent.click(getByTestId("dialog-accept"));
 
     expect(mockOnAccept).toHaveBeenCalled();
+    await vi.runAllTimers();
   });
 
   test("Clicking Cancel successfully calls the onCancel callback", async () => {
-    const user = userEvent.setup();
-
     const { getByTestId } = render(<UserPrompt />);
 
     const mockOnCancel = vi.fn(() => {});
@@ -167,8 +176,9 @@ describe("userPrompt", () => {
       }),
     );
 
-    await user.click(getByTestId("dialog-cancel"));
+    fireEvent.click(getByTestId("dialog-cancel"));
 
     expect(mockOnCancel).toHaveBeenCalled();
+    await vi.runAllTimers();
   });
 });
