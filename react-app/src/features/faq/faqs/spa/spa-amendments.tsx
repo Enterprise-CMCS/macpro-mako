@@ -9,7 +9,7 @@ export const SpaAmendments = () => (
       Starting July 28, 2025 Medicaid Model Data Lab (MMDL) no longer accepts new submissions for
       these SPAs, including:
     </p>
-    <ul className="ml-8 list-disc space-y-2">
+    <ul className="ml-8 list-disc space-y-2" role="list">
       <li>Medicaid Alternative Benefit Plan (ABP)</li>
       <li>Medicaid Premiums & Cost Sharing</li>
       <li>CHIP Eligibility</li>
@@ -21,7 +21,7 @@ export const SpaAmendments = () => (
     <p>
       Templates and implementation guides for OneMAC SPAs can be downloaded from the respective FAQ:
     </p>
-    <ul className="ml-8 list-disc space-y-2 text-primary">
+    <ul className="ml-8 list-disc space-y-2 text-primary" role="list">
       {[
         {
           text: "Where can I download Medicaid Alternative Benefit Plan (ABP) SPA templates?",

@@ -125,7 +125,7 @@ export const ChipSpaImplementationGuides = () => (
   <div>
     <section className="space-y-2">
       <p>CHIP eligibility SPA implementation guides can be downloaded at the links below.</p>
-      <ul className="list-disc pl-6">
+      <ul className="list-disc pl-6" role="list">
         <li>
           <PdfLink
             href="/chp/IG_ChipEligibilityIntroduction.pdf"
@@ -135,7 +135,7 @@ export const ChipSpaImplementationGuides = () => (
           />
         </li>
       </ul>
-      <ul className="pl-6 space-y-2">
+      <ul className="pl-6 space-y-2" role="list">
         <li className="space-y-2">
           <p>MAGI Eligibility & Methods</p>
           <PdfList list={CHP_MAGI_GUIDES} label="template" ulClassName="list-disc pl-6 space-y-2" />

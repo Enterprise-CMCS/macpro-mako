@@ -6,7 +6,7 @@ export const WithdrawPackageWaiver = () => (
       <b>Completing this action will conclude the review of this Waiver package.</b>
     </p>
     <p>There are two methods you can use to withdraw a submission package:</p>
-    <ul className="list-disc ml-7 space-y-2">
+    <ul className="list-disc ml-7 space-y-2" role="list">
       <li>
         In OneMAC, Locate and select the link to the Waiver ID. Then, under Package Actions, select
         the Withdraw Package link.

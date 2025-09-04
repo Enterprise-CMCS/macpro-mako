@@ -8,7 +8,7 @@ export const CrosswalkSystem = () => (
       temporary extension requests.
     </p>
     <p>Check which system to submit your state plan in with this crosswalk training document.</p>
-    <ul>
+    <ul role="list">
       <li>
         <PdfLink
           href="/onboarding/eligibility-crosswalk-paper-based-state-plan-macpro.pdf"

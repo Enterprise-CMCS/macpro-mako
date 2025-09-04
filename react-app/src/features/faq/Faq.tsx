@@ -1,5 +1,5 @@
-import { useCallback, useEffect, useMemo, useState } from "react";
-import { Navigate, useParams } from "react-router";
+import { useCallback, useEffect, useState } from "react";
+import { useParams } from "react-router";
 
 import {
   Accordion,
@@ -10,35 +10,25 @@ import {
   CardWithTopBorder,
   SubNavHeader,
 } from "@/components";
-import { useFeatureFlag } from "@/hooks/useFeatureFlag";
 import { sendGAEvent } from "@/utils/ReactGA/SendGAEvent";
 
 import { oneMACFAQContent } from "./faqs";
 import { helpDeskContact } from "./faqs/utils";
 
 export const Faq = () => {
-  const isFAQHidden = useFeatureFlag("TOGGLE_FAQ");
-
-  // Get the flag value for hiding the MMDL banner.
-  const isBannerHidden = useFeatureFlag("UAT_HIDE_MMDL_BANNER");
-  const isUpdateNewLabel = useFeatureFlag("UPGRADE_NEW_LABEL");
-  const isChipSpaDetailsEnabled = useFeatureFlag("CHIP_SPA_DETAILS");
-
-  const faqContent = useMemo(() => {
-    return oneMACFAQContent({ isChipSpaDetailsEnabled, isBannerHidden });
-  }, [isChipSpaDetailsEnabled, isBannerHidden]);
-
   const { id } = useParams<{ id: string }>();
 
   const [openItems, setOpenItems] = useState<string[]>([]);
+  const [allExpanded, setAllExpanded] = useState<boolean>(false);
 
   const expandAll = useCallback(() => {
     const allIds = [];
-    faqContent.forEach(({ qanda }) => {
+    oneMACFAQContent.forEach(({ qanda }) => {
       qanda.forEach(({ anchorText }) => allIds.push(anchorText));
     });
     setOpenItems(allIds);
-  }, [setOpenItems, faqContent]);
+    setAllExpanded(true);
+  }, [setOpenItems]);
 
   useEffect(() => {
     if (id) {
@@ -53,9 +43,6 @@ export const Faq = () => {
     }
   }, [id]);
 
-  if (isFAQHidden) {
-    return <Navigate to="/" replace />;
-  }
   return (
     <>
       <SubNavHeader>
@@ -73,16 +60,24 @@ export const Faq = () => {
                   event_label: "Expand All",
                 });
               }}
+              className="w-full xs:w-fit hover:bg-transparent mb-5"
               variant="outline"
               data-testid="expand-all"
-              className="w-full xs:w-fit hover:bg-transparent mb-5"
+              id="expand-all-btn"
+              aria-expanded={allExpanded}
+              aria-controls="faq-accordions"
             >
               Expand all to search with CTRL + F
             </Button>
 
             {/* FAQ */}
-            <Accordion type="multiple" value={openItems} onValueChange={setOpenItems}>
-              {faqContent.map(({ sectionTitle, qanda }) => (
+            <Accordion
+              type="multiple"
+              value={openItems}
+              onValueChange={setOpenItems}
+              id="faq-accordions"
+            >
+              {oneMACFAQContent.map(({ sectionTitle, qanda }) => (
                 <article key={sectionTitle} className="mb-8">
                   <h2 className="text-2xl mb-4 text-primary">{sectionTitle}</h2>
                   {qanda.map(({ anchorText, answerJSX, question, label, labelColor }) => (
@@ -94,7 +89,7 @@ export const Faq = () => {
                     >
                       <AccordionTrigger className="text-left">
                         <div className="flex items-center gap-2">
-                          {isUpdateNewLabel && label && (
+                          {label && (
                             <span
                               className={`text-white text-xs font-semibold px-2 py-0.5 rounded no-underline hover:no-underline ${
                                 labelColor === "green"
@@ -103,6 +98,7 @@ export const Faq = () => {
                                     ? "bg-[#0050D8]"
                                     : "bg-gray-500"
                               }`}
+                              // id={`${anchorText}-label`}
                             >
                               {label}
                             </span>

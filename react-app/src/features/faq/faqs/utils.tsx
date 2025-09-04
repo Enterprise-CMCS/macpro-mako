@@ -62,12 +62,12 @@ export const PdfList = ({
   label: string;
   ulClassName?: string;
 }) => (
-  <ul className={ulClassName}>
+  <ul className={ulClassName} role="list">
     {list.map((pdf) => (
       <li key={pdf.title}>
         <PdfLink href={pdf.href} title={pdf.title} text={pdf.text} label={label} className="" />
         {pdf.subtext && (
-          <ul className="list-disc pl-7 space-y-1">
+          <ul className="list-disc pl-7 space-y-1" role="list">
             {pdf.subtext.map((sub, index) => (
               <li key={index} className="text-sm text-gray-600">
                 {sub}

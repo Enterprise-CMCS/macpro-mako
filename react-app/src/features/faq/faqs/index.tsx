@@ -15,20 +15,14 @@ type FAQContent = {
   qanda: QuestionAnswer[];
 };
 
-export const oneMACFAQContent = ({
-  isChipSpaDetailsEnabled = false,
-  isBannerHidden = true,
-}: {
-  isChipSpaDetailsEnabled: boolean;
-  isBannerHidden: boolean;
-}): FAQContent[] => [
+export const oneMACFAQContent: FAQContent[] = [
   {
     sectionTitle: "General",
     qanda: generalContent,
   },
   {
     sectionTitle: "State Plan Amendments (SPAs)",
-    qanda: spaContent({ isChipSpaDetailsEnabled, isBannerHidden }),
+    qanda: spaContent,
   },
   {
     sectionTitle: "Waivers",

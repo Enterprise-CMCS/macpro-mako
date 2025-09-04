@@ -8,7 +8,7 @@ export const SpaIdFormat = () => (
       The Official Submission package SPA ID must follow the format SS-YY-#### OR SS-YY-####-XXXX to
       include:
     </p>
-    <ul className="list-disc ml-7 space-y-2">
+    <ul className="list-disc ml-7 space-y-2" role="list">
       <li>SS = 2 alpha character (State Abbreviation)</li>
       <li>YY = 2 numeric digits (Year)</li>
       <li>#### = 4 numeric digits (Serial number)</li>

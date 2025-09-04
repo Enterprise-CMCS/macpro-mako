@@ -4,7 +4,7 @@ export const WithdrawSpaRaiResponse = () => (
       If a state wishes to withdraw a Formal RAI Response, the state must first contact their CMS
       Point of Contact so the action can be enabled.
     </p>
-    <ul className="list-disc ml-7">
+    <ul className="list-disc ml-7" role="list">
       <li>As a CMS user, log in to OneMAC and select the link to the SPA ID from the dashboard</li>
       <li>
         Then, under Package Actions, select the Enable Formal RAI Response Withdraw link, and then
@@ -24,7 +24,7 @@ export const WithdrawSpaRaiResponse = () => (
         Note: These submissions will remain on the clock until the package action has been taken.
       </b>
     </p>
-    <ul className="list-disc ml-7 space-y-2">
+    <ul className="list-disc ml-7 space-y-2" role="list">
       <li>
         On the Formal RAI Response Withdraw form, upload any supporting documentation and fill out
         the Additional Information section explaining your need to withdraw the Formal RAI Response
@@ -32,7 +32,7 @@ export const WithdrawSpaRaiResponse = () => (
       </li>
       <li>
         Select Submit.
-        <ul className="list-disc ml-12">
+        <ul className="list-disc ml-12" role="list">
           <li>
             You will receive a confirmation message asking if you are sure that you want to withdraw
             the Formal RAI Response. Select Yes, withdraw response.

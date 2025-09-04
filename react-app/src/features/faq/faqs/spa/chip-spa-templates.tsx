@@ -128,7 +128,7 @@ export const ChipSpaTemplates = () => (
       completing the templates you need, upload them as part of the SPA submission. The template
       PDFs can only be opened using Adobe Reader or Acrobat.
     </p>
-    <ul className="pl-7 space-y-2 py-4">
+    <ul className="pl-7 space-y-2 py-4" role="list">
       <li className="space-y-2">
         <p>MAGI Eligibility & Methods</p>
         <PdfList

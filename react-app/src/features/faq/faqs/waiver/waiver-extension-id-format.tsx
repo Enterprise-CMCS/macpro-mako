@@ -4,7 +4,7 @@ export const WaiverExtensionIdFormat = () => (
       Temporary extension numbers must follow the format SS-####.R##.TE## or SS-#####.R##.TE## to
       include:
     </p>
-    <ul className="list-disc pl-7 space-y-2">
+    <ul className="list-disc pl-7 space-y-2" role="list">
       <li>SS = 2 character state abbreviation</li>
       <li>####(#)= 4 or 5 digit initial waiver number</li>
       <li>R## = renewal number (R01, R02, ...) (Use R00 for waivers without renewals)</li>

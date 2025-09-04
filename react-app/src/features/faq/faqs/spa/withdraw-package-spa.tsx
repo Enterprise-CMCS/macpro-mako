@@ -6,7 +6,7 @@ export const WithdrawPackageSpa = () => (
       <b>Completing this action will conclude the review of this SPA package.</b>
     </p>
     <p>There are two methods you can use to withdraw a submission package:</p>
-    <ul className="ml-8 list-disc space-y-2">
+    <ul className="ml-8 list-disc space-y-2" role="list">
       <li>
         In OneMAC, Locate and select the link to the SPA ID. Then, under Package Actions, select the
         Withdraw Package link.

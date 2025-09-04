@@ -4,7 +4,7 @@ export const InitialWaiverIdFormat = () => (
       1915(b) Initial Waiver numbers must follow the format SS-####.R00.00 or SS-#####.R00.00 to
       include:
     </p>
-    <ul className="list-disc pl-7 space-y-2">
+    <ul className="list-disc pl-7 space-y-2" role="list">
       <li>SS = 2 character state abbreviation</li>
       <li>##### = 4 or 5 digit initial waiver number</li>
       <li>R00 = initial number</li>
