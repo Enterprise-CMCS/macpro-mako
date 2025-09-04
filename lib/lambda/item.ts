@@ -27,8 +27,8 @@ export const handler = authenticatedMiddy({
   setToContext: true,
   eventSchema: itemEventSchema,
 })
-  .use(fetchPackage({ setToContext: true }))
   .use(canViewPackage())
+  .use(fetchPackage({ setToContext: true }))
   .use(fetchAppkChildren({ setToContext: true }))
   .use(fetchChangelog({ setToContext: true }))
   .handler(async (event: ItemEvent, context: ContextWithPackage) => {
