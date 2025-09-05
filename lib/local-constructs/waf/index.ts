@@ -92,7 +92,16 @@ export class WafConstruct extends Construct {
           managedRuleGroupStatement: {
             vendorName: "AWS",
             name: "AWSManagedRulesCommonRuleSet",
-            excludedRules: generateExcludeRuleList(awsCommonExcludeRules),
+            // NOTE: We explicitly exclude the AWSManagedRulesCommonRuleSet sub-rule `SizeRestrictions_BODY`
+            // because it enforces a much stricter request body size limit (~8 KB).
+            // That default blocks many legitimate requests before our custom rule is evaluated.
+            // To maintain protection against oversized request bodies (DoS/DDoS vectors),
+            // we replace it with our own `RequestBodySizeLimit` rule, which enforces a 64 KB limit
+            // using `oversizeHandling: "MATCH"`.
+            excludedRules: [
+              ...generateExcludeRuleList(awsCommonExcludeRules),
+              { name: "SizeRestrictions_BODY" },
+            ],
           },
         },
         visibilityConfig: {
@@ -133,6 +142,28 @@ export class WafConstruct extends Construct {
           sampledRequestsEnabled: true,
           cloudWatchMetricsEnabled: true,
           metricName: `${name}-AWSManagedRulesKnownBadInputsRuleSetMetric`,
+        },
+      },
+      {
+        name: "RequestBodySizeLimit",
+        priority: 45,
+        action: { block: {} },
+        statement: {
+          sizeConstraintStatement: {
+            fieldToMatch: {
+              body: {
+                oversizeHandling: "MATCH",
+              },
+            },
+            comparisonOperator: "GT",
+            size: 65536, // 64 KB
+            textTransformations: [{ priority: 0, type: "NONE" }],
+          },
+        },
+        visibilityConfig: {
+          sampledRequestsEnabled: true,
+          cloudWatchMetricsEnabled: true,
+          metricName: `${name}-RequestBodySizeLimitMetric`,
         },
       },
       {

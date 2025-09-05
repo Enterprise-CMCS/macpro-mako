@@ -190,6 +190,11 @@ export type AttachmentUrlRequestBody = {
   filename: string;
 };
 
+export type WebFormRequestBody = {
+  formId: string;
+  formVersion: string;
+};
+
 export type PackageActionsRequestBody = {
   id: string;
 };

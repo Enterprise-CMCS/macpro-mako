@@ -26,7 +26,7 @@ const getFlags = (toggleFlags: FlagToggles = {}) =>
         flagVersion: 4,
         variation: 1,
         trackEvents: false,
-        value: toggleFlags[flag] || defaultValue,
+        value: toggleFlags[flag] !== undefined ? toggleFlags[flag] : defaultValue,
       },
     }),
     {} as FlagResponse,

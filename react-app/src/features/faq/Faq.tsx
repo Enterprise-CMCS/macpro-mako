@@ -337,9 +337,9 @@ export const Faq = () => {
                             <span
                               className={`text-white text-xs font-semibold px-2 py-0.5 rounded no-underline hover:no-underline ${
                                 labelColor === "green"
-                                  ? "bg-green-600"
+                                  ? "bg-[#2E8540]"
                                   : labelColor === "blue"
-                                    ? "bg-blue-600"
+                                    ? "bg-[#0050D8]"
                                     : "bg-gray-500"
                               }`}
                             >

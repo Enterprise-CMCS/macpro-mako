@@ -10,11 +10,6 @@ import {
   Button,
   ConfirmationDialog,
   LoadingSpinner,
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
   SimplePageContainer,
   SubNavHeader,
 } from "@/components";
@@ -54,8 +49,9 @@ export const StateSignup = () => {
     currentRole !== "statesubmitter" &&
     currentRole !== "statesystemadmin" &&
     currentRole !== "norole"
-  )
+  ) {
     return <Navigate to="/profile" />;
+  }
 
   const onChange = (values: StateCode[]) => {
     setStateSelected(values);
@@ -118,44 +114,16 @@ export const StateSignup = () => {
             )}
             <div className="py-2">
               <h2 className="text-xl font-bold mb-2">Select your State Access</h2>
-              {isNewUserRoleDisplay && (
-                <FilterableSelect
-                  value={stateSelected}
-                  options={statesToRequest}
-                  onChange={(values: StateCode[]) => onChange(values)}
-                  placeholder="Select state here"
-                  selectedDisplay="value"
-                />
-              )}
-              {!isNewUserRoleDisplay &&
-                (roleToRequest === "statesystemadmin" ? (
-                  <Select onValueChange={(value: StateCode) => onChange([value])}>
-                    <SelectTrigger aria-label="Select state">
-                      <SelectValue placeholder="Select state here" />
-                    </SelectTrigger>
-                    <SelectContent isScrollable>
-                      {statesToRequest.map((state) => (
-                        <SelectItem value={state.value} key={state.value}>
-                          {state.label}
-                        </SelectItem>
-                      ))}
-                    </SelectContent>
-                  </Select>
-                ) : (
-                  <FilterableSelect
-                    value={stateSelected}
-                    options={statesToRequest}
-                    onChange={(values: StateCode[]) => onChange(values)}
-                    placeholder="Select state here"
-                    selectedDisplay="label"
-                  />
-                ))}
+              <FilterableSelect
+                ariaLabel="Select state here"
+                value={stateSelected}
+                options={statesToRequest}
+                onChange={(values: StateCode[]) => onChange(values)}
+                placeholder="Select state here"
+                selectedDisplay={isNewUserRoleDisplay ? "value" : "label"}
+              />
               {!stateSelected.length && (
-                <p className="text-red-600 mt-3">
-                  {roleToRequest === "statesystemadmin"
-                    ? "Please select a state."
-                    : "Please select at least one state."}
-                </p>
+                <p className="text-red-600 mt-3">Please select at least one state.</p>
               )}
               <div className="py-4">
                 {isNewUserRoleDisplay ? (

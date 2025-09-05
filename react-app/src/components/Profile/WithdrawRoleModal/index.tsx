@@ -49,7 +49,7 @@ const RemoveActiveRoleModal = ({ open, selfRevokeRole, onAccept, onCancel }: Mod
       title={
         <div className="mr-4">
           Withdraw {stateDisplay}
-          {newUserRoleMap[selfRevokeRole.role].toLowerCase()} access?
+          {newUserRoleMap[selfRevokeRole.role]} access?
         </div>
       }
       body={`This action cannot be undone. The ${stateDisplay}${newUserRoleMap[approvingRole]} will be notified of this change.`}

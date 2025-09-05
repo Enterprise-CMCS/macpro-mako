@@ -1,14 +1,14 @@
 import type { Meta, StoryObj } from "@storybook/react-vite";
-import { TEST_REVIEWER_USERNAME } from "mocks";
 import { reactRouterParameters, withRouter } from "storybook-addon-remix-react-router";
 
+import { asCmsReviewer } from "../../../../../.storybook/decorators";
 import { SplitSpaForm } from "./index";
 
 const meta = {
   title: "Form/SplitSpa",
   component: SplitSpaForm,
   render: () => <SplitSpaForm />,
-  decorators: [withRouter],
+  decorators: [withRouter, asCmsReviewer],
   parameters: {
     reactRouter: reactRouterParameters({
       location: {
@@ -18,7 +18,6 @@ const meta = {
         path: "/test/:id/:authority",
       },
     }),
-    username: TEST_REVIEWER_USERNAME,
   },
 } satisfies Meta<typeof SplitSpaForm>;
 
