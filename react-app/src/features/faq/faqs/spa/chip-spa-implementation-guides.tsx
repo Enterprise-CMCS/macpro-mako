@@ -1,7 +1,7 @@
-import { Template } from "./chpRenderSection";
+import { PdfLink, PdfList, Template } from "../utils";
 
-export const CHP_GUIDES: Template[] = [
-  // MAGI Eligibility & Methods
+// MAGI Eligibility & Methods
+export const CHP_MAGI_GUIDES: Template[] = [
   {
     title: "CS 7",
     text: "Eligibility - Targeted Low-Income Children Implementation Guide",
@@ -47,22 +47,28 @@ export const CHP_GUIDES: Template[] = [
     text: "Other Eligibility Criteria - Spenddowns Implementation Guide",
     href: "/chp/IG_CS16_Spenddown.pdf",
   },
+];
 
-  // XXI Medicaid Expansion
+// XXI Medicaid Expansion
+export const CHP_MED_EXPANSION_GUIDES: Template[] = [
   {
     title: "CS 3",
     text: "Eligibility for Medicaid Expansion Program Implementation Guide",
     href: "/chp/IG_CS3_MedicaidExpansion.pdf",
   },
+];
 
-  // Eligibility Processing
+// Eligibility Processing
+export const CHP_ELIGIBILITY_GUIDES: Template[] = [
   {
     title: "CS 24",
     text: "General Eligibility - Eligibility Processing Implementation Guide",
     href: "/chp/IG_CS24_EligibilityProcessing.pdf",
   },
+];
 
-  // Non-Financial Eligibility
+// Non-Financial Eligibility
+export const CHP_NON_FIN_GUIDES: Template[] = [
   {
     title: "CS 17",
     text: "Non-Financial Eligibility - Residency Implementation Guide",
@@ -114,3 +120,51 @@ export const CHP_GUIDES: Template[] = [
     href: "/chp/IG_CS31_IncarceratedCHIPBeneficiaries.pdf",
   },
 ];
+
+export const ChipSpaImplementationGuides = () => (
+  <div>
+    <section className="space-y-2">
+      <p>CHIP eligibility SPA implementation guides can be downloaded at the links below.</p>
+      <ul className="list-disc pl-6" role="list">
+        <li>
+          <PdfLink
+            href="/chp/IG_ChipEligibilityIntroduction.pdf"
+            label="template"
+            title="CHIP Eligibility Introduction"
+            className=""
+          />
+        </li>
+      </ul>
+      <ul className="pl-6 space-y-2" role="list">
+        <li className="space-y-2">
+          <p>MAGI Eligibility & Methods</p>
+          <PdfList list={CHP_MAGI_GUIDES} label="template" ulClassName="list-disc pl-6 space-y-2" />
+        </li>
+        <li className="space-y-2">
+          <p>XXI Medicaid Expansion</p>
+          <PdfList
+            list={CHP_MED_EXPANSION_GUIDES}
+            label="template"
+            ulClassName="list-disc pl-6 space-y-2"
+          />
+        </li>
+        <li className="space-y-2">
+          <p>Eligibility Processing</p>
+          <PdfList
+            list={CHP_ELIGIBILITY_GUIDES}
+            label="template"
+            ulClassName="list-disc pl-6 space-y-2"
+          />
+        </li>
+        <li className="space-y-2">
+          <p>Non-Financial Eligibility</p>
+          <PdfList
+            list={CHP_NON_FIN_GUIDES}
+            label="template"
+            ulClassName="list-disc pl-6 space-y-2"
+          />
+        </li>
+      </ul>
+    </section>
+  </div>
+);

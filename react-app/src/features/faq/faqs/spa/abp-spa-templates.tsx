@@ -1,4 +1,4 @@
-import { Template } from "./chpRenderSection";
+import { PdfList, Template } from "../utils";
 
 export const ABP_TEMPLATES: Template[] = [
   {
@@ -80,3 +80,14 @@ export const ABP_TEMPLATES: Template[] = [
     href: "/abp/ABP11.pdf",
   },
 ];
+
+export const AbpSpaTemplates = () => (
+  <section className="space-y-2">
+    <p>
+      Medicaid Alternative Benefit Plan (ABP) SPA templates can be downloaded at the links below.
+      After downloading and completing the templates you need, upload them as part of the SPA
+      submission. The template PDFs can only be opened using Adobe Reader or Acrobat.
+    </p>
+    <PdfList list={ABP_TEMPLATES} label="template" />
+  </section>
+);

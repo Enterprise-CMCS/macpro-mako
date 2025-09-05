@@ -1,4 +1,4 @@
-import { Template } from "./chpRenderSection";
+import { PdfList, Template } from "../utils";
 
 export const MPC_GUIDES: Template[] = [
   {
@@ -35,3 +35,13 @@ export const MPC_GUIDES: Template[] = [
     href: "/mpc/IG_G3_CostSharingLimitations.pdf",
   },
 ];
+
+export const MpcSpaImplementationGuides = () => (
+  <section className="space-y-2">
+    <p>
+      Medicaid Premiums and Cost Sharing SPA implementation guides can be downloaded at the links
+      below.
+    </p>
+    <PdfList list={MPC_GUIDES} label="template" />
+  </section>
+);
