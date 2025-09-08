@@ -364,7 +364,7 @@ const oneMacSeatoolStatusCheck = async (seatoolRecord: Document) => {
     const raiDate = seatool.getRaiDate(seatoolRecord);
     // Only proceed if we have events and a RAI requested date
     if (raiResponseEvents?.length && raiDate.raiRequestedDate) {
-      const eventDate = normalizeToDate(raiResponseEvents[0]._source.timestamp);
+      const eventDate = normalizeToDate(raiResponseEvents.at(-1)!._source.timestamp);
       const requestedDate = normalizeToDate(raiDate.raiRequestedDate);
       // Set status to submitted if our dates line up
       if (!isBefore(eventDate, requestedDate)) {
