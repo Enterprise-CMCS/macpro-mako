@@ -8,7 +8,10 @@ import { DatePickerProps } from "shared-types";
 import { Button, Calendar, Popover, PopoverContent, PopoverTrigger } from "@/components";
 import { cn } from "@/utils";
 
-export const DatePicker = ({ date, onChange, dataTestId }: DatePickerProps) => {
+export const DatePicker = React.forwardRef<
+  React.ElementRef<typeof PopoverContent> & DatePickerProps,
+  React.ComponentPropsWithoutRef<typeof PopoverContent> & DatePickerProps
+>(({ date, onChange, dataTestId, ...props }, ref) => {
   const [isCalendarOpen, setIsCalendarOpen] = React.useState<boolean>(false);
   const [selected, setSelected] = React.useState<Date>();
   return (
@@ -26,7 +29,7 @@ export const DatePicker = ({ date, onChange, dataTestId }: DatePickerProps) => {
           {date ? format(date, "MM/dd/yyyy") : <span>Pick a date</span>}
         </Button>
       </PopoverTrigger>
-      <PopoverContent className="w-auto p-0">
+      <PopoverContent ref={ref} className="w-auto p-0" {...props}>
         <Calendar
           mode="single"
           selected={selected}
@@ -41,4 +44,4 @@ export const DatePicker = ({ date, onChange, dataTestId }: DatePickerProps) => {
       </PopoverContent>
     </Popover>
   );
-};
+});
