@@ -3,7 +3,8 @@ import { Button, CheckboxGroup } from "@/components";
 type Props = {
   value: string[];
   onChange: (val: string[]) => void;
-  options: { label: string; value: string }[];
+  options: { label: string; value: string; id: string }[];
+  legend?: string;
 };
 
 export const FilterableMultiCheck = (props: Props) => {

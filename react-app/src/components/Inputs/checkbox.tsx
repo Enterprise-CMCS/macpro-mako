@@ -4,10 +4,12 @@ import * as React from "react";
 import { DependencyWrapperProps } from "shared-types";
 
 import { cn } from "@/utils";
-const Checkbox = React.forwardRef<
+
+const CheckboxComponent = React.forwardRef<
   React.ElementRef<typeof CheckboxPrimitive.Root>,
   React.ComponentPropsWithoutRef<typeof CheckboxPrimitive.Root> &
     DependencyWrapperProps & {
+      id: string;
       className?: string;
       label?: string;
       value?: string;
@@ -20,7 +22,8 @@ const Checkbox = React.forwardRef<
     <div className="items-top flex space-x-2">
       <CheckboxPrimitive.Root
         ref={ref}
-        id={(props.label || props.styledLabel) as string}
+        id={props.id}
+        aria-describedby={props.description ? `${props.id}-description` : undefined}
         className={cn(
           "peer h-7 w-7 my-2 shrink-0 rounded-sm border-black border-2 ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 data-[state=checked]:bg-primary data-[state=checked]:border-primary data-[state=checked]:text-primary-foreground",
           className,
@@ -34,7 +37,7 @@ const Checkbox = React.forwardRef<
       <div className="grid gap-1.5 leading-none">
         {!!(props.label || props.styledLabel) && (
           <label
-            htmlFor={(props.label || props.styledLabel) as string}
+            htmlFor={props.id}
             className={cn(
               "mt-2.5 text-md font-normal leading-normal peer-disabled:cursor-not-allowed peer-disabled:opacity-70",
               props.optionlabelClassName,
@@ -44,26 +47,33 @@ const Checkbox = React.forwardRef<
           </label>
         )}
         {!!props.description && (
-          <p className="text-sm text-muted-foreground">{props.description}</p>
+          <p id={`${props.id}-description`} className="text-sm text-muted-foreground">
+            {props.description}
+          </p>
         )}
       </div>
     </div>
   );
 });
-Checkbox.displayName = CheckboxPrimitive.Root.displayName;
+
+CheckboxComponent.displayName = CheckboxPrimitive.Root.displayName;
+export const Checkbox = CheckboxComponent;
 
 type CheckboxGroupProps = {
   value: string[];
   onChange: (value: string[]) => void;
-  options: { label: string; value: string }[];
+  options: { label: string; value: string; id: string }[];
+  legend?: string;
 };
 
 export const CheckboxGroup = (props: CheckboxGroupProps) => {
   return (
-    <div className="flex flex-col gap-2">
+    <fieldset className="flex flex-col gap-2">
+      {props.legend && <legend className="text-md font-semibold mb-2">{props.legend}</legend>}
       {props.options.map((OPT) => (
         <Checkbox
           key={`CHECK-${OPT.value}`}
+          id={OPT.id}
           label={OPT.label}
           checked={props.value.includes(OPT.value)}
           onCheckedChange={(c) => {
@@ -73,8 +83,6 @@ export const CheckboxGroup = (props: CheckboxGroupProps) => {
           }}
         />
       ))}
-    </div>
+    </fieldset>
   );
 };
-
-export { Checkbox };

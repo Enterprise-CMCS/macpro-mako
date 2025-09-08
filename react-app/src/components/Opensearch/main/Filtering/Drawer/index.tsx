@@ -73,6 +73,7 @@ export const OsFilterDrawer = () => {
                     value={filterDrawerHook.filters[filter.field]?.value as string[]}
                     onChange={filterDrawerHook.onFilterChange(filter.field)}
                     options={filterDrawerHook.aggs?.[filter.field]}
+                    legend={filter.label}
                   />
                 )}
                 {filter.component === "dateRange" && (
