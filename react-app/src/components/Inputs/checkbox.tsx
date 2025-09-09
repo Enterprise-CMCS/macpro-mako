@@ -67,22 +67,36 @@ type CheckboxGroupProps = {
 };
 
 export const CheckboxGroup = (props: CheckboxGroupProps) => {
+  const [srMessage, setSrMessage] = React.useState("");
+
   return (
-    <fieldset className="flex flex-col gap-2">
-      {props.legend && <legend className="text-md font-semibold mb-2">{props.legend}</legend>}
-      {props.options.map((OPT) => (
-        <Checkbox
-          key={`CHECK-${OPT.value}`}
-          id={OPT.id}
-          label={OPT.label}
-          checked={props.value.includes(OPT.value)}
-          onCheckedChange={(c) => {
-            const filtered = props.value.filter((f) => f !== OPT.value);
-            if (!c) return props.onChange(filtered);
-            props.onChange([...filtered, OPT.value]);
-          }}
-        />
-      ))}
-    </fieldset>
+    <>
+      <div aria-live="assertive" role="status" className="sr-only">
+        {srMessage}
+      </div>
+      <fieldset className="flex flex-col gap-2">
+        {props.legend && <legend className="text-md font-semibold mb-2">{props.legend}</legend>}
+        {props.options.map((OPT) => (
+          <Checkbox
+            key={OPT.id}
+            id={OPT.id}
+            label={OPT.label}
+            checked={props.value.includes(OPT.value)}
+            onCheckedChange={(c) => {
+              const filtered = props.value.filter((f) => f !== OPT.value);
+
+              if (!c) {
+                setSrMessage(`${OPT.label}. unchecked, checkbox`);
+                return props.onChange(filtered);
+              }
+
+              setSrMessage(`${OPT.label}, checked, checkbox`);
+              props.onChange([...filtered, OPT.value]);
+            }}
+            aria-live="off"
+          />
+        ))}
+      </fieldset>
+    </>
   );
 };

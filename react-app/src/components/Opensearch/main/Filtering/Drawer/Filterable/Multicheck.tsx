@@ -1,6 +1,7 @@
 import { Button, CheckboxGroup } from "@/components";
 
 type Props = {
+  label: string;
   value: string[];
   onChange: (val: string[]) => void;
   options: { label: string; value: string; id: string }[];
@@ -19,10 +20,15 @@ export const FilterableMultiCheck = (props: Props) => {
   return (
     <>
       <div className="flex gap-2 my-2">
-        <Button size="sm" onClick={onSelectAll}>
+        <Button size="sm" onClick={onSelectAll} aria-label={`Select all ${props.label} options`}>
           Select All
         </Button>
-        <Button size="sm" variant="outline" onClick={onClear}>
+        <Button
+          size="sm"
+          variant="outline"
+          onClick={onClear}
+          aria-label={`Clear all ${props.label} options`}
+        >
           Clear
         </Button>
       </div>

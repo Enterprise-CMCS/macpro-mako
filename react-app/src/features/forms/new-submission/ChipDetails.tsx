@@ -120,7 +120,7 @@ export const ChipDetailsForm = () => {
                               field.onChange(updated);
                             }}
                           >
-                            <Checkbox checked={isSelected} />
+                            <Checkbox id={option.replaceAll(" ", "")} checked={isSelected} />
                             <span>{option}</span>
                           </div>
                         );
