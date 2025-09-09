@@ -34,4 +34,4 @@ jobs:
 
       - name: Run tests
         working-directory: react-app
-        run: CI=true bun run test-storybook
+        run: bun run test-storybook

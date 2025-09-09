@@ -20,8 +20,8 @@ export default mergeConfig(
       setupFiles: "./.storybook/vitest.setup.ts",
       reporters: ["default", "html", "json", "github-actions"],
       outputFile: {
-        html: "./accessibility/html-report.html",
-        json: "./accessibility/json-report.json",
+        html: "../accessibility/html-report/index.html",
+        json: "../accessibility/json-report.json",
       },
     },
   }),

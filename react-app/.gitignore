@@ -9,7 +9,6 @@ lerna-debug.log*
 bun-debug.log*
 bun-error.log*
 
-accessibility
 node_modules
 dist
 dist-ssr
