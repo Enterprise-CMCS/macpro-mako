@@ -18,6 +18,11 @@ export default mergeConfig(
     ],
     test: {
       setupFiles: "./.storybook/vitest.setup.ts",
+      reporters: process.env.CI ? ["default", "html", "json", "github-actions"] : ["default"],
+      outputFile: {
+        html: "./accessibility/html-report.html",
+        json: "./accessibility/json-report.json",
+      },
     },
   }),
 );
