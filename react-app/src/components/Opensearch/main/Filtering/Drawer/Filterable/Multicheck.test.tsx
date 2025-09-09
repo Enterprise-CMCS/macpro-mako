@@ -18,8 +18,8 @@ describe("FilterableMultiCheck", () => {
 
   it("should display all options unchecked if value is empty", () => {
     render(<FilterableMultiCheck label="Label" value={[]} onChange={onChange} options={options} />);
-    expect(screen.getByRole("button", { name: "Select All" })).toBeInTheDocument();
-    expect(screen.getByRole("button", { name: "Clear" })).toBeInTheDocument();
+    expect(screen.getByRole("button", { name: "Select all Label options" })).toBeInTheDocument();
+    expect(screen.getByRole("button", { name: "Clear all Label options" })).toBeInTheDocument();
     expect(screen.getByLabelText("Apple")).toBeInTheDocument();
     expect(screen.getByLabelText("Apple").getAttribute("data-state")).toEqual("unchecked");
     expect(screen.getByLabelText("Banana")).toBeInTheDocument();
@@ -37,8 +37,8 @@ describe("FilterableMultiCheck", () => {
         options={options}
       />,
     );
-    expect(screen.getByRole("button", { name: "Select All" })).toBeInTheDocument();
-    expect(screen.getByRole("button", { name: "Clear" })).toBeInTheDocument();
+    expect(screen.getByRole("button", { name: "Select all Label options" })).toBeInTheDocument();
+    expect(screen.getByRole("button", { name: "Clear all Label options" })).toBeInTheDocument();
     expect(screen.getByLabelText("Apple")).toBeInTheDocument();
     expect(screen.getByLabelText("Apple").getAttribute("data-state")).toEqual("checked");
     expect(screen.getByLabelText("Banana")).toBeInTheDocument();
@@ -50,7 +50,7 @@ describe("FilterableMultiCheck", () => {
   it("should handle clicking Select All", async () => {
     const user = userEvent.setup();
     render(<FilterableMultiCheck label="label" value={[]} onChange={onChange} options={options} />);
-    await user.click(screen.getByRole("button", { name: "Select All" }));
+    await user.click(screen.getByRole("button", { name: "Select all label options" }));
     expect(onChange).toHaveBeenCalledWith(["apple", "banana", "clementine"]);
   });
 
@@ -64,7 +64,7 @@ describe("FilterableMultiCheck", () => {
         options={options}
       />,
     );
-    await user.click(screen.getByRole("button", { name: "Clear" }));
+    await user.click(screen.getByRole("button", { name: "Clear all label options" }));
     expect(onChange).toHaveBeenCalledWith([]);
   });
 });
