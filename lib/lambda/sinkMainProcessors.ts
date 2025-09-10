@@ -1,3 +1,4 @@
+import { UTCDate } from "@date-fns/utc";
 import { isBefore } from "date-fns";
 import { bulkUpdateDataWrapper, ErrorType, getItems, logError } from "libs";
 import { getPackage, getPackageChangelog } from "libs/api/package";
@@ -313,13 +314,6 @@ export const insertOneMacRecordsFromKafkaIntoMako = async (
   await bulkUpdateDataWrapper(roleRequests, "roles");
 };
 
-// Seatool sets their days to a fixed time so we just round it to the day.
-function normalizeToDate(timestamp: string | number | Date): number {
-  const date = new Date(timestamp);
-  date.setHours(0, 0, 0, 0);
-  return date.getTime();
-}
-
 const getMakoDocTimestamps = async (kafkaRecords: KafkaRecord[]) => {
   const kafkaIds = kafkaRecords.map((record) =>
     removeDoubleQuotesSurroundingString(decodeBase64WithUtf8(record.key)),
@@ -364,8 +358,8 @@ const oneMacSeatoolStatusCheck = async (seatoolRecord: Document) => {
     const raiDate = seatool.getRaiDate(seatoolRecord);
     // Only proceed if we have events and a RAI requested date
     if (raiResponseEvents?.length && raiDate.raiRequestedDate) {
-      const eventDate = normalizeToDate(raiResponseEvents[0]._source.timestamp);
-      const requestedDate = normalizeToDate(raiDate.raiRequestedDate);
+      const eventDate = new UTCDate(raiResponseEvents[0]._source.timestamp);
+      const requestedDate = new UTCDate(raiDate.raiRequestedDate);
       // Set status to submitted if our dates line up
       if (!isBefore(eventDate, requestedDate)) {
         return SeatoolSpwStatusEnum.Submitted;
