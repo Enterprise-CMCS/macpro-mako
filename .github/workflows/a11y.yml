@@ -1,22 +1,47 @@
 name: Accessibility Tests
 
 on:
-  pull_request:
   push:
     branches:
-      - main
+      - "*"
+      - "!skipci"
   schedule:
     - cron: "30 01 * * *"
   workflow_dispatch:
 
+permissions:
+  id-token: write
+  contents: write
+  actions: read
+
 jobs:
   test:
     runs-on: ubuntu-latest
-    # container:
-    #   # Make sure to grab the latest version of the Playwright image
-    #   # https://playwright.dev/docs/docker#pull-the-image
-    #   image: mcr.microsoft.com/playwright:v1.54.0-noble
+    env:
+      JSON_ARTIFACT_ID: json-accessibility-report
+      HTML_ARTIFACT_ID: html-accessibility-report
+    outputs:
+      json_artifact_id: ${{ env.JSON_ARTIFACT_ID }}
+      json_deploy_to: _data/${{ steps.variables.outputs.report_path }}
+      html_artifact_id: ${{ env.HTML_ARTIFACT_ID }}
+      html_deploy_to: ${{ steps.variables.outputs.report_path }}${{ steps.variables.outputs.report_name }}/
+      commit_msg: ${{ steps.variables.outputs.commit_msg }}
+      output_url: ${{ steps.variables.outputs.report_path }}${{ steps.variables.outputs.report_name }}/
+      actualResult: ${{ steps.accessibility-test.conclusion }}
     steps:
+      - name: Set Report Path and Name
+        id: variables
+        run: |
+          if [[ ${{ github.ref_name }} == 'main' ]]; then
+            echo "report_path=storybook-reports/" >> "$GITHUB_OUTPUT"
+            echo "report_name=main" >> "$GITHUB_OUTPUT"
+            echo "commit_msg=update Storybook report for main" >> "$GITHUB_OUTPUT"
+          else
+            echo "report_path=storybook-reports/branches/${{ github.ref_name }}/" >> "$GITHUB_OUTPUT"
+            echo "report_name=${{ github.run_id }}" >> "$GITHUB_OUTPUT"
+            echo "commit_msg=add Storybook report for branch ${{ github.ref_name }}, run-id ${{ github.run_id }}" >> "$GITHUB_OUTPUT"
+          fi
+
       - name: Checkout
         uses: actions/checkout@v4
       - uses: ./.github/actions/setup
@@ -33,5 +58,44 @@ jobs:
         run: bun run build
 
       - name: Run tests
+        id: accessibility-test
         working-directory: react-app
         run: bun run test-storybook
+
+      - name: Rename Reports
+        if: ${{ !cancelled() }}
+        working-directory: accessibility/
+        run: |
+          mv json-report.json ${{ steps.variables.outputs.report_name }}.json
+          mv html-report ${{ steps.variables.outputs.report_name }}
+
+      - name: Upload JSON Report
+        uses: actions/upload-artifact@v4
+        id: upload-json
+        if: ${{ !cancelled() }}
+        with:
+          name: ${{ env.JSON_ARTIFACT_ID }}
+          path: accessibility/${{ steps.variables.outputs.report_name }}.json
+          retention-days: 30
+
+      - name: Upload HTML Report
+        uses: actions/upload-artifact@v4
+        id: upload-html
+        if: ${{ !cancelled() }}
+        with:
+          name: ${{ env.HTML_ARTIFACT_ID }}
+          path: accessibility/${{ steps.variables.outputs.report_name }}
+          retention-days: 30
+
+  publish:
+    needs: [test]
+    uses: ./.github/workflows/push-to-gh-pages.yml
+    if: ${{ github.ref != 'refs/heads/production' }} && ${{ github.ref != 'refs/heads/val' }}
+    with:
+      FILE_1_ARTIFACT_ID: ${{ needs.test.outputs.json_artifact_id }}
+      FILE_1_DEPLOY_TO: ${{ needs.test.outputs.json_deploy_to }}
+      FILE_2_ARTIFACT_ID: ${{ needs.test.outputs.html_artifact_id }}
+      FILE_2_DEPLOY_TO: ${{ needs.test.outputs.html_deploy_to }}
+      COMMIT_MSG: ${{ needs.test.outputs.commit_msg }}
+      URL_PATH: ${{ needs.test.outputs.output_url }}
+    secrets: inherit # pragma: allowlist secret

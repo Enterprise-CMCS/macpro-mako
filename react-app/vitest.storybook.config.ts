@@ -19,19 +19,7 @@ export default mergeConfig(
     test: {
       setupFiles: "./.storybook/vitest.setup.ts",
       reporters: process.env.GITHUB_ACTIONS
-        ? [
-            "default",
-            "html",
-            "json",
-            [
-              "github-actions",
-              {
-                onWritePath(path: string) {
-                  return path.replace(/^\/app\//, `${process.env.GITHUB_WORKSPACE}/`);
-                },
-              },
-            ],
-          ]
+        ? ["default", "html", "json", "github-actions"]
         : ["default", "html", "json"],
       outputFile: {
         html: "../accessibility/html-report/index.html",

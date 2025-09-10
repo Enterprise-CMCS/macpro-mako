@@ -1,5 +1,5 @@
 import { UTCDate } from "@date-fns/utc";
-import { isBefore } from "date-fns";
+import { isAfter, isBefore, isEqual, startOfDay } from "date-fns";
 import { bulkUpdateDataWrapper, ErrorType, getItems, logError } from "libs";
 import { getPackage, getPackageChangelog } from "libs/api/package";
 import {
@@ -355,13 +355,18 @@ const oneMacSeatoolStatusCheck = async (seatoolRecord: Document) => {
     const raiResponseEvents = changelogs.hits.hits.filter(
       (event) => event._source.event === "respond-to-rai",
     );
+    const mostRecentRaiResponse = raiResponseEvents?.at(-1);
+
     const raiDate = seatool.getRaiDate(seatoolRecord);
     // Only proceed if we have events and a RAI requested date
-    if (raiResponseEvents?.length && raiDate.raiRequestedDate) {
-      const eventDate = new UTCDate(raiResponseEvents[0]._source.timestamp);
-      const requestedDate = new UTCDate(raiDate.raiRequestedDate);
-      // Set status to submitted if our dates line up
-      if (!isBefore(eventDate, requestedDate)) {
+    if (mostRecentRaiResponse && raiDate.raiRequestedDate) {
+      const eventDate = startOfDay(new UTCDate(mostRecentRaiResponse._source.timestamp));
+      const requestedDate = startOfDay(new UTCDate(raiDate.raiRequestedDate));
+      // When a note is added or save to a RAI request, it presents as a new RAI request,
+      // even if the RAI response has already been submitted and is pending review.
+      // We don't want to change the OneMAC status to Pending RAI though because it has
+      // already been responded to, so we will leave the status as Submitted.
+      if (isEqual(eventDate, requestedDate) || isAfter(eventDate, requestedDate)) {
         return SeatoolSpwStatusEnum.Submitted;
       }
     }
