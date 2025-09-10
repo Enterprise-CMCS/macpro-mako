@@ -5,9 +5,15 @@ on:
     branches:
       - "*"
       - "!skipci"
+      - "!snyk"
+      - "!snyk-*"
   schedule:
     - cron: "30 01 * * *"
   workflow_dispatch:
+
+concurrency:
+  group: ${{ github.ref_name }}-accessibility
+  cancel-in-progress: true
 
 permissions:
   id-token: write
