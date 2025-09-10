@@ -1763,7 +1763,7 @@ describe("insertNewSeatoolRecordsFromKafkaIntoMako", () => {
             RAI: [
               {
                 RAI_RECEIVED_DATE: null,
-                RAI_REQUESTED_DATE: 1675123200000,
+                RAI_REQUESTED_DATE: 1674518400000, // Jan 24, 2023
                 RAI_WITHDRAWN_DATE: null,
               },
             ],
@@ -1794,7 +1794,7 @@ describe("insertNewSeatoolRecordsFromKafkaIntoMako", () => {
         leadAnalystOfficerId: 67890,
         locked: false,
         proposedDate: null,
-        raiRequestedDate: "2023-01-31T00:00:00.000Z",
+        raiRequestedDate: "2023-01-24T00:00:00.000Z",
         raiWithdrawEnabled: undefined,
         raiWithdrawnDate: null,
         raiReceivedDate: null,
