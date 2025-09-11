@@ -1,4 +1,5 @@
-import { isBefore } from "date-fns";
+import { UTCDate } from "@date-fns/utc";
+import { isAfter, isBefore } from "date-fns";
 import { bulkUpdateDataWrapper, ErrorType, getItems, logError } from "libs";
 import { getPackage, getPackageChangelog } from "libs/api/package";
 import {
@@ -313,23 +314,22 @@ export const insertOneMacRecordsFromKafkaIntoMako = async (
   await bulkUpdateDataWrapper(roleRequests, "roles");
 };
 
-// Seatool sets their days to a fixed time so we just round it to the day.
-function normalizeToDate(timestamp: string | number | Date): number {
-  const date = new Date(timestamp);
-  date.setHours(0, 0, 0, 0);
-  return date.getTime();
-}
-
 const getMakoDocTimestamps = async (kafkaRecords: KafkaRecord[]) => {
   const kafkaIds = kafkaRecords.map((record) =>
     removeDoubleQuotesSurroundingString(decodeBase64WithUtf8(record.key)),
   );
   const openSearchRecords = await getItems(kafkaIds);
 
-  return openSearchRecords.reduce<Map<string, number>>((map, item) => {
-    if (item?.changedDate) {
-      map.set(item.id, new Date(item.changedDate).getTime());
-    }
+  return openSearchRecords.reduce<
+    Map<string, { changedDate?: number; raiReceivedDate?: number; raiWithdrawnDate?: number }>
+  >((map, item) => {
+    map.set(item.id, {
+      changedDate: item.changedDate ? new Date(item.changedDate).getTime() : undefined,
+      raiReceivedDate: item.raiReceivedDate ? new Date(item.raiReceivedDate).getTime() : undefined,
+      raiWithdrawnDate: item.raiWithdrawnDate
+        ? new Date(item.raiWithdrawnDate).getTime()
+        : undefined,
+    });
 
     return map;
   }, new Map());
@@ -361,13 +361,18 @@ const oneMacSeatoolStatusCheck = async (seatoolRecord: Document) => {
     const raiResponseEvents = changelogs.hits.hits.filter(
       (event) => event._source.event === "respond-to-rai",
     );
+    const mostRecentRaiResponse = raiResponseEvents?.at(-1);
+
     const raiDate = seatool.getRaiDate(seatoolRecord);
     // Only proceed if we have events and a RAI requested date
-    if (raiResponseEvents?.length && raiDate.raiRequestedDate) {
-      const eventDate = normalizeToDate(raiResponseEvents[0]._source.timestamp);
-      const requestedDate = normalizeToDate(raiDate.raiRequestedDate);
-      // Set status to submitted if our dates line up
-      if (!isBefore(eventDate, requestedDate)) {
+    if (mostRecentRaiResponse && raiDate.raiRequestedDate) {
+      const eventDate = new UTCDate(mostRecentRaiResponse._source.timestamp);
+      const requestedDate = new UTCDate(raiDate.raiRequestedDate);
+      // When a note is added or save to a RAI request, it presents as a new RAI request,
+      // even if the RAI response has already been submitted and is pending review.
+      // We don't want to change the OneMAC status to Pending RAI though because it has
+      // already been responded to, so we will leave the status as Submitted.
+      if (isAfter(eventDate, requestedDate)) {
         return SeatoolSpwStatusEnum.Submitted;
       }
     }
@@ -460,20 +465,50 @@ export const insertNewSeatoolRecordsFromKafkaIntoMako = async (
       }
 
       const { data: seatoolDocument } = safeSeatoolRecord;
-      const makoDocumentTimestamp = makoDocTimestamps.get(seatoolDocument.id);
+      const makoDocumentTimestamps = makoDocTimestamps.get(seatoolDocument.id);
+      console.log({ makoDocTimestamps });
+      console.log("original", JSON.stringify(seatoolDocument, null, 2));
 
       if (
         seatoolDocument.changed_date &&
-        makoDocumentTimestamp &&
-        isBefore(seatoolDocument.changed_date, makoDocumentTimestamp)
+        makoDocumentTimestamps &&
+        makoDocumentTimestamps?.changedDate &&
+        isBefore(seatoolDocument.changed_date, makoDocumentTimestamps.changedDate)
       ) {
         console.warn(
-          `id: ${seatoolDocument.id} mako: ${makoDocumentTimestamp} seatool: ${seatoolDocument.changed_date} ${seatoolDocument.cmsStatus}`,
+          `id: ${seatoolDocument.id} mako: ${makoDocumentTimestamps.changedDate} seatool: ${seatoolDocument.changed_date} ${seatoolDocument.cmsStatus}`,
         );
         console.warn("SKIPPED DUE TO OUT-OF-DATE INFORMATION");
         continue;
       }
 
+      // Overwrite the RAI received date with the OneMAC value,
+      // unless the RAI received date in SEA Tool is undefined
+      // which indicates that a new RAI has been requested
+      // and the OneMAC RAI received date should be reset to undefined
+      if (
+        seatoolDocument.raiReceivedDate !== undefined &&
+        makoDocumentTimestamps?.raiReceivedDate
+      ) {
+        seatoolDocument.raiReceivedDate = new Date(
+          makoDocumentTimestamps.raiReceivedDate,
+        ).toISOString();
+      }
+
+      // Overwrite the RAI withdrawn date with the OneMAC value,
+      // unless the RAI withdrawn date in SEA Tool is undefined
+      // which indicates that a new RAI has been requested
+      // and the OneMAC RAI withdrawn date should be reset to undefined
+      if (
+        seatoolDocument.raiWithdrawnDate !== undefined &&
+        makoDocumentTimestamps?.raiWithdrawnDate
+      ) {
+        seatoolDocument.raiWithdrawnDate = new Date(
+          makoDocumentTimestamps.raiWithdrawnDate,
+        ).toISOString();
+      }
+
+      console.log("updated", JSON.stringify(seatoolDocument, null, 2));
       if (seatoolDocument.authority && seatoolDocument.seatoolStatus !== "Unknown") {
         seatoolRecordsForMako.push(seatoolDocument);
       }
