@@ -1,4 +1,4 @@
-import type { FC } from "react";
+import { type FC, useState } from "react";
 import { opensearch } from "shared-types";
 
 import * as UI from "@/components";
@@ -16,77 +16,90 @@ export const OsTable: FC<{
   const context = useOsContext();
   const url = useOsUrl();
   const onlyID = props.columns.filter((c) => c.hidden === false).length <= 2;
+  const [sortAnnouncement, setSortAnnouncement] = useState("");
+
+  const handleSort = (TH: OsTableColumn) => {
+    if (!TH.field) return;
+
+    const newOrder = url.state.sort.order === "desc" ? "asc" : "desc";
+    url.onSet((s) => ({
+      ...s,
+      sort: {
+        field: TH.field as opensearch.main.Field,
+        order: newOrder,
+      },
+    }));
+
+    const direction = newOrder === "desc" ? "descending" : "ascending";
+    setSortAnnouncement(`Sorted by ${TH.label}, ${direction}`);
+  };
 
   return (
-    <UI.Table className="overflow-scroll w-full" data-testid="os-table">
-      <UI.TableHeader className="sticky top-0 bg-white">
-        <UI.TableRow>
-          {props.columns.map((TH) => {
-            if (TH.hidden) return null;
-            return (
-              <UI.TableHead
-                {...(!!TH.props && TH.props)}
-                key={`TH-${TH.field}`}
-                isActive={url.state.sort?.field === TH.field}
-                className={cn({ "w-full": onlyID && TH.field === "id.keyword" })}
-                desc={url.state.sort?.order === "desc"}
-                {...(TH.isSystem && { className: "pointer-events-none" })}
-                onClick={() => {
-                  if (!TH.field) return;
-                  url.onSet((s) => ({
-                    ...s,
-                    sort: {
-                      field: TH.field as opensearch.main.Field,
-                      order: s.sort.order === "desc" ? "asc" : "desc",
-                    },
-                  }));
-                }}
-              >
-                {TH.label}
-              </UI.TableHead>
-            );
-          })}
-        </UI.TableRow>
-      </UI.TableHeader>
-      <UI.TableBody>
-        {/* TODO: Add a skeleton loader after discussing with HCD.
-        See https://qmacbis.atlassian.net/browse/OY2-25623 */}
-        {!context.data && (
+    <>
+      <div className="sr-only" aria-live="polite" aria-atomic="true">
+        {sortAnnouncement}
+      </div>
+      <UI.Table className="overflow-scroll w-full" data-testid="os-table">
+        <UI.TableHeader className="sticky top-0 bg-white">
           <UI.TableRow>
-            <UI.TableCell>
-              <LoadingSpinner />
-            </UI.TableCell>
-          </UI.TableRow>
-        )}
-        {context.data && !context.data.hits.length && (
-          <UI.TableRow className="h-10">
-            <UI.TableCell className="flex pb-14">
-              <p className="font-medium whitespace-nowrap h-[20px]"> </p>
-              <div className="absolute right-[50%] translate-x-[50%] translate-y-[50%] font-medium text-lg text-gray-500">
-                No Results Found
-                <p className="absolute right-[50%] translate-x-[50%] translate-y-[50%] text-sm whitespace-nowrap h-[20px]">
-                  Adjust your search and filter to find what you are looking for.
-                </p>
-              </div>
-            </UI.TableCell>
-          </UI.TableRow>
-        )}
-        {context.data?.hits.map((DAT) => (
-          <UI.TableRow className="max-h-1" key={DAT._source.id}>
-            {props.columns.map((COL) => {
-              if (COL.hidden) return null;
+            {props.columns.map((TH) => {
+              if (TH.hidden) return null;
               return (
-                <UI.TableCell
-                  key={`${COL.field}-${DAT._source.id}`}
-                  className="font-medium whitespace-nowrap"
+                <UI.TableHead
+                  {...(!!TH.props && TH.props)}
+                  key={`TH-${TH.field}`}
+                  isActive={url.state.sort?.field === TH.field}
+                  className={cn({ "w-full": onlyID && TH.field === "id.keyword" })}
+                  desc={url.state.sort?.order === "desc"}
+                  {...(TH.isSystem && { className: "pointer-events-none" })}
+                  onClick={() => handleSort(TH)}
                 >
-                  {COL.cell(DAT._source) ?? BLANK_VALUE}
-                </UI.TableCell>
+                  {TH.label}
+                </UI.TableHead>
               );
             })}
           </UI.TableRow>
-        ))}
-      </UI.TableBody>
-    </UI.Table>
+        </UI.TableHeader>
+        <UI.TableBody>
+          {/* TODO: Add a skeleton loader after discussing with HCD.
+        See https://qmacbis.atlassian.net/browse/OY2-25623 */}
+          {!context.data && (
+            <UI.TableRow>
+              <UI.TableCell>
+                <LoadingSpinner />
+              </UI.TableCell>
+            </UI.TableRow>
+          )}
+          {context.data && !context.data.hits.length && (
+            <UI.TableRow className="h-10">
+              <UI.TableCell className="flex pb-14">
+                <p className="font-medium whitespace-nowrap h-[20px]"> </p>
+                <div className="absolute right-[50%] translate-x-[50%] translate-y-[50%] font-medium text-lg text-gray-500">
+                  No Results Found
+                  <p className="absolute right-[50%] translate-x-[50%] translate-y-[50%] text-sm whitespace-nowrap h-[20px]">
+                    Adjust your search and filter to find what you are looking for.
+                  </p>
+                </div>
+              </UI.TableCell>
+            </UI.TableRow>
+          )}
+          {context.data?.hits.map((DAT) => (
+            <UI.TableRow className="max-h-1" key={DAT._source.id}>
+              {props.columns.map((COL) => {
+                if (COL.hidden) return null;
+                return (
+                  <UI.TableCell
+                    key={`${COL.field}-${DAT._source.id}`}
+                    className="font-medium whitespace-nowrap"
+                  >
+                    {COL.cell(DAT._source) ?? BLANK_VALUE}
+                  </UI.TableCell>
+                );
+              })}
+            </UI.TableRow>
+          ))}
+        </UI.TableBody>
+      </UI.Table>
+    </>
   );
 };
