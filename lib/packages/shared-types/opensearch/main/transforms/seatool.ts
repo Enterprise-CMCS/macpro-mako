@@ -1,5 +1,6 @@
 import { UTCDate } from "@date-fns/utc";
 
+import { SkippableValidationError } from "..";
 import {
   finalDispositionStatuses,
   getStatus,
@@ -10,7 +11,6 @@ import {
   SeatoolOfficer,
   seatoolSchema,
 } from "../../../index";
-import { SkippableValidationError } from "..";
 
 type PendingValidationMetadata = {
   seatoolStatus: string;
@@ -50,10 +50,10 @@ function getLeadAnalyst(eventData: SeaTool) {
 // EDT is -4 hours from UTC and EST is -5 hours from UTC. In order
 // to make this look normal, we need to shift the time to account
 // for the difference in time handling in OneMAC and SEA Tool.
-// Convert the date to ET and set it to 9am.
+// Convert the date to midnight ET instead of midnight UTC.
 export const shiftSeatoolTime = (date: number): string => {
   const utcDate = new UTCDate(date);
-  return new Date(utcDate.getFullYear(), utcDate.getMonth(), utcDate.getDate(), 9).toISOString();
+  return new Date(utcDate.getFullYear(), utcDate.getMonth(), utcDate.getDate()).toISOString();
 };
 
 export const getRaiDate = (data: SeaTool) => {
