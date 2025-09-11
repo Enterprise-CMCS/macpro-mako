@@ -1,4 +1,3 @@
-import { TZDate } from "@date-fns/tz";
 import { UTCDate } from "@date-fns/utc";
 
 import {
@@ -54,7 +53,7 @@ function getLeadAnalyst(eventData: SeaTool) {
 // Convert the date to midnight ET instead of midnight UTC.
 export const shiftSeatoolTime = (date: number): string => {
   const utcDate = new UTCDate(date);
-  return new TZDate(
+  return new Date(
     utcDate.getFullYear(),
     utcDate.getMonth(),
     utcDate.getDate(),
@@ -62,7 +61,6 @@ export const shiftSeatoolTime = (date: number): string => {
     0,
     0,
     0,
-    "America/New_York",
   ).toISOString();
 };
 
