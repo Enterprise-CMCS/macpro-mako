@@ -44,6 +44,18 @@ function getLeadAnalyst(eventData: SeaTool) {
   };
 }
 
+// Dates on SEA Tool are created without a time and stored as an
+// ISO string at midnight UTC. OneMAC dates are displayed at ET
+// which results in the date looking like it is a day off because
+// EDT is -4 hours from UTC and EST is -5 hours from UTC. In order
+// to make this look normal, we need to shift the time to account
+// for the difference in time handling in OneMAC and SEA Tool.
+// Convert the date to ET and set it to 9am.
+export const shiftSeatoolTime = (date: number): string => {
+  const utcDate = new UTCDate(date);
+  return new Date(utcDate.getFullYear(), utcDate.getMonth(), utcDate.getDate(), 9).toISOString();
+};
+
 export const getRaiDate = (data: SeaTool) => {
   let raiReceivedDate: null | string = null;
   let raiRequestedDate: null | string = null;
@@ -64,13 +76,13 @@ export const getRaiDate = (data: SeaTool) => {
     })[data.RAI.length - 1] ?? null;
 
   if (raiDate && raiDate.RAI_RECEIVED_DATE) {
-    raiReceivedDate = new UTCDate(raiDate.RAI_RECEIVED_DATE).toISOString();
+    raiReceivedDate = shiftSeatoolTime(raiDate.RAI_RECEIVED_DATE);
   }
   if (raiDate && raiDate.RAI_REQUESTED_DATE) {
-    raiRequestedDate = new UTCDate(raiDate.RAI_REQUESTED_DATE).toISOString();
+    raiRequestedDate = shiftSeatoolTime(raiDate.RAI_REQUESTED_DATE);
   }
   if (raiDate && raiDate.RAI_WITHDRAWN_DATE) {
-    raiWithdrawnDate = new UTCDate(raiDate.RAI_WITHDRAWN_DATE).toISOString();
+    raiWithdrawnDate = shiftSeatoolTime(raiDate.RAI_WITHDRAWN_DATE);
   }
   return {
     raiReceivedDate,

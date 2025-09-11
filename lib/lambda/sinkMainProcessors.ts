@@ -320,10 +320,16 @@ const getMakoDocTimestamps = async (kafkaRecords: KafkaRecord[]) => {
   );
   const openSearchRecords = await getItems(kafkaIds);
 
-  return openSearchRecords.reduce<Map<string, number>>((map, item) => {
-    if (item?.changedDate) {
-      map.set(item.id, new Date(item.changedDate).getTime());
-    }
+  return openSearchRecords.reduce<
+    Map<string, { changedDate?: number; raiReceivedDate?: number; raiWithdrawnDate?: number }>
+  >((map, item) => {
+    map.set(item.id, {
+      changedDate: item.changedDate ? new Date(item.changedDate).getTime() : undefined,
+      raiReceivedDate: item.raiReceivedDate ? new Date(item.raiReceivedDate).getTime() : undefined,
+      raiWithdrawnDate: item.raiWithdrawnDate
+        ? new Date(item.raiWithdrawnDate).getTime()
+        : undefined,
+    });
 
     return map;
   }, new Map());
@@ -459,18 +465,39 @@ export const insertNewSeatoolRecordsFromKafkaIntoMako = async (
       }
 
       const { data: seatoolDocument } = safeSeatoolRecord;
-      const makoDocumentTimestamp = makoDocTimestamps.get(seatoolDocument.id);
+      const makoDocumentTimestamps = makoDocTimestamps.get(seatoolDocument.id);
 
       if (
         seatoolDocument.changed_date &&
-        makoDocumentTimestamp &&
-        isBefore(seatoolDocument.changed_date, makoDocumentTimestamp)
+        makoDocumentTimestamps &&
+        makoDocumentTimestamps?.changedDate &&
+        isBefore(seatoolDocument.changed_date, makoDocumentTimestamps.changedDate)
       ) {
         console.warn(
-          `id: ${seatoolDocument.id} mako: ${makoDocumentTimestamp} seatool: ${seatoolDocument.changed_date} ${seatoolDocument.cmsStatus}`,
+          `id: ${seatoolDocument.id} mako: ${makoDocumentTimestamps.changedDate} seatool: ${seatoolDocument.changed_date} ${seatoolDocument.cmsStatus}`,
         );
         console.warn("SKIPPED DUE TO OUT-OF-DATE INFORMATION");
         continue;
+      }
+
+      // Overwrite the RAI received date with the OneMAC value,
+      // unless the RAI received date in SEA Tool is undefined
+      // which indicates that a new RAI has been requested
+      // and the OneMAC RAI received date should be reset to undefined
+      if (seatoolDocument.raiReceivedDate && makoDocumentTimestamps?.raiReceivedDate) {
+        seatoolDocument.raiReceivedDate = new Date(
+          makoDocumentTimestamps.raiReceivedDate,
+        ).toISOString();
+      }
+
+      // Overwrite the RAI withdrawn date with the OneMAC value,
+      // unless the RAI withdrawn date in SEA Tool is undefined
+      // which indicates that a new RAI has been requested
+      // and the OneMAC RAI withdrawn date should be reset to undefined
+      if (seatoolDocument.raiWithdrawnDate && makoDocumentTimestamps?.raiWithdrawnDate) {
+        seatoolDocument.raiWithdrawnDate = new Date(
+          makoDocumentTimestamps.raiWithdrawnDate,
+        ).toISOString();
       }
 
       if (seatoolDocument.authority && seatoolDocument.seatoolStatus !== "Unknown") {
