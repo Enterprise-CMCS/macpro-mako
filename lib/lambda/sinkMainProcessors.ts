@@ -467,7 +467,7 @@ export const insertNewSeatoolRecordsFromKafkaIntoMako = async (
       const { data: seatoolDocument } = safeSeatoolRecord;
       const makoDocumentTimestamps = makoDocTimestamps.get(seatoolDocument.id);
       console.log({ makoDocTimestamps });
-      console.log(JSON.stringify(seatoolDocument, null, 2));
+      console.log("original", JSON.stringify(seatoolDocument, null, 2));
 
       if (
         seatoolDocument.changed_date &&
@@ -508,6 +508,7 @@ export const insertNewSeatoolRecordsFromKafkaIntoMako = async (
         ).toISOString();
       }
 
+      console.log("updated", JSON.stringify(seatoolDocument, null, 2));
       if (seatoolDocument.authority && seatoolDocument.seatoolStatus !== "Unknown") {
         seatoolRecordsForMako.push(seatoolDocument);
       }
