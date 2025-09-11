@@ -2,6 +2,7 @@ import LZ from "lz-string";
 import { useMemo } from "react";
 import { LoaderFunctionArgs, redirect, useLoaderData } from "react-router";
 import { UserDetails } from "shared-types";
+import { isUserManagerUser } from "shared-utils";
 
 import { getUserDetails, getUserProfile, OneMacUserProfile } from "@/api";
 import { GroupAndDivision, RoleStatusCard, SubNavHeader, UserInformation } from "@/components";
@@ -21,12 +22,7 @@ export const userProfileLoader = async ({
 
   try {
     const currUserDetails = await getUserDetails();
-    if (
-      !currUserDetails?.role ||
-      !["systemadmin", "statesystemadmin", "cmsroleapprover", "helpdesk"].includes(
-        currUserDetails?.role,
-      )
-    ) {
+    if (!currUserDetails?.role || !isUserManagerUser(currUserDetails)) {
       return redirect("/");
     }
 

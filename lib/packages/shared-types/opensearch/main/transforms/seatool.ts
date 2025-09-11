@@ -1,3 +1,5 @@
+import { UTCDate } from "@date-fns/utc";
+
 import {
   finalDispositionStatuses,
   getStatus,
@@ -8,6 +10,13 @@ import {
   SeatoolOfficer,
   seatoolSchema,
 } from "../../../index";
+import { SkippableValidationError } from "..";
+
+type PendingValidationMetadata = {
+  seatoolStatus: string;
+  hasTitle: boolean;
+  hasDescription: boolean;
+};
 
 function getLeadAnalyst(eventData: SeaTool) {
   let leadAnalystOfficerId: null | number = null;
@@ -55,13 +64,13 @@ export const getRaiDate = (data: SeaTool) => {
     })[data.RAI.length - 1] ?? null;
 
   if (raiDate && raiDate.RAI_RECEIVED_DATE) {
-    raiReceivedDate = new Date(raiDate.RAI_RECEIVED_DATE).toISOString();
+    raiReceivedDate = new UTCDate(raiDate.RAI_RECEIVED_DATE).toISOString();
   }
   if (raiDate && raiDate.RAI_REQUESTED_DATE) {
-    raiRequestedDate = new Date(raiDate.RAI_REQUESTED_DATE).toISOString();
+    raiRequestedDate = new UTCDate(raiDate.RAI_REQUESTED_DATE).toISOString();
   }
   if (raiDate && raiDate.RAI_WITHDRAWN_DATE) {
-    raiWithdrawnDate = new Date(raiDate.RAI_WITHDRAWN_DATE).toISOString();
+    raiWithdrawnDate = new UTCDate(raiDate.RAI_WITHDRAWN_DATE).toISOString();
   }
   return {
     raiReceivedDate,
@@ -123,8 +132,13 @@ export const transform = (id: string) => {
         !data.STATE_PLAN.SUMMARY_MEMO ||
         data.STATE_PLAN.SUMMARY_MEMO.trim() === "")
     ) {
-      throw new Error(
+      throw new SkippableValidationError<PendingValidationMetadata>(
         "Validation failed: Pending status requires both subject and description to be non-empty",
+        {
+          seatoolStatus,
+          hasTitle: !!data.STATE_PLAN.TITLE_NAME,
+          hasDescription: !!data.STATE_PLAN.SUMMARY_MEMO,
+        },
       );
     }
     const authority =

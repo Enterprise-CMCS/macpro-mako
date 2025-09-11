@@ -62,7 +62,7 @@ describe("WithdrawRoleModal", () => {
     expect(screen.getByText(/pending approval/)).toBeInTheDocument();
   });
 
-  it("should render 'Withdraw California state submitter access?' when status is active", () => {
+  it("should render 'Withdraw California State Submitter access?' when status is active", () => {
     render(
       <WithdrawRoleModal
         {...defaultProps}
@@ -77,6 +77,6 @@ describe("WithdrawRoleModal", () => {
         }
       />,
     );
-    expect(screen.getByText("Withdraw California state submitter access?")).toBeInTheDocument();
+    expect(screen.getByText(/Withdraw California State Submitter access?/)).toBeInTheDocument();
   });
 });

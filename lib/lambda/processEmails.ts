@@ -19,6 +19,7 @@ import { decodeBase64WithUtf8, formatActionType, getSecret } from "shared-utils"
 import { retry } from "shared-utils/retry";
 
 import { sendUserRoleEmails } from "./processUserRoleEmails";
+import { adjustTimestamp } from "./utils";
 
 class TemporaryError extends Error {
   constructor(message: string) {
@@ -130,13 +131,36 @@ export const handler: Handler<KafkaEvent> = async (event) => {
 export async function processRecord(kafkaRecord: KafkaRecord, config: ProcessEmailConfig) {
   console.log("processRecord called with kafkaRecord: ", JSON.stringify(kafkaRecord, null, 2));
   const { key, value, timestamp } = kafkaRecord;
+
+  if (typeof key !== "string") {
+    console.log("key is not a string ", JSON.stringify(key, null, 2));
+    throw new Error("Key is not a string");
+  }
+
   const id: string = decodeBase64WithUtf8(key);
+  const safeID = id.replace(/^"|"$/g, "").toUpperCase();
+
+  if (!value) {
+    console.log("Tombstone detected. Doing nothing for this event");
+    return;
+  }
+  const parsedValue = JSON.parse(decodeBase64WithUtf8(value));
+
+  if (parsedValue.eventType === "user-role" || parsedValue.eventType === "legacy-user-role") {
+    try {
+      console.log("Sending user role email...");
+      await sendUserRoleEmails(parsedValue, timestamp, config);
+    } catch (error) {
+      console.error("Error sending user email", error);
+      throw error;
+    }
+    return;
+  }
 
   if (kafkaRecord.topic === "aws.seatool.ksql.onemac.three.agg.State_Plan") {
-    const safeID = id.replace(/^"|"$/g, "").toUpperCase();
     const seatoolRecord: Document = {
       safeID,
-      ...JSON.parse(decodeBase64WithUtf8(value)),
+      ...parsedValue,
     };
     const safeSeatoolRecord = opensearch.main.seatool.transform(safeID).safeParse(seatoolRecord);
 
@@ -192,46 +216,23 @@ export async function processRecord(kafkaRecord: KafkaRecord, config: ProcessEma
     return;
   }
 
-  if (typeof key !== "string") {
-    console.log("key is not a string ", JSON.stringify(key, null, 2));
-    throw new Error("Key is not a string");
-  }
-
-  if (!value) {
-    console.log("Tombstone detected. Doing nothing for this event");
-    return;
-  }
-
-  const record = {
-    timestamp,
-    ...JSON.parse(decodeBase64WithUtf8(value)),
-  };
-  console.log("record: ", JSON.stringify(record, null, 2));
-
-  const valueParsed = JSON.parse(decodeBase64WithUtf8(value));
-  if (valueParsed.eventType === "user-role" || valueParsed.eventType === "legacy-user-role") {
-    try {
-      console.log("Sending user role email...");
-      await sendUserRoleEmails(valueParsed, timestamp, config);
-    } catch (error) {
-      console.error("Error sending user email", error);
-      throw error;
-    }
-    return;
-  }
-
-  if (record.origin !== "mako") {
+  if (parsedValue.origin !== "mako") {
     console.log("Kafka event is not of mako origin. Doing nothing.");
     return;
   }
 
+  const record = {
+    ...parsedValue,
+    timestamp,
+  };
+
   try {
     console.log("Config:", JSON.stringify(config, null, 2));
-    await processAndSendEmails(record, id, config);
+    await processAndSendEmails(record, safeID, config);
   } catch (error) {
     console.error(
       "Error processing record: { record, id, config }",
-      JSON.stringify({ record, id, config }, null, 2),
+      JSON.stringify({ record, safeID, config }, null, 2),
     );
     throw error;
   }
@@ -296,11 +297,15 @@ export async function processAndSendEmails(
 
   const allStateUsersEmails = allStateUsers.map((user) => user.formattedEmailAddress);
   const isChipEligibility = record.authority === "CHIP SPA" && !!item._source?.chipSubmissionType;
-  console.log("mappped to formatted email address for all state users: ", allStateUsers);
+  console.log("mapped to formatted email address for all state users: ", allStateUsers);
+
+  // Adjust timestamp if needed before sending it to the email template
+  const updatedTimestamp = adjustTimestamp(record, item);
 
   const templateVariables = {
     ...record,
     id,
+    timestamp: updatedTimestamp,
     isChipEligibility,
     applicationEndpointUrl: config.applicationEndpointUrl,
     territory,
