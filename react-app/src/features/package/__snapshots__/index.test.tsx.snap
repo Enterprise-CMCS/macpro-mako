@@ -292,13 +292,13 @@ exports[`package details > makes a package 1`] = `
             class="flex flex-col gap-2"
             data-orientation="vertical"
           >
-            <div
+            <fieldset
               class="border-b"
               data-orientation="vertical"
               data-state="open"
             >
-              <h3
-                class="flex"
+              <legend
+                class="flex w-full"
                 data-orientation="vertical"
                 data-state="open"
               >
@@ -356,7 +356,7 @@ exports[`package details > makes a package 1`] = `
                     />
                   </svg>
                 </button>
-              </h3>
+              </legend>
               <div
                 aria-labelledby="radix-:r0:"
                 class="text-sm transition-all p-4"
@@ -395,14 +395,14 @@ exports[`package details > makes a package 1`] = `
                   </div>
                 </div>
               </div>
-            </div>
-            <div
+            </fieldset>
+            <fieldset
               class="border-b"
               data-orientation="vertical"
               data-state="closed"
             >
-              <h3
-                class="flex"
+              <legend
+                class="flex w-full"
                 data-orientation="vertical"
                 data-state="closed"
               >
@@ -460,7 +460,7 @@ exports[`package details > makes a package 1`] = `
                     />
                   </svg>
                 </button>
-              </h3>
+              </legend>
               <div
                 aria-labelledby="radix-:r2:"
                 class="text-sm transition-all p-4"
@@ -471,14 +471,14 @@ exports[`package details > makes a package 1`] = `
                 role="region"
                 style="--radix-accordion-content-height: var(--radix-collapsible-content-height); --radix-accordion-content-width: var(--radix-collapsible-content-width);"
               />
-            </div>
-            <div
+            </fieldset>
+            <fieldset
               class="border-b"
               data-orientation="vertical"
               data-state="closed"
             >
-              <h3
-                class="flex"
+              <legend
+                class="flex w-full"
                 data-orientation="vertical"
                 data-state="closed"
               >
@@ -536,7 +536,7 @@ exports[`package details > makes a package 1`] = `
                     />
                   </svg>
                 </button>
-              </h3>
+              </legend>
               <div
                 aria-labelledby="radix-:r4:"
                 class="text-sm transition-all p-4"
@@ -547,14 +547,14 @@ exports[`package details > makes a package 1`] = `
                 role="region"
                 style="--radix-accordion-content-height: var(--radix-collapsible-content-height); --radix-accordion-content-width: var(--radix-collapsible-content-width);"
               />
-            </div>
-            <div
+            </fieldset>
+            <fieldset
               class="border-b"
               data-orientation="vertical"
               data-state="closed"
             >
-              <h3
-                class="flex"
+              <legend
+                class="flex w-full"
                 data-orientation="vertical"
                 data-state="closed"
               >
@@ -612,7 +612,7 @@ exports[`package details > makes a package 1`] = `
                     />
                   </svg>
                 </button>
-              </h3>
+              </legend>
               <div
                 aria-labelledby="radix-:r6:"
                 class="text-sm transition-all p-4"
@@ -623,14 +623,14 @@ exports[`package details > makes a package 1`] = `
                 role="region"
                 style="--radix-accordion-content-height: var(--radix-collapsible-content-height); --radix-accordion-content-width: var(--radix-collapsible-content-width);"
               />
-            </div>
-            <div
+            </fieldset>
+            <fieldset
               class="border-b"
               data-orientation="vertical"
               data-state="closed"
             >
-              <h3
-                class="flex"
+              <legend
+                class="flex w-full"
                 data-orientation="vertical"
                 data-state="closed"
               >
@@ -688,7 +688,7 @@ exports[`package details > makes a package 1`] = `
                     />
                   </svg>
                 </button>
-              </h3>
+              </legend>
               <div
                 aria-labelledby="radix-:r8:"
                 class="text-sm transition-all p-4"
@@ -699,14 +699,14 @@ exports[`package details > makes a package 1`] = `
                 role="region"
                 style="--radix-accordion-content-height: var(--radix-collapsible-content-height); --radix-accordion-content-width: var(--radix-collapsible-content-width);"
               />
-            </div>
-            <div
+            </fieldset>
+            <fieldset
               class="border-b"
               data-orientation="vertical"
               data-state="closed"
             >
-              <h3
-                class="flex"
+              <legend
+                class="flex w-full"
                 data-orientation="vertical"
                 data-state="closed"
               >
@@ -764,7 +764,7 @@ exports[`package details > makes a package 1`] = `
                     />
                   </svg>
                 </button>
-              </h3>
+              </legend>
               <div
                 aria-labelledby="radix-:ra:"
                 class="text-sm transition-all p-4"
@@ -775,14 +775,14 @@ exports[`package details > makes a package 1`] = `
                 role="region"
                 style="--radix-accordion-content-height: var(--radix-collapsible-content-height); --radix-accordion-content-width: var(--radix-collapsible-content-width);"
               />
-            </div>
-            <div
+            </fieldset>
+            <fieldset
               class="border-b"
               data-orientation="vertical"
               data-state="closed"
             >
-              <h3
-                class="flex"
+              <legend
+                class="flex w-full"
                 data-orientation="vertical"
                 data-state="closed"
               >
@@ -840,7 +840,7 @@ exports[`package details > makes a package 1`] = `
                     />
                   </svg>
                 </button>
-              </h3>
+              </legend>
               <div
                 aria-labelledby="radix-:rc:"
                 class="text-sm transition-all p-4"
@@ -851,14 +851,14 @@ exports[`package details > makes a package 1`] = `
                 role="region"
                 style="--radix-accordion-content-height: var(--radix-collapsible-content-height); --radix-accordion-content-width: var(--radix-collapsible-content-width);"
               />
-            </div>
-            <div
+            </fieldset>
+            <fieldset
               class="border-b"
               data-orientation="vertical"
               data-state="closed"
             >
-              <h3
-                class="flex"
+              <legend
+                class="flex w-full"
                 data-orientation="vertical"
                 data-state="closed"
               >
@@ -916,7 +916,7 @@ exports[`package details > makes a package 1`] = `
                     />
                   </svg>
                 </button>
-              </h3>
+              </legend>
               <div
                 aria-labelledby="radix-:re:"
                 class="text-sm transition-all p-4"
@@ -927,14 +927,14 @@ exports[`package details > makes a package 1`] = `
                 role="region"
                 style="--radix-accordion-content-height: var(--radix-collapsible-content-height); --radix-accordion-content-width: var(--radix-collapsible-content-width);"
               />
-            </div>
-            <div
+            </fieldset>
+            <fieldset
               class="border-b"
               data-orientation="vertical"
               data-state="closed"
             >
-              <h3
-                class="flex"
+              <legend
+                class="flex w-full"
                 data-orientation="vertical"
                 data-state="closed"
               >
@@ -992,7 +992,7 @@ exports[`package details > makes a package 1`] = `
                     />
                   </svg>
                 </button>
-              </h3>
+              </legend>
               <div
                 aria-labelledby="radix-:rg:"
                 class="text-sm transition-all p-4"
@@ -1003,7 +1003,7 @@ exports[`package details > makes a package 1`] = `
                 role="region"
                 style="--radix-accordion-content-height: var(--radix-collapsible-content-height); --radix-accordion-content-width: var(--radix-collapsible-content-width);"
               />
-            </div>
+            </fieldset>
           </div>
         </div>
       </section>
