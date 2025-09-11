@@ -40,6 +40,14 @@ export const test = {
     }
     if (argv.storybook) {
       testCommand = "test:storybook";
+      // install the playwright browser dependencies
+      await runCommand(
+        "bunx",
+        ["playwright", "install", "--with-deps", "chromium", "--force"],
+        "react-app",
+      );
+      // build the UI
+      await runCommand("bun", ["run", "build"], "react-app");
     }
     await runCommand("bun", ["run", testCommand], ".");
   },

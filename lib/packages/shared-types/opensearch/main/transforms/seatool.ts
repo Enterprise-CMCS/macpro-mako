@@ -1,5 +1,7 @@
+import { TZDate } from "@date-fns/tz";
 import { UTCDate } from "@date-fns/utc";
 
+import { SkippableValidationError } from "..";
 import {
   finalDispositionStatuses,
   getStatus,
@@ -10,7 +12,6 @@ import {
   SeatoolOfficer,
   seatoolSchema,
 } from "../../../index";
-import { SkippableValidationError } from "..";
 
 type PendingValidationMetadata = {
   seatoolStatus: string;
@@ -53,7 +54,16 @@ function getLeadAnalyst(eventData: SeaTool) {
 // Convert the date to midnight ET instead of midnight UTC.
 export const shiftSeatoolTime = (date: number): string => {
   const utcDate = new UTCDate(date);
-  return new Date(utcDate.getFullYear(), utcDate.getMonth(), utcDate.getDate()).toISOString();
+  return new TZDate(
+    utcDate.getFullYear(),
+    utcDate.getMonth(),
+    utcDate.getDate(),
+    0,
+    0,
+    0,
+    0,
+    "America/New_York",
+  ).toISOString();
 };
 
 export const getRaiDate = (data: SeaTool) => {

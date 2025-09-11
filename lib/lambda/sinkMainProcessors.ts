@@ -466,6 +466,8 @@ export const insertNewSeatoolRecordsFromKafkaIntoMako = async (
 
       const { data: seatoolDocument } = safeSeatoolRecord;
       const makoDocumentTimestamps = makoDocTimestamps.get(seatoolDocument.id);
+      console.log({ makoDocTimestamps });
+      console.log(JSON.stringify(seatoolDocument, null, 2));
 
       if (
         seatoolDocument.changed_date &&
@@ -484,7 +486,10 @@ export const insertNewSeatoolRecordsFromKafkaIntoMako = async (
       // unless the RAI received date in SEA Tool is undefined
       // which indicates that a new RAI has been requested
       // and the OneMAC RAI received date should be reset to undefined
-      if (seatoolDocument.raiReceivedDate && makoDocumentTimestamps?.raiReceivedDate) {
+      if (
+        seatoolDocument.raiReceivedDate !== undefined &&
+        makoDocumentTimestamps?.raiReceivedDate
+      ) {
         seatoolDocument.raiReceivedDate = new Date(
           makoDocumentTimestamps.raiReceivedDate,
         ).toISOString();
@@ -494,7 +499,10 @@ export const insertNewSeatoolRecordsFromKafkaIntoMako = async (
       // unless the RAI withdrawn date in SEA Tool is undefined
       // which indicates that a new RAI has been requested
       // and the OneMAC RAI withdrawn date should be reset to undefined
-      if (seatoolDocument.raiWithdrawnDate && makoDocumentTimestamps?.raiWithdrawnDate) {
+      if (
+        seatoolDocument.raiWithdrawnDate !== undefined &&
+        makoDocumentTimestamps?.raiWithdrawnDate
+      ) {
         seatoolDocument.raiWithdrawnDate = new Date(
           makoDocumentTimestamps.raiWithdrawnDate,
         ).toISOString();
