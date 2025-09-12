@@ -45,6 +45,19 @@ function Calendar({ className, classNames, showOutsideDays = true, ...props }: C
         ...classNames,
       }}
       captionLayout="dropdown-buttons"
+      components={{
+        Dropdown: ({ caption, className, ...props }: any) => {
+          return (
+            <button className="relative mx-1">
+              {caption}
+              <select
+                className={cn("absolute left-0 w-auto h-auto opacity-0 cursor-pointer", className)}
+                {...props}
+              />
+            </button>
+          );
+        },
+      }}
       {...props}
     />
   );
