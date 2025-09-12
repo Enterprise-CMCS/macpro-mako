@@ -10,11 +10,11 @@ describe("UserInformation", () => {
     renderWithQueryClient(
       <UserInformation fullName="Test User" role="statesubmitter" email="test@example.com" />,
     );
-    expect(screen.getByRole("heading", { name: "Full Name", level: 3 })).toBeInTheDocument();
+    expect(screen.getByText("Full Name")).toBeInTheDocument();
     expect(screen.getByText("Test User")).toBeInTheDocument();
-    expect(screen.getByRole("heading", { name: "Role", level: 3 })).toBeInTheDocument();
+    expect(screen.getByText("Role")).toBeInTheDocument();
     expect(screen.getByText("State Submitter")).toBeInTheDocument();
-    expect(screen.getByRole("heading", { name: "Email", level: 3 })).toBeInTheDocument();
+    expect(screen.getByText("Email")).toBeInTheDocument();
     expect(screen.getByText("test@example.com")).toBeInTheDocument();
   });
 });

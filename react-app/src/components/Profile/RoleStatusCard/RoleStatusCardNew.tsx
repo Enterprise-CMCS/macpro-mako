@@ -36,7 +36,7 @@ export const RoleStatusCardNew = ({
   const showActions = !!onClick;
 
   return (
-    <RoleStatusTopBorderCard status={access.status}>
+    <RoleStatusTopBorderCard className="my-3" status={access.status}>
       <div className="p-8 min-h-36">
         <div className="flex justify-between">
           <h3 className="text-xl font-bold">
@@ -70,12 +70,17 @@ export const RoleStatusCardNew = ({
                 <DropdownMenu.Content
                   className="flex flex-col bg-white rounded-md shadow-lg p-4 border"
                   align="start"
+                  asChild
                 >
-                  <DropdownMenu.Item asChild>
-                    <button className="text-primary" onClick={onClick} type="button">
-                      {isPending ? "Cancel Request" : "Remove User Role"}
-                    </button>
-                  </DropdownMenu.Item>
+                  <ul>
+                    <DropdownMenu.Item asChild>
+                      <li>
+                        <button className="text-primary" onClick={onClick} type="button">
+                          {isPending ? "Cancel Request" : "Remove User Role"}
+                        </button>
+                      </li>
+                    </DropdownMenu.Item>
+                  </ul>
                 </DropdownMenu.Content>
               </DropdownMenu.Root>
             )}
