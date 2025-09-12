@@ -86,6 +86,7 @@
     "@vitejs/plugin-react": "^4.7.0",
     "@vitejs/plugin-react-swc": "^3.0.0",
     "@vitest/browser": "^3.2.4",
+    "@whitespace/storybook-addon-html": "^8.0.2",
     "autoprefixer": "^10.4.14",
     "eslint-plugin-storybook": "^9.1.4",
     "jsdom": "^21.1.1",
