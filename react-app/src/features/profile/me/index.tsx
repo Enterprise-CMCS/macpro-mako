@@ -256,10 +256,10 @@ export const MyProfile = () => {
             group={userDetails.group}
             division={userDetails.division}
           />
-          <div className="flex flex-col gap-6 md:basis-1/2">
+          <div className="md:basis-1/2 space-y-3">
             {/* Status/State Access Management Section */}
             {showAllStateAccess && (
-              <div>
+              <>
                 {isNewUserRoleDisplay ? (
                   <h2 className="text-2xl font-bold">My User Roles</h2>
                 ) : (
@@ -278,32 +278,37 @@ export const MyProfile = () => {
                   onCancel={() => setSelfRevokeRole(null)}
                 />
 
-                {orderedRoleStatus && orderedRoleStatus.length ? (
-                  orderedRoleStatus?.map((access) => (
-                    <RoleStatusCard
-                      key={`${access.territory}-${access.role}`}
-                      access={access}
-                      role={userDetails.role}
-                      onClick={() => handleRoleStatusClick(access)}
-                    />
-                  ))
-                ) : (
-                  <p className="my-6">No role requested</p>
-                )}
-                {isNewUserRoleDisplay && !hideAddRoleButton ? (
-                  <Button
-                    className="w-full border-dashed p-10 text-black font-normal"
-                    variant="outline"
-                    onClick={() =>
-                      isStateUser(user.user) ? navigate("/signup/state") : navigate("/signup")
-                    }
-                  >
-                    Add another user role <PlusIcon className="ml-3" />
-                  </Button>
-                ) : (
-                  <StateAccessControls />
-                )}
-              </div>
+                <ol className="flex flex-col">
+                  {orderedRoleStatus && orderedRoleStatus.length ? (
+                    orderedRoleStatus?.map((access) => (
+                      <li key={`${access.territory}-${access.role}`}>
+                        <RoleStatusCard
+                          access={access}
+                          role={userDetails.role}
+                          onClick={() => handleRoleStatusClick(access)}
+                        />
+                      </li>
+                    ))
+                  ) : (
+                    <li>
+                      <p className="my-6">No role requested</p>
+                    </li>
+                  )}
+                  {isNewUserRoleDisplay && !hideAddRoleButton ? (
+                    <Button
+                      className="w-full border-dashed p-10 text-black font-normal"
+                      variant="outline"
+                      onClick={() =>
+                        isStateUser(user.user) ? navigate("/signup/state") : navigate("/signup")
+                      }
+                    >
+                      Add another user role <PlusIcon className="ml-3" />
+                    </Button>
+                  ) : (
+                    <StateAccessControls />
+                  )}
+                </ol>
+              </>
             )}
 
             {userDetails.role === "cmsroleapprover" && !isNewUserRoleDisplay && (
