@@ -70,21 +70,23 @@ export const UserProfile = () => {
             group={userDetails.group}
             division={userDetails.division}
           />
-          <div className="flex flex-col gap-6 md:basis-1/2">
-            <div>
-              {isNewUserRoleDisplay ? (
-                <h2 className="text-2xl font-bold">My User Roles</h2>
-              ) : (
-                <h2 className="text-2xl font-bold">
-                  {userDetails.role === "statesubmitter" || userDetails.role === "statesystemadmin"
-                    ? "State Access Management"
-                    : "Status"}
-                </h2>
-              )}
+          <div className="flex flex-col gap-y-6 md:basis-1/2">
+            {isNewUserRoleDisplay ? (
+              <h2 className="text-2xl font-bold">My User Roles</h2>
+            ) : (
+              <h2 className="text-2xl font-bold">
+                {userDetails.role === "statesubmitter" || userDetails.role === "statesystemadmin"
+                  ? "State Access Management"
+                  : "Status"}
+              </h2>
+            )}
+            <ol>
               {orderedRoleStatus?.map((access) => (
-                <RoleStatusCard role={userDetails.role} access={access} key={access.id} />
+                <li key={access.id}>
+                  <RoleStatusCard role={userDetails.role} access={access} />
+                </li>
               ))}
-            </div>
+            </ol>
 
             {userDetails.role === "cmsroleapprover" && !isNewUserRoleDisplay && (
               <GroupAndDivision
