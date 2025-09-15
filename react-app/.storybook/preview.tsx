@@ -40,6 +40,8 @@ const preview: Preview = {
       // 👇 Fail all accessibility tests when violations are found
       test: "error",
     },
+
+    html: {},
   },
 };
 

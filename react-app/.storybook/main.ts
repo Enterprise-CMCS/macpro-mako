@@ -32,6 +32,7 @@ const config: StorybookConfig = {
   typescript: { check: true },
   staticDirs: ["../public", "../dist"],
   addons: [
+    "@whitespace/storybook-addon-html",
     "@storybook/addon-a11y",
     "@storybook/addon-docs",
     "@storybook/addon-vitest",
