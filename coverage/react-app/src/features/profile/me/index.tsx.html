@@ -384,7 +384,12 @@
 <a name='L319'></a><a href='#L319'>319</a>
 <a name='L320'></a><a href='#L320'>320</a>
 <a name='L321'></a><a href='#L321'>321</a>
-<a name='L322'></a><a href='#L322'>322</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
+<a name='L322'></a><a href='#L322'>322</a>
+<a name='L323'></a><a href='#L323'>323</a>
+<a name='L324'></a><a href='#L324'>324</a>
+<a name='L325'></a><a href='#L325'>325</a>
+<a name='L326'></a><a href='#L326'>326</a>
+<a name='L327'></a><a href='#L327'>327</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -666,6 +671,7 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">110x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -681,7 +687,11 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -963,10 +973,10 @@ export const MyProfile = () =&gt; {
             group={userDetails.group}
             division={userDetails.division}
           /&gt;
-          &lt;div className="flex flex-col gap-6 md:basis-1/2"&gt;
+          &lt;div className="md:basis-1/2 space-y-3"&gt;
             {/* Status/State Access Management Section */}
             {showAllStateAccess &amp;&amp; (
-              &lt;div&gt;
+              &lt;&gt;
                 {isNewUserRoleDisplay ? (
 <span class="branch-0 cbranch-no" title="branch not covered" >                  &lt;h2 className="text-2xl font-bold"&gt;My User Roles&lt;/h2&gt;</span>
                 ) : (
@@ -985,32 +995,37 @@ export const MyProfile = () =&gt; {
                   onCancel={<span class="fstat-no" title="function not covered" >() =&gt; <span class="cstat-no" title="statement not covered" >s</span>etSelfRevokeRole(null)}</span>
                 /&gt;
 &nbsp;
-                {orderedRoleStatus &amp;&amp; orderedRoleStatus.length ? (
-                  orderedRoleStatus?.map((access) =&gt; (
-                    &lt;RoleStatusCard
-                      key={`${access.territory}-${access.role}`}
-                      access={access}
-                      role={userDetails.role}
-                      onClick={() =&gt; handleRoleStatusClick(access)}
-                    /&gt;
-                  ))
-                ) : (
-                  &lt;p className="my-6"&gt;No role requested&lt;/p&gt;
-                )}
-                {isNewUserRoleDisplay &amp;&amp; <span class="branch-1 cbranch-no" title="branch not covered" >!hideAddRoleButton ? (</span>
-<span class="branch-0 cbranch-no" title="branch not covered" >                  &lt;Button</span>
-                    className="w-full border-dashed p-10 text-black font-normal"
-                    variant="outline"
-                    onClick={<span class="fstat-no" title="function not covered" >() =&gt;</span>
-<span class="cstat-no" title="statement not covered" >                      isStateUser(user.user) ? navigate("/signup/state") : navigate("/signup")</span>
-                    }
-                  &gt;
-                    Add another user role &lt;PlusIcon className="ml-3" /&gt;
-                  &lt;/Button&gt;
-                ) : (
-                  &lt;StateAccessControls /&gt;
-                )}
-              &lt;/div&gt;
+                &lt;ol className="flex flex-col"&gt;
+                  {orderedRoleStatus &amp;&amp; orderedRoleStatus.length ? (
+                    orderedRoleStatus?.map((access) =&gt; (
+                      &lt;li key={`${access.territory}-${access.role}`}&gt;
+                        &lt;RoleStatusCard
+                          access={access}
+                          role={userDetails.role}
+                          onClick={() =&gt; handleRoleStatusClick(access)}
+                        /&gt;
+                      &lt;/li&gt;
+                    ))
+                  ) : (
+                    &lt;li&gt;
+                      &lt;p className="my-6"&gt;No role requested&lt;/p&gt;
+                    &lt;/li&gt;
+                  )}
+                  {isNewUserRoleDisplay &amp;&amp; <span class="branch-1 cbranch-no" title="branch not covered" >!hideAddRoleButton ? (</span>
+<span class="branch-0 cbranch-no" title="branch not covered" >                    &lt;Button</span>
+                      className="w-full border-dashed p-10 text-black font-normal"
+                      variant="outline"
+                      onClick={<span class="fstat-no" title="function not covered" >() =&gt;</span>
+<span class="cstat-no" title="statement not covered" >                        isStateUser(user.user) ? navigate("/signup/state") : navigate("/signup")</span>
+                      }
+                    &gt;
+                      Add another user role &lt;PlusIcon className="ml-3" /&gt;
+                    &lt;/Button&gt;
+                  ) : (
+                    &lt;StateAccessControls /&gt;
+                  )}
+                &lt;/ol&gt;
+              &lt;/&gt;
             )}
 &nbsp;
             {userDetails.role === "cmsroleapprover" &amp;&amp; !isNewUserRoleDisplay &amp;&amp; (
@@ -1033,7 +1048,7 @@ export const MyProfile = () =&gt; {
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2025-09-15T02:15:39.304Z
+                at 2025-09-15T15:12:32.278Z
             </div>
         <script src="../../../../../prettify.js"></script>
         <script>
