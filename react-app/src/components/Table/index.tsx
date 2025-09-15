@@ -10,7 +10,7 @@ const Table = React.forwardRef<
     className?: string;
   }
 >(({ className, ...props }, ref) => (
-  <div className="w-full border-[1px] overflow-auto">
+  <div className="w-full border-[1px] overflow-auto p-0.5">
     <table ref={ref} className={cn("w-full caption-bottom text-sm", className)} {...props} />
   </div>
 ));
@@ -76,29 +76,58 @@ const TableHead = React.forwardRef<
     icon?: React.ReactNode;
     desc?: boolean;
   }
->(({ className, children, icon, isActive, desc, ...props }, ref) => (
-  <th
-    ref={ref}
-    className={cn(
-      "px-4 pl-2 text-left font-semibold  text-muted-foreground [&:has([role=checkbox])]:pr-0 leading-5",
-      className,
-      { "cursor-pointer": !!props?.onClick },
-    )}
-    {...props}
-  >
+>(({ className, children, icon, isActive, desc, ...props }, ref) => {
+  const sortable = !!props.onClick;
+
+  const content = (
     <div className="flex items-center gap-1">
       {children}
       {icon ? (
         icon
       ) : (
         <>
-          {desc && <ArrowDown className={cn(".1em w-5 h-5", { "opacity-0": !isActive })} />}
-          {!desc && <ArrowUp className={cn(".1em w-5 h-5", { "opacity-0": !isActive })} />}
+          {desc && (
+            <ArrowDown
+              className={cn(".1em w-5 h-5", { "opacity-0": !isActive })}
+              aria-hidden="true"
+            />
+          )}
+          {!desc && (
+            <ArrowUp
+              className={cn(".1em w-5 h-5", { "opacity-0": !isActive })}
+              aria-hidden="true"
+            />
+          )}
         </>
       )}
     </div>
-  </th>
-));
+  );
+
+  const handleKeyDown = (e: React.KeyboardEvent<HTMLTableCellElement>) => {
+    if (e.key === "Enter" || e.key === " ") {
+      e.preventDefault();
+      props.onClick?.();
+    }
+  };
+
+  return (
+    <th
+      ref={ref}
+      scope="col"
+      aria-sort={isActive ? (desc ? "descending" : "ascending") : "none"}
+      className={cn(
+        "px-4 pl-2 text-left font-semibold text-muted-foreground [&:has([role=checkbox])]:pr-0 leading-5",
+        className,
+        { "cursor-pointer": sortable },
+      )}
+      tabIndex={sortable ? 0 : undefined}
+      onKeyDown={sortable ? handleKeyDown : undefined}
+      {...props}
+    >
+      {content}
+    </th>
+  );
+});
 TableHead.displayName = "TableHead";
 
 const TableCell = React.forwardRef<
@@ -107,14 +136,7 @@ const TableCell = React.forwardRef<
     className?: string;
   }
 >(({ className, ...props }, ref) => (
-  <td
-    ref={ref}
-    className={cn(
-      "px-2 py-3 text-left align-middle  text-sm [&:has([role=checkbox])]:pr-0",
-      className,
-    )}
-    {...props}
-  />
+  <td ref={ref} className={cn("px-2 py-3 text-left align-middle  text-sm", className)} {...props} />
 ));
 TableCell.displayName = "TableCell";
 
