@@ -6,20 +6,20 @@
   },
   "private": true,
   "dependencies": {
-    "@aws-sdk/client-cloudformation": "^3.888.0",
-    "@aws-sdk/client-cloudfront": "^3.888.0",
-    "@aws-sdk/client-cost-explorer": "^3.889.0",
-    "@aws-sdk/client-ec2": "^3.888.0",
-    "@aws-sdk/client-ssm": "^3.888.0",
+    "@aws-sdk/client-cloudformation": "^3.526.0",
+    "@aws-sdk/client-cloudfront": "^3.600.0",
+    "@aws-sdk/client-cost-explorer": "^3.613.0",
+    "@aws-sdk/client-ec2": "^3.827.0",
+    "@aws-sdk/client-ssm": "^3.613.0",
     "dotenv": "^16.0.3",
-    "open": "^10.2.0",
+    "open": "^10.0.4",
     "readline-sync": "^1.4.10",
     "shared-utils": "*",
     "yargs": "^17.7.1"
   },
   "devDependencies": {
-    "@aws-sdk/client-resource-groups-tagging-api": "^3.888.0",
-    "simple-git": "^3.28.0",
-    "typescript": "^5.9.2"
+    "@aws-sdk/client-resource-groups-tagging-api": "^3.621.0",
+    "simple-git": "^3.25.0",
+    "typescript": "^5.0.4"
   }
 }

@@ -14,10 +14,10 @@
   "author": "",
   "license": "ISC",
   "devDependencies": {
-    "@axe-core/playwright": "^4.10.2",
-    "@playwright/test": "^1.55.0",
-    "msw": "^2.11.2",
+    "@axe-core/playwright": "^4.8.3",
+    "@playwright/test": "^1.45.3",
+    "msw": "^2.7.3",
     "playwright-msw": "^3.0.1",
-    "otpauth": "9.4.1"
+    "otpauth": "9.4.0"
   }
 }

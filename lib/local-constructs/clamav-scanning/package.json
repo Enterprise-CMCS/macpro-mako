@@ -15,14 +15,14 @@
   "author": "",
   "license": "ISC",
   "devDependencies": {
-    "@types/aws-lambda": "^8.10.152",
-    "esbuild": "^0.25.9"
+    "@types/aws-lambda": "^8.10.140",
+    "esbuild": "^0.25.4"
   },
   "dependencies": {
-    "@aws-sdk/client-s3": "^3.888.0",
+    "@aws-sdk/client-s3": "^3.864.0",
     "@types/mime-types": "^2.1.4",
     "file-type": "^19.6.0",
     "mime-types": "^2.1.35",
-    "pino": "^9.9.5"
+    "pino": "^9.5.0"
   }
 }

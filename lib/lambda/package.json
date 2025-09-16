@@ -7,25 +7,25 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "@aws-sdk/client-lambda": "^3.888.0",
-    "@aws-sdk/client-s3": "^3.888.0",
-    "@aws-sdk/client-ses": "^3.888.0",
-    "@aws-sdk/client-sfn": "^3.888.0",
-    "@aws-sdk/s3-request-presigner": "^3.888.0",
+    "@aws-sdk/client-lambda": "^3.600.0",
+    "@aws-sdk/client-s3": "^3.600.0",
+    "@aws-sdk/client-ses": "^3.600.0",
+    "@aws-sdk/client-sfn": "^3.600.0",
+    "@aws-sdk/s3-request-presigner": "^3.600.0",
     "@dannywrayuk/middy-zod-validator": "^1.4.0",
-    "@haftahave/serverless-ses-template": "^6.2.0",
-    "@middy/core": "^6.4.5",
-    "@middy/http-error-handler": "^6.4.5",
-    "@middy/http-json-body-parser": "^6.4.5",
+    "@haftahave/serverless-ses-template": "^6.1.0",
+    "@middy/core": "^6.3.2",
+    "@middy/http-error-handler": "^6.3.2",
+    "@middy/http-json-body-parser": "^6.3.2",
     "base-64": "^1.0.0",
     "cfn-response-async": "^1.0.0",
-    "mssql": "^11.0.1",
+    "mssql": "^11.0.0",
     "uuid": "^10.0.0"
   },
   "devDependencies": {
-    "@types/aws-lambda": "^8.10.152",
+    "@types/aws-lambda": "^8.10.150",
     "@types/base-64": "^1.0.2",
-    "@types/mssql": "^9.1.8",
+    "@types/mssql": "^9.1.5",
     "@types/uuid": "^10.0.0"
   }
 }
