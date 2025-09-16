@@ -363,7 +363,7 @@ export const errorIdentityProviderServiceHandler = http.post<
   IdpRequestSessionBody | IdpRefreshRequestBody | IdpListUsersRequestBody | AdminGetUserRequestBody
 >(
   /https:\/\/cognito-idp\.\S*.amazonaws\.com\//,
-  () => new HttpResponse("InternalErrorException", { status: 500 }),
+  async () => new HttpResponse("Response Error", { status: 500 }),
 );
 
 export const cognitoHandlers = [
