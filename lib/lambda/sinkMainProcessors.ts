@@ -5,6 +5,7 @@ import { getPackage, getPackageChangelog } from "libs/api/package";
 import {
   KafkaRecord,
   opensearch,
+  SEATOOL_SPW_STATUS,
   SEATOOL_STATUS,
   SeatoolRecordWithUpdatedDate,
   SeatoolSpwStatusEnum,
@@ -466,8 +467,6 @@ export const insertNewSeatoolRecordsFromKafkaIntoMako = async (
 
       const { data: seatoolDocument } = safeSeatoolRecord;
       const makoDocumentTimestamps = makoDocTimestamps.get(seatoolDocument.id);
-      console.log({ makoDocTimestamps });
-      console.log("original", JSON.stringify(seatoolDocument, null, 2));
 
       if (
         seatoolDocument.changed_date &&
@@ -488,7 +487,6 @@ export const insertNewSeatoolRecordsFromKafkaIntoMako = async (
       // and the OneMAC RAI received date should be reset to undefined
       if (
         seatoolDocument.raiReceivedDate !== undefined &&
-        seatoolDocument.raiWithdrawEnabled === undefined &&
         makoDocumentTimestamps?.raiReceivedDate
       ) {
         seatoolDocument.raiReceivedDate = new Date(
@@ -496,21 +494,31 @@ export const insertNewSeatoolRecordsFromKafkaIntoMako = async (
         ).toISOString();
       }
 
-      // Overwrite the RAI withdrawn date with the OneMAC value,
-      // unless the RAI withdrawn date in SEA Tool is undefined
-      // which indicates that a new RAI has been requested
-      // and the OneMAC RAI withdrawn date should be reset to undefined
       if (
         seatoolDocument.raiWithdrawnDate !== undefined &&
         makoDocumentTimestamps?.raiWithdrawnDate
       ) {
-        seatoolDocument.raiReceivedDate = null;
+        // Overwrite the RAI withdrawn date with the OneMAC value,
+        // unless the RAI withdrawn date in SEA Tool is undefined
+        // which indicates that a new RAI has been requested
+        // and the OneMAC RAI withdrawn date should be reset to undefined
         seatoolDocument.raiWithdrawnDate = new Date(
           makoDocumentTimestamps.raiWithdrawnDate,
         ).toISOString();
       }
 
-      console.log("updated", JSON.stringify(seatoolDocument, null, 2));
+      if (seatoolDocument.seatoolStatus === SEATOOL_SPW_STATUS[SeatoolSpwStatusEnum.PendingRAI]) {
+        seatoolDocument.raiReceivedDate = null;
+        seatoolDocument.raiWithdrawnDate = null;
+      }
+
+      if (
+        seatoolDocument.seatoolStatus ===
+        SEATOOL_SPW_STATUS[SeatoolSpwStatusEnum.FormalRAIResponseWithdrawalRequested]
+      ) {
+        seatoolDocument.raiReceivedDate = null;
+      }
+
       if (seatoolDocument.authority && seatoolDocument.seatoolStatus !== "Unknown") {
         seatoolRecordsForMako.push(seatoolDocument);
       }
