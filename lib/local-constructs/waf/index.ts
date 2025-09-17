@@ -147,7 +147,22 @@ export class WafConstruct extends Construct {
       {
         name: "RequestBodySizeLimit",
         priority: 45,
-        action: { block: {} },
+        action: {
+          block: {
+            customResponse: {
+              responseCode: 413,
+              responseHeaders: [
+                {
+                  name: "Content-Type",
+                  value: "application/json",
+                },
+              ],
+              customResponseBody: {
+                content: '{"body": {"message": "Request body too large"}}',
+              },
+            },
+          },
+        },
         statement: {
           sizeConstraintStatement: {
             fieldToMatch: {
