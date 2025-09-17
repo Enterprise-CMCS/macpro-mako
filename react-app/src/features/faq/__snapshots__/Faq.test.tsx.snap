@@ -212,6 +212,7 @@ exports[`Faq > should display the items expected 1`] = `
                 class="mb-4 text-primary"
               >
                 <a
+                  aria-label="Call the OneMAC Helpdesk"
                   class="underline"
                   href="tel:(833) 228-2540"
                 >
@@ -225,6 +226,7 @@ exports[`Faq > should display the items expected 1`] = `
                 class="text-primary"
               >
                 <a
+                  aria-label="Email the OneMAC Helpdesk"
                   class="underline"
                   href="mailto:OneMAC_Helpdesk@cms.hhs.gov"
                 >
