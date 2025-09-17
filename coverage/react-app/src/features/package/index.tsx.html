@@ -236,7 +236,10 @@
 <a name='L171'></a><a href='#L171'>171</a>
 <a name='L172'></a><a href='#L172'>172</a>
 <a name='L173'></a><a href='#L173'>173</a>
-<a name='L174'></a><a href='#L174'>174</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
+<a name='L174'></a><a href='#L174'>174</a>
+<a name='L175'></a><a href='#L175'>175</a>
+<a name='L176'></a><a href='#L176'>176</a>
+<a name='L177'></a><a href='#L177'>177</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -254,6 +257,8 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">4x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -382,8 +387,6 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">4x</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
@@ -401,7 +404,10 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -429,12 +435,14 @@ import { PackageStatusCard } from "./package-status";
 export const DetailCardWrapper = ({
   title,
   children,
+  ariaLabel,
 }: PropsWithChildren&lt;{
   title: string;
+  ariaLabel?: string;
 }&gt;) =&gt; (
   &lt;CardWithTopBorder className="text-wrap my-0 sm:mt-6"&gt;
     &lt;div className="p-4 py-1 min-h-36"&gt;
-      &lt;h2&gt;{title}&lt;/h2&gt;
+      &lt;h2 id={ariaLabel}&gt;{title}&lt;/h2&gt;
       {children}
     &lt;/div&gt;
   &lt;/CardWithTopBorder&gt;
@@ -492,10 +500,10 @@ export const DetailsContent = ({ id }: DetailsContentProps) =&gt; {
   return (
     &lt;div className="w-full py-1 px-4 lg:px-8 grid grid-cols-1 gap-y-6 sm:gap-y-6"&gt;
       &lt;section id="package_overview" className="sm:mb-0 two-cols gap-y-3 sm:gap-y-3"&gt;
-        &lt;DetailCardWrapper title="Status"&gt;
+        &lt;DetailCardWrapper title="Status" ariaLabel="package-status-heading"&gt;
           &lt;PackageStatusCard submission={updatedSubmission} /&gt;
         &lt;/DetailCardWrapper&gt;
-        &lt;DetailCardWrapper title="Package Actions"&gt;
+        &lt;DetailCardWrapper title="Package Actions" ariaLabel="package-actions-heading"&gt;
           &lt;PackageActionsCard id={id} submission={updatedSubmission} /&gt;
         &lt;/DetailCardWrapper&gt;
       &lt;/section&gt;
@@ -544,9 +552,7 @@ export const Details = <span class="fstat-no" title="function not covered" >() =
     &lt;div className="max-w-screen-xl mx-auto flex flex-col lg:flex-row"&gt;
       &lt;div className="px-4 lg:px-8"&gt;
         &lt;BreadCrumbs options={detailsAndActionsCrumbs({ id, authority })} /&gt;
-        &lt;div className="hidden lg:block pr-8"&gt;
-          &lt;DetailsSidebar id={id} /&gt;
-        &lt;/div&gt;
+        &lt;DetailsSidebar id={id} /&gt;
       &lt;/div&gt;
       &lt;DetailsContent id={id} /&gt;
     &lt;/div&gt;
@@ -568,18 +574,21 @@ const DetailsSidebar = <span class="fstat-no" title="function not covered" >({</
   };
 &nbsp;
   return (
-    &lt;aside className="min-w-56 flex-none font-semibold mt-6"&gt;
-      {links.map(({ id, href, displayName }) =&gt; (
-        &lt;a
-          className="block mb-2 text-blue-900 hover:underline"
-          key={id}
-          href={href}
-          onClick={<span class="fstat-no" title="function not covered" >() =&gt; <span class="cstat-no" title="statement not covered" >h</span>andleSidebarClick(id)}</span>
-        &gt;
-          {displayName}
-        &lt;/a&gt;
-      ))}
-    &lt;/aside&gt;
+    &lt;nav className="min-w-56 flex-none font-semibold mt-6 hidden lg:block mr-8"&gt;
+      &lt;ul&gt;
+        {links.map(({ id, href, displayName }) =&gt; (
+          &lt;li key={id}&gt;
+            &lt;a
+              className="block mb-2 text-blue-900 hover:underline"
+              href={href}
+              onClick={<span class="fstat-no" title="function not covered" >() =&gt; <span class="cstat-no" title="statement not covered" >h</span>andleSidebarClick(id)}</span>
+            &gt;
+              {displayName}
+            &lt;/a&gt;
+          &lt;/li&gt;
+        ))}
+      &lt;/ul&gt;
+    &lt;/nav&gt;
   );
 };
 &nbsp;</pre></td></tr></table></pre>
@@ -589,7 +598,7 @@ const DetailsSidebar = <span class="fstat-no" title="function not covered" >({</
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2025-09-17T14:50:47.058Z
+                at 2025-09-17T18:07:53.261Z
             </div>
         <script src="../../../../prettify.js"></script>
         <script>
