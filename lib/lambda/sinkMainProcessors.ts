@@ -513,8 +513,8 @@ export const insertNewSeatoolRecordsFromKafkaIntoMako = async (
       }
 
       if (
-        seatoolDocument.seatoolStatus ===
-        SEATOOL_SPW_STATUS[SeatoolSpwStatusEnum.FormalRAIResponseWithdrawalRequested]
+        seatoolRecord.STATE_PLAN.SPW_STATUS_ID ===
+        SeatoolSpwStatusEnum.FormalRAIResponseWithdrawalRequested
       ) {
         seatoolDocument.raiReceivedDate = null;
       }
