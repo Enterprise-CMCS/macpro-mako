@@ -88,6 +88,7 @@ export const Footer = ({ email, address, showNavLinks }: Props) => {
                   onClick={() => {
                     sendGAEvent("home_help_phone", null);
                   }}
+                  aria-label="Call the OneMAC Helpdesk"
                 >
                   (833) 228-2540
                 </a>
@@ -99,6 +100,7 @@ export const Footer = ({ email, address, showNavLinks }: Props) => {
                   onClick={() => {
                     sendGAEvent("home_help_email", null);
                   }}
+                  aria-label="Email the OneMAC Helpdesk"
                 >
                   OneMAC_Helpdesk@cms.hhs.gov
                 </a>
@@ -134,7 +136,10 @@ export const Footer = ({ email, address, showNavLinks }: Props) => {
             <a
               href={`mailto:${email}`}
               className="font-bold underline"
-              aria-label="Email the OneMAC Helpdesk"
+              onClick={() => {
+                sendGAEvent("home_help_email", null);
+              }}
+              aria-label="Email the OneMAC Helpdesk for help or feedback"
             >
               {email}
             </a>{" "}
