@@ -131,7 +131,11 @@ export const Footer = ({ email, address, showNavLinks }: Props) => {
         <div className="px-10 py-4 text-white text-[.8rem] flex flex-col items-center sm:flex-row max-w-screen-xl mx-auto">
           <div>
             Email{" "}
-            <a href={`mailto:${email}`} className="font-bold underline">
+            <a
+              href={`mailto:${email}`}
+              className="font-bold underline"
+              aria-label="Email the OneMAC Helpdesk"
+            >
               {email}
             </a>{" "}
             for help or feedback
