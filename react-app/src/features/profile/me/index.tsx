@@ -295,15 +295,17 @@ export const MyProfile = () => {
                     </li>
                   )}
                   {isNewUserRoleDisplay && !hideAddRoleButton ? (
-                    <Button
-                      className="w-full border-dashed p-10 text-black font-normal"
-                      variant="outline"
-                      onClick={() =>
-                        isStateUser(user.user) ? navigate("/signup/state") : navigate("/signup")
-                      }
-                    >
-                      Add another user role <PlusIcon className="ml-3" />
-                    </Button>
+                    <li>
+                      <Button
+                        className="w-full border-dashed p-10 text-black font-normal"
+                        variant="outline"
+                        onClick={() =>
+                          isStateUser(user.user) ? navigate("/signup/state") : navigate("/signup")
+                        }
+                      >
+                        Add another user role <PlusIcon className="ml-3" />
+                      </Button>
+                    </li>
                   ) : (
                     <StateAccessControls />
                   )}
