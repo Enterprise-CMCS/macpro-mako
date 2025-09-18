@@ -344,47 +344,61 @@ const oneMacSeatoolStatusCheck = async (seatoolRecord: Document) => {
   const seatoolStatus = seatoolRecord?.STATE_PLAN.SPW_STATUS_ID;
 
   // If we have a withdrawal requested do not update unless the status in seatool is Withdrawn
-  if (
-    oneMacStatus === SEATOOL_STATUS.WITHDRAW_REQUESTED &&
-    seatoolStatus !== SeatoolSpwStatusEnum.Withdrawn
-  ) {
+  if (oneMacStatus === SEATOOL_STATUS.WITHDRAW_REQUESTED) {
+    if (seatoolStatus === SeatoolSpwStatusEnum.Withdrawn) {
+      return seatoolStatus;
+    }
     return SeatoolSpwStatusEnum.WithdrawalRequested;
   }
 
-  // Current status is RAI Issued in seatool and onemac status is SUBMITTED
-  if (
-    oneMacStatus === SEATOOL_STATUS.SUBMITTED &&
-    seatoolStatus === SeatoolSpwStatusEnum.PendingRAI
-  ) {
+  // Current onemac status is SUBMITTED
+  if (oneMacStatus === SEATOOL_STATUS.SUBMITTED) {
     // Checking to see if the most recent entry is in the changelog is respond to rai
     const changelogs = await getPackageChangelog(seatoolRecord.id);
-
     const raiResponseEvents = changelogs.hits.hits.filter(
       (event) => event._source.event === "respond-to-rai",
     );
-    const mostRecentRaiResponse = raiResponseEvents?.at(-1);
 
-    const raiDate = seatool.getRaiDate(seatoolRecord);
-    // Only proceed if we have events and a RAI requested date
-    if (mostRecentRaiResponse && raiDate.raiRequestedDate) {
-      const eventDate = new UTCDate(mostRecentRaiResponse._source.timestamp);
-      const requestedDate = new UTCDate(raiDate.raiRequestedDate);
-      // When a note is added or save to a RAI request, it presents as a new RAI request,
-      // even if the RAI response has already been submitted and is pending review.
-      // We don't want to change the OneMAC status to Pending RAI though because it has
-      // already been responded to, so we will leave the status as Submitted.
-      if (isAfter(eventDate, requestedDate)) {
-        return SeatoolSpwStatusEnum.Submitted;
-      }
+    if (!raiResponseEvents || raiResponseEvents.length === 0) {
+      return seatoolStatus;
     }
+
+    if (seatoolStatus === SeatoolSpwStatusEnum.Pending) {
+      return seatoolStatus;
+    }
+
+    if (seatoolStatus === SeatoolSpwStatusEnum.PendingRAI) {
+      const mostRecentRaiResponse = raiResponseEvents?.at(-1);
+
+      const raiDate = seatool.getRaiDate(seatoolRecord);
+      // Only proceed if we have an event and a RAI requested date
+      if (mostRecentRaiResponse && raiDate.raiRequestedDate) {
+        const eventDate = new UTCDate(mostRecentRaiResponse._source.timestamp);
+        const requestedDate = new UTCDate(raiDate.raiRequestedDate);
+        // When a note is added or save to a RAI request, it presents as a new RAI request,
+        // even if the RAI response has already been submitted and is pending review.
+        // We don't want to change the OneMAC status to Pending RAI though because it has
+        // already been responded to, so we will leave the status as Submitted.
+        if (isAfter(eventDate, requestedDate)) {
+          return SeatoolSpwStatusEnum.Submitted;
+        }
+      }
+      return seatoolStatus;
+    }
+
+    if (seatoolStatus === SeatoolSpwStatusEnum.Disapproved) {
+      return seatoolStatus;
+    }
+
+    return seatoolStatus;
   }
-  if (
-    oneMacStatus === SEATOOL_STATUS.RAI_RESPONSE_WITHDRAW_REQUESTED &&
-    seatoolStatus !== SeatoolSpwStatusEnum.PendingRAI
-  ) {
+
+  if (oneMacStatus === SEATOOL_STATUS.RAI_RESPONSE_WITHDRAW_REQUESTED) {
     if (
       seatoolStatus &&
+      // keep the existing seatool status if any of these are true
       [
+        SeatoolSpwStatusEnum.PendingRAI,
         SeatoolSpwStatusEnum.Withdrawn,
         SeatoolSpwStatusEnum.Terminated,
         SeatoolSpwStatusEnum.Disapproved,
@@ -392,10 +406,12 @@ const oneMacSeatoolStatusCheck = async (seatoolRecord: Document) => {
     ) {
       return seatoolStatus;
     }
+
+    // otherwise return Formal RAI Response - Withdrawal Requested
     return SeatoolSpwStatusEnum.FormalRAIResponseWithdrawalRequested;
   }
 
-  return seatoolRecord.STATE_PLAN.SPW_STATUS_ID;
+  return seatoolStatus;
 };
 
 /**
@@ -513,8 +529,8 @@ export const insertNewSeatoolRecordsFromKafkaIntoMako = async (
       }
 
       if (
-        seatoolRecord.STATE_PLAN.SPW_STATUS_ID ===
-        SeatoolSpwStatusEnum.FormalRAIResponseWithdrawalRequested
+        seatoolDocument.seatoolStatus ===
+        SEATOOL_SPW_STATUS[SeatoolSpwStatusEnum.FormalRAIResponseWithdrawalRequested]
       ) {
         seatoolDocument.raiReceivedDate = null;
       }
