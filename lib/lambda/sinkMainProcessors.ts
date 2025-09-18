@@ -337,42 +337,51 @@ const getMakoDocTimestamps = async (kafkaRecords: KafkaRecord[]) => {
 };
 //  We need to make sure if we have a certain status in onemac that it takes priority over what comes over from seatool.
 //  Withdrawl-requested,RAI response withdrawal requested and if we responded to an rai request take priority
-const oneMacSeatoolStatusCheck = async (seatoolRecord: Document) => {
+export const oneMacSeatoolStatusCheck = async (seatoolRecord: Document) => {
   const existingPackage = await getPackage(seatoolRecord.id);
 
   const oneMacStatus = existingPackage?._source?.seatoolStatus;
   const seatoolStatus = seatoolRecord?.STATE_PLAN.SPW_STATUS_ID;
 
-  // If we have a withdrawal requested do not update unless the status in seatool is Withdrawn
+  // if the OneMAC status is Withdrawal Requested
   if (oneMacStatus === SEATOOL_STATUS.WITHDRAW_REQUESTED) {
+    // and the SEA Tool status is Withdrawn, return Withdrawn
     if (seatoolStatus === SeatoolSpwStatusEnum.Withdrawn) {
       return seatoolStatus;
     }
+    // otherwise, return Withdrawal Requested
     return SeatoolSpwStatusEnum.WithdrawalRequested;
   }
 
-  // Current onemac status is SUBMITTED
+  // if the OneMAC status is Submitted
   if (oneMacStatus === SEATOOL_STATUS.SUBMITTED) {
-    // Checking to see if the most recent entry is in the changelog is respond to rai
+    // check to see if any of the Changelog events are Respond-to-RAI
     const changelogs = await getPackageChangelog(seatoolRecord.id);
     const raiResponseEvents = changelogs.hits.hits.filter(
       (event) => event._source.event === "respond-to-rai",
     );
 
+    // if there are no RAI responses, return the current status in SEA Tool
     if (!raiResponseEvents || raiResponseEvents.length === 0) {
       return seatoolStatus;
     }
 
+    // if the SEA Tool status is Pending, return Pending
     if (seatoolStatus === SeatoolSpwStatusEnum.Pending) {
       return seatoolStatus;
     }
 
+    // if the SEA Tool status is Pending RAI, more checks are needed
     if (seatoolStatus === SeatoolSpwStatusEnum.PendingRAI) {
+      // get the most recent RAI response from the Changelog in OneMAC,
+      // there could be multiple responses and multiple RAIs
       const mostRecentRaiResponse = raiResponseEvents?.at(-1);
 
+      // get the RAI dates from the SEA Tool record
       const raiDate = seatool.getRaiDate(seatoolRecord);
-      // Only proceed if we have an event and a RAI requested date
+      // only proceed if we have a RAI response in OneMAC and a RAI requested date in SEA Tool
       if (mostRecentRaiResponse && raiDate.raiRequestedDate) {
+        // convert these values to UTC so that they are being compared without worrying about timezones
         const eventDate = new UTCDate(mostRecentRaiResponse._source.timestamp);
         const requestedDate = new UTCDate(raiDate.raiRequestedDate);
         // When a note is added or save to a RAI request, it presents as a new RAI request,
@@ -383,22 +392,32 @@ const oneMacSeatoolStatusCheck = async (seatoolRecord: Document) => {
           return SeatoolSpwStatusEnum.Submitted;
         }
       }
+      // if there are no RAI Responses in OneMAC or no RAI requested date in SEA Tool
+      // or if the RAI requested date in SEA Tool is after the RAI Response in OneMAC
+      // return the current SEA Tool Status
       return seatoolStatus;
     }
 
+    // if the SEA Tool status is Disapproved, return Disapproved
     if (seatoolStatus === SeatoolSpwStatusEnum.Disapproved) {
       return seatoolStatus;
     }
 
+    // if the SEA Tool status didn't match any of the above, return the current SEA Tool status
     return seatoolStatus;
   }
 
+  // if the OneMAC status is RAI Response Withdrawal Requested
   if (oneMacStatus === SEATOOL_STATUS.RAI_RESPONSE_WITHDRAW_REQUESTED) {
+    // if the SEA Tool status is Pending RAI, return Pending RAI
+    if (seatoolStatus === SeatoolSpwStatusEnum.PendingRAI) {
+      return seatoolStatus;
+    }
+
+    // if the SEA Tool status is terminating, then return the current SEA Tool status
     if (
       seatoolStatus &&
-      // keep the existing seatool status if any of these are true
       [
-        SeatoolSpwStatusEnum.PendingRAI,
         SeatoolSpwStatusEnum.Withdrawn,
         SeatoolSpwStatusEnum.Terminated,
         SeatoolSpwStatusEnum.Disapproved,
@@ -411,6 +430,7 @@ const oneMacSeatoolStatusCheck = async (seatoolRecord: Document) => {
     return SeatoolSpwStatusEnum.FormalRAIResponseWithdrawalRequested;
   }
 
+  // if none of the OneMAC statuses match the above, return the current SEA Tool status
   return seatoolStatus;
 };
 
