@@ -194,7 +194,9 @@ export const ActionForm = <Schema extends SchemaWithEnforcableProps>({
       try {
         await mutateAsync(formData);
       } catch (error) {
-        throw Error(`Error submitting form: ${error?.message || error}`);
+        throw Error(
+          `Error submitting form: ${error?.response?.data?.body?.message || error?.message || error}`,
+        );
       }
 
       const { documentChecker, property } = documentPollerArgs;
