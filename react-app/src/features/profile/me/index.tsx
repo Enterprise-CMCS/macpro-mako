@@ -307,7 +307,9 @@ export const MyProfile = () => {
                       </Button>
                     </li>
                   ) : (
-                    <StateAccessControls />
+                    <li>
+                      <StateAccessControls />
+                    </li>
                   )}
                 </ol>
               </>
