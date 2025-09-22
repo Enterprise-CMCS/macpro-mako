@@ -23,4 +23,3 @@ env.json
 # tests
 coverage
 .vitest
-nope/
