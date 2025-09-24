@@ -361,7 +361,7 @@ describe("Layout", () => {
       expect(window.location.assign).toHaveBeenCalledWith(expectedUrl);
 
       // Restore original window.location
-      // @ts-ignore resetting window.location
+      // @ts-ignore we need to reset the original window function
       window.location = originalLocation;
     });
 
@@ -385,7 +385,7 @@ describe("Layout", () => {
       );
 
       // Restore original window.location
-      // @ts-ignore resetting window.location
+      // @ts-ignore we need to reset the original window function
       window.location = originalLocation;
     });
   });
