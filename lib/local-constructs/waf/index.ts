@@ -47,6 +47,12 @@ export class WafConstruct extends Construct {
         awsIpReputationExcludeRules,
         awsBadInputsExcludeRules,
       ),
+      customResponseBodies: {
+        RequestBodySizeLimit: {
+          content: '{"body": {"message": "Request body too large"}}',
+          contentType: "APPLICATION_JSON",
+        },
+      },
       name: `${name}`,
     });
 
@@ -147,7 +153,14 @@ export class WafConstruct extends Construct {
       {
         name: "RequestBodySizeLimit",
         priority: 45,
-        action: { block: {} },
+        action: {
+          block: {
+            customResponse: {
+              responseCode: 413,
+              customResponseBodyKey: "RequestBodySizeLimit",
+            },
+          },
+        },
         statement: {
           sizeConstraintStatement: {
             fieldToMatch: {
