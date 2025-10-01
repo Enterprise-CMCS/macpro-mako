@@ -33,6 +33,8 @@ All documentation can be found on the [GitHub Wiki pages](https://github.com/Ent
 
 ## Contributing
 
+Made with love
+
 Work items for this project are tracked in Jira. Check out the [project kanban board](https://qmacbis.atlassian.net/jira/software/c/projects/OY2/boards/257) to view all work items affecting this repo.
 
 If you don't have access to Jira, would like access to Jira, or would like to drop us an idea without pursuing Jira access, please visit the [slack channel](https://cmsgov.slack.com/archives/C05ECGY0F5F).
