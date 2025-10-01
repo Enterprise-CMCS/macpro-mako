@@ -1,10 +1,10 @@
-# OneMAC Knowledge Transfer Documentation
+# OneMAC Complete Techincal Overview
 
 ## Executive Summary
 
 OneMAC is a comprehensive state government application that enables state employees to submit new Medicaid waivers, State Plan Amendments (SPAs), and amendments to existing programs. The application serves as a modernized replacement for the legacy OneMAC system, providing a streamlined interface for complex healthcare policy submissions while maintaining integration with existing CMS systems.
 
-**Important Note**: CMS users do not directly use the OneMAC application. Instead, CMS users work in **SEATool**, which updates the SEATool database. These changes are captured by BigMAC Kafka topics and consumed by OneMAC's processing layer for data synchronization.
+**Important Note**: Both state government users and CMS users access the OneMAC application, but with different roles and capabilities. CMS users have read-only access to review submissions, manage user roles, and view package statuses. CMS users also work in SEATool for official status updates, which flow back to OneMAC through BigMAC Kafka topics for data synchronization.
 
 ### Key Capabilities
 
@@ -25,7 +25,6 @@ graph TB
     
     subgraph "Data Ingestion Layer"
         Kafka[Kafka Event Streams]
-        Debezium[Debezium CDC]
     end
     
     subgraph "CMS Systems"
@@ -55,19 +54,17 @@ graph TB
         end
         
         subgraph "Frontend"
-            CloudFront[CloudFront Distribution]
-            ReactApp[React SPA]
+            OneMAC_Website[onemac.cms.gov<br/>CloudFront + React SPA]
         end
     end
     
     subgraph "Users"
         StateUsers[State Government Users]
-        CMSUsers[CMS Users<br/>Use SEATool, not OneMAC]
+        CMSUsers[CMS Users<br/>Read-only access to OneMAC<br/>+ SEATool for status updates]
     end
     
-    SEATool --> Debezium
+    SEATool --> Kafka
     OneMAC --> Kafka
-    Debezium --> Kafka
     
     CMSUsers --> SEATool
     SEATool --> SEAToolDB
@@ -84,7 +81,7 @@ graph TB
     SinkTypes --> OpenSearch
     SinkCpocs --> OpenSearch
     
-    ReactApp --> APIGateway
+    OneMAC_Website --> APIGateway
     APIGateway --> SearchAPI
     APIGateway --> SubmitAPI
     APIGateway --> UserMgmt
@@ -93,10 +90,10 @@ graph TB
     SubmitAPI --> S3
     SubmitAPI --> Kafka
     
-    CloudFront --> ReactApp
-    StateUsers --> CloudFront
+    StateUsers --> OneMAC_Website
+    CMSUsers --> OneMAC_Website
     
-    IDM --> ReactApp
+    IDM --> OneMAC_Website
     
     SES --> StateUsers
     SES --> CMSUsers
@@ -109,7 +106,7 @@ graph TB
 - **Frontend**: React 18 + TypeScript + Vite + TailwindCSS *[Source: `react-app/package.json`, `react-app/vite.config.ts`]*
 - **Backend**: AWS Lambda + Node.js + TypeScript *[Source: `lib/lambda/`, `lib/stacks/api.ts`]*
 - **Data Storage**: OpenSearch + S3 *[Source: `lib/stacks/data.ts`, `lib/stacks/uploads.ts`]*
-- **Event Streaming**: Apache Kafka + Debezium CDC *[Source: `lib/lambda/sinkMain.ts`, `.github/workflows/deploy.yml`]*
+- **Event Streaming**: Apache Kafka *[Source: `lib/lambda/sinkMain.ts`, `.github/workflows/deploy.yml`]*
 - **Infrastructure**: AWS CDK + CloudFormation *[Source: `lib/stacks/`, `cdk.json`]*
 - **Authentication**: AWS Cognito + IDM Integration *[Source: `lib/stacks/auth.ts`, `lib/stacks/data.ts`]*
 - **Testing**: Vitest + Playwright + Storybook *[Source: `test/playwright.config.ts`, `react-app/vitest.storybook.config.ts`]*
@@ -120,7 +117,7 @@ graph TB
 ```mermaid
 sequenceDiagram
     participant User as State User
-    participant UI as OneMAC Frontend
+    participant UI as onemac.cms.gov
     participant API as API Gateway
     participant Submit as Submit Lambda
     participant Kafka as Kafka Stream
@@ -485,14 +482,21 @@ graph TB
 
 ### Role-Based Access Control
 
+*[Source: `lib/packages/shared-types/user.ts` lines 53-77, `lib/packages/shared-utils/user-helper.ts` lines 90-110]*
+
 ```mermaid
 graph TB
-    subgraph "User Roles"
+    subgraph "State User Roles"
         StateSubmitter[State Submitter<br/>- Submit new packages<br/>- Respond to RAI<br/>- Upload documents]
         StateSystemAdmin[State System Admin<br/>- Manage state users<br/>- All state submitter permissions]
-        CMSReviewer[CMS Reviewer<br/>- Review submissions<br/>- Request additional info]
-        CMSRoleApprover[CMS Role Approver<br/>- Approve user roles<br/>- Manage access]
-        Helpdesk[Helpdesk<br/>- User support<br/>- Limited admin functions]
+    end
+    
+    subgraph "CMS User Roles"
+        DefaultCMSUser[Default CMS User<br/>- Read-only access<br/>- View all submissions<br/>- Dashboard access]
+        CMSReviewer[CMS Reviewer<br/>- Read-only access<br/>- View submissions<br/>- Dashboard access]
+        CMSRoleApprover[CMS Role Approver<br/>- Approve user roles<br/>- Manage user access<br/>- User management interface]
+        SystemAdmin[CMS System Admin<br/>- Full administrative access<br/>- All CMS permissions]
+        Helpdesk[Helpdesk<br/>- User support<br/>- Read-only access<br/>- Limited admin functions]
     end
     
     subgraph "Permissions"
@@ -504,10 +508,39 @@ graph TB
     StateSystemAdmin --> StateAccess
     StateSubmitter --> ActionPermissions
     StateSystemAdmin --> ActionPermissions
+    
+    DefaultCMSUser --> ActionPermissions
     CMSReviewer --> ActionPermissions
     CMSRoleApprover --> ActionPermissions
+    SystemAdmin --> ActionPermissions
     Helpdesk --> ActionPermissions
 ```
+
+### CMS User Capabilities in OneMAC
+
+*[Source: `lib/packages/shared-types/user.ts`, `react-app/src/features/dashboard/`, `react-app/src/features/user-roles/`]*
+
+**What CMS Users Can Do:**
+
+- **Dashboard Access**: View all state submissions across all states *[Source: `react-app/src/features/dashboard/index.test.tsx` lines 231-275]*
+- **Package Review**: Read-only access to submission details, attachments, and status history
+- **User Management**: CMS Role Approvers can approve/deny state user access requests *[Source: `react-app/src/components/Layout/index.tsx` lines 62-67]*
+- **Cross-State Visibility**: Unlike state users, CMS users can see submissions from all states
+- **Role Administration**: System admins and role approvers can manage user permissions
+
+**What CMS Users Cannot Do:**
+
+- **Submit New Packages**: Only state users can create new submissions
+- **Respond to RAI**: Cannot respond to requests for additional information
+- **Upload Documents**: Cannot upload subsequent documents or make changes
+- **Withdraw Packages**: Cannot initiate package withdrawals
+
+**CMS Role Hierarchy** *[Source: `lib/packages/shared-utils/user-helper.ts` lines 76-88]*:
+
+- **defaultcmsuser/cmsreviewer**: Basic read-only access
+- **cmsroleapprover**: Can approve state system admin requests
+- **systemadmin**: Can approve all role types including helpdesk and cmsroleapprover
+- **helpdesk**: User support with read-only access
 
 ## Package Lifecycle
 
@@ -859,7 +892,7 @@ sequenceDiagram
     Kafka->>OneMAC: Update package status
     OneMAC->>State: Email notification of status change
     
-    Note over SEATool,CMS: CMS users never directly<br/>access OneMAC interface
+    Note over SEATool,CMS: CMS users have read-only<br/>access to OneMAC interface
     Note over Kafka: BigMAC topics carry<br/>SEATool status updates
 ```
 
@@ -892,7 +925,6 @@ graph TB
     end
     
     subgraph "Integration Layer"
-        Debezium[Debezium CDC<br/>- Database change capture<br/>- Real-time sync]
         Kafka[Kafka Streams<br/>- Event streaming<br/>- Message queuing]
         Transform[Data Transformation<br/>- Schema mapping<br/>- Validation]
     end
@@ -902,72 +934,125 @@ graph TB
         Application[OneMAC Application<br/>- User interface<br/>- Business logic]
     end
     
-    SEATool --> Debezium
-    OneMAC --> Kafka
     SEATool --> Kafka
+    OneMAC --> Kafka
     IDM --> Application
     
-    Debezium --> Kafka
     Kafka --> Transform
     Transform --> OpenSearch
     OpenSearch --> Application
 ```
 
-### Data Reconciliation
-
-The system implements sophisticated data reconciliation logic:
-
-- **Timestamp-based Conflict Resolution**: Uses timestamps to determine data freshness
-- **Status Priority Rules**: OneMAC statuses take precedence for specific scenarios
-- **Bi-directional Sync**: Changes flow both ways between systems
-- **Conflict Detection**: Automatic detection and logging of data conflicts
-
-## Future Considerations
-
-### Planned Enhancements
-
-1. **API Modernization**: Migration to GraphQL for more efficient data fetching
-2. **Real-time Updates**: WebSocket integration for live status updates
-3. **Advanced Analytics**: Enhanced reporting and dashboard capabilities
-4. **Mobile Optimization**: Improved mobile experience for field users
-5. **AI Integration**: Automated document analysis and validation
-
-### Technical Debt
-
-1. **Legacy Code Cleanup**: Gradual removal of OneMAC compatibility code
-2. **Schema Standardization**: Unification of data schemas across systems
-3. **Performance Optimization**: Query optimization and caching improvements
-4. **Documentation Updates**: Continuous documentation maintenance
-
-## Troubleshooting Guide
-
-### Common Issues
-
-1. **Consumer Lag**: Monitor Kafka consumer lag metrics
-2. **OpenSearch Performance**: Monitor query response times and cluster health
-3. **Email Delivery**: Check SES sending statistics and bounce rates
-4. **Authentication Issues**: Verify Cognito and IDM integration
-5. **Data Sync Problems**: Check Kafka topic health and Lambda error rates
-
-### Support Contacts
-
-- **Development Team**: Primary development and maintenance
-- **DevOps Team**: Infrastructure and deployment support
-- **CMS Business Team**: Business requirements and user support
-- **Security Team**: Security compliance and incident response
-
-## Conclusion
-
-OneMAC represents a comprehensive modernization of the Medicaid waiver and state plan submission process. The application successfully bridges legacy systems while providing a modern, accessible, and scalable platform for state government users. CMS users continue to use SEATool for package review and approval, with status updates flowing back to OneMAC through BigMAC Kafka topics. The event-driven architecture ensures data consistency across multiple systems while the robust testing strategy maintains high quality and accessibility standards.
-
-The system's design emphasizes reliability, security, and user experience while maintaining the complex business logic required for healthcare policy administration. The separation of concerns between OneMAC (state users) and SEATool (CMS users) allows each system to be optimized for its specific user base while maintaining seamless data integration. The extensive monitoring and alerting capabilities ensure operational excellence, while the comprehensive testing strategy maintains code quality and accessibility compliance.
-
 ## Quick Start Guide for New Team Members
 
-**What OneMAC Does**: OneMAC is essentially a digital submission portal where state government employees submit healthcare policy documents (Medicaid waivers and state plan amendments) to CMS for approval. Think of it as a sophisticated form system with file uploads, status tracking, and email notifications. State users fill out forms, upload supporting documents, and track their submission status, while CMS reviewers work in a separate system called SEATool to review and approve these submissions.
+**What OneMAC Does**: OneMAC is essentially a digital submission portal where state government employees submit healthcare policy documents (Medicaid waivers and state plan amendments) to CMS for approval. Think of it as a sophisticated form system with file uploads, status tracking, and email notifications. State users fill out forms, upload supporting documents, and track their submission status, while CMS users have read-only access to view and review submissions in OneMAC, plus they use SEATool for official status updates.
 
 **How Data Flows**: The application follows an event-driven architecture centered around Kafka message streams. When a state user submits a form through the React frontend, it triggers a Lambda function that stores files in S3 and publishes an event to Kafka. Multiple "sink" Lambda functions consume these Kafka events and index the data into OpenSearch (our search database). When CMS users make decisions in SEATool, those changes also flow through Kafka back to OneMAC, keeping both systems synchronized. Email notifications are automatically triggered at key points in this workflow.
 
 **Technical Structure**: The codebase is organized into clear layers - React frontend (`react-app/`), Lambda backend functions (`lib/lambda/`), AWS infrastructure definitions (`lib/stacks/`), shared TypeScript types (`lib/packages/shared-types/`), and comprehensive tests (`test/`). The infrastructure is defined as code using AWS CDK, and everything deploys automatically through GitHub Actions. Each Git branch gets its own complete AWS environment, making it safe to develop and test features in isolation.
 
 **Key Integration Points**: The most complex part of the system is reconciling data between three sources: new OneMAC submissions, legacy OneMAC historical data, and authoritative SEATool data. The `sinkMainProcessors.ts` file contains the business logic that handles conflicts between these systems - for example, determining whether a OneMAC withdrawal request should override a SEATool status update based on timestamps. Understanding this reconciliation logic is crucial for maintaining data integrity across the entire healthcare policy workflow.
+
+## Glossary and External Resources
+
+### Key Terms and Definitions
+
+**1915(b) Waiver** - Medicaid waiver that allows states to provide services through managed care delivery systems or otherwise limit people's choice of provider.
+
+- *Official Resource*: [CMS 1915(b) Waiver Information](https://www.medicaid.gov/medicaid/section-1115-demonstrations/1915-b-waivers/index.html)
+
+**1915(c) Waiver** - Home and Community-Based Services (HCBS) waiver that allows states to provide long-term care services in home and community settings rather than institutional settings.
+
+- *Official Resource*: [CMS 1915(c) HCBS Waiver Information](https://www.medicaid.gov/medicaid/home-community-based-services/home-community-based-services-authorities/home-community-based-services-1915c/index.html)
+
+**Appendix K** - Special amendment to 1915(c) waivers that allows states to temporarily modify waiver services during emergencies (like COVID-19).
+
+- *Official Resource*: [CMS Appendix K Emergency Authority](https://www.medicaid.gov/state-resource-center/downloads/covid-19-appendix-k-template.pdf)
+
+**CHIP SPA** - Children's Health Insurance Program State Plan Amendment, modifications to state CHIP programs.
+
+- *Official Resource*: [CMS CHIP Information](https://www.medicaid.gov/chip/index.html)
+
+**Medicaid SPA** - State Plan Amendment, formal requests to modify a state's Medicaid program.
+
+- *Official Resource*: [CMS State Plan Amendments](https://www.medicaid.gov/medicaid/medicaid-state-plan-amendments/index.html)
+
+**RAI (Request for Additional Information)** - Formal CMS request for additional documentation or clarification on a submission.
+
+- *Official Resource*: [CMS Review Process Guidelines](https://www.medicaid.gov/medicaid/medicaid-state-plan-amendments/downloads/review-guide.pdf)
+
+**SEATool** - State Electronic Access Tool, CMS's system for reviewing and approving state submissions.
+
+- *Official Resource*: [CMS SEATool User Guide](https://www.medicaid.gov/state-resource-center/medicaid-state-technical-assistance/seatool/index.html)
+
+**CPOC (Central Point of Contact)** - Designated state and CMS contacts for Medicaid/CHIP communications.
+
+- *Official Resource*: [CMS State Contacts Directory](https://www.medicaid.gov/about-us/contact-us/contact-state-page/index.html)
+
+**NOSO (Notice of State Opportunity)** - CMS notification to states about available federal funding or policy opportunities.
+
+### External System References
+
+**BigMAC** - The Kafka topic system that carries data between CMS systems and OneMAC.
+
+**IDM (Identity Management)** - CMS's centralized identity and access management system.
+
+### Regulatory and Compliance Resources
+
+**Section 508 Compliance** - Federal accessibility requirements for electronic and information technology.
+
+- *Official Resource*: [Section 508.gov](https://www.section508.gov/)
+
+**WCAG 2.1 AA** - Web Content Accessibility Guidelines Level AA compliance standards.
+
+- *Official Resource*: [WCAG 2.1 Guidelines](https://www.w3.org/WAI/WCAG21/quickref/)
+
+**HIPAA** - Health Insurance Portability and Accountability Act privacy and security requirements.
+
+- *Official Resource*: [HHS HIPAA Information](https://www.hhs.gov/hipaa/index.html)
+
+### CMS Program Resources
+
+**Medicaid.gov** - Primary resource for Medicaid program information
+
+- *Link*: [https://www.medicaid.gov/](https://www.medicaid.gov/)
+
+**CMS State Resource Center** - Technical assistance and guidance for states
+
+- *Link*: [https://www.medicaid.gov/state-resource-center/index.html](https://www.medicaid.gov/state-resource-center/index.html)
+
+**CMS Waiver List** - Current approved waivers by state
+
+- *Link*: [https://www.medicaid.gov/medicaid/section-1115-demonstrations/index.html](https://www.medicaid.gov/medicaid/section-1115-demonstrations/index.html)
+
+**CHIP Program Information** - Children's Health Insurance Program details
+
+- *Link*: [https://www.medicaid.gov/chip/index.html](https://www.medicaid.gov/chip/index.html)
+
+### Technical Resources
+
+**AWS CDK Documentation** - Infrastructure as Code framework used by OneMAC
+
+- *Link*: [https://docs.aws.amazon.com/cdk/](https://docs.aws.amazon.com/cdk/)
+
+**Apache Kafka Documentation** - Event streaming platform documentation
+
+- *Link*: [https://kafka.apache.org/documentation/](https://kafka.apache.org/documentation/)
+
+**OpenSearch Documentation** - Search and analytics engine documentation
+
+- *Link*: [https://opensearch.org/docs/](https://opensearch.org/docs/)
+
+### Acronym Quick Reference
+
+- **CDC**: Change Data Capture
+- **CHIP**: Children's Health Insurance Program  
+- **CMS**: Centers for Medicare & Medicaid Services
+- **CPOC**: Central Point of Contact
+- **DLQ**: Dead Letter Queue
+- **HCBS**: Home and Community-Based Services
+- **IDM**: Identity Management
+- **NOSO**: Notice of State Opportunity
+- **RAI**: Request for Additional Information
+- **SPA**: State Plan Amendment
+- **VPC**: Virtual Private Cloud
