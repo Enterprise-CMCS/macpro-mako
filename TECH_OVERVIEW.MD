@@ -1043,16 +1043,4 @@ graph TB
 
 - *Link*: [https://opensearch.org/docs/](https://opensearch.org/docs/)
 
-### Acronym Quick Reference
-
-- **CDC**: Change Data Capture
-- **CHIP**: Children's Health Insurance Program  
-- **CMS**: Centers for Medicare & Medicaid Services
-- **CPOC**: Central Point of Contact
-- **DLQ**: Dead Letter Queue
-- **HCBS**: Home and Community-Based Services
-- **IDM**: Identity Management
-- **NOSO**: Notice of State Opportunity
-- **RAI**: Request for Additional Information
-- **SPA**: State Plan Amendment
-- **VPC**: Virtual Private Cloud
+Updated Oct 1st 2025 by the MACPRO Engineering Team
