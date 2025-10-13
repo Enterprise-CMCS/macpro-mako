@@ -24,3 +24,7 @@ env.json
 accessibility
 coverage
 .vitest
+
+.idea
+.vscode
+.history
