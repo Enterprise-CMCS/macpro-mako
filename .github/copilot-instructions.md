@@ -19,7 +19,7 @@
 
 ## Tooling & Commands
 
-- Use Bun scripts (`bun run build`, `bun run lint`) and the `./run` CLI wrapper for installs, tests, and UI work.
+- Use Bun scripts (`bun run build`, `bun run lint`) and the `./run` CLI wrapper for installs, tests, and UI work. For targeted testing, use `./run test --run <filter>` to run specific test files.
 - Use `./run --help` additional flags for specific subcommands.
 - Prefer Vitest for unit tests; place `*.test.ts` files beside sources.
 

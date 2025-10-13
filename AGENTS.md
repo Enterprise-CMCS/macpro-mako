@@ -28,7 +28,7 @@
 - Core read/search handlers (`search.ts`, `getForm.ts`, `getAllForms.ts`) rely on shared utilities in `lib/lambda/libs/**` and OpenSearch helpers from `libs/opensearch-lib`.
 - Submission flows (`lib/lambda/submit/*`) generate payloads, handle missing attachments, and publish Kafka events; update flows live under `lib/lambda/update/*`.
 - Kafka sink processors (`sinkMain.ts`, `sinkChangelog.ts`, etc.) and maintenance jobs (`runReindex.ts`, `setupIndex.ts`) share middleware in `lib/lambda/middleware/` for auth, permissions, and normalization.
-- Unit tests for each handler sit beside the source (e.g., `getAttachmentUrl.test.ts`); run `./run test --filter lib/lambda` or `bun run build && bun run lint` before deploying backend changes.
+- Unit tests for each handler sit beside the source (e.g., `getAttachmentUrl.test.ts`); run `./run test --run lib/lambda` or `bun run build && bun run lint` before deploying backend changes.
 
 ## Build, Test, and Development Commands
 
@@ -49,7 +49,7 @@ Prefer the root `./run` wrapper for day-to-day tasks. It validates `direnv`, Nod
 
 ### Testing
 
-- `./run test` — execute Vitest suites; add `--coverage`, `--ui`, or `--storybook` for alternate modes (storybook mode prebuilds the UI and installs Playwright binaries).
+- `./run test` — execute Vitest suites; add `--coverage`, `--ui`, or `--storybook` for alternate modes. Use `--run` to disable watch mode. Support file filtering: `./run test --run getReportUrl` or `./run test --run lib/lambda/specific.test.ts` (storybook mode prebuilds the UI and installs Playwright binaries).
 - `AGENT_MODE=mocked ./run e2e [--ui]` — run Playwright E2E specs; the CLI installs browser deps before invoking the proper Bun script.
 - `bun run lint` / `bun run format:check` — enforce ESLint and Prettier; prefer `bun run format:write` when you need to apply fixes.
 
