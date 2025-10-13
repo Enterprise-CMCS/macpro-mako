@@ -31,4 +31,4 @@
 ## When Unsure
 
 - Reference existing patterns in `lib/` or `react-app/` before proposing new frameworks or dependencies.
-- **DO NOT HALUCINATE:** If repository guidance conflicts, defer to human review and note the ambiguity.
+- **DO NOT HALLUCINATE:** If repository guidance conflicts, defer to human review and note the ambiguity.
