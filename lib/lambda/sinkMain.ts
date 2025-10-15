@@ -20,7 +20,7 @@ export const handler: Handler<KafkaEvent> = async (event) => {
 
         console.log(`topic: ${topic}`);
         console.log(`records: ${JSON.stringify(records, null, 2)}`);
-        
+
         switch (topic) {
           case "aws.onemac.migration.cdc":
             return insertOneMacRecordsFromKafkaIntoMako(records, topicPartition);
