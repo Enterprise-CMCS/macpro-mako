@@ -22,10 +22,10 @@ const PackageDetailsGrid = ({ details }: PackageDetailsGridProps) => (
   <div className="two-cols gap-y-6 sm:gap-y-6">
     {details.map(({ label, value, canView = true }) => {
       return canView ? (
-        <dl key={label}>
-          <dt className="font-bold">{label}</dt>
-          <dd className="py-2">{value}</dd>
-        </dl>
+        <div key={label}>
+          <h3 className="font-bold">{label}</h3>
+          <div className="py-2">{value}</div>
+        </div>
       ) : null;
     })}
   </div>

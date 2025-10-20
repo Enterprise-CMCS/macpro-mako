@@ -11,9 +11,9 @@ export type ErrorResponse = {
 };
 
 interface ParsedKafkaEvent {
+  id: string;
   event?: string;
   authority?: string;
-  timestamp: number;
 }
 
 export const handleOpensearchError = (error: unknown): ErrorResponse => {
@@ -44,14 +44,18 @@ export const handleOpensearchError = (error: unknown): ErrorResponse => {
  * @param timestamp the timestamp of the call to the handler
  * @returns the original timestamp, unless the record is a Respond to RAI event for a CHIP SPA.
  */
-export const adjustTimestamp = (parsedRecord: ParsedKafkaEvent, item: ItemResult): number => {
+export const adjustTimestamp = (
+  parsedRecord: ParsedKafkaEvent,
+  item: ItemResult,
+  timestamp: number,
+): number => {
   if (
     !(
       parsedRecord?.event === "respond-to-rai" &&
       parsedRecord?.authority?.toUpperCase() === "CHIP SPA"
     )
   ) {
-    return parsedRecord.timestamp;
+    return timestamp;
   }
 
   const submissionDate = item?._source.submissionDate || "";
@@ -59,7 +63,7 @@ export const adjustTimestamp = (parsedRecord: ParsedKafkaEvent, item: ItemResult
 
   if (!submissionDate || !raiRequestedDate) {
     console.error("error parsing os record");
-    return parsedRecord.timestamp;
+    return timestamp;
   }
 
   // length of time from when the RAI was requested until now

@@ -2,46 +2,39 @@
 
 exports[`Package Status test > The package status component is called successfully 1`] = `
 <DocumentFragment>
-  <dl
-    aria-labelledby="package-status-heading"
+  <div
     class="my-3 font-bold text-xl"
   >
-    <dt />
-    <dd
+    <div />
+    <div
       class="text-xs opacity-80"
     >
-      <ul>
-        <li>
-          <p
-            class="mt-1"
-          >
-            <span
-              class="font-bold mr-1"
-            >
-              ·
-            </span>
-            <span>
-              Withdraw Formal RAI Response - Enabled
-            </span>
-          </p>
-        </li>
-        <li>
-          <p
-            class="mt-1"
-          >
-            <span
-              class="font-bold mr-1"
-            >
-              ·
-            </span>
-            <span>
-              2nd Clock
-            </span>
-          </p>
-        </li>
-      </ul>
-    </dd>
-  </dl>
+      <p
+        class="mt-1"
+      >
+        <span
+          class="font-bold mr-1"
+        >
+          ·
+        </span>
+        <span>
+          Withdraw Formal RAI Response - Enabled
+        </span>
+      </p>
+      <p
+        class="mt-1"
+      >
+        <span
+          class="font-bold mr-1"
+        >
+          ·
+        </span>
+        <span>
+          2nd Clock
+        </span>
+      </p>
+    </div>
+  </div>
   ,
 </DocumentFragment>
 `;

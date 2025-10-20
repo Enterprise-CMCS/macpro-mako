@@ -194,12 +194,6 @@ export const ActionForm = <Schema extends SchemaWithEnforcableProps>({
       try {
         await mutateAsync(formData);
       } catch (error) {
-        if (error?.response?.status === 413) {
-          throw Error(
-            "Upload failed: Your submission is too large. Try uploading fewer files at a time or shortening long file names.",
-          );
-        }
-
         throw Error(`Error submitting form: ${error?.message || error}`);
       }
 

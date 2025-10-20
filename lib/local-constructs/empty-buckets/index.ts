@@ -80,7 +80,7 @@ export class EmptyBuckets extends Construct {
     });
 
     const lambda = new NodejsFunction(this, "Lambda", {
-      runtime: Runtime.NODEJS_20_X,
+      runtime: Runtime.NODEJS_18_X,
       handler: "handler",
       depsLockFilePath: join(__dirname, "../../../bun.lockb"),
       entry: join(__dirname, "src", "emptyBuckets.ts"),

@@ -1,4 +1,5 @@
 import { storybookTest } from "@storybook/addon-vitest/vitest-plugin";
+import { cpus } from "os";
 import { join } from "path";
 import { configDefaults, defineConfig } from "vitest/config";
 
@@ -59,6 +60,15 @@ export default defineConfig({
       },
     },
     testTimeout: 10000,
+    pool: "threads",
+    poolOptions: {
+      threads: {
+        singleThread: false,
+        isolate: true,
+        maxThreads: Math.max(1, Math.floor(cpus().length * 0.75)),
+        minThreads: Math.max(1, Math.floor(cpus().length * 0.5)),
+      },
+    },
     coverage: {
       provider: "istanbul",
       reportsDirectory: join(__dirname, "coverage"),

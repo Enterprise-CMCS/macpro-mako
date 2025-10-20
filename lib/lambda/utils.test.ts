@@ -25,11 +25,12 @@ describe("utils", () => {
       expect(
         await adjustTimestamp(
           {
+            id: WITHDRAW_RAI_ITEM_C,
             event: "new-chip-submission",
             authority: Authority.CHIP_SPA as string,
-            timestamp,
           },
           items[WITHDRAW_RAI_ITEM_C] as ItemResult,
+          timestamp,
         ),
       ).toEqual(timestamp);
     });
@@ -40,11 +41,12 @@ describe("utils", () => {
       expect(
         await adjustTimestamp(
           {
+            id: WITHDRAW_RAI_ITEM_C,
             event: "respond-to-rai",
             authority: Authority.MED_SPA as string,
-            timestamp,
           },
           items[WITHDRAW_RAI_ITEM_C] as ItemResult,
+          timestamp,
         ),
       ).toEqual(timestamp);
     });
@@ -55,11 +57,12 @@ describe("utils", () => {
       expect(
         await adjustTimestamp(
           {
+            id: WITHDRAW_RAI_ITEM_B,
             event: "respond-to-rai",
             authority: Authority.CHIP_SPA as string,
-            timestamp,
           },
           items[WITHDRAW_RAI_ITEM_B] as ItemResult,
+          timestamp,
         ),
       ).toEqual(timestamp);
     });
@@ -70,11 +73,12 @@ describe("utils", () => {
       expect(
         await adjustTimestamp(
           {
+            id: WITHDRAW_RAI_ITEM_D,
             event: "respond-to-rai",
             authority: Authority.CHIP_SPA as string,
-            timestamp,
           },
           items[WITHDRAW_RAI_ITEM_D] as ItemResult,
+          timestamp,
         ),
       ).toEqual(timestamp);
     });
@@ -84,11 +88,12 @@ describe("utils", () => {
       expect(
         await adjustTimestamp(
           {
+            id: WITHDRAW_RAI_ITEM_C,
             event: "respond-to-rai",
             authority: Authority.CHIP_SPA as string,
-            timestamp,
           },
           items[WITHDRAW_RAI_ITEM_C] as ItemResult,
+          timestamp,
         ),
       ).toEqual(new UTCDate(2024, 1, 29).getTime());
     });

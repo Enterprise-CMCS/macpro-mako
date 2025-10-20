@@ -38,7 +38,7 @@ export class ManageUsers extends Construct {
     const manageUsers = new NodejsFunction(this, "LambdaFunction", {
       entry: join(__dirname, "src/manageUsers.ts"),
       handler: "handler",
-      runtime: Runtime.NODEJS_20_X,
+      runtime: Runtime.NODEJS_18_X,
       depsLockFilePath: join(__dirname, "../../../bun.lockb"),
       timeout: Duration.minutes(5),
       logGroup,

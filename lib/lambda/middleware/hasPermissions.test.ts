@@ -1,8 +1,6 @@
-import { zodValidator } from "@dannywrayuk/middy-zod-validator";
 import middy, { Request } from "@middy/core";
 import httpErrorHandler from "@middy/http-error-handler";
-import httpJsonBodyParser from "@middy/http-json-body-parser";
-import { APIGatewayEvent, APIGatewayProxyEventHeaders, Context } from "aws-lambda";
+import { APIGatewayEvent, Context } from "aws-lambda";
 import {
   CMS_ROLE_APPROVER_USER,
   getActiveStatesForUserByEmail,
@@ -15,13 +13,16 @@ import {
   TEST_STATE_SUBMITTER_USER,
   TEST_STATE_SYSTEM_ADMIN_USER,
 } from "mocks";
+import items from "mocks/data/items";
 import { FullUser } from "shared-types";
 import { main } from "shared-types/opensearch";
 import { describe, expect, it } from "vitest";
-import { z } from "zod";
 
 import { canViewPackage, canViewUser } from "./hasPermissions";
-import { storeAuthUserInRequest } from "./utils";
+import { storeAuthUserInRequest, storePackageInRequest } from "./utils";
+
+const TEST_ITEM = items[TEST_ITEM_ID] as main.ItemResult;
+const HI_TEST_ITEM = items[HI_TEST_ITEM_ID] as main.ItemResult;
 
 const TEST_STATE_USER: FullUser = {
   ...TEST_STATE_SUBMITTER_USER,
@@ -51,6 +52,7 @@ describe("Permissions middleware", () => {
   describe("canViewPackage", () => {
     const setupHandler = ({
       user = undefined,
+      packageResult = undefined,
     }: { user?: FullUser; packageResult?: main.ItemResult } = {}) =>
       middy()
         .use(
@@ -58,23 +60,12 @@ describe("Permissions middleware", () => {
             fallbackMessage: JSON.stringify({ message: "Internal server error" }),
           }),
         )
-        .use(httpJsonBodyParser())
-        .use(
-          zodValidator({
-            eventSchema: z
-              .object({
-                body: z
-                  .object({
-                    id: z.string(),
-                  })
-                  .strict(),
-              })
-              .passthrough(),
-          }),
-        )
         .before(async (request: Request) => {
           if (user) {
             storeAuthUserInRequest(user, request, false);
+          }
+          if (packageResult) {
+            storePackageInRequest(packageResult, request, false);
           }
         })
         .use(canViewPackage())
@@ -85,13 +76,10 @@ describe("Permissions middleware", () => {
 
     it("should not throw an error if the state user has permissions", async () => {
       const event = {
-        body: JSON.stringify({ id: TEST_ITEM_ID }),
-        headers: {
-          "Content-Type": "application/json",
-        } as APIGatewayProxyEventHeaders,
+        body: "test",
       } as APIGatewayEvent;
 
-      const handler = setupHandler({ user: TEST_STATE_USER });
+      const handler = setupHandler({ user: TEST_STATE_USER, packageResult: TEST_ITEM });
 
       const res = await handler(event, {} as Context);
 
@@ -102,13 +90,10 @@ describe("Permissions middleware", () => {
 
     it("should not throw an error if the user is a CMS user", async () => {
       const event = {
-        body: JSON.stringify({ id: TEST_ITEM_ID }),
-        headers: {
-          "Content-Type": "application/json",
-        } as APIGatewayProxyEventHeaders,
+        body: "test",
       } as APIGatewayEvent;
 
-      const handler = setupHandler({ user: TEST_CMS_USER });
+      const handler = setupHandler({ user: TEST_CMS_USER, packageResult: TEST_ITEM });
 
       const res = await handler(event, {} as Context);
 
@@ -119,13 +104,10 @@ describe("Permissions middleware", () => {
 
     it("should return 500 if the user is not set", async () => {
       const event = {
-        body: JSON.stringify({ id: TEST_ITEM_ID }),
-        headers: {
-          "Content-Type": "application/json",
-        } as APIGatewayProxyEventHeaders,
+        body: "test",
       } as APIGatewayEvent;
 
-      const handler = setupHandler();
+      const handler = setupHandler({ packageResult: TEST_ITEM });
 
       const res = await handler(event, {} as Context);
 
@@ -134,12 +116,9 @@ describe("Permissions middleware", () => {
       expect(res.body).toEqual(JSON.stringify({ message: "Internal server error" }));
     });
 
-    it("should return 400 if the package is not set", async () => {
+    it("should return 500 if the package is not set", async () => {
       const event = {
-        body: JSON.stringify({}),
-        headers: {
-          "Content-Type": "application/json",
-        } as APIGatewayProxyEventHeaders,
+        body: "test",
       } as APIGatewayEvent;
 
       const handler = setupHandler({ user: TEST_STATE_USER });
@@ -147,32 +126,16 @@ describe("Permissions middleware", () => {
       const res = await handler(event, {} as Context);
 
       expect(res).toBeTruthy();
-      expect(res.statusCode).toEqual(400);
-      expect(res.body).toEqual(
-        JSON.stringify({
-          message: "Event failed validation",
-          error: [
-            {
-              code: "invalid_type",
-              expected: "string",
-              received: "undefined",
-              path: ["body", "id"],
-              message: "Required",
-            },
-          ],
-        }),
-      );
+      expect(res.statusCode).toEqual(500);
+      expect(res.body).toEqual(JSON.stringify({ message: "Internal server error" }));
     });
 
     it("should return 403 if the state user has does not have permissions for the state of the package", async () => {
       const event = {
-        body: JSON.stringify({ id: HI_TEST_ITEM_ID }),
-        headers: {
-          "Content-Type": "application/json",
-        } as APIGatewayProxyEventHeaders,
+        body: "test",
       } as APIGatewayEvent;
 
-      const handler = setupHandler({ user: TEST_STATE_USER });
+      const handler = setupHandler({ user: TEST_STATE_USER, packageResult: HI_TEST_ITEM });
 
       const res = await handler(event, {} as Context);
 

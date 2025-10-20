@@ -21,6 +21,5 @@ DS_Store
 env.json
 
 # tests
-accessibility
 coverage
 .vitest

@@ -23,7 +23,6 @@ export const SUBMITTED_RAI_ID = "MD-0005.R01.06";
 export const RAI_WITHDRAWAL_ID = "MD-0005.R01.07";
 export const TEST_SPA_ITEM_ID = "MD-11-2020";
 export const TEST_SPA_ITEM_RAI_ID = "MD-11-2022";
-export const NEW_CHIP_ITEM_ID = "MD-12-2024";
 export const TEST_PACKAGE_STATUS_ID = "MD-11-2021";
 export const TEST_SPA_ITEM_TO_SPLIT = "MD-12-2020";
 export const TEST_SPLIT_SPA_ITEM_ID = "MD-12-2020-Z";
@@ -38,14 +37,12 @@ export const WITHDRAW_EMAIL_SENT = "VA-2234.R11.50";
 export const CONTRACTING_INITIAL_ITEM_ID = "MD-007.R00.00";
 export const CONTRACTING_AMEND_ITEM_ID = "MD-007.R00.01";
 export const MISSING_CHANGELOG_ITEM_ID = "MD-008.R00.00";
-export const CAP_INIT_1915B_ITEM_ID = "MD-009.R00.00";
-export const APP_K_1915C_ITEM_ID = "MD-010.R00.00";
 export const WITHDRAWN_CHANGELOG_ITEM_ID = "VA-11-2020";
 export const INITIAL_RELEASE_APPK_ITEM_ID = "MD-010.R00.01";
 export const WITHDRAW_APPK_ITEM_ID = "MD-010.R00.02";
 export const EXISTING_ITEM_APPROVED_APPK_ITEM_ID = "MD-012.R00.01";
 export const SUBMISSION_ERROR_ITEM_ID = "Throw Submission Error";
-export const GET_ERROR_ITEM_ID = "MD-Throw Get Item Error";
+export const GET_ERROR_ITEM_ID = "Throw Get Item Error";
 export const WITHDRAW_RAI_ITEM_B = "VA-2234.R11.02";
 export const WITHDRAW_RAI_ITEM_C = "VA-2234.R11.03";
 export const WITHDRAW_RAI_ITEM_D = "VA-12-2020";
@@ -578,86 +575,6 @@ const items: Record<string, TestItemResult> = {
       authority: "Medicaid SPA",
     },
   },
-  [NEW_CHIP_ITEM_ID]: {
-    _id: NEW_CHIP_ITEM_ID,
-    found: true,
-    _source: {
-      id: NEW_CHIP_ITEM_ID,
-      seatoolStatus: SEATOOL_STATUS.APPROVED,
-      stateStatus: statusToDisplayToStateUser[SEATOOL_STATUS.APPROVED],
-      cmsStatus: statusToDisplayToCmsUser[SEATOOL_STATUS.APPROVED],
-      actionType: "New",
-      state: "MD",
-      origin: "OneMAC",
-      submissionDate: "2024-10-27T18:17:21.557Z",
-      changedDate: "2024-11-26T18:17:21.557Z",
-      makoChangedDate: "2024-11-26T18:17:21.557Z",
-      changelog: [
-        {
-          _id: `${NEW_CHIP_ITEM_ID}-001`,
-          _source: {
-            id: `${NEW_CHIP_ITEM_ID}-0001`,
-            event: "new-chip-submission",
-            packageId: NEW_CHIP_ITEM_ID,
-          },
-        },
-      ],
-      authority: "CHIP SPA",
-    },
-  },
-  [CAP_INIT_1915B_ITEM_ID]: {
-    _id: CAP_INIT_1915B_ITEM_ID,
-    found: true,
-    _source: {
-      id: CAP_INIT_1915B_ITEM_ID,
-      seatoolStatus: SEATOOL_STATUS.APPROVED,
-      stateStatus: statusToDisplayToStateUser[SEATOOL_STATUS.APPROVED],
-      cmsStatus: statusToDisplayToCmsUser[SEATOOL_STATUS.APPROVED],
-      actionType: "New",
-      authority: "1915(b)",
-      origin: "OneMAC",
-      state: "MD",
-      changelog: [
-        {
-          _id: `${CAP_INIT_1915B_ITEM_ID}-001`,
-          _source: {
-            id: `${CAP_INIT_1915B_ITEM_ID}-0001`,
-            event: "capitated-initial",
-            proposedEffectiveDate: 1677715200000, // Mar 1, 2023
-            attachments: [],
-          },
-        },
-      ],
-    },
-  },
-  [APP_K_1915C_ITEM_ID]: {
-    _id: APP_K_1915C_ITEM_ID,
-    found: true,
-    _source: {
-      id: WITHDRAWAL_REQUESTED_ID,
-      seatoolStatus: SEATOOL_STATUS.WITHDRAW_REQUESTED,
-      stateStatus: statusToDisplayToStateUser[SEATOOL_STATUS.WITHDRAW_REQUESTED],
-      cmsStatus: statusToDisplayToCmsUser[SEATOOL_STATUS.WITHDRAW_REQUESTED],
-      actionType: "New",
-      authority: "1915(c)",
-      state: "MD",
-      origin: "OneMAC",
-      changelog: [
-        {
-          _id: `${APP_K_1915C_ITEM_ID}-001`,
-          _source: {
-            id: `${APP_K_1915C_ITEM_ID}-0001`,
-            event: "app-k",
-            packageId: APP_K_1915C_ITEM_ID,
-            proposedEffectiveDate: 1677715200000, // Mar 1, 2023
-            attachments: [],
-            additionalInformation: "Supporting documents uploaded as follow-up.",
-            timestamp: 1677715200000, // Mar 1, 2023
-          },
-        },
-      ],
-    },
-  },
   [TEST_PACKAGE_STATUS_ID]: {
     _id: TEST_PACKAGE_STATUS_ID,
     found: true,
@@ -978,28 +895,6 @@ const items: Record<string, TestItemResult> = {
           _source: {
             packageId: WITHDRAWN_CHANGELOG_ITEM_ID,
             id: `${WITHDRAWN_CHANGELOG_ITEM_ID}-0005`,
-            submitterName: "Test person",
-            event: "toggle-withdraw-rai",
-            changeMade: "add file",
-            changeReason: "missing file",
-            raiWithdrawEnabled: true,
-            attachments: [
-              {
-                key: "misc007",
-                title: "Miscellaneous File",
-                filename: "miscellaneous_info.txt",
-                bucket: ATTACHMENT_BUCKET_NAME,
-              },
-            ],
-            additionalInformation: "Uncategorized file upload.",
-            isAdminChange: true,
-          },
-        },
-        {
-          _id: `${WITHDRAWN_CHANGELOG_ITEM_ID}-0006`,
-          _source: {
-            packageId: WITHDRAWN_CHANGELOG_ITEM_ID,
-            id: `${WITHDRAWN_CHANGELOG_ITEM_ID}-0006`,
             event: "withdraw-rai",
             attachments: [
               {
@@ -1014,10 +909,10 @@ const items: Record<string, TestItemResult> = {
           },
         },
         {
-          _id: `${WITHDRAWN_CHANGELOG_ITEM_ID}-0007`,
+          _id: `${WITHDRAWN_CHANGELOG_ITEM_ID}-0006`,
           _source: {
             packageId: WITHDRAWN_CHANGELOG_ITEM_ID,
-            id: `${WITHDRAWN_CHANGELOG_ITEM_ID}-0007`,
+            id: `${WITHDRAWN_CHANGELOG_ITEM_ID}-0006`,
             event: "withdraw-package",
             attachments: [
               {
@@ -1032,10 +927,10 @@ const items: Record<string, TestItemResult> = {
           },
         },
         {
-          _id: `${WITHDRAWN_CHANGELOG_ITEM_ID}-0008`,
+          _id: `${WITHDRAWN_CHANGELOG_ITEM_ID}-0007`,
           _source: {
             packageId: WITHDRAWN_CHANGELOG_ITEM_ID,
-            id: `${WITHDRAWN_CHANGELOG_ITEM_ID}-0008`,
+            id: `${WITHDRAWN_CHANGELOG_ITEM_ID}-0007`,
             event: undefined,
             attachments: [
               {
@@ -1064,7 +959,6 @@ const items: Record<string, TestItemResult> = {
       authority: "CHIP SPA",
       state: "MD",
       origin: "OneMAC",
-      submissionDate: "2023-12-31T00:00:00.000Z",
       changelog: [
         {
           _id: `${RAI_WITHDRAWAL_ID}-0001`,
@@ -1099,10 +993,6 @@ const items: Record<string, TestItemResult> = {
       authority: "CHIP SPA",
       state: "MD",
       origin: "OneMAC",
-      submissionDate: "2023-01-01T00:00:00.000Z",
-      raiRequestedDate: "2023-01-15T00:00:00.000Z",
-      // @ts-ignore Type is messed up
-      raiReceivedDate: "2023-02-01T00:00:00.000Z",
       changelog: [
         {
           _id: `${SUBMITTED_RAI_ID}-0001`,
@@ -1137,27 +1027,16 @@ const items: Record<string, TestItemResult> = {
       authority: "1915(c)",
       state: "MD",
       origin: "OneMAC",
-      submissionDate: "2023-12-31T00:00:00.000Z",
-      raiRequestedDate: "2024-01-01T00:00:00.000Z",
-      // @ts-ignore Type is messed up
-      raiReceivedDate: "2024-01-03T00:00:00.000Z",
-      changelog: [
+      appkChildren: [
         {
-          _id: `${WITHDRAWAL_REQUESTED_ID}-0001`,
           _source: {
-            packageId: WITHDRAWAL_REQUESTED_ID,
-            id: `${WITHDRAWAL_REQUESTED_ID}-0001`,
-            event: "respond-to-rai",
-            attachments: [
-              {
-                key: "rai001",
-                title: "Response to RAI",
-                filename: "rai_response.docx",
-                bucket: ATTACHMENT_BUCKET_NAME,
-              },
-            ],
-            additionalInformation: "Detailed response to the request for additional information.",
-            timestamp: 1675123200000, // Feb 1, 2023
+            authority: "1915(c)",
+            changedDate: "2024-01-01T00:00:00Z",
+            makoChangedDate: "2024-01-01T00:00:00Z",
+            title: "Withrdrawal Requested",
+            seatoolStatus: SEATOOL_STATUS.WITHDRAW_REQUESTED,
+            stateStatus: statusToDisplayToStateUser[SEATOOL_STATUS.WITHDRAW_REQUESTED],
+            cmsStatus: statusToDisplayToCmsUser[SEATOOL_STATUS.WITHDRAW_REQUESTED],
           },
         },
       ],
@@ -1537,7 +1416,7 @@ const items: Record<string, TestItemResult> = {
 export const TEST_PACKAGE_STATUS_ITEM = items[TEST_PACKAGE_STATUS_ID] as opensearch.main.ItemResult;
 export const TEST_MED_SPA_ITEM = items[TEST_SPA_ITEM_ID] as opensearch.main.ItemResult;
 export const TEST_MED_SPA_RAI_ITEM = items[TEST_SPA_ITEM_RAI_ID] as opensearch.main.ItemResult;
-export const TEST_CHIP_SPA_ITEM = items[NEW_CHIP_ITEM_ID] as opensearch.main.ItemResult;
+export const TEST_CHIP_SPA_ITEM = items[WITHDRAWN_CHANGELOG_ITEM_ID] as opensearch.main.ItemResult;
 export const TEST_1915B_ITEM = items[EXISTING_ITEM_APPROVED_NEW_ID] as opensearch.main.ItemResult;
 export const TEST_1915C_ITEM = items[INITIAL_RELEASE_APPK_ITEM_ID] as opensearch.main.ItemResult;
 export const WITHDRAW_APPK_ITEM = items[WITHDRAW_APPK_ITEM_ID] as opensearch.main.ItemResult;

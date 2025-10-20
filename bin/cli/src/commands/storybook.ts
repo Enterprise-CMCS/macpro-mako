@@ -31,17 +31,7 @@ export const storybook = {
   },
 
   handler: async (options: { "start-only"?: boolean; "build-only"?: boolean; ci?: boolean }) => {
-    // install the playwright browser dependencies
-    await runCommand(
-      "bunx",
-      ["playwright", "install", "--with-deps", "chromium", "--force"],
-      "react-app",
-    );
-    // build the UI
-    await runCommand("bun", ["run", "build"], "react-app");
-
     const storybookCommand = ["run", "storybook"];
-
     if (options.ci) {
       storybookCommand.push("--ci");
     }

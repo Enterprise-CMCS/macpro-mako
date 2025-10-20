@@ -31,7 +31,7 @@ jobs:
         with:
           ref: gh-pages
           token: ${{ steps.app-token.outputs.token }}
-      - name: Delete Playwright Data for Branch
+      - name: Delete Data for Branch
         timeout-minutes: 3
         working-directory: _data/playwright-reports/branches/
         run: |
@@ -41,7 +41,7 @@ jobs:
           else 
             echo "Could not find Playwright Data for $BRANCH_NAME to delete" >> "$GITHUB_STEP_SUMMARY"
           fi
-      - name: Delete Playwright Reports for Branch
+      - name: Delete Reports for Branch
         timeout-minutes: 3
         working-directory: playwright-reports/branches/
         run: |
@@ -51,35 +51,15 @@ jobs:
           else 
             echo "Could not find Playwright Reports for $BRANCH_NAME to delete" >> "$GITHUB_STEP_SUMMARY"
           fi
-      - name: Delete Storybook Data for Branch
-        timeout-minutes: 3
-        working-directory: _data/storybook-reports/branches/
-        run: |
-          if [[ -d $BRANCH_NAME ]]; then
-            rm -rf $BRANCH_NAME
-            echo "Deleted Storybook Data for $BRANCH_NAME from GitHub Pages" >> "$GITHUB_STEP_SUMMARY"
-          else 
-            echo "Could not find Storybook Data for $BRANCH_NAME to delete" >> "$GITHUB_STEP_SUMMARY"
-          fi
-      - name: Delete Storybook Reports for Branch
-        timeout-minutes: 3
-        working-directory: storybook-reports/branches/
-        run: |
-          if [[ -d $BRANCH_NAME ]]; then
-            rm -rf $BRANCH_NAME
-            echo "Deleted Storybook Reports for $BRANCH_NAME from GitHub Pages" >> "$GITHUB_STEP_SUMMARY"
-          else 
-            echo "Could not find Storybook Reports for $BRANCH_NAME to delete" >> "$GITHUB_STEP_SUMMARY"
-          fi
       - name: Push Changes
         timeout-minutes: 3
         run: |
           if [[ -z $(git status --porcelain) ]]; then
-            echo "Did not have Playwright or Storybook Data or Reports to delete" >> "$GITHUB_STEP_SUMMARY"
+            echo "Did not have Playwright Data or Reports to delete" >> "$GITHUB_STEP_SUMMARY"
           else
             git add -A
             git commit -am "workflow: remove all reports and data for branch $BRANCH_NAME"
             git pull origin gh-pages --rebase -s recursive -X ours
             git push
-            echo "Deleted Playwright and Storybook Data or Reports for $BRANCH_NAME from GitHub Pages" >> "$GITHUB_STEP_SUMMARY"
+            echo "Deleted Playwright Data or Reports for $BRANCH_NAME from GitHub Pages" >> "$GITHUB_STEP_SUMMARY"
           fi

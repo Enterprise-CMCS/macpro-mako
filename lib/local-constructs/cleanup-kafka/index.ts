@@ -43,7 +43,7 @@ export class CleanupKafka extends Construct {
       entry: join(__dirname, "src/cleanupKafka.ts"),
       handler: "handler",
       depsLockFilePath: join(__dirname, "../../../bun.lockb"),
-      runtime: Runtime.NODEJS_20_X,
+      runtime: Runtime.NODEJS_18_X,
       timeout: Duration.minutes(15),
       role: new Role(this, "CleanupKafkaLambdaExecutionRole", {
         assumedBy: new ServicePrincipal("lambda.amazonaws.com"),

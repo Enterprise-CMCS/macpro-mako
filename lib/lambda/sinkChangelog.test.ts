@@ -465,25 +465,6 @@ describe("syncing Changelog events", () => {
       {
         packageId: "MD-0005.R01.01",
         id: "MD-0005.R01.01-0005",
-        submitterName: "Test person",
-        event: "toggle-withdraw-rai",
-        changeMade: "add file",
-        changeReason: "missing file",
-        raiWithdrawEnabled: true,
-        attachments: [
-          {
-            key: "misc007",
-            title: "Miscellaneous File",
-            filename: "miscellaneous_info.txt",
-            bucket: "uploads-test-attachment-bucket",
-          },
-        ],
-        additionalInformation: "Uncategorized file upload.",
-        isAdminChange: true,
-      },
-      {
-        packageId: "MD-0005.R01.01",
-        id: "MD-0005.R01.01-0006",
         event: "withdraw-rai",
         attachments: [
           {
@@ -498,7 +479,7 @@ describe("syncing Changelog events", () => {
       },
       {
         packageId: "MD-0005.R01.01",
-        id: "MD-0005.R01.01-0007",
+        id: "MD-0005.R01.01-0006",
         event: "withdraw-package",
         attachments: [
           {
@@ -513,7 +494,7 @@ describe("syncing Changelog events", () => {
       },
       {
         packageId: "MD-0005.R01.01",
-        id: "MD-0005.R01.01-0008",
+        id: "MD-0005.R01.01-0007",
         attachments: [
           {
             bucket: "uploads-test-attachment-bucket",
@@ -735,25 +716,6 @@ describe("syncing Changelog events", () => {
         timestamp: 1680307200000,
       },
       {
-        additionalInformation: "Uncategorized file upload.",
-        attachments: [
-          {
-            bucket: "uploads-test-attachment-bucket",
-            filename: "miscellaneous_info.txt",
-            key: "misc007",
-            title: "Miscellaneous File",
-          },
-        ],
-        changeMade: "add file",
-        changeReason: "missing file",
-        event: "toggle-withdraw-rai",
-        id: "MD-0005.R01.01-0005",
-        isAdminChange: true,
-        packageId: "MD-0005.R01.01",
-        raiWithdrawEnabled: true,
-        submitterName: "Test person",
-      },
-      {
         additionalInformation: "Official notice of RAI withdrawal submitted.",
         attachments: [
           {
@@ -764,7 +726,7 @@ describe("syncing Changelog events", () => {
           },
         ],
         event: "withdraw-rai",
-        id: "MD-0005.R01.01-0006",
+        id: "MD-0005.R01.01-0005",
         packageId: "MD-0005.R01.01",
         timestamp: 1682899200000,
       },
@@ -779,7 +741,7 @@ describe("syncing Changelog events", () => {
           },
         ],
         event: "withdraw-package",
-        id: "MD-0005.R01.01-0007",
+        id: "MD-0005.R01.01-0006",
         packageId: "MD-0005.R01.01",
         timestamp: 1685491200000,
       },
@@ -793,7 +755,7 @@ describe("syncing Changelog events", () => {
             title: "Miscellaneous File",
           },
         ],
-        id: "MD-0005.R01.01-0008",
+        id: "MD-0005.R01.01-0007",
         isAdminChange: false,
         packageId: "MD-0005.R01.01",
       },
@@ -929,25 +891,6 @@ describe("syncing Changelog events", () => {
         timestamp: 1680307200000,
       },
       {
-        additionalInformation: "Uncategorized file upload.",
-        attachments: [
-          {
-            bucket: "uploads-test-attachment-bucket",
-            filename: "miscellaneous_info.txt",
-            key: "misc007",
-            title: "Miscellaneous File",
-          },
-        ],
-        changeMade: "add file",
-        changeReason: "missing file",
-        event: "toggle-withdraw-rai",
-        id: "VA-11-2020-0005",
-        isAdminChange: true,
-        packageId: "VA-11-2020-del",
-        raiWithdrawEnabled: true,
-        submitterName: "Test person",
-      },
-      {
         additionalInformation: "Official notice of RAI withdrawal submitted.",
         attachments: [
           {
@@ -958,7 +901,7 @@ describe("syncing Changelog events", () => {
           },
         ],
         event: "withdraw-rai",
-        id: "VA-11-2020-0006",
+        id: "VA-11-2020-0005",
         packageId: "VA-11-2020-del",
         timestamp: 1682899200000,
       },
@@ -973,7 +916,7 @@ describe("syncing Changelog events", () => {
           },
         ],
         event: "withdraw-package",
-        id: "VA-11-2020-0007",
+        id: "VA-11-2020-0006",
         packageId: "VA-11-2020-del",
         timestamp: 1685491200000,
       },
@@ -987,7 +930,7 @@ describe("syncing Changelog events", () => {
             title: "Miscellaneous File",
           },
         ],
-        id: "VA-11-2020-0008",
+        id: "VA-11-2020-0007",
         isAdminChange: false,
         packageId: "VA-11-2020-del",
       },
