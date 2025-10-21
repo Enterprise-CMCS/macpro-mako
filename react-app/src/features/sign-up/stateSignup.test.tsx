@@ -54,6 +54,10 @@ describe("StateSignup", () => {
           path: "/signup/state",
           element: <StateSignup />,
         },
+        {
+          path: "/signup/state/role",
+          element: <div>Role Selection Page</div>,
+        },
       ],
       {
         initialEntries: [
@@ -105,8 +109,11 @@ describe("StateSignup", () => {
     await user.click(screen.getByText("California, CA"));
 
     const continueButton = screen.getByRole("button", { name: "Continue" });
-
     await user.click(continueButton);
+
+    await waitFor(() => {
+      expect(screen.getByText("Role Selection Page")).toBeInTheDocument();
+    });
   });
 
   it("should show the form if the user is a statesystemadmin", async () => {
@@ -132,7 +139,7 @@ describe("StateSignup", () => {
     const submitButton = screen.getByRole("button", { name: "Submit" });
     expect(submitButton).toBeDisabled();
 
-    await user.click(screen.getByRole("combobox", { name: /Select state/ }));
+    await user.click(screen.getByRole("combobox"));
     expect(submitButton).toBeDisabled();
 
     await waitFor(() => expect(screen.getByText("Maine")).toBeInTheDocument());
@@ -169,7 +176,7 @@ describe("StateSignup", () => {
     const submitButton = screen.getByRole("button", { name: "Submit" });
     expect(submitButton).toBeDisabled();
 
-    await user.click(screen.getByRole("combobox", { name: /Select state/ }));
+    await user.click(screen.getByRole("combobox"));
     expect(submitButton).toBeDisabled();
 
     await waitFor(() => expect(screen.getByText("Maine")).toBeInTheDocument());

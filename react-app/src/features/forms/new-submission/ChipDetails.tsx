@@ -77,7 +77,7 @@ export const ChipDetailsForm = () => {
               return (
                 <FormItem className="w-full sm:max-w-[460px] relative">
                   <FormLabel className="font-bold">CHIP Submission Type</FormLabel>
-                  <Select>
+                  <Select value={selectedValues.join(", ")}>
                     <FormControl>
                       <SelectTrigger
                         showIcon={false}
@@ -88,7 +88,7 @@ export const ChipDetailsForm = () => {
                             data-testid="selected-value-chip"
                             className="truncate w-full whitespace-nowrap overflow-hidden text-ellipsis"
                           >
-                            {selectedValues.length > 0 ? selectedValues.join(", ") : ""}
+                            {selectedValues.join(", ")}
                           </SelectValue>
                         </div>
 
@@ -120,7 +120,7 @@ export const ChipDetailsForm = () => {
                               field.onChange(updated);
                             }}
                           >
-                            <Checkbox checked={isSelected} />
+                            <Checkbox id={option.replaceAll(" ", "")} checked={isSelected} />
                             <span>{option}</span>
                           </div>
                         );
