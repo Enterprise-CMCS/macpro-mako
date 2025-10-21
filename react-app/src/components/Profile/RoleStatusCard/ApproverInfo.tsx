@@ -14,23 +14,26 @@ export const ApproverInfo = ({ access }: ApproverInfoProps) => {
   if (hideApprovers) return null;
 
   return (
-    <>
+    <div className="flex flex-wrap gap-x-1">
       <span className="font-semibold">
         {userRoleMap[getApprovingRole(role)]}
         {": "}
       </span>
-      {approverList.length
-        ? approverList.map((approver, index) => (
-            <a
-              className="text-blue-600"
-              href={`mailto:${approver.email}`}
-              key={`${approver.fullName}-${index}`}
-            >
-              {approver.fullName}
-              {index !== access.approverList.length - 1 && ", "}
-            </a>
-          ))
-        : "N/A"}
-    </>
+
+      {approverList.length ? (
+        <ul className="contents">
+          {approverList.map((approver, index) => (
+            <li key={`${approver.email}-${index}`}>
+              <a className="text-blue-600" href={`mailto:${approver.email}`}>
+                {approver.fullName}
+                {index !== access.approverList.length - 1 && ", "}
+              </a>
+            </li>
+          ))}
+        </ul>
+      ) : (
+        "N/A"
+      )}
+    </div>
   );
 };

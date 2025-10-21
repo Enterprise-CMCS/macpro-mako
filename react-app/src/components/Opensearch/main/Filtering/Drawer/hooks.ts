@@ -187,13 +187,14 @@ export const useFilterDrawer = () => {
           ...STATE,
           [KEY]: AGG.buckets
             .map((BUCK) => ({
+              id: BUCK.key.replaceAll(" ", ""),
               label: `${labelMap[BUCK.key] || BUCK.key}`,
               value: BUCK.key,
             }))
             .sort((a, b) => Intl.Collator("en").compare(a.value, b.value)),
         };
       },
-      {} as Record<opensearch.main.Field, { label: string; value: string }[]>,
+      {} as Record<opensearch.main.Field, { id: string; label: string; value: string }[]>,
     );
   }, [_aggs, labelMap]);
 
