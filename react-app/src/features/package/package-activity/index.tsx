@@ -221,7 +221,7 @@ type PackageActivitiesProps = {
 
 export const PackageActivities = ({ id, changelog }: PackageActivitiesProps) => {
   const changelogWithoutAdminChanges = changelog.filter((item) => !item._source.isAdminChange);
-
+  console.log("Changelog" + changelogWithoutAdminChanges);
   return (
     <DetailsSection
       id="package_activity"
@@ -239,15 +239,10 @@ export const PackageActivities = ({ id, changelog }: PackageActivitiesProps) => 
           type="multiple"
           className="flex flex-col gap-2"
           defaultValue={[changelogWithoutAdminChanges[0]._source.id]}
-          asChild
         >
-          <ol>
-            {changelogWithoutAdminChanges.map(({ _source: packageActivity }) => (
-              <li key={packageActivity.id}>
-                <PackageActivity packageActivity={packageActivity} />
-              </li>
-            ))}
-          </ol>
+          {changelogWithoutAdminChanges.map(({ _source: packageActivity }) => (
+            <PackageActivity key={packageActivity.id} packageActivity={packageActivity} />
+          ))}
         </Accordion>
       ) : (
         <p className="text-gray-500">No package activity recorded</p>

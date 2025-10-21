@@ -178,7 +178,6 @@ export const SlotField = ({
             >
               <div key={`CHECK-${OPT.value}`}>
                 <Checkbox
-                  id={OPT.label.replaceAll(" ", "")}
                   label={OPT.label}
                   value={OPT.value}
                   checked={field.value?.includes(OPT.value)}

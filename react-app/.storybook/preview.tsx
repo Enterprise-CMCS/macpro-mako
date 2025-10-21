@@ -5,7 +5,7 @@ import { cognitoHandlers, defaultApiHandlers, launchDarklyHandlers } from "mocks
 import { initialize, mswLoader } from "msw-storybook-addon";
 
 // import * as React from "react";
-import { withLaunchDarkly, withQueryClient } from "./decorators";
+import { withQueryClient } from "./decorators";
 initialize({
   onUnhandledRequest: "bypass",
   serviceWorker: {
@@ -20,7 +20,7 @@ const preview: Preview = {
   loaders: [mswLoader],
   //👇 Enables auto-generated documentation for all stories
   tags: ["autodocs"],
-  decorators: [withQueryClient, withLaunchDarkly],
+  decorators: [withQueryClient],
   parameters: {
     controls: {
       matchers: {
@@ -29,19 +29,13 @@ const preview: Preview = {
       },
     },
     msw: {
-      handlers: {
-        auth: [...cognitoHandlers],
-        api: [...defaultApiHandlers],
-        flags: [...launchDarklyHandlers],
-      },
+      handlers: [...cognitoHandlers, ...defaultApiHandlers, ...launchDarklyHandlers],
     },
 
     a11y: {
       // 👇 Fail all accessibility tests when violations are found
       test: "error",
     },
-
-    html: {},
   },
 };
 

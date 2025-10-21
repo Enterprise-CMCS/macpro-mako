@@ -25,27 +25,27 @@ export const UserInformation = ({
   const isNewUserRoleDisplay = useFeatureFlag("SHOW_USER_ROLE_UPDATE");
 
   return (
-    <div className="flex flex-col gap-y-6 md:basis-1/2">
+    <div className="flex flex-col gap-6 md:basis-1/2">
       <h2 className="text-2xl font-bold">
         {isNewUserRoleDisplay ? "My Information" : "Profile Information"}
       </h2>
 
-      <dl className="leading-9">
-        <dt className="font-bold">Full Name</dt>
-        <dd>{fullName}</dd>
-      </dl>
+      <div className="leading-9">
+        <h3 className="font-bold">Full Name</h3>
+        <p>{fullName}</p>
+      </div>
 
       {!isNewUserRoleDisplay && (
-        <dl className="leading-9">
-          <dt className="font-bold">Role</dt>
-          <dd>{userRoleMap[role]}</dd>
-        </dl>
+        <div className="leading-9">
+          <h3 className="font-bold">Role</h3>
+          <p>{userRoleMap[role]}</p>
+        </div>
       )}
 
-      <dl className="leading-9">
-        <dt className="font-bold">Email</dt>
-        <dd>{email}</dd>
-      </dl>
+      <div className="leading-9">
+        <h3 className="font-bold">Email</h3>
+        <p>{email}</p>
+      </div>
 
       {role !== "statesubmitter" && role !== "helpdesk" && role !== "statesystemadmin" && (
         <EditableGroupAndDivision

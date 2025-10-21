@@ -67,7 +67,7 @@ describe("Tooltip component within export button", () => {
     await user.click(screen.queryByTestId("export-csv-btn"));
 
     expect(spy).toHaveBeenCalledWith(expected);
-    expect(gaSpy).toHaveBeenCalledWith("dash_export_csv", { row_count: 12 });
+    expect(gaSpy).toHaveBeenCalledWith("dash_export_csv", { row_count: 11 });
   });
 
   it("should show modal when count is greater than 10000", async () => {

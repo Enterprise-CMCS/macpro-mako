@@ -11,10 +11,8 @@ type AccordionItemProps = {
 const AccordionItem = React.forwardRef<
   React.ElementRef<typeof AccordionPrimitive.Item>,
   AccordionItemProps
->(({ className, children, ...props }, ref) => (
-  <AccordionPrimitive.Item ref={ref} className={cn("border-b", className)} {...props} asChild>
-    <fieldset>{children}</fieldset>
-  </AccordionPrimitive.Item>
+>(({ className, ...props }, ref) => (
+  <AccordionPrimitive.Item ref={ref} className={cn("border-b", className)} {...props} />
 ));
 AccordionItem.displayName = "AccordionItem";
 
@@ -41,21 +39,19 @@ const AccordionTrigger = React.forwardRef<
 >(({ className, showPlusMinus, children, ...props }, ref) => {
   const animationClass = showPlusMinus ? "group" : "[&[data-state=open]>svg]:rotate-180";
   return (
-    <AccordionPrimitive.Header className="flex w-full" asChild>
-      <legend>
-        <AccordionPrimitive.Trigger
-          ref={ref}
-          className={cn(
-            "flex flex-1 items-center justify-between py-4 font-medium transition-all",
-            animationClass,
-            className,
-          )}
-          {...props}
-        >
-          {children}
-          <TriggerIcon showPlusMinus={showPlusMinus} />
-        </AccordionPrimitive.Trigger>
-      </legend>
+    <AccordionPrimitive.Header className="flex">
+      <AccordionPrimitive.Trigger
+        ref={ref}
+        className={cn(
+          "flex flex-1 items-center justify-between py-4 font-medium transition-all",
+          animationClass,
+          className,
+        )}
+        {...props}
+      >
+        {children}
+        <TriggerIcon showPlusMinus={showPlusMinus} />
+      </AccordionPrimitive.Trigger>
     </AccordionPrimitive.Header>
   );
 });

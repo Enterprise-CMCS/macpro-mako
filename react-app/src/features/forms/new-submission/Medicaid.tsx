@@ -85,7 +85,6 @@ const MedSpaFooter = ({ form, onSubmit, onCancel }: MedSpaFooterProps) => {
             <button
               onClick={onSubmit}
               disabled={!form.formState.isValid}
-              aria-disabled={!form.formState.isValid}
               data-testid="submit-action-form"
               className={`w-[181.75px] py-3 px-5 gap-2.5 rounded font-semibold text-sm transition ${
                 !form.formState.isValid
@@ -137,7 +136,6 @@ const MedSpaFooter = ({ form, onSubmit, onCancel }: MedSpaFooterProps) => {
           <button
             onClick={onSubmit}
             disabled={!form.formState.isValid}
-            aria-disabled={!form.formState.isValid}
             data-testid="submit-action-form"
             className={`w-[181.75px] py-3 px-5 gap-2.5 rounded font-semibold text-sm transition ${
               !form.formState.isValid

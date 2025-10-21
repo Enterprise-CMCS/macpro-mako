@@ -50,9 +50,9 @@ describe("OsFilterDrawer", () => {
         "Formal RAI Response",
         "CPOC Name",
       ].forEach((label) => {
-        const button = screen.queryByRole("button", { name: label });
-        expect(button).toBeInTheDocument();
-        expect(button.getAttribute("data-state")).toEqual("closed");
+        const heading = screen.queryByRole("heading", { name: label, level: 3 });
+        expect(heading).toBeInTheDocument();
+        expect(heading.nextElementSibling.getAttribute("data-state")).toEqual("closed");
       });
     });
     it("should handle clicking the Reset button", async () => {
@@ -97,31 +97,35 @@ describe("OsFilterDrawer", () => {
         "spas",
       );
       await user.click(screen.getByRole("button", { name: "Open filter panel" }));
-      const state = screen.getByRole("button", {
+      const state = screen.getByRole("heading", {
         name: "State",
-      }).parentElement.parentElement;
+        level: 3,
+      }).parentElement;
       await waitFor(() => expect(state.getAttribute("data-state")).toEqual("open"));
       expect(within(state).queryByLabelText("Remove MD")).toBeInTheDocument();
 
-      const authority = screen.getByRole("button", {
+      const authority = screen.getByRole("heading", {
         name: "Authority",
-      }).parentElement.parentElement;
+        level: 3,
+      }).parentElement;
       expect(authority.getAttribute("data-state")).toEqual("open");
       expect(within(authority).queryByLabelText("CHIP SPA").getAttribute("data-state")).toEqual(
         "checked",
       );
 
-      const raiWithdraw = screen.getByRole("button", {
+      const raiWithdraw = screen.getByRole("heading", {
         name: "RAI Withdraw Enabled",
-      }).parentElement.parentElement;
+        level: 3,
+      }).parentElement;
       expect(raiWithdraw.getAttribute("data-state")).toEqual("open");
       expect(within(raiWithdraw).queryByLabelText("Yes").getAttribute("data-state")).toEqual(
         "checked",
       );
 
-      const finalDisposition = screen.getByRole("button", {
+      const finalDisposition = screen.getByRole("heading", {
         name: "Final Disposition",
-      }).parentElement.parentElement;
+        level: 3,
+      }).parentElement;
       expect(finalDisposition.getAttribute("data-state")).toEqual("open");
       expect(
         within(finalDisposition).queryByText("Jan 01, 2025 - Jan 01, 2025"),
@@ -162,9 +166,10 @@ describe("OsFilterDrawer", () => {
         const { user } = setup([], "spas");
         await user.click(screen.getByRole("button", { name: "Open filter panel" }));
 
-        const state = screen.getByRole("button", {
+        const state = screen.getByRole("heading", {
           name: "State",
-        }).parentElement.parentElement;
+          level: 3,
+        }).parentElement;
         expect(state.getAttribute("data-state")).toEqual("closed");
         await user.click(screen.getByRole("button", { name: "State" }));
         expect(state.getAttribute("data-state")).toEqual("open");
@@ -187,9 +192,10 @@ describe("OsFilterDrawer", () => {
         );
         await user.click(screen.getByRole("button", { name: "Open filter panel" }));
 
-        const state = screen.getByRole("button", {
+        const state = screen.getByRole("heading", {
           name: "State",
-        }).parentElement.parentElement;
+          level: 3,
+        }).parentElement;
         await waitFor(() => expect(state.getAttribute("data-state")).toEqual("open"));
 
         const combo = screen.getByRole("combobox");
@@ -202,18 +208,15 @@ describe("OsFilterDrawer", () => {
         const { user } = setup([], "spas");
         await user.click(screen.getByRole("button", { name: "Open filter panel" }));
 
-        const authority = screen.getByRole("button", {
+        const authority = screen.getByRole("heading", {
           name: "Authority",
-        }).parentElement.parentElement;
+          level: 3,
+        }).parentElement;
         expect(authority.getAttribute("data-state")).toEqual("closed");
         await user.click(screen.getByRole("button", { name: "Authority" }));
         expect(authority.getAttribute("data-state")).toEqual("open");
-        expect(
-          screen.queryByRole("button", { name: "Select all Authority options" }),
-        ).toBeInTheDocument();
-        expect(
-          screen.queryByRole("button", { name: "Clear all Authority options" }),
-        ).toBeInTheDocument();
+        expect(screen.queryByRole("button", { name: "Select All" })).toBeInTheDocument();
+        expect(screen.queryByRole("button", { name: "Clear" })).toBeInTheDocument();
 
         const chip = screen.queryByLabelText("CHIP SPA");
         expect(chip).toBeInTheDocument();
@@ -243,10 +246,11 @@ describe("OsFilterDrawer", () => {
         await waitFor(() =>
           expect(
             screen
-              .getByRole("button", {
+              .getByRole("heading", {
                 name: "Authority",
+                level: 3,
               })
-              .parentElement.parentElement.getAttribute("data-state"),
+              .parentElement.getAttribute("data-state"),
           ).toEqual("open"),
         );
 
@@ -290,11 +294,9 @@ describe("OsFilterDrawer", () => {
         expect(med).toBeInTheDocument();
         expect(med.getAttribute("data-state")).toEqual("unchecked");
 
-        await user.click(screen.getByRole("button", { name: "Select all Authority options" }));
-        await waitFor(() => {
-          expect(chip.getAttribute("data-state")).toEqual("checked");
-          expect(med.getAttribute("data-state")).toEqual("checked");
-        });
+        await user.click(screen.queryByRole("button", { name: "Select All" }));
+        expect(chip.getAttribute("data-state")).toEqual("checked");
+        expect(med.getAttribute("data-state")).toEqual("checked");
       });
       it("should handle clicking Clear", async () => {
         const { user } = setup(
@@ -320,11 +322,9 @@ describe("OsFilterDrawer", () => {
         expect(med).toBeInTheDocument();
         expect(med.getAttribute("data-state")).toEqual("checked");
 
-        await user.click(screen.getByRole("button", { name: "Clear all Authority options" }));
-        await waitFor(() => {
-          expect(chip.getAttribute("data-state")).toEqual("unchecked");
-          expect(med.getAttribute("data-state")).toEqual("unchecked");
-        });
+        await user.click(screen.queryByRole("button", { name: "Clear" }));
+        expect(chip.getAttribute("data-state")).toEqual("unchecked");
+        expect(med.getAttribute("data-state")).toEqual("unchecked");
       });
     });
   });
@@ -353,9 +353,9 @@ describe("OsFilterDrawer", () => {
         "Formal RAI Response",
         "CPOC Name",
       ].forEach((label) => {
-        const button = screen.queryByRole("button", { name: label });
-        expect(button).toBeInTheDocument();
-        expect(button.getAttribute("data-state")).toEqual("closed");
+        const heading = screen.queryByRole("heading", { name: label, level: 3 });
+        expect(heading).toBeInTheDocument();
+        expect(heading.nextElementSibling.getAttribute("data-state")).toEqual("closed");
       });
     });
     describe("Authority filter", () => {
@@ -363,16 +363,15 @@ describe("OsFilterDrawer", () => {
         const { user } = setup([], "waivers");
         await user.click(screen.getByRole("button", { name: "Open filter panel" }));
 
-        const authority = screen.getByRole("button", {
+        const authority = screen.getByRole("heading", {
           name: "Authority",
-        }).parentElement.parentElement;
+          level: 3,
+        }).parentElement;
         expect(authority.getAttribute("data-state")).toEqual("closed");
         await user.click(screen.getByRole("button", { name: "Authority" }));
         expect(authority.getAttribute("data-state")).toEqual("open");
-        expect(
-          screen.queryByRole("button", { name: "Select all Authority options" }),
-        ).toBeVisible();
-        expect(screen.queryByRole("button", { name: "Clear all Authority options" }));
+        expect(screen.queryByRole("button", { name: "Select All" })).toBeVisible();
+        expect(screen.queryByRole("button", { name: "Clear" }));
 
         const chip = screen.queryByLabelText("1915(b)");
         expect(chip).toBeInTheDocument();
@@ -402,10 +401,11 @@ describe("OsFilterDrawer", () => {
         await waitFor(() =>
           expect(
             screen
-              .getByRole("button", {
+              .getByRole("heading", {
                 name: "Authority",
+                level: 3,
               })
-              .parentElement.parentElement.getAttribute("data-state"),
+              .parentElement.getAttribute("data-state"),
           ).toEqual("open"),
         );
 

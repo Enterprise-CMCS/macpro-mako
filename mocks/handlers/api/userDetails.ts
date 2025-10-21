@@ -14,7 +14,7 @@ const defaultApiUserDetailsHandler = http.post<PathParams, UserDetailsRequestBod
   async ({ request }) => {
     const authenticatedUser = getMockUser();
     if (!authenticatedUser) {
-      return HttpResponse.json(null);
+      return new HttpResponse("User not authenticated", { status: 401 });
     }
 
     const { userEmail: reqUserEmail } = await request.json();

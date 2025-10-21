@@ -25,6 +25,7 @@ export const RoleStatusCardNew = ({
   onClick,
 }: Omit<RoleStatusProps, "isNewUserRoleDisplay">) => {
   if (!access) return null;
+  console.log(access.role, onClick);
   const isState = isStateRole(access.role as UserRole);
   const hideApprovers = status !== "pending" && role === "norole";
   const showApproverInfo =
@@ -35,8 +36,9 @@ export const RoleStatusCardNew = ({
   const isPending = access.status === "pending";
   const showActions = !!onClick;
 
+  console.log(access.role, showActions);
   return (
-    <RoleStatusTopBorderCard className="my-3" status={access.status}>
+    <RoleStatusTopBorderCard status={access.status}>
       <div className="p-8 min-h-36">
         <div className="flex justify-between">
           <h3 className="text-xl font-bold">
@@ -70,17 +72,12 @@ export const RoleStatusCardNew = ({
                 <DropdownMenu.Content
                   className="flex flex-col bg-white rounded-md shadow-lg p-4 border"
                   align="start"
-                  asChild
                 >
-                  <ul>
-                    <DropdownMenu.Item asChild>
-                      <li>
-                        <button className="text-primary" onClick={onClick} type="button">
-                          {isPending ? "Cancel Request" : "Remove User Role"}
-                        </button>
-                      </li>
-                    </DropdownMenu.Item>
-                  </ul>
+                  <DropdownMenu.Item asChild>
+                    <button className="text-primary" onClick={onClick} type="button">
+                      {isPending ? "Cancel Request" : "Remove User Role"}
+                    </button>
+                  </DropdownMenu.Item>
                 </DropdownMenu.Content>
               </DropdownMenu.Root>
             )}

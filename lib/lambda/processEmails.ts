@@ -157,6 +157,18 @@ export async function processRecord(kafkaRecord: KafkaRecord, config: ProcessEma
     return;
   }
 
+  let item;
+  try {
+    item = await os.getItem(config.osDomain, getOsNamespace("main"), safeID);
+  } catch (err) {
+    console.error("Error getting item: ", err);
+  }
+
+  if (!item?.found || !item?._source) {
+    console.log(`The package was not found for id: ${id} in mako. Doing nothing.`);
+    return;
+  }
+
   if (kafkaRecord.topic === "aws.seatool.ksql.onemac.three.agg.State_Plan") {
     const seatoolRecord: Document = {
       safeID,
@@ -166,13 +178,6 @@ export async function processRecord(kafkaRecord: KafkaRecord, config: ProcessEma
 
     if (safeSeatoolRecord.data?.seatoolStatus === SEATOOL_STATUS.WITHDRAWN) {
       try {
-        const item = await os.getItem(config.osDomain, getOsNamespace("main"), safeID);
-
-        if (!item?.found || !item?._source) {
-          console.log(`The package was not found for id: ${id} in mako. Doing nothing.`);
-          return;
-        }
-
         if (item._source.withdrawEmailSent) {
           console.log("Withdraw email previously sent");
           return;
@@ -221,11 +226,13 @@ export async function processRecord(kafkaRecord: KafkaRecord, config: ProcessEma
     return;
   }
 
+  // Adjust timestamp if needed before sending it to the email template
+  const updatedTimestamp = adjustTimestamp(parsedValue, item, timestamp);
+
   const record = {
     ...parsedValue,
-    timestamp,
+    timestamp: updatedTimestamp,
   };
-
   try {
     console.log("Config:", JSON.stringify(config, null, 2));
     await processAndSendEmails(record, safeID, config);
@@ -284,15 +291,11 @@ export async function processAndSendEmails(
 
   const allStateUsersEmails = allStateUsers.map((user) => user.formattedEmailAddress);
   const isChipEligibility = record.authority === "CHIP SPA" && !!item._source?.chipSubmissionType;
-  console.log("mapped to formatted email address for all state users: ", allStateUsers);
-
-  // Adjust timestamp if needed before sending it to the email template
-  const updatedTimestamp = adjustTimestamp(record, item);
+  console.log("mappped to formatted email address for all state users: ", allStateUsers);
 
   const templateVariables = {
     ...record,
     id,
-    timestamp: updatedTimestamp,
     isChipEligibility,
     applicationEndpointUrl: config.applicationEndpointUrl,
     territory,

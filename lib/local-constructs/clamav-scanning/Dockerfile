@@ -1,9 +1,6 @@
-FROM --platform=linux/amd64 public.ecr.aws/lambda/nodejs:20 as builder
+FROM --platform=linux/amd64 public.ecr.aws/lambda/nodejs:18 as builder
 WORKDIR ${LAMBDA_TASK_ROOT}
-
-# Install system packages - try different package managers
-RUN (dnf install -y clamav clamd || microdnf install -y clamav clamd || yum install -y clamav clamd)
-
+RUN yum install -y clamav clamav-freshclam clamd aws-cli
 COPY package.json package-lock.json ./
 RUN npm install
 COPY . .

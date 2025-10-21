@@ -274,7 +274,7 @@ describe("Footer GA Events", () => {
       />,
     );
 
-    await userEvent.click(screen.getByRole("link", { name: "Call the OneMAC Helpdesk" }));
+    await userEvent.click(screen.getByRole("link", { name: /\(833\) 228-2540/i }));
 
     expect(sendGAEvent).toHaveBeenCalledWith("home_help_phone", null);
   });
@@ -287,7 +287,7 @@ describe("Footer GA Events", () => {
       />,
     );
 
-    await userEvent.click(screen.getByLabelText("Email the OneMAC Helpdesk"));
+    await userEvent.click(screen.getByRole("link", { name: /OneMAC_Helpdesk@cms\.hhs\.gov/i }));
 
     expect(sendGAEvent).toHaveBeenCalledWith("home_help_email", null);
   });

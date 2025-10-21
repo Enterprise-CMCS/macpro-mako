@@ -4,8 +4,6 @@ import * as os from "libs/opensearch-lib";
 import * as sink from "libs/sink-lib";
 import {
   errorOSMainMultiDocumentHandler,
-  EXISTING_ITEM_ID,
-  EXISTING_ITEM_PENDING_ID,
   EXISTING_ITEM_TEMPORARY_EXTENSION_ID,
   NOT_FOUND_ITEM_ID,
   OPENSEARCH_DOMAIN,
@@ -14,7 +12,6 @@ import {
   SUBMITTED_RAI_ID,
   TEST_ITEM_ID,
   WITHDRAWAL_REQUESTED_ID,
-  WITHDRAWN_CHANGELOG_ITEM_ID,
 } from "mocks";
 import {
   appkBase,
@@ -47,7 +44,6 @@ import { afterEach, describe, expect, it, vi } from "vitest";
 import {
   insertNewSeatoolRecordsFromKafkaIntoMako,
   insertOneMacRecordsFromKafkaIntoMako,
-  oneMacSeatoolStatusCheck,
   syncSeatoolRecordDatesFromKafkaWithMako,
 } from "./sinkMainProcessors";
 
@@ -817,7 +813,6 @@ describe("insertNewSeatoolRecordsFromKafkaIntoMako", () => {
         raiRequestedDate: null,
         raiWithdrawEnabled: false,
         raiWithdrawnDate: null,
-        raiReceivedDate: null,
         reviewTeam: [
           {
             email: "john.doe@medicaid.gov",
@@ -1052,7 +1047,6 @@ describe("insertNewSeatoolRecordsFromKafkaIntoMako", () => {
         raiRequestedDate: null,
         raiWithdrawEnabled: false,
         raiWithdrawnDate: null,
-        raiReceivedDate: null,
         reviewTeam: [
           {
             email: "john.doe@medicaid.gov",
@@ -1164,7 +1158,6 @@ describe("insertNewSeatoolRecordsFromKafkaIntoMako", () => {
         raiRequestedDate: null,
         raiWithdrawEnabled: false,
         raiWithdrawnDate: null,
-        raiReceivedDate: null,
         reviewTeam: [
           {
             email: "john.doe@medicaid.gov",
@@ -1278,7 +1271,6 @@ describe("insertNewSeatoolRecordsFromKafkaIntoMako", () => {
         raiRequestedDate: null,
         raiWithdrawEnabled: false,
         raiWithdrawnDate: null,
-        raiReceivedDate: null,
         reviewTeam: [
           {
             email: "john.doe@medicaid.gov",
@@ -1682,7 +1674,6 @@ describe("insertNewSeatoolRecordsFromKafkaIntoMako", () => {
         raiRequestedDate: null,
         raiWithdrawEnabled: undefined,
         raiWithdrawnDate: null,
-        raiReceivedDate: "2024-01-03T00:00:00.000Z",
         reviewTeam: [
           {
             email: "john.doe@medicaid.gov",
@@ -1767,7 +1758,7 @@ describe("insertNewSeatoolRecordsFromKafkaIntoMako", () => {
             RAI: [
               {
                 RAI_RECEIVED_DATE: null,
-                RAI_REQUESTED_DATE: 1674518400000, // Jan 24, 2023
+                RAI_REQUESTED_DATE: 1675123200000,
                 RAI_WITHDRAWN_DATE: null,
               },
             ],
@@ -1798,10 +1789,9 @@ describe("insertNewSeatoolRecordsFromKafkaIntoMako", () => {
         leadAnalystOfficerId: 67890,
         locked: false,
         proposedDate: null,
-        raiRequestedDate: "2023-01-24T05:00:00.000Z",
+        raiRequestedDate: "2023-01-31T00:00:00.000Z",
         raiWithdrawEnabled: undefined,
         raiWithdrawnDate: null,
-        raiReceivedDate: "2023-02-01T00:00:00.000Z",
         reviewTeam: [
           {
             email: "john.doe@medicaid.gov",
@@ -1917,10 +1907,9 @@ describe("insertNewSeatoolRecordsFromKafkaIntoMako", () => {
         leadAnalystOfficerId: 67890,
         locked: false,
         proposedDate: null,
-        raiRequestedDate: "2023-01-31T05:00:00.000Z",
+        raiRequestedDate: "2023-01-31T00:00:00.000Z",
         raiWithdrawEnabled: undefined,
         raiWithdrawnDate: null,
-        raiReceivedDate: null,
         reviewTeam: [
           {
             email: "john.doe@medicaid.gov",
@@ -2036,10 +2025,9 @@ describe("insertNewSeatoolRecordsFromKafkaIntoMako", () => {
         leadAnalystOfficerId: 67890,
         locked: false,
         proposedDate: null,
-        raiRequestedDate: "2023-01-31T05:00:00.000Z",
+        raiRequestedDate: "2023-01-31T00:00:00.000Z",
         raiWithdrawEnabled: false,
         raiWithdrawnDate: null,
-        raiReceivedDate: null,
         reviewTeam: [
           {
             email: "john.doe@medicaid.gov",
@@ -2155,10 +2143,9 @@ describe("insertNewSeatoolRecordsFromKafkaIntoMako", () => {
         leadAnalystOfficerId: 67890,
         locked: false,
         proposedDate: null,
-        raiRequestedDate: "2023-01-31T05:00:00.000Z",
+        raiRequestedDate: "2023-01-31T00:00:00.000Z",
         raiWithdrawEnabled: false,
         raiWithdrawnDate: null,
-        raiReceivedDate: null,
         reviewTeam: [
           {
             email: "john.doe@medicaid.gov",
@@ -2274,9 +2261,8 @@ describe("insertNewSeatoolRecordsFromKafkaIntoMako", () => {
         leadAnalystOfficerId: 67890,
         locked: false,
         proposedDate: null,
-        raiRequestedDate: "2023-01-31T05:00:00.000Z",
+        raiRequestedDate: "2023-01-31T00:00:00.000Z",
         raiWithdrawEnabled: false,
-        raiReceivedDate: null,
         raiWithdrawnDate: null,
         reviewTeam: [
           {
@@ -2449,103 +2435,4 @@ describe("syncSeatoolRecordDatesFromKafkaWithMako", () => {
       metadata: expect.any(Object),
     });
   });
-});
-
-describe("oneMacSeatoolStatusCheck", () => {
-  it.each([
-    [WITHDRAWAL_REQUESTED_ID, SeatoolSpwStatusEnum.Withdrawn, SeatoolSpwStatusEnum.Withdrawn],
-    [
-      WITHDRAWAL_REQUESTED_ID,
-      SeatoolSpwStatusEnum.Terminated,
-      SeatoolSpwStatusEnum.WithdrawalRequested,
-    ],
-    [
-      WITHDRAWAL_REQUESTED_ID,
-      SeatoolSpwStatusEnum.Disapproved,
-      SeatoolSpwStatusEnum.WithdrawalRequested,
-    ],
-    [
-      WITHDRAWAL_REQUESTED_ID,
-      SeatoolSpwStatusEnum.WithdrawalRequested,
-      SeatoolSpwStatusEnum.WithdrawalRequested,
-    ],
-    [RAI_WITHDRAWAL_ID, SeatoolSpwStatusEnum.PendingRAI, SeatoolSpwStatusEnum.PendingRAI],
-    [RAI_WITHDRAWAL_ID, SeatoolSpwStatusEnum.Withdrawn, SeatoolSpwStatusEnum.Withdrawn],
-    [RAI_WITHDRAWAL_ID, SeatoolSpwStatusEnum.Terminated, SeatoolSpwStatusEnum.Terminated],
-    [RAI_WITHDRAWAL_ID, SeatoolSpwStatusEnum.Disapproved, SeatoolSpwStatusEnum.Disapproved],
-    [
-      RAI_WITHDRAWAL_ID,
-      SeatoolSpwStatusEnum.Approved,
-      SeatoolSpwStatusEnum.FormalRAIResponseWithdrawalRequested,
-    ],
-    [
-      RAI_WITHDRAWAL_ID,
-      SeatoolSpwStatusEnum.Pending,
-      SeatoolSpwStatusEnum.FormalRAIResponseWithdrawalRequested,
-    ],
-    [EXISTING_ITEM_ID, SeatoolSpwStatusEnum.Approved, SeatoolSpwStatusEnum.Approved],
-    [EXISTING_ITEM_PENDING_ID, SeatoolSpwStatusEnum.Pending, SeatoolSpwStatusEnum.Pending],
-    [EXISTING_ITEM_PENDING_ID, SeatoolSpwStatusEnum.Submitted, SeatoolSpwStatusEnum.Submitted],
-    [WITHDRAWN_CHANGELOG_ITEM_ID, SeatoolSpwStatusEnum.Withdrawn, SeatoolSpwStatusEnum.Withdrawn],
-  ])(
-    `if OneMAC status is %i and SEA Tool status is %i it should return %i`,
-    async (id, seatoolStatus, expectedStatus) => {
-      // @ts-ignore we don't need all of these values for the test
-      const resultStatus = await oneMacSeatoolStatusCheck({
-        id: id,
-        // @ts-ignore we don't need all of these values for the test
-        STATE_PLAN: {
-          SPW_STATUS_ID: seatoolStatus,
-        },
-      });
-      expect(resultStatus).toEqual(expectedStatus);
-    },
-  );
-
-  it.each([
-    [
-      SUBMITTED_RAI_ID,
-      SeatoolSpwStatusEnum.Pending,
-      "2023-01-20T00:00:00.000Z",
-      SeatoolSpwStatusEnum.Pending,
-    ],
-    [
-      SUBMITTED_RAI_ID,
-      SeatoolSpwStatusEnum.PendingRAI,
-      "2023-01-20T00:00:00.000Z",
-      SeatoolSpwStatusEnum.Submitted,
-    ],
-    [
-      SUBMITTED_RAI_ID,
-      SeatoolSpwStatusEnum.PendingRAI,
-      "2023-02-15T00:00:00.000Z",
-      SeatoolSpwStatusEnum.PendingRAI,
-    ],
-    [
-      SUBMITTED_RAI_ID,
-      SeatoolSpwStatusEnum.Disapproved,
-      "2023-02-10T00:00:00.000Z",
-      SeatoolSpwStatusEnum.Disapproved,
-    ],
-  ])(
-    `if OneMAC status is %i and SEA Tool status is %i with requested date %i it should return %i`,
-    async (id, seatoolStatus, raiRquestedDate, expectedStatus) => {
-      // @ts-ignore we don't need all of these values for the test
-      const resultStatus = await oneMacSeatoolStatusCheck({
-        id: id,
-        // @ts-ignore we don't need all of these values for the test
-        STATE_PLAN: {
-          SPW_STATUS_ID: seatoolStatus,
-        },
-        RAI: [
-          {
-            RAI_REQUESTED_DATE: new Date(raiRquestedDate).getTime(),
-            RAI_RECEIVED_DATE: null,
-            RAI_WITHDRAWN_DATE: null,
-          },
-        ],
-      });
-      expect(resultStatus).toEqual(expectedStatus);
-    },
-  );
 });

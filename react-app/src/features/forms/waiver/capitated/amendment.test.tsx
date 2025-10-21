@@ -27,7 +27,7 @@ describe("Capitated Amendment", () => {
   });
 
   test("EXISTING WAIVER NUMBER TO AMEND", async () => {
-    const existingWaiverInput = await screen.findByLabelText(/Existing Waiver Number to Amend/);
+    const existingWaiverInput = screen.getByLabelText(/Existing Waiver Number to Amend/);
     const existingWaiverLabel = screen.getByTestId("existing-waiver-label");
 
     // test record does not exist error occurs

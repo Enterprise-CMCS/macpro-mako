@@ -138,15 +138,10 @@ export const AdminPackageActivities = ({ changelog }: AdminChangesProps) => {
         type="multiple"
         defaultValue={[adminChangelog[0]._source.id]}
         className="flex flex-col gap-2"
-        asChild
       >
-        <ol>
-          {adminChangelog.map(({ _source: adminActivity }) => (
-            <li key={adminActivity.id}>
-              <AdminChange adminActivity={adminActivity} />
-            </li>
-          ))}
-        </ol>
+        {adminChangelog.map(({ _source: adminActivity }) => (
+          <AdminChange key={adminActivity.id} adminActivity={adminActivity} />
+        ))}
       </Accordion>
     </DetailsSection>
   );

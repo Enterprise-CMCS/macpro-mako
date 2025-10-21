@@ -18,14 +18,12 @@ import { PackageStatusCard } from "./package-status";
 export const DetailCardWrapper = ({
   title,
   children,
-  ariaLabel,
 }: PropsWithChildren<{
   title: string;
-  ariaLabel?: string;
 }>) => (
   <CardWithTopBorder className="text-wrap my-0 sm:mt-6">
     <div className="p-4 py-1 min-h-36">
-      <h2 id={ariaLabel}>{title}</h2>
+      <h2>{title}</h2>
       {children}
     </div>
   </CardWithTopBorder>
@@ -83,10 +81,10 @@ export const DetailsContent = ({ id }: DetailsContentProps) => {
   return (
     <div className="w-full py-1 px-4 lg:px-8 grid grid-cols-1 gap-y-6 sm:gap-y-6">
       <section id="package_overview" className="sm:mb-0 two-cols gap-y-3 sm:gap-y-3">
-        <DetailCardWrapper title="Status" ariaLabel="package-status-heading">
+        <DetailCardWrapper title="Status">
           <PackageStatusCard submission={updatedSubmission} />
         </DetailCardWrapper>
-        <DetailCardWrapper title="Package Actions" ariaLabel="package-actions-heading">
+        <DetailCardWrapper title="Package Actions">
           <PackageActionsCard id={id} submission={updatedSubmission} />
         </DetailCardWrapper>
       </section>
@@ -135,7 +133,9 @@ export const Details = () => {
     <div className="max-w-screen-xl mx-auto flex flex-col lg:flex-row">
       <div className="px-4 lg:px-8">
         <BreadCrumbs options={detailsAndActionsCrumbs({ id, authority })} />
-        <DetailsSidebar id={id} />
+        <div className="hidden lg:block pr-8">
+          <DetailsSidebar id={id} />
+        </div>
       </div>
       <DetailsContent id={id} />
     </div>
@@ -157,20 +157,17 @@ const DetailsSidebar = ({ id }: DetailsSidebarProps) => {
   };
 
   return (
-    <nav className="min-w-56 flex-none font-semibold mt-6 hidden lg:block mr-8">
-      <ul>
-        {links.map(({ id, href, displayName }) => (
-          <li key={id}>
-            <a
-              className="block mb-2 text-blue-900 hover:underline"
-              href={href}
-              onClick={() => handleSidebarClick(id)}
-            >
-              {displayName}
-            </a>
-          </li>
-        ))}
-      </ul>
-    </nav>
+    <aside className="min-w-56 flex-none font-semibold mt-6">
+      {links.map(({ id, href, displayName }) => (
+        <a
+          className="block mb-2 text-blue-900 hover:underline"
+          key={id}
+          href={href}
+          onClick={() => handleSidebarClick(id)}
+        >
+          {displayName}
+        </a>
+      ))}
+    </aside>
   );
 };

@@ -147,17 +147,3 @@ export const legacyTransforms = {
   waiverextensionc: legacyTemporaryExtension,
   waiverextension: legacyTemporaryExtension,
 };
-
-export class SkippableValidationError<TMetadata = unknown> extends Error {
-  constructor(
-    message: string,
-    public metadata?: TMetadata,
-  ) {
-    super(message);
-    this.name = "SkippableValidationError";
-  }
-}
-
-export const isSkippableError = (error: unknown): error is SkippableValidationError => {
-  return error instanceof SkippableValidationError;
-};

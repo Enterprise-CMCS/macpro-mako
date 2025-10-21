@@ -25,32 +25,27 @@ export const PackageStatusCard = ({ submission }: PackageStatusCardProps) => {
   const isInActiveSecondClockStatus = isCmsUser(user.user) && submission.secondClock;
 
   return (
-    <dl className="my-3 font-bold text-xl" aria-labelledby="package-status-heading">
-      <dt>
+    <div className="my-3 font-bold text-xl">
+      <div>
         {isCmsUser(user.user) && isHelpDeskUser(user.user) === false
           ? submission.cmsStatus
           : submission.stateStatus}
-      </dt>
-      <dd className="text-xs opacity-80">
-        <ul>
-          {isInRAIWithdrawEnabledSubStatus && (
-            <li>
-              <p className="mt-1">
-                <span className="font-bold mr-1">·</span>
-                <span>Withdraw Formal RAI Response - Enabled</span>
-              </p>
-            </li>
-          )}
-          {isInActiveSecondClockStatus && (
-            <li>
-              <p className="mt-1">
-                <span className="font-bold mr-1">·</span>
-                <span>2nd Clock</span>
-              </p>
-            </li>
-          )}
-        </ul>
-      </dd>
-    </dl>
+      </div>
+      <div className="text-xs opacity-80">
+        {isInRAIWithdrawEnabledSubStatus && (
+          <p className="mt-1">
+            <span className="font-bold mr-1">·</span>
+            <span>Withdraw Formal RAI Response - Enabled</span>
+          </p>
+        )}
+
+        {isInActiveSecondClockStatus && (
+          <p className="mt-1">
+            <span className="font-bold mr-1">·</span>
+            <span>2nd Clock</span>
+          </p>
+        )}
+      </div>
+    </div>
   );
 };
