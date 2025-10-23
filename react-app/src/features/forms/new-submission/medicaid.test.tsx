@@ -1,14 +1,34 @@
-import { screen } from "@testing-library/react";
+import { act, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { EXISTING_ITEM_ID } from "mocks";
-import { beforeAll, describe, expect, test } from "vitest";
+import { beforeAll, describe, expect, test, vi } from "vitest";
 
 import { formSchemas } from "@/formSchemas";
-import { renderFormAsync } from "@/utils/test-helpers/renderForm";
+import { renderFormWithPackageSectionAsync } from "@/utils/test-helpers";
 import { mockApiRefinements, skipCleanup } from "@/utils/test-helpers/skipCleanup";
 import { uploadFiles } from "@/utils/test-helpers/uploadFiles";
 
 import { MedicaidForm } from "./Medicaid";
+
+const intersectionObserverCb = vi.fn();
+vi.stubGlobal(
+  "IntersectionObserver",
+  vi.fn((cb) => {
+    intersectionObserverCb.mockImplementation(cb);
+    return {
+      observe: vi.fn(),
+      unobserve: vi.fn(),
+      disconnect: vi.fn(),
+    };
+  }),
+);
+
+vi.mock("@/hooks/useFeatureFlag", () => ({
+  useFeatureFlag: (flag: string) => {
+    if (flag === "MED_SPA_FOOTER") return true;
+    return false;
+  },
+}));
 
 const upload = uploadFiles<(typeof formSchemas)["new-medicaid-submission"]>();
 
@@ -17,7 +37,7 @@ describe("Medicaid SPA", () => {
     skipCleanup();
     mockApiRefinements();
 
-    await renderFormAsync(<MedicaidForm />);
+    await renderFormWithPackageSectionAsync(<MedicaidForm />);
   });
 
   test("SPA ID", async () => {
@@ -81,5 +101,22 @@ describe("Medicaid SPA", () => {
     if (result) {
       expect(result(mockCheck)).toBe(true);
     }
+  });
+
+  test("MedSpaFooter shows/hides on scroll", () => {
+    const footer = screen.getByTestId("medicaid-form-footer");
+    expect(footer).not.toHaveClass("fixed");
+
+    act(() => {
+      intersectionObserverCb([{ isIntersecting: false }]);
+    });
+
+    expect(footer).toHaveClass("fixed");
+
+    act(() => {
+      intersectionObserverCb([{ isIntersecting: true }]);
+    });
+
+    expect(footer).not.toHaveClass("fixed");
   });
 });

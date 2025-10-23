@@ -45,7 +45,7 @@ describe("getAttachmentUrl tests", () => {
     expect(gaModule.sendGAEvent).toHaveBeenCalledWith(
       "api_error",
       expect.objectContaining({
-        message: "failure /getAttachmentUrl",
+        message: `failure /getAttachmentUrl getting ${key}/${filename} for ${id} from bucket ${ATTACHMENT_BUCKET_NAME}`,
       }),
     );
   });

@@ -220,6 +220,7 @@ const defaultGetApproversHandler = http.post<PathParams, UserProfileRequestBody>
 
     type ApproverGroup = {
       territory: string;
+      fullName: string;
       email: string;
     };
     const approverGroups: Record<string, Record<string, ApproverGroup[]>> = {};
@@ -232,8 +233,12 @@ const defaultGetApproversHandler = http.post<PathParams, UserProfileRequestBody>
       for (const doc of approverDocs) {
         const territory = doc.territory;
         const group = (approverGroups[originalRole] ??= {});
+
+        const fullName = osUsers[doc.email]?._source?.fullName || "Unknown";
+
         (group[territory] ??= []).push({
           email: doc.email,
+          fullName,
           territory,
         });
       }

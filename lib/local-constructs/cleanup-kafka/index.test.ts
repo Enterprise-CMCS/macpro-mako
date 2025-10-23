@@ -42,7 +42,7 @@ describe("CleanupKafka", () => {
       "CleanupKafkaLambdaFunction",
     ) as lambda.Function;
     expect(lambdaFunction).toBeInstanceOf(lambda.Function);
-    expect(lambdaFunction.runtime).toBe(lambda.Runtime.NODEJS_18_X);
+    expect(lambdaFunction.runtime).toBe(lambda.Runtime.NODEJS_20_X);
     expect(lambdaFunction.timeout?.toMinutes()).toBe(15);
 
     const role = lambdaFunction.role as iam.Role;

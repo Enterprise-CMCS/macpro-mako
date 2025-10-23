@@ -1,5 +1,4 @@
 import type { Meta, StoryObj } from "@storybook/react-vite";
-import { TEST_STATE_SUBMITTER_USERNAME } from "mocks";
 import { reactRouterParameters, withRouter } from "storybook-addon-remix-react-router";
 import { z } from "zod";
 
@@ -13,12 +12,13 @@ import {
   RequiredIndicator,
 } from "@/components";
 
+import { asStateSubmitter } from "../../../.storybook/decorators";
 import { ActionForm } from "./index";
 
 const meta = {
   title: "Form/ActionForm",
   component: ActionForm,
-  decorators: [withRouter],
+  decorators: [withRouter, asStateSubmitter],
   argTypes: {
     schema: {
       control: false,
@@ -33,14 +33,13 @@ const meta = {
         path: "/test/:id/:authority",
       },
     }),
-    username: TEST_STATE_SUBMITTER_USERNAME,
   },
 } satisfies Meta<typeof ActionForm>;
 
 export default meta;
 type Story = StoryObj<typeof meta>;
 
-export const Default: Story = {
+export const Basic: Story = {
   args: {
     schema: z.object({
       id: z.string(),

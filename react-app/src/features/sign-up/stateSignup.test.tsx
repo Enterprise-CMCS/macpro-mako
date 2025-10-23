@@ -54,6 +54,10 @@ describe("StateSignup", () => {
           path: "/signup/state",
           element: <StateSignup />,
         },
+        {
+          path: "/signup/state/role",
+          element: <div>Role Selection Page</div>,
+        },
       ],
       {
         initialEntries: [
@@ -105,8 +109,11 @@ describe("StateSignup", () => {
     await user.click(screen.getByText("California, CA"));
 
     const continueButton = screen.getByRole("button", { name: "Continue" });
-
     await user.click(continueButton);
+
+    await waitFor(() => {
+      expect(screen.getByText("Role Selection Page")).toBeInTheDocument();
+    });
   });
 
   it("should show the form if the user is a statesystemadmin", async () => {
@@ -132,12 +139,12 @@ describe("StateSignup", () => {
     const submitButton = screen.getByRole("button", { name: "Submit" });
     expect(submitButton).toBeDisabled();
 
-    await user.click(screen.getByRole("combobox", { name: /Select state/ }));
+    await user.click(screen.getByRole("combobox"));
     expect(submitButton).toBeDisabled();
 
     await waitFor(() => expect(screen.getByText("Maine")).toBeInTheDocument());
     await user.click(screen.getByText("Maine"));
-    expect(submitButton).toBeEnabled();
+    await waitFor(() => expect(submitButton).toBeEnabled());
 
     await user.click(submitButton);
 
@@ -158,7 +165,7 @@ describe("StateSignup", () => {
     const confirmButton = screen.getByRole("button", { name: "Confirm" });
     await user.click(confirmButton);
 
-    expect(screen.getByText(/Registration: User Role/)).toBeInTheDocument();
+    await waitFor(() => expect(screen.getByText(/Registration: User Role/)).toBeInTheDocument());
   });
 
   it("should show an error if there was an error submitting the request", async () => {
@@ -169,7 +176,7 @@ describe("StateSignup", () => {
     const submitButton = screen.getByRole("button", { name: "Submit" });
     expect(submitButton).toBeDisabled();
 
-    await user.click(screen.getByRole("combobox", { name: /Select state/ }));
+    await user.click(screen.getByRole("combobox"));
     expect(submitButton).toBeDisabled();
 
     await waitFor(() => expect(screen.getByText("Maine")).toBeInTheDocument());

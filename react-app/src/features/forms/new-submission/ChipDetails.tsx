@@ -41,7 +41,7 @@ export const ChipDetailsForm = () => {
             render={({ field }) => (
               <FormItem>
                 <div className="flex gap-4">
-                  <FormLabel className="font-semibold" data-testid="spaid-label">
+                  <FormLabel htmlFor="spa-id" className="font-semibold" data-testid="spaid-label">
                     SPA ID <RequiredIndicator />
                   </FormLabel>
                   <Link
@@ -56,13 +56,15 @@ export const ChipDetailsForm = () => {
                 <SpaIdFormattingDesc />
                 <FormControl>
                   <Input
+                    id="spa-id"
                     className="max-w-sm"
                     ref={field.ref}
                     value={field.value}
+                    aria-describedby="spa-id-formatting-desc"
                     onChange={(e) => field.onChange(e.currentTarget.value.toUpperCase())}
                   />
                 </FormControl>
-                <FormMessage />
+                <FormMessage announceOn={field.value} />
               </FormItem>
             )}
           />
@@ -75,7 +77,7 @@ export const ChipDetailsForm = () => {
               return (
                 <FormItem className="w-full sm:max-w-[460px] relative">
                   <FormLabel className="font-bold">CHIP Submission Type</FormLabel>
-                  <Select>
+                  <Select value={selectedValues.join(", ")}>
                     <FormControl>
                       <SelectTrigger
                         showIcon={false}
@@ -86,7 +88,7 @@ export const ChipDetailsForm = () => {
                             data-testid="selected-value-chip"
                             className="truncate w-full whitespace-nowrap overflow-hidden text-ellipsis"
                           >
-                            {selectedValues.length > 0 ? selectedValues.join(", ") : ""}
+                            {selectedValues.join(", ")}
                           </SelectValue>
                         </div>
 
@@ -118,7 +120,7 @@ export const ChipDetailsForm = () => {
                               field.onChange(updated);
                             }}
                           >
-                            <Checkbox checked={isSelected} />
+                            <Checkbox id={option.replaceAll(" ", "")} checked={isSelected} />
                             <span>{option}</span>
                           </div>
                         );
