@@ -10,7 +10,7 @@ import {
 import { beforeAll, describe, expect, test } from "vitest";
 
 import { formSchemas } from "@/formSchemas";
-import { renderFormAsync } from "@/utils/test-helpers/renderForm";
+import { renderFormWithPackageSectionAsync } from "@/utils/test-helpers/renderForm";
 import { skipCleanup } from "@/utils/test-helpers/skipCleanup";
 import { uploadFiles } from "@/utils/test-helpers/uploadFiles";
 
@@ -22,7 +22,7 @@ describe("RENEWAL CONTRACTING WAIVER", () => {
   beforeAll(async () => {
     skipCleanup();
 
-    await renderFormAsync(<RenewalForm />);
+    await renderFormWithPackageSectionAsync(<RenewalForm />);
   });
 
   test("WAIVER ID EXISTING", async () => {

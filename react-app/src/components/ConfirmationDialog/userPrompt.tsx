@@ -18,6 +18,10 @@ export type UserPrompt = {
 
 class UserPromptObserver extends Observer<UserPrompt> {
   create = (data: UserPrompt) => {
+    if (this.observed) {
+      return;
+    }
+
     this.publish(data);
     this.observed = { ...data };
   };
@@ -30,9 +34,15 @@ class UserPromptObserver extends Observer<UserPrompt> {
 
 const userPromptState = new UserPromptObserver();
 
-export const userPrompt = (newUserPrompt: UserPrompt) => {
+const userPromptFn = (newUserPrompt: UserPrompt) => {
   return userPromptState.create(newUserPrompt);
 };
+
+export const userPrompt = Object.assign(userPromptFn, {
+  dismiss: () => {
+    userPromptState.dismiss();
+  },
+});
 
 export const UserPrompt = () => {
   const [activeUserPrompt, setActiveUserPrompt] = useState<UserPrompt | null>(null);
@@ -77,6 +87,7 @@ export const UserPrompt = () => {
     <ConfirmationDialog
       open={isOpen}
       title={activeUserPrompt.header}
+      description="Dialog for user confirmation"
       body={activeUserPrompt.body}
       onAccept={onAccept}
       onCancel={onCancel}

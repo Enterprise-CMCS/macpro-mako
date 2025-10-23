@@ -28,10 +28,7 @@ const initializeApp = async () => {
     const { mockedWorker } = await import("mocks/browser");
     const { setMockUsername, TEST_STATE_SUBMITTER_USERNAME } = await import("mocks");
 
-    await mockedWorker.start({
-      onUnhandledRequest: "warn",
-      waitUntilReady: true,
-    });
+    await mockedWorker.start({ onUnhandledRequest: "warn" });
 
     await setMockUsername(import.meta.env.VITE_MOCK_USER_USERNAME || TEST_STATE_SUBMITTER_USERNAME);
   }

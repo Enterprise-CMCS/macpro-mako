@@ -18,7 +18,7 @@ export const renderFormAsync = async (form: ReactElement) => {
 
 export const renderFormWithPackageSectionAsync = async (
   form: ReactElement,
-  id: string,
+  id?: string,
   authority?: string,
 ) => {
   const routes = [
@@ -27,13 +27,19 @@ export const renderFormWithPackageSectionAsync = async (
       element: <h1>dashboard test</h1>,
     },
     {
+      path: "/test/:authority",
+      element: form,
+    },
+    {
       path: "/test/:id/:authority",
       element: form,
     },
   ];
   const routeOptions = {
     initialEntries: [
-      `/test/${id}/${(authority || items[id]?._source?.authority || "Medicaid SPA") as Authority}`,
+      id
+        ? `/test/${id}/${(authority || items[id]?._source?.authority || "Medicaid SPA") as Authority}`
+        : `/test/${(authority || "Medicaid SPA") as Authority}`,
     ],
   };
 

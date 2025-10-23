@@ -9,7 +9,6 @@ import {
 import {
   banner,
   Button,
-  ConfirmationDialog,
   LoadingSpinner,
   Select,
   SelectContent,
@@ -18,6 +17,7 @@ import {
   SelectValue,
   SimplePageContainer,
   SubNavHeader,
+  userPrompt,
 } from "@/components";
 
 import { divisionsType, groupDivision, groupDivisionType } from "./groupDivision";
@@ -33,7 +33,6 @@ const groupSortFn = (groupA, groupB) => {
 };
 
 export const CMSSignup = () => {
-  const [showModal, setShowModal] = useState<boolean>(false);
   const [group, setGroup] = useState<groupDivisionType | null>(null);
   const [division, setDivision] = useState<divisionsType | null>(null);
   const { mutateAsync: submitRequest } = useSubmitRoleRequests();
@@ -42,6 +41,17 @@ export const CMSSignup = () => {
 
   const { data: userDetails, isLoading: isUserDetailsLoading } = useGetUserDetails();
   const currentRole = userDetails?.role;
+
+  const onCancel = () => {
+    userPrompt({
+      header: "Cancel role request?",
+      body: "Changes you made will not be saved.",
+      onAccept: () => navigate("/signup"),
+      onCancel: () => {},
+      acceptButtonText: "Confirm",
+      cancelButtonText: "Stay on Page",
+    });
+  };
 
   const onSubmit = async () => {
     try {
@@ -113,16 +123,6 @@ export const CMSSignup = () => {
       </SubNavHeader>
       {!isCMSRoleApprover && (
         <SimplePageContainer>
-          <ConfirmationDialog
-            open={showModal}
-            title="Cancel role request?"
-            body="Changes you made will not be saved."
-            onAccept={() => navigate("/signup")}
-            onCancel={() => setShowModal(false)}
-            cancelButtonText="Stay on Page"
-            acceptButtonText="Confirm"
-          />
-
           <div className="flex justify-center p-5">
             <div className="w-1/2">
               <div className="py-2">
@@ -187,7 +187,7 @@ export const CMSSignup = () => {
                 <Button className="mr-3" disabled={division == null} onClick={onSubmit}>
                   Submit
                 </Button>
-                <Button variant="outline" onClick={() => setShowModal(true)}>
+                <Button variant="outline" onClick={onCancel}>
                   Cancel
                 </Button>
               </div>

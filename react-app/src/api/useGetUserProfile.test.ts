@@ -26,7 +26,7 @@ describe("getUserProfile tests", () => {
     expect(gaModule.sendGAEvent).toHaveBeenCalledWith(
       "api_error",
       expect.objectContaining({
-        message: "failure /getUserDetails",
+        message: "failure /getUserDetails ",
       }),
     );
   });

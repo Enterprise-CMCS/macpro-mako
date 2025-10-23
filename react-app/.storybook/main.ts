@@ -1,3 +1,6 @@
+import { createRequire } from "node:module";
+import { dirname, join } from "node:path";
+
 import type { StorybookConfig } from "@storybook/react-vite";
 import {
   API_ENDPOINT,
@@ -9,15 +12,9 @@ import {
   USER_POOL_CLIENT_ID,
   USER_POOL_ID,
 } from "mocks";
-import { dirname, join } from "path";
 
-/**
- * This function is used to resolve the absolute path of a package.
- * It is needed in projects that use Yarn PnP or are set up within a monorepo.
- */
-function getAbsolutePath(value: string): any {
-  return dirname(require.resolve(join(value, "package.json")));
-}
+// @ts-ignore module is esnext
+const require = createRequire(import.meta.url);
 
 const config: StorybookConfig = {
   env: (config) => ({
@@ -37,15 +34,26 @@ const config: StorybookConfig = {
     VITE_GOOGLE_ANALYTICS_DISABLE: "true",
     VITE_LAUNCHDARKLY_CLIENT_ID: LAUNCHDARKLY_CLIENT_ID,
   }),
-  stories: ["../src/**/*.mdx", "../src/**/*.stories.@(js|jsx|mjs|ts|tsx)"],
+  stories: ["../src/**/*.mdx", "../src/**/*.stories.{js,jsx,mjs,ts,tsx}"],
+  typescript: { check: true },
+  staticDirs: ["../public", "../dist"],
   addons: [
-    getAbsolutePath("@storybook/addon-docs"),
+    getAbsolutePath("@whitespace/storybook-addon-html"),
     getAbsolutePath("@storybook/addon-a11y"),
+    getAbsolutePath("@storybook/addon-docs"),
+    getAbsolutePath("@storybook/addon-vitest"),
     getAbsolutePath("storybook-addon-remix-react-router"),
   ],
-  framework: {
-    name: getAbsolutePath("@storybook/react-vite"),
-    options: {},
+  framework: getAbsolutePath("@storybook/react-vite"),
+  core: {
+    builder: getAbsolutePath("@storybook/builder-vite"),
+  },
+  features: {
+    developmentModeForBuild: true,
   },
 };
 export default config;
+
+function getAbsolutePath(value: string): string {
+  return dirname(require.resolve(join(value, "package.json")));
+}

@@ -1,11 +1,11 @@
 import { ChevronLeft } from "lucide-react";
 import { useMemo } from "react";
 import { Navigate, useNavigate, useSearchParams } from "react-router";
-import { StateCode } from "shared-types";
+import { StateCode, UserDetails } from "shared-types";
 import { UserRole } from "shared-types/events/legacy-user";
 import { isStateRole } from "shared-utils";
 
-import { useGetUserDetails, useGetUserProfile, UserDetails, useStateAccessMap } from "@/api";
+import { useGetUserDetails, useGetUserProfile, useStateAccessMap } from "@/api";
 import {
   LoadingSpinner,
   OptionCard,
@@ -89,7 +89,7 @@ export const StateRoleSignup = () => {
         <section className="max-w-3xl mx-auto">
           <div className="py-10">
             <h2 className="text-xl font-bold">
-              {statesRequested.length > 1 ? "States:" : "State:"}
+              {statesRequested.length > 1 ? "States / Territories:" : "State / Territory:"}
             </h2>
             <p className="text-xl italic">
               {statesRequested.map((state) => convertStateAbbrToFullName(state)).join(", ")}

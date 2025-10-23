@@ -4,7 +4,7 @@ import { EXISTING_ITEM_APPROVED_AMEND_ID } from "mocks";
 import { beforeAll, describe, expect, test } from "vitest";
 
 import { formSchemas } from "@/formSchemas";
-import { renderFormAsync } from "@/utils/test-helpers/renderForm";
+import { renderFormWithPackageSectionAsync } from "@/utils/test-helpers/renderForm";
 import { mockApiRefinements, skipCleanup } from "@/utils/test-helpers/skipCleanup";
 import { uploadFiles } from "@/utils/test-helpers/uploadFiles";
 
@@ -17,7 +17,7 @@ describe("Capitated Initial", () => {
     skipCleanup();
     mockApiRefinements();
 
-    await renderFormAsync(<InitialForm />);
+    await renderFormWithPackageSectionAsync(<InitialForm />);
   });
 
   test("1915(B) WAIVER NUMBER", async () => {

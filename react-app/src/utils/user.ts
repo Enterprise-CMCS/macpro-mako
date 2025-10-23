@@ -5,7 +5,6 @@ import { isCmsUser } from "shared-utils";
 import { getUser } from "@/api";
 
 export const getUserStateCodes = (user: FullUser | null | undefined): StateCode[] => {
-  console.log("what is the user", user);
   // We always need a user, and state users always need a custom:state value
   if (!user) return [];
   return isCmsUser(user) ? [...STATE_CODES] : ((user.states ?? []) as StateCode[]);

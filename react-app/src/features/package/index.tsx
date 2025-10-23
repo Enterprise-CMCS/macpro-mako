@@ -6,7 +6,7 @@ import { ItemResult } from "shared-types/opensearch/changelog";
 import { getItem, useGetItem } from "@/api";
 import { CardWithTopBorder, ErrorAlert, LoadingSpinner } from "@/components";
 import { BreadCrumbs } from "@/components/BreadCrumb";
-import { detailsAndActionsCrumbs } from "@/utils";
+import { detailsAndActionsCrumbs, sendGAEvent } from "@/utils";
 
 import { AdminPackageActivities } from "./admin-changes";
 import { useDetailsSidebarLinks } from "./hooks";
@@ -18,12 +18,14 @@ import { PackageStatusCard } from "./package-status";
 export const DetailCardWrapper = ({
   title,
   children,
+  ariaLabel,
 }: PropsWithChildren<{
   title: string;
+  ariaLabel?: string;
 }>) => (
   <CardWithTopBorder className="text-wrap my-0 sm:mt-6">
     <div className="p-4 py-1 min-h-36">
-      <h2>{title}</h2>
+      <h2 id={ariaLabel}>{title}</h2>
       {children}
     </div>
   </CardWithTopBorder>
@@ -81,10 +83,10 @@ export const DetailsContent = ({ id }: DetailsContentProps) => {
   return (
     <div className="w-full py-1 px-4 lg:px-8 grid grid-cols-1 gap-y-6 sm:gap-y-6">
       <section id="package_overview" className="sm:mb-0 two-cols gap-y-3 sm:gap-y-3">
-        <DetailCardWrapper title="Status">
+        <DetailCardWrapper title="Status" ariaLabel="package-status-heading">
           <PackageStatusCard submission={updatedSubmission} />
         </DetailCardWrapper>
-        <DetailCardWrapper title="Package Actions">
+        <DetailCardWrapper title="Package Actions" ariaLabel="package-actions-heading">
           <PackageActionsCard id={id} submission={updatedSubmission} />
         </DetailCardWrapper>
       </section>
@@ -133,9 +135,7 @@ export const Details = () => {
     <div className="max-w-screen-xl mx-auto flex flex-col lg:flex-row">
       <div className="px-4 lg:px-8">
         <BreadCrumbs options={detailsAndActionsCrumbs({ id, authority })} />
-        <div className="hidden lg:block pr-8">
-          <DetailsSidebar id={id} />
-        </div>
+        <DetailsSidebar id={id} />
       </div>
       <DetailsContent id={id} />
     </div>
@@ -148,14 +148,29 @@ type DetailsSidebarProps = {
 
 const DetailsSidebar = ({ id }: DetailsSidebarProps) => {
   const links = useDetailsSidebarLinks(id);
+  const handleSidebarClick = (linkId: string) => {
+    if (linkId === "package_activity" || linkId === "package_details") {
+      sendGAEvent("package_detail_sidebar_link_click", {
+        link: linkId,
+      });
+    }
+  };
 
   return (
-    <aside className="min-w-56 flex-none font-semibold mt-6">
-      {links.map(({ id, href, displayName }) => (
-        <a className="block mb-2 text-blue-900 hover:underline" key={id} href={href}>
-          {displayName}
-        </a>
-      ))}
-    </aside>
+    <nav className="min-w-56 flex-none font-semibold mt-6 hidden lg:block mr-8">
+      <ul>
+        {links.map(({ id, href, displayName }) => (
+          <li key={id}>
+            <a
+              className="block mb-2 text-blue-900 hover:underline"
+              href={href}
+              onClick={() => handleSidebarClick(id)}
+            >
+              {displayName}
+            </a>
+          </li>
+        ))}
+      </ul>
+    </nav>
   );
 };

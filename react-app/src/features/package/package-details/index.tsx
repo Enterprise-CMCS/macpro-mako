@@ -1,6 +1,5 @@
 import { useEffect, useMemo, useRef } from "react";
 import { Authority, opensearch } from "shared-types";
-import { isCmsUser } from "shared-utils";
 
 import { useGetUser } from "@/api/useGetUser";
 import { DetailsSection, LoadingSpinner } from "@/components";
@@ -23,10 +22,10 @@ const PackageDetailsGrid = ({ details }: PackageDetailsGridProps) => (
   <div className="two-cols gap-y-6 sm:gap-y-6">
     {details.map(({ label, value, canView = true }) => {
       return canView ? (
-        <div key={label}>
-          <h3 className="font-bold">{label}</h3>
-          <div className="py-2">{value}</div>
-        </div>
+        <dl key={label}>
+          <dt className="font-bold">{label}</dt>
+          <dd className="py-2">{value}</dd>
+        </dl>
       ) : null;
     })}
   </div>
@@ -38,7 +37,7 @@ type PackageDetailsProps = {
 
 export const PackageDetails = ({ submission }: PackageDetailsProps) => {
   const { data: user, isLoading: isUserLoading } = useGetUser();
-  const didSetGATag = useRef(false);
+  const didSetGATag = useRef<boolean>(false);
   const isCHIPDetailsEnabled = useFeatureFlag("CHIP_SPA_DETAILS");
   const title = useMemo(() => {
     const hasChipSubmissionType =
@@ -67,16 +66,16 @@ export const PackageDetails = ({ submission }: PackageDetailsProps) => {
 
   useEffect(() => {
     if (!isUserLoading && typeof window.gtag == "function" && !didSetGATag.current) {
-      const isWaiver = (authority) =>
-        authority === Authority["1915c"] || authority === Authority["1915b"];
       sendGAEvent("package_details_view", {
         package_id: submission.id,
-        package_type: isWaiver(submission.authority) ? "waiver" : "spa",
-        user_role: isCmsUser(user.user) ? "cms" : "state",
+        package_type: submission.authority,
+        state: submission.state,
+        ...(user?.user?.role && { user_role: user?.user?.role }),
       });
       didSetGATag.current = true;
     }
-  }, [isUserLoading, user?.user, submission.id, submission.authority, didSetGATag]);
+  }, [isUserLoading]); // eslint-disable-line react-hooks/exhaustive-deps
+  // we only want this to run when the user finishes loading
 
   if (isUserLoading) return <LoadingSpinner />;
 

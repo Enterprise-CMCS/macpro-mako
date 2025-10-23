@@ -10,9 +10,8 @@ import {
   WITHDRAW_RAI_ITEM_D,
   WITHDRAW_RAI_ITEM_E,
 } from "mocks";
-import { KafkaEvent, KafkaRecord } from "shared-types";
-import { Authority } from "shared-types";
-import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
+import { Authority, KafkaEvent, KafkaRecord } from "shared-types";
+import { describe, expect, it, vi } from "vitest";
 
 import { handler } from "./processEmails";
 const nms = "new-medicaid-submission";
@@ -24,7 +23,6 @@ const capitatedInitial = "capitated-initial";
 const withdrawRai = "withdraw-rai";
 const respondToRai = "respond-to-rai";
 const uploadSubsequentDocuments = "upload-subsequent-documents";
-import { calculate90dayExpiration } from "./utils";
 
 describe("process emails  Handler", () => {
   it.each([
@@ -424,68 +422,5 @@ describe("process emails  Handler for seatool", () => {
     };
     await handler(mockEvent, {} as Context, callback);
     expect(consoleSpy).toHaveBeenCalledWith("Withdraw email previously sent");
-  });
-});
-
-describe("calculate90dayExpiration", () => {
-  const mockConfig = {
-    osDomain: "fakeDomain",
-    indexNamespace: "main",
-    region: "us-east-1",
-  } as any;
-
-  const parsedRecord = {
-    id: "OH-1234-56",
-  };
-
-  beforeEach(() => {
-    vi.restoreAllMocks();
-    vi.useFakeTimers();
-  });
-
-  afterEach(() => {
-    vi.useRealTimers(); // clean up
-  });
-
-  it("should calculate 90-day expiration date with paused duration", async () => {
-    // Mock submissionDate = Jan 1 2025, RAI requested = Jan 31 2025
-    const submissionDate = "2025-01-01T00:00:00Z";
-    const raiRequestedDate = "2025-01-31T00:00:00Z";
-
-    const expectedNow = new Date("2025-03-01T00:00:00Z").getTime();
-    vi.setSystemTime(expectedNow);
-
-    vi.spyOn(os, "getItem").mockResolvedValue({
-      _source: {
-        submissionDate,
-        raiRequestedDate,
-      },
-    } as any);
-
-    const result = await calculate90dayExpiration(parsedRecord as any, mockConfig);
-
-    const submissionMS = new Date(submissionDate).getTime();
-    const raiMS = new Date(raiRequestedDate).getTime();
-    const pausedDuration = expectedNow - raiMS;
-    const ninetyDays = 90 * 24 * 60 * 60 * 1000;
-    const expectedExpiration = submissionMS + ninetyDays + pausedDuration;
-
-    expect(result).toBe(expectedExpiration);
-  });
-
-  it("should log an error if submissionDate or raiRequestedDate is missing", async () => {
-    const consoleSpy = vi.spyOn(console, "error").mockImplementation(() => {});
-
-    vi.spyOn(os, "getItem").mockResolvedValue({
-      _source: {
-        submissionDate: "2025-01-31T00:00:00Z",
-        raiRequestedDate: null, // Missing RAI date
-      },
-    } as any);
-
-    const result = await calculate90dayExpiration(parsedRecord as any, mockConfig);
-
-    expect(consoleSpy).toHaveBeenCalledWith("error parsing os record");
-    expect(result).toBeUndefined();
   });
 });

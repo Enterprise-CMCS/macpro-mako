@@ -1,3 +1,4 @@
+import { createError } from "@middy/util";
 import { APIGatewayEvent } from "shared-types";
 import { z } from "zod";
 
@@ -32,6 +33,10 @@ export const handler = authenticatedMiddy({
     }
 
     const userDetails = await getUserByEmail(email);
+    if (!userDetails) {
+      throw createError(404, JSON.stringify({ message: "User not found" }));
+    }
+
     const latestActiveRoleObj = await getLatestActiveRoleByEmail(email);
     const activeStates = await getActiveStatesForUserByEmail(email);
 

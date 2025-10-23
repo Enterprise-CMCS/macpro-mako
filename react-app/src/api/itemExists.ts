@@ -8,7 +8,7 @@ export const itemExists = async (id: string): Promise<boolean> => {
     return response.exists;
   } catch (error) {
     sendGAEvent("api_errror", {
-      error: "failure /itemExists",
+      error: `failure /itemExists ${id}`,
     });
     console.error("Error checking if item exists:", error);
     return false;

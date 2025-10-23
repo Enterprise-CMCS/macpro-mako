@@ -45,7 +45,7 @@ export function ConfirmationDialog({
       <DialogContent className="sm:max-w-[425px]" data-testid="dialog-content">
         <DialogHeader>
           <DialogTitle data-testid="dialog-title">{title}</DialogTitle>
-          {description && <DialogDescription>{description}</DialogDescription>}
+          {description && <DialogDescription className="sr-only">{description}</DialogDescription>}
         </DialogHeader>
         {body && (
           <div className="grid gap-4 py-4" data-testid="dialog-body">

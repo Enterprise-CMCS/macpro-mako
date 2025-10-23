@@ -12,7 +12,6 @@ import { SignUp } from "@/features/sign-up/sign-up";
 import { queryClient } from "@/utils";
 
 import { CMSSignup, StateConfirmation, StateRoleSignup, StateSignup } from "./features/sign-up";
-import { RoleAwareTracker } from "./utils/ReactGA/RoleAwareTracker";
 
 const RoutesWithTimeout = () => (
   <>
@@ -27,9 +26,7 @@ export const router = (loginFlag = false) => {
       path: "/",
       element: (
         // For tracking user_role sent with GA events
-        <RoleAwareTracker>
-          <C.Layout />
-        </RoleAwareTracker>
+        <C.Layout />
       ),
       errorElement: <C.Layout />,
       children: [

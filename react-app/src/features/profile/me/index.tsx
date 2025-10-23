@@ -3,7 +3,7 @@ import { useEffect, useMemo, useState } from "react";
 import { Navigate, useNavigate } from "react-router";
 import { StateCode } from "shared-types";
 import { Territory } from "shared-types/events/legacy-user";
-import { isStateUser, userRoleMap } from "shared-utils";
+import { isStateUser } from "shared-utils";
 
 import {
   StateAccess,
@@ -67,11 +67,6 @@ export const MyProfile = () => {
 
     return orderRoleStatus(filteredRoleStatus);
   }, [userDetails, userProfile, isNewUserRoleDisplay]);
-
-  const currentRoleObj = useMemo(() => {
-    if (!userProfile || !userProfile.stateAccess) return { group: null, division: null };
-    return userProfile?.stateAccess.find((x) => x.role === userDetails.role);
-  }, [userProfile, userDetails]);
 
   const hideAddRoleButton = useMemo(() => {
     if (!userProfile || !userProfile.stateAccess) return true;
@@ -255,19 +250,16 @@ export const MyProfile = () => {
         <div className="flex flex-col md:flex-row">
           <UserInformation
             fullName={userDetails?.fullName}
-            role={userRoleMap[userDetails?.role] ?? "No role requested"}
+            role={userDetails?.role}
             email={userDetails?.email}
-            allowEdits
-            groupDivision={
-              currentRoleObj && currentRoleObj.group
-                ? `${currentRoleObj?.group}/${currentRoleObj?.division}`
-                : null
-            }
+            allowEdits={isNewUserRoleDisplay}
+            group={userDetails.group}
+            division={userDetails.division}
           />
-          <div className="flex flex-col gap-6 md:basis-1/2">
+          <div className="md:basis-1/2 space-y-3">
             {/* Status/State Access Management Section */}
             {showAllStateAccess && (
-              <div>
+              <>
                 {isNewUserRoleDisplay ? (
                   <h2 className="text-2xl font-bold">My User Roles</h2>
                 ) : (
@@ -286,32 +278,41 @@ export const MyProfile = () => {
                   onCancel={() => setSelfRevokeRole(null)}
                 />
 
-                {orderedRoleStatus && orderedRoleStatus.length ? (
-                  orderedRoleStatus?.map((access) => (
-                    <RoleStatusCard
-                      key={`${access.territory}-${access.role}`}
-                      access={access}
-                      role={userDetails.role}
-                      onClick={() => handleRoleStatusClick(access)}
-                    />
-                  ))
-                ) : (
-                  <p className="my-6">No role requested</p>
-                )}
-                {isNewUserRoleDisplay && !hideAddRoleButton ? (
-                  <Button
-                    className="w-full border-dashed p-10 text-black font-normal"
-                    variant="outline"
-                    onClick={() =>
-                      isStateUser(user.user) ? navigate("/signup/state") : navigate("/signup")
-                    }
-                  >
-                    Add another user role <PlusIcon className="ml-3" />
-                  </Button>
-                ) : (
-                  <StateAccessControls />
-                )}
-              </div>
+                <ol className="flex flex-col">
+                  {orderedRoleStatus && orderedRoleStatus.length ? (
+                    orderedRoleStatus?.map((access) => (
+                      <li key={`${access.territory}-${access.role}`}>
+                        <RoleStatusCard
+                          access={access}
+                          role={userDetails.role}
+                          onClick={() => handleRoleStatusClick(access)}
+                        />
+                      </li>
+                    ))
+                  ) : (
+                    <li>
+                      <p className="my-6">No role requested</p>
+                    </li>
+                  )}
+                  {isNewUserRoleDisplay && !hideAddRoleButton ? (
+                    <li>
+                      <Button
+                        className="w-full border-dashed p-10 text-black font-normal"
+                        variant="outline"
+                        onClick={() =>
+                          isStateUser(user.user) ? navigate("/signup/state") : navigate("/signup")
+                        }
+                      >
+                        Add another user role <PlusIcon className="ml-3" />
+                      </Button>
+                    </li>
+                  ) : (
+                    <li>
+                      <StateAccessControls />
+                    </li>
+                  )}
+                </ol>
+              </>
             )}
 
             {userDetails.role === "cmsroleapprover" && !isNewUserRoleDisplay && (

@@ -1,6 +1,7 @@
+import { UTCDate } from "@date-fns/utc";
 import { errors as OpensearchErrors } from "@opensearch-project/opensearch";
-import * as os from "libs/opensearch-lib";
-import { getOsNamespace } from "libs/utils";
+import { add, differenceInDays } from "date-fns";
+import { ItemResult } from "shared-types/opensearch/main";
 
 export type ErrorResponse = {
   statusCode: number;
@@ -9,22 +10,10 @@ export type ErrorResponse = {
   };
 };
 
-interface ParseKafkaEvent {
-  id: string;
+interface ParsedKafkaEvent {
   event?: string;
   authority?: string;
-}
-
-export interface ProcessEmailConfig {
-  emailAddressLookupSecretName: string;
-  applicationEndpointUrl: string;
-  osDomain: string;
-  indexNamespace?: string;
-  region: string;
-  DLQ_URL: string;
-  userPoolId: string;
-  configurationSetName: string;
-  isDev: boolean;
+  timestamp: number;
 }
 
 export const handleOpensearchError = (error: unknown): ErrorResponse => {
@@ -44,32 +33,44 @@ export const handleOpensearchError = (error: unknown): ErrorResponse => {
   };
 };
 
-export const calculate90dayExpiration = async (
-  parsedRecord: ParseKafkaEvent,
-  config: ProcessEmailConfig,
-) => {
-  const item = await os.getItem(config.osDomain, getOsNamespace("main"), parsedRecord.id);
+/**
+ * Adjusts the timestamp, if needed, to provide the email template with the correct date.
+ * For example:
+ * - The 90 day date for a respond to RAI events for CHIP SPAs should not be the timestamp
+ * the call to the handler, but the submission date plus the number of days between the
+ * RAI request and response.
+ * @param parsedRecord the Kafka value parsed as a JSON object
+ * @param item the OpenSearch item matching the Kafka key
+ * @param timestamp the timestamp of the call to the handler
+ * @returns the original timestamp, unless the record is a Respond to RAI event for a CHIP SPA.
+ */
+export const adjustTimestamp = (parsedRecord: ParsedKafkaEvent, item: ItemResult): number => {
+  if (
+    !(
+      parsedRecord?.event === "respond-to-rai" &&
+      parsedRecord?.authority?.toUpperCase() === "CHIP SPA"
+    )
+  ) {
+    return parsedRecord.timestamp;
+  }
+
   const submissionDate = item?._source.submissionDate || "";
   const raiRequestedDate = item?._source.raiRequestedDate || "";
-  const submissionMS = new Date(submissionDate).getTime();
-  const raiMS = new Date(raiRequestedDate).getTime();
+
   if (!submissionDate || !raiRequestedDate) {
     console.error("error parsing os record");
+    return parsedRecord.timestamp;
   }
-  const now = Date.now();
 
-  if (raiRequestedDate && submissionDate) {
-    // length of time from when the RAI was requested until now
-    const pausedDuration = now - raiMS;
-    // 90 days in milliseconds
-    const ninetyDays = 90 * 24 * 60 * 60 * 1000;
+  // length of time from when the RAI was requested until now
+  const pausedDuration = differenceInDays(
+    new UTCDate(), // now
+    new UTCDate(raiRequestedDate), // original RAI Requested Date
+  );
 
-    const ninetyDayExpirationClock = submissionMS + ninetyDays + pausedDuration;
-    return ninetyDayExpirationClock;
-  }
-  return undefined;
-};
+  const submissionDateWithPauseDuration = add(new UTCDate(submissionDate), {
+    days: pausedDuration,
+  });
 
-export const isChipSpaRespondRAIEvent = (parsedRecord: ParseKafkaEvent) => {
-  return parsedRecord?.event == "respond-to-rai" && parsedRecord?.authority == "CHIP SPA";
+  return submissionDateWithPauseDuration.getTime();
 };

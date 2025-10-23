@@ -2,11 +2,11 @@ import { screen } from "@testing-library/react";
 import { beforeAll, describe, expect, it, vi } from "vitest";
 
 import { WithdrawRaiForm } from "@/features/forms/post-submission/withdraw-rai";
-import { renderFormAsync } from "@/utils/test-helpers/renderForm";
+import { renderFormWithPackageSectionAsync } from "@/utils/test-helpers/renderForm";
 
 describe("Withdraw RAI for Medicaid SPAs", () => {
   beforeAll(async () => {
-    await renderFormAsync(<WithdrawRaiForm />);
+    await renderFormWithPackageSectionAsync(<WithdrawRaiForm />);
   });
 
   // test documentChecker function from ActionForm in isolation

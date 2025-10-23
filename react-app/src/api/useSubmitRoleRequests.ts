@@ -3,7 +3,7 @@ import { API } from "aws-amplify";
 import { StateCode } from "shared-types";
 import { UserRole } from "shared-types/events/legacy-user";
 
-import { StateAccess } from "./useGetUserProfile";
+import { OneMacUserProfile } from "./useGetUserProfile";
 
 export type RoleStatus = "active" | "denied" | "pending" | "revoked";
 export type RoleRequest = {
@@ -32,37 +32,61 @@ export const submitRoleRequests = async (request: RoleRequest): Promise<{ messag
 export const useSubmitRoleRequests = () => {
   const queryClient = useQueryClient();
 
-  return useMutation<{ message: string }, Error, RoleRequest, { previousRequests?: StateAccess[] }>(
-    {
-      mutationFn: submitRoleRequests,
+  return useMutation<
+    { message: string },
+    Error,
+    RoleRequest,
+    { previousProfile?: OneMacUserProfile }
+  >({
+    mutationFn: submitRoleRequests,
 
-      onMutate: async (newRequest) => {
-        await queryClient.cancelQueries(["roleRequests"]);
-        // Save current cache in case there's an error
-        const previousRequests: StateAccess[] | undefined = queryClient.getQueryData<StateAccess[]>(
-          ["roleRequests"],
-        );
-        // Updates existing cache if anything changed
-        queryClient.setQueryData(["roleRequests"], (old: StateAccess[] = []) => {
-          if (!Array.isArray(old)) return [];
-          return old.map((oldRequest) => {
-            if (oldRequest.id === `${newRequest.email}_${newRequest.state}_${newRequest.role}`) {
-              let status = "pending";
-              if (newRequest.grantAccess !== undefined) status = newRequest.grantAccess;
-              return { ...oldRequest, lastModifiedDate: Date.now(), status: status, ...newRequest };
-            }
-            return oldRequest;
-          });
-        });
+    onMutate: async (newRequest) => {
+      await queryClient.cancelQueries({ queryKey: ["profile"] });
 
-        return { previousRequests };
-      },
+      const previousProfile = queryClient.getQueryData<OneMacUserProfile>(["profile"]);
 
-      onError: (_error, _variables, context) => {
-        if (context?.previousRequests) {
-          queryClient.setQueryData(["roleRequests"], context.previousRequests);
-        }
-      },
+      if (!previousProfile) return;
+
+      const { email, state, role, grantAccess, eventType } = newRequest;
+      const id = `${email}_${state}_${role}`;
+      const oldStateAccess = previousProfile.stateAccess ?? [];
+
+      const updatedStateAccess = oldStateAccess.some((stateAccess) => stateAccess.id === id)
+        ? oldStateAccess.map((stateAccess) =>
+            stateAccess.id === id
+              ? {
+                  ...stateAccess,
+                  status: grantAccess ?? "pending",
+                  eventType,
+                }
+              : stateAccess,
+          )
+        : [
+            ...oldStateAccess,
+            {
+              id,
+              email,
+              role,
+              territory: state,
+              status: grantAccess ?? "pending",
+              eventType,
+              doneByEmail: email,
+              doneByName: "Updating...",
+            },
+          ];
+
+      queryClient.setQueryData<OneMacUserProfile>(["profile"], {
+        ...previousProfile,
+        stateAccess: updatedStateAccess,
+      });
+
+      return { previousProfile };
     },
-  );
+
+    onError: (_error, _variables, context) => {
+      if (context?.previousProfile) {
+        queryClient.setQueryData(["profile"], context.previousProfile);
+      }
+    },
+  });
 };

@@ -1,4 +1,4 @@
-import { cpus } from "os";
+import { storybookTest } from "@storybook/addon-vitest/vitest-plugin";
 import { join } from "path";
 import { configDefaults, defineConfig } from "vitest/config";
 
@@ -7,21 +7,58 @@ export default defineConfig({
     globals: true,
     include: ["**/*.test.{ts,tsx}"],
     exclude: ["**/node_modules/**", "test/**", "**/*.spec.{ts,tsx}"],
+    projects: [
+      {
+        test: {
+          name: "lib",
+          root: "./lib/",
+          setupFiles: ["vitest.setup.ts"],
+          exclude: ["**/node_modules/**", "./libs/email/**"],
+          environment: "node",
+        },
+      },
+      {
+        test: {
+          name: "email",
+          root: "./lib/libs/email/",
+          setupFiles: ["vitest.setup.ts"],
+          exclude: ["**/node_modules/**"],
+          environment: "jsdom",
+        },
+      },
+      {
+        extends: "./react-app/vite.config.ts",
+        test: {
+          name: "ui",
+          root: "./react-app",
+          setupFiles: "vitest.setup.ts",
+          exclude: ["**/node_modules/**"],
+          environment: "jsdom",
+        },
+      },
+      {
+        extends: "./react-app/.storybook/vite.config.ts",
+        plugins: [
+          storybookTest({
+            configDir: join(__dirname, "./react-app/.storybook"),
+            // This should match your package.json script to run Storybook
+            // The --ci flag will skip prompts and not open a browser
+            storybookScript: "run storybook --ci",
+          }),
+        ],
+        test: {
+          name: "storybook",
+          root: "./react-app",
+          setupFiles: "./.storybook/vitest.setup.ts",
+        },
+      },
+    ],
     server: {
       deps: {
         cacheDir: ".vitest/cache",
       },
     },
     testTimeout: 10000,
-    pool: "threads",
-    poolOptions: {
-      threads: {
-        singleThread: false,
-        isolate: true,
-        maxThreads: Math.max(1, Math.floor(cpus().length * 0.75)),
-        minThreads: Math.max(1, Math.floor(cpus().length * 0.5)),
-      },
-    },
     coverage: {
       provider: "istanbul",
       reportsDirectory: join(__dirname, "coverage"),

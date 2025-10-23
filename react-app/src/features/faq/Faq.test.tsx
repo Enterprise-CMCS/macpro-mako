@@ -11,7 +11,7 @@ vi.mock("react-router", async () => ({
 vi.mock("@/utils/ReactGA/SendGAEvent", () => ({
   sendGAEvent: vi.fn(),
 }));
-vi.mock("./content/oneMACFAQContent", () => ({
+vi.mock("./faqs", () => ({
   oneMACFAQContent: [
     {
       sectionTitle: "Section 1",
@@ -21,12 +21,8 @@ vi.mock("./content/oneMACFAQContent", () => ({
       ],
     },
   ],
-  helpDeskContact: {
-    phone: "123-456-7890",
-    email: "help@example.com",
-  },
-  handleSupportLinkClick: vi.fn(() => () => {}),
 }));
+
 it("should expand all FAQ items when the 'Expand all' button is clicked and send GA event", () => {
   render(<Faq />);
 
@@ -48,7 +44,7 @@ it("should expand all FAQ items when the 'Expand all' button is clicked and send
 it("should fire GA event when help desk phone is clicked", () => {
   render(<Faq />);
 
-  const phoneLink = screen.getByText("123-456-7890");
+  const phoneLink = screen.getByText("(833) 228-2540");
 
   fireEvent.click(phoneLink);
 
@@ -58,7 +54,7 @@ it("should fire GA event when help desk phone is clicked", () => {
 it("should fire GA event when help desk email is clicked", () => {
   render(<Faq />);
 
-  const emailLink = screen.getByText("help@example.com");
+  const emailLink = screen.getByText("OneMAC_Helpdesk@cms.hhs.gov");
 
   fireEvent.click(emailLink);
 

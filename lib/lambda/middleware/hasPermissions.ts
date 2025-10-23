@@ -10,18 +10,29 @@ import { getAuthUserFromRequest, getPackageFromRequest } from "./utils";
  */
 export const canViewPackage = (): MiddlewareObj => ({
   before: async (request: Request) => {
-    // Get the user to check if they are authorized to see the package
-    const user = await getAuthUserFromRequest(request);
     const packageResult = await getPackageFromRequest(request);
 
-    if (!user || !packageResult) {
-      throw new Error("User or package were not stored on the request");
+    let state: string;
+    if (packageResult) {
+      state = packageResult?._source?.state.toUpperCase();
+    } else {
+      // the event body should already have been validated by `validator` before this handler runs
+      const { id } = request.event.body as { id: string };
+      state = id.substring(0, 2).toUpperCase();
     }
 
-    if (
-      !isCmsUser(user) &&
-      (!user.states || !user.states.includes(packageResult?._source?.state.toUpperCase()))
-    ) {
+    if (!state) {
+      throw new Error("Could not resolve the state of the package");
+    }
+
+    // Get the user to check if they are authorized to see the package
+    const user = await getAuthUserFromRequest(request);
+
+    if (!user) {
+      throw new Error("User was not stored on the request");
+    }
+
+    if (!isCmsUser(user) && (!user.states || !user.states.includes(state))) {
       throw createError(403, JSON.stringify({ message: "Not authorized to view this resource" }));
     }
   },

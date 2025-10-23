@@ -7,6 +7,7 @@ import {
   getRequestContext,
   setDefaultStateSubmitter,
   setMockUsername,
+  STATE_SUBMITTER_USERNAME,
 } from "mocks";
 import { mockedProducer } from "mocks/helpers/kafka.utils";
 import { mockedServiceServer as mockedServer } from "mocks/server";
@@ -77,6 +78,49 @@ describe("submitGroupDivision handler", () => {
     expect(res.body).toEqual(
       JSON.stringify({ message: "Group and division submitted successfully." }),
     );
+  });
+
+  it("should return a 401 if the user is a statesubmitter", async () => {
+    setMockUsername(STATE_SUBMITTER_USERNAME);
+
+    const event = {
+      body: JSON.stringify({
+        userEmail: "mako.stateuser@gmail.com",
+        group: "Group1",
+        division: "Division1",
+      }),
+      requestContext: getRequestContext(),
+    } as APIGatewayEvent;
+
+    const res = await handler(event, {} as Context);
+
+    expect(res.statusCode).toEqual(403);
+    expect(res.body).toEqual(JSON.stringify({ message: "Not authorized to view this resource" }));
+  });
+
+  it("should return a 404 if the user is not found", async () => {
+    setMockUsername(CMS_ROLE_APPROVER_USERNAME);
+
+    const event = {
+      body: JSON.stringify({ userEmail: "test@test.com", group: "Group1", division: "Division1" }),
+      requestContext: getRequestContext(),
+    };
+
+    const res = await handler(event, {} as Context);
+
+    expect(res.statusCode).toEqual(404);
+    expect(res.body).toEqual(
+      JSON.stringify({ message: "User with email test@test.com not found." }),
+    );
+  });
+
+  it("should return a 400 if the event body is missing", async () => {
+    const event = {};
+
+    const res = await handler(event, {} as Context);
+
+    expect(res.statusCode).toEqual(400);
+    expect(res.body).toEqual(JSON.stringify({ message: "Event body required" }));
   });
 
   it("should return a 500 if there is an error", async () => {
