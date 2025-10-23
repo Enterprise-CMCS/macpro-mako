@@ -1,4 +1,5 @@
 import {
+  errorApiItemHandler,
   EXISTING_ITEM_APPROVED_AMEND_ID,
   EXISTING_ITEM_APPROVED_NEW_ID,
   EXISTING_ITEM_APPROVED_RENEW_ID,
@@ -6,7 +7,6 @@ import {
   NOT_FOUND_ITEM_ID,
   TEST_ITEM_ID,
 } from "mocks";
-import { errorApiItemHandler } from "mocks";
 import { mockedApiServer as mockedServer } from "mocks/server";
 import { describe, expect, it, vi } from "vitest";
 
@@ -61,7 +61,7 @@ describe("zod schema helpers", () => {
       expect(gaModule.sendGAEvent).toHaveBeenCalledWith(
         "api_error",
         expect.objectContaining({
-          message: "failure /item",
+          message: "failure /item TEST_ID",
         }),
       );
     });

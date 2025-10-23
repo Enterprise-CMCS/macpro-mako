@@ -8,7 +8,7 @@ import { main } from "shared-types/opensearch";
 import { describe, expect, it } from "vitest";
 
 import { fetchPackage, FetchPackageOptions } from "./fetchPackage";
-import { getPackageFromRequest } from "./utils";
+import { ContextWithPackage, getPackageFromRequest } from "./utils";
 
 const setupHandler = ({
   expectedPackage = undefined,
@@ -21,14 +21,16 @@ const setupHandler = ({
   options?: FetchPackageOptions;
 } = {}) =>
   middy()
-    .use(httpErrorHandler())
+    .use(
+      httpErrorHandler({ fallbackMessage: JSON.stringify({ message: "Internal server error" }) }),
+    )
     .use(httpJsonBodyParser())
     .use(fetchPackage(options))
     .before(async (request: Request) => {
       const packageResult = await getPackageFromRequest(request);
       expect(packageResult).toEqual(expectedPackage);
     })
-    .handler((event: APIGatewayEvent, context: Context & { packageResult?: main.ItemResult }) => {
+    .handler((event: APIGatewayEvent, context: ContextWithPackage) => {
       if (options.setToContext) {
         const { packageResult } = context;
         expect(packageResult).toEqual(expectedPackage);
@@ -72,6 +74,23 @@ describe("fetchPackage", () => {
     expect(res).toBeTruthy();
     expect(res.statusCode).toEqual(200);
     expect(res.body).toEqual("OK");
+  });
+
+  it("should return 500, if there is an error retrieving the package and allowNotFound is false", async () => {
+    const event = {
+      body: JSON.stringify({ id: GET_ERROR_ITEM_ID }),
+      headers: {
+        "Content-Type": "application/json",
+      } as APIGatewayProxyEventHeaders,
+    } as APIGatewayEvent;
+
+    const handler = setupHandler();
+
+    const res = await handler(event, {} as Context);
+
+    expect(res).toBeTruthy();
+    expect(res.statusCode).toEqual(500);
+    expect(res.body).toEqual(JSON.stringify({ message: "Internal server error" }));
   });
 
   it("should return 404, if the package is not found", async () => {

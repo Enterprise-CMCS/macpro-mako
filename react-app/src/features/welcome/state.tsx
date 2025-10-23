@@ -171,7 +171,7 @@ export const StateWelcome = () => {
           {/* Horizontal "or" line */}
           <div className="flex items-center w-full mb-8">
             <div className="flex-grow border-t border-[#DFE1E2]" />
-            <span className="mx-4 text-sm text-[#9CA3AF]">or</span>
+            <span className="mx-4 text-sm text-[#72767A]">or</span>
             <div className="flex-grow border-t border-[#DFE1E2]" />
           </div>
 

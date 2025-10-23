@@ -6,29 +6,29 @@ import { Checkbox, CheckboxGroup } from "./checkbox";
 
 describe("Checkbox Component", () => {
   it("renders correctly with a label", () => {
-    render(<Checkbox label="Accept Terms" />);
+    render(<Checkbox id="accept-terms" label="Accept Terms" />);
     expect(screen.getByLabelText("Accept Terms")).toBeInTheDocument();
   });
 
   it("renders correctly with a styledLabel", () => {
-    render(<Checkbox styledLabel={<span>Styled Label</span>} />);
+    render(<Checkbox id="styled-label" styledLabel={<span>Styled Label</span>} />);
     expect(screen.getByText("Styled Label")).toBeInTheDocument();
   });
 
   it("displays description if provided", () => {
-    render(<Checkbox label="Terms" description="Please accept terms and conditions" />);
+    render(<Checkbox id="terms" label="Terms" description="Please accept terms and conditions" />);
     expect(screen.getByText("Please accept terms and conditions")).toBeInTheDocument();
   });
 
   it("applies custom class names", () => {
-    render(<Checkbox label="Terms" className="custom-class" />);
+    render(<Checkbox id="terms" label="Terms" className="custom-class" />);
     const checkbox = screen.getByLabelText("Terms");
     expect(checkbox).toHaveClass("custom-class");
   });
 
   it("toggles checked state when clicked", () => {
     const handleChange = vi.fn();
-    render(<Checkbox label="Terms" onCheckedChange={handleChange} />);
+    render(<Checkbox id="terms" label="Terms" onCheckedChange={handleChange} />);
     const checkbox = screen.getByLabelText("Terms");
 
     // Simulate checking the checkbox
@@ -44,9 +44,9 @@ describe("Checkbox Component", () => {
 describe("CheckboxGroup Component", () => {
   it("renders all options correctly", () => {
     const options = [
-      { label: "Option 1", value: "opt1" },
-      { label: "Option 2", value: "opt2" },
-      { label: "Option 3", value: "opt3" },
+      { label: "Option 1", value: "opt1", id: "opt1" },
+      { label: "Option 2", value: "opt2", id: "opt2" },
+      { label: "Option 3", value: "opt3", id: "opt3" },
     ];
     render(<CheckboxGroup value={[]} onChange={() => {}} options={options} />);
 
@@ -57,8 +57,8 @@ describe("CheckboxGroup Component", () => {
 
   it("checks the correct checkboxes based on initial value", () => {
     const options = [
-      { label: "Option 1", value: "opt1" },
-      { label: "Option 2", value: "opt2" },
+      { label: "Option 1", value: "opt1", id: "opt1" },
+      { label: "Option 2", value: "opt2", id: "opt2" },
     ];
     render(<CheckboxGroup value={["opt1"]} onChange={() => {}} options={options} />);
 
@@ -68,8 +68,8 @@ describe("CheckboxGroup Component", () => {
 
   it("calls onChange with the correct values when a checkbox is toggled", () => {
     const options = [
-      { label: "Option 1", value: "opt1" },
-      { label: "Option 2", value: "opt2" },
+      { label: "Option 1", value: "opt1", id: "opt1" },
+      { label: "Option 2", value: "opt2", id: "opt2" },
     ];
     const handleChange = vi.fn();
 

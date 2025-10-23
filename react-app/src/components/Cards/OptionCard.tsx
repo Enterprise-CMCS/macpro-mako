@@ -6,7 +6,7 @@ import { CardWithTopBorder } from "@/components";
 import { cn } from "@/utils";
 
 export type OptionCardFieldsetProps = PropsWithChildren<{
-  legend: string;
+  legend?: string;
 }>;
 export type MACFieldsetOption = {
   title: string;
@@ -19,7 +19,7 @@ export const OptionFieldset = ({ children, legend }: OptionCardFieldsetProps) =>
   return (
     <section className="max-w-3xl mx-auto mb-6">
       <fieldset>
-        <legend className="text-2xl font-medium py-8">{legend}</legend>
+        {legend && <legend className="text-2xl font-medium py-8">{legend}</legend>}
         <CardWithTopBorder>{children}</CardWithTopBorder>
       </fieldset>
     </section>

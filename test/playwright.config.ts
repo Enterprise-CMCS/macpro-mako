@@ -38,7 +38,7 @@ export default defineConfig({
   // retries: process.env.CI ? 2 : 0,
   retries: 0,
   // Limit the number of failures on CI to save resources
-  maxFailures: process.env.CI ? 10 : undefined,
+  // maxFailures: process.env.CI ? 10 : undefined,
   /* Opt out of parallel tests on CI. */
   workers: 1,
   /* Reporter to use. See https://playwright.dev/docs/test-reporters */
@@ -146,7 +146,7 @@ export default defineConfig({
     },
     {
       name: "shared",
-      testMatch: "**/e2e/e2e/**/*.spec.ts",
+      testMatch: "e2e/specs/**/*.spec.ts",
       use: {
         baseURL: rootURL,
       },

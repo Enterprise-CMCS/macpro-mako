@@ -9,14 +9,18 @@ const setupHandler = ({
   expectedEvent = undefined,
   options = {
     opensearch: false,
+    kafka: false,
     disableCors: false,
+    body: true,
   },
 }: {
   expectedEvent?: APIGatewayEvent;
   options?: NormalizeEventOptions;
 } = {}) =>
   middy()
-    .use(httpErrorHandler())
+    .use(
+      httpErrorHandler({ fallbackMessage: JSON.stringify({ message: "Internal server error" }) }),
+    )
     .use(normalizeEvent(options))
     .handler((event: APIGatewayEvent) => {
       if (expectedEvent) {
@@ -24,7 +28,7 @@ const setupHandler = ({
       }
       return {
         statusCode: 200,
-        body: "OK",
+        body: { message: "OK" },
       };
     });
 
@@ -121,6 +125,46 @@ describe("normalizeEvent middleware", () => {
     expect(res.body).toEqual(JSON.stringify({ message: "Event body required" }));
   });
 
+  it("should not check for event body if the body option is false", async () => {
+    const event = {} as APIGatewayEvent;
+
+    const handler = setupHandler({ options: { body: false } });
+
+    const res = await handler(event, {} as Context);
+
+    expect(res).toBeTruthy();
+    expect(res.statusCode).toEqual(200);
+    expect(res.body).toEqual(JSON.stringify({ message: "OK" }));
+  });
+
+  it("should not check for event body if the method is GET", async () => {
+    const event = {
+      httpMethod: "GET",
+    } as APIGatewayEvent;
+
+    const handler = setupHandler();
+
+    const res = await handler(event, {} as Context);
+
+    expect(res).toBeTruthy();
+    expect(res.statusCode).toEqual(200);
+    expect(res.body).toEqual(JSON.stringify({ message: "OK" }));
+  });
+
+  it("should not check for event body if the method is HEAD", async () => {
+    const event = {
+      httpMethod: "HEAD",
+    } as APIGatewayEvent;
+
+    const handler = setupHandler();
+
+    const res = await handler(event, {} as Context);
+
+    expect(res).toBeTruthy();
+    expect(res.statusCode).toEqual(200);
+    expect(res.body).toEqual(JSON.stringify({ message: "OK" }));
+  });
+
   it("should return 500 if the opensearch option is true and osDomain is not set", async () => {
     const osDomain = process.env.osDomain;
     delete process.env.osDomain;
@@ -203,7 +247,7 @@ describe("normalizeEvent middleware", () => {
 
     expect(res).toBeTruthy();
     expect(res.statusCode).toEqual(200);
-    expect(res.body).toEqual("OK");
+    expect(res.body).toEqual(JSON.stringify({ message: "OK" }));
 
     process.env.osDomain = osDomain;
     process.env.indexNamespace = indexNamespace;
@@ -225,10 +269,103 @@ describe("normalizeEvent middleware", () => {
 
     expect(res).toBeTruthy();
     expect(res.statusCode).toEqual(200);
-    expect(res.body).toEqual("OK");
+    expect(res.body).toEqual(JSON.stringify({ message: "OK" }));
 
     process.env.osDomain = osDomain;
     process.env.indexNamespace = indexNamespace;
+  });
+
+  it("should return 500 if the kafka option is true and topicName is not set", async () => {
+    const topicName = process.env.topicName;
+    delete process.env.topicName;
+
+    const event = {
+      body: "test",
+    } as APIGatewayEvent;
+
+    const handler = setupHandler({ options: { kafka: true } });
+
+    const res = await handler(event, {} as Context);
+
+    expect(res).toBeTruthy();
+    expect(res.statusCode).toEqual(500);
+    expect(res.body).toEqual(JSON.stringify({ message: "Internal server error" }));
+
+    process.env.topicName = topicName;
+  });
+
+  it("should not check for topicName if the kafka option is undefined", async () => {
+    const topicName = process.env.topicName;
+    delete process.env.topicName;
+
+    const event = {
+      body: "test",
+    } as APIGatewayEvent;
+
+    const handler = setupHandler();
+
+    const res = await handler(event, {} as Context);
+
+    expect(res).toBeTruthy();
+    expect(res.statusCode).toEqual(200);
+    expect(res.body).toEqual(JSON.stringify({ message: "OK" }));
+
+    process.env.topicName = topicName;
+  });
+
+  it("should not check for topicName if the kafka option is false", async () => {
+    const topicName = process.env.topicName;
+    delete process.env.topicName;
+
+    const event = {
+      body: "test",
+    } as APIGatewayEvent;
+
+    const handler = setupHandler({ options: { kafka: false } });
+
+    const res = await handler(event, {} as Context);
+
+    expect(res).toBeTruthy();
+    expect(res.statusCode).toEqual(200);
+    expect(res.body).toEqual(JSON.stringify({ message: "OK" }));
+
+    process.env.topicName = topicName;
+  });
+
+  it("should convert the response body to a string if it is an object", async () => {
+    const event = {
+      body: "test",
+    } as APIGatewayEvent;
+
+    const handler = setupHandler();
+
+    const res = await handler(event, {} as Context);
+
+    expect(res).toBeTruthy();
+    expect(res.statusCode).toEqual(200);
+    expect(res.body).toEqual(JSON.stringify({ message: "OK" }));
+  });
+
+  it("should not convert the response body if it is a string", async () => {
+    const event = {
+      body: "test",
+    } as APIGatewayEvent;
+
+    const handler = middy()
+      .use(
+        httpErrorHandler({ fallbackMessage: JSON.stringify({ message: "Internal server error" }) }),
+      )
+      .use(normalizeEvent())
+      .handler(() => ({
+        statusCode: 200,
+        body: "OK",
+      }));
+
+    const res = await handler(event, {} as Context);
+
+    expect(res).toBeTruthy();
+    expect(res.statusCode).toBe(200);
+    expect(res.body).toEqual("OK");
   });
 
   it("should add CORS headers to the response if disableCors is undefined", async () => {
@@ -242,7 +379,7 @@ describe("normalizeEvent middleware", () => {
 
     expect(res).toBeTruthy();
     expect(res.statusCode).toEqual(200);
-    expect(res.body).toEqual("OK");
+    expect(res.body).toEqual(JSON.stringify({ message: "OK" }));
     expect(res.headers).toEqual({
       "Access-Control-Allow-Headers": "Content-Type",
       "Access-Control-Allow-Origin": "*",
@@ -261,7 +398,7 @@ describe("normalizeEvent middleware", () => {
 
     expect(res).toBeTruthy();
     expect(res.statusCode).toEqual(200);
-    expect(res.body).toEqual("OK");
+    expect(res.body).toEqual(JSON.stringify({ message: "OK" }));
     expect(res.headers).toEqual({
       "Access-Control-Allow-Headers": "Content-Type",
       "Access-Control-Allow-Origin": "*",
@@ -280,7 +417,7 @@ describe("normalizeEvent middleware", () => {
 
     expect(res).toBeTruthy();
     expect(res.statusCode).toEqual(200);
-    expect(res.body).toEqual("OK");
+    expect(res.body).toEqual(JSON.stringify({ message: "OK" }));
     expect(res.headers).toBeUndefined();
   });
 });

@@ -31,12 +31,6 @@ export default defineConfig(({ mode }) => {
     server: {
       port: 5000,
     },
-    test: {
-      root: "react-app",
-      setupFiles: "vitest.setup.ts",
-      exclude: ["**/node_modules/**"],
-      environment: "jsdom",
-    },
     resolve: {
       alias: {
         "@": fileURLToPath(new URL("./src", import.meta.url)),

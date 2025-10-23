@@ -31,7 +31,12 @@ export const mfaLogin: LoginFn = async (page, username, password) => {
 export const authStrategyMap: Record<string, Record<string, LoginFn>> = {
   local: {
     stateSubmitter: cognitoLogin,
+    submitter: cognitoLogin,
+    stateSystemAdmin: cognitoLogin,
     cmsReviewer: cognitoLogin,
+    cmsRoleApprover: cognitoLogin,
+    systemAdmin: cognitoLogin,
+    helpDesk: cognitoLogin,
   },
   dev: {
     stateSubmitter: cognitoLogin,

@@ -11,6 +11,7 @@ import {
   logs,
   openApp,
   openKibana,
+  storybook,
   test,
   ui,
   watch,
@@ -22,19 +23,20 @@ yargs
     if (msg) console.error(msg);
     process.exit(1);
   })
-  .command(watch)
   .command(deploy)
   .command(destroy)
   .command(docs)
   .command(e2e)
+  .command(emails)
+  .command(getCost)
   .command(install)
   .command(logs)
   .command(openApp)
   .command(openKibana)
+  .command(storybook)
   .command(test)
   .command(ui)
-  .command(emails)
-  .command(getCost)
+  .command(watch)
   .strict()
   .scriptName("run")
   .demandCommand(1, "")

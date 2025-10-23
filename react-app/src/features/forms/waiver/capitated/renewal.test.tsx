@@ -10,7 +10,7 @@ import {
 import { beforeAll, describe, expect, test } from "vitest";
 
 import { formSchemas } from "@/formSchemas";
-import { renderFormAsync } from "@/utils/test-helpers/renderForm";
+import { renderFormWithPackageSectionAsync } from "@/utils/test-helpers/renderForm";
 import { mockApiRefinements, skipCleanup } from "@/utils/test-helpers/skipCleanup";
 import { uploadFiles } from "@/utils/test-helpers/uploadFiles";
 
@@ -23,7 +23,7 @@ describe("Capitated Renewal", () => {
     skipCleanup();
     mockApiRefinements();
 
-    await renderFormAsync(<Renewal />);
+    await renderFormWithPackageSectionAsync(<Renewal />);
   });
 
   test("EXISTING RENEWAL NUMBER TO RENEW", async () => {

@@ -10,18 +10,16 @@ import {
   Button,
   ConfirmationDialog,
   LoadingSpinner,
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
   SimplePageContainer,
   SubNavHeader,
 } from "@/components";
 import { FilterableSelect, Option } from "@/components/Opensearch/main/Filtering/Drawer/Filterable";
 import { useAvailableStates } from "@/hooks/useAvailableStates";
+import { useFeatureFlag } from "@/hooks/useFeatureFlag";
 
 export const StateSignup = () => {
+  const isNewUserRoleDisplay = useFeatureFlag("SHOW_USER_ROLE_UPDATE");
+
   const [stateSelected, setStateSelected] = useState<StateCode[]>([]);
   const [showModal, setShowModal] = useState<boolean>(false);
   const navigate = useNavigate();
@@ -51,11 +49,9 @@ export const StateSignup = () => {
     currentRole !== "statesubmitter" &&
     currentRole !== "statesystemadmin" &&
     currentRole !== "norole"
-  )
+  ) {
     return <Navigate to="/profile" />;
-
-  // Statesubmitters can request to be a statesystemadmin for 1 state
-  // const isRequestRoleAdmin = currentRole === "statesubmitter";
+  }
 
   const onChange = (values: StateCode[]) => {
     setStateSelected(values);
@@ -94,13 +90,15 @@ export const StateSignup = () => {
   return (
     <div>
       <SubNavHeader>
-        <h1 className="text-xl font-medium">Registration: State Access</h1>
+        <h1 className="text-xl font-medium">
+          {isNewUserRoleDisplay ? "Choose States For Access" : "Registration: State Access"}
+        </h1>
       </SubNavHeader>
       <ConfirmationDialog
         open={showModal}
         title="Cancel role request?"
         body="Changes you made will not be saved."
-        onAccept={() => navigate("/signup")}
+        onAccept={() => navigate(isNewUserRoleDisplay ? "/profile" : "/signup")}
         onCancel={() => setShowModal(false)}
         cancelButtonText="Stay on Page"
         acceptButtonText="Confirm"
@@ -108,47 +106,47 @@ export const StateSignup = () => {
       <SimplePageContainer>
         <div className="flex justify-center p-5">
           <div className="w-1/3">
-            <div className="py-2">
-              <h2 className="text-xl font-bold mb-2">User Role:</h2>
-              <p className="text-xl italic">{userRoleMap[roleToRequest] ?? "Not Found"}</p>
-            </div>
+            {!isNewUserRoleDisplay && (
+              <div className="py-2">
+                <h2 className="text-xl font-bold mb-2">User Role:</h2>
+                <p className="text-xl italic">{userRoleMap[roleToRequest] ?? "Not Found"}</p>
+              </div>
+            )}
             <div className="py-2">
               <h2 className="text-xl font-bold mb-2">Select your State Access</h2>
-              {roleToRequest === "statesystemadmin" ? (
-                <Select onValueChange={(value: StateCode) => onChange([value])}>
-                  <SelectTrigger aria-label="Select state">
-                    <SelectValue placeholder="Select state here" />
-                  </SelectTrigger>
-                  <SelectContent isScrollable>
-                    {statesToRequest.map((state) => (
-                      <SelectItem value={state.value} key={state.value}>
-                        {state.label}
-                      </SelectItem>
-                    ))}
-                  </SelectContent>
-                </Select>
-              ) : (
-                <FilterableSelect
-                  value={stateSelected}
-                  options={statesToRequest}
-                  onChange={(values: StateCode[]) => onChange(values)}
-                  placeholder="Select state here"
-                  selectedDisplay="label"
-                />
-              )}
+              <FilterableSelect
+                ariaLabel="Select state here"
+                value={stateSelected}
+                options={statesToRequest}
+                onChange={(values: StateCode[]) => onChange(values)}
+                placeholder="Select state here"
+                selectedDisplay={isNewUserRoleDisplay ? "value" : "label"}
+              />
               {!stateSelected.length && (
-                <p className="text-red-600 mt-3">
-                  {roleToRequest === "statesystemadmin"
-                    ? "Please select a state."
-                    : "Please select at least one state."}
-                </p>
+                <p className="text-red-600 mt-3">Please select at least one state.</p>
               )}
               <div className="py-4">
-                <Button className="mr-3" disabled={!stateSelected.length} onClick={onSubmit}>
-                  Submit
-                </Button>
+                {isNewUserRoleDisplay ? (
+                  <Button
+                    className="mr-3"
+                    disabled={!stateSelected.length}
+                    onClick={() => {
+                      const stateParam = encodeURIComponent(stateSelected.join(","));
+                      navigate(`/signup/state/role?states=${stateParam}`);
+                    }}
+                  >
+                    Continue
+                  </Button>
+                ) : (
+                  <Button className="mr-3" disabled={!stateSelected.length} onClick={onSubmit}>
+                    Submit
+                  </Button>
+                )}
                 {isLoading && <LoadingSpinner />}
-                <Button variant="outline" onClick={() => setShowModal(true)}>
+                <Button
+                  variant={isNewUserRoleDisplay ? "link" : "outline"}
+                  onClick={() => setShowModal(true)}
+                >
                   Cancel
                 </Button>
               </div>

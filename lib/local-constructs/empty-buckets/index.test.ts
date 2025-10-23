@@ -29,7 +29,7 @@ describe("EmptyBuckets", () => {
   it("should create a Lambda function with appropriate properties", () => {
     const lambdaFunction = emptyBuckets.node.findChild("Lambda") as lambda.Function;
     expect(lambdaFunction).toBeInstanceOf(lambda.Function);
-    expect(lambdaFunction.runtime).toBe(lambda.Runtime.NODEJS_18_X);
+    expect(lambdaFunction.runtime).toBe(lambda.Runtime.NODEJS_20_X);
     expect(lambdaFunction.timeout?.toMinutes()).toBe(15);
 
     const role = lambdaFunction.role as iam.Role;

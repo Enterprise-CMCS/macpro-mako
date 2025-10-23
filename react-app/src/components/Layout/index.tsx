@@ -17,8 +17,8 @@ import { ErrorPage } from "@/features/error-page";
 import { hasPendingRequests } from "@/features/profile/utils";
 import { useMediaQuery } from "@/hooks";
 import { useFeatureFlag } from "@/hooks/useFeatureFlag";
-import { isFaqPage, isProd } from "@/utils";
-import { cn } from "@/utils";
+import { cn, isFaqPage, isProd } from "@/utils";
+import { PathTracker } from "@/utils/ReactGA/PathTracker";
 import { sendGAEvent } from "@/utils/ReactGA/SendGAEvent";
 
 import TopBanner from "../Banner/macproBanner";
@@ -248,55 +248,57 @@ export const Layout = () => {
 
   return (
     <div className="min-h-full flex flex-col">
-      <ScrollToTop />
-      <UserPrompt />
-      {user?.user && !isFaqPage && <MMDLAlertBanner />}
-      <UsaBanner isUserMissingRole={user?.user && customUserRoles === undefined} />
-      <TopBanner />
-      <nav data-testid="nav-banner-d" className="bg-primary">
-        <div className="max-w-screen-xl mx-auto px-4 lg:px-8">
-          <div className="h-[70px] relative flex gap-12 items-center text-white">
-            {!isFaqPage ? (
-              // This is the original Link component
-              <Link to={user?.user || hideLogin ? "/" : "/login"}>
-                <img
-                  className="h-10 w-28 min-w-[112px] resize-none"
-                  src="/onemac-logo.png"
-                  alt="onemac site logo"
-                />
-              </Link>
-            ) : (
-              // This is a non-clickable element that looks the same
-              <div>
-                <img
-                  className="h-10 w-28 min-w-[112px] resize-none"
-                  src="/onemac-logo.png"
-                  alt="onemac site logo"
-                />
-              </div>
-            )}
-            <ResponsiveNav isDesktop={isDesktop} />
+      <PathTracker userRole={user?.user?.role}>
+        <ScrollToTop />
+        <UserPrompt />
+        {user?.user && !isFaqPage && <MMDLAlertBanner />}
+        <UsaBanner isUserMissingRole={user?.user && customUserRoles === undefined} />
+        <TopBanner />
+        <nav data-testid="nav-banner-d" className="bg-primary">
+          <div className="max-w-screen-xl mx-auto px-4 lg:px-8">
+            <div className="h-[70px] relative flex gap-12 items-center text-white">
+              {!isFaqPage ? (
+                // This is the original Link component
+                <Link to={user?.user || hideLogin ? "/" : "/login"}>
+                  <img
+                    className="h-10 w-28 min-w-[112px] resize-none"
+                    src="/onemac-logo.png"
+                    alt="onemac site logo"
+                  />
+                </Link>
+              ) : (
+                // This is a non-clickable element that looks the same
+                <div>
+                  <img
+                    className="h-10 w-28 min-w-[112px] resize-none"
+                    src="/onemac-logo.png"
+                    alt="onemac site logo"
+                  />
+                </div>
+              )}
+              <ResponsiveNav isDesktop={isDesktop} />
+            </div>
           </div>
-        </div>
-      </nav>
-      <main className="flex-1">
-        {/* Portal target for SubNavHeader */}
-        <div id="subheader-portal-container" />
-        <SimplePageContainer>
-          <Banner />
-        </SimplePageContainer>
-        {error ? <ErrorPage /> : <Outlet />}
-      </main>
-      <Footer
-        email="OneMAC_Helpdesk@cms.hhs.gov"
-        address={{
-          city: "Baltimore",
-          state: "MD",
-          street: "7500 Security Boulevard",
-          zip: 21244,
-        }}
-        showNavLinks={cmsHomeFlag && stateHomeFlag && !!user.user}
-      />
+        </nav>
+        <main className="flex-1">
+          {/* Portal target for SubNavHeader */}
+          <div id="subheader-portal-container" />
+          <SimplePageContainer>
+            <Banner />
+          </SimplePageContainer>
+          {error ? <ErrorPage /> : <Outlet />}
+        </main>
+        <Footer
+          email="OneMAC_Helpdesk@cms.hhs.gov"
+          address={{
+            city: "Baltimore",
+            state: "MD",
+            street: "7500 Security Boulevard",
+            zip: 21244,
+          }}
+          showNavLinks={cmsHomeFlag && stateHomeFlag && !!user.user}
+        />
+      </PathTracker>
     </div>
   );
 };

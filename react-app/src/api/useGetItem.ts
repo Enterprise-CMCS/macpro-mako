@@ -6,7 +6,7 @@ import { sendGAEvent } from "@/utils/ReactGA/SendGAEvent";
 
 export const getItem = async (id: string): Promise<opensearch.main.ItemResult> =>
   await API.post("os", "/item", { body: { id } }).catch(() =>
-    sendGAEvent("api_error", { message: "failure /item" }),
+    sendGAEvent("api_error", { message: `failure /item ${id}` }),
   );
 
 export const idIsApproved = async (id: string) => {

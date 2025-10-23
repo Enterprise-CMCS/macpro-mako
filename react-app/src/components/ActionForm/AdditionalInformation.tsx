@@ -45,6 +45,7 @@ export const AdditionalInformation = <Schema extends SchemaWithEnforcableProps>(
           id="character-count"
           aria-label="character-count"
           aria-live="polite"
+          role="note"
           className="text-neutral-500"
         >
           {`${4000 - (field?.value?.length || 0)} characters remaining`}

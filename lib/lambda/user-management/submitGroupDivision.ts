@@ -1,47 +1,66 @@
+import { createError } from "@middy/util";
+import { APIGatewayEvent } from "aws-lambda";
 import { produceMessage } from "libs/api/kafka";
-import { response } from "libs/handler-lib";
+import { z } from "zod";
 
+import { authenticatedMiddy, canViewUser, ContextWithAuthenticatedUser } from "../middleware";
 import { getUserByEmail } from "./userManagementService";
 
-type SubmitGroupDivisionBody = {
-  userEmail: string;
-  group: string;
-  division: string;
-};
+export const submitGroupDivisionEventSchema = z
+  .object({
+    body: z.object({
+      userEmail: z.string(),
+      group: z.string(),
+      division: z.string(),
+    }),
+  })
+  .passthrough();
 
-export const submitGroupDivision = async (body: SubmitGroupDivisionBody) => {
-  try {
-    const topicName = process.env.topicName as string;
-    if (!topicName) {
-      throw new Error("Topic name is not defined");
+export type SubmitGroupDivisionEvent = APIGatewayEvent &
+  z.infer<typeof submitGroupDivisionEventSchema>;
+
+export const handler = authenticatedMiddy({
+  opensearch: true,
+  kafka: true,
+  setToContext: true,
+  eventSchema: submitGroupDivisionEventSchema,
+})
+  .use(canViewUser())
+  .handler(async (event: SubmitGroupDivisionEvent, context: ContextWithAuthenticatedUser) => {
+    const { authenticatedUser } = context;
+    const { userEmail, group, division } = event.body;
+    const lookupEmail = userEmail || authenticatedUser?.email;
+
+    if (!lookupEmail) {
+      throw new Error("Email is undefined");
     }
 
-    const { userEmail, group, division } = body;
-    const userInfo = await getUserByEmail(userEmail);
+    const userInfo = await getUserByEmail(lookupEmail);
+
+    if (!userInfo || userInfo === null) {
+      throw createError(
+        404,
+        JSON.stringify({ message: `User with email ${userEmail} not found.` }),
+      );
+    }
+
+    const { fullName, email, id } = userInfo;
 
     await produceMessage(
-      topicName,
+      process?.env?.topicName || "",
       userInfo.id,
       JSON.stringify({
-        eventType: "user-info",
-        email: userInfo.email,
+        id,
+        email,
         group,
         division,
-        fullName: userInfo.fullName,
+        fullName,
+        eventType: "user-info",
       }),
     );
 
-    return response({
+    return {
       statusCode: 200,
       body: { message: "Group and division submitted successfully." },
-    });
-  } catch (error) {
-    console.error("Error submitting group and division:", { error });
-    return response({
-      statusCode: 500,
-      body: { message: `Internal Server Error: ${error.message}` },
-    });
-  }
-};
-
-export const handler = submitGroupDivision;
+    };
+  });

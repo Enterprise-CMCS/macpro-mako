@@ -37,7 +37,7 @@ export const WebformsList = () => {
                           (key.slice(-1).match(/[a-zA-Z]/)
                             ? key.slice(-1).toLowerCase()
                             : key.slice(-1))}
-                      </td>{" "}
+                      </td>
                       <td>{version}</td>
                       <td>
                         <Link
