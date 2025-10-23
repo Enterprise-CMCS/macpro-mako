@@ -18,7 +18,9 @@ DS_Store
 .serverless
 ./src
 .env*
+env.json
 
 # tests
+accessibility
 coverage
 .vitest

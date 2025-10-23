@@ -1,5 +1,6 @@
 import { API } from "aws-amplify";
 
+import { sendGAEvent } from "@/utils/ReactGA/SendGAEvent";
 export const getAttachmentUrl = async (
   id: string,
   bucket: string,
@@ -14,5 +15,10 @@ export const getAttachmentUrl = async (
       filename,
     },
   });
+  if (!response.url) {
+    sendGAEvent("api_error", {
+      message: `failure /getAttachmentUrl getting ${key}/${filename} for ${id} from bucket ${bucket}`,
+    });
+  }
   return response.url as string;
 };

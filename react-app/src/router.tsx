@@ -11,7 +11,7 @@ import { userProfileLoader } from "@/features/profile/user";
 import { SignUp } from "@/features/sign-up/sign-up";
 import { queryClient } from "@/utils";
 
-import { CMSSignup, StateSignup } from "./features/sign-up";
+import { CMSSignup, StateConfirmation, StateRoleSignup, StateSignup } from "./features/sign-up";
 
 const RoutesWithTimeout = () => (
   <>
@@ -24,7 +24,10 @@ export const router = (loginFlag = false) => {
   return createBrowserRouter([
     {
       path: "/",
-      element: <C.Layout />,
+      element: (
+        // For tracking user_role sent with GA events
+        <C.Layout />
+      ),
       errorElement: <C.Layout />,
       children: [
         { path: "/", index: true, element: <F.WelcomeWrapper /> },
@@ -44,8 +47,9 @@ export const router = (loginFlag = false) => {
               path: "/signup",
               element: <SignUp />,
             },
-            // { path: "/signup/state", element: <StateSignup /> },
             { path: "/signup/state", element: <StateSignup /> },
+            { path: "/signup/state/role", element: <StateRoleSignup /> },
+            { path: "/signup/state/role/confirm", element: <StateConfirmation /> },
             { path: "/signup/cms", element: <CMSSignup /> },
             {
               path: "/dashboard",

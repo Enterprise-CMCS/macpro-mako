@@ -1,9 +1,10 @@
-import { useMemo } from "react";
+import { useEffect, useMemo, useRef } from "react";
 import { Authority, opensearch } from "shared-types";
 
 import { useGetUser } from "@/api/useGetUser";
 import { DetailsSection, LoadingSpinner } from "@/components";
 import { useFeatureFlag } from "@/hooks/useFeatureFlag";
+import { sendGAEvent } from "@/utils";
 
 import {
   getApprovedAndEffectiveDetails,
@@ -21,10 +22,10 @@ const PackageDetailsGrid = ({ details }: PackageDetailsGridProps) => (
   <div className="two-cols gap-y-6 sm:gap-y-6">
     {details.map(({ label, value, canView = true }) => {
       return canView ? (
-        <div key={label}>
-          <h3 className="font-bold">{label}</h3>
-          <div className="py-2">{value}</div>
-        </div>
+        <dl key={label}>
+          <dt className="font-bold">{label}</dt>
+          <dd className="py-2">{value}</dd>
+        </dl>
       ) : null;
     })}
   </div>
@@ -36,6 +37,7 @@ type PackageDetailsProps = {
 
 export const PackageDetails = ({ submission }: PackageDetailsProps) => {
   const { data: user, isLoading: isUserLoading } = useGetUser();
+  const didSetGATag = useRef<boolean>(false);
   const isCHIPDetailsEnabled = useFeatureFlag("CHIP_SPA_DETAILS");
   const title = useMemo(() => {
     const hasChipSubmissionType =
@@ -61,6 +63,19 @@ export const PackageDetails = ({ submission }: PackageDetailsProps) => {
 
     return `${submission.authority} Package Details`;
   }, [submission, isCHIPDetailsEnabled]);
+
+  useEffect(() => {
+    if (!isUserLoading && typeof window.gtag == "function" && !didSetGATag.current) {
+      sendGAEvent("package_details_view", {
+        package_id: submission.id,
+        package_type: submission.authority,
+        state: submission.state,
+        ...(user?.user?.role && { user_role: user?.user?.role }),
+      });
+      didSetGATag.current = true;
+    }
+  }, [isUserLoading]); // eslint-disable-line react-hooks/exhaustive-deps
+  // we only want this to run when the user finishes loading
 
   if (isUserLoading) return <LoadingSpinner />;
 

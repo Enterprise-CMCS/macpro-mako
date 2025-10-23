@@ -1,6 +1,7 @@
 import type * as LabelPrimitive from "@radix-ui/react-label";
 import { Slot } from "@radix-ui/react-slot";
 import * as React from "react";
+import { useEffect, useRef, useState } from "react";
 import {
   Controller,
   ControllerProps,
@@ -130,10 +131,38 @@ FormDescription.displayName = "FormDescription";
 
 const FormMessage = React.forwardRef<
   HTMLParagraphElement,
-  React.HTMLAttributes<HTMLParagraphElement> & { className?: string }
->(({ className, children, ...props }, ref) => {
+  React.HTMLAttributes<HTMLParagraphElement> & {
+    className?: string;
+    announceOn?: unknown;
+    debounceMs?: number;
+  }
+>(({ className, children, announceOn, debounceMs = 1000, ...props }, ref) => {
   const { error, formMessageId } = useFormField();
+  const [announceCounter, setAnnounceCounter] = useState(0);
+  const timeoutRef = useRef<number | null>(null);
+
   const body = error && !Array.isArray(error) ? String(error?.message) : children;
+  const shouldAnnounce = announceOn !== null && !!body;
+
+  // Screen readers re-read a live region only if its text content changes.
+  // Increasing announceCounter forces re-render; the live-region now has “new” content
+  // Forcing screen readers to reannounce error on every keystroke.
+
+  // Debounce: every keystroke clears & restarts the timer.
+  // After debounceMs of silence, we increment announceCounter → re-render,
+  // so the screen reader reads the latest error once.
+  useEffect(() => {
+    if (!shouldAnnounce) return;
+
+    if (timeoutRef.current) clearTimeout(timeoutRef.current);
+
+    timeoutRef.current = setTimeout(() => {
+      setAnnounceCounter((n) => n + 1);
+    }, debounceMs) as unknown as number;
+    return () => {
+      if (timeoutRef.current) clearTimeout(timeoutRef.current);
+    };
+  }, [announceOn, body, shouldAnnounce, debounceMs]);
 
   if (!body) {
     return null;
@@ -143,10 +172,14 @@ const FormMessage = React.forwardRef<
     <p
       ref={ref}
       id={formMessageId}
+      role="status"
+      aria-live="assertive"
       className={cn("text-[0.8rem] font-medium text-destructive", className)}
       {...props}
     >
       {body}
+      {/* Invisible text that changes every keystroke so screen recoders re-read error */}
+      {shouldAnnounce && <span className="sr-only">invalid {announceCounter}</span>}
     </p>
   );
 });

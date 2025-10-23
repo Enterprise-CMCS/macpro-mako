@@ -41,7 +41,7 @@ export const ChipDetailsForm = () => {
             render={({ field }) => (
               <FormItem>
                 <div className="flex gap-4">
-                  <FormLabel className="font-semibold" data-testid="spaid-label">
+                  <FormLabel htmlFor="spa-id" className="font-semibold" data-testid="spaid-label">
                     SPA ID <RequiredIndicator />
                   </FormLabel>
                   <Link
@@ -56,33 +56,39 @@ export const ChipDetailsForm = () => {
                 <SpaIdFormattingDesc />
                 <FormControl>
                   <Input
+                    id="spa-id"
                     className="max-w-sm"
                     ref={field.ref}
                     value={field.value}
+                    aria-describedby="spa-id-formatting-desc"
                     onChange={(e) => field.onChange(e.currentTarget.value.toUpperCase())}
                   />
                 </FormControl>
-                <FormMessage />
+                <FormMessage announceOn={field.value} />
               </FormItem>
             )}
           />
           <FormField
             control={control}
             name="chipSubmissionType"
+            data-testid="HERE"
             render={({ field }) => {
               const selectedValues = Array.isArray(field.value) ? field.value : [];
               return (
                 <FormItem className="w-full sm:max-w-[460px] relative">
                   <FormLabel className="font-bold">CHIP Submission Type</FormLabel>
-                  <Select>
+                  <Select value={selectedValues.join(", ")}>
                     <FormControl>
                       <SelectTrigger
                         showIcon={false}
                         className="relative w-full mt-2 h-[40px] px-[4px] gap-[5px] border border-[#565C65] text-gray-950 flex items-center justify-between rounded-none after:hidden"
                       >
                         <div className="flex-1 text-left overflow-hidden">
-                          <SelectValue className="truncate w-full whitespace-nowrap overflow-hidden text-ellipsis">
-                            {selectedValues.length > 0 ? selectedValues.join(", ") : ""}
+                          <SelectValue
+                            data-testid="selected-value-chip"
+                            className="truncate w-full whitespace-nowrap overflow-hidden text-ellipsis"
+                          >
+                            {selectedValues.join(", ")}
                           </SelectValue>
                         </div>
 
@@ -104,6 +110,7 @@ export const ChipDetailsForm = () => {
                         const isSelected = selectedValues.includes(option);
                         return (
                           <div
+                            data-testid={option.replace(/ /g, "-").toLowerCase()}
                             key={option}
                             className="flex text-left gap-2 px-4 py-2 cursor-pointer hover:bg-gray-100"
                             onClick={() => {
@@ -113,7 +120,7 @@ export const ChipDetailsForm = () => {
                               field.onChange(updated);
                             }}
                           >
-                            <Checkbox checked={isSelected} />
+                            <Checkbox id={option.replaceAll(" ", "")} checked={isSelected} />
                             <span>{option}</span>
                           </div>
                         );

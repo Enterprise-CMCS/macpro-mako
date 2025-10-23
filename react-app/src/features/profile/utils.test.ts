@@ -1,35 +1,36 @@
+import { UserRole } from "shared-types/events/legacy-user";
 import { describe, expect, it } from "vitest";
 
-import { filterStateAccess, hasPendingRequests, orderStateAccess } from "./utils";
+import { filterRoleStatus, hasPendingRequests, orderRoleStatus } from "./utils";
 
 const baseRole = {
   eventType: "user-role",
   email: "statesubmitter@nightwatch.test",
   doneByEmail: "approver@example.com",
   doneByName: "State Approver",
-  role: "statesubmitter",
+  role: "statesubmitter" as UserRole,
   lastModifiedDate: 1744942254306,
 };
 
 describe("Profile utils", () => {
-  describe("orderStateAccess", () => {
+  describe("orderRoleStatus", () => {
     it("should return undefined if accesses is undefined", () => {
       // @ts-ignore
-      expect(orderStateAccess()).toBeUndefined();
+      expect(orderRoleStatus()).toBeUndefined();
     });
 
     it("should return undefined if accesses is null", () => {
       // @ts-ignore
-      expect(orderStateAccess(null)).toBeUndefined();
+      expect(orderRoleStatus(null)).toBeUndefined();
     });
 
     it("should return undefined if accesses is an empty array", () => {
-      expect(orderStateAccess([])).toBeUndefined();
+      expect(orderRoleStatus([])).toBeUndefined();
     });
 
     it("should move the revoked statuses to the bottom of the list", () => {
       expect(
-        orderStateAccess([
+        orderRoleStatus([
           {
             ...baseRole,
             id: `${baseRole.email}_AK_${baseRole.role}`,
@@ -61,7 +62,7 @@ describe("Profile utils", () => {
 
     it("should sort the roles by active and revoked statuses and full state name ", () => {
       expect(
-        orderStateAccess([
+        orderRoleStatus([
           {
             ...baseRole,
             id: `${baseRole.email}_MA_${baseRole.role}`,
@@ -140,32 +141,32 @@ describe("Profile utils", () => {
     });
   });
 
-  describe("filterStateAccess", () => {
+  describe("filterRoleStatus", () => {
     it("should return an empty array if userProfile is undefined", () => {
       // @ts-ignore
-      expect(filterStateAccess({ role: "statesubmitter" })).toEqual([]);
+      expect(filterRoleStatus({ role: "statesubmitter" })).toEqual([]);
     });
 
     it("should return an empty array if userProfile is null", () => {
       // @ts-ignore
-      expect(filterStateAccess({ role: "statesubmitter" }, null)).toEqual([]);
+      expect(filterRoleStatus({ role: "statesubmitter" }, null)).toEqual([]);
     });
 
     it("should return an empty array if userProfile is an empty object", () => {
-      expect(filterStateAccess({ role: "statesubmitter" }, {})).toEqual([]);
+      expect(filterRoleStatus({ role: "statesubmitter" }, {})).toEqual([]);
     });
 
     it("should return an empty array if stateAccess is null", () => {
-      expect(filterStateAccess({ role: "statesubmitter" }, { stateAccess: null })).toEqual([]);
+      expect(filterRoleStatus({ role: "statesubmitter" }, { stateAccess: null })).toEqual([]);
     });
 
     it("should return an empty array if stateAccess is an empty array", () => {
-      expect(filterStateAccess({ role: "statesubmitter" }, { stateAccess: [] })).toEqual([]);
+      expect(filterRoleStatus({ role: "statesubmitter" }, { stateAccess: [] })).toEqual([]);
     });
 
     // it("should filter out the ZZ states", () => {
     //   expect(
-    //     filterStateAccess(undefined, {
+    //     filterRoleStatus(undefined, {
     //       stateAccess: [
     //         {
     //           ...baseRole,
@@ -193,7 +194,7 @@ describe("Profile utils", () => {
 
     it("should filter all roles except the user's role if it has one", () => {
       expect(
-        filterStateAccess(
+        filterRoleStatus(
           { role: "statesubmitter" },
           {
             stateAccess: [

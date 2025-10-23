@@ -18,16 +18,18 @@ import {
   TableRow,
 } from "@/components";
 import { BLANK_VALUE } from "@/consts";
+import { sendGAEvent } from "@/utils";
 
 import { Attachments, useAttachmentService } from "./hook";
 
 type AttachmentDetailsProps = {
   id: string;
+  packageId: string;
   attachments: opensearch.changelog.Document["attachments"];
   onClick: (attachment: Attachments[number]) => Promise<string>;
 };
 
-const AttachmentDetails = ({ id, attachments, onClick }: AttachmentDetailsProps) => (
+const AttachmentDetails = ({ id, packageId, attachments, onClick }: AttachmentDetailsProps) => (
   <TableBody>
     {attachments.map((attachment) => {
       return (
@@ -37,7 +39,13 @@ const AttachmentDetails = ({ id, attachments, onClick }: AttachmentDetailsProps)
             <Button
               className="ml-[-15px] align-left text-left min-h-fit"
               variant="link"
-              onClick={() => onClick(attachment).then(window.open)}
+              onClick={() => {
+                onClick(attachment).then(window.open);
+                sendGAEvent("attachment_download", {
+                  document_type: attachment.title,
+                  package_id: packageId,
+                });
+              }}
             >
               {attachment.filename}
             </Button>
@@ -70,7 +78,12 @@ const Submission = ({ packageActivity }: SubmissionProps) => {
               </TableRow>
             </TableHeader>
 
-            <AttachmentDetails attachments={attachments} id={id} onClick={onUrl} />
+            <AttachmentDetails
+              attachments={attachments}
+              id={id}
+              packageId={packageId}
+              onClick={onUrl}
+            />
           </Table>
         ) : (
           <p>No information submitted</p>
@@ -81,7 +94,13 @@ const Submission = ({ packageActivity }: SubmissionProps) => {
           variant="outline"
           className="w-max"
           loading={loading}
-          onClick={() => onZip(attachments)}
+          onClick={() => {
+            onZip(attachments);
+            sendGAEvent("section_attachments_download", {
+              number_attachments: attachments.length,
+              package_id: packageId,
+            });
+          }}
         >
           Download section attachments
         </Button>
@@ -124,7 +143,7 @@ const PackageActivity = ({ packageActivity }: PackageActivityProps) => {
         return "RAI Response Submitted";
 
       case "upload-subsequent-documents":
-        return "Subsequent Document Uploaded";
+        return "Subsequent Document(s) Uploaded";
 
       default:
         return BLANK_VALUE;
@@ -177,6 +196,10 @@ const DownloadAllButton = ({ packageId, submissionChangelog }: DownloadAllButton
     }
 
     onZip(attachmentsAggregate);
+    sendGAEvent("all_attachments_download", {
+      number_attachments: attachmentsAggregate.length,
+      package_id: packageId,
+    });
   };
 
   return (
@@ -198,7 +221,7 @@ type PackageActivitiesProps = {
 
 export const PackageActivities = ({ id, changelog }: PackageActivitiesProps) => {
   const changelogWithoutAdminChanges = changelog.filter((item) => !item._source.isAdminChange);
-  console.log("Changelog" + changelogWithoutAdminChanges);
+
   return (
     <DetailsSection
       id="package_activity"
@@ -216,10 +239,15 @@ export const PackageActivities = ({ id, changelog }: PackageActivitiesProps) => 
           type="multiple"
           className="flex flex-col gap-2"
           defaultValue={[changelogWithoutAdminChanges[0]._source.id]}
+          asChild
         >
-          {changelogWithoutAdminChanges.map(({ _source: packageActivity }) => (
-            <PackageActivity key={packageActivity.id} packageActivity={packageActivity} />
-          ))}
+          <ol>
+            {changelogWithoutAdminChanges.map(({ _source: packageActivity }) => (
+              <li key={packageActivity.id}>
+                <PackageActivity packageActivity={packageActivity} />
+              </li>
+            ))}
+          </ol>
         </Accordion>
       ) : (
         <p className="text-gray-500">No package activity recorded</p>

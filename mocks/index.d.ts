@@ -41,57 +41,11 @@ export type TestCpocsItemResult = DeepPartial<opensearch.cpocs.ItemResult>;
 
 export type TestCpocsDocument = TestCpocsItemResult["_source"];
 
-export type TestUserResult = {
-  _id: string;
-  found: boolean;
-  _source: {
-    id: string;
-    eventType: "user-info" | "legacy-user-info";
-    email: string;
-    fullName: string;
-    role:
-      | "defaultcmsuser"
-      | "cmsroleapprover"
-      | "cmsreviewer"
-      | "statesystemadmin"
-      | "helpdesk"
-      | "statesubmitter"
-      | "systemadmin"
-      | "norole";
-    states?: string[];
-    group?: string;
-    division?: string;
-  };
-};
+export type TestUserResult = DeepPartial<opensearch.users.ItemResult>;
 
 export type TestUserDocument = TestUserResult["_source"];
 
-export type TestUserRole =
-  | "defaultcmsuser"
-  | "cmsroleapprover"
-  | "cmsreviewer"
-  | "statesystemadmin"
-  | "helpdesk"
-  | "statesubmitter"
-  | "systemadmin"
-  | "norole";
-
-export type TestRoleResult = {
-  _id: string;
-  found: boolean;
-  _source: {
-    id: string;
-    eventType: "user-role" | "legacy-user-role";
-    email: string;
-    doneByEmail: string;
-    doneByName: string;
-    status: "active" | "pending" | "revoked" | "denied";
-    role: TestUserRole;
-    territory: string;
-    lastModifiedDate: number;
-    approverList?: { fullName: string; email: string }[];
-  };
-};
+export type TestRoleResult = DeepPartial<opensearch.roles.ItemResult>;
 
 export type TestRoleDocument = TestRoleResult["_source"];
 
@@ -185,15 +139,17 @@ type BoolQuery = QueryBase & {
 
 export type QueryAggs = opensearch.main.Aggs;
 
+export type Query = {
+  term?: Record<string, string>;
+  bool?: BoolQuery;
+  match_all?: MatchAllQuery;
+  regexp?: Record<string, string>;
+};
+
 export type SearchQueryBody = {
   from?: number;
   search?: string;
-  query?: {
-    term?: Record<string, string>;
-    bool?: BoolQuery;
-    match_all?: MatchAllQuery;
-    regexp?: Record<string, string>;
-  };
+  query?: Query;
   aggs?: Record<string, QueryAggs>;
   size?: number;
   sortDirection?: string;
@@ -234,6 +190,11 @@ export type AttachmentUrlRequestBody = {
   filename: string;
 };
 
+export type WebFormRequestBody = {
+  formId: string;
+  formVersion: string;
+};
+
 export type PackageActionsRequestBody = {
   id: string;
 };
@@ -241,7 +202,7 @@ export type PackageActionsRequestBody = {
 export type SubmitRoleRequestBody = {
   email: string;
   state: string;
-  role: TestUserRole;
+  role: UserRole;
   eventType: string;
   grantAccess?: boolean;
   requestRoleChange: boolean;

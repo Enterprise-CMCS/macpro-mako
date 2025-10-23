@@ -1,28 +1,38 @@
 import { http, HttpResponse, PathParams } from "msw";
 
 import { getFilteredUserResultList } from "../../data/osusers";
-import { getFilteredRoleDocsByEmail, getLatestRoleByEmail } from "../../data/roles";
+import {
+  getActiveStatesForUserByEmail,
+  getFilteredRoleDocsByEmail,
+  getLatestRoleByEmail,
+} from "../../data/roles";
 import { UserDetailsRequestBody } from "../../index.d";
 import { getMockUser } from "../auth.utils";
 
 const defaultApiUserDetailsHandler = http.post<PathParams, UserDetailsRequestBody>(
   "https://test-domain.execute-api.us-east-1.amazonaws.com/mocked-tests/getUserDetails",
   async ({ request }) => {
-    const currUser = getMockUser();
-    if (!currUser) {
-      return new HttpResponse("User not authenticated", { status: 401 });
+    const authenticatedUser = getMockUser();
+    if (!authenticatedUser) {
+      return HttpResponse.json(null);
     }
 
     const { userEmail: reqUserEmail } = await request.json();
 
-    const email = reqUserEmail || currUser?.email;
+    const email = reqUserEmail || authenticatedUser?.email;
 
     const userDetails = getFilteredUserResultList([email || ""])?.[0]?._source ?? null;
+    if (!userDetails) {
+      return new HttpResponse("User not found", { status: 404 });
+    }
+
     const userRoles = getLatestRoleByEmail(email || "")?.[0]?._source ?? null;
+    const states = getActiveStatesForUserByEmail(email || "");
 
     return HttpResponse.json({
       ...userDetails,
       role: userRoles?.role ?? "norole",
+      states,
     });
   },
 );

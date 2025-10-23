@@ -18,7 +18,7 @@ const reviewerAuthFile = "./playwright/.auth/reviewer-user.json";
 const deploymentConfig = await getDeploymentConfig(stage, project);
 const password = await getSecret(deploymentConfig.devPasswordArn);
 
-console.log(`[Local Setup] Stage: ${stage} | Project: ${project} | Base URL: ${baseURL}`);
+console.log(`[Local Setup] Stage: ${stage} | Project: ${project} | Base URL: ${baseURL.local}`);
 
 setup("auth", async () => {
   await checkAuthPath(stateSubmitterAuthFile);

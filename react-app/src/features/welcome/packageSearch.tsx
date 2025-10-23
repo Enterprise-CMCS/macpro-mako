@@ -3,6 +3,7 @@ import { useState } from "react";
 import { Link, useNavigate } from "react-router";
 
 import { Button, RadioGroup, RadioGroupItem } from "@/components";
+import { sendGAEvent } from "@/utils/ReactGA/SendGAEvent";
 
 export const PackageSearch = () => {
   const [searchText, setSearchText] = useState("");
@@ -20,6 +21,13 @@ export const PackageSearch = () => {
       }),
     );
     navigate(`/dashboard?os=${compressedValue}`);
+    sendGAEvent("home_search_text", null);
+  };
+
+  const triggerGAEvent = (eventType, option) => {
+    sendGAEvent(eventType, {
+      option: option,
+    });
   };
 
   return (
@@ -30,20 +38,24 @@ export const PackageSearch = () => {
       </p>
       <RadioGroup
         value={tabChoice}
-        onValueChange={(e) => setTabChoice(e)}
+        onValueChange={(e) => {
+          setTabChoice(e);
+          triggerGAEvent("home_search_radio", e);
+        }}
         className="flex space-x-4"
       >
         <div className="flex space-x-2">
-          <RadioGroupItem value="spas" id="r1" />
+          <RadioGroupItem value="spas" id="r1" aria-label="Search SPAs" />
           <label htmlFor="r1">Search SPAs</label>
         </div>
         <div className="flex space-x-2">
-          <RadioGroupItem value="waivers" id="r2" />
+          <RadioGroupItem value="waivers" id="r2" aria-label="Search waivers" />
           <label htmlFor="r2">Search waivers</label>
         </div>
       </RadioGroup>
       <div className="flex items-center border rounded w-[434px]">
         <input
+          aria-label="Search for text"
           className="flex h-9 w-full rounded-sm bg-transparent px-3 py-1 text-sm shadow-sm"
           value={searchText}
           onChange={(e) => setSearchText(e.target.value)}

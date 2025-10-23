@@ -34,13 +34,17 @@ exports[`Faq > should display the items expected 1`] = `
         class="mb-8"
       >
         <button
+          aria-controls="faq-accordions"
+          aria-expanded="false"
           class="inline-flex items-center justify-center rounded-md text-[16px] ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none border-2 border-primary text-primary font-bold disabled:opacity-50 h-10 px-4 py-2 w-full xs:w-fit hover:bg-transparent mb-5"
           data-testid="expand-all"
+          id="expand-all-btn"
         >
           Expand all to search with CTRL + F
         </button>
         <div
           data-orientation="vertical"
+          id="faq-accordions"
         >
           <article
             class="mb-8"
@@ -50,26 +54,26 @@ exports[`Faq > should display the items expected 1`] = `
             >
               Section 1
             </h2>
-            <div
+            <fieldset
               class="border-b"
               data-orientation="vertical"
               data-state="open"
               data-testid="q1"
               id="q1"
             >
-              <h3
-                class="flex"
+              <legend
+                class="flex w-full"
                 data-orientation="vertical"
                 data-state="open"
               >
                 <button
-                  aria-controls="radix-:r9:"
+                  aria-controls="radix-:rh:"
                   aria-expanded="true"
                   class="flex flex-1 items-center justify-between py-4 font-medium transition-all [&[data-state=open]>svg]:rotate-180 text-left"
                   data-orientation="vertical"
                   data-radix-collection-item=""
                   data-state="open"
-                  id="radix-:r8:"
+                  id="radix-:rg:"
                   type="button"
                 >
                   <div
@@ -98,13 +102,13 @@ exports[`Faq > should display the items expected 1`] = `
                     />
                   </svg>
                 </button>
-              </h3>
+              </legend>
               <div
-                aria-labelledby="radix-:r8:"
+                aria-labelledby="radix-:rg:"
                 class="text-sm transition-all px-3"
                 data-orientation="vertical"
                 data-state="open"
-                id="radix-:r9:"
+                id="radix-:rh:"
                 role="region"
                 style="--radix-accordion-content-height: var(--radix-collapsible-content-height); --radix-accordion-content-width: var(--radix-collapsible-content-width);"
               >
@@ -116,27 +120,27 @@ exports[`Faq > should display the items expected 1`] = `
                   </p>
                 </div>
               </div>
-            </div>
-            <div
+            </fieldset>
+            <fieldset
               class="border-b"
               data-orientation="vertical"
               data-state="closed"
               data-testid="q2"
               id="q2"
             >
-              <h3
-                class="flex"
+              <legend
+                class="flex w-full"
                 data-orientation="vertical"
                 data-state="closed"
               >
                 <button
-                  aria-controls="radix-:rb:"
+                  aria-controls="radix-:rj:"
                   aria-expanded="false"
                   class="flex flex-1 items-center justify-between py-4 font-medium transition-all [&[data-state=open]>svg]:rotate-180 text-left"
                   data-orientation="vertical"
                   data-radix-collection-item=""
                   data-state="closed"
-                  id="radix-:ra:"
+                  id="radix-:ri:"
                   type="button"
                 >
                   <div
@@ -165,25 +169,25 @@ exports[`Faq > should display the items expected 1`] = `
                     />
                   </svg>
                 </button>
-              </h3>
+              </legend>
               <div
-                aria-labelledby="radix-:ra:"
+                aria-labelledby="radix-:ri:"
                 class="text-sm transition-all px-3"
                 data-orientation="vertical"
                 data-state="closed"
                 hidden=""
-                id="radix-:rb:"
+                id="radix-:rj:"
                 role="region"
                 style="--radix-accordion-content-height: var(--radix-collapsible-content-height); --radix-accordion-content-width: var(--radix-collapsible-content-width);"
               />
-            </div>
+            </fieldset>
           </article>
         </div>
       </article>
     </div>
     <div>
       <div
-        class="my-6 flex flex-col"
+        class="my-6 flex flex-col sticky top-5"
       >
         <div
           class="h-2 shadow-lg"
@@ -208,10 +212,11 @@ exports[`Faq > should display the items expected 1`] = `
                 class="mb-4 text-primary"
               >
                 <a
+                  aria-label="Call the OneMAC Helpdesk"
                   class="underline"
-                  href="tel:123-456-7890"
+                  href="tel:(833) 228-2540"
                 >
-                  123-456-7890
+                  (833) 228-2540
                 </a>
               </p>
               <b>
@@ -221,10 +226,11 @@ exports[`Faq > should display the items expected 1`] = `
                 class="text-primary"
               >
                 <a
+                  aria-label="Email the OneMAC Helpdesk"
                   class="underline"
-                  href="mailto:help@example.com"
+                  href="mailto:OneMAC_Helpdesk@cms.hhs.gov"
                 >
-                  help@example.com
+                  OneMAC_Helpdesk@cms.hhs.gov
                 </a>
               </p>
             </div>

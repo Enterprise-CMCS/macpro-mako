@@ -17,9 +17,9 @@ import { ErrorPage } from "@/features/error-page";
 import { hasPendingRequests } from "@/features/profile/utils";
 import { useMediaQuery } from "@/hooks";
 import { useFeatureFlag } from "@/hooks/useFeatureFlag";
-import { isFaqPage, isProd } from "@/utils";
-import { cn } from "@/utils";
-import { sendGAEvent } from "@/utils/ReactGA/sendGAEvent";
+import { cn, isFaqPage, isProd } from "@/utils";
+import { PathTracker } from "@/utils/ReactGA/PathTracker";
+import { sendGAEvent } from "@/utils/ReactGA/SendGAEvent";
 
 import TopBanner from "../Banner/macproBanner";
 import { Footer } from "../Footer";
@@ -106,6 +106,7 @@ const UserDropdownMenu = () => {
   const navigate = useNavigate();
   const { data: userDetails, isLoading } = useGetUserDetails();
   const { data: userProfile } = useGetUserProfile();
+  const isNewUserRoleDisplay = useFeatureFlag("SHOW_USER_ROLE_UPDATE");
 
   // Disable page if user has a pending request
   // Certain roles cannot be changed
@@ -119,6 +120,9 @@ const UserDropdownMenu = () => {
 
     return excludedRoles.includes(currentRole);
   };
+
+  const showRequestRoleChangeButton =
+    !disableRoleChange() && !isLoading && userDetails && !isNewUserRoleDisplay;
 
   const handleViewProfile = () => {
     navigate("/profile");
@@ -181,8 +185,7 @@ const UserDropdownMenu = () => {
               </li>
             </DropdownMenu.Item>
             {/* TODO: conditionally show this if the user IS NOT HELPDESK */}
-            {/* // helpdesk, system admins, and cms reviewer users don't even see request role as an option */}
-            {!disableRoleChange() && !isLoading && userDetails && (
+            {showRequestRoleChangeButton && (
               <DropdownMenu.Item
                 className="text-primary hover:text-primary/70 cursor-pointer"
                 asChild
@@ -242,76 +245,60 @@ export const Layout = () => {
   const isDesktop = useMediaQuery("(min-width: 768px)");
   const { data: user } = useGetUser();
   const customUserRoles = user?.user?.["custom:cms-roles"] || "";
-  const customisMemberOf = user?.user?.["custom:ismemberof"] || "";
-
-  if (customUserRoles.length > 0) {
-    if (
-      customUserRoles.includes("onemac-state-user") ||
-      customUserRoles.includes("onemac-helpdesk") ||
-      customUserRoles.includes("onemac-micro-readonly")
-    ) {
-      // TBD weather to add states to the login event since users may have a states array with multiple states.
-      sendGAEvent("Login", customUserRoles, null);
-    }
-  }
-  if (customisMemberOf.length > 0) {
-    if (customisMemberOf.includes("ONEMAC_USER")) {
-      sendGAEvent("Login", customisMemberOf, null);
-    }
-  }
-  // TODO: add logic for super user when/if super user goes into effect
 
   return (
     <div className="min-h-full flex flex-col">
-      <ScrollToTop />
-      <UserPrompt />
-      {user?.user && !isFaqPage && <MMDLAlertBanner />}
-      <UsaBanner isUserMissingRole={user?.user && customUserRoles === undefined} />
-      <TopBanner />
-      <nav data-testid="nav-banner-d" className="bg-primary">
-        <div className="max-w-screen-xl mx-auto px-4 lg:px-8">
-          <div className="h-[70px] relative flex gap-12 items-center text-white">
-            {!isFaqPage ? (
-              // This is the original Link component
-              <Link to={user?.user || hideLogin ? "/" : "/login"}>
-                <img
-                  className="h-10 w-28 min-w-[112px] resize-none"
-                  src="/onemac-logo.png"
-                  alt="onemac site logo"
-                />
-              </Link>
-            ) : (
-              // This is a non-clickable element that looks the same
-              <div>
-                <img
-                  className="h-10 w-28 min-w-[112px] resize-none"
-                  src="/onemac-logo.png"
-                  alt="onemac site logo"
-                />
-              </div>
-            )}
-            <ResponsiveNav isDesktop={isDesktop} />
+      <PathTracker userRole={user?.user?.role}>
+        <ScrollToTop />
+        <UserPrompt />
+        {user?.user && !isFaqPage && <MMDLAlertBanner />}
+        <UsaBanner isUserMissingRole={user?.user && customUserRoles === undefined} />
+        <TopBanner />
+        <nav data-testid="nav-banner-d" className="bg-primary">
+          <div className="max-w-screen-xl mx-auto px-4 lg:px-8">
+            <div className="h-[70px] relative flex gap-12 items-center text-white">
+              {!isFaqPage ? (
+                // This is the original Link component
+                <Link to={user?.user || hideLogin ? "/" : "/login"}>
+                  <img
+                    className="h-10 w-28 min-w-[112px] resize-none"
+                    src="/onemac-logo.png"
+                    alt="onemac site logo"
+                  />
+                </Link>
+              ) : (
+                // This is a non-clickable element that looks the same
+                <div>
+                  <img
+                    className="h-10 w-28 min-w-[112px] resize-none"
+                    src="/onemac-logo.png"
+                    alt="onemac site logo"
+                  />
+                </div>
+              )}
+              <ResponsiveNav isDesktop={isDesktop} />
+            </div>
           </div>
-        </div>
-      </nav>
-      <main className="flex-1">
-        {/* Portal target for SubNavHeader */}
-        <div id="subheader-portal-container" />
-        <SimplePageContainer>
-          <Banner />
-        </SimplePageContainer>
-        {error ? <ErrorPage /> : <Outlet />}
-      </main>
-      <Footer
-        email="OneMAC_Helpdesk@cms.hhs.gov"
-        address={{
-          city: "Baltimore",
-          state: "MD",
-          street: "7500 Security Boulevard",
-          zip: 21244,
-        }}
-        showNavLinks={cmsHomeFlag && stateHomeFlag && !!user.user}
-      />
+        </nav>
+        <main className="flex-1">
+          {/* Portal target for SubNavHeader */}
+          <div id="subheader-portal-container" />
+          <SimplePageContainer>
+            <Banner />
+          </SimplePageContainer>
+          {error ? <ErrorPage /> : <Outlet />}
+        </main>
+        <Footer
+          email="OneMAC_Helpdesk@cms.hhs.gov"
+          address={{
+            city: "Baltimore",
+            state: "MD",
+            street: "7500 Security Boulevard",
+            zip: 21244,
+          }}
+          showNavLinks={cmsHomeFlag && stateHomeFlag && !!user.user}
+        />
+      </PathTracker>
     </div>
   );
 };
@@ -372,6 +359,15 @@ const ResponsiveNav = ({ isDesktop }: ResponsiveNavProps) => {
     setIsOpen(false);
   }
 
+  const triggerGAEvent = (name) => {
+    const eventName = `home_nav_${name.toLowerCase().replace(/\s+/g, "_")}`;
+
+    sendGAEvent(eventName, {
+      event_category: "Navigation",
+      event_label: name,
+    });
+  };
+
   if (isDesktop) {
     return (
       <>
@@ -382,6 +378,7 @@ const ResponsiveNav = ({ isDesktop }: ResponsiveNavProps) => {
             target={link.link === "/faq" ? "_blank" : "_self"}
             key={link.name}
             className={setClassBasedOnNav}
+            onClick={() => triggerGAEvent(link.name)}
           >
             {link.name}
           </NavLink>
@@ -446,6 +443,7 @@ const ResponsiveNav = ({ isDesktop }: ResponsiveNavProps) => {
                   className="block py-2 pl-3 pr-4 text-white rounded"
                   to={link.link}
                   target={link.link === "/faq" ? "_blank" : "_self"}
+                  onClick={() => triggerGAEvent(link.name)}
                 >
                   {link.name}
                 </Link>

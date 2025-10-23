@@ -1,30 +1,37 @@
-import { APIGatewayEvent } from "aws-lambda";
-import { itemExists } from "libs/api/package";
-import { response } from "libs/handler-lib";
+import { APIGatewayEvent } from "shared-types";
+import { z } from "zod";
 
-import { handleOpensearchError } from "./utils";
+import { authenticatedMiddy, canViewPackage, ContextWithPackage, fetchPackage } from "./middleware";
 
-export const handler = async (event: APIGatewayEvent) => {
-  if (!event.body) {
-    return response({
-      statusCode: 400,
-      body: { message: "Event body required" },
-    });
-  }
+const itemExistsEventSchema = z
+  .object({
+    body: z
+      .object({
+        id: z.string(),
+      })
+      .strict(),
+  })
+  .passthrough();
 
-  try {
-    const body = JSON.parse(event.body);
-    const exists = await itemExists({
-      id: body.id,
-    });
-    return response({
+export type ItemExistsEvent = APIGatewayEvent & z.infer<typeof itemExistsEventSchema>;
+
+export const handler = authenticatedMiddy({
+  opensearch: true,
+  setToContext: true,
+  eventSchema: itemExistsEventSchema,
+})
+  .use(fetchPackage({ allowNotFound: true, setToContext: true }))
+  .use(canViewPackage())
+  .handler(async (event: ItemExistsEvent, context: ContextWithPackage) => {
+    const { packageResult } = context;
+
+    const exists = !(packageResult === undefined || !packageResult.found);
+
+    return {
       statusCode: 200,
-      body: {
+      body: JSON.stringify({
         message: exists ? "Record found for the given id" : "No record found for the given id",
         exists,
-      },
-    });
-  } catch (error) {
-    return response(handleOpensearchError(error));
-  }
-};
+      }),
+    };
+  });

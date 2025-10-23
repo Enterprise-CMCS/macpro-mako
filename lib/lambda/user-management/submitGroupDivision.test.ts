@@ -1,8 +1,13 @@
+import { APIGatewayEvent, Context } from "aws-lambda";
 import {
-  defaultCMSUser,
+  CMS_ROLE_APPROVER_USERNAME,
+  DEFAULT_CMS_USER_EMAIL,
+  DEFAULT_CMS_USER_USERNAME,
   errorRoleSearchHandler,
+  getRequestContext,
   setDefaultStateSubmitter,
   setMockUsername,
+  STATE_SUBMITTER_USERNAME,
 } from "mocks";
 import { mockedProducer } from "mocks/helpers/kafka.utils";
 import { mockedServiceServer as mockedServer } from "mocks/server";
@@ -20,30 +25,33 @@ describe("submitGroupDivision handler", () => {
     delete process.env.topicName;
 
     const event = {
-      userEmail: "mako.stateuser@gmail.com",
-      group: "Group1",
-      division: "Division1",
-    };
+      body: JSON.stringify({
+        userEmail: "mako.stateuser@gmail.com",
+        group: "Group1",
+        division: "Division1",
+      }),
+    } as APIGatewayEvent;
 
-    const res = await handler(event);
+    const res = await handler(event, {} as Context);
 
     expect(res.statusCode).toEqual(500);
-    expect(res.body).toEqual(
-      JSON.stringify({ message: "Internal Server Error: Topic name is not defined" }),
-    );
+    expect(res.body).toEqual(JSON.stringify({ message: "Internal server error" }));
   });
 
   it("should return a 200 if the group and division were submitted successfully", async () => {
     mockedProducer.send.mockResolvedValueOnce([{ message: "sent" }]);
-    setMockUsername(defaultCMSUser);
+    setMockUsername(DEFAULT_CMS_USER_USERNAME);
 
     const event = {
-      userEmail: "mako.stateuser@gmail.com",
-      group: "Group1",
-      division: "Division1",
-    };
+      body: JSON.stringify({
+        userEmail: DEFAULT_CMS_USER_EMAIL,
+        group: "Group1",
+        division: "Division1",
+      }),
+      requestContext: getRequestContext(),
+    } as APIGatewayEvent;
 
-    const res = await handler(event);
+    const res = await handler(event, {} as Context);
 
     expect(res.statusCode).toEqual(200);
     expect(res.body).toEqual(
@@ -51,19 +59,86 @@ describe("submitGroupDivision handler", () => {
     );
   });
 
-  it("should return a 500 if there is an error", async () => {
-    mockedServer.use(errorRoleSearchHandler);
-    setMockUsername(defaultCMSUser);
+  it("should return a 200 if the user is a manager", async () => {
+    mockedProducer.send.mockResolvedValueOnce([{ message: "sent" }]);
+    setMockUsername(CMS_ROLE_APPROVER_USERNAME);
 
     const event = {
-      userEmail: "cmsroleapprover@example.com",
-      group: "Group1",
-      division: "Division1",
+      body: JSON.stringify({
+        userEmail: DEFAULT_CMS_USER_EMAIL,
+        group: "Group1",
+        division: "Division1",
+      }),
+      requestContext: getRequestContext(),
+    } as APIGatewayEvent;
+
+    const res = await handler(event, {} as Context);
+
+    expect(res.statusCode).toEqual(200);
+    expect(res.body).toEqual(
+      JSON.stringify({ message: "Group and division submitted successfully." }),
+    );
+  });
+
+  it("should return a 401 if the user is a statesubmitter", async () => {
+    setMockUsername(STATE_SUBMITTER_USERNAME);
+
+    const event = {
+      body: JSON.stringify({
+        userEmail: "mako.stateuser@gmail.com",
+        group: "Group1",
+        division: "Division1",
+      }),
+      requestContext: getRequestContext(),
+    } as APIGatewayEvent;
+
+    const res = await handler(event, {} as Context);
+
+    expect(res.statusCode).toEqual(403);
+    expect(res.body).toEqual(JSON.stringify({ message: "Not authorized to view this resource" }));
+  });
+
+  it("should return a 404 if the user is not found", async () => {
+    setMockUsername(CMS_ROLE_APPROVER_USERNAME);
+
+    const event = {
+      body: JSON.stringify({ userEmail: "test@test.com", group: "Group1", division: "Division1" }),
+      requestContext: getRequestContext(),
     };
 
-    const res = await handler(event);
+    const res = await handler(event, {} as Context);
+
+    expect(res.statusCode).toEqual(404);
+    expect(res.body).toEqual(
+      JSON.stringify({ message: "User with email test@test.com not found." }),
+    );
+  });
+
+  it("should return a 400 if the event body is missing", async () => {
+    const event = {};
+
+    const res = await handler(event, {} as Context);
+
+    expect(res.statusCode).toEqual(400);
+    expect(res.body).toEqual(JSON.stringify({ message: "Event body required" }));
+  });
+
+  it("should return a 500 if there is an error", async () => {
+    mockedServer.use(errorRoleSearchHandler);
+    setMockUsername(DEFAULT_CMS_USER_USERNAME);
+
+    const event = {
+      body: JSON.stringify({
+        userEmail: DEFAULT_CMS_USER_EMAIL,
+        group: "Group1",
+        division: "Division1",
+      }),
+      requestContext: getRequestContext(),
+    } as APIGatewayEvent;
+
+    const res = await handler(event, {} as Context);
 
     expect(res.statusCode).toEqual(500);
-    expect(res.body).toContain("Internal Server Error");
+    expect(res.body).toContain("Internal server error");
   });
 });

@@ -1,4 +1,4 @@
-import { screen } from "@testing-library/react";
+import { screen, waitFor } from "@testing-library/react";
 import {
   CAPITATED_INITIAL_ITEM_ID,
   CONTRACTING_INITIAL_ITEM_ID,
@@ -39,10 +39,12 @@ describe("Post-submission Amendment", () => {
   test("redirects to /dashboard when changelog doesn't contain a relevant event", async () => {
     await renderFormWithPackageSectionAsync(<Amendment />, MISSING_CHANGELOG_ITEM_ID);
 
-    expect(
-      screen.getByRole("heading", {
-        name: "dashboard test",
-      }),
-    ).toBeInTheDocument();
+    await waitFor(() =>
+      expect(
+        screen.getByRole("heading", {
+          name: "dashboard test",
+        }),
+      ).toBeInTheDocument(),
+    );
   });
 });

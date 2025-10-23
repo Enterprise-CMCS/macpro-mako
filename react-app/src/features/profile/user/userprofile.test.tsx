@@ -10,11 +10,20 @@ import {
   systemAdmin,
   TEST_STATE_SUBMITTER_EMAIL,
 } from "mocks";
-import { beforeEach, describe, expect, test } from "vitest";
+import { beforeEach, describe, expect, test, vi } from "vitest";
 
 import { renderWithQueryClientAndMemoryRouter } from "@/utils/test-helpers";
 
 import { UserProfile, userProfileLoader } from ".";
+
+let mockUserRoleFeatureFlag = false;
+
+vi.mock("@/hooks/useFeatureFlag", () => ({
+  useFeatureFlag: (flag: string) => {
+    if (flag === "isNewUserRoleDisplay") return mockUserRoleFeatureFlag;
+    return false;
+  },
+}));
 
 describe("User Profile", () => {
   const setup = async (userEmail) => {
@@ -52,6 +61,7 @@ describe("User Profile", () => {
 
   beforeEach(() => {
     setMockUsername(systemAdmin);
+    mockUserRoleFeatureFlag = false;
   });
 
   test("should redirect to / if the user is not a user manager role", async () => {
@@ -67,11 +77,11 @@ describe("User Profile", () => {
         screen.getByRole("heading", { name: "Profile Information", level: 2 }),
       ).toBeInTheDocument(),
     );
-    expect(screen.getByRole("heading", { name: "Full Name", level: 3 })).toBeInTheDocument();
+    expect(screen.getByText("Full Name")).toBeInTheDocument();
     expect(screen.getByText("Stateuser Tester")).toBeInTheDocument();
-    expect(screen.getByRole("heading", { name: "Role", level: 3 })).toBeInTheDocument();
+    expect(screen.getByText("Role")).toBeInTheDocument();
     expect(screen.getByText("State Submitter")).toBeInTheDocument();
-    expect(screen.getByRole("heading", { name: "Email", level: 3 })).toBeInTheDocument();
+    expect(screen.getByText("Email")).toBeInTheDocument();
     expect(screen.getByText(TEST_STATE_SUBMITTER_EMAIL)).toBeInTheDocument();
 
     expect(screen.getByText("State Access Management")).toBeInTheDocument();
@@ -153,9 +163,9 @@ describe("User Profile", () => {
       expect(screen.getByRole("heading", { name: "Status", level: 2 })).toBeInTheDocument(),
     );
     expect(screen.getByRole("heading", { name: "Group & Division", level: 2 })).toBeInTheDocument();
-    expect(screen.getByRole("heading", { name: /Group:/, level: 3 })).toBeInTheDocument();
+    expect(screen.getByText(/Group:/)).toBeInTheDocument();
     expect(screen.getByText("Group 1")).toBeInTheDocument();
-    expect(screen.getByRole("heading", { name: /Division:/, level: 3 })).toBeInTheDocument();
+    expect(screen.getByText(/Division:/)).toBeInTheDocument();
     expect(screen.getByText("Division 1")).toBeInTheDocument();
 
     expect(screen.queryByRole("heading", { name: "State Access Management", level: 2 })).toBeNull();

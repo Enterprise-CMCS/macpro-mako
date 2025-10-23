@@ -1,69 +1,43 @@
-import { APIGatewayEvent } from "aws-lambda";
-import { getAuthDetails, lookupUserAttributes } from "libs/api/auth/user";
 import { produceMessage } from "libs/api/kafka";
-import { response } from "libs/handler-lib";
+import { APIGatewayEvent } from "shared-types";
 
+import { authenticatedMiddy, ContextWithAuthenticatedUser } from "../middleware";
 import { getUserByEmail } from "./userManagementService";
 
-export const createUserProfile = async (event: APIGatewayEvent) => {
-  if (!event?.requestContext) {
-    return response({
-      statusCode: 400,
-      body: { message: "Request context required" },
-    });
+export const handler = authenticatedMiddy({
+  opensearch: true,
+  kafka: true,
+  setToContext: true,
+}).handler(async (event: APIGatewayEvent, context: ContextWithAuthenticatedUser) => {
+  const { authenticatedUser } = context;
+
+  if (!authenticatedUser?.email) {
+    throw new Error("Email is undefined");
   }
 
-  const topicName = process.env.topicName as string;
-  if (!topicName) {
-    throw new Error("Topic name is not defined");
-  }
+  const userInfo = await getUserByEmail(authenticatedUser.email);
 
-  let authDetails;
-  try {
-    authDetails = getAuthDetails(event);
-  } catch (err) {
-    console.error(err);
-    return response({
-      statusCode: 401,
-      body: { message: "User not authenticated" },
-    });
-  }
+  const id = `${authenticatedUser.email}_user-information`;
 
-  try {
-    const { userId, poolId } = authDetails;
-    const userAttributes = await lookupUserAttributes(userId, poolId);
-    const userInfo = await getUserByEmail(userAttributes.email);
+  if (!userInfo) {
+    await produceMessage(
+      process.env.topicName || "",
+      id,
+      JSON.stringify({
+        eventType: "user-info",
+        email: authenticatedUser.email,
+        fullName: `${authenticatedUser.given_name} ${authenticatedUser.family_name}`,
+      }),
+    );
 
-    const id = `${userAttributes.email}_user-information`;
-
-    if (!userInfo) {
-      await produceMessage(
-        topicName,
-        id,
-        JSON.stringify({
-          eventType: "user-info",
-          email: userAttributes.email,
-          fullName: `${userAttributes.given_name} ${userAttributes.family_name}`,
-        }),
-      );
-
-      return response({
-        statusCode: 200,
-        body: { message: "User profile created" },
-      });
-    }
-
-    return response({
+    return {
       statusCode: 200,
-      body: { message: `User profile already exists` },
-    });
-  } catch (err: unknown) {
-    console.log("An error occurred: ", err);
-    return response({
-      statusCode: 500,
-      body: { message: "Internal server error" },
-    });
+      body: { message: "User profile created" },
+    };
   }
-};
 
-export const handler = createUserProfile;
+  return {
+    statusCode: 200,
+    body: { message: "User profile already exists" },
+  };
+});

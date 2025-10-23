@@ -21,7 +21,7 @@ export const PackageActionsCard = ({ submission, id }: PackageActionsCardProps) 
 
   if (!data?.actions?.length) {
     return (
-      <div className="my-3">
+      <div className="my-3" aria-labelledby="package-actions-heading">
         <em className="text-gray-400 my-3">
           No actions are currently available for this submission.
         </em>
@@ -30,10 +30,10 @@ export const PackageActionsCard = ({ submission, id }: PackageActionsCardProps) 
   }
 
   return (
-    <div className="my-3 sm:text-nowrap sm:min-w-min">
+    <nav className="my-3 sm:text-nowrap sm:min-w-min" aria-labelledby="package-actions-heading">
       <ul className="my-3">
         {data.actions.map((type, idx) => (
-          <li className="py-2">
+          <li className="py-2" key={`${type}-${idx}`}>
             <Link
               key={`${idx}-${type}`}
               state={{
@@ -55,6 +55,6 @@ export const PackageActionsCard = ({ submission, id }: PackageActionsCardProps) 
           </li>
         ))}
       </ul>
-    </div>
+    </nav>
   );
 };

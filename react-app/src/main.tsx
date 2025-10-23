@@ -6,7 +6,6 @@ import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 import { asyncWithLDProvider } from "launchdarkly-react-client-sdk";
 import React from "react";
 import ReactDOM from "react-dom/client";
-import ReactGA from "react-ga4";
 import { RouterProvider } from "react-router";
 
 import config from "@/config";
@@ -16,20 +15,12 @@ import { useFeatureFlag } from "./hooks/useFeatureFlag";
 import { router } from "./router";
 
 const ldClientId = config.launchDarkly?.CLIENT_ID;
-const googleAnalyticsGtag = config.googleAnalytics?.GOOGLE_ANALYTICS_ID;
+
 if (ldClientId === undefined) {
   throw new Error("To configure LaunchDarkly, you must set LAUNCHDARKLY_CLIENT_ID");
 }
 
 const initializeApp = async () => {
-  // Initialize Google Analytics
-  if (googleAnalyticsGtag) {
-    ReactGA.initialize(googleAnalyticsGtag);
-    ReactGA.send({ hitType: "pageview", page: window.location.pathname });
-  } else {
-    console.warn("Google Analytics Measurement ID is not set.");
-  }
-
   // Start the MSW server if in the DEV environment and the mocked flag is on
   if (import.meta.env.DEV && import.meta.env.MODE === "mocked") {
     await import("../mockServiceWorker.js?worker");
@@ -37,10 +28,7 @@ const initializeApp = async () => {
     const { mockedWorker } = await import("mocks/browser");
     const { setMockUsername, TEST_STATE_SUBMITTER_USERNAME } = await import("mocks");
 
-    await mockedWorker.start({
-      onUnhandledRequest: "warn",
-      waitUntilReady: true,
-    });
+    await mockedWorker.start({ onUnhandledRequest: "warn" });
 
     await setMockUsername(import.meta.env.VITE_MOCK_USER_USERNAME || TEST_STATE_SUBMITTER_USERNAME);
   }

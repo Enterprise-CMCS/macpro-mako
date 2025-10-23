@@ -96,6 +96,13 @@ export const featureFlags = {
     defaultValue: true,
   },
   /*
+   *  Toggle visibility between new and old user role UI's
+   */
+  SHOW_USER_ROLE_UPDATE: {
+    flag: "show-user-role-updates",
+    defaultValue: false,
+  },
+  /*
    *  Toggle visibility between the new and upgrade faq labels
    */
   UPGRADE_NEW_LABEL: {

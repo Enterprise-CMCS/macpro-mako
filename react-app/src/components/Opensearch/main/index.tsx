@@ -1,7 +1,9 @@
 import { FC, useState } from "react";
 
+import { ErrorAlert } from "@/components/ErrorAlert";
 import { Pagination } from "@/components/Pagination";
 import { useLocalStorage } from "@/hooks/useLocalStorage";
+import { sendGAEvent } from "@/utils/ReactGA/SendGAEvent";
 
 import { OsFiltering } from "./Filtering";
 import { FilterChips } from "./Filtering";
@@ -37,6 +39,11 @@ export const OsMainView: FC<{ columns: OsTableColumn[] }> = (props) => {
   }));
 
   const onToggle = (field: string) => {
+    const isBecomingVisible = !localStorageCol[currentTab].includes(field);
+    sendGAEvent("dash_column_toggle", {
+      column_name: field,
+      visible: isBecomingVisible,
+    });
     setLocalStorageCol((prev) => ({
       ...prev,
       [currentTab]: prev[currentTab].includes(field)
@@ -51,6 +58,10 @@ export const OsMainView: FC<{ columns: OsTableColumn[] }> = (props) => {
       ),
     }));
   };
+
+  if (context.error) {
+    return <ErrorAlert error={context.error} />;
+  }
 
   return (
     <div className="flex flex-col">

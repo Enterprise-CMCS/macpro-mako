@@ -90,7 +90,6 @@ export const renderCellActions = (
       division: userRole.division ?? null,
       requestRoleChange: false,
     });
-    console.log(userRole.role, "USERROLE");
   };
   return (
     <Popover>
@@ -239,7 +238,7 @@ export const UserManagement = () => {
       Email: role.email,
       State: role.territory,
       Status: role.status,
-      Role: role.role,
+      Role: userRoleMap[role.role],
       ["Last Modified"]: formatDate(role.lastModifiedDate),
       ["Modified By"]: role.doneByName,
     }));
@@ -265,7 +264,7 @@ export const UserManagement = () => {
         onAccept={onAcceptRoleChange}
         onCancel={() => setModalText(null)}
       />
-      <div className="bg-sky-100" data-testid="sub-nav-header">
+      <div className="bg-sky-100/75" data-testid="sub-nav-header">
         <div className="max-w-screen-xl m-auto px-4 lg:px-8 flex items-center py-4 justify-between">
           <h1 className="text-xl font-medium">User Management</h1>
           {(isHelpDesk || isSystemAdmin) && (
@@ -304,7 +303,7 @@ export const UserManagement = () => {
                   <TableCell>
                     <Link
                       to={`/profile/${LZ.compressToEncodedURIComponent(userRole.email).replaceAll("+", "_")}`}
-                      className="text-blue-500 flex select-none items-center px-2 py-2"
+                      className="cursor-pointer text-blue-600 hover:underline flex select-none items-center px-2 py-2"
                     >
                       {userRole.fullName}
                     </Link>

@@ -1,56 +1,86 @@
+import { PlusIcon } from "lucide-react";
 import { useEffect, useMemo, useState } from "react";
-import { Navigate } from "react-router";
+import { Navigate, useNavigate } from "react-router";
 import { StateCode } from "shared-types";
-import { userRoleMap } from "shared-utils";
+import { Territory } from "shared-types/events/legacy-user";
+import { isStateUser } from "shared-utils";
 
-import { useGetUserDetails, useGetUserProfile, useSubmitRoleRequests } from "@/api";
+import {
+  StateAccess,
+  useGetUser,
+  useGetUserDetails,
+  useGetUserProfile,
+  useSubmitRoleRequests,
+} from "@/api";
 import {
   banner,
   Button,
   CardWithTopBorder,
-  ConfirmationDialog,
   GroupAndDivision,
   LoadingSpinner,
-  StateAccessCard,
+  RoleStatusCard,
   SubNavHeader,
   UserInformation,
+  WithdrawRoleModal,
 } from "@/components";
 import { Option } from "@/components/Opensearch/main/Filtering/Drawer/Filterable";
 import { FilterableSelect } from "@/components/Opensearch/main/Filtering/Drawer/Filterable";
 import { useAvailableStates } from "@/hooks/useAvailableStates";
-import { convertStateAbbrToFullName } from "@/utils";
+import { useFeatureFlag } from "@/hooks/useFeatureFlag";
 
-import {
-  filterStateAccess,
-  hasPendingRequests,
-  orderStateAccess,
-  stateAccessRoles,
-} from "../utils";
+import { filterRoleStatus, hasPendingRequests, orderRoleStatus, stateAccessRoles } from "../utils";
+
+export interface SelfRevokeAcess extends StateAccess {
+  isNewUserRoleDisplay: boolean;
+}
+
+export interface SelfRevokeAcess extends StateAccess {
+  isNewUserRoleDisplay: boolean;
+}
 
 export const MyProfile = () => {
+  const navigate = useNavigate();
   const { data: userDetails, isLoading: isDetailLoading } = useGetUserDetails();
+  const { data: user } = useGetUser();
   const {
     data: userProfile,
     isLoading: isProfileLoading,
+    isRefetching: isProfileRefetching,
     refetch: reloadUserProfile,
   } = useGetUserProfile();
 
+  const isNewUserRoleDisplay = useFeatureFlag("SHOW_USER_ROLE_UPDATE");
+
   const { mutateAsync: submitRequest, isLoading: areRolesLoading } = useSubmitRoleRequests();
-  const [selfRevokeState, setSelfRevokeState] = useState<StateCode | null>(null);
+
+  const [selfRevokeRole, setSelfRevokeRole] = useState<SelfRevokeAcess | null>(null);
+
   const [showAddState, setShowAddState] = useState<boolean>(true);
   const [requestedStates, setRequestedStates] = useState<StateCode[]>([]);
   const [pendingRequests, setPendingRequests] = useState<boolean>(false);
   const statesToRequest: Option[] = useAvailableStates(userDetails?.role, userProfile?.stateAccess);
 
-  const filteredStateAccess = useMemo(
-    () => filterStateAccess(userDetails, userProfile),
-    [userDetails, userProfile],
-  );
+  const orderedRoleStatus = useMemo(() => {
+    const filteredRoleStatus = isNewUserRoleDisplay
+      ? userProfile?.stateAccess
+      : filterRoleStatus(userDetails, userProfile);
 
-  const orderedStateAccess = useMemo(
-    () => orderStateAccess(filteredStateAccess),
-    [filteredStateAccess],
-  );
+    return orderRoleStatus(filteredRoleStatus);
+  }, [userDetails, userProfile, isNewUserRoleDisplay]);
+
+  const hideAddRoleButton = useMemo(() => {
+    if (!userProfile || !userProfile.stateAccess) return true;
+
+    const isCMSWithManyRoles = userProfile?.stateAccess.filter((x) => {
+      if (x.role === "defaultcmsuser" || x.role === "cmsreviewer") return false;
+      if (x.role.includes("cms") || x.role === "systemadmin")
+        return x.status === "active" || x.status === "pending";
+      return false;
+    });
+
+    const isHelpDesk = userProfile?.stateAccess.filter((x) => x.role === "helpdesk").length;
+    return isCMSWithManyRoles.length || isHelpDesk;
+  }, [userProfile]);
 
   // Set initial value of showAddState based on pending roles
   useEffect(() => {
@@ -58,9 +88,9 @@ export const MyProfile = () => {
       const pendingRequests = hasPendingRequests(userProfile?.stateAccess);
       setPendingRequests(pendingRequests);
     }
-  }, [isDetailLoading, isProfileLoading, filteredStateAccess, userProfile]);
+  }, [isDetailLoading, isProfileLoading, userProfile, userProfile?.stateAccess]);
 
-  if (isDetailLoading || isProfileLoading) {
+  if (isDetailLoading || isProfileLoading || isProfileRefetching) {
     return <LoadingSpinner />;
   }
 
@@ -105,6 +135,8 @@ export const MyProfile = () => {
     );
   };
 
+  const delay = (milliseconds) => new Promise((resolve) => setTimeout(resolve, milliseconds));
+
   const handleSubmitRequest = async () => {
     try {
       for (const state of requestedStates) {
@@ -119,6 +151,7 @@ export const MyProfile = () => {
 
       setShowAddState(true);
       setRequestedStates([]);
+      await delay(500);
       await reloadUserProfile();
 
       banner({
@@ -143,22 +176,33 @@ export const MyProfile = () => {
     try {
       await submitRequest({
         email: userDetails.email,
-        state: selfRevokeState,
+        state: selfRevokeRole.territory as Territory,
         role: userDetails.role,
         eventType: "user-role",
         requestRoleChange: false,
         grantAccess: "revoked",
       });
 
-      setSelfRevokeState(null);
+      setSelfRevokeRole(null);
+      await delay(500);
       await reloadUserProfile();
 
-      banner({
-        header: "Submission Completed",
-        body: "Your submission has been received.",
-        variant: "success",
-        pathnameToDisplayOn: window.location.pathname,
-      });
+      if (isNewUserRoleDisplay) {
+        banner({
+          header: "Role Removed",
+          body: "You have successfully removed this role from your account.",
+          variant: "success",
+          pathnameToDisplayOn: window.location.pathname,
+        });
+      } else {
+        banner({
+          header: "Submission Completed",
+          body: "Your submission has been received.",
+          variant: "success",
+          pathnameToDisplayOn: window.location.pathname,
+        });
+      }
+
       window.scrollTo(0, 0);
     } catch (error) {
       banner({
@@ -171,6 +215,31 @@ export const MyProfile = () => {
     }
   };
 
+  const handleRoleStatusClick = (access: StateAccess) => {
+    setSelfRevokeRole({ isNewUserRoleDisplay, ...access });
+  };
+
+  const handleDialogOnAccept = async () => {
+    if (
+      !selfRevokeRole.isNewUserRoleDisplay ||
+      (selfRevokeRole.status !== "pending" && selfRevokeRole.role === "statesubmitter")
+    ) {
+      await handleSelfRevokeAccess();
+    } else if (selfRevokeRole.status !== "pending") {
+      // TODO: add in logic for other users to be able to self revoke
+      console.log("self revoke role");
+      setSelfRevokeRole(null);
+    } else {
+      // TODO: add in the logic to remove pending request move state change into that function
+      console.log("Withdraw pending request");
+      setSelfRevokeRole(null);
+    }
+  };
+
+  const showAllStateAccess = isNewUserRoleDisplay
+    ? true
+    : stateAccessRoles.includes(userDetails?.role);
+
   return (
     <>
       <SubNavHeader>
@@ -181,41 +250,72 @@ export const MyProfile = () => {
         <div className="flex flex-col md:flex-row">
           <UserInformation
             fullName={userDetails?.fullName}
-            role={userRoleMap[userDetails?.role]}
+            role={userDetails?.role}
             email={userDetails?.email}
+            allowEdits={isNewUserRoleDisplay}
+            group={userDetails.group}
+            division={userDetails.division}
           />
-          <div className="flex flex-col gap-6 md:basis-1/2">
+          <div className="md:basis-1/2 space-y-3">
             {/* Status/State Access Management Section */}
-            {stateAccessRoles.includes(userDetails?.role) && (
-              <div>
-                <h2 className="text-2xl font-bold">
-                  {userDetails.role === "statesubmitter" || userDetails.role === "statesystemadmin"
-                    ? "State Access Management"
-                    : "Status"}
-                </h2>
+            {showAllStateAccess && (
+              <>
+                {isNewUserRoleDisplay ? (
+                  <h2 className="text-2xl font-bold">My User Roles</h2>
+                ) : (
+                  <h2 className="text-2xl font-bold">
+                    {userDetails.role === "statesubmitter" ||
+                    userDetails.role === "statesystemadmin"
+                      ? "State Access Management"
+                      : "Status"}
+                  </h2>
+                )}
                 {/* TODO: Get state system admin for that state */}
-                <ConfirmationDialog
-                  open={selfRevokeState !== null}
-                  title="Withdraw State Access?"
-                  body={`This action cannot be undone. ${convertStateAbbrToFullName(selfRevokeState)} State System Admin will be notified.`}
-                  acceptButtonText="Confirm"
-                  aria-labelledby="Self Revoke Access Modal"
-                  onAccept={handleSelfRevokeAccess}
-                  onCancel={() => setSelfRevokeState(null)}
+                <WithdrawRoleModal
+                  open={selfRevokeRole !== null}
+                  selfRevokeRole={selfRevokeRole}
+                  onAccept={handleDialogOnAccept}
+                  onCancel={() => setSelfRevokeRole(null)}
                 />
-                {orderedStateAccess?.map((access) => (
-                  <StateAccessCard
-                    key={`${access.territory}`}
-                    access={access}
-                    role={userDetails.role}
-                    onClick={() => setSelfRevokeState(access.territory as StateCode)}
-                  />
-                ))}
-                <StateAccessControls />
-              </div>
+
+                <ol className="flex flex-col">
+                  {orderedRoleStatus && orderedRoleStatus.length ? (
+                    orderedRoleStatus?.map((access) => (
+                      <li key={`${access.territory}-${access.role}`}>
+                        <RoleStatusCard
+                          access={access}
+                          role={userDetails.role}
+                          onClick={() => handleRoleStatusClick(access)}
+                        />
+                      </li>
+                    ))
+                  ) : (
+                    <li>
+                      <p className="my-6">No role requested</p>
+                    </li>
+                  )}
+                  {isNewUserRoleDisplay && !hideAddRoleButton ? (
+                    <li>
+                      <Button
+                        className="w-full border-dashed p-10 text-black font-normal"
+                        variant="outline"
+                        onClick={() =>
+                          isStateUser(user.user) ? navigate("/signup/state") : navigate("/signup")
+                        }
+                      >
+                        Add another user role <PlusIcon className="ml-3" />
+                      </Button>
+                    </li>
+                  ) : (
+                    <li>
+                      <StateAccessControls />
+                    </li>
+                  )}
+                </ol>
+              </>
             )}
 
-            {userDetails.role === "cmsroleapprover" && (
+            {userDetails.role === "cmsroleapprover" && !isNewUserRoleDisplay && (
               <GroupAndDivision
                 group={userDetails.group}
                 division={userDetails.division}

@@ -1,4 +1,5 @@
 import { TZDate } from "@date-fns/tz";
+import { UTCDate } from "@date-fns/utc";
 import { add, format } from "date-fns";
 
 export const isDST = (date: Date): boolean => {
@@ -12,11 +13,10 @@ export function formatNinetyDaysDate(date: number | null | undefined): string {
     return "Pending";
   }
 
-  const baseDate = new Date(date);
+  const baseDate = new UTCDate(date);
   const ninetyDaysLater = add(baseDate, { days: 90 });
 
-  const timezoneAbbreviation = isDST(ninetyDaysLater) ? "EDT" : "EST";
-  return format(ninetyDaysLater, `MMM d, yyyy '@ 11:59pm ${timezoneAbbreviation}'`);
+  return format(ninetyDaysLater, "MMM d, yyyy");
 }
 
 export function formatDate(dateValue: string | number) {
