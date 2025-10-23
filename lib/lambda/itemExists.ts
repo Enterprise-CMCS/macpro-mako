@@ -1,7 +1,7 @@
 import { APIGatewayEvent } from "shared-types";
 import { z } from "zod";
 
-import { ContextWithPackage, fetchPackage, nonAuthenticatedMiddy } from "./middleware";
+import { authenticatedMiddy, canViewPackage, ContextWithPackage, fetchPackage } from "./middleware";
 
 const itemExistsEventSchema = z
   .object({
@@ -15,15 +15,18 @@ const itemExistsEventSchema = z
 
 export type ItemExistsEvent = APIGatewayEvent & z.infer<typeof itemExistsEventSchema>;
 
-export const handler = nonAuthenticatedMiddy({
+export const handler = authenticatedMiddy({
   opensearch: true,
+  setToContext: true,
   eventSchema: itemExistsEventSchema,
 })
   .use(fetchPackage({ allowNotFound: true, setToContext: true }))
+  .use(canViewPackage())
   .handler(async (event: ItemExistsEvent, context: ContextWithPackage) => {
     const { packageResult } = context;
 
     const exists = !(packageResult === undefined || !packageResult.found);
+
     return {
       statusCode: 200,
       body: JSON.stringify({

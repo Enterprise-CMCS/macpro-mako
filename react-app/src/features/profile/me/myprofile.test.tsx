@@ -233,7 +233,11 @@ describe("MyProfile", () => {
     setMockUsername(cmsRoleApprover);
     await setup();
     await waitFor(() => expect(screen.queryByText("Choose State Access")).not.toBeInTheDocument());
-    await waitFor(() => expect(screen.queryByText("Group & Division")).toBeInTheDocument());
+    await waitFor(() =>
+      expect(
+        screen.getByRole("heading", { name: "Group & Division", level: 2 }),
+      ).toBeInTheDocument(),
+    );
   });
 
   test("hides state access control for non statesubmitter users", async () => {

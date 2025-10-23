@@ -19,9 +19,11 @@ export class DashboardPage {
   public async validateDownload(
     page,
     {
+      role,
       triggerSelector,
       expectedFilename,
     }: {
+      role: string;
       triggerSelector: string;
       expectedFilename: string;
     },
@@ -32,7 +34,7 @@ export class DashboardPage {
     ]);
 
     const actualFilename = download.suggestedFilename();
-    console.info(`[Download] Filename suggested by browser: ${actualFilename}"`);
+    console.info(`[Download] for ${role} Filename suggested by browser: ${actualFilename}"`);
 
     expect(actualFilename).toBe(expectedFilename);
   }

@@ -13,6 +13,7 @@ import * as newChipDetailsSubmission from "./new-chip-details-submission";
 import * as newChipSubmission from "./new-chip-submission";
 import * as newMedicaidSubmission from "./new-medicaid-submission";
 import * as respondToRai from "./respond-to-rai";
+import * as splitSpa from "./split-spa";
 import * as temporaryExtension from "./temporary-extension";
 import * as toggleWithdrawRai from "./toggle-withdraw-rai";
 import * as uploadSubsequentDocuments from "./upload-subsequent-documents";
@@ -46,6 +47,7 @@ export const events = {
   "app-k": appk,
   "legacy-event": legacyEvent,
   "legacy-admin-change": legacyAdminChange,
+  "split-spa": splitSpa,
 };
 
 export type BaseSchemas = z.infer<typeof newMedicaidSubmission.baseSchema>;
@@ -67,4 +69,5 @@ export type Events = {
   WithdrawPackage: z.infer<typeof withdrawPackage.schema>;
   WithdrawRai: z.infer<typeof withdrawRai.schema>;
   ToggleWithdrawRai: z.infer<typeof toggleWithdrawRai.schema>;
+  SplitSpa: z.infer<typeof splitSpa.schema>;
 };

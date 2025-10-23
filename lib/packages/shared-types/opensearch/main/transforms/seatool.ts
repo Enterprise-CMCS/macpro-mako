@@ -1,3 +1,6 @@
+import { TZDate } from "@date-fns/tz";
+import { UTCDate } from "@date-fns/utc";
+
 import {
   finalDispositionStatuses,
   getStatus,
@@ -8,6 +11,13 @@ import {
   SeatoolOfficer,
   seatoolSchema,
 } from "../../../index";
+import { SkippableValidationError } from "..";
+
+type PendingValidationMetadata = {
+  seatoolStatus: string;
+  hasTitle: boolean;
+  hasDescription: boolean;
+};
 
 function getLeadAnalyst(eventData: SeaTool) {
   let leadAnalystOfficerId: null | number = null;
@@ -35,6 +45,29 @@ function getLeadAnalyst(eventData: SeaTool) {
   };
 }
 
+// Dates on SEA Tool are created without a time and stored as an
+// ISO string at midnight UTC. OneMAC dates are displayed at ET
+// which results in the date looking like it is a day off because
+// EDT is -4 hours from UTC and EST is -5 hours from UTC. In order
+// to make this look normal, we need to shift the time to account
+// for the difference in time handling in OneMAC and SEA Tool.
+// Convert the date to midnight ET instead of midnight UTC.
+export const shiftSeatoolTime = (date: number): string => {
+  const utcDate = new UTCDate(date);
+  return new UTCDate(
+    new TZDate(
+      utcDate.getFullYear(),
+      utcDate.getMonth(),
+      utcDate.getDate(),
+      0,
+      0,
+      0,
+      0,
+      "America/New_York",
+    ).toISOString(),
+  ).toISOString();
+};
+
 export const getRaiDate = (data: SeaTool) => {
   let raiReceivedDate: null | string = null;
   let raiRequestedDate: null | string = null;
@@ -55,13 +88,13 @@ export const getRaiDate = (data: SeaTool) => {
     })[data.RAI.length - 1] ?? null;
 
   if (raiDate && raiDate.RAI_RECEIVED_DATE) {
-    raiReceivedDate = new Date(raiDate.RAI_RECEIVED_DATE).toISOString();
+    raiReceivedDate = shiftSeatoolTime(raiDate.RAI_RECEIVED_DATE);
   }
   if (raiDate && raiDate.RAI_REQUESTED_DATE) {
-    raiRequestedDate = new Date(raiDate.RAI_REQUESTED_DATE).toISOString();
+    raiRequestedDate = shiftSeatoolTime(raiDate.RAI_REQUESTED_DATE);
   }
   if (raiDate && raiDate.RAI_WITHDRAWN_DATE) {
-    raiWithdrawnDate = new Date(raiDate.RAI_WITHDRAWN_DATE).toISOString();
+    raiWithdrawnDate = shiftSeatoolTime(raiDate.RAI_WITHDRAWN_DATE);
   }
   return {
     raiReceivedDate,
@@ -123,8 +156,13 @@ export const transform = (id: string) => {
         !data.STATE_PLAN.SUMMARY_MEMO ||
         data.STATE_PLAN.SUMMARY_MEMO.trim() === "")
     ) {
-      throw new Error(
+      throw new SkippableValidationError<PendingValidationMetadata>(
         "Validation failed: Pending status requires both subject and description to be non-empty",
+        {
+          seatoolStatus,
+          hasTitle: !!data.STATE_PLAN.TITLE_NAME,
+          hasDescription: !!data.STATE_PLAN.SUMMARY_MEMO,
+        },
       );
     }
     const authority =
@@ -167,6 +205,7 @@ export const transform = (id: string) => {
           };
         }) || [],
       proposedDate: getDateStringOrNullFromEpoc(data.STATE_PLAN.PROPOSED_DATE),
+      raiReceivedDate,
       raiRequestedDate,
       raiWithdrawnDate,
       reviewTeam: compileSrtList(data.ACTION_OFFICERS),

@@ -2,6 +2,7 @@ export * from "./button";
 export * from "./calendar";
 export * from "./checkbox";
 export * from "./date-picker";
+export * from "./editable-text";
 export * from "./form";
 export * from "./upload";
 export * from "./input";

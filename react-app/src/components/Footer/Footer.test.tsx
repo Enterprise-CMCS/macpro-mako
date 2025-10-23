@@ -5,7 +5,6 @@ import { useEffect, useRef, useState } from "react";
 import { BrowserRouter } from "react-router";
 import { beforeEach, describe, expect, it, vi } from "vitest";
 
-import { MedSpaFooter } from "./index";
 import { Footer } from "./index";
 
 vi.mock("@/utils/ReactGA/SendGAEvent", () => ({
@@ -142,63 +141,6 @@ describe("FAQFooter", () => {
   });
 });
 
-describe("MedSpaFooter scroll behavior", () => {
-  beforeEach(() => {
-    // Reset scroll position before each test
-    Object.defineProperty(window, "scrollY", {
-      writable: true,
-      configurable: true,
-      value: 0,
-    });
-    vi.resetAllMocks();
-  });
-
-  it("hides footer when scrolled to bottom", () => {
-    // Mock document height and window size
-    Object.defineProperty(document.body, "offsetHeight", {
-      configurable: true,
-      value: 1000,
-    });
-    Object.defineProperty(window, "innerHeight", {
-      configurable: true,
-      value: 500,
-    });
-    window.scrollY = 500; // Simulate scrolling to the bottom
-
-    const onCancel = vi.fn();
-    const onSubmit = vi.fn();
-
-    render(<MedSpaFooter onCancel={onCancel} onSubmit={onSubmit} disabled={true} />);
-
-    // Trigger scroll event
-    window.dispatchEvent(new Event("scroll"));
-
-    // Footer should disappear
-    expect(screen.queryByTestId("submit-action-form")).not.toBeInTheDocument();
-  });
-
-  it("shows footer when not scrolled to bottom", () => {
-    Object.defineProperty(document.body, "offsetHeight", {
-      configurable: true,
-      value: 1000,
-    });
-    Object.defineProperty(window, "innerHeight", {
-      configurable: true,
-      value: 500,
-    });
-    window.scrollY = 200; // Not at the bottom
-
-    const onCancel = vi.fn();
-    const onSubmit = vi.fn();
-
-    render(<MedSpaFooter onCancel={onCancel} onSubmit={onSubmit} disabled={true} />);
-
-    window.dispatchEvent(new Event("scroll"));
-
-    expect(screen.getByTestId("submit-action-form-footer")).toBeInTheDocument();
-  });
-});
-
 // Mock component using the IntersectionObserver logic
 const TestComponent = () => {
   const [visible, setVisible] = useState(true);
@@ -267,40 +209,6 @@ describe("TestComponent visibility based on IntersectionObserver", () => {
   });
 });
 
-describe("MedSpaFooter", () => {
-  it("disables Save & Submit button when form is invalid", () => {
-    const onCancel = vi.fn();
-    const onSubmit = vi.fn();
-
-    render(
-      <MedSpaFooter
-        onCancel={onCancel}
-        onSubmit={onSubmit}
-        disabled={true} // <- form is invalid
-      />,
-    );
-
-    const submitBtn = screen.getByTestId("submit-action-form-footer");
-    expect(submitBtn).toBeDisabled();
-  });
-
-  it("enables Save & Submit button when form is valid", () => {
-    const onCancel = vi.fn();
-    const onSubmit = vi.fn();
-
-    render(
-      <MedSpaFooter
-        onCancel={onCancel}
-        onSubmit={onSubmit}
-        disabled={false} // <- form is valid
-      />,
-    );
-
-    const submitBtn = screen.getByTestId("submit-action-form-footer");
-    expect(submitBtn).not.toBeDisabled();
-  });
-});
-
 describe("Footer GA Events", () => {
   beforeEach(() => {
     vi.clearAllMocks();
@@ -366,7 +274,7 @@ describe("Footer GA Events", () => {
       />,
     );
 
-    await userEvent.click(screen.getByRole("link", { name: /\(833\) 228-2540/i }));
+    await userEvent.click(screen.getByRole("link", { name: "Call the OneMAC Helpdesk" }));
 
     expect(sendGAEvent).toHaveBeenCalledWith("home_help_phone", null);
   });
@@ -379,7 +287,7 @@ describe("Footer GA Events", () => {
       />,
     );
 
-    await userEvent.click(screen.getByRole("link", { name: /OneMAC_Helpdesk@cms\.hhs\.gov/i }));
+    await userEvent.click(screen.getByLabelText("Email the OneMAC Helpdesk"));
 
     expect(sendGAEvent).toHaveBeenCalledWith("home_help_email", null);
   });

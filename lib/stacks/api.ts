@@ -154,7 +154,7 @@ export class Api extends cdk.NestedStack {
       });
 
       const fn = new NodejsFunction(this, id, {
-        runtime: cdk.aws_lambda.Runtime.NODEJS_18_X,
+        runtime: cdk.aws_lambda.Runtime.NODEJS_20_X,
         functionName: `${project}-${stage}-${stack}-${id}`,
         depsLockFilePath: join(__dirname, "../../bun.lockb"),
         entry,

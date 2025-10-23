@@ -1,556 +1,6 @@
 // Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
-exports[`package details > render package details for a 1915(c) submission 1`] = `
-<DocumentFragment>
-  <section
-    class="p-4 border rounded-sm border-cardBorder"
-    id="package_details"
-  >
-    <h1
-      class="text-3xl font-semibold mb-2"
-      data-testid="undefined-title"
-    >
-      1915(c) Package Details
-    </h1>
-    <hr
-      class="my-6 bg-slate-200"
-    />
-    <div
-      class="grid gap-y-8"
-      data-testid="undefined-child"
-    >
-      <div>
-        <div
-          class="two-cols gap-y-6 sm:gap-y-6"
-        >
-          <div>
-            <h3
-              class="font-bold"
-            >
-              Submission ID
-            </h3>
-            <div
-              class="py-2"
-            >
-              MD-010.R00.01
-            </div>
-          </div>
-          <div>
-            <h3
-              class="font-bold"
-            >
-              Authority
-            </h3>
-            <div
-              class="py-2"
-            >
-              1915(c)
-            </div>
-          </div>
-          <div>
-            <h3
-              class="font-bold"
-            >
-              Action Type
-            </h3>
-            <div
-              class="py-2"
-            >
-              Initial
-            </div>
-          </div>
-          <div>
-            <h3
-              class="font-bold"
-            >
-              State
-            </h3>
-            <div
-              class="py-2"
-            >
-              Maryland
-            </div>
-          </div>
-          <div>
-            <h3
-              class="font-bold"
-            >
-              Type
-            </h3>
-            <div
-              class="py-2"
-            >
-              -- --
-            </div>
-          </div>
-          <div>
-            <h3
-              class="font-bold"
-            >
-              Subtype
-            </h3>
-            <div
-              class="py-2"
-            >
-              -- --
-            </div>
-          </div>
-          <div>
-            <h3
-              class="font-bold"
-            >
-              Initial Submission Date
-            </h3>
-            <div
-              class="py-2"
-            >
-              -- --
-            </div>
-          </div>
-          <div>
-            <h3
-              class="font-bold"
-            >
-              Latest Package Activity
-            </h3>
-            <div
-              class="py-2"
-            >
-              -- --
-            </div>
-          </div>
-          <div>
-            <h3
-              class="font-bold"
-            >
-              Formal RAI Response Date
-            </h3>
-            <div
-              class="py-2"
-            >
-              -- --
-            </div>
-          </div>
-          <div>
-            <h3
-              class="font-bold"
-            >
-              Final Disposition Date
-            </h3>
-            <div
-              class="py-2"
-            >
-              -- --
-            </div>
-          </div>
-          <div>
-            <h3
-              class="font-bold"
-            >
-              Proposed Effective Date
-            </h3>
-            <div
-              class="py-2"
-            >
-              Pending
-            </div>
-          </div>
-          <div>
-            <h3
-              class="font-bold"
-            >
-              Approved Effective Date
-            </h3>
-            <div
-              class="py-2"
-            >
-              -- --
-            </div>
-          </div>
-        </div>
-        <hr
-          class="my-4"
-        />
-        <div
-          class="two-cols gap-y-6 sm:gap-y-6"
-        >
-          <div>
-            <h3
-              class="font-bold"
-            >
-              Submitted By
-            </h3>
-            <div
-              class="py-2"
-            >
-              <p
-                class="text-lg"
-              >
-                -- --
-              </p>
-            </div>
-          </div>
-          <div>
-            <h3
-              class="font-bold"
-            >
-              CPOC
-            </h3>
-            <div
-              class="py-2"
-            >
-              <p
-                class="text-lg"
-              >
-                -- --
-              </p>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </section>
-  ,
-</DocumentFragment>
-`;
-
-exports[`package details > render package details for a 1915(c) submission with action type amend 1`] = `
-<DocumentFragment>
-  <section
-    class="p-4 border rounded-sm border-cardBorder"
-    id="package_details"
-  >
-    <h1
-      class="text-3xl font-semibold mb-2"
-      data-testid="undefined-title"
-    >
-      1915(c) Appendix K Amendment Package Details
-    </h1>
-    <hr
-      class="my-6 bg-slate-200"
-    />
-    <div
-      class="grid gap-y-8"
-      data-testid="undefined-child"
-    >
-      <div>
-        <div
-          class="two-cols gap-y-6 sm:gap-y-6"
-        >
-          <div>
-            <h3
-              class="font-bold"
-            >
-              Submission ID
-            </h3>
-            <div
-              class="py-2"
-            >
-              MD-0000.R00.01
-            </div>
-          </div>
-          <div>
-            <h3
-              class="font-bold"
-            >
-              Authority
-            </h3>
-            <div
-              class="py-2"
-            >
-              1915(c)
-            </div>
-          </div>
-          <div>
-            <h3
-              class="font-bold"
-            >
-              Action Type
-            </h3>
-            <div
-              class="py-2"
-            >
-              Amendment
-            </div>
-          </div>
-          <div>
-            <h3
-              class="font-bold"
-            >
-              State
-            </h3>
-            <div
-              class="py-2"
-            >
-              Maryland
-            </div>
-          </div>
-          <div>
-            <h3
-              class="font-bold"
-            >
-              Type
-            </h3>
-            <div
-              class="py-2"
-            >
-              -- --
-            </div>
-          </div>
-          <div>
-            <h3
-              class="font-bold"
-            >
-              Subtype
-            </h3>
-            <div
-              class="py-2"
-            >
-              -- --
-            </div>
-          </div>
-          <div>
-            <h3
-              class="font-bold"
-            >
-              Initial Submission Date
-            </h3>
-            <div
-              class="py-2"
-            >
-              -- --
-            </div>
-          </div>
-          <div>
-            <h3
-              class="font-bold"
-            >
-              Latest Package Activity
-            </h3>
-            <div
-              class="py-2"
-            >
-              -- --
-            </div>
-          </div>
-          <div>
-            <h3
-              class="font-bold"
-            >
-              Formal RAI Response Date
-            </h3>
-            <div
-              class="py-2"
-            >
-              -- --
-            </div>
-          </div>
-          <div>
-            <h3
-              class="font-bold"
-            >
-              Final Disposition Date
-            </h3>
-            <div
-              class="py-2"
-            >
-              -- --
-            </div>
-          </div>
-          <div>
-            <h3
-              class="font-bold"
-            >
-              Proposed Effective Date
-            </h3>
-            <div
-              class="py-2"
-            >
-              Pending
-            </div>
-          </div>
-          <div>
-            <h3
-              class="font-bold"
-            >
-              Approved Effective Date
-            </h3>
-            <div
-              class="py-2"
-            >
-              -- --
-            </div>
-          </div>
-        </div>
-        <hr
-          class="my-4"
-        />
-        <div
-          class="two-cols gap-y-6 sm:gap-y-6"
-        >
-          <div>
-            <h3
-              class="font-bold"
-            >
-              Submitted By
-            </h3>
-            <div
-              class="py-2"
-            >
-              <p
-                class="text-lg"
-              >
-                -- --
-              </p>
-            </div>
-          </div>
-          <div>
-            <h3
-              class="font-bold"
-            >
-              CPOC
-            </h3>
-            <div
-              class="py-2"
-            >
-              <p
-                class="text-lg"
-              >
-                -- --
-              </p>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </section>
-  ,
-</DocumentFragment>
-`;
-
-exports[`package details > render package details for a 1915(c) submission with action type extend 1`] = `
-<DocumentFragment>
-  <section
-    class="p-4 border rounded-sm border-cardBorder"
-    id="package_details"
-  >
-    <h1
-      class="text-3xl font-semibold mb-2"
-      data-testid="undefined-title"
-    >
-      Temporary Extension Request Details
-    </h1>
-    <hr
-      class="my-6 bg-slate-200"
-    />
-    <div
-      class="grid gap-y-8"
-      data-testid="undefined-child"
-    >
-      <div>
-        <div
-          class="two-cols gap-y-6 sm:gap-y-6"
-        >
-          <div>
-            <h3
-              class="font-bold"
-            >
-              Submission ID
-            </h3>
-            <div
-              class="py-2"
-            >
-              MD-0005.R01.TE00
-            </div>
-          </div>
-          <div>
-            <h3
-              class="font-bold"
-            >
-              Authority
-            </h3>
-            <div
-              class="py-2"
-            />
-          </div>
-          <div>
-            <h3
-              class="font-bold"
-            >
-              State
-            </h3>
-            <div
-              class="py-2"
-            >
-              Maryland
-            </div>
-          </div>
-          <div>
-            <h3
-              class="font-bold"
-            >
-              Approved Initial or Renewal Number
-            </h3>
-            <div
-              class="py-2"
-            />
-          </div>
-          <div>
-            <h3
-              class="font-bold"
-            >
-              Initial Submission Date
-            </h3>
-            <div
-              class="py-2"
-            >
-              -- --
-            </div>
-          </div>
-          <div>
-            <h3
-              class="font-bold"
-            >
-              Latest Package Activity
-            </h3>
-            <div
-              class="py-2"
-            >
-              -- --
-            </div>
-          </div>
-        </div>
-        <hr
-          class="my-4"
-        />
-        <div
-          class="two-cols gap-y-6 sm:gap-y-6"
-        >
-          <div>
-            <h3
-              class="font-bold"
-            >
-              Submitted By
-            </h3>
-            <div
-              class="py-2"
-            >
-              <p
-                class="text-lg"
-              >
-                -- --
-              </p>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </section>
-  ,
-</DocumentFragment>
-`;
-
-exports[`package details > renders package details for a 1915(b) submission 1`] = `
+exports[`package details > as CMS Reviewer > renders package details for a 1915(b) 1`] = `
 <DocumentFragment>
   <section
     class="p-4 border rounded-sm border-cardBorder"
@@ -573,150 +23,174 @@ exports[`package details > renders package details for a 1915(b) submission 1`] 
         <div
           class="two-cols gap-y-6 sm:gap-y-6"
         >
-          <div>
-            <h3
+          <dl>
+            <dt
               class="font-bold"
             >
               Submission ID
-            </h3>
-            <div
+            </dt>
+            <dd
               class="py-2"
             >
               MD-0000.R00.00
-            </div>
-          </div>
-          <div>
-            <h3
+            </dd>
+          </dl>
+          <dl>
+            <dt
               class="font-bold"
             >
               Authority
-            </h3>
-            <div
+            </dt>
+            <dd
               class="py-2"
             >
               1915(b)
-            </div>
-          </div>
-          <div>
-            <h3
+            </dd>
+          </dl>
+          <dl>
+            <dt
               class="font-bold"
             >
               Action Type
-            </h3>
-            <div
+            </dt>
+            <dd
               class="py-2"
             >
               Initial
-            </div>
-          </div>
-          <div>
-            <h3
+            </dd>
+          </dl>
+          <dl>
+            <dt
               class="font-bold"
             >
               State
-            </h3>
-            <div
+            </dt>
+            <dd
               class="py-2"
             >
               Maryland
-            </div>
-          </div>
-          <div>
-            <h3
+            </dd>
+          </dl>
+          <dl>
+            <dt
+              class="font-bold"
+            >
+              Subject
+            </dt>
+            <dd
+              class="py-2"
+            >
+              -- --
+            </dd>
+          </dl>
+          <dl>
+            <dt
               class="font-bold"
             >
               Type
-            </h3>
-            <div
+            </dt>
+            <dd
               class="py-2"
             >
               -- --
-            </div>
-          </div>
-          <div>
-            <h3
+            </dd>
+          </dl>
+          <dl>
+            <dt
               class="font-bold"
             >
               Subtype
-            </h3>
-            <div
+            </dt>
+            <dd
               class="py-2"
             >
               -- --
-            </div>
-          </div>
-          <div>
-            <h3
+            </dd>
+          </dl>
+          <dl>
+            <dt
               class="font-bold"
             >
               Initial Submission Date
-            </h3>
-            <div
+            </dt>
+            <dd
               class="py-2"
             >
               -- --
-            </div>
-          </div>
-          <div>
-            <h3
+            </dd>
+          </dl>
+          <dl>
+            <dt
               class="font-bold"
             >
               Latest Package Activity
-            </h3>
-            <div
+            </dt>
+            <dd
               class="py-2"
             >
               -- --
-            </div>
-          </div>
-          <div>
-            <h3
+            </dd>
+          </dl>
+          <dl>
+            <dt
               class="font-bold"
             >
               Formal RAI Response Date
-            </h3>
-            <div
+            </dt>
+            <dd
               class="py-2"
             >
               -- --
-            </div>
-          </div>
-          <div>
-            <h3
+            </dd>
+          </dl>
+          <dl>
+            <dt
               class="font-bold"
             >
               Final Disposition Date
-            </h3>
-            <div
+            </dt>
+            <dd
               class="py-2"
             >
               -- --
-            </div>
-          </div>
-          <div>
-            <h3
+            </dd>
+          </dl>
+          <dl>
+            <dt
               class="font-bold"
             >
               Proposed Effective Date
-            </h3>
-            <div
+            </dt>
+            <dd
               class="py-2"
             >
               Pending
-            </div>
-          </div>
-          <div>
-            <h3
+            </dd>
+          </dl>
+          <dl>
+            <dt
               class="font-bold"
             >
               Approved Effective Date
-            </h3>
-            <div
+            </dt>
+            <dd
               class="py-2"
             >
               -- --
-            </div>
-          </div>
+            </dd>
+          </dl>
+          <dl>
+            <dt
+              class="font-bold"
+            >
+              Description
+            </dt>
+            <dd
+              class="py-2"
+            >
+              -- --
+            </dd>
+          </dl>
         </div>
         <hr
           class="my-4"
@@ -724,13 +198,13 @@ exports[`package details > renders package details for a 1915(b) submission 1`] 
         <div
           class="two-cols gap-y-6 sm:gap-y-6"
         >
-          <div>
-            <h3
+          <dl>
+            <dt
               class="font-bold"
             >
               Submitted By
-            </h3>
-            <div
+            </dt>
+            <dd
               class="py-2"
             >
               <p
@@ -738,15 +212,15 @@ exports[`package details > renders package details for a 1915(b) submission 1`] 
               >
                 -- --
               </p>
-            </div>
-          </div>
-          <div>
-            <h3
+            </dd>
+          </dl>
+          <dl>
+            <dt
               class="font-bold"
             >
               CPOC
-            </h3>
-            <div
+            </dt>
+            <dd
               class="py-2"
             >
               <p
@@ -754,8 +228,1334 @@ exports[`package details > renders package details for a 1915(b) submission 1`] 
               >
                 -- --
               </p>
-            </div>
-          </div>
+            </dd>
+          </dl>
+          <dl>
+            <dt
+              class="font-bold"
+            >
+              SRT
+            </dt>
+            <dd
+              class="py-2"
+            >
+              -- --
+            </dd>
+          </dl>
+        </div>
+      </div>
+    </div>
+  </section>
+  ,
+</DocumentFragment>
+`;
+
+exports[`package details > as CMS Reviewer > renders package details for a 1915(c) 1`] = `
+<DocumentFragment>
+  <section
+    class="p-4 border rounded-sm border-cardBorder"
+    id="package_details"
+  >
+    <h1
+      class="text-3xl font-semibold mb-2"
+      data-testid="undefined-title"
+    >
+      1915(c) Package Details
+    </h1>
+    <hr
+      class="my-6 bg-slate-200"
+    />
+    <div
+      class="grid gap-y-8"
+      data-testid="undefined-child"
+    >
+      <div>
+        <div
+          class="two-cols gap-y-6 sm:gap-y-6"
+        >
+          <dl>
+            <dt
+              class="font-bold"
+            >
+              Submission ID
+            </dt>
+            <dd
+              class="py-2"
+            >
+              MD-010.R00.01
+            </dd>
+          </dl>
+          <dl>
+            <dt
+              class="font-bold"
+            >
+              Authority
+            </dt>
+            <dd
+              class="py-2"
+            >
+              1915(c)
+            </dd>
+          </dl>
+          <dl>
+            <dt
+              class="font-bold"
+            >
+              Action Type
+            </dt>
+            <dd
+              class="py-2"
+            >
+              Initial
+            </dd>
+          </dl>
+          <dl>
+            <dt
+              class="font-bold"
+            >
+              State
+            </dt>
+            <dd
+              class="py-2"
+            >
+              Maryland
+            </dd>
+          </dl>
+          <dl>
+            <dt
+              class="font-bold"
+            >
+              Subject
+            </dt>
+            <dd
+              class="py-2"
+            >
+              -- --
+            </dd>
+          </dl>
+          <dl>
+            <dt
+              class="font-bold"
+            >
+              Type
+            </dt>
+            <dd
+              class="py-2"
+            >
+              -- --
+            </dd>
+          </dl>
+          <dl>
+            <dt
+              class="font-bold"
+            >
+              Subtype
+            </dt>
+            <dd
+              class="py-2"
+            >
+              -- --
+            </dd>
+          </dl>
+          <dl>
+            <dt
+              class="font-bold"
+            >
+              Initial Submission Date
+            </dt>
+            <dd
+              class="py-2"
+            >
+              -- --
+            </dd>
+          </dl>
+          <dl>
+            <dt
+              class="font-bold"
+            >
+              Latest Package Activity
+            </dt>
+            <dd
+              class="py-2"
+            >
+              -- --
+            </dd>
+          </dl>
+          <dl>
+            <dt
+              class="font-bold"
+            >
+              Formal RAI Response Date
+            </dt>
+            <dd
+              class="py-2"
+            >
+              -- --
+            </dd>
+          </dl>
+          <dl>
+            <dt
+              class="font-bold"
+            >
+              Final Disposition Date
+            </dt>
+            <dd
+              class="py-2"
+            >
+              -- --
+            </dd>
+          </dl>
+          <dl>
+            <dt
+              class="font-bold"
+            >
+              Proposed Effective Date
+            </dt>
+            <dd
+              class="py-2"
+            >
+              Pending
+            </dd>
+          </dl>
+          <dl>
+            <dt
+              class="font-bold"
+            >
+              Approved Effective Date
+            </dt>
+            <dd
+              class="py-2"
+            >
+              -- --
+            </dd>
+          </dl>
+          <dl>
+            <dt
+              class="font-bold"
+            >
+              Description
+            </dt>
+            <dd
+              class="py-2"
+            >
+              -- --
+            </dd>
+          </dl>
+        </div>
+        <hr
+          class="my-4"
+        />
+        <div
+          class="two-cols gap-y-6 sm:gap-y-6"
+        >
+          <dl>
+            <dt
+              class="font-bold"
+            >
+              Submitted By
+            </dt>
+            <dd
+              class="py-2"
+            >
+              <p
+                class="text-lg"
+              >
+                -- --
+              </p>
+            </dd>
+          </dl>
+          <dl>
+            <dt
+              class="font-bold"
+            >
+              CPOC
+            </dt>
+            <dd
+              class="py-2"
+            >
+              <p
+                class="text-lg"
+              >
+                -- --
+              </p>
+            </dd>
+          </dl>
+          <dl>
+            <dt
+              class="font-bold"
+            >
+              SRT
+            </dt>
+            <dd
+              class="py-2"
+            >
+              -- --
+            </dd>
+          </dl>
+        </div>
+      </div>
+    </div>
+  </section>
+  ,
+</DocumentFragment>
+`;
+
+exports[`package details > as CMS Reviewer > renders package details for a 1915(c) Appendix K Amendment 1`] = `
+<DocumentFragment>
+  <section
+    class="p-4 border rounded-sm border-cardBorder"
+    id="package_details"
+  >
+    <h1
+      class="text-3xl font-semibold mb-2"
+      data-testid="undefined-title"
+    >
+      1915(c) Appendix K Amendment Package Details
+    </h1>
+    <hr
+      class="my-6 bg-slate-200"
+    />
+    <div
+      class="grid gap-y-8"
+      data-testid="undefined-child"
+    >
+      <div>
+        <div
+          class="two-cols gap-y-6 sm:gap-y-6"
+        >
+          <dl>
+            <dt
+              class="font-bold"
+            >
+              Submission ID
+            </dt>
+            <dd
+              class="py-2"
+            >
+              MD-0000.R00.01
+            </dd>
+          </dl>
+          <dl>
+            <dt
+              class="font-bold"
+            >
+              Authority
+            </dt>
+            <dd
+              class="py-2"
+            >
+              1915(c)
+            </dd>
+          </dl>
+          <dl>
+            <dt
+              class="font-bold"
+            >
+              Action Type
+            </dt>
+            <dd
+              class="py-2"
+            >
+              Amendment
+            </dd>
+          </dl>
+          <dl>
+            <dt
+              class="font-bold"
+            >
+              State
+            </dt>
+            <dd
+              class="py-2"
+            >
+              Maryland
+            </dd>
+          </dl>
+          <dl>
+            <dt
+              class="font-bold"
+            >
+              Subject
+            </dt>
+            <dd
+              class="py-2"
+            >
+              -- --
+            </dd>
+          </dl>
+          <dl>
+            <dt
+              class="font-bold"
+            >
+              Type
+            </dt>
+            <dd
+              class="py-2"
+            >
+              -- --
+            </dd>
+          </dl>
+          <dl>
+            <dt
+              class="font-bold"
+            >
+              Subtype
+            </dt>
+            <dd
+              class="py-2"
+            >
+              -- --
+            </dd>
+          </dl>
+          <dl>
+            <dt
+              class="font-bold"
+            >
+              Initial Submission Date
+            </dt>
+            <dd
+              class="py-2"
+            >
+              -- --
+            </dd>
+          </dl>
+          <dl>
+            <dt
+              class="font-bold"
+            >
+              Latest Package Activity
+            </dt>
+            <dd
+              class="py-2"
+            >
+              -- --
+            </dd>
+          </dl>
+          <dl>
+            <dt
+              class="font-bold"
+            >
+              Formal RAI Response Date
+            </dt>
+            <dd
+              class="py-2"
+            >
+              -- --
+            </dd>
+          </dl>
+          <dl>
+            <dt
+              class="font-bold"
+            >
+              Final Disposition Date
+            </dt>
+            <dd
+              class="py-2"
+            >
+              -- --
+            </dd>
+          </dl>
+          <dl>
+            <dt
+              class="font-bold"
+            >
+              Proposed Effective Date
+            </dt>
+            <dd
+              class="py-2"
+            >
+              Pending
+            </dd>
+          </dl>
+          <dl>
+            <dt
+              class="font-bold"
+            >
+              Approved Effective Date
+            </dt>
+            <dd
+              class="py-2"
+            >
+              -- --
+            </dd>
+          </dl>
+          <dl>
+            <dt
+              class="font-bold"
+            >
+              Description
+            </dt>
+            <dd
+              class="py-2"
+            >
+              -- --
+            </dd>
+          </dl>
+        </div>
+        <hr
+          class="my-4"
+        />
+        <div
+          class="two-cols gap-y-6 sm:gap-y-6"
+        >
+          <dl>
+            <dt
+              class="font-bold"
+            >
+              Submitted By
+            </dt>
+            <dd
+              class="py-2"
+            >
+              <p
+                class="text-lg"
+              >
+                -- --
+              </p>
+            </dd>
+          </dl>
+          <dl>
+            <dt
+              class="font-bold"
+            >
+              CPOC
+            </dt>
+            <dd
+              class="py-2"
+            >
+              <p
+                class="text-lg"
+              >
+                -- --
+              </p>
+            </dd>
+          </dl>
+          <dl>
+            <dt
+              class="font-bold"
+            >
+              SRT
+            </dt>
+            <dd
+              class="py-2"
+            >
+              -- --
+            </dd>
+          </dl>
+        </div>
+      </div>
+    </div>
+  </section>
+  ,
+</DocumentFragment>
+`;
+
+exports[`package details > as CMS Reviewer > renders package details for a Temporary Extension Request 1`] = `
+<DocumentFragment>
+  <section
+    class="p-4 border rounded-sm border-cardBorder"
+    id="package_details"
+  >
+    <h1
+      class="text-3xl font-semibold mb-2"
+      data-testid="undefined-title"
+    >
+      Temporary Extension Request Details
+    </h1>
+    <hr
+      class="my-6 bg-slate-200"
+    />
+    <div
+      class="grid gap-y-8"
+      data-testid="undefined-child"
+    >
+      <div>
+        <div
+          class="two-cols gap-y-6 sm:gap-y-6"
+        >
+          <dl>
+            <dt
+              class="font-bold"
+            >
+              Submission ID
+            </dt>
+            <dd
+              class="py-2"
+            >
+              MD-0005.R01.TE00
+            </dd>
+          </dl>
+          <dl>
+            <dt
+              class="font-bold"
+            >
+              Authority
+            </dt>
+            <dd
+              class="py-2"
+            />
+          </dl>
+          <dl>
+            <dt
+              class="font-bold"
+            >
+              State
+            </dt>
+            <dd
+              class="py-2"
+            >
+              Maryland
+            </dd>
+          </dl>
+          <dl>
+            <dt
+              class="font-bold"
+            >
+              Approved Initial or Renewal Number
+            </dt>
+            <dd
+              class="py-2"
+            />
+          </dl>
+          <dl>
+            <dt
+              class="font-bold"
+            >
+              Initial Submission Date
+            </dt>
+            <dd
+              class="py-2"
+            >
+              -- --
+            </dd>
+          </dl>
+          <dl>
+            <dt
+              class="font-bold"
+            >
+              Latest Package Activity
+            </dt>
+            <dd
+              class="py-2"
+            >
+              -- --
+            </dd>
+          </dl>
+        </div>
+        <hr
+          class="my-4"
+        />
+        <div
+          class="two-cols gap-y-6 sm:gap-y-6"
+        >
+          <dl>
+            <dt
+              class="font-bold"
+            >
+              Submitted By
+            </dt>
+            <dd
+              class="py-2"
+            >
+              <p
+                class="text-lg"
+              >
+                -- --
+              </p>
+            </dd>
+          </dl>
+        </div>
+      </div>
+    </div>
+  </section>
+  ,
+</DocumentFragment>
+`;
+
+exports[`package details > as State Submitter > renders package details for a 1915(b) 1`] = `
+<DocumentFragment>
+  <section
+    class="p-4 border rounded-sm border-cardBorder"
+    id="package_details"
+  >
+    <h1
+      class="text-3xl font-semibold mb-2"
+      data-testid="undefined-title"
+    >
+      1915(b) Package Details
+    </h1>
+    <hr
+      class="my-6 bg-slate-200"
+    />
+    <div
+      class="grid gap-y-8"
+      data-testid="undefined-child"
+    >
+      <div>
+        <div
+          class="two-cols gap-y-6 sm:gap-y-6"
+        >
+          <dl>
+            <dt
+              class="font-bold"
+            >
+              Submission ID
+            </dt>
+            <dd
+              class="py-2"
+            >
+              MD-0000.R00.00
+            </dd>
+          </dl>
+          <dl>
+            <dt
+              class="font-bold"
+            >
+              Authority
+            </dt>
+            <dd
+              class="py-2"
+            >
+              1915(b)
+            </dd>
+          </dl>
+          <dl>
+            <dt
+              class="font-bold"
+            >
+              Action Type
+            </dt>
+            <dd
+              class="py-2"
+            >
+              Initial
+            </dd>
+          </dl>
+          <dl>
+            <dt
+              class="font-bold"
+            >
+              State
+            </dt>
+            <dd
+              class="py-2"
+            >
+              Maryland
+            </dd>
+          </dl>
+          <dl>
+            <dt
+              class="font-bold"
+            >
+              Initial Submission Date
+            </dt>
+            <dd
+              class="py-2"
+            >
+              -- --
+            </dd>
+          </dl>
+          <dl>
+            <dt
+              class="font-bold"
+            >
+              Latest Package Activity
+            </dt>
+            <dd
+              class="py-2"
+            >
+              -- --
+            </dd>
+          </dl>
+          <dl>
+            <dt
+              class="font-bold"
+            >
+              Formal RAI Response Date
+            </dt>
+            <dd
+              class="py-2"
+            >
+              -- --
+            </dd>
+          </dl>
+          <dl>
+            <dt
+              class="font-bold"
+            >
+              Final Disposition Date
+            </dt>
+            <dd
+              class="py-2"
+            >
+              -- --
+            </dd>
+          </dl>
+          <dl>
+            <dt
+              class="font-bold"
+            >
+              Proposed Effective Date
+            </dt>
+            <dd
+              class="py-2"
+            >
+              Pending
+            </dd>
+          </dl>
+          <dl>
+            <dt
+              class="font-bold"
+            >
+              Approved Effective Date
+            </dt>
+            <dd
+              class="py-2"
+            >
+              -- --
+            </dd>
+          </dl>
+        </div>
+        <hr
+          class="my-4"
+        />
+        <div
+          class="two-cols gap-y-6 sm:gap-y-6"
+        >
+          <dl>
+            <dt
+              class="font-bold"
+            >
+              Submitted By
+            </dt>
+            <dd
+              class="py-2"
+            >
+              <p
+                class="text-lg"
+              >
+                -- --
+              </p>
+            </dd>
+          </dl>
+          <dl>
+            <dt
+              class="font-bold"
+            >
+              CPOC
+            </dt>
+            <dd
+              class="py-2"
+            >
+              <p
+                class="text-lg"
+              >
+                -- --
+              </p>
+            </dd>
+          </dl>
+        </div>
+      </div>
+    </div>
+  </section>
+  ,
+</DocumentFragment>
+`;
+
+exports[`package details > as State Submitter > renders package details for a 1915(c) 1`] = `
+<DocumentFragment>
+  <section
+    class="p-4 border rounded-sm border-cardBorder"
+    id="package_details"
+  >
+    <h1
+      class="text-3xl font-semibold mb-2"
+      data-testid="undefined-title"
+    >
+      1915(c) Package Details
+    </h1>
+    <hr
+      class="my-6 bg-slate-200"
+    />
+    <div
+      class="grid gap-y-8"
+      data-testid="undefined-child"
+    >
+      <div>
+        <div
+          class="two-cols gap-y-6 sm:gap-y-6"
+        >
+          <dl>
+            <dt
+              class="font-bold"
+            >
+              Submission ID
+            </dt>
+            <dd
+              class="py-2"
+            >
+              MD-010.R00.01
+            </dd>
+          </dl>
+          <dl>
+            <dt
+              class="font-bold"
+            >
+              Authority
+            </dt>
+            <dd
+              class="py-2"
+            >
+              1915(c)
+            </dd>
+          </dl>
+          <dl>
+            <dt
+              class="font-bold"
+            >
+              Action Type
+            </dt>
+            <dd
+              class="py-2"
+            >
+              Initial
+            </dd>
+          </dl>
+          <dl>
+            <dt
+              class="font-bold"
+            >
+              State
+            </dt>
+            <dd
+              class="py-2"
+            >
+              Maryland
+            </dd>
+          </dl>
+          <dl>
+            <dt
+              class="font-bold"
+            >
+              Initial Submission Date
+            </dt>
+            <dd
+              class="py-2"
+            >
+              -- --
+            </dd>
+          </dl>
+          <dl>
+            <dt
+              class="font-bold"
+            >
+              Latest Package Activity
+            </dt>
+            <dd
+              class="py-2"
+            >
+              -- --
+            </dd>
+          </dl>
+          <dl>
+            <dt
+              class="font-bold"
+            >
+              Formal RAI Response Date
+            </dt>
+            <dd
+              class="py-2"
+            >
+              -- --
+            </dd>
+          </dl>
+          <dl>
+            <dt
+              class="font-bold"
+            >
+              Final Disposition Date
+            </dt>
+            <dd
+              class="py-2"
+            >
+              -- --
+            </dd>
+          </dl>
+          <dl>
+            <dt
+              class="font-bold"
+            >
+              Proposed Effective Date
+            </dt>
+            <dd
+              class="py-2"
+            >
+              Pending
+            </dd>
+          </dl>
+          <dl>
+            <dt
+              class="font-bold"
+            >
+              Approved Effective Date
+            </dt>
+            <dd
+              class="py-2"
+            >
+              -- --
+            </dd>
+          </dl>
+        </div>
+        <hr
+          class="my-4"
+        />
+        <div
+          class="two-cols gap-y-6 sm:gap-y-6"
+        >
+          <dl>
+            <dt
+              class="font-bold"
+            >
+              Submitted By
+            </dt>
+            <dd
+              class="py-2"
+            >
+              <p
+                class="text-lg"
+              >
+                -- --
+              </p>
+            </dd>
+          </dl>
+          <dl>
+            <dt
+              class="font-bold"
+            >
+              CPOC
+            </dt>
+            <dd
+              class="py-2"
+            >
+              <p
+                class="text-lg"
+              >
+                -- --
+              </p>
+            </dd>
+          </dl>
+        </div>
+      </div>
+    </div>
+  </section>
+  ,
+</DocumentFragment>
+`;
+
+exports[`package details > as State Submitter > renders package details for a 1915(c) Appendix K Amendment 1`] = `
+<DocumentFragment>
+  <section
+    class="p-4 border rounded-sm border-cardBorder"
+    id="package_details"
+  >
+    <h1
+      class="text-3xl font-semibold mb-2"
+      data-testid="undefined-title"
+    >
+      1915(c) Appendix K Amendment Package Details
+    </h1>
+    <hr
+      class="my-6 bg-slate-200"
+    />
+    <div
+      class="grid gap-y-8"
+      data-testid="undefined-child"
+    >
+      <div>
+        <div
+          class="two-cols gap-y-6 sm:gap-y-6"
+        >
+          <dl>
+            <dt
+              class="font-bold"
+            >
+              Submission ID
+            </dt>
+            <dd
+              class="py-2"
+            >
+              MD-0000.R00.01
+            </dd>
+          </dl>
+          <dl>
+            <dt
+              class="font-bold"
+            >
+              Authority
+            </dt>
+            <dd
+              class="py-2"
+            >
+              1915(c)
+            </dd>
+          </dl>
+          <dl>
+            <dt
+              class="font-bold"
+            >
+              Action Type
+            </dt>
+            <dd
+              class="py-2"
+            >
+              Amendment
+            </dd>
+          </dl>
+          <dl>
+            <dt
+              class="font-bold"
+            >
+              State
+            </dt>
+            <dd
+              class="py-2"
+            >
+              Maryland
+            </dd>
+          </dl>
+          <dl>
+            <dt
+              class="font-bold"
+            >
+              Initial Submission Date
+            </dt>
+            <dd
+              class="py-2"
+            >
+              -- --
+            </dd>
+          </dl>
+          <dl>
+            <dt
+              class="font-bold"
+            >
+              Latest Package Activity
+            </dt>
+            <dd
+              class="py-2"
+            >
+              -- --
+            </dd>
+          </dl>
+          <dl>
+            <dt
+              class="font-bold"
+            >
+              Formal RAI Response Date
+            </dt>
+            <dd
+              class="py-2"
+            >
+              -- --
+            </dd>
+          </dl>
+          <dl>
+            <dt
+              class="font-bold"
+            >
+              Final Disposition Date
+            </dt>
+            <dd
+              class="py-2"
+            >
+              -- --
+            </dd>
+          </dl>
+          <dl>
+            <dt
+              class="font-bold"
+            >
+              Proposed Effective Date
+            </dt>
+            <dd
+              class="py-2"
+            >
+              Pending
+            </dd>
+          </dl>
+          <dl>
+            <dt
+              class="font-bold"
+            >
+              Approved Effective Date
+            </dt>
+            <dd
+              class="py-2"
+            >
+              -- --
+            </dd>
+          </dl>
+        </div>
+        <hr
+          class="my-4"
+        />
+        <div
+          class="two-cols gap-y-6 sm:gap-y-6"
+        >
+          <dl>
+            <dt
+              class="font-bold"
+            >
+              Submitted By
+            </dt>
+            <dd
+              class="py-2"
+            >
+              <p
+                class="text-lg"
+              >
+                -- --
+              </p>
+            </dd>
+          </dl>
+          <dl>
+            <dt
+              class="font-bold"
+            >
+              CPOC
+            </dt>
+            <dd
+              class="py-2"
+            >
+              <p
+                class="text-lg"
+              >
+                -- --
+              </p>
+            </dd>
+          </dl>
+        </div>
+      </div>
+    </div>
+  </section>
+  ,
+</DocumentFragment>
+`;
+
+exports[`package details > as State Submitter > renders package details for a Temporary Extension Request 1`] = `
+<DocumentFragment>
+  <section
+    class="p-4 border rounded-sm border-cardBorder"
+    id="package_details"
+  >
+    <h1
+      class="text-3xl font-semibold mb-2"
+      data-testid="undefined-title"
+    >
+      Temporary Extension Request Details
+    </h1>
+    <hr
+      class="my-6 bg-slate-200"
+    />
+    <div
+      class="grid gap-y-8"
+      data-testid="undefined-child"
+    >
+      <div>
+        <div
+          class="two-cols gap-y-6 sm:gap-y-6"
+        >
+          <dl>
+            <dt
+              class="font-bold"
+            >
+              Submission ID
+            </dt>
+            <dd
+              class="py-2"
+            >
+              MD-0005.R01.TE00
+            </dd>
+          </dl>
+          <dl>
+            <dt
+              class="font-bold"
+            >
+              Authority
+            </dt>
+            <dd
+              class="py-2"
+            />
+          </dl>
+          <dl>
+            <dt
+              class="font-bold"
+            >
+              State
+            </dt>
+            <dd
+              class="py-2"
+            >
+              Maryland
+            </dd>
+          </dl>
+          <dl>
+            <dt
+              class="font-bold"
+            >
+              Approved Initial or Renewal Number
+            </dt>
+            <dd
+              class="py-2"
+            />
+          </dl>
+          <dl>
+            <dt
+              class="font-bold"
+            >
+              Initial Submission Date
+            </dt>
+            <dd
+              class="py-2"
+            >
+              -- --
+            </dd>
+          </dl>
+          <dl>
+            <dt
+              class="font-bold"
+            >
+              Latest Package Activity
+            </dt>
+            <dd
+              class="py-2"
+            >
+              -- --
+            </dd>
+          </dl>
+        </div>
+        <hr
+          class="my-4"
+        />
+        <div
+          class="two-cols gap-y-6 sm:gap-y-6"
+        >
+          <dl>
+            <dt
+              class="font-bold"
+            >
+              Submitted By
+            </dt>
+            <dd
+              class="py-2"
+            >
+              <p
+                class="text-lg"
+              >
+                -- --
+              </p>
+            </dd>
+          </dl>
         </div>
       </div>
     </div>

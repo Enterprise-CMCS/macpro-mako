@@ -35,13 +35,13 @@ export const FormIntroTextForAppK = () => (
 );
 
 export const SpaIdFormattingDesc = () => (
-  <>
+  <div id="spa-id-formatting-desc" aria-live="off">
     <p>Must follow the format SS-YY-NNNN or SS-YY-NNNN-XXXX.</p>
     <p className="text-neutral-500">
       Reminder - CMS recommends that all SPA numbers start with the year in which the package is
       submitted.
     </p>
-  </>
+  </div>
 );
 
 type PreSubmissionMessageProps = {
@@ -55,9 +55,11 @@ export const PreSubmissionMessage = ({
       to edit this form. If CMS needs any additional information, they will
       follow up by email.`,
 }: PreSubmissionMessageProps) => (
-  <Alert variant="infoBlock" className="my-2 flex-row text-sm">
-    <Info />
-    <p className="ml-2">{preSubmissionMessage}</p>
-    {hasProgressLossReminder && <ProgressLossReminder className="ml-2" />}
-  </Alert>
+  <section>
+    <Alert variant="infoBlock" className="flex-row text-sm">
+      <Info />
+      <p className="ml-2">{preSubmissionMessage}</p>
+      {hasProgressLossReminder && <ProgressLossReminder className="ml-2" />}
+    </Alert>
+  </section>
 );
