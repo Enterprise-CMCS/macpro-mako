@@ -2,6 +2,7 @@ import { SendEmailCommand, SendEmailCommandInput, SESClient } from "@aws-sdk/cli
 import { SendMessageCommand, SQSClient } from "@aws-sdk/client-sqs";
 import { Handler } from "aws-lambda";
 import { htmlToText, HtmlToTextOptions } from "html-to-text";
+import { isWithinDays } from "lib/packages/shared-utils/date-helper";
 import { getPackageChangelog } from "libs/api/package";
 import { getAllStateUsersFromOpenSearch, getEmailTemplates } from "libs/email";
 import { EMAIL_CONFIG, getCpocEmail, getSrtEmails } from "libs/email/content/email-components";
@@ -15,7 +16,7 @@ import {
   opensearch,
   SEATOOL_STATUS,
 } from "shared-types";
-import { decodeBase64WithUtf8, formatActionType, getSecret, isWithinDays } from "shared-utils";
+import { decodeBase64WithUtf8, formatActionType, getSecret } from "shared-utils";
 import { retry } from "shared-utils/retry";
 
 import { sendUserRoleEmails } from "./processUserRoleEmails";
@@ -168,8 +169,7 @@ export async function processRecord(kafkaRecord: KafkaRecord, config: ProcessEma
     if (safeSeatoolRecord.data?.seatoolStatus === SEATOOL_STATUS.WITHDRAWN && isWithinTimeframe) {
       try {
         const item = await os.getItem(config.osDomain, getOsNamespace("main"), safeID);
-        console.log("item", item);
-        if (!item?.found || !item?._source?.makoChangedDate) {
+        if (!item?.found || (!item?._source && !item?._source.makoChangedDate)) {
           console.log(`The package was not found for id: ${id} in mako. Doing nothing.`);
           return;
         }
