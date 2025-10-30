@@ -171,10 +171,7 @@ export async function processRecord(kafkaRecord: KafkaRecord, config: ProcessEma
 
     console.log("new withdraw checks", existsInMako, isWithinTimeframe);
     console.log("new withdraw checks2", safeSeatoolRecord.data);
-    if (
-      safeSeatoolRecord.data?.seatoolStatus === SEATOOL_STATUS.WITHDRAWN &&
-      isWithinTimeframe &&
-    ) {
+    if (safeSeatoolRecord.data?.seatoolStatus === SEATOOL_STATUS.WITHDRAWN && isWithinTimeframe) {
       try {
         const item = await os.getItem(config.osDomain, getOsNamespace("main"), safeID);
         console.log("item", item);
