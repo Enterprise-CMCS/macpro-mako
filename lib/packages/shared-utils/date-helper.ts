@@ -1,6 +1,7 @@
 import { TZDate } from "@date-fns/tz";
 import { UTCDate } from "@date-fns/utc";
 import { add, format } from "date-fns";
+import { differenceInDays } from "date-fns";
 
 export const isDST = (date: Date): boolean => {
   const jan = new Date(date).getTimezoneOffset();
@@ -47,3 +48,15 @@ export const formatDateToUTC = (
 
   return format(utcDateObj, formatValue);
 };
+
+export function isWithinDays(dateValue?: number | string | null, days: number = 20): boolean {
+  if (!dateValue) return false;
+
+  const date = new Date(dateValue);
+  if (isNaN(date.getTime())) return false;
+
+  const now = new Date();
+  const diff = differenceInDays(now, date);
+
+  return diff >= 0 && diff <= days;
+}

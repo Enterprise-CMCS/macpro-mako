@@ -2,6 +2,7 @@ import { SendEmailCommand, SendEmailCommandInput, SESClient } from "@aws-sdk/cli
 import { SendMessageCommand, SQSClient } from "@aws-sdk/client-sqs";
 import { Handler } from "aws-lambda";
 import { htmlToText, HtmlToTextOptions } from "html-to-text";
+import { isWithinDays } from "lib/packages/shared-utils/date-helper";
 import { getPackageChangelog } from "libs/api/package";
 import { getAllStateUsersFromOpenSearch, getEmailTemplates } from "libs/email";
 import { EMAIL_CONFIG, getCpocEmail, getSrtEmails } from "libs/email/content/email-components";
@@ -163,8 +164,15 @@ export async function processRecord(kafkaRecord: KafkaRecord, config: ProcessEma
       ...parsedValue,
     };
     const safeSeatoolRecord = opensearch.main.seatool.transform(safeID).safeParse(seatoolRecord);
-
-    if (safeSeatoolRecord.data?.seatoolStatus === SEATOOL_STATUS.WITHDRAWN) {
+    const timeframe = isWithinDays(safeSeatoolRecord.data?.changed_date, 20);
+    const existsInMako =
+      safeSeatoolRecord.data?.makoChangedDate !== undefined &&
+      safeSeatoolRecord.data?.makoChangedDate !== null;
+    if (
+      safeSeatoolRecord.data?.seatoolStatus === SEATOOL_STATUS.WITHDRAWN &&
+      timeframe &&
+      existsInMako
+    ) {
       try {
         const item = await os.getItem(config.osDomain, getOsNamespace("main"), safeID);
 
