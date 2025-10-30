@@ -170,6 +170,7 @@ export async function processRecord(kafkaRecord: KafkaRecord, config: ProcessEma
       safeSeatoolRecord.data?.makoChangedDate !== null;
 
     console.log("new withdraw checks", existsInMako, isWithinTimeframe);
+    console.log("new withdraw checks2", safeSeatoolRecord.data);
     if (
       safeSeatoolRecord.data?.seatoolStatus === SEATOOL_STATUS.WITHDRAWN &&
       isWithinTimeframe &&
