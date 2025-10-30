@@ -2,7 +2,6 @@ import { SendEmailCommand, SendEmailCommandInput, SESClient } from "@aws-sdk/cli
 import { SendMessageCommand, SQSClient } from "@aws-sdk/client-sqs";
 import { Handler } from "aws-lambda";
 import { htmlToText, HtmlToTextOptions } from "html-to-text";
-import { isWithinDays } from "lib/packages/shared-utils/date-helper";
 import { getPackageChangelog } from "libs/api/package";
 import { getAllStateUsersFromOpenSearch, getEmailTemplates } from "libs/email";
 import { EMAIL_CONFIG, getCpocEmail, getSrtEmails } from "libs/email/content/email-components";
@@ -16,7 +15,7 @@ import {
   opensearch,
   SEATOOL_STATUS,
 } from "shared-types";
-import { decodeBase64WithUtf8, formatActionType, getSecret } from "shared-utils";
+import { decodeBase64WithUtf8, formatActionType, getSecret, isWithinDays } from "shared-utils";
 import { retry } from "shared-utils/retry";
 
 import { sendUserRoleEmails } from "./processUserRoleEmails";
