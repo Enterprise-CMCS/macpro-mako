@@ -165,17 +165,12 @@ export async function processRecord(kafkaRecord: KafkaRecord, config: ProcessEma
     };
     const safeSeatoolRecord = opensearch.main.seatool.transform(safeID).safeParse(seatoolRecord);
     const isWithinTimeframe = isWithinDays(safeSeatoolRecord.data?.changed_date, 20);
-    const existsInMako =
-      safeSeatoolRecord.data?.makoChangedDate !== undefined &&
-      safeSeatoolRecord.data?.makoChangedDate !== null;
 
-    console.log("new withdraw checks", existsInMako, isWithinTimeframe);
-    console.log("new withdraw checks2", safeSeatoolRecord.data);
     if (safeSeatoolRecord.data?.seatoolStatus === SEATOOL_STATUS.WITHDRAWN && isWithinTimeframe) {
       try {
         const item = await os.getItem(config.osDomain, getOsNamespace("main"), safeID);
         console.log("item", item);
-        if (!item?.found || !item?._source) {
+        if (!item?.found || || !item?._source?.makoChangedDate) {
           console.log(`The package was not found for id: ${id} in mako. Doing nothing.`);
           return;
         }
