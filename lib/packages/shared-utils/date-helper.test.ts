@@ -1,6 +1,12 @@
 import { describe, expect, it } from "vitest";
 
-import { formatDate, formatDateToET, formatDateToUTC, formatNinetyDaysDate } from "./date-helper";
+import {
+  formatDate,
+  formatDateToET,
+  formatDateToUTC,
+  formatNinetyDaysDate,
+  isWithinDays,
+} from "./date-helper";
 
 describe("date-helper", () => {
   describe("formatDate", () => {
@@ -78,6 +84,36 @@ describe("date-helper", () => {
       const date = new Date(2025, 0, 5); // Jan 5, 2025
       const formattedDate = formatNinetyDaysDate(date.getTime());
       expect(formattedDate).toBe("Apr 5, 2025");
+    });
+  });
+
+  describe("isWithinDays", () => {
+    const fixedNow = new Date("2025-10-30T12:00:00Z");
+    it("returns false for null/undefined", () => {
+      expect(isWithinDays(null, 20)).toBe(false);
+      expect(isWithinDays(undefined, 20)).toBe(false);
+    });
+
+    it("returns true for today", () => {
+      expect(isWithinDays(fixedNow.toISOString(), 20)).toBe(true);
+    });
+
+    it("returns true for a date within the window", () => {
+      const tenDaysAgo = new Date(fixedNow);
+      tenDaysAgo.setDate(tenDaysAgo.getDate() - 10);
+      expect(isWithinDays(tenDaysAgo.toISOString(), 20)).toBe(true);
+    });
+
+    it("returns false for a date older than the window", () => {
+      const twentyOneDaysAgo = new Date(fixedNow);
+      twentyOneDaysAgo.setDate(twentyOneDaysAgo.getDate() - 21);
+      expect(isWithinDays(twentyOneDaysAgo.toISOString(), 20)).toBe(false);
+    });
+
+    it("returns false for a future date", () => {
+      const tomorrow = new Date(fixedNow);
+      tomorrow.setDate(tomorrow.getDate() + 1);
+      expect(isWithinDays(tomorrow.toISOString(), 20)).toBe(false);
     });
   });
 });
