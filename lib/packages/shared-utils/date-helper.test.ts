@@ -111,9 +111,9 @@ describe("date-helper", () => {
     });
 
     it("returns false for a future date", () => {
-      const tomorrow = new Date(fixedNow);
-      tomorrow.setDate(tomorrow.getDate() + 1);
-      expect(isWithinDays(tomorrow.toISOString(), 20)).toBe(false);
+      const future = new Date();
+      future.setDate(future.getDate() + 5);
+      expect(isWithinDays(future.toISOString(), 20)).toBe(false);
     });
   });
 });
