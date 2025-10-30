@@ -174,11 +174,10 @@ export async function processRecord(kafkaRecord: KafkaRecord, config: ProcessEma
     if (
       safeSeatoolRecord.data?.seatoolStatus === SEATOOL_STATUS.WITHDRAWN &&
       isWithinTimeframe &&
-      existsInMako
     ) {
       try {
         const item = await os.getItem(config.osDomain, getOsNamespace("main"), safeID);
-
+        console.log("item", item);
         if (!item?.found || !item?._source) {
           console.log(`The package was not found for id: ${id} in mako. Doing nothing.`);
           return;
