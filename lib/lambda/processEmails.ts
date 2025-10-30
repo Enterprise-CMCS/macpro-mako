@@ -164,13 +164,15 @@ export async function processRecord(kafkaRecord: KafkaRecord, config: ProcessEma
       ...parsedValue,
     };
     const safeSeatoolRecord = opensearch.main.seatool.transform(safeID).safeParse(seatoolRecord);
-    const timeframe = isWithinDays(safeSeatoolRecord.data?.changed_date, 20);
+    const isWithinTimeframe = isWithinDays(safeSeatoolRecord.data?.changed_date, 20);
     const existsInMako =
       safeSeatoolRecord.data?.makoChangedDate !== undefined &&
       safeSeatoolRecord.data?.makoChangedDate !== null;
+
+    console.log("new withdraw checks", existsInMako, isWithinTimeframe);
     if (
       safeSeatoolRecord.data?.seatoolStatus === SEATOOL_STATUS.WITHDRAWN &&
-      timeframe &&
+      isWithinTimeframe &&
       existsInMako
     ) {
       try {
