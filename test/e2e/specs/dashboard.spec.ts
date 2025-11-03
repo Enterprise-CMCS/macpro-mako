@@ -18,7 +18,7 @@ for (const [role, user] of Object.entries(users)) {
       storageState: path.resolve(`.auth/${ENV}/${role}.json`),
     });
 
-    test.describe(`${role} dashboard`, () => {
+    test.describe(`${role} dashboard`, { tag: ["@CI"] }, () => {
       test.beforeEach(async ({ page }) => {
         dashboardPage = new DashboardPage(page);
         await page.goto("/dashboard");
