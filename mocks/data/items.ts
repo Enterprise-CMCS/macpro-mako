@@ -127,6 +127,7 @@ const items: Record<string, TestItemResult> = {
       submitterEmail: "BOBSMITH@MEDICAIDFAKE.gov",
       id: WITHDRAW_EMAIL_SENT,
       seatoolStatus: SEATOOL_STATUS.APPROVED,
+      makoChangedDate: "2024-12-25T09:17:21.557Z",
       stateStatus: statusToDisplayToStateUser[SEATOOL_STATUS.APPROVED],
       cmsStatus: statusToDisplayToCmsUser[SEATOOL_STATUS.APPROVED],
       actionType: "New",
