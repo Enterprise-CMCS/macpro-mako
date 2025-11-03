@@ -311,7 +311,7 @@ const seatoolData = (authority: string) => ({
     STATUS_DATE: 1709347600,
     SUMMARY_MEMO: "Plan revision to include telehealth services.",
     TITLE_NAME: "State Health Plan 2025",
-    CHANGED_DATE: 1709450000,
+    CHANGED_DATE: Date.now(),
   },
   RAI: [
     {
