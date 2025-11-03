@@ -23,16 +23,16 @@
         <div class='clearfix'>
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">90.47% </span>
+                <span class="strong">88.23% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>133/147</span>
+                <span class='fraction'>135/153</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">82.35% </span>
+                <span class="strong">75.47% </span>
                 <span class="quiet">Branches</span>
-                <span class='fraction'>42/51</span>
+                <span class='fraction'>40/53</span>
             </div>
         
             
@@ -44,9 +44,9 @@
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">90.71% </span>
+                <span class="strong">88.35% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>127/140</span>
+                <span class='fraction'>129/146</span>
             </div>
         
             
@@ -495,7 +495,17 @@
 <a name='L430'></a><a href='#L430'>430</a>
 <a name='L431'></a><a href='#L431'>431</a>
 <a name='L432'></a><a href='#L432'>432</a>
-<a name='L433'></a><a href='#L433'>433</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
+<a name='L433'></a><a href='#L433'>433</a>
+<a name='L434'></a><a href='#L434'>434</a>
+<a name='L435'></a><a href='#L435'>435</a>
+<a name='L436'></a><a href='#L436'>436</a>
+<a name='L437'></a><a href='#L437'>437</a>
+<a name='L438'></a><a href='#L438'>438</a>
+<a name='L439'></a><a href='#L439'>439</a>
+<a name='L440'></a><a href='#L440'>440</a>
+<a name='L441'></a><a href='#L441'>441</a>
+<a name='L442'></a><a href='#L442'>442</a>
+<a name='L443'></a><a href='#L443'>443</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -661,6 +671,16 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">6x</span>
 <span class="cline-any cline-yes">6x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">6x</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">6x</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">6x</span>
 <span class="cline-any cline-yes">6x</span>
@@ -1094,7 +1114,17 @@ export async function processRecord(kafkaRecord: KafkaRecord, config: ProcessEma
     const safeSeatoolRecord = opensearch.main.seatool.transform(safeID).safeParse(seatoolRecord);
     const isWithinTimeframe = isWithinDays(safeSeatoolRecord.data?.changed_date, 20);
 &nbsp;
-    <span class="missing-if-branch" title="else path not taken" >E</span>if (safeSeatoolRecord.data?.seatoolStatus === SEATOOL_STATUS.WITHDRAWN &amp;&amp; isWithinTimeframe) {
+    <span class="missing-if-branch" title="if path not taken" >I</span>if (!isWithinTimeframe) {
+<span class="cstat-no" title="statement not covered" >      console.log(`Not sending because message is outside of timeframe...`);</span>
+<span class="cstat-no" title="statement not covered" >      return;</span>
+    }
+&nbsp;
+    <span class="missing-if-branch" title="if path not taken" >I</span>if (config.isDev) {
+<span class="cstat-no" title="statement not covered" >      console.log(`Not sending because message is in development env...`);</span>
+<span class="cstat-no" title="statement not covered" >      return;</span>
+    }
+&nbsp;
+    <span class="missing-if-branch" title="else path not taken" >E</span>if (safeSeatoolRecord.data?.seatoolStatus === SEATOOL_STATUS.WITHDRAWN) {
       try {
         const item = await os.getItem(config.osDomain, getOsNamespace("main"), safeID);
         if (!item?.found || (!item?._source &amp;&amp; <span class="branch-2 cbranch-no" title="branch not covered" >!item?._source.makoChangedDate)) {</span>
@@ -1280,8 +1310,8 @@ export function createEmailParams(
     Destination: {
       ToAddresses: filledTemplate.to,
       CcAddresses: isDev
-        ? [...(filledTemplate.cc || []), `State Submitter &lt;${EMAIL_CONFIG.DEV_EMAIL}&gt;`]
-        : <span class="branch-1 cbranch-no" title="branch not covered" >filledTemplate.cc,</span>
+        ? <span class="branch-0 cbranch-no" title="branch not covered" >[...(filledTemplate.cc || []), `State Submitter &lt;${EMAIL_CONFIG.DEV_EMAIL}&gt;`]</span>
+        : filledTemplate.cc,
     },
     Message: {
       Body: {
@@ -1366,7 +1396,7 @@ const htmlToTextOptions = (baseUrl: string): HtmlToTextOptions =&gt; ({
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2025-11-03T02:18:30.338Z
+                at 2025-11-03T17:30:19.148Z
             </div>
         <script src="../../prettify.js"></script>
         <script>
