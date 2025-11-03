@@ -41,7 +41,7 @@ beforeEach(() => {
   process.env.PROJECT = PROJECT;
   process.env.REGION_A = REGION;
   process.env.STAGE = STAGE;
-  process.env.isDev = "true";
+  process.env.isDev = "false";
 
   process.env.project = PROJECT;
   process.env.region = REGION;
