@@ -165,7 +165,11 @@ export async function processRecord(kafkaRecord: KafkaRecord, config: ProcessEma
     const safeSeatoolRecord = opensearch.main.seatool.transform(safeID).safeParse(seatoolRecord);
     const isWithinTimeframe = isWithinDays(safeSeatoolRecord.data?.changed_date, 20);
 
-    if (safeSeatoolRecord.data?.seatoolStatus === SEATOOL_STATUS.WITHDRAWN && isWithinTimeframe) {
+    if (
+      safeSeatoolRecord.data?.seatoolStatus === SEATOOL_STATUS.WITHDRAWN &&
+      isWithinTimeframe &&
+      !config.isDev
+    ) {
       try {
         const item = await os.getItem(config.osDomain, getOsNamespace("main"), safeID);
         if (!item?.found || (!item?._source && !item?._source.makoChangedDate)) {
