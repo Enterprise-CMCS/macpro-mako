@@ -170,10 +170,10 @@ export async function processRecord(kafkaRecord: KafkaRecord, config: ProcessEma
       return;
     }
 
-    if (config.isDev) {
-      console.log(`Not sending because message is in development env...`);
-      return;
-    }
+    // if (config.isDev) {
+    //   console.log(`Not sending because message is in development env...`);
+    //   return;
+    // }
 
     if (safeSeatoolRecord.data?.seatoolStatus === SEATOOL_STATUS.WITHDRAWN) {
       try {
