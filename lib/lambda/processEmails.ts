@@ -188,6 +188,42 @@ export async function processRecord(kafkaRecord: KafkaRecord, config: ProcessEma
           return;
         }
 
+        let claim;
+        try {
+          claim = await os.updateData(config.osDomain, {
+            index: getOsNamespace("main"),
+            id: safeID,
+            body: {
+              script: {
+                lang: "painless",
+                source: `
+          if (ctx._source.withdrawEmailSent == true) {
+            ctx.op = 'none';
+          } else {
+            ctx._source.withdrawEmailSent = true;
+            ctx._source.withdrawEmailSentAt = params.now;
+          }
+        `,
+                params: { now: new Date().toISOString() },
+              },
+            },
+            retry_on_conflict: 5,
+          });
+        } catch (e: any) {
+          if (e?.meta?.statusCode === 409) {
+            console.log(
+              `Conflict claiming withdraw send for ${safeID}; likely already handled. Skipping.`,
+            );
+            return;
+          }
+          throw e;
+        }
+
+        if (claim?.result !== "updated") {
+          console.log(`Withdraw email already handled for ${safeID}; skipping.`);
+          return;
+        }
+
         const changelogFilter = [
           { term: { "event.keyword": "withdraw-package" } },
           { term: { "origin.keyword": "mako" } },
@@ -206,18 +242,6 @@ export async function processRecord(kafkaRecord: KafkaRecord, config: ProcessEma
         };
 
         await processAndSendEmails(recordToPass as Events[keyof Events], safeID, config);
-
-        const indexObject = {
-          index: getOsNamespace("main"),
-          id: safeID,
-          body: {
-            doc: {
-              withdrawEmailSent: true,
-            },
-          },
-        };
-
-        await os.updateData(config.osDomain, indexObject);
       } catch (error) {
         console.error("Error processing record:", JSON.stringify(error, null, 2));
         throw error;
