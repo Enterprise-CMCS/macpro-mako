@@ -125,6 +125,7 @@ export const Faq = () => {
                     className="underline"
                     href={`tel:${helpDeskContact.phone}`}
                     onClick={() => sendGAEvent("support_contact_phone")}
+                    aria-label="Call the OneMAC Helpdesk"
                   >
                     {helpDeskContact.phone}
                   </a>
@@ -135,6 +136,7 @@ export const Faq = () => {
                     className="underline"
                     href={`mailto:${helpDeskContact.email}`}
                     onClick={() => sendGAEvent("support_contact_email")}
+                    aria-label="Email the OneMAC Helpdesk"
                   >
                     {helpDeskContact.email}
                   </a>

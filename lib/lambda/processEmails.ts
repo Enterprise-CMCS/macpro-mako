@@ -15,7 +15,7 @@ import {
   opensearch,
   SEATOOL_STATUS,
 } from "shared-types";
-import { decodeBase64WithUtf8, formatActionType, getSecret } from "shared-utils";
+import { decodeBase64WithUtf8, formatActionType, getSecret, isWithinDays } from "shared-utils";
 import { retry } from "shared-utils/retry";
 
 import { sendUserRoleEmails } from "./processUserRoleEmails";
@@ -163,12 +163,22 @@ export async function processRecord(kafkaRecord: KafkaRecord, config: ProcessEma
       ...parsedValue,
     };
     const safeSeatoolRecord = opensearch.main.seatool.transform(safeID).safeParse(seatoolRecord);
+    const isWithinTimeframe = isWithinDays(safeSeatoolRecord.data?.changed_date, 20);
+
+    if (!isWithinTimeframe) {
+      console.log(`Not sending because message is outside of timeframe...`);
+      return;
+    }
+
+    if (config.isDev) {
+      console.log(`Not sending because message is in development env...`);
+      return;
+    }
 
     if (safeSeatoolRecord.data?.seatoolStatus === SEATOOL_STATUS.WITHDRAWN) {
       try {
         const item = await os.getItem(config.osDomain, getOsNamespace("main"), safeID);
-
-        if (!item?.found || !item?._source) {
+        if (!item?.found || !item?._source?.makoChangedDate) {
           console.log(`The package was not found for id: ${id} in mako. Doing nothing.`);
           return;
         }
