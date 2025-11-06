@@ -75,9 +75,11 @@ export async function bulkUpdateData(
       const response = await client.bulk({ refresh: true, body: body });
       if (response.body.errors) {
         // Check for 429 status within response errors
-        const hasRateLimitErrors = response.body.items.some(
-          (item: any) => item.update.status === 429,
-        );
+        const hasRateLimitErrors = response.body.items.some((item: any) => {
+          // Check both update and delete operations for rate limit errors
+          const operation = item.update || item.delete;
+          return operation?.status === 429;
+        });
 
         if (hasRateLimitErrors && retries > 0) {
           console.log(`Rate limit exceeded, retrying in ${delay}ms...`);
