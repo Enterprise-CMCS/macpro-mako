@@ -101,11 +101,12 @@ const getColumns = ({ user, isCms }: OneMacUser): OsTableColumn[] => {
       field: "finalDispositionDate",
       label: "Final Disposition",
       hidden: true,
-      cell: (data) =>
+      transform: (data) =>
         data?.finalDispositionDate
           ? formatDateToUTC(data.finalDispositionDate, "MM/dd/yyyy")
           : BLANK_VALUE,
-      transform: (data) => data.state ?? BLANK_VALUE,
+
+      cell: renderCellDate("finalDispositionDate"),
     },
     {
       field: "makoChangedDate",
