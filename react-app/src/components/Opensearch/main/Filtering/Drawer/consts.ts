@@ -81,7 +81,7 @@ export const DATE_INITIALSUBMISSION: DrawerFilterableGroup = {
 
 export const DATE_FINALDISPOSITION: DrawerFilterableGroup = {
   label: "Final Disposition",
-  field: "finalDispositionDate.keyword",
+  field: "finalDispositionDate",
   component: "dateRange",
   prefix: "must",
   type: "range",
@@ -96,6 +96,15 @@ export const DATE_LATESTPACKAGEACTIVITY: DrawerFilterableGroup = {
   type: "range",
   value: { gte: undefined, lte: undefined },
 };
+
+// export const DATE_RAIREQUESTED: DrawerFilterableGroup = {
+//   label: "Formal RAI Requested",
+//   field: "raiRequestedDate",
+//   component: "dateRange",
+//   prefix: "must",
+//   type: "range",
+//   value: { gte: undefined, lte: undefined },
+// };
 
 export const DATE_RAIRECEIVED: DrawerFilterableGroup = {
   label: "Formal RAI Response",
