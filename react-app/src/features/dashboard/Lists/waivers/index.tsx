@@ -108,7 +108,7 @@ const getColumns = ({ isCms, user }: OneMacUser): OsTableColumn[] => {
           ? formatDateToUTC(data.finalDispositionDate, "MM/dd/yyyy")
           : BLANK_VALUE,
 
-      cell: renderCellDate("finalDispositionDate"),
+      cell: ({ finalDispositionDate }) => finalDispositionDate ?? BLANK_VALUE,
     },
     {
       field: "makoChangedDate",
@@ -125,7 +125,7 @@ const getColumns = ({ isCms, user }: OneMacUser): OsTableColumn[] => {
       hidden: true,
       transform: (data) =>
         data?.raiRequestedDate ? formatDateToUTC(data.raiRequestedDate, "MM/dd/yyyy") : BLANK_VALUE,
-      cell: renderCellDate("raiRequestedDate"),
+      cell: ({ raiRequestedDate }) => raiRequestedDate ?? BLANK_VALUE,
     },
     {
       field: "raiReceivedDate",
