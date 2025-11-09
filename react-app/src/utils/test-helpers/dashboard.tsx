@@ -289,7 +289,7 @@ export const PENDING_RAI_REQUEST_ITEM_EXPORT = {
   "Submitted By": PENDING_RAI_REQUEST_ITEM._source.submitterName,
   "CPOC Name": PENDING_RAI_REQUEST_ITEM._source.leadAnalystName,
   "Final Disposition": "-- --",
-  "Formal RAI Requested": "02/29/2024",
+  "Formal RAI Requested": "03/01/2024",
 };
 
 export const PENDING_RAI_RECEIVED_ITEM = {
@@ -314,8 +314,8 @@ export const PENDING_RAI_RECEIVED_ITEM_EXPORT = {
   State: PENDING_RAI_RECEIVED_ITEM._source.state,
   "Submitted By": PENDING_RAI_RECEIVED_ITEM._source.submitterName,
   "CPOC Name": PENDING_RAI_RECEIVED_ITEM._source.leadAnalystName,
-  // "Final Disposition": "-- --",
-  // "Formal RAI Requested": "02/29/2024",
+  "Final Disposition": "-- --",
+  "Formal RAI Requested": "03/01/2024",
 };
 
 export const RAI_WITHDRAW_ENABLED_ITEM = {
@@ -341,8 +341,8 @@ export const RAI_WITHDRAW_ENABLED_ITEM_EXPORT = {
   State: RAI_WITHDRAW_ENABLED_ITEM._source.state,
   "Submitted By": RAI_WITHDRAW_ENABLED_ITEM._source.submitterName,
   "CPOC Name": RAI_WITHDRAW_ENABLED_ITEM._source.leadAnalystName,
-  // "Final Disposition": "-- --",
-  // "Formal RAI Requested": "02/29/2024",
+  "Final Disposition": "-- --",
+  "Formal RAI Requested": "03/01/2024",
 };
 
 export const RAI_WITHDRAW_DISABLED_ITEM = {
@@ -368,8 +368,8 @@ export const RAI_WITHDRAW_DISABLED_ITEM_EXPORT = {
   State: RAI_WITHDRAW_DISABLED_ITEM._source.state,
   "Submitted By": RAI_WITHDRAW_DISABLED_ITEM._source.submitterName,
   "CPOC Name": RAI_WITHDRAW_DISABLED_ITEM._source.leadAnalystName,
-  // "Final Disposition": "-- --",
-  // "Formal RAI Requested": "02/29/2024",
+  "Final Disposition": "-- --",
+  "Formal RAI Requested": "03/01/2024",
 };
 
 export const APPROVED_ITEM = {
