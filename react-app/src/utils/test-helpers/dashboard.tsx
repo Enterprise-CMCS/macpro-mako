@@ -393,7 +393,7 @@ export const APPROVED_ITEM_EXPORT = {
   State: APPROVED_ITEM._source.state,
   "Submitted By": APPROVED_ITEM._source.submitterName,
   "CPOC Name": APPROVED_ITEM._source.leadAnalystName,
-  "Final Disposition": "04/30/2024",
+  "Final Disposition": "05/01/2024",
   "Formal RAI Requested": "-- --",
 };
 
