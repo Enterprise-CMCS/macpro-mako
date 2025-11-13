@@ -1,4 +1,4 @@
-import { afterAll, beforeAll, describe, expect, it, vi } from "vitest";
+import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 
 import {
   formatDate,
@@ -90,18 +90,18 @@ describe("date-helper", () => {
   describe("isWithinDays", () => {
     const fixedNow = new Date("2025-10-30T12:00:00Z");
 
-    beforeAll(() => {
+    beforeEach(() => {
       vi.useFakeTimers();
       vi.setSystemTime(fixedNow);
     });
 
-    afterAll(() => {
+    afterEach(() => {
       vi.useRealTimers();
     });
 
     it("returns false for null/undefined", () => {
       expect(isWithinDays(null, 20)).toBe(false);
-      expect(isWithinDays(undefined, 20)).toBe(false);
+      expect(isWithinDays(undefined as any, 20)).toBe(false);
     });
 
     it("returns true for today", () => {
