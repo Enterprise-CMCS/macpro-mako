@@ -91,13 +91,11 @@ describe("date-helper", () => {
     const fixedNow = new Date("2025-10-30T12:00:00Z");
 
     beforeAll(() => {
-      // Freeze system time to a known instant
       vi.useFakeTimers();
       vi.setSystemTime(fixedNow);
     });
 
     afterAll(() => {
-      // Restore real timers after the suite
       vi.useRealTimers();
     });
 
@@ -107,7 +105,6 @@ describe("date-helper", () => {
     });
 
     it("returns true for today", () => {
-      // Since the clock is frozen, this is “now”
       expect(isWithinDays(fixedNow.toISOString(), 20)).toBe(true);
     });
 
@@ -124,7 +121,6 @@ describe("date-helper", () => {
     });
 
     it("returns false for a future date", () => {
-      // Base this off fixedNow so it’s deterministic
       const future = new Date(fixedNow);
       future.setDate(future.getDate() + 5);
       expect(isWithinDays(future.toISOString(), 20)).toBe(false);
