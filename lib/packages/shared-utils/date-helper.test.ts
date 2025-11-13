@@ -1,4 +1,4 @@
-import { describe, expect, it } from "vitest";
+import { afterAll, beforeAll, describe, expect, it, vi } from "vitest";
 
 import {
   formatDate,
@@ -89,12 +89,25 @@ describe("date-helper", () => {
 
   describe("isWithinDays", () => {
     const fixedNow = new Date("2025-10-30T12:00:00Z");
+
+    beforeAll(() => {
+      // Freeze system time to a known instant
+      vi.useFakeTimers();
+      vi.setSystemTime(fixedNow);
+    });
+
+    afterAll(() => {
+      // Restore real timers after the suite
+      vi.useRealTimers();
+    });
+
     it("returns false for null/undefined", () => {
       expect(isWithinDays(null, 20)).toBe(false);
       expect(isWithinDays(undefined, 20)).toBe(false);
     });
 
     it("returns true for today", () => {
+      // Since the clock is frozen, this is “now”
       expect(isWithinDays(fixedNow.toISOString(), 20)).toBe(true);
     });
 
@@ -111,7 +124,8 @@ describe("date-helper", () => {
     });
 
     it("returns false for a future date", () => {
-      const future = new Date();
+      // Base this off fixedNow so it’s deterministic
+      const future = new Date(fixedNow);
       future.setDate(future.getDate() + 5);
       expect(isWithinDays(future.toISOString(), 20)).toBe(false);
     });
