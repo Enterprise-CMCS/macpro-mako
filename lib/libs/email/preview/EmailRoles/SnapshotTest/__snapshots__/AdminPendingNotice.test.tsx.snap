@@ -3,14 +3,14 @@
 exports[`Admin Pending Notice Email Snapshot Test > renders a AppkCMSEmail Preview Template 1`] = `
 <DocumentFragment>
   <meta
-    content="text/html; charset=UTF-8"
-    http-equiv="Content-Type"
+    content=text/html; charset=UTF-8
+    http-equiv=Content-Type
   />
   <meta
-    name="x-apple-disable-message-reformatting"
+    name=x-apple-disable-message-reformatting
   />
   <div
-    style="display: none; overflow: hidden; line-height: 1px; opacity: 0; max-height: 0; max-width: 0;"
+    style=display: none; overflow: hidden; line-height: 1px; opacity: 0; max-height: 0; max-width: 0;
   >
     There is a new OneMAC State System Admin access request  for Ohio 
     <div>
@@ -18,42 +18,42 @@ exports[`Admin Pending Notice Email Snapshot Test > renders a AppkCMSEmail Previ
     </div>
   </div>
   <table
-    align="center"
-    border="0"
-    cellpadding="0"
-    cellspacing="0"
-    role="presentation"
-    style="max-width: 37.5em; background-color: rgb(245, 245, 245);"
-    width="100%"
+    align=center
+    border=0
+    cellpadding=0
+    cellspacing=0
+    role=presentation
+    style=max-width: 37.5em; background-color: #F5F5F5;
+    width=100%
   >
     <tbody>
       <tr
-        style="width: 100%;"
+        style=width: 100%;
       >
         <td>
           <table
-            align="center"
-            border="0"
-            cellpadding="0"
-            cellspacing="0"
-            role="presentation"
-            style="background-color: rgb(0, 113, 189); padding: 16px;"
-            width="100%"
+            align=center
+            border=0
+            cellpadding=0
+            cellspacing=0
+            role=presentation
+            style=background-color: #0071BD; padding: 16px;
+            width=100%
           >
             <tbody>
               <tr>
                 <td>
                   <a
-                    href="https://mako-dev.cms.gov/"
-                    style="color: rgb(6, 125, 247); text-decoration: none; display: block; max-width: 112px;"
-                    target="_blank"
+                    href=https://mako-dev.cms.gov/
+                    style=color: #067DF7; text-decoration: none; display: block; max-width: 112px;
+                    target=_blank
                   >
                     <img
-                      alt="OneMAC Logo"
-                      height="40"
-                      src="https://mako-dev.cms.gov/onemac-logo.png"
-                      style="max-width: 112px;"
-                      width="112"
+                      alt=OneMAC Logo
+                      height=40
+                      src=https://mako-dev.cms.gov/onemac-logo.png
+                      style=max-width: 112px;
+                      width=112
                     />
                   </a>
                 </td>
@@ -61,10 +61,10 @@ exports[`Admin Pending Notice Email Snapshot Test > renders a AppkCMSEmail Previ
             </tbody>
           </table>
           <div
-            style="margin: 0px 8px 8px 8px; padding: 8px;"
+            style=margin: 0px 8px 8px 8px; padding: 8px;
           >
             <h1
-              style="color: rgb(51, 51, 51); font-size: 20px; font-weight: bold; margin-bottom: 15px;"
+              style=color: #333333; font-size: 20px; font-weight: bold; margin-bottom: 15px;
             />
             <p>
               Hello,
@@ -73,42 +73,42 @@ exports[`Admin Pending Notice Email Snapshot Test > renders a AppkCMSEmail Previ
               There is a new OneMAC State System Admin access request  for Ohio from Amazing Andie waiting for your review. Please log into your User Management Dashboard to see the pending request.
             </p>
             <p
-              style="font-size: 14px; line-height: 1.4; margin: 12px 0px; color: rgb(51, 51, 51);"
+              style=font-size: 14px; line-height: 1.4; margin: 12px 0px; color: #333333;
             >
               Thank you.
             </p>
           </div>
           <table
-            align="center"
-            border="0"
-            cellpadding="0"
-            cellspacing="0"
-            role="presentation"
-            style="font-size: 14px; padding: 0px 0px; font-weight: 300; background-color: rgb(0, 113, 189); color: rgb(255, 255, 255); text-align: center;"
-            width="100%"
+            align=center
+            border=0
+            cellpadding=0
+            cellspacing=0
+            role=presentation
+            style=font-size: 14px; padding: 0px 0px; font-weight: 300; background-color: #0071BD; color: #FFFFFF; text-align: center;
+            width=100%
           >
             <tbody>
               <tr>
                 <td>
                   <table
-                    align="center"
-                    border="0"
-                    cellpadding="0"
-                    cellspacing="0"
-                    role="presentation"
-                    style="font-size: 14px; padding: 0px 0px; font-weight: 300; background-color: rgb(0, 113, 189); color: rgb(255, 255, 255); text-align: center;"
-                    width="100%"
+                    align=center
+                    border=0
+                    cellpadding=0
+                    cellspacing=0
+                    role=presentation
+                    style=font-size: 14px; padding: 0px 0px; font-weight: 300; background-color: #0071BD; color: #FFFFFF; text-align: center;
+                    width=100%
                   >
                     <tbody>
                       <tr>
                         <td>
                           <p
-                            style="font-size: 14px; line-height: 24px; margin: 8px; color: rgb(255, 255, 255);"
+                            style=font-size: 14px; line-height: 24px; margin: 8px; color: #FFFFFF;
                           >
                             U.S. Centers for Medicare & Medicaid Services
                           </p>
                           <p
-                            style="font-size: 14px; line-height: 24px; margin: 8px; color: rgb(255, 255, 255);"
+                            style=font-size: 14px; line-height: 24px; margin: 8px; color: #FFFFFF;
                           >
                             © 2025 | 7500 Security Boulevard, Baltimore, MD 21244
                           </p>

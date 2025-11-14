@@ -2,24 +2,24 @@
 
 exports[`Withdraw Confirmation State Email Snapshot Test > renders a Appk Preview Template 1`] = `
 {
-  "asFragment": [Function],
-  "baseElement": <body>
+  asFragment: [Function],
+  baseElement: <body>
     <div>
       <html
-        dir="ltr"
-        lang="en"
+        dir=ltr
+        lang=en
       >
         <head>
           <meta
-            content="text/html; charset=UTF-8"
-            http-equiv="Content-Type"
+            content=text/html; charset=UTF-8
+            http-equiv=Content-Type
           />
           <meta
-            name="x-apple-disable-message-reformatting"
+            name=x-apple-disable-message-reformatting
           />
         </head>
         <div
-          style="display: none; overflow: hidden; line-height: 1px; opacity: 0; max-height: 0; max-width: 0;"
+          style=display: none; overflow: hidden; line-height: 1px; opacity: 0; max-height: 0; max-width: 0;
         >
           Withdrawal of 1915(c) CO-1234.R21.00
           <div>
@@ -27,45 +27,45 @@ exports[`Withdraw Confirmation State Email Snapshot Test > renders a Appk Previe
           </div>
         </div>
         <body
-          style="background-color: rgb(255, 255, 255); color: rgb(33, 33, 33); font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif; margin: 0px auto; padding: 20px 0px 48px;"
+          style=background-color: #FFFFFF; color: #212121; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif; margin: 0px auto; padding: 20px 0px 48px;
         >
           <table
-            align="center"
-            border="0"
-            cellpadding="0"
-            cellspacing="0"
-            role="presentation"
-            style="max-width: 37.5em; background-color: rgb(245, 245, 245);"
-            width="100%"
+            align=center
+            border=0
+            cellpadding=0
+            cellspacing=0
+            role=presentation
+            style=max-width: 37.5em; background-color: #F5F5F5;
+            width=100%
           >
             <tbody>
               <tr
-                style="width: 100%;"
+                style=width: 100%;
               >
                 <td>
                   <table
-                    align="center"
-                    border="0"
-                    cellpadding="0"
-                    cellspacing="0"
-                    role="presentation"
-                    style="background-color: rgb(0, 113, 189); padding: 16px;"
-                    width="100%"
+                    align=center
+                    border=0
+                    cellpadding=0
+                    cellspacing=0
+                    role=presentation
+                    style=background-color: #0071BD; padding: 16px;
+                    width=100%
                   >
                     <tbody>
                       <tr>
                         <td>
                           <a
-                            href="https://mako-dev.cms.gov/"
-                            style="color: rgb(6, 125, 247); text-decoration: none; display: block; max-width: 112px;"
-                            target="_blank"
+                            href=https://mako-dev.cms.gov/
+                            style=color: #067DF7; text-decoration: none; display: block; max-width: 112px;
+                            target=_blank
                           >
                             <img
-                              alt="OneMAC Logo"
-                              height="40"
-                              src="https://mako-dev.cms.gov/onemac-logo.png"
-                              style="max-width: 112px;"
-                              width="112"
+                              alt=OneMAC Logo
+                              height=40
+                              src=https://mako-dev.cms.gov/onemac-logo.png
+                              style=max-width: 112px;
+                              width=112
                             />
                           </a>
                         </td>
@@ -73,35 +73,35 @@ exports[`Withdraw Confirmation State Email Snapshot Test > renders a Appk Previe
                     </tbody>
                   </table>
                   <div
-                    style="margin: 0px 8px 8px 8px; padding: 8px;"
+                    style=margin: 0px 8px 8px 8px; padding: 8px;
                   >
                     <h1
-                      style="color: rgb(51, 51, 51); font-size: 20px; font-weight: bold; margin-bottom: 15px;"
+                      style=color: #333333; font-size: 20px; font-weight: bold; margin-bottom: 15px;
                     >
                       This email is to confirm Amendment CO-1234.R21.00 was withdrawn by George Harrison. The review of Amendment CO-1234.R21.00 has concluded.
                     </h1>
                     <hr
-                      style="width: 100%; border-top: 1px solid #0071BD; margin: 16px 0px;"
+                      style=width: 100%; border-top: 1px solid #0071BD; margin: 16px 0px;
                     />
                     <table
-                      align="center"
-                      border="0"
-                      cellpadding="0"
-                      cellspacing="0"
-                      role="presentation"
-                      width="100%"
+                      align=center
+                      border=0
+                      cellpadding=0
+                      cellspacing=0
+                      role=presentation
+                      width=100%
                     >
                       <tbody>
                         <tr>
                           <td>
                             <p
-                              style="font-size: 14px; line-height: 24px; margin: 8px 0px 16px 0px;"
+                              style=font-size: 14px; line-height: 24px; margin: 8px 0px 16px 0px;
                             >
                               If you have any questions, please contact 
                               <a
-                                href="mailto:spa@cms.hhs.gov"
-                                style="color: rgb(6, 125, 247); text-decoration: underline;"
-                                target="_blank"
+                                href=mailto:spa@cms.hhs.gov
+                                style=color: #067DF7; text-decoration: underline;
+                                target=_blank
                               >
                                 spa@cms.hhs.gov
                               </a>
@@ -112,42 +112,42 @@ exports[`Withdraw Confirmation State Email Snapshot Test > renders a Appk Previe
                       </tbody>
                     </table>
                     <p
-                      style="font-size: 14px; line-height: 1.4; margin: 12px 0px; color: rgb(51, 51, 51);"
+                      style=font-size: 14px; line-height: 1.4; margin: 12px 0px; color: #333333;
                     >
                       Thank you.
                     </p>
                   </div>
                   <table
-                    align="center"
-                    border="0"
-                    cellpadding="0"
-                    cellspacing="0"
-                    role="presentation"
-                    style="font-size: 14px; padding: 0px 0px; font-weight: 300; background-color: rgb(0, 113, 189); color: rgb(255, 255, 255); text-align: center;"
-                    width="100%"
+                    align=center
+                    border=0
+                    cellpadding=0
+                    cellspacing=0
+                    role=presentation
+                    style=font-size: 14px; padding: 0px 0px; font-weight: 300; background-color: #0071BD; color: #FFFFFF; text-align: center;
+                    width=100%
                   >
                     <tbody>
                       <tr>
                         <td>
                           <table
-                            align="center"
-                            border="0"
-                            cellpadding="0"
-                            cellspacing="0"
-                            role="presentation"
-                            style="font-size: 14px; padding: 0px 0px; font-weight: 300; background-color: rgb(0, 113, 189); color: rgb(255, 255, 255); text-align: center;"
-                            width="100%"
+                            align=center
+                            border=0
+                            cellpadding=0
+                            cellspacing=0
+                            role=presentation
+                            style=font-size: 14px; padding: 0px 0px; font-weight: 300; background-color: #0071BD; color: #FFFFFF; text-align: center;
+                            width=100%
                           >
                             <tbody>
                               <tr>
                                 <td>
                                   <p
-                                    style="font-size: 14px; line-height: 24px; margin: 8px; color: rgb(255, 255, 255);"
+                                    style=font-size: 14px; line-height: 24px; margin: 8px; color: #FFFFFF;
                                   >
                                     U.S. Centers for Medicare & Medicaid Services
                                   </p>
                                   <p
-                                    style="font-size: 14px; line-height: 24px; margin: 8px; color: rgb(255, 255, 255);"
+                                    style=font-size: 14px; line-height: 24px; margin: 8px; color: #FFFFFF;
                                   >
                                     © 
                                     2025
@@ -169,22 +169,22 @@ exports[`Withdraw Confirmation State Email Snapshot Test > renders a Appk Previe
       </html>
     </div>
   </body>,
-  "container": <div>
+  container: <div>
     <html
-      dir="ltr"
-      lang="en"
+      dir=ltr
+      lang=en
     >
       <head>
         <meta
-          content="text/html; charset=UTF-8"
-          http-equiv="Content-Type"
+          content=text/html; charset=UTF-8
+          http-equiv=Content-Type
         />
         <meta
-          name="x-apple-disable-message-reformatting"
+          name=x-apple-disable-message-reformatting
         />
       </head>
       <div
-        style="display: none; overflow: hidden; line-height: 1px; opacity: 0; max-height: 0; max-width: 0;"
+        style=display: none; overflow: hidden; line-height: 1px; opacity: 0; max-height: 0; max-width: 0;
       >
         Withdrawal of 1915(c) CO-1234.R21.00
         <div>
@@ -192,45 +192,45 @@ exports[`Withdraw Confirmation State Email Snapshot Test > renders a Appk Previe
         </div>
       </div>
       <body
-        style="background-color: rgb(255, 255, 255); color: rgb(33, 33, 33); font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif; margin: 0px auto; padding: 20px 0px 48px;"
+        style=background-color: #FFFFFF; color: #212121; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif; margin: 0px auto; padding: 20px 0px 48px;
       >
         <table
-          align="center"
-          border="0"
-          cellpadding="0"
-          cellspacing="0"
-          role="presentation"
-          style="max-width: 37.5em; background-color: rgb(245, 245, 245);"
-          width="100%"
+          align=center
+          border=0
+          cellpadding=0
+          cellspacing=0
+          role=presentation
+          style=max-width: 37.5em; background-color: #F5F5F5;
+          width=100%
         >
           <tbody>
             <tr
-              style="width: 100%;"
+              style=width: 100%;
             >
               <td>
                 <table
-                  align="center"
-                  border="0"
-                  cellpadding="0"
-                  cellspacing="0"
-                  role="presentation"
-                  style="background-color: rgb(0, 113, 189); padding: 16px;"
-                  width="100%"
+                  align=center
+                  border=0
+                  cellpadding=0
+                  cellspacing=0
+                  role=presentation
+                  style=background-color: #0071BD; padding: 16px;
+                  width=100%
                 >
                   <tbody>
                     <tr>
                       <td>
                         <a
-                          href="https://mako-dev.cms.gov/"
-                          style="color: rgb(6, 125, 247); text-decoration: none; display: block; max-width: 112px;"
-                          target="_blank"
+                          href=https://mako-dev.cms.gov/
+                          style=color: #067DF7; text-decoration: none; display: block; max-width: 112px;
+                          target=_blank
                         >
                           <img
-                            alt="OneMAC Logo"
-                            height="40"
-                            src="https://mako-dev.cms.gov/onemac-logo.png"
-                            style="max-width: 112px;"
-                            width="112"
+                            alt=OneMAC Logo
+                            height=40
+                            src=https://mako-dev.cms.gov/onemac-logo.png
+                            style=max-width: 112px;
+                            width=112
                           />
                         </a>
                       </td>
@@ -238,35 +238,35 @@ exports[`Withdraw Confirmation State Email Snapshot Test > renders a Appk Previe
                   </tbody>
                 </table>
                 <div
-                  style="margin: 0px 8px 8px 8px; padding: 8px;"
+                  style=margin: 0px 8px 8px 8px; padding: 8px;
                 >
                   <h1
-                    style="color: rgb(51, 51, 51); font-size: 20px; font-weight: bold; margin-bottom: 15px;"
+                    style=color: #333333; font-size: 20px; font-weight: bold; margin-bottom: 15px;
                   >
                     This email is to confirm Amendment CO-1234.R21.00 was withdrawn by George Harrison. The review of Amendment CO-1234.R21.00 has concluded.
                   </h1>
                   <hr
-                    style="width: 100%; border-top: 1px solid #0071BD; margin: 16px 0px;"
+                    style=width: 100%; border-top: 1px solid #0071BD; margin: 16px 0px;
                   />
                   <table
-                    align="center"
-                    border="0"
-                    cellpadding="0"
-                    cellspacing="0"
-                    role="presentation"
-                    width="100%"
+                    align=center
+                    border=0
+                    cellpadding=0
+                    cellspacing=0
+                    role=presentation
+                    width=100%
                   >
                     <tbody>
                       <tr>
                         <td>
                           <p
-                            style="font-size: 14px; line-height: 24px; margin: 8px 0px 16px 0px;"
+                            style=font-size: 14px; line-height: 24px; margin: 8px 0px 16px 0px;
                           >
                             If you have any questions, please contact 
                             <a
-                              href="mailto:spa@cms.hhs.gov"
-                              style="color: rgb(6, 125, 247); text-decoration: underline;"
-                              target="_blank"
+                              href=mailto:spa@cms.hhs.gov
+                              style=color: #067DF7; text-decoration: underline;
+                              target=_blank
                             >
                               spa@cms.hhs.gov
                             </a>
@@ -277,42 +277,42 @@ exports[`Withdraw Confirmation State Email Snapshot Test > renders a Appk Previe
                     </tbody>
                   </table>
                   <p
-                    style="font-size: 14px; line-height: 1.4; margin: 12px 0px; color: rgb(51, 51, 51);"
+                    style=font-size: 14px; line-height: 1.4; margin: 12px 0px; color: #333333;
                   >
                     Thank you.
                   </p>
                 </div>
                 <table
-                  align="center"
-                  border="0"
-                  cellpadding="0"
-                  cellspacing="0"
-                  role="presentation"
-                  style="font-size: 14px; padding: 0px 0px; font-weight: 300; background-color: rgb(0, 113, 189); color: rgb(255, 255, 255); text-align: center;"
-                  width="100%"
+                  align=center
+                  border=0
+                  cellpadding=0
+                  cellspacing=0
+                  role=presentation
+                  style=font-size: 14px; padding: 0px 0px; font-weight: 300; background-color: #0071BD; color: #FFFFFF; text-align: center;
+                  width=100%
                 >
                   <tbody>
                     <tr>
                       <td>
                         <table
-                          align="center"
-                          border="0"
-                          cellpadding="0"
-                          cellspacing="0"
-                          role="presentation"
-                          style="font-size: 14px; padding: 0px 0px; font-weight: 300; background-color: rgb(0, 113, 189); color: rgb(255, 255, 255); text-align: center;"
-                          width="100%"
+                          align=center
+                          border=0
+                          cellpadding=0
+                          cellspacing=0
+                          role=presentation
+                          style=font-size: 14px; padding: 0px 0px; font-weight: 300; background-color: #0071BD; color: #FFFFFF; text-align: center;
+                          width=100%
                         >
                           <tbody>
                             <tr>
                               <td>
                                 <p
-                                  style="font-size: 14px; line-height: 24px; margin: 8px; color: rgb(255, 255, 255);"
+                                  style=font-size: 14px; line-height: 24px; margin: 8px; color: #FFFFFF;
                                 >
                                   U.S. Centers for Medicare & Medicaid Services
                                 </p>
                                 <p
-                                  style="font-size: 14px; line-height: 24px; margin: 8px; color: rgb(255, 255, 255);"
+                                  style=font-size: 14px; line-height: 24px; margin: 8px; color: #FFFFFF;
                                 >
                                   © 
                                   2025
@@ -333,80 +333,80 @@ exports[`Withdraw Confirmation State Email Snapshot Test > renders a Appk Previe
       </body>
     </html>
   </div>,
-  "debug": [Function],
-  "findAllByAltText": [Function],
-  "findAllByDisplayValue": [Function],
-  "findAllByLabelText": [Function],
-  "findAllByPlaceholderText": [Function],
-  "findAllByRole": [Function],
-  "findAllByTestId": [Function],
-  "findAllByText": [Function],
-  "findAllByTitle": [Function],
-  "findByAltText": [Function],
-  "findByDisplayValue": [Function],
-  "findByLabelText": [Function],
-  "findByPlaceholderText": [Function],
-  "findByRole": [Function],
-  "findByTestId": [Function],
-  "findByText": [Function],
-  "findByTitle": [Function],
-  "getAllByAltText": [Function],
-  "getAllByDisplayValue": [Function],
-  "getAllByLabelText": [Function],
-  "getAllByPlaceholderText": [Function],
-  "getAllByRole": [Function],
-  "getAllByTestId": [Function],
-  "getAllByText": [Function],
-  "getAllByTitle": [Function],
-  "getByAltText": [Function],
-  "getByDisplayValue": [Function],
-  "getByLabelText": [Function],
-  "getByPlaceholderText": [Function],
-  "getByRole": [Function],
-  "getByTestId": [Function],
-  "getByText": [Function],
-  "getByTitle": [Function],
-  "queryAllByAltText": [Function],
-  "queryAllByDisplayValue": [Function],
-  "queryAllByLabelText": [Function],
-  "queryAllByPlaceholderText": [Function],
-  "queryAllByRole": [Function],
-  "queryAllByTestId": [Function],
-  "queryAllByText": [Function],
-  "queryAllByTitle": [Function],
-  "queryByAltText": [Function],
-  "queryByDisplayValue": [Function],
-  "queryByLabelText": [Function],
-  "queryByPlaceholderText": [Function],
-  "queryByRole": [Function],
-  "queryByTestId": [Function],
-  "queryByText": [Function],
-  "queryByTitle": [Function],
-  "rerender": [Function],
-  "unmount": [Function],
+  debug: [Function],
+  findAllByAltText: [Function],
+  findAllByDisplayValue: [Function],
+  findAllByLabelText: [Function],
+  findAllByPlaceholderText: [Function],
+  findAllByRole: [Function],
+  findAllByTestId: [Function],
+  findAllByText: [Function],
+  findAllByTitle: [Function],
+  findByAltText: [Function],
+  findByDisplayValue: [Function],
+  findByLabelText: [Function],
+  findByPlaceholderText: [Function],
+  findByRole: [Function],
+  findByTestId: [Function],
+  findByText: [Function],
+  findByTitle: [Function],
+  getAllByAltText: [Function],
+  getAllByDisplayValue: [Function],
+  getAllByLabelText: [Function],
+  getAllByPlaceholderText: [Function],
+  getAllByRole: [Function],
+  getAllByTestId: [Function],
+  getAllByText: [Function],
+  getAllByTitle: [Function],
+  getByAltText: [Function],
+  getByDisplayValue: [Function],
+  getByLabelText: [Function],
+  getByPlaceholderText: [Function],
+  getByRole: [Function],
+  getByTestId: [Function],
+  getByText: [Function],
+  getByTitle: [Function],
+  queryAllByAltText: [Function],
+  queryAllByDisplayValue: [Function],
+  queryAllByLabelText: [Function],
+  queryAllByPlaceholderText: [Function],
+  queryAllByRole: [Function],
+  queryAllByTestId: [Function],
+  queryAllByText: [Function],
+  queryAllByTitle: [Function],
+  queryByAltText: [Function],
+  queryByDisplayValue: [Function],
+  queryByLabelText: [Function],
+  queryByPlaceholderText: [Function],
+  queryByRole: [Function],
+  queryByTestId: [Function],
+  queryByText: [Function],
+  queryByTitle: [Function],
+  rerender: [Function],
+  unmount: [Function],
 }
 `;
 
 exports[`Withdraw Confirmation State Email Snapshot Test > renders a ChipSPA Preview Template 1`] = `
 {
-  "asFragment": [Function],
-  "baseElement": <body>
+  asFragment: [Function],
+  baseElement: <body>
     <div>
       <html
-        dir="ltr"
-        lang="en"
+        dir=ltr
+        lang=en
       >
         <head>
           <meta
-            content="text/html; charset=UTF-8"
-            http-equiv="Content-Type"
+            content=text/html; charset=UTF-8
+            http-equiv=Content-Type
           />
           <meta
-            name="x-apple-disable-message-reformatting"
+            name=x-apple-disable-message-reformatting
           />
         </head>
         <div
-          style="display: none; overflow: hidden; line-height: 1px; opacity: 0; max-height: 0; max-width: 0;"
+          style=display: none; overflow: hidden; line-height: 1px; opacity: 0; max-height: 0; max-width: 0;
         >
           Withdrawal of 1915(c) CO-1234.R21.00
           <div>
@@ -414,45 +414,45 @@ exports[`Withdraw Confirmation State Email Snapshot Test > renders a ChipSPA Pre
           </div>
         </div>
         <body
-          style="background-color: rgb(255, 255, 255); color: rgb(33, 33, 33); font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif; margin: 0px auto; padding: 20px 0px 48px;"
+          style=background-color: #FFFFFF; color: #212121; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif; margin: 0px auto; padding: 20px 0px 48px;
         >
           <table
-            align="center"
-            border="0"
-            cellpadding="0"
-            cellspacing="0"
-            role="presentation"
-            style="max-width: 37.5em; background-color: rgb(245, 245, 245);"
-            width="100%"
+            align=center
+            border=0
+            cellpadding=0
+            cellspacing=0
+            role=presentation
+            style=max-width: 37.5em; background-color: #F5F5F5;
+            width=100%
           >
             <tbody>
               <tr
-                style="width: 100%;"
+                style=width: 100%;
               >
                 <td>
                   <table
-                    align="center"
-                    border="0"
-                    cellpadding="0"
-                    cellspacing="0"
-                    role="presentation"
-                    style="background-color: rgb(0, 113, 189); padding: 16px;"
-                    width="100%"
+                    align=center
+                    border=0
+                    cellpadding=0
+                    cellspacing=0
+                    role=presentation
+                    style=background-color: #0071BD; padding: 16px;
+                    width=100%
                   >
                     <tbody>
                       <tr>
                         <td>
                           <a
-                            href="https://mako-dev.cms.gov/"
-                            style="color: rgb(6, 125, 247); text-decoration: none; display: block; max-width: 112px;"
-                            target="_blank"
+                            href=https://mako-dev.cms.gov/
+                            style=color: #067DF7; text-decoration: none; display: block; max-width: 112px;
+                            target=_blank
                           >
                             <img
-                              alt="OneMAC Logo"
-                              height="40"
-                              src="https://mako-dev.cms.gov/onemac-logo.png"
-                              style="max-width: 112px;"
-                              width="112"
+                              alt=OneMAC Logo
+                              height=40
+                              src=https://mako-dev.cms.gov/onemac-logo.png
+                              style=max-width: 112px;
+                              width=112
                             />
                           </a>
                         </td>
@@ -460,35 +460,35 @@ exports[`Withdraw Confirmation State Email Snapshot Test > renders a ChipSPA Pre
                     </tbody>
                   </table>
                   <div
-                    style="margin: 0px 8px 8px 8px; padding: 8px;"
+                    style=margin: 0px 8px 8px 8px; padding: 8px;
                   >
                     <h1
-                      style="color: rgb(51, 51, 51); font-size: 20px; font-weight: bold; margin-bottom: 15px;"
+                      style=color: #333333; font-size: 20px; font-weight: bold; margin-bottom: 15px;
                     >
                       This email is to confirm Amendment CO-1234.R21.00 was withdrawn by George Harrison. The review of Amendment CO-1234.R21.00 has concluded.
                     </h1>
                     <hr
-                      style="width: 100%; border-top: 1px solid #0071BD; margin: 16px 0px;"
+                      style=width: 100%; border-top: 1px solid #0071BD; margin: 16px 0px;
                     />
                     <table
-                      align="center"
-                      border="0"
-                      cellpadding="0"
-                      cellspacing="0"
-                      role="presentation"
-                      width="100%"
+                      align=center
+                      border=0
+                      cellpadding=0
+                      cellspacing=0
+                      role=presentation
+                      width=100%
                     >
                       <tbody>
                         <tr>
                           <td>
                             <p
-                              style="font-size: 14px; line-height: 24px; margin: 8px 0px 16px 0px;"
+                              style=font-size: 14px; line-height: 24px; margin: 8px 0px 16px 0px;
                             >
                               If you have any questions, please contact 
                               <a
-                                href="mailto:spa@cms.hhs.gov"
-                                style="color: rgb(6, 125, 247); text-decoration: underline;"
-                                target="_blank"
+                                href=mailto:spa@cms.hhs.gov
+                                style=color: #067DF7; text-decoration: underline;
+                                target=_blank
                               >
                                 spa@cms.hhs.gov
                               </a>
@@ -499,42 +499,42 @@ exports[`Withdraw Confirmation State Email Snapshot Test > renders a ChipSPA Pre
                       </tbody>
                     </table>
                     <p
-                      style="font-size: 14px; line-height: 1.4; margin: 12px 0px; color: rgb(51, 51, 51);"
+                      style=font-size: 14px; line-height: 1.4; margin: 12px 0px; color: #333333;
                     >
                       Thank you.
                     </p>
                   </div>
                   <table
-                    align="center"
-                    border="0"
-                    cellpadding="0"
-                    cellspacing="0"
-                    role="presentation"
-                    style="font-size: 14px; padding: 0px 0px; font-weight: 300; background-color: rgb(0, 113, 189); color: rgb(255, 255, 255); text-align: center;"
-                    width="100%"
+                    align=center
+                    border=0
+                    cellpadding=0
+                    cellspacing=0
+                    role=presentation
+                    style=font-size: 14px; padding: 0px 0px; font-weight: 300; background-color: #0071BD; color: #FFFFFF; text-align: center;
+                    width=100%
                   >
                     <tbody>
                       <tr>
                         <td>
                           <table
-                            align="center"
-                            border="0"
-                            cellpadding="0"
-                            cellspacing="0"
-                            role="presentation"
-                            style="font-size: 14px; padding: 0px 0px; font-weight: 300; background-color: rgb(0, 113, 189); color: rgb(255, 255, 255); text-align: center;"
-                            width="100%"
+                            align=center
+                            border=0
+                            cellpadding=0
+                            cellspacing=0
+                            role=presentation
+                            style=font-size: 14px; padding: 0px 0px; font-weight: 300; background-color: #0071BD; color: #FFFFFF; text-align: center;
+                            width=100%
                           >
                             <tbody>
                               <tr>
                                 <td>
                                   <p
-                                    style="font-size: 14px; line-height: 24px; margin: 8px; color: rgb(255, 255, 255);"
+                                    style=font-size: 14px; line-height: 24px; margin: 8px; color: #FFFFFF;
                                   >
                                     U.S. Centers for Medicare & Medicaid Services
                                   </p>
                                   <p
-                                    style="font-size: 14px; line-height: 24px; margin: 8px; color: rgb(255, 255, 255);"
+                                    style=font-size: 14px; line-height: 24px; margin: 8px; color: #FFFFFF;
                                   >
                                     © 
                                     2025
@@ -557,20 +557,20 @@ exports[`Withdraw Confirmation State Email Snapshot Test > renders a ChipSPA Pre
     </div>
     <div>
       <html
-        dir="ltr"
-        lang="en"
+        dir=ltr
+        lang=en
       >
         <head>
           <meta
-            content="text/html; charset=UTF-8"
-            http-equiv="Content-Type"
+            content=text/html; charset=UTF-8
+            http-equiv=Content-Type
           />
           <meta
-            name="x-apple-disable-message-reformatting"
+            name=x-apple-disable-message-reformatting
           />
         </head>
         <div
-          style="display: none; overflow: hidden; line-height: 1px; opacity: 0; max-height: 0; max-width: 0;"
+          style=display: none; overflow: hidden; line-height: 1px; opacity: 0; max-height: 0; max-width: 0;
         >
           CHIP SPA Package CO-1234.R21.00 Withdrawal Confirmation
           <div>
@@ -578,45 +578,45 @@ exports[`Withdraw Confirmation State Email Snapshot Test > renders a ChipSPA Pre
           </div>
         </div>
         <body
-          style="background-color: rgb(255, 255, 255); color: rgb(33, 33, 33); font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif; margin: 0px auto; padding: 20px 0px 48px;"
+          style=background-color: #FFFFFF; color: #212121; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif; margin: 0px auto; padding: 20px 0px 48px;
         >
           <table
-            align="center"
-            border="0"
-            cellpadding="0"
-            cellspacing="0"
-            role="presentation"
-            style="max-width: 37.5em; background-color: rgb(245, 245, 245);"
-            width="100%"
+            align=center
+            border=0
+            cellpadding=0
+            cellspacing=0
+            role=presentation
+            style=max-width: 37.5em; background-color: #F5F5F5;
+            width=100%
           >
             <tbody>
               <tr
-                style="width: 100%;"
+                style=width: 100%;
               >
                 <td>
                   <table
-                    align="center"
-                    border="0"
-                    cellpadding="0"
-                    cellspacing="0"
-                    role="presentation"
-                    style="background-color: rgb(0, 113, 189); padding: 16px;"
-                    width="100%"
+                    align=center
+                    border=0
+                    cellpadding=0
+                    cellspacing=0
+                    role=presentation
+                    style=background-color: #0071BD; padding: 16px;
+                    width=100%
                   >
                     <tbody>
                       <tr>
                         <td>
                           <a
-                            href="https://mako-dev.cms.gov/"
-                            style="color: rgb(6, 125, 247); text-decoration: none; display: block; max-width: 112px;"
-                            target="_blank"
+                            href=https://mako-dev.cms.gov/
+                            style=color: #067DF7; text-decoration: none; display: block; max-width: 112px;
+                            target=_blank
                           >
                             <img
-                              alt="OneMAC Logo"
-                              height="40"
-                              src="https://mako-dev.cms.gov/onemac-logo.png"
-                              style="max-width: 112px;"
-                              width="112"
+                              alt=OneMAC Logo
+                              height=40
+                              src=https://mako-dev.cms.gov/onemac-logo.png
+                              style=max-width: 112px;
+                              width=112
                             />
                           </a>
                         </td>
@@ -624,35 +624,35 @@ exports[`Withdraw Confirmation State Email Snapshot Test > renders a ChipSPA Pre
                     </tbody>
                   </table>
                   <div
-                    style="margin: 0px 8px 8px 8px; padding: 8px;"
+                    style=margin: 0px 8px 8px 8px; padding: 8px;
                   >
                     <h1
-                      style="color: rgb(51, 51, 51); font-size: 20px; font-weight: bold; margin-bottom: 15px;"
+                      style=color: #333333; font-size: 20px; font-weight: bold; margin-bottom: 15px;
                     >
                       This email is to confirm CHIP SPA CO-1234.R21.00 was withdrawn by George Harrison. The review of CHIP SPA CO-1234.R21.00 has concluded.
                     </h1>
                     <hr
-                      style="width: 100%; border-top: 1px solid #0071BD; margin: 16px 0px;"
+                      style=width: 100%; border-top: 1px solid #0071BD; margin: 16px 0px;
                     />
                     <table
-                      align="center"
-                      border="0"
-                      cellpadding="0"
-                      cellspacing="0"
-                      role="presentation"
-                      width="100%"
+                      align=center
+                      border=0
+                      cellpadding=0
+                      cellspacing=0
+                      role=presentation
+                      width=100%
                     >
                       <tbody>
                         <tr>
                           <td>
                             <p
-                              style="font-size: 14px; line-height: 24px; margin: 8px 0px 16px 0px;"
+                              style=font-size: 14px; line-height: 24px; margin: 8px 0px 16px 0px;
                             >
                               If you have any question, please contact 
                               <a
-                                href="mailto:CHIPSPASubmissionMailBox@cms.hhs.gov"
-                                style="color: rgb(6, 125, 247); text-decoration: underline;"
-                                target="_blank"
+                                href=mailto:CHIPSPASubmissionMailBox@cms.hhs.gov
+                                style=color: #067DF7; text-decoration: underline;
+                                target=_blank
                               >
                                 CHIPSPASubmissionMailBox@cms.hhs.gov
                               </a>
@@ -663,42 +663,42 @@ exports[`Withdraw Confirmation State Email Snapshot Test > renders a ChipSPA Pre
                       </tbody>
                     </table>
                     <p
-                      style="font-size: 14px; line-height: 1.4; margin: 12px 0px; color: rgb(51, 51, 51);"
+                      style=font-size: 14px; line-height: 1.4; margin: 12px 0px; color: #333333;
                     >
                       Thank you.
                     </p>
                   </div>
                   <table
-                    align="center"
-                    border="0"
-                    cellpadding="0"
-                    cellspacing="0"
-                    role="presentation"
-                    style="font-size: 14px; padding: 0px 0px; font-weight: 300; background-color: rgb(0, 113, 189); color: rgb(255, 255, 255); text-align: center;"
-                    width="100%"
+                    align=center
+                    border=0
+                    cellpadding=0
+                    cellspacing=0
+                    role=presentation
+                    style=font-size: 14px; padding: 0px 0px; font-weight: 300; background-color: #0071BD; color: #FFFFFF; text-align: center;
+                    width=100%
                   >
                     <tbody>
                       <tr>
                         <td>
                           <table
-                            align="center"
-                            border="0"
-                            cellpadding="0"
-                            cellspacing="0"
-                            role="presentation"
-                            style="font-size: 14px; padding: 0px 0px; font-weight: 300; background-color: rgb(0, 113, 189); color: rgb(255, 255, 255); text-align: center;"
-                            width="100%"
+                            align=center
+                            border=0
+                            cellpadding=0
+                            cellspacing=0
+                            role=presentation
+                            style=font-size: 14px; padding: 0px 0px; font-weight: 300; background-color: #0071BD; color: #FFFFFF; text-align: center;
+                            width=100%
                           >
                             <tbody>
                               <tr>
                                 <td>
                                   <p
-                                    style="font-size: 14px; line-height: 24px; margin: 8px; color: rgb(255, 255, 255);"
+                                    style=font-size: 14px; line-height: 24px; margin: 8px; color: #FFFFFF;
                                   >
                                     U.S. Centers for Medicare & Medicaid Services
                                   </p>
                                   <p
-                                    style="font-size: 14px; line-height: 24px; margin: 8px; color: rgb(255, 255, 255);"
+                                    style=font-size: 14px; line-height: 24px; margin: 8px; color: #FFFFFF;
                                   >
                                     © 
                                     2025
@@ -720,22 +720,22 @@ exports[`Withdraw Confirmation State Email Snapshot Test > renders a ChipSPA Pre
       </html>
     </div>
   </body>,
-  "container": <div>
+  container: <div>
     <html
-      dir="ltr"
-      lang="en"
+      dir=ltr
+      lang=en
     >
       <head>
         <meta
-          content="text/html; charset=UTF-8"
-          http-equiv="Content-Type"
+          content=text/html; charset=UTF-8
+          http-equiv=Content-Type
         />
         <meta
-          name="x-apple-disable-message-reformatting"
+          name=x-apple-disable-message-reformatting
         />
       </head>
       <div
-        style="display: none; overflow: hidden; line-height: 1px; opacity: 0; max-height: 0; max-width: 0;"
+        style=display: none; overflow: hidden; line-height: 1px; opacity: 0; max-height: 0; max-width: 0;
       >
         CHIP SPA Package CO-1234.R21.00 Withdrawal Confirmation
         <div>
@@ -743,45 +743,45 @@ exports[`Withdraw Confirmation State Email Snapshot Test > renders a ChipSPA Pre
         </div>
       </div>
       <body
-        style="background-color: rgb(255, 255, 255); color: rgb(33, 33, 33); font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif; margin: 0px auto; padding: 20px 0px 48px;"
+        style=background-color: #FFFFFF; color: #212121; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif; margin: 0px auto; padding: 20px 0px 48px;
       >
         <table
-          align="center"
-          border="0"
-          cellpadding="0"
-          cellspacing="0"
-          role="presentation"
-          style="max-width: 37.5em; background-color: rgb(245, 245, 245);"
-          width="100%"
+          align=center
+          border=0
+          cellpadding=0
+          cellspacing=0
+          role=presentation
+          style=max-width: 37.5em; background-color: #F5F5F5;
+          width=100%
         >
           <tbody>
             <tr
-              style="width: 100%;"
+              style=width: 100%;
             >
               <td>
                 <table
-                  align="center"
-                  border="0"
-                  cellpadding="0"
-                  cellspacing="0"
-                  role="presentation"
-                  style="background-color: rgb(0, 113, 189); padding: 16px;"
-                  width="100%"
+                  align=center
+                  border=0
+                  cellpadding=0
+                  cellspacing=0
+                  role=presentation
+                  style=background-color: #0071BD; padding: 16px;
+                  width=100%
                 >
                   <tbody>
                     <tr>
                       <td>
                         <a
-                          href="https://mako-dev.cms.gov/"
-                          style="color: rgb(6, 125, 247); text-decoration: none; display: block; max-width: 112px;"
-                          target="_blank"
+                          href=https://mako-dev.cms.gov/
+                          style=color: #067DF7; text-decoration: none; display: block; max-width: 112px;
+                          target=_blank
                         >
                           <img
-                            alt="OneMAC Logo"
-                            height="40"
-                            src="https://mako-dev.cms.gov/onemac-logo.png"
-                            style="max-width: 112px;"
-                            width="112"
+                            alt=OneMAC Logo
+                            height=40
+                            src=https://mako-dev.cms.gov/onemac-logo.png
+                            style=max-width: 112px;
+                            width=112
                           />
                         </a>
                       </td>
@@ -789,35 +789,35 @@ exports[`Withdraw Confirmation State Email Snapshot Test > renders a ChipSPA Pre
                   </tbody>
                 </table>
                 <div
-                  style="margin: 0px 8px 8px 8px; padding: 8px;"
+                  style=margin: 0px 8px 8px 8px; padding: 8px;
                 >
                   <h1
-                    style="color: rgb(51, 51, 51); font-size: 20px; font-weight: bold; margin-bottom: 15px;"
+                    style=color: #333333; font-size: 20px; font-weight: bold; margin-bottom: 15px;
                   >
                     This email is to confirm CHIP SPA CO-1234.R21.00 was withdrawn by George Harrison. The review of CHIP SPA CO-1234.R21.00 has concluded.
                   </h1>
                   <hr
-                    style="width: 100%; border-top: 1px solid #0071BD; margin: 16px 0px;"
+                    style=width: 100%; border-top: 1px solid #0071BD; margin: 16px 0px;
                   />
                   <table
-                    align="center"
-                    border="0"
-                    cellpadding="0"
-                    cellspacing="0"
-                    role="presentation"
-                    width="100%"
+                    align=center
+                    border=0
+                    cellpadding=0
+                    cellspacing=0
+                    role=presentation
+                    width=100%
                   >
                     <tbody>
                       <tr>
                         <td>
                           <p
-                            style="font-size: 14px; line-height: 24px; margin: 8px 0px 16px 0px;"
+                            style=font-size: 14px; line-height: 24px; margin: 8px 0px 16px 0px;
                           >
                             If you have any question, please contact 
                             <a
-                              href="mailto:CHIPSPASubmissionMailBox@cms.hhs.gov"
-                              style="color: rgb(6, 125, 247); text-decoration: underline;"
-                              target="_blank"
+                              href=mailto:CHIPSPASubmissionMailBox@cms.hhs.gov
+                              style=color: #067DF7; text-decoration: underline;
+                              target=_blank
                             >
                               CHIPSPASubmissionMailBox@cms.hhs.gov
                             </a>
@@ -828,42 +828,42 @@ exports[`Withdraw Confirmation State Email Snapshot Test > renders a ChipSPA Pre
                     </tbody>
                   </table>
                   <p
-                    style="font-size: 14px; line-height: 1.4; margin: 12px 0px; color: rgb(51, 51, 51);"
+                    style=font-size: 14px; line-height: 1.4; margin: 12px 0px; color: #333333;
                   >
                     Thank you.
                   </p>
                 </div>
                 <table
-                  align="center"
-                  border="0"
-                  cellpadding="0"
-                  cellspacing="0"
-                  role="presentation"
-                  style="font-size: 14px; padding: 0px 0px; font-weight: 300; background-color: rgb(0, 113, 189); color: rgb(255, 255, 255); text-align: center;"
-                  width="100%"
+                  align=center
+                  border=0
+                  cellpadding=0
+                  cellspacing=0
+                  role=presentation
+                  style=font-size: 14px; padding: 0px 0px; font-weight: 300; background-color: #0071BD; color: #FFFFFF; text-align: center;
+                  width=100%
                 >
                   <tbody>
                     <tr>
                       <td>
                         <table
-                          align="center"
-                          border="0"
-                          cellpadding="0"
-                          cellspacing="0"
-                          role="presentation"
-                          style="font-size: 14px; padding: 0px 0px; font-weight: 300; background-color: rgb(0, 113, 189); color: rgb(255, 255, 255); text-align: center;"
-                          width="100%"
+                          align=center
+                          border=0
+                          cellpadding=0
+                          cellspacing=0
+                          role=presentation
+                          style=font-size: 14px; padding: 0px 0px; font-weight: 300; background-color: #0071BD; color: #FFFFFF; text-align: center;
+                          width=100%
                         >
                           <tbody>
                             <tr>
                               <td>
                                 <p
-                                  style="font-size: 14px; line-height: 24px; margin: 8px; color: rgb(255, 255, 255);"
+                                  style=font-size: 14px; line-height: 24px; margin: 8px; color: #FFFFFF;
                                 >
                                   U.S. Centers for Medicare & Medicaid Services
                                 </p>
                                 <p
-                                  style="font-size: 14px; line-height: 24px; margin: 8px; color: rgb(255, 255, 255);"
+                                  style=font-size: 14px; line-height: 24px; margin: 8px; color: #FFFFFF;
                                 >
                                   © 
                                   2025
@@ -884,80 +884,80 @@ exports[`Withdraw Confirmation State Email Snapshot Test > renders a ChipSPA Pre
       </body>
     </html>
   </div>,
-  "debug": [Function],
-  "findAllByAltText": [Function],
-  "findAllByDisplayValue": [Function],
-  "findAllByLabelText": [Function],
-  "findAllByPlaceholderText": [Function],
-  "findAllByRole": [Function],
-  "findAllByTestId": [Function],
-  "findAllByText": [Function],
-  "findAllByTitle": [Function],
-  "findByAltText": [Function],
-  "findByDisplayValue": [Function],
-  "findByLabelText": [Function],
-  "findByPlaceholderText": [Function],
-  "findByRole": [Function],
-  "findByTestId": [Function],
-  "findByText": [Function],
-  "findByTitle": [Function],
-  "getAllByAltText": [Function],
-  "getAllByDisplayValue": [Function],
-  "getAllByLabelText": [Function],
-  "getAllByPlaceholderText": [Function],
-  "getAllByRole": [Function],
-  "getAllByTestId": [Function],
-  "getAllByText": [Function],
-  "getAllByTitle": [Function],
-  "getByAltText": [Function],
-  "getByDisplayValue": [Function],
-  "getByLabelText": [Function],
-  "getByPlaceholderText": [Function],
-  "getByRole": [Function],
-  "getByTestId": [Function],
-  "getByText": [Function],
-  "getByTitle": [Function],
-  "queryAllByAltText": [Function],
-  "queryAllByDisplayValue": [Function],
-  "queryAllByLabelText": [Function],
-  "queryAllByPlaceholderText": [Function],
-  "queryAllByRole": [Function],
-  "queryAllByTestId": [Function],
-  "queryAllByText": [Function],
-  "queryAllByTitle": [Function],
-  "queryByAltText": [Function],
-  "queryByDisplayValue": [Function],
-  "queryByLabelText": [Function],
-  "queryByPlaceholderText": [Function],
-  "queryByRole": [Function],
-  "queryByTestId": [Function],
-  "queryByText": [Function],
-  "queryByTitle": [Function],
-  "rerender": [Function],
-  "unmount": [Function],
+  debug: [Function],
+  findAllByAltText: [Function],
+  findAllByDisplayValue: [Function],
+  findAllByLabelText: [Function],
+  findAllByPlaceholderText: [Function],
+  findAllByRole: [Function],
+  findAllByTestId: [Function],
+  findAllByText: [Function],
+  findAllByTitle: [Function],
+  findByAltText: [Function],
+  findByDisplayValue: [Function],
+  findByLabelText: [Function],
+  findByPlaceholderText: [Function],
+  findByRole: [Function],
+  findByTestId: [Function],
+  findByText: [Function],
+  findByTitle: [Function],
+  getAllByAltText: [Function],
+  getAllByDisplayValue: [Function],
+  getAllByLabelText: [Function],
+  getAllByPlaceholderText: [Function],
+  getAllByRole: [Function],
+  getAllByTestId: [Function],
+  getAllByText: [Function],
+  getAllByTitle: [Function],
+  getByAltText: [Function],
+  getByDisplayValue: [Function],
+  getByLabelText: [Function],
+  getByPlaceholderText: [Function],
+  getByRole: [Function],
+  getByTestId: [Function],
+  getByText: [Function],
+  getByTitle: [Function],
+  queryAllByAltText: [Function],
+  queryAllByDisplayValue: [Function],
+  queryAllByLabelText: [Function],
+  queryAllByPlaceholderText: [Function],
+  queryAllByRole: [Function],
+  queryAllByTestId: [Function],
+  queryAllByText: [Function],
+  queryAllByTitle: [Function],
+  queryByAltText: [Function],
+  queryByDisplayValue: [Function],
+  queryByLabelText: [Function],
+  queryByPlaceholderText: [Function],
+  queryByRole: [Function],
+  queryByTestId: [Function],
+  queryByText: [Function],
+  queryByTitle: [Function],
+  rerender: [Function],
+  unmount: [Function],
 }
 `;
 
 exports[`Withdraw Confirmation State Email Snapshot Test > renders a Medicaid_SPA Preview Template 1`] = `
 {
-  "asFragment": [Function],
-  "baseElement": <body>
+  asFragment: [Function],
+  baseElement: <body>
     <div>
       <html
-        dir="ltr"
-        lang="en"
+        dir=ltr
+        lang=en
       >
         <head>
           <meta
-            content="text/html; charset=UTF-8"
-            http-equiv="Content-Type"
+            content=text/html; charset=UTF-8
+            http-equiv=Content-Type
           />
           <meta
-            name="x-apple-disable-message-reformatting"
+            name=x-apple-disable-message-reformatting
           />
         </head>
         <div
-          style="display: none; overflow: hidden; line-height: 1px; opacity: 0; max-height: 0; max-width: 0;"
+          style=display: none; overflow: hidden; line-height: 1px; opacity: 0; max-height: 0; max-width: 0;
         >
           Withdrawal of 1915(c) CO-1234.R21.00
           <div>
@@ -965,45 +965,45 @@ exports[`Withdraw Confirmation State Email Snapshot Test > renders a Medicaid_SP
           </div>
         </div>
         <body
-          style="background-color: rgb(255, 255, 255); color: rgb(33, 33, 33); font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif; margin: 0px auto; padding: 20px 0px 48px;"
+          style=background-color: #FFFFFF; color: #212121; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif; margin: 0px auto; padding: 20px 0px 48px;
         >
           <table
-            align="center"
-            border="0"
-            cellpadding="0"
-            cellspacing="0"
-            role="presentation"
-            style="max-width: 37.5em; background-color: rgb(245, 245, 245);"
-            width="100%"
+            align=center
+            border=0
+            cellpadding=0
+            cellspacing=0
+            role=presentation
+            style=max-width: 37.5em; background-color: #F5F5F5;
+            width=100%
           >
             <tbody>
               <tr
-                style="width: 100%;"
+                style=width: 100%;
               >
                 <td>
                   <table
-                    align="center"
-                    border="0"
-                    cellpadding="0"
-                    cellspacing="0"
-                    role="presentation"
-                    style="background-color: rgb(0, 113, 189); padding: 16px;"
-                    width="100%"
+                    align=center
+                    border=0
+                    cellpadding=0
+                    cellspacing=0
+                    role=presentation
+                    style=background-color: #0071BD; padding: 16px;
+                    width=100%
                   >
                     <tbody>
                       <tr>
                         <td>
                           <a
-                            href="https://mako-dev.cms.gov/"
-                            style="color: rgb(6, 125, 247); text-decoration: none; display: block; max-width: 112px;"
-                            target="_blank"
+                            href=https://mako-dev.cms.gov/
+                            style=color: #067DF7; text-decoration: none; display: block; max-width: 112px;
+                            target=_blank
                           >
                             <img
-                              alt="OneMAC Logo"
-                              height="40"
-                              src="https://mako-dev.cms.gov/onemac-logo.png"
-                              style="max-width: 112px;"
-                              width="112"
+                              alt=OneMAC Logo
+                              height=40
+                              src=https://mako-dev.cms.gov/onemac-logo.png
+                              style=max-width: 112px;
+                              width=112
                             />
                           </a>
                         </td>
@@ -1011,35 +1011,35 @@ exports[`Withdraw Confirmation State Email Snapshot Test > renders a Medicaid_SP
                     </tbody>
                   </table>
                   <div
-                    style="margin: 0px 8px 8px 8px; padding: 8px;"
+                    style=margin: 0px 8px 8px 8px; padding: 8px;
                   >
                     <h1
-                      style="color: rgb(51, 51, 51); font-size: 20px; font-weight: bold; margin-bottom: 15px;"
+                      style=color: #333333; font-size: 20px; font-weight: bold; margin-bottom: 15px;
                     >
                       This email is to confirm Amendment CO-1234.R21.00 was withdrawn by George Harrison. The review of Amendment CO-1234.R21.00 has concluded.
                     </h1>
                     <hr
-                      style="width: 100%; border-top: 1px solid #0071BD; margin: 16px 0px;"
+                      style=width: 100%; border-top: 1px solid #0071BD; margin: 16px 0px;
                     />
                     <table
-                      align="center"
-                      border="0"
-                      cellpadding="0"
-                      cellspacing="0"
-                      role="presentation"
-                      width="100%"
+                      align=center
+                      border=0
+                      cellpadding=0
+                      cellspacing=0
+                      role=presentation
+                      width=100%
                     >
                       <tbody>
                         <tr>
                           <td>
                             <p
-                              style="font-size: 14px; line-height: 24px; margin: 8px 0px 16px 0px;"
+                              style=font-size: 14px; line-height: 24px; margin: 8px 0px 16px 0px;
                             >
                               If you have any questions, please contact 
                               <a
-                                href="mailto:spa@cms.hhs.gov"
-                                style="color: rgb(6, 125, 247); text-decoration: underline;"
-                                target="_blank"
+                                href=mailto:spa@cms.hhs.gov
+                                style=color: #067DF7; text-decoration: underline;
+                                target=_blank
                               >
                                 spa@cms.hhs.gov
                               </a>
@@ -1050,42 +1050,42 @@ exports[`Withdraw Confirmation State Email Snapshot Test > renders a Medicaid_SP
                       </tbody>
                     </table>
                     <p
-                      style="font-size: 14px; line-height: 1.4; margin: 12px 0px; color: rgb(51, 51, 51);"
+                      style=font-size: 14px; line-height: 1.4; margin: 12px 0px; color: #333333;
                     >
                       Thank you.
                     </p>
                   </div>
                   <table
-                    align="center"
-                    border="0"
-                    cellpadding="0"
-                    cellspacing="0"
-                    role="presentation"
-                    style="font-size: 14px; padding: 0px 0px; font-weight: 300; background-color: rgb(0, 113, 189); color: rgb(255, 255, 255); text-align: center;"
-                    width="100%"
+                    align=center
+                    border=0
+                    cellpadding=0
+                    cellspacing=0
+                    role=presentation
+                    style=font-size: 14px; padding: 0px 0px; font-weight: 300; background-color: #0071BD; color: #FFFFFF; text-align: center;
+                    width=100%
                   >
                     <tbody>
                       <tr>
                         <td>
                           <table
-                            align="center"
-                            border="0"
-                            cellpadding="0"
-                            cellspacing="0"
-                            role="presentation"
-                            style="font-size: 14px; padding: 0px 0px; font-weight: 300; background-color: rgb(0, 113, 189); color: rgb(255, 255, 255); text-align: center;"
-                            width="100%"
+                            align=center
+                            border=0
+                            cellpadding=0
+                            cellspacing=0
+                            role=presentation
+                            style=font-size: 14px; padding: 0px 0px; font-weight: 300; background-color: #0071BD; color: #FFFFFF; text-align: center;
+                            width=100%
                           >
                             <tbody>
                               <tr>
                                 <td>
                                   <p
-                                    style="font-size: 14px; line-height: 24px; margin: 8px; color: rgb(255, 255, 255);"
+                                    style=font-size: 14px; line-height: 24px; margin: 8px; color: #FFFFFF;
                                   >
                                     U.S. Centers for Medicare & Medicaid Services
                                   </p>
                                   <p
-                                    style="font-size: 14px; line-height: 24px; margin: 8px; color: rgb(255, 255, 255);"
+                                    style=font-size: 14px; line-height: 24px; margin: 8px; color: #FFFFFF;
                                   >
                                     © 
                                     2025
@@ -1108,20 +1108,20 @@ exports[`Withdraw Confirmation State Email Snapshot Test > renders a Medicaid_SP
     </div>
     <div>
       <html
-        dir="ltr"
-        lang="en"
+        dir=ltr
+        lang=en
       >
         <head>
           <meta
-            content="text/html; charset=UTF-8"
-            http-equiv="Content-Type"
+            content=text/html; charset=UTF-8
+            http-equiv=Content-Type
           />
           <meta
-            name="x-apple-disable-message-reformatting"
+            name=x-apple-disable-message-reformatting
           />
         </head>
         <div
-          style="display: none; overflow: hidden; line-height: 1px; opacity: 0; max-height: 0; max-width: 0;"
+          style=display: none; overflow: hidden; line-height: 1px; opacity: 0; max-height: 0; max-width: 0;
         >
           CHIP SPA Package CO-1234.R21.00 Withdrawal Confirmation
           <div>
@@ -1129,45 +1129,45 @@ exports[`Withdraw Confirmation State Email Snapshot Test > renders a Medicaid_SP
           </div>
         </div>
         <body
-          style="background-color: rgb(255, 255, 255); color: rgb(33, 33, 33); font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif; margin: 0px auto; padding: 20px 0px 48px;"
+          style=background-color: #FFFFFF; color: #212121; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif; margin: 0px auto; padding: 20px 0px 48px;
         >
           <table
-            align="center"
-            border="0"
-            cellpadding="0"
-            cellspacing="0"
-            role="presentation"
-            style="max-width: 37.5em; background-color: rgb(245, 245, 245);"
-            width="100%"
+            align=center
+            border=0
+            cellpadding=0
+            cellspacing=0
+            role=presentation
+            style=max-width: 37.5em; background-color: #F5F5F5;
+            width=100%
           >
             <tbody>
               <tr
-                style="width: 100%;"
+                style=width: 100%;
               >
                 <td>
                   <table
-                    align="center"
-                    border="0"
-                    cellpadding="0"
-                    cellspacing="0"
-                    role="presentation"
-                    style="background-color: rgb(0, 113, 189); padding: 16px;"
-                    width="100%"
+                    align=center
+                    border=0
+                    cellpadding=0
+                    cellspacing=0
+                    role=presentation
+                    style=background-color: #0071BD; padding: 16px;
+                    width=100%
                   >
                     <tbody>
                       <tr>
                         <td>
                           <a
-                            href="https://mako-dev.cms.gov/"
-                            style="color: rgb(6, 125, 247); text-decoration: none; display: block; max-width: 112px;"
-                            target="_blank"
+                            href=https://mako-dev.cms.gov/
+                            style=color: #067DF7; text-decoration: none; display: block; max-width: 112px;
+                            target=_blank
                           >
                             <img
-                              alt="OneMAC Logo"
-                              height="40"
-                              src="https://mako-dev.cms.gov/onemac-logo.png"
-                              style="max-width: 112px;"
-                              width="112"
+                              alt=OneMAC Logo
+                              height=40
+                              src=https://mako-dev.cms.gov/onemac-logo.png
+                              style=max-width: 112px;
+                              width=112
                             />
                           </a>
                         </td>
@@ -1175,35 +1175,35 @@ exports[`Withdraw Confirmation State Email Snapshot Test > renders a Medicaid_SP
                     </tbody>
                   </table>
                   <div
-                    style="margin: 0px 8px 8px 8px; padding: 8px;"
+                    style=margin: 0px 8px 8px 8px; padding: 8px;
                   >
                     <h1
-                      style="color: rgb(51, 51, 51); font-size: 20px; font-weight: bold; margin-bottom: 15px;"
+                      style=color: #333333; font-size: 20px; font-weight: bold; margin-bottom: 15px;
                     >
                       This email is to confirm CHIP SPA CO-1234.R21.00 was withdrawn by George Harrison. The review of CHIP SPA CO-1234.R21.00 has concluded.
                     </h1>
                     <hr
-                      style="width: 100%; border-top: 1px solid #0071BD; margin: 16px 0px;"
+                      style=width: 100%; border-top: 1px solid #0071BD; margin: 16px 0px;
                     />
                     <table
-                      align="center"
-                      border="0"
-                      cellpadding="0"
-                      cellspacing="0"
-                      role="presentation"
-                      width="100%"
+                      align=center
+                      border=0
+                      cellpadding=0
+                      cellspacing=0
+                      role=presentation
+                      width=100%
                     >
                       <tbody>
                         <tr>
                           <td>
                             <p
-                              style="font-size: 14px; line-height: 24px; margin: 8px 0px 16px 0px;"
+                              style=font-size: 14px; line-height: 24px; margin: 8px 0px 16px 0px;
                             >
                               If you have any question, please contact 
                               <a
-                                href="mailto:CHIPSPASubmissionMailBox@cms.hhs.gov"
-                                style="color: rgb(6, 125, 247); text-decoration: underline;"
-                                target="_blank"
+                                href=mailto:CHIPSPASubmissionMailBox@cms.hhs.gov
+                                style=color: #067DF7; text-decoration: underline;
+                                target=_blank
                               >
                                 CHIPSPASubmissionMailBox@cms.hhs.gov
                               </a>
@@ -1214,42 +1214,42 @@ exports[`Withdraw Confirmation State Email Snapshot Test > renders a Medicaid_SP
                       </tbody>
                     </table>
                     <p
-                      style="font-size: 14px; line-height: 1.4; margin: 12px 0px; color: rgb(51, 51, 51);"
+                      style=font-size: 14px; line-height: 1.4; margin: 12px 0px; color: #333333;
                     >
                       Thank you.
                     </p>
                   </div>
                   <table
-                    align="center"
-                    border="0"
-                    cellpadding="0"
-                    cellspacing="0"
-                    role="presentation"
-                    style="font-size: 14px; padding: 0px 0px; font-weight: 300; background-color: rgb(0, 113, 189); color: rgb(255, 255, 255); text-align: center;"
-                    width="100%"
+                    align=center
+                    border=0
+                    cellpadding=0
+                    cellspacing=0
+                    role=presentation
+                    style=font-size: 14px; padding: 0px 0px; font-weight: 300; background-color: #0071BD; color: #FFFFFF; text-align: center;
+                    width=100%
                   >
                     <tbody>
                       <tr>
                         <td>
                           <table
-                            align="center"
-                            border="0"
-                            cellpadding="0"
-                            cellspacing="0"
-                            role="presentation"
-                            style="font-size: 14px; padding: 0px 0px; font-weight: 300; background-color: rgb(0, 113, 189); color: rgb(255, 255, 255); text-align: center;"
-                            width="100%"
+                            align=center
+                            border=0
+                            cellpadding=0
+                            cellspacing=0
+                            role=presentation
+                            style=font-size: 14px; padding: 0px 0px; font-weight: 300; background-color: #0071BD; color: #FFFFFF; text-align: center;
+                            width=100%
                           >
                             <tbody>
                               <tr>
                                 <td>
                                   <p
-                                    style="font-size: 14px; line-height: 24px; margin: 8px; color: rgb(255, 255, 255);"
+                                    style=font-size: 14px; line-height: 24px; margin: 8px; color: #FFFFFF;
                                   >
                                     U.S. Centers for Medicare & Medicaid Services
                                   </p>
                                   <p
-                                    style="font-size: 14px; line-height: 24px; margin: 8px; color: rgb(255, 255, 255);"
+                                    style=font-size: 14px; line-height: 24px; margin: 8px; color: #FFFFFF;
                                   >
                                     © 
                                     2025
@@ -1272,20 +1272,20 @@ exports[`Withdraw Confirmation State Email Snapshot Test > renders a Medicaid_SP
     </div>
     <div>
       <html
-        dir="ltr"
-        lang="en"
+        dir=ltr
+        lang=en
       >
         <head>
           <meta
-            content="text/html; charset=UTF-8"
-            http-equiv="Content-Type"
+            content=text/html; charset=UTF-8
+            http-equiv=Content-Type
           />
           <meta
-            name="x-apple-disable-message-reformatting"
+            name=x-apple-disable-message-reformatting
           />
         </head>
         <div
-          style="display: none; overflow: hidden; line-height: 1px; opacity: 0; max-height: 0; max-width: 0;"
+          style=display: none; overflow: hidden; line-height: 1px; opacity: 0; max-height: 0; max-width: 0;
         >
           Medicaid SPA Package CO-1234.R21.00 Withdrawal Confirmation
           <div>
@@ -1293,45 +1293,45 @@ exports[`Withdraw Confirmation State Email Snapshot Test > renders a Medicaid_SP
           </div>
         </div>
         <body
-          style="background-color: rgb(255, 255, 255); color: rgb(33, 33, 33); font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif; margin: 0px auto; padding: 20px 0px 48px;"
+          style=background-color: #FFFFFF; color: #212121; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif; margin: 0px auto; padding: 20px 0px 48px;
         >
           <table
-            align="center"
-            border="0"
-            cellpadding="0"
-            cellspacing="0"
-            role="presentation"
-            style="max-width: 37.5em; background-color: rgb(245, 245, 245);"
-            width="100%"
+            align=center
+            border=0
+            cellpadding=0
+            cellspacing=0
+            role=presentation
+            style=max-width: 37.5em; background-color: #F5F5F5;
+            width=100%
           >
             <tbody>
               <tr
-                style="width: 100%;"
+                style=width: 100%;
               >
                 <td>
                   <table
-                    align="center"
-                    border="0"
-                    cellpadding="0"
-                    cellspacing="0"
-                    role="presentation"
-                    style="background-color: rgb(0, 113, 189); padding: 16px;"
-                    width="100%"
+                    align=center
+                    border=0
+                    cellpadding=0
+                    cellspacing=0
+                    role=presentation
+                    style=background-color: #0071BD; padding: 16px;
+                    width=100%
                   >
                     <tbody>
                       <tr>
                         <td>
                           <a
-                            href="https://mako-dev.cms.gov/"
-                            style="color: rgb(6, 125, 247); text-decoration: none; display: block; max-width: 112px;"
-                            target="_blank"
+                            href=https://mako-dev.cms.gov/
+                            style=color: #067DF7; text-decoration: none; display: block; max-width: 112px;
+                            target=_blank
                           >
                             <img
-                              alt="OneMAC Logo"
-                              height="40"
-                              src="https://mako-dev.cms.gov/onemac-logo.png"
-                              style="max-width: 112px;"
-                              width="112"
+                              alt=OneMAC Logo
+                              height=40
+                              src=https://mako-dev.cms.gov/onemac-logo.png
+                              style=max-width: 112px;
+                              width=112
                             />
                           </a>
                         </td>
@@ -1339,35 +1339,35 @@ exports[`Withdraw Confirmation State Email Snapshot Test > renders a Medicaid_SP
                     </tbody>
                   </table>
                   <div
-                    style="margin: 0px 8px 8px 8px; padding: 8px;"
+                    style=margin: 0px 8px 8px 8px; padding: 8px;
                   >
                     <h1
-                      style="color: rgb(51, 51, 51); font-size: 20px; font-weight: bold; margin-bottom: 15px;"
+                      style=color: #333333; font-size: 20px; font-weight: bold; margin-bottom: 15px;
                     >
                       This email is to confirm Medicaid SPA CO-1234.R21.00 was withdrawn by George Harrison. The review of Medicaid SPA CO-1234.R21.00 has concluded.
                     </h1>
                     <hr
-                      style="width: 100%; border-top: 1px solid #0071BD; margin: 16px 0px;"
+                      style=width: 100%; border-top: 1px solid #0071BD; margin: 16px 0px;
                     />
                     <table
-                      align="center"
-                      border="0"
-                      cellpadding="0"
-                      cellspacing="0"
-                      role="presentation"
-                      width="100%"
+                      align=center
+                      border=0
+                      cellpadding=0
+                      cellspacing=0
+                      role=presentation
+                      width=100%
                     >
                       <tbody>
                         <tr>
                           <td>
                             <p
-                              style="font-size: 14px; line-height: 24px; margin: 8px 0px 16px 0px;"
+                              style=font-size: 14px; line-height: 24px; margin: 8px 0px 16px 0px;
                             >
                               If you have any questions, please contact 
                               <a
-                                href="mailto:spa@cms.hhs.gov"
-                                style="color: rgb(6, 125, 247); text-decoration: underline;"
-                                target="_blank"
+                                href=mailto:spa@cms.hhs.gov
+                                style=color: #067DF7; text-decoration: underline;
+                                target=_blank
                               >
                                 spa@cms.hhs.gov
                               </a>
@@ -1378,42 +1378,42 @@ exports[`Withdraw Confirmation State Email Snapshot Test > renders a Medicaid_SP
                       </tbody>
                     </table>
                     <p
-                      style="font-size: 14px; line-height: 1.4; margin: 12px 0px; color: rgb(51, 51, 51);"
+                      style=font-size: 14px; line-height: 1.4; margin: 12px 0px; color: #333333;
                     >
                       Thank you.
                     </p>
                   </div>
                   <table
-                    align="center"
-                    border="0"
-                    cellpadding="0"
-                    cellspacing="0"
-                    role="presentation"
-                    style="font-size: 14px; padding: 0px 0px; font-weight: 300; background-color: rgb(0, 113, 189); color: rgb(255, 255, 255); text-align: center;"
-                    width="100%"
+                    align=center
+                    border=0
+                    cellpadding=0
+                    cellspacing=0
+                    role=presentation
+                    style=font-size: 14px; padding: 0px 0px; font-weight: 300; background-color: #0071BD; color: #FFFFFF; text-align: center;
+                    width=100%
                   >
                     <tbody>
                       <tr>
                         <td>
                           <table
-                            align="center"
-                            border="0"
-                            cellpadding="0"
-                            cellspacing="0"
-                            role="presentation"
-                            style="font-size: 14px; padding: 0px 0px; font-weight: 300; background-color: rgb(0, 113, 189); color: rgb(255, 255, 255); text-align: center;"
-                            width="100%"
+                            align=center
+                            border=0
+                            cellpadding=0
+                            cellspacing=0
+                            role=presentation
+                            style=font-size: 14px; padding: 0px 0px; font-weight: 300; background-color: #0071BD; color: #FFFFFF; text-align: center;
+                            width=100%
                           >
                             <tbody>
                               <tr>
                                 <td>
                                   <p
-                                    style="font-size: 14px; line-height: 24px; margin: 8px; color: rgb(255, 255, 255);"
+                                    style=font-size: 14px; line-height: 24px; margin: 8px; color: #FFFFFF;
                                   >
                                     U.S. Centers for Medicare & Medicaid Services
                                   </p>
                                   <p
-                                    style="font-size: 14px; line-height: 24px; margin: 8px; color: rgb(255, 255, 255);"
+                                    style=font-size: 14px; line-height: 24px; margin: 8px; color: #FFFFFF;
                                   >
                                     © 
                                     2025
@@ -1435,22 +1435,22 @@ exports[`Withdraw Confirmation State Email Snapshot Test > renders a Medicaid_SP
       </html>
     </div>
   </body>,
-  "container": <div>
+  container: <div>
     <html
-      dir="ltr"
-      lang="en"
+      dir=ltr
+      lang=en
     >
       <head>
         <meta
-          content="text/html; charset=UTF-8"
-          http-equiv="Content-Type"
+          content=text/html; charset=UTF-8
+          http-equiv=Content-Type
         />
         <meta
-          name="x-apple-disable-message-reformatting"
+          name=x-apple-disable-message-reformatting
         />
       </head>
       <div
-        style="display: none; overflow: hidden; line-height: 1px; opacity: 0; max-height: 0; max-width: 0;"
+        style=display: none; overflow: hidden; line-height: 1px; opacity: 0; max-height: 0; max-width: 0;
       >
         Medicaid SPA Package CO-1234.R21.00 Withdrawal Confirmation
         <div>
@@ -1458,45 +1458,45 @@ exports[`Withdraw Confirmation State Email Snapshot Test > renders a Medicaid_SP
         </div>
       </div>
       <body
-        style="background-color: rgb(255, 255, 255); color: rgb(33, 33, 33); font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif; margin: 0px auto; padding: 20px 0px 48px;"
+        style=background-color: #FFFFFF; color: #212121; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif; margin: 0px auto; padding: 20px 0px 48px;
       >
         <table
-          align="center"
-          border="0"
-          cellpadding="0"
-          cellspacing="0"
-          role="presentation"
-          style="max-width: 37.5em; background-color: rgb(245, 245, 245);"
-          width="100%"
+          align=center
+          border=0
+          cellpadding=0
+          cellspacing=0
+          role=presentation
+          style=max-width: 37.5em; background-color: #F5F5F5;
+          width=100%
         >
           <tbody>
             <tr
-              style="width: 100%;"
+              style=width: 100%;
             >
               <td>
                 <table
-                  align="center"
-                  border="0"
-                  cellpadding="0"
-                  cellspacing="0"
-                  role="presentation"
-                  style="background-color: rgb(0, 113, 189); padding: 16px;"
-                  width="100%"
+                  align=center
+                  border=0
+                  cellpadding=0
+                  cellspacing=0
+                  role=presentation
+                  style=background-color: #0071BD; padding: 16px;
+                  width=100%
                 >
                   <tbody>
                     <tr>
                       <td>
                         <a
-                          href="https://mako-dev.cms.gov/"
-                          style="color: rgb(6, 125, 247); text-decoration: none; display: block; max-width: 112px;"
-                          target="_blank"
+                          href=https://mako-dev.cms.gov/
+                          style=color: #067DF7; text-decoration: none; display: block; max-width: 112px;
+                          target=_blank
                         >
                           <img
-                            alt="OneMAC Logo"
-                            height="40"
-                            src="https://mako-dev.cms.gov/onemac-logo.png"
-                            style="max-width: 112px;"
-                            width="112"
+                            alt=OneMAC Logo
+                            height=40
+                            src=https://mako-dev.cms.gov/onemac-logo.png
+                            style=max-width: 112px;
+                            width=112
                           />
                         </a>
                       </td>
@@ -1504,35 +1504,35 @@ exports[`Withdraw Confirmation State Email Snapshot Test > renders a Medicaid_SP
                   </tbody>
                 </table>
                 <div
-                  style="margin: 0px 8px 8px 8px; padding: 8px;"
+                  style=margin: 0px 8px 8px 8px; padding: 8px;
                 >
                   <h1
-                    style="color: rgb(51, 51, 51); font-size: 20px; font-weight: bold; margin-bottom: 15px;"
+                    style=color: #333333; font-size: 20px; font-weight: bold; margin-bottom: 15px;
                   >
                     This email is to confirm Medicaid SPA CO-1234.R21.00 was withdrawn by George Harrison. The review of Medicaid SPA CO-1234.R21.00 has concluded.
                   </h1>
                   <hr
-                    style="width: 100%; border-top: 1px solid #0071BD; margin: 16px 0px;"
+                    style=width: 100%; border-top: 1px solid #0071BD; margin: 16px 0px;
                   />
                   <table
-                    align="center"
-                    border="0"
-                    cellpadding="0"
-                    cellspacing="0"
-                    role="presentation"
-                    width="100%"
+                    align=center
+                    border=0
+                    cellpadding=0
+                    cellspacing=0
+                    role=presentation
+                    width=100%
                   >
                     <tbody>
                       <tr>
                         <td>
                           <p
-                            style="font-size: 14px; line-height: 24px; margin: 8px 0px 16px 0px;"
+                            style=font-size: 14px; line-height: 24px; margin: 8px 0px 16px 0px;
                           >
                             If you have any questions, please contact 
                             <a
-                              href="mailto:spa@cms.hhs.gov"
-                              style="color: rgb(6, 125, 247); text-decoration: underline;"
-                              target="_blank"
+                              href=mailto:spa@cms.hhs.gov
+                              style=color: #067DF7; text-decoration: underline;
+                              target=_blank
                             >
                               spa@cms.hhs.gov
                             </a>
@@ -1543,42 +1543,42 @@ exports[`Withdraw Confirmation State Email Snapshot Test > renders a Medicaid_SP
                     </tbody>
                   </table>
                   <p
-                    style="font-size: 14px; line-height: 1.4; margin: 12px 0px; color: rgb(51, 51, 51);"
+                    style=font-size: 14px; line-height: 1.4; margin: 12px 0px; color: #333333;
                   >
                     Thank you.
                   </p>
                 </div>
                 <table
-                  align="center"
-                  border="0"
-                  cellpadding="0"
-                  cellspacing="0"
-                  role="presentation"
-                  style="font-size: 14px; padding: 0px 0px; font-weight: 300; background-color: rgb(0, 113, 189); color: rgb(255, 255, 255); text-align: center;"
-                  width="100%"
+                  align=center
+                  border=0
+                  cellpadding=0
+                  cellspacing=0
+                  role=presentation
+                  style=font-size: 14px; padding: 0px 0px; font-weight: 300; background-color: #0071BD; color: #FFFFFF; text-align: center;
+                  width=100%
                 >
                   <tbody>
                     <tr>
                       <td>
                         <table
-                          align="center"
-                          border="0"
-                          cellpadding="0"
-                          cellspacing="0"
-                          role="presentation"
-                          style="font-size: 14px; padding: 0px 0px; font-weight: 300; background-color: rgb(0, 113, 189); color: rgb(255, 255, 255); text-align: center;"
-                          width="100%"
+                          align=center
+                          border=0
+                          cellpadding=0
+                          cellspacing=0
+                          role=presentation
+                          style=font-size: 14px; padding: 0px 0px; font-weight: 300; background-color: #0071BD; color: #FFFFFF; text-align: center;
+                          width=100%
                         >
                           <tbody>
                             <tr>
                               <td>
                                 <p
-                                  style="font-size: 14px; line-height: 24px; margin: 8px; color: rgb(255, 255, 255);"
+                                  style=font-size: 14px; line-height: 24px; margin: 8px; color: #FFFFFF;
                                 >
                                   U.S. Centers for Medicare & Medicaid Services
                                 </p>
                                 <p
-                                  style="font-size: 14px; line-height: 24px; margin: 8px; color: rgb(255, 255, 255);"
+                                  style=font-size: 14px; line-height: 24px; margin: 8px; color: #FFFFFF;
                                 >
                                   © 
                                   2025
@@ -1599,80 +1599,80 @@ exports[`Withdraw Confirmation State Email Snapshot Test > renders a Medicaid_SP
       </body>
     </html>
   </div>,
-  "debug": [Function],
-  "findAllByAltText": [Function],
-  "findAllByDisplayValue": [Function],
-  "findAllByLabelText": [Function],
-  "findAllByPlaceholderText": [Function],
-  "findAllByRole": [Function],
-  "findAllByTestId": [Function],
-  "findAllByText": [Function],
-  "findAllByTitle": [Function],
-  "findByAltText": [Function],
-  "findByDisplayValue": [Function],
-  "findByLabelText": [Function],
-  "findByPlaceholderText": [Function],
-  "findByRole": [Function],
-  "findByTestId": [Function],
-  "findByText": [Function],
-  "findByTitle": [Function],
-  "getAllByAltText": [Function],
-  "getAllByDisplayValue": [Function],
-  "getAllByLabelText": [Function],
-  "getAllByPlaceholderText": [Function],
-  "getAllByRole": [Function],
-  "getAllByTestId": [Function],
-  "getAllByText": [Function],
-  "getAllByTitle": [Function],
-  "getByAltText": [Function],
-  "getByDisplayValue": [Function],
-  "getByLabelText": [Function],
-  "getByPlaceholderText": [Function],
-  "getByRole": [Function],
-  "getByTestId": [Function],
-  "getByText": [Function],
-  "getByTitle": [Function],
-  "queryAllByAltText": [Function],
-  "queryAllByDisplayValue": [Function],
-  "queryAllByLabelText": [Function],
-  "queryAllByPlaceholderText": [Function],
-  "queryAllByRole": [Function],
-  "queryAllByTestId": [Function],
-  "queryAllByText": [Function],
-  "queryAllByTitle": [Function],
-  "queryByAltText": [Function],
-  "queryByDisplayValue": [Function],
-  "queryByLabelText": [Function],
-  "queryByPlaceholderText": [Function],
-  "queryByRole": [Function],
-  "queryByTestId": [Function],
-  "queryByText": [Function],
-  "queryByTitle": [Function],
-  "rerender": [Function],
-  "unmount": [Function],
+  debug: [Function],
+  findAllByAltText: [Function],
+  findAllByDisplayValue: [Function],
+  findAllByLabelText: [Function],
+  findAllByPlaceholderText: [Function],
+  findAllByRole: [Function],
+  findAllByTestId: [Function],
+  findAllByText: [Function],
+  findAllByTitle: [Function],
+  findByAltText: [Function],
+  findByDisplayValue: [Function],
+  findByLabelText: [Function],
+  findByPlaceholderText: [Function],
+  findByRole: [Function],
+  findByTestId: [Function],
+  findByText: [Function],
+  findByTitle: [Function],
+  getAllByAltText: [Function],
+  getAllByDisplayValue: [Function],
+  getAllByLabelText: [Function],
+  getAllByPlaceholderText: [Function],
+  getAllByRole: [Function],
+  getAllByTestId: [Function],
+  getAllByText: [Function],
+  getAllByTitle: [Function],
+  getByAltText: [Function],
+  getByDisplayValue: [Function],
+  getByLabelText: [Function],
+  getByPlaceholderText: [Function],
+  getByRole: [Function],
+  getByTestId: [Function],
+  getByText: [Function],
+  getByTitle: [Function],
+  queryAllByAltText: [Function],
+  queryAllByDisplayValue: [Function],
+  queryAllByLabelText: [Function],
+  queryAllByPlaceholderText: [Function],
+  queryAllByRole: [Function],
+  queryAllByTestId: [Function],
+  queryAllByText: [Function],
+  queryAllByTitle: [Function],
+  queryByAltText: [Function],
+  queryByDisplayValue: [Function],
+  queryByLabelText: [Function],
+  queryByPlaceholderText: [Function],
+  queryByRole: [Function],
+  queryByTestId: [Function],
+  queryByText: [Function],
+  queryByTitle: [Function],
+  rerender: [Function],
+  unmount: [Function],
 }
 `;
 
 exports[`Withdraw Confirmation State Email Snapshot Test > renders a Waiver Preview Template 1`] = `
 {
-  "asFragment": [Function],
-  "baseElement": <body>
+  asFragment: [Function],
+  baseElement: <body>
     <div>
       <html
-        dir="ltr"
-        lang="en"
+        dir=ltr
+        lang=en
       >
         <head>
           <meta
-            content="text/html; charset=UTF-8"
-            http-equiv="Content-Type"
+            content=text/html; charset=UTF-8
+            http-equiv=Content-Type
           />
           <meta
-            name="x-apple-disable-message-reformatting"
+            name=x-apple-disable-message-reformatting
           />
         </head>
         <div
-          style="display: none; overflow: hidden; line-height: 1px; opacity: 0; max-height: 0; max-width: 0;"
+          style=display: none; overflow: hidden; line-height: 1px; opacity: 0; max-height: 0; max-width: 0;
         >
           Withdrawal of 1915(c) CO-1234.R21.00
           <div>
@@ -1680,45 +1680,45 @@ exports[`Withdraw Confirmation State Email Snapshot Test > renders a Waiver Prev
           </div>
         </div>
         <body
-          style="background-color: rgb(255, 255, 255); color: rgb(33, 33, 33); font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif; margin: 0px auto; padding: 20px 0px 48px;"
+          style=background-color: #FFFFFF; color: #212121; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif; margin: 0px auto; padding: 20px 0px 48px;
         >
           <table
-            align="center"
-            border="0"
-            cellpadding="0"
-            cellspacing="0"
-            role="presentation"
-            style="max-width: 37.5em; background-color: rgb(245, 245, 245);"
-            width="100%"
+            align=center
+            border=0
+            cellpadding=0
+            cellspacing=0
+            role=presentation
+            style=max-width: 37.5em; background-color: #F5F5F5;
+            width=100%
           >
             <tbody>
               <tr
-                style="width: 100%;"
+                style=width: 100%;
               >
                 <td>
                   <table
-                    align="center"
-                    border="0"
-                    cellpadding="0"
-                    cellspacing="0"
-                    role="presentation"
-                    style="background-color: rgb(0, 113, 189); padding: 16px;"
-                    width="100%"
+                    align=center
+                    border=0
+                    cellpadding=0
+                    cellspacing=0
+                    role=presentation
+                    style=background-color: #0071BD; padding: 16px;
+                    width=100%
                   >
                     <tbody>
                       <tr>
                         <td>
                           <a
-                            href="https://mako-dev.cms.gov/"
-                            style="color: rgb(6, 125, 247); text-decoration: none; display: block; max-width: 112px;"
-                            target="_blank"
+                            href=https://mako-dev.cms.gov/
+                            style=color: #067DF7; text-decoration: none; display: block; max-width: 112px;
+                            target=_blank
                           >
                             <img
-                              alt="OneMAC Logo"
-                              height="40"
-                              src="https://mako-dev.cms.gov/onemac-logo.png"
-                              style="max-width: 112px;"
-                              width="112"
+                              alt=OneMAC Logo
+                              height=40
+                              src=https://mako-dev.cms.gov/onemac-logo.png
+                              style=max-width: 112px;
+                              width=112
                             />
                           </a>
                         </td>
@@ -1726,35 +1726,35 @@ exports[`Withdraw Confirmation State Email Snapshot Test > renders a Waiver Prev
                     </tbody>
                   </table>
                   <div
-                    style="margin: 0px 8px 8px 8px; padding: 8px;"
+                    style=margin: 0px 8px 8px 8px; padding: 8px;
                   >
                     <h1
-                      style="color: rgb(51, 51, 51); font-size: 20px; font-weight: bold; margin-bottom: 15px;"
+                      style=color: #333333; font-size: 20px; font-weight: bold; margin-bottom: 15px;
                     >
                       This email is to confirm Amendment CO-1234.R21.00 was withdrawn by George Harrison. The review of Amendment CO-1234.R21.00 has concluded.
                     </h1>
                     <hr
-                      style="width: 100%; border-top: 1px solid #0071BD; margin: 16px 0px;"
+                      style=width: 100%; border-top: 1px solid #0071BD; margin: 16px 0px;
                     />
                     <table
-                      align="center"
-                      border="0"
-                      cellpadding="0"
-                      cellspacing="0"
-                      role="presentation"
-                      width="100%"
+                      align=center
+                      border=0
+                      cellpadding=0
+                      cellspacing=0
+                      role=presentation
+                      width=100%
                     >
                       <tbody>
                         <tr>
                           <td>
                             <p
-                              style="font-size: 14px; line-height: 24px; margin: 8px 0px 16px 0px;"
+                              style=font-size: 14px; line-height: 24px; margin: 8px 0px 16px 0px;
                             >
                               If you have any questions, please contact 
                               <a
-                                href="mailto:spa@cms.hhs.gov"
-                                style="color: rgb(6, 125, 247); text-decoration: underline;"
-                                target="_blank"
+                                href=mailto:spa@cms.hhs.gov
+                                style=color: #067DF7; text-decoration: underline;
+                                target=_blank
                               >
                                 spa@cms.hhs.gov
                               </a>
@@ -1765,42 +1765,42 @@ exports[`Withdraw Confirmation State Email Snapshot Test > renders a Waiver Prev
                       </tbody>
                     </table>
                     <p
-                      style="font-size: 14px; line-height: 1.4; margin: 12px 0px; color: rgb(51, 51, 51);"
+                      style=font-size: 14px; line-height: 1.4; margin: 12px 0px; color: #333333;
                     >
                       Thank you.
                     </p>
                   </div>
                   <table
-                    align="center"
-                    border="0"
-                    cellpadding="0"
-                    cellspacing="0"
-                    role="presentation"
-                    style="font-size: 14px; padding: 0px 0px; font-weight: 300; background-color: rgb(0, 113, 189); color: rgb(255, 255, 255); text-align: center;"
-                    width="100%"
+                    align=center
+                    border=0
+                    cellpadding=0
+                    cellspacing=0
+                    role=presentation
+                    style=font-size: 14px; padding: 0px 0px; font-weight: 300; background-color: #0071BD; color: #FFFFFF; text-align: center;
+                    width=100%
                   >
                     <tbody>
                       <tr>
                         <td>
                           <table
-                            align="center"
-                            border="0"
-                            cellpadding="0"
-                            cellspacing="0"
-                            role="presentation"
-                            style="font-size: 14px; padding: 0px 0px; font-weight: 300; background-color: rgb(0, 113, 189); color: rgb(255, 255, 255); text-align: center;"
-                            width="100%"
+                            align=center
+                            border=0
+                            cellpadding=0
+                            cellspacing=0
+                            role=presentation
+                            style=font-size: 14px; padding: 0px 0px; font-weight: 300; background-color: #0071BD; color: #FFFFFF; text-align: center;
+                            width=100%
                           >
                             <tbody>
                               <tr>
                                 <td>
                                   <p
-                                    style="font-size: 14px; line-height: 24px; margin: 8px; color: rgb(255, 255, 255);"
+                                    style=font-size: 14px; line-height: 24px; margin: 8px; color: #FFFFFF;
                                   >
                                     U.S. Centers for Medicare & Medicaid Services
                                   </p>
                                   <p
-                                    style="font-size: 14px; line-height: 24px; margin: 8px; color: rgb(255, 255, 255);"
+                                    style=font-size: 14px; line-height: 24px; margin: 8px; color: #FFFFFF;
                                   >
                                     © 
                                     2025
@@ -1823,20 +1823,20 @@ exports[`Withdraw Confirmation State Email Snapshot Test > renders a Waiver Prev
     </div>
     <div>
       <html
-        dir="ltr"
-        lang="en"
+        dir=ltr
+        lang=en
       >
         <head>
           <meta
-            content="text/html; charset=UTF-8"
-            http-equiv="Content-Type"
+            content=text/html; charset=UTF-8
+            http-equiv=Content-Type
           />
           <meta
-            name="x-apple-disable-message-reformatting"
+            name=x-apple-disable-message-reformatting
           />
         </head>
         <div
-          style="display: none; overflow: hidden; line-height: 1px; opacity: 0; max-height: 0; max-width: 0;"
+          style=display: none; overflow: hidden; line-height: 1px; opacity: 0; max-height: 0; max-width: 0;
         >
           CHIP SPA Package CO-1234.R21.00 Withdrawal Confirmation
           <div>
@@ -1844,45 +1844,45 @@ exports[`Withdraw Confirmation State Email Snapshot Test > renders a Waiver Prev
           </div>
         </div>
         <body
-          style="background-color: rgb(255, 255, 255); color: rgb(33, 33, 33); font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif; margin: 0px auto; padding: 20px 0px 48px;"
+          style=background-color: #FFFFFF; color: #212121; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif; margin: 0px auto; padding: 20px 0px 48px;
         >
           <table
-            align="center"
-            border="0"
-            cellpadding="0"
-            cellspacing="0"
-            role="presentation"
-            style="max-width: 37.5em; background-color: rgb(245, 245, 245);"
-            width="100%"
+            align=center
+            border=0
+            cellpadding=0
+            cellspacing=0
+            role=presentation
+            style=max-width: 37.5em; background-color: #F5F5F5;
+            width=100%
           >
             <tbody>
               <tr
-                style="width: 100%;"
+                style=width: 100%;
               >
                 <td>
                   <table
-                    align="center"
-                    border="0"
-                    cellpadding="0"
-                    cellspacing="0"
-                    role="presentation"
-                    style="background-color: rgb(0, 113, 189); padding: 16px;"
-                    width="100%"
+                    align=center
+                    border=0
+                    cellpadding=0
+                    cellspacing=0
+                    role=presentation
+                    style=background-color: #0071BD; padding: 16px;
+                    width=100%
                   >
                     <tbody>
                       <tr>
                         <td>
                           <a
-                            href="https://mako-dev.cms.gov/"
-                            style="color: rgb(6, 125, 247); text-decoration: none; display: block; max-width: 112px;"
-                            target="_blank"
+                            href=https://mako-dev.cms.gov/
+                            style=color: #067DF7; text-decoration: none; display: block; max-width: 112px;
+                            target=_blank
                           >
                             <img
-                              alt="OneMAC Logo"
-                              height="40"
-                              src="https://mako-dev.cms.gov/onemac-logo.png"
-                              style="max-width: 112px;"
-                              width="112"
+                              alt=OneMAC Logo
+                              height=40
+                              src=https://mako-dev.cms.gov/onemac-logo.png
+                              style=max-width: 112px;
+                              width=112
                             />
                           </a>
                         </td>
@@ -1890,35 +1890,35 @@ exports[`Withdraw Confirmation State Email Snapshot Test > renders a Waiver Prev
                     </tbody>
                   </table>
                   <div
-                    style="margin: 0px 8px 8px 8px; padding: 8px;"
+                    style=margin: 0px 8px 8px 8px; padding: 8px;
                   >
                     <h1
-                      style="color: rgb(51, 51, 51); font-size: 20px; font-weight: bold; margin-bottom: 15px;"
+                      style=color: #333333; font-size: 20px; font-weight: bold; margin-bottom: 15px;
                     >
                       This email is to confirm CHIP SPA CO-1234.R21.00 was withdrawn by George Harrison. The review of CHIP SPA CO-1234.R21.00 has concluded.
                     </h1>
                     <hr
-                      style="width: 100%; border-top: 1px solid #0071BD; margin: 16px 0px;"
+                      style=width: 100%; border-top: 1px solid #0071BD; margin: 16px 0px;
                     />
                     <table
-                      align="center"
-                      border="0"
-                      cellpadding="0"
-                      cellspacing="0"
-                      role="presentation"
-                      width="100%"
+                      align=center
+                      border=0
+                      cellpadding=0
+                      cellspacing=0
+                      role=presentation
+                      width=100%
                     >
                       <tbody>
                         <tr>
                           <td>
                             <p
-                              style="font-size: 14px; line-height: 24px; margin: 8px 0px 16px 0px;"
+                              style=font-size: 14px; line-height: 24px; margin: 8px 0px 16px 0px;
                             >
                               If you have any question, please contact 
                               <a
-                                href="mailto:CHIPSPASubmissionMailBox@cms.hhs.gov"
-                                style="color: rgb(6, 125, 247); text-decoration: underline;"
-                                target="_blank"
+                                href=mailto:CHIPSPASubmissionMailBox@cms.hhs.gov
+                                style=color: #067DF7; text-decoration: underline;
+                                target=_blank
                               >
                                 CHIPSPASubmissionMailBox@cms.hhs.gov
                               </a>
@@ -1929,42 +1929,42 @@ exports[`Withdraw Confirmation State Email Snapshot Test > renders a Waiver Prev
                       </tbody>
                     </table>
                     <p
-                      style="font-size: 14px; line-height: 1.4; margin: 12px 0px; color: rgb(51, 51, 51);"
+                      style=font-size: 14px; line-height: 1.4; margin: 12px 0px; color: #333333;
                     >
                       Thank you.
                     </p>
                   </div>
                   <table
-                    align="center"
-                    border="0"
-                    cellpadding="0"
-                    cellspacing="0"
-                    role="presentation"
-                    style="font-size: 14px; padding: 0px 0px; font-weight: 300; background-color: rgb(0, 113, 189); color: rgb(255, 255, 255); text-align: center;"
-                    width="100%"
+                    align=center
+                    border=0
+                    cellpadding=0
+                    cellspacing=0
+                    role=presentation
+                    style=font-size: 14px; padding: 0px 0px; font-weight: 300; background-color: #0071BD; color: #FFFFFF; text-align: center;
+                    width=100%
                   >
                     <tbody>
                       <tr>
                         <td>
                           <table
-                            align="center"
-                            border="0"
-                            cellpadding="0"
-                            cellspacing="0"
-                            role="presentation"
-                            style="font-size: 14px; padding: 0px 0px; font-weight: 300; background-color: rgb(0, 113, 189); color: rgb(255, 255, 255); text-align: center;"
-                            width="100%"
+                            align=center
+                            border=0
+                            cellpadding=0
+                            cellspacing=0
+                            role=presentation
+                            style=font-size: 14px; padding: 0px 0px; font-weight: 300; background-color: #0071BD; color: #FFFFFF; text-align: center;
+                            width=100%
                           >
                             <tbody>
                               <tr>
                                 <td>
                                   <p
-                                    style="font-size: 14px; line-height: 24px; margin: 8px; color: rgb(255, 255, 255);"
+                                    style=font-size: 14px; line-height: 24px; margin: 8px; color: #FFFFFF;
                                   >
                                     U.S. Centers for Medicare & Medicaid Services
                                   </p>
                                   <p
-                                    style="font-size: 14px; line-height: 24px; margin: 8px; color: rgb(255, 255, 255);"
+                                    style=font-size: 14px; line-height: 24px; margin: 8px; color: #FFFFFF;
                                   >
                                     © 
                                     2025
@@ -1987,20 +1987,20 @@ exports[`Withdraw Confirmation State Email Snapshot Test > renders a Waiver Prev
     </div>
     <div>
       <html
-        dir="ltr"
-        lang="en"
+        dir=ltr
+        lang=en
       >
         <head>
           <meta
-            content="text/html; charset=UTF-8"
-            http-equiv="Content-Type"
+            content=text/html; charset=UTF-8
+            http-equiv=Content-Type
           />
           <meta
-            name="x-apple-disable-message-reformatting"
+            name=x-apple-disable-message-reformatting
           />
         </head>
         <div
-          style="display: none; overflow: hidden; line-height: 1px; opacity: 0; max-height: 0; max-width: 0;"
+          style=display: none; overflow: hidden; line-height: 1px; opacity: 0; max-height: 0; max-width: 0;
         >
           Medicaid SPA Package CO-1234.R21.00 Withdrawal Confirmation
           <div>
@@ -2008,45 +2008,45 @@ exports[`Withdraw Confirmation State Email Snapshot Test > renders a Waiver Prev
           </div>
         </div>
         <body
-          style="background-color: rgb(255, 255, 255); color: rgb(33, 33, 33); font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif; margin: 0px auto; padding: 20px 0px 48px;"
+          style=background-color: #FFFFFF; color: #212121; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif; margin: 0px auto; padding: 20px 0px 48px;
         >
           <table
-            align="center"
-            border="0"
-            cellpadding="0"
-            cellspacing="0"
-            role="presentation"
-            style="max-width: 37.5em; background-color: rgb(245, 245, 245);"
-            width="100%"
+            align=center
+            border=0
+            cellpadding=0
+            cellspacing=0
+            role=presentation
+            style=max-width: 37.5em; background-color: #F5F5F5;
+            width=100%
           >
             <tbody>
               <tr
-                style="width: 100%;"
+                style=width: 100%;
               >
                 <td>
                   <table
-                    align="center"
-                    border="0"
-                    cellpadding="0"
-                    cellspacing="0"
-                    role="presentation"
-                    style="background-color: rgb(0, 113, 189); padding: 16px;"
-                    width="100%"
+                    align=center
+                    border=0
+                    cellpadding=0
+                    cellspacing=0
+                    role=presentation
+                    style=background-color: #0071BD; padding: 16px;
+                    width=100%
                   >
                     <tbody>
                       <tr>
                         <td>
                           <a
-                            href="https://mako-dev.cms.gov/"
-                            style="color: rgb(6, 125, 247); text-decoration: none; display: block; max-width: 112px;"
-                            target="_blank"
+                            href=https://mako-dev.cms.gov/
+                            style=color: #067DF7; text-decoration: none; display: block; max-width: 112px;
+                            target=_blank
                           >
                             <img
-                              alt="OneMAC Logo"
-                              height="40"
-                              src="https://mako-dev.cms.gov/onemac-logo.png"
-                              style="max-width: 112px;"
-                              width="112"
+                              alt=OneMAC Logo
+                              height=40
+                              src=https://mako-dev.cms.gov/onemac-logo.png
+                              style=max-width: 112px;
+                              width=112
                             />
                           </a>
                         </td>
@@ -2054,35 +2054,35 @@ exports[`Withdraw Confirmation State Email Snapshot Test > renders a Waiver Prev
                     </tbody>
                   </table>
                   <div
-                    style="margin: 0px 8px 8px 8px; padding: 8px;"
+                    style=margin: 0px 8px 8px 8px; padding: 8px;
                   >
                     <h1
-                      style="color: rgb(51, 51, 51); font-size: 20px; font-weight: bold; margin-bottom: 15px;"
+                      style=color: #333333; font-size: 20px; font-weight: bold; margin-bottom: 15px;
                     >
                       This email is to confirm Medicaid SPA CO-1234.R21.00 was withdrawn by George Harrison. The review of Medicaid SPA CO-1234.R21.00 has concluded.
                     </h1>
                     <hr
-                      style="width: 100%; border-top: 1px solid #0071BD; margin: 16px 0px;"
+                      style=width: 100%; border-top: 1px solid #0071BD; margin: 16px 0px;
                     />
                     <table
-                      align="center"
-                      border="0"
-                      cellpadding="0"
-                      cellspacing="0"
-                      role="presentation"
-                      width="100%"
+                      align=center
+                      border=0
+                      cellpadding=0
+                      cellspacing=0
+                      role=presentation
+                      width=100%
                     >
                       <tbody>
                         <tr>
                           <td>
                             <p
-                              style="font-size: 14px; line-height: 24px; margin: 8px 0px 16px 0px;"
+                              style=font-size: 14px; line-height: 24px; margin: 8px 0px 16px 0px;
                             >
                               If you have any questions, please contact 
                               <a
-                                href="mailto:spa@cms.hhs.gov"
-                                style="color: rgb(6, 125, 247); text-decoration: underline;"
-                                target="_blank"
+                                href=mailto:spa@cms.hhs.gov
+                                style=color: #067DF7; text-decoration: underline;
+                                target=_blank
                               >
                                 spa@cms.hhs.gov
                               </a>
@@ -2093,42 +2093,42 @@ exports[`Withdraw Confirmation State Email Snapshot Test > renders a Waiver Prev
                       </tbody>
                     </table>
                     <p
-                      style="font-size: 14px; line-height: 1.4; margin: 12px 0px; color: rgb(51, 51, 51);"
+                      style=font-size: 14px; line-height: 1.4; margin: 12px 0px; color: #333333;
                     >
                       Thank you.
                     </p>
                   </div>
                   <table
-                    align="center"
-                    border="0"
-                    cellpadding="0"
-                    cellspacing="0"
-                    role="presentation"
-                    style="font-size: 14px; padding: 0px 0px; font-weight: 300; background-color: rgb(0, 113, 189); color: rgb(255, 255, 255); text-align: center;"
-                    width="100%"
+                    align=center
+                    border=0
+                    cellpadding=0
+                    cellspacing=0
+                    role=presentation
+                    style=font-size: 14px; padding: 0px 0px; font-weight: 300; background-color: #0071BD; color: #FFFFFF; text-align: center;
+                    width=100%
                   >
                     <tbody>
                       <tr>
                         <td>
                           <table
-                            align="center"
-                            border="0"
-                            cellpadding="0"
-                            cellspacing="0"
-                            role="presentation"
-                            style="font-size: 14px; padding: 0px 0px; font-weight: 300; background-color: rgb(0, 113, 189); color: rgb(255, 255, 255); text-align: center;"
-                            width="100%"
+                            align=center
+                            border=0
+                            cellpadding=0
+                            cellspacing=0
+                            role=presentation
+                            style=font-size: 14px; padding: 0px 0px; font-weight: 300; background-color: #0071BD; color: #FFFFFF; text-align: center;
+                            width=100%
                           >
                             <tbody>
                               <tr>
                                 <td>
                                   <p
-                                    style="font-size: 14px; line-height: 24px; margin: 8px; color: rgb(255, 255, 255);"
+                                    style=font-size: 14px; line-height: 24px; margin: 8px; color: #FFFFFF;
                                   >
                                     U.S. Centers for Medicare & Medicaid Services
                                   </p>
                                   <p
-                                    style="font-size: 14px; line-height: 24px; margin: 8px; color: rgb(255, 255, 255);"
+                                    style=font-size: 14px; line-height: 24px; margin: 8px; color: #FFFFFF;
                                   >
                                     © 
                                     2025
@@ -2151,20 +2151,20 @@ exports[`Withdraw Confirmation State Email Snapshot Test > renders a Waiver Prev
     </div>
     <div>
       <html
-        dir="ltr"
-        lang="en"
+        dir=ltr
+        lang=en
       >
         <head>
           <meta
-            content="text/html; charset=UTF-8"
-            http-equiv="Content-Type"
+            content=text/html; charset=UTF-8
+            http-equiv=Content-Type
           />
           <meta
-            name="x-apple-disable-message-reformatting"
+            name=x-apple-disable-message-reformatting
           />
         </head>
         <div
-          style="display: none; overflow: hidden; line-height: 1px; opacity: 0; max-height: 0; max-width: 0;"
+          style=display: none; overflow: hidden; line-height: 1px; opacity: 0; max-height: 0; max-width: 0;
         >
           Withdrawal of 1915(b) CO-1234.R21.00
           <div>
@@ -2172,45 +2172,45 @@ exports[`Withdraw Confirmation State Email Snapshot Test > renders a Waiver Prev
           </div>
         </div>
         <body
-          style="background-color: rgb(255, 255, 255); color: rgb(33, 33, 33); font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif; margin: 0px auto; padding: 20px 0px 48px;"
+          style=background-color: #FFFFFF; color: #212121; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif; margin: 0px auto; padding: 20px 0px 48px;
         >
           <table
-            align="center"
-            border="0"
-            cellpadding="0"
-            cellspacing="0"
-            role="presentation"
-            style="max-width: 37.5em; background-color: rgb(245, 245, 245);"
-            width="100%"
+            align=center
+            border=0
+            cellpadding=0
+            cellspacing=0
+            role=presentation
+            style=max-width: 37.5em; background-color: #F5F5F5;
+            width=100%
           >
             <tbody>
               <tr
-                style="width: 100%;"
+                style=width: 100%;
               >
                 <td>
                   <table
-                    align="center"
-                    border="0"
-                    cellpadding="0"
-                    cellspacing="0"
-                    role="presentation"
-                    style="background-color: rgb(0, 113, 189); padding: 16px;"
-                    width="100%"
+                    align=center
+                    border=0
+                    cellpadding=0
+                    cellspacing=0
+                    role=presentation
+                    style=background-color: #0071BD; padding: 16px;
+                    width=100%
                   >
                     <tbody>
                       <tr>
                         <td>
                           <a
-                            href="https://mako-dev.cms.gov/"
-                            style="color: rgb(6, 125, 247); text-decoration: none; display: block; max-width: 112px;"
-                            target="_blank"
+                            href=https://mako-dev.cms.gov/
+                            style=color: #067DF7; text-decoration: none; display: block; max-width: 112px;
+                            target=_blank
                           >
                             <img
-                              alt="OneMAC Logo"
-                              height="40"
-                              src="https://mako-dev.cms.gov/onemac-logo.png"
-                              style="max-width: 112px;"
-                              width="112"
+                              alt=OneMAC Logo
+                              height=40
+                              src=https://mako-dev.cms.gov/onemac-logo.png
+                              style=max-width: 112px;
+                              width=112
                             />
                           </a>
                         </td>
@@ -2218,35 +2218,35 @@ exports[`Withdraw Confirmation State Email Snapshot Test > renders a Waiver Prev
                     </tbody>
                   </table>
                   <div
-                    style="margin: 0px 8px 8px 8px; padding: 8px;"
+                    style=margin: 0px 8px 8px 8px; padding: 8px;
                   >
                     <h1
-                      style="color: rgb(51, 51, 51); font-size: 20px; font-weight: bold; margin-bottom: 15px;"
+                      style=color: #333333; font-size: 20px; font-weight: bold; margin-bottom: 15px;
                     >
                       This email is to confirm Amendment CO-1234.R21.00 was withdrawn by George Harrison. The review of Amendment CO-1234.R21.00 has concluded.
                     </h1>
                     <hr
-                      style="width: 100%; border-top: 1px solid #0071BD; margin: 16px 0px;"
+                      style=width: 100%; border-top: 1px solid #0071BD; margin: 16px 0px;
                     />
                     <table
-                      align="center"
-                      border="0"
-                      cellpadding="0"
-                      cellspacing="0"
-                      role="presentation"
-                      width="100%"
+                      align=center
+                      border=0
+                      cellpadding=0
+                      cellspacing=0
+                      role=presentation
+                      width=100%
                     >
                       <tbody>
                         <tr>
                           <td>
                             <p
-                              style="font-size: 14px; line-height: 24px; margin: 8px 0px 16px 0px;"
+                              style=font-size: 14px; line-height: 24px; margin: 8px 0px 16px 0px;
                             >
                               If you have any questions, please contact 
                               <a
-                                href="mailto:spa@cms.hhs.gov"
-                                style="color: rgb(6, 125, 247); text-decoration: underline;"
-                                target="_blank"
+                                href=mailto:spa@cms.hhs.gov
+                                style=color: #067DF7; text-decoration: underline;
+                                target=_blank
                               >
                                 spa@cms.hhs.gov
                               </a>
@@ -2257,42 +2257,42 @@ exports[`Withdraw Confirmation State Email Snapshot Test > renders a Waiver Prev
                       </tbody>
                     </table>
                     <p
-                      style="font-size: 14px; line-height: 1.4; margin: 12px 0px; color: rgb(51, 51, 51);"
+                      style=font-size: 14px; line-height: 1.4; margin: 12px 0px; color: #333333;
                     >
                       Thank you.
                     </p>
                   </div>
                   <table
-                    align="center"
-                    border="0"
-                    cellpadding="0"
-                    cellspacing="0"
-                    role="presentation"
-                    style="font-size: 14px; padding: 0px 0px; font-weight: 300; background-color: rgb(0, 113, 189); color: rgb(255, 255, 255); text-align: center;"
-                    width="100%"
+                    align=center
+                    border=0
+                    cellpadding=0
+                    cellspacing=0
+                    role=presentation
+                    style=font-size: 14px; padding: 0px 0px; font-weight: 300; background-color: #0071BD; color: #FFFFFF; text-align: center;
+                    width=100%
                   >
                     <tbody>
                       <tr>
                         <td>
                           <table
-                            align="center"
-                            border="0"
-                            cellpadding="0"
-                            cellspacing="0"
-                            role="presentation"
-                            style="font-size: 14px; padding: 0px 0px; font-weight: 300; background-color: rgb(0, 113, 189); color: rgb(255, 255, 255); text-align: center;"
-                            width="100%"
+                            align=center
+                            border=0
+                            cellpadding=0
+                            cellspacing=0
+                            role=presentation
+                            style=font-size: 14px; padding: 0px 0px; font-weight: 300; background-color: #0071BD; color: #FFFFFF; text-align: center;
+                            width=100%
                           >
                             <tbody>
                               <tr>
                                 <td>
                                   <p
-                                    style="font-size: 14px; line-height: 24px; margin: 8px; color: rgb(255, 255, 255);"
+                                    style=font-size: 14px; line-height: 24px; margin: 8px; color: #FFFFFF;
                                   >
                                     U.S. Centers for Medicare & Medicaid Services
                                   </p>
                                   <p
-                                    style="font-size: 14px; line-height: 24px; margin: 8px; color: rgb(255, 255, 255);"
+                                    style=font-size: 14px; line-height: 24px; margin: 8px; color: #FFFFFF;
                                   >
                                     © 
                                     2025
@@ -2314,22 +2314,22 @@ exports[`Withdraw Confirmation State Email Snapshot Test > renders a Waiver Prev
       </html>
     </div>
   </body>,
-  "container": <div>
+  container: <div>
     <html
-      dir="ltr"
-      lang="en"
+      dir=ltr
+      lang=en
     >
       <head>
         <meta
-          content="text/html; charset=UTF-8"
-          http-equiv="Content-Type"
+          content=text/html; charset=UTF-8
+          http-equiv=Content-Type
         />
         <meta
-          name="x-apple-disable-message-reformatting"
+          name=x-apple-disable-message-reformatting
         />
       </head>
       <div
-        style="display: none; overflow: hidden; line-height: 1px; opacity: 0; max-height: 0; max-width: 0;"
+        style=display: none; overflow: hidden; line-height: 1px; opacity: 0; max-height: 0; max-width: 0;
       >
         Withdrawal of 1915(b) CO-1234.R21.00
         <div>
@@ -2337,45 +2337,45 @@ exports[`Withdraw Confirmation State Email Snapshot Test > renders a Waiver Prev
         </div>
       </div>
       <body
-        style="background-color: rgb(255, 255, 255); color: rgb(33, 33, 33); font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif; margin: 0px auto; padding: 20px 0px 48px;"
+        style=background-color: #FFFFFF; color: #212121; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif; margin: 0px auto; padding: 20px 0px 48px;
       >
         <table
-          align="center"
-          border="0"
-          cellpadding="0"
-          cellspacing="0"
-          role="presentation"
-          style="max-width: 37.5em; background-color: rgb(245, 245, 245);"
-          width="100%"
+          align=center
+          border=0
+          cellpadding=0
+          cellspacing=0
+          role=presentation
+          style=max-width: 37.5em; background-color: #F5F5F5;
+          width=100%
         >
           <tbody>
             <tr
-              style="width: 100%;"
+              style=width: 100%;
             >
               <td>
                 <table
-                  align="center"
-                  border="0"
-                  cellpadding="0"
-                  cellspacing="0"
-                  role="presentation"
-                  style="background-color: rgb(0, 113, 189); padding: 16px;"
-                  width="100%"
+                  align=center
+                  border=0
+                  cellpadding=0
+                  cellspacing=0
+                  role=presentation
+                  style=background-color: #0071BD; padding: 16px;
+                  width=100%
                 >
                   <tbody>
                     <tr>
                       <td>
                         <a
-                          href="https://mako-dev.cms.gov/"
-                          style="color: rgb(6, 125, 247); text-decoration: none; display: block; max-width: 112px;"
-                          target="_blank"
+                          href=https://mako-dev.cms.gov/
+                          style=color: #067DF7; text-decoration: none; display: block; max-width: 112px;
+                          target=_blank
                         >
                           <img
-                            alt="OneMAC Logo"
-                            height="40"
-                            src="https://mako-dev.cms.gov/onemac-logo.png"
-                            style="max-width: 112px;"
-                            width="112"
+                            alt=OneMAC Logo
+                            height=40
+                            src=https://mako-dev.cms.gov/onemac-logo.png
+                            style=max-width: 112px;
+                            width=112
                           />
                         </a>
                       </td>
@@ -2383,35 +2383,35 @@ exports[`Withdraw Confirmation State Email Snapshot Test > renders a Waiver Prev
                   </tbody>
                 </table>
                 <div
-                  style="margin: 0px 8px 8px 8px; padding: 8px;"
+                  style=margin: 0px 8px 8px 8px; padding: 8px;
                 >
                   <h1
-                    style="color: rgb(51, 51, 51); font-size: 20px; font-weight: bold; margin-bottom: 15px;"
+                    style=color: #333333; font-size: 20px; font-weight: bold; margin-bottom: 15px;
                   >
                     This email is to confirm Amendment CO-1234.R21.00 was withdrawn by George Harrison. The review of Amendment CO-1234.R21.00 has concluded.
                   </h1>
                   <hr
-                    style="width: 100%; border-top: 1px solid #0071BD; margin: 16px 0px;"
+                    style=width: 100%; border-top: 1px solid #0071BD; margin: 16px 0px;
                   />
                   <table
-                    align="center"
-                    border="0"
-                    cellpadding="0"
-                    cellspacing="0"
-                    role="presentation"
-                    width="100%"
+                    align=center
+                    border=0
+                    cellpadding=0
+                    cellspacing=0
+                    role=presentation
+                    width=100%
                   >
                     <tbody>
                       <tr>
                         <td>
                           <p
-                            style="font-size: 14px; line-height: 24px; margin: 8px 0px 16px 0px;"
+                            style=font-size: 14px; line-height: 24px; margin: 8px 0px 16px 0px;
                           >
                             If you have any questions, please contact 
                             <a
-                              href="mailto:spa@cms.hhs.gov"
-                              style="color: rgb(6, 125, 247); text-decoration: underline;"
-                              target="_blank"
+                              href=mailto:spa@cms.hhs.gov
+                              style=color: #067DF7; text-decoration: underline;
+                              target=_blank
                             >
                               spa@cms.hhs.gov
                             </a>
@@ -2422,42 +2422,42 @@ exports[`Withdraw Confirmation State Email Snapshot Test > renders a Waiver Prev
                     </tbody>
                   </table>
                   <p
-                    style="font-size: 14px; line-height: 1.4; margin: 12px 0px; color: rgb(51, 51, 51);"
+                    style=font-size: 14px; line-height: 1.4; margin: 12px 0px; color: #333333;
                   >
                     Thank you.
                   </p>
                 </div>
                 <table
-                  align="center"
-                  border="0"
-                  cellpadding="0"
-                  cellspacing="0"
-                  role="presentation"
-                  style="font-size: 14px; padding: 0px 0px; font-weight: 300; background-color: rgb(0, 113, 189); color: rgb(255, 255, 255); text-align: center;"
-                  width="100%"
+                  align=center
+                  border=0
+                  cellpadding=0
+                  cellspacing=0
+                  role=presentation
+                  style=font-size: 14px; padding: 0px 0px; font-weight: 300; background-color: #0071BD; color: #FFFFFF; text-align: center;
+                  width=100%
                 >
                   <tbody>
                     <tr>
                       <td>
                         <table
-                          align="center"
-                          border="0"
-                          cellpadding="0"
-                          cellspacing="0"
-                          role="presentation"
-                          style="font-size: 14px; padding: 0px 0px; font-weight: 300; background-color: rgb(0, 113, 189); color: rgb(255, 255, 255); text-align: center;"
-                          width="100%"
+                          align=center
+                          border=0
+                          cellpadding=0
+                          cellspacing=0
+                          role=presentation
+                          style=font-size: 14px; padding: 0px 0px; font-weight: 300; background-color: #0071BD; color: #FFFFFF; text-align: center;
+                          width=100%
                         >
                           <tbody>
                             <tr>
                               <td>
                                 <p
-                                  style="font-size: 14px; line-height: 24px; margin: 8px; color: rgb(255, 255, 255);"
+                                  style=font-size: 14px; line-height: 24px; margin: 8px; color: #FFFFFF;
                                 >
                                   U.S. Centers for Medicare & Medicaid Services
                                 </p>
                                 <p
-                                  style="font-size: 14px; line-height: 24px; margin: 8px; color: rgb(255, 255, 255);"
+                                  style=font-size: 14px; line-height: 24px; margin: 8px; color: #FFFFFF;
                                 >
                                   © 
                                   2025
@@ -2478,56 +2478,56 @@ exports[`Withdraw Confirmation State Email Snapshot Test > renders a Waiver Prev
       </body>
     </html>
   </div>,
-  "debug": [Function],
-  "findAllByAltText": [Function],
-  "findAllByDisplayValue": [Function],
-  "findAllByLabelText": [Function],
-  "findAllByPlaceholderText": [Function],
-  "findAllByRole": [Function],
-  "findAllByTestId": [Function],
-  "findAllByText": [Function],
-  "findAllByTitle": [Function],
-  "findByAltText": [Function],
-  "findByDisplayValue": [Function],
-  "findByLabelText": [Function],
-  "findByPlaceholderText": [Function],
-  "findByRole": [Function],
-  "findByTestId": [Function],
-  "findByText": [Function],
-  "findByTitle": [Function],
-  "getAllByAltText": [Function],
-  "getAllByDisplayValue": [Function],
-  "getAllByLabelText": [Function],
-  "getAllByPlaceholderText": [Function],
-  "getAllByRole": [Function],
-  "getAllByTestId": [Function],
-  "getAllByText": [Function],
-  "getAllByTitle": [Function],
-  "getByAltText": [Function],
-  "getByDisplayValue": [Function],
-  "getByLabelText": [Function],
-  "getByPlaceholderText": [Function],
-  "getByRole": [Function],
-  "getByTestId": [Function],
-  "getByText": [Function],
-  "getByTitle": [Function],
-  "queryAllByAltText": [Function],
-  "queryAllByDisplayValue": [Function],
-  "queryAllByLabelText": [Function],
-  "queryAllByPlaceholderText": [Function],
-  "queryAllByRole": [Function],
-  "queryAllByTestId": [Function],
-  "queryAllByText": [Function],
-  "queryAllByTitle": [Function],
-  "queryByAltText": [Function],
-  "queryByDisplayValue": [Function],
-  "queryByLabelText": [Function],
-  "queryByPlaceholderText": [Function],
-  "queryByRole": [Function],
-  "queryByTestId": [Function],
-  "queryByText": [Function],
-  "queryByTitle": [Function],
-  "rerender": [Function],
-  "unmount": [Function],
+  debug: [Function],
+  findAllByAltText: [Function],
+  findAllByDisplayValue: [Function],
+  findAllByLabelText: [Function],
+  findAllByPlaceholderText: [Function],
+  findAllByRole: [Function],
+  findAllByTestId: [Function],
+  findAllByText: [Function],
+  findAllByTitle: [Function],
+  findByAltText: [Function],
+  findByDisplayValue: [Function],
+  findByLabelText: [Function],
+  findByPlaceholderText: [Function],
+  findByRole: [Function],
+  findByTestId: [Function],
+  findByText: [Function],
+  findByTitle: [Function],
+  getAllByAltText: [Function],
+  getAllByDisplayValue: [Function],
+  getAllByLabelText: [Function],
+  getAllByPlaceholderText: [Function],
+  getAllByRole: [Function],
+  getAllByTestId: [Function],
+  getAllByText: [Function],
+  getAllByTitle: [Function],
+  getByAltText: [Function],
+  getByDisplayValue: [Function],
+  getByLabelText: [Function],
+  getByPlaceholderText: [Function],
+  getByRole: [Function],
+  getByTestId: [Function],
+  getByText: [Function],
+  getByTitle: [Function],
+  queryAllByAltText: [Function],
+  queryAllByDisplayValue: [Function],
+  queryAllByLabelText: [Function],
+  queryAllByPlaceholderText: [Function],
+  queryAllByRole: [Function],
+  queryAllByTestId: [Function],
+  queryAllByText: [Function],
+  queryAllByTitle: [Function],
+  queryByAltText: [Function],
+  queryByDisplayValue: [Function],
+  queryByLabelText: [Function],
+  queryByPlaceholderText: [Function],
+  queryByRole: [Function],
+  queryByTestId: [Function],
+  queryByText: [Function],
+  queryByTitle: [Function],
+  rerender: [Function],
+  unmount: [Function],
 }
 `;
