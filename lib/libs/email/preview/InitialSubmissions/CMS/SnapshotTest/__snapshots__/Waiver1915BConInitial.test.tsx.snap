@@ -328,7 +328,7 @@ exports[`Initial Submission CMS Email Snapshot Test > renders a Initial Waiver C
                             <p
                               style="font-size: 14px; line-height: 1.4; margin: 4px 0px 4px 0px; color: rgb(51, 51, 51);"
                             >
-                              March 2, 2023
+                              January 13, 2026
                             </p>
                           </td>
                         </tr>
@@ -507,7 +507,7 @@ exports[`Initial Submission CMS Email Snapshot Test > renders a Initial Waiver C
                           <p
                             style="font-size: 14px; line-height: 24px; margin: 8px; color: rgb(255, 255, 255);"
                           >
-                            © 2023 | 7500 Security Boulevard, Baltimore, MD 21244
+                            © 2025 | 7500 Security Boulevard, Baltimore, MD 21244
                           </p>
                         </td>
                       </tr>

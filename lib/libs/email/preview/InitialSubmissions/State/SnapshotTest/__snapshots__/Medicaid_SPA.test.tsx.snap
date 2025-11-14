@@ -258,7 +258,7 @@ exports[`Initial Submission State Email Snapshot Test > renders a Medicaid Spa P
                             <p
                               style="font-size: 14px; line-height: 1.4; margin: 4px 0px 4px 0px; color: rgb(51, 51, 51);"
                             >
-                              March 2, 2023
+                              January 13, 2026
                             </p>
                           </td>
                         </tr>
@@ -295,7 +295,7 @@ exports[`Initial Submission State Email Snapshot Test > renders a Medicaid Spa P
                             <p
                               style="font-size: 14px; line-height: 1.4; margin: 4px 0px 4px 0px; color: rgb(51, 51, 51);"
                             >
-                              Apr 1, 2023
+                              Feb 12, 2026
                             </p>
                           </td>
                         </tr>
@@ -343,7 +343,7 @@ exports[`Initial Submission State Email Snapshot Test > renders a Medicaid Spa P
             >
               This response confirms the receipt of your Medicaid State Plan Amendment
         (SPA or your response to a SPA Request for Additional Information (RAI)). You can expect a formal response to your submittal to be issued
-        within 90 days, before Apr 1, 2023.
+        within 90 days, before Feb 12, 2026.
             </p>
             <p
               style="font-size: 14px; line-height: 1.4; margin: 16px 0px 16px 0px; color: rgb(51, 51, 51);"
@@ -419,7 +419,7 @@ exports[`Initial Submission State Email Snapshot Test > renders a Medicaid Spa P
                           <p
                             style="font-size: 14px; line-height: 24px; margin: 8px; color: rgb(255, 255, 255);"
                           >
-                            © 2023 | 7500 Security Boulevard, Baltimore, MD 21244
+                            © 2025 | 7500 Security Boulevard, Baltimore, MD 21244
                           </p>
                         </td>
                       </tr>
