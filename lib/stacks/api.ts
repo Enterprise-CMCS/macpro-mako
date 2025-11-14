@@ -606,6 +606,11 @@ export class Api extends cdk.NestedStack {
         lambda: lambdas.submitRoleRequests,
         method: "POST",
       },
+      submitNoso: {
+        path: "submitNoso",
+        lambda: lambdas.submitNOSO,
+        method: "POST",
+      },
       item: { path: "item", lambda: lambdas.item, method: "POST" },
       submit: { path: "submit", lambda: lambdas.submit, method: "POST" },
       getTypes: {
