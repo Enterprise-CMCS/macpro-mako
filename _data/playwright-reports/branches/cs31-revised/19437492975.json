@@ -340,42 +340,37 @@
                               "workerIndex": 0,
                               "parallelIndex": 0,
                               "status": "failed",
-                              "duration": 11041,
+                              "duration": 6212,
                               "error": {
-                                "message": "Error: \u001b[31mTimed out 5000ms waiting for \u001b[39m\u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m()\u001b[22m\n\nLocator: getByTestId('Dashboard-d')\nExpected: visible\nReceived: <element(s) not found>\nCall log:\n\u001b[2m  - Expect \"toBeVisible\" with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for getByTestId('Dashboard-d')\u001b[22m\n",
-                                "stack": "Error: \u001b[31mTimed out 5000ms waiting for \u001b[39m\u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m()\u001b[22m\n\nLocator: getByTestId('Dashboard-d')\nExpected: visible\nReceived: <element(s) not found>\nCall log:\n\u001b[2m  - Expect \"toBeVisible\" with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for getByTestId('Dashboard-d')\u001b[22m\n\n    at /home/runner/work/macpro-mako/macpro-mako/test/e2e/specs/dashboard.spec.ts:33:53",
+                                "message": "Error: \u001b[31mTimed out 5000ms waiting for \u001b[39m\u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m()\u001b[22m\n\nLocator: getByTestId('Home-d')\nExpected: visible\nReceived: <element(s) not found>\nCall log:\n\u001b[2m  - Expect \"toBeVisible\" with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for getByTestId('Home-d')\u001b[22m\n",
+                                "stack": "Error: \u001b[31mTimed out 5000ms waiting for \u001b[39m\u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m()\u001b[22m\n\nLocator: getByTestId('Home-d')\nExpected: visible\nReceived: <element(s) not found>\nCall log:\n\u001b[2m  - Expect \"toBeVisible\" with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for getByTestId('Home-d')\u001b[22m\n\n    at /home/runner/work/macpro-mako/macpro-mako/test/e2e/specs/dashboard.spec.ts:29:48",
                                 "location": {
                                   "file": "/home/runner/work/macpro-mako/macpro-mako/test/e2e/specs/dashboard.spec.ts",
-                                  "column": 53,
-                                  "line": 33
+                                  "column": 48,
+                                  "line": 29
                                 },
-                                "snippet": "\u001b[0m \u001b[90m 31 |\u001b[39m           \u001b[36mawait\u001b[39m expect(dashboardPage\u001b[33m.\u001b[39mhomeLink)\u001b[33m.\u001b[39mnot\u001b[33m.\u001b[39mtoHaveClass(\u001b[32m\"underline\"\u001b[39m)\u001b[33m;\u001b[39m\n \u001b[90m 32 |\u001b[39m\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 33 |\u001b[39m           \u001b[36mawait\u001b[39m expect(dashboardPage\u001b[33m.\u001b[39mdashboardLink)\u001b[33m.\u001b[39mtoBeVisible()\u001b[33m;\u001b[39m\n \u001b[90m    |\u001b[39m                                                     \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 34 |\u001b[39m           \u001b[36mawait\u001b[39m expect(dashboardPage\u001b[33m.\u001b[39mdashboardLink)\u001b[33m.\u001b[39mtoHaveText(\u001b[32m\"Dashboard\"\u001b[39m)\u001b[33m;\u001b[39m\n \u001b[90m 35 |\u001b[39m           \u001b[36mawait\u001b[39m expect(dashboardPage\u001b[33m.\u001b[39mdashboardLink)\u001b[33m.\u001b[39mtoHaveClass(\u001b[35m/underline/\u001b[39m)\u001b[33m;\u001b[39m\n \u001b[90m 36 |\u001b[39m\u001b[0m"
+                                "snippet": "\u001b[0m \u001b[90m 27 |\u001b[39m       test\u001b[33m.\u001b[39mdescribe(\u001b[32m\"UI validations\"\u001b[39m\u001b[33m,\u001b[39m {}\u001b[33m,\u001b[39m () \u001b[33m=>\u001b[39m {\n \u001b[90m 28 |\u001b[39m         test(\u001b[32m\"navigation banner updates\"\u001b[39m\u001b[33m,\u001b[39m \u001b[36masync\u001b[39m () \u001b[33m=>\u001b[39m {\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 29 |\u001b[39m           \u001b[36mawait\u001b[39m expect(dashboardPage\u001b[33m.\u001b[39mhomeLink)\u001b[33m.\u001b[39mtoBeVisible()\u001b[33m;\u001b[39m\n \u001b[90m    |\u001b[39m                                                \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 30 |\u001b[39m           \u001b[36mawait\u001b[39m expect(dashboardPage\u001b[33m.\u001b[39mhomeLink)\u001b[33m.\u001b[39mtoHaveText(\u001b[32m\"Home\"\u001b[39m)\u001b[33m;\u001b[39m\n \u001b[90m 31 |\u001b[39m           \u001b[36mawait\u001b[39m expect(dashboardPage\u001b[33m.\u001b[39mhomeLink)\u001b[33m.\u001b[39mnot\u001b[33m.\u001b[39mtoHaveClass(\u001b[32m\"underline\"\u001b[39m)\u001b[33m;\u001b[39m\n \u001b[90m 32 |\u001b[39m\u001b[0m"
                               },
                               "errors": [
                                 {
                                   "location": {
                                     "file": "/home/runner/work/macpro-mako/macpro-mako/test/e2e/specs/dashboard.spec.ts",
-                                    "column": 53,
-                                    "line": 33
+                                    "column": 48,
+                                    "line": 29
                                   },
-                                  "message": "Error: \u001b[31mTimed out 5000ms waiting for \u001b[39m\u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m()\u001b[22m\n\nLocator: getByTestId('Dashboard-d')\nExpected: visible\nReceived: <element(s) not found>\nCall log:\n\u001b[2m  - Expect \"toBeVisible\" with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for getByTestId('Dashboard-d')\u001b[22m\n\n\n  31 |           await expect(dashboardPage.homeLink).not.toHaveClass(\"underline\");\n  32 |\n> 33 |           await expect(dashboardPage.dashboardLink).toBeVisible();\n     |                                                     ^\n  34 |           await expect(dashboardPage.dashboardLink).toHaveText(\"Dashboard\");\n  35 |           await expect(dashboardPage.dashboardLink).toHaveClass(/underline/);\n  36 |\n    at /home/runner/work/macpro-mako/macpro-mako/test/e2e/specs/dashboard.spec.ts:33:53"
+                                  "message": "Error: \u001b[31mTimed out 5000ms waiting for \u001b[39m\u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m()\u001b[22m\n\nLocator: getByTestId('Home-d')\nExpected: visible\nReceived: <element(s) not found>\nCall log:\n\u001b[2m  - Expect \"toBeVisible\" with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for getByTestId('Home-d')\u001b[22m\n\n\n  27 |       test.describe(\"UI validations\", {}, () => {\n  28 |         test(\"navigation banner updates\", async () => {\n> 29 |           await expect(dashboardPage.homeLink).toBeVisible();\n     |                                                ^\n  30 |           await expect(dashboardPage.homeLink).toHaveText(\"Home\");\n  31 |           await expect(dashboardPage.homeLink).not.toHaveClass(\"underline\");\n  32 |\n    at /home/runner/work/macpro-mako/macpro-mako/test/e2e/specs/dashboard.spec.ts:29:48"
                                 }
                               ],
                               "stdout": [],
                               "stderr": [],
                               "retry": 0,
-                              "startTime": "2025-11-17T17:09:24.204Z",
+                              "startTime": "2025-11-18T16:06:47.259Z",
                               "annotations": [],
                               "attachments": [
                                 {
                                   "name": "video",
                                   "contentType": "video/webm",
                                   "path": "/home/runner/work/macpro-mako/macpro-mako/test/test-results/e2e-specs-dashboard-Dashbo-17e0c-s-navigation-banner-updates-shared/video.webm"
-                                },
-                                {
-                                  "name": "error-context",
-                                  "contentType": "text/markdown",
-                                  "path": "/home/runner/work/macpro-mako/macpro-mako/test/test-results/e2e-specs-dashboard-Dashbo-17e0c-s-navigation-banner-updates-shared/error-context.md"
                                 },
                                 {
                                   "name": "trace",
@@ -385,8 +380,8 @@
                               ],
                               "errorLocation": {
                                 "file": "/home/runner/work/macpro-mako/macpro-mako/test/e2e/specs/dashboard.spec.ts",
-                                "column": 53,
-                                "line": 33
+                                "column": 48,
+                                "line": 29
                               }
                             }
                           ],
@@ -416,7 +411,7 @@
                               "workerIndex": 1,
                               "parallelIndex": 0,
                               "status": "failed",
-                              "duration": 5990,
+                              "duration": 6134,
                               "error": {
                                 "message": "Error: \u001b[31mTimed out 5000ms waiting for \u001b[39m\u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m()\u001b[22m\n\nLocator: getByRole('heading', { name: 'Dashboard' })\nExpected: visible\nReceived: <element(s) not found>\nCall log:\n\u001b[2m  - Expect \"toBeVisible\" with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for getByRole('heading', { name: 'Dashboard' })\u001b[22m\n",
                                 "stack": "Error: \u001b[31mTimed out 5000ms waiting for \u001b[39m\u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m()\u001b[22m\n\nLocator: getByRole('heading', { name: 'Dashboard' })\nExpected: visible\nReceived: <element(s) not found>\nCall log:\n\u001b[2m  - Expect \"toBeVisible\" with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for getByRole('heading', { name: 'Dashboard' })\u001b[22m\n\n    at /home/runner/work/macpro-mako/macpro-mako/test/e2e/specs/dashboard.spec.ts:43:74",
@@ -440,7 +435,7 @@
                               "stdout": [],
                               "stderr": [],
                               "retry": 0,
-                              "startTime": "2025-11-17T17:09:36.393Z",
+                              "startTime": "2025-11-18T16:06:54.575Z",
                               "annotations": [],
                               "attachments": [
                                 {
@@ -492,7 +487,7 @@
                               "workerIndex": 2,
                               "parallelIndex": 0,
                               "status": "failed",
-                              "duration": 5961,
+                              "duration": 5909,
                               "error": {
                                 "message": "Error: \u001b[31mTimed out 5000ms waiting for \u001b[39m\u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m()\u001b[22m\n\nLocator: getByRole('tab', { name: 'SPAs' })\nExpected: visible\nReceived: <element(s) not found>\nCall log:\n\u001b[2m  - Expect \"toBeVisible\" with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for getByRole('tab', { name: 'SPAs' })\u001b[22m\n",
                                 "stack": "Error: \u001b[31mTimed out 5000ms waiting for \u001b[39m\u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m()\u001b[22m\n\nLocator: getByRole('tab', { name: 'SPAs' })\nExpected: visible\nReceived: <element(s) not found>\nCall log:\n\u001b[2m  - Expect \"toBeVisible\" with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for getByRole('tab', { name: 'SPAs' })\u001b[22m\n\n    at /home/runner/work/macpro-mako/macpro-mako/test/e2e/specs/dashboard.spec.ts:53:65",
@@ -516,7 +511,7 @@
                               "stdout": [],
                               "stderr": [],
                               "retry": 0,
-                              "startTime": "2025-11-17T17:09:43.518Z",
+                              "startTime": "2025-11-18T16:07:01.878Z",
                               "annotations": [],
                               "attachments": [
                                 {
@@ -568,7 +563,7 @@
                               "workerIndex": 3,
                               "parallelIndex": 0,
                               "status": "failed",
-                              "duration": 5958,
+                              "duration": 5936,
                               "error": {
                                 "message": "Error: \u001b[31mTimed out 5000ms waiting for \u001b[39m\u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m()\u001b[22m\n\nLocator: getByTestId('filtering').locator('p')\nExpected: visible\nReceived: <element(s) not found>\nCall log:\n\u001b[2m  - Expect \"toBeVisible\" with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for getByTestId('filtering').locator('p')\u001b[22m\n",
                                 "stack": "Error: \u001b[31mTimed out 5000ms waiting for \u001b[39m\u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m()\u001b[22m\n\nLocator: getByTestId('filtering').locator('p')\nExpected: visible\nReceived: <element(s) not found>\nCall log:\n\u001b[2m  - Expect \"toBeVisible\" with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for getByTestId('filtering').locator('p')\u001b[22m\n\n    at /home/runner/work/macpro-mako/macpro-mako/test/e2e/specs/dashboard.spec.ts:61:68",
@@ -592,7 +587,7 @@
                               "stdout": [],
                               "stderr": [],
                               "retry": 0,
-                              "startTime": "2025-11-17T17:09:50.633Z",
+                              "startTime": "2025-11-18T16:07:08.930Z",
                               "annotations": [],
                               "attachments": [
                                 {
@@ -644,7 +639,7 @@
                               "workerIndex": 4,
                               "parallelIndex": 0,
                               "status": "failed",
-                              "duration": 5960,
+                              "duration": 5921,
                               "error": {
                                 "message": "Error: \u001b[31mTimed out 5000ms waiting for \u001b[39m\u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m()\u001b[22m\n\nLocator: getByRole('button', { name: /Columns/ })\nExpected: visible\nReceived: <element(s) not found>\nCall log:\n\u001b[2m  - Expect \"toBeVisible\" with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for getByRole('button', { name: /Columns/ })\u001b[22m\n",
                                 "stack": "Error: \u001b[31mTimed out 5000ms waiting for \u001b[39m\u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m()\u001b[22m\n\nLocator: getByRole('button', { name: /Columns/ })\nExpected: visible\nReceived: <element(s) not found>\nCall log:\n\u001b[2m  - Expect \"toBeVisible\" with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for getByRole('button', { name: /Columns/ })\u001b[22m\n\n    at /home/runner/work/macpro-mako/macpro-mako/test/e2e/specs/dashboard.spec.ts:70:71",
@@ -668,7 +663,7 @@
                               "stdout": [],
                               "stderr": [],
                               "retry": 0,
-                              "startTime": "2025-11-17T17:09:57.722Z",
+                              "startTime": "2025-11-18T16:07:16.004Z",
                               "annotations": [],
                               "attachments": [
                                 {
@@ -720,7 +715,7 @@
                               "workerIndex": 5,
                               "parallelIndex": 0,
                               "status": "failed",
-                              "duration": 5917,
+                              "duration": 5942,
                               "error": {
                                 "message": "Error: \u001b[31mTimed out 5000ms waiting for \u001b[39m\u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m()\u001b[22m\n\nLocator: getByText(/Filters/)\nExpected: visible\nReceived: <element(s) not found>\nCall log:\n\u001b[2m  - Expect \"toBeVisible\" with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for getByText(/Filters/)\u001b[22m\n",
                                 "stack": "Error: \u001b[31mTimed out 5000ms waiting for \u001b[39m\u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m()\u001b[22m\n\nLocator: getByText(/Filters/)\nExpected: visible\nReceived: <element(s) not found>\nCall log:\n\u001b[2m  - Expect \"toBeVisible\" with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for getByText(/Filters/)\u001b[22m\n\n    at /home/runner/work/macpro-mako/macpro-mako/test/e2e/specs/dashboard.spec.ts:77:51",
@@ -744,7 +739,7 @@
                               "stdout": [],
                               "stderr": [],
                               "retry": 0,
-                              "startTime": "2025-11-17T17:10:04.823Z",
+                              "startTime": "2025-11-18T16:07:23.079Z",
                               "annotations": [],
                               "attachments": [
                                 {
@@ -796,7 +791,7 @@
                               "workerIndex": 6,
                               "parallelIndex": 0,
                               "status": "failed",
-                              "duration": 5945,
+                              "duration": 5975,
                               "error": {
                                 "message": "Error: \u001b[31mTimed out 5000ms waiting for \u001b[39m\u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m()\u001b[22m\n\nLocator: getByRole('button', { name: /Export/ })\nExpected: visible\nReceived: <element(s) not found>\nCall log:\n\u001b[2m  - Expect \"toBeVisible\" with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for getByRole('button', { name: /Export/ })\u001b[22m\n",
                                 "stack": "Error: \u001b[31mTimed out 5000ms waiting for \u001b[39m\u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m()\u001b[22m\n\nLocator: getByRole('button', { name: /Export/ })\nExpected: visible\nReceived: <element(s) not found>\nCall log:\n\u001b[2m  - Expect \"toBeVisible\" with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for getByRole('button', { name: /Export/ })\u001b[22m\n\n    at /home/runner/work/macpro-mako/macpro-mako/test/e2e/specs/dashboard.spec.ts:82:70",
@@ -820,7 +815,7 @@
                               "stdout": [],
                               "stderr": [],
                               "retry": 0,
-                              "startTime": "2025-11-17T17:10:11.877Z",
+                              "startTime": "2025-11-18T16:07:30.181Z",
                               "annotations": [],
                               "attachments": [
                                 {
@@ -887,12 +882,12 @@
                                       "workerIndex": 7,
                                       "parallelIndex": 0,
                                       "status": "passed",
-                                      "duration": 799,
+                                      "duration": 818,
                                       "errors": [],
                                       "stdout": [],
                                       "stderr": [],
                                       "retry": 0,
-                                      "startTime": "2025-11-17T17:10:18.963Z",
+                                      "startTime": "2025-11-18T16:07:37.312Z",
                                       "annotations": [],
                                       "attachments": []
                                     }
@@ -923,7 +918,7 @@
                                       "workerIndex": 7,
                                       "parallelIndex": 0,
                                       "status": "failed",
-                                      "duration": 5758,
+                                      "duration": 5917,
                                       "error": {
                                         "message": "Error: \u001b[31mTimed out 5000ms waiting for \u001b[39m\u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m()\u001b[22m\n\nLocator: locator('tbody')\nExpected: visible\nReceived: <element(s) not found>\nCall log:\n\u001b[2m  - Expect \"toBeVisible\" with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for locator('tbody')\u001b[22m\n",
                                         "stack": "Error: \u001b[31mTimed out 5000ms waiting for \u001b[39m\u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m()\u001b[22m\n\nLocator: locator('tbody')\nExpected: visible\nReceived: <element(s) not found>\nCall log:\n\u001b[2m  - Expect \"toBeVisible\" with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for locator('tbody')\u001b[22m\n\n    at /home/runner/work/macpro-mako/macpro-mako/test/e2e/specs/dashboard.spec.ts:126:51",
@@ -947,7 +942,7 @@
                                       "stdout": [],
                                       "stderr": [],
                                       "retry": 0,
-                                      "startTime": "2025-11-17T17:10:19.832Z",
+                                      "startTime": "2025-11-18T16:07:38.202Z",
                                       "annotations": [],
                                       "attachments": [
                                         {
@@ -999,7 +994,7 @@
                                       "workerIndex": 8,
                                       "parallelIndex": 0,
                                       "status": "failed",
-                                      "duration": 5954,
+                                      "duration": 5962,
                                       "error": {
                                         "message": "Error: \u001b[31mTimed out 5000ms waiting for \u001b[39m\u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m()\u001b[22m\n\nLocator: getByTestId('pagination')\nExpected: visible\nReceived: <element(s) not found>\nCall log:\n\u001b[2m  - Expect \"toBeVisible\" with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for getByTestId('pagination')\u001b[22m\n",
                                         "stack": "Error: \u001b[31mTimed out 5000ms waiting for \u001b[39m\u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m()\u001b[22m\n\nLocator: getByTestId('pagination')\nExpected: visible\nReceived: <element(s) not found>\nCall log:\n\u001b[2m  - Expect \"toBeVisible\" with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for getByTestId('pagination')\u001b[22m\n\n    at /home/runner/work/macpro-mako/macpro-mako/test/e2e/specs/dashboard.spec.ts:130:60",
@@ -1023,7 +1018,7 @@
                                       "stdout": [],
                                       "stderr": [],
                                       "retry": 0,
-                                      "startTime": "2025-11-17T17:10:26.696Z",
+                                      "startTime": "2025-11-18T16:07:45.215Z",
                                       "annotations": [],
                                       "attachments": [
                                         {
@@ -1083,7 +1078,7 @@
                                       "workerIndex": 9,
                                       "parallelIndex": 0,
                                       "status": "timedOut",
-                                      "duration": 31195,
+                                      "duration": 31227,
                                       "error": {
                                         "message": "\u001b[31mTest timeout of 30000ms exceeded while running \"beforeEach\" hook.\u001b[39m",
                                         "stack": "\u001b[31mTest timeout of 30000ms exceeded while running \"beforeEach\" hook.\u001b[39m\n    at /home/runner/work/macpro-mako/macpro-mako/test/e2e/specs/dashboard.spec.ts:135:18",
@@ -1115,7 +1110,7 @@
                                       "stdout": [],
                                       "stderr": [],
                                       "retry": 0,
-                                      "startTime": "2025-11-17T17:10:33.801Z",
+                                      "startTime": "2025-11-18T16:07:52.328Z",
                                       "annotations": [],
                                       "attachments": [
                                         {
@@ -1167,7 +1162,7 @@
                                       "workerIndex": 10,
                                       "parallelIndex": 0,
                                       "status": "timedOut",
-                                      "duration": 31149,
+                                      "duration": 31440,
                                       "error": {
                                         "message": "\u001b[31mTest timeout of 30000ms exceeded while running \"beforeEach\" hook.\u001b[39m",
                                         "stack": "\u001b[31mTest timeout of 30000ms exceeded while running \"beforeEach\" hook.\u001b[39m\n    at /home/runner/work/macpro-mako/macpro-mako/test/e2e/specs/dashboard.spec.ts:135:18",
@@ -1199,7 +1194,7 @@
                                       "stdout": [],
                                       "stderr": [],
                                       "retry": 0,
-                                      "startTime": "2025-11-17T17:11:06.173Z",
+                                      "startTime": "2025-11-18T16:08:24.748Z",
                                       "annotations": [],
                                       "attachments": [
                                         {
@@ -1251,7 +1246,7 @@
                                       "workerIndex": 11,
                                       "parallelIndex": 0,
                                       "status": "timedOut",
-                                      "duration": 31336,
+                                      "duration": 31208,
                                       "error": {
                                         "message": "\u001b[31mTest timeout of 30000ms exceeded while running \"beforeEach\" hook.\u001b[39m",
                                         "stack": "\u001b[31mTest timeout of 30000ms exceeded while running \"beforeEach\" hook.\u001b[39m\n    at /home/runner/work/macpro-mako/macpro-mako/test/e2e/specs/dashboard.spec.ts:135:18",
@@ -1283,7 +1278,7 @@
                                       "stdout": [],
                                       "stderr": [],
                                       "retry": 0,
-                                      "startTime": "2025-11-17T17:11:38.507Z",
+                                      "startTime": "2025-11-18T16:08:57.393Z",
                                       "annotations": [],
                                       "attachments": [
                                         {
@@ -1347,7 +1342,7 @@
                               "workerIndex": 12,
                               "parallelIndex": 0,
                               "status": "timedOut",
-                              "duration": 31213,
+                              "duration": 31374,
                               "error": {
                                 "message": "\u001b[31mTest timeout of 30000ms exceeded.\u001b[39m",
                                 "stack": "\u001b[31mTest timeout of 30000ms exceeded.\u001b[39m"
@@ -1368,7 +1363,7 @@
                               "stdout": [],
                               "stderr": [],
                               "retry": 0,
-                              "startTime": "2025-11-17T17:12:11.015Z",
+                              "startTime": "2025-11-18T16:09:29.813Z",
                               "annotations": [],
                               "attachments": [
                                 {
@@ -1437,7 +1432,7 @@
                               "workerIndex": 13,
                               "parallelIndex": 0,
                               "status": "failed",
-                              "duration": 10039,
+                              "duration": 10088,
                               "error": {
                                 "message": "Error: \u001b[31mTimed out 5000ms waiting for \u001b[39m\u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m()\u001b[22m\n\nLocator: getByTestId('Dashboard-d')\nExpected: visible\nReceived: <element(s) not found>\nCall log:\n\u001b[2m  - Expect \"toBeVisible\" with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for getByTestId('Dashboard-d')\u001b[22m\n",
                                 "stack": "Error: \u001b[31mTimed out 5000ms waiting for \u001b[39m\u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m()\u001b[22m\n\nLocator: getByTestId('Dashboard-d')\nExpected: visible\nReceived: <element(s) not found>\nCall log:\n\u001b[2m  - Expect \"toBeVisible\" with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for getByTestId('Dashboard-d')\u001b[22m\n\n    at /home/runner/work/macpro-mako/macpro-mako/test/e2e/specs/dashboard.spec.ts:33:53",
@@ -1461,7 +1456,7 @@
                               "stdout": [],
                               "stderr": [],
                               "retry": 0,
-                              "startTime": "2025-11-17T17:12:43.400Z",
+                              "startTime": "2025-11-18T16:10:02.383Z",
                               "annotations": [],
                               "attachments": [
                                 {
@@ -1513,7 +1508,7 @@
                               "workerIndex": 14,
                               "parallelIndex": 0,
                               "status": "failed",
-                              "duration": 5955,
+                              "duration": 5963,
                               "error": {
                                 "message": "Error: \u001b[31mTimed out 5000ms waiting for \u001b[39m\u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m()\u001b[22m\n\nLocator: getByRole('heading', { name: 'Dashboard' })\nExpected: visible\nReceived: <element(s) not found>\nCall log:\n\u001b[2m  - Expect \"toBeVisible\" with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for getByRole('heading', { name: 'Dashboard' })\u001b[22m\n",
                                 "stack": "Error: \u001b[31mTimed out 5000ms waiting for \u001b[39m\u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m()\u001b[22m\n\nLocator: getByRole('heading', { name: 'Dashboard' })\nExpected: visible\nReceived: <element(s) not found>\nCall log:\n\u001b[2m  - Expect \"toBeVisible\" with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for getByRole('heading', { name: 'Dashboard' })\u001b[22m\n\n    at /home/runner/work/macpro-mako/macpro-mako/test/e2e/specs/dashboard.spec.ts:43:74",
@@ -1537,7 +1532,7 @@
                               "stdout": [],
                               "stderr": [],
                               "retry": 0,
-                              "startTime": "2025-11-17T17:12:54.611Z",
+                              "startTime": "2025-11-18T16:10:13.627Z",
                               "annotations": [],
                               "attachments": [
                                 {
@@ -1589,7 +1584,7 @@
                               "workerIndex": 15,
                               "parallelIndex": 0,
                               "status": "failed",
-                              "duration": 5968,
+                              "duration": 5975,
                               "error": {
                                 "message": "Error: \u001b[31mTimed out 5000ms waiting for \u001b[39m\u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m()\u001b[22m\n\nLocator: getByRole('tab', { name: 'SPAs' })\nExpected: visible\nReceived: <element(s) not found>\nCall log:\n\u001b[2m  - Expect \"toBeVisible\" with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for getByRole('tab', { name: 'SPAs' })\u001b[22m\n",
                                 "stack": "Error: \u001b[31mTimed out 5000ms waiting for \u001b[39m\u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m()\u001b[22m\n\nLocator: getByRole('tab', { name: 'SPAs' })\nExpected: visible\nReceived: <element(s) not found>\nCall log:\n\u001b[2m  - Expect \"toBeVisible\" with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for getByRole('tab', { name: 'SPAs' })\u001b[22m\n\n    at /home/runner/work/macpro-mako/macpro-mako/test/e2e/specs/dashboard.spec.ts:53:65",
@@ -1613,7 +1608,7 @@
                               "stdout": [],
                               "stderr": [],
                               "retry": 0,
-                              "startTime": "2025-11-17T17:13:01.739Z",
+                              "startTime": "2025-11-18T16:10:20.747Z",
                               "annotations": [],
                               "attachments": [
                                 {
@@ -1665,7 +1660,7 @@
                               "workerIndex": 16,
                               "parallelIndex": 0,
                               "status": "failed",
-                              "duration": 5953,
+                              "duration": 5968,
                               "error": {
                                 "message": "Error: \u001b[31mTimed out 5000ms waiting for \u001b[39m\u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m()\u001b[22m\n\nLocator: getByTestId('filtering').locator('p')\nExpected: visible\nReceived: <element(s) not found>\nCall log:\n\u001b[2m  - Expect \"toBeVisible\" with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for getByTestId('filtering').locator('p')\u001b[22m\n",
                                 "stack": "Error: \u001b[31mTimed out 5000ms waiting for \u001b[39m\u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m()\u001b[22m\n\nLocator: getByTestId('filtering').locator('p')\nExpected: visible\nReceived: <element(s) not found>\nCall log:\n\u001b[2m  - Expect \"toBeVisible\" with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for getByTestId('filtering').locator('p')\u001b[22m\n\n    at /home/runner/work/macpro-mako/macpro-mako/test/e2e/specs/dashboard.spec.ts:61:68",
@@ -1689,7 +1684,7 @@
                               "stdout": [],
                               "stderr": [],
                               "retry": 0,
-                              "startTime": "2025-11-17T17:13:08.895Z",
+                              "startTime": "2025-11-18T16:10:27.890Z",
                               "annotations": [],
                               "attachments": [
                                 {
@@ -1741,7 +1736,7 @@
                               "workerIndex": 17,
                               "parallelIndex": 0,
                               "status": "failed",
-                              "duration": 5991,
+                              "duration": 5963,
                               "error": {
                                 "message": "Error: \u001b[31mTimed out 5000ms waiting for \u001b[39m\u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m()\u001b[22m\n\nLocator: getByRole('button', { name: /Columns/ })\nExpected: visible\nReceived: <element(s) not found>\nCall log:\n\u001b[2m  - Expect \"toBeVisible\" with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for getByRole('button', { name: /Columns/ })\u001b[22m\n",
                                 "stack": "Error: \u001b[31mTimed out 5000ms waiting for \u001b[39m\u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m()\u001b[22m\n\nLocator: getByRole('button', { name: /Columns/ })\nExpected: visible\nReceived: <element(s) not found>\nCall log:\n\u001b[2m  - Expect \"toBeVisible\" with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for getByRole('button', { name: /Columns/ })\u001b[22m\n\n    at /home/runner/work/macpro-mako/macpro-mako/test/e2e/specs/dashboard.spec.ts:70:71",
@@ -1765,7 +1760,7 @@
                               "stdout": [],
                               "stderr": [],
                               "retry": 0,
-                              "startTime": "2025-11-17T17:13:16.032Z",
+                              "startTime": "2025-11-18T16:10:35.010Z",
                               "annotations": [],
                               "attachments": [
                                 {
@@ -1817,7 +1812,7 @@
                               "workerIndex": 18,
                               "parallelIndex": 0,
                               "status": "failed",
-                              "duration": 6037,
+                              "duration": 5933,
                               "error": {
                                 "message": "Error: \u001b[31mTimed out 5000ms waiting for \u001b[39m\u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m()\u001b[22m\n\nLocator: getByText(/Filters/)\nExpected: visible\nReceived: <element(s) not found>\nCall log:\n\u001b[2m  - Expect \"toBeVisible\" with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for getByText(/Filters/)\u001b[22m\n",
                                 "stack": "Error: \u001b[31mTimed out 5000ms waiting for \u001b[39m\u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m()\u001b[22m\n\nLocator: getByText(/Filters/)\nExpected: visible\nReceived: <element(s) not found>\nCall log:\n\u001b[2m  - Expect \"toBeVisible\" with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for getByText(/Filters/)\u001b[22m\n\n    at /home/runner/work/macpro-mako/macpro-mako/test/e2e/specs/dashboard.spec.ts:77:51",
@@ -1841,7 +1836,7 @@
                               "stdout": [],
                               "stderr": [],
                               "retry": 0,
-                              "startTime": "2025-11-17T17:13:23.203Z",
+                              "startTime": "2025-11-18T16:10:42.120Z",
                               "annotations": [],
                               "attachments": [
                                 {
@@ -1893,7 +1888,7 @@
                               "workerIndex": 19,
                               "parallelIndex": 0,
                               "status": "failed",
-                              "duration": 6063,
+                              "duration": 5952,
                               "error": {
                                 "message": "Error: \u001b[31mTimed out 5000ms waiting for \u001b[39m\u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m()\u001b[22m\n\nLocator: getByRole('button', { name: /Export/ })\nExpected: visible\nReceived: <element(s) not found>\nCall log:\n\u001b[2m  - Expect \"toBeVisible\" with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for getByRole('button', { name: /Export/ })\u001b[22m\n",
                                 "stack": "Error: \u001b[31mTimed out 5000ms waiting for \u001b[39m\u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m()\u001b[22m\n\nLocator: getByRole('button', { name: /Export/ })\nExpected: visible\nReceived: <element(s) not found>\nCall log:\n\u001b[2m  - Expect \"toBeVisible\" with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for getByRole('button', { name: /Export/ })\u001b[22m\n\n    at /home/runner/work/macpro-mako/macpro-mako/test/e2e/specs/dashboard.spec.ts:82:70",
@@ -1917,7 +1912,7 @@
                               "stdout": [],
                               "stderr": [],
                               "retry": 0,
-                              "startTime": "2025-11-17T17:13:30.420Z",
+                              "startTime": "2025-11-18T16:10:49.203Z",
                               "annotations": [],
                               "attachments": [
                                 {
@@ -1984,12 +1979,12 @@
                                       "workerIndex": 20,
                                       "parallelIndex": 0,
                                       "status": "passed",
-                                      "duration": 799,
+                                      "duration": 800,
                                       "errors": [],
                                       "stdout": [],
                                       "stderr": [],
                                       "retry": 0,
-                                      "startTime": "2025-11-17T17:13:37.651Z",
+                                      "startTime": "2025-11-18T16:10:56.304Z",
                                       "annotations": [],
                                       "attachments": []
                                     }
@@ -2020,7 +2015,7 @@
                                       "workerIndex": 20,
                                       "parallelIndex": 0,
                                       "status": "failed",
-                                      "duration": 5838,
+                                      "duration": 5908,
                                       "error": {
                                         "message": "Error: \u001b[31mTimed out 5000ms waiting for \u001b[39m\u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m()\u001b[22m\n\nLocator: locator('tbody')\nExpected: visible\nReceived: <element(s) not found>\nCall log:\n\u001b[2m  - Expect \"toBeVisible\" with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for locator('tbody')\u001b[22m\n",
                                         "stack": "Error: \u001b[31mTimed out 5000ms waiting for \u001b[39m\u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m()\u001b[22m\n\nLocator: locator('tbody')\nExpected: visible\nReceived: <element(s) not found>\nCall log:\n\u001b[2m  - Expect \"toBeVisible\" with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for locator('tbody')\u001b[22m\n\n    at /home/runner/work/macpro-mako/macpro-mako/test/e2e/specs/dashboard.spec.ts:126:51",
@@ -2044,7 +2039,7 @@
                                       "stdout": [],
                                       "stderr": [],
                                       "retry": 0,
-                                      "startTime": "2025-11-17T17:13:38.523Z",
+                                      "startTime": "2025-11-18T16:10:57.176Z",
                                       "annotations": [],
                                       "attachments": [
                                         {
@@ -2096,7 +2091,7 @@
                                       "workerIndex": 21,
                                       "parallelIndex": 0,
                                       "status": "failed",
-                                      "duration": 5978,
+                                      "duration": 5959,
                                       "error": {
                                         "message": "Error: \u001b[31mTimed out 5000ms waiting for \u001b[39m\u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m()\u001b[22m\n\nLocator: getByTestId('pagination')\nExpected: visible\nReceived: <element(s) not found>\nCall log:\n\u001b[2m  - Expect \"toBeVisible\" with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for getByTestId('pagination')\u001b[22m\n",
                                         "stack": "Error: \u001b[31mTimed out 5000ms waiting for \u001b[39m\u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m()\u001b[22m\n\nLocator: getByTestId('pagination')\nExpected: visible\nReceived: <element(s) not found>\nCall log:\n\u001b[2m  - Expect \"toBeVisible\" with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for getByTestId('pagination')\u001b[22m\n\n    at /home/runner/work/macpro-mako/macpro-mako/test/e2e/specs/dashboard.spec.ts:130:60",
@@ -2120,7 +2115,7 @@
                                       "stdout": [],
                                       "stderr": [],
                                       "retry": 0,
-                                      "startTime": "2025-11-17T17:13:45.469Z",
+                                      "startTime": "2025-11-18T16:11:04.175Z",
                                       "annotations": [],
                                       "attachments": [
                                         {
@@ -2180,7 +2175,7 @@
                                       "workerIndex": 22,
                                       "parallelIndex": 0,
                                       "status": "timedOut",
-                                      "duration": 31354,
+                                      "duration": 31329,
                                       "error": {
                                         "message": "\u001b[31mTest timeout of 30000ms exceeded while running \"beforeEach\" hook.\u001b[39m",
                                         "stack": "\u001b[31mTest timeout of 30000ms exceeded while running \"beforeEach\" hook.\u001b[39m\n    at /home/runner/work/macpro-mako/macpro-mako/test/e2e/specs/dashboard.spec.ts:135:18",
@@ -2212,7 +2207,7 @@
                                       "stdout": [],
                                       "stderr": [],
                                       "retry": 0,
-                                      "startTime": "2025-11-17T17:13:52.626Z",
+                                      "startTime": "2025-11-18T16:11:11.292Z",
                                       "annotations": [],
                                       "attachments": [
                                         {
@@ -2264,7 +2259,7 @@
                                       "workerIndex": 23,
                                       "parallelIndex": 0,
                                       "status": "timedOut",
-                                      "duration": 31300,
+                                      "duration": 31293,
                                       "error": {
                                         "message": "\u001b[31mTest timeout of 30000ms exceeded while running \"beforeEach\" hook.\u001b[39m",
                                         "stack": "\u001b[31mTest timeout of 30000ms exceeded while running \"beforeEach\" hook.\u001b[39m\n    at /home/runner/work/macpro-mako/macpro-mako/test/e2e/specs/dashboard.spec.ts:135:18",
@@ -2296,7 +2291,7 @@
                                       "stdout": [],
                                       "stderr": [],
                                       "retry": 0,
-                                      "startTime": "2025-11-17T17:14:25.189Z",
+                                      "startTime": "2025-11-18T16:11:43.817Z",
                                       "annotations": [],
                                       "attachments": [
                                         {
@@ -2348,7 +2343,7 @@
                                       "workerIndex": 24,
                                       "parallelIndex": 0,
                                       "status": "timedOut",
-                                      "duration": 31433,
+                                      "duration": 31317,
                                       "error": {
                                         "message": "\u001b[31mTest timeout of 30000ms exceeded while running \"beforeEach\" hook.\u001b[39m",
                                         "stack": "\u001b[31mTest timeout of 30000ms exceeded while running \"beforeEach\" hook.\u001b[39m\n    at /home/runner/work/macpro-mako/macpro-mako/test/e2e/specs/dashboard.spec.ts:135:18",
@@ -2380,7 +2375,7 @@
                                       "stdout": [],
                                       "stderr": [],
                                       "retry": 0,
-                                      "startTime": "2025-11-17T17:14:57.700Z",
+                                      "startTime": "2025-11-18T16:12:16.311Z",
                                       "annotations": [],
                                       "attachments": [
                                         {
@@ -2444,7 +2439,7 @@
                               "workerIndex": 25,
                               "parallelIndex": 0,
                               "status": "timedOut",
-                              "duration": 31188,
+                              "duration": 31231,
                               "error": {
                                 "message": "\u001b[31mTest timeout of 30000ms exceeded.\u001b[39m",
                                 "stack": "\u001b[31mTest timeout of 30000ms exceeded.\u001b[39m"
@@ -2465,7 +2460,7 @@
                               "stdout": [],
                               "stderr": [],
                               "retry": 0,
-                              "startTime": "2025-11-17T17:15:30.342Z",
+                              "startTime": "2025-11-18T16:12:48.797Z",
                               "annotations": [],
                               "attachments": [
                                 {
@@ -2510,8 +2505,8 @@
   ],
   "errors": [],
   "stats": {
-    "startTime": "2025-11-17T17:09:10.381Z",
-    "duration": 411381.73699999996,
+    "startTime": "2025-11-18T16:06:33.631Z",
+    "duration": 406615.46900000004,
     "expected": 2,
     "skipped": 0,
     "unexpected": 26,
