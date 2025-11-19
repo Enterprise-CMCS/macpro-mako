@@ -27,7 +27,7 @@ exports[`Respond To Rai State Email Snapshot Test > renders a ChipSPA Preview Te
           </div>
         </div>
         <body
-          style="background-color: rgb(255, 255, 255); color: rgb(33, 33, 33); font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif; margin: 0px auto; padding: 20px 0px 48px;"
+          style="background-color: rgb(255, 255, 255); color: rgb(33, 33, 33); font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen", "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue", sans-serif; margin: 0px auto; padding: 20px 0px 48px;"
         >
           <table
             align="center"
@@ -296,10 +296,10 @@ exports[`Respond To Rai State Email Snapshot Test > renders a ChipSPA Preview Te
                                   style="width: 100%;"
                                 >
                                   <hr
-                                    style="width: 100%; border-top: 1px solid #0071BD; margin: 16px 0px;"
+                                    style="width: 100%; border-top: 1px solid rgb(0, 113, 189); margin: 16px 0px;"
                                   />
                                   <p
-                                    style="font-size: 14px; line-height: 24px; margin: .5em;"
+                                    style="font-size: 14px; line-height: 24px; margin: 0.5em;"
                                   >
                                     <h2
                                       style="font-size: 16px;"
@@ -435,7 +435,7 @@ exports[`Respond To Rai State Email Snapshot Test > renders a ChipSPA Preview Te
         </div>
       </div>
       <body
-        style="background-color: rgb(255, 255, 255); color: rgb(33, 33, 33); font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif; margin: 0px auto; padding: 20px 0px 48px;"
+        style="background-color: rgb(255, 255, 255); color: rgb(33, 33, 33); font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen", "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue", sans-serif; margin: 0px auto; padding: 20px 0px 48px;"
       >
         <table
           align="center"
@@ -704,10 +704,10 @@ exports[`Respond To Rai State Email Snapshot Test > renders a ChipSPA Preview Te
                                 style="width: 100%;"
                               >
                                 <hr
-                                  style="width: 100%; border-top: 1px solid #0071BD; margin: 16px 0px;"
+                                  style="width: 100%; border-top: 1px solid rgb(0, 113, 189); margin: 16px 0px;"
                                 />
                                 <p
-                                  style="font-size: 14px; line-height: 24px; margin: .5em;"
+                                  style="font-size: 14px; line-height: 24px; margin: 0.5em;"
                                 >
                                   <h2
                                     style="font-size: 16px;"
@@ -900,7 +900,7 @@ exports[`Respond To Rai State Email Snapshot Test > renders a Medicaid_SPA Previ
           </div>
         </div>
         <body
-          style="background-color: rgb(255, 255, 255); color: rgb(33, 33, 33); font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif; margin: 0px auto; padding: 20px 0px 48px;"
+          style="background-color: rgb(255, 255, 255); color: rgb(33, 33, 33); font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen", "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue", sans-serif; margin: 0px auto; padding: 20px 0px 48px;"
         >
           <table
             align="center"
@@ -1169,10 +1169,10 @@ exports[`Respond To Rai State Email Snapshot Test > renders a Medicaid_SPA Previ
                                   style="width: 100%;"
                                 >
                                   <hr
-                                    style="width: 100%; border-top: 1px solid #0071BD; margin: 16px 0px;"
+                                    style="width: 100%; border-top: 1px solid rgb(0, 113, 189); margin: 16px 0px;"
                                   />
                                   <p
-                                    style="font-size: 14px; line-height: 24px; margin: .5em;"
+                                    style="font-size: 14px; line-height: 24px; margin: 0.5em;"
                                   >
                                     <h2
                                       style="font-size: 16px;"
@@ -1307,7 +1307,7 @@ exports[`Respond To Rai State Email Snapshot Test > renders a Medicaid_SPA Previ
           </div>
         </div>
         <body
-          style="background-color: rgb(255, 255, 255); color: rgb(33, 33, 33); font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif; margin: 0px auto; padding: 20px 0px 48px;"
+          style="background-color: rgb(255, 255, 255); color: rgb(33, 33, 33); font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen", "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue", sans-serif; margin: 0px auto; padding: 20px 0px 48px;"
         >
           <table
             align="center"
@@ -1576,10 +1576,10 @@ exports[`Respond To Rai State Email Snapshot Test > renders a Medicaid_SPA Previ
                                   style="width: 100%;"
                                 >
                                   <hr
-                                    style="width: 100%; border-top: 1px solid #0071BD; margin: 16px 0px;"
+                                    style="width: 100%; border-top: 1px solid rgb(0, 113, 189); margin: 16px 0px;"
                                   />
                                   <p
-                                    style="font-size: 14px; line-height: 24px; margin: .5em;"
+                                    style="font-size: 14px; line-height: 24px; margin: 0.5em;"
                                   >
                                     <h2
                                       style="font-size: 16px;"
@@ -1719,7 +1719,7 @@ exports[`Respond To Rai State Email Snapshot Test > renders a Medicaid_SPA Previ
         </div>
       </div>
       <body
-        style="background-color: rgb(255, 255, 255); color: rgb(33, 33, 33); font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif; margin: 0px auto; padding: 20px 0px 48px;"
+        style="background-color: rgb(255, 255, 255); color: rgb(33, 33, 33); font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen", "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue", sans-serif; margin: 0px auto; padding: 20px 0px 48px;"
       >
         <table
           align="center"
@@ -1988,10 +1988,10 @@ exports[`Respond To Rai State Email Snapshot Test > renders a Medicaid_SPA Previ
                                 style="width: 100%;"
                               >
                                 <hr
-                                  style="width: 100%; border-top: 1px solid #0071BD; margin: 16px 0px;"
+                                  style="width: 100%; border-top: 1px solid rgb(0, 113, 189); margin: 16px 0px;"
                                 />
                                 <p
-                                  style="font-size: 14px; line-height: 24px; margin: .5em;"
+                                  style="font-size: 14px; line-height: 24px; margin: 0.5em;"
                                 >
                                   <h2
                                     style="font-size: 16px;"
@@ -2188,7 +2188,7 @@ exports[`Respond To Rai State Email Snapshot Test > renders a Waiver Capitated P
           </div>
         </div>
         <body
-          style="background-color: rgb(255, 255, 255); color: rgb(33, 33, 33); font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif; margin: 0px auto; padding: 20px 0px 48px;"
+          style="background-color: rgb(255, 255, 255); color: rgb(33, 33, 33); font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen", "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue", sans-serif; margin: 0px auto; padding: 20px 0px 48px;"
         >
           <table
             align="center"
@@ -2457,10 +2457,10 @@ exports[`Respond To Rai State Email Snapshot Test > renders a Waiver Capitated P
                                   style="width: 100%;"
                                 >
                                   <hr
-                                    style="width: 100%; border-top: 1px solid #0071BD; margin: 16px 0px;"
+                                    style="width: 100%; border-top: 1px solid rgb(0, 113, 189); margin: 16px 0px;"
                                   />
                                   <p
-                                    style="font-size: 14px; line-height: 24px; margin: .5em;"
+                                    style="font-size: 14px; line-height: 24px; margin: 0.5em;"
                                   >
                                     <h2
                                       style="font-size: 16px;"
@@ -2595,7 +2595,7 @@ exports[`Respond To Rai State Email Snapshot Test > renders a Waiver Capitated P
           </div>
         </div>
         <body
-          style="background-color: rgb(255, 255, 255); color: rgb(33, 33, 33); font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif; margin: 0px auto; padding: 20px 0px 48px;"
+          style="background-color: rgb(255, 255, 255); color: rgb(33, 33, 33); font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen", "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue", sans-serif; margin: 0px auto; padding: 20px 0px 48px;"
         >
           <table
             align="center"
@@ -2864,10 +2864,10 @@ exports[`Respond To Rai State Email Snapshot Test > renders a Waiver Capitated P
                                   style="width: 100%;"
                                 >
                                   <hr
-                                    style="width: 100%; border-top: 1px solid #0071BD; margin: 16px 0px;"
+                                    style="width: 100%; border-top: 1px solid rgb(0, 113, 189); margin: 16px 0px;"
                                   />
                                   <p
-                                    style="font-size: 14px; line-height: 24px; margin: .5em;"
+                                    style="font-size: 14px; line-height: 24px; margin: 0.5em;"
                                   >
                                     <h2
                                       style="font-size: 16px;"
@@ -3006,7 +3006,7 @@ exports[`Respond To Rai State Email Snapshot Test > renders a Waiver Capitated P
           </div>
         </div>
         <body
-          style="background-color: rgb(255, 255, 255); color: rgb(33, 33, 33); font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif; margin: 0px auto; padding: 20px 0px 48px;"
+          style="background-color: rgb(255, 255, 255); color: rgb(33, 33, 33); font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen", "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue", sans-serif; margin: 0px auto; padding: 20px 0px 48px;"
         >
           <table
             align="center"
@@ -3313,10 +3313,10 @@ exports[`Respond To Rai State Email Snapshot Test > renders a Waiver Capitated P
                                   style="width: 100%;"
                                 >
                                   <hr
-                                    style="width: 100%; border-top: 1px solid #0071BD; margin: 16px 0px;"
+                                    style="width: 100%; border-top: 1px solid rgb(0, 113, 189); margin: 16px 0px;"
                                   />
                                   <p
-                                    style="font-size: 14px; line-height: 24px; margin: .5em;"
+                                    style="font-size: 14px; line-height: 24px; margin: 0.5em;"
                                   >
                                     <h2
                                       style="font-size: 16px;"
@@ -3458,7 +3458,7 @@ exports[`Respond To Rai State Email Snapshot Test > renders a Waiver Capitated P
         </div>
       </div>
       <body
-        style="background-color: rgb(255, 255, 255); color: rgb(33, 33, 33); font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif; margin: 0px auto; padding: 20px 0px 48px;"
+        style="background-color: rgb(255, 255, 255); color: rgb(33, 33, 33); font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen", "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue", sans-serif; margin: 0px auto; padding: 20px 0px 48px;"
       >
         <table
           align="center"
@@ -3765,10 +3765,10 @@ exports[`Respond To Rai State Email Snapshot Test > renders a Waiver Capitated P
                                 style="width: 100%;"
                               >
                                 <hr
-                                  style="width: 100%; border-top: 1px solid #0071BD; margin: 16px 0px;"
+                                  style="width: 100%; border-top: 1px solid rgb(0, 113, 189); margin: 16px 0px;"
                                 />
                                 <p
-                                  style="font-size: 14px; line-height: 24px; margin: .5em;"
+                                  style="font-size: 14px; line-height: 24px; margin: 0.5em;"
                                 >
                                   <h2
                                     style="font-size: 16px;"

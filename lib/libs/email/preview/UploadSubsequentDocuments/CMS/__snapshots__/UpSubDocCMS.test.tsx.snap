@@ -27,7 +27,7 @@ exports[`Upload Subsequent Document CMS Email Snapshot Test > renders a AppKCMSE
           </div>
         </div>
         <body
-          style="background-color: rgb(255, 255, 255); color: rgb(33, 33, 33); font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif; margin: 0px auto; padding: 20px 0px 48px;"
+          style="background-color: rgb(255, 255, 255); color: rgb(33, 33, 33); font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen", "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue", sans-serif; margin: 0px auto; padding: 20px 0px 48px;"
         >
           <table
             align="center"
@@ -182,10 +182,10 @@ exports[`Upload Subsequent Document CMS Email Snapshot Test > renders a AppKCMSE
                                   style="width: 100%;"
                                 >
                                   <hr
-                                    style="width: 100%; border-top: 1px solid #0071BD; margin: 16px 0px;"
+                                    style="width: 100%; border-top: 1px solid rgb(0, 113, 189); margin: 16px 0px;"
                                   />
                                   <p
-                                    style="font-size: 14px; line-height: 24px; margin: .5em;"
+                                    style="font-size: 14px; line-height: 24px; margin: 0.5em;"
                                   >
                                     <h2
                                       style="font-size: 16px;"
@@ -206,7 +206,7 @@ exports[`Upload Subsequent Document CMS Email Snapshot Test > renders a AppKCMSE
                       </tbody>
                     </table>
                     <hr
-                      style="width: 100%; border-top: 1px solid #0071BD; margin: 16px 0px;"
+                      style="width: 100%; border-top: 1px solid rgb(0, 113, 189); margin: 16px 0px;"
                     />
                     <h2
                       style="font-size: 16px;"
@@ -306,7 +306,7 @@ exports[`Upload Subsequent Document CMS Email Snapshot Test > renders a AppKCMSE
                       </tbody>
                     </table>
                     <hr
-                      style="width: 100%; border-top: 1px solid #0071BD; margin: 16px 0px;"
+                      style="width: 100%; border-top: 1px solid rgb(0, 113, 189); margin: 16px 0px;"
                     />
                     <p
                       style="font-size: 14px; line-height: 1.4; margin: 12px 0px; color: rgb(51, 51, 51); font-weight: bold;"
@@ -426,7 +426,7 @@ exports[`Upload Subsequent Document CMS Email Snapshot Test > renders a AppKCMSE
         </div>
       </div>
       <body
-        style="background-color: rgb(255, 255, 255); color: rgb(33, 33, 33); font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif; margin: 0px auto; padding: 20px 0px 48px;"
+        style="background-color: rgb(255, 255, 255); color: rgb(33, 33, 33); font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen", "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue", sans-serif; margin: 0px auto; padding: 20px 0px 48px;"
       >
         <table
           align="center"
@@ -581,10 +581,10 @@ exports[`Upload Subsequent Document CMS Email Snapshot Test > renders a AppKCMSE
                                 style="width: 100%;"
                               >
                                 <hr
-                                  style="width: 100%; border-top: 1px solid #0071BD; margin: 16px 0px;"
+                                  style="width: 100%; border-top: 1px solid rgb(0, 113, 189); margin: 16px 0px;"
                                 />
                                 <p
-                                  style="font-size: 14px; line-height: 24px; margin: .5em;"
+                                  style="font-size: 14px; line-height: 24px; margin: 0.5em;"
                                 >
                                   <h2
                                     style="font-size: 16px;"
@@ -605,7 +605,7 @@ exports[`Upload Subsequent Document CMS Email Snapshot Test > renders a AppKCMSE
                     </tbody>
                   </table>
                   <hr
-                    style="width: 100%; border-top: 1px solid #0071BD; margin: 16px 0px;"
+                    style="width: 100%; border-top: 1px solid rgb(0, 113, 189); margin: 16px 0px;"
                   />
                   <h2
                     style="font-size: 16px;"
@@ -705,7 +705,7 @@ exports[`Upload Subsequent Document CMS Email Snapshot Test > renders a AppKCMSE
                     </tbody>
                   </table>
                   <hr
-                    style="width: 100%; border-top: 1px solid #0071BD; margin: 16px 0px;"
+                    style="width: 100%; border-top: 1px solid rgb(0, 113, 189); margin: 16px 0px;"
                   />
                   <p
                     style="font-size: 14px; line-height: 1.4; margin: 12px 0px; color: rgb(51, 51, 51); font-weight: bold;"
@@ -882,7 +882,7 @@ exports[`Upload Subsequent Document CMS Email Snapshot Test > renders a ChipSPA 
           </div>
         </div>
         <body
-          style="background-color: rgb(255, 255, 255); color: rgb(33, 33, 33); font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif; margin: 0px auto; padding: 20px 0px 48px;"
+          style="background-color: rgb(255, 255, 255); color: rgb(33, 33, 33); font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen", "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue", sans-serif; margin: 0px auto; padding: 20px 0px 48px;"
         >
           <table
             align="center"
@@ -1037,10 +1037,10 @@ exports[`Upload Subsequent Document CMS Email Snapshot Test > renders a ChipSPA 
                                   style="width: 100%;"
                                 >
                                   <hr
-                                    style="width: 100%; border-top: 1px solid #0071BD; margin: 16px 0px;"
+                                    style="width: 100%; border-top: 1px solid rgb(0, 113, 189); margin: 16px 0px;"
                                   />
                                   <p
-                                    style="font-size: 14px; line-height: 24px; margin: .5em;"
+                                    style="font-size: 14px; line-height: 24px; margin: 0.5em;"
                                   >
                                     <h2
                                       style="font-size: 16px;"
@@ -1061,7 +1061,7 @@ exports[`Upload Subsequent Document CMS Email Snapshot Test > renders a ChipSPA 
                       </tbody>
                     </table>
                     <hr
-                      style="width: 100%; border-top: 1px solid #0071BD; margin: 16px 0px;"
+                      style="width: 100%; border-top: 1px solid rgb(0, 113, 189); margin: 16px 0px;"
                     />
                     <h2
                       style="font-size: 16px;"
@@ -1161,7 +1161,7 @@ exports[`Upload Subsequent Document CMS Email Snapshot Test > renders a ChipSPA 
                       </tbody>
                     </table>
                     <hr
-                      style="width: 100%; border-top: 1px solid #0071BD; margin: 16px 0px;"
+                      style="width: 100%; border-top: 1px solid rgb(0, 113, 189); margin: 16px 0px;"
                     />
                     <p
                       style="font-size: 14px; line-height: 1.4; margin: 12px 0px; color: rgb(51, 51, 51); font-weight: bold;"
@@ -1280,7 +1280,7 @@ exports[`Upload Subsequent Document CMS Email Snapshot Test > renders a ChipSPA 
           </div>
         </div>
         <body
-          style="background-color: rgb(255, 255, 255); color: rgb(33, 33, 33); font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif; margin: 0px auto; padding: 20px 0px 48px;"
+          style="background-color: rgb(255, 255, 255); color: rgb(33, 33, 33); font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen", "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue", sans-serif; margin: 0px auto; padding: 20px 0px 48px;"
         >
           <table
             align="center"
@@ -1435,10 +1435,10 @@ exports[`Upload Subsequent Document CMS Email Snapshot Test > renders a ChipSPA 
                                   style="width: 100%;"
                                 >
                                   <hr
-                                    style="width: 100%; border-top: 1px solid #0071BD; margin: 16px 0px;"
+                                    style="width: 100%; border-top: 1px solid rgb(0, 113, 189); margin: 16px 0px;"
                                   />
                                   <p
-                                    style="font-size: 14px; line-height: 24px; margin: .5em;"
+                                    style="font-size: 14px; line-height: 24px; margin: 0.5em;"
                                   >
                                     <h2
                                       style="font-size: 16px;"
@@ -1459,7 +1459,7 @@ exports[`Upload Subsequent Document CMS Email Snapshot Test > renders a ChipSPA 
                       </tbody>
                     </table>
                     <hr
-                      style="width: 100%; border-top: 1px solid #0071BD; margin: 16px 0px;"
+                      style="width: 100%; border-top: 1px solid rgb(0, 113, 189); margin: 16px 0px;"
                     />
                     <h2
                       style="font-size: 16px;"
@@ -2019,7 +2019,7 @@ exports[`Upload Subsequent Document CMS Email Snapshot Test > renders a ChipSPA 
                       </tbody>
                     </table>
                     <hr
-                      style="width: 100%; border-top: 1px solid #0071BD; margin: 16px 0px;"
+                      style="width: 100%; border-top: 1px solid rgb(0, 113, 189); margin: 16px 0px;"
                     />
                     <p
                       style="font-size: 14px; line-height: 1.4; margin: 12px 0px; color: rgb(51, 51, 51); font-weight: bold;"
@@ -2139,7 +2139,7 @@ exports[`Upload Subsequent Document CMS Email Snapshot Test > renders a ChipSPA 
         </div>
       </div>
       <body
-        style="background-color: rgb(255, 255, 255); color: rgb(33, 33, 33); font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif; margin: 0px auto; padding: 20px 0px 48px;"
+        style="background-color: rgb(255, 255, 255); color: rgb(33, 33, 33); font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen", "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue", sans-serif; margin: 0px auto; padding: 20px 0px 48px;"
       >
         <table
           align="center"
@@ -2294,10 +2294,10 @@ exports[`Upload Subsequent Document CMS Email Snapshot Test > renders a ChipSPA 
                                 style="width: 100%;"
                               >
                                 <hr
-                                  style="width: 100%; border-top: 1px solid #0071BD; margin: 16px 0px;"
+                                  style="width: 100%; border-top: 1px solid rgb(0, 113, 189); margin: 16px 0px;"
                                 />
                                 <p
-                                  style="font-size: 14px; line-height: 24px; margin: .5em;"
+                                  style="font-size: 14px; line-height: 24px; margin: 0.5em;"
                                 >
                                   <h2
                                     style="font-size: 16px;"
@@ -2318,7 +2318,7 @@ exports[`Upload Subsequent Document CMS Email Snapshot Test > renders a ChipSPA 
                     </tbody>
                   </table>
                   <hr
-                    style="width: 100%; border-top: 1px solid #0071BD; margin: 16px 0px;"
+                    style="width: 100%; border-top: 1px solid rgb(0, 113, 189); margin: 16px 0px;"
                   />
                   <h2
                     style="font-size: 16px;"
@@ -2878,7 +2878,7 @@ exports[`Upload Subsequent Document CMS Email Snapshot Test > renders a ChipSPA 
                     </tbody>
                   </table>
                   <hr
-                    style="width: 100%; border-top: 1px solid #0071BD; margin: 16px 0px;"
+                    style="width: 100%; border-top: 1px solid rgb(0, 113, 189); margin: 16px 0px;"
                   />
                   <p
                     style="font-size: 14px; line-height: 1.4; margin: 12px 0px; color: rgb(51, 51, 51); font-weight: bold;"
@@ -3055,7 +3055,7 @@ exports[`Upload Subsequent Document CMS Email Snapshot Test > renders a Medicaid
           </div>
         </div>
         <body
-          style="background-color: rgb(255, 255, 255); color: rgb(33, 33, 33); font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif; margin: 0px auto; padding: 20px 0px 48px;"
+          style="background-color: rgb(255, 255, 255); color: rgb(33, 33, 33); font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen", "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue", sans-serif; margin: 0px auto; padding: 20px 0px 48px;"
         >
           <table
             align="center"
@@ -3210,10 +3210,10 @@ exports[`Upload Subsequent Document CMS Email Snapshot Test > renders a Medicaid
                                   style="width: 100%;"
                                 >
                                   <hr
-                                    style="width: 100%; border-top: 1px solid #0071BD; margin: 16px 0px;"
+                                    style="width: 100%; border-top: 1px solid rgb(0, 113, 189); margin: 16px 0px;"
                                   />
                                   <p
-                                    style="font-size: 14px; line-height: 24px; margin: .5em;"
+                                    style="font-size: 14px; line-height: 24px; margin: 0.5em;"
                                   >
                                     <h2
                                       style="font-size: 16px;"
@@ -3234,7 +3234,7 @@ exports[`Upload Subsequent Document CMS Email Snapshot Test > renders a Medicaid
                       </tbody>
                     </table>
                     <hr
-                      style="width: 100%; border-top: 1px solid #0071BD; margin: 16px 0px;"
+                      style="width: 100%; border-top: 1px solid rgb(0, 113, 189); margin: 16px 0px;"
                     />
                     <h2
                       style="font-size: 16px;"
@@ -3334,7 +3334,7 @@ exports[`Upload Subsequent Document CMS Email Snapshot Test > renders a Medicaid
                       </tbody>
                     </table>
                     <hr
-                      style="width: 100%; border-top: 1px solid #0071BD; margin: 16px 0px;"
+                      style="width: 100%; border-top: 1px solid rgb(0, 113, 189); margin: 16px 0px;"
                     />
                     <p
                       style="font-size: 14px; line-height: 1.4; margin: 12px 0px; color: rgb(51, 51, 51); font-weight: bold;"
@@ -3453,7 +3453,7 @@ exports[`Upload Subsequent Document CMS Email Snapshot Test > renders a Medicaid
           </div>
         </div>
         <body
-          style="background-color: rgb(255, 255, 255); color: rgb(33, 33, 33); font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif; margin: 0px auto; padding: 20px 0px 48px;"
+          style="background-color: rgb(255, 255, 255); color: rgb(33, 33, 33); font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen", "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue", sans-serif; margin: 0px auto; padding: 20px 0px 48px;"
         >
           <table
             align="center"
@@ -3608,10 +3608,10 @@ exports[`Upload Subsequent Document CMS Email Snapshot Test > renders a Medicaid
                                   style="width: 100%;"
                                 >
                                   <hr
-                                    style="width: 100%; border-top: 1px solid #0071BD; margin: 16px 0px;"
+                                    style="width: 100%; border-top: 1px solid rgb(0, 113, 189); margin: 16px 0px;"
                                   />
                                   <p
-                                    style="font-size: 14px; line-height: 24px; margin: .5em;"
+                                    style="font-size: 14px; line-height: 24px; margin: 0.5em;"
                                   >
                                     <h2
                                       style="font-size: 16px;"
@@ -3632,7 +3632,7 @@ exports[`Upload Subsequent Document CMS Email Snapshot Test > renders a Medicaid
                       </tbody>
                     </table>
                     <hr
-                      style="width: 100%; border-top: 1px solid #0071BD; margin: 16px 0px;"
+                      style="width: 100%; border-top: 1px solid rgb(0, 113, 189); margin: 16px 0px;"
                     />
                     <h2
                       style="font-size: 16px;"
@@ -4192,7 +4192,7 @@ exports[`Upload Subsequent Document CMS Email Snapshot Test > renders a Medicaid
                       </tbody>
                     </table>
                     <hr
-                      style="width: 100%; border-top: 1px solid #0071BD; margin: 16px 0px;"
+                      style="width: 100%; border-top: 1px solid rgb(0, 113, 189); margin: 16px 0px;"
                     />
                     <p
                       style="font-size: 14px; line-height: 1.4; margin: 12px 0px; color: rgb(51, 51, 51); font-weight: bold;"
@@ -4311,7 +4311,7 @@ exports[`Upload Subsequent Document CMS Email Snapshot Test > renders a Medicaid
           </div>
         </div>
         <body
-          style="background-color: rgb(255, 255, 255); color: rgb(33, 33, 33); font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif; margin: 0px auto; padding: 20px 0px 48px;"
+          style="background-color: rgb(255, 255, 255); color: rgb(33, 33, 33); font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen", "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue", sans-serif; margin: 0px auto; padding: 20px 0px 48px;"
         >
           <table
             align="center"
@@ -4466,10 +4466,10 @@ exports[`Upload Subsequent Document CMS Email Snapshot Test > renders a Medicaid
                                   style="width: 100%;"
                                 >
                                   <hr
-                                    style="width: 100%; border-top: 1px solid #0071BD; margin: 16px 0px;"
+                                    style="width: 100%; border-top: 1px solid rgb(0, 113, 189); margin: 16px 0px;"
                                   />
                                   <p
-                                    style="font-size: 14px; line-height: 24px; margin: .5em;"
+                                    style="font-size: 14px; line-height: 24px; margin: 0.5em;"
                                   >
                                     <h2
                                       style="font-size: 16px;"
@@ -4490,7 +4490,7 @@ exports[`Upload Subsequent Document CMS Email Snapshot Test > renders a Medicaid
                       </tbody>
                     </table>
                     <hr
-                      style="width: 100%; border-top: 1px solid #0071BD; margin: 16px 0px;"
+                      style="width: 100%; border-top: 1px solid rgb(0, 113, 189); margin: 16px 0px;"
                     />
                     <h2
                       style="font-size: 16px;"
@@ -5050,7 +5050,7 @@ exports[`Upload Subsequent Document CMS Email Snapshot Test > renders a Medicaid
                       </tbody>
                     </table>
                     <hr
-                      style="width: 100%; border-top: 1px solid #0071BD; margin: 16px 0px;"
+                      style="width: 100%; border-top: 1px solid rgb(0, 113, 189); margin: 16px 0px;"
                     />
                     <p
                       style="font-size: 14px; line-height: 1.4; margin: 12px 0px; color: rgb(51, 51, 51); font-weight: bold;"
@@ -5170,7 +5170,7 @@ exports[`Upload Subsequent Document CMS Email Snapshot Test > renders a Medicaid
         </div>
       </div>
       <body
-        style="background-color: rgb(255, 255, 255); color: rgb(33, 33, 33); font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif; margin: 0px auto; padding: 20px 0px 48px;"
+        style="background-color: rgb(255, 255, 255); color: rgb(33, 33, 33); font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen", "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue", sans-serif; margin: 0px auto; padding: 20px 0px 48px;"
       >
         <table
           align="center"
@@ -5325,10 +5325,10 @@ exports[`Upload Subsequent Document CMS Email Snapshot Test > renders a Medicaid
                                 style="width: 100%;"
                               >
                                 <hr
-                                  style="width: 100%; border-top: 1px solid #0071BD; margin: 16px 0px;"
+                                  style="width: 100%; border-top: 1px solid rgb(0, 113, 189); margin: 16px 0px;"
                                 />
                                 <p
-                                  style="font-size: 14px; line-height: 24px; margin: .5em;"
+                                  style="font-size: 14px; line-height: 24px; margin: 0.5em;"
                                 >
                                   <h2
                                     style="font-size: 16px;"
@@ -5349,7 +5349,7 @@ exports[`Upload Subsequent Document CMS Email Snapshot Test > renders a Medicaid
                     </tbody>
                   </table>
                   <hr
-                    style="width: 100%; border-top: 1px solid #0071BD; margin: 16px 0px;"
+                    style="width: 100%; border-top: 1px solid rgb(0, 113, 189); margin: 16px 0px;"
                   />
                   <h2
                     style="font-size: 16px;"
@@ -5909,7 +5909,7 @@ exports[`Upload Subsequent Document CMS Email Snapshot Test > renders a Medicaid
                     </tbody>
                   </table>
                   <hr
-                    style="width: 100%; border-top: 1px solid #0071BD; margin: 16px 0px;"
+                    style="width: 100%; border-top: 1px solid rgb(0, 113, 189); margin: 16px 0px;"
                   />
                   <p
                     style="font-size: 14px; line-height: 1.4; margin: 12px 0px; color: rgb(51, 51, 51); font-weight: bold;"
@@ -6086,7 +6086,7 @@ exports[`Upload Subsequent Document CMS Email Snapshot Test > renders a Waiver C
           </div>
         </div>
         <body
-          style="background-color: rgb(255, 255, 255); color: rgb(33, 33, 33); font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif; margin: 0px auto; padding: 20px 0px 48px;"
+          style="background-color: rgb(255, 255, 255); color: rgb(33, 33, 33); font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen", "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue", sans-serif; margin: 0px auto; padding: 20px 0px 48px;"
         >
           <table
             align="center"
@@ -6241,10 +6241,10 @@ exports[`Upload Subsequent Document CMS Email Snapshot Test > renders a Waiver C
                                   style="width: 100%;"
                                 >
                                   <hr
-                                    style="width: 100%; border-top: 1px solid #0071BD; margin: 16px 0px;"
+                                    style="width: 100%; border-top: 1px solid rgb(0, 113, 189); margin: 16px 0px;"
                                   />
                                   <p
-                                    style="font-size: 14px; line-height: 24px; margin: .5em;"
+                                    style="font-size: 14px; line-height: 24px; margin: 0.5em;"
                                   >
                                     <h2
                                       style="font-size: 16px;"
@@ -6265,7 +6265,7 @@ exports[`Upload Subsequent Document CMS Email Snapshot Test > renders a Waiver C
                       </tbody>
                     </table>
                     <hr
-                      style="width: 100%; border-top: 1px solid #0071BD; margin: 16px 0px;"
+                      style="width: 100%; border-top: 1px solid rgb(0, 113, 189); margin: 16px 0px;"
                     />
                     <h2
                       style="font-size: 16px;"
@@ -6365,7 +6365,7 @@ exports[`Upload Subsequent Document CMS Email Snapshot Test > renders a Waiver C
                       </tbody>
                     </table>
                     <hr
-                      style="width: 100%; border-top: 1px solid #0071BD; margin: 16px 0px;"
+                      style="width: 100%; border-top: 1px solid rgb(0, 113, 189); margin: 16px 0px;"
                     />
                     <p
                       style="font-size: 14px; line-height: 1.4; margin: 12px 0px; color: rgb(51, 51, 51); font-weight: bold;"
@@ -6484,7 +6484,7 @@ exports[`Upload Subsequent Document CMS Email Snapshot Test > renders a Waiver C
           </div>
         </div>
         <body
-          style="background-color: rgb(255, 255, 255); color: rgb(33, 33, 33); font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif; margin: 0px auto; padding: 20px 0px 48px;"
+          style="background-color: rgb(255, 255, 255); color: rgb(33, 33, 33); font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen", "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue", sans-serif; margin: 0px auto; padding: 20px 0px 48px;"
         >
           <table
             align="center"
@@ -6639,10 +6639,10 @@ exports[`Upload Subsequent Document CMS Email Snapshot Test > renders a Waiver C
                                   style="width: 100%;"
                                 >
                                   <hr
-                                    style="width: 100%; border-top: 1px solid #0071BD; margin: 16px 0px;"
+                                    style="width: 100%; border-top: 1px solid rgb(0, 113, 189); margin: 16px 0px;"
                                   />
                                   <p
-                                    style="font-size: 14px; line-height: 24px; margin: .5em;"
+                                    style="font-size: 14px; line-height: 24px; margin: 0.5em;"
                                   >
                                     <h2
                                       style="font-size: 16px;"
@@ -6663,7 +6663,7 @@ exports[`Upload Subsequent Document CMS Email Snapshot Test > renders a Waiver C
                       </tbody>
                     </table>
                     <hr
-                      style="width: 100%; border-top: 1px solid #0071BD; margin: 16px 0px;"
+                      style="width: 100%; border-top: 1px solid rgb(0, 113, 189); margin: 16px 0px;"
                     />
                     <h2
                       style="font-size: 16px;"
@@ -7223,7 +7223,7 @@ exports[`Upload Subsequent Document CMS Email Snapshot Test > renders a Waiver C
                       </tbody>
                     </table>
                     <hr
-                      style="width: 100%; border-top: 1px solid #0071BD; margin: 16px 0px;"
+                      style="width: 100%; border-top: 1px solid rgb(0, 113, 189); margin: 16px 0px;"
                     />
                     <p
                       style="font-size: 14px; line-height: 1.4; margin: 12px 0px; color: rgb(51, 51, 51); font-weight: bold;"
@@ -7342,7 +7342,7 @@ exports[`Upload Subsequent Document CMS Email Snapshot Test > renders a Waiver C
           </div>
         </div>
         <body
-          style="background-color: rgb(255, 255, 255); color: rgb(33, 33, 33); font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif; margin: 0px auto; padding: 20px 0px 48px;"
+          style="background-color: rgb(255, 255, 255); color: rgb(33, 33, 33); font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen", "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue", sans-serif; margin: 0px auto; padding: 20px 0px 48px;"
         >
           <table
             align="center"
@@ -7497,10 +7497,10 @@ exports[`Upload Subsequent Document CMS Email Snapshot Test > renders a Waiver C
                                   style="width: 100%;"
                                 >
                                   <hr
-                                    style="width: 100%; border-top: 1px solid #0071BD; margin: 16px 0px;"
+                                    style="width: 100%; border-top: 1px solid rgb(0, 113, 189); margin: 16px 0px;"
                                   />
                                   <p
-                                    style="font-size: 14px; line-height: 24px; margin: .5em;"
+                                    style="font-size: 14px; line-height: 24px; margin: 0.5em;"
                                   >
                                     <h2
                                       style="font-size: 16px;"
@@ -7521,7 +7521,7 @@ exports[`Upload Subsequent Document CMS Email Snapshot Test > renders a Waiver C
                       </tbody>
                     </table>
                     <hr
-                      style="width: 100%; border-top: 1px solid #0071BD; margin: 16px 0px;"
+                      style="width: 100%; border-top: 1px solid rgb(0, 113, 189); margin: 16px 0px;"
                     />
                     <h2
                       style="font-size: 16px;"
@@ -8081,7 +8081,7 @@ exports[`Upload Subsequent Document CMS Email Snapshot Test > renders a Waiver C
                       </tbody>
                     </table>
                     <hr
-                      style="width: 100%; border-top: 1px solid #0071BD; margin: 16px 0px;"
+                      style="width: 100%; border-top: 1px solid rgb(0, 113, 189); margin: 16px 0px;"
                     />
                     <p
                       style="font-size: 14px; line-height: 1.4; margin: 12px 0px; color: rgb(51, 51, 51); font-weight: bold;"
@@ -8200,7 +8200,7 @@ exports[`Upload Subsequent Document CMS Email Snapshot Test > renders a Waiver C
           </div>
         </div>
         <body
-          style="background-color: rgb(255, 255, 255); color: rgb(33, 33, 33); font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif; margin: 0px auto; padding: 20px 0px 48px;"
+          style="background-color: rgb(255, 255, 255); color: rgb(33, 33, 33); font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen", "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue", sans-serif; margin: 0px auto; padding: 20px 0px 48px;"
         >
           <table
             align="center"
@@ -8355,10 +8355,10 @@ exports[`Upload Subsequent Document CMS Email Snapshot Test > renders a Waiver C
                                   style="width: 100%;"
                                 >
                                   <hr
-                                    style="width: 100%; border-top: 1px solid #0071BD; margin: 16px 0px;"
+                                    style="width: 100%; border-top: 1px solid rgb(0, 113, 189); margin: 16px 0px;"
                                   />
                                   <p
-                                    style="font-size: 14px; line-height: 24px; margin: .5em;"
+                                    style="font-size: 14px; line-height: 24px; margin: 0.5em;"
                                   >
                                     <h2
                                       style="font-size: 16px;"
@@ -8379,7 +8379,7 @@ exports[`Upload Subsequent Document CMS Email Snapshot Test > renders a Waiver C
                       </tbody>
                     </table>
                     <hr
-                      style="width: 100%; border-top: 1px solid #0071BD; margin: 16px 0px;"
+                      style="width: 100%; border-top: 1px solid rgb(0, 113, 189); margin: 16px 0px;"
                     />
                     <h2
                       style="font-size: 16px;"
@@ -8939,7 +8939,7 @@ exports[`Upload Subsequent Document CMS Email Snapshot Test > renders a Waiver C
                       </tbody>
                     </table>
                     <hr
-                      style="width: 100%; border-top: 1px solid #0071BD; margin: 16px 0px;"
+                      style="width: 100%; border-top: 1px solid rgb(0, 113, 189); margin: 16px 0px;"
                     />
                     <p
                       style="font-size: 14px; line-height: 1.4; margin: 12px 0px; color: rgb(51, 51, 51); font-weight: bold;"
@@ -9059,7 +9059,7 @@ exports[`Upload Subsequent Document CMS Email Snapshot Test > renders a Waiver C
         </div>
       </div>
       <body
-        style="background-color: rgb(255, 255, 255); color: rgb(33, 33, 33); font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif; margin: 0px auto; padding: 20px 0px 48px;"
+        style="background-color: rgb(255, 255, 255); color: rgb(33, 33, 33); font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen", "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue", sans-serif; margin: 0px auto; padding: 20px 0px 48px;"
       >
         <table
           align="center"
@@ -9214,10 +9214,10 @@ exports[`Upload Subsequent Document CMS Email Snapshot Test > renders a Waiver C
                                 style="width: 100%;"
                               >
                                 <hr
-                                  style="width: 100%; border-top: 1px solid #0071BD; margin: 16px 0px;"
+                                  style="width: 100%; border-top: 1px solid rgb(0, 113, 189); margin: 16px 0px;"
                                 />
                                 <p
-                                  style="font-size: 14px; line-height: 24px; margin: .5em;"
+                                  style="font-size: 14px; line-height: 24px; margin: 0.5em;"
                                 >
                                   <h2
                                     style="font-size: 16px;"
@@ -9238,7 +9238,7 @@ exports[`Upload Subsequent Document CMS Email Snapshot Test > renders a Waiver C
                     </tbody>
                   </table>
                   <hr
-                    style="width: 100%; border-top: 1px solid #0071BD; margin: 16px 0px;"
+                    style="width: 100%; border-top: 1px solid rgb(0, 113, 189); margin: 16px 0px;"
                   />
                   <h2
                     style="font-size: 16px;"
@@ -9798,7 +9798,7 @@ exports[`Upload Subsequent Document CMS Email Snapshot Test > renders a Waiver C
                     </tbody>
                   </table>
                   <hr
-                    style="width: 100%; border-top: 1px solid #0071BD; margin: 16px 0px;"
+                    style="width: 100%; border-top: 1px solid rgb(0, 113, 189); margin: 16px 0px;"
                   />
                   <p
                     style="font-size: 14px; line-height: 1.4; margin: 12px 0px; color: rgb(51, 51, 51); font-weight: bold;"

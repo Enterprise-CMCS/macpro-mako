@@ -339,10 +339,10 @@ exports[`Initial Submission State Email Snapshot Test > renders a Initial Capita
                       </tbody>
                     </table>
                     <hr
-                      style="width: 100%; border-top: 1px solid #0071BD; margin: 16px 0px;"
+                      style="width: 100%; border-top: 1px solid rgb(0, 113, 189); margin: 16px 0px;"
                     />
                     <p
-                      style="font-size: 14px; line-height: 24px; margin: .5em;"
+                      style="font-size: 14px; line-height: 24px; margin: 0.5em;"
                     />
                     <h2
                       style="font-size: 16px;"
@@ -390,7 +390,7 @@ exports[`Initial Submission State Email Snapshot Test > renders a Initial Capita
               This mailbox is for the submittal of Section 1915(b) and 1915(c) Waivers, responses to Requests for Additional Information (RAI) on Waivers, and extension requests on Waivers only. Any other correspondence will be disregarded.
             </p>
             <hr
-              style="width: 100%; border-top: 1px solid #0071BD; margin: 16px 0px;"
+              style="width: 100%; border-top: 1px solid rgb(0, 113, 189); margin: 16px 0px;"
             />
             <table
               align="center"

@@ -335,10 +335,10 @@ exports[`Initial Submission CMS Email Snapshot Test > renders a Renewal Waiver C
                       </tbody>
                     </table>
                     <hr
-                      style="width: 100%; border-top: 1px solid #0071BD; margin: 16px 0px;"
+                      style="width: 100%; border-top: 1px solid rgb(0, 113, 189); margin: 16px 0px;"
                     />
                     <p
-                      style="font-size: 14px; line-height: 24px; margin: .5em;"
+                      style="font-size: 14px; line-height: 24px; margin: 0.5em;"
                     />
                     <h2
                       style="font-size: 16px;"
@@ -372,7 +372,7 @@ exports[`Initial Submission CMS Email Snapshot Test > renders a Renewal Waiver C
               </tbody>
             </table>
             <hr
-              style="width: 100%; border-top: 1px solid #0071BD; margin: 16px 0px;"
+              style="width: 100%; border-top: 1px solid rgb(0, 113, 189); margin: 16px 0px;"
             />
             <h2
               style="font-size: 16px;"

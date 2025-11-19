@@ -27,7 +27,7 @@ exports[`Withdraw Package CMS Email Snapshot Test > renders a Appk Preview Templ
           </div>
         </div>
         <body
-          style="background-color: rgb(255, 255, 255); color: rgb(33, 33, 33); font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif; margin: 0px auto; padding: 20px 0px 48px;"
+          style="background-color: rgb(255, 255, 255); color: rgb(33, 33, 33); font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen", "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue", sans-serif; margin: 0px auto; padding: 20px 0px 48px;"
         >
           <table
             align="center"
@@ -258,10 +258,10 @@ exports[`Withdraw Package CMS Email Snapshot Test > renders a Appk Preview Templ
                                   style="width: 100%;"
                                 >
                                   <hr
-                                    style="width: 100%; border-top: 1px solid #0071BD; margin: 16px 0px;"
+                                    style="width: 100%; border-top: 1px solid rgb(0, 113, 189); margin: 16px 0px;"
                                   />
                                   <p
-                                    style="font-size: 14px; line-height: 24px; margin: .5em;"
+                                    style="font-size: 14px; line-height: 24px; margin: 0.5em;"
                                   >
                                     <h2
                                       style="font-size: 16px;"
@@ -362,7 +362,7 @@ exports[`Withdraw Package CMS Email Snapshot Test > renders a Appk Preview Templ
         </div>
       </div>
       <body
-        style="background-color: rgb(255, 255, 255); color: rgb(33, 33, 33); font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif; margin: 0px auto; padding: 20px 0px 48px;"
+        style="background-color: rgb(255, 255, 255); color: rgb(33, 33, 33); font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen", "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue", sans-serif; margin: 0px auto; padding: 20px 0px 48px;"
       >
         <table
           align="center"
@@ -593,10 +593,10 @@ exports[`Withdraw Package CMS Email Snapshot Test > renders a Appk Preview Templ
                                 style="width: 100%;"
                               >
                                 <hr
-                                  style="width: 100%; border-top: 1px solid #0071BD; margin: 16px 0px;"
+                                  style="width: 100%; border-top: 1px solid rgb(0, 113, 189); margin: 16px 0px;"
                                 />
                                 <p
-                                  style="font-size: 14px; line-height: 24px; margin: .5em;"
+                                  style="font-size: 14px; line-height: 24px; margin: 0.5em;"
                                 >
                                   <h2
                                     style="font-size: 16px;"
@@ -754,7 +754,7 @@ exports[`Withdraw Package CMS Email Snapshot Test > renders a ChipSPA Preview Te
           </div>
         </div>
         <body
-          style="background-color: rgb(255, 255, 255); color: rgb(33, 33, 33); font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif; margin: 0px auto; padding: 20px 0px 48px;"
+          style="background-color: rgb(255, 255, 255); color: rgb(33, 33, 33); font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen", "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue", sans-serif; margin: 0px auto; padding: 20px 0px 48px;"
         >
           <table
             align="center"
@@ -985,10 +985,10 @@ exports[`Withdraw Package CMS Email Snapshot Test > renders a ChipSPA Preview Te
                                   style="width: 100%;"
                                 >
                                   <hr
-                                    style="width: 100%; border-top: 1px solid #0071BD; margin: 16px 0px;"
+                                    style="width: 100%; border-top: 1px solid rgb(0, 113, 189); margin: 16px 0px;"
                                   />
                                   <p
-                                    style="font-size: 14px; line-height: 24px; margin: .5em;"
+                                    style="font-size: 14px; line-height: 24px; margin: 0.5em;"
                                   >
                                     <h2
                                       style="font-size: 16px;"
@@ -1088,7 +1088,7 @@ exports[`Withdraw Package CMS Email Snapshot Test > renders a ChipSPA Preview Te
           </div>
         </div>
         <body
-          style="background-color: rgb(255, 255, 255); color: rgb(33, 33, 33); font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif; margin: 0px auto; padding: 20px 0px 48px;"
+          style="background-color: rgb(255, 255, 255); color: rgb(33, 33, 33); font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen", "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue", sans-serif; margin: 0px auto; padding: 20px 0px 48px;"
         >
           <table
             align="center"
@@ -1142,7 +1142,7 @@ exports[`Withdraw Package CMS Email Snapshot Test > renders a ChipSPA Preview Te
                       The OneMAC Submission Portal received a request to withdraw the package below. The package will no longer be considered for CMS review:
                     </h1>
                     <hr
-                      style="width: 100%; border-top: 1px solid #0071BD; margin: 16px 0px;"
+                      style="width: 100%; border-top: 1px solid rgb(0, 113, 189); margin: 16px 0px;"
                     />
                     <table
                       align="center"
@@ -1322,10 +1322,10 @@ exports[`Withdraw Package CMS Email Snapshot Test > renders a ChipSPA Preview Te
                                   style="width: 100%;"
                                 >
                                   <hr
-                                    style="width: 100%; border-top: 1px solid #0071BD; margin: 16px 0px;"
+                                    style="width: 100%; border-top: 1px solid rgb(0, 113, 189); margin: 16px 0px;"
                                   />
                                   <p
-                                    style="font-size: 14px; line-height: 24px; margin: .5em;"
+                                    style="font-size: 14px; line-height: 24px; margin: 0.5em;"
                                   >
                                     <h2
                                       style="font-size: 16px;"
@@ -1426,7 +1426,7 @@ exports[`Withdraw Package CMS Email Snapshot Test > renders a ChipSPA Preview Te
         </div>
       </div>
       <body
-        style="background-color: rgb(255, 255, 255); color: rgb(33, 33, 33); font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif; margin: 0px auto; padding: 20px 0px 48px;"
+        style="background-color: rgb(255, 255, 255); color: rgb(33, 33, 33); font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen", "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue", sans-serif; margin: 0px auto; padding: 20px 0px 48px;"
       >
         <table
           align="center"
@@ -1480,7 +1480,7 @@ exports[`Withdraw Package CMS Email Snapshot Test > renders a ChipSPA Preview Te
                     The OneMAC Submission Portal received a request to withdraw the package below. The package will no longer be considered for CMS review:
                   </h1>
                   <hr
-                    style="width: 100%; border-top: 1px solid #0071BD; margin: 16px 0px;"
+                    style="width: 100%; border-top: 1px solid rgb(0, 113, 189); margin: 16px 0px;"
                   />
                   <table
                     align="center"
@@ -1660,10 +1660,10 @@ exports[`Withdraw Package CMS Email Snapshot Test > renders a ChipSPA Preview Te
                                 style="width: 100%;"
                               >
                                 <hr
-                                  style="width: 100%; border-top: 1px solid #0071BD; margin: 16px 0px;"
+                                  style="width: 100%; border-top: 1px solid rgb(0, 113, 189); margin: 16px 0px;"
                                 />
                                 <p
-                                  style="font-size: 14px; line-height: 24px; margin: .5em;"
+                                  style="font-size: 14px; line-height: 24px; margin: 0.5em;"
                                 >
                                   <h2
                                     style="font-size: 16px;"
@@ -1821,7 +1821,7 @@ exports[`Withdraw Package CMS Email Snapshot Test > renders a Medicaid_SPA Previ
           </div>
         </div>
         <body
-          style="background-color: rgb(255, 255, 255); color: rgb(33, 33, 33); font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif; margin: 0px auto; padding: 20px 0px 48px;"
+          style="background-color: rgb(255, 255, 255); color: rgb(33, 33, 33); font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen", "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue", sans-serif; margin: 0px auto; padding: 20px 0px 48px;"
         >
           <table
             align="center"
@@ -2052,10 +2052,10 @@ exports[`Withdraw Package CMS Email Snapshot Test > renders a Medicaid_SPA Previ
                                   style="width: 100%;"
                                 >
                                   <hr
-                                    style="width: 100%; border-top: 1px solid #0071BD; margin: 16px 0px;"
+                                    style="width: 100%; border-top: 1px solid rgb(0, 113, 189); margin: 16px 0px;"
                                   />
                                   <p
-                                    style="font-size: 14px; line-height: 24px; margin: .5em;"
+                                    style="font-size: 14px; line-height: 24px; margin: 0.5em;"
                                   >
                                     <h2
                                       style="font-size: 16px;"
@@ -2155,7 +2155,7 @@ exports[`Withdraw Package CMS Email Snapshot Test > renders a Medicaid_SPA Previ
           </div>
         </div>
         <body
-          style="background-color: rgb(255, 255, 255); color: rgb(33, 33, 33); font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif; margin: 0px auto; padding: 20px 0px 48px;"
+          style="background-color: rgb(255, 255, 255); color: rgb(33, 33, 33); font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen", "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue", sans-serif; margin: 0px auto; padding: 20px 0px 48px;"
         >
           <table
             align="center"
@@ -2209,7 +2209,7 @@ exports[`Withdraw Package CMS Email Snapshot Test > renders a Medicaid_SPA Previ
                       The OneMAC Submission Portal received a request to withdraw the package below. The package will no longer be considered for CMS review:
                     </h1>
                     <hr
-                      style="width: 100%; border-top: 1px solid #0071BD; margin: 16px 0px;"
+                      style="width: 100%; border-top: 1px solid rgb(0, 113, 189); margin: 16px 0px;"
                     />
                     <table
                       align="center"
@@ -2389,10 +2389,10 @@ exports[`Withdraw Package CMS Email Snapshot Test > renders a Medicaid_SPA Previ
                                   style="width: 100%;"
                                 >
                                   <hr
-                                    style="width: 100%; border-top: 1px solid #0071BD; margin: 16px 0px;"
+                                    style="width: 100%; border-top: 1px solid rgb(0, 113, 189); margin: 16px 0px;"
                                   />
                                   <p
-                                    style="font-size: 14px; line-height: 24px; margin: .5em;"
+                                    style="font-size: 14px; line-height: 24px; margin: 0.5em;"
                                   >
                                     <h2
                                       style="font-size: 16px;"
@@ -2492,7 +2492,7 @@ exports[`Withdraw Package CMS Email Snapshot Test > renders a Medicaid_SPA Previ
           </div>
         </div>
         <body
-          style="background-color: rgb(255, 255, 255); color: rgb(33, 33, 33); font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif; margin: 0px auto; padding: 20px 0px 48px;"
+          style="background-color: rgb(255, 255, 255); color: rgb(33, 33, 33); font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen", "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue", sans-serif; margin: 0px auto; padding: 20px 0px 48px;"
         >
           <table
             align="center"
@@ -2546,7 +2546,7 @@ exports[`Withdraw Package CMS Email Snapshot Test > renders a Medicaid_SPA Previ
                       The OneMAC Submission Portal received a request to withdraw the package below. The package will no longer be considered for CMS review:
                     </h1>
                     <hr
-                      style="width: 100%; border-top: 1px solid #0071BD; margin: 16px 0px;"
+                      style="width: 100%; border-top: 1px solid rgb(0, 113, 189); margin: 16px 0px;"
                     />
                     <table
                       align="center"
@@ -2726,10 +2726,10 @@ exports[`Withdraw Package CMS Email Snapshot Test > renders a Medicaid_SPA Previ
                                   style="width: 100%;"
                                 >
                                   <hr
-                                    style="width: 100%; border-top: 1px solid #0071BD; margin: 16px 0px;"
+                                    style="width: 100%; border-top: 1px solid rgb(0, 113, 189); margin: 16px 0px;"
                                   />
                                   <p
-                                    style="font-size: 14px; line-height: 24px; margin: .5em;"
+                                    style="font-size: 14px; line-height: 24px; margin: 0.5em;"
                                   >
                                     <h2
                                       style="font-size: 16px;"
@@ -2830,7 +2830,7 @@ exports[`Withdraw Package CMS Email Snapshot Test > renders a Medicaid_SPA Previ
         </div>
       </div>
       <body
-        style="background-color: rgb(255, 255, 255); color: rgb(33, 33, 33); font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif; margin: 0px auto; padding: 20px 0px 48px;"
+        style="background-color: rgb(255, 255, 255); color: rgb(33, 33, 33); font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen", "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue", sans-serif; margin: 0px auto; padding: 20px 0px 48px;"
       >
         <table
           align="center"
@@ -2884,7 +2884,7 @@ exports[`Withdraw Package CMS Email Snapshot Test > renders a Medicaid_SPA Previ
                     The OneMAC Submission Portal received a request to withdraw the package below. The package will no longer be considered for CMS review:
                   </h1>
                   <hr
-                    style="width: 100%; border-top: 1px solid #0071BD; margin: 16px 0px;"
+                    style="width: 100%; border-top: 1px solid rgb(0, 113, 189); margin: 16px 0px;"
                   />
                   <table
                     align="center"
@@ -3064,10 +3064,10 @@ exports[`Withdraw Package CMS Email Snapshot Test > renders a Medicaid_SPA Previ
                                 style="width: 100%;"
                               >
                                 <hr
-                                  style="width: 100%; border-top: 1px solid #0071BD; margin: 16px 0px;"
+                                  style="width: 100%; border-top: 1px solid rgb(0, 113, 189); margin: 16px 0px;"
                                 />
                                 <p
-                                  style="font-size: 14px; line-height: 24px; margin: .5em;"
+                                  style="font-size: 14px; line-height: 24px; margin: 0.5em;"
                                 >
                                   <h2
                                     style="font-size: 16px;"
@@ -3225,7 +3225,7 @@ exports[`Withdraw Package CMS Email Snapshot Test > renders a Waiver Capitated P
           </div>
         </div>
         <body
-          style="background-color: rgb(255, 255, 255); color: rgb(33, 33, 33); font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif; margin: 0px auto; padding: 20px 0px 48px;"
+          style="background-color: rgb(255, 255, 255); color: rgb(33, 33, 33); font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen", "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue", sans-serif; margin: 0px auto; padding: 20px 0px 48px;"
         >
           <table
             align="center"
@@ -3456,10 +3456,10 @@ exports[`Withdraw Package CMS Email Snapshot Test > renders a Waiver Capitated P
                                   style="width: 100%;"
                                 >
                                   <hr
-                                    style="width: 100%; border-top: 1px solid #0071BD; margin: 16px 0px;"
+                                    style="width: 100%; border-top: 1px solid rgb(0, 113, 189); margin: 16px 0px;"
                                   />
                                   <p
-                                    style="font-size: 14px; line-height: 24px; margin: .5em;"
+                                    style="font-size: 14px; line-height: 24px; margin: 0.5em;"
                                   >
                                     <h2
                                       style="font-size: 16px;"
@@ -3559,7 +3559,7 @@ exports[`Withdraw Package CMS Email Snapshot Test > renders a Waiver Capitated P
           </div>
         </div>
         <body
-          style="background-color: rgb(255, 255, 255); color: rgb(33, 33, 33); font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif; margin: 0px auto; padding: 20px 0px 48px;"
+          style="background-color: rgb(255, 255, 255); color: rgb(33, 33, 33); font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen", "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue", sans-serif; margin: 0px auto; padding: 20px 0px 48px;"
         >
           <table
             align="center"
@@ -3613,7 +3613,7 @@ exports[`Withdraw Package CMS Email Snapshot Test > renders a Waiver Capitated P
                       The OneMAC Submission Portal received a request to withdraw the package below. The package will no longer be considered for CMS review:
                     </h1>
                     <hr
-                      style="width: 100%; border-top: 1px solid #0071BD; margin: 16px 0px;"
+                      style="width: 100%; border-top: 1px solid rgb(0, 113, 189); margin: 16px 0px;"
                     />
                     <table
                       align="center"
@@ -3793,10 +3793,10 @@ exports[`Withdraw Package CMS Email Snapshot Test > renders a Waiver Capitated P
                                   style="width: 100%;"
                                 >
                                   <hr
-                                    style="width: 100%; border-top: 1px solid #0071BD; margin: 16px 0px;"
+                                    style="width: 100%; border-top: 1px solid rgb(0, 113, 189); margin: 16px 0px;"
                                   />
                                   <p
-                                    style="font-size: 14px; line-height: 24px; margin: .5em;"
+                                    style="font-size: 14px; line-height: 24px; margin: 0.5em;"
                                   >
                                     <h2
                                       style="font-size: 16px;"
@@ -3896,7 +3896,7 @@ exports[`Withdraw Package CMS Email Snapshot Test > renders a Waiver Capitated P
           </div>
         </div>
         <body
-          style="background-color: rgb(255, 255, 255); color: rgb(33, 33, 33); font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif; margin: 0px auto; padding: 20px 0px 48px;"
+          style="background-color: rgb(255, 255, 255); color: rgb(33, 33, 33); font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen", "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue", sans-serif; margin: 0px auto; padding: 20px 0px 48px;"
         >
           <table
             align="center"
@@ -3950,7 +3950,7 @@ exports[`Withdraw Package CMS Email Snapshot Test > renders a Waiver Capitated P
                       The OneMAC Submission Portal received a request to withdraw the package below. The package will no longer be considered for CMS review:
                     </h1>
                     <hr
-                      style="width: 100%; border-top: 1px solid #0071BD; margin: 16px 0px;"
+                      style="width: 100%; border-top: 1px solid rgb(0, 113, 189); margin: 16px 0px;"
                     />
                     <table
                       align="center"
@@ -4130,10 +4130,10 @@ exports[`Withdraw Package CMS Email Snapshot Test > renders a Waiver Capitated P
                                   style="width: 100%;"
                                 >
                                   <hr
-                                    style="width: 100%; border-top: 1px solid #0071BD; margin: 16px 0px;"
+                                    style="width: 100%; border-top: 1px solid rgb(0, 113, 189); margin: 16px 0px;"
                                   />
                                   <p
-                                    style="font-size: 14px; line-height: 24px; margin: .5em;"
+                                    style="font-size: 14px; line-height: 24px; margin: 0.5em;"
                                   >
                                     <h2
                                       style="font-size: 16px;"
@@ -4233,7 +4233,7 @@ exports[`Withdraw Package CMS Email Snapshot Test > renders a Waiver Capitated P
           </div>
         </div>
         <body
-          style="background-color: rgb(255, 255, 255); color: rgb(33, 33, 33); font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif; margin: 0px auto; padding: 20px 0px 48px;"
+          style="background-color: rgb(255, 255, 255); color: rgb(33, 33, 33); font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen", "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue", sans-serif; margin: 0px auto; padding: 20px 0px 48px;"
         >
           <table
             align="center"
@@ -4464,10 +4464,10 @@ exports[`Withdraw Package CMS Email Snapshot Test > renders a Waiver Capitated P
                                   style="width: 100%;"
                                 >
                                   <hr
-                                    style="width: 100%; border-top: 1px solid #0071BD; margin: 16px 0px;"
+                                    style="width: 100%; border-top: 1px solid rgb(0, 113, 189); margin: 16px 0px;"
                                   />
                                   <p
-                                    style="font-size: 14px; line-height: 24px; margin: .5em;"
+                                    style="font-size: 14px; line-height: 24px; margin: 0.5em;"
                                   >
                                     <h2
                                       style="font-size: 16px;"
@@ -4568,7 +4568,7 @@ exports[`Withdraw Package CMS Email Snapshot Test > renders a Waiver Capitated P
         </div>
       </div>
       <body
-        style="background-color: rgb(255, 255, 255); color: rgb(33, 33, 33); font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif; margin: 0px auto; padding: 20px 0px 48px;"
+        style="background-color: rgb(255, 255, 255); color: rgb(33, 33, 33); font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen", "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue", sans-serif; margin: 0px auto; padding: 20px 0px 48px;"
       >
         <table
           align="center"
@@ -4799,10 +4799,10 @@ exports[`Withdraw Package CMS Email Snapshot Test > renders a Waiver Capitated P
                                 style="width: 100%;"
                               >
                                 <hr
-                                  style="width: 100%; border-top: 1px solid #0071BD; margin: 16px 0px;"
+                                  style="width: 100%; border-top: 1px solid rgb(0, 113, 189); margin: 16px 0px;"
                                 />
                                 <p
-                                  style="font-size: 14px; line-height: 24px; margin: .5em;"
+                                  style="font-size: 14px; line-height: 24px; margin: 0.5em;"
                                 >
                                   <h2
                                     style="font-size: 16px;"
