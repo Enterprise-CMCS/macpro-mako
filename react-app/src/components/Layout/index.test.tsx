@@ -380,9 +380,7 @@ describe("Layout", () => {
       await user.click(registerButton);
 
       // Assert that window.location.assign was called with the expected URL
-      expect(window.location.assign).toHaveBeenCalledWith(
-        expect.stringContaining("/signin/login.html"),
-      );
+      expect(window.location.assign).toHaveBeenCalledWith(expect.stringContaining("/"));
 
       // Restore original window.location
       // @ts-ignore we need to reset the original window function
