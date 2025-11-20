@@ -381,7 +381,7 @@ describe("Layout", () => {
       await user.click(registerButton);
 
       // Assert that window.location.assign was called with the expected URL
-      expect(window.location.assign).toBe(config.idm.home_url);
+      expect(window.location.assign).toBeCalledWith(config.idm.home_url);
 
       // Restore original window.location
       // @ts-ignore we need to reset the original window function
