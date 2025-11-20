@@ -344,7 +344,7 @@ const ResponsiveNav = ({ isDesktop }: ResponsiveNavProps) => {
   const hideLogin = useFeatureFlag("LOGIN_PAGE");
 
   const handleRegister = () => {
-    const url = `${config.idm.home_url}/signin/login.html`;
+    const url = config.idm.home_url;
     window.location.assign(url);
   };
 
