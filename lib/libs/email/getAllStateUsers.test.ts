@@ -4,11 +4,16 @@ import {
   USER_POOL_ID,
 } from "mocks";
 import { mockedServiceServer as mockedServer } from "mocks/server";
-import { describe, expect, it } from "vitest";
+import { beforeEach, describe, expect, it, vi } from "vitest";
 
 import { getAllStateUsers } from "./getAllStateUsers";
 
 describe("getAllStateUsers", () => {
+  beforeEach(() => {
+    // AWS SDK polling is sensitive to fake timers; use real timers to avoid stalled requests.
+    vi.useRealTimers();
+  });
+
   it("should fetch users successfully", async () => {
     const result = await getAllStateUsers({ userPoolId: USER_POOL_ID, state: "CA" });
     expect(result).toEqual([

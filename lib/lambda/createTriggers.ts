@@ -54,22 +54,16 @@ export const handler: Handler = async (event, _, callback) => {
         );
         const result = await lambdaClient.send(command);
         console.log(result);
-        if (createEventSourceMappingParams.Enabled) {
+        if (createEventSourceMappingParams.Enabled && result.UUID) {
           uuidsToCheck.push(result.UUID);
         }
       }
     }
     for (const uuid of uuidsToCheck) {
-      let isEnabled = false;
-      while (!isEnabled) {
-        const listCommand = new GetEventSourceMappingCommand({ UUID: uuid });
-        const mappingResult = await lambdaClient.send(listCommand);
-        if (mappingResult.State === "Enabled") {
-          isEnabled = true;
-        } else {
-          console.log(`Waiting for mapping ${uuid} to be enabled...`);
-          await new Promise((resolve) => setTimeout(resolve, 10000)); // Wait for 10 seconds before checking again
-        }
+      const listCommand = new GetEventSourceMappingCommand({ UUID: uuid });
+      const mappingResult = await lambdaClient.send(listCommand);
+      if (mappingResult.State !== "Enabled") {
+        throw new Error(`Mapping ${uuid} is not enabled`);
       }
       console.log(`Mapping ${uuid} is now enabled.`);
     }

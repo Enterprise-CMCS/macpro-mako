@@ -14,6 +14,10 @@ export async function getExport(exportName: string, region: string = "us-east-1"
     return exportItem.Value!;
   } catch (error) {
     console.error(`Error getting export value: ${error}`);
-    throw error;
+    if (error instanceof Error && error.message.includes("Export with name")) {
+      throw error;
+    }
+
+    throw new Error("UnknownError");
   }
 }

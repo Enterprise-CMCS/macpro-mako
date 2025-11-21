@@ -163,7 +163,7 @@ describe("Upload", () => {
   it("does not display the dropzone when uploading", async () => {
     renderWithQueryClient(<Upload {...defaultProps} />);
 
-    const dropzone = screen.getByTestId("upload-component-upload");
+    const dropzone = screen.getByRole("presentation");
     const file = new File(["file contents"], "file.pdf", { type: "application/pdf" });
 
     Object.defineProperty(dropzone, "files", {
@@ -174,7 +174,7 @@ describe("Upload", () => {
     fireEvent.drop(dropzone);
 
     await waitFor(() => {
-      expect(screen.getByTestId("upload-component-upload")).not.toBeVisible();
+      expect(screen.queryByTestId("upload-component-upload")).not.toBeInTheDocument();
     });
   });
 
