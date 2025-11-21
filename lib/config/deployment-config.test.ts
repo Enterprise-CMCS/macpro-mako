@@ -38,7 +38,6 @@ describe("DeploymentConfig", () => {
     vpcName: "vpcName",
     iamPath: "/my/path/",
     iamPermissionsBoundary: "arn:aws:iam::1234578910:policy/foo/bar-policy",
-    smartLinkUrl: "https://smartlink.example.com",
   });
 
   const stageSecret = JSON.stringify({
@@ -107,7 +106,6 @@ describe("DeploymentConfig", () => {
       terminationProtection: false,
       iamPath: "/my/path/",
       iamPermissionsBoundary: "arn:aws:iam::1234578910:policy/foo/bar-policy",
-      smartLinkUrl: "https://smartlink.example.com",
     };
 
     expect(deploymentConfig.config).toEqual(expectedConfig);
@@ -174,7 +172,6 @@ describe("DeploymentConfig", () => {
       terminationProtection: false,
       iamPath: "/my/path/",
       iamPermissionsBoundary: "arn:aws:iam::1234578910:policy/foo/bar-policy",
-      smartLinkUrl: "https://smartlink.example.com",
     };
 
     expect(deploymentConfig.config).toEqual(expectedConfig);

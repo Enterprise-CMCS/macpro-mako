@@ -29,7 +29,6 @@ export type InjectedConfigProperties = {
   legacyS3AccessRoleArn: string;
   useSharedOpenSearch: boolean;
   vpcName: string;
-  smartLinkUrl: string;
 };
 
 export type DeploymentConfigProperties = InjectedConfigProperties & {
@@ -134,7 +133,6 @@ export class DeploymentConfig {
       typeof config.idmEnable === "boolean" &&
       typeof config.idmHomeUrl === "string" &&
       typeof config.legacyS3AccessRoleArn === "string" &&
-      typeof config.smartlinkUrl === "string" &&
       typeof config.useSharedOpenSearch === "boolean" &&
       typeof config.vpcName === "string"
     );
