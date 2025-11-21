@@ -26,6 +26,7 @@ export type InjectedConfigProperties = {
   idmClientSecretArn: string;
   idmEnable: boolean;
   idmHomeUrl: string;
+  smartLinkUrl: string;
   legacyS3AccessRoleArn: string;
   useSharedOpenSearch: boolean;
   vpcName: string;
@@ -132,6 +133,7 @@ export class DeploymentConfig {
       typeof config.idmClientSecretArn === "string" && // pragma: allowlist secret
       typeof config.idmEnable === "boolean" &&
       typeof config.idmHomeUrl === "string" &&
+      typeof config.smartLinkUrl === "string" &&
       typeof config.legacyS3AccessRoleArn === "string" &&
       typeof config.useSharedOpenSearch === "boolean" &&
       typeof config.vpcName === "string"
