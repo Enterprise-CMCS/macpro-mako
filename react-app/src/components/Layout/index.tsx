@@ -73,7 +73,11 @@ const useGetLinks = () => {
           {
             name: "OneMAC SMART",
             link: config.smartLink.url,
-            condition: !isProd,
+            condition:
+              !isProd &&
+              ["systemadmin", "statesystemadmin", "cmsroleapprover"].includes(
+                userDetailsData?.role,
+              ),
           },
           {
             name: "Latest Updates",
