@@ -71,6 +71,11 @@ const useGetLinks = () => {
             condition: !toggleFaq,
           },
           {
+            name: "OneMAC SMART",
+            link: config.smartLink.url,
+            condition: !isProd,
+          },
+          {
             name: "Latest Updates",
             link: "/latestupdates",
             condition: isStateHomepage && isStateUser(userObj.user),
@@ -367,7 +372,6 @@ const ResponsiveNav = ({ isDesktop }: ResponsiveNavProps) => {
       event_label: name,
     });
   };
-
   if (isDesktop) {
     return (
       <>
@@ -375,7 +379,7 @@ const ResponsiveNav = ({ isDesktop }: ResponsiveNavProps) => {
           <NavLink
             data-testid={`${link.name}-d`}
             to={link.link}
-            target={link.link === "/faq" ? "_blank" : "_self"}
+            target={link.link === "/faq" || link.name === "OneMAC SMART" ? "_blank" : "_self"}
             key={link.name}
             className={setClassBasedOnNav}
             onClick={() => triggerGAEvent(link.name)}

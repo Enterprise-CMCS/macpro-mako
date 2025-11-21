@@ -21,6 +21,9 @@ const config = {
   googleAnalytics: {
     GOOGLE_ANALYTICS_ID: import.meta.env.VITE_GOOGLE_ANALYTICS_GTAG,
   },
+  smartLink: {
+    url: import.meta.env.VITE_SMART_LINK_URL,
+  },
 };
 
 export default config;
