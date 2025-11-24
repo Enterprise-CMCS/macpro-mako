@@ -20,6 +20,18 @@ import { renderFormWithPackageSectionAsync } from "@/utils/test-helpers/renderFo
 import { ActionForm } from "./index";
 const PROGRESS_REMINDER = /If you leave this page, you will lose your progress on this form./;
 const sendGAEventSpy = vi.spyOn(await import("@/utils/ReactGA/SendGAEvent"), "sendGAEvent");
+
+vi.mock("react-router-dom", async (importOriginal) => {
+  const actual = await importOriginal<typeof import("react-router-dom")>();
+
+  const mockNavigate = vi.fn();
+
+  return {
+    ...actual,
+    useNavigate: () => mockNavigate,
+  };
+});
+
 describe("ActionForm", () => {
   beforeEach(() => {
     setDefaultStateSubmitter();

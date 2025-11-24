@@ -22,16 +22,51 @@ describe("Lambda Handler", () => {
   const lambdaSpy = vi.spyOn(LambdaClient.prototype, "send");
   const callback = vi.fn();
 
+  /**
+   * Happy-path behavior:
+   *  - First send(): CreateEventSourceMappingCommand -> returns UUID
+   *  - Second send(): GetEventSourceMappingCommand  -> returns State: "Enabled"
+   */
+  const mockSuccessMapping = () => {
+    // First call: CreateEventSourceMappingCommand
+    lambdaSpy.mockImplementationOnce(async (command) => {
+      // Optional sanity check, safe to remove if noisy:
+      // expect(command).toBeInstanceOf(CreateEventSourceMappingCommand);
+      return { UUID: TEST_FUNCTION_TEST_TOPIC_UUID } as any;
+    });
+
+    // Second call: GetEventSourceMappingCommand
+    lambdaSpy.mockImplementationOnce(async (command) => {
+      // Optional sanity check:
+      // expect(command).toBeInstanceOf(GetEventSourceMappingCommand);
+      return { State: "Enabled" } as any;
+    });
+  };
+
+  /**
+   * Error behavior:
+   *  - First send(): CreateEventSourceMappingCommand -> throws
+   * This drives your handler into the catch block and makes it call
+   * the callback with an Error and statusCode: 500.
+   */
+  const mockErrorOnCreate = () => {
+    lambdaSpy.mockImplementationOnce(async () => {
+      throw new Error("Mapping creation failed");
+    });
+  };
+
   beforeEach(() => {
-    vi.useFakeTimers();
+    lambdaSpy.mockReset();
+    callback.mockReset();
   });
 
   afterEach(() => {
     vi.clearAllMocks();
-    vi.useRealTimers();
   });
 
   it("should handle successful execution and enable the mappings", async () => {
+    mockSuccessMapping();
+
     const event = {
       triggers: [
         {
@@ -65,11 +100,14 @@ describe("Lambda Handler", () => {
         },
       } as GetEventSourceMappingCommand),
     );
+
     expect(lambdaSpy).toHaveBeenCalledTimes(2);
     expect(callback).toHaveBeenCalledWith(null, { statusCode: 200 });
   });
 
   it("should handle errors during mapping creation", async () => {
+    mockErrorOnCreate();
+
     const event = {
       triggers: [
         {
@@ -84,14 +122,7 @@ describe("Lambda Handler", () => {
       startingPosition: "TRIM_HORIZON",
     };
 
-    // Wrap the callback in a promise so the test only finishes
-    // once the Lambda callback has been invoked.
-    await new Promise<void>((resolve) => {
-      handler(event, {} as Context, (...args: Parameters<typeof callback>) => {
-        callback(...args); // keep your spy behavior
-        resolve();
-      });
-    });
+    await handler(event, {} as Context, callback);
 
     expect(lambdaSpy).toHaveBeenCalledWith(
       expect.objectContaining({
@@ -103,7 +134,10 @@ describe("Lambda Handler", () => {
         }),
       } as CreateEventSourceMappingCommand),
     );
+
     expect(lambdaSpy).toHaveBeenCalledTimes(1);
-    expect(callback).toHaveBeenCalledWith(expect.any(Error), { statusCode: 500 });
+    expect(callback).toHaveBeenCalledWith(expect.any(Error), {
+      statusCode: 500,
+    });
   });
 });
