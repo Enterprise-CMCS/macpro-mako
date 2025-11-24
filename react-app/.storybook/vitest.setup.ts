@@ -4,10 +4,15 @@ import { beforeAll } from "vitest";
 
 import * as previewAnnotations from "./preview";
 
-const annotations = setProjectAnnotations([
-  // Add the a11y addon annotations
-  a11yAddonAnnotations,
-  previewAnnotations,
-]);
+// Disable Storybook preview + MSW during Vitest if env variable set
+const disableMsw = process.env.STORYBOOK_DISABLE_MSW === "true" || typeof window === "undefined";
 
-beforeAll(annotations.beforeAll);
+const baseAnnotations = [a11yAddonAnnotations];
+
+const annotations = setProjectAnnotations(
+  disableMsw ? baseAnnotations : [...baseAnnotations, previewAnnotations],
+);
+
+if (annotations.beforeAll) {
+  beforeAll(annotations.beforeAll);
+}

@@ -84,7 +84,14 @@ describe("Lambda Handler", () => {
       startingPosition: "TRIM_HORIZON",
     };
 
-    await handler(event, {} as Context, callback);
+    // Wrap the callback in a promise so the test only finishes
+    // once the Lambda callback has been invoked.
+    await new Promise<void>((resolve) => {
+      handler(event, {} as Context, (...args: Parameters<typeof callback>) => {
+        callback(...args); // keep your spy behavior
+        resolve();
+      });
+    });
 
     expect(lambdaSpy).toHaveBeenCalledWith(
       expect.objectContaining({
@@ -97,8 +104,6 @@ describe("Lambda Handler", () => {
       } as CreateEventSourceMappingCommand),
     );
     expect(lambdaSpy).toHaveBeenCalledTimes(1);
-    expect(callback).toHaveBeenCalledWith(expect.any(Error), {
-      statusCode: 500,
-    });
+    expect(callback).toHaveBeenCalledWith(expect.any(Error), { statusCode: 500 });
   });
 });
