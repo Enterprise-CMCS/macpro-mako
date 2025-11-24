@@ -31,14 +31,14 @@ describe("Lambda Handler", () => {
     // First call: CreateEventSourceMappingCommand
     lambdaSpy.mockImplementationOnce(async (command) => {
       // Optional sanity check, safe to remove if noisy:
-      // expect(command).toBeInstanceOf(CreateEventSourceMappingCommand);
+      expect(command).toBeInstanceOf(CreateEventSourceMappingCommand);
       return { UUID: TEST_FUNCTION_TEST_TOPIC_UUID } as any;
     });
 
     // Second call: GetEventSourceMappingCommand
     lambdaSpy.mockImplementationOnce(async (command) => {
       // Optional sanity check:
-      // expect(command).toBeInstanceOf(GetEventSourceMappingCommand);
+      expect(command).toBeInstanceOf(GetEventSourceMappingCommand);
       return { State: "Enabled" } as any;
     });
   };
