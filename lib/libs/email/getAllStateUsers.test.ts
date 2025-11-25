@@ -1,8 +1,32 @@
 // lib/libs/email/getAllStateUsers.test.ts
-// These imports should match whatever you had before for MSW.
-// If they live in a different module, just adjust this line.
-import { errorIdentityProviderServiceHandler, mockedServer } from "mocks";
-import { beforeEach, describe, expect, it } from "vitest";
+import axios from "axios";
+import { beforeEach, describe, expect, it, vi } from "vitest";
+
+vi.mock("axios", () => {
+  // Local to the factory to avoid hoisting/TDZ problems
+  const postMock = vi.fn();
+
+  const axiosInstance = {
+    post: postMock,
+  };
+
+  const axiosDefault = Object.assign(postMock, {
+    // Support both axios.post(...) and axios.create().post(...)
+    post: postMock,
+    create: vi.fn(() => axiosInstance),
+    isAxiosError: (err: unknown) => (err as any)?.isAxiosError === true,
+    // Expose the mock for our assertions
+    __postMock: postMock,
+  });
+
+  return { default: axiosDefault };
+});
+
+type AxiosMock = typeof axios & {
+  __postMock: ReturnType<typeof vi.fn>;
+};
+
+const mockedAxios = axios as AxiosMock;
 
 import { getAllStateUsers } from "./getAllStateUsers";
 
@@ -10,20 +34,11 @@ const USER_POOL_ID = "test-user-pool-id";
 
 describe("getAllStateUsers", () => {
   beforeEach(() => {
-    // Make sure MSW is reset to its default handlers between tests
-    if (typeof mockedServer.resetHandlers === "function") {
-      mockedServer.resetHandlers();
-    }
+    mockedAxios.__postMock.mockReset();
   });
 
   it("should fetch and return state users successfully", async () => {
-    const result = await getAllStateUsers({
-      userPoolId: USER_POOL_ID,
-      state: "CA",
-    });
-
-    // This matches the fixture you've been seeing in the logs
-    expect(result).toEqual([
+    const apiResponse = [
       {
         email: "multistate@example.com",
         firstName: "Multi",
@@ -42,14 +57,22 @@ describe("getAllStateUsers", () => {
         formattedEmailAddress: "George Harrison <george@example.com>",
         lastName: "Harrison",
       },
-    ]);
+    ];
+
+    mockedAxios.__postMock.mockResolvedValueOnce({ data: apiResponse });
+
+    const result = await getAllStateUsers({
+      userPoolId: USER_POOL_ID,
+      state: "CA",
+    });
+
+    expect(mockedAxios.__postMock).toHaveBeenCalledTimes(1);
+    expect(result).toEqual(apiResponse);
   });
 
   it("should handle an error when fetching state users", async () => {
-    // Swap in the error MSW handler for this test
-    mockedServer.use(errorIdentityProviderServiceHandler);
+    mockedAxios.__postMock.mockRejectedValueOnce(new Error("network error"));
 
-    // IMPORTANT: pass the Promise directly to expect(...), not a function.
     await expect(getAllStateUsers({ userPoolId: USER_POOL_ID, state: "CA" })).rejects.toThrow(
       "Error fetching users",
     );

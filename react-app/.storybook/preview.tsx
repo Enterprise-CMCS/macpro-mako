@@ -6,33 +6,28 @@ import { initialize, mswLoader } from "msw-storybook-addon";
 
 import { withLaunchDarkly, withQueryClient } from "./decorators";
 
-// Detect vitest (unit tests)
 const isVitest = typeof import.meta !== "undefined" && (import.meta as any).vitest;
 
-// Detect Storybook test runner (Playwright)
 const isStorybookTestRunner =
   typeof window !== "undefined" && (window as any).__STORYBOOK_TEST_RUNNER__;
 
-// Detect Storybook test env via env var (for CI)
-// NOTE: in a Vite/Storybook build, this will be replaced at build-time
-const isStorybookTestEnv =
-  typeof process !== "undefined" &&
-  typeof process.env !== "undefined" &&
-  process.env.STORYBOOK_TEST === "true";
+// 🔹 Build-time flag from CI to totally disable MSW in Storybook
+const isMswDisabled =
+  typeof import.meta !== "undefined" && (import.meta as any).env?.STORYBOOK_DISABLE_MSW === "true";
 
 // Only use MSW when:
 // - we have a real window
-// - we have `navigator.serviceWorker` (real browser)
+// - we have navigator.serviceWorker
 // - NOT Vitest
 // - NOT Storybook test runner
-// - NOT explicit STORYBOOK_TEST env (CI accessibility run)
+// - NOT explicitly disabled via env
 const shouldUseMsw =
   typeof window !== "undefined" &&
   typeof navigator !== "undefined" &&
   "serviceWorker" in navigator &&
   !isVitest &&
   !isStorybookTestRunner &&
-  !isStorybookTestEnv;
+  !isMswDisabled;
 
 if (shouldUseMsw) {
   initialize({
