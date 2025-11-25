@@ -6,15 +6,22 @@ import { initialize, mswLoader } from "msw-storybook-addon";
 
 import { withLaunchDarkly, withQueryClient } from "./decorators";
 
-// Detect Vitest (storybook-addon-vitest)
 const isVitest = typeof import.meta !== "undefined" && (import.meta as any).vitest;
 
-// Detect Storybook test-runner (a11y pipeline / playwright)
 const isStorybookTestRunner =
   typeof window !== "undefined" && (window as any).__STORYBOOK_TEST_RUNNER__;
 
-// We only want MSW's service worker in *real* Storybook UI
-const shouldUseMsw = !isVitest && !isStorybookTestRunner;
+// Only use MSW when:
+// - we have a real window
+// - we have navigator.serviceWorker (real browser)
+// - NOT Vitest
+// - NOT Storybook test runner
+const shouldUseMsw =
+  typeof window !== "undefined" &&
+  typeof navigator !== "undefined" &&
+  "serviceWorker" in navigator &&
+  !isVitest &&
+  !isStorybookTestRunner;
 
 if (shouldUseMsw) {
   initialize({
@@ -54,7 +61,6 @@ const preview: Preview = {
     a11y: {
       test: "error",
     },
-
     html: {},
   },
 };
