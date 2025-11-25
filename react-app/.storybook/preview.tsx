@@ -6,11 +6,17 @@ import { initialize, mswLoader } from "msw-storybook-addon";
 
 import { withLaunchDarkly, withQueryClient } from "./decorators";
 
-// 🔹 Detect when we're running inside Vitest (storybook-addon-vitest)
+// Detect Vitest (storybook-addon-vitest)
 const isVitest = typeof import.meta !== "undefined" && (import.meta as any).vitest;
 
-// Only initialize MSW's service worker in real Storybook, NOT in Vitest
-if (!isVitest) {
+// Detect Storybook test-runner (a11y pipeline / playwright)
+const isStorybookTestRunner =
+  typeof window !== "undefined" && (window as any).__STORYBOOK_TEST_RUNNER__;
+
+// We only want MSW's service worker in *real* Storybook UI
+const shouldUseMsw = !isVitest && !isStorybookTestRunner;
+
+if (shouldUseMsw) {
   initialize({
     onUnhandledRequest: "bypass",
     serviceWorker: {
@@ -22,8 +28,7 @@ if (!isVitest) {
 }
 
 const preview: Preview = {
-  // In Vitest, don't run the mswLoader at all
-  loaders: isVitest ? [] : [mswLoader],
+  loaders: shouldUseMsw ? [mswLoader] : [],
   tags: ["autodocs"],
   decorators: [withQueryClient, withLaunchDarkly],
   parameters: {
@@ -34,10 +39,8 @@ const preview: Preview = {
       },
     },
 
-    // Disable MSW handlers for Vitest so no SW / workerChannel logic runs
-    ...(isVitest
-      ? {}
-      : {
+    ...(shouldUseMsw
+      ? {
           msw: {
             handlers: {
               auth: [...cognitoHandlers],
@@ -45,10 +48,10 @@ const preview: Preview = {
               flags: [...launchDarklyHandlers],
             },
           },
-        }),
+        }
+      : {}),
 
     a11y: {
-      // Fail accessibility tests when violations are found
       test: "error",
     },
 

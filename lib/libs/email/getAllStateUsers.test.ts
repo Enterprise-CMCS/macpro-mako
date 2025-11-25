@@ -56,12 +56,17 @@ describe("getAllStateUsers", () => {
   });
 
   it("should handle an error when fetching state users", async () => {
-    // Make any axios GET/POST reject so getAllStateUsers hits its error path
-    mockedAxios.get.mockRejectedValueOnce(new Error("network error"));
-    mockedAxios.post.mockRejectedValueOnce(new Error("network error"));
+    // Make sure no previous behavior leaks into this test
+    mockedAxios.post.mockReset();
 
-    await expect(getAllStateUsers({ userPoolId: USER_POOL_ID, state: "CA" })).rejects.toThrowError(
+    // For this test, every call rejects
+    mockedAxios.post.mockRejectedValue(new Error("network error"));
+
+    await expect(getAllStateUsers({ userPoolId: USER_POOL_ID, state: "CA" })).rejects.toThrow(
       "Error fetching users",
     );
+
+    // Optional: prove we actually hit axios once in this path
+    expect(mockedAxios.post).toHaveBeenCalledTimes(1);
   });
 });
