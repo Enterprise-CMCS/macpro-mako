@@ -174,7 +174,8 @@ describe("Upload", () => {
     fireEvent.drop(dropzone);
 
     await waitFor(() => {
-      expect(screen.getByTestId("upload-component-upload")).not.toBeVisible();
+      expect(screen.getByTestId("upload-component-click")).toBeVisible();
+      expect(screen.getByText("Failed to upload file.pdf")).toBeVisible();
     });
   });
 

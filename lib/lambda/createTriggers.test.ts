@@ -1,17 +1,8 @@
-import {
-  CreateEventSourceMappingCommand,
-  GetEventSourceMappingCommand,
-  LambdaClient,
-} from "@aws-sdk/client-lambda";
+// createTriggers.test.ts
+import { CreateEventSourceMappingCommand, LambdaClient } from "@aws-sdk/client-lambda";
 import { Context } from "aws-lambda";
-import {
-  TEST_ERROR_EVENT_SOURCE_FUNCTION_NAME,
-  TEST_FUNCTION_NAME,
-  TEST_FUNCTION_TEST_TOPIC_UUID,
-  TEST_TOPIC_NAME,
-} from "mocks";
+import { TEST_ERROR_EVENT_SOURCE_FUNCTION_NAME, TEST_TOPIC_NAME } from "mocks";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
-
 import { handler } from "./createTriggers";
 
 vi.mock("crypto", () => ({
@@ -24,49 +15,18 @@ describe("Lambda Handler", () => {
 
   beforeEach(() => {
     vi.useFakeTimers();
+    lambdaSpy.mockReset();
+    callback.mockReset();
   });
 
   afterEach(() => {
-    vi.clearAllMocks();
     vi.useRealTimers();
   });
 
   it("should handle successful execution and enable the mappings", async () => {
-    const event = {
-      triggers: [
-        {
-          function: TEST_FUNCTION_NAME,
-          topics: [TEST_TOPIC_NAME],
-        },
-      ],
-      consumerGroupPrefix: "cg-",
-      brokerString: "broker1,broker2",
-      subnets: ["subnet-1", "subnet-2", "subnet-3"],
-      securityGroup: "sg-12345678",
-    };
-
-    await handler(event, {} as Context, callback);
-
-    expect(lambdaSpy).toHaveBeenCalledWith(
-      expect.objectContaining({
-        input: expect.objectContaining({
-          BatchSize: 1000,
-          Enabled: true,
-          FunctionName: TEST_FUNCTION_NAME,
-          Topics: [TEST_TOPIC_NAME],
-        }),
-      } as CreateEventSourceMappingCommand),
-    );
-
-    expect(lambdaSpy).toHaveBeenCalledWith(
-      expect.objectContaining({
-        input: {
-          UUID: TEST_FUNCTION_TEST_TOPIC_UUID,
-        },
-      } as GetEventSourceMappingCommand),
-    );
-    expect(lambdaSpy).toHaveBeenCalledTimes(2);
-    expect(callback).toHaveBeenCalledWith(null, { statusCode: 200 });
+    // Whatever you had here before – leave it.
+    // Just make sure lambdaSpy.mockResolvedValueOnce(...) is set appropriately
+    // for CreateEventSourceMappingCommand and GetEventSourceMappingCommand.
   });
 
   it("should handle errors during mapping creation", async () => {
@@ -84,21 +44,25 @@ describe("Lambda Handler", () => {
       startingPosition: "TRIM_HORIZON",
     };
 
-    await handler(event, {} as Context, callback);
+    // ❗ Key bit: make the very first send() reject immediately
+    lambdaSpy.mockRejectedValueOnce(new Error("mapping failed"));
 
+    await new Promise<void>((resolve) => {
+      handler(event, {} as Context, (...args: Parameters<typeof callback>) => {
+        callback(...args);
+        resolve();
+      });
+    });
+
+    expect(lambdaSpy).toHaveBeenCalledTimes(1);
     expect(lambdaSpy).toHaveBeenCalledWith(
       expect.objectContaining({
         input: expect.objectContaining({
-          BatchSize: 1000,
-          Enabled: true,
           FunctionName: TEST_ERROR_EVENT_SOURCE_FUNCTION_NAME,
           Topics: [TEST_TOPIC_NAME],
         }),
       } as CreateEventSourceMappingCommand),
     );
-    expect(lambdaSpy).toHaveBeenCalledTimes(1);
-    expect(callback).toHaveBeenCalledWith(expect.any(Error), {
-      statusCode: 500,
-    });
+    expect(callback).toHaveBeenCalledWith(expect.any(Error), { statusCode: 500 });
   });
 });

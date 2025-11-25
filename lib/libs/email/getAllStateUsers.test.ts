@@ -56,8 +56,9 @@ describe("getAllStateUsers", () => {
 
   it("should handle an error when fetching state users", async () => {
     mockedServer.use(errorIdentityProviderServiceHandler);
-    await expect(() =>
-      getAllStateUsers({ userPoolId: USER_POOL_ID, state: "CA" }),
-    ).rejects.toThrowError("Error fetching users");
+
+    await expect(getAllStateUsers({ userPoolId: USER_POOL_ID, state: "CA" })).rejects.toThrowError(
+      "Error fetching users",
+    );
   });
 });
