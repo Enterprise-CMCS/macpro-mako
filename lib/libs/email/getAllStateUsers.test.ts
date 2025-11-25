@@ -1,27 +1,26 @@
 // lib/libs/email/getAllStateUsers.test.ts
 
-import { errorIdentityProviderServiceHandler } from "mocks";
-import { mockedServiceServer as mockedServer } from "mocks/server";
-import { beforeEach, describe, expect, it } from "vitest";
+import axios from "axios";
+import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 
 import { getAllStateUsers } from "./getAllStateUsers";
 
 const USER_POOL_ID = "test-user-pool-id";
 
 describe("getAllStateUsers", () => {
+  let postSpy: ReturnType<typeof vi.spyOn>;
+
   beforeEach(() => {
-    // reset MSW handlers back to their defaults between tests
-    mockedServer.resetHandlers();
+    // Spy on axios.post for this test file only
+    postSpy = vi.spyOn(axios, "post");
+  });
+
+  afterEach(() => {
+    postSpy.mockRestore();
   });
 
   it("should fetch and return state users successfully", async () => {
-    const result = await getAllStateUsers({
-      userPoolId: USER_POOL_ID,
-      state: "CA",
-    });
-
-    // This matches what your failure output showed
-    expect(result).toEqual([
+    const apiResponse = [
       {
         email: "multistate@example.com",
         firstName: "Multi",
@@ -40,16 +39,28 @@ describe("getAllStateUsers", () => {
         formattedEmailAddress: "George Harrison <george@example.com>",
         lastName: "Harrison",
       },
-    ]);
+    ];
+
+    postSpy.mockResolvedValueOnce({ data: apiResponse });
+
+    const result = await getAllStateUsers({
+      userPoolId: USER_POOL_ID,
+      state: "CA",
+    });
+
+    expect(postSpy).toHaveBeenCalledTimes(1);
+    expect(result).toEqual(apiResponse);
   });
 
   it("should handle an error when fetching state users", async () => {
-    // Swap the handler to the error case for this one test
-    mockedServer.use(errorIdentityProviderServiceHandler);
+    // Force axios to reject for this call – no MSW, no network
+    postSpy.mockRejectedValueOnce(new Error("network error"));
 
-    // ✅ IMPORTANT: pass the *promise* to `expect(...)`, not a function.
-    await expect(getAllStateUsers({ userPoolId: USER_POOL_ID, state: "CA" })).rejects.toThrow(
-      "Error fetching users",
-    );
+    await expect(
+      getAllStateUsers({
+        userPoolId: USER_POOL_ID,
+        state: "CA",
+      }),
+    ).rejects.toThrow("Error fetching users");
   });
 });
