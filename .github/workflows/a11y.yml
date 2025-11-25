@@ -66,6 +66,8 @@ jobs:
       - name: Run tests
         id: accessibility-test
         working-directory: react-app
+        env:
+          STORYBOOK_TEST: "true"
         run: bun run test-storybook
 
       - name: Rename Reports

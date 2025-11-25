@@ -8,20 +8,30 @@ import { withLaunchDarkly, withQueryClient } from "./decorators";
 
 const isVitest = typeof import.meta !== "undefined" && (import.meta as any).vitest;
 
+// Storybook test runner flag (Playwright-based a11y/test-runner)
 const isStorybookTestRunner =
-  typeof window !== "undefined" && (window as any).__STORYBOOK_TEST_RUNNER__;
+  (typeof window !== "undefined" && (window as any).__STORYBOOK_TEST_RUNNER__) ||
+  (typeof globalThis !== "undefined" && (globalThis as any).__STORYBOOK_TEST_RUNNER__);
+
+// Explicit CI/test env flag you can set in your a11y pipeline
+// e.g. STORYBOOK_TEST=true
+const isStorybookTestEnv =
+  typeof process !== "undefined" && process.env && process.env.STORYBOOK_TEST === "true";
+
+const isBrowser = typeof window !== "undefined" && typeof navigator !== "undefined";
 
 // Only use MSW when:
-// - we have a real window
-// - we have navigator.serviceWorker (real browser)
+// - real browser
+// - has serviceWorker
 // - NOT Vitest
 // - NOT Storybook test runner
+// - NOT our explicit STORYBOOK_TEST env
 const shouldUseMsw =
-  typeof window !== "undefined" &&
-  typeof navigator !== "undefined" &&
+  isBrowser &&
   "serviceWorker" in navigator &&
   !isVitest &&
-  !isStorybookTestRunner;
+  !isStorybookTestRunner &&
+  !isStorybookTestEnv;
 
 if (shouldUseMsw) {
   initialize({
@@ -35,6 +45,7 @@ if (shouldUseMsw) {
 }
 
 const preview: Preview = {
+  // Only attach mswLoader when we actually use MSW
   loaders: shouldUseMsw ? [mswLoader] : [],
   tags: ["autodocs"],
   decorators: [withQueryClient, withLaunchDarkly],
@@ -46,6 +57,7 @@ const preview: Preview = {
       },
     },
 
+    // Only register MSW handlers when enabled
     ...(shouldUseMsw
       ? {
           msw: {
@@ -59,6 +71,7 @@ const preview: Preview = {
       : {}),
 
     a11y: {
+      // Fail on violations in both normal Storybook and test runner
       test: "error",
     },
     html: {},
