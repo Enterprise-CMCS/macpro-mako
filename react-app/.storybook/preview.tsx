@@ -6,10 +6,10 @@ import { initialize, mswLoader } from "msw-storybook-addon";
 
 import { withLaunchDarkly, withQueryClient } from "./decorators";
 
+// 🔹 Detect when we're running inside Vitest (storybook-addon-vitest)
 const isVitest = typeof import.meta !== "undefined" && (import.meta as any).vitest;
 
-// Only initialize MSW's service worker when running real Storybook,
-// NOT when Storybook preview is being pulled into Vitest a11y tests.
+// Only initialize MSW's service worker in real Storybook, NOT in Vitest
 if (!isVitest) {
   initialize({
     onUnhandledRequest: "bypass",
@@ -22,6 +22,7 @@ if (!isVitest) {
 }
 
 const preview: Preview = {
+  // In Vitest, don't run the mswLoader at all
   loaders: isVitest ? [] : [mswLoader],
   tags: ["autodocs"],
   decorators: [withQueryClient, withLaunchDarkly],
@@ -33,7 +34,7 @@ const preview: Preview = {
       },
     },
 
-    // Disable MSW story handlers entirely when in Vitest a11y runs.
+    // Disable MSW handlers for Vitest so no SW / workerChannel logic runs
     ...(isVitest
       ? {}
       : {
@@ -47,6 +48,7 @@ const preview: Preview = {
         }),
 
     a11y: {
+      // Fail accessibility tests when violations are found
       test: "error",
     },
 
