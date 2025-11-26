@@ -4,9 +4,14 @@ import type { Preview } from "@storybook/react-vite";
 import { cognitoHandlers, defaultApiHandlers, launchDarklyHandlers } from "mocks";
 import { initialize, mswLoader } from "msw-storybook-addon";
 
+import { MemoryRouter, Route, Routes } from "react-router";
+
 import { withLaunchDarkly, withQueryClient } from "./decorators";
 
 const isVitest = typeof import.meta !== "undefined" && (import.meta as any).vitest;
+const isStorybookTestRunner =
+  typeof window !== "undefined" && (window as any).__STORYBOOK_TEST_RUNNER__;
+const isAutomation = typeof navigator !== "undefined" && navigator.webdriver;
 
 // 🔹 Build-time flag from CI to totally disable MSW in Storybook
 const isMswDisabled =
@@ -49,7 +54,23 @@ if (shouldUseMsw) {
 const preview: Preview = {
   loaders: shouldUseMsw ? [mswLoader] : [],
   tags: ["autodocs"],
-  decorators: [withQueryClient, withLaunchDarkly],
+  decorators: [
+    ...(isStorybookTestRunner || isAutomation
+      ? [
+          (Story) => (
+            <MemoryRouter initialEntries={["/"]}>
+              <Routes>
+                <Route path="/" element={<Story />} />
+                <Route path="/signup" element={<Story />} />
+                <Route path="*" element={<Story />} />
+              </Routes>
+            </MemoryRouter>
+          ),
+        ]
+      : []),
+    withQueryClient,
+    withLaunchDarkly,
+  ],
   parameters: {
     controls: {
       matchers: {
