@@ -9,8 +9,6 @@ const meta = {
   component: TemporaryExtensionForm,
   decorators: [withRouter, asStateSubmitter],
   parameters: {
-    a11y: { disable: true },
-    test: { disable: true },
     reactRouter: reactRouterParameters({
       routing: {
         path: "/new-submission/waiver/temporary-extensions",

@@ -23,27 +23,16 @@ const queryClient = new QueryClient({
   },
 });
 
-const isServer = typeof window === "undefined";
-const isStorybookTestRunner =
-  !isServer && ((window as any).__STORYBOOK_TEST_RUNNER__ || (window as any).__vitest_browser__);
-const isVitest = typeof import.meta !== "undefined" && (import.meta as any).vitest;
-const isAutomation = typeof navigator !== "undefined" && navigator.webdriver;
-const isLdDisabledViaEnv =
-  typeof import.meta !== "undefined" && (import.meta as any).env?.STORYBOOK_DISABLE_LD === "true";
-
-// Use a no-op provider in test/storybook runner, vitest browser, or automation to avoid async LD startup/network waits.
-const LDProvider =
-  isServer || isStorybookTestRunner || isVitest || isAutomation || isLdDisabledViaEnv
-    ? ({ children }) => <>{children}</>
-    : await asyncWithLDProvider({
-        clientSideID: LAUNCHDARKLY_CLIENT_ID,
-        options: {
-          bootstrap: "localStorage",
-          baseUrl: "https://clientsdk.launchdarkly.us",
-          streamUrl: "https://clientstream.launchdarkly.us",
-          eventsUrl: "https://events.launchdarkly.us",
-        },
-      });
+// Initialize LaunchDarkly
+const LDProvider = await asyncWithLDProvider({
+  clientSideID: LAUNCHDARKLY_CLIENT_ID,
+  options: {
+    bootstrap: "localStorage",
+    baseUrl: "https://clientsdk.launchdarkly.us",
+    streamUrl: "https://clientstream.launchdarkly.us",
+    eventsUrl: "https://events.launchdarkly.us",
+  },
+});
 
 export const withQueryClient = (Story) => (
   <QueryClientProvider client={queryClient}>{Story()}</QueryClientProvider>
