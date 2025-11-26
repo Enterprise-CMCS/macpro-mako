@@ -7,6 +7,9 @@ import { initialize, mswLoader } from "msw-storybook-addon";
 import { withLaunchDarkly, withQueryClient } from "./decorators";
 
 const isVitest = typeof import.meta !== "undefined" && (import.meta as any).vitest;
+const isStorybookTestRunner =
+  typeof window !== "undefined" && (window as any).__STORYBOOK_TEST_RUNNER__;
+const isAutomation = typeof navigator !== "undefined" && navigator.webdriver;
 
 // 🔹 Build-time flag from CI to totally disable MSW in Storybook
 const isMswDisabled =
@@ -16,12 +19,15 @@ const isMswDisabled =
 // - we have a real window
 // - we have navigator.serviceWorker
 // - NOT Vitest
+// - NOT Storybook test runner / automation
 // - NOT explicitly disabled via env
 const shouldUseMsw =
   typeof window !== "undefined" &&
   typeof navigator !== "undefined" &&
   "serviceWorker" in navigator &&
   !isVitest &&
+  !isStorybookTestRunner &&
+  !isAutomation &&
   !isMswDisabled;
 
 if (typeof navigator !== "undefined" && navigator.serviceWorker) {
