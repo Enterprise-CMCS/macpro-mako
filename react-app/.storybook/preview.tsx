@@ -97,8 +97,11 @@ const preview: Preview = {
               flags: [...launchDarklyHandlers],
               // Fallback to prevent unmocked axios/fetch calls from hanging the runner
               misc: [
-                http.get(/.*/, () => HttpResponse.json({}, { status: 200 })),
-                http.post(/.*/, () => HttpResponse.json({}, { status: 200 })),
+                http.get(/.*/, () => HttpResponse.json({ ok: true }, { status: 200 })),
+                http.post(/.*/, () => HttpResponse.json({ ok: true }, { status: 200 })),
+                http.put(/.*/, () => HttpResponse.json({ ok: true }, { status: 200 })),
+                http.patch(/.*/, () => HttpResponse.json({ ok: true }, { status: 200 })),
+                http.delete(/.*/, () => HttpResponse.json({ ok: true }, { status: 200 })),
               ],
             },
           },
