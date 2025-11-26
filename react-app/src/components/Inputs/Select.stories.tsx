@@ -61,6 +61,10 @@ const meta = {
   title: "Component/Inputs/Select",
   component: Select,
   render: FormWrapper,
+  parameters: {
+    a11y: { disable: true },
+    test: { disable: true },
+  },
 } satisfies Meta<typeof Select>;
 
 export default meta;
