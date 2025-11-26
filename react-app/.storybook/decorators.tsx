@@ -23,16 +23,21 @@ const queryClient = new QueryClient({
   },
 });
 
-// Initialize LaunchDarkly
-const LDProvider = await asyncWithLDProvider({
-  clientSideID: LAUNCHDARKLY_CLIENT_ID,
-  options: {
-    bootstrap: "localStorage",
-    baseUrl: "https://clientsdk.launchdarkly.us",
-    streamUrl: "https://clientstream.launchdarkly.us",
-    eventsUrl: "https://events.launchdarkly.us",
-  },
-});
+const isStorybookTestRunner =
+  typeof window !== "undefined" && (window as any).__STORYBOOK_TEST_RUNNER__;
+
+// Use a no-op provider for the Storybook test runner to avoid async LD startup/network waits.
+const LDProvider = isStorybookTestRunner
+  ? ({ children }) => <>{children}</>
+  : await asyncWithLDProvider({
+      clientSideID: LAUNCHDARKLY_CLIENT_ID,
+      options: {
+        bootstrap: "localStorage",
+        baseUrl: "https://clientsdk.launchdarkly.us",
+        streamUrl: "https://clientstream.launchdarkly.us",
+        eventsUrl: "https://events.launchdarkly.us",
+      },
+    });
 
 export const withQueryClient = (Story) => (
   <QueryClientProvider client={queryClient}>{Story()}</QueryClientProvider>
