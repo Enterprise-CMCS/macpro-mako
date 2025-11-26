@@ -1,4 +1,3 @@
-// .storybook/decorators.tsx
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { asyncWithLDProvider } from "launchdarkly-react-client-sdk";
 import {
@@ -25,25 +24,19 @@ const queryClient = new QueryClient({
   },
 });
 
-// --------- env detection for tests / a11y ---------
-
-const isVitest = typeof import.meta !== "undefined" && (import.meta as any).vitest;
-
+// Detect Storybook test runner (used by test-storybook / Playwright)
 const isStorybookTestRunner =
-  typeof window !== "undefined" && (window as any).__STORYBOOK_TEST_RUNNER__ === true;
+  typeof window !== "undefined" && (window as any).__STORYBOOK_TEST_RUNNER__;
 
-const isLdDisabled =
-  isVitest ||
-  isStorybookTestRunner ||
-  (typeof import.meta !== "undefined" &&
-    (import.meta as any).env?.VITE_STORYBOOK_DISABLE_LD === "true");
+// In normal Storybook we use a real LD provider.
+// In a11y / test-runner, we use a no-op provider to avoid open connections.
+let LDProvider: React.ComponentType<{ children: React.ReactNode }>;
 
-// --------- LaunchDarkly provider (only in real Storybook) ---------
-
-let LDProvider: React.ComponentType<{ children: React.ReactNode }> | null = null;
-
-if (!isLdDisabled) {
-  // Only initialize LD in real Storybook usage
+if (isStorybookTestRunner) {
+  // No-op provider for test runner / accessibility pipeline
+  LDProvider = ({ children }) => <>{children}</>;
+} else {
+  // Real LaunchDarkly provider for interactive Storybook
   LDProvider = await asyncWithLDProvider({
     clientSideID: LAUNCHDARKLY_CLIENT_ID,
     options: {
@@ -55,69 +48,54 @@ if (!isLdDisabled) {
   });
 }
 
-export const withQueryClient = (Story: React.ComponentType) => (
-  <QueryClientProvider client={queryClient}>
-    <Story />
-  </QueryClientProvider>
+export const withQueryClient = (Story) => (
+  <QueryClientProvider client={queryClient}>{Story()}</QueryClientProvider>
 );
 
-export const withLaunchDarkly = (Story: React.ComponentType) => {
-  // In tests / a11y runs, LD is a no-op wrapper
-  if (isLdDisabled || !LDProvider) {
-    return <Story />;
-  }
+export const withLaunchDarkly = (Story) => <LDProvider>{Story()}</LDProvider>;
 
-  return (
-    <LDProvider>
-      <Story />
-    </LDProvider>
-  );
-};
-
-// MSW flag helpers (unchanged)
-export const updateFlags = (toggleFlags: Record<string, any>) => [
+export const updateFlags = (toggleFlags) => [
   ...launchDarklyHandlers,
   toggleGetLDEvalStreamHandler(toggleFlags),
   toggleGetLDEvalxHandler(toggleFlags),
 ];
 
-// User-role decorators (unchanged)
-export const asLoggedOut = (Story: React.ComponentType) => {
+export const asLoggedOut = (Story) => {
   setMockUsername(null);
-  return <Story />;
+  return Story();
 };
 
-export const asStateSubmitter = (Story: React.ComponentType) => {
+export const asStateSubmitter = (Story) => {
   setMockUsername(TEST_STATE_SUBMITTER_USERNAME);
-  return <Story />;
+  return Story();
 };
 
-export const asStateSystemAdmin = (Story: React.ComponentType) => {
+export const asStateSystemAdmin = (Story) => {
   setMockUsername(OS_STATE_SYSTEM_ADMIN_USERNAME);
-  return <Story />;
+  return Story();
 };
 
-export const asDefaultCmsUser = (Story: React.ComponentType) => {
+export const asDefaultCmsUser = (Story) => {
   setMockUsername(DEFAULT_CMS_USER_EMAIL);
-  return <Story />;
+  return Story();
 };
 
-export const asCmsReviewer = (Story: React.ComponentType) => {
+export const asCmsReviewer = (Story) => {
   setMockUsername(TEST_REVIEWER_USERNAME);
-  return <Story />;
+  return Story();
 };
 
-export const asCmsRoleApprover = (Story: React.ComponentType) => {
+export const asCmsRoleApprover = (Story) => {
   setMockUsername(CMS_ROLE_APPROVER_USERNAME);
-  return <Story />;
+  return Story();
 };
 
-export const asHelpDesk = (Story: React.ComponentType) => {
+export const asHelpDesk = (Story) => {
   setMockUsername(HELP_DESK_USER_USERNAME);
-  return <Story />;
+  return Story();
 };
 
-export const asSystemAdmin = (Story: React.ComponentType) => {
+export const asSystemAdmin = (Story) => {
   setMockUsername(SYSTEM_ADMIN_USERNAME);
-  return <Story />;
+  return Story();
 };

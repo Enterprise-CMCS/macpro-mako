@@ -1,5 +1,4 @@
 // lib/libs/email/getAllStateUsers.test.ts
-
 import axios from "axios";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 
@@ -7,16 +6,46 @@ import { getAllStateUsers } from "./getAllStateUsers";
 
 const USER_POOL_ID = "test-user-pool-id";
 
-describe("getAllStateUsers", () => {
-  let postSpy: ReturnType<typeof vi.spyOn>;
+/**
+ * Completely mock axios for this file only.
+ * - No MSW
+ * - No identity provider mock server
+ * - No wrapAxiosError spy
+ *
+ * Everything that calls axios (including axios.create().post) will hit the same postMock.
+ */
+vi.mock("axios", () => {
+  const postMock = vi.fn();
 
+  const createMock = vi.fn(() => ({
+    post: postMock,
+  }));
+
+  // Default export: callable function that delegates to postMock
+  const axiosFn: any = (...args: any[]) => postMock(...args);
+
+  axiosFn.post = postMock;
+  axiosFn.create = createMock;
+  axiosFn.isAxiosError = (err: any) => !!err?.isAxiosError;
+
+  return { default: axiosFn };
+});
+
+type AxiosMock = typeof axios & {
+  post: ReturnType<typeof vi.fn>;
+  create: ReturnType<typeof vi.fn>;
+};
+
+const mockedAxios = axios as AxiosMock;
+
+describe("getAllStateUsers", () => {
   beforeEach(() => {
-    // Spy on axios.post for this test file only
-    postSpy = vi.spyOn(axios, "post");
+    mockedAxios.post.mockReset();
+    mockedAxios.create.mockClear();
   });
 
   afterEach(() => {
-    postSpy.mockRestore();
+    vi.clearAllMocks();
   });
 
   it("should fetch and return state users successfully", async () => {
@@ -41,20 +70,19 @@ describe("getAllStateUsers", () => {
       },
     ];
 
-    postSpy.mockResolvedValueOnce({ data: apiResponse });
+    mockedAxios.post.mockResolvedValueOnce({ data: apiResponse });
 
     const result = await getAllStateUsers({
       userPoolId: USER_POOL_ID,
       state: "CA",
     });
 
-    expect(postSpy).toHaveBeenCalledTimes(1);
+    expect(mockedAxios.post).toHaveBeenCalledTimes(1);
     expect(result).toEqual(apiResponse);
   });
 
   it("should handle an error when fetching state users", async () => {
-    // Force axios to reject for this call – no MSW, no network
-    postSpy.mockRejectedValueOnce(new Error("network error"));
+    mockedAxios.post.mockRejectedValueOnce(new Error("network error"));
 
     await expect(
       getAllStateUsers({
