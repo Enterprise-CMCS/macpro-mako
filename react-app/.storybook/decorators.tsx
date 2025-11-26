@@ -23,8 +23,9 @@ const queryClient = new QueryClient({
   },
 });
 
+const isServer = typeof window === "undefined";
 const isStorybookTestRunner =
-  typeof window !== "undefined" &&
+  !isServer &&
   ((window as any).__STORYBOOK_TEST_RUNNER__ || (window as any).__vitest_browser__);
 const isVitest = typeof import.meta !== "undefined" && (import.meta as any).vitest;
 const isAutomation = typeof navigator !== "undefined" && navigator.webdriver;
@@ -33,7 +34,7 @@ const isLdDisabledViaEnv =
 
 // Use a no-op provider in test/storybook runner, vitest browser, or automation to avoid async LD startup/network waits.
 const LDProvider =
-  isStorybookTestRunner || isVitest || isAutomation || isLdDisabledViaEnv
+  isServer || isStorybookTestRunner || isVitest || isAutomation || isLdDisabledViaEnv
     ? ({ children }) => <>{children}</>
     : await asyncWithLDProvider({
         clientSideID: LAUNCHDARKLY_CLIENT_ID,
