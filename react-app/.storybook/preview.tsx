@@ -19,15 +19,12 @@ const isMswDisabled =
 // - we have a real window
 // - we have navigator.serviceWorker
 // - NOT Vitest
-// - NOT Storybook test runner / automation
 // - NOT explicitly disabled via env
 const shouldUseMsw =
   typeof window !== "undefined" &&
   typeof navigator !== "undefined" &&
   "serviceWorker" in navigator &&
   !isVitest &&
-  !isStorybookTestRunner &&
-  !isAutomation &&
   !isMswDisabled;
 
 if (typeof navigator !== "undefined" && navigator.serviceWorker) {
