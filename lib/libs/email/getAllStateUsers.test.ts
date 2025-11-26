@@ -1,5 +1,7 @@
-// lib/libs/email/getAllStateUsers.test.ts
-import { CognitoIdentityProviderClient, ListUsersCommandOutput } from "@aws-sdk/client-cognito-identity-provider";
+import {
+  CognitoIdentityProviderClient,
+  ListUsersCommandOutput,
+} from "@aws-sdk/client-cognito-identity-provider";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 
 import { getAllStateUsers } from "./getAllStateUsers";

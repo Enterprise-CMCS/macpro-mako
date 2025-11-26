@@ -19,7 +19,6 @@ describe("getExport", () => {
   it("should throw an error if there is an issue with the AWS SDK call", async () => {
     mockedServiceServer.use(errorCloudFormationHandler);
 
-    // ✅ Less brittle: just assert that it throws at all
     await expect(getExport(TEST_CF_EXPORT_ID)).rejects.toThrow();
   });
 });
