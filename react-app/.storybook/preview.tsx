@@ -1,8 +1,6 @@
 import "../src/index.css";
 
 import type { Preview } from "@storybook/react-vite";
-import axios from "axios";
-import { axiosLegacyAdapter } from "axios-legacy-adapter";
 import { cognitoHandlers, defaultApiHandlers, launchDarklyHandlers } from "mocks";
 import { initialize, mswLoader } from "msw-storybook-addon";
 
@@ -14,9 +12,6 @@ const isVitest = typeof import.meta !== "undefined" && (import.meta as any).vite
 const isStorybookTestRunner =
   typeof window !== "undefined" && (window as any).__STORYBOOK_TEST_RUNNER__;
 const isAutomation = typeof navigator !== "undefined" && navigator.webdriver;
-
-// Keep axios on the legacy XHR adapter in the Storybook runner to avoid unmocked fetch issues.
-axios.defaults.adapter = axiosLegacyAdapter;
 
 // 🔹 Build-time flag from CI to totally disable MSW in Storybook
 const isMswDisabled =

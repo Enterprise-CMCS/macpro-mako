@@ -88,10 +88,10 @@
     "@vitejs/plugin-react-swc": "^3.0.0",
     "@vitest/browser": "^3.2.4",
     "@whitespace/storybook-addon-html": "^8.0.2",
+    "@storybook/test": "^9.1.6",
     "autoprefixer": "^10.4.14",
     "eslint-plugin-storybook": "^9.1.6",
     "jsdom": "^21.1.1",
-    "axios-legacy-adapter": "^1.0.7",
     "msw": "2.7.3",
     "msw-storybook-addon": "^2.0.5",
     "playwright": "^1.54.2",
@@ -106,6 +106,8 @@
     "vite-plugin-radar": "^0.9.2",
     "vitest": "^3.2.4",
     "vitest-axe": "^0.1.0",
-    "vitest-browser-react": "^1.0.1"
+    "vitest-browser-react": "^1.0.1",
+    "@mdx-js/react": "^3.1.0",
+    "tsconfig-paths": "^4.2.0"
   }
 }
