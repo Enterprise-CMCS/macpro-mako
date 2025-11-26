@@ -24,6 +24,16 @@ const shouldUseMsw =
   !isVitest &&
   !isMswDisabled;
 
+if (typeof navigator !== "undefined" && navigator.serviceWorker) {
+  // Work around an MSW regression where a service worker message without a request payload
+  // crashes the Storybook test runner (see https://github.com/mswjs/msw/issues/2217).
+  navigator.serviceWorker.addEventListener("message", (event) => {
+    if (!event?.data?.request?.url && event.stopImmediatePropagation) {
+      event.stopImmediatePropagation();
+    }
+  });
+}
+
 if (shouldUseMsw) {
   initialize({
     onUnhandledRequest: "bypass",
