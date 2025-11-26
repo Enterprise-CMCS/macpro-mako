@@ -25,8 +25,7 @@ const queryClient = new QueryClient({
 
 const isServer = typeof window === "undefined";
 const isStorybookTestRunner =
-  !isServer &&
-  ((window as any).__STORYBOOK_TEST_RUNNER__ || (window as any).__vitest_browser__);
+  !isServer && ((window as any).__STORYBOOK_TEST_RUNNER__ || (window as any).__vitest_browser__);
 const isVitest = typeof import.meta !== "undefined" && (import.meta as any).vitest;
 const isAutomation = typeof navigator !== "undefined" && navigator.webdriver;
 const isLdDisabledViaEnv =

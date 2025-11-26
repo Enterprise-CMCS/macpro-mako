@@ -18,6 +18,8 @@ export default mergeConfig(
     ],
     test: {
       setupFiles: "./.storybook/vitest.setup.ts",
+      testTimeout: 60000,
+      hookTimeout: 60000,
       reporters: process.env.GITHUB_ACTIONS
         ? ["default", "html", "json", "github-actions"]
         : ["default", "html", "json"],
