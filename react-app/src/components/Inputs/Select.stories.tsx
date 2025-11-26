@@ -1,4 +1,5 @@
 import type { Meta, StoryObj } from "@storybook/react-vite";
+import { within } from "@storybook/testing-library";
 import { useState } from "react";
 import { FormProvider, useForm } from "react-hook-form";
 
@@ -74,6 +75,10 @@ export const Unselected: Story = {
     ],
     value: undefined,
   },
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement);
+    await canvas.findByTestId("example-select");
+  },
 };
 
 export const Selected: Story = {
@@ -84,5 +89,9 @@ export const Selected: Story = {
       { id: 3, value: "third", label: "Third Choice" },
     ],
     value: "second",
+  },
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement);
+    await canvas.findByTestId("example-select");
   },
 };
