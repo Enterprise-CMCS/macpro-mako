@@ -31,7 +31,7 @@ const shouldUseMsw =
   typeof window !== "undefined" &&
   typeof navigator !== "undefined" &&
   "serviceWorker" in navigator &&
-  (!(isVitest && !isStorybookTestRunner && !isAutomation)) &&
+  !(isVitest && !isStorybookTestRunner && !isAutomation) &&
   !isMswDisabled;
 
 if (typeof navigator !== "undefined" && navigator.serviceWorker) {
@@ -77,10 +77,6 @@ const preview: Preview = {
     withLaunchDarkly,
   ],
   parameters: {
-    // Disable Storybook test runner and a11y scans for now to avoid pipeline timeouts
-    test: { disable: true },
-    vitest: { disable: true },
-    a11y: { disable: true },
     controls: {
       matchers: {
         color: /(background|color)$/i,
