@@ -26,6 +26,7 @@ jobs:
     env:
       JSON_ARTIFACT_ID: json-accessibility-report
       HTML_ARTIFACT_ID: html-accessibility-report
+      STORYBOOK_DISABLE_LD: "true"
     outputs:
       json_artifact_id: ${{ env.JSON_ARTIFACT_ID }}
       json_deploy_to: _data/${{ steps.variables.outputs.report_path }}
