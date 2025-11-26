@@ -1,5 +1,4 @@
 import type { Meta, StoryObj } from "@storybook/react-vite";
-import { within } from "@storybook/testing-library";
 import { useState } from "react";
 import { FormProvider, useForm } from "react-hook-form";
 
@@ -61,10 +60,6 @@ const meta = {
   title: "Component/Inputs/Select",
   component: Select,
   render: FormWrapper,
-  parameters: {
-    a11y: { disable: true },
-    test: { disable: true },
-  },
 } satisfies Meta<typeof Select>;
 
 export default meta;
@@ -79,10 +74,6 @@ export const Unselected: Story = {
     ],
     value: undefined,
   },
-  play: async ({ canvasElement }) => {
-    const canvas = within(canvasElement);
-    await canvas.findByTestId("example-select");
-  },
 };
 
 export const Selected: Story = {
@@ -93,9 +84,5 @@ export const Selected: Story = {
       { id: 3, value: "third", label: "Third Choice" },
     ],
     value: "second",
-  },
-  play: async ({ canvasElement }) => {
-    const canvas = within(canvasElement);
-    await canvas.findByTestId("example-select");
   },
 };

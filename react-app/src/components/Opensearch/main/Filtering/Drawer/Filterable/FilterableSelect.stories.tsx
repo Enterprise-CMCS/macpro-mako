@@ -9,10 +9,6 @@ const meta = {
   args: {
     onChange: fn(),
   },
-  parameters: {
-    a11y: { disable: true },
-    test: { disable: true },
-  },
 } satisfies Meta<typeof FilterableSelect>;
 
 export default meta;
