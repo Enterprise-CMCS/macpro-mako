@@ -1,6 +1,5 @@
 // lib/libs/email/getAllStateUsers.test.ts
-
-import axios from "axios";
+import { CognitoIdentityProviderClient, ListUsersCommandOutput } from "@aws-sdk/client-cognito-identity-provider";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 
 import { getAllStateUsers } from "./getAllStateUsers";
@@ -8,19 +7,55 @@ import { getAllStateUsers } from "./getAllStateUsers";
 const USER_POOL_ID = "test-user-pool-id";
 
 describe("getAllStateUsers", () => {
-  let postSpy: ReturnType<typeof vi.spyOn>;
+  let cognitoSpy: ReturnType<typeof vi.spyOn>;
 
   beforeEach(() => {
-    // Spy on axios.post for this test file only
-    postSpy = vi.spyOn(axios, "post");
+    cognitoSpy = vi.spyOn(CognitoIdentityProviderClient.prototype, "send");
   });
 
   afterEach(() => {
-    postSpy.mockRestore();
+    cognitoSpy.mockRestore();
   });
 
   it("should fetch and return state users successfully", async () => {
-    const apiResponse = [
+    const apiResponse: ListUsersCommandOutput = {
+      Users: [
+        {
+          Attributes: [
+            { Name: "email", Value: "multistate@example.com" },
+            { Name: "given_name", Value: "Multi" },
+            { Name: "family_name", Value: "State" },
+            { Name: "custom:state", Value: "CA,AK" },
+          ],
+        },
+        {
+          Attributes: [
+            { Name: "email", Value: "statesubmitter@nightwatch.test" },
+            { Name: "given_name", Value: "State" },
+            { Name: "family_name", Value: "Submitter Test" },
+            { Name: "custom:state", Value: "CA" },
+          ],
+        },
+        {
+          Attributes: [
+            { Name: "email", Value: "george@example.com" },
+            { Name: "given_name", Value: "George" },
+            { Name: "family_name", Value: "Harrison" },
+            { Name: "custom:state", Value: "MA" },
+          ],
+        },
+      ],
+    };
+
+    cognitoSpy.mockResolvedValueOnce(apiResponse);
+
+    const result = await getAllStateUsers({
+      userPoolId: USER_POOL_ID,
+      state: "CA",
+    });
+
+    expect(cognitoSpy).toHaveBeenCalledTimes(1);
+    expect(result).toEqual([
       {
         email: "multistate@example.com",
         firstName: "Multi",
@@ -33,28 +68,11 @@ describe("getAllStateUsers", () => {
         formattedEmailAddress: "State Submitter Test <statesubmitter@nightwatch.test>",
         lastName: "Submitter Test",
       },
-      {
-        email: "george@example.com",
-        firstName: "George",
-        formattedEmailAddress: "George Harrison <george@example.com>",
-        lastName: "Harrison",
-      },
-    ];
-
-    postSpy.mockResolvedValueOnce({ data: apiResponse });
-
-    const result = await getAllStateUsers({
-      userPoolId: USER_POOL_ID,
-      state: "CA",
-    });
-
-    expect(postSpy).toHaveBeenCalledTimes(1);
-    expect(result).toEqual(apiResponse);
+    ]);
   });
 
   it("should handle an error when fetching state users", async () => {
-    // Force axios to reject for this call – no MSW, no network
-    postSpy.mockRejectedValueOnce(new Error("network error"));
+    cognitoSpy.mockRejectedValueOnce(new Error("network error"));
 
     await expect(
       getAllStateUsers({
@@ -62,5 +80,7 @@ describe("getAllStateUsers", () => {
         state: "CA",
       }),
     ).rejects.toThrow("Error fetching users");
+
+    expect(cognitoSpy).toHaveBeenCalledTimes(1);
   });
 });
