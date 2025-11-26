@@ -24,20 +24,23 @@ const queryClient = new QueryClient({
 });
 
 const isStorybookTestRunner =
-  typeof window !== "undefined" && (window as any).__STORYBOOK_TEST_RUNNER__;
+  typeof window !== "undefined" &&
+  ((window as any).__STORYBOOK_TEST_RUNNER__ || (window as any).__vitest_browser__);
+const isVitest = typeof import.meta !== "undefined" && (import.meta as any).vitest;
 
-// Use a no-op provider for the Storybook test runner to avoid async LD startup/network waits.
-const LDProvider = isStorybookTestRunner
-  ? ({ children }) => <>{children}</>
-  : await asyncWithLDProvider({
-      clientSideID: LAUNCHDARKLY_CLIENT_ID,
-      options: {
-        bootstrap: "localStorage",
-        baseUrl: "https://clientsdk.launchdarkly.us",
-        streamUrl: "https://clientstream.launchdarkly.us",
-        eventsUrl: "https://events.launchdarkly.us",
-      },
-    });
+// Use a no-op provider in test/storybook runner to avoid async LD startup/network waits.
+const LDProvider =
+  isStorybookTestRunner || isVitest
+    ? ({ children }) => <>{children}</>
+    : await asyncWithLDProvider({
+        clientSideID: LAUNCHDARKLY_CLIENT_ID,
+        options: {
+          bootstrap: "localStorage",
+          baseUrl: "https://clientsdk.launchdarkly.us",
+          streamUrl: "https://clientstream.launchdarkly.us",
+          eventsUrl: "https://events.launchdarkly.us",
+        },
+      });
 
 export const withQueryClient = (Story) => (
   <QueryClientProvider client={queryClient}>{Story()}</QueryClientProvider>
