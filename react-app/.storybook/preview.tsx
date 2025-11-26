@@ -3,6 +3,7 @@ import "../src/index.css";
 import type { Preview } from "@storybook/react-vite";
 import axios from "axios";
 import { cognitoHandlers, defaultApiHandlers, launchDarklyHandlers } from "mocks";
+import { http, HttpResponse } from "msw";
 import { initialize, mswLoader } from "msw-storybook-addon";
 
 import { MemoryRouter, Route, Routes } from "react-router";
@@ -90,6 +91,11 @@ const preview: Preview = {
               auth: [...cognitoHandlers],
               api: [...defaultApiHandlers],
               flags: [...launchDarklyHandlers],
+              // Fallback to prevent unmocked axios/fetch calls from hanging the runner
+              misc: [
+                http.get(/.*/, () => HttpResponse.json({}, { status: 200 })),
+                http.post(/.*/, () => HttpResponse.json({}, { status: 200 })),
+              ],
             },
           },
         }
