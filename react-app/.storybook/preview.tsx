@@ -24,6 +24,17 @@ const shouldUseMsw =
   !isVitest &&
   !isMswDisabled;
 
+if (typeof navigator !== "undefined" && navigator.serviceWorker) {
+  // Drop malformed MSW worker messages that are missing a request payload
+  // to avoid the deserializeRequest crash in the Storybook test runner.
+  navigator.serviceWorker.addEventListener("message", (event) => {
+    if (!event?.data?.request?.url) {
+      event.stopImmediatePropagation?.();
+      return;
+    }
+  });
+}
+
 if (shouldUseMsw) {
   initialize({
     onUnhandledRequest: "bypass",
