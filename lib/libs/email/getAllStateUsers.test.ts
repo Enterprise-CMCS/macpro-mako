@@ -1,68 +1,27 @@
 import {
-  CognitoIdentityProviderClient,
-  ListUsersCommandOutput,
-} from "@aws-sdk/client-cognito-identity-provider";
-import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
+  emptyIdentityProviderServiceHandler,
+  errorIdentityProviderServiceHandler,
+  USER_POOL_ID,
+} from "mocks";
+import { mockedServiceServer as mockedServer } from "mocks/server";
+import { beforeEach, describe, expect, it, vi } from "vitest";
 
 import { getAllStateUsers } from "./getAllStateUsers";
 
-const USER_POOL_ID = "test-user-pool-id";
-
 describe("getAllStateUsers", () => {
-  let cognitoSpy: ReturnType<typeof vi.spyOn>;
-
   beforeEach(() => {
-    cognitoSpy = vi.spyOn(CognitoIdentityProviderClient.prototype, "send");
+    // AWS SDK polling is sensitive to fake timers; use real timers to avoid stalled requests.
+    vi.useRealTimers();
   });
 
-  afterEach(() => {
-    cognitoSpy.mockRestore();
-  });
-
-  it("should fetch and return state users successfully", async () => {
-    const apiResponse: ListUsersCommandOutput = {
-      Users: [
-        {
-          Attributes: [
-            { Name: "email", Value: "multistate@example.com" },
-            { Name: "given_name", Value: "Multi" },
-            { Name: "family_name", Value: "State" },
-            { Name: "custom:state", Value: "CA,AK" },
-          ],
-        },
-        {
-          Attributes: [
-            { Name: "email", Value: "statesubmitter@nightwatch.test" },
-            { Name: "given_name", Value: "State" },
-            { Name: "family_name", Value: "Submitter Test" },
-            { Name: "custom:state", Value: "CA" },
-          ],
-        },
-        {
-          Attributes: [
-            { Name: "email", Value: "george@example.com" },
-            { Name: "given_name", Value: "George" },
-            { Name: "family_name", Value: "Harrison" },
-            { Name: "custom:state", Value: "MA" },
-          ],
-        },
-      ],
-    };
-
-    cognitoSpy.mockResolvedValueOnce(apiResponse);
-
-    const result = await getAllStateUsers({
-      userPoolId: USER_POOL_ID,
-      state: "CA",
-    });
-
-    expect(cognitoSpy).toHaveBeenCalledTimes(1);
+  it("should fetch users successfully", async () => {
+    const result = await getAllStateUsers({ userPoolId: USER_POOL_ID, state: "CA" });
     expect(result).toEqual([
       {
-        email: "multistate@example.com",
         firstName: "Multi",
-        formattedEmailAddress: "Multi State <multistate@example.com>",
         lastName: "State",
+        email: "multistate@example.com",
+        formattedEmailAddress: "Multi State <multistate@example.com>",
       },
       {
         email: "statesubmitter@nightwatch.test",
@@ -70,19 +29,40 @@ describe("getAllStateUsers", () => {
         formattedEmailAddress: "State Submitter Test <statesubmitter@nightwatch.test>",
         lastName: "Submitter Test",
       },
+      {
+        firstName: "George",
+        lastName: "Harrison",
+        email: "george@example.com",
+        formattedEmailAddress: "George Harrison <george@example.com>",
+      },
     ]);
   });
 
+  it("should return an empty array when no users are found", async () => {
+    const result = await getAllStateUsers({ userPoolId: USER_POOL_ID, state: "MA" });
+    expect(result).toEqual([]);
+  });
+
+  it("should ignore users with no email", async () => {
+    const result = await getAllStateUsers({ userPoolId: USER_POOL_ID, state: "AK" });
+    expect(result).toEqual([]);
+  });
+
+  it("should ignore users with invalid email formats", async () => {
+    const result = await getAllStateUsers({ userPoolId: USER_POOL_ID, state: "LA" });
+    expect(result).toEqual([]);
+  });
+
+  it("should handle fetching empty state users", async () => {
+    mockedServer.use(emptyIdentityProviderServiceHandler);
+    const result = await getAllStateUsers({ userPoolId: USER_POOL_ID, state: "CA" });
+    expect(result).toEqual([]);
+  });
+
   it("should handle an error when fetching state users", async () => {
-    cognitoSpy.mockRejectedValueOnce(new Error("network error"));
-
-    await expect(
-      getAllStateUsers({
-        userPoolId: USER_POOL_ID,
-        state: "CA",
-      }),
-    ).rejects.toThrow("Error fetching users");
-
-    expect(cognitoSpy).toHaveBeenCalledTimes(1);
+    mockedServer.use(errorIdentityProviderServiceHandler);
+    await expect(() =>
+      getAllStateUsers({ userPoolId: USER_POOL_ID, state: "CA" }),
+    ).rejects.toThrowError("Error fetching users");
   });
 });
