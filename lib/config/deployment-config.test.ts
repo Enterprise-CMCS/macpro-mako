@@ -78,6 +78,7 @@ describe("DeploymentConfig", () => {
     const deploymentConfig = await DeploymentConfig.fetch(options);
 
     const expectedConfig: DeploymentConfigProperties = {
+      attachmentsBucketName: "uploads-test-attachment-bucket",
       brokerString: "brokerString",
       dbInfoSecretName: "dbInfoSecretName", // pragma: allowlist secret
       devPasswordArn: "devPasswordArn", // pragma: allowlist secret
@@ -144,6 +145,7 @@ describe("DeploymentConfig", () => {
     );
 
     const expectedConfig: DeploymentConfigProperties = {
+      attachmentsBucketName: "uploads-test-attachment-bucket",
       brokerString: "brokerString",
       dbInfoSecretName: "dbInfoSecretName", // pragma: allowlist secret
       devPasswordArn: "devPasswordArn", // pragma: allowlist secret
