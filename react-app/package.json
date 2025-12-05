@@ -105,5 +105,10 @@
     "vitest": "^3.2.4",
     "vitest-axe": "^0.1.0",
     "vitest-browser-react": "^1.0.1"
+  },
+  "msw": {
+    "workerDirectory": [
+      "public"
+    ]
   }
 }
