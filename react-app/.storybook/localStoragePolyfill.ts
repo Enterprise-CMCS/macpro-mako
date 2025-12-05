@@ -1,6 +1,9 @@
 // Provide a minimal localStorage implementation for Storybook when running under Node (Vitest).
 // We override if there is no implementation or if getItem is not callable.
-if (typeof globalThis.localStorage === "undefined" || typeof globalThis.localStorage.getItem !== "function") {
+if (
+  typeof globalThis.localStorage === "undefined" ||
+  typeof globalThis.localStorage.getItem !== "function"
+) {
   const store = new Map<string, string>();
   const storage: Storage = {
     getItem: (key: string) => store.get(key) ?? null,
