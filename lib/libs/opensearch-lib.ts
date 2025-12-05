@@ -88,10 +88,30 @@ export async function bulkUpdateData(
         }
         if (!hasRateLimitErrors) {
           // Handle or throw other errors normally
-          console.error("Bulk update errors:", JSON.stringify(response.body.items, null, 2));
+          const failedItems = response.body.items.filter((item: any) => {
+            const operation = item.update || item.delete || item.index || item.create;
+            // Ignore 404 errors for delete operations (document already deleted)
+            if (item.delete && operation.status === 404) {
+              console.log(`Document ${operation._id} already deleted, continuing...`);
+              return false;
+            }
+            return operation.error;
+          });
+
+          if (failedItems.length > 0) {
+            console.error("Bulk operation errors:", JSON.stringify(failedItems, null, 2));
+          }
         }
       } else {
-        console.log("Bulk update successful.");
+        // Log summary of successful operations
+        const summary = response.body.items.reduce((acc: any, item: any) => {
+          if (item.update) acc.updates = (acc.updates || 0) + 1;
+          if (item.delete) acc.deletes = (acc.deletes || 0) + 1;
+          if (item.create) acc.creates = (acc.creates || 0) + 1;
+          if (item.index) acc.indexes = (acc.indexes || 0) + 1;
+          return acc;
+        }, {});
+        console.log("Bulk operations successful:", summary);
       }
     } catch (error: any) {
       if (error.statusCode === 429 && retries > 0) {
