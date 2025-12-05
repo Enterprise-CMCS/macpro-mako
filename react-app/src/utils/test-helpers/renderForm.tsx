@@ -27,6 +27,10 @@ export const renderFormWithPackageSectionAsync = async (
       element: <h1>dashboard test</h1>,
     },
     {
+      path: "/",
+      element: <h1>home</h1>,
+    },
+    {
       path: "/test/:authority",
       element: form,
     },

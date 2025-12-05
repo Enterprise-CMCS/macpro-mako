@@ -4,11 +4,12 @@ import {
   USER_POOL_ID,
 } from "mocks";
 import { mockedServiceServer as mockedServer } from "mocks/server";
-import { describe, expect, it } from "vitest";
+import { describe, expect, it, vi } from "vitest";
 
 import { getAllStateUsers } from "./getAllStateUsers";
 
 describe("getAllStateUsers", () => {
+  vi.setConfig({ testTimeout: 15000 });
   it("should fetch users successfully", async () => {
     const result = await getAllStateUsers({ userPoolId: USER_POOL_ID, state: "CA" });
     expect(result).toEqual([

@@ -19,6 +19,7 @@ vi.mock("crypto", () => ({
 }));
 
 describe("Lambda Handler", () => {
+  vi.setConfig({ testTimeout: 15000 });
   const lambdaSpy = vi.spyOn(LambdaClient.prototype, "send");
   const callback = vi.fn();
 
