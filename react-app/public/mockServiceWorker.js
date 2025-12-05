@@ -9,7 +9,7 @@
  */
 
 const PACKAGE_VERSION = '2.7.3'
-const INTEGRITY_CHECKSUM = '00729d72e3b82faf54ca8b9621dbb96f'
+const INTEGRITY_CHECKSUM = '00729d72e3b82faf54ca8b9621dbb96f' // pragma: allowlist secret - static MSW integrity token
 const IS_MOCKED_RESPONSE = Symbol('isMockedResponse')
 const activeClientIds = new Set()
 

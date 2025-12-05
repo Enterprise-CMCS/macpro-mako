@@ -216,6 +216,7 @@ export const Upload = ({ maxFiles, files, setFiles, dataTestId, type }: UploadPr
             {...getInputProps()}
             data-testid={`${dataTestId}-upload`}
             className="hidden"
+            style={{ display: "none" }}
           />
         </div>
       )}
