@@ -1,5 +1,6 @@
 /* eslint-disable */
 /* tslint:disable */
+/// <reference lib="webworker" />
 
 /**
  * Mock Service Worker.
@@ -7,21 +8,25 @@
  * - Please do NOT modify this file.
  */
 
+export {}
+
+declare const self: ServiceWorkerGlobalScope
+
 const PACKAGE_VERSION = '2.12.4'
 const INTEGRITY_CHECKSUM = '4db4a41e972cec1b64cc569c66952d82' // pragma: allowlist secret - static MSW integrity token
 const IS_MOCKED_RESPONSE = Symbol('isMockedResponse')
-const activeClientIds = new Set()
+const activeClientIds = new Set<string>()
 
-addEventListener('install', function () {
-  self.skipWaiting()
+self.addEventListener('install', (event: ExtendableEvent) => {
+  event.waitUntil(self.skipWaiting())
 })
 
-addEventListener('activate', function (event) {
+self.addEventListener('activate', (event: ExtendableEvent) => {
   event.waitUntil(self.clients.claim())
 })
 
-addEventListener('message', async function (event) {
-  const clientId = Reflect.get(event.source || {}, 'id')
+self.addEventListener('message', async (event: ExtendableMessageEvent) => {
+  const clientId = (event.source as Client | null)?.id
 
   if (!clientId || !self.clients) {
     return
@@ -74,9 +79,7 @@ addEventListener('message', async function (event) {
     case 'CLIENT_CLOSED': {
       activeClientIds.delete(clientId)
 
-      const remainingClients = allClients.filter((client) => {
-        return client.id !== clientId
-      })
+      const remainingClients = allClients.filter((candidate) => candidate.id !== clientId)
 
       // Unregister itself when there are no more clients
       if (remainingClients.length === 0) {
@@ -88,7 +91,7 @@ addEventListener('message', async function (event) {
   }
 })
 
-addEventListener('fetch', function (event) {
+self.addEventListener('fetch', (event: FetchEvent) => {
   const requestInterceptedAt = Date.now()
 
   // Bypass navigation requests.
@@ -98,10 +101,7 @@ addEventListener('fetch', function (event) {
 
   // Opening the DevTools triggers the "only-if-cached" request
   // that cannot be handled by the worker. Bypass such requests.
-  if (
-    event.request.cache === 'only-if-cached' &&
-    event.request.mode !== 'same-origin'
-  ) {
+  if (event.request.cache === 'only-if-cached' && event.request.mode !== 'same-origin') {
     return
   }
 
@@ -116,20 +116,14 @@ addEventListener('fetch', function (event) {
   event.respondWith(handleRequest(event, requestId, requestInterceptedAt))
 })
 
-/**
- * @param {FetchEvent} event
- * @param {string} requestId
- * @param {number} requestInterceptedAt
- */
-async function handleRequest(event, requestId, requestInterceptedAt) {
+async function handleRequest(
+  event: FetchEvent,
+  requestId: string,
+  requestInterceptedAt: number,
+): Promise<Response> {
   const client = await resolveMainClient(event)
   const requestCloneForEvents = event.request.clone()
-  const response = await getResponse(
-    event,
-    client,
-    requestId,
-    requestInterceptedAt,
-  )
+  const response = await getResponse(event, client, requestId, requestInterceptedAt)
 
   // Send back the response clone for the "response:*" life-cycle events.
   // Ensure MSW is active and ready to handle the message, otherwise
@@ -154,7 +148,7 @@ async function handleRequest(event, requestId, requestInterceptedAt) {
             type: responseClone.type,
             status: responseClone.status,
             statusText: responseClone.statusText,
-            headers: Object.fromEntries(responseClone.headers.entries()),
+            headers: headersToObject(responseClone.headers),
             body: responseClone.body,
           },
         },
@@ -171,13 +165,11 @@ async function handleRequest(event, requestId, requestInterceptedAt) {
  * Client that issues a request doesn't necessarily equal the client
  * that registered the worker. It's with the latter the worker should
  * communicate with during the response resolving phase.
- * @param {FetchEvent} event
- * @returns {Promise<Client | undefined>}
  */
-async function resolveMainClient(event) {
-  const client = await self.clients.get(event.clientId)
+async function resolveMainClient(event: FetchEvent): Promise<Client | undefined> {
+  const client = event.clientId ? await self.clients.get(event.clientId) : undefined
 
-  if (activeClientIds.has(event.clientId)) {
+  if (event.clientId && activeClientIds.has(event.clientId)) {
     return client
   }
 
@@ -185,35 +177,24 @@ async function resolveMainClient(event) {
     return client
   }
 
-  const allClients = await self.clients.matchAll({
-    type: 'window',
-  })
+  const allClients = await self.clients.matchAll({ type: 'window' })
 
   return allClients
-    .filter((client) => {
-      // Get only those clients that are currently visible.
-      return client.visibilityState === 'visible'
-    })
-    .find((client) => {
-      // Find the client ID that's recorded in the
-      // set of clients that have registered the worker.
-      return activeClientIds.has(client.id)
-    })
+    .filter((candidate) => candidate.visibilityState === 'visible')
+    .find((candidate) => activeClientIds.has(candidate.id))
 }
 
-/**
- * @param {FetchEvent} event
- * @param {Client | undefined} client
- * @param {string} requestId
- * @param {number} requestInterceptedAt
- * @returns {Promise<Response>}
- */
-async function getResponse(event, client, requestId, requestInterceptedAt) {
+async function getResponse(
+  event: FetchEvent,
+  client: Client | undefined,
+  requestId: string,
+  requestInterceptedAt: number,
+): Promise<Response> {
   // Clone the request because it might've been already used
   // (i.e. its body has been read and sent to the client).
   const requestClone = event.request.clone()
 
-  function passthrough() {
+  const passthrough = () => {
     // Cast the request headers to a new Headers instance
     // so the headers can be manipulated with.
     const headers = new Headers(requestClone.headers)
@@ -224,9 +205,7 @@ async function getResponse(event, client, requestId, requestInterceptedAt) {
     const acceptHeader = headers.get('accept')
     if (acceptHeader) {
       const values = acceptHeader.split(',').map((value) => value.trim())
-      const filteredValues = values.filter(
-        (value) => value !== 'msw/passthrough',
-      )
+      const filteredValues = values.filter((value) => value !== 'msw/passthrough')
 
       if (filteredValues.length > 0) {
         headers.set('accept', filteredValues.join(', '))
@@ -274,18 +253,17 @@ async function getResponse(event, client, requestId, requestInterceptedAt) {
     case 'PASSTHROUGH': {
       return passthrough()
     }
-  }
 
-  return passthrough()
+    default:
+      return passthrough()
+  }
 }
 
-/**
- * @param {Client} client
- * @param {any} message
- * @param {Array<Transferable>} transferrables
- * @returns {Promise<any>}
- */
-function sendToClient(client, message, transferrables = []) {
+function sendToClient(
+  client: Client,
+  message: Record<string, unknown>,
+  transferrables: Transferable[] = [],
+): Promise<any> {
   return new Promise((resolve, reject) => {
     const channel = new MessageChannel()
 
@@ -297,18 +275,11 @@ function sendToClient(client, message, transferrables = []) {
       resolve(event.data)
     }
 
-    client.postMessage(message, [
-      channel.port2,
-      ...transferrables.filter(Boolean),
-    ])
+    client.postMessage(message, [channel.port2, ...transferrables.filter(Boolean)])
   })
 }
 
-/**
- * @param {Response} response
- * @returns {Response}
- */
-function respondWithMock(response) {
+function respondWithMock(response: Response): Response {
   // Setting response status code to 0 is a no-op.
   // However, when responding with a "Response.error()", the produced Response
   // instance will have status code set to 0. Since it's not possible to create
@@ -327,15 +298,12 @@ function respondWithMock(response) {
   return mockedResponse
 }
 
-/**
- * @param {Request} request
- */
-async function serializeRequest(request) {
+async function serializeRequest(request: Request) {
   return {
     url: request.url,
     mode: request.mode,
     method: request.method,
-    headers: Object.fromEntries(request.headers.entries()),
+    headers: headersToObject(request.headers),
     cache: request.cache,
     credentials: request.credentials,
     destination: request.destination,
@@ -346,4 +314,12 @@ async function serializeRequest(request) {
     body: await request.arrayBuffer(),
     keepalive: request.keepalive,
   }
+}
+
+function headersToObject(headers: Headers): Record<string, string> {
+  const result: Record<string, string> = {}
+  headers.forEach((value, key) => {
+    result[key] = value
+  })
+  return result
 }
