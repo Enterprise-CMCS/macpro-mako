@@ -23,7 +23,7 @@ if (ldClientId === undefined) {
 const initializeApp = async () => {
   // Start the MSW server if in the DEV environment and the mocked flag is on
   if (import.meta.env.DEV && import.meta.env.MODE === "mocked") {
-    await import("../mockServiceWorker.js?worker");
+    await import("../mockServiceWorker.ts?worker");
 
     const { mockedWorker } = await import("mocks/browser");
     const { setMockUsername, TEST_STATE_SUBMITTER_USERNAME } = await import("mocks");

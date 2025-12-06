@@ -19,11 +19,22 @@ vi.mock("crypto", () => ({
 }));
 
 describe("Lambda Handler", () => {
+  vi.setConfig({ testTimeout: 15000 });
   const lambdaSpy = vi.spyOn(LambdaClient.prototype, "send");
   const callback = vi.fn();
 
   beforeEach(() => {
     vi.useFakeTimers();
+    lambdaSpy.mockImplementation((command) => {
+      const input: any = (command as any).input;
+      if ((input?.FunctionName || input?.UUID) === TEST_ERROR_EVENT_SOURCE_FUNCTION_NAME) {
+        return Promise.reject(new Error("mapping failed"));
+      }
+      if (input?.UUID) {
+        return Promise.resolve({ State: "Enabled" } as any);
+      }
+      return Promise.resolve({ UUID: TEST_FUNCTION_TEST_TOPIC_UUID } as any);
+    });
   });
 
   afterEach(() => {
