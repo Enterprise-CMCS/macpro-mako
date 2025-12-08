@@ -12,24 +12,24 @@
     "maxFailures": 0,
     "metadata": {
       "ci": {
-        "commitHref": "https://github.com/Enterprise-CMCS/macpro-mako/commit/2316f4b3ee7ddd24130c78acedf23b19e51ccc5a",
-        "commitHash": "2316f4b3ee7ddd24130c78acedf23b19e51ccc5a",
-        "buildHref": "https://github.com/Enterprise-CMCS/macpro-mako/actions/runs/20035006211"
+        "commitHref": "https://github.com/Enterprise-CMCS/macpro-mako/commit/4ffc02e2eff639d760d175db8898229aeef72ae5",
+        "commitHash": "4ffc02e2eff639d760d175db8898229aeef72ae5",
+        "buildHref": "https://github.com/Enterprise-CMCS/macpro-mako/actions/runs/20038656573"
       },
       "gitCommit": {
-        "shortHash": "2316f4b",
-        "hash": "2316f4b3ee7ddd24130c78acedf23b19e51ccc5a",
-        "subject": "fix(high-vuln): update packages to fix some high vulnerabiltiies  (#1801)",
-        "body": "fix(high-vuln): update packages to fix some high vulnerabiltiies  (#1801)\n\n* update packages\n\n* update snapshot tests\n\n* msw update\n\n* trying\n\n* add testing logic\n\n* test\n\n* update\n\n* update package\n\n* Update cloudformation.ts\n\n* Update createTriggers.test.ts\n\n* Update mockServiceWorker.js\n\n* Update getAllStateUsers.test.ts\n\n* Update mockServiceWorker.js\n\n* update",
+        "shortHash": "4ffc02e",
+        "hash": "4ffc02e2eff639d760d175db8898229aeef72ae5",
+        "subject": "fix(remove-class): remove hidden class for drop input (#1803)",
+        "body": "fix(remove-class): remove hidden class for drop input (#1803)\n\n* Update upload.tsx\n\n* Update upload.tsx\n\n* Update upload.tsx\n\n* update\n\n* Update Dockerfile\n\n* Update Dockerfile",
         "author": {
           "name": "James Dinh",
           "email": "james.d@globalalliantinc.com",
-          "time": 1765210916000
+          "time": 1765218644000
         },
         "committer": {
           "name": "GitHub",
           "email": "noreply@github.com",
-          "time": 1765210916000
+          "time": 1765218644000
         },
         "branch": "main"
       },
@@ -67,24 +67,24 @@
         "retries": 0,
         "metadata": {
           "ci": {
-            "commitHref": "https://github.com/Enterprise-CMCS/macpro-mako/commit/2316f4b3ee7ddd24130c78acedf23b19e51ccc5a",
-            "commitHash": "2316f4b3ee7ddd24130c78acedf23b19e51ccc5a",
-            "buildHref": "https://github.com/Enterprise-CMCS/macpro-mako/actions/runs/20035006211"
+            "commitHref": "https://github.com/Enterprise-CMCS/macpro-mako/commit/4ffc02e2eff639d760d175db8898229aeef72ae5",
+            "commitHash": "4ffc02e2eff639d760d175db8898229aeef72ae5",
+            "buildHref": "https://github.com/Enterprise-CMCS/macpro-mako/actions/runs/20038656573"
           },
           "gitCommit": {
-            "shortHash": "2316f4b",
-            "hash": "2316f4b3ee7ddd24130c78acedf23b19e51ccc5a",
-            "subject": "fix(high-vuln): update packages to fix some high vulnerabiltiies  (#1801)",
-            "body": "fix(high-vuln): update packages to fix some high vulnerabiltiies  (#1801)\n\n* update packages\n\n* update snapshot tests\n\n* msw update\n\n* trying\n\n* add testing logic\n\n* test\n\n* update\n\n* update package\n\n* Update cloudformation.ts\n\n* Update createTriggers.test.ts\n\n* Update mockServiceWorker.js\n\n* Update getAllStateUsers.test.ts\n\n* Update mockServiceWorker.js\n\n* update",
+            "shortHash": "4ffc02e",
+            "hash": "4ffc02e2eff639d760d175db8898229aeef72ae5",
+            "subject": "fix(remove-class): remove hidden class for drop input (#1803)",
+            "body": "fix(remove-class): remove hidden class for drop input (#1803)\n\n* Update upload.tsx\n\n* Update upload.tsx\n\n* Update upload.tsx\n\n* update\n\n* Update Dockerfile\n\n* Update Dockerfile",
             "author": {
               "name": "James Dinh",
               "email": "james.d@globalalliantinc.com",
-              "time": 1765210916000
+              "time": 1765218644000
             },
             "committer": {
               "name": "GitHub",
               "email": "noreply@github.com",
-              "time": 1765210916000
+              "time": 1765218644000
             },
             "branch": "main"
           },
@@ -108,24 +108,24 @@
         "retries": 0,
         "metadata": {
           "ci": {
-            "commitHref": "https://github.com/Enterprise-CMCS/macpro-mako/commit/2316f4b3ee7ddd24130c78acedf23b19e51ccc5a",
-            "commitHash": "2316f4b3ee7ddd24130c78acedf23b19e51ccc5a",
-            "buildHref": "https://github.com/Enterprise-CMCS/macpro-mako/actions/runs/20035006211"
+            "commitHref": "https://github.com/Enterprise-CMCS/macpro-mako/commit/4ffc02e2eff639d760d175db8898229aeef72ae5",
+            "commitHash": "4ffc02e2eff639d760d175db8898229aeef72ae5",
+            "buildHref": "https://github.com/Enterprise-CMCS/macpro-mako/actions/runs/20038656573"
           },
           "gitCommit": {
-            "shortHash": "2316f4b",
-            "hash": "2316f4b3ee7ddd24130c78acedf23b19e51ccc5a",
-            "subject": "fix(high-vuln): update packages to fix some high vulnerabiltiies  (#1801)",
-            "body": "fix(high-vuln): update packages to fix some high vulnerabiltiies  (#1801)\n\n* update packages\n\n* update snapshot tests\n\n* msw update\n\n* trying\n\n* add testing logic\n\n* test\n\n* update\n\n* update package\n\n* Update cloudformation.ts\n\n* Update createTriggers.test.ts\n\n* Update mockServiceWorker.js\n\n* Update getAllStateUsers.test.ts\n\n* Update mockServiceWorker.js\n\n* update",
+            "shortHash": "4ffc02e",
+            "hash": "4ffc02e2eff639d760d175db8898229aeef72ae5",
+            "subject": "fix(remove-class): remove hidden class for drop input (#1803)",
+            "body": "fix(remove-class): remove hidden class for drop input (#1803)\n\n* Update upload.tsx\n\n* Update upload.tsx\n\n* Update upload.tsx\n\n* update\n\n* Update Dockerfile\n\n* Update Dockerfile",
             "author": {
               "name": "James Dinh",
               "email": "james.d@globalalliantinc.com",
-              "time": 1765210916000
+              "time": 1765218644000
             },
             "committer": {
               "name": "GitHub",
               "email": "noreply@github.com",
-              "time": 1765210916000
+              "time": 1765218644000
             },
             "branch": "main"
           },
@@ -149,24 +149,24 @@
         "retries": 0,
         "metadata": {
           "ci": {
-            "commitHref": "https://github.com/Enterprise-CMCS/macpro-mako/commit/2316f4b3ee7ddd24130c78acedf23b19e51ccc5a",
-            "commitHash": "2316f4b3ee7ddd24130c78acedf23b19e51ccc5a",
-            "buildHref": "https://github.com/Enterprise-CMCS/macpro-mako/actions/runs/20035006211"
+            "commitHref": "https://github.com/Enterprise-CMCS/macpro-mako/commit/4ffc02e2eff639d760d175db8898229aeef72ae5",
+            "commitHash": "4ffc02e2eff639d760d175db8898229aeef72ae5",
+            "buildHref": "https://github.com/Enterprise-CMCS/macpro-mako/actions/runs/20038656573"
           },
           "gitCommit": {
-            "shortHash": "2316f4b",
-            "hash": "2316f4b3ee7ddd24130c78acedf23b19e51ccc5a",
-            "subject": "fix(high-vuln): update packages to fix some high vulnerabiltiies  (#1801)",
-            "body": "fix(high-vuln): update packages to fix some high vulnerabiltiies  (#1801)\n\n* update packages\n\n* update snapshot tests\n\n* msw update\n\n* trying\n\n* add testing logic\n\n* test\n\n* update\n\n* update package\n\n* Update cloudformation.ts\n\n* Update createTriggers.test.ts\n\n* Update mockServiceWorker.js\n\n* Update getAllStateUsers.test.ts\n\n* Update mockServiceWorker.js\n\n* update",
+            "shortHash": "4ffc02e",
+            "hash": "4ffc02e2eff639d760d175db8898229aeef72ae5",
+            "subject": "fix(remove-class): remove hidden class for drop input (#1803)",
+            "body": "fix(remove-class): remove hidden class for drop input (#1803)\n\n* Update upload.tsx\n\n* Update upload.tsx\n\n* Update upload.tsx\n\n* update\n\n* Update Dockerfile\n\n* Update Dockerfile",
             "author": {
               "name": "James Dinh",
               "email": "james.d@globalalliantinc.com",
-              "time": 1765210916000
+              "time": 1765218644000
             },
             "committer": {
               "name": "GitHub",
               "email": "noreply@github.com",
-              "time": 1765210916000
+              "time": 1765218644000
             },
             "branch": "main"
           },
@@ -190,24 +190,24 @@
         "retries": 0,
         "metadata": {
           "ci": {
-            "commitHref": "https://github.com/Enterprise-CMCS/macpro-mako/commit/2316f4b3ee7ddd24130c78acedf23b19e51ccc5a",
-            "commitHash": "2316f4b3ee7ddd24130c78acedf23b19e51ccc5a",
-            "buildHref": "https://github.com/Enterprise-CMCS/macpro-mako/actions/runs/20035006211"
+            "commitHref": "https://github.com/Enterprise-CMCS/macpro-mako/commit/4ffc02e2eff639d760d175db8898229aeef72ae5",
+            "commitHash": "4ffc02e2eff639d760d175db8898229aeef72ae5",
+            "buildHref": "https://github.com/Enterprise-CMCS/macpro-mako/actions/runs/20038656573"
           },
           "gitCommit": {
-            "shortHash": "2316f4b",
-            "hash": "2316f4b3ee7ddd24130c78acedf23b19e51ccc5a",
-            "subject": "fix(high-vuln): update packages to fix some high vulnerabiltiies  (#1801)",
-            "body": "fix(high-vuln): update packages to fix some high vulnerabiltiies  (#1801)\n\n* update packages\n\n* update snapshot tests\n\n* msw update\n\n* trying\n\n* add testing logic\n\n* test\n\n* update\n\n* update package\n\n* Update cloudformation.ts\n\n* Update createTriggers.test.ts\n\n* Update mockServiceWorker.js\n\n* Update getAllStateUsers.test.ts\n\n* Update mockServiceWorker.js\n\n* update",
+            "shortHash": "4ffc02e",
+            "hash": "4ffc02e2eff639d760d175db8898229aeef72ae5",
+            "subject": "fix(remove-class): remove hidden class for drop input (#1803)",
+            "body": "fix(remove-class): remove hidden class for drop input (#1803)\n\n* Update upload.tsx\n\n* Update upload.tsx\n\n* Update upload.tsx\n\n* update\n\n* Update Dockerfile\n\n* Update Dockerfile",
             "author": {
               "name": "James Dinh",
               "email": "james.d@globalalliantinc.com",
-              "time": 1765210916000
+              "time": 1765218644000
             },
             "committer": {
               "name": "GitHub",
               "email": "noreply@github.com",
-              "time": 1765210916000
+              "time": 1765218644000
             },
             "branch": "main"
           },
@@ -231,24 +231,24 @@
         "retries": 0,
         "metadata": {
           "ci": {
-            "commitHref": "https://github.com/Enterprise-CMCS/macpro-mako/commit/2316f4b3ee7ddd24130c78acedf23b19e51ccc5a",
-            "commitHash": "2316f4b3ee7ddd24130c78acedf23b19e51ccc5a",
-            "buildHref": "https://github.com/Enterprise-CMCS/macpro-mako/actions/runs/20035006211"
+            "commitHref": "https://github.com/Enterprise-CMCS/macpro-mako/commit/4ffc02e2eff639d760d175db8898229aeef72ae5",
+            "commitHash": "4ffc02e2eff639d760d175db8898229aeef72ae5",
+            "buildHref": "https://github.com/Enterprise-CMCS/macpro-mako/actions/runs/20038656573"
           },
           "gitCommit": {
-            "shortHash": "2316f4b",
-            "hash": "2316f4b3ee7ddd24130c78acedf23b19e51ccc5a",
-            "subject": "fix(high-vuln): update packages to fix some high vulnerabiltiies  (#1801)",
-            "body": "fix(high-vuln): update packages to fix some high vulnerabiltiies  (#1801)\n\n* update packages\n\n* update snapshot tests\n\n* msw update\n\n* trying\n\n* add testing logic\n\n* test\n\n* update\n\n* update package\n\n* Update cloudformation.ts\n\n* Update createTriggers.test.ts\n\n* Update mockServiceWorker.js\n\n* Update getAllStateUsers.test.ts\n\n* Update mockServiceWorker.js\n\n* update",
+            "shortHash": "4ffc02e",
+            "hash": "4ffc02e2eff639d760d175db8898229aeef72ae5",
+            "subject": "fix(remove-class): remove hidden class for drop input (#1803)",
+            "body": "fix(remove-class): remove hidden class for drop input (#1803)\n\n* Update upload.tsx\n\n* Update upload.tsx\n\n* Update upload.tsx\n\n* update\n\n* Update Dockerfile\n\n* Update Dockerfile",
             "author": {
               "name": "James Dinh",
               "email": "james.d@globalalliantinc.com",
-              "time": 1765210916000
+              "time": 1765218644000
             },
             "committer": {
               "name": "GitHub",
               "email": "noreply@github.com",
-              "time": 1765210916000
+              "time": 1765218644000
             },
             "branch": "main"
           },
@@ -272,24 +272,24 @@
         "retries": 0,
         "metadata": {
           "ci": {
-            "commitHref": "https://github.com/Enterprise-CMCS/macpro-mako/commit/2316f4b3ee7ddd24130c78acedf23b19e51ccc5a",
-            "commitHash": "2316f4b3ee7ddd24130c78acedf23b19e51ccc5a",
-            "buildHref": "https://github.com/Enterprise-CMCS/macpro-mako/actions/runs/20035006211"
+            "commitHref": "https://github.com/Enterprise-CMCS/macpro-mako/commit/4ffc02e2eff639d760d175db8898229aeef72ae5",
+            "commitHash": "4ffc02e2eff639d760d175db8898229aeef72ae5",
+            "buildHref": "https://github.com/Enterprise-CMCS/macpro-mako/actions/runs/20038656573"
           },
           "gitCommit": {
-            "shortHash": "2316f4b",
-            "hash": "2316f4b3ee7ddd24130c78acedf23b19e51ccc5a",
-            "subject": "fix(high-vuln): update packages to fix some high vulnerabiltiies  (#1801)",
-            "body": "fix(high-vuln): update packages to fix some high vulnerabiltiies  (#1801)\n\n* update packages\n\n* update snapshot tests\n\n* msw update\n\n* trying\n\n* add testing logic\n\n* test\n\n* update\n\n* update package\n\n* Update cloudformation.ts\n\n* Update createTriggers.test.ts\n\n* Update mockServiceWorker.js\n\n* Update getAllStateUsers.test.ts\n\n* Update mockServiceWorker.js\n\n* update",
+            "shortHash": "4ffc02e",
+            "hash": "4ffc02e2eff639d760d175db8898229aeef72ae5",
+            "subject": "fix(remove-class): remove hidden class for drop input (#1803)",
+            "body": "fix(remove-class): remove hidden class for drop input (#1803)\n\n* Update upload.tsx\n\n* Update upload.tsx\n\n* Update upload.tsx\n\n* update\n\n* Update Dockerfile\n\n* Update Dockerfile",
             "author": {
               "name": "James Dinh",
               "email": "james.d@globalalliantinc.com",
-              "time": 1765210916000
+              "time": 1765218644000
             },
             "committer": {
               "name": "GitHub",
               "email": "noreply@github.com",
-              "time": 1765210916000
+              "time": 1765218644000
             },
             "branch": "main"
           },
@@ -313,24 +313,24 @@
         "retries": 0,
         "metadata": {
           "ci": {
-            "commitHref": "https://github.com/Enterprise-CMCS/macpro-mako/commit/2316f4b3ee7ddd24130c78acedf23b19e51ccc5a",
-            "commitHash": "2316f4b3ee7ddd24130c78acedf23b19e51ccc5a",
-            "buildHref": "https://github.com/Enterprise-CMCS/macpro-mako/actions/runs/20035006211"
+            "commitHref": "https://github.com/Enterprise-CMCS/macpro-mako/commit/4ffc02e2eff639d760d175db8898229aeef72ae5",
+            "commitHash": "4ffc02e2eff639d760d175db8898229aeef72ae5",
+            "buildHref": "https://github.com/Enterprise-CMCS/macpro-mako/actions/runs/20038656573"
           },
           "gitCommit": {
-            "shortHash": "2316f4b",
-            "hash": "2316f4b3ee7ddd24130c78acedf23b19e51ccc5a",
-            "subject": "fix(high-vuln): update packages to fix some high vulnerabiltiies  (#1801)",
-            "body": "fix(high-vuln): update packages to fix some high vulnerabiltiies  (#1801)\n\n* update packages\n\n* update snapshot tests\n\n* msw update\n\n* trying\n\n* add testing logic\n\n* test\n\n* update\n\n* update package\n\n* Update cloudformation.ts\n\n* Update createTriggers.test.ts\n\n* Update mockServiceWorker.js\n\n* Update getAllStateUsers.test.ts\n\n* Update mockServiceWorker.js\n\n* update",
+            "shortHash": "4ffc02e",
+            "hash": "4ffc02e2eff639d760d175db8898229aeef72ae5",
+            "subject": "fix(remove-class): remove hidden class for drop input (#1803)",
+            "body": "fix(remove-class): remove hidden class for drop input (#1803)\n\n* Update upload.tsx\n\n* Update upload.tsx\n\n* Update upload.tsx\n\n* update\n\n* Update Dockerfile\n\n* Update Dockerfile",
             "author": {
               "name": "James Dinh",
               "email": "james.d@globalalliantinc.com",
-              "time": 1765210916000
+              "time": 1765218644000
             },
             "committer": {
               "name": "GitHub",
               "email": "noreply@github.com",
-              "time": 1765210916000
+              "time": 1765218644000
             },
             "branch": "main"
           },
@@ -354,24 +354,24 @@
         "retries": 0,
         "metadata": {
           "ci": {
-            "commitHref": "https://github.com/Enterprise-CMCS/macpro-mako/commit/2316f4b3ee7ddd24130c78acedf23b19e51ccc5a",
-            "commitHash": "2316f4b3ee7ddd24130c78acedf23b19e51ccc5a",
-            "buildHref": "https://github.com/Enterprise-CMCS/macpro-mako/actions/runs/20035006211"
+            "commitHref": "https://github.com/Enterprise-CMCS/macpro-mako/commit/4ffc02e2eff639d760d175db8898229aeef72ae5",
+            "commitHash": "4ffc02e2eff639d760d175db8898229aeef72ae5",
+            "buildHref": "https://github.com/Enterprise-CMCS/macpro-mako/actions/runs/20038656573"
           },
           "gitCommit": {
-            "shortHash": "2316f4b",
-            "hash": "2316f4b3ee7ddd24130c78acedf23b19e51ccc5a",
-            "subject": "fix(high-vuln): update packages to fix some high vulnerabiltiies  (#1801)",
-            "body": "fix(high-vuln): update packages to fix some high vulnerabiltiies  (#1801)\n\n* update packages\n\n* update snapshot tests\n\n* msw update\n\n* trying\n\n* add testing logic\n\n* test\n\n* update\n\n* update package\n\n* Update cloudformation.ts\n\n* Update createTriggers.test.ts\n\n* Update mockServiceWorker.js\n\n* Update getAllStateUsers.test.ts\n\n* Update mockServiceWorker.js\n\n* update",
+            "shortHash": "4ffc02e",
+            "hash": "4ffc02e2eff639d760d175db8898229aeef72ae5",
+            "subject": "fix(remove-class): remove hidden class for drop input (#1803)",
+            "body": "fix(remove-class): remove hidden class for drop input (#1803)\n\n* Update upload.tsx\n\n* Update upload.tsx\n\n* Update upload.tsx\n\n* update\n\n* Update Dockerfile\n\n* Update Dockerfile",
             "author": {
               "name": "James Dinh",
               "email": "james.d@globalalliantinc.com",
-              "time": 1765210916000
+              "time": 1765218644000
             },
             "committer": {
               "name": "GitHub",
               "email": "noreply@github.com",
-              "time": 1765210916000
+              "time": 1765218644000
             },
             "branch": "main"
           },
@@ -395,24 +395,24 @@
         "retries": 0,
         "metadata": {
           "ci": {
-            "commitHref": "https://github.com/Enterprise-CMCS/macpro-mako/commit/2316f4b3ee7ddd24130c78acedf23b19e51ccc5a",
-            "commitHash": "2316f4b3ee7ddd24130c78acedf23b19e51ccc5a",
-            "buildHref": "https://github.com/Enterprise-CMCS/macpro-mako/actions/runs/20035006211"
+            "commitHref": "https://github.com/Enterprise-CMCS/macpro-mako/commit/4ffc02e2eff639d760d175db8898229aeef72ae5",
+            "commitHash": "4ffc02e2eff639d760d175db8898229aeef72ae5",
+            "buildHref": "https://github.com/Enterprise-CMCS/macpro-mako/actions/runs/20038656573"
           },
           "gitCommit": {
-            "shortHash": "2316f4b",
-            "hash": "2316f4b3ee7ddd24130c78acedf23b19e51ccc5a",
-            "subject": "fix(high-vuln): update packages to fix some high vulnerabiltiies  (#1801)",
-            "body": "fix(high-vuln): update packages to fix some high vulnerabiltiies  (#1801)\n\n* update packages\n\n* update snapshot tests\n\n* msw update\n\n* trying\n\n* add testing logic\n\n* test\n\n* update\n\n* update package\n\n* Update cloudformation.ts\n\n* Update createTriggers.test.ts\n\n* Update mockServiceWorker.js\n\n* Update getAllStateUsers.test.ts\n\n* Update mockServiceWorker.js\n\n* update",
+            "shortHash": "4ffc02e",
+            "hash": "4ffc02e2eff639d760d175db8898229aeef72ae5",
+            "subject": "fix(remove-class): remove hidden class for drop input (#1803)",
+            "body": "fix(remove-class): remove hidden class for drop input (#1803)\n\n* Update upload.tsx\n\n* Update upload.tsx\n\n* Update upload.tsx\n\n* update\n\n* Update Dockerfile\n\n* Update Dockerfile",
             "author": {
               "name": "James Dinh",
               "email": "james.d@globalalliantinc.com",
-              "time": 1765210916000
+              "time": 1765218644000
             },
             "committer": {
               "name": "GitHub",
               "email": "noreply@github.com",
-              "time": 1765210916000
+              "time": 1765218644000
             },
             "branch": "main"
           },
@@ -436,24 +436,24 @@
         "retries": 0,
         "metadata": {
           "ci": {
-            "commitHref": "https://github.com/Enterprise-CMCS/macpro-mako/commit/2316f4b3ee7ddd24130c78acedf23b19e51ccc5a",
-            "commitHash": "2316f4b3ee7ddd24130c78acedf23b19e51ccc5a",
-            "buildHref": "https://github.com/Enterprise-CMCS/macpro-mako/actions/runs/20035006211"
+            "commitHref": "https://github.com/Enterprise-CMCS/macpro-mako/commit/4ffc02e2eff639d760d175db8898229aeef72ae5",
+            "commitHash": "4ffc02e2eff639d760d175db8898229aeef72ae5",
+            "buildHref": "https://github.com/Enterprise-CMCS/macpro-mako/actions/runs/20038656573"
           },
           "gitCommit": {
-            "shortHash": "2316f4b",
-            "hash": "2316f4b3ee7ddd24130c78acedf23b19e51ccc5a",
-            "subject": "fix(high-vuln): update packages to fix some high vulnerabiltiies  (#1801)",
-            "body": "fix(high-vuln): update packages to fix some high vulnerabiltiies  (#1801)\n\n* update packages\n\n* update snapshot tests\n\n* msw update\n\n* trying\n\n* add testing logic\n\n* test\n\n* update\n\n* update package\n\n* Update cloudformation.ts\n\n* Update createTriggers.test.ts\n\n* Update mockServiceWorker.js\n\n* Update getAllStateUsers.test.ts\n\n* Update mockServiceWorker.js\n\n* update",
+            "shortHash": "4ffc02e",
+            "hash": "4ffc02e2eff639d760d175db8898229aeef72ae5",
+            "subject": "fix(remove-class): remove hidden class for drop input (#1803)",
+            "body": "fix(remove-class): remove hidden class for drop input (#1803)\n\n* Update upload.tsx\n\n* Update upload.tsx\n\n* Update upload.tsx\n\n* update\n\n* Update Dockerfile\n\n* Update Dockerfile",
             "author": {
               "name": "James Dinh",
               "email": "james.d@globalalliantinc.com",
-              "time": 1765210916000
+              "time": 1765218644000
             },
             "committer": {
               "name": "GitHub",
               "email": "noreply@github.com",
-              "time": 1765210916000
+              "time": 1765218644000
             },
             "branch": "main"
           },
@@ -477,24 +477,24 @@
         "retries": 0,
         "metadata": {
           "ci": {
-            "commitHref": "https://github.com/Enterprise-CMCS/macpro-mako/commit/2316f4b3ee7ddd24130c78acedf23b19e51ccc5a",
-            "commitHash": "2316f4b3ee7ddd24130c78acedf23b19e51ccc5a",
-            "buildHref": "https://github.com/Enterprise-CMCS/macpro-mako/actions/runs/20035006211"
+            "commitHref": "https://github.com/Enterprise-CMCS/macpro-mako/commit/4ffc02e2eff639d760d175db8898229aeef72ae5",
+            "commitHash": "4ffc02e2eff639d760d175db8898229aeef72ae5",
+            "buildHref": "https://github.com/Enterprise-CMCS/macpro-mako/actions/runs/20038656573"
           },
           "gitCommit": {
-            "shortHash": "2316f4b",
-            "hash": "2316f4b3ee7ddd24130c78acedf23b19e51ccc5a",
-            "subject": "fix(high-vuln): update packages to fix some high vulnerabiltiies  (#1801)",
-            "body": "fix(high-vuln): update packages to fix some high vulnerabiltiies  (#1801)\n\n* update packages\n\n* update snapshot tests\n\n* msw update\n\n* trying\n\n* add testing logic\n\n* test\n\n* update\n\n* update package\n\n* Update cloudformation.ts\n\n* Update createTriggers.test.ts\n\n* Update mockServiceWorker.js\n\n* Update getAllStateUsers.test.ts\n\n* Update mockServiceWorker.js\n\n* update",
+            "shortHash": "4ffc02e",
+            "hash": "4ffc02e2eff639d760d175db8898229aeef72ae5",
+            "subject": "fix(remove-class): remove hidden class for drop input (#1803)",
+            "body": "fix(remove-class): remove hidden class for drop input (#1803)\n\n* Update upload.tsx\n\n* Update upload.tsx\n\n* Update upload.tsx\n\n* update\n\n* Update Dockerfile\n\n* Update Dockerfile",
             "author": {
               "name": "James Dinh",
               "email": "james.d@globalalliantinc.com",
-              "time": 1765210916000
+              "time": 1765218644000
             },
             "committer": {
               "name": "GitHub",
               "email": "noreply@github.com",
-              "time": 1765210916000
+              "time": 1765218644000
             },
             "branch": "main"
           },
@@ -518,24 +518,24 @@
         "retries": 0,
         "metadata": {
           "ci": {
-            "commitHref": "https://github.com/Enterprise-CMCS/macpro-mako/commit/2316f4b3ee7ddd24130c78acedf23b19e51ccc5a",
-            "commitHash": "2316f4b3ee7ddd24130c78acedf23b19e51ccc5a",
-            "buildHref": "https://github.com/Enterprise-CMCS/macpro-mako/actions/runs/20035006211"
+            "commitHref": "https://github.com/Enterprise-CMCS/macpro-mako/commit/4ffc02e2eff639d760d175db8898229aeef72ae5",
+            "commitHash": "4ffc02e2eff639d760d175db8898229aeef72ae5",
+            "buildHref": "https://github.com/Enterprise-CMCS/macpro-mako/actions/runs/20038656573"
           },
           "gitCommit": {
-            "shortHash": "2316f4b",
-            "hash": "2316f4b3ee7ddd24130c78acedf23b19e51ccc5a",
-            "subject": "fix(high-vuln): update packages to fix some high vulnerabiltiies  (#1801)",
-            "body": "fix(high-vuln): update packages to fix some high vulnerabiltiies  (#1801)\n\n* update packages\n\n* update snapshot tests\n\n* msw update\n\n* trying\n\n* add testing logic\n\n* test\n\n* update\n\n* update package\n\n* Update cloudformation.ts\n\n* Update createTriggers.test.ts\n\n* Update mockServiceWorker.js\n\n* Update getAllStateUsers.test.ts\n\n* Update mockServiceWorker.js\n\n* update",
+            "shortHash": "4ffc02e",
+            "hash": "4ffc02e2eff639d760d175db8898229aeef72ae5",
+            "subject": "fix(remove-class): remove hidden class for drop input (#1803)",
+            "body": "fix(remove-class): remove hidden class for drop input (#1803)\n\n* Update upload.tsx\n\n* Update upload.tsx\n\n* Update upload.tsx\n\n* update\n\n* Update Dockerfile\n\n* Update Dockerfile",
             "author": {
               "name": "James Dinh",
               "email": "james.d@globalalliantinc.com",
-              "time": 1765210916000
+              "time": 1765218644000
             },
             "committer": {
               "name": "GitHub",
               "email": "noreply@github.com",
-              "time": 1765210916000
+              "time": 1765218644000
             },
             "branch": "main"
           },
@@ -559,24 +559,24 @@
         "retries": 0,
         "metadata": {
           "ci": {
-            "commitHref": "https://github.com/Enterprise-CMCS/macpro-mako/commit/2316f4b3ee7ddd24130c78acedf23b19e51ccc5a",
-            "commitHash": "2316f4b3ee7ddd24130c78acedf23b19e51ccc5a",
-            "buildHref": "https://github.com/Enterprise-CMCS/macpro-mako/actions/runs/20035006211"
+            "commitHref": "https://github.com/Enterprise-CMCS/macpro-mako/commit/4ffc02e2eff639d760d175db8898229aeef72ae5",
+            "commitHash": "4ffc02e2eff639d760d175db8898229aeef72ae5",
+            "buildHref": "https://github.com/Enterprise-CMCS/macpro-mako/actions/runs/20038656573"
           },
           "gitCommit": {
-            "shortHash": "2316f4b",
-            "hash": "2316f4b3ee7ddd24130c78acedf23b19e51ccc5a",
-            "subject": "fix(high-vuln): update packages to fix some high vulnerabiltiies  (#1801)",
-            "body": "fix(high-vuln): update packages to fix some high vulnerabiltiies  (#1801)\n\n* update packages\n\n* update snapshot tests\n\n* msw update\n\n* trying\n\n* add testing logic\n\n* test\n\n* update\n\n* update package\n\n* Update cloudformation.ts\n\n* Update createTriggers.test.ts\n\n* Update mockServiceWorker.js\n\n* Update getAllStateUsers.test.ts\n\n* Update mockServiceWorker.js\n\n* update",
+            "shortHash": "4ffc02e",
+            "hash": "4ffc02e2eff639d760d175db8898229aeef72ae5",
+            "subject": "fix(remove-class): remove hidden class for drop input (#1803)",
+            "body": "fix(remove-class): remove hidden class for drop input (#1803)\n\n* Update upload.tsx\n\n* Update upload.tsx\n\n* Update upload.tsx\n\n* update\n\n* Update Dockerfile\n\n* Update Dockerfile",
             "author": {
               "name": "James Dinh",
               "email": "james.d@globalalliantinc.com",
-              "time": 1765210916000
+              "time": 1765218644000
             },
             "committer": {
               "name": "GitHub",
               "email": "noreply@github.com",
-              "time": 1765210916000
+              "time": 1765218644000
             },
             "branch": "main"
           },
@@ -649,7 +649,7 @@
                               "workerIndex": 0,
                               "parallelIndex": 0,
                               "status": "failed",
-                              "duration": 7289,
+                              "duration": 8371,
                               "error": {
                                 "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m(\u001b[22m\u001b[2m)\u001b[22m failed\n\nLocator: getByTestId('Dashboard-d')\nExpected: visible\nTimeout: 5000ms\nError: element(s) not found\n\nCall log:\n\u001b[2m  - Expect \"toBeVisible\" with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for getByTestId('Dashboard-d')\u001b[22m\n",
                                 "stack": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m(\u001b[22m\u001b[2m)\u001b[22m failed\n\nLocator: getByTestId('Dashboard-d')\nExpected: visible\nTimeout: 5000ms\nError: element(s) not found\n\nCall log:\n\u001b[2m  - Expect \"toBeVisible\" with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for getByTestId('Dashboard-d')\u001b[22m\n\n    at /home/runner/work/macpro-mako/macpro-mako/test/e2e/specs/dashboard.spec.ts:33:53",
@@ -673,7 +673,7 @@
                               "stdout": [],
                               "stderr": [],
                               "retry": 0,
-                              "startTime": "2025-12-08T16:42:26.008Z",
+                              "startTime": "2025-12-08T18:36:15.793Z",
                               "annotations": [],
                               "attachments": [
                                 {
@@ -725,7 +725,7 @@
                               "workerIndex": 1,
                               "parallelIndex": 0,
                               "status": "failed",
-                              "duration": 6366,
+                              "duration": 6444,
                               "error": {
                                 "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m(\u001b[22m\u001b[2m)\u001b[22m failed\n\nLocator: getByRole('heading', { name: 'Dashboard' })\nExpected: visible\nTimeout: 5000ms\nError: element(s) not found\n\nCall log:\n\u001b[2m  - Expect \"toBeVisible\" with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for getByRole('heading', { name: 'Dashboard' })\u001b[22m\n",
                                 "stack": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m(\u001b[22m\u001b[2m)\u001b[22m failed\n\nLocator: getByRole('heading', { name: 'Dashboard' })\nExpected: visible\nTimeout: 5000ms\nError: element(s) not found\n\nCall log:\n\u001b[2m  - Expect \"toBeVisible\" with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for getByRole('heading', { name: 'Dashboard' })\u001b[22m\n\n    at /home/runner/work/macpro-mako/macpro-mako/test/e2e/specs/dashboard.spec.ts:43:74",
@@ -749,7 +749,7 @@
                               "stdout": [],
                               "stderr": [],
                               "retry": 0,
-                              "startTime": "2025-12-08T16:42:34.527Z",
+                              "startTime": "2025-12-08T18:36:25.379Z",
                               "annotations": [],
                               "attachments": [
                                 {
@@ -801,7 +801,7 @@
                               "workerIndex": 2,
                               "parallelIndex": 0,
                               "status": "failed",
-                              "duration": 6329,
+                              "duration": 6402,
                               "error": {
                                 "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m(\u001b[22m\u001b[2m)\u001b[22m failed\n\nLocator: getByRole('tab', { name: 'SPAs' })\nExpected: visible\nTimeout: 5000ms\nError: element(s) not found\n\nCall log:\n\u001b[2m  - Expect \"toBeVisible\" with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for getByRole('tab', { name: 'SPAs' })\u001b[22m\n",
                                 "stack": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m(\u001b[22m\u001b[2m)\u001b[22m failed\n\nLocator: getByRole('tab', { name: 'SPAs' })\nExpected: visible\nTimeout: 5000ms\nError: element(s) not found\n\nCall log:\n\u001b[2m  - Expect \"toBeVisible\" with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for getByRole('tab', { name: 'SPAs' })\u001b[22m\n\n    at /home/runner/work/macpro-mako/macpro-mako/test/e2e/specs/dashboard.spec.ts:53:65",
@@ -825,7 +825,7 @@
                               "stdout": [],
                               "stderr": [],
                               "retry": 0,
-                              "startTime": "2025-12-08T16:42:42.107Z",
+                              "startTime": "2025-12-08T18:36:33.046Z",
                               "annotations": [],
                               "attachments": [
                                 {
@@ -877,7 +877,7 @@
                               "workerIndex": 3,
                               "parallelIndex": 0,
                               "status": "failed",
-                              "duration": 6465,
+                              "duration": 6341,
                               "error": {
                                 "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m(\u001b[22m\u001b[2m)\u001b[22m failed\n\nLocator: getByTestId('filtering').locator('p')\nExpected: visible\nTimeout: 5000ms\nError: element(s) not found\n\nCall log:\n\u001b[2m  - Expect \"toBeVisible\" with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for getByTestId('filtering').locator('p')\u001b[22m\n",
                                 "stack": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m(\u001b[22m\u001b[2m)\u001b[22m failed\n\nLocator: getByTestId('filtering').locator('p')\nExpected: visible\nTimeout: 5000ms\nError: element(s) not found\n\nCall log:\n\u001b[2m  - Expect \"toBeVisible\" with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for getByTestId('filtering').locator('p')\u001b[22m\n\n    at /home/runner/work/macpro-mako/macpro-mako/test/e2e/specs/dashboard.spec.ts:61:68",
@@ -901,7 +901,7 @@
                               "stdout": [],
                               "stderr": [],
                               "retry": 0,
-                              "startTime": "2025-12-08T16:42:49.650Z",
+                              "startTime": "2025-12-08T18:36:40.670Z",
                               "annotations": [],
                               "attachments": [
                                 {
@@ -953,7 +953,7 @@
                               "workerIndex": 4,
                               "parallelIndex": 0,
                               "status": "failed",
-                              "duration": 6351,
+                              "duration": 6355,
                               "error": {
                                 "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m(\u001b[22m\u001b[2m)\u001b[22m failed\n\nLocator: getByRole('button', { name: /Columns/ })\nExpected: visible\nTimeout: 5000ms\nError: element(s) not found\n\nCall log:\n\u001b[2m  - Expect \"toBeVisible\" with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for getByRole('button', { name: /Columns/ })\u001b[22m\n",
                                 "stack": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m(\u001b[22m\u001b[2m)\u001b[22m failed\n\nLocator: getByRole('button', { name: /Columns/ })\nExpected: visible\nTimeout: 5000ms\nError: element(s) not found\n\nCall log:\n\u001b[2m  - Expect \"toBeVisible\" with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for getByRole('button', { name: /Columns/ })\u001b[22m\n\n    at /home/runner/work/macpro-mako/macpro-mako/test/e2e/specs/dashboard.spec.ts:70:71",
@@ -977,7 +977,7 @@
                               "stdout": [],
                               "stderr": [],
                               "retry": 0,
-                              "startTime": "2025-12-08T16:42:57.334Z",
+                              "startTime": "2025-12-08T18:36:48.209Z",
                               "annotations": [],
                               "attachments": [
                                 {
@@ -1029,7 +1029,7 @@
                               "workerIndex": 5,
                               "parallelIndex": 0,
                               "status": "failed",
-                              "duration": 6355,
+                              "duration": 6392,
                               "error": {
                                 "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m(\u001b[22m\u001b[2m)\u001b[22m failed\n\nLocator: getByText(/Filters/)\nExpected: visible\nTimeout: 5000ms\nError: element(s) not found\n\nCall log:\n\u001b[2m  - Expect \"toBeVisible\" with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for getByText(/Filters/)\u001b[22m\n",
                                 "stack": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m(\u001b[22m\u001b[2m)\u001b[22m failed\n\nLocator: getByText(/Filters/)\nExpected: visible\nTimeout: 5000ms\nError: element(s) not found\n\nCall log:\n\u001b[2m  - Expect \"toBeVisible\" with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for getByText(/Filters/)\u001b[22m\n\n    at /home/runner/work/macpro-mako/macpro-mako/test/e2e/specs/dashboard.spec.ts:77:51",
@@ -1053,7 +1053,7 @@
                               "stdout": [],
                               "stderr": [],
                               "retry": 0,
-                              "startTime": "2025-12-08T16:43:04.910Z",
+                              "startTime": "2025-12-08T18:36:55.779Z",
                               "annotations": [],
                               "attachments": [
                                 {
@@ -1105,7 +1105,7 @@
                               "workerIndex": 6,
                               "parallelIndex": 0,
                               "status": "failed",
-                              "duration": 6338,
+                              "duration": 6548,
                               "error": {
                                 "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m(\u001b[22m\u001b[2m)\u001b[22m failed\n\nLocator: getByRole('button', { name: /Export/ })\nExpected: visible\nTimeout: 5000ms\nError: element(s) not found\n\nCall log:\n\u001b[2m  - Expect \"toBeVisible\" with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for getByRole('button', { name: /Export/ })\u001b[22m\n",
                                 "stack": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m(\u001b[22m\u001b[2m)\u001b[22m failed\n\nLocator: getByRole('button', { name: /Export/ })\nExpected: visible\nTimeout: 5000ms\nError: element(s) not found\n\nCall log:\n\u001b[2m  - Expect \"toBeVisible\" with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for getByRole('button', { name: /Export/ })\u001b[22m\n\n    at /home/runner/work/macpro-mako/macpro-mako/test/e2e/specs/dashboard.spec.ts:82:70",
@@ -1129,7 +1129,7 @@
                               "stdout": [],
                               "stderr": [],
                               "retry": 0,
-                              "startTime": "2025-12-08T16:43:12.496Z",
+                              "startTime": "2025-12-08T18:37:03.375Z",
                               "annotations": [],
                               "attachments": [
                                 {
@@ -1196,12 +1196,12 @@
                                       "workerIndex": 7,
                                       "parallelIndex": 0,
                                       "status": "passed",
-                                      "duration": 1352,
+                                      "duration": 1148,
                                       "errors": [],
                                       "stdout": [],
                                       "stderr": [],
                                       "retry": 0,
-                                      "startTime": "2025-12-08T16:43:20.046Z",
+                                      "startTime": "2025-12-08T18:37:11.127Z",
                                       "annotations": [],
                                       "attachments": []
                                     }
@@ -1232,7 +1232,7 @@
                                       "workerIndex": 7,
                                       "parallelIndex": 0,
                                       "status": "failed",
-                                      "duration": 6100,
+                                      "duration": 6228,
                                       "error": {
                                         "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m(\u001b[22m\u001b[2m)\u001b[22m failed\n\nLocator: locator('tbody')\nExpected: visible\nTimeout: 5000ms\nError: element(s) not found\n\nCall log:\n\u001b[2m  - Expect \"toBeVisible\" with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for locator('tbody')\u001b[22m\n",
                                         "stack": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m(\u001b[22m\u001b[2m)\u001b[22m failed\n\nLocator: locator('tbody')\nExpected: visible\nTimeout: 5000ms\nError: element(s) not found\n\nCall log:\n\u001b[2m  - Expect \"toBeVisible\" with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for locator('tbody')\u001b[22m\n\n    at /home/runner/work/macpro-mako/macpro-mako/test/e2e/specs/dashboard.spec.ts:126:51",
@@ -1256,7 +1256,7 @@
                                       "stdout": [],
                                       "stderr": [],
                                       "retry": 0,
-                                      "startTime": "2025-12-08T16:43:21.493Z",
+                                      "startTime": "2025-12-08T18:37:12.371Z",
                                       "annotations": [],
                                       "attachments": [
                                         {
@@ -1308,7 +1308,7 @@
                                       "workerIndex": 8,
                                       "parallelIndex": 0,
                                       "status": "failed",
-                                      "duration": 6346,
+                                      "duration": 6367,
                                       "error": {
                                         "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m(\u001b[22m\u001b[2m)\u001b[22m failed\n\nLocator: getByTestId('pagination')\nExpected: visible\nTimeout: 5000ms\nError: element(s) not found\n\nCall log:\n\u001b[2m  - Expect \"toBeVisible\" with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for getByTestId('pagination')\u001b[22m\n",
                                         "stack": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m(\u001b[22m\u001b[2m)\u001b[22m failed\n\nLocator: getByTestId('pagination')\nExpected: visible\nTimeout: 5000ms\nError: element(s) not found\n\nCall log:\n\u001b[2m  - Expect \"toBeVisible\" with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for getByTestId('pagination')\u001b[22m\n\n    at /home/runner/work/macpro-mako/macpro-mako/test/e2e/specs/dashboard.spec.ts:130:60",
@@ -1332,7 +1332,7 @@
                                       "stdout": [],
                                       "stderr": [],
                                       "retry": 0,
-                                      "startTime": "2025-12-08T16:43:28.719Z",
+                                      "startTime": "2025-12-08T18:37:19.721Z",
                                       "annotations": [],
                                       "attachments": [
                                         {
@@ -1392,7 +1392,7 @@
                                       "workerIndex": 9,
                                       "parallelIndex": 0,
                                       "status": "timedOut",
-                                      "duration": 31425,
+                                      "duration": 31522,
                                       "error": {
                                         "message": "\u001b[31mTest timeout of 30000ms exceeded while running \"beforeEach\" hook.\u001b[39m",
                                         "stack": "\u001b[31mTest timeout of 30000ms exceeded while running \"beforeEach\" hook.\u001b[39m\n    at /home/runner/work/macpro-mako/macpro-mako/test/e2e/specs/dashboard.spec.ts:135:18",
@@ -1424,7 +1424,7 @@
                                       "stdout": [],
                                       "stderr": [],
                                       "retry": 0,
-                                      "startTime": "2025-12-08T16:43:36.276Z",
+                                      "startTime": "2025-12-08T18:37:27.298Z",
                                       "annotations": [],
                                       "attachments": [
                                         {
@@ -1476,7 +1476,7 @@
                                       "workerIndex": 10,
                                       "parallelIndex": 0,
                                       "status": "timedOut",
-                                      "duration": 31513,
+                                      "duration": 31479,
                                       "error": {
                                         "message": "\u001b[31mTest timeout of 30000ms exceeded while running \"beforeEach\" hook.\u001b[39m",
                                         "stack": "\u001b[31mTest timeout of 30000ms exceeded while running \"beforeEach\" hook.\u001b[39m\n    at /home/runner/work/macpro-mako/macpro-mako/test/e2e/specs/dashboard.spec.ts:135:18",
@@ -1508,7 +1508,7 @@
                                       "stdout": [],
                                       "stderr": [],
                                       "retry": 0,
-                                      "startTime": "2025-12-08T16:44:08.927Z",
+                                      "startTime": "2025-12-08T18:38:00.050Z",
                                       "annotations": [],
                                       "attachments": [
                                         {
@@ -1560,7 +1560,7 @@
                                       "workerIndex": 11,
                                       "parallelIndex": 0,
                                       "status": "timedOut",
-                                      "duration": 31536,
+                                      "duration": 31366,
                                       "error": {
                                         "message": "\u001b[31mTest timeout of 30000ms exceeded while running \"beforeEach\" hook.\u001b[39m",
                                         "stack": "\u001b[31mTest timeout of 30000ms exceeded while running \"beforeEach\" hook.\u001b[39m\n    at /home/runner/work/macpro-mako/macpro-mako/test/e2e/specs/dashboard.spec.ts:135:18",
@@ -1592,7 +1592,7 @@
                                       "stdout": [],
                                       "stderr": [],
                                       "retry": 0,
-                                      "startTime": "2025-12-08T16:44:41.696Z",
+                                      "startTime": "2025-12-08T18:38:32.740Z",
                                       "annotations": [],
                                       "attachments": [
                                         {
@@ -1656,7 +1656,7 @@
                               "workerIndex": 12,
                               "parallelIndex": 0,
                               "status": "timedOut",
-                              "duration": 31285,
+                              "duration": 31280,
                               "error": {
                                 "message": "\u001b[31mTest timeout of 30000ms exceeded.\u001b[39m",
                                 "stack": "\u001b[31mTest timeout of 30000ms exceeded.\u001b[39m"
@@ -1677,7 +1677,7 @@
                               "stdout": [],
                               "stderr": [],
                               "retry": 0,
-                              "startTime": "2025-12-08T16:45:14.466Z",
+                              "startTime": "2025-12-08T18:39:05.335Z",
                               "annotations": [],
                               "attachments": [
                                 {
@@ -1730,7 +1730,7 @@
                   "specs": [
                     {
                       "title": "navigation banner updates",
-                      "ok": true,
+                      "ok": false,
                       "tags": [
                         "CI"
                       ],
@@ -1745,18 +1745,58 @@
                             {
                               "workerIndex": 13,
                               "parallelIndex": 0,
-                              "status": "passed",
-                              "duration": 6138,
-                              "errors": [],
+                              "status": "failed",
+                              "duration": 6348,
+                              "error": {
+                                "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m(\u001b[22m\u001b[2m)\u001b[22m failed\n\nLocator: getByTestId('Home-d')\nExpected: visible\nTimeout: 5000ms\nError: element(s) not found\n\nCall log:\n\u001b[2m  - Expect \"toBeVisible\" with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for getByTestId('Home-d')\u001b[22m\n",
+                                "stack": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m(\u001b[22m\u001b[2m)\u001b[22m failed\n\nLocator: getByTestId('Home-d')\nExpected: visible\nTimeout: 5000ms\nError: element(s) not found\n\nCall log:\n\u001b[2m  - Expect \"toBeVisible\" with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for getByTestId('Home-d')\u001b[22m\n\n    at /home/runner/work/macpro-mako/macpro-mako/test/e2e/specs/dashboard.spec.ts:29:48",
+                                "location": {
+                                  "file": "/home/runner/work/macpro-mako/macpro-mako/test/e2e/specs/dashboard.spec.ts",
+                                  "column": 48,
+                                  "line": 29
+                                },
+                                "snippet": "\u001b[0m \u001b[90m 27 |\u001b[39m       test\u001b[33m.\u001b[39mdescribe(\u001b[32m\"UI validations\"\u001b[39m\u001b[33m,\u001b[39m {}\u001b[33m,\u001b[39m () \u001b[33m=>\u001b[39m {\n \u001b[90m 28 |\u001b[39m         test(\u001b[32m\"navigation banner updates\"\u001b[39m\u001b[33m,\u001b[39m \u001b[36masync\u001b[39m () \u001b[33m=>\u001b[39m {\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 29 |\u001b[39m           \u001b[36mawait\u001b[39m expect(dashboardPage\u001b[33m.\u001b[39mhomeLink)\u001b[33m.\u001b[39mtoBeVisible()\u001b[33m;\u001b[39m\n \u001b[90m    |\u001b[39m                                                \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 30 |\u001b[39m           \u001b[36mawait\u001b[39m expect(dashboardPage\u001b[33m.\u001b[39mhomeLink)\u001b[33m.\u001b[39mtoHaveText(\u001b[32m\"Home\"\u001b[39m)\u001b[33m;\u001b[39m\n \u001b[90m 31 |\u001b[39m           \u001b[36mawait\u001b[39m expect(dashboardPage\u001b[33m.\u001b[39mhomeLink)\u001b[33m.\u001b[39mnot\u001b[33m.\u001b[39mtoHaveClass(\u001b[32m\"underline\"\u001b[39m)\u001b[33m;\u001b[39m\n \u001b[90m 32 |\u001b[39m\u001b[0m"
+                              },
+                              "errors": [
+                                {
+                                  "location": {
+                                    "file": "/home/runner/work/macpro-mako/macpro-mako/test/e2e/specs/dashboard.spec.ts",
+                                    "column": 48,
+                                    "line": 29
+                                  },
+                                  "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m(\u001b[22m\u001b[2m)\u001b[22m failed\n\nLocator: getByTestId('Home-d')\nExpected: visible\nTimeout: 5000ms\nError: element(s) not found\n\nCall log:\n\u001b[2m  - Expect \"toBeVisible\" with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for getByTestId('Home-d')\u001b[22m\n\n\n  27 |       test.describe(\"UI validations\", {}, () => {\n  28 |         test(\"navigation banner updates\", async () => {\n> 29 |           await expect(dashboardPage.homeLink).toBeVisible();\n     |                                                ^\n  30 |           await expect(dashboardPage.homeLink).toHaveText(\"Home\");\n  31 |           await expect(dashboardPage.homeLink).not.toHaveClass(\"underline\");\n  32 |\n    at /home/runner/work/macpro-mako/macpro-mako/test/e2e/specs/dashboard.spec.ts:29:48"
+                                }
+                              ],
                               "stdout": [],
                               "stderr": [],
                               "retry": 0,
-                              "startTime": "2025-12-08T16:45:46.970Z",
+                              "startTime": "2025-12-08T18:39:37.866Z",
                               "annotations": [],
-                              "attachments": []
+                              "attachments": [
+                                {
+                                  "name": "video",
+                                  "contentType": "video/webm",
+                                  "path": "/home/runner/work/macpro-mako/macpro-mako/test/test-results/e2e-specs-dashboard-Dashbo-6dc6d-s-navigation-banner-updates-shared/video.webm"
+                                },
+                                {
+                                  "name": "error-context",
+                                  "contentType": "text/markdown",
+                                  "path": "/home/runner/work/macpro-mako/macpro-mako/test/test-results/e2e-specs-dashboard-Dashbo-6dc6d-s-navigation-banner-updates-shared/error-context.md"
+                                },
+                                {
+                                  "name": "trace",
+                                  "contentType": "application/zip",
+                                  "path": "/home/runner/work/macpro-mako/macpro-mako/test/test-results/e2e-specs-dashboard-Dashbo-6dc6d-s-navigation-banner-updates-shared/trace.zip"
+                                }
+                              ],
+                              "errorLocation": {
+                                "file": "/home/runner/work/macpro-mako/macpro-mako/test/e2e/specs/dashboard.spec.ts",
+                                "column": 48,
+                                "line": 29
+                              }
                             }
                           ],
-                          "status": "expected"
+                          "status": "unexpected"
                         }
                       ],
                       "id": "e31090cf21ac3d2f1505-49435fe861e54d37de40",
@@ -1779,15 +1819,15 @@
                           "projectName": "shared",
                           "results": [
                             {
-                              "workerIndex": 13,
+                              "workerIndex": 14,
                               "parallelIndex": 0,
                               "status": "passed",
-                              "duration": 4066,
+                              "duration": 4087,
                               "errors": [],
                               "stdout": [],
                               "stderr": [],
                               "retry": 0,
-                              "startTime": "2025-12-08T16:45:53.195Z",
+                              "startTime": "2025-12-08T18:39:45.413Z",
                               "annotations": [],
                               "attachments": []
                             }
@@ -1815,15 +1855,15 @@
                           "projectName": "shared",
                           "results": [
                             {
-                              "workerIndex": 13,
+                              "workerIndex": 14,
                               "parallelIndex": 0,
                               "status": "passed",
-                              "duration": 4025,
+                              "duration": 4059,
                               "errors": [],
                               "stdout": [],
                               "stderr": [],
                               "retry": 0,
-                              "startTime": "2025-12-08T16:45:57.275Z",
+                              "startTime": "2025-12-08T18:39:49.587Z",
                               "annotations": [],
                               "attachments": []
                             }
@@ -1851,15 +1891,15 @@
                           "projectName": "shared",
                           "results": [
                             {
-                              "workerIndex": 13,
+                              "workerIndex": 14,
                               "parallelIndex": 0,
                               "status": "passed",
-                              "duration": 4011,
+                              "duration": 3868,
                               "errors": [],
                               "stdout": [],
                               "stderr": [],
                               "retry": 0,
-                              "startTime": "2025-12-08T16:46:01.312Z",
+                              "startTime": "2025-12-08T18:39:53.663Z",
                               "annotations": [],
                               "attachments": []
                             }
@@ -1887,15 +1927,15 @@
                           "projectName": "shared",
                           "results": [
                             {
-                              "workerIndex": 13,
+                              "workerIndex": 14,
                               "parallelIndex": 0,
                               "status": "passed",
-                              "duration": 4035,
+                              "duration": 4098,
                               "errors": [],
                               "stdout": [],
                               "stderr": [],
                               "retry": 0,
-                              "startTime": "2025-12-08T16:46:05.334Z",
+                              "startTime": "2025-12-08T18:39:57.545Z",
                               "annotations": [],
                               "attachments": []
                             }
@@ -1923,15 +1963,15 @@
                           "projectName": "shared",
                           "results": [
                             {
-                              "workerIndex": 13,
+                              "workerIndex": 14,
                               "parallelIndex": 0,
                               "status": "passed",
-                              "duration": 3993,
+                              "duration": 3975,
                               "errors": [],
                               "stdout": [],
                               "stderr": [],
                               "retry": 0,
-                              "startTime": "2025-12-08T16:46:09.380Z",
+                              "startTime": "2025-12-08T18:40:01.658Z",
                               "annotations": [],
                               "attachments": []
                             }
@@ -1959,15 +1999,15 @@
                           "projectName": "shared",
                           "results": [
                             {
-                              "workerIndex": 13,
+                              "workerIndex": 14,
                               "parallelIndex": 0,
                               "status": "passed",
-                              "duration": 2890,
+                              "duration": 4059,
                               "errors": [],
                               "stdout": [],
                               "stderr": [],
                               "retry": 0,
-                              "startTime": "2025-12-08T16:46:13.385Z",
+                              "startTime": "2025-12-08T18:40:05.645Z",
                               "annotations": [],
                               "attachments": []
                             }
@@ -2010,15 +2050,15 @@
                                   "projectName": "shared",
                                   "results": [
                                     {
-                                      "workerIndex": 13,
+                                      "workerIndex": 14,
                                       "parallelIndex": 0,
                                       "status": "passed",
-                                      "duration": 1090,
+                                      "duration": 1096,
                                       "errors": [],
                                       "stdout": [],
                                       "stderr": [],
                                       "retry": 0,
-                                      "startTime": "2025-12-08T16:46:16.287Z",
+                                      "startTime": "2025-12-08T18:40:09.716Z",
                                       "annotations": [],
                                       "attachments": []
                                     }
@@ -2046,15 +2086,15 @@
                                   "projectName": "shared",
                                   "results": [
                                     {
-                                      "workerIndex": 13,
+                                      "workerIndex": 14,
                                       "parallelIndex": 0,
                                       "status": "passed",
-                                      "duration": 3814,
+                                      "duration": 3855,
                                       "errors": [],
                                       "stdout": [],
                                       "stderr": [],
                                       "retry": 0,
-                                      "startTime": "2025-12-08T16:46:17.388Z",
+                                      "startTime": "2025-12-08T18:40:10.822Z",
                                       "annotations": [],
                                       "attachments": []
                                     }
@@ -2082,15 +2122,15 @@
                                   "projectName": "shared",
                                   "results": [
                                     {
-                                      "workerIndex": 13,
+                                      "workerIndex": 14,
                                       "parallelIndex": 0,
                                       "status": "passed",
-                                      "duration": 4012,
+                                      "duration": 3977,
                                       "errors": [],
                                       "stdout": [],
                                       "stderr": [],
                                       "retry": 0,
-                                      "startTime": "2025-12-08T16:46:21.216Z",
+                                      "startTime": "2025-12-08T18:40:14.690Z",
                                       "annotations": [],
                                       "attachments": []
                                     }
@@ -2126,15 +2166,15 @@
                                   "projectName": "shared",
                                   "results": [
                                     {
-                                      "workerIndex": 13,
+                                      "workerIndex": 14,
                                       "parallelIndex": 0,
                                       "status": "passed",
-                                      "duration": 4386,
+                                      "duration": 4478,
                                       "errors": [],
                                       "stdout": [],
                                       "stderr": [],
                                       "retry": 0,
-                                      "startTime": "2025-12-08T16:46:25.240Z",
+                                      "startTime": "2025-12-08T18:40:18.680Z",
                                       "annotations": [],
                                       "attachments": []
                                     }
@@ -2162,15 +2202,15 @@
                                   "projectName": "shared",
                                   "results": [
                                     {
-                                      "workerIndex": 13,
+                                      "workerIndex": 14,
                                       "parallelIndex": 0,
                                       "status": "passed",
-                                      "duration": 3615,
+                                      "duration": 4229,
                                       "errors": [],
                                       "stdout": [],
                                       "stderr": [],
                                       "retry": 0,
-                                      "startTime": "2025-12-08T16:46:29.640Z",
+                                      "startTime": "2025-12-08T18:40:23.170Z",
                                       "annotations": [],
                                       "attachments": []
                                     }
@@ -2198,15 +2238,15 @@
                                   "projectName": "shared",
                                   "results": [
                                     {
-                                      "workerIndex": 13,
+                                      "workerIndex": 14,
                                       "parallelIndex": 0,
                                       "status": "passed",
-                                      "duration": 3314,
+                                      "duration": 4157,
                                       "errors": [],
                                       "stdout": [],
                                       "stderr": [],
                                       "retry": 0,
-                                      "startTime": "2025-12-08T16:46:33.269Z",
+                                      "startTime": "2025-12-08T18:40:27.415Z",
                                       "annotations": [],
                                       "attachments": []
                                     }
@@ -2246,10 +2286,10 @@
                           "projectName": "shared",
                           "results": [
                             {
-                              "workerIndex": 13,
+                              "workerIndex": 14,
                               "parallelIndex": 0,
                               "status": "passed",
-                              "duration": 8930,
+                              "duration": 9311,
                               "errors": [],
                               "stdout": [
                                 {
@@ -2258,7 +2298,7 @@
                               ],
                               "stderr": [],
                               "retry": 0,
-                              "startTime": "2025-12-08T16:46:36.596Z",
+                              "startTime": "2025-12-08T18:40:31.586Z",
                               "annotations": [],
                               "attachments": [
                                 {
@@ -2288,11 +2328,11 @@
   ],
   "errors": [],
   "stats": {
-    "startTime": "2025-12-08T16:42:10.774Z",
-    "duration": 274835.439,
-    "expected": 15,
+    "startTime": "2025-12-08T18:36:01.491Z",
+    "duration": 279488.908,
+    "expected": 14,
     "skipped": 0,
-    "unexpected": 13,
+    "unexpected": 14,
     "flaky": 0
   }
 }
