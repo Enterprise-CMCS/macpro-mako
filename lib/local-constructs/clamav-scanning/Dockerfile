@@ -10,7 +10,6 @@ RUN (dnf install -y clamav clamd || microdnf install -y clamav clamd || yum inst
 
 # Remove unused runtime emulator and update global npm to patched version to address CVEs
 RUN rm -f /usr/local/bin/aws-lambda-rie \
-  && rm -rf /var/lang/lib/node_modules/npm \
   && npm install -g npm@latest \
   && npm cache clean --force
 
