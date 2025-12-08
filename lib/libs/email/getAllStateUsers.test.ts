@@ -1,10 +1,10 @@
+import { CognitoIdentityProviderClient } from "@aws-sdk/client-cognito-identity-provider";
 import {
   emptyIdentityProviderServiceHandler,
   errorIdentityProviderServiceHandler,
   USER_POOL_ID,
 } from "mocks";
 import { mockedServiceServer as mockedServer } from "mocks/server";
-import { CognitoIdentityProviderClient } from "@aws-sdk/client-cognito-identity-provider";
 import { describe, expect, it, vi } from "vitest";
 
 import { getAllStateUsers } from "./getAllStateUsers";
