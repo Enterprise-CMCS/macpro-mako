@@ -24,6 +24,7 @@ export class ClamScanScanner extends Construct {
   constructor(scope: Construct, id: string, props: ClamScanScannerProps) {
     super(scope, id);
     const { fileBucket } = props;
+    const cacheBust = process.env.CACHE_BUST ?? Date.now().toString();
 
     // S3 Bucket
     const clamDefsBucket = new s3.Bucket(this, `ClamDefsBucket`, {
@@ -158,7 +159,7 @@ export class ClamScanScanner extends Construct {
       code: DockerImageCode.fromImageAsset(__dirname, {
         cmd: ["dist/defs.handler"],
         buildArgs: {
-          CACHE_BUST: "2025-12-01-cve-2025-7783",
+          CACHE_BUST: cacheBust,
         },
       }),
       timeout: cdk.Duration.minutes(1),
@@ -180,7 +181,7 @@ export class ClamScanScanner extends Construct {
     const clamscanLambda = new DockerImageFunction(this, "ServerlessClamscan", {
       code: DockerImageCode.fromImageAsset(__dirname, {
         buildArgs: {
-          CACHE_BUST: "2025-12-01-cve-2025-7783",
+          CACHE_BUST: cacheBust,
         },
       }),
       timeout: cdk.Duration.minutes(1),
