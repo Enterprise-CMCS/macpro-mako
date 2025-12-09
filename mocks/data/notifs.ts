@@ -5,7 +5,7 @@ export const notifs = [
     header: "MMDL SPA forms available in OneMAC",
     pubDate: "2025-01-07T12:20:56.160Z",
     expDate: "2025-02-07T11:21:50.210Z",
-    buttonLink: "/faq/spa-admendments",
+    buttonLink: "/faq/spa-amendments",
     buttonText: "Go to FAQs",
     disabled: true,
   },
