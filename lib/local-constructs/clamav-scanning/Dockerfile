@@ -13,6 +13,8 @@ RUN (dnf --refresh upgrade -y || microdnf upgrade -y || yum update -y) \
   && (dnf autoremove -y || microdnf autoremove -y || yum autoremove -y || true) \
   && (dnf clean all || microdnf clean all || yum clean all) \
   && rm -rf /var/cache/dnf
+# Record patched RPM versions in build log for verification
+RUN rpm -q glib2 curl-minimal libcurl-minimal || true
 
 # Remove unused runtime emulator and update global npm to patched version to address CVEs
 RUN rm -f /usr/local/bin/aws-lambda-rie \
