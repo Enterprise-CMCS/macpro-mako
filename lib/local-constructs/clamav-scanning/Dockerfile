@@ -13,11 +13,11 @@ RUN (dnf --refresh upgrade -y || microdnf upgrade -y || yum update -y) \
     && (dnf autoremove -y || microdnf autoremove -y || yum autoremove -y || true) \
     && (dnf clean all || microdnf clean all || yum clean all) \
     && rm -rf /var/cache/dnf
-# Force-install patched glib2/curl RPMs directly (fails if not yet available), then log versions
-RUN dnf --refresh install -y \
-      https://cdn.amazonlinux.com/al2023/core/latest/x86_64/packages/glib2-2.82.2-767.amzn2023.x86_64.rpm \
-      https://cdn.amazonlinux.com/al2023/core/latest/x86_64/packages/curl-minimal-8.11.1-4.amzn2023.0.3.x86_64.rpm \
-      https://cdn.amazonlinux.com/al2023/core/latest/x86_64/packages/libcurl-minimal-8.11.1-4.amzn2023.0.3.x86_64.rpm \
+# Try patched AL2023 snapshot/advisory for glib2/curl; fall back to normal upgrade if unavailable, then log versions
+RUN (dnf --releasever=2023.9.20251208 --refresh update -y --advisory ALAS2023-2025-1311 glib2 curl-minimal libcurl-minimal || \
+     dnf --refresh upgrade -y glib2 curl-minimal libcurl-minimal || \
+     microdnf upgrade -y glib2 curl-minimal libcurl-minimal || \
+     yum update -y glib2 curl-minimal libcurl-minimal) \
     && rpm -q glib2 curl-minimal libcurl-minimal
 
 # Remove unused runtime emulator and upgrade bundled npm to pick up patched dependencies
