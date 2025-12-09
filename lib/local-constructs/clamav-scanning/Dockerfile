@@ -10,20 +10,27 @@ RUN (dnf install -y clamav clamd || microdnf install -y clamav clamd || yum inst
 
 # General OS refresh to pick up all available security fixes; refresh metadata, upgrade, autoremove, clean caches
 RUN (dnf --refresh upgrade -y || microdnf upgrade -y || yum update -y) \
-  && (dnf autoremove -y || microdnf autoremove -y || yum autoremove -y || true) \
-  && (dnf clean all || microdnf clean all || yum clean all) \
-  && rm -rf /var/cache/dnf
-# Enforce and record patched RPM versions in the build log; fail build if required versions are unavailable
-RUN (dnf --refresh upgrade -y glib2 curl-minimal libcurl-minimal || microdnf upgrade -y glib2 curl-minimal libcurl-minimal || yum update -y glib2 curl-minimal libcurl-minimal) \
-  && rpm -q glib2 curl-minimal libcurl-minimal \
-  && rpm -q glib2 | grep -q "glib2-2.82.2-767" \
-  && rpm -q curl-minimal | grep -q "curl-minimal-8.11.1-4.amzn2023.0.3" \
-  && rpm -q libcurl-minimal | grep -q "libcurl-minimal-8.11.1-4.amzn2023.0.3"
+    && (dnf autoremove -y || microdnf autoremove -y || yum autoremove -y || true) \
+    && (dnf clean all || microdnf clean all || yum clean all) \
+    && rm -rf /var/cache/dnf
+# Enforce and record patched RPM versions in the build log; require at least the fixed versions
+RUN set -e; \
+    req_glib2="2.82.2-767"; \
+    req_curl="8.11.1-4.amzn2023.0.3"; \
+    req_libcurl="8.11.1-4.amzn2023.0.3"; \
+    (dnf --refresh upgrade -y glib2 curl-minimal libcurl-minimal || microdnf upgrade -y glib2 curl-minimal libcurl-minimal || yum update -y glib2 curl-minimal libcurl-minimal); \
+    rpm -q glib2 curl-minimal libcurl-minimal; \
+    installed_glib2=$(rpm -q --qf '%{VERSION}-%{RELEASE}\n' glib2 | head -n1); \
+    installed_curl=$(rpm -q --qf '%{VERSION}-%{RELEASE}\n' curl-minimal | head -n1); \
+    installed_libcurl=$(rpm -q --qf '%{VERSION}-%{RELEASE}\n' libcurl-minimal | head -n1); \
+    [ "$(printf '%s\n%s\n' "$req_glib2" "$installed_glib2" | sort -V | tail -n1)" = "$installed_glib2" ]; \
+    [ "$(printf '%s\n%s\n' "$req_curl" "$installed_curl" | sort -V | tail -n1)" = "$installed_curl" ]; \
+    [ "$(printf '%s\n%s\n' "$req_libcurl" "$installed_libcurl" | sort -V | tail -n1)" = "$installed_libcurl" ]
 
 # Remove unused runtime emulator and update global npm to patched version to address CVEs
 RUN rm -f /usr/local/bin/aws-lambda-rie \
-  && npm install -g npm@latest \
-  && npm cache clean --force
+    && npm install -g npm@latest \
+    && npm cache clean --force
 
 COPY package.json package-lock.json ./
 RUN npm install
