@@ -633,7 +633,7 @@
                   "specs": [
                     {
                       "title": "navigation banner updates",
-                      "ok": true,
+                      "ok": false,
                       "tags": [
                         "CI"
                       ],
@@ -648,18 +648,58 @@
                             {
                               "workerIndex": 0,
                               "parallelIndex": 0,
-                              "status": "passed",
-                              "duration": 3016,
-                              "errors": [],
+                              "status": "failed",
+                              "duration": 8271,
+                              "error": {
+                                "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m(\u001b[22m\u001b[2m)\u001b[22m failed\n\nLocator: getByTestId('Dashboard-d')\nExpected: visible\nTimeout: 5000ms\nError: element(s) not found\n\nCall log:\n\u001b[2m  - Expect \"toBeVisible\" with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for getByTestId('Dashboard-d')\u001b[22m\n",
+                                "stack": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m(\u001b[22m\u001b[2m)\u001b[22m failed\n\nLocator: getByTestId('Dashboard-d')\nExpected: visible\nTimeout: 5000ms\nError: element(s) not found\n\nCall log:\n\u001b[2m  - Expect \"toBeVisible\" with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for getByTestId('Dashboard-d')\u001b[22m\n\n    at /home/runner/work/macpro-mako/macpro-mako/test/e2e/specs/dashboard.spec.ts:33:53",
+                                "location": {
+                                  "file": "/home/runner/work/macpro-mako/macpro-mako/test/e2e/specs/dashboard.spec.ts",
+                                  "column": 53,
+                                  "line": 33
+                                },
+                                "snippet": "\u001b[0m \u001b[90m 31 |\u001b[39m           \u001b[36mawait\u001b[39m expect(dashboardPage\u001b[33m.\u001b[39mhomeLink)\u001b[33m.\u001b[39mnot\u001b[33m.\u001b[39mtoHaveClass(\u001b[32m\"underline\"\u001b[39m)\u001b[33m;\u001b[39m\n \u001b[90m 32 |\u001b[39m\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 33 |\u001b[39m           \u001b[36mawait\u001b[39m expect(dashboardPage\u001b[33m.\u001b[39mdashboardLink)\u001b[33m.\u001b[39mtoBeVisible()\u001b[33m;\u001b[39m\n \u001b[90m    |\u001b[39m                                                     \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 34 |\u001b[39m           \u001b[36mawait\u001b[39m expect(dashboardPage\u001b[33m.\u001b[39mdashboardLink)\u001b[33m.\u001b[39mtoHaveText(\u001b[32m\"Dashboard\"\u001b[39m)\u001b[33m;\u001b[39m\n \u001b[90m 35 |\u001b[39m           \u001b[36mawait\u001b[39m expect(dashboardPage\u001b[33m.\u001b[39mdashboardLink)\u001b[33m.\u001b[39mtoHaveClass(\u001b[35m/underline/\u001b[39m)\u001b[33m;\u001b[39m\n \u001b[90m 36 |\u001b[39m\u001b[0m"
+                              },
+                              "errors": [
+                                {
+                                  "location": {
+                                    "file": "/home/runner/work/macpro-mako/macpro-mako/test/e2e/specs/dashboard.spec.ts",
+                                    "column": 53,
+                                    "line": 33
+                                  },
+                                  "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m(\u001b[22m\u001b[2m)\u001b[22m failed\n\nLocator: getByTestId('Dashboard-d')\nExpected: visible\nTimeout: 5000ms\nError: element(s) not found\n\nCall log:\n\u001b[2m  - Expect \"toBeVisible\" with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for getByTestId('Dashboard-d')\u001b[22m\n\n\n  31 |           await expect(dashboardPage.homeLink).not.toHaveClass(\"underline\");\n  32 |\n> 33 |           await expect(dashboardPage.dashboardLink).toBeVisible();\n     |                                                     ^\n  34 |           await expect(dashboardPage.dashboardLink).toHaveText(\"Dashboard\");\n  35 |           await expect(dashboardPage.dashboardLink).toHaveClass(/underline/);\n  36 |\n    at /home/runner/work/macpro-mako/macpro-mako/test/e2e/specs/dashboard.spec.ts:33:53"
+                                }
+                              ],
                               "stdout": [],
                               "stderr": [],
                               "retry": 0,
-                              "startTime": "2025-12-08T18:43:49.657Z",
+                              "startTime": "2025-12-09T15:44:11.290Z",
                               "annotations": [],
-                              "attachments": []
+                              "attachments": [
+                                {
+                                  "name": "video",
+                                  "contentType": "video/webm",
+                                  "path": "/home/runner/work/macpro-mako/macpro-mako/test/test-results/e2e-specs-dashboard-Dashbo-17e0c-s-navigation-banner-updates-shared/video.webm"
+                                },
+                                {
+                                  "name": "error-context",
+                                  "contentType": "text/markdown",
+                                  "path": "/home/runner/work/macpro-mako/macpro-mako/test/test-results/e2e-specs-dashboard-Dashbo-17e0c-s-navigation-banner-updates-shared/error-context.md"
+                                },
+                                {
+                                  "name": "trace",
+                                  "contentType": "application/zip",
+                                  "path": "/home/runner/work/macpro-mako/macpro-mako/test/test-results/e2e-specs-dashboard-Dashbo-17e0c-s-navigation-banner-updates-shared/trace.zip"
+                                }
+                              ],
+                              "errorLocation": {
+                                "file": "/home/runner/work/macpro-mako/macpro-mako/test/e2e/specs/dashboard.spec.ts",
+                                "column": 53,
+                                "line": 33
+                              }
                             }
                           ],
-                          "status": "expected"
+                          "status": "unexpected"
                         }
                       ],
                       "id": "e31090cf21ac3d2f1505-79236770153f2bc1774a",
@@ -669,7 +709,7 @@
                     },
                     {
                       "title": "page header",
-                      "ok": true,
+                      "ok": false,
                       "tags": [
                         "CI"
                       ],
@@ -682,20 +722,60 @@
                           "projectName": "shared",
                           "results": [
                             {
-                              "workerIndex": 0,
+                              "workerIndex": 1,
                               "parallelIndex": 0,
-                              "status": "passed",
-                              "duration": 2837,
-                              "errors": [],
+                              "status": "failed",
+                              "duration": 6282,
+                              "error": {
+                                "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m(\u001b[22m\u001b[2m)\u001b[22m failed\n\nLocator: getByRole('heading', { name: 'Dashboard' })\nExpected: visible\nTimeout: 5000ms\nError: element(s) not found\n\nCall log:\n\u001b[2m  - Expect \"toBeVisible\" with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for getByRole('heading', { name: 'Dashboard' })\u001b[22m\n",
+                                "stack": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m(\u001b[22m\u001b[2m)\u001b[22m failed\n\nLocator: getByRole('heading', { name: 'Dashboard' })\nExpected: visible\nTimeout: 5000ms\nError: element(s) not found\n\nCall log:\n\u001b[2m  - Expect \"toBeVisible\" with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for getByRole('heading', { name: 'Dashboard' })\u001b[22m\n\n    at /home/runner/work/macpro-mako/macpro-mako/test/e2e/specs/dashboard.spec.ts:43:74",
+                                "location": {
+                                  "file": "/home/runner/work/macpro-mako/macpro-mako/test/e2e/specs/dashboard.spec.ts",
+                                  "column": 74,
+                                  "line": 43
+                                },
+                                "snippet": "\u001b[0m \u001b[90m 41 |\u001b[39m\n \u001b[90m 42 |\u001b[39m         test(\u001b[32m\"page header\"\u001b[39m\u001b[33m,\u001b[39m \u001b[36masync\u001b[39m ({ page }) \u001b[33m=>\u001b[39m {\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 43 |\u001b[39m           \u001b[36mawait\u001b[39m expect(page\u001b[33m.\u001b[39mgetByRole(\u001b[32m\"heading\"\u001b[39m\u001b[33m,\u001b[39m { name\u001b[33m:\u001b[39m \u001b[32m\"Dashboard\"\u001b[39m }))\u001b[33m.\u001b[39mtoBeVisible()\u001b[33m;\u001b[39m\n \u001b[90m    |\u001b[39m                                                                          \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 44 |\u001b[39m           \u001b[36mawait\u001b[39m expect(page\u001b[33m.\u001b[39mgetByRole(\u001b[32m\"heading\"\u001b[39m\u001b[33m,\u001b[39m { name\u001b[33m:\u001b[39m \u001b[32m\"Dashboard\"\u001b[39m }))\u001b[33m.\u001b[39mtoHaveText(\u001b[32m\"Dashboard\"\u001b[39m)\u001b[33m;\u001b[39m\n \u001b[90m 45 |\u001b[39m\n \u001b[90m 46 |\u001b[39m           \u001b[36mif\u001b[39m (role\u001b[33m.\u001b[39mincludes(\u001b[32m\"state\"\u001b[39m)) {\u001b[0m"
+                              },
+                              "errors": [
+                                {
+                                  "location": {
+                                    "file": "/home/runner/work/macpro-mako/macpro-mako/test/e2e/specs/dashboard.spec.ts",
+                                    "column": 74,
+                                    "line": 43
+                                  },
+                                  "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m(\u001b[22m\u001b[2m)\u001b[22m failed\n\nLocator: getByRole('heading', { name: 'Dashboard' })\nExpected: visible\nTimeout: 5000ms\nError: element(s) not found\n\nCall log:\n\u001b[2m  - Expect \"toBeVisible\" with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for getByRole('heading', { name: 'Dashboard' })\u001b[22m\n\n\n  41 |\n  42 |         test(\"page header\", async ({ page }) => {\n> 43 |           await expect(page.getByRole(\"heading\", { name: \"Dashboard\" })).toBeVisible();\n     |                                                                          ^\n  44 |           await expect(page.getByRole(\"heading\", { name: \"Dashboard\" })).toHaveText(\"Dashboard\");\n  45 |\n  46 |           if (role.includes(\"state\")) {\n    at /home/runner/work/macpro-mako/macpro-mako/test/e2e/specs/dashboard.spec.ts:43:74"
+                                }
+                              ],
                               "stdout": [],
                               "stderr": [],
                               "retry": 0,
-                              "startTime": "2025-12-08T18:43:52.763Z",
+                              "startTime": "2025-12-09T15:44:20.650Z",
                               "annotations": [],
-                              "attachments": []
+                              "attachments": [
+                                {
+                                  "name": "video",
+                                  "contentType": "video/webm",
+                                  "path": "/home/runner/work/macpro-mako/macpro-mako/test/test-results/e2e-specs-dashboard-Dashbo-578b1--UI-validations-page-header-shared/video.webm"
+                                },
+                                {
+                                  "name": "error-context",
+                                  "contentType": "text/markdown",
+                                  "path": "/home/runner/work/macpro-mako/macpro-mako/test/test-results/e2e-specs-dashboard-Dashbo-578b1--UI-validations-page-header-shared/error-context.md"
+                                },
+                                {
+                                  "name": "trace",
+                                  "contentType": "application/zip",
+                                  "path": "/home/runner/work/macpro-mako/macpro-mako/test/test-results/e2e-specs-dashboard-Dashbo-578b1--UI-validations-page-header-shared/trace.zip"
+                                }
+                              ],
+                              "errorLocation": {
+                                "file": "/home/runner/work/macpro-mako/macpro-mako/test/e2e/specs/dashboard.spec.ts",
+                                "column": 74,
+                                "line": 43
+                              }
                             }
                           ],
-                          "status": "expected"
+                          "status": "unexpected"
                         }
                       ],
                       "id": "e31090cf21ac3d2f1505-d58f6cb96869baa5c8ca",
@@ -705,7 +785,7 @@
                     },
                     {
                       "title": "SPA and Waiver tabs",
-                      "ok": true,
+                      "ok": false,
                       "tags": [
                         "CI"
                       ],
@@ -718,20 +798,60 @@
                           "projectName": "shared",
                           "results": [
                             {
-                              "workerIndex": 0,
+                              "workerIndex": 2,
                               "parallelIndex": 0,
-                              "status": "passed",
-                              "duration": 2947,
-                              "errors": [],
+                              "status": "failed",
+                              "duration": 6253,
+                              "error": {
+                                "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m(\u001b[22m\u001b[2m)\u001b[22m failed\n\nLocator: getByRole('tab', { name: 'SPAs' })\nExpected: visible\nTimeout: 5000ms\nError: element(s) not found\n\nCall log:\n\u001b[2m  - Expect \"toBeVisible\" with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for getByRole('tab', { name: 'SPAs' })\u001b[22m\n",
+                                "stack": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m(\u001b[22m\u001b[2m)\u001b[22m failed\n\nLocator: getByRole('tab', { name: 'SPAs' })\nExpected: visible\nTimeout: 5000ms\nError: element(s) not found\n\nCall log:\n\u001b[2m  - Expect \"toBeVisible\" with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for getByRole('tab', { name: 'SPAs' })\u001b[22m\n\n    at /home/runner/work/macpro-mako/macpro-mako/test/e2e/specs/dashboard.spec.ts:53:65",
+                                "location": {
+                                  "file": "/home/runner/work/macpro-mako/macpro-mako/test/e2e/specs/dashboard.spec.ts",
+                                  "column": 65,
+                                  "line": 53
+                                },
+                                "snippet": "\u001b[0m \u001b[90m 51 |\u001b[39m\n \u001b[90m 52 |\u001b[39m         test(\u001b[32m\"SPA and Waiver tabs\"\u001b[39m\u001b[33m,\u001b[39m \u001b[36masync\u001b[39m ({ page }) \u001b[33m=>\u001b[39m {\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 53 |\u001b[39m           \u001b[36mawait\u001b[39m expect(page\u001b[33m.\u001b[39mgetByRole(\u001b[32m\"tab\"\u001b[39m\u001b[33m,\u001b[39m { name\u001b[33m:\u001b[39m \u001b[32m\"SPAs\"\u001b[39m }))\u001b[33m.\u001b[39mtoBeVisible()\u001b[33m;\u001b[39m\n \u001b[90m    |\u001b[39m                                                                 \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 54 |\u001b[39m           \u001b[36mawait\u001b[39m expect(page\u001b[33m.\u001b[39mgetByRole(\u001b[32m\"tab\"\u001b[39m\u001b[33m,\u001b[39m { name\u001b[33m:\u001b[39m \u001b[32m\"SPAs\"\u001b[39m }))\u001b[33m.\u001b[39mtoHaveText(\u001b[32m\"SPAs\"\u001b[39m)\u001b[33m;\u001b[39m\n \u001b[90m 55 |\u001b[39m\n \u001b[90m 56 |\u001b[39m           \u001b[36mawait\u001b[39m expect(page\u001b[33m.\u001b[39mgetByRole(\u001b[32m\"tab\"\u001b[39m\u001b[33m,\u001b[39m { name\u001b[33m:\u001b[39m \u001b[32m\"Waivers\"\u001b[39m }))\u001b[33m.\u001b[39mtoBeVisible()\u001b[33m;\u001b[39m\u001b[0m"
+                              },
+                              "errors": [
+                                {
+                                  "location": {
+                                    "file": "/home/runner/work/macpro-mako/macpro-mako/test/e2e/specs/dashboard.spec.ts",
+                                    "column": 65,
+                                    "line": 53
+                                  },
+                                  "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m(\u001b[22m\u001b[2m)\u001b[22m failed\n\nLocator: getByRole('tab', { name: 'SPAs' })\nExpected: visible\nTimeout: 5000ms\nError: element(s) not found\n\nCall log:\n\u001b[2m  - Expect \"toBeVisible\" with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for getByRole('tab', { name: 'SPAs' })\u001b[22m\n\n\n  51 |\n  52 |         test(\"SPA and Waiver tabs\", async ({ page }) => {\n> 53 |           await expect(page.getByRole(\"tab\", { name: \"SPAs\" })).toBeVisible();\n     |                                                                 ^\n  54 |           await expect(page.getByRole(\"tab\", { name: \"SPAs\" })).toHaveText(\"SPAs\");\n  55 |\n  56 |           await expect(page.getByRole(\"tab\", { name: \"Waivers\" })).toBeVisible();\n    at /home/runner/work/macpro-mako/macpro-mako/test/e2e/specs/dashboard.spec.ts:53:65"
+                                }
+                              ],
                               "stdout": [],
                               "stderr": [],
                               "retry": 0,
-                              "startTime": "2025-12-08T18:43:55.614Z",
+                              "startTime": "2025-12-09T15:44:28.012Z",
                               "annotations": [],
-                              "attachments": []
+                              "attachments": [
+                                {
+                                  "name": "video",
+                                  "contentType": "video/webm",
+                                  "path": "/home/runner/work/macpro-mako/macpro-mako/test/test-results/e2e-specs-dashboard-Dashbo-4d124-dations-SPA-and-Waiver-tabs-shared/video.webm"
+                                },
+                                {
+                                  "name": "error-context",
+                                  "contentType": "text/markdown",
+                                  "path": "/home/runner/work/macpro-mako/macpro-mako/test/test-results/e2e-specs-dashboard-Dashbo-4d124-dations-SPA-and-Waiver-tabs-shared/error-context.md"
+                                },
+                                {
+                                  "name": "trace",
+                                  "contentType": "application/zip",
+                                  "path": "/home/runner/work/macpro-mako/macpro-mako/test/test-results/e2e-specs-dashboard-Dashbo-4d124-dations-SPA-and-Waiver-tabs-shared/trace.zip"
+                                }
+                              ],
+                              "errorLocation": {
+                                "file": "/home/runner/work/macpro-mako/macpro-mako/test/e2e/specs/dashboard.spec.ts",
+                                "column": 65,
+                                "line": 53
+                              }
                             }
                           ],
-                          "status": "expected"
+                          "status": "unexpected"
                         }
                       ],
                       "id": "e31090cf21ac3d2f1505-aaa4291f7cccb505955c",
@@ -741,7 +861,7 @@
                     },
                     {
                       "title": "search field",
-                      "ok": true,
+                      "ok": false,
                       "tags": [
                         "CI"
                       ],
@@ -754,20 +874,60 @@
                           "projectName": "shared",
                           "results": [
                             {
-                              "workerIndex": 0,
+                              "workerIndex": 3,
                               "parallelIndex": 0,
-                              "status": "passed",
-                              "duration": 2856,
-                              "errors": [],
+                              "status": "failed",
+                              "duration": 6212,
+                              "error": {
+                                "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m(\u001b[22m\u001b[2m)\u001b[22m failed\n\nLocator: getByTestId('filtering').locator('p')\nExpected: visible\nTimeout: 5000ms\nError: element(s) not found\n\nCall log:\n\u001b[2m  - Expect \"toBeVisible\" with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for getByTestId('filtering').locator('p')\u001b[22m\n",
+                                "stack": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m(\u001b[22m\u001b[2m)\u001b[22m failed\n\nLocator: getByTestId('filtering').locator('p')\nExpected: visible\nTimeout: 5000ms\nError: element(s) not found\n\nCall log:\n\u001b[2m  - Expect \"toBeVisible\" with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for getByTestId('filtering').locator('p')\u001b[22m\n\n    at /home/runner/work/macpro-mako/macpro-mako/test/e2e/specs/dashboard.spec.ts:61:68",
+                                "location": {
+                                  "file": "/home/runner/work/macpro-mako/macpro-mako/test/e2e/specs/dashboard.spec.ts",
+                                  "column": 68,
+                                  "line": 61
+                                },
+                                "snippet": "\u001b[0m \u001b[90m 59 |\u001b[39m\n \u001b[90m 60 |\u001b[39m         test(\u001b[32m\"search field\"\u001b[39m\u001b[33m,\u001b[39m \u001b[36masync\u001b[39m ({ page }) \u001b[33m=>\u001b[39m {\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 61 |\u001b[39m           \u001b[36mawait\u001b[39m expect(page\u001b[33m.\u001b[39mgetByTestId(\u001b[32m\"filtering\"\u001b[39m)\u001b[33m.\u001b[39mlocator(\u001b[32m\"p\"\u001b[39m))\u001b[33m.\u001b[39mtoBeVisible()\u001b[33m;\u001b[39m\n \u001b[90m    |\u001b[39m                                                                    \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 62 |\u001b[39m           \u001b[36mawait\u001b[39m expect(page\u001b[33m.\u001b[39mgetByTestId(\u001b[32m\"filtering\"\u001b[39m)\u001b[33m.\u001b[39mlocator(\u001b[32m\"p\"\u001b[39m))\u001b[33m.\u001b[39mtoHaveText(\n \u001b[90m 63 |\u001b[39m             \u001b[32m\"Search by Package ID, CPOC Name, or Submitter Name\"\u001b[39m\u001b[33m,\u001b[39m\n \u001b[90m 64 |\u001b[39m           )\u001b[33m;\u001b[39m\u001b[0m"
+                              },
+                              "errors": [
+                                {
+                                  "location": {
+                                    "file": "/home/runner/work/macpro-mako/macpro-mako/test/e2e/specs/dashboard.spec.ts",
+                                    "column": 68,
+                                    "line": 61
+                                  },
+                                  "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m(\u001b[22m\u001b[2m)\u001b[22m failed\n\nLocator: getByTestId('filtering').locator('p')\nExpected: visible\nTimeout: 5000ms\nError: element(s) not found\n\nCall log:\n\u001b[2m  - Expect \"toBeVisible\" with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for getByTestId('filtering').locator('p')\u001b[22m\n\n\n  59 |\n  60 |         test(\"search field\", async ({ page }) => {\n> 61 |           await expect(page.getByTestId(\"filtering\").locator(\"p\")).toBeVisible();\n     |                                                                    ^\n  62 |           await expect(page.getByTestId(\"filtering\").locator(\"p\")).toHaveText(\n  63 |             \"Search by Package ID, CPOC Name, or Submitter Name\",\n  64 |           );\n    at /home/runner/work/macpro-mako/macpro-mako/test/e2e/specs/dashboard.spec.ts:61:68"
+                                }
+                              ],
                               "stdout": [],
                               "stderr": [],
                               "retry": 0,
-                              "startTime": "2025-12-08T18:43:58.575Z",
+                              "startTime": "2025-12-09T15:44:35.363Z",
                               "annotations": [],
-                              "attachments": []
+                              "attachments": [
+                                {
+                                  "name": "video",
+                                  "contentType": "video/webm",
+                                  "path": "/home/runner/work/macpro-mako/macpro-mako/test/test-results/e2e-specs-dashboard-Dashbo-61417-UI-validations-search-field-shared/video.webm"
+                                },
+                                {
+                                  "name": "error-context",
+                                  "contentType": "text/markdown",
+                                  "path": "/home/runner/work/macpro-mako/macpro-mako/test/test-results/e2e-specs-dashboard-Dashbo-61417-UI-validations-search-field-shared/error-context.md"
+                                },
+                                {
+                                  "name": "trace",
+                                  "contentType": "application/zip",
+                                  "path": "/home/runner/work/macpro-mako/macpro-mako/test/test-results/e2e-specs-dashboard-Dashbo-61417-UI-validations-search-field-shared/trace.zip"
+                                }
+                              ],
+                              "errorLocation": {
+                                "file": "/home/runner/work/macpro-mako/macpro-mako/test/e2e/specs/dashboard.spec.ts",
+                                "column": 68,
+                                "line": 61
+                              }
                             }
                           ],
-                          "status": "expected"
+                          "status": "unexpected"
                         }
                       ],
                       "id": "e31090cf21ac3d2f1505-09e909a1a6477cabd9dc",
@@ -777,7 +937,7 @@
                     },
                     {
                       "title": "columns button",
-                      "ok": true,
+                      "ok": false,
                       "tags": [
                         "CI"
                       ],
@@ -790,20 +950,60 @@
                           "projectName": "shared",
                           "results": [
                             {
-                              "workerIndex": 0,
+                              "workerIndex": 4,
                               "parallelIndex": 0,
-                              "status": "passed",
-                              "duration": 2807,
-                              "errors": [],
+                              "status": "failed",
+                              "duration": 6195,
+                              "error": {
+                                "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m(\u001b[22m\u001b[2m)\u001b[22m failed\n\nLocator: getByRole('button', { name: /Columns/ })\nExpected: visible\nTimeout: 5000ms\nError: element(s) not found\n\nCall log:\n\u001b[2m  - Expect \"toBeVisible\" with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for getByRole('button', { name: /Columns/ })\u001b[22m\n",
+                                "stack": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m(\u001b[22m\u001b[2m)\u001b[22m failed\n\nLocator: getByRole('button', { name: /Columns/ })\nExpected: visible\nTimeout: 5000ms\nError: element(s) not found\n\nCall log:\n\u001b[2m  - Expect \"toBeVisible\" with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for getByRole('button', { name: /Columns/ })\u001b[22m\n\n    at /home/runner/work/macpro-mako/macpro-mako/test/e2e/specs/dashboard.spec.ts:70:71",
+                                "location": {
+                                  "file": "/home/runner/work/macpro-mako/macpro-mako/test/e2e/specs/dashboard.spec.ts",
+                                  "column": 71,
+                                  "line": 70
+                                },
+                                "snippet": "\u001b[0m \u001b[90m 68 |\u001b[39m\n \u001b[90m 69 |\u001b[39m         test(\u001b[32m\"columns button\"\u001b[39m\u001b[33m,\u001b[39m \u001b[36masync\u001b[39m ({ page }) \u001b[33m=>\u001b[39m {\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 70 |\u001b[39m           \u001b[36mawait\u001b[39m expect(page\u001b[33m.\u001b[39mgetByRole(\u001b[32m\"button\"\u001b[39m\u001b[33m,\u001b[39m { name\u001b[33m:\u001b[39m \u001b[35m/Columns/\u001b[39m }))\u001b[33m.\u001b[39mtoBeVisible()\u001b[33m;\u001b[39m\n \u001b[90m    |\u001b[39m                                                                       \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 71 |\u001b[39m           \u001b[36mawait\u001b[39m expect(page\u001b[33m.\u001b[39mgetByRole(\u001b[32m\"button\"\u001b[39m\u001b[33m,\u001b[39m { name\u001b[33m:\u001b[39m \u001b[35m/Columns/\u001b[39m }))\u001b[33m.\u001b[39mtoHaveText(\n \u001b[90m 72 |\u001b[39m             \u001b[32m\"Columns (3 hidden)\"\u001b[39m\u001b[33m,\u001b[39m\n \u001b[90m 73 |\u001b[39m           )\u001b[33m;\u001b[39m\u001b[0m"
+                              },
+                              "errors": [
+                                {
+                                  "location": {
+                                    "file": "/home/runner/work/macpro-mako/macpro-mako/test/e2e/specs/dashboard.spec.ts",
+                                    "column": 71,
+                                    "line": 70
+                                  },
+                                  "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m(\u001b[22m\u001b[2m)\u001b[22m failed\n\nLocator: getByRole('button', { name: /Columns/ })\nExpected: visible\nTimeout: 5000ms\nError: element(s) not found\n\nCall log:\n\u001b[2m  - Expect \"toBeVisible\" with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for getByRole('button', { name: /Columns/ })\u001b[22m\n\n\n  68 |\n  69 |         test(\"columns button\", async ({ page }) => {\n> 70 |           await expect(page.getByRole(\"button\", { name: /Columns/ })).toBeVisible();\n     |                                                                       ^\n  71 |           await expect(page.getByRole(\"button\", { name: /Columns/ })).toHaveText(\n  72 |             \"Columns (3 hidden)\",\n  73 |           );\n    at /home/runner/work/macpro-mako/macpro-mako/test/e2e/specs/dashboard.spec.ts:70:71"
+                                }
+                              ],
                               "stdout": [],
                               "stderr": [],
                               "retry": 0,
-                              "startTime": "2025-12-08T18:44:01.445Z",
+                              "startTime": "2025-12-09T15:44:42.667Z",
                               "annotations": [],
-                              "attachments": []
+                              "attachments": [
+                                {
+                                  "name": "video",
+                                  "contentType": "video/webm",
+                                  "path": "/home/runner/work/macpro-mako/macpro-mako/test/test-results/e2e-specs-dashboard-Dashbo-1f836--validations-columns-button-shared/video.webm"
+                                },
+                                {
+                                  "name": "error-context",
+                                  "contentType": "text/markdown",
+                                  "path": "/home/runner/work/macpro-mako/macpro-mako/test/test-results/e2e-specs-dashboard-Dashbo-1f836--validations-columns-button-shared/error-context.md"
+                                },
+                                {
+                                  "name": "trace",
+                                  "contentType": "application/zip",
+                                  "path": "/home/runner/work/macpro-mako/macpro-mako/test/test-results/e2e-specs-dashboard-Dashbo-1f836--validations-columns-button-shared/trace.zip"
+                                }
+                              ],
+                              "errorLocation": {
+                                "file": "/home/runner/work/macpro-mako/macpro-mako/test/e2e/specs/dashboard.spec.ts",
+                                "column": 71,
+                                "line": 70
+                              }
                             }
                           ],
-                          "status": "expected"
+                          "status": "unexpected"
                         }
                       ],
                       "id": "e31090cf21ac3d2f1505-c2aaa2e70a91136deaa4",
@@ -813,7 +1013,7 @@
                     },
                     {
                       "title": "filters buttons",
-                      "ok": true,
+                      "ok": false,
                       "tags": [
                         "CI"
                       ],
@@ -826,20 +1026,60 @@
                           "projectName": "shared",
                           "results": [
                             {
-                              "workerIndex": 0,
+                              "workerIndex": 5,
                               "parallelIndex": 0,
-                              "status": "passed",
-                              "duration": 2866,
-                              "errors": [],
+                              "status": "failed",
+                              "duration": 6203,
+                              "error": {
+                                "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m(\u001b[22m\u001b[2m)\u001b[22m failed\n\nLocator: getByText(/Filters/)\nExpected: visible\nTimeout: 5000ms\nError: element(s) not found\n\nCall log:\n\u001b[2m  - Expect \"toBeVisible\" with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for getByText(/Filters/)\u001b[22m\n",
+                                "stack": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m(\u001b[22m\u001b[2m)\u001b[22m failed\n\nLocator: getByText(/Filters/)\nExpected: visible\nTimeout: 5000ms\nError: element(s) not found\n\nCall log:\n\u001b[2m  - Expect \"toBeVisible\" with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for getByText(/Filters/)\u001b[22m\n\n    at /home/runner/work/macpro-mako/macpro-mako/test/e2e/specs/dashboard.spec.ts:77:51",
+                                "location": {
+                                  "file": "/home/runner/work/macpro-mako/macpro-mako/test/e2e/specs/dashboard.spec.ts",
+                                  "column": 51,
+                                  "line": 77
+                                },
+                                "snippet": "\u001b[0m \u001b[90m 75 |\u001b[39m\n \u001b[90m 76 |\u001b[39m         test(\u001b[32m\"filters buttons\"\u001b[39m\u001b[33m,\u001b[39m \u001b[36masync\u001b[39m ({ page }) \u001b[33m=>\u001b[39m {\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 77 |\u001b[39m           \u001b[36mawait\u001b[39m expect(page\u001b[33m.\u001b[39mgetByText(\u001b[35m/Filters/\u001b[39m))\u001b[33m.\u001b[39mtoBeVisible()\u001b[33m;\u001b[39m\n \u001b[90m    |\u001b[39m                                                   \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 78 |\u001b[39m           \u001b[36mawait\u001b[39m expect(page\u001b[33m.\u001b[39mgetByText(\u001b[35m/Filters/\u001b[39m))\u001b[33m.\u001b[39mtoHaveText(\u001b[32m\"Filters\"\u001b[39m)\u001b[33m;\u001b[39m\n \u001b[90m 79 |\u001b[39m         })\u001b[33m;\u001b[39m\n \u001b[90m 80 |\u001b[39m\u001b[0m"
+                              },
+                              "errors": [
+                                {
+                                  "location": {
+                                    "file": "/home/runner/work/macpro-mako/macpro-mako/test/e2e/specs/dashboard.spec.ts",
+                                    "column": 51,
+                                    "line": 77
+                                  },
+                                  "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m(\u001b[22m\u001b[2m)\u001b[22m failed\n\nLocator: getByText(/Filters/)\nExpected: visible\nTimeout: 5000ms\nError: element(s) not found\n\nCall log:\n\u001b[2m  - Expect \"toBeVisible\" with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for getByText(/Filters/)\u001b[22m\n\n\n  75 |\n  76 |         test(\"filters buttons\", async ({ page }) => {\n> 77 |           await expect(page.getByText(/Filters/)).toBeVisible();\n     |                                                   ^\n  78 |           await expect(page.getByText(/Filters/)).toHaveText(\"Filters\");\n  79 |         });\n  80 |\n    at /home/runner/work/macpro-mako/macpro-mako/test/e2e/specs/dashboard.spec.ts:77:51"
+                                }
+                              ],
                               "stdout": [],
                               "stderr": [],
                               "retry": 0,
-                              "startTime": "2025-12-08T18:44:04.264Z",
+                              "startTime": "2025-12-09T15:44:49.935Z",
                               "annotations": [],
-                              "attachments": []
+                              "attachments": [
+                                {
+                                  "name": "video",
+                                  "contentType": "video/webm",
+                                  "path": "/home/runner/work/macpro-mako/macpro-mako/test/test-results/e2e-specs-dashboard-Dashbo-0e4b7-validations-filters-buttons-shared/video.webm"
+                                },
+                                {
+                                  "name": "error-context",
+                                  "contentType": "text/markdown",
+                                  "path": "/home/runner/work/macpro-mako/macpro-mako/test/test-results/e2e-specs-dashboard-Dashbo-0e4b7-validations-filters-buttons-shared/error-context.md"
+                                },
+                                {
+                                  "name": "trace",
+                                  "contentType": "application/zip",
+                                  "path": "/home/runner/work/macpro-mako/macpro-mako/test/test-results/e2e-specs-dashboard-Dashbo-0e4b7-validations-filters-buttons-shared/trace.zip"
+                                }
+                              ],
+                              "errorLocation": {
+                                "file": "/home/runner/work/macpro-mako/macpro-mako/test/e2e/specs/dashboard.spec.ts",
+                                "column": 51,
+                                "line": 77
+                              }
                             }
                           ],
-                          "status": "expected"
+                          "status": "unexpected"
                         }
                       ],
                       "id": "e31090cf21ac3d2f1505-ccbb295142dad4447f3d",
@@ -849,7 +1089,7 @@
                     },
                     {
                       "title": "export button",
-                      "ok": true,
+                      "ok": false,
                       "tags": [
                         "CI"
                       ],
@@ -862,20 +1102,60 @@
                           "projectName": "shared",
                           "results": [
                             {
-                              "workerIndex": 0,
+                              "workerIndex": 6,
                               "parallelIndex": 0,
-                              "status": "passed",
-                              "duration": 2859,
-                              "errors": [],
+                              "status": "failed",
+                              "duration": 6277,
+                              "error": {
+                                "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m(\u001b[22m\u001b[2m)\u001b[22m failed\n\nLocator: getByRole('button', { name: /Export/ })\nExpected: visible\nTimeout: 5000ms\nError: element(s) not found\n\nCall log:\n\u001b[2m  - Expect \"toBeVisible\" with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for getByRole('button', { name: /Export/ })\u001b[22m\n",
+                                "stack": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m(\u001b[22m\u001b[2m)\u001b[22m failed\n\nLocator: getByRole('button', { name: /Export/ })\nExpected: visible\nTimeout: 5000ms\nError: element(s) not found\n\nCall log:\n\u001b[2m  - Expect \"toBeVisible\" with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for getByRole('button', { name: /Export/ })\u001b[22m\n\n    at /home/runner/work/macpro-mako/macpro-mako/test/e2e/specs/dashboard.spec.ts:82:70",
+                                "location": {
+                                  "file": "/home/runner/work/macpro-mako/macpro-mako/test/e2e/specs/dashboard.spec.ts",
+                                  "column": 70,
+                                  "line": 82
+                                },
+                                "snippet": "\u001b[0m \u001b[90m 80 |\u001b[39m\n \u001b[90m 81 |\u001b[39m         test(\u001b[32m\"export button\"\u001b[39m\u001b[33m,\u001b[39m \u001b[36masync\u001b[39m ({ page }) \u001b[33m=>\u001b[39m {\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 82 |\u001b[39m           \u001b[36mawait\u001b[39m expect(page\u001b[33m.\u001b[39mgetByRole(\u001b[32m\"button\"\u001b[39m\u001b[33m,\u001b[39m { name\u001b[33m:\u001b[39m \u001b[35m/Export/\u001b[39m }))\u001b[33m.\u001b[39mtoBeVisible()\u001b[33m;\u001b[39m\n \u001b[90m    |\u001b[39m                                                                      \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 83 |\u001b[39m           \u001b[36mawait\u001b[39m expect(page\u001b[33m.\u001b[39mgetByRole(\u001b[32m\"button\"\u001b[39m\u001b[33m,\u001b[39m { name\u001b[33m:\u001b[39m \u001b[35m/Export/\u001b[39m }))\u001b[33m.\u001b[39mtoHaveText(\u001b[32m\"Export\"\u001b[39m)\u001b[33m;\u001b[39m\n \u001b[90m 84 |\u001b[39m         })\u001b[33m;\u001b[39m\n \u001b[90m 85 |\u001b[39m\u001b[0m"
+                              },
+                              "errors": [
+                                {
+                                  "location": {
+                                    "file": "/home/runner/work/macpro-mako/macpro-mako/test/e2e/specs/dashboard.spec.ts",
+                                    "column": 70,
+                                    "line": 82
+                                  },
+                                  "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m(\u001b[22m\u001b[2m)\u001b[22m failed\n\nLocator: getByRole('button', { name: /Export/ })\nExpected: visible\nTimeout: 5000ms\nError: element(s) not found\n\nCall log:\n\u001b[2m  - Expect \"toBeVisible\" with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for getByRole('button', { name: /Export/ })\u001b[22m\n\n\n  80 |\n  81 |         test(\"export button\", async ({ page }) => {\n> 82 |           await expect(page.getByRole(\"button\", { name: /Export/ })).toBeVisible();\n     |                                                                      ^\n  83 |           await expect(page.getByRole(\"button\", { name: /Export/ })).toHaveText(\"Export\");\n  84 |         });\n  85 |\n    at /home/runner/work/macpro-mako/macpro-mako/test/e2e/specs/dashboard.spec.ts:82:70"
+                                }
+                              ],
                               "stdout": [],
                               "stderr": [],
                               "retry": 0,
-                              "startTime": "2025-12-08T18:44:07.145Z",
+                              "startTime": "2025-12-09T15:44:57.220Z",
                               "annotations": [],
-                              "attachments": []
+                              "attachments": [
+                                {
+                                  "name": "video",
+                                  "contentType": "video/webm",
+                                  "path": "/home/runner/work/macpro-mako/macpro-mako/test/test-results/e2e-specs-dashboard-Dashbo-d0cac-I-validations-export-button-shared/video.webm"
+                                },
+                                {
+                                  "name": "error-context",
+                                  "contentType": "text/markdown",
+                                  "path": "/home/runner/work/macpro-mako/macpro-mako/test/test-results/e2e-specs-dashboard-Dashbo-d0cac-I-validations-export-button-shared/error-context.md"
+                                },
+                                {
+                                  "name": "trace",
+                                  "contentType": "application/zip",
+                                  "path": "/home/runner/work/macpro-mako/macpro-mako/test/test-results/e2e-specs-dashboard-Dashbo-d0cac-I-validations-export-button-shared/trace.zip"
+                                }
+                              ],
+                              "errorLocation": {
+                                "file": "/home/runner/work/macpro-mako/macpro-mako/test/e2e/specs/dashboard.spec.ts",
+                                "column": 70,
+                                "line": 82
+                              }
                             }
                           ],
-                          "status": "expected"
+                          "status": "unexpected"
                         }
                       ],
                       "id": "e31090cf21ac3d2f1505-292b179a233e813cb1fa",
@@ -913,15 +1193,15 @@
                                   "projectName": "shared",
                                   "results": [
                                     {
-                                      "workerIndex": 0,
+                                      "workerIndex": 7,
                                       "parallelIndex": 0,
                                       "status": "passed",
-                                      "duration": 901,
+                                      "duration": 1074,
                                       "errors": [],
                                       "stdout": [],
                                       "stderr": [],
                                       "retry": 0,
-                                      "startTime": "2025-12-08T18:44:10.016Z",
+                                      "startTime": "2025-12-09T15:45:04.612Z",
                                       "annotations": [],
                                       "attachments": []
                                     }
@@ -936,7 +1216,7 @@
                             },
                             {
                               "title": "table data",
-                              "ok": true,
+                              "ok": false,
                               "tags": [
                                 "CI"
                               ],
@@ -949,20 +1229,60 @@
                                   "projectName": "shared",
                                   "results": [
                                     {
-                                      "workerIndex": 0,
+                                      "workerIndex": 7,
                                       "parallelIndex": 0,
-                                      "status": "passed",
-                                      "duration": 2757,
-                                      "errors": [],
+                                      "status": "failed",
+                                      "duration": 6032,
+                                      "error": {
+                                        "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m(\u001b[22m\u001b[2m)\u001b[22m failed\n\nLocator: locator('tbody')\nExpected: visible\nTimeout: 5000ms\nError: element(s) not found\n\nCall log:\n\u001b[2m  - Expect \"toBeVisible\" with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for locator('tbody')\u001b[22m\n",
+                                        "stack": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m(\u001b[22m\u001b[2m)\u001b[22m failed\n\nLocator: locator('tbody')\nExpected: visible\nTimeout: 5000ms\nError: element(s) not found\n\nCall log:\n\u001b[2m  - Expect \"toBeVisible\" with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for locator('tbody')\u001b[22m\n\n    at /home/runner/work/macpro-mako/macpro-mako/test/e2e/specs/dashboard.spec.ts:126:51",
+                                        "location": {
+                                          "file": "/home/runner/work/macpro-mako/macpro-mako/test/e2e/specs/dashboard.spec.ts",
+                                          "column": 51,
+                                          "line": 126
+                                        },
+                                        "snippet": "\u001b[0m \u001b[90m 124 |\u001b[39m\n \u001b[90m 125 |\u001b[39m             test(\u001b[32m\"table data\"\u001b[39m\u001b[33m,\u001b[39m \u001b[36masync\u001b[39m ({ page }) \u001b[33m=>\u001b[39m {\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 126 |\u001b[39m               \u001b[36mawait\u001b[39m expect(page\u001b[33m.\u001b[39mlocator(\u001b[32m\"tbody\"\u001b[39m))\u001b[33m.\u001b[39mtoBeVisible()\u001b[33m;\u001b[39m\n \u001b[90m     |\u001b[39m                                                   \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 127 |\u001b[39m             })\u001b[33m;\u001b[39m\n \u001b[90m 128 |\u001b[39m\n \u001b[90m 129 |\u001b[39m             test(\u001b[32m\"table footer\"\u001b[39m\u001b[33m,\u001b[39m \u001b[36masync\u001b[39m ({ page }) \u001b[33m=>\u001b[39m {\u001b[0m"
+                                      },
+                                      "errors": [
+                                        {
+                                          "location": {
+                                            "file": "/home/runner/work/macpro-mako/macpro-mako/test/e2e/specs/dashboard.spec.ts",
+                                            "column": 51,
+                                            "line": 126
+                                          },
+                                          "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m(\u001b[22m\u001b[2m)\u001b[22m failed\n\nLocator: locator('tbody')\nExpected: visible\nTimeout: 5000ms\nError: element(s) not found\n\nCall log:\n\u001b[2m  - Expect \"toBeVisible\" with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for locator('tbody')\u001b[22m\n\n\n  124 |\n  125 |             test(\"table data\", async ({ page }) => {\n> 126 |               await expect(page.locator(\"tbody\")).toBeVisible();\n      |                                                   ^\n  127 |             });\n  128 |\n  129 |             test(\"table footer\", async ({ page }) => {\n    at /home/runner/work/macpro-mako/macpro-mako/test/e2e/specs/dashboard.spec.ts:126:51"
+                                        }
+                                      ],
                                       "stdout": [],
                                       "stderr": [],
                                       "retry": 0,
-                                      "startTime": "2025-12-08T18:44:10.928Z",
+                                      "startTime": "2025-12-09T15:45:05.768Z",
                                       "annotations": [],
-                                      "attachments": []
+                                      "attachments": [
+                                        {
+                                          "name": "video",
+                                          "contentType": "video/webm",
+                                          "path": "/home/runner/work/macpro-mako/macpro-mako/test/test-results/e2e-specs-dashboard-Dashbo-d26ce-board-table-spas-table-data-shared/video.webm"
+                                        },
+                                        {
+                                          "name": "error-context",
+                                          "contentType": "text/markdown",
+                                          "path": "/home/runner/work/macpro-mako/macpro-mako/test/test-results/e2e-specs-dashboard-Dashbo-d26ce-board-table-spas-table-data-shared/error-context.md"
+                                        },
+                                        {
+                                          "name": "trace",
+                                          "contentType": "application/zip",
+                                          "path": "/home/runner/work/macpro-mako/macpro-mako/test/test-results/e2e-specs-dashboard-Dashbo-d26ce-board-table-spas-table-data-shared/trace.zip"
+                                        }
+                                      ],
+                                      "errorLocation": {
+                                        "file": "/home/runner/work/macpro-mako/macpro-mako/test/e2e/specs/dashboard.spec.ts",
+                                        "column": 51,
+                                        "line": 126
+                                      }
                                     }
                                   ],
-                                  "status": "expected"
+                                  "status": "unexpected"
                                 }
                               ],
                               "id": "e31090cf21ac3d2f1505-9832e54ed6bc6e875887",
@@ -972,7 +1292,7 @@
                             },
                             {
                               "title": "table footer",
-                              "ok": true,
+                              "ok": false,
                               "tags": [
                                 "CI"
                               ],
@@ -985,20 +1305,60 @@
                                   "projectName": "shared",
                                   "results": [
                                     {
-                                      "workerIndex": 0,
+                                      "workerIndex": 8,
                                       "parallelIndex": 0,
-                                      "status": "passed",
-                                      "duration": 2798,
-                                      "errors": [],
+                                      "status": "failed",
+                                      "duration": 6324,
+                                      "error": {
+                                        "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m(\u001b[22m\u001b[2m)\u001b[22m failed\n\nLocator: getByTestId('pagination')\nExpected: visible\nTimeout: 5000ms\nError: element(s) not found\n\nCall log:\n\u001b[2m  - Expect \"toBeVisible\" with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for getByTestId('pagination')\u001b[22m\n",
+                                        "stack": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m(\u001b[22m\u001b[2m)\u001b[22m failed\n\nLocator: getByTestId('pagination')\nExpected: visible\nTimeout: 5000ms\nError: element(s) not found\n\nCall log:\n\u001b[2m  - Expect \"toBeVisible\" with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for getByTestId('pagination')\u001b[22m\n\n    at /home/runner/work/macpro-mako/macpro-mako/test/e2e/specs/dashboard.spec.ts:130:60",
+                                        "location": {
+                                          "file": "/home/runner/work/macpro-mako/macpro-mako/test/e2e/specs/dashboard.spec.ts",
+                                          "column": 60,
+                                          "line": 130
+                                        },
+                                        "snippet": "\u001b[0m \u001b[90m 128 |\u001b[39m\n \u001b[90m 129 |\u001b[39m             test(\u001b[32m\"table footer\"\u001b[39m\u001b[33m,\u001b[39m \u001b[36masync\u001b[39m ({ page }) \u001b[33m=>\u001b[39m {\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 130 |\u001b[39m               \u001b[36mawait\u001b[39m expect(page\u001b[33m.\u001b[39mgetByTestId(\u001b[32m\"pagination\"\u001b[39m))\u001b[33m.\u001b[39mtoBeVisible()\u001b[33m;\u001b[39m\n \u001b[90m     |\u001b[39m                                                            \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 131 |\u001b[39m             })\u001b[33m;\u001b[39m\n \u001b[90m 132 |\u001b[39m           })\u001b[33m;\u001b[39m\n \u001b[90m 133 |\u001b[39m\u001b[0m"
+                                      },
+                                      "errors": [
+                                        {
+                                          "location": {
+                                            "file": "/home/runner/work/macpro-mako/macpro-mako/test/e2e/specs/dashboard.spec.ts",
+                                            "column": 60,
+                                            "line": 130
+                                          },
+                                          "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m(\u001b[22m\u001b[2m)\u001b[22m failed\n\nLocator: getByTestId('pagination')\nExpected: visible\nTimeout: 5000ms\nError: element(s) not found\n\nCall log:\n\u001b[2m  - Expect \"toBeVisible\" with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for getByTestId('pagination')\u001b[22m\n\n\n  128 |\n  129 |             test(\"table footer\", async ({ page }) => {\n> 130 |               await expect(page.getByTestId(\"pagination\")).toBeVisible();\n      |                                                            ^\n  131 |             });\n  132 |           });\n  133 |\n    at /home/runner/work/macpro-mako/macpro-mako/test/e2e/specs/dashboard.spec.ts:130:60"
+                                        }
+                                      ],
                                       "stdout": [],
                                       "stderr": [],
                                       "retry": 0,
-                                      "startTime": "2025-12-08T18:44:13.698Z",
+                                      "startTime": "2025-12-09T15:45:12.811Z",
                                       "annotations": [],
-                                      "attachments": []
+                                      "attachments": [
+                                        {
+                                          "name": "video",
+                                          "contentType": "video/webm",
+                                          "path": "/home/runner/work/macpro-mako/macpro-mako/test/test-results/e2e-specs-dashboard-Dashbo-1d713-ard-table-spas-table-footer-shared/video.webm"
+                                        },
+                                        {
+                                          "name": "error-context",
+                                          "contentType": "text/markdown",
+                                          "path": "/home/runner/work/macpro-mako/macpro-mako/test/test-results/e2e-specs-dashboard-Dashbo-1d713-ard-table-spas-table-footer-shared/error-context.md"
+                                        },
+                                        {
+                                          "name": "trace",
+                                          "contentType": "application/zip",
+                                          "path": "/home/runner/work/macpro-mako/macpro-mako/test/test-results/e2e-specs-dashboard-Dashbo-1d713-ard-table-spas-table-footer-shared/trace.zip"
+                                        }
+                                      ],
+                                      "errorLocation": {
+                                        "file": "/home/runner/work/macpro-mako/macpro-mako/test/e2e/specs/dashboard.spec.ts",
+                                        "column": 60,
+                                        "line": 130
+                                      }
                                     }
                                   ],
-                                  "status": "expected"
+                                  "status": "unexpected"
                                 }
                               ],
                               "id": "e31090cf21ac3d2f1505-6a9fe6fd1870cdaf3e89",
@@ -1016,7 +1376,7 @@
                           "specs": [
                             {
                               "title": "column headers",
-                              "ok": true,
+                              "ok": false,
                               "tags": [
                                 "CI"
                               ],
@@ -1029,20 +1389,68 @@
                                   "projectName": "shared",
                                   "results": [
                                     {
-                                      "workerIndex": 0,
+                                      "workerIndex": 9,
                                       "parallelIndex": 0,
-                                      "status": "passed",
-                                      "duration": 2774,
-                                      "errors": [],
+                                      "status": "timedOut",
+                                      "duration": 31437,
+                                      "error": {
+                                        "message": "\u001b[31mTest timeout of 30000ms exceeded while running \"beforeEach\" hook.\u001b[39m",
+                                        "stack": "\u001b[31mTest timeout of 30000ms exceeded while running \"beforeEach\" hook.\u001b[39m\n    at /home/runner/work/macpro-mako/macpro-mako/test/e2e/specs/dashboard.spec.ts:135:18",
+                                        "location": {
+                                          "file": "/home/runner/work/macpro-mako/macpro-mako/test/e2e/specs/dashboard.spec.ts",
+                                          "column": 18,
+                                          "line": 135
+                                        },
+                                        "snippet": "\u001b[0m \u001b[90m 133 |\u001b[39m\n \u001b[90m 134 |\u001b[39m           test\u001b[33m.\u001b[39mdescribe(\u001b[32m\"waivers\"\u001b[39m\u001b[33m,\u001b[39m () \u001b[33m=>\u001b[39m {\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 135 |\u001b[39m             test\u001b[33m.\u001b[39mbeforeEach(\u001b[36masync\u001b[39m ({ page }) \u001b[33m=>\u001b[39m {\n \u001b[90m     |\u001b[39m                  \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 136 |\u001b[39m               \u001b[36mawait\u001b[39m page\u001b[33m.\u001b[39mgetByRole(\u001b[32m\"tab\"\u001b[39m\u001b[33m,\u001b[39m { name\u001b[33m:\u001b[39m \u001b[32m\"Waivers\"\u001b[39m })\u001b[33m.\u001b[39mclick()\u001b[33m;\u001b[39m\n \u001b[90m 137 |\u001b[39m             })\u001b[33m;\u001b[39m\n \u001b[90m 138 |\u001b[39m\u001b[0m"
+                                      },
+                                      "errors": [
+                                        {
+                                          "location": {
+                                            "file": "/home/runner/work/macpro-mako/macpro-mako/test/e2e/specs/dashboard.spec.ts",
+                                            "column": 18,
+                                            "line": 135
+                                          },
+                                          "message": "\u001b[31mTest timeout of 30000ms exceeded while running \"beforeEach\" hook.\u001b[39m\n\n  133 |\n  134 |           test.describe(\"waivers\", () => {\n> 135 |             test.beforeEach(async ({ page }) => {\n      |                  ^\n  136 |               await page.getByRole(\"tab\", { name: \"Waivers\" }).click();\n  137 |             });\n  138 |\n    at /home/runner/work/macpro-mako/macpro-mako/test/e2e/specs/dashboard.spec.ts:135:18"
+                                        },
+                                        {
+                                          "location": {
+                                            "file": "/home/runner/work/macpro-mako/macpro-mako/test/e2e/specs/dashboard.spec.ts",
+                                            "column": 64,
+                                            "line": 136
+                                          },
+                                          "message": "Error: locator.click: Test timeout of 30000ms exceeded.\nCall log:\n\u001b[2m  - waiting for getByRole('tab', { name: 'Waivers' })\u001b[22m\n\n\n  134 |           test.describe(\"waivers\", () => {\n  135 |             test.beforeEach(async ({ page }) => {\n> 136 |               await page.getByRole(\"tab\", { name: \"Waivers\" }).click();\n      |                                                                ^\n  137 |             });\n  138 |\n  139 |             test(\"column headers\", async ({ page }) => {\n    at /home/runner/work/macpro-mako/macpro-mako/test/e2e/specs/dashboard.spec.ts:136:64"
+                                        }
+                                      ],
                                       "stdout": [],
                                       "stderr": [],
                                       "retry": 0,
-                                      "startTime": "2025-12-08T18:44:16.509Z",
+                                      "startTime": "2025-12-09T15:45:20.254Z",
                                       "annotations": [],
-                                      "attachments": []
+                                      "attachments": [
+                                        {
+                                          "name": "video",
+                                          "contentType": "video/webm",
+                                          "path": "/home/runner/work/macpro-mako/macpro-mako/test/test-results/e2e-specs-dashboard-Dashbo-72375-able-waivers-column-headers-shared/video.webm"
+                                        },
+                                        {
+                                          "name": "error-context",
+                                          "contentType": "text/markdown",
+                                          "path": "/home/runner/work/macpro-mako/macpro-mako/test/test-results/e2e-specs-dashboard-Dashbo-72375-able-waivers-column-headers-shared/error-context.md"
+                                        },
+                                        {
+                                          "name": "trace",
+                                          "contentType": "application/zip",
+                                          "path": "/home/runner/work/macpro-mako/macpro-mako/test/test-results/e2e-specs-dashboard-Dashbo-72375-able-waivers-column-headers-shared/trace.zip"
+                                        }
+                                      ],
+                                      "errorLocation": {
+                                        "file": "/home/runner/work/macpro-mako/macpro-mako/test/e2e/specs/dashboard.spec.ts",
+                                        "column": 18,
+                                        "line": 135
+                                      }
                                     }
                                   ],
-                                  "status": "expected"
+                                  "status": "unexpected"
                                 }
                               ],
                               "id": "e31090cf21ac3d2f1505-a626b6eed07fdecc9042",
@@ -1052,7 +1460,7 @@
                             },
                             {
                               "title": "table data",
-                              "ok": true,
+                              "ok": false,
                               "tags": [
                                 "CI"
                               ],
@@ -1065,20 +1473,68 @@
                                   "projectName": "shared",
                                   "results": [
                                     {
-                                      "workerIndex": 0,
+                                      "workerIndex": 10,
                                       "parallelIndex": 0,
-                                      "status": "passed",
-                                      "duration": 2887,
-                                      "errors": [],
+                                      "status": "timedOut",
+                                      "duration": 31549,
+                                      "error": {
+                                        "message": "\u001b[31mTest timeout of 30000ms exceeded while running \"beforeEach\" hook.\u001b[39m",
+                                        "stack": "\u001b[31mTest timeout of 30000ms exceeded while running \"beforeEach\" hook.\u001b[39m\n    at /home/runner/work/macpro-mako/macpro-mako/test/e2e/specs/dashboard.spec.ts:135:18",
+                                        "location": {
+                                          "file": "/home/runner/work/macpro-mako/macpro-mako/test/e2e/specs/dashboard.spec.ts",
+                                          "column": 18,
+                                          "line": 135
+                                        },
+                                        "snippet": "\u001b[0m \u001b[90m 133 |\u001b[39m\n \u001b[90m 134 |\u001b[39m           test\u001b[33m.\u001b[39mdescribe(\u001b[32m\"waivers\"\u001b[39m\u001b[33m,\u001b[39m () \u001b[33m=>\u001b[39m {\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 135 |\u001b[39m             test\u001b[33m.\u001b[39mbeforeEach(\u001b[36masync\u001b[39m ({ page }) \u001b[33m=>\u001b[39m {\n \u001b[90m     |\u001b[39m                  \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 136 |\u001b[39m               \u001b[36mawait\u001b[39m page\u001b[33m.\u001b[39mgetByRole(\u001b[32m\"tab\"\u001b[39m\u001b[33m,\u001b[39m { name\u001b[33m:\u001b[39m \u001b[32m\"Waivers\"\u001b[39m })\u001b[33m.\u001b[39mclick()\u001b[33m;\u001b[39m\n \u001b[90m 137 |\u001b[39m             })\u001b[33m;\u001b[39m\n \u001b[90m 138 |\u001b[39m\u001b[0m"
+                                      },
+                                      "errors": [
+                                        {
+                                          "location": {
+                                            "file": "/home/runner/work/macpro-mako/macpro-mako/test/e2e/specs/dashboard.spec.ts",
+                                            "column": 18,
+                                            "line": 135
+                                          },
+                                          "message": "\u001b[31mTest timeout of 30000ms exceeded while running \"beforeEach\" hook.\u001b[39m\n\n  133 |\n  134 |           test.describe(\"waivers\", () => {\n> 135 |             test.beforeEach(async ({ page }) => {\n      |                  ^\n  136 |               await page.getByRole(\"tab\", { name: \"Waivers\" }).click();\n  137 |             });\n  138 |\n    at /home/runner/work/macpro-mako/macpro-mako/test/e2e/specs/dashboard.spec.ts:135:18"
+                                        },
+                                        {
+                                          "location": {
+                                            "file": "/home/runner/work/macpro-mako/macpro-mako/test/e2e/specs/dashboard.spec.ts",
+                                            "column": 64,
+                                            "line": 136
+                                          },
+                                          "message": "Error: locator.click: Test timeout of 30000ms exceeded.\nCall log:\n\u001b[2m  - waiting for getByRole('tab', { name: 'Waivers' })\u001b[22m\n\n\n  134 |           test.describe(\"waivers\", () => {\n  135 |             test.beforeEach(async ({ page }) => {\n> 136 |               await page.getByRole(\"tab\", { name: \"Waivers\" }).click();\n      |                                                                ^\n  137 |             });\n  138 |\n  139 |             test(\"column headers\", async ({ page }) => {\n    at /home/runner/work/macpro-mako/macpro-mako/test/e2e/specs/dashboard.spec.ts:136:64"
+                                        }
+                                      ],
                                       "stdout": [],
                                       "stderr": [],
                                       "retry": 0,
-                                      "startTime": "2025-12-08T18:44:19.295Z",
+                                      "startTime": "2025-12-09T15:45:52.833Z",
                                       "annotations": [],
-                                      "attachments": []
+                                      "attachments": [
+                                        {
+                                          "name": "video",
+                                          "contentType": "video/webm",
+                                          "path": "/home/runner/work/macpro-mako/macpro-mako/test/test-results/e2e-specs-dashboard-Dashbo-3ade6-rd-table-waivers-table-data-shared/video.webm"
+                                        },
+                                        {
+                                          "name": "error-context",
+                                          "contentType": "text/markdown",
+                                          "path": "/home/runner/work/macpro-mako/macpro-mako/test/test-results/e2e-specs-dashboard-Dashbo-3ade6-rd-table-waivers-table-data-shared/error-context.md"
+                                        },
+                                        {
+                                          "name": "trace",
+                                          "contentType": "application/zip",
+                                          "path": "/home/runner/work/macpro-mako/macpro-mako/test/test-results/e2e-specs-dashboard-Dashbo-3ade6-rd-table-waivers-table-data-shared/trace.zip"
+                                        }
+                                      ],
+                                      "errorLocation": {
+                                        "file": "/home/runner/work/macpro-mako/macpro-mako/test/e2e/specs/dashboard.spec.ts",
+                                        "column": 18,
+                                        "line": 135
+                                      }
                                     }
                                   ],
-                                  "status": "expected"
+                                  "status": "unexpected"
                                 }
                               ],
                               "id": "e31090cf21ac3d2f1505-61809a8110fdeff7508e",
@@ -1088,7 +1544,7 @@
                             },
                             {
                               "title": "table footer",
-                              "ok": true,
+                              "ok": false,
                               "tags": [
                                 "CI"
                               ],
@@ -1101,20 +1557,68 @@
                                   "projectName": "shared",
                                   "results": [
                                     {
-                                      "workerIndex": 0,
+                                      "workerIndex": 11,
                                       "parallelIndex": 0,
-                                      "status": "passed",
-                                      "duration": 2512,
-                                      "errors": [],
+                                      "status": "timedOut",
+                                      "duration": 31323,
+                                      "error": {
+                                        "message": "\u001b[31mTest timeout of 30000ms exceeded while running \"beforeEach\" hook.\u001b[39m",
+                                        "stack": "\u001b[31mTest timeout of 30000ms exceeded while running \"beforeEach\" hook.\u001b[39m\n    at /home/runner/work/macpro-mako/macpro-mako/test/e2e/specs/dashboard.spec.ts:135:18",
+                                        "location": {
+                                          "file": "/home/runner/work/macpro-mako/macpro-mako/test/e2e/specs/dashboard.spec.ts",
+                                          "column": 18,
+                                          "line": 135
+                                        },
+                                        "snippet": "\u001b[0m \u001b[90m 133 |\u001b[39m\n \u001b[90m 134 |\u001b[39m           test\u001b[33m.\u001b[39mdescribe(\u001b[32m\"waivers\"\u001b[39m\u001b[33m,\u001b[39m () \u001b[33m=>\u001b[39m {\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 135 |\u001b[39m             test\u001b[33m.\u001b[39mbeforeEach(\u001b[36masync\u001b[39m ({ page }) \u001b[33m=>\u001b[39m {\n \u001b[90m     |\u001b[39m                  \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 136 |\u001b[39m               \u001b[36mawait\u001b[39m page\u001b[33m.\u001b[39mgetByRole(\u001b[32m\"tab\"\u001b[39m\u001b[33m,\u001b[39m { name\u001b[33m:\u001b[39m \u001b[32m\"Waivers\"\u001b[39m })\u001b[33m.\u001b[39mclick()\u001b[33m;\u001b[39m\n \u001b[90m 137 |\u001b[39m             })\u001b[33m;\u001b[39m\n \u001b[90m 138 |\u001b[39m\u001b[0m"
+                                      },
+                                      "errors": [
+                                        {
+                                          "location": {
+                                            "file": "/home/runner/work/macpro-mako/macpro-mako/test/e2e/specs/dashboard.spec.ts",
+                                            "column": 18,
+                                            "line": 135
+                                          },
+                                          "message": "\u001b[31mTest timeout of 30000ms exceeded while running \"beforeEach\" hook.\u001b[39m\n\n  133 |\n  134 |           test.describe(\"waivers\", () => {\n> 135 |             test.beforeEach(async ({ page }) => {\n      |                  ^\n  136 |               await page.getByRole(\"tab\", { name: \"Waivers\" }).click();\n  137 |             });\n  138 |\n    at /home/runner/work/macpro-mako/macpro-mako/test/e2e/specs/dashboard.spec.ts:135:18"
+                                        },
+                                        {
+                                          "location": {
+                                            "file": "/home/runner/work/macpro-mako/macpro-mako/test/e2e/specs/dashboard.spec.ts",
+                                            "column": 64,
+                                            "line": 136
+                                          },
+                                          "message": "Error: locator.click: Test timeout of 30000ms exceeded.\nCall log:\n\u001b[2m  - waiting for getByRole('tab', { name: 'Waivers' })\u001b[22m\n\n\n  134 |           test.describe(\"waivers\", () => {\n  135 |             test.beforeEach(async ({ page }) => {\n> 136 |               await page.getByRole(\"tab\", { name: \"Waivers\" }).click();\n      |                                                                ^\n  137 |             });\n  138 |\n  139 |             test(\"column headers\", async ({ page }) => {\n    at /home/runner/work/macpro-mako/macpro-mako/test/e2e/specs/dashboard.spec.ts:136:64"
+                                        }
+                                      ],
                                       "stdout": [],
                                       "stderr": [],
                                       "retry": 0,
-                                      "startTime": "2025-12-08T18:44:22.197Z",
+                                      "startTime": "2025-12-09T15:46:25.512Z",
                                       "annotations": [],
-                                      "attachments": []
+                                      "attachments": [
+                                        {
+                                          "name": "video",
+                                          "contentType": "video/webm",
+                                          "path": "/home/runner/work/macpro-mako/macpro-mako/test/test-results/e2e-specs-dashboard-Dashbo-7af1b--table-waivers-table-footer-shared/video.webm"
+                                        },
+                                        {
+                                          "name": "error-context",
+                                          "contentType": "text/markdown",
+                                          "path": "/home/runner/work/macpro-mako/macpro-mako/test/test-results/e2e-specs-dashboard-Dashbo-7af1b--table-waivers-table-footer-shared/error-context.md"
+                                        },
+                                        {
+                                          "name": "trace",
+                                          "contentType": "application/zip",
+                                          "path": "/home/runner/work/macpro-mako/macpro-mako/test/test-results/e2e-specs-dashboard-Dashbo-7af1b--table-waivers-table-footer-shared/trace.zip"
+                                        }
+                                      ],
+                                      "errorLocation": {
+                                        "file": "/home/runner/work/macpro-mako/macpro-mako/test/e2e/specs/dashboard.spec.ts",
+                                        "column": 18,
+                                        "line": 135
+                                      }
                                     }
                                   ],
-                                  "status": "expected"
+                                  "status": "unexpected"
                                 }
                               ],
                               "id": "e31090cf21ac3d2f1505-b5476ccae199bfd768d0",
@@ -1136,7 +1640,7 @@
                   "specs": [
                     {
                       "title": "Download Exports for stateSubmitter user",
-                      "ok": true,
+                      "ok": false,
                       "tags": [
                         "CI"
                       ],
@@ -1149,30 +1653,57 @@
                           "projectName": "shared",
                           "results": [
                             {
-                              "workerIndex": 0,
+                              "workerIndex": 12,
                               "parallelIndex": 0,
-                              "status": "passed",
-                              "duration": 4466,
-                              "errors": [],
-                              "stdout": [
+                              "status": "timedOut",
+                              "duration": 31322,
+                              "error": {
+                                "message": "\u001b[31mTest timeout of 30000ms exceeded.\u001b[39m",
+                                "stack": "\u001b[31mTest timeout of 30000ms exceeded.\u001b[39m"
+                              },
+                              "errors": [
                                 {
-                                  "text": "[Download] for stateSubmitter Filename suggested by browser: spas-export-12_08_2025.csv\"\n"
+                                  "message": "\u001b[31mTest timeout of 30000ms exceeded.\u001b[39m"
+                                },
+                                {
+                                  "location": {
+                                    "file": "/home/runner/work/macpro-mako/macpro-mako/test/pages/dashboard.page.ts",
+                                    "column": 12,
+                                    "line": 32
+                                  },
+                                  "message": "Error: page.waitForEvent: Test timeout of 30000ms exceeded.\n=========================== logs ===========================\nwaiting for event \"download\"\n============================================================\n\n   at pages/dashboard.page.ts:32\n\n  30 |   ) {\n  31 |     const [download] = await Promise.all([\n> 32 |       page.waitForEvent(\"download\"),\n     |            ^\n  33 |       page.getByTestId(triggerSelector).click(),\n  34 |     ]);\n  35 |\n    at DashboardPage.validateDownload (/home/runner/work/macpro-mako/macpro-mako/test/pages/dashboard.page.ts:32:12)\n    at /home/runner/work/macpro-mako/macpro-mako/test/e2e/specs/dashboard.spec.ts:204:31"
                                 }
                               ],
+                              "stdout": [],
                               "stderr": [],
                               "retry": 0,
-                              "startTime": "2025-12-08T18:44:24.722Z",
+                              "startTime": "2025-12-09T15:46:57.944Z",
                               "annotations": [],
                               "attachments": [
                                 {
                                   "name": "metadata",
                                   "contentType": "application/json",
                                   "body": "ewogICJpZCI6ICJETC0wMDAxIiwKICAidGl0bGUiOiAiRXhwb3J0IERhc2hib2FyZCBSZWNvcmRzIiwKICAiZmlsZSI6ICJkYXNoYm9hcmQuc3BlYy50cyIsCiAgImZlYXR1cmUiOiAiRGFzaGJvYXJkIiwKICAidHlwZSI6ICJzbW9rZSIsCiAgInRhZ3MiOiBbCiAgICAic21va2UiCiAgXSwKICAiamlyYSI6ICIiLAogICJ0ZXN0cmFpbF9jYXNlX2lkIjogIiIKfQ=="
+                                },
+                                {
+                                  "name": "video",
+                                  "contentType": "video/webm",
+                                  "path": "/home/runner/work/macpro-mako/macpro-mako/test/test-results/e2e-specs-dashboard-Dashbo-81c90-rts-for-stateSubmitter-user-shared/video.webm"
+                                },
+                                {
+                                  "name": "error-context",
+                                  "contentType": "text/markdown",
+                                  "path": "/home/runner/work/macpro-mako/macpro-mako/test/test-results/e2e-specs-dashboard-Dashbo-81c90-rts-for-stateSubmitter-user-shared/error-context.md"
+                                },
+                                {
+                                  "name": "trace",
+                                  "contentType": "application/zip",
+                                  "path": "/home/runner/work/macpro-mako/macpro-mako/test/test-results/e2e-specs-dashboard-Dashbo-81c90-rts-for-stateSubmitter-user-shared/trace.zip"
                                 }
                               ]
                             }
                           ],
-                          "status": "expected"
+                          "status": "unexpected"
                         }
                       ],
                       "id": "e31090cf21ac3d2f1505-a2db929c6434ad64d2d1",
@@ -1212,15 +1743,15 @@
                           "projectName": "shared",
                           "results": [
                             {
-                              "workerIndex": 0,
+                              "workerIndex": 13,
                               "parallelIndex": 0,
                               "status": "passed",
-                              "duration": 2917,
+                              "duration": 6009,
                               "errors": [],
                               "stdout": [],
                               "stderr": [],
                               "retry": 0,
-                              "startTime": "2025-12-08T18:44:29.199Z",
+                              "startTime": "2025-12-09T15:47:30.398Z",
                               "annotations": [],
                               "attachments": []
                             }
@@ -1248,15 +1779,15 @@
                           "projectName": "shared",
                           "results": [
                             {
-                              "workerIndex": 0,
+                              "workerIndex": 13,
                               "parallelIndex": 0,
                               "status": "passed",
-                              "duration": 2811,
+                              "duration": 3897,
                               "errors": [],
                               "stdout": [],
                               "stderr": [],
                               "retry": 0,
-                              "startTime": "2025-12-08T18:44:32.128Z",
+                              "startTime": "2025-12-09T15:47:36.485Z",
                               "annotations": [],
                               "attachments": []
                             }
@@ -1284,15 +1815,15 @@
                           "projectName": "shared",
                           "results": [
                             {
-                              "workerIndex": 0,
+                              "workerIndex": 13,
                               "parallelIndex": 0,
                               "status": "passed",
-                              "duration": 2835,
+                              "duration": 3945,
                               "errors": [],
                               "stdout": [],
                               "stderr": [],
                               "retry": 0,
-                              "startTime": "2025-12-08T18:44:34.952Z",
+                              "startTime": "2025-12-09T15:47:40.394Z",
                               "annotations": [],
                               "attachments": []
                             }
@@ -1320,15 +1851,15 @@
                           "projectName": "shared",
                           "results": [
                             {
-                              "workerIndex": 0,
+                              "workerIndex": 13,
                               "parallelIndex": 0,
                               "status": "passed",
-                              "duration": 2908,
+                              "duration": 3918,
                               "errors": [],
                               "stdout": [],
                               "stderr": [],
                               "retry": 0,
-                              "startTime": "2025-12-08T18:44:37.797Z",
+                              "startTime": "2025-12-09T15:47:44.350Z",
                               "annotations": [],
                               "attachments": []
                             }
@@ -1356,15 +1887,15 @@
                           "projectName": "shared",
                           "results": [
                             {
-                              "workerIndex": 0,
+                              "workerIndex": 13,
                               "parallelIndex": 0,
                               "status": "passed",
-                              "duration": 3036,
+                              "duration": 3898,
                               "errors": [],
                               "stdout": [],
                               "stderr": [],
                               "retry": 0,
-                              "startTime": "2025-12-08T18:44:40.717Z",
+                              "startTime": "2025-12-09T15:47:48.281Z",
                               "annotations": [],
                               "attachments": []
                             }
@@ -1392,15 +1923,15 @@
                           "projectName": "shared",
                           "results": [
                             {
-                              "workerIndex": 0,
+                              "workerIndex": 13,
                               "parallelIndex": 0,
                               "status": "passed",
-                              "duration": 2865,
+                              "duration": 3870,
                               "errors": [],
                               "stdout": [],
                               "stderr": [],
                               "retry": 0,
-                              "startTime": "2025-12-08T18:44:43.767Z",
+                              "startTime": "2025-12-09T15:47:52.190Z",
                               "annotations": [],
                               "attachments": []
                             }
@@ -1428,15 +1959,15 @@
                           "projectName": "shared",
                           "results": [
                             {
-                              "workerIndex": 0,
+                              "workerIndex": 13,
                               "parallelIndex": 0,
                               "status": "passed",
-                              "duration": 2860,
+                              "duration": 3819,
                               "errors": [],
                               "stdout": [],
                               "stderr": [],
                               "retry": 0,
-                              "startTime": "2025-12-08T18:44:46.643Z",
+                              "startTime": "2025-12-09T15:47:56.072Z",
                               "annotations": [],
                               "attachments": []
                             }
@@ -1479,15 +2010,15 @@
                                   "projectName": "shared",
                                   "results": [
                                     {
-                                      "workerIndex": 0,
+                                      "workerIndex": 13,
                                       "parallelIndex": 0,
                                       "status": "passed",
-                                      "duration": 916,
+                                      "duration": 1019,
                                       "errors": [],
                                       "stdout": [],
                                       "stderr": [],
                                       "retry": 0,
-                                      "startTime": "2025-12-08T18:44:49.518Z",
+                                      "startTime": "2025-12-09T15:47:59.902Z",
                                       "annotations": [],
                                       "attachments": []
                                     }
@@ -1515,15 +2046,15 @@
                                   "projectName": "shared",
                                   "results": [
                                     {
-                                      "workerIndex": 0,
+                                      "workerIndex": 13,
                                       "parallelIndex": 0,
                                       "status": "passed",
-                                      "duration": 2772,
+                                      "duration": 3736,
                                       "errors": [],
                                       "stdout": [],
                                       "stderr": [],
                                       "retry": 0,
-                                      "startTime": "2025-12-08T18:44:50.444Z",
+                                      "startTime": "2025-12-09T15:48:00.932Z",
                                       "annotations": [],
                                       "attachments": []
                                     }
@@ -1551,15 +2082,15 @@
                                   "projectName": "shared",
                                   "results": [
                                     {
-                                      "workerIndex": 0,
+                                      "workerIndex": 13,
                                       "parallelIndex": 0,
                                       "status": "passed",
-                                      "duration": 2790,
+                                      "duration": 3867,
                                       "errors": [],
                                       "stdout": [],
                                       "stderr": [],
                                       "retry": 0,
-                                      "startTime": "2025-12-08T18:44:53.228Z",
+                                      "startTime": "2025-12-09T15:48:04.681Z",
                                       "annotations": [],
                                       "attachments": []
                                     }
@@ -1595,15 +2126,15 @@
                                   "projectName": "shared",
                                   "results": [
                                     {
-                                      "workerIndex": 0,
+                                      "workerIndex": 13,
                                       "parallelIndex": 0,
                                       "status": "passed",
-                                      "duration": 2565,
+                                      "duration": 3794,
                                       "errors": [],
                                       "stdout": [],
                                       "stderr": [],
                                       "retry": 0,
-                                      "startTime": "2025-12-08T18:44:56.034Z",
+                                      "startTime": "2025-12-09T15:48:08.559Z",
                                       "annotations": [],
                                       "attachments": []
                                     }
@@ -1631,15 +2162,15 @@
                                   "projectName": "shared",
                                   "results": [
                                     {
-                                      "workerIndex": 0,
+                                      "workerIndex": 13,
                                       "parallelIndex": 0,
                                       "status": "passed",
-                                      "duration": 2419,
+                                      "duration": 3523,
                                       "errors": [],
                                       "stdout": [],
                                       "stderr": [],
                                       "retry": 0,
-                                      "startTime": "2025-12-08T18:44:58.612Z",
+                                      "startTime": "2025-12-09T15:48:12.365Z",
                                       "annotations": [],
                                       "attachments": []
                                     }
@@ -1667,15 +2198,15 @@
                                   "projectName": "shared",
                                   "results": [
                                     {
-                                      "workerIndex": 0,
+                                      "workerIndex": 13,
                                       "parallelIndex": 0,
                                       "status": "passed",
-                                      "duration": 2551,
+                                      "duration": 3622,
                                       "errors": [],
                                       "stdout": [],
                                       "stderr": [],
                                       "retry": 0,
-                                      "startTime": "2025-12-08T18:45:01.046Z",
+                                      "startTime": "2025-12-09T15:48:15.902Z",
                                       "annotations": [],
                                       "attachments": []
                                     }
@@ -1715,19 +2246,19 @@
                           "projectName": "shared",
                           "results": [
                             {
-                              "workerIndex": 0,
+                              "workerIndex": 13,
                               "parallelIndex": 0,
                               "status": "passed",
-                              "duration": 5316,
+                              "duration": 8702,
                               "errors": [],
                               "stdout": [
                                 {
-                                  "text": "[Download] for cmsReviewer Filename suggested by browser: spas-export-12_08_2025.csv\"\n"
+                                  "text": "[Download] for cmsReviewer Filename suggested by browser: spas-export-12_09_2025.csv\"\n"
                                 }
                               ],
                               "stderr": [],
                               "retry": 0,
-                              "startTime": "2025-12-08T18:45:03.609Z",
+                              "startTime": "2025-12-09T15:48:19.535Z",
                               "annotations": [],
                               "attachments": [
                                 {
@@ -1757,11 +2288,11 @@
   ],
   "errors": [],
   "stats": {
-    "startTime": "2025-12-08T18:43:38.560Z",
-    "duration": 90475.79400000001,
-    "expected": 28,
+    "startTime": "2025-12-09T15:43:55.290Z",
+    "duration": 273017.37,
+    "expected": 15,
     "skipped": 0,
-    "unexpected": 0,
+    "unexpected": 13,
     "flaky": 0
   }
 }
