@@ -13,8 +13,12 @@ RUN (dnf --refresh upgrade -y || microdnf upgrade -y || yum update -y) \
   && (dnf autoremove -y || microdnf autoremove -y || yum autoremove -y || true) \
   && (dnf clean all || microdnf clean all || yum clean all) \
   && rm -rf /var/cache/dnf
-# Record patched RPM versions in build log for verification
-RUN rpm -q glib2 curl-minimal libcurl-minimal || true
+# Enforce and record patched RPM versions in the build log; fail build if required versions are unavailable
+RUN (dnf --refresh upgrade -y glib2 curl-minimal libcurl-minimal || microdnf upgrade -y glib2 curl-minimal libcurl-minimal || yum update -y glib2 curl-minimal libcurl-minimal) \
+  && rpm -q glib2 curl-minimal libcurl-minimal \
+  && rpm -q glib2 | grep -q "glib2-2.82.2-767" \
+  && rpm -q curl-minimal | grep -q "curl-minimal-8.11.1-4.amzn2023.0.3" \
+  && rpm -q libcurl-minimal | grep -q "libcurl-minimal-8.11.1-4.amzn2023.0.3"
 
 # Remove unused runtime emulator and update global npm to patched version to address CVEs
 RUN rm -f /usr/local/bin/aws-lambda-rie \
