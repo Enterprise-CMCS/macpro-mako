@@ -1,4 +1,4 @@
-FROM --platform=linux/amd64 public.ecr.aws/lambda/nodejs:20 as builder
+FROM --platform=linux/amd64 public.ecr.aws/lambda/nodejs:22 as builder
 # Increment CACHE_BUST to force Docker to pull a fresh base image (e.g., for security patches)
 # Last updated: 2026-02-28 to pull latest patched Node base
 ARG CACHE_BUST=6
