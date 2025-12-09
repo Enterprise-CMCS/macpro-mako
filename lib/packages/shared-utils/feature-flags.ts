@@ -109,4 +109,11 @@ export const featureFlags = {
     flag: "upgade-new-label",
     defaultValue: true,
   },
+  /*
+   *  Toggle visibility of SMART link in header
+   */
+  SHOW_SMART_LINK: {
+    flag: "show-smart-link",
+    defaultValue: false,
+  },
 } as const;
