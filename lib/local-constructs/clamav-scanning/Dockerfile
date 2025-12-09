@@ -17,8 +17,9 @@ RUN (dnf --refresh upgrade -y || microdnf upgrade -y || yum update -y) \
 RUN (dnf --refresh upgrade -y glib2 curl-minimal libcurl-minimal || microdnf upgrade -y glib2 curl-minimal libcurl-minimal || yum update -y glib2 curl-minimal libcurl-minimal) \
     && rpm -q glib2 curl-minimal libcurl-minimal
 
-# Remove unused runtime emulator and update global npm to patched version to address CVEs
-RUN rm -f /usr/local/bin/aws-lambda-rie
+# Remove unused runtime emulator and bundled global npm (old npm pulls in glob/cross-spawn/brace-expansion CVEs)
+RUN rm -f /usr/local/bin/aws-lambda-rie \
+    && rm -rf /var/lang/lib/node_modules/npm
 
 COPY package.json package-lock.json ./
 RUN npm install
