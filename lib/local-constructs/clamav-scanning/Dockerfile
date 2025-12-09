@@ -1,4 +1,4 @@
-FROM --platform=linux/amd64 public.ecr.aws/lambda/nodejs:20 as builder
+FROM public.ecr.aws/lambda/nodejs:20 as builder
 
 # Increment CACHE_BUST to encourage rebuilds when we want to refresh security state
 # NOTE: this does NOT force docker to pull a new base; make sure your CI does `docker pull` too.
@@ -21,8 +21,7 @@ RUN set -e; \
     echo "==> Running full OS upgrade for remaining patches"; \
     dnf --refresh upgrade -y; \
     \
-    echo "==> Cleaning up unused deps and caches"; \
-    dnf autoremove -y; \
+    echo "==> Cleaning up caches"; \
     dnf clean all; \
     rm -rf /var/cache/dnf; \
     \
