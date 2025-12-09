@@ -71,6 +71,9 @@ jobs:
           role-duration-seconds: 10800
 
       - name: Deploy
+        env:
+          # Force fresh Docker image builds for CDK assets (pull latest base, no cache) and pass a cache-bust
+          CDK_DOCKER_FLAGS: "--pull --no-cache --build-arg CACHE_BUST=${{ github.run_id }}"
         run: run deploy --stage $STAGE_NAME
 
       - name: Set Application URLs
