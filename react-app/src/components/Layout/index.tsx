@@ -40,7 +40,7 @@ const useGetLinks = () => {
   const showHome = toggleFaq ? userObj.user : true; // if toggleFAQ is on we want to hide home when not logged in
   const isStateHomepage = useFeatureFlag("STATE_HOMEPAGE_FLAG");
   const showSMART = useFeatureFlag("SHOW_SMART_LINK");
-  console.log(showSMART);
+
   const links =
     userLoading || userDetailsLoading || isFaqPage
       ? []
