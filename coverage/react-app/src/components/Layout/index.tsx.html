@@ -23,16 +23,16 @@
         <div class='clearfix'>
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">87.35% </span>
+                <span class="strong">87.5% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>76/87</span>
+                <span class='fraction'>77/88</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">78.48% </span>
+                <span class="strong">78.31% </span>
                 <span class="quiet">Branches</span>
-                <span class='fraction'>62/79</span>
+                <span class='fraction'>65/83</span>
             </div>
         
             
@@ -44,9 +44,9 @@
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">88.88% </span>
+                <span class="strong">89.02% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>72/81</span>
+                <span class='fraction'>73/82</span>
             </div>
         
             
@@ -593,7 +593,16 @@
 <a name='L528'></a><a href='#L528'>528</a>
 <a name='L529'></a><a href='#L529'>529</a>
 <a name='L530'></a><a href='#L530'>530</a>
-<a name='L531'></a><a href='#L531'>531</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
+<a name='L531'></a><a href='#L531'>531</a>
+<a name='L532'></a><a href='#L532'>532</a>
+<a name='L533'></a><a href='#L533'>533</a>
+<a name='L534'></a><a href='#L534'>534</a>
+<a name='L535'></a><a href='#L535'>535</a>
+<a name='L536'></a><a href='#L536'>536</a>
+<a name='L537'></a><a href='#L537'>537</a>
+<a name='L538'></a><a href='#L538'>538</a>
+<a name='L539'></a><a href='#L539'>539</a>
+<a name='L540'></a><a href='#L540'>540</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -628,6 +637,7 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">106x</span>
+<span class="cline-any cline-yes">94x</span>
 <span class="cline-any cline-yes">94x</span>
 <span class="cline-any cline-yes">94x</span>
 <span class="cline-any cline-yes">94x</span>
@@ -676,7 +686,16 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">497x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">568x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">94x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -962,7 +981,6 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">71x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -1164,6 +1182,7 @@ const useGetLinks = () =&gt; {
   const toggleFaq = useFeatureFlag("TOGGLE_FAQ");
   const showHome = toggleFaq ? <span class="branch-0 cbranch-no" title="branch not covered" >userObj.user </span>: true; // if toggleFAQ is on we want to hide home when not logged in
   const isStateHomepage = useFeatureFlag("STATE_HOMEPAGE_FLAG");
+  const showSMART = useFeatureFlag("SHOW_SMART_LINK");
 &nbsp;
   const links =
     userLoading || userDetailsLoading || isFaqPage
@@ -1194,6 +1213,15 @@ const useGetLinks = () =&gt; {
             name: "View FAQs",
             link: "/faq",
             condition: !toggleFaq,
+          },
+          {
+            name: "OneMAC SMART",
+            link: config.smartLink.url,
+            condition:
+              showSMART &amp;&amp;
+<span class="branch-1 cbranch-no" title="branch not covered" >              ["systemadmin", "cmsroleapprover", "cmsreviewer", "defaultcmsuser"].includes(</span>
+                userDetailsData?.role,
+              ),
           },
           {
             name: "Latest Updates",
@@ -1492,7 +1520,6 @@ const ResponsiveNav = ({ isDesktop }: ResponsiveNavProps) =&gt; {
       event_label: name,
     });
   };
-&nbsp;
   if (isDesktop) {
     return (
       &lt;&gt;
@@ -1500,7 +1527,7 @@ const ResponsiveNav = ({ isDesktop }: ResponsiveNavProps) =&gt; {
           &lt;NavLink
             data-testid={`${link.name}-d`}
             to={link.link}
-            target={link.link === "/faq" ? "_blank" : "_self"}
+            target={link.link === "/faq" || link.name === "OneMAC SMART" ? "_blank" : "_self"}
             key={link.name}
             className={setClassBasedOnNav}
             onClick={() =&gt; triggerGAEvent(link.name)}
@@ -1660,7 +1687,7 @@ export const SupportSubNavHeader = ({ children, className }: SupportSubNavHeader
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2025-12-09T20:30:35.008Z
+                at 2025-12-10T00:18:47.744Z
             </div>
         <script src="../../../../prettify.js"></script>
         <script>
