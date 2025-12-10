@@ -12,24 +12,24 @@
     "maxFailures": 0,
     "metadata": {
       "ci": {
-        "commitHref": "https://github.com/Enterprise-CMCS/macpro-mako/commit/98965eeefdff68996ad47b2875f73389700629e9",
-        "commitHash": "98965eeefdff68996ad47b2875f73389700629e9",
-        "buildHref": "https://github.com/Enterprise-CMCS/macpro-mako/actions/runs/20077409002"
+        "commitHref": "https://github.com/Enterprise-CMCS/macpro-mako/commit/3f7bbaf6c2a36989d456ccb43db5f4f5b5a1465c",
+        "commitHash": "3f7bbaf6c2a36989d456ccb43db5f4f5b5a1465c",
+        "buildHref": "https://github.com/Enterprise-CMCS/macpro-mako/actions/runs/20082702847"
       },
       "gitCommit": {
-        "shortHash": "98965ee",
-        "hash": "98965eeefdff68996ad47b2875f73389700629e9",
-        "subject": "Update Dockerfile",
-        "body": "Update Dockerfile\n",
+        "shortHash": "3f7bbaf",
+        "hash": "3f7bbaf6c2a36989d456ccb43db5f4f5b5a1465c",
+        "subject": "fix(add smart link): Smart link with feature flag to header banner",
+        "body": "fix(add smart link): Smart link with feature flag to header banner\n\n* adjust smart link test\n\n* update logic\n\n* Update deployment-config.ts\n\n* comment in\n\n* add viewing logic\n\n* Update index.tsx\n\n* Update deployment-config.test.ts\n\n* Update index.tsx\n\n* Update main.ts\n\n* add feature flag\n\n* Update index.tsx\n\n* Update index.tsx",
         "author": {
           "name": "James Dinh",
-          "email": "jdinh8124@gmail.com",
-          "time": 1765311810000
+          "email": "james.d@globalalliantinc.com",
+          "time": 1765325515000
         },
         "committer": {
-          "name": "James Dinh",
-          "email": "jdinh8124@gmail.com",
-          "time": 1765311810000
+          "name": "GitHub",
+          "email": "noreply@github.com",
+          "time": 1765325515000
         },
         "branch": "main"
       },
@@ -67,24 +67,24 @@
         "retries": 0,
         "metadata": {
           "ci": {
-            "commitHref": "https://github.com/Enterprise-CMCS/macpro-mako/commit/98965eeefdff68996ad47b2875f73389700629e9",
-            "commitHash": "98965eeefdff68996ad47b2875f73389700629e9",
-            "buildHref": "https://github.com/Enterprise-CMCS/macpro-mako/actions/runs/20077409002"
+            "commitHref": "https://github.com/Enterprise-CMCS/macpro-mako/commit/3f7bbaf6c2a36989d456ccb43db5f4f5b5a1465c",
+            "commitHash": "3f7bbaf6c2a36989d456ccb43db5f4f5b5a1465c",
+            "buildHref": "https://github.com/Enterprise-CMCS/macpro-mako/actions/runs/20082702847"
           },
           "gitCommit": {
-            "shortHash": "98965ee",
-            "hash": "98965eeefdff68996ad47b2875f73389700629e9",
-            "subject": "Update Dockerfile",
-            "body": "Update Dockerfile\n",
+            "shortHash": "3f7bbaf",
+            "hash": "3f7bbaf6c2a36989d456ccb43db5f4f5b5a1465c",
+            "subject": "fix(add smart link): Smart link with feature flag to header banner",
+            "body": "fix(add smart link): Smart link with feature flag to header banner\n\n* adjust smart link test\n\n* update logic\n\n* Update deployment-config.ts\n\n* comment in\n\n* add viewing logic\n\n* Update index.tsx\n\n* Update deployment-config.test.ts\n\n* Update index.tsx\n\n* Update main.ts\n\n* add feature flag\n\n* Update index.tsx\n\n* Update index.tsx",
             "author": {
               "name": "James Dinh",
-              "email": "jdinh8124@gmail.com",
-              "time": 1765311810000
+              "email": "james.d@globalalliantinc.com",
+              "time": 1765325515000
             },
             "committer": {
-              "name": "James Dinh",
-              "email": "jdinh8124@gmail.com",
-              "time": 1765311810000
+              "name": "GitHub",
+              "email": "noreply@github.com",
+              "time": 1765325515000
             },
             "branch": "main"
           },
@@ -108,24 +108,24 @@
         "retries": 0,
         "metadata": {
           "ci": {
-            "commitHref": "https://github.com/Enterprise-CMCS/macpro-mako/commit/98965eeefdff68996ad47b2875f73389700629e9",
-            "commitHash": "98965eeefdff68996ad47b2875f73389700629e9",
-            "buildHref": "https://github.com/Enterprise-CMCS/macpro-mako/actions/runs/20077409002"
+            "commitHref": "https://github.com/Enterprise-CMCS/macpro-mako/commit/3f7bbaf6c2a36989d456ccb43db5f4f5b5a1465c",
+            "commitHash": "3f7bbaf6c2a36989d456ccb43db5f4f5b5a1465c",
+            "buildHref": "https://github.com/Enterprise-CMCS/macpro-mako/actions/runs/20082702847"
           },
           "gitCommit": {
-            "shortHash": "98965ee",
-            "hash": "98965eeefdff68996ad47b2875f73389700629e9",
-            "subject": "Update Dockerfile",
-            "body": "Update Dockerfile\n",
+            "shortHash": "3f7bbaf",
+            "hash": "3f7bbaf6c2a36989d456ccb43db5f4f5b5a1465c",
+            "subject": "fix(add smart link): Smart link with feature flag to header banner",
+            "body": "fix(add smart link): Smart link with feature flag to header banner\n\n* adjust smart link test\n\n* update logic\n\n* Update deployment-config.ts\n\n* comment in\n\n* add viewing logic\n\n* Update index.tsx\n\n* Update deployment-config.test.ts\n\n* Update index.tsx\n\n* Update main.ts\n\n* add feature flag\n\n* Update index.tsx\n\n* Update index.tsx",
             "author": {
               "name": "James Dinh",
-              "email": "jdinh8124@gmail.com",
-              "time": 1765311810000
+              "email": "james.d@globalalliantinc.com",
+              "time": 1765325515000
             },
             "committer": {
-              "name": "James Dinh",
-              "email": "jdinh8124@gmail.com",
-              "time": 1765311810000
+              "name": "GitHub",
+              "email": "noreply@github.com",
+              "time": 1765325515000
             },
             "branch": "main"
           },
@@ -149,24 +149,24 @@
         "retries": 0,
         "metadata": {
           "ci": {
-            "commitHref": "https://github.com/Enterprise-CMCS/macpro-mako/commit/98965eeefdff68996ad47b2875f73389700629e9",
-            "commitHash": "98965eeefdff68996ad47b2875f73389700629e9",
-            "buildHref": "https://github.com/Enterprise-CMCS/macpro-mako/actions/runs/20077409002"
+            "commitHref": "https://github.com/Enterprise-CMCS/macpro-mako/commit/3f7bbaf6c2a36989d456ccb43db5f4f5b5a1465c",
+            "commitHash": "3f7bbaf6c2a36989d456ccb43db5f4f5b5a1465c",
+            "buildHref": "https://github.com/Enterprise-CMCS/macpro-mako/actions/runs/20082702847"
           },
           "gitCommit": {
-            "shortHash": "98965ee",
-            "hash": "98965eeefdff68996ad47b2875f73389700629e9",
-            "subject": "Update Dockerfile",
-            "body": "Update Dockerfile\n",
+            "shortHash": "3f7bbaf",
+            "hash": "3f7bbaf6c2a36989d456ccb43db5f4f5b5a1465c",
+            "subject": "fix(add smart link): Smart link with feature flag to header banner",
+            "body": "fix(add smart link): Smart link with feature flag to header banner\n\n* adjust smart link test\n\n* update logic\n\n* Update deployment-config.ts\n\n* comment in\n\n* add viewing logic\n\n* Update index.tsx\n\n* Update deployment-config.test.ts\n\n* Update index.tsx\n\n* Update main.ts\n\n* add feature flag\n\n* Update index.tsx\n\n* Update index.tsx",
             "author": {
               "name": "James Dinh",
-              "email": "jdinh8124@gmail.com",
-              "time": 1765311810000
+              "email": "james.d@globalalliantinc.com",
+              "time": 1765325515000
             },
             "committer": {
-              "name": "James Dinh",
-              "email": "jdinh8124@gmail.com",
-              "time": 1765311810000
+              "name": "GitHub",
+              "email": "noreply@github.com",
+              "time": 1765325515000
             },
             "branch": "main"
           },
@@ -190,24 +190,24 @@
         "retries": 0,
         "metadata": {
           "ci": {
-            "commitHref": "https://github.com/Enterprise-CMCS/macpro-mako/commit/98965eeefdff68996ad47b2875f73389700629e9",
-            "commitHash": "98965eeefdff68996ad47b2875f73389700629e9",
-            "buildHref": "https://github.com/Enterprise-CMCS/macpro-mako/actions/runs/20077409002"
+            "commitHref": "https://github.com/Enterprise-CMCS/macpro-mako/commit/3f7bbaf6c2a36989d456ccb43db5f4f5b5a1465c",
+            "commitHash": "3f7bbaf6c2a36989d456ccb43db5f4f5b5a1465c",
+            "buildHref": "https://github.com/Enterprise-CMCS/macpro-mako/actions/runs/20082702847"
           },
           "gitCommit": {
-            "shortHash": "98965ee",
-            "hash": "98965eeefdff68996ad47b2875f73389700629e9",
-            "subject": "Update Dockerfile",
-            "body": "Update Dockerfile\n",
+            "shortHash": "3f7bbaf",
+            "hash": "3f7bbaf6c2a36989d456ccb43db5f4f5b5a1465c",
+            "subject": "fix(add smart link): Smart link with feature flag to header banner",
+            "body": "fix(add smart link): Smart link with feature flag to header banner\n\n* adjust smart link test\n\n* update logic\n\n* Update deployment-config.ts\n\n* comment in\n\n* add viewing logic\n\n* Update index.tsx\n\n* Update deployment-config.test.ts\n\n* Update index.tsx\n\n* Update main.ts\n\n* add feature flag\n\n* Update index.tsx\n\n* Update index.tsx",
             "author": {
               "name": "James Dinh",
-              "email": "jdinh8124@gmail.com",
-              "time": 1765311810000
+              "email": "james.d@globalalliantinc.com",
+              "time": 1765325515000
             },
             "committer": {
-              "name": "James Dinh",
-              "email": "jdinh8124@gmail.com",
-              "time": 1765311810000
+              "name": "GitHub",
+              "email": "noreply@github.com",
+              "time": 1765325515000
             },
             "branch": "main"
           },
@@ -231,24 +231,24 @@
         "retries": 0,
         "metadata": {
           "ci": {
-            "commitHref": "https://github.com/Enterprise-CMCS/macpro-mako/commit/98965eeefdff68996ad47b2875f73389700629e9",
-            "commitHash": "98965eeefdff68996ad47b2875f73389700629e9",
-            "buildHref": "https://github.com/Enterprise-CMCS/macpro-mako/actions/runs/20077409002"
+            "commitHref": "https://github.com/Enterprise-CMCS/macpro-mako/commit/3f7bbaf6c2a36989d456ccb43db5f4f5b5a1465c",
+            "commitHash": "3f7bbaf6c2a36989d456ccb43db5f4f5b5a1465c",
+            "buildHref": "https://github.com/Enterprise-CMCS/macpro-mako/actions/runs/20082702847"
           },
           "gitCommit": {
-            "shortHash": "98965ee",
-            "hash": "98965eeefdff68996ad47b2875f73389700629e9",
-            "subject": "Update Dockerfile",
-            "body": "Update Dockerfile\n",
+            "shortHash": "3f7bbaf",
+            "hash": "3f7bbaf6c2a36989d456ccb43db5f4f5b5a1465c",
+            "subject": "fix(add smart link): Smart link with feature flag to header banner",
+            "body": "fix(add smart link): Smart link with feature flag to header banner\n\n* adjust smart link test\n\n* update logic\n\n* Update deployment-config.ts\n\n* comment in\n\n* add viewing logic\n\n* Update index.tsx\n\n* Update deployment-config.test.ts\n\n* Update index.tsx\n\n* Update main.ts\n\n* add feature flag\n\n* Update index.tsx\n\n* Update index.tsx",
             "author": {
               "name": "James Dinh",
-              "email": "jdinh8124@gmail.com",
-              "time": 1765311810000
+              "email": "james.d@globalalliantinc.com",
+              "time": 1765325515000
             },
             "committer": {
-              "name": "James Dinh",
-              "email": "jdinh8124@gmail.com",
-              "time": 1765311810000
+              "name": "GitHub",
+              "email": "noreply@github.com",
+              "time": 1765325515000
             },
             "branch": "main"
           },
@@ -272,24 +272,24 @@
         "retries": 0,
         "metadata": {
           "ci": {
-            "commitHref": "https://github.com/Enterprise-CMCS/macpro-mako/commit/98965eeefdff68996ad47b2875f73389700629e9",
-            "commitHash": "98965eeefdff68996ad47b2875f73389700629e9",
-            "buildHref": "https://github.com/Enterprise-CMCS/macpro-mako/actions/runs/20077409002"
+            "commitHref": "https://github.com/Enterprise-CMCS/macpro-mako/commit/3f7bbaf6c2a36989d456ccb43db5f4f5b5a1465c",
+            "commitHash": "3f7bbaf6c2a36989d456ccb43db5f4f5b5a1465c",
+            "buildHref": "https://github.com/Enterprise-CMCS/macpro-mako/actions/runs/20082702847"
           },
           "gitCommit": {
-            "shortHash": "98965ee",
-            "hash": "98965eeefdff68996ad47b2875f73389700629e9",
-            "subject": "Update Dockerfile",
-            "body": "Update Dockerfile\n",
+            "shortHash": "3f7bbaf",
+            "hash": "3f7bbaf6c2a36989d456ccb43db5f4f5b5a1465c",
+            "subject": "fix(add smart link): Smart link with feature flag to header banner",
+            "body": "fix(add smart link): Smart link with feature flag to header banner\n\n* adjust smart link test\n\n* update logic\n\n* Update deployment-config.ts\n\n* comment in\n\n* add viewing logic\n\n* Update index.tsx\n\n* Update deployment-config.test.ts\n\n* Update index.tsx\n\n* Update main.ts\n\n* add feature flag\n\n* Update index.tsx\n\n* Update index.tsx",
             "author": {
               "name": "James Dinh",
-              "email": "jdinh8124@gmail.com",
-              "time": 1765311810000
+              "email": "james.d@globalalliantinc.com",
+              "time": 1765325515000
             },
             "committer": {
-              "name": "James Dinh",
-              "email": "jdinh8124@gmail.com",
-              "time": 1765311810000
+              "name": "GitHub",
+              "email": "noreply@github.com",
+              "time": 1765325515000
             },
             "branch": "main"
           },
@@ -313,24 +313,24 @@
         "retries": 0,
         "metadata": {
           "ci": {
-            "commitHref": "https://github.com/Enterprise-CMCS/macpro-mako/commit/98965eeefdff68996ad47b2875f73389700629e9",
-            "commitHash": "98965eeefdff68996ad47b2875f73389700629e9",
-            "buildHref": "https://github.com/Enterprise-CMCS/macpro-mako/actions/runs/20077409002"
+            "commitHref": "https://github.com/Enterprise-CMCS/macpro-mako/commit/3f7bbaf6c2a36989d456ccb43db5f4f5b5a1465c",
+            "commitHash": "3f7bbaf6c2a36989d456ccb43db5f4f5b5a1465c",
+            "buildHref": "https://github.com/Enterprise-CMCS/macpro-mako/actions/runs/20082702847"
           },
           "gitCommit": {
-            "shortHash": "98965ee",
-            "hash": "98965eeefdff68996ad47b2875f73389700629e9",
-            "subject": "Update Dockerfile",
-            "body": "Update Dockerfile\n",
+            "shortHash": "3f7bbaf",
+            "hash": "3f7bbaf6c2a36989d456ccb43db5f4f5b5a1465c",
+            "subject": "fix(add smart link): Smart link with feature flag to header banner",
+            "body": "fix(add smart link): Smart link with feature flag to header banner\n\n* adjust smart link test\n\n* update logic\n\n* Update deployment-config.ts\n\n* comment in\n\n* add viewing logic\n\n* Update index.tsx\n\n* Update deployment-config.test.ts\n\n* Update index.tsx\n\n* Update main.ts\n\n* add feature flag\n\n* Update index.tsx\n\n* Update index.tsx",
             "author": {
               "name": "James Dinh",
-              "email": "jdinh8124@gmail.com",
-              "time": 1765311810000
+              "email": "james.d@globalalliantinc.com",
+              "time": 1765325515000
             },
             "committer": {
-              "name": "James Dinh",
-              "email": "jdinh8124@gmail.com",
-              "time": 1765311810000
+              "name": "GitHub",
+              "email": "noreply@github.com",
+              "time": 1765325515000
             },
             "branch": "main"
           },
@@ -354,24 +354,24 @@
         "retries": 0,
         "metadata": {
           "ci": {
-            "commitHref": "https://github.com/Enterprise-CMCS/macpro-mako/commit/98965eeefdff68996ad47b2875f73389700629e9",
-            "commitHash": "98965eeefdff68996ad47b2875f73389700629e9",
-            "buildHref": "https://github.com/Enterprise-CMCS/macpro-mako/actions/runs/20077409002"
+            "commitHref": "https://github.com/Enterprise-CMCS/macpro-mako/commit/3f7bbaf6c2a36989d456ccb43db5f4f5b5a1465c",
+            "commitHash": "3f7bbaf6c2a36989d456ccb43db5f4f5b5a1465c",
+            "buildHref": "https://github.com/Enterprise-CMCS/macpro-mako/actions/runs/20082702847"
           },
           "gitCommit": {
-            "shortHash": "98965ee",
-            "hash": "98965eeefdff68996ad47b2875f73389700629e9",
-            "subject": "Update Dockerfile",
-            "body": "Update Dockerfile\n",
+            "shortHash": "3f7bbaf",
+            "hash": "3f7bbaf6c2a36989d456ccb43db5f4f5b5a1465c",
+            "subject": "fix(add smart link): Smart link with feature flag to header banner",
+            "body": "fix(add smart link): Smart link with feature flag to header banner\n\n* adjust smart link test\n\n* update logic\n\n* Update deployment-config.ts\n\n* comment in\n\n* add viewing logic\n\n* Update index.tsx\n\n* Update deployment-config.test.ts\n\n* Update index.tsx\n\n* Update main.ts\n\n* add feature flag\n\n* Update index.tsx\n\n* Update index.tsx",
             "author": {
               "name": "James Dinh",
-              "email": "jdinh8124@gmail.com",
-              "time": 1765311810000
+              "email": "james.d@globalalliantinc.com",
+              "time": 1765325515000
             },
             "committer": {
-              "name": "James Dinh",
-              "email": "jdinh8124@gmail.com",
-              "time": 1765311810000
+              "name": "GitHub",
+              "email": "noreply@github.com",
+              "time": 1765325515000
             },
             "branch": "main"
           },
@@ -395,24 +395,24 @@
         "retries": 0,
         "metadata": {
           "ci": {
-            "commitHref": "https://github.com/Enterprise-CMCS/macpro-mako/commit/98965eeefdff68996ad47b2875f73389700629e9",
-            "commitHash": "98965eeefdff68996ad47b2875f73389700629e9",
-            "buildHref": "https://github.com/Enterprise-CMCS/macpro-mako/actions/runs/20077409002"
+            "commitHref": "https://github.com/Enterprise-CMCS/macpro-mako/commit/3f7bbaf6c2a36989d456ccb43db5f4f5b5a1465c",
+            "commitHash": "3f7bbaf6c2a36989d456ccb43db5f4f5b5a1465c",
+            "buildHref": "https://github.com/Enterprise-CMCS/macpro-mako/actions/runs/20082702847"
           },
           "gitCommit": {
-            "shortHash": "98965ee",
-            "hash": "98965eeefdff68996ad47b2875f73389700629e9",
-            "subject": "Update Dockerfile",
-            "body": "Update Dockerfile\n",
+            "shortHash": "3f7bbaf",
+            "hash": "3f7bbaf6c2a36989d456ccb43db5f4f5b5a1465c",
+            "subject": "fix(add smart link): Smart link with feature flag to header banner",
+            "body": "fix(add smart link): Smart link with feature flag to header banner\n\n* adjust smart link test\n\n* update logic\n\n* Update deployment-config.ts\n\n* comment in\n\n* add viewing logic\n\n* Update index.tsx\n\n* Update deployment-config.test.ts\n\n* Update index.tsx\n\n* Update main.ts\n\n* add feature flag\n\n* Update index.tsx\n\n* Update index.tsx",
             "author": {
               "name": "James Dinh",
-              "email": "jdinh8124@gmail.com",
-              "time": 1765311810000
+              "email": "james.d@globalalliantinc.com",
+              "time": 1765325515000
             },
             "committer": {
-              "name": "James Dinh",
-              "email": "jdinh8124@gmail.com",
-              "time": 1765311810000
+              "name": "GitHub",
+              "email": "noreply@github.com",
+              "time": 1765325515000
             },
             "branch": "main"
           },
@@ -436,24 +436,24 @@
         "retries": 0,
         "metadata": {
           "ci": {
-            "commitHref": "https://github.com/Enterprise-CMCS/macpro-mako/commit/98965eeefdff68996ad47b2875f73389700629e9",
-            "commitHash": "98965eeefdff68996ad47b2875f73389700629e9",
-            "buildHref": "https://github.com/Enterprise-CMCS/macpro-mako/actions/runs/20077409002"
+            "commitHref": "https://github.com/Enterprise-CMCS/macpro-mako/commit/3f7bbaf6c2a36989d456ccb43db5f4f5b5a1465c",
+            "commitHash": "3f7bbaf6c2a36989d456ccb43db5f4f5b5a1465c",
+            "buildHref": "https://github.com/Enterprise-CMCS/macpro-mako/actions/runs/20082702847"
           },
           "gitCommit": {
-            "shortHash": "98965ee",
-            "hash": "98965eeefdff68996ad47b2875f73389700629e9",
-            "subject": "Update Dockerfile",
-            "body": "Update Dockerfile\n",
+            "shortHash": "3f7bbaf",
+            "hash": "3f7bbaf6c2a36989d456ccb43db5f4f5b5a1465c",
+            "subject": "fix(add smart link): Smart link with feature flag to header banner",
+            "body": "fix(add smart link): Smart link with feature flag to header banner\n\n* adjust smart link test\n\n* update logic\n\n* Update deployment-config.ts\n\n* comment in\n\n* add viewing logic\n\n* Update index.tsx\n\n* Update deployment-config.test.ts\n\n* Update index.tsx\n\n* Update main.ts\n\n* add feature flag\n\n* Update index.tsx\n\n* Update index.tsx",
             "author": {
               "name": "James Dinh",
-              "email": "jdinh8124@gmail.com",
-              "time": 1765311810000
+              "email": "james.d@globalalliantinc.com",
+              "time": 1765325515000
             },
             "committer": {
-              "name": "James Dinh",
-              "email": "jdinh8124@gmail.com",
-              "time": 1765311810000
+              "name": "GitHub",
+              "email": "noreply@github.com",
+              "time": 1765325515000
             },
             "branch": "main"
           },
@@ -477,24 +477,24 @@
         "retries": 0,
         "metadata": {
           "ci": {
-            "commitHref": "https://github.com/Enterprise-CMCS/macpro-mako/commit/98965eeefdff68996ad47b2875f73389700629e9",
-            "commitHash": "98965eeefdff68996ad47b2875f73389700629e9",
-            "buildHref": "https://github.com/Enterprise-CMCS/macpro-mako/actions/runs/20077409002"
+            "commitHref": "https://github.com/Enterprise-CMCS/macpro-mako/commit/3f7bbaf6c2a36989d456ccb43db5f4f5b5a1465c",
+            "commitHash": "3f7bbaf6c2a36989d456ccb43db5f4f5b5a1465c",
+            "buildHref": "https://github.com/Enterprise-CMCS/macpro-mako/actions/runs/20082702847"
           },
           "gitCommit": {
-            "shortHash": "98965ee",
-            "hash": "98965eeefdff68996ad47b2875f73389700629e9",
-            "subject": "Update Dockerfile",
-            "body": "Update Dockerfile\n",
+            "shortHash": "3f7bbaf",
+            "hash": "3f7bbaf6c2a36989d456ccb43db5f4f5b5a1465c",
+            "subject": "fix(add smart link): Smart link with feature flag to header banner",
+            "body": "fix(add smart link): Smart link with feature flag to header banner\n\n* adjust smart link test\n\n* update logic\n\n* Update deployment-config.ts\n\n* comment in\n\n* add viewing logic\n\n* Update index.tsx\n\n* Update deployment-config.test.ts\n\n* Update index.tsx\n\n* Update main.ts\n\n* add feature flag\n\n* Update index.tsx\n\n* Update index.tsx",
             "author": {
               "name": "James Dinh",
-              "email": "jdinh8124@gmail.com",
-              "time": 1765311810000
+              "email": "james.d@globalalliantinc.com",
+              "time": 1765325515000
             },
             "committer": {
-              "name": "James Dinh",
-              "email": "jdinh8124@gmail.com",
-              "time": 1765311810000
+              "name": "GitHub",
+              "email": "noreply@github.com",
+              "time": 1765325515000
             },
             "branch": "main"
           },
@@ -518,24 +518,24 @@
         "retries": 0,
         "metadata": {
           "ci": {
-            "commitHref": "https://github.com/Enterprise-CMCS/macpro-mako/commit/98965eeefdff68996ad47b2875f73389700629e9",
-            "commitHash": "98965eeefdff68996ad47b2875f73389700629e9",
-            "buildHref": "https://github.com/Enterprise-CMCS/macpro-mako/actions/runs/20077409002"
+            "commitHref": "https://github.com/Enterprise-CMCS/macpro-mako/commit/3f7bbaf6c2a36989d456ccb43db5f4f5b5a1465c",
+            "commitHash": "3f7bbaf6c2a36989d456ccb43db5f4f5b5a1465c",
+            "buildHref": "https://github.com/Enterprise-CMCS/macpro-mako/actions/runs/20082702847"
           },
           "gitCommit": {
-            "shortHash": "98965ee",
-            "hash": "98965eeefdff68996ad47b2875f73389700629e9",
-            "subject": "Update Dockerfile",
-            "body": "Update Dockerfile\n",
+            "shortHash": "3f7bbaf",
+            "hash": "3f7bbaf6c2a36989d456ccb43db5f4f5b5a1465c",
+            "subject": "fix(add smart link): Smart link with feature flag to header banner",
+            "body": "fix(add smart link): Smart link with feature flag to header banner\n\n* adjust smart link test\n\n* update logic\n\n* Update deployment-config.ts\n\n* comment in\n\n* add viewing logic\n\n* Update index.tsx\n\n* Update deployment-config.test.ts\n\n* Update index.tsx\n\n* Update main.ts\n\n* add feature flag\n\n* Update index.tsx\n\n* Update index.tsx",
             "author": {
               "name": "James Dinh",
-              "email": "jdinh8124@gmail.com",
-              "time": 1765311810000
+              "email": "james.d@globalalliantinc.com",
+              "time": 1765325515000
             },
             "committer": {
-              "name": "James Dinh",
-              "email": "jdinh8124@gmail.com",
-              "time": 1765311810000
+              "name": "GitHub",
+              "email": "noreply@github.com",
+              "time": 1765325515000
             },
             "branch": "main"
           },
@@ -559,24 +559,24 @@
         "retries": 0,
         "metadata": {
           "ci": {
-            "commitHref": "https://github.com/Enterprise-CMCS/macpro-mako/commit/98965eeefdff68996ad47b2875f73389700629e9",
-            "commitHash": "98965eeefdff68996ad47b2875f73389700629e9",
-            "buildHref": "https://github.com/Enterprise-CMCS/macpro-mako/actions/runs/20077409002"
+            "commitHref": "https://github.com/Enterprise-CMCS/macpro-mako/commit/3f7bbaf6c2a36989d456ccb43db5f4f5b5a1465c",
+            "commitHash": "3f7bbaf6c2a36989d456ccb43db5f4f5b5a1465c",
+            "buildHref": "https://github.com/Enterprise-CMCS/macpro-mako/actions/runs/20082702847"
           },
           "gitCommit": {
-            "shortHash": "98965ee",
-            "hash": "98965eeefdff68996ad47b2875f73389700629e9",
-            "subject": "Update Dockerfile",
-            "body": "Update Dockerfile\n",
+            "shortHash": "3f7bbaf",
+            "hash": "3f7bbaf6c2a36989d456ccb43db5f4f5b5a1465c",
+            "subject": "fix(add smart link): Smart link with feature flag to header banner",
+            "body": "fix(add smart link): Smart link with feature flag to header banner\n\n* adjust smart link test\n\n* update logic\n\n* Update deployment-config.ts\n\n* comment in\n\n* add viewing logic\n\n* Update index.tsx\n\n* Update deployment-config.test.ts\n\n* Update index.tsx\n\n* Update main.ts\n\n* add feature flag\n\n* Update index.tsx\n\n* Update index.tsx",
             "author": {
               "name": "James Dinh",
-              "email": "jdinh8124@gmail.com",
-              "time": 1765311810000
+              "email": "james.d@globalalliantinc.com",
+              "time": 1765325515000
             },
             "committer": {
-              "name": "James Dinh",
-              "email": "jdinh8124@gmail.com",
-              "time": 1765311810000
+              "name": "GitHub",
+              "email": "noreply@github.com",
+              "time": 1765325515000
             },
             "branch": "main"
           },
@@ -649,12 +649,12 @@
                               "workerIndex": 0,
                               "parallelIndex": 0,
                               "status": "passed",
-                              "duration": 6082,
+                              "duration": 4008,
                               "errors": [],
                               "stdout": [],
                               "stderr": [],
                               "retry": 0,
-                              "startTime": "2025-12-09T20:29:28.103Z",
+                              "startTime": "2025-12-10T00:16:50.043Z",
                               "annotations": [],
                               "attachments": []
                             }
@@ -685,12 +685,12 @@
                               "workerIndex": 0,
                               "parallelIndex": 0,
                               "status": "passed",
-                              "duration": 3968,
+                              "duration": 2854,
                               "errors": [],
                               "stdout": [],
                               "stderr": [],
                               "retry": 0,
-                              "startTime": "2025-12-09T20:29:34.272Z",
+                              "startTime": "2025-12-10T00:16:54.136Z",
                               "annotations": [],
                               "attachments": []
                             }
@@ -721,12 +721,12 @@
                               "workerIndex": 0,
                               "parallelIndex": 0,
                               "status": "passed",
-                              "duration": 2922,
+                              "duration": 3943,
                               "errors": [],
                               "stdout": [],
                               "stderr": [],
                               "retry": 0,
-                              "startTime": "2025-12-09T20:29:38.252Z",
+                              "startTime": "2025-12-10T00:16:57.005Z",
                               "annotations": [],
                               "attachments": []
                             }
@@ -757,12 +757,12 @@
                               "workerIndex": 0,
                               "parallelIndex": 0,
                               "status": "passed",
-                              "duration": 3857,
+                              "duration": 3948,
                               "errors": [],
                               "stdout": [],
                               "stderr": [],
                               "retry": 0,
-                              "startTime": "2025-12-09T20:29:41.186Z",
+                              "startTime": "2025-12-10T00:17:00.960Z",
                               "annotations": [],
                               "attachments": []
                             }
@@ -793,12 +793,12 @@
                               "workerIndex": 0,
                               "parallelIndex": 0,
                               "status": "passed",
-                              "duration": 2906,
+                              "duration": 2812,
                               "errors": [],
                               "stdout": [],
                               "stderr": [],
                               "retry": 0,
-                              "startTime": "2025-12-09T20:29:45.055Z",
+                              "startTime": "2025-12-10T00:17:04.920Z",
                               "annotations": [],
                               "attachments": []
                             }
@@ -829,12 +829,12 @@
                               "workerIndex": 0,
                               "parallelIndex": 0,
                               "status": "passed",
-                              "duration": 3940,
+                              "duration": 2787,
                               "errors": [],
                               "stdout": [],
                               "stderr": [],
                               "retry": 0,
-                              "startTime": "2025-12-09T20:29:47.973Z",
+                              "startTime": "2025-12-10T00:17:07.746Z",
                               "annotations": [],
                               "attachments": []
                             }
@@ -865,12 +865,12 @@
                               "workerIndex": 0,
                               "parallelIndex": 0,
                               "status": "passed",
-                              "duration": 3958,
+                              "duration": 2968,
                               "errors": [],
                               "stdout": [],
                               "stderr": [],
                               "retry": 0,
-                              "startTime": "2025-12-09T20:29:51.925Z",
+                              "startTime": "2025-12-10T00:17:10.545Z",
                               "annotations": [],
                               "attachments": []
                             }
@@ -916,12 +916,12 @@
                                       "workerIndex": 0,
                                       "parallelIndex": 0,
                                       "status": "passed",
-                                      "duration": 1024,
+                                      "duration": 968,
                                       "errors": [],
                                       "stdout": [],
                                       "stderr": [],
                                       "retry": 0,
-                                      "startTime": "2025-12-09T20:29:55.894Z",
+                                      "startTime": "2025-12-10T00:17:13.526Z",
                                       "annotations": [],
                                       "attachments": []
                                     }
@@ -952,12 +952,12 @@
                                       "workerIndex": 0,
                                       "parallelIndex": 0,
                                       "status": "passed",
-                                      "duration": 3969,
+                                      "duration": 3728,
                                       "errors": [],
                                       "stdout": [],
                                       "stderr": [],
                                       "retry": 0,
-                                      "startTime": "2025-12-09T20:29:56.929Z",
+                                      "startTime": "2025-12-10T00:17:14.509Z",
                                       "annotations": [],
                                       "attachments": []
                                     }
@@ -988,12 +988,12 @@
                                       "workerIndex": 0,
                                       "parallelIndex": 0,
                                       "status": "passed",
-                                      "duration": 3851,
+                                      "duration": 2902,
                                       "errors": [],
                                       "stdout": [],
                                       "stderr": [],
                                       "retry": 0,
-                                      "startTime": "2025-12-09T20:30:00.915Z",
+                                      "startTime": "2025-12-10T00:17:18.249Z",
                                       "annotations": [],
                                       "attachments": []
                                     }
@@ -1032,12 +1032,12 @@
                                       "workerIndex": 0,
                                       "parallelIndex": 0,
                                       "status": "passed",
-                                      "duration": 3774,
+                                      "duration": 4217,
                                       "errors": [],
                                       "stdout": [],
                                       "stderr": [],
                                       "retry": 0,
-                                      "startTime": "2025-12-09T20:30:04.779Z",
+                                      "startTime": "2025-12-10T00:17:21.163Z",
                                       "annotations": [],
                                       "attachments": []
                                     }
@@ -1068,12 +1068,12 @@
                                       "workerIndex": 0,
                                       "parallelIndex": 0,
                                       "status": "passed",
-                                      "duration": 3539,
+                                      "duration": 3297,
                                       "errors": [],
                                       "stdout": [],
                                       "stderr": [],
                                       "retry": 0,
-                                      "startTime": "2025-12-09T20:30:08.565Z",
+                                      "startTime": "2025-12-10T00:17:25.393Z",
                                       "annotations": [],
                                       "attachments": []
                                     }
@@ -1104,12 +1104,12 @@
                                       "workerIndex": 0,
                                       "parallelIndex": 0,
                                       "status": "passed",
-                                      "duration": 3487,
+                                      "duration": 3006,
                                       "errors": [],
                                       "stdout": [],
                                       "stderr": [],
                                       "retry": 0,
-                                      "startTime": "2025-12-09T20:30:12.118Z",
+                                      "startTime": "2025-12-10T00:17:28.704Z",
                                       "annotations": [],
                                       "attachments": []
                                     }
@@ -1152,16 +1152,16 @@
                               "workerIndex": 0,
                               "parallelIndex": 0,
                               "status": "passed",
-                              "duration": 10231,
+                              "duration": 7382,
                               "errors": [],
                               "stdout": [
                                 {
-                                  "text": "[Download] for stateSubmitter Filename suggested by browser: spas-export-12_09_2025.csv\"\n"
+                                  "text": "[Download] for stateSubmitter Filename suggested by browser: spas-export-12_10_2025.csv\"\n"
                                 }
                               ],
                               "stderr": [],
                               "retry": 0,
-                              "startTime": "2025-12-09T20:30:15.616Z",
+                              "startTime": "2025-12-10T00:17:31.721Z",
                               "annotations": [],
                               "attachments": [
                                 {
@@ -1215,12 +1215,12 @@
                               "workerIndex": 0,
                               "parallelIndex": 0,
                               "status": "passed",
-                              "duration": 3095,
+                              "duration": 2941,
                               "errors": [],
                               "stdout": [],
                               "stderr": [],
                               "retry": 0,
-                              "startTime": "2025-12-09T20:30:25.862Z",
+                              "startTime": "2025-12-10T00:17:39.115Z",
                               "annotations": [],
                               "attachments": []
                             }
@@ -1251,12 +1251,12 @@
                               "workerIndex": 0,
                               "parallelIndex": 0,
                               "status": "passed",
-                              "duration": 2929,
+                              "duration": 2978,
                               "errors": [],
                               "stdout": [],
                               "stderr": [],
                               "retry": 0,
-                              "startTime": "2025-12-09T20:30:28.968Z",
+                              "startTime": "2025-12-10T00:17:42.068Z",
                               "annotations": [],
                               "attachments": []
                             }
@@ -1287,12 +1287,12 @@
                               "workerIndex": 0,
                               "parallelIndex": 0,
                               "status": "passed",
-                              "duration": 3079,
+                              "duration": 2874,
                               "errors": [],
                               "stdout": [],
                               "stderr": [],
                               "retry": 0,
-                              "startTime": "2025-12-09T20:30:31.911Z",
+                              "startTime": "2025-12-10T00:17:45.061Z",
                               "annotations": [],
                               "attachments": []
                             }
@@ -1323,12 +1323,12 @@
                               "workerIndex": 0,
                               "parallelIndex": 0,
                               "status": "passed",
-                              "duration": 2859,
+                              "duration": 2895,
                               "errors": [],
                               "stdout": [],
                               "stderr": [],
                               "retry": 0,
-                              "startTime": "2025-12-09T20:30:35.000Z",
+                              "startTime": "2025-12-10T00:17:47.949Z",
                               "annotations": [],
                               "attachments": []
                             }
@@ -1359,12 +1359,12 @@
                               "workerIndex": 0,
                               "parallelIndex": 0,
                               "status": "passed",
-                              "duration": 2918,
+                              "duration": 2848,
                               "errors": [],
                               "stdout": [],
                               "stderr": [],
                               "retry": 0,
-                              "startTime": "2025-12-09T20:30:37.870Z",
+                              "startTime": "2025-12-10T00:17:50.855Z",
                               "annotations": [],
                               "attachments": []
                             }
@@ -1395,12 +1395,12 @@
                               "workerIndex": 0,
                               "parallelIndex": 0,
                               "status": "passed",
-                              "duration": 2843,
+                              "duration": 2883,
                               "errors": [],
                               "stdout": [],
                               "stderr": [],
                               "retry": 0,
-                              "startTime": "2025-12-09T20:30:40.801Z",
+                              "startTime": "2025-12-10T00:17:53.714Z",
                               "annotations": [],
                               "attachments": []
                             }
@@ -1431,12 +1431,12 @@
                               "workerIndex": 0,
                               "parallelIndex": 0,
                               "status": "passed",
-                              "duration": 2971,
+                              "duration": 2870,
                               "errors": [],
                               "stdout": [],
                               "stderr": [],
                               "retry": 0,
-                              "startTime": "2025-12-09T20:30:43.655Z",
+                              "startTime": "2025-12-10T00:17:56.609Z",
                               "annotations": [],
                               "attachments": []
                             }
@@ -1482,12 +1482,12 @@
                                       "workerIndex": 0,
                                       "parallelIndex": 0,
                                       "status": "passed",
-                                      "duration": 1009,
+                                      "duration": 889,
                                       "errors": [],
                                       "stdout": [],
                                       "stderr": [],
                                       "retry": 0,
-                                      "startTime": "2025-12-09T20:30:46.638Z",
+                                      "startTime": "2025-12-10T00:17:59.491Z",
                                       "annotations": [],
                                       "attachments": []
                                     }
@@ -1518,12 +1518,12 @@
                                       "workerIndex": 0,
                                       "parallelIndex": 0,
                                       "status": "passed",
-                                      "duration": 2895,
+                                      "duration": 2849,
                                       "errors": [],
                                       "stdout": [],
                                       "stderr": [],
                                       "retry": 0,
-                                      "startTime": "2025-12-09T20:30:47.657Z",
+                                      "startTime": "2025-12-10T00:18:00.390Z",
                                       "annotations": [],
                                       "attachments": []
                                     }
@@ -1554,12 +1554,12 @@
                                       "workerIndex": 0,
                                       "parallelIndex": 0,
                                       "status": "passed",
-                                      "duration": 2806,
+                                      "duration": 2980,
                                       "errors": [],
                                       "stdout": [],
                                       "stderr": [],
                                       "retry": 0,
-                                      "startTime": "2025-12-09T20:30:50.563Z",
+                                      "startTime": "2025-12-10T00:18:03.250Z",
                                       "annotations": [],
                                       "attachments": []
                                     }
@@ -1598,12 +1598,12 @@
                                       "workerIndex": 0,
                                       "parallelIndex": 0,
                                       "status": "passed",
-                                      "duration": 2937,
+                                      "duration": 2892,
                                       "errors": [],
                                       "stdout": [],
                                       "stderr": [],
                                       "retry": 0,
-                                      "startTime": "2025-12-09T20:30:53.380Z",
+                                      "startTime": "2025-12-10T00:18:06.242Z",
                                       "annotations": [],
                                       "attachments": []
                                     }
@@ -1634,12 +1634,12 @@
                                       "workerIndex": 0,
                                       "parallelIndex": 0,
                                       "status": "passed",
-                                      "duration": 3156,
+                                      "duration": 2491,
                                       "errors": [],
                                       "stdout": [],
                                       "stderr": [],
                                       "retry": 0,
-                                      "startTime": "2025-12-09T20:30:56.329Z",
+                                      "startTime": "2025-12-10T00:18:09.146Z",
                                       "annotations": [],
                                       "attachments": []
                                     }
@@ -1670,12 +1670,12 @@
                                       "workerIndex": 0,
                                       "parallelIndex": 0,
                                       "status": "passed",
-                                      "duration": 3016,
+                                      "duration": 2505,
                                       "errors": [],
                                       "stdout": [],
                                       "stderr": [],
                                       "retry": 0,
-                                      "startTime": "2025-12-09T20:30:59.497Z",
+                                      "startTime": "2025-12-10T00:18:11.651Z",
                                       "annotations": [],
                                       "attachments": []
                                     }
@@ -1718,16 +1718,16 @@
                               "workerIndex": 0,
                               "parallelIndex": 0,
                               "status": "passed",
-                              "duration": 6453,
+                              "duration": 6486,
                               "errors": [],
                               "stdout": [
                                 {
-                                  "text": "[Download] for cmsReviewer Filename suggested by browser: spas-export-12_09_2025.csv\"\n"
+                                  "text": "[Download] for cmsReviewer Filename suggested by browser: spas-export-12_10_2025.csv\"\n"
                                 }
                               ],
                               "stderr": [],
                               "retry": 0,
-                              "startTime": "2025-12-09T20:31:02.524Z",
+                              "startTime": "2025-12-10T00:18:14.167Z",
                               "annotations": [],
                               "attachments": [
                                 {
@@ -1757,8 +1757,8 @@
   ],
   "errors": [],
   "stats": {
-    "startTime": "2025-12-09T20:29:15.728Z",
-    "duration": 113347.364,
+    "startTime": "2025-12-10T00:16:37.502Z",
+    "duration": 103250.821,
     "expected": 28,
     "skipped": 0,
     "unexpected": 0,
