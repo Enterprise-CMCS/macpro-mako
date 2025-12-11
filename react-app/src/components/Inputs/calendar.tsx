@@ -1,11 +1,42 @@
-import { DayPicker } from "react-day-picker";
+import * as React from "react";
+import { Button as DayButton, DayPicker, useDayRender, type DayProps } from "react-day-picker";
 import { CalendarProps } from "shared-types";
 
 import { cn } from "@/utils";
 
 import { buttonVariants } from "./button";
 
-function Calendar({ className, classNames, showOutsideDays = true, ...props }: CalendarProps) {
+// Custom Day component to ensure today's date is announced by assistive tech.
+const AccessibleDay = (props: DayProps) => {
+  const buttonRef = React.useRef<HTMLButtonElement>(null);
+  const dayRender = useDayRender(props.date, props.displayMonth, buttonRef);
+  const ariaCurrent = dayRender.activeModifiers.today ? "date" : undefined;
+
+  if (dayRender.isHidden) {
+    return <div role="gridcell" />;
+  }
+
+  if (!dayRender.isButton) {
+    return <div {...dayRender.divProps} aria-current={ariaCurrent} />;
+  }
+
+  return (
+    <DayButton
+      name="day"
+      ref={buttonRef}
+      aria-current={ariaCurrent}
+      {...dayRender.buttonProps}
+    />
+  );
+};
+
+function Calendar({
+  className,
+  classNames,
+  showOutsideDays = true,
+  components,
+  ...props
+}: CalendarProps) {
   return (
     <DayPicker
       fromYear={1960}
@@ -46,6 +77,7 @@ function Calendar({ className, classNames, showOutsideDays = true, ...props }: C
       }}
       captionLayout="dropdown-buttons"
       components={{
+        Day: AccessibleDay,
         Dropdown: ({ caption, className, ...props }: any) => {
           return (
             <button className="relative mx-1">
@@ -57,6 +89,7 @@ function Calendar({ className, classNames, showOutsideDays = true, ...props }: C
             </button>
           );
         },
+        ...(components ?? {}),
       }}
       {...props}
     />
