@@ -1,3 +1,4 @@
+import { useFeatureFlag } from "@/hooks/useFeatureFlag";
 import { PdfList, Template } from "../utils";
 
 // MAGI Eligibility & Methods
@@ -117,50 +118,60 @@ export const CHP_NON_FIN_TEMPLATE: Template[] = [
   {
     title: "CS 31",
     text: "Incarcerated CHIP Beneficiaries",
-    href: "/chp/CS31.pdf",
+    href: "/chp/CS31-A.pdf",
   },
 ];
 
-export const ChipSpaTemplates = () => (
-  <section>
-    <p>
-      CHIP eligibility SPA templates can be downloaded at the links below. After downloading and
-      completing the templates you need, upload them as part of the SPA submission. The template
-      PDFs can only be opened using Adobe Reader or Acrobat.
-    </p>
-    <ul className="pl-7 space-y-2 py-4" role="list">
-      <li className="space-y-2">
-        <p>MAGI Eligibility & Methods</p>
-        <PdfList
-          list={CHP_MAGI_TEMPLATES}
-          label="template"
-          ulClassName="list-disc pl-7 space-y-2"
-        />
-      </li>
-      <li className="space-y-2">
-        <p>XXI Medicaid Expansion</p>
-        <PdfList
-          list={CHP_MED_EXPANSION_TEMPLATES}
-          label="template"
-          ulClassName="list-disc pl-7 space-y-2"
-        />
-      </li>
-      <li className="space-y-2">
-        <p>Eligibility Processing</p>
-        <PdfList
-          list={CHP_ELIGIBILITY_TEMPLATE}
-          label="template"
-          ulClassName="list-disc pl-7 space-y-2"
-        />
-      </li>
-      <li className="space-y-2">
-        <p>Non-Financial Eligibility</p>
-        <PdfList
-          list={CHP_NON_FIN_TEMPLATE}
-          label="template"
-          ulClassName="list-disc pl-7 space-y-2"
-        />
-      </li>
-    </ul>
-  </section>
-);
+export const ChipSpaTemplates = () => {
+  const useNewCs31 = useFeatureFlag("CS31_ALT");
+
+  const nonFinancialTemplates: Template[] = CHP_NON_FIN_TEMPLATE.map((template) =>
+    template.title === "CS 31"
+      ? { ...template, href: useNewCs31 ? "/chp/CS31-B.pdf" : "/chp/CS31-A.pdf" }
+      : template,
+  );
+
+  return (
+    <section>
+      <p>
+        CHIP eligibility SPA templates can be downloaded at the links below. After downloading and
+        completing the templates you need, upload them as part of the SPA submission. The template
+        PDFs can only be opened using Adobe Reader or Acrobat.
+      </p>
+      <ul className="pl-7 space-y-2 py-4" role="list">
+        <li className="space-y-2">
+          <p>MAGI Eligibility & Methods</p>
+          <PdfList
+            list={CHP_MAGI_TEMPLATES}
+            label="template"
+            ulClassName="list-disc pl-7 space-y-2"
+          />
+        </li>
+        <li className="space-y-2">
+          <p>XXI Medicaid Expansion</p>
+          <PdfList
+            list={CHP_MED_EXPANSION_TEMPLATES}
+            label="template"
+            ulClassName="list-disc pl-7 space-y-2"
+          />
+        </li>
+        <li className="space-y-2">
+          <p>Eligibility Processing</p>
+          <PdfList
+            list={CHP_ELIGIBILITY_TEMPLATE}
+            label="template"
+            ulClassName="list-disc pl-7 space-y-2"
+          />
+        </li>
+        <li className="space-y-2">
+          <p>Non-Financial Eligibility</p>
+          <PdfList
+            list={nonFinancialTemplates}
+            label="template"
+            ulClassName="list-disc pl-7 space-y-2"
+          />
+        </li>
+      </ul>
+    </section>
+  );
+};
