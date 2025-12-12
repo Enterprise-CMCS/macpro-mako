@@ -5,6 +5,7 @@ export interface Template {
   text?: string;
   href: string;
   subtext?: string[];
+  downloadName?: string;
 }
 
 export const helpDeskContact = {
@@ -32,6 +33,7 @@ export const PdfLink = ({
   title,
   text,
   label,
+  downloadName,
   className = "underline hover:no-underline",
 }: {
   href: string;
@@ -39,11 +41,12 @@ export const PdfLink = ({
   text?: string;
   label: string;
   className?: string;
+  downloadName?: string;
 }) => (
   <a
     className={cn("text-primary", className)}
     href={href}
-    download
+    download={downloadName ?? true}
     rel="noopener noreferrer"
     target="_blank"
     onClick={handleSupportLinkClick(label)}
@@ -65,7 +68,14 @@ export const PdfList = ({
   <ul className={ulClassName} role="list">
     {list.map((pdf) => (
       <li key={pdf.title}>
-        <PdfLink href={pdf.href} title={pdf.title} text={pdf.text} label={label} className="" />
+        <PdfLink
+          href={pdf.href}
+          title={pdf.title}
+          text={pdf.text}
+          label={label}
+          downloadName={pdf.downloadName}
+          className=""
+        />
         {pdf.subtext && (
           <ul className="list-disc pl-7 space-y-1" role="list">
             {pdf.subtext.map((sub, index) => (

@@ -119,6 +119,7 @@ export const CHP_NON_FIN_GUIDES: Template[] = [
     title: "CS 31",
     text: "Incarcerated CHIP Beneficiaries Implementation Guide",
     href: "/chp/IG_CS31_IncarceratedCHIPBeneficiaries-A.pdf",
+    downloadName: "IG_CS31_IncarceratedCHIPBeneficiaries.pdf",
   },
 ];
 
