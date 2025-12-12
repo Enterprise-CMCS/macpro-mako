@@ -39,6 +39,7 @@ const useGetLinks = () => {
   const toggleFaq = useFeatureFlag("TOGGLE_FAQ");
   const showHome = toggleFaq ? userObj.user : true; // if toggleFAQ is on we want to hide home when not logged in
   const isStateHomepage = useFeatureFlag("STATE_HOMEPAGE_FLAG");
+  const showSMART = useFeatureFlag("SHOW_SMART_LINK");
 
   const links =
     userLoading || userDetailsLoading || isFaqPage
@@ -69,6 +70,15 @@ const useGetLinks = () => {
             name: "View FAQs",
             link: "/faq",
             condition: !toggleFaq,
+          },
+          {
+            name: "OneMAC SMART",
+            link: config.smartLink.url,
+            condition:
+              showSMART &&
+              ["systemadmin", "cmsroleapprover", "cmsreviewer", "defaultcmsuser"].includes(
+                userDetailsData?.role,
+              ),
           },
           {
             name: "Latest Updates",
@@ -344,7 +354,7 @@ const ResponsiveNav = ({ isDesktop }: ResponsiveNavProps) => {
   const hideLogin = useFeatureFlag("LOGIN_PAGE");
 
   const handleRegister = () => {
-    const url = `${config.idm.home_url}/signin/login.html`;
+    const url = config.idm.home_url;
     window.location.assign(url);
   };
 
@@ -367,7 +377,6 @@ const ResponsiveNav = ({ isDesktop }: ResponsiveNavProps) => {
       event_label: name,
     });
   };
-
   if (isDesktop) {
     return (
       <>
@@ -375,7 +384,7 @@ const ResponsiveNav = ({ isDesktop }: ResponsiveNavProps) => {
           <NavLink
             data-testid={`${link.name}-d`}
             to={link.link}
-            target={link.link === "/faq" ? "_blank" : "_self"}
+            target={link.link === "/faq" || link.name === "OneMAC SMART" ? "_blank" : "_self"}
             key={link.name}
             className={setClassBasedOnNav}
             onClick={() => triggerGAEvent(link.name)}

@@ -174,7 +174,7 @@ describe("Upload", () => {
     fireEvent.drop(dropzone);
 
     await waitFor(() => {
-      expect(screen.getByTestId("upload-component-upload")).not.toBeVisible();
+      expect(screen.queryByTestId("upload-component-upload")).not.toBeInTheDocument();
     });
   });
 

@@ -19,6 +19,13 @@ vi.mock("@aws-sdk/s3-request-presigner", () => ({
   getSignedUrl: vi.fn(),
 }));
 
+(globalThis as any).logger = {
+  warn: vi.fn(),
+  info: vi.fn(),
+  error: vi.fn(),
+  debug: vi.fn(),
+};
+
 describe("Lambda Handler", () => {
   afterEach(() => {
     vi.clearAllMocks();

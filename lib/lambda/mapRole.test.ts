@@ -11,6 +11,12 @@ import * as os from "../libs/opensearch-lib";
 import { handler } from "./mapRole";
 
 describe("CloudFormation Custom Resource Handler", () => {
+  (globalThis as any).logger = {
+    warn: vi.fn(),
+    info: vi.fn(),
+    error: vi.fn(),
+    debug: vi.fn(),
+  };
   const mockEventBase = {
     ResponseURL: CLOUDFORMATION_NOTIFICATION_DOMAIN,
     ResourceProperties: {

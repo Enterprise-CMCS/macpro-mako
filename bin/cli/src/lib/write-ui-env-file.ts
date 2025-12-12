@@ -73,6 +73,7 @@ export async function writeUiEnvFile(stage, local = false) {
       ? `"http://localhost:5000/"`
       : deploymentOutput.applicationEndpointUrl,
     VITE_IDM_HOME_URL: deploymentOutput.idmHomeUrl,
+    VITE_SMART_LINK_URL: deploymentOutput.smartLinkUrl,
     VITE_GOOGLE_ANALYTICS_GTAG: `"${googleAnalytics}"`,
     VITE_GOOGLE_ANALYTICS_DISABLE: `"${deploymentConfig.googleAnalyticsDisable}"`,
     VITE_LAUNCHDARKLY_CLIENT_ID: `"${deploymentConfig.launchDarklyClientId}"`,

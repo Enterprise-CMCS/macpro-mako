@@ -5,6 +5,7 @@ import { AUTH_CONFIG, noRoleUser, setMockUsername, testStateSubmitter } from "mo
 import { afterAll, beforeAll, beforeEach, describe, expect, it, vi } from "vitest";
 
 import * as api from "@/api";
+import config from "@/config";
 import * as hooks from "@/hooks";
 import * as ReactGAModule from "@/utils/ReactGA/SendGAEvent";
 import { renderWithQueryClientAndMemoryRouter } from "@/utils/test-helpers";
@@ -380,9 +381,7 @@ describe("Layout", () => {
       await user.click(registerButton);
 
       // Assert that window.location.assign was called with the expected URL
-      expect(window.location.assign).toHaveBeenCalledWith(
-        expect.stringContaining("/signin/login.html"),
-      );
+      expect(window.location.assign).toBeCalledWith(config.idm.home_url);
 
       // Restore original window.location
       // @ts-ignore we need to reset the original window function
