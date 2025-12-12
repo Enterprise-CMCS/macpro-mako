@@ -1,42 +1,10 @@
-import * as React from "react";
-import { Button as DayButton, DayPicker, useDayRender, type DayProps } from "react-day-picker";
+import { DayPicker, Button as DayButton, type DayButtonProps } from "react-day-picker";
 import { CalendarProps } from "shared-types";
 
 import { cn } from "@/utils";
-
 import { buttonVariants } from "./button";
 
-// Custom Day component to ensure today's date is announced by assistive tech.
-const AccessibleDay = (props: DayProps) => {
-  const buttonRef = React.useRef<HTMLButtonElement>(null);
-  const dayRender = useDayRender(props.date, props.displayMonth, buttonRef);
-  const ariaCurrent = dayRender.activeModifiers.today ? "date" : undefined;
-
-  if (dayRender.isHidden) {
-    return <div role="gridcell" />;
-  }
-
-  if (!dayRender.isButton) {
-    return <div {...dayRender.divProps} aria-current={ariaCurrent} />;
-  }
-
-  return (
-    <DayButton
-      name="day"
-      ref={buttonRef}
-      aria-current={ariaCurrent}
-      {...dayRender.buttonProps}
-    />
-  );
-};
-
-function Calendar({
-  className,
-  classNames,
-  showOutsideDays = true,
-  components,
-  ...props
-}: CalendarProps) {
+function Calendar({ className, classNames, showOutsideDays = true, ...props }: CalendarProps) {
   return (
     <DayPicker
       fromYear={1960}
@@ -77,19 +45,28 @@ function Calendar({
       }}
       captionLayout="dropdown-buttons"
       components={{
-        Day: AccessibleDay,
-        Dropdown: ({ caption, className, ...props }: any) => {
+        DayButton: (props: DayButtonProps) => {
+          const { modifiers, ...buttonProps } = props;
+
+          return (
+            <DayButton
+              {...buttonProps}
+              modifiers={modifiers}
+              aria-current={modifiers.today ? "date" : undefined}
+            />
+          );
+        },
+        Dropdown: ({ caption, className, ...dropdownProps }: any) => {
           return (
             <button className="relative mx-1">
               {caption}
               <select
                 className={cn("absolute left-0 w-auto h-auto opacity-0 cursor-pointer", className)}
-                {...props}
+                {...dropdownProps}
               />
             </button>
           );
         },
-        ...(components ?? {}),
       }}
       {...props}
     />
