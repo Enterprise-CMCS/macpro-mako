@@ -29,9 +29,7 @@ const AccessibleDay = (props: DayProps) => {
     );
   }
 
-  return (
-    <DayButton name="day" ref={buttonRef} aria-current={ariaCurrent} {...dayRender.buttonProps} />
-  );
+  return <DayButton ref={buttonRef} aria-current={ariaCurrent} {...dayRender.buttonProps} />;
 };
 
 function Calendar({
