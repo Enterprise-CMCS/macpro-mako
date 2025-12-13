@@ -157,6 +157,9 @@ export class ClamScanScanner extends Construct {
     const clamDefsLambda = new DockerImageFunction(this, "ServerlessClamDefs", {
       code: DockerImageCode.fromImageAsset(__dirname, {
         cmd: ["dist/defs.handler"],
+        buildArgs: {
+          CACHE_BUST: "2025-12-01-cve-2025-7783",
+        },
       }),
       timeout: cdk.Duration.minutes(1),
       memorySize: 10240,
@@ -175,7 +178,11 @@ export class ClamScanScanner extends Construct {
     });
 
     const clamscanLambda = new DockerImageFunction(this, "ServerlessClamscan", {
-      code: DockerImageCode.fromImageAsset(__dirname),
+      code: DockerImageCode.fromImageAsset(__dirname, {
+        buildArgs: {
+          CACHE_BUST: "2025-12-01-cve-2025-7783",
+        },
+      }),
       timeout: cdk.Duration.minutes(1),
       memorySize: 10240,
       role: this.lambdaRole,

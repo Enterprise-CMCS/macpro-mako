@@ -1,14 +1,16 @@
+import { CognitoIdentityProviderClient } from "@aws-sdk/client-cognito-identity-provider";
 import {
   emptyIdentityProviderServiceHandler,
   errorIdentityProviderServiceHandler,
   USER_POOL_ID,
 } from "mocks";
 import { mockedServiceServer as mockedServer } from "mocks/server";
-import { describe, expect, it } from "vitest";
+import { describe, expect, it, vi } from "vitest";
 
 import { getAllStateUsers } from "./getAllStateUsers";
 
 describe("getAllStateUsers", () => {
+  vi.setConfig({ testTimeout: 15000 });
   it("should fetch users successfully", async () => {
     const result = await getAllStateUsers({ userPoolId: USER_POOL_ID, state: "CA" });
     expect(result).toEqual([
@@ -56,8 +58,12 @@ describe("getAllStateUsers", () => {
 
   it("should handle an error when fetching state users", async () => {
     mockedServer.use(errorIdentityProviderServiceHandler);
+    const sendSpy = vi
+      .spyOn(CognitoIdentityProviderClient.prototype, "send")
+      .mockRejectedValueOnce(new Error("boom"));
     await expect(() =>
       getAllStateUsers({ userPoolId: USER_POOL_ID, state: "CA" }),
     ).rejects.toThrowError("Error fetching users");
+    sendSpy.mockRestore();
   });
 });

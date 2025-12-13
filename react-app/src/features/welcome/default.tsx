@@ -39,7 +39,7 @@ export const Welcome = () => {
               <br />
               As of August 27, 2025, the CS31 SPA template and implementation guide are now
               available.{" "}
-              <Link to="/faq/spa-admendments" target={FAQ_TAB} className="underline text-[#0071bc]">
+              <Link to="/faq/spa-amendments" target={FAQ_TAB} className="underline text-[#0071bc]">
                 Learn more
               </Link>
             </p>

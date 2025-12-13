@@ -130,6 +130,7 @@ export class ParentStack extends cdk.Stack {
         s3BucketName: uiInfraStack.bucket.bucketName,
         cloudfrontDistributionId: uiInfraStack.distribution.distributionId,
         idmHomeUrl: props.idmHomeUrl,
+        smartLinkUrl: props.smartLinkUrl,
         kibanaUrl: `https://${dataStack.openSearchDomainEndpoint}/_dashboards`,
       }),
       description: `Deployment output for the ${props.stage} environment.`,

@@ -89,6 +89,13 @@ export const featureFlags = {
     defaultValue: true,
   },
   /*
+   * Toggle CS31 CHIP SPA template asset between environments
+   */
+  CS31_ALT: {
+    flag: "cs31-alt",
+    defaultValue: false,
+  },
+  /*
    *  Toggle visibility between the enhanced experience and mmdl banner
    */
   UPGRADE_MMDL_BANNER: {
@@ -108,5 +115,12 @@ export const featureFlags = {
   UPGRADE_NEW_LABEL: {
     flag: "upgade-new-label",
     defaultValue: true,
+  },
+  /*
+   *  Toggle visibility of SMART link in header
+   */
+  SHOW_SMART_LINK: {
+    flag: "show-smart-link",
+    defaultValue: false,
   },
 } as const;

@@ -141,6 +141,12 @@ const getOneMacRecordWithAllProperties = (
   const record = JSON.parse(decodeBase64WithUtf8(value));
   const kafkaSource = String.fromCharCode(...(kafkaRecord.headers[0]?.source || []));
 
+  // Skip email tracking events
+  if (record.eventList && record.componentId) {
+    console.log(`Skipping email event for component: ${record.componentId}`);
+    return undefined; // Skip processing
+  }
+
   if (isRecordAnAdminOneMacRecord(record)) {
     const safeRecord = adminRecordSchema.safeParse(record);
 
@@ -251,8 +257,7 @@ const getOneMacRecordWithAllProperties = (
 
     return oneMacLegacyRecord;
   }
-
-  console.error(`No transform found for event: ${record.event}`);
+  console.error(`No transform found for event: ${record.event}`, JSON.stringify(record));
 
   return;
 };

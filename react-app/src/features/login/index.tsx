@@ -51,7 +51,7 @@ export const Login = () => {
               buttonStyling,
               "border border-primary text-primary font-bold hover:bg-primary/10",
             )}
-            to={`${config.idm.home_url}/signin/login.html`}
+            to={config.idm.home_url}
           >
             Register
           </Link>
