@@ -1,11 +1,44 @@
-import { DayPicker } from "react-day-picker";
+import * as React from "react";
+import { Button as DayButton, DayPicker, type DayProps, useDayRender } from "react-day-picker";
 import { CalendarProps } from "shared-types";
 
 import { cn } from "@/utils";
 
 import { buttonVariants } from "./button";
 
-function Calendar({ className, classNames, showOutsideDays = true, ...props }: CalendarProps) {
+const AccessibleDay = (props: DayProps) => {
+  const buttonRef = React.useRef<HTMLButtonElement>(null);
+  const dayRender = useDayRender(props.date, props.displayMonth, buttonRef);
+  const ariaCurrent = dayRender.activeModifiers.today ? "date" : undefined;
+
+  if (dayRender.isHidden) {
+    return <div role="gridcell" />;
+  }
+
+  if (!dayRender.isButton) {
+    const { className, style, children, ...divProps } = dayRender.divProps;
+    return (
+      <div
+        className={className}
+        style={style as React.CSSProperties}
+        aria-current={ariaCurrent}
+        {...divProps}
+      >
+        {children}
+      </div>
+    );
+  }
+
+  return <DayButton ref={buttonRef} aria-current={ariaCurrent} {...dayRender.buttonProps} />;
+};
+
+function Calendar({
+  className,
+  classNames,
+  showOutsideDays = true,
+  components,
+  ...props
+}: CalendarProps) {
   return (
     <DayPicker
       fromYear={1960}
@@ -46,17 +79,19 @@ function Calendar({ className, classNames, showOutsideDays = true, ...props }: C
       }}
       captionLayout="dropdown-buttons"
       components={{
-        Dropdown: ({ caption, className, ...props }: any) => {
+        Day: AccessibleDay,
+        Dropdown: ({ caption, className, ...dropdownProps }: any) => {
           return (
             <button className="relative mx-1">
               {caption}
               <select
                 className={cn("absolute left-0 w-auto h-auto opacity-0 cursor-pointer", className)}
-                {...props}
+                {...dropdownProps}
               />
             </button>
           );
         },
+        ...(components ?? {}),
       }}
       {...props}
     />
