@@ -51,6 +51,7 @@ export const renderCellActions = (
   setSelectedUserRole: React.Dispatch<React.SetStateAction<object>>,
   userDetails: UserDetails,
 ) => {
+  console.log(userDetails);
   const actions = (function () {
     switch (userRole.status) {
       case "pending":
@@ -95,7 +96,10 @@ export const renderCellActions = (
 
   const isPopoverDisabled =
     !actions.length ||
-    (!userDetails.states.includes(userRole.territory) && userRole.territory !== "N/A");
+    (userDetails.role !== "systemadmin" &&
+      userRole.territory.toLocaleUpperCase() !== "N/A" &&
+      !userDetails.states?.includes(userRole.territory));
+
   return (
     <Popover>
       <PopoverTrigger
