@@ -51,7 +51,8 @@ export const renderCellActions = (
   setSelectedUserRole: React.Dispatch<React.SetStateAction<object>>,
   userDetails: UserDetails,
 ) => {
-  console.log(userDetails);
+  console.log("user detail ", userDetails);
+  console.log("userrole", userRole);
   const actions = (function () {
     switch (userRole.status) {
       case "pending":
