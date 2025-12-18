@@ -130,6 +130,8 @@ export const UserManagement = () => {
   const isHelpDesk = userDetails && userDetails?.role === "helpdesk";
   const isStateSystemAdmin = userDetails && userDetails.role === "statesystemadmin";
   const isSystemAdmin = userDetails && userDetails.role === "systemadmin";
+  const isCmsRoleApprover = userDetails && userDetails.role === "cmsroleapprover";
+  const canManageUsers = isSystemAdmin || isStateSystemAdmin || isCmsRoleApprover;
 
   const getBannerText = (selectedUser: SelectedUser) => {
     const getStatusText = () => {
@@ -295,7 +297,7 @@ export const UserManagement = () => {
             {userRoles.map((userRole) => {
               return (
                 <TableRow key={userRole.id}>
-                  {!isHelpDesk && (
+                  {canManageUsers && userDetails.states.includes(userRole.territory) && (
                     <TableCell className="py-5 px-4">
                       {renderCellActions(userRole, setModalText, setSelectedUserRole)}
                     </TableCell>
