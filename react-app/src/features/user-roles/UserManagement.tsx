@@ -3,6 +3,7 @@ import { ExportToCsv } from "export-to-csv";
 import LZ from "lz-string";
 import { useEffect, useMemo, useState } from "react";
 import { Link } from "react-router";
+import { UserDetails } from "shared-types";
 import { formatDate, formatDateToET } from "shared-utils";
 import { userRoleMap } from "shared-utils";
 
@@ -48,6 +49,7 @@ export const renderCellActions = (
   userRole: UserRoleType,
   setModalText: React.Dispatch<React.SetStateAction<string>>,
   setSelectedUserRole: React.Dispatch<React.SetStateAction<object>>,
+  userDetails: UserDetails,
 ) => {
   const actions = (function () {
     switch (userRole.status) {
@@ -94,7 +96,7 @@ export const renderCellActions = (
   return (
     <Popover>
       <PopoverTrigger
-        disabled={!actions.length}
+        disabled={!actions.length || userDetails.states.includes(userRole.territory)}
         className="block ml-3"
         aria-label="Available actions"
       >
@@ -297,9 +299,9 @@ export const UserManagement = () => {
             {userRoles.map((userRole) => {
               return (
                 <TableRow key={userRole.id}>
-                  {canManageUsers && userDetails.states.includes(userRole.territory) && (
+                  {canManageUsers && (
                     <TableCell className="py-5 px-4">
-                      {renderCellActions(userRole, setModalText, setSelectedUserRole)}
+                      {renderCellActions(userRole, setModalText, setSelectedUserRole, userDetails)}
                     </TableCell>
                   )}
                   <TableCell>
