@@ -96,7 +96,11 @@ export const renderCellActions = (
   return (
     <Popover>
       <PopoverTrigger
-        disabled={!actions.length || userDetails.states.includes(userRole.territory || "N/A")}
+        disabled={
+          !actions.length ||
+          userDetails.states.includes(userRole.territory) ||
+          userRole.territory === "N/A"
+        }
         className="block ml-3"
         aria-label="Available actions"
       >
