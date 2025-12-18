@@ -71,7 +71,6 @@ export const renderCellActions = (
     };
 
     const requestFor = userRole.status === "pending" ? " request for" : "";
-
     const statusMap = {
       "Grant Access": "active",
       "Deny Access": "denied",
@@ -93,19 +92,23 @@ export const renderCellActions = (
       requestRoleChange: false,
     });
   };
+
+  const isPopoverDisabled =
+    !actions.length ||
+    (!userDetails.states.includes(userRole.territory) && userRole.territory !== "N/A");
   return (
     <Popover>
       <PopoverTrigger
-        disabled={
-          !actions.length ||
-          (!userDetails.states.includes(userRole.territory) && userRole.territory !== "N/A")
-        }
-        className="block ml-3"
+        disabled={isPopoverDisabled}
+        className="block ml-3 "
         aria-label="Available actions"
       >
         <EllipsisVerticalIcon
           aria-label="record actions"
-          className={cn("w-8 ", actions.length ? "text-blue-700" : "text-gray-400")}
+          className={cn(
+            "w-8 transition-colors",
+            isPopoverDisabled ? "text-gray-400" : "text-blue-700 hover:text-blue-800",
+          )}
         />
       </PopoverTrigger>
       <PopoverContent className="w-auto">
