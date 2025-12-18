@@ -98,8 +98,7 @@ export const renderCellActions = (
       <PopoverTrigger
         disabled={
           !actions.length ||
-          userDetails.states.includes(userRole.territory) ||
-          userRole.territory === "N/A"
+          (!userDetails.states.includes(userRole.territory) && userRole.territory !== "N/A")
         }
         className="block ml-3"
         aria-label="Available actions"
