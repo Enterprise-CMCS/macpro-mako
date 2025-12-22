@@ -97,8 +97,8 @@ export const renderCellActions = (
 
   const isPopoverDisabled =
     !actions.length ||
-    (userDetails.role !== "systemadmin" &&
-      userRole.territory.toLocaleUpperCase() !== "N/A" &&
+    (!["systemadmin", "cmsroleapprover"].includes(userDetails.role) &&
+      userRole.territory?.toLocaleUpperCase() !== "N/A" &&
       !userDetails.states?.includes(userRole.territory));
 
   return (
