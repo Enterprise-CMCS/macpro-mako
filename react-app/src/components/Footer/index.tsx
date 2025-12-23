@@ -1,5 +1,6 @@
 import { useMemo } from "react";
 import { Link } from "react-router";
+import { UserRoles } from "shared-types";
 import { isStateUser } from "shared-utils";
 
 import { useGetUser, useGetUserDetails } from "@/api";
@@ -26,6 +27,11 @@ export const Footer = ({ email, address, showNavLinks }: Props) => {
     const role = userDetailsData?.role;
     return ["systemadmin", "statesystemadmin", "cmsroleapprover", "helpdesk"].includes(role);
   }, [userDetailsData]);
+  const showDashboard =
+    user.user &&
+    Object.values(UserRoles).some((role) => {
+      return user.user.role === role;
+    });
   const isStateHomepage = useFeatureFlag("STATE_HOMEPAGE_FLAG");
 
   return (
@@ -43,15 +49,17 @@ export const Footer = ({ email, address, showNavLinks }: Props) => {
               >
                 <p>Home</p>
               </a>
-              <a
-                href="/dashboard"
-                className="underline font-bold"
-                onClick={() => {
-                  sendGAEvent("home_footer_link", { link_name: "dashboard" });
-                }}
-              >
-                <p>Dashboard</p>
-              </a>
+              {showDashboard && (
+                <a
+                  href="/dashboard"
+                  className="underline font-bold"
+                  onClick={() => {
+                    sendGAEvent("home_footer_link", { link_name: "dashboard" });
+                  }}
+                >
+                  <p>Dashboard</p>
+                </a>
+              )}
 
               {showUserManagement && (
                 <a href="/usermanagement" className="underline font-bold">
