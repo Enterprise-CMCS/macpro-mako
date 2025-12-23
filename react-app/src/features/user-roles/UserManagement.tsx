@@ -24,7 +24,7 @@ import {
   TableHeader,
   TableRow,
 } from "@/components";
-import { queryClient } from "@/utils"; // you already have this in router file
+import { queryClient } from "@/utils";
 import { cn } from "@/utils";
 
 import { initSortUserData, sortUserData, UserRoleType } from "./utils";
