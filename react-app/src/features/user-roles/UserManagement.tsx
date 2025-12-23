@@ -24,6 +24,7 @@ import {
   TableHeader,
   TableRow,
 } from "@/components";
+import { queryClient } from "@/utils"; // you already have this in router file
 import { cn } from "@/utils";
 
 import { initSortUserData, sortUserData, UserRoleType } from "./utils";
@@ -226,6 +227,7 @@ export const UserManagement = () => {
     try {
       setModalText(null);
       await submitRequest(selectedUserRole);
+      await queryClient.invalidateQueries({ queryKey: ["roleRequests"] });
       setSelectedUserRole(null);
 
       banner({
