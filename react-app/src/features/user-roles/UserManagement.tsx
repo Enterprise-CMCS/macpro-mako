@@ -227,7 +227,7 @@ export const UserManagement = () => {
     try {
       setModalText(null);
       await submitRequest(selectedUserRole);
-      await queryClient.invalidateQueries({ queryKey: ["roleRequests"] });
+      await queryClient.refetchQueries({ queryKey: ["roleRequests"], exact: true });
       setSelectedUserRole(null);
 
       banner({
