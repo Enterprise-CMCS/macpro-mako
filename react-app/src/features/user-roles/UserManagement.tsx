@@ -16,7 +16,6 @@ import {
   Popover,
   PopoverContent,
   PopoverTrigger,
-  // SubNavHeader,
   Table,
   TableBody,
   TableCell,
@@ -52,43 +51,47 @@ export const renderCellActions = (
   setSelectedUserRole: React.Dispatch<React.SetStateAction<object>>,
   userDetails: UserDetails,
 ) => {
-  console.log("user detail ", userDetails);
-  console.log("userrole", userRole);
-  const actions = (function () {
-    switch (userRole.status) {
-      case "pending":
-        return ["Grant Access", "Deny Access"];
-      case "active":
-        return ["Revoke Access"];
-      case "denied":
-        return ["Grant Access"];
-      case "revoked":
-        return ["Grant Access"];
-    }
-  })();
+  const actions =
+    (function () {
+      switch (userRole.status) {
+        case "pending":
+          return ["Grant Access", "Deny Access"];
+        case "active":
+          return ["Revoke Access"];
+        case "denied":
+          return ["Grant Access"];
+        case "revoked":
+          return ["Grant Access"];
+        default:
+          return [];
+      }
+    })() ?? [];
+
   const actionChosen = (action: string) => {
     const modalAction = {
       "Grant Access": "grant",
       "Deny Access": "deny",
       "Revoke Access": "revoke",
-    };
+    } as const;
 
     const requestFor = userRole.status === "pending" ? " request for" : "";
+
     const statusMap = {
       "Grant Access": "active",
       "Deny Access": "denied",
       "Revoke Access": "revoked",
-    };
-    //  in legacy there is logic to add the territory in front
+    } as const;
+
     setModalText(
-      `This will ${modalAction[action]} ${userRole.fullName}'s${requestFor} access to OneMac.`,
+      `This will ${modalAction[action as keyof typeof modalAction]} ${userRole.fullName}'s${requestFor} access to OneMac.`,
     );
+
     setSelectedUserRole({
       email: userRole.email,
       fullName: userRole.fullName,
       state: userRole.territory,
       role: userRole.role,
-      grantAccess: statusMap[action],
+      grantAccess: statusMap[action as keyof typeof statusMap],
       eventType: userRole.eventType,
       group: userRole.group ?? null,
       division: userRole.division ?? null,
@@ -96,6 +99,7 @@ export const renderCellActions = (
     });
   };
 
+  // systemadmin + cmsroleapprover can always act (unless there are 0 actions)
   const isPopoverDisabled =
     !actions.length ||
     (!["systemadmin", "cmsroleapprover"].includes(userDetails.role) &&
@@ -106,7 +110,7 @@ export const renderCellActions = (
     <Popover>
       <PopoverTrigger
         disabled={isPopoverDisabled}
-        className="block ml-3 "
+        className="block ml-3"
         aria-label="Available actions"
       >
         <EllipsisVerticalIcon
@@ -117,6 +121,7 @@ export const renderCellActions = (
           )}
         />
       </PopoverTrigger>
+
       <PopoverContent className="w-auto">
         <div className="flex flex-col">
           {actions.map((action, idx) => (
@@ -138,14 +143,15 @@ export const UserManagement = () => {
   const { data: userDetails } = useGetUserDetails();
   const { data, isLoading, isFetching } = useGetRoleRequests();
   const { mutateAsync: submitRequest, isLoading: processSubmit } = useSubmitRoleRequests();
+
   const [userRoles, setUserRoles] = useState<UserRoleType[] | null>(null);
   const [selectedUserRole, setSelectedUserRole] = useState<SelectedUser>(null);
 
-  const isHelpDesk = userDetails && userDetails?.role === "helpdesk";
-  const isStateSystemAdmin = userDetails && userDetails.role === "statesystemadmin";
-  const isSystemAdmin = userDetails && userDetails.role === "systemadmin";
-  const isCmsRoleApprover = userDetails && userDetails.role === "cmsroleapprover";
-  const canManageUsers = isSystemAdmin || isStateSystemAdmin || isCmsRoleApprover;
+  const isHelpDesk = userDetails?.role === "helpdesk";
+  const isStateSystemAdmin = userDetails?.role === "statesystemadmin";
+  const isSystemAdmin = userDetails?.role === "systemadmin";
+  const isCmsRoleApprover = userDetails?.role === "cmsroleapprover";
+  const canManageUsers = !!(isSystemAdmin || isStateSystemAdmin || isCmsRoleApprover);
 
   const getBannerText = (selectedUser: SelectedUser) => {
     const getStatusText = () => {
@@ -160,7 +166,6 @@ export const UserManagement = () => {
           return "'s access is pending";
       }
     };
-
     return `${selectedUser.fullName}${getStatusText()}`;
   };
 
@@ -168,6 +173,7 @@ export const UserManagement = () => {
     title: keyof headingType | "";
     direction: boolean;
   }>({ title: "", direction: false });
+
   const [modalText, setModalText] = useState<string | null>(null);
 
   const renderStatus = (value: string) => {
@@ -180,6 +186,8 @@ export const UserManagement = () => {
         return "Denied";
       case "revoked":
         return "Revoked";
+      default:
+        return value;
     }
   };
 
@@ -192,8 +200,11 @@ export const UserManagement = () => {
       "Last Modified": "lastModifiedDate",
       "Modified By": "doneByName",
     };
+
     if (isHelpDesk) return baseHeadings;
+
     if (!isStateSystemAdmin) return { Actions: null, ...baseHeadings };
+
     delete baseHeadings.State;
     delete baseHeadings.Role;
     return { Actions: null, ...baseHeadings };
@@ -206,7 +217,10 @@ export const UserManagement = () => {
     if (sortBy.title === heading) {
       setSortBy({ title: heading, direction: !sortBy.direction });
       direction = !sortBy.direction;
-    } else setSortBy({ title: heading, direction: false });
+    } else {
+      setSortBy({ title: heading, direction: false });
+    }
+
     setUserRoles(sortUserData(headings[heading], direction, userRoles));
   };
 
@@ -216,7 +230,7 @@ export const UserManagement = () => {
       if (sortBy.title) {
         sorted = sortUserData(headings[sortBy.title], sortBy.direction, [...data]);
       } else {
-        sorted = initSortUserData([...data]); // default sort if no column clicked yet
+        sorted = initSortUserData([...data]);
       }
       setUserRoles(sorted);
     }
@@ -226,16 +240,37 @@ export const UserManagement = () => {
   const onAcceptRoleChange = async () => {
     try {
       setModalText(null);
-      await submitRequest(selectedUserRole);
-      await queryClient.refetchQueries({ queryKey: ["roleRequests"], exact: true });
+
+      const updated = selectedUserRole;
+      await submitRequest(updated);
+
+      // ✅ Update local table immediately (so UI is correct even if refetch lags)
+      setUserRoles((prev) => {
+        if (!prev) return prev;
+        return prev.map((r) => {
+          const sameUser = r.email === updated.email;
+          if (!sameUser) return r;
+
+          return {
+            ...r,
+            status: updated.grantAccess, // active/denied/revoked
+            // optional: keep rest as-is; backend can overwrite on refetch
+          };
+        });
+      });
+
       setSelectedUserRole(null);
+
+      // Still refresh source-of-truth cache
+      await queryClient.invalidateQueries({ queryKey: ["roleRequests"] });
 
       banner({
         header: "Status Change",
-        body: `${getBannerText(selectedUserRole)}, a notification has been sent to their email.`,
+        body: `${getBannerText(updated)}, a notification has been sent to their email.`,
         variant: "success",
         pathnameToDisplayOn: window.location.pathname,
       });
+
       window.scrollTo(0, 0);
     } catch (error) {
       console.error(error);
@@ -248,7 +283,6 @@ export const UserManagement = () => {
     }
   };
 
-  // Export Section
   const handleExport = async () => {
     const modifiedUserRoles = userRoles.map((role) => ({
       Name: role.fullName,
@@ -268,8 +302,10 @@ export const UserManagement = () => {
     csvExporter.generateCsv(modifiedUserRoles);
   };
 
-  if (!userDetails || isLoading || processSubmit || isFetching || !userRoles)
+  if (!userDetails || isLoading || processSubmit || isFetching || !userRoles) {
     return <LoadingSpinner />;
+  }
+
   return (
     <div>
       <ConfirmationDialog
@@ -281,6 +317,7 @@ export const UserManagement = () => {
         onAccept={onAcceptRoleChange}
         onCancel={() => setModalText(null)}
       />
+
       <div className="bg-sky-100/75" data-testid="sub-nav-header">
         <div className="max-w-screen-xl m-auto px-4 lg:px-8 flex items-center py-4 justify-between">
           <h1 className="text-xl font-medium">User Management</h1>
@@ -291,6 +328,7 @@ export const UserManagement = () => {
           )}
         </div>
       </div>
+
       <div className="py-5 px-10">
         <Table>
           <TableHeader className="[&_tr]:border-b sticky top-0 bg-white">
@@ -308,35 +346,39 @@ export const UserManagement = () => {
               ))}
             </TableRow>
           </TableHeader>
+
           <TableBody>
-            {userRoles.map((userRole) => {
-              return (
-                <TableRow key={userRole.id}>
-                  {canManageUsers && (
-                    <TableCell className="py-5 px-4">
-                      {renderCellActions(userRole, setModalText, setSelectedUserRole, userDetails)}
-                    </TableCell>
-                  )}
+            {userRoles.map((userRole) => (
+              <TableRow key={userRole.id}>
+                {canManageUsers && (
                   <TableCell>
-                    <Link
-                      to={`/profile/${LZ.compressToEncodedURIComponent(userRole.email).replaceAll("+", "_")}`}
-                      className="cursor-pointer text-blue-600 hover:underline flex select-none items-center px-2 py-2"
-                    >
-                      {userRole.fullName}
-                    </Link>
+                    {renderCellActions(userRole, setModalText, setSelectedUserRole, userDetails)}
                   </TableCell>
-                  {!isStateSystemAdmin && <TableCell>{userRole.territory}</TableCell>}
-                  <TableCell>
-                    <span className="font-bold flex items-center">
-                      {renderStatus(userRole.status)}
-                    </span>
-                  </TableCell>
-                  {!isStateSystemAdmin && <TableCell>{userRoleMap[userRole.role]}</TableCell>}
-                  <TableCell>{formatDateToET(userRole.lastModifiedDate)}</TableCell>
-                  <TableCell>{userRole.doneByName}</TableCell>
-                </TableRow>
-              );
-            })}
+                )}
+
+                <TableCell>
+                  <Link
+                    to={`/profile/${LZ.compressToEncodedURIComponent(userRole.email).replaceAll("+", "_")}`}
+                    className="cursor-pointer text-blue-600 hover:underline flex select-none items-center px-2 py-2"
+                  >
+                    {userRole.fullName}
+                  </Link>
+                </TableCell>
+
+                {!isStateSystemAdmin && <TableCell>{userRole.territory}</TableCell>}
+
+                <TableCell>
+                  <span className="font-bold flex items-center">
+                    {renderStatus(userRole.status)}
+                  </span>
+                </TableCell>
+
+                {!isStateSystemAdmin && <TableCell>{userRoleMap[userRole.role]}</TableCell>}
+
+                <TableCell>{formatDateToET(userRole.lastModifiedDate)}</TableCell>
+                <TableCell>{userRole.doneByName}</TableCell>
+              </TableRow>
+            ))}
           </TableBody>
         </Table>
       </div>
