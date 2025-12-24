@@ -88,7 +88,7 @@ export const renderCellActions = (
       fullName: userRole.fullName,
       state: userRole.territory,
       role: userRole.role,
-      grantAccess: statusMap[action], // <- this covers grant/deny/revoke
+      grantAccess: statusMap[action],
       eventType: userRole.eventType,
       group: userRole.group ?? null,
       division: userRole.division ?? null,
@@ -265,7 +265,7 @@ export const UserManagement = () => {
       // 2) Immediately reflect change locally (grant/deny/revoke all covered)
       applyLocalStatusUpdate(selectedUserRole);
 
-      // 3) Optional: ensure server truth eventually replaces local
+      // 3) ensure server truth eventually replaces local
       await queryClient.invalidateQueries({ queryKey: ["roleRequests"] });
 
       banner({
