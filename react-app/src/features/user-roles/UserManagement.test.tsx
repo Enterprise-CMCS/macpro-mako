@@ -9,7 +9,7 @@ import {
   setMockUsername,
   systemAdmin,
 } from "mocks";
-import { afterEach, describe, expect, it, vi } from "vitest";
+import { describe, expect, it, vi } from "vitest";
 
 import * as api from "@/api";
 import { renderWithQueryClientAndMemoryRouter } from "@/utils/test-helpers";
@@ -48,10 +48,6 @@ describe("UserManagement", () => {
       user,
     };
   };
-
-  afterEach(() => {
-    vi.restoreAllMocks();
-  });
 
   it("should display all the role requests for the state for a state system admin", async () => {
     setMockUsername(osStateSystemAdmin);
@@ -201,7 +197,7 @@ describe("UserManagement", () => {
       },
     ];
 
-    vi.spyOn(api, "useGetUserDetails").mockReturnValue({
+    const userDetailsSpy = vi.spyOn(api, "useGetUserDetails").mockReturnValue({
       data: {
         id: "admin-user",
         eventType: "user-details",
@@ -213,12 +209,12 @@ describe("UserManagement", () => {
         group: "Admin Group",
       },
     } as any);
-    vi.spyOn(api, "useGetRoleRequests").mockReturnValue({
+    const roleRequestsSpy = vi.spyOn(api, "useGetRoleRequests").mockReturnValue({
       data: mockRoleRequests,
       isLoading: false,
       isFetching: false,
     } as any);
-    vi.spyOn(api, "useSubmitRoleRequests").mockReturnValue({
+    const submitRoleRequestsSpy = vi.spyOn(api, "useSubmitRoleRequests").mockReturnValue({
       mutateAsync,
       isLoading: false,
     } as any);
@@ -249,5 +245,9 @@ describe("UserManagement", () => {
         requestRoleChange: false,
       }),
     );
+
+    userDetailsSpy.mockRestore();
+    roleRequestsSpy.mockRestore();
+    submitRoleRequestsSpy.mockRestore();
   });
 });
