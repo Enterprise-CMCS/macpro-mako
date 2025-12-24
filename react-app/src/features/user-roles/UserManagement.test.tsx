@@ -1,4 +1,4 @@
-import { screen, waitForElementToBeRemoved, within } from "@testing-library/react";
+import { screen, waitFor, waitForElementToBeRemoved, within } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import {
   CMS_ROLE_APPROVER_EMAIL,
@@ -9,11 +9,13 @@ import {
   setMockUsername,
   systemAdmin,
 } from "mocks";
-import { describe, expect, it } from "vitest";
+import { afterEach, describe, expect, it, vi } from "vitest";
 
+import * as api from "@/api";
 import { renderWithQueryClientAndMemoryRouter } from "@/utils/test-helpers";
 
 import { UserManagement } from "./UserManagement";
+import { UserRoleType } from "./utils";
 
 describe("UserManagement", () => {
   const setup = async () => {
@@ -46,6 +48,10 @@ describe("UserManagement", () => {
       user,
     };
   };
+
+  afterEach(() => {
+    vi.restoreAllMocks();
+  });
 
   it("should display all the role requests for the state for a state system admin", async () => {
     setMockUsername(osStateSystemAdmin);
@@ -176,5 +182,72 @@ describe("UserManagement", () => {
     for (let i = 1; i <= expectedPendingRoles.length; i++) {
       expect(within(rows[i]).getByRole("cell", { name: "Pending" })).toBeInTheDocument();
     }
+  });
+
+  it("updates the status and modified by after confirming an action", async () => {
+    const mutateAsync = vi.fn().mockResolvedValue({});
+    const mockRoleRequests: UserRoleType[] = [
+      {
+        id: "pending@example.com_MD_statesubmitter",
+        email: "pending@example.com",
+        fullName: "Pending User",
+        role: "statesubmitter",
+        territory: "MD",
+        doneByEmail: "approver@example.com",
+        doneByName: "Original Approver",
+        lastModifiedDate: 1745234449866,
+        status: "pending",
+        eventType: "user-role",
+      },
+    ];
+
+    vi.spyOn(api, "useGetUserDetails").mockReturnValue({
+      data: {
+        id: "admin-user",
+        eventType: "user-details",
+        email: "admin@example.com",
+        fullName: "Admin User",
+        role: "systemadmin",
+        states: ["MD"],
+        division: "Admin Division",
+        group: "Admin Group",
+      },
+    } as any);
+    vi.spyOn(api, "useGetRoleRequests").mockReturnValue({
+      data: mockRoleRequests,
+      isLoading: false,
+      isFetching: false,
+    } as any);
+    vi.spyOn(api, "useSubmitRoleRequests").mockReturnValue({
+      mutateAsync,
+      isLoading: false,
+    } as any);
+
+    global.scrollTo = vi.fn();
+
+    const { user } = await setup();
+
+    const rowLabel = await screen.findByText("Pending User");
+    const row = rowLabel.closest("tr");
+    expect(row).not.toBeNull();
+
+    await user.click(within(row as HTMLElement).getByRole("button"));
+    await user.click(await screen.findByText("Grant Access"));
+    await user.click(screen.getByRole("button", { name: "Confirm" }));
+
+    await waitFor(() => {
+      const updatedRow = screen.getByText("Pending User").closest("tr");
+      expect(updatedRow).not.toBeNull();
+      expect(within(updatedRow as HTMLElement).getByText("Granted")).toBeInTheDocument();
+      expect(within(updatedRow as HTMLElement).getByText("Admin User")).toBeInTheDocument();
+    });
+
+    expect(mutateAsync).toHaveBeenCalledWith(
+      expect.objectContaining({
+        email: "pending@example.com",
+        grantAccess: "active",
+        requestRoleChange: false,
+      }),
+    );
   });
 });
