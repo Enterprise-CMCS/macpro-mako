@@ -266,7 +266,7 @@ export const UserManagement = () => {
       applyLocalStatusUpdate(selectedUserRole);
 
       // 3) Optional: ensure server truth eventually replaces local
-      // await queryClient.invalidateQueries({ queryKey: ["roleRequests"] });
+      await queryClient.invalidateQueries({ queryKey: ["roleRequests"] });
 
       banner({
         header: "Status Change",
