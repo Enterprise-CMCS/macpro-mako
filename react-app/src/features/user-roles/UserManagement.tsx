@@ -28,7 +28,6 @@ import { cn } from "@/utils";
 import { initSortUserData, sortUserData, UserRoleType } from "./utils";
 
 type headingType = { [key: string]: keyof UserRoleType | null };
-
 type SelectedUser = RoleRequest & { fullName: string };
 
 const pendingCircle = (
@@ -66,29 +65,30 @@ export const renderCellActions = (
   })();
 
   const actionChosen = (action: string) => {
-    const modalAction = {
+    const modalAction: Record<string, string> = {
       "Grant Access": "grant",
       "Deny Access": "deny",
       "Revoke Access": "revoke",
-    } as const;
+    };
 
     const requestFor = userRole.status === "pending" ? " request for" : "";
 
-    const statusMap = {
+    const statusMap: Record<string, UserRoleType["status"]> = {
       "Grant Access": "active",
       "Deny Access": "denied",
       "Revoke Access": "revoked",
-    } as const;
+    };
 
     setModalText(
       `This will ${modalAction[action]} ${userRole.fullName}'s${requestFor} access to OneMac.`,
     );
+
     setSelectedUserRole({
       email: userRole.email,
       fullName: userRole.fullName,
       state: userRole.territory,
       role: userRole.role,
-      grantAccess: statusMap[action],
+      grantAccess: statusMap[action], // <- this covers grant/deny/revoke
       eventType: userRole.eventType,
       group: userRole.group ?? null,
       division: userRole.division ?? null,
@@ -98,19 +98,12 @@ export const renderCellActions = (
 
   return (
     <Popover>
-      <PopoverTrigger
-        disabled={isPopoverDisabled || !actions.length}
-        aria-label="Available actions"
-        className={cn(
-          "block ml-3",
-          isPopoverDisabled || !actions.length ? "cursor-not-allowed opacity-50" : "cursor-pointer",
-        )}
-      >
+      <PopoverTrigger disabled={isPopoverDisabled} aria-label="Available actions">
         <EllipsisVerticalIcon
           aria-label="record actions"
           className={cn(
             "w-8",
-            isPopoverDisabled || !actions.length ? "text-gray-400" : "text-blue-700",
+            isPopoverDisabled ? "text-gray-400 cursor-not-allowed" : "text-blue-700",
           )}
         />
       </PopoverTrigger>
@@ -134,42 +127,44 @@ export const renderCellActions = (
 
 export const UserManagement = () => {
   const queryClient = useQueryClient();
-
   const { data: userDetails } = useGetUserDetails();
   const { data, isLoading, isFetching } = useGetRoleRequests();
   const { mutateAsync: submitRequest, isLoading: processSubmit } = useSubmitRoleRequests();
 
   const [userRoles, setUserRoles] = useState<UserRoleType[] | null>(null);
   const [selectedUserRole, setSelectedUserRole] = useState<SelectedUser>(null);
+  const [modalText, setModalText] = useState<string | null>(null);
 
-  const isHelpDesk = !!userDetails && userDetails.role === "helpdesk";
-  const isStateSystemAdmin = !!userDetails && userDetails.role === "statesystemadmin";
-  const isSystemAdmin = !!userDetails && userDetails.role === "systemadmin";
-  const isCmsRoleApprover = !!userDetails && userDetails.role === "cmsroleapprover";
-
+  const isHelpDesk = userDetails?.role === "helpdesk";
+  const isStateSystemAdmin = userDetails?.role === "statesystemadmin";
+  const isSystemAdmin = userDetails?.role === "systemadmin";
+  const isCmsRoleApprover = userDetails?.role === "cmsroleapprover";
   const canManageUsers = isSystemAdmin || isStateSystemAdmin || isCmsRoleApprover;
-
-  const getBannerText = (selectedUser: SelectedUser) => {
-    const getStatusText = () => {
-      switch (selectedUser.grantAccess) {
-        case "active":
-          return " has been granted access";
-        case "denied":
-          return " has been denied access";
-        case "revoked":
-          return "'s access has been revoked";
-        default:
-          return "'s access is pending";
-      }
-    };
-    return `${selectedUser.fullName}${getStatusText()}`;
-  };
 
   const [sortBy, setSortBy] = useState<{ title: keyof headingType | ""; direction: boolean }>({
     title: "",
     direction: false,
   });
-  const [modalText, setModalText] = useState<string | null>(null);
+
+  const headings = useMemo(() => {
+    const baseHeadings: headingType = {
+      Name: "fullName",
+      State: "territory",
+      Status: "status",
+      Role: "role",
+      "Last Modified": "lastModifiedDate",
+      "Modified By": "doneByName",
+    };
+
+    if (isHelpDesk) return baseHeadings;
+
+    if (!isStateSystemAdmin) return { Actions: null, ...baseHeadings };
+
+    // state sys admin view removes State/Role columns
+    delete baseHeadings.State;
+    delete baseHeadings.Role;
+    return { Actions: null, ...baseHeadings };
+  }, [isHelpDesk, isStateSystemAdmin]);
 
   const renderStatus = (value: string) => {
     switch (value) {
@@ -186,88 +181,101 @@ export const UserManagement = () => {
     }
   };
 
-  const headings = useMemo(() => {
-    const baseHeadings: headingType = {
-      Name: "fullName",
-      State: "territory",
-      Status: "status",
-      Role: "role",
-      "Last Modified": "lastModifiedDate",
-      "Modified By": "doneByName",
-    };
-
-    if (isHelpDesk) return baseHeadings;
-
-    // keep your existing behavior for state-system-admin column trimming
-    if (!isStateSystemAdmin) return { Actions: null, ...baseHeadings };
-
-    delete baseHeadings.State;
-    delete baseHeadings.Role;
-    return { Actions: null, ...baseHeadings };
-  }, [isHelpDesk, isStateSystemAdmin]);
-
   const sortByHeading = (heading: string) => {
     if (heading === "Actions") return;
 
     let direction = false;
     if (sortBy.title === heading) {
-      setSortBy({ title: heading, direction: !sortBy.direction });
       direction = !sortBy.direction;
+      setSortBy({ title: heading, direction });
     } else {
       setSortBy({ title: heading, direction: false });
     }
 
-    setUserRoles(sortUserData(headings[heading], direction, userRoles));
+    setUserRoles((prev) => (prev ? sortUserData(headings[heading], direction, prev) : prev));
   };
 
   useEffect(() => {
-    if (data) {
-      let sorted: UserRoleType[];
-      if (sortBy.title) {
-        sorted = sortUserData(headings[sortBy.title], sortBy.direction, [...data]);
-      } else {
-        sorted = initSortUserData([...data]);
-      }
-      setUserRoles(sorted);
+    if (!data) return;
+    if (!data.length) {
+      setUserRoles([]);
+      return;
+    }
+
+    if (sortBy.title) {
+      setUserRoles(sortUserData(headings[sortBy.title], sortBy.direction, [...data]));
+    } else {
+      setUserRoles(initSortUserData([...data]));
     }
   }, [data, sortBy, headings]);
+
+  const getBannerText = (selectedUser: SelectedUser) => {
+    switch (selectedUser.grantAccess) {
+      case "active":
+        return `${selectedUser.fullName} has been granted access`;
+      case "denied":
+        return `${selectedUser.fullName} has been denied access`;
+      case "revoked":
+        return `${selectedUser.fullName}'s access has been revoked`;
+      default:
+        return `${selectedUser.fullName}'s access is pending`;
+    }
+  };
+
+  const applyLocalStatusUpdate = (updated: SelectedUser) => {
+    const now = Date.now();
+
+    // Update the local rendered table state
+    setUserRoles((prev) => {
+      if (!prev) return prev;
+      return prev.map((r) => {
+        if (r.email !== updated.email) return r;
+
+        return {
+          ...r,
+          status: updated.grantAccess, // <- works for grant/deny/revoke
+          lastModifiedDate: now,
+          doneByName: userDetails?.fullName ?? r.doneByName,
+        };
+      });
+    });
+
+    // Update React Query cache for roleRequests too (so refetch isn't required to see change)
+    queryClient.setQueryData<UserRoleType[]>(["roleRequests"], (old) => {
+      if (!old) return old;
+      return old.map((r) => {
+        if (r.email !== updated.email) return r;
+        return {
+          ...r,
+          status: updated.grantAccess,
+          lastModifiedDate: now,
+          doneByName: userDetails?.fullName ?? r.doneByName,
+        };
+      });
+    });
+  };
 
   const onAcceptRoleChange = async () => {
     try {
       setModalText(null);
 
-      // snapshot for optimistic local patch
-      const pendingUpdate = selectedUserRole;
-
+      // 1) Call API
       await submitRequest(selectedUserRole);
-      setSelectedUserRole(null);
 
-      // ✅ optimistic patch local table state (so UI updates instantly)
-      setUserRoles((prev) => {
-        if (!prev || !pendingUpdate) return prev;
-        return prev.map((r) => {
-          if (r.email !== pendingUpdate.email) return r;
-          return {
-            ...r,
-            status: pendingUpdate.grantAccess,
-            // if your API returns these fields, you can update them too
-            // lastModifiedDate: Date.now(),
-            // doneByName: userDetails?.fullName ?? r.doneByName,
-          };
-        });
-      });
+      // 2) Immediately reflect change locally (grant/deny/revoke all covered)
+      applyLocalStatusUpdate(selectedUserRole);
 
-      // ✅ force fresh data from server
-      await queryClient.invalidateQueries({ queryKey: ["roleRequests"] });
-      await queryClient.refetchQueries({ queryKey: ["roleRequests"] });
+      // 3) Optional: ensure server truth eventually replaces local
+      // await queryClient.invalidateQueries({ queryKey: ["roleRequests"] });
 
       banner({
         header: "Status Change",
-        body: `${getBannerText(pendingUpdate)}, a notification has been sent to their email.`,
+        body: `${getBannerText(selectedUserRole)}, a notification has been sent to their email.`,
         variant: "success",
         pathnameToDisplayOn: window.location.pathname,
       });
 
+      setSelectedUserRole(null);
       window.scrollTo(0, 0);
     } catch (error) {
       console.error(error);
@@ -281,15 +289,16 @@ export const UserManagement = () => {
   };
 
   const handleExport = async () => {
-    const modifiedUserRoles = userRoles.map((role) => ({
-      Name: role.fullName,
-      Email: role.email,
-      State: role.territory,
-      Status: role.status,
-      Role: userRoleMap[role.role],
-      ["Last Modified"]: formatDate(role.lastModifiedDate),
-      ["Modified By"]: role.doneByName,
-    }));
+    const modifiedUserRoles =
+      userRoles?.map((role) => ({
+        Name: role.fullName,
+        Email: role.email,
+        State: role.territory,
+        Status: role.status,
+        Role: userRoleMap[role.role],
+        ["Last Modified"]: formatDate(role.lastModifiedDate),
+        ["Modified By"]: role.doneByName,
+      })) ?? [];
 
     const csvExporter = new ExportToCsv({
       useKeysAsHeaders: true,
@@ -353,7 +362,7 @@ export const UserManagement = () => {
 
               return (
                 <TableRow key={userRole.id}>
-                  {!isHelpDesk && (
+                  {canManageUsers && (
                     <TableCell>
                       {renderCellActions(
                         userRole,
@@ -382,6 +391,7 @@ export const UserManagement = () => {
                   </TableCell>
 
                   {!isStateSystemAdmin && <TableCell>{userRoleMap[userRole.role]}</TableCell>}
+
                   <TableCell>{formatDateToET(userRole.lastModifiedDate)}</TableCell>
                   <TableCell>{userRole.doneByName}</TableCell>
                 </TableRow>
