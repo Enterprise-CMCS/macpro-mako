@@ -1,4 +1,3 @@
-import { is } from "date-fns/locale";
 import { UserRole } from "shared-types/events/legacy-user";
 import { userRoleMap } from "shared-utils";
 
