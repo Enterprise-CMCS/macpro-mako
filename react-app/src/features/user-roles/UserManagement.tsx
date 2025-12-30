@@ -229,11 +229,7 @@ export const UserManagement = () => {
     setUserRoles((prev) => {
       if (!prev) return prev;
       return prev.map((r) => {
-        if (
-          r.email !== updated.email ||
-          r.territory !== updated.state ||
-          r.role !== updated.role
-        ) {
+        if (r.email !== updated.email || r.territory !== updated.state || r.role !== updated.role) {
           return r;
         }
 
@@ -251,11 +247,7 @@ export const UserManagement = () => {
     queryClient.setQueryData<UserRoleType[]>(["roleRequests"], (old) => {
       if (!old) return old;
       return old.map((r) => {
-        if (
-          r.email !== updated.email ||
-          r.territory !== updated.state ||
-          r.role !== updated.role
-        ) {
+        if (r.email !== updated.email || r.territory !== updated.state || r.role !== updated.role) {
           return r;
         }
         return {
