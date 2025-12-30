@@ -279,8 +279,8 @@ export const UserManagement = () => {
       // 2) Immediately reflect change locally (grant/deny/revoke all covered)
       applyLocalStatusUpdate(selectedUserRole);
 
-      // 3) ensure server truth eventually replaces local
-      await queryClient.invalidateQueries({ queryKey: ["roleRequests"] });
+      // 3) mark stale without refetching immediately (backend updates are async)
+      await queryClient.invalidateQueries({ queryKey: ["roleRequests"], refetchType: "none" });
 
       banner({
         header: "Status Change",
