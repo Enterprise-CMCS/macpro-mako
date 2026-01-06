@@ -33,6 +33,18 @@ export const userProfileLoader = async ({
     const profileUserDetails = await getUserDetails(userEmail);
     const profileUserProfile = await getUserProfile(userEmail);
 
+    const isActorStateSystemAdmin = currUserDetails.role === "statesystemadmin";
+    const hasActiveStateSystemAdminRole =
+      profileUserProfile?.stateAccess?.some(
+        (access) => access.role === "statesystemadmin" && access.status === "active",
+      ) ?? false;
+    const isTargetStateSystemAdmin =
+      hasActiveStateSystemAdminRole || profileUserDetails?.role === "statesystemadmin";
+
+    if (isActorStateSystemAdmin && isTargetStateSystemAdmin) {
+      return redirect("/usermanagement");
+    }
+
     return { userDetails: profileUserDetails, userProfile: profileUserProfile };
   } catch (error) {
     if (error instanceof Error) {

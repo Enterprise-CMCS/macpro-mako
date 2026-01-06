@@ -116,6 +116,78 @@ describe("UserManagement", () => {
     expect(within(rows[6]).getByRole("cell", { name: "Granted" })).toBeInTheDocument();
   });
 
+  it("hides users with active state system admin roles for state system admins", async () => {
+    const mockRoleRequests: UserRoleType[] = [
+      {
+        id: "ssa@example.com_N/A_statesystemadmin",
+        email: "ssa@example.com",
+        fullName: "SSA User",
+        role: "statesystemadmin",
+        territory: "N/A",
+        doneByEmail: "approver@example.com",
+        doneByName: "Approver User",
+        lastModifiedDate: 1745234449866,
+        status: "active",
+        eventType: "user-role",
+      },
+      {
+        id: "ssa@example.com_MD_statesubmitter",
+        email: "ssa@example.com",
+        fullName: "SSA User",
+        role: "statesubmitter",
+        territory: "MD",
+        doneByEmail: "approver@example.com",
+        doneByName: "Approver User",
+        lastModifiedDate: 1745234449866,
+        status: "active",
+        eventType: "user-role",
+      },
+      {
+        id: "other@example.com_MD_statesubmitter",
+        email: "other@example.com",
+        fullName: "Other User",
+        role: "statesubmitter",
+        territory: "MD",
+        doneByEmail: "approver@example.com",
+        doneByName: "Approver User",
+        lastModifiedDate: 1745234449866,
+        status: "active",
+        eventType: "user-role",
+      },
+    ];
+
+    const userDetailsSpy = vi.spyOn(api, "useGetUserDetails").mockReturnValue({
+      data: {
+        id: "admin-user",
+        eventType: "user-details",
+        email: "admin@example.com",
+        fullName: "Admin User",
+        role: "statesystemadmin",
+        states: ["MD"],
+        division: "Admin Division",
+        group: "Admin Group",
+      },
+    } as any);
+    const roleRequestsSpy = vi.spyOn(api, "useGetRoleRequests").mockReturnValue({
+      data: mockRoleRequests,
+      isLoading: false,
+      isFetching: false,
+    } as any);
+    const submitRoleRequestsSpy = vi.spyOn(api, "useSubmitRoleRequests").mockReturnValue({
+      mutateAsync: vi.fn(),
+      isLoading: false,
+    } as any);
+
+    await setup();
+
+    expect(screen.queryByText("SSA User")).toBeNull();
+    expect(screen.getByText("Other User")).toBeInTheDocument();
+
+    userDetailsSpy.mockRestore();
+    roleRequestsSpy.mockRestore();
+    submitRoleRequestsSpy.mockRestore();
+  });
+
   it("should display all the role requests except cmsroleapprovers and systemadmins for a cmsroleapprover", async () => {
     setMockUsername(cmsRoleApprover);
     await setup();
