@@ -368,7 +368,7 @@ export const UserManagement = () => {
               const isActorStateSystemAdmin = userDetails.role === "statesystemadmin";
               const isTargetStateSystemAdmin = userRole.role === "statesystemadmin";
               const isParallelSsaBlocked = isActorStateSystemAdmin && isTargetStateSystemAdmin;
-
+              console.log(userDetails, userRole, isParallelSsaBlocked);
               const isPopoverDisabled =
                 !canManageUsers ||
                 isParallelSsaBlocked ||
