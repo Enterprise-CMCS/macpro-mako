@@ -212,23 +212,12 @@ export const UserManagement = () => {
     }
   }, [data, sortBy, headings]);
 
-  const stateSystemAdminEmails = useMemo(() => {
-    if (!userRoles) return new Set<string>();
-    return new Set(
-      userRoles
-        .filter((role) => role.role === "statesystemadmin" && role.status === "active")
-        .map((role) => role.email),
-    );
-  }, [userRoles]);
-
   const visibleUserRoles = useMemo(() => {
     if (!userRoles) return [];
     if (!isStateSystemAdmin) return userRoles;
 
-    return userRoles.filter(
-      (r) => r.role !== "statesystemadmin" && !stateSystemAdminEmails.has(r.email),
-    );
-  }, [userRoles, isStateSystemAdmin, stateSystemAdminEmails]);
+    return userRoles.filter((r) => r.role !== "statesystemadmin");
+  }, [userRoles, isStateSystemAdmin]);
 
   const getBannerText = (selectedUser: SelectedUser) => {
     switch (selectedUser.grantAccess) {
@@ -377,8 +366,9 @@ export const UserManagement = () => {
           <TableBody>
             {visibleUserRoles.map((userRole) => {
               const isActorStateSystemAdmin = userDetails.role === "statesystemadmin";
-              const isTargetStateSystemAdmin = stateSystemAdminEmails.has(userRole.email);
+              const isTargetStateSystemAdmin = userRole.role === "statesystemadmin";
               const isParallelSsaBlocked = isActorStateSystemAdmin && isTargetStateSystemAdmin;
+              console.log(userDetails, userRole, isParallelSsaBlocked);
               const isPopoverDisabled =
                 !canManageUsers ||
                 isParallelSsaBlocked ||
