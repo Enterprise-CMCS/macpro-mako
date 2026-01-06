@@ -96,31 +96,32 @@ export const renderCellActions = (
     });
   };
 
+  const isDisabled = isPopoverDisabled || actions.length === 0;
+
   return (
     <Popover>
-      <PopoverTrigger disabled={isPopoverDisabled} aria-label="Available actions">
+      <PopoverTrigger disabled={isDisabled} aria-label="Available actions">
         <EllipsisVerticalIcon
           aria-label="record actions"
-          className={cn(
-            "w-8",
-            isPopoverDisabled ? "text-gray-400 cursor-not-allowed" : "text-blue-700",
-          )}
+          className={cn("w-8", isDisabled ? "text-gray-400 cursor-not-allowed" : "text-blue-700")}
         />
       </PopoverTrigger>
 
-      <PopoverContent className="w-auto">
-        <div className="flex flex-col">
-          {actions.map((action, idx) => (
-            <div
-              className="text-blue-500 cursor-pointer relative flex select-none items-center rounded-sm px-2 py-2 text-sm outline-none transition-colors hover:bg-accent hover:text-accent-foreground"
-              key={idx}
-              onClick={() => actionChosen(action)}
-            >
-              {action}
-            </div>
-          ))}
-        </div>
-      </PopoverContent>
+      {!isDisabled && (
+        <PopoverContent className="w-auto">
+          <div className="flex flex-col">
+            {actions.map((action, idx) => (
+              <div
+                className="text-blue-500 cursor-pointer relative flex select-none items-center rounded-sm px-2 py-2 text-sm outline-none transition-colors hover:bg-accent hover:text-accent-foreground"
+                key={idx}
+                onClick={() => actionChosen(action)}
+              >
+                {action}
+              </div>
+            ))}
+          </div>
+        </PopoverContent>
+      )}
     </Popover>
   );
 };
@@ -139,6 +140,8 @@ export const UserManagement = () => {
   const isStateSystemAdmin = userDetails?.role === "statesystemadmin";
   const isSystemAdmin = userDetails?.role === "systemadmin";
   const isCmsRoleApprover = userDetails?.role === "cmsroleapprover";
+
+  // Policy: SSAs can manage users, just not other parallel SSA accounts.
   const canManageUsers = isSystemAdmin || isStateSystemAdmin || isCmsRoleApprover;
 
   const [sortBy, setSortBy] = useState<{ title: keyof headingType | ""; direction: boolean }>({
@@ -209,6 +212,13 @@ export const UserManagement = () => {
     }
   }, [data, sortBy, headings]);
 
+  const visibleUserRoles = useMemo(() => {
+    if (!userRoles) return [];
+    if (!isStateSystemAdmin) return userRoles;
+
+    return userRoles.filter((r) => r.role !== "statesystemadmin");
+  }, [userRoles, isStateSystemAdmin]);
+
   const getBannerText = (selectedUser: SelectedUser) => {
     switch (selectedUser.grantAccess) {
       case "active":
@@ -225,7 +235,6 @@ export const UserManagement = () => {
   const applyLocalStatusUpdate = (updated: SelectedUser) => {
     const now = Date.now();
 
-    // Update the local rendered table state
     setUserRoles((prev) => {
       if (!prev) return prev;
       return prev.map((r) => {
@@ -235,7 +244,7 @@ export const UserManagement = () => {
 
         return {
           ...r,
-          status: updated.grantAccess, // <- works for grant/deny/revoke
+          status: updated.grantAccess,
           lastModifiedDate: now,
           doneByName: userDetails?.fullName ?? r.doneByName,
           doneByEmail: userDetails?.email ?? r.doneByEmail,
@@ -243,7 +252,6 @@ export const UserManagement = () => {
       });
     });
 
-    // Update React Query cache for roleRequests too (so refetch isn't required to see change)
     queryClient.setQueryData<UserRoleType[]>(["roleRequests"], (old) => {
       if (!old) return old;
       return old.map((r) => {
@@ -265,13 +273,9 @@ export const UserManagement = () => {
     try {
       setModalText(null);
 
-      // 1) Call API
       await submitRequest(selectedUserRole);
-
-      // 2) Immediately reflect change locally (grant/deny/revoke all covered)
       applyLocalStatusUpdate(selectedUserRole);
 
-      // 3) mark stale without refetching immediately (backend updates are async)
       await queryClient.invalidateQueries({ queryKey: ["roleRequests"], refetchType: "none" });
 
       banner({
@@ -296,7 +300,7 @@ export const UserManagement = () => {
 
   const handleExport = async () => {
     const modifiedUserRoles =
-      userRoles?.map((role) => ({
+      visibleUserRoles.map((role) => ({
         Name: role.fullName,
         Email: role.email,
         State: role.territory,
@@ -314,8 +318,9 @@ export const UserManagement = () => {
     csvExporter.generateCsv(modifiedUserRoles);
   };
 
-  if (!userDetails || isLoading || processSubmit || isFetching || !userRoles)
+  if (!userDetails || isLoading || processSubmit || isFetching || !userRoles) {
     return <LoadingSpinner />;
+  }
 
   return (
     <div>
@@ -359,9 +364,14 @@ export const UserManagement = () => {
           </TableHeader>
 
           <TableBody>
-            {userRoles.map((userRole) => {
+            {visibleUserRoles.map((userRole) => {
+              const isActorStateSystemAdmin = userDetails.role === "statesystemadmin";
+              const isTargetStateSystemAdmin = userRole.role === "statesystemadmin";
+              const isParallelSsaBlocked = isActorStateSystemAdmin && isTargetStateSystemAdmin;
+
               const isPopoverDisabled =
                 !canManageUsers ||
+                isParallelSsaBlocked ||
                 (!["systemadmin", "cmsroleapprover"].includes(userDetails.role) &&
                   userRole.territory?.toLocaleUpperCase() !== "N/A" &&
                   !userDetails.states?.includes(userRole.territory));
@@ -381,7 +391,10 @@ export const UserManagement = () => {
 
                   <TableCell>
                     <Link
-                      to={`/profile/${LZ.compressToEncodedURIComponent(userRole.email).replaceAll("+", "_")}`}
+                      to={`/profile/${LZ.compressToEncodedURIComponent(userRole.email).replaceAll(
+                        "+",
+                        "_",
+                      )}`}
                       className="cursor-pointer text-blue-600 hover:underline flex select-none items-center px-2 py-2"
                     >
                       {userRole.fullName}
