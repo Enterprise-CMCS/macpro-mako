@@ -49,13 +49,14 @@ const resolveGroup = (value?: string) => {
   if (!value) return undefined;
   const trimmed = value.trim();
   if (!trimmed) return undefined;
-
+  console.log("resolveGroup", trimmed);
   const matchByLabel = groupDivision.find(
     (group) => group.abbr === trimmed || group.name === trimmed,
   );
   if (matchByLabel) return matchByLabel;
-
+  console.log("no match by label, trying id");
   const id = parseNumericId(trimmed);
+  console.log("parsed id", id);
   if (id === null) return undefined;
 
   return groupDivision.find((group) => group.id === id);
