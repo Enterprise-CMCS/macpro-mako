@@ -91,6 +91,7 @@ const getGroupDisplayValue = (value?: string) => {
 };
 
 const getDivisionDisplayValue = (value?: string, groupValue?: string) => {
+  console.log("getDivisionDisplayValue", value, groupValue);
   if (!value) return "";
   const trimmed = value.trim();
   if (!trimmed) return "";
@@ -99,6 +100,7 @@ const getDivisionDisplayValue = (value?: string, groupValue?: string) => {
   if (id === null) return trimmed;
 
   const division = resolveDivision(trimmed, resolveGroup(groupValue));
+  console.log("resolved division", division);
   return division?.abbr ?? division?.name ?? trimmed;
 };
 
