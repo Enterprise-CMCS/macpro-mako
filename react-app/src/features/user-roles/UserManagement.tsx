@@ -365,13 +365,9 @@ export const UserManagement = () => {
 
           <TableBody>
             {visibleUserRoles.map((userRole) => {
-              const isActorStateSystemAdmin = userDetails.role === "statesystemadmin";
-              const isTargetStateSystemAdmin = userRole.role === "statesystemadmin";
-              const isParallelSsaBlocked = isActorStateSystemAdmin && isTargetStateSystemAdmin;
-              console.log(userDetails, userRole, isParallelSsaBlocked);
+              console.log(userDetails, userRole);
               const isPopoverDisabled =
                 !canManageUsers ||
-                isParallelSsaBlocked ||
                 (!["systemadmin", "cmsroleapprover"].includes(userDetails.role) &&
                   userRole.territory?.toLocaleUpperCase() !== "N/A" &&
                   !userDetails.states?.includes(userRole.territory));
