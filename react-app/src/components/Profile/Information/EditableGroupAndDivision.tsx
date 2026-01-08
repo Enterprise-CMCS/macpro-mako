@@ -58,7 +58,7 @@ const resolveGroup = (value?: string) => {
   const id = parseNumericId(trimmed);
   console.log("parsed id", id);
   if (id === null) return undefined;
-
+  console.log(groupDivision, "finding by id", id);
   return groupDivision.find((group) => group.id === id);
 };
 
