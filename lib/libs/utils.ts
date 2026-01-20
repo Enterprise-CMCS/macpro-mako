@@ -42,6 +42,5 @@ export function getOsNamespace(baseIndex: BaseIndex): Index {
 export function getDomainAndNamespace(baseIndex: BaseIndex) {
   const domain = getDomain();
   const index = getOsNamespace(baseIndex);
-
   return { index, domain };
 }
