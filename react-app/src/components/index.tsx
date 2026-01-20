@@ -34,3 +34,4 @@ export * from "./Banner";
 export * from "./ActionForm";
 export * from "./Tooltip";
 export * from "./ToggleGroup";
+export * from "./UserManagementGuard";

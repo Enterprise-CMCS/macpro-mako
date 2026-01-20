@@ -1,7 +1,7 @@
 import { createBrowserRouter, Navigate, Outlet } from "react-router";
 
 import * as C from "@/components";
-import { TimeoutModal } from "@/components";
+import { TimeoutModal, UserManagementGuard } from "@/components";
 import * as F from "@/features";
 import {
   postSubmissionLoader,
@@ -169,7 +169,15 @@ export const router = (loginFlag = false) => {
               path: "/support/:id",
               element: <F.SupportPage />,
             },
-            { path: "/usermanagement", element: <F.UserManagement /> },
+            {
+              element: <UserManagementGuard />,
+              children: [
+                {
+                  path: "/usermanagement",
+                  element: <F.UserManagement />,
+                },
+              ],
+            },
           ],
         },
 
