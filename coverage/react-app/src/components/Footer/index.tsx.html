@@ -23,30 +23,30 @@
         <div class='clearfix'>
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">94.73% </span>
+                <span class="strong">95.23% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>18/19</span>
+                <span class='fraction'>20/21</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
                 <span class="strong">100% </span>
                 <span class="quiet">Branches</span>
-                <span class='fraction'>8/8</span>
+                <span class='fraction'>11/11</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">90% </span>
+                <span class="strong">90.9% </span>
                 <span class="quiet">Functions</span>
-                <span class='fraction'>9/10</span>
+                <span class='fraction'>10/11</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">94.44% </span>
+                <span class="strong">95% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>17/18</span>
+                <span class='fraction'>19/20</span>
             </div>
         
             
@@ -241,7 +241,16 @@
 <a name='L176'></a><a href='#L176'>176</a>
 <a name='L177'></a><a href='#L177'>177</a>
 <a name='L178'></a><a href='#L178'>178</a>
-<a name='L179'></a><a href='#L179'>179</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
+<a name='L179'></a><a href='#L179'>179</a>
+<a name='L180'></a><a href='#L180'>180</a>
+<a name='L181'></a><a href='#L181'>181</a>
+<a name='L182'></a><a href='#L182'>182</a>
+<a name='L183'></a><a href='#L183'>183</a>
+<a name='L184'></a><a href='#L184'>184</a>
+<a name='L185'></a><a href='#L185'>185</a>
+<a name='L186'></a><a href='#L186'>186</a>
+<a name='L187'></a><a href='#L187'>187</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -269,6 +278,11 @@
 <span class="cline-any cline-yes">9x</span>
 <span class="cline-any cline-yes">9x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">9x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">45x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">9x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -290,7 +304,9 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -421,6 +437,7 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">import { useMemo } from "react";
 import { Link } from "react-router";
+import { UserRoles } from "shared-types";
 import { isStateUser } from "shared-utils";
 &nbsp;
 import { useGetUser, useGetUserDetails } from "@/api";
@@ -447,6 +464,11 @@ export const Footer = ({ email, address, showNavLinks }: Props) =&gt; {
     const role = userDetailsData?.role;
     return ["systemadmin", "statesystemadmin", "cmsroleapprover", "helpdesk"].includes(role);
   }, [userDetailsData]);
+  const showDashboard =
+    user.user &amp;&amp;
+    Object.values(UserRoles).some((role) =&gt; {
+      return user.user.role === role;
+    });
   const isStateHomepage = useFeatureFlag("STATE_HOMEPAGE_FLAG");
 &nbsp;
   return (
@@ -464,15 +486,17 @@ export const Footer = ({ email, address, showNavLinks }: Props) =&gt; {
               &gt;
                 &lt;p&gt;Home&lt;/p&gt;
               &lt;/a&gt;
-              &lt;a
-                href="/dashboard"
-                className="underline font-bold"
-                onClick={() =&gt; {
-                  sendGAEvent("home_footer_link", { link_name: "dashboard" });
-                }}
-              &gt;
-                &lt;p&gt;Dashboard&lt;/p&gt;
-              &lt;/a&gt;
+              {showDashboard &amp;&amp; (
+                &lt;a
+                  href="/dashboard"
+                  className="underline font-bold"
+                  onClick={() =&gt; {
+                    sendGAEvent("home_footer_link", { link_name: "dashboard" });
+                  }}
+                &gt;
+                  &lt;p&gt;Dashboard&lt;/p&gt;
+                &lt;/a&gt;
+              )}
 &nbsp;
               {showUserManagement &amp;&amp; (
                 &lt;a href="/usermanagement" className="underline font-bold"&gt;
@@ -604,7 +628,7 @@ export const FAQFooter = () =&gt; {
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2026-01-20T02:20:01.489Z
+                at 2026-01-20T15:19:13.287Z
             </div>
         <script src="../../../../prettify.js"></script>
         <script>

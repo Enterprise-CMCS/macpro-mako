@@ -23,16 +23,16 @@
         <div class='clearfix'>
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">81.98% </span>
+                <span class="strong">85.58% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>91/111</span>
+                <span class='fraction'>95/111</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">70.51% </span>
+                <span class="strong">73.07% </span>
                 <span class="quiet">Branches</span>
-                <span class='fraction'>55/78</span>
+                <span class='fraction'>57/78</span>
             </div>
         
             
@@ -44,9 +44,9 @@
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">81.48% </span>
+                <span class="strong">85.18% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>88/108</span>
+                <span class='fraction'>92/108</span>
             </div>
         
             
@@ -502,7 +502,7 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">3x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -511,22 +511,22 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">3x</span>
 <span class="cline-any cline-yes">3x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -639,9 +639,9 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">61481x</span>
-<span class="cline-any cline-yes">21487x</span>
-<span class="cline-any cline-yes">21487x</span>
+<span class="cline-any cline-yes">61483x</span>
+<span class="cline-any cline-yes">21489x</span>
+<span class="cline-any cline-yes">21489x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -799,18 +799,18 @@ export async function mapRole(
         ExternalId: "foo",
       }),
     );
-    const interceptor = <span class="cstat-no" title="statement not covered" >aws4Interceptor({</span>
+    const interceptor = aws4Interceptor({
       options: {
         region: process.env.region,
       },
       credentials: {
-        accessKeyId: assumedRoleCommandData?.Credentials?.AccessKeyId || "",
-        secretAccessKey: assumedRoleCommandData?.Credentials?.SecretAccessKey || "",
+        accessKeyId: assumedRoleCommandData?.Credentials?.AccessKeyId || <span class="branch-1 cbranch-no" title="branch not covered" >"",</span>
+        secretAccessKey: assumedRoleCommandData?.Credentials?.SecretAccessKey || <span class="branch-1 cbranch-no" title="branch not covered" >"",</span>
         sessionToken: assumedRoleCommandData?.Credentials?.SessionToken,
       },
     });
-<span class="cstat-no" title="statement not covered" >    axios.interceptors.request.use(interceptor);</span>
-    const patchResponse = <span class="cstat-no" title="statement not covered" >await axios.patch(</span>
+    axios.interceptors.request.use(interceptor);
+    const patchResponse = await axios.patch(
       `${host}/_plugins/_security/api/rolesmapping/${osRoleName}`,
       [
         {
@@ -820,7 +820,7 @@ export async function mapRole(
         },
       ],
     );
-<span class="cstat-no" title="statement not covered" >    return decodeUtf8(patchResponse.data);</span>
+    return decodeUtf8(patchResponse.data);
   } catch (error) {
     console.error("Error making PUT request:", error);
     throw error;
@@ -961,7 +961,7 @@ export function decodeUtf8(data: any): any {
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2026-01-20T02:20:01.489Z
+                at 2026-01-20T15:19:13.287Z
             </div>
         <script src="../../prettify.js"></script>
         <script>
