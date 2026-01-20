@@ -23,16 +23,16 @@
         <div class='clearfix'>
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">97.29% </span>
+                <span class="strong">75.67% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>36/37</span>
+                <span class='fraction'>28/37</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">81.81% </span>
+                <span class="strong">72.72% </span>
                 <span class="quiet">Branches</span>
-                <span class='fraction'>18/22</span>
+                <span class='fraction'>16/22</span>
             </div>
         
             
@@ -44,9 +44,9 @@
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">97.29% </span>
+                <span class="strong">75.67% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>36/37</span>
+                <span class='fraction'>28/37</span>
             </div>
         
             
@@ -61,7 +61,7 @@
             </div>
         </template>
     </div>
-    <div class='status-line high'></div>
+    <div class='status-line medium'></div>
     <pre><table class="coverage">
 <tr><td class="line-count quiet"><a name='L1'></a><a href='#L1'>1</a>
 <a name='L2'></a><a href='#L2'>2</a>
@@ -275,9 +275,18 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">2x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">3x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-yes">2x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">2x</span>
@@ -285,26 +294,17 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">2x</span>
-<span class="cline-any cline-yes">2x</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">2x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">2x</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">2x</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -326,18 +326,18 @@
 <span class="cline-any cline-yes">2x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">import { GetObjectCommand, S3Client } from "@aws-sdk/client-s3";
 import { AssumeRoleCommand, STSClient } from "@aws-sdk/client-sts";
@@ -413,7 +413,7 @@ export const handler = async (event: APIGatewayEvent) =&gt; {
     // Now we can generate the presigned url
     const url = await generatePresignedUrl(body.bucket, body.key, body.filename, 60);
 &nbsp;
-    return response&lt;unknown&gt;({
+<span class="cstat-no" title="statement not covered" >    return response&lt;unknown&gt;({</span>
       statusCode: 200,
       body: { url },
     });
@@ -435,14 +435,14 @@ async function getClient(bucket: string) {
     );
 &nbsp;
     // Extract the assumed role credentials
-    const assumedCredentials = assumedRoleResponse.Credentials;
+    const assumedCredentials = <span class="cstat-no" title="statement not covered" >assumedRoleResponse.Credentials;</span>
 &nbsp;
-    if (!assumedCredentials) {
-      throw new Error("No assumed credentials");
+<span class="cstat-no" title="statement not covered" >    if (!assumedCredentials) {</span>
+<span class="cstat-no" title="statement not covered" >      throw new Error("No assumed credentials");</span>
     }
 &nbsp;
     // Create S3 client using the assumed role's credentials
-    return new S3Client({
+<span class="cstat-no" title="statement not covered" >    return new S3Client({</span>
       credentials: {
         accessKeyId: assumedCredentials.AccessKeyId as string,
         secretAccessKey: assumedCredentials.SecretAccessKey as string,
@@ -464,18 +464,18 @@ async function generatePresignedUrl(
   const client = await getClient(bucket);
 &nbsp;
   // Create a command to get the object (you can adjust this according to your use case)
-  const getObjectCommand = new GetObjectCommand({
+  const getObjectCommand = <span class="cstat-no" title="statement not covered" >new GetObjectCommand({</span>
     Bucket: bucket,
     Key: key,
     ResponseContentDisposition: `filename ="${filename}"`,
   });
 &nbsp;
   // Generate a presigned URL
-  const presignedUrl = await getSignedUrl(client, getObjectCommand, {
+  const presignedUrl = <span class="cstat-no" title="statement not covered" >await getSignedUrl(client, getObjectCommand, {</span>
     expiresIn: expirationInSeconds,
   });
 &nbsp;
-  return presignedUrl;
+<span class="cstat-no" title="statement not covered" >  return presignedUrl;</span>
 }
 &nbsp;</pre></td></tr></table></pre>
 
@@ -484,7 +484,7 @@ async function generatePresignedUrl(
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2026-01-19T02:19:38.224Z
+                at 2026-01-20T02:20:01.489Z
             </div>
         <script src="../../prettify.js"></script>
         <script>
