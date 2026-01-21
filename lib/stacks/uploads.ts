@@ -7,6 +7,7 @@ interface UploadsStackProps extends cdk.NestedStackProps {
   stage: string;
   stack: string;
   isDev: boolean;
+  attachmentsBucketName: string;
 }
 
 export class Uploads extends cdk.NestedStack {
@@ -21,63 +22,82 @@ export class Uploads extends cdk.NestedStack {
   private initializeResources(props: UploadsStackProps): {
     attachmentsBucket: cdk.aws_s3.Bucket;
   } {
-    const { project, stage, isDev } = props;
-    const attachmentsBucketName = `${project}-${stage}-attachments-${cdk.Aws.ACCOUNT_ID}`;
+    const { attachmentsBucketName, isDev } = props;
 
-    // S3 Buckets
-    const attachmentsBucket = new cdk.aws_s3.Bucket(this, "AttachmentsBucket", {
-      bucketName: attachmentsBucketName,
-      versioned: true,
-      cors: [
-        {
-          allowedOrigins: ["*"],
-          allowedHeaders: ["*"],
-          allowedMethods: [
-            cdk.aws_s3.HttpMethods.GET,
-            cdk.aws_s3.HttpMethods.PUT,
-            cdk.aws_s3.HttpMethods.POST,
-            cdk.aws_s3.HttpMethods.DELETE,
-            cdk.aws_s3.HttpMethods.HEAD,
-          ],
-          exposedHeaders: ["ETag"],
-          maxAge: 3000,
-        },
-      ],
-      removalPolicy: isDev ? cdk.RemovalPolicy.DESTROY : cdk.RemovalPolicy.RETAIN,
-      autoDeleteObjects: isDev,
-    });
+    let attachmentsBucket: cdk.aws_s3.Bucket;
 
-    attachmentsBucket.addToResourcePolicy(
-      new cdk.aws_iam.PolicyStatement({
-        effect: cdk.aws_iam.Effect.DENY,
-        principals: [new cdk.aws_iam.AnyPrincipal()],
-        actions: ["s3:*"],
-        resources: [attachmentsBucket.bucketArn, `${attachmentsBucket.bucketArn}/*`],
-        conditions: {
-          Bool: { "aws:SecureTransport": "false" },
-        },
-      }),
-    );
+    if (!isDev) {
+      // For permanent environments: Create bucket if it doesn't exist, import if it does
+      attachmentsBucket = new cdk.aws_s3.Bucket(this, "AttachmentsBucket", {
+        bucketName: attachmentsBucketName,
+        versioned: true,
+        encryption: cdk.aws_s3.BucketEncryption.S3_MANAGED,
+        publicReadAccess: false,
+        blockPublicAccess: cdk.aws_s3.BlockPublicAccess.BLOCK_ALL,
+        removalPolicy: cdk.RemovalPolicy.RETAIN, // Keep bucket on stack deletion
+        autoDeleteObjects: false, // Preserve data
+        cors: [
+          {
+            allowedOrigins: ["*"],
+            allowedHeaders: ["*"],
+            allowedMethods: [
+              cdk.aws_s3.HttpMethods.GET,
+              cdk.aws_s3.HttpMethods.PUT,
+              cdk.aws_s3.HttpMethods.POST,
+              cdk.aws_s3.HttpMethods.DELETE,
+              cdk.aws_s3.HttpMethods.HEAD,
+            ],
+            exposedHeaders: ["ETag"],
+            maxAge: 3000,
+          },
+        ],
+      });
 
+      // Deny insecure requests to the bucket
+      attachmentsBucket.addToResourcePolicy(
+        new cdk.aws_iam.PolicyStatement({
+          effect: cdk.aws_iam.Effect.DENY,
+          principals: [new cdk.aws_iam.AnyPrincipal()],
+          actions: ["s3:*"],
+          resources: [attachmentsBucket.bucketArn, `${attachmentsBucket.bucketArn}/*`],
+          conditions: {
+            Bool: { "aws:SecureTransport": "false" },
+          },
+        }),
+      );
+    } else {
+      // For dev environments: Import bucket by name (uses main bucket for shared dev data)
+      attachmentsBucket = cdk.aws_s3.Bucket.fromBucketName(
+        this,
+        "AttachmentsBucket",
+        attachmentsBucketName,
+      ) as cdk.aws_s3.Bucket;
+    }
+
+    // Set up ClamAV scanner (works with both created and imported bucket references)
     const scanner = new LC.ClamScanScanner(this, "ClamScan", {
       fileBucket: attachmentsBucket,
     });
 
-    attachmentsBucket.addToResourcePolicy(
-      new cdk.aws_iam.PolicyStatement({
-        effect: cdk.aws_iam.Effect.DENY,
-        principals: [new cdk.aws_iam.AnyPrincipal()],
-        actions: ["s3:GetObject"],
-        resources: [`${attachmentsBucket.bucketArn}/*`],
-        conditions: {
-          StringNotEquals: {
-            "s3:ExistingObjectTag/virusScanStatus": "CLEAN",
-            "aws:PrincipalArn": scanner.lambdaRole.roleArn,
+    // Add virus scan security policy for permanent environments
+    if (!isDev) {
+      attachmentsBucket.addToResourcePolicy(
+        new cdk.aws_iam.PolicyStatement({
+          effect: cdk.aws_iam.Effect.DENY,
+          principals: [new cdk.aws_iam.AnyPrincipal()],
+          actions: ["s3:GetObject"],
+          resources: [`${attachmentsBucket.bucketArn}/*`],
+          conditions: {
+            StringNotEquals: {
+              "s3:ExistingObjectTag/virusScanStatus": "CLEAN",
+              "aws:PrincipalArn": scanner.lambdaRole.roleArn,
+            },
           },
-        },
-      }),
-    );
+        }),
+      );
+    }
 
+    // Note: For dev environments using imported buckets, policies are managed manually
     new LC.EmptyBuckets(this, "EmptyBuckets", {
       buckets: [],
     });

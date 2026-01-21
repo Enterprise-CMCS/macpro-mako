@@ -50,6 +50,7 @@ export class ParentStack extends cdk.Stack {
     const uploadsStack = new Stacks.Uploads(this, "uploads", {
       ...commonProps,
       stack: "uploads",
+      attachmentsBucketName: props.attachmentsBucketName,
     });
 
     const dataStack = new Stacks.Data(this, "data", {

@@ -5,6 +5,7 @@ import { emailHandlers } from "./email";
 import { idmHandlers } from "./idm";
 import { lambdaHandlers } from "./lambda";
 import { secretsManagerHandlers } from "./secretsManager";
+import { ssmHandlers } from "./ssm";
 import { stepFunctionHandlers } from "./stepFunctions";
 
 export const awsHandlers = [
@@ -13,6 +14,7 @@ export const awsHandlers = [
   ...credentialHandlers,
   ...lambdaHandlers,
   ...secretsManagerHandlers,
+  ...ssmHandlers,
   ...stepFunctionHandlers,
   ...emailHandlers,
   ...idmHandlers,

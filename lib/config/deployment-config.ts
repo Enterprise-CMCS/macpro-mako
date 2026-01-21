@@ -1,3 +1,4 @@
+import { GetParameterCommand, SSMClient } from "@aws-sdk/client-ssm";
 import { getExport, getSecret } from "shared-utils";
 
 export interface InjectedConfigOptions {
@@ -7,6 +8,7 @@ export interface InjectedConfigOptions {
 }
 
 export type InjectedConfigProperties = {
+  attachmentsBucketName: string;
   brokerString: string;
   dbInfoSecretName: string;
   devPasswordArn: string;
@@ -65,6 +67,27 @@ export class DeploymentConfig {
     return appConfigInstance;
   }
 
+  private static async loadBucketName(project: string, stage: string): Promise<string> {
+    const ssmClient = new SSMClient({ region: process.env.region });
+
+    try {
+      // Try stage-specific parameter first
+      const response = await ssmClient.send(
+        new GetParameterCommand({
+          Name: `/${project}/${stage}/attachmentsBucketName`,
+        }),
+      );
+      return response.Parameter!.Value!;
+    } catch (error: unknown) {
+      // For ephemeral branches, fall back to main bucket
+      console.log(`No bucket parameter for ${stage}, using main bucket`, error);
+      const fallbackResponse = await ssmClient.send(
+        new GetParameterCommand({ Name: `/${project}/main/attachmentsBucketName` }),
+      );
+      return fallbackResponse.Parameter!.Value!;
+    }
+  }
+
   private static async loadConfig(
     options: InjectedConfigOptions,
   ): Promise<InjectedConfigProperties> {
@@ -88,10 +111,14 @@ export class DeploymentConfig {
       console.warn(`Optional stage secret ${stageSecretName} not found: ${error.message}`);
     }
 
+    // Load bucket name from Parameter Store
+    const attachmentsBucketName = await this.loadBucketName(project, stage);
+
     // Merge secrets with stageSecret taking precedence
     const combinedSecret: { [key: string]: any } = {
       ...defaultSecret,
       ...stageSecret,
+      attachmentsBucketName,
     };
 
     // Convert "true"/"false" strings to booleans
@@ -114,6 +141,7 @@ export class DeploymentConfig {
 
   private static isConfig(config: any): config is InjectedConfigProperties {
     return (
+      typeof config.attachmentsBucketName === "string" &&
       typeof config.brokerString === "string" &&
       typeof config.dbInfoSecretName == "string" && // pragma: allowlist secret
       typeof config.devPasswordArn == "string" && // pragma: allowlist secret
