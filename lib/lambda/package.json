@@ -7,11 +7,13 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "@aws-sdk/client-dynamodb": "^3.600.0",
     "@aws-sdk/client-lambda": "^3.600.0",
     "@aws-sdk/client-s3": "^3.600.0",
     "@aws-sdk/client-ses": "^3.600.0",
     "@aws-sdk/client-sfn": "^3.600.0",
     "@aws-sdk/s3-request-presigner": "^3.600.0",
+    "@aws-sdk/util-dynamodb": "^3.600.0",
     "@dannywrayuk/middy-zod-validator": "^1.4.0",
     "@haftahave/serverless-ses-template": "^6.1.0",
     "@middy/core": "^6.3.2",

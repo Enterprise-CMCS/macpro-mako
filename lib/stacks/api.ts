@@ -63,6 +63,44 @@ export class Api extends cdk.NestedStack {
     } = props;
 
     const topicName = `${topicNamespace}aws.onemac.migration.cdc`;
+    const smartTopicName = `${topicNamespace}aws.smart.inbound.events`;
+
+    // ==========================================
+    // DataSink Infrastructure - DynamoDB Idempotency Table
+    // ==========================================
+    const idempotencyTable = new cdk.aws_dynamodb.Table(this, "DataSinkIdempotency", {
+      tableName: `${project}-${stage}-dataSinkIdempotency`,
+      partitionKey: {
+        name: "eventId",
+        type: cdk.aws_dynamodb.AttributeType.STRING,
+      },
+      billingMode: cdk.aws_dynamodb.BillingMode.PAY_PER_REQUEST,
+      timeToLiveAttribute: "expiresAt",
+      removalPolicy: isDev ? cdk.RemovalPolicy.DESTROY : cdk.RemovalPolicy.RETAIN,
+      pointInTimeRecoverySpecification: {
+        pointInTimeRecoveryEnabled: !isDev,
+      },
+    });
+
+    // ==========================================
+    // DataSink Infrastructure - API Key Secret
+    // ==========================================
+    const dataSinkApiKeySecret = new cdk.aws_secretsmanager.Secret(this, "DataSinkApiKeySecret", {
+      secretName: `${project}/${stage}/dataSink-api-key`, // pragma: allowlist secret
+      description: "API Key for dataSink endpoint (SMART/MuleSoft integration)",
+      generateSecretString: {
+        excludePunctuation: true,
+        passwordLength: 32,
+      },
+    });
+
+    // Note: Cross-account access policy can be added here when MuleSoft account ID is known
+    // dataSinkApiKeySecret.addToResourcePolicy(new cdk.aws_iam.PolicyStatement({
+    //   effect: cdk.aws_iam.Effect.ALLOW,
+    //   principals: [new cdk.aws_iam.AccountPrincipal("MULESOFT_ACCOUNT_ID")],
+    //   actions: ["secretsmanager:GetSecretValue"],
+    //   resources: ["*"],
+    // }));
 
     // Define IAM role
     const lambdaRole = new cdk.aws_iam.Role(this, "LambdaExecutionRole", {
@@ -450,6 +488,80 @@ export class Api extends cdk.NestedStack {
       {} as { [key: string]: NodejsFunction },
     );
 
+    // ==========================================
+    // DataSink Lambda - Separate IAM Role with DynamoDB permissions
+    // ==========================================
+    const dataSinkLambdaRole = new cdk.aws_iam.Role(this, "DataSinkLambdaRole", {
+      assumedBy: new cdk.aws_iam.ServicePrincipal("lambda.amazonaws.com"),
+      managedPolicies: [
+        cdk.aws_iam.ManagedPolicy.fromAwsManagedPolicyName(
+          "service-role/AWSLambdaBasicExecutionRole",
+        ),
+        cdk.aws_iam.ManagedPolicy.fromAwsManagedPolicyName(
+          "service-role/AWSLambdaVPCAccessExecutionRole",
+        ),
+        cdk.aws_iam.ManagedPolicy.fromAwsManagedPolicyName("CloudWatchLogsFullAccess"),
+      ],
+      inlinePolicies: {
+        DataSinkPolicy: new cdk.aws_iam.PolicyDocument({
+          statements: [
+            // DynamoDB permissions for idempotency table
+            new cdk.aws_iam.PolicyStatement({
+              effect: cdk.aws_iam.Effect.ALLOW,
+              actions: [
+                "dynamodb:PutItem",
+                "dynamodb:GetItem",
+                "dynamodb:UpdateItem",
+                "dynamodb:Query",
+              ],
+              resources: [idempotencyTable.tableArn],
+            }),
+            // Kafka/MSK permissions (if needed for VPC connectivity)
+            new cdk.aws_iam.PolicyStatement({
+              effect: cdk.aws_iam.Effect.ALLOW,
+              actions: [
+                "kafka:DescribeCluster",
+                "kafka:GetBootstrapBrokers",
+              ],
+              resources: ["*"],
+            }),
+          ],
+        }),
+      },
+    });
+
+    // DataSink Lambda Log Group
+    const dataSinkLogGroup = new cdk.aws_logs.LogGroup(this, "dataSinkLogGroup", {
+      logGroupName: `/aws/lambda/${project}-${stage}-${stack}-dataSink`,
+      removalPolicy: cdk.RemovalPolicy.DESTROY,
+    });
+
+    // DataSink Lambda Function
+    const dataSinkLambda = new NodejsFunction(this, "dataSink", {
+      runtime: cdk.aws_lambda.Runtime.NODEJS_20_X,
+      functionName: `${project}-${stage}-${stack}-dataSink`,
+      depsLockFilePath: join(__dirname, "../../bun.lockb"),
+      entry: join(__dirname, "../lambda/dataSink.ts"),
+      handler: "handler",
+      role: dataSinkLambdaRole,
+      environment: {
+        idempotencyTableName: idempotencyTable.tableName,
+        smartTopicName,
+        brokerString,
+      },
+      timeout: cdk.Duration.seconds(30),
+      memorySize: 1024,
+      retryAttempts: 0,
+      vpc: vpc,
+      securityGroups: [lambdaSecurityGroup],
+      vpcSubnets: { subnets: privateSubnets },
+      logGroup: dataSinkLogGroup,
+      bundling: commonBundlingOptions,
+    });
+
+    // Add dataSink to lambdas object for alarm creation
+    lambdas["dataSink"] = dataSinkLambda;
+
     // Create IAM role for API Gateway to invoke Lambda functions
     const apiGatewayRole = new cdk.aws_iam.Role(this, "ApiGatewayRole", {
       assumedBy: new cdk.aws_iam.ServicePrincipal("apigateway.amazonaws.com"),
@@ -538,6 +650,78 @@ export class Api extends cdk.NestedStack {
         "gatewayresponse.header.Access-Control-Allow-Origin": "'*'",
         "gatewayresponse.header.Access-Control-Allow-Headers": "'*'",
       },
+    });
+
+    // ==========================================
+    // DataSink API Key and Usage Plan
+    // ==========================================
+    // Create API Key from the secret value
+    const dataSinkApiKey = api.addApiKey("DataSinkApiKey", {
+      apiKeyName: `${project}-${stage}-dataSink-api-key`,
+      description: "API Key for dataSink endpoint (SMART/MuleSoft integration)",
+      value: dataSinkApiKeySecret.secretValue.unsafeUnwrap(),
+    });
+
+    // Create Usage Plan with lenient rate limits
+    const dataSinkUsagePlan = api.addUsagePlan("DataSinkUsagePlan", {
+      name: `${project}-${stage}-dataSink-usage-plan`,
+      description: "Usage plan for dataSink endpoint",
+      throttle: {
+        rateLimit: 1000, // requests per second
+        burstLimit: 2000, // burst capacity
+      },
+      quota: {
+        limit: 100000, // requests per day
+        period: cdk.aws_apigateway.Period.DAY,
+      },
+    });
+
+    // Associate API Key with Usage Plan
+    dataSinkUsagePlan.addApiKey(dataSinkApiKey);
+
+    // Associate Usage Plan with the API stage
+    dataSinkUsagePlan.addApiStage({
+      stage: api.deploymentStage,
+    });
+
+    // ==========================================
+    // DataSink API Resource with API Key Required
+    // ==========================================
+    const dataSinkResource = api.root.addResource("dataSink");
+
+    const dataSinkIntegration = new cdk.aws_apigateway.LambdaIntegration(dataSinkLambda, {
+      proxy: true,
+      credentialsRole: apiGatewayRole,
+    });
+
+    // Add POST method with API Key requirement (no IAM auth)
+    dataSinkResource.addMethod("POST", dataSinkIntegration, {
+      authorizationType: cdk.aws_apigateway.AuthorizationType.NONE,
+      apiKeyRequired: true,
+      methodResponses: [
+        {
+          statusCode: "202",
+          responseParameters: {
+            "method.response.header.Access-Control-Allow-Origin": true,
+            "method.response.header.Access-Control-Allow-Headers": true,
+            "method.response.header.Access-Control-Allow-Methods": true,
+          },
+        },
+        {
+          statusCode: "400",
+          responseParameters: {
+            "method.response.header.Access-Control-Allow-Origin": true,
+            "method.response.header.Access-Control-Allow-Headers": true,
+          },
+        },
+        {
+          statusCode: "500",
+          responseParameters: {
+            "method.response.header.Access-Control-Allow-Origin": true,
+            "method.response.header.Access-Control-Allow-Headers": true,
+          },
+        },
+      ],
     });
 
     const apiResources = {

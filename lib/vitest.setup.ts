@@ -64,6 +64,10 @@ beforeEach(() => {
   process.env.brokerString = KAFKA_BROKERS;
   process.env.idmAuthzApiKeyArn = "test-secret"; // pragma: allowlist secret
   process.env.idmAuthzApiEndpoint = "https://dimAuthzEndpoint.com";
+
+  // DataSink environment variables
+  process.env.idempotencyTableName = "test-idempotency-table";
+  process.env.smartTopicName = "test-smart-topic";
 });
 
 afterEach(() => {

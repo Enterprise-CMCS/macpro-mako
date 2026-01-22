@@ -340,6 +340,9 @@ export class Data extends cdk.NestedStack {
         {
           topic: `${topicNamespace}aws.onemac.migration.cdc`,
         },
+        {
+          topic: `${topicNamespace}aws.smart.inbound.events`,
+        },
       ],
       vpc,
     });
@@ -350,7 +353,10 @@ export class Data extends cdk.NestedStack {
         privateSubnets: privateSubnets,
         securityGroups: [lambdaSecurityGroup],
         brokerString,
-        topicPatternsToDelete: [`${topicNamespace}aws.onemac.migration.cdc`],
+        topicPatternsToDelete: [
+          `${topicNamespace}aws.onemac.migration.cdc`,
+          `${topicNamespace}aws.smart.inbound.events`,
+        ],
       });
     }
 
@@ -466,6 +472,7 @@ export class Data extends cdk.NestedStack {
       sinkInsights: { provisionedConcurrency: 0 },
       sinkLegacyInsights: { provisionedConcurrency: 0 },
       sinkMain: { provisionedConcurrency: 2 },
+      sinkSmart: { provisionedConcurrency: 2 }, // SMART events consumer
       sinkSubtypes: { provisionedConcurrency: 0 },
       sinkTypes: { provisionedConcurrency: 0 },
     };
@@ -620,6 +627,10 @@ export class Data extends cdk.NestedStack {
               function: lambdaFunctions.sinkCpocs.functionName,
               topics: ["aws.seatool.debezium.cdc.SEA.dbo.Officers"],
             },
+            {
+              function: lambdaFunctions.sinkSmart.functionName,
+              topics: [`${topicNamespace}aws.smart.inbound.events`],
+            },
           ],
         }),
       },
@@ -748,6 +759,10 @@ export class Data extends cdk.NestedStack {
                       {
                         function: lambdaFunctions.sinkCpocs.functionName,
                         topics: ["aws.seatool.debezium.cdc.SEA.dbo.Officers"],
+                      },
+                      {
+                        function: lambdaFunctions.sinkSmart.functionName,
+                        topics: [`${topicNamespace}aws.smart.inbound.events`],
                       },
                     ],
                   }),
