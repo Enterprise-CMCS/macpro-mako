@@ -396,14 +396,6 @@ export class Api extends cdk.NestedStack {
         },
       },
       {
-        id: "itemExistsInternal",
-        entry: join(__dirname, "../lambda/itemExistsInternal.ts"),
-        environment: {
-          osDomain: `https://${openSearchDomainEndpoint}`,
-          indexNamespace,
-        },
-      },
-      {
         id: "forms",
         entry: join(__dirname, "../lambda/getForm.ts"),
         environment: {},
@@ -757,11 +749,6 @@ export class Api extends cdk.NestedStack {
     };
 
     const internalApiResources = {
-      itemExists: {
-        path: "itemExists",
-        lambda: lambdas.itemExistsInternal,
-        method: "POST",
-      },
       checkIdentifierUsage: {
         path: "checkIdentifierUsage",
         lambda: lambdas.checkIdentifierUsage,
