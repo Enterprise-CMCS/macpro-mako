@@ -25,7 +25,7 @@ interface AuthStackProps extends cdk.NestedStackProps {
   idmAuthzApiEndpoint: DeploymentConfigProperties["idmAuthzApiEndpoint"];
   idmAuthzApiKeyArn: DeploymentConfigProperties["idmAuthzApiKeyArn"];
   devPasswordArn: DeploymentConfigProperties["devPasswordArn"];
-  smartLinkUrl: DeploymentConfigProperties["smartLinkUrl"];
+  smartLinkUrl?: DeploymentConfigProperties["smartLinkUrl"];
 }
 
 export class Auth extends cdk.NestedStack {

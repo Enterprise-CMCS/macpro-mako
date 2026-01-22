@@ -569,21 +569,24 @@ export class Api extends cdk.NestedStack {
       },
     });
 
-    internalApi.addToResourcePolicy(
-      new cdk.aws_iam.PolicyStatement({
-        effect: cdk.aws_iam.Effect.ALLOW,
-        principals: [new AnyPrincipal()],
-        actions: ["execute-api:Invoke"],
-        resources: [
-          `arn:aws:execute-api:${this.region}:${this.account}:${internalApi.restApiId}/*`,
-        ],
-        conditions: {
-          StringEquals: {
-            "aws:SourceVpce": internalApiVpcEndpoint.vpcEndpointId,
+    const internalApiResourcePolicy = new cdk.aws_iam.PolicyDocument({
+      statements: [
+        new PolicyStatement({
+          effect: Effect.ALLOW,
+          principals: [new AnyPrincipal()],
+          actions: ["execute-api:Invoke"],
+          resources: [internalApi.arnForExecuteApi()],
+          conditions: {
+            StringEquals: {
+              "aws:SourceVpce": internalApiVpcEndpoint.vpcEndpointId,
+            },
           },
-        },
-      }),
-    );
+        }),
+      ],
+    });
+
+    const internalApiCfn = internalApi.node.defaultChild as cdk.aws_apigateway.CfnRestApi;
+    internalApiCfn.policy = internalApiResourcePolicy;
 
     // Define API Gateway
     const api = new cdk.aws_apigateway.RestApi(this, "APIGateway", {
@@ -761,8 +764,8 @@ export class Api extends cdk.NestedStack {
       path: string,
       lambdaFunction: cdk.aws_lambda.Function,
       method: string = "POST",
-      authorizationType: cdk.aws_apigateway.AuthorizationType = .IAM,
-        
+      authorizationType: cdk.aws_apigateway.AuthorizationType = cdk.aws_apigateway.AuthorizationType
+        .IAM,
     ) => {
       const resource = apiGateway.root.resourceForPath(path);
 
