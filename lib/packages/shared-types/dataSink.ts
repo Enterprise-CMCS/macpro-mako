@@ -140,36 +140,56 @@ export const dataSinkErrorSchema = z.object({
 export type DataSinkError = z.infer<typeof dataSinkErrorSchema>;
 
 /**
- * DynamoDB idempotency record schema
- * Used for tracking processed events and preventing duplicates
+ * OpenSearch datasink document schema
+ * Used for storing event envelopes and tracking idempotency
  */
-export const idempotencyRecordSchema = z.object({
-  /** Primary key - the eventId from the request */
+export const dataSinkDocumentSchema = z.object({
+  /** Document ID = eventId for idempotency */
+  id: z.string().uuid(),
+
+  /** Publishing system (e.g., SMART, ONEMAC) */
+  source: z.string(),
+
+  /** Business object category (e.g., WAIVER, SPA) */
+  recordType: z.string(),
+
+  /** Business event name */
+  eventType: z.string(),
+
+  /** Globally unique ID for idempotency (UUID) */
   eventId: z.string().uuid(),
+
+  /** ISO-8601 timestamp of the source event */
+  eventTime: z.string().datetime().optional(),
+
+  /** Trace ID spanning OneMAC <-> MuleSoft <-> SMART */
+  correlationId: z.string().optional(),
+
+  /** Version of the contract */
+  schemaVersion: z.string(),
+
+  /** Domain payload - flexible structure that varies by eventType */
+  data: z.record(z.unknown()),
 
   /** When the event was first received (ISO-8601) */
   receivedAt: z.string().datetime(),
 
+  /** When the event was processed (ISO-8601) */
+  processedAt: z.string().datetime().optional(),
+
   /** Processing status */
-  status: z.enum(["RECEIVED", "PUBLISHED", "FAILED"]),
+  status: z.enum(["RECEIVED", "PROCESSED", "FAILED"]),
 
-  /** Source system */
-  source: z.string(),
-
-  /** Record type */
-  recordType: z.string(),
-
-  /** Event type */
-  eventType: z.string(),
-
-  /** Correlation ID from MuleSoft */
-  correlationId: z.string().optional(),
-
-  /** TTL timestamp for DynamoDB auto-deletion (Unix epoch seconds) */
-  expiresAt: z.number(),
+  /** TTL timestamp for cleanup (Unix epoch seconds) */
+  expiresAt: z.number().optional(),
 });
 
-export type IdempotencyRecord = z.infer<typeof idempotencyRecordSchema>;
+export type DataSinkDocument = z.infer<typeof dataSinkDocumentSchema>;
+
+/**
+ * @deprecated Use DataSinkDocument instead - kept for backward compatibility
+ */
+export type IdempotencyRecord = DataSinkDocument;
 
 /**
  * Helper function to create a success response

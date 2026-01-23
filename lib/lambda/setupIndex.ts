@@ -52,6 +52,23 @@ export const handler: Handler = async (event, __, callback) => {
       osDomain: event.osDomain,
       index: `${event.indexNamespace}roles`,
     });
+    await manageIndexResource({
+      osDomain: event.osDomain,
+      index: `${event.indexNamespace}datasink`,
+      update: {
+        eventId: { type: "keyword" },
+        source: { type: "keyword" },
+        recordType: { type: "keyword" },
+        eventType: { type: "keyword" },
+        eventTime: { type: "date" },
+        correlationId: { type: "keyword" },
+        schemaVersion: { type: "keyword" },
+        receivedAt: { type: "date" },
+        processedAt: { type: "date" },
+        status: { type: "keyword" },
+        expiresAt: { type: "long" },
+      },
+    });
   } catch (error: any) {
     response.statusCode = 500;
     errorResponse = error;

@@ -1,35 +1,24 @@
 import { APIGatewayProxyEvent } from "aws-lambda";
 import { beforeEach, describe, expect, it, vi, Mock } from "vitest";
 
-import { handler, resetKafkaProducer } from "./dataSink";
-import * as dataSinkLib from "../libs/dataSink-lib";
+import { handler } from "./dataSink";
+import * as dataSinkLib from "../libs/dataSink-opensearch-lib";
 import {
   DataSinkEnvelope,
   DataSinkErrorCode,
   DATASINK_SCHEMA_VERSION,
-  IdempotencyRecord,
 } from "shared-types";
+import { DataSinkDocument } from "../libs/dataSink-opensearch-lib";
 
-// Mock the dataSink-lib module
-vi.mock("../libs/dataSink-lib", () => ({
+// Mock the dataSink-opensearch-lib module
+vi.mock("../libs/dataSink-opensearch-lib", () => ({
   checkIdempotency: vi.fn(),
-  updateIdempotencyStatus: vi.fn(),
-  resetDynamoClient: vi.fn(),
-}));
-
-// Mock kafkajs
-vi.mock("kafkajs", () => ({
-  Kafka: vi.fn(() => ({
-    producer: vi.fn(() => ({
-      connect: vi.fn(),
-      send: vi.fn(() => Promise.resolve([{ partition: 0, offset: "1" }])),
-      disconnect: vi.fn(),
-    })),
-  })),
+  updateEnvelopeStatus: vi.fn(),
+  getDataSinkDocument: vi.fn(),
 }));
 
 const mockCheckIdempotency = dataSinkLib.checkIdempotency as Mock;
-const mockUpdateIdempotencyStatus = dataSinkLib.updateIdempotencyStatus as Mock;
+const mockUpdateEnvelopeStatus = dataSinkLib.updateEnvelopeStatus as Mock;
 
 /**
  * Helper to create a valid DataSink envelope
@@ -105,13 +94,14 @@ function createApiEvent(body: unknown): APIGatewayProxyEvent {
 }
 
 /**
- * Helper to create an idempotency record
+ * Helper to create a DataSink document for testing
  */
-function createIdempotencyRecord(
+function createDataSinkDocument(
   envelope: DataSinkEnvelope,
-  status: IdempotencyRecord["status"] = "RECEIVED",
-): IdempotencyRecord {
+  status: DataSinkDocument["status"] = "RECEIVED",
+): DataSinkDocument {
   return {
+    id: envelope.eventId,
     eventId: envelope.eventId,
     receivedAt: new Date().toISOString(),
     status,
@@ -119,6 +109,8 @@ function createIdempotencyRecord(
     recordType: envelope.recordType,
     eventType: envelope.eventType,
     correlationId: envelope.correlationId,
+    schemaVersion: envelope.schemaVersion,
+    data: envelope.data,
     expiresAt: Math.floor(Date.now() / 1000) + 7 * 24 * 60 * 60,
   };
 }
@@ -126,12 +118,10 @@ function createIdempotencyRecord(
 describe("dataSink Lambda handler", () => {
   beforeEach(() => {
     vi.clearAllMocks();
-    resetKafkaProducer();
 
     // Set required environment variables
-    process.env.idempotencyTableName = "test-idempotency-table";
-    process.env.smartTopicName = "test-smart-topic";
-    process.env.brokerString = "localhost:9092";
+    process.env.osDomain = "https://test-opensearch-domain";
+    process.env.indexNamespace = "test-";
   });
 
   describe("Request validation", () => {
@@ -238,11 +228,11 @@ describe("dataSink Lambda handler", () => {
   describe("Idempotency handling", () => {
     it("should return 202 with message when duplicate event is detected", async () => {
       const envelope = createValidEnvelope();
-      const existingRecord = createIdempotencyRecord(envelope, "PUBLISHED");
+      const existingDocument = createDataSinkDocument(envelope, "PROCESSED");
 
       mockCheckIdempotency.mockResolvedValueOnce({
         isDuplicate: true,
-        record: existingRecord,
+        document: existingDocument,
       });
 
       const event = createApiEvent(envelope);
@@ -256,13 +246,13 @@ describe("dataSink Lambda handler", () => {
       expect(body.data.originalReceivedAt).toBeDefined();
 
       // Should not attempt to update status for duplicate
-      expect(mockUpdateIdempotencyStatus).not.toHaveBeenCalled();
+      expect(mockUpdateEnvelopeStatus).not.toHaveBeenCalled();
     });
 
-    it("should return 503 when DynamoDB idempotency check fails", async () => {
+    it("should return 503 when OpenSearch idempotency check fails", async () => {
       const envelope = createValidEnvelope();
 
-      mockCheckIdempotency.mockRejectedValueOnce(new Error("DynamoDB error"));
+      mockCheckIdempotency.mockRejectedValueOnce(new Error("OpenSearch error"));
 
       const event = createApiEvent(envelope);
       const result = await handler(event);
@@ -275,15 +265,15 @@ describe("dataSink Lambda handler", () => {
   });
 
   describe("Successful event processing", () => {
-    it("should return 202 and publish to Kafka for new event", async () => {
+    it("should return 202 and store to OpenSearch for new event", async () => {
       const envelope = createValidEnvelope();
-      const newRecord = createIdempotencyRecord(envelope, "RECEIVED");
+      const newDocument = createDataSinkDocument(envelope, "RECEIVED");
 
       mockCheckIdempotency.mockResolvedValueOnce({
         isDuplicate: false,
-        record: newRecord,
+        document: newDocument,
       });
-      mockUpdateIdempotencyStatus.mockResolvedValueOnce(undefined);
+      mockUpdateEnvelopeStatus.mockResolvedValueOnce(undefined);
 
       const event = createApiEvent(envelope);
       const result = await handler(event);
@@ -295,19 +285,19 @@ describe("dataSink Lambda handler", () => {
       expect(body.schemaVersion).toBe(DATASINK_SCHEMA_VERSION);
       expect(body.data.message).toBe("Event accepted for processing");
 
-      // Should update status to PUBLISHED
-      expect(mockUpdateIdempotencyStatus).toHaveBeenCalledWith(envelope.eventId, "PUBLISHED");
+      // Should update status to PROCESSED
+      expect(mockUpdateEnvelopeStatus).toHaveBeenCalledWith(envelope.eventId, "PROCESSED");
     });
 
     it("should process event without correlationId", async () => {
       const envelope = createValidEnvelope({ correlationId: undefined });
-      const newRecord = createIdempotencyRecord(envelope, "RECEIVED");
+      const newDocument = createDataSinkDocument(envelope, "RECEIVED");
 
       mockCheckIdempotency.mockResolvedValueOnce({
         isDuplicate: false,
-        record: newRecord,
+        document: newDocument,
       });
-      mockUpdateIdempotencyStatus.mockResolvedValueOnce(undefined);
+      mockUpdateEnvelopeStatus.mockResolvedValueOnce(undefined);
 
       const event = createApiEvent(envelope);
       const result = await handler(event);
@@ -320,13 +310,13 @@ describe("dataSink Lambda handler", () => {
 
     it("should process SPA recordType", async () => {
       const envelope = createValidEnvelope({ recordType: "SPA" });
-      const newRecord = createIdempotencyRecord(envelope, "RECEIVED");
+      const newDocument = createDataSinkDocument(envelope, "RECEIVED");
 
       mockCheckIdempotency.mockResolvedValueOnce({
         isDuplicate: false,
-        record: newRecord,
+        document: newDocument,
       });
-      mockUpdateIdempotencyStatus.mockResolvedValueOnce(undefined);
+      mockUpdateEnvelopeStatus.mockResolvedValueOnce(undefined);
 
       const event = createApiEvent(envelope);
       const result = await handler(event);
@@ -336,13 +326,13 @@ describe("dataSink Lambda handler", () => {
 
     it("should process ONEMAC source", async () => {
       const envelope = createValidEnvelope({ source: "ONEMAC" });
-      const newRecord = createIdempotencyRecord(envelope, "RECEIVED");
+      const newDocument = createDataSinkDocument(envelope, "RECEIVED");
 
       mockCheckIdempotency.mockResolvedValueOnce({
         isDuplicate: false,
-        record: newRecord,
+        document: newDocument,
       });
-      mockUpdateIdempotencyStatus.mockResolvedValueOnce(undefined);
+      mockUpdateEnvelopeStatus.mockResolvedValueOnce(undefined);
 
       const event = createApiEvent(envelope);
       const result = await handler(event);
@@ -352,17 +342,19 @@ describe("dataSink Lambda handler", () => {
   });
 
   describe("Error scenarios", () => {
-    it("should return 503 when Kafka publish fails", async () => {
+    it("should return 503 when OpenSearch status update fails", async () => {
       const envelope = createValidEnvelope();
-      const newRecord = createIdempotencyRecord(envelope, "RECEIVED");
+      const newDocument = createDataSinkDocument(envelope, "RECEIVED");
 
       mockCheckIdempotency.mockResolvedValueOnce({
         isDuplicate: false,
-        record: newRecord,
+        document: newDocument,
       });
 
-      // Force Kafka to fail by not setting brokerString
-      delete process.env.brokerString;
+      // First call fails (updating to PROCESSED)
+      mockUpdateEnvelopeStatus.mockRejectedValueOnce(new Error("OpenSearch error"));
+      // Second call also fails (updating to FAILED)
+      mockUpdateEnvelopeStatus.mockRejectedValueOnce(new Error("OpenSearch error"));
 
       const event = createApiEvent(envelope);
       const result = await handler(event);
@@ -370,16 +362,16 @@ describe("dataSink Lambda handler", () => {
       expect(result.statusCode).toBe(503);
       const body = JSON.parse(result.body);
       expect(body.error.code).toBe(DataSinkErrorCode.SERVICE_UNAVAILABLE);
-      expect(body.error.message).toContain("publishing service");
+      expect(body.error.message).toContain("storage service");
 
-      // Should update status to FAILED
-      expect(mockUpdateIdempotencyStatus).toHaveBeenCalledWith(envelope.eventId, "FAILED");
+      // Should try to update status to FAILED
+      expect(mockUpdateEnvelopeStatus).toHaveBeenCalledWith(envelope.eventId, "FAILED");
     });
 
     it("should include correlationId in error response when available", async () => {
       const envelope = createValidEnvelope();
 
-      mockCheckIdempotency.mockRejectedValueOnce(new Error("DynamoDB error"));
+      mockCheckIdempotency.mockRejectedValueOnce(new Error("OpenSearch error"));
 
       const event = createApiEvent(envelope);
       const result = await handler(event);
@@ -393,13 +385,13 @@ describe("dataSink Lambda handler", () => {
   describe("Response format", () => {
     it("should include CORS headers in response", async () => {
       const envelope = createValidEnvelope();
-      const newRecord = createIdempotencyRecord(envelope, "RECEIVED");
+      const newDocument = createDataSinkDocument(envelope, "RECEIVED");
 
       mockCheckIdempotency.mockResolvedValueOnce({
         isDuplicate: false,
-        record: newRecord,
+        document: newDocument,
       });
-      mockUpdateIdempotencyStatus.mockResolvedValueOnce(undefined);
+      mockUpdateEnvelopeStatus.mockResolvedValueOnce(undefined);
 
       const event = createApiEvent(envelope);
       const result = await handler(event);
@@ -412,13 +404,13 @@ describe("dataSink Lambda handler", () => {
 
     it("should return valid JSON in response body", async () => {
       const envelope = createValidEnvelope();
-      const newRecord = createIdempotencyRecord(envelope, "RECEIVED");
+      const newDocument = createDataSinkDocument(envelope, "RECEIVED");
 
       mockCheckIdempotency.mockResolvedValueOnce({
         isDuplicate: false,
-        record: newRecord,
+        document: newDocument,
       });
-      mockUpdateIdempotencyStatus.mockResolvedValueOnce(undefined);
+      mockUpdateEnvelopeStatus.mockResolvedValueOnce(undefined);
 
       const event = createApiEvent(envelope);
       const result = await handler(event);

@@ -63,24 +63,6 @@ export class Api extends cdk.NestedStack {
     } = props;
 
     const topicName = `${topicNamespace}aws.onemac.migration.cdc`;
-    const smartTopicName = `${topicNamespace}aws.smart.inbound.events`;
-
-    // ==========================================
-    // DataSink Infrastructure - DynamoDB Idempotency Table
-    // ==========================================
-    const idempotencyTable = new cdk.aws_dynamodb.Table(this, "DataSinkIdempotency", {
-      tableName: `${project}-${stage}-dataSinkIdempotency`,
-      partitionKey: {
-        name: "eventId",
-        type: cdk.aws_dynamodb.AttributeType.STRING,
-      },
-      billingMode: cdk.aws_dynamodb.BillingMode.PAY_PER_REQUEST,
-      timeToLiveAttribute: "expiresAt",
-      removalPolicy: isDev ? cdk.RemovalPolicy.DESTROY : cdk.RemovalPolicy.RETAIN,
-      pointInTimeRecoverySpecification: {
-        pointInTimeRecoveryEnabled: !isDev,
-      },
-    });
 
     // ==========================================
     // DataSink Infrastructure - API Key Secret
@@ -489,7 +471,7 @@ export class Api extends cdk.NestedStack {
     );
 
     // ==========================================
-    // DataSink Lambda - Separate IAM Role with DynamoDB permissions
+    // DataSink Lambda - IAM Role with OpenSearch permissions
     // ==========================================
     const dataSinkLambdaRole = new cdk.aws_iam.Role(this, "DataSinkLambdaRole", {
       assumedBy: new cdk.aws_iam.ServicePrincipal("lambda.amazonaws.com"),
@@ -505,25 +487,18 @@ export class Api extends cdk.NestedStack {
       inlinePolicies: {
         DataSinkPolicy: new cdk.aws_iam.PolicyDocument({
           statements: [
-            // DynamoDB permissions for idempotency table
+            // OpenSearch permissions for idempotency and storage
             new cdk.aws_iam.PolicyStatement({
               effect: cdk.aws_iam.Effect.ALLOW,
               actions: [
-                "dynamodb:PutItem",
-                "dynamodb:GetItem",
-                "dynamodb:UpdateItem",
-                "dynamodb:Query",
+                "es:ESHttpHead",
+                "es:ESHttpPost",
+                "es:ESHttpGet",
+                "es:ESHttpPatch",
+                "es:ESHttpDelete",
+                "es:ESHttpPut",
               ],
-              resources: [idempotencyTable.tableArn],
-            }),
-            // Kafka/MSK permissions (if needed for VPC connectivity)
-            new cdk.aws_iam.PolicyStatement({
-              effect: cdk.aws_iam.Effect.ALLOW,
-              actions: [
-                "kafka:DescribeCluster",
-                "kafka:GetBootstrapBrokers",
-              ],
-              resources: ["*"],
+              resources: [`${openSearchDomainArn}/*`],
             }),
           ],
         }),
@@ -545,9 +520,8 @@ export class Api extends cdk.NestedStack {
       handler: "handler",
       role: dataSinkLambdaRole,
       environment: {
-        idempotencyTableName: idempotencyTable.tableName,
-        smartTopicName,
-        brokerString,
+        osDomain: `https://${openSearchDomainEndpoint}`,
+        indexNamespace,
       },
       timeout: cdk.Duration.seconds(30),
       memorySize: 1024,
