@@ -528,6 +528,22 @@ export class Api extends cdk.NestedStack {
       },
     );
 
+    const internalApiResourcePolicy = new cdk.aws_iam.PolicyDocument({
+      statements: [
+        new PolicyStatement({
+          effect: Effect.ALLOW,
+          principals: [new AnyPrincipal()],
+          actions: ["execute-api:Invoke"],
+          resources: ["*"],
+          conditions: {
+            StringEquals: {
+              "aws:SourceVpce": internalApiVpcEndpoint.vpcEndpointId,
+            },
+          },
+        }),
+      ],
+    });
+
     const internalApi = new cdk.aws_apigateway.RestApi(this, "InternalApiGateway", {
       restApiName: `${project}-${stage}-internal`,
       deployOptions: {
@@ -567,28 +583,8 @@ export class Api extends cdk.NestedStack {
         types: [cdk.aws_apigateway.EndpointType.PRIVATE],
         vpcEndpoints: [internalApiVpcEndpoint],
       },
+      policy: internalApiResourcePolicy,
     });
-
-    const internalApiResourcePolicy = new cdk.aws_iam.PolicyDocument({
-      statements: [
-        new PolicyStatement({
-          effect: Effect.ALLOW,
-          principals: [new AnyPrincipal()],
-          actions: ["execute-api:Invoke"],
-          resources: [
-            `arn:aws:execute-api:${this.region}:${this.account}:${internalApi.restApiId}/*/*/*`,
-          ],
-          conditions: {
-            StringEquals: {
-              "aws:SourceVpce": internalApiVpcEndpoint.vpcEndpointId,
-            },
-          },
-        }),
-      ],
-    });
-
-    const internalApiCfn = internalApi.node.defaultChild as cdk.aws_apigateway.CfnRestApi;
-    internalApiCfn.policy = internalApiResourcePolicy;
 
     // Define API Gateway
     const api = new cdk.aws_apigateway.RestApi(this, "APIGateway", {
