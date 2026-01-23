@@ -575,7 +575,9 @@ export class Api extends cdk.NestedStack {
           effect: Effect.ALLOW,
           principals: [new AnyPrincipal()],
           actions: ["execute-api:Invoke"],
-          resources: [internalApi.arnForExecuteApi()],
+          resources: [
+            `arn:aws:execute-api:${this.region}:${this.account}:${internalApi.restApiId}/*/*/*`,
+          ],
           conditions: {
             StringEquals: {
               "aws:SourceVpce": internalApiVpcEndpoint.vpcEndpointId,
