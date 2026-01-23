@@ -33,16 +33,21 @@ interface ApiStackProps extends cdk.NestedStackProps {
 export class Api extends cdk.NestedStack {
   public readonly apiGateway: cdk.aws_apigateway.RestApi;
   public readonly apiGatewayUrl: string;
+  public readonly internalApiGateway: cdk.aws_apigateway.RestApi;
+  public readonly internalApiGatewayUrl: string;
 
   constructor(scope: Construct, id: string, props: ApiStackProps) {
     super(scope, id, props);
     const resources = this.initializeResources(props);
     this.apiGateway = resources.apiGateway;
+    this.internalApiGateway = resources.internalApiGateway;
     this.apiGatewayUrl = `https://${this.apiGateway.restApiId}.execute-api.${this.region}.amazonaws.com/${props.stage}`;
+    this.internalApiGatewayUrl = `https://${this.internalApiGateway.restApiId}.execute-api.${this.region}.amazonaws.com/${props.stage}`;
   }
 
   private initializeResources(props: ApiStackProps): {
     apiGateway: cdk.aws_apigateway.RestApi;
+    internalApiGateway: cdk.aws_apigateway.RestApi;
   } {
     const { project, stage, isDev, stack } = props;
     const {
@@ -383,6 +388,14 @@ export class Api extends cdk.NestedStack {
         },
       },
       {
+        id: "checkIdentifierUsage",
+        entry: join(__dirname, "../lambda/checkIdentifierUsage.ts"),
+        environment: {
+          osDomain: `https://${openSearchDomainEndpoint}`,
+          indexNamespace,
+        },
+      },
+      {
         id: "forms",
         entry: join(__dirname, "../lambda/getForm.ts"),
         environment: {},
@@ -478,6 +491,100 @@ export class Api extends cdk.NestedStack {
         removalPolicy: cdk.RemovalPolicy.DESTROY,
       },
     );
+
+    const internalApiEndpointSecurityGroup = new cdk.aws_ec2.SecurityGroup(
+      this,
+      "InternalApiEndpointSecurityGroup",
+      {
+        vpc,
+        description: `Allow HTTPS access to ${project}-${stage} private API endpoint.`,
+        allowAllOutbound: true,
+      },
+    );
+
+    internalApiEndpointSecurityGroup.addIngressRule(
+      cdk.aws_ec2.Peer.ipv4(vpc.vpcCidrBlock),
+      cdk.aws_ec2.Port.tcp(443),
+      "Allow VPC access to the private API endpoint",
+    );
+
+    const internalApiVpcEndpoint = new cdk.aws_ec2.InterfaceVpcEndpoint(
+      this,
+      "InternalApiVpcEndpoint",
+      {
+        vpc,
+        service: cdk.aws_ec2.InterfaceVpcEndpointAwsService.APIGATEWAY,
+        subnets: { subnets: privateSubnets },
+        securityGroups: [internalApiEndpointSecurityGroup],
+        privateDnsEnabled: true,
+      },
+    );
+
+    const internalApiExecutionLogsLogGroup = new cdk.aws_logs.LogGroup(
+      this,
+      "InternalApiGatewayExecutionLogsLogGroup",
+      {
+        removalPolicy: cdk.RemovalPolicy.DESTROY,
+      },
+    );
+
+    const internalApiResourcePolicy = new cdk.aws_iam.PolicyDocument({
+      statements: [
+        new PolicyStatement({
+          effect: Effect.ALLOW,
+          principals: [new AnyPrincipal()],
+          actions: ["execute-api:Invoke"],
+          resources: ["*"],
+          conditions: {
+            StringEquals: {
+              "aws:SourceVpce": internalApiVpcEndpoint.vpcEndpointId,
+            },
+          },
+        }),
+      ],
+    });
+
+    const internalApi = new cdk.aws_apigateway.RestApi(this, "InternalApiGateway", {
+      restApiName: `${project}-${stage}-internal`,
+      deployOptions: {
+        stageName: stage,
+        loggingLevel: cdk.aws_apigateway.MethodLoggingLevel.INFO,
+        dataTraceEnabled: true,
+        metricsEnabled: true,
+        accessLogDestination: new cdk.aws_apigateway.LogGroupLogDestination(
+          internalApiExecutionLogsLogGroup,
+        ),
+        accessLogFormat: cdk.aws_apigateway.AccessLogFormat.jsonWithStandardFields({
+          caller: true,
+          httpMethod: true,
+          ip: true,
+          protocol: true,
+          requestTime: true,
+          resourcePath: true,
+          responseLength: true,
+          status: true,
+          user: true,
+        }),
+      },
+      defaultCorsPreflightOptions: {
+        allowOrigins: cdk.aws_apigateway.Cors.ALL_ORIGINS,
+        allowMethods: cdk.aws_apigateway.Cors.ALL_METHODS,
+        allowHeaders: [
+          "Content-Type",
+          "Authorization",
+          "X-Amz-Date",
+          "X-Api-Key",
+          "X-Amz-Security-Token",
+          "X-Amz-User-Agent",
+        ],
+        allowCredentials: true,
+      },
+      endpointConfiguration: {
+        types: [cdk.aws_apigateway.EndpointType.PRIVATE],
+        vpcEndpoints: [internalApiVpcEndpoint],
+      },
+      policy: internalApiResourcePolicy,
+    });
 
     // Define API Gateway
     const api = new cdk.aws_apigateway.RestApi(this, "APIGateway", {
@@ -628,6 +735,11 @@ export class Api extends cdk.NestedStack {
         lambda: lambdas.itemExists,
         method: "POST",
       },
+      checkIdentifierUsage: {
+        path: "checkIdentifierUsage",
+        lambda: lambdas.checkIdentifierUsage,
+        method: "GET",
+      },
       forms: { path: "forms", lambda: lambdas.forms, method: "POST" },
       allForms: {
         path: "allForms",
@@ -637,12 +749,23 @@ export class Api extends cdk.NestedStack {
       getSystemNotifs: { path: "systemNotifs", lambda: lambdas.getSystemNotifs, method: "GET" },
     };
 
+    const internalApiResources = {
+      checkIdentifierUsage: {
+        path: "checkIdentifierUsage",
+        lambda: lambdas.checkIdentifierUsage,
+        method: "GET",
+      },
+    };
+
     const addApiResource = (
+      apiGateway: cdk.aws_apigateway.RestApi,
       path: string,
       lambdaFunction: cdk.aws_lambda.Function,
       method: string = "POST",
+      authorizationType: cdk.aws_apigateway.AuthorizationType = cdk.aws_apigateway.AuthorizationType
+        .IAM,
     ) => {
-      const resource = api.root.resourceForPath(path);
+      const resource = apiGateway.root.resourceForPath(path);
 
       // Define the integration for the Lambda function
       const integration = new cdk.aws_apigateway.LambdaIntegration(lambdaFunction, {
@@ -652,7 +775,7 @@ export class Api extends cdk.NestedStack {
 
       // Add method for specified HTTP method
       resource.addMethod(method, integration, {
-        authorizationType: cdk.aws_apigateway.AuthorizationType.IAM,
+        authorizationType,
         apiKeyRequired: false,
         methodResponses: [
           {
@@ -668,7 +791,17 @@ export class Api extends cdk.NestedStack {
     };
 
     Object.values(apiResources).forEach((resource) => {
-      addApiResource(resource.path, resource.lambda, resource.method);
+      addApiResource(api, resource.path, resource.lambda, resource.method);
+    });
+
+    Object.values(internalApiResources).forEach((resource) => {
+      addApiResource(
+        internalApi,
+        resource.path,
+        resource.lambda,
+        resource.method,
+        cdk.aws_apigateway.AuthorizationType.NONE,
+      );
     });
 
     // Define CloudWatch Alarms
@@ -738,6 +871,6 @@ export class Api extends cdk.NestedStack {
       });
     }
 
-    return { apiGateway: api };
+    return { apiGateway: api, internalApiGateway: internalApi };
   }
 }

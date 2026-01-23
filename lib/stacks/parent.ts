@@ -122,6 +122,7 @@ export class ParentStack extends cdk.Stack {
       parameterName: `/${props.project}/${props.stage}/deployment-output`,
       stringValue: JSON.stringify({
         apiGatewayRestApiUrl: apiStack.apiGatewayUrl,
+        internalApiGatewayRestApiUrl: apiStack.internalApiGatewayUrl,
         identityPoolId: authStack.identityPool.attrId,
         userPoolId: authStack.userPool.userPoolId,
         userPoolClientId: authStack.userPoolClient.attrClientId,
