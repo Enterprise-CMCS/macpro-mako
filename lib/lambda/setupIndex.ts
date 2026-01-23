@@ -67,6 +67,13 @@ export const handler: Handler = async (event, __, callback) => {
         processedAt: { type: "date" },
         status: { type: "keyword" },
         expiresAt: { type: "long" },
+        // Outbound event fields
+        direction: { type: "keyword" },
+        targetEndpoint: { type: "keyword" },
+        httpStatusCode: { type: "integer" },
+        lastAttemptAt: { type: "date" },
+        attemptCount: { type: "integer" },
+        businessKey: { type: "keyword" },
       },
     });
   } catch (error: any) {

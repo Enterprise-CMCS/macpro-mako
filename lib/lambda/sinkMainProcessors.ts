@@ -1,6 +1,13 @@
 import { UTCDate } from "@date-fns/utc";
 import { isAfter, isBefore } from "date-fns";
-import { bulkUpdateDataWrapper, ErrorType, getItems, logError } from "libs";
+import {
+  bulkUpdateDataWrapper,
+  ErrorType,
+  getItems,
+  logError,
+  processOutboundEvents,
+  OutboundRecordInput,
+} from "libs";
 import { getPackage, getPackageChangelog } from "libs/api/package";
 import {
   KafkaRecord,
@@ -318,6 +325,30 @@ export const insertOneMacRecordsFromKafkaIntoMako = async (
   await bulkUpdateDataWrapper(oneMacRecords, "main");
   await bulkUpdateDataWrapper(oneMacUsers, "users");
   await bulkUpdateDataWrapper(roleRequests, "roles");
+
+  // Process outbound events for SMART integration (if configured)
+  // Only process package records, not user/role records
+  if (oneMacRecords.length > 0) {
+    try {
+      const outboundRecords: OutboundRecordInput[] = oneMacRecords.map((record) => ({
+        ...record,
+        id: record.id,
+        authority: record.authority as string | undefined,
+        event: record.event as string | undefined,
+        eventType: record.eventType as string | undefined,
+      }));
+
+      await processOutboundEvents(outboundRecords);
+    } catch (error) {
+      // Log but don't fail the main processing if outbound events fail
+      logError({
+        type: ErrorType.UNKNOWN,
+        error,
+        metadata: { context: "processOutboundEvents", recordCount: oneMacRecords.length },
+      });
+      console.error("Failed to process outbound events:", error);
+    }
+  }
 };
 
 const getMakoDocTimestamps = async (kafkaRecords: KafkaRecord[]) => {

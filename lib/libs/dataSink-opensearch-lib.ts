@@ -1,11 +1,17 @@
 import * as os from "./opensearch-lib";
-import { DataSinkEnvelope, IDEMPOTENCY_TTL_SECONDS } from "shared-types";
+import {
+  DataSinkEnvelope,
+  DataSinkDirection,
+  DataSinkStatus,
+  IDEMPOTENCY_TTL_SECONDS,
+} from "shared-types";
 import { validateEnvVariable } from "shared-utils";
 import { opensearch } from "shared-types";
 
 /**
  * Document structure for datasink index
  * Stores the full event envelope plus metadata for idempotency and tracking
+ * Supports both inbound (SMART → OneMAC) and outbound (OneMAC → SMART) events
  */
 export interface DataSinkDocument {
   /** Document ID = eventId for idempotency */
@@ -26,14 +32,26 @@ export interface DataSinkDocument {
   schemaVersion: string;
   /** Domain payload - flexible structure that varies by eventType */
   data: Record<string, unknown>;
-  /** When the event was first received (ISO-8601) */
+  /** When the event was first received/created (ISO-8601) */
   receivedAt: string;
-  /** When the event was processed (ISO-8601) */
+  /** When the event was processed/sent (ISO-8601) */
   processedAt?: string;
   /** Processing status */
-  status: "RECEIVED" | "PROCESSED" | "FAILED";
+  status: DataSinkStatus;
   /** TTL timestamp for cleanup (Unix epoch seconds) */
   expiresAt?: number;
+  /** Direction of the event flow (INBOUND or OUTBOUND) */
+  direction?: DataSinkDirection;
+  /** Target endpoint URL for outbound events */
+  targetEndpoint?: string;
+  /** HTTP status code from outbound request */
+  httpStatusCode?: number;
+  /** Timestamp of last send attempt for outbound events */
+  lastAttemptAt?: string;
+  /** Number of send attempts for outbound events */
+  attemptCount?: number;
+  /** Business key from the original record (e.g., SPA ID, Waiver ID) */
+  businessKey?: string;
 }
 
 /**
@@ -46,7 +64,7 @@ export type IdempotencyCheckResult =
 /**
  * Get the OpenSearch domain and datasink index name from environment variables
  */
-function getOsConfig(): { osDomain: string; index: opensearch.Index } {
+export function getOsConfig(): { osDomain: string; index: opensearch.Index } {
   validateEnvVariable("osDomain");
   validateEnvVariable("indexNamespace");
   const osDomain = process.env.osDomain!;
@@ -70,15 +88,17 @@ function calculateExpiresAt(): number {
  * If not, creates a new document with status "RECEIVED".
  *
  * @param envelope - The incoming event envelope
+ * @param direction - Direction of the event flow (defaults to INBOUND)
  * @returns IdempotencyCheckResult indicating if this is a duplicate or new event
  * @throws Error if OpenSearch operation fails
  */
 export async function checkIdempotency(
   envelope: DataSinkEnvelope,
+  direction: DataSinkDirection = DataSinkDirection.INBOUND,
 ): Promise<IdempotencyCheckResult> {
   const { osDomain, index } = getOsConfig();
 
-  console.log(`Checking idempotency for eventId: ${envelope.eventId}`);
+  console.log(`Checking idempotency for eventId: ${envelope.eventId} (${direction})`);
 
   try {
     // Check if document already exists
@@ -93,8 +113,13 @@ export async function checkIdempotency(
       };
     }
 
-    // Document doesn't exist - create a new one with status "RECEIVED"
+    // Document doesn't exist - create a new one
     const now = new Date().toISOString();
+    const initialStatus =
+      direction === DataSinkDirection.OUTBOUND
+        ? DataSinkStatus.PENDING_SEND
+        : DataSinkStatus.RECEIVED;
+
     const newDocument: DataSinkDocument = {
       id: envelope.eventId,
       source: envelope.source,
@@ -106,14 +131,15 @@ export async function checkIdempotency(
       schemaVersion: envelope.schemaVersion,
       data: envelope.data,
       receivedAt: now,
-      status: "RECEIVED",
+      status: initialStatus,
       expiresAt: calculateExpiresAt(),
+      direction,
     };
 
     // Store the document using bulkUpdateData with doc_as_upsert
     await os.bulkUpdateData(osDomain, index, [newDocument]);
 
-    console.log(`Created new idempotency document for eventId: ${envelope.eventId}`);
+    console.log(`Created new ${direction} document for eventId: ${envelope.eventId}`);
     return {
       isDuplicate: false,
       document: newDocument,
@@ -129,18 +155,29 @@ export async function checkIdempotency(
  *
  * @param eventId - The event ID to update
  * @param status - The new status
+ * @param additionalFields - Optional additional fields to update (e.g., httpStatusCode)
  */
 export async function updateEnvelopeStatus(
   eventId: string,
-  status: DataSinkDocument["status"],
+  status: DataSinkStatus,
+  additionalFields?: Partial<
+    Pick<DataSinkDocument, "httpStatusCode" | "lastAttemptAt" | "attemptCount" | "targetEndpoint">
+  >,
 ): Promise<void> {
   const { osDomain, index } = getOsConfig();
 
   const now = new Date().toISOString();
-  const updateDoc = {
+  const isCompletionStatus =
+    status === DataSinkStatus.PROCESSED ||
+    status === DataSinkStatus.SENT ||
+    status === DataSinkStatus.FAILED ||
+    status === DataSinkStatus.SEND_FAILED;
+
+  const updateDoc: Partial<DataSinkDocument> & { id: string } = {
     id: eventId,
     status,
-    processedAt: status === "PROCESSED" ? now : undefined,
+    processedAt: isCompletionStatus ? now : undefined,
+    ...additionalFields,
   };
 
   try {

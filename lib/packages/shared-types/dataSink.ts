@@ -140,8 +140,41 @@ export const dataSinkErrorSchema = z.object({
 export type DataSinkError = z.infer<typeof dataSinkErrorSchema>;
 
 /**
+ * Direction of the event flow
+ */
+export const DataSinkDirection = {
+  /** Inbound: SMART → MuleSoft → OneMAC */
+  INBOUND: "INBOUND",
+  /** Outbound: OneMAC → MuleSoft → SMART */
+  OUTBOUND: "OUTBOUND",
+} as const;
+
+export type DataSinkDirection = (typeof DataSinkDirection)[keyof typeof DataSinkDirection];
+
+/**
+ * Processing status values for datasink documents
+ */
+export const DataSinkStatus = {
+  /** Inbound: Event received but not yet processed */
+  RECEIVED: "RECEIVED",
+  /** Inbound: Event successfully processed */
+  PROCESSED: "PROCESSED",
+  /** Inbound/Outbound: Processing/sending failed */
+  FAILED: "FAILED",
+  /** Outbound: Event queued for sending */
+  PENDING_SEND: "PENDING_SEND",
+  /** Outbound: Event successfully sent to MuleSoft */
+  SENT: "SENT",
+  /** Outbound: Failed to send to MuleSoft after retries */
+  SEND_FAILED: "SEND_FAILED",
+} as const;
+
+export type DataSinkStatus = (typeof DataSinkStatus)[keyof typeof DataSinkStatus];
+
+/**
  * OpenSearch datasink document schema
  * Used for storing event envelopes and tracking idempotency
+ * Supports both inbound (SMART → OneMAC) and outbound (OneMAC → SMART) events
  */
 export const dataSinkDocumentSchema = z.object({
   /** Document ID = eventId for idempotency */
@@ -171,17 +204,42 @@ export const dataSinkDocumentSchema = z.object({
   /** Domain payload - flexible structure that varies by eventType */
   data: z.record(z.unknown()),
 
-  /** When the event was first received (ISO-8601) */
+  /** When the event was first received/created (ISO-8601) */
   receivedAt: z.string().datetime(),
 
-  /** When the event was processed (ISO-8601) */
+  /** When the event was processed/sent (ISO-8601) */
   processedAt: z.string().datetime().optional(),
 
   /** Processing status */
-  status: z.enum(["RECEIVED", "PROCESSED", "FAILED"]),
+  status: z.enum([
+    DataSinkStatus.RECEIVED,
+    DataSinkStatus.PROCESSED,
+    DataSinkStatus.FAILED,
+    DataSinkStatus.PENDING_SEND,
+    DataSinkStatus.SENT,
+    DataSinkStatus.SEND_FAILED,
+  ]),
 
   /** TTL timestamp for cleanup (Unix epoch seconds) */
   expiresAt: z.number().optional(),
+
+  /** Direction of the event flow (INBOUND or OUTBOUND) */
+  direction: z.enum([DataSinkDirection.INBOUND, DataSinkDirection.OUTBOUND]).optional(),
+
+  /** Target endpoint URL for outbound events */
+  targetEndpoint: z.string().optional(),
+
+  /** HTTP status code from outbound request */
+  httpStatusCode: z.number().optional(),
+
+  /** Timestamp of last send attempt for outbound events */
+  lastAttemptAt: z.string().datetime().optional(),
+
+  /** Number of send attempts for outbound events */
+  attemptCount: z.number().optional(),
+
+  /** Business key from the original record (e.g., SPA ID, Waiver ID) */
+  businessKey: z.string().optional(),
 });
 
 export type DataSinkDocument = z.infer<typeof dataSinkDocumentSchema>;

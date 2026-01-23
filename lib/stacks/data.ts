@@ -474,14 +474,26 @@ export class Data extends cdk.NestedStack {
 
     const lambdaFunctions = Object.entries(functionConfigs).reduce(
       (acc, [name, config]) => {
+        // Base environment for all sink Lambdas
+        const environment: Record<string, string> = {
+          osDomain: `https://${openSearchDomainEndpoint}`,
+          indexNamespace,
+        };
+
+        // Add dataExchange environment variables for sinkMain
+        // These are optional - if not set, outbound events are disabled
+        if (name === "sinkMain") {
+          // DataExchange endpoint URL (empty = disabled)
+          environment.dataExchangeEndpoint = process.env.DATA_EXCHANGE_ENDPOINT || "";
+          // API key for MuleSoft authentication (optional)
+          environment.dataExchangeApiKey = process.env.DATA_EXCHANGE_API_KEY || "";
+        }
+
         acc[name] = createLambda({
           id: name,
           role: sharedLambdaRole,
           useVpc: true,
-          environment: {
-            osDomain: `https://${openSearchDomainEndpoint}`,
-            indexNamespace,
-          },
+          environment,
           provisionedConcurrency: !props.isDev ? config.provisionedConcurrency : 0,
         });
         return acc;
