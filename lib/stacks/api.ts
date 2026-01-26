@@ -452,6 +452,14 @@ export class Api extends cdk.NestedStack {
           notificationSecretArn,
         },
       },
+      {
+        id: "checkIdentifierUsage",
+        entry: join(__dirname, "../lambda/checkIdentifierUsage.ts"),
+        environment: {
+          osDomain: `https://${openSearchDomainEndpoint}`,
+          indexNamespace,
+        },
+      },
     ];
 
     const lambdas = lambdaDefinitions.reduce(
@@ -675,6 +683,50 @@ export class Api extends cdk.NestedStack {
       methodResponses: [
         {
           statusCode: "202",
+          responseParameters: {
+            "method.response.header.Access-Control-Allow-Origin": true,
+            "method.response.header.Access-Control-Allow-Headers": true,
+            "method.response.header.Access-Control-Allow-Methods": true,
+          },
+        },
+        {
+          statusCode: "400",
+          responseParameters: {
+            "method.response.header.Access-Control-Allow-Origin": true,
+            "method.response.header.Access-Control-Allow-Headers": true,
+          },
+        },
+        {
+          statusCode: "500",
+          responseParameters: {
+            "method.response.header.Access-Control-Allow-Origin": true,
+            "method.response.header.Access-Control-Allow-Headers": true,
+          },
+        },
+      ],
+    });
+
+    // ==========================================
+    // checkIdentifierUsage - Public API (no auth, no API key)
+    // Allows external systems (WMS, MACPro) to check for duplicate IDs
+    // ==========================================
+    const checkIdentifierUsageResource = api.root.addResource("checkIdentifierUsage");
+
+    const checkIdentifierUsageIntegration = new cdk.aws_apigateway.LambdaIntegration(
+      lambdas.checkIdentifierUsage,
+      {
+        proxy: true,
+        credentialsRole: apiGatewayRole,
+      },
+    );
+
+    // Add GET method - fully public (no IAM auth, no API key)
+    checkIdentifierUsageResource.addMethod("GET", checkIdentifierUsageIntegration, {
+      authorizationType: cdk.aws_apigateway.AuthorizationType.NONE,
+      apiKeyRequired: false,
+      methodResponses: [
+        {
+          statusCode: "200",
           responseParameters: {
             "method.response.header.Access-Control-Allow-Origin": true,
             "method.response.header.Access-Control-Allow-Headers": true,
