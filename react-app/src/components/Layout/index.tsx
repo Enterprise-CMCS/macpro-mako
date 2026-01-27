@@ -73,15 +73,6 @@ const useGetLinks = () => {
             condition: !toggleFaq,
           },
           {
-            name: "MACPro",
-            link: config.macproLink.url,
-            condition:
-              showMACPRO &&
-              ["systemadmin", "cmsroleapprover", "cmsreviewer", "defaultcmsuser"].includes(
-                userDetailsData?.role,
-              ),
-          },
-          {
             name: "OneMAC SMART",
             link: config.smartLink.url,
             condition:
@@ -89,6 +80,11 @@ const useGetLinks = () => {
               ["systemadmin", "cmsroleapprover", "cmsreviewer", "defaultcmsuser"].includes(
                 userDetailsData?.role,
               ),
+          },
+          {
+            name: "MACPro",
+            link: config.macproLink.url,
+            condition: showMACPRO && userDetailsData?.role,
           },
           {
             name: "Latest Updates",
