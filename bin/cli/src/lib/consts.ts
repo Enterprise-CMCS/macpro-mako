@@ -24,5 +24,5 @@ export const mockEnvVariables = {
   VITE_GOOGLE_ANALYTICS_DISABLE: `"true"`,
   VITE_LAUNCHDARKLY_CLIENT_ID: `"6638280397c1bc569aea5f3f"`,
   VITE_SMART_LINK_URL: `"https://onemacsmart.cms.gov"`,
-  VITE_MACPRO_LINK: `"https://macpro.cms.gov"`,
+  VITE_MACPRO_LINK_URL: `"https://macpro.cms.gov"`,
 };

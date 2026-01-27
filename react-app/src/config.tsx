@@ -25,7 +25,7 @@ const config = {
     url: import.meta.env.VITE_SMART_LINK_URL,
   },
   macproLink: {
-    url: import.meta.env.VITE_MACPRO_LINK,
+    url: import.meta.env.VITE_MACPRO_LINK_URL,
   },
 };
 
