@@ -1,9 +1,9 @@
-import { TEST_ITEM_ID, NOT_FOUND_ITEM_ID } from "mocks";
+import * as opensearchLib from "libs/opensearch-lib";
+import { NOT_FOUND_ITEM_ID, TEST_ITEM_ID } from "mocks";
 import items from "mocks/data/items";
-import { describe, expect, it, vi, beforeEach } from "vitest";
+import { beforeEach, describe, expect, it, vi } from "vitest";
 
 import { checkIdentifierUsage } from "./checkIdentifierUsage";
-import * as opensearchLib from "libs/opensearch-lib";
 
 // Mock the opensearch-lib
 vi.mock("libs/opensearch-lib", () => ({
@@ -86,9 +86,7 @@ describe("checkIdentifierUsage", () => {
 
   it("should return exists: true with origin when identifier is found with SEATool origin", async () => {
     // Find an item with SEATool origin from test data
-    const seatoolItem = Object.values(items).find(
-      (item) => item._source?.origin === "SEATool",
-    );
+    const seatoolItem = Object.values(items).find((item) => item._source?.origin === "SEATool");
     expect(seatoolItem).toBeDefined();
     if (!seatoolItem?._id) {
       throw new Error("SEATool item not found");

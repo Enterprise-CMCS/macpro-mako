@@ -1,17 +1,24 @@
-import { v4 as uuidv4 } from "uuid";
-import * as os from "./opensearch-lib";
+import { GetSecretValueCommand, SecretsManagerClient } from "@aws-sdk/client-secrets-manager";
+import axios from "axios";
 import {
-  DataSinkEnvelope,
-  DataSinkDirection,
-  DataSinkStatus,
-  DataSinkSource,
-  DataSinkRecordType,
   DATASINK_SCHEMA_VERSION,
-  IDEMPOTENCY_TTL_SECONDS,
+  DataSinkDirection,
+  DataSinkEnvelope,
+  DataSinkRecordType,
+  DataSinkSource,
+  DataSinkStatus,
 } from "shared-types";
-import { validateEnvVariable } from "shared-utils";
-import { opensearch } from "shared-types";
+import { v4 as uuidv4 } from "uuid";
+
 import { DataSinkDocument, getOsConfig } from "./dataSink-opensearch-lib";
+import * as os from "./opensearch-lib";
+
+// Secrets Manager client - lazy initialized
+let secretsClient: SecretsManagerClient | null = null;
+
+// Cached configuration to avoid repeated Secrets Manager calls
+let cachedConfig: DataExchangeConfig | null = null;
+let configFetchPromise: Promise<DataExchangeConfig | null> | null = null;
 
 /**
  * Configuration for outbound event processing
@@ -53,29 +60,96 @@ export interface OutboundRecordInput {
 }
 
 /**
- * Get the dataExchange endpoint configuration from environment variables
- * Returns null if endpoint is not configured (feature disabled)
+ * Initialize the Secrets Manager client (lazy initialization)
  */
-export function getDataExchangeConfig(): DataExchangeConfig | null {
-  const endpoint = process.env.dataExchangeEndpoint;
-
-  if (!endpoint || endpoint.trim() === "") {
-    console.log("DataExchange endpoint not configured - outbound events disabled");
-    return null;
+function getSecretsClient(): SecretsManagerClient {
+  if (!secretsClient) {
+    secretsClient = new SecretsManagerClient({});
   }
-
-  return {
-    endpoint: endpoint.trim(),
-    apiKey: process.env.dataExchangeApiKey,
-    timeoutMs: parseInt(process.env.dataExchangeTimeoutMs || "30000", 10),
-  };
+  return secretsClient;
 }
 
 /**
- * Calculate the expiresAt timestamp for TTL (7 days from now)
+ * Fetch credentials from Secrets Manager
+ * @param secretName - The name of the secret to fetch
+ * @returns The parsed secret containing endpoint and apiKey
  */
-function calculateExpiresAt(): number {
-  return Math.floor(Date.now() / 1000) + IDEMPOTENCY_TTL_SECONDS;
+async function fetchSecretCredentials(
+  secretName: string,
+): Promise<{ endpoint?: string; apiKey?: string } | null> {
+  try {
+    const client = getSecretsClient();
+    const response = await client.send(new GetSecretValueCommand({ SecretId: secretName }));
+
+    if (!response.SecretString) {
+      console.error("Secret value is empty");
+      return null;
+    }
+
+    return JSON.parse(response.SecretString);
+  } catch (error) {
+    console.error("Failed to fetch dataExchange credentials from Secrets Manager:", error);
+    return null;
+  }
+}
+
+/**
+ * Get the dataExchange endpoint configuration from Secrets Manager
+ * Returns null if endpoint is not configured (feature disabled)
+ * Uses caching to avoid repeated Secrets Manager calls during Lambda execution
+ */
+export async function getDataExchangeConfig(): Promise<DataExchangeConfig | null> {
+  // Return cached config if available
+  if (cachedConfig !== null) {
+    return cachedConfig;
+  }
+
+  // If a fetch is already in progress, wait for it
+  if (configFetchPromise !== null) {
+    return configFetchPromise;
+  }
+
+  // Start fetching the config
+  configFetchPromise = (async () => {
+    const secretName = process.env.dataExchangeSecretName;
+
+    if (!secretName || secretName.trim() === "") {
+      console.log("DataExchange secret not configured - outbound events disabled");
+      cachedConfig = null;
+      return null;
+    }
+
+    const credentials = await fetchSecretCredentials(secretName);
+
+    if (!credentials || !credentials.endpoint || credentials.endpoint.trim() === "") {
+      console.log("DataExchange endpoint not found in secret - outbound events disabled");
+      cachedConfig = null;
+      return null;
+    }
+
+    cachedConfig = {
+      endpoint: credentials.endpoint.trim(),
+      apiKey: credentials.apiKey,
+      timeoutMs: parseInt(process.env.dataExchangeTimeoutMs || "30000", 10),
+    };
+
+    console.log(
+      `DataExchange config loaded from Secrets Manager: endpoint=${cachedConfig.endpoint}`,
+    );
+    return cachedConfig;
+  })();
+
+  const result = await configFetchPromise;
+  configFetchPromise = null;
+  return result;
+}
+
+/**
+ * Clear the cached configuration (useful for testing)
+ */
+export function clearDataExchangeConfigCache(): void {
+  cachedConfig = null;
+  configFetchPromise = null;
 }
 
 /**
@@ -175,7 +249,6 @@ export async function storeOutboundEvent(
     data: envelope.data,
     receivedAt: now,
     status: DataSinkStatus.PENDING_SEND,
-    expiresAt: calculateExpiresAt(),
     direction: DataSinkDirection.OUTBOUND,
     targetEndpoint,
     attemptCount: 0,
@@ -232,9 +305,6 @@ export async function sendToMuleSoft(
   envelope: DataSinkEnvelope,
   config: DataExchangeConfig,
 ): Promise<SendResult> {
-  const controller = new AbortController();
-  const timeoutId = setTimeout(() => controller.abort(), config.timeoutMs || 30000);
-
   try {
     const headers: Record<string, string> = {
       "Content-Type": "application/json",
@@ -246,41 +316,63 @@ export async function sendToMuleSoft(
 
     console.log(`Sending outbound event to ${config.endpoint}: eventId=${envelope.eventId}`);
 
-    const response = await fetch(config.endpoint, {
-      method: "POST",
+    const response = await axios.post(config.endpoint, envelope, {
       headers,
-      body: JSON.stringify(envelope),
-      signal: controller.signal,
+      timeout: config.timeoutMs || 30000,
+      validateStatus: (status) => status >= 200 && status < 500, // Don't throw for 4xx, we'll handle it
     });
 
-    clearTimeout(timeoutId);
-
-    const responseBody = await response.json().catch(() => ({}));
-
-    if (response.ok || response.status === 202) {
+    // Treat 2xx and 202 as success
+    if (response.status >= 200 && response.status < 300) {
       console.log(`Successfully sent event ${envelope.eventId} - status ${response.status}`);
       return {
         success: true,
         httpStatusCode: response.status,
-        responseBody,
+        responseBody: response.data,
       };
     }
 
+    // Handle 4xx responses (client errors)
     console.error(
-      `Failed to send event ${envelope.eventId} - status ${response.status}: ${JSON.stringify(responseBody)}`,
+      `Failed to send event ${envelope.eventId} - status ${response.status}: ${JSON.stringify(response.data)}`,
     );
     return {
       success: false,
       httpStatusCode: response.status,
-      responseBody,
-      error: `HTTP ${response.status}: ${JSON.stringify(responseBody)}`,
+      responseBody: response.data,
+      error: `HTTP ${response.status}: ${JSON.stringify(response.data)}`,
     };
   } catch (error: unknown) {
-    clearTimeout(timeoutId);
+    // Handle network errors, timeouts, and 5xx responses
+    if (axios.isAxiosError(error)) {
+      const httpStatusCode = error.response?.status;
+      const responseBody = error.response?.data;
 
+      if (httpStatusCode) {
+        // Server returned an error response
+        console.error(
+          `Failed to send event ${envelope.eventId} - status ${httpStatusCode}: ${JSON.stringify(responseBody)}`,
+        );
+        return {
+          success: false,
+          httpStatusCode,
+          responseBody,
+          error: `HTTP ${httpStatusCode}: ${JSON.stringify(responseBody)}`,
+        };
+      }
+
+      // Network error or timeout
+      const errorMessage = error.message || "Network error";
+      console.error(`Error sending event ${envelope.eventId}: ${errorMessage}`);
+      return {
+        success: false,
+        error: errorMessage,
+      };
+    }
+
+    // Non-axios error
     const errorMessage = error instanceof Error ? error.message : String(error);
     console.error(`Error sending event ${envelope.eventId}: ${errorMessage}`);
-
     return {
       success: false,
       error: errorMessage,
@@ -295,10 +387,8 @@ export async function sendToMuleSoft(
  * @param record - The source record to process
  * @returns The eventId of the processed event, or null if disabled/failed
  */
-export async function processOutboundEvent(
-  record: OutboundRecordInput,
-): Promise<string | null> {
-  const config = getDataExchangeConfig();
+export async function processOutboundEvent(record: OutboundRecordInput): Promise<string | null> {
+  const config = await getDataExchangeConfig();
 
   if (!config) {
     // Outbound events are disabled
@@ -349,7 +439,7 @@ export async function processOutboundEvent(
 export async function processOutboundEvents(
   records: OutboundRecordInput[],
 ): Promise<(string | null)[]> {
-  const config = getDataExchangeConfig();
+  const config = await getDataExchangeConfig();
 
   if (!config) {
     console.log("DataExchange not configured - skipping outbound event processing");
@@ -364,7 +454,10 @@ export async function processOutboundEvents(
     if (result.status === "fulfilled") {
       return result.value;
     }
-    console.error(`Failed to process outbound event for record ${records[index].id}:`, result.reason);
+    console.error(
+      `Failed to process outbound event for record ${records[index].id}:`,
+      result.reason,
+    );
     return null;
   });
 }

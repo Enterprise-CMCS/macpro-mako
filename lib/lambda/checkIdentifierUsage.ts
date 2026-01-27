@@ -1,6 +1,7 @@
 import { APIGatewayEvent } from "aws-lambda";
-import { response } from "libs/handler-lib";
 import { checkIdentifierUsage } from "libs/api/package/checkIdentifierUsage";
+import { response } from "libs/handler-lib";
+
 import { nonAuthenticatedMiddy } from "./middleware/handlers";
 
 /**

@@ -350,9 +350,7 @@ export class Data extends cdk.NestedStack {
         privateSubnets: privateSubnets,
         securityGroups: [lambdaSecurityGroup],
         brokerString,
-        topicPatternsToDelete: [
-          `${topicNamespace}aws.onemac.migration.cdc`,
-        ],
+        topicPatternsToDelete: [`${topicNamespace}aws.onemac.migration.cdc`],
       });
     }
 
@@ -410,6 +408,16 @@ export class Data extends cdk.NestedStack {
       return fn;
     };
 
+    // ==========================================
+    // DataExchange Secret - MuleSoft outbound credentials
+    // Stores the endpoint URL and API key provided by MuleSoft
+    // ==========================================
+    const dataExchangeSecret = new cdk.aws_secretsmanager.Secret(this, "DataExchangeSecret", {
+      secretName: `${project}/${stage}/dataExchange-credentials`, // pragma: allowlist secret
+      description:
+        "Credentials for outbound MuleSoft dataExchange endpoint (endpoint URL and API key)",
+    });
+
     const sharedLambdaRole = new cdk.aws_iam.Role(this, "SharedLambdaExecutionRole", {
       assumedBy: new cdk.aws_iam.ServicePrincipal("lambda.amazonaws.com"),
       managedPolicies: [
@@ -457,6 +465,12 @@ export class Data extends cdk.NestedStack {
               actions: ["logs:CreateLogGroup"],
               resources: ["*"],
             }),
+            // Permission to read dataExchange credentials from Secrets Manager
+            new cdk.aws_iam.PolicyStatement({
+              effect: cdk.aws_iam.Effect.ALLOW,
+              actions: ["secretsmanager:GetSecretValue"],
+              resources: [dataExchangeSecret.secretArn],
+            }),
           ],
         }),
       },
@@ -481,12 +495,10 @@ export class Data extends cdk.NestedStack {
         };
 
         // Add dataExchange environment variables for sinkMain
-        // These are optional - if not set, outbound events are disabled
+        // The secret contains the MuleSoft endpoint URL and API key
         if (name === "sinkMain") {
-          // DataExchange endpoint URL (empty = disabled)
-          environment.dataExchangeEndpoint = process.env.DATA_EXCHANGE_ENDPOINT || "";
-          // API key for MuleSoft authentication (optional)
-          environment.dataExchangeApiKey = process.env.DATA_EXCHANGE_API_KEY || "";
+          // Secret name containing MuleSoft credentials (endpoint and apiKey)
+          environment.dataExchangeSecretName = dataExchangeSecret.secretName;
         }
 
         acc[name] = createLambda({

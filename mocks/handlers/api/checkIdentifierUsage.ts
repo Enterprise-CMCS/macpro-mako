@@ -1,6 +1,6 @@
 import { http, HttpResponse } from "msw";
 
-import items, { TEST_ITEM_ID, NOT_FOUND_ITEM_ID, GET_ERROR_ITEM_ID } from "../../data/items";
+import items, { GET_ERROR_ITEM_ID, NOT_FOUND_ITEM_ID, TEST_ITEM_ID } from "../../data/items";
 
 /**
  * Helper function to find an item by ID with case-insensitive matching
@@ -21,10 +21,7 @@ const defaultApiCheckIdentifierUsageHandler = http.get(
 
     // Missing id parameter
     if (!identifier) {
-      return HttpResponse.json(
-        { message: "Missing required parameter: id" },
-        { status: 400 },
-      );
+      return HttpResponse.json({ message: "Missing required parameter: id" }, { status: 400 });
     }
 
     // Error case for testing

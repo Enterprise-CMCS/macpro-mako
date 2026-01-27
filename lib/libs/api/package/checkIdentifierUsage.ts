@@ -14,9 +14,7 @@ export interface IdentifierCheckResult {
  * @param identifier - The identifier to check (case-insensitive)
  * @returns Object with exists flag and origin system name if found
  */
-export async function checkIdentifierUsage(
-  identifier: string,
-): Promise<IdentifierCheckResult> {
+export async function checkIdentifierUsage(identifier: string): Promise<IdentifierCheckResult> {
   try {
     const { domain, index } = getDomainAndNamespace("main");
 

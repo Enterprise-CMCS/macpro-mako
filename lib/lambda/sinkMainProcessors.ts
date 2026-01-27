@@ -5,8 +5,8 @@ import {
   ErrorType,
   getItems,
   logError,
-  processOutboundEvents,
   OutboundRecordInput,
+  processOutboundEvents,
 } from "libs";
 import { getPackage, getPackageChangelog } from "libs/api/package";
 import {

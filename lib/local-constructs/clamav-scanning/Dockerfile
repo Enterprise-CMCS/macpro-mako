@@ -15,9 +15,10 @@ RUN (dnf --refresh upgrade -y || microdnf upgrade -y || yum update -y) \
     && rm -rf /var/cache/dnf \
     && rpm -q glib2 || true
 
-# Remove unused runtime emulator and update global npm to patched version to address CVEs
+# Remove unused runtime emulator and attempt to update global npm to patched version to address CVEs
+# The npm update is best-effort - if network fails, continue with base image npm version
 RUN rm -f /usr/local/bin/aws-lambda-rie \
-    && npm install -g npm@latest \
+    && (npm install -g npm@latest || echo "npm update failed, continuing with existing version") \
     && npm cache clean --force
 
 COPY package.json package-lock.json ./

@@ -220,9 +220,6 @@ export const dataSinkDocumentSchema = z.object({
     DataSinkStatus.SEND_FAILED,
   ]),
 
-  /** TTL timestamp for cleanup (Unix epoch seconds) */
-  expiresAt: z.number().optional(),
-
   /** Direction of the event flow (INBOUND or OUTBOUND) */
   direction: z.enum([DataSinkDirection.INBOUND, DataSinkDirection.OUTBOUND]).optional(),
 
@@ -281,16 +278,4 @@ export function createDataSinkErrorResponse(
       message,
     },
   };
-}
-
-/**
- * TTL duration for idempotency records (7 days in seconds)
- */
-export const IDEMPOTENCY_TTL_SECONDS = 7 * 24 * 60 * 60;
-
-/**
- * Calculate the expiresAt timestamp for DynamoDB TTL
- */
-export function calculateExpiresAt(): number {
-  return Math.floor(Date.now() / 1000) + IDEMPOTENCY_TTL_SECONDS;
 }

@@ -1,11 +1,11 @@
 import { APIGatewayProxyEvent, APIGatewayProxyResult } from "aws-lambda";
+import { checkIdempotency, updateEnvelopeStatus } from "libs";
 import {
+  createDataSinkErrorResponse,
+  createDataSinkResponse,
   dataSinkEnvelopeSchema,
   DataSinkErrorCode,
-  createDataSinkResponse,
-  createDataSinkErrorResponse,
 } from "shared-types";
-import { checkIdempotency, updateEnvelopeStatus } from "libs";
 
 /**
  * Create an API Gateway response with proper headers

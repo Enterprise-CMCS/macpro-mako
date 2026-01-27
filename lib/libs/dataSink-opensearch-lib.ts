@@ -1,12 +1,8 @@
-import * as os from "./opensearch-lib";
-import {
-  DataSinkEnvelope,
-  DataSinkDirection,
-  DataSinkStatus,
-  IDEMPOTENCY_TTL_SECONDS,
-} from "shared-types";
-import { validateEnvVariable } from "shared-utils";
+import { DataSinkDirection, DataSinkEnvelope, DataSinkStatus } from "shared-types";
 import { opensearch } from "shared-types";
+import { validateEnvVariable } from "shared-utils";
+
+import * as os from "./opensearch-lib";
 
 /**
  * Document structure for datasink index
@@ -38,8 +34,6 @@ export interface DataSinkDocument {
   processedAt?: string;
   /** Processing status */
   status: DataSinkStatus;
-  /** TTL timestamp for cleanup (Unix epoch seconds) */
-  expiresAt?: number;
   /** Direction of the event flow (INBOUND or OUTBOUND) */
   direction?: DataSinkDirection;
   /** Target endpoint URL for outbound events */
@@ -73,13 +67,6 @@ export function getOsConfig(): { osDomain: string; index: opensearch.Index } {
     osDomain,
     index: `${indexNamespace}datasink` as opensearch.Index,
   };
-}
-
-/**
- * Calculate the expiresAt timestamp for TTL (7 days from now)
- */
-function calculateExpiresAt(): number {
-  return Math.floor(Date.now() / 1000) + IDEMPOTENCY_TTL_SECONDS;
 }
 
 /**
@@ -132,7 +119,6 @@ export async function checkIdempotency(
       data: envelope.data,
       receivedAt: now,
       status: initialStatus,
-      expiresAt: calculateExpiresAt(),
       direction,
     };
 
@@ -195,9 +181,7 @@ export async function updateEnvelopeStatus(
  * @param eventId - The event ID to look up
  * @returns The document if found, undefined otherwise
  */
-export async function getDataSinkDocument(
-  eventId: string,
-): Promise<DataSinkDocument | undefined> {
+export async function getDataSinkDocument(eventId: string): Promise<DataSinkDocument | undefined> {
   const { osDomain, index } = getOsConfig();
 
   try {

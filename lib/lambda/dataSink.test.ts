@@ -1,14 +1,10 @@
 import { APIGatewayProxyEvent } from "aws-lambda";
-import { beforeEach, describe, expect, it, vi, Mock } from "vitest";
+import { DATASINK_SCHEMA_VERSION, DataSinkEnvelope, DataSinkErrorCode } from "shared-types";
+import { beforeEach, describe, expect, it, Mock, vi } from "vitest";
 
-import { handler } from "./dataSink";
 import * as dataSinkLib from "../libs/dataSink-opensearch-lib";
-import {
-  DataSinkEnvelope,
-  DataSinkErrorCode,
-  DATASINK_SCHEMA_VERSION,
-} from "shared-types";
 import { DataSinkDocument } from "../libs/dataSink-opensearch-lib";
+import { handler } from "./dataSink";
 
 // Mock the dataSink-opensearch-lib module
 vi.mock("../libs/dataSink-opensearch-lib", () => ({
@@ -111,7 +107,6 @@ function createDataSinkDocument(
     correlationId: envelope.correlationId,
     schemaVersion: envelope.schemaVersion,
     data: envelope.data,
-    expiresAt: Math.floor(Date.now() / 1000) + 7 * 24 * 60 * 60,
   };
 }
 

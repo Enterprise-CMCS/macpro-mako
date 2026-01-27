@@ -1,9 +1,9 @@
 import { APIGatewayEvent, Context } from "aws-lambda";
-import { TEST_ITEM_ID, NOT_FOUND_ITEM_ID } from "mocks";
-import { describe, expect, it, vi, beforeEach } from "vitest";
+import * as checkIdentifierUsageLib from "libs/api/package/checkIdentifierUsage";
+import { NOT_FOUND_ITEM_ID, TEST_ITEM_ID } from "mocks";
+import { beforeEach, describe, expect, it, vi } from "vitest";
 
 import { handler } from "./checkIdentifierUsage";
-import * as checkIdentifierUsageLib from "libs/api/package/checkIdentifierUsage";
 
 // Mock the checkIdentifierUsage function
 vi.mock("libs/api/package/checkIdentifierUsage", () => ({
