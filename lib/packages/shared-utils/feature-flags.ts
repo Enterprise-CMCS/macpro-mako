@@ -123,4 +123,11 @@ export const featureFlags = {
     flag: "show-smart-link",
     defaultValue: false,
   },
+  /*
+   *  Toggle visibility of MACPRO link in header
+   */
+  SHOW_MACPRO_LINK: {
+    flag: "show-macpro-link",
+    defaultValue: false,
+  },
 } as const;

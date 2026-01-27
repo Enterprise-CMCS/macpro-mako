@@ -100,6 +100,8 @@ export class ParentStack extends cdk.Stack {
       idmAuthzApiKeyArn: props.idmAuthzApiKeyArn,
       idmClientSecretArn: props.idmClientSecretArn,
       devPasswordArn: props.devPasswordArn,
+      smartLinkUrl: props.smartLinkUrl,
+      macproLinkUrl: props.macproLinkUrl,
     });
 
     new Stacks.Email(this, "email", {
@@ -131,6 +133,7 @@ export class ParentStack extends cdk.Stack {
         cloudfrontDistributionId: uiInfraStack.distribution.distributionId,
         idmHomeUrl: props.idmHomeUrl,
         smartLinkUrl: props.smartLinkUrl,
+        macproLinkUrl: props.macproLinkUrl,
         kibanaUrl: `https://${dataStack.openSearchDomainEndpoint}/_dashboards`,
       }),
       description: `Deployment output for the ${props.stage} environment.`,
