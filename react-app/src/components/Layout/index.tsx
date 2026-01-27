@@ -73,7 +73,7 @@ const useGetLinks = () => {
             condition: !toggleFaq,
           },
           {
-            name: "MACPRO",
+            name: "MACPro",
             link: config.macproLink.url,
             condition:
               showMACPRO &&
@@ -394,7 +394,11 @@ const ResponsiveNav = ({ isDesktop }: ResponsiveNavProps) => {
           <NavLink
             data-testid={`${link.name}-d`}
             to={link.link}
-            target={link.link === "/faq" || link.name === "OneMAC SMART" ? "_blank" : "_self"}
+            target={
+              link.link === "/faq" || link.name === "OneMAC SMART" || link.name === "MACPro"
+                ? "_blank"
+                : "_self"
+            }
             key={link.name}
             className={setClassBasedOnNav}
             onClick={() => triggerGAEvent(link.name)}
