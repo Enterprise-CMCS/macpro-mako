@@ -40,6 +40,7 @@ const useGetLinks = () => {
   const showHome = toggleFaq ? userObj.user : true; // if toggleFAQ is on we want to hide home when not logged in
   const isStateHomepage = useFeatureFlag("STATE_HOMEPAGE_FLAG");
   const showSMART = useFeatureFlag("SHOW_SMART_LINK");
+  const showMACPRO = useFeatureFlag("SHOW_MACPRO_LINK");
 
   const links =
     userLoading || userDetailsLoading || isFaqPage
@@ -70,6 +71,15 @@ const useGetLinks = () => {
             name: "View FAQs",
             link: "/faq",
             condition: !toggleFaq,
+          },
+          {
+            name: "MACPRO",
+            link: config.macproLink.url,
+            condition:
+              showMACPRO &&
+              ["systemadmin", "cmsroleapprover", "cmsreviewer", "defaultcmsuser"].includes(
+                userDetailsData?.role,
+              ),
           },
           {
             name: "OneMAC SMART",
