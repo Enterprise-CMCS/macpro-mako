@@ -39,7 +39,7 @@ describe("DeploymentConfig", () => {
     iamPath: "/my/path/",
     iamPermissionsBoundary: "arn:aws:iam::1234578910:policy/foo/bar-policy",
     smartLinkUrl: "https://smartlink.example.com",
-    macproLinkUrl: "https://macpro.example.com",
+    macproLinkUrl: "https://macprolink.example.com",
   });
 
   const stageSecret = JSON.stringify({
@@ -109,7 +109,7 @@ describe("DeploymentConfig", () => {
       iamPath: "/my/path/",
       iamPermissionsBoundary: "arn:aws:iam::1234578910:policy/foo/bar-policy",
       smartLinkUrl: "https://smartlink.example.com",
-      macproLinkUrl: "https://macpro.example.com",
+      macproLinkUrl: "https://macprolink.example.com",
     };
     expect(deploymentConfig.config).toEqual(expectedConfig);
   });
@@ -176,7 +176,7 @@ describe("DeploymentConfig", () => {
       iamPath: "/my/path/",
       iamPermissionsBoundary: "arn:aws:iam::1234578910:policy/foo/bar-policy",
       smartLinkUrl: "https://smartlink.example.com",
-      macproLinkUrl: "https://macpro.example.com",
+      macproLinkUrl: "https://macprolink.example.com",
     };
 
     expect(deploymentConfig.config).toEqual(expectedConfig);
