@@ -1,6 +1,6 @@
 import { APIGatewayEvent, Context } from "aws-lambda";
 import * as checkIdentifierUsageLib from "libs/api/package/checkIdentifierUsage";
-import { NOT_FOUND_ITEM_ID, TEST_ITEM_ID } from "mocks";
+import { TEST_ITEM_ID } from "mocks";
 import { beforeEach, describe, expect, it, vi } from "vitest";
 
 import { handler } from "./checkIdentifierUsage";

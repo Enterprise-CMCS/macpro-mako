@@ -46,7 +46,7 @@ function createResponse(
  */
 export async function handler(event: APIGatewayProxyEvent): Promise<APIGatewayProxyResult> {
   let correlationId: string | undefined;
-  const requestId = event.requestContext?.requestId || `req-${Date.now()}`;
+  const _requestId = event.requestContext?.requestId || `req-${Date.now()}`;
 
   try {
     console.log("Received dataSink request", {
@@ -87,7 +87,7 @@ export async function handler(event: APIGatewayProxyEvent): Promise<APIGatewayPr
     let parsedBody: unknown;
     try {
       parsedBody = JSON.parse(event.body);
-    } catch (parseError) {
+    } catch {
       console.error("Failed to parse JSON body");
       return createResponse(
         400,

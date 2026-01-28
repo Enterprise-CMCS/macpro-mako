@@ -1,6 +1,5 @@
 import * as os from "libs/opensearch-lib";
 import { getDomainAndNamespace } from "libs/utils";
-import { opensearch } from "shared-types";
 
 export interface IdentifierCheckResult {
   exists: boolean;

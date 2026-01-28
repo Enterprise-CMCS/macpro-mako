@@ -78,7 +78,7 @@ describe("dataExchange-lib", () => {
     });
 
     it("returns null when endpoint is not in secret", async () => {
-      process.env.dataExchangeSecretName = "test-secret";
+      process.env.dataExchangeSecretName = "test-secret"; // pragma: allowlist secret
       mockSend.mockResolvedValueOnce({
         SecretString: JSON.stringify({ apiKey: "test-key" }),
       });
@@ -87,17 +87,17 @@ describe("dataExchange-lib", () => {
     });
 
     it("returns config when credentials are in secret", async () => {
-      process.env.dataExchangeSecretName = "test-secret";
+      process.env.dataExchangeSecretName = "test-secret"; // pragma: allowlist secret
       mockSend.mockResolvedValueOnce({
         SecretString: JSON.stringify({
           endpoint: "https://mulesoft.example.com/dataExchange",
-          apiKey: "test-api-key",
+          apiKey: "test-api-key", // pragma: allowlist secret
         }),
       });
       const config = await getDataExchangeConfig();
       expect(config).toEqual({
         endpoint: "https://mulesoft.example.com/dataExchange",
-        apiKey: "test-api-key",
+        apiKey: "test-api-key", // pragma: allowlist secret
         timeoutMs: 30000,
       });
     });
@@ -107,7 +107,7 @@ describe("dataExchange-lib", () => {
       mockSend.mockResolvedValue({
         SecretString: JSON.stringify({
           endpoint: "https://mulesoft.example.com/dataExchange",
-          apiKey: "test-api-key",
+          apiKey: "test-api-key", // pragma: allowlist secret
         }),
       });
 
@@ -121,7 +121,7 @@ describe("dataExchange-lib", () => {
     });
 
     it("returns null when Secrets Manager call fails", async () => {
-      process.env.dataExchangeSecretName = "test-secret";
+      process.env.dataExchangeSecretName = "test-secret"; // pragma: allowlist secret
       mockSend.mockRejectedValueOnce(new Error("Access denied"));
       const config = await getDataExchangeConfig();
       expect(config).toBeNull();
@@ -389,7 +389,7 @@ describe("dataExchange-lib", () => {
 
       it("includes x-api-key header when apiKey is provided", async () => {
         const envelope = createTestEnvelope();
-        const config = createTestConfig({ apiKey: "my-secret-key" });
+        const config = createTestConfig({ apiKey: "my-secret-key" }); // pragma: allowlist secret
         mockAxiosPost.mockResolvedValueOnce({ status: 200, data: {} });
 
         await sendToMuleSoft(envelope, config);
@@ -707,11 +707,11 @@ describe("dataExchange-lib", () => {
     });
 
     it("processes event successfully end-to-end", async () => {
-      process.env.dataExchangeSecretName = "test-secret";
+      process.env.dataExchangeSecretName = "test-secret"; // pragma: allowlist secret
       mockSend.mockResolvedValueOnce({
         SecretString: JSON.stringify({
           endpoint: "https://mulesoft.example.com/dataExchange",
-          apiKey: "test-api-key",
+          apiKey: "test-api-key", // pragma: allowlist secret
         }),
       });
       mockAxiosPost.mockResolvedValueOnce({
@@ -754,12 +754,12 @@ describe("dataExchange-lib", () => {
     });
 
     it("updates status to SEND_FAILED when send fails", async () => {
-      process.env.dataExchangeSecretName = "test-secret";
+      process.env.dataExchangeSecretName = "test-secret"; // pragma: allowlist secret
       clearDataExchangeConfigCache();
       mockSend.mockResolvedValueOnce({
         SecretString: JSON.stringify({
           endpoint: "https://mulesoft.example.com/dataExchange",
-          apiKey: "test-api-key",
+          apiKey: "test-api-key", // pragma: allowlist secret
         }),
       });
       mockAxiosPost.mockResolvedValueOnce({
@@ -788,7 +788,7 @@ describe("dataExchange-lib", () => {
       mockSend.mockResolvedValueOnce({
         SecretString: JSON.stringify({
           endpoint: "https://mulesoft.example.com/dataExchange",
-          apiKey: "test-api-key",
+          apiKey: "test-api-key", // pragma: allowlist secret
         }),
       });
       vi.mocked(os.bulkUpdateData).mockRejectedValueOnce(new Error("OpenSearch error"));
@@ -802,7 +802,7 @@ describe("dataExchange-lib", () => {
       mockSend.mockResolvedValueOnce({
         SecretString: JSON.stringify({
           endpoint: "https://mulesoft.example.com/dataExchange",
-          apiKey: "test-api-key",
+          apiKey: "test-api-key", // pragma: allowlist secret
         }),
       });
       mockAxiosPost.mockResolvedValueOnce({
@@ -823,12 +823,12 @@ describe("dataExchange-lib", () => {
     });
 
     it("extracts business key from record data", async () => {
-      process.env.dataExchangeSecretName = "test-secret";
+      process.env.dataExchangeSecretName = "test-secret"; // pragma: allowlist secret
       clearDataExchangeConfigCache();
       mockSend.mockResolvedValueOnce({
         SecretString: JSON.stringify({
           endpoint: "https://mulesoft.example.com/dataExchange",
-          apiKey: "test-api-key",
+          apiKey: "test-api-key", // pragma: allowlist secret
         }),
       });
       mockAxiosPost.mockResolvedValueOnce({
