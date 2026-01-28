@@ -84,7 +84,11 @@ const useGetLinks = () => {
           {
             name: "MACPro",
             link: config.macproLink.url,
-            condition: showMACPRO && userDetailsData?.role,
+            condition:
+              showMACPRO &&
+              Object.values(UserRoles).some((role) => {
+                return userObj.user.role === role;
+              }),
           },
           {
             name: "Latest Updates",
