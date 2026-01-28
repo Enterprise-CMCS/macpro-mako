@@ -1,0 +1,1767 @@
+{
+  "config": {
+    "configFile": "/home/runner/work/macpro-mako/macpro-mako/test/playwright.config.ts",
+    "rootDir": "/home/runner/work/macpro-mako/macpro-mako/test",
+    "forbidOnly": true,
+    "fullyParallel": true,
+    "globalSetup": "/home/runner/work/macpro-mako/macpro-mako/test/lib/global.setup.ts",
+    "globalTeardown": "/home/runner/work/macpro-mako/macpro-mako/test/lib/global.teardown.ts",
+    "globalTimeout": 0,
+    "grep": {},
+    "grepInvert": null,
+    "maxFailures": 0,
+    "metadata": {
+      "ci": {
+        "commitHref": "https://github.com/Enterprise-CMCS/macpro-mako/commit/0f4606c29c4b658c3b8deb8068b497ba248c38cd",
+        "commitHash": "0f4606c29c4b658c3b8deb8068b497ba248c38cd",
+        "buildHref": "https://github.com/Enterprise-CMCS/macpro-mako/actions/runs/21449496019"
+      },
+      "gitCommit": {
+        "shortHash": "0f4606c",
+        "hash": "0f4606c29c4b658c3b8deb8068b497ba248c38cd",
+        "subject": "chore: Update pre-commit configuration and clean up test imports",
+        "body": "chore: Update pre-commit configuration and clean up test imports\n\n- Modify pre-commit configuration to exclude test files from secrets detection.\n- Remove unused imports in checkIdentifierUsage and related test files.\n- Update error handling in dataSink to simplify JSON parsing.\n- Add allowlist comments for sensitive environment variables in dataExchange tests.\n",
+        "author": {
+          "name": "Benjamin Paige",
+          "email": "benjamin.paige@gmail.com",
+          "time": 1769622793000
+        },
+        "committer": {
+          "name": "Benjamin Paige",
+          "email": "benjamin.paige@gmail.com",
+          "time": 1769622793000
+        },
+        "branch": "datasink"
+      },
+      "actualWorkers": 1
+    },
+    "preserveOutput": "always",
+    "reporter": [
+      [
+        "github",
+        null
+      ],
+      [
+        "html",
+        {
+          "outputFolder": "./playwright-reports/html-report",
+          "open": "never"
+        }
+      ],
+      [
+        "json",
+        {
+          "outputFile": "./playwright-reports/playwright-summary.json"
+        }
+      ]
+    ],
+    "reportSlowTests": {
+      "max": 5,
+      "threshold": 300000
+    },
+    "quiet": false,
+    "projects": [
+      {
+        "outputDir": "/home/runner/work/macpro-mako/macpro-mako/test/test-results",
+        "repeatEach": 1,
+        "retries": 0,
+        "metadata": {
+          "ci": {
+            "commitHref": "https://github.com/Enterprise-CMCS/macpro-mako/commit/0f4606c29c4b658c3b8deb8068b497ba248c38cd",
+            "commitHash": "0f4606c29c4b658c3b8deb8068b497ba248c38cd",
+            "buildHref": "https://github.com/Enterprise-CMCS/macpro-mako/actions/runs/21449496019"
+          },
+          "gitCommit": {
+            "shortHash": "0f4606c",
+            "hash": "0f4606c29c4b658c3b8deb8068b497ba248c38cd",
+            "subject": "chore: Update pre-commit configuration and clean up test imports",
+            "body": "chore: Update pre-commit configuration and clean up test imports\n\n- Modify pre-commit configuration to exclude test files from secrets detection.\n- Remove unused imports in checkIdentifierUsage and related test files.\n- Update error handling in dataSink to simplify JSON parsing.\n- Add allowlist comments for sensitive environment variables in dataExchange tests.\n",
+            "author": {
+              "name": "Benjamin Paige",
+              "email": "benjamin.paige@gmail.com",
+              "time": 1769622793000
+            },
+            "committer": {
+              "name": "Benjamin Paige",
+              "email": "benjamin.paige@gmail.com",
+              "time": 1769622793000
+            },
+            "branch": "datasink"
+          },
+          "actualWorkers": 1
+        },
+        "id": "local-setup",
+        "name": "local-setup",
+        "testDir": "/home/runner/work/macpro-mako/macpro-mako/test",
+        "testIgnore": [
+          "**/*.test.{ts,tsx}",
+          "**/smoke/**/*.spec.ts"
+        ],
+        "testMatch": [
+          "/local\\.setup\\.ts/"
+        ],
+        "timeout": 30000
+      },
+      {
+        "outputDir": "/home/runner/work/macpro-mako/macpro-mako/test/test-results",
+        "repeatEach": 1,
+        "retries": 0,
+        "metadata": {
+          "ci": {
+            "commitHref": "https://github.com/Enterprise-CMCS/macpro-mako/commit/0f4606c29c4b658c3b8deb8068b497ba248c38cd",
+            "commitHash": "0f4606c29c4b658c3b8deb8068b497ba248c38cd",
+            "buildHref": "https://github.com/Enterprise-CMCS/macpro-mako/actions/runs/21449496019"
+          },
+          "gitCommit": {
+            "shortHash": "0f4606c",
+            "hash": "0f4606c29c4b658c3b8deb8068b497ba248c38cd",
+            "subject": "chore: Update pre-commit configuration and clean up test imports",
+            "body": "chore: Update pre-commit configuration and clean up test imports\n\n- Modify pre-commit configuration to exclude test files from secrets detection.\n- Remove unused imports in checkIdentifierUsage and related test files.\n- Update error handling in dataSink to simplify JSON parsing.\n- Add allowlist comments for sensitive environment variables in dataExchange tests.\n",
+            "author": {
+              "name": "Benjamin Paige",
+              "email": "benjamin.paige@gmail.com",
+              "time": 1769622793000
+            },
+            "committer": {
+              "name": "Benjamin Paige",
+              "email": "benjamin.paige@gmail.com",
+              "time": 1769622793000
+            },
+            "branch": "datasink"
+          },
+          "actualWorkers": 1
+        },
+        "id": "ci-setup",
+        "name": "ci-setup",
+        "testDir": "/home/runner/work/macpro-mako/macpro-mako/test",
+        "testIgnore": [
+          "**/*.test.{ts,tsx}",
+          "**/smoke/**/*.spec.ts"
+        ],
+        "testMatch": [
+          "/ci\\.setup\\.ts/"
+        ],
+        "timeout": 30000
+      },
+      {
+        "outputDir": "/home/runner/work/macpro-mako/macpro-mako/test/test-results",
+        "repeatEach": 1,
+        "retries": 0,
+        "metadata": {
+          "ci": {
+            "commitHref": "https://github.com/Enterprise-CMCS/macpro-mako/commit/0f4606c29c4b658c3b8deb8068b497ba248c38cd",
+            "commitHash": "0f4606c29c4b658c3b8deb8068b497ba248c38cd",
+            "buildHref": "https://github.com/Enterprise-CMCS/macpro-mako/actions/runs/21449496019"
+          },
+          "gitCommit": {
+            "shortHash": "0f4606c",
+            "hash": "0f4606c29c4b658c3b8deb8068b497ba248c38cd",
+            "subject": "chore: Update pre-commit configuration and clean up test imports",
+            "body": "chore: Update pre-commit configuration and clean up test imports\n\n- Modify pre-commit configuration to exclude test files from secrets detection.\n- Remove unused imports in checkIdentifierUsage and related test files.\n- Update error handling in dataSink to simplify JSON parsing.\n- Add allowlist comments for sensitive environment variables in dataExchange tests.\n",
+            "author": {
+              "name": "Benjamin Paige",
+              "email": "benjamin.paige@gmail.com",
+              "time": 1769622793000
+            },
+            "committer": {
+              "name": "Benjamin Paige",
+              "email": "benjamin.paige@gmail.com",
+              "time": 1769622793000
+            },
+            "branch": "datasink"
+          },
+          "actualWorkers": 1
+        },
+        "id": "val-setup",
+        "name": "val-setup",
+        "testDir": "/home/runner/work/macpro-mako/macpro-mako/test",
+        "testIgnore": [
+          "**/*.test.{ts,tsx}",
+          "**/smoke/**/*.spec.ts"
+        ],
+        "testMatch": [
+          "/val\\.setup\\.ts/"
+        ],
+        "timeout": 30000
+      },
+      {
+        "outputDir": "/home/runner/work/macpro-mako/macpro-mako/test/test-results",
+        "repeatEach": 1,
+        "retries": 0,
+        "metadata": {
+          "ci": {
+            "commitHref": "https://github.com/Enterprise-CMCS/macpro-mako/commit/0f4606c29c4b658c3b8deb8068b497ba248c38cd",
+            "commitHash": "0f4606c29c4b658c3b8deb8068b497ba248c38cd",
+            "buildHref": "https://github.com/Enterprise-CMCS/macpro-mako/actions/runs/21449496019"
+          },
+          "gitCommit": {
+            "shortHash": "0f4606c",
+            "hash": "0f4606c29c4b658c3b8deb8068b497ba248c38cd",
+            "subject": "chore: Update pre-commit configuration and clean up test imports",
+            "body": "chore: Update pre-commit configuration and clean up test imports\n\n- Modify pre-commit configuration to exclude test files from secrets detection.\n- Remove unused imports in checkIdentifierUsage and related test files.\n- Update error handling in dataSink to simplify JSON parsing.\n- Add allowlist comments for sensitive environment variables in dataExchange tests.\n",
+            "author": {
+              "name": "Benjamin Paige",
+              "email": "benjamin.paige@gmail.com",
+              "time": 1769622793000
+            },
+            "committer": {
+              "name": "Benjamin Paige",
+              "email": "benjamin.paige@gmail.com",
+              "time": 1769622793000
+            },
+            "branch": "datasink"
+          },
+          "actualWorkers": 1
+        },
+        "id": "eua-setup",
+        "name": "eua-setup",
+        "testDir": "/home/runner/work/macpro-mako/macpro-mako/test",
+        "testIgnore": [
+          "**/*.test.{ts,tsx}",
+          "**/smoke/**/*.spec.ts"
+        ],
+        "testMatch": [
+          "/eua\\.setup\\.ts/"
+        ],
+        "timeout": 30000
+      },
+      {
+        "outputDir": "/home/runner/work/macpro-mako/macpro-mako/test/test-results",
+        "repeatEach": 1,
+        "retries": 0,
+        "metadata": {
+          "ci": {
+            "commitHref": "https://github.com/Enterprise-CMCS/macpro-mako/commit/0f4606c29c4b658c3b8deb8068b497ba248c38cd",
+            "commitHash": "0f4606c29c4b658c3b8deb8068b497ba248c38cd",
+            "buildHref": "https://github.com/Enterprise-CMCS/macpro-mako/actions/runs/21449496019"
+          },
+          "gitCommit": {
+            "shortHash": "0f4606c",
+            "hash": "0f4606c29c4b658c3b8deb8068b497ba248c38cd",
+            "subject": "chore: Update pre-commit configuration and clean up test imports",
+            "body": "chore: Update pre-commit configuration and clean up test imports\n\n- Modify pre-commit configuration to exclude test files from secrets detection.\n- Remove unused imports in checkIdentifierUsage and related test files.\n- Update error handling in dataSink to simplify JSON parsing.\n- Add allowlist comments for sensitive environment variables in dataExchange tests.\n",
+            "author": {
+              "name": "Benjamin Paige",
+              "email": "benjamin.paige@gmail.com",
+              "time": 1769622793000
+            },
+            "committer": {
+              "name": "Benjamin Paige",
+              "email": "benjamin.paige@gmail.com",
+              "time": 1769622793000
+            },
+            "branch": "datasink"
+          },
+          "actualWorkers": 1
+        },
+        "id": "mfa-setup",
+        "name": "mfa-setup",
+        "testDir": "/home/runner/work/macpro-mako/macpro-mako/test",
+        "testIgnore": [
+          "**/*.test.{ts,tsx}",
+          "**/smoke/**/*.spec.ts"
+        ],
+        "testMatch": [
+          "/mfa\\.setup\\.ts/"
+        ],
+        "timeout": 30000
+      },
+      {
+        "outputDir": "/home/runner/work/macpro-mako/macpro-mako/test/test-results",
+        "repeatEach": 1,
+        "retries": 0,
+        "metadata": {
+          "ci": {
+            "commitHref": "https://github.com/Enterprise-CMCS/macpro-mako/commit/0f4606c29c4b658c3b8deb8068b497ba248c38cd",
+            "commitHash": "0f4606c29c4b658c3b8deb8068b497ba248c38cd",
+            "buildHref": "https://github.com/Enterprise-CMCS/macpro-mako/actions/runs/21449496019"
+          },
+          "gitCommit": {
+            "shortHash": "0f4606c",
+            "hash": "0f4606c29c4b658c3b8deb8068b497ba248c38cd",
+            "subject": "chore: Update pre-commit configuration and clean up test imports",
+            "body": "chore: Update pre-commit configuration and clean up test imports\n\n- Modify pre-commit configuration to exclude test files from secrets detection.\n- Remove unused imports in checkIdentifierUsage and related test files.\n- Update error handling in dataSink to simplify JSON parsing.\n- Add allowlist comments for sensitive environment variables in dataExchange tests.\n",
+            "author": {
+              "name": "Benjamin Paige",
+              "email": "benjamin.paige@gmail.com",
+              "time": 1769622793000
+            },
+            "committer": {
+              "name": "Benjamin Paige",
+              "email": "benjamin.paige@gmail.com",
+              "time": 1769622793000
+            },
+            "branch": "datasink"
+          },
+          "actualWorkers": 1
+        },
+        "id": "smoke-test",
+        "name": "smoke-test",
+        "testDir": "/home/runner/work/macpro-mako/macpro-mako/test",
+        "testIgnore": [
+          "**/*.test.{ts,tsx}",
+          "**/smoke/**/*.spec.ts"
+        ],
+        "testMatch": [
+          "/smoke\\.setup\\.ts/"
+        ],
+        "timeout": 30000
+      },
+      {
+        "outputDir": "/home/runner/work/macpro-mako/macpro-mako/test/test-results",
+        "repeatEach": 1,
+        "retries": 0,
+        "metadata": {
+          "ci": {
+            "commitHref": "https://github.com/Enterprise-CMCS/macpro-mako/commit/0f4606c29c4b658c3b8deb8068b497ba248c38cd",
+            "commitHash": "0f4606c29c4b658c3b8deb8068b497ba248c38cd",
+            "buildHref": "https://github.com/Enterprise-CMCS/macpro-mako/actions/runs/21449496019"
+          },
+          "gitCommit": {
+            "shortHash": "0f4606c",
+            "hash": "0f4606c29c4b658c3b8deb8068b497ba248c38cd",
+            "subject": "chore: Update pre-commit configuration and clean up test imports",
+            "body": "chore: Update pre-commit configuration and clean up test imports\n\n- Modify pre-commit configuration to exclude test files from secrets detection.\n- Remove unused imports in checkIdentifierUsage and related test files.\n- Update error handling in dataSink to simplify JSON parsing.\n- Add allowlist comments for sensitive environment variables in dataExchange tests.\n",
+            "author": {
+              "name": "Benjamin Paige",
+              "email": "benjamin.paige@gmail.com",
+              "time": 1769622793000
+            },
+            "committer": {
+              "name": "Benjamin Paige",
+              "email": "benjamin.paige@gmail.com",
+              "time": 1769622793000
+            },
+            "branch": "datasink"
+          },
+          "actualWorkers": 1
+        },
+        "id": "local",
+        "name": "local",
+        "testDir": "/home/runner/work/macpro-mako/macpro-mako/test",
+        "testIgnore": [
+          "**/*.test.{ts,tsx}",
+          "**/smoke/**/*.spec.ts"
+        ],
+        "testMatch": [
+          "**/*.spec.ts"
+        ],
+        "timeout": 30000
+      },
+      {
+        "outputDir": "/home/runner/work/macpro-mako/macpro-mako/test/test-results",
+        "repeatEach": 1,
+        "retries": 0,
+        "metadata": {
+          "ci": {
+            "commitHref": "https://github.com/Enterprise-CMCS/macpro-mako/commit/0f4606c29c4b658c3b8deb8068b497ba248c38cd",
+            "commitHash": "0f4606c29c4b658c3b8deb8068b497ba248c38cd",
+            "buildHref": "https://github.com/Enterprise-CMCS/macpro-mako/actions/runs/21449496019"
+          },
+          "gitCommit": {
+            "shortHash": "0f4606c",
+            "hash": "0f4606c29c4b658c3b8deb8068b497ba248c38cd",
+            "subject": "chore: Update pre-commit configuration and clean up test imports",
+            "body": "chore: Update pre-commit configuration and clean up test imports\n\n- Modify pre-commit configuration to exclude test files from secrets detection.\n- Remove unused imports in checkIdentifierUsage and related test files.\n- Update error handling in dataSink to simplify JSON parsing.\n- Add allowlist comments for sensitive environment variables in dataExchange tests.\n",
+            "author": {
+              "name": "Benjamin Paige",
+              "email": "benjamin.paige@gmail.com",
+              "time": 1769622793000
+            },
+            "committer": {
+              "name": "Benjamin Paige",
+              "email": "benjamin.paige@gmail.com",
+              "time": 1769622793000
+            },
+            "branch": "datasink"
+          },
+          "actualWorkers": 1
+        },
+        "id": "ci",
+        "name": "ci",
+        "testDir": "/home/runner/work/macpro-mako/macpro-mako/test",
+        "testIgnore": [
+          "**/*.test.{ts,tsx}",
+          "**/smoke/**/*.spec.ts"
+        ],
+        "testMatch": [
+          "**/*.spec.ts"
+        ],
+        "timeout": 30000
+      },
+      {
+        "outputDir": "/home/runner/work/macpro-mako/macpro-mako/test/test-results",
+        "repeatEach": 1,
+        "retries": 0,
+        "metadata": {
+          "ci": {
+            "commitHref": "https://github.com/Enterprise-CMCS/macpro-mako/commit/0f4606c29c4b658c3b8deb8068b497ba248c38cd",
+            "commitHash": "0f4606c29c4b658c3b8deb8068b497ba248c38cd",
+            "buildHref": "https://github.com/Enterprise-CMCS/macpro-mako/actions/runs/21449496019"
+          },
+          "gitCommit": {
+            "shortHash": "0f4606c",
+            "hash": "0f4606c29c4b658c3b8deb8068b497ba248c38cd",
+            "subject": "chore: Update pre-commit configuration and clean up test imports",
+            "body": "chore: Update pre-commit configuration and clean up test imports\n\n- Modify pre-commit configuration to exclude test files from secrets detection.\n- Remove unused imports in checkIdentifierUsage and related test files.\n- Update error handling in dataSink to simplify JSON parsing.\n- Add allowlist comments for sensitive environment variables in dataExchange tests.\n",
+            "author": {
+              "name": "Benjamin Paige",
+              "email": "benjamin.paige@gmail.com",
+              "time": 1769622793000
+            },
+            "committer": {
+              "name": "Benjamin Paige",
+              "email": "benjamin.paige@gmail.com",
+              "time": 1769622793000
+            },
+            "branch": "datasink"
+          },
+          "actualWorkers": 1
+        },
+        "id": "val",
+        "name": "val",
+        "testDir": "/home/runner/work/macpro-mako/macpro-mako/test",
+        "testIgnore": [
+          "**/*.test.{ts,tsx}",
+          "**/smoke/**/*.spec.ts"
+        ],
+        "testMatch": [
+          "**/*.spec.ts"
+        ],
+        "timeout": 30000
+      },
+      {
+        "outputDir": "/home/runner/work/macpro-mako/macpro-mako/test/test-results",
+        "repeatEach": 1,
+        "retries": 0,
+        "metadata": {
+          "ci": {
+            "commitHref": "https://github.com/Enterprise-CMCS/macpro-mako/commit/0f4606c29c4b658c3b8deb8068b497ba248c38cd",
+            "commitHash": "0f4606c29c4b658c3b8deb8068b497ba248c38cd",
+            "buildHref": "https://github.com/Enterprise-CMCS/macpro-mako/actions/runs/21449496019"
+          },
+          "gitCommit": {
+            "shortHash": "0f4606c",
+            "hash": "0f4606c29c4b658c3b8deb8068b497ba248c38cd",
+            "subject": "chore: Update pre-commit configuration and clean up test imports",
+            "body": "chore: Update pre-commit configuration and clean up test imports\n\n- Modify pre-commit configuration to exclude test files from secrets detection.\n- Remove unused imports in checkIdentifierUsage and related test files.\n- Update error handling in dataSink to simplify JSON parsing.\n- Add allowlist comments for sensitive environment variables in dataExchange tests.\n",
+            "author": {
+              "name": "Benjamin Paige",
+              "email": "benjamin.paige@gmail.com",
+              "time": 1769622793000
+            },
+            "committer": {
+              "name": "Benjamin Paige",
+              "email": "benjamin.paige@gmail.com",
+              "time": 1769622793000
+            },
+            "branch": "datasink"
+          },
+          "actualWorkers": 1
+        },
+        "id": "eua-user",
+        "name": "eua-user",
+        "testDir": "/home/runner/work/macpro-mako/macpro-mako/test",
+        "testIgnore": [
+          "**/*.test.{ts,tsx}",
+          "**/smoke/**/*.spec.ts"
+        ],
+        "testMatch": [
+          "**/*.spec.ts"
+        ],
+        "timeout": 30000
+      },
+      {
+        "outputDir": "/home/runner/work/macpro-mako/macpro-mako/test/test-results",
+        "repeatEach": 1,
+        "retries": 0,
+        "metadata": {
+          "ci": {
+            "commitHref": "https://github.com/Enterprise-CMCS/macpro-mako/commit/0f4606c29c4b658c3b8deb8068b497ba248c38cd",
+            "commitHash": "0f4606c29c4b658c3b8deb8068b497ba248c38cd",
+            "buildHref": "https://github.com/Enterprise-CMCS/macpro-mako/actions/runs/21449496019"
+          },
+          "gitCommit": {
+            "shortHash": "0f4606c",
+            "hash": "0f4606c29c4b658c3b8deb8068b497ba248c38cd",
+            "subject": "chore: Update pre-commit configuration and clean up test imports",
+            "body": "chore: Update pre-commit configuration and clean up test imports\n\n- Modify pre-commit configuration to exclude test files from secrets detection.\n- Remove unused imports in checkIdentifierUsage and related test files.\n- Update error handling in dataSink to simplify JSON parsing.\n- Add allowlist comments for sensitive environment variables in dataExchange tests.\n",
+            "author": {
+              "name": "Benjamin Paige",
+              "email": "benjamin.paige@gmail.com",
+              "time": 1769622793000
+            },
+            "committer": {
+              "name": "Benjamin Paige",
+              "email": "benjamin.paige@gmail.com",
+              "time": 1769622793000
+            },
+            "branch": "datasink"
+          },
+          "actualWorkers": 1
+        },
+        "id": "mfa-user",
+        "name": "mfa-user",
+        "testDir": "/home/runner/work/macpro-mako/macpro-mako/test",
+        "testIgnore": [
+          "**/*.test.{ts,tsx}",
+          "**/smoke/**/*.spec.ts"
+        ],
+        "testMatch": [
+          "**/*.spec.ts"
+        ],
+        "timeout": 30000
+      },
+      {
+        "outputDir": "/home/runner/work/macpro-mako/macpro-mako/test/test-results",
+        "repeatEach": 1,
+        "retries": 0,
+        "metadata": {
+          "ci": {
+            "commitHref": "https://github.com/Enterprise-CMCS/macpro-mako/commit/0f4606c29c4b658c3b8deb8068b497ba248c38cd",
+            "commitHash": "0f4606c29c4b658c3b8deb8068b497ba248c38cd",
+            "buildHref": "https://github.com/Enterprise-CMCS/macpro-mako/actions/runs/21449496019"
+          },
+          "gitCommit": {
+            "shortHash": "0f4606c",
+            "hash": "0f4606c29c4b658c3b8deb8068b497ba248c38cd",
+            "subject": "chore: Update pre-commit configuration and clean up test imports",
+            "body": "chore: Update pre-commit configuration and clean up test imports\n\n- Modify pre-commit configuration to exclude test files from secrets detection.\n- Remove unused imports in checkIdentifierUsage and related test files.\n- Update error handling in dataSink to simplify JSON parsing.\n- Add allowlist comments for sensitive environment variables in dataExchange tests.\n",
+            "author": {
+              "name": "Benjamin Paige",
+              "email": "benjamin.paige@gmail.com",
+              "time": 1769622793000
+            },
+            "committer": {
+              "name": "Benjamin Paige",
+              "email": "benjamin.paige@gmail.com",
+              "time": 1769622793000
+            },
+            "branch": "datasink"
+          },
+          "actualWorkers": 1
+        },
+        "id": "smoke-tests",
+        "name": "smoke-tests",
+        "testDir": "/home/runner/work/macpro-mako/macpro-mako/test",
+        "testIgnore": [
+          "**/*.test.{ts,tsx}",
+          "**/smoke/**/*.spec.ts"
+        ],
+        "testMatch": [
+          "**/smoke/**/*.spec.ts"
+        ],
+        "timeout": 30000
+      },
+      {
+        "outputDir": "/home/runner/work/macpro-mako/macpro-mako/test/test-results",
+        "repeatEach": 1,
+        "retries": 0,
+        "metadata": {
+          "ci": {
+            "commitHref": "https://github.com/Enterprise-CMCS/macpro-mako/commit/0f4606c29c4b658c3b8deb8068b497ba248c38cd",
+            "commitHash": "0f4606c29c4b658c3b8deb8068b497ba248c38cd",
+            "buildHref": "https://github.com/Enterprise-CMCS/macpro-mako/actions/runs/21449496019"
+          },
+          "gitCommit": {
+            "shortHash": "0f4606c",
+            "hash": "0f4606c29c4b658c3b8deb8068b497ba248c38cd",
+            "subject": "chore: Update pre-commit configuration and clean up test imports",
+            "body": "chore: Update pre-commit configuration and clean up test imports\n\n- Modify pre-commit configuration to exclude test files from secrets detection.\n- Remove unused imports in checkIdentifierUsage and related test files.\n- Update error handling in dataSink to simplify JSON parsing.\n- Add allowlist comments for sensitive environment variables in dataExchange tests.\n",
+            "author": {
+              "name": "Benjamin Paige",
+              "email": "benjamin.paige@gmail.com",
+              "time": 1769622793000
+            },
+            "committer": {
+              "name": "Benjamin Paige",
+              "email": "benjamin.paige@gmail.com",
+              "time": 1769622793000
+            },
+            "branch": "datasink"
+          },
+          "actualWorkers": 1
+        },
+        "id": "shared",
+        "name": "shared",
+        "testDir": "/home/runner/work/macpro-mako/macpro-mako/test",
+        "testIgnore": [
+          "**/*.test.{ts,tsx}",
+          "**/smoke/**/*.spec.ts"
+        ],
+        "testMatch": [
+          "e2e/specs/**/*.spec.ts"
+        ],
+        "timeout": 30000
+      }
+    ],
+    "shard": null,
+    "tags": [],
+    "updateSnapshots": "missing",
+    "updateSourceMethod": "patch",
+    "version": "1.57.0",
+    "workers": 1,
+    "webServer": null
+  },
+  "suites": [
+    {
+      "title": "e2e/specs/dashboard.spec.ts",
+      "file": "e2e/specs/dashboard.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [],
+      "suites": [
+        {
+          "title": "Dashboard page",
+          "file": "e2e/specs/dashboard.spec.ts",
+          "line": 16,
+          "column": 8,
+          "specs": [],
+          "suites": [
+            {
+              "title": "stateSubmitter dashboard",
+              "file": "e2e/specs/dashboard.spec.ts",
+              "line": 21,
+              "column": 10,
+              "specs": [],
+              "suites": [
+                {
+                  "title": "UI validations",
+                  "file": "e2e/specs/dashboard.spec.ts",
+                  "line": 27,
+                  "column": 12,
+                  "specs": [
+                    {
+                      "title": "navigation banner updates",
+                      "ok": true,
+                      "tags": [
+                        "CI"
+                      ],
+                      "tests": [
+                        {
+                          "timeout": 30000,
+                          "annotations": [],
+                          "expectedStatus": "passed",
+                          "projectId": "shared",
+                          "projectName": "shared",
+                          "results": [
+                            {
+                              "workerIndex": 0,
+                              "parallelIndex": 0,
+                              "status": "passed",
+                              "duration": 6032,
+                              "errors": [],
+                              "stdout": [],
+                              "stderr": [],
+                              "retry": 0,
+                              "startTime": "2026-01-28T17:58:52.522Z",
+                              "annotations": [],
+                              "attachments": []
+                            }
+                          ],
+                          "status": "expected"
+                        }
+                      ],
+                      "id": "e31090cf21ac3d2f1505-79236770153f2bc1774a",
+                      "file": "e2e/specs/dashboard.spec.ts",
+                      "line": 28,
+                      "column": 9
+                    },
+                    {
+                      "title": "page header",
+                      "ok": true,
+                      "tags": [
+                        "CI"
+                      ],
+                      "tests": [
+                        {
+                          "timeout": 30000,
+                          "annotations": [],
+                          "expectedStatus": "passed",
+                          "projectId": "shared",
+                          "projectName": "shared",
+                          "results": [
+                            {
+                              "workerIndex": 0,
+                              "parallelIndex": 0,
+                              "status": "passed",
+                              "duration": 4050,
+                              "errors": [],
+                              "stdout": [],
+                              "stderr": [],
+                              "retry": 0,
+                              "startTime": "2026-01-28T17:58:58.642Z",
+                              "annotations": [],
+                              "attachments": []
+                            }
+                          ],
+                          "status": "expected"
+                        }
+                      ],
+                      "id": "e31090cf21ac3d2f1505-d58f6cb96869baa5c8ca",
+                      "file": "e2e/specs/dashboard.spec.ts",
+                      "line": 42,
+                      "column": 9
+                    },
+                    {
+                      "title": "SPA and Waiver tabs",
+                      "ok": true,
+                      "tags": [
+                        "CI"
+                      ],
+                      "tests": [
+                        {
+                          "timeout": 30000,
+                          "annotations": [],
+                          "expectedStatus": "passed",
+                          "projectId": "shared",
+                          "projectName": "shared",
+                          "results": [
+                            {
+                              "workerIndex": 0,
+                              "parallelIndex": 0,
+                              "status": "passed",
+                              "duration": 3985,
+                              "errors": [],
+                              "stdout": [],
+                              "stderr": [],
+                              "retry": 0,
+                              "startTime": "2026-01-28T17:59:02.707Z",
+                              "annotations": [],
+                              "attachments": []
+                            }
+                          ],
+                          "status": "expected"
+                        }
+                      ],
+                      "id": "e31090cf21ac3d2f1505-aaa4291f7cccb505955c",
+                      "file": "e2e/specs/dashboard.spec.ts",
+                      "line": 52,
+                      "column": 9
+                    },
+                    {
+                      "title": "search field",
+                      "ok": true,
+                      "tags": [
+                        "CI"
+                      ],
+                      "tests": [
+                        {
+                          "timeout": 30000,
+                          "annotations": [],
+                          "expectedStatus": "passed",
+                          "projectId": "shared",
+                          "projectName": "shared",
+                          "results": [
+                            {
+                              "workerIndex": 0,
+                              "parallelIndex": 0,
+                              "status": "passed",
+                              "duration": 3956,
+                              "errors": [],
+                              "stdout": [],
+                              "stderr": [],
+                              "retry": 0,
+                              "startTime": "2026-01-28T17:59:06.703Z",
+                              "annotations": [],
+                              "attachments": []
+                            }
+                          ],
+                          "status": "expected"
+                        }
+                      ],
+                      "id": "e31090cf21ac3d2f1505-09e909a1a6477cabd9dc",
+                      "file": "e2e/specs/dashboard.spec.ts",
+                      "line": 60,
+                      "column": 9
+                    },
+                    {
+                      "title": "columns button",
+                      "ok": true,
+                      "tags": [
+                        "CI"
+                      ],
+                      "tests": [
+                        {
+                          "timeout": 30000,
+                          "annotations": [],
+                          "expectedStatus": "passed",
+                          "projectId": "shared",
+                          "projectName": "shared",
+                          "results": [
+                            {
+                              "workerIndex": 0,
+                              "parallelIndex": 0,
+                              "status": "passed",
+                              "duration": 3949,
+                              "errors": [],
+                              "stdout": [],
+                              "stderr": [],
+                              "retry": 0,
+                              "startTime": "2026-01-28T17:59:10.670Z",
+                              "annotations": [],
+                              "attachments": []
+                            }
+                          ],
+                          "status": "expected"
+                        }
+                      ],
+                      "id": "e31090cf21ac3d2f1505-c2aaa2e70a91136deaa4",
+                      "file": "e2e/specs/dashboard.spec.ts",
+                      "line": 69,
+                      "column": 9
+                    },
+                    {
+                      "title": "filters buttons",
+                      "ok": true,
+                      "tags": [
+                        "CI"
+                      ],
+                      "tests": [
+                        {
+                          "timeout": 30000,
+                          "annotations": [],
+                          "expectedStatus": "passed",
+                          "projectId": "shared",
+                          "projectName": "shared",
+                          "results": [
+                            {
+                              "workerIndex": 0,
+                              "parallelIndex": 0,
+                              "status": "passed",
+                              "duration": 3787,
+                              "errors": [],
+                              "stdout": [],
+                              "stderr": [],
+                              "retry": 0,
+                              "startTime": "2026-01-28T17:59:14.632Z",
+                              "annotations": [],
+                              "attachments": []
+                            }
+                          ],
+                          "status": "expected"
+                        }
+                      ],
+                      "id": "e31090cf21ac3d2f1505-ccbb295142dad4447f3d",
+                      "file": "e2e/specs/dashboard.spec.ts",
+                      "line": 76,
+                      "column": 9
+                    },
+                    {
+                      "title": "export button",
+                      "ok": true,
+                      "tags": [
+                        "CI"
+                      ],
+                      "tests": [
+                        {
+                          "timeout": 30000,
+                          "annotations": [],
+                          "expectedStatus": "passed",
+                          "projectId": "shared",
+                          "projectName": "shared",
+                          "results": [
+                            {
+                              "workerIndex": 0,
+                              "parallelIndex": 0,
+                              "status": "passed",
+                              "duration": 4021,
+                              "errors": [],
+                              "stdout": [],
+                              "stderr": [],
+                              "retry": 0,
+                              "startTime": "2026-01-28T17:59:18.432Z",
+                              "annotations": [],
+                              "attachments": []
+                            }
+                          ],
+                          "status": "expected"
+                        }
+                      ],
+                      "id": "e31090cf21ac3d2f1505-292b179a233e813cb1fa",
+                      "file": "e2e/specs/dashboard.spec.ts",
+                      "line": 81,
+                      "column": 9
+                    }
+                  ],
+                  "suites": [
+                    {
+                      "title": "dashboard table",
+                      "file": "e2e/specs/dashboard.spec.ts",
+                      "line": 86,
+                      "column": 14,
+                      "specs": [],
+                      "suites": [
+                        {
+                          "title": "spas",
+                          "file": "e2e/specs/dashboard.spec.ts",
+                          "line": 87,
+                          "column": 16,
+                          "specs": [
+                            {
+                              "title": "column headers",
+                              "ok": true,
+                              "tags": [
+                                "CI"
+                              ],
+                              "tests": [
+                                {
+                                  "timeout": 30000,
+                                  "annotations": [],
+                                  "expectedStatus": "passed",
+                                  "projectId": "shared",
+                                  "projectName": "shared",
+                                  "results": [
+                                    {
+                                      "workerIndex": 0,
+                                      "parallelIndex": 0,
+                                      "status": "passed",
+                                      "duration": 1041,
+                                      "errors": [],
+                                      "stdout": [],
+                                      "stderr": [],
+                                      "retry": 0,
+                                      "startTime": "2026-01-28T17:59:22.466Z",
+                                      "annotations": [],
+                                      "attachments": []
+                                    }
+                                  ],
+                                  "status": "expected"
+                                }
+                              ],
+                              "id": "e31090cf21ac3d2f1505-9b54b2f13ec47145f067",
+                              "file": "e2e/specs/dashboard.spec.ts",
+                              "line": 88,
+                              "column": 13
+                            },
+                            {
+                              "title": "table data",
+                              "ok": true,
+                              "tags": [
+                                "CI"
+                              ],
+                              "tests": [
+                                {
+                                  "timeout": 30000,
+                                  "annotations": [],
+                                  "expectedStatus": "passed",
+                                  "projectId": "shared",
+                                  "projectName": "shared",
+                                  "results": [
+                                    {
+                                      "workerIndex": 0,
+                                      "parallelIndex": 0,
+                                      "status": "passed",
+                                      "duration": 3771,
+                                      "errors": [],
+                                      "stdout": [],
+                                      "stderr": [],
+                                      "retry": 0,
+                                      "startTime": "2026-01-28T17:59:23.519Z",
+                                      "annotations": [],
+                                      "attachments": []
+                                    }
+                                  ],
+                                  "status": "expected"
+                                }
+                              ],
+                              "id": "e31090cf21ac3d2f1505-9832e54ed6bc6e875887",
+                              "file": "e2e/specs/dashboard.spec.ts",
+                              "line": 125,
+                              "column": 13
+                            },
+                            {
+                              "title": "table footer",
+                              "ok": true,
+                              "tags": [
+                                "CI"
+                              ],
+                              "tests": [
+                                {
+                                  "timeout": 30000,
+                                  "annotations": [],
+                                  "expectedStatus": "passed",
+                                  "projectId": "shared",
+                                  "projectName": "shared",
+                                  "results": [
+                                    {
+                                      "workerIndex": 0,
+                                      "parallelIndex": 0,
+                                      "status": "passed",
+                                      "duration": 3893,
+                                      "errors": [],
+                                      "stdout": [],
+                                      "stderr": [],
+                                      "retry": 0,
+                                      "startTime": "2026-01-28T17:59:27.303Z",
+                                      "annotations": [],
+                                      "attachments": []
+                                    }
+                                  ],
+                                  "status": "expected"
+                                }
+                              ],
+                              "id": "e31090cf21ac3d2f1505-6a9fe6fd1870cdaf3e89",
+                              "file": "e2e/specs/dashboard.spec.ts",
+                              "line": 129,
+                              "column": 13
+                            }
+                          ]
+                        },
+                        {
+                          "title": "waivers",
+                          "file": "e2e/specs/dashboard.spec.ts",
+                          "line": 134,
+                          "column": 16,
+                          "specs": [
+                            {
+                              "title": "column headers",
+                              "ok": true,
+                              "tags": [
+                                "CI"
+                              ],
+                              "tests": [
+                                {
+                                  "timeout": 30000,
+                                  "annotations": [],
+                                  "expectedStatus": "passed",
+                                  "projectId": "shared",
+                                  "projectName": "shared",
+                                  "results": [
+                                    {
+                                      "workerIndex": 0,
+                                      "parallelIndex": 0,
+                                      "status": "passed",
+                                      "duration": 3841,
+                                      "errors": [],
+                                      "stdout": [],
+                                      "stderr": [],
+                                      "retry": 0,
+                                      "startTime": "2026-01-28T17:59:31.208Z",
+                                      "annotations": [],
+                                      "attachments": []
+                                    }
+                                  ],
+                                  "status": "expected"
+                                }
+                              ],
+                              "id": "e31090cf21ac3d2f1505-a626b6eed07fdecc9042",
+                              "file": "e2e/specs/dashboard.spec.ts",
+                              "line": 139,
+                              "column": 13
+                            },
+                            {
+                              "title": "table data",
+                              "ok": true,
+                              "tags": [
+                                "CI"
+                              ],
+                              "tests": [
+                                {
+                                  "timeout": 30000,
+                                  "annotations": [],
+                                  "expectedStatus": "passed",
+                                  "projectId": "shared",
+                                  "projectName": "shared",
+                                  "results": [
+                                    {
+                                      "workerIndex": 0,
+                                      "parallelIndex": 0,
+                                      "status": "passed",
+                                      "duration": 3672,
+                                      "errors": [],
+                                      "stdout": [],
+                                      "stderr": [],
+                                      "retry": 0,
+                                      "startTime": "2026-01-28T17:59:35.061Z",
+                                      "annotations": [],
+                                      "attachments": []
+                                    }
+                                  ],
+                                  "status": "expected"
+                                }
+                              ],
+                              "id": "e31090cf21ac3d2f1505-61809a8110fdeff7508e",
+                              "file": "e2e/specs/dashboard.spec.ts",
+                              "line": 176,
+                              "column": 13
+                            },
+                            {
+                              "title": "table footer",
+                              "ok": true,
+                              "tags": [
+                                "CI"
+                              ],
+                              "tests": [
+                                {
+                                  "timeout": 30000,
+                                  "annotations": [],
+                                  "expectedStatus": "passed",
+                                  "projectId": "shared",
+                                  "projectName": "shared",
+                                  "results": [
+                                    {
+                                      "workerIndex": 0,
+                                      "parallelIndex": 0,
+                                      "status": "passed",
+                                      "duration": 3653,
+                                      "errors": [],
+                                      "stdout": [],
+                                      "stderr": [],
+                                      "retry": 0,
+                                      "startTime": "2026-01-28T17:59:38.748Z",
+                                      "annotations": [],
+                                      "attachments": []
+                                    }
+                                  ],
+                                  "status": "expected"
+                                }
+                              ],
+                              "id": "e31090cf21ac3d2f1505-b5476ccae199bfd768d0",
+                              "file": "e2e/specs/dashboard.spec.ts",
+                              "line": 180,
+                              "column": 13
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "title": "Interactions",
+                  "file": "e2e/specs/dashboard.spec.ts",
+                  "line": 187,
+                  "column": 12,
+                  "specs": [
+                    {
+                      "title": "Download Exports for stateSubmitter user",
+                      "ok": true,
+                      "tags": [
+                        "CI"
+                      ],
+                      "tests": [
+                        {
+                          "timeout": 30000,
+                          "annotations": [],
+                          "expectedStatus": "passed",
+                          "projectId": "shared",
+                          "projectName": "shared",
+                          "results": [
+                            {
+                              "workerIndex": 0,
+                              "parallelIndex": 0,
+                              "status": "passed",
+                              "duration": 7866,
+                              "errors": [],
+                              "stdout": [
+                                {
+                                  "text": "[Download] for stateSubmitter Filename suggested by browser: spas-export-01_28_2026.csv\"\n"
+                                }
+                              ],
+                              "stderr": [],
+                              "retry": 0,
+                              "startTime": "2026-01-28T17:59:42.414Z",
+                              "annotations": [],
+                              "attachments": [
+                                {
+                                  "name": "metadata",
+                                  "contentType": "application/json",
+                                  "body": "ewogICJpZCI6ICJETC0wMDAxIiwKICAidGl0bGUiOiAiRXhwb3J0IERhc2hib2FyZCBSZWNvcmRzIiwKICAiZmlsZSI6ICJkYXNoYm9hcmQuc3BlYy50cyIsCiAgImZlYXR1cmUiOiAiRGFzaGJvYXJkIiwKICAidHlwZSI6ICJzbW9rZSIsCiAgInRhZ3MiOiBbCiAgICAic21va2UiCiAgXSwKICAiamlyYSI6ICIiLAogICJ0ZXN0cmFpbF9jYXNlX2lkIjogIiIKfQ=="
+                                }
+                              ]
+                            }
+                          ],
+                          "status": "expected"
+                        }
+                      ],
+                      "id": "e31090cf21ac3d2f1505-a2db929c6434ad64d2d1",
+                      "file": "e2e/specs/dashboard.spec.ts",
+                      "line": 188,
+                      "column": 9
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "title": "cmsReviewer dashboard",
+              "file": "e2e/specs/dashboard.spec.ts",
+              "line": 21,
+              "column": 10,
+              "specs": [],
+              "suites": [
+                {
+                  "title": "UI validations",
+                  "file": "e2e/specs/dashboard.spec.ts",
+                  "line": 27,
+                  "column": 12,
+                  "specs": [
+                    {
+                      "title": "navigation banner updates",
+                      "ok": true,
+                      "tags": [
+                        "CI"
+                      ],
+                      "tests": [
+                        {
+                          "timeout": 30000,
+                          "annotations": [],
+                          "expectedStatus": "passed",
+                          "projectId": "shared",
+                          "projectName": "shared",
+                          "results": [
+                            {
+                              "workerIndex": 0,
+                              "parallelIndex": 0,
+                              "status": "passed",
+                              "duration": 4138,
+                              "errors": [],
+                              "stdout": [],
+                              "stderr": [],
+                              "retry": 0,
+                              "startTime": "2026-01-28T17:59:50.291Z",
+                              "annotations": [],
+                              "attachments": []
+                            }
+                          ],
+                          "status": "expected"
+                        }
+                      ],
+                      "id": "e31090cf21ac3d2f1505-49435fe861e54d37de40",
+                      "file": "e2e/specs/dashboard.spec.ts",
+                      "line": 28,
+                      "column": 9
+                    },
+                    {
+                      "title": "page header",
+                      "ok": true,
+                      "tags": [
+                        "CI"
+                      ],
+                      "tests": [
+                        {
+                          "timeout": 30000,
+                          "annotations": [],
+                          "expectedStatus": "passed",
+                          "projectId": "shared",
+                          "projectName": "shared",
+                          "results": [
+                            {
+                              "workerIndex": 0,
+                              "parallelIndex": 0,
+                              "status": "passed",
+                              "duration": 2783,
+                              "errors": [],
+                              "stdout": [],
+                              "stderr": [],
+                              "retry": 0,
+                              "startTime": "2026-01-28T17:59:54.440Z",
+                              "annotations": [],
+                              "attachments": []
+                            }
+                          ],
+                          "status": "expected"
+                        }
+                      ],
+                      "id": "e31090cf21ac3d2f1505-feace4ed300c666899a1",
+                      "file": "e2e/specs/dashboard.spec.ts",
+                      "line": 42,
+                      "column": 9
+                    },
+                    {
+                      "title": "SPA and Waiver tabs",
+                      "ok": true,
+                      "tags": [
+                        "CI"
+                      ],
+                      "tests": [
+                        {
+                          "timeout": 30000,
+                          "annotations": [],
+                          "expectedStatus": "passed",
+                          "projectId": "shared",
+                          "projectName": "shared",
+                          "results": [
+                            {
+                              "workerIndex": 0,
+                              "parallelIndex": 0,
+                              "status": "passed",
+                              "duration": 3996,
+                              "errors": [],
+                              "stdout": [],
+                              "stderr": [],
+                              "retry": 0,
+                              "startTime": "2026-01-28T17:59:57.236Z",
+                              "annotations": [],
+                              "attachments": []
+                            }
+                          ],
+                          "status": "expected"
+                        }
+                      ],
+                      "id": "e31090cf21ac3d2f1505-455bb432ffaaed58f362",
+                      "file": "e2e/specs/dashboard.spec.ts",
+                      "line": 52,
+                      "column": 9
+                    },
+                    {
+                      "title": "search field",
+                      "ok": true,
+                      "tags": [
+                        "CI"
+                      ],
+                      "tests": [
+                        {
+                          "timeout": 30000,
+                          "annotations": [],
+                          "expectedStatus": "passed",
+                          "projectId": "shared",
+                          "projectName": "shared",
+                          "results": [
+                            {
+                              "workerIndex": 0,
+                              "parallelIndex": 0,
+                              "status": "passed",
+                              "duration": 3978,
+                              "errors": [],
+                              "stdout": [],
+                              "stderr": [],
+                              "retry": 0,
+                              "startTime": "2026-01-28T18:00:01.244Z",
+                              "annotations": [],
+                              "attachments": []
+                            }
+                          ],
+                          "status": "expected"
+                        }
+                      ],
+                      "id": "e31090cf21ac3d2f1505-9f724c34626455f57ae5",
+                      "file": "e2e/specs/dashboard.spec.ts",
+                      "line": 60,
+                      "column": 9
+                    },
+                    {
+                      "title": "columns button",
+                      "ok": true,
+                      "tags": [
+                        "CI"
+                      ],
+                      "tests": [
+                        {
+                          "timeout": 30000,
+                          "annotations": [],
+                          "expectedStatus": "passed",
+                          "projectId": "shared",
+                          "projectName": "shared",
+                          "results": [
+                            {
+                              "workerIndex": 0,
+                              "parallelIndex": 0,
+                              "status": "passed",
+                              "duration": 4019,
+                              "errors": [],
+                              "stdout": [],
+                              "stderr": [],
+                              "retry": 0,
+                              "startTime": "2026-01-28T18:00:05.233Z",
+                              "annotations": [],
+                              "attachments": []
+                            }
+                          ],
+                          "status": "expected"
+                        }
+                      ],
+                      "id": "e31090cf21ac3d2f1505-6ffaa1bbf26b0ba51345",
+                      "file": "e2e/specs/dashboard.spec.ts",
+                      "line": 69,
+                      "column": 9
+                    },
+                    {
+                      "title": "filters buttons",
+                      "ok": true,
+                      "tags": [
+                        "CI"
+                      ],
+                      "tests": [
+                        {
+                          "timeout": 30000,
+                          "annotations": [],
+                          "expectedStatus": "passed",
+                          "projectId": "shared",
+                          "projectName": "shared",
+                          "results": [
+                            {
+                              "workerIndex": 0,
+                              "parallelIndex": 0,
+                              "status": "passed",
+                              "duration": 3780,
+                              "errors": [],
+                              "stdout": [],
+                              "stderr": [],
+                              "retry": 0,
+                              "startTime": "2026-01-28T18:00:09.265Z",
+                              "annotations": [],
+                              "attachments": []
+                            }
+                          ],
+                          "status": "expected"
+                        }
+                      ],
+                      "id": "e31090cf21ac3d2f1505-b07f1519c3c4a274bec3",
+                      "file": "e2e/specs/dashboard.spec.ts",
+                      "line": 76,
+                      "column": 9
+                    },
+                    {
+                      "title": "export button",
+                      "ok": true,
+                      "tags": [
+                        "CI"
+                      ],
+                      "tests": [
+                        {
+                          "timeout": 30000,
+                          "annotations": [],
+                          "expectedStatus": "passed",
+                          "projectId": "shared",
+                          "projectName": "shared",
+                          "results": [
+                            {
+                              "workerIndex": 0,
+                              "parallelIndex": 0,
+                              "status": "passed",
+                              "duration": 3967,
+                              "errors": [],
+                              "stdout": [],
+                              "stderr": [],
+                              "retry": 0,
+                              "startTime": "2026-01-28T18:00:13.057Z",
+                              "annotations": [],
+                              "attachments": []
+                            }
+                          ],
+                          "status": "expected"
+                        }
+                      ],
+                      "id": "e31090cf21ac3d2f1505-931865d50e04c29cd203",
+                      "file": "e2e/specs/dashboard.spec.ts",
+                      "line": 81,
+                      "column": 9
+                    }
+                  ],
+                  "suites": [
+                    {
+                      "title": "dashboard table",
+                      "file": "e2e/specs/dashboard.spec.ts",
+                      "line": 86,
+                      "column": 14,
+                      "specs": [],
+                      "suites": [
+                        {
+                          "title": "spas",
+                          "file": "e2e/specs/dashboard.spec.ts",
+                          "line": 87,
+                          "column": 16,
+                          "specs": [
+                            {
+                              "title": "column headers",
+                              "ok": true,
+                              "tags": [
+                                "CI"
+                              ],
+                              "tests": [
+                                {
+                                  "timeout": 30000,
+                                  "annotations": [],
+                                  "expectedStatus": "passed",
+                                  "projectId": "shared",
+                                  "projectName": "shared",
+                                  "results": [
+                                    {
+                                      "workerIndex": 0,
+                                      "parallelIndex": 0,
+                                      "status": "passed",
+                                      "duration": 1018,
+                                      "errors": [],
+                                      "stdout": [],
+                                      "stderr": [],
+                                      "retry": 0,
+                                      "startTime": "2026-01-28T18:00:17.035Z",
+                                      "annotations": [],
+                                      "attachments": []
+                                    }
+                                  ],
+                                  "status": "expected"
+                                }
+                              ],
+                              "id": "e31090cf21ac3d2f1505-99c3838bc3fb0f0af16b",
+                              "file": "e2e/specs/dashboard.spec.ts",
+                              "line": 88,
+                              "column": 13
+                            },
+                            {
+                              "title": "table data",
+                              "ok": true,
+                              "tags": [
+                                "CI"
+                              ],
+                              "tests": [
+                                {
+                                  "timeout": 30000,
+                                  "annotations": [],
+                                  "expectedStatus": "passed",
+                                  "projectId": "shared",
+                                  "projectName": "shared",
+                                  "results": [
+                                    {
+                                      "workerIndex": 0,
+                                      "parallelIndex": 0,
+                                      "status": "passed",
+                                      "duration": 3744,
+                                      "errors": [],
+                                      "stdout": [],
+                                      "stderr": [],
+                                      "retry": 0,
+                                      "startTime": "2026-01-28T18:00:18.067Z",
+                                      "annotations": [],
+                                      "attachments": []
+                                    }
+                                  ],
+                                  "status": "expected"
+                                }
+                              ],
+                              "id": "e31090cf21ac3d2f1505-ff072afbb17733ee985f",
+                              "file": "e2e/specs/dashboard.spec.ts",
+                              "line": 125,
+                              "column": 13
+                            },
+                            {
+                              "title": "table footer",
+                              "ok": true,
+                              "tags": [
+                                "CI"
+                              ],
+                              "tests": [
+                                {
+                                  "timeout": 30000,
+                                  "annotations": [],
+                                  "expectedStatus": "passed",
+                                  "projectId": "shared",
+                                  "projectName": "shared",
+                                  "results": [
+                                    {
+                                      "workerIndex": 0,
+                                      "parallelIndex": 0,
+                                      "status": "passed",
+                                      "duration": 2878,
+                                      "errors": [],
+                                      "stdout": [],
+                                      "stderr": [],
+                                      "retry": 0,
+                                      "startTime": "2026-01-28T18:00:21.822Z",
+                                      "annotations": [],
+                                      "attachments": []
+                                    }
+                                  ],
+                                  "status": "expected"
+                                }
+                              ],
+                              "id": "e31090cf21ac3d2f1505-07886babd48e8320c3ee",
+                              "file": "e2e/specs/dashboard.spec.ts",
+                              "line": 129,
+                              "column": 13
+                            }
+                          ]
+                        },
+                        {
+                          "title": "waivers",
+                          "file": "e2e/specs/dashboard.spec.ts",
+                          "line": 134,
+                          "column": 16,
+                          "specs": [
+                            {
+                              "title": "column headers",
+                              "ok": true,
+                              "tags": [
+                                "CI"
+                              ],
+                              "tests": [
+                                {
+                                  "timeout": 30000,
+                                  "annotations": [],
+                                  "expectedStatus": "passed",
+                                  "projectId": "shared",
+                                  "projectName": "shared",
+                                  "results": [
+                                    {
+                                      "workerIndex": 0,
+                                      "parallelIndex": 0,
+                                      "status": "passed",
+                                      "duration": 3710,
+                                      "errors": [],
+                                      "stdout": [],
+                                      "stderr": [],
+                                      "retry": 0,
+                                      "startTime": "2026-01-28T18:00:24.712Z",
+                                      "annotations": [],
+                                      "attachments": []
+                                    }
+                                  ],
+                                  "status": "expected"
+                                }
+                              ],
+                              "id": "e31090cf21ac3d2f1505-efd257844fbde96ced5d",
+                              "file": "e2e/specs/dashboard.spec.ts",
+                              "line": 139,
+                              "column": 13
+                            },
+                            {
+                              "title": "table data",
+                              "ok": true,
+                              "tags": [
+                                "CI"
+                              ],
+                              "tests": [
+                                {
+                                  "timeout": 30000,
+                                  "annotations": [],
+                                  "expectedStatus": "passed",
+                                  "projectId": "shared",
+                                  "projectName": "shared",
+                                  "results": [
+                                    {
+                                      "workerIndex": 0,
+                                      "parallelIndex": 0,
+                                      "status": "passed",
+                                      "duration": 3375,
+                                      "errors": [],
+                                      "stdout": [],
+                                      "stderr": [],
+                                      "retry": 0,
+                                      "startTime": "2026-01-28T18:00:28.436Z",
+                                      "annotations": [],
+                                      "attachments": []
+                                    }
+                                  ],
+                                  "status": "expected"
+                                }
+                              ],
+                              "id": "e31090cf21ac3d2f1505-667b6675c2f89da21417",
+                              "file": "e2e/specs/dashboard.spec.ts",
+                              "line": 176,
+                              "column": 13
+                            },
+                            {
+                              "title": "table footer",
+                              "ok": true,
+                              "tags": [
+                                "CI"
+                              ],
+                              "tests": [
+                                {
+                                  "timeout": 30000,
+                                  "annotations": [],
+                                  "expectedStatus": "passed",
+                                  "projectId": "shared",
+                                  "projectName": "shared",
+                                  "results": [
+                                    {
+                                      "workerIndex": 0,
+                                      "parallelIndex": 0,
+                                      "status": "passed",
+                                      "duration": 3553,
+                                      "errors": [],
+                                      "stdout": [],
+                                      "stderr": [],
+                                      "retry": 0,
+                                      "startTime": "2026-01-28T18:00:31.823Z",
+                                      "annotations": [],
+                                      "attachments": []
+                                    }
+                                  ],
+                                  "status": "expected"
+                                }
+                              ],
+                              "id": "e31090cf21ac3d2f1505-b6337307151f9d48b5ff",
+                              "file": "e2e/specs/dashboard.spec.ts",
+                              "line": 180,
+                              "column": 13
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "title": "Interactions",
+                  "file": "e2e/specs/dashboard.spec.ts",
+                  "line": 187,
+                  "column": 12,
+                  "specs": [
+                    {
+                      "title": "Download Exports for cmsReviewer user",
+                      "ok": true,
+                      "tags": [
+                        "CI"
+                      ],
+                      "tests": [
+                        {
+                          "timeout": 30000,
+                          "annotations": [],
+                          "expectedStatus": "passed",
+                          "projectId": "shared",
+                          "projectName": "shared",
+                          "results": [
+                            {
+                              "workerIndex": 0,
+                              "parallelIndex": 0,
+                              "status": "passed",
+                              "duration": 8118,
+                              "errors": [],
+                              "stdout": [
+                                {
+                                  "text": "[Download] for cmsReviewer Filename suggested by browser: spas-export-01_28_2026.csv\"\n"
+                                }
+                              ],
+                              "stderr": [],
+                              "retry": 0,
+                              "startTime": "2026-01-28T18:00:35.390Z",
+                              "annotations": [],
+                              "attachments": [
+                                {
+                                  "name": "metadata",
+                                  "contentType": "application/json",
+                                  "body": "ewogICJpZCI6ICJETC0wMDAxIiwKICAidGl0bGUiOiAiRXhwb3J0IERhc2hib2FyZCBSZWNvcmRzIiwKICAiZmlsZSI6ICJkYXNoYm9hcmQuc3BlYy50cyIsCiAgImZlYXR1cmUiOiAiRGFzaGJvYXJkIiwKICAidHlwZSI6ICJzbW9rZSIsCiAgInRhZ3MiOiBbCiAgICAic21va2UiCiAgXSwKICAiamlyYSI6ICIiLAogICJ0ZXN0cmFpbF9jYXNlX2lkIjogIiIKfQ=="
+                                }
+                              ]
+                            }
+                          ],
+                          "status": "expected"
+                        }
+                      ],
+                      "id": "e31090cf21ac3d2f1505-cae5ba9990e03d5efaa9",
+                      "file": "e2e/specs/dashboard.spec.ts",
+                      "line": 188,
+                      "column": 9
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "errors": [],
+  "stats": {
+    "startTime": "2026-01-28T17:58:38.044Z",
+    "duration": 125566.059,
+    "expected": 28,
+    "skipped": 0,
+    "unexpected": 0,
+    "flaky": 0
+  }
+}
