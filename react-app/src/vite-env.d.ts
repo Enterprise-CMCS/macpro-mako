@@ -17,6 +17,7 @@ interface ImportMetaEnv {
   readonly VITE_GOOGLE_ANALYTICS_DISABLE: string;
   readonly VITE_LAUNCHDARKLY_CLIENT_ID: string;
   readonly VITE_SMART_LINK_URL: string;
+  readonly VITE_MACPRO_LINK_URL: string;
 }
 
 interface ImportMeta {
