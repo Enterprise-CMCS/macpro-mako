@@ -18,3 +18,4 @@ export * as deleteTriggers from "./deleteTriggers";
 export * as sinkChangelog from "./sinkChangelog";
 export * as item from "./item";
 export * as postAuth from "./postAuth";
+export * as checkIdentifierUsage from "./checkIdentifierUsage";

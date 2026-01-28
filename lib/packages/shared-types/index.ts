@@ -2,6 +2,7 @@ export * from "./actions";
 export * from "./events";
 export * from "./attachments";
 export * from "./authority";
+export * from "./dataSink";
 export * from "./email";
 export * from "./errors";
 export * from "./forms";

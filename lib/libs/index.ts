@@ -1,3 +1,5 @@
 export * from "./opensearch-lib";
 export * from "./env";
 export * from "./sink-lib";
+export * from "./dataSink-opensearch-lib";
+export * from "./dataExchange-lib";

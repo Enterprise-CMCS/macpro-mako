@@ -42,39 +42,41 @@
     </script>
     <script>
       // fetch env.json created by the prebuild script
-      fetch('/env.json')
+      fetch("/env.json")
         .then(async (res) => {
           const text = await res.text();
-          console.log("res text: ", text)
+          console.log("res text: ", text);
           try {
             const json = JSON.parse(text);
             const GA_ID = json.VITE_GOOGLE_ANALYTICS_GTAG;
             if (!GA_ID) {
-              console.warn('No GA_ID found in env.json');
+              console.warn("No GA_ID found in env.json");
               return;
             }
-    
+
             // Inject the gtag.js script dynamically
-            const script = document.createElement('script');
+            const script = document.createElement("script");
             script.src = `https://www.googletagmanager.com/gtag/js?id=${GA_ID}`;
             script.async = true;
             document.head.appendChild(script);
-    
+
             // Initialize GA
             window.dataLayer = window.dataLayer || [];
-            function gtag(){ dataLayer.push(arguments); }
+            function gtag() {
+              dataLayer.push(arguments);
+            }
             window.gtag = gtag;
-    
-            gtag('js', new Date());
+
+            gtag("js", new Date());
             // should toggle on for development and off before deployment to higher env's
-            gtag('set', { debug_mode: false });
-            console.log('GA initialized with ID:', GA_ID);
+            gtag("set", { debug_mode: false });
+            console.log("GA initialized with ID:", GA_ID);
           } catch (e) {
-            console.warn('Invalid JSON, printing raw contents:\n', text);
+            console.warn("Invalid JSON, printing raw contents:\n", text);
           }
         })
         .catch((err) => {
-          console.error('Failed to load /assets/env.json:', err);
+          console.error("Failed to load /assets/env.json:", err);
         });
     </script>
   </body>

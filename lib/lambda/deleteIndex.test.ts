@@ -32,6 +32,7 @@ describe("Lambda Handler", () => {
       `${OPENSEARCH_INDEX_NAMESPACE}cpocs`,
       `${OPENSEARCH_INDEX_NAMESPACE}users`,
       `${OPENSEARCH_INDEX_NAMESPACE}roles`,
+      `${OPENSEARCH_INDEX_NAMESPACE}datasink`,
     ];
 
     expect(deleteIndexSpy).toHaveBeenCalledTimes(expectedIndices.length);
@@ -75,6 +76,7 @@ describe("Lambda Handler", () => {
       `${OPENSEARCH_INDEX_NAMESPACE}cpocs`,
       `${OPENSEARCH_INDEX_NAMESPACE}users`,
       `${OPENSEARCH_INDEX_NAMESPACE}roles`,
+      `${OPENSEARCH_INDEX_NAMESPACE}datasink`,
     ];
 
     // should have been called one extra time because it retried after the first failure.
@@ -106,6 +108,7 @@ describe("Lambda Handler", () => {
       `${OPENSEARCH_INDEX_NAMESPACE}cpocs`,
       `${OPENSEARCH_INDEX_NAMESPACE}users`,
       `${OPENSEARCH_INDEX_NAMESPACE}roles`,
+      `${OPENSEARCH_INDEX_NAMESPACE}datasink`,
     ];
 
     // should have been called one extra time because it retried after the first failure.

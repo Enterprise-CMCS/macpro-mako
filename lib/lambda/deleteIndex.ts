@@ -23,6 +23,7 @@ export const handler: Handler = async (event, __, callback) => {
       `${indexNamespace}cpocs`,
       `${indexNamespace}users`,
       `${indexNamespace}roles`,
+      `${indexNamespace}datasink`,
     ];
     for (const index of indices) {
       try {
