@@ -12,24 +12,24 @@
     "maxFailures": 0,
     "metadata": {
       "ci": {
-        "commitHref": "https://github.com/Enterprise-CMCS/macpro-mako/commit/1fa79ed2c0f4df774d4a32d5fe7fb614f95fff95",
-        "commitHash": "1fa79ed2c0f4df774d4a32d5fe7fb614f95fff95",
-        "buildHref": "https://github.com/Enterprise-CMCS/macpro-mako/actions/runs/21411112483"
+        "commitHref": "https://github.com/Enterprise-CMCS/macpro-mako/commit/0e9fdf1dbf702b378ea0c4819135836244637898",
+        "commitHash": "0e9fdf1dbf702b378ea0c4819135836244637898",
+        "buildHref": "https://github.com/Enterprise-CMCS/macpro-mako/actions/runs/21445260471"
       },
       "gitCommit": {
-        "shortHash": "1fa79ed",
-        "hash": "1fa79ed2c0f4df774d4a32d5fe7fb614f95fff95",
-        "subject": "feat(MACPro link): add MACPro link to onemac header (#1819)",
-        "body": "feat(MACPro link): add MACPro link to onemac header (#1819)\n\n* add macpro link url\n\n* Update write-ui-env-file.ts\n\n* cleanup names\n\n* Update deployment-config.test.ts\n\n* Update index.tsx",
+        "shortHash": "0e9fdf1",
+        "hash": "0e9fdf1dbf702b378ea0c4819135836244637898",
+        "subject": "fix(macpro sso): add additional macpro sso link logic (#1821)",
+        "body": "fix(macpro sso): add additional macpro sso link logic (#1821)\n\n* Update index.tsx\n\n* Update index.tsx\n\n* Update index.tsx",
         "author": {
           "name": "James Dinh",
           "email": "jdinh8124@gmail.com",
-          "time": 1769542113000
+          "time": 1769615642000
         },
         "committer": {
           "name": "GitHub",
           "email": "noreply@github.com",
-          "time": 1769542113000
+          "time": 1769615642000
         },
         "branch": "main"
       },
@@ -43,24 +43,24 @@
         "retries": 0,
         "metadata": {
           "ci": {
-            "commitHref": "https://github.com/Enterprise-CMCS/macpro-mako/commit/1fa79ed2c0f4df774d4a32d5fe7fb614f95fff95",
-            "commitHash": "1fa79ed2c0f4df774d4a32d5fe7fb614f95fff95",
-            "buildHref": "https://github.com/Enterprise-CMCS/macpro-mako/actions/runs/21411112483"
+            "commitHref": "https://github.com/Enterprise-CMCS/macpro-mako/commit/0e9fdf1dbf702b378ea0c4819135836244637898",
+            "commitHash": "0e9fdf1dbf702b378ea0c4819135836244637898",
+            "buildHref": "https://github.com/Enterprise-CMCS/macpro-mako/actions/runs/21445260471"
           },
           "gitCommit": {
-            "shortHash": "1fa79ed",
-            "hash": "1fa79ed2c0f4df774d4a32d5fe7fb614f95fff95",
-            "subject": "feat(MACPro link): add MACPro link to onemac header (#1819)",
-            "body": "feat(MACPro link): add MACPro link to onemac header (#1819)\n\n* add macpro link url\n\n* Update write-ui-env-file.ts\n\n* cleanup names\n\n* Update deployment-config.test.ts\n\n* Update index.tsx",
+            "shortHash": "0e9fdf1",
+            "hash": "0e9fdf1dbf702b378ea0c4819135836244637898",
+            "subject": "fix(macpro sso): add additional macpro sso link logic (#1821)",
+            "body": "fix(macpro sso): add additional macpro sso link logic (#1821)\n\n* Update index.tsx\n\n* Update index.tsx\n\n* Update index.tsx",
             "author": {
               "name": "James Dinh",
               "email": "jdinh8124@gmail.com",
-              "time": 1769542113000
+              "time": 1769615642000
             },
             "committer": {
               "name": "GitHub",
               "email": "noreply@github.com",
-              "time": 1769542113000
+              "time": 1769615642000
             },
             "branch": "main"
           },
@@ -84,24 +84,24 @@
         "retries": 0,
         "metadata": {
           "ci": {
-            "commitHref": "https://github.com/Enterprise-CMCS/macpro-mako/commit/1fa79ed2c0f4df774d4a32d5fe7fb614f95fff95",
-            "commitHash": "1fa79ed2c0f4df774d4a32d5fe7fb614f95fff95",
-            "buildHref": "https://github.com/Enterprise-CMCS/macpro-mako/actions/runs/21411112483"
+            "commitHref": "https://github.com/Enterprise-CMCS/macpro-mako/commit/0e9fdf1dbf702b378ea0c4819135836244637898",
+            "commitHash": "0e9fdf1dbf702b378ea0c4819135836244637898",
+            "buildHref": "https://github.com/Enterprise-CMCS/macpro-mako/actions/runs/21445260471"
           },
           "gitCommit": {
-            "shortHash": "1fa79ed",
-            "hash": "1fa79ed2c0f4df774d4a32d5fe7fb614f95fff95",
-            "subject": "feat(MACPro link): add MACPro link to onemac header (#1819)",
-            "body": "feat(MACPro link): add MACPro link to onemac header (#1819)\n\n* add macpro link url\n\n* Update write-ui-env-file.ts\n\n* cleanup names\n\n* Update deployment-config.test.ts\n\n* Update index.tsx",
+            "shortHash": "0e9fdf1",
+            "hash": "0e9fdf1dbf702b378ea0c4819135836244637898",
+            "subject": "fix(macpro sso): add additional macpro sso link logic (#1821)",
+            "body": "fix(macpro sso): add additional macpro sso link logic (#1821)\n\n* Update index.tsx\n\n* Update index.tsx\n\n* Update index.tsx",
             "author": {
               "name": "James Dinh",
               "email": "jdinh8124@gmail.com",
-              "time": 1769542113000
+              "time": 1769615642000
             },
             "committer": {
               "name": "GitHub",
               "email": "noreply@github.com",
-              "time": 1769542113000
+              "time": 1769615642000
             },
             "branch": "main"
           },
@@ -125,24 +125,24 @@
         "retries": 0,
         "metadata": {
           "ci": {
-            "commitHref": "https://github.com/Enterprise-CMCS/macpro-mako/commit/1fa79ed2c0f4df774d4a32d5fe7fb614f95fff95",
-            "commitHash": "1fa79ed2c0f4df774d4a32d5fe7fb614f95fff95",
-            "buildHref": "https://github.com/Enterprise-CMCS/macpro-mako/actions/runs/21411112483"
+            "commitHref": "https://github.com/Enterprise-CMCS/macpro-mako/commit/0e9fdf1dbf702b378ea0c4819135836244637898",
+            "commitHash": "0e9fdf1dbf702b378ea0c4819135836244637898",
+            "buildHref": "https://github.com/Enterprise-CMCS/macpro-mako/actions/runs/21445260471"
           },
           "gitCommit": {
-            "shortHash": "1fa79ed",
-            "hash": "1fa79ed2c0f4df774d4a32d5fe7fb614f95fff95",
-            "subject": "feat(MACPro link): add MACPro link to onemac header (#1819)",
-            "body": "feat(MACPro link): add MACPro link to onemac header (#1819)\n\n* add macpro link url\n\n* Update write-ui-env-file.ts\n\n* cleanup names\n\n* Update deployment-config.test.ts\n\n* Update index.tsx",
+            "shortHash": "0e9fdf1",
+            "hash": "0e9fdf1dbf702b378ea0c4819135836244637898",
+            "subject": "fix(macpro sso): add additional macpro sso link logic (#1821)",
+            "body": "fix(macpro sso): add additional macpro sso link logic (#1821)\n\n* Update index.tsx\n\n* Update index.tsx\n\n* Update index.tsx",
             "author": {
               "name": "James Dinh",
               "email": "jdinh8124@gmail.com",
-              "time": 1769542113000
+              "time": 1769615642000
             },
             "committer": {
               "name": "GitHub",
               "email": "noreply@github.com",
-              "time": 1769542113000
+              "time": 1769615642000
             },
             "branch": "main"
           },
@@ -166,24 +166,24 @@
         "retries": 0,
         "metadata": {
           "ci": {
-            "commitHref": "https://github.com/Enterprise-CMCS/macpro-mako/commit/1fa79ed2c0f4df774d4a32d5fe7fb614f95fff95",
-            "commitHash": "1fa79ed2c0f4df774d4a32d5fe7fb614f95fff95",
-            "buildHref": "https://github.com/Enterprise-CMCS/macpro-mako/actions/runs/21411112483"
+            "commitHref": "https://github.com/Enterprise-CMCS/macpro-mako/commit/0e9fdf1dbf702b378ea0c4819135836244637898",
+            "commitHash": "0e9fdf1dbf702b378ea0c4819135836244637898",
+            "buildHref": "https://github.com/Enterprise-CMCS/macpro-mako/actions/runs/21445260471"
           },
           "gitCommit": {
-            "shortHash": "1fa79ed",
-            "hash": "1fa79ed2c0f4df774d4a32d5fe7fb614f95fff95",
-            "subject": "feat(MACPro link): add MACPro link to onemac header (#1819)",
-            "body": "feat(MACPro link): add MACPro link to onemac header (#1819)\n\n* add macpro link url\n\n* Update write-ui-env-file.ts\n\n* cleanup names\n\n* Update deployment-config.test.ts\n\n* Update index.tsx",
+            "shortHash": "0e9fdf1",
+            "hash": "0e9fdf1dbf702b378ea0c4819135836244637898",
+            "subject": "fix(macpro sso): add additional macpro sso link logic (#1821)",
+            "body": "fix(macpro sso): add additional macpro sso link logic (#1821)\n\n* Update index.tsx\n\n* Update index.tsx\n\n* Update index.tsx",
             "author": {
               "name": "James Dinh",
               "email": "jdinh8124@gmail.com",
-              "time": 1769542113000
+              "time": 1769615642000
             },
             "committer": {
               "name": "GitHub",
               "email": "noreply@github.com",
-              "time": 1769542113000
+              "time": 1769615642000
             },
             "branch": "main"
           },
@@ -207,24 +207,24 @@
         "retries": 0,
         "metadata": {
           "ci": {
-            "commitHref": "https://github.com/Enterprise-CMCS/macpro-mako/commit/1fa79ed2c0f4df774d4a32d5fe7fb614f95fff95",
-            "commitHash": "1fa79ed2c0f4df774d4a32d5fe7fb614f95fff95",
-            "buildHref": "https://github.com/Enterprise-CMCS/macpro-mako/actions/runs/21411112483"
+            "commitHref": "https://github.com/Enterprise-CMCS/macpro-mako/commit/0e9fdf1dbf702b378ea0c4819135836244637898",
+            "commitHash": "0e9fdf1dbf702b378ea0c4819135836244637898",
+            "buildHref": "https://github.com/Enterprise-CMCS/macpro-mako/actions/runs/21445260471"
           },
           "gitCommit": {
-            "shortHash": "1fa79ed",
-            "hash": "1fa79ed2c0f4df774d4a32d5fe7fb614f95fff95",
-            "subject": "feat(MACPro link): add MACPro link to onemac header (#1819)",
-            "body": "feat(MACPro link): add MACPro link to onemac header (#1819)\n\n* add macpro link url\n\n* Update write-ui-env-file.ts\n\n* cleanup names\n\n* Update deployment-config.test.ts\n\n* Update index.tsx",
+            "shortHash": "0e9fdf1",
+            "hash": "0e9fdf1dbf702b378ea0c4819135836244637898",
+            "subject": "fix(macpro sso): add additional macpro sso link logic (#1821)",
+            "body": "fix(macpro sso): add additional macpro sso link logic (#1821)\n\n* Update index.tsx\n\n* Update index.tsx\n\n* Update index.tsx",
             "author": {
               "name": "James Dinh",
               "email": "jdinh8124@gmail.com",
-              "time": 1769542113000
+              "time": 1769615642000
             },
             "committer": {
               "name": "GitHub",
               "email": "noreply@github.com",
-              "time": 1769542113000
+              "time": 1769615642000
             },
             "branch": "main"
           },
@@ -248,24 +248,24 @@
         "retries": 0,
         "metadata": {
           "ci": {
-            "commitHref": "https://github.com/Enterprise-CMCS/macpro-mako/commit/1fa79ed2c0f4df774d4a32d5fe7fb614f95fff95",
-            "commitHash": "1fa79ed2c0f4df774d4a32d5fe7fb614f95fff95",
-            "buildHref": "https://github.com/Enterprise-CMCS/macpro-mako/actions/runs/21411112483"
+            "commitHref": "https://github.com/Enterprise-CMCS/macpro-mako/commit/0e9fdf1dbf702b378ea0c4819135836244637898",
+            "commitHash": "0e9fdf1dbf702b378ea0c4819135836244637898",
+            "buildHref": "https://github.com/Enterprise-CMCS/macpro-mako/actions/runs/21445260471"
           },
           "gitCommit": {
-            "shortHash": "1fa79ed",
-            "hash": "1fa79ed2c0f4df774d4a32d5fe7fb614f95fff95",
-            "subject": "feat(MACPro link): add MACPro link to onemac header (#1819)",
-            "body": "feat(MACPro link): add MACPro link to onemac header (#1819)\n\n* add macpro link url\n\n* Update write-ui-env-file.ts\n\n* cleanup names\n\n* Update deployment-config.test.ts\n\n* Update index.tsx",
+            "shortHash": "0e9fdf1",
+            "hash": "0e9fdf1dbf702b378ea0c4819135836244637898",
+            "subject": "fix(macpro sso): add additional macpro sso link logic (#1821)",
+            "body": "fix(macpro sso): add additional macpro sso link logic (#1821)\n\n* Update index.tsx\n\n* Update index.tsx\n\n* Update index.tsx",
             "author": {
               "name": "James Dinh",
               "email": "jdinh8124@gmail.com",
-              "time": 1769542113000
+              "time": 1769615642000
             },
             "committer": {
               "name": "GitHub",
               "email": "noreply@github.com",
-              "time": 1769542113000
+              "time": 1769615642000
             },
             "branch": "main"
           },
@@ -289,24 +289,24 @@
         "retries": 0,
         "metadata": {
           "ci": {
-            "commitHref": "https://github.com/Enterprise-CMCS/macpro-mako/commit/1fa79ed2c0f4df774d4a32d5fe7fb614f95fff95",
-            "commitHash": "1fa79ed2c0f4df774d4a32d5fe7fb614f95fff95",
-            "buildHref": "https://github.com/Enterprise-CMCS/macpro-mako/actions/runs/21411112483"
+            "commitHref": "https://github.com/Enterprise-CMCS/macpro-mako/commit/0e9fdf1dbf702b378ea0c4819135836244637898",
+            "commitHash": "0e9fdf1dbf702b378ea0c4819135836244637898",
+            "buildHref": "https://github.com/Enterprise-CMCS/macpro-mako/actions/runs/21445260471"
           },
           "gitCommit": {
-            "shortHash": "1fa79ed",
-            "hash": "1fa79ed2c0f4df774d4a32d5fe7fb614f95fff95",
-            "subject": "feat(MACPro link): add MACPro link to onemac header (#1819)",
-            "body": "feat(MACPro link): add MACPro link to onemac header (#1819)\n\n* add macpro link url\n\n* Update write-ui-env-file.ts\n\n* cleanup names\n\n* Update deployment-config.test.ts\n\n* Update index.tsx",
+            "shortHash": "0e9fdf1",
+            "hash": "0e9fdf1dbf702b378ea0c4819135836244637898",
+            "subject": "fix(macpro sso): add additional macpro sso link logic (#1821)",
+            "body": "fix(macpro sso): add additional macpro sso link logic (#1821)\n\n* Update index.tsx\n\n* Update index.tsx\n\n* Update index.tsx",
             "author": {
               "name": "James Dinh",
               "email": "jdinh8124@gmail.com",
-              "time": 1769542113000
+              "time": 1769615642000
             },
             "committer": {
               "name": "GitHub",
               "email": "noreply@github.com",
-              "time": 1769542113000
+              "time": 1769615642000
             },
             "branch": "main"
           },
@@ -330,24 +330,24 @@
         "retries": 0,
         "metadata": {
           "ci": {
-            "commitHref": "https://github.com/Enterprise-CMCS/macpro-mako/commit/1fa79ed2c0f4df774d4a32d5fe7fb614f95fff95",
-            "commitHash": "1fa79ed2c0f4df774d4a32d5fe7fb614f95fff95",
-            "buildHref": "https://github.com/Enterprise-CMCS/macpro-mako/actions/runs/21411112483"
+            "commitHref": "https://github.com/Enterprise-CMCS/macpro-mako/commit/0e9fdf1dbf702b378ea0c4819135836244637898",
+            "commitHash": "0e9fdf1dbf702b378ea0c4819135836244637898",
+            "buildHref": "https://github.com/Enterprise-CMCS/macpro-mako/actions/runs/21445260471"
           },
           "gitCommit": {
-            "shortHash": "1fa79ed",
-            "hash": "1fa79ed2c0f4df774d4a32d5fe7fb614f95fff95",
-            "subject": "feat(MACPro link): add MACPro link to onemac header (#1819)",
-            "body": "feat(MACPro link): add MACPro link to onemac header (#1819)\n\n* add macpro link url\n\n* Update write-ui-env-file.ts\n\n* cleanup names\n\n* Update deployment-config.test.ts\n\n* Update index.tsx",
+            "shortHash": "0e9fdf1",
+            "hash": "0e9fdf1dbf702b378ea0c4819135836244637898",
+            "subject": "fix(macpro sso): add additional macpro sso link logic (#1821)",
+            "body": "fix(macpro sso): add additional macpro sso link logic (#1821)\n\n* Update index.tsx\n\n* Update index.tsx\n\n* Update index.tsx",
             "author": {
               "name": "James Dinh",
               "email": "jdinh8124@gmail.com",
-              "time": 1769542113000
+              "time": 1769615642000
             },
             "committer": {
               "name": "GitHub",
               "email": "noreply@github.com",
-              "time": 1769542113000
+              "time": 1769615642000
             },
             "branch": "main"
           },
@@ -371,24 +371,24 @@
         "retries": 0,
         "metadata": {
           "ci": {
-            "commitHref": "https://github.com/Enterprise-CMCS/macpro-mako/commit/1fa79ed2c0f4df774d4a32d5fe7fb614f95fff95",
-            "commitHash": "1fa79ed2c0f4df774d4a32d5fe7fb614f95fff95",
-            "buildHref": "https://github.com/Enterprise-CMCS/macpro-mako/actions/runs/21411112483"
+            "commitHref": "https://github.com/Enterprise-CMCS/macpro-mako/commit/0e9fdf1dbf702b378ea0c4819135836244637898",
+            "commitHash": "0e9fdf1dbf702b378ea0c4819135836244637898",
+            "buildHref": "https://github.com/Enterprise-CMCS/macpro-mako/actions/runs/21445260471"
           },
           "gitCommit": {
-            "shortHash": "1fa79ed",
-            "hash": "1fa79ed2c0f4df774d4a32d5fe7fb614f95fff95",
-            "subject": "feat(MACPro link): add MACPro link to onemac header (#1819)",
-            "body": "feat(MACPro link): add MACPro link to onemac header (#1819)\n\n* add macpro link url\n\n* Update write-ui-env-file.ts\n\n* cleanup names\n\n* Update deployment-config.test.ts\n\n* Update index.tsx",
+            "shortHash": "0e9fdf1",
+            "hash": "0e9fdf1dbf702b378ea0c4819135836244637898",
+            "subject": "fix(macpro sso): add additional macpro sso link logic (#1821)",
+            "body": "fix(macpro sso): add additional macpro sso link logic (#1821)\n\n* Update index.tsx\n\n* Update index.tsx\n\n* Update index.tsx",
             "author": {
               "name": "James Dinh",
               "email": "jdinh8124@gmail.com",
-              "time": 1769542113000
+              "time": 1769615642000
             },
             "committer": {
               "name": "GitHub",
               "email": "noreply@github.com",
-              "time": 1769542113000
+              "time": 1769615642000
             },
             "branch": "main"
           },
@@ -412,24 +412,24 @@
         "retries": 0,
         "metadata": {
           "ci": {
-            "commitHref": "https://github.com/Enterprise-CMCS/macpro-mako/commit/1fa79ed2c0f4df774d4a32d5fe7fb614f95fff95",
-            "commitHash": "1fa79ed2c0f4df774d4a32d5fe7fb614f95fff95",
-            "buildHref": "https://github.com/Enterprise-CMCS/macpro-mako/actions/runs/21411112483"
+            "commitHref": "https://github.com/Enterprise-CMCS/macpro-mako/commit/0e9fdf1dbf702b378ea0c4819135836244637898",
+            "commitHash": "0e9fdf1dbf702b378ea0c4819135836244637898",
+            "buildHref": "https://github.com/Enterprise-CMCS/macpro-mako/actions/runs/21445260471"
           },
           "gitCommit": {
-            "shortHash": "1fa79ed",
-            "hash": "1fa79ed2c0f4df774d4a32d5fe7fb614f95fff95",
-            "subject": "feat(MACPro link): add MACPro link to onemac header (#1819)",
-            "body": "feat(MACPro link): add MACPro link to onemac header (#1819)\n\n* add macpro link url\n\n* Update write-ui-env-file.ts\n\n* cleanup names\n\n* Update deployment-config.test.ts\n\n* Update index.tsx",
+            "shortHash": "0e9fdf1",
+            "hash": "0e9fdf1dbf702b378ea0c4819135836244637898",
+            "subject": "fix(macpro sso): add additional macpro sso link logic (#1821)",
+            "body": "fix(macpro sso): add additional macpro sso link logic (#1821)\n\n* Update index.tsx\n\n* Update index.tsx\n\n* Update index.tsx",
             "author": {
               "name": "James Dinh",
               "email": "jdinh8124@gmail.com",
-              "time": 1769542113000
+              "time": 1769615642000
             },
             "committer": {
               "name": "GitHub",
               "email": "noreply@github.com",
-              "time": 1769542113000
+              "time": 1769615642000
             },
             "branch": "main"
           },
@@ -453,24 +453,24 @@
         "retries": 0,
         "metadata": {
           "ci": {
-            "commitHref": "https://github.com/Enterprise-CMCS/macpro-mako/commit/1fa79ed2c0f4df774d4a32d5fe7fb614f95fff95",
-            "commitHash": "1fa79ed2c0f4df774d4a32d5fe7fb614f95fff95",
-            "buildHref": "https://github.com/Enterprise-CMCS/macpro-mako/actions/runs/21411112483"
+            "commitHref": "https://github.com/Enterprise-CMCS/macpro-mako/commit/0e9fdf1dbf702b378ea0c4819135836244637898",
+            "commitHash": "0e9fdf1dbf702b378ea0c4819135836244637898",
+            "buildHref": "https://github.com/Enterprise-CMCS/macpro-mako/actions/runs/21445260471"
           },
           "gitCommit": {
-            "shortHash": "1fa79ed",
-            "hash": "1fa79ed2c0f4df774d4a32d5fe7fb614f95fff95",
-            "subject": "feat(MACPro link): add MACPro link to onemac header (#1819)",
-            "body": "feat(MACPro link): add MACPro link to onemac header (#1819)\n\n* add macpro link url\n\n* Update write-ui-env-file.ts\n\n* cleanup names\n\n* Update deployment-config.test.ts\n\n* Update index.tsx",
+            "shortHash": "0e9fdf1",
+            "hash": "0e9fdf1dbf702b378ea0c4819135836244637898",
+            "subject": "fix(macpro sso): add additional macpro sso link logic (#1821)",
+            "body": "fix(macpro sso): add additional macpro sso link logic (#1821)\n\n* Update index.tsx\n\n* Update index.tsx\n\n* Update index.tsx",
             "author": {
               "name": "James Dinh",
               "email": "jdinh8124@gmail.com",
-              "time": 1769542113000
+              "time": 1769615642000
             },
             "committer": {
               "name": "GitHub",
               "email": "noreply@github.com",
-              "time": 1769542113000
+              "time": 1769615642000
             },
             "branch": "main"
           },
@@ -494,24 +494,24 @@
         "retries": 0,
         "metadata": {
           "ci": {
-            "commitHref": "https://github.com/Enterprise-CMCS/macpro-mako/commit/1fa79ed2c0f4df774d4a32d5fe7fb614f95fff95",
-            "commitHash": "1fa79ed2c0f4df774d4a32d5fe7fb614f95fff95",
-            "buildHref": "https://github.com/Enterprise-CMCS/macpro-mako/actions/runs/21411112483"
+            "commitHref": "https://github.com/Enterprise-CMCS/macpro-mako/commit/0e9fdf1dbf702b378ea0c4819135836244637898",
+            "commitHash": "0e9fdf1dbf702b378ea0c4819135836244637898",
+            "buildHref": "https://github.com/Enterprise-CMCS/macpro-mako/actions/runs/21445260471"
           },
           "gitCommit": {
-            "shortHash": "1fa79ed",
-            "hash": "1fa79ed2c0f4df774d4a32d5fe7fb614f95fff95",
-            "subject": "feat(MACPro link): add MACPro link to onemac header (#1819)",
-            "body": "feat(MACPro link): add MACPro link to onemac header (#1819)\n\n* add macpro link url\n\n* Update write-ui-env-file.ts\n\n* cleanup names\n\n* Update deployment-config.test.ts\n\n* Update index.tsx",
+            "shortHash": "0e9fdf1",
+            "hash": "0e9fdf1dbf702b378ea0c4819135836244637898",
+            "subject": "fix(macpro sso): add additional macpro sso link logic (#1821)",
+            "body": "fix(macpro sso): add additional macpro sso link logic (#1821)\n\n* Update index.tsx\n\n* Update index.tsx\n\n* Update index.tsx",
             "author": {
               "name": "James Dinh",
               "email": "jdinh8124@gmail.com",
-              "time": 1769542113000
+              "time": 1769615642000
             },
             "committer": {
               "name": "GitHub",
               "email": "noreply@github.com",
-              "time": 1769542113000
+              "time": 1769615642000
             },
             "branch": "main"
           },
@@ -535,24 +535,24 @@
         "retries": 0,
         "metadata": {
           "ci": {
-            "commitHref": "https://github.com/Enterprise-CMCS/macpro-mako/commit/1fa79ed2c0f4df774d4a32d5fe7fb614f95fff95",
-            "commitHash": "1fa79ed2c0f4df774d4a32d5fe7fb614f95fff95",
-            "buildHref": "https://github.com/Enterprise-CMCS/macpro-mako/actions/runs/21411112483"
+            "commitHref": "https://github.com/Enterprise-CMCS/macpro-mako/commit/0e9fdf1dbf702b378ea0c4819135836244637898",
+            "commitHash": "0e9fdf1dbf702b378ea0c4819135836244637898",
+            "buildHref": "https://github.com/Enterprise-CMCS/macpro-mako/actions/runs/21445260471"
           },
           "gitCommit": {
-            "shortHash": "1fa79ed",
-            "hash": "1fa79ed2c0f4df774d4a32d5fe7fb614f95fff95",
-            "subject": "feat(MACPro link): add MACPro link to onemac header (#1819)",
-            "body": "feat(MACPro link): add MACPro link to onemac header (#1819)\n\n* add macpro link url\n\n* Update write-ui-env-file.ts\n\n* cleanup names\n\n* Update deployment-config.test.ts\n\n* Update index.tsx",
+            "shortHash": "0e9fdf1",
+            "hash": "0e9fdf1dbf702b378ea0c4819135836244637898",
+            "subject": "fix(macpro sso): add additional macpro sso link logic (#1821)",
+            "body": "fix(macpro sso): add additional macpro sso link logic (#1821)\n\n* Update index.tsx\n\n* Update index.tsx\n\n* Update index.tsx",
             "author": {
               "name": "James Dinh",
               "email": "jdinh8124@gmail.com",
-              "time": 1769542113000
+              "time": 1769615642000
             },
             "committer": {
               "name": "GitHub",
               "email": "noreply@github.com",
-              "time": 1769542113000
+              "time": 1769615642000
             },
             "branch": "main"
           },
@@ -650,12 +650,12 @@
                               "workerIndex": 0,
                               "parallelIndex": 0,
                               "status": "passed",
-                              "duration": 2905,
+                              "duration": 4978,
                               "errors": [],
                               "stdout": [],
                               "stderr": [],
                               "retry": 0,
-                              "startTime": "2026-01-27T19:54:45.469Z",
+                              "startTime": "2026-01-28T15:57:32.781Z",
                               "annotations": [],
                               "attachments": []
                             }
@@ -686,12 +686,12 @@
                               "workerIndex": 0,
                               "parallelIndex": 0,
                               "status": "passed",
-                              "duration": 2866,
+                              "duration": 3961,
                               "errors": [],
                               "stdout": [],
                               "stderr": [],
                               "retry": 0,
-                              "startTime": "2026-01-27T19:54:48.462Z",
+                              "startTime": "2026-01-28T15:57:37.868Z",
                               "annotations": [],
                               "attachments": []
                             }
@@ -722,12 +722,12 @@
                               "workerIndex": 0,
                               "parallelIndex": 0,
                               "status": "passed",
-                              "duration": 2776,
+                              "duration": 4078,
                               "errors": [],
                               "stdout": [],
                               "stderr": [],
                               "retry": 0,
-                              "startTime": "2026-01-27T19:54:51.341Z",
+                              "startTime": "2026-01-28T15:57:41.842Z",
                               "annotations": [],
                               "attachments": []
                             }
@@ -758,12 +758,12 @@
                               "workerIndex": 0,
                               "parallelIndex": 0,
                               "status": "passed",
-                              "duration": 2739,
+                              "duration": 4392,
                               "errors": [],
                               "stdout": [],
                               "stderr": [],
                               "retry": 0,
-                              "startTime": "2026-01-27T19:54:54.129Z",
+                              "startTime": "2026-01-28T15:57:45.931Z",
                               "annotations": [],
                               "attachments": []
                             }
@@ -794,12 +794,12 @@
                               "workerIndex": 0,
                               "parallelIndex": 0,
                               "status": "passed",
-                              "duration": 2765,
+                              "duration": 3826,
                               "errors": [],
                               "stdout": [],
                               "stderr": [],
                               "retry": 0,
-                              "startTime": "2026-01-27T19:54:56.881Z",
+                              "startTime": "2026-01-28T15:57:50.334Z",
                               "annotations": [],
                               "attachments": []
                             }
@@ -830,12 +830,12 @@
                               "workerIndex": 0,
                               "parallelIndex": 0,
                               "status": "passed",
-                              "duration": 2724,
+                              "duration": 2925,
                               "errors": [],
                               "stdout": [],
                               "stderr": [],
                               "retry": 0,
-                              "startTime": "2026-01-27T19:54:59.658Z",
+                              "startTime": "2026-01-28T15:57:54.172Z",
                               "annotations": [],
                               "attachments": []
                             }
@@ -866,12 +866,12 @@
                               "workerIndex": 0,
                               "parallelIndex": 0,
                               "status": "passed",
-                              "duration": 3048,
+                              "duration": 3961,
                               "errors": [],
                               "stdout": [],
                               "stderr": [],
                               "retry": 0,
-                              "startTime": "2026-01-27T19:55:02.395Z",
+                              "startTime": "2026-01-28T15:57:57.112Z",
                               "annotations": [],
                               "attachments": []
                             }
@@ -917,12 +917,12 @@
                                       "workerIndex": 0,
                                       "parallelIndex": 0,
                                       "status": "passed",
-                                      "duration": 766,
+                                      "duration": 1005,
                                       "errors": [],
                                       "stdout": [],
                                       "stderr": [],
                                       "retry": 0,
-                                      "startTime": "2026-01-27T19:55:05.455Z",
+                                      "startTime": "2026-01-28T15:58:01.086Z",
                                       "annotations": [],
                                       "attachments": []
                                     }
@@ -953,12 +953,12 @@
                                       "workerIndex": 0,
                                       "parallelIndex": 0,
                                       "status": "passed",
-                                      "duration": 2671,
+                                      "duration": 3849,
                                       "errors": [],
                                       "stdout": [],
                                       "stderr": [],
                                       "retry": 0,
-                                      "startTime": "2026-01-27T19:55:06.232Z",
+                                      "startTime": "2026-01-28T15:58:02.104Z",
                                       "annotations": [],
                                       "attachments": []
                                     }
@@ -989,12 +989,12 @@
                                       "workerIndex": 0,
                                       "parallelIndex": 0,
                                       "status": "passed",
-                                      "duration": 2678,
+                                      "duration": 3821,
                                       "errors": [],
                                       "stdout": [],
                                       "stderr": [],
                                       "retry": 0,
-                                      "startTime": "2026-01-27T19:55:08.916Z",
+                                      "startTime": "2026-01-28T15:58:05.966Z",
                                       "annotations": [],
                                       "attachments": []
                                     }
@@ -1033,12 +1033,12 @@
                                       "workerIndex": 0,
                                       "parallelIndex": 0,
                                       "status": "passed",
-                                      "duration": 2546,
+                                      "duration": 3289,
                                       "errors": [],
                                       "stdout": [],
                                       "stderr": [],
                                       "retry": 0,
-                                      "startTime": "2026-01-27T19:55:11.606Z",
+                                      "startTime": "2026-01-28T15:58:09.799Z",
                                       "annotations": [],
                                       "attachments": []
                                     }
@@ -1069,12 +1069,12 @@
                                       "workerIndex": 0,
                                       "parallelIndex": 0,
                                       "status": "passed",
-                                      "duration": 2256,
+                                      "duration": 3020,
                                       "errors": [],
                                       "stdout": [],
                                       "stderr": [],
                                       "retry": 0,
-                                      "startTime": "2026-01-27T19:55:14.164Z",
+                                      "startTime": "2026-01-28T15:58:13.099Z",
                                       "annotations": [],
                                       "attachments": []
                                     }
@@ -1105,12 +1105,12 @@
                                       "workerIndex": 0,
                                       "parallelIndex": 0,
                                       "status": "passed",
-                                      "duration": 2289,
+                                      "duration": 3045,
                                       "errors": [],
                                       "stdout": [],
                                       "stderr": [],
                                       "retry": 0,
-                                      "startTime": "2026-01-27T19:55:16.432Z",
+                                      "startTime": "2026-01-28T15:58:16.130Z",
                                       "annotations": [],
                                       "attachments": []
                                     }
@@ -1153,16 +1153,16 @@
                               "workerIndex": 0,
                               "parallelIndex": 0,
                               "status": "passed",
-                              "duration": 4406,
+                              "duration": 5735,
                               "errors": [],
                               "stdout": [
                                 {
-                                  "text": "[Download] for stateSubmitter Filename suggested by browser: spas-export-01_27_2026.csv\"\n"
+                                  "text": "[Download] for stateSubmitter Filename suggested by browser: spas-export-01_28_2026.csv\"\n"
                                 }
                               ],
                               "stderr": [],
                               "retry": 0,
-                              "startTime": "2026-01-27T19:55:18.732Z",
+                              "startTime": "2026-01-28T15:58:19.187Z",
                               "annotations": [],
                               "attachments": [
                                 {
@@ -1216,12 +1216,12 @@
                               "workerIndex": 0,
                               "parallelIndex": 0,
                               "status": "passed",
-                              "duration": 2800,
+                              "duration": 3034,
                               "errors": [],
                               "stdout": [],
                               "stderr": [],
                               "retry": 0,
-                              "startTime": "2026-01-27T19:55:23.149Z",
+                              "startTime": "2026-01-28T15:58:24.934Z",
                               "annotations": [],
                               "attachments": []
                             }
@@ -1252,12 +1252,12 @@
                               "workerIndex": 0,
                               "parallelIndex": 0,
                               "status": "passed",
-                              "duration": 2728,
+                              "duration": 2858,
                               "errors": [],
                               "stdout": [],
                               "stderr": [],
                               "retry": 0,
-                              "startTime": "2026-01-27T19:55:25.959Z",
+                              "startTime": "2026-01-28T15:58:27.980Z",
                               "annotations": [],
                               "attachments": []
                             }
@@ -1288,12 +1288,12 @@
                               "workerIndex": 0,
                               "parallelIndex": 0,
                               "status": "passed",
-                              "duration": 1937,
+                              "duration": 2867,
                               "errors": [],
                               "stdout": [],
                               "stderr": [],
                               "retry": 0,
-                              "startTime": "2026-01-27T19:55:28.701Z",
+                              "startTime": "2026-01-28T15:58:30.853Z",
                               "annotations": [],
                               "attachments": []
                             }
@@ -1324,12 +1324,12 @@
                               "workerIndex": 0,
                               "parallelIndex": 0,
                               "status": "passed",
-                              "duration": 1862,
+                              "duration": 2880,
                               "errors": [],
                               "stdout": [],
                               "stderr": [],
                               "retry": 0,
-                              "startTime": "2026-01-27T19:55:30.651Z",
+                              "startTime": "2026-01-28T15:58:33.730Z",
                               "annotations": [],
                               "attachments": []
                             }
@@ -1360,12 +1360,12 @@
                               "workerIndex": 0,
                               "parallelIndex": 0,
                               "status": "passed",
-                              "duration": 2715,
+                              "duration": 2857,
                               "errors": [],
                               "stdout": [],
                               "stderr": [],
                               "retry": 0,
-                              "startTime": "2026-01-27T19:55:32.523Z",
+                              "startTime": "2026-01-28T15:58:36.621Z",
                               "annotations": [],
                               "attachments": []
                             }
@@ -1396,12 +1396,12 @@
                               "workerIndex": 0,
                               "parallelIndex": 0,
                               "status": "passed",
-                              "duration": 2704,
+                              "duration": 2791,
                               "errors": [],
                               "stdout": [],
                               "stderr": [],
                               "retry": 0,
-                              "startTime": "2026-01-27T19:55:35.249Z",
+                              "startTime": "2026-01-28T15:58:39.488Z",
                               "annotations": [],
                               "attachments": []
                             }
@@ -1432,12 +1432,12 @@
                               "workerIndex": 0,
                               "parallelIndex": 0,
                               "status": "passed",
-                              "duration": 2834,
+                              "duration": 2878,
                               "errors": [],
                               "stdout": [],
                               "stderr": [],
                               "retry": 0,
-                              "startTime": "2026-01-27T19:55:37.967Z",
+                              "startTime": "2026-01-28T15:58:42.291Z",
                               "annotations": [],
                               "attachments": []
                             }
@@ -1483,12 +1483,12 @@
                                       "workerIndex": 0,
                                       "parallelIndex": 0,
                                       "status": "passed",
-                                      "duration": 805,
+                                      "duration": 890,
                                       "errors": [],
                                       "stdout": [],
                                       "stderr": [],
                                       "retry": 0,
-                                      "startTime": "2026-01-27T19:55:40.814Z",
+                                      "startTime": "2026-01-28T15:58:45.181Z",
                                       "annotations": [],
                                       "attachments": []
                                     }
@@ -1519,12 +1519,12 @@
                                       "workerIndex": 0,
                                       "parallelIndex": 0,
                                       "status": "passed",
-                                      "duration": 2725,
+                                      "duration": 2833,
                                       "errors": [],
                                       "stdout": [],
                                       "stderr": [],
                                       "retry": 0,
-                                      "startTime": "2026-01-27T19:55:41.631Z",
+                                      "startTime": "2026-01-28T15:58:46.082Z",
                                       "annotations": [],
                                       "attachments": []
                                     }
@@ -1555,12 +1555,12 @@
                                       "workerIndex": 0,
                                       "parallelIndex": 0,
                                       "status": "passed",
-                                      "duration": 1773,
+                                      "duration": 2780,
                                       "errors": [],
                                       "stdout": [],
                                       "stderr": [],
                                       "retry": 0,
-                                      "startTime": "2026-01-27T19:55:44.367Z",
+                                      "startTime": "2026-01-28T15:58:48.926Z",
                                       "annotations": [],
                                       "attachments": []
                                     }
@@ -1599,12 +1599,12 @@
                                       "workerIndex": 0,
                                       "parallelIndex": 0,
                                       "status": "passed",
-                                      "duration": 2458,
+                                      "duration": 3004,
                                       "errors": [],
                                       "stdout": [],
                                       "stderr": [],
                                       "retry": 0,
-                                      "startTime": "2026-01-27T19:55:46.150Z",
+                                      "startTime": "2026-01-28T15:58:51.718Z",
                                       "annotations": [],
                                       "attachments": []
                                     }
@@ -1635,12 +1635,12 @@
                                       "workerIndex": 0,
                                       "parallelIndex": 0,
                                       "status": "passed",
-                                      "duration": 2342,
+                                      "duration": 2506,
                                       "errors": [],
                                       "stdout": [],
                                       "stderr": [],
                                       "retry": 0,
-                                      "startTime": "2026-01-27T19:55:48.620Z",
+                                      "startTime": "2026-01-28T15:58:54.735Z",
                                       "annotations": [],
                                       "attachments": []
                                     }
@@ -1671,12 +1671,12 @@
                                       "workerIndex": 0,
                                       "parallelIndex": 0,
                                       "status": "passed",
-                                      "duration": 2349,
+                                      "duration": 2962,
                                       "errors": [],
                                       "stdout": [],
                                       "stderr": [],
                                       "retry": 0,
-                                      "startTime": "2026-01-27T19:55:50.973Z",
+                                      "startTime": "2026-01-28T15:58:57.254Z",
                                       "annotations": [],
                                       "attachments": []
                                     }
@@ -1719,16 +1719,16 @@
                               "workerIndex": 0,
                               "parallelIndex": 0,
                               "status": "passed",
-                              "duration": 4786,
+                              "duration": 6020,
                               "errors": [],
                               "stdout": [
                                 {
-                                  "text": "[Download] for cmsReviewer Filename suggested by browser: spas-export-01_27_2026.csv\"\n"
+                                  "text": "[Download] for cmsReviewer Filename suggested by browser: spas-export-01_28_2026.csv\"\n"
                                 }
                               ],
                               "stderr": [],
                               "retry": 0,
-                              "startTime": "2026-01-27T19:55:53.332Z",
+                              "startTime": "2026-01-28T15:59:00.227Z",
                               "annotations": [],
                               "attachments": [
                                 {
@@ -1758,8 +1758,8 @@
   ],
   "errors": [],
   "stats": {
-    "startTime": "2026-01-27T19:54:33.032Z",
-    "duration": 85193.02,
+    "startTime": "2026-01-28T15:57:19.980Z",
+    "duration": 106370.067,
     "expected": 28,
     "skipped": 0,
     "unexpected": 0,
