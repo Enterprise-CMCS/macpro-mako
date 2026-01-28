@@ -86,8 +86,9 @@ const useGetLinks = () => {
             link: config.macproLink.url,
             condition:
               showMACPRO &&
+              userObj.user &&
               Object.values(UserRoles).some((role) => {
-                return userObj.user.role === role;
+                return userObj.user?.role === role;
               }),
           },
           {
