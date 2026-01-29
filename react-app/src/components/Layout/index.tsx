@@ -40,6 +40,7 @@ const useGetLinks = () => {
   const showHome = toggleFaq ? userObj.user : true; // if toggleFAQ is on we want to hide home when not logged in
   const isStateHomepage = useFeatureFlag("STATE_HOMEPAGE_FLAG");
   const showSMART = useFeatureFlag("SHOW_SMART_LINK");
+  const showMACPRO = useFeatureFlag("SHOW_MACPRO_LINK");
 
   const links =
     userLoading || userDetailsLoading || isFaqPage
@@ -79,6 +80,16 @@ const useGetLinks = () => {
               ["systemadmin", "cmsroleapprover", "cmsreviewer", "defaultcmsuser"].includes(
                 userDetailsData?.role,
               ),
+          },
+          {
+            name: "MACPro",
+            link: config.macproLink.url,
+            condition:
+              showMACPRO &&
+              userObj.user &&
+              Object.values(UserRoles).some((role) => {
+                return userObj.user?.role === role;
+              }),
           },
           {
             name: "Latest Updates",
@@ -384,7 +395,11 @@ const ResponsiveNav = ({ isDesktop }: ResponsiveNavProps) => {
           <NavLink
             data-testid={`${link.name}-d`}
             to={link.link}
-            target={link.link === "/faq" || link.name === "OneMAC SMART" ? "_blank" : "_self"}
+            target={
+              link.link === "/faq" || link.name === "OneMAC SMART" || link.name === "MACPro"
+                ? "_blank"
+                : "_self"
+            }
             key={link.name}
             className={setClassBasedOnNav}
             onClick={() => triggerGAEvent(link.name)}
