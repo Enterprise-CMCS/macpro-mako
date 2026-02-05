@@ -12,8 +12,14 @@ import { getPackageType } from "./getPackageType";
  * @property {object} body
  * @property {string} body.packageId
  * @property {string} body.action
+ * @property {string} body.changeMade
+ * @property {string} body.changeReason
  */
-const sendRecoverMessage = async (currentPackage: ItemResult) => {
+const sendRecoverMessage = async (
+  currentPackage: ItemResult,
+  changeMade: string,
+  changeReason: string,
+) => {
   const topicName = process.env.topicName as string;
   if (!topicName) {
     throw new Error("Topic name is not defined");
@@ -39,8 +45,8 @@ const sendRecoverMessage = async (currentPackage: ItemResult) => {
       deleted: false,
       isAdminChange: true,
       adminChangeType: "update-id",
-      changeMade: "Recovered Package.",
-      changeReason: "Recovered package.",
+      changeMade,
+      changeReason,
       makoChangedDate: currentTime,
       changedDate: currentTime,
       statusDate: currentTime,
@@ -57,8 +63,15 @@ const sendRecoverMessage = async (currentPackage: ItemResult) => {
  * @property {object} body
  * @property {string} body.packageId
  * @property {string} body.action
+ * @property {string} body.changeMade
+ * @property {string} body.changeReason
  */
-const sendDeleteMessage = async (currentPackage: ItemResult, timestamp?: number) => {
+const sendDeleteMessage = async (
+  currentPackage: ItemResult,
+  changeMade: string,
+  changeReason: string,
+  timestamp?: number,
+) => {
   const topicName = process.env.topicName as string;
   if (!topicName) {
     throw new Error("Topic name is not defined");
@@ -77,8 +90,8 @@ const sendDeleteMessage = async (currentPackage: ItemResult, timestamp?: number)
       deleted: true,
       idToBeUpdated: currentPackage._id,
       origin: "OneMAC",
-      changeMade: "Deleted package.",
-      changeReason: "Deleted package.",
+      changeMade,
+      changeReason,
       isAdminChange: true,
       adminChangeType: "update-id",
       makoChangedDate: currentTime,
@@ -95,6 +108,8 @@ const sendDeleteMessage = async (currentPackage: ItemResult, timestamp?: number)
       deleted: true,
       isAdminChange: true,
       adminChangeType: "delete",
+      changeMade,
+      changeReason,
       makoChangedDate: currentTime,
       changedDate: currentTime,
       statusDate: currentTime,
@@ -113,6 +128,8 @@ const sendDeleteMessage = async (currentPackage: ItemResult, timestamp?: number)
  * @property {string} body.action
  * @property {object} body.updatedFields
  * @property {string} body.updatedFields.title
+ * @property {string} body.changeMade
+ * @property {string} body.changeReason
  */
 
 const sendUpdateValuesMessage = async ({
@@ -123,8 +140,8 @@ const sendUpdateValuesMessage = async ({
 }: {
   currentPackage: ItemResult;
   updatedFields: object;
-  changeMade?: string;
-  changeReason?: string;
+  changeMade: string;
+  changeReason: string;
 }) => {
   const topicName = process.env.topicName as string;
   if (!topicName) {
@@ -182,6 +199,8 @@ const sendUpdateValuesMessage = async ({
  * @property {string} body.packageId
  * @property {string} body.action
  * @property {string} body.updatedId
+ * @property {string} body.changeMade
+ * @property {string} body.changeReason
  */
 const sendUpdateIdMessage = async ({
   currentPackage,
@@ -191,8 +210,8 @@ const sendUpdateIdMessage = async ({
 }: {
   currentPackage: ItemResult;
   updatedId: string;
-  changeMade?: string;
-  changeReason?: string;
+  changeMade: string;
+  changeReason: string;
 }) => {
   const topicName = process.env.topicName as string;
   if (!topicName) {
@@ -253,7 +272,7 @@ const sendUpdateIdMessage = async ({
       timestamp: currentTime,
     }),
   );
-  await sendDeleteMessage(currentPackage, currentTime);
+  await sendDeleteMessage(currentPackage, changeMade, changeReason, currentTime);
   return response({
     statusCode: 200,
     body: { message: `The ID of package ${currentPackage._id} has been updated to ${updatedId}.` },
@@ -265,8 +284,8 @@ const updatePackageEventBodySchema = z.object({
   action: z.enum(["update-values", "update-id", "delete", "recover"]),
   updatedId: z.string().optional(),
   updatedFields: z.record(z.unknown()).optional(),
-  changeMade: z.string().optional(),
-  changeReason: z.string().optional(),
+  changeMade: z.string(),
+  changeReason: z.string(),
 });
 
 export const handler = async (event: APIGatewayEvent) => {
@@ -313,10 +332,10 @@ export const handler = async (event: APIGatewayEvent) => {
     }
 
     if (action === "delete") {
-      return await sendDeleteMessage(currentPackage);
+      return await sendDeleteMessage(currentPackage, changeMade, changeReason);
     }
     if (action === "recover") {
-      return await sendRecoverMessage(currentPackage);
+      return await sendRecoverMessage(currentPackage, changeMade, changeReason);
     }
     if (action === "update-id") {
       return await sendUpdateIdMessage({ currentPackage, updatedId, changeMade, changeReason });
@@ -332,6 +351,12 @@ export const handler = async (event: APIGatewayEvent) => {
     }
   } catch (err) {
     console.error("Error has occured modifying package:", err);
+    if (err instanceof z.ZodError) {
+      return response({
+        statusCode: 400,
+        body: { message: err.errors },
+      });
+    }
     return response({
       statusCode: 500,
       body: { message: err.message || "Internal Server Error" },

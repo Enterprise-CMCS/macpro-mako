@@ -11,6 +11,8 @@ import { getNextSplitSPAId } from "./getNextSplitSPAId";
 /** @typedef {object} json
  * @property {object} body
  * @property {string} body.packageId
+ * @property {string} body.changeMade
+ * @property {string} body.changeReason
  */
 
 const sendSubmitSplitSPAMessage = async ({
@@ -19,8 +21,8 @@ const sendSubmitSplitSPAMessage = async ({
   changeReason,
 }: {
   currentPackage: ItemResult;
-  changeMade?: string;
-  changeReason?: string;
+  changeMade: string;
+  changeReason: string;
 }) => {
   const topicName = process.env.topicName as string;
   if (!topicName) {
@@ -69,8 +71,8 @@ const sendSubmitSplitSPAMessage = async ({
 
 const splitSPAEventBodySchema = z.object({
   packageId: events["new-medicaid-submission"].baseSchema.shape.id,
-  changeMade: z.string().optional(),
-  changeReason: z.string().optional(),
+  changeMade: z.string(),
+  changeReason: z.string(),
 });
 
 export const handler = async (event: APIGatewayEvent) => {

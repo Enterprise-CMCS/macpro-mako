@@ -31,6 +31,8 @@ interface submitMessageType {
   adminChangeType: string;
   stateStatus: string;
   cmsStatus: string;
+  changeMade: string;
+  changeReason: string;
 }
 
 const convertStringToTimestamp = (date: string) => {

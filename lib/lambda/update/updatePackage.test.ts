@@ -29,7 +29,7 @@ describe("handler", () => {
 
   it("should return 400 if package ID is not found", async () => {
     const noActionevent = {
-      body: JSON.stringify({ packageId: "123", changeReason: "Nunya" }),
+      body: JSON.stringify({ packageId: "123", changeMade: "Nunya", changeReason: "Nunya" }),
     } as APIGatewayEvent;
 
     const result = await handler(noActionevent);
@@ -40,7 +40,7 @@ describe("handler", () => {
 
   it("should return 400 if action is not found", async () => {
     const noApackageEvent = {
-      body: JSON.stringify({ action: "123", changeReason: "Nunya" }),
+      body: JSON.stringify({ action: "123", changeMade: "Nunya", changeReason: "Nunya" }),
     } as APIGatewayEvent;
 
     const result = await handler(noApackageEvent);
@@ -52,7 +52,12 @@ describe("handler", () => {
   describe("delete", () => {
     it("should return 404 if the package is not found", async () => {
       const noActionevent = {
-        body: JSON.stringify({ packageId: "123", action: "delete", changeReason: "Nunya" }),
+        body: JSON.stringify({
+          packageId: "123",
+          action: "delete",
+          changeMade: "Nunya",
+          changeReason: "Nunya",
+        }),
       } as APIGatewayEvent;
 
       const result = await handler(noActionevent);
@@ -67,6 +72,7 @@ describe("handler", () => {
         body: JSON.stringify({
           packageId: EXISTING_ITEM_ID,
           action: "delete",
+          changeMade: "Nunya",
           changeReason: "Nunya",
         }),
       } as APIGatewayEvent;
@@ -82,6 +88,7 @@ describe("handler", () => {
         body: JSON.stringify({
           packageId: EXISTING_ITEM_ID,
           action: "delete",
+          changeMade: "Nunya",
           changeReason: "Nunya",
         }),
       } as APIGatewayEvent;
@@ -100,6 +107,7 @@ describe("handler", () => {
         body: JSON.stringify({
           packageId: EXISTING_ITEM_ID,
           action: "recover",
+          changeMade: "Nunya",
           changeReason: "Nunya",
         }),
       } as APIGatewayEvent;
@@ -115,6 +123,7 @@ describe("handler", () => {
         body: JSON.stringify({
           packageId: EXISTING_ITEM_ID,
           action: "recover",
+          changeMade: "Nunya",
           changeReason: "Nunya",
         }),
       } as APIGatewayEvent;
@@ -132,6 +141,7 @@ describe("handler", () => {
         body: JSON.stringify({
           packageId: DELETED_ITEM_ID,
           action: "recover",
+          changeMade: "Nunya",
           changeReason: "Nunya",
         }),
       } as APIGatewayEvent;
@@ -152,6 +162,7 @@ describe("handler", () => {
         body: JSON.stringify({
           packageId: CAPITATED_INITIAL_ITEM_ID,
           action: "update-id",
+          changeMade: "Nunya",
           changeReason: "Nunya",
           updatedId: "SS-1235.R00.00",
         }),
@@ -168,6 +179,7 @@ describe("handler", () => {
         body: JSON.stringify({
           packageId: SIMPLE_ID,
           action: "update-id",
+          changeMade: "Nunya",
           changeReason: "Nunya",
           updatedId: "SS-120",
         }),
@@ -188,6 +200,7 @@ describe("handler", () => {
         body: JSON.stringify({
           packageId: CAPITATED_INITIAL_ITEM_ID,
           action: "update-id",
+          changeMade: "Nunya",
           changeReason: "Nunya",
           updatedId: "SS-120",
         }),
@@ -209,6 +222,7 @@ describe("handler", () => {
         body: JSON.stringify({
           packageId: EXISTING_ITEM_ID,
           action: "update-id",
+          changeMade: "Nunya",
           changeReason: "Nunya",
         }),
       } as APIGatewayEvent;
@@ -226,6 +240,7 @@ describe("handler", () => {
         body: JSON.stringify({
           packageId: EXISTING_ITEM_ID,
           action: "update-id",
+          changeMade: "Nunya",
           changeReason: "Nunya",
           updatedId: EXISTING_ITEM_ID,
         }),
@@ -244,6 +259,7 @@ describe("handler", () => {
         body: JSON.stringify({
           packageId: EXISTING_ITEM_ID,
           action: "update-id",
+          changeMade: "Nunya",
           changeReason: "Nunya",
           updatedId: EXISTING_ITEM_PENDING_ID,
         }),
@@ -260,6 +276,7 @@ describe("handler", () => {
         body: JSON.stringify({
           packageId: CAPITATED_INITIAL_ITEM_ID,
           action: "update-id",
+          changeMade: "Nunya",
           changeReason: "Nunya",
           updatedId: CAPITATED_INITIAL_NEW_ITEM_ID,
         }),
@@ -285,6 +302,7 @@ describe("handler", () => {
         body: JSON.stringify({
           packageId: SIMPLE_ID,
           action: "update-values",
+          changeMade: "Nunya",
           changeReason: "Nunya",
           updatedFields: {},
         }),
@@ -301,6 +319,7 @@ describe("handler", () => {
         body: JSON.stringify({
           packageId: SIMPLE_ID,
           action: "update-values",
+          changeMade: "Nunya",
           changeReason: "Nunya",
           updatedFields: { badfield: "nothing" },
         }),
@@ -319,6 +338,7 @@ describe("handler", () => {
         body: JSON.stringify({
           packageId: SIMPLE_ID,
           action: "update-values",
+          changeMade: "Nunya",
           changeReason: "Nunya",
           updatedFields: { id: "cant update ID here" },
         }),
@@ -337,6 +357,7 @@ describe("handler", () => {
         body: JSON.stringify({
           packageId: CAPITATED_INITIAL_ITEM_ID,
           action: "update-values",
+          changeMade: "Nunya",
           changeReason: "Nunya",
           updatedFields: { state: "TX" },
         }),

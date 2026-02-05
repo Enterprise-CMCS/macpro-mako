@@ -29,7 +29,11 @@ describe("handler", () => {
 
   it("should return 404 if package ID is not found", async () => {
     const invalidPackage = {
-      body: JSON.stringify({ packageId: "MD-25-9999" }),
+      body: JSON.stringify({
+        packageId: "MD-25-9999",
+        changeMade: "Split SPA",
+        changeReason: "Administrative correction",
+      }),
     } as unknown as APIGatewayEvent;
 
     const result = await handler(invalidPackage);
@@ -39,7 +43,11 @@ describe("handler", () => {
 
   it("should throw an error if not Medicaid SPA", async () => {
     const chipSPAPackage = {
-      body: JSON.stringify({ packageId: TEST_CHIP_SPA_ITEM._id }),
+      body: JSON.stringify({
+        packageId: TEST_CHIP_SPA_ITEM._id,
+        changeMade: "Split SPA",
+        changeReason: "Administrative correction",
+      }),
       requestContext: getRequestContext(),
     } as APIGatewayEvent;
 
@@ -64,6 +72,8 @@ describe("handler", () => {
     const noActionevent = {
       body: JSON.stringify({
         packageId: TEST_MED_SPA_ITEM._id,
+        changeMade: "Split SPA",
+        changeReason: "Administrative correction",
       }),
     } as APIGatewayEvent;
 
@@ -72,7 +82,11 @@ describe("handler", () => {
 
   it("should create a split SPA", async () => {
     const medSPAPackage = {
-      body: JSON.stringify({ packageId: TEST_MED_SPA_ITEM._id }),
+      body: JSON.stringify({
+        packageId: TEST_MED_SPA_ITEM._id,
+        changeMade: "Split SPA",
+        changeReason: "Administrative correction",
+      }),
     } as unknown as APIGatewayEvent;
 
     const result = await handler(medSPAPackage);
@@ -81,7 +95,11 @@ describe("handler", () => {
 
   it("should fail if unable to get next split SPA suffix", async () => {
     const medSPAPackage = {
-      body: JSON.stringify({ packageId: TEST_SPA_ITEM_TO_SPLIT }),
+      body: JSON.stringify({
+        packageId: TEST_SPA_ITEM_TO_SPLIT,
+        changeMade: "Split SPA",
+        changeReason: "Administrative correction",
+      }),
     } as unknown as APIGatewayEvent;
 
     await expect(handler(medSPAPackage)).rejects.toThrow("This package can't be further split.");
