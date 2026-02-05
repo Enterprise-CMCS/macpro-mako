@@ -66,6 +66,24 @@ export class ParentStack extends cdk.Stack {
       sharedOpenSearchDomainEndpoint: props.sharedOpenSearchDomainEndpoint,
     });
 
+    // Auth stack must be created BEFORE Api stack
+    // Auth creates the userPool required by UI/auth flows
+    const authStack = new Stacks.Auth(this, "auth", {
+      ...commonProps,
+      stack: "auth",
+      applicationEndpointUrl: uiInfraStack.applicationEndpointUrl,
+      vpc,
+      privateSubnets,
+      lambdaSecurityGroup: networkingStack.lambdaSecurityGroup,
+      idmEnable: props.idmEnable,
+      idmClientId: props.idmClientId,
+      idmClientIssuer: props.idmClientIssuer,
+      idmAuthzApiEndpoint: props.idmAuthzApiEndpoint,
+      idmAuthzApiKeyArn: props.idmAuthzApiKeyArn,
+      idmClientSecretArn: props.idmClientSecretArn,
+      devPasswordArn: props.devPasswordArn,
+    });
+
     const apiStack = new Stacks.Api(this, "api", {
       ...commonProps,
       stack: "api",
@@ -83,18 +101,6 @@ export class ParentStack extends cdk.Stack {
       attachmentsBucket: uploadsStack.attachmentsBucket,
       notificationSecretName: props.notificationSecretName,
       notificationSecretArn: props.notificationSecretArn,
-    });
-
-    const authStack = new Stacks.Auth(this, "auth", {
-      ...commonProps,
-      stack: "auth",
-      apiGateway: apiStack.apiGateway,
-      applicationEndpointUrl: uiInfraStack.applicationEndpointUrl,
-      vpc,
-      privateSubnets,
-      lambdaSecurityGroup: networkingStack.lambdaSecurityGroup,
-      idmEnable: props.idmEnable,
-      idmClientId: props.idmClientId,
       idmClientIssuer: props.idmClientIssuer,
       idmAuthzApiEndpoint: props.idmAuthzApiEndpoint,
       idmAuthzApiKeyArn: props.idmAuthzApiKeyArn,
@@ -102,6 +108,7 @@ export class ParentStack extends cdk.Stack {
       devPasswordArn: props.devPasswordArn,
       smartLinkUrl: props.smartLinkUrl,
       macproLinkUrl: props.macproLinkUrl,
+      idmClientId: props.idmClientId,
     });
 
     new Stacks.Email(this, "email", {

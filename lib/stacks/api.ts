@@ -28,6 +28,9 @@ interface ApiStackProps extends cdk.NestedStackProps {
   legacyS3AccessRoleArn: DeploymentConfigProperties["legacyS3AccessRoleArn"];
   notificationSecretName: DeploymentConfigProperties["notificationSecretName"];
   notificationSecretArn: DeploymentConfigProperties["notificationSecretArn"];
+  // IDM/Okta configuration for dataSink authorizer
+  idmClientIssuer: DeploymentConfigProperties["idmClientIssuer"];
+  idmClientId: DeploymentConfigProperties["idmClientId"];
 }
 
 export class Api extends cdk.NestedStack {
@@ -60,29 +63,11 @@ export class Api extends cdk.NestedStack {
       dbInfoSecretName,
       notificationSecretName,
       notificationSecretArn,
+      idmClientIssuer,
+      idmClientId,
     } = props;
 
     const topicName = `${topicNamespace}aws.onemac.migration.cdc`;
-
-    // ==========================================
-    // DataSink Infrastructure - API Key Secret
-    // ==========================================
-    const dataSinkApiKeySecret = new cdk.aws_secretsmanager.Secret(this, "DataSinkApiKeySecret", {
-      secretName: `${project}/${stage}/dataSink-api-key`, // pragma: allowlist secret
-      description: "API Key for dataSink endpoint (SMART/MuleSoft integration)",
-      generateSecretString: {
-        excludePunctuation: true,
-        passwordLength: 32,
-      },
-    });
-
-    // Note: Cross-account access policy can be added here when MuleSoft account ID is known
-    // dataSinkApiKeySecret.addToResourcePolicy(new cdk.aws_iam.PolicyStatement({
-    //   effect: cdk.aws_iam.Effect.ALLOW,
-    //   principals: [new cdk.aws_iam.AccountPrincipal("MULESOFT_ACCOUNT_ID")],
-    //   actions: ["secretsmanager:GetSecretValue"],
-    //   resources: ["*"],
-    // }));
 
     // Define IAM role
     const lambdaRole = new cdk.aws_iam.Role(this, "LambdaExecutionRole", {
@@ -635,51 +620,56 @@ export class Api extends cdk.NestedStack {
     });
 
     // ==========================================
-    // DataSink API Key and Usage Plan
-    // ==========================================
-    // Create API Key from the secret value
-    const dataSinkApiKey = api.addApiKey("DataSinkApiKey", {
-      apiKeyName: `${project}-${stage}-dataSink-api-key`,
-      description: "API Key for dataSink endpoint (SMART/MuleSoft integration)",
-      value: dataSinkApiKeySecret.secretValue.unsafeUnwrap(),
-    });
-
-    // Create Usage Plan with lenient rate limits
-    const dataSinkUsagePlan = api.addUsagePlan("DataSinkUsagePlan", {
-      name: `${project}-${stage}-dataSink-usage-plan`,
-      description: "Usage plan for dataSink endpoint",
-      throttle: {
-        rateLimit: 1000, // requests per second
-        burstLimit: 2000, // burst capacity
-      },
-      quota: {
-        limit: 100000, // requests per day
-        period: cdk.aws_apigateway.Period.DAY,
-      },
-    });
-
-    // Associate API Key with Usage Plan
-    dataSinkUsagePlan.addApiKey(dataSinkApiKey);
-
-    // Associate Usage Plan with the API stage
-    dataSinkUsagePlan.addApiStage({
-      stage: api.deploymentStage,
-    });
-
-    // ==========================================
-    // DataSink API Resource with API Key Required
+    // DataSink API Resource with IDM/Okta JWT Authorization
+    // Validates IDM-issued JWTs using a Lambda authorizer
     // ==========================================
     const dataSinkResource = api.root.addResource("dataSink");
+
+    const dataSinkAuthorizerLogGroup = new cdk.aws_logs.LogGroup(
+      this,
+      "dataSinkAuthorizerLogGroup",
+      {
+        logGroupName: `/aws/lambda/${project}-${stage}-${stack}-dataSink-authorizer`,
+        removalPolicy: cdk.RemovalPolicy.DESTROY,
+      },
+    );
+
+    const dataSinkJwtAuthorizer = new NodejsFunction(this, "dataSinkJwtAuthorizer", {
+      runtime: cdk.aws_lambda.Runtime.NODEJS_20_X,
+      functionName: `${project}-${stage}-${stack}-dataSink-authorizer`,
+      depsLockFilePath: join(__dirname, "../../bun.lockb"),
+      entry: join(__dirname, "../lambda/authorizers/idmJwtAuthorizer.ts"),
+      handler: "handler",
+      timeout: cdk.Duration.seconds(10),
+      memorySize: 256,
+      environment: {
+        IDM_ISSUER: idmClientIssuer,
+        IDM_AUDIENCE: idmClientId,
+      },
+      logGroup: dataSinkAuthorizerLogGroup,
+      bundling: commonBundlingOptions,
+    });
+
+    const dataSinkTokenAuthorizer = new cdk.aws_apigateway.TokenAuthorizer(
+      this,
+      "DataSinkTokenAuthorizer",
+      {
+        handler: dataSinkJwtAuthorizer,
+        authorizerName: `${project}-${stage}-${stack}-dataSink-authorizer`,
+        identitySource: cdk.aws_apigateway.IdentitySource.header("Authorization"),
+        resultsCacheTtl: cdk.Duration.minutes(5),
+      },
+    );
 
     const dataSinkIntegration = new cdk.aws_apigateway.LambdaIntegration(dataSinkLambda, {
       proxy: true,
       credentialsRole: apiGatewayRole,
     });
 
-    // Add POST method with API Key requirement (no IAM auth)
+    // Add POST method with IDM/Okta authorization
     dataSinkResource.addMethod("POST", dataSinkIntegration, {
-      authorizationType: cdk.aws_apigateway.AuthorizationType.NONE,
-      apiKeyRequired: true,
+      authorizationType: cdk.aws_apigateway.AuthorizationType.CUSTOM,
+      authorizer: dataSinkTokenAuthorizer,
       methodResponses: [
         {
           statusCode: "202",
@@ -691,6 +681,20 @@ export class Api extends cdk.NestedStack {
         },
         {
           statusCode: "400",
+          responseParameters: {
+            "method.response.header.Access-Control-Allow-Origin": true,
+            "method.response.header.Access-Control-Allow-Headers": true,
+          },
+        },
+        {
+          statusCode: "401",
+          responseParameters: {
+            "method.response.header.Access-Control-Allow-Origin": true,
+            "method.response.header.Access-Control-Allow-Headers": true,
+          },
+        },
+        {
+          statusCode: "403",
           responseParameters: {
             "method.response.header.Access-Control-Allow-Origin": true,
             "method.response.header.Access-Control-Allow-Headers": true,

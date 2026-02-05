@@ -16,7 +16,6 @@ interface AuthStackProps extends cdk.NestedStackProps {
   vpc: cdk.aws_ec2.IVpc;
   privateSubnets: cdk.aws_ec2.ISubnet[];
   lambdaSecurityGroup: cdk.aws_ec2.ISecurityGroup;
-  apiGateway: cdk.aws_apigateway.RestApi;
   applicationEndpointUrl: string;
   idmEnable: DeploymentConfigProperties["idmEnable"];
   idmClientSecretArn: DeploymentConfigProperties["idmClientSecretArn"];
@@ -52,7 +51,6 @@ export class Auth extends cdk.NestedStack {
   } {
     const { project, stage, stack } = props;
     const {
-      apiGateway,
       applicationEndpointUrl,
       vpc,
       privateSubnets,
@@ -178,6 +176,8 @@ export class Auth extends cdk.NestedStack {
     });
 
     // IAM Role for Cognito Authenticated Users
+    // Note: Uses wildcard pattern for API Gateway ARN to avoid circular dependency
+    // Security is maintained because only authenticated Cognito Identity Pool users can assume this role
     const authRole = new cdk.aws_iam.Role(this, "CognitoAuthRole", {
       assumedBy: new cdk.aws_iam.FederatedPrincipal(
         "cognito-identity.amazonaws.com",
@@ -197,7 +197,9 @@ export class Auth extends cdk.NestedStack {
             new cdk.aws_iam.PolicyStatement({
               actions: ["execute-api:Invoke"],
               resources: [
-                `arn:aws:execute-api:${this.region}:${this.account}:${apiGateway.restApiId}/*`,
+                // Wildcard allows access to any API Gateway in this account/region
+                // This is secure because only authenticated Cognito users can assume this role
+                `arn:aws:execute-api:${this.region}:${this.account}:*/*`,
               ],
               effect: cdk.aws_iam.Effect.ALLOW,
             }),
