@@ -71,8 +71,8 @@ const sendSubmitSplitSPAMessage = async ({
 
 const splitSPAEventBodySchema = z.object({
   packageId: events["new-medicaid-submission"].baseSchema.shape.id,
-  changeMade: z.string(),
-  changeReason: z.string(),
+  changeMade: z.string().trim().min(1),
+  changeReason: z.string().trim().min(1),
 });
 
 export const handler = async (event: APIGatewayEvent) => {

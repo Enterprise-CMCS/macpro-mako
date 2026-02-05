@@ -284,8 +284,8 @@ const updatePackageEventBodySchema = z.object({
   action: z.enum(["update-values", "update-id", "delete", "recover"]),
   updatedId: z.string().optional(),
   updatedFields: z.record(z.unknown()).optional(),
-  changeMade: z.string(),
-  changeReason: z.string(),
+  changeMade: z.string().trim().min(1),
+  changeReason: z.string().trim().min(1),
 });
 
 export const handler = async (event: APIGatewayEvent) => {
