@@ -4,6 +4,7 @@ import {
   DELETED_ITEM_ID,
   EXISTING_ITEM_ID,
   EXISTING_ITEM_PENDING_ID,
+  NEW_CHIP_ITEM_ID,
   SIMPLE_ID,
 } from "mocks";
 import { mockedProducer } from "mocks/helpers/kafka.utils";
@@ -373,6 +374,71 @@ describe("handler", () => {
       );
 
       expect(mockedProducer.send).toHaveBeenCalledTimes(1);
+    });
+
+    it("should update chipSubmissionType even if missing on the record", async () => {
+      const noActionevent = {
+        body: JSON.stringify({
+          packageId: NEW_CHIP_ITEM_ID,
+          action: "update-values",
+          changeMade: "Nunya",
+          changeReason: "Nunya",
+          updatedFields: { chipSubmissionType: ["Non-Financial Eligibility"] },
+        }),
+      } as APIGatewayEvent;
+
+      const result = await handler(noActionevent);
+
+      expect(result?.statusCode).toBe(200);
+      expect(result?.body).toEqual(
+        JSON.stringify({
+          message: `chipSubmissionType has been updated in package ${NEW_CHIP_ITEM_ID}.`,
+        }),
+      );
+
+      expect(mockedProducer.send).toHaveBeenCalledTimes(1);
+    });
+
+    it("should reject chipSubmissionType updates for non-CHIP SPA packages", async () => {
+      const noActionevent = {
+        body: JSON.stringify({
+          packageId: CAPITATED_INITIAL_ITEM_ID,
+          action: "update-values",
+          changeMade: "Nunya",
+          changeReason: "Nunya",
+          updatedFields: { chipSubmissionType: ["Non-Financial Eligibility"] },
+        }),
+      } as APIGatewayEvent;
+
+      const result = await handler(noActionevent);
+
+      expect(result?.statusCode).toBe(400);
+      expect(result?.body).toEqual(
+        JSON.stringify({
+          message: "CHIP Submission Type updates are only allowed for CHIP SPA packages.",
+        }),
+      );
+    });
+
+    it("should reject invalid chipSubmissionType values", async () => {
+      const noActionevent = {
+        body: JSON.stringify({
+          packageId: NEW_CHIP_ITEM_ID,
+          action: "update-values",
+          changeMade: "Nunya",
+          changeReason: "Nunya",
+          updatedFields: { chipSubmissionType: ["Bad Value"] },
+        }),
+      } as APIGatewayEvent;
+
+      const result = await handler(noActionevent);
+
+      expect(result?.statusCode).toBe(400);
+      expect(result?.body).toEqual(
+        JSON.stringify({
+          message: "Invalid CHIP Submission Type value(s).",
+        }),
+      );
     });
   });
 });

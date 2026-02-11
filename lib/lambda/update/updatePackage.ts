@@ -147,14 +147,47 @@ const sendUpdateValuesMessage = async ({
   if (!topicName) {
     throw new Error("Topic name is not defined");
   }
+  const allowedNewFields = new Set(["chipSubmissionType"]);
+  const allowedChipSubmissionTypes = new Set([
+    "MAGI Eligibility and Methods",
+    "Non-Financial Eligibility",
+    "XXI Medicaid Expansion",
+    "Eligibility Process",
+  ]);
   const invalidFields = Object.keys(updatedFields).filter(
-    (field) => !(field in currentPackage._source),
+    (field) => !(field in currentPackage._source) && !allowedNewFields.has(field),
   );
   if (invalidFields.length > 0) {
     return response({
       statusCode: 400,
       body: { message: `Cannot update invalid field(s): ${invalidFields.join(", ")}` },
     });
+  }
+
+  if ("chipSubmissionType" in updatedFields) {
+    if (currentPackage._source.authority !== "CHIP SPA") {
+      return response({
+        statusCode: 400,
+        body: { message: "CHIP Submission Type updates are only allowed for CHIP SPA packages." },
+      });
+    }
+    const chipSubmissionType = (updatedFields as { chipSubmissionType?: unknown })
+      .chipSubmissionType;
+    if (!Array.isArray(chipSubmissionType) || chipSubmissionType.length === 0) {
+      return response({
+        statusCode: 400,
+        body: { message: "CHIP Submission Type must include at least one value." },
+      });
+    }
+    const invalidTypes = chipSubmissionType.filter(
+      (type) => typeof type !== "string" || !allowedChipSubmissionTypes.has(type),
+    );
+    if (invalidTypes.length > 0) {
+      return response({
+        statusCode: 400,
+        body: { message: "Invalid CHIP Submission Type value(s)." },
+      });
+    }
   }
 
   if ("id" in updatedFields) {
