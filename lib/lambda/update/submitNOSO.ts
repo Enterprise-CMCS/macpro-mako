@@ -13,8 +13,8 @@ import { submitNOSOAdminSchema } from "./adminChangeSchemas";
  * @property {string} body.id
  * @property {string} body.authority
  * @property {string} body.status
- * @property {string} body.submitterEmail
- * @property {string} body.submitterName
+ * @property {string | null} [body.submitterEmail]
+ * @property {string | null} [body.submitterName]
  * @property {string} body.adminChangeType
  * @property {string} body.mockEvent
  * @property {string} body.changeMade
@@ -24,8 +24,8 @@ interface submitMessageType {
   id: string;
   authority: string;
   status: string;
-  submitterEmail: string;
-  submitterName: string;
+  submitterEmail?: string | null;
+  submitterName?: string | null;
   submissionDate: string;
   proposedDate: string;
   adminChangeType: string;
