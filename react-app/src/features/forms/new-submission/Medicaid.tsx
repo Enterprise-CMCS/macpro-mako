@@ -26,9 +26,10 @@ type MedSpaFooterProps = {
   form: FormArg<(typeof formSchemas)["new-medicaid-submission"]>;
   onSubmit: () => void;
   onCancel: (promptOverride?: Partial<Omit<UserPromptType, "onAccept">>) => void;
+  onSaveDraft?: () => void;
 };
 
-const MedSpaFooter = ({ form, onSubmit, onCancel }: MedSpaFooterProps) => {
+const MedSpaFooter = ({ form, onSubmit, onCancel, onSaveDraft }: MedSpaFooterProps) => {
   const [isFooterFixed, setIsFooterFixed] = useState(false);
   const watchedId = form.watch("id");
 
@@ -79,6 +80,8 @@ const MedSpaFooter = ({ form, onSubmit, onCancel }: MedSpaFooterProps) => {
             <button
               type="button"
               className="w-[128.36px] py-3 px-5 gap-2.5 rounded border-2 border-blue-700 text-blue-700 bg-white font-semibold text-sm"
+              onClick={onSaveDraft}
+              data-testid="save-draft-form"
             >
               Save
             </button>
@@ -131,6 +134,8 @@ const MedSpaFooter = ({ form, onSubmit, onCancel }: MedSpaFooterProps) => {
           <button
             type="button"
             className="w-[128.36px] py-3 px-5 gap-2.5 rounded border-2 border-blue-700 text-blue-700 bg-white font-semibold text-sm"
+            onClick={onSaveDraft}
+            data-testid="save-draft-form"
           >
             Save
           </button>
@@ -253,14 +258,20 @@ export const MedicaidForm = () => {
       }}
       footer={
         isMedSpaFooterShown
-          ? ({ form, onSubmit, onCancel }) => (
+          ? ({ form, onSubmit, onCancel, onSaveDraft }) => (
               <section>
                 <div id="footer-trigger" />
-                <MedSpaFooter form={form} onSubmit={onSubmit} onCancel={onCancel} />
+                <MedSpaFooter
+                  form={form}
+                  onSubmit={onSubmit}
+                  onCancel={onCancel}
+                  onSaveDraft={onSaveDraft}
+                />
               </section>
             )
           : undefined
       }
+      draftOptions={{ enabled: true, event: "new-medicaid-submission" }}
     />
   );
 };

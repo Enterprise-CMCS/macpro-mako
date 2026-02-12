@@ -47,7 +47,7 @@ export const formSchema = events["temporary-extension"].baseSchema
           message:
             "You can only submit for a state you have access to. If you need to add another state, visit your IDM user profile to request access.",
         })
-        .refine(async (value) => !(await itemExists(value)), {
+        .refine(async (value) => !(await itemExists(value, { includeDrafts: true })), {
           message:
             "According to our records, this Temporary Extension Request Number already exists. Please check the Temporary Extension Request Number and try entering it again.",
         }),

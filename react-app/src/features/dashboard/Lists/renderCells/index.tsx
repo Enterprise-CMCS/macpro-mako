@@ -1,10 +1,11 @@
 import { EllipsisVerticalIcon } from "@heroicons/react/24/outline";
 import * as DropdownMenu from "@radix-ui/react-dropdown-menu";
 import { Link } from "react-router";
-import { Authority, FullUser, opensearch } from "shared-types";
+import { FullUser, opensearch } from "shared-types";
 import { formatDateToET, getAvailableActions } from "shared-utils";
 
 import { DASHBOARD_ORIGIN, mapActionLabel, ORIGIN } from "@/utils";
+import { getDraftEditLink } from "@/utils/drafts";
 import { sendGAEvent } from "@/utils/ReactGA/SendGAEvent";
 
 export const renderCellDate = (key: keyof opensearch.main.Document) =>
@@ -14,11 +15,11 @@ export const renderCellDate = (key: keyof opensearch.main.Document) =>
   };
 
 export type CellIdLinkProps = {
-  id: string;
-  authority: Authority | string;
+  record: opensearch.main.Document;
 };
 
-export const CellDetailsLink = ({ id, authority }: CellIdLinkProps) => {
+export const CellDetailsLink = ({ record }: CellIdLinkProps) => {
+  const { id, authority } = record;
   const handleLinkClick = () => {
     sendGAEvent("dash_package_link", {
       package_type: authority, // The 'authority' prop is the package type
@@ -26,10 +27,13 @@ export const CellDetailsLink = ({ id, authority }: CellIdLinkProps) => {
     });
   };
 
+  const draftLink = getDraftEditLink(record);
+  const detailsLink = `/details/${encodeURIComponent(authority)}/${encodeURIComponent(id)}`;
+
   return (
     <Link
       className="cursor-pointer text-blue-600 hover:underline"
-      to={`/details/${encodeURIComponent(authority)}/${encodeURIComponent(id)}`}
+      to={draftLink ?? detailsLink}
       onClick={handleLinkClick} // Track the click event for analytics
     >
       {id}

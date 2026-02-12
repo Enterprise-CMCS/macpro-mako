@@ -91,6 +91,11 @@ export type Document = AppkDocument &
     mockEvent?: string;
     withdrawEmailSent?: boolean;
     fullName?: string;
+    event?: string;
+    draft?: {
+      savedAt: string;
+      data: Record<string, unknown>;
+    };
     attachments?: {
       [key: string]: {
         label: string;

@@ -194,6 +194,12 @@ export const TemporaryExtensionForm = () => {
         body: "Your submission has been received.",
         variant: "success",
       }}
+      draftOptions={{
+        enabled: true,
+        event: "temporary-extension",
+        idPath: "ids.id",
+        authorityPath: "ids.validAuthority.authority",
+      }}
     />
   );
 };

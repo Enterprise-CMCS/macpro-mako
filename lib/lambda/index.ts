@@ -10,6 +10,7 @@ export * as mapRole from "./mapRole";
 export * as processEmails from "./processEmails";
 export * as runReindex from "./runReindex";
 export * as search from "./search";
+export * as saveDraft from "./saveDraft";
 export * as setupIndex from "./setupIndex";
 export * as sinkMain from "./sinkMain";
 export * as checkConsumerLag from "./checkConsumerLag";
