@@ -135,5 +135,6 @@ export const AppKAmendmentForm = () => (
       body: "The 1915(c) Appendix K Amendment request has been submitted.",
       variant: "success",
     }}
+    draftOptions={{ enabled: true, event: "app-k" }}
   />
 );

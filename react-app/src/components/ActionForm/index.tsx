@@ -4,11 +4,11 @@ import { API } from "aws-amplify";
 import { ReactNode, useEffect, useMemo, useRef } from "react";
 import { DefaultValues, FieldPath, useForm, UseFormReturn } from "react-hook-form";
 import { Navigate, useLocation, useNavigate, useParams } from "react-router";
-import { Authority, UserDetails } from "shared-types";
+import { Authority, SEATOOL_STATUS, UserDetails } from "shared-types";
 import { isStateUser } from "shared-utils";
 import { z } from "zod";
 
-import { useGetUserDetails } from "@/api";
+import { saveDraft, useGetItem, useGetUserDetails } from "@/api";
 import {
   ActionFormDescription,
   Banner,
@@ -61,6 +61,13 @@ export type FormArg<Schema extends SchemaWithEnforcableProps> = UseFormReturn<
   z.infer<InferUntransformedSchema<Schema>>
 >;
 
+type DraftOptions = {
+  enabled: boolean;
+  event: string;
+  idPath?: string;
+  authorityPath?: string;
+};
+
 type ActionFormProps<Schema extends SchemaWithEnforcableProps> = {
   schema: Schema;
   defaultValues?: DefaultValues<z.infer<InferUntransformedSchema<Schema>>>;
@@ -93,7 +100,17 @@ type ActionFormProps<Schema extends SchemaWithEnforcableProps> = {
     form: FormArg<Schema>;
     onSubmit: () => void;
     onCancel: (promptOverride?: Partial<Omit<UserPrompt, "onAccept">>) => void;
+    onSaveDraft?: () => void;
+    isDraftMode?: boolean;
   }) => ReactNode;
+  draftOptions?: DraftOptions;
+};
+
+const getValueByPath = (values: Record<string, unknown>, path: string) => {
+  return path.split(".").reduce<unknown>((acc, key) => {
+    if (!acc || typeof acc !== "object") return undefined;
+    return (acc as Record<string, unknown>)[key];
+  }, values);
 };
 
 export const ActionForm = <Schema extends SchemaWithEnforcableProps>({
@@ -133,20 +150,34 @@ export const ActionForm = <Schema extends SchemaWithEnforcableProps>({
   areFieldsRequired = true,
   showFAQFooter = true,
   footer: Footer,
+  draftOptions,
 }: ActionFormProps<Schema>) => {
   const { id, authority } = useParams<{
     id: string;
     authority: Authority;
     type: string;
   }>();
-  const { pathname } = useLocation();
+  const { pathname, search } = useLocation();
   const startTimePage = Date.now();
+  const effectiveSubmitButtonLabel =
+    draftOptions?.enabled && submitButtonLabel === "Submit" ? "Save & Submit" : submitButtonLabel;
 
   const navigate = useNavigate();
   const { data: userObj, isLoading: isUserLoading } = useGetUserDetails();
   const skipNavigationPromptRef = useRef(false);
 
   const breadcrumbs = optionCrumbsFromPath(pathname, authority, id);
+  const draftEnabled = draftOptions?.enabled === true;
+  const rawDraftId = draftEnabled ? new URLSearchParams(search).get("draftId") : null;
+  const draftId = rawDraftId ? rawDraftId.toUpperCase() : null;
+  const isDraftMode = draftEnabled && !!draftId;
+  const hasAppliedDraftRef = useRef(false);
+
+  const {
+    data: draftRecord,
+    isLoading: isDraftLoading,
+    error: draftError,
+  } = useGetItem(draftId ?? "", { enabled: isDraftMode });
 
   const form = useForm<z.TypeOf<Schema>>({
     resolver: zodResolver(schema),
@@ -155,6 +186,25 @@ export const ActionForm = <Schema extends SchemaWithEnforcableProps>({
       ...defaultValues,
     },
   });
+
+  useEffect(() => {
+    if (!isDraftMode) {
+      hasAppliedDraftRef.current = false;
+      return;
+    }
+    hasAppliedDraftRef.current = false;
+  }, [draftId, isDraftMode]);
+
+  useEffect(() => {
+    const draftData = draftRecord?._source?.draft?.data as
+      | DefaultValues<z.infer<InferUntransformedSchema<Schema>>>
+      | undefined;
+
+    if (!draftData || hasAppliedDraftRef.current) return;
+
+    form.reset({ ...defaultValues, ...draftData });
+    hasAppliedDraftRef.current = true;
+  }, [draftRecord, defaultValues, form]);
 
   const hasRealChanges = Object.keys(form.formState.dirtyFields).length > 0;
 
@@ -189,6 +239,11 @@ export const ActionForm = <Schema extends SchemaWithEnforcableProps>({
       }),
   });
 
+  const { mutateAsync: saveDraftAsync, isLoading: isSavingDraft } = useMutation({
+    mutationFn: (payload: { id: string; event: string; authority?: string; draftData: any }) =>
+      saveDraft(payload),
+  });
+
   const onSubmit = form.handleSubmit(async (formData) => {
     try {
       try {
@@ -204,12 +259,16 @@ export const ActionForm = <Schema extends SchemaWithEnforcableProps>({
       }
 
       const { documentChecker, property } = documentPollerArgs;
+      const effectiveDocumentChecker = isDraftMode
+        ? (check: Parameters<typeof documentChecker>[0]) =>
+            documentChecker(check) && !check.hasStatus(SEATOOL_STATUS.DRAFT)
+        : documentChecker;
 
       const documentPollerId =
         typeof property === "function" ? property(formData) : formData[property];
 
       try {
-        const poller = documentPoller(documentPollerId, documentChecker);
+        const poller = documentPoller(documentPollerId, effectiveDocumentChecker);
         await poller.startPollingData();
       } catch (error) {
         throw Error(`${error?.message || error}`);
@@ -249,6 +308,71 @@ export const ActionForm = <Schema extends SchemaWithEnforcableProps>({
     }
   });
 
+  const handleSaveDraft = async () => {
+    if (!draftEnabled || !draftOptions?.event) return;
+
+    const idPath = draftOptions.idPath ?? "id";
+    const isIdValid = await form.trigger(idPath as FieldPath<z.TypeOf<Schema>>);
+
+    if (!isIdValid) {
+      banner({
+        header: "Unable to save draft",
+        body: "Please enter a valid ID before saving.",
+        variant: "destructive",
+        pathnameToDisplayOn: window.location.pathname,
+      });
+      return;
+    }
+
+    const formValues = form.getValues();
+    const idValue = getValueByPath(formValues as Record<string, unknown>, idPath);
+
+    if (typeof idValue !== "string" || !idValue.trim()) {
+      banner({
+        header: "Unable to save draft",
+        body: "Please enter a valid ID before saving.",
+        variant: "destructive",
+        pathnameToDisplayOn: window.location.pathname,
+      });
+      return;
+    }
+
+    const normalizedId = idValue.toUpperCase();
+    const authorityPath = draftOptions.authorityPath ?? "authority";
+    const authorityValue = getValueByPath(formValues as Record<string, unknown>, authorityPath);
+
+    try {
+      await saveDraftAsync({
+        id: normalizedId,
+        event: draftOptions.event,
+        authority: typeof authorityValue === "string" ? authorityValue : undefined,
+        draftData: formValues as Record<string, unknown>,
+      });
+
+      banner({
+        header: "Draft saved",
+        body: `Draft for ${normalizedId} has been saved.`,
+        variant: "success",
+        pathnameToDisplayOn: window.location.pathname,
+      });
+
+      form.reset(formValues);
+
+      if (!rawDraftId || rawDraftId.toUpperCase() !== normalizedId) {
+        const nextSearch = new URLSearchParams(search);
+        nextSearch.set("draftId", normalizedId);
+        navigate(`${pathname}?${nextSearch.toString()}`, { replace: true });
+      }
+    } catch (error) {
+      banner({
+        header: "Unable to save draft",
+        body: error instanceof Error ? error.message : String(error),
+        variant: "destructive",
+        pathnameToDisplayOn: window.location.pathname,
+      });
+    }
+  };
+
   const attachmentsFromSchema = useMemo(() => getAttachments(schema), [schema]);
 
   const handleCancel = (promptOverride?: Partial<Omit<UserPrompt, "onAccept">>) => {
@@ -272,6 +396,17 @@ export const ActionForm = <Schema extends SchemaWithEnforcableProps>({
 
   if (isUserLoading === true) {
     return <LoadingSpinner />;
+  }
+
+  if (isDraftMode && isDraftLoading) {
+    return <LoadingSpinner />;
+  }
+
+  if (
+    isDraftMode &&
+    (draftError || !draftRecord || draftRecord._source?.seatoolStatus !== SEATOOL_STATUS.DRAFT)
+  ) {
+    return <Navigate to="/dashboard" replace />;
   }
 
   const doesUserHaveAccessToForm = conditionsDeterminingUserAccess.some((condition) =>
@@ -343,9 +478,27 @@ export const ActionForm = <Schema extends SchemaWithEnforcableProps>({
             />
           )}
           {Footer ? (
-            <Footer form={form} onSubmit={onSubmit} onCancel={handleCancel} />
+            <Footer
+              form={form}
+              onSubmit={onSubmit}
+              onCancel={handleCancel}
+              onSaveDraft={draftEnabled ? handleSaveDraft : undefined}
+              isDraftMode={isDraftMode}
+            />
           ) : (
             <section className="flex justify-end gap-2 p-4 ml-auto">
+              {draftEnabled && (
+                <Button
+                  className="px-12"
+                  type="button"
+                  onClick={handleSaveDraft}
+                  disabled={isSavingDraft}
+                  aria-disabled={isSavingDraft}
+                  data-testid="save-draft-form"
+                >
+                  Save
+                </Button>
+              )}
               <Button
                 className="px-12"
                 type={promptPreSubmission ? "button" : "submit"}
@@ -358,7 +511,7 @@ export const ActionForm = <Schema extends SchemaWithEnforcableProps>({
                 aria-disabled={!form.formState.isValid}
                 data-testid="submit-action-form"
               >
-                {submitButtonLabel}
+                {effectiveSubmitButtonLabel}
               </Button>
               <Button
                 className="px-12"

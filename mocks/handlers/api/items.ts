@@ -35,11 +35,15 @@ export const errorApiItemHandler = http.post(
 const defaultApiItemExistsHandler = http.post<GetItemBody, GetItemBody>(
   "https://test-domain.execute-api.us-east-1.amazonaws.com/mocked-tests/itemExists",
   async ({ request }) => {
-    const { id } = await request.json();
+    const { id, includeDrafts } = await request.json();
     if (id == GET_ERROR_ITEM_ID) {
       return new HttpResponse("Internal server error", { status: 500 });
     }
-    return HttpResponse.json({ exists: !!items[id]?._source });
+    const exists = !!items[id]?._source;
+    return HttpResponse.json({
+      exists,
+      ...(includeDrafts && exists ? { status: items[id]?._source?.seatoolStatus } : {}),
+    });
   },
 );
 
@@ -48,4 +52,13 @@ export const errorApiItemExistsHandler = http.post(
   () => new HttpResponse(null, { status: 500 }),
 );
 
-export const itemHandlers = [defaultApiItemHandler, defaultApiItemExistsHandler];
+const defaultApiSaveDraftHandler = http.post(
+  "https://test-domain.execute-api.us-east-1.amazonaws.com/mocked-tests/saveDraft",
+  () => HttpResponse.json({ message: "Draft saved" }),
+);
+
+export const itemHandlers = [
+  defaultApiItemHandler,
+  defaultApiItemExistsHandler,
+  defaultApiSaveDraftHandler,
+];

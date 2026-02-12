@@ -1,4 +1,4 @@
-import { APIGatewayEvent } from "shared-types";
+import { APIGatewayEvent, SEATOOL_STATUS } from "shared-types";
 import { z } from "zod";
 
 import { authenticatedMiddy, canViewPackage, ContextWithPackage, fetchPackage } from "./middleware";
@@ -8,6 +8,7 @@ const itemExistsEventSchema = z
     body: z
       .object({
         id: z.string(),
+        includeDrafts: z.boolean().optional(),
       })
       .strict(),
   })
@@ -25,13 +26,19 @@ export const handler = authenticatedMiddy({
   .handler(async (event: ItemExistsEvent, context: ContextWithPackage) => {
     const { packageResult } = context;
 
-    const exists = !(packageResult === undefined || !packageResult.found);
+    const includeDrafts = Boolean(event.body?.includeDrafts);
+    const hasPackage = !(packageResult === undefined || !packageResult.found);
+    const isDraft = packageResult?._source?.seatoolStatus === SEATOOL_STATUS.DRAFT;
+    const exists = hasPackage && (includeDrafts || !isDraft);
 
     return {
       statusCode: 200,
       body: JSON.stringify({
         message: exists ? "Record found for the given id" : "No record found for the given id",
         exists,
+        ...(includeDrafts && hasPackage
+          ? { status: packageResult?._source?.seatoolStatus }
+          : {}),
       }),
     };
   });

@@ -32,7 +32,7 @@ const getColumns = ({ user, isCms }: OneMacUser): OsTableColumn[] => {
       label: "SPA ID",
       locked: true,
       transform: (data) => data.id,
-      cell: ({ id, authority }) => <CellDetailsLink id={id} authority={authority} />,
+      cell: (data) => <CellDetailsLink record={data} />,
     },
     {
       field: "state.keyword",

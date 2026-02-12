@@ -28,7 +28,7 @@ describe("CellDetailsLink GA event", () => {
 
     render(
       <MemoryRouter>
-        <CellDetailsLink id={item.id} authority={item.authority} />
+        <CellDetailsLink record={item} />
       </MemoryRouter>,
     );
 
@@ -80,11 +80,11 @@ describe("renderCells", () => {
   describe("CellDetailsLink", () => {
     const setup = (item: opensearch.main.Document) => {
       renderWithMemoryRouter(
-        <CellDetailsLink id={item.id} authority={item.authority} />,
+        <CellDetailsLink record={item} />,
         [
           {
             path: "/test",
-            element: <CellDetailsLink id={item.id} authority={item.authority} />,
+            element: <CellDetailsLink record={item} />,
           },
         ],
         {
@@ -94,26 +94,37 @@ describe("renderCells", () => {
     };
     it("should return a link for cell details for a Medicaid SPA item", () => {
       setup(TEST_MED_SPA_ITEM._source);
-      expect(screen.getByText(TEST_MED_SPA_ITEM._id).getAttribute("href")).toEqual(
-        `/details/${encodeURIComponent(TEST_MED_SPA_ITEM._source.authority)}/${encodeURIComponent(TEST_MED_SPA_ITEM._id)}`,
+      expect(screen.getByText(TEST_MED_SPA_ITEM._source.id).getAttribute("href")).toEqual(
+        `/details/${encodeURIComponent(TEST_MED_SPA_ITEM._source.authority)}/${encodeURIComponent(TEST_MED_SPA_ITEM._source.id)}`,
       );
     });
     it("should return a link for cell details for a CHIP SPA item", () => {
       setup(TEST_CHIP_SPA_ITEM._source);
-      expect(screen.getByText(TEST_CHIP_SPA_ITEM._id).getAttribute("href")).toEqual(
-        `/details/${encodeURIComponent(TEST_CHIP_SPA_ITEM._source.authority)}/${encodeURIComponent(TEST_CHIP_SPA_ITEM._id)}`,
+      expect(screen.getByText(TEST_CHIP_SPA_ITEM._source.id).getAttribute("href")).toEqual(
+        `/details/${encodeURIComponent(TEST_CHIP_SPA_ITEM._source.authority)}/${encodeURIComponent(TEST_CHIP_SPA_ITEM._source.id)}`,
       );
     });
     it("should return a link for cell details for a 1915(c) waiver item", () => {
       setup(TEST_1915B_ITEM._source);
-      expect(screen.getByText(TEST_1915B_ITEM._id).getAttribute("href")).toEqual(
-        `/details/${encodeURIComponent(TEST_1915B_ITEM._source.authority)}/${encodeURIComponent(TEST_1915B_ITEM._id)}`,
+      expect(screen.getByText(TEST_1915B_ITEM._source.id).getAttribute("href")).toEqual(
+        `/details/${encodeURIComponent(TEST_1915B_ITEM._source.authority)}/${encodeURIComponent(TEST_1915B_ITEM._source.id)}`,
       );
     });
     it("should return a link for cell details for a 1915(c) waiver item", () => {
       setup(TEST_1915C_ITEM._source);
-      expect(screen.getByText(TEST_1915C_ITEM._id).getAttribute("href")).toEqual(
-        `/details/${encodeURIComponent(TEST_1915C_ITEM._source.authority)}/${encodeURIComponent(TEST_1915C_ITEM._id)}`,
+      expect(screen.getByText(TEST_1915C_ITEM._source.id).getAttribute("href")).toEqual(
+        `/details/${encodeURIComponent(TEST_1915C_ITEM._source.authority)}/${encodeURIComponent(TEST_1915C_ITEM._source.id)}`,
+      );
+    });
+    it("should return a link to the draft form for draft items", () => {
+      const draftItem: opensearch.main.Document = {
+        ...TEST_MED_SPA_ITEM._source,
+        seatoolStatus: SEATOOL_STATUS.DRAFT,
+        event: "new-medicaid-submission",
+      };
+      setup(draftItem);
+      expect(screen.getByText(draftItem.id).getAttribute("href")).toEqual(
+        `/new-submission/spa/medicaid/create?draftId=${draftItem.id}&origin=spas`,
       );
     });
   });

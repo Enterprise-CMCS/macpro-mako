@@ -243,6 +243,15 @@ export class Api extends cdk.NestedStack {
         provisionedConcurrency: 2,
       },
       {
+        id: "saveDraft",
+        entry: join(__dirname, "../lambda/saveDraft.ts"),
+        environment: {
+          osDomain: `https://${openSearchDomainEndpoint}`,
+          indexNamespace,
+        },
+        provisionedConcurrency: 2,
+      },
+      {
         id: "getUserDetails",
         entry: join(__dirname, "../lambda/user-management/getUserDetails.ts"),
         environment: {
@@ -608,6 +617,7 @@ export class Api extends cdk.NestedStack {
       },
       item: { path: "item", lambda: lambdas.item, method: "POST" },
       submit: { path: "submit", lambda: lambdas.submit, method: "POST" },
+      saveDraft: { path: "saveDraft", lambda: lambdas.saveDraft, method: "POST" },
       getTypes: {
         path: "getTypes",
         lambda: lambdas.getTypes,
