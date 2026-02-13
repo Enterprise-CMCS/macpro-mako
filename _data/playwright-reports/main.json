@@ -12,24 +12,24 @@
     "maxFailures": 0,
     "metadata": {
       "ci": {
-        "commitHref": "https://github.com/Enterprise-CMCS/macpro-mako/commit/b34004f86c331c1ae4cc9a9e0cb156617fc7d897",
-        "commitHash": "b34004f86c331c1ae4cc9a9e0cb156617fc7d897",
-        "buildHref": "https://github.com/Enterprise-CMCS/macpro-mako/actions/runs/21998299050"
+        "commitHref": "https://github.com/Enterprise-CMCS/macpro-mako/commit/4920960fc75b67e9c8672e361e534c2db88fcfa4",
+        "commitHash": "4920960fc75b67e9c8672e361e534c2db88fcfa4",
+        "buildHref": "https://github.com/Enterprise-CMCS/macpro-mako/actions/runs/22005647684"
       },
       "gitCommit": {
-        "shortHash": "b34004f",
-        "hash": "b34004f86c331c1ae4cc9a9e0cb156617fc7d897",
-        "subject": "feat(admin activity): add changeMade and changeReason logic to all administrative changes in the backend",
-        "body": "feat(admin activity): add changeMade and changeReason logic to all administrative changes in the backend\n\n* add changeMade and changeReason logic\n\n* tighten logic\n\n* add optional nullable for noso\n\n* add logic",
+        "shortHash": "4920960",
+        "hash": "4920960fc75b67e9c8672e361e534c2db88fcfa4",
+        "subject": "fix(changelog-timestamp): added time logic to not choke up on date format for changelog (#1826)",
+        "body": "fix(changelog-timestamp): added time logic to not choke up on date format for changelog (#1826)\n\n* added time logic to not choke up on date format for changelog\n\n* Update dashboard.spec.ts",
         "author": {
           "name": "James Dinh",
           "email": "james.d@globalalliantinc.com",
-          "time": 1771007559000
+          "time": 1771023301000
         },
         "committer": {
           "name": "GitHub",
           "email": "noreply@github.com",
-          "time": 1771007559000
+          "time": 1771023301000
         },
         "branch": "main"
       },
@@ -43,24 +43,24 @@
         "retries": 0,
         "metadata": {
           "ci": {
-            "commitHref": "https://github.com/Enterprise-CMCS/macpro-mako/commit/b34004f86c331c1ae4cc9a9e0cb156617fc7d897",
-            "commitHash": "b34004f86c331c1ae4cc9a9e0cb156617fc7d897",
-            "buildHref": "https://github.com/Enterprise-CMCS/macpro-mako/actions/runs/21998299050"
+            "commitHref": "https://github.com/Enterprise-CMCS/macpro-mako/commit/4920960fc75b67e9c8672e361e534c2db88fcfa4",
+            "commitHash": "4920960fc75b67e9c8672e361e534c2db88fcfa4",
+            "buildHref": "https://github.com/Enterprise-CMCS/macpro-mako/actions/runs/22005647684"
           },
           "gitCommit": {
-            "shortHash": "b34004f",
-            "hash": "b34004f86c331c1ae4cc9a9e0cb156617fc7d897",
-            "subject": "feat(admin activity): add changeMade and changeReason logic to all administrative changes in the backend",
-            "body": "feat(admin activity): add changeMade and changeReason logic to all administrative changes in the backend\n\n* add changeMade and changeReason logic\n\n* tighten logic\n\n* add optional nullable for noso\n\n* add logic",
+            "shortHash": "4920960",
+            "hash": "4920960fc75b67e9c8672e361e534c2db88fcfa4",
+            "subject": "fix(changelog-timestamp): added time logic to not choke up on date format for changelog (#1826)",
+            "body": "fix(changelog-timestamp): added time logic to not choke up on date format for changelog (#1826)\n\n* added time logic to not choke up on date format for changelog\n\n* Update dashboard.spec.ts",
             "author": {
               "name": "James Dinh",
               "email": "james.d@globalalliantinc.com",
-              "time": 1771007559000
+              "time": 1771023301000
             },
             "committer": {
               "name": "GitHub",
               "email": "noreply@github.com",
-              "time": 1771007559000
+              "time": 1771023301000
             },
             "branch": "main"
           },
@@ -84,24 +84,24 @@
         "retries": 0,
         "metadata": {
           "ci": {
-            "commitHref": "https://github.com/Enterprise-CMCS/macpro-mako/commit/b34004f86c331c1ae4cc9a9e0cb156617fc7d897",
-            "commitHash": "b34004f86c331c1ae4cc9a9e0cb156617fc7d897",
-            "buildHref": "https://github.com/Enterprise-CMCS/macpro-mako/actions/runs/21998299050"
+            "commitHref": "https://github.com/Enterprise-CMCS/macpro-mako/commit/4920960fc75b67e9c8672e361e534c2db88fcfa4",
+            "commitHash": "4920960fc75b67e9c8672e361e534c2db88fcfa4",
+            "buildHref": "https://github.com/Enterprise-CMCS/macpro-mako/actions/runs/22005647684"
           },
           "gitCommit": {
-            "shortHash": "b34004f",
-            "hash": "b34004f86c331c1ae4cc9a9e0cb156617fc7d897",
-            "subject": "feat(admin activity): add changeMade and changeReason logic to all administrative changes in the backend",
-            "body": "feat(admin activity): add changeMade and changeReason logic to all administrative changes in the backend\n\n* add changeMade and changeReason logic\n\n* tighten logic\n\n* add optional nullable for noso\n\n* add logic",
+            "shortHash": "4920960",
+            "hash": "4920960fc75b67e9c8672e361e534c2db88fcfa4",
+            "subject": "fix(changelog-timestamp): added time logic to not choke up on date format for changelog (#1826)",
+            "body": "fix(changelog-timestamp): added time logic to not choke up on date format for changelog (#1826)\n\n* added time logic to not choke up on date format for changelog\n\n* Update dashboard.spec.ts",
             "author": {
               "name": "James Dinh",
               "email": "james.d@globalalliantinc.com",
-              "time": 1771007559000
+              "time": 1771023301000
             },
             "committer": {
               "name": "GitHub",
               "email": "noreply@github.com",
-              "time": 1771007559000
+              "time": 1771023301000
             },
             "branch": "main"
           },
@@ -125,24 +125,24 @@
         "retries": 0,
         "metadata": {
           "ci": {
-            "commitHref": "https://github.com/Enterprise-CMCS/macpro-mako/commit/b34004f86c331c1ae4cc9a9e0cb156617fc7d897",
-            "commitHash": "b34004f86c331c1ae4cc9a9e0cb156617fc7d897",
-            "buildHref": "https://github.com/Enterprise-CMCS/macpro-mako/actions/runs/21998299050"
+            "commitHref": "https://github.com/Enterprise-CMCS/macpro-mako/commit/4920960fc75b67e9c8672e361e534c2db88fcfa4",
+            "commitHash": "4920960fc75b67e9c8672e361e534c2db88fcfa4",
+            "buildHref": "https://github.com/Enterprise-CMCS/macpro-mako/actions/runs/22005647684"
           },
           "gitCommit": {
-            "shortHash": "b34004f",
-            "hash": "b34004f86c331c1ae4cc9a9e0cb156617fc7d897",
-            "subject": "feat(admin activity): add changeMade and changeReason logic to all administrative changes in the backend",
-            "body": "feat(admin activity): add changeMade and changeReason logic to all administrative changes in the backend\n\n* add changeMade and changeReason logic\n\n* tighten logic\n\n* add optional nullable for noso\n\n* add logic",
+            "shortHash": "4920960",
+            "hash": "4920960fc75b67e9c8672e361e534c2db88fcfa4",
+            "subject": "fix(changelog-timestamp): added time logic to not choke up on date format for changelog (#1826)",
+            "body": "fix(changelog-timestamp): added time logic to not choke up on date format for changelog (#1826)\n\n* added time logic to not choke up on date format for changelog\n\n* Update dashboard.spec.ts",
             "author": {
               "name": "James Dinh",
               "email": "james.d@globalalliantinc.com",
-              "time": 1771007559000
+              "time": 1771023301000
             },
             "committer": {
               "name": "GitHub",
               "email": "noreply@github.com",
-              "time": 1771007559000
+              "time": 1771023301000
             },
             "branch": "main"
           },
@@ -166,24 +166,24 @@
         "retries": 0,
         "metadata": {
           "ci": {
-            "commitHref": "https://github.com/Enterprise-CMCS/macpro-mako/commit/b34004f86c331c1ae4cc9a9e0cb156617fc7d897",
-            "commitHash": "b34004f86c331c1ae4cc9a9e0cb156617fc7d897",
-            "buildHref": "https://github.com/Enterprise-CMCS/macpro-mako/actions/runs/21998299050"
+            "commitHref": "https://github.com/Enterprise-CMCS/macpro-mako/commit/4920960fc75b67e9c8672e361e534c2db88fcfa4",
+            "commitHash": "4920960fc75b67e9c8672e361e534c2db88fcfa4",
+            "buildHref": "https://github.com/Enterprise-CMCS/macpro-mako/actions/runs/22005647684"
           },
           "gitCommit": {
-            "shortHash": "b34004f",
-            "hash": "b34004f86c331c1ae4cc9a9e0cb156617fc7d897",
-            "subject": "feat(admin activity): add changeMade and changeReason logic to all administrative changes in the backend",
-            "body": "feat(admin activity): add changeMade and changeReason logic to all administrative changes in the backend\n\n* add changeMade and changeReason logic\n\n* tighten logic\n\n* add optional nullable for noso\n\n* add logic",
+            "shortHash": "4920960",
+            "hash": "4920960fc75b67e9c8672e361e534c2db88fcfa4",
+            "subject": "fix(changelog-timestamp): added time logic to not choke up on date format for changelog (#1826)",
+            "body": "fix(changelog-timestamp): added time logic to not choke up on date format for changelog (#1826)\n\n* added time logic to not choke up on date format for changelog\n\n* Update dashboard.spec.ts",
             "author": {
               "name": "James Dinh",
               "email": "james.d@globalalliantinc.com",
-              "time": 1771007559000
+              "time": 1771023301000
             },
             "committer": {
               "name": "GitHub",
               "email": "noreply@github.com",
-              "time": 1771007559000
+              "time": 1771023301000
             },
             "branch": "main"
           },
@@ -207,24 +207,24 @@
         "retries": 0,
         "metadata": {
           "ci": {
-            "commitHref": "https://github.com/Enterprise-CMCS/macpro-mako/commit/b34004f86c331c1ae4cc9a9e0cb156617fc7d897",
-            "commitHash": "b34004f86c331c1ae4cc9a9e0cb156617fc7d897",
-            "buildHref": "https://github.com/Enterprise-CMCS/macpro-mako/actions/runs/21998299050"
+            "commitHref": "https://github.com/Enterprise-CMCS/macpro-mako/commit/4920960fc75b67e9c8672e361e534c2db88fcfa4",
+            "commitHash": "4920960fc75b67e9c8672e361e534c2db88fcfa4",
+            "buildHref": "https://github.com/Enterprise-CMCS/macpro-mako/actions/runs/22005647684"
           },
           "gitCommit": {
-            "shortHash": "b34004f",
-            "hash": "b34004f86c331c1ae4cc9a9e0cb156617fc7d897",
-            "subject": "feat(admin activity): add changeMade and changeReason logic to all administrative changes in the backend",
-            "body": "feat(admin activity): add changeMade and changeReason logic to all administrative changes in the backend\n\n* add changeMade and changeReason logic\n\n* tighten logic\n\n* add optional nullable for noso\n\n* add logic",
+            "shortHash": "4920960",
+            "hash": "4920960fc75b67e9c8672e361e534c2db88fcfa4",
+            "subject": "fix(changelog-timestamp): added time logic to not choke up on date format for changelog (#1826)",
+            "body": "fix(changelog-timestamp): added time logic to not choke up on date format for changelog (#1826)\n\n* added time logic to not choke up on date format for changelog\n\n* Update dashboard.spec.ts",
             "author": {
               "name": "James Dinh",
               "email": "james.d@globalalliantinc.com",
-              "time": 1771007559000
+              "time": 1771023301000
             },
             "committer": {
               "name": "GitHub",
               "email": "noreply@github.com",
-              "time": 1771007559000
+              "time": 1771023301000
             },
             "branch": "main"
           },
@@ -248,24 +248,24 @@
         "retries": 0,
         "metadata": {
           "ci": {
-            "commitHref": "https://github.com/Enterprise-CMCS/macpro-mako/commit/b34004f86c331c1ae4cc9a9e0cb156617fc7d897",
-            "commitHash": "b34004f86c331c1ae4cc9a9e0cb156617fc7d897",
-            "buildHref": "https://github.com/Enterprise-CMCS/macpro-mako/actions/runs/21998299050"
+            "commitHref": "https://github.com/Enterprise-CMCS/macpro-mako/commit/4920960fc75b67e9c8672e361e534c2db88fcfa4",
+            "commitHash": "4920960fc75b67e9c8672e361e534c2db88fcfa4",
+            "buildHref": "https://github.com/Enterprise-CMCS/macpro-mako/actions/runs/22005647684"
           },
           "gitCommit": {
-            "shortHash": "b34004f",
-            "hash": "b34004f86c331c1ae4cc9a9e0cb156617fc7d897",
-            "subject": "feat(admin activity): add changeMade and changeReason logic to all administrative changes in the backend",
-            "body": "feat(admin activity): add changeMade and changeReason logic to all administrative changes in the backend\n\n* add changeMade and changeReason logic\n\n* tighten logic\n\n* add optional nullable for noso\n\n* add logic",
+            "shortHash": "4920960",
+            "hash": "4920960fc75b67e9c8672e361e534c2db88fcfa4",
+            "subject": "fix(changelog-timestamp): added time logic to not choke up on date format for changelog (#1826)",
+            "body": "fix(changelog-timestamp): added time logic to not choke up on date format for changelog (#1826)\n\n* added time logic to not choke up on date format for changelog\n\n* Update dashboard.spec.ts",
             "author": {
               "name": "James Dinh",
               "email": "james.d@globalalliantinc.com",
-              "time": 1771007559000
+              "time": 1771023301000
             },
             "committer": {
               "name": "GitHub",
               "email": "noreply@github.com",
-              "time": 1771007559000
+              "time": 1771023301000
             },
             "branch": "main"
           },
@@ -289,24 +289,24 @@
         "retries": 0,
         "metadata": {
           "ci": {
-            "commitHref": "https://github.com/Enterprise-CMCS/macpro-mako/commit/b34004f86c331c1ae4cc9a9e0cb156617fc7d897",
-            "commitHash": "b34004f86c331c1ae4cc9a9e0cb156617fc7d897",
-            "buildHref": "https://github.com/Enterprise-CMCS/macpro-mako/actions/runs/21998299050"
+            "commitHref": "https://github.com/Enterprise-CMCS/macpro-mako/commit/4920960fc75b67e9c8672e361e534c2db88fcfa4",
+            "commitHash": "4920960fc75b67e9c8672e361e534c2db88fcfa4",
+            "buildHref": "https://github.com/Enterprise-CMCS/macpro-mako/actions/runs/22005647684"
           },
           "gitCommit": {
-            "shortHash": "b34004f",
-            "hash": "b34004f86c331c1ae4cc9a9e0cb156617fc7d897",
-            "subject": "feat(admin activity): add changeMade and changeReason logic to all administrative changes in the backend",
-            "body": "feat(admin activity): add changeMade and changeReason logic to all administrative changes in the backend\n\n* add changeMade and changeReason logic\n\n* tighten logic\n\n* add optional nullable for noso\n\n* add logic",
+            "shortHash": "4920960",
+            "hash": "4920960fc75b67e9c8672e361e534c2db88fcfa4",
+            "subject": "fix(changelog-timestamp): added time logic to not choke up on date format for changelog (#1826)",
+            "body": "fix(changelog-timestamp): added time logic to not choke up on date format for changelog (#1826)\n\n* added time logic to not choke up on date format for changelog\n\n* Update dashboard.spec.ts",
             "author": {
               "name": "James Dinh",
               "email": "james.d@globalalliantinc.com",
-              "time": 1771007559000
+              "time": 1771023301000
             },
             "committer": {
               "name": "GitHub",
               "email": "noreply@github.com",
-              "time": 1771007559000
+              "time": 1771023301000
             },
             "branch": "main"
           },
@@ -330,24 +330,24 @@
         "retries": 0,
         "metadata": {
           "ci": {
-            "commitHref": "https://github.com/Enterprise-CMCS/macpro-mako/commit/b34004f86c331c1ae4cc9a9e0cb156617fc7d897",
-            "commitHash": "b34004f86c331c1ae4cc9a9e0cb156617fc7d897",
-            "buildHref": "https://github.com/Enterprise-CMCS/macpro-mako/actions/runs/21998299050"
+            "commitHref": "https://github.com/Enterprise-CMCS/macpro-mako/commit/4920960fc75b67e9c8672e361e534c2db88fcfa4",
+            "commitHash": "4920960fc75b67e9c8672e361e534c2db88fcfa4",
+            "buildHref": "https://github.com/Enterprise-CMCS/macpro-mako/actions/runs/22005647684"
           },
           "gitCommit": {
-            "shortHash": "b34004f",
-            "hash": "b34004f86c331c1ae4cc9a9e0cb156617fc7d897",
-            "subject": "feat(admin activity): add changeMade and changeReason logic to all administrative changes in the backend",
-            "body": "feat(admin activity): add changeMade and changeReason logic to all administrative changes in the backend\n\n* add changeMade and changeReason logic\n\n* tighten logic\n\n* add optional nullable for noso\n\n* add logic",
+            "shortHash": "4920960",
+            "hash": "4920960fc75b67e9c8672e361e534c2db88fcfa4",
+            "subject": "fix(changelog-timestamp): added time logic to not choke up on date format for changelog (#1826)",
+            "body": "fix(changelog-timestamp): added time logic to not choke up on date format for changelog (#1826)\n\n* added time logic to not choke up on date format for changelog\n\n* Update dashboard.spec.ts",
             "author": {
               "name": "James Dinh",
               "email": "james.d@globalalliantinc.com",
-              "time": 1771007559000
+              "time": 1771023301000
             },
             "committer": {
               "name": "GitHub",
               "email": "noreply@github.com",
-              "time": 1771007559000
+              "time": 1771023301000
             },
             "branch": "main"
           },
@@ -371,24 +371,24 @@
         "retries": 0,
         "metadata": {
           "ci": {
-            "commitHref": "https://github.com/Enterprise-CMCS/macpro-mako/commit/b34004f86c331c1ae4cc9a9e0cb156617fc7d897",
-            "commitHash": "b34004f86c331c1ae4cc9a9e0cb156617fc7d897",
-            "buildHref": "https://github.com/Enterprise-CMCS/macpro-mako/actions/runs/21998299050"
+            "commitHref": "https://github.com/Enterprise-CMCS/macpro-mako/commit/4920960fc75b67e9c8672e361e534c2db88fcfa4",
+            "commitHash": "4920960fc75b67e9c8672e361e534c2db88fcfa4",
+            "buildHref": "https://github.com/Enterprise-CMCS/macpro-mako/actions/runs/22005647684"
           },
           "gitCommit": {
-            "shortHash": "b34004f",
-            "hash": "b34004f86c331c1ae4cc9a9e0cb156617fc7d897",
-            "subject": "feat(admin activity): add changeMade and changeReason logic to all administrative changes in the backend",
-            "body": "feat(admin activity): add changeMade and changeReason logic to all administrative changes in the backend\n\n* add changeMade and changeReason logic\n\n* tighten logic\n\n* add optional nullable for noso\n\n* add logic",
+            "shortHash": "4920960",
+            "hash": "4920960fc75b67e9c8672e361e534c2db88fcfa4",
+            "subject": "fix(changelog-timestamp): added time logic to not choke up on date format for changelog (#1826)",
+            "body": "fix(changelog-timestamp): added time logic to not choke up on date format for changelog (#1826)\n\n* added time logic to not choke up on date format for changelog\n\n* Update dashboard.spec.ts",
             "author": {
               "name": "James Dinh",
               "email": "james.d@globalalliantinc.com",
-              "time": 1771007559000
+              "time": 1771023301000
             },
             "committer": {
               "name": "GitHub",
               "email": "noreply@github.com",
-              "time": 1771007559000
+              "time": 1771023301000
             },
             "branch": "main"
           },
@@ -412,24 +412,24 @@
         "retries": 0,
         "metadata": {
           "ci": {
-            "commitHref": "https://github.com/Enterprise-CMCS/macpro-mako/commit/b34004f86c331c1ae4cc9a9e0cb156617fc7d897",
-            "commitHash": "b34004f86c331c1ae4cc9a9e0cb156617fc7d897",
-            "buildHref": "https://github.com/Enterprise-CMCS/macpro-mako/actions/runs/21998299050"
+            "commitHref": "https://github.com/Enterprise-CMCS/macpro-mako/commit/4920960fc75b67e9c8672e361e534c2db88fcfa4",
+            "commitHash": "4920960fc75b67e9c8672e361e534c2db88fcfa4",
+            "buildHref": "https://github.com/Enterprise-CMCS/macpro-mako/actions/runs/22005647684"
           },
           "gitCommit": {
-            "shortHash": "b34004f",
-            "hash": "b34004f86c331c1ae4cc9a9e0cb156617fc7d897",
-            "subject": "feat(admin activity): add changeMade and changeReason logic to all administrative changes in the backend",
-            "body": "feat(admin activity): add changeMade and changeReason logic to all administrative changes in the backend\n\n* add changeMade and changeReason logic\n\n* tighten logic\n\n* add optional nullable for noso\n\n* add logic",
+            "shortHash": "4920960",
+            "hash": "4920960fc75b67e9c8672e361e534c2db88fcfa4",
+            "subject": "fix(changelog-timestamp): added time logic to not choke up on date format for changelog (#1826)",
+            "body": "fix(changelog-timestamp): added time logic to not choke up on date format for changelog (#1826)\n\n* added time logic to not choke up on date format for changelog\n\n* Update dashboard.spec.ts",
             "author": {
               "name": "James Dinh",
               "email": "james.d@globalalliantinc.com",
-              "time": 1771007559000
+              "time": 1771023301000
             },
             "committer": {
               "name": "GitHub",
               "email": "noreply@github.com",
-              "time": 1771007559000
+              "time": 1771023301000
             },
             "branch": "main"
           },
@@ -453,24 +453,24 @@
         "retries": 0,
         "metadata": {
           "ci": {
-            "commitHref": "https://github.com/Enterprise-CMCS/macpro-mako/commit/b34004f86c331c1ae4cc9a9e0cb156617fc7d897",
-            "commitHash": "b34004f86c331c1ae4cc9a9e0cb156617fc7d897",
-            "buildHref": "https://github.com/Enterprise-CMCS/macpro-mako/actions/runs/21998299050"
+            "commitHref": "https://github.com/Enterprise-CMCS/macpro-mako/commit/4920960fc75b67e9c8672e361e534c2db88fcfa4",
+            "commitHash": "4920960fc75b67e9c8672e361e534c2db88fcfa4",
+            "buildHref": "https://github.com/Enterprise-CMCS/macpro-mako/actions/runs/22005647684"
           },
           "gitCommit": {
-            "shortHash": "b34004f",
-            "hash": "b34004f86c331c1ae4cc9a9e0cb156617fc7d897",
-            "subject": "feat(admin activity): add changeMade and changeReason logic to all administrative changes in the backend",
-            "body": "feat(admin activity): add changeMade and changeReason logic to all administrative changes in the backend\n\n* add changeMade and changeReason logic\n\n* tighten logic\n\n* add optional nullable for noso\n\n* add logic",
+            "shortHash": "4920960",
+            "hash": "4920960fc75b67e9c8672e361e534c2db88fcfa4",
+            "subject": "fix(changelog-timestamp): added time logic to not choke up on date format for changelog (#1826)",
+            "body": "fix(changelog-timestamp): added time logic to not choke up on date format for changelog (#1826)\n\n* added time logic to not choke up on date format for changelog\n\n* Update dashboard.spec.ts",
             "author": {
               "name": "James Dinh",
               "email": "james.d@globalalliantinc.com",
-              "time": 1771007559000
+              "time": 1771023301000
             },
             "committer": {
               "name": "GitHub",
               "email": "noreply@github.com",
-              "time": 1771007559000
+              "time": 1771023301000
             },
             "branch": "main"
           },
@@ -494,24 +494,24 @@
         "retries": 0,
         "metadata": {
           "ci": {
-            "commitHref": "https://github.com/Enterprise-CMCS/macpro-mako/commit/b34004f86c331c1ae4cc9a9e0cb156617fc7d897",
-            "commitHash": "b34004f86c331c1ae4cc9a9e0cb156617fc7d897",
-            "buildHref": "https://github.com/Enterprise-CMCS/macpro-mako/actions/runs/21998299050"
+            "commitHref": "https://github.com/Enterprise-CMCS/macpro-mako/commit/4920960fc75b67e9c8672e361e534c2db88fcfa4",
+            "commitHash": "4920960fc75b67e9c8672e361e534c2db88fcfa4",
+            "buildHref": "https://github.com/Enterprise-CMCS/macpro-mako/actions/runs/22005647684"
           },
           "gitCommit": {
-            "shortHash": "b34004f",
-            "hash": "b34004f86c331c1ae4cc9a9e0cb156617fc7d897",
-            "subject": "feat(admin activity): add changeMade and changeReason logic to all administrative changes in the backend",
-            "body": "feat(admin activity): add changeMade and changeReason logic to all administrative changes in the backend\n\n* add changeMade and changeReason logic\n\n* tighten logic\n\n* add optional nullable for noso\n\n* add logic",
+            "shortHash": "4920960",
+            "hash": "4920960fc75b67e9c8672e361e534c2db88fcfa4",
+            "subject": "fix(changelog-timestamp): added time logic to not choke up on date format for changelog (#1826)",
+            "body": "fix(changelog-timestamp): added time logic to not choke up on date format for changelog (#1826)\n\n* added time logic to not choke up on date format for changelog\n\n* Update dashboard.spec.ts",
             "author": {
               "name": "James Dinh",
               "email": "james.d@globalalliantinc.com",
-              "time": 1771007559000
+              "time": 1771023301000
             },
             "committer": {
               "name": "GitHub",
               "email": "noreply@github.com",
-              "time": 1771007559000
+              "time": 1771023301000
             },
             "branch": "main"
           },
@@ -535,24 +535,24 @@
         "retries": 0,
         "metadata": {
           "ci": {
-            "commitHref": "https://github.com/Enterprise-CMCS/macpro-mako/commit/b34004f86c331c1ae4cc9a9e0cb156617fc7d897",
-            "commitHash": "b34004f86c331c1ae4cc9a9e0cb156617fc7d897",
-            "buildHref": "https://github.com/Enterprise-CMCS/macpro-mako/actions/runs/21998299050"
+            "commitHref": "https://github.com/Enterprise-CMCS/macpro-mako/commit/4920960fc75b67e9c8672e361e534c2db88fcfa4",
+            "commitHash": "4920960fc75b67e9c8672e361e534c2db88fcfa4",
+            "buildHref": "https://github.com/Enterprise-CMCS/macpro-mako/actions/runs/22005647684"
           },
           "gitCommit": {
-            "shortHash": "b34004f",
-            "hash": "b34004f86c331c1ae4cc9a9e0cb156617fc7d897",
-            "subject": "feat(admin activity): add changeMade and changeReason logic to all administrative changes in the backend",
-            "body": "feat(admin activity): add changeMade and changeReason logic to all administrative changes in the backend\n\n* add changeMade and changeReason logic\n\n* tighten logic\n\n* add optional nullable for noso\n\n* add logic",
+            "shortHash": "4920960",
+            "hash": "4920960fc75b67e9c8672e361e534c2db88fcfa4",
+            "subject": "fix(changelog-timestamp): added time logic to not choke up on date format for changelog (#1826)",
+            "body": "fix(changelog-timestamp): added time logic to not choke up on date format for changelog (#1826)\n\n* added time logic to not choke up on date format for changelog\n\n* Update dashboard.spec.ts",
             "author": {
               "name": "James Dinh",
               "email": "james.d@globalalliantinc.com",
-              "time": 1771007559000
+              "time": 1771023301000
             },
             "committer": {
               "name": "GitHub",
               "email": "noreply@github.com",
-              "time": 1771007559000
+              "time": 1771023301000
             },
             "branch": "main"
           },
@@ -629,7 +629,7 @@
                 {
                   "title": "UI validations",
                   "file": "e2e/specs/dashboard.spec.ts",
-                  "line": 27,
+                  "line": 30,
                   "column": 12,
                   "specs": [
                     {
@@ -650,12 +650,12 @@
                               "workerIndex": 0,
                               "parallelIndex": 0,
                               "status": "passed",
-                              "duration": 4229,
+                              "duration": 3977,
                               "errors": [],
                               "stdout": [],
                               "stderr": [],
                               "retry": 0,
-                              "startTime": "2026-02-13T18:45:19.763Z",
+                              "startTime": "2026-02-13T23:15:20.446Z",
                               "annotations": [],
                               "attachments": []
                             }
@@ -665,7 +665,7 @@
                       ],
                       "id": "e31090cf21ac3d2f1505-79236770153f2bc1774a",
                       "file": "e2e/specs/dashboard.spec.ts",
-                      "line": 28,
+                      "line": 31,
                       "column": 9
                     },
                     {
@@ -686,12 +686,12 @@
                               "workerIndex": 0,
                               "parallelIndex": 0,
                               "status": "passed",
-                              "duration": 4060,
+                              "duration": 2883,
                               "errors": [],
                               "stdout": [],
                               "stderr": [],
                               "retry": 0,
-                              "startTime": "2026-02-13T18:45:24.087Z",
+                              "startTime": "2026-02-13T23:15:24.519Z",
                               "annotations": [],
                               "attachments": []
                             }
@@ -701,7 +701,7 @@
                       ],
                       "id": "e31090cf21ac3d2f1505-d58f6cb96869baa5c8ca",
                       "file": "e2e/specs/dashboard.spec.ts",
-                      "line": 42,
+                      "line": 45,
                       "column": 9
                     },
                     {
@@ -722,12 +722,12 @@
                               "workerIndex": 0,
                               "parallelIndex": 0,
                               "status": "passed",
-                              "duration": 4082,
+                              "duration": 2927,
                               "errors": [],
                               "stdout": [],
                               "stderr": [],
                               "retry": 0,
-                              "startTime": "2026-02-13T18:45:28.165Z",
+                              "startTime": "2026-02-13T23:15:27.427Z",
                               "annotations": [],
                               "attachments": []
                             }
@@ -737,7 +737,7 @@
                       ],
                       "id": "e31090cf21ac3d2f1505-aaa4291f7cccb505955c",
                       "file": "e2e/specs/dashboard.spec.ts",
-                      "line": 52,
+                      "line": 55,
                       "column": 9
                     },
                     {
@@ -758,12 +758,12 @@
                               "workerIndex": 0,
                               "parallelIndex": 0,
                               "status": "passed",
-                              "duration": 4092,
+                              "duration": 2874,
                               "errors": [],
                               "stdout": [],
                               "stderr": [],
                               "retry": 0,
-                              "startTime": "2026-02-13T18:45:32.263Z",
+                              "startTime": "2026-02-13T23:15:30.368Z",
                               "annotations": [],
                               "attachments": []
                             }
@@ -773,7 +773,7 @@
                       ],
                       "id": "e31090cf21ac3d2f1505-09e909a1a6477cabd9dc",
                       "file": "e2e/specs/dashboard.spec.ts",
-                      "line": 60,
+                      "line": 63,
                       "column": 9
                     },
                     {
@@ -794,12 +794,12 @@
                               "workerIndex": 0,
                               "parallelIndex": 0,
                               "status": "passed",
-                              "duration": 4011,
+                              "duration": 2841,
                               "errors": [],
                               "stdout": [],
                               "stderr": [],
                               "retry": 0,
-                              "startTime": "2026-02-13T18:45:36.373Z",
+                              "startTime": "2026-02-13T23:15:33.258Z",
                               "annotations": [],
                               "attachments": []
                             }
@@ -809,7 +809,7 @@
                       ],
                       "id": "e31090cf21ac3d2f1505-c2aaa2e70a91136deaa4",
                       "file": "e2e/specs/dashboard.spec.ts",
-                      "line": 69,
+                      "line": 72,
                       "column": 9
                     },
                     {
@@ -830,12 +830,12 @@
                               "workerIndex": 0,
                               "parallelIndex": 0,
                               "status": "passed",
-                              "duration": 4034,
+                              "duration": 4862,
                               "errors": [],
                               "stdout": [],
                               "stderr": [],
                               "retry": 0,
-                              "startTime": "2026-02-13T18:45:40.400Z",
+                              "startTime": "2026-02-13T23:15:36.113Z",
                               "annotations": [],
                               "attachments": []
                             }
@@ -845,7 +845,7 @@
                       ],
                       "id": "e31090cf21ac3d2f1505-ccbb295142dad4447f3d",
                       "file": "e2e/specs/dashboard.spec.ts",
-                      "line": 76,
+                      "line": 79,
                       "column": 9
                     },
                     {
@@ -866,12 +866,12 @@
                               "workerIndex": 0,
                               "parallelIndex": 0,
                               "status": "passed",
-                              "duration": 4026,
+                              "duration": 2957,
                               "errors": [],
                               "stdout": [],
                               "stderr": [],
                               "retry": 0,
-                              "startTime": "2026-02-13T18:45:44.447Z",
+                              "startTime": "2026-02-13T23:15:40.987Z",
                               "annotations": [],
                               "attachments": []
                             }
@@ -881,7 +881,7 @@
                       ],
                       "id": "e31090cf21ac3d2f1505-292b179a233e813cb1fa",
                       "file": "e2e/specs/dashboard.spec.ts",
-                      "line": 81,
+                      "line": 84,
                       "column": 9
                     }
                   ],
@@ -889,14 +889,14 @@
                     {
                       "title": "dashboard table",
                       "file": "e2e/specs/dashboard.spec.ts",
-                      "line": 86,
+                      "line": 89,
                       "column": 14,
                       "specs": [],
                       "suites": [
                         {
                           "title": "spas",
                           "file": "e2e/specs/dashboard.spec.ts",
-                          "line": 87,
+                          "line": 90,
                           "column": 16,
                           "specs": [
                             {
@@ -917,12 +917,12 @@
                                       "workerIndex": 0,
                                       "parallelIndex": 0,
                                       "status": "passed",
-                                      "duration": 1124,
+                                      "duration": 3223,
                                       "errors": [],
                                       "stdout": [],
                                       "stderr": [],
                                       "retry": 0,
-                                      "startTime": "2026-02-13T18:45:48.484Z",
+                                      "startTime": "2026-02-13T23:15:43.955Z",
                                       "annotations": [],
                                       "attachments": []
                                     }
@@ -932,7 +932,7 @@
                               ],
                               "id": "e31090cf21ac3d2f1505-9b54b2f13ec47145f067",
                               "file": "e2e/specs/dashboard.spec.ts",
-                              "line": 88,
+                              "line": 91,
                               "column": 13
                             },
                             {
@@ -953,12 +953,12 @@
                                       "workerIndex": 0,
                                       "parallelIndex": 0,
                                       "status": "passed",
-                                      "duration": 3805,
+                                      "duration": 2898,
                                       "errors": [],
                                       "stdout": [],
                                       "stderr": [],
                                       "retry": 0,
-                                      "startTime": "2026-02-13T18:45:49.620Z",
+                                      "startTime": "2026-02-13T23:15:47.189Z",
                                       "annotations": [],
                                       "attachments": []
                                     }
@@ -968,7 +968,7 @@
                               ],
                               "id": "e31090cf21ac3d2f1505-9832e54ed6bc6e875887",
                               "file": "e2e/specs/dashboard.spec.ts",
-                              "line": 125,
+                              "line": 128,
                               "column": 13
                             },
                             {
@@ -989,12 +989,12 @@
                                       "workerIndex": 0,
                                       "parallelIndex": 0,
                                       "status": "passed",
-                                      "duration": 3964,
+                                      "duration": 2778,
                                       "errors": [],
                                       "stdout": [],
                                       "stderr": [],
                                       "retry": 0,
-                                      "startTime": "2026-02-13T18:45:53.438Z",
+                                      "startTime": "2026-02-13T23:15:50.099Z",
                                       "annotations": [],
                                       "attachments": []
                                     }
@@ -1004,7 +1004,7 @@
                               ],
                               "id": "e31090cf21ac3d2f1505-6a9fe6fd1870cdaf3e89",
                               "file": "e2e/specs/dashboard.spec.ts",
-                              "line": 129,
+                              "line": 132,
                               "column": 13
                             }
                           ]
@@ -1012,7 +1012,7 @@
                         {
                           "title": "waivers",
                           "file": "e2e/specs/dashboard.spec.ts",
-                          "line": 134,
+                          "line": 137,
                           "column": 16,
                           "specs": [
                             {
@@ -1033,12 +1033,12 @@
                                       "workerIndex": 0,
                                       "parallelIndex": 0,
                                       "status": "passed",
-                                      "duration": 4108,
+                                      "duration": 3354,
                                       "errors": [],
                                       "stdout": [],
                                       "stderr": [],
                                       "retry": 0,
-                                      "startTime": "2026-02-13T18:45:57.415Z",
+                                      "startTime": "2026-02-13T23:15:52.889Z",
                                       "annotations": [],
                                       "attachments": []
                                     }
@@ -1048,7 +1048,7 @@
                               ],
                               "id": "e31090cf21ac3d2f1505-a626b6eed07fdecc9042",
                               "file": "e2e/specs/dashboard.spec.ts",
-                              "line": 139,
+                              "line": 142,
                               "column": 13
                             },
                             {
@@ -1069,12 +1069,12 @@
                                       "workerIndex": 0,
                                       "parallelIndex": 0,
                                       "status": "passed",
-                                      "duration": 3766,
+                                      "duration": 3094,
                                       "errors": [],
                                       "stdout": [],
                                       "stderr": [],
                                       "retry": 0,
-                                      "startTime": "2026-02-13T18:46:01.536Z",
+                                      "startTime": "2026-02-13T23:15:56.259Z",
                                       "annotations": [],
                                       "attachments": []
                                     }
@@ -1084,7 +1084,7 @@
                               ],
                               "id": "e31090cf21ac3d2f1505-61809a8110fdeff7508e",
                               "file": "e2e/specs/dashboard.spec.ts",
-                              "line": 176,
+                              "line": 179,
                               "column": 13
                             },
                             {
@@ -1105,12 +1105,12 @@
                                       "workerIndex": 0,
                                       "parallelIndex": 0,
                                       "status": "passed",
-                                      "duration": 4014,
+                                      "duration": 3097,
                                       "errors": [],
                                       "stdout": [],
                                       "stderr": [],
                                       "retry": 0,
-                                      "startTime": "2026-02-13T18:46:05.314Z",
+                                      "startTime": "2026-02-13T23:15:59.365Z",
                                       "annotations": [],
                                       "attachments": []
                                     }
@@ -1120,7 +1120,7 @@
                               ],
                               "id": "e31090cf21ac3d2f1505-b5476ccae199bfd768d0",
                               "file": "e2e/specs/dashboard.spec.ts",
-                              "line": 180,
+                              "line": 183,
                               "column": 13
                             }
                           ]
@@ -1132,7 +1132,7 @@
                 {
                   "title": "Interactions",
                   "file": "e2e/specs/dashboard.spec.ts",
-                  "line": 187,
+                  "line": 190,
                   "column": 12,
                   "specs": [
                     {
@@ -1153,7 +1153,7 @@
                               "workerIndex": 0,
                               "parallelIndex": 0,
                               "status": "passed",
-                              "duration": 8155,
+                              "duration": 5196,
                               "errors": [],
                               "stdout": [
                                 {
@@ -1162,7 +1162,7 @@
                               ],
                               "stderr": [],
                               "retry": 0,
-                              "startTime": "2026-02-13T18:46:09.340Z",
+                              "startTime": "2026-02-13T23:16:02.475Z",
                               "annotations": [],
                               "attachments": [
                                 {
@@ -1178,7 +1178,7 @@
                       ],
                       "id": "e31090cf21ac3d2f1505-a2db929c6434ad64d2d1",
                       "file": "e2e/specs/dashboard.spec.ts",
-                      "line": 188,
+                      "line": 191,
                       "column": 9
                     }
                   ]
@@ -1195,7 +1195,7 @@
                 {
                   "title": "UI validations",
                   "file": "e2e/specs/dashboard.spec.ts",
-                  "line": 27,
+                  "line": 30,
                   "column": 12,
                   "specs": [
                     {
@@ -1216,12 +1216,12 @@
                               "workerIndex": 0,
                               "parallelIndex": 0,
                               "status": "passed",
-                              "duration": 4101,
+                              "duration": 2895,
                               "errors": [],
                               "stdout": [],
                               "stderr": [],
                               "retry": 0,
-                              "startTime": "2026-02-13T18:46:17.507Z",
+                              "startTime": "2026-02-13T23:16:07.684Z",
                               "annotations": [],
                               "attachments": []
                             }
@@ -1231,7 +1231,7 @@
                       ],
                       "id": "e31090cf21ac3d2f1505-49435fe861e54d37de40",
                       "file": "e2e/specs/dashboard.spec.ts",
-                      "line": 28,
+                      "line": 31,
                       "column": 9
                     },
                     {
@@ -1252,12 +1252,12 @@
                               "workerIndex": 0,
                               "parallelIndex": 0,
                               "status": "passed",
-                              "duration": 4039,
+                              "duration": 2870,
                               "errors": [],
                               "stdout": [],
                               "stderr": [],
                               "retry": 0,
-                              "startTime": "2026-02-13T18:46:21.619Z",
+                              "startTime": "2026-02-13T23:16:10.591Z",
                               "annotations": [],
                               "attachments": []
                             }
@@ -1267,7 +1267,7 @@
                       ],
                       "id": "e31090cf21ac3d2f1505-feace4ed300c666899a1",
                       "file": "e2e/specs/dashboard.spec.ts",
-                      "line": 42,
+                      "line": 45,
                       "column": 9
                     },
                     {
@@ -1288,12 +1288,12 @@
                               "workerIndex": 0,
                               "parallelIndex": 0,
                               "status": "passed",
-                              "duration": 4031,
+                              "duration": 2826,
                               "errors": [],
                               "stdout": [],
                               "stderr": [],
                               "retry": 0,
-                              "startTime": "2026-02-13T18:46:25.669Z",
+                              "startTime": "2026-02-13T23:16:13.475Z",
                               "annotations": [],
                               "attachments": []
                             }
@@ -1303,7 +1303,7 @@
                       ],
                       "id": "e31090cf21ac3d2f1505-455bb432ffaaed58f362",
                       "file": "e2e/specs/dashboard.spec.ts",
-                      "line": 52,
+                      "line": 55,
                       "column": 9
                     },
                     {
@@ -1324,12 +1324,12 @@
                               "workerIndex": 0,
                               "parallelIndex": 0,
                               "status": "passed",
-                              "duration": 4008,
+                              "duration": 2797,
                               "errors": [],
                               "stdout": [],
                               "stderr": [],
                               "retry": 0,
-                              "startTime": "2026-02-13T18:46:29.713Z",
+                              "startTime": "2026-02-13T23:16:16.315Z",
                               "annotations": [],
                               "attachments": []
                             }
@@ -1339,7 +1339,7 @@
                       ],
                       "id": "e31090cf21ac3d2f1505-9f724c34626455f57ae5",
                       "file": "e2e/specs/dashboard.spec.ts",
-                      "line": 60,
+                      "line": 63,
                       "column": 9
                     },
                     {
@@ -1360,12 +1360,12 @@
                               "workerIndex": 0,
                               "parallelIndex": 0,
                               "status": "passed",
-                              "duration": 4045,
+                              "duration": 2786,
                               "errors": [],
                               "stdout": [],
                               "stderr": [],
                               "retry": 0,
-                              "startTime": "2026-02-13T18:46:33.733Z",
+                              "startTime": "2026-02-13T23:16:19.123Z",
                               "annotations": [],
                               "attachments": []
                             }
@@ -1375,7 +1375,7 @@
                       ],
                       "id": "e31090cf21ac3d2f1505-6ffaa1bbf26b0ba51345",
                       "file": "e2e/specs/dashboard.spec.ts",
-                      "line": 69,
+                      "line": 72,
                       "column": 9
                     },
                     {
@@ -1396,12 +1396,12 @@
                               "workerIndex": 0,
                               "parallelIndex": 0,
                               "status": "passed",
-                              "duration": 3857,
+                              "duration": 2786,
                               "errors": [],
                               "stdout": [],
                               "stderr": [],
                               "retry": 0,
-                              "startTime": "2026-02-13T18:46:37.790Z",
+                              "startTime": "2026-02-13T23:16:21.919Z",
                               "annotations": [],
                               "attachments": []
                             }
@@ -1411,7 +1411,7 @@
                       ],
                       "id": "e31090cf21ac3d2f1505-b07f1519c3c4a274bec3",
                       "file": "e2e/specs/dashboard.spec.ts",
-                      "line": 76,
+                      "line": 79,
                       "column": 9
                     },
                     {
@@ -1432,12 +1432,12 @@
                               "workerIndex": 0,
                               "parallelIndex": 0,
                               "status": "passed",
-                              "duration": 4097,
+                              "duration": 1826,
                               "errors": [],
                               "stdout": [],
                               "stderr": [],
                               "retry": 0,
-                              "startTime": "2026-02-13T18:46:41.657Z",
+                              "startTime": "2026-02-13T23:16:24.716Z",
                               "annotations": [],
                               "attachments": []
                             }
@@ -1447,7 +1447,7 @@
                       ],
                       "id": "e31090cf21ac3d2f1505-931865d50e04c29cd203",
                       "file": "e2e/specs/dashboard.spec.ts",
-                      "line": 81,
+                      "line": 84,
                       "column": 9
                     }
                   ],
@@ -1455,14 +1455,14 @@
                     {
                       "title": "dashboard table",
                       "file": "e2e/specs/dashboard.spec.ts",
-                      "line": 86,
+                      "line": 89,
                       "column": 14,
                       "specs": [],
                       "suites": [
                         {
                           "title": "spas",
                           "file": "e2e/specs/dashboard.spec.ts",
-                          "line": 87,
+                          "line": 90,
                           "column": 16,
                           "specs": [
                             {
@@ -1483,12 +1483,12 @@
                                       "workerIndex": 0,
                                       "parallelIndex": 0,
                                       "status": "passed",
-                                      "duration": 1105,
+                                      "duration": 2943,
                                       "errors": [],
                                       "stdout": [],
                                       "stderr": [],
                                       "retry": 0,
-                                      "startTime": "2026-02-13T18:46:45.765Z",
+                                      "startTime": "2026-02-13T23:16:26.553Z",
                                       "annotations": [],
                                       "attachments": []
                                     }
@@ -1498,7 +1498,7 @@
                               ],
                               "id": "e31090cf21ac3d2f1505-99c3838bc3fb0f0af16b",
                               "file": "e2e/specs/dashboard.spec.ts",
-                              "line": 88,
+                              "line": 91,
                               "column": 13
                             },
                             {
@@ -1519,12 +1519,12 @@
                                       "workerIndex": 0,
                                       "parallelIndex": 0,
                                       "status": "passed",
-                                      "duration": 3890,
+                                      "duration": 1983,
                                       "errors": [],
                                       "stdout": [],
                                       "stderr": [],
                                       "retry": 0,
-                                      "startTime": "2026-02-13T18:46:46.881Z",
+                                      "startTime": "2026-02-13T23:16:29.507Z",
                                       "annotations": [],
                                       "attachments": []
                                     }
@@ -1534,7 +1534,7 @@
                               ],
                               "id": "e31090cf21ac3d2f1505-ff072afbb17733ee985f",
                               "file": "e2e/specs/dashboard.spec.ts",
-                              "line": 125,
+                              "line": 128,
                               "column": 13
                             },
                             {
@@ -1555,12 +1555,12 @@
                                       "workerIndex": 0,
                                       "parallelIndex": 0,
                                       "status": "passed",
-                                      "duration": 3956,
+                                      "duration": 2757,
                                       "errors": [],
                                       "stdout": [],
                                       "stderr": [],
                                       "retry": 0,
-                                      "startTime": "2026-02-13T18:46:50.783Z",
+                                      "startTime": "2026-02-13T23:16:31.500Z",
                                       "annotations": [],
                                       "attachments": []
                                     }
@@ -1570,7 +1570,7 @@
                               ],
                               "id": "e31090cf21ac3d2f1505-07886babd48e8320c3ee",
                               "file": "e2e/specs/dashboard.spec.ts",
-                              "line": 129,
+                              "line": 132,
                               "column": 13
                             }
                           ]
@@ -1578,7 +1578,7 @@
                         {
                           "title": "waivers",
                           "file": "e2e/specs/dashboard.spec.ts",
-                          "line": 134,
+                          "line": 137,
                           "column": 16,
                           "specs": [
                             {
@@ -1599,12 +1599,12 @@
                                       "workerIndex": 0,
                                       "parallelIndex": 0,
                                       "status": "passed",
-                                      "duration": 4079,
+                                      "duration": 3141,
                                       "errors": [],
                                       "stdout": [],
                                       "stderr": [],
                                       "retry": 0,
-                                      "startTime": "2026-02-13T18:46:54.752Z",
+                                      "startTime": "2026-02-13T23:16:34.268Z",
                                       "annotations": [],
                                       "attachments": []
                                     }
@@ -1614,7 +1614,7 @@
                               ],
                               "id": "e31090cf21ac3d2f1505-efd257844fbde96ced5d",
                               "file": "e2e/specs/dashboard.spec.ts",
-                              "line": 139,
+                              "line": 142,
                               "column": 13
                             },
                             {
@@ -1635,12 +1635,12 @@
                                       "workerIndex": 0,
                                       "parallelIndex": 0,
                                       "status": "passed",
-                                      "duration": 3681,
+                                      "duration": 2189,
                                       "errors": [],
                                       "stdout": [],
                                       "stderr": [],
                                       "retry": 0,
-                                      "startTime": "2026-02-13T18:46:58.844Z",
+                                      "startTime": "2026-02-13T23:16:37.421Z",
                                       "annotations": [],
                                       "attachments": []
                                     }
@@ -1650,7 +1650,7 @@
                               ],
                               "id": "e31090cf21ac3d2f1505-667b6675c2f89da21417",
                               "file": "e2e/specs/dashboard.spec.ts",
-                              "line": 176,
+                              "line": 179,
                               "column": 13
                             },
                             {
@@ -1671,12 +1671,12 @@
                                       "workerIndex": 0,
                                       "parallelIndex": 0,
                                       "status": "passed",
-                                      "duration": 3442,
+                                      "duration": 2893,
                                       "errors": [],
                                       "stdout": [],
                                       "stderr": [],
                                       "retry": 0,
-                                      "startTime": "2026-02-13T18:47:02.538Z",
+                                      "startTime": "2026-02-13T23:16:39.622Z",
                                       "annotations": [],
                                       "attachments": []
                                     }
@@ -1686,7 +1686,7 @@
                               ],
                               "id": "e31090cf21ac3d2f1505-b6337307151f9d48b5ff",
                               "file": "e2e/specs/dashboard.spec.ts",
-                              "line": 180,
+                              "line": 183,
                               "column": 13
                             }
                           ]
@@ -1698,7 +1698,7 @@
                 {
                   "title": "Interactions",
                   "file": "e2e/specs/dashboard.spec.ts",
-                  "line": 187,
+                  "line": 190,
                   "column": 12,
                   "specs": [
                     {
@@ -1719,7 +1719,7 @@
                               "workerIndex": 0,
                               "parallelIndex": 0,
                               "status": "passed",
-                              "duration": 9487,
+                              "duration": 4337,
                               "errors": [],
                               "stdout": [
                                 {
@@ -1728,7 +1728,7 @@
                               ],
                               "stderr": [],
                               "retry": 0,
-                              "startTime": "2026-02-13T18:47:05.991Z",
+                              "startTime": "2026-02-13T23:16:42.526Z",
                               "annotations": [],
                               "attachments": [
                                 {
@@ -1744,7 +1744,7 @@
                       ],
                       "id": "e31090cf21ac3d2f1505-cae5ba9990e03d5efaa9",
                       "file": "e2e/specs/dashboard.spec.ts",
-                      "line": 188,
+                      "line": 191,
                       "column": 9
                     }
                   ]
@@ -1758,8 +1758,8 @@
   ],
   "errors": [],
   "stats": {
-    "startTime": "2026-02-13T18:45:05.823Z",
-    "duration": 129763.735,
+    "startTime": "2026-02-13T23:15:08.668Z",
+    "duration": 98300.523,
     "expected": 28,
     "skipped": 0,
     "unexpected": 0,
