@@ -22,6 +22,9 @@ for (const [role, user] of Object.entries(users)) {
       test.beforeEach(async ({ page }) => {
         dashboardPage = new DashboardPage(page);
         await page.goto("/dashboard");
+        await expect(page.getByRole("heading", { name: "Dashboard" })).toBeVisible();
+        await expect(page.getByRole("tab", { name: "SPAs" })).toBeVisible();
+        await expect(page.getByTestId("os-table")).toBeVisible();
       });
 
       test.describe("UI validations", {}, () => {
