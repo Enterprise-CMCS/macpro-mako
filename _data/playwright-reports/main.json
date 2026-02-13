@@ -12,24 +12,24 @@
     "maxFailures": 0,
     "metadata": {
       "ci": {
-        "commitHref": "https://github.com/Enterprise-CMCS/macpro-mako/commit/0e9fdf1dbf702b378ea0c4819135836244637898",
-        "commitHash": "0e9fdf1dbf702b378ea0c4819135836244637898",
-        "buildHref": "https://github.com/Enterprise-CMCS/macpro-mako/actions/runs/21445260471"
+        "commitHref": "https://github.com/Enterprise-CMCS/macpro-mako/commit/b34004f86c331c1ae4cc9a9e0cb156617fc7d897",
+        "commitHash": "b34004f86c331c1ae4cc9a9e0cb156617fc7d897",
+        "buildHref": "https://github.com/Enterprise-CMCS/macpro-mako/actions/runs/21998299050"
       },
       "gitCommit": {
-        "shortHash": "0e9fdf1",
-        "hash": "0e9fdf1dbf702b378ea0c4819135836244637898",
-        "subject": "fix(macpro sso): add additional macpro sso link logic (#1821)",
-        "body": "fix(macpro sso): add additional macpro sso link logic (#1821)\n\n* Update index.tsx\n\n* Update index.tsx\n\n* Update index.tsx",
+        "shortHash": "b34004f",
+        "hash": "b34004f86c331c1ae4cc9a9e0cb156617fc7d897",
+        "subject": "feat(admin activity): add changeMade and changeReason logic to all administrative changes in the backend",
+        "body": "feat(admin activity): add changeMade and changeReason logic to all administrative changes in the backend\n\n* add changeMade and changeReason logic\n\n* tighten logic\n\n* add optional nullable for noso\n\n* add logic",
         "author": {
           "name": "James Dinh",
-          "email": "jdinh8124@gmail.com",
-          "time": 1769615642000
+          "email": "james.d@globalalliantinc.com",
+          "time": 1771007559000
         },
         "committer": {
           "name": "GitHub",
           "email": "noreply@github.com",
-          "time": 1769615642000
+          "time": 1771007559000
         },
         "branch": "main"
       },
@@ -43,24 +43,24 @@
         "retries": 0,
         "metadata": {
           "ci": {
-            "commitHref": "https://github.com/Enterprise-CMCS/macpro-mako/commit/0e9fdf1dbf702b378ea0c4819135836244637898",
-            "commitHash": "0e9fdf1dbf702b378ea0c4819135836244637898",
-            "buildHref": "https://github.com/Enterprise-CMCS/macpro-mako/actions/runs/21445260471"
+            "commitHref": "https://github.com/Enterprise-CMCS/macpro-mako/commit/b34004f86c331c1ae4cc9a9e0cb156617fc7d897",
+            "commitHash": "b34004f86c331c1ae4cc9a9e0cb156617fc7d897",
+            "buildHref": "https://github.com/Enterprise-CMCS/macpro-mako/actions/runs/21998299050"
           },
           "gitCommit": {
-            "shortHash": "0e9fdf1",
-            "hash": "0e9fdf1dbf702b378ea0c4819135836244637898",
-            "subject": "fix(macpro sso): add additional macpro sso link logic (#1821)",
-            "body": "fix(macpro sso): add additional macpro sso link logic (#1821)\n\n* Update index.tsx\n\n* Update index.tsx\n\n* Update index.tsx",
+            "shortHash": "b34004f",
+            "hash": "b34004f86c331c1ae4cc9a9e0cb156617fc7d897",
+            "subject": "feat(admin activity): add changeMade and changeReason logic to all administrative changes in the backend",
+            "body": "feat(admin activity): add changeMade and changeReason logic to all administrative changes in the backend\n\n* add changeMade and changeReason logic\n\n* tighten logic\n\n* add optional nullable for noso\n\n* add logic",
             "author": {
               "name": "James Dinh",
-              "email": "jdinh8124@gmail.com",
-              "time": 1769615642000
+              "email": "james.d@globalalliantinc.com",
+              "time": 1771007559000
             },
             "committer": {
               "name": "GitHub",
               "email": "noreply@github.com",
-              "time": 1769615642000
+              "time": 1771007559000
             },
             "branch": "main"
           },
@@ -84,24 +84,24 @@
         "retries": 0,
         "metadata": {
           "ci": {
-            "commitHref": "https://github.com/Enterprise-CMCS/macpro-mako/commit/0e9fdf1dbf702b378ea0c4819135836244637898",
-            "commitHash": "0e9fdf1dbf702b378ea0c4819135836244637898",
-            "buildHref": "https://github.com/Enterprise-CMCS/macpro-mako/actions/runs/21445260471"
+            "commitHref": "https://github.com/Enterprise-CMCS/macpro-mako/commit/b34004f86c331c1ae4cc9a9e0cb156617fc7d897",
+            "commitHash": "b34004f86c331c1ae4cc9a9e0cb156617fc7d897",
+            "buildHref": "https://github.com/Enterprise-CMCS/macpro-mako/actions/runs/21998299050"
           },
           "gitCommit": {
-            "shortHash": "0e9fdf1",
-            "hash": "0e9fdf1dbf702b378ea0c4819135836244637898",
-            "subject": "fix(macpro sso): add additional macpro sso link logic (#1821)",
-            "body": "fix(macpro sso): add additional macpro sso link logic (#1821)\n\n* Update index.tsx\n\n* Update index.tsx\n\n* Update index.tsx",
+            "shortHash": "b34004f",
+            "hash": "b34004f86c331c1ae4cc9a9e0cb156617fc7d897",
+            "subject": "feat(admin activity): add changeMade and changeReason logic to all administrative changes in the backend",
+            "body": "feat(admin activity): add changeMade and changeReason logic to all administrative changes in the backend\n\n* add changeMade and changeReason logic\n\n* tighten logic\n\n* add optional nullable for noso\n\n* add logic",
             "author": {
               "name": "James Dinh",
-              "email": "jdinh8124@gmail.com",
-              "time": 1769615642000
+              "email": "james.d@globalalliantinc.com",
+              "time": 1771007559000
             },
             "committer": {
               "name": "GitHub",
               "email": "noreply@github.com",
-              "time": 1769615642000
+              "time": 1771007559000
             },
             "branch": "main"
           },
@@ -125,24 +125,24 @@
         "retries": 0,
         "metadata": {
           "ci": {
-            "commitHref": "https://github.com/Enterprise-CMCS/macpro-mako/commit/0e9fdf1dbf702b378ea0c4819135836244637898",
-            "commitHash": "0e9fdf1dbf702b378ea0c4819135836244637898",
-            "buildHref": "https://github.com/Enterprise-CMCS/macpro-mako/actions/runs/21445260471"
+            "commitHref": "https://github.com/Enterprise-CMCS/macpro-mako/commit/b34004f86c331c1ae4cc9a9e0cb156617fc7d897",
+            "commitHash": "b34004f86c331c1ae4cc9a9e0cb156617fc7d897",
+            "buildHref": "https://github.com/Enterprise-CMCS/macpro-mako/actions/runs/21998299050"
           },
           "gitCommit": {
-            "shortHash": "0e9fdf1",
-            "hash": "0e9fdf1dbf702b378ea0c4819135836244637898",
-            "subject": "fix(macpro sso): add additional macpro sso link logic (#1821)",
-            "body": "fix(macpro sso): add additional macpro sso link logic (#1821)\n\n* Update index.tsx\n\n* Update index.tsx\n\n* Update index.tsx",
+            "shortHash": "b34004f",
+            "hash": "b34004f86c331c1ae4cc9a9e0cb156617fc7d897",
+            "subject": "feat(admin activity): add changeMade and changeReason logic to all administrative changes in the backend",
+            "body": "feat(admin activity): add changeMade and changeReason logic to all administrative changes in the backend\n\n* add changeMade and changeReason logic\n\n* tighten logic\n\n* add optional nullable for noso\n\n* add logic",
             "author": {
               "name": "James Dinh",
-              "email": "jdinh8124@gmail.com",
-              "time": 1769615642000
+              "email": "james.d@globalalliantinc.com",
+              "time": 1771007559000
             },
             "committer": {
               "name": "GitHub",
               "email": "noreply@github.com",
-              "time": 1769615642000
+              "time": 1771007559000
             },
             "branch": "main"
           },
@@ -166,24 +166,24 @@
         "retries": 0,
         "metadata": {
           "ci": {
-            "commitHref": "https://github.com/Enterprise-CMCS/macpro-mako/commit/0e9fdf1dbf702b378ea0c4819135836244637898",
-            "commitHash": "0e9fdf1dbf702b378ea0c4819135836244637898",
-            "buildHref": "https://github.com/Enterprise-CMCS/macpro-mako/actions/runs/21445260471"
+            "commitHref": "https://github.com/Enterprise-CMCS/macpro-mako/commit/b34004f86c331c1ae4cc9a9e0cb156617fc7d897",
+            "commitHash": "b34004f86c331c1ae4cc9a9e0cb156617fc7d897",
+            "buildHref": "https://github.com/Enterprise-CMCS/macpro-mako/actions/runs/21998299050"
           },
           "gitCommit": {
-            "shortHash": "0e9fdf1",
-            "hash": "0e9fdf1dbf702b378ea0c4819135836244637898",
-            "subject": "fix(macpro sso): add additional macpro sso link logic (#1821)",
-            "body": "fix(macpro sso): add additional macpro sso link logic (#1821)\n\n* Update index.tsx\n\n* Update index.tsx\n\n* Update index.tsx",
+            "shortHash": "b34004f",
+            "hash": "b34004f86c331c1ae4cc9a9e0cb156617fc7d897",
+            "subject": "feat(admin activity): add changeMade and changeReason logic to all administrative changes in the backend",
+            "body": "feat(admin activity): add changeMade and changeReason logic to all administrative changes in the backend\n\n* add changeMade and changeReason logic\n\n* tighten logic\n\n* add optional nullable for noso\n\n* add logic",
             "author": {
               "name": "James Dinh",
-              "email": "jdinh8124@gmail.com",
-              "time": 1769615642000
+              "email": "james.d@globalalliantinc.com",
+              "time": 1771007559000
             },
             "committer": {
               "name": "GitHub",
               "email": "noreply@github.com",
-              "time": 1769615642000
+              "time": 1771007559000
             },
             "branch": "main"
           },
@@ -207,24 +207,24 @@
         "retries": 0,
         "metadata": {
           "ci": {
-            "commitHref": "https://github.com/Enterprise-CMCS/macpro-mako/commit/0e9fdf1dbf702b378ea0c4819135836244637898",
-            "commitHash": "0e9fdf1dbf702b378ea0c4819135836244637898",
-            "buildHref": "https://github.com/Enterprise-CMCS/macpro-mako/actions/runs/21445260471"
+            "commitHref": "https://github.com/Enterprise-CMCS/macpro-mako/commit/b34004f86c331c1ae4cc9a9e0cb156617fc7d897",
+            "commitHash": "b34004f86c331c1ae4cc9a9e0cb156617fc7d897",
+            "buildHref": "https://github.com/Enterprise-CMCS/macpro-mako/actions/runs/21998299050"
           },
           "gitCommit": {
-            "shortHash": "0e9fdf1",
-            "hash": "0e9fdf1dbf702b378ea0c4819135836244637898",
-            "subject": "fix(macpro sso): add additional macpro sso link logic (#1821)",
-            "body": "fix(macpro sso): add additional macpro sso link logic (#1821)\n\n* Update index.tsx\n\n* Update index.tsx\n\n* Update index.tsx",
+            "shortHash": "b34004f",
+            "hash": "b34004f86c331c1ae4cc9a9e0cb156617fc7d897",
+            "subject": "feat(admin activity): add changeMade and changeReason logic to all administrative changes in the backend",
+            "body": "feat(admin activity): add changeMade and changeReason logic to all administrative changes in the backend\n\n* add changeMade and changeReason logic\n\n* tighten logic\n\n* add optional nullable for noso\n\n* add logic",
             "author": {
               "name": "James Dinh",
-              "email": "jdinh8124@gmail.com",
-              "time": 1769615642000
+              "email": "james.d@globalalliantinc.com",
+              "time": 1771007559000
             },
             "committer": {
               "name": "GitHub",
               "email": "noreply@github.com",
-              "time": 1769615642000
+              "time": 1771007559000
             },
             "branch": "main"
           },
@@ -248,24 +248,24 @@
         "retries": 0,
         "metadata": {
           "ci": {
-            "commitHref": "https://github.com/Enterprise-CMCS/macpro-mako/commit/0e9fdf1dbf702b378ea0c4819135836244637898",
-            "commitHash": "0e9fdf1dbf702b378ea0c4819135836244637898",
-            "buildHref": "https://github.com/Enterprise-CMCS/macpro-mako/actions/runs/21445260471"
+            "commitHref": "https://github.com/Enterprise-CMCS/macpro-mako/commit/b34004f86c331c1ae4cc9a9e0cb156617fc7d897",
+            "commitHash": "b34004f86c331c1ae4cc9a9e0cb156617fc7d897",
+            "buildHref": "https://github.com/Enterprise-CMCS/macpro-mako/actions/runs/21998299050"
           },
           "gitCommit": {
-            "shortHash": "0e9fdf1",
-            "hash": "0e9fdf1dbf702b378ea0c4819135836244637898",
-            "subject": "fix(macpro sso): add additional macpro sso link logic (#1821)",
-            "body": "fix(macpro sso): add additional macpro sso link logic (#1821)\n\n* Update index.tsx\n\n* Update index.tsx\n\n* Update index.tsx",
+            "shortHash": "b34004f",
+            "hash": "b34004f86c331c1ae4cc9a9e0cb156617fc7d897",
+            "subject": "feat(admin activity): add changeMade and changeReason logic to all administrative changes in the backend",
+            "body": "feat(admin activity): add changeMade and changeReason logic to all administrative changes in the backend\n\n* add changeMade and changeReason logic\n\n* tighten logic\n\n* add optional nullable for noso\n\n* add logic",
             "author": {
               "name": "James Dinh",
-              "email": "jdinh8124@gmail.com",
-              "time": 1769615642000
+              "email": "james.d@globalalliantinc.com",
+              "time": 1771007559000
             },
             "committer": {
               "name": "GitHub",
               "email": "noreply@github.com",
-              "time": 1769615642000
+              "time": 1771007559000
             },
             "branch": "main"
           },
@@ -289,24 +289,24 @@
         "retries": 0,
         "metadata": {
           "ci": {
-            "commitHref": "https://github.com/Enterprise-CMCS/macpro-mako/commit/0e9fdf1dbf702b378ea0c4819135836244637898",
-            "commitHash": "0e9fdf1dbf702b378ea0c4819135836244637898",
-            "buildHref": "https://github.com/Enterprise-CMCS/macpro-mako/actions/runs/21445260471"
+            "commitHref": "https://github.com/Enterprise-CMCS/macpro-mako/commit/b34004f86c331c1ae4cc9a9e0cb156617fc7d897",
+            "commitHash": "b34004f86c331c1ae4cc9a9e0cb156617fc7d897",
+            "buildHref": "https://github.com/Enterprise-CMCS/macpro-mako/actions/runs/21998299050"
           },
           "gitCommit": {
-            "shortHash": "0e9fdf1",
-            "hash": "0e9fdf1dbf702b378ea0c4819135836244637898",
-            "subject": "fix(macpro sso): add additional macpro sso link logic (#1821)",
-            "body": "fix(macpro sso): add additional macpro sso link logic (#1821)\n\n* Update index.tsx\n\n* Update index.tsx\n\n* Update index.tsx",
+            "shortHash": "b34004f",
+            "hash": "b34004f86c331c1ae4cc9a9e0cb156617fc7d897",
+            "subject": "feat(admin activity): add changeMade and changeReason logic to all administrative changes in the backend",
+            "body": "feat(admin activity): add changeMade and changeReason logic to all administrative changes in the backend\n\n* add changeMade and changeReason logic\n\n* tighten logic\n\n* add optional nullable for noso\n\n* add logic",
             "author": {
               "name": "James Dinh",
-              "email": "jdinh8124@gmail.com",
-              "time": 1769615642000
+              "email": "james.d@globalalliantinc.com",
+              "time": 1771007559000
             },
             "committer": {
               "name": "GitHub",
               "email": "noreply@github.com",
-              "time": 1769615642000
+              "time": 1771007559000
             },
             "branch": "main"
           },
@@ -330,24 +330,24 @@
         "retries": 0,
         "metadata": {
           "ci": {
-            "commitHref": "https://github.com/Enterprise-CMCS/macpro-mako/commit/0e9fdf1dbf702b378ea0c4819135836244637898",
-            "commitHash": "0e9fdf1dbf702b378ea0c4819135836244637898",
-            "buildHref": "https://github.com/Enterprise-CMCS/macpro-mako/actions/runs/21445260471"
+            "commitHref": "https://github.com/Enterprise-CMCS/macpro-mako/commit/b34004f86c331c1ae4cc9a9e0cb156617fc7d897",
+            "commitHash": "b34004f86c331c1ae4cc9a9e0cb156617fc7d897",
+            "buildHref": "https://github.com/Enterprise-CMCS/macpro-mako/actions/runs/21998299050"
           },
           "gitCommit": {
-            "shortHash": "0e9fdf1",
-            "hash": "0e9fdf1dbf702b378ea0c4819135836244637898",
-            "subject": "fix(macpro sso): add additional macpro sso link logic (#1821)",
-            "body": "fix(macpro sso): add additional macpro sso link logic (#1821)\n\n* Update index.tsx\n\n* Update index.tsx\n\n* Update index.tsx",
+            "shortHash": "b34004f",
+            "hash": "b34004f86c331c1ae4cc9a9e0cb156617fc7d897",
+            "subject": "feat(admin activity): add changeMade and changeReason logic to all administrative changes in the backend",
+            "body": "feat(admin activity): add changeMade and changeReason logic to all administrative changes in the backend\n\n* add changeMade and changeReason logic\n\n* tighten logic\n\n* add optional nullable for noso\n\n* add logic",
             "author": {
               "name": "James Dinh",
-              "email": "jdinh8124@gmail.com",
-              "time": 1769615642000
+              "email": "james.d@globalalliantinc.com",
+              "time": 1771007559000
             },
             "committer": {
               "name": "GitHub",
               "email": "noreply@github.com",
-              "time": 1769615642000
+              "time": 1771007559000
             },
             "branch": "main"
           },
@@ -371,24 +371,24 @@
         "retries": 0,
         "metadata": {
           "ci": {
-            "commitHref": "https://github.com/Enterprise-CMCS/macpro-mako/commit/0e9fdf1dbf702b378ea0c4819135836244637898",
-            "commitHash": "0e9fdf1dbf702b378ea0c4819135836244637898",
-            "buildHref": "https://github.com/Enterprise-CMCS/macpro-mako/actions/runs/21445260471"
+            "commitHref": "https://github.com/Enterprise-CMCS/macpro-mako/commit/b34004f86c331c1ae4cc9a9e0cb156617fc7d897",
+            "commitHash": "b34004f86c331c1ae4cc9a9e0cb156617fc7d897",
+            "buildHref": "https://github.com/Enterprise-CMCS/macpro-mako/actions/runs/21998299050"
           },
           "gitCommit": {
-            "shortHash": "0e9fdf1",
-            "hash": "0e9fdf1dbf702b378ea0c4819135836244637898",
-            "subject": "fix(macpro sso): add additional macpro sso link logic (#1821)",
-            "body": "fix(macpro sso): add additional macpro sso link logic (#1821)\n\n* Update index.tsx\n\n* Update index.tsx\n\n* Update index.tsx",
+            "shortHash": "b34004f",
+            "hash": "b34004f86c331c1ae4cc9a9e0cb156617fc7d897",
+            "subject": "feat(admin activity): add changeMade and changeReason logic to all administrative changes in the backend",
+            "body": "feat(admin activity): add changeMade and changeReason logic to all administrative changes in the backend\n\n* add changeMade and changeReason logic\n\n* tighten logic\n\n* add optional nullable for noso\n\n* add logic",
             "author": {
               "name": "James Dinh",
-              "email": "jdinh8124@gmail.com",
-              "time": 1769615642000
+              "email": "james.d@globalalliantinc.com",
+              "time": 1771007559000
             },
             "committer": {
               "name": "GitHub",
               "email": "noreply@github.com",
-              "time": 1769615642000
+              "time": 1771007559000
             },
             "branch": "main"
           },
@@ -412,24 +412,24 @@
         "retries": 0,
         "metadata": {
           "ci": {
-            "commitHref": "https://github.com/Enterprise-CMCS/macpro-mako/commit/0e9fdf1dbf702b378ea0c4819135836244637898",
-            "commitHash": "0e9fdf1dbf702b378ea0c4819135836244637898",
-            "buildHref": "https://github.com/Enterprise-CMCS/macpro-mako/actions/runs/21445260471"
+            "commitHref": "https://github.com/Enterprise-CMCS/macpro-mako/commit/b34004f86c331c1ae4cc9a9e0cb156617fc7d897",
+            "commitHash": "b34004f86c331c1ae4cc9a9e0cb156617fc7d897",
+            "buildHref": "https://github.com/Enterprise-CMCS/macpro-mako/actions/runs/21998299050"
           },
           "gitCommit": {
-            "shortHash": "0e9fdf1",
-            "hash": "0e9fdf1dbf702b378ea0c4819135836244637898",
-            "subject": "fix(macpro sso): add additional macpro sso link logic (#1821)",
-            "body": "fix(macpro sso): add additional macpro sso link logic (#1821)\n\n* Update index.tsx\n\n* Update index.tsx\n\n* Update index.tsx",
+            "shortHash": "b34004f",
+            "hash": "b34004f86c331c1ae4cc9a9e0cb156617fc7d897",
+            "subject": "feat(admin activity): add changeMade and changeReason logic to all administrative changes in the backend",
+            "body": "feat(admin activity): add changeMade and changeReason logic to all administrative changes in the backend\n\n* add changeMade and changeReason logic\n\n* tighten logic\n\n* add optional nullable for noso\n\n* add logic",
             "author": {
               "name": "James Dinh",
-              "email": "jdinh8124@gmail.com",
-              "time": 1769615642000
+              "email": "james.d@globalalliantinc.com",
+              "time": 1771007559000
             },
             "committer": {
               "name": "GitHub",
               "email": "noreply@github.com",
-              "time": 1769615642000
+              "time": 1771007559000
             },
             "branch": "main"
           },
@@ -453,24 +453,24 @@
         "retries": 0,
         "metadata": {
           "ci": {
-            "commitHref": "https://github.com/Enterprise-CMCS/macpro-mako/commit/0e9fdf1dbf702b378ea0c4819135836244637898",
-            "commitHash": "0e9fdf1dbf702b378ea0c4819135836244637898",
-            "buildHref": "https://github.com/Enterprise-CMCS/macpro-mako/actions/runs/21445260471"
+            "commitHref": "https://github.com/Enterprise-CMCS/macpro-mako/commit/b34004f86c331c1ae4cc9a9e0cb156617fc7d897",
+            "commitHash": "b34004f86c331c1ae4cc9a9e0cb156617fc7d897",
+            "buildHref": "https://github.com/Enterprise-CMCS/macpro-mako/actions/runs/21998299050"
           },
           "gitCommit": {
-            "shortHash": "0e9fdf1",
-            "hash": "0e9fdf1dbf702b378ea0c4819135836244637898",
-            "subject": "fix(macpro sso): add additional macpro sso link logic (#1821)",
-            "body": "fix(macpro sso): add additional macpro sso link logic (#1821)\n\n* Update index.tsx\n\n* Update index.tsx\n\n* Update index.tsx",
+            "shortHash": "b34004f",
+            "hash": "b34004f86c331c1ae4cc9a9e0cb156617fc7d897",
+            "subject": "feat(admin activity): add changeMade and changeReason logic to all administrative changes in the backend",
+            "body": "feat(admin activity): add changeMade and changeReason logic to all administrative changes in the backend\n\n* add changeMade and changeReason logic\n\n* tighten logic\n\n* add optional nullable for noso\n\n* add logic",
             "author": {
               "name": "James Dinh",
-              "email": "jdinh8124@gmail.com",
-              "time": 1769615642000
+              "email": "james.d@globalalliantinc.com",
+              "time": 1771007559000
             },
             "committer": {
               "name": "GitHub",
               "email": "noreply@github.com",
-              "time": 1769615642000
+              "time": 1771007559000
             },
             "branch": "main"
           },
@@ -494,24 +494,24 @@
         "retries": 0,
         "metadata": {
           "ci": {
-            "commitHref": "https://github.com/Enterprise-CMCS/macpro-mako/commit/0e9fdf1dbf702b378ea0c4819135836244637898",
-            "commitHash": "0e9fdf1dbf702b378ea0c4819135836244637898",
-            "buildHref": "https://github.com/Enterprise-CMCS/macpro-mako/actions/runs/21445260471"
+            "commitHref": "https://github.com/Enterprise-CMCS/macpro-mako/commit/b34004f86c331c1ae4cc9a9e0cb156617fc7d897",
+            "commitHash": "b34004f86c331c1ae4cc9a9e0cb156617fc7d897",
+            "buildHref": "https://github.com/Enterprise-CMCS/macpro-mako/actions/runs/21998299050"
           },
           "gitCommit": {
-            "shortHash": "0e9fdf1",
-            "hash": "0e9fdf1dbf702b378ea0c4819135836244637898",
-            "subject": "fix(macpro sso): add additional macpro sso link logic (#1821)",
-            "body": "fix(macpro sso): add additional macpro sso link logic (#1821)\n\n* Update index.tsx\n\n* Update index.tsx\n\n* Update index.tsx",
+            "shortHash": "b34004f",
+            "hash": "b34004f86c331c1ae4cc9a9e0cb156617fc7d897",
+            "subject": "feat(admin activity): add changeMade and changeReason logic to all administrative changes in the backend",
+            "body": "feat(admin activity): add changeMade and changeReason logic to all administrative changes in the backend\n\n* add changeMade and changeReason logic\n\n* tighten logic\n\n* add optional nullable for noso\n\n* add logic",
             "author": {
               "name": "James Dinh",
-              "email": "jdinh8124@gmail.com",
-              "time": 1769615642000
+              "email": "james.d@globalalliantinc.com",
+              "time": 1771007559000
             },
             "committer": {
               "name": "GitHub",
               "email": "noreply@github.com",
-              "time": 1769615642000
+              "time": 1771007559000
             },
             "branch": "main"
           },
@@ -535,24 +535,24 @@
         "retries": 0,
         "metadata": {
           "ci": {
-            "commitHref": "https://github.com/Enterprise-CMCS/macpro-mako/commit/0e9fdf1dbf702b378ea0c4819135836244637898",
-            "commitHash": "0e9fdf1dbf702b378ea0c4819135836244637898",
-            "buildHref": "https://github.com/Enterprise-CMCS/macpro-mako/actions/runs/21445260471"
+            "commitHref": "https://github.com/Enterprise-CMCS/macpro-mako/commit/b34004f86c331c1ae4cc9a9e0cb156617fc7d897",
+            "commitHash": "b34004f86c331c1ae4cc9a9e0cb156617fc7d897",
+            "buildHref": "https://github.com/Enterprise-CMCS/macpro-mako/actions/runs/21998299050"
           },
           "gitCommit": {
-            "shortHash": "0e9fdf1",
-            "hash": "0e9fdf1dbf702b378ea0c4819135836244637898",
-            "subject": "fix(macpro sso): add additional macpro sso link logic (#1821)",
-            "body": "fix(macpro sso): add additional macpro sso link logic (#1821)\n\n* Update index.tsx\n\n* Update index.tsx\n\n* Update index.tsx",
+            "shortHash": "b34004f",
+            "hash": "b34004f86c331c1ae4cc9a9e0cb156617fc7d897",
+            "subject": "feat(admin activity): add changeMade and changeReason logic to all administrative changes in the backend",
+            "body": "feat(admin activity): add changeMade and changeReason logic to all administrative changes in the backend\n\n* add changeMade and changeReason logic\n\n* tighten logic\n\n* add optional nullable for noso\n\n* add logic",
             "author": {
               "name": "James Dinh",
-              "email": "jdinh8124@gmail.com",
-              "time": 1769615642000
+              "email": "james.d@globalalliantinc.com",
+              "time": 1771007559000
             },
             "committer": {
               "name": "GitHub",
               "email": "noreply@github.com",
-              "time": 1769615642000
+              "time": 1771007559000
             },
             "branch": "main"
           },
@@ -600,7 +600,7 @@
     "tags": [],
     "updateSnapshots": "missing",
     "updateSourceMethod": "patch",
-    "version": "1.58.0",
+    "version": "1.58.2",
     "workers": 1,
     "webServer": null
   },
@@ -650,12 +650,12 @@
                               "workerIndex": 0,
                               "parallelIndex": 0,
                               "status": "passed",
-                              "duration": 4978,
+                              "duration": 4229,
                               "errors": [],
                               "stdout": [],
                               "stderr": [],
                               "retry": 0,
-                              "startTime": "2026-01-28T15:57:32.781Z",
+                              "startTime": "2026-02-13T18:45:19.763Z",
                               "annotations": [],
                               "attachments": []
                             }
@@ -686,12 +686,12 @@
                               "workerIndex": 0,
                               "parallelIndex": 0,
                               "status": "passed",
-                              "duration": 3961,
+                              "duration": 4060,
                               "errors": [],
                               "stdout": [],
                               "stderr": [],
                               "retry": 0,
-                              "startTime": "2026-01-28T15:57:37.868Z",
+                              "startTime": "2026-02-13T18:45:24.087Z",
                               "annotations": [],
                               "attachments": []
                             }
@@ -722,12 +722,12 @@
                               "workerIndex": 0,
                               "parallelIndex": 0,
                               "status": "passed",
-                              "duration": 4078,
+                              "duration": 4082,
                               "errors": [],
                               "stdout": [],
                               "stderr": [],
                               "retry": 0,
-                              "startTime": "2026-01-28T15:57:41.842Z",
+                              "startTime": "2026-02-13T18:45:28.165Z",
                               "annotations": [],
                               "attachments": []
                             }
@@ -758,12 +758,12 @@
                               "workerIndex": 0,
                               "parallelIndex": 0,
                               "status": "passed",
-                              "duration": 4392,
+                              "duration": 4092,
                               "errors": [],
                               "stdout": [],
                               "stderr": [],
                               "retry": 0,
-                              "startTime": "2026-01-28T15:57:45.931Z",
+                              "startTime": "2026-02-13T18:45:32.263Z",
                               "annotations": [],
                               "attachments": []
                             }
@@ -794,12 +794,12 @@
                               "workerIndex": 0,
                               "parallelIndex": 0,
                               "status": "passed",
-                              "duration": 3826,
+                              "duration": 4011,
                               "errors": [],
                               "stdout": [],
                               "stderr": [],
                               "retry": 0,
-                              "startTime": "2026-01-28T15:57:50.334Z",
+                              "startTime": "2026-02-13T18:45:36.373Z",
                               "annotations": [],
                               "attachments": []
                             }
@@ -830,12 +830,12 @@
                               "workerIndex": 0,
                               "parallelIndex": 0,
                               "status": "passed",
-                              "duration": 2925,
+                              "duration": 4034,
                               "errors": [],
                               "stdout": [],
                               "stderr": [],
                               "retry": 0,
-                              "startTime": "2026-01-28T15:57:54.172Z",
+                              "startTime": "2026-02-13T18:45:40.400Z",
                               "annotations": [],
                               "attachments": []
                             }
@@ -866,12 +866,12 @@
                               "workerIndex": 0,
                               "parallelIndex": 0,
                               "status": "passed",
-                              "duration": 3961,
+                              "duration": 4026,
                               "errors": [],
                               "stdout": [],
                               "stderr": [],
                               "retry": 0,
-                              "startTime": "2026-01-28T15:57:57.112Z",
+                              "startTime": "2026-02-13T18:45:44.447Z",
                               "annotations": [],
                               "attachments": []
                             }
@@ -917,12 +917,12 @@
                                       "workerIndex": 0,
                                       "parallelIndex": 0,
                                       "status": "passed",
-                                      "duration": 1005,
+                                      "duration": 1124,
                                       "errors": [],
                                       "stdout": [],
                                       "stderr": [],
                                       "retry": 0,
-                                      "startTime": "2026-01-28T15:58:01.086Z",
+                                      "startTime": "2026-02-13T18:45:48.484Z",
                                       "annotations": [],
                                       "attachments": []
                                     }
@@ -953,12 +953,12 @@
                                       "workerIndex": 0,
                                       "parallelIndex": 0,
                                       "status": "passed",
-                                      "duration": 3849,
+                                      "duration": 3805,
                                       "errors": [],
                                       "stdout": [],
                                       "stderr": [],
                                       "retry": 0,
-                                      "startTime": "2026-01-28T15:58:02.104Z",
+                                      "startTime": "2026-02-13T18:45:49.620Z",
                                       "annotations": [],
                                       "attachments": []
                                     }
@@ -989,12 +989,12 @@
                                       "workerIndex": 0,
                                       "parallelIndex": 0,
                                       "status": "passed",
-                                      "duration": 3821,
+                                      "duration": 3964,
                                       "errors": [],
                                       "stdout": [],
                                       "stderr": [],
                                       "retry": 0,
-                                      "startTime": "2026-01-28T15:58:05.966Z",
+                                      "startTime": "2026-02-13T18:45:53.438Z",
                                       "annotations": [],
                                       "attachments": []
                                     }
@@ -1033,12 +1033,12 @@
                                       "workerIndex": 0,
                                       "parallelIndex": 0,
                                       "status": "passed",
-                                      "duration": 3289,
+                                      "duration": 4108,
                                       "errors": [],
                                       "stdout": [],
                                       "stderr": [],
                                       "retry": 0,
-                                      "startTime": "2026-01-28T15:58:09.799Z",
+                                      "startTime": "2026-02-13T18:45:57.415Z",
                                       "annotations": [],
                                       "attachments": []
                                     }
@@ -1069,12 +1069,12 @@
                                       "workerIndex": 0,
                                       "parallelIndex": 0,
                                       "status": "passed",
-                                      "duration": 3020,
+                                      "duration": 3766,
                                       "errors": [],
                                       "stdout": [],
                                       "stderr": [],
                                       "retry": 0,
-                                      "startTime": "2026-01-28T15:58:13.099Z",
+                                      "startTime": "2026-02-13T18:46:01.536Z",
                                       "annotations": [],
                                       "attachments": []
                                     }
@@ -1105,12 +1105,12 @@
                                       "workerIndex": 0,
                                       "parallelIndex": 0,
                                       "status": "passed",
-                                      "duration": 3045,
+                                      "duration": 4014,
                                       "errors": [],
                                       "stdout": [],
                                       "stderr": [],
                                       "retry": 0,
-                                      "startTime": "2026-01-28T15:58:16.130Z",
+                                      "startTime": "2026-02-13T18:46:05.314Z",
                                       "annotations": [],
                                       "attachments": []
                                     }
@@ -1153,16 +1153,16 @@
                               "workerIndex": 0,
                               "parallelIndex": 0,
                               "status": "passed",
-                              "duration": 5735,
+                              "duration": 8155,
                               "errors": [],
                               "stdout": [
                                 {
-                                  "text": "[Download] for stateSubmitter Filename suggested by browser: spas-export-01_28_2026.csv\"\n"
+                                  "text": "[Download] for stateSubmitter Filename suggested by browser: spas-export-02_13_2026.csv\"\n"
                                 }
                               ],
                               "stderr": [],
                               "retry": 0,
-                              "startTime": "2026-01-28T15:58:19.187Z",
+                              "startTime": "2026-02-13T18:46:09.340Z",
                               "annotations": [],
                               "attachments": [
                                 {
@@ -1216,12 +1216,12 @@
                               "workerIndex": 0,
                               "parallelIndex": 0,
                               "status": "passed",
-                              "duration": 3034,
+                              "duration": 4101,
                               "errors": [],
                               "stdout": [],
                               "stderr": [],
                               "retry": 0,
-                              "startTime": "2026-01-28T15:58:24.934Z",
+                              "startTime": "2026-02-13T18:46:17.507Z",
                               "annotations": [],
                               "attachments": []
                             }
@@ -1252,12 +1252,12 @@
                               "workerIndex": 0,
                               "parallelIndex": 0,
                               "status": "passed",
-                              "duration": 2858,
+                              "duration": 4039,
                               "errors": [],
                               "stdout": [],
                               "stderr": [],
                               "retry": 0,
-                              "startTime": "2026-01-28T15:58:27.980Z",
+                              "startTime": "2026-02-13T18:46:21.619Z",
                               "annotations": [],
                               "attachments": []
                             }
@@ -1288,12 +1288,12 @@
                               "workerIndex": 0,
                               "parallelIndex": 0,
                               "status": "passed",
-                              "duration": 2867,
+                              "duration": 4031,
                               "errors": [],
                               "stdout": [],
                               "stderr": [],
                               "retry": 0,
-                              "startTime": "2026-01-28T15:58:30.853Z",
+                              "startTime": "2026-02-13T18:46:25.669Z",
                               "annotations": [],
                               "attachments": []
                             }
@@ -1324,12 +1324,12 @@
                               "workerIndex": 0,
                               "parallelIndex": 0,
                               "status": "passed",
-                              "duration": 2880,
+                              "duration": 4008,
                               "errors": [],
                               "stdout": [],
                               "stderr": [],
                               "retry": 0,
-                              "startTime": "2026-01-28T15:58:33.730Z",
+                              "startTime": "2026-02-13T18:46:29.713Z",
                               "annotations": [],
                               "attachments": []
                             }
@@ -1360,12 +1360,12 @@
                               "workerIndex": 0,
                               "parallelIndex": 0,
                               "status": "passed",
-                              "duration": 2857,
+                              "duration": 4045,
                               "errors": [],
                               "stdout": [],
                               "stderr": [],
                               "retry": 0,
-                              "startTime": "2026-01-28T15:58:36.621Z",
+                              "startTime": "2026-02-13T18:46:33.733Z",
                               "annotations": [],
                               "attachments": []
                             }
@@ -1396,12 +1396,12 @@
                               "workerIndex": 0,
                               "parallelIndex": 0,
                               "status": "passed",
-                              "duration": 2791,
+                              "duration": 3857,
                               "errors": [],
                               "stdout": [],
                               "stderr": [],
                               "retry": 0,
-                              "startTime": "2026-01-28T15:58:39.488Z",
+                              "startTime": "2026-02-13T18:46:37.790Z",
                               "annotations": [],
                               "attachments": []
                             }
@@ -1432,12 +1432,12 @@
                               "workerIndex": 0,
                               "parallelIndex": 0,
                               "status": "passed",
-                              "duration": 2878,
+                              "duration": 4097,
                               "errors": [],
                               "stdout": [],
                               "stderr": [],
                               "retry": 0,
-                              "startTime": "2026-01-28T15:58:42.291Z",
+                              "startTime": "2026-02-13T18:46:41.657Z",
                               "annotations": [],
                               "attachments": []
                             }
@@ -1483,12 +1483,12 @@
                                       "workerIndex": 0,
                                       "parallelIndex": 0,
                                       "status": "passed",
-                                      "duration": 890,
+                                      "duration": 1105,
                                       "errors": [],
                                       "stdout": [],
                                       "stderr": [],
                                       "retry": 0,
-                                      "startTime": "2026-01-28T15:58:45.181Z",
+                                      "startTime": "2026-02-13T18:46:45.765Z",
                                       "annotations": [],
                                       "attachments": []
                                     }
@@ -1519,12 +1519,12 @@
                                       "workerIndex": 0,
                                       "parallelIndex": 0,
                                       "status": "passed",
-                                      "duration": 2833,
+                                      "duration": 3890,
                                       "errors": [],
                                       "stdout": [],
                                       "stderr": [],
                                       "retry": 0,
-                                      "startTime": "2026-01-28T15:58:46.082Z",
+                                      "startTime": "2026-02-13T18:46:46.881Z",
                                       "annotations": [],
                                       "attachments": []
                                     }
@@ -1555,12 +1555,12 @@
                                       "workerIndex": 0,
                                       "parallelIndex": 0,
                                       "status": "passed",
-                                      "duration": 2780,
+                                      "duration": 3956,
                                       "errors": [],
                                       "stdout": [],
                                       "stderr": [],
                                       "retry": 0,
-                                      "startTime": "2026-01-28T15:58:48.926Z",
+                                      "startTime": "2026-02-13T18:46:50.783Z",
                                       "annotations": [],
                                       "attachments": []
                                     }
@@ -1599,12 +1599,12 @@
                                       "workerIndex": 0,
                                       "parallelIndex": 0,
                                       "status": "passed",
-                                      "duration": 3004,
+                                      "duration": 4079,
                                       "errors": [],
                                       "stdout": [],
                                       "stderr": [],
                                       "retry": 0,
-                                      "startTime": "2026-01-28T15:58:51.718Z",
+                                      "startTime": "2026-02-13T18:46:54.752Z",
                                       "annotations": [],
                                       "attachments": []
                                     }
@@ -1635,12 +1635,12 @@
                                       "workerIndex": 0,
                                       "parallelIndex": 0,
                                       "status": "passed",
-                                      "duration": 2506,
+                                      "duration": 3681,
                                       "errors": [],
                                       "stdout": [],
                                       "stderr": [],
                                       "retry": 0,
-                                      "startTime": "2026-01-28T15:58:54.735Z",
+                                      "startTime": "2026-02-13T18:46:58.844Z",
                                       "annotations": [],
                                       "attachments": []
                                     }
@@ -1671,12 +1671,12 @@
                                       "workerIndex": 0,
                                       "parallelIndex": 0,
                                       "status": "passed",
-                                      "duration": 2962,
+                                      "duration": 3442,
                                       "errors": [],
                                       "stdout": [],
                                       "stderr": [],
                                       "retry": 0,
-                                      "startTime": "2026-01-28T15:58:57.254Z",
+                                      "startTime": "2026-02-13T18:47:02.538Z",
                                       "annotations": [],
                                       "attachments": []
                                     }
@@ -1719,16 +1719,16 @@
                               "workerIndex": 0,
                               "parallelIndex": 0,
                               "status": "passed",
-                              "duration": 6020,
+                              "duration": 9487,
                               "errors": [],
                               "stdout": [
                                 {
-                                  "text": "[Download] for cmsReviewer Filename suggested by browser: spas-export-01_28_2026.csv\"\n"
+                                  "text": "[Download] for cmsReviewer Filename suggested by browser: spas-export-02_13_2026.csv\"\n"
                                 }
                               ],
                               "stderr": [],
                               "retry": 0,
-                              "startTime": "2026-01-28T15:59:00.227Z",
+                              "startTime": "2026-02-13T18:47:05.991Z",
                               "annotations": [],
                               "attachments": [
                                 {
@@ -1758,8 +1758,8 @@
   ],
   "errors": [],
   "stats": {
-    "startTime": "2026-01-28T15:57:19.980Z",
-    "duration": 106370.067,
+    "startTime": "2026-02-13T18:45:05.823Z",
+    "duration": 129763.735,
     "expected": 28,
     "skipped": 0,
     "unexpected": 0,
