@@ -23,30 +23,30 @@
         <div class='clearfix'>
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">91.57% </span>
+                <span class="strong">89.9% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>87/95</span>
+                <span class='fraction'>98/109</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">83.33% </span>
+                <span class="strong">80.88% </span>
                 <span class="quiet">Branches</span>
-                <span class='fraction'>45/54</span>
+                <span class='fraction'>55/68</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">85.71% </span>
+                <span class="strong">87.5% </span>
                 <span class="quiet">Functions</span>
-                <span class='fraction'>6/7</span>
+                <span class='fraction'>7/8</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">92.55% </span>
+                <span class="strong">92.45% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>87/94</span>
+                <span class='fraction'>98/106</span>
             </div>
         
             
@@ -312,7 +312,28 @@
 <a name='L247'></a><a href='#L247'>247</a>
 <a name='L248'></a><a href='#L248'>248</a>
 <a name='L249'></a><a href='#L249'>249</a>
-<a name='L250'></a><a href='#L250'>250</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
+<a name='L250'></a><a href='#L250'>250</a>
+<a name='L251'></a><a href='#L251'>251</a>
+<a name='L252'></a><a href='#L252'>252</a>
+<a name='L253'></a><a href='#L253'>253</a>
+<a name='L254'></a><a href='#L254'>254</a>
+<a name='L255'></a><a href='#L255'>255</a>
+<a name='L256'></a><a href='#L256'>256</a>
+<a name='L257'></a><a href='#L257'>257</a>
+<a name='L258'></a><a href='#L258'>258</a>
+<a name='L259'></a><a href='#L259'>259</a>
+<a name='L260'></a><a href='#L260'>260</a>
+<a name='L261'></a><a href='#L261'>261</a>
+<a name='L262'></a><a href='#L262'>262</a>
+<a name='L263'></a><a href='#L263'>263</a>
+<a name='L264'></a><a href='#L264'>264</a>
+<a name='L265'></a><a href='#L265'>265</a>
+<a name='L266'></a><a href='#L266'>266</a>
+<a name='L267'></a><a href='#L267'>267</a>
+<a name='L268'></a><a href='#L268'>268</a>
+<a name='L269'></a><a href='#L269'>269</a>
+<a name='L270'></a><a href='#L270'>270</a>
+<a name='L271'></a><a href='#L271'>271</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -379,6 +400,15 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">27x</span>
+<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">27x</span>
 <span class="cline-any cline-yes">27x</span>
@@ -406,9 +436,21 @@
 <span class="cline-any cline-yes">6x</span>
 <span class="cline-any cline-yes">5x</span>
 <span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -629,6 +671,15 @@ const processAndIndex = async ({
   transforms: any;
   topicPartition: string;
 }) =&gt; {
+  const normalizeEpochDate = (value: unknown): number | null =&gt; {
+    <span class="missing-if-branch" title="if path not taken" >I</span>if (value === null || value === undefined) <span class="cstat-no" title="statement not covered" >return null;</span>
+    <span class="missing-if-branch" title="if path not taken" >I</span>if (typeof value === "number") <span class="cstat-no" title="statement not covered" >return value;</span>
+    <span class="missing-if-branch" title="else path not taken" >E</span>if (typeof value === "string") {
+      const parsed = Date.parse(value);
+      return Number.isNaN(parsed) ? <span class="branch-0 cbranch-no" title="branch not covered" >null : p</span>arsed;
+    }
+<span class="cstat-no" title="statement not covered" >    return null;</span>
+  };
   const docs: Array&lt;(typeof transforms)[keyof typeof transforms]["Schema"]&gt; = [];
   for (const kafkaRecord of kafkaRecords) {
     console.log(JSON.stringify(kafkaRecord, null, 2));
@@ -655,10 +706,22 @@ const processAndIndex = async ({
         if (result.success) {
           if (result.data.adminChangeType === "update-id" &amp;&amp; "idToBeUpdated" in result.data) {
             const { id, packageId: _packageId, idToBeUpdated, ...restOfResultData } = result.data;
+            const normalizedDates: Record&lt;string, number | null&gt; = {};
+            if ("proposedDate" in restOfResultData) {
+              normalizedDates.proposedDate = normalizeEpochDate(
+                (restOfResultData as { proposedDate?: unknown }).proposedDate,
+              );
+            }
+            if ("submissionDate" in restOfResultData) {
+              normalizedDates.submissionDate = normalizeEpochDate(
+                (restOfResultData as { submissionDate?: unknown }).submissionDate,
+              );
+            }
             // Push doc with content of package being soft deleted
 &nbsp;
             docs.push({
               ...restOfResultData,
+              ...normalizedDates,
               id: id + "-" + result.data.timestamp,
               packageId: id,
               event: "update-id",
@@ -817,7 +880,7 @@ const processAndIndex = async ({
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2026-02-13T18:39:41.326Z
+                at 2026-02-13T23:02:31.698Z
             </div>
         <script src="../../prettify.js"></script>
         <script>
