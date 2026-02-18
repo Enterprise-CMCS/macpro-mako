@@ -239,7 +239,6 @@ async function scanIndex(
       size: pageSize,
       scroll: "2m",
       sort: ["_doc"],
-      track_total_hits: false,
       body: {
         query: { match_all: {} },
       },
