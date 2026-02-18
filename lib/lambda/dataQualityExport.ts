@@ -232,43 +232,45 @@ async function scanIndex(
   pageSize: number,
   onPage: (hits: any[]) => Promise<void>,
 ) {
-  const pitResponse = await client.openPointInTime({
-    index,
-    keep_alive: "5m",
-  });
-  const pitId = pitResponse.body?.id ?? pitResponse.body?.pit_id ?? pitResponse.body;
-
-  if (!pitId) {
-    throw new Error(`Failed to open PIT for index ${index}`);
-  }
-
-  let searchAfter: unknown[] | undefined;
+  let scrollId: string | undefined;
   try {
-    while (true) {
-      const response = await client.search({
-        size: pageSize,
-        pit: { id: pitId, keep_alive: "5m" },
-        sort: ["_shard_doc"],
-        search_after: searchAfter,
-        track_total_hits: false,
-        query: { match_all: {} },
-      });
-      const decoded = decodeUtf8(response);
-      const body = decoded?.body ?? decoded;
-      const hits = body?.hits?.hits ?? [];
+    let response = await client.search({
+      index,
+      size: pageSize,
+      scroll: "2m",
+      sort: ["_doc"],
+      track_total_hits: false,
+      query: { match_all: {} },
+    });
 
-      if (!hits.length) {
+    let decoded = decodeUtf8(response);
+    let body = decoded?.body ?? decoded;
+    let hits = body?.hits?.hits ?? [];
+    scrollId = body?._scroll_id ?? body?.scroll_id;
+
+    while (hits.length) {
+      await onPage(hits);
+
+      if (!scrollId) {
         break;
       }
 
-      await onPage(hits);
-      searchAfter = hits[hits.length - 1]?.sort;
+      response = await client.scroll({
+        scroll_id: scrollId,
+        scroll: "2m",
+      });
+      decoded = decodeUtf8(response);
+      body = decoded?.body ?? decoded;
+      hits = body?.hits?.hits ?? [];
+      scrollId = body?._scroll_id ?? body?.scroll_id ?? scrollId;
     }
   } finally {
     try {
-      await client.closePointInTime({ body: { id: pitId } });
+      if (scrollId) {
+        await client.clearScroll({ scroll_id: scrollId });
+      }
     } catch (error) {
-      console.warn("Failed to close PIT", { index, error });
+      console.warn("Failed to clear scroll", { index, error });
     }
   }
 }
