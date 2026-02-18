@@ -240,7 +240,9 @@ async function scanIndex(
       scroll: "2m",
       sort: ["_doc"],
       track_total_hits: false,
-      query: { match_all: {} },
+      body: {
+        query: { match_all: {} },
+      },
     });
 
     let decoded = decodeUtf8(response);
