@@ -398,7 +398,7 @@ export const ActionForm = <Schema extends SchemaWithEnforcableProps>({
     });
   };
 
-  const getStickyCancelPromptOverride = () => {
+  const getStickyCancelPromptOverride = (): Partial<Omit<UserPrompt, "onAccept">> => {
     const idPath = draftOptions?.idPath ?? "id";
     const idValue = getValueByPath(
       form.getValues() as Record<string, unknown>,
@@ -412,7 +412,7 @@ export const ActionForm = <Schema extends SchemaWithEnforcableProps>({
       acceptButtonText: "Yes, leave",
       cancelButtonText: "Go back",
       areButtonsReversed: true,
-      cancelVariant: "link",
+      cancelVariant: "link" as const,
     };
   };
 
