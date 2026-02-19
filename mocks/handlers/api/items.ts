@@ -2,7 +2,7 @@ import { http, HttpResponse } from "msw";
 import { opensearch } from "shared-types";
 
 import items, { GET_ERROR_ITEM_ID } from "../../data/items";
-import type { GetItemBody } from "../../index.d";
+import type { GetItemBody, ItemExistsBody } from "../../index.d";
 
 const defaultApiItemHandler = http.post<GetItemBody, GetItemBody>(
   "https://test-domain.execute-api.us-east-1.amazonaws.com/mocked-tests/item",
@@ -32,7 +32,7 @@ export const errorApiItemHandler = http.post(
   () => new HttpResponse(null, { status: 500 }),
 );
 
-const defaultApiItemExistsHandler = http.post<GetItemBody, GetItemBody>(
+const defaultApiItemExistsHandler = http.post<ItemExistsBody, ItemExistsBody>(
   "https://test-domain.execute-api.us-east-1.amazonaws.com/mocked-tests/itemExists",
   async ({ request }) => {
     const { id, includeDrafts } = await request.json();

@@ -158,6 +158,7 @@ export type SearchQueryBody = {
 };
 
 export type GetItemBody = { id: string };
+export type ItemExistsBody = { id: string; includeDrafts?: boolean };
 
 export type GetMultiItemBody = { ids: string[] };
 
