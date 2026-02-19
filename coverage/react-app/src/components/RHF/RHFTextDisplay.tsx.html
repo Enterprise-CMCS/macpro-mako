@@ -23,30 +23,30 @@
         <div class='clearfix'>
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">100% </span>
+                <span class="strong">0% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>8/8</span>
+                <span class='fraction'>0/8</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">100% </span>
+                <span class="strong">0% </span>
                 <span class="quiet">Branches</span>
-                <span class='fraction'>8/8</span>
+                <span class='fraction'>0/8</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">100% </span>
+                <span class="strong">0% </span>
                 <span class="quiet">Functions</span>
-                <span class='fraction'>4/4</span>
+                <span class='fraction'>0/4</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">100% </span>
+                <span class="strong">0% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>6/6</span>
+                <span class='fraction'>0/6</span>
             </div>
         
             
@@ -61,7 +61,7 @@
             </div>
         </template>
     </div>
-    <div class='status-line high'></div>
+    <div class='status-line low'></div>
     <pre><table class="coverage">
 <tr><td class="line-count quiet"><a name='L1'></a><a href='#L1'>1</a>
 <a name='L2'></a><a href='#L2'>2</a>
@@ -149,14 +149,14 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">105x</span>
-<span class="cline-any cline-yes">164x</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">7x</span>
-<span class="cline-any cline-yes">17x</span>
-<span class="cline-any cline-yes">16x</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">16x</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -225,14 +225,14 @@ interface RHFTextDisplayProps {
   index?: number;
 }
 &nbsp;
-export const RHFTextDisplay = (props: RHFTextDisplayProps) =&gt; {
-  if (!Array.isArray(props.text)) return props.text;
+export const RHFTextDisplay = <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >(p</span>rops: RHFTextDisplayProps) =&gt; {</span>
+<span class="cstat-no" title="statement not covered" >  if (!Array.isArray(props.text)) <span class="cstat-no" title="statement not covered" >return props.text;</span></span>
 &nbsp;
-  return props.text.map((t) =&gt; {
-    if (typeof t === "string") return t;
-    const orderedList = t?.listType === "ordered";
+<span class="cstat-no" title="statement not covered" >  return props.text.map(<span class="fstat-no" title="function not covered" >(t</span>) =&gt; {</span>
+<span class="cstat-no" title="statement not covered" >    if (typeof t === "string") <span class="cstat-no" title="statement not covered" >return t;</span></span>
+    const orderedList = <span class="cstat-no" title="statement not covered" >t?.listType === "ordered";</span>
 &nbsp;
-    switch (t?.type) {
+<span class="cstat-no" title="statement not covered" >    switch (t?.type) {</span>
       case "br":
         return (
           &lt;&gt;
@@ -262,9 +262,9 @@ export const RHFTextDisplay = (props: RHFTextDisplayProps) =&gt; {
       case "list":
         return (
           &lt;&gt;
-            {orderedList &amp;&amp; (
+            {<span class="branch-0 cbranch-no" title="branch not covered" >orderedList &amp;&amp; (</span>
               &lt;ol&gt;
-                {t?.list?.map((l, j) =&gt; {
+                {t?.list?.map(<span class="fstat-no" title="function not covered" >(l</span>, j) =&gt; {
                   return (
                     &lt;li key={`listItem.${j}.${l.text}`}&gt;
                       &lt;RHFTextDisplay text={[l]} /&gt;
@@ -273,9 +273,9 @@ export const RHFTextDisplay = (props: RHFTextDisplayProps) =&gt; {
                 })}
               &lt;/ol&gt;
             )}
-            {!orderedList &amp;&amp; (
+            {<span class="branch-0 cbranch-no" title="branch not covered" >!orderedList &amp;&amp; (</span>
               &lt;ul&gt;
-                {t?.list?.map((l, j) =&gt; {
+                {t?.list?.map(<span class="fstat-no" title="function not covered" >(l</span>, j) =&gt; {
                   return (
                     &lt;li key={`listItem.${j}.${l.text}`}&gt;
                       &lt;RHFTextDisplay text={[l]} /&gt;
@@ -298,7 +298,7 @@ export const RHFTextDisplay = (props: RHFTextDisplayProps) =&gt; {
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2026-02-18T02:20:30.071Z
+                at 2026-02-19T02:20:04.000Z
             </div>
         <script src="../../../../prettify.js"></script>
         <script>

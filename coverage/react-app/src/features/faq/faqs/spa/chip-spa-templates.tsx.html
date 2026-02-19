@@ -23,9 +23,9 @@
         <div class='clearfix'>
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">62.5% </span>
+                <span class="strong">0% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>5/8</span>
+                <span class='fraction'>0/8</span>
             </div>
         
             
@@ -44,9 +44,9 @@
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">62.5% </span>
+                <span class="strong">0% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>5/8</span>
+                <span class='fraction'>0/8</span>
             </div>
         
             
@@ -61,7 +61,7 @@
             </div>
         </template>
     </div>
-    <div class='status-line medium'></div>
+    <div class='status-line low'></div>
     <pre><table class="coverage">
 <tr><td class="line-count quiet"><a name='L1'></a><a href='#L1'>1</a>
 <a name='L2'></a><a href='#L2'>2</a>
@@ -247,7 +247,7 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">3x</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -296,7 +296,7 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">3x</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -305,7 +305,7 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">3x</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -314,7 +314,7 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">3x</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -368,7 +368,7 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">3x</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
@@ -426,7 +426,7 @@
 import { PdfList, Template } from "../utils";
 &nbsp;
 // MAGI Eligibility &amp; Methods
-export const CHP_MAGI_TEMPLATES: Template[] = [
+export const CHP_MAGI_TEMPLATES: Template[] = <span class="cstat-no" title="statement not covered" >[</span>
   {
     title: "CS 7",
     text: "Eligibility - Targeted Low-Income Children",
@@ -475,7 +475,7 @@ export const CHP_MAGI_TEMPLATES: Template[] = [
 ];
 &nbsp;
 // XXI Medicaid Expansion
-export const CHP_MED_EXPANSION_TEMPLATES: Template[] = [
+export const CHP_MED_EXPANSION_TEMPLATES: Template[] = <span class="cstat-no" title="statement not covered" >[</span>
   {
     title: "CS 3",
     text: "Eligibility for Medicaid Expansion Program",
@@ -484,7 +484,7 @@ export const CHP_MED_EXPANSION_TEMPLATES: Template[] = [
 ];
 &nbsp;
 // Eligibility Processing
-export const CHP_ELIGIBILITY_TEMPLATE: Template[] = [
+export const CHP_ELIGIBILITY_TEMPLATE: Template[] = <span class="cstat-no" title="statement not covered" >[</span>
   {
     title: "CS 24",
     text: "General Eligibility - Eligibility Processing",
@@ -493,7 +493,7 @@ export const CHP_ELIGIBILITY_TEMPLATE: Template[] = [
 ];
 &nbsp;
 // Non-Financial Eligibility
-export const CHP_NON_FIN_TEMPLATE: Template[] = [
+export const CHP_NON_FIN_TEMPLATE: Template[] = <span class="cstat-no" title="statement not covered" >[</span>
   {
     title: "CS 17",
     text: "Non-Financial Eligibility - Residency",
@@ -547,7 +547,7 @@ export const CHP_NON_FIN_TEMPLATE: Template[] = [
   },
 ];
 &nbsp;
-export const ChipSpaTemplates = <span class="fstat-no" title="function not covered" >() =&gt; {</span>
+export const ChipSpaTemplates = <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >() =&gt; {</span></span>
   const useNewCs31 = <span class="cstat-no" title="statement not covered" >useFeatureFlag("CS31_ALT");</span>
 &nbsp;
   const nonFinancialTemplates: Template[] = <span class="cstat-no" title="statement not covered" >CHP_NON_FIN_TEMPLATE.map(<span class="fstat-no" title="function not covered" >(t</span>emplate) =&gt;</span>
@@ -607,7 +607,7 @@ export const ChipSpaTemplates = <span class="fstat-no" title="function not cover
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2026-02-18T02:20:30.071Z
+                at 2026-02-19T02:20:04.000Z
             </div>
         <script src="../../../../../../prettify.js"></script>
         <script>

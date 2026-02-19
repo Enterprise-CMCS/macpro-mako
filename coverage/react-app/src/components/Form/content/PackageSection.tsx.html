@@ -23,30 +23,30 @@
         <div class='clearfix'>
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">100% </span>
+                <span class="strong">37.5% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>8/8</span>
+                <span class='fraction'>3/8</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">50% </span>
+                <span class="strong">0% </span>
                 <span class="quiet">Branches</span>
-                <span class='fraction'>2/4</span>
+                <span class='fraction'>0/4</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">100% </span>
+                <span class="strong">0% </span>
                 <span class="quiet">Functions</span>
-                <span class='fraction'>3/3</span>
+                <span class='fraction'>0/3</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">100% </span>
+                <span class="strong">37.5% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>8/8</span>
+                <span class='fraction'>3/8</span>
             </div>
         
             
@@ -61,7 +61,7 @@
             </div>
         </template>
     </div>
-    <div class='status-line high'></div>
+    <div class='status-line low'></div>
     <pre><table class="coverage">
 <tr><td class="line-count quiet"><a name='L1'></a><a href='#L1'>1</a>
 <a name='L2'></a><a href='#L2'>2</a>
@@ -114,30 +114,30 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">105x</span>
-<span class="cline-any cline-yes">17x</span>
+<span class="cline-any cline-yes">104x</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">17x</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">105x</span>
-<span class="cline-any cline-yes">17x</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">104x</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">17x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">105x</span>
-<span class="cline-any cline-yes">17x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">104x</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -160,30 +160,30 @@ import { AuthorityUnion } from "shared-types";
 &nbsp;
 import { BLANK_VALUE } from "@/consts";
 &nbsp;
-export const getIdLabel = (authority: AuthorityUnion) =&gt; {
-  const idLabels = new Map&lt;AuthorityUnion, string&gt;([
+export const getIdLabel = <span class="fstat-no" title="function not covered" >(a</span>uthority: AuthorityUnion) =&gt; {
+  const idLabels = <span class="cstat-no" title="statement not covered" >new Map&lt;AuthorityUnion, string&gt;([</span>
     ["CHIP SPA", "Package ID"],
     ["Medicaid SPA", "Package ID"],
     ["1915(b)", "Waiver Number"],
     ["1915(c)", "Waiver Number"],
   ]);
 &nbsp;
-  return idLabels.get(authority) ?? <span class="branch-1 cbranch-no" title="branch not covered" >BLANK_VALUE;</span>
+<span class="cstat-no" title="statement not covered" >  return idLabels.get(authority) ?? BLANK_VALUE;</span>
 };
 &nbsp;
-export const getAuthorityLabel = (authority: AuthorityUnion) =&gt; {
-  const authorityLabels = new Map&lt;AuthorityUnion, string&gt;([
+export const getAuthorityLabel = <span class="fstat-no" title="function not covered" >(a</span>uthority: AuthorityUnion) =&gt; {
+  const authorityLabels = <span class="cstat-no" title="statement not covered" >new Map&lt;AuthorityUnion, string&gt;([</span>
     ["CHIP SPA", "CHIP SPA"],
     ["Medicaid SPA", "Medicaid SPA"],
     ["1915(b)", "1915(b) Waiver"],
     ["1915(c)", "1915(c) Waiver"],
   ]);
 &nbsp;
-  return authorityLabels.get(authority) ?? <span class="branch-1 cbranch-no" title="branch not covered" >BLANK_VALUE;</span>
+<span class="cstat-no" title="statement not covered" >  return authorityLabels.get(authority) ?? BLANK_VALUE;</span>
 };
 &nbsp;
-export const PackageSection = () =&gt; {
-  const { id, authority } = useParams&lt;{
+export const PackageSection = <span class="fstat-no" title="function not covered" >() =&gt; {</span>
+  const { id, authority } = <span class="cstat-no" title="statement not covered" >useParams&lt;{</span>
     id: string;
     authority: AuthorityUnion;
   }&gt;();
@@ -208,7 +208,7 @@ export const PackageSection = () =&gt; {
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2026-02-18T02:20:30.071Z
+                at 2026-02-19T02:20:04.000Z
             </div>
         <script src="../../../../../prettify.js"></script>
         <script>

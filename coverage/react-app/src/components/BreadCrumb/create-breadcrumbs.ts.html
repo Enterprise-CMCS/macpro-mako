@@ -23,30 +23,30 @@
         <div class='clearfix'>
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">100% </span>
+                <span class="strong">22.22% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>9/9</span>
+                <span class='fraction'>2/9</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">100% </span>
+                <span class="strong">0% </span>
                 <span class="quiet">Branches</span>
-                <span class='fraction'>4/4</span>
+                <span class='fraction'>0/4</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">100% </span>
+                <span class="strong">0% </span>
                 <span class="quiet">Functions</span>
-                <span class='fraction'>2/2</span>
+                <span class='fraction'>0/2</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">100% </span>
+                <span class="strong">22.22% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>9/9</span>
+                <span class='fraction'>2/9</span>
             </div>
         
             
@@ -61,7 +61,7 @@
             </div>
         </template>
     </div>
-    <div class='status-line high'></div>
+    <div class='status-line low'></div>
     <pre><table class="coverage">
 <tr><td class="line-count quiet"><a name='L1'></a><a href='#L1'>1</a>
 <a name='L2'></a><a href='#L2'>2</a>
@@ -149,7 +149,7 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">105x</span>
+<span class="cline-any cline-yes">103x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -197,33 +197,33 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">105x</span>
+<span class="cline-any cline-yes">103x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">543x</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">1739x</span>
-<span class="cline-any cline-yes">25x</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">1714x</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">543x</span>
-<span class="cline-any cline-yes">114x</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">429x</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">import { Authority } from "shared-types";
 &nbsp;
@@ -278,33 +278,33 @@ const newSubmissionPageRouteMapper: Record&lt;string, { to: string; displayText:
   },
 };
 &nbsp;
-export const optionCrumbsFromPath = (
+export const optionCrumbsFromPath = <span class="fstat-no" title="function not covered" >(</span>
   path: string,
   authority?: Authority,
   id?: string,
 ): BreadCrumbConfig[] =&gt; {
-  const breadcrumbs = [dashboardCrumb(authority)].concat(
-    path.split("/").reduce&lt;BreadCrumbConfig[]&gt;((acc, subPath, index) =&gt; {
-      if (subPath in newSubmissionPageRouteMapper) {
-        return acc.concat({
+  const breadcrumbs = <span class="cstat-no" title="statement not covered" >[dashboardCrumb(authority)].concat(</span>
+    path.split("/").reduce&lt;BreadCrumbConfig[]&gt;(<span class="fstat-no" title="function not covered" >(a</span>cc, subPath, index) =&gt; {
+<span class="cstat-no" title="statement not covered" >      if (subPath in newSubmissionPageRouteMapper) {</span>
+<span class="cstat-no" title="statement not covered" >        return acc.concat({</span>
           ...newSubmissionPageRouteMapper[subPath],
           order: index,
         });
       }
 &nbsp;
-      return acc;
+<span class="cstat-no" title="statement not covered" >      return acc;</span>
     }, []),
   );
 &nbsp;
-  if (id) {
-    return breadcrumbs.concat({
+<span class="cstat-no" title="statement not covered" >  if (id) {</span>
+<span class="cstat-no" title="statement not covered" >    return breadcrumbs.concat({</span>
       displayText: id,
       to: `/details/${authority}/${id}`,
       order: breadcrumbs.length,
     });
   }
 &nbsp;
-  return breadcrumbs;
+<span class="cstat-no" title="statement not covered" >  return breadcrumbs;</span>
 };
 &nbsp;</pre></td></tr></table></pre>
 
@@ -313,7 +313,7 @@ export const optionCrumbsFromPath = (
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2026-02-18T02:20:30.071Z
+                at 2026-02-19T02:20:04.000Z
             </div>
         <script src="../../../../prettify.js"></script>
         <script>

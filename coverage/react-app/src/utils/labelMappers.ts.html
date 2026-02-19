@@ -23,30 +23,30 @@
         <div class='clearfix'>
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">83.33% </span>
+                <span class="strong">8.33% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>10/12</span>
+                <span class='fraction'>1/12</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">80% </span>
+                <span class="strong">0% </span>
                 <span class="quiet">Branches</span>
-                <span class='fraction'>8/10</span>
+                <span class='fraction'>0/10</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">100% </span>
+                <span class="strong">0% </span>
                 <span class="quiet">Functions</span>
-                <span class='fraction'>1/1</span>
+                <span class='fraction'>0/1</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">83.33% </span>
+                <span class="strong">8.33% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>10/12</span>
+                <span class='fraction'>1/12</span>
             </div>
         
             
@@ -61,7 +61,7 @@
             </div>
         </template>
     </div>
-    <div class='status-line high'></div>
+    <div class='status-line low'></div>
     <pre><table class="coverage">
 <tr><td class="line-count quiet"><a name='L1'></a><a href='#L1'>1</a>
 <a name='L2'></a><a href='#L2'>2</a>
@@ -91,53 +91,53 @@
 <a name='L26'></a><a href='#L26'>26</a>
 <a name='L27'></a><a href='#L27'>27</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">106x</span>
-<span class="cline-any cline-yes">1221x</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">150x</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">78x</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">372x</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">40x</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">145x</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">104x</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">104x</span>
+<span class="cline-any cline-yes">105x</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">228x</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">import { Action } from "shared-types/actions";
 &nbsp;
-export const mapActionLabel = (a: Action) =&gt; {
-  switch (a) {
+export const mapActionLabel = <span class="fstat-no" title="function not covered" >(a</span>: Action) =&gt; {
+<span class="cstat-no" title="statement not covered" >  switch (a) {</span>
     case Action.ENABLE_RAI_WITHDRAW:
-      return "Enable Formal RAI Response Withdraw";
+<span class="cstat-no" title="statement not covered" >      return "Enable Formal RAI Response Withdraw";</span>
     case Action.DISABLE_RAI_WITHDRAW:
-      return "Disable Formal RAI Response Withdraw";
+<span class="cstat-no" title="statement not covered" >      return "Disable Formal RAI Response Withdraw";</span>
     case Action.WITHDRAW_PACKAGE:
-      return "Withdraw Package";
+<span class="cstat-no" title="statement not covered" >      return "Withdraw Package";</span>
     case Action.WITHDRAW_RAI:
-      return "Withdraw Formal RAI Response";
+<span class="cstat-no" title="statement not covered" >      return "Withdraw Formal RAI Response";</span>
     case Action.RESPOND_TO_RAI:
-      return "Respond to Formal RAI";
+<span class="cstat-no" title="statement not covered" >      return "Respond to Formal RAI";</span>
     case Action.TEMP_EXTENSION:
-      return "Request Temporary Extension";
+<span class="cstat-no" title="statement not covered" >      return "Request Temporary Extension";</span>
     case Action.AMEND_WAIVER:
-      return "Add Amendment";
-<span class="branch-7 cbranch-no" title="branch not covered" >    case Action.UPDATE_ID:</span>
+<span class="cstat-no" title="statement not covered" >      return "Add Amendment";</span>
+    case Action.UPDATE_ID:
 <span class="cstat-no" title="statement not covered" >      return "Update ID";</span>
     case Action.UPLOAD_SUBSEQUENT_DOCUMENTS:
-      return "Upload Subsequent Documents";
-<span class="branch-9 cbranch-no" title="branch not covered" >    default:</span>
+<span class="cstat-no" title="statement not covered" >      return "Upload Subsequent Documents";</span>
+    default:
 <span class="cstat-no" title="statement not covered" >      return "";</span>
   }
 };
@@ -148,7 +148,7 @@ export const mapActionLabel = (a: Action) =&gt; {
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2026-02-18T02:20:30.071Z
+                at 2026-02-19T02:20:04.000Z
             </div>
         <script src="../../../prettify.js"></script>
         <script>

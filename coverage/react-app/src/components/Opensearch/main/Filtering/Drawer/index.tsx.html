@@ -23,30 +23,30 @@
         <div class='clearfix'>
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">100% </span>
+                <span class="strong">0% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>2/2</span>
+                <span class='fraction'>0/2</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">100% </span>
+                <span class="strong">0% </span>
                 <span class="quiet">Branches</span>
-                <span class='fraction'>4/4</span>
+                <span class='fraction'>0/4</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">100% </span>
+                <span class="strong">0% </span>
                 <span class="quiet">Functions</span>
-                <span class='fraction'>1/1</span>
+                <span class='fraction'>0/1</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">100% </span>
+                <span class="strong">0% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>2/2</span>
+                <span class='fraction'>0/2</span>
             </div>
         
             
@@ -61,7 +61,7 @@
             </div>
         </template>
     </div>
-    <div class='status-line high'></div>
+    <div class='status-line low'></div>
     <pre><table class="coverage">
 <tr><td class="line-count quiet"><a name='L1'></a><a href='#L1'>1</a>
 <a name='L2'></a><a href='#L2'>2</a>
@@ -183,11 +183,11 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">105x</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">481x</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -285,11 +285,11 @@ import {
 import * as F from "./Filterable";
 import { useFilterDrawer } from "./hooks";
 &nbsp;
-export const OsFilterDrawer = () =&gt; {
+export const OsFilterDrawer = <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >() =&gt; {</span></span>
   // how filterDrawerHook looks
   // filterDrawerHook: {accordionValues: {}, aggs: filter opts, drawer: drawer state, fitlers: name of filters &amp; status's, filtersApplied: boolean,
   //                    onFilterChange, onFilterReset}
-  const filterDrawerHook = useFilterDrawer();
+  const filterDrawerHook = <span class="cstat-no" title="statement not covered" >useFilterDrawer();</span>
 &nbsp;
   return (
     &lt;Sheet
@@ -329,7 +329,7 @@ export const OsFilterDrawer = () =&gt; {
                 {filter.label}
               &lt;/AccordionTrigger&gt;
               &lt;AccordionContent className="px-0"&gt;
-                {filter.component === "multiSelect" &amp;&amp; (
+                {<span class="branch-0 cbranch-no" title="branch not covered" >filter.component === "multiSelect" &amp;&amp; (</span>
                   &lt;F.FilterableSelect
                     value={filterDrawerHook.filters[filter.field]?.value as string[]}
                     onChange={filterDrawerHook.onFilterChange(filter.field)}
@@ -337,7 +337,7 @@ export const OsFilterDrawer = () =&gt; {
                     ariaLabel={filter.label}
                   /&gt;
                 )}
-                {filter.component === "multiCheck" &amp;&amp; (
+                {<span class="branch-0 cbranch-no" title="branch not covered" >filter.component === "multiCheck" &amp;&amp; (</span>
                   &lt;F.FilterableMultiCheck
                     label={filter.label}
                     value={filterDrawerHook.filters[filter.field]?.value as string[]}
@@ -346,13 +346,13 @@ export const OsFilterDrawer = () =&gt; {
                     legend={filter.label}
                   /&gt;
                 )}
-                {filter.component === "dateRange" &amp;&amp; (
+                {<span class="branch-0 cbranch-no" title="branch not covered" >filter.component === "dateRange" &amp;&amp; (</span>
                   &lt;F.FilterableDateRange
                     value={filterDrawerHook.filters[filter.field]?.value as opensearch.RangeValue}
                     onChange={filterDrawerHook.onFilterChange(filter.field)}
                   /&gt;
                 )}
-                {filter.component === "boolean" &amp;&amp; (
+                {<span class="branch-0 cbranch-no" title="branch not covered" >filter.component === "boolean" &amp;&amp; (</span>
                   &lt;F.FilterableBoolean
                     value={filterDrawerHook.filters[filter.field]?.value as boolean}
                     onChange={filterDrawerHook.onFilterChange(filter.field)}
@@ -376,7 +376,7 @@ export * from "./hooks";
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2026-02-18T02:20:30.071Z
+                at 2026-02-19T02:20:04.000Z
             </div>
         <script src="../../../../../../../prettify.js"></script>
         <script>

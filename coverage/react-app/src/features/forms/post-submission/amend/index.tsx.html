@@ -23,30 +23,30 @@
         <div class='clearfix'>
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">100% </span>
+                <span class="strong">0% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>11/11</span>
+                <span class='fraction'>0/11</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">87.5% </span>
+                <span class="strong">0% </span>
                 <span class="quiet">Branches</span>
-                <span class='fraction'>14/16</span>
+                <span class='fraction'>0/16</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">100% </span>
+                <span class="strong">0% </span>
                 <span class="quiet">Functions</span>
-                <span class='fraction'>3/3</span>
+                <span class='fraction'>0/3</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">100% </span>
+                <span class="strong">0% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>11/11</span>
+                <span class='fraction'>0/11</span>
             </div>
         
             
@@ -61,7 +61,7 @@
             </div>
         </template>
     </div>
-    <div class='status-line high'></div>
+    <div class='status-line low'></div>
     <pre><table class="coverage">
 <tr><td class="line-count quiet"><a name='L1'></a><a href='#L1'>1</a>
 <a name='L2'></a><a href='#L2'>2</a>
@@ -109,33 +109,33 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">2x</span>
-<span class="cline-any cline-yes">6x</span>
-<span class="cline-any cline-yes">6x</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">6x</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">3x</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">3x</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">2x</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">3x</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">3x</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -148,33 +148,33 @@ import { LoadingSpinner } from "@/components";
 import { AmendmentForm as CapitatedForm } from "@/features/forms/waiver/capitated";
 import { AmendmentForm as ContractingForm } from "@/features/forms/waiver/contracting";
 &nbsp;
-export const Amendment = () =&gt; {
-  const { id } = useParams();
-  const { data: submission, isLoading: isSubmissionLoading } = useGetItem(id);
+export const Amendment = <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >() =&gt; {</span></span>
+  const { id } = <span class="cstat-no" title="statement not covered" >useParams();</span>
+  const { data: submission, isLoading: isSubmissionLoading } = <span class="cstat-no" title="statement not covered" >useGetItem(id);</span>
 &nbsp;
-  if (submission == undefined &amp;&amp; isSubmissionLoading === true) {
+<span class="cstat-no" title="statement not covered" >  if (submission == undefined &amp;&amp; isSubmissionLoading === true) {</span>
     return &lt;LoadingSpinner /&gt;;
   }
 &nbsp;
-  <span class="missing-if-branch" title="if path not taken" >I</span>if (submission == undefined &amp;&amp; <span class="branch-1 cbranch-no" title="branch not covered" >isSubmissionLoading === false) {</span>
+<span class="cstat-no" title="statement not covered" >  if (submission == undefined &amp;&amp; isSubmissionLoading === false) {</span>
     return &lt;Navigate to="/dashboard" /&gt;;
   }
 &nbsp;
-  const isCapitated = submission._source.changelog.find(
-    (event) =&gt;
-      event._source.event === "capitated-initial" || event._source.event === "capitated-renewal",
+  const isCapitated = <span class="cstat-no" title="statement not covered" >submission._source.changelog.find(</span>
+<span class="fstat-no" title="function not covered" >    (e</span>vent) =&gt;
+<span class="cstat-no" title="statement not covered" >      event._source.event === "capitated-initial" || event._source.event === "capitated-renewal",</span>
   );
-  const isContracting = submission._source.changelog.find(
-    (event) =&gt;
-      event._source.event === "contracting-initial" ||
+  const isContracting = <span class="cstat-no" title="statement not covered" >submission._source.changelog.find(</span>
+<span class="fstat-no" title="function not covered" >    (e</span>vent) =&gt;
+<span class="cstat-no" title="statement not covered" >      event._source.event === "contracting-initial" ||</span>
       event._source.event === "contracting-renewal",
   );
 &nbsp;
-  if (isCapitated) {
+<span class="cstat-no" title="statement not covered" >  if (isCapitated) {</span>
     return &lt;CapitatedForm waiverId={id} /&gt;;
   }
 &nbsp;
-  if (isContracting) {
+<span class="cstat-no" title="statement not covered" >  if (isContracting) {</span>
     return &lt;ContractingForm waiverId={id} /&gt;;
   }
 &nbsp;
@@ -187,7 +187,7 @@ export const Amendment = () =&gt; {
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2026-02-18T02:20:30.071Z
+                at 2026-02-19T02:20:04.000Z
             </div>
         <script src="../../../../../../prettify.js"></script>
         <script>

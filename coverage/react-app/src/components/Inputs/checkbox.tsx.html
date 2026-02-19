@@ -23,30 +23,30 @@
         <div class='clearfix'>
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">100% </span>
+                <span class="strong">33.33% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>12/12</span>
+                <span class='fraction'>4/12</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">100% </span>
+                <span class="strong">0% </span>
                 <span class="quiet">Branches</span>
-                <span class='fraction'>11/11</span>
+                <span class='fraction'>0/11</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">100% </span>
+                <span class="strong">0% </span>
                 <span class="quiet">Functions</span>
-                <span class='fraction'>4/4</span>
+                <span class='fraction'>0/4</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">100% </span>
+                <span class="strong">36.36% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>11/11</span>
+                <span class='fraction'>4/11</span>
             </div>
         
             
@@ -61,7 +61,7 @@
             </div>
         </template>
     </div>
-    <div class='status-line high'></div>
+    <div class='status-line low'></div>
     <pre><table class="coverage">
 <tr><td class="line-count quiet"><a name='L1'></a><a href='#L1'>1</a>
 <a name='L2'></a><a href='#L2'>2</a>
@@ -172,7 +172,7 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">105x</span>
+<span class="cline-any cline-yes">103x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -223,8 +223,8 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">105x</span>
-<span class="cline-any cline-yes">105x</span>
+<span class="cline-any cline-yes">103x</span>
+<span class="cline-any cline-yes">103x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -233,8 +233,8 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">105x</span>
-<span class="cline-any cline-yes">29x</span>
+<span class="cline-any cline-yes">103x</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -250,15 +250,15 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">4x</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">4x</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">3x</span>
-<span class="cline-any cline-yes">3x</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -286,7 +286,7 @@ const CheckboxComponent = React.forwardRef&lt;
       description?: string;
       optionlabelClassName?: string;
     }
-&gt;(({ className, ...props }, ref) =&gt; {
+&gt;(<span class="fstat-no" title="function not covered" >({</span> className, ...props }, ref) =&gt; {
   return (
     &lt;div className="items-top flex space-x-2"&gt;
       &lt;CheckboxPrimitive.Root
@@ -304,7 +304,7 @@ const CheckboxComponent = React.forwardRef&lt;
         &lt;/CheckboxPrimitive.Indicator&gt;
       &lt;/CheckboxPrimitive.Root&gt;
       &lt;div className="grid gap-1.5 leading-none"&gt;
-        {!!(props.label || props.styledLabel) &amp;&amp; (
+        {<span class="branch-0 cbranch-no" title="branch not covered" >!!(props.label || props.styledLabel) &amp;&amp; (</span>
           &lt;label
             htmlFor={props.id}
             className={cn(
@@ -315,7 +315,7 @@ const CheckboxComponent = React.forwardRef&lt;
             {props.label || props.styledLabel}
           &lt;/label&gt;
         )}
-        {!!props.description &amp;&amp; (
+        {<span class="branch-0 cbranch-no" title="branch not covered" >!!props.description </span>&amp;&amp; (
           &lt;p id={`${props.id}-description`} className="text-sm text-muted-foreground"&gt;
             {props.description}
           &lt;/p&gt;
@@ -335,8 +335,8 @@ type CheckboxGroupProps = {
   legend?: string;
 };
 &nbsp;
-export const CheckboxGroup = (props: CheckboxGroupProps) =&gt; {
-  const [srMessage, setSrMessage] = React.useState("");
+export const CheckboxGroup = <span class="fstat-no" title="function not covered" >(p</span>rops: CheckboxGroupProps) =&gt; {
+  const [srMessage, setSrMessage] = <span class="cstat-no" title="statement not covered" >React.useState("");</span>
 &nbsp;
   return (
     &lt;&gt;
@@ -344,23 +344,23 @@ export const CheckboxGroup = (props: CheckboxGroupProps) =&gt; {
         {srMessage}
       &lt;/div&gt;
       &lt;fieldset className="flex flex-col gap-2"&gt;
-        {props.legend &amp;&amp; &lt;legend className="text-md font-semibold mb-2"&gt;{props.legend}&lt;/legend&gt;}
+        {<span class="branch-0 cbranch-no" title="branch not covered" >props.legend </span>&amp;&amp; &lt;legend className="text-md font-semibold mb-2"&gt;{props.legend}&lt;/legend&gt;}
         {props.options.map((OPT) =&gt; (
           &lt;Checkbox
             key={OPT.id}
             id={OPT.id}
             label={OPT.label}
             checked={props.value.includes(OPT.value)}
-            onCheckedChange={(c) =&gt; {
-              const filtered = props.value.filter((f) =&gt; f !== OPT.value);
+            onCheckedChange={<span class="fstat-no" title="function not covered" >(c</span>) =&gt; {
+              const filtered = <span class="cstat-no" title="statement not covered" >props.value.filter(<span class="fstat-no" title="function not covered" >(f</span>) =&gt; <span class="cstat-no" title="statement not covered" >f !== OPT.value)</span>;</span>
 &nbsp;
-              if (!c) {
-                setSrMessage(`${OPT.label}. unchecked, checkbox`);
-                return props.onChange(filtered);
+<span class="cstat-no" title="statement not covered" >              if (!c) {</span>
+<span class="cstat-no" title="statement not covered" >                setSrMessage(`${OPT.label}. unchecked, checkbox`);</span>
+<span class="cstat-no" title="statement not covered" >                return props.onChange(filtered);</span>
               }
 &nbsp;
-              setSrMessage(`${OPT.label}, checked, checkbox`);
-              props.onChange([...filtered, OPT.value]);
+<span class="cstat-no" title="statement not covered" >              setSrMessage(`${OPT.label}, checked, checkbox`);</span>
+<span class="cstat-no" title="statement not covered" >              props.onChange([...filtered, OPT.value]);</span>
             }}
             aria-live="off"
           /&gt;
@@ -376,7 +376,7 @@ export const CheckboxGroup = (props: CheckboxGroupProps) =&gt; {
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2026-02-18T02:20:30.071Z
+                at 2026-02-19T02:20:04.000Z
             </div>
         <script src="../../../../prettify.js"></script>
         <script>

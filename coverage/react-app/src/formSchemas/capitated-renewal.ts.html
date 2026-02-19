@@ -23,9 +23,9 @@
         <div class='clearfix'>
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">100% </span>
+                <span class="strong">0% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>5/5</span>
+                <span class='fraction'>0/5</span>
             </div>
         
             
@@ -37,16 +37,16 @@
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">100% </span>
+                <span class="strong">0% </span>
                 <span class="quiet">Functions</span>
-                <span class='fraction'>4/4</span>
+                <span class='fraction'>0/4</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">100% </span>
+                <span class="strong">0% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>5/5</span>
+                <span class='fraction'>0/5</span>
             </div>
         
             
@@ -61,7 +61,7 @@
             </div>
         </template>
     </div>
-    <div class='status-line high'></div>
+    <div class='status-line low'></div>
     <pre><table class="coverage">
 <tr><td class="line-count quiet"><a name='L1'></a><a href='#L1'>1</a>
 <a name='L2'></a><a href='#L2'>2</a>
@@ -97,26 +97,26 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">25x</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">130x</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">121x</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">121x</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">121x</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -126,26 +126,26 @@
 import { canBeRenewedOrAmended, idIsApproved, itemExists } from "@/api";
 import { isAuthorizedState } from "@/utils";
 &nbsp;
-export const formSchema = events["capitated-renewal"].baseSchema.extend({
+export const formSchema = <span class="cstat-no" title="statement not covered" >events["capitated-renewal"].baseSchema.extend({</span>
   id: events["capitated-renewal"].baseSchema.shape.id
     .refine(isAuthorizedState, {
       message:
         "You can only submit for a state you have access to. If you need to add another state, visit your IDM user profile to request access.",
     })
-    .refine(async (value) =&gt; !(await itemExists(value)), {
+    .refine(<span class="fstat-no" title="function not covered" >async (v</span>alue) =&gt; <span class="cstat-no" title="statement not covered" >!(await itemExists(value)), {</span>
       message:
         "According to our records, this 1915(b) Waiver Number already exists. Please check the 1915(b) Waiver Number and try entering it again.",
     }),
   waiverNumber: events["capitated-renewal"].baseSchema.shape.waiverNumber
-    .refine(async (value) =&gt; await itemExists(value), {
+    .refine(<span class="fstat-no" title="function not covered" >async (v</span>alue) =&gt; <span class="cstat-no" title="statement not covered" >await itemExists(value), {</span>
       message:
         "According to our records, this 1915(b) Waiver Number does not yet exist. Please check the 1915(b) Initial or Renewal Waiver Number and try entering it again.",
     })
-    .refine(async (value) =&gt; await canBeRenewedOrAmended(value), {
+    .refine(<span class="fstat-no" title="function not covered" >async (v</span>alue) =&gt; <span class="cstat-no" title="statement not covered" >await canBeRenewedOrAmended(value), {</span>
       message:
         "The 1915(b) Waiver Number entered does not seem to match our records. Please enter an approved 1915(b) Initial or Renewal Waiver Number, using a dash after the two character state abbreviation.",
     })
-    .refine(async (value) =&gt; await idIsApproved(value), {
+    .refine(<span class="fstat-no" title="function not covered" >async (v</span>alue) =&gt; <span class="cstat-no" title="statement not covered" >await idIsApproved(value), {</span>
       message:
         "According to our records, this 1915(b) Waiver Number is not approved. You must supply an approved 1915(b) Initial or Renewal Waiver Number.",
     }),
@@ -157,7 +157,7 @@ export const formSchema = events["capitated-renewal"].baseSchema.extend({
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2026-02-18T02:20:30.071Z
+                at 2026-02-19T02:20:04.000Z
             </div>
         <script src="../../../prettify.js"></script>
         <script>

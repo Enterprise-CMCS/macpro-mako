@@ -23,30 +23,30 @@
         <div class='clearfix'>
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">91.66% </span>
+                <span class="strong">0% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>11/12</span>
+                <span class='fraction'>0/12</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">100% </span>
+                <span class="strong">0% </span>
                 <span class="quiet">Branches</span>
-                <span class='fraction'>1/1</span>
+                <span class='fraction'>0/1</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">80% </span>
+                <span class="strong">0% </span>
                 <span class="quiet">Functions</span>
-                <span class='fraction'>4/5</span>
+                <span class='fraction'>0/5</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">90.9% </span>
+                <span class="strong">0% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>10/11</span>
+                <span class='fraction'>0/11</span>
             </div>
         
             
@@ -61,7 +61,7 @@
             </div>
         </template>
     </div>
-    <div class='status-line high'></div>
+    <div class='status-line low'></div>
     <pre><table class="coverage">
 <tr><td class="line-count quiet"><a name='L1'></a><a href='#L1'>1</a>
 <a name='L2'></a><a href='#L2'>2</a>
@@ -229,20 +229,18 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">7x</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">5x</span>
-<span class="cline-any cline-yes">4x</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">4x</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -290,8 +288,10 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">3x</span>
-<span class="cline-any cline-yes">3x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -372,18 +372,18 @@ import { formSchemas } from "@/formSchemas";
 &nbsp;
 import { SplitSpaIdsForm } from "./SplitSpaIdsForm";
 &nbsp;
-const SPLIT_COUNT_START = 2;
-const SPLIT_COUNT_END = 8;
+const SPLIT_COUNT_START = <span class="cstat-no" title="statement not covered" >2;</span>
+const SPLIT_COUNT_END = <span class="cstat-no" title="statement not covered" >8;</span>
 &nbsp;
-const SPLIT_COUNT_OPTIONS = [...Array(SPLIT_COUNT_END - SPLIT_COUNT_START + 1).keys()].map(
-  (x) =&gt; `${x + SPLIT_COUNT_START}`,
+const SPLIT_COUNT_OPTIONS = <span class="cstat-no" title="statement not covered" >[...Array(SPLIT_COUNT_END - SPLIT_COUNT_START + 1).keys()].map(</span>
+<span class="fstat-no" title="function not covered" >  (x</span>) =&gt; <span class="cstat-no" title="statement not covered" >`${x + SPLIT_COUNT_START}`,</span>
 );
 &nbsp;
-export const SplitSpaForm = () =&gt; {
-  const { authority, id } = useParams();
-  const [splitCount, setSplitCount] = React.useState&lt;number&gt;();
+export const SplitSpaForm = <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >() =&gt; {</span></span>
+  const { authority, id } = <span class="cstat-no" title="statement not covered" >useParams();</span>
+  const [splitCount, setSplitCount] = <span class="cstat-no" title="statement not covered" >React.useState&lt;number&gt;();</span>
 &nbsp;
-  const authorityType = React.useMemo(() =&gt; authority.replace("SPA", "").trim(), [authority]);
+  const authorityType = <span class="cstat-no" title="statement not covered" >React.useMemo(<span class="fstat-no" title="function not covered" >() =&gt; <span class="cstat-no" title="statement not covered" >a</span>uthority.replace("SPA", "").trim(), [</span>authority]);</span>
 &nbsp;
   return (
     &lt;ActionForm
@@ -432,9 +432,9 @@ export const SplitSpaForm = () =&gt; {
                 &lt;div className="max-w-sm"&gt;
                   &lt;FormControl&gt;
                     &lt;Select
-                      onValueChange={(value) =&gt; {
-                        field.onChange(value);
-                        setSplitCount(parseInt(value));
+                      onValueChange={<span class="fstat-no" title="function not covered" >(v</span>alue) =&gt; {
+<span class="cstat-no" title="statement not covered" >                        field.onChange(value);</span>
+<span class="cstat-no" title="statement not covered" >                        setSplitCount(parseInt(value));</span>
                       }}
                       defaultValue={`${field.value}`}
                     &gt;
@@ -455,7 +455,7 @@ export const SplitSpaForm = () =&gt; {
             )}
           /&gt;
           &lt;SplitSpaIdsForm control={control} spaId={id} splitCount={splitCount} /&gt;
-          {splitCount &amp;&amp; (
+          {<span class="branch-0 cbranch-no" title="branch not covered" >splitCount &amp;&amp; (</span>
             &lt;FormField
               control={control}
               name="requestor"
@@ -499,7 +499,7 @@ export const SplitSpaForm = () =&gt; {
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2026-02-18T02:20:30.071Z
+                at 2026-02-19T02:20:04.000Z
             </div>
         <script src="../../../../../../prettify.js"></script>
         <script>

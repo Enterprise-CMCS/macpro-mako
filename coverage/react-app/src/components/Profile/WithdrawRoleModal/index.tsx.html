@@ -23,30 +23,30 @@
         <div class='clearfix'>
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">100% </span>
+                <span class="strong">0% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>15/15</span>
+                <span class='fraction'>0/15</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">86.66% </span>
+                <span class="strong">0% </span>
                 <span class="quiet">Branches</span>
-                <span class='fraction'>13/15</span>
+                <span class='fraction'>0/15</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">100% </span>
+                <span class="strong">0% </span>
                 <span class="quiet">Functions</span>
-                <span class='fraction'>3/3</span>
+                <span class='fraction'>0/3</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">100% </span>
+                <span class="strong">0% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>10/10</span>
+                <span class='fraction'>0/10</span>
             </div>
         
             
@@ -61,7 +61,7 @@
             </div>
         </template>
     </div>
-    <div class='status-line high'></div>
+    <div class='status-line low'></div>
     <pre><table class="coverage">
 <tr><td class="line-count quiet"><a name='L1'></a><a href='#L1'>1</a>
 <a name='L2'></a><a href='#L2'>2</a>
@@ -182,12 +182,10 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">105x</span>
-<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -206,15 +204,17 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">105x</span>
-<span class="cline-any cline-yes">27x</span>
-<span class="cline-any cline-yes">27x</span>
-<span class="cline-any cline-yes">5x</span>
-<span class="cline-any cline-yes">2x</span>
-<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">27x</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -262,12 +262,12 @@ const WithdrawPendingRoleModal = ({ open, onAccept, onCancel }: ModalProps) =&gt
   /&gt;
 );
 &nbsp;
-const RemoveActiveRoleModal = ({ open, selfRevokeRole, onAccept, onCancel }: ModalProps) =&gt; {
-  const approvingRole = getApprovingRole(selfRevokeRole.role);
+const RemoveActiveRoleModal = <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >({</span> open, selfRevokeRole, onAccept, onCancel }: ModalProps) =&gt; {</span>
+  const approvingRole = <span class="cstat-no" title="statement not covered" >getApprovingRole(selfRevokeRole.role);</span>
   const stateDisplay =
-    selfRevokeRole.role === "statesubmitter"
+<span class="cstat-no" title="statement not covered" >    selfRevokeRole.role === "statesubmitter"</span>
       ? `${convertStateAbbrToFullName(selfRevokeRole.territory)} `
-      : <span class="branch-1 cbranch-no" title="branch not covered" >"";</span>
+      : "";
   return (
     &lt;ConfirmationDialog
       open={open}
@@ -286,20 +286,20 @@ const RemoveActiveRoleModal = ({ open, selfRevokeRole, onAccept, onCancel }: Mod
   );
 };
 &nbsp;
-export const WithdrawRoleModal = (props: ModalProps) =&gt; {
-  const modalType = (function () {
-    if (!props.selfRevokeRole) return null;
-    if (!props.selfRevokeRole.isNewUserRoleDisplay) return "legacy-withdraw";
-    if (props.selfRevokeRole.status === "pending") return "pending-withdraw";
-    <span class="missing-if-branch" title="else path not taken" >E</span>if (props.selfRevokeRole.status === "active") return "remove-role";
+export const WithdrawRoleModal = <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >(p</span>rops: ModalProps) =&gt; {</span>
+  const modalType = <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >(function () {</span></span>
+<span class="cstat-no" title="statement not covered" >    if (!props.selfRevokeRole) <span class="cstat-no" title="statement not covered" >return null;</span></span>
+<span class="cstat-no" title="statement not covered" >    if (!props.selfRevokeRole.isNewUserRoleDisplay) <span class="cstat-no" title="statement not covered" >return "legacy-withdraw";</span></span>
+<span class="cstat-no" title="statement not covered" >    if (props.selfRevokeRole.status === "pending") <span class="cstat-no" title="statement not covered" >return "pending-withdraw";</span></span>
+<span class="cstat-no" title="statement not covered" >    if (props.selfRevokeRole.status === "active") <span class="cstat-no" title="statement not covered" >return "remove-role";</span></span>
   })();
 &nbsp;
-  if (!props.selfRevokeRole) return;
+<span class="cstat-no" title="statement not covered" >  if (!props.selfRevokeRole) <span class="cstat-no" title="statement not covered" >return;</span></span>
   return (
     &lt;&gt;
-      {modalType === "legacy-withdraw" &amp;&amp; &lt;LegacyWithdrawRoleModal {...props} /&gt;}
-      {modalType === "pending-withdraw" &amp;&amp; &lt;WithdrawPendingRoleModal {...props} /&gt;}
-      {modalType === "remove-role" &amp;&amp; &lt;RemoveActiveRoleModal {...props} /&gt;}
+      {<span class="branch-0 cbranch-no" title="branch not covered" >modalType === "legacy-withdraw" &amp;&amp; &lt;</span>LegacyWithdrawRoleModal {...props} /&gt;}
+      {<span class="branch-0 cbranch-no" title="branch not covered" >modalType === "pending-withdraw" &amp;&amp; &lt;</span>WithdrawPendingRoleModal {...props} /&gt;}
+      {<span class="branch-0 cbranch-no" title="branch not covered" >modalType === "remove-role" &amp;&amp; &lt;</span>RemoveActiveRoleModal {...props} /&gt;}
     &lt;/&gt;
   );
 };
@@ -310,7 +310,7 @@ export const WithdrawRoleModal = (props: ModalProps) =&gt; {
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2026-02-18T02:20:30.071Z
+                at 2026-02-19T02:20:04.000Z
             </div>
         <script src="../../../../../prettify.js"></script>
         <script>

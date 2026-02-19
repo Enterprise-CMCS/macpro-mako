@@ -23,30 +23,30 @@
         <div class='clearfix'>
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">100% </span>
+                <span class="strong">16.66% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>6/6</span>
+                <span class='fraction'>1/6</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">100% </span>
+                <span class="strong">0% </span>
                 <span class="quiet">Branches</span>
-                <span class='fraction'>3/3</span>
+                <span class='fraction'>0/3</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">100% </span>
+                <span class="strong">0% </span>
                 <span class="quiet">Functions</span>
-                <span class='fraction'>2/2</span>
+                <span class='fraction'>0/2</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">100% </span>
+                <span class="strong">16.66% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>6/6</span>
+                <span class='fraction'>1/6</span>
             </div>
         
             
@@ -61,7 +61,7 @@
             </div>
         </template>
     </div>
-    <div class='status-line high'></div>
+    <div class='status-line low'></div>
     <pre><table class="coverage">
 <tr><td class="line-count quiet"><a name='L1'></a><a href='#L1'>1</a>
 <a name='L2'></a><a href='#L2'>2</a>
@@ -117,9 +117,9 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">105x</span>
-<span class="cline-any cline-yes">211x</span>
-<span class="cline-any cline-yes">211x</span>
+<span class="cline-any cline-yes">104x</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -141,9 +141,9 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">9x</span>
-<span class="cline-any cline-yes">9x</span>
-<span class="cline-any cline-yes">9x</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -161,9 +161,9 @@ import { DatePickerProps } from "shared-types";
 import { Button, Calendar, Popover, PopoverContent, PopoverTrigger } from "@/components";
 import { cn } from "@/utils";
 &nbsp;
-export const DatePicker = ({ date, onChange, dataTestId }: DatePickerProps) =&gt; {
-  const [isCalendarOpen, setIsCalendarOpen] = React.useState&lt;boolean&gt;(false);
-  const [selected, setSelected] = React.useState&lt;Date&gt;();
+export const DatePicker = <span class="fstat-no" title="function not covered" >({</span> date, onChange, dataTestId }: DatePickerProps) =&gt; {
+  const [isCalendarOpen, setIsCalendarOpen] = <span class="cstat-no" title="statement not covered" >React.useState&lt;boolean&gt;(false);</span>
+  const [selected, setSelected] = <span class="cstat-no" title="statement not covered" >React.useState&lt;Date&gt;();</span>
   return (
     &lt;Popover open={isCalendarOpen} onOpenChange={setIsCalendarOpen}&gt;
       &lt;PopoverTrigger asChild&gt;
@@ -176,7 +176,7 @@ export const DatePicker = ({ date, onChange, dataTestId }: DatePickerProps) =&gt
           data-testid={`${dataTestId}-datepicker`}
         &gt;
           &lt;CalendarIcon className="mr-2 h-4 w-4" /&gt;
-          {date ? format(date, "MM/dd/yyyy") : &lt;span&gt;Pick a date&lt;/span&gt;}
+          {date ? <span class="branch-0 cbranch-no" title="branch not covered" >format(date, "MM/dd/yyyy") : &lt;</span>span&gt;Pick a date&lt;/span&gt;}
         &lt;/Button&gt;
       &lt;/PopoverTrigger&gt;
       &lt;PopoverContent className="w-auto p-0"&gt;
@@ -184,10 +184,10 @@ export const DatePicker = ({ date, onChange, dataTestId }: DatePickerProps) =&gt
           mode="single"
           selected={selected}
           defaultMonth={selected}
-          onSelect={(date) =&gt; {
-            setSelected(date);
-            onChange(date);
-            setIsCalendarOpen(false);
+          onSelect={<span class="fstat-no" title="function not covered" >(d</span>ate) =&gt; {
+<span class="cstat-no" title="statement not covered" >            setSelected(date);</span>
+<span class="cstat-no" title="statement not covered" >            onChange(date);</span>
+<span class="cstat-no" title="statement not covered" >            setIsCalendarOpen(false);</span>
           }}
           initialFocus
         /&gt;
@@ -202,7 +202,7 @@ export const DatePicker = ({ date, onChange, dataTestId }: DatePickerProps) =&gt
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2026-02-18T02:20:30.071Z
+                at 2026-02-19T02:20:04.000Z
             </div>
         <script src="../../../../prettify.js"></script>
         <script>

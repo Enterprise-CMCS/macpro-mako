@@ -23,30 +23,30 @@
         <div class='clearfix'>
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">100% </span>
+                <span class="strong">0% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>14/14</span>
+                <span class='fraction'>0/14</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">100% </span>
+                <span class="strong">0% </span>
                 <span class="quiet">Branches</span>
-                <span class='fraction'>12/12</span>
+                <span class='fraction'>0/12</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">100% </span>
+                <span class="strong">0% </span>
                 <span class="quiet">Functions</span>
-                <span class='fraction'>7/7</span>
+                <span class='fraction'>0/7</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">100% </span>
+                <span class="strong">0% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>11/11</span>
+                <span class='fraction'>0/11</span>
             </div>
         
             
@@ -61,7 +61,7 @@
             </div>
         </template>
     </div>
-    <div class='status-line high'></div>
+    <div class='status-line low'></div>
     <pre><table class="coverage">
 <tr><td class="line-count quiet"><a name='L1'></a><a href='#L1'>1</a>
 <a name='L2'></a><a href='#L2'>2</a>
@@ -116,16 +116,16 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">24x</span>
-<span class="cline-any cline-yes">24x</span>
-<span class="cline-any cline-yes">24x</span>
-<span class="cline-any cline-yes">560x</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">20x</span>
-<span class="cline-any cline-yes">560x</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -133,14 +133,14 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">10x</span>
-<span class="cline-any cline-yes">560x</span>
-<span class="cline-any cline-yes">560x</span>
-<span class="cline-any cline-yes">112x</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">560x</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">import { useMemo } from "react";
@@ -152,20 +152,20 @@ import { StateAccess } from "@/api";
 import { useStateAccessMap } from "../api/useStateAccessMap";
 import { useFeatureFlag } from "./useFeatureFlag";
 &nbsp;
-export function useAvailableStates(
+export function <span class="fstat-no" title="function not covered" >useAvailableStates(</span>
   roleToRequest: UserRole,
   stateAccessList: StateAccess[] | undefined,
 ) {
-  const isNewUserRoleDisplay = useFeatureFlag("SHOW_USER_ROLE_UPDATE");
-  const stateAccessMap = useStateAccessMap(stateAccessList ?? []);
-  return useMemo(() =&gt; {
-    const formatOption = ({ label, value }: (typeof FULL_CENSUS_STATES)[number]) =&gt; ({
+  const isNewUserRoleDisplay = <span class="cstat-no" title="statement not covered" >useFeatureFlag("SHOW_USER_ROLE_UPDATE");</span>
+  const stateAccessMap = <span class="cstat-no" title="statement not covered" >useStateAccessMap(stateAccessList ?? []);</span>
+<span class="cstat-no" title="statement not covered" >  return useMemo(<span class="fstat-no" title="function not covered" >() =&gt; {</span></span>
+    const formatOption = <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >({</span> label, value }: (typeof FULL_CENSUS_STATES)[number]) =&gt; (<span class="cstat-no" title="statement not covered" >{</span></span>
       label: isNewUserRoleDisplay ? `${label}, ${value}` : label,
       value,
     });
 &nbsp;
-    if (!stateAccessList) {
-      return FULL_CENSUS_STATES.map(({ label, value }) =&gt; ({
+<span class="cstat-no" title="statement not covered" >    if (!stateAccessList) {</span>
+<span class="cstat-no" title="statement not covered" >      return FULL_CENSUS_STATES.map(<span class="fstat-no" title="function not covered" >({</span> label, value }) =&gt; (<span class="cstat-no" title="statement not covered" >{</span></span>
         label: isNewUserRoleDisplay ? `${label}, ${value}` : label,
         value,
       }));
@@ -173,14 +173,14 @@ export function useAvailableStates(
 &nbsp;
     // Check if user has all possible roles for this state (Feature Flag ON)
     // Show states user doesn't have access to for role being requested (Feature Flag OFF)
-    const statesToRequest = (stateCode: string) =&gt; {
-      const activeStates = stateAccessMap[stateCode] ?? new Set&lt;UserRole&gt;();
-      return isNewUserRoleDisplay
-        ? !STATE_ROLES.every((role) =&gt; activeStates.has(role))
+    const statesToRequest = <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >(s</span>tateCode: string) =&gt; {</span>
+      const activeStates = <span class="cstat-no" title="statement not covered" >stateAccessMap[stateCode] ?? new Set&lt;UserRole&gt;();</span>
+<span class="cstat-no" title="statement not covered" >      return isNewUserRoleDisplay</span>
+        ? !STATE_ROLES.every(<span class="fstat-no" title="function not covered" >(r</span>ole) =&gt; <span class="cstat-no" title="statement not covered" >activeStates.has(role))</span>
         : !activeStates.has(roleToRequest);
     };
 &nbsp;
-    return FULL_CENSUS_STATES.filter(({ value }) =&gt; statesToRequest(value)).map(formatOption);
+<span class="cstat-no" title="statement not covered" >    return FULL_CENSUS_STATES.filter(<span class="fstat-no" title="function not covered" >({</span> value }) =&gt; <span class="cstat-no" title="statement not covered" >statesToRequest(value)).m</span>ap(formatOption);</span>
   }, [roleToRequest, stateAccessList, stateAccessMap, isNewUserRoleDisplay]);
 }
 &nbsp;</pre></td></tr></table></pre>
@@ -190,7 +190,7 @@ export function useAvailableStates(
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2026-02-18T02:20:30.071Z
+                at 2026-02-19T02:20:04.000Z
             </div>
         <script src="../../../prettify.js"></script>
         <script>

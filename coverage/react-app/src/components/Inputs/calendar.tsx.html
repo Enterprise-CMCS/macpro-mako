@@ -23,30 +23,30 @@
         <div class='clearfix'>
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">87.5% </span>
+                <span class="strong">25% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>7/8</span>
+                <span class='fraction'>2/8</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">77.77% </span>
+                <span class="strong">0% </span>
                 <span class="quiet">Branches</span>
-                <span class='fraction'>7/9</span>
+                <span class='fraction'>0/9</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">100% </span>
+                <span class="strong">0% </span>
                 <span class="quiet">Functions</span>
-                <span class='fraction'>3/3</span>
+                <span class='fraction'>0/3</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">87.5% </span>
+                <span class="strong">25% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>7/8</span>
+                <span class='fraction'>2/8</span>
             </div>
         
             
@@ -61,7 +61,7 @@
             </div>
         </template>
     </div>
-    <div class='status-line high'></div>
+    <div class='status-line low'></div>
     <pre><table class="coverage">
 <tr><td class="line-count quiet"><a name='L1'></a><a href='#L1'>1</a>
 <a name='L2'></a><a href='#L2'>2</a>
@@ -173,16 +173,16 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">105x</span>
-<span class="cline-any cline-yes">3920x</span>
-<span class="cline-any cline-yes">3920x</span>
-<span class="cline-any cline-yes">3920x</span>
+<span class="cline-any cline-yes">104x</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">3920x</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">3920x</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -264,7 +264,7 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">105x</span>
+<span class="cline-any cline-yes">104x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">import * as React from "react";
@@ -275,16 +275,16 @@ import { cn } from "@/utils";
 &nbsp;
 import { buttonVariants } from "./button";
 &nbsp;
-const AccessibleDay = (props: DayProps) =&gt; {
-  const buttonRef = React.useRef&lt;HTMLButtonElement&gt;(null);
-  const dayRender = useDayRender(props.date, props.displayMonth, buttonRef);
-  const ariaCurrent = dayRender.activeModifiers.today ? "date" : undefined;
+const AccessibleDay = <span class="fstat-no" title="function not covered" >(p</span>rops: DayProps) =&gt; {
+  const buttonRef = <span class="cstat-no" title="statement not covered" >React.useRef&lt;HTMLButtonElement&gt;(null);</span>
+  const dayRender = <span class="cstat-no" title="statement not covered" >useDayRender(props.date, props.displayMonth, buttonRef);</span>
+  const ariaCurrent = <span class="cstat-no" title="statement not covered" >dayRender.activeModifiers.today ? "date" : undefined;</span>
 &nbsp;
-  <span class="missing-if-branch" title="if path not taken" >I</span>if (dayRender.isHidden) {
+<span class="cstat-no" title="statement not covered" >  if (dayRender.isHidden) {</span>
     return &lt;div role="gridcell" /&gt;;
   }
 &nbsp;
-  <span class="missing-if-branch" title="if path not taken" >I</span>if (!dayRender.isButton) {
+<span class="cstat-no" title="statement not covered" >  if (!dayRender.isButton) {</span>
     const { className, style, children, ...divProps } = <span class="cstat-no" title="statement not covered" >dayRender.divProps;</span>
     return (
       &lt;div
@@ -301,10 +301,10 @@ const AccessibleDay = (props: DayProps) =&gt; {
   return &lt;DayButton ref={buttonRef} aria-current={ariaCurrent} {...dayRender.buttonProps} /&gt;;
 };
 &nbsp;
-function Calendar({
+function <span class="fstat-no" title="function not covered" >Calendar({</span>
   className,
   classNames,
-  showOutsideDays = true,
+  showOutsideDays = <span class="branch-0 cbranch-no" title="branch not covered" >true,</span>
   components,
   ...props
 }: CalendarProps) {
@@ -349,7 +349,7 @@ function Calendar({
       captionLayout="dropdown-buttons"
       components={{
         Day: AccessibleDay,
-        Dropdown: ({ caption, className, ...dropdownProps }: any) =&gt; {
+        Dropdown: <span class="fstat-no" title="function not covered" >({</span> caption, className, ...dropdownProps }: any) =&gt; {
           return (
             &lt;button className="relative mx-1"&gt;
               {caption}
@@ -376,7 +376,7 @@ export { Calendar };
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2026-02-18T02:20:30.071Z
+                at 2026-02-19T02:20:04.000Z
             </div>
         <script src="../../../../prettify.js"></script>
         <script>

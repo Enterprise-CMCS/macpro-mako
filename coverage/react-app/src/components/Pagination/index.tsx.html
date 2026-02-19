@@ -23,30 +23,30 @@
         <div class='clearfix'>
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">100% </span>
+                <span class="strong">0% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>10/10</span>
+                <span class='fraction'>0/10</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">100% </span>
+                <span class="strong">0% </span>
                 <span class="quiet">Branches</span>
-                <span class='fraction'>2/2</span>
+                <span class='fraction'>0/2</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">100% </span>
+                <span class="strong">0% </span>
                 <span class="quiet">Functions</span>
-                <span class='fraction'>7/7</span>
+                <span class='fraction'>0/7</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">100% </span>
+                <span class="strong">0% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>10/10</span>
+                <span class='fraction'>0/10</span>
             </div>
         
             
@@ -61,7 +61,7 @@
             </div>
         </template>
     </div>
-    <div class='status-line high'></div>
+    <div class='status-line low'></div>
     <pre><table class="coverage">
 <tr><td class="line-count quiet"><a name='L1'></a><a href='#L1'>1</a>
 <a name='L2'></a><a href='#L2'>2</a>
@@ -228,11 +228,11 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">105x</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">105x</span>
-<span class="cline-any cline-yes">172x</span>
-<span class="cline-any cline-yes">172x</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -260,7 +260,7 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -282,7 +282,7 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -314,7 +314,7 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -329,11 +329,11 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">207x</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -352,7 +352,7 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -386,11 +386,11 @@ import { cn } from "@/utils";
 import type { Props } from "./types";
 import { pageStateResolver } from "./utils";
 &nbsp;
-const maxRecordCount = 10000;
+const maxRecordCount = <span class="cstat-no" title="statement not covered" >10000;</span>
 &nbsp;
-export const Pagination: FC&lt;Props&gt; = (props) =&gt; {
-  const count = props.count &gt; maxRecordCount ? maxRecordCount : props.count;
-  const state = pageStateResolver({
+export const Pagination: FC&lt;Props&gt; = <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >(p</span>rops) =&gt; {</span>
+  const count = <span class="cstat-no" title="statement not covered" >props.count &gt; maxRecordCount ? maxRecordCount : props.count;</span>
+  const state = <span class="cstat-no" title="statement not covered" >pageStateResolver({</span>
     pageNumber: props.pageNumber,
     pageSize: props.pageSize,
     count,
@@ -418,7 +418,7 @@ export const Pagination: FC&lt;Props&gt; = (props) =&gt; {
               aria-labelledby="recordsLabel"
               className="font-bold cursor-pointer border-[1px] mt-[-1px]"
               value={props.pageSize}
-              onChange={(e) =&gt; props.onSizeChange?.(Number(e.target.value))}
+              onChange={<span class="fstat-no" title="function not covered" >(e</span>) =&gt; <span class="cstat-no" title="statement not covered" >props.onSizeChange?.(Number(e.target.value))}</span>
             &gt;
               {[25, 50, 100].map((SIZE) =&gt; (
                 &lt;option key={`size-${SIZE}`}&gt;{SIZE}&lt;/option&gt;
@@ -440,7 +440,7 @@ export const Pagination: FC&lt;Props&gt; = (props) =&gt; {
             aria-label="Pagination"
           &gt;
             &lt;button
-              onClick={() =&gt; props.onPageChange(props.pageNumber - 1)}
+              onClick={<span class="fstat-no" title="function not covered" >() =&gt; <span class="cstat-no" title="statement not covered" >p</span>rops.onPageChange(props.pageNumber - 1)}</span>
               disabled={state.prevDisabled}
               className="relative inline-flex items-center rounded-l-md px-2 py-2 text-gray-400 ring-1 ring-inset ring-gray-300 hover:bg-gray-50 focus:z-20 focus:outline-offset-0"
             &gt;
@@ -460,7 +460,7 @@ export const Pagination: FC&lt;Props&gt; = (props) =&gt; {
               &lt;/svg&gt;
             &lt;/button&gt;
 &nbsp;
-            {state.pageRange.map((PAGE) =&gt; {
+            {state.pageRange.map(<span class="fstat-no" title="function not covered" >(P</span>AGE) =&gt; {
               if (Array.isArray(PAGE))
                 return (
                   &lt;div
@@ -472,7 +472,7 @@ export const Pagination: FC&lt;Props&gt; = (props) =&gt; {
                   &gt;
                     ...
                     &lt;select
-                      onChange={(v) =&gt; props.onPageChange(Number(v.currentTarget.value) - 1)}
+                      onChange={<span class="fstat-no" title="function not covered" >(v</span>) =&gt; <span class="cstat-no" title="statement not covered" >props.onPageChange(Number(v.currentTarget.value) - 1)}</span>
                       className="absolute w-auto h-auto opacity-0 cursor-pointer"
                       aria-labelledby="morePagesButton"
                       data-testid="morePagesButton"
@@ -487,11 +487,11 @@ export const Pagination: FC&lt;Props&gt; = (props) =&gt; {
                   &lt;/div&gt;
                 );
 &nbsp;
-              const isActive = props.pageNumber === PAGE - 1;
+              const isActive = <span class="cstat-no" title="statement not covered" >props.pageNumber === PAGE - 1;</span>
               return (
                 &lt;button
                   key={`PAGE-${PAGE}`}
-                  onClick={() =&gt; props.onPageChange(PAGE - 1)}
+                  onClick={<span class="fstat-no" title="function not covered" >() =&gt; <span class="cstat-no" title="statement not covered" >p</span>rops.onPageChange(PAGE - 1)}</span>
                   className={cn(
                     "relative inline-flex items-center px-4 py-2 text-sm font-semibold text-gray-900 ring-1 ring-inset ring-gray-300 hover:bg-gray-50 focus:z-20 focus:outline-offset-0",
                     {
@@ -510,7 +510,7 @@ export const Pagination: FC&lt;Props&gt; = (props) =&gt; {
 &nbsp;
             &lt;button
               disabled={state.nextDisabled}
-              onClick={() =&gt; props.onPageChange(props.pageNumber + 1)}
+              onClick={<span class="fstat-no" title="function not covered" >() =&gt; <span class="cstat-no" title="statement not covered" >p</span>rops.onPageChange(props.pageNumber + 1)}</span>
               className="relative inline-flex items-center rounded-r-md px-2 py-2 text-gray-400 ring-1 ring-inset ring-gray-300 hover:bg-gray-50 focus:z-20 focus:outline-offset-0"
             &gt;
               &lt;span className="sr-only"&gt;Next&lt;/span&gt;
@@ -544,7 +544,7 @@ export * from "./utils";
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2026-02-18T02:20:30.071Z
+                at 2026-02-19T02:20:04.000Z
             </div>
         <script src="../../../../prettify.js"></script>
         <script>

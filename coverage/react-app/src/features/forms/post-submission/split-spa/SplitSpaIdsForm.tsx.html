@@ -23,30 +23,30 @@
         <div class='clearfix'>
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">100% </span>
+                <span class="strong">0% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>10/10</span>
+                <span class='fraction'>0/10</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">100% </span>
+                <span class="strong">0% </span>
                 <span class="quiet">Branches</span>
-                <span class='fraction'>6/6</span>
+                <span class='fraction'>0/6</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">100% </span>
+                <span class="strong">0% </span>
                 <span class="quiet">Functions</span>
-                <span class='fraction'>3/3</span>
+                <span class='fraction'>0/3</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">100% </span>
+                <span class="strong">0% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>10/10</span>
+                <span class='fraction'>0/10</span>
             </div>
         
             
@@ -61,7 +61,7 @@
             </div>
         </template>
     </div>
-    <div class='status-line high'></div>
+    <div class='status-line low'></div>
     <pre><table class="coverage">
 <tr><td class="line-count quiet"><a name='L1'></a><a href='#L1'>1</a>
 <a name='L2'></a><a href='#L2'>2</a>
@@ -172,7 +172,7 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -215,7 +215,7 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -224,21 +224,21 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">62x</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">62x</span>
-<span class="cline-any cline-yes">16x</span>
-<span class="cline-any cline-yes">16x</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">43x</span>
-<span class="cline-any cline-yes">16x</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">62x</span>
-<span class="cline-any cline-yes">15x</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -269,7 +269,7 @@ import {
   FormMessage,
 } from "@/components";
 &nbsp;
-const DEFAULT_SUFFIXES = {
+const DEFAULT_SUFFIXES = <span class="cstat-no" title="statement not covered" >{</span>
   1: "A",
   2: "B",
   3: "C",
@@ -312,7 +312,7 @@ const SplitSpaId = ({ control, index, spaId, ...props }) =&gt; (
   /&gt;
 );
 &nbsp;
-export const SplitSpaIdsForm = ({
+export const SplitSpaIdsForm = <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >({</span></span>
   control,
   spaId,
   splitCount,
@@ -321,21 +321,21 @@ export const SplitSpaIdsForm = ({
   spaId: string;
   splitCount: number;
 }) =&gt; {
-  const { fields, remove, append } = useFieldArray({
+  const { fields, remove, append } = <span class="cstat-no" title="statement not covered" >useFieldArray({</span>
     control,
     name: "spaIds",
   });
 &nbsp;
-  useEffect(() =&gt; {
-    remove();
-    const fieldData = [...Array(splitCount).keys()]
+<span class="cstat-no" title="statement not covered" >  useEffect(<span class="fstat-no" title="function not covered" >() =&gt; {</span></span>
+<span class="cstat-no" title="statement not covered" >    remove();</span>
+    const fieldData = <span class="cstat-no" title="statement not covered" >[...Array(splitCount).keys()]</span>
       .splice(1)
-      .map((index) =&gt; ({ suffix: DEFAULT_SUFFIXES[index] }));
-    append(fieldData);
+      .map(<span class="fstat-no" title="function not covered" >(i</span>ndex) =&gt; (<span class="cstat-no" title="statement not covered" >{ suffix: DEFAULT_SUFFIXES[index] }));</span>
+<span class="cstat-no" title="statement not covered" >    append(fieldData);</span>
   }, [splitCount]); // eslint-disable-line react-hooks/exhaustive-deps
 &nbsp;
-  if (!spaId || !splitCount || splitCount &lt; 2 || splitCount &gt; 8) {
-    return;
+<span class="cstat-no" title="statement not covered" >  if (!spaId || !splitCount || splitCount &lt; 2 || splitCount &gt; 8) {</span>
+<span class="cstat-no" title="statement not covered" >    return;</span>
   }
 &nbsp;
   return (
@@ -361,7 +361,7 @@ export const SplitSpaIdsForm = ({
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2026-02-18T02:20:30.071Z
+                at 2026-02-19T02:20:04.000Z
             </div>
         <script src="../../../../../../prettify.js"></script>
         <script>

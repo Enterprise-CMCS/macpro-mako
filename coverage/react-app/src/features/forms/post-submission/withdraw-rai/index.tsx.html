@@ -23,30 +23,30 @@
         <div class='clearfix'>
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">100% </span>
+                <span class="strong">0% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>5/5</span>
+                <span class='fraction'>0/5</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">50% </span>
+                <span class="strong">0% </span>
                 <span class="quiet">Branches</span>
-                <span class='fraction'>4/8</span>
+                <span class='fraction'>0/8</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">100% </span>
+                <span class="strong">0% </span>
                 <span class="quiet">Functions</span>
-                <span class='fraction'>2/2</span>
+                <span class='fraction'>0/2</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">100% </span>
+                <span class="strong">0% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>5/5</span>
+                <span class='fraction'>0/5</span>
             </div>
         
             
@@ -61,7 +61,7 @@
             </div>
         </template>
     </div>
-    <div class='status-line high'></div>
+    <div class='status-line low'></div>
     <pre><table class="coverage">
 <tr><td class="line-count quiet"><a name='L1'></a><a href='#L1'>1</a>
 <a name='L2'></a><a href='#L2'>2</a>
@@ -127,21 +127,15 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">4x</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -152,7 +146,13 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -184,15 +184,15 @@ import { ActionForm } from "@/components/ActionForm";
 import { PackageSection } from "@/components/Form/content/PackageSection";
 import { formSchemas } from "@/formSchemas";
 &nbsp;
-export const WithdrawRaiForm = () =&gt; {
-  const { authority, id } = useParams();
-  const faqLink = authority?.includes("SPA")
+export const WithdrawRaiForm = <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >() =&gt; {</span></span>
+  const { authority, id } = <span class="cstat-no" title="statement not covered" >useParams();</span>
+  const faqLink = <span class="cstat-no" title="statement not covered" >authority?.includes("SPA")</span>
     ? authority?.includes("CHIP")
-      ? <span class="branch-0 cbranch-no" title="branch not covered" >"chip-spa"</span>
+      ? "chip-spa"
       : "spa"
-    : <span class="branch-1 cbranch-no" title="branch not covered" >"waiver";</span>
+    : "waiver";
 &nbsp;
-  const authorityText = authority === "1915(c)" ? <span class="branch-0 cbranch-no" title="branch not covered" >`1915(c) Appendix K` </span>: authority;
+  const authorityText = <span class="cstat-no" title="statement not covered" >authority === "1915(c)" ? `1915(c) Appendix K` : authority;</span>
 &nbsp;
   return (
     &lt;ActionForm
@@ -208,8 +208,8 @@ export const WithdrawRaiForm = () =&gt; {
       }}
       documentPollerArgs={{
         property: "id",
-        documentChecker: (check) =&gt;
-          check.recordExists &amp;&amp; <span class="branch-1 cbranch-no" title="branch not covered" >check.hasStatus(SEATOOL_STATUS.RAI_RESPONSE_WITHDRAW_REQUESTED),</span>
+        documentChecker: <span class="fstat-no" title="function not covered" >(c</span>heck) =&gt;
+<span class="cstat-no" title="statement not covered" >          check.recordExists &amp;&amp; check.hasStatus(SEATOOL_STATUS.RAI_RESPONSE_WITHDRAW_REQUESTED),</span>
       }}
       breadcrumbText="Withdraw Formal RAI Response"
       formDescription="Complete this form to withdraw the Formal RAI response. Once complete,
@@ -241,7 +241,7 @@ export const WithdrawRaiForm = () =&gt; {
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2026-02-18T02:20:30.071Z
+                at 2026-02-19T02:20:04.000Z
             </div>
         <script src="../../../../../../prettify.js"></script>
         <script>

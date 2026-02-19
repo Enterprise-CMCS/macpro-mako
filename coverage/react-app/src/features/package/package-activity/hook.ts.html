@@ -23,30 +23,30 @@
         <div class='clearfix'>
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">91.3% </span>
+                <span class="strong">0% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>21/23</span>
+                <span class='fraction'>0/23</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">50% </span>
+                <span class="strong">0% </span>
                 <span class="quiet">Branches</span>
-                <span class='fraction'>2/4</span>
+                <span class='fraction'>0/4</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">100% </span>
+                <span class="strong">0% </span>
                 <span class="quiet">Functions</span>
-                <span class='fraction'>7/7</span>
+                <span class='fraction'>0/7</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">95.23% </span>
+                <span class="strong">0% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>20/21</span>
+                <span class='fraction'>0/21</span>
             </div>
         
             
@@ -61,7 +61,7 @@
             </div>
         </template>
     </div>
-    <div class='status-line high'></div>
+    <div class='status-line low'></div>
     <pre><table class="coverage">
 <tr><td class="line-count quiet"><a name='L1'></a><a href='#L1'>1</a>
 <a name='L2'></a><a href='#L2'>2</a>
@@ -119,43 +119,43 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">6x</span>
-<span class="cline-any cline-yes">10x</span>
-<span class="cline-any cline-yes">4x</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">10x</span>
-<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">2x</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">2x</span>
-<span class="cline-any cline-yes">3x</span>
-<span class="cline-any cline-yes">3x</span>
-<span class="cline-any cline-yes">3x</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">2x</span>
-<span class="cline-any cline-yes">2x</span>
-<span class="cline-any cline-yes">2x</span>
-<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">2x</span>
-<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">2x</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">2x</span>
-<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">10x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">import { useMutation } from "@tanstack/react-query";
 import { saveAs } from "file-saver";
@@ -166,43 +166,43 @@ import { getAttachmentUrl } from "@/api";
 &nbsp;
 export type Attachments = NonNullable&lt;opensearch.changelog.Document["attachments"]&gt;;
 &nbsp;
-export const useAttachmentService = ({ packageId }: { packageId: string }) =&gt; {
-  const { mutateAsync, error, isLoading } = useMutation((attachment: Attachments[number]) =&gt;
-    getAttachmentUrl(packageId, attachment.bucket, attachment.key, attachment.filename),
+export const useAttachmentService = <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >({</span> packageId }: { packageId: string }) =&gt; {</span>
+  const { mutateAsync, error, isLoading } = <span class="cstat-no" title="statement not covered" >useMutation(<span class="fstat-no" title="function not covered" >(a</span>ttachment: Attachments[number]) =&gt;</span>
+<span class="cstat-no" title="statement not covered" >    getAttachmentUrl(packageId, attachment.bucket, attachment.key, attachment.filename),</span>
   );
 &nbsp;
-  const onZip = (attachments: Attachments) =&gt; {
-    <span class="missing-if-branch" title="if path not taken" >I</span>if (attachments.length === 0) {
+  const onZip = <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >(a</span>ttachments: Attachments) =&gt; {</span>
+<span class="cstat-no" title="statement not covered" >    if (attachments.length === 0) {</span>
 <span class="cstat-no" title="statement not covered" >      return;</span>
     }
 &nbsp;
-    const zip = new JSZip();
+    const zip = <span class="cstat-no" title="statement not covered" >new JSZip();</span>
 &nbsp;
-    const remoteZips = attachments.map(async (attachment, index) =&gt; {
-      const url = await mutateAsync(attachment);
-      <span class="missing-if-branch" title="if path not taken" >I</span>if (!url) <span class="cstat-no" title="statement not covered" >return;</span>
-      const data = await fetch(url).then((res) =&gt; res.blob());
+    const remoteZips = <span class="cstat-no" title="statement not covered" >attachments.map(<span class="fstat-no" title="function not covered" >async (a</span>ttachment, index) =&gt; {</span>
+      const url = <span class="cstat-no" title="statement not covered" >await mutateAsync(attachment);</span>
+<span class="cstat-no" title="statement not covered" >      if (!url) <span class="cstat-no" title="statement not covered" >return;</span></span>
+      const data = <span class="cstat-no" title="statement not covered" >await fetch(url).then(<span class="fstat-no" title="function not covered" >(r</span>es) =&gt; <span class="cstat-no" title="statement not covered" >res.blob());</span></span>
 &nbsp;
       // append index for uniqueness (fileone.md -&gt; fileone(1).md)
-      const filename = (() =&gt; {
-        const pieces = attachment.filename.split(".");
-        const ext = pieces.pop();
-        return `${pieces.join(".")}(${index + 1}).${ext}`;
+      const filename = <span class="cstat-no" title="statement not covered" >(<span class="fstat-no" title="function not covered" >() =&gt; {</span></span>
+        const pieces = <span class="cstat-no" title="statement not covered" >attachment.filename.split(".");</span>
+        const ext = <span class="cstat-no" title="statement not covered" >pieces.pop();</span>
+<span class="cstat-no" title="statement not covered" >        return `${pieces.join(".")}(${index + 1}).${ext}`;</span>
       })();
 &nbsp;
-      zip.file(filename, data);
-      return data;
+<span class="cstat-no" title="statement not covered" >      zip.file(filename, data);</span>
+<span class="cstat-no" title="statement not covered" >      return data;</span>
     });
 &nbsp;
-    Promise.allSettled(remoteZips)
-      .then(async () =&gt; {
-        const asyncZipContent = await zip.generateAsync({ type: "blob" });
-        saveAs(asyncZipContent, `${packageId} - ${new Date().toDateString()}.zip`);
+<span class="cstat-no" title="statement not covered" >    Promise.allSettled(remoteZips)</span>
+      .then(<span class="fstat-no" title="function not covered" >async () =&gt; {</span>
+        const asyncZipContent = <span class="cstat-no" title="statement not covered" >await zip.generateAsync({ type: "blob" });</span>
+<span class="cstat-no" title="statement not covered" >        saveAs(asyncZipContent, `${packageId} - ${new Date().toDateString()}.zip`);</span>
       })
       .catch(console.error);
   };
 &nbsp;
-  return { loading: isLoading, error, onUrl: mutateAsync, onZip };
+<span class="cstat-no" title="statement not covered" >  return { loading: isLoading, error, onUrl: mutateAsync, onZip };</span>
 };
 &nbsp;</pre></td></tr></table></pre>
 
@@ -211,7 +211,7 @@ export const useAttachmentService = ({ packageId }: { packageId: string }) =&gt;
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2026-02-18T02:20:30.071Z
+                at 2026-02-19T02:20:04.000Z
             </div>
         <script src="../../../../../prettify.js"></script>
         <script>
