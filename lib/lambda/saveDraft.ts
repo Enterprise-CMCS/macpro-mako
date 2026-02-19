@@ -1,6 +1,6 @@
 import { APIGatewayEvent } from "aws-lambda";
-import { getPackage } from "libs/api/package";
 import { getAuthDetails, isAuthorized, lookupUserAttributes } from "libs/api/auth/user";
+import { getPackage } from "libs/api/package";
 import { response } from "libs/handler-lib";
 import * as os from "libs/opensearch-lib";
 import { getDomainAndNamespace } from "libs/utils";
