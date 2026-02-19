@@ -2,13 +2,14 @@ import { GetObjectCommand, PutObjectCommand, S3Client } from "@aws-sdk/client-s3
 import { SendEmailCommand, SESClient } from "@aws-sdk/client-ses";
 import { getSignedUrl } from "@aws-sdk/s3-request-presigner";
 import { Handler } from "aws-lambda";
-import { createReadStream, createWriteStream } from "fs";
 import { once } from "events";
-import { join } from "path";
-
+import { createReadStream, createWriteStream } from "fs";
 import { decodeUtf8, getClient } from "libs/opensearch-lib";
 import { getDomainAndNamespace } from "libs/utils";
+import { join } from "path";
 import { BaseIndex } from "shared-types/opensearch";
+
+import { evaluateRecord, getRuleSummary, RuleViolation } from "./data-quality/rules";
 
 const DEFAULT_PAGE_SIZE = 1000;
 const DEFAULT_PRESIGN_DAYS = 7;
@@ -28,6 +29,13 @@ type ExportResult = {
   objectKey: string;
   rowCount: number;
   columns: string[];
+  violationsKey: string;
+  violationCount: number;
+  ruleSummary: {
+    total: number;
+    auto: number;
+    manual: number;
+  };
 };
 
 export const handler: Handler<ExportEvent> = async (event = {}) => {
@@ -37,9 +45,7 @@ export const handler: Handler<ExportEvent> = async (event = {}) => {
   }
 
   const runId = event.runId ?? new Date().toISOString().replace(/[:.]/g, "-");
-  const indices: BaseIndex[] = event.indices?.length
-    ? event.indices
-    : ["main", "changelog"];
+  const indices: BaseIndex[] = event.indices?.length ? event.indices : ["main", "changelog"];
   const pageSize = event.pageSize ?? DEFAULT_PAGE_SIZE;
 
   const s3Client = new S3Client({});
@@ -72,6 +78,9 @@ export const handler: Handler<ExportEvent> = async (event = {}) => {
       objectKey: result.objectKey,
       rowCount: result.rowCount,
       columns: result.columns,
+      violationsKey: result.violationsKey,
+      violationCount: result.violationCount,
+      ruleSummary: result.ruleSummary,
     })),
   };
 
@@ -167,11 +176,37 @@ async function exportIndex(
   const columns = await collectColumns(client, index, opts.pageSize);
 
   const filePath = join("/tmp", `data-quality-${baseIndex}-${opts.runId}.csv`);
+  const violationsPath = join("/tmp", `data-quality-${baseIndex}-${opts.runId}-violations.csv`);
   console.log("Writing CSV", { baseIndex, filePath });
 
-  const rowCount = await writeCsvFile(client, index, columns, opts.pageSize, filePath);
+  const violationsStream = createWriteStream(violationsPath, { encoding: "utf8" });
+  const violationHeader = [
+    "os_index",
+    "os_id",
+    "rule_id",
+    "field",
+    "severity",
+    "expected",
+    "actual",
+    "message",
+  ].join(",");
+  await writeToStream(violationsStream, `${violationHeader}\n`);
+
+  const { rowCount, violationCount, ruleSummary } = await writeCsvFile(
+    client,
+    baseIndex,
+    index,
+    columns,
+    opts.pageSize,
+    filePath,
+    violationsStream,
+  );
+
+  violationsStream.end();
+  await once(violationsStream, "finish");
 
   const objectKey = `data-quality/${process.env.indexNamespace ?? "unknown"}/${opts.runId}/${baseIndex}.csv`;
+  const violationsKey = `data-quality/${process.env.indexNamespace ?? "unknown"}/${opts.runId}/violations-${baseIndex}.csv`;
   console.log("Uploading CSV", { baseIndex, objectKey });
 
   await opts.s3Client.send(
@@ -183,15 +218,31 @@ async function exportIndex(
     }),
   );
 
+  await opts.s3Client.send(
+    new PutObjectCommand({
+      Bucket: opts.bucketName,
+      Key: violationsKey,
+      Body: createReadStream(violationsPath),
+      ContentType: "text/csv",
+    }),
+  );
+
   return {
     index: baseIndex,
     objectKey,
     rowCount,
     columns,
+    violationsKey,
+    violationCount,
+    ruleSummary,
   };
 }
 
-async function collectColumns(client: Awaited<ReturnType<typeof getClient>>, index: string, pageSize: number) {
+async function collectColumns(
+  client: Awaited<ReturnType<typeof getClient>>,
+  index: string,
+  pageSize: number,
+) {
   const columns = new Set<string>(["os_index", "os_id"]);
 
   await scanIndex(client, index, pageSize, async (hits) => {
@@ -201,38 +252,57 @@ async function collectColumns(client: Awaited<ReturnType<typeof getClient>>, ind
     }
   });
 
-  const sorted = Array.from(columns).filter((col) => !["os_index", "os_id"].includes(col)).sort();
+  const sorted = Array.from(columns)
+    .filter((col) => !["os_index", "os_id"].includes(col))
+    .sort();
   return ["os_index", "os_id", ...sorted];
 }
 
 async function writeCsvFile(
   client: Awaited<ReturnType<typeof getClient>>,
+  baseIndex: BaseIndex,
   index: string,
   columns: string[],
   pageSize: number,
   filePath: string,
+  violationsStream: NodeJS.WritableStream,
 ) {
   const stream = createWriteStream(filePath, { encoding: "utf8" });
   let rowCount = 0;
+  let violationCount = 0;
+  const ruleSummary = getRuleSummary(baseIndex);
 
   await writeToStream(stream, `${columns.join(",")}\n`);
 
   await scanIndex(client, index, pageSize, async (hits) => {
     let buffer = "";
+    let violationBuffer = "";
     for (const hit of hits) {
-      const flat = flattenRecord(hit?._source ?? {});
+      const source = hit?._source ?? {};
+      const flat = flattenRecord(source);
       const row = buildRow(hit, flat, columns);
       buffer += `${row}\n`;
       rowCount += 1;
+
+      const violations = evaluateRecord(baseIndex, source);
+      if (violations.length) {
+        for (const violation of violations) {
+          violationBuffer += buildViolationRow(hit, violation) + "\n";
+          violationCount += 1;
+        }
+      }
     }
     if (buffer) {
       await writeToStream(stream, buffer);
+    }
+    if (violationBuffer) {
+      await writeToStream(violationsStream, violationBuffer);
     }
   });
 
   stream.end();
   await once(stream, "finish");
-  return rowCount;
+  return { rowCount, violationCount, ruleSummary };
 }
 
 async function scanIndex(
@@ -310,7 +380,7 @@ function flattenRecord(record: Record<string, any>, prefix = "", output: Record<
 }
 
 function buildRow(hit: any, flat: Record<string, any>, columns: string[]) {
-  const row = {
+  const row: Record<string, any> = {
     os_index: hit?._index ?? "",
     os_id: hit?._id ?? "",
     ...flat,
@@ -318,6 +388,32 @@ function buildRow(hit: any, flat: Record<string, any>, columns: string[]) {
 
   const values = columns.map((column) => formatValue(row[column]));
   return values.map(escapeCsv).join(",");
+}
+
+function buildViolationRow(hit: any, violation: RuleViolation) {
+  const row = {
+    os_index: hit?._index ?? "",
+    os_id: hit?._id ?? "",
+    rule_id: violation.ruleId,
+    field: violation.field,
+    severity: violation.severity,
+    expected: violation.expected,
+    actual: violation.actual,
+    message: violation.message,
+  };
+
+  const values = [
+    row.os_index,
+    row.os_id,
+    row.rule_id,
+    row.field,
+    row.severity,
+    row.expected,
+    row.actual,
+    row.message,
+  ].map((value) => escapeCsv(formatValue(value)));
+
+  return values.join(",");
 }
 
 function formatValue(value: unknown): string {
@@ -329,8 +425,8 @@ function formatValue(value: unknown): string {
 }
 
 function escapeCsv(value: string): string {
-  if (value.includes("\"")) {
-    value = value.replace(/\"/g, "\"\"");
+  if (value.includes('"')) {
+    value = value.replace(/"/g, '""');
   }
   if (/[\n\r,]/.test(value)) {
     return `"${value}"`;
