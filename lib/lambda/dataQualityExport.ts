@@ -118,15 +118,24 @@ export const handler: Handler<ExportEvent> = async (event = {}) => {
     );
 
     const emailFrom = event.emailFrom ?? recipients[0];
-    await sendSummaryEmail({
-      sesClient,
-      emailFrom,
-      recipients,
-      runId,
-      stage: process.env.indexNamespace ?? "unknown",
-      manifestUrl,
-      fileLinks,
-    });
+    try {
+      await sendSummaryEmail({
+        sesClient,
+        emailFrom,
+        recipients,
+        runId,
+        stage: process.env.indexNamespace ?? "unknown",
+        manifestUrl,
+        fileLinks,
+      });
+    } catch (error: any) {
+      const message = String(error?.message ?? "");
+      if (error?.name === "MessageRejected" || message.includes("Email address is not verified")) {
+        console.warn("Email not sent (address not verified).", { error: message });
+      } else {
+        throw error;
+      }
+    }
   }
 
   console.log("Data quality export completed", {
