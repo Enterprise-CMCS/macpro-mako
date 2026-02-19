@@ -1,4 +1,4 @@
-import { act, screen } from "@testing-library/react";
+import { act, screen, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { EXISTING_ITEM_ID } from "mocks";
 import { beforeAll, describe, expect, test, vi } from "vitest";
@@ -103,9 +103,13 @@ describe("Medicaid SPA", () => {
     }
   });
 
-  test("sticky footer shows/hides on scroll", () => {
+  test("sticky footer shows/hides on scroll", async () => {
     const footer = screen.getByTestId("action-form-footer");
     expect(footer).not.toHaveClass("fixed");
+
+    await waitFor(() => {
+      expect(IntersectionObserver).toHaveBeenCalled();
+    });
 
     act(() => {
       intersectionObserverCb([{ isIntersecting: false }]);
