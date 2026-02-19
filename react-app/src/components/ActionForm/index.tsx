@@ -1,7 +1,7 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useMutation } from "@tanstack/react-query";
 import { API } from "aws-amplify";
-import { ReactNode, useEffect, useMemo, useRef } from "react";
+import { ReactNode, useEffect, useMemo, useRef, useState } from "react";
 import { DefaultValues, FieldPath, useForm, UseFormReturn } from "react-hook-form";
 import { Navigate, useLocation, useNavigate, useParams } from "react-router";
 import { Authority, SEATOOL_STATUS, UserDetails } from "shared-types";
@@ -29,6 +29,7 @@ import {
   userPrompt,
 } from "@/components";
 import { useNavigationPrompt } from "@/hooks";
+import { useFeatureFlag } from "@/hooks/useFeatureFlag";
 import { getFormOrigin, queryClient } from "@/utils";
 import { CheckDocumentFunction, documentPoller } from "@/utils/Poller/documentPoller";
 import { sendGAEvent } from "@/utils/ReactGA/SendGAEvent";
@@ -165,6 +166,9 @@ export const ActionForm = <Schema extends SchemaWithEnforcableProps>({
   const navigate = useNavigate();
   const { data: userObj, isLoading: isUserLoading } = useGetUserDetails();
   const skipNavigationPromptRef = useRef(false);
+  const isStickyFooterEnabled = useFeatureFlag("STICKY_FORM_FOOTER");
+  const footerTriggerRef = useRef<HTMLDivElement | null>(null);
+  const [isFooterFixed, setIsFooterFixed] = useState(false);
 
   const breadcrumbs = optionCrumbsFromPath(pathname, authority, id);
   const draftEnabled = draftOptions?.enabled === true;
@@ -394,6 +398,43 @@ export const ActionForm = <Schema extends SchemaWithEnforcableProps>({
     });
   };
 
+  const getStickyCancelPromptOverride = () => {
+    const idPath = draftOptions?.idPath ?? "id";
+    const idValue = getValueByPath(
+      form.getValues() as Record<string, unknown>,
+      idPath,
+    );
+    const trimmedId = typeof idValue === "string" ? idValue.trim() : "";
+
+    return {
+      header: "Leave this page?",
+      body: `Unsaved changes${trimmedId ? ` to ${trimmedId}` : ""} will be discarded. Go back to save your changes.`,
+      acceptButtonText: "Yes, leave",
+      cancelButtonText: "Go back",
+      areButtonsReversed: true,
+      cancelVariant: "link",
+    };
+  };
+
+  useEffect(() => {
+    if (!isStickyFooterEnabled) {
+      setIsFooterFixed(false);
+      return;
+    }
+    const target = footerTriggerRef.current;
+    if (!target) return;
+
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        setIsFooterFixed(!entry.isIntersecting);
+      },
+      { threshold: 0.2 },
+    );
+
+    observer.observe(target);
+    return () => observer.disconnect();
+  }, [isStickyFooterEnabled]);
+
   if (isUserLoading === true) {
     return <LoadingSpinner />;
   }
@@ -485,6 +526,62 @@ export const ActionForm = <Schema extends SchemaWithEnforcableProps>({
               onSaveDraft={draftEnabled ? handleSaveDraft : undefined}
               isDraftMode={isDraftMode}
             />
+          ) : isStickyFooterEnabled ? (
+            <section>
+              <div ref={footerTriggerRef} />
+              <section
+                className={
+                  isFooterFixed
+                    ? "fixed bottom-0 left-0 w-full z-40 border-t border-gray-300 bg-white px-6"
+                    : "flex flex-col md:flex-row justify-between items-center gap-4 p-4 w-full"
+                }
+                data-testid="action-form-footer"
+              >
+                <div className="flex justify-between items-center w-full py-3">
+                  <button
+                    onClick={() => handleCancel(getStickyCancelPromptOverride())}
+                    data-testid="cancel-action-form"
+                    className="w-24 py-3 px-5 text-blue-700 font-semibold underline"
+                    type="button"
+                  >
+                    Cancel
+                  </button>
+
+                  <div className="flex gap-2.5">
+                    {draftEnabled && (
+                      <button
+                        type="button"
+                        className="w-[128.36px] py-3 px-5 gap-2.5 rounded border-2 border-blue-700 text-blue-700 bg-white font-semibold text-sm"
+                        onClick={handleSaveDraft}
+                        disabled={isSavingDraft}
+                        aria-disabled={isSavingDraft}
+                        data-testid="save-draft-form"
+                      >
+                        Save
+                      </button>
+                    )}
+                    <button
+                      type={promptPreSubmission ? "button" : "submit"}
+                      onClick={
+                        promptPreSubmission
+                          ? () => userPrompt({ ...promptPreSubmission, onAccept: onSubmit })
+                          : undefined
+                      }
+                      disabled={!form.formState.isValid}
+                      aria-disabled={!form.formState.isValid}
+                      data-testid="submit-action-form"
+                      className={`w-[181.75px] py-3 px-5 gap-2.5 rounded font-semibold text-sm transition ${
+                        !form.formState.isValid
+                          ? "bg-gray-300 text-white cursor-not-allowed"
+                          : "bg-blue-700 text-white hover:bg-blue-800"
+                      }`}
+                    >
+                      {effectiveSubmitButtonLabel}
+                    </button>
+                  </div>
+                </div>
+              </section>
+            </section>
           ) : (
             <section className="flex justify-end gap-2 p-4 ml-auto">
               {draftEnabled && (

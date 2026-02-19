@@ -11,6 +11,7 @@ import {
 } from "mocks";
 import { mockedApiServer as mockedServer } from "mocks/server";
 import { afterAll, afterEach, beforeAll, expect, vi } from "vitest";
+import * as React from "react";
 
 // TODO to mock
 // [MSW] Warning: intercepted a request without a matching request handler:
@@ -20,6 +21,9 @@ Amplify.configure({
   API: API_CONFIG,
   Auth: AUTH_CONFIG,
 });
+
+// Some dependencies expect React to be available as a global in test environments.
+(globalThis as { React?: typeof React }).React = React;
 
 // extends Vitest's expect method with methods from react-testing-library
 expect.extend(matchers);

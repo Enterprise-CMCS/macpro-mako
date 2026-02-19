@@ -75,10 +75,10 @@ export const featureFlags = {
     defaultValue: true,
   },
   /*
-   *  Toggle visibility of save and submit form
+   *  Toggle visibility of sticky form footer
    */
-  MED_SPA_FOOTER: {
-    flag: "med-spa-footer",
+  STICKY_FORM_FOOTER: {
+    flag: "sticky-form-footer",
     defaultValue: true,
   },
   /*
