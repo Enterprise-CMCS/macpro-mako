@@ -1,4 +1,4 @@
-import { http, HttpResponse } from "msw";
+import { http, HttpResponse, PathParams } from "msw";
 import { opensearch } from "shared-types";
 
 import items, { GET_ERROR_ITEM_ID } from "../../data/items";
@@ -32,7 +32,7 @@ export const errorApiItemHandler = http.post(
   () => new HttpResponse(null, { status: 500 }),
 );
 
-const defaultApiItemExistsHandler = http.post<ItemExistsBody, ItemExistsBody>(
+const defaultApiItemExistsHandler = http.post<PathParams, ItemExistsBody>(
   "https://test-domain.execute-api.us-east-1.amazonaws.com/mocked-tests/itemExists",
   async ({ request }) => {
     const { id, includeDrafts } = await request.json();
