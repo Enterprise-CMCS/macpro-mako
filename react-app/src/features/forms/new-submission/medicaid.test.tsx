@@ -25,7 +25,7 @@ vi.stubGlobal(
 
 vi.mock("@/hooks/useFeatureFlag", () => ({
   useFeatureFlag: (flag: string) => {
-    if (flag === "MED_SPA_FOOTER") return true;
+    if (flag === "STICKY_FORM_FOOTER") return true;
     return false;
   },
 }));
@@ -103,8 +103,8 @@ describe("Medicaid SPA", () => {
     }
   });
 
-  test("MedSpaFooter shows/hides on scroll", () => {
-    const footer = screen.getByTestId("medicaid-form-footer");
+  test("sticky footer shows/hides on scroll", () => {
+    const footer = screen.getByTestId("action-form-footer");
     expect(footer).not.toHaveClass("fixed");
 
     act(() => {
