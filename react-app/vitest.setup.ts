@@ -10,8 +10,8 @@ import {
   setMockUsername,
 } from "mocks";
 import { mockedApiServer as mockedServer } from "mocks/server";
-import { afterAll, afterEach, beforeAll, expect, vi } from "vitest";
 import * as React from "react";
+import { afterAll, afterEach, beforeAll, expect, vi } from "vitest";
 
 // TODO to mock
 // [MSW] Warning: intercepted a request without a matching request handler:

@@ -400,10 +400,7 @@ export const ActionForm = <Schema extends SchemaWithEnforcableProps>({
 
   const getStickyCancelPromptOverride = (): Partial<Omit<UserPrompt, "onAccept">> => {
     const idPath = draftOptions?.idPath ?? "id";
-    const idValue = getValueByPath(
-      form.getValues() as Record<string, unknown>,
-      idPath,
-    );
+    const idValue = getValueByPath(form.getValues() as Record<string, unknown>, idPath);
     const trimmedId = typeof idValue === "string" ? idValue.trim() : "";
 
     return {
