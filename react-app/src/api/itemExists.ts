@@ -12,7 +12,7 @@ export const itemExists = async (id: string, options: ItemExistsOptions = {}): P
   try {
     const draftIdFromUrl =
       typeof window !== "undefined"
-        ? new URLSearchParams(window.location.search).get("draftId") ?? undefined
+        ? (new URLSearchParams(window.location.search).get("draftId") ?? undefined)
         : undefined;
     const allowDraftId = options.allowDraftId ?? draftIdFromUrl;
     const includeDrafts = options.includeDrafts ?? false;

@@ -36,9 +36,7 @@ export const handler = authenticatedMiddy({
       body: JSON.stringify({
         message: exists ? "Record found for the given id" : "No record found for the given id",
         exists,
-        ...(includeDrafts && hasPackage
-          ? { status: packageResult?._source?.seatoolStatus }
-          : {}),
+        ...(includeDrafts && hasPackage ? { status: packageResult?._source?.seatoolStatus } : {}),
       }),
     };
   });
