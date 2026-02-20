@@ -10,11 +10,14 @@ import { uploadFiles } from "@/utils/test-helpers/uploadFiles";
 
 import { MedicaidForm } from "./Medicaid";
 
-const intersectionObserverCb = vi.fn();
+let intersectionObserverCb:
+  | ((entries: Array<Pick<IntersectionObserverEntry, "isIntersecting">>) => void)
+  | undefined;
 vi.stubGlobal(
   "IntersectionObserver",
-  vi.fn((cb) => {
-    intersectionObserverCb.mockImplementation(cb);
+  vi.fn((cb: IntersectionObserverCallback) => {
+    intersectionObserverCb = (entries) =>
+      cb(entries as IntersectionObserverEntry[], {} as IntersectionObserver);
     return {
       observe: vi.fn(),
       unobserve: vi.fn(),
@@ -106,19 +109,18 @@ describe("Medicaid SPA", () => {
   test("sticky footer shows/hides on scroll", async () => {
     const footer = screen.getByTestId("action-form-footer");
     expect(footer).not.toHaveClass("fixed");
-
     await waitFor(() => {
-      expect(IntersectionObserver).toHaveBeenCalled();
+      expect(intersectionObserverCb).toBeDefined();
     });
 
     act(() => {
-      intersectionObserverCb([{ isIntersecting: false }]);
+      intersectionObserverCb?.([{ isIntersecting: false }]);
     });
 
     expect(footer).toHaveClass("fixed");
 
     act(() => {
-      intersectionObserverCb([{ isIntersecting: true }]);
+      intersectionObserverCb?.([{ isIntersecting: true }]);
     });
 
     expect(footer).not.toHaveClass("fixed");
