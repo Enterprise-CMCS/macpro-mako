@@ -117,7 +117,7 @@ describe("renderCells", () => {
         `/details/${encodeURIComponent(TEST_1915C_ITEM._source.authority)}/${encodeURIComponent(TEST_1915C_ITEM._source.id)}`,
       );
     });
-    it("should return a link to the draft form for draft items", () => {
+    it("should return a link to details for draft items", () => {
       const draftItem: opensearch.main.Document = {
         ...TEST_MED_SPA_ITEM._source,
         seatoolStatus: SEATOOL_STATUS.DRAFT,
@@ -125,7 +125,7 @@ describe("renderCells", () => {
       };
       setup(draftItem);
       expect(screen.getByText(draftItem.id).getAttribute("href")).toEqual(
-        `/new-submission/spa/medicaid/create?draftId=${draftItem.id}&origin=spas`,
+        `/details/${encodeURIComponent(draftItem.authority)}/${encodeURIComponent(draftItem.id)}`,
       );
     });
   });

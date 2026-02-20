@@ -37,13 +37,12 @@ export const CellDetailsLink = ({ record }: CellIdLinkProps) => {
     });
   };
 
-  const draftLink = getDraftEditLink(record);
   const detailsLink = `/details/${encodeURIComponent(authority)}/${encodeURIComponent(id)}`;
 
   return (
     <Link
       className={`cursor-pointer text-blue-600 hover:underline ${isDraft ? "italic" : ""}`}
-      to={draftLink ?? detailsLink}
+      to={detailsLink}
       onClick={handleLinkClick} // Track the click event for analytics
     >
       {id}
