@@ -2,6 +2,8 @@ import { UTCDate } from "@date-fns/utc";
 import { isAfter, isBefore } from "date-fns";
 import { bulkUpdateDataWrapper, ErrorType, getItems, logError } from "libs";
 import { getPackage, getPackageChangelog } from "libs/api/package";
+import * as os from "libs/opensearch-lib";
+import { getDomainAndNamespace } from "libs/utils";
 import {
   KafkaRecord,
   opensearch,
@@ -40,9 +42,28 @@ const adminRecordSchema = deleteAdminChangeSchema
   .or(splitSPAAdminChangeSchema)
   .or(extendSubmitNOSOAdminSchema);
 
+const eventsThatMayStartAsDrafts = new Set([
+  "new-medicaid-submission",
+  "new-chip-submission",
+  "new-chip-details-submission",
+  "capitated-initial",
+  "capitated-renewal",
+  "capitated-amendment",
+  "contracting-initial",
+  "contracting-renewal",
+  "contracting-amendment",
+  "temporary-extension",
+  "app-k",
+]);
+
 type OneMacRecord = {
   id: string;
   [key: string]: unknown | undefined;
+};
+
+type OneMacRecordWithSource = {
+  record: OneMacRecord;
+  sourceEvent?: string;
 };
 
 type ParsedRecordFromKafka = Partial<{
@@ -137,7 +158,7 @@ const getOneMacRecordWithAllProperties = (
   value: string,
   topicPartition: string,
   kafkaRecord: KafkaRecord,
-): OneMacRecord | undefined => {
+): OneMacRecordWithSource | undefined => {
   const record = JSON.parse(decodeBase64WithUtf8(value));
   const kafkaSource = String.fromCharCode(...(kafkaRecord.headers[0]?.source || []));
 
@@ -164,7 +185,7 @@ const getOneMacRecordWithAllProperties = (
 
     const { data: oneMacAdminRecord } = safeRecord;
 
-    return oneMacAdminRecord;
+    return { record: oneMacAdminRecord };
   }
 
   if (isRecordAOneMacRecord(record)) {
@@ -184,7 +205,10 @@ const getOneMacRecordWithAllProperties = (
 
     const { data: oneMacRecord } = safeEvent;
 
-    return oneMacRecord;
+    return {
+      record: oneMacRecord,
+      sourceEvent: record.event,
+    };
   }
 
   if (isRecordAUserRoleRequest(record)) {
@@ -192,7 +216,7 @@ const getOneMacRecordWithAllProperties = (
 
     if (userParseResult.success === true) {
       console.log("USER RECORD: ", JSON.stringify(record));
-      return userParseResult.data;
+      return { record: userParseResult.data };
     }
 
     console.log("USER RECORD INVALID BECAUSE: ", userParseResult.error, JSON.stringify(record));
@@ -206,7 +230,7 @@ const getOneMacRecordWithAllProperties = (
 
     if (userParseResult.success === true) {
       console.log("USER RECORD: ", JSON.stringify(record));
-      return userParseResult.data;
+      return { record: userParseResult.data };
     }
 
     console.log("USER RECORD INVALID BECAUSE: ", userParseResult.error, JSON.stringify(record));
@@ -220,7 +244,7 @@ const getOneMacRecordWithAllProperties = (
 
     if (userParseResult.success === true) {
       console.log("USER RECORD: ", JSON.stringify(record));
-      return userParseResult.data;
+      return { record: userParseResult.data };
     }
     console.log("USER RECORD INVALID BECAUSE: ", userParseResult.error, JSON.stringify(record));
   }
@@ -230,7 +254,7 @@ const getOneMacRecordWithAllProperties = (
 
     if (userParseResult.success === true) {
       console.log("USER RECORD: ", JSON.stringify(record));
-      return userParseResult.data;
+      return { record: userParseResult.data };
     }
     console.log("USER RECORD INVALID BECAUSE: ", userParseResult.error, JSON.stringify(record));
   }
@@ -255,11 +279,51 @@ const getOneMacRecordWithAllProperties = (
 
     const { data: oneMacLegacyRecord } = safeEvent;
 
-    return oneMacLegacyRecord;
+    return { record: oneMacLegacyRecord };
   }
   console.error(`No transform found for event: ${record.event}`, JSON.stringify(record));
 
   return;
+};
+
+const removeDraftFieldForSubmittedRecords = async (recordIds: string[]) => {
+  if (recordIds.length === 0) {
+    return;
+  }
+
+  const { domain, index } = getDomainAndNamespace("main");
+  const dedupedRecordIds = [...new Set(recordIds)];
+
+  const results = await Promise.allSettled(
+    dedupedRecordIds.map(async (id) =>
+      os.updateData(domain, {
+        index,
+        id,
+        body: {
+          script: {
+            lang: "painless",
+            source: "ctx._source.remove(params.field)",
+            params: {
+              field: "draft",
+            },
+          },
+        },
+      }),
+    ),
+  );
+
+  results.forEach((result, resultIndex) => {
+    if (result.status === "rejected") {
+      logError({
+        type: ErrorType.UNKNOWN,
+        error: result.reason,
+        metadata: {
+          message: "Failed to remove draft field after OneMAC submission was indexed",
+          recordId: dedupedRecordIds[resultIndex],
+        },
+      });
+    }
+  });
 };
 
 /**
@@ -271,33 +335,38 @@ export const insertOneMacRecordsFromKafkaIntoMako = async (
   kafkaRecords: KafkaRecord[],
   topicPartition: string,
 ) => {
-  const oneMacRecordsForMako = kafkaRecords.reduce<OneMacRecord[]>((collection, kafkaRecord) => {
-    try {
-      const { value } = kafkaRecord;
+  const oneMacRecordsForMakoWithSource = kafkaRecords.reduce<OneMacRecordWithSource[]>(
+    (collection, kafkaRecord) => {
+      try {
+        const { value } = kafkaRecord;
 
-      if (!value) {
-        return collection;
+        if (!value) {
+          return collection;
+        }
+
+        const oneMacRecordWithAllProperties = getOneMacRecordWithAllProperties(
+          value,
+          topicPartition,
+          kafkaRecord,
+        );
+
+        if (oneMacRecordWithAllProperties) {
+          return collection.concat(oneMacRecordWithAllProperties);
+        }
+      } catch (error) {
+        logError({
+          type: ErrorType.BADPARSE,
+          error,
+          metadata: { topicPartition, kafkaRecord },
+        });
       }
 
-      const oneMacRecordWithAllProperties = getOneMacRecordWithAllProperties(
-        value,
-        topicPartition,
-        kafkaRecord,
-      );
+      return collection;
+    },
+    [],
+  );
 
-      if (oneMacRecordWithAllProperties) {
-        return collection.concat(oneMacRecordWithAllProperties);
-      }
-    } catch (error) {
-      logError({
-        type: ErrorType.BADPARSE,
-        error,
-        metadata: { topicPartition, kafkaRecord },
-      });
-    }
-
-    return collection;
-  }, []);
+  const oneMacRecordsForMako = oneMacRecordsForMakoWithSource.map(({ record }) => record);
 
   const oneMacRecords = oneMacRecordsForMako.filter(
     (record) =>
@@ -314,10 +383,23 @@ export const insertOneMacRecordsFromKafkaIntoMako = async (
     .sort((a, b) => {
       return (a.lastModifiedDate as any) - (b.lastModifiedDate as any);
     });
+  const upsertedMainRecordIds = new Set(oneMacRecords.map((record) => record.id));
+  const draftCleanupRecordIds = oneMacRecordsForMakoWithSource.reduce<string[]>((acc, entry) => {
+    const { sourceEvent, record } = entry;
+    if (
+      sourceEvent &&
+      eventsThatMayStartAsDrafts.has(sourceEvent) &&
+      upsertedMainRecordIds.has(record.id)
+    ) {
+      acc.push(record.id);
+    }
+    return acc;
+  }, []);
 
   await bulkUpdateDataWrapper(oneMacRecords, "main");
   await bulkUpdateDataWrapper(oneMacUsers, "users");
   await bulkUpdateDataWrapper(roleRequests, "roles");
+  await removeDraftFieldForSubmittedRecords(draftCleanupRecordIds);
 };
 
 const getMakoDocTimestamps = async (kafkaRecords: KafkaRecord[]) => {
