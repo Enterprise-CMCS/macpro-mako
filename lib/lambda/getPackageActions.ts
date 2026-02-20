@@ -1,6 +1,7 @@
 import { APIGatewayEvent } from "aws-lambda";
 import { response } from "libs/handler-lib";
-import { getAvailableActions } from "shared-utils";
+import { SEATOOL_STATUS } from "shared-types";
+import { getAvailableActions, isCmsUser } from "shared-utils";
 
 import {
   getAuthDetails,
@@ -44,6 +45,15 @@ export const getPackageActions = async (event: APIGatewayEvent) => {
       });
     }
 
+    const user = { ...userAttr, role: activeRole.role };
+
+    if (result._source.seatoolStatus === SEATOOL_STATUS.DRAFT && isCmsUser(user)) {
+      return response({
+        statusCode: 404,
+        body: { message: "No record found for the given id" },
+      });
+    }
+
     const passedStateAuth = await isAuthorizedToGetPackageActions(event, result._source.state);
 
     if (!passedStateAuth)
@@ -55,7 +65,7 @@ export const getPackageActions = async (event: APIGatewayEvent) => {
     return response({
       statusCode: 200,
       body: {
-        actions: getAvailableActions({ ...userAttr, role: activeRole.role }, result._source),
+        actions: getAvailableActions(user, result._source),
       },
     });
   } catch (err) {

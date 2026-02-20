@@ -1,5 +1,6 @@
 import { MiddlewareObj, Request } from "@middy/core";
 import { createError } from "@middy/util";
+import { SEATOOL_STATUS } from "shared-types";
 import { isCmsUser, isUserManagerUser } from "shared-utils";
 
 import { getAuthUserFromRequest, getPackageFromRequest } from "./utils";
@@ -30,6 +31,10 @@ export const canViewPackage = (): MiddlewareObj => ({
 
     if (!user) {
       throw new Error("User was not stored on the request");
+    }
+
+    if (packageResult?._source?.seatoolStatus === SEATOOL_STATUS.DRAFT && isCmsUser(user)) {
+      throw createError(403, JSON.stringify({ message: "Not authorized to view this resource" }));
     }
 
     if (!isCmsUser(user) && (!user.states || !user.states.includes(state))) {

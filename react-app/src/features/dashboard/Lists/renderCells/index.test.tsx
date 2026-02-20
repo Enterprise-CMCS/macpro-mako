@@ -13,6 +13,7 @@ import { UserRole } from "shared-types/events/legacy-user";
 import { describe, expect, it, vi } from "vitest";
 
 import { renderWithMemoryRouter } from "@/utils/test-helpers";
+import { DRAFT_CONTINUE_ACTION_LABEL, DRAFT_DELETE_ACTION_LABEL } from "@/utils/drafts";
 
 import { CellDetailsLink, renderCellActions, renderCellDate } from "./index";
 vi.mock("@/utils/ReactGA/SendGAEvent", () => ({
@@ -169,6 +170,28 @@ describe("renderCells", () => {
     });
 
     describe("as a State Submitter", () => {
+      it("should show draft actions for draft records", async () => {
+        const draftItem: opensearch.main.Document = {
+          ...TEST_MED_SPA_ITEM._source,
+          seatoolStatus: SEATOOL_STATUS.DRAFT,
+          stateStatus: "Draft",
+          cmsStatus: "Draft",
+          event: "new-medicaid-submission",
+        };
+        const { user } = setup(TEST_STATE_SUBMITTER_USER, "statesubmitter", draftItem);
+
+        await user.click(screen.getByLabelText("Available package actions"));
+
+        expect(screen.getByText(DRAFT_CONTINUE_ACTION_LABEL).getAttribute("href")).toEqual(
+          `/new-submission/spa/medicaid/create?draftId=${draftItem.id}&origin=spas`,
+        );
+        expect(
+          screen.getByRole("menuitem", {
+            name: `${DRAFT_DELETE_ACTION_LABEL} for ${draftItem.id}`,
+          }),
+        ).toBeInTheDocument();
+      });
+
       it(`should handle button click and display [${Action.RESPOND_TO_RAI},${Action.WITHDRAW_PACKAGE}]`, async () => {
         const { user } = setup(TEST_STATE_SUBMITTER_USER, "statesubmitter", {
           ...TEST_MED_SPA_ITEM._source,

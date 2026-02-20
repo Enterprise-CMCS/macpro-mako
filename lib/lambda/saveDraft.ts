@@ -141,6 +141,7 @@ export const handler = authenticatedMiddy({
     id: normalizedId,
     authority: resolvedAuthority,
     state: stateCode,
+    deleted: false,
     seatoolStatus: SEATOOL_STATUS.DRAFT,
     stateStatus,
     cmsStatus,

@@ -241,6 +241,7 @@ describe("insertOneMacRecordsFromKafkaIntoMako", () => {
         submissionDate: ISO_DATETIME,
         state: "VA",
         origin: "OneMAC",
+        deleted: false,
         raiWithdrawEnabled: false,
         description: null,
         subject: null,
@@ -322,6 +323,7 @@ describe("insertOneMacRecordsFromKafkaIntoMako", () => {
         ...expectation,
         id: event.id,
         makoChangedDate: ISO_DATETIME,
+        deleted: false,
       },
     ]);
   });
@@ -741,6 +743,7 @@ describe("insertOneMacRecordsFromKafkaIntoMako", () => {
         makoChangedDate: new Date(TIMESTAMP).toISOString(),
         state: "MD",
         origin: "OneMACLegacy",
+        deleted: false,
         proposedDate: "2025-03-10T00:00:00Z",
         submissionDate: new Date(TIMESTAMP).toISOString(),
         submitterEmail: "tester@example.com",

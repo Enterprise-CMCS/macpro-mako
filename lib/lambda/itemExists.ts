@@ -28,15 +28,18 @@ export const handler = authenticatedMiddy({
 
     const includeDrafts = Boolean(event.body?.includeDrafts);
     const hasPackage = !(packageResult === undefined || !packageResult.found);
+    const isDeleted = packageResult?._source?.deleted === true;
     const isDraft = packageResult?._source?.seatoolStatus === SEATOOL_STATUS.DRAFT;
-    const exists = hasPackage && (includeDrafts || !isDraft);
+    const exists = hasPackage && !isDeleted && (includeDrafts || !isDraft);
 
     return {
       statusCode: 200,
       body: JSON.stringify({
         message: exists ? "Record found for the given id" : "No record found for the given id",
         exists,
-        ...(includeDrafts && hasPackage ? { status: packageResult?._source?.seatoolStatus } : {}),
+        ...(includeDrafts && hasPackage && !isDeleted
+          ? { status: packageResult?._source?.seatoolStatus }
+          : {}),
       }),
     };
   });

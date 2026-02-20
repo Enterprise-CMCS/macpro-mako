@@ -1,9 +1,18 @@
-import { Link, useLocation } from "react-router";
-import { opensearch } from "shared-types";
+import { Link, useLocation, useNavigate } from "react-router";
+import { Authority, opensearch, SEATOOL_STATUS } from "shared-types";
+import { isStateUser } from "shared-utils";
 
-import { useGetPackageActions } from "@/api";
-import { LoadingSpinner } from "@/components";
+import { deleteDraft, useGetPackageActions, useGetUser } from "@/api";
+import { banner, LoadingSpinner, userPrompt } from "@/components";
 import { DETAILS_ORIGIN, mapActionLabel, ORIGIN, WAIVER_SUBMISSION_ORIGIN } from "@/utils";
+import { getDashboardTabForAuthority } from "@/utils/crumbs";
+import {
+  DRAFT_CONTINUE_ACTION_LABEL,
+  DRAFT_DELETE_ACTION_LABEL,
+  DRAFT_DELETE_MODAL_BODY,
+  DRAFT_DELETE_MODAL_HEADER,
+  getDraftEditLink,
+} from "@/utils/drafts";
 
 type PackageActionsCardProps = {
   id: string;
@@ -12,10 +21,98 @@ type PackageActionsCardProps = {
 
 export const PackageActionsCard = ({ submission, id }: PackageActionsCardProps) => {
   const location = useLocation();
+  const navigate = useNavigate();
+  const { data: oneMacUser, isLoading: isUserLoading } = useGetUser();
+  const isDraft = submission.seatoolStatus === SEATOOL_STATUS.DRAFT;
+  const draftLink = isDraft ? getDraftEditLink(submission) : null;
+  const canManageDraft =
+    isDraft && !!draftLink && !!oneMacUser?.user && isStateUser(oneMacUser.user);
 
   const { data, isLoading } = useGetPackageActions(id, {
     retry: false,
+    enabled: !isDraft,
   });
+
+  if (isDraft && isUserLoading) {
+    return <LoadingSpinner />;
+  }
+
+  const handleDeleteDraft = () => {
+    userPrompt({
+      header: DRAFT_DELETE_MODAL_HEADER,
+      body: DRAFT_DELETE_MODAL_BODY,
+      acceptButtonText: "Delete",
+      cancelButtonText: "Cancel",
+      cancelVariant: "link",
+      onAccept: async () => {
+        try {
+          await deleteDraft(id);
+          let dashboardPath = "/dashboard";
+          try {
+            const tab = getDashboardTabForAuthority(submission.authority as Authority);
+            dashboardPath = `/dashboard?tab=${tab}`;
+          } catch {
+            // Fallback to default dashboard if authority is malformed.
+          }
+
+          banner({
+            header: "Draft deleted",
+            body: `Draft for ${id} has been deleted.`,
+            variant: "success",
+            pathnameToDisplayOn: "/dashboard",
+          });
+
+          navigate(dashboardPath, { replace: true });
+        } catch (error) {
+          banner({
+            header: "Unable to delete draft",
+            body: error instanceof Error ? error.message : String(error),
+            variant: "destructive",
+            pathnameToDisplayOn: location.pathname,
+          });
+        }
+      },
+    });
+  };
+
+  if (isDraft && canManageDraft) {
+    return (
+      <nav className="my-3 sm:text-nowrap sm:min-w-min" aria-labelledby="package-actions-heading">
+        <ul className="my-3">
+          <li className="py-2">
+            <Link
+              state={{
+                from: `${location.pathname}${location.search}`,
+              }}
+              to={draftLink!}
+              className="text-sky-700 font-semibold text-lg hover:underline hover:decoration-inherit"
+            >
+              {DRAFT_CONTINUE_ACTION_LABEL}
+            </Link>
+          </li>
+          <li className="py-2">
+            <button
+              className="text-sky-700 font-semibold text-lg hover:underline hover:decoration-inherit"
+              onClick={handleDeleteDraft}
+              type="button"
+            >
+              {DRAFT_DELETE_ACTION_LABEL}
+            </button>
+          </li>
+        </ul>
+      </nav>
+    );
+  }
+
+  if (isDraft) {
+    return (
+      <div className="my-3" aria-labelledby="package-actions-heading">
+        <em className="text-gray-400 my-3">
+          No actions are currently available for this submission.
+        </em>
+      </div>
+    );
+  }
 
   if (isLoading) return <LoadingSpinner />;
 

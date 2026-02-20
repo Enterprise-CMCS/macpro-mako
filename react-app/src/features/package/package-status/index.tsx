@@ -26,7 +26,7 @@ export const PackageStatusCard = ({ submission }: PackageStatusCardProps) => {
 
   return (
     <dl className="my-3 font-bold text-xl" aria-labelledby="package-status-heading">
-      <dt>
+      <dt className={submission.seatoolStatus === SEATOOL_STATUS.DRAFT ? "italic" : undefined}>
         {isCmsUser(user.user) && isHelpDeskUser(user.user) === false
           ? submission.cmsStatus
           : submission.stateStatus}

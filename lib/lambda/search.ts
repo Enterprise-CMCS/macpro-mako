@@ -1,6 +1,7 @@
 import { APIGatewayEvent } from "aws-lambda";
 import { response } from "libs/handler-lib";
 import { getDomainAndNamespace } from "libs/utils";
+import { SEATOOL_STATUS } from "shared-types";
 import { BaseIndex } from "shared-types/opensearch";
 import { ONEMAC_LEGACY_ORIGIN } from "shared-types/opensearch/main/transforms/legacy-transforms";
 import { validateEnvVariable } from "shared-utils";
@@ -39,6 +40,9 @@ export const getSearchData = async (event: APIGatewayEvent) => {
     const stateFilter = await getStateFilter(event);
     if (stateFilter) {
       query.query.bool.must.push(stateFilter);
+    } else if (stateFilter === null) {
+      // Drafts are state-only and should not appear in CMS search results.
+      query.query.bool.must_not.push({ term: { "seatoolStatus.keyword": SEATOOL_STATUS.DRAFT } });
     }
     // Return OneMAC records and NOSOs (denoted with SEATool origin and only NOSO)
     query.query.bool.must.push({

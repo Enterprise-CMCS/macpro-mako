@@ -17,6 +17,7 @@ import { beforeEach, describe, expect, it, vi } from "vitest";
 
 import { mapActionLabel } from "@/utils";
 import { renderFormWithPackageSectionAsync } from "@/utils/test-helpers/renderForm";
+import { DRAFT_CONTINUE_ACTION_LABEL, DRAFT_DELETE_ACTION_LABEL } from "@/utils/drafts";
 
 import { DetailCardWrapper } from "../../index";
 import { PackageActionsCard } from "./index";
@@ -47,6 +48,26 @@ describe("", () => {
   });
 
   describe("as a state submitter", () => {
+    it("should show continue and delete actions for drafts", async () => {
+      const submission = {
+        ...TEST_MED_SPA_ITEM._source,
+        seatoolStatus: SEATOOL_STATUS.DRAFT,
+        stateStatus: "Draft",
+        cmsStatus: "Draft",
+        event: "new-medicaid-submission",
+      };
+
+      await setup(submission, TEST_MED_SPA_ITEM._id);
+
+      expect(
+        await screen.findByRole("link", { name: DRAFT_CONTINUE_ACTION_LABEL }),
+      ).toHaveAttribute(
+        "href",
+        `/new-submission/spa/medicaid/create?draftId=${TEST_MED_SPA_ITEM._id}&origin=spas`,
+      );
+      expect(screen.getByRole("button", { name: DRAFT_DELETE_ACTION_LABEL })).toBeInTheDocument();
+    });
+
     it(`should return actions: [${Action.RESPOND_TO_RAI},${Action.WITHDRAW_PACKAGE}]`, async () => {
       const submission = {
         ...TEST_MED_SPA_ITEM._source,
@@ -145,6 +166,22 @@ describe("", () => {
   describe("as a cms reviewer", () => {
     beforeEach(() => {
       setMockUsername(testReviewer);
+    });
+
+    it("should not show draft actions for drafts", async () => {
+      const submission = {
+        ...TEST_MED_SPA_ITEM._source,
+        seatoolStatus: SEATOOL_STATUS.DRAFT,
+        stateStatus: "Draft",
+        cmsStatus: "Draft",
+        event: "new-medicaid-submission",
+      };
+
+      await setup(submission, TEST_MED_SPA_ITEM._id);
+
+      expect(
+        screen.getByText("No actions are currently available for this submission."),
+      ).toBeInTheDocument();
     });
 
     it(`should return actions: [${Action.ENABLE_RAI_WITHDRAW}] for CHIP SPA`, async () => {

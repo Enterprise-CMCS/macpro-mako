@@ -1,10 +1,10 @@
 import { http, HttpResponse, PathParams } from "msw";
-import { opensearch } from "shared-types";
+import { opensearch, SEATOOL_STATUS } from "shared-types";
 
 import items, { GET_ERROR_ITEM_ID } from "../../data/items";
-import type { GetItemBody, ItemExistsBody } from "../../index.d";
+import type { DeleteDraftBody, GetItemBody, ItemExistsBody } from "../../index.d";
 
-const defaultApiItemHandler = http.post<GetItemBody, GetItemBody>(
+const defaultApiItemHandler = http.post<PathParams, GetItemBody>(
   "https://test-domain.execute-api.us-east-1.amazonaws.com/mocked-tests/item",
   async ({ request }) => {
     const { id } = await request.json();
@@ -20,7 +20,7 @@ const defaultApiItemHandler = http.post<GetItemBody, GetItemBody>(
 );
 
 export const onceApiItemHandler = (item: opensearch.main.ItemResult) =>
-  http.post<GetItemBody, GetItemBody>(
+  http.post<PathParams, GetItemBody>(
     "https://test-domain.execute-api.us-east-1.amazonaws.com/mocked-tests/item",
     async () => {
       return item ? HttpResponse.json(item) : new HttpResponse(null, { status: 404 });
@@ -57,8 +57,32 @@ const defaultApiSaveDraftHandler = http.post(
   () => HttpResponse.json({ message: "Draft saved" }),
 );
 
+const defaultApiDeleteDraftHandler = http.post<PathParams, DeleteDraftBody>(
+  "https://test-domain.execute-api.us-east-1.amazonaws.com/mocked-tests/deleteDraft",
+  async ({ request }) => {
+    const { id } = await request.json();
+    const item = items[id];
+
+    if (!id) {
+      return HttpResponse.json({ message: "Event body required" }, { status: 400 });
+    }
+
+    if (
+      !item?._source ||
+      item._source.seatoolStatus !== SEATOOL_STATUS.DRAFT ||
+      item._source.deleted
+    ) {
+      return HttpResponse.json({ message: "Package is not an active draft." }, { status: 409 });
+    }
+
+    item._source.deleted = true;
+    return HttpResponse.json({ message: "Draft deleted", id });
+  },
+);
+
 export const itemHandlers = [
   defaultApiItemHandler,
   defaultApiItemExistsHandler,
   defaultApiSaveDraftHandler,
+  defaultApiDeleteDraftHandler,
 ];
