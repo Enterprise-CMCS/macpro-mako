@@ -9,6 +9,21 @@ import { getStateFilter } from "../libs/api/auth/user";
 import { getPackage, getPackageChangelog } from "../libs/api/package";
 import { handleOpensearchError } from "./utils";
 
+const getAwsSdkLogger = () => {
+  const logger = (globalThis as any).logger;
+  if (
+    logger &&
+    typeof logger.debug === "function" &&
+    typeof logger.info === "function" &&
+    typeof logger.warn === "function" &&
+    typeof logger.error === "function"
+  ) {
+    return logger;
+  }
+
+  return console;
+};
+
 // Handler function to get Seatool data
 export const handler = async (event: APIGatewayEvent) => {
   try {
@@ -83,7 +98,10 @@ export const handler = async (event: APIGatewayEvent) => {
 
 async function getClient(bucket: string) {
   if (bucket.startsWith("uploads")) {
-    const stsClient = new STSClient({ region: process.env.region });
+    const stsClient = new STSClient({
+      region: process.env.region,
+      logger: getAwsSdkLogger(),
+    });
 
     // Assume the role
     const assumedRoleResponse = await stsClient.send(

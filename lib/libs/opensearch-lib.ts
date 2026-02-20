@@ -11,6 +11,21 @@ import { getDomainAndNamespace } from "./utils";
 
 let client: Client;
 
+const getAwsSdkLogger = () => {
+  const logger = (globalThis as any).logger;
+  if (
+    logger &&
+    typeof logger.debug === "function" &&
+    typeof logger.info === "function" &&
+    typeof logger.warn === "function" &&
+    typeof logger.error === "function"
+  ) {
+    return logger;
+  }
+
+  return console;
+};
+
 export async function getClient(host: string) {
   return new Client({
     ...createAwsConnector(await defaultProvider()()),
@@ -132,6 +147,7 @@ export async function mapRole(
   try {
     const sts = new STSClient({
       region: process.env.region,
+      logger: getAwsSdkLogger(),
     });
     const assumedRoleCommandData = await sts.send(
       new AssumeRoleCommand({

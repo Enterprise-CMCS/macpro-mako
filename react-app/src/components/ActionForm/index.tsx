@@ -167,7 +167,7 @@ export const ActionForm = <Schema extends SchemaWithEnforcableProps>({
   const { data: userObj, isLoading: isUserLoading } = useGetUserDetails();
   const skipNavigationPromptRef = useRef(false);
   const isStickyFooterEnabled = useFeatureFlag("STICKY_FORM_FOOTER");
-  const footerTriggerRef = useRef<HTMLDivElement | null>(null);
+  const [footerTriggerElement, setFooterTriggerElement] = useState<HTMLDivElement | null>(null);
   const [isFooterFixed, setIsFooterFixed] = useState(false);
 
   const breadcrumbs = optionCrumbsFromPath(pathname, authority, id);
@@ -414,12 +414,10 @@ export const ActionForm = <Schema extends SchemaWithEnforcableProps>({
   };
 
   useEffect(() => {
-    if (!isStickyFooterEnabled) {
+    if (!isStickyFooterEnabled || !footerTriggerElement) {
       setIsFooterFixed(false);
       return;
     }
-    const target = footerTriggerRef.current;
-    if (!target) return;
 
     const observer = new IntersectionObserver(
       ([entry]) => {
@@ -428,9 +426,9 @@ export const ActionForm = <Schema extends SchemaWithEnforcableProps>({
       { threshold: 0.2 },
     );
 
-    observer.observe(target);
+    observer.observe(footerTriggerElement);
     return () => observer.disconnect();
-  }, [isStickyFooterEnabled]);
+  }, [footerTriggerElement, isStickyFooterEnabled]);
 
   if (isUserLoading === true) {
     return <LoadingSpinner />;
@@ -525,7 +523,7 @@ export const ActionForm = <Schema extends SchemaWithEnforcableProps>({
             />
           ) : isStickyFooterEnabled ? (
             <section>
-              <div ref={footerTriggerRef} />
+              <div ref={setFooterTriggerElement} />
               <section
                 className={
                   isFooterFixed
