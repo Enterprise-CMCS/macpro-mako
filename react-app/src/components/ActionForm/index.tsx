@@ -183,6 +183,11 @@ export const ActionForm = <Schema extends SchemaWithEnforcableProps>({
     error: draftError,
   } = useGetItem(draftId ?? "", { enabled: isDraftMode });
 
+  useEffect(() => {
+    // Reset one-time prompt bypass after URL/search updates.
+    skipNavigationPromptRef.current = false;
+  }, [search]);
+
   const form = useForm<z.TypeOf<Schema>>({
     resolver: zodResolver(schema),
     mode: "onChange",
@@ -365,6 +370,7 @@ export const ActionForm = <Schema extends SchemaWithEnforcableProps>({
       if (!rawDraftId || rawDraftId.toUpperCase() !== normalizedId) {
         const nextSearch = new URLSearchParams(search);
         nextSearch.set("draftId", normalizedId);
+        skipNavigationPromptRef.current = true;
         navigate(`${pathname}?${nextSearch.toString()}`, { replace: true });
       }
     } catch (error) {
