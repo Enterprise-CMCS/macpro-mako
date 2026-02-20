@@ -15,5 +15,6 @@ export * from "./useGetTypes";
 export * from "./amplifyConfig";
 export * from "./itemExists";
 export * from "./saveDraft";
+export * from "./deleteDraft";
 export * from "./useGetCounties";
 export * from "./useStateAccessMap";

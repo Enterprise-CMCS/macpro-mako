@@ -19,6 +19,10 @@ export async function itemExists({
       return false;
     }
 
+    if (packageResult._source.deleted === true) {
+      return false;
+    }
+
     if (includeDrafts) {
       return true;
     }

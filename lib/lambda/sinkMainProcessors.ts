@@ -206,7 +206,12 @@ const getOneMacRecordWithAllProperties = (
     const { data: oneMacRecord } = safeEvent;
 
     return {
-      record: oneMacRecord,
+      // Non-delete OneMAC package events should always be active in the primary index.
+      // This prevents stale `deleted: true` values from surviving partial OpenSearch updates.
+      record: {
+        deleted: false,
+        ...oneMacRecord,
+      },
       sourceEvent: record.event,
     };
   }
@@ -279,7 +284,12 @@ const getOneMacRecordWithAllProperties = (
 
     const { data: oneMacLegacyRecord } = safeEvent;
 
-    return { record: oneMacLegacyRecord };
+    return {
+      record: {
+        deleted: false,
+        ...oneMacLegacyRecord,
+      },
+    };
   }
   console.error(`No transform found for event: ${record.event}`, JSON.stringify(record));
 

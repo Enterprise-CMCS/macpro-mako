@@ -1,11 +1,20 @@
 import { EllipsisVerticalIcon } from "@heroicons/react/24/outline";
 import * as DropdownMenu from "@radix-ui/react-dropdown-menu";
 import { Link } from "react-router";
-import { FullUser, opensearch } from "shared-types";
-import { formatDateToET, getAvailableActions } from "shared-utils";
+import { Authority, FullUser, opensearch, SEATOOL_STATUS } from "shared-types";
+import { formatDateToET, getAvailableActions, isStateUser } from "shared-utils";
 
+import { deleteDraft } from "@/api/deleteDraft";
+import { banner, userPrompt } from "@/components";
 import { DASHBOARD_ORIGIN, mapActionLabel, ORIGIN } from "@/utils";
-import { getDraftEditLink } from "@/utils/drafts";
+import { getDashboardTabForAuthority } from "@/utils/crumbs";
+import {
+  DRAFT_CONTINUE_ACTION_LABEL,
+  DRAFT_DELETE_ACTION_LABEL,
+  DRAFT_DELETE_MODAL_BODY,
+  DRAFT_DELETE_MODAL_HEADER,
+  getDraftEditLink,
+} from "@/utils/drafts";
 import { sendGAEvent } from "@/utils/ReactGA/SendGAEvent";
 
 export const renderCellDate = (key: keyof opensearch.main.Document) =>
@@ -20,6 +29,7 @@ export type CellIdLinkProps = {
 
 export const CellDetailsLink = ({ record }: CellIdLinkProps) => {
   const { id, authority } = record;
+  const isDraft = record.seatoolStatus === SEATOOL_STATUS.DRAFT;
   const handleLinkClick = () => {
     sendGAEvent("dash_package_link", {
       package_type: authority, // The 'authority' prop is the package type
@@ -32,7 +42,7 @@ export const CellDetailsLink = ({ record }: CellIdLinkProps) => {
 
   return (
     <Link
-      className="cursor-pointer text-blue-600 hover:underline"
+      className={`cursor-pointer text-blue-600 hover:underline ${isDraft ? "italic" : ""}`}
       to={draftLink ?? detailsLink}
       onClick={handleLinkClick} // Track the click event for analytics
     >
@@ -45,12 +55,56 @@ export const renderCellActions = (user: FullUser | null) => {
   return function Cell(data: opensearch.main.Document) {
     if (!user) return null;
 
-    const actions = getAvailableActions(user, data);
+    const draftLink = getDraftEditLink(data);
+    const hasDraftActions =
+      data.seatoolStatus === SEATOOL_STATUS.DRAFT && isStateUser(user) && !!draftLink;
+    const actions = hasDraftActions ? [] : getAvailableActions(user, data);
+
+    const handleDraftDelete = () => {
+      sendGAEvent("dash_ellipsis_click", {
+        action: "delete-draft",
+      });
+
+      userPrompt({
+        header: DRAFT_DELETE_MODAL_HEADER,
+        body: DRAFT_DELETE_MODAL_BODY,
+        acceptButtonText: "Delete",
+        cancelButtonText: "Cancel",
+        cancelVariant: "link",
+        onAccept: async () => {
+          try {
+            await deleteDraft(data.id);
+            banner({
+              header: "Draft deleted",
+              body: `Draft for ${data.id} has been deleted.`,
+              variant: "success",
+              pathnameToDisplayOn: window.location.pathname,
+            });
+
+            let tab = "spas";
+            try {
+              tab = getDashboardTabForAuthority(data.authority as Authority);
+            } catch {
+              // Fallback for unexpected authority values.
+            }
+
+            window.location.assign(`/dashboard?tab=${tab}`);
+          } catch (error) {
+            banner({
+              header: "Unable to delete draft",
+              body: error instanceof Error ? error.message : String(error),
+              variant: "destructive",
+              pathnameToDisplayOn: window.location.pathname,
+            });
+          }
+        },
+      });
+    };
 
     return (
       <DropdownMenu.Root>
         <DropdownMenu.DropdownMenuTrigger
-          disabled={!actions.length}
+          disabled={!actions.length && !hasDraftActions}
           aria-label="Available package actions"
           data-testid="available-actions"
           asChild
@@ -66,37 +120,70 @@ export const renderCellActions = (user: FullUser | null) => {
           className="flex flex-col bg-white rounded-md shadow-lg p-4 border"
           align="start"
         >
-          {actions.map((action, idx) => {
-            const handleActionClick = () => {
-              sendGAEvent("dash_ellipsis_click", {
-                action: action,
-              });
-            };
-
-            return (
+          {hasDraftActions ? (
+            <>
               <DropdownMenu.Item
-                key={`${idx}-${action}`}
                 asChild
-                aria-label={`${mapActionLabel(action)} for ${data.id}`}
+                aria-label={`${DRAFT_CONTINUE_ACTION_LABEL} for ${data.id}`}
               >
                 <Link
-                  onClick={handleActionClick}
+                  onClick={() =>
+                    sendGAEvent("dash_ellipsis_click", {
+                      action: "continue-package",
+                    })
+                  }
                   state={{
-                    from: `${location.pathname}${location.search}`,
+                    from: `${window.location.pathname}${window.location.search}`,
                   }}
-                  to={{
-                    pathname: `/actions/${action}/${data.authority}/${data.id}`,
-                    search: new URLSearchParams({
-                      [ORIGIN]: DASHBOARD_ORIGIN,
-                    }).toString(),
-                  }}
+                  to={draftLink!}
                   className="text-blue-500 flex select-none items-center rounded-sm px-2 py-2 text-sm hover:bg-accent"
                 >
-                  {mapActionLabel(action)}
+                  {DRAFT_CONTINUE_ACTION_LABEL}
                 </Link>
               </DropdownMenu.Item>
-            );
-          })}
+              <DropdownMenu.Item asChild aria-label={`${DRAFT_DELETE_ACTION_LABEL} for ${data.id}`}>
+                <button
+                  onClick={handleDraftDelete}
+                  className="text-blue-500 text-left flex select-none items-center rounded-sm px-2 py-2 text-sm hover:bg-accent"
+                  type="button"
+                >
+                  {DRAFT_DELETE_ACTION_LABEL}
+                </button>
+              </DropdownMenu.Item>
+            </>
+          ) : (
+            actions.map((action, idx) => {
+              const handleActionClick = () => {
+                sendGAEvent("dash_ellipsis_click", {
+                  action: action,
+                });
+              };
+
+              return (
+                <DropdownMenu.Item
+                  key={`${idx}-${action}`}
+                  asChild
+                  aria-label={`${mapActionLabel(action)} for ${data.id}`}
+                >
+                  <Link
+                    onClick={handleActionClick}
+                    state={{
+                      from: `${window.location.pathname}${window.location.search}`,
+                    }}
+                    to={{
+                      pathname: `/actions/${action}/${data.authority}/${data.id}`,
+                      search: new URLSearchParams({
+                        [ORIGIN]: DASHBOARD_ORIGIN,
+                      }).toString(),
+                    }}
+                    className="text-blue-500 flex select-none items-center rounded-sm px-2 py-2 text-sm hover:bg-accent"
+                  >
+                    {mapActionLabel(action)}
+                  </Link>
+                </DropdownMenu.Item>
+              );
+            })
+          )}
         </DropdownMenu.Content>
       </DropdownMenu.Root>
     );

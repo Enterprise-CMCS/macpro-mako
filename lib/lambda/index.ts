@@ -1,5 +1,6 @@
 export * as createTriggers from "./createTriggers";
 export * as deleteIndex from "./deleteIndex";
+export * as deleteDraft from "./deleteDraft";
 export * as getAttachmentUrl from "./getAttachmentUrl";
 export * as getCpocs from "./getCpocs";
 export * as getPackageActions from "./getPackageActions";

@@ -77,7 +77,7 @@ const getColumns = ({ user, isCms }: OneMacUser): OsTableColumn[] => {
 
         return (
           <>
-            <p>{status}</p>
+            <p className={data.seatoolStatus === SEATOOL_STATUS.DRAFT ? "italic" : ""}>{status}</p>
             {data.raiWithdrawEnabled &&
               data.seatoolStatus !== SEATOOL_STATUS.PENDING_APPROVAL &&
               data.seatoolStatus !== SEATOOL_STATUS.PENDING_CONCURRENCE && (
