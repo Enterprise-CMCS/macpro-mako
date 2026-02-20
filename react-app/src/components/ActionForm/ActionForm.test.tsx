@@ -710,6 +710,44 @@ describe("ActionForm", () => {
 
     expect(screen.queryByText(PROGRESS_REMINDER)).not.toBeInTheDocument();
   });
+
+  test("does not show leave-form prompt on first draft save", async () => {
+    const user = userEvent.setup();
+    const userPromptSpy = vi.spyOn(components, "userPrompt").mockImplementation(() => undefined);
+    const bannerSpy = vi.spyOn(components, "banner");
+
+    await renderFormWithPackageSectionAsync(
+      <ActionForm
+        title="Draft Save Test"
+        schema={z.object({
+          id: z.string().min(1),
+        })}
+        fields={(form) => <input aria-label="Package ID" {...form.register("id")} />}
+        defaultValues={{ id: "" }}
+        documentPollerArgs={{
+          property: () => "id",
+          documentChecker: () => true,
+        }}
+        draftOptions={{ enabled: true, event: "new-medicaid-submission" }}
+        breadcrumbText="Example Breadcrumb"
+      />,
+    );
+
+    await user.type(screen.getByLabelText("Package ID"), "MD-00-0001");
+    await user.click(screen.getByTestId("save-draft-form"));
+
+    await waitFor(() =>
+      expect(bannerSpy).toHaveBeenCalledWith(
+        expect.objectContaining({
+          header: "Draft saved",
+          variant: "success",
+        }),
+      ),
+    );
+
+    expect(userPromptSpy).not.toHaveBeenCalled();
+  });
+
   test("calls onSubmit directly when `promptPreSubmission` is not defined", async () => {
     const user = userEvent.setup();
 
