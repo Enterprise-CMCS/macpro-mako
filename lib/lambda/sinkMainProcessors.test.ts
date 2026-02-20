@@ -64,6 +64,7 @@ const LATER_TIMESTAMP = 1742645041557;
 const LATER_ISO_DATETIME = "2025-03-22T12:04:01.557Z";
 
 const bulkUpdateDataSpy = vi.spyOn(os, "bulkUpdateData");
+const updateDataSpy = vi.spyOn(os, "updateData").mockResolvedValue(undefined);
 const logErrorSpy = vi.spyOn(sink, "logError");
 
 describe("insertOneMacRecordsFromKafkaIntoMako", () => {
@@ -323,6 +324,92 @@ describe("insertOneMacRecordsFromKafkaIntoMako", () => {
         makoChangedDate: ISO_DATETIME,
       },
     ]);
+  });
+
+  it("removes the draft field for records that transition from draft to submitted", async () => {
+    await insertOneMacRecordsFromKafkaIntoMako(
+      [
+        createKafkaRecord({
+          topic: TOPIC,
+          key: "TUQtMjQtMjMwMA==",
+          value: convertObjToBase64({
+            ...newMedicaidSubmission,
+            origin: "mako",
+            submitterName: "George Harrison",
+            submitterEmail: "george@example.com",
+            timestamp: TIMESTAMP,
+          }),
+        }),
+      ],
+      TOPIC,
+    );
+
+    expect(updateDataSpy).toHaveBeenCalledWith(OPENSEARCH_DOMAIN, {
+      index: OPENSEARCH_INDEX,
+      id: newMedicaidSubmission.id,
+      body: {
+        script: {
+          lang: "painless",
+          source: "ctx._source.remove(params.field)",
+          params: {
+            field: "draft",
+          },
+        },
+      },
+    });
+  });
+
+  it("does not remove draft field for non-submission events", async () => {
+    await insertOneMacRecordsFromKafkaIntoMako(
+      [
+        createKafkaRecord({
+          topic: TOPIC,
+          key: "TUQtMjQtMjMwMA==",
+          value: convertObjToBase64({
+            ...respondToRai,
+            origin: "mako",
+            submitterName: "George Harrison",
+            submitterEmail: "george@example.com",
+            timestamp: TIMESTAMP,
+          }),
+        }),
+      ],
+      TOPIC,
+    );
+
+    expect(updateDataSpy).not.toHaveBeenCalled();
+  });
+
+  it("logs and continues when removing the draft field fails", async () => {
+    updateDataSpy.mockRejectedValueOnce(new Error("failed to remove draft"));
+
+    await expect(
+      insertOneMacRecordsFromKafkaIntoMako(
+        [
+          createKafkaRecord({
+            topic: TOPIC,
+            key: "TUQtMjQtMjMwMA==",
+            value: convertObjToBase64({
+              ...newMedicaidSubmission,
+              origin: "mako",
+              submitterName: "George Harrison",
+              submitterEmail: "george@example.com",
+              timestamp: TIMESTAMP,
+            }),
+          }),
+        ],
+        TOPIC,
+      ),
+    ).resolves.toBeUndefined();
+
+    expect(logErrorSpy).toHaveBeenCalledWith(
+      expect.objectContaining({
+        type: sink.ErrorType.UNKNOWN,
+        metadata: expect.objectContaining({
+          recordId: newMedicaidSubmission.id,
+        }),
+      }),
+    );
   });
 
   it("handles valid kafka admin record to update id", async () => {
