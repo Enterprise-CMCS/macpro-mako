@@ -23,30 +23,30 @@
         <div class='clearfix'>
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">0% </span>
+                <span class="strong">100% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>0/8</span>
+                <span class='fraction'>8/8</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">0% </span>
+                <span class="strong">91.66% </span>
                 <span class="quiet">Branches</span>
-                <span class='fraction'>0/12</span>
+                <span class='fraction'>11/12</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">0% </span>
+                <span class="strong">100% </span>
                 <span class="quiet">Functions</span>
-                <span class='fraction'>0/4</span>
+                <span class='fraction'>4/4</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">0% </span>
+                <span class="strong">100% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>0/8</span>
+                <span class='fraction'>8/8</span>
             </div>
         
             
@@ -61,7 +61,7 @@
             </div>
         </template>
     </div>
-    <div class='status-line low'></div>
+    <div class='status-line high'></div>
     <pre><table class="coverage">
 <tr><td class="line-count quiet"><a name='L1'></a><a href='#L1'>1</a>
 <a name='L2'></a><a href='#L2'>2</a>
@@ -292,10 +292,10 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">4x</span>
+<span class="cline-any cline-yes">5x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">5x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -335,7 +335,7 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">5x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -401,9 +401,9 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">25x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -497,8 +497,8 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">4x</span>
+<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -512,10 +512,10 @@ import { useFeatureFlag } from "@/hooks/useFeatureFlag";
 &nbsp;
 import { BrowseDash, PackageSearch } from "./packageSearch";
 &nbsp;
-export const StateWelcome = <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >() =&gt; {</span></span>
-  const [activeTab, setActiveTab] = <span class="cstat-no" title="statement not covered" >useState("medicaid");</span>
+export const StateWelcome = () =&gt; {
+  const [activeTab, setActiveTab] = useState("medicaid");
 &nbsp;
-  const tabConfig = <span class="cstat-no" title="statement not covered" >[</span>
+  const tabConfig = [
     {
       id: "medicaid",
       label: "Medicaid SPA",
@@ -555,7 +555,7 @@ export const StateWelcome = <span class="cstat-no" title="statement not covered"
     },
   ];
 &nbsp;
-  const cards = <span class="cstat-no" title="statement not covered" >[</span>
+  const cards = [
     {
       id: 1,
       title: "MACPro System",
@@ -620,10 +620,10 @@ export const StateWelcome = <span class="cstat-no" title="statement not covered"
 &nbsp;
             {/* Tabs */}
             &lt;div className="flex flex-col gap-[24px]"&gt;
-              {tabConfig.map(<span class="fstat-no" title="function not covered" >(t</span>ab) =&gt; {
-                const isActive = <span class="cstat-no" title="statement not covered" >activeTab === tab.id;</span>
+              {tabConfig.map((tab) =&gt; {
+                const isActive = activeTab === tab.id;
                 return (
-                  &lt;div key={tab.id} onClick={<span class="fstat-no" title="function not covered" >() =&gt; <span class="cstat-no" title="statement not covered" >s</span>etActiveTab(tab.id)} c</span>lassName="cursor-pointer"&gt;
+                  &lt;div key={tab.id} onClick={() =&gt; setActiveTab(tab.id)} className="cursor-pointer"&gt;
                     &lt;div className="flex items-center"&gt;
                       &lt;div
                         className={`w-[6px] h-[39px] rounded-[5px] shadow-md flex-shrink-0 ${
@@ -641,11 +641,11 @@ export const StateWelcome = <span class="cstat-no" title="statement not covered"
                       &lt;/div&gt;
                     &lt;/div&gt;
 &nbsp;
-                    {<span class="branch-0 cbranch-no" title="branch not covered" >isActive &amp;&amp; (</span>
+                    {isActive &amp;&amp; (
                       &lt;div className="pl-[24px] pt-[8px]"&gt;
                         &lt;p className="max-w-[677px] w-full font-open-sans text-[18px] text-[#212121] leading-[1.62] mb-4"&gt;
                           {tab.content}
-                          {<span class="branch-0 cbranch-no" title="branch not covered" >tab.id === "medicaid" &amp;&amp; (</span>
+                          {tab.id === "medicaid" &amp;&amp; (
                             &lt;a href="#" className="underline ml-1 text-blue-700"&gt;
                               Learn how.
                             &lt;/a&gt;
@@ -704,7 +704,7 @@ export const StateWelcome = <span class="cstat-no" title="statement not covered"
             {cards[0] &amp;&amp; renderCard(cards[0])}
             {cards[1] &amp;&amp; renderCard(cards[1])}
           &lt;/div&gt;
-          {<span class="branch-0 cbranch-no" title="branch not covered" >cards[2] </span>&amp;&amp; (
+          {cards[2] &amp;&amp; (
             &lt;div className="flex flex-col md:flex-row gap-[40px]"&gt;
               {renderCard(cards[2])}
               {/* Optionally add an empty div to balance the row if you want spacing */}
@@ -717,8 +717,8 @@ export const StateWelcome = <span class="cstat-no" title="statement not covered"
   );
 };
 &nbsp;
-const StateWelcomeWrapper = <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >() =&gt; {</span></span>
-  const isStateHomepageEnabled = <span class="cstat-no" title="statement not covered" >useFeatureFlag("STATE_HOMEPAGE_FLAG");</span>
+const StateWelcomeWrapper = () =&gt; {
+  const isStateHomepageEnabled = useFeatureFlag("STATE_HOMEPAGE_FLAG");
   return &lt;&gt;{isStateHomepageEnabled ? <span class="branch-0 cbranch-no" title="branch not covered" >&lt;StateWelcome /&gt; : &lt;W</span>elcome /&gt;}&lt;/&gt;;
 };
 &nbsp;
@@ -730,7 +730,7 @@ export default StateWelcomeWrapper;
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2026-02-19T02:20:04.000Z
+                at 2026-02-20T02:20:53.292Z
             </div>
         <script src="../../../../prettify.js"></script>
         <script>

@@ -23,30 +23,30 @@
         <div class='clearfix'>
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">0% </span>
+                <span class="strong">80% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>0/5</span>
+                <span class='fraction'>4/5</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">0% </span>
+                <span class="strong">71.42% </span>
                 <span class="quiet">Branches</span>
-                <span class='fraction'>0/7</span>
+                <span class='fraction'>5/7</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">0% </span>
+                <span class="strong">80% </span>
                 <span class="quiet">Functions</span>
-                <span class='fraction'>0/5</span>
+                <span class='fraction'>4/5</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">0% </span>
+                <span class="strong">80% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>0/5</span>
+                <span class='fraction'>4/5</span>
             </div>
         
             
@@ -61,7 +61,7 @@
             </div>
         </template>
     </div>
-    <div class='status-line low'></div>
+    <div class='status-line high'></div>
     <pre><table class="coverage">
 <tr><td class="line-count quiet"><a name='L1'></a><a href='#L1'>1</a>
 <a name='L2'></a><a href='#L2'>2</a>
@@ -222,7 +222,7 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">5x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -262,7 +262,7 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">59x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -296,7 +296,7 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">44x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -313,7 +313,7 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -358,7 +358,7 @@ interface AmendmentFormProps {
   waiverId?: string;
 }
 &nbsp;
-export const AmendmentForm = <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >({</span> waiverId }: AmendmentFormProps) =&gt; {</span>
+export const AmendmentForm = ({ waiverId }: AmendmentFormProps) =&gt; {
   return (
     &lt;ActionForm
       schema={formSchemas["contracting-amendment"]}
@@ -375,7 +375,7 @@ export const AmendmentForm = <span class="cstat-no" title="statement not covered
             &lt;/span&gt;
           &lt;/div&gt;
           {waiverId !== undefined ? (
-<span class="branch-0 cbranch-no" title="branch not covered" >            &lt;div&gt;</span>
+            &lt;div&gt;
               &lt;p className="font-semibold"&gt;Existing Waiver Number to Amend&lt;/p&gt;
               &lt;p className="text-lg font-thin" data-testid="existing-waiver-id"&gt;
                 {waiverId}
@@ -398,7 +398,7 @@ export const AmendmentForm = <span class="cstat-no" title="statement not covered
                     &lt;Input
                       ref={field.ref}
                       value={field.value}
-                      onChange={<span class="fstat-no" title="function not covered" >(e</span>) =&gt; <span class="cstat-no" title="statement not covered" >field.onChange(e.currentTarget.value.toUpperCase())}</span>
+                      onChange={(e) =&gt; field.onChange(e.currentTarget.value.toUpperCase())}
                     /&gt;
                   &lt;/FormControl&gt;
                   &lt;FormMessage /&gt;
@@ -432,7 +432,7 @@ export const AmendmentForm = <span class="cstat-no" title="statement not covered
                   &lt;Input
                     ref={field.ref}
                     value={field.value}
-                    onChange={<span class="fstat-no" title="function not covered" >(e</span>) =&gt; <span class="cstat-no" title="statement not covered" >field.onChange(e.currentTarget.value.toUpperCase())}</span>
+                    onChange={(e) =&gt; field.onChange(e.currentTarget.value.toUpperCase())}
                   /&gt;
                 &lt;/FormControl&gt;
                 &lt;FormMessage /&gt;
@@ -449,7 +449,7 @@ export const AmendmentForm = <span class="cstat-no" title="statement not covered
                 &lt;/FormLabel&gt;
                 &lt;FormControl className="max-w-sm"&gt;
                   &lt;DatePicker
-                    onChange={<span class="fstat-no" title="function not covered" >(d</span>ate) =&gt; <span class="cstat-no" title="statement not covered" >field.onChange(date.getTime())}</span>
+                    onChange={(date) =&gt; field.onChange(date.getTime())}
                     date={field.value ? new Date(field.value) : undefined}
                     dataTestId="proposedEffectiveDate"
                   /&gt;
@@ -478,7 +478,7 @@ export const AmendmentForm = <span class="cstat-no" title="statement not covered
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2026-02-19T02:20:04.000Z
+                at 2026-02-20T02:20:53.292Z
             </div>
         <script src="../../../../../../prettify.js"></script>
         <script>

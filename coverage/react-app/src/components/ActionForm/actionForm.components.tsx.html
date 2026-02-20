@@ -23,30 +23,30 @@
         <div class='clearfix'>
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">0% </span>
+                <span class="strong">100% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>0/12</span>
+                <span class='fraction'>12/12</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">0% </span>
+                <span class="strong">93.33% </span>
                 <span class="quiet">Branches</span>
-                <span class='fraction'>0/15</span>
+                <span class='fraction'>14/15</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">0% </span>
+                <span class="strong">100% </span>
                 <span class="quiet">Functions</span>
-                <span class='fraction'>0/4</span>
+                <span class='fraction'>4/4</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">0% </span>
+                <span class="strong">100% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>0/12</span>
+                <span class='fraction'>12/12</span>
             </div>
         
             
@@ -61,7 +61,7 @@
             </div>
         </template>
     </div>
-    <div class='status-line low'></div>
+    <div class='status-line high'></div>
     <pre><table class="coverage">
 <tr><td class="line-count quiet"><a name='L1'></a><a href='#L1'>1</a>
 <a name='L2'></a><a href='#L2'>2</a>
@@ -128,8 +128,8 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">104x</span>
+<span class="cline-any cline-yes">265x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -144,8 +144,8 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">104x</span>
+<span class="cline-any cline-yes">263x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -161,35 +161,35 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">104x</span>
+<span class="cline-any cline-yes">1308x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">104x</span>
+<span class="cline-any cline-yes">1308x</span>
+<span class="cline-any cline-yes">452x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">452x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">406x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">856x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">import { Link } from "react-router";
 import { z } from "zod";
 &nbsp;
 import { FAQ_TAB } from "@/consts";
 &nbsp;
-export const AttachmentFileFormatInstructions = <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >() =&gt; (</span></span>
-<span class="cstat-no" title="statement not covered" >  &lt;p data-testid="accepted-files"&gt;</span>
+export const AttachmentFileFormatInstructions = () =&gt; (
+  &lt;p data-testid="accepted-files"&gt;
     We accept the following file formats:{" "}
     &lt;span className="font-bold"&gt;.doc, .docx, .pdf, .jpg, .xlsx, and more. &lt;/span&gt;{" "}
     &lt;Link
@@ -204,8 +204,8 @@ export const AttachmentFileFormatInstructions = <span class="cstat-no" title="st
   &lt;/p&gt;
 );
 &nbsp;
-export const AttachmentFAQInstructions = <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >({</span> faqLink }: { faqLink?: string }) =&gt; (</span>
-<span class="cstat-no" title="statement not covered" >  &lt;p data-testid="attachments-instructions"&gt;</span>
+export const AttachmentFAQInstructions = ({ faqLink }: { faqLink?: string }) =&gt; (
+  &lt;p data-testid="attachments-instructions"&gt;
     Maximum file size of 80 MB per attachment.{" "}
     &lt;span className="font-bold"&gt;You can add multiple files per attachment type.&lt;/span&gt; Read the
     description for each of the attachment types on the{" "}
@@ -221,27 +221,27 @@ export const AttachmentFAQInstructions = <span class="cstat-no" title="statement
   &lt;/p&gt;
 );
 &nbsp;
-const isZodArrayDef = <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >(d</span>ef: unknown): def is z.ZodArrayDef =&gt;</span>
-<span class="cstat-no" title="statement not covered" >  def !== undefined &amp;&amp;</span>
+const isZodArrayDef = (def: unknown): def is z.ZodArrayDef =&gt;
+  def !== undefined &amp;&amp;
   def !== null &amp;&amp;
   typeof def === "object" &amp;&amp;
   "typeName" in def &amp;&amp;
   def.typeName === "ZodArray";
 &nbsp;
-export const AttachmentInstructions = <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >({</span> fileValidation }: { fileValidation: z.ZodArray&lt;any&gt; }) =&gt; {</span>
-<span class="cstat-no" title="statement not covered" >  if (isZodArrayDef(fileValidation)) {</span>
-    const { maxLength, minLength } = <span class="cstat-no" title="statement not covered" >fileValidation;</span>
+export const AttachmentInstructions = ({ fileValidation }: { fileValidation: z.ZodArray&lt;any&gt; }) =&gt; {
+  if (isZodArrayDef(fileValidation)) {
+    const { maxLength, minLength } = fileValidation;
 &nbsp;
-<span class="cstat-no" title="statement not covered" >    if (maxLength?.value === 1 &amp;&amp; minLength?.value === 1) {</span>
+    if (maxLength?.value === 1 &amp;&amp; minLength?.value === 1) {
       return &lt;p&gt;One attachment is required&lt;/p&gt;;
     }
 &nbsp;
-<span class="cstat-no" title="statement not covered" >    if (minLength?.value) {</span>
+    <span class="missing-if-branch" title="else path not taken" >E</span>if (minLength?.value) {
       return &lt;p&gt;At least one attachment is required&lt;/p&gt;;
     }
   }
 &nbsp;
-<span class="cstat-no" title="statement not covered" >  return null;</span>
+  return null;
 };
 &nbsp;</pre></td></tr></table></pre>
 
@@ -250,7 +250,7 @@ export const AttachmentInstructions = <span class="cstat-no" title="statement no
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2026-02-19T02:20:04.000Z
+                at 2026-02-20T02:20:53.292Z
             </div>
         <script src="../../../../prettify.js"></script>
         <script>

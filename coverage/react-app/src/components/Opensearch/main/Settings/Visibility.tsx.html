@@ -23,30 +23,30 @@
         <div class='clearfix'>
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">0% </span>
+                <span class="strong">100% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>0/9</span>
+                <span class='fraction'>9/9</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">0% </span>
+                <span class="strong">100% </span>
                 <span class="quiet">Branches</span>
-                <span class='fraction'>0/7</span>
+                <span class='fraction'>7/7</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">0% </span>
+                <span class="strong">100% </span>
                 <span class="quiet">Functions</span>
-                <span class='fraction'>0/6</span>
+                <span class='fraction'>6/6</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">0% </span>
+                <span class="strong">100% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>0/9</span>
+                <span class='fraction'>9/9</span>
             </div>
         
             
@@ -61,7 +61,7 @@
             </div>
         </template>
     </div>
-    <div class='status-line low'></div>
+    <div class='status-line high'></div>
     <pre><table class="coverage">
 <tr><td class="line-count quiet"><a name='L1'></a><a href='#L1'>1</a>
 <a name='L2'></a><a href='#L2'>2</a>
@@ -166,7 +166,7 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">105x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -191,8 +191,8 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">105x</span>
+<span class="cline-any cline-yes">568x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -202,18 +202,8 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">28x</span>
+<span class="cline-any cline-yes">28x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -227,17 +217,27 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">105x</span>
+<span class="cline-any cline-yes">75x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">570x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">28x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -257,7 +257,7 @@ type Props&lt;T extends UI.OsTableColumn&gt; = {
   hiddenColumns: T[];
 };
 &nbsp;
-export const VisibilityPopover = <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >({</span></span>
+export const VisibilityPopover = ({
   list,
   onItemClick,
   hiddenColumns,
@@ -282,8 +282,8 @@ export const VisibilityPopover = <span class="cstat-no" title="statement not cov
   );
 };
 &nbsp;
-export const VisiblityItem = <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >&lt;T extends UI.OsTableColumn&gt;(p</span>rops: T &amp; { onClick: () =&gt; void }) =&gt; {</span>
-  const eyeStyles = <span class="cstat-no" title="statement not covered" >cn("flex gap-2", {</span>
+export const VisiblityItem = &lt;T extends UI.OsTableColumn&gt;(props: T &amp; { onClick: () =&gt; void }) =&gt; {
+  const eyeStyles = cn("flex gap-2", {
     "text-gray-800": !props.hidden,
     "text-gray-500": props.hidden,
   });
@@ -292,9 +292,9 @@ export const VisiblityItem = <span class="cstat-no" title="statement not covered
     &lt;li&gt;
       &lt;DropdownMenu.Item
         asChild
-        onSelect={<span class="fstat-no" title="function not covered" >(e</span>) =&gt; {
-<span class="cstat-no" title="statement not covered" >          e.preventDefault(); /</span>/ necessary to prevent closing the menu when selecting an item
-<span class="cstat-no" title="statement not covered" >          props.onClick();</span>
+        onSelect={(e) =&gt; {
+          e.preventDefault(); // necessary to prevent closing the menu when selecting an item
+          props.onClick();
         }}
       &gt;
         &lt;button
@@ -307,7 +307,7 @@ export const VisiblityItem = <span class="cstat-no" title="statement not covered
           aria-live="polite"
         &gt;
           {props.hidden ? (
-<span class="branch-0 cbranch-no" title="branch not covered" >            &lt;EyeOffIcon className={eyeStyles} aria-hidden focusable={false} /&gt;</span>
+            &lt;EyeOffIcon className={eyeStyles} aria-hidden focusable={false} /&gt;
           ) : (
             &lt;EyeIcon className={eyeStyles} aria-hidden focusable={false} /&gt;
           )}
@@ -318,17 +318,17 @@ export const VisiblityItem = <span class="cstat-no" title="statement not covered
   );
 };
 &nbsp;
-export const VisibilityMenu = <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >&lt;T extends UI.OsTableColumn&gt;(p</span>rops: Props&lt;T&gt;) =&gt; (</span>
-<span class="cstat-no" title="statement not covered" >  &lt;DropdownMenu.Content asChild&gt;</span>
+export const VisibilityMenu = &lt;T extends UI.OsTableColumn&gt;(props: Props&lt;T&gt;) =&gt; (
+  &lt;DropdownMenu.Content asChild&gt;
     &lt;ul
       className="flex flex-col gap-2 bg-white p-4 shadow-md rounded-md w-72"
       data-testid="columns-menu"
     &gt;
-      {props.list.map(<span class="fstat-no" title="function not covered" >(I</span>T) =&gt;
-<span class="cstat-no" title="statement not covered" >        IT.field ? (</span>
+      {props.list.map((IT) =&gt;
+        IT.field ? (
           &lt;VisiblityItem
             key={`vis-${IT.field}`}
-            onClick={<span class="fstat-no" title="function not covered" >() =&gt; <span class="cstat-no" title="statement not covered" >p</span>rops.onItemClick(IT.field as string)}</span>
+            onClick={() =&gt; props.onItemClick(IT.field as string)}
             {...IT}
           /&gt;
         ) : null,
@@ -343,7 +343,7 @@ export const VisibilityMenu = <span class="cstat-no" title="statement not covere
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2026-02-19T02:20:04.000Z
+                at 2026-02-20T02:20:53.292Z
             </div>
         <script src="../../../../../../prettify.js"></script>
         <script>

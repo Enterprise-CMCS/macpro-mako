@@ -23,30 +23,30 @@
         <div class='clearfix'>
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">0% </span>
+                <span class="strong">88.88% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>0/9</span>
+                <span class='fraction'>8/9</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">0% </span>
+                <span class="strong">95.83% </span>
                 <span class="quiet">Branches</span>
-                <span class='fraction'>0/24</span>
+                <span class='fraction'>23/24</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">0% </span>
+                <span class="strong">100% </span>
                 <span class="quiet">Functions</span>
-                <span class='fraction'>0/2</span>
+                <span class='fraction'>2/2</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">0% </span>
+                <span class="strong">100% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>0/8</span>
+                <span class='fraction'>8/8</span>
             </div>
         
             
@@ -61,7 +61,7 @@
             </div>
         </template>
     </div>
-    <div class='status-line low'></div>
+    <div class='status-line high'></div>
     <pre><table class="coverage">
 <tr><td class="line-count quiet"><a name='L1'></a><a href='#L1'>1</a>
 <a name='L2'></a><a href='#L2'>2</a>
@@ -189,7 +189,7 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">105x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -199,21 +199,21 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">105x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">11x</span>
+<span class="cline-any cline-yes">11x</span>
+<span class="cline-any cline-yes">11x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">11x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">11x</span>
+<span class="cline-any cline-yes">11x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -304,31 +304,31 @@ import { updatedRoleAccessStatus } from "@/utils";
 import { RoleStatusProps } from ".";
 import { ApproverInfo } from "./ApproverInfo";
 &nbsp;
-export const CardStatus = <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >({</span> status }: { status: string }) =&gt; {</span>
+export const CardStatus = ({ status }: { status: string }) =&gt; {
   return (
     &lt;div className="flex items-center gap-2"&gt;
-      {<span class="branch-0 cbranch-no" title="branch not covered" >status === "denied" &amp;&amp; &lt;</span>XCircle className="text-red-500" /&gt;}
-      {<span class="branch-0 cbranch-no" title="branch not covered" >status === "pending" &amp;&amp; &lt;</span>Clock className="text-yellow-500" /&gt;}
+      {status === "denied" &amp;&amp; &lt;XCircle className="text-red-500" /&gt;}
+      {status === "pending" &amp;&amp; &lt;Clock className="text-yellow-500" /&gt;}
       &lt;p className="italic"&gt;{updatedRoleAccessStatus[status]}&lt;/p&gt;
     &lt;/div&gt;
   );
 };
 &nbsp;
-export const RoleStatusCardNew = <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >({</span></span>
+export const RoleStatusCardNew = ({
   role,
   access,
   onClick,
 }: Omit&lt;RoleStatusProps, "isNewUserRoleDisplay"&gt;) =&gt; {
-<span class="cstat-no" title="statement not covered" >  if (!access) <span class="cstat-no" title="statement not covered" >return null;</span></span>
-  const isState = <span class="cstat-no" title="statement not covered" >isStateRole(access.role as UserRole);</span>
-  const hideApprovers = <span class="cstat-no" title="statement not covered" >status !== "pending" &amp;&amp; role === "norole";</span>
+  <span class="missing-if-branch" title="if path not taken" >I</span>if (!access) <span class="cstat-no" title="statement not covered" >return null;</span>
+  const isState = isStateRole(access.role as UserRole);
+  const hideApprovers = status !== "pending" &amp;&amp; role === "norole";
   const showApproverInfo =
-<span class="cstat-no" title="statement not covered" >    access.role !== "defaultcmsuser" &amp;&amp;</span>
+    access.role !== "defaultcmsuser" &amp;&amp;
     access.role !== "cmsreviewer" &amp;&amp;
     access.role !== "systemadmin";
 &nbsp;
-  const isPending = <span class="cstat-no" title="statement not covered" >access.status === "pending";</span>
-  const showActions = <span class="cstat-no" title="statement not covered" >!!onClick;</span>
+  const isPending = access.status === "pending";
+  const showActions = !!onClick;
 &nbsp;
   return (
     &lt;RoleStatusTopBorderCard className="my-3" status={access.status}&gt;
@@ -381,7 +381,7 @@ export const RoleStatusCardNew = <span class="cstat-no" title="statement not cov
             )}
         &lt;/div&gt;
         &lt;CardStatus status={access.status} /&gt;
-        {<span class="branch-0 cbranch-no" title="branch not covered" >access.role === "systemadmin" &amp;&amp; (</span>
+        {access.role === "systemadmin" &amp;&amp; (
           &lt;div className="block lg:mt-8 lg:mb-2"&gt;
             &lt;strong&gt;Approvers&lt;/strong&gt;
             &lt;br /&gt;
@@ -397,9 +397,9 @@ export const RoleStatusCardNew = <span class="cstat-no" title="statement not cov
             &lt;i&gt;Automatically approved by the system&lt;/i&gt;
           &lt;/div&gt;
         )}
-        {<span class="branch-0 cbranch-no" title="branch not covered" >showApproverInfo &amp;&amp; (</span>
+        {showApproverInfo &amp;&amp; (
           &lt;div className="block lg:mt-8 lg:mb-2"&gt;
-            &lt;p className="mb-2"&gt;{<span class="branch-0 cbranch-no" title="branch not covered" >!hideApprovers &amp;&amp; &lt;</span>strong&gt;Approvers&lt;/strong&gt;}&lt;/p&gt;
+            &lt;p className="mb-2"&gt;{!hideApprovers &amp;&amp; &lt;strong&gt;Approvers&lt;/strong&gt;}&lt;/p&gt;
 &nbsp;
             &lt;ApproverInfo access={access} /&gt;
           &lt;/div&gt;
@@ -415,7 +415,7 @@ export const RoleStatusCardNew = <span class="cstat-no" title="statement not cov
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2026-02-19T02:20:04.000Z
+                at 2026-02-20T02:20:53.292Z
             </div>
         <script src="../../../../../prettify.js"></script>
         <script>

@@ -23,30 +23,30 @@
         <div class='clearfix'>
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">0% </span>
+                <span class="strong">100% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>0/6</span>
+                <span class='fraction'>6/6</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">0% </span>
+                <span class="strong">80% </span>
                 <span class="quiet">Branches</span>
-                <span class='fraction'>0/10</span>
+                <span class='fraction'>8/10</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">0% </span>
+                <span class="strong">100% </span>
                 <span class="quiet">Functions</span>
-                <span class='fraction'>0/2</span>
+                <span class='fraction'>2/2</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">0% </span>
+                <span class="strong">100% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>0/6</span>
+                <span class='fraction'>6/6</span>
             </div>
         
             
@@ -61,7 +61,7 @@
             </div>
         </template>
     </div>
-    <div class='status-line low'></div>
+    <div class='status-line high'></div>
     <pre><table class="coverage">
 <tr><td class="line-count quiet"><a name='L1'></a><a href='#L1'>1</a>
 <a name='L2'></a><a href='#L2'>2</a>
@@ -173,7 +173,7 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">105x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -181,20 +181,12 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">52x</span>
+<span class="cline-any cline-yes">52x</span>
+<span class="cline-any cline-yes">52x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">52x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -226,7 +218,15 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">46x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -266,7 +266,7 @@ type CustomRegisterOptions = Omit&lt;
   "disabled" | "valueAsNumber" | "valueAsDate" | "setValueAs"
 &gt;;
 &nbsp;
-export const Field = <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >&lt;TFields extends FieldValues&gt;({</span></span>
+export const Field = &lt;TFields extends FieldValues&gt;({
   name,
   index,
   SLOT,
@@ -274,12 +274,12 @@ export const Field = <span class="cstat-no" title="statement not covered" ><span
   parentId,
   ...props
 }: FieldProps&lt;TFields&gt;) =&gt; {
-  const prefix = <span class="cstat-no" title="statement not covered" >`${name}.${index}.`;</span>
-  const adjustedPrefix = <span class="cstat-no" title="statement not covered" >parentId + prefix;</span>
-  const adjustedSlotName = <span class="cstat-no" title="statement not covered" >prefix + SLOT.name;</span>
+  const prefix = `${name}.${index}.`;
+  const adjustedPrefix = parentId + prefix;
+  const adjustedSlotName = prefix + SLOT.name;
 &nbsp;
   // Wrapped Group
-<span class="cstat-no" title="statement not covered" >  if (SLOT.rhf === "WrappedGroup") {</span>
+  if (SLOT.rhf === "WrappedGroup") {
     return (
       &lt;div className="w-full"&gt;
         {(SLOT.label || SLOT.styledLabel) &amp;&amp; (
@@ -288,7 +288,7 @@ export const Field = <span class="cstat-no" title="statement not covered" ><span
           &lt;/FormLabel&gt;
         )}
         &lt;div className={SLOT.props?.wrapperClassName} key={`wrappedGroup-${name}-${index}`}&gt;
-          {SLOT.fields?.map(<span class="fstat-no" title="function not covered" >(F</span>) =&gt; {
+          {SLOT.fields?.map((F) =&gt; {
             return (
               &lt;Field {...{ name, index, control, parentId, ...props }} SLOT={F} key={F.name} /&gt;
             );
@@ -319,7 +319,7 @@ export const Field = <span class="cstat-no" title="statement not covered" ><span
   // If the slot has a dependency, wrap it in a dependency wrapper.
   // Ensure the conditions are adjusted to the new name within the FieldGroup.
   // Otherwise, just return the form field:
-<span class="cstat-no" title="statement not covered" >  return SLOT.dependency ? (</span>
+  return SLOT.dependency ? (
     &lt;DependencyWrapper
       {...SLOT}
       key={adjustedSlotName}
@@ -349,7 +349,7 @@ export const Field = <span class="cstat-no" title="statement not covered" ><span
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2026-02-19T02:20:04.000Z
+                at 2026-02-20T02:20:53.292Z
             </div>
         <script src="../../../../prettify.js"></script>
         <script>

@@ -23,30 +23,30 @@
         <div class='clearfix'>
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">0% </span>
+                <span class="strong">100% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>0/9</span>
+                <span class='fraction'>9/9</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">0% </span>
+                <span class="strong">72.72% </span>
                 <span class="quiet">Branches</span>
-                <span class='fraction'>0/11</span>
+                <span class='fraction'>8/11</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">0% </span>
+                <span class="strong">100% </span>
                 <span class="quiet">Functions</span>
-                <span class='fraction'>0/1</span>
+                <span class='fraction'>1/1</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">0% </span>
+                <span class="strong">100% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>0/9</span>
+                <span class='fraction'>9/9</span>
             </div>
         
             
@@ -61,7 +61,7 @@
             </div>
         </template>
     </div>
-    <div class='status-line low'></div>
+    <div class='status-line high'></div>
     <pre><table class="coverage">
 <tr><td class="line-count quiet"><a name='L1'></a><a href='#L1'>1</a>
 <a name='L2'></a><a href='#L2'>2</a>
@@ -236,9 +236,9 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">105x</span>
+<span class="cline-any cline-yes">105x</span>
+<span class="cline-any cline-yes">105x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -264,7 +264,7 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">105x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -273,7 +273,7 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">105x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -327,7 +327,7 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">105x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -341,7 +341,7 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">105x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -367,7 +367,7 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">105x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -381,7 +381,7 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">105x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -401,9 +401,9 @@ import * as React from "react";
 &nbsp;
 import { cn } from "@/utils";
 &nbsp;
-const Select = <span class="cstat-no" title="statement not covered" >SelectPrimitive.Root;</span>
-const SelectGroup = <span class="cstat-no" title="statement not covered" >SelectPrimitive.Group;</span>
-const SelectValue = <span class="cstat-no" title="statement not covered" >SelectPrimitive.Value;</span>
+const Select = SelectPrimitive.Root;
+const SelectGroup = SelectPrimitive.Group;
+const SelectValue = SelectPrimitive.Value;
 &nbsp;
 const SelectTrigger = React.forwardRef&lt;
   React.ElementRef&lt;typeof SelectPrimitive.Trigger&gt; &amp; { className?: string },
@@ -411,7 +411,7 @@ const SelectTrigger = React.forwardRef&lt;
     className?: string;
     showIcon?: boolean;
   }
-&gt;(({ className, children, showIcon = <span class="branch-0 cbranch-no" title="branch not covered" >true,</span> ...props }, ref) =&gt; (
+&gt;(({ className, children, showIcon = true, ...props }, ref) =&gt; (
   &lt;SelectPrimitive.Trigger
     ref={ref}
     className={cn(
@@ -422,14 +422,14 @@ const SelectTrigger = React.forwardRef&lt;
     {...props}
   &gt;
     {children}
-    {<span class="branch-0 cbranch-no" title="branch not covered" >showIcon &amp;&amp; (</span>
+    {showIcon &amp;&amp; (
       &lt;SelectPrimitive.Icon asChild&gt;
         &lt;ChevronDownIcon className="h-4 w-4 opacity-50 group-focus:opacity-100" /&gt;
       &lt;/SelectPrimitive.Icon&gt;
     )}
   &lt;/SelectPrimitive.Trigger&gt;
 ));
-<span class="cstat-no" title="statement not covered" >SelectTrigger.displayName = SelectPrimitive.Trigger.displayName;</span>
+SelectTrigger.displayName = SelectPrimitive.Trigger.displayName;
 &nbsp;
 interface SelectContentProps
   extends React.ComponentPropsWithoutRef&lt;typeof SelectPrimitive.Content&gt; {
@@ -438,10 +438,10 @@ interface SelectContentProps
   isScrollable?: boolean;
 }
 &nbsp;
-const SelectContent = <span class="cstat-no" title="statement not covered" >React.forwardRef&lt;</span>
+const SelectContent = React.forwardRef&lt;
   React.ElementRef&lt;typeof SelectPrimitive.Content&gt;,
   SelectContentProps
-&gt;(<span class="fstat-no" title="function not covered" >({</span> className, children, position = <span class="branch-0 cbranch-no" title="branch not covered" >"popper",</span> isScrollable = <span class="branch-0 cbranch-no" title="branch not covered" >false,</span> ...props }, ref) =&gt; {
+&gt;(({ className, children, position = "popper", isScrollable = false, ...props }, ref) =&gt; {
   return (
     &lt;SelectPrimitive.Portal&gt;
       &lt;SelectPrimitive.Content
@@ -492,7 +492,7 @@ const SelectContent = <span class="cstat-no" title="statement not covered" >Reac
   );
 });
 &nbsp;
-<span class="cstat-no" title="statement not covered" >SelectContent.displayName = SelectPrimitive.Content.displayName;</span>
+SelectContent.displayName = SelectPrimitive.Content.displayName;
 &nbsp;
 const SelectLabel = React.forwardRef&lt;
   React.ElementRef&lt;typeof SelectPrimitive.Label&gt; &amp; { className?: string },
@@ -506,7 +506,7 @@ const SelectLabel = React.forwardRef&lt;
     {...props}
   /&gt;
 ));
-<span class="cstat-no" title="statement not covered" >SelectLabel.displayName = SelectPrimitive.Label.displayName;</span>
+SelectLabel.displayName = SelectPrimitive.Label.displayName;
 &nbsp;
 const SelectItem = React.forwardRef&lt;
   React.ElementRef&lt;typeof SelectPrimitive.Item&gt; &amp; { className?: string },
@@ -532,7 +532,7 @@ const SelectItem = React.forwardRef&lt;
     &lt;/SelectPrimitive.ItemText&gt;
   &lt;/SelectPrimitive.Item&gt;
 ));
-<span class="cstat-no" title="statement not covered" >SelectItem.displayName = SelectPrimitive.Item.displayName;</span>
+SelectItem.displayName = SelectPrimitive.Item.displayName;
 &nbsp;
 const SelectSeparator = React.forwardRef&lt;
   React.ElementRef&lt;typeof SelectPrimitive.Separator&gt; &amp; { className?: string },
@@ -546,7 +546,7 @@ const SelectSeparator = React.forwardRef&lt;
     {...props}
   /&gt;
 ));
-<span class="cstat-no" title="statement not covered" >SelectSeparator.displayName = SelectPrimitive.Separator.displayName;</span>
+SelectSeparator.displayName = SelectPrimitive.Separator.displayName;
 &nbsp;
 export {
   Select,
@@ -565,7 +565,7 @@ export {
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2026-02-19T02:20:04.000Z
+                at 2026-02-20T02:20:53.292Z
             </div>
         <script src="../../../../prettify.js"></script>
         <script>

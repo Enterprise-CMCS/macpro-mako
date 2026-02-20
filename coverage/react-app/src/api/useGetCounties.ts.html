@@ -23,30 +23,30 @@
         <div class='clearfix'>
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">10.52% </span>
+                <span class="strong">78.94% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>2/19</span>
+                <span class='fraction'>15/19</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">0% </span>
+                <span class="strong">80% </span>
                 <span class="quiet">Branches</span>
-                <span class='fraction'>0/5</span>
+                <span class='fraction'>4/5</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">0% </span>
+                <span class="strong">75% </span>
                 <span class="quiet">Functions</span>
-                <span class='fraction'>0/12</span>
+                <span class='fraction'>9/12</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">12.5% </span>
+                <span class="strong">81.25% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>2/16</span>
+                <span class='fraction'>13/16</span>
             </div>
         
             
@@ -61,7 +61,7 @@
             </div>
         </template>
     </div>
-    <div class='status-line low'></div>
+    <div class='status-line medium'></div>
     <pre><table class="coverage">
 <tr><td class="line-count quiet"><a name='L1'></a><a href='#L1'>1</a>
 <a name='L2'></a><a href='#L2'>2</a>
@@ -119,40 +119,40 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">62x</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">104x</span>
+<span class="cline-any cline-yes">198x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">39x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">62x</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">39x</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">104x</span>
+<span class="cline-any cline-yes">198x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">198x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">198x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">53x</span>
+<span class="cline-any cline-yes">3204x</span>
+<span class="cline-any cline-yes">108x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">198x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">198x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
@@ -167,14 +167,14 @@ import { getUserStateCodes } from "@/utils";
 &nbsp;
 import { useGetUser } from "./useGetUser";
 &nbsp;
-const usePopulationData = <span class="fstat-no" title="function not covered" >(s</span>tateString: string) =&gt; {
-<span class="cstat-no" title="statement not covered" >  return useQuery(</span>
+const usePopulationData = (stateString: string) =&gt; {
+  return useQuery(
     ["populationData", stateString],
-<span class="fstat-no" title="function not covered" >    () =&gt;</span>
-<span class="cstat-no" title="statement not covered" >      fetch(</span>
+    () =&gt;
+      fetch(
         `https://api.census.gov/data/2019/pep/population?get=NAME&amp;for=county:*&amp;in=state:${stateString}`,
       )
-        .then(<span class="fstat-no" title="function not covered" >(r</span>esponse) =&gt; <span class="cstat-no" title="statement not covered" >response.json())</span>
+        .then((response) =&gt; response.json())
         .then(<span class="fstat-no" title="function not covered" >(p</span>opulation) =&gt; <span class="cstat-no" title="statement not covered" >population.slice(1).map(<span class="fstat-no" title="function not covered" >(i</span>tem) =&gt; <span class="cstat-no" title="statement not covered" >item[0])</span>),</span>
     {
       refetchOnWindowFocus: false,
@@ -184,27 +184,27 @@ const usePopulationData = <span class="fstat-no" title="function not covered" >(
   );
 };
 &nbsp;
-export const useGetCounties = <span class="fstat-no" title="function not covered" >(): { label: string; value: string }[] =&gt; {</span>
-  const { data: userData } = <span class="cstat-no" title="statement not covered" >useGetUser();</span>
+export const useGetCounties = (): { label: string; value: string }[] =&gt; {
+  const { data: userData } = useGetUser();
 &nbsp;
-  const stateCodes = <span class="cstat-no" title="statement not covered" >useMemo(<span class="fstat-no" title="function not covered" >() =&gt; <span class="cstat-no" title="statement not covered" >g</span>etUserStateCodes(userData?.user), [</span>userData]);</span>
+  const stateCodes = useMemo(() =&gt; getUserStateCodes(userData?.user), [userData]);
 &nbsp;
-  const stateNumericCodesString = <span class="cstat-no" title="statement not covered" >useMemo(</span>
-<span class="fstat-no" title="function not covered" >    () =&gt;</span>
-<span class="cstat-no" title="statement not covered" >      stateCodes</span>
-        .map(<span class="fstat-no" title="function not covered" >(c</span>ode) =&gt; <span class="cstat-no" title="statement not covered" >FULL_CENSUS_STATES.find(<span class="fstat-no" title="function not covered" >(s</span>tate) =&gt; <span class="cstat-no" title="statement not covered" >state.value === code)?.c</span>ode)</span>
-        .filter(<span class="fstat-no" title="function not covered" >(c</span>ode): code is string =&gt; <span class="cstat-no" title="statement not covered" >code !== undefined &amp;&amp; code !== "00")</span>
+  const stateNumericCodesString = useMemo(
+    () =&gt;
+      stateCodes
+        .map((code) =&gt; FULL_CENSUS_STATES.find((state) =&gt; state.value === code)?.code)
+        .filter((code): code is string =&gt; code !== undefined &amp;&amp; code !== "00")
         .join(","),
     [stateCodes],
   );
 &nbsp;
-  const { data: populationData = <span class="branch-0 cbranch-no" title="branch not covered" >[] </span>} = <span class="cstat-no" title="statement not covered" >usePopulationData(stateNumericCodesString);</span>
+  const { data: populationData = [] } = usePopulationData(stateNumericCodesString);
 &nbsp;
-<span class="cstat-no" title="statement not covered" >  return (</span>
+  return (
     populationData.map(<span class="fstat-no" title="function not covered" >(c</span>ounty) =&gt; {
       const [label] = <span class="cstat-no" title="statement not covered" >county.split(",");</span>
 <span class="cstat-no" title="statement not covered" >      return { label, value: county };</span>
-    }) ?? []
+    }) ?? <span class="branch-1 cbranch-no" title="branch not covered" >[]</span>
   );
 };
 &nbsp;</pre></td></tr></table></pre>
@@ -214,7 +214,7 @@ export const useGetCounties = <span class="fstat-no" title="function not covered
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2026-02-19T02:20:04.000Z
+                at 2026-02-20T02:20:53.292Z
             </div>
         <script src="../../../prettify.js"></script>
         <script>

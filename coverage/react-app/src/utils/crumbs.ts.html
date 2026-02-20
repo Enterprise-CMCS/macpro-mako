@@ -23,30 +23,30 @@
         <div class='clearfix'>
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">35.71% </span>
+                <span class="strong">100% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>5/14</span>
+                <span class='fraction'>14/14</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">0% </span>
+                <span class="strong">100% </span>
                 <span class="quiet">Branches</span>
-                <span class='fraction'>0/9</span>
+                <span class='fraction'>9/9</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">0% </span>
+                <span class="strong">100% </span>
                 <span class="quiet">Functions</span>
-                <span class='fraction'>0/5</span>
+                <span class='fraction'>5/5</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">45.45% </span>
+                <span class="strong">100% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>5/11</span>
+                <span class='fraction'>11/11</span>
             </div>
         
             
@@ -61,7 +61,7 @@
             </div>
         </template>
     </div>
-    <div class='status-line low'></div>
+    <div class='status-line high'></div>
     <pre><table class="coverage">
 <tr><td class="line-count quiet"><a name='L1'></a><a href='#L1'>1</a>
 <a name='L2'></a><a href='#L2'>2</a>
@@ -127,42 +127,42 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">104x</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">106x</span>
+<span class="cline-any cline-yes">546x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">509x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">36x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">104x</span>
+<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">104x</span>
+<span class="cline-any cline-yes">106x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">2x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">104x</span>
+<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">550x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">104x</span>
+<span class="cline-any cline-yes">106x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">106x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -179,42 +179,42 @@ type DetailsAndActionsBreadCrumbsArgs = {
   actionType?: Action;
 };
 &nbsp;
-export const getDashboardTabForAuthority = <span class="fstat-no" title="function not covered" >(a</span>uthority: Authority): "spas" | "waivers" =&gt; {
-<span class="cstat-no" title="statement not covered" >  switch (authority) {</span>
+export const getDashboardTabForAuthority = (authority: Authority): "spas" | "waivers" =&gt; {
+  switch (authority) {
     case "CHIP SPA" as Authority:
     case "Medicaid SPA" as Authority:
-<span class="cstat-no" title="statement not covered" >      return "spas";</span>
+      return "spas";
     case "1915(b)":
     case "1915(c)":
-<span class="cstat-no" title="statement not covered" >      return "waivers";</span>
+      return "waivers";
     default:
-<span class="cstat-no" title="statement not covered" >      throw new Error("Invalid authority");</span>
+      throw new Error("Invalid authority");
   }
 };
 &nbsp;
-export const detailsAndActionsCrumbs = <span class="fstat-no" title="function not covered" >({</span>
+export const detailsAndActionsCrumbs = ({
   id,
   authority,
   actionType,
 }: DetailsAndActionsBreadCrumbsArgs): BreadCrumbConfig[] =&gt; {
-  const defaultBreadCrumbs = <span class="cstat-no" title="statement not covered" >[dashboardCrumb(authority), detailsCrumb(id, authority)];</span>
+  const defaultBreadCrumbs = [dashboardCrumb(authority), detailsCrumb(id, authority)];
 &nbsp;
-<span class="cstat-no" title="statement not covered" >  return actionType ? [...defaultBreadCrumbs, actionCrumb(actionType, id)] : defaultBreadCrumbs;</span>
+  return actionType ? [...defaultBreadCrumbs, actionCrumb(actionType, id)] : defaultBreadCrumbs;
 };
 &nbsp;
-export const dashboardCrumb = <span class="fstat-no" title="function not covered" >(a</span>uthority?: Authority): BreadCrumbConfig =&gt; (<span class="cstat-no" title="statement not covered" >{</span>
+export const dashboardCrumb = (authority?: Authority): BreadCrumbConfig =&gt; ({
   displayText: "Dashboard",
   order: 1,
   to: authority ? `/dashboard?tab=${getDashboardTabForAuthority(authority)}` : "/dashboard",
 });
 &nbsp;
-export const detailsCrumb = <span class="fstat-no" title="function not covered" >(i</span>d: string, authority: Authority): BreadCrumbConfig =&gt; (<span class="cstat-no" title="statement not covered" >{</span>
+export const detailsCrumb = (id: string, authority: Authority): BreadCrumbConfig =&gt; ({
   displayText: id,
   order: 2,
   to: `/details/${authority}/${id}`,
 });
 &nbsp;
-export const actionCrumb = <span class="fstat-no" title="function not covered" >(a</span>ction: Action, id: string): BreadCrumbConfig =&gt; (<span class="cstat-no" title="statement not covered" >{</span>
+export const actionCrumb = (action: Action, id: string): BreadCrumbConfig =&gt; ({
   displayText: mapActionLabel(action),
   order: 3,
   to: `/actions/${id}/${action}`,
@@ -226,7 +226,7 @@ export const actionCrumb = <span class="fstat-no" title="function not covered" >
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2026-02-19T02:20:04.000Z
+                at 2026-02-20T02:20:53.292Z
             </div>
         <script src="../../../prettify.js"></script>
         <script>

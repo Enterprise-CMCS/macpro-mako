@@ -23,30 +23,30 @@
         <div class='clearfix'>
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">0% </span>
+                <span class="strong">63.63% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>0/11</span>
+                <span class='fraction'>7/11</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">0% </span>
+                <span class="strong">33.33% </span>
                 <span class="quiet">Branches</span>
-                <span class='fraction'>0/3</span>
+                <span class='fraction'>1/3</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">0% </span>
+                <span class="strong">100% </span>
                 <span class="quiet">Functions</span>
-                <span class='fraction'>0/2</span>
+                <span class='fraction'>2/2</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">0% </span>
+                <span class="strong">63.63% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>0/11</span>
+                <span class='fraction'>7/11</span>
             </div>
         
             
@@ -61,7 +61,7 @@
             </div>
         </template>
     </div>
-    <div class='status-line low'></div>
+    <div class='status-line medium'></div>
     <pre><table class="coverage">
 <tr><td class="line-count quiet"><a name='L1'></a><a href='#L1'>1</a>
 <a name='L2'></a><a href='#L2'>2</a>
@@ -146,26 +146,26 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">210x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">210x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">210x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1718x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1712x</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">1712x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">210x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">import React from "react";
 &nbsp;
@@ -192,32 +192,32 @@ type CreateContextReturn&lt;T&gt; = [React.Provider&lt;T&gt;, () =&gt; T, React.
  *
  * @param options create context options
  */
-export function <span class="fstat-no" title="function not covered" >createContextProvider&lt;ContextType&gt;(</span>
+export function createContextProvider&lt;ContextType&gt;(
   options: CreateContextOptions,
 ): CreateContextReturn&lt;ContextType&gt; {
   const {
     errorMessage = <span class="branch-0 cbranch-no" title="branch not covered" >"useContext: `context` is undefined. Seems you forgot to wrap component within the Provider",</span>
     name,
-  } = <span class="cstat-no" title="statement not covered" >options;</span>
+  } = options;
 &nbsp;
-  const Context = <span class="cstat-no" title="statement not covered" >React.createContext&lt;ContextType | undefined&gt;(undefined);</span>
+  const Context = React.createContext&lt;ContextType | undefined&gt;(undefined);
 &nbsp;
-<span class="cstat-no" title="statement not covered" >  Context.displayName = name;</span>
+  Context.displayName = name;
 &nbsp;
-  function <span class="fstat-no" title="function not covered" >useContext&lt;T extends ContextType = ContextType&gt;() {</span>
-    const context = <span class="cstat-no" title="statement not covered" >React.useContext(Context);</span>
+  function useContext&lt;T extends ContextType = ContextType&gt;() {
+    const context = React.useContext(Context);
 &nbsp;
-<span class="cstat-no" title="statement not covered" >    if (!context) {</span>
+    <span class="missing-if-branch" title="if path not taken" >I</span>if (!context) {
       const error = <span class="cstat-no" title="statement not covered" >new Error(errorMessage);</span>
 <span class="cstat-no" title="statement not covered" >      error.name = "ContextError";</span>
 <span class="cstat-no" title="statement not covered" >      Error.captureStackTrace?.(error, useContext);</span>
 <span class="cstat-no" title="statement not covered" >      throw error;</span>
     }
 &nbsp;
-<span class="cstat-no" title="statement not covered" >    return context as T;</span>
+    return context as T;
   }
 &nbsp;
-<span class="cstat-no" title="statement not covered" >  return [Context.Provider, useContext, Context] as CreateContextReturn&lt;ContextType&gt;;</span>
+  return [Context.Provider, useContext, Context] as CreateContextReturn&lt;ContextType&gt;;
 }
 &nbsp;</pre></td></tr></table></pre>
 
@@ -226,7 +226,7 @@ export function <span class="fstat-no" title="function not covered" >createConte
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2026-02-19T02:20:04.000Z
+                at 2026-02-20T02:20:53.292Z
             </div>
         <script src="../../../prettify.js"></script>
         <script>

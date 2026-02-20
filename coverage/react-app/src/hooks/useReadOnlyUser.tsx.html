@@ -23,30 +23,30 @@
         <div class='clearfix'>
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">10% </span>
+                <span class="strong">100% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>1/10</span>
+                <span class='fraction'>10/10</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">0% </span>
+                <span class="strong">100% </span>
                 <span class="quiet">Branches</span>
-                <span class='fraction'>0/2</span>
+                <span class='fraction'>2/2</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">0% </span>
+                <span class="strong">100% </span>
                 <span class="quiet">Functions</span>
-                <span class='fraction'>0/2</span>
+                <span class='fraction'>2/2</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">10% </span>
+                <span class="strong">100% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>1/10</span>
+                <span class='fraction'>10/10</span>
             </div>
         
             
@@ -61,7 +61,7 @@
             </div>
         </template>
     </div>
-    <div class='status-line low'></div>
+    <div class='status-line high'></div>
     <pre><table class="coverage">
 <tr><td class="line-count quiet"><a name='L1'></a><a href='#L1'>1</a>
 <a name='L2'></a><a href='#L2'>2</a>
@@ -88,40 +88,40 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">82x</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">106x</span>
+<span class="cline-any cline-yes">12x</span>
+<span class="cline-any cline-yes">12x</span>
+<span class="cline-any cline-yes">12x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">12x</span>
+<span class="cline-any cline-yes">8x</span>
+<span class="cline-any cline-yes">4x</span>
+<span class="cline-any cline-yes">4x</span>
+<span class="cline-any cline-yes">4x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">12x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">import { useEffect, useState } from "react";
 import { UserRoles } from "shared-types";
 &nbsp;
 import { useGetUser } from "@/api";
 &nbsp;
-export const useReadOnlyUser = <span class="fstat-no" title="function not covered" >() =&gt; {</span>
-  const { data: user, isFetched: isUserFetched } = <span class="cstat-no" title="statement not covered" >useGetUser();</span>
-  const [readOnly, setReadOnly] = <span class="cstat-no" title="statement not covered" >useState(true);</span>
-  const [isLoading, setIsLoading] = <span class="cstat-no" title="statement not covered" >useState(true);</span>
+export const useReadOnlyUser = () =&gt; {
+  const { data: user, isFetched: isUserFetched } = useGetUser();
+  const [readOnly, setReadOnly] = useState(true);
+  const [isLoading, setIsLoading] = useState(true);
 &nbsp;
-<span class="cstat-no" title="statement not covered" >  useEffect(<span class="fstat-no" title="function not covered" >() =&gt; {</span></span>
-<span class="cstat-no" title="statement not covered" >    if (isUserFetched) {</span>
-      const role = <span class="cstat-no" title="statement not covered" >user?.user?.role;</span>
-<span class="cstat-no" title="statement not covered" >      setReadOnly(role !== UserRoles.STATE_SUBMITTER);</span>
-<span class="cstat-no" title="statement not covered" >      setIsLoading(false);</span>
+  useEffect(() =&gt; {
+    if (isUserFetched) {
+      const role = user?.user?.role;
+      setReadOnly(role !== UserRoles.STATE_SUBMITTER);
+      setIsLoading(false);
     }
   }, [user, isUserFetched]);
 &nbsp;
-<span class="cstat-no" title="statement not covered" >  return { readOnly, isLoading };</span>
+  return { readOnly, isLoading };
 };
 &nbsp;</pre></td></tr></table></pre>
 
@@ -130,7 +130,7 @@ export const useReadOnlyUser = <span class="fstat-no" title="function not covere
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2026-02-19T02:20:04.000Z
+                at 2026-02-20T02:20:53.292Z
             </div>
         <script src="../../../prettify.js"></script>
         <script>

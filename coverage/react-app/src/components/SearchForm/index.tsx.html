@@ -23,30 +23,30 @@
         <div class='clearfix'>
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">0% </span>
+                <span class="strong">100% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>0/16</span>
+                <span class='fraction'>16/16</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">0% </span>
+                <span class="strong">80% </span>
                 <span class="quiet">Branches</span>
-                <span class='fraction'>0/5</span>
+                <span class='fraction'>4/5</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">0% </span>
+                <span class="strong">100% </span>
                 <span class="quiet">Functions</span>
-                <span class='fraction'>0/5</span>
+                <span class='fraction'>5/5</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">0% </span>
+                <span class="strong">100% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>0/16</span>
+                <span class='fraction'>16/16</span>
             </div>
         
             
@@ -61,7 +61,7 @@
             </div>
         </template>
     </div>
-    <div class='status-line low'></div>
+    <div class='status-line high'></div>
     <pre><table class="coverage">
 <tr><td class="line-count quiet"><a name='L1'></a><a href='#L1'>1</a>
 <a name='L2'></a><a href='#L2'>2</a>
@@ -174,25 +174,23 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">105x</span>
+<span class="cline-any cline-yes">246x</span>
+<span class="cline-any cline-yes">246x</span>
+<span class="cline-any cline-yes">246x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">246x</span>
+<span class="cline-any cline-yes">59x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">246x</span>
+<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-yes">2x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">246x</span>
+<span class="cline-any cline-yes">12x</span>
+<span class="cline-any cline-yes">12x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -241,10 +239,12 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -271,23 +271,23 @@ export const SearchForm: FC&lt;{
   urlState?: OsUrlState;
   isSearching: boolean;
   disabled: boolean;
-}&gt; = <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >({</span> handleSearch, urlState, disabled, isSearching }) =&gt; {</span>
-  const [searchText, setSearchText] = <span class="cstat-no" title="statement not covered" >useState(urlState?.search ?? "");</span>
-  const debouncedSearchString = <span class="cstat-no" title="statement not covered" >useDebounce(searchText, 750);</span>
-  const searchInputRef = <span class="cstat-no" title="statement not covered" >useRef(null);</span>
+}&gt; = ({ handleSearch, urlState, disabled, isSearching }) =&gt; {
+  const [searchText, setSearchText] = useState(urlState?.search ?? "");
+  const debouncedSearchString = useDebounce(searchText, 750);
+  const searchInputRef = useRef(null);
 &nbsp;
-<span class="cstat-no" title="statement not covered" >  useEffect(<span class="fstat-no" title="function not covered" >() =&gt; {</span></span>
-<span class="cstat-no" title="statement not covered" >    handleSearch(debouncedSearchString);</span>
+  useEffect(() =&gt; {
+    handleSearch(debouncedSearchString);
   }, [debouncedSearchString]); // eslint-disable-line react-hooks/exhaustive-deps
 &nbsp;
-  const handleSubmit = <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >(e</span>vent: React.FormEvent&lt;HTMLFormElement&gt;) =&gt; {</span>
-<span class="cstat-no" title="statement not covered" >    event.preventDefault();</span>
-<span class="cstat-no" title="statement not covered" >    handleSearch(searchText);</span>
+  const handleSubmit = (event: React.FormEvent&lt;HTMLFormElement&gt;) =&gt; {
+    event.preventDefault();
+    handleSearch(searchText);
   };
 &nbsp;
-  const handleInputChange = <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >(e</span>vent: React.ChangeEvent&lt;HTMLInputElement&gt;) =&gt; {</span>
-    const updateText = <span class="cstat-no" title="statement not covered" >event.target.value;</span>
-<span class="cstat-no" title="statement not covered" >    setSearchText(updateText);</span>
+  const handleInputChange = (event: React.ChangeEvent&lt;HTMLInputElement&gt;) =&gt; {
+    const updateText = event.target.value;
+    setSearchText(updateText);
   };
 &nbsp;
   return (
@@ -329,7 +329,7 @@ export const SearchForm: FC&lt;{
               hidden: isSearching === false,
             })}
           /&gt;
-          {<span class="branch-0 cbranch-no" title="branch not covered" >searchText &amp;&amp; (</span>
+          {searchText &amp;&amp; (
             &lt;Button
               className="w-auto h-auto p-0"
               variant="ghost"
@@ -337,11 +337,11 @@ export const SearchForm: FC&lt;{
               aria-label="Clear search input"
               aria-controls="search-input"
               data-testid="clear-search-button"
-              onClick={<span class="fstat-no" title="function not covered" >() =&gt; {</span>
-<span class="cstat-no" title="statement not covered" >                setSearchText("");</span>
-<span class="cstat-no" title="statement not covered" >                handleSearch("");</span>
-<span class="cstat-no" title="statement not covered" >                if (searchInputRef.current) {</span>
-<span class="cstat-no" title="statement not covered" >                  searchInputRef.current.focus();</span>
+              onClick={() =&gt; {
+                setSearchText("");
+                handleSearch("");
+                <span class="missing-if-branch" title="else path not taken" >E</span>if (searchInputRef.current) {
+                  searchInputRef.current.focus();
                 }
               }}
               disabled={disabled}
@@ -361,7 +361,7 @@ export const SearchForm: FC&lt;{
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2026-02-19T02:20:04.000Z
+                at 2026-02-20T02:20:53.292Z
             </div>
         <script src="../../../../prettify.js"></script>
         <script>

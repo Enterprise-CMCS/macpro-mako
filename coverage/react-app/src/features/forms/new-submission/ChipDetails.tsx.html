@@ -23,30 +23,30 @@
         <div class='clearfix'>
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">0% </span>
+                <span class="strong">40% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>0/10</span>
+                <span class='fraction'>4/10</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">0% </span>
+                <span class="strong">33.33% </span>
                 <span class="quiet">Branches</span>
-                <span class='fraction'>0/6</span>
+                <span class='fraction'>2/6</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">0% </span>
+                <span class="strong">37.5% </span>
                 <span class="quiet">Functions</span>
-                <span class='fraction'>0/8</span>
+                <span class='fraction'>3/8</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">0% </span>
+                <span class="strong">40% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>0/10</span>
+                <span class='fraction'>4/10</span>
             </div>
         
             
@@ -296,8 +296,8 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">4x</span>
+<span class="cline-any cline-yes">3x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -349,7 +349,7 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">3x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -383,7 +383,7 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">12x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -507,8 +507,8 @@ import {
 import { FAQ_TAB } from "@/consts";
 import { formSchemas } from "@/formSchemas";
 &nbsp;
-export const ChipDetailsForm = <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >() =&gt; {</span></span>
-  const chipSubmissionType = <span class="cstat-no" title="statement not covered" >[</span>
+export const ChipDetailsForm = () =&gt; {
+  const chipSubmissionType = [
     "MAGI Eligibility and Methods",
     "Non-Financial Eligibility",
     "XXI Medicaid Expansion",
@@ -559,8 +559,8 @@ export const ChipDetailsForm = <span class="cstat-no" title="statement not cover
             control={control}
             name="chipSubmissionType"
             data-testid="HERE"
-            render={<span class="fstat-no" title="function not covered" >({</span> field }) =&gt; {
-              const selectedValues = <span class="cstat-no" title="statement not covered" >Array.isArray(field.value) ? field.value : [];</span>
+            render={({ field }) =&gt; {
+              const selectedValues = Array.isArray(field.value) ? <span class="branch-0 cbranch-no" title="branch not covered" >field.value </span>: [];
               return (
                 &lt;FormItem className="w-full sm:max-w-[460px] relative"&gt;
                   &lt;FormLabel className="font-bold"&gt;CHIP Submission Type&lt;/FormLabel&gt;
@@ -593,8 +593,8 @@ export const ChipDetailsForm = <span class="cstat-no" title="statement not cover
                       &lt;/SelectTrigger&gt;
                     &lt;/FormControl&gt;
                     &lt;SelectContent className=" left-0 top-full mt-1 z-50 w-full bg-white border border-gray-200 shadow-md rounded-md"&gt;
-                      {chipSubmissionType.map(<span class="fstat-no" title="function not covered" >(o</span>ption) =&gt; {
-                        const isSelected = <span class="cstat-no" title="statement not covered" >selectedValues.includes(option);</span>
+                      {chipSubmissionType.map((option) =&gt; {
+                        const isSelected = selectedValues.includes(option);
                         return (
                           &lt;div
                             data-testid={option.replace(/ /g, "-").toLowerCase()}
@@ -630,7 +630,7 @@ export const ChipDetailsForm = <span class="cstat-no" title="statement not cover
                   &lt;DatePicker
                     dataTestId="proposedEffectiveDate"
                     onChange={<span class="fstat-no" title="function not covered" >(d</span>ate) =&gt; <span class="cstat-no" title="statement not covered" >field.onChange(date.getTime())}</span>
-                    date={field.value ? new Date(field.value) : undefined}
+                    date={field.value ? <span class="branch-0 cbranch-no" title="branch not covered" >new Date(field.value) : u</span>ndefined}
                   /&gt;
                 &lt;/FormControl&gt;
                 &lt;FormMessage /&gt;
@@ -703,7 +703,7 @@ export const ChipDetailsForm = <span class="cstat-no" title="statement not cover
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2026-02-19T02:20:04.000Z
+                at 2026-02-20T02:20:53.292Z
             </div>
         <script src="../../../../../prettify.js"></script>
         <script>

@@ -23,30 +23,30 @@
         <div class='clearfix'>
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">0% </span>
+                <span class="strong">100% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>0/4</span>
+                <span class='fraction'>4/4</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">0% </span>
+                <span class="strong">100% </span>
                 <span class="quiet">Branches</span>
-                <span class='fraction'>0/11</span>
+                <span class='fraction'>11/11</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">0% </span>
+                <span class="strong">100% </span>
                 <span class="quiet">Functions</span>
-                <span class='fraction'>0/1</span>
+                <span class='fraction'>1/1</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">0% </span>
+                <span class="strong">100% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>0/4</span>
+                <span class='fraction'>4/4</span>
             </div>
         
             
@@ -61,7 +61,7 @@
             </div>
         </template>
     </div>
-    <div class='status-line low'></div>
+    <div class='status-line high'></div>
     <pre><table class="coverage">
 <tr><td class="line-count quiet"><a name='L1'></a><a href='#L1'>1</a>
 <a name='L2'></a><a href='#L2'>2</a>
@@ -128,8 +128,8 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">5x</span>
+<span class="cline-any cline-yes">2x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -137,13 +137,13 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">2x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">2x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -184,8 +184,8 @@ type PackageStatusCardProps = {
   submission: opensearch.main.Document;
 };
 &nbsp;
-export const PackageStatusCard = <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >({</span> submission }: PackageStatusCardProps) =&gt; {</span>
-  const { data: user } = <span class="cstat-no" title="statement not covered" >useGetUser();</span>
+export const PackageStatusCard = ({ submission }: PackageStatusCardProps) =&gt; {
+  const { data: user } = useGetUser();
 &nbsp;
   // This really a check to determine if we should show the status of an RAI Withdraw being enabled
   // We have a flag that we monitor but there are certain things that can be done outside of onemac,
@@ -193,13 +193,13 @@ export const PackageStatusCard = <span class="cstat-no" title="statement not cov
   // below (Pending Approval, and Pending Concurrence). In the future we should build logic into the
   // seatool sink that allows us to simply clear these flags
   const isInRAIWithdrawEnabledSubStatus =
-<span class="cstat-no" title="statement not covered" >    submission.raiWithdrawEnabled &amp;&amp;</span>
+    submission.raiWithdrawEnabled &amp;&amp;
     submission.seatoolStatus !== SEATOOL_STATUS.PENDING_APPROVAL &amp;&amp;
     submission.seatoolStatus !== SEATOOL_STATUS.PENDING_CONCURRENCE;
 &nbsp;
   // Similar to the above check their are certain things that occur in seatool that invalidate the secondClock
   // flag. Additionally second clock sub status only displays for CMS users
-  const isInActiveSecondClockStatus = <span class="cstat-no" title="statement not covered" >isCmsUser(user.user) &amp;&amp; submission.secondClock;</span>
+  const isInActiveSecondClockStatus = isCmsUser(user.user) &amp;&amp; submission.secondClock;
 &nbsp;
   return (
     &lt;dl className="my-3 font-bold text-xl" aria-labelledby="package-status-heading"&gt;
@@ -210,7 +210,7 @@ export const PackageStatusCard = <span class="cstat-no" title="statement not cov
       &lt;/dt&gt;
       &lt;dd className="text-xs opacity-80"&gt;
         &lt;ul&gt;
-          {<span class="branch-0 cbranch-no" title="branch not covered" >isInRAIWithdrawEnabledSubStatus &amp;&amp; (</span>
+          {isInRAIWithdrawEnabledSubStatus &amp;&amp; (
             &lt;li&gt;
               &lt;p className="mt-1"&gt;
                 &lt;span className="font-bold mr-1"&gt;·&lt;/span&gt;
@@ -218,7 +218,7 @@ export const PackageStatusCard = <span class="cstat-no" title="statement not cov
               &lt;/p&gt;
             &lt;/li&gt;
           )}
-          {<span class="branch-0 cbranch-no" title="branch not covered" >isInActiveSecondClockStatus &amp;&amp; (</span>
+          {isInActiveSecondClockStatus &amp;&amp; (
             &lt;li&gt;
               &lt;p className="mt-1"&gt;
                 &lt;span className="font-bold mr-1"&gt;·&lt;/span&gt;
@@ -238,7 +238,7 @@ export const PackageStatusCard = <span class="cstat-no" title="statement not cov
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2026-02-19T02:20:04.000Z
+                at 2026-02-20T02:20:53.292Z
             </div>
         <script src="../../../../../prettify.js"></script>
         <script>

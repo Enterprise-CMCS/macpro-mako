@@ -23,30 +23,30 @@
         <div class='clearfix'>
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">0% </span>
+                <span class="strong">100% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>0/7</span>
+                <span class='fraction'>7/7</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">0% </span>
+                <span class="strong">90% </span>
                 <span class="quiet">Branches</span>
-                <span class='fraction'>0/10</span>
+                <span class='fraction'>9/10</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">0% </span>
+                <span class="strong">100% </span>
                 <span class="quiet">Functions</span>
-                <span class='fraction'>0/1</span>
+                <span class='fraction'>1/1</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">0% </span>
+                <span class="strong">100% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>0/7</span>
+                <span class='fraction'>7/7</span>
             </div>
         
             
@@ -61,7 +61,7 @@
             </div>
         </template>
     </div>
-    <div class='status-line low'></div>
+    <div class='status-line high'></div>
     <pre><table class="coverage">
 <tr><td class="line-count quiet"><a name='L1'></a><a href='#L1'>1</a>
 <a name='L2'></a><a href='#L2'>2</a>
@@ -95,19 +95,19 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">4x</span>
+<span class="cline-any cline-yes">3x</span>
+<span class="cline-any cline-yes">3x</span>
+<span class="cline-any cline-yes">3x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">3x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">3x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">2x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -121,19 +121,19 @@ import { useGetUser } from "@/api";
 import * as F from "@/features";
 import { useFeatureFlag } from "@/hooks/useFeatureFlag";
 &nbsp;
-export const WelcomeWrapper = <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >() =&gt; {</span></span>
-  const { data: user } = <span class="cstat-no" title="statement not covered" >useGetUser();</span>
-  const isCMSEnabled = <span class="cstat-no" title="statement not covered" >useFeatureFlag("CMS_HOMEPAGE_FLAG");</span>
-  const isStateEnabled = <span class="cstat-no" title="statement not covered" >useFeatureFlag("STATE_HOMEPAGE_FLAG");</span>
+export const WelcomeWrapper = () =&gt; {
+  const { data: user } = useGetUser();
+  const isCMSEnabled = useFeatureFlag("CMS_HOMEPAGE_FLAG");
+  const isStateEnabled = useFeatureFlag("STATE_HOMEPAGE_FLAG");
 &nbsp;
-<span class="cstat-no" title="statement not covered" >  if (user) {</span>
+  <span class="missing-if-branch" title="else path not taken" >E</span>if (user) {
     // Check if the user exists and has a CMS role, cms feature flag
-<span class="cstat-no" title="statement not covered" >    if (isCmsUser(user.user) &amp;&amp; isCMSEnabled) {</span>
+    if (isCmsUser(user.user) &amp;&amp; isCMSEnabled) {
       return &lt;F.CMSWelcome /&gt;;
     }
 &nbsp;
     // Check if the user exists and has a State role, state feature flag
-<span class="cstat-no" title="statement not covered" >    if (isStateUser(user.user) &amp;&amp; isStateEnabled) {</span>
+    if (isStateUser(user.user) &amp;&amp; isStateEnabled) {
       return &lt;F.StateWelcome /&gt;;
     }
   }
@@ -148,7 +148,7 @@ export const WelcomeWrapper = <span class="cstat-no" title="statement not covere
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2026-02-19T02:20:04.000Z
+                at 2026-02-20T02:20:53.292Z
             </div>
         <script src="../../../../prettify.js"></script>
         <script>

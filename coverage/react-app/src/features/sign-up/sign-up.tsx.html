@@ -23,30 +23,30 @@
         <div class='clearfix'>
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">0% </span>
+                <span class="strong">100% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>0/8</span>
+                <span class='fraction'>8/8</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">0% </span>
+                <span class="strong">100% </span>
                 <span class="quiet">Branches</span>
-                <span class='fraction'>0/2</span>
+                <span class='fraction'>2/2</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">0% </span>
+                <span class="strong">100% </span>
                 <span class="quiet">Functions</span>
-                <span class='fraction'>0/3</span>
+                <span class='fraction'>3/3</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">0% </span>
+                <span class="strong">100% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>0/7</span>
+                <span class='fraction'>7/7</span>
             </div>
         
             
@@ -61,7 +61,7 @@
             </div>
         </template>
     </div>
-    <div class='status-line low'></div>
+    <div class='status-line high'></div>
     <pre><table class="coverage">
 <tr><td class="line-count quiet"><a name='L1'></a><a href='#L1'>1</a>
 <a name='L2'></a><a href='#L2'>2</a>
@@ -157,19 +157,16 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -197,8 +194,11 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">6x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -235,16 +235,16 @@ type RoleOptions = {
   link: string;
 };
 &nbsp;
-export const SignUp = <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >() =&gt; {</span></span>
-  const { data: userDetails } = <span class="cstat-no" title="statement not covered" >useGetUserDetails();</span>
-  const isNewUserRoleDisplay = <span class="cstat-no" title="statement not covered" >useFeatureFlag("SHOW_USER_ROLE_UPDATE");</span>
+export const SignUp = () =&gt; {
+  const { data: userDetails } = useGetUserDetails();
+  const isNewUserRoleDisplay = useFeatureFlag("SHOW_USER_ROLE_UPDATE");
   if (!userDetails) return &lt;LoadingSpinner /&gt;;
 &nbsp;
-  const role = <span class="cstat-no" title="statement not covered" >userDetails.role;</span>
+  const role = userDetails.role;
   if (role &amp;&amp; isNewUserRoleDisplay) return &lt;Navigate to="/profile" /&gt;;
 &nbsp;
   // helpdesk, system admins, and cms reviewer users don't even see request role as an option
-  const roleOptions = <span class="cstat-no" title="statement not covered" >[</span>
+  const roleOptions = [
     {
       key: "statesubmitter",
       title: "State Submitter",
@@ -275,8 +275,8 @@ export const SignUp = <span class="cstat-no" title="statement not covered" ><spa
     },
   ] satisfies RoleOptions[];
 &nbsp;
-  const displayRoleOptions = <span class="cstat-no" title="statement not covered" >roleOptions.filter(<span class="fstat-no" title="function not covered" >(r</span>oleOption) =&gt; {</span>
-<span class="cstat-no" title="statement not covered" >    return roleOption.rolesWhoCanView.find(<span class="fstat-no" title="function not covered" >(v</span>alidRole) =&gt; <span class="cstat-no" title="statement not covered" >validRole === role);</span></span>
+  const displayRoleOptions = roleOptions.filter((roleOption) =&gt; {
+    return roleOption.rolesWhoCanView.find((validRole) =&gt; validRole === role);
   });
 &nbsp;
   return (
@@ -304,7 +304,7 @@ export const SignUp = <span class="cstat-no" title="statement not covered" ><spa
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2026-02-19T02:20:04.000Z
+                at 2026-02-20T02:20:53.292Z
             </div>
         <script src="../../../../prettify.js"></script>
         <script>

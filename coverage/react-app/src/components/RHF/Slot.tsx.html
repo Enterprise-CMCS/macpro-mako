@@ -23,30 +23,30 @@
         <div class='clearfix'>
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">0% </span>
+                <span class="strong">100% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>0/5</span>
+                <span class='fraction'>5/5</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">0% </span>
+                <span class="strong">91.66% </span>
                 <span class="quiet">Branches</span>
-                <span class='fraction'>0/12</span>
+                <span class='fraction'>11/12</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">0% </span>
+                <span class="strong">100% </span>
                 <span class="quiet">Functions</span>
-                <span class='fraction'>0/4</span>
+                <span class='fraction'>4/4</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">0% </span>
+                <span class="strong">100% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>0/5</span>
+                <span class='fraction'>5/5</span>
             </div>
         
             
@@ -61,7 +61,7 @@
             </div>
         </template>
     </div>
-    <div class='status-line low'></div>
+    <div class='status-line high'></div>
     <pre><table class="coverage">
 <tr><td class="line-count quiet"><a name='L1'></a><a href='#L1'>1</a>
 <a name='L2'></a><a href='#L2'>2</a>
@@ -143,7 +143,7 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">105x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -161,11 +161,11 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">203x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">180x</span>
+<span class="cline-any cline-yes">41x</span>
+<span class="cline-any cline-yes">41x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -213,7 +213,7 @@ import { FormControl, FormDescription, FormItem, FormLabel, FormMessage } from "
 import { RHFTextDisplay } from ".";
 import { SlotField } from "./SlotField";
 &nbsp;
-export const RHFSlot = <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >&lt;</span></span>
+export const RHFSlot = &lt;
   TFieldValues extends FieldValues = FieldValues,
   TName extends FieldPath&lt;TFieldValues&gt; = FieldPath&lt;TFieldValues&gt;,
 &gt;({
@@ -231,18 +231,18 @@ export const RHFSlot = <span class="cstat-no" title="statement not covered" ><sp
   TFieldValues,
   TName
 &gt;["render"] =&gt;
-<span class="cstat-no" title="statement not covered" >  function <span class="fstat-no" title="function not covered" >SlotFormWrapper({</span> field }) {</span>
+  function SlotFormWrapper({ field }) {
     // added to unregister/reset inputs when removed from dom
-<span class="cstat-no" title="statement not covered" >    useEffect(<span class="fstat-no" title="function not covered" >() =&gt; {</span></span>
-<span class="cstat-no" title="statement not covered" >      return <span class="fstat-no" title="function not covered" >() =&gt; {</span></span>
-<span class="cstat-no" title="statement not covered" >        control.unregister(field.name);</span>
+    useEffect(() =&gt; {
+      return () =&gt; {
+        control.unregister(field.name);
       };
     }, []); // eslint-disable-line react-hooks/exhaustive-deps
 &nbsp;
     return (
       &lt;FormItem
         className={cn(`flex ${formItemClassName ? ` ${formItemClassName}` : ""}
-        ${horizontalLayout ? "" : " flex-col gap-4"}
+        ${horizontalLayout ? <span class="branch-0 cbranch-no" title="branch not covered" >"" : "</span> flex-col gap-4"}
         `)}
         data-testid={rest.name + "Wrapper"}
       &gt;
@@ -280,7 +280,7 @@ export const RHFSlot = <span class="cstat-no" title="statement not covered" ><sp
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2026-02-19T02:20:04.000Z
+                at 2026-02-20T02:20:53.292Z
             </div>
         <script src="../../../../prettify.js"></script>
         <script>

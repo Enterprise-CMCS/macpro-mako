@@ -23,30 +23,30 @@
         <div class='clearfix'>
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">0% </span>
+                <span class="strong">100% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>0/2</span>
+                <span class='fraction'>2/2</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">0% </span>
+                <span class="strong">30% </span>
                 <span class="quiet">Branches</span>
-                <span class='fraction'>0/10</span>
+                <span class='fraction'>3/10</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">0% </span>
+                <span class="strong">100% </span>
                 <span class="quiet">Functions</span>
-                <span class='fraction'>0/1</span>
+                <span class='fraction'>1/1</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">0% </span>
+                <span class="strong">100% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>0/2</span>
+                <span class='fraction'>2/2</span>
             </div>
         
             
@@ -61,7 +61,7 @@
             </div>
         </template>
     </div>
-    <div class='status-line low'></div>
+    <div class='status-line high'></div>
     <pre><table class="coverage">
 <tr><td class="line-count quiet"><a name='L1'></a><a href='#L1'>1</a>
 <a name='L2'></a><a href='#L2'>2</a>
@@ -106,7 +106,7 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">105x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -136,7 +136,7 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">105x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">import * as React from "react";
@@ -144,11 +144,11 @@ import { InputProps } from "shared-types";
 &nbsp;
 import { cn } from "@/utils";
 &nbsp;
-const Input = <span class="cstat-no" title="statement not covered" >React.forwardRef&lt;HTMLInputElement, InputProps&gt;(</span>
-<span class="fstat-no" title="function not covered" >  ({</span> className, icon, iconRight, ...props }, ref) =&gt; {
+const Input = React.forwardRef&lt;HTMLInputElement, InputProps&gt;(
+  ({ className, icon, iconRight, ...props }, ref) =&gt; {
     return (
-      &lt;div className={cn("relative", icon &amp;&amp; !className?.includes("w-full") &amp;&amp; "w-fit")}&gt;
-        {<span class="branch-0 cbranch-no" title="branch not covered" >icon &amp;&amp; (</span>
+      &lt;div className={cn("relative", icon &amp;&amp; <span class="branch-1 cbranch-no" title="branch not covered" >!className?.includes("w-full") &amp;&amp; <span class="branch-2 cbranch-no" title="branch not covered" >"</span>w-fit")}&gt;</span>
+        {icon &amp;&amp; (
           &lt;span
             className={`absolute inset-y-0 border-[#212121] border flex items-center px-3 bg-[#f0f0f0] ${
               iconRight
@@ -163,7 +163,7 @@ const Input = <span class="cstat-no" title="statement not covered" >React.forwar
           className={cn(
             "flex h-9 w-full rounded-sm border border-[#212121] bg-transparent px-3 py-1 text-sm shadow-sm transition-colors file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:cursor-not-allowed disabled:opacity-50",
             className,
-            icon &amp;&amp; (iconRight ? "pr-10" : "pl-10"),
+            icon &amp;&amp; (<span class="branch-1 cbranch-no" title="branch not covered" >iconRight ? "pr-10" : "pl-10"</span>),
           )}
           ref={ref}
           id={props.name}
@@ -174,7 +174,7 @@ const Input = <span class="cstat-no" title="statement not covered" >React.forwar
   },
 );
 &nbsp;
-<span class="cstat-no" title="statement not covered" >Input.displayName = "Input";</span>
+Input.displayName = "Input";
 &nbsp;
 export { Input };
 &nbsp;</pre></td></tr></table></pre>
@@ -184,7 +184,7 @@ export { Input };
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2026-02-19T02:20:04.000Z
+                at 2026-02-20T02:20:53.292Z
             </div>
         <script src="../../../../prettify.js"></script>
         <script>

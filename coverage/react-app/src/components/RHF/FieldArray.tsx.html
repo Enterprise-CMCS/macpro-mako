@@ -23,30 +23,30 @@
         <div class='clearfix'>
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">0% </span>
+                <span class="strong">100% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>0/12</span>
+                <span class='fraction'>12/12</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">0% </span>
+                <span class="strong">87.5% </span>
                 <span class="quiet">Branches</span>
-                <span class='fraction'>0/16</span>
+                <span class='fraction'>14/16</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">0% </span>
+                <span class="strong">100% </span>
                 <span class="quiet">Functions</span>
-                <span class='fraction'>0/7</span>
+                <span class='fraction'>7/7</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">0% </span>
+                <span class="strong">100% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>0/12</span>
+                <span class='fraction'>12/12</span>
             </div>
         
             
@@ -61,7 +61,7 @@
             </div>
         </template>
     </div>
-    <div class='status-line low'></div>
+    <div class='status-line high'></div>
     <pre><table class="coverage">
 <tr><td class="line-count quiet"><a name='L1'></a><a href='#L1'>1</a>
 <a name='L2'></a><a href='#L2'>2</a>
@@ -160,33 +160,27 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">105x</span>
+<span class="cline-any cline-yes">33x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">33x</span>
+<span class="cline-any cline-yes">3x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">33x</span>
+<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">33x</span>
+<span class="cline-any cline-yes">6x</span>
+<span class="cline-any cline-yes">6x</span>
+<span class="cline-any cline-yes">6x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -197,7 +191,13 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -207,7 +207,7 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -246,36 +246,36 @@ import { Button } from "../Inputs";
 import { Field } from "./Field";
 import { slotInitializer } from "./utils";
 &nbsp;
-export const RHFFieldArray = <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >&lt;TFields extends FieldValues&gt;(p</span>rops: FieldArrayProps&lt;TFields&gt;) =&gt; {</span>
-  const fieldArr = <span class="cstat-no" title="statement not covered" >useFieldArray&lt;any&gt;({</span>
+export const RHFFieldArray = &lt;TFields extends FieldValues&gt;(props: FieldArrayProps&lt;TFields&gt;) =&gt; {
+  const fieldArr = useFieldArray&lt;any&gt;({
     control: props.control,
     name: props.name,
     shouldUnregister: true,
   });
 &nbsp;
-  const onAppend = <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >() =&gt; {</span></span>
-<span class="cstat-no" title="statement not covered" >    fieldArr.append(props.fields.reduce(slotInitializer(), {}) as never);</span>
+  const onAppend = () =&gt; {
+    fieldArr.append(props.fields.reduce(slotInitializer(), {}) as never);
   };
 &nbsp;
   // initialize array if necessary
-<span class="cstat-no" title="statement not covered" >  if (fieldArr.fields.length == 0) {</span>
-<span class="cstat-no" title="statement not covered" >    onAppend();</span>
+  if (fieldArr.fields.length == 0) {
+    onAppend();
   }
 &nbsp;
   // on-load or if the element id changes, scroll this element into view
-<span class="cstat-no" title="statement not covered" >  useLayoutEffect(<span class="fstat-no" title="function not covered" >() =&gt; {</span></span>
-    const element = <span class="cstat-no" title="statement not covered" >document.getElementById(props.name);</span>
-<span class="cstat-no" title="statement not covered" >    if (element) {</span>
-<span class="cstat-no" title="statement not covered" >      element.scrollIntoView({ behavior: "smooth", block: "center", inline: "nearest" });</span>
+  useLayoutEffect(() =&gt; {
+    const element = document.getElementById(props.name);
+    <span class="missing-if-branch" title="else path not taken" >E</span>if (element) {
+      element.scrollIntoView({ behavior: "smooth", block: "center", inline: "nearest" });
     }
   }, [props.name]);
 &nbsp;
   return (
     &lt;div className={"flex flex-col gap-6 w-full"} id={props.name}&gt;
-      {fieldArr.fields.map(<span class="fstat-no" title="function not covered" >(F</span>LD, index) =&gt; {
+      {fieldArr.fields.map((FLD, index) =&gt; {
         return (
           &lt;div className={cn("flex flex-row gap-6", props.fieldArrayClassName)} key={FLD.id}&gt;
-            {props.fields.map(<span class="fstat-no" title="function not covered" >(S</span>LOT, i) =&gt; {
+            {props.fields.map((SLOT, i) =&gt; {
               return &lt;Field key={`${SLOT.name}-${i}`} {...props} index={index} SLOT={SLOT} /&gt;;
             })}
             {/* FieldArray Removal */}
@@ -283,7 +283,7 @@ export const RHFFieldArray = <span class="cstat-no" title="statement not covered
               &lt;Trash2
                 className="self-end mb-2 cursor-pointer stroke-primary"
                 data-testid={`removeRowButton-${index}`}
-                onClick={<span class="fstat-no" title="function not covered" >() =&gt; <span class="cstat-no" title="statement not covered" >f</span>ieldArr.remove(index)}</span>
+                onClick={() =&gt; fieldArr.remove(index)}
               /&gt;
             )}
             {/* FieldGroup Removal */}
@@ -292,18 +292,18 @@ export const RHFFieldArray = <span class="cstat-no" title="statement not covered
                 className="self-end m-2 mr-0"
                 variant={"destructive"}
                 data-testid={`removeGroupButton-${index}`}
-                onClick={<span class="fstat-no" title="function not covered" >() =&gt; {</span>
-<span class="cstat-no" title="statement not covered" >                  fieldArr.remove(index);</span>
+                onClick={() =&gt; {
+                  fieldArr.remove(index);
                 }}
               &gt;
-                {props.removeText ?? "Remove Group"}
+                {props.removeText ?? <span class="branch-1 cbranch-no" title="branch not covered" >"Remove Group"}</span>
               &lt;/Button&gt;
             )}
-            {<span class="branch-0 cbranch-no" title="branch not covered" >props.divider </span>&amp;&amp; &lt;div className="w-full border-slate-300 border-b-[1px]" /&gt;}
+            {props.divider &amp;&amp; &lt;div className="w-full border-slate-300 border-b-[1px]" /&gt;}
           &lt;/div&gt;
         );
       })}
-      {<span class="branch-0 cbranch-no" title="branch not covered" >props.lastDivider </span>&amp;&amp; (
+      {props.lastDivider &amp;&amp; (
         &lt;div className={cn("w-full border-slate-300 border-b-[1px]", props.lastDivider)} /&gt;
       )}
       &lt;div className={cn("flex items-center", props.appendClassName)}&gt;
@@ -328,7 +328,7 @@ export const RHFFieldArray = <span class="cstat-no" title="statement not covered
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2026-02-19T02:20:04.000Z
+                at 2026-02-20T02:20:53.292Z
             </div>
         <script src="../../../../prettify.js"></script>
         <script>
