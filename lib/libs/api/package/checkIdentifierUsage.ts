@@ -16,17 +16,18 @@ export interface IdentifierCheckResult {
 export async function checkIdentifierUsage(identifier: string): Promise<IdentifierCheckResult> {
   try {
     const { domain, index } = getDomainAndNamespace("main");
+    const normalizedIdentifier = identifier.trim();
 
-    // Use case-insensitive match query to find the identifier
+    // Use an exact keyword lookup with case-insensitive matching.
     const query = {
       size: 1,
       query: {
         bool: {
           must: [
             {
-              match: {
-                id: {
-                  query: identifier,
+              term: {
+                "id.keyword": {
+                  value: normalizedIdentifier,
                   case_insensitive: true,
                 },
               },

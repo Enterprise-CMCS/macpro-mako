@@ -45,9 +45,9 @@ describe("checkIdentifierUsage", () => {
           bool: {
             must: [
               {
-                match: {
-                  id: {
-                    query: NOT_FOUND_ITEM_ID,
+                term: {
+                  "id.keyword": {
+                    value: NOT_FOUND_ITEM_ID,
                     case_insensitive: true,
                   },
                 },
@@ -130,9 +130,9 @@ describe("checkIdentifierUsage", () => {
           bool: {
             must: [
               {
-                match: {
-                  id: {
-                    query: lowerCaseId,
+                term: {
+                  "id.keyword": {
+                    value: lowerCaseId,
                     case_insensitive: true,
                   },
                 },
@@ -156,9 +156,42 @@ describe("checkIdentifierUsage", () => {
           bool: {
             must: [
               {
-                match: {
-                  id: {
-                    query: upperCaseId,
+                term: {
+                  "id.keyword": {
+                    value: upperCaseId,
+                    case_insensitive: true,
+                  },
+                },
+              },
+            ],
+            must_not: expect.any(Array),
+          },
+        },
+      }),
+    );
+  });
+
+  it("should trim leading and trailing whitespace before lookup", async () => {
+    vi.mocked(opensearchLib.search).mockResolvedValue({
+      hits: {
+        hits: [items[TEST_ITEM_ID]],
+        total: { value: 1, relation: "eq" },
+      },
+    });
+
+    await checkIdentifierUsage(`  ${TEST_ITEM_ID}  `);
+
+    expect(opensearchLib.search).toHaveBeenCalledWith(
+      expect.any(String),
+      expect.any(String),
+      expect.objectContaining({
+        query: {
+          bool: {
+            must: [
+              {
+                term: {
+                  "id.keyword": {
+                    value: TEST_ITEM_ID,
                     case_insensitive: true,
                   },
                 },
