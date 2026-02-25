@@ -27,7 +27,7 @@ export const AmendmentForm = ({ waiverId }: AmendmentFormProps) => {
       schema={formSchemas["capitated-amendment"]}
       title="1915(b) Comprehensive (Capitated) Waiver Amendment Details"
       breadcrumbText="1915(b) Comprehensive (Capitated) Waiver Amendment"
-      fields={({ control }) => (
+      fields={({ control, isDraftMode }) => (
         <>
           <div className="flex flex-col">
             <FormLabel className="font-semibold" htmlFor="1975b">
@@ -95,6 +95,7 @@ export const AmendmentForm = ({ waiverId }: AmendmentFormProps) => {
                   <Input
                     ref={field.ref}
                     value={field.value}
+                    disabled={isDraftMode}
                     onChange={(e) => field.onChange(e.currentTarget.value.toUpperCase())}
                   />
                 </FormControl>

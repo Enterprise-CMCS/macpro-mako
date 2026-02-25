@@ -62,6 +62,10 @@ export type FormArg<Schema extends SchemaWithEnforcableProps> = UseFormReturn<
   z.infer<InferUntransformedSchema<Schema>>
 >;
 
+export type ActionFormFieldsArg<Schema extends SchemaWithEnforcableProps> = FormArg<Schema> & {
+  isDraftMode: boolean;
+};
+
 type DraftOptions = {
   enabled: boolean;
   event: string;
@@ -73,7 +77,7 @@ type ActionFormProps<Schema extends SchemaWithEnforcableProps> = {
   schema: Schema;
   defaultValues?: DefaultValues<z.infer<InferUntransformedSchema<Schema>>>;
   title: string;
-  fields: (form: FormArg<Schema>) => ReactNode;
+  fields: (form: ActionFormFieldsArg<Schema>) => ReactNode;
   submitButtonLabel?: string;
   bannerPostSubmission?: Omit<Banner, "pathnameToDisplayOn">;
   promptPreSubmission?: Omit<UserPrompt, "onAccept">;
@@ -481,7 +485,7 @@ export const ActionForm = <Schema extends SchemaWithEnforcableProps>({
                 {formDescription}
               </ActionFormDescription>
             </div>
-            <Fields {...form} />
+            <Fields {...form} isDraftMode={isDraftMode} />
           </SectionCard>
           {attachmentsFromSchema.length > 0 && (
             <ActionFormAttachments

@@ -16,8 +16,8 @@ import { Action, opensearch, SEATOOL_STATUS } from "shared-types";
 import { beforeEach, describe, expect, it, vi } from "vitest";
 
 import { mapActionLabel } from "@/utils";
-import { renderFormWithPackageSectionAsync } from "@/utils/test-helpers/renderForm";
 import { DRAFT_CONTINUE_ACTION_LABEL, DRAFT_DELETE_ACTION_LABEL } from "@/utils/drafts";
+import { renderFormWithPackageSectionAsync } from "@/utils/test-helpers/renderForm";
 
 import { DetailCardWrapper } from "../../index";
 import { PackageActionsCard } from "./index";

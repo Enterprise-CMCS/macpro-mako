@@ -6,8 +6,8 @@ import { getRequestContext } from "mocks";
 import { APIGatewayEvent, SEATOOL_STATUS } from "shared-types";
 import { beforeEach, describe, expect, it, vi } from "vitest";
 
-import * as userService from "./user-management/userManagementService";
 import { handler } from "./saveDraft";
+import * as userService from "./user-management/userManagementService";
 
 const DRAFT_ID = "MD-25-2525-SAVE";
 

@@ -12,8 +12,8 @@ import { Action, CognitoUserAttributes, opensearch, SEATOOL_STATUS } from "share
 import { UserRole } from "shared-types/events/legacy-user";
 import { describe, expect, it, vi } from "vitest";
 
-import { renderWithMemoryRouter } from "@/utils/test-helpers";
 import { DRAFT_CONTINUE_ACTION_LABEL, DRAFT_DELETE_ACTION_LABEL } from "@/utils/drafts";
+import { renderWithMemoryRouter } from "@/utils/test-helpers";
 
 import { CellDetailsLink, renderCellActions, renderCellDate } from "./index";
 vi.mock("@/utils/ReactGA/SendGAEvent", () => ({

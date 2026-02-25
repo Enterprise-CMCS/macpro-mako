@@ -22,7 +22,7 @@ export const ChipForm = () => (
     title="CHIP SPA Details"
     schema={formSchemas["new-chip-submission"]}
     breadcrumbText="Submit new CHIP SPA"
-    fields={({ control }) => (
+    fields={({ control, isDraftMode }) => (
       <>
         <FormField
           control={control}
@@ -49,6 +49,7 @@ export const ChipForm = () => (
                   className="max-w-sm"
                   ref={field.ref}
                   value={field.value}
+                  disabled={isDraftMode}
                   aria-describedby="spa-id-formatting-desc"
                   onChange={(e) => field.onChange(e.currentTarget.value.toUpperCase())}
                 />
