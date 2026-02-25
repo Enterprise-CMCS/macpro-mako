@@ -1,7 +1,7 @@
 import { Context } from "aws-lambda";
-import { getRequestContext, setDefaultStateSubmitter, setMockUsername, testReviewer } from "mocks";
-import * as os from "libs/opensearch-lib";
 import * as packageApi from "libs/api/package";
+import * as os from "libs/opensearch-lib";
+import { getRequestContext, setDefaultStateSubmitter, setMockUsername, testReviewer } from "mocks";
 import { APIGatewayEvent, SEATOOL_STATUS } from "shared-types";
 import { beforeEach, describe, expect, it, vi } from "vitest";
 
