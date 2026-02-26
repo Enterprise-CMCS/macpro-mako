@@ -136,6 +136,11 @@ export const handler = authenticatedMiddy({
   const { stateStatus, cmsStatus } = getStatus(SEATOOL_STATUS.DRAFT);
   const draftEventName = eventName as DraftableEvent;
   const resolvedAuthority = resolveAuthority(draftEventName, authority, draftData);
+  const existingOriginalCreatorEmail =
+    existingPackage?._source?.draft?.originalCreatorEmail ??
+    existingPackage?._source?.submitterEmail;
+  const existingOriginalCreatorName =
+    existingPackage?._source?.draft?.originalCreatorName ?? existingPackage?._source?.submitterName;
 
   const record = {
     id: normalizedId,
@@ -157,6 +162,8 @@ export const handler = authenticatedMiddy({
     event: draftEventName,
     draft: {
       savedAt,
+      originalCreatorEmail: existingOriginalCreatorEmail ?? user.email,
+      originalCreatorName: existingOriginalCreatorName ?? user.fullName,
       data: draftData,
     },
   };

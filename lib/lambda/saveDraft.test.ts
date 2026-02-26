@@ -55,6 +55,10 @@ describe("saveDraft handler", () => {
           doc: expect.objectContaining({
             deleted: false,
             seatoolStatus: SEATOOL_STATUS.DRAFT,
+            draft: expect.objectContaining({
+              originalCreatorEmail: "state.user@example.com",
+              originalCreatorName: "State User",
+            }),
           }),
         }),
       }),
@@ -83,6 +87,54 @@ describe("saveDraft handler", () => {
           doc: expect.objectContaining({
             deleted: false,
             seatoolStatus: SEATOOL_STATUS.DRAFT,
+          }),
+        }),
+      }),
+    );
+  });
+
+  it("preserves the original draft creator when a different user saves the draft", async () => {
+    vi.spyOn(authApi, "lookupUserAttributes").mockResolvedValue({
+      email: "another.user@example.com",
+    } as any);
+    vi.spyOn(userService, "getUserByEmail").mockResolvedValue({
+      email: "another.user@example.com",
+      fullName: "Another User",
+    } as any);
+
+    vi.spyOn(packageApi, "getPackage").mockResolvedValue({
+      found: true,
+      _id: DRAFT_ID,
+      _source: {
+        id: DRAFT_ID,
+        seatoolStatus: SEATOOL_STATUS.DRAFT,
+        deleted: false,
+        submitterEmail: "state.user@example.com",
+        submitterName: "State User",
+        draft: {
+          savedAt: "2026-01-01T00:00:00.000Z",
+          originalCreatorEmail: "state.user@example.com",
+          originalCreatorName: "State User",
+          data: { id: DRAFT_ID },
+        },
+      },
+    } as any);
+
+    const res = await handler(baseEvent, {} as Context);
+
+    expect(res.statusCode).toBe(200);
+    expect(os.updateData).toHaveBeenCalledWith(
+      expect.any(String),
+      expect.objectContaining({
+        id: DRAFT_ID,
+        body: expect.objectContaining({
+          doc: expect.objectContaining({
+            submitterEmail: "another.user@example.com",
+            submitterName: "Another User",
+            draft: expect.objectContaining({
+              originalCreatorEmail: "state.user@example.com",
+              originalCreatorName: "State User",
+            }),
           }),
         }),
       }),

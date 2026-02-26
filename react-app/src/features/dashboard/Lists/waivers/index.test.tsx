@@ -1,6 +1,5 @@
 import { cleanup, screen, waitForElementToBeRemoved, within } from "@testing-library/react";
 import userEvent, { UserEvent } from "@testing-library/user-event";
-import { ExportToCsv } from "export-to-csv";
 import {
   DEFAULT_CMS_USER,
   HELP_DESK_USER,
@@ -13,6 +12,7 @@ import { formatActionType } from "shared-utils";
 import { afterAll, afterEach, beforeAll, beforeEach, describe, expect, it, vi } from "vitest";
 
 import * as api from "@/api";
+import * as exportUtils from "@/components/Opensearch/main/Filtering/Export/export.utils";
 import { BLANK_VALUE } from "@/consts";
 import {
   APPROVED_ITEM,
@@ -436,15 +436,23 @@ describe("WaiversList", () => {
     });
 
     it("should handle export", async () => {
-      const spy = vi.spyOn(ExportToCsv.prototype, "generateCsv").mockImplementation(() => {});
+      const csvSpy = vi.spyOn(exportUtils, "exportCsvRows").mockImplementation(() => {});
+      const excelSpy = vi.spyOn(exportUtils, "exportStyledExcelRows").mockResolvedValue(undefined);
 
       await user.keyboard("{Escape}"); // ⚠️ close columns menu after testing
 
       await user.click(screen.queryByTestId("export-csv-btn"));
 
       const expectedData = getExpectedExportData(useCmsStatus);
-      console.log("what is expected data: ", expectedData);
-      expect(spy).toHaveBeenCalledWith(expectedData);
+      if (oneMacUser.role === "statesubmitter") {
+        expect(csvSpy).not.toHaveBeenCalled();
+        expect(excelSpy).toHaveBeenCalled();
+        const rowsArg = excelSpy.mock.calls[0]?.[1] ?? [];
+        expect(rowsArg.length).toEqual(expectedData.length);
+      } else {
+        expect(excelSpy).not.toHaveBeenCalled();
+        expect(csvSpy).toHaveBeenCalledWith(expectedData);
+      }
     });
   });
 });

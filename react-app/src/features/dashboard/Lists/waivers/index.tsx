@@ -1,6 +1,6 @@
 import { useMemo } from "react";
 import { CMS_READ_ONLY_ROLES, SEATOOL_STATUS, UserRoles } from "shared-types";
-import { formatActionType, formatDateToET, formatDateToUTC } from "shared-utils";
+import { formatActionType, formatDateToET, formatDateToUTC, isStateUser } from "shared-utils";
 
 import { OneMacUser } from "@/api";
 import { OsMainView, OsTableColumn } from "@/components";
@@ -158,6 +158,7 @@ const getColumns = ({ isCms, user }: OneMacUser): OsTableColumn[] => {
 
 export const WaiversList = ({ oneMacUser }: { oneMacUser: OneMacUser }) => {
   const columns = useMemo(() => getColumns(oneMacUser), [oneMacUser]);
+  const useStyledExcelExport = isStateUser(oneMacUser.user);
 
-  return <OsMainView columns={columns} />;
+  return <OsMainView columns={columns} useStyledExcelExport={useStyledExcelExport} />;
 };
