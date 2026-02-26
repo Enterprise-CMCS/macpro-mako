@@ -7,7 +7,7 @@ const itemExistsEventSchema = z
   .object({
     body: z
       .object({
-        id: z.string(),
+        id: z.string().trim().min(1),
         includeDrafts: z.boolean().optional(),
       })
       .strict(),

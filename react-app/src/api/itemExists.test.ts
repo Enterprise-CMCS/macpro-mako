@@ -1,3 +1,4 @@
+import { API } from "aws-amplify";
 import {
   errorApiItemExistsHandler,
   NOT_EXISTING_ITEM_ID,
@@ -17,6 +18,15 @@ vi.mock("@/utils/ReactGA/SendGAEvent", () => {
 });
 
 describe("itemExists test", () => {
+  it("should return false without making a request when id is blank", async () => {
+    const postSpy = vi.spyOn(API, "post");
+
+    const found = await itemExists("   ");
+    expect(found).toBeFalsy();
+    expect(postSpy).not.toHaveBeenCalled();
+    postSpy.mockRestore();
+  });
+
   it("should return true if the item exists", async () => {
     const found = await itemExists(TEST_ITEM_ID);
     expect(found).toBeTruthy();

@@ -52,6 +52,21 @@ describe("Handler for checking if record exists", () => {
     );
   });
 
+  it("should return 400 if the item id is blank", async () => {
+    const event = {
+      body: JSON.stringify({ id: "   " }),
+      requestContext: getRequestContext(),
+    } as APIGatewayEvent;
+
+    const res = await handler(event, {} as Context);
+
+    expect(res).toBeTruthy();
+    expect(res.statusCode).toEqual(400);
+    expect(JSON.parse(res.body)).toEqual(
+      expect.objectContaining({ message: "Event failed validation" }),
+    );
+  });
+
   it("should return 401 if not authenticated", async () => {
     setMockUsername(null);
     const event = {

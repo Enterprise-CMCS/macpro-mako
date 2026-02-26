@@ -10,6 +10,11 @@ type ItemExistsOptions = {
 
 export const itemExists = async (id: string, options: ItemExistsOptions = {}): Promise<boolean> => {
   try {
+    const normalizedId = id?.trim().toUpperCase();
+    if (!normalizedId) {
+      return false;
+    }
+
     const draftIdFromUrl =
       typeof window !== "undefined"
         ? (new URLSearchParams(window.location.search).get("draftId") ?? undefined)
@@ -18,13 +23,13 @@ export const itemExists = async (id: string, options: ItemExistsOptions = {}): P
     const includeDrafts = options.includeDrafts ?? false;
 
     const response = await API.post("os", "/itemExists", {
-      body: { id, includeDrafts },
+      body: { id: normalizedId, includeDrafts },
     });
 
     if (
       includeDrafts &&
       allowDraftId &&
-      allowDraftId.toUpperCase() === id.toUpperCase() &&
+      allowDraftId.toUpperCase() === normalizedId &&
       response?.status === SEATOOL_STATUS.DRAFT
     ) {
       return false;
