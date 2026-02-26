@@ -1,4 +1,4 @@
-import { screen } from "@testing-library/react";
+import { screen, waitFor } from "@testing-library/react";
 import {
   EXISTING_ITEM_ID,
   onceApiPackageActionsHandler,
@@ -16,11 +16,48 @@ import { Action, opensearch, SEATOOL_STATUS } from "shared-types";
 import { beforeEach, describe, expect, it, vi } from "vitest";
 
 import { mapActionLabel } from "@/utils";
-import { DRAFT_CONTINUE_ACTION_LABEL, DRAFT_DELETE_ACTION_LABEL } from "@/utils/drafts";
+import {
+  DRAFT_CONTINUE_ACTION_LABEL,
+  DRAFT_DELETE_ACTION_LABEL,
+  DRAFT_DELETE_MODAL_BODY,
+  DRAFT_DELETE_MODAL_HEADER,
+} from "@/utils/drafts";
 import { renderFormWithPackageSectionAsync } from "@/utils/test-helpers/renderForm";
 
 import { DetailCardWrapper } from "../../index";
 import { PackageActionsCard } from "./index";
+
+const { mockNavigate } = vi.hoisted(() => ({
+  mockNavigate: vi.fn(),
+}));
+
+vi.mock("react-router", async () => {
+  const actual = await vi.importActual<typeof import("react-router")>("react-router");
+  return {
+    ...actual,
+    useNavigate: () => mockNavigate,
+  };
+});
+
+vi.mock("@/api", async () => {
+  const actual = await vi.importActual<typeof import("@/api")>("@/api");
+  return {
+    ...actual,
+    deleteDraft: vi.fn(),
+  };
+});
+
+vi.mock("@/components", async () => {
+  const actual = await vi.importActual<typeof import("@/components")>("@/components");
+  return {
+    ...actual,
+    banner: vi.fn(),
+    userPrompt: vi.fn(),
+  };
+});
+
+const { deleteDraft } = await import("@/api");
+const { banner, userPrompt } = await import("@/components");
 
 const setup = async (submission: opensearch.main.Document, id: string) => {
   await renderFormWithPackageSectionAsync(
@@ -34,6 +71,7 @@ const setup = async (submission: opensearch.main.Document, id: string) => {
 describe("", () => {
   beforeEach(() => {
     vi.clearAllMocks();
+    mockNavigate.mockReset();
     setDefaultStateSubmitter();
   });
 
@@ -48,16 +86,16 @@ describe("", () => {
   });
 
   describe("as a state submitter", () => {
-    it("should show continue and delete actions for drafts", async () => {
-      const submission = {
-        ...TEST_MED_SPA_ITEM._source,
-        seatoolStatus: SEATOOL_STATUS.DRAFT,
-        stateStatus: "Draft",
-        cmsStatus: "Draft",
-        event: "new-medicaid-submission",
-      };
+    const draftSubmission: opensearch.main.Document = {
+      ...TEST_MED_SPA_ITEM._source,
+      seatoolStatus: SEATOOL_STATUS.DRAFT,
+      stateStatus: "Draft",
+      cmsStatus: "Draft",
+      event: "new-medicaid-submission",
+    };
 
-      await setup(submission, TEST_MED_SPA_ITEM._id);
+    it("should show continue and delete actions for drafts", async () => {
+      await setup(draftSubmission, TEST_MED_SPA_ITEM._id);
 
       expect(
         await screen.findByRole("link", { name: DRAFT_CONTINUE_ACTION_LABEL }),
@@ -66,6 +104,60 @@ describe("", () => {
         `/new-submission/spa/medicaid/create?draftId=${TEST_MED_SPA_ITEM._id}&origin=spas`,
       );
       expect(screen.getByRole("button", { name: DRAFT_DELETE_ACTION_LABEL })).toBeInTheDocument();
+    });
+
+    it("should open a delete confirmation modal from package details", async () => {
+      await setup(draftSubmission, TEST_MED_SPA_ITEM._id);
+
+      screen.getByRole("button", { name: DRAFT_DELETE_ACTION_LABEL }).click();
+
+      expect(userPrompt).toHaveBeenCalledWith(
+        expect.objectContaining({
+          header: DRAFT_DELETE_MODAL_HEADER,
+          body: DRAFT_DELETE_MODAL_BODY,
+          acceptButtonText: "Delete",
+          cancelButtonText: "Cancel",
+          cancelVariant: "link",
+        }),
+      );
+    });
+
+    it("should keep users on package details when delete modal is canceled", async () => {
+      await setup(draftSubmission, TEST_MED_SPA_ITEM._id);
+
+      screen.getByRole("button", { name: DRAFT_DELETE_ACTION_LABEL }).click();
+
+      const promptData = vi.mocked(userPrompt).mock.calls.at(-1)?.[0];
+      expect(promptData).toBeDefined();
+
+      promptData?.onCancel?.();
+
+      expect(deleteDraft).not.toHaveBeenCalled();
+      expect(screen.getByText("Package Actions")).toBeInTheDocument();
+      expect(screen.queryByText("dashboard test")).not.toBeInTheDocument();
+    });
+
+    it("should delete and route users to dashboard from package details", async () => {
+      vi.mocked(deleteDraft).mockResolvedValueOnce(undefined);
+      await setup(draftSubmission, TEST_MED_SPA_ITEM._id);
+
+      screen.getByRole("button", { name: DRAFT_DELETE_ACTION_LABEL }).click();
+
+      const promptData = vi.mocked(userPrompt).mock.calls.at(-1)?.[0];
+      expect(promptData).toBeDefined();
+
+      await promptData?.onAccept?.();
+
+      await waitFor(() => {
+        expect(deleteDraft).toHaveBeenCalledWith(TEST_MED_SPA_ITEM._id);
+        expect(mockNavigate).toHaveBeenCalledWith("/dashboard?tab=spas", { replace: true });
+        expect(banner).toHaveBeenCalledWith(
+          expect.objectContaining({
+            header: "Draft deleted",
+            body: `Draft for ${TEST_MED_SPA_ITEM._id} has been deleted.`,
+          }),
+        );
+      });
     });
 
     it(`should return actions: [${Action.RESPOND_TO_RAI},${Action.WITHDRAW_PACKAGE}]`, async () => {

@@ -70,6 +70,9 @@ export const renderCellActions = (user: FullUser | null) => {
         acceptButtonText: "Delete",
         cancelButtonText: "Cancel",
         cancelVariant: "link",
+        onCancel: () => {
+          // Keep users on the dashboard when they dismiss the delete draft modal.
+        },
         onAccept: async () => {
           try {
             await deleteDraft(data.id);

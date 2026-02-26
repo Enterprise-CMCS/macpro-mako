@@ -1,6 +1,5 @@
 import { screen, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
-import { ExportToCsv } from "export-to-csv";
 import { getFilteredDocList } from "mocks";
 import { describe, expect, it, vi } from "vitest";
 
@@ -14,12 +13,19 @@ import {
   renderFilterDrawer,
 } from "@/utils/test-helpers";
 
+import * as exportUtils from "./export.utils";
+
 const columns: OsTableColumn[] = [...DEFAULT_COLUMNS, NO_TRANSFORM_COLUMN, HIDDEN_COLUMN];
 
-const setup = (disabled?: boolean, count: number = 123) => {
+const setup = (disabled?: boolean, count: number = 123, useStyledExcelExport = true) => {
   const user = userEvent.setup();
   const rendered = renderFilterDrawer(
-    <OsExportData columns={columns} disabled={disabled} count={count} />,
+    <OsExportData
+      columns={columns}
+      disabled={disabled}
+      count={count}
+      useStyledExcelExport={useStyledExcelExport}
+    />,
     getDashboardQueryString(),
   );
   return {
@@ -53,21 +59,37 @@ describe("Tooltip component within export button", () => {
   });
 
   it("should export on click if button is enabled", async () => {
-    const spy = vi.spyOn(ExportToCsv.prototype, "generateCsv").mockImplementation(() => {});
+    const csvSpy = vi.spyOn(exportUtils, "exportCsvRows").mockImplementation(() => {});
+    const excelSpy = vi.spyOn(exportUtils, "exportStyledExcelRows").mockResolvedValue(undefined);
     const gaSpy = vi.spyOn(ga, "sendGAEvent").mockImplementation(() => {});
 
-    const expected = getFilteredDocList(["CHIP SPA", "Medicaid SPA"]).map((doc) => ({
-      Authority: doc.authority,
-      "SPA ID": doc.id,
-      State: doc.state,
-    }));
+    const expected = getFilteredDocList(["CHIP SPA", "Medicaid SPA"]).map((doc) => [
+      doc.id,
+      doc.state,
+      doc.authority,
+    ]);
 
     const { user } = setup(false);
 
     await user.click(screen.queryByTestId("export-csv-btn"));
 
-    expect(spy).toHaveBeenCalledWith(expected);
+    expect(csvSpy).not.toHaveBeenCalled();
+    expect(excelSpy).toHaveBeenCalled();
+    const rowsArg = excelSpy.mock.calls[0]?.[1] ?? [];
+    expect(rowsArg.map((row) => row.values)).toEqual(expected);
     expect(gaSpy).toHaveBeenCalledWith("dash_export_csv", { row_count: 12 });
+  });
+
+  it("should export CSV when styled excel export is disabled", async () => {
+    const csvSpy = vi.spyOn(exportUtils, "exportCsvRows").mockImplementation(() => {});
+    const excelSpy = vi.spyOn(exportUtils, "exportStyledExcelRows").mockResolvedValue(undefined);
+
+    const { user } = setup(false, 123, false);
+
+    await user.click(screen.queryByTestId("export-csv-btn"));
+
+    expect(excelSpy).not.toHaveBeenCalled();
+    expect(csvSpy).toHaveBeenCalled();
   });
 
   it("should show modal when count is greater than 10000", async () => {
@@ -92,7 +114,7 @@ describe("Tooltip component within export button", () => {
   });
 
   it("should proceed with exporting when export button is clicked in the modal", async () => {
-    const spy = vi.spyOn(ExportToCsv.prototype, "generateCsv").mockImplementation(() => {});
+    const excelSpy = vi.spyOn(exportUtils, "exportStyledExcelRows").mockResolvedValue(undefined);
 
     const { user } = setup(false, 10001);
 
@@ -104,7 +126,7 @@ describe("Tooltip component within export button", () => {
 
     await user.click(exportButton);
 
-    await waitFor(() => expect(spy).toHaveBeenCalled());
+    await waitFor(() => expect(excelSpy).toHaveBeenCalled());
 
     expect(screen.queryByText("Export limit reached")).not.toBeInTheDocument();
   });

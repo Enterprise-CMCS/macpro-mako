@@ -1,6 +1,5 @@
 import { screen, within } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
-import { ExportToCsv } from "export-to-csv";
 import { getFilteredDocList } from "mocks";
 import { opensearch } from "shared-types";
 import { describe, expect, it, vi } from "vitest";
@@ -14,6 +13,8 @@ import {
   renderDashboard,
 } from "@/utils/test-helpers";
 
+import * as exportUtils from "./Export/export.utils";
+
 const defaultHits = getFilteredHits(["CHIP SPA", "Medicaid SPA"]);
 
 const setup = (
@@ -21,10 +22,16 @@ const setup = (
   onToggle: (field: string) => void,
   disabled?: boolean,
   hits: opensearch.Hits<opensearch.main.Document> = defaultHits,
+  useStyledExcelExport: boolean = true,
 ) => {
   const user = userEvent.setup();
   const rendered = renderDashboard(
-    <OsFiltering columns={columns} onToggle={onToggle} disabled={disabled} />,
+    <OsFiltering
+      columns={columns}
+      onToggle={onToggle}
+      disabled={disabled}
+      useStyledExcelExport={useStyledExcelExport}
+    />,
     {
       data: hits,
       error: null,
@@ -135,17 +142,21 @@ describe("Visibility button", () => {
   });
 
   it("should handle clicking the Export button", async () => {
-    const spy = vi.spyOn(ExportToCsv.prototype, "generateCsv").mockImplementation(() => {});
-    const expected = getFilteredDocList(["CHIP SPA", "Medicaid SPA"]).map((doc) => ({
-      Authority: doc.authority,
-      "SPA ID": doc.id,
-      State: doc.state,
-    }));
+    const csvSpy = vi.spyOn(exportUtils, "exportCsvRows").mockImplementation(() => {});
+    const excelSpy = vi.spyOn(exportUtils, "exportStyledExcelRows").mockResolvedValue(undefined);
+    const expected = getFilteredDocList(["CHIP SPA", "Medicaid SPA"]).map((doc) => [
+      doc.id,
+      doc.state,
+      doc.authority,
+    ]);
     const user = userEvent.setup();
     const onToggle = vi.fn();
     setup(DEFAULT_COLUMNS, onToggle, false);
 
     await user.click(screen.getByRole("button", { name: "Export" }));
-    expect(spy).toHaveBeenCalledWith(expected);
+    expect(csvSpy).not.toHaveBeenCalled();
+    expect(excelSpy).toHaveBeenCalled();
+    const rowsArg = excelSpy.mock.calls[0]?.[1] ?? [];
+    expect(rowsArg.map((row) => row.values)).toEqual(expected);
   });
 });

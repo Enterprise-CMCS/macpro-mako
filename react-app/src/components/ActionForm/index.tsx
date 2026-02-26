@@ -1,7 +1,7 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useMutation } from "@tanstack/react-query";
 import { API } from "aws-amplify";
-import { ReactNode, useEffect, useMemo, useRef, useState } from "react";
+import { ReactNode, useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { DefaultValues, FieldPath, useForm, UseFormReturn } from "react-hook-form";
 import { Navigate, useLocation, useNavigate, useParams } from "react-router";
 import { Authority, SEATOOL_STATUS, UserDetails } from "shared-types";
@@ -173,6 +173,8 @@ export const ActionForm = <Schema extends SchemaWithEnforcableProps>({
   const isStickyFooterEnabled = useFeatureFlag("STICKY_FORM_FOOTER");
   const [footerTriggerElement, setFooterTriggerElement] = useState<HTMLDivElement | null>(null);
   const [isFooterFixed, setIsFooterFixed] = useState(false);
+  const [hasConfirmedNonOwnerDraftAction, setHasConfirmedNonOwnerDraftAction] = useState(false);
+  const hasPromptedNonOwnerDraftActionRef = useRef(false);
 
   const breadcrumbs = optionCrumbsFromPath(pathname, authority, id);
   const draftEnabled = draftOptions?.enabled === true;
@@ -186,6 +188,37 @@ export const ActionForm = <Schema extends SchemaWithEnforcableProps>({
     isLoading: isDraftLoading,
     error: draftError,
   } = useGetItem(draftId ?? "", { enabled: isDraftMode });
+  const draftOriginalCreatorEmail =
+    draftRecord?._source?.draft?.originalCreatorEmail ?? draftRecord?._source?.submitterEmail;
+  const draftPackageIdForWarning = draftRecord?._source?.id ?? draftId ?? id ?? "this package";
+  const isNonOwnerDraftUser = Boolean(
+    isDraftMode &&
+      draftOriginalCreatorEmail &&
+      userObj?.email &&
+      draftOriginalCreatorEmail.toLowerCase() !== userObj.email.toLowerCase(),
+  );
+
+  const navigateAwayFromDraft = useCallback(() => {
+    if (window.history.length > 1) {
+      navigate(-1);
+      return;
+    }
+    navigate(getFormOrigin({ id, authority }));
+  }, [navigate, id, authority]);
+
+  const promptNonOwnerDraftAction = useCallback(() => {
+    userPrompt({
+      header: "Confirm action",
+      body: `Since you are not the original package creator, are you sure you want to take this action on ${draftPackageIdForWarning}?`,
+      acceptButtonText: "Yes, continue",
+      cancelButtonText: "Cancel",
+      cancelVariant: "link",
+      onAccept: () => {
+        setHasConfirmedNonOwnerDraftAction(true);
+      },
+      onCancel: navigateAwayFromDraft,
+    });
+  }, [draftPackageIdForWarning, navigateAwayFromDraft]);
 
   useEffect(() => {
     // Reset one-time prompt bypass after URL/search updates.
@@ -203,10 +236,40 @@ export const ActionForm = <Schema extends SchemaWithEnforcableProps>({
   useEffect(() => {
     if (!isDraftMode) {
       hasAppliedDraftRef.current = false;
+      hasPromptedNonOwnerDraftActionRef.current = false;
+      setHasConfirmedNonOwnerDraftAction(false);
       return;
     }
     hasAppliedDraftRef.current = false;
+    hasPromptedNonOwnerDraftActionRef.current = false;
+    setHasConfirmedNonOwnerDraftAction(false);
   }, [draftId, isDraftMode]);
+
+  useEffect(() => {
+    if (!isNonOwnerDraftUser || hasConfirmedNonOwnerDraftAction) {
+      return;
+    }
+
+    if (hasPromptedNonOwnerDraftActionRef.current) {
+      return;
+    }
+
+    hasPromptedNonOwnerDraftActionRef.current = true;
+    promptNonOwnerDraftAction();
+  }, [hasConfirmedNonOwnerDraftAction, isNonOwnerDraftUser, promptNonOwnerDraftAction]);
+
+  const canProceedWithNonOwnerDraftAction = () => {
+    if (!isNonOwnerDraftUser || hasConfirmedNonOwnerDraftAction) {
+      return true;
+    }
+
+    if (!hasPromptedNonOwnerDraftActionRef.current) {
+      hasPromptedNonOwnerDraftActionRef.current = true;
+      promptNonOwnerDraftAction();
+    }
+
+    return false;
+  };
 
   useEffect(() => {
     const draftData = draftRecord?._source?.draft?.data as
@@ -258,6 +321,10 @@ export const ActionForm = <Schema extends SchemaWithEnforcableProps>({
   });
 
   const onSubmit = form.handleSubmit(async (formData) => {
+    if (!canProceedWithNonOwnerDraftAction()) {
+      return;
+    }
+
     try {
       try {
         await mutateAsync(formData);
@@ -323,6 +390,7 @@ export const ActionForm = <Schema extends SchemaWithEnforcableProps>({
 
   const handleSaveDraft = async () => {
     if (!draftEnabled || !draftOptions?.event) return;
+    if (!canProceedWithNonOwnerDraftAction()) return;
 
     const idPath = draftOptions.idPath ?? "id";
     const isIdValid = await form.trigger(idPath as FieldPath<z.TypeOf<Schema>>);

@@ -1,5 +1,3 @@
-import { format } from "date-fns";
-import { ExportToCsv } from "export-to-csv";
 import { motion } from "framer-motion";
 import { Download, Loader } from "lucide-react";
 import { useState } from "react";
@@ -20,6 +18,14 @@ import { ConfirmationDialog } from "@/components/ConfirmationDialog";
 import { sendGAEvent } from "@/utils/ReactGA/SendGAEvent";
 
 import { DEFAULT_FILTERS } from "../../useOpensearch";
+import {
+  buildCsvExportRows,
+  buildStyledExportRows,
+  exportCsvRows,
+  exportStyledExcelRows,
+  getExportFilenameBase,
+  getVisibleExportColumns,
+} from "./export.utils";
 
 const EXPORT_LIMIT = 10000;
 
@@ -27,14 +33,14 @@ export const OsExportData: FC<{
   columns: OsTableColumn[];
   disabled?: boolean;
   count: number;
-}> = ({ columns, disabled, count }) => {
+  useStyledExcelExport?: boolean;
+}> = ({ columns, disabled, count, useStyledExcelExport = false }) => {
   const [loading, setLoading] = useState(false);
   const [showAlert, setShowAlert] = useState(false);
   const url = useOsUrl();
 
   const exportToCsv = async () => {
     setLoading(true);
-    const exportData: Record<any, any>[] = [];
     const filters = [
       ...url.state.filters,
       ...(DEFAULT_FILTERS[url.state.tab]?.filters || []),
@@ -42,27 +48,19 @@ export const OsExportData: FC<{
     ];
 
     const resolvedData = await getMainExportData(filters, url.state.sort);
+    const visibleColumns = getVisibleExportColumns(columns);
+    const filenameBase = getExportFilenameBase(url.state.tab);
 
-    for (const item of resolvedData) {
-      const column: Record<any, any> = {};
-
-      for (const header of columns) {
-        if (!header.transform) continue;
-        if (header.hidden) continue;
-        column[header.label] = header.transform(item);
-      }
-      exportData.push(column);
+    if (useStyledExcelExport) {
+      const styledRows = buildStyledExportRows(visibleColumns, resolvedData);
+      await exportStyledExcelRows(visibleColumns, styledRows, filenameBase);
+    } else {
+      const exportRows = buildCsvExportRows(visibleColumns, resolvedData);
+      exportCsvRows(exportRows, filenameBase);
     }
 
-    const csvExporter = new ExportToCsv({
-      useKeysAsHeaders: true,
-      filename: `${url.state.tab}-export-${format(new Date(), "MM/dd/yyyy")}`,
-    });
-
-    csvExporter.generateCsv(exportData);
-
     sendGAEvent("dash_export_csv", {
-      row_count: exportData.length,
+      row_count: resolvedData.length,
     });
     setLoading(false);
   };

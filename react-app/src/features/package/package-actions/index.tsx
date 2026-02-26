@@ -44,6 +44,9 @@ export const PackageActionsCard = ({ submission, id }: PackageActionsCardProps) 
       acceptButtonText: "Delete",
       cancelButtonText: "Cancel",
       cancelVariant: "link",
+      onCancel: () => {
+        // Keep users on package details when they dismiss the delete draft modal.
+      },
       onAccept: async () => {
         try {
           await deleteDraft(id);

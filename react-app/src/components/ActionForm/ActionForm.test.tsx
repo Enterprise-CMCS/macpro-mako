@@ -12,6 +12,7 @@ import { isCmsReadonlyUser } from "shared-utils";
 import { beforeEach, describe, expect, test, vi } from "vitest";
 import { z } from "zod";
 
+import * as api from "@/api";
 import * as components from "@/components";
 import { DataPoller } from "@/utils/Poller/DataPoller";
 import * as documentPoller from "@/utils/Poller/documentPoller";
@@ -756,6 +757,123 @@ describe("ActionForm", () => {
     );
 
     expect(userPromptSpy).not.toHaveBeenCalled();
+  });
+
+  test("shows warning modal when a non-owner opens a draft and allows continue", async () => {
+    const user = userEvent.setup();
+    const draftId = "NY-25-2342";
+    const useGetItemSpy = vi.spyOn(api, "useGetItem").mockReturnValue({
+      data: {
+        _id: draftId,
+        found: true,
+        _source: {
+          id: draftId,
+          seatoolStatus: SEATOOL_STATUS.DRAFT,
+          draft: {
+            savedAt: "2026-02-26T00:00:00.000Z",
+            originalCreatorEmail: "someone.else@example.com",
+            data: { id: draftId },
+          },
+        },
+      },
+      isLoading: false,
+      error: null,
+    } as any);
+    const userPromptSpy = vi.spyOn(components, "userPrompt").mockImplementation(() => undefined);
+
+    await renderFormWithPackageSectionAsync(
+      <ActionForm
+        title="Draft owner test"
+        schema={z.object({
+          id: z.string().min(1),
+        })}
+        fields={(form) => <input aria-label="Package ID" {...form.register("id")} />}
+        defaultValues={{ id: draftId }}
+        documentPollerArgs={{
+          property: () => "id",
+          documentChecker: () => true,
+        }}
+        draftOptions={{ enabled: true, event: "new-medicaid-submission" }}
+        breadcrumbText="Example Breadcrumb"
+      />,
+      undefined,
+      "Medicaid SPA",
+      `draftId=${draftId}`,
+    );
+
+    await waitFor(() =>
+      expect(userPromptSpy).toHaveBeenCalledWith(
+        expect.objectContaining({
+          header: "Confirm action",
+          body: `Since you are not the original package creator, are you sure you want to take this action on ${draftId}?`,
+          acceptButtonText: "Yes, continue",
+          cancelButtonText: "Cancel",
+        }),
+      ),
+    );
+
+    const firstPromptArgs = userPromptSpy.mock.calls[0][0] as { onAccept: () => void };
+    firstPromptArgs.onAccept();
+    await user.click(screen.getByTestId("save-draft-form"));
+
+    expect(userPromptSpy).toHaveBeenCalledTimes(1);
+    useGetItemSpy.mockRestore();
+  });
+
+  test("redirects away when non-owner cancels the draft warning modal", async () => {
+    const draftId = "NY-25-2342";
+    const useGetItemSpy = vi.spyOn(api, "useGetItem").mockReturnValue({
+      data: {
+        _id: draftId,
+        found: true,
+        _source: {
+          id: draftId,
+          seatoolStatus: SEATOOL_STATUS.DRAFT,
+          draft: {
+            savedAt: "2026-02-26T00:00:00.000Z",
+            originalCreatorEmail: "someone.else@example.com",
+            data: { id: draftId },
+          },
+        },
+      },
+      isLoading: false,
+      error: null,
+    } as any);
+    const userPromptSpy = vi.spyOn(components, "userPrompt").mockImplementation(() => undefined);
+
+    await renderFormWithPackageSectionAsync(
+      <ActionForm
+        title="Draft owner test"
+        schema={z.object({
+          id: z.string().min(1),
+        })}
+        fields={(form) => <input aria-label="Package ID" {...form.register("id")} />}
+        defaultValues={{ id: draftId }}
+        documentPollerArgs={{
+          property: () => "id",
+          documentChecker: () => true,
+        }}
+        draftOptions={{ enabled: true, event: "new-medicaid-submission" }}
+        breadcrumbText="Example Breadcrumb"
+      />,
+      undefined,
+      "Medicaid SPA",
+      `draftId=${draftId}`,
+    );
+
+    await waitFor(() => expect(userPromptSpy).toHaveBeenCalledTimes(1));
+    const firstPromptArgs = userPromptSpy.mock.calls[0][0] as {
+      onCancel?: () => void;
+    };
+    firstPromptArgs.onCancel?.();
+
+    expect(mockNavigate).toHaveBeenCalled();
+    const firstNavigateArg = mockNavigate.mock.calls[0][0];
+    if (firstNavigateArg !== -1) {
+      expect(firstNavigateArg).toEqual(expect.objectContaining({ pathname: "/dashboard" }));
+    }
+
+    useGetItemSpy.mockRestore();
   });
 
   test("calls onSubmit directly when `promptPreSubmission` is not defined", async () => {
