@@ -451,7 +451,11 @@ describe("WaiversList", () => {
         expect(rowsArg.length).toEqual(expectedData.length);
       } else {
         expect(excelSpy).not.toHaveBeenCalled();
-        expect(csvSpy).toHaveBeenCalledWith(expectedData);
+        expect(csvSpy).toHaveBeenCalledTimes(1);
+        expect(csvSpy).toHaveBeenCalledWith(
+          expectedData,
+          expect.stringMatching(/-export-\d{2}_\d{2}_\d{4}$/),
+        );
       }
     });
   });
