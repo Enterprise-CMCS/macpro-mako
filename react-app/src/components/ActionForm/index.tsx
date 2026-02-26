@@ -393,22 +393,28 @@ export const ActionForm = <Schema extends SchemaWithEnforcableProps>({
     if (!canProceedWithNonOwnerDraftAction()) return;
 
     const idPath = draftOptions.idPath ?? "id";
-    const isIdValid = await form.trigger(idPath as FieldPath<z.TypeOf<Schema>>);
+    const shouldValidateIdField = !isDraftMode;
+    if (shouldValidateIdField) {
+      const isIdValid = await form.trigger(idPath as FieldPath<z.TypeOf<Schema>>);
 
-    if (!isIdValid) {
-      banner({
-        header: "Unable to save draft",
-        body: "Please enter a valid ID before saving.",
-        variant: "destructive",
-        pathnameToDisplayOn: window.location.pathname,
-      });
-      return;
+      if (!isIdValid) {
+        banner({
+          header: "Unable to save draft",
+          body: "Please enter a valid ID before saving.",
+          variant: "destructive",
+          pathnameToDisplayOn: window.location.pathname,
+        });
+        return;
+      }
     }
 
     const formValues = form.getValues();
     const idValue = getValueByPath(formValues as Record<string, unknown>, idPath);
+    const idFromForm = typeof idValue === "string" ? idValue.trim() : "";
+    const fallbackDraftId = isDraftMode ? draftId : undefined;
+    const resolvedId = idFromForm || fallbackDraftId;
 
-    if (typeof idValue !== "string" || !idValue.trim()) {
+    if (!resolvedId) {
       banner({
         header: "Unable to save draft",
         body: "Please enter a valid ID before saving.",
@@ -418,7 +424,7 @@ export const ActionForm = <Schema extends SchemaWithEnforcableProps>({
       return;
     }
 
-    const normalizedId = idValue.toUpperCase();
+    const normalizedId = resolvedId.toUpperCase();
     const authorityPath = draftOptions.authorityPath ?? "authority";
     const authorityValue = getValueByPath(formValues as Record<string, unknown>, authorityPath);
 
