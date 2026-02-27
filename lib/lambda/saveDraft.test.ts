@@ -65,7 +65,7 @@ describe("saveDraft handler", () => {
     );
   });
 
-  it("reactivates a previously deleted draft id by forcing deleted=false", async () => {
+  it("reactivates a previously deleted draft id by forcing deleted=false and resetting creator", async () => {
     vi.spyOn(packageApi, "getPackage").mockResolvedValue({
       found: true,
       _id: DRAFT_ID,
@@ -73,6 +73,14 @@ describe("saveDraft handler", () => {
         id: DRAFT_ID,
         seatoolStatus: SEATOOL_STATUS.DRAFT,
         deleted: true,
+        submitterEmail: "old.user@example.com",
+        submitterName: "Old User",
+        draft: {
+          savedAt: "2026-01-01T00:00:00.000Z",
+          originalCreatorEmail: "old.user@example.com",
+          originalCreatorName: "Old User",
+          data: { id: DRAFT_ID },
+        },
       },
     } as any);
 
@@ -87,6 +95,12 @@ describe("saveDraft handler", () => {
           doc: expect.objectContaining({
             deleted: false,
             seatoolStatus: SEATOOL_STATUS.DRAFT,
+            submitterEmail: "state.user@example.com",
+            submitterName: "State User",
+            draft: expect.objectContaining({
+              originalCreatorEmail: "state.user@example.com",
+              originalCreatorName: "State User",
+            }),
           }),
         }),
       }),
