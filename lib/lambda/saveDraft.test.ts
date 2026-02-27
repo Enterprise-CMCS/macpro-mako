@@ -52,6 +52,7 @@ describe("saveDraft handler", () => {
       expect.objectContaining({
         id: DRAFT_ID,
         body: expect.objectContaining({
+          doc_as_upsert: true,
           doc: expect.objectContaining({
             deleted: false,
             seatoolStatus: SEATOOL_STATUS.DRAFT,
@@ -222,6 +223,7 @@ describe("saveDraft handler", () => {
         if_seq_no: 10,
         if_primary_term: 2,
         body: expect.objectContaining({
+          doc_as_upsert: false,
           doc: expect.objectContaining({
             submitterEmail: "another.user@example.com",
             submitterName: "Another User",

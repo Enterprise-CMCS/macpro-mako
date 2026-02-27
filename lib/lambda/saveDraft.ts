@@ -208,6 +208,7 @@ export const handler = authenticatedMiddy({
   };
 
   const { domain, index } = getDomainAndNamespace("main");
+  const shouldUpsert = !hasActiveExistingDraft;
 
   const updateResponse = await os.updateData(domain, {
     index,
@@ -216,7 +217,7 @@ export const handler = authenticatedMiddy({
       hasVersionFromRequest && { if_seq_no: ifSeqNo, if_primary_term: ifPrimaryTerm }),
     body: {
       doc: record,
-      doc_as_upsert: true,
+      doc_as_upsert: shouldUpsert,
     },
   });
 
