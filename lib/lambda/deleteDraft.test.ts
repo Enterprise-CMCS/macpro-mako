@@ -31,7 +31,8 @@ describe("deleteDraft handler", () => {
   beforeEach(() => {
     vi.clearAllMocks();
     setDefaultStateSubmitter();
-    vi.spyOn(os, "updateData").mockResolvedValue(undefined as void);
+    vi.spyOn(packageApi, "getDraftPackage").mockResolvedValue(undefined as any);
+    vi.spyOn(os, "updateData").mockResolvedValue(undefined as any);
   });
 
   it("returns 400 when event body is missing", async () => {
@@ -48,7 +49,9 @@ describe("deleteDraft handler", () => {
 
   it("returns 403 when CMS user tries to delete a draft", async () => {
     setMockUsername(testReviewer);
-    vi.spyOn(packageApi, "getPackage").mockResolvedValue(buildPackageResult(SEATOOL_STATUS.DRAFT));
+    vi.spyOn(packageApi, "getDraftPackage").mockResolvedValue(
+      buildPackageResult(SEATOOL_STATUS.DRAFT),
+    );
 
     const res = await handler(
       {
@@ -59,11 +62,11 @@ describe("deleteDraft handler", () => {
     );
 
     expect(res.statusCode).toBe(403);
-    expect(res.body).toEqual(JSON.stringify({ message: "Not authorized to view this resource" }));
+    expect(res.body).toEqual(JSON.stringify({ message: "Only state users can delete drafts." }));
   });
 
   it("returns 409 when package is not an active draft", async () => {
-    vi.spyOn(packageApi, "getPackage").mockResolvedValue(
+    vi.spyOn(packageApi, "getDraftPackage").mockResolvedValue(
       buildPackageResult(SEATOOL_STATUS.PENDING),
     );
 
@@ -83,7 +86,9 @@ describe("deleteDraft handler", () => {
   });
 
   it("soft deletes a draft package", async () => {
-    vi.spyOn(packageApi, "getPackage").mockResolvedValue(buildPackageResult(SEATOOL_STATUS.DRAFT));
+    vi.spyOn(packageApi, "getDraftPackage").mockResolvedValue(
+      buildPackageResult(SEATOOL_STATUS.DRAFT),
+    );
 
     const res = await handler(
       {
@@ -99,6 +104,7 @@ describe("deleteDraft handler", () => {
       expect.any(String),
       expect.objectContaining({
         id: DRAFT_ID,
+        index: expect.stringContaining("draftmain"),
         refresh: true,
         if_seq_no: 12,
         if_primary_term: 3,
@@ -111,7 +117,9 @@ describe("deleteDraft handler", () => {
   });
 
   it("returns 409 when draft was changed by another request during delete", async () => {
-    vi.spyOn(packageApi, "getPackage").mockResolvedValue(buildPackageResult(SEATOOL_STATUS.DRAFT));
+    vi.spyOn(packageApi, "getDraftPackage").mockResolvedValue(
+      buildPackageResult(SEATOOL_STATUS.DRAFT),
+    );
     vi.spyOn(os, "updateData").mockRejectedValue({
       meta: {
         body: {

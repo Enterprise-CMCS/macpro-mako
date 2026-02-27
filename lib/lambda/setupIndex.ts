@@ -22,6 +22,15 @@ export const handler: Handler = async (event, __, callback) => {
     });
     await manageIndexResource({
       osDomain: event.osDomain,
+      index: `${event.indexNamespace}draftmain`,
+      update: {
+        changedDate: { type: "date" },
+        makoChangedDate: { type: "date" },
+        statusDate: { type: "date" },
+      },
+    });
+    await manageIndexResource({
+      osDomain: event.osDomain,
       index: `${event.indexNamespace}changelog`,
     });
     await manageIndexResource({

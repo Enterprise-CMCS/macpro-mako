@@ -1,4 +1,5 @@
 import { APIGatewayEvent } from "aws-lambda";
+import * as packageApi from "libs/api/package/getPackage";
 import { getRequestContext, noStateSubmitter, setMockUsername } from "mocks";
 import {
   GET_ERROR_ITEM_ID,
@@ -8,11 +9,16 @@ import {
   WITHDRAWN_CHANGELOG_ITEM_ID,
 } from "mocks/data/items";
 import { Action } from "shared-types";
-import { describe, expect, it } from "vitest";
+import { beforeEach, describe, expect, it, vi } from "vitest";
 
 import { handler } from "./getPackageActions";
 
 describe("getPackageActions Handler", () => {
+  beforeEach(() => {
+    vi.clearAllMocks();
+    vi.spyOn(packageApi, "getDraftPackage").mockResolvedValue(undefined as any);
+  });
+
   it("should return 400 if event body is missing", async () => {
     const event = {} as APIGatewayEvent;
 
@@ -51,7 +57,7 @@ describe("getPackageActions Handler", () => {
     );
   });
 
-  it("should return 500 if event body is invalid", async () => {
+  it("should return 400 if event body is invalid JSON", async () => {
     const event = {
       body: {},
       requestContext: getRequestContext(),
@@ -60,8 +66,8 @@ describe("getPackageActions Handler", () => {
     const res = await handler(event);
 
     expect(res).toBeTruthy();
-    expect(res.statusCode).toEqual(500);
-    expect(res.body).toEqual(JSON.stringify({ message: "Internal server error" }));
+    expect(res.statusCode).toEqual(400);
+    expect(res.body).toEqual(JSON.stringify({ message: "Event body must be valid JSON" }));
   });
 
   it("should return 404 if the package is not found", async () => {

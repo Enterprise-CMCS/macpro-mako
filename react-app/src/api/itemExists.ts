@@ -37,7 +37,7 @@ export const itemExists = async (id: string, options: ItemExistsOptions = {}): P
 
     return response.exists;
   } catch (error) {
-    sendGAEvent("api_errror", {
+    sendGAEvent("api_error", {
       error: `failure /itemExists ${id}`,
     });
     console.error("Error checking if item exists:", error);

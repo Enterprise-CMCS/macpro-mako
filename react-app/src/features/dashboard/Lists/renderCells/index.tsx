@@ -1,13 +1,12 @@
 import { EllipsisVerticalIcon } from "@heroicons/react/24/outline";
 import * as DropdownMenu from "@radix-ui/react-dropdown-menu";
 import { Link } from "react-router";
-import { Authority, FullUser, opensearch, SEATOOL_STATUS } from "shared-types";
+import { FullUser, opensearch, SEATOOL_STATUS } from "shared-types";
 import { formatDateToET, getAvailableActions, isStateUser } from "shared-utils";
 
 import { deleteDraft } from "@/api/deleteDraft";
 import { banner, userPrompt } from "@/components";
-import { DASHBOARD_ORIGIN, mapActionLabel, ORIGIN } from "@/utils";
-import { getDashboardTabForAuthority } from "@/utils/crumbs";
+import { DASHBOARD_ORIGIN, mapActionLabel, ORIGIN, queryClient } from "@/utils";
 import {
   DRAFT_CONTINUE_ACTION_LABEL,
   DRAFT_DELETE_ACTION_LABEL,
@@ -82,21 +81,12 @@ export const renderCellActions = (user: FullUser | null) => {
               variant: "success",
               pathnameToDisplayOn: window.location.pathname,
             });
-
-            let tab = "spas";
-            try {
-              tab = getDashboardTabForAuthority(data.authority as Authority);
-            } catch {
-              // Fallback for unexpected authority values.
-            }
-
-            const dashboardPath = `/dashboard?tab=${tab}`;
-            if (window.location.pathname === "/dashboard") {
-              window.location.reload();
-              return;
-            }
-
-            window.location.assign(dashboardPath);
+            await Promise.all([
+              queryClient.invalidateQueries({ queryKey: ["os-dashboard"] }),
+              queryClient.invalidateQueries({ queryKey: ["spas"] }),
+              queryClient.invalidateQueries({ queryKey: ["waivers"] }),
+            ]);
+            window.dispatchEvent(new Event("os-dashboard-refresh"));
           } catch (error) {
             banner({
               header: "Unable to delete draft",

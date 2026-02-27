@@ -188,7 +188,7 @@ export const ActionForm = <Schema extends SchemaWithEnforcableProps>({
     data: draftRecord,
     isLoading: isDraftLoading,
     error: draftError,
-  } = useGetItem(draftId ?? "", { enabled: isDraftMode });
+  } = useGetItem(draftId ?? "", { enabled: isDraftMode }, { includeDraft: true });
   const draftOriginalCreatorEmail =
     draftRecord?._source?.draft?.originalCreatorEmail ?? draftRecord?._source?.submitterEmail;
   const draftPackageIdForWarning = draftRecord?._source?.id ?? draftId ?? id ?? "this package";

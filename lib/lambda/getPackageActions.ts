@@ -8,7 +8,7 @@ import {
   isAuthorizedToGetPackageActions,
   lookupUserAttributes,
 } from "../libs/api/auth/user";
-import { getPackage } from "../libs/api/package/getPackage";
+import { getDraftPackage, getPackage } from "../libs/api/package/getPackage";
 import { getLatestActiveRoleByEmail } from "./user-management/userManagementService";
 import { handleOpensearchError } from "./utils";
 
@@ -20,10 +20,37 @@ export const getPackageActions = async (event: APIGatewayEvent) => {
     });
   }
 
+  let body: { id?: unknown };
   try {
-    const body = JSON.parse(event.body);
+    body = JSON.parse(event.body);
+  } catch {
+    return response({
+      statusCode: 400,
+      body: { message: "Event body must be valid JSON" },
+    });
+  }
 
-    const result = await getPackage(body.id);
+  try {
+    const normalizedId = typeof body?.id === "string" ? body.id.trim() : "";
+    if (!normalizedId) {
+      return response({
+        statusCode: 400,
+        body: { message: "Valid id is required" },
+      });
+    }
+
+    const mainResult = await getPackage(normalizedId);
+    const hasActiveMainNonDraft =
+      mainResult?.found === true &&
+      mainResult._source?.deleted !== true &&
+      mainResult._source?.seatoolStatus !== SEATOOL_STATUS.DRAFT;
+
+    const draftResult = hasActiveMainNonDraft ? undefined : await getDraftPackage(normalizedId);
+    const hasActiveDraft =
+      draftResult?.found === true &&
+      draftResult._source?.deleted !== true &&
+      draftResult._source?.seatoolStatus === SEATOOL_STATUS.DRAFT;
+    const result = hasActiveMainNonDraft ? mainResult : hasActiveDraft ? draftResult : undefined;
 
     if (result === undefined || !result.found) {
       return response({

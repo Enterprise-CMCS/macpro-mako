@@ -1,10 +1,11 @@
 import { APIGatewayEvent } from "aws-lambda";
 import { getAuthDetails, isAuthorized, lookupUserAttributes } from "libs/api/auth/user";
-import { getPackage } from "libs/api/package";
+import { getDraftPackage, getPackage } from "libs/api/package";
 import { response } from "libs/handler-lib";
 import * as os from "libs/opensearch-lib";
 import { getDomainAndNamespace } from "libs/utils";
 import { getStatus, SEATOOL_STATUS } from "shared-types";
+import { main } from "shared-types/opensearch";
 import { z } from "zod";
 
 import { authenticatedMiddy } from "./middleware";
@@ -54,7 +55,7 @@ const saveDraftEventSchema = z
   .object({
     body: z
       .object({
-        id: z.string(),
+        id: z.string().trim().min(1),
         event: z.string(),
         authority: z.string().optional(),
         draftData: z.record(z.unknown()),
@@ -77,6 +78,27 @@ const resolveAuthority = (
   const nestedAuthority = (draftData as any)?.ids?.validAuthority?.authority;
   if (typeof nestedAuthority === "string") return nestedAuthority;
   return eventToAuthority[eventName];
+};
+
+const isActiveDraft = (packageResult?: main.ItemResult) =>
+  packageResult?.found === true &&
+  packageResult._source?.seatoolStatus === SEATOOL_STATUS.DRAFT &&
+  packageResult._source?.deleted !== true;
+
+const isVersionConflictError = (error: unknown) => {
+  if (error && typeof error === "object") {
+    const osType = (error as { meta?: { body?: { error?: { type?: string } } } }).meta?.body?.error
+      ?.type;
+    if (osType === "version_conflict_engine_exception") {
+      return true;
+    }
+  }
+
+  if (error instanceof Error) {
+    return error.message.includes("version_conflict_engine_exception");
+  }
+
+  return false;
 };
 
 export const handler = authenticatedMiddy({
@@ -111,11 +133,14 @@ export const handler = authenticatedMiddy({
     });
   }
 
-  const existingPackage = await getPackage(normalizedId);
+  const existingMainPackage = await getPackage(normalizedId);
+  const existingDraftPackage = await getDraftPackage(normalizedId);
+
   if (
-    existingPackage &&
-    existingPackage.found &&
-    existingPackage._source?.seatoolStatus !== SEATOOL_STATUS.DRAFT
+    existingMainPackage &&
+    existingMainPackage.found &&
+    existingMainPackage._source?.deleted !== true &&
+    existingMainPackage._source?.seatoolStatus !== SEATOOL_STATUS.DRAFT
   ) {
     return response({
       statusCode: 409,
@@ -138,25 +163,32 @@ export const handler = authenticatedMiddy({
   const { stateStatus, cmsStatus } = getStatus(SEATOOL_STATUS.DRAFT);
   const draftEventName = eventName as DraftableEvent;
   const resolvedAuthority = resolveAuthority(draftEventName, authority, draftData);
-  const hasActiveExistingDraft =
-    existingPackage?.found === true &&
-    existingPackage._source?.seatoolStatus === SEATOOL_STATUS.DRAFT &&
-    existingPackage._source?.deleted !== true;
+
+  const hasActiveDraftInDraftIndex = isActiveDraft(existingDraftPackage);
+  const activeExistingDraft = hasActiveDraftInDraftIndex ? existingDraftPackage : undefined;
+  const hasActiveExistingDraft = Boolean(activeExistingDraft);
+
   const activeDraftCreatorEmail =
-    existingPackage?._source?.draft?.originalCreatorEmail ??
-    existingPackage?._source?.submitterEmail;
+    activeExistingDraft?._source?.draft?.originalCreatorEmail ??
+    activeExistingDraft?._source?.submitterEmail;
   const activeDraftCreatorName =
-    existingPackage?._source?.draft?.originalCreatorName ?? existingPackage?._source?.submitterName;
+    activeExistingDraft?._source?.draft?.originalCreatorName ??
+    activeExistingDraft?._source?.submitterName;
   const existingOriginalCreatorEmail = hasActiveExistingDraft ? activeDraftCreatorEmail : undefined;
   const existingOriginalCreatorName = hasActiveExistingDraft ? activeDraftCreatorName : undefined;
   const hasVersionFromRequest =
+    typeof ifSeqNo === "number" &&
+    typeof ifPrimaryTerm === "number" &&
     Number.isInteger(ifSeqNo) &&
     Number.isInteger(ifPrimaryTerm) &&
     ifSeqNo >= 0 &&
     ifPrimaryTerm >= 0;
+  const requestVersion = hasVersionFromRequest
+    ? { if_seq_no: ifSeqNo, if_primary_term: ifPrimaryTerm }
+    : undefined;
   const hasVersionInExistingDraft =
-    typeof existingPackage?._seq_no === "number" &&
-    typeof existingPackage?._primary_term === "number";
+    typeof activeExistingDraft?._seq_no === "number" &&
+    typeof activeExistingDraft?._primary_term === "number";
 
   if (hasActiveExistingDraft) {
     if (!hasVersionFromRequest) {
@@ -170,7 +202,8 @@ export const handler = authenticatedMiddy({
 
     if (
       hasVersionInExistingDraft &&
-      (ifSeqNo !== existingPackage._seq_no || ifPrimaryTerm !== existingPackage._primary_term)
+      (ifSeqNo !== activeExistingDraft?._seq_no ||
+        ifPrimaryTerm !== activeExistingDraft?._primary_term)
     ) {
       return response({
         statusCode: 409,
@@ -207,22 +240,38 @@ export const handler = authenticatedMiddy({
     },
   };
 
-  const { domain, index } = getDomainAndNamespace("main");
-  const shouldUpsert = !hasActiveExistingDraft;
+  const { domain, index } = getDomainAndNamespace("draftmain");
+  const shouldUpsert = !hasActiveDraftInDraftIndex;
+  const shouldUseCompareAndWrite = hasActiveDraftInDraftIndex;
 
-  const updateResponse = await os.updateData(domain, {
-    index,
-    id: normalizedId,
-    ...(hasActiveExistingDraft &&
-      hasVersionFromRequest && { if_seq_no: ifSeqNo, if_primary_term: ifPrimaryTerm }),
-    body: {
-      doc: record,
-      doc_as_upsert: shouldUpsert,
-    },
-  });
+  let updateResponse;
+  try {
+    updateResponse = await os.updateData(domain, {
+      index,
+      id: normalizedId,
+      ...(shouldUseCompareAndWrite && requestVersion ? requestVersion : {}),
+      body: {
+        doc: record,
+        doc_as_upsert: shouldUpsert,
+      },
+    });
+  } catch (error) {
+    if (isVersionConflictError(error)) {
+      return response({
+        statusCode: 409,
+        body: {
+          message: "Draft was updated by another user. Refresh this page and try saving again.",
+        },
+      });
+    }
 
-  const seqNo = updateResponse?.body?._seq_no ?? updateResponse?._seq_no;
-  const primaryTerm = updateResponse?.body?._primary_term ?? updateResponse?._primary_term;
+    throw error;
+  }
+
+  const updateResult = (updateResponse as any)?.body ?? updateResponse;
+  const seqNo = typeof updateResult?._seq_no === "number" ? updateResult._seq_no : undefined;
+  const primaryTerm =
+    typeof updateResult?._primary_term === "number" ? updateResult._primary_term : undefined;
 
   return response({
     statusCode: 200,

@@ -52,6 +52,7 @@ import {
 } from "./sinkMainProcessors";
 
 const OPENSEARCH_INDEX = `${OPENSEARCH_INDEX_NAMESPACE}main`;
+const OPENSEARCH_DRAFT_INDEX = `${OPENSEARCH_INDEX_NAMESPACE}draftmain`;
 const TEST_ITEM_KEY = Buffer.from(TEST_ITEM_ID).toString("base64");
 const WITHDRAWAL_REQUESTED_KEY = Buffer.from(WITHDRAWAL_REQUESTED_ID).toString("base64");
 const SUBMITTED_RAI_KEY = Buffer.from(SUBMITTED_RAI_ID).toString("base64");
@@ -64,7 +65,7 @@ const LATER_TIMESTAMP = 1742645041557;
 const LATER_ISO_DATETIME = "2025-03-22T12:04:01.557Z";
 
 const bulkUpdateDataSpy = vi.spyOn(os, "bulkUpdateData");
-const updateDataSpy = vi.spyOn(os, "updateData").mockResolvedValue(undefined);
+const updateDataSpy = vi.spyOn(os, "updateData").mockResolvedValue(undefined as any);
 const logErrorSpy = vi.spyOn(sink, "logError");
 
 describe("insertOneMacRecordsFromKafkaIntoMako", () => {
@@ -328,7 +329,7 @@ describe("insertOneMacRecordsFromKafkaIntoMako", () => {
     ]);
   });
 
-  it("removes the draft field for records that transition from draft to submitted", async () => {
+  it("marks draft records deleted in draftmain for records that transition from draft to submitted", async () => {
     await insertOneMacRecordsFromKafkaIntoMako(
       [
         createKafkaRecord({
@@ -347,21 +348,19 @@ describe("insertOneMacRecordsFromKafkaIntoMako", () => {
     );
 
     expect(updateDataSpy).toHaveBeenCalledWith(OPENSEARCH_DOMAIN, {
-      index: OPENSEARCH_INDEX,
+      index: OPENSEARCH_DRAFT_INDEX,
       id: newMedicaidSubmission.id,
+      refresh: true,
       body: {
-        script: {
-          lang: "painless",
-          source: "ctx._source.remove(params.field)",
-          params: {
-            field: "draft",
-          },
-        },
+        doc: expect.objectContaining({
+          deleted: true,
+        }),
+        doc_as_upsert: false,
       },
     });
   });
 
-  it("does not remove draft field for non-submission events", async () => {
+  it("does not mark draft records deleted for non-submission events", async () => {
     await insertOneMacRecordsFromKafkaIntoMako(
       [
         createKafkaRecord({
@@ -382,7 +381,7 @@ describe("insertOneMacRecordsFromKafkaIntoMako", () => {
     expect(updateDataSpy).not.toHaveBeenCalled();
   });
 
-  it("logs and continues when removing the draft field fails", async () => {
+  it("logs and continues when marking draft records deleted fails", async () => {
     updateDataSpy.mockRejectedValueOnce(new Error("failed to remove draft"));
 
     await expect(

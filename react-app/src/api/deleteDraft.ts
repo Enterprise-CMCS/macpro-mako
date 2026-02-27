@@ -6,7 +6,7 @@ export const deleteDraft = async (id: string) => {
   try {
     return await API.post("os", "/deleteDraft", { body: { id } });
   } catch (error) {
-    sendGAEvent("api_errror", {
+    sendGAEvent("api_error", {
       error: `failure /deleteDraft ${id}`,
     });
     throw error;

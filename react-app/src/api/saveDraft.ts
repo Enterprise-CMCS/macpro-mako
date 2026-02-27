@@ -22,7 +22,7 @@ export const saveDraft = async (payload: SaveDraftPayload): Promise<SaveDraftRes
   try {
     return await API.post("os", "/saveDraft", { body: payload });
   } catch (error) {
-    sendGAEvent("api_errror", {
+    sendGAEvent("api_error", {
       error: `failure /saveDraft ${payload.id}`,
     });
     throw error;

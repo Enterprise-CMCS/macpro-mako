@@ -56,7 +56,7 @@ describe("itemExists test", () => {
     expect(found).toBeFalsy();
 
     expect(gaModule.sendGAEvent).toHaveBeenCalledWith(
-      "api_errror",
+      "api_error",
       expect.objectContaining({
         error: `failure /itemExists ${TEST_ITEM_ID}`,
       }),

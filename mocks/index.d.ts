@@ -157,7 +157,7 @@ export type SearchQueryBody = {
   _source?: string[];
 };
 
-export type GetItemBody = { id: string };
+export type GetItemBody = { id: string; includeDraft?: boolean };
 export type ItemExistsBody = { id: string; includeDrafts?: boolean };
 export type DeleteDraftBody = { id: string };
 

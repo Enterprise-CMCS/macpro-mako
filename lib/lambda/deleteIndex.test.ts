@@ -24,6 +24,7 @@ describe("Lambda Handler", () => {
 
     const expectedIndices = [
       `${OPENSEARCH_INDEX_NAMESPACE}main`,
+      `${OPENSEARCH_INDEX_NAMESPACE}draftmain`,
       `${OPENSEARCH_INDEX_NAMESPACE}changelog`,
       `${OPENSEARCH_INDEX_NAMESPACE}insights`,
       `${OPENSEARCH_INDEX_NAMESPACE}types`,
@@ -67,6 +68,7 @@ describe("Lambda Handler", () => {
 
     const expectedIndices = [
       `${OPENSEARCH_INDEX_NAMESPACE}main`,
+      `${OPENSEARCH_INDEX_NAMESPACE}draftmain`,
       `${OPENSEARCH_INDEX_NAMESPACE}changelog`,
       `${OPENSEARCH_INDEX_NAMESPACE}insights`,
       `${OPENSEARCH_INDEX_NAMESPACE}types`,
@@ -98,6 +100,7 @@ describe("Lambda Handler", () => {
 
     const expectedIndices = [
       `${OPENSEARCH_INDEX_NAMESPACE}main`,
+      `${OPENSEARCH_INDEX_NAMESPACE}draftmain`,
       `${OPENSEARCH_INDEX_NAMESPACE}changelog`,
       `${OPENSEARCH_INDEX_NAMESPACE}insights`,
       `${OPENSEARCH_INDEX_NAMESPACE}types`,

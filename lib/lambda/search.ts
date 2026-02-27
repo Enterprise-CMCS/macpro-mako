@@ -1,6 +1,6 @@
 import { APIGatewayEvent } from "aws-lambda";
 import { response } from "libs/handler-lib";
-import { getDomainAndNamespace } from "libs/utils";
+import { getDomainAndNamespace, getOsNamespace } from "libs/utils";
 import { SEATOOL_STATUS } from "shared-types";
 import { BaseIndex } from "shared-types/opensearch";
 import { ONEMAC_LEGACY_ORIGIN } from "shared-types/opensearch/main/transforms/legacy-transforms";
@@ -24,7 +24,8 @@ export const getSearchData = async (event: APIGatewayEvent) => {
       body: { message: "Index path parameter required" },
     });
   }
-  const { domain, index } = getDomainAndNamespace(event.pathParameters.index as BaseIndex);
+  const requestedIndex = event.pathParameters.index as BaseIndex;
+  const { domain, index } = getDomainAndNamespace(requestedIndex);
 
   try {
     let query: any = {};
@@ -40,6 +41,29 @@ export const getSearchData = async (event: APIGatewayEvent) => {
     const stateFilter = await getStateFilter(event);
     if (stateFilter) {
       query.query.bool.must.push(stateFilter);
+      if (requestedIndex === "main") {
+        const draftIndex = getOsNamespace("draftmain");
+        query.query.bool.must.push({
+          bool: {
+            should: [
+              {
+                bool: {
+                  must_not: [{ term: { "seatoolStatus.keyword": SEATOOL_STATUS.DRAFT } }],
+                },
+              },
+              {
+                bool: {
+                  must: [
+                    { term: { "seatoolStatus.keyword": SEATOOL_STATUS.DRAFT } },
+                    { term: { _index: draftIndex } },
+                  ],
+                },
+              },
+            ],
+            minimum_should_match: 1,
+          },
+        });
+      }
     } else if (stateFilter === null) {
       // Drafts are state-only and should not appear in CMS search results.
       query.query.bool.must_not.push({ term: { "seatoolStatus.keyword": SEATOOL_STATUS.DRAFT } });
@@ -63,7 +87,11 @@ export const getSearchData = async (event: APIGatewayEvent) => {
 
     query.from = query.from || 0;
     query.size = query.size || 100;
-    const results = await search(domain, index, query);
+    const searchIndex: Parameters<typeof search>[1] =
+      requestedIndex === "main" && stateFilter
+        ? (`${index},${getOsNamespace("draftmain")}` as Parameters<typeof search>[1])
+        : index;
+    const results = await search(domain, searchIndex, query);
     for (let i = 0; i < results?.hits?.hits?.length; i++) {
       if (results.hits.hits[i]._source?.appkParent) {
         const children = await getAppkChildren(results.hits.hits[i]._id);
