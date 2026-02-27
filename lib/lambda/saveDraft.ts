@@ -136,11 +136,17 @@ export const handler = authenticatedMiddy({
   const { stateStatus, cmsStatus } = getStatus(SEATOOL_STATUS.DRAFT);
   const draftEventName = eventName as DraftableEvent;
   const resolvedAuthority = resolveAuthority(draftEventName, authority, draftData);
-  const existingOriginalCreatorEmail =
+  const hasActiveExistingDraft =
+    existingPackage?.found === true &&
+    existingPackage._source?.seatoolStatus === SEATOOL_STATUS.DRAFT &&
+    existingPackage._source?.deleted !== true;
+  const activeDraftCreatorEmail =
     existingPackage?._source?.draft?.originalCreatorEmail ??
     existingPackage?._source?.submitterEmail;
-  const existingOriginalCreatorName =
+  const activeDraftCreatorName =
     existingPackage?._source?.draft?.originalCreatorName ?? existingPackage?._source?.submitterName;
+  const existingOriginalCreatorEmail = hasActiveExistingDraft ? activeDraftCreatorEmail : undefined;
+  const existingOriginalCreatorName = hasActiveExistingDraft ? activeDraftCreatorName : undefined;
 
   const record = {
     id: normalizedId,
