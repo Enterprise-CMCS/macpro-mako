@@ -338,7 +338,9 @@ describe("ActionForm", () => {
     fireEvent.submit(await screen.findByTestId("submit-action-form"));
 
     await waitFor(() =>
-      expect(documentPollerSpy).toHaveBeenCalledWith(EXISTING_ITEM_PENDING_ID, documentChecker),
+      expect(documentPollerSpy).toHaveBeenCalledWith(EXISTING_ITEM_PENDING_ID, documentChecker, {
+        includeDraft: false,
+      }),
     );
   });
 
@@ -841,6 +843,59 @@ describe("ActionForm", () => {
 
     useGetItemSpy.mockRestore();
     saveDraftSpy.mockRestore();
+  });
+
+  test("polls with includeDraft enabled while submitting an existing draft", async () => {
+    const draftId = "MD-25-2525-SAVE";
+    const useGetItemSpy = vi.spyOn(api, "useGetItem").mockReturnValue({
+      data: {
+        _id: draftId,
+        found: true,
+        _source: {
+          id: draftId,
+          seatoolStatus: SEATOOL_STATUS.DRAFT,
+          draft: {
+            savedAt: "2026-02-26T00:00:00.000Z",
+            data: { id: draftId },
+          },
+          changelog: [],
+        },
+      },
+      isLoading: false,
+      error: null,
+    } as any);
+    const documentPollerSpy = vi.spyOn(documentPoller, "documentPoller");
+    const documentChecker: documentPoller.CheckDocumentFunction = () => true;
+
+    await renderFormWithPackageSectionAsync(
+      <ActionForm
+        title="Draft Submit Test"
+        schema={z.object({
+          id: z.string().min(1),
+        })}
+        fields={(form) => <input aria-label="Package ID" {...form.register("id")} />}
+        defaultValues={{ id: draftId }}
+        documentPollerArgs={{
+          property: "id",
+          documentChecker,
+        }}
+        draftOptions={{ enabled: true, event: "new-medicaid-submission" }}
+        breadcrumbText="Example Breadcrumb"
+      />,
+      undefined,
+      "Medicaid SPA",
+      `draftId=${draftId}`,
+    );
+
+    fireEvent.submit(await screen.findByTestId("submit-action-form"));
+
+    await waitFor(() =>
+      expect(documentPollerSpy).toHaveBeenCalledWith(draftId, expect.any(Function), {
+        includeDraft: true,
+      }),
+    );
+
+    useGetItemSpy.mockRestore();
   });
 
   test("shows warning modal when a non-owner opens a draft and allows continue", async () => {

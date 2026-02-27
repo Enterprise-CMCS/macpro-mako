@@ -364,7 +364,9 @@ export const ActionForm = <Schema extends SchemaWithEnforcableProps>({
         typeof property === "function" ? property(formData) : formData[property];
 
       try {
-        const poller = documentPoller(documentPollerId, effectiveDocumentChecker);
+        const poller = documentPoller(documentPollerId, effectiveDocumentChecker, {
+          includeDraft: isDraftMode,
+        });
         await poller.startPollingData();
       } catch (error) {
         throw Error(`${error?.message || error}`);
