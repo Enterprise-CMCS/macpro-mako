@@ -9,7 +9,7 @@ export type DetailsSidebarLink = {
 };
 
 export const useDetailsSidebarLinks = (dataId: string): DetailsSidebarLink[] => {
-  const { data } = useGetItem(dataId);
+  const { data } = useGetItem(dataId, undefined, { includeDraft: true });
   const [sideBarLinks, setSideBarLinks] = useState<DetailsSidebarLink[]>([]);
 
   useLayoutEffect(() => {

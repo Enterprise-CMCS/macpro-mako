@@ -68,14 +68,18 @@ const injectChipEligibilityAttachment = (
 };
 
 export const DetailsContent = ({ id }: DetailsContentProps) => {
-  const { data: record, isLoading, error } = useGetItem(id);
+  const { data: record, isLoading, error } = useGetItem(id, undefined, { includeDraft: true });
 
   const submission = record?._source;
+  const normalizedSubmission = useMemo(
+    () => (submission ? { ...submission, changelog: submission.changelog ?? [] } : undefined),
+    [submission],
+  );
   const updatedSubmission = useMemo(() => {
-    return submission
-      ? injectChipEligibilityAttachment(submission, submission.changelog)
+    return normalizedSubmission
+      ? injectChipEligibilityAttachment(normalizedSubmission, normalizedSubmission.changelog)
       : undefined;
-  }, [submission]);
+  }, [normalizedSubmission]);
 
   if (isLoading) return <LoadingSpinner />;
   if (error || !record || !updatedSubmission) return <ErrorAlert error={error} />;
@@ -113,7 +117,7 @@ export const packageDetailsLoader = async ({
   }
 
   try {
-    const packageResult = await getItem(id);
+    const packageResult = await getItem(id, { includeDraft: true });
     if (!packageResult || packageResult._source.deleted === true || packageResult.found === false) {
       return redirect("/dashboard");
     }

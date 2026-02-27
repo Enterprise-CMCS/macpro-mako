@@ -121,7 +121,15 @@ describe("getItemData Handler", () => {
     const res = await handler(event, {} as Context);
 
     expect(res.statusCode).toEqual(200);
-    expect(res.body).toEqual(JSON.stringify(draftPackage));
+    expect(res.body).toEqual(
+      JSON.stringify({
+        ...draftPackage,
+        _source: {
+          ...draftPackage._source,
+          changelog: [],
+        },
+      }),
+    );
     getDraftPackageSpy.mockRestore();
   });
 

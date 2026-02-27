@@ -61,7 +61,13 @@ export const handler = authenticatedMiddy({
       if (isActiveDraft && (!authenticatedUser || !isCmsUser(authenticatedUser))) {
         return {
           statusCode: 200,
-          body: draftPackageResult,
+          body: {
+            ...draftPackageResult,
+            _source: {
+              ...draftPackageResult._source,
+              changelog: draftPackageResult._source?.changelog ?? [],
+            },
+          },
         };
       }
     }
