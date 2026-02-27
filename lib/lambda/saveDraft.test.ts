@@ -107,6 +107,68 @@ describe("saveDraft handler", () => {
     );
   });
 
+  it("returns 409 when active draft save misses optimistic concurrency values", async () => {
+    vi.spyOn(packageApi, "getPackage").mockResolvedValue({
+      found: true,
+      _id: DRAFT_ID,
+      _seq_no: 10,
+      _primary_term: 2,
+      _source: {
+        id: DRAFT_ID,
+        seatoolStatus: SEATOOL_STATUS.DRAFT,
+        deleted: false,
+      },
+    } as any);
+
+    const res = await handler(baseEvent, {} as Context);
+
+    expect(res.statusCode).toBe(409);
+    expect(res.body).toEqual(
+      JSON.stringify({
+        message: "Draft was updated by another user. Refresh this page and try saving again.",
+      }),
+    );
+    expect(os.updateData).not.toHaveBeenCalled();
+  });
+
+  it("returns 409 when active draft save has stale optimistic concurrency values", async () => {
+    vi.spyOn(packageApi, "getPackage").mockResolvedValue({
+      found: true,
+      _id: DRAFT_ID,
+      _seq_no: 11,
+      _primary_term: 2,
+      _source: {
+        id: DRAFT_ID,
+        seatoolStatus: SEATOOL_STATUS.DRAFT,
+        deleted: false,
+      },
+    } as any);
+
+    const eventWithStaleVersion = {
+      ...baseEvent,
+      body: JSON.stringify({
+        id: DRAFT_ID,
+        event: "new-medicaid-submission",
+        draftData: {
+          id: DRAFT_ID,
+          proposedEffectiveDate: 1771480800000,
+        },
+        ifSeqNo: 10,
+        ifPrimaryTerm: 2,
+      }),
+    } as APIGatewayEvent;
+
+    const res = await handler(eventWithStaleVersion, {} as Context);
+
+    expect(res.statusCode).toBe(409);
+    expect(res.body).toEqual(
+      JSON.stringify({
+        message: "Draft was updated by another user. Refresh this page and try saving again.",
+      }),
+    );
+    expect(os.updateData).not.toHaveBeenCalled();
+  });
+
   it("preserves the original draft creator when a different user saves the draft", async () => {
     vi.spyOn(authApi, "lookupUserAttributes").mockResolvedValue({
       email: "another.user@example.com",
@@ -119,6 +181,8 @@ describe("saveDraft handler", () => {
     vi.spyOn(packageApi, "getPackage").mockResolvedValue({
       found: true,
       _id: DRAFT_ID,
+      _seq_no: 10,
+      _primary_term: 2,
       _source: {
         id: DRAFT_ID,
         seatoolStatus: SEATOOL_STATUS.DRAFT,
@@ -134,13 +198,29 @@ describe("saveDraft handler", () => {
       },
     } as any);
 
-    const res = await handler(baseEvent, {} as Context);
+    const eventWithCurrentVersion = {
+      ...baseEvent,
+      body: JSON.stringify({
+        id: DRAFT_ID,
+        event: "new-medicaid-submission",
+        draftData: {
+          id: DRAFT_ID,
+          proposedEffectiveDate: 1771480800000,
+        },
+        ifSeqNo: 10,
+        ifPrimaryTerm: 2,
+      }),
+    } as APIGatewayEvent;
+
+    const res = await handler(eventWithCurrentVersion, {} as Context);
 
     expect(res.statusCode).toBe(200);
     expect(os.updateData).toHaveBeenCalledWith(
       expect.any(String),
       expect.objectContaining({
         id: DRAFT_ID,
+        if_seq_no: 10,
+        if_primary_term: 2,
         body: expect.objectContaining({
           doc: expect.objectContaining({
             submitterEmail: "another.user@example.com",

@@ -175,6 +175,7 @@ export const ActionForm = <Schema extends SchemaWithEnforcableProps>({
   const [isFooterFixed, setIsFooterFixed] = useState(false);
   const [hasConfirmedNonOwnerDraftAction, setHasConfirmedNonOwnerDraftAction] = useState(false);
   const hasPromptedNonOwnerDraftActionRef = useRef(false);
+  const draftVersionRef = useRef<{ seqNo?: number; primaryTerm?: number }>({});
 
   const breadcrumbs = optionCrumbsFromPath(pathname, authority, id);
   const draftEnabled = draftOptions?.enabled === true;
@@ -238,12 +239,27 @@ export const ActionForm = <Schema extends SchemaWithEnforcableProps>({
       hasAppliedDraftRef.current = false;
       hasPromptedNonOwnerDraftActionRef.current = false;
       setHasConfirmedNonOwnerDraftAction(false);
+      draftVersionRef.current = {};
       return;
     }
     hasAppliedDraftRef.current = false;
     hasPromptedNonOwnerDraftActionRef.current = false;
     setHasConfirmedNonOwnerDraftAction(false);
+    draftVersionRef.current = {};
   }, [draftId, isDraftMode]);
+
+  useEffect(() => {
+    if (!isDraftMode || !draftRecord) {
+      return;
+    }
+
+    if (typeof draftRecord._seq_no === "number" && typeof draftRecord._primary_term === "number") {
+      draftVersionRef.current = {
+        seqNo: draftRecord._seq_no,
+        primaryTerm: draftRecord._primary_term,
+      };
+    }
+  }, [draftRecord, isDraftMode]);
 
   useEffect(() => {
     if (!isNonOwnerDraftUser || hasConfirmedNonOwnerDraftAction) {
@@ -427,14 +443,34 @@ export const ActionForm = <Schema extends SchemaWithEnforcableProps>({
     const normalizedId = resolvedId.toUpperCase();
     const authorityPath = draftOptions.authorityPath ?? "authority";
     const authorityValue = getValueByPath(formValues as Record<string, unknown>, authorityPath);
+    const draftVersionPayload =
+      isDraftMode &&
+      typeof draftVersionRef.current.seqNo === "number" &&
+      typeof draftVersionRef.current.primaryTerm === "number"
+        ? {
+            ifSeqNo: draftVersionRef.current.seqNo,
+            ifPrimaryTerm: draftVersionRef.current.primaryTerm,
+          }
+        : {};
 
     try {
-      await saveDraftAsync({
+      const saveResponse = await saveDraftAsync({
         id: normalizedId,
         event: draftOptions.event,
         authority: typeof authorityValue === "string" ? authorityValue : undefined,
         draftData: formValues as Record<string, unknown>,
+        ...draftVersionPayload,
       });
+
+      if (
+        typeof saveResponse?.seqNo === "number" &&
+        typeof saveResponse?.primaryTerm === "number"
+      ) {
+        draftVersionRef.current = {
+          seqNo: saveResponse.seqNo,
+          primaryTerm: saveResponse.primaryTerm,
+        };
+      }
 
       banner({
         header: "Draft saved",

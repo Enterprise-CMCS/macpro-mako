@@ -26,6 +26,22 @@ const deleteDraftEventSchema = z
 export type DeleteDraftEvent = APIGatewayEvent & z.infer<typeof deleteDraftEventSchema>;
 type DeleteDraftContext = ContextWithPackage & ContextWithAuthenticatedUser;
 
+const isVersionConflictError = (error: unknown) => {
+  if (error && typeof error === "object") {
+    const osType = (error as { meta?: { body?: { error?: { type?: string } } } }).meta?.body?.error
+      ?.type;
+    if (osType === "version_conflict_engine_exception") {
+      return true;
+    }
+  }
+
+  if (error instanceof Error) {
+    return error.message.includes("version_conflict_engine_exception");
+  }
+
+  return false;
+};
+
 export const handler = authenticatedMiddy({
   opensearch: true,
   setToContext: true,
@@ -60,21 +76,40 @@ export const handler = authenticatedMiddy({
 
     const timestamp = new Date().toISOString();
     const { domain, index } = getDomainAndNamespace("main");
+    const hasVersionData =
+      typeof packageResult._seq_no === "number" && typeof packageResult._primary_term === "number";
 
-    await os.updateData(domain, {
-      index,
-      id: submission.id,
-      refresh: true,
-      body: {
-        doc: {
-          deleted: true,
-          changedDate: timestamp,
-          makoChangedDate: timestamp,
-          statusDate: timestamp,
+    try {
+      await os.updateData(domain, {
+        index,
+        id: submission.id,
+        refresh: true,
+        ...(hasVersionData && {
+          if_seq_no: packageResult._seq_no,
+          if_primary_term: packageResult._primary_term,
+        }),
+        body: {
+          doc: {
+            deleted: true,
+            changedDate: timestamp,
+            makoChangedDate: timestamp,
+            statusDate: timestamp,
+          },
+          doc_as_upsert: false,
         },
-        doc_as_upsert: false,
-      },
-    });
+      });
+    } catch (error) {
+      if (isVersionConflictError(error)) {
+        return response({
+          statusCode: 409,
+          body: {
+            message: "Draft was updated by another user. Refresh this page and try deleting again.",
+          },
+        });
+      }
+
+      throw error;
+    }
 
     return response({
       statusCode: 200,

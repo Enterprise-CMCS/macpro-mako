@@ -7,9 +7,18 @@ export type SaveDraftPayload = {
   event: string;
   authority?: string;
   draftData: Record<string, unknown>;
+  ifSeqNo?: number;
+  ifPrimaryTerm?: number;
 };
 
-export const saveDraft = async (payload: SaveDraftPayload) => {
+export type SaveDraftResponse = {
+  message: string;
+  id: string;
+  seqNo?: number;
+  primaryTerm?: number;
+};
+
+export const saveDraft = async (payload: SaveDraftPayload): Promise<SaveDraftResponse> => {
   try {
     return await API.post("os", "/saveDraft", { body: payload });
   } catch (error) {
