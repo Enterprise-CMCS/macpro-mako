@@ -97,6 +97,7 @@ describe("deleteDraft handler", () => {
       expect.any(String),
       expect.objectContaining({
         id: DRAFT_ID,
+        refresh: true,
         body: expect.objectContaining({
           doc: expect.objectContaining({ deleted: true }),
           doc_as_upsert: false,

@@ -90,7 +90,13 @@ export const renderCellActions = (user: FullUser | null) => {
               // Fallback for unexpected authority values.
             }
 
-            window.location.assign(`/dashboard?tab=${tab}`);
+            const dashboardPath = `/dashboard?tab=${tab}`;
+            if (window.location.pathname === "/dashboard") {
+              window.location.reload();
+              return;
+            }
+
+            window.location.assign(dashboardPath);
           } catch (error) {
             banner({
               header: "Unable to delete draft",
