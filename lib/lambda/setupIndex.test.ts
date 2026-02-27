@@ -24,6 +24,7 @@ describe("handler", () => {
 
     const expectedIndices = [
       `${OPENSEARCH_INDEX_NAMESPACE}main`,
+      `${OPENSEARCH_INDEX_NAMESPACE}draftmain`,
       `${OPENSEARCH_INDEX_NAMESPACE}changelog`,
       `${OPENSEARCH_INDEX_NAMESPACE}types`,
       `${OPENSEARCH_INDEX_NAMESPACE}subtypes`,
@@ -37,7 +38,7 @@ describe("handler", () => {
     for (const index of expectedIndices) {
       expect(createIndexSpy).toHaveBeenCalledWith(OPENSEARCH_DOMAIN, index);
     }
-    expect(createIndexSpy).toHaveBeenCalledTimes(9);
+    expect(createIndexSpy).toHaveBeenCalledTimes(10);
 
     expect(updateMappingSpy).toHaveBeenCalledWith(
       OPENSEARCH_DOMAIN,
@@ -51,7 +52,16 @@ describe("handler", () => {
         submissionDate: { type: "date" },
       },
     );
-    expect(updateMappingSpy).toHaveBeenCalledTimes(1);
+    expect(updateMappingSpy).toHaveBeenCalledWith(
+      OPENSEARCH_DOMAIN,
+      `${OPENSEARCH_INDEX_NAMESPACE}draftmain`,
+      {
+        changedDate: { type: "date" },
+        makoChangedDate: { type: "date" },
+        statusDate: { type: "date" },
+      },
+    );
+    expect(updateMappingSpy).toHaveBeenCalledTimes(2);
 
     expect(callback).toHaveBeenCalledWith(null, { statusCode: 200 });
   });

@@ -38,12 +38,12 @@ describe("saveDraft handler", () => {
       email: "state.user@example.com",
       fullName: "State User",
     } as any);
-    vi.spyOn(os, "updateData").mockResolvedValue(undefined as void);
+    vi.spyOn(packageApi, "getPackage").mockResolvedValue(undefined as any);
+    vi.spyOn(packageApi, "getDraftPackage").mockResolvedValue(undefined as any);
+    vi.spyOn(os, "updateData").mockResolvedValue(undefined as any);
   });
 
   it("writes deleted=false when creating a new draft", async () => {
-    vi.spyOn(packageApi, "getPackage").mockResolvedValue(undefined as any);
-
     const res = await handler(baseEvent, {} as Context);
 
     expect(res.statusCode).toBe(200);
@@ -109,7 +109,7 @@ describe("saveDraft handler", () => {
   });
 
   it("returns 409 when active draft save misses optimistic concurrency values", async () => {
-    vi.spyOn(packageApi, "getPackage").mockResolvedValue({
+    vi.spyOn(packageApi, "getDraftPackage").mockResolvedValue({
       found: true,
       _id: DRAFT_ID,
       _seq_no: 10,
@@ -133,7 +133,7 @@ describe("saveDraft handler", () => {
   });
 
   it("returns 409 when active draft save has stale optimistic concurrency values", async () => {
-    vi.spyOn(packageApi, "getPackage").mockResolvedValue({
+    vi.spyOn(packageApi, "getDraftPackage").mockResolvedValue({
       found: true,
       _id: DRAFT_ID,
       _seq_no: 11,
@@ -179,7 +179,7 @@ describe("saveDraft handler", () => {
       fullName: "Another User",
     } as any);
 
-    vi.spyOn(packageApi, "getPackage").mockResolvedValue({
+    vi.spyOn(packageApi, "getDraftPackage").mockResolvedValue({
       found: true,
       _id: DRAFT_ID,
       _seq_no: 10,
@@ -233,6 +233,53 @@ describe("saveDraft handler", () => {
             }),
           }),
         }),
+      }),
+    );
+  });
+
+  it("returns 409 when OpenSearch reports a version conflict during compare-and-write", async () => {
+    vi.spyOn(packageApi, "getDraftPackage").mockResolvedValue({
+      found: true,
+      _id: DRAFT_ID,
+      _seq_no: 12,
+      _primary_term: 1,
+      _source: {
+        id: DRAFT_ID,
+        seatoolStatus: SEATOOL_STATUS.DRAFT,
+        deleted: false,
+      },
+    } as any);
+
+    vi.spyOn(os, "updateData").mockRejectedValueOnce({
+      meta: {
+        body: {
+          error: {
+            type: "version_conflict_engine_exception",
+          },
+        },
+      },
+    });
+
+    const eventWithCurrentVersion = {
+      ...baseEvent,
+      body: JSON.stringify({
+        id: DRAFT_ID,
+        event: "new-medicaid-submission",
+        draftData: {
+          id: DRAFT_ID,
+          proposedEffectiveDate: 1771480800000,
+        },
+        ifSeqNo: 12,
+        ifPrimaryTerm: 1,
+      }),
+    } as APIGatewayEvent;
+
+    const res = await handler(eventWithCurrentVersion, {} as Context);
+
+    expect(res.statusCode).toBe(409);
+    expect(res.body).toEqual(
+      JSON.stringify({
+        message: "Draft was updated by another user. Refresh this page and try saving again.",
       }),
     );
   });

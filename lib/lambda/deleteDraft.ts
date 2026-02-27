@@ -1,3 +1,4 @@
+import { getDraftPackage } from "libs/api/package";
 import { response } from "libs/handler-lib";
 import * as os from "libs/opensearch-lib";
 import { getDomainAndNamespace } from "libs/utils";
@@ -5,26 +6,20 @@ import { APIGatewayEvent, SEATOOL_STATUS } from "shared-types";
 import { isStateUser } from "shared-utils";
 import { z } from "zod";
 
-import {
-  authenticatedMiddy,
-  canViewPackage,
-  ContextWithAuthenticatedUser,
-  ContextWithPackage,
-  fetchPackage,
-} from "./middleware";
+import { authenticatedMiddy, ContextWithAuthenticatedUser } from "./middleware";
 
 const deleteDraftEventSchema = z
   .object({
     body: z
       .object({
-        id: z.string(),
+        id: z.string().trim().min(1),
       })
       .strict(),
   })
   .passthrough();
 
 export type DeleteDraftEvent = APIGatewayEvent & z.infer<typeof deleteDraftEventSchema>;
-type DeleteDraftContext = ContextWithPackage & ContextWithAuthenticatedUser;
+type DeleteDraftContext = ContextWithAuthenticatedUser;
 
 const isVersionConflictError = (error: unknown) => {
   if (error && typeof error === "object") {
@@ -46,73 +41,89 @@ export const handler = authenticatedMiddy({
   opensearch: true,
   setToContext: true,
   eventSchema: deleteDraftEventSchema,
-})
-  .use(fetchPackage({ setToContext: true }))
-  .use(canViewPackage())
-  .handler(async (_event: DeleteDraftEvent, context: DeleteDraftContext) => {
-    const { authenticatedUser, packageResult } = context;
+}).handler(async (event: DeleteDraftEvent, context: DeleteDraftContext) => {
+  const { authenticatedUser } = context;
 
-    if (!authenticatedUser || !isStateUser(authenticatedUser)) {
-      return response({
-        statusCode: 403,
-        body: { message: "Only state users can delete drafts." },
-      });
-    }
+  if (!authenticatedUser || !isStateUser(authenticatedUser)) {
+    return response({
+      statusCode: 403,
+      body: { message: "Only state users can delete drafts." },
+    });
+  }
 
-    if (!packageResult || !packageResult.found || !packageResult._source) {
-      return response({
-        statusCode: 404,
-        body: { message: "No record found for the given id" },
-      });
-    }
+  const id = event.body?.id?.toUpperCase();
+  if (!id) {
+    return response({
+      statusCode: 400,
+      body: { message: "Event body required" },
+    });
+  }
 
-    const submission = packageResult._source;
-    if (submission.deleted || submission.seatoolStatus !== SEATOOL_STATUS.DRAFT) {
+  const stateCode = id.slice(0, 2);
+  const userStates = authenticatedUser.states?.map((state) => state.toUpperCase()) || [];
+  if (!userStates.includes(stateCode)) {
+    return response({
+      statusCode: 403,
+      body: { message: "Not authorized to view this resource" },
+    });
+  }
+
+  const packageResult = await getDraftPackage(id);
+
+  if (!packageResult || !packageResult.found || !packageResult._source) {
+    return response({
+      statusCode: 404,
+      body: { message: "No record found for the given id" },
+    });
+  }
+
+  const submission = packageResult._source;
+  if (submission.deleted || submission.seatoolStatus !== SEATOOL_STATUS.DRAFT) {
+    return response({
+      statusCode: 409,
+      body: { message: `Package ${submission.id} is not an active draft.` },
+    });
+  }
+
+  const timestamp = new Date().toISOString();
+  const { domain, index } = getDomainAndNamespace("draftmain");
+  const hasVersionData =
+    typeof packageResult._seq_no === "number" && typeof packageResult._primary_term === "number";
+
+  try {
+    await os.updateData(domain, {
+      index,
+      id: submission.id,
+      refresh: true,
+      ...(hasVersionData && {
+        if_seq_no: packageResult._seq_no,
+        if_primary_term: packageResult._primary_term,
+      }),
+      body: {
+        doc: {
+          deleted: true,
+          changedDate: timestamp,
+          makoChangedDate: timestamp,
+          statusDate: timestamp,
+        },
+        doc_as_upsert: false,
+      },
+    });
+  } catch (error) {
+    if (isVersionConflictError(error)) {
       return response({
         statusCode: 409,
-        body: { message: `Package ${submission.id} is not an active draft.` },
-      });
-    }
-
-    const timestamp = new Date().toISOString();
-    const { domain, index } = getDomainAndNamespace("main");
-    const hasVersionData =
-      typeof packageResult._seq_no === "number" && typeof packageResult._primary_term === "number";
-
-    try {
-      await os.updateData(domain, {
-        index,
-        id: submission.id,
-        refresh: true,
-        ...(hasVersionData && {
-          if_seq_no: packageResult._seq_no,
-          if_primary_term: packageResult._primary_term,
-        }),
         body: {
-          doc: {
-            deleted: true,
-            changedDate: timestamp,
-            makoChangedDate: timestamp,
-            statusDate: timestamp,
-          },
-          doc_as_upsert: false,
+          message: "Draft was updated by another user. Refresh this page and try deleting again.",
         },
       });
-    } catch (error) {
-      if (isVersionConflictError(error)) {
-        return response({
-          statusCode: 409,
-          body: {
-            message: "Draft was updated by another user. Refresh this page and try deleting again.",
-          },
-        });
-      }
-
-      throw error;
     }
 
-    return response({
-      statusCode: 200,
-      body: { message: "Draft deleted", id: submission.id },
-    });
+    throw error;
+  }
+
+  return response({
+    statusCode: 200,
+    body: { message: "Draft deleted", id: submission.id },
   });
+});

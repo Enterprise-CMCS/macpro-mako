@@ -1,7 +1,15 @@
+import { getDraftPackage } from "libs/api/package";
 import { APIGatewayEvent, SEATOOL_STATUS } from "shared-types";
+import { isCmsUser } from "shared-utils";
 import { z } from "zod";
 
-import { authenticatedMiddy, canViewPackage, ContextWithPackage, fetchPackage } from "./middleware";
+import {
+  authenticatedMiddy,
+  canViewPackage,
+  ContextWithAuthenticatedUser,
+  ContextWithPackage,
+  fetchPackage,
+} from "./middleware";
 
 const itemExistsEventSchema = z
   .object({
@@ -23,23 +31,43 @@ export const handler = authenticatedMiddy({
 })
   .use(fetchPackage({ allowNotFound: true, setToContext: true }))
   .use(canViewPackage())
-  .handler(async (event: ItemExistsEvent, context: ContextWithPackage) => {
-    const { packageResult } = context;
+  .handler(
+    async (event: ItemExistsEvent, context: ContextWithPackage & ContextWithAuthenticatedUser) => {
+      const { packageResult, authenticatedUser } = context;
 
-    const includeDrafts = Boolean(event.body?.includeDrafts);
-    const hasPackage = !(packageResult === undefined || !packageResult.found);
-    const isDeleted = packageResult?._source?.deleted === true;
-    const isDraft = packageResult?._source?.seatoolStatus === SEATOOL_STATUS.DRAFT;
-    const exists = hasPackage && !isDeleted && (includeDrafts || !isDraft);
+      const includeDrafts = Boolean(event.body?.includeDrafts);
+      const isCms = Boolean(authenticatedUser && isCmsUser(authenticatedUser));
+      const hasActiveMainNonDraft =
+        packageResult?.found === true &&
+        packageResult._source?.deleted !== true &&
+        packageResult._source?.seatoolStatus !== SEATOOL_STATUS.DRAFT;
 
-    return {
-      statusCode: 200,
-      body: JSON.stringify({
-        message: exists ? "Record found for the given id" : "No record found for the given id",
-        exists,
-        ...(includeDrafts && hasPackage && !isDeleted
-          ? { status: packageResult?._source?.seatoolStatus }
-          : {}),
-      }),
-    };
-  });
+      const shouldFetchDraftIndex = includeDrafts && !isCms;
+      const draftPackage = shouldFetchDraftIndex
+        ? await getDraftPackage(event.body?.id?.toUpperCase())
+        : undefined;
+      const hasActiveDraftPackage =
+        draftPackage?.found === true &&
+        draftPackage._source?.deleted !== true &&
+        draftPackage._source?.seatoolStatus === SEATOOL_STATUS.DRAFT;
+
+      const exists = includeDrafts
+        ? hasActiveMainNonDraft || hasActiveDraftPackage
+        : hasActiveMainNonDraft;
+
+      const status = hasActiveMainNonDraft
+        ? packageResult?._source?.seatoolStatus
+        : hasActiveDraftPackage
+          ? draftPackage?._source?.seatoolStatus
+          : undefined;
+
+      return {
+        statusCode: 200,
+        body: JSON.stringify({
+          message: exists ? "Record found for the given id" : "No record found for the given id",
+          exists,
+          ...(includeDrafts && status ? { status } : {}),
+        }),
+      };
+    },
+  );

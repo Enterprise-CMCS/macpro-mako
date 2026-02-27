@@ -37,6 +37,8 @@ export const DEFAULT_FILTERS: Record<OsTab, Partial<OsUrlState>> = {
     ],
   },
 };
+
+export const OS_DASHBOARD_REFRESH_EVENT = "os-dashboard-refresh";
 /**
  *
 @summary
@@ -87,10 +89,33 @@ export const useOsData = () => {
       setTabLoading(false);
     }
   };
+
   useEffect(() => {
     onRequest(params.state);
   }, [params.queryString]); // eslint-disable-line react-hooks/exhaustive-deps
-  return { data, isLoading, error, ...params, tabLoading };
+
+  useEffect(() => {
+    if (typeof window === "undefined") {
+      return;
+    }
+
+    const handleDashboardRefresh = () => {
+      onRequest(params.state);
+    };
+
+    window.addEventListener(OS_DASHBOARD_REFRESH_EVENT, handleDashboardRefresh);
+    return () => {
+      window.removeEventListener(OS_DASHBOARD_REFRESH_EVENT, handleDashboardRefresh);
+    };
+  }, [params.queryString]); // eslint-disable-line react-hooks/exhaustive-deps
+
+  return {
+    data,
+    isLoading,
+    error,
+    ...params,
+    tabLoading,
+  };
 };
 export const useOsAggregate = () => {
   const { data: user } = useGetUser();

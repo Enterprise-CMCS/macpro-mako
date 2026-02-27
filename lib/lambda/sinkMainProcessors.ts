@@ -56,6 +56,22 @@ const eventsThatMayStartAsDrafts = new Set([
   "app-k",
 ]);
 
+const isDocumentMissingError = (error: unknown) => {
+  if (error && typeof error === "object") {
+    const osType = (error as { meta?: { body?: { error?: { type?: string } } } }).meta?.body?.error
+      ?.type;
+    if (osType === "document_missing_exception") {
+      return true;
+    }
+  }
+
+  if (error instanceof Error) {
+    return error.message.includes("document_missing_exception");
+  }
+
+  return false;
+};
+
 type OneMacRecord = {
   id: string;
   [key: string]: unknown | undefined;
@@ -296,27 +312,29 @@ const getOneMacRecordWithAllProperties = (
   return;
 };
 
-const removeDraftFieldForSubmittedRecords = async (recordIds: string[]) => {
+const markDraftRecordsDeletedForSubmittedRecords = async (recordIds: string[]) => {
   if (recordIds.length === 0) {
     return;
   }
 
-  const { domain, index } = getDomainAndNamespace("main");
+  const { domain, index } = getDomainAndNamespace("draftmain");
   const dedupedRecordIds = [...new Set(recordIds)];
+  const timestamp = new Date().toISOString();
 
   const results = await Promise.allSettled(
     dedupedRecordIds.map(async (id) =>
       os.updateData(domain, {
         index,
         id,
+        refresh: true,
         body: {
-          script: {
-            lang: "painless",
-            source: "ctx._source.remove(params.field)",
-            params: {
-              field: "draft",
-            },
+          doc: {
+            deleted: true,
+            changedDate: timestamp,
+            makoChangedDate: timestamp,
+            statusDate: timestamp,
           },
+          doc_as_upsert: false,
         },
       }),
     ),
@@ -324,11 +342,15 @@ const removeDraftFieldForSubmittedRecords = async (recordIds: string[]) => {
 
   results.forEach((result, resultIndex) => {
     if (result.status === "rejected") {
+      if (isDocumentMissingError(result.reason)) {
+        return;
+      }
+
       logError({
         type: ErrorType.UNKNOWN,
         error: result.reason,
         metadata: {
-          message: "Failed to remove draft field after OneMAC submission was indexed",
+          message: "Failed to mark draft as deleted after OneMAC submission was indexed",
           recordId: dedupedRecordIds[resultIndex],
         },
       });
@@ -409,7 +431,7 @@ export const insertOneMacRecordsFromKafkaIntoMako = async (
   await bulkUpdateDataWrapper(oneMacRecords, "main");
   await bulkUpdateDataWrapper(oneMacUsers, "users");
   await bulkUpdateDataWrapper(roleRequests, "roles");
-  await removeDraftFieldForSubmittedRecords(draftCleanupRecordIds);
+  await markDraftRecordsDeletedForSubmittedRecords(draftCleanupRecordIds);
 };
 
 const getMakoDocTimestamps = async (kafkaRecords: KafkaRecord[]) => {

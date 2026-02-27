@@ -4,7 +4,13 @@ import { isStateUser } from "shared-utils";
 
 import { deleteDraft, useGetPackageActions, useGetUser } from "@/api";
 import { banner, LoadingSpinner, userPrompt } from "@/components";
-import { DETAILS_ORIGIN, mapActionLabel, ORIGIN, WAIVER_SUBMISSION_ORIGIN } from "@/utils";
+import {
+  DETAILS_ORIGIN,
+  mapActionLabel,
+  ORIGIN,
+  queryClient,
+  WAIVER_SUBMISSION_ORIGIN,
+} from "@/utils";
 import { getDashboardTabForAuthority } from "@/utils/crumbs";
 import {
   DRAFT_CONTINUE_ACTION_LABEL,
@@ -64,6 +70,11 @@ export const PackageActionsCard = ({ submission, id }: PackageActionsCardProps) 
             variant: "success",
             pathnameToDisplayOn: "/dashboard",
           });
+          await Promise.all([
+            queryClient.invalidateQueries({ queryKey: ["os-dashboard"] }),
+            queryClient.invalidateQueries({ queryKey: ["spas"] }),
+            queryClient.invalidateQueries({ queryKey: ["waivers"] }),
+          ]);
 
           navigate(dashboardPath, { replace: true });
         } catch (error) {

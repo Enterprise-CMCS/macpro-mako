@@ -1,9 +1,13 @@
+import { getDraftPackage } from "libs/api/package";
 import { APIGatewayEvent } from "shared-types";
+import { SEATOOL_STATUS } from "shared-types";
+import { isCmsUser } from "shared-utils";
 import { z } from "zod";
 
 import {
   authenticatedMiddy,
   canViewPackage,
+  ContextWithAuthenticatedUser,
   ContextWithPackage,
   fetchAppkChildren,
   fetchChangelog,
@@ -14,7 +18,8 @@ const itemEventSchema = z
   .object({
     body: z
       .object({
-        id: z.string(),
+        id: z.string().trim().min(1),
+        includeDraft: z.boolean().optional(),
       })
       .strict(),
   })
@@ -27,15 +32,42 @@ export const handler = authenticatedMiddy({
   setToContext: true,
   eventSchema: itemEventSchema,
 })
-  .use(fetchPackage({ setToContext: true }))
+  .use(fetchPackage({ allowNotFound: true, rethrowErrors: true, setToContext: true }))
   .use(canViewPackage())
   .use(fetchAppkChildren({ setToContext: true }))
   .use(fetchChangelog({ setToContext: true }))
-  .handler(async (event: ItemEvent, context: ContextWithPackage) => {
-    const { packageResult } = context;
+  .handler(async (event: ItemEvent, context: ContextWithPackage & ContextWithAuthenticatedUser) => {
+    const { packageResult, authenticatedUser } = context;
+
+    const isActiveMainNonDraft =
+      packageResult?.found === true &&
+      packageResult._source?.deleted !== true &&
+      packageResult._source?.seatoolStatus !== SEATOOL_STATUS.DRAFT;
+
+    if (isActiveMainNonDraft) {
+      return {
+        statusCode: 200,
+        body: packageResult,
+      };
+    }
+
+    if (event.body?.includeDraft === true) {
+      const draftPackageResult = await getDraftPackage(event.body.id.toUpperCase());
+      const isActiveDraft =
+        draftPackageResult?.found === true &&
+        draftPackageResult._source?.deleted !== true &&
+        draftPackageResult._source?.seatoolStatus === SEATOOL_STATUS.DRAFT;
+
+      if (isActiveDraft && (!authenticatedUser || !isCmsUser(authenticatedUser))) {
+        return {
+          statusCode: 200,
+          body: draftPackageResult,
+        };
+      }
+    }
 
     return {
-      statusCode: 200,
-      body: packageResult,
+      statusCode: 404,
+      body: JSON.stringify({ message: "No record found for the given id" }),
     };
   });

@@ -1,4 +1,5 @@
 import { APIGatewayEvent, Context } from "aws-lambda";
+import * as packageApi from "libs/api/package";
 import {
   GET_ERROR_ITEM_ID,
   getRequestContext,
@@ -8,7 +9,8 @@ import {
   setMockUsername,
   TEST_ITEM_ID,
 } from "mocks";
-import { describe, expect, it } from "vitest";
+import { SEATOOL_STATUS } from "shared-types";
+import { describe, expect, it, vi } from "vitest";
 
 import { handler } from "./itemExists";
 
@@ -152,5 +154,34 @@ describe("Handler for checking if record exists", () => {
     expect(res.body).toEqual(
       JSON.stringify({ message: "No record found for the given id", exists: false }),
     );
+  });
+
+  it("should return draft status from draftmain when includeDrafts is true", async () => {
+    const getDraftPackageSpy = vi.spyOn(packageApi, "getDraftPackage").mockResolvedValueOnce({
+      found: true,
+      _id: NOT_FOUND_ITEM_ID,
+      _source: {
+        id: NOT_FOUND_ITEM_ID,
+        seatoolStatus: SEATOOL_STATUS.DRAFT,
+        deleted: false,
+      },
+    } as any);
+
+    const event = {
+      body: JSON.stringify({ id: NOT_FOUND_ITEM_ID, includeDrafts: true }),
+      requestContext: getRequestContext(),
+    } as APIGatewayEvent;
+
+    const res = await handler(event, {} as Context);
+
+    expect(res.statusCode).toEqual(200);
+    expect(res.body).toEqual(
+      JSON.stringify({
+        message: "Record found for the given id",
+        exists: true,
+        status: SEATOOL_STATUS.DRAFT,
+      }),
+    );
+    getDraftPackageSpy.mockRestore();
   });
 });

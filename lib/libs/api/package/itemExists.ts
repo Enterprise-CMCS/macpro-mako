@@ -12,22 +12,25 @@ export async function itemExists({
 }): Promise<boolean> {
   try {
     const domain = getDomain();
-    const index: `${string}${BaseIndex}` = getOsNamespace("main");
+    const mainIndex: `${string}${BaseIndex}` = getOsNamespace("main");
+    const draftIndex: `${string}${BaseIndex}` = getOsNamespace("draftmain");
 
-    const packageResult = await os.getItem(domain, index, id);
-    if (!packageResult?._source) {
-      return false;
-    }
+    const mainPackageResult = await os.getItem(domain, mainIndex, id);
+    const hasMainNonDraftPackage =
+      mainPackageResult?.found === true &&
+      mainPackageResult._source?.deleted !== true &&
+      mainPackageResult._source?.seatoolStatus !== SEATOOL_STATUS.DRAFT;
 
-    if (packageResult._source.deleted === true) {
-      return false;
-    }
+    if (hasMainNonDraftPackage) return true;
+    if (!includeDrafts) return false;
 
-    if (includeDrafts) {
-      return true;
-    }
+    const draftPackageResult = await os.getItem(domain, draftIndex, id);
+    const hasDraftPackage =
+      draftPackageResult?.found === true &&
+      draftPackageResult._source?.deleted !== true &&
+      draftPackageResult._source?.seatoolStatus === SEATOOL_STATUS.DRAFT;
 
-    return packageResult._source.seatoolStatus !== SEATOOL_STATUS.DRAFT;
+    return hasDraftPackage;
   } catch (error) {
     console.error(error);
     return false;

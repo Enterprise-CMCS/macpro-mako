@@ -7,11 +7,13 @@ import { storePackageInRequest } from "./utils";
 export type FetchPackageOptions = {
   allowNotFound?: boolean;
   setToContext?: boolean;
+  rethrowErrors?: boolean;
 };
 
 const defaults: FetchPackageOptions = {
   allowNotFound: false,
   setToContext: false,
+  rethrowErrors: false,
 };
 
 /**
@@ -33,7 +35,12 @@ export const fetchPackage = (opts: FetchPackageOptions = {}): MiddlewareObj => {
       try {
         packageResult = await getPackage(id);
       } catch (err) {
-        if (!options.allowNotFound) {
+        const statusCode = (err as { statusCode?: number; meta?: { statusCode?: number } })
+          ?.statusCode;
+        const metaStatusCode = (err as { meta?: { statusCode?: number } })?.meta?.statusCode;
+        const isNotFoundError = statusCode === 404 || metaStatusCode === 404;
+
+        if (!options.allowNotFound || (options.rethrowErrors && !isNotFoundError)) {
           throw err;
         }
       }

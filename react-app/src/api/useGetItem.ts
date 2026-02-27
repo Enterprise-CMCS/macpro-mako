@@ -4,8 +4,15 @@ import { opensearch, ReactQueryApiError, SEATOOL_STATUS } from "shared-types";
 
 import { sendGAEvent } from "@/utils/ReactGA/SendGAEvent";
 
-export const getItem = async (id: string): Promise<opensearch.main.ItemResult> =>
-  await API.post("os", "/item", { body: { id } }).catch(() =>
+type GetItemOptions = {
+  includeDraft?: boolean;
+};
+
+export const getItem = async (
+  id: string,
+  options?: GetItemOptions,
+): Promise<opensearch.main.ItemResult> =>
+  await API.post("os", "/item", { body: { id, includeDraft: options?.includeDraft } }).catch(() =>
     sendGAEvent("api_error", { message: `failure /item ${id}` }),
   );
 
@@ -32,10 +39,11 @@ export const canBeRenewedOrAmended = async (id: string) => {
 export const useGetItem = (
   id: string,
   options?: UseQueryOptions<opensearch.main.ItemResult, ReactQueryApiError>,
+  requestOptions?: GetItemOptions,
 ) => {
   return useQuery<opensearch.main.ItemResult, ReactQueryApiError>(
-    ["record", id],
-    () => getItem(id),
+    ["record", id, requestOptions?.includeDraft ? "includeDraft" : "mainOnly"],
+    () => getItem(id, requestOptions),
     options,
   );
 };

@@ -55,4 +55,21 @@ describe("api/package/itemExists", () => {
 
     expect(exists).toBe(true);
   });
+
+  it("returns true for active drafts in draftmain when main has no package", async () => {
+    vi.spyOn(os, "getItem")
+      .mockResolvedValueOnce(undefined as any)
+      .mockResolvedValueOnce({
+        found: true,
+        _source: {
+          id: "MD-25-2525-SAVE",
+          deleted: false,
+          seatoolStatus: SEATOOL_STATUS.DRAFT,
+        },
+      } as any);
+
+    const exists = await itemExists({ id: "MD-25-2525-SAVE", includeDrafts: true });
+
+    expect(exists).toBe(true);
+  });
 });

@@ -184,7 +184,9 @@ export async function mapRole(
   }
 }
 
-export async function search(host: string, index: opensearch.Index, query: any) {
+type SearchIndex = opensearch.Index | `${opensearch.Index},${opensearch.Index}`;
+
+export async function search(host: string, index: SearchIndex, query: any) {
   client = client || (await getClient(host));
   const response = await client.search({
     index: index,
