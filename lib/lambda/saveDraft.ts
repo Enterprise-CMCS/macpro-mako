@@ -58,6 +58,8 @@ const saveDraftEventSchema = z
         event: z.string(),
         authority: z.string().optional(),
         draftData: z.record(z.unknown()),
+        ifSeqNo: z.number().int().nonnegative().optional(),
+        ifPrimaryTerm: z.number().int().nonnegative().optional(),
       })
       .strict(),
   })
@@ -89,7 +91,7 @@ export const handler = authenticatedMiddy({
     });
   }
 
-  const { id, event: eventName, authority, draftData } = event.body;
+  const { id, event: eventName, authority, draftData, ifSeqNo, ifPrimaryTerm } = event.body;
   if (!draftableEvents.includes(eventName as DraftableEvent)) {
     return response({
       statusCode: 400,
@@ -147,6 +149,37 @@ export const handler = authenticatedMiddy({
     existingPackage?._source?.draft?.originalCreatorName ?? existingPackage?._source?.submitterName;
   const existingOriginalCreatorEmail = hasActiveExistingDraft ? activeDraftCreatorEmail : undefined;
   const existingOriginalCreatorName = hasActiveExistingDraft ? activeDraftCreatorName : undefined;
+  const hasVersionFromRequest =
+    Number.isInteger(ifSeqNo) &&
+    Number.isInteger(ifPrimaryTerm) &&
+    ifSeqNo >= 0 &&
+    ifPrimaryTerm >= 0;
+  const hasVersionInExistingDraft =
+    typeof existingPackage?._seq_no === "number" &&
+    typeof existingPackage?._primary_term === "number";
+
+  if (hasActiveExistingDraft) {
+    if (!hasVersionFromRequest) {
+      return response({
+        statusCode: 409,
+        body: {
+          message: "Draft was updated by another user. Refresh this page and try saving again.",
+        },
+      });
+    }
+
+    if (
+      hasVersionInExistingDraft &&
+      (ifSeqNo !== existingPackage._seq_no || ifPrimaryTerm !== existingPackage._primary_term)
+    ) {
+      return response({
+        statusCode: 409,
+        body: {
+          message: "Draft was updated by another user. Refresh this page and try saving again.",
+        },
+      });
+    }
+  }
 
   const record = {
     id: normalizedId,
@@ -176,17 +209,26 @@ export const handler = authenticatedMiddy({
 
   const { domain, index } = getDomainAndNamespace("main");
 
-  await os.updateData(domain, {
+  const updateResponse = await os.updateData(domain, {
     index,
     id: normalizedId,
+    ...(hasActiveExistingDraft &&
+      hasVersionFromRequest && { if_seq_no: ifSeqNo, if_primary_term: ifPrimaryTerm }),
     body: {
       doc: record,
       doc_as_upsert: true,
     },
   });
 
+  const seqNo = updateResponse?.body?._seq_no ?? updateResponse?._seq_no;
+  const primaryTerm = updateResponse?.body?._primary_term ?? updateResponse?._primary_term;
+
   return response({
     statusCode: 200,
-    body: { message: "Draft saved", id: normalizedId },
+    body: {
+      message: "Draft saved",
+      id: normalizedId,
+      ...(typeof seqNo === "number" && typeof primaryTerm === "number" && { seqNo, primaryTerm }),
+    },
   });
 });

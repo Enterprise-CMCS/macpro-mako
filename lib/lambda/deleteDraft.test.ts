@@ -16,6 +16,8 @@ const buildPackageResult = (
   ({
     found: true,
     _id: DRAFT_ID,
+    _seq_no: 12,
+    _primary_term: 3,
     _source: {
       id: DRAFT_ID,
       state: "MD",
@@ -98,10 +100,40 @@ describe("deleteDraft handler", () => {
       expect.objectContaining({
         id: DRAFT_ID,
         refresh: true,
+        if_seq_no: 12,
+        if_primary_term: 3,
         body: expect.objectContaining({
           doc: expect.objectContaining({ deleted: true }),
           doc_as_upsert: false,
         }),
+      }),
+    );
+  });
+
+  it("returns 409 when draft was changed by another request during delete", async () => {
+    vi.spyOn(packageApi, "getPackage").mockResolvedValue(buildPackageResult(SEATOOL_STATUS.DRAFT));
+    vi.spyOn(os, "updateData").mockRejectedValue({
+      meta: {
+        body: {
+          error: {
+            type: "version_conflict_engine_exception",
+          },
+        },
+      },
+    });
+
+    const res = await handler(
+      {
+        body: JSON.stringify({ id: DRAFT_ID }),
+        requestContext: getRequestContext(),
+      } as APIGatewayEvent,
+      {} as Context,
+    );
+
+    expect(res.statusCode).toBe(409);
+    expect(res.body).toEqual(
+      JSON.stringify({
+        message: "Draft was updated by another user. Refresh this page and try deleting again.",
       }),
     );
   });

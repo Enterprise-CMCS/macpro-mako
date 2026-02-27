@@ -759,6 +759,90 @@ describe("ActionForm", () => {
     expect(userPromptSpy).not.toHaveBeenCalled();
   });
 
+  test("uses and rolls optimistic concurrency values while saving an existing draft", async () => {
+    const user = userEvent.setup();
+    const draftId = "NY-25-2342";
+    const useGetItemSpy = vi.spyOn(api, "useGetItem").mockReturnValue({
+      data: {
+        _id: draftId,
+        _seq_no: 5,
+        _primary_term: 1,
+        found: true,
+        _source: {
+          id: draftId,
+          seatoolStatus: SEATOOL_STATUS.DRAFT,
+          draft: {
+            savedAt: "2026-02-26T00:00:00.000Z",
+            data: { id: draftId },
+          },
+        },
+      },
+      isLoading: false,
+      error: null,
+    } as any);
+    const saveDraftSpy = vi
+      .spyOn(api, "saveDraft")
+      .mockResolvedValueOnce({
+        message: "Draft saved",
+        id: draftId,
+        seqNo: 6,
+        primaryTerm: 1,
+      })
+      .mockResolvedValueOnce({
+        message: "Draft saved",
+        id: draftId,
+        seqNo: 7,
+        primaryTerm: 1,
+      });
+
+    await renderFormWithPackageSectionAsync(
+      <ActionForm
+        title="Draft Save Test"
+        schema={z.object({
+          id: z.string().min(1),
+        })}
+        fields={(form) => <input aria-label="Package ID" {...form.register("id")} />}
+        defaultValues={{ id: draftId }}
+        documentPollerArgs={{
+          property: () => "id",
+          documentChecker: () => true,
+        }}
+        draftOptions={{ enabled: true, event: "new-medicaid-submission" }}
+        breadcrumbText="Example Breadcrumb"
+      />,
+      undefined,
+      "Medicaid SPA",
+      `draftId=${draftId}`,
+    );
+
+    await user.click(screen.getByTestId("save-draft-form"));
+    await waitFor(() => expect(saveDraftSpy).toHaveBeenCalledTimes(1));
+    expect(saveDraftSpy).toHaveBeenNthCalledWith(
+      1,
+      expect.objectContaining({
+        id: draftId,
+        event: "new-medicaid-submission",
+        ifSeqNo: 5,
+        ifPrimaryTerm: 1,
+      }),
+    );
+
+    await user.click(screen.getByTestId("save-draft-form"));
+    await waitFor(() => expect(saveDraftSpy).toHaveBeenCalledTimes(2));
+    expect(saveDraftSpy).toHaveBeenNthCalledWith(
+      2,
+      expect.objectContaining({
+        id: draftId,
+        event: "new-medicaid-submission",
+        ifSeqNo: 6,
+        ifPrimaryTerm: 1,
+      }),
+    );
+
+    useGetItemSpy.mockRestore();
+    saveDraftSpy.mockRestore();
+  });
+
   test("shows warning modal when a non-owner opens a draft and allows continue", async () => {
     const user = userEvent.setup();
     const draftId = "NY-25-2342";
