@@ -64,6 +64,7 @@ export const handler = authenticatedMiddy({
     await os.updateData(domain, {
       index,
       id: submission.id,
+      refresh: true,
       body: {
         doc: {
           deleted: true,
