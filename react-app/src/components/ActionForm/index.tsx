@@ -176,6 +176,7 @@ export const ActionForm = <Schema extends SchemaWithEnforcableProps>({
   const [hasConfirmedNonOwnerDraftAction, setHasConfirmedNonOwnerDraftAction] = useState(false);
   const hasPromptedNonOwnerDraftActionRef = useRef(false);
   const draftVersionRef = useRef<{ seqNo?: number; primaryTerm?: number }>({});
+  const saveDraftInFlightRef = useRef(false);
 
   const breadcrumbs = optionCrumbsFromPath(pathname, authority, id);
   const draftEnabled = draftOptions?.enabled === true;
@@ -408,14 +409,34 @@ export const ActionForm = <Schema extends SchemaWithEnforcableProps>({
 
   const handleSaveDraft = async () => {
     if (!draftEnabled || !draftOptions?.event) return;
+    if (saveDraftInFlightRef.current) return;
     if (!canProceedWithNonOwnerDraftAction()) return;
 
-    const idPath = draftOptions.idPath ?? "id";
-    const shouldValidateIdField = !isDraftMode;
-    if (shouldValidateIdField) {
-      const isIdValid = await form.trigger(idPath as FieldPath<z.TypeOf<Schema>>);
+    saveDraftInFlightRef.current = true;
+    try {
+      const idPath = draftOptions.idPath ?? "id";
+      const shouldValidateIdField = !isDraftMode;
+      if (shouldValidateIdField) {
+        const isIdValid = await form.trigger(idPath as FieldPath<z.TypeOf<Schema>>);
 
-      if (!isIdValid) {
+        if (!isIdValid) {
+          banner({
+            header: "Unable to save draft",
+            body: "Please enter a valid ID before saving.",
+            variant: "destructive",
+            pathnameToDisplayOn: window.location.pathname,
+          });
+          return;
+        }
+      }
+
+      const formValues = form.getValues();
+      const idValue = getValueByPath(formValues as Record<string, unknown>, idPath);
+      const idFromForm = typeof idValue === "string" ? idValue.trim() : "";
+      const fallbackDraftId = isDraftMode ? draftId : undefined;
+      const resolvedId = idFromForm || fallbackDraftId;
+
+      if (!resolvedId) {
         banner({
           header: "Unable to save draft",
           body: "Please enter a valid ID before saving.",
@@ -424,38 +445,20 @@ export const ActionForm = <Schema extends SchemaWithEnforcableProps>({
         });
         return;
       }
-    }
 
-    const formValues = form.getValues();
-    const idValue = getValueByPath(formValues as Record<string, unknown>, idPath);
-    const idFromForm = typeof idValue === "string" ? idValue.trim() : "";
-    const fallbackDraftId = isDraftMode ? draftId : undefined;
-    const resolvedId = idFromForm || fallbackDraftId;
+      const normalizedId = resolvedId.toUpperCase();
+      const authorityPath = draftOptions.authorityPath ?? "authority";
+      const authorityValue = getValueByPath(formValues as Record<string, unknown>, authorityPath);
+      const draftVersionPayload =
+        isDraftMode &&
+        typeof draftVersionRef.current.seqNo === "number" &&
+        typeof draftVersionRef.current.primaryTerm === "number"
+          ? {
+              ifSeqNo: draftVersionRef.current.seqNo,
+              ifPrimaryTerm: draftVersionRef.current.primaryTerm,
+            }
+          : {};
 
-    if (!resolvedId) {
-      banner({
-        header: "Unable to save draft",
-        body: "Please enter a valid ID before saving.",
-        variant: "destructive",
-        pathnameToDisplayOn: window.location.pathname,
-      });
-      return;
-    }
-
-    const normalizedId = resolvedId.toUpperCase();
-    const authorityPath = draftOptions.authorityPath ?? "authority";
-    const authorityValue = getValueByPath(formValues as Record<string, unknown>, authorityPath);
-    const draftVersionPayload =
-      isDraftMode &&
-      typeof draftVersionRef.current.seqNo === "number" &&
-      typeof draftVersionRef.current.primaryTerm === "number"
-        ? {
-            ifSeqNo: draftVersionRef.current.seqNo,
-            ifPrimaryTerm: draftVersionRef.current.primaryTerm,
-          }
-        : {};
-
-    try {
       const saveResponse = await saveDraftAsync({
         id: normalizedId,
         event: draftOptions.event,
@@ -496,6 +499,8 @@ export const ActionForm = <Schema extends SchemaWithEnforcableProps>({
         variant: "destructive",
         pathnameToDisplayOn: window.location.pathname,
       });
+    } finally {
+      saveDraftInFlightRef.current = false;
     }
   };
 

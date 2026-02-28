@@ -845,6 +845,50 @@ describe("ActionForm", () => {
     saveDraftSpy.mockRestore();
   });
 
+  test("ignores duplicate save clicks while a draft save is already in flight", async () => {
+    let resolveSaveDraft: ((value: api.SaveDraftResponse) => void) | undefined;
+    const saveDraftSpy = vi.spyOn(api, "saveDraft").mockImplementation(
+      () =>
+        new Promise<api.SaveDraftResponse>((resolve) => {
+          resolveSaveDraft = resolve;
+        }),
+    );
+
+    await renderFormWithPackageSectionAsync(
+      <ActionForm
+        title="Draft Save Test"
+        schema={z.object({
+          id: z.string().min(1),
+        })}
+        fields={(form) => <input aria-label="Package ID" {...form.register("id")} />}
+        defaultValues={{ id: "MD-00-0002" }}
+        documentPollerArgs={{
+          property: () => "id",
+          documentChecker: () => true,
+        }}
+        draftOptions={{ enabled: true, event: "new-medicaid-submission" }}
+        breadcrumbText="Example Breadcrumb"
+      />,
+    );
+
+    const saveButton = await screen.findByTestId("save-draft-form");
+    fireEvent.click(saveButton);
+    fireEvent.click(saveButton);
+
+    await waitFor(() => expect(saveDraftSpy).toHaveBeenCalledTimes(1));
+
+    resolveSaveDraft?.({
+      message: "Draft saved",
+      id: "MD-00-0002",
+      seqNo: 1,
+      primaryTerm: 1,
+    });
+
+    await waitFor(() => expect(saveDraftSpy).toHaveBeenCalledTimes(1));
+
+    saveDraftSpy.mockRestore();
+  });
+
   test("polls with includeDraft enabled while submitting an existing draft", async () => {
     const draftId = "MD-25-2525-SAVE";
     const useGetItemSpy = vi.spyOn(api, "useGetItem").mockReturnValue({
