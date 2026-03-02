@@ -1,6 +1,5 @@
 import { screen, within } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
-import { getFilteredDocList } from "mocks";
 import { opensearch } from "shared-types";
 import { describe, expect, it, vi } from "vitest";
 
@@ -22,16 +21,10 @@ const setup = (
   onToggle: (field: string) => void,
   disabled?: boolean,
   hits: opensearch.Hits<opensearch.main.Document> = defaultHits,
-  useStyledExcelExport: boolean = true,
 ) => {
   const user = userEvent.setup();
   const rendered = renderDashboard(
-    <OsFiltering
-      columns={columns}
-      onToggle={onToggle}
-      disabled={disabled}
-      useStyledExcelExport={useStyledExcelExport}
-    />,
+    <OsFiltering columns={columns} onToggle={onToggle} disabled={disabled} />,
     {
       data: hits,
       error: null,
@@ -143,20 +136,21 @@ describe("Visibility button", () => {
 
   it("should handle clicking the Export button", async () => {
     const csvSpy = vi.spyOn(exportUtils, "exportCsvRows").mockImplementation(() => {});
-    const excelSpy = vi.spyOn(exportUtils, "exportStyledExcelRows").mockResolvedValue(undefined);
-    const expected = getFilteredDocList(["CHIP SPA", "Medicaid SPA"]).map((doc) => [
-      doc.id,
-      doc.state,
-      doc.authority,
-    ]);
     const user = userEvent.setup();
     const onToggle = vi.fn();
     setup(DEFAULT_COLUMNS, onToggle, false);
 
     await user.click(screen.getByRole("button", { name: "Export" }));
-    expect(csvSpy).not.toHaveBeenCalled();
-    expect(excelSpy).toHaveBeenCalled();
-    const rowsArg = excelSpy.mock.calls[0]?.[1] ?? [];
-    expect(rowsArg.map((row) => row.values)).toEqual(expected);
+    expect(csvSpy).toHaveBeenCalledTimes(1);
+    const [rowsArg, filenameArg] = csvSpy.mock.calls[0] ?? [[], ""];
+    expect(rowsArg).toHaveLength(12);
+    expect(rowsArg[0]).toEqual(
+      expect.objectContaining({
+        "SPA ID": expect.any(String),
+        State: expect.any(String),
+        Authority: expect.any(String),
+      }),
+    );
+    expect(filenameArg).toMatch(/-export-\d{2}_\d{2}_\d{4}$/);
   });
 });

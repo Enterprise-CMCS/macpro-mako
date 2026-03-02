@@ -20,9 +20,7 @@ import { sendGAEvent } from "@/utils/ReactGA/SendGAEvent";
 import { DEFAULT_FILTERS } from "../../useOpensearch";
 import {
   buildCsvExportRows,
-  buildStyledExportRows,
   exportCsvRows,
-  exportStyledExcelRows,
   getExportFilenameBase,
   getVisibleExportColumns,
 } from "./export.utils";
@@ -33,8 +31,7 @@ export const OsExportData: FC<{
   columns: OsTableColumn[];
   disabled?: boolean;
   count: number;
-  useStyledExcelExport?: boolean;
-}> = ({ columns, disabled, count, useStyledExcelExport = false }) => {
+}> = ({ columns, disabled, count }) => {
   const [loading, setLoading] = useState(false);
   const [showAlert, setShowAlert] = useState(false);
   const url = useOsUrl();
@@ -50,14 +47,8 @@ export const OsExportData: FC<{
     const resolvedData = await getMainExportData(filters, url.state.sort);
     const visibleColumns = getVisibleExportColumns(columns);
     const filenameBase = getExportFilenameBase(url.state.tab);
-
-    if (useStyledExcelExport) {
-      const styledRows = buildStyledExportRows(visibleColumns, resolvedData);
-      await exportStyledExcelRows(visibleColumns, styledRows, filenameBase);
-    } else {
-      const exportRows = buildCsvExportRows(visibleColumns, resolvedData);
-      exportCsvRows(exportRows, filenameBase);
-    }
+    const exportRows = buildCsvExportRows(visibleColumns, resolvedData);
+    exportCsvRows(exportRows, filenameBase);
 
     sendGAEvent("dash_export_csv", {
       row_count: resolvedData.length,

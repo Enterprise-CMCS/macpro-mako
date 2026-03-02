@@ -15,9 +15,7 @@ import { useOsData, useOsUrl } from "./useOpensearch";
 const createLSColumns = (columns: OsTableColumn[]): string[] =>
   columns.filter((col) => col.hidden).map((col) => col.field ?? "");
 
-export const OsMainView: FC<{ columns: OsTableColumn[]; useStyledExcelExport?: boolean }> = (
-  props,
-) => {
+export const OsMainView: FC<{ columns: OsTableColumn[] }> = (props) => {
   const context = useOsContext();
   const url = useOsUrl();
   const osData = useOsData();
@@ -72,7 +70,6 @@ export const OsMainView: FC<{ columns: OsTableColumn[]; useStyledExcelExport?: b
           onToggle={onToggle}
           columns={osColumns[currentTab]}
           count={context.data?.total?.value || 0}
-          useStyledExcelExport={props.useStyledExcelExport}
         />
         <FilterChips />
       </div>

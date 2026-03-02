@@ -3,6 +3,7 @@ import * as packageApi from "libs/api/package";
 import {
   GET_ERROR_ITEM_ID,
   getRequestContext,
+  helpDeskUser,
   HI_TEST_ITEM_ID,
   NOT_FOUND_ITEM_ID,
   setMockUsername,
@@ -116,6 +117,45 @@ describe("getItemData Handler", () => {
     const event = {
       body: JSON.stringify({ id: NOT_FOUND_ITEM_ID, includeDraft: true }),
       requestContext: getRequestContext(),
+    } as APIGatewayEvent;
+
+    const res = await handler(event, {} as Context);
+
+    expect(res.statusCode).toEqual(200);
+    expect(res.body).toEqual(
+      JSON.stringify({
+        ...draftPackage,
+        _source: {
+          ...draftPackage._source,
+          changelog: [],
+        },
+      }),
+    );
+    getDraftPackageSpy.mockRestore();
+  });
+
+  it("should return 200 with draft package data for a Helpdesk user when includeDraft=true", async () => {
+    const draftPackage = {
+      found: true,
+      _id: "MD-25-2525-SAVE",
+      _source: {
+        id: "MD-25-2525-SAVE",
+        state: "MD",
+        seatoolStatus: SEATOOL_STATUS.DRAFT,
+        deleted: false,
+        draft: {
+          savedAt: "2026-01-01T00:00:00.000Z",
+          data: { id: "MD-25-2525-SAVE" },
+        },
+      },
+    } as any;
+    const getDraftPackageSpy = vi
+      .spyOn(packageApi, "getDraftPackage")
+      .mockResolvedValueOnce(draftPackage);
+
+    const event = {
+      body: JSON.stringify({ id: NOT_FOUND_ITEM_ID, includeDraft: true }),
+      requestContext: getRequestContext(helpDeskUser),
     } as APIGatewayEvent;
 
     const res = await handler(event, {} as Context);

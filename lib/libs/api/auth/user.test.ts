@@ -2,6 +2,7 @@ import { APIGatewayEvent } from "aws-lambda";
 import {
   convertUserAttributes,
   getRequestContext,
+  helpDeskUser,
   nullStateSubmitter,
   setMockUsername,
   testReviewer,
@@ -12,6 +13,7 @@ import { afterAll, describe, expect, it } from "vitest";
 
 import {
   getAuthDetails,
+  getSearchUserScope,
   getStateFilter,
   isAuthorized,
   isAuthorizedToGetPackageActions,
@@ -154,6 +156,19 @@ describe("Auth functions", () => {
         requestContext: getRequestContext(testReviewer),
       } as APIGatewayEvent);
       expect(result).toBeNull();
+    });
+  });
+
+  describe("getSearchUserScope", () => {
+    it("should allow Helpdesk users to view drafts without a state filter", async () => {
+      const result = await getSearchUserScope({
+        requestContext: getRequestContext(helpDeskUser),
+      } as APIGatewayEvent);
+
+      expect(result).toEqual({
+        stateFilter: null,
+        canViewDrafts: true,
+      });
     });
   });
 });

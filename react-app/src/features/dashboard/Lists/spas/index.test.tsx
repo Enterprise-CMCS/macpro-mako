@@ -102,49 +102,65 @@ const defaultHits: opensearch.Hits<opensearch.main.Document> = {
   total: { value: hitCount, relation: "eq" },
 };
 
+const omitHiddenExportFields = <
+  T extends {
+    "CPOC Name"?: string;
+    "Final Disposition"?: string;
+    "Formal RAI Requested"?: string;
+  },
+>(
+  row: T,
+) => {
+  const visibleFields = { ...row };
+  delete visibleFields["CPOC Name"];
+  delete visibleFields["Final Disposition"];
+  delete visibleFields["Formal RAI Requested"];
+  return visibleFields;
+};
+
 const getExpectedExportData = (useCmsStatus: boolean) => {
   return [
-    {
+    omitHiddenExportFields({
       ...PENDING_SUBMITTED_ITEM_EXPORT,
       Authority: pendingDoc.authority,
       "SPA ID": pendingDoc.id,
       Status: useCmsStatus ? pendingDoc.cmsStatus : pendingDoc.stateStatus,
-    },
-    {
+    }),
+    omitHiddenExportFields({
       ...PENDING_RAI_REQUEST_ITEM_EXPORT,
       Authority: raiRequestDoc.authority,
       "SPA ID": raiRequestDoc.id,
       Status: useCmsStatus ? raiRequestDoc.cmsStatus : raiRequestDoc.stateStatus,
-    },
-    {
+    }),
+    omitHiddenExportFields({
       ...PENDING_RAI_RECEIVED_ITEM_EXPORT,
       Authority: raiReceivedDoc.authority,
       "SPA ID": raiReceivedDoc.id,
       Status: useCmsStatus ? raiReceivedDoc.cmsStatus : raiReceivedDoc.stateStatus,
-    },
-    {
+    }),
+    omitHiddenExportFields({
       ...RAI_WITHDRAW_ENABLED_ITEM_EXPORT,
       Authority: withdrawEnabledDoc.authority,
       "SPA ID": withdrawEnabledDoc.id,
       Status: `${useCmsStatus ? withdrawEnabledDoc.cmsStatus : withdrawEnabledDoc.stateStatus} (Withdraw Formal RAI Response - Enabled)`,
-    },
-    {
+    }),
+    omitHiddenExportFields({
       ...RAI_WITHDRAW_DISABLED_ITEM_EXPORT,
       Authority: withdrawDisabledDoc.authority,
       "SPA ID": withdrawDisabledDoc.id,
       Status: useCmsStatus ? withdrawDisabledDoc.cmsStatus : withdrawDisabledDoc.stateStatus,
-    },
-    {
+    }),
+    omitHiddenExportFields({
       ...APPROVED_ITEM_EXPORT,
       Authority: approvedDoc.authority,
       "SPA ID": approvedDoc.id,
       Status: useCmsStatus ? approvedDoc.cmsStatus : approvedDoc.stateStatus,
-    },
-    {
+    }),
+    omitHiddenExportFields({
       ...BLANK_ITEM_EXPORT,
       "SPA ID": blankDoc.id,
       Status: useCmsStatus ? blankDoc.cmsStatus : blankDoc.stateStatus,
-    },
+    }),
   ];
 };
 
@@ -417,26 +433,16 @@ describe("SpasList", () => {
 
     it("should handle export", async () => {
       const csvSpy = vi.spyOn(exportUtils, "exportCsvRows").mockImplementation(() => {});
-      const excelSpy = vi.spyOn(exportUtils, "exportStyledExcelRows").mockResolvedValue(undefined);
 
       await user.keyboard("{Escape}"); // ⚠️ close columns menu after testing
 
       await user.click(screen.getByTestId("export-csv-btn"));
 
       const expectedData = getExpectedExportData(useCmsStatus);
-      if (oneMacUser.role === "statesubmitter") {
-        expect(csvSpy).not.toHaveBeenCalled();
-        expect(excelSpy).toHaveBeenCalled();
-        const rowsArg = excelSpy.mock.calls[0]?.[1] ?? [];
-        expect(rowsArg.length).toEqual(expectedData.length);
-      } else {
-        expect(excelSpy).not.toHaveBeenCalled();
-        expect(csvSpy).toHaveBeenCalledTimes(1);
-        expect(csvSpy).toHaveBeenCalledWith(
-          expectedData,
-          expect.stringMatching(/-export-\d{2}_\d{2}_\d{4}$/),
-        );
-      }
+      expect(csvSpy).toHaveBeenCalledTimes(1);
+      const [rows, filename] = csvSpy.mock.calls[0];
+      expect(rows).toEqual(expectedData);
+      expect(filename).toMatch(/-export-\d{2}_\d{2}_\d{4}$/);
     });
   });
 });

@@ -1,16 +1,12 @@
-import { opensearch, SEATOOL_STATUS } from "shared-types";
+import { opensearch } from "shared-types";
 import { describe, expect, it } from "vitest";
 
 import { OsTableColumn } from "@/components";
 
-import {
-  buildStyledExportRows,
-  getExportFilenameBase,
-  getVisibleExportColumns,
-} from "./export.utils";
+import { buildCsvExportRows, getExportFilenameBase, getVisibleExportColumns } from "./export.utils";
 
 describe("export utils", () => {
-  it("buildStyledExportRows marks draft rows for italic styling", () => {
+  it("buildCsvExportRows includes draft rows as plain CSV data", () => {
     const columns: OsTableColumn[] = [
       {
         label: "SPA ID",
@@ -31,7 +27,7 @@ describe("export utils", () => {
         id: "NY-25-2342",
         state: "NY",
         authority: "Medicaid SPA",
-        seatoolStatus: SEATOOL_STATUS.DRAFT,
+        seatoolStatus: "Draft",
         stateStatus: "Draft",
         cmsStatus: "Draft",
       } as opensearch.main.Document,
@@ -39,18 +35,18 @@ describe("export utils", () => {
         id: "NY-25-2343",
         state: "NY",
         authority: "Medicaid SPA",
-        seatoolStatus: SEATOOL_STATUS.SUBMITTED,
+        seatoolStatus: "Submitted",
         stateStatus: "Submitted",
         cmsStatus: "Submitted - Intake Needed",
       } as opensearch.main.Document,
     ];
 
     const visibleColumns = getVisibleExportColumns(columns);
-    const rows = buildStyledExportRows(visibleColumns, items);
+    const rows = buildCsvExportRows(visibleColumns, items);
 
     expect(rows).toEqual([
-      { isDraft: true, values: ["NY-25-2342", "NY"] },
-      { isDraft: false, values: ["NY-25-2343", "NY"] },
+      { "SPA ID": "NY-25-2342", State: "NY" },
+      { "SPA ID": "NY-25-2343", State: "NY" },
     ]);
   });
 

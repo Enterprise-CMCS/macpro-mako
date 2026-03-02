@@ -13,8 +13,7 @@ export const OsFiltering: FC<{
   onToggle: (field: string) => void;
   disabled?: boolean;
   count?: number;
-  useStyledExcelExport?: boolean;
-}> = ({ columns, onToggle, disabled, count, useStyledExcelExport = false }) => {
+}> = ({ columns, onToggle, disabled, count }) => {
   const url = useOsUrl();
   const context = useOsContext();
   const [lastSearch, setLastSearch] = useState<string | null>(null);
@@ -65,7 +64,6 @@ export const OsFiltering: FC<{
             columns={columns}
             disabled={context?.data?.total.value === 0}
             count={count}
-            useStyledExcelExport={useStyledExcelExport}
           />
         </div>
       </div>

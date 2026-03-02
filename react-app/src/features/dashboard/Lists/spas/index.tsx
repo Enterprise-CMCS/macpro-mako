@@ -1,7 +1,7 @@
 import { useMemo } from "react";
 import { SEATOOL_STATUS, UserRoles } from "shared-types";
 import { CMS_READ_ONLY_ROLES } from "shared-types/user";
-import { formatDateToET, formatDateToUTC, isStateUser } from "shared-utils";
+import { formatDateToET, formatDateToUTC } from "shared-utils";
 
 import { OneMacUser } from "@/api";
 import { OsMainView, OsTableColumn } from "@/components";
@@ -156,7 +156,5 @@ const getColumns = ({ user, isCms }: OneMacUser): OsTableColumn[] => {
 
 export const SpasList = ({ oneMacUser }: { oneMacUser: OneMacUser }) => {
   const columns = useMemo(() => getColumns(oneMacUser), [oneMacUser]);
-  const useStyledExcelExport = isStateUser(oneMacUser.user);
-
-  return <OsMainView columns={columns} useStyledExcelExport={useStyledExcelExport} />;
+  return <OsMainView columns={columns} />;
 };

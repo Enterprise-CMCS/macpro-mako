@@ -1,7 +1,7 @@
 import { getDraftPackage } from "libs/api/package";
 import { APIGatewayEvent } from "shared-types";
 import { SEATOOL_STATUS } from "shared-types";
-import { isCmsUser } from "shared-utils";
+import { isCmsUser, isHelpDeskUser } from "shared-utils";
 import { z } from "zod";
 
 import {
@@ -58,7 +58,10 @@ export const handler = authenticatedMiddy({
         draftPackageResult._source?.deleted !== true &&
         draftPackageResult._source?.seatoolStatus === SEATOOL_STATUS.DRAFT;
 
-      if (isActiveDraft && (!authenticatedUser || !isCmsUser(authenticatedUser))) {
+      if (
+        isActiveDraft &&
+        (!authenticatedUser || !isCmsUser(authenticatedUser) || isHelpDeskUser(authenticatedUser))
+      ) {
         return {
           statusCode: 200,
           body: {
