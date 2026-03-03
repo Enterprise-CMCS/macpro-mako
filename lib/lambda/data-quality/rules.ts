@@ -110,7 +110,7 @@ const AUTO_RULE_CHECKS: Record<string, RuleCheck> = {
     return [];
   },
   "DQ-002": (record, rule) =>
-    isEmpty(record.origin)
+    shouldCheckOrigin(record) && isEmpty(record.origin)
       ? [
           violation(
             rule,
@@ -122,7 +122,7 @@ const AUTO_RULE_CHECKS: Record<string, RuleCheck> = {
         ]
       : [],
   "DQ-003": (record, rule) =>
-    isEmpty(record.GSI1pk)
+    shouldCheckLegacyKey(record) && isEmpty(record.GSI1pk)
       ? [
           violation(
             rule,
@@ -186,7 +186,7 @@ const AUTO_RULE_CHECKS: Record<string, RuleCheck> = {
     return [];
   },
   "DQ-010": (record, rule) =>
-    !isNoso(record) && isEmpty(record.submitterName)
+    requiresSubmitterIdentity(record) && isEmpty(record.submitterName)
       ? [
           violation(
             rule,
@@ -198,7 +198,7 @@ const AUTO_RULE_CHECKS: Record<string, RuleCheck> = {
         ]
       : [],
   "DQ-011": (record, rule) =>
-    !isNoso(record) && isEmpty(record.submitterEmail)
+    requiresSubmitterIdentity(record) && isEmpty(record.submitterEmail)
       ? [
           violation(
             rule,
@@ -210,25 +210,25 @@ const AUTO_RULE_CHECKS: Record<string, RuleCheck> = {
         ]
       : [],
   "DQ-013": (record, rule) =>
-    !isEmpty(record.submissionDate) && !isValidEpochMillis(record.submissionDate)
+    !isEmpty(record.submissionDate) && !isValidTimestamp(record.submissionDate)
       ? [
           violation(
             rule,
-            "submissionDate is not a valid epoch milliseconds timestamp",
+            "submissionDate is not a valid ISO date or epoch milliseconds timestamp",
             formatValue(record.submissionDate),
-            "epoch ms",
+            "ISO date or epoch ms",
             "error",
           ),
         ]
       : [],
   "DQ-014": (record, rule) =>
-    !isEmpty(record.statusDate) && !isValidEpochMillis(record.statusDate)
+    !isEmpty(record.statusDate) && !isValidTimestamp(record.statusDate)
       ? [
           violation(
             rule,
-            "statusDate is not a valid epoch milliseconds timestamp",
+            "statusDate is not a valid ISO date or epoch milliseconds timestamp",
             formatValue(record.statusDate),
-            "epoch ms",
+            "ISO date or epoch ms",
             "error",
           ),
         ]
@@ -282,41 +282,52 @@ const AUTO_RULE_CHECKS: Record<string, RuleCheck> = {
         ]
       : [],
   "DQ-020": (record, rule) => {
-    if (isEmpty(record.formalRaiReceivedDate)) return [];
-    if (!isValidEpochMillis(record.formalRaiReceivedDate)) {
+    const formalRaiField = !isEmpty(record.formalRaiReceivedDate)
+      ? "formalRaiReceivedDate"
+      : "raiReceivedDate";
+    const formalRaiValue =
+      formalRaiField === "formalRaiReceivedDate"
+        ? record.formalRaiReceivedDate
+        : record.raiReceivedDate;
+
+    if (isEmpty(formalRaiValue)) return [];
+    if (!isValidTimestamp(formalRaiValue)) {
       return [
         violation(
           rule,
-          "formalRaiReceivedDate is not valid epoch ms",
-          formatValue(record.formalRaiReceivedDate),
-          "epoch ms",
+          `${formalRaiField} is not a valid ISO date or epoch milliseconds timestamp`,
+          formatValue(formalRaiValue),
+          "ISO date or epoch ms",
           "error",
+          formalRaiField,
         ),
       ];
     }
-    const formal = toEpochMillis(record.formalRaiReceivedDate)!;
+    const formal = toTimestampMillis(formalRaiValue)!;
     const now = Date.now();
     if (formal > now) {
       return [
         violation(
           rule,
-          "formalRaiReceivedDate is in the future",
-          formatValue(record.formalRaiReceivedDate),
+          `${formalRaiField} is in the future`,
+          formatValue(formalRaiValue),
           "<= now",
           "error",
+          formalRaiField,
         ),
       ];
     }
-    if (!isEmpty(record.raiRequestedDate) && isValidEpochMillis(record.raiRequestedDate)) {
-      const requested = toEpochMillis(record.raiRequestedDate)!;
+    if (!isEmpty(record.raiRequestedDate) && isValidTimestamp(record.raiRequestedDate)) {
+      const requested = toTimestampMillis(record.raiRequestedDate)!;
       if (formal < requested) {
         return [
           violation(
             rule,
-            "formalRaiReceivedDate is before raiRequestedDate",
-            formatValue(record.formalRaiReceivedDate),
+            `${formalRaiField} is before raiRequestedDate`,
+            formatValue(formalRaiValue),
             ">= raiRequestedDate",
             "error",
+            formalRaiField,
           ),
         ];
       }
@@ -383,13 +394,13 @@ const AUTO_RULE_CHECKS: Record<string, RuleCheck> = {
     return issues;
   },
   "DQ-024": (record, rule) =>
-    !isEmpty(record.timestamp) && !isValidEpochMillis(record.timestamp)
+    !isEmpty(record.timestamp) && !isValidTimestamp(record.timestamp)
       ? [
           violation(
             rule,
-            "timestamp is not a valid epoch milliseconds timestamp",
+            "timestamp is not a valid ISO date or epoch milliseconds timestamp",
             formatValue(record.timestamp),
-            "epoch ms",
+            "ISO date or epoch ms",
             "error",
           ),
         ]
@@ -541,6 +552,57 @@ function isOneMacOrigin(record: Record<string, any>): boolean {
   return normalize(record.origin) === "onemac";
 }
 
+function isDeletedRecord(record: Record<string, any>): boolean {
+  return record.deleted === true;
+}
+
+function isAdminChangeRecord(record: Record<string, any>): boolean {
+  return record.isAdminChange === true || !isEmpty(record.adminChangeType);
+}
+
+function isLikelySeatoolSnapshot(record: Record<string, any>): boolean {
+  return (
+    isEmpty(record.origin) &&
+    !isEmpty(record.changed_date) &&
+    !isEmpty(record.seatoolStatus) &&
+    isEmpty(record.event)
+  );
+}
+
+function isLegacyRecord(record: Record<string, any>): boolean {
+  const origin = normalize(record.origin);
+  return (
+    origin === "onemaclegacy" ||
+    origin === "seatool" ||
+    !isEmpty(record.pk) ||
+    !isEmpty(record.GSI1pk)
+  );
+}
+
+function shouldCheckOrigin(record: Record<string, any>): boolean {
+  return (
+    !isDeletedRecord(record) && !isAdminChangeRecord(record) && !isLikelySeatoolSnapshot(record)
+  );
+}
+
+function shouldCheckLegacyKey(record: Record<string, any>): boolean {
+  return (
+    !isDeletedRecord(record) &&
+    !isAdminChangeRecord(record) &&
+    !isLikelySeatoolSnapshot(record) &&
+    isLegacyRecord(record)
+  );
+}
+
+function requiresSubmitterIdentity(record: Record<string, any>): boolean {
+  return (
+    !isDeletedRecord(record) &&
+    !isAdminChangeRecord(record) &&
+    !isNoso(record) &&
+    isOneMacOrigin(record)
+  );
+}
+
 function isMedicaidSpa(value: unknown): boolean {
   return normalize(value) === "medicaid spa";
 }
@@ -555,24 +617,34 @@ function isNoso(record: Record<string, any>): boolean {
   return normalize(record.origin) === "seatool" && event === "noso";
 }
 
-function isValidEpochMillis(value: unknown): boolean {
-  const epoch = toEpochMillis(value);
-  if (epoch === null) return false;
-  return epoch >= MIN_EPOCH_MS && epoch <= MAX_EPOCH_MS;
+function isValidTimestamp(value: unknown): boolean {
+  const timestamp = toTimestampMillis(value);
+  if (timestamp === null) return false;
+  return timestamp >= MIN_EPOCH_MS && timestamp <= MAX_EPOCH_MS;
 }
 
-function toEpochMillis(value: unknown): number | null {
+function toTimestampMillis(value: unknown): number | null {
   if (typeof value === "number" && Number.isFinite(value)) {
     return Math.trunc(value);
   }
   if (typeof value === "string") {
     const trimmed = value.trim();
     if (!trimmed) return null;
-    if (/^\\d{13}$/.test(trimmed)) {
+    if (/^\d{13}$/.test(trimmed)) {
       return Number(trimmed);
+    }
+    if (isIsoLikeTimestamp(trimmed)) {
+      const parsed = Date.parse(trimmed);
+      if (!Number.isNaN(parsed)) {
+        return parsed;
+      }
     }
   }
   return null;
+}
+
+function isIsoLikeTimestamp(value: string): boolean {
+  return /^\d{4}-\d{2}-\d{2}(?:T.*)?$/.test(value);
 }
 
 function formatValue(value: unknown): string {
