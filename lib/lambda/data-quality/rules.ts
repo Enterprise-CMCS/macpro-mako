@@ -1,4 +1,8 @@
-import { SEATOOL_STATUS } from "shared-types";
+import {
+  SEATOOL_STATUS,
+  statusToDisplayToCmsUser,
+  statusToDisplayToStateUser,
+} from "shared-types";
 import { BaseIndex } from "shared-types/opensearch";
 
 import { checklist, ChecklistItem } from "./checklist";
@@ -87,7 +91,14 @@ const VALID_STATES = new Set([
   "VI",
 ]);
 
-const VALID_CURRENT_STATUSES = new Set(Object.values(SEATOOL_STATUS));
+const VALID_CURRENT_STATUS_VALUES = new Set([
+  ...Object.values(SEATOOL_STATUS),
+  ...Object.values(statusToDisplayToStateUser),
+  ...Object.values(statusToDisplayToCmsUser),
+  "TE Requested",
+  "Inactivated",
+  "Waiver Terminated",
+]);
 
 const MIN_EPOCH_MS = 946684800000; // 2000-01-01
 const MAX_EPOCH_MS = 4102444800000; // 2100-01-01
@@ -160,7 +171,7 @@ const AUTO_RULE_CHECKS: Record<string, RuleCheck> = {
     return [];
   },
   "DQ-009": (record, rule) => {
-    if (!isMedicaidSpa(record.authority)) return [];
+    if (!isOneMacOrigin(record) || !isMedicaidSpa(record.authority)) return [];
     if (isEmpty(record.proposedDate)) {
       return [
         violation(
@@ -258,13 +269,14 @@ const AUTO_RULE_CHECKS: Record<string, RuleCheck> = {
         ]
       : [],
   "DQ-017": (record, rule) =>
-    !isEmpty(record.currentStatus) && !VALID_CURRENT_STATUSES.has(String(record.currentStatus))
+    !isEmpty(record.currentStatus) &&
+    !VALID_CURRENT_STATUS_VALUES.has(String(record.currentStatus))
       ? [
           violation(
             rule,
-            "currentStatus has invalid value",
+            "currentStatus has an unmapped value",
             formatValue(record.currentStatus),
-            "valid status",
+            "mapped currentStatus",
             "error",
           ),
         ]
@@ -581,7 +593,10 @@ function isLegacyRecord(record: Record<string, any>): boolean {
 
 function shouldCheckOrigin(record: Record<string, any>): boolean {
   return (
-    !isDeletedRecord(record) && !isAdminChangeRecord(record) && !isLikelySeatoolSnapshot(record)
+    !isDeletedRecord(record) &&
+    !isAdminChangeRecord(record) &&
+    !isLikelySeatoolSnapshot(record) &&
+    hasOneMacFootprint(record)
   );
 }
 
@@ -600,6 +615,16 @@ function requiresSubmitterIdentity(record: Record<string, any>): boolean {
     !isAdminChangeRecord(record) &&
     !isNoso(record) &&
     isOneMacOrigin(record)
+  );
+}
+
+function hasOneMacFootprint(record: Record<string, any>): boolean {
+  return (
+    !isEmpty(record.submissionDate) ||
+    !isEmpty(record.submitterName) ||
+    !isEmpty(record.submitterEmail) ||
+    !isEmpty(record.packageId) ||
+    !isEmpty(record.makoChangedDate)
   );
 }
 
