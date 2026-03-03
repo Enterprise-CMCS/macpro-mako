@@ -9,7 +9,7 @@ import { getDomainAndNamespace } from "libs/utils";
 import { join } from "path";
 import { BaseIndex } from "shared-types/opensearch";
 
-import { evaluateRecord, getRuleSummary, RuleViolation } from "./data-quality/rules";
+import { evaluateRecord, getRuleSummary, RuleSummary, RuleViolation } from "./data-quality/rules";
 
 const DEFAULT_PAGE_SIZE = 1000;
 const DEFAULT_PRESIGN_DAYS = 7;
@@ -31,11 +31,7 @@ type ExportResult = {
   columns: string[];
   violationsKey: string;
   violationCount: number;
-  ruleSummary: {
-    total: number;
-    auto: number;
-    manual: number;
-  };
+  ruleSummary: RuleSummary;
 };
 
 export const handler: Handler<ExportEvent> = async (event = {}) => {

@@ -18,6 +18,8 @@ export type RuleSummary = {
   total: number;
   auto: number;
   manual: number;
+  automatedRuleIds: string[];
+  manualRuleIds: string[];
 };
 
 type RuleCheck = (record: Record<string, any>, rule: ChecklistItem) => RuleViolation[];
@@ -90,7 +92,7 @@ const VALID_CURRENT_STATUSES = new Set(Object.values(SEATOOL_STATUS));
 const MIN_EPOCH_MS = 946684800000; // 2000-01-01
 const MAX_EPOCH_MS = 4102444800000; // 2100-01-01
 
-const EMAIL_REGEX = /^[^\\s@]+@[^\\s@]+\\.[^\\s@]+$/;
+const EMAIL_REGEX = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
 const AUTO_RULE_CHECKS: Record<string, RuleCheck> = {
   "DQ-001": (record, rule) => {
@@ -478,8 +480,20 @@ export function evaluateRecord(baseIndex: BaseIndex, record: Record<string, any>
 
 export function getRuleSummary(baseIndex: BaseIndex): RuleSummary {
   const rules = getRulesForIndex(baseIndex);
-  const auto = rules.filter((rule) => AUTO_RULE_CHECKS[rule.checkId]).length;
-  return { total: rules.length, auto, manual: rules.length - auto };
+  const automatedRuleIds = rules
+    .filter((rule) => AUTO_RULE_CHECKS[rule.checkId])
+    .map((rule) => rule.checkId);
+  const manualRuleIds = rules
+    .filter((rule) => !AUTO_RULE_CHECKS[rule.checkId])
+    .map((rule) => rule.checkId);
+
+  return {
+    total: rules.length,
+    auto: automatedRuleIds.length,
+    manual: manualRuleIds.length,
+    automatedRuleIds,
+    manualRuleIds,
+  };
 }
 
 function getRulesForIndex(baseIndex: BaseIndex): ChecklistItem[] {
