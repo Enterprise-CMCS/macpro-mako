@@ -413,6 +413,7 @@ const AUTO_RULE_CHECKS: Record<string, RuleCheck> = {
         ]
       : [],
   "DQ-025": (record, rule) => {
+    if (!shouldCheckChangelogOrigin(record)) return [];
     if (isEmpty(record.origin)) {
       return [
         violation(
@@ -453,7 +454,7 @@ const AUTO_RULE_CHECKS: Record<string, RuleCheck> = {
     return [];
   },
   "DQ-027": (record, rule) =>
-    record.isAdminChange === true && isEmpty(record.changeMade)
+    shouldCheckChangelogAdminFields(record) && isEmpty(record.changeMade)
       ? [
           violation(
             rule,
@@ -465,7 +466,7 @@ const AUTO_RULE_CHECKS: Record<string, RuleCheck> = {
         ]
       : [],
   "DQ-028": (record, rule) =>
-    record.isAdminChange === true && isEmpty(record.changeReason)
+    shouldCheckChangelogAdminFields(record) && isEmpty(record.changeReason)
       ? [
           violation(
             rule,
@@ -481,6 +482,10 @@ const AUTO_RULE_CHECKS: Record<string, RuleCheck> = {
 const RULES_BY_INDEX = new Map<BaseIndex, ChecklistItem[]>();
 
 export function evaluateRecord(baseIndex: BaseIndex, record: Record<string, any>): RuleViolation[] {
+  if (isDeletedRecord(record)) {
+    return [];
+  }
+
   const rules = getRulesForIndex(baseIndex);
   const violations: RuleViolation[] = [];
 
@@ -635,6 +640,20 @@ function isNoso(record: Record<string, any>): boolean {
   const event = normalize(record.event);
   if (event === "noso") return true;
   return normalize(record.origin) === "seatool" && event === "noso";
+}
+
+function isLegacyAdminChangeRecord(record: Record<string, any>): boolean {
+  const event = normalize(record.event);
+  const id = String(record.id ?? "");
+  return event === "legacy-admin-change" || id.includes("-legacy-admin-change-");
+}
+
+function shouldCheckChangelogOrigin(record: Record<string, any>): boolean {
+  return !isLegacyAdminChangeRecord(record);
+}
+
+function shouldCheckChangelogAdminFields(record: Record<string, any>): boolean {
+  return record.isAdminChange === true && !isLegacyAdminChangeRecord(record);
 }
 
 function isValidTimestamp(value: unknown): boolean {
