@@ -1,7 +1,10 @@
 export * as createTriggers from "./createTriggers";
 export * as deleteIndex from "./deleteIndex";
+export * as externalAttachmentAuthorizer from "./externalAttachmentAuthorizer";
+export * as externalToken from "./externalToken";
 export * as getAttachmentUrl from "./getAttachmentUrl";
 export * as getCpocs from "./getCpocs";
+export * as getExternalAttachmentUrl from "./getExternalAttachmentUrl";
 export * as getPackageActions from "./getPackageActions";
 export * as getSubTypes from "./getSubTypes";
 export * as getTypes from "./getTypes";

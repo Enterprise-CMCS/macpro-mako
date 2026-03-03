@@ -26,6 +26,7 @@ interface ApiStackProps extends cdk.NestedStackProps {
   brokerString: DeploymentConfigProperties["brokerString"];
   dbInfoSecretName: DeploymentConfigProperties["dbInfoSecretName"];
   legacyS3AccessRoleArn: DeploymentConfigProperties["legacyS3AccessRoleArn"];
+  externalApiAuthSecretArn: DeploymentConfigProperties["externalApiAuthSecretArn"];
   notificationSecretName: DeploymentConfigProperties["notificationSecretName"];
   notificationSecretArn: DeploymentConfigProperties["notificationSecretArn"];
   // IDM/Okta configuration for dataSink authorizer
@@ -53,6 +54,7 @@ export class Api extends cdk.NestedStack {
       privateSubnets,
       brokerString,
       legacyS3AccessRoleArn,
+      externalApiAuthSecretArn,
       lambdaSecurityGroup,
       topicNamespace,
       indexNamespace,
@@ -118,6 +120,13 @@ export class Api extends cdk.NestedStack {
             }),
             new cdk.aws_iam.PolicyStatement({
               effect: cdk.aws_iam.Effect.ALLOW,
+              actions: ["s3:GetObject", "s3:GetObjectTagging"],
+              resources: [
+                `arn:${cdk.Aws.PARTITION}:s3:::${project}-*-attachments-${cdk.Aws.ACCOUNT_ID}/*`,
+              ],
+            }),
+            new cdk.aws_iam.PolicyStatement({
+              effect: cdk.aws_iam.Effect.ALLOW,
               actions: ["secretsmanager:DescribeSecret", "secretsmanager:GetSecretValue"],
               resources: [
                 `arn:aws:secretsmanager:${this.region}:${this.account}:secret:${dbInfoSecretName}-*`,
@@ -129,6 +138,11 @@ export class Api extends cdk.NestedStack {
               resources: [
                 `arn:aws:secretsmanager:${this.region}:${this.account}:secret:${notificationSecretName}-*`,
               ],
+            }),
+            new cdk.aws_iam.PolicyStatement({
+              effect: cdk.aws_iam.Effect.ALLOW,
+              actions: ["secretsmanager:DescribeSecret", "secretsmanager:GetSecretValue"],
+              resources: [externalApiAuthSecretArn],
             }),
           ],
         }),
@@ -225,6 +239,30 @@ export class Api extends cdk.NestedStack {
           indexNamespace,
         },
         provisionedConcurrency: 2,
+      },
+      {
+        id: "externalToken",
+        entry: join(__dirname, "../lambda/externalToken.ts"),
+        environment: {
+          externalApiAuthSecretArn,
+        },
+      },
+      {
+        id: "externalAttachmentAuthorizer",
+        entry: join(__dirname, "../lambda/externalAttachmentAuthorizer.ts"),
+        environment: {
+          externalApiAuthSecretArn,
+        },
+      },
+      {
+        id: "getExternalAttachmentUrl",
+        entry: join(__dirname, "../lambda/getExternalAttachmentUrl.ts"),
+        environment: {
+          osDomain: `https://${openSearchDomainEndpoint}`,
+          legacyS3AccessRoleArn,
+          indexNamespace,
+          externalApiAuthSecretArn,
+        },
       },
       {
         id: "item",
@@ -661,6 +699,16 @@ export class Api extends cdk.NestedStack {
       },
     );
 
+    const externalTokenAuthorizer = new cdk.aws_apigateway.TokenAuthorizer(
+      this,
+      "ExternalTokenAuthorizer",
+      {
+        handler: lambdas.externalAttachmentAuthorizer,
+        identitySource: cdk.aws_apigateway.IdentitySource.header("Authorization"),
+        resultsCacheTtl: cdk.Duration.minutes(5),
+      },
+    );
+
     const dataSinkIntegration = new cdk.aws_apigateway.LambdaIntegration(dataSinkLambda, {
       proxy: true,
       credentialsRole: apiGatewayRole,
@@ -754,7 +802,16 @@ export class Api extends cdk.NestedStack {
       ],
     });
 
-    const apiResources = {
+    type RouteAuthorization = "IAM" | "NONE" | "CUSTOM";
+    type ApiResourceDefinition = {
+      path: string;
+      lambda: NodejsFunction;
+      method: string;
+      authorizationType?: RouteAuthorization;
+      authorizer?: cdk.aws_apigateway.IAuthorizer;
+    };
+
+    const apiResources: Record<string, ApiResourceDefinition> = {
       search: {
         path: "search/{index}",
         lambda: lambdas.search,
@@ -774,6 +831,19 @@ export class Api extends cdk.NestedStack {
         path: "getUploadUrl",
         lambda: lambdas.getUploadUrl,
         method: "POST",
+      },
+      oauthToken: {
+        path: "oauth/token",
+        lambda: lambdas.externalToken,
+        method: "POST",
+        authorizationType: "NONE",
+      },
+      externalGetAttachmentUrl: {
+        path: "external/getAttachmentUrl",
+        lambda: lambdas.getExternalAttachmentUrl,
+        method: "POST",
+        authorizationType: "CUSTOM",
+        authorizer: externalTokenAuthorizer,
       },
       requestBaseCMSAccess: {
         path: "requestBaseCMSAccess",
@@ -855,6 +925,8 @@ export class Api extends cdk.NestedStack {
       path: string,
       lambdaFunction: cdk.aws_lambda.Function,
       method: string = "POST",
+      authorizationType: RouteAuthorization = "IAM",
+      authorizer?: cdk.aws_apigateway.IAuthorizer,
     ) => {
       const resource = api.root.resourceForPath(path);
 
@@ -864,9 +936,29 @@ export class Api extends cdk.NestedStack {
         credentialsRole: apiGatewayRole,
       });
 
-      // Add method for specified HTTP method
-      resource.addMethod(method, integration, {
-        authorizationType: cdk.aws_apigateway.AuthorizationType.IAM,
+      if (authorizationType === "CUSTOM" && !authorizer) {
+        throw new Error(`Route ${path} is configured for CUSTOM auth but has no authorizer.`);
+      }
+
+      const authOptions: Pick<
+        cdk.aws_apigateway.MethodOptions,
+        "authorizationType" | "authorizer"
+      > =
+        authorizationType === "NONE"
+          ? {
+              authorizationType: cdk.aws_apigateway.AuthorizationType.NONE,
+            }
+          : authorizationType === "CUSTOM"
+            ? {
+                authorizationType: cdk.aws_apigateway.AuthorizationType.CUSTOM,
+                authorizer,
+              }
+            : {
+                authorizationType: cdk.aws_apigateway.AuthorizationType.IAM,
+              };
+
+      const methodOptions: cdk.aws_apigateway.MethodOptions = {
+        ...authOptions,
         apiKeyRequired: false,
         methodResponses: [
           {
@@ -878,11 +970,20 @@ export class Api extends cdk.NestedStack {
             },
           },
         ],
-      });
+      };
+
+      // Add method for specified HTTP method
+      resource.addMethod(method, integration, methodOptions);
     };
 
     Object.values(apiResources).forEach((resource) => {
-      addApiResource(resource.path, resource.lambda, resource.method);
+      addApiResource(
+        resource.path,
+        resource.lambda,
+        resource.method,
+        resource.authorizationType,
+        resource.authorizer,
+      );
     });
 
     // Define CloudWatch Alarms

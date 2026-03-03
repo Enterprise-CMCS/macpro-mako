@@ -40,6 +40,7 @@ describe("DeploymentConfig", () => {
     iamPermissionsBoundary: "arn:aws:iam::1234578910:policy/foo/bar-policy",
     smartLinkUrl: "https://smartlink.example.com",
     macproLinkUrl: "https://macprolink.example.com",
+    externalApiAuthSecretArn: "externalApiAuthSecretArn", // pragma: allowlist secret
   });
 
   const stageSecret = JSON.stringify({
@@ -98,6 +99,7 @@ describe("DeploymentConfig", () => {
       idmEnable: true, // Converted to boolean
       idmHomeUrl: "idmHomeUrl",
       legacyS3AccessRoleArn: "legacyS3AccessRoleArn",
+      externalApiAuthSecretArn: "externalApiAuthSecretArn", // pragma: allowlist secret
       useSharedOpenSearch: true, // Converted to boolean
       vpcName: "vpcName",
       isDev: true,
@@ -165,6 +167,7 @@ describe("DeploymentConfig", () => {
       idmEnable: true,
       idmHomeUrl: "idmHomeUrl",
       legacyS3AccessRoleArn: "legacyS3AccessRoleArn",
+      externalApiAuthSecretArn: "externalApiAuthSecretArn", // pragma: allowlist secret
       useSharedOpenSearch: true,
       vpcName: "vpcName",
       isDev: true,
