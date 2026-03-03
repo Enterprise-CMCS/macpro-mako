@@ -1,8 +1,4 @@
-import {
-  SEATOOL_STATUS,
-  statusToDisplayToCmsUser,
-  statusToDisplayToStateUser,
-} from "shared-types";
+import { SEATOOL_STATUS, statusToDisplayToCmsUser, statusToDisplayToStateUser } from "shared-types";
 import { BaseIndex } from "shared-types/opensearch";
 
 import { checklist, ChecklistItem } from "./checklist";
@@ -269,8 +265,7 @@ const AUTO_RULE_CHECKS: Record<string, RuleCheck> = {
         ]
       : [],
   "DQ-017": (record, rule) =>
-    !isEmpty(record.currentStatus) &&
-    !VALID_CURRENT_STATUS_VALUES.has(String(record.currentStatus))
+    !isEmpty(record.currentStatus) && !VALID_CURRENT_STATUS_VALUES.has(String(record.currentStatus))
       ? [
           violation(
             rule,
