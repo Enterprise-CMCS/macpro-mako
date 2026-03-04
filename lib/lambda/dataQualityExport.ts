@@ -1,5 +1,12 @@
-import { GetObjectCommand, PutObjectCommand, S3Client } from "@aws-sdk/client-s3";
+import {
+  GetObjectCommand,
+  HeadObjectCommand,
+  ListObjectsV2Command,
+  PutObjectCommand,
+  S3Client,
+} from "@aws-sdk/client-s3";
 import { SendEmailCommand, SESClient } from "@aws-sdk/client-ses";
+import { AssumeRoleCommand, STSClient } from "@aws-sdk/client-sts";
 import { getSignedUrl } from "@aws-sdk/s3-request-presigner";
 import { Handler } from "aws-lambda";
 import { once } from "events";
@@ -9,11 +16,18 @@ import { getDomainAndNamespace } from "libs/utils";
 import { join } from "path";
 import { BaseIndex } from "shared-types/opensearch";
 
+import { checklist } from "./data-quality/checklist";
 import { evaluateRecord, getRuleSummary, RuleSummary, RuleViolation } from "./data-quality/rules";
 
 const DEFAULT_PAGE_SIZE = 1000;
 const DEFAULT_PRESIGN_DAYS = 7;
 const MAX_PRESIGN_SECONDS = 60 * 60 * 24 * 7;
+const ATTACHMENT_CHECK_BATCH_SIZE = 25;
+const DQ012B_SAMPLE_KEY_LIMIT = 50;
+const DQ012B_UPLOAD_GRACE_HOURS = 24;
+const DQ012B_UPLOAD_GRACE_MS = DQ012B_UPLOAD_GRACE_HOURS * 60 * 60 * 1000;
+const CHECKLIST_BY_ID = new Map(checklist.map((rule) => [rule.checkId, rule]));
+const DEFAULT_EXPORT_INDICES: BaseIndex[] = ["main", "changelog", "users", "roles"];
 
 type ExportEvent = {
   runId?: string;
@@ -34,6 +48,35 @@ type ExportResult = {
   ruleSummary: RuleSummary;
 };
 
+type AttachmentReference = {
+  bucket: string;
+  key: string;
+};
+
+type AttachmentSnapshot = {
+  osIndex: string;
+  osId: string;
+  recordId: string;
+  isDeleted: boolean;
+  hasAttachmentData: boolean;
+  missingMetadataCount: number;
+  references: AttachmentReference[];
+};
+
+type AttachmentCheckContext = {
+  objectExistsCache: Map<string, Promise<boolean>>;
+  s3ClientCache: Map<string, Promise<S3Client>>;
+  mainRecordAttachmentState: Map<string, boolean>;
+  referencedAttachmentKeysByBucket: Map<string, Set<string>>;
+  processedAttachmentIndices: Set<BaseIndex>;
+  dq012BCompleted: boolean;
+};
+
+type AttachmentRuleViolation = RuleViolation & {
+  osIndex: string;
+  osId: string;
+};
+
 export const handler: Handler<ExportEvent> = async (event = {}) => {
   const bucketName = process.env.DATA_QUALITY_BUCKET_NAME;
   if (!bucketName) {
@@ -41,11 +84,21 @@ export const handler: Handler<ExportEvent> = async (event = {}) => {
   }
 
   const runId = event.runId ?? new Date().toISOString().replace(/[:.]/g, "-");
-  const indices: BaseIndex[] = event.indices?.length ? event.indices : ["main", "changelog"];
+  const indices: BaseIndex[] = normalizeIndices(
+    event.indices?.length ? event.indices : DEFAULT_EXPORT_INDICES,
+  );
   const pageSize = event.pageSize ?? DEFAULT_PAGE_SIZE;
 
   const s3Client = new S3Client({});
   const sesClient = new SESClient({});
+  const attachmentCheckContext: AttachmentCheckContext = {
+    objectExistsCache: new Map(),
+    s3ClientCache: new Map(),
+    mainRecordAttachmentState: new Map(),
+    referencedAttachmentKeysByBucket: new Map(),
+    processedAttachmentIndices: new Set(),
+    dq012BCompleted: false,
+  };
 
   console.log("Data quality export started", {
     runId,
@@ -60,6 +113,7 @@ export const handler: Handler<ExportEvent> = async (event = {}) => {
       bucketName,
       pageSize,
       s3Client,
+      attachmentCheckContext,
     });
     results.push(result);
   }
@@ -163,6 +217,7 @@ async function exportIndex(
     bucketName: string;
     pageSize: number;
     s3Client: S3Client;
+    attachmentCheckContext: AttachmentCheckContext;
   },
 ): Promise<ExportResult> {
   const { domain, index } = getDomainAndNamespace(baseIndex);
@@ -196,6 +251,7 @@ async function exportIndex(
     opts.pageSize,
     filePath,
     violationsStream,
+    opts.attachmentCheckContext,
   );
 
   violationsStream.end();
@@ -262,11 +318,14 @@ async function writeCsvFile(
   pageSize: number,
   filePath: string,
   violationsStream: NodeJS.WritableStream,
+  attachmentCheckContext: AttachmentCheckContext,
 ) {
   const stream = createWriteStream(filePath, { encoding: "utf8" });
   let rowCount = 0;
   let violationCount = 0;
   const ruleSummary = getRuleSummary(baseIndex);
+  const attachmentSnapshots: AttachmentSnapshot[] = [];
+  const legacySourceCounts = new Map<string, number>();
 
   await writeToStream(stream, `${columns.join(",")}\n`);
 
@@ -279,6 +338,17 @@ async function writeCsvFile(
       const row = buildRow(hit, flat, columns);
       buffer += `${row}\n`;
       rowCount += 1;
+
+      if (baseIndex === "main" || baseIndex === "changelog") {
+        attachmentSnapshots.push(buildAttachmentSnapshot(hit, source));
+      }
+
+      if (baseIndex === "main" && source.deleted !== true) {
+        const legacySource = classifyLegacySource(source);
+        if (legacySource) {
+          legacySourceCounts.set(legacySource, (legacySourceCounts.get(legacySource) ?? 0) + 1);
+        }
+      }
 
       const violations = evaluateRecord(baseIndex, source);
       if (violations.length) {
@@ -295,6 +365,37 @@ async function writeCsvFile(
       await writeToStream(violationsStream, violationBuffer);
     }
   });
+
+  if (baseIndex === "main" || baseIndex === "changelog") {
+    const attachmentViolations = await evaluateAttachmentViolations(
+      baseIndex,
+      attachmentSnapshots,
+      attachmentCheckContext,
+    );
+
+    if (attachmentViolations.length > 0) {
+      const attachmentViolationRows = attachmentViolations
+        .map((violation) =>
+          buildViolationRow({ _index: violation.osIndex, _id: violation.osId }, violation),
+        )
+        .join("\n");
+      await writeToStream(violationsStream, `${attachmentViolationRows}\n`);
+      violationCount += attachmentViolations.length;
+    }
+  }
+
+  if (baseIndex === "main") {
+    const legacyInventoryViolations = buildLegacyInventoryViolations(legacySourceCounts);
+    if (legacyInventoryViolations.length > 0) {
+      const legacyViolationRows = legacyInventoryViolations
+        .map((violation) =>
+          buildViolationRow({ _index: violation.osIndex, _id: violation.osId }, violation),
+        )
+        .join("\n");
+      await writeToStream(violationsStream, `${legacyViolationRows}\n`);
+      violationCount += legacyInventoryViolations.length;
+    }
+  }
 
   stream.end();
   await once(stream, "finish");
@@ -349,6 +450,491 @@ async function scanIndex(
       console.warn("Failed to clear scroll", { index, error });
     }
   }
+}
+
+function buildAttachmentSnapshot(hit: any, source: Record<string, any>): AttachmentSnapshot {
+  const extracted = extractAttachmentReferences(source.attachments);
+  return {
+    osIndex: String(hit?._index ?? ""),
+    osId: String(hit?._id ?? ""),
+    recordId: getRecordId(source, hit),
+    isDeleted: source.deleted === true,
+    hasAttachmentData: extracted.hasAttachmentData,
+    missingMetadataCount: extracted.missingMetadataCount,
+    references: extracted.references,
+  };
+}
+
+function extractAttachmentReferences(attachments: unknown): {
+  hasAttachmentData: boolean;
+  missingMetadataCount: number;
+  references: AttachmentReference[];
+} {
+  if (!Array.isArray(attachments) || attachments.length === 0) {
+    return {
+      hasAttachmentData: false,
+      missingMetadataCount: 0,
+      references: [],
+    };
+  }
+
+  const uniqueRefs = new Set<string>();
+  const references: AttachmentReference[] = [];
+  let missingMetadataCount = 0;
+
+  for (const attachment of attachments) {
+    const bucket = String((attachment as Record<string, any>)?.bucket ?? "").trim();
+    const key = String((attachment as Record<string, any>)?.key ?? "").trim();
+
+    if (!bucket || !key) {
+      missingMetadataCount += 1;
+      continue;
+    }
+
+    const refKey = `${bucket}:::${key}`;
+    if (uniqueRefs.has(refKey)) continue;
+    uniqueRefs.add(refKey);
+    references.push({ bucket, key });
+  }
+
+  return {
+    hasAttachmentData: true,
+    missingMetadataCount,
+    references,
+  };
+}
+
+async function evaluateAttachmentViolations(
+  baseIndex: BaseIndex,
+  snapshots: AttachmentSnapshot[],
+  context: AttachmentCheckContext,
+): Promise<AttachmentRuleViolation[]> {
+  const violations: AttachmentRuleViolation[] = [];
+  const activeSnapshots = snapshots.filter(
+    (snapshot) => !snapshot.isDeleted && Boolean(snapshot.osId) && Boolean(snapshot.recordId),
+  );
+
+  if (baseIndex === "main") {
+    for (const snapshot of activeSnapshots) {
+      context.mainRecordAttachmentState.set(
+        snapshot.recordId,
+        snapshot.hasAttachmentData && snapshot.references.length > 0,
+      );
+    }
+  }
+
+  const refsToCheck = new Map<string, AttachmentReference>();
+  for (const snapshot of activeSnapshots) {
+    if (!snapshot.hasAttachmentData || snapshot.references.length === 0) continue;
+    for (const ref of snapshot.references) {
+      const lookupKey = `${ref.bucket}:::${ref.key}`;
+      refsToCheck.set(lookupKey, ref);
+      const bucketSet =
+        context.referencedAttachmentKeysByBucket.get(ref.bucket) ?? new Set<string>();
+      bucketSet.add(ref.key);
+      context.referencedAttachmentKeysByBucket.set(ref.bucket, bucketSet);
+    }
+  }
+
+  const existsByRef = await resolveAttachmentExistenceMap(
+    Array.from(refsToCheck.values()),
+    context,
+  );
+
+  for (const snapshot of activeSnapshots) {
+    if (!snapshot.hasAttachmentData) continue;
+
+    if (snapshot.missingMetadataCount > 0) {
+      violations.push(
+        createAttachmentViolation(snapshot.osIndex, snapshot.osId, {
+          ruleId: "DQ-012",
+          actual: `${snapshot.missingMetadataCount} attachment entries missing bucket/key`,
+          expected: "attachments[].bucket and attachments[].key populated",
+          message: "Attachment metadata is missing bucket/key; cannot validate S3 object",
+          severity: "error",
+        }),
+      );
+    }
+
+    let missingRefs = 0;
+    for (const ref of snapshot.references) {
+      const lookupKey = `${ref.bucket}:::${ref.key}`;
+      const exists = existsByRef.get(lookupKey) ?? false;
+      if (exists) continue;
+
+      missingRefs += 1;
+      violations.push(
+        createAttachmentViolation(snapshot.osIndex, snapshot.osId, {
+          ruleId: "DQ-012",
+          actual: `${ref.bucket}/${ref.key}`,
+          expected: "S3 object exists",
+          message: "Attachment referenced in OpenSearch was not found in S3",
+          severity: "error",
+        }),
+      );
+    }
+
+    if (snapshot.references.length + snapshot.missingMetadataCount > 0) {
+      const missingAll =
+        snapshot.references.length === 0 ? true : missingRefs === snapshot.references.length;
+
+      if (missingAll) {
+        violations.push(
+          createAttachmentViolation(snapshot.osIndex, snapshot.osId, {
+            ruleId: "DQ-012-A",
+            actual: "No resolvable attachment object found in S3 for indexed attachments",
+            expected: "At least one attachment object exists in S3",
+            message: "Index has attachment data but S3 has no matching object",
+            severity: "error",
+          }),
+        );
+      }
+    }
+
+    if (baseIndex === "changelog" && snapshot.references.length > 0) {
+      const mainHasAttachments = context.mainRecordAttachmentState.get(snapshot.recordId);
+      if (mainHasAttachments === false) {
+        violations.push(
+          createAttachmentViolation(snapshot.osIndex, snapshot.osId, {
+            ruleId: "DQ-012-C",
+            actual: "changelog has attachments, main has none",
+            expected: "main and changelog attachment presence aligned",
+            message: "Attachment mismatch between main and changelog for record",
+            severity: "warn",
+          }),
+        );
+      }
+    }
+  }
+
+  context.processedAttachmentIndices.add(baseIndex);
+  const shouldRunDQ012B =
+    !context.dq012BCompleted &&
+    context.processedAttachmentIndices.has("main") &&
+    context.processedAttachmentIndices.has("changelog");
+
+  if (shouldRunDQ012B) {
+    const dq012BViolations = await buildDq012BViolations(context);
+    if (dq012BViolations.length > 0) {
+      violations.push(...dq012BViolations);
+    }
+    context.dq012BCompleted = true;
+  }
+
+  return violations;
+}
+
+async function buildDq012BViolations(
+  context: AttachmentCheckContext,
+): Promise<AttachmentRuleViolation[]> {
+  const bucket = process.env.ATTACHMENTS_BUCKET_NAME;
+  if (!bucket) {
+    console.warn("DQ-012-B skipped: ATTACHMENTS_BUCKET_NAME is not set");
+    return [];
+  }
+
+  const referencedKeys = context.referencedAttachmentKeysByBucket.get(bucket) ?? new Set<string>();
+  const s3Client = await getS3ClientForBucket(bucket, context);
+
+  let continuationToken: string | undefined;
+  let orphanCount = 0;
+  const sampleKeys: string[] = [];
+  const now = Date.now();
+
+  do {
+    const page = await s3Client.send(
+      new ListObjectsV2Command({
+        Bucket: bucket,
+        ContinuationToken: continuationToken,
+        MaxKeys: 1000,
+      }),
+    );
+
+    for (const object of page.Contents ?? []) {
+      const key = String(object.Key ?? "").trim();
+      if (!key || key.endsWith("/")) continue;
+      if (referencedKeys.has(key)) continue;
+
+      const lastModified = object.LastModified?.getTime();
+      if (lastModified && now - lastModified < DQ012B_UPLOAD_GRACE_MS) {
+        continue;
+      }
+
+      orphanCount += 1;
+      if (sampleKeys.length < DQ012B_SAMPLE_KEY_LIMIT) {
+        sampleKeys.push(key);
+      }
+    }
+
+    continuationToken = page.NextContinuationToken;
+  } while (continuationToken);
+
+  if (orphanCount === 0) {
+    return [];
+  }
+
+  const violations: AttachmentRuleViolation[] = [
+    createSyntheticViolation("DQ-012-B", {
+      osIndex: `s3:${bucket}`,
+      osId: "summary",
+      actual: `${orphanCount} unreferenced objects`,
+      expected: "Zero objects in S3 without OpenSearch attachment references",
+      message: `Found ${orphanCount} attachment object(s) in S3 older than ${DQ012B_UPLOAD_GRACE_HOURS}h with no reference in main/changelog`,
+      severity: "warn",
+    }),
+  ];
+
+  for (const sampleKey of sampleKeys) {
+    violations.push(
+      createSyntheticViolation("DQ-012-B", {
+        osIndex: `s3:${bucket}`,
+        osId: sampleKey,
+        actual: `${bucket}/${sampleKey}`,
+        expected: "Object key linked to a main/changelog attachment reference",
+        message: "Sample unreferenced attachment object in S3",
+        severity: "warn",
+      }),
+    );
+  }
+
+  return violations;
+}
+
+async function resolveAttachmentExistenceMap(
+  refs: AttachmentReference[],
+  context: AttachmentCheckContext,
+) {
+  const existsByRef = new Map<string, boolean>();
+  if (refs.length === 0) return existsByRef;
+
+  await runWithConcurrency(refs, ATTACHMENT_CHECK_BATCH_SIZE, async (ref) => {
+    const lookupKey = `${ref.bucket}:::${ref.key}`;
+    const cached = context.objectExistsCache.get(lookupKey);
+    const existsPromise = cached ?? checkAttachmentObjectExists(ref, context);
+    if (!cached) {
+      context.objectExistsCache.set(lookupKey, existsPromise);
+    }
+    const exists = await existsPromise;
+    existsByRef.set(lookupKey, exists);
+  });
+
+  return existsByRef;
+}
+
+async function checkAttachmentObjectExists(
+  ref: AttachmentReference,
+  context: AttachmentCheckContext,
+) {
+  try {
+    const s3Client = await getS3ClientForBucket(ref.bucket, context);
+    await s3Client.send(
+      new HeadObjectCommand({
+        Bucket: ref.bucket,
+        Key: ref.key,
+      }),
+    );
+    return true;
+  } catch (error: any) {
+    const statusCode = error?.$metadata?.httpStatusCode;
+    if (
+      statusCode === 403 ||
+      statusCode === 404 ||
+      error?.name === "NotFound" ||
+      error?.name === "NoSuchKey"
+    ) {
+      return false;
+    }
+
+    console.warn("Unable to verify attachment in S3", {
+      bucket: ref.bucket,
+      key: ref.key,
+      error: String(error?.message ?? error),
+    });
+    return false;
+  }
+}
+
+async function getS3ClientForBucket(bucket: string, context: AttachmentCheckContext) {
+  const cacheKey =
+    bucket.startsWith("uploads") && process.env.LEGACY_S3_ACCESS_ROLE_ARN
+      ? `legacy:${bucket}`
+      : "default";
+
+  const cachedClient = context.s3ClientCache.get(cacheKey);
+  if (cachedClient) return cachedClient;
+
+  const clientPromise = createS3ClientForBucket(bucket);
+  context.s3ClientCache.set(cacheKey, clientPromise);
+  return clientPromise;
+}
+
+async function createS3ClientForBucket(bucket: string) {
+  if (bucket.startsWith("uploads") && process.env.LEGACY_S3_ACCESS_ROLE_ARN) {
+    const stsClient = new STSClient({ region: process.env.AWS_REGION });
+    const assumedRole = await stsClient.send(
+      new AssumeRoleCommand({
+        RoleArn: process.env.LEGACY_S3_ACCESS_ROLE_ARN,
+        RoleSessionName: "data-quality-export-attachments",
+      }),
+    );
+
+    const credentials = assumedRole.Credentials;
+    if (!credentials?.AccessKeyId || !credentials?.SecretAccessKey) {
+      throw new Error("Unable to assume legacy S3 access role for attachment checks");
+    }
+
+    return new S3Client({
+      credentials: {
+        accessKeyId: credentials.AccessKeyId,
+        secretAccessKey: credentials.SecretAccessKey,
+        sessionToken: credentials.SessionToken,
+      },
+    });
+  }
+
+  return new S3Client({});
+}
+
+function createAttachmentViolation(
+  osIndex: string,
+  osId: string,
+  input: {
+    ruleId: string;
+    actual: string;
+    expected: string;
+    message: string;
+    severity: "error" | "warn";
+  },
+): AttachmentRuleViolation {
+  return createSyntheticViolation(input.ruleId, {
+    osIndex,
+    osId,
+    actual: input.actual,
+    expected: input.expected,
+    message: input.message,
+    severity: input.severity,
+  });
+}
+
+function createSyntheticViolation(
+  ruleId: string,
+  input: {
+    osIndex: string;
+    osId: string;
+    actual: string;
+    expected: string;
+    message: string;
+    severity: "error" | "warn";
+    field?: string;
+  },
+): AttachmentRuleViolation {
+  const checklistRule = CHECKLIST_BY_ID.get(ruleId);
+  return {
+    osIndex: input.osIndex,
+    osId: input.osId,
+    ruleId,
+    field: input.field ?? checklistRule?.fieldName ?? "attachments",
+    severity: input.severity,
+    expected: input.expected || checklistRule?.expectedResult || "",
+    actual: input.actual,
+    message: input.message || checklistRule?.checkDescription || "",
+  };
+}
+
+function buildLegacyInventoryViolations(
+  legacySourceCounts: Map<string, number>,
+): AttachmentRuleViolation[] {
+  const rows = Array.from(legacySourceCounts.entries()).sort((a, b) => b[1] - a[1]);
+  const total = rows.reduce((sum, [, count]) => sum + count, 0);
+
+  const violations: AttachmentRuleViolation[] = [
+    createSyntheticViolation("DQ-023", {
+      osIndex: "summary",
+      osId: "total-legacy-records",
+      actual: `${total}`,
+      expected: "Legacy records inventoried by source",
+      message: "Legacy source inventory summary for main index",
+      severity: "warn",
+      field: "origin, GSI1pk",
+    }),
+  ];
+
+  for (const [source, count] of rows) {
+    violations.push(
+      createSyntheticViolation("DQ-023", {
+        osIndex: "summary",
+        osId: source,
+        actual: `${count}`,
+        expected: "Legacy records inventoried by source",
+        message: `Legacy source inventory count for ${source}`,
+        severity: "warn",
+        field: "origin, GSI1pk",
+      }),
+    );
+  }
+
+  return violations;
+}
+
+function classifyLegacySource(record: Record<string, any>): string | null {
+  const origin = normalizeString(record.origin);
+  if (origin === "onemac" || origin === "mako") {
+    return null;
+  }
+
+  if (origin === "onemaclegacy") {
+    return "OneMACLegacy";
+  }
+
+  if (origin === "seatool") {
+    return "SEATool";
+  }
+
+  const legacySignal = `${normalizeString(record.pk)} ${normalizeString(record.GSI1pk)} ${normalizeString(
+    record.id,
+  )}`;
+
+  if (legacySignal.includes("macpro")) {
+    return "MACPro";
+  }
+
+  if (legacySignal.includes("wms") || legacySignal.includes("mmdl")) {
+    return "WMS/MMDL";
+  }
+
+  if (!isEmptyValue(record.GSI1pk) || !isEmptyValue(record.pk) || origin === "") {
+    return "UnknownLegacy";
+  }
+
+  return null;
+}
+
+function getRecordId(source: Record<string, any>, hit: any) {
+  const rawValue = source.id ?? source.packageId ?? source.pk ?? hit?._id ?? "";
+  return String(rawValue).trim();
+}
+
+async function runWithConcurrency<T>(
+  items: T[],
+  concurrency: number,
+  worker: (item: T, index: number) => Promise<void>,
+) {
+  if (items.length === 0) return;
+  let cursor = 0;
+  const maxWorkers = Math.max(1, Math.min(concurrency, items.length));
+
+  const workers = Array.from({ length: maxWorkers }, async () => {
+    while (true) {
+      const index = cursor;
+      cursor += 1;
+      if (index >= items.length) {
+        return;
+      }
+      await worker(items[index], index);
+    }
+  });
+
+  await Promise.all(workers);
 }
 
 function flattenRecord(record: Record<string, any>, prefix = "", output: Record<string, any> = {}) {
@@ -420,6 +1006,19 @@ function formatValue(value: unknown): string {
   return JSON.stringify(value);
 }
 
+function normalizeString(value: unknown): string {
+  return String(value ?? "")
+    .trim()
+    .toLowerCase();
+}
+
+function isEmptyValue(value: unknown): boolean {
+  if (value === null || value === undefined) return true;
+  if (typeof value === "string") return value.trim().length === 0;
+  if (Array.isArray(value)) return value.length === 0;
+  return false;
+}
+
 function escapeCsv(value: string): string {
   if (value.includes('"')) {
     value = value.replace(/"/g, '""');
@@ -428,6 +1027,26 @@ function escapeCsv(value: string): string {
     return `"${value}"`;
   }
   return value;
+}
+
+function normalizeIndices(indices: BaseIndex[]): BaseIndex[] {
+  const deduped: BaseIndex[] = [];
+  for (const index of indices) {
+    if (!deduped.includes(index)) {
+      deduped.push(index);
+    }
+  }
+
+  if (deduped.includes("main") && deduped.includes("changelog")) {
+    const ordered: BaseIndex[] = [
+      "main",
+      "changelog",
+      ...deduped.filter((value) => value !== "main" && value !== "changelog"),
+    ];
+    return ordered;
+  }
+
+  return deduped;
 }
 
 function normalizeRecipients(input?: string[] | string) {

@@ -96,8 +96,18 @@ const VALID_CURRENT_STATUS_VALUES = new Set([
   "Waiver Terminated",
 ]);
 
+const SPA_ID_REGEX = /^[A-Z]{2}-\d{2}-\d{4}(?:-[A-Z0-9]{1,4})?$/;
+const WAIVER_ID_REGEX =
+  /^[A-Z]{2}-\d{4,5}\.R(?:00\.00|(?!00)\d{2}\.00|\d{2}\.(?!00)\d{2}|\d{2}\.TE\d{2})$/;
+
 const MIN_EPOCH_MS = 946684800000; // 2000-01-01
 const MAX_EPOCH_MS = 4102444800000; // 2100-01-01
+const RAI_DATE_MISMATCH_MS = 18 * 60 * 60 * 1000;
+
+const DQ005_LINK_GRACE_HOURS = 24;
+const DQ005_LINK_GRACE_MS = DQ005_LINK_GRACE_HOURS * 60 * 60 * 1000;
+const DQ006_LINK_GRACE_HOURS = 24;
+const DQ006_LINK_GRACE_MS = DQ006_LINK_GRACE_HOURS * 60 * 60 * 1000;
 
 const EMAIL_REGEX = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
@@ -140,6 +150,90 @@ const AUTO_RULE_CHECKS: Record<string, RuleCheck> = {
           ),
         ]
       : [],
+  "DQ-004": (record, rule) => {
+    if (!requiresIdFormatValidation(record)) return [];
+
+    const id = String(record.id ?? "").trim();
+    if (!id) {
+      return [
+        violation(
+          rule,
+          "id is null or empty for OneMAC record",
+          formatValue(record.id),
+          "non-empty",
+          "error",
+        ),
+      ];
+    }
+
+    const pattern = getIdPatternForAuthority(record.authority);
+    if (!pattern) {
+      return [];
+    }
+
+    if (!pattern.test(id)) {
+      return [
+        violation(
+          rule,
+          "id does not match expected format for authority",
+          id,
+          "authority-specific id format",
+          "error",
+        ),
+      ];
+    }
+
+    return [];
+  },
+  "DQ-005": (record, rule) => {
+    if (!requiresSeatoolLinkage(record)) return [];
+
+    const submissionTimestamp = toTimestampMillis(record.submissionDate);
+    if (submissionTimestamp === null) return [];
+
+    if (Date.now() - submissionTimestamp < DQ005_LINK_GRACE_MS) {
+      return [];
+    }
+
+    if (!isEmpty(record.changed_date)) {
+      return [];
+    }
+
+    return [
+      violation(
+        rule,
+        "possible missing SEA Tool linkage: changed_date is missing after grace period",
+        formatValue(record.changed_date),
+        `changed_date populated within ${DQ005_LINK_GRACE_HOURS} hours`,
+        "warn",
+        "changed_date",
+      ),
+    ];
+  },
+  "DQ-006": (record, rule) => {
+    if (!isCandidateForMissingOneMacLink(record)) return [];
+
+    const changedTimestamp = toTimestampMillis(record.changed_date);
+    if (changedTimestamp === null) return [];
+
+    if (Date.now() - changedTimestamp < DQ006_LINK_GRACE_MS) {
+      return [];
+    }
+
+    if (hasOneMacFootprint(record)) {
+      return [];
+    }
+
+    return [
+      violation(
+        rule,
+        "possible SEA Tool-only record: missing OneMAC footprint after grace period",
+        formatValue(record.origin),
+        `OneMAC footprint present within ${DQ006_LINK_GRACE_HOURS} hours`,
+        "warn",
+      ),
+    ];
+  },
   "DQ-007": (record, rule) =>
     isOneMacOrigin(record) && isEmpty(record.submissionDate)
       ? [
@@ -288,6 +382,69 @@ const AUTO_RULE_CHECKS: Record<string, RuleCheck> = {
           ),
         ]
       : [],
+  "DQ-019": (record, rule) => {
+    const issues: RuleViolation[] = [];
+    const raiReceivedMs = toTimestampMillis(record.raiReceivedDate);
+    const formalRaiReceivedMs = toTimestampMillis(record.formalRaiReceivedDate);
+    const latestRaiResponseMs = toTimestampMillis(record.latestRaiResponseTimestamp);
+
+    if (!isEmpty(record.latestRaiResponseTimestamp) && latestRaiResponseMs === null) {
+      issues.push(
+        violation(
+          rule,
+          "latestRaiResponseTimestamp is not a valid timestamp",
+          formatValue(record.latestRaiResponseTimestamp),
+          "ISO date or epoch ms",
+          "warn",
+          "latestRaiResponseTimestamp",
+        ),
+      );
+    }
+
+    if (!isEmpty(record.latestRaiResponseTimestamp) && isEmpty(record.raiReceivedDate)) {
+      issues.push(
+        violation(
+          rule,
+          "latestRaiResponseTimestamp exists but raiReceivedDate is null",
+          formatValue(record.raiReceivedDate),
+          "raiReceivedDate populated when latestRaiResponseTimestamp exists",
+          "warn",
+          "raiReceivedDate",
+        ),
+      );
+    }
+
+    const comparableDates = [
+      { field: "raiReceivedDate", value: raiReceivedMs },
+      { field: "formalRaiReceivedDate", value: formalRaiReceivedMs },
+      { field: "latestRaiResponseTimestamp", value: latestRaiResponseMs },
+    ].filter((entry) => entry.value !== null) as { field: string; value: number }[];
+
+    if (comparableDates.length < 2) {
+      return issues;
+    }
+
+    const baseline = comparableDates[0];
+    for (const current of comparableDates.slice(1)) {
+      const diff = Math.abs(current.value - baseline.value);
+      if (diff <= RAI_DATE_MISMATCH_MS) continue;
+
+      issues.push(
+        violation(
+          rule,
+          `RAI response date mismatch between ${baseline.field} and ${current.field}`,
+          `${baseline.field}=${formatValue(record[baseline.field])}; ${current.field}=${formatValue(
+            record[current.field],
+          )}`,
+          `${baseline.field} and ${current.field} aligned`,
+          "warn",
+          current.field,
+        ),
+      );
+    }
+
+    return issues;
+  },
   "DQ-020": (record, rule) => {
     const formalRaiField = !isEmpty(record.formalRaiReceivedDate)
       ? "formalRaiReceivedDate"
@@ -477,7 +634,105 @@ const AUTO_RULE_CHECKS: Record<string, RuleCheck> = {
           ),
         ]
       : [],
+  "DQ-029": (record, rule) => {
+    if (!isStateUserRole(record.role)) return [];
+    if (!Array.isArray(record.states) || record.states.length === 0) {
+      return [
+        violation(
+          rule,
+          "state user is missing states access list",
+          formatValue(record.states),
+          "at least one state",
+          "error",
+        ),
+      ];
+    }
+
+    const validStateCount = record.states.filter(
+      (value: unknown) => typeof value === "string" && VALID_STATES.has(value.toUpperCase()),
+    ).length;
+
+    if (validStateCount === 0) {
+      return [
+        violation(
+          rule,
+          "state user has no valid state codes assigned",
+          formatValue(record.states),
+          "at least one valid state code",
+          "error",
+        ),
+      ];
+    }
+
+    return [];
+  },
+  "DQ-030": (record, rule) => {
+    if (isEmpty(record.id)) {
+      return [
+        violation(rule, "role id is missing", formatValue(record.id), "non-empty id", "error"),
+      ];
+    }
+
+    if (!isValidRoleId(record)) {
+      return [
+        violation(
+          rule,
+          "role id has invalid format",
+          formatValue(record.id),
+          "email_territory_role",
+          "error",
+        ),
+      ];
+    }
+
+    return [];
+  },
+  "DQ-031": (record, rule) =>
+    isEmpty(record.email) || EMAIL_REGEX.test(String(record.email))
+      ? []
+      : [
+          violation(
+            rule,
+            "email has invalid format",
+            formatValue(record.email),
+            "valid email",
+            "error",
+          ),
+        ],
+  "DQ-032": (record, rule) => {
+    if (isEmpty(record.lastModifiedDate)) {
+      return [
+        violation(
+          rule,
+          "lastModifiedDate is missing",
+          formatValue(record.lastModifiedDate),
+          "non-empty timestamp",
+          "error",
+        ),
+      ];
+    }
+    if (!isValidTimestamp(record.lastModifiedDate)) {
+      return [
+        violation(
+          rule,
+          "lastModifiedDate is not a valid ISO date or epoch milliseconds timestamp",
+          formatValue(record.lastModifiedDate),
+          "ISO date or epoch ms",
+          "error",
+        ),
+      ];
+    }
+    return [];
+  },
 };
+
+const RUNTIME_AUTOMATED_RULE_IDS = new Set([
+  "DQ-012",
+  "DQ-012-A",
+  "DQ-012-B",
+  "DQ-012-C",
+  "DQ-023",
+]);
 
 const RULES_BY_INDEX = new Map<BaseIndex, ChecklistItem[]>();
 
@@ -504,10 +759,10 @@ export function evaluateRecord(baseIndex: BaseIndex, record: Record<string, any>
 export function getRuleSummary(baseIndex: BaseIndex): RuleSummary {
   const rules = getRulesForIndex(baseIndex);
   const automatedRuleIds = rules
-    .filter((rule) => AUTO_RULE_CHECKS[rule.checkId])
+    .filter((rule) => isAutomatedRule(rule.checkId))
     .map((rule) => rule.checkId);
   const manualRuleIds = rules
-    .filter((rule) => !AUTO_RULE_CHECKS[rule.checkId])
+    .filter((rule) => !isAutomatedRule(rule.checkId))
     .map((rule) => rule.checkId);
 
   return {
@@ -517,6 +772,10 @@ export function getRuleSummary(baseIndex: BaseIndex): RuleSummary {
     automatedRuleIds,
     manualRuleIds,
   };
+}
+
+function isAutomatedRule(ruleId: string) {
+  return Boolean(AUTO_RULE_CHECKS[ruleId]) || RUNTIME_AUTOMATED_RULE_IDS.has(ruleId);
 }
 
 function getRulesForIndex(baseIndex: BaseIndex): ChecklistItem[] {
@@ -618,6 +877,41 @@ function requiresSubmitterIdentity(record: Record<string, any>): boolean {
   );
 }
 
+function requiresIdFormatValidation(record: Record<string, any>): boolean {
+  return (
+    !isDeletedRecord(record) &&
+    !isAdminChangeRecord(record) &&
+    isOneMacOrigin(record) &&
+    !isEmpty(record.authority)
+  );
+}
+
+function getIdPatternForAuthority(authority: unknown): RegExp | null {
+  const normalizedAuthority = normalize(authority);
+  if (normalizedAuthority === "medicaid spa" || normalizedAuthority === "chip spa") {
+    return SPA_ID_REGEX;
+  }
+
+  if (
+    normalizedAuthority === "1915(b)" ||
+    normalizedAuthority === "1915(c)" ||
+    normalizedAuthority.startsWith("1915(")
+  ) {
+    return WAIVER_ID_REGEX;
+  }
+
+  return null;
+}
+
+function requiresSeatoolLinkage(record: Record<string, any>): boolean {
+  return (
+    !isDeletedRecord(record) &&
+    !isAdminChangeRecord(record) &&
+    !isNoso(record) &&
+    isOneMacOrigin(record)
+  );
+}
+
 function hasOneMacFootprint(record: Record<string, any>): boolean {
   return (
     !isEmpty(record.submissionDate) ||
@@ -625,6 +919,15 @@ function hasOneMacFootprint(record: Record<string, any>): boolean {
     !isEmpty(record.submitterEmail) ||
     !isEmpty(record.packageId) ||
     !isEmpty(record.makoChangedDate)
+  );
+}
+
+function isCandidateForMissingOneMacLink(record: Record<string, any>): boolean {
+  return (
+    !isDeletedRecord(record) &&
+    !isAdminChangeRecord(record) &&
+    !isNoso(record) &&
+    !isEmpty(record.changed_date)
   );
 }
 
@@ -654,6 +957,26 @@ function shouldCheckChangelogOrigin(record: Record<string, any>): boolean {
 
 function shouldCheckChangelogAdminFields(record: Record<string, any>): boolean {
   return record.isAdminChange === true && !isLegacyAdminChangeRecord(record);
+}
+
+function isStateUserRole(value: unknown): boolean {
+  const role = normalize(value);
+  return role === "statesubmitter" || role === "statesystemadmin";
+}
+
+function isValidRoleId(record: Record<string, any>): boolean {
+  const id = String(record.id ?? "").trim();
+  if (!id) return false;
+
+  const email = String(record.email ?? "").trim();
+  const territory = String(record.territory ?? "").trim();
+  const role = String(record.role ?? "").trim();
+
+  if (email && territory && role) {
+    return id === `${email}_${territory}_${role}`;
+  }
+
+  return /^[^_]+_[^_]+_[^_]+$/.test(id);
 }
 
 function isValidTimestamp(value: unknown): boolean {

@@ -24,6 +24,8 @@ interface DataStackProps extends cdk.NestedStackProps {
   sharedOpenSearchDomainEndpoint: string;
   sharedOpenSearchDomainArn: string;
   devPasswordArn: string;
+  attachmentsBucket: cdk.aws_s3.Bucket;
+  legacyS3AccessRoleArn: string;
 }
 
 export class Data extends cdk.NestedStack {
@@ -56,6 +58,8 @@ export class Data extends cdk.NestedStack {
       sharedOpenSearchDomainEndpoint,
       sharedOpenSearchDomainArn,
       devPasswordArn,
+      attachmentsBucket,
+      legacyS3AccessRoleArn,
     } = props;
     const consumerGroupPrefix = `--${project}--${stage}--`;
 
@@ -515,6 +519,21 @@ export class Data extends cdk.NestedStack {
             }),
             new cdk.aws_iam.PolicyStatement({
               effect: cdk.aws_iam.Effect.ALLOW,
+              actions: ["s3:GetObject"],
+              resources: [`${attachmentsBucket.bucketArn}/*`],
+            }),
+            new cdk.aws_iam.PolicyStatement({
+              effect: cdk.aws_iam.Effect.ALLOW,
+              actions: ["s3:ListBucket"],
+              resources: [attachmentsBucket.bucketArn],
+            }),
+            new cdk.aws_iam.PolicyStatement({
+              effect: cdk.aws_iam.Effect.ALLOW,
+              actions: ["sts:AssumeRole"],
+              resources: [legacyS3AccessRoleArn],
+            }),
+            new cdk.aws_iam.PolicyStatement({
+              effect: cdk.aws_iam.Effect.ALLOW,
               actions: ["ses:SendEmail"],
               resources: ["*"],
             }),
@@ -567,6 +586,8 @@ export class Data extends cdk.NestedStack {
         indexNamespace,
         DATA_QUALITY_BUCKET_NAME: dataQualityBucket.bucketName,
         DATA_QUALITY_DEFAULT_EMAILS: isDev ? "james.d@globalalliantinc.com" : "",
+        ATTACHMENTS_BUCKET_NAME: attachmentsBucket.bucketName,
+        LEGACY_S3_ACCESS_ROLE_ARN: legacyS3AccessRoleArn,
       },
     });
 

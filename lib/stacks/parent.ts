@@ -64,6 +64,8 @@ export class ParentStack extends cdk.Stack {
       devPasswordArn: props.devPasswordArn,
       sharedOpenSearchDomainArn: props.sharedOpenSearchDomainArn,
       sharedOpenSearchDomainEndpoint: props.sharedOpenSearchDomainEndpoint,
+      attachmentsBucket: uploadsStack.attachmentsBucket,
+      legacyS3AccessRoleArn: props.legacyS3AccessRoleArn,
     });
 
     const apiStack = new Stacks.Api(this, "api", {

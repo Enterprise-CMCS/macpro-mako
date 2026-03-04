@@ -18,8 +18,7 @@ This document intentionally avoids environment-specific baseline counts so it st
 
 ## Current Scope
 
-- Exported indices currently in scope: `main`, `changelog`
-- Indices not yet exported: `users`, `roles`
+- Exported indices currently in scope: `main`, `changelog`, `users`, `roles`
 - Deleted records are excluded globally before rule evaluation
 - Legacy/backfill cohorts are scoped out where they would otherwise create known false positives
 
@@ -30,7 +29,7 @@ This document intentionally avoids environment-specific baseline counts so it st
 - Timestamp checks still enforce a lower bound of `2000-01-01`; pre-2000 values are intentionally flagged.
 - `main` checks use cohort logic so legacy shell rows and non-app-facing rows do not inflate the report.
 - `changelog` checks use cohort logic so legacy admin-change backfill rows do not inflate the report.
-- `users` and `roles` checks are not currently in scope because those indices are not exported yet.
+- `users` and `roles` are now included in the export scope so `DQ-029` through `DQ-032` run in the same report.
 
 ## Rule Decisions
 
@@ -71,30 +70,32 @@ This document intentionally avoids environment-specific baseline counts so it st
 - Original check (checklist): ID Format validation per authority type
 - Original expected result: All IDs follow standard naming convention OR documented as legacy exception
 - Index: `main`
-- Status: manual / deferred
-- Decision: not automated yet
-- Reason: ID validation depends on authority-specific patterns plus explicit legacy exceptions
-- Follow-up: define acceptable ID formats by authority and document legacy exceptions
+- Status: automated
+- Decision: validate `id` format for native OneMAC records using authority-specific patterns (`Medicaid SPA`, `CHIP SPA`, and `1915*` waiver ids)
+- Reason: regex patterns are already defined in submission schemas and can be reused consistently for data quality
+- Follow-up: none for now
 
 ### `DQ-005`
 
 - Original check (checklist): OneMAC submissions missing in SEA Tool
 - Original expected result: Zero missing records OR documented reason (e.g., deleted, admin change)
 - Index: `main`
-- Status: manual / deferred
-- Decision: not automated yet
-- Reason: requires cross-system reconciliation outside OpenSearch
-- Follow-up: decide what the source of truth is for SEA Tool comparison
+- Status: automated (heuristic)
+- Decision: warn when native OneMAC records appear unlinked to SEA Tool after a grace period
+- Reason: we do not have a direct SEA Tool source-of-truth join in this export, so this is an operational heuristic
+- Current logic: for non-deleted, non-admin-change, non-NOSO `origin=OneMAC` records, flag when `submissionDate` is older than 24 hours and `changed_date` is still missing
+- Follow-up: keep as warning-level signal; upgrade to strict validation only if a direct SEA Tool reconciliation source is added
 
 ### `DQ-006`
 
 - Original check (checklist): SEA Tool submissions not found in OneMAC
 - Original expected result: Document which legacy system records should/should not appear in OneMAC
 - Index: `main`
-- Status: manual / deferred
-- Decision: not automated yet
-- Reason: requires cross-system reconciliation and explicit decisions for legacy record coverage
-- Follow-up: define which SEA Tool records should exist in OneMAC
+- Status: automated (heuristic)
+- Decision: warn on likely SEA Tool-only records that still have no OneMAC footprint after a grace period
+- Reason: we do not have a direct SEA Tool-to-OneMAC reconciliation join in this export, so this is a best-effort operational signal
+- Current logic: for non-deleted, non-admin-change, non-NOSO records with `changed_date`, warn when `changed_date` is older than 24 hours and OneMAC footprint fields (`submissionDate`, `submitterName`, `submitterEmail`, `makoChangedDate`) are all missing
+- Follow-up: keep as warning-level signal; treat as inventory/reporting unless business defines strict reconciliation criteria
 
 ### `DQ-007`
 
@@ -152,40 +153,41 @@ This document intentionally avoids environment-specific baseline counts so it st
 - Original check (checklist): Mandatory attachments missing in S3
 - Original expected result: Zero missing records
 - Index: `main`, `changelog`
-- Status: manual / deferred
-- Decision: not automated yet
-- Reason: requires S3 object existence checks plus attachment metadata validation
-- Follow-up: define attachment comparison strategy between OpenSearch and S3
+- Status: automated
+- Decision: validate each indexed attachment with S3 `HeadObject` and flag missing objects
+- Reason: attachment records already include `bucket` and `key`; object existence can be checked directly
+- Follow-up: none for now
 
 ### `DQ-012-A`
 
 - Original check (checklist): Submissions with no attachments in S3 but main index or changelog has attachments data
 - Original expected result: Zero discrepancies
 - Index: `main`, `changelog`
-- Status: manual / deferred
-- Decision: not automated yet
-- Reason: requires checking that indexed attachment references exist in S3
-- Follow-up: add S3 existence checks per attachment key
+- Status: automated
+- Decision: if attachment metadata exists but no resolvable S3 object is found, flag discrepancy
+- Reason: direct continuation of `DQ-012` object existence checks at the submission level
+- Follow-up: none for now
 
 ### `DQ-012-B`
 
 - Original check (checklist): Submissions with attachments in S3 but main index or changelog has NO attachments data
 - Original expected result: Zero discrepancies
 - Index: `main`, `changelog`
-- Status: manual / deferred
-- Decision: not automated yet
-- Reason: requires reverse lookup from S3 objects to OpenSearch records
-- Follow-up: decide whether S3 inventory or prefix scan is the correct source for comparison
+- Status: automated
+- Decision: list objects from the configured attachments bucket and flag unreferenced objects older than a grace period
+- Reason: with attachments consolidated in the same account, direct bucket-to-index reconciliation is now practical
+- Current logic: compare S3 object keys in `ATTACHMENTS_BUCKET_NAME` against all `main`/`changelog` attachment references and emit summary + sample keys for unreferenced objects older than 24 hours
+- Follow-up: once migration fully completes, consider replacing list-based scan with S3 Inventory for larger-scale efficiency
 
 ### `DQ-012-C`
 
 - Original check (checklist): Submissions with no attachments in main but attachments in changelog
 - Original expected result: Zero discrepancies OR documented reason
 - Index: `main`, `changelog`
-- Status: manual / deferred
-- Decision: not automated yet
-- Reason: requires record-level comparison of `attachments` content between `main` and `changelog`
-- Follow-up: define how attachment drift should be evaluated
+- Status: automated
+- Decision: during runs that include both indices, flag changelog records with attachments when the corresponding main record has none
+- Reason: record-level comparison is feasible using shared package-level identifiers
+- Follow-up: decide whether to also emit paired violations on the main side
 
 ### `DQ-013`
 
@@ -257,10 +259,11 @@ This document intentionally avoids environment-specific baseline counts so it st
 - Original check (checklist): RAI date discrepancies between export and UI
 - Original expected result: All RAI dates consistent between export and UI
 - Index: `main`
-- Status: manual / deferred
-- Decision: not automated yet
-- Reason: this requires comparing exported data with UI/app rendering behavior
-- Follow-up: define the comparison workflow against `/item` or UI surfaces
+- Status: automated
+- Decision: compare `raiReceivedDate`, `formalRaiReceivedDate`, and `latestRaiResponseTimestamp` when present and flag mismatches
+- Reason: these fields drive UI-facing RAI date behavior and should stay internally consistent
+- Current logic: warn when latest timestamp exists but `raiReceivedDate` is missing or when date values diverge beyond tolerance
+- Follow-up: none for now
 
 ### `DQ-020`
 
@@ -298,10 +301,11 @@ This document intentionally avoids environment-specific baseline counts so it st
 - Original check (checklist): Identify all legacy system records (WMS/MMDL, MACPro)
 - Original expected result: Document all legacy system sources and record counts
 - Index: `main`
-- Status: manual / deferred
-- Decision: treat as a reporting/inventory exercise, not a pass/fail rule
-- Reason: identifying legacy source systems requires explicit source classification
-- Follow-up: decide whether to create a separate legacy source inventory output
+- Status: automated
+- Decision: generate legacy source inventory summaries in the violations output (total + per-source counts)
+- Reason: this is primarily an inventory/reporting check, so summary output is more useful than per-record noise
+- Current logic: classify likely legacy records using `origin`, `pk`, and `GSI1pk` signals into source buckets and emit summarized counts
+- Follow-up: refine source heuristics if business wants stricter source attribution
 
 ### `DQ-024`
 
@@ -358,51 +362,49 @@ This document intentionally avoids environment-specific baseline counts so it st
 - Original check (checklist): Validate state access list for state users
 - Original expected result: All state users have at least one state assigned
 - Index: `users`
-- Status: not in scope
-- Decision: not implemented
-- Reason: the current export does not include the `users` index
-- Follow-up: add `users` export before implementing this rule
+- Status: automated
+- Decision: for state-user roles, require a non-empty `states` list with at least one valid state code
+- Reason: this directly validates whether state users can be scoped to at least one territory in-app
+- Follow-up: none for now
 
 ### `DQ-030`
 
 - Original check (checklist): Validate role ID format
 - Original expected result: All role IDs follow standard format
 - Index: `roles`
-- Status: not in scope
-- Decision: not implemented
-- Reason: the current export does not include the `roles` index
-- Follow-up: define role ID format, then add `roles` export and validation
+- Status: automated
+- Decision: require non-empty role `id` and validate it follows `email_territory_role` composition
+- Reason: role records are generated from those fields; drift indicates malformed index data
+- Follow-up: none for now
 
 ### `DQ-031`
 
 - Original check (checklist): Validate email format in roles
 - Original expected result: All email addresses follow valid format
 - Index: `roles`
-- Status: not in scope
-- Decision: not implemented
-- Reason: the current export does not include the `roles` index
-- Follow-up: once `roles` are exported, this can reuse the existing email validator
+- Status: automated
+- Decision: validate non-empty role `email` values with the same standard email regex used elsewhere
+- Reason: objective format check with low false-positive risk
+- Follow-up: none for now
 
 ### `DQ-032`
 
 - Original check (checklist): Validate role modification timestamp
 - Original expected result: All timestamps in valid Unix epoch milliseconds range
 - Index: `roles`
-- Status: not in scope
-- Decision: not implemented
-- Reason: the current export does not include the `roles` index
-- Follow-up: once `roles` are exported, this can reuse the existing timestamp validator
+- Status: automated
+- Decision: require non-empty `lastModifiedDate` and validate timestamp format/range
+- Reason: role lifecycle history depends on a reliable modification timestamp
+- Follow-up: none for now
 
 ## Open Questions
 
 - Should `DQ-015` continue to flag legacy authority aliases such as `APD` and `1115`, or should those be normalized/allowed?
 - Should `toggle-withdraw-rai` changelog events be exempt from `DQ-027` and `DQ-028`?
 - Should placeholder values such as `"-- --"` be preserved as violations or normalized to null upstream?
-- Should `DQ-019` be implemented as an API/UI comparison check, and if so, what is the source of truth?
-- Should `users` and `roles` be added to the export scope for `DQ-029` through `DQ-032`?
 
 ## Next Changes
 
-No immediate code changes are required for the current baseline.
+The current baseline now covers `main`, `changelog`, `users`, and `roles`.
 
-The recommended next step is to review the current decisions with business and only make targeted rule changes after the open questions are answered.
+The recommended next step is to review findings with business and tune thresholds/cohorts where noise remains (especially reconciliation-style checks and legacy-source heuristics).
