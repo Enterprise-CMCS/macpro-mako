@@ -199,8 +199,7 @@ for (const [role, user] of Object.entries(users)) {
           const yyyy = today.getFullYear();
           const mm = String(today.getMonth() + 1).padStart(2, "0");
           const dd = String(today.getDate()).padStart(2, "0");
-          const extension = role === "stateSubmitter" ? "xlsx" : "csv";
-          const expectedFilename = `spas-export-${mm}_${dd}_${yyyy}.${extension}`;
+          const expectedFilename = `spas-export-${mm}_${dd}_${yyyy}.csv`;
 
           await dashboardPage.validateDownload(page, {
             role: role,
