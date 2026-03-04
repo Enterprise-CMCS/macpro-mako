@@ -63,6 +63,15 @@ export class Api extends cdk.NestedStack {
     } = props;
 
     const topicName = `${topicNamespace}aws.onemac.migration.cdc`;
+    const legacyAttachmentBucketMapParameterName = `/${project}/${stage}/legacy-attachment-bucket-map`;
+    const legacyAttachmentBucketMap = cdk.aws_ssm.StringParameter.valueForStringParameter(
+      this,
+      legacyAttachmentBucketMapParameterName,
+    );
+    const legacyMirrorBucketArns = [
+      `arn:aws:s3:::${project}-${stage}-legacy-attachments-${this.account}`,
+      `arn:aws:s3:::${project}-${stage}-legacy-attachmentsbucket-${this.account}`,
+    ];
 
     // Define IAM role
     const lambdaRole = new cdk.aws_iam.Role(this, "LambdaExecutionRole", {
@@ -110,6 +119,11 @@ export class Api extends cdk.NestedStack {
                 "s3:GetObjectTagging",
               ],
               resources: [`${attachmentsBucket.bucketArn}/*`],
+            }),
+            new cdk.aws_iam.PolicyStatement({
+              effect: cdk.aws_iam.Effect.ALLOW,
+              actions: ["s3:GetObject", "s3:GetObjectTagging"],
+              resources: legacyMirrorBucketArns.map((bucketArn) => `${bucketArn}/*`),
             }),
             new cdk.aws_iam.PolicyStatement({
               effect: cdk.aws_iam.Effect.ALLOW,
@@ -218,6 +232,7 @@ export class Api extends cdk.NestedStack {
           osDomain: `https://${openSearchDomainEndpoint}`,
           legacyS3AccessRoleArn,
           indexNamespace,
+          LEGACY_ATTACHMENT_BUCKET_MAP: legacyAttachmentBucketMap,
         },
         provisionedConcurrency: 2,
       },

@@ -28,7 +28,9 @@ vi.mock("@aws-sdk/s3-request-presigner", () => ({
 
 describe("Lambda Handler", () => {
   afterEach(() => {
+    delete process.env.LEGACY_ATTACHMENT_BUCKET_MAP;
     vi.clearAllMocks();
+    vi.restoreAllMocks();
   });
 
   it("should return 400 if event body is missing", async () => {
@@ -142,6 +144,96 @@ describe("Lambda Handler", () => {
     expect(res.statusCode).toEqual(200);
     expect(res.body).toEqual(JSON.stringify({ url: mockUrl }));
   });
+
+  it("should remap legacy bucket requests and log when remapping is applied", async () => {
+    const mappedBucket = "mako-main-legacy-attachments-635052997545";
+    process.env.LEGACY_ATTACHMENT_BUCKET_MAP = JSON.stringify({
+      [ATTACHMENT_BUCKET_NAME]: mappedBucket,
+    });
+    const infoSpy = vi.spyOn(console, "info").mockImplementation(() => undefined);
+    const mockUrl = `https://${mappedBucket}.s3.${ATTACHMENT_BUCKET_REGION}.amazonaws.com/123e4567-e89b-12d3-a456-426614174000`;
+    vi.mocked(getSignedUrl).mockResolvedValueOnce(mockUrl);
+
+    const event = {
+      body: JSON.stringify({
+        id: WITHDRAWN_CHANGELOG_ITEM_ID,
+        bucket: ATTACHMENT_BUCKET_NAME,
+        key: "doc001",
+        filename: "contract_amendment_2024.pdf",
+      }),
+      requestContext: getRequestContext(),
+    } as APIGatewayEvent;
+
+    const res = await handler(event);
+
+    const firstSignedUrlCommand = vi.mocked(getSignedUrl).mock.calls[0]?.[1] as any;
+    expect(firstSignedUrlCommand?.input?.Bucket).toBe(mappedBucket);
+    expect(infoSpy).toHaveBeenCalledWith(
+      expect.stringContaining("legacy_attachment_remap_applied"),
+    );
+    expect(res.statusCode).toEqual(200);
+    expect(res.body).toEqual(JSON.stringify({ url: mockUrl }));
+    infoSpy.mockRestore();
+  });
+
+  it("should fallback to legacy bucket and log warning if remapped bucket fails", async () => {
+    const mappedBucket = "mako-main-legacy-attachments-635052997545";
+    process.env.LEGACY_ATTACHMENT_BUCKET_MAP = JSON.stringify({
+      [ATTACHMENT_BUCKET_NAME]: mappedBucket,
+    });
+    const warnSpy = vi.spyOn(console, "warn").mockImplementation(() => undefined);
+    const fallbackUrl = `https://${ATTACHMENT_BUCKET_NAME}.s3.${ATTACHMENT_BUCKET_REGION}.amazonaws.com/fallback`;
+    vi.mocked(getSignedUrl)
+      .mockRejectedValueOnce(new Error("AccessDenied"))
+      .mockResolvedValueOnce(fallbackUrl);
+
+    const event = {
+      body: JSON.stringify({
+        id: WITHDRAWN_CHANGELOG_ITEM_ID,
+        bucket: ATTACHMENT_BUCKET_NAME,
+        key: "doc001",
+        filename: "contract_amendment_2024.pdf",
+      }),
+      requestContext: getRequestContext(),
+    } as APIGatewayEvent;
+
+    const res = await handler(event);
+
+    const secondSignedUrlCommand = vi.mocked(getSignedUrl).mock.calls[1]?.[1] as any;
+    expect(secondSignedUrlCommand?.input?.Bucket).toBe(ATTACHMENT_BUCKET_NAME);
+    expect(warnSpy).toHaveBeenCalledWith(
+      expect.stringContaining("legacy_attachment_remap_fallback"),
+    );
+    expect(res.statusCode).toEqual(200);
+    expect(res.body).toEqual(JSON.stringify({ url: fallbackUrl }));
+    warnSpy.mockRestore();
+  });
+
+  it("should log warning when a legacy bucket request has no mapping", async () => {
+    const warnSpy = vi.spyOn(console, "warn").mockImplementation(() => undefined);
+    const mockUrl = `https://${ATTACHMENT_BUCKET_NAME}.s3.${ATTACHMENT_BUCKET_REGION}.amazonaws.com/123e4567-e89b-12d3-a456-426614174000`;
+    vi.mocked(getSignedUrl).mockResolvedValueOnce(mockUrl);
+
+    const event = {
+      body: JSON.stringify({
+        id: WITHDRAWN_CHANGELOG_ITEM_ID,
+        bucket: ATTACHMENT_BUCKET_NAME,
+        key: "doc001",
+        filename: "contract_amendment_2024.pdf",
+      }),
+      requestContext: getRequestContext(),
+    } as APIGatewayEvent;
+
+    const res = await handler(event);
+
+    expect(warnSpy).toHaveBeenCalledWith(
+      expect.stringContaining("legacy_attachment_remap_missing_mapping"),
+    );
+    expect(res.statusCode).toEqual(200);
+    expect(res.body).toEqual(JSON.stringify({ url: mockUrl }));
+    warnSpy.mockRestore();
+  });
+
   it("should return 500 because response is missing credentials", async () => {
     const mockUrl = `https://${ATTACHMENT_BUCKET_NAME}.s3.${ATTACHMENT_BUCKET_REGION}.amazonaws.com/123e4567-e89b-12d3-a456-426614174000`;
     vi.mocked(getSignedUrl).mockResolvedValueOnce(mockUrl);
