@@ -752,7 +752,8 @@ describe("ActionForm", () => {
     await waitFor(() =>
       expect(bannerSpy).toHaveBeenCalledWith(
         expect.objectContaining({
-          header: "Draft saved",
+          header: "Progress saved",
+          body: "Changes made to MD-00-0001 have been saved.",
           variant: "success",
         }),
       ),

@@ -478,8 +478,8 @@ export const ActionForm = <Schema extends SchemaWithEnforcableProps>({
       }
 
       banner({
-        header: "Draft saved",
-        body: `Draft for ${normalizedId} has been saved.`,
+        header: "Progress saved",
+        body: `Changes made to ${normalizedId} have been saved.`,
         variant: "success",
         pathnameToDisplayOn: window.location.pathname,
       });
