@@ -36,6 +36,8 @@ This document intentionally avoids environment-specific baseline counts so it st
 
 ### `DQ-001`
 
+- Original check (checklist): Identify all soft-deleted records
+- Original expected result: All deleted=true records documented with reason
 - Index: `main`
 - Status: listed in the checklist, effectively suppressed by global delete exclusion
 - Decision: do not emit violations for soft-deleted rows
@@ -44,6 +46,8 @@ This document intentionally avoids environment-specific baseline counts so it st
 
 ### `DQ-002`
 
+- Original check (checklist): Records with NULL or empty Origin values
+- Original expected result: Zero records with NULL origin OR documented exceptions?
 - Index: `main`
 - Status: automated
 - Decision: only evaluate rows that have a OneMAC footprint
@@ -53,6 +57,8 @@ This document intentionally avoids environment-specific baseline counts so it st
 
 ### `DQ-003`
 
+- Original check (checklist): Records with NULL GSI1pk values
+- Original expected result: Document all records with NULL GSI1pk and confirm they should be hidden
 - Index: `main`
 - Status: automated
 - Decision: only evaluate legacy-like rows
@@ -62,6 +68,8 @@ This document intentionally avoids environment-specific baseline counts so it st
 
 ### `DQ-004`
 
+- Original check (checklist): ID Format validation per authority type
+- Original expected result: All IDs follow standard naming convention OR documented as legacy exception
 - Index: `main`
 - Status: manual / deferred
 - Decision: not automated yet
@@ -70,6 +78,8 @@ This document intentionally avoids environment-specific baseline counts so it st
 
 ### `DQ-005`
 
+- Original check (checklist): OneMAC submissions missing in SEA Tool
+- Original expected result: Zero missing records OR documented reason (e.g., deleted, admin change)
 - Index: `main`
 - Status: manual / deferred
 - Decision: not automated yet
@@ -78,6 +88,8 @@ This document intentionally avoids environment-specific baseline counts so it st
 
 ### `DQ-006`
 
+- Original check (checklist): SEA Tool submissions not found in OneMAC
+- Original expected result: Document which legacy system records should/should not appear in OneMAC
 - Index: `main`
 - Status: manual / deferred
 - Decision: not automated yet
@@ -86,6 +98,8 @@ This document intentionally avoids environment-specific baseline counts so it st
 
 ### `DQ-007`
 
+- Original check (checklist): NULL submissionDate for OneMAC-originated records
+- Original expected result: Zero NULL values for OneMAC-originated records
 - Index: `main`
 - Status: automated
 - Decision: require `submissionDate` only for native, non-deleted `OneMAC` records
@@ -94,6 +108,8 @@ This document intentionally avoids environment-specific baseline counts so it st
 
 ### `DQ-008`
 
+- Original check (checklist): Proposed effective date = "Pending"
+- Original expected result: List all "Pending" records; define SMART handling rule
 - Index: `main`
 - Status: automated
 - Decision: keep `"Pending"` as a warning condition, not a hard failure
@@ -102,6 +118,8 @@ This document intentionally avoids environment-specific baseline counts so it st
 
 ### `DQ-009`
 
+- Original check (checklist): NULL proposedDate for Medicaid SPAs
+- Original expected result: Zero NULL values OR value = "Pending" with documentation
 - Index: `main`
 - Status: automated
 - Decision: only evaluate native `OneMAC` records where `authority = Medicaid SPA`
@@ -111,6 +129,8 @@ This document intentionally avoids environment-specific baseline counts so it st
 
 ### `DQ-010`
 
+- Original check (checklist): NULL submitterName for non-NOSO records
+- Original expected result: Zero NULL values for non-NOSO submissions
 - Index: `main`
 - Status: automated
 - Decision: require `submitterName` only for native, non-NOSO, non-admin-change, non-deleted OneMAC records
@@ -119,6 +139,8 @@ This document intentionally avoids environment-specific baseline counts so it st
 
 ### `DQ-011`
 
+- Original check (checklist): NULL submitterEmail for non-NOSO records
+- Original expected result: Zero NULL values for non-NOSO submissions
 - Index: `main`
 - Status: automated
 - Decision: require `submitterEmail` only for native, non-NOSO, non-admin-change, non-deleted OneMAC records
@@ -127,6 +149,8 @@ This document intentionally avoids environment-specific baseline counts so it st
 
 ### `DQ-012`
 
+- Original check (checklist): Mandatory attachments missing in S3
+- Original expected result: Zero missing records
 - Index: `main`, `changelog`
 - Status: manual / deferred
 - Decision: not automated yet
@@ -135,6 +159,8 @@ This document intentionally avoids environment-specific baseline counts so it st
 
 ### `DQ-012-A`
 
+- Original check (checklist): Submissions with no attachments in S3 but main index or changelog has attachments data
+- Original expected result: Zero discrepancies
 - Index: `main`, `changelog`
 - Status: manual / deferred
 - Decision: not automated yet
@@ -143,6 +169,8 @@ This document intentionally avoids environment-specific baseline counts so it st
 
 ### `DQ-012-B`
 
+- Original check (checklist): Submissions with attachments in S3 but main index or changelog has NO attachments data
+- Original expected result: Zero discrepancies
 - Index: `main`, `changelog`
 - Status: manual / deferred
 - Decision: not automated yet
@@ -151,6 +179,8 @@ This document intentionally avoids environment-specific baseline counts so it st
 
 ### `DQ-012-C`
 
+- Original check (checklist): Submissions with no attachments in main but attachments in changelog
+- Original expected result: Zero discrepancies OR documented reason
 - Index: `main`, `changelog`
 - Status: manual / deferred
 - Decision: not automated yet
@@ -159,6 +189,8 @@ This document intentionally avoids environment-specific baseline counts so it st
 
 ### `DQ-013`
 
+- Original check (checklist): Validate timestamp format (Unix epoch milliseconds)
+- Original expected result: All timestamps in valid Unix epoch milliseconds range
 - Index: `main`
 - Status: automated
 - Decision: accept ISO-style timestamps or 13-digit epoch milliseconds
@@ -168,6 +200,8 @@ This document intentionally avoids environment-specific baseline counts so it st
 
 ### `DQ-014`
 
+- Original check (checklist): Validate timestamp format (Unix epoch milliseconds)
+- Original expected result: All timestamps in valid Unix epoch milliseconds range
 - Index: `main`
 - Status: automated
 - Decision: same timestamp logic as `DQ-013`
@@ -177,6 +211,8 @@ This document intentionally avoids environment-specific baseline counts so it st
 
 ### `DQ-015`
 
+- Original check (checklist): Invalid authority values
+- Original expected result: All records have valid authority value
 - Index: `main`
 - Status: automated
 - Decision: keep a strict normalized authority allowlist
@@ -186,6 +222,8 @@ This document intentionally avoids environment-specific baseline counts so it st
 
 ### `DQ-016`
 
+- Original check (checklist): Invalid state codes
+- Original expected result: All state codes valid (50 states + DC + 5 territories)
 - Index: `main`
 - Status: automated
 - Decision: validate state codes strictly
@@ -195,6 +233,8 @@ This document intentionally avoids environment-specific baseline counts so it st
 
 ### `DQ-017`
 
+- Original check (checklist): Invalid status values
+- Original expected result: All records have valid status value
 - Index: `main`
 - Status: automated
 - Decision: validate `currentStatus` against the mapped status vocabulary, not only canonical `SEATOOL_STATUS`
@@ -204,6 +244,8 @@ This document intentionally avoids environment-specific baseline counts so it st
 
 ### `DQ-018`
 
+- Original check (checklist): Invalid email format
+- Original expected result: All email addresses follow valid format
 - Index: `main`
 - Status: automated
 - Decision: keep strict email format validation
@@ -212,6 +254,8 @@ This document intentionally avoids environment-specific baseline counts so it st
 
 ### `DQ-019`
 
+- Original check (checklist): RAI date discrepancies between export and UI
+- Original expected result: All RAI dates consistent between export and UI
 - Index: `main`
 - Status: manual / deferred
 - Decision: not automated yet
@@ -220,6 +264,8 @@ This document intentionally avoids environment-specific baseline counts so it st
 
 ### `DQ-020`
 
+- Original check (checklist): Formal RAI Response Date logical consistency
+- Original expected result: Formal RAI response date should be >= RAI requested date and not in future
 - Index: `main`
 - Status: automated
 - Decision: validate `formalRaiReceivedDate` when present, otherwise fall back to `raiReceivedDate`
@@ -229,6 +275,8 @@ This document intentionally avoids environment-specific baseline counts so it st
 
 ### `DQ-021`
 
+- Original check (checklist): Admin changes missing changeMade or changeReason
+- Original expected result: All admin changes have changeMade and changeReason populated
 - Index: `main`
 - Status: automated
 - Decision: require `changeMade` and `changeReason` for admin changes in `main`
@@ -237,6 +285,8 @@ This document intentionally avoids environment-specific baseline counts so it st
 
 ### `DQ-022`
 
+- Original check (checklist): NOSO records not properly identified
+- Original expected result: All NOSO records have NULL submitterName and submitterEmail
 - Index: `main`
 - Status: automated
 - Decision: require `submitterName` and `submitterEmail` to be null for NOSO records
@@ -245,6 +295,8 @@ This document intentionally avoids environment-specific baseline counts so it st
 
 ### `DQ-023`
 
+- Original check (checklist): Identify all legacy system records (WMS/MMDL, MACPro)
+- Original expected result: Document all legacy system sources and record counts
 - Index: `main`
 - Status: manual / deferred
 - Decision: treat as a reporting/inventory exercise, not a pass/fail rule
@@ -253,6 +305,8 @@ This document intentionally avoids environment-specific baseline counts so it st
 
 ### `DQ-024`
 
+- Original check (checklist): Validate changelog timestamp format
+- Original expected result: All timestamps in valid Unix epoch milliseconds range
 - Index: `changelog`
 - Status: automated
 - Decision: use the same timestamp rule as `DQ-013` and `DQ-014`
@@ -261,6 +315,8 @@ This document intentionally avoids environment-specific baseline counts so it st
 
 ### `DQ-025`
 
+- Original check (checklist): NULL or invalid origin in changelog
+- Original expected result: All changelog events have valid origin
 - Index: `changelog`
 - Status: automated
 - Decision: require valid `origin`, but skip legacy admin-change backfill rows
@@ -269,6 +325,8 @@ This document intentionally avoids environment-specific baseline counts so it st
 
 ### `DQ-026`
 
+- Original check (checklist): Admin changes in changelog missing isAdminChange flag
+- Original expected result: All records with changeMade/changeReason have isAdminChange=true
 - Index: `changelog`
 - Status: automated
 - Decision: if `changeMade` or `changeReason` is present, require `isAdminChange = true`
@@ -277,6 +335,8 @@ This document intentionally avoids environment-specific baseline counts so it st
 
 ### `DQ-027`
 
+- Original check (checklist): Verify changeMade populated for admin changes
+- Original expected result: All admin changes have changeMade value
 - Index: `changelog`
 - Status: automated
 - Decision: require `changeMade` for non-legacy admin-change rows
@@ -285,6 +345,8 @@ This document intentionally avoids environment-specific baseline counts so it st
 
 ### `DQ-028`
 
+- Original check (checklist): Verify changeReason populated for admin changes
+- Original expected result: All admin changes have changeReason value
 - Index: `changelog`
 - Status: automated
 - Decision: require `changeReason` for non-legacy admin-change rows
@@ -293,6 +355,8 @@ This document intentionally avoids environment-specific baseline counts so it st
 
 ### `DQ-029`
 
+- Original check (checklist): Validate state access list for state users
+- Original expected result: All state users have at least one state assigned
 - Index: `users`
 - Status: not in scope
 - Decision: not implemented
@@ -301,6 +365,8 @@ This document intentionally avoids environment-specific baseline counts so it st
 
 ### `DQ-030`
 
+- Original check (checklist): Validate role ID format
+- Original expected result: All role IDs follow standard format
 - Index: `roles`
 - Status: not in scope
 - Decision: not implemented
@@ -309,6 +375,8 @@ This document intentionally avoids environment-specific baseline counts so it st
 
 ### `DQ-031`
 
+- Original check (checklist): Validate email format in roles
+- Original expected result: All email addresses follow valid format
 - Index: `roles`
 - Status: not in scope
 - Decision: not implemented
@@ -317,6 +385,8 @@ This document intentionally avoids environment-specific baseline counts so it st
 
 ### `DQ-032`
 
+- Original check (checklist): Validate role modification timestamp
+- Original expected result: All timestamps in valid Unix epoch milliseconds range
 - Index: `roles`
 - Status: not in scope
 - Decision: not implemented
