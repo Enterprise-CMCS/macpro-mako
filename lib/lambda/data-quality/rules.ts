@@ -634,38 +634,6 @@ const AUTO_RULE_CHECKS: Record<string, RuleCheck> = {
           ),
         ]
       : [],
-  "DQ-029": (record, rule) => {
-    if (!isStateUserRole(record.role)) return [];
-    if (!Array.isArray(record.states) || record.states.length === 0) {
-      return [
-        violation(
-          rule,
-          "state user is missing states access list",
-          formatValue(record.states),
-          "at least one state",
-          "error",
-        ),
-      ];
-    }
-
-    const validStateCount = record.states.filter(
-      (value: unknown) => typeof value === "string" && VALID_STATES.has(value.toUpperCase()),
-    ).length;
-
-    if (validStateCount === 0) {
-      return [
-        violation(
-          rule,
-          "state user has no valid state codes assigned",
-          formatValue(record.states),
-          "at least one valid state code",
-          "error",
-        ),
-      ];
-    }
-
-    return [];
-  },
   "DQ-030": (record, rule) => {
     if (isEmpty(record.id)) {
       return [
@@ -731,6 +699,7 @@ const RUNTIME_AUTOMATED_RULE_IDS = new Set([
   "DQ-012-A",
   "DQ-012-B",
   "DQ-012-C",
+  "DQ-029",
   "DQ-023",
 ]);
 
@@ -927,7 +896,8 @@ function isCandidateForMissingOneMacLink(record: Record<string, any>): boolean {
     !isDeletedRecord(record) &&
     !isAdminChangeRecord(record) &&
     !isNoso(record) &&
-    !isEmpty(record.changed_date)
+    !isEmpty(record.changed_date) &&
+    normalize(record.origin) === "seatool"
   );
 }
 
@@ -957,11 +927,6 @@ function shouldCheckChangelogOrigin(record: Record<string, any>): boolean {
 
 function shouldCheckChangelogAdminFields(record: Record<string, any>): boolean {
   return record.isAdminChange === true && !isLegacyAdminChangeRecord(record);
-}
-
-function isStateUserRole(value: unknown): boolean {
-  const role = normalize(value);
-  return role === "statesubmitter" || role === "statesystemadmin";
 }
 
 function isValidRoleId(record: Record<string, any>): boolean {

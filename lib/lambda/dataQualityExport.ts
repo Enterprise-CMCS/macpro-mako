@@ -27,7 +27,8 @@ const DQ012B_SAMPLE_KEY_LIMIT = 50;
 const DQ012B_UPLOAD_GRACE_HOURS = 24;
 const DQ012B_UPLOAD_GRACE_MS = DQ012B_UPLOAD_GRACE_HOURS * 60 * 60 * 1000;
 const CHECKLIST_BY_ID = new Map(checklist.map((rule) => [rule.checkId, rule]));
-const DEFAULT_EXPORT_INDICES: BaseIndex[] = ["main", "changelog", "users", "roles"];
+const DEFAULT_EXPORT_INDICES: BaseIndex[] = ["main", "changelog", "roles", "users"];
+const DQ029_STATE_ROLES = new Set(["statesubmitter", "statesystemadmin"]);
 
 type ExportEvent = {
   runId?: string;
@@ -46,6 +47,10 @@ type ExportResult = {
   violationsKey: string;
   violationCount: number;
   ruleSummary: RuleSummary;
+  dq001DeletedKey?: string;
+  dq001DeletedCount?: number;
+  dq023InventoryKey?: string;
+  dq023InventoryCount?: number;
 };
 
 type AttachmentReference = {
@@ -70,11 +75,24 @@ type AttachmentCheckContext = {
   referencedAttachmentKeysByBucket: Map<string, Set<string>>;
   processedAttachmentIndices: Set<BaseIndex>;
   dq012BCompleted: boolean;
+  activeStateTerritoriesByEmail: Map<string, Set<string>>;
+  processedAccessIndices: Set<BaseIndex>;
+};
+
+type UserSnapshot = {
+  osIndex: string;
+  osId: string;
+  email: string;
 };
 
 type AttachmentRuleViolation = RuleViolation & {
   osIndex: string;
   osId: string;
+};
+
+type SupplementalExports = {
+  dq001DeletedStream?: NodeJS.WritableStream;
+  dq023InventoryStream?: NodeJS.WritableStream;
 };
 
 export const handler: Handler<ExportEvent> = async (event = {}) => {
@@ -98,6 +116,8 @@ export const handler: Handler<ExportEvent> = async (event = {}) => {
     referencedAttachmentKeysByBucket: new Map(),
     processedAttachmentIndices: new Set(),
     dq012BCompleted: false,
+    activeStateTerritoriesByEmail: new Map(),
+    processedAccessIndices: new Set(),
   };
 
   console.log("Data quality export started", {
@@ -131,6 +151,10 @@ export const handler: Handler<ExportEvent> = async (event = {}) => {
       violationsKey: result.violationsKey,
       violationCount: result.violationCount,
       ruleSummary: result.ruleSummary,
+      dq001DeletedKey: result.dq001DeletedKey,
+      dq001DeletedCount: result.dq001DeletedCount,
+      dq023InventoryKey: result.dq023InventoryKey,
+      dq023InventoryCount: result.dq023InventoryCount,
     })),
   };
 
@@ -230,6 +254,12 @@ async function exportIndex(
   const violationsPath = join("/tmp", `data-quality-${baseIndex}-${opts.runId}-violations.csv`);
   console.log("Writing CSV", { baseIndex, filePath });
 
+  const supplementalExports: SupplementalExports = {};
+  let dq001DeletedPath: string | undefined;
+  let dq001DeletedKey: string | undefined;
+  let dq023InventoryPath: string | undefined;
+  let dq023InventoryKey: string | undefined;
+
   const violationsStream = createWriteStream(violationsPath, { encoding: "utf8" });
   const violationHeader = [
     "os_index",
@@ -243,19 +273,51 @@ async function exportIndex(
   ].join(",");
   await writeToStream(violationsStream, `${violationHeader}\n`);
 
-  const { rowCount, violationCount, ruleSummary } = await writeCsvFile(
-    client,
-    baseIndex,
-    index,
-    columns,
-    opts.pageSize,
-    filePath,
-    violationsStream,
-    opts.attachmentCheckContext,
-  );
+  if (baseIndex === "main") {
+    dq001DeletedPath = join("/tmp", `data-quality-${baseIndex}-${opts.runId}-dq001-deleted.csv`);
+    dq023InventoryPath = join(
+      "/tmp",
+      `data-quality-${baseIndex}-${opts.runId}-dq023-legacy-inventory.csv`,
+    );
+    dq001DeletedKey = `data-quality/${process.env.indexNamespace ?? "unknown"}/${opts.runId}/dq001-deleted-main.csv`;
+    dq023InventoryKey = `data-quality/${process.env.indexNamespace ?? "unknown"}/${opts.runId}/dq023-legacy-inventory-main.csv`;
+
+    supplementalExports.dq001DeletedStream = createWriteStream(dq001DeletedPath, {
+      encoding: "utf8",
+    });
+    supplementalExports.dq023InventoryStream = createWriteStream(dq023InventoryPath, {
+      encoding: "utf8",
+    });
+
+    await writeToStream(supplementalExports.dq001DeletedStream, `${columns.join(",")}\n`);
+    await writeToStream(supplementalExports.dq023InventoryStream, "dq_check,source,count,notes\n");
+  }
+
+  const { rowCount, violationCount, ruleSummary, dq001DeletedCount, dq023InventoryCount } =
+    await writeCsvFile(
+      client,
+      baseIndex,
+      index,
+      columns,
+      opts.pageSize,
+      filePath,
+      violationsStream,
+      opts.attachmentCheckContext,
+      supplementalExports,
+    );
 
   violationsStream.end();
   await once(violationsStream, "finish");
+
+  if (supplementalExports.dq001DeletedStream) {
+    supplementalExports.dq001DeletedStream.end();
+    await once(supplementalExports.dq001DeletedStream, "finish");
+  }
+
+  if (supplementalExports.dq023InventoryStream) {
+    supplementalExports.dq023InventoryStream.end();
+    await once(supplementalExports.dq023InventoryStream, "finish");
+  }
 
   const objectKey = `data-quality/${process.env.indexNamespace ?? "unknown"}/${opts.runId}/${baseIndex}.csv`;
   const violationsKey = `data-quality/${process.env.indexNamespace ?? "unknown"}/${opts.runId}/violations-${baseIndex}.csv`;
@@ -279,6 +341,28 @@ async function exportIndex(
     }),
   );
 
+  if (dq001DeletedPath && dq001DeletedKey) {
+    await opts.s3Client.send(
+      new PutObjectCommand({
+        Bucket: opts.bucketName,
+        Key: dq001DeletedKey,
+        Body: createReadStream(dq001DeletedPath),
+        ContentType: "text/csv",
+      }),
+    );
+  }
+
+  if (dq023InventoryPath && dq023InventoryKey) {
+    await opts.s3Client.send(
+      new PutObjectCommand({
+        Bucket: opts.bucketName,
+        Key: dq023InventoryKey,
+        Body: createReadStream(dq023InventoryPath),
+        ContentType: "text/csv",
+      }),
+    );
+  }
+
   return {
     index: baseIndex,
     objectKey,
@@ -287,6 +371,10 @@ async function exportIndex(
     violationsKey,
     violationCount,
     ruleSummary,
+    dq001DeletedKey,
+    dq001DeletedCount,
+    dq023InventoryKey,
+    dq023InventoryCount,
   };
 }
 
@@ -319,19 +407,24 @@ async function writeCsvFile(
   filePath: string,
   violationsStream: NodeJS.WritableStream,
   attachmentCheckContext: AttachmentCheckContext,
+  supplementalExports: SupplementalExports,
 ) {
   const stream = createWriteStream(filePath, { encoding: "utf8" });
   let rowCount = 0;
   let violationCount = 0;
+  let dq001DeletedCount = 0;
+  let dq023InventoryCount = 0;
   const ruleSummary = getRuleSummary(baseIndex);
   const attachmentSnapshots: AttachmentSnapshot[] = [];
   const legacySourceCounts = new Map<string, number>();
+  const userSnapshots: UserSnapshot[] = [];
 
   await writeToStream(stream, `${columns.join(",")}\n`);
 
   await scanIndex(client, index, pageSize, async (hits) => {
     let buffer = "";
     let violationBuffer = "";
+    let dq001DeletedBuffer = "";
     for (const hit of hits) {
       const source = hit?._source ?? {};
       const flat = flattenRecord(source);
@@ -339,8 +432,29 @@ async function writeCsvFile(
       buffer += `${row}\n`;
       rowCount += 1;
 
+      if (
+        baseIndex === "main" &&
+        source.deleted === true &&
+        supplementalExports.dq001DeletedStream
+      ) {
+        dq001DeletedBuffer += `${row}\n`;
+        dq001DeletedCount += 1;
+      }
+
       if (baseIndex === "main" || baseIndex === "changelog") {
         attachmentSnapshots.push(buildAttachmentSnapshot(hit, source));
+      }
+
+      if (baseIndex === "roles") {
+        collectStateRoleAccess(source, attachmentCheckContext);
+      }
+
+      if (baseIndex === "users" && source.deleted !== true) {
+        userSnapshots.push({
+          osIndex: String(hit?._index ?? ""),
+          osId: String(hit?._id ?? ""),
+          email: String(source.email ?? "").trim(),
+        });
       }
 
       if (baseIndex === "main" && source.deleted !== true) {
@@ -364,6 +478,9 @@ async function writeCsvFile(
     if (violationBuffer) {
       await writeToStream(violationsStream, violationBuffer);
     }
+    if (dq001DeletedBuffer && supplementalExports.dq001DeletedStream) {
+      await writeToStream(supplementalExports.dq001DeletedStream, dq001DeletedBuffer);
+    }
   });
 
   if (baseIndex === "main" || baseIndex === "changelog") {
@@ -384,22 +501,41 @@ async function writeCsvFile(
     }
   }
 
-  if (baseIndex === "main") {
-    const legacyInventoryViolations = buildLegacyInventoryViolations(legacySourceCounts);
-    if (legacyInventoryViolations.length > 0) {
-      const legacyViolationRows = legacyInventoryViolations
+  if (baseIndex === "main" && supplementalExports.dq023InventoryStream) {
+    const legacyInventoryRows = buildLegacyInventoryRows(legacySourceCounts);
+    if (legacyInventoryRows.length > 0) {
+      const serialized = legacyInventoryRows
+        .map((row) =>
+          [
+            escapeCsv("DQ-023"),
+            escapeCsv(row.source),
+            escapeCsv(String(row.count)),
+            escapeCsv(row.notes),
+          ].join(","),
+        )
+        .join("\n");
+      await writeToStream(supplementalExports.dq023InventoryStream, `${serialized}\n`);
+      dq023InventoryCount += legacyInventoryRows.length;
+    }
+  }
+
+  attachmentCheckContext.processedAccessIndices.add(baseIndex);
+  if (baseIndex === "users") {
+    const dq029Violations = buildDq029CrossIndexViolations(userSnapshots, attachmentCheckContext);
+    if (dq029Violations.length > 0) {
+      const dq029Rows = dq029Violations
         .map((violation) =>
           buildViolationRow({ _index: violation.osIndex, _id: violation.osId }, violation),
         )
         .join("\n");
-      await writeToStream(violationsStream, `${legacyViolationRows}\n`);
-      violationCount += legacyInventoryViolations.length;
+      await writeToStream(violationsStream, `${dq029Rows}\n`);
+      violationCount += dq029Violations.length;
     }
   }
 
   stream.end();
   await once(stream, "finish");
-  return { rowCount, violationCount, ruleSummary };
+  return { rowCount, violationCount, ruleSummary, dq001DeletedCount, dq023InventoryCount };
 }
 
 async function scanIndex(
@@ -841,34 +977,83 @@ function createSyntheticViolation(
   };
 }
 
-function buildLegacyInventoryViolations(
-  legacySourceCounts: Map<string, number>,
-): AttachmentRuleViolation[] {
+function buildLegacyInventoryRows(legacySourceCounts: Map<string, number>) {
   const rows = Array.from(legacySourceCounts.entries()).sort((a, b) => b[1] - a[1]);
   const total = rows.reduce((sum, [, count]) => sum + count, 0);
 
-  const violations: AttachmentRuleViolation[] = [
-    createSyntheticViolation("DQ-023", {
-      osIndex: "summary",
-      osId: "total-legacy-records",
-      actual: `${total}`,
-      expected: "Legacy records inventoried by source",
-      message: "Legacy source inventory summary for main index",
-      severity: "warn",
-      field: "origin, GSI1pk",
-    }),
+  const inventoryRows: { source: string; count: number; notes: string }[] = [
+    {
+      source: "TOTAL",
+      count: total,
+      notes: "Legacy source inventory summary for main index",
+    },
   ];
 
   for (const [source, count] of rows) {
+    inventoryRows.push({
+      source,
+      count,
+      notes: `Legacy source inventory count for ${source}`,
+    });
+  }
+
+  return inventoryRows;
+}
+
+function collectStateRoleAccess(source: Record<string, any>, context: AttachmentCheckContext) {
+  const role = normalizeString(source.role);
+  if (!DQ029_STATE_ROLES.has(role)) return;
+
+  if (normalizeString(source.status) !== "active") return;
+
+  const email = normalizeString(source.email);
+  if (!email) return;
+
+  const territory = String(source.territory ?? "")
+    .trim()
+    .toUpperCase();
+  if (!territory) return;
+
+  const territories = context.activeStateTerritoriesByEmail.get(email) ?? new Set<string>();
+  territories.add(territory);
+  context.activeStateTerritoriesByEmail.set(email, territories);
+}
+
+function buildDq029CrossIndexViolations(
+  users: UserSnapshot[],
+  context: AttachmentCheckContext,
+): AttachmentRuleViolation[] {
+  if (!context.processedAccessIndices.has("roles")) {
+    console.warn("DQ-029 skipped: roles index was not processed in this run");
+    return [];
+  }
+
+  const violations: AttachmentRuleViolation[] = [];
+
+  for (const user of users) {
+    const email = normalizeString(user.email);
+    if (!email) continue;
+
+    const stateTerritories = context.activeStateTerritoriesByEmail.get(email);
+    if (!stateTerritories || stateTerritories.size === 0) {
+      continue;
+    }
+
+    const validStateTerritories = Array.from(stateTerritories).filter(isValidStateTerritory);
+    if (validStateTerritories.length > 0) {
+      continue;
+    }
+
     violations.push(
-      createSyntheticViolation("DQ-023", {
-        osIndex: "summary",
-        osId: source,
-        actual: `${count}`,
-        expected: "Legacy records inventoried by source",
-        message: `Legacy source inventory count for ${source}`,
-        severity: "warn",
-        field: "origin, GSI1pk",
+      createSyntheticViolation("DQ-029", {
+        osIndex: user.osIndex,
+        osId: user.osId || email,
+        actual: Array.from(stateTerritories).join("|") || "none",
+        expected: "At least one active state role with a valid territory",
+        message:
+          "User has active state-user role(s) but no valid state territory assignment in roles index",
+        severity: "error",
+        field: "states",
       }),
     );
   }
@@ -1019,6 +1204,13 @@ function isEmptyValue(value: unknown): boolean {
   return false;
 }
 
+function isValidStateTerritory(value: string) {
+  if (value === "N/A" || value === "ZZ") {
+    return false;
+  }
+  return /^[A-Z]{2}$/.test(value);
+}
+
 function escapeCsv(value: string): string {
   if (value.includes('"')) {
     value = value.replace(/"/g, '""');
@@ -1037,16 +1229,21 @@ function normalizeIndices(indices: BaseIndex[]): BaseIndex[] {
     }
   }
 
-  if (deduped.includes("main") && deduped.includes("changelog")) {
-    const ordered: BaseIndex[] = [
-      "main",
-      "changelog",
-      ...deduped.filter((value) => value !== "main" && value !== "changelog"),
-    ];
-    return ordered;
+  const ordered: BaseIndex[] = [];
+  const priority: BaseIndex[] = ["main", "changelog", "roles", "users"];
+  for (const index of priority) {
+    if (deduped.includes(index)) {
+      ordered.push(index);
+    }
   }
 
-  return deduped;
+  for (const index of deduped) {
+    if (!ordered.includes(index)) {
+      ordered.push(index);
+    }
+  }
+
+  return ordered;
 }
 
 function normalizeRecipients(input?: string[] | string) {

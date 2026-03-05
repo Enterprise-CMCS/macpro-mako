@@ -38,10 +38,11 @@ This document intentionally avoids environment-specific baseline counts so it st
 - Original check (checklist): Identify all soft-deleted records
 - Original expected result: All deleted=true records documented with reason
 - Index: `main`
-- Status: listed in the checklist, effectively suppressed by global delete exclusion
-- Decision: do not emit violations for soft-deleted rows
-- Reason: deleted rows are not app-visible and create noise
-- Follow-up: none unless business wants a separate deleted-record inventory report
+- Status: automated (separate output)
+- Decision: do not emit rule violations for soft-deleted rows, but export them to a dedicated `DQ-001` CSV
+- Reason: deleted rows are not app-visible for quality checks, but business still needs an auditable inventory
+- Current logic: global rule evaluation still excludes `deleted=true` rows, and `main` export writes a dedicated `dq001-deleted-main.csv` sheet
+- Follow-up: add/standardize a deletion reason field if business wants reason-level validation
 
 ### `DQ-002`
 
@@ -92,9 +93,9 @@ This document intentionally avoids environment-specific baseline counts so it st
 - Original expected result: Document which legacy system records should/should not appear in OneMAC
 - Index: `main`
 - Status: automated (heuristic)
-- Decision: warn on likely SEA Tool-only records that still have no OneMAC footprint after a grace period
-- Reason: we do not have a direct SEA Tool-to-OneMAC reconciliation join in this export, so this is a best-effort operational signal
-- Current logic: for non-deleted, non-admin-change, non-NOSO records with `changed_date`, warn when `changed_date` is older than 24 hours and OneMAC footprint fields (`submissionDate`, `submitterName`, `submitterEmail`, `makoChangedDate`) are all missing
+- Decision: warn on explicit `origin=SEATool` records that still have no OneMAC footprint after a grace period
+- Reason: this avoids flooding on blank-origin legacy rows while preserving a targeted SEA Tool reconciliation signal
+- Current logic: for non-deleted, non-admin-change, non-NOSO `origin=SEATool` records with `changed_date`, warn when `changed_date` is older than 24 hours and OneMAC footprint fields (`submissionDate`, `submitterName`, `submitterEmail`, `packageId`, `makoChangedDate`) are all missing
 - Follow-up: keep as warning-level signal; treat as inventory/reporting unless business defines strict reconciliation criteria
 
 ### `DQ-007`
@@ -301,10 +302,10 @@ This document intentionally avoids environment-specific baseline counts so it st
 - Original check (checklist): Identify all legacy system records (WMS/MMDL, MACPro)
 - Original expected result: Document all legacy system sources and record counts
 - Index: `main`
-- Status: automated
-- Decision: generate legacy source inventory summaries in the violations output (total + per-source counts)
-- Reason: this is primarily an inventory/reporting check, so summary output is more useful than per-record noise
-- Current logic: classify likely legacy records using `origin`, `pk`, and `GSI1pk` signals into source buckets and emit summarized counts
+- Status: automated (separate output)
+- Decision: generate legacy source inventory as a dedicated `DQ-023` CSV, not as rule violations
+- Reason: this is an inventory/reporting check and should not inflate violation totals
+- Current logic: classify likely legacy records using `origin`, `pk`, and `GSI1pk` signals into source buckets and export summarized counts to `dq023-legacy-inventory-main.csv`
 - Follow-up: refine source heuristics if business wants stricter source attribution
 
 ### `DQ-024`
@@ -363,8 +364,9 @@ This document intentionally avoids environment-specific baseline counts so it st
 - Original expected result: All state users have at least one state assigned
 - Index: `users`
 - Status: automated
-- Decision: for state-user roles, require a non-empty `states` list with at least one valid state code
-- Reason: this directly validates whether state users can be scoped to at least one territory in-app
+- Decision: cross-reference `users` to `roles` by `email`; if user has active state-user roles, require at least one valid territory assignment in those role records
+- Reason: `users` rows do not reliably carry role/state scope; the `roles` index is the source of truth for granted state access
+- Current logic: aggregate active `statesubmitter`/`statesystemadmin` roles by `email` from `roles`, then validate corresponding `users` rows have at least one valid territory (not `N/A`/`ZZ`)
 - Follow-up: none for now
 
 ### `DQ-030`
