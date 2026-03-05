@@ -10,7 +10,7 @@ on:
   push:
     branches:
       - securitysync
-# Set branch name to your test branch
+# Set branch name to your test branch 
 
 
 permissions:
