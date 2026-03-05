@@ -1,0 +1,55 @@
+name: Security Sync
+
+#on:
+ # workflow_dispatch: # for testing and manual runs
+  #schedule:
+#    - cron: "0 6 * * *" # daily at 0600 UTC
+
+# FOR TESTING - Add this and # the “on:” below to test changes made on branch
+on:
+  push:
+    branches:
+      - securitysync
+# Set branch name to your test branch
+
+
+permissions:
+  id-token: write
+  contents: read
+
+jobs:
+  sync:
+    name: Run sync
+    runs-on: ubuntu-24.04
+    strategy:
+      max-parallel: 1
+      matrix:
+        environment: ["dev", "impl", "prod"]
+      fail-fast: false
+    environment:
+      name: ${{ matrix.environment }}
+    steps:
+      - name: Check out repo
+        uses: actions/checkout@v4
+        with:
+          token: ${{secrets.DEMOS_GITHUB_SERVICE_ACCOUNT_TOKEN}}
+
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v2
+        with:
+          aws-region: ${{ secrets.AWS_DEFAULT_REGION }}
+          role-to-assume: ${{ secrets.AWS_OIDC_ROLE_TO_ASSUME }}
+
+      - name: Sync Security Hub and Jira
+        id: sync_step
+        uses: Enterprise-CMCS/mac-fc-security-hub-visibility@v2.2
+        with:
+          jira-token: ${{ secrets.JIRA_TOKEN }}
+          jira-username: ${{ secrets.JIRA_USERNAME }}
+          jira-project-key: OY2
+          jira-ignore-statuses: Done, Closed, Canceled
+          aws-severities: CRITICAL, HIGH, MEDIUM
+          jira-custom-fields: '{ "customfield_10100": "OY2-37771" }'
+          include-all-products: 'true'
+          jira-consolidate-tickets: true
+          skip-products: Default
