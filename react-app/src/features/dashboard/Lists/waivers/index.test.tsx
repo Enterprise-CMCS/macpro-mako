@@ -479,7 +479,15 @@ describe("WaiversList", () => {
 
     await setup(
       {
-        hits: [{ _id: draftDoc.id, _source: draftDoc }],
+        hits: [
+          {
+            _index: "mock-index",
+            _id: draftDoc.id,
+            _score: 1,
+            _source: draftDoc,
+            sort: [0],
+          },
+        ],
         max_score: 1,
         total: { value: 1, relation: "eq" },
       },
