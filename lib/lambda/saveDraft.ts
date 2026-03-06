@@ -37,6 +37,9 @@ const eventToAuthority: Partial<Record<DraftableEvent, string>> = {
   "contracting-initial": "1915(b)",
   "contracting-renewal": "1915(b)",
   "contracting-amendment": "1915(b)",
+  // Temporary extension type can be selected later, but drafts still need an authority
+  // to show up on the waivers dashboard tab immediately after first save.
+  "temporary-extension": "1915(b)",
   "app-k": "1915(c)",
 };
 

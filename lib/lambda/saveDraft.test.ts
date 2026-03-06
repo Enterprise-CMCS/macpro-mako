@@ -66,6 +66,37 @@ describe("saveDraft handler", () => {
     );
   });
 
+  it("defaults temporary-extension draft authority to 1915(b) when type is not selected yet", async () => {
+    const tempExtensionId = "MD-1198.R06.TE00";
+    const temporaryExtensionEvent = {
+      ...baseEvent,
+      body: JSON.stringify({
+        id: tempExtensionId,
+        event: "temporary-extension",
+        draftData: {
+          ids: {
+            id: tempExtensionId,
+          },
+        },
+      }),
+    } as APIGatewayEvent;
+
+    const res = await handler(temporaryExtensionEvent, {} as Context);
+
+    expect(res.statusCode).toBe(200);
+    expect(os.updateData).toHaveBeenCalledWith(
+      expect.any(String),
+      expect.objectContaining({
+        id: tempExtensionId,
+        body: expect.objectContaining({
+          doc: expect.objectContaining({
+            authority: "1915(b)",
+          }),
+        }),
+      }),
+    );
+  });
+
   it("reactivates a previously deleted draft id by forcing deleted=false and resetting creator", async () => {
     vi.spyOn(packageApi, "getPackage").mockResolvedValue({
       found: true,
