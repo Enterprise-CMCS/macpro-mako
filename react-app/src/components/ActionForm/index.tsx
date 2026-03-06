@@ -421,7 +421,7 @@ export const ActionForm = <Schema extends SchemaWithEnforcableProps>({
 
         if (!isIdValid) {
           banner({
-            header: "Unable to save draft",
+            header: "Unable to save Draft",
             body: "Please enter a valid ID before saving.",
             variant: "destructive",
             pathnameToDisplayOn: window.location.pathname,
@@ -438,7 +438,7 @@ export const ActionForm = <Schema extends SchemaWithEnforcableProps>({
 
       if (!resolvedId) {
         banner({
-          header: "Unable to save draft",
+          header: "Unable to save Draft",
           body: "Please enter a valid ID before saving.",
           variant: "destructive",
           pathnameToDisplayOn: window.location.pathname,
@@ -494,7 +494,7 @@ export const ActionForm = <Schema extends SchemaWithEnforcableProps>({
       }
     } catch (error) {
       banner({
-        header: "Unable to save draft",
+        header: "Unable to save Draft",
         body: error instanceof Error ? error.message : String(error),
         variant: "destructive",
         pathnameToDisplayOn: window.location.pathname,
