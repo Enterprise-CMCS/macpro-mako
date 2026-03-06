@@ -214,9 +214,7 @@ const verifyRow = (
   const cells = row.children;
   let cellIndex = hasActions ? 1 : 0;
   const expectedSubmitterName =
-    doc.seatoolStatus === SEATOOL_STATUS.DRAFT
-      ? doc.draft?.originalCreatorName || doc.submitterName || BLANK_VALUE
-      : doc.submitterName || BLANK_VALUE;
+    doc.seatoolStatus === SEATOOL_STATUS.DRAFT ? BLANK_VALUE : doc.submitterName || BLANK_VALUE;
 
   if (hasActions) {
     // Actions
@@ -462,7 +460,7 @@ describe("WaiversList", () => {
     });
   });
 
-  it("shows draft original creator in Submitted By for waiver draft rows", async () => {
+  it("shows blank Submitted By for waiver draft rows", async () => {
     const draftDoc = {
       ...pendingDoc,
       id: "MD-26-8888-W",
@@ -496,8 +494,6 @@ describe("WaiversList", () => {
       false,
     );
 
-    const row = within(screen.getByTestId("os-table")).getByText(draftDoc.id).closest("tr");
-    expect(within(row).getByText("Original Draft Owner")).toBeInTheDocument();
-    expect(within(row).queryByText("Latest Saver")).not.toBeInTheDocument();
+    verifyRow(draftDoc, { hasActions: true, status: "Draft" });
   });
 });

@@ -15,9 +15,7 @@ const getColumns = ({ user, isCms }: OneMacUser): OsTableColumn[] => {
     return [];
   }
   const getDraftAwareSubmitterName = (data: opensearch.main.Document) =>
-    data.seatoolStatus === SEATOOL_STATUS.DRAFT
-      ? (data.draft?.originalCreatorName ?? data.submitterName ?? BLANK_VALUE)
-      : (data.submitterName ?? BLANK_VALUE);
+    data.seatoolStatus === SEATOOL_STATUS.DRAFT ? BLANK_VALUE : (data.submitterName ?? BLANK_VALUE);
 
   return [
     // hide actions column for: readonly,help desk
