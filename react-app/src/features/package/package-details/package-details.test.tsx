@@ -97,4 +97,29 @@ describe("package details", () => {
     expect(screen.queryByText("Submitted By")).not.toBeInTheDocument();
     expect(screen.getByText("Original Draft Owner")).toBeInTheDocument();
   });
+
+  it("shows Proposed Effective Date from draft data for draft packages", async () => {
+    setMockUsername(TEST_STATE_SUBMITTER_USERNAME);
+
+    const draftSubmission = {
+      ...TEST_1915B_ITEM._source,
+      seatoolStatus: SEATOOL_STATUS.DRAFT,
+      stateStatus: "Draft",
+      cmsStatus: "Draft",
+      proposedDate: undefined,
+      draft: {
+        savedAt: "2026-03-06T00:00:00.000Z",
+        data: {
+          id: TEST_1915B_ITEM._source.id,
+          proposedEffectiveDate: 1774396800000,
+        },
+      },
+    } as unknown as opensearch.main.Document;
+
+    await setup(draftSubmission);
+
+    expect(screen.getByText("Proposed Effective Date")).toBeInTheDocument();
+    expect(screen.getByText("March 25, 2026")).toBeInTheDocument();
+    expect(screen.queryByText("Pending")).not.toBeInTheDocument();
+  });
 });

@@ -180,7 +180,17 @@ export const getApprovedAndEffectiveDetails: GetLabelAndValueFromSubmission = (s
   },
   {
     label: "Proposed Effective Date",
-    value: submission.proposedDate ? formatDateToUTC(submission.proposedDate) : "Pending",
+    value: (() => {
+      const proposedDateFromDraftData = submission.draft?.data?.proposedEffectiveDate;
+      const draftDateValue =
+        typeof proposedDateFromDraftData === "string" ||
+        typeof proposedDateFromDraftData === "number"
+          ? proposedDateFromDraftData
+          : undefined;
+      const effectiveDate = submission.proposedDate ?? draftDateValue;
+
+      return effectiveDate ? formatDateToUTC(effectiveDate) : "Pending";
+    })(),
     canView: submission.actionType !== "Extend",
   },
   {
