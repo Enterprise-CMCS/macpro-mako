@@ -7,7 +7,7 @@ import {
   TEST_REVIEWER_USER,
   TEST_STATE_SUBMITTER_USER,
 } from "mocks";
-import { FullUser, opensearch } from "shared-types";
+import { FullUser, opensearch, SEATOOL_STATUS } from "shared-types";
 import { formatActionType } from "shared-utils";
 import { afterAll, afterEach, beforeAll, beforeEach, describe, expect, it, vi } from "vitest";
 
@@ -213,6 +213,10 @@ const verifyRow = (
   const row = within(screen.getByTestId("os-table")).getByText(doc.id).parentElement.parentElement;
   const cells = row.children;
   let cellIndex = hasActions ? 1 : 0;
+  const expectedSubmitterName =
+    doc.seatoolStatus === SEATOOL_STATUS.DRAFT
+      ? doc.draft?.originalCreatorName || doc.submitterName || BLANK_VALUE
+      : doc.submitterName || BLANK_VALUE;
 
   if (hasActions) {
     // Actions
@@ -243,7 +247,7 @@ const verifyRow = (
   cellIndex++;
   expect(cells[cellIndex].textContent).toEqual(doc.leadAnalystName || BLANK_VALUE); // CPOC Name
   cellIndex++;
-  expect(cells[cellIndex].textContent).toEqual(doc.submitterName || BLANK_VALUE); // Submitted By
+  expect(cells[cellIndex].textContent).toEqual(expectedSubmitterName); // Submitted By
 };
 
 describe("WaiversList", () => {
@@ -456,5 +460,36 @@ describe("WaiversList", () => {
       expect(rows).toEqual(expectedData);
       expect(filename).toMatch(/-export-\d{2}_\d{2}_\d{4}$/);
     });
+  });
+
+  it("shows draft original creator in Submitted By for waiver draft rows", async () => {
+    const draftDoc = {
+      ...pendingDoc,
+      id: "MD-26-8888-W",
+      seatoolStatus: SEATOOL_STATUS.DRAFT,
+      stateStatus: "Draft",
+      cmsStatus: "Draft",
+      submitterName: "Latest Saver",
+      draft: {
+        savedAt: "2026-03-06T00:00:00.000Z",
+        originalCreatorName: "Original Draft Owner",
+        data: { id: "MD-26-8888-W" },
+      },
+    } as opensearch.main.Document;
+
+    await setup(
+      {
+        hits: [{ _id: draftDoc.id, _source: draftDoc }],
+        max_score: 1,
+        total: { value: 1, relation: "eq" },
+      },
+      getDashboardQueryString({ tab: "waivers" }),
+      TEST_STATE_SUBMITTER_USER,
+      false,
+    );
+
+    const row = within(screen.getByTestId("os-table")).getByText(draftDoc.id).closest("tr");
+    expect(within(row).getByText("Original Draft Owner")).toBeInTheDocument();
+    expect(within(row).queryByText("Latest Saver")).not.toBeInTheDocument();
   });
 });

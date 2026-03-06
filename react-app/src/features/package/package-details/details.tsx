@@ -1,5 +1,5 @@
 import { ReactNode, useState } from "react";
-import { Authority, opensearch } from "shared-types";
+import { Authority, opensearch, SEATOOL_STATUS } from "shared-types";
 import {
   formatActionType,
   formatDateToET,
@@ -202,18 +202,27 @@ export const getDescriptionDetails: GetLabelAndValueFromSubmission = (submission
 
 export const getSubmittedByDetails: GetLabelAndValueFromSubmission = (submission, { user }) => [
   //possibly add details new drop down here
-  {
-    label: "Submitted By",
-    value: <p className="text-lg">{submission.submitterName || BLANK_VALUE}</p>,
-  },
-  {
-    label: "CPOC",
-    value: <p className="text-lg">{submission.leadAnalystName || BLANK_VALUE}</p>,
-    canView: submission.actionType !== "Extend",
-  },
-  {
-    label: "SRT",
-    value: <ReviewTeamList reviewTeam={submission.reviewTeam} />,
-    canView: isCmsUser(user) && submission.actionType !== "Extend",
-  },
+  ...(() => {
+    const isDraft = submission.seatoolStatus === SEATOOL_STATUS.DRAFT;
+    const draftAwareName = isDraft
+      ? (submission.draft?.originalCreatorName ?? submission.submitterName)
+      : submission.submitterName;
+
+    return [
+      {
+        label: isDraft ? "Draft Owner" : "Submitted By",
+        value: <p className="text-lg">{draftAwareName || BLANK_VALUE}</p>,
+      },
+      {
+        label: "CPOC",
+        value: <p className="text-lg">{submission.leadAnalystName || BLANK_VALUE}</p>,
+        canView: submission.actionType !== "Extend",
+      },
+      {
+        label: "SRT",
+        value: <ReviewTeamList reviewTeam={submission.reviewTeam} />,
+        canView: isCmsUser(user) && submission.actionType !== "Extend",
+      },
+    ];
+  })(),
 ];

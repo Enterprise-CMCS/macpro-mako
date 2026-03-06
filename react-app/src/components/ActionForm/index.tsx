@@ -73,6 +73,11 @@ type DraftOptions = {
   authorityPath?: string;
 };
 
+type DraftSaveStatus = {
+  variant: "saving" | "success" | "error" | "dirty";
+  message: string;
+};
+
 type ActionFormProps<Schema extends SchemaWithEnforcableProps> = {
   schema: Schema;
   defaultValues?: DefaultValues<z.infer<InferUntransformedSchema<Schema>>>;
@@ -174,6 +179,9 @@ export const ActionForm = <Schema extends SchemaWithEnforcableProps>({
   const [footerTriggerElement, setFooterTriggerElement] = useState<HTMLDivElement | null>(null);
   const [isFooterFixed, setIsFooterFixed] = useState(false);
   const [hasConfirmedNonOwnerDraftAction, setHasConfirmedNonOwnerDraftAction] = useState(false);
+  const [draftSaveStatus, setDraftSaveStatus] = useState<DraftSaveStatus | null>(null);
+  const previousDraftIdRef = useRef<string | null>(null);
+  const draftSaveStatusRef = useRef<HTMLParagraphElement | null>(null);
   const hasPromptedNonOwnerDraftActionRef = useRef(false);
   const draftVersionRef = useRef<{ seqNo?: number; primaryTerm?: number }>({});
   const saveDraftInFlightRef = useRef(false);
@@ -236,17 +244,28 @@ export const ActionForm = <Schema extends SchemaWithEnforcableProps>({
   });
 
   useEffect(() => {
+    const previousDraftId = previousDraftIdRef.current;
+    const shouldClearDraftSaveStatus = previousDraftId !== null && draftId !== previousDraftId;
+
     if (!isDraftMode) {
       hasAppliedDraftRef.current = false;
       hasPromptedNonOwnerDraftActionRef.current = false;
       setHasConfirmedNonOwnerDraftAction(false);
+      if (previousDraftId !== null) {
+        setDraftSaveStatus(null);
+      }
       draftVersionRef.current = {};
+      previousDraftIdRef.current = draftId;
       return;
     }
     hasAppliedDraftRef.current = false;
     hasPromptedNonOwnerDraftActionRef.current = false;
     setHasConfirmedNonOwnerDraftAction(false);
+    if (shouldClearDraftSaveStatus) {
+      setDraftSaveStatus(null);
+    }
     draftVersionRef.current = {};
+    previousDraftIdRef.current = draftId;
   }, [draftId, isDraftMode]);
 
   useEffect(() => {
@@ -300,6 +319,30 @@ export const ActionForm = <Schema extends SchemaWithEnforcableProps>({
   }, [draftRecord, defaultValues, form]);
 
   const hasRealChanges = Object.keys(form.formState.dirtyFields).length > 0;
+
+  useEffect(() => {
+    if (!draftEnabled) return;
+
+    if (
+      hasRealChanges &&
+      draftSaveStatus &&
+      draftSaveStatus.variant !== "saving" &&
+      draftSaveStatus.variant !== "dirty"
+    ) {
+      setDraftSaveStatus({
+        variant: "dirty",
+        message: "Unsaved changes",
+      });
+    }
+  }, [draftEnabled, draftSaveStatus, hasRealChanges]);
+
+  useEffect(() => {
+    if (!draftEnabled || !draftSaveStatus) return;
+
+    if (draftSaveStatus.variant === "success" || draftSaveStatus.variant === "error") {
+      draftSaveStatusRef.current?.focus();
+    }
+  }, [draftEnabled, draftSaveStatus]);
 
   useNavigationPrompt({
     shouldBlock: hasRealChanges && !form.formState.isSubmitting,
@@ -412,6 +455,10 @@ export const ActionForm = <Schema extends SchemaWithEnforcableProps>({
     if (saveDraftInFlightRef.current) return;
     if (!canProceedWithNonOwnerDraftAction()) return;
 
+    setDraftSaveStatus({
+      variant: "saving",
+      message: "Saving...",
+    });
     saveDraftInFlightRef.current = true;
     try {
       const idPath = draftOptions.idPath ?? "id";
@@ -425,6 +472,10 @@ export const ActionForm = <Schema extends SchemaWithEnforcableProps>({
             body: "Please enter a valid ID before saving.",
             variant: "destructive",
             pathnameToDisplayOn: window.location.pathname,
+          });
+          setDraftSaveStatus({
+            variant: "error",
+            message: "Please enter a valid ID before saving.",
           });
           return;
         }
@@ -442,6 +493,10 @@ export const ActionForm = <Schema extends SchemaWithEnforcableProps>({
           body: "Please enter a valid ID before saving.",
           variant: "destructive",
           pathnameToDisplayOn: window.location.pathname,
+        });
+        setDraftSaveStatus({
+          variant: "error",
+          message: "Please enter a valid ID before saving.",
         });
         return;
       }
@@ -483,6 +538,13 @@ export const ActionForm = <Schema extends SchemaWithEnforcableProps>({
         variant: "success",
         pathnameToDisplayOn: window.location.pathname,
       });
+      setDraftSaveStatus({
+        variant: "success",
+        message: `Progress saved at ${new Intl.DateTimeFormat("en-US", {
+          hour: "numeric",
+          minute: "2-digit",
+        }).format(new Date())}`,
+      });
 
       form.reset(formValues);
 
@@ -493,16 +555,34 @@ export const ActionForm = <Schema extends SchemaWithEnforcableProps>({
         navigate(`${pathname}?${nextSearch.toString()}`, { replace: true });
       }
     } catch (error) {
+      const errorMessage = error instanceof Error ? error.message : "Unable to save. Try again.";
       banner({
         header: "Unable to save Draft",
         body: error instanceof Error ? error.message : String(error),
         variant: "destructive",
         pathnameToDisplayOn: window.location.pathname,
       });
+      setDraftSaveStatus({
+        variant: "error",
+        message: errorMessage,
+      });
     } finally {
       saveDraftInFlightRef.current = false;
     }
   };
+
+  const draftSaveStatusClassName = (() => {
+    switch (draftSaveStatus?.variant) {
+      case "success":
+        return "text-green-700";
+      case "error":
+        return "text-red-700";
+      case "dirty":
+        return "text-amber-700";
+      default:
+        return "text-gray-700";
+    }
+  })();
 
   const attachmentsFromSchema = useMemo(() => getAttachments(schema), [schema]);
 
@@ -523,21 +603,6 @@ export const ActionForm = <Schema extends SchemaWithEnforcableProps>({
       submission_type: title,
       time_on_page_sec: timeOnPageSec,
     });
-  };
-
-  const getStickyCancelPromptOverride = (): Partial<Omit<UserPrompt, "onAccept">> => {
-    const idPath = draftOptions?.idPath ?? "id";
-    const idValue = getValueByPath(form.getValues() as Record<string, unknown>, idPath);
-    const trimmedId = typeof idValue === "string" ? idValue.trim() : "";
-
-    return {
-      header: "Leave this page?",
-      body: `Unsaved changes${trimmedId ? ` to ${trimmedId}` : ""} will be discarded. Go back to save your changes.`,
-      acceptButtonText: "Yes, leave",
-      cancelButtonText: "Go back",
-      areButtonsReversed: true,
-      cancelVariant: "link" as const,
-    };
   };
 
   useEffect(() => {
@@ -661,7 +726,7 @@ export const ActionForm = <Schema extends SchemaWithEnforcableProps>({
               >
                 <div className="flex justify-between items-center w-full py-3">
                   <button
-                    onClick={() => handleCancel(getStickyCancelPromptOverride())}
+                    onClick={() => handleCancel()}
                     data-testid="cancel-action-form"
                     className="w-24 py-3 px-5 text-blue-700 font-semibold underline"
                     type="button"
@@ -669,7 +734,19 @@ export const ActionForm = <Schema extends SchemaWithEnforcableProps>({
                     Cancel
                   </button>
 
-                  <div className="flex gap-2.5">
+                  <div className="flex items-center gap-4">
+                    {draftEnabled && draftSaveStatus?.message && (
+                      <p
+                        ref={draftSaveStatusRef}
+                        className={`text-sm font-medium ${draftSaveStatusClassName}`}
+                        data-testid="draft-save-status"
+                        role="status"
+                        aria-live="polite"
+                        tabIndex={-1}
+                      >
+                        {draftSaveStatus.message}
+                      </p>
+                    )}
                     {draftEnabled && (
                       <button
                         type="button"
@@ -705,7 +782,19 @@ export const ActionForm = <Schema extends SchemaWithEnforcableProps>({
               </section>
             </section>
           ) : (
-            <section className="flex justify-end gap-2 p-4 ml-auto">
+            <section className="flex items-center gap-2 p-4">
+              {draftEnabled && draftSaveStatus?.message && (
+                <p
+                  ref={draftSaveStatusRef}
+                  className={`mr-auto text-sm font-medium ${draftSaveStatusClassName}`}
+                  data-testid="draft-save-status"
+                  role="status"
+                  aria-live="polite"
+                  tabIndex={-1}
+                >
+                  {draftSaveStatus.message}
+                </p>
+              )}
               {draftEnabled && (
                 <Button
                   className="px-12"

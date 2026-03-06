@@ -758,8 +758,54 @@ describe("ActionForm", () => {
         }),
       ),
     );
+    await waitFor(() =>
+      expect(screen.getByTestId("draft-save-status")).toHaveTextContent(/^Progress saved at /),
+    );
 
     expect(userPromptSpy).not.toHaveBeenCalled();
+  });
+
+  test("shows unsaved changes status after editing a saved draft", async () => {
+    const user = userEvent.setup();
+    const saveDraftSpy = vi.spyOn(api, "saveDraft").mockResolvedValue({
+      message: "Draft saved",
+      id: "MD-00-0003",
+      seqNo: 1,
+      primaryTerm: 1,
+    });
+
+    await renderFormWithPackageSectionAsync(
+      <ActionForm
+        title="Draft Save Test"
+        schema={z.object({
+          id: z.string().min(1),
+        })}
+        fields={(form) => <input aria-label="Package ID" {...form.register("id")} />}
+        defaultValues={{ id: "" }}
+        documentPollerArgs={{
+          property: () => "id",
+          documentChecker: () => true,
+        }}
+        draftOptions={{ enabled: true, event: "new-medicaid-submission" }}
+        breadcrumbText="Example Breadcrumb"
+      />,
+    );
+
+    const packageIdField = screen.getByLabelText("Package ID");
+    await user.type(packageIdField, "MD-00-0003");
+    await user.click(screen.getByTestId("save-draft-form"));
+
+    await waitFor(() =>
+      expect(screen.getByTestId("draft-save-status")).toHaveTextContent(/^Progress saved at /),
+    );
+
+    await user.type(packageIdField, "A");
+
+    await waitFor(() =>
+      expect(screen.getByTestId("draft-save-status")).toHaveTextContent("Unsaved changes"),
+    );
+
+    saveDraftSpy.mockRestore();
   });
 
   test("uses and rolls optimistic concurrency values while saving an existing draft", async () => {

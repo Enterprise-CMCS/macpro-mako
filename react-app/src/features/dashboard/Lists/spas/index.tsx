@@ -1,5 +1,5 @@
 import { useMemo } from "react";
-import { SEATOOL_STATUS, UserRoles } from "shared-types";
+import { opensearch, SEATOOL_STATUS, UserRoles } from "shared-types";
 import { CMS_READ_ONLY_ROLES } from "shared-types/user";
 import { formatDateToET, formatDateToUTC } from "shared-utils";
 
@@ -14,6 +14,11 @@ const getColumns = ({ user, isCms }: OneMacUser): OsTableColumn[] => {
   if (!user || user === null) {
     return [];
   }
+  const getDraftAwareSubmitterName = (data: opensearch.main.Document) =>
+    data.seatoolStatus === SEATOOL_STATUS.DRAFT
+      ? (data.draft?.originalCreatorName ?? data.submitterName ?? BLANK_VALUE)
+      : (data.submitterName ?? BLANK_VALUE);
+
   return [
     // hide actions column for: readonly,help desk
     ...(!CMS_READ_ONLY_ROLES.some((UR) => user?.role === UR)
@@ -148,8 +153,8 @@ const getColumns = ({ user, isCms }: OneMacUser): OsTableColumn[] => {
     {
       field: "submitterName.keyword",
       label: "Submitted By",
-      transform: (data) => data.submitterName ?? BLANK_VALUE,
-      cell: (data) => data.submitterName,
+      transform: (data) => getDraftAwareSubmitterName(data),
+      cell: (data) => getDraftAwareSubmitterName(data),
     },
   ];
 };

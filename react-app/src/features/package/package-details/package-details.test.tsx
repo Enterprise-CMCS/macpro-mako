@@ -9,7 +9,7 @@ import {
   TEST_STATE_SUBMITTER_USERNAME,
 } from "mocks";
 import items from "mocks/data/items";
-import { opensearch } from "shared-types";
+import { opensearch, SEATOOL_STATUS } from "shared-types";
 import { beforeEach, describe, expect, it, test, vi } from "vitest";
 
 import * as gaUtils from "@/utils";
@@ -73,5 +73,28 @@ describe("package details", () => {
       expect(screen.getByText(header)).toBeInTheDocument();
       expect(asFragment()).toMatchSnapshot();
     });
+  });
+
+  it("shows Draft Owner instead of Submitted By for draft packages", async () => {
+    setMockUsername(TEST_STATE_SUBMITTER_USERNAME);
+
+    const draftSubmission = {
+      ...TEST_1915B_ITEM._source,
+      seatoolStatus: SEATOOL_STATUS.DRAFT,
+      stateStatus: "Draft",
+      cmsStatus: "Draft",
+      submitterName: "Latest Saver",
+      draft: {
+        savedAt: "2026-03-06T00:00:00.000Z",
+        originalCreatorName: "Original Draft Owner",
+        data: { id: TEST_1915B_ITEM._source.id },
+      },
+    } as opensearch.main.Document;
+
+    await setup(draftSubmission);
+
+    expect(screen.getByText("Draft Owner")).toBeInTheDocument();
+    expect(screen.queryByText("Submitted By")).not.toBeInTheDocument();
+    expect(screen.getByText("Original Draft Owner")).toBeInTheDocument();
   });
 });
