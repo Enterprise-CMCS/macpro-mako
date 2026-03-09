@@ -96,6 +96,32 @@ describe("handler", () => {
     expect(result).toStrictEqual(expectedResult);
   });
 
+  it("should submit a new item with blank submitter info", async () => {
+    const validItem = {
+      body: JSON.stringify({
+        id: NOT_EXISTING_ITEM_ID,
+        authority: "Medicaid SPA",
+        status: "submitted",
+        adminChangeType: "NOSO",
+        submitterEmail: "",
+        submitterName: null,
+        changeMade: "change",
+        mockEvent: "mock-event",
+        changeReason: "reason",
+        submissionDate: "1/1/2025",
+        proposedDate: "12/1/2025",
+      }),
+    } as APIGatewayEvent;
+
+    const result = await handler(validItem);
+
+    const expectedResult = {
+      statusCode: 200,
+      body: { message: `${NOT_EXISTING_ITEM_ID} has been submitted.` },
+    };
+    expect(result).toStrictEqual(expectedResult);
+  });
+
   it("should fail to create a package ID with no topic name", async () => {
     process.env.topicName = "";
     const validItem = {

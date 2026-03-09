@@ -66,6 +66,15 @@ const processAndIndex = async ({
   transforms: any;
   topicPartition: string;
 }) => {
+  const normalizeEpochDate = (value: unknown): number | null => {
+    if (value === null || value === undefined) return null;
+    if (typeof value === "number") return value;
+    if (typeof value === "string") {
+      const parsed = Date.parse(value);
+      return Number.isNaN(parsed) ? null : parsed;
+    }
+    return null;
+  };
   const docs: Array<(typeof transforms)[keyof typeof transforms]["Schema"]> = [];
   for (const kafkaRecord of kafkaRecords) {
     console.log(JSON.stringify(kafkaRecord, null, 2));
@@ -92,10 +101,22 @@ const processAndIndex = async ({
         if (result.success) {
           if (result.data.adminChangeType === "update-id" && "idToBeUpdated" in result.data) {
             const { id, packageId: _packageId, idToBeUpdated, ...restOfResultData } = result.data;
+            const normalizedDates: Record<string, number | null> = {};
+            if ("proposedDate" in restOfResultData) {
+              normalizedDates.proposedDate = normalizeEpochDate(
+                (restOfResultData as { proposedDate?: unknown }).proposedDate,
+              );
+            }
+            if ("submissionDate" in restOfResultData) {
+              normalizedDates.submissionDate = normalizeEpochDate(
+                (restOfResultData as { submissionDate?: unknown }).submissionDate,
+              );
+            }
             // Push doc with content of package being soft deleted
 
             docs.push({
               ...restOfResultData,
+              ...normalizedDates,
               id: id + "-" + result.data.timestamp,
               packageId: id,
               event: "update-id",

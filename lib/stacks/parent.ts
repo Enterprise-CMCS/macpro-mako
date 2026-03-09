@@ -82,6 +82,8 @@ export class ParentStack extends cdk.Stack {
       idmAuthzApiKeyArn: props.idmAuthzApiKeyArn,
       idmClientSecretArn: props.idmClientSecretArn,
       devPasswordArn: props.devPasswordArn,
+      smartLinkUrl: props.smartLinkUrl,
+      macproLinkUrl: props.macproLinkUrl,
     });
 
     const apiStack = new Stacks.Api(this, "api", {

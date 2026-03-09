@@ -4,6 +4,7 @@ import {
   DELETED_ITEM_ID,
   EXISTING_ITEM_ID,
   EXISTING_ITEM_PENDING_ID,
+  NEW_CHIP_ITEM_ID,
   SIMPLE_ID,
 } from "mocks";
 import { mockedProducer } from "mocks/helpers/kafka.utils";
@@ -29,7 +30,7 @@ describe("handler", () => {
 
   it("should return 400 if package ID is not found", async () => {
     const noActionevent = {
-      body: JSON.stringify({ packageId: "123", changeReason: "Nunya" }),
+      body: JSON.stringify({ packageId: "123", changeMade: "Nunya", changeReason: "Nunya" }),
     } as APIGatewayEvent;
 
     const result = await handler(noActionevent);
@@ -40,7 +41,7 @@ describe("handler", () => {
 
   it("should return 400 if action is not found", async () => {
     const noApackageEvent = {
-      body: JSON.stringify({ action: "123", changeReason: "Nunya" }),
+      body: JSON.stringify({ action: "123", changeMade: "Nunya", changeReason: "Nunya" }),
     } as APIGatewayEvent;
 
     const result = await handler(noApackageEvent);
@@ -52,7 +53,12 @@ describe("handler", () => {
   describe("delete", () => {
     it("should return 404 if the package is not found", async () => {
       const noActionevent = {
-        body: JSON.stringify({ packageId: "123", action: "delete", changeReason: "Nunya" }),
+        body: JSON.stringify({
+          packageId: "123",
+          action: "delete",
+          changeMade: "Nunya",
+          changeReason: "Nunya",
+        }),
       } as APIGatewayEvent;
 
       const result = await handler(noActionevent);
@@ -67,6 +73,7 @@ describe("handler", () => {
         body: JSON.stringify({
           packageId: EXISTING_ITEM_ID,
           action: "delete",
+          changeMade: "Nunya",
           changeReason: "Nunya",
         }),
       } as APIGatewayEvent;
@@ -82,6 +89,7 @@ describe("handler", () => {
         body: JSON.stringify({
           packageId: EXISTING_ITEM_ID,
           action: "delete",
+          changeMade: "Nunya",
           changeReason: "Nunya",
         }),
       } as APIGatewayEvent;
@@ -100,6 +108,7 @@ describe("handler", () => {
         body: JSON.stringify({
           packageId: EXISTING_ITEM_ID,
           action: "recover",
+          changeMade: "Nunya",
           changeReason: "Nunya",
         }),
       } as APIGatewayEvent;
@@ -115,6 +124,7 @@ describe("handler", () => {
         body: JSON.stringify({
           packageId: EXISTING_ITEM_ID,
           action: "recover",
+          changeMade: "Nunya",
           changeReason: "Nunya",
         }),
       } as APIGatewayEvent;
@@ -132,6 +142,7 @@ describe("handler", () => {
         body: JSON.stringify({
           packageId: DELETED_ITEM_ID,
           action: "recover",
+          changeMade: "Nunya",
           changeReason: "Nunya",
         }),
       } as APIGatewayEvent;
@@ -152,6 +163,7 @@ describe("handler", () => {
         body: JSON.stringify({
           packageId: CAPITATED_INITIAL_ITEM_ID,
           action: "update-id",
+          changeMade: "Nunya",
           changeReason: "Nunya",
           updatedId: "SS-1235.R00.00",
         }),
@@ -168,6 +180,7 @@ describe("handler", () => {
         body: JSON.stringify({
           packageId: SIMPLE_ID,
           action: "update-id",
+          changeMade: "Nunya",
           changeReason: "Nunya",
           updatedId: "SS-120",
         }),
@@ -188,6 +201,7 @@ describe("handler", () => {
         body: JSON.stringify({
           packageId: CAPITATED_INITIAL_ITEM_ID,
           action: "update-id",
+          changeMade: "Nunya",
           changeReason: "Nunya",
           updatedId: "SS-120",
         }),
@@ -209,6 +223,7 @@ describe("handler", () => {
         body: JSON.stringify({
           packageId: EXISTING_ITEM_ID,
           action: "update-id",
+          changeMade: "Nunya",
           changeReason: "Nunya",
         }),
       } as APIGatewayEvent;
@@ -226,6 +241,7 @@ describe("handler", () => {
         body: JSON.stringify({
           packageId: EXISTING_ITEM_ID,
           action: "update-id",
+          changeMade: "Nunya",
           changeReason: "Nunya",
           updatedId: EXISTING_ITEM_ID,
         }),
@@ -244,6 +260,7 @@ describe("handler", () => {
         body: JSON.stringify({
           packageId: EXISTING_ITEM_ID,
           action: "update-id",
+          changeMade: "Nunya",
           changeReason: "Nunya",
           updatedId: EXISTING_ITEM_PENDING_ID,
         }),
@@ -260,6 +277,7 @@ describe("handler", () => {
         body: JSON.stringify({
           packageId: CAPITATED_INITIAL_ITEM_ID,
           action: "update-id",
+          changeMade: "Nunya",
           changeReason: "Nunya",
           updatedId: CAPITATED_INITIAL_NEW_ITEM_ID,
         }),
@@ -285,6 +303,7 @@ describe("handler", () => {
         body: JSON.stringify({
           packageId: SIMPLE_ID,
           action: "update-values",
+          changeMade: "Nunya",
           changeReason: "Nunya",
           updatedFields: {},
         }),
@@ -301,6 +320,7 @@ describe("handler", () => {
         body: JSON.stringify({
           packageId: SIMPLE_ID,
           action: "update-values",
+          changeMade: "Nunya",
           changeReason: "Nunya",
           updatedFields: { badfield: "nothing" },
         }),
@@ -319,6 +339,7 @@ describe("handler", () => {
         body: JSON.stringify({
           packageId: SIMPLE_ID,
           action: "update-values",
+          changeMade: "Nunya",
           changeReason: "Nunya",
           updatedFields: { id: "cant update ID here" },
         }),
@@ -337,6 +358,7 @@ describe("handler", () => {
         body: JSON.stringify({
           packageId: CAPITATED_INITIAL_ITEM_ID,
           action: "update-values",
+          changeMade: "Nunya",
           changeReason: "Nunya",
           updatedFields: { state: "TX" },
         }),
@@ -352,6 +374,71 @@ describe("handler", () => {
       );
 
       expect(mockedProducer.send).toHaveBeenCalledTimes(1);
+    });
+
+    it("should update chipSubmissionType even if missing on the record", async () => {
+      const noActionevent = {
+        body: JSON.stringify({
+          packageId: NEW_CHIP_ITEM_ID,
+          action: "update-values",
+          changeMade: "Nunya",
+          changeReason: "Nunya",
+          updatedFields: { chipSubmissionType: ["Non-Financial Eligibility"] },
+        }),
+      } as APIGatewayEvent;
+
+      const result = await handler(noActionevent);
+
+      expect(result?.statusCode).toBe(200);
+      expect(result?.body).toEqual(
+        JSON.stringify({
+          message: `chipSubmissionType has been updated in package ${NEW_CHIP_ITEM_ID}.`,
+        }),
+      );
+
+      expect(mockedProducer.send).toHaveBeenCalledTimes(1);
+    });
+
+    it("should reject chipSubmissionType updates for non-CHIP SPA packages", async () => {
+      const noActionevent = {
+        body: JSON.stringify({
+          packageId: CAPITATED_INITIAL_ITEM_ID,
+          action: "update-values",
+          changeMade: "Nunya",
+          changeReason: "Nunya",
+          updatedFields: { chipSubmissionType: ["Non-Financial Eligibility"] },
+        }),
+      } as APIGatewayEvent;
+
+      const result = await handler(noActionevent);
+
+      expect(result?.statusCode).toBe(400);
+      expect(result?.body).toEqual(
+        JSON.stringify({
+          message: "CHIP Submission Type updates are only allowed for CHIP SPA packages.",
+        }),
+      );
+    });
+
+    it("should reject invalid chipSubmissionType values", async () => {
+      const noActionevent = {
+        body: JSON.stringify({
+          packageId: NEW_CHIP_ITEM_ID,
+          action: "update-values",
+          changeMade: "Nunya",
+          changeReason: "Nunya",
+          updatedFields: { chipSubmissionType: ["Bad Value"] },
+        }),
+      } as APIGatewayEvent;
+
+      const result = await handler(noActionevent);
+
+      expect(result?.statusCode).toBe(400);
+      expect(result?.body).toEqual(
+        JSON.stringify({
+          message: "Invalid CHIP Submission Type value(s).",
+        }),
+      );
     });
   });
 });
