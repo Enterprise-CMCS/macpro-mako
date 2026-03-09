@@ -8,6 +8,7 @@ import { join } from "path";
 
 import { commonBundlingOptions } from "../config/bundling-config";
 import { DeploymentConfigProperties } from "../config/deployment-config";
+import { getLegacyAttachmentBucketMapParameterName } from "./legacy-attachment-bucket-map";
 
 interface ApiStackProps extends cdk.NestedStackProps {
   project: string;
@@ -63,7 +64,10 @@ export class Api extends cdk.NestedStack {
     } = props;
 
     const topicName = `${topicNamespace}aws.onemac.migration.cdc`;
-    const legacyAttachmentBucketMapParameterName = `/${project}/${stage}/legacy-attachment-bucket-map`;
+    const legacyAttachmentBucketMapParameterName = getLegacyAttachmentBucketMapParameterName(
+      project,
+      stage,
+    );
     const legacyAttachmentBucketMap = cdk.aws_ssm.StringParameter.valueForStringParameter(
       this,
       legacyAttachmentBucketMapParameterName,
