@@ -76,6 +76,9 @@ describe("saveDraft handler", () => {
         draftData: {
           ids: {
             id: tempExtensionId,
+            validAuthority: {
+              authority: "",
+            },
           },
         },
       }),

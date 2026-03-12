@@ -76,10 +76,18 @@ const resolveAuthority = (
   authority: string | undefined,
   draftData: Record<string, unknown>,
 ) => {
-  if (authority) return authority;
-  if (typeof draftData.authority === "string") return draftData.authority;
+  const normalizedAuthority = authority?.trim();
+  if (normalizedAuthority) return normalizedAuthority;
+
+  if (typeof draftData.authority === "string" && draftData.authority.trim()) {
+    return draftData.authority.trim();
+  }
+
   const nestedAuthority = (draftData as any)?.ids?.validAuthority?.authority;
-  if (typeof nestedAuthority === "string") return nestedAuthority;
+  if (typeof nestedAuthority === "string" && nestedAuthority.trim()) {
+    return nestedAuthority.trim();
+  }
+
   return eventToAuthority[eventName];
 };
 
