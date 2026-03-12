@@ -44,7 +44,7 @@ jobs:
         id: sync_step
         uses: Enterprise-CMCS/mac-fc-security-hub-visibility@v2.2
         with:
-          jira-token: ${{ secrets.JIRA_TOKEN }}
+          jira-token: ${{ secrets.NEW_JIRA_TOKEN }}
           jira-username: ${{ secrets.JIRA_USERNAME }}
           jira-project-key: OY2
           jira-ignore-statuses: Done, Closed, Canceled
