@@ -11,7 +11,7 @@ import { isStateUser } from "shared-utils";
 
 import { useGetUser, useGetUserDetails, useGetUserProfile } from "@/api";
 import { Banner, ScrollToTop, SimplePageContainer, UserPrompt } from "@/components";
-import MMDLAlertBanner from "@/components/Banner/MMDLSpaBanner";
+import SystemAlertBanner from "@/components/Banner/SystemAlertBanner";
 import config from "@/config";
 import { ErrorPage } from "@/features/error-page";
 import { hasPendingRequests } from "@/features/profile/utils";
@@ -272,7 +272,7 @@ export const Layout = () => {
       <PathTracker userRole={user?.user?.role}>
         <ScrollToTop />
         <UserPrompt />
-        {user?.user && !isFaqPage && <MMDLAlertBanner />}
+        {user?.user && !isFaqPage && <SystemAlertBanner />}
         <UsaBanner isUserMissingRole={user?.user && customUserRoles === undefined} />
         <TopBanner />
         <nav data-testid="nav-banner-d" className="bg-primary">

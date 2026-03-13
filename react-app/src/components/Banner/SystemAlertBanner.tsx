@@ -5,7 +5,7 @@ import { Link } from "react-router";
 import { useGetSystemNotifs } from "@/api";
 import { FAQ_TAB } from "@/consts";
 
-const MMDLAlertBanner = () => {
+const SystemAlertBanner = () => {
   const { clearNotif, notifications } = useGetSystemNotifs();
   const selectedBanner = notifications[0];
 
@@ -53,4 +53,4 @@ const MMDLAlertBanner = () => {
   );
 };
 
-export default MMDLAlertBanner;
+export default SystemAlertBanner;

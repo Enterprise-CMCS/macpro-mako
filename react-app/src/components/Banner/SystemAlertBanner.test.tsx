@@ -5,7 +5,7 @@ import { afterEach, describe, expect, it, vi } from "vitest";
 
 import { useGetSystemNotifs } from "@/api";
 
-import MMDLAlertBanner from "./MMDLSpaBanner";
+import SystemAlertBanner from "./SystemAlertBanner";
 
 vi.mock("@/api", () => ({
   useGetSystemNotifs: vi.fn(),
@@ -14,11 +14,11 @@ vi.mock("@/api", () => ({
 const renderBanner = () =>
   render(
     <MemoryRouter>
-      <MMDLAlertBanner />
+      <SystemAlertBanner />
     </MemoryRouter>,
   );
 
-describe("MMDLAlertBanner", () => {
+describe("SystemAlertBanner", () => {
   afterEach(() => {
     vi.resetAllMocks();
   });
