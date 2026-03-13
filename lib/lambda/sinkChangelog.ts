@@ -5,6 +5,10 @@ import { KafkaEvent, KafkaRecord, LegacyAdminChange, opensearch } from "shared-t
 import { decodeBase64WithUtf8 } from "shared-utils";
 
 import {
+  hasAttachmentArchiveRebuildQueueConfigured,
+  sendAttachmentArchiveRebuildRequest,
+} from "../attachment-archive/rebuild-queue";
+import {
   legacyEventIdUpdateSchema,
   transformDeleteSchema,
   transformedSplitSPASchema,
@@ -267,4 +271,36 @@ const processAndIndex = async ({
     }
   }
   await bulkUpdateDataWrapper(docs, "changelog");
+
+  if (!hasAttachmentArchiveRebuildQueueConfigured()) {
+    return;
+  }
+
+  const packagesToRebuild = docs.reduce<Map<string, number | undefined>>((acc, document) => {
+    if (!document.packageId || document.packageId.endsWith("-del") || document.isAdminChange) {
+      return acc;
+    }
+
+    const currentTimestamp =
+      typeof document.timestamp === "number" ? document.timestamp : undefined;
+    const previousTimestamp = acc.get(document.packageId);
+
+    acc.set(
+      document.packageId,
+      previousTimestamp === undefined || currentTimestamp === undefined
+        ? (previousTimestamp ?? currentTimestamp)
+        : Math.max(previousTimestamp, currentTimestamp),
+    );
+    return acc;
+  }, new Map<string, number | undefined>());
+
+  await Promise.all(
+    Array.from(packagesToRebuild.entries()).map(([packageId, latestTimestamp]) =>
+      sendAttachmentArchiveRebuildRequest({
+        packageId,
+        latestTimestamp,
+        source: "sink-changelog",
+      }),
+    ),
+  );
 };

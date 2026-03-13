@@ -1,69 +1,36 @@
-import { GetObjectCommand, S3Client } from "@aws-sdk/client-s3";
-import { AssumeRoleCommand, STSClient } from "@aws-sdk/client-sts";
+import { GetObjectCommand, HeadObjectCommand } from "@aws-sdk/client-s3";
 import { getSignedUrl } from "@aws-sdk/s3-request-presigner";
 import { APIGatewayEvent } from "aws-lambda";
 import { response } from "libs/handler-lib";
 import { getDomain } from "libs/utils";
 
+import {
+  getAttachmentErrorMessage,
+  isSkippableAttachmentError,
+} from "../attachment-archive/attachment-errors";
+import {
+  createAttachmentBucketClientFactory,
+  getAttachmentBucketMap,
+  resolveTargetBucket as resolveMappedBucket,
+} from "../attachment-archive/bucket-routing";
 import { getStateFilter } from "../libs/api/auth/user";
 import { getPackage, getPackageChangelog } from "../libs/api/package";
 import { handleOpensearchError } from "./utils";
 
-type AttachmentBucketMap = Record<string, string>;
+function getClient(bucket: string) {
+  return createAttachmentBucketClientFactory({
+    region: process.env.region || process.env.AWS_REGION,
+    legacyS3AccessRoleArn: process.env.legacyS3AccessRoleArn,
+  })(bucket);
+}
 
-let cachedAttachmentBucketMap: AttachmentBucketMap | undefined;
-let cachedAttachmentBucketMapRaw: string | undefined;
+class AttachmentUnavailableError extends Error {
+  statusCode = 410;
 
-function getAttachmentBucketMap(): AttachmentBucketMap {
-  const rawMap = process.env.LEGACY_ATTACHMENT_BUCKET_MAP;
-
-  if (
-    cachedAttachmentBucketMap &&
-    cachedAttachmentBucketMapRaw === (rawMap ?? "__NO_MAP_CONFIGURED__")
-  ) {
-    return cachedAttachmentBucketMap;
+  constructor(message: string) {
+    super(message);
+    this.name = "AttachmentUnavailableError";
   }
-
-  cachedAttachmentBucketMapRaw = rawMap ?? "__NO_MAP_CONFIGURED__";
-  if (!rawMap) {
-    cachedAttachmentBucketMap = {};
-    return cachedAttachmentBucketMap;
-  }
-
-  try {
-    const parsedMap: unknown = JSON.parse(rawMap);
-    if (typeof parsedMap !== "object" || parsedMap === null || Array.isArray(parsedMap)) {
-      throw new Error("LEGACY_ATTACHMENT_BUCKET_MAP must be a JSON object");
-    }
-
-    const attachmentBucketMap = Object.entries(parsedMap).reduce<AttachmentBucketMap>(
-      (acc, [sourceBucket, destinationBucket]) => {
-        if (
-          typeof sourceBucket !== "string" ||
-          sourceBucket.length === 0 ||
-          typeof destinationBucket !== "string" ||
-          destinationBucket.length === 0
-        ) {
-          throw new Error("LEGACY_ATTACHMENT_BUCKET_MAP must map non-empty strings");
-        }
-        acc[sourceBucket] = destinationBucket;
-        return acc;
-      },
-      {},
-    );
-
-    cachedAttachmentBucketMap = attachmentBucketMap;
-  } catch (error) {
-    cachedAttachmentBucketMap = {};
-    console.warn(
-      JSON.stringify({
-        event: "legacy_attachment_bucket_map_invalid",
-        message: error instanceof Error ? error.message : String(error),
-      }),
-    );
-  }
-
-  return cachedAttachmentBucketMap;
 }
 
 function logRemapApplied({
@@ -141,28 +108,61 @@ function logRemapFallback({
   );
 }
 
+function logAttachmentUnavailable({
+  packageId,
+  sourceBucket,
+  destinationBucket,
+  key,
+  filename,
+  reason,
+}: {
+  packageId: string;
+  sourceBucket: string;
+  destinationBucket?: string;
+  key: string;
+  filename: string;
+  reason: string;
+}) {
+  console.warn(
+    JSON.stringify({
+      event: "legacy_attachment_unavailable",
+      packageId,
+      sourceBucket,
+      destinationBucket,
+      key,
+      filename,
+      reason,
+    }),
+  );
+}
+
 function resolveTargetBucket(
   packageId: string,
   sourceBucket: string,
   key: string,
   filename: string,
 ): { sourceBucket: string; destinationBucket: string; remapped: boolean } {
-  const attachmentBucketMap = getAttachmentBucketMap();
-  const mappedBucket = attachmentBucketMap[sourceBucket];
+  const attachmentBucketMap = getAttachmentBucketMap(
+    process.env.LEGACY_ATTACHMENT_BUCKET_MAP,
+    (message) =>
+      console.warn(
+        JSON.stringify({
+          event: "legacy_attachment_bucket_map_invalid",
+          message,
+        }),
+      ),
+  );
+  const bucketResolution = resolveMappedBucket(sourceBucket, attachmentBucketMap);
 
-  if (mappedBucket) {
+  if (bucketResolution.remapped) {
     logRemapApplied({
       packageId,
       sourceBucket,
-      destinationBucket: mappedBucket,
+      destinationBucket: bucketResolution.destinationBucket,
       key,
       filename,
     });
-    return {
-      sourceBucket,
-      destinationBucket: mappedBucket,
-      remapped: true,
-    };
+    return bucketResolution;
   }
 
   if (sourceBucket.startsWith("uploads")) {
@@ -175,9 +175,9 @@ function resolveTargetBucket(
   }
 
   return {
-    sourceBucket,
-    destinationBucket: sourceBucket,
-    remapped: false,
+    sourceBucket: bucketResolution.sourceBucket,
+    destinationBucket: bucketResolution.destinationBucket,
+    remapped: bucketResolution.remapped,
   };
 }
 
@@ -242,73 +242,96 @@ export const handler = async (event: APIGatewayEvent) => {
     }
 
     const bucketResolution = resolveTargetBucket(body.id, body.bucket, body.key, body.filename);
+    const bucketToSign = await resolveDownloadBucket({
+      packageId: body.id,
+      sourceBucket: bucketResolution.sourceBucket,
+      destinationBucket: bucketResolution.destinationBucket,
+      remapped: bucketResolution.remapped,
+      key: body.key,
+      filename: body.filename,
+    });
 
     // Now we can generate the presigned url
-    let url: string;
-    try {
-      url = await generatePresignedUrl(
-        bucketResolution.destinationBucket,
-        body.key,
-        body.filename,
-        60,
-      );
-    } catch (error) {
-      if (!bucketResolution.remapped) {
-        throw error;
-      }
-
-      logRemapFallback({
-        packageId: body.id,
-        sourceBucket: bucketResolution.sourceBucket,
-        destinationBucket: bucketResolution.destinationBucket,
-        key: body.key,
-        filename: body.filename,
-        reason: error instanceof Error ? error.message : String(error),
-      });
-      url = await generatePresignedUrl(bucketResolution.sourceBucket, body.key, body.filename, 60);
-    }
+    const url = await generatePresignedUrl(bucketToSign, body.key, body.filename, 60);
 
     return response<unknown>({
       statusCode: 200,
       body: { url },
     });
   } catch (error) {
+    if (error instanceof AttachmentUnavailableError) {
+      return response({
+        statusCode: error.statusCode,
+        body: { message: error.message },
+      });
+    }
+
     return response(handleOpensearchError(error));
   }
 };
 
-async function getClient(bucket: string) {
-  if (bucket.startsWith("uploads")) {
-    const stsClient = new STSClient({ region: process.env.region });
+async function resolveDownloadBucket({
+  packageId,
+  sourceBucket,
+  destinationBucket,
+  remapped,
+  key,
+  filename,
+}: {
+  packageId: string;
+  sourceBucket: string;
+  destinationBucket: string;
+  remapped: boolean;
+  key: string;
+  filename: string;
+}) {
+  if (remapped) {
+    try {
+      await assertObjectAccessible(destinationBucket, key);
+      return destinationBucket;
+    } catch (error) {
+      logRemapFallback({
+        packageId,
+        sourceBucket,
+        destinationBucket,
+        key,
+        filename,
+        reason: error instanceof Error ? error.message : String(error),
+      });
+    }
+  }
 
-    // Assume the role
-    const assumedRoleResponse = await stsClient.send(
-      new AssumeRoleCommand({
-        RoleArn: process.env.legacyS3AccessRoleArn,
-        RoleSessionName: "AssumedRoleSession",
-      }),
-    );
-
-    // Extract the assumed role credentials
-    const assumedCredentials = assumedRoleResponse.Credentials;
-
-    if (!assumedCredentials) {
-      throw new Error("No assumed credentials");
+  try {
+    await assertObjectAccessible(sourceBucket, key);
+    return sourceBucket;
+  } catch (error) {
+    if (!isSkippableAttachmentError(error)) {
+      throw error;
     }
 
-    // Create S3 client using the assumed role's credentials
-    return new S3Client({
-      credentials: {
-        accessKeyId: assumedCredentials.AccessKeyId as string,
-        secretAccessKey: assumedCredentials.SecretAccessKey as string,
-        sessionToken: assumedCredentials.SessionToken,
-      },
+    logAttachmentUnavailable({
+      packageId,
+      sourceBucket,
+      destinationBucket: remapped ? destinationBucket : undefined,
+      key,
+      filename,
+      reason: getAttachmentErrorMessage(error),
     });
+
+    throw new AttachmentUnavailableError("This attachment is no longer available.");
   }
-  return new S3Client({});
 }
 
-//TODO: add check for resource before signing URL
+async function assertObjectAccessible(bucket: string, key: string) {
+  const client = await getClient(bucket);
+  await client.send(
+    new HeadObjectCommand({
+      Bucket: bucket,
+      Key: key,
+    }),
+  );
+}
+
 async function generatePresignedUrl(
   bucket: string,
   key: string,

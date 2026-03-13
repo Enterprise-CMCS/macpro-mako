@@ -190,6 +190,12 @@ export type AttachmentUrlRequestBody = {
   filename: string;
 };
 
+export type AttachmentArchiveRequestBody = {
+  id: string;
+  scope: "all" | "section";
+  sectionId?: string;
+};
+
 export type WebFormRequestBody = {
   formId: string;
   formVersion: string;

@@ -3,7 +3,6 @@ import { APIGatewayEvent } from "aws-lambda";
 import {
   ATTACHMENT_BUCKET_NAME,
   ATTACHMENT_BUCKET_REGION,
-  GET_ERROR_ITEM_ID,
   getRequestContext,
   HI_TEST_ITEM_ID,
   NOT_FOUND_ITEM_ID,
@@ -11,13 +10,23 @@ import {
   TEST_ITEM_ID,
   WITHDRAWN_CHANGELOG_ITEM_ID,
 } from "mocks";
-import { afterEach, describe, expect, it, vi } from "vitest";
+import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 
-import { handler } from "./getAttachmentUrl";
+const { createAttachmentBucketClientFactory, mockSend } = vi.hoisted(() => ({
+  createAttachmentBucketClientFactory: vi.fn(),
+  mockSend: vi.fn(),
+}));
+
+vi.mock("../attachment-archive/bucket-routing", async (importOriginal) => ({
+  ...(await importOriginal<typeof import("../attachment-archive/bucket-routing")>()),
+  createAttachmentBucketClientFactory,
+}));
 
 vi.mock("@aws-sdk/s3-request-presigner", () => ({
   getSignedUrl: vi.fn(),
 }));
+
+import { handler } from "./getAttachmentUrl";
 
 (globalThis as any).logger = {
   warn: vi.fn(),
@@ -27,10 +36,22 @@ vi.mock("@aws-sdk/s3-request-presigner", () => ({
 };
 
 describe("Lambda Handler", () => {
+  beforeEach(() => {
+    mockSend.mockResolvedValue({});
+    createAttachmentBucketClientFactory.mockImplementation(
+      () => async () =>
+        ({
+          send: mockSend,
+        }) as any,
+    );
+  });
+
   afterEach(() => {
     delete process.env.LEGACY_ATTACHMENT_BUCKET_MAP;
-    vi.clearAllMocks();
     vi.restoreAllMocks();
+    vi.clearAllMocks();
+    mockSend.mockReset();
+    createAttachmentBucketClientFactory.mockReset();
   });
 
   it("should return 400 if event body is missing", async () => {
@@ -143,6 +164,7 @@ describe("Lambda Handler", () => {
     expect(res).toBeTruthy();
     expect(res.statusCode).toEqual(200);
     expect(res.body).toEqual(JSON.stringify({ url: mockUrl }));
+    expect(mockSend).toHaveBeenCalledTimes(1);
   });
 
   it("should remap legacy bucket requests and log when remapping is applied", async () => {
@@ -166,7 +188,10 @@ describe("Lambda Handler", () => {
 
     const res = await handler(event);
 
+    const accessCheckCommand = mockSend.mock.calls[0]?.[0] as any;
     const firstSignedUrlCommand = vi.mocked(getSignedUrl).mock.calls[0]?.[1] as any;
+    expect(accessCheckCommand?.input?.Bucket).toBe(mappedBucket);
+    expect(accessCheckCommand?.input?.Key).toBe("doc001");
     expect(firstSignedUrlCommand?.input?.Bucket).toBe(mappedBucket);
     expect(infoSpy).toHaveBeenCalledWith(
       expect.stringContaining("legacy_attachment_remap_applied"),
@@ -183,9 +208,8 @@ describe("Lambda Handler", () => {
     });
     const warnSpy = vi.spyOn(console, "warn").mockImplementation(() => undefined);
     const fallbackUrl = `https://${ATTACHMENT_BUCKET_NAME}.s3.${ATTACHMENT_BUCKET_REGION}.amazonaws.com/fallback`;
-    vi.mocked(getSignedUrl)
-      .mockRejectedValueOnce(new Error("AccessDenied"))
-      .mockResolvedValueOnce(fallbackUrl);
+    mockSend.mockRejectedValueOnce(new Error("AccessDenied"));
+    vi.mocked(getSignedUrl).mockResolvedValueOnce(fallbackUrl);
 
     const event = {
       body: JSON.stringify({
@@ -199,8 +223,10 @@ describe("Lambda Handler", () => {
 
     const res = await handler(event);
 
-    const secondSignedUrlCommand = vi.mocked(getSignedUrl).mock.calls[1]?.[1] as any;
-    expect(secondSignedUrlCommand?.input?.Bucket).toBe(ATTACHMENT_BUCKET_NAME);
+    const accessCheckCommand = mockSend.mock.calls[0]?.[0] as any;
+    const signedUrlCommand = vi.mocked(getSignedUrl).mock.calls[0]?.[1] as any;
+    expect(accessCheckCommand?.input?.Bucket).toBe(mappedBucket);
+    expect(signedUrlCommand?.input?.Bucket).toBe(ATTACHMENT_BUCKET_NAME);
     expect(warnSpy).toHaveBeenCalledWith(
       expect.stringContaining("legacy_attachment_remap_fallback"),
     );
@@ -226,6 +252,7 @@ describe("Lambda Handler", () => {
 
     const res = await handler(event);
 
+    expect(mockSend).toHaveBeenCalledTimes(1);
     expect(warnSpy).toHaveBeenCalledWith(
       expect.stringContaining("legacy_attachment_remap_missing_mapping"),
     );
@@ -234,10 +261,64 @@ describe("Lambda Handler", () => {
     warnSpy.mockRestore();
   });
 
+  it("should return 410 when an unmapped attachment bucket no longer exists", async () => {
+    const warnSpy = vi.spyOn(console, "warn").mockImplementation(() => undefined);
+    mockSend.mockRejectedValueOnce({
+      name: "NoSuchBucket",
+      message: "The specified bucket does not exist",
+    });
+
+    const event = {
+      body: JSON.stringify({
+        id: WITHDRAWN_CHANGELOG_ITEM_ID,
+        bucket: ATTACHMENT_BUCKET_NAME,
+        key: "doc001",
+        filename: "contract_amendment_2024.pdf",
+      }),
+      requestContext: getRequestContext(),
+    } as APIGatewayEvent;
+
+    const res = await handler(event);
+
+    expect(vi.mocked(getSignedUrl)).not.toHaveBeenCalled();
+    expect(res.statusCode).toEqual(410);
+    expect(res.body).toEqual(
+      JSON.stringify({ message: "This attachment is no longer available." }),
+    );
+    expect(warnSpy).toHaveBeenCalledWith(expect.stringContaining("legacy_attachment_unavailable"));
+    warnSpy.mockRestore();
+  });
+
+  it("should return 410 when the resolved attachment object is missing", async () => {
+    const warnSpy = vi.spyOn(console, "warn").mockImplementation(() => undefined);
+    mockSend.mockRejectedValueOnce({
+      name: "NoSuchKey",
+      message: "The specified key does not exist",
+    });
+
+    const event = {
+      body: JSON.stringify({
+        id: WITHDRAWN_CHANGELOG_ITEM_ID,
+        bucket: ATTACHMENT_BUCKET_NAME,
+        key: "doc001",
+        filename: "contract_amendment_2024.pdf",
+      }),
+      requestContext: getRequestContext(),
+    } as APIGatewayEvent;
+
+    const res = await handler(event);
+
+    expect(vi.mocked(getSignedUrl)).not.toHaveBeenCalled();
+    expect(res.statusCode).toEqual(410);
+    expect(res.body).toEqual(
+      JSON.stringify({ message: "This attachment is no longer available." }),
+    );
+    expect(warnSpy).toHaveBeenCalledWith(expect.stringContaining("legacy_attachment_unavailable"));
+    warnSpy.mockRestore();
+  });
+
   it("should return 500 because response is missing credentials", async () => {
-    const mockUrl = `https://${ATTACHMENT_BUCKET_NAME}.s3.${ATTACHMENT_BUCKET_REGION}.amazonaws.com/123e4567-e89b-12d3-a456-426614174000`;
-    vi.mocked(getSignedUrl).mockResolvedValueOnce(mockUrl);
-    process.env.region = "us-fail-1";
+    vi.mocked(getSignedUrl).mockRejectedValueOnce(new Error("No assumed credentials"));
     const event = {
       body: JSON.stringify({
         id: WITHDRAWN_CHANGELOG_ITEM_ID,
@@ -256,12 +337,14 @@ describe("Lambda Handler", () => {
   });
 
   it("should handle errors during processing", async () => {
+    mockSend.mockRejectedValueOnce(new Error("boom"));
+
     const event = {
       body: JSON.stringify({
-        id: GET_ERROR_ITEM_ID,
+        id: WITHDRAWN_CHANGELOG_ITEM_ID,
         bucket: ATTACHMENT_BUCKET_NAME,
-        key: "test-key",
-        filename: "test-file",
+        key: "doc001",
+        filename: "contract_amendment_2024.pdf",
       }),
       requestContext: getRequestContext(),
     } as APIGatewayEvent;

@@ -1,5 +1,5 @@
 import { toBeEmptyDOMElement } from "@testing-library/jest-dom/matchers";
-import { screen } from "@testing-library/react";
+import { screen, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import {
   ATTACHMENT_BUCKET_NAME,
@@ -57,13 +57,17 @@ describe("Package Activity", () => {
     expect(screen.getByText("Contract Amendment"));
   });
 
-  it("calls 'Download all attachments' with onZip and the correct attachment arguments", async () => {
-    const spiedOnZip = vi.fn();
+  it("requests the all-attachments archive and opens the returned url", async () => {
+    const onArchive = vi.fn(() => Promise.resolve("http://example.com/all.zip"));
+    const openSpy = vi.spyOn(window, "open").mockImplementation(vi.fn());
 
-    // @ts-expect-error
     vi.spyOn(packageActivityHooks, "useAttachmentService").mockImplementation(() => ({
-      onZip: spiedOnZip,
+      attachmentErrorMessage: undefined,
+      archiveErrorMessage: undefined,
       loading: false,
+      onArchive,
+      onUrl: vi.fn(),
+      error: null,
     }));
 
     const user = userEvent.setup();
@@ -75,62 +79,25 @@ describe("Package Activity", () => {
       WITHDRAWN_CHANGELOG_ITEM_ID,
     );
 
-    const downloadAllAttachmentsBtn = screen.getByText("Download all attachments");
-    await user.click(downloadAllAttachmentsBtn);
+    await user.click(screen.getByText("Download all attachments"));
 
-    expect(spiedOnZip).toBeCalledWith([
-      {
-        filename: "contract_amendment_2024.pdf",
-        key: "doc001",
-        title: "Contract Amendment",
-        bucket: ATTACHMENT_BUCKET_NAME,
-      },
-      {
-        filename: "rai_response.docx",
-        key: "rai002",
-        title: "Response to RAI",
-        bucket: ATTACHMENT_BUCKET_NAME,
-      },
-      {
-        filename: "followup_docs.zip",
-        key: "subdoc003",
-        title: "Follow-Up Documents",
-        bucket: ATTACHMENT_BUCKET_NAME,
-      },
-      {
-        filename: "compliance_documents.xlsx",
-        key: "subdoc004",
-        title: "Compliance Files",
-        bucket: ATTACHMENT_BUCKET_NAME,
-      },
-      {
-        filename: "rai_withdrawal_notice.pdf",
-        key: "withdraw005",
-        title: "Withdrawal Notice",
-        bucket: ATTACHMENT_BUCKET_NAME,
-      },
-      {
-        filename: "package_withdrawal_request.docx",
-        key: "withdraw006",
-        title: "Package Withdrawal",
-        bucket: ATTACHMENT_BUCKET_NAME,
-      },
-      {
-        filename: "miscellaneous_info.txt",
-        key: "misc007",
-        title: "Miscellaneous File",
-        bucket: ATTACHMENT_BUCKET_NAME,
-      },
-    ]);
+    expect(onArchive).toHaveBeenCalledWith({ scope: "all" });
+    await waitFor(() => {
+      expect(openSpy).toHaveBeenCalledWith("http://example.com/all.zip");
+    });
   });
 
-  it("calls 'Download section attachments' with onZip and the correct attachment arguments", async () => {
-    const spiedOnZip = vi.fn();
+  it("requests the section archive and opens the returned url", async () => {
+    const onArchive = vi.fn(() => Promise.resolve("http://example.com/section.zip"));
+    const openSpy = vi.spyOn(window, "open").mockImplementation(vi.fn());
 
-    // @ts-expect-error
     vi.spyOn(packageActivityHooks, "useAttachmentService").mockImplementation(() => ({
-      onZip: spiedOnZip,
+      attachmentErrorMessage: undefined,
+      archiveErrorMessage: undefined,
       loading: false,
+      onArchive,
+      onUrl: vi.fn(),
+      error: null,
     }));
 
     const user = userEvent.setup();
@@ -142,33 +109,28 @@ describe("Package Activity", () => {
       WITHDRAWN_CHANGELOG_ITEM_ID,
     );
 
-    const downloadAttachmentsBtn = screen.getByText("Download section attachments");
-    await user.click(downloadAttachmentsBtn);
+    await user.click(screen.getByText("Download section attachments"));
 
-    expect(spiedOnZip).toBeCalledWith([
-      {
-        filename: "contract_amendment_2024.pdf",
-        key: "doc001",
-        title: "Contract Amendment",
-        bucket: ATTACHMENT_BUCKET_NAME,
-      },
-      {
-        filename: "contract_amendment_2024_2.pdf",
-        key: "doc002",
-        title: "Contract Amendment2",
-        bucket: ATTACHMENT_BUCKET_NAME,
-      },
-    ]);
+    expect(onArchive).toHaveBeenCalledWith({
+      scope: "section",
+      sectionId: TEST_ITEM_WITH_CHANGELOG._source.changelog[0]._source.id,
+    });
+    await waitFor(() => {
+      expect(openSpy).toHaveBeenCalledWith("http://example.com/section.zip");
+    });
   });
 
   it("calls the attachment name with onUrl and the correct attachment argument", async () => {
     const spiedOnUrl = vi.fn(() => Promise.resolve("hello world!"));
     const spiedWindowOpen = vi.fn();
 
-    // @ts-expect-error
     vi.spyOn(packageActivityHooks, "useAttachmentService").mockImplementation(() => ({
+      attachmentErrorMessage: undefined,
+      archiveErrorMessage: undefined,
       onUrl: spiedOnUrl,
       loading: false,
+      onArchive: vi.fn(),
+      error: null,
     }));
 
     vi.spyOn(window, "open").mockImplementation(spiedWindowOpen);
@@ -192,5 +154,56 @@ describe("Package Activity", () => {
       bucket: ATTACHMENT_BUCKET_NAME,
     });
     expect(spiedWindowOpen).toBeCalledWith("hello world!");
+  });
+
+  it("does not open a new tab when an attachment download resolves without a url", async () => {
+    const onUrl = vi.fn(() => Promise.resolve(undefined));
+    const openSpy = vi.spyOn(window, "open").mockImplementation(vi.fn());
+
+    vi.spyOn(packageActivityHooks, "useAttachmentService").mockImplementation(() => ({
+      attachmentErrorMessage: undefined,
+      archiveErrorMessage: undefined,
+      onUrl,
+      loading: false,
+      onArchive: vi.fn(),
+      error: null,
+    }));
+
+    const user = userEvent.setup();
+    await renderFormWithPackageSectionAsync(
+      <PackageActivities
+        id={WITHDRAWN_CHANGELOG_ITEM_ID}
+        changelog={WITHDRAW_APPK_ITEM._source.changelog}
+      />,
+      WITHDRAWN_CHANGELOG_ITEM_ID,
+    );
+
+    await user.click(screen.getByText("contract_amendment_2024.pdf"));
+
+    expect(onUrl).toHaveBeenCalled();
+    await waitFor(() => {
+      expect(openSpy).not.toHaveBeenCalled();
+    });
+  });
+
+  it("renders the individual attachment error message inline", async () => {
+    vi.spyOn(packageActivityHooks, "useAttachmentService").mockImplementation(() => ({
+      attachmentErrorMessage: "This attachment is no longer available.",
+      archiveErrorMessage: undefined,
+      loading: false,
+      onArchive: vi.fn(),
+      onUrl: vi.fn(),
+      error: null,
+    }));
+
+    await renderFormWithPackageSectionAsync(
+      <PackageActivities
+        id={WITHDRAWN_CHANGELOG_ITEM_ID}
+        changelog={WITHDRAW_APPK_ITEM._source.changelog}
+      />,
+      WITHDRAWN_CHANGELOG_ITEM_ID,
+    );
+
+    expect(screen.getByText("This attachment is no longer available.")).toBeInTheDocument();
   });
 });
