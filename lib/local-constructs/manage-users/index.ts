@@ -8,7 +8,6 @@ import {
   Role,
   ServicePrincipal,
 } from "aws-cdk-lib/aws-iam";
-import { Runtime } from "aws-cdk-lib/aws-lambda";
 import { NodejsFunction } from "aws-cdk-lib/aws-lambda-nodejs";
 import { LogGroup } from "aws-cdk-lib/aws-logs";
 import {
@@ -20,6 +19,7 @@ import { Construct } from "constructs";
 import { join } from "path";
 
 import { commonBundlingOptions } from "../../config/bundling-config";
+import { lambdaRuntime } from "../../config/lambda-runtime";
 
 export class ManageUsers extends Construct {
   constructor(
@@ -38,7 +38,7 @@ export class ManageUsers extends Construct {
     const manageUsers = new NodejsFunction(this, "LambdaFunction", {
       entry: join(__dirname, "src/manageUsers.ts"),
       handler: "handler",
-      runtime: Runtime.NODEJS_20_X,
+      runtime: lambdaRuntime,
       depsLockFilePath: join(__dirname, "../../../bun.lockb"),
       timeout: Duration.minutes(5),
       logGroup,

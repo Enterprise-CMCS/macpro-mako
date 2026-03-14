@@ -8,7 +8,6 @@ import {
   Role,
   ServicePrincipal,
 } from "aws-cdk-lib/aws-iam";
-import { Runtime } from "aws-cdk-lib/aws-lambda";
 import { NodejsFunction } from "aws-cdk-lib/aws-lambda-nodejs";
 import { LogGroup } from "aws-cdk-lib/aws-logs";
 import {
@@ -19,7 +18,8 @@ import {
 import { Construct } from "constructs";
 import { join } from "path";
 
-import { commonBundlingOptions } from "./../../config/bundling-config";
+import { commonBundlingOptions } from "../../config/bundling-config";
+import { lambdaRuntime } from "../../config/lambda-runtime";
 
 interface CleanupKafkaProps {
   vpc: IVpc;
@@ -43,7 +43,7 @@ export class CleanupKafka extends Construct {
       entry: join(__dirname, "src/cleanupKafka.ts"),
       handler: "handler",
       depsLockFilePath: join(__dirname, "../../../bun.lockb"),
-      runtime: Runtime.NODEJS_20_X,
+      runtime: lambdaRuntime,
       timeout: Duration.minutes(15),
       role: new Role(this, "CleanupKafkaLambdaExecutionRole", {
         assumedBy: new ServicePrincipal("lambda.amazonaws.com"),

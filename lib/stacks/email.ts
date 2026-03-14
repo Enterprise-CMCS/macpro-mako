@@ -6,6 +6,7 @@ import { DeploymentConfigProperties } from "lib/config/deployment-config";
 import { join } from "path";
 
 import { commonBundlingOptions } from "../config/bundling-config";
+import { lambdaRuntime } from "../config/lambda-runtime";
 
 interface EmailServiceStackProps extends cdk.StackProps {
   project: string;
@@ -182,7 +183,7 @@ export class Email extends cdk.NestedStack {
       depsLockFilePath: join(__dirname, "../../bun.lockb"),
       entry: join(__dirname, "../lambda/processEmails.ts"),
       handler: "handler",
-      runtime: cdk.aws_lambda.Runtime.NODEJS_20_X,
+      runtime: lambdaRuntime,
       memorySize: envConfig[props.isDev ? "dev" : "prod"].memorySize,
       timeout: cdk.Duration.minutes(envConfig[props.isDev ? "dev" : "prod"].timeout),
       role: lambdaRole,

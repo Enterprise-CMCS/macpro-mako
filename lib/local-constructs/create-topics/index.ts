@@ -8,7 +8,6 @@ import {
   Role,
   ServicePrincipal,
 } from "aws-cdk-lib/aws-iam";
-import { Runtime } from "aws-cdk-lib/aws-lambda";
 import { NodejsFunction } from "aws-cdk-lib/aws-lambda-nodejs";
 import { LogGroup } from "aws-cdk-lib/aws-logs";
 import {
@@ -20,6 +19,7 @@ import { Construct } from "constructs";
 import { join } from "path";
 
 import { commonBundlingOptions } from "../../config/bundling-config";
+import { lambdaRuntime } from "../../config/lambda-runtime";
 
 interface CreateTopicsProps {
   vpc: IVpc;
@@ -42,7 +42,7 @@ export class CreateTopics extends Construct {
     const lambda = new NodejsFunction(this, "CreateTopicsLambda", {
       entry: join(__dirname, "src/createTopics.ts"),
       handler: "handler",
-      runtime: Runtime.NODEJS_20_X,
+      runtime: lambdaRuntime,
       timeout: Duration.minutes(5),
       depsLockFilePath: join(__dirname, "../../../bun.lockb"),
       role: new Role(this, "CreateTopicsLambdaExecutionRole", {

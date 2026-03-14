@@ -7,7 +7,6 @@ import {
   Role,
   ServicePrincipal,
 } from "aws-cdk-lib/aws-iam";
-import { Runtime } from "aws-cdk-lib/aws-lambda";
 import { NodejsFunction } from "aws-cdk-lib/aws-lambda-nodejs";
 import { LogGroup } from "aws-cdk-lib/aws-logs";
 import { IBucket } from "aws-cdk-lib/aws-s3";
@@ -20,6 +19,7 @@ import { Construct } from "constructs";
 import { join } from "path";
 
 import { commonBundlingOptions } from "../../config/bundling-config";
+import { lambdaRuntime } from "../../config/lambda-runtime";
 
 interface EmptyBucketsProps extends StackProps {
   buckets: IBucket[];
@@ -80,7 +80,7 @@ export class EmptyBuckets extends Construct {
     });
 
     const lambda = new NodejsFunction(this, "Lambda", {
-      runtime: Runtime.NODEJS_20_X,
+      runtime: lambdaRuntime,
       handler: "handler",
       depsLockFilePath: join(__dirname, "../../../bun.lockb"),
       entry: join(__dirname, "src", "emptyBuckets.ts"),

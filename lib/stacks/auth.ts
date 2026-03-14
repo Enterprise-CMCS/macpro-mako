@@ -7,6 +7,7 @@ import { join } from "path";
 
 import { commonBundlingOptions } from "../config/bundling-config";
 import { DeploymentConfigProperties } from "../config/deployment-config";
+import { lambdaRuntime } from "../config/lambda-runtime";
 
 interface AuthStackProps extends cdk.NestedStackProps {
   project: string;
@@ -260,7 +261,7 @@ export class Auth extends cdk.NestedStack {
         },
       });
       const postAuthLambda = new NodejsFunction(this, "PostAuthLambda", {
-        runtime: cdk.aws_lambda.Runtime.NODEJS_20_X,
+        runtime: lambdaRuntime,
         entry: join(__dirname, "../lambda/postAuth.ts"),
         handler: "handler",
         role: postAuthLambdaRole,

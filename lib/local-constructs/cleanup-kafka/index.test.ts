@@ -6,6 +6,7 @@ import * as logs from "aws-cdk-lib/aws-logs";
 import * as cr from "aws-cdk-lib/custom-resources";
 import { describe, expect, it } from "vitest";
 
+import { lambdaRuntime } from "../../config/lambda-runtime";
 import { CleanupKafka } from ".";
 
 describe("CleanupKafka", () => {
@@ -42,7 +43,7 @@ describe("CleanupKafka", () => {
       "CleanupKafkaLambdaFunction",
     ) as lambda.Function;
     expect(lambdaFunction).toBeInstanceOf(lambda.Function);
-    expect(lambdaFunction.runtime).toBe(lambda.Runtime.NODEJS_20_X);
+    expect(lambdaFunction.runtime).toBe(lambdaRuntime);
     expect(lambdaFunction.timeout?.toMinutes()).toBe(15);
 
     const role = lambdaFunction.role as iam.Role;

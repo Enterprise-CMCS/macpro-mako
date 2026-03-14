@@ -6,6 +6,7 @@ import * as s3 from "aws-cdk-lib/aws-s3";
 import * as cr from "aws-cdk-lib/custom-resources";
 import { describe, expect, it } from "vitest";
 
+import { lambdaRuntime } from "../../config/lambda-runtime";
 import { EmptyBuckets } from ".";
 
 describe("EmptyBuckets", () => {
@@ -29,7 +30,7 @@ describe("EmptyBuckets", () => {
   it("should create a Lambda function with appropriate properties", () => {
     const lambdaFunction = emptyBuckets.node.findChild("Lambda") as lambda.Function;
     expect(lambdaFunction).toBeInstanceOf(lambda.Function);
-    expect(lambdaFunction.runtime).toBe(lambda.Runtime.NODEJS_20_X);
+    expect(lambdaFunction.runtime).toBe(lambdaRuntime);
     expect(lambdaFunction.timeout?.toMinutes()).toBe(15);
 
     const role = lambdaFunction.role as iam.Role;

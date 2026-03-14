@@ -8,6 +8,7 @@ import { join } from "path";
 
 import { commonBundlingOptions } from "../config/bundling-config";
 import { DeploymentConfigProperties } from "../config/deployment-config";
+import { lambdaRuntime } from "../config/lambda-runtime";
 
 interface ApiStackProps extends cdk.NestedStackProps {
   project: string;
@@ -154,7 +155,7 @@ export class Api extends cdk.NestedStack {
       });
 
       const fn = new NodejsFunction(this, id, {
-        runtime: cdk.aws_lambda.Runtime.NODEJS_20_X,
+        runtime: lambdaRuntime,
         functionName: `${project}-${stage}-${stack}-${id}`,
         depsLockFilePath: join(__dirname, "../../bun.lockb"),
         entry,
