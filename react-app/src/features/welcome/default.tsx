@@ -37,8 +37,9 @@ export const Welcome = () => {
               these SPA types are submitted through the OneMAC system effective July 28, 2025.
               <br />
               <br />
-              The CS31 template and implementation guide have been updated in OneMAC to include
-              policies for targeted low-income pregnant women. March 19, 2026.{" "}
+              The CS 31 CHIP eligibility SPA template and implementation guide have been updated in
+              OneMAC to include policies for targeted low-income pregnant women. These updates will
+              be effective starting March 19, 2026.{" "}
               <Link to="/faq/spa-amendments" target={FAQ_TAB} className="underline text-[#0071bc]">
                 Learn more
               </Link>
