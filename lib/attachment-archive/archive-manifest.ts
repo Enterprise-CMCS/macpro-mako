@@ -1,6 +1,7 @@
 import { createHash } from "crypto";
 
 import {
+  ATTACHMENT_ARCHIVE_BUILD_VERSION,
   AttachmentArchiveCurrent,
   AttachmentArchivePackageManifest,
   AttachmentArchivePackageManifestSection,
@@ -189,6 +190,7 @@ export function buildSectionAttachmentArchiveManifest(
   }));
 
   const canonicalPayload = JSON.stringify({
+    buildVersion: ATTACHMENT_ARCHIVE_BUILD_VERSION,
     packageId: request.packageId,
     scope: request.scope,
     sectionId: request.sectionId,
@@ -211,6 +213,7 @@ export function buildSectionAttachmentArchiveManifest(
 
   return {
     version: 2,
+    buildVersion: ATTACHMENT_ARCHIVE_BUILD_VERSION,
     type: "section",
     packageId: request.packageId,
     scope: "section",
@@ -245,6 +248,7 @@ export function buildPackageAttachmentArchiveManifest({
   const hash = createHash("sha256")
     .update(
       JSON.stringify({
+        buildVersion: ATTACHMENT_ARCHIVE_BUILD_VERSION,
         packageId,
         scope: "all",
         rootFolderName,
@@ -255,6 +259,7 @@ export function buildPackageAttachmentArchiveManifest({
 
   return {
     version: 2,
+    buildVersion: ATTACHMENT_ARCHIVE_BUILD_VERSION,
     type: "package",
     packageId,
     scope: "all",
@@ -272,6 +277,7 @@ export function buildAttachmentArchiveCurrent({
   artifactKey,
   manifestKey,
   attachmentCount,
+  executionArn,
   sectionId,
   sectionNumber,
   sectionLabel,
@@ -284,6 +290,7 @@ export function buildAttachmentArchiveCurrent({
   artifactKey: string;
   manifestKey: string;
   attachmentCount: number;
+  executionArn?: string;
   sectionId?: string;
   sectionNumber?: number;
   sectionLabel?: string;
@@ -299,6 +306,7 @@ export function buildAttachmentArchiveCurrent({
     manifestKey,
     attachmentCount,
     updatedAt: new Date().toISOString(),
+    ...(executionArn ? { executionArn } : {}),
     ...(sectionId ? { sectionId } : {}),
     ...(sectionNumber ? { sectionNumber } : {}),
     ...(sectionLabel ? { sectionLabel } : {}),
@@ -326,7 +334,8 @@ export function parseAttachmentArchiveCurrent(
       typeof parsed.artifactKey === "string" &&
       typeof parsed.manifestKey === "string" &&
       typeof parsed.attachmentCount === "number" &&
-      typeof parsed.updatedAt === "string"
+      typeof parsed.updatedAt === "string" &&
+      (parsed.executionArn === undefined || typeof parsed.executionArn === "string")
     ) {
       return parsed as AttachmentArchiveCurrent;
     }

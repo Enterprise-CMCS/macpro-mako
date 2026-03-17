@@ -1,7 +1,11 @@
 import { GetObjectCommand, GetObjectCommandOutput, S3Client } from "@aws-sdk/client-s3";
 import { Upload } from "@aws-sdk/lib-storage";
 import archiver, { Archiver } from "archiver";
-import { PassThrough } from "stream";
+import { randomUUID } from "crypto";
+import { createReadStream, createWriteStream, promises as fs } from "fs";
+import { join } from "path";
+import { Readable } from "stream";
+import { finished } from "stream/promises";
 
 import { buildAttachmentArchiveCurrent } from "../archive-manifest";
 import { createAttachmentBucketClientFactory, getAttachmentBucketMap } from "../bucket-routing";
@@ -50,6 +54,7 @@ const getAttachmentBucketClient = createAttachmentBucketClientFactory({
 });
 
 type AttachmentBody = NonNullable<GetObjectCommandOutput["Body"]>;
+type ArchiverInput = Buffer | Readable;
 
 function isSectionManifest(
   manifest: AttachmentArchiveManifest,
@@ -102,6 +107,7 @@ async function markFailed(errorMessage: string): Promise<void> {
       artifactKey,
       manifestKey,
       attachmentCount: current?.attachmentCount || 0,
+      executionArn: current?.executionArn,
       sectionId: current?.sectionId,
       sectionNumber: current?.sectionNumber,
       sectionLabel: current?.sectionLabel,
@@ -165,7 +171,7 @@ async function appendSectionManifest(
       continue;
     }
 
-    archive.append(Buffer.from(await result.body.transformToByteArray()), {
+    archive.append(toArchiverInput(result.body), {
       name: pathResolver(attachment),
     });
     appendedAttachmentCount += 1;
@@ -248,7 +254,10 @@ async function buildArchiveFromManifest(
 function buildCurrentFromManifest(
   manifest: AttachmentArchiveManifest,
   status: AttachmentArchiveCurrent["status"],
-  errorMessage?: string,
+  options?: {
+    errorMessage?: string;
+    executionArn?: string;
+  },
 ): AttachmentArchiveCurrent {
   return buildAttachmentArchiveCurrent({
     scope: manifest.scope,
@@ -260,12 +269,53 @@ function buildCurrentFromManifest(
       manifest.scope === "section"
         ? manifest.attachments.length
         : manifest.sections.reduce((total, section) => total + section.attachmentCount, 0),
+    executionArn: options?.executionArn,
     sectionId: manifest.scope === "section" ? manifest.sectionId : undefined,
     sectionNumber: manifest.scope === "section" ? manifest.sectionNumber : undefined,
     sectionLabel: manifest.scope === "section" ? manifest.sectionLabel : undefined,
     sectionFolderName: manifest.scope === "section" ? manifest.sectionFolderName : undefined,
-    errorMessage,
+    errorMessage: options?.errorMessage,
   });
+}
+
+function isNodeReadableStream(value: unknown): value is NodeJS.ReadableStream {
+  return !!value && typeof (value as NodeJS.ReadableStream).pipe === "function";
+}
+
+function isWebReadableStream(value: unknown): value is ReadableStream<Uint8Array> {
+  return !!value && typeof (value as ReadableStream<Uint8Array>).getReader === "function";
+}
+
+function isAsyncIterableStream(value: unknown): value is AsyncIterable<Uint8Array> {
+  return (
+    !!value && typeof (value as AsyncIterable<Uint8Array>)[Symbol.asyncIterator] === "function"
+  );
+}
+
+function hasTransformToWebStream(body: AttachmentBody): body is AttachmentBody & {
+  transformToWebStream: () => ReadableStream<Uint8Array>;
+} {
+  return typeof (body as { transformToWebStream?: unknown }).transformToWebStream === "function";
+}
+
+function toArchiverInput(body: AttachmentBody): ArchiverInput {
+  if (isNodeReadableStream(body)) {
+    return body as Readable;
+  }
+
+  if (hasTransformToWebStream(body)) {
+    return Readable.fromWeb(body.transformToWebStream());
+  }
+
+  if (isWebReadableStream(body)) {
+    return Readable.fromWeb(body);
+  }
+
+  if (isAsyncIterableStream(body)) {
+    return Readable.from(body);
+  }
+
+  throw new Error("Attachment body could not be converted to a readable stream");
 }
 
 async function run(): Promise<void> {
@@ -295,36 +345,76 @@ async function run(): Promise<void> {
 
   const manifest = await loadManifest();
 
-  await putCurrentArchiveStatus(buildCurrentFromManifest(manifest, "RUNNING"));
+  await putCurrentArchiveStatus(
+    buildCurrentFromManifest(manifest, "RUNNING", {
+      executionArn: current.executionArn,
+    }),
+  );
 
-  const zipOutputStream = new PassThrough();
   const archive = archiver("zip", { zlib: { level: 9 } });
-  const upload = new Upload({
-    client: archiveBucketClient,
-    params: {
-      Bucket: archiveBucketName,
-      Key: artifactKey,
-      Body: zipOutputStream,
-      ContentType: "application/zip",
-    },
+  const tempArchivePath = join("/tmp", `attachment-archive-${hash}-${randomUUID()}.zip`);
+  const archiveFileStream = createWriteStream(tempArchivePath);
+  archive.on("warning", (error: Error) => {
+    archiveFileStream.destroy(error);
+  });
+  archive.on("error", (error: Error) => {
+    archiveFileStream.destroy(error);
   });
 
-  const archiveCompleted = new Promise<void>((resolve, reject) => {
-    archive.on("warning", (error: Error) => {
-      reject(error);
-    });
-    archive.on("error", (error: Error) => {
-      reject(error);
-    });
-    archive.on("end", () => {
-      resolve();
-    });
-  });
+  archive.pipe(archiveFileStream);
 
-  archive.pipe(zipOutputStream);
-  const builtArchive = await buildArchiveFromManifest(archive, manifest);
-  await archive.finalize();
-  await Promise.all([upload.done(), archiveCompleted]);
+  let builtArchive:
+    | {
+        manifest: AttachmentArchiveManifest;
+        appendedAttachmentCount: number;
+        skippedAttachmentCount: number;
+      }
+    | undefined;
+
+  try {
+    builtArchive = await buildArchiveFromManifest(archive, manifest);
+    console.info(
+      JSON.stringify({
+        event: "attachment_archive_zip_build_completed",
+        artifactKey,
+        hash,
+        manifestType: builtArchive.manifest.type,
+        attachmentCount: builtArchive.appendedAttachmentCount,
+        skippedAttachmentCount: builtArchive.skippedAttachmentCount,
+        tempArchivePath,
+      }),
+    );
+    await archive.finalize();
+    await finished(archiveFileStream);
+    console.info(
+      JSON.stringify({
+        event: "attachment_archive_upload_starting",
+        artifactKey,
+        hash,
+        tempArchivePath,
+      }),
+    );
+
+    const upload = new Upload({
+      client: archiveBucketClient,
+      params: {
+        Bucket: archiveBucketName,
+        Key: artifactKey,
+        Body: createReadStream(tempArchivePath),
+        ContentType: "application/zip",
+      },
+    });
+    await upload.done();
+    console.info(
+      JSON.stringify({
+        event: "attachment_archive_upload_completed",
+        artifactKey,
+        hash,
+      }),
+    );
+  } finally {
+    await fs.rm(tempArchivePath, { force: true }).catch(() => undefined);
+  }
 
   const latestCurrent = await getCurrentArchiveStatus();
   if (!latestCurrent || latestCurrent.hash !== hash) {
@@ -338,7 +428,11 @@ async function run(): Promise<void> {
     return;
   }
 
-  await putCurrentArchiveStatus(buildCurrentFromManifest(builtArchive.manifest, "READY"));
+  await putCurrentArchiveStatus(
+    buildCurrentFromManifest(builtArchive.manifest, "READY", {
+      executionArn: latestCurrent.executionArn,
+    }),
+  );
 
   console.info(
     JSON.stringify({
@@ -352,7 +446,9 @@ async function run(): Promise<void> {
   );
 }
 
-run().catch(async (error: unknown) => {
+try {
+  await run();
+} catch (error) {
   const message = error instanceof Error ? error.message : String(error);
   console.error(
     JSON.stringify({
@@ -376,4 +472,4 @@ run().catch(async (error: unknown) => {
   }
 
   process.exitCode = 1;
-});
+}

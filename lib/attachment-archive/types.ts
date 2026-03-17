@@ -1,5 +1,6 @@
 export type AttachmentArchiveScope = "all" | "section";
 export type AttachmentArchiveStatus = "PENDING" | "RUNNING" | "READY" | "FAILED";
+export const ATTACHMENT_ARCHIVE_BUILD_VERSION = 2;
 
 export interface AttachmentArchiveSourceAttachment {
   bucket: string;
@@ -30,6 +31,7 @@ export interface AttachmentArchiveSectionRequest extends AttachmentArchiveSectio
 
 export interface AttachmentArchiveSectionManifest extends AttachmentArchiveSectionInfo {
   version: 2;
+  buildVersion: number;
   type: "section";
   packageId: string;
   scope: "section";
@@ -47,6 +49,7 @@ export interface AttachmentArchivePackageManifestSection extends AttachmentArchi
 
 export interface AttachmentArchivePackageManifest {
   version: 2;
+  buildVersion: number;
   type: "package";
   packageId: string;
   scope: "all";
@@ -69,6 +72,7 @@ export interface AttachmentArchiveCurrent {
   manifestKey: string;
   attachmentCount: number;
   updatedAt: string;
+  executionArn?: string;
   sectionId?: string;
   sectionNumber?: number;
   sectionLabel?: string;

@@ -1,25 +1,22 @@
-const SKIPPABLE_ERROR_NAMES = new Set([
-  "AccessDenied",
-  "ExpiredToken",
-  "Forbidden",
-  "InvalidAccessKeyId",
-  "NoSuchBucket",
-  "NoSuchKey",
-  "NotFound",
-  "PermanentRedirect",
-]);
+import { isLegacyUploadBucket } from "./bucket-routing";
 
-const SKIPPABLE_MESSAGE_FRAGMENTS = [
-  "Access Denied",
+const NOT_FOUND_ERROR_NAMES = new Set(["NoSuchBucket", "NoSuchKey", "NotFound"]);
+const ACCESS_DENIED_ERROR_NAMES = new Set(["AccessDenied", "Forbidden", "InvalidAccessKeyId"]);
+
+const NOT_FOUND_MESSAGE_FRAGMENTS = [
   "does not exist",
-  "ExpiredToken",
-  "Forbidden",
   "NoSuchBucket",
   "NoSuchKey",
   "not found",
   "The specified bucket does not exist",
   "The specified key does not exist",
 ];
+
+type AttachmentErrorInfo = {
+  errorName: string;
+  message: string;
+  statusCode?: number;
+};
 
 export function getAttachmentErrorMessage(error: unknown) {
   if (error instanceof Error) {
@@ -29,9 +26,8 @@ export function getAttachmentErrorMessage(error: unknown) {
   return String(error);
 }
 
-export function isSkippableAttachmentError(error: unknown) {
+function getAttachmentErrorInfo(error: unknown): AttachmentErrorInfo {
   const message = getAttachmentErrorMessage(error);
-  const normalizedMessage = message.toLowerCase();
   const errorName =
     (typeof error === "object" &&
       error &&
@@ -48,32 +44,71 @@ export function isSkippableAttachmentError(error: unknown) {
       ? (error as any).$metadata.httpStatusCode
       : undefined;
 
-  let skippable = false;
-  let reason = "";
+  return {
+    errorName,
+    message,
+    statusCode,
+  };
+}
 
-  if (statusCode === 403 || statusCode === 404) {
-    skippable = true;
-    reason = `HTTP status ${statusCode}`;
-  } else if (SKIPPABLE_ERROR_NAMES.has(errorName)) {
-    skippable = true;
-    reason = `error name "${errorName}"`;
-  } else if (
-    SKIPPABLE_MESSAGE_FRAGMENTS.some((fragment) =>
+function logAttachmentErrorClassification(
+  label: string,
+  info: AttachmentErrorInfo,
+  bucket?: string,
+) {
+  console.warn(`[${label}]`, {
+    bucket,
+    errorName: info.errorName || undefined,
+    statusCode: info.statusCode,
+    message: info.message,
+  });
+}
+
+export function isAttachmentNotFoundError(error: unknown) {
+  const info = getAttachmentErrorInfo(error);
+  const normalizedMessage = info.message.toLowerCase();
+
+  const notFound =
+    info.statusCode === 404 ||
+    NOT_FOUND_ERROR_NAMES.has(info.errorName) ||
+    NOT_FOUND_MESSAGE_FRAGMENTS.some((fragment) =>
       normalizedMessage.includes(fragment.toLowerCase()),
-    )
-  ) {
-    skippable = true;
-    reason = "message matched skippable fragment";
+    );
+
+  if (notFound) {
+    logAttachmentErrorClassification("MISSING_ATTACHMENT_ERROR", info);
   }
 
-  if (skippable) {
-    console.warn("[SKIPPED_ATTACHMENT_ERROR]", {
-      reason,
-      errorName: errorName || undefined,
-      statusCode,
-      message,
-    });
+  return notFound;
+}
+
+export function isAttachmentAccessDeniedError(error: unknown) {
+  const info = getAttachmentErrorInfo(error);
+  const normalizedMessage = info.message.toLowerCase();
+
+  const accessDenied =
+    info.statusCode === 403 ||
+    ACCESS_DENIED_ERROR_NAMES.has(info.errorName) ||
+    normalizedMessage.includes("access denied") ||
+    normalizedMessage.includes("forbidden");
+
+  if (accessDenied) {
+    logAttachmentErrorClassification("ACCESS_DENIED_ATTACHMENT_ERROR", info);
   }
 
-  return skippable;
+  return accessDenied;
+}
+
+export function isLegacyAttachmentUnavailableError(bucket: string, error: unknown) {
+  if (!isLegacyUploadBucket(bucket)) {
+    return false;
+  }
+
+  const unavailable = isAttachmentNotFoundError(error) || isAttachmentAccessDeniedError(error);
+  if (unavailable) {
+    const info = getAttachmentErrorInfo(error);
+    logAttachmentErrorClassification("LEGACY_ATTACHMENT_UNAVAILABLE", info, bucket);
+  }
+
+  return unavailable;
 }

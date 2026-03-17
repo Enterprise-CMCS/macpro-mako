@@ -167,6 +167,28 @@ describe("Lambda Handler", () => {
     expect(mockSend).toHaveBeenCalledTimes(1);
   });
 
+  it("builds a safe content-disposition header for unicode filenames", async () => {
+    const mockUrl = `https://${ATTACHMENT_BUCKET_NAME}.s3.${ATTACHMENT_BUCKET_REGION}.amazonaws.com/123e4567-e89b-12d3-a456-426614174000`;
+    vi.mocked(getSignedUrl).mockResolvedValueOnce(mockUrl);
+
+    const event = {
+      body: JSON.stringify({
+        id: WITHDRAWN_CHANGELOG_ITEM_ID,
+        bucket: ATTACHMENT_BUCKET_NAME,
+        key: "doc001",
+        filename: "Screenshot 2026-02-19 at 1.13.37\u202fPM.png",
+      }),
+      requestContext: getRequestContext(),
+    } as APIGatewayEvent;
+
+    await handler(event);
+
+    const signedUrlCommand = vi.mocked(getSignedUrl).mock.calls[0]?.[1] as any;
+    expect(signedUrlCommand?.input?.ResponseContentDisposition).toBe(
+      `attachment; filename="Screenshot 2026-02-19 at 1.13.37 PM.png"; filename*=UTF-8''Screenshot%202026-02-19%20at%201.13.37%E2%80%AFPM.png`,
+    );
+  });
+
   it("should remap legacy bucket requests and log when remapping is applied", async () => {
     const mappedBucket = "mako-main-legacy-attachments-635052997545";
     process.env.LEGACY_ATTACHMENT_BUCKET_MAP = JSON.stringify({
@@ -201,14 +223,17 @@ describe("Lambda Handler", () => {
     infoSpy.mockRestore();
   });
 
-  it("should fallback to legacy bucket and log warning if remapped bucket fails", async () => {
+  it("should fallback to legacy bucket and log warning if remapped bucket object is missing", async () => {
     const mappedBucket = "mako-main-legacy-attachments-635052997545";
     process.env.LEGACY_ATTACHMENT_BUCKET_MAP = JSON.stringify({
       [ATTACHMENT_BUCKET_NAME]: mappedBucket,
     });
     const warnSpy = vi.spyOn(console, "warn").mockImplementation(() => undefined);
     const fallbackUrl = `https://${ATTACHMENT_BUCKET_NAME}.s3.${ATTACHMENT_BUCKET_REGION}.amazonaws.com/fallback`;
-    mockSend.mockRejectedValueOnce(new Error("AccessDenied"));
+    mockSend.mockRejectedValueOnce({
+      name: "NoSuchKey",
+      message: "The specified key does not exist",
+    });
     vi.mocked(getSignedUrl).mockResolvedValueOnce(fallbackUrl);
 
     const event = {
@@ -315,6 +340,33 @@ describe("Lambda Handler", () => {
     );
     expect(warnSpy).toHaveBeenCalledWith(expect.stringContaining("legacy_attachment_unavailable"));
     warnSpy.mockRestore();
+  });
+
+  it("should return 500 when the canonical remapped bucket returns access denied", async () => {
+    process.env.LEGACY_ATTACHMENT_BUCKET_MAP = JSON.stringify({
+      [ATTACHMENT_BUCKET_NAME]: "mako-main-attachments-test",
+    });
+    mockSend.mockRejectedValueOnce({
+      name: "AccessDenied",
+      message: "Access Denied",
+      $metadata: { httpStatusCode: 403 },
+    });
+
+    const event = {
+      body: JSON.stringify({
+        id: WITHDRAWN_CHANGELOG_ITEM_ID,
+        bucket: ATTACHMENT_BUCKET_NAME,
+        key: "doc001",
+        filename: "contract_amendment_2024.pdf",
+      }),
+      requestContext: getRequestContext(),
+    } as APIGatewayEvent;
+
+    const res = await handler(event);
+
+    expect(vi.mocked(getSignedUrl)).not.toHaveBeenCalled();
+    expect(res.statusCode).toEqual(500);
+    expect(res.body).toEqual(JSON.stringify({ message: "Internal server error" }));
   });
 
   it("should return 500 because response is missing credentials", async () => {

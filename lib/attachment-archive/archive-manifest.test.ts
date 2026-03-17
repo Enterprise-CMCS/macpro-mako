@@ -11,6 +11,7 @@ import {
   getPackageArchiveRootFolderName,
   parseAttachmentArchiveCurrent,
 } from "./archive-manifest";
+import { ATTACHMENT_ARCHIVE_BUILD_VERSION } from "./types";
 
 describe("attachment archive manifest helpers", () => {
   it("builds a stable section hash regardless of source attachment order", () => {
@@ -62,6 +63,7 @@ describe("attachment archive manifest helpers", () => {
     });
 
     expect(first.hash).toBe(second.hash);
+    expect(first.buildVersion).toBe(ATTACHMENT_ARCHIVE_BUILD_VERSION);
     expect(first.attachments.map((attachment) => attachment.archiveFilename)).toEqual([
       "a.pdf",
       "b.pdf",
@@ -143,6 +145,7 @@ describe("attachment archive manifest helpers", () => {
     });
 
     expect(manifest.version).toBe(2);
+    expect(manifest.buildVersion).toBe(ATTACHMENT_ARCHIVE_BUILD_VERSION);
     expect(manifest.rootFolderName).toBe(getPackageArchiveRootFolderName("MD-25-2525-IJJJ"));
     expect(manifest.sections).toHaveLength(1);
   });
@@ -181,6 +184,7 @@ describe("attachment archive manifest helpers", () => {
       artifactKey: "artifact.zip",
       manifestKey: "manifest.json",
       attachmentCount: 2,
+      executionArn: "arn:aws:states:us-east-1:123456789012:execution:test:archive",
       sectionId: "section-a",
       sectionNumber: 1,
       sectionLabel: "initial-package-submitted",

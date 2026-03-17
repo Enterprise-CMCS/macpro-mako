@@ -3,6 +3,8 @@ import { describe, expect, it } from "vitest";
 import {
   getLegacyAttachmentBucketMapParameterName,
   getLegacyAttachmentMirrorBuckets,
+  getSharedAttachmentReadBucket,
+  resolveAttachmentReadStage,
   resolveLegacyAttachmentBucketMapStage,
 } from "./legacy-attachment-bucket-map";
 
@@ -33,6 +35,35 @@ describe("getLegacyAttachmentBucketMapParameterName", () => {
     expect(getLegacyAttachmentBucketMapParameterName("mako", "migrate")).toBe(
       "/mako/main/legacy-attachment-bucket-map",
     );
+  });
+});
+
+describe("resolveAttachmentReadStage", () => {
+  it("keeps the main attachment read stage", () => {
+    expect(resolveAttachmentReadStage("main")).toBe("main");
+  });
+
+  it("routes ephemeral stages to main attachment reads", () => {
+    expect(resolveAttachmentReadStage("migrate")).toBe("main");
+    expect(resolveAttachmentReadStage("feature-x")).toBe("main");
+  });
+});
+
+describe("getSharedAttachmentReadBucket", () => {
+  it("builds the main attachment read bucket for migrate", () => {
+    expect(getSharedAttachmentReadBucket("mako", "migrate", "123456789012")).toEqual({
+      stage: "main",
+      name: "mako-main-attachments-123456789012",
+      arn: "arn:aws:s3:::mako-main-attachments-123456789012",
+    });
+  });
+
+  it("keeps production attachment reads stage-local", () => {
+    expect(getSharedAttachmentReadBucket("mako", "production", "123456789012")).toEqual({
+      stage: "production",
+      name: "mako-production-attachments-123456789012",
+      arn: "arn:aws:s3:::mako-production-attachments-123456789012",
+    });
   });
 });
 

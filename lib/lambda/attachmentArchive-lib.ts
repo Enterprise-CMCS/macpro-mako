@@ -1,5 +1,5 @@
 import { GetObjectCommand, S3Client } from "@aws-sdk/client-s3";
-import { SFNClient, StartExecutionCommand } from "@aws-sdk/client-sfn";
+import { DescribeExecutionCommand, SFNClient, StartExecutionCommand } from "@aws-sdk/client-sfn";
 import { getSignedUrl } from "@aws-sdk/s3-request-presigner";
 import { createError } from "@middy/util";
 import { opensearch } from "shared-types";
@@ -15,6 +15,10 @@ import {
   parseAttachmentArchiveCurrent,
 } from "../attachment-archive/archive-manifest";
 import { getAttachmentBucketMap } from "../attachment-archive/bucket-routing";
+import {
+  type AttachmentArchiveCurrentResolution,
+  resolveAttachmentArchiveCurrentState,
+} from "../attachment-archive/current-state";
 import {
   buildAttachmentArchiveSections,
   getAttachmentArchiveSectionById,
@@ -34,6 +38,7 @@ import {
 } from "../attachment-archive/types";
 
 const DEFAULT_POLL_AFTER_SECONDS = 3;
+const DEFAULT_REBUILD_START_DELAY_MS = 1000;
 const awsRegion = process.env.region || process.env.AWS_REGION;
 
 const archiveBucketClient = new S3Client({ region: awsRegion });
@@ -84,6 +89,35 @@ function getArchiveStateMachineArn(): string {
   return stateMachineArn;
 }
 
+function getArchiveRebuildStartDelayMs(): number {
+  const rawValue = process.env.ATTACHMENT_ARCHIVE_REBUILD_START_DELAY_MS;
+  if (!rawValue) {
+    return DEFAULT_REBUILD_START_DELAY_MS;
+  }
+
+  const parsed = Number.parseInt(rawValue, 10);
+  if (!Number.isFinite(parsed) || parsed < 0) {
+    console.warn(
+      JSON.stringify({
+        event: "attachment_archive_rebuild_invalid_start_delay",
+        value: rawValue,
+        fallbackDelayMs: DEFAULT_REBUILD_START_DELAY_MS,
+      }),
+    );
+    return DEFAULT_REBUILD_START_DELAY_MS;
+  }
+
+  return parsed;
+}
+
+async function sleep(ms: number) {
+  if (ms <= 0) {
+    return;
+  }
+
+  await new Promise((resolve) => setTimeout(resolve, ms));
+}
+
 async function buildReadyResponse({
   archiveBucketName,
   artifactKey,
@@ -110,12 +144,37 @@ async function buildReadyResponse({
   };
 }
 
-async function startArchiveExecution(input: AttachmentArchiveStateMachineInput) {
+function createArchiveExecutionIdentity(hash: string) {
+  const executionName = `attachment-archive-${hash.slice(0, 24)}-${Date.now()}-${Math.floor(
+    Math.random() * 1_000_000,
+  )}`;
+  const stateMachineArn = getArchiveStateMachineArn();
+  const [prefix, stateMachineName] = stateMachineArn.split(":stateMachine:");
+  if (!prefix || !stateMachineName) {
+    throw new Error(`Invalid attachment archive state machine ARN: ${stateMachineArn}`);
+  }
+
+  return {
+    executionArn: `${prefix}:execution:${stateMachineName}:${executionName}`,
+    executionName,
+    stateMachineArn,
+  };
+}
+
+async function startArchiveExecution({
+  input,
+  executionName,
+  stateMachineArn,
+}: {
+  input: AttachmentArchiveStateMachineInput;
+  executionName: string;
+  stateMachineArn: string;
+}) {
   await stateMachineClient.send(
     new StartExecutionCommand({
-      stateMachineArn: getArchiveStateMachineArn(),
+      stateMachineArn,
       input: JSON.stringify(input),
-      name: `attachment-archive-${input.hash.slice(0, 24)}-${Date.now()}`,
+      name: executionName,
     }),
   );
 }
@@ -287,31 +346,77 @@ async function getArchiveArtifactCurrent({
   return parseAttachmentArchiveCurrent(rawCurrent);
 }
 
-async function ensureArchiveArtifact({
+async function isArchiveExecutionRunning(executionArn: string): Promise<boolean> {
+  try {
+    const response = await stateMachineClient.send(
+      new DescribeExecutionCommand({
+        executionArn,
+      }),
+    );
+
+    return response.status === "RUNNING";
+  } catch (error) {
+    const errorName = (error as { name?: string })?.name;
+    if (errorName === "ExecutionDoesNotExist") {
+      return false;
+    }
+
+    throw error;
+  }
+}
+
+async function resolveArchiveArtifactState({
   archiveBucketName,
   artifact,
+  current,
 }: {
   archiveBucketName: string;
   artifact: ArchiveArtifactPlan;
+  current?: AttachmentArchiveCurrent;
+}): Promise<AttachmentArchiveCurrentResolution> {
+  const artifactKey = current?.artifactKey || artifact.artifactKey;
+  const artifactExists =
+    current?.status === "READY"
+      ? await objectExists({
+          client: archiveBucketClient,
+          bucket: archiveBucketName,
+          key: artifactKey,
+        })
+      : false;
+  const hasRunningExecution = current?.executionArn
+    ? await isArchiveExecutionRunning(current.executionArn)
+    : undefined;
+
+  return resolveAttachmentArchiveCurrentState({
+    expectedHash: artifact.hash,
+    current,
+    artifactExists,
+    hasRunningExecution,
+  });
+}
+
+async function ensureArchiveArtifact({
+  archiveBucketName,
+  artifact,
+  beforeStart,
+}: {
+  archiveBucketName: string;
+  artifact: ArchiveArtifactPlan;
+  beforeStart?: () => Promise<void>;
 }): Promise<ArchiveArtifactResult> {
   const current = await getArchiveArtifactCurrent({ archiveBucketName, artifact });
+  const resolution = await resolveArchiveArtifactState({
+    archiveBucketName,
+    artifact,
+    current,
+  });
 
-  if (current?.hash === artifact.hash) {
-    if (current.status === "READY") {
-      const exists = await objectExists({
-        client: archiveBucketClient,
-        bucket: archiveBucketName,
-        key: current.artifactKey,
-      });
+  if (resolution.action === "ready") {
+    return { artifact, current, started: false, status: "READY" };
+  }
 
-      if (exists) {
-        return { artifact, current, started: false, status: "READY" };
-      }
-    }
-
-    if (current.status === "PENDING" || current.status === "RUNNING") {
-      return { artifact, current, started: false, status: current.status };
-    }
+  if (resolution.action === "in_progress") {
+    return { artifact, current, started: false, status: resolution.status };
   }
 
   await putJsonObject({
@@ -320,6 +425,12 @@ async function ensureArchiveArtifact({
     key: artifact.manifestKey,
     body: artifact.manifest,
   });
+
+  await beforeStart?.();
+
+  const { executionArn, executionName, stateMachineArn } = createArchiveExecutionIdentity(
+    artifact.hash,
+  );
 
   await putJsonObject({
     client: archiveBucketClient,
@@ -332,6 +443,7 @@ async function ensureArchiveArtifact({
       artifactKey: artifact.artifactKey,
       manifestKey: artifact.manifestKey,
       attachmentCount: artifact.attachmentCount,
+      executionArn,
       sectionId: artifact.sectionId,
       sectionNumber: artifact.sectionNumber,
       sectionLabel: artifact.sectionLabel,
@@ -339,14 +451,43 @@ async function ensureArchiveArtifact({
     }),
   });
 
-  await startArchiveExecution({
-    archiveBucketName,
-    artifactKey: artifact.artifactKey,
-    attachmentCount: artifact.attachmentCount,
-    currentKey: artifact.currentKey,
-    hash: artifact.hash,
-    manifestKey: artifact.manifestKey,
-  });
+  try {
+    await startArchiveExecution({
+      input: {
+        archiveBucketName,
+        artifactKey: artifact.artifactKey,
+        attachmentCount: artifact.attachmentCount,
+        currentKey: artifact.currentKey,
+        hash: artifact.hash,
+        manifestKey: artifact.manifestKey,
+      },
+      executionName,
+      stateMachineArn,
+    });
+  } catch (error) {
+    await putJsonObject({
+      client: archiveBucketClient,
+      bucket: archiveBucketName,
+      key: artifact.currentKey,
+      body: buildAttachmentArchiveCurrent({
+        scope: artifact.scope,
+        hash: artifact.hash,
+        status: "FAILED",
+        artifactKey: artifact.artifactKey,
+        manifestKey: artifact.manifestKey,
+        attachmentCount: artifact.attachmentCount,
+        executionArn,
+        sectionId: artifact.sectionId,
+        sectionNumber: artifact.sectionNumber,
+        sectionLabel: artifact.sectionLabel,
+        sectionFolderName: artifact.sectionFolderName,
+        errorMessage:
+          error instanceof Error ? error.message : "Attachment archive execution failed to start",
+      }),
+    });
+
+    throw error;
+  }
 
   return {
     artifact,
@@ -357,6 +498,7 @@ async function ensureArchiveArtifact({
       artifactKey: artifact.artifactKey,
       manifestKey: artifact.manifestKey,
       attachmentCount: artifact.attachmentCount,
+      executionArn,
       sectionId: artifact.sectionId,
       sectionNumber: artifact.sectionNumber,
       sectionLabel: artifact.sectionLabel,
@@ -381,36 +523,31 @@ export async function getRequestedAttachmentArchiveStatus({
   const archiveBucketName = getArchiveBucketName();
   const artifact = getRequestedArtifact({ packageId, scope, sectionId, changelog });
   const current = await getArchiveArtifactCurrent({ archiveBucketName, artifact });
+  const resolution = await resolveArchiveArtifactState({
+    archiveBucketName,
+    artifact,
+    current,
+  });
 
-  if (current?.hash === artifact.hash) {
-    if (current.status === "READY") {
-      const exists = await objectExists({
-        client: archiveBucketClient,
-        bucket: archiveBucketName,
-        key: current.artifactKey,
-      });
+  if (resolution.action === "ready") {
+    return {
+      response: await buildReadyResponse({
+        archiveBucketName,
+        artifactKey: current?.artifactKey || artifact.artifactKey,
+        fileName: artifact.downloadFilename,
+      }),
+      needsRebuild: false,
+    };
+  }
 
-      if (exists) {
-        return {
-          response: await buildReadyResponse({
-            archiveBucketName,
-            artifactKey: current.artifactKey,
-            fileName: artifact.downloadFilename,
-          }),
-          needsRebuild: false,
-        };
-      }
-    }
-
-    if (current.status === "PENDING" || current.status === "RUNNING") {
-      return {
-        response: {
-          status: "PENDING" as const,
-          pollAfterSeconds: DEFAULT_POLL_AFTER_SECONDS,
-        },
-        needsRebuild: false,
-      };
-    }
+  if (resolution.action === "in_progress") {
+    return {
+      response: {
+        status: "PENDING" as const,
+        pollAfterSeconds: DEFAULT_POLL_AFTER_SECONDS,
+      },
+      needsRebuild: false,
+    };
   }
 
   return {
@@ -419,6 +556,58 @@ export async function getRequestedAttachmentArchiveStatus({
       pollAfterSeconds: DEFAULT_POLL_AFTER_SECONDS,
     },
     needsRebuild: true,
+  };
+}
+
+export async function validateAttachmentArchiveCompletion({
+  archiveBucketName,
+  currentKey,
+  hash,
+  artifactKey,
+}: {
+  archiveBucketName: string;
+  currentKey: string;
+  hash: string;
+  artifactKey: string;
+}) {
+  const current = await getJsonObject<AttachmentArchiveCurrent>({
+    client: archiveBucketClient,
+    bucket: archiveBucketName,
+    key: currentKey,
+  });
+
+  if (!current) {
+    throw new Error(`Attachment archive current state was not found at ${currentKey}`);
+  }
+
+  if (current.hash !== hash) {
+    throw new Error(`Attachment archive hash mismatch for ${currentKey}`);
+  }
+
+  if (current.status !== "READY") {
+    throw new Error(
+      `Attachment archive current state at ${currentKey} is ${current.status}, expected READY`,
+    );
+  }
+
+  if (current.artifactKey !== artifactKey) {
+    throw new Error(
+      `Attachment archive artifact key mismatch for ${currentKey}: expected ${artifactKey}, got ${current.artifactKey}`,
+    );
+  }
+
+  const exists = await objectExists({
+    client: archiveBucketClient,
+    bucket: archiveBucketName,
+    key: artifactKey,
+  });
+
+  if (!exists) {
+    throw new Error(`Attachment archive artifact was not found at ${artifactKey}`);
+  }
+
+  return {
+    ok: true as const,
   };
 }
 
@@ -439,24 +628,49 @@ export async function rebuildPackageAttachmentArchives({
   }
 
   const archiveBucketName = getArchiveBucketName();
-  const sectionResults: ArchiveArtifactResult[] = [];
-  for (const sectionArtifact of plan.sectionArtifacts) {
-    sectionResults.push(
-      await ensureArchiveArtifact({
-        archiveBucketName,
-        artifact: sectionArtifact,
+  const rebuildStartDelayMs = getArchiveRebuildStartDelayMs();
+  let startedArtifactCount = 0;
+  let delayedStartCount = 0;
+  const waitForStartThrottle = async () => {
+    if (startedArtifactCount === 0 || rebuildStartDelayMs <= 0) {
+      return;
+    }
+
+    delayedStartCount += 1;
+    console.info(
+      JSON.stringify({
+        event: "attachment_archive_rebuild_start_delay",
+        packageId,
+        delayMs: rebuildStartDelayMs,
+        startedArtifactCount,
       }),
     );
+    await sleep(rebuildStartDelayMs);
+  };
+  const ensureArchiveArtifactWithThrottle = async (artifact: ArchiveArtifactPlan) => {
+    const result = await ensureArchiveArtifact({
+      archiveBucketName,
+      artifact,
+      beforeStart: waitForStartThrottle,
+    });
+    if (result.started) {
+      startedArtifactCount += 1;
+    }
+    return result;
+  };
+  const sectionResults: ArchiveArtifactResult[] = [];
+  for (const sectionArtifact of plan.sectionArtifacts) {
+    sectionResults.push(await ensureArchiveArtifactWithThrottle(sectionArtifact));
   }
 
-  const packageResult = await ensureArchiveArtifact({
-    archiveBucketName,
-    artifact: plan.packageArtifact,
-  });
+  const packageResult = await ensureArchiveArtifactWithThrottle(plan.packageArtifact);
 
   return {
     packageId,
     packageStatus: packageResult.status,
+    rebuildStartDelayMs,
+    startedArtifactCount,
+    delayedStartCount,
     sectionResults: sectionResults.map((result) => ({
       sectionId: result.artifact.sectionId,
       started: result.started,
@@ -508,6 +722,7 @@ export async function markAttachmentArchiveFailed({
       artifactKey,
       manifestKey,
       attachmentCount,
+      executionArn: current?.executionArn,
       sectionId: current?.sectionId,
       sectionNumber: current?.sectionNumber,
       sectionLabel: current?.sectionLabel,

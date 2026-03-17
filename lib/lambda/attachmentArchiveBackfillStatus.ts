@@ -3,6 +3,7 @@ import { GetQueueAttributesCommand, SQSClient } from "@aws-sdk/client-sqs";
 
 const queueClient = new SQSClient({ region: process.env.region || process.env.AWS_REGION });
 const stepFunctionsClient = new SFNClient({ region: process.env.region || process.env.AWS_REGION });
+const STALE_ARCHIVE_EXECUTION_MAX_AGE_MS = 30 * 60 * 1000;
 
 type AttachmentArchiveBackfillStatusEvent = {
   currentExecutionArn?: string;
@@ -27,9 +28,15 @@ function getArchiveStateMachineArn() {
   return stateMachineArn;
 }
 
-async function countRunningExecutions(stateMachineArn: string, currentExecutionArn?: string) {
+async function countRunningExecutions(
+  stateMachineArn: string,
+  currentExecutionArn?: string,
+  maxAgeMs?: number,
+) {
   let nextToken: string | undefined;
   let runningCount = 0;
+  const staleExecutions: string[] = [];
+  const now = Date.now();
 
   do {
     const response = await stepFunctionsClient.send(
@@ -41,12 +48,36 @@ async function countRunningExecutions(stateMachineArn: string, currentExecutionA
       }),
     );
 
-    runningCount += (response.executions || []).filter(
-      (execution) => execution.executionArn !== currentExecutionArn,
-    ).length;
+    runningCount += (response.executions || []).filter((execution) => {
+      if (execution.executionArn === currentExecutionArn) {
+        return false;
+      }
+
+      if (!maxAgeMs || !execution.startDate) {
+        return true;
+      }
+
+      const isStale = now - execution.startDate.getTime() > maxAgeMs;
+      if (isStale && execution.executionArn) {
+        staleExecutions.push(execution.executionArn);
+      }
+
+      return !isStale;
+    }).length;
 
     nextToken = response.nextToken;
   } while (nextToken);
+
+  if (staleExecutions.length > 0) {
+    console.warn(
+      JSON.stringify({
+        event: "attachment_archive_backfill_status_ignored_stale_executions",
+        stateMachineArn,
+        staleExecutionArns: staleExecutions,
+        staleThresholdMinutes: STALE_ARCHIVE_EXECUTION_MAX_AGE_MS / 60000,
+      }),
+    );
+  }
 
   return runningCount;
 }
@@ -65,7 +96,11 @@ export const handler = async (event: AttachmentArchiveBackfillStatusEvent = {}) 
   const queueInflight = Number(
     queueAttributesResponse.Attributes?.ApproximateNumberOfMessagesNotVisible || "0",
   );
-  const runningExecutions = await countRunningExecutions(getArchiveStateMachineArn());
+  const runningExecutions = await countRunningExecutions(
+    getArchiveStateMachineArn(),
+    undefined,
+    STALE_ARCHIVE_EXECUTION_MAX_AGE_MS,
+  );
   const otherHistoricalBackfillExecutions = event.historicalBackfillStateMachineArn
     ? await countRunningExecutions(
         event.historicalBackfillStateMachineArn,

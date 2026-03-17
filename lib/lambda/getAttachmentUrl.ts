@@ -6,7 +6,8 @@ import { getDomain } from "libs/utils";
 
 import {
   getAttachmentErrorMessage,
-  isSkippableAttachmentError,
+  isAttachmentNotFoundError,
+  isLegacyAttachmentUnavailableError,
 } from "../attachment-archive/attachment-errors";
 import {
   createAttachmentBucketClientFactory,
@@ -290,6 +291,10 @@ async function resolveDownloadBucket({
       await assertObjectAccessible(destinationBucket, key);
       return destinationBucket;
     } catch (error) {
+      if (!isAttachmentNotFoundError(error)) {
+        throw error;
+      }
+
       logRemapFallback({
         packageId,
         sourceBucket,
@@ -305,7 +310,10 @@ async function resolveDownloadBucket({
     await assertObjectAccessible(sourceBucket, key);
     return sourceBucket;
   } catch (error) {
-    if (!isSkippableAttachmentError(error)) {
+    const attachmentUnavailable =
+      isAttachmentNotFoundError(error) || isLegacyAttachmentUnavailableError(sourceBucket, error);
+
+    if (!attachmentUnavailable) {
       throw error;
     }
 
@@ -332,6 +340,30 @@ async function assertObjectAccessible(bucket: string, key: string) {
   );
 }
 
+function getAsciiFilename(filename: string) {
+  const sanitized = filename
+    .normalize("NFKD")
+    .replace(/[^\x20-\x7E]+/g, "_")
+    .replace(/["\\]/g, "_")
+    .trim();
+
+  return sanitized || "download";
+}
+
+function encodeContentDispositionFilename(filename: string) {
+  return encodeURIComponent(filename).replace(
+    /['()*]/g,
+    (char) => `%${char.charCodeAt(0).toString(16).toUpperCase()}`,
+  );
+}
+
+function buildResponseContentDisposition(filename: string) {
+  const asciiFilename = getAsciiFilename(filename);
+  const encodedFilename = encodeContentDispositionFilename(filename);
+
+  return `attachment; filename="${asciiFilename}"; filename*=UTF-8''${encodedFilename}`;
+}
+
 async function generatePresignedUrl(
   bucket: string,
   key: string,
@@ -345,7 +377,7 @@ async function generatePresignedUrl(
   const getObjectCommand = new GetObjectCommand({
     Bucket: bucket,
     Key: key,
-    ResponseContentDisposition: `filename ="${filename}"`,
+    ResponseContentDisposition: buildResponseContentDisposition(filename),
   });
 
   // Generate a presigned URL

@@ -12,6 +12,7 @@ import { DeploymentConfigProperties } from "../config/deployment-config";
 import {
   getLegacyAttachmentBucketMapParameterName,
   getLegacyAttachmentMirrorBuckets,
+  getSharedAttachmentReadBucket,
 } from "./legacy-attachment-bucket-map";
 
 interface ApiStackProps extends cdk.NestedStackProps {
@@ -50,6 +51,7 @@ export class Api extends cdk.NestedStack {
   private initializeResources(props: ApiStackProps): {
     apiGateway: cdk.aws_apigateway.RestApi;
   } {
+    const ATTACHMENT_ARCHIVE_HISTORICAL_BACKFILL_PAGES_PER_EXECUTION = 10;
     const { project, stage, isDev, stack, attachmentArchiveRebuildQueue } = props;
     const {
       vpc,
@@ -77,6 +79,7 @@ export class Api extends cdk.NestedStack {
       this,
       legacyAttachmentBucketMapParameterName,
     );
+    const sharedAttachmentReadBucket = getSharedAttachmentReadBucket(project, stage, this.account);
     const legacyMirrorBuckets = getLegacyAttachmentMirrorBuckets(project, stage, this.account);
     const legacyMirrorBucketArns = legacyMirrorBuckets.arns;
     const archiveBucket = new Bucket(this, "AttachmentArchiveBucket", {
@@ -152,6 +155,11 @@ export class Api extends cdk.NestedStack {
                 "s3:GetObjectTagging",
               ],
               resources: [`${attachmentsBucket.bucketArn}/*`],
+            }),
+            new cdk.aws_iam.PolicyStatement({
+              effect: cdk.aws_iam.Effect.ALLOW,
+              actions: ["s3:GetObject", "s3:GetObjectTagging"],
+              resources: [`${sharedAttachmentReadBucket.arn}/*`],
             }),
             new cdk.aws_iam.PolicyStatement({
               effect: cdk.aws_iam.Effect.ALLOW,
@@ -242,6 +250,14 @@ export class Api extends cdk.NestedStack {
                 resources: [
                   `arn:aws:states:${this.region}:${this.account}:stateMachine:${project}-${stage}-${stack}-attachment-archive`,
                   `arn:aws:states:${this.region}:${this.account}:stateMachine:${project}-${stage}-${stack}-attachment-archive-historical-backfill`,
+                ],
+              }),
+              new cdk.aws_iam.PolicyStatement({
+                effect: cdk.aws_iam.Effect.ALLOW,
+                actions: ["states:DescribeExecution"],
+                resources: [
+                  `arn:aws:states:${this.region}:${this.account}:execution:${project}-${stage}-${stack}-attachment-archive:*`,
+                  `arn:aws:states:${this.region}:${this.account}:execution:${project}-${stage}-${stack}-attachment-archive-historical-backfill:*`,
                 ],
               }),
             ],
@@ -619,12 +635,21 @@ export class Api extends cdk.NestedStack {
         role: attachmentArchiveMaintenanceRole,
       },
       {
+        id: "validateAttachmentArchive",
+        entry: join(__dirname, "../lambda/validateAttachmentArchive.ts"),
+        environment: {
+          ATTACHMENT_ARCHIVE_BUCKET_NAME: archiveBucket.bucketName,
+        },
+        role: attachmentArchiveMaintenanceRole,
+      },
+      {
         id: "rebuildAttachmentArchives",
         entry: join(__dirname, "../lambda/rebuildAttachmentArchives.ts"),
         environment: {
           osDomain: `https://${openSearchDomainEndpoint}`,
           indexNamespace,
           ATTACHMENT_ARCHIVE_BUCKET_NAME: archiveBucket.bucketName,
+          ATTACHMENT_ARCHIVE_REBUILD_START_DELAY_MS: "1000",
         },
         role: attachmentArchiveRequestRole,
         timeoutSeconds: 300,
@@ -718,8 +743,18 @@ export class Api extends cdk.NestedStack {
             }),
             new cdk.aws_iam.PolicyStatement({
               effect: cdk.aws_iam.Effect.ALLOW,
+              actions: ["s3:GetObject", "s3:GetObjectTagging"],
+              resources: [`${sharedAttachmentReadBucket.arn}/*`],
+            }),
+            new cdk.aws_iam.PolicyStatement({
+              effect: cdk.aws_iam.Effect.ALLOW,
               actions: ["s3:GetObject"],
               resources: legacyMirrorBucketArns.map((bucketArn) => `${bucketArn}/*`),
+            }),
+            new cdk.aws_iam.PolicyStatement({
+              effect: cdk.aws_iam.Effect.ALLOW,
+              actions: ["s3:ListBucket"],
+              resources: legacyMirrorBucketArns,
             }),
             new cdk.aws_iam.PolicyStatement({
               effect: cdk.aws_iam.Effect.ALLOW,
@@ -779,6 +814,17 @@ export class Api extends cdk.NestedStack {
       },
     );
 
+    const attachmentArchiveFailed = new cdk.aws_stepfunctions.Fail(
+      this,
+      "AttachmentArchiveFailure",
+      {
+        cause: "Attachment archive execution did not produce a valid ready artifact.",
+        error: "AttachmentArchiveValidationFailed",
+      },
+    );
+
+    markAttachmentArchiveFailedTask.next(attachmentArchiveFailed);
+
     const runArchiveWorkerTask = new cdk.aws_stepfunctions_tasks.EcsRunTask(
       this,
       "RunAttachmentArchiveWorkerTask",
@@ -788,6 +834,7 @@ export class Api extends cdk.NestedStack {
         integrationPattern: cdk.aws_stepfunctions.IntegrationPattern.RUN_JOB,
         launchTarget: new cdk.aws_stepfunctions_tasks.EcsFargateLaunchTarget(),
         assignPublicIp: false,
+        resultPath: cdk.aws_stepfunctions.JsonPath.DISCARD,
         containerOverrides: [
           {
             containerDefinition: archiveWorkerContainer,
@@ -823,6 +870,24 @@ export class Api extends cdk.NestedStack {
       resultPath: "$.error",
     });
 
+    const validateAttachmentArchiveTask = new cdk.aws_stepfunctions_tasks.LambdaInvoke(
+      this,
+      "ValidateAttachmentArchiveTask",
+      {
+        lambdaFunction: lambdas.validateAttachmentArchive,
+        outputPath: "$.Payload",
+        payload: cdk.aws_stepfunctions.TaskInput.fromObject({
+          "archiveBucketName.$": "$.archiveBucketName",
+          "artifactKey.$": "$.artifactKey",
+          "currentKey.$": "$.currentKey",
+          "hash.$": "$.hash",
+        }),
+      },
+    ).addCatch(markAttachmentArchiveFailedTask, {
+      errors: ["States.ALL"],
+      resultPath: "$.error",
+    });
+
     const archiveStateMachineLogGroup = new cdk.aws_logs.LogGroup(
       this,
       "AttachmentArchiveStateMachineLogGroup",
@@ -837,9 +902,9 @@ export class Api extends cdk.NestedStack {
       "AttachmentArchiveStateMachine",
       {
         definitionBody: cdk.aws_stepfunctions.DefinitionBody.fromChainable(
-          runArchiveWorkerTask.next(
-            new cdk.aws_stepfunctions.Succeed(this, "AttachmentArchiveSuccess"),
-          ),
+          runArchiveWorkerTask
+            .next(validateAttachmentArchiveTask)
+            .next(new cdk.aws_stepfunctions.Succeed(this, "AttachmentArchiveSuccess")),
         ),
         stateMachineName: `${project}-${stage}-${stack}-attachment-archive`,
         logs: {
@@ -867,9 +932,12 @@ export class Api extends cdk.NestedStack {
     lambdas.rebuildAttachmentArchives.addEventSource(
       new SqsEventSource(attachmentArchiveRebuildQueue, {
         batchSize: 1,
+        maxConcurrency: 2,
       }),
     );
 
+    const historicalBackfillStateMachineName = `${project}-${stage}-${stack}-attachment-archive-historical-backfill`;
+    const historicalBackfillStateMachineArn = `arn:aws:states:${this.region}:${this.account}:stateMachine:${historicalBackfillStateMachineName}`;
     const historicalBackfillStateMachineLogGroup = new cdk.aws_logs.LogGroup(
       this,
       "AttachmentArchiveHistoricalBackfillStateMachineLogGroup",
@@ -887,6 +955,31 @@ export class Api extends cdk.NestedStack {
           afterKey: null,
         }),
         resultPath: "$.cursor",
+      },
+    );
+
+    const initializeHistoricalBackfillPageBudget = new cdk.aws_stepfunctions.Pass(
+      this,
+      "InitializeAttachmentArchiveHistoricalBackfillPageBudget",
+      {
+        result: cdk.aws_stepfunctions.Result.fromObject({
+          remaining: ATTACHMENT_ARCHIVE_HISTORICAL_BACKFILL_PAGES_PER_EXECUTION,
+        }),
+        resultPath: "$.pageBudget",
+      },
+    );
+
+    const decrementHistoricalBackfillPageBudget = new cdk.aws_stepfunctions.Pass(
+      this,
+      "DecrementAttachmentArchiveHistoricalBackfillPageBudget",
+      {
+        parameters: {
+          remaining: cdk.aws_stepfunctions.JsonPath.mathAdd(
+            cdk.aws_stepfunctions.JsonPath.numberAt("$.pageBudget.remaining"),
+            -1,
+          ),
+        },
+        resultPath: "$.pageBudget",
       },
     );
 
@@ -932,6 +1025,30 @@ export class Api extends cdk.NestedStack {
       },
     );
 
+    const continueHistoricalBackfillExecutionTask =
+      new cdk.aws_stepfunctions_tasks.StepFunctionsStartExecution(
+        this,
+        "ContinueAttachmentArchiveHistoricalBackfillExecutionTask",
+        {
+          stateMachine: cdk.aws_stepfunctions.StateMachine.fromStateMachineArn(
+            this,
+            "AttachmentArchiveHistoricalBackfillStateMachineRef",
+            historicalBackfillStateMachineArn,
+          ),
+          integrationPattern: cdk.aws_stepfunctions.IntegrationPattern.REQUEST_RESPONSE,
+          input: cdk.aws_stepfunctions.TaskInput.fromObject({
+            cursor: {
+              "afterKey.$": "$.page.afterKey",
+            },
+            pageBudget: {
+              remaining: ATTACHMENT_ARCHIVE_HISTORICAL_BACKFILL_PAGES_PER_EXECUTION,
+            },
+            skipLockCheck: true,
+          }),
+          resultPath: cdk.aws_stepfunctions.JsonPath.DISCARD,
+        },
+      );
+
     const waitForHistoricalBackfillDrain = new cdk.aws_stepfunctions.Wait(
       this,
       "WaitForAttachmentArchiveHistoricalBackfillDrain",
@@ -965,6 +1082,26 @@ export class Api extends cdk.NestedStack {
       "AttachmentArchiveHistoricalBackfillComplete",
     );
 
+    const historicalBackfillContinued = new cdk.aws_stepfunctions.Succeed(
+      this,
+      "AttachmentArchiveHistoricalBackfillContinued",
+    );
+
+    const initializeHistoricalBackfillState = new cdk.aws_stepfunctions.Choice(
+      this,
+      "InitializeAttachmentArchiveHistoricalBackfillState",
+    );
+
+    const ensureHistoricalBackfillPageBudget = new cdk.aws_stepfunctions.Choice(
+      this,
+      "EnsureAttachmentArchiveHistoricalBackfillPageBudget",
+    );
+
+    const shouldSkipHistoricalBackfillLockCheck = new cdk.aws_stepfunctions.Choice(
+      this,
+      "ShouldSkipAttachmentArchiveHistoricalBackfillLockCheck",
+    );
+
     const ensureSingleHistoricalBackfillExecution = new cdk.aws_stepfunctions.Choice(
       this,
       "EnsureSingleAttachmentArchiveHistoricalBackfillExecution",
@@ -975,7 +1112,29 @@ export class Api extends cdk.NestedStack {
       "AttachmentArchiveHistoricalBackfillDrainChoice",
     );
 
-    initializeHistoricalBackfillCursor.next(checkHistoricalBackfillLockTask);
+    initializeHistoricalBackfillState
+      .when(
+        cdk.aws_stepfunctions.Condition.isPresent("$.cursor.afterKey"),
+        ensureHistoricalBackfillPageBudget,
+      )
+      .otherwise(initializeHistoricalBackfillCursor);
+    initializeHistoricalBackfillCursor.next(ensureHistoricalBackfillPageBudget);
+    ensureHistoricalBackfillPageBudget
+      .when(
+        cdk.aws_stepfunctions.Condition.isPresent("$.pageBudget.remaining"),
+        shouldSkipHistoricalBackfillLockCheck,
+      )
+      .otherwise(initializeHistoricalBackfillPageBudget);
+    initializeHistoricalBackfillPageBudget.next(shouldSkipHistoricalBackfillLockCheck);
+    shouldSkipHistoricalBackfillLockCheck
+      .when(
+        cdk.aws_stepfunctions.Condition.and(
+          cdk.aws_stepfunctions.Condition.isPresent("$.skipLockCheck"),
+          cdk.aws_stepfunctions.Condition.booleanEquals("$.skipLockCheck", true),
+        ),
+        enqueueHistoricalBackfillPageTask,
+      )
+      .otherwise(checkHistoricalBackfillLockTask);
     ensureSingleHistoricalBackfillExecution
       .when(
         cdk.aws_stepfunctions.Condition.numberGreaterThan(
@@ -999,21 +1158,27 @@ export class Api extends cdk.NestedStack {
         waitForHistoricalBackfillDrain,
       )
       .when(
-        cdk.aws_stepfunctions.Condition.booleanEquals("$.page.done", false),
-        advanceHistoricalBackfillCursor,
+        cdk.aws_stepfunctions.Condition.booleanEquals("$.page.done", true),
+        historicalBackfillComplete,
       )
-      .otherwise(historicalBackfillComplete);
+      .when(
+        cdk.aws_stepfunctions.Condition.numberGreaterThan("$.pageBudget.remaining", 1),
+        decrementHistoricalBackfillPageBudget,
+      )
+      .otherwise(continueHistoricalBackfillExecutionTask);
     checkHistoricalBackfillDrainStatusTask.next(historicalBackfillDrainChoice);
+    decrementHistoricalBackfillPageBudget.next(advanceHistoricalBackfillCursor);
     advanceHistoricalBackfillCursor.next(enqueueHistoricalBackfillPageTask);
+    continueHistoricalBackfillExecutionTask.next(historicalBackfillContinued);
 
     new cdk.aws_stepfunctions.StateMachine(
       this,
       "AttachmentArchiveHistoricalBackfillStateMachine",
       {
         definitionBody: cdk.aws_stepfunctions.DefinitionBody.fromChainable(
-          initializeHistoricalBackfillCursor,
+          initializeHistoricalBackfillState,
         ),
-        stateMachineName: `${project}-${stage}-${stack}-attachment-archive-historical-backfill`,
+        stateMachineName: historicalBackfillStateMachineName,
         logs: {
           destination: historicalBackfillStateMachineLogGroup,
           includeExecutionData: true,

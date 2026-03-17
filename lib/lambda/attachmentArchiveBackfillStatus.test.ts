@@ -92,4 +92,40 @@ describe("attachmentArchiveBackfillStatus handler", () => {
       }),
     );
   });
+
+  it("ignores stale attachment archive executions when reporting running work", async () => {
+    sqsSpy.mockResolvedValue({
+      Attributes: {
+        ApproximateNumberOfMessages: "0",
+        ApproximateNumberOfMessagesNotVisible: "0",
+      },
+    } as never);
+    stepFunctionsSpy
+      .mockResolvedValueOnce({
+        executions: [
+          {
+            executionArn:
+              "arn:aws:states:us-east-1:123456789012:execution:attachment-archive:fresh",
+            startDate: new Date(),
+          },
+          {
+            executionArn:
+              "arn:aws:states:us-east-1:123456789012:execution:attachment-archive:stale",
+            startDate: new Date(Date.now() - 31 * 60 * 1000),
+          },
+        ],
+      } as never)
+      .mockResolvedValueOnce({
+        executions: [],
+      } as never);
+
+    const result = await handler();
+
+    expect(result).toEqual({
+      otherHistoricalBackfillExecutions: 0,
+      queueInflight: 0,
+      queueVisible: 0,
+      runningExecutions: 1,
+    });
+  });
 });

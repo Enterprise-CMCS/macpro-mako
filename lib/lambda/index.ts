@@ -13,6 +13,7 @@ export * as getUploadUrl from "./getUploadUrl";
 export * as mapRole from "./mapRole";
 export * as markAttachmentArchiveFailed from "./markAttachmentArchiveFailed";
 export * as rebuildAttachmentArchives from "./rebuildAttachmentArchives";
+export * as validateAttachmentArchive from "./validateAttachmentArchive";
 export * as processEmails from "./processEmails";
 export * as runReindex from "./runReindex";
 export * as search from "./search";

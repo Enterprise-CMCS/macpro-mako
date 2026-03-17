@@ -1,4 +1,9 @@
-import { getAttachmentErrorMessage, isSkippableAttachmentError } from "../attachment-errors";
+import {
+  getAttachmentErrorMessage,
+  isAttachmentAccessDeniedError,
+  isAttachmentNotFoundError,
+  isLegacyAttachmentUnavailableError,
+} from "../attachment-errors";
 import { AttachmentBucketMap, resolveTargetBucket } from "../bucket-routing";
 import { AttachmentArchiveSourceAttachment } from "../types";
 
@@ -74,6 +79,13 @@ export async function loadArchiveAttachment<TBody>({
         skipped: false,
       };
     } catch (error) {
+      // If the mirrored legacy bucket is missing the object, S3 may surface either
+      // a not-found or access-denied style error depending on bucket permissions.
+      // In both cases we want to fall back to the original legacy upload bucket.
+      if (!isAttachmentNotFoundError(error) && !isAttachmentAccessDeniedError(error)) {
+        throw error;
+      }
+
       logWarn(
         JSON.stringify({
           event: "legacy_attachment_remap_fallback",
@@ -94,7 +106,17 @@ export async function loadArchiveAttachment<TBody>({
       skipped: false,
     };
   } catch (error) {
-    if (!isSkippableAttachmentError(error)) {
+    if (
+      isAttachmentAccessDeniedError(error) &&
+      !isLegacyAttachmentUnavailableError(resolution.sourceBucket, error)
+    ) {
+      throw error;
+    }
+
+    if (
+      !isAttachmentNotFoundError(error) &&
+      !isLegacyAttachmentUnavailableError(resolution.sourceBucket, error)
+    ) {
       throw error;
     }
 
