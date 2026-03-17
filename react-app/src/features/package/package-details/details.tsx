@@ -158,7 +158,6 @@ export const getSubmissionDetails: GetLabelAndValueFromSubmission = (
       label: "Approved Initial or Renewal Number",
       value:
         submission.originalWaiverNumber ??
-        submission.waiverNumber ??
         getDraftWaiverNumber(submission) ??
         BLANK_VALUE,
       canView: submission.actionType === "Extend",
