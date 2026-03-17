@@ -24,6 +24,7 @@ import { Attachments, useAttachmentService } from "./hook";
 
 type PackageActivityRecord = {
   id: string;
+  packageId: string;
   label: string;
   submitterName?: string;
   timestamp?: string | number;
@@ -122,6 +123,7 @@ const getDraftPackageActivity = (
 
   return {
     id: `${submission.id}-draft-activity`,
+    packageId: submission.id,
     label: "Draft Saved",
     submitterName: submission.submitterName,
     timestamp: submission.draft?.savedAt ?? submission.makoChangedDate,
@@ -339,6 +341,7 @@ const mapChangelogItemToPackageActivity = ({
 
   return {
     id: packageActivity.id,
+    packageId: packageActivity.packageId,
     label,
     submitterName: packageActivity.submitterName,
     timestamp: packageActivity.timestamp,
