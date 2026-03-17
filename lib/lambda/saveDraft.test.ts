@@ -283,4 +283,41 @@ describe("saveDraft handler", () => {
       }),
     );
   });
+
+  it("defaults temporary extension draft authority when the request carries an empty nested authority", async () => {
+    const temporaryExtensionDraftId = "MD-1198.R06.TE00";
+    const temporaryExtensionEvent = {
+      ...baseEvent,
+      body: JSON.stringify({
+        id: temporaryExtensionDraftId,
+        event: "temporary-extension",
+        draftData: {
+          event: "temporary-extension",
+          ids: {
+            id: temporaryExtensionDraftId,
+            validAuthority: {
+              authority: "",
+              waiverNumber: "MD-2200.R00.00",
+            },
+          },
+        },
+      }),
+    } as APIGatewayEvent;
+
+    const res = await handler(temporaryExtensionEvent, {} as Context);
+
+    expect(res.statusCode).toBe(200);
+    expect(os.updateData).toHaveBeenCalledWith(
+      expect.any(String),
+      expect.objectContaining({
+        id: temporaryExtensionDraftId,
+        body: expect.objectContaining({
+          doc: expect.objectContaining({
+            authority: "1915(b)",
+            actionType: "Extend",
+          }),
+        }),
+      }),
+    );
+  });
 });

@@ -457,7 +457,10 @@ export const ActionForm = <Schema extends SchemaWithEnforcableProps>({
       const saveResponse = await saveDraftAsync({
         id: normalizedId,
         event: draftOptions.event,
-        authority: typeof authorityValue === "string" ? authorityValue : undefined,
+        authority:
+          typeof authorityValue === "string" && authorityValue.trim()
+            ? authorityValue
+            : undefined,
         draftData: formValues as Record<string, unknown>,
         ...draftVersionPayload,
       });

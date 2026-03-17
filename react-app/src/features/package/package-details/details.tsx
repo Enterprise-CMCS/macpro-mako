@@ -53,6 +53,12 @@ type GetLabelAndValueFromSubmission = (
   chipFlagEnabled: boolean,
 ) => LabelAndValue[];
 
+const getDraftWaiverNumber = (submission: opensearch.main.Document) => {
+  const waiverNumber = (submission.draft?.data as Record<string, any> | undefined)?.ids
+    ?.validAuthority?.waiverNumber;
+  return typeof waiverNumber === "string" && waiverNumber.trim() ? waiverNumber : undefined;
+};
+
 export const getSubmissionDetails: GetLabelAndValueFromSubmission = (
   submission,
   { user },
@@ -150,7 +156,11 @@ export const getSubmissionDetails: GetLabelAndValueFromSubmission = (
     },
     {
       label: "Approved Initial or Renewal Number",
-      value: submission.originalWaiverNumber,
+      value:
+        submission.originalWaiverNumber ??
+        submission.waiverNumber ??
+        getDraftWaiverNumber(submission) ??
+        BLANK_VALUE,
       canView: submission.actionType === "Extend",
     },
     ...chipSubmissionTypeField,
