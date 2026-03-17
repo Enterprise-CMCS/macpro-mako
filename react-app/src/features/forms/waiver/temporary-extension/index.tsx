@@ -68,7 +68,7 @@ export const TemporaryExtensionForm = () => {
                       field.onChange(value);
                       setTemporaryExtensionType(value);
                     }}
-                    defaultValue={field.value}
+                    value={field.value || undefined}
                   >
                     <FormControl>
                       <SelectTrigger>

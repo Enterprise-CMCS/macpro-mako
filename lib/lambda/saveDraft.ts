@@ -37,6 +37,7 @@ const eventToAuthority: Partial<Record<DraftableEvent, string>> = {
   "contracting-initial": "1915(b)",
   "contracting-renewal": "1915(b)",
   "contracting-amendment": "1915(b)",
+  "temporary-extension": "1915(b)",
   "app-k": "1915(c)",
 };
 
@@ -73,10 +74,18 @@ const resolveAuthority = (
   authority: string | undefined,
   draftData: Record<string, unknown>,
 ) => {
-  if (authority) return authority;
-  if (typeof draftData.authority === "string") return draftData.authority;
+  const trimmedAuthority = typeof authority === "string" ? authority.trim() : "";
+  if (trimmedAuthority) return trimmedAuthority;
+
+  const draftAuthority =
+    typeof draftData.authority === "string" ? draftData.authority.trim() : "";
+  if (draftAuthority) return draftAuthority;
+
   const nestedAuthority = (draftData as any)?.ids?.validAuthority?.authority;
-  if (typeof nestedAuthority === "string") return nestedAuthority;
+  const trimmedNestedAuthority =
+    typeof nestedAuthority === "string" ? nestedAuthority.trim() : "";
+  if (trimmedNestedAuthority) return trimmedNestedAuthority;
+
   return eventToAuthority[eventName];
 };
 
