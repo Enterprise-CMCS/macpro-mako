@@ -34,7 +34,12 @@ jobs:
           GH_TOKEN: ${{ github.token }}
         run: |
           WF_NAME="Code Coverage Report"
-          RUN_ID=`gh run list --workflow "${WF_NAME}" --json databaseId --jq .[0].databaseId`
+          RUN_ID=$(gh run list \
+            --workflow "${WF_NAME}" \
+            --branch main \
+            --status completed \
+            --json databaseId,conclusion \
+            --jq '[.[] | select(.conclusion == "success")][0].databaseId')
           echo "Detected latest run id of ${RUN_ID} for workflow ${WF_NAME}"
           echo "run-id=${RUN_ID}" >> "$GITHUB_OUTPUT"
       - uses: actions/download-artifact@v4
@@ -46,14 +51,23 @@ jobs:
           path: main-coverage
           github-token: ${{ secrets.GITHUB_TOKEN }}
           run-id: ${{ steps.get-run-id.outputs.run-id }}
-      - name: Report Coverage (compared with Main)
+      - name: Check for main coverage summary
+        id: check-main-coverage
         if: ${{ steps.get-run-id.conclusion == 'success' && steps.get-main-coverage.conclusion == 'success' }}
+        run: |
+          if [ -f main-coverage/coverage-summary.json ]; then
+            echo "exists=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "exists=false" >> "$GITHUB_OUTPUT"
+          fi
+      - name: Report Coverage (compared with Main)
+        if: ${{ steps.check-main-coverage.outputs.exists == 'true' }}
         uses: davelosert/vitest-coverage-report-action@v2
         with:
           json-summary-compare-path: main-coverage/coverage-summary.json
           file-coverage-mode: changes
       - name: Report Coverage (only PR)
-        if: ${{ failure() }}
+        if: ${{ always() && steps.test.conclusion == 'success' && steps.check-main-coverage.outputs.exists != 'true' }}
         uses: davelosert/vitest-coverage-report-action@v2
         with:
           file-coverage-mode: changes

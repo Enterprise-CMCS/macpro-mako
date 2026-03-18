@@ -263,10 +263,11 @@ export async function processAndSendEmails(
   config: ProcessEmailConfig,
 ) {
   const templates = await getEmailTemplates(record);
+  const eventName = "event" in record ? record.event : "unknown";
 
   if (!templates) {
     console.log(
-      `The kafka record has an event type that does not have email support. event: ${record.event}. Doing nothing.`,
+      `The kafka record has an event type that does not have email support. event: ${eventName}. Doing nothing.`,
     );
     return;
   }
@@ -293,7 +294,8 @@ export async function processAndSendEmails(
   const emails: EmailAddresses = JSON.parse(sec);
 
   const allStateUsersEmails = allStateUsers.map((user) => user.formattedEmailAddress);
-  const isChipEligibility = record.authority === "CHIP SPA" && !!item._source?.chipSubmissionType;
+  const isChipEligibility =
+    "authority" in record && record.authority === "CHIP SPA" && !!item._source?.chipSubmissionType;
   console.log("mapped to formatted email address for all state users: ", allStateUsers);
 
   // Adjust timestamp if needed before sending it to the email template

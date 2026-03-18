@@ -28,7 +28,7 @@ exports[`Withdraw Confirmation State Email Snapshot Test > renders a Appk Previe
           </div>
         </div>
         <body
-          style="background-color: rgb(255, 255, 255); margin: 0px;"
+          style="background-color: rgb(255, 255, 255); margin: 0px; padding: 0px;"
         >
           <table
             align="center"
@@ -211,7 +211,7 @@ exports[`Withdraw Confirmation State Email Snapshot Test > renders a Appk Previe
         </div>
       </div>
       <body
-        style="background-color: rgb(255, 255, 255); margin: 0px;"
+        style="background-color: rgb(255, 255, 255); margin: 0px; padding: 0px;"
       >
         <table
           align="center"
@@ -451,7 +451,7 @@ exports[`Withdraw Confirmation State Email Snapshot Test > renders a ChipSPA Pre
           </div>
         </div>
         <body
-          style="background-color: rgb(255, 255, 255); margin: 0px;"
+          style="background-color: rgb(255, 255, 255); margin: 0px; padding: 0px;"
         >
           <table
             align="center"
@@ -633,7 +633,7 @@ exports[`Withdraw Confirmation State Email Snapshot Test > renders a ChipSPA Pre
           </div>
         </div>
         <body
-          style="background-color: rgb(255, 255, 255); margin: 0px;"
+          style="background-color: rgb(255, 255, 255); margin: 0px; padding: 0px;"
         >
           <table
             align="center"
@@ -816,7 +816,7 @@ exports[`Withdraw Confirmation State Email Snapshot Test > renders a ChipSPA Pre
         </div>
       </div>
       <body
-        style="background-color: rgb(255, 255, 255); margin: 0px;"
+        style="background-color: rgb(255, 255, 255); margin: 0px; padding: 0px;"
       >
         <table
           align="center"
@@ -1056,7 +1056,7 @@ exports[`Withdraw Confirmation State Email Snapshot Test > renders a Medicaid_SP
           </div>
         </div>
         <body
-          style="background-color: rgb(255, 255, 255); margin: 0px;"
+          style="background-color: rgb(255, 255, 255); margin: 0px; padding: 0px;"
         >
           <table
             align="center"
@@ -1238,7 +1238,7 @@ exports[`Withdraw Confirmation State Email Snapshot Test > renders a Medicaid_SP
           </div>
         </div>
         <body
-          style="background-color: rgb(255, 255, 255); margin: 0px;"
+          style="background-color: rgb(255, 255, 255); margin: 0px; padding: 0px;"
         >
           <table
             align="center"
@@ -1420,7 +1420,7 @@ exports[`Withdraw Confirmation State Email Snapshot Test > renders a Medicaid_SP
           </div>
         </div>
         <body
-          style="background-color: rgb(255, 255, 255); margin: 0px;"
+          style="background-color: rgb(255, 255, 255); margin: 0px; padding: 0px;"
         >
           <table
             align="center"
@@ -1603,7 +1603,7 @@ exports[`Withdraw Confirmation State Email Snapshot Test > renders a Medicaid_SP
         </div>
       </div>
       <body
-        style="background-color: rgb(255, 255, 255); margin: 0px;"
+        style="background-color: rgb(255, 255, 255); margin: 0px; padding: 0px;"
       >
         <table
           align="center"
@@ -1843,7 +1843,7 @@ exports[`Withdraw Confirmation State Email Snapshot Test > renders a Waiver Prev
           </div>
         </div>
         <body
-          style="background-color: rgb(255, 255, 255); margin: 0px;"
+          style="background-color: rgb(255, 255, 255); margin: 0px; padding: 0px;"
         >
           <table
             align="center"
@@ -2025,7 +2025,7 @@ exports[`Withdraw Confirmation State Email Snapshot Test > renders a Waiver Prev
           </div>
         </div>
         <body
-          style="background-color: rgb(255, 255, 255); margin: 0px;"
+          style="background-color: rgb(255, 255, 255); margin: 0px; padding: 0px;"
         >
           <table
             align="center"
@@ -2207,7 +2207,7 @@ exports[`Withdraw Confirmation State Email Snapshot Test > renders a Waiver Prev
           </div>
         </div>
         <body
-          style="background-color: rgb(255, 255, 255); margin: 0px;"
+          style="background-color: rgb(255, 255, 255); margin: 0px; padding: 0px;"
         >
           <table
             align="center"
@@ -2389,7 +2389,7 @@ exports[`Withdraw Confirmation State Email Snapshot Test > renders a Waiver Prev
           </div>
         </div>
         <body
-          style="background-color: rgb(255, 255, 255); margin: 0px;"
+          style="background-color: rgb(255, 255, 255); margin: 0px; padding: 0px;"
         >
           <table
             align="center"
@@ -2572,7 +2572,7 @@ exports[`Withdraw Confirmation State Email Snapshot Test > renders a Waiver Prev
         </div>
       </div>
       <body
-        style="background-color: rgb(255, 255, 255); margin: 0px;"
+        style="background-color: rgb(255, 255, 255); margin: 0px; padding: 0px;"
       >
         <table
           align="center"
