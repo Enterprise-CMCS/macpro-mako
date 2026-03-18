@@ -11,8 +11,5 @@ jobs:
 
       - uses: ./.github/actions/setup
 
-      - name: Install Dependencies
-        run: run install
-
       - name: Run ESLint
         run: bun lint
