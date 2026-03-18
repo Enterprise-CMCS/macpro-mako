@@ -1,7 +1,4 @@
-import { useFeatureFlag } from "@/hooks/useFeatureFlag";
-
 import { PdfLink, PdfList, Template } from "../utils";
-
 // MAGI Eligibility & Methods
 export const CHP_MAGI_GUIDES: Template[] = [
   {
@@ -119,25 +116,11 @@ export const CHP_NON_FIN_GUIDES: Template[] = [
   {
     title: "CS 31",
     text: "Incarcerated CHIP Beneficiaries Implementation Guide",
-    href: "/chp/IG_CS31_IncarceratedCHIPBeneficiaries-A.pdf",
-    downloadName: "IG_CS31_IncarceratedCHIPBeneficiaries.pdf",
+    href: "/chp/IG_CS31_IncarceratedCHIPBeneficiaries.pdf",
   },
 ];
 
 export const ChipSpaImplementationGuides = () => {
-  const useNewCs31 = useFeatureFlag("CS31_ALT");
-
-  const nonFinancialGuides: Template[] = CHP_NON_FIN_GUIDES.map((guide) =>
-    guide.title === "CS 31"
-      ? {
-          ...guide,
-          href: useNewCs31
-            ? "/chp/IG_CS31_IncarceratedCHIPBeneficiaries-B.pdf"
-            : "/chp/IG_CS31_IncarceratedCHIPBeneficiaries-A.pdf",
-        }
-      : guide,
-  );
-
   return (
     <div>
       <section className="space-y-2">
@@ -180,7 +163,7 @@ export const ChipSpaImplementationGuides = () => {
           <li className="space-y-2">
             <p>Non-Financial Eligibility</p>
             <PdfList
-              list={nonFinancialGuides}
+              list={CHP_NON_FIN_GUIDES}
               label="template"
               ulClassName="list-disc pl-6 space-y-2"
             />

@@ -28,7 +28,7 @@ exports[`Initial Submission State Email Snapshot Test > renders a Renewal Contra
           </div>
         </div>
         <body
-          style="background-color: rgb(255, 255, 255); margin: 0px;"
+          style="background-color: rgb(255, 255, 255); margin: 0px; padding: 0px;"
         >
           <table
             align="center"
@@ -541,7 +541,7 @@ exports[`Initial Submission State Email Snapshot Test > renders a Renewal Contra
         </div>
       </div>
       <body
-        style="background-color: rgb(255, 255, 255); margin: 0px;"
+        style="background-color: rgb(255, 255, 255); margin: 0px; padding: 0px;"
       >
         <table
           align="center"

@@ -28,7 +28,7 @@ exports[`Respond To Rai State Email Snapshot Test > renders a ChipSPA Preview Te
           </div>
         </div>
         <body
-          style="background-color: rgb(255, 255, 255); margin: 0px;"
+          style="background-color: rgb(255, 255, 255); margin: 0px; padding: 0px;"
         >
           <table
             align="center"
@@ -454,7 +454,7 @@ exports[`Respond To Rai State Email Snapshot Test > renders a ChipSPA Preview Te
         </div>
       </div>
       <body
-        style="background-color: rgb(255, 255, 255); margin: 0px;"
+        style="background-color: rgb(255, 255, 255); margin: 0px; padding: 0px;"
       >
         <table
           align="center"
@@ -937,7 +937,7 @@ exports[`Respond To Rai State Email Snapshot Test > renders a Medicaid_SPA Previ
           </div>
         </div>
         <body
-          style="background-color: rgb(255, 255, 255); margin: 0px;"
+          style="background-color: rgb(255, 255, 255); margin: 0px; padding: 0px;"
         >
           <table
             align="center"
@@ -1362,7 +1362,7 @@ exports[`Respond To Rai State Email Snapshot Test > renders a Medicaid_SPA Previ
           </div>
         </div>
         <body
-          style="background-color: rgb(255, 255, 255); margin: 0px;"
+          style="background-color: rgb(255, 255, 255); margin: 0px; padding: 0px;"
         >
           <table
             align="center"
@@ -1792,7 +1792,7 @@ exports[`Respond To Rai State Email Snapshot Test > renders a Medicaid_SPA Previ
         </div>
       </div>
       <body
-        style="background-color: rgb(255, 255, 255); margin: 0px;"
+        style="background-color: rgb(255, 255, 255); margin: 0px; padding: 0px;"
       >
         <table
           align="center"
@@ -2279,7 +2279,7 @@ exports[`Respond To Rai State Email Snapshot Test > renders a Waiver Capitated P
           </div>
         </div>
         <body
-          style="background-color: rgb(255, 255, 255); margin: 0px;"
+          style="background-color: rgb(255, 255, 255); margin: 0px; padding: 0px;"
         >
           <table
             align="center"
@@ -2704,7 +2704,7 @@ exports[`Respond To Rai State Email Snapshot Test > renders a Waiver Capitated P
           </div>
         </div>
         <body
-          style="background-color: rgb(255, 255, 255); margin: 0px;"
+          style="background-color: rgb(255, 255, 255); margin: 0px; padding: 0px;"
         >
           <table
             align="center"
@@ -3133,7 +3133,7 @@ exports[`Respond To Rai State Email Snapshot Test > renders a Waiver Capitated P
           </div>
         </div>
         <body
-          style="background-color: rgb(255, 255, 255); margin: 0px;"
+          style="background-color: rgb(255, 255, 255); margin: 0px; padding: 0px;"
         >
           <table
             align="center"
@@ -3603,7 +3603,7 @@ exports[`Respond To Rai State Email Snapshot Test > renders a Waiver Capitated P
         </div>
       </div>
       <body
-        style="background-color: rgb(255, 255, 255); margin: 0px;"
+        style="background-color: rgb(255, 255, 255); margin: 0px; padding: 0px;"
       >
         <table
           align="center"
