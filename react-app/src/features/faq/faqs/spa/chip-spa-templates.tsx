@@ -118,7 +118,6 @@ export const CHP_NON_FIN_TEMPLATE: Template[] = [
     title: "CS 31",
     text: "Incarcerated CHIP Beneficiaries",
     href: "/chp/CS31.pdf",
-    downloadName: "CS31.pdf",
   },
 ];
 
