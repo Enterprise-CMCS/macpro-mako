@@ -37,16 +37,16 @@ describe("getArchiveBaseReadBucket", () => {
   it("builds the main archive read bucket for migrate", () => {
     expect(getArchiveBaseReadBucket("mako", "migrate", "123456789012")).toEqual({
       stage: "main",
-      name: "mako-main-attachment-archives-123456789012",
-      arn: "arn:aws:s3:::mako-main-attachment-archives-123456789012",
+      name: "mako-main-attachment-archives-123456789012", // pragma: allowlist secret
+      arn: "arn:aws:s3:::mako-main-attachment-archives-123456789012", // pragma: allowlist secret
     });
   });
 
   it("keeps production archive reads stage-local", () => {
     expect(getArchiveBaseReadBucket("mako", "production", "123456789012")).toEqual({
       stage: "production",
-      name: "mako-production-attachment-archives-123456789012",
-      arn: "arn:aws:s3:::mako-production-attachment-archives-123456789012",
+      name: "mako-production-attachment-archives-123456789012", // pragma: allowlist secret
+      arn: "arn:aws:s3:::mako-production-attachment-archives-123456789012", // pragma: allowlist secret
     });
   });
 });
@@ -54,8 +54,8 @@ describe("getArchiveBaseReadBucket", () => {
 describe("getEphemeralArchiveOverlayBucket", () => {
   it("builds the shared overlay bucket", () => {
     expect(getEphemeralArchiveOverlayBucket("mako", "123456789012")).toEqual({
-      name: "mako-ephemeral-attachment-archives-123456789012",
-      arn: "arn:aws:s3:::mako-ephemeral-attachment-archives-123456789012",
+      name: "mako-ephemeral-attachment-archives-123456789012", // pragma: allowlist secret
+      arn: "arn:aws:s3:::mako-ephemeral-attachment-archives-123456789012", // pragma: allowlist secret
     });
   });
 });
