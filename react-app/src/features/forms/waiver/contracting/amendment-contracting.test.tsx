@@ -7,7 +7,7 @@ import {
   EXISTING_ITEM_PENDING_ID,
   NOT_FOUND_ITEM_ID,
 } from "mocks";
-import { beforeAll, describe, expect, test } from "vitest";
+import { describe, expect, test } from "vitest";
 
 import { formSchemas } from "@/formSchemas";
 import { renderFormWithPackageSectionAsync } from "@/utils/test-helpers/renderForm";
