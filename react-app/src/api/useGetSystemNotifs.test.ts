@@ -132,6 +132,8 @@ describe("useGetSystemNotif", () => {
   });
 
   test("falls back to an empty dismissed list when local storage is missing", () => {
+    vi.useFakeTimers();
+    vi.setSystemTime(new Date("2026-03-13T00:00:00.000Z"));
     vi.spyOn(Storage.prototype, "getItem").mockImplementation(() => null);
 
     const {
