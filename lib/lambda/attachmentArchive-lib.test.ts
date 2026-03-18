@@ -199,6 +199,47 @@ describe("attachmentArchive-lib", () => {
     });
   });
 
+  it("rebuilds when a cross-stage execution arn cannot be described", async () => {
+    getObjectText.mockResolvedValue(
+      JSON.stringify(
+        buildAttachmentArchiveCurrent({
+          scope: "section",
+          hash: manifest.hash,
+          status: "RUNNING",
+          artifactKey,
+          manifestKey,
+          attachmentCount: 1,
+          executionArn:
+            "arn:aws:states:us-east-1:123456789012:execution:migrate-attachment-archive:running",
+          sectionId: sectionDescriptor.sectionId,
+          sectionNumber: sectionDescriptor.sectionNumber,
+          sectionLabel: sectionDescriptor.sectionLabel,
+          sectionFolderName: sectionDescriptor.sectionFolderName,
+        }),
+      ),
+    );
+    stepFunctionsSpy.mockRejectedValue(
+      Object.assign(new Error("not authorized"), {
+        name: "AccessDeniedException",
+      }),
+    );
+
+    const result = await getRequestedAttachmentArchiveStatus({
+      packageId: "MD-10-6772",
+      scope: "section",
+      sectionId: sectionDescriptor.sectionId,
+      changelog: [],
+    });
+
+    expect(result).toEqual({
+      needsRebuild: true,
+      response: {
+        pollAfterSeconds: 3,
+        status: "PENDING",
+      },
+    });
+  });
+
   it("fails validation when the current state is not ready", async () => {
     getJsonObject.mockResolvedValue({
       scope: "section",

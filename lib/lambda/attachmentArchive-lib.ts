@@ -475,7 +475,7 @@ async function isArchiveExecutionRunning(executionArn: string): Promise<boolean>
     return response.status === "RUNNING";
   } catch (error) {
     const errorName = (error as { name?: string })?.name;
-    if (errorName === "ExecutionDoesNotExist") {
+    if (errorName === "ExecutionDoesNotExist" || errorName === "AccessDeniedException") {
       return false;
     }
 
