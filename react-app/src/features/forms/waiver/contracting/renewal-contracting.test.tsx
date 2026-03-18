@@ -1,4 +1,4 @@
-import { screen } from "@testing-library/react";
+import { screen, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import {
   EXISTING_ITEM_APPROVED_AMEND_ID,
@@ -11,41 +11,36 @@ import { beforeAll, describe, expect, test } from "vitest";
 
 import { formSchemas } from "@/formSchemas";
 import { renderFormWithPackageSectionAsync } from "@/utils/test-helpers/renderForm";
-import { skipCleanup } from "@/utils/test-helpers/skipCleanup";
 import { uploadFiles } from "@/utils/test-helpers/uploadFiles";
 
 import { RenewalForm } from "./Renewal";
 
 const upload = uploadFiles<(typeof formSchemas)["contracting-renewal"]>();
+const setup = async () => renderFormWithPackageSectionAsync(<RenewalForm />);
 
 describe("RENEWAL CONTRACTING WAIVER", () => {
-  beforeAll(async () => {
-    skipCleanup();
-
-    await renderFormWithPackageSectionAsync(<RenewalForm />);
-  });
-
   test("WAIVER ID EXISTING", async () => {
-    const waiverIdInput = screen.getByLabelText(/existing waiver number to renew/i);
+    await setup();
+    const waiverIdInput = await screen.findByLabelText(/existing waiver number to renew/i);
     const waiverIdLabel = screen.getByTestId("waiverid-existing-label");
 
     // test record does not exist error occurs
     await userEvent.type(waiverIdInput, NOT_FOUND_ITEM_ID);
-    const recordDoesNotExistError = screen.getByText(
+    const recordDoesNotExistError = await screen.findByText(
       "According to our records, this 1915(b) Waiver Number does not yet exist. Please check the 1915(b) Initial or Renewal Waiver Number and try entering it again.",
     );
     expect(recordDoesNotExistError).toBeInTheDocument();
     await userEvent.clear(waiverIdInput);
     // test record is not approved error occurs
     await userEvent.type(waiverIdInput, EXISTING_ITEM_PENDING_ID);
-    const recordIsNotApproved = screen.getByText(
+    const recordIsNotApproved = await screen.findByText(
       "According to our records, this 1915(b) Waiver Number is not approved. You must supply an approved 1915(b) Initial or Renewal Waiver Number.",
     );
     expect(recordIsNotApproved).toBeInTheDocument();
     await userEvent.clear(waiverIdInput);
     // test record is not able to be renewed or amended error occurs
     await userEvent.type(waiverIdInput, EXISTING_ITEM_APPROVED_AMEND_ID);
-    const recordCanNotBeRenewed = screen.getByText(
+    const recordCanNotBeRenewed = await screen.findByText(
       "The 1915(b) Waiver Number entered does not seem to match our records. Please enter an approved 1915(b) Initial or Renewal Waiver Number, using a dash after the two character state abbreviation.",
     );
     expect(recordCanNotBeRenewed).toBeInTheDocument();
@@ -54,16 +49,17 @@ describe("RENEWAL CONTRACTING WAIVER", () => {
     //valid id is entered
     await userEvent.type(waiverIdInput, EXISTING_ITEM_APPROVED_NEW_ID);
 
-    expect(waiverIdLabel).not.toHaveClass("text-destructive");
+    await waitFor(() => expect(waiverIdLabel).not.toHaveClass("text-destructive"));
   });
   test("WAIVER ID RENEWAL", async () => {
+    await setup();
     const waiverIdInput = screen.getByLabelText(/1915\(b\) Waiver Renewal Number/i);
     const waiverIdLabel = screen.getByTestId("waiverid-renewal-label");
 
     // validate id errors
     // item exists validation error occurs
     await userEvent.type(waiverIdInput, TEST_ITEM_ID);
-    const itemExistsErrorMessage = screen.getByText(
+    const itemExistsErrorMessage = await screen.findByText(
       "According to our records, this 1915(b) Waiver Number already exists. Please check the 1915(b) Waiver Number and try entering it again.",
     );
     expect(itemExistsErrorMessage).toBeInTheDocument();
@@ -88,10 +84,11 @@ describe("RENEWAL CONTRACTING WAIVER", () => {
 
     await userEvent.type(waiverIdInput, "MD-0006.R01.00");
 
-    expect(waiverIdLabel).not.toHaveClass("text-destructive");
+    await waitFor(() => expect(waiverIdLabel).not.toHaveClass("text-destructive"));
   });
 
   test("PROPOSED EFFECTIVE DATE OF RENEWAL CONTRACTING WAIVER", async () => {
+    await setup();
     await userEvent.click(screen.getByTestId("proposedEffectiveDate-datepicker"));
     await userEvent.keyboard("{Enter}");
 
@@ -103,23 +100,36 @@ describe("RENEWAL CONTRACTING WAIVER", () => {
   });
 
   test("B4 WAIVER APPLICATION", async () => {
+    await setup();
     const cmsForm179PlanLabel = await upload("b4WaiverApplication");
     expect(cmsForm179PlanLabel).not.toHaveClass("text-destructive");
   });
   test("B4 INDEPENDENT ASSESSMENT", async () => {
+    await setup();
     const cmsForm179PlanLabel = await upload("b4IndependentAssessment");
     expect(cmsForm179PlanLabel).not.toHaveClass("text-destructive");
   });
   test("OTHER", async () => {
+    await setup();
     const cmsForm179PlanLabel = await upload("other");
     expect(cmsForm179PlanLabel).not.toHaveClass("text-destructive");
   });
   test("TRIBAL CONSULTATION", async () => {
+    await setup();
     const cmsForm179PlanLabel = await upload("tribalConsultation");
     expect(cmsForm179PlanLabel).not.toHaveClass("text-destructive");
   });
 
   test("submit button is enabled", async () => {
-    expect(screen.getByTestId("submit-action-form")).toBeEnabled();
+    await setup();
+    const waiverIdExistingInput = await screen.findByLabelText(/existing waiver number to renew/i);
+    const waiverIdRenewalInput = screen.getByLabelText(/1915\(b\) Waiver Renewal Number/i);
+
+    await userEvent.type(waiverIdExistingInput, EXISTING_ITEM_APPROVED_NEW_ID);
+    await userEvent.type(waiverIdRenewalInput, "MD-0006.R01.00");
+    await userEvent.click(screen.getByTestId("proposedEffectiveDate-datepicker"));
+    await userEvent.keyboard("{Enter}");
+    await upload("b4WaiverApplication");
+    await waitFor(() => expect(screen.getByTestId("submit-action-form")).toBeEnabled());
   });
 });

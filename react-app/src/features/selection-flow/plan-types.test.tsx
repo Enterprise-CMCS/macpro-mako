@@ -1,4 +1,4 @@
-import { render, screen, waitForElementToBeRemoved } from "@testing-library/react";
+import { render, screen, waitFor, waitForElementToBeRemoved } from "@testing-library/react";
 import { setDefaultStateSubmitter, setMockUsername, testReviewer } from "mocks";
 import React, { ReactElement } from "react";
 import { beforeEach, describe, expect, it } from "vitest";
@@ -60,14 +60,14 @@ describe("plan-types", () => {
   describe("NewSubmissionInitialOptions", () => {
     it("should navigate unauthenticated users to /", async () => {
       setMockUsername(null);
-      await setup(<NewSubmissionInitialOptions />, "/new-submission");
-      expect(screen.getByText("Home")).toBeInTheDocument();
+      const { router } = await setup(<NewSubmissionInitialOptions />, "/new-submission");
+      await waitFor(() => expect(router.state.location.pathname).toBe("/"));
     });
 
     it("should navigate cms users to /", async () => {
       setMockUsername(testReviewer);
-      await setup(<NewSubmissionInitialOptions />, "/new-submission");
-      expect(screen.getByText("Home")).toBeInTheDocument();
+      const { router } = await setup(<NewSubmissionInitialOptions />, "/new-submission");
+      await waitFor(() => expect(router.state.location.pathname).toBe("/"));
     });
 
     it("should render the page for a state user", async () => {
