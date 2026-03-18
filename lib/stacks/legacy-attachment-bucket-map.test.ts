@@ -61,7 +61,7 @@ describe("getSharedAttachmentReadBucket", () => {
   it("keeps production attachment reads stage-local", () => {
     expect(getSharedAttachmentReadBucket("mako", "production", "123456789012")).toEqual({
       stage: "production",
-      name: "mako-production-attachments-123456789012",
+      name: "mako-production-attachments-123456789012", // pragma: allowlist secret
       arn: "arn:aws:s3:::mako-production-attachments-123456789012",
     });
   });
@@ -86,8 +86,8 @@ describe("getLegacyAttachmentMirrorBuckets", () => {
     expect(getLegacyAttachmentMirrorBuckets("mako", "production", "123456789012")).toEqual({
       stage: "production",
       names: [
-        "mako-production-legacy-attachments-123456789012",
-        "mako-production-legacy-attachmentsbucket-123456789012",
+        "mako-production-legacy-attachments-123456789012", // pragma: allowlist secret
+        "mako-production-legacy-attachmentsbucket-123456789012", // pragma: allowlist secret
       ],
       arns: [
         "arn:aws:s3:::mako-production-legacy-attachments-123456789012",

@@ -25,7 +25,7 @@ async function importWithMockedClient(mockedClient: {
   vi.doMock("@aws-sdk/credential-provider-node", () => ({
     defaultProvider: () => async () => ({
       accessKeyId: "test-access-key",
-      secretAccessKey: "test-secret-key",
+      secretAccessKey: "test-secret-key", // pragma: allowlist secret
       sessionToken: "test-session-token",
     }),
   }));
