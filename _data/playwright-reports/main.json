@@ -12,24 +12,24 @@
     "maxFailures": 0,
     "metadata": {
       "ci": {
-        "commitHref": "https://github.com/Enterprise-CMCS/macpro-mako/commit/4920960fc75b67e9c8672e361e534c2db88fcfa4",
-        "commitHash": "4920960fc75b67e9c8672e361e534c2db88fcfa4",
-        "buildHref": "https://github.com/Enterprise-CMCS/macpro-mako/actions/runs/22005647684"
+        "commitHref": "https://github.com/Enterprise-CMCS/macpro-mako/commit/357b5ea2970fac6244253037e8819bfd00733d6c",
+        "commitHash": "357b5ea2970fac6244253037e8819bfd00733d6c",
+        "buildHref": "https://github.com/Enterprise-CMCS/macpro-mako/actions/runs/23257719924"
       },
       "gitCommit": {
-        "shortHash": "4920960",
-        "hash": "4920960fc75b67e9c8672e361e534c2db88fcfa4",
-        "subject": "fix(changelog-timestamp): added time logic to not choke up on date format for changelog (#1826)",
-        "body": "fix(changelog-timestamp): added time logic to not choke up on date format for changelog (#1826)\n\n* added time logic to not choke up on date format for changelog\n\n* Update dashboard.spec.ts",
+        "shortHash": "357b5ea",
+        "hash": "357b5ea2970fac6244253037e8819bfd00733d6c",
+        "subject": "feat: legacy s3 migration - runtime redirect - zip archives",
+        "body": "feat: legacy s3 migration - runtime redirect - zip archives\n\n* feat(legacy-attachment): implement legacy bucket remapping and logging in attachment URL handler; add decommission runbook and update .gitignore\n\n* refactor(legacy-attachment): enhance legacy attachment bucket decommission runbook; implement parameter name resolution and add unit tests\n\n* feat(attachment-archive): implement attachment archive functionality with S3 integration and error handling; add unit tests for backfill and attachment source logic\n\n* feat(attachment-archive): enhance attachment archive functionality with new repair scripts and error handling; add tests for current state resolution and source repair logic\n\n* chore(workflows): consolidate dependency installation into setup action for a11y, deploy, and lint workflows\n\n* test: enhance test coverage for dashboard and waiver amendment forms; refactor test logic for clarity and reliability\n\n* refactor(tests): remove unused import of beforeAll in waiver contracting test files for cleaner code\n\n* chore(workflows): improve coverage report workflow by refining run ID retrieval and adding checks for main coverage summary\n\n* feat(attachment-archive): enhance attachment archive functionality by introducing base bucket handling and overlay prefix management; refactor related functions for improved clarity and maintainability\n\n* test(attachment-archive): add test for rebuilding attachment archive status when execution ARN is inaccessible; enhance error handling for AccessDeniedException\n\n* test(archive-bucket-routing): update tests to include pragma comments for allowlisting secrets in bucket names and ARNs",
         "author": {
-          "name": "James Dinh",
-          "email": "james.d@globalalliantinc.com",
-          "time": 1771023301000
+          "name": "Benjamin Paige",
+          "email": "benjamin.paige@gmail.com",
+          "time": 1773854373000
         },
         "committer": {
           "name": "GitHub",
           "email": "noreply@github.com",
-          "time": 1771023301000
+          "time": 1773854373000
         },
         "branch": "main"
       },
@@ -43,24 +43,24 @@
         "retries": 0,
         "metadata": {
           "ci": {
-            "commitHref": "https://github.com/Enterprise-CMCS/macpro-mako/commit/4920960fc75b67e9c8672e361e534c2db88fcfa4",
-            "commitHash": "4920960fc75b67e9c8672e361e534c2db88fcfa4",
-            "buildHref": "https://github.com/Enterprise-CMCS/macpro-mako/actions/runs/22005647684"
+            "commitHref": "https://github.com/Enterprise-CMCS/macpro-mako/commit/357b5ea2970fac6244253037e8819bfd00733d6c",
+            "commitHash": "357b5ea2970fac6244253037e8819bfd00733d6c",
+            "buildHref": "https://github.com/Enterprise-CMCS/macpro-mako/actions/runs/23257719924"
           },
           "gitCommit": {
-            "shortHash": "4920960",
-            "hash": "4920960fc75b67e9c8672e361e534c2db88fcfa4",
-            "subject": "fix(changelog-timestamp): added time logic to not choke up on date format for changelog (#1826)",
-            "body": "fix(changelog-timestamp): added time logic to not choke up on date format for changelog (#1826)\n\n* added time logic to not choke up on date format for changelog\n\n* Update dashboard.spec.ts",
+            "shortHash": "357b5ea",
+            "hash": "357b5ea2970fac6244253037e8819bfd00733d6c",
+            "subject": "feat: legacy s3 migration - runtime redirect - zip archives",
+            "body": "feat: legacy s3 migration - runtime redirect - zip archives\n\n* feat(legacy-attachment): implement legacy bucket remapping and logging in attachment URL handler; add decommission runbook and update .gitignore\n\n* refactor(legacy-attachment): enhance legacy attachment bucket decommission runbook; implement parameter name resolution and add unit tests\n\n* feat(attachment-archive): implement attachment archive functionality with S3 integration and error handling; add unit tests for backfill and attachment source logic\n\n* feat(attachment-archive): enhance attachment archive functionality with new repair scripts and error handling; add tests for current state resolution and source repair logic\n\n* chore(workflows): consolidate dependency installation into setup action for a11y, deploy, and lint workflows\n\n* test: enhance test coverage for dashboard and waiver amendment forms; refactor test logic for clarity and reliability\n\n* refactor(tests): remove unused import of beforeAll in waiver contracting test files for cleaner code\n\n* chore(workflows): improve coverage report workflow by refining run ID retrieval and adding checks for main coverage summary\n\n* feat(attachment-archive): enhance attachment archive functionality by introducing base bucket handling and overlay prefix management; refactor related functions for improved clarity and maintainability\n\n* test(attachment-archive): add test for rebuilding attachment archive status when execution ARN is inaccessible; enhance error handling for AccessDeniedException\n\n* test(archive-bucket-routing): update tests to include pragma comments for allowlisting secrets in bucket names and ARNs",
             "author": {
-              "name": "James Dinh",
-              "email": "james.d@globalalliantinc.com",
-              "time": 1771023301000
+              "name": "Benjamin Paige",
+              "email": "benjamin.paige@gmail.com",
+              "time": 1773854373000
             },
             "committer": {
               "name": "GitHub",
               "email": "noreply@github.com",
-              "time": 1771023301000
+              "time": 1773854373000
             },
             "branch": "main"
           },
@@ -84,24 +84,24 @@
         "retries": 0,
         "metadata": {
           "ci": {
-            "commitHref": "https://github.com/Enterprise-CMCS/macpro-mako/commit/4920960fc75b67e9c8672e361e534c2db88fcfa4",
-            "commitHash": "4920960fc75b67e9c8672e361e534c2db88fcfa4",
-            "buildHref": "https://github.com/Enterprise-CMCS/macpro-mako/actions/runs/22005647684"
+            "commitHref": "https://github.com/Enterprise-CMCS/macpro-mako/commit/357b5ea2970fac6244253037e8819bfd00733d6c",
+            "commitHash": "357b5ea2970fac6244253037e8819bfd00733d6c",
+            "buildHref": "https://github.com/Enterprise-CMCS/macpro-mako/actions/runs/23257719924"
           },
           "gitCommit": {
-            "shortHash": "4920960",
-            "hash": "4920960fc75b67e9c8672e361e534c2db88fcfa4",
-            "subject": "fix(changelog-timestamp): added time logic to not choke up on date format for changelog (#1826)",
-            "body": "fix(changelog-timestamp): added time logic to not choke up on date format for changelog (#1826)\n\n* added time logic to not choke up on date format for changelog\n\n* Update dashboard.spec.ts",
+            "shortHash": "357b5ea",
+            "hash": "357b5ea2970fac6244253037e8819bfd00733d6c",
+            "subject": "feat: legacy s3 migration - runtime redirect - zip archives",
+            "body": "feat: legacy s3 migration - runtime redirect - zip archives\n\n* feat(legacy-attachment): implement legacy bucket remapping and logging in attachment URL handler; add decommission runbook and update .gitignore\n\n* refactor(legacy-attachment): enhance legacy attachment bucket decommission runbook; implement parameter name resolution and add unit tests\n\n* feat(attachment-archive): implement attachment archive functionality with S3 integration and error handling; add unit tests for backfill and attachment source logic\n\n* feat(attachment-archive): enhance attachment archive functionality with new repair scripts and error handling; add tests for current state resolution and source repair logic\n\n* chore(workflows): consolidate dependency installation into setup action for a11y, deploy, and lint workflows\n\n* test: enhance test coverage for dashboard and waiver amendment forms; refactor test logic for clarity and reliability\n\n* refactor(tests): remove unused import of beforeAll in waiver contracting test files for cleaner code\n\n* chore(workflows): improve coverage report workflow by refining run ID retrieval and adding checks for main coverage summary\n\n* feat(attachment-archive): enhance attachment archive functionality by introducing base bucket handling and overlay prefix management; refactor related functions for improved clarity and maintainability\n\n* test(attachment-archive): add test for rebuilding attachment archive status when execution ARN is inaccessible; enhance error handling for AccessDeniedException\n\n* test(archive-bucket-routing): update tests to include pragma comments for allowlisting secrets in bucket names and ARNs",
             "author": {
-              "name": "James Dinh",
-              "email": "james.d@globalalliantinc.com",
-              "time": 1771023301000
+              "name": "Benjamin Paige",
+              "email": "benjamin.paige@gmail.com",
+              "time": 1773854373000
             },
             "committer": {
               "name": "GitHub",
               "email": "noreply@github.com",
-              "time": 1771023301000
+              "time": 1773854373000
             },
             "branch": "main"
           },
@@ -125,24 +125,24 @@
         "retries": 0,
         "metadata": {
           "ci": {
-            "commitHref": "https://github.com/Enterprise-CMCS/macpro-mako/commit/4920960fc75b67e9c8672e361e534c2db88fcfa4",
-            "commitHash": "4920960fc75b67e9c8672e361e534c2db88fcfa4",
-            "buildHref": "https://github.com/Enterprise-CMCS/macpro-mako/actions/runs/22005647684"
+            "commitHref": "https://github.com/Enterprise-CMCS/macpro-mako/commit/357b5ea2970fac6244253037e8819bfd00733d6c",
+            "commitHash": "357b5ea2970fac6244253037e8819bfd00733d6c",
+            "buildHref": "https://github.com/Enterprise-CMCS/macpro-mako/actions/runs/23257719924"
           },
           "gitCommit": {
-            "shortHash": "4920960",
-            "hash": "4920960fc75b67e9c8672e361e534c2db88fcfa4",
-            "subject": "fix(changelog-timestamp): added time logic to not choke up on date format for changelog (#1826)",
-            "body": "fix(changelog-timestamp): added time logic to not choke up on date format for changelog (#1826)\n\n* added time logic to not choke up on date format for changelog\n\n* Update dashboard.spec.ts",
+            "shortHash": "357b5ea",
+            "hash": "357b5ea2970fac6244253037e8819bfd00733d6c",
+            "subject": "feat: legacy s3 migration - runtime redirect - zip archives",
+            "body": "feat: legacy s3 migration - runtime redirect - zip archives\n\n* feat(legacy-attachment): implement legacy bucket remapping and logging in attachment URL handler; add decommission runbook and update .gitignore\n\n* refactor(legacy-attachment): enhance legacy attachment bucket decommission runbook; implement parameter name resolution and add unit tests\n\n* feat(attachment-archive): implement attachment archive functionality with S3 integration and error handling; add unit tests for backfill and attachment source logic\n\n* feat(attachment-archive): enhance attachment archive functionality with new repair scripts and error handling; add tests for current state resolution and source repair logic\n\n* chore(workflows): consolidate dependency installation into setup action for a11y, deploy, and lint workflows\n\n* test: enhance test coverage for dashboard and waiver amendment forms; refactor test logic for clarity and reliability\n\n* refactor(tests): remove unused import of beforeAll in waiver contracting test files for cleaner code\n\n* chore(workflows): improve coverage report workflow by refining run ID retrieval and adding checks for main coverage summary\n\n* feat(attachment-archive): enhance attachment archive functionality by introducing base bucket handling and overlay prefix management; refactor related functions for improved clarity and maintainability\n\n* test(attachment-archive): add test for rebuilding attachment archive status when execution ARN is inaccessible; enhance error handling for AccessDeniedException\n\n* test(archive-bucket-routing): update tests to include pragma comments for allowlisting secrets in bucket names and ARNs",
             "author": {
-              "name": "James Dinh",
-              "email": "james.d@globalalliantinc.com",
-              "time": 1771023301000
+              "name": "Benjamin Paige",
+              "email": "benjamin.paige@gmail.com",
+              "time": 1773854373000
             },
             "committer": {
               "name": "GitHub",
               "email": "noreply@github.com",
-              "time": 1771023301000
+              "time": 1773854373000
             },
             "branch": "main"
           },
@@ -166,24 +166,24 @@
         "retries": 0,
         "metadata": {
           "ci": {
-            "commitHref": "https://github.com/Enterprise-CMCS/macpro-mako/commit/4920960fc75b67e9c8672e361e534c2db88fcfa4",
-            "commitHash": "4920960fc75b67e9c8672e361e534c2db88fcfa4",
-            "buildHref": "https://github.com/Enterprise-CMCS/macpro-mako/actions/runs/22005647684"
+            "commitHref": "https://github.com/Enterprise-CMCS/macpro-mako/commit/357b5ea2970fac6244253037e8819bfd00733d6c",
+            "commitHash": "357b5ea2970fac6244253037e8819bfd00733d6c",
+            "buildHref": "https://github.com/Enterprise-CMCS/macpro-mako/actions/runs/23257719924"
           },
           "gitCommit": {
-            "shortHash": "4920960",
-            "hash": "4920960fc75b67e9c8672e361e534c2db88fcfa4",
-            "subject": "fix(changelog-timestamp): added time logic to not choke up on date format for changelog (#1826)",
-            "body": "fix(changelog-timestamp): added time logic to not choke up on date format for changelog (#1826)\n\n* added time logic to not choke up on date format for changelog\n\n* Update dashboard.spec.ts",
+            "shortHash": "357b5ea",
+            "hash": "357b5ea2970fac6244253037e8819bfd00733d6c",
+            "subject": "feat: legacy s3 migration - runtime redirect - zip archives",
+            "body": "feat: legacy s3 migration - runtime redirect - zip archives\n\n* feat(legacy-attachment): implement legacy bucket remapping and logging in attachment URL handler; add decommission runbook and update .gitignore\n\n* refactor(legacy-attachment): enhance legacy attachment bucket decommission runbook; implement parameter name resolution and add unit tests\n\n* feat(attachment-archive): implement attachment archive functionality with S3 integration and error handling; add unit tests for backfill and attachment source logic\n\n* feat(attachment-archive): enhance attachment archive functionality with new repair scripts and error handling; add tests for current state resolution and source repair logic\n\n* chore(workflows): consolidate dependency installation into setup action for a11y, deploy, and lint workflows\n\n* test: enhance test coverage for dashboard and waiver amendment forms; refactor test logic for clarity and reliability\n\n* refactor(tests): remove unused import of beforeAll in waiver contracting test files for cleaner code\n\n* chore(workflows): improve coverage report workflow by refining run ID retrieval and adding checks for main coverage summary\n\n* feat(attachment-archive): enhance attachment archive functionality by introducing base bucket handling and overlay prefix management; refactor related functions for improved clarity and maintainability\n\n* test(attachment-archive): add test for rebuilding attachment archive status when execution ARN is inaccessible; enhance error handling for AccessDeniedException\n\n* test(archive-bucket-routing): update tests to include pragma comments for allowlisting secrets in bucket names and ARNs",
             "author": {
-              "name": "James Dinh",
-              "email": "james.d@globalalliantinc.com",
-              "time": 1771023301000
+              "name": "Benjamin Paige",
+              "email": "benjamin.paige@gmail.com",
+              "time": 1773854373000
             },
             "committer": {
               "name": "GitHub",
               "email": "noreply@github.com",
-              "time": 1771023301000
+              "time": 1773854373000
             },
             "branch": "main"
           },
@@ -207,24 +207,24 @@
         "retries": 0,
         "metadata": {
           "ci": {
-            "commitHref": "https://github.com/Enterprise-CMCS/macpro-mako/commit/4920960fc75b67e9c8672e361e534c2db88fcfa4",
-            "commitHash": "4920960fc75b67e9c8672e361e534c2db88fcfa4",
-            "buildHref": "https://github.com/Enterprise-CMCS/macpro-mako/actions/runs/22005647684"
+            "commitHref": "https://github.com/Enterprise-CMCS/macpro-mako/commit/357b5ea2970fac6244253037e8819bfd00733d6c",
+            "commitHash": "357b5ea2970fac6244253037e8819bfd00733d6c",
+            "buildHref": "https://github.com/Enterprise-CMCS/macpro-mako/actions/runs/23257719924"
           },
           "gitCommit": {
-            "shortHash": "4920960",
-            "hash": "4920960fc75b67e9c8672e361e534c2db88fcfa4",
-            "subject": "fix(changelog-timestamp): added time logic to not choke up on date format for changelog (#1826)",
-            "body": "fix(changelog-timestamp): added time logic to not choke up on date format for changelog (#1826)\n\n* added time logic to not choke up on date format for changelog\n\n* Update dashboard.spec.ts",
+            "shortHash": "357b5ea",
+            "hash": "357b5ea2970fac6244253037e8819bfd00733d6c",
+            "subject": "feat: legacy s3 migration - runtime redirect - zip archives",
+            "body": "feat: legacy s3 migration - runtime redirect - zip archives\n\n* feat(legacy-attachment): implement legacy bucket remapping and logging in attachment URL handler; add decommission runbook and update .gitignore\n\n* refactor(legacy-attachment): enhance legacy attachment bucket decommission runbook; implement parameter name resolution and add unit tests\n\n* feat(attachment-archive): implement attachment archive functionality with S3 integration and error handling; add unit tests for backfill and attachment source logic\n\n* feat(attachment-archive): enhance attachment archive functionality with new repair scripts and error handling; add tests for current state resolution and source repair logic\n\n* chore(workflows): consolidate dependency installation into setup action for a11y, deploy, and lint workflows\n\n* test: enhance test coverage for dashboard and waiver amendment forms; refactor test logic for clarity and reliability\n\n* refactor(tests): remove unused import of beforeAll in waiver contracting test files for cleaner code\n\n* chore(workflows): improve coverage report workflow by refining run ID retrieval and adding checks for main coverage summary\n\n* feat(attachment-archive): enhance attachment archive functionality by introducing base bucket handling and overlay prefix management; refactor related functions for improved clarity and maintainability\n\n* test(attachment-archive): add test for rebuilding attachment archive status when execution ARN is inaccessible; enhance error handling for AccessDeniedException\n\n* test(archive-bucket-routing): update tests to include pragma comments for allowlisting secrets in bucket names and ARNs",
             "author": {
-              "name": "James Dinh",
-              "email": "james.d@globalalliantinc.com",
-              "time": 1771023301000
+              "name": "Benjamin Paige",
+              "email": "benjamin.paige@gmail.com",
+              "time": 1773854373000
             },
             "committer": {
               "name": "GitHub",
               "email": "noreply@github.com",
-              "time": 1771023301000
+              "time": 1773854373000
             },
             "branch": "main"
           },
@@ -248,24 +248,24 @@
         "retries": 0,
         "metadata": {
           "ci": {
-            "commitHref": "https://github.com/Enterprise-CMCS/macpro-mako/commit/4920960fc75b67e9c8672e361e534c2db88fcfa4",
-            "commitHash": "4920960fc75b67e9c8672e361e534c2db88fcfa4",
-            "buildHref": "https://github.com/Enterprise-CMCS/macpro-mako/actions/runs/22005647684"
+            "commitHref": "https://github.com/Enterprise-CMCS/macpro-mako/commit/357b5ea2970fac6244253037e8819bfd00733d6c",
+            "commitHash": "357b5ea2970fac6244253037e8819bfd00733d6c",
+            "buildHref": "https://github.com/Enterprise-CMCS/macpro-mako/actions/runs/23257719924"
           },
           "gitCommit": {
-            "shortHash": "4920960",
-            "hash": "4920960fc75b67e9c8672e361e534c2db88fcfa4",
-            "subject": "fix(changelog-timestamp): added time logic to not choke up on date format for changelog (#1826)",
-            "body": "fix(changelog-timestamp): added time logic to not choke up on date format for changelog (#1826)\n\n* added time logic to not choke up on date format for changelog\n\n* Update dashboard.spec.ts",
+            "shortHash": "357b5ea",
+            "hash": "357b5ea2970fac6244253037e8819bfd00733d6c",
+            "subject": "feat: legacy s3 migration - runtime redirect - zip archives",
+            "body": "feat: legacy s3 migration - runtime redirect - zip archives\n\n* feat(legacy-attachment): implement legacy bucket remapping and logging in attachment URL handler; add decommission runbook and update .gitignore\n\n* refactor(legacy-attachment): enhance legacy attachment bucket decommission runbook; implement parameter name resolution and add unit tests\n\n* feat(attachment-archive): implement attachment archive functionality with S3 integration and error handling; add unit tests for backfill and attachment source logic\n\n* feat(attachment-archive): enhance attachment archive functionality with new repair scripts and error handling; add tests for current state resolution and source repair logic\n\n* chore(workflows): consolidate dependency installation into setup action for a11y, deploy, and lint workflows\n\n* test: enhance test coverage for dashboard and waiver amendment forms; refactor test logic for clarity and reliability\n\n* refactor(tests): remove unused import of beforeAll in waiver contracting test files for cleaner code\n\n* chore(workflows): improve coverage report workflow by refining run ID retrieval and adding checks for main coverage summary\n\n* feat(attachment-archive): enhance attachment archive functionality by introducing base bucket handling and overlay prefix management; refactor related functions for improved clarity and maintainability\n\n* test(attachment-archive): add test for rebuilding attachment archive status when execution ARN is inaccessible; enhance error handling for AccessDeniedException\n\n* test(archive-bucket-routing): update tests to include pragma comments for allowlisting secrets in bucket names and ARNs",
             "author": {
-              "name": "James Dinh",
-              "email": "james.d@globalalliantinc.com",
-              "time": 1771023301000
+              "name": "Benjamin Paige",
+              "email": "benjamin.paige@gmail.com",
+              "time": 1773854373000
             },
             "committer": {
               "name": "GitHub",
               "email": "noreply@github.com",
-              "time": 1771023301000
+              "time": 1773854373000
             },
             "branch": "main"
           },
@@ -289,24 +289,24 @@
         "retries": 0,
         "metadata": {
           "ci": {
-            "commitHref": "https://github.com/Enterprise-CMCS/macpro-mako/commit/4920960fc75b67e9c8672e361e534c2db88fcfa4",
-            "commitHash": "4920960fc75b67e9c8672e361e534c2db88fcfa4",
-            "buildHref": "https://github.com/Enterprise-CMCS/macpro-mako/actions/runs/22005647684"
+            "commitHref": "https://github.com/Enterprise-CMCS/macpro-mako/commit/357b5ea2970fac6244253037e8819bfd00733d6c",
+            "commitHash": "357b5ea2970fac6244253037e8819bfd00733d6c",
+            "buildHref": "https://github.com/Enterprise-CMCS/macpro-mako/actions/runs/23257719924"
           },
           "gitCommit": {
-            "shortHash": "4920960",
-            "hash": "4920960fc75b67e9c8672e361e534c2db88fcfa4",
-            "subject": "fix(changelog-timestamp): added time logic to not choke up on date format for changelog (#1826)",
-            "body": "fix(changelog-timestamp): added time logic to not choke up on date format for changelog (#1826)\n\n* added time logic to not choke up on date format for changelog\n\n* Update dashboard.spec.ts",
+            "shortHash": "357b5ea",
+            "hash": "357b5ea2970fac6244253037e8819bfd00733d6c",
+            "subject": "feat: legacy s3 migration - runtime redirect - zip archives",
+            "body": "feat: legacy s3 migration - runtime redirect - zip archives\n\n* feat(legacy-attachment): implement legacy bucket remapping and logging in attachment URL handler; add decommission runbook and update .gitignore\n\n* refactor(legacy-attachment): enhance legacy attachment bucket decommission runbook; implement parameter name resolution and add unit tests\n\n* feat(attachment-archive): implement attachment archive functionality with S3 integration and error handling; add unit tests for backfill and attachment source logic\n\n* feat(attachment-archive): enhance attachment archive functionality with new repair scripts and error handling; add tests for current state resolution and source repair logic\n\n* chore(workflows): consolidate dependency installation into setup action for a11y, deploy, and lint workflows\n\n* test: enhance test coverage for dashboard and waiver amendment forms; refactor test logic for clarity and reliability\n\n* refactor(tests): remove unused import of beforeAll in waiver contracting test files for cleaner code\n\n* chore(workflows): improve coverage report workflow by refining run ID retrieval and adding checks for main coverage summary\n\n* feat(attachment-archive): enhance attachment archive functionality by introducing base bucket handling and overlay prefix management; refactor related functions for improved clarity and maintainability\n\n* test(attachment-archive): add test for rebuilding attachment archive status when execution ARN is inaccessible; enhance error handling for AccessDeniedException\n\n* test(archive-bucket-routing): update tests to include pragma comments for allowlisting secrets in bucket names and ARNs",
             "author": {
-              "name": "James Dinh",
-              "email": "james.d@globalalliantinc.com",
-              "time": 1771023301000
+              "name": "Benjamin Paige",
+              "email": "benjamin.paige@gmail.com",
+              "time": 1773854373000
             },
             "committer": {
               "name": "GitHub",
               "email": "noreply@github.com",
-              "time": 1771023301000
+              "time": 1773854373000
             },
             "branch": "main"
           },
@@ -330,24 +330,24 @@
         "retries": 0,
         "metadata": {
           "ci": {
-            "commitHref": "https://github.com/Enterprise-CMCS/macpro-mako/commit/4920960fc75b67e9c8672e361e534c2db88fcfa4",
-            "commitHash": "4920960fc75b67e9c8672e361e534c2db88fcfa4",
-            "buildHref": "https://github.com/Enterprise-CMCS/macpro-mako/actions/runs/22005647684"
+            "commitHref": "https://github.com/Enterprise-CMCS/macpro-mako/commit/357b5ea2970fac6244253037e8819bfd00733d6c",
+            "commitHash": "357b5ea2970fac6244253037e8819bfd00733d6c",
+            "buildHref": "https://github.com/Enterprise-CMCS/macpro-mako/actions/runs/23257719924"
           },
           "gitCommit": {
-            "shortHash": "4920960",
-            "hash": "4920960fc75b67e9c8672e361e534c2db88fcfa4",
-            "subject": "fix(changelog-timestamp): added time logic to not choke up on date format for changelog (#1826)",
-            "body": "fix(changelog-timestamp): added time logic to not choke up on date format for changelog (#1826)\n\n* added time logic to not choke up on date format for changelog\n\n* Update dashboard.spec.ts",
+            "shortHash": "357b5ea",
+            "hash": "357b5ea2970fac6244253037e8819bfd00733d6c",
+            "subject": "feat: legacy s3 migration - runtime redirect - zip archives",
+            "body": "feat: legacy s3 migration - runtime redirect - zip archives\n\n* feat(legacy-attachment): implement legacy bucket remapping and logging in attachment URL handler; add decommission runbook and update .gitignore\n\n* refactor(legacy-attachment): enhance legacy attachment bucket decommission runbook; implement parameter name resolution and add unit tests\n\n* feat(attachment-archive): implement attachment archive functionality with S3 integration and error handling; add unit tests for backfill and attachment source logic\n\n* feat(attachment-archive): enhance attachment archive functionality with new repair scripts and error handling; add tests for current state resolution and source repair logic\n\n* chore(workflows): consolidate dependency installation into setup action for a11y, deploy, and lint workflows\n\n* test: enhance test coverage for dashboard and waiver amendment forms; refactor test logic for clarity and reliability\n\n* refactor(tests): remove unused import of beforeAll in waiver contracting test files for cleaner code\n\n* chore(workflows): improve coverage report workflow by refining run ID retrieval and adding checks for main coverage summary\n\n* feat(attachment-archive): enhance attachment archive functionality by introducing base bucket handling and overlay prefix management; refactor related functions for improved clarity and maintainability\n\n* test(attachment-archive): add test for rebuilding attachment archive status when execution ARN is inaccessible; enhance error handling for AccessDeniedException\n\n* test(archive-bucket-routing): update tests to include pragma comments for allowlisting secrets in bucket names and ARNs",
             "author": {
-              "name": "James Dinh",
-              "email": "james.d@globalalliantinc.com",
-              "time": 1771023301000
+              "name": "Benjamin Paige",
+              "email": "benjamin.paige@gmail.com",
+              "time": 1773854373000
             },
             "committer": {
               "name": "GitHub",
               "email": "noreply@github.com",
-              "time": 1771023301000
+              "time": 1773854373000
             },
             "branch": "main"
           },
@@ -371,24 +371,24 @@
         "retries": 0,
         "metadata": {
           "ci": {
-            "commitHref": "https://github.com/Enterprise-CMCS/macpro-mako/commit/4920960fc75b67e9c8672e361e534c2db88fcfa4",
-            "commitHash": "4920960fc75b67e9c8672e361e534c2db88fcfa4",
-            "buildHref": "https://github.com/Enterprise-CMCS/macpro-mako/actions/runs/22005647684"
+            "commitHref": "https://github.com/Enterprise-CMCS/macpro-mako/commit/357b5ea2970fac6244253037e8819bfd00733d6c",
+            "commitHash": "357b5ea2970fac6244253037e8819bfd00733d6c",
+            "buildHref": "https://github.com/Enterprise-CMCS/macpro-mako/actions/runs/23257719924"
           },
           "gitCommit": {
-            "shortHash": "4920960",
-            "hash": "4920960fc75b67e9c8672e361e534c2db88fcfa4",
-            "subject": "fix(changelog-timestamp): added time logic to not choke up on date format for changelog (#1826)",
-            "body": "fix(changelog-timestamp): added time logic to not choke up on date format for changelog (#1826)\n\n* added time logic to not choke up on date format for changelog\n\n* Update dashboard.spec.ts",
+            "shortHash": "357b5ea",
+            "hash": "357b5ea2970fac6244253037e8819bfd00733d6c",
+            "subject": "feat: legacy s3 migration - runtime redirect - zip archives",
+            "body": "feat: legacy s3 migration - runtime redirect - zip archives\n\n* feat(legacy-attachment): implement legacy bucket remapping and logging in attachment URL handler; add decommission runbook and update .gitignore\n\n* refactor(legacy-attachment): enhance legacy attachment bucket decommission runbook; implement parameter name resolution and add unit tests\n\n* feat(attachment-archive): implement attachment archive functionality with S3 integration and error handling; add unit tests for backfill and attachment source logic\n\n* feat(attachment-archive): enhance attachment archive functionality with new repair scripts and error handling; add tests for current state resolution and source repair logic\n\n* chore(workflows): consolidate dependency installation into setup action for a11y, deploy, and lint workflows\n\n* test: enhance test coverage for dashboard and waiver amendment forms; refactor test logic for clarity and reliability\n\n* refactor(tests): remove unused import of beforeAll in waiver contracting test files for cleaner code\n\n* chore(workflows): improve coverage report workflow by refining run ID retrieval and adding checks for main coverage summary\n\n* feat(attachment-archive): enhance attachment archive functionality by introducing base bucket handling and overlay prefix management; refactor related functions for improved clarity and maintainability\n\n* test(attachment-archive): add test for rebuilding attachment archive status when execution ARN is inaccessible; enhance error handling for AccessDeniedException\n\n* test(archive-bucket-routing): update tests to include pragma comments for allowlisting secrets in bucket names and ARNs",
             "author": {
-              "name": "James Dinh",
-              "email": "james.d@globalalliantinc.com",
-              "time": 1771023301000
+              "name": "Benjamin Paige",
+              "email": "benjamin.paige@gmail.com",
+              "time": 1773854373000
             },
             "committer": {
               "name": "GitHub",
               "email": "noreply@github.com",
-              "time": 1771023301000
+              "time": 1773854373000
             },
             "branch": "main"
           },
@@ -412,24 +412,24 @@
         "retries": 0,
         "metadata": {
           "ci": {
-            "commitHref": "https://github.com/Enterprise-CMCS/macpro-mako/commit/4920960fc75b67e9c8672e361e534c2db88fcfa4",
-            "commitHash": "4920960fc75b67e9c8672e361e534c2db88fcfa4",
-            "buildHref": "https://github.com/Enterprise-CMCS/macpro-mako/actions/runs/22005647684"
+            "commitHref": "https://github.com/Enterprise-CMCS/macpro-mako/commit/357b5ea2970fac6244253037e8819bfd00733d6c",
+            "commitHash": "357b5ea2970fac6244253037e8819bfd00733d6c",
+            "buildHref": "https://github.com/Enterprise-CMCS/macpro-mako/actions/runs/23257719924"
           },
           "gitCommit": {
-            "shortHash": "4920960",
-            "hash": "4920960fc75b67e9c8672e361e534c2db88fcfa4",
-            "subject": "fix(changelog-timestamp): added time logic to not choke up on date format for changelog (#1826)",
-            "body": "fix(changelog-timestamp): added time logic to not choke up on date format for changelog (#1826)\n\n* added time logic to not choke up on date format for changelog\n\n* Update dashboard.spec.ts",
+            "shortHash": "357b5ea",
+            "hash": "357b5ea2970fac6244253037e8819bfd00733d6c",
+            "subject": "feat: legacy s3 migration - runtime redirect - zip archives",
+            "body": "feat: legacy s3 migration - runtime redirect - zip archives\n\n* feat(legacy-attachment): implement legacy bucket remapping and logging in attachment URL handler; add decommission runbook and update .gitignore\n\n* refactor(legacy-attachment): enhance legacy attachment bucket decommission runbook; implement parameter name resolution and add unit tests\n\n* feat(attachment-archive): implement attachment archive functionality with S3 integration and error handling; add unit tests for backfill and attachment source logic\n\n* feat(attachment-archive): enhance attachment archive functionality with new repair scripts and error handling; add tests for current state resolution and source repair logic\n\n* chore(workflows): consolidate dependency installation into setup action for a11y, deploy, and lint workflows\n\n* test: enhance test coverage for dashboard and waiver amendment forms; refactor test logic for clarity and reliability\n\n* refactor(tests): remove unused import of beforeAll in waiver contracting test files for cleaner code\n\n* chore(workflows): improve coverage report workflow by refining run ID retrieval and adding checks for main coverage summary\n\n* feat(attachment-archive): enhance attachment archive functionality by introducing base bucket handling and overlay prefix management; refactor related functions for improved clarity and maintainability\n\n* test(attachment-archive): add test for rebuilding attachment archive status when execution ARN is inaccessible; enhance error handling for AccessDeniedException\n\n* test(archive-bucket-routing): update tests to include pragma comments for allowlisting secrets in bucket names and ARNs",
             "author": {
-              "name": "James Dinh",
-              "email": "james.d@globalalliantinc.com",
-              "time": 1771023301000
+              "name": "Benjamin Paige",
+              "email": "benjamin.paige@gmail.com",
+              "time": 1773854373000
             },
             "committer": {
               "name": "GitHub",
               "email": "noreply@github.com",
-              "time": 1771023301000
+              "time": 1773854373000
             },
             "branch": "main"
           },
@@ -453,24 +453,24 @@
         "retries": 0,
         "metadata": {
           "ci": {
-            "commitHref": "https://github.com/Enterprise-CMCS/macpro-mako/commit/4920960fc75b67e9c8672e361e534c2db88fcfa4",
-            "commitHash": "4920960fc75b67e9c8672e361e534c2db88fcfa4",
-            "buildHref": "https://github.com/Enterprise-CMCS/macpro-mako/actions/runs/22005647684"
+            "commitHref": "https://github.com/Enterprise-CMCS/macpro-mako/commit/357b5ea2970fac6244253037e8819bfd00733d6c",
+            "commitHash": "357b5ea2970fac6244253037e8819bfd00733d6c",
+            "buildHref": "https://github.com/Enterprise-CMCS/macpro-mako/actions/runs/23257719924"
           },
           "gitCommit": {
-            "shortHash": "4920960",
-            "hash": "4920960fc75b67e9c8672e361e534c2db88fcfa4",
-            "subject": "fix(changelog-timestamp): added time logic to not choke up on date format for changelog (#1826)",
-            "body": "fix(changelog-timestamp): added time logic to not choke up on date format for changelog (#1826)\n\n* added time logic to not choke up on date format for changelog\n\n* Update dashboard.spec.ts",
+            "shortHash": "357b5ea",
+            "hash": "357b5ea2970fac6244253037e8819bfd00733d6c",
+            "subject": "feat: legacy s3 migration - runtime redirect - zip archives",
+            "body": "feat: legacy s3 migration - runtime redirect - zip archives\n\n* feat(legacy-attachment): implement legacy bucket remapping and logging in attachment URL handler; add decommission runbook and update .gitignore\n\n* refactor(legacy-attachment): enhance legacy attachment bucket decommission runbook; implement parameter name resolution and add unit tests\n\n* feat(attachment-archive): implement attachment archive functionality with S3 integration and error handling; add unit tests for backfill and attachment source logic\n\n* feat(attachment-archive): enhance attachment archive functionality with new repair scripts and error handling; add tests for current state resolution and source repair logic\n\n* chore(workflows): consolidate dependency installation into setup action for a11y, deploy, and lint workflows\n\n* test: enhance test coverage for dashboard and waiver amendment forms; refactor test logic for clarity and reliability\n\n* refactor(tests): remove unused import of beforeAll in waiver contracting test files for cleaner code\n\n* chore(workflows): improve coverage report workflow by refining run ID retrieval and adding checks for main coverage summary\n\n* feat(attachment-archive): enhance attachment archive functionality by introducing base bucket handling and overlay prefix management; refactor related functions for improved clarity and maintainability\n\n* test(attachment-archive): add test for rebuilding attachment archive status when execution ARN is inaccessible; enhance error handling for AccessDeniedException\n\n* test(archive-bucket-routing): update tests to include pragma comments for allowlisting secrets in bucket names and ARNs",
             "author": {
-              "name": "James Dinh",
-              "email": "james.d@globalalliantinc.com",
-              "time": 1771023301000
+              "name": "Benjamin Paige",
+              "email": "benjamin.paige@gmail.com",
+              "time": 1773854373000
             },
             "committer": {
               "name": "GitHub",
               "email": "noreply@github.com",
-              "time": 1771023301000
+              "time": 1773854373000
             },
             "branch": "main"
           },
@@ -494,24 +494,24 @@
         "retries": 0,
         "metadata": {
           "ci": {
-            "commitHref": "https://github.com/Enterprise-CMCS/macpro-mako/commit/4920960fc75b67e9c8672e361e534c2db88fcfa4",
-            "commitHash": "4920960fc75b67e9c8672e361e534c2db88fcfa4",
-            "buildHref": "https://github.com/Enterprise-CMCS/macpro-mako/actions/runs/22005647684"
+            "commitHref": "https://github.com/Enterprise-CMCS/macpro-mako/commit/357b5ea2970fac6244253037e8819bfd00733d6c",
+            "commitHash": "357b5ea2970fac6244253037e8819bfd00733d6c",
+            "buildHref": "https://github.com/Enterprise-CMCS/macpro-mako/actions/runs/23257719924"
           },
           "gitCommit": {
-            "shortHash": "4920960",
-            "hash": "4920960fc75b67e9c8672e361e534c2db88fcfa4",
-            "subject": "fix(changelog-timestamp): added time logic to not choke up on date format for changelog (#1826)",
-            "body": "fix(changelog-timestamp): added time logic to not choke up on date format for changelog (#1826)\n\n* added time logic to not choke up on date format for changelog\n\n* Update dashboard.spec.ts",
+            "shortHash": "357b5ea",
+            "hash": "357b5ea2970fac6244253037e8819bfd00733d6c",
+            "subject": "feat: legacy s3 migration - runtime redirect - zip archives",
+            "body": "feat: legacy s3 migration - runtime redirect - zip archives\n\n* feat(legacy-attachment): implement legacy bucket remapping and logging in attachment URL handler; add decommission runbook and update .gitignore\n\n* refactor(legacy-attachment): enhance legacy attachment bucket decommission runbook; implement parameter name resolution and add unit tests\n\n* feat(attachment-archive): implement attachment archive functionality with S3 integration and error handling; add unit tests for backfill and attachment source logic\n\n* feat(attachment-archive): enhance attachment archive functionality with new repair scripts and error handling; add tests for current state resolution and source repair logic\n\n* chore(workflows): consolidate dependency installation into setup action for a11y, deploy, and lint workflows\n\n* test: enhance test coverage for dashboard and waiver amendment forms; refactor test logic for clarity and reliability\n\n* refactor(tests): remove unused import of beforeAll in waiver contracting test files for cleaner code\n\n* chore(workflows): improve coverage report workflow by refining run ID retrieval and adding checks for main coverage summary\n\n* feat(attachment-archive): enhance attachment archive functionality by introducing base bucket handling and overlay prefix management; refactor related functions for improved clarity and maintainability\n\n* test(attachment-archive): add test for rebuilding attachment archive status when execution ARN is inaccessible; enhance error handling for AccessDeniedException\n\n* test(archive-bucket-routing): update tests to include pragma comments for allowlisting secrets in bucket names and ARNs",
             "author": {
-              "name": "James Dinh",
-              "email": "james.d@globalalliantinc.com",
-              "time": 1771023301000
+              "name": "Benjamin Paige",
+              "email": "benjamin.paige@gmail.com",
+              "time": 1773854373000
             },
             "committer": {
               "name": "GitHub",
               "email": "noreply@github.com",
-              "time": 1771023301000
+              "time": 1773854373000
             },
             "branch": "main"
           },
@@ -535,24 +535,24 @@
         "retries": 0,
         "metadata": {
           "ci": {
-            "commitHref": "https://github.com/Enterprise-CMCS/macpro-mako/commit/4920960fc75b67e9c8672e361e534c2db88fcfa4",
-            "commitHash": "4920960fc75b67e9c8672e361e534c2db88fcfa4",
-            "buildHref": "https://github.com/Enterprise-CMCS/macpro-mako/actions/runs/22005647684"
+            "commitHref": "https://github.com/Enterprise-CMCS/macpro-mako/commit/357b5ea2970fac6244253037e8819bfd00733d6c",
+            "commitHash": "357b5ea2970fac6244253037e8819bfd00733d6c",
+            "buildHref": "https://github.com/Enterprise-CMCS/macpro-mako/actions/runs/23257719924"
           },
           "gitCommit": {
-            "shortHash": "4920960",
-            "hash": "4920960fc75b67e9c8672e361e534c2db88fcfa4",
-            "subject": "fix(changelog-timestamp): added time logic to not choke up on date format for changelog (#1826)",
-            "body": "fix(changelog-timestamp): added time logic to not choke up on date format for changelog (#1826)\n\n* added time logic to not choke up on date format for changelog\n\n* Update dashboard.spec.ts",
+            "shortHash": "357b5ea",
+            "hash": "357b5ea2970fac6244253037e8819bfd00733d6c",
+            "subject": "feat: legacy s3 migration - runtime redirect - zip archives",
+            "body": "feat: legacy s3 migration - runtime redirect - zip archives\n\n* feat(legacy-attachment): implement legacy bucket remapping and logging in attachment URL handler; add decommission runbook and update .gitignore\n\n* refactor(legacy-attachment): enhance legacy attachment bucket decommission runbook; implement parameter name resolution and add unit tests\n\n* feat(attachment-archive): implement attachment archive functionality with S3 integration and error handling; add unit tests for backfill and attachment source logic\n\n* feat(attachment-archive): enhance attachment archive functionality with new repair scripts and error handling; add tests for current state resolution and source repair logic\n\n* chore(workflows): consolidate dependency installation into setup action for a11y, deploy, and lint workflows\n\n* test: enhance test coverage for dashboard and waiver amendment forms; refactor test logic for clarity and reliability\n\n* refactor(tests): remove unused import of beforeAll in waiver contracting test files for cleaner code\n\n* chore(workflows): improve coverage report workflow by refining run ID retrieval and adding checks for main coverage summary\n\n* feat(attachment-archive): enhance attachment archive functionality by introducing base bucket handling and overlay prefix management; refactor related functions for improved clarity and maintainability\n\n* test(attachment-archive): add test for rebuilding attachment archive status when execution ARN is inaccessible; enhance error handling for AccessDeniedException\n\n* test(archive-bucket-routing): update tests to include pragma comments for allowlisting secrets in bucket names and ARNs",
             "author": {
-              "name": "James Dinh",
-              "email": "james.d@globalalliantinc.com",
-              "time": 1771023301000
+              "name": "Benjamin Paige",
+              "email": "benjamin.paige@gmail.com",
+              "time": 1773854373000
             },
             "committer": {
               "name": "GitHub",
               "email": "noreply@github.com",
-              "time": 1771023301000
+              "time": 1773854373000
             },
             "branch": "main"
           },
@@ -650,12 +650,12 @@
                               "workerIndex": 0,
                               "parallelIndex": 0,
                               "status": "passed",
-                              "duration": 3977,
+                              "duration": 5017,
                               "errors": [],
                               "stdout": [],
                               "stderr": [],
                               "retry": 0,
-                              "startTime": "2026-02-13T23:15:20.446Z",
+                              "startTime": "2026-03-18T17:22:53.847Z",
                               "annotations": [],
                               "attachments": []
                             }
@@ -686,12 +686,12 @@
                               "workerIndex": 0,
                               "parallelIndex": 0,
                               "status": "passed",
-                              "duration": 2883,
+                              "duration": 5544,
                               "errors": [],
                               "stdout": [],
                               "stderr": [],
                               "retry": 0,
-                              "startTime": "2026-02-13T23:15:24.519Z",
+                              "startTime": "2026-03-18T17:22:58.960Z",
                               "annotations": [],
                               "attachments": []
                             }
@@ -722,12 +722,12 @@
                               "workerIndex": 0,
                               "parallelIndex": 0,
                               "status": "passed",
-                              "duration": 2927,
+                              "duration": 4108,
                               "errors": [],
                               "stdout": [],
                               "stderr": [],
                               "retry": 0,
-                              "startTime": "2026-02-13T23:15:27.427Z",
+                              "startTime": "2026-03-18T17:23:04.517Z",
                               "annotations": [],
                               "attachments": []
                             }
@@ -758,12 +758,12 @@
                               "workerIndex": 0,
                               "parallelIndex": 0,
                               "status": "passed",
-                              "duration": 2874,
+                              "duration": 3969,
                               "errors": [],
                               "stdout": [],
                               "stderr": [],
                               "retry": 0,
-                              "startTime": "2026-02-13T23:15:30.368Z",
+                              "startTime": "2026-03-18T17:23:08.638Z",
                               "annotations": [],
                               "attachments": []
                             }
@@ -794,12 +794,12 @@
                               "workerIndex": 0,
                               "parallelIndex": 0,
                               "status": "passed",
-                              "duration": 2841,
+                              "duration": 2956,
                               "errors": [],
                               "stdout": [],
                               "stderr": [],
                               "retry": 0,
-                              "startTime": "2026-02-13T23:15:33.258Z",
+                              "startTime": "2026-03-18T17:23:12.619Z",
                               "annotations": [],
                               "attachments": []
                             }
@@ -830,12 +830,12 @@
                               "workerIndex": 0,
                               "parallelIndex": 0,
                               "status": "passed",
-                              "duration": 4862,
+                              "duration": 3971,
                               "errors": [],
                               "stdout": [],
                               "stderr": [],
                               "retry": 0,
-                              "startTime": "2026-02-13T23:15:36.113Z",
+                              "startTime": "2026-03-18T17:23:15.586Z",
                               "annotations": [],
                               "attachments": []
                             }
@@ -866,12 +866,12 @@
                               "workerIndex": 0,
                               "parallelIndex": 0,
                               "status": "passed",
-                              "duration": 2957,
+                              "duration": 3999,
                               "errors": [],
                               "stdout": [],
                               "stderr": [],
                               "retry": 0,
-                              "startTime": "2026-02-13T23:15:40.987Z",
+                              "startTime": "2026-03-18T17:23:19.571Z",
                               "annotations": [],
                               "attachments": []
                             }
@@ -917,12 +917,12 @@
                                       "workerIndex": 0,
                                       "parallelIndex": 0,
                                       "status": "passed",
-                                      "duration": 3223,
+                                      "duration": 3361,
                                       "errors": [],
                                       "stdout": [],
                                       "stderr": [],
                                       "retry": 0,
-                                      "startTime": "2026-02-13T23:15:43.955Z",
+                                      "startTime": "2026-03-18T17:23:23.581Z",
                                       "annotations": [],
                                       "attachments": []
                                     }
@@ -953,12 +953,12 @@
                                       "workerIndex": 0,
                                       "parallelIndex": 0,
                                       "status": "passed",
-                                      "duration": 2898,
+                                      "duration": 2847,
                                       "errors": [],
                                       "stdout": [],
                                       "stderr": [],
                                       "retry": 0,
-                                      "startTime": "2026-02-13T23:15:47.189Z",
+                                      "startTime": "2026-03-18T17:23:26.953Z",
                                       "annotations": [],
                                       "attachments": []
                                     }
@@ -989,12 +989,12 @@
                                       "workerIndex": 0,
                                       "parallelIndex": 0,
                                       "status": "passed",
-                                      "duration": 2778,
+                                      "duration": 2885,
                                       "errors": [],
                                       "stdout": [],
                                       "stderr": [],
                                       "retry": 0,
-                                      "startTime": "2026-02-13T23:15:50.099Z",
+                                      "startTime": "2026-03-18T17:23:29.812Z",
                                       "annotations": [],
                                       "attachments": []
                                     }
@@ -1033,12 +1033,12 @@
                                       "workerIndex": 0,
                                       "parallelIndex": 0,
                                       "status": "passed",
-                                      "duration": 3354,
+                                      "duration": 5300,
                                       "errors": [],
                                       "stdout": [],
                                       "stderr": [],
                                       "retry": 0,
-                                      "startTime": "2026-02-13T23:15:52.889Z",
+                                      "startTime": "2026-03-18T17:23:32.709Z",
                                       "annotations": [],
                                       "attachments": []
                                     }
@@ -1069,12 +1069,12 @@
                                       "workerIndex": 0,
                                       "parallelIndex": 0,
                                       "status": "passed",
-                                      "duration": 3094,
+                                      "duration": 5216,
                                       "errors": [],
                                       "stdout": [],
                                       "stderr": [],
                                       "retry": 0,
-                                      "startTime": "2026-02-13T23:15:56.259Z",
+                                      "startTime": "2026-03-18T17:23:38.024Z",
                                       "annotations": [],
                                       "attachments": []
                                     }
@@ -1105,12 +1105,12 @@
                                       "workerIndex": 0,
                                       "parallelIndex": 0,
                                       "status": "passed",
-                                      "duration": 3097,
+                                      "duration": 4219,
                                       "errors": [],
                                       "stdout": [],
                                       "stderr": [],
                                       "retry": 0,
-                                      "startTime": "2026-02-13T23:15:59.365Z",
+                                      "startTime": "2026-03-18T17:23:43.252Z",
                                       "annotations": [],
                                       "attachments": []
                                     }
@@ -1153,16 +1153,16 @@
                               "workerIndex": 0,
                               "parallelIndex": 0,
                               "status": "passed",
-                              "duration": 5196,
+                              "duration": 5901,
                               "errors": [],
                               "stdout": [
                                 {
-                                  "text": "[Download] for stateSubmitter Filename suggested by browser: spas-export-02_13_2026.csv\"\n"
+                                  "text": "[Download] for stateSubmitter Filename suggested by browser: spas-export-03_18_2026.csv\"\n"
                                 }
                               ],
                               "stderr": [],
                               "retry": 0,
-                              "startTime": "2026-02-13T23:16:02.475Z",
+                              "startTime": "2026-03-18T17:23:47.484Z",
                               "annotations": [],
                               "attachments": [
                                 {
@@ -1216,12 +1216,12 @@
                               "workerIndex": 0,
                               "parallelIndex": 0,
                               "status": "passed",
-                              "duration": 2895,
+                              "duration": 3096,
                               "errors": [],
                               "stdout": [],
                               "stderr": [],
                               "retry": 0,
-                              "startTime": "2026-02-13T23:16:07.684Z",
+                              "startTime": "2026-03-18T17:23:53.398Z",
                               "annotations": [],
                               "attachments": []
                             }
@@ -1252,12 +1252,12 @@
                               "workerIndex": 0,
                               "parallelIndex": 0,
                               "status": "passed",
-                              "duration": 2870,
+                              "duration": 2856,
                               "errors": [],
                               "stdout": [],
                               "stderr": [],
                               "retry": 0,
-                              "startTime": "2026-02-13T23:16:10.591Z",
+                              "startTime": "2026-03-18T17:23:56.506Z",
                               "annotations": [],
                               "attachments": []
                             }
@@ -1288,12 +1288,12 @@
                               "workerIndex": 0,
                               "parallelIndex": 0,
                               "status": "passed",
-                              "duration": 2826,
+                              "duration": 3003,
                               "errors": [],
                               "stdout": [],
                               "stderr": [],
                               "retry": 0,
-                              "startTime": "2026-02-13T23:16:13.475Z",
+                              "startTime": "2026-03-18T17:23:59.374Z",
                               "annotations": [],
                               "attachments": []
                             }
@@ -1324,12 +1324,12 @@
                               "workerIndex": 0,
                               "parallelIndex": 0,
                               "status": "passed",
-                              "duration": 2797,
+                              "duration": 2935,
                               "errors": [],
                               "stdout": [],
                               "stderr": [],
                               "retry": 0,
-                              "startTime": "2026-02-13T23:16:16.315Z",
+                              "startTime": "2026-03-18T17:24:02.391Z",
                               "annotations": [],
                               "attachments": []
                             }
@@ -1360,12 +1360,12 @@
                               "workerIndex": 0,
                               "parallelIndex": 0,
                               "status": "passed",
-                              "duration": 2786,
+                              "duration": 2965,
                               "errors": [],
                               "stdout": [],
                               "stderr": [],
                               "retry": 0,
-                              "startTime": "2026-02-13T23:16:19.123Z",
+                              "startTime": "2026-03-18T17:24:05.342Z",
                               "annotations": [],
                               "attachments": []
                             }
@@ -1396,12 +1396,12 @@
                               "workerIndex": 0,
                               "parallelIndex": 0,
                               "status": "passed",
-                              "duration": 2786,
+                              "duration": 2906,
                               "errors": [],
                               "stdout": [],
                               "stderr": [],
                               "retry": 0,
-                              "startTime": "2026-02-13T23:16:21.919Z",
+                              "startTime": "2026-03-18T17:24:08.320Z",
                               "annotations": [],
                               "attachments": []
                             }
@@ -1432,12 +1432,12 @@
                               "workerIndex": 0,
                               "parallelIndex": 0,
                               "status": "passed",
-                              "duration": 1826,
+                              "duration": 3981,
                               "errors": [],
                               "stdout": [],
                               "stderr": [],
                               "retry": 0,
-                              "startTime": "2026-02-13T23:16:24.716Z",
+                              "startTime": "2026-03-18T17:24:11.236Z",
                               "annotations": [],
                               "attachments": []
                             }
@@ -1483,12 +1483,12 @@
                                       "workerIndex": 0,
                                       "parallelIndex": 0,
                                       "status": "passed",
-                                      "duration": 2943,
+                                      "duration": 3361,
                                       "errors": [],
                                       "stdout": [],
                                       "stderr": [],
                                       "retry": 0,
-                                      "startTime": "2026-02-13T23:16:26.553Z",
+                                      "startTime": "2026-03-18T17:24:15.227Z",
                                       "annotations": [],
                                       "attachments": []
                                     }
@@ -1519,12 +1519,12 @@
                                       "workerIndex": 0,
                                       "parallelIndex": 0,
                                       "status": "passed",
-                                      "duration": 1983,
+                                      "duration": 2916,
                                       "errors": [],
                                       "stdout": [],
                                       "stderr": [],
                                       "retry": 0,
-                                      "startTime": "2026-02-13T23:16:29.507Z",
+                                      "startTime": "2026-03-18T17:24:18.599Z",
                                       "annotations": [],
                                       "attachments": []
                                     }
@@ -1555,12 +1555,12 @@
                                       "workerIndex": 0,
                                       "parallelIndex": 0,
                                       "status": "passed",
-                                      "duration": 2757,
+                                      "duration": 2849,
                                       "errors": [],
                                       "stdout": [],
                                       "stderr": [],
                                       "retry": 0,
-                                      "startTime": "2026-02-13T23:16:31.500Z",
+                                      "startTime": "2026-03-18T17:24:21.525Z",
                                       "annotations": [],
                                       "attachments": []
                                     }
@@ -1599,12 +1599,12 @@
                                       "workerIndex": 0,
                                       "parallelIndex": 0,
                                       "status": "passed",
-                                      "duration": 3141,
+                                      "duration": 3324,
                                       "errors": [],
                                       "stdout": [],
                                       "stderr": [],
                                       "retry": 0,
-                                      "startTime": "2026-02-13T23:16:34.268Z",
+                                      "startTime": "2026-03-18T17:24:24.385Z",
                                       "annotations": [],
                                       "attachments": []
                                     }
@@ -1635,12 +1635,12 @@
                                       "workerIndex": 0,
                                       "parallelIndex": 0,
                                       "status": "passed",
-                                      "duration": 2189,
+                                      "duration": 3180,
                                       "errors": [],
                                       "stdout": [],
                                       "stderr": [],
                                       "retry": 0,
-                                      "startTime": "2026-02-13T23:16:37.421Z",
+                                      "startTime": "2026-03-18T17:24:27.722Z",
                                       "annotations": [],
                                       "attachments": []
                                     }
@@ -1671,12 +1671,12 @@
                                       "workerIndex": 0,
                                       "parallelIndex": 0,
                                       "status": "passed",
-                                      "duration": 2893,
+                                      "duration": 3169,
                                       "errors": [],
                                       "stdout": [],
                                       "stderr": [],
                                       "retry": 0,
-                                      "startTime": "2026-02-13T23:16:39.622Z",
+                                      "startTime": "2026-03-18T17:24:30.917Z",
                                       "annotations": [],
                                       "attachments": []
                                     }
@@ -1719,16 +1719,16 @@
                               "workerIndex": 0,
                               "parallelIndex": 0,
                               "status": "passed",
-                              "duration": 4337,
+                              "duration": 6095,
                               "errors": [],
                               "stdout": [
                                 {
-                                  "text": "[Download] for cmsReviewer Filename suggested by browser: spas-export-02_13_2026.csv\"\n"
+                                  "text": "[Download] for cmsReviewer Filename suggested by browser: spas-export-03_18_2026.csv\"\n"
                                 }
                               ],
                               "stderr": [],
                               "retry": 0,
-                              "startTime": "2026-02-13T23:16:42.526Z",
+                              "startTime": "2026-03-18T17:24:34.098Z",
                               "annotations": [],
                               "attachments": [
                                 {
@@ -1758,8 +1758,8 @@
   ],
   "errors": [],
   "stats": {
-    "startTime": "2026-02-13T23:15:08.668Z",
-    "duration": 98300.523,
+    "startTime": "2026-03-18T17:22:40.352Z",
+    "duration": 119954.568,
     "expected": 28,
     "skipped": 0,
     "unexpected": 0,
