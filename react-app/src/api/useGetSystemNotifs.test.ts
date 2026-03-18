@@ -130,4 +130,18 @@ describe("useGetSystemNotif", () => {
 
     apiGetSpy.mockRestore();
   });
+
+  test("falls back to an empty dismissed list when local storage is missing", () => {
+    vi.spyOn(Storage.prototype, "getItem").mockImplementation(() => null);
+
+    const {
+      result: { current: testHook },
+    } = renderHook(() => api.useGetSystemNotifs());
+
+    expect(testHook.dismissed).toStrictEqual([]);
+    expect(testHook.notifications.map((notif) => notif.notifId)).toEqual([
+      "activeNewest",
+      "activeOldest",
+    ]);
+  });
 });
