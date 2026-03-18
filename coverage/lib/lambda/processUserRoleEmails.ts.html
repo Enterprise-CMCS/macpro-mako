@@ -23,30 +23,30 @@
         <div class='clearfix'>
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">97.56% </span>
+                <span class="strong">100% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>40/41</span>
+                <span class='fraction'>39/39</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">77.77% </span>
+                <span class="strong">83.33% </span>
                 <span class="quiet">Branches</span>
-                <span class='fraction'>14/18</span>
+                <span class='fraction'>15/18</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
                 <span class="strong">100% </span>
                 <span class="quiet">Functions</span>
-                <span class='fraction'>3/3</span>
+                <span class='fraction'>2/2</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
                 <span class="strong">100% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>38/38</span>
+                <span class='fraction'>39/39</span>
             </div>
         
             
@@ -178,7 +178,8 @@
 <a name='L113'></a><a href='#L113'>113</a>
 <a name='L114'></a><a href='#L114'>114</a>
 <a name='L115'></a><a href='#L115'>115</a>
-<a name='L116'></a><a href='#L116'>116</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
+<a name='L116'></a><a href='#L116'>116</a>
+<a name='L117'></a><a href='#L117'>117</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -224,8 +225,10 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">7x</span>
+<span class="cline-any cline-yes">6x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -246,12 +249,11 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">7x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">7x</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">6x</span>
-<span class="cline-any cline-yes">6x</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">7x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -338,7 +340,9 @@ export async function sendUserRoleEmails(
         domain: config.osDomain,
         index: `${config.indexNamespace}users`,
       });
-      record.fullName = userInfo.fullName;
+      if (userInfo?.fullName) {
+        record.fullName = userInfo.fullName;
+      }
     } catch (error) {
       console.error("Error trying to get user name:", error);
     }
@@ -347,7 +351,7 @@ export async function sendUserRoleEmails(
   // get the approver list
   <span class="missing-if-branch" title="else path not taken" >E</span>if (templates.length) {
     try {
-      const approverList: { email: string } | null[] = await getApproversByRoleState(
+      const approverList = await getApproversByRoleState(
         record.role,
         record.territory,
         {
@@ -360,15 +364,14 @@ export async function sendUserRoleEmails(
         },
       );
 &nbsp;
-      if (!approverList.length) console.log("NO APPROVERS FOUND");
+      if (!approverList.length) {
+        console.log("NO APPROVERS FOUND");
+      }
 &nbsp;
       const approverListFormated = approverList.map(
-        (approver: { email: string; fullName: string } | null) =&gt; {
-          <span class="missing-if-branch" title="if path not taken" >I</span>if (!approver) <span class="cstat-no" title="statement not covered" >return "";</span>
-          return `${approver.fullName} &lt;${approver.email}&gt;`;
-        },
+        (approver) =&gt; `${approver.fullName} &lt;${approver.email}&gt;`,
       );
-      record.approverList = approverListFormated.filter((approver) =&gt; approver !== "");
+      record.approverList = approverListFormated;
     } catch (error) {
       console.log("Error trying to get approver list: ", error);
     }
@@ -415,7 +418,7 @@ export async function sendUserRoleEmails(
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2026-03-17T02:20:57.570Z
+                at 2026-03-18T17:26:24.860Z
             </div>
         <script src="../../prettify.js"></script>
         <script>

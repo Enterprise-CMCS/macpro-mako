@@ -25,28 +25,28 @@
             <div class='fl pad1y space-right2'>
                 <span class="strong">100% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>9/9</span>
+                <span class='fraction'>8/8</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">75% </span>
+                <span class="strong">100% </span>
                 <span class="quiet">Branches</span>
-                <span class='fraction'>3/4</span>
+                <span class='fraction'>6/6</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
                 <span class="strong">100% </span>
                 <span class="quiet">Functions</span>
-                <span class='fraction'>2/2</span>
+                <span class='fraction'>3/3</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
                 <span class="strong">100% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>9/9</span>
+                <span class='fraction'>8/8</span>
             </div>
         
             
@@ -83,19 +83,15 @@
 <a name='L18'></a><a href='#L18'>18</a>
 <a name='L19'></a><a href='#L19'>19</a>
 <a name='L20'></a><a href='#L20'>20</a>
-<a name='L21'></a><a href='#L21'>21</a>
-<a name='L22'></a><a href='#L22'>22</a>
-<a name='L23'></a><a href='#L23'>23</a>
-<a name='L24'></a><a href='#L24'>24</a>
-<a name='L25'></a><a href='#L25'>25</a>
-<a name='L26'></a><a href='#L26'>26</a>
-<a name='L27'></a><a href='#L27'>27</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
+<a name='L21'></a><a href='#L21'>21</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">4x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">3x</span>
 <span class="cline-any cline-yes">3x</span>
 <span class="cline-any cline-yes">3x</span>
 <span class="cline-any cline-yes">2x</span>
@@ -106,40 +102,26 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">2x</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">import { getPackageChangelog } from "libs/api/package";
-import { response } from "libs/handler-lib";
 import { events } from "shared-types";
 &nbsp;
-export const getPackageType = async (packageId: string) =&gt; {
+function isKnownPackageEvent(event: string): event is keyof typeof events {
+  return event in events;
+}
+&nbsp;
+export const getPackageType = async (packageId: string): Promise&lt;keyof typeof events&gt; =&gt; {
   // use event of current package to determine how ID should be formatted
-  try {
-    const packageChangelog = await getPackageChangelog(packageId);
-    const packageSubmissionType = packageChangelog.hits.hits.find(
-      (pkg) =&gt; pkg._source.event in events,
-    );
+  const packageChangelog = await getPackageChangelog(packageId);
+  const packageSubmissionType = packageChangelog.hits.hits.find((pkg) =&gt; {
+    return !!pkg._source?.event &amp;&amp; isKnownPackageEvent(pkg._source.event);
+  });
 &nbsp;
-    if (!packageSubmissionType) {
-      throw new Error("The type of package could not be determined.");
-    }
-&nbsp;
-    return packageSubmissionType._source.event;
-  } catch (error) {
-    return response({
-      statusCode: 500,
-      body: {
-        message: error.message || <span class="branch-1 cbranch-no" title="branch not covered" >"An error occurred determining the package submission type.",</span>
-      },
-    });
+  if (!packageSubmissionType || !isKnownPackageEvent(packageSubmissionType._source.event)) {
+    throw new Error("The type of package could not be determined.");
   }
+&nbsp;
+  return packageSubmissionType._source.event;
 };
 &nbsp;</pre></td></tr></table></pre>
 
@@ -148,7 +130,7 @@ export const getPackageType = async (packageId: string) =&gt; {
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2026-03-17T02:20:57.570Z
+                at 2026-03-18T17:26:24.860Z
             </div>
         <script src="../../../prettify.js"></script>
         <script>
