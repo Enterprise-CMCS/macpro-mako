@@ -480,6 +480,7 @@ export class Data extends cdk.NestedStack {
           useVpc: true,
           environment: {
             ATTACHMENT_ARCHIVE_REBUILD_QUEUE_URL: attachmentArchiveRebuildQueue.queueUrl,
+            ATTACHMENT_ARCHIVE_REBUILD_TRIGGER_TOPIC_NAME: `${topicNamespace}aws.onemac.migration.cdc`,
             osDomain: `https://${openSearchDomainEndpoint}`,
             indexNamespace,
           },

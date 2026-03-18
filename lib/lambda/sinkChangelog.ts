@@ -48,6 +48,20 @@ export const handler: Handler<KafkaEvent> = async (event) => {
     throw error;
   }
 };
+
+function getTopicNameFromPartition(topicPartition: string): string {
+  return topicPartition.replace(/-\d+$/, "");
+}
+
+function shouldQueueArchiveRebuildForTopic(topicPartition: string): boolean {
+  const configuredTopicName = process.env.ATTACHMENT_ARCHIVE_REBUILD_TRIGGER_TOPIC_NAME;
+  if (!configuredTopicName) {
+    return true;
+  }
+
+  return getTopicNameFromPartition(topicPartition) === configuredTopicName;
+}
+
 function extractIds(input: string): { beforeId: string; afterId: string } | null {
   const regex = /from\s+([^\s]+)\s+to\s+([^\s]+)/;
   const match = input.match(regex);
@@ -272,7 +286,10 @@ const processAndIndex = async ({
   }
   await bulkUpdateDataWrapper(docs, "changelog");
 
-  if (!hasAttachmentArchiveRebuildQueueConfigured()) {
+  if (
+    !hasAttachmentArchiveRebuildQueueConfigured() ||
+    !shouldQueueArchiveRebuildForTopic(topicPartition)
+  ) {
     return;
   }
 

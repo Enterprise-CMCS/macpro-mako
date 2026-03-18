@@ -10,6 +10,12 @@ import { join } from "path";
 import { commonBundlingOptions } from "../config/bundling-config";
 import { DeploymentConfigProperties } from "../config/deployment-config";
 import {
+  getArchiveBaseReadBucket,
+  getArchiveOverlayPrefix,
+  getEphemeralArchiveOverlayBucket,
+  isSharedArchiveStage,
+} from "./archive-bucket-routing";
+import {
   getLegacyAttachmentBucketMapParameterName,
   getLegacyAttachmentMirrorBuckets,
   getSharedAttachmentReadBucket,
@@ -82,32 +88,91 @@ export class Api extends cdk.NestedStack {
     const sharedAttachmentReadBucket = getSharedAttachmentReadBucket(project, stage, this.account);
     const legacyMirrorBuckets = getLegacyAttachmentMirrorBuckets(project, stage, this.account);
     const legacyMirrorBucketArns = legacyMirrorBuckets.arns;
-    const archiveBucket = new Bucket(this, "AttachmentArchiveBucket", {
-      bucketName: `${project}-${stage}-attachment-archives-${this.account}`,
-      versioned: true,
-      encryption: BucketEncryption.S3_MANAGED,
-      blockPublicAccess: BlockPublicAccess.BLOCK_ALL,
-      removalPolicy: isDev ? cdk.RemovalPolicy.DESTROY : cdk.RemovalPolicy.RETAIN,
-      autoDeleteObjects: isDev,
-      lifecycleRules: [
-        {
-          abortIncompleteMultipartUploadAfter: cdk.Duration.days(7),
-          expiration: cdk.Duration.days(365),
-        },
-      ],
-    });
-
-    archiveBucket.addToResourcePolicy(
-      new PolicyStatement({
-        effect: Effect.DENY,
-        principals: [new AnyPrincipal()],
-        actions: ["s3:*"],
-        resources: [archiveBucket.bucketArn, `${archiveBucket.bucketArn}/*`],
-        conditions: {
-          Bool: { "aws:SecureTransport": "false" },
-        },
-      }),
+    const archiveBaseReadBucket = getArchiveBaseReadBucket(project, stage, this.account);
+    const archiveOverlayPrefix = getArchiveOverlayPrefix(stage);
+    const sharedEphemeralArchiveOverlayBucket = getEphemeralArchiveOverlayBucket(
+      project,
+      this.account,
     );
+    const usesSharedArchiveOverlay = !isSharedArchiveStage(stage);
+
+    const managedArchiveBucket = usesSharedArchiveOverlay
+      ? undefined
+      : new Bucket(this, "AttachmentArchiveBucket", {
+          bucketName: `${project}-${stage}-attachment-archives-${this.account}`,
+          versioned: true,
+          encryption: BucketEncryption.S3_MANAGED,
+          blockPublicAccess: BlockPublicAccess.BLOCK_ALL,
+          removalPolicy: isDev ? cdk.RemovalPolicy.DESTROY : cdk.RemovalPolicy.RETAIN,
+          autoDeleteObjects: isDev,
+          lifecycleRules: [
+            {
+              abortIncompleteMultipartUploadAfter: cdk.Duration.days(7),
+              expiration: cdk.Duration.days(365),
+            },
+          ],
+        });
+    const archiveBucket = managedArchiveBucket
+      ? managedArchiveBucket
+      : Bucket.fromBucketName(
+          this,
+          "SharedEphemeralAttachmentArchiveBucket",
+          sharedEphemeralArchiveOverlayBucket.name,
+        );
+
+    if (managedArchiveBucket) {
+      managedArchiveBucket.addToResourcePolicy(
+        new PolicyStatement({
+          effect: Effect.DENY,
+          principals: [new AnyPrincipal()],
+          actions: ["s3:*"],
+          resources: [managedArchiveBucket.bucketArn, `${managedArchiveBucket.bucketArn}/*`],
+          conditions: {
+            Bool: { "aws:SecureTransport": "false" },
+          },
+        }),
+      );
+    }
+
+    if (stage === "main") {
+      const ephemeralArchiveOverlayBucket = new Bucket(
+        this,
+        "EphemeralAttachmentArchiveOverlayBucket",
+        {
+          bucketName: sharedEphemeralArchiveOverlayBucket.name,
+          versioned: true,
+          encryption: BucketEncryption.S3_MANAGED,
+          blockPublicAccess: BlockPublicAccess.BLOCK_ALL,
+          removalPolicy: cdk.RemovalPolicy.RETAIN,
+          lifecycleRules: [
+            {
+              abortIncompleteMultipartUploadAfter: cdk.Duration.days(7),
+              expiration: cdk.Duration.days(365),
+            },
+          ],
+        },
+      );
+
+      ephemeralArchiveOverlayBucket.addToResourcePolicy(
+        new PolicyStatement({
+          effect: Effect.DENY,
+          principals: [new AnyPrincipal()],
+          actions: ["s3:*"],
+          resources: [
+            ephemeralArchiveOverlayBucket.bucketArn,
+            `${ephemeralArchiveOverlayBucket.bucketArn}/*`,
+          ],
+          conditions: {
+            Bool: { "aws:SecureTransport": "false" },
+          },
+        }),
+      );
+    }
+
+    const archiveWriteBucketName = archiveBucket.bucketName;
+    const archiveWriteBucketArn = archiveBucket.bucketArn;
+    const archiveBaseReadBucketName = archiveBaseReadBucket.name;
+    const archiveBaseReadBucketArn = archiveBaseReadBucket.arn;
 
     // Define IAM role
     const lambdaRole = new cdk.aws_iam.Role(this, "LambdaExecutionRole", {
@@ -169,12 +234,17 @@ export class Api extends cdk.NestedStack {
             new cdk.aws_iam.PolicyStatement({
               effect: cdk.aws_iam.Effect.ALLOW,
               actions: ["s3:GetObject", "s3:PutObject"],
-              resources: [`${archiveBucket.bucketArn}/*`],
+              resources: [`${archiveWriteBucketArn}/*`],
             }),
             new cdk.aws_iam.PolicyStatement({
               effect: cdk.aws_iam.Effect.ALLOW,
               actions: ["s3:ListBucket"],
-              resources: [archiveBucket.bucketArn],
+              resources: [archiveWriteBucketArn],
+            }),
+            new cdk.aws_iam.PolicyStatement({
+              effect: cdk.aws_iam.Effect.ALLOW,
+              actions: ["s3:GetObject"],
+              resources: [`${archiveBaseReadBucketArn}/*`],
             }),
             new cdk.aws_iam.PolicyStatement({
               effect: cdk.aws_iam.Effect.ALLOW,
@@ -232,12 +302,22 @@ export class Api extends cdk.NestedStack {
               new cdk.aws_iam.PolicyStatement({
                 effect: cdk.aws_iam.Effect.ALLOW,
                 actions: ["s3:GetObject", "s3:PutObject"],
-                resources: [`${archiveBucket.bucketArn}/*`],
+                resources: [`${archiveWriteBucketArn}/*`],
               }),
               new cdk.aws_iam.PolicyStatement({
                 effect: cdk.aws_iam.Effect.ALLOW,
                 actions: ["s3:ListBucket"],
-                resources: [archiveBucket.bucketArn],
+                resources: [archiveWriteBucketArn],
+              }),
+              new cdk.aws_iam.PolicyStatement({
+                effect: cdk.aws_iam.Effect.ALLOW,
+                actions: ["s3:GetObject"],
+                resources: [`${archiveBaseReadBucketArn}/*`],
+              }),
+              new cdk.aws_iam.PolicyStatement({
+                effect: cdk.aws_iam.Effect.ALLOW,
+                actions: ["s3:ListBucket"],
+                resources: [archiveBaseReadBucketArn],
               }),
               new cdk.aws_iam.PolicyStatement({
                 effect: cdk.aws_iam.Effect.ALLOW,
@@ -286,12 +366,12 @@ export class Api extends cdk.NestedStack {
               new cdk.aws_iam.PolicyStatement({
                 effect: cdk.aws_iam.Effect.ALLOW,
                 actions: ["s3:GetObject", "s3:PutObject"],
-                resources: [`${archiveBucket.bucketArn}/*`],
+                resources: [`${archiveWriteBucketArn}/*`],
               }),
               new cdk.aws_iam.PolicyStatement({
                 effect: cdk.aws_iam.Effect.ALLOW,
                 actions: ["s3:ListBucket"],
-                resources: [archiveBucket.bucketArn],
+                resources: [archiveWriteBucketArn],
               }),
             ],
           }),
@@ -410,7 +490,9 @@ export class Api extends cdk.NestedStack {
         environment: {
           osDomain: `https://${openSearchDomainEndpoint}`,
           indexNamespace,
-          ATTACHMENT_ARCHIVE_BUCKET_NAME: archiveBucket.bucketName,
+          ATTACHMENT_ARCHIVE_BUCKET_NAME: archiveWriteBucketName,
+          ATTACHMENT_ARCHIVE_BASE_BUCKET_NAME: archiveBaseReadBucketName,
+          ATTACHMENT_ARCHIVE_KEY_PREFIX: archiveOverlayPrefix,
           ATTACHMENT_ARCHIVE_REBUILD_QUEUE_URL: attachmentArchiveRebuildQueue.queueUrl,
         },
         role: attachmentArchiveRequestRole,
@@ -630,7 +712,7 @@ export class Api extends cdk.NestedStack {
         id: "markAttachmentArchiveFailed",
         entry: join(__dirname, "../lambda/markAttachmentArchiveFailed.ts"),
         environment: {
-          ATTACHMENT_ARCHIVE_BUCKET_NAME: archiveBucket.bucketName,
+          ATTACHMENT_ARCHIVE_BUCKET_NAME: archiveWriteBucketName,
         },
         role: attachmentArchiveMaintenanceRole,
       },
@@ -638,7 +720,7 @@ export class Api extends cdk.NestedStack {
         id: "validateAttachmentArchive",
         entry: join(__dirname, "../lambda/validateAttachmentArchive.ts"),
         environment: {
-          ATTACHMENT_ARCHIVE_BUCKET_NAME: archiveBucket.bucketName,
+          ATTACHMENT_ARCHIVE_BUCKET_NAME: archiveWriteBucketName,
         },
         role: attachmentArchiveMaintenanceRole,
       },
@@ -648,7 +730,9 @@ export class Api extends cdk.NestedStack {
         environment: {
           osDomain: `https://${openSearchDomainEndpoint}`,
           indexNamespace,
-          ATTACHMENT_ARCHIVE_BUCKET_NAME: archiveBucket.bucketName,
+          ATTACHMENT_ARCHIVE_BUCKET_NAME: archiveWriteBucketName,
+          ATTACHMENT_ARCHIVE_BASE_BUCKET_NAME: archiveBaseReadBucketName,
+          ATTACHMENT_ARCHIVE_KEY_PREFIX: archiveOverlayPrefix,
           ATTACHMENT_ARCHIVE_REBUILD_START_DELAY_MS: "1000",
         },
         role: attachmentArchiveRequestRole,
@@ -660,7 +744,9 @@ export class Api extends cdk.NestedStack {
         environment: {
           osDomain: `https://${openSearchDomainEndpoint}`,
           indexNamespace,
-          ATTACHMENT_ARCHIVE_BUCKET_NAME: archiveBucket.bucketName,
+          ATTACHMENT_ARCHIVE_BUCKET_NAME: archiveWriteBucketName,
+          ATTACHMENT_ARCHIVE_BASE_BUCKET_NAME: archiveBaseReadBucketName,
+          ATTACHMENT_ARCHIVE_KEY_PREFIX: archiveOverlayPrefix,
           ATTACHMENT_ARCHIVE_REBUILD_QUEUE_URL: attachmentArchiveRebuildQueue.queueUrl,
         },
         role: attachmentArchiveRequestRole,
@@ -681,7 +767,9 @@ export class Api extends cdk.NestedStack {
         environment: {
           osDomain: `https://${openSearchDomainEndpoint}`,
           indexNamespace,
-          ATTACHMENT_ARCHIVE_BUCKET_NAME: archiveBucket.bucketName,
+          ATTACHMENT_ARCHIVE_BUCKET_NAME: archiveWriteBucketName,
+          ATTACHMENT_ARCHIVE_BASE_BUCKET_NAME: archiveBaseReadBucketName,
+          ATTACHMENT_ARCHIVE_KEY_PREFIX: archiveOverlayPrefix,
         },
         role: attachmentArchiveRequestRole,
         timeoutSeconds: 900,
@@ -759,7 +847,7 @@ export class Api extends cdk.NestedStack {
             new cdk.aws_iam.PolicyStatement({
               effect: cdk.aws_iam.Effect.ALLOW,
               actions: ["s3:GetObject", "s3:PutObject"],
-              resources: [`${archiveBucket.bucketArn}/*`],
+              resources: [`${archiveWriteBucketArn}/*`],
             }),
             new cdk.aws_iam.PolicyStatement({
               effect: cdk.aws_iam.Effect.ALLOW,
@@ -1472,6 +1560,14 @@ export class Api extends cdk.NestedStack {
 
     new LC.EmptyBuckets(this, "EmptyBuckets", {
       buckets: [],
+      bucketPrefixes: usesSharedArchiveOverlay
+        ? [
+            {
+              bucket: archiveBucket,
+              prefix: archiveOverlayPrefix,
+            },
+          ]
+        : [],
     });
 
     if (!isDev) {

@@ -15,10 +15,7 @@ import {
   parseAttachmentArchiveCurrent,
 } from "../attachment-archive/archive-manifest";
 import { getAttachmentBucketMap } from "../attachment-archive/bucket-routing";
-import {
-  type AttachmentArchiveCurrentResolution,
-  resolveAttachmentArchiveCurrentState,
-} from "../attachment-archive/current-state";
+import { resolveAttachmentArchiveCurrentState } from "../attachment-archive/current-state";
 import {
   buildAttachmentArchiveSections,
   getAttachmentArchiveSectionById,
@@ -48,11 +45,14 @@ type ArchiveArtifactPlan = {
   scope: AttachmentArchiveScope;
   attachmentCount: number;
   artifactKey: string;
+  baseArtifactKey: string;
   currentKey: string;
+  baseCurrentKey: string;
   downloadFilename: string;
   hash: string;
   manifest: AttachmentArchivePackageManifest | AttachmentArchiveSectionManifest;
   manifestKey: string;
+  baseManifestKey: string;
   sectionId?: string;
   sectionNumber?: number;
   sectionLabel?: string;
@@ -61,9 +61,17 @@ type ArchiveArtifactPlan = {
 
 type ArchiveArtifactResult = {
   artifact: ArchiveArtifactPlan;
+  artifactBucketName: string;
+  artifactKey: string;
   current?: AttachmentArchiveCurrent;
   started: boolean;
   status: "FAILED" | "PENDING" | "READY" | "RUNNING";
+};
+
+type ArchiveStorageConfig = {
+  baseReadBucketName: string;
+  keyPrefix: string;
+  writeBucketName: string;
 };
 
 type PackageArchivePlan = {
@@ -78,6 +86,26 @@ function getArchiveBucketName(): string {
   }
 
   return bucketName;
+}
+
+function getArchiveBaseBucketName(): string {
+  return process.env.ATTACHMENT_ARCHIVE_BASE_BUCKET_NAME || getArchiveBucketName();
+}
+
+function getArchiveKeyPrefix(): string {
+  return (process.env.ATTACHMENT_ARCHIVE_KEY_PREFIX || "").replace(/^\/+|\/+$/g, "");
+}
+
+function getArchiveStorageConfig(): ArchiveStorageConfig {
+  return {
+    writeBucketName: getArchiveBucketName(),
+    baseReadBucketName: getArchiveBaseBucketName(),
+    keyPrefix: getArchiveKeyPrefix(),
+  };
+}
+
+function prefixArchiveKey(key: string, keyPrefix: string): string {
+  return keyPrefix ? `${keyPrefix}/${key}` : key;
 }
 
 function getArchiveStateMachineArn(): string {
@@ -144,6 +172,96 @@ async function buildReadyResponse({
   };
 }
 
+async function getArchiveArtifactCurrent({
+  archiveBucketName,
+  currentKey,
+}: {
+  archiveBucketName: string;
+  currentKey: string;
+}) {
+  const rawCurrent = await getObjectText({
+    client: archiveBucketClient,
+    bucket: archiveBucketName,
+    key: currentKey,
+  });
+
+  return parseAttachmentArchiveCurrent(rawCurrent);
+}
+
+async function resolveArchiveArtifactState({
+  archiveBucketName,
+  artifactKey,
+  current,
+  expectedHash,
+}: {
+  archiveBucketName: string;
+  artifactKey: string;
+  current?: AttachmentArchiveCurrent;
+  expectedHash: string;
+}) {
+  const resolvedArtifactKey = current?.artifactKey || artifactKey;
+  const artifactExists =
+    current?.status === "READY"
+      ? await objectExists({
+          client: archiveBucketClient,
+          bucket: archiveBucketName,
+          key: resolvedArtifactKey,
+        })
+      : false;
+  const hasRunningExecution = current?.executionArn
+    ? await isArchiveExecutionRunning(current.executionArn)
+    : undefined;
+
+  return resolveAttachmentArchiveCurrentState({
+    expectedHash,
+    current,
+    artifactExists,
+    hasRunningExecution,
+  });
+}
+
+async function syncManifestToWriteBucket({
+  baseBucketName,
+  baseManifestKey,
+  writeBucketName,
+  writeManifestKey,
+}: {
+  baseBucketName: string;
+  baseManifestKey: string;
+  writeBucketName: string;
+  writeManifestKey: string;
+}) {
+  if (baseBucketName === writeBucketName && baseManifestKey === writeManifestKey) {
+    return;
+  }
+
+  const existingManifest = await getObjectText({
+    client: archiveBucketClient,
+    bucket: writeBucketName,
+    key: writeManifestKey,
+  });
+  if (existingManifest) {
+    return;
+  }
+
+  const manifest = await getJsonObject({
+    client: archiveBucketClient,
+    bucket: baseBucketName,
+    key: baseManifestKey,
+  });
+
+  if (!manifest) {
+    throw new Error(`Attachment archive manifest ${baseManifestKey} was not found`);
+  }
+
+  await putJsonObject({
+    client: archiveBucketClient,
+    bucket: writeBucketName,
+    key: writeManifestKey,
+    body: manifest,
+  });
+}
+
 function createArchiveExecutionIdentity(hash: string) {
   const executionName = `attachment-archive-${hash.slice(0, 24)}-${Date.now()}-${Math.floor(
     Math.random() * 1_000_000,
@@ -186,6 +304,7 @@ function buildPackageArchivePlan({
   packageId: string;
   changelog: opensearch.changelog.ItemResult[];
 }): PackageArchivePlan | undefined {
+  const { keyPrefix } = getArchiveStorageConfig();
   const sectionDescriptors = buildAttachmentArchiveSections({ packageId, changelog });
   if (sectionDescriptors.length === 0) {
     return undefined;
@@ -202,12 +321,12 @@ function buildPackageArchivePlan({
       rootFolderName: section.rootFolderName,
       attachments: section.attachments,
     });
-    const currentKey = getArchiveCurrentKey({
+    const baseCurrentKey = getArchiveCurrentKey({
       packageId,
       scope: "section",
       sectionId: section.sectionId,
     });
-    const manifestKey = getArchiveManifestKey(
+    const baseManifestKey = getArchiveManifestKey(
       {
         packageId,
         scope: "section",
@@ -215,7 +334,7 @@ function buildPackageArchivePlan({
       },
       manifest.hash,
     );
-    const artifactKey = getArchiveArtifactKey(
+    const baseArtifactKey = getArchiveArtifactKey(
       {
         packageId,
         scope: "section",
@@ -227,8 +346,10 @@ function buildPackageArchivePlan({
     return {
       scope: "section",
       attachmentCount: manifest.attachments.length,
-      artifactKey,
-      currentKey,
+      artifactKey: prefixArchiveKey(baseArtifactKey, keyPrefix),
+      baseArtifactKey,
+      currentKey: prefixArchiveKey(baseCurrentKey, keyPrefix),
+      baseCurrentKey,
       downloadFilename: getArchiveDownloadFilename({
         packageId,
         scope: "section",
@@ -237,7 +358,8 @@ function buildPackageArchivePlan({
       }),
       hash: manifest.hash,
       manifest,
-      manifestKey,
+      manifestKey: prefixArchiveKey(baseManifestKey, keyPrefix),
+      baseManifestKey,
       sectionId: section.sectionId,
       sectionNumber: section.sectionNumber,
       sectionLabel: section.sectionLabel,
@@ -260,18 +382,30 @@ function buildPackageArchivePlan({
     })),
   });
 
+  const basePackageArtifactKey = getArchiveArtifactKey(
+    { packageId, scope: "all" },
+    packageManifest.hash,
+  );
+  const basePackageCurrentKey = getArchiveCurrentKey({ packageId, scope: "all" });
+  const basePackageManifestKey = getArchiveManifestKey(
+    { packageId, scope: "all" },
+    packageManifest.hash,
+  );
   const packageArtifact: ArchiveArtifactPlan = {
     scope: "all",
     attachmentCount: sectionArtifacts.reduce(
       (total, artifact) => total + artifact.attachmentCount,
       0,
     ),
-    artifactKey: getArchiveArtifactKey({ packageId, scope: "all" }, packageManifest.hash),
-    currentKey: getArchiveCurrentKey({ packageId, scope: "all" }),
+    artifactKey: prefixArchiveKey(basePackageArtifactKey, keyPrefix),
+    baseArtifactKey: basePackageArtifactKey,
+    currentKey: prefixArchiveKey(basePackageCurrentKey, keyPrefix),
+    baseCurrentKey: basePackageCurrentKey,
     downloadFilename: getArchiveDownloadFilename({ packageId, scope: "all" }),
     hash: packageManifest.hash,
     manifest: packageManifest,
-    manifestKey: getArchiveManifestKey({ packageId, scope: "all" }, packageManifest.hash),
+    manifestKey: prefixArchiveKey(basePackageManifestKey, keyPrefix),
+    baseManifestKey: basePackageManifestKey,
   };
 
   return {
@@ -330,22 +464,6 @@ function getRequestedArtifact({
   return sectionArtifact;
 }
 
-async function getArchiveArtifactCurrent({
-  archiveBucketName,
-  artifact,
-}: {
-  archiveBucketName: string;
-  artifact: ArchiveArtifactPlan;
-}) {
-  const rawCurrent = await getObjectText({
-    client: archiveBucketClient,
-    bucket: archiveBucketName,
-    key: artifact.currentKey,
-  });
-
-  return parseAttachmentArchiveCurrent(rawCurrent);
-}
-
 async function isArchiveExecutionRunning(executionArn: string): Promise<boolean> {
   try {
     const response = await stateMachineClient.send(
@@ -365,63 +483,148 @@ async function isArchiveExecutionRunning(executionArn: string): Promise<boolean>
   }
 }
 
-async function resolveArchiveArtifactState({
-  archiveBucketName,
+async function resolveArchiveArtifactForRead({
   artifact,
-  current,
 }: {
-  archiveBucketName: string;
   artifact: ArchiveArtifactPlan;
-  current?: AttachmentArchiveCurrent;
-}): Promise<AttachmentArchiveCurrentResolution> {
-  const artifactKey = current?.artifactKey || artifact.artifactKey;
-  const artifactExists =
-    current?.status === "READY"
-      ? await objectExists({
-          client: archiveBucketClient,
-          bucket: archiveBucketName,
-          key: artifactKey,
-        })
-      : false;
-  const hasRunningExecution = current?.executionArn
-    ? await isArchiveExecutionRunning(current.executionArn)
-    : undefined;
+}): Promise<
+  | {
+      action: "ready";
+      artifactKey: string;
+      bucketName: string;
+      current?: AttachmentArchiveCurrent;
+    }
+  | {
+      action: "in_progress";
+      current?: AttachmentArchiveCurrent;
+      status: "PENDING" | "RUNNING";
+    }
+  | {
+      action: "rebuild";
+      current?: AttachmentArchiveCurrent;
+      reason: string;
+    }
+> {
+  const { baseReadBucketName, writeBucketName } = getArchiveStorageConfig();
 
-  return resolveAttachmentArchiveCurrentState({
-    expectedHash: artifact.hash,
-    current,
-    artifactExists,
-    hasRunningExecution,
+  const writeCurrent = await getArchiveArtifactCurrent({
+    archiveBucketName: writeBucketName,
+    currentKey: artifact.currentKey,
   });
+  const writeResolution = await resolveArchiveArtifactState({
+    archiveBucketName: writeBucketName,
+    artifactKey: artifact.artifactKey,
+    current: writeCurrent,
+    expectedHash: artifact.hash,
+  });
+
+  if (writeResolution.action === "ready") {
+    return {
+      action: "ready",
+      artifactKey: writeCurrent?.artifactKey || artifact.artifactKey,
+      bucketName: writeBucketName,
+      current: writeCurrent,
+    };
+  }
+
+  if (writeResolution.action === "in_progress") {
+    return {
+      action: "in_progress",
+      current: writeCurrent,
+      status: writeResolution.status,
+    };
+  }
+
+  if (
+    baseReadBucketName !== writeBucketName ||
+    artifact.baseCurrentKey !== artifact.currentKey ||
+    artifact.baseArtifactKey !== artifact.artifactKey
+  ) {
+    const baseCurrent = await getArchiveArtifactCurrent({
+      archiveBucketName: baseReadBucketName,
+      currentKey: artifact.baseCurrentKey,
+    });
+    const baseResolution = await resolveArchiveArtifactState({
+      archiveBucketName: baseReadBucketName,
+      artifactKey: artifact.baseArtifactKey,
+      current: baseCurrent,
+      expectedHash: artifact.hash,
+    });
+
+    if (baseResolution.action === "ready") {
+      return {
+        action: "ready",
+        artifactKey: baseCurrent?.artifactKey || artifact.baseArtifactKey,
+        bucketName: baseReadBucketName,
+        current: baseCurrent,
+      };
+    }
+
+    if (baseResolution.action === "in_progress") {
+      return {
+        action: "in_progress",
+        current: baseCurrent,
+        status: baseResolution.status,
+      };
+    }
+  }
+
+  return {
+    action: "rebuild",
+    current: writeCurrent,
+    reason: writeResolution.reason,
+  };
 }
 
 async function ensureArchiveArtifact({
-  archiveBucketName,
   artifact,
   beforeStart,
+  syncBaseManifestToWrite = false,
 }: {
-  archiveBucketName: string;
   artifact: ArchiveArtifactPlan;
   beforeStart?: () => Promise<void>;
+  syncBaseManifestToWrite?: boolean;
 }): Promise<ArchiveArtifactResult> {
-  const current = await getArchiveArtifactCurrent({ archiveBucketName, artifact });
-  const resolution = await resolveArchiveArtifactState({
-    archiveBucketName,
-    artifact,
-    current,
-  });
+  const { writeBucketName } = getArchiveStorageConfig();
+  const resolution = await resolveArchiveArtifactForRead({ artifact });
 
   if (resolution.action === "ready") {
-    return { artifact, current, started: false, status: "READY" };
+    if (syncBaseManifestToWrite) {
+      await syncManifestToWriteBucket({
+        baseBucketName: resolution.bucketName,
+        baseManifestKey:
+          resolution.bucketName === writeBucketName
+            ? artifact.manifestKey
+            : artifact.baseManifestKey,
+        writeBucketName,
+        writeManifestKey: artifact.manifestKey,
+      });
+    }
+
+    return {
+      artifact,
+      artifactBucketName: resolution.bucketName,
+      artifactKey: resolution.artifactKey,
+      current: resolution.current,
+      started: false,
+      status: "READY",
+    };
   }
 
   if (resolution.action === "in_progress") {
-    return { artifact, current, started: false, status: resolution.status };
+    return {
+      artifact,
+      artifactBucketName: writeBucketName,
+      artifactKey: artifact.artifactKey,
+      current: resolution.current,
+      started: false,
+      status: resolution.status,
+    };
   }
 
   await putJsonObject({
     client: archiveBucketClient,
-    bucket: archiveBucketName,
+    bucket: writeBucketName,
     key: artifact.manifestKey,
     body: artifact.manifest,
   });
@@ -434,7 +637,7 @@ async function ensureArchiveArtifact({
 
   await putJsonObject({
     client: archiveBucketClient,
-    bucket: archiveBucketName,
+    bucket: writeBucketName,
     key: artifact.currentKey,
     body: buildAttachmentArchiveCurrent({
       scope: artifact.scope,
@@ -454,7 +657,7 @@ async function ensureArchiveArtifact({
   try {
     await startArchiveExecution({
       input: {
-        archiveBucketName,
+        archiveBucketName: writeBucketName,
         artifactKey: artifact.artifactKey,
         attachmentCount: artifact.attachmentCount,
         currentKey: artifact.currentKey,
@@ -467,7 +670,7 @@ async function ensureArchiveArtifact({
   } catch (error) {
     await putJsonObject({
       client: archiveBucketClient,
-      bucket: archiveBucketName,
+      bucket: writeBucketName,
       key: artifact.currentKey,
       body: buildAttachmentArchiveCurrent({
         scope: artifact.scope,
@@ -491,6 +694,8 @@ async function ensureArchiveArtifact({
 
   return {
     artifact,
+    artifactBucketName: writeBucketName,
+    artifactKey: artifact.artifactKey,
     current: buildAttachmentArchiveCurrent({
       scope: artifact.scope,
       hash: artifact.hash,
@@ -520,20 +725,14 @@ export async function getRequestedAttachmentArchiveStatus({
   sectionId?: string;
   changelog: opensearch.changelog.ItemResult[];
 }) {
-  const archiveBucketName = getArchiveBucketName();
   const artifact = getRequestedArtifact({ packageId, scope, sectionId, changelog });
-  const current = await getArchiveArtifactCurrent({ archiveBucketName, artifact });
-  const resolution = await resolveArchiveArtifactState({
-    archiveBucketName,
-    artifact,
-    current,
-  });
+  const resolution = await resolveArchiveArtifactForRead({ artifact });
 
   if (resolution.action === "ready") {
     return {
       response: await buildReadyResponse({
-        archiveBucketName,
-        artifactKey: current?.artifactKey || artifact.artifactKey,
+        archiveBucketName: resolution.bucketName,
+        artifactKey: resolution.artifactKey,
         fileName: artifact.downloadFilename,
       }),
       needsRebuild: false,
@@ -627,7 +826,6 @@ export async function rebuildPackageAttachmentArchives({
     };
   }
 
-  const archiveBucketName = getArchiveBucketName();
   const rebuildStartDelayMs = getArchiveRebuildStartDelayMs();
   let startedArtifactCount = 0;
   let delayedStartCount = 0;
@@ -649,9 +847,9 @@ export async function rebuildPackageAttachmentArchives({
   };
   const ensureArchiveArtifactWithThrottle = async (artifact: ArchiveArtifactPlan) => {
     const result = await ensureArchiveArtifact({
-      archiveBucketName,
       artifact,
       beforeStart: waitForStartThrottle,
+      syncBaseManifestToWrite: artifact.scope === "section",
     });
     if (result.started) {
       startedArtifactCount += 1;

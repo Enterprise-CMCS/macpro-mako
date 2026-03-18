@@ -18,31 +18,58 @@ const MAX_SAMPLE_ITEMS = 25;
 const STATUS_BATCH_SIZE = 25;
 const archiveBucketClient = new S3Client({ region: process.env.region || process.env.AWS_REGION });
 
-function getArchiveBucketName() {
-  const bucketName = process.env.ATTACHMENT_ARCHIVE_BUCKET_NAME;
-  if (!bucketName) {
+function getArchiveStorageConfig() {
+  const writeBucketName = process.env.ATTACHMENT_ARCHIVE_BUCKET_NAME;
+  if (!writeBucketName) {
     throw new Error("ATTACHMENT_ARCHIVE_BUCKET_NAME must be defined");
   }
 
-  return bucketName;
+  const baseBucketName = process.env.ATTACHMENT_ARCHIVE_BASE_BUCKET_NAME || writeBucketName;
+  const keyPrefix = (process.env.ATTACHMENT_ARCHIVE_KEY_PREFIX || "").replace(/^\/+|\/+$/g, "");
+
+  return {
+    baseBucketName,
+    keyPrefix,
+    writeBucketName,
+  };
 }
 
-async function listArchiveCurrentKeys(bucket: string) {
+function applyArchiveKeyPrefix(key: string, keyPrefix: string) {
+  return keyPrefix ? `${keyPrefix}/${key}` : key;
+}
+
+function removeArchiveKeyPrefix(key: string, keyPrefix: string) {
+  if (!keyPrefix) {
+    return key;
+  }
+
+  const expectedPrefix = `${keyPrefix}/`;
+  return key.startsWith(expectedPrefix) ? key.slice(expectedPrefix.length) : key;
+}
+
+async function listArchiveCurrentKeys({
+  bucket,
+  keyPrefix = "",
+}: {
+  bucket: string;
+  keyPrefix?: string;
+}) {
   const keys = new Set<string>();
   let continuationToken: string | undefined;
+  const objectPrefix = keyPrefix ? `${keyPrefix}/package/` : "package/";
 
   do {
     const response = (await archiveBucketClient.send(
       new ListObjectsV2Command({
         Bucket: bucket,
         ContinuationToken: continuationToken,
-        Prefix: "package/",
+        Prefix: objectPrefix,
       }),
     )) as ListObjectsV2CommandOutput;
 
     for (const object of response.Contents || []) {
       if (object.Key?.endsWith("/current.json")) {
-        keys.add(object.Key);
+        keys.add(removeArchiveKeyPrefix(object.Key, keyPrefix));
       }
     }
 
@@ -65,10 +92,10 @@ async function getCurrentStatus({ bucket, key }: { bucket: string; key: string }
 }
 
 async function listNonReadyCurrentKeys({
-  bucket,
+  storage,
   currentKeys,
 }: {
-  bucket: string;
+  storage: ReturnType<typeof getArchiveStorageConfig>;
   currentKeys: string[];
 }) {
   const notReadyKeys: string[] = [];
@@ -77,7 +104,17 @@ async function listNonReadyCurrentKeys({
     const batch = currentKeys.slice(index, index + STATUS_BATCH_SIZE);
     const results = await Promise.all(
       batch.map(async (key) => {
-        const current = await getCurrentStatus({ bucket, key });
+        const overlayKey = applyArchiveKeyPrefix(key, storage.keyPrefix);
+        const overlayCurrent = await getCurrentStatus({
+          bucket: storage.writeBucketName,
+          key: overlayKey,
+        }).catch(() => undefined);
+        const current =
+          overlayCurrent ||
+          (await getCurrentStatus({
+            bucket: storage.baseBucketName,
+            key,
+          }).catch(() => undefined));
         return current?.status === "READY" ? undefined : key;
       }),
     );
@@ -97,12 +134,20 @@ function sampleItems<T>(items: T[]) {
 }
 
 export const handler = async () => {
-  const archiveBucketName = getArchiveBucketName();
-  const [expectedPackageIds, expectedSections, currentKeys] = await Promise.all([
-    listAllAttachmentArchivePackageIds(),
-    listAllAttachmentArchiveSections(),
-    listArchiveCurrentKeys(archiveBucketName),
-  ]);
+  const storage = getArchiveStorageConfig();
+  const [expectedPackageIds, expectedSections, overlayCurrentKeys, baseCurrentKeys] =
+    await Promise.all([
+      listAllAttachmentArchivePackageIds(),
+      listAllAttachmentArchiveSections(),
+      listArchiveCurrentKeys({
+        bucket: storage.writeBucketName,
+        keyPrefix: storage.keyPrefix,
+      }),
+      listArchiveCurrentKeys({
+        bucket: storage.baseBucketName,
+      }),
+    ]);
+  const currentKeys = Array.from(new Set([...baseCurrentKeys, ...overlayCurrentKeys])).sort();
   const currentKeySet = new Set(currentKeys);
 
   const expectedPackageKeys = new Set(
@@ -131,14 +176,16 @@ export const handler = async () => {
   const extraPackageKeys = existingPackageKeys.filter((key) => !expectedPackageKeys.has(key));
   const extraSectionKeys = existingSectionKeys.filter((key) => !expectedSectionKeys.has(key));
   const notReadyKeys = await listNonReadyCurrentKeys({
-    bucket: archiveBucketName,
+    storage,
     currentKeys,
   });
   const notReadyPackageKeys = notReadyKeys.filter((key) => key.includes("/all/current.json"));
   const notReadySectionKeys = notReadyKeys.filter((key) => key.includes("/section/"));
 
   return {
-    archiveBucketName,
+    archiveBucketName: storage.writeBucketName,
+    archiveBaseBucketName: storage.baseBucketName,
+    archiveKeyPrefix: storage.keyPrefix,
     exactCoverageMatches:
       missingPackageKeys.length === 0 &&
       missingSectionKeys.length === 0 &&
