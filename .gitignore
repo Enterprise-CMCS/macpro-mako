@@ -28,3 +28,6 @@ coverage
 .idea
 .vscode
 .history
+
+test/local/*
+docs/local/*

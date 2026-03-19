@@ -1,7 +1,7 @@
 import { useMemo } from "react";
 import { opensearch } from "shared-types";
 import { ItemResult } from "shared-types/opensearch/changelog";
-import { formatDateToET } from "shared-utils";
+import { formatDateToET, getPackageActivityLabel } from "shared-utils";
 
 import {
   Accordion,
@@ -55,9 +55,7 @@ const DRAFT_ATTACHMENT_LABELS: Record<string, string> = {
 
 const humanizeDraftAttachmentKey = (key: string) =>
   DRAFT_ATTACHMENT_LABELS[key] ??
-  key
-    .replace(/([a-z0-9])([A-Z])/g, "$1 $2")
-    .replace(/\b\w/g, (char) => char.toUpperCase());
+  key.replace(/([a-z0-9])([A-Z])/g, "$1 $2").replace(/\b\w/g, (char) => char.toUpperCase());
 
 const getDraftAttachments = (
   submission?: opensearch.main.Document,
@@ -87,7 +85,8 @@ const getDraftAttachments = (
       const maybeAttachment = file as Record<string, unknown>;
       const filename =
         typeof maybeAttachment.filename === "string" ? maybeAttachment.filename : undefined;
-      const bucket = typeof maybeAttachment.bucket === "string" ? maybeAttachment.bucket : undefined;
+      const bucket =
+        typeof maybeAttachment.bucket === "string" ? maybeAttachment.bucket : undefined;
       const key = typeof maybeAttachment.key === "string" ? maybeAttachment.key : undefined;
       const uploadDate =
         typeof maybeAttachment.uploadDate === "number" ? maybeAttachment.uploadDate : undefined;
@@ -137,7 +136,7 @@ type AttachmentDetailsProps = {
   id: string;
   packageId: string;
   attachments: opensearch.changelog.Document["attachments"];
-  onClick: (attachment: Attachments[number]) => Promise<string>;
+  onClick: (attachment: Attachments[number]) => Promise<string | undefined>;
 };
 
 const AttachmentDetails = ({ id, packageId, attachments, onClick }: AttachmentDetailsProps) => (
@@ -151,7 +150,11 @@ const AttachmentDetails = ({ id, packageId, attachments, onClick }: AttachmentDe
               className="ml-[-15px] align-left text-left min-h-fit"
               variant="link"
               onClick={() => {
-                onClick(attachment).then(window.open);
+                onClick(attachment).then((url) => {
+                  if (url) {
+                    window.open(url);
+                  }
+                });
                 sendGAEvent("attachment_download", {
                   document_type: attachment.title,
                   package_id: packageId,
@@ -173,14 +176,15 @@ type SubmissionProps = {
 
 const Submission = ({ packageActivity }: SubmissionProps) => {
   const { attachments = [], id, packageId, additionalInformation } = packageActivity;
-  const { onUrl, loading, onZip } = useAttachmentService({ packageId });
+  const { archiveErrorMessage, attachmentErrorMessage, onArchive, onUrl, loading } =
+    useAttachmentService({ packageId });
 
   return (
     <div className="flex flex-col gap-6">
       <div>
         <h2 className="font-bold text-lg mb-2">Attachments</h2>
 
-        {attachments && attachments?.length > 0 ? (
+        {attachments && attachments.length > 0 ? (
           <Table>
             <TableHeader>
               <TableRow>
@@ -199,22 +203,38 @@ const Submission = ({ packageActivity }: SubmissionProps) => {
         ) : (
           <p>No information submitted</p>
         )}
+        {attachmentErrorMessage && (
+          <p role="alert" className="mt-2 text-red-700">
+            {attachmentErrorMessage}
+          </p>
+        )}
       </div>
-      {!packageActivity.isSyntheticDraft && attachments && attachments.length > 1 && (
-        <Button
-          variant="outline"
-          className="w-max"
-          loading={loading}
-          onClick={() => {
-            onZip(attachments);
-            sendGAEvent("section_attachments_download", {
-              number_attachments: attachments.length,
-              package_id: packageId,
-            });
-          }}
-        >
-          Download section attachments
-        </Button>
+      {!packageActivity.isSyntheticDraft && attachments.length > 1 && (
+        <>
+          <Button
+            variant="outline"
+            className="w-max"
+            loading={loading}
+            onClick={() => {
+              onArchive({ scope: "section", sectionId: id }).then((url) => {
+                if (url) {
+                  window.open(url);
+                }
+              });
+              sendGAEvent("section_attachments_download", {
+                number_attachments: attachments.length,
+                package_id: packageId,
+              });
+            }}
+          >
+            Download section attachments
+          </Button>
+          {archiveErrorMessage && (
+            <p role="alert" className="text-red-700">
+              {archiveErrorMessage}
+            </p>
+          )}
+        </>
       )}
       <div>
         <h2 className="font-bold text-lg mb-2">Additional Information</h2>
@@ -256,7 +276,7 @@ type DownloadAllButtonProps = {
 };
 
 const DownloadAllButton = ({ packageId, packageActivities }: DownloadAllButtonProps) => {
-  const { onZip, loading } = useAttachmentService({ packageId });
+  const { archiveErrorMessage, loading, onArchive } = useAttachmentService({ packageId });
 
   if (packageActivities.length === 0) {
     return null;
@@ -266,20 +286,24 @@ const DownloadAllButton = ({ packageId, packageActivities }: DownloadAllButtonPr
     return null;
   }
 
+  const attachmentsAggregate = packageActivities.reduce<Attachments>((acc, packageActivity) => {
+    if (!packageActivity.attachments || packageActivity.attachments.length === 0) {
+      return acc;
+    }
+
+    return acc.concat(packageActivity.attachments);
+  }, []);
+
   const onDownloadAll = () => {
-    const attachmentsAggregate = packageActivities.reduce<Attachments>((acc, packageActivity) => {
-      if (!packageActivity.attachments || packageActivity.attachments.length === 0) {
-        return acc;
-      }
-
-      return acc.concat(packageActivity.attachments);
-    }, []);
-
     if (attachmentsAggregate.length === 0) {
       return;
     }
 
-    onZip(attachmentsAggregate);
+    onArchive({ scope: "all" }).then((url) => {
+      if (url) {
+        window.open(url);
+      }
+    });
     sendGAEvent("all_attachments_download", {
       number_attachments: attachmentsAggregate.length,
       package_id: packageId,
@@ -287,14 +311,21 @@ const DownloadAllButton = ({ packageId, packageActivities }: DownloadAllButtonPr
   };
 
   return (
-    <Button
-      loading={loading}
-      onClick={onDownloadAll}
-      variant="outline"
-      className="max-w-fit min-h-fit justify-self-end"
-    >
-      Download all attachments
-    </Button>
+    <>
+      <Button
+        loading={loading}
+        onClick={onDownloadAll}
+        variant="outline"
+        className="max-w-fit min-h-fit justify-self-end"
+      >
+        Download all attachments
+      </Button>
+      {archiveErrorMessage && (
+        <p role="alert" className="justify-self-end text-red-700">
+          {archiveErrorMessage}
+        </p>
+      )}
+    </>
   );
 };
 
@@ -307,37 +338,7 @@ type PackageActivitiesProps = {
 const mapChangelogItemToPackageActivity = ({
   _source: packageActivity,
 }: ItemResult): PackageActivityRecord => {
-  const label = (() => {
-    switch (packageActivity.event) {
-      case "capitated-amendment":
-      case "capitated-initial":
-      case "capitated-renewal":
-      case "contracting-amendment":
-      case "contracting-initial":
-      case "contracting-renewal":
-      case "new-chip-submission":
-      case "new-chip-details-submission":
-      case "new-medicaid-submission":
-      case "temporary-extension":
-      case "app-k":
-        return "Initial Package Submitted";
-
-      case "withdraw-package":
-        return "Package - Withdrawal Requested";
-      case "legacy-withdraw-rai-request":
-      case "withdraw-rai":
-        return "Formal RAI Response - Withdrawal Requested";
-
-      case "respond-to-rai":
-        return "RAI Response Submitted";
-
-      case "upload-subsequent-documents":
-        return "Subsequent Document(s) Uploaded";
-
-      default:
-        return BLANK_VALUE;
-    }
-  })();
+  const label = getPackageActivityLabel(packageActivity.event) || BLANK_VALUE;
 
   return {
     id: packageActivity.id,
@@ -377,7 +378,6 @@ export const PackageActivities = ({ id, changelog, submission }: PackageActiviti
     >
       {packageActivities.length > 0 ? (
         <Accordion
-          // `packageActivities[0].id` to re-render the `defaultValue` whenever `keyAndDefaultValue` changes
           key={packageActivities[0].id}
           type="multiple"
           className="flex flex-col gap-2"

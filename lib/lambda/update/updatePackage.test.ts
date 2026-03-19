@@ -36,7 +36,17 @@ describe("handler", () => {
     const result = await handler(noActionevent);
 
     expect(result?.statusCode).toBe(400);
-    expect(result?.body).toEqual(JSON.stringify({ message: "Package ID and action are required" }));
+    expect(JSON.parse(result?.body || "{}")).toEqual({
+      message: [
+        {
+          code: "invalid_type",
+          expected: "'update-values' | 'update-id' | 'delete' | 'recover'",
+          message: "Required",
+          path: ["action"],
+          received: "undefined",
+        },
+      ],
+    });
   });
 
   it("should return 400 if action is not found", async () => {
@@ -47,7 +57,25 @@ describe("handler", () => {
     const result = await handler(noApackageEvent);
 
     expect(result?.statusCode).toBe(400);
-    expect(result?.body).toEqual(JSON.stringify({ message: "Package ID and action are required" }));
+    expect(JSON.parse(result?.body || "{}")).toEqual({
+      message: [
+        {
+          code: "invalid_type",
+          expected: "string",
+          message: "Required",
+          path: ["packageId"],
+          received: "undefined",
+        },
+        {
+          code: "invalid_enum_value",
+          message:
+            "Invalid enum value. Expected 'update-values' | 'update-id' | 'delete' | 'recover', received '123'",
+          options: ["update-values", "update-id", "delete", "recover"],
+          path: ["action"],
+          received: "123",
+        },
+      ],
+    });
   });
 
   describe("delete", () => {
@@ -191,7 +219,7 @@ describe("handler", () => {
       expect(result?.statusCode).toBe(500);
       expect(result?.body).toEqual(
         JSON.stringify({
-          message: "Cannot read properties of undefined (reading 'baseSchema')",
+          message: "The type of package could not be determined.",
         }),
       );
     });

@@ -43,7 +43,9 @@ export async function sendUserRoleEmails(
         domain: config.osDomain,
         index: `${config.indexNamespace}users`,
       });
-      record.fullName = userInfo.fullName;
+      if (userInfo?.fullName) {
+        record.fullName = userInfo.fullName;
+      }
     } catch (error) {
       console.error("Error trying to get user name:", error);
     }
@@ -52,7 +54,7 @@ export async function sendUserRoleEmails(
   // get the approver list
   if (templates.length) {
     try {
-      const approverList: { email: string } | null[] = await getApproversByRoleState(
+      const approverList = await getApproversByRoleState(
         record.role,
         record.territory,
         {
@@ -65,15 +67,14 @@ export async function sendUserRoleEmails(
         },
       );
 
-      if (!approverList.length) console.log("NO APPROVERS FOUND");
+      if (!approverList.length) {
+        console.log("NO APPROVERS FOUND");
+      }
 
       const approverListFormated = approverList.map(
-        (approver: { email: string; fullName: string } | null) => {
-          if (!approver) return "";
-          return `${approver.fullName} <${approver.email}>`;
-        },
+        (approver) => `${approver.fullName} <${approver.email}>`,
       );
-      record.approverList = approverListFormated.filter((approver) => approver !== "");
+      record.approverList = approverListFormated;
     } catch (error) {
       console.log("Error trying to get approver list: ", error);
     }

@@ -1,12 +1,6 @@
 import { Column, Heading, Hr, Link, Row, Section, Text } from "@react-email/components";
 import { Fragment, ReactNode } from "react";
-import {
-  Attachment,
-  AttachmentKey,
-  CommonEmailVariables,
-  EmailAddresses,
-  Events,
-} from "shared-types";
+import { Attachment, CommonEmailVariables, EmailAddresses, Events } from "shared-types";
 import * as os from "shared-types/opensearch";
 
 import { styles } from "./email-styles";
@@ -137,7 +131,7 @@ const DetailsHeading = () => (
 const Attachments = ({
   attachments,
 }: {
-  attachments: Partial<Record<AttachmentKey, AttachmentGroup>>;
+  attachments: Partial<Record<string, AttachmentGroup>>;
 }) => {
   if (!attachments || areAllAttachmentsEmpty(attachments)) {
     return (

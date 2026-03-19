@@ -1,7 +1,5 @@
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { renderHook, waitFor } from "@testing-library/react";
-import { saveAs } from "file-saver";
-import JSZip from "jszip";
 import { beforeEach, describe, expect, it, vi } from "vitest";
 
 import * as api from "@/api";
@@ -11,13 +9,6 @@ import { useAttachmentService } from "./hook";
 const wrapper = ({ children }) => (
   <QueryClientProvider client={new QueryClient()}> {children}</QueryClientProvider>
 );
-
-vi.mock("file-saver", async (importOriginals) => ({
-  ...(await importOriginals()),
-  saveAs: vi.fn(),
-}));
-
-global.fetch = vi.fn();
 
 describe("useAttachmentService", () => {
   beforeEach(() => {
@@ -50,89 +41,101 @@ describe("useAttachmentService", () => {
       attachment.key,
       attachment.filename,
     );
-
     expect(url).toBe("http://example.com/testFile");
+    expect(result.current.attachmentErrorMessage).toBeUndefined();
   });
 
-  it("calls onZip and generates a ZIP and downloads it with correct filenames", async () => {
-    const packageId = "testPackage";
-    const attachments = [
-      {
-        title: "Test Bucket",
-        bucket: "bucket1",
-        key: "key1",
-        filename: "file1.md",
-        uploadDate: 123231,
-      },
-      {
-        title: "Test Bucket",
-        bucket: "bucket2",
-        key: "key2",
-        filename: "file2.md",
-        uploadDate: 123232,
-      },
-    ];
+  it("stores an attachment error message when an individual attachment download fails", async () => {
+    const consoleErrorSpy = vi.spyOn(console, "error").mockImplementation(() => undefined);
+    const attachment = {
+      title: "Test Bucket",
+      bucket: "testBucket",
+      key: "testKey",
+      filename: "testFile",
+      uploadDate: 123232,
+    };
 
-    const getAttachmentUrlSpy = vi.spyOn(api, "getAttachmentUrl");
-    getAttachmentUrlSpy.mockResolvedValueOnce("http://example.com/file1.md");
-    getAttachmentUrlSpy.mockResolvedValueOnce("http://example.com/file2.md");
+    vi.spyOn(api, "getAttachmentUrl").mockRejectedValue({
+      response: {
+        data: {
+          message: "This attachment is no longer available.",
+        },
+      },
+    });
 
-    const fetchSpy = vi
-      .spyOn(global, "fetch")
-      // @ts-expect-error
+    const { result } = renderHook(() => useAttachmentService({ packageId: "testPackage" }), {
+      wrapper,
+    });
+
+    await expect(result.current.onUrl(attachment)).resolves.toBeUndefined();
+
+    await waitFor(() => {
+      expect(result.current.attachmentErrorMessage).toBe("This attachment is no longer available.");
+    });
+    expect(consoleErrorSpy).toHaveBeenCalled();
+  });
+
+  it("returns the archive url immediately when the archive is ready", async () => {
+    vi.spyOn(api, "getAttachmentArchive").mockResolvedValue({
+      status: "READY",
+      filename: "testPackage-attachments.zip",
+      url: "http://example.com/archive.zip",
+    });
+
+    const { result } = renderHook(() => useAttachmentService({ packageId: "testPackage" }), {
+      wrapper,
+    });
+
+    await expect(result.current.onArchive({ scope: "all" })).resolves.toBe(
+      "http://example.com/archive.zip",
+    );
+  });
+
+  it("polls pending archive responses until a ready archive is available", async () => {
+    vi.useFakeTimers();
+
+    const getAttachmentArchiveSpy = vi
+      .spyOn(api, "getAttachmentArchive")
       .mockResolvedValueOnce({
-        blob: vi.fn().mockResolvedValue(new Blob(["file1"])),
+        status: "PENDING",
+        pollAfterSeconds: 1,
       })
-      // @ts-expect-error
       .mockResolvedValueOnce({
-        blob: vi.fn().mockResolvedValue(new Blob(["file2"])),
+        status: "READY",
+        filename: "testPackage-attachments.zip",
+        url: "http://example.com/archive.zip",
       });
 
-    const zipFileSpy = vi.spyOn(JSZip.prototype, "file");
-    vi.spyOn(JSZip.prototype, "generateAsync").mockResolvedValue(new Blob());
-
-    const { result } = renderHook(() => useAttachmentService({ packageId }), { wrapper });
-
-    await waitFor(() => {
-      result.current.onZip(attachments);
+    const { result } = renderHook(() => useAttachmentService({ packageId: "testPackage" }), {
+      wrapper,
     });
 
-    expect(getAttachmentUrlSpy).toHaveBeenCalledTimes(2);
-    expect(fetchSpy).toBeCalledTimes(2);
-    expect(zipFileSpy).toBeCalledWith("file1(1).md", expect.any(Blob));
-    expect(zipFileSpy).toBeCalledWith("file2(2).md", expect.any(Blob));
-    expect(saveAs).toBeCalledWith(expect.any(Blob), expect.any(String));
+    const archivePromise = result.current.onArchive({ scope: "all" });
+
+    await vi.advanceTimersByTimeAsync(1000);
+
+    await expect(archivePromise).resolves.toBe("http://example.com/archive.zip");
+    expect(getAttachmentArchiveSpy).toHaveBeenCalledTimes(2);
+
+    vi.useRealTimers();
   });
 
-  it("calls onZip and logs errors if fetch or zip generation fails", async () => {
-    const packageId = "testPackage";
-    const attachments = [
-      {
-        title: "Test Bucket",
-        bucket: "bucket1",
-        key: "key1",
-        filename: "file1.md",
-        uploadDate: 123232,
-      },
-    ];
-
-    const getAttachmentUrlSpy = vi
-      .spyOn(api, "getAttachmentUrl")
-      .mockImplementation(() => Promise.resolve("http://example.com/file1.md"));
-
-    const fetchSpy = vi
-      .spyOn(JSZip.prototype, "generateAsync")
-      .mockRejectedValue(new Error("Fetch failed"));
-    const consoleErrorSpy = vi.spyOn(console, "error");
-
-    const { result } = renderHook(() => useAttachmentService({ packageId }), { wrapper });
-
-    await waitFor(() => {
-      result.current.onZip(attachments);
+  it("stores an archive error message when archive generation fails", async () => {
+    const consoleErrorSpy = vi.spyOn(console, "error").mockImplementation(() => undefined);
+    vi.spyOn(api, "getAttachmentArchive").mockResolvedValue({
+      status: "FAILED",
+      message: "Archive generation failed",
     });
 
-    expect(consoleErrorSpy).toBeCalledWith(expect.any(Error));
-    expect(fetchSpy).toBeCalledTimes(1);
-    expect(getAttachmentUrlSpy).toBeCalledTimes(1);
+    const { result } = renderHook(() => useAttachmentService({ packageId: "testPackage" }), {
+      wrapper,
+    });
+
+    await expect(result.current.onArchive({ scope: "all" })).resolves.toBeUndefined();
+
+    await waitFor(() => {
+      expect(result.current.archiveErrorMessage).toBe("Archive generation failed");
+    });
+    expect(consoleErrorSpy).toHaveBeenCalled();
   });
 });
