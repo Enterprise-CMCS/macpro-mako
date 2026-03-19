@@ -1,5 +1,3 @@
-import { useFeatureFlag } from "@/hooks/useFeatureFlag";
-
 import { PdfList, Template } from "../utils";
 
 // MAGI Eligibility & Methods
@@ -119,20 +117,11 @@ export const CHP_NON_FIN_TEMPLATE: Template[] = [
   {
     title: "CS 31",
     text: "Incarcerated CHIP Beneficiaries",
-    href: "/chp/CS31-A.pdf",
-    downloadName: "CS31.pdf",
+    href: "/chp/CS31.pdf",
   },
 ];
 
 export const ChipSpaTemplates = () => {
-  const useNewCs31 = useFeatureFlag("CS31_ALT");
-
-  const nonFinancialTemplates: Template[] = CHP_NON_FIN_TEMPLATE.map((template) =>
-    template.title === "CS 31"
-      ? { ...template, href: useNewCs31 ? "/chp/CS31-B.pdf" : "/chp/CS31-A.pdf" }
-      : template,
-  );
-
   return (
     <section>
       <p>
@@ -168,7 +157,7 @@ export const ChipSpaTemplates = () => {
         <li className="space-y-2">
           <p>Non-Financial Eligibility</p>
           <PdfList
-            list={nonFinancialTemplates}
+            list={CHP_NON_FIN_TEMPLATE}
             label="template"
             ulClassName="list-disc pl-7 space-y-2"
           />
