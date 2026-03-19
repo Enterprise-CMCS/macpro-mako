@@ -17,6 +17,27 @@ const mapValidNotifications = (notifications: unknown[]): ValidBannerNotificatio
     .map((notification) => BannerNotificationSchema.parse(notification));
 };
 
+const getTime = (value?: string) => {
+  if (!value) return null;
+
+  const time = new Date(value).getTime();
+  return Number.isNaN(time) ? null : time;
+};
+
+const sortByPublishedDateDesc = (a: ValidBannerNotification, b: ValidBannerNotification) => {
+  const aTime = getTime(a.pubDate) ?? Number.NEGATIVE_INFINITY;
+  const bTime = getTime(b.pubDate) ?? Number.NEGATIVE_INFINITY;
+
+  return bTime - aTime;
+};
+
+const isActiveNotification = (notification: ValidBannerNotification, now: number) => {
+  const pubDate = getTime(notification.pubDate);
+  const expDate = getTime(notification.expDate);
+
+  return pubDate !== null && expDate !== null && pubDate <= now && expDate > now;
+};
+
 export const getSystemNotifs = async (): Promise<ValidBannerNotification[]> => {
   try {
     const notifications = await API.get("os", "/systemNotifs", {});
@@ -42,10 +63,10 @@ export const useGetSystemNotifs = () => {
     () => getSystemNotifs(),
   );
 
-  const notDismissed = result.data?.filter((i) => !dismissed.includes(i.notifId)) ?? []; //check dismissed
-  const currentNotifs = notDismissed.filter(
-    (i) => i.expDate && new Date(i.expDate).getTime() > new Date().getTime(),
-  ); //check expired
+  const now = Date.now();
+  const allNotifications = [...(result.data ?? [])].sort(sortByPublishedDateDesc);
+  const notDismissed = allNotifications.filter((i) => !dismissed.includes(i.notifId));
+  const currentNotifs = notDismissed.filter((i) => isActiveNotification(i, now));
 
   const clearNotif = (id?: string) => {
     const toBeRemoved = id ?? currentNotifs?.[0]?.notifId ?? "";
@@ -62,7 +83,7 @@ export const useGetSystemNotifs = () => {
   return {
     notifications: currentNotifs,
     dismissed: dismissed,
-    allNotifications: result.data ?? [],
+    allNotifications,
     clearNotif: clearNotif,
     resetNotifs: resetNotifs,
   };

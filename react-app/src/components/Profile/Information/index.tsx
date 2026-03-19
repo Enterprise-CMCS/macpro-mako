@@ -23,7 +23,6 @@ export const UserInformation = ({
   allowEdits,
 }: UserInformationProps) => {
   const isNewUserRoleDisplay = useFeatureFlag("SHOW_USER_ROLE_UPDATE");
-
   return (
     <div className="flex flex-col gap-y-6 md:basis-1/2">
       <h2 className="text-2xl font-bold">

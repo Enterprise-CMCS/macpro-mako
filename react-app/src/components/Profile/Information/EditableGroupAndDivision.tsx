@@ -30,12 +30,80 @@ import {
   DialogTitle,
 } from "@/components/Dialog";
 import { BLANK_VALUE } from "@/consts";
-import { divisionsType, groupDivision } from "@/features/sign-up/groupDivision";
+import { divisionsType, groupDivision, groupDivisionType } from "@/features/sign-up/groupDivision";
 
 const groupDivisionSchema = z.object({
   group: z.string().min(1, "A group selection is required."),
   division: z.string().min(1, "A division selection is required."),
 });
+
+const parseNumericId = (value?: string) => {
+  if (!value) return null;
+  const trimmed = value.trim();
+  if (!trimmed) return null;
+  const id = Number(trimmed);
+  return Number.isNaN(id) ? null : id;
+};
+
+const resolveGroup = (value?: string) => {
+  if (!value) return undefined;
+  const trimmed = value.trim();
+  if (!trimmed) return undefined;
+  console.log("resolveGroup", trimmed);
+  const matchByLabel = groupDivision.find(
+    (group) => group.abbr === trimmed || group.name === trimmed,
+  );
+  if (matchByLabel) return matchByLabel;
+  console.log("no match by label, trying id");
+  const id = parseNumericId(trimmed);
+  console.log("parsed id", id);
+  if (id === null) return undefined;
+  console.log(groupDivision, "finding by id", id);
+  return groupDivision.find((group) => group.id === id);
+};
+
+const resolveDivision = (value?: string, group?: groupDivisionType) => {
+  if (!value) return undefined;
+  const trimmed = value.trim();
+  if (!trimmed) return undefined;
+
+  const id = parseNumericId(trimmed);
+  const allDivisions = groupDivision.flatMap((group) => group.divisions);
+  const divisionsToSearch = group ? group.divisions : allDivisions;
+
+  const matchByLabelOrId = (division: divisionsType) =>
+    division.abbr === trimmed || division.name === trimmed || (id !== null && division.id === id);
+
+  return (
+    divisionsToSearch.find(matchByLabelOrId) ??
+    (group ? allDivisions.find(matchByLabelOrId) : undefined)
+  );
+};
+
+const getGroupDisplayValue = (value?: string) => {
+  if (!value) return "";
+  const trimmed = value.trim();
+  if (!trimmed) return "";
+
+  const id = parseNumericId(trimmed);
+  if (id === null) return trimmed;
+
+  return groupDivision.find((group) => group.id === id)?.abbr ?? trimmed;
+};
+
+const getDivisionDisplayValue = (value?: string, groupValue?: string) => {
+  console.log("getDivisionDisplayValue", value, groupValue);
+  if (!value) return "";
+  const trimmed = value.trim();
+  if (!trimmed) return "";
+
+  const id = parseNumericId(trimmed);
+  if (id === null) return trimmed;
+
+  const division = resolveDivision(trimmed, resolveGroup(groupValue));
+  console.log("resolved division", division);
+  return division?.abbr ?? division?.name ?? trimmed;
+};
 
 type GroupAndDivisionFormProps = {
   group?: string;
@@ -55,13 +123,11 @@ const GroupAndDivisionForm = ({
   const [availableDivisions, setAvailableDivisions] = useState<divisionsType[]>([]);
 
   const { initialGroupAbbr, initialDivisionAbbr } = useMemo(() => {
-    const initialGroupObject = group ? groupDivision.find((g) => g.abbr === group) : undefined;
+    const initialGroupObject = resolveGroup(group);
+    const initialDivisionObject = resolveDivision(division, initialGroupObject);
     return {
       initialGroupAbbr: initialGroupObject?.abbr || "",
-      initialDivisionAbbr:
-        initialGroupObject && division
-          ? initialGroupObject.divisions.find((d) => d.abbr === division)?.abbr || ""
-          : "",
+      initialDivisionAbbr: initialDivisionObject?.abbr || initialDivisionObject?.name || "",
     };
   }, [group, division]);
 
@@ -258,6 +324,12 @@ export const EditableGroupAndDivision = ({
     setIsDialogOpen(false);
   };
 
+  const displayGroup = useMemo(() => getGroupDisplayValue(group), [group]);
+  const displayDivision = useMemo(
+    () => getDivisionDisplayValue(division, group),
+    [division, group],
+  );
+
   return (
     <div className="leading-9">
       <h3 className="font-bold flex items-center">
@@ -275,7 +347,11 @@ export const EditableGroupAndDivision = ({
         )}
       </h3>
 
-      <p>{group && division ? `${group}/${division}` : `${BLANK_VALUE} ${BLANK_VALUE}`}</p>
+      <p>
+        {displayGroup && displayDivision
+          ? `${displayGroup}/${displayDivision}`
+          : `${BLANK_VALUE} ${BLANK_VALUE}`}
+      </p>
 
       <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
         <GroupAndDivisionForm

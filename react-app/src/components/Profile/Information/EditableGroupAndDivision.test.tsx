@@ -1,3 +1,4 @@
+import { screen } from "@testing-library/react";
 import { describe, expect, it } from "vitest";
 
 import { renderWithQueryClient } from "@/utils/test-helpers";
@@ -29,6 +30,13 @@ describe("EditableGroupAndDivision ", () => {
       />,
     );
     expect(asFragment()).toMatchSnapshot();
+  });
+
+  it("maps numeric group and division values to labels", () => {
+    renderWithQueryClient(
+      <EditableGroupAndDivision group="1" division="16" allowEdits email="test@example.com" />,
+    );
+    expect(screen.getByText("CAHPG/DSCP")).toBeInTheDocument();
   });
 
   it("should render correctly without group and division", () => {
