@@ -96,7 +96,11 @@ export const DetailsContent = ({ id }: DetailsContentProps) => {
       </section>
       <div className="grid grid-cols-1 gap-y-3">
         <PackageDetails submission={updatedSubmission} />
-        <PackageActivities id={id} changelog={updatedSubmission.changelog} />
+        <PackageActivities
+          id={id}
+          changelog={updatedSubmission.changelog}
+          submission={updatedSubmission}
+        />
         <AdminPackageActivities changelog={updatedSubmission.changelog} />
       </div>
     </div>

@@ -815,7 +815,9 @@ exports[`package details > as CMS Reviewer > renders package details for a Tempo
             </dt>
             <dd
               class="py-2"
-            />
+            >
+              -- --
+            </dd>
           </dl>
           <dl>
             <dt
@@ -1507,7 +1509,9 @@ exports[`package details > as State Submitter > renders package details for a Te
             </dt>
             <dd
               class="py-2"
-            />
+            >
+              -- --
+            </dd>
           </dl>
           <dl>
             <dt

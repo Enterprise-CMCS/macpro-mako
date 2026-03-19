@@ -9,6 +9,7 @@ import {
   WITHDRAW_APPK_ITEM,
   WITHDRAWN_CHANGELOG_ITEM_ID,
 } from "mocks";
+import { opensearch } from "shared-types";
 import { beforeEach, describe, expect, it, vi } from "vitest";
 
 import { renderFormWithPackageSectionAsync } from "@/utils/test-helpers/renderForm";
@@ -40,6 +41,59 @@ describe("Package Activity", () => {
     expect(screen.getByText("Package Activity (0)"));
     expect(screen.getByText("No package activity recorded"));
     expect(screen.queryByText("Download all attachments")).not.toBeInTheDocument();
+  });
+
+  it("shows a single draft package activity when a draft has saved attachments and no changelog", async () => {
+    const draftSubmission = {
+      id: "MD-26-0001-P",
+      seatoolStatus: "Draft",
+      submitterName: "George Harrison",
+      makoChangedDate: "2026-03-03T19:09:56.000Z",
+      draft: {
+        savedAt: "2026-03-03T19:09:56.000Z",
+        data: {
+          attachments: {
+            cmsForm179: {
+              files: [
+                {
+                  filename: "cms-179.pdf",
+                  key: "cms-179-key",
+                  bucket: ATTACHMENT_BUCKET_NAME,
+                  uploadDate: 1772564996000,
+                  title: "cms-179",
+                },
+              ],
+            },
+            spaPages: {
+              files: [
+                {
+                  filename: "spa-pages.pdf",
+                  key: "spa-pages-key",
+                  bucket: ATTACHMENT_BUCKET_NAME,
+                  uploadDate: 1772564997000,
+                  title: "spa-pages",
+                },
+              ],
+            },
+          },
+        },
+      },
+      changelog: [],
+    } as unknown as opensearch.main.Document;
+
+    await renderFormWithPackageSectionAsync(
+      <PackageActivities id={draftSubmission.id} changelog={[]} submission={draftSubmission} />,
+      draftSubmission.id,
+    );
+
+    expect(screen.getByText("Package Activity (1)")).toBeInTheDocument();
+    expect(screen.getByText("Draft Saved By George Harrison")).toBeInTheDocument();
+    expect(screen.getByText("CMS-179 Form")).toBeInTheDocument();
+    expect(screen.getByText("SPA Pages")).toBeInTheDocument();
+    expect(screen.getByText("cms-179.pdf")).toBeInTheDocument();
+    expect(screen.getByText("spa-pages.pdf")).toBeInTheDocument();
+    expect(screen.queryByText("Download all attachments")).not.toBeInTheDocument();
+    expect(screen.queryByText("Download section attachments")).not.toBeInTheDocument();
   });
 
   it("displays the correct title with changelog length, a changelog entry, and the 'Download all attachments' button", async () => {
@@ -154,6 +208,52 @@ describe("Package Activity", () => {
       bucket: ATTACHMENT_BUCKET_NAME,
     });
     expect(spiedWindowOpen).toBeCalledWith("hello world!");
+  });
+
+  it("does not show download buttons for a synthetic draft package activity", async () => {
+    const draftSubmission = {
+      id: "MD-26-0001-P",
+      seatoolStatus: "Draft",
+      submitterName: "George Harrison",
+      draft: {
+        savedAt: "2026-03-03T19:09:56.000Z",
+        data: {
+          attachments: {
+            cmsForm179: {
+              files: [
+                {
+                  filename: "cms-179.pdf",
+                  key: "cms-179-key",
+                  bucket: ATTACHMENT_BUCKET_NAME,
+                  uploadDate: 1772564996000,
+                  title: "cms-179",
+                },
+              ],
+            },
+            spaPages: {
+              files: [
+                {
+                  filename: "spa-pages.pdf",
+                  key: "spa-pages-key",
+                  bucket: ATTACHMENT_BUCKET_NAME,
+                  uploadDate: 1772564997000,
+                  title: "spa-pages",
+                },
+              ],
+            },
+          },
+        },
+      },
+      changelog: [],
+    } as unknown as opensearch.main.Document;
+
+    await renderFormWithPackageSectionAsync(
+      <PackageActivities id={draftSubmission.id} changelog={[]} submission={draftSubmission} />,
+      draftSubmission.id,
+    );
+
+    expect(screen.queryByText("Download all attachments")).not.toBeInTheDocument();
+    expect(screen.queryByText("Download section attachments")).not.toBeInTheDocument();
   });
 
   it("does not open a new tab when an attachment download resolves without a url", async () => {

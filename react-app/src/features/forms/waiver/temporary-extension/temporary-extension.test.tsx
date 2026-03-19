@@ -23,6 +23,26 @@ describe("Temporary Extension", () => {
     vi.clearAllMocks();
   });
 
+  test("submit button stays disabled until a temporary extension type is selected", async () => {
+    const user = userEvent.setup();
+
+    await renderFormWithPackageSectionAsync(<TemporaryExtensionForm />);
+
+    await user.type(
+      screen.getByLabelText(/Approved Initial or Renewal Waiver Number/),
+      EXISTING_ITEM_APPROVED_NEW_ID,
+    );
+    await user.type(
+      screen.getByLabelText(/Temporary Extension Request Number/),
+      VALID_ITEM_TEMPORARY_EXTENSION_ID,
+    );
+
+    const waiverExtensionRequestLabel = await upload("waiverExtensionRequest");
+    expect(waiverExtensionRequestLabel).not.toHaveClass("text-destructive");
+
+    expect(screen.getByTestId("submit-action-form")).toBeDisabled();
+  });
+
   test("EXISTING WAIVER ID", async () => {
     // set the Item Id to TEST_ITEM_ID
     await renderFormWithPackageSectionAsync(

@@ -73,6 +73,49 @@ describe("package details", () => {
       expect(screen.getByText(header)).toBeInTheDocument();
       expect(asFragment()).toMatchSnapshot();
     });
+
+    it("shows the approved waiver number for a temporary extension draft from saved draft data", async () => {
+      const temporaryExtensionDraft = {
+        ...TEST_TEMPORARY_EXTENSION_ITEM._source,
+        seatoolStatus: SEATOOL_STATUS.DRAFT,
+        originalWaiverNumber: undefined,
+        draft: {
+          savedAt: "2026-03-16T20:56:00.000Z",
+          data: {
+            ids: {
+              validAuthority: {
+                waiverNumber: "AL-2200.R00.00",
+                authority: "",
+              },
+            },
+          },
+        },
+      } as opensearch.main.Document;
+
+      await setup(temporaryExtensionDraft);
+
+      expect(screen.getByText("Approved Initial or Renewal Number")).toBeInTheDocument();
+      expect(screen.getByText("AL-2200.R00.00")).toBeInTheDocument();
+    });
+
+    it("shows the approved waiver number for a temporary extension draft from direct saved draft data", async () => {
+      const temporaryExtensionDraft = {
+        ...TEST_TEMPORARY_EXTENSION_ITEM._source,
+        seatoolStatus: SEATOOL_STATUS.DRAFT,
+        originalWaiverNumber: undefined,
+        draft: {
+          savedAt: "2026-03-16T20:56:00.000Z",
+          data: {
+            waiverNumber: "AL-3300.R00.00",
+          },
+        },
+      } as opensearch.main.Document;
+
+      await setup(temporaryExtensionDraft);
+
+      expect(screen.getByText("Approved Initial or Renewal Number")).toBeInTheDocument();
+      expect(screen.getByText("AL-3300.R00.00")).toBeInTheDocument();
+    });
   });
 
   it("shows Draft Owner instead of Submitted By for draft packages", async () => {
