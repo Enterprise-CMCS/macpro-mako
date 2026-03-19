@@ -28,6 +28,12 @@ import {
 import { convertObjToBase64, createKafkaEvent, createKafkaRecord } from "mocks/helpers/kafka.utils";
 import { afterEach, describe, expect, it, vi } from "vitest";
 
+vi.mock("../attachment-archive/rebuild-queue", () => ({
+  hasAttachmentArchiveRebuildQueueConfigured: vi.fn(() => false),
+  sendAttachmentArchiveRebuildRequest: vi.fn(),
+}));
+
+import * as rebuildQueue from "../attachment-archive/rebuild-queue";
 import { handler } from "./sinkChangelog";
 
 // Onemac charcode used for header
@@ -41,11 +47,79 @@ const TEST_ITEM_UPDATE_KEY = Buffer.from(TEST_ITEM_UPDATE_ID).toString("base64")
 const TIMESTAMP = 1732645041557;
 
 describe("syncing Changelog events", () => {
+  const hasAttachmentArchiveRebuildQueueConfigured = vi.mocked(
+    rebuildQueue.hasAttachmentArchiveRebuildQueueConfigured,
+  );
+  const sendAttachmentArchiveRebuildRequest = vi.mocked(
+    rebuildQueue.sendAttachmentArchiveRebuildRequest,
+  );
   const bulkUpdateDataSpy = vi.spyOn(os, "bulkUpdateData");
   const logErrorSpy = vi.spyOn(sink, "logError");
+  const originalRebuildTriggerTopicName = process.env.ATTACHMENT_ARCHIVE_REBUILD_TRIGGER_TOPIC_NAME;
 
   afterEach(() => {
     vi.clearAllMocks();
+    process.env.ATTACHMENT_ARCHIVE_REBUILD_TRIGGER_TOPIC_NAME = originalRebuildTriggerTopicName;
+    hasAttachmentArchiveRebuildQueueConfigured.mockReturnValue(false);
+  });
+
+  it("queues archive rebuilds only for the configured ephemeral source topic", async () => {
+    hasAttachmentArchiveRebuildQueueConfigured.mockReturnValue(true);
+    process.env.ATTACHMENT_ARCHIVE_REBUILD_TRIGGER_TOPIC_NAME = TOPIC;
+
+    const event = createKafkaEvent({
+      [`${TOPIC}-01`]: [
+        createKafkaRecord({
+          topic: `${TOPIC}-01`,
+          key: Buffer.from(uploadSubsequentDocuments.id).toString("base64"),
+          value: convertObjToBase64({
+            ...uploadSubsequentDocuments,
+            packageId: uploadSubsequentDocuments.id,
+            origin: "mako",
+            submitterName: "George Harrison",
+            submitterEmail: "george@example.com",
+            timestamp: TIMESTAMP,
+          }),
+          headers: [{ source: oneMacCode }],
+        }),
+      ],
+    });
+
+    await handler(event, {} as Context, vi.fn());
+
+    expect(sendAttachmentArchiveRebuildRequest).toHaveBeenCalledWith(
+      expect.objectContaining({
+        packageId: uploadSubsequentDocuments.id,
+        source: "sink-changelog",
+      }),
+    );
+  });
+
+  it("does not queue rebuilds for shared main topic updates in ephemeral stages", async () => {
+    hasAttachmentArchiveRebuildQueueConfigured.mockReturnValue(true);
+    process.env.ATTACHMENT_ARCHIVE_REBUILD_TRIGGER_TOPIC_NAME = TOPIC;
+
+    const event = createKafkaEvent({
+      "aws.onemac.migration.cdc-01": [
+        createKafkaRecord({
+          topic: "aws.onemac.migration.cdc-01",
+          key: Buffer.from(uploadSubsequentDocuments.id).toString("base64"),
+          value: convertObjToBase64({
+            ...uploadSubsequentDocuments,
+            packageId: uploadSubsequentDocuments.id,
+            origin: "mako",
+            submitterName: "George Harrison",
+            submitterEmail: "george@example.com",
+            timestamp: TIMESTAMP,
+          }),
+          headers: [{ source: oneMacCode }],
+        }),
+      ],
+    });
+
+    await handler(event, {} as Context, vi.fn());
+
+    expect(sendAttachmentArchiveRebuildRequest).not.toHaveBeenCalled();
   });
 
   it.each([
@@ -372,6 +446,8 @@ describe("syncing Changelog events", () => {
             changedDate: TIMESTAMP,
             statusDate: TIMESTAMP,
             timestamp: TIMESTAMP,
+            proposedDate: "2026-02-18T00:00:00.000Z",
+            submissionDate: "2026-02-13T21:01:29.530Z",
           }),
           offset: 3,
         }),
@@ -390,6 +466,8 @@ describe("syncing Changelog events", () => {
         changeReason: "additional information of the change",
         isAdminChange: true,
         event: "update-id",
+        proposedDate: 1771372800000,
+        submissionDate: 1771016489530,
         id: "MD-0005.R01.01-1732645041557",
         packageId: "MD-0005.R01.01",
       },

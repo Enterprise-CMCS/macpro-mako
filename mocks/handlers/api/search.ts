@@ -22,7 +22,7 @@ const defaultApiSearchHandler = http.post<PathParams, SearchQueryBody>(
       const isSpa =
         authorityValues.includes("CHIP SPA") || authorityValues.includes("Medicaid SPA");
 
-      const aggregations = getAggregations(aggs, isSpa);
+      const aggregations = getAggregations(aggs ?? {}, isSpa);
 
       return HttpResponse.json({
         took: 3,

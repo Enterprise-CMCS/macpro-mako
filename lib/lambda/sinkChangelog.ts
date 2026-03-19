@@ -5,6 +5,10 @@ import { KafkaEvent, KafkaRecord, LegacyAdminChange, opensearch } from "shared-t
 import { decodeBase64WithUtf8 } from "shared-utils";
 
 import {
+  hasAttachmentArchiveRebuildQueueConfigured,
+  sendAttachmentArchiveRebuildRequest,
+} from "../attachment-archive/rebuild-queue";
+import {
   legacyEventIdUpdateSchema,
   transformDeleteSchema,
   transformedSplitSPASchema,
@@ -44,6 +48,20 @@ export const handler: Handler<KafkaEvent> = async (event) => {
     throw error;
   }
 };
+
+function getTopicNameFromPartition(topicPartition: string): string {
+  return topicPartition.replace(/-\d+$/, "");
+}
+
+function shouldQueueArchiveRebuildForTopic(topicPartition: string): boolean {
+  const configuredTopicName = process.env.ATTACHMENT_ARCHIVE_REBUILD_TRIGGER_TOPIC_NAME;
+  if (!configuredTopicName) {
+    return true;
+  }
+
+  return getTopicNameFromPartition(topicPartition) === configuredTopicName;
+}
+
 function extractIds(input: string): { beforeId: string; afterId: string } | null {
   const regex = /from\s+([^\s]+)\s+to\s+([^\s]+)/;
   const match = input.match(regex);
@@ -66,6 +84,15 @@ const processAndIndex = async ({
   transforms: any;
   topicPartition: string;
 }) => {
+  const normalizeEpochDate = (value: unknown): number | null => {
+    if (value === null || value === undefined) return null;
+    if (typeof value === "number") return value;
+    if (typeof value === "string") {
+      const parsed = Date.parse(value);
+      return Number.isNaN(parsed) ? null : parsed;
+    }
+    return null;
+  };
   const docs: Array<(typeof transforms)[keyof typeof transforms]["Schema"]> = [];
   for (const kafkaRecord of kafkaRecords) {
     console.log(JSON.stringify(kafkaRecord, null, 2));
@@ -92,10 +119,22 @@ const processAndIndex = async ({
         if (result.success) {
           if (result.data.adminChangeType === "update-id" && "idToBeUpdated" in result.data) {
             const { id, packageId: _packageId, idToBeUpdated, ...restOfResultData } = result.data;
+            const normalizedDates: Record<string, number | null> = {};
+            if ("proposedDate" in restOfResultData) {
+              normalizedDates.proposedDate = normalizeEpochDate(
+                (restOfResultData as { proposedDate?: unknown }).proposedDate,
+              );
+            }
+            if ("submissionDate" in restOfResultData) {
+              normalizedDates.submissionDate = normalizeEpochDate(
+                (restOfResultData as { submissionDate?: unknown }).submissionDate,
+              );
+            }
             // Push doc with content of package being soft deleted
 
             docs.push({
               ...restOfResultData,
+              ...normalizedDates,
               id: id + "-" + result.data.timestamp,
               packageId: id,
               event: "update-id",
@@ -246,4 +285,39 @@ const processAndIndex = async ({
     }
   }
   await bulkUpdateDataWrapper(docs, "changelog");
+
+  if (
+    !hasAttachmentArchiveRebuildQueueConfigured() ||
+    !shouldQueueArchiveRebuildForTopic(topicPartition)
+  ) {
+    return;
+  }
+
+  const packagesToRebuild = docs.reduce<Map<string, number | undefined>>((acc, document) => {
+    if (!document.packageId || document.packageId.endsWith("-del") || document.isAdminChange) {
+      return acc;
+    }
+
+    const currentTimestamp =
+      typeof document.timestamp === "number" ? document.timestamp : undefined;
+    const previousTimestamp = acc.get(document.packageId);
+
+    acc.set(
+      document.packageId,
+      previousTimestamp === undefined || currentTimestamp === undefined
+        ? (previousTimestamp ?? currentTimestamp)
+        : Math.max(previousTimestamp, currentTimestamp),
+    );
+    return acc;
+  }, new Map<string, number | undefined>());
+
+  await Promise.all(
+    Array.from(packagesToRebuild.entries()).map(([packageId, latestTimestamp]) =>
+      sendAttachmentArchiveRebuildRequest({
+        packageId,
+        latestTimestamp,
+        source: "sink-changelog",
+      }),
+    ),
+  );
 };
