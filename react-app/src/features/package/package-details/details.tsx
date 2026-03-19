@@ -54,9 +54,17 @@ type GetLabelAndValueFromSubmission = (
 ) => LabelAndValue[];
 
 const getDraftWaiverNumber = (submission: opensearch.main.Document) => {
-  const waiverNumber = (submission.draft?.data as Record<string, any> | undefined)?.ids
-    ?.validAuthority?.waiverNumber;
-  return typeof waiverNumber === "string" && waiverNumber.trim() ? waiverNumber : undefined;
+  const draftData = submission.draft?.data as Record<string, any> | undefined;
+  const nestedWaiverNumber = draftData?.ids?.validAuthority?.waiverNumber;
+  const directWaiverNumber = draftData?.waiverNumber;
+
+  if (typeof nestedWaiverNumber === "string" && nestedWaiverNumber.trim()) {
+    return nestedWaiverNumber;
+  }
+
+  return typeof directWaiverNumber === "string" && directWaiverNumber.trim()
+    ? directWaiverNumber
+    : undefined;
 };
 
 export const getSubmissionDetails: GetLabelAndValueFromSubmission = (
