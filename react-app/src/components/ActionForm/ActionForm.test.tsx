@@ -35,6 +35,7 @@ describe("ActionForm", () => {
   beforeEach(() => {
     setDefaultStateSubmitter();
     vi.clearAllMocks();
+    vi.spyOn(api, "itemExists").mockResolvedValue(false);
     window.gtag = vi.fn();
   });
 
@@ -1047,6 +1048,125 @@ describe("ActionForm", () => {
     await user.click(screen.getByTestId("save-draft-form"));
 
     expect(userPromptSpy).toHaveBeenCalledTimes(1);
+    useGetItemSpy.mockRestore();
+  });
+
+  test("shows a lock banner on open and disables draft actions when a matching SEA package exists", async () => {
+    const draftId = "MD-26-7685-P";
+    const bannerSpy = vi.spyOn(components, "banner").mockImplementation(() => undefined);
+    const useGetItemSpy = vi.spyOn(api, "useGetItem").mockReturnValue({
+      data: {
+        _id: draftId,
+        found: true,
+        _source: {
+          id: draftId,
+          seatoolStatus: SEATOOL_STATUS.DRAFT,
+          draft: {
+            savedAt: "2026-03-12T00:00:00.000Z",
+            data: { id: draftId },
+          },
+        },
+      },
+      isLoading: false,
+      error: null,
+    } as any);
+    vi.mocked(api.itemExists).mockResolvedValue(true);
+
+    await renderFormWithPackageSectionAsync(
+      <ActionForm
+        title="Draft lock test"
+        schema={z.object({
+          id: z.string().min(1),
+        })}
+        fields={(form) => <input aria-label="Package ID" {...form.register("id")} />}
+        defaultValues={{ id: draftId }}
+        documentPollerArgs={{
+          property: () => "id",
+          documentChecker: () => true,
+        }}
+        draftOptions={{ enabled: true, event: "new-medicaid-submission" }}
+        breadcrumbText="Example Breadcrumb"
+      />,
+      undefined,
+      "Medicaid SPA",
+      `draftId=${draftId}`,
+    );
+
+    await waitFor(() =>
+      expect(bannerSpy).toHaveBeenCalledWith(
+        expect.objectContaining({
+          header: "This draft is locked",
+          body: `A package with ID ${draftId} already exists in SEA Tool. This draft can no longer be saved or submitted in OneMAC. Delete this draft if you no longer need it.`,
+          variant: "destructive",
+        }),
+      ),
+    );
+
+    expect(screen.getByText("This draft is locked")).toBeInTheDocument();
+    expect(screen.getByTestId("save-draft-form")).toBeDisabled();
+    expect(screen.getByTestId("submit-action-form")).toBeDisabled();
+
+    useGetItemSpy.mockRestore();
+  });
+
+  test("shows a friendly lock message if a draft save races with a new SEA submission", async () => {
+    const user = userEvent.setup();
+    const draftId = "MD-26-7685-P";
+    const bannerSpy = vi.spyOn(components, "banner").mockImplementation(() => undefined);
+    const useGetItemSpy = vi.spyOn(api, "useGetItem").mockReturnValue({
+      data: {
+        _id: draftId,
+        found: true,
+        _source: {
+          id: draftId,
+          seatoolStatus: SEATOOL_STATUS.DRAFT,
+          draft: {
+            savedAt: "2026-03-12T00:00:00.000Z",
+            data: { id: draftId },
+          },
+        },
+      },
+      isLoading: false,
+      error: null,
+    } as any);
+    vi.spyOn(api, "saveDraft").mockRejectedValue({
+      response: {
+        status: 409,
+      },
+    });
+
+    await renderFormWithPackageSectionAsync(
+      <ActionForm
+        title="Draft lock test"
+        schema={z.object({
+          id: z.string().min(1),
+        })}
+        fields={(form) => <input aria-label="Package ID" {...form.register("id")} />}
+        defaultValues={{ id: draftId }}
+        documentPollerArgs={{
+          property: () => "id",
+          documentChecker: () => true,
+        }}
+        draftOptions={{ enabled: true, event: "new-medicaid-submission" }}
+        breadcrumbText="Example Breadcrumb"
+      />,
+      undefined,
+      "Medicaid SPA",
+      `draftId=${draftId}`,
+    );
+
+    await user.click(screen.getByTestId("save-draft-form"));
+
+    await waitFor(() =>
+      expect(bannerSpy).toHaveBeenCalledWith(
+        expect.objectContaining({
+          header: "This draft is locked",
+          body: `A package with ID ${draftId} already exists in SEA Tool. This draft can no longer be saved or submitted in OneMAC. Delete this draft if you no longer need it.`,
+          variant: "destructive",
+        }),
+      ),
+    );
+
     useGetItemSpy.mockRestore();
   });
 

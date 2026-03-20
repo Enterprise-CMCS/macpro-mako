@@ -20,6 +20,7 @@ const itemEventSchema = z
       .object({
         id: z.string().trim().min(1),
         includeDraft: z.boolean().optional(),
+        preferDraft: z.boolean().optional(),
       })
       .strict(),
   })
@@ -38,6 +39,30 @@ export const handler = authenticatedMiddy({
   .use(fetchChangelog({ setToContext: true }))
   .handler(async (event: ItemEvent, context: ContextWithPackage & ContextWithAuthenticatedUser) => {
     const { packageResult, authenticatedUser } = context;
+
+    if (event.body?.includeDraft === true && event.body?.preferDraft === true) {
+      const draftPackageResult = await getDraftPackage(event.body.id.toUpperCase());
+      const isActiveDraft =
+        draftPackageResult?.found === true &&
+        draftPackageResult._source?.deleted !== true &&
+        draftPackageResult._source?.seatoolStatus === SEATOOL_STATUS.DRAFT;
+
+      if (
+        isActiveDraft &&
+        (!authenticatedUser || !isCmsUser(authenticatedUser) || isHelpDeskUser(authenticatedUser))
+      ) {
+        return {
+          statusCode: 200,
+          body: {
+            ...draftPackageResult,
+            _source: {
+              ...draftPackageResult._source,
+              changelog: draftPackageResult._source?.changelog ?? [],
+            },
+          },
+        };
+      }
+    }
 
     const isActiveMainNonDraft =
       packageResult?.found === true &&

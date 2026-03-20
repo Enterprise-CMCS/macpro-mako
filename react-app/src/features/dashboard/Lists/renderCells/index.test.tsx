@@ -151,7 +151,7 @@ describe("renderCells", () => {
       };
       setup(draftItem);
       expect(screen.getByText(draftItem.id).getAttribute("href")).toEqual(
-        `/details/${encodeURIComponent(draftItem.authority)}/${encodeURIComponent(draftItem.id)}`,
+        `/details/${encodeURIComponent(draftItem.authority)}/${encodeURIComponent(draftItem.id)}?preferDraft=true`,
       );
     });
   });

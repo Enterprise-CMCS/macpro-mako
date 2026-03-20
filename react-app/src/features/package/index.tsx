@@ -33,6 +33,7 @@ export const DetailCardWrapper = ({
 
 type DetailsContentProps = {
   id: string;
+  preferDraft?: boolean;
 };
 
 const injectChipEligibilityAttachment = (
@@ -67,8 +68,11 @@ const injectChipEligibilityAttachment = (
   };
 };
 
-export const DetailsContent = ({ id }: DetailsContentProps) => {
-  const { data: record, isLoading, error } = useGetItem(id, undefined, { includeDraft: true });
+export const DetailsContent = ({ id, preferDraft = false }: DetailsContentProps) => {
+  const { data: record, isLoading, error } = useGetItem(id, undefined, {
+    includeDraft: true,
+    preferDraft,
+  });
 
   const submission = record?._source;
   const normalizedSubmission = useMemo(
@@ -110,18 +114,22 @@ export const DetailsContent = ({ id }: DetailsContentProps) => {
 type LoaderData = {
   id: string;
   authority: Authority;
+  preferDraft: boolean;
 };
 
 export const packageDetailsLoader = async ({
   params,
+  request,
 }: LoaderFunctionArgs): Promise<LoaderData | Response> => {
   const { id, authority } = params;
   if (id === undefined || authority === undefined) {
     return redirect("/dashboard");
   }
 
+  const preferDraft = new URL(request.url).searchParams.get("preferDraft") === "true";
+
   try {
-    const packageResult = await getItem(id, { includeDraft: true });
+    const packageResult = await getItem(id, { includeDraft: true, preferDraft });
     if (!packageResult || packageResult._source.deleted === true || packageResult.found === false) {
       return redirect("/dashboard");
     }
@@ -134,18 +142,18 @@ export const packageDetailsLoader = async ({
     return redirect("/dashboard");
   }
 
-  return { id, authority: authority as Authority };
+  return { id, authority: authority as Authority, preferDraft };
 };
 
 export const Details = () => {
-  const { id, authority } = useLoaderData<LoaderData>();
+  const { id, authority, preferDraft } = useLoaderData<LoaderData>();
   return (
     <div className="max-w-screen-xl mx-auto flex flex-col lg:flex-row">
       <div className="px-4 lg:px-8">
         <BreadCrumbs options={detailsAndActionsCrumbs({ id, authority })} />
         <DetailsSidebar id={id} />
       </div>
-      <DetailsContent id={id} />
+      <DetailsContent id={id} preferDraft={preferDraft} />
     </div>
   );
 };
