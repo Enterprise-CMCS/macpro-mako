@@ -17,8 +17,8 @@ import {
   DRAFT_DELETE_ACTION_LABEL,
   DRAFT_DELETE_MODAL_BODY,
   DRAFT_DELETE_MODAL_HEADER,
-  getNonOwnerDraftDeleteModalBody,
   getDraftEditLink,
+  getNonOwnerDraftDeleteModalBody,
 } from "@/utils/drafts";
 
 type PackageActionsCardProps = {
