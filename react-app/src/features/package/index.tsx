@@ -1,12 +1,21 @@
+import { useQuery } from "@tanstack/react-query";
 import { PropsWithChildren, useMemo } from "react";
 import { LoaderFunctionArgs, redirect, useLoaderData } from "react-router";
-import { Authority, opensearch } from "shared-types";
+import { Authority, opensearch, SEATOOL_STATUS } from "shared-types";
 import { ItemResult } from "shared-types/opensearch/changelog";
 
-import { getItem, useGetItem } from "@/api";
-import { CardWithTopBorder, ErrorAlert, LoadingSpinner } from "@/components";
+import { getItem, itemExists, useGetItem } from "@/api";
+import {
+  Alert,
+  AlertDescription,
+  AlertTitle,
+  CardWithTopBorder,
+  ErrorAlert,
+  LoadingSpinner,
+} from "@/components";
 import { BreadCrumbs } from "@/components/BreadCrumb";
 import { detailsAndActionsCrumbs, sendGAEvent } from "@/utils";
+import { DRAFT_LOCKED_ALERT_TITLE, getDraftLockedMessage } from "@/utils/drafts";
 
 import { AdminPackageActivities } from "./admin-changes";
 import { useDetailsSidebarLinks } from "./hooks";
@@ -88,12 +97,25 @@ export const DetailsContent = ({ id, preferDraft = false }: DetailsContentProps)
       ? injectChipEligibilityAttachment(normalizedSubmission, normalizedSubmission.changelog)
       : undefined;
   }, [normalizedSubmission]);
+  const isDraft = updatedSubmission?.seatoolStatus === SEATOOL_STATUS.DRAFT;
+  const { data: hasConflictingMainPackage = false, isLoading: isDraftConflictLoading } = useQuery({
+    queryKey: ["draft-main-conflict", id],
+    queryFn: () => itemExists(id),
+    enabled: isDraft,
+  });
+  const isLockedDraft = isDraft && hasConflictingMainPackage;
 
-  if (isLoading) return <LoadingSpinner />;
+  if (isLoading || (isDraft && isDraftConflictLoading)) return <LoadingSpinner />;
   if (error || !record || !updatedSubmission) return <ErrorAlert error={error} />;
 
   return (
     <div className="w-full py-1 px-4 lg:px-8 grid grid-cols-1 gap-y-6 sm:gap-y-6">
+      {isLockedDraft && (
+        <Alert variant="destructive">
+          <AlertTitle>{DRAFT_LOCKED_ALERT_TITLE}</AlertTitle>
+          <AlertDescription>{getDraftLockedMessage(id)}</AlertDescription>
+        </Alert>
+      )}
       <section id="package_overview" className="sm:mb-0 two-cols gap-y-3 sm:gap-y-3">
         <DetailCardWrapper title="Status" ariaLabel="package-status-heading">
           <PackageStatusCard submission={updatedSubmission} />

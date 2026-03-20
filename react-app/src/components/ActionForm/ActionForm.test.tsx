@@ -1093,6 +1093,7 @@ describe("ActionForm", () => {
     );
 
     expect(screen.getByText("This draft is locked")).toBeInTheDocument();
+    expect(screen.getByLabelText("Package ID")).toBeDisabled();
     expect(screen.getByTestId("save-draft-form")).toBeDisabled();
     expect(screen.getByTestId("submit-action-form")).toBeDisabled();
     expect(bannerSpy).not.toHaveBeenCalled();
@@ -1149,6 +1150,7 @@ describe("ActionForm", () => {
     await user.click(screen.getByTestId("save-draft-form"));
 
     await waitFor(() => expect(screen.getByText("This draft is locked")).toBeInTheDocument());
+    expect(screen.getByLabelText("Package ID")).toBeDisabled();
     expect(screen.getByTestId("save-draft-form")).toBeDisabled();
     expect(screen.getByTestId("submit-action-form")).toBeDisabled();
     expect(screen.getByTestId("draft-save-status")).toHaveTextContent("Draft locked");

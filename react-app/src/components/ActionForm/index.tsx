@@ -34,6 +34,7 @@ import {
 import { useNavigationPrompt } from "@/hooks";
 import { useFeatureFlag } from "@/hooks/useFeatureFlag";
 import { getFormOrigin, queryClient } from "@/utils";
+import { DRAFT_LOCKED_ALERT_TITLE, getDraftLockedMessage } from "@/utils/drafts";
 import { CheckDocumentFunction, documentPoller } from "@/utils/Poller/documentPoller";
 import { sendGAEvent } from "@/utils/ReactGA/SendGAEvent";
 
@@ -215,7 +216,7 @@ export const ActionForm = <Schema extends SchemaWithEnforcableProps>({
   const draftOriginalCreatorEmail =
     draftRecord?._source?.draft?.originalCreatorEmail ?? draftRecord?._source?.submitterEmail;
   const draftPackageIdForWarning = draftRecord?._source?.id ?? draftId ?? id ?? "this package";
-  const draftConflictMessage = `A package with ID ${draftPackageIdForWarning} already exists in SEA Tool. This draft can no longer be saved or submitted in OneMAC. Delete this draft if you no longer need it.`;
+  const draftConflictMessage = getDraftLockedMessage(draftPackageIdForWarning);
   const isNonOwnerDraftUser = Boolean(
     isDraftMode &&
       draftOriginalCreatorEmail &&
@@ -712,55 +713,57 @@ export const ActionForm = <Schema extends SchemaWithEnforcableProps>({
         <form onSubmit={onSubmit} className="my-6 space-y-8 mx-auto justify-center flex flex-col">
           {isDraftLockedByExistingPackage && (
             <Alert variant="destructive">
-              <AlertTitle>This draft is locked</AlertTitle>
+              <AlertTitle>{DRAFT_LOCKED_ALERT_TITLE}</AlertTitle>
               <AlertDescription>{draftConflictMessage}</AlertDescription>
             </Alert>
           )}
-          <SectionCard testId="detail-section" title={title}>
-            <div>
-              {areFieldsRequired && <RequiredFieldDescription />}
-              <ActionFormDescription boldReminder={areFieldsRequired}>
-                {formDescription}
-              </ActionFormDescription>
-            </div>
-            <Fields {...form} isDraftMode={isDraftMode} />
-          </SectionCard>
-          {attachmentsFromSchema.length > 0 && (
-            <ActionFormAttachments
-              attachmentsFromSchema={attachmentsFromSchema}
-              {...attachments}
-              type={title}
-            />
-          )}
-          {additionalInformation && (
-            <SectionCard
-              testId="additional-info"
-              title={
-                <>
-                  {additionalInformation.title}{" "}
-                  {additionalInformation.required && <RequiredIndicator />}
-                </>
-              }
-            >
-              <FormField
-                control={form.control}
-                name={"additionalInformation" as FieldPath<z.TypeOf<Schema>>}
-                render={({ field }) => (
-                  <AdditionalInformation
-                    label={additionalInformation.label}
-                    field={field}
-                    submissionTitle={title}
-                  />
-                )}
-              />
+          <fieldset disabled={isDraftLockedByExistingPackage} className="space-y-8">
+            <SectionCard testId="detail-section" title={title}>
+              <div>
+                {areFieldsRequired && <RequiredFieldDescription />}
+                <ActionFormDescription boldReminder={areFieldsRequired}>
+                  {formDescription}
+                </ActionFormDescription>
+              </div>
+              <Fields {...form} isDraftMode={isDraftMode} />
             </SectionCard>
-          )}
-          {showPreSubmissionMessage && (
-            <PreSubmissionMessage
-              hasProgressLossReminder={areFieldsRequired}
-              preSubmissionMessage={preSubmissionMessage}
-            />
-          )}
+            {attachmentsFromSchema.length > 0 && (
+              <ActionFormAttachments
+                attachmentsFromSchema={attachmentsFromSchema}
+                {...attachments}
+                type={title}
+              />
+            )}
+            {additionalInformation && (
+              <SectionCard
+                testId="additional-info"
+                title={
+                  <>
+                    {additionalInformation.title}{" "}
+                    {additionalInformation.required && <RequiredIndicator />}
+                  </>
+                }
+              >
+                <FormField
+                  control={form.control}
+                  name={"additionalInformation" as FieldPath<z.TypeOf<Schema>>}
+                  render={({ field }) => (
+                    <AdditionalInformation
+                      label={additionalInformation.label}
+                      field={field}
+                      submissionTitle={title}
+                    />
+                  )}
+                />
+              </SectionCard>
+            )}
+            {showPreSubmissionMessage && (
+              <PreSubmissionMessage
+                hasProgressLossReminder={areFieldsRequired}
+                preSubmissionMessage={preSubmissionMessage}
+              />
+            )}
+          </fieldset>
           {Footer ? (
             <Footer
               form={form}
