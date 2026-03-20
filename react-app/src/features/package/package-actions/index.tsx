@@ -45,14 +45,12 @@ export const PackageActionsCard = ({ submission, id }: PackageActionsCardProps) 
   const canManageDraft =
     isDraft && !!draftLink && !!oneMacUser?.user && isStateUser(oneMacUser.user);
   const livePackageLink = `/details/${encodeURIComponent(submission.authority)}/${encodeURIComponent(id)}`;
-  const {
-    data: hasConflictingMainPackage = false,
-    isLoading: isConflictingMainPackageLoading,
-  } = useQuery({
-    queryKey: ["draft-main-conflict", id],
-    queryFn: () => itemExists(id),
-    enabled: isDraft,
-  });
+  const { data: hasConflictingMainPackage = false, isLoading: isConflictingMainPackageLoading } =
+    useQuery({
+      queryKey: ["draft-main-conflict", id],
+      queryFn: () => itemExists(id),
+      enabled: isDraft,
+    });
   const isLockedDraft = isDraft && hasConflictingMainPackage;
 
   const { data, isLoading } = useGetPackageActions(id, {
