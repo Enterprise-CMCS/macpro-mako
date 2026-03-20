@@ -110,4 +110,57 @@ describe("resolveAttachmentArchiveCurrentState", () => {
       }),
     ).toEqual({ action: "rebuild", reason: "legacy_in_progress_stale" });
   });
+
+  it("returns terminal failures instead of rebuilding non-clean attachment archives", () => {
+    const current = buildAttachmentArchiveCurrent({
+      scope: "all",
+      hash: "hash",
+      status: "FAILED",
+      artifactKey: "archive.zip",
+      manifestKey: "archive.manifest.json",
+      attachmentCount: 2,
+      failureCode: "ATTACHMENT_NOT_CLEAN",
+      failureMessage:
+        "Unable to prepare the attachment archive because blocked.xlsx is not available for download. File scanning did not complete successfully.",
+      blockedAttachment: {
+        bucket: "mako-main-attachments-123",
+        key: "blocked.xlsx",
+        filename: "blocked.xlsx",
+        title: "Blocked attachment",
+        virusScanStatus: "UKNOWNEXT",
+      },
+    });
+
+    expect(
+      resolveAttachmentArchiveCurrentState({
+        expectedHash: "hash",
+        current,
+        artifactExists: false,
+      }),
+    ).toEqual({
+      action: "failed",
+      message:
+        "Unable to prepare the attachment archive because blocked.xlsx is not available for download. File scanning did not complete successfully.",
+    });
+  });
+
+  it("keeps generic failures rebuildable", () => {
+    const current = buildAttachmentArchiveCurrent({
+      scope: "all",
+      hash: "hash",
+      status: "FAILED",
+      artifactKey: "archive.zip",
+      manifestKey: "archive.manifest.json",
+      attachmentCount: 2,
+      errorMessage: "Archive execution failed",
+    });
+
+    expect(
+      resolveAttachmentArchiveCurrentState({
+        expectedHash: "hash",
+        current,
+        artifactExists: false,
+      }),
+    ).toEqual({ action: "rebuild", reason: "failed" });
+  });
 });

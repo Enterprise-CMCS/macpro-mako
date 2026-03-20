@@ -2,7 +2,9 @@ import { createHash } from "crypto";
 
 import {
   ATTACHMENT_ARCHIVE_BUILD_VERSION,
+  AttachmentArchiveBlockedAttachment,
   AttachmentArchiveCurrent,
+  AttachmentArchiveFailureCode,
   AttachmentArchivePackageManifest,
   AttachmentArchivePackageManifestSection,
   AttachmentArchiveScope,
@@ -282,6 +284,9 @@ export function buildAttachmentArchiveCurrent({
   sectionNumber,
   sectionLabel,
   sectionFolderName,
+  failureCode,
+  failureMessage,
+  blockedAttachment,
   errorMessage,
 }: {
   scope: AttachmentArchiveScope;
@@ -295,6 +300,9 @@ export function buildAttachmentArchiveCurrent({
   sectionNumber?: number;
   sectionLabel?: string;
   sectionFolderName?: string;
+  failureCode?: AttachmentArchiveFailureCode;
+  failureMessage?: string;
+  blockedAttachment?: AttachmentArchiveBlockedAttachment;
   errorMessage?: string;
 }): AttachmentArchiveCurrent {
   return {
@@ -311,8 +319,24 @@ export function buildAttachmentArchiveCurrent({
     ...(sectionNumber ? { sectionNumber } : {}),
     ...(sectionLabel ? { sectionLabel } : {}),
     ...(sectionFolderName ? { sectionFolderName } : {}),
-    ...(errorMessage ? { errorMessage } : {}),
+    ...(failureCode ? { failureCode } : {}),
+    ...(failureMessage ? { failureMessage } : {}),
+    ...(blockedAttachment ? { blockedAttachment } : {}),
+    ...(errorMessage || failureMessage ? { errorMessage: errorMessage || failureMessage } : {}),
   };
+}
+
+function isValidBlockedAttachment(
+  value: Partial<AttachmentArchiveBlockedAttachment> | undefined,
+): value is AttachmentArchiveBlockedAttachment {
+  return !!(
+    value &&
+    typeof value.bucket === "string" &&
+    typeof value.key === "string" &&
+    typeof value.filename === "string" &&
+    typeof value.title === "string" &&
+    (value.virusScanStatus === undefined || typeof value.virusScanStatus === "string")
+  );
 }
 
 export function parseAttachmentArchiveCurrent(
@@ -335,7 +359,12 @@ export function parseAttachmentArchiveCurrent(
       typeof parsed.manifestKey === "string" &&
       typeof parsed.attachmentCount === "number" &&
       typeof parsed.updatedAt === "string" &&
-      (parsed.executionArn === undefined || typeof parsed.executionArn === "string")
+      (parsed.executionArn === undefined || typeof parsed.executionArn === "string") &&
+      (parsed.failureCode === undefined || parsed.failureCode === "ATTACHMENT_NOT_CLEAN") &&
+      (parsed.failureMessage === undefined || typeof parsed.failureMessage === "string") &&
+      (parsed.blockedAttachment === undefined ||
+        isValidBlockedAttachment(parsed.blockedAttachment)) &&
+      (parsed.errorMessage === undefined || typeof parsed.errorMessage === "string")
     ) {
       return parsed as AttachmentArchiveCurrent;
     }

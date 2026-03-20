@@ -206,4 +206,30 @@ describe("Package Activity", () => {
 
     expect(screen.getByText("This attachment is no longer available.")).toBeInTheDocument();
   });
+
+  it("renders the archive error message inline for package downloads", async () => {
+    vi.spyOn(packageActivityHooks, "useAttachmentService").mockImplementation(() => ({
+      attachmentErrorMessage: undefined,
+      archiveErrorMessage:
+        "Unable to prepare the attachment archive because blocked.xlsx is not available for download. File scanning did not complete successfully.",
+      loading: false,
+      onArchive: vi.fn(),
+      onUrl: vi.fn(),
+      error: null,
+    }));
+
+    await renderFormWithPackageSectionAsync(
+      <PackageActivities
+        id={WITHDRAWN_CHANGELOG_ITEM_ID}
+        changelog={WITHDRAW_APPK_ITEM._source.changelog}
+      />,
+      WITHDRAWN_CHANGELOG_ITEM_ID,
+    );
+
+    expect(
+      screen.getAllByText(
+        "Unable to prepare the attachment archive because blocked.xlsx is not available for download. File scanning did not complete successfully.",
+      ).length,
+    ).toBeGreaterThan(0);
+  });
 });

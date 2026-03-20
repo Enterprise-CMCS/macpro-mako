@@ -189,10 +189,30 @@ describe("attachment archive manifest helpers", () => {
       sectionNumber: 1,
       sectionLabel: "initial-package-submitted",
       sectionFolderName: "section-1-initial-package-submitted",
+      failureCode: "ATTACHMENT_NOT_CLEAN",
+      failureMessage:
+        "Unable to prepare the attachment archive because blocked.xlsx is not available for download. File scanning did not complete successfully.",
+      blockedAttachment: {
+        bucket: "mako-main-attachments-123456789012",
+        key: "blocked.xlsx",
+        filename: "blocked.xlsx",
+        title: "Blocked attachment",
+        virusScanStatus: "UKNOWNEXT",
+      },
     });
 
     expect(parseAttachmentArchiveCurrent(JSON.stringify(current))).toEqual(current);
     expect(parseAttachmentArchiveCurrent("not-json")).toBeUndefined();
     expect(parseAttachmentArchiveCurrent(JSON.stringify({ status: "READY" }))).toBeUndefined();
+    expect(
+      parseAttachmentArchiveCurrent(
+        JSON.stringify({
+          ...current,
+          blockedAttachment: {
+            bucket: "bucket-only",
+          },
+        }),
+      ),
+    ).toBeUndefined();
   });
 });

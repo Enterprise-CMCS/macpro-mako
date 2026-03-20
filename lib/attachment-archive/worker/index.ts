@@ -1,4 +1,9 @@
-import { GetObjectCommand, GetObjectCommandOutput, S3Client } from "@aws-sdk/client-s3";
+import {
+  GetObjectCommand,
+  GetObjectCommandOutput,
+  GetObjectTaggingCommand,
+  S3Client,
+} from "@aws-sdk/client-s3";
 import { Upload } from "@aws-sdk/lib-storage";
 import archiver, { Archiver } from "archiver";
 import { randomUUID } from "crypto";
@@ -18,6 +23,10 @@ import {
   AttachmentArchiveSectionManifest,
 } from "../types";
 import { loadArchiveAttachment } from "./attachment-source";
+import {
+  classifyAttachmentArchiveAccessFailure,
+  getAttachmentArchiveFailureState,
+} from "./failure-classification";
 
 function requireEnv(name: string): string {
   const value = process.env[name];
@@ -85,7 +94,12 @@ async function putCurrentArchiveStatus(status: AttachmentArchiveCurrent): Promis
   });
 }
 
-async function markFailed(errorMessage: string): Promise<void> {
+async function markFailed(
+  failure: Pick<
+    AttachmentArchiveCurrent,
+    "errorMessage" | "failureCode" | "failureMessage" | "blockedAttachment"
+  >,
+): Promise<void> {
   const current = await getCurrentArchiveStatus();
 
   if (current?.hash && current.hash !== hash) {
@@ -112,7 +126,10 @@ async function markFailed(errorMessage: string): Promise<void> {
       sectionNumber: current?.sectionNumber,
       sectionLabel: current?.sectionLabel,
       sectionFolderName: current?.sectionFolderName,
-      errorMessage,
+      failureCode: failure.failureCode,
+      failureMessage: failure.failureMessage,
+      blockedAttachment: failure.blockedAttachment,
+      errorMessage: failure.errorMessage,
     }),
   );
 }
@@ -131,6 +148,27 @@ async function getAttachmentBody(bucket: string, key: string): Promise<Attachmen
   }
 
   return response.Body;
+}
+
+async function getAttachmentObjectTags(
+  bucket: string,
+  key: string,
+): Promise<Record<string, string>> {
+  const client = await getAttachmentBucketClient(bucket);
+  const response = await client.send(
+    new GetObjectTaggingCommand({
+      Bucket: bucket,
+      Key: key,
+    }),
+  );
+
+  return (response.TagSet || []).reduce<Record<string, string>>((acc, tag) => {
+    if (tag.Key && tag.Value) {
+      acc[tag.Key] = tag.Value;
+    }
+
+    return acc;
+  }, {});
 }
 
 async function loadManifest(key = manifestKey): Promise<AttachmentArchiveManifest> {
@@ -159,12 +197,30 @@ async function appendSectionManifest(
   let skippedAttachmentCount = 0;
 
   for (const attachment of manifest.attachments) {
-    const result = await loadArchiveAttachment({
-      attachment,
-      attachmentBucketMap,
-      consumer: "attachment_archive_worker",
-      getAttachmentBody,
-    });
+    let result: Awaited<ReturnType<typeof loadArchiveAttachment<AttachmentBody>>>;
+
+    try {
+      result = await loadArchiveAttachment({
+        attachment,
+        attachmentBucketMap,
+        consumer: "attachment_archive_worker",
+        getAttachmentBody,
+      });
+    } catch (error) {
+      const failure = await classifyAttachmentArchiveAccessFailure({
+        attachment,
+        error,
+        getObjectTags: getAttachmentObjectTags,
+      });
+
+      if (failure) {
+        throw Object.assign(new Error(failure.failureMessage), failure, {
+          cause: error,
+        });
+      }
+
+      throw error;
+    }
 
     if (result.skipped) {
       skippedAttachmentCount += 1;
@@ -255,7 +311,10 @@ function buildCurrentFromManifest(
   manifest: AttachmentArchiveManifest,
   status: AttachmentArchiveCurrent["status"],
   options?: {
+    blockedAttachment?: AttachmentArchiveCurrent["blockedAttachment"];
     errorMessage?: string;
+    failureCode?: AttachmentArchiveCurrent["failureCode"];
+    failureMessage?: AttachmentArchiveCurrent["failureMessage"];
     executionArn?: string;
   },
 ): AttachmentArchiveCurrent {
@@ -274,6 +333,9 @@ function buildCurrentFromManifest(
     sectionNumber: manifest.scope === "section" ? manifest.sectionNumber : undefined,
     sectionLabel: manifest.scope === "section" ? manifest.sectionLabel : undefined,
     sectionFolderName: manifest.scope === "section" ? manifest.sectionFolderName : undefined,
+    failureCode: options?.failureCode,
+    failureMessage: options?.failureMessage,
+    blockedAttachment: options?.blockedAttachment,
     errorMessage: options?.errorMessage,
   });
 }
@@ -461,7 +523,7 @@ try {
   );
 
   try {
-    await markFailed(message);
+    await markFailed(getAttachmentArchiveFailureState(error));
   } catch (statusError) {
     console.error(
       JSON.stringify({

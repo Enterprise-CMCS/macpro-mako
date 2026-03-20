@@ -1,5 +1,6 @@
 export type AttachmentArchiveScope = "all" | "section";
 export type AttachmentArchiveStatus = "PENDING" | "RUNNING" | "READY" | "FAILED";
+export type AttachmentArchiveFailureCode = "ATTACHMENT_NOT_CLEAN";
 export const ATTACHMENT_ARCHIVE_BUILD_VERSION = 2;
 
 export interface AttachmentArchiveSourceAttachment {
@@ -63,6 +64,14 @@ export type AttachmentArchiveManifest =
   | AttachmentArchiveSectionManifest
   | AttachmentArchivePackageManifest;
 
+export interface AttachmentArchiveBlockedAttachment {
+  bucket: string;
+  key: string;
+  filename: string;
+  title: string;
+  virusScanStatus?: string;
+}
+
 export interface AttachmentArchiveCurrent {
   version: 2;
   scope: AttachmentArchiveScope;
@@ -77,6 +86,9 @@ export interface AttachmentArchiveCurrent {
   sectionNumber?: number;
   sectionLabel?: string;
   sectionFolderName?: string;
+  failureCode?: AttachmentArchiveFailureCode;
+  failureMessage?: string;
+  blockedAttachment?: AttachmentArchiveBlockedAttachment;
   errorMessage?: string;
 }
 

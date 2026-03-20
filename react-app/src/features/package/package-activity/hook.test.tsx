@@ -138,4 +138,39 @@ describe("useAttachmentService", () => {
     });
     expect(consoleErrorSpy).toHaveBeenCalled();
   });
+
+  it("stops polling when the backend returns a terminal archive failure", async () => {
+    vi.useFakeTimers();
+    const consoleErrorSpy = vi.spyOn(console, "error").mockImplementation(() => undefined);
+
+    const getAttachmentArchiveSpy = vi
+      .spyOn(api, "getAttachmentArchive")
+      .mockResolvedValueOnce({
+        status: "PENDING",
+        pollAfterSeconds: 1,
+      })
+      .mockResolvedValueOnce({
+        status: "FAILED",
+        message:
+          "Unable to prepare the attachment archive because blocked.xlsx is not available for download. File scanning did not complete successfully.",
+      });
+
+    const { result } = renderHook(() => useAttachmentService({ packageId: "testPackage" }), {
+      wrapper,
+    });
+
+    const archivePromise = result.current.onArchive({ scope: "all" });
+    await vi.advanceTimersByTimeAsync(1000);
+
+    await expect(archivePromise).resolves.toBeUndefined();
+    await waitFor(() => {
+      expect(result.current.archiveErrorMessage).toBe(
+        "Unable to prepare the attachment archive because blocked.xlsx is not available for download. File scanning did not complete successfully.",
+      );
+    });
+    expect(getAttachmentArchiveSpy).toHaveBeenCalledTimes(2);
+    expect(consoleErrorSpy).toHaveBeenCalled();
+
+    vi.useRealTimers();
+  });
 });

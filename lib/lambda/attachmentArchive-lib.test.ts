@@ -29,6 +29,7 @@ import * as packageActivity from "../attachment-archive/package-activity";
 import * as storage from "../attachment-archive/storage";
 import {
   getRequestedAttachmentArchiveStatus,
+  markAttachmentArchiveFailed,
   rebuildPackageAttachmentArchives,
   validateAttachmentArchiveCompletion,
 } from "./attachmentArchive-lib";
@@ -51,6 +52,7 @@ describe("attachmentArchive-lib", () => {
   const stepFunctionsSpy = vi.spyOn(SFNClient.prototype, "send");
 
   const sectionDescriptor = {
+    packageId: "MD-10-6772",
     sectionId: "section-a",
     sectionNumber: 1,
     sectionLabel: "initial-package-submitted",
@@ -236,6 +238,51 @@ describe("attachmentArchive-lib", () => {
       response: {
         pollAfterSeconds: 3,
         status: "PENDING",
+      },
+    });
+  });
+
+  it("returns a terminal failed response for non-clean attachment archives", async () => {
+    getObjectText.mockResolvedValue(
+      JSON.stringify(
+        buildAttachmentArchiveCurrent({
+          scope: "section",
+          hash: manifest.hash,
+          status: "FAILED",
+          artifactKey,
+          manifestKey,
+          attachmentCount: 1,
+          sectionId: sectionDescriptor.sectionId,
+          sectionNumber: sectionDescriptor.sectionNumber,
+          sectionLabel: sectionDescriptor.sectionLabel,
+          sectionFolderName: sectionDescriptor.sectionFolderName,
+          failureCode: "ATTACHMENT_NOT_CLEAN",
+          failureMessage:
+            "Unable to prepare the attachment archive because blocked.xlsx is not available for download. File scanning did not complete successfully.",
+          blockedAttachment: {
+            bucket: "mako-main-attachments-635052997545",
+            key: "blocked.xlsx",
+            filename: "blocked.xlsx",
+            title: "Blocked attachment",
+            virusScanStatus: "UKNOWNEXT",
+          },
+        }),
+      ),
+    );
+
+    const result = await getRequestedAttachmentArchiveStatus({
+      packageId: "MD-10-6772",
+      scope: "section",
+      sectionId: sectionDescriptor.sectionId,
+      changelog: [],
+    });
+
+    expect(result).toEqual({
+      needsRebuild: false,
+      response: {
+        status: "FAILED",
+        message:
+          "Unable to prepare the attachment archive because blocked.xlsx is not available for download. File scanning did not complete successfully.",
       },
     });
   });
@@ -464,5 +511,48 @@ describe("attachmentArchive-lib", () => {
       }),
     );
     expect(stepFunctionsSpy).toHaveBeenCalledTimes(1);
+  });
+
+  it("preserves structured worker failures when the step function failure handler runs", async () => {
+    getJsonObject.mockResolvedValue(
+      buildAttachmentArchiveCurrent({
+        scope: "section",
+        hash: manifest.hash,
+        status: "FAILED",
+        artifactKey,
+        manifestKey,
+        attachmentCount: 1,
+        sectionId: sectionDescriptor.sectionId,
+        sectionNumber: sectionDescriptor.sectionNumber,
+        sectionLabel: sectionDescriptor.sectionLabel,
+        sectionFolderName: sectionDescriptor.sectionFolderName,
+        failureCode: "ATTACHMENT_NOT_CLEAN",
+        failureMessage:
+          "Unable to prepare the attachment archive because blocked.xlsx is not available for download. File scanning did not complete successfully.",
+        blockedAttachment: {
+          bucket: "mako-main-attachments-635052997545",
+          key: "blocked.xlsx",
+          filename: "blocked.xlsx",
+          title: "Blocked attachment",
+          virusScanStatus: "UKNOWNEXT",
+        },
+      }),
+    );
+
+    const result = await markAttachmentArchiveFailed({
+      archiveBucketName: "mako-test-attachment-archives",
+      currentKey: `package/MD-10-6772/section/${sectionDescriptor.sectionId}/current.json`,
+      hash: manifest.hash,
+      artifactKey,
+      manifestKey,
+      attachmentCount: 1,
+      errorMessage: "Task failed",
+    });
+
+    expect(result).toEqual({
+      skipped: true,
+      reason: "preserve_terminal_failure",
+    });
+    expect(putJsonObject).not.toHaveBeenCalled();
   });
 });
