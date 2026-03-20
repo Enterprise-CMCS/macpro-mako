@@ -54,7 +54,7 @@ describe("package details", () => {
         `http://localhost/details/Medicaid%20SPA/${encodeURIComponent(ADMIN_ITEM_ID)}?preferDraft=true`,
       ),
       context: undefined as any,
-    });
+    } as any);
 
     expect(getItemSpy).toHaveBeenCalledWith(ADMIN_ITEM_ID, {
       includeDraft: true,
