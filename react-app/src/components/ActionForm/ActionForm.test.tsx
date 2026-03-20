@@ -1092,19 +1092,10 @@ describe("ActionForm", () => {
       `draftId=${draftId}`,
     );
 
-    await waitFor(() =>
-      expect(bannerSpy).toHaveBeenCalledWith(
-        expect.objectContaining({
-          header: "This draft is locked",
-          body: `A package with ID ${draftId} already exists in SEA Tool. This draft can no longer be saved or submitted in OneMAC. Delete this draft if you no longer need it.`,
-          variant: "destructive",
-        }),
-      ),
-    );
-
     expect(screen.getByText("This draft is locked")).toBeInTheDocument();
     expect(screen.getByTestId("save-draft-form")).toBeDisabled();
     expect(screen.getByTestId("submit-action-form")).toBeDisabled();
+    expect(bannerSpy).not.toHaveBeenCalled();
 
     useGetItemSpy.mockRestore();
   });
@@ -1157,15 +1148,11 @@ describe("ActionForm", () => {
 
     await user.click(screen.getByTestId("save-draft-form"));
 
-    await waitFor(() =>
-      expect(bannerSpy).toHaveBeenCalledWith(
-        expect.objectContaining({
-          header: "This draft is locked",
-          body: `A package with ID ${draftId} already exists in SEA Tool. This draft can no longer be saved or submitted in OneMAC. Delete this draft if you no longer need it.`,
-          variant: "destructive",
-        }),
-      ),
-    );
+    await waitFor(() => expect(screen.getByText("This draft is locked")).toBeInTheDocument());
+    expect(screen.getByTestId("save-draft-form")).toBeDisabled();
+    expect(screen.getByTestId("submit-action-form")).toBeDisabled();
+    expect(screen.getByTestId("draft-save-status")).toHaveTextContent("Draft locked");
+    expect(bannerSpy).not.toHaveBeenCalled();
 
     useGetItemSpy.mockRestore();
   });

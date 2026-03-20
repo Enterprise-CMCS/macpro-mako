@@ -21,6 +21,7 @@ import {
   DRAFT_DELETE_ACTION_LABEL,
   DRAFT_DELETE_MODAL_BODY,
   DRAFT_DELETE_MODAL_HEADER,
+  DRAFT_VIEW_LIVE_PACKAGE_ACTION_LABEL,
   getNonOwnerDraftDeleteModalBody,
 } from "@/utils/drafts";
 import { renderFormWithPackageSectionAsync } from "@/utils/test-helpers/renderForm";
@@ -57,8 +58,10 @@ vi.mock("@/components", async () => {
   };
 });
 
-const { deleteDraft } = await import("@/api");
+const apiModule = await import("@/api");
+const { deleteDraft } = apiModule;
 const { banner, userPrompt } = await import("@/components");
+const itemExistsSpy = vi.spyOn(apiModule, "itemExists");
 
 const setup = async (submission: opensearch.main.Document, id: string) => {
   await renderFormWithPackageSectionAsync(
@@ -74,6 +77,7 @@ describe("", () => {
     vi.clearAllMocks();
     mockNavigate.mockReset();
     setDefaultStateSubmitter();
+    itemExistsSpy.mockResolvedValue(false);
   });
 
   it("renders nothing if there are no actions", async () => {
@@ -104,6 +108,23 @@ describe("", () => {
         "href",
         `/new-submission/spa/medicaid/create?draftId=${TEST_MED_SPA_ITEM._id}&origin=spas`,
       );
+      expect(screen.getByRole("button", { name: DRAFT_DELETE_ACTION_LABEL })).toBeInTheDocument();
+    });
+
+    it("should show view live package and delete draft actions for locked drafts", async () => {
+      itemExistsSpy.mockResolvedValue(true);
+
+      await setup(draftSubmission, TEST_MED_SPA_ITEM._id);
+
+      expect(
+        await screen.findByRole("link", { name: DRAFT_VIEW_LIVE_PACKAGE_ACTION_LABEL }),
+      ).toHaveAttribute(
+        "href",
+        `/details/${encodeURIComponent(draftSubmission.authority)}/${encodeURIComponent(TEST_MED_SPA_ITEM._id)}`,
+      );
+      expect(
+        screen.queryByRole("link", { name: DRAFT_CONTINUE_ACTION_LABEL }),
+      ).not.toBeInTheDocument();
       expect(screen.getByRole("button", { name: DRAFT_DELETE_ACTION_LABEL })).toBeInTheDocument();
     });
 

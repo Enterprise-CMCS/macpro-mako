@@ -1,8 +1,9 @@
+import { useQuery } from "@tanstack/react-query";
 import { Link, useLocation, useNavigate } from "react-router";
 import { Authority, opensearch, SEATOOL_STATUS } from "shared-types";
 import { isStateUser } from "shared-utils";
 
-import { deleteDraft, useGetPackageActions, useGetUser } from "@/api";
+import { deleteDraft, itemExists, useGetPackageActions, useGetUser } from "@/api";
 import { banner, LoadingSpinner, userPrompt } from "@/components";
 import {
   DETAILS_ORIGIN,
@@ -17,6 +18,7 @@ import {
   DRAFT_DELETE_ACTION_LABEL,
   DRAFT_DELETE_MODAL_BODY,
   DRAFT_DELETE_MODAL_HEADER,
+  DRAFT_VIEW_LIVE_PACKAGE_ACTION_LABEL,
   getDraftEditLink,
   getNonOwnerDraftDeleteModalBody,
 } from "@/utils/drafts";
@@ -42,13 +44,23 @@ export const PackageActionsCard = ({ submission, id }: PackageActionsCardProps) 
   );
   const canManageDraft =
     isDraft && !!draftLink && !!oneMacUser?.user && isStateUser(oneMacUser.user);
+  const livePackageLink = `/details/${encodeURIComponent(submission.authority)}/${encodeURIComponent(id)}`;
+  const {
+    data: hasConflictingMainPackage = false,
+    isLoading: isConflictingMainPackageLoading,
+  } = useQuery({
+    queryKey: ["draft-main-conflict", id],
+    queryFn: () => itemExists(id),
+    enabled: isDraft,
+  });
+  const isLockedDraft = isDraft && hasConflictingMainPackage;
 
   const { data, isLoading } = useGetPackageActions(id, {
     retry: false,
     enabled: !isDraft,
   });
 
-  if (isDraft && isUserLoading) {
+  if (isDraft && (isUserLoading || isConflictingMainPackageLoading)) {
     return <LoadingSpinner />;
   }
 
@@ -97,6 +109,35 @@ export const PackageActionsCard = ({ submission, id }: PackageActionsCardProps) 
       },
     });
   };
+
+  if (isLockedDraft && canManageDraft) {
+    return (
+      <nav className="my-3 sm:text-nowrap sm:min-w-min" aria-labelledby="package-actions-heading">
+        <ul className="my-3">
+          <li className="py-2">
+            <Link
+              state={{
+                from: `${location.pathname}${location.search}`,
+              }}
+              to={livePackageLink}
+              className="text-sky-700 font-semibold text-lg hover:underline hover:decoration-inherit"
+            >
+              {DRAFT_VIEW_LIVE_PACKAGE_ACTION_LABEL}
+            </Link>
+          </li>
+          <li className="py-2">
+            <button
+              className="text-sky-700 font-semibold text-lg hover:underline hover:decoration-inherit"
+              onClick={handleDeleteDraft}
+              type="button"
+            >
+              {DRAFT_DELETE_ACTION_LABEL}
+            </button>
+          </li>
+        </ul>
+      </nav>
+    );
+  }
 
   if (isDraft && canManageDraft) {
     return (

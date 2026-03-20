@@ -186,9 +186,9 @@ export const ActionForm = <Schema extends SchemaWithEnforcableProps>({
   const previousDraftIdRef = useRef<string | null>(null);
   const draftSaveStatusRef = useRef<HTMLParagraphElement | null>(null);
   const hasPromptedNonOwnerDraftActionRef = useRef(false);
-  const hasShownDraftLockedBannerRef = useRef(false);
   const draftVersionRef = useRef<{ seqNo?: number; primaryTerm?: number }>({});
   const saveDraftInFlightRef = useRef(false);
+  const [hasDetectedDraftConflict, setHasDetectedDraftConflict] = useState(false);
 
   const breadcrumbs = optionCrumbsFromPath(pathname, authority, id);
   const draftEnabled = draftOptions?.enabled === true;
@@ -269,6 +269,7 @@ export const ActionForm = <Schema extends SchemaWithEnforcableProps>({
       if (previousDraftId !== null) {
         setDraftSaveStatus(null);
       }
+      setHasDetectedDraftConflict(false);
       draftVersionRef.current = {};
       previousDraftIdRef.current = draftId;
       return;
@@ -279,6 +280,7 @@ export const ActionForm = <Schema extends SchemaWithEnforcableProps>({
     if (shouldClearDraftSaveStatus) {
       setDraftSaveStatus(null);
     }
+    setHasDetectedDraftConflict(false);
     draftVersionRef.current = {};
     previousDraftIdRef.current = draftId;
   }, [draftId, isDraftMode]);
@@ -322,30 +324,8 @@ export const ActionForm = <Schema extends SchemaWithEnforcableProps>({
     return false;
   };
 
-  const isDraftLockedByExistingPackage = isDraftMode && hasConflictingMainPackage;
-
-  const showDraftLockedBanner = useCallback(() => {
-    banner({
-      header: "This draft is locked",
-      body: draftConflictMessage,
-      variant: "destructive",
-      pathnameToDisplayOn: window.location.pathname,
-    });
-  }, [draftConflictMessage]);
-
-  useEffect(() => {
-    if (!isDraftLockedByExistingPackage) {
-      hasShownDraftLockedBannerRef.current = false;
-      return;
-    }
-
-    if (hasShownDraftLockedBannerRef.current) {
-      return;
-    }
-
-    hasShownDraftLockedBannerRef.current = true;
-    showDraftLockedBanner();
-  }, [isDraftLockedByExistingPackage, showDraftLockedBanner]);
+  const isDraftLockedByExistingPackage =
+    isDraftMode && (hasConflictingMainPackage || hasDetectedDraftConflict);
 
   useEffect(() => {
     const draftData = draftRecord?._source?.draft?.data as
@@ -422,7 +402,6 @@ export const ActionForm = <Schema extends SchemaWithEnforcableProps>({
 
   const onSubmit = form.handleSubmit(async (formData) => {
     if (isDraftLockedByExistingPackage) {
-      showDraftLockedBanner();
       return;
     }
 
@@ -499,7 +478,6 @@ export const ActionForm = <Schema extends SchemaWithEnforcableProps>({
     if (!draftEnabled || !draftOptions?.event) return;
     if (saveDraftInFlightRef.current) return;
     if (isDraftLockedByExistingPackage) {
-      showDraftLockedBanner();
       return;
     }
     if (!canProceedWithNonOwnerDraftAction()) return;
@@ -619,16 +597,24 @@ export const ActionForm = <Schema extends SchemaWithEnforcableProps>({
 
         return error instanceof Error ? error.message : "Unable to save. Try again.";
       })();
-      banner({
-        header:
-          errorMessage === draftConflictMessage ? "This draft is locked" : "Unable to save Draft",
-        body: errorMessage,
-        variant: "destructive",
-        pathnameToDisplayOn: window.location.pathname,
-      });
+      const isDraftConflictError = errorMessage === draftConflictMessage;
+
+      if (isDraftConflictError) {
+        setHasDetectedDraftConflict(true);
+        if (typeof window.scrollTo === "function") {
+          window.scrollTo(0, 0);
+        }
+      } else {
+        banner({
+          header: "Unable to save Draft",
+          body: errorMessage,
+          variant: "destructive",
+          pathnameToDisplayOn: window.location.pathname,
+        });
+      }
       setDraftSaveStatus({
         variant: "error",
-        message: errorMessage,
+        message: isDraftConflictError ? "Draft locked" : errorMessage,
       });
     } finally {
       saveDraftInFlightRef.current = false;
@@ -820,7 +806,11 @@ export const ActionForm = <Schema extends SchemaWithEnforcableProps>({
                     {draftEnabled && (
                       <button
                         type="button"
-                        className="w-[128.36px] py-3 px-5 gap-2.5 rounded border-2 border-blue-700 text-blue-700 bg-white font-semibold text-sm"
+                        className={`w-[128.36px] py-3 px-5 gap-2.5 rounded border-2 font-semibold text-sm transition ${
+                          isSavingDraft || isDraftLockedByExistingPackage
+                            ? "border-gray-300 text-gray-400 bg-gray-100 cursor-not-allowed"
+                            : "border-blue-700 text-blue-700 bg-white hover:bg-slate-50"
+                        }`}
                         onClick={handleSaveDraft}
                         disabled={isSavingDraft || isDraftLockedByExistingPackage}
                         aria-disabled={isSavingDraft || isDraftLockedByExistingPackage}

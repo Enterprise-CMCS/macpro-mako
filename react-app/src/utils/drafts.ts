@@ -4,6 +4,7 @@ import { getDashboardTabForAuthority } from "./crumbs";
 
 export const DRAFT_CONTINUE_ACTION_LABEL = "Continue Package";
 export const DRAFT_DELETE_ACTION_LABEL = "Delete Draft";
+export const DRAFT_VIEW_LIVE_PACKAGE_ACTION_LABEL = "View Live Package";
 export const DRAFT_DELETE_MODAL_HEADER = "Confirm delete";
 export const DRAFT_DELETE_MODAL_BODY =
   "This action cannot be undone. Are you sure you want to delete this draft package?";
