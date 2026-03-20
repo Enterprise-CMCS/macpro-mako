@@ -19,7 +19,19 @@ export const deploy = {
   },
   handler: async (options: { stage: string; stack?: string }) => {
     await checkIfAuthenticated();
-    await runCommand("cdk", ["deploy", "-c", `stage=${options.stage}`, "--all"], ".");
+    const cdkBinary = path.resolve(__dirname, "../../../node_modules/.bin/cdk");
+    await runCommand(
+      cdkBinary,
+      [
+        "deploy",
+        "-a",
+        "./node_modules/.bin/tsx bin/app.ts",
+        "-c",
+        `stage=${options.stage}`,
+        "--all",
+      ],
+      ".",
+    );
 
     await writeUiEnvFile(options.stage);
 

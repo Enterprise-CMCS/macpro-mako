@@ -28,7 +28,7 @@ exports[`Upload Subsequent Document CMS Email Snapshot Test > renders a AppKCMSE
           </div>
         </div>
         <body
-          style="background-color: rgb(255, 255, 255); margin: 0px;"
+          style="background-color: rgb(255, 255, 255); margin: 0px; padding: 0px;"
         >
           <table
             align="center"
@@ -489,7 +489,7 @@ exports[`Upload Subsequent Document CMS Email Snapshot Test > renders a AppKCMSE
         </div>
       </div>
       <body
-        style="background-color: rgb(255, 255, 255); margin: 0px;"
+        style="background-color: rgb(255, 255, 255); margin: 0px; padding: 0px;"
       >
         <table
           align="center"
@@ -1007,7 +1007,7 @@ exports[`Upload Subsequent Document CMS Email Snapshot Test > renders a ChipSPA 
           </div>
         </div>
         <body
-          style="background-color: rgb(255, 255, 255); margin: 0px;"
+          style="background-color: rgb(255, 255, 255); margin: 0px; padding: 0px;"
         >
           <table
             align="center"
@@ -1467,7 +1467,7 @@ exports[`Upload Subsequent Document CMS Email Snapshot Test > renders a ChipSPA 
           </div>
         </div>
         <body
-          style="background-color: rgb(255, 255, 255); margin: 0px;"
+          style="background-color: rgb(255, 255, 255); margin: 0px; padding: 0px;"
         >
           <table
             align="center"
@@ -2388,7 +2388,7 @@ exports[`Upload Subsequent Document CMS Email Snapshot Test > renders a ChipSPA 
         </div>
       </div>
       <body
-        style="background-color: rgb(255, 255, 255); margin: 0px;"
+        style="background-color: rgb(255, 255, 255); margin: 0px; padding: 0px;"
       >
         <table
           align="center"
@@ -3366,7 +3366,7 @@ exports[`Upload Subsequent Document CMS Email Snapshot Test > renders a Medicaid
           </div>
         </div>
         <body
-          style="background-color: rgb(255, 255, 255); margin: 0px;"
+          style="background-color: rgb(255, 255, 255); margin: 0px; padding: 0px;"
         >
           <table
             align="center"
@@ -3826,7 +3826,7 @@ exports[`Upload Subsequent Document CMS Email Snapshot Test > renders a Medicaid
           </div>
         </div>
         <body
-          style="background-color: rgb(255, 255, 255); margin: 0px;"
+          style="background-color: rgb(255, 255, 255); margin: 0px; padding: 0px;"
         >
           <table
             align="center"
@@ -4746,7 +4746,7 @@ exports[`Upload Subsequent Document CMS Email Snapshot Test > renders a Medicaid
           </div>
         </div>
         <body
-          style="background-color: rgb(255, 255, 255); margin: 0px;"
+          style="background-color: rgb(255, 255, 255); margin: 0px; padding: 0px;"
         >
           <table
             align="center"
@@ -5664,7 +5664,7 @@ exports[`Upload Subsequent Document CMS Email Snapshot Test > renders a Medicaid
         </div>
       </div>
       <body
-        style="background-color: rgb(255, 255, 255); margin: 0px;"
+        style="background-color: rgb(255, 255, 255); margin: 0px; padding: 0px;"
       >
         <table
           align="center"
@@ -6639,7 +6639,7 @@ exports[`Upload Subsequent Document CMS Email Snapshot Test > renders a Waiver C
           </div>
         </div>
         <body
-          style="background-color: rgb(255, 255, 255); margin: 0px;"
+          style="background-color: rgb(255, 255, 255); margin: 0px; padding: 0px;"
         >
           <table
             align="center"
@@ -7099,7 +7099,7 @@ exports[`Upload Subsequent Document CMS Email Snapshot Test > renders a Waiver C
           </div>
         </div>
         <body
-          style="background-color: rgb(255, 255, 255); margin: 0px;"
+          style="background-color: rgb(255, 255, 255); margin: 0px; padding: 0px;"
         >
           <table
             align="center"
@@ -8019,7 +8019,7 @@ exports[`Upload Subsequent Document CMS Email Snapshot Test > renders a Waiver C
           </div>
         </div>
         <body
-          style="background-color: rgb(255, 255, 255); margin: 0px;"
+          style="background-color: rgb(255, 255, 255); margin: 0px; padding: 0px;"
         >
           <table
             align="center"
@@ -8936,7 +8936,7 @@ exports[`Upload Subsequent Document CMS Email Snapshot Test > renders a Waiver C
           </div>
         </div>
         <body
-          style="background-color: rgb(255, 255, 255); margin: 0px;"
+          style="background-color: rgb(255, 255, 255); margin: 0px; padding: 0px;"
         >
           <table
             align="center"
@@ -9857,7 +9857,7 @@ exports[`Upload Subsequent Document CMS Email Snapshot Test > renders a Waiver C
         </div>
       </div>
       <body
-        style="background-color: rgb(255, 255, 255); margin: 0px;"
+        style="background-color: rgb(255, 255, 255); margin: 0px; padding: 0px;"
       >
         <table
           align="center"

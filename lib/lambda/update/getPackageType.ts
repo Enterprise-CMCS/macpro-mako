@@ -1,26 +1,20 @@
 import { getPackageChangelog } from "libs/api/package";
-import { response } from "libs/handler-lib";
 import { events } from "shared-types";
 
-export const getPackageType = async (packageId: string) => {
+function isKnownPackageEvent(event: string): event is keyof typeof events {
+  return event in events;
+}
+
+export const getPackageType = async (packageId: string): Promise<keyof typeof events> => {
   // use event of current package to determine how ID should be formatted
-  try {
-    const packageChangelog = await getPackageChangelog(packageId);
-    const packageSubmissionType = packageChangelog.hits.hits.find(
-      (pkg) => pkg._source.event in events,
-    );
+  const packageChangelog = await getPackageChangelog(packageId);
+  const packageSubmissionType = packageChangelog.hits.hits.find((pkg) => {
+    return !!pkg._source?.event && isKnownPackageEvent(pkg._source.event);
+  });
 
-    if (!packageSubmissionType) {
-      throw new Error("The type of package could not be determined.");
-    }
-
-    return packageSubmissionType._source.event;
-  } catch (error) {
-    return response({
-      statusCode: 500,
-      body: {
-        message: error.message || "An error occurred determining the package submission type.",
-      },
-    });
+  if (!packageSubmissionType || !isKnownPackageEvent(packageSubmissionType._source.event)) {
+    throw new Error("The type of package could not be determined.");
   }
+
+  return packageSubmissionType._source.event;
 };

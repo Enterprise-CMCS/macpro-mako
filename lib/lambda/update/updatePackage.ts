@@ -8,6 +8,16 @@ import { z } from "zod";
 
 import { getPackageType } from "./getPackageType";
 
+function getBaseSchema(
+  eventModule: (typeof events)[keyof typeof events],
+): z.AnyZodObject | undefined {
+  if (!("baseSchema" in eventModule) || !eventModule.baseSchema) {
+    return undefined;
+  }
+
+  return eventModule.baseSchema as z.AnyZodObject;
+}
+
 /** @typedef {object} json
  * @property {object} body
  * @property {string} body.packageId
@@ -273,9 +283,23 @@ const sendUpdateIdMessage = async ({
   }
   // use event of current package to determine how ID should be formatted
   const packageEvent = await getPackageType(currentPackage._id);
-  const packageSubmissionTypeSchema = events[packageEvent as keyof typeof events].baseSchema;
+  const eventModule = events[packageEvent];
+  const packageSubmissionTypeSchema = getBaseSchema(eventModule);
+  if (!packageSubmissionTypeSchema) {
+    return response({
+      statusCode: 400,
+      body: { message: `Package event ${packageEvent} does not support ID updates.` },
+    });
+  }
 
-  const idSchema = packageSubmissionTypeSchema.shape.id;
+  const idSchema = (packageSubmissionTypeSchema.shape as Record<string, z.ZodTypeAny>).id;
+  if (!idSchema) {
+    return response({
+      statusCode: 400,
+      body: { message: `Package event ${packageEvent} does not define an ID format.` },
+    });
+  }
+
   const parsedId = idSchema.safeParse(updatedId);
 
   if (!parsedId.success) {
@@ -329,24 +353,9 @@ export const handler = async (event: APIGatewayEvent) => {
     });
   }
   try {
-    const parseEventBody = (body: unknown) => {
-      return updatePackageEventBodySchema.parse(typeof body === "string" ? JSON.parse(body) : body);
-    };
-    let body = {
-      packageId: "",
-      action: "",
-    };
-    if (typeof event.body === "string") {
-      body = JSON.parse(event.body);
-    } else {
-      body = event.body;
-    }
-    if (!body.packageId || !body.action) {
-      return response({
-        statusCode: 400,
-        body: { message: "Package ID and action are required" },
-      });
-    }
+    const body = updatePackageEventBodySchema.parse(
+      typeof event.body === "string" ? JSON.parse(event.body) : event.body,
+    );
     const {
       packageId,
       action,
@@ -354,7 +363,7 @@ export const handler = async (event: APIGatewayEvent) => {
       updatedFields = {},
       changeMade,
       changeReason,
-    } = parseEventBody(event.body);
+    } = body;
 
     const currentPackage = await getPackage(packageId);
     if (!currentPackage || currentPackage.found == false) {
@@ -382,6 +391,11 @@ export const handler = async (event: APIGatewayEvent) => {
         changeReason,
       });
     }
+
+    return response({
+      statusCode: 400,
+      body: { message: "Unsupported package action" },
+    });
   } catch (err) {
     console.error("Error has occured modifying package:", err);
     if (err instanceof z.ZodError) {
@@ -392,7 +406,7 @@ export const handler = async (event: APIGatewayEvent) => {
     }
     return response({
       statusCode: 500,
-      body: { message: err.message || "Internal Server Error" },
+      body: { message: err instanceof Error ? err.message : "Internal Server Error" },
     });
   }
 };

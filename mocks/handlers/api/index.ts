@@ -30,7 +30,7 @@ export { errorApiItemExistsHandler, errorApiItemHandler, onceApiItemHandler } fr
 export { errorApiNotificationHandler } from "./notifications";
 export { errorApiPackageActionsHandler, onceApiPackageActionsHandler } from "./packageActions";
 export { errorApiSearchHandler } from "./search";
-export { errorApiAttachmentUrlHandler } from "./submissions";
+export { errorApiAttachmentArchiveHandler, errorApiAttachmentUrlHandler } from "./submissions";
 export { errorApiSubTypesHandler, errorApiTypeHandler } from "./types";
 export { mockCurrentAuthenticatedUser, mockUseGetUser, mockUserAttributes } from "./user";
 export { errorApiRequestBaseCMSAccessHandler, errorApiUserDetailsHandler } from "./userDetails";
