@@ -7,6 +7,8 @@ export const DRAFT_DELETE_ACTION_LABEL = "Delete Draft";
 export const DRAFT_DELETE_MODAL_HEADER = "Confirm delete";
 export const DRAFT_DELETE_MODAL_BODY =
   "This action cannot be undone. Are you sure you want to delete this draft package?";
+export const getNonOwnerDraftDeleteModalBody = (packageId: string) =>
+  `Since you are not the original package creator, are you sure you want to delete draft package ${packageId}? This action cannot be undone.`;
 
 const EVENT_TO_DRAFT_PATH: Record<string, string> = {
   "new-medicaid-submission": "/new-submission/spa/medicaid/create",

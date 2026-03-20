@@ -17,6 +17,7 @@ import {
   DRAFT_DELETE_ACTION_LABEL,
   DRAFT_DELETE_MODAL_BODY,
   DRAFT_DELETE_MODAL_HEADER,
+  getNonOwnerDraftDeleteModalBody,
   getDraftEditLink,
 } from "@/utils/drafts";
 
@@ -31,6 +32,14 @@ export const PackageActionsCard = ({ submission, id }: PackageActionsCardProps) 
   const { data: oneMacUser, isLoading: isUserLoading } = useGetUser();
   const isDraft = submission.seatoolStatus === SEATOOL_STATUS.DRAFT;
   const draftLink = isDraft ? getDraftEditLink(submission) : null;
+  const draftOriginalCreatorEmail =
+    submission.draft?.originalCreatorEmail ?? submission.submitterEmail;
+  const isNonOwnerDraftUser = Boolean(
+    isDraft &&
+      draftOriginalCreatorEmail &&
+      oneMacUser?.user?.email &&
+      draftOriginalCreatorEmail.toLowerCase() !== oneMacUser.user.email.toLowerCase(),
+  );
   const canManageDraft =
     isDraft && !!draftLink && !!oneMacUser?.user && isStateUser(oneMacUser.user);
 
@@ -46,7 +55,7 @@ export const PackageActionsCard = ({ submission, id }: PackageActionsCardProps) 
   const handleDeleteDraft = () => {
     userPrompt({
       header: DRAFT_DELETE_MODAL_HEADER,
-      body: DRAFT_DELETE_MODAL_BODY,
+      body: isNonOwnerDraftUser ? getNonOwnerDraftDeleteModalBody(id) : DRAFT_DELETE_MODAL_BODY,
       acceptButtonText: "Delete",
       cancelButtonText: "Cancel",
       cancelVariant: "link",
