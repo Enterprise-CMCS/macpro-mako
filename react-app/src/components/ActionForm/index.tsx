@@ -620,7 +620,8 @@ export const ActionForm = <Schema extends SchemaWithEnforcableProps>({
         return error instanceof Error ? error.message : "Unable to save. Try again.";
       })();
       banner({
-        header: errorMessage === draftConflictMessage ? "This draft is locked" : "Unable to save Draft",
+        header:
+          errorMessage === draftConflictMessage ? "This draft is locked" : "Unable to save Draft",
         body: errorMessage,
         variant: "destructive",
         pathnameToDisplayOn: window.location.pathname,
@@ -851,7 +852,11 @@ export const ActionForm = <Schema extends SchemaWithEnforcableProps>({
               </section>
             </section>
           ) : (
-            <section className="flex items-center gap-2 p-4">
+            <section
+              className={
+                draftEnabled ? "flex items-center gap-2 p-4" : "flex justify-end gap-2 p-4 ml-auto"
+              }
+            >
               {draftEnabled && draftSaveStatus?.message && (
                 <p
                   ref={draftSaveStatusRef}

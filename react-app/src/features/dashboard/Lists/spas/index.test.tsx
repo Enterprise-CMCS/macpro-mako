@@ -203,9 +203,11 @@ const verifyRow = (
     expect(within(row).getByTestId("available-actions"));
   }
   expect(cells[cellIndex].textContent).toEqual(doc.id); // SPA ID
-  expect(cells[cellIndex].firstElementChild.getAttribute("href")).toEqual(
-    `/details/${encodeURI(doc.authority)}/${doc.id}`,
-  );
+  const expectedDetailsHref =
+    doc.seatoolStatus === SEATOOL_STATUS.DRAFT
+      ? `/details/${encodeURI(doc.authority)}/${doc.id}?preferDraft=true`
+      : `/details/${encodeURI(doc.authority)}/${doc.id}`;
+  expect(cells[cellIndex].firstElementChild.getAttribute("href")).toEqual(expectedDetailsHref);
   cellIndex++;
   expect(cells[cellIndex].textContent).toEqual(doc.state || BLANK_VALUE); // State
   cellIndex++;
@@ -444,6 +446,10 @@ describe("SpasList", () => {
     const draftDoc = {
       ...pendingDoc,
       id: "MD-26-9999-P",
+      submissionDate: undefined,
+      finalDispositionDate: undefined,
+      raiRequestedDate: undefined,
+      raiReceivedDate: undefined,
       seatoolStatus: SEATOOL_STATUS.DRAFT,
       stateStatus: "Draft",
       cmsStatus: "Draft",
@@ -455,7 +461,7 @@ describe("SpasList", () => {
       },
     } as opensearch.main.Document;
 
-    await setup(
+    const { user } = await setup(
       {
         hits: [
           {
@@ -474,6 +480,16 @@ describe("SpasList", () => {
       false,
     );
 
-    verifyRow(draftDoc, { hasActions: true, status: "Draft" });
+    await user.click(screen.queryByRole("button", { name: "Columns (3 hidden)" }));
+    const columns = screen.getByTestId("columns-menu");
+    await user.click(within(columns).getByText("Final Disposition"));
+    await user.click(within(columns).getByText("Formal RAI Requested"));
+    await user.click(within(columns).getByText("CPOC Name"));
+
+    verifyRow(draftDoc, {
+      hasActions: true,
+      status: "Draft",
+      makoChangedDate: "01/31/2024",
+    });
   });
 });
