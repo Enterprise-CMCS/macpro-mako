@@ -4,7 +4,7 @@ import { getDashboardTabForAuthority } from "./crumbs";
 
 export const DRAFT_CONTINUE_ACTION_LABEL = "Continue Package";
 export const DRAFT_DELETE_ACTION_LABEL = "Delete Draft";
-export const DRAFT_VIEW_LIVE_PACKAGE_ACTION_LABEL = "View Live Package";
+export const DRAFT_BACK_TO_DASHBOARD_ACTION_LABEL = "Back to Dashboard";
 export const DRAFT_DELETE_MODAL_HEADER = "Confirm delete";
 export const DRAFT_DELETE_MODAL_BODY =
   "This action cannot be undone. Are you sure you want to delete this draft package?";
@@ -44,4 +44,13 @@ export const getDraftEditLink = (record: opensearch.main.Document) => {
     pathname: EVENT_TO_DRAFT_PATH[record.event],
     search: searchParams.toString(),
   };
+};
+
+export const getDraftDashboardLink = (record: opensearch.main.Document) => {
+  try {
+    const tab = getDashboardTabForAuthority(record.authority as Authority);
+    return `/dashboard?tab=${tab}`;
+  } catch {
+    return "/dashboard";
+  }
 };

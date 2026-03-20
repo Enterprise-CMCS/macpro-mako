@@ -1,6 +1,6 @@
 import { useQuery } from "@tanstack/react-query";
 import { Link, useLocation, useNavigate } from "react-router";
-import { Authority, opensearch, SEATOOL_STATUS } from "shared-types";
+import { opensearch, SEATOOL_STATUS } from "shared-types";
 import { isStateUser } from "shared-utils";
 
 import { deleteDraft, itemExists, useGetPackageActions, useGetUser } from "@/api";
@@ -12,13 +12,13 @@ import {
   queryClient,
   WAIVER_SUBMISSION_ORIGIN,
 } from "@/utils";
-import { getDashboardTabForAuthority } from "@/utils/crumbs";
 import {
+  DRAFT_BACK_TO_DASHBOARD_ACTION_LABEL,
   DRAFT_CONTINUE_ACTION_LABEL,
   DRAFT_DELETE_ACTION_LABEL,
   DRAFT_DELETE_MODAL_BODY,
   DRAFT_DELETE_MODAL_HEADER,
-  DRAFT_VIEW_LIVE_PACKAGE_ACTION_LABEL,
+  getDraftDashboardLink,
   getDraftEditLink,
   getNonOwnerDraftDeleteModalBody,
 } from "@/utils/drafts";
@@ -44,7 +44,7 @@ export const PackageActionsCard = ({ submission, id }: PackageActionsCardProps) 
   );
   const canManageDraft =
     isDraft && !!draftLink && !!oneMacUser?.user && isStateUser(oneMacUser.user);
-  const livePackageLink = `/details/${encodeURIComponent(submission.authority)}/${encodeURIComponent(id)}`;
+  const draftDashboardLink = getDraftDashboardLink(submission);
   const { data: hasConflictingMainPackage = false, isLoading: isConflictingMainPackageLoading } =
     useQuery({
       queryKey: ["draft-main-conflict", id],
@@ -75,14 +75,6 @@ export const PackageActionsCard = ({ submission, id }: PackageActionsCardProps) 
       onAccept: async () => {
         try {
           await deleteDraft(id);
-          let dashboardPath = "/dashboard";
-          try {
-            const tab = getDashboardTabForAuthority(submission.authority as Authority);
-            dashboardPath = `/dashboard?tab=${tab}`;
-          } catch {
-            // Fallback to default dashboard if authority is malformed.
-          }
-
           banner({
             header: "Draft deleted",
             body: `Draft for ${id} has been deleted.`,
@@ -95,7 +87,7 @@ export const PackageActionsCard = ({ submission, id }: PackageActionsCardProps) 
             queryClient.invalidateQueries({ queryKey: ["waivers"] }),
           ]);
 
-          navigate(dashboardPath, { replace: true });
+          navigate(draftDashboardLink, { replace: true });
         } catch (error) {
           banner({
             header: "Unable to delete draft",
@@ -117,10 +109,10 @@ export const PackageActionsCard = ({ submission, id }: PackageActionsCardProps) 
               state={{
                 from: `${location.pathname}${location.search}`,
               }}
-              to={livePackageLink}
+              to={draftDashboardLink}
               className="text-sky-700 font-semibold text-lg hover:underline hover:decoration-inherit"
             >
-              {DRAFT_VIEW_LIVE_PACKAGE_ACTION_LABEL}
+              {DRAFT_BACK_TO_DASHBOARD_ACTION_LABEL}
             </Link>
           </li>
           <li className="py-2">
