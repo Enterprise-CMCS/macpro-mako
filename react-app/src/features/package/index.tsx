@@ -69,7 +69,11 @@ const injectChipEligibilityAttachment = (
 };
 
 export const DetailsContent = ({ id, preferDraft = false }: DetailsContentProps) => {
-  const { data: record, isLoading, error } = useGetItem(id, undefined, {
+  const {
+    data: record,
+    isLoading,
+    error,
+  } = useGetItem(id, undefined, {
     includeDraft: true,
     preferDraft,
   });
