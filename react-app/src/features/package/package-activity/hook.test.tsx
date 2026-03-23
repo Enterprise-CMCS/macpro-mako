@@ -191,9 +191,12 @@ describe("useAttachmentService", () => {
       await vi.advanceTimersByTimeAsync(1000);
 
       await expect(archivePromise).resolves.toBeUndefined();
-      expect(result.current.archiveErrorMessage).toBe(
-        "Unable to prepare the attachment archive because blocked.xlsx is not available for download. File scanning did not complete successfully.",
-      );
+      vi.useRealTimers();
+      await waitFor(() => {
+        expect(result.current.archiveErrorMessage).toBe(
+          "Unable to prepare the attachment archive because blocked.xlsx is not available for download. File scanning did not complete successfully.",
+        );
+      });
       expect(getAttachmentArchiveSpy).toHaveBeenCalledTimes(2);
       expect(consoleErrorSpy).toHaveBeenCalled();
     } finally {
