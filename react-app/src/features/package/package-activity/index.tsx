@@ -66,8 +66,15 @@ type SubmissionProps = {
 
 const Submission = ({ packageActivity }: SubmissionProps) => {
   const { attachments = [], id, packageId, additionalInformation } = packageActivity;
-  const { archiveErrorMessage, attachmentErrorMessage, onArchive, onUrl, loading } =
-    useAttachmentService({ packageId });
+  const {
+    archiveErrorMessage,
+    archiveWarningMessage,
+    attachmentErrorMessage,
+    onArchive,
+    onUrl,
+    loading,
+  } = useAttachmentService({ packageId });
+  const archiveMessage = archiveErrorMessage || archiveWarningMessage;
 
   return (
     <div className="flex flex-col gap-6">
@@ -119,9 +126,9 @@ const Submission = ({ packageActivity }: SubmissionProps) => {
           >
             Download section attachments
           </Button>
-          {archiveErrorMessage && (
+          {archiveMessage && (
             <p role="alert" className="text-red-700">
-              {archiveErrorMessage}
+              {archiveMessage}
             </p>
           )}
         </>
@@ -169,7 +176,10 @@ type DownloadAllButtonProps = {
 };
 
 const DownloadAllButton = ({ packageId, submissionChangelog }: DownloadAllButtonProps) => {
-  const { archiveErrorMessage, loading, onArchive } = useAttachmentService({ packageId });
+  const { archiveErrorMessage, archiveWarningMessage, loading, onArchive } = useAttachmentService({
+    packageId,
+  });
+  const archiveMessage = archiveErrorMessage || archiveWarningMessage;
 
   if (submissionChangelog?.length === 0) {
     return null;
@@ -209,9 +219,9 @@ const DownloadAllButton = ({ packageId, submissionChangelog }: DownloadAllButton
       >
         Download all attachments
       </Button>
-      {archiveErrorMessage && (
+      {archiveMessage && (
         <p role="alert" className="justify-self-end text-red-700">
-          {archiveErrorMessage}
+          {archiveMessage}
         </p>
       )}
     </>

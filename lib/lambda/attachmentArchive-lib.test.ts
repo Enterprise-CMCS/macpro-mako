@@ -21,6 +21,7 @@ import * as s3RequestPresigner from "@aws-sdk/s3-request-presigner";
 
 import {
   buildAttachmentArchiveCurrent,
+  buildPackageAttachmentArchiveManifest,
   buildSectionAttachmentArchiveManifest,
   getArchiveArtifactKey,
   getArchiveManifestKey,
@@ -93,6 +94,36 @@ describe("attachmentArchive-lib", () => {
       sectionId: sectionDescriptor.sectionId,
     },
     manifest.hash,
+  );
+  const packageManifest = buildPackageAttachmentArchiveManifest({
+    packageId: "MD-10-6772",
+    sections: [
+      {
+        sectionId: sectionDescriptor.sectionId,
+        sectionNumber: sectionDescriptor.sectionNumber,
+        sectionLabel: sectionDescriptor.sectionLabel,
+        sectionFolderName: sectionDescriptor.sectionFolderName,
+        rootFolderName: sectionDescriptor.rootFolderName,
+        artifactKey,
+        attachmentCount: manifest.attachments.length,
+        hash: manifest.hash,
+        manifestKey,
+      },
+    ],
+  });
+  const packageArtifactKey = getArchiveArtifactKey(
+    {
+      packageId: "MD-10-6772",
+      scope: "all",
+    },
+    packageManifest.hash,
+  );
+  const packageManifestKey = getArchiveManifestKey(
+    {
+      packageId: "MD-10-6772",
+      scope: "all",
+    },
+    packageManifest.hash,
   );
 
   beforeEach(() => {
@@ -285,6 +316,122 @@ describe("attachmentArchive-lib", () => {
           "Unable to prepare the attachment archive because blocked.xlsx is not available for download. File scanning did not complete successfully.",
       },
     });
+  });
+
+  it("returns a terminal failed response when all section attachments are unavailable", async () => {
+    getObjectText.mockResolvedValue(
+      JSON.stringify(
+        buildAttachmentArchiveCurrent({
+          scope: "section",
+          hash: manifest.hash,
+          status: "FAILED",
+          artifactKey,
+          manifestKey,
+          attachmentCount: 1,
+          appendedAttachmentCount: 0,
+          skippedAttachmentCount: 1,
+          sectionId: sectionDescriptor.sectionId,
+          sectionNumber: sectionDescriptor.sectionNumber,
+          sectionLabel: sectionDescriptor.sectionLabel,
+          sectionFolderName: sectionDescriptor.sectionFolderName,
+          failureCode: "ALL_ATTACHMENTS_UNAVAILABLE",
+          failureMessage:
+            "The attachments in this section are no longer available, so this download could not be created.",
+        }),
+      ),
+    );
+
+    const result = await getRequestedAttachmentArchiveStatus({
+      packageId: "MD-10-6772",
+      scope: "section",
+      sectionId: sectionDescriptor.sectionId,
+      changelog: [],
+    });
+
+    expect(result).toEqual({
+      needsRebuild: false,
+      response: {
+        status: "FAILED",
+        message:
+          "The attachments in this section are no longer available, so this download could not be created.",
+      },
+    });
+  });
+
+  it("returns a ready response with a warning when some attachments were skipped", async () => {
+    getObjectText.mockResolvedValue(
+      JSON.stringify(
+        buildAttachmentArchiveCurrent({
+          scope: "section",
+          hash: manifest.hash,
+          status: "READY",
+          artifactKey,
+          manifestKey,
+          attachmentCount: 2,
+          appendedAttachmentCount: 1,
+          skippedAttachmentCount: 1,
+          sectionId: sectionDescriptor.sectionId,
+          sectionNumber: sectionDescriptor.sectionNumber,
+          sectionLabel: sectionDescriptor.sectionLabel,
+          sectionFolderName: sectionDescriptor.sectionFolderName,
+        }),
+      ),
+    );
+    objectExists.mockResolvedValue(true);
+
+    const result = await getRequestedAttachmentArchiveStatus({
+      packageId: "MD-10-6772",
+      scope: "section",
+      sectionId: sectionDescriptor.sectionId,
+      changelog: [],
+    });
+
+    expect(result).toEqual({
+      needsRebuild: false,
+      response: {
+        filename: "MD-10-6772-section-1-initial-package-submitted-attachments.zip",
+        status: "READY",
+        url: "https://example.com/archive.zip",
+        warningMessage:
+          "Some attachments in this download are no longer available and were not included.",
+      },
+    });
+  });
+
+  it("returns a date-based package download filename in Eastern Time", async () => {
+    getObjectText.mockResolvedValue(
+      JSON.stringify(
+        buildAttachmentArchiveCurrent({
+          scope: "all",
+          hash: packageManifest.hash,
+          status: "READY",
+          artifactKey: packageArtifactKey,
+          manifestKey: packageManifestKey,
+          attachmentCount: 1,
+          appendedAttachmentCount: 1,
+        }),
+      ),
+    );
+    objectExists.mockResolvedValue(true);
+    vi.useFakeTimers();
+    vi.setSystemTime(new Date("2026-03-23T18:00:00.000Z"));
+
+    const result = await getRequestedAttachmentArchiveStatus({
+      packageId: "MD-10-6772",
+      scope: "all",
+      changelog: [],
+    });
+
+    expect(result).toEqual({
+      needsRebuild: false,
+      response: {
+        filename: "MD-10-6772 - Mon Mar 23 2026.zip",
+        status: "READY",
+        url: "https://example.com/archive.zip",
+      },
+    });
+
+    vi.useRealTimers();
   });
 
   it("fails validation when the current state is not ready", async () => {
@@ -536,6 +683,44 @@ describe("attachmentArchive-lib", () => {
           title: "Blocked attachment",
           virusScanStatus: "UKNOWNEXT",
         },
+      }),
+    );
+
+    const result = await markAttachmentArchiveFailed({
+      archiveBucketName: "mako-test-attachment-archives",
+      currentKey: `package/MD-10-6772/section/${sectionDescriptor.sectionId}/current.json`,
+      hash: manifest.hash,
+      artifactKey,
+      manifestKey,
+      attachmentCount: 1,
+      errorMessage: "Task failed",
+    });
+
+    expect(result).toEqual({
+      skipped: true,
+      reason: "preserve_terminal_failure",
+    });
+    expect(putJsonObject).not.toHaveBeenCalled();
+  });
+
+  it("preserves all-unavailable worker failures when the step function failure handler runs", async () => {
+    getJsonObject.mockResolvedValue(
+      buildAttachmentArchiveCurrent({
+        scope: "section",
+        hash: manifest.hash,
+        status: "FAILED",
+        artifactKey,
+        manifestKey,
+        attachmentCount: 1,
+        appendedAttachmentCount: 0,
+        skippedAttachmentCount: 1,
+        sectionId: sectionDescriptor.sectionId,
+        sectionNumber: sectionDescriptor.sectionNumber,
+        sectionLabel: sectionDescriptor.sectionLabel,
+        sectionFolderName: sectionDescriptor.sectionFolderName,
+        failureCode: "ALL_ATTACHMENTS_UNAVAILABLE",
+        failureMessage:
+          "The attachments in this section are no longer available, so this download could not be created.",
       }),
     );
 

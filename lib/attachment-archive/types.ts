@@ -1,6 +1,6 @@
 export type AttachmentArchiveScope = "all" | "section";
 export type AttachmentArchiveStatus = "PENDING" | "RUNNING" | "READY" | "FAILED";
-export type AttachmentArchiveFailureCode = "ATTACHMENT_NOT_CLEAN";
+export type AttachmentArchiveFailureCode = "ALL_ATTACHMENTS_UNAVAILABLE" | "ATTACHMENT_NOT_CLEAN";
 export const ATTACHMENT_ARCHIVE_BUILD_VERSION = 2;
 
 export interface AttachmentArchiveSourceAttachment {
@@ -80,6 +80,8 @@ export interface AttachmentArchiveCurrent {
   artifactKey: string;
   manifestKey: string;
   attachmentCount: number;
+  appendedAttachmentCount?: number;
+  skippedAttachmentCount?: number;
   updatedAt: string;
   executionArn?: string;
   sectionId?: string;

@@ -163,9 +163,13 @@ describe("attachment archive manifest helpers", () => {
         "hash",
       ),
     ).toBe("package/MD-25-2525-IJJJ/section/abc/hash.zip");
-    expect(getArchiveDownloadFilename({ packageId: "MD-25-2525-IJJJ", scope: "all" })).toBe(
-      "MD-25-2525-IJJJ-attachments.zip",
-    );
+    expect(
+      getArchiveDownloadFilename({
+        packageId: "MD-25-2525-IJJJ",
+        scope: "all",
+        now: new Date("2026-03-23T18:00:00.000Z"),
+      }),
+    ).toBe("MD-25-2525-IJJJ - Mon Mar 23 2026.zip");
     expect(
       getArchiveDownloadFilename({
         packageId: "MD-25-2525-IJJJ",
@@ -184,21 +188,16 @@ describe("attachment archive manifest helpers", () => {
       artifactKey: "artifact.zip",
       manifestKey: "manifest.json",
       attachmentCount: 2,
+      appendedAttachmentCount: 1,
+      skippedAttachmentCount: 1,
       executionArn: "arn:aws:states:us-east-1:123456789012:execution:test:archive",
       sectionId: "section-a",
       sectionNumber: 1,
       sectionLabel: "initial-package-submitted",
       sectionFolderName: "section-1-initial-package-submitted",
-      failureCode: "ATTACHMENT_NOT_CLEAN",
+      failureCode: "ALL_ATTACHMENTS_UNAVAILABLE",
       failureMessage:
-        "Unable to prepare the attachment archive because blocked.xlsx is not available for download. File scanning did not complete successfully.",
-      blockedAttachment: {
-        bucket: "mako-main-attachments-123456789012",
-        key: "blocked.xlsx",
-        filename: "blocked.xlsx",
-        title: "Blocked attachment",
-        virusScanStatus: "UKNOWNEXT",
-      },
+        "The attachments in this section are no longer available, so this download could not be created.",
     });
 
     expect(parseAttachmentArchiveCurrent(JSON.stringify(current))).toEqual(current);

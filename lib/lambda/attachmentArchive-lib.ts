@@ -16,7 +16,10 @@ import {
 } from "../attachment-archive/archive-manifest";
 import { getAttachmentBucketMap } from "../attachment-archive/bucket-routing";
 import { resolveAttachmentArchiveCurrentState } from "../attachment-archive/current-state";
-import { isTerminalAttachmentArchiveFailure } from "../attachment-archive/failure-state";
+import {
+  getAttachmentArchiveWarningMessage,
+  isTerminalAttachmentArchiveFailure,
+} from "../attachment-archive/failure-state";
 import {
   buildAttachmentArchiveSections,
   getAttachmentArchiveSectionById,
@@ -151,10 +154,12 @@ async function buildReadyResponse({
   archiveBucketName,
   artifactKey,
   fileName,
+  warningMessage,
 }: {
   archiveBucketName: string;
   artifactKey: string;
   fileName: string;
+  warningMessage?: string;
 }) {
   const url = await getSignedUrl(
     archiveBucketClient,
@@ -170,6 +175,7 @@ async function buildReadyResponse({
     status: "READY" as const,
     filename: fileName,
     url,
+    ...(warningMessage ? { warningMessage } : {}),
   };
 }
 
@@ -772,6 +778,7 @@ export async function getRequestedAttachmentArchiveStatus({
         archiveBucketName: resolution.bucketName,
         artifactKey: resolution.artifactKey,
         fileName: artifact.downloadFilename,
+        warningMessage: getAttachmentArchiveWarningMessage(resolution.current),
       }),
       needsRebuild: false,
     };

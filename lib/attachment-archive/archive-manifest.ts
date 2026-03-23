@@ -56,6 +56,22 @@ function sanitizeDownloadComponent(value: string): string {
   return value.replace(/[^A-Za-z0-9._-]+/g, "_");
 }
 
+function formatEasternDownloadDate(now = new Date()): string {
+  const parts = new Intl.DateTimeFormat("en-US", {
+    timeZone: "America/New_York",
+    weekday: "short",
+    month: "short",
+    day: "numeric",
+    year: "numeric",
+  }).formatToParts(now);
+
+  const getPart = (type: string) => parts.find((part) => part.type === type)?.value;
+
+  return [getPart("weekday"), getPart("month"), getPart("day"), getPart("year")]
+    .filter((value): value is string => Boolean(value))
+    .join(" ");
+}
+
 function sortAttachments(attachments: AttachmentArchiveSourceAttachment[]) {
   return [...attachments]
     .map((attachment) => ({
@@ -166,11 +182,12 @@ export function getArchiveDownloadFilename(request: {
   scope: AttachmentArchiveScope;
   sectionNumber?: number;
   sectionLabel?: string;
+  now?: Date;
 }): string {
   const packageId = sanitizeDownloadComponent(request.packageId);
 
   if (request.scope === "all") {
-    return `${packageId}-attachments.zip`;
+    return `${packageId} - ${formatEasternDownloadDate(request.now)}.zip`;
   }
 
   const sectionNumber = request.sectionNumber || 1;
@@ -279,6 +296,8 @@ export function buildAttachmentArchiveCurrent({
   artifactKey,
   manifestKey,
   attachmentCount,
+  appendedAttachmentCount,
+  skippedAttachmentCount,
   executionArn,
   sectionId,
   sectionNumber,
@@ -295,6 +314,8 @@ export function buildAttachmentArchiveCurrent({
   artifactKey: string;
   manifestKey: string;
   attachmentCount: number;
+  appendedAttachmentCount?: number;
+  skippedAttachmentCount?: number;
   executionArn?: string;
   sectionId?: string;
   sectionNumber?: number;
@@ -313,6 +334,8 @@ export function buildAttachmentArchiveCurrent({
     artifactKey,
     manifestKey,
     attachmentCount,
+    ...(typeof appendedAttachmentCount === "number" ? { appendedAttachmentCount } : {}),
+    ...(typeof skippedAttachmentCount === "number" ? { skippedAttachmentCount } : {}),
     updatedAt: new Date().toISOString(),
     ...(executionArn ? { executionArn } : {}),
     ...(sectionId ? { sectionId } : {}),
@@ -358,9 +381,15 @@ export function parseAttachmentArchiveCurrent(
       typeof parsed.artifactKey === "string" &&
       typeof parsed.manifestKey === "string" &&
       typeof parsed.attachmentCount === "number" &&
+      (parsed.appendedAttachmentCount === undefined ||
+        typeof parsed.appendedAttachmentCount === "number") &&
+      (parsed.skippedAttachmentCount === undefined ||
+        typeof parsed.skippedAttachmentCount === "number") &&
       typeof parsed.updatedAt === "string" &&
       (parsed.executionArn === undefined || typeof parsed.executionArn === "string") &&
-      (parsed.failureCode === undefined || parsed.failureCode === "ATTACHMENT_NOT_CLEAN") &&
+      (parsed.failureCode === undefined ||
+        parsed.failureCode === "ATTACHMENT_NOT_CLEAN" ||
+        parsed.failureCode === "ALL_ATTACHMENTS_UNAVAILABLE") &&
       (parsed.failureMessage === undefined || typeof parsed.failureMessage === "string") &&
       (parsed.blockedAttachment === undefined ||
         isValidBlockedAttachment(parsed.blockedAttachment)) &&

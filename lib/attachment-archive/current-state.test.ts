@@ -144,6 +144,38 @@ describe("resolveAttachmentArchiveCurrentState", () => {
     });
   });
 
+  it("returns terminal failures for archives where every attachment is unavailable", () => {
+    const current = buildAttachmentArchiveCurrent({
+      scope: "section",
+      hash: "hash",
+      status: "FAILED",
+      artifactKey: "archive.zip",
+      manifestKey: "archive.manifest.json",
+      attachmentCount: 2,
+      appendedAttachmentCount: 0,
+      skippedAttachmentCount: 2,
+      sectionId: "section-a",
+      sectionNumber: 1,
+      sectionLabel: "initial-package-submitted",
+      sectionFolderName: "section-1-initial-package-submitted",
+      failureCode: "ALL_ATTACHMENTS_UNAVAILABLE",
+      failureMessage:
+        "The attachments in this section are no longer available, so this download could not be created.",
+    });
+
+    expect(
+      resolveAttachmentArchiveCurrentState({
+        expectedHash: "hash",
+        current,
+        artifactExists: false,
+      }),
+    ).toEqual({
+      action: "failed",
+      message:
+        "The attachments in this section are no longer available, so this download could not be created.",
+    });
+  });
+
   it("keeps generic failures rebuildable", () => {
     const current = buildAttachmentArchiveCurrent({
       scope: "all",

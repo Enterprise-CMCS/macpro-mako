@@ -2,12 +2,16 @@ import {
   AttachmentArchiveBlockedAttachment,
   AttachmentArchiveCurrent,
   AttachmentArchiveFailureCode,
+  AttachmentArchiveScope,
   AttachmentArchiveSourceAttachment,
 } from "./types";
 
 const DEFAULT_FAILURE_MESSAGE = "Unable to prepare the attachment archive.";
+const PARTIAL_ARCHIVE_WARNING_MESSAGE =
+  "Some attachments in this download are no longer available and were not included.";
 
 export const ATTACHMENT_ARCHIVE_TERMINAL_FAILURE_CODES = new Set<AttachmentArchiveFailureCode>([
+  "ALL_ATTACHMENTS_UNAVAILABLE",
   "ATTACHMENT_NOT_CLEAN",
 ]);
 
@@ -27,10 +31,18 @@ export function buildAttachmentArchiveBlockedAttachment(
 export function buildAttachmentArchiveFailureMessage({
   failureCode,
   blockedAttachment,
+  scope,
 }: {
   failureCode: AttachmentArchiveFailureCode;
   blockedAttachment?: AttachmentArchiveBlockedAttachment;
+  scope?: AttachmentArchiveScope;
 }) {
+  if (failureCode === "ALL_ATTACHMENTS_UNAVAILABLE") {
+    return scope === "section"
+      ? "The attachments in this section are no longer available, so this download could not be created."
+      : "The attachments in this package are no longer available, so this download could not be created.";
+  }
+
   if (failureCode === "ATTACHMENT_NOT_CLEAN") {
     const filename = blockedAttachment?.filename || "One of the attachments";
     return `Unable to prepare the attachment archive because ${filename} is not available for download. File scanning did not complete successfully.`;
@@ -58,6 +70,16 @@ export function buildAttachmentNotCleanArchiveFailure({
   };
 }
 
+export function buildAllAttachmentsUnavailableArchiveFailure(scope: AttachmentArchiveScope) {
+  return {
+    failureCode: "ALL_ATTACHMENTS_UNAVAILABLE" as const,
+    failureMessage: buildAttachmentArchiveFailureMessage({
+      failureCode: "ALL_ATTACHMENTS_UNAVAILABLE",
+      scope,
+    }),
+  };
+}
+
 export function isTerminalAttachmentArchiveFailure(
   current?: Pick<AttachmentArchiveCurrent, "status" | "failureCode">,
 ): current is Pick<AttachmentArchiveCurrent, "status" | "failureCode"> & {
@@ -72,10 +94,20 @@ export function isTerminalAttachmentArchiveFailure(
 }
 
 export function getAttachmentArchiveFailureMessage(
-  current?: Pick<AttachmentArchiveCurrent, "failureMessage" | "errorMessage" | "blockedAttachment">,
+  current?: Pick<
+    AttachmentArchiveCurrent,
+    "failureCode" | "failureMessage" | "errorMessage" | "blockedAttachment" | "scope"
+  >,
 ) {
   if (current?.failureMessage) {
     return current.failureMessage;
+  }
+
+  if (current?.failureCode === "ALL_ATTACHMENTS_UNAVAILABLE") {
+    return buildAttachmentArchiveFailureMessage({
+      failureCode: "ALL_ATTACHMENTS_UNAVAILABLE",
+      scope: current.scope,
+    });
   }
 
   if (current?.blockedAttachment) {
@@ -86,4 +118,14 @@ export function getAttachmentArchiveFailureMessage(
   }
 
   return current?.errorMessage || DEFAULT_FAILURE_MESSAGE;
+}
+
+export function getAttachmentArchiveWarningMessage(
+  current?: Pick<AttachmentArchiveCurrent, "status" | "skippedAttachmentCount">,
+) {
+  if (current?.status !== "READY" || !current.skippedAttachmentCount) {
+    return undefined;
+  }
+
+  return PARTIAL_ARCHIVE_WARNING_MESSAGE;
 }

@@ -880,6 +880,7 @@ export class Api extends cdk.NestedStack {
         environment: {
           LEGACY_ATTACHMENT_BUCKET_MAP: legacyAttachmentBucketMap,
           LEGACY_S3_ACCESS_ROLE_ARN: legacyS3AccessRoleArn,
+          TZ: "America/New_York",
         },
       },
     );

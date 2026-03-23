@@ -9,6 +9,7 @@ export type AttachmentArchiveResponse =
       status: "READY";
       filename: string;
       url: string;
+      warningMessage?: string;
     }
   | {
       status: "PENDING";

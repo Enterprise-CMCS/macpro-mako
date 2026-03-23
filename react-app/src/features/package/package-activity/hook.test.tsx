@@ -78,7 +78,7 @@ describe("useAttachmentService", () => {
   it("returns the archive url immediately when the archive is ready", async () => {
     vi.spyOn(api, "getAttachmentArchive").mockResolvedValue({
       status: "READY",
-      filename: "testPackage-attachments.zip",
+      filename: "testPackage - Mon Mar 23 2026.zip",
       url: "http://example.com/archive.zip",
     });
 
@@ -89,6 +89,7 @@ describe("useAttachmentService", () => {
     await expect(result.current.onArchive({ scope: "all" })).resolves.toBe(
       "http://example.com/archive.zip",
     );
+    expect(result.current.archiveWarningMessage).toBeUndefined();
   });
 
   it("polls pending archive responses until a ready archive is available", async () => {
@@ -102,7 +103,7 @@ describe("useAttachmentService", () => {
       })
       .mockResolvedValueOnce({
         status: "READY",
-        filename: "testPackage-attachments.zip",
+        filename: "testPackage - Mon Mar 23 2026.zip",
         url: "http://example.com/archive.zip",
       });
 
@@ -118,6 +119,31 @@ describe("useAttachmentService", () => {
     expect(getAttachmentArchiveSpy).toHaveBeenCalledTimes(2);
 
     vi.useRealTimers();
+  });
+
+  it("stores an archive warning message when the archive is ready with omitted attachments", async () => {
+    vi.spyOn(api, "getAttachmentArchive").mockResolvedValue({
+      status: "READY",
+      filename: "testPackage - Mon Mar 23 2026.zip",
+      url: "http://example.com/archive.zip",
+      warningMessage:
+        "Some attachments in this download are no longer available and were not included.",
+    });
+
+    const { result } = renderHook(() => useAttachmentService({ packageId: "testPackage" }), {
+      wrapper,
+    });
+
+    await expect(result.current.onArchive({ scope: "all" })).resolves.toBe(
+      "http://example.com/archive.zip",
+    );
+
+    await waitFor(() => {
+      expect(result.current.archiveWarningMessage).toBe(
+        "Some attachments in this download are no longer available and were not included.",
+      );
+    });
+    expect(result.current.archiveErrorMessage).toBeUndefined();
   });
 
   it("stores an archive error message when archive generation fails", async () => {
