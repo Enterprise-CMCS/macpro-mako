@@ -94,31 +94,32 @@ describe("useAttachmentService", () => {
 
   it("polls pending archive responses until a ready archive is available", async () => {
     vi.useFakeTimers();
+    try {
+      const getAttachmentArchiveSpy = vi
+        .spyOn(api, "getAttachmentArchive")
+        .mockResolvedValueOnce({
+          status: "PENDING",
+          pollAfterSeconds: 1,
+        })
+        .mockResolvedValueOnce({
+          status: "READY",
+          filename: "testPackage - Mon Mar 23 2026.zip",
+          url: "http://example.com/archive.zip",
+        });
 
-    const getAttachmentArchiveSpy = vi
-      .spyOn(api, "getAttachmentArchive")
-      .mockResolvedValueOnce({
-        status: "PENDING",
-        pollAfterSeconds: 1,
-      })
-      .mockResolvedValueOnce({
-        status: "READY",
-        filename: "testPackage - Mon Mar 23 2026.zip",
-        url: "http://example.com/archive.zip",
+      const { result } = renderHook(() => useAttachmentService({ packageId: "testPackage" }), {
+        wrapper,
       });
 
-    const { result } = renderHook(() => useAttachmentService({ packageId: "testPackage" }), {
-      wrapper,
-    });
+      const archivePromise = result.current.onArchive({ scope: "all" });
 
-    const archivePromise = result.current.onArchive({ scope: "all" });
+      await vi.advanceTimersByTimeAsync(1000);
 
-    await vi.advanceTimersByTimeAsync(1000);
-
-    await expect(archivePromise).resolves.toBe("http://example.com/archive.zip");
-    expect(getAttachmentArchiveSpy).toHaveBeenCalledTimes(2);
-
-    vi.useRealTimers();
+      await expect(archivePromise).resolves.toBe("http://example.com/archive.zip");
+      expect(getAttachmentArchiveSpy).toHaveBeenCalledTimes(2);
+    } finally {
+      vi.useRealTimers();
+    }
   });
 
   it("stores an archive warning message when the archive is ready with omitted attachments", async () => {
@@ -167,36 +168,36 @@ describe("useAttachmentService", () => {
 
   it("stops polling when the backend returns a terminal archive failure", async () => {
     vi.useFakeTimers();
-    const consoleErrorSpy = vi.spyOn(console, "error").mockImplementation(() => undefined);
+    try {
+      const consoleErrorSpy = vi.spyOn(console, "error").mockImplementation(() => undefined);
 
-    const getAttachmentArchiveSpy = vi
-      .spyOn(api, "getAttachmentArchive")
-      .mockResolvedValueOnce({
-        status: "PENDING",
-        pollAfterSeconds: 1,
-      })
-      .mockResolvedValueOnce({
-        status: "FAILED",
-        message:
-          "Unable to prepare the attachment archive because blocked.xlsx is not available for download. File scanning did not complete successfully.",
+      const getAttachmentArchiveSpy = vi
+        .spyOn(api, "getAttachmentArchive")
+        .mockResolvedValueOnce({
+          status: "PENDING",
+          pollAfterSeconds: 1,
+        })
+        .mockResolvedValueOnce({
+          status: "FAILED",
+          message:
+            "Unable to prepare the attachment archive because blocked.xlsx is not available for download. File scanning did not complete successfully.",
+        });
+
+      const { result } = renderHook(() => useAttachmentService({ packageId: "testPackage" }), {
+        wrapper,
       });
 
-    const { result } = renderHook(() => useAttachmentService({ packageId: "testPackage" }), {
-      wrapper,
-    });
+      const archivePromise = result.current.onArchive({ scope: "all" });
+      await vi.advanceTimersByTimeAsync(1000);
 
-    const archivePromise = result.current.onArchive({ scope: "all" });
-    await vi.advanceTimersByTimeAsync(1000);
-
-    await expect(archivePromise).resolves.toBeUndefined();
-    await waitFor(() => {
+      await expect(archivePromise).resolves.toBeUndefined();
       expect(result.current.archiveErrorMessage).toBe(
         "Unable to prepare the attachment archive because blocked.xlsx is not available for download. File scanning did not complete successfully.",
       );
-    });
-    expect(getAttachmentArchiveSpy).toHaveBeenCalledTimes(2);
-    expect(consoleErrorSpy).toHaveBeenCalled();
-
-    vi.useRealTimers();
+      expect(getAttachmentArchiveSpy).toHaveBeenCalledTimes(2);
+      expect(consoleErrorSpy).toHaveBeenCalled();
+    } finally {
+      vi.useRealTimers();
+    }
   });
 });
