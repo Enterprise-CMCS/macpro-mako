@@ -1002,7 +1002,7 @@ describe("ActionForm", () => {
           seatoolStatus: SEATOOL_STATUS.DRAFT,
           draft: {
             savedAt: "2026-02-26T00:00:00.000Z",
-            originalCreatorEmail: "someone.else@example.com",
+            draftOwnerEmail: "someone.else@example.com",
             data: { id: draftId },
           },
         },
@@ -1036,7 +1036,7 @@ describe("ActionForm", () => {
       expect(userPromptSpy).toHaveBeenCalledWith(
         expect.objectContaining({
           header: "Confirm action",
-          body: `Since you are not the original package creator, are you sure you want to take this action on ${draftId}?`,
+          body: `Since you are not the draft owner, are you sure you want to take this action on ${draftId}?`,
           acceptButtonText: "Yes, continue",
           cancelButtonText: "Cancel",
         }),
@@ -1170,7 +1170,7 @@ describe("ActionForm", () => {
           seatoolStatus: SEATOOL_STATUS.DRAFT,
           draft: {
             savedAt: "2026-02-26T00:00:00.000Z",
-            originalCreatorEmail: "someone.else@example.com",
+            draftOwnerEmail: "someone.else@example.com",
             data: { id: draftId },
           },
         },

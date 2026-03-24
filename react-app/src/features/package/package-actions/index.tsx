@@ -32,13 +32,12 @@ export const PackageActionsCard = ({ submission, id }: PackageActionsCardProps) 
   const { data: oneMacUser, isLoading: isUserLoading } = useGetUser();
   const isDraft = submission.seatoolStatus === SEATOOL_STATUS.DRAFT;
   const draftLink = isDraft ? getDraftEditLink(submission) : null;
-  const draftOriginalCreatorEmail =
-    submission.draft?.originalCreatorEmail ?? submission.submitterEmail;
+  const draftOwnerEmail = submission.draft?.draftOwnerEmail ?? submission.submitterEmail;
   const isNonOwnerDraftUser = Boolean(
     isDraft &&
-      draftOriginalCreatorEmail &&
+      draftOwnerEmail &&
       oneMacUser?.user?.email &&
-      draftOriginalCreatorEmail.toLowerCase() !== oneMacUser.user.email.toLowerCase(),
+      draftOwnerEmail.toLowerCase() !== oneMacUser.user.email.toLowerCase(),
   );
   const canManageDraft =
     isDraft && !!draftLink && !!oneMacUser?.user && isStateUser(oneMacUser.user);

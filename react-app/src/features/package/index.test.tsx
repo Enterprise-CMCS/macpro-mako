@@ -120,8 +120,8 @@ describe("package details", () => {
           changelog: [],
           draft: {
             savedAt: "2026-03-20T00:00:00.000Z",
-            originalCreatorEmail: "submitter@example.com",
-            originalCreatorName: "State Submitter",
+            draftOwnerEmail: "submitter@example.com",
+            draftOwnerName: "State Submitter",
             data: { id: ADMIN_ITEM_ID },
           },
         },

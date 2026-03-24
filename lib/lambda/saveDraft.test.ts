@@ -57,8 +57,8 @@ describe("saveDraft handler", () => {
             deleted: false,
             seatoolStatus: SEATOOL_STATUS.DRAFT,
             draft: expect.objectContaining({
-              originalCreatorEmail: "state.user@example.com",
-              originalCreatorName: "State User",
+              draftOwnerEmail: "state.user@example.com",
+              draftOwnerName: "State User",
             }),
           }),
         }),
@@ -100,7 +100,7 @@ describe("saveDraft handler", () => {
     );
   });
 
-  it("reactivates a previously deleted draft id by forcing deleted=false and resetting creator", async () => {
+  it("reactivates a previously deleted draft id by forcing deleted=false and resetting draft owner", async () => {
     vi.spyOn(packageApi, "getPackage").mockResolvedValue({
       found: true,
       _id: DRAFT_ID,
@@ -112,8 +112,8 @@ describe("saveDraft handler", () => {
         submitterName: "Old User",
         draft: {
           savedAt: "2026-01-01T00:00:00.000Z",
-          originalCreatorEmail: "old.user@example.com",
-          originalCreatorName: "Old User",
+          draftOwnerEmail: "old.user@example.com",
+          draftOwnerName: "Old User",
           data: { id: DRAFT_ID },
         },
       },
@@ -133,8 +133,8 @@ describe("saveDraft handler", () => {
             submitterEmail: "state.user@example.com",
             submitterName: "State User",
             draft: expect.objectContaining({
-              originalCreatorEmail: "state.user@example.com",
-              originalCreatorName: "State User",
+              draftOwnerEmail: "state.user@example.com",
+              draftOwnerName: "State User",
             }),
           }),
         }),
@@ -203,8 +203,7 @@ describe("saveDraft handler", () => {
     );
     expect(os.updateData).not.toHaveBeenCalled();
   });
-
-  it("preserves the original draft creator when a different user saves the draft", async () => {
+  it("replaces draft owner when a different user saves the draft", async () => {
     vi.spyOn(authApi, "lookupUserAttributes").mockResolvedValue({
       email: "another.user@example.com",
     } as any);
@@ -226,8 +225,8 @@ describe("saveDraft handler", () => {
         submitterName: "State User",
         draft: {
           savedAt: "2026-01-01T00:00:00.000Z",
-          originalCreatorEmail: "state.user@example.com",
-          originalCreatorName: "State User",
+          draftOwnerEmail: "another.user@example.com",
+          draftOwnerName: "Another User",
           data: { id: DRAFT_ID },
         },
       },
@@ -262,8 +261,8 @@ describe("saveDraft handler", () => {
             submitterEmail: "another.user@example.com",
             submitterName: "Another User",
             draft: expect.objectContaining({
-              originalCreatorEmail: "state.user@example.com",
-              originalCreatorName: "State User",
+              draftOwnerEmail: "state.user@example.com",
+              draftOwnerName: "State User",
             }),
           }),
         }),

@@ -231,7 +231,7 @@ export const getSubmittedByDetails: GetLabelAndValueFromSubmission = (submission
   ...(() => {
     const isDraft = submission.seatoolStatus === SEATOOL_STATUS.DRAFT;
     const draftAwareName = isDraft
-      ? (submission.draft?.originalCreatorName ?? submission.submitterName)
+      ? (submission.draft?.draftOwnerName ?? submission.submitterName)
       : submission.submitterName;
 
     return [

@@ -213,15 +213,15 @@ export const ActionForm = <Schema extends SchemaWithEnforcableProps>({
       queryFn: () => itemExists(draftId ?? ""),
       enabled: isDraftMode && Boolean(draftId),
     });
-  const draftOriginalCreatorEmail =
-    draftRecord?._source?.draft?.originalCreatorEmail ?? draftRecord?._source?.submitterEmail;
+  const draftOwnerEmail =
+    draftRecord?._source?.draft?.draftOwnerEmail ?? draftRecord?._source?.submitterEmail;
   const draftPackageIdForWarning = draftRecord?._source?.id ?? draftId ?? id ?? "this package";
   const draftConflictMessage = getDraftLockedMessage(draftPackageIdForWarning);
   const isNonOwnerDraftUser = Boolean(
     isDraftMode &&
-      draftOriginalCreatorEmail &&
+      draftOwnerEmail &&
       userObj?.email &&
-      draftOriginalCreatorEmail.toLowerCase() !== userObj.email.toLowerCase(),
+      draftOwnerEmail.toLowerCase() !== userObj.email.toLowerCase(),
   );
 
   const navigateAwayFromDraft = useCallback(() => {
@@ -235,7 +235,7 @@ export const ActionForm = <Schema extends SchemaWithEnforcableProps>({
   const promptNonOwnerDraftAction = useCallback(() => {
     userPrompt({
       header: "Confirm action",
-      body: `Since you are not the original package creator, are you sure you want to take this action on ${draftPackageIdForWarning}?`,
+      body: `Since you are not the draft owner, are you sure you want to take this action on ${draftPackageIdForWarning}?`,
       acceptButtonText: "Yes, continue",
       cancelButtonText: "Cancel",
       cancelVariant: "link",

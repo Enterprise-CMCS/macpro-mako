@@ -94,8 +94,8 @@ export type Document = AppkDocument &
     event?: string;
     draft?: {
       savedAt: string;
-      originalCreatorEmail?: string;
-      originalCreatorName?: string;
+      draftOwnerEmail?: string;
+      draftOwnerName?: string;
       data: Record<string, unknown>;
     };
     attachments?: {

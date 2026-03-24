@@ -179,14 +179,14 @@ export const handler = authenticatedMiddy({
   const activeExistingDraft = hasActiveDraftInDraftIndex ? existingDraftPackage : undefined;
   const hasActiveExistingDraft = Boolean(activeExistingDraft);
 
-  const activeDraftCreatorEmail =
-    activeExistingDraft?._source?.draft?.originalCreatorEmail ??
+  const activeDraftOwnerEmail =
+    activeExistingDraft?._source?.draft?.draftOwnerEmail ??
     activeExistingDraft?._source?.submitterEmail;
-  const activeDraftCreatorName =
-    activeExistingDraft?._source?.draft?.originalCreatorName ??
+  const activeDraftOwnerName =
+    activeExistingDraft?._source?.draft?.draftOwnerName ??
     activeExistingDraft?._source?.submitterName;
-  const existingOriginalCreatorEmail = hasActiveExistingDraft ? activeDraftCreatorEmail : undefined;
-  const existingOriginalCreatorName = hasActiveExistingDraft ? activeDraftCreatorName : undefined;
+  const existingDraftOwnerEmaill = hasActiveExistingDraft ? activeDraftOwnerEmail : undefined;
+  const existingDraftOwnerName = hasActiveExistingDraft ? activeDraftOwnerName : undefined;
   const hasVersionFromRequest =
     typeof ifSeqNo === "number" &&
     typeof ifPrimaryTerm === "number" &&
@@ -245,8 +245,8 @@ export const handler = authenticatedMiddy({
     event: draftEventName,
     draft: {
       savedAt,
-      originalCreatorEmail: existingOriginalCreatorEmail ?? user.email,
-      originalCreatorName: existingOriginalCreatorName ?? user.fullName,
+      draftOwnerEmail: existingDraftOwnerEmaill ?? user.email,
+      draftOwnerName: existingDraftOwnerName ?? user.fullName,
       data: draftData,
     },
   };

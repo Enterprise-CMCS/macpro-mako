@@ -145,8 +145,8 @@ describe("", () => {
         ...draftSubmission,
         draft: {
           savedAt: "2026-03-20T00:00:00.000Z",
-          originalCreatorEmail: "someoneelse@example.com",
-          originalCreatorName: "Someone Else",
+          draftOwnerEmail: "someoneelse@example.com",
+          draftOwnerName: "Someone Else",
           data: {},
         },
       };
