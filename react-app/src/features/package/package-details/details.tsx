@@ -205,7 +205,7 @@ export const getApprovedAndEffectiveDetails: GetLabelAndValueFromSubmission = (s
           : undefined;
       const effectiveDate = submission.proposedDate ?? draftDateValue;
 
-      return effectiveDate ? formatDateToUTC(effectiveDate) : "Pending";
+      return effectiveDate ? formatDateToUTC(effectiveDate) : "-- --";
     })(),
     canView: submission.actionType !== "Extend",
   },

@@ -2,7 +2,7 @@ import { Authority, opensearch, SEATOOL_STATUS } from "shared-types";
 
 import { getDashboardTabForAuthority } from "./crumbs";
 
-export const DRAFT_CONTINUE_ACTION_LABEL = "Review Draft";
+export const DRAFT_CONTINUE_ACTION_LABEL = "ContinueDraft";
 export const DRAFT_DELETE_ACTION_LABEL = "Delete Draft";
 export const DRAFT_DELETE_MODAL_HEADER = "Confirm delete";
 export const DRAFT_DELETE_MODAL_BODY =
@@ -27,8 +27,6 @@ const EVENT_TO_DRAFT_PATH: Record<string, string> = {
   "app-k": "/new-submission/waiver/app-k",
 };
 
-export const getDraftEditLink = (record: opensearch.main.Document) => {
-  if (record.seatoolStatus !== SEATOOL_STATUS.DRAFT) return null;
   if (!record.event || !(record.event in EVENT_TO_DRAFT_PATH)) return null;
 
   const searchParams = new URLSearchParams({
