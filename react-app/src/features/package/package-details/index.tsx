@@ -40,14 +40,9 @@ export const PackageDetails = ({ submission }: PackageDetailsProps) => {
   const didSetGATag = useRef<boolean>(false);
   const isCHIPDetailsEnabled = useFeatureFlag("CHIP_SPA_DETAILS");
   const title = useMemo(() => {
-    const hasChipSubmissionType =
-      Array.isArray(submission.chipSubmissionType) && submission.chipSubmissionType.length > 0;
+    const isEligibilityChipSubmissionType = submission.event === "new-chip-details-submission";
 
-    const hasChipEligibilityAttachment =
-      Array.isArray(submission.attachments?.chipEligibility?.files) &&
-      submission.attachments.chipEligibility.files.length > 0;
-
-    if (isCHIPDetailsEnabled && (hasChipSubmissionType || hasChipEligibilityAttachment)) {
+    if (isCHIPDetailsEnabled && isEligibilityChipSubmissionType) {
       return "CHIP Eligibility SPA Package Details";
     }
 

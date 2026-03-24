@@ -74,23 +74,12 @@ export const getSubmissionDetails: GetLabelAndValueFromSubmission = (
   { user },
   chipFlagEnabled,
 ) => {
-  const hasChipEligibilityAttachment = Object.values(submission.attachments || {}).some(
-    (attachment) =>
-      attachment.label?.toLowerCase().includes("chip eligibility") &&
-      Array.isArray(attachment.files) &&
-      attachment.files.length > 0,
-  );
-
+  const isEligibilityChipSubmissionType = submission.event === "new-chip-details-submission";
   const hasChipSubmissionType =
     Array.isArray(submission.chipSubmissionType) && submission.chipSubmissionType.length > 0;
 
-  console.log(submission);
-  console.log("CHIP FLAG:", chipFlagEnabled);
-  console.log("Has CHIP Eligibility Attachment:", hasChipEligibilityAttachment);
-  console.log("Has CHIP Submission Type:", hasChipSubmissionType);
-
   const chipSubmissionTypeField: LabelAndValue[] =
-    chipFlagEnabled && (hasChipEligibilityAttachment || hasChipSubmissionType)
+    chipFlagEnabled && (isEligibilityChipSubmissionType || hasChipSubmissionType)
       ? [
           {
             label: "CHIP Submission Type",
