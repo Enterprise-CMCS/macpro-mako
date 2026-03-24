@@ -11,15 +11,16 @@ import { getAuthUserFromRequest, getPackageFromRequest } from "./utils";
  */
 export const canViewPackage = (): MiddlewareObj => ({
   before: async (request: Request) => {
+    console.log("haspermission", request.event.body);
     const packageResult = await getPackageFromRequest(request);
 
     let state: string;
     if (packageResult) {
-      state = packageResult?._source?.state.toUpperCase();
+      state = packageResult?._source?.state?.toUpperCase();
     } else {
       // the event body should already have been validated by `validator` before this handler runs
       const { id } = request.event.body as { id: string };
-      state = id.substring(0, 2).toUpperCase();
+      state = id.substring(0, 2)?.toUpperCase();
     }
 
     if (!state) {
