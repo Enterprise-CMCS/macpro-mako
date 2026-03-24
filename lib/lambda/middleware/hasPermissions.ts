@@ -11,9 +11,7 @@ import { getAuthUserFromRequest, getPackageFromRequest } from "./utils";
  */
 export const canViewPackage = (): MiddlewareObj => ({
   before: async (request: Request) => {
-    console.log("haspermission", request.event.body);
     const packageResult = await getPackageFromRequest(request);
-    console.log(packageResult);
     let state: string;
     if (packageResult && packageResult._source?.state) {
       state = packageResult?._source?.state.toUpperCase();

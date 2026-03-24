@@ -41,7 +41,6 @@ export const handler = authenticatedMiddy({
     const { packageResult, authenticatedUser } = context;
 
     if (event.body?.includeDraft === true && event.body?.preferDraft === true) {
-      console.log(1, event.body);
       const draftPackageResult = await getDraftPackage(event.body.id.toUpperCase());
       const isActiveDraft =
         draftPackageResult?.found === true &&
@@ -78,7 +77,6 @@ export const handler = authenticatedMiddy({
     }
 
     if (event.body?.includeDraft === true) {
-      console.log(2, event.body);
       const draftPackageResult = await getDraftPackage(event.body.id.toUpperCase());
       const isActiveDraft =
         draftPackageResult?.found === true &&

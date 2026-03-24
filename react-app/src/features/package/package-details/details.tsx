@@ -84,6 +84,10 @@ export const getSubmissionDetails: GetLabelAndValueFromSubmission = (
   const hasChipSubmissionType =
     Array.isArray(submission.chipSubmissionType) && submission.chipSubmissionType.length > 0;
 
+  console.log("CHIP FLAG:", chipFlagEnabled);
+  console.log("Has CHIP Eligibility Attachment:", hasChipEligibilityAttachment);
+  console.log("Has CHIP Submission Type:", hasChipSubmissionType);
+
   const chipSubmissionTypeField: LabelAndValue[] =
     chipFlagEnabled && (hasChipEligibilityAttachment || hasChipSubmissionType)
       ? [
