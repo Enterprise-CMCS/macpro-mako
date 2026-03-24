@@ -3,6 +3,7 @@ import { PropsWithChildren, useMemo } from "react";
 import { LoaderFunctionArgs, redirect, useLoaderData } from "react-router";
 import { Authority, opensearch, SEATOOL_STATUS } from "shared-types";
 import { ItemResult } from "shared-types/opensearch/changelog";
+import { isHelpDeskUser } from "shared-utils";
 
 import { getItem, itemExists, useGetItem } from "@/api";
 import {
@@ -110,7 +111,7 @@ export const DetailsContent = ({ id, preferDraft = false }: DetailsContentProps)
 
   return (
     <div className="w-full py-1 px-4 lg:px-8 grid grid-cols-1 gap-y-6 sm:gap-y-6">
-      {isLockedDraft && (
+      {isLockedDraft && !isHelpDeskUser && (
         <Alert variant="destructive">
           <AlertTitle>{DRAFT_LOCKED_ALERT_TITLE}</AlertTitle>
           <AlertDescription>{getDraftLockedMessage(id)}</AlertDescription>
