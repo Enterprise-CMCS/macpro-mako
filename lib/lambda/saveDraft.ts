@@ -179,14 +179,6 @@ export const handler = authenticatedMiddy({
   const activeExistingDraft = hasActiveDraftInDraftIndex ? existingDraftPackage : undefined;
   const hasActiveExistingDraft = Boolean(activeExistingDraft);
 
-  const activeDraftOwnerEmail =
-    activeExistingDraft?._source?.draft?.draftOwnerEmail ??
-    activeExistingDraft?._source?.submitterEmail;
-  const activeDraftOwnerName =
-    activeExistingDraft?._source?.draft?.draftOwnerName ??
-    activeExistingDraft?._source?.submitterName;
-  const existingDraftOwnerEmaill = hasActiveExistingDraft ? activeDraftOwnerEmail : undefined;
-  const existingDraftOwnerName = hasActiveExistingDraft ? activeDraftOwnerName : undefined;
   const hasVersionFromRequest =
     typeof ifSeqNo === "number" &&
     typeof ifPrimaryTerm === "number" &&
@@ -245,8 +237,8 @@ export const handler = authenticatedMiddy({
     event: draftEventName,
     draft: {
       savedAt,
-      draftOwnerEmail: existingDraftOwnerEmaill ?? user.email,
-      draftOwnerName: existingDraftOwnerName ?? user.fullName,
+      draftOwnerEmail: user.email,
+      draftOwnerName: user.fullName,
       data: draftData,
     },
   };

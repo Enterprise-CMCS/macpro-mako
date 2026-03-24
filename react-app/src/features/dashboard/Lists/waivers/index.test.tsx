@@ -476,7 +476,7 @@ describe("WaiversList", () => {
       submitterName: "Latest Saver",
       draft: {
         savedAt: "2026-03-06T00:00:00.000Z",
-        draftOwnerName: "Original Draft Owner",
+        draftOwnerName: "Draft Owner",
         data: { id: "MD-26-8888-W" },
       },
     } as opensearch.main.Document;
