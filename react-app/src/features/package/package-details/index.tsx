@@ -40,6 +40,7 @@ export const PackageDetails = ({ submission }: PackageDetailsProps) => {
   const didSetGATag = useRef<boolean>(false);
   const isCHIPDetailsEnabled = useFeatureFlag("CHIP_SPA_DETAILS");
   const title = useMemo(() => {
+    console.log("Determining title with submission:", submission);
     const isEligibilityChipSubmissionType = submission.event === "new-chip-details-submission";
 
     if (isCHIPDetailsEnabled && isEligibilityChipSubmissionType) {
