@@ -120,6 +120,8 @@ const getDraftPackageActivity = (
     return null;
   }
 
+  console.log("finding package activity additional info", submission);
+
   return {
     id: `${submission.id}-draft-activity`,
     packageId: submission.id,
@@ -127,7 +129,7 @@ const getDraftPackageActivity = (
     submitterName: submission.submitterName,
     timestamp: submission.draft?.savedAt ?? submission.makoChangedDate,
     attachments,
-    additionalInformation: null,
+    additionalInformation: submission.draft?.data?.additionalInformation as string | undefined,
     isSyntheticDraft: true,
   };
 };

@@ -99,7 +99,6 @@ export const getSubmissionDetails: GetLabelAndValueFromSubmission = (
               <span className="italic text-gray-500">{BLANK_VALUE}</span>
             ),
           },
-          ,
         ]
       : [];
 
