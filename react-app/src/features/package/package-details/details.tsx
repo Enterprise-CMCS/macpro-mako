@@ -82,7 +82,7 @@ export const getSubmissionDetails: GetLabelAndValueFromSubmission = (
     (Array.isArray(chipSubmissionTypeFromDraftData) && chipSubmissionTypeFromDraftData.length > 0);
 
   let chipSubmissionValue = (
-    <span className="break-words">{submission.chipSubmissionType.join(", ")}</span>
+    <span className="break-words">{submission.chipSubmissionType?.join(", ")}</span>
   );
 
   if (
