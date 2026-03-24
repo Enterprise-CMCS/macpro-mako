@@ -45,11 +45,11 @@ jobs:
         uses: Enterprise-CMCS/mac-fc-security-hub-visibility@v2.2
         with:
           jira-token: ${{ secrets.NEW_JIRA_TOKEN }}
-          jira-username: ${{ secrets.JIRA_USERNAME }}
+          jira-username: macpro_jira_service_account
           jira-project-key: OY2
           jira-ignore-statuses: Done, Closed, Canceled
           aws-severities: CRITICAL, HIGH, MEDIUM
-          jira-custom-fields: '{ "customfield_10100": "OY2-37771" }'
+          jira-custom-fields: '{ "customfield_10100": "OY2-37771","customfield_26713":[{"id":"51901"}]}'
           include-all-products: 'true'
           jira-consolidate-tickets: true
           skip-products: Default
