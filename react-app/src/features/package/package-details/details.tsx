@@ -1,12 +1,6 @@
 import { ReactNode, useState } from "react";
 import { Authority, opensearch, SEATOOL_STATUS } from "shared-types";
-import {
-  formatActionType,
-  formatDateToET,
-  formatDateToUTC,
-  isCmsUser,
-  isStateUser,
-} from "shared-utils";
+import { formatActionType, formatDateToET, isCmsUser, isStateUser } from "shared-utils";
 
 import { OneMacUser } from "@/api/useGetUser";
 import { BLANK_VALUE } from "@/consts";
@@ -75,8 +69,24 @@ export const getSubmissionDetails: GetLabelAndValueFromSubmission = (
   chipFlagEnabled,
 ) => {
   const isEligibilityChipSubmissionType = submission.event === "new-chip-details-submission";
+  const chipSubmissionTypeFromDraftData = submission.draft?.data?.chipSubmissionType;
+
   const hasChipSubmissionType =
-    Array.isArray(submission.chipSubmissionType) && submission.chipSubmissionType.length > 0;
+    (Array.isArray(submission.chipSubmissionType) && submission.chipSubmissionType.length > 0) ||
+    (Array.isArray(chipSubmissionTypeFromDraftData) && chipSubmissionTypeFromDraftData.length > 0);
+
+  let chipSubmissionValue = (
+    <span className="break-words">{submission.chipSubmissionType.join(", ")}</span>
+  );
+
+  if (
+    Array.isArray(chipSubmissionTypeFromDraftData) &&
+    chipSubmissionTypeFromDraftData.length > 0
+  ) {
+    chipSubmissionValue = (
+      <span className="break-words">{chipSubmissionTypeFromDraftData.join(", ")}</span>
+    );
+  }
 
   const chipSubmissionTypeField: LabelAndValue[] =
     chipFlagEnabled && (isEligibilityChipSubmissionType || hasChipSubmissionType)
@@ -84,11 +94,12 @@ export const getSubmissionDetails: GetLabelAndValueFromSubmission = (
           {
             label: "CHIP Submission Type",
             value: hasChipSubmissionType ? (
-              <span className="break-words">{submission.chipSubmissionType.join(", ")}</span>
+              chipSubmissionValue
             ) : (
               <span className="italic text-gray-500">{BLANK_VALUE}</span>
             ),
           },
+          ,
         ]
       : [];
 
@@ -179,38 +190,6 @@ export const getSubmissionDetails: GetLabelAndValueFromSubmission = (
     },
   ];
 };
-
-export const getApprovedAndEffectiveDetails: GetLabelAndValueFromSubmission = (submission) => [
-  {
-    label: "Final Disposition Date",
-    value: submission.finalDispositionDate
-      ? formatDateToUTC(submission.finalDispositionDate)
-      : BLANK_VALUE,
-    canView: submission.actionType !== "Extend",
-  },
-  {
-    label: "Proposed Effective Date",
-    value: (() => {
-      const proposedDateFromDraftData = submission.draft?.data?.proposedEffectiveDate;
-      const draftDateValue =
-        typeof proposedDateFromDraftData === "string" ||
-        typeof proposedDateFromDraftData === "number"
-          ? proposedDateFromDraftData
-          : undefined;
-      const effectiveDate = submission.proposedDate ?? draftDateValue;
-
-      return effectiveDate ? formatDateToUTC(effectiveDate) : "-- --";
-    })(),
-    canView: submission.actionType !== "Extend",
-  },
-  {
-    label: "Approved Effective Date",
-    value: submission.approvedEffectiveDate
-      ? formatDateToUTC(submission.approvedEffectiveDate)
-      : BLANK_VALUE,
-    canView: submission.actionType !== "Extend",
-  },
-];
 
 export const getDescriptionDetails: GetLabelAndValueFromSubmission = (submission, { user }) => [
   {
