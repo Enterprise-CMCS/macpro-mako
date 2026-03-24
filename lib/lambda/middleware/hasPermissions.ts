@@ -15,7 +15,7 @@ export const canViewPackage = (): MiddlewareObj => ({
     const packageResult = await getPackageFromRequest(request);
     console.log(packageResult);
     let state: string;
-    if (packageResult && stateteResult._source?.state) {
+    if (packageResult && packageResult._source?.state) {
       state = packageResult?._source?.state.toUpperCase();
     } else {
       // the event body should already have been validated by `validator` before this handler runs
