@@ -116,12 +116,6 @@ const getDraftPackageActivity = (
   }
 
   const attachments = getDraftAttachments(submission);
-  console.log("Draft attachments:", attachments);
-  // if (attachments.length === 0) {
-  //   return null;
-  // }
-
-  console.log("finding package activity additional info", submission);
 
   return {
     id: `${submission.id}-draft-activity`,
