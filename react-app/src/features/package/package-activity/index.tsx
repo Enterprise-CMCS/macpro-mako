@@ -363,7 +363,7 @@ export const PackageActivities = ({ id, changelog, submission }: PackageActiviti
     if (changelogWithoutAdminChanges.length > 0) {
       return changelogWithoutAdminChanges;
     }
-
+    console.log("test", submission);
     const draftPackageActivity = getDraftPackageActivity(submission);
     return draftPackageActivity ? [draftPackageActivity] : [];
   }, [changelog, submission]);
