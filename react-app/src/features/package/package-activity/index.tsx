@@ -116,6 +116,7 @@ const getDraftPackageActivity = (
   }
 
   const attachments = getDraftAttachments(submission);
+  console.log("Draft attachments:", attachments);
   if (attachments.length === 0) {
     return null;
   }
