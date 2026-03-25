@@ -34,7 +34,11 @@ import {
 import { useNavigationPrompt } from "@/hooks";
 import { useFeatureFlag } from "@/hooks/useFeatureFlag";
 import { getFormOrigin, queryClient } from "@/utils";
-import { DRAFT_LOCKED_ALERT_TITLE, getDraftLockedMessage } from "@/utils/drafts";
+import {
+  DRAFT_LOCKED_ALERT_TITLE,
+  getDraftLockedMessage,
+  getNonOwnerDraftDeleteModalBody,
+} from "@/utils/drafts";
 import { CheckDocumentFunction, documentPoller } from "@/utils/Poller/documentPoller";
 import { sendGAEvent } from "@/utils/ReactGA/SendGAEvent";
 
@@ -235,7 +239,7 @@ export const ActionForm = <Schema extends SchemaWithEnforcableProps>({
   const promptNonOwnerDraftAction = useCallback(() => {
     userPrompt({
       header: "Confirm action",
-      body: `Since you are not the draft owner, are you sure you want to take this action on ${draftPackageIdForWarning}?`,
+      body: getNonOwnerDraftDeleteModalBody(draftPackageIdForWarning),
       acceptButtonText: "Yes, continue",
       cancelButtonText: "Cancel",
       cancelVariant: "link",
