@@ -286,7 +286,6 @@ export const handler = authenticatedMiddy({
                   record,
                 },
               },
-              upsert: record,
             }
           : {
               doc: record,

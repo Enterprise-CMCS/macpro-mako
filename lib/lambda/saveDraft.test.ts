@@ -195,16 +195,6 @@ describe("saveDraft handler", () => {
               }),
             },
           }),
-          upsert: expect.objectContaining({
-            deleted: false,
-            seatoolStatus: SEATOOL_STATUS.DRAFT,
-            draft: expect.objectContaining({
-              data: {
-                id: DRAFT_ID,
-                proposedEffectiveDate: 1771480800000,
-              },
-            }),
-          }),
         }),
       }),
     );
