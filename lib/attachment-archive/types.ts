@@ -92,5 +92,6 @@ export interface AttachmentArchiveStateMachineInput {
 export interface AttachmentArchiveRebuildMessage {
   packageId: string;
   latestTimestamp?: number;
+  preferDraft?: boolean;
   source: "request" | "sink-changelog" | "backfill";
 }

@@ -140,6 +140,7 @@ export const handler = authenticatedMiddy({
     await sendAttachmentArchiveRebuildRequest({
       packageId,
       latestTimestamp,
+      preferDraft: isDraftPackage || undefined,
       source: "request",
     });
   }

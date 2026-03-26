@@ -145,4 +145,35 @@ describe("useAttachmentService", () => {
     });
     expect(consoleErrorSpy).toHaveBeenCalled();
   });
+
+  it("stops polling and surfaces an error when an archive stays pending too long", async () => {
+    vi.useFakeTimers();
+
+    const consoleErrorSpy = vi.spyOn(console, "error").mockImplementation(() => undefined);
+    const getAttachmentArchiveSpy = vi.spyOn(api, "getAttachmentArchive").mockResolvedValue({
+      status: "PENDING",
+      pollAfterSeconds: 1,
+    });
+
+    const { result } = renderHook(() => useAttachmentService({ packageId: "testPackage" }), {
+      wrapper,
+    });
+
+    const archivePromise = result.current.onArchive({ scope: "all" });
+
+    await vi.runAllTimersAsync();
+
+    await expect(archivePromise).resolves.toBeUndefined();
+
+    vi.useRealTimers();
+
+    await waitFor(() => {
+      expect(result.current.archiveErrorMessage).toBe(
+        "Attachment archive is taking longer than expected. Please try again in a few moments.",
+      );
+      expect(result.current.loading).toBe(false);
+    });
+    expect(getAttachmentArchiveSpy).toHaveBeenCalledTimes(20);
+    expect(consoleErrorSpy).toHaveBeenCalled();
+  });
 });

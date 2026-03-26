@@ -239,6 +239,72 @@ describe("getAttachmentArchive handler", () => {
     );
   });
 
+  it("queues a draft rebuild when a draft archive is pending and stale", async () => {
+    getRequestedAttachmentArchiveStatus.mockResolvedValue({
+      needsRebuild: true,
+      response: {
+        status: "PENDING",
+        pollAfterSeconds: 3,
+      },
+    });
+    vi.spyOn(packageApi, "getPackage").mockResolvedValue({
+      found: true,
+      _id: "MD-26-9999-P",
+      _index: "main",
+      _score: 1,
+      _source: {
+        id: "MD-26-9999-P",
+        state: "MD",
+        seatoolStatus: "Submitted",
+      },
+    } as any);
+    vi.spyOn(packageApi, "getDraftPackage").mockResolvedValue({
+      found: true,
+      _id: "MD-26-9999-P",
+      _index: "draftmain",
+      _score: 1,
+      _source: {
+        id: "MD-26-9999-P",
+        state: "MD",
+        seatoolStatus: "Draft",
+        event: "new-medicaid-submission",
+        draft: {
+          savedAt: "2026-03-20T00:00:00.000Z",
+          data: {
+            attachments: {
+              cmsForm179: {
+                files: [
+                  {
+                    bucket: "bucket-1",
+                    key: "draft-doc-001",
+                    filename: "draft-contract.pdf",
+                    uploadDate: 1772564996000,
+                  },
+                ],
+              },
+            },
+          },
+        },
+      },
+    } as any);
+
+    const event = {
+      body: JSON.stringify({ id: "MD-26-9999-P", scope: "all", preferDraft: true }),
+      requestContext: getRequestContext(),
+    } as APIGatewayEvent;
+
+    const response = await handler(event, {} as Context);
+
+    expect(response.statusCode).toBe(200);
+    expect(sendAttachmentArchiveRebuildRequest).toHaveBeenCalledWith(
+      expect.objectContaining({
+        packageId: "MD-26-9999-P",
+        preferDraft: true,
+        source: "request",
+      }),
+    );
+  });
+
   it("returns a 500 response when archive lookup throws unexpectedly", async () => {
     getRequestedAttachmentArchiveStatus.mockRejectedValue(new Error("boom"));
 
