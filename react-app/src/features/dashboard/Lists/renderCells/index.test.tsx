@@ -19,6 +19,7 @@ import {
   DRAFT_DELETE_MODAL_BODY,
   DRAFT_DELETE_MODAL_HEADER,
   DRAFT_REVIEW_ACTION_LABEL,
+  getNonOwnerDraftDeleteModalBody,
 } from "@/utils/drafts";
 import { renderWithMemoryRouter } from "@/utils/test-helpers";
 
@@ -251,6 +252,37 @@ describe("renderCells", () => {
           expect.objectContaining({
             header: DRAFT_DELETE_MODAL_HEADER,
             body: DRAFT_DELETE_MODAL_BODY,
+            acceptButtonText: "Delete",
+            cancelButtonText: "Cancel",
+            cancelVariant: "link",
+          }),
+        );
+      });
+
+      it("should show owner-aware delete copy for non-owner draft users", async () => {
+        const nonOwnerDraftItem: opensearch.main.Document = {
+          ...draftItem,
+          draft: {
+            savedAt: "2026-03-26T00:00:00.000Z",
+            draftOwnerEmail: "someoneelse@example.com",
+            draftOwnerName: "Someone Else",
+            data: {},
+          },
+        };
+
+        const { user } = setup(TEST_STATE_SUBMITTER_USER, "statesubmitter", nonOwnerDraftItem);
+
+        await user.click(screen.getByLabelText("Available package actions"));
+        await user.click(
+          screen.getByRole("menuitem", {
+            name: `${DRAFT_DELETE_ACTION_LABEL} for ${nonOwnerDraftItem.id}`,
+          }),
+        );
+
+        expect(userPrompt).toHaveBeenCalledWith(
+          expect.objectContaining({
+            header: DRAFT_DELETE_MODAL_HEADER,
+            body: getNonOwnerDraftDeleteModalBody(nonOwnerDraftItem.id),
             acceptButtonText: "Delete",
             cancelButtonText: "Cancel",
             cancelVariant: "link",

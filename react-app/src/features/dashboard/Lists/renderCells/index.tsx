@@ -15,6 +15,7 @@ import {
   DRAFT_DELETE_MODAL_HEADER,
   getDraftEditLink,
   getDraftPrimaryActionLabel,
+  getNonOwnerDraftDeleteModalBody,
 } from "@/utils/drafts";
 import { sendGAEvent } from "@/utils/ReactGA/SendGAEvent";
 
@@ -74,6 +75,13 @@ const ActionMenuCell = ({
     data.seatoolStatus === SEATOOL_STATUS.DRAFT && isStateUser(user) && !!draftLink;
   const actions = hasDraftActions ? [] : getAvailableActions(user, data);
   const [hasConflictingMainPackage, setHasConflictingMainPackage] = useState(false);
+  const draftOwnerEmail = data.draft?.draftOwnerEmail ?? data.submitterEmail;
+  const isNonOwnerDraftUser = Boolean(
+    hasDraftActions &&
+      draftOwnerEmail &&
+      user.email &&
+      draftOwnerEmail.toLowerCase() !== user.email.toLowerCase(),
+  );
 
   useEffect(() => {
     let isMounted = true;
@@ -111,7 +119,9 @@ const ActionMenuCell = ({
 
     userPrompt({
       header: DRAFT_DELETE_MODAL_HEADER,
-      body: DRAFT_DELETE_MODAL_BODY,
+      body: isNonOwnerDraftUser
+        ? getNonOwnerDraftDeleteModalBody(data.id)
+        : DRAFT_DELETE_MODAL_BODY,
       acceptButtonText: "Delete",
       cancelButtonText: "Cancel",
       cancelVariant: "link",

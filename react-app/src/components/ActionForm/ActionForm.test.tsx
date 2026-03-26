@@ -1043,7 +1043,11 @@ describe("ActionForm", () => {
       ),
     );
 
-    const firstPromptArgs = userPromptSpy.mock.calls[0][0] as { onAccept: () => void };
+    const firstPromptArgs = userPromptSpy.mock.calls[0][0] as {
+      body: string;
+      onAccept: () => void;
+    };
+    expect(firstPromptArgs.body).not.toMatch(/delete draft package/i);
     firstPromptArgs.onAccept();
     await user.click(screen.getByTestId("save-draft-form"));
 
