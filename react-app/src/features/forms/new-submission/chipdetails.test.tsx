@@ -75,6 +75,7 @@ describe("ChipDetailsForm", () => {
   });
 
   it("disables CHIP Submission Type when the draft is locked by a conflict", async () => {
+    const user = userEvent.setup();
     const draftId = "MD-25-0003-IJJJ";
     vi.spyOn(api, "useGetItem").mockReturnValue({
       data: {
@@ -103,5 +104,7 @@ describe("ChipDetailsForm", () => {
 
     expect(screen.getByText("This draft is locked")).toBeInTheDocument();
     expect(screen.getByRole("combobox")).toBeDisabled();
+    await user.click(screen.getByRole("combobox"));
+    expect(screen.queryByText("MAGI Eligibility and Methods")).not.toBeInTheDocument();
   });
 });

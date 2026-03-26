@@ -72,6 +72,7 @@ export type FormArg<Schema extends SchemaWithEnforcableProps> = UseFormReturn<
 
 export type ActionFormFieldsArg<Schema extends SchemaWithEnforcableProps> = FormArg<Schema> & {
   isDraftMode: boolean;
+  isDraftLocked: boolean;
 };
 
 type DraftOptions = {
@@ -746,7 +747,11 @@ export const ActionForm = <Schema extends SchemaWithEnforcableProps>({
                   {formDescription}
                 </ActionFormDescription>
               </div>
-              <Fields {...form} isDraftMode={isDraftMode} />
+              <Fields
+                {...form}
+                isDraftMode={isDraftMode}
+                isDraftLocked={isDraftLockedByExistingPackage}
+              />
             </SectionCard>
             {attachmentsFromSchema.length > 0 && (
               <ActionFormAttachments

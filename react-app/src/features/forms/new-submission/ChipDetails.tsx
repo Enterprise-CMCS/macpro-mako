@@ -33,7 +33,7 @@ export const ChipDetailsForm = () => {
       title="CHIP Eligibility SPA Details"
       schema={formSchemas["new-chip-details-submission"]}
       breadcrumbText="Submit new CHIP Eligibility SPA"
-      fields={({ control, isDraftMode }) => (
+      fields={({ control, isDraftLocked, isDraftMode }) => (
         <>
           <FormField
             control={control}
@@ -78,7 +78,7 @@ export const ChipDetailsForm = () => {
               return (
                 <FormItem className="w-full sm:max-w-[460px] relative">
                   <FormLabel className="font-bold">CHIP Submission Type</FormLabel>
-                  <Select value={selectedValues.join(", ")}>
+                  <Select value={selectedValues.join(", ")} disabled={isDraftLocked}>
                     <FormControl>
                       <SelectTrigger
                         showIcon={false}
