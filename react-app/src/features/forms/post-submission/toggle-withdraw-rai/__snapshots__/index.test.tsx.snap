@@ -107,7 +107,6 @@ exports[`Toggle Withdraw Rai components > renders disable withdraw rai correctly
       <fieldset
         class="space-y-8"
       >
-        <hr
         <section
           class="p-4 border rounded-sm border-cardBorder"
           data-testid="detail-section"
