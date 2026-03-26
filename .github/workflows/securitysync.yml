@@ -1,17 +1,14 @@
 name: Security Sync
 
-#on:
- # workflow_dispatch: # for testing and manual runs
-  #schedule:
-#    - cron: "0 6 * * *" # daily at 0600 UTC
+on:
+  workflow_dispatch: # for testing and manual runs
+  schedule:
+    - cron: "0 6 * * *" # daily at 0600 UTC
 
-# FOR TESTING - Add this and # the “on:” below to test changes made on branch
 on:
   push:
     branches:
       - securitysync
-# Set branch name to your test branch 
-
 
 permissions:
   id-token: write
@@ -53,3 +50,4 @@ jobs:
           include-all-products: 'true'
           jira-consolidate-tickets: true
           skip-products: Default
+          jira-assignee: DFBO
