@@ -265,4 +265,34 @@ describe("Package Activity", () => {
       ).length,
     ).toBeGreaterThan(0);
   });
+
+  it("uses consistent typography for attachment and archive status messages", async () => {
+    vi.spyOn(packageActivityHooks, "useAttachmentService").mockImplementation(() => ({
+      attachmentErrorMessage: "This attachment is no longer available.",
+      archiveErrorMessage:
+        "Unable to prepare the attachment archive because blocked.xlsx is not available for download. File scanning did not complete successfully.",
+      archiveWarningMessage: undefined,
+      loading: false,
+      onArchive: vi.fn(),
+      onUrl: vi.fn(),
+      error: null,
+    }));
+
+    await renderFormWithPackageSectionAsync(
+      <PackageActivities
+        id={WITHDRAWN_CHANGELOG_ITEM_ID}
+        changelog={WITHDRAW_APPK_ITEM._source.changelog}
+      />,
+      WITHDRAWN_CHANGELOG_ITEM_ID,
+    );
+
+    const statusMessages = screen.getAllByRole("alert");
+    expect(statusMessages.length).toBeGreaterThan(0);
+
+    statusMessages.forEach((message) => {
+      expect(message).toHaveClass("text-sm");
+      expect(message).toHaveClass("font-normal");
+      expect(message).toHaveClass("text-red-700");
+    });
+  });
 });

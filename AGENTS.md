@@ -37,8 +37,10 @@ Prefer the root `./run` wrapper for day-to-day tasks. It validates `direnv`, Nod
 ### Environment setup
 
 - `direnv allow .` — load shared environment variables for the workspace.
+- `nvm use` — switch to the Node version pinned in `.nvmrc` (`v20.17.0` at time of writing).
 - `./run install` — install dependencies across packages with Bun.
 - `bun run build` — compile TypeScript across workspaces before packaging Lambdas or synthesizing CDK.
+- If `./run` reports `node not found` or a version mismatch, run `direnv allow .` and/or `nvm use` before retrying.
 
 ### UI workflows
 

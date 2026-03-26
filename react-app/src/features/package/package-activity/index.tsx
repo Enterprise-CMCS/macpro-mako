@@ -22,6 +22,8 @@ import { sendGAEvent } from "@/utils";
 
 import { Attachments, useAttachmentService } from "./hook";
 
+const attachmentStatusMessageClassName = "text-sm font-normal text-red-700";
+
 type AttachmentDetailsProps = {
   id: string;
   packageId: string;
@@ -101,7 +103,7 @@ const Submission = ({ packageActivity }: SubmissionProps) => {
           <p>No information submitted</p>
         )}
         {attachmentErrorMessage && (
-          <p role="alert" className="mt-2 text-red-700">
+          <p role="alert" className={`mt-2 ${attachmentStatusMessageClassName}`}>
             {attachmentErrorMessage}
           </p>
         )}
@@ -127,7 +129,7 @@ const Submission = ({ packageActivity }: SubmissionProps) => {
             Download section attachments
           </Button>
           {archiveMessage && (
-            <p role="alert" className="text-red-700">
+            <p role="alert" className={attachmentStatusMessageClassName}>
               {archiveMessage}
             </p>
           )}
@@ -220,7 +222,7 @@ const DownloadAllButton = ({ packageId, submissionChangelog }: DownloadAllButton
         Download all attachments
       </Button>
       {archiveMessage && (
-        <p role="alert" className="justify-self-end text-red-700">
+        <p role="alert" className={`justify-self-end ${attachmentStatusMessageClassName}`}>
           {archiveMessage}
         </p>
       )}
