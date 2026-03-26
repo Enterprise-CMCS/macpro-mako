@@ -71,6 +71,7 @@ export const ChipDetailsForm = () => {
           />
           <FormField
             control={control}
+            disabled={isDraftMode}
             name="chipSubmissionType"
             data-testid="HERE"
             render={({ field }) => {
