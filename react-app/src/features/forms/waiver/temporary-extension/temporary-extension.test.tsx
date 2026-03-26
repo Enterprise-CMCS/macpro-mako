@@ -45,6 +45,14 @@ describe("Temporary Extension", () => {
     expect(screen.getByTestId("submit-action-form")).toBeDisabled();
   });
 
+  test("does not fetch the original waiver on initial render", async () => {
+    const getItemSpy = vi.spyOn(api, "getItem");
+
+    await renderFormWithPackageSectionAsync(<TemporaryExtensionForm />);
+
+    expect(getItemSpy).not.toHaveBeenCalled();
+  });
+
   test("save draft requires selecting a temporary extension type", async () => {
     const user = userEvent.setup();
     const saveDraftSpy = vi.spyOn(api, "saveDraft");

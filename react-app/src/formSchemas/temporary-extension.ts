@@ -28,12 +28,16 @@ export const formSchema = events["temporary-extension"].baseSchema
         })
         .refine(
           async (data) => {
+            if (!data.waiverNumber?.trim() || !data.authority?.trim()) {
+              return true;
+            }
+
             try {
               const originalWaiverData = await getItem(data.waiverNumber);
 
-              return !(originalWaiverData._source.authority !== data.authority);
+              return originalWaiverData?._source?.authority === data.authority;
             } catch {
-              return z.never;
+              return true;
             }
           },
           {

@@ -25,8 +25,18 @@ describe("getItem", () => {
 
 describe("zod schema helpers", () => {
   describe("idIsApproved", () => {
+    it("returns false for a blank id", async () => {
+      expect(await unit.idIsApproved("")).toBe(false);
+    });
+
     it("returns false if no getItem fails", async () => {
       expect(await unit.idIsApproved(NOT_FOUND_ITEM_ID)).toBe(false);
+    });
+
+    it("returns false if getItem errors", async () => {
+      mockedServer.use(errorApiItemHandler);
+
+      expect(await unit.idIsApproved(TEST_ITEM_ID)).toBe(false);
     });
 
     it("returns false if status is not approved", async () => {
@@ -39,6 +49,10 @@ describe("zod schema helpers", () => {
   });
 
   describe("canBeRenewedOrAmended", () => {
+    it("returns false for a blank id", async () => {
+      expect(await unit.canBeRenewedOrAmended("")).toBe(false);
+    });
+
     it("returns true if item is New or Renew actionType", async () => {
       const newCanRenewOrAmend = await unit.canBeRenewedOrAmended(EXISTING_ITEM_APPROVED_NEW_ID);
       const renewCanRenewOrAmend = await unit.canBeRenewedOrAmended(
@@ -47,6 +61,13 @@ describe("zod schema helpers", () => {
       expect(newCanRenewOrAmend).toBe(true);
       expect(renewCanRenewOrAmend).toBe(true);
     });
+
+    it("returns false if getItem errors", async () => {
+      mockedServer.use(errorApiItemHandler);
+
+      expect(await unit.canBeRenewedOrAmended(TEST_ITEM_ID)).toBe(false);
+    });
+
     it("returns false if an item is Amend actionType", async () => {
       expect(await unit.canBeRenewedOrAmended(EXISTING_ITEM_APPROVED_AMEND_ID)).toBe(false);
     });

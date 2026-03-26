@@ -12,19 +12,29 @@ type GetItemOptions = {
 export const getItem = async (
   id: string,
   options?: GetItemOptions,
-): Promise<opensearch.main.ItemResult> =>
-  await API.post("os", "/item", {
+): Promise<opensearch.main.ItemResult> => {
+  const normalizedId = id?.trim().toUpperCase();
+  if (!normalizedId) {
+    return undefined as never;
+  }
+
+  return await API.post("os", "/item", {
     body: {
-      id,
+      id: normalizedId,
       includeDraft: options?.includeDraft,
       preferDraft: options?.preferDraft,
     },
-  }).catch(() => sendGAEvent("api_error", { message: `failure /item ${id}` }));
+  }).catch(() => sendGAEvent("api_error", { message: `failure /item ${normalizedId}` }));
+};
 
 export const idIsApproved = async (id: string) => {
   try {
+    if (!id?.trim()) {
+      return false;
+    }
+
     const record = await getItem(id);
-    return record._source.seatoolStatus == SEATOOL_STATUS.APPROVED;
+    return record?._source?.seatoolStatus == SEATOOL_STATUS.APPROVED;
   } catch (e) {
     console.error(e);
     return false;
@@ -33,8 +43,12 @@ export const idIsApproved = async (id: string) => {
 
 export const canBeRenewedOrAmended = async (id: string) => {
   try {
+    if (!id?.trim()) {
+      return false;
+    }
+
     const record = await getItem(id);
-    return ["New", "Renew"].includes(record._source.actionType);
+    return ["New", "Renew"].includes(record?._source?.actionType ?? "");
   } catch (e) {
     console.error(e);
     return false;
