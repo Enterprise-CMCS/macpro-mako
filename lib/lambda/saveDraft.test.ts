@@ -129,10 +129,12 @@ describe("saveDraft handler", () => {
     expect(os.updateData).not.toHaveBeenCalled();
   });
 
-  it("reactivates a previously deleted draft id by forcing deleted=false and resetting draft owner", async () => {
-    vi.spyOn(packageApi, "getPackage").mockResolvedValue({
+  it("reactivates a previously deleted draft id by replacing the stale draft document", async () => {
+    vi.spyOn(packageApi, "getDraftPackage").mockResolvedValue({
       found: true,
       _id: DRAFT_ID,
+      _seq_no: 7,
+      _primary_term: 3,
       _source: {
         id: DRAFT_ID,
         seatoolStatus: SEATOOL_STATUS.DRAFT,
@@ -143,7 +145,22 @@ describe("saveDraft handler", () => {
           savedAt: "2026-01-01T00:00:00.000Z",
           draftOwnerEmail: "old.user@example.com",
           draftOwnerName: "Old User",
-          data: { id: DRAFT_ID },
+          data: {
+            id: DRAFT_ID,
+            additionalInformation: "Old deleted draft information",
+            attachments: {
+              coverLetter: {
+                files: [
+                  {
+                    filename: "stale.pdf",
+                    key: "stale-key",
+                    bucket: "stale-bucket",
+                    uploadDate: 1,
+                  },
+                ],
+              },
+            },
+          },
         },
       },
     } as any);
@@ -155,15 +172,37 @@ describe("saveDraft handler", () => {
       expect.any(String),
       expect.objectContaining({
         id: DRAFT_ID,
+        if_seq_no: 7,
+        if_primary_term: 3,
         body: expect.objectContaining({
-          doc: expect.objectContaining({
+          script: expect.objectContaining({
+            lang: "painless",
+            source: "ctx._source = params.record",
+            params: {
+              record: expect.objectContaining({
+                deleted: false,
+                seatoolStatus: SEATOOL_STATUS.DRAFT,
+                submitterEmail: "state.user@example.com",
+                submitterName: "State User",
+                draft: expect.objectContaining({
+                  draftOwnerEmail: "state.user@example.com",
+                  draftOwnerName: "State User",
+                  data: {
+                    id: DRAFT_ID,
+                    proposedEffectiveDate: 1771480800000,
+                  },
+                }),
+              }),
+            },
+          }),
+          upsert: expect.objectContaining({
             deleted: false,
             seatoolStatus: SEATOOL_STATUS.DRAFT,
-            submitterEmail: "state.user@example.com",
-            submitterName: "State User",
             draft: expect.objectContaining({
-              draftOwnerEmail: "state.user@example.com",
-              draftOwnerName: "State User",
+              data: {
+                id: DRAFT_ID,
+                proposedEffectiveDate: 1771480800000,
+              },
             }),
           }),
         }),

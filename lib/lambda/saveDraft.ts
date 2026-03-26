@@ -93,6 +93,11 @@ const isActiveDraft = (packageResult?: main.ItemResult) =>
   packageResult._source?.seatoolStatus === SEATOOL_STATUS.DRAFT &&
   packageResult._source?.deleted !== true;
 
+const isDeletedDraft = (packageResult?: main.ItemResult) =>
+  packageResult?.found === true &&
+  packageResult._source?.seatoolStatus === SEATOOL_STATUS.DRAFT &&
+  packageResult._source?.deleted === true;
+
 const isVersionConflictError = (error: unknown) => {
   if (error && typeof error === "object") {
     const osType = (error as { meta?: { body?: { error?: { type?: string } } } }).meta?.body?.error
@@ -187,6 +192,7 @@ export const handler = authenticatedMiddy({
   const hasActiveDraftInDraftIndex = isActiveDraft(existingDraftPackage);
   const activeExistingDraft = hasActiveDraftInDraftIndex ? existingDraftPackage : undefined;
   const hasActiveExistingDraft = Boolean(activeExistingDraft);
+  const hasDeletedDraftInDraftIndex = isDeletedDraft(existingDraftPackage);
 
   const hasVersionFromRequest =
     typeof ifSeqNo === "number" &&
@@ -199,8 +205,8 @@ export const handler = authenticatedMiddy({
     ? { if_seq_no: ifSeqNo, if_primary_term: ifPrimaryTerm }
     : undefined;
   const hasVersionInExistingDraft =
-    typeof activeExistingDraft?._seq_no === "number" &&
-    typeof activeExistingDraft?._primary_term === "number";
+    typeof existingDraftPackage?._seq_no === "number" &&
+    typeof existingDraftPackage?._primary_term === "number";
 
   if (hasActiveExistingDraft) {
     if (!hasVersionFromRequest) {
@@ -253,18 +259,39 @@ export const handler = authenticatedMiddy({
   };
 
   const { domain, index } = getDomainAndNamespace("draftmain");
-  const shouldUpsert = !hasActiveDraftInDraftIndex;
+  const shouldUpsert = existingDraftPackage?.found !== true;
   const shouldUseCompareAndWrite = hasActiveDraftInDraftIndex;
+  const shouldReplaceDeletedDraft = hasDeletedDraftInDraftIndex;
+  const deletedDraftVersion =
+    shouldReplaceDeletedDraft && hasVersionInExistingDraft
+      ? {
+          if_seq_no: existingDraftPackage._seq_no,
+          if_primary_term: existingDraftPackage._primary_term,
+        }
+      : undefined;
 
   let updateResponse;
   try {
     updateResponse = await os.updateData(domain, {
       index,
       id: normalizedId,
-      ...(shouldUseCompareAndWrite && requestVersion ? requestVersion : {}),
+      ...((shouldUseCompareAndWrite && requestVersion) || deletedDraftVersion || {}),
       body: {
-        doc: record,
-        doc_as_upsert: shouldUpsert,
+        ...(shouldReplaceDeletedDraft
+          ? {
+              script: {
+                lang: "painless",
+                source: "ctx._source = params.record",
+                params: {
+                  record,
+                },
+              },
+              upsert: record,
+            }
+          : {
+              doc: record,
+              doc_as_upsert: shouldUpsert,
+            }),
       },
     });
   } catch (error) {
