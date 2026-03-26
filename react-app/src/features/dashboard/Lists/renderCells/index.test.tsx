@@ -12,13 +12,11 @@ import { Action, CognitoUserAttributes, opensearch, SEATOOL_STATUS } from "share
 import { UserRole } from "shared-types/events/legacy-user";
 import { beforeEach, describe, expect, it, vi } from "vitest";
 
-import * as itemExistsApi from "@/api/itemExists";
 import {
   DRAFT_CONTINUE_ACTION_LABEL,
   DRAFT_DELETE_ACTION_LABEL,
   DRAFT_DELETE_MODAL_BODY,
   DRAFT_DELETE_MODAL_HEADER,
-  DRAFT_REVIEW_ACTION_LABEL,
   getNonOwnerDraftDeleteModalBody,
 } from "@/utils/drafts";
 import { renderWithMemoryRouter } from "@/utils/test-helpers";
@@ -47,11 +45,8 @@ const { deleteDraft } = await import("@/api/deleteDraft");
 const { sendGAEvent } = await import("@/utils/ReactGA/SendGAEvent");
 import { MemoryRouter } from "react-router";
 
-const itemExistsSpy = vi.spyOn(itemExistsApi, "itemExists");
-
 beforeEach(() => {
   vi.clearAllMocks();
-  itemExistsSpy.mockResolvedValue(false);
 });
 
 describe("CellDetailsLink GA event", () => {
@@ -224,18 +219,6 @@ describe("renderCells", () => {
             name: `${DRAFT_DELETE_ACTION_LABEL} for ${draftItem.id}`,
           }),
         ).toBeInTheDocument();
-      });
-
-      it("should show Review Draft for locked draft records", async () => {
-        itemExistsSpy.mockResolvedValue(true);
-        const { user } = setup(TEST_STATE_SUBMITTER_USER, "statesubmitter", draftItem);
-
-        await user.click(screen.getByLabelText("Available package actions"));
-
-        expect(await screen.findByText(DRAFT_REVIEW_ACTION_LABEL)).toHaveAttribute(
-          "href",
-          `/new-submission/spa/medicaid/create?draftId=${draftItem.id}&origin=spas`,
-        );
       });
 
       it("should open a delete confirmation modal for draft actions", async () => {

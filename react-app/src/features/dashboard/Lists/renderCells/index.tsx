@@ -1,20 +1,18 @@
 import { EllipsisVerticalIcon } from "@heroicons/react/24/outline";
 import * as DropdownMenu from "@radix-ui/react-dropdown-menu";
-import { useEffect, useState } from "react";
 import { Link } from "react-router";
 import { FullUser, opensearch, SEATOOL_STATUS } from "shared-types";
 import { formatDateToET, getAvailableActions, isStateUser } from "shared-utils";
 
 import { deleteDraft } from "@/api/deleteDraft";
-import { itemExists } from "@/api/itemExists";
 import { banner, userPrompt } from "@/components";
 import { DASHBOARD_ORIGIN, mapActionLabel, ORIGIN, queryClient } from "@/utils";
 import {
+  DRAFT_CONTINUE_ACTION_LABEL,
   DRAFT_DELETE_ACTION_LABEL,
   DRAFT_DELETE_MODAL_BODY,
   DRAFT_DELETE_MODAL_HEADER,
   getDraftEditLink,
-  getDraftPrimaryActionLabel,
   getNonOwnerDraftDeleteModalBody,
 } from "@/utils/drafts";
 import { sendGAEvent } from "@/utils/ReactGA/SendGAEvent";
@@ -74,7 +72,6 @@ const ActionMenuCell = ({
   const hasDraftActions =
     data.seatoolStatus === SEATOOL_STATUS.DRAFT && isStateUser(user) && !!draftLink;
   const actions = hasDraftActions ? [] : getAvailableActions(user, data);
-  const [hasConflictingMainPackage, setHasConflictingMainPackage] = useState(false);
   const draftOwnerEmail = data.draft?.draftOwnerEmail ?? data.submitterEmail;
   const isNonOwnerDraftUser = Boolean(
     hasDraftActions &&
@@ -82,35 +79,6 @@ const ActionMenuCell = ({
       user.email &&
       draftOwnerEmail.toLowerCase() !== user.email.toLowerCase(),
   );
-
-  useEffect(() => {
-    let isMounted = true;
-
-    if (!hasDraftActions) {
-      setHasConflictingMainPackage(false);
-      return () => {
-        isMounted = false;
-      };
-    }
-
-    itemExists(data.id)
-      .then((exists) => {
-        if (isMounted) {
-          setHasConflictingMainPackage(exists);
-        }
-      })
-      .catch(() => {
-        if (isMounted) {
-          setHasConflictingMainPackage(false);
-        }
-      });
-
-    return () => {
-      isMounted = false;
-    };
-  }, [data.id, hasDraftActions]);
-
-  const draftPrimaryActionLabel = getDraftPrimaryActionLabel(hasConflictingMainPackage);
 
   const handleDraftDelete = () => {
     sendGAEvent("dash_ellipsis_click", {
@@ -176,7 +144,7 @@ const ActionMenuCell = ({
       >
         {hasDraftActions ? (
           <>
-            <DropdownMenu.Item asChild aria-label={`${draftPrimaryActionLabel} for ${data.id}`}>
+            <DropdownMenu.Item asChild aria-label={`${DRAFT_CONTINUE_ACTION_LABEL} for ${data.id}`}>
               <Link
                 onClick={() =>
                   sendGAEvent("dash_ellipsis_click", {
@@ -189,7 +157,7 @@ const ActionMenuCell = ({
                 to={draftLink!}
                 className="text-blue-500 flex select-none items-center rounded-sm px-2 py-2 text-sm hover:bg-accent"
               >
-                {draftPrimaryActionLabel}
+                {DRAFT_CONTINUE_ACTION_LABEL}
               </Link>
             </DropdownMenu.Item>
             <DropdownMenu.Item asChild aria-label={`${DRAFT_DELETE_ACTION_LABEL} for ${data.id}`}>

@@ -21,7 +21,6 @@ import {
   DRAFT_DELETE_ACTION_LABEL,
   DRAFT_DELETE_MODAL_BODY,
   DRAFT_DELETE_MODAL_HEADER,
-  DRAFT_REVIEW_ACTION_LABEL,
   getNonOwnerDraftDeleteModalBody,
 } from "@/utils/drafts";
 import { renderFormWithPackageSectionAsync } from "@/utils/test-helpers/renderForm";
@@ -62,14 +61,10 @@ const apiModule = await import("@/api");
 const { deleteDraft } = apiModule;
 const { banner, userPrompt } = await import("@/components");
 
-const setup = async (
-  submission: opensearch.main.Document,
-  id: string,
-  options: { isLockedDraft?: boolean } = {},
-) => {
+const setup = async (submission: opensearch.main.Document, id: string) => {
   await renderFormWithPackageSectionAsync(
     <DetailCardWrapper title="Package Actions">
-      <PackageActionsCard submission={submission} id={id} isLockedDraft={options.isLockedDraft} />
+      <PackageActionsCard submission={submission} id={id} />
     </DetailCardWrapper>,
     id,
   );
@@ -113,10 +108,12 @@ describe("", () => {
       expect(screen.getByRole("button", { name: DRAFT_DELETE_ACTION_LABEL })).toBeInTheDocument();
     });
 
-    it("should show review-draft and delete draft actions for locked drafts", async () => {
-      await setup(draftSubmission, TEST_MED_SPA_ITEM._id, { isLockedDraft: true });
+    it("should show continue-package and delete draft actions for locked drafts", async () => {
+      await setup(draftSubmission, TEST_MED_SPA_ITEM._id);
 
-      expect(await screen.findByRole("link", { name: DRAFT_REVIEW_ACTION_LABEL })).toHaveAttribute(
+      expect(
+        await screen.findByRole("link", { name: DRAFT_CONTINUE_ACTION_LABEL }),
+      ).toHaveAttribute(
         "href",
         `/new-submission/spa/medicaid/create?draftId=${TEST_MED_SPA_ITEM._id}&origin=spas`,
       );

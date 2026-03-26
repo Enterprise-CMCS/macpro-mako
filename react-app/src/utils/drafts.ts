@@ -3,7 +3,6 @@ import { Authority, opensearch, SEATOOL_STATUS } from "shared-types";
 import { getDashboardTabForAuthority } from "./crumbs";
 
 export const DRAFT_CONTINUE_ACTION_LABEL = "Continue Package";
-export const DRAFT_REVIEW_ACTION_LABEL = "Review Draft";
 export const DRAFT_DELETE_ACTION_LABEL = "Delete Draft";
 export const DRAFT_DELETE_MODAL_HEADER = "Confirm delete";
 export const DRAFT_DELETE_MODAL_BODY =
@@ -14,9 +13,7 @@ export const getNonOwnerDraftWarningModalBody = (packageId: string) =>
 export const getNonOwnerDraftDeleteModalBody = (packageId: string) =>
   `Since you are not the draft owner, are you sure you want to delete draft package ${packageId}? This action cannot be undone.`;
 export const getDraftLockedMessage = (packageId: string) =>
-  `A package with ID ${packageId} already exists in SEA Tool. This draft can no longer be saved or submitted in OneMAC. Delete this draft if you no longer need it.`;
-export const getDraftPrimaryActionLabel = (isLockedDraft: boolean) =>
-  isLockedDraft ? DRAFT_REVIEW_ACTION_LABEL : DRAFT_CONTINUE_ACTION_LABEL;
+  `A package with ID ${packageId} has already been submitted to CMS. This draft can no longer be saved or submitted in OneMAC. Delete this draft if you no longer need it.`;
 
 const EVENT_TO_DRAFT_PATH: Record<string, string> = {
   "new-medicaid-submission": "/new-submission/spa/medicaid/create",
