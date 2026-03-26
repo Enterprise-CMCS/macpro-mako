@@ -700,6 +700,8 @@ export const ActionForm = <Schema extends SchemaWithEnforcableProps>({
     return <Navigate to="/" replace />;
   }
 
+  console.log();
+
   return (
     <SimplePageContainer>
       <BreadCrumbs
@@ -715,7 +717,7 @@ export const ActionForm = <Schema extends SchemaWithEnforcableProps>({
       {form.formState.isSubmitting && <LoadingSpinner />}
       <Form {...form}>
         <form onSubmit={onSubmit} className="my-6 space-y-8 mx-auto justify-center flex flex-col">
-          {isDraftLockedByExistingPackage && !isHelpDeskUser && (
+          {isDraftLockedByExistingPackage && !isHelpDeskUser(userObj) && (
             <Alert variant="destructive">
               <AlertTitle>{DRAFT_LOCKED_ALERT_TITLE}</AlertTitle>
               <AlertDescription>{draftConflictMessage}</AlertDescription>
