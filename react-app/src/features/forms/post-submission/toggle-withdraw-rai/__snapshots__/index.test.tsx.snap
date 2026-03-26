@@ -104,60 +104,65 @@ exports[`Toggle Withdraw Rai components > renders disable withdraw rai correctly
     <form
       class="my-6 space-y-8 mx-auto justify-center flex flex-col"
     >
-      <section
-        class="p-4 border rounded-sm border-cardBorder"
-        data-testid="detail-section"
+      <fieldset
+        class="space-y-8"
       >
-        <h1
-          class="text-3xl font-semibold mb-2"
-          data-testid="detail-section-title"
-        >
-          Enable Formal RAI Response Withdraw Details
-        </h1>
         <hr
-          class="my-6 bg-slate-200"
-        />
-        <div
-          class="gap-8 flex flex-col"
-          data-testid="detail-section-child"
+        <section
+          class="p-4 border rounded-sm border-cardBorder"
+          data-testid="detail-section"
         >
-          <div>
-            <div
-              class="mt-4"
-            >
-              Once you submit this form, the most recent Formal RAI Response for this package will be able to be withdrawn by the state
-            </div>
-          </div>
-          <section
-            class="flex flex-col mb-8 space-y-8"
+          <h1
+            class="text-3xl font-semibold mb-2"
+            data-testid="detail-section-title"
+          >
+            Enable Formal RAI Response Withdraw Details
+          </h1>
+          <hr
+            class="my-6 bg-slate-200"
+          />
+          <div
+            class="gap-8 flex flex-col"
+            data-testid="detail-section-child"
           >
             <div>
-              <p
-                class="font-bold"
+              <div
+                class="mt-4"
               >
-                Waiver Number
-              </p>
-              <p
-                class="text-xl"
-              >
-                VA-2234.R11.02
-              </p>
+                Once you submit this form, the most recent Formal RAI Response for this package will be able to be withdrawn by the state
+              </div>
             </div>
-            <div>
-              <p
-                class="font-bold"
-              >
-                Authority
-              </p>
-              <p
-                class="text-xl"
-              >
-                1915(b) Waiver
-              </p>
-            </div>
-          </section>
-        </div>
-      </section>
+            <section
+              class="flex flex-col mb-8 space-y-8"
+            >
+              <div>
+                <p
+                  class="font-bold"
+                >
+                  Waiver Number
+                </p>
+                <p
+                  class="text-xl"
+                >
+                  VA-2234.R11.02
+                </p>
+              </div>
+              <div>
+                <p
+                  class="font-bold"
+                >
+                  Authority
+                </p>
+                <p
+                  class="text-xl"
+                >
+                  1915(b) Waiver
+                </p>
+              </div>
+            </section>
+          </div>
+        </section>
+      </fieldset>
       <section
         class="flex justify-end gap-2 p-4 ml-auto"
       >
@@ -308,60 +313,64 @@ exports[`Toggle Withdraw Rai components > renders enable withdraw rai correctly 
     <form
       class="my-6 space-y-8 mx-auto justify-center flex flex-col"
     >
-      <section
-        class="p-4 border rounded-sm border-cardBorder"
-        data-testid="detail-section"
+      <fieldset
+        class="space-y-8"
       >
-        <h1
-          class="text-3xl font-semibold mb-2"
-          data-testid="detail-section-title"
+        <section
+          class="p-4 border rounded-sm border-cardBorder"
+          data-testid="detail-section"
         >
-          Disable Formal RAI Response Withdraw Details
-        </h1>
-        <hr
-          class="my-6 bg-slate-200"
-        />
-        <div
-          class="gap-8 flex flex-col"
-          data-testid="detail-section-child"
-        >
-          <div>
-            <div
-              class="mt-4"
-            >
-              The state will not be able to withdraw its RAI response. It may take up to a minute for this change to be applied.
-            </div>
-          </div>
-          <section
-            class="flex flex-col mb-8 space-y-8"
+          <h1
+            class="text-3xl font-semibold mb-2"
+            data-testid="detail-section-title"
+          >
+            Disable Formal RAI Response Withdraw Details
+          </h1>
+          <hr
+            class="my-6 bg-slate-200"
+          />
+          <div
+            class="gap-8 flex flex-col"
+            data-testid="detail-section-child"
           >
             <div>
-              <p
-                class="font-bold"
+              <div
+                class="mt-4"
               >
-                Waiver Number
-              </p>
-              <p
-                class="text-xl"
-              >
-                VA-2234.R11.02
-              </p>
+                The state will not be able to withdraw its RAI response. It may take up to a minute for this change to be applied.
+              </div>
             </div>
-            <div>
-              <p
-                class="font-bold"
-              >
-                Authority
-              </p>
-              <p
-                class="text-xl"
-              >
-                1915(b) Waiver
-              </p>
-            </div>
-          </section>
-        </div>
-      </section>
+            <section
+              class="flex flex-col mb-8 space-y-8"
+            >
+              <div>
+                <p
+                  class="font-bold"
+                >
+                  Waiver Number
+                </p>
+                <p
+                  class="text-xl"
+                >
+                  VA-2234.R11.02
+                </p>
+              </div>
+              <div>
+                <p
+                  class="font-bold"
+                >
+                  Authority
+                </p>
+                <p
+                  class="text-xl"
+                >
+                  1915(b) Waiver
+                </p>
+              </div>
+            </section>
+          </div>
+        </section>
+      </fieldset>
       <section
         class="flex justify-end gap-2 p-4 ml-auto"
       >
