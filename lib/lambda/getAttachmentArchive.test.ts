@@ -7,7 +7,7 @@ import {
   setMockUsername,
   WITHDRAWN_CHANGELOG_ITEM_ID,
 } from "mocks";
-import { afterEach, describe, expect, it, vi } from "vitest";
+import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 
 const { getRequestedAttachmentArchiveStatus, sendAttachmentArchiveRebuildRequest } = vi.hoisted(
   () => ({
@@ -24,9 +24,14 @@ vi.mock("./attachmentArchive-lib", () => ({
   getRequestedAttachmentArchiveStatus,
 }));
 
+import * as packageApi from "../libs/api/package";
 import { handler } from "./getAttachmentArchive";
 
 describe("getAttachmentArchive handler", () => {
+  beforeEach(() => {
+    vi.spyOn(packageApi, "getDraftPackage").mockResolvedValue(undefined as any);
+  });
+
   afterEach(async () => {
     getRequestedAttachmentArchiveStatus.mockReset();
     sendAttachmentArchiveRebuildRequest.mockReset();
@@ -125,6 +130,87 @@ describe("getAttachmentArchive handler", () => {
       }),
     );
     expect(sendAttachmentArchiveRebuildRequest).not.toHaveBeenCalled();
+  });
+
+  it("uses synthetic draft changelog attachments when preferDraft is requested", async () => {
+    getRequestedAttachmentArchiveStatus.mockResolvedValue({
+      needsRebuild: false,
+      response: {
+        status: "READY",
+        filename: "archive.zip",
+        url: "http://example.com/archive.zip",
+      },
+    });
+    vi.spyOn(packageApi, "getPackage").mockResolvedValue({
+      found: true,
+      _id: "MD-26-9999-P",
+      _index: "main",
+      _score: 1,
+      _source: {
+        id: "MD-26-9999-P",
+        state: "MD",
+        seatoolStatus: "Submitted",
+      },
+    } as any);
+    vi.spyOn(packageApi, "getDraftPackage").mockResolvedValue({
+      found: true,
+      _id: "MD-26-9999-P",
+      _index: "draftmain",
+      _score: 1,
+      _source: {
+        id: "MD-26-9999-P",
+        state: "MD",
+        seatoolStatus: "Draft",
+        event: "new-medicaid-submission",
+        draft: {
+          savedAt: "2026-03-20T00:00:00.000Z",
+          data: {
+            attachments: {
+              cmsForm179: {
+                files: [
+                  {
+                    bucket: "bucket-1",
+                    key: "draft-doc-001",
+                    filename: "draft-contract.pdf",
+                    uploadDate: 1772564996000,
+                  },
+                ],
+              },
+            },
+          },
+        },
+      },
+    } as any);
+    const getPackageChangelogSpy = vi.spyOn(packageApi, "getPackageChangelog");
+
+    const event = {
+      body: JSON.stringify({ id: "MD-26-9999-P", scope: "all", preferDraft: true }),
+      requestContext: getRequestContext(),
+    } as APIGatewayEvent;
+
+    const response = await handler(event, {} as Context);
+
+    expect(response.statusCode).toBe(200);
+    expect(getRequestedAttachmentArchiveStatus).toHaveBeenCalledWith(
+      expect.objectContaining({
+        packageId: "MD-26-9999-P",
+        changelog: [
+          expect.objectContaining({
+            _source: expect.objectContaining({
+              id: "MD-26-9999-P-draft-activity",
+              attachments: [
+                expect.objectContaining({
+                  bucket: "bucket-1",
+                  key: "draft-doc-001",
+                  filename: "draft-contract.pdf",
+                }),
+              ],
+            }),
+          }),
+        ],
+      }),
+    );
+    expect(getPackageChangelogSpy).not.toHaveBeenCalled();
   });
 
   it("queues a rebuild when the requested archive is pending and stale", async () => {

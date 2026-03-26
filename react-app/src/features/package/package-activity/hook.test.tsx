@@ -29,7 +29,7 @@ describe("useAttachmentService", () => {
       .spyOn(api, "getAttachmentUrl")
       .mockResolvedValue("http://example.com/testFile");
 
-    const { result } = renderHook(() => useAttachmentService({ packageId }), {
+    const { result } = renderHook(() => useAttachmentService({ packageId, preferDraft: true }), {
       wrapper,
     });
 
@@ -40,6 +40,7 @@ describe("useAttachmentService", () => {
       attachment.bucket,
       attachment.key,
       attachment.filename,
+      { preferDraft: true },
     );
     expect(url).toBe("http://example.com/testFile");
     expect(result.current.attachmentErrorMessage).toBeUndefined();
@@ -82,13 +83,19 @@ describe("useAttachmentService", () => {
       url: "http://example.com/archive.zip",
     });
 
-    const { result } = renderHook(() => useAttachmentService({ packageId: "testPackage" }), {
-      wrapper,
-    });
+    const { result } = renderHook(
+      () => useAttachmentService({ packageId: "testPackage", preferDraft: true }),
+      {
+        wrapper,
+      },
+    );
 
     await expect(result.current.onArchive({ scope: "all" })).resolves.toBe(
       "http://example.com/archive.zip",
     );
+    expect(api.getAttachmentArchive).toHaveBeenCalledWith("testPackage", "all", undefined, {
+      preferDraft: true,
+    });
   });
 
   it("polls pending archive responses until a ready archive is available", async () => {

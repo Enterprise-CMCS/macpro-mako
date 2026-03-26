@@ -21,6 +21,7 @@ import {
   DRAFT_DELETE_ACTION_LABEL,
   DRAFT_DELETE_MODAL_BODY,
   DRAFT_DELETE_MODAL_HEADER,
+  DRAFT_REVIEW_ACTION_LABEL,
   getNonOwnerDraftDeleteModalBody,
 } from "@/utils/drafts";
 import { renderFormWithPackageSectionAsync } from "@/utils/test-helpers/renderForm";
@@ -60,12 +61,15 @@ vi.mock("@/components", async () => {
 const apiModule = await import("@/api");
 const { deleteDraft } = apiModule;
 const { banner, userPrompt } = await import("@/components");
-const itemExistsSpy = vi.spyOn(apiModule, "itemExists");
 
-const setup = async (submission: opensearch.main.Document, id: string) => {
+const setup = async (
+  submission: opensearch.main.Document,
+  id: string,
+  options: { isLockedDraft?: boolean } = {},
+) => {
   await renderFormWithPackageSectionAsync(
     <DetailCardWrapper title="Package Actions">
-      <PackageActionsCard submission={submission} id={id} />
+      <PackageActionsCard submission={submission} id={id} isLockedDraft={options.isLockedDraft} />
     </DetailCardWrapper>,
     id,
   );
@@ -76,7 +80,6 @@ describe("", () => {
     vi.clearAllMocks();
     mockNavigate.mockReset();
     setDefaultStateSubmitter();
-    itemExistsSpy.mockResolvedValue(false);
   });
 
   it("renders nothing if there are no actions", async () => {
@@ -111,13 +114,9 @@ describe("", () => {
     });
 
     it("should show review-draft and delete draft actions for locked drafts", async () => {
-      itemExistsSpy.mockResolvedValue(true);
+      await setup(draftSubmission, TEST_MED_SPA_ITEM._id, { isLockedDraft: true });
 
-      await setup(draftSubmission, TEST_MED_SPA_ITEM._id);
-
-      expect(
-        await screen.findByRole("link", { name: DRAFT_CONTINUE_ACTION_LABEL }),
-      ).toHaveAttribute(
+      expect(await screen.findByRole("link", { name: DRAFT_REVIEW_ACTION_LABEL })).toHaveAttribute(
         "href",
         `/new-submission/spa/medicaid/create?draftId=${TEST_MED_SPA_ITEM._id}&origin=spas`,
       );

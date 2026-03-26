@@ -23,12 +23,14 @@ export const getAttachmentArchive = async (
   id: string,
   scope: AttachmentArchiveScope,
   sectionId?: string,
+  options: { preferDraft?: boolean } = {},
 ): Promise<AttachmentArchiveResponse> => {
   const response = (await API.post("os", "/getAttachmentArchive", {
     body: {
       id,
       scope,
       ...(sectionId ? { sectionId } : {}),
+      preferDraft: options.preferDraft,
     },
   })) as Partial<AttachmentArchiveResponse>;
 

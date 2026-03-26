@@ -1,4 +1,4 @@
-import { screen, waitForElementToBeRemoved } from "@testing-library/react";
+import { screen, waitForElementToBeRemoved, within } from "@testing-library/react";
 import {
   EXISTING_ITEM_APPROVED_AMEND_ID,
   EXISTING_ITEM_TEMPORARY_EXTENSION_ID,
@@ -163,6 +163,32 @@ describe("package details", () => {
 
     expect(screen.getByText("Proposed Effective Date")).toBeInTheDocument();
     expect(screen.getByText("March 25, 2026")).toBeInTheDocument();
+    expect(screen.queryByText("Pending")).not.toBeInTheDocument();
+  });
+
+  it("shows -- -- for a missing draft proposed effective date", async () => {
+    setMockUsername(TEST_STATE_SUBMITTER_USERNAME);
+
+    const draftSubmission = {
+      ...TEST_1915B_ITEM._source,
+      seatoolStatus: SEATOOL_STATUS.DRAFT,
+      stateStatus: "Draft",
+      cmsStatus: "Draft",
+      proposedDate: undefined,
+      draft: {
+        savedAt: "2026-03-06T00:00:00.000Z",
+        data: {
+          id: TEST_1915B_ITEM._source.id,
+        },
+      },
+    } as unknown as opensearch.main.Document;
+
+    await setup(draftSubmission);
+
+    const proposedEffectiveDateField = screen.getByText("Proposed Effective Date").closest("dl");
+
+    expect(proposedEffectiveDateField).not.toBeNull();
+    expect(within(proposedEffectiveDateField!).getByText("-- --")).toBeInTheDocument();
     expect(screen.queryByText("Pending")).not.toBeInTheDocument();
   });
 });

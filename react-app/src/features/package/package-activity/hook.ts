@@ -44,9 +44,17 @@ function getApiErrorMessage(error: unknown, fallback: string) {
   return fallback;
 }
 
-export const useAttachmentService = ({ packageId }: { packageId: string }) => {
+export const useAttachmentService = ({
+  packageId,
+  preferDraft = false,
+}: {
+  packageId: string;
+  preferDraft?: boolean;
+}) => {
   const { mutateAsync, error, isLoading } = useMutation((attachment: Attachments[number]) =>
-    getAttachmentUrl(packageId, attachment.bucket, attachment.key, attachment.filename),
+    getAttachmentUrl(packageId, attachment.bucket, attachment.key, attachment.filename, {
+      preferDraft,
+    }),
   );
   const [archiveLoading, setArchiveLoading] = useState(false);
   const [archiveErrorMessage, setArchiveErrorMessage] = useState<string | undefined>();
@@ -74,7 +82,9 @@ export const useAttachmentService = ({ packageId }: { packageId: string }) => {
 
     try {
       while (true) {
-        const response = await getAttachmentArchive(packageId, scope, sectionId);
+        const response = await getAttachmentArchive(packageId, scope, sectionId, {
+          preferDraft,
+        });
 
         if (response.status === "READY") {
           return response.url;

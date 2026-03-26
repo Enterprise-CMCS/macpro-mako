@@ -26,6 +26,7 @@ vi.mock("@aws-sdk/s3-request-presigner", () => ({
   getSignedUrl: vi.fn(),
 }));
 
+import * as packageApi from "../libs/api/package";
 import { handler } from "./getAttachmentUrl";
 
 (globalThis as any).logger = {
@@ -44,6 +45,7 @@ describe("Lambda Handler", () => {
           send: mockSend,
         }) as any,
     );
+    vi.spyOn(packageApi, "getDraftPackage").mockResolvedValue(undefined as any);
   });
 
   afterEach(() => {
@@ -187,6 +189,67 @@ describe("Lambda Handler", () => {
     expect(signedUrlCommand?.input?.ResponseContentDisposition).toBe(
       `attachment; filename="Screenshot 2026-02-19 at 1.13.37 PM.png"; filename*=UTF-8''Screenshot%202026-02-19%20at%201.13.37%E2%80%AFPM.png`,
     );
+  });
+
+  it("returns a presigned url for draft attachments when preferDraft is requested", async () => {
+    const mockUrl = `https://${ATTACHMENT_BUCKET_NAME}.s3.${ATTACHMENT_BUCKET_REGION}.amazonaws.com/draft-object`;
+    vi.mocked(getSignedUrl).mockResolvedValueOnce(mockUrl);
+    vi.spyOn(packageApi, "getPackage").mockResolvedValue({
+      found: true,
+      _id: "MD-26-9999-P",
+      _index: "main",
+      _score: 1,
+      _source: {
+        id: "MD-26-9999-P",
+        state: "MD",
+        seatoolStatus: "Submitted",
+      },
+    } as any);
+    vi.spyOn(packageApi, "getDraftPackage").mockResolvedValue({
+      found: true,
+      _id: "MD-26-9999-P",
+      _index: "draftmain",
+      _score: 1,
+      _source: {
+        id: "MD-26-9999-P",
+        state: "MD",
+        seatoolStatus: "Draft",
+        event: "new-medicaid-submission",
+        draft: {
+          savedAt: "2026-03-20T00:00:00.000Z",
+          data: {
+            attachments: {
+              cmsForm179: {
+                files: [
+                  {
+                    bucket: ATTACHMENT_BUCKET_NAME,
+                    key: "draft-doc-001",
+                    filename: "draft-contract.pdf",
+                    uploadDate: 1772564996000,
+                  },
+                ],
+              },
+            },
+          },
+        },
+      },
+    } as any);
+
+    const event = {
+      body: JSON.stringify({
+        id: "MD-26-9999-P",
+        bucket: ATTACHMENT_BUCKET_NAME,
+        key: "draft-doc-001",
+        filename: "draft-contract.pdf",
+        preferDraft: true,
+      }),
+      requestContext: getRequestContext(),
+    } as APIGatewayEvent;
+
+    const res = await handler(event);
+
+    expect(res.statusCode).toEqual(200);
+    expect(res.body).toEqual(JSON.stringify({ url: mockUrl }));
   });
 
   it("should remap legacy bucket requests and log when remapping is applied", async () => {

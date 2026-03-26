@@ -174,7 +174,7 @@ type SubmissionProps = {
 const Submission = ({ packageActivity }: SubmissionProps) => {
   const { attachments = [], id, packageId, additionalInformation } = packageActivity;
   const { archiveErrorMessage, attachmentErrorMessage, onArchive, onUrl, loading } =
-    useAttachmentService({ packageId });
+    useAttachmentService({ packageId, preferDraft: packageActivity.isSyntheticDraft });
 
   return (
     <div className="flex flex-col gap-6">
@@ -273,16 +273,6 @@ type DownloadAllButtonProps = {
 };
 
 const DownloadAllButton = ({ packageId, packageActivities }: DownloadAllButtonProps) => {
-  const { archiveErrorMessage, loading, onArchive } = useAttachmentService({ packageId });
-
-  if (packageActivities.length === 0) {
-    return null;
-  }
-
-  if (packageActivities.some((packageActivity) => packageActivity.isSyntheticDraft)) {
-    return null;
-  }
-
   const attachmentsAggregate = packageActivities.reduce<Attachments>((acc, packageActivity) => {
     if (!packageActivity.attachments || packageActivity.attachments.length === 0) {
       return acc;
@@ -290,6 +280,15 @@ const DownloadAllButton = ({ packageId, packageActivities }: DownloadAllButtonPr
 
     return acc.concat(packageActivity.attachments);
   }, []);
+  const preferDraft = packageActivities.some((packageActivity) => packageActivity.isSyntheticDraft);
+  const { archiveErrorMessage, loading, onArchive } = useAttachmentService({
+    packageId,
+    preferDraft,
+  });
+
+  if (attachmentsAggregate.length === 0) {
+    return null;
+  }
 
   const onDownloadAll = () => {
     if (attachmentsAggregate.length === 0) {
@@ -358,7 +357,7 @@ export const PackageActivities = ({ id, changelog, submission }: PackageActiviti
     if (changelogWithoutAdminChanges.length > 0) {
       return changelogWithoutAdminChanges;
     }
-    console.log("test", submission);
+
     const draftPackageActivity = getDraftPackageActivity(submission);
     return draftPackageActivity ? [draftPackageActivity] : [];
   }, [changelog, submission]);

@@ -92,8 +92,71 @@ describe("Package Activity", () => {
     expect(screen.getByText("SPA Pages")).toBeInTheDocument();
     expect(screen.getByText("cms-179.pdf")).toBeInTheDocument();
     expect(screen.getByText("spa-pages.pdf")).toBeInTheDocument();
-    expect(screen.queryByText("Download all attachments")).not.toBeInTheDocument();
+    expect(screen.getByText("Download all attachments")).toBeInTheDocument();
     expect(screen.queryByText("Download section attachments")).not.toBeInTheDocument();
+  });
+
+  it("shows a single draft package activity for a text-only draft without download buttons", async () => {
+    const draftSubmission = {
+      id: "MD-26-0002-P",
+      seatoolStatus: "Draft",
+      submitterName: "George Harrison",
+      draft: {
+        savedAt: "2026-03-03T19:09:56.000Z",
+        data: {
+          additionalInformation: "Saved draft notes",
+        },
+      },
+      changelog: [],
+    } as unknown as opensearch.main.Document;
+
+    await renderFormWithPackageSectionAsync(
+      <PackageActivities id={draftSubmission.id} changelog={[]} submission={draftSubmission} />,
+      draftSubmission.id,
+    );
+
+    expect(screen.getByText("Package Activity (1)")).toBeInTheDocument();
+    expect(screen.getByText("Draft Saved By George Harrison")).toBeInTheDocument();
+    expect(screen.getByText("Saved draft notes")).toBeInTheDocument();
+    expect(screen.queryByText("Download all attachments")).not.toBeInTheDocument();
+  });
+
+  it("shows draft attachments and saved additional information together", async () => {
+    const draftSubmission = {
+      id: "MD-26-0003-P",
+      seatoolStatus: "Draft",
+      submitterName: "George Harrison",
+      draft: {
+        savedAt: "2026-03-03T19:09:56.000Z",
+        data: {
+          additionalInformation: "Please review the saved draft context.",
+          attachments: {
+            cmsForm179: {
+              files: [
+                {
+                  filename: "cms-179.pdf",
+                  key: "cms-179-key",
+                  bucket: ATTACHMENT_BUCKET_NAME,
+                  uploadDate: 1772564996000,
+                  title: "cms-179",
+                },
+              ],
+            },
+          },
+        },
+      },
+      changelog: [],
+    } as unknown as opensearch.main.Document;
+
+    await renderFormWithPackageSectionAsync(
+      <PackageActivities id={draftSubmission.id} changelog={[]} submission={draftSubmission} />,
+      draftSubmission.id,
+    );
+
+    expect(screen.getByText("CMS-179 Form")).toBeInTheDocument();
+    expect(screen.getByText("cms-179.pdf")).toBeInTheDocument();
+    expect(screen.getByText("Please review the saved draft context.")).toBeInTheDocument();
+    expect(screen.getByText("Download all attachments")).toBeInTheDocument();
   });
 
   it("displays the correct title with changelog length, a changelog entry, and the 'Download all attachments' button", async () => {
@@ -210,7 +273,19 @@ describe("Package Activity", () => {
     expect(spiedWindowOpen).toBeCalledWith("hello world!");
   });
 
-  it("does not show download buttons for a synthetic draft package activity", async () => {
+  it("downloads all attachments for a synthetic draft package activity", async () => {
+    const onArchive = vi.fn(() => Promise.resolve("http://example.com/draft-all.zip"));
+    const openSpy = vi.spyOn(window, "open").mockImplementation(vi.fn());
+
+    vi.spyOn(packageActivityHooks, "useAttachmentService").mockImplementation(() => ({
+      attachmentErrorMessage: undefined,
+      archiveErrorMessage: undefined,
+      loading: false,
+      onArchive,
+      onUrl: vi.fn(),
+      error: null,
+    }));
+
     const draftSubmission = {
       id: "MD-26-0001-P",
       seatoolStatus: "Draft",
@@ -252,7 +327,13 @@ describe("Package Activity", () => {
       draftSubmission.id,
     );
 
-    expect(screen.queryByText("Download all attachments")).not.toBeInTheDocument();
+    const user = userEvent.setup();
+    await user.click(screen.getByText("Download all attachments"));
+
+    expect(onArchive).toHaveBeenCalledWith({ scope: "all" });
+    await waitFor(() => {
+      expect(openSpy).toHaveBeenCalledWith("http://example.com/draft-all.zip");
+    });
     expect(screen.queryByText("Download section attachments")).not.toBeInTheDocument();
   });
 

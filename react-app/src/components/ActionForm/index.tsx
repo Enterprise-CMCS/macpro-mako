@@ -37,7 +37,7 @@ import { getFormOrigin, queryClient } from "@/utils";
 import {
   DRAFT_LOCKED_ALERT_TITLE,
   getDraftLockedMessage,
-  getNonOwnerDraftDeleteModalBody,
+  getNonOwnerDraftWarningModalBody,
 } from "@/utils/drafts";
 import { CheckDocumentFunction, documentPoller } from "@/utils/Poller/documentPoller";
 import { sendGAEvent } from "@/utils/ReactGA/SendGAEvent";
@@ -239,7 +239,7 @@ export const ActionForm = <Schema extends SchemaWithEnforcableProps>({
   const promptNonOwnerDraftAction = useCallback(() => {
     userPrompt({
       header: "Confirm action",
-      body: getNonOwnerDraftDeleteModalBody(draftPackageIdForWarning),
+      body: getNonOwnerDraftWarningModalBody(draftPackageIdForWarning),
       acceptButtonText: "Yes, continue",
       cancelButtonText: "Cancel",
       cancelVariant: "link",

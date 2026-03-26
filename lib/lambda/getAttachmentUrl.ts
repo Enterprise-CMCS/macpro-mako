@@ -3,6 +3,7 @@ import { getSignedUrl } from "@aws-sdk/s3-request-presigner";
 import { APIGatewayEvent } from "aws-lambda";
 import { response } from "libs/handler-lib";
 import { getDomain } from "libs/utils";
+import { SEATOOL_STATUS } from "shared-types";
 
 import {
   getAttachmentErrorMessage,
@@ -14,8 +15,9 @@ import {
   getAttachmentBucketMap,
   resolveTargetBucket as resolveMappedBucket,
 } from "../attachment-archive/bucket-routing";
-import { getStateFilter } from "../libs/api/auth/user";
-import { getPackage, getPackageChangelog } from "../libs/api/package";
+import { getDraftAttachments } from "../attachment-archive/draft-package";
+import { getSearchUserScope as getAttachmentSearchUserScope } from "../libs/api/auth/user";
+import { getDraftPackage, getPackage, getPackageChangelog } from "../libs/api/package";
 import { handleOpensearchError } from "./utils";
 
 function getClient(bucket: string) {
@@ -202,19 +204,53 @@ export const handler = async (event: APIGatewayEvent) => {
 
   try {
     const body = JSON.parse(event.body);
+    const normalizedId = typeof body.id === "string" ? body.id.trim().toUpperCase() : "";
+    if (!normalizedId) {
+      return response({
+        statusCode: 400,
+        body: { message: "Valid id is required" },
+      });
+    }
 
-    const mainResult = await getPackage(body.id);
-    if (!mainResult || !mainResult.found) {
+    const { stateFilter, canViewDrafts } = await getAttachmentSearchUserScope(event);
+    if (stateFilter === false) {
+      return response({
+        statusCode: 403,
+        body: { message: "state access not permitted for the given id" },
+      });
+    }
+
+    const mainResult = await getPackage(normalizedId);
+    const hasActiveMainNonDraft =
+      mainResult?.found === true &&
+      mainResult._source?.deleted !== true &&
+      mainResult._source?.seatoolStatus !== SEATOOL_STATUS.DRAFT;
+    const draftResult = await getDraftPackage(normalizedId);
+    const hasActiveDraft =
+      draftResult?.found === true &&
+      draftResult._source?.deleted !== true &&
+      draftResult._source?.seatoolStatus === SEATOOL_STATUS.DRAFT;
+
+    const canAccessDraft = hasActiveDraft && (stateFilter !== null || canViewDrafts);
+    const resolvedResult =
+      body.preferDraft === true && canAccessDraft
+        ? draftResult
+        : hasActiveMainNonDraft
+          ? mainResult
+          : canAccessDraft
+            ? draftResult
+            : undefined;
+
+    if (!resolvedResult || !resolvedResult.found) {
       return response({
         statusCode: 404,
         body: { message: "No record found for the given id" },
       });
     }
 
-    const stateFilter = await getStateFilter(event);
     if (stateFilter) {
-      const stateAccessAllowed = stateFilter?.terms.state.includes(
-        mainResult?._source?.state?.toLocaleLowerCase() || "",
+      const stateAccessAllowed = stateFilter.terms.state.includes(
+        resolvedResult._source?.state?.toLocaleLowerCase() || "",
       );
 
       if (!stateAccessAllowed) {
@@ -225,14 +261,17 @@ export const handler = async (event: APIGatewayEvent) => {
       }
     }
 
-    // add state
-    // Do we want to check
-    const changelogs = await getPackageChangelog(body.id);
-    const attachmentExists = changelogs.hits.hits.some((CL) => {
-      return CL._source.attachments?.some(
-        (ATT) => ATT.bucket === body.bucket && ATT.key === body.key,
-      );
-    });
+    const isDraftResult = resolvedResult._source?.seatoolStatus === SEATOOL_STATUS.DRAFT;
+    const attachmentExists = isDraftResult
+      ? getDraftAttachments(resolvedResult._source).some(
+          (attachment) => attachment.bucket === body.bucket && attachment.key === body.key,
+        )
+      : (await getPackageChangelog(normalizedId)).hits.hits.some((changelogItem) =>
+          changelogItem._source.attachments?.some(
+            (attachment) => attachment.bucket === body.bucket && attachment.key === body.key,
+          ),
+        );
+
     if (!attachmentExists) {
       return response({
         statusCode: 500,
@@ -242,9 +281,14 @@ export const handler = async (event: APIGatewayEvent) => {
       });
     }
 
-    const bucketResolution = resolveTargetBucket(body.id, body.bucket, body.key, body.filename);
+    const bucketResolution = resolveTargetBucket(
+      normalizedId,
+      body.bucket,
+      body.key,
+      body.filename,
+    );
     const bucketToSign = await resolveDownloadBucket({
-      packageId: body.id,
+      packageId: normalizedId,
       sourceBucket: bucketResolution.sourceBucket,
       destinationBucket: bucketResolution.destinationBucket,
       remapped: bucketResolution.remapped,
