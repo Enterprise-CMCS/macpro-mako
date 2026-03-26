@@ -1,18 +1,23 @@
 import { screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
-import { beforeEach, describe, expect, it } from "vitest";
+import { SEATOOL_STATUS } from "shared-types";
+import { beforeEach, describe, expect, it, vi } from "vitest";
 
+import * as api from "@/api";
 import { mockApiRefinements, renderFormWithPackageSectionAsync } from "@/utils/test-helpers";
 
 import { ChipDetailsForm } from "./ChipDetails";
 
 describe("ChipDetailsForm", () => {
-  beforeEach(async () => {
+  beforeEach(() => {
+    vi.clearAllMocks();
     mockApiRefinements();
-    await renderFormWithPackageSectionAsync(<ChipDetailsForm />);
+    vi.spyOn(api, "itemExists").mockResolvedValue(false);
   });
 
-  it("renders the form with all major fields", () => {
+  it("renders the form with all major fields", async () => {
+    await renderFormWithPackageSectionAsync(<ChipDetailsForm />);
+
     expect(
       screen.getByRole("heading", { name: /CHIP Eligibility SPA Details/i }),
     ).toBeInTheDocument();
@@ -23,6 +28,8 @@ describe("ChipDetailsForm", () => {
   });
 
   it("shows checkbox options when clicking submission type trigger", async () => {
+    await renderFormWithPackageSectionAsync(<ChipDetailsForm />);
+
     const trigger = screen.getByRole("combobox");
     await userEvent.click(trigger);
 
@@ -32,7 +39,69 @@ describe("ChipDetailsForm", () => {
     expect(await screen.findByText("Eligibility Process")).toBeInTheDocument();
   });
 
-  it("renders attachment section with accepted file types", () => {
+  it("renders attachment section with accepted file types", async () => {
+    await renderFormWithPackageSectionAsync(<ChipDetailsForm />);
+
     expect(screen.getByTestId("accepted-files")).toHaveTextContent(".doc, .docx, .pdf");
+  });
+
+  it("keeps CHIP Submission Type enabled for an unlocked draft", async () => {
+    const draftId = "MD-25-0003-IJJJ";
+    vi.spyOn(api, "useGetItem").mockReturnValue({
+      data: {
+        _id: draftId,
+        found: true,
+        _source: {
+          id: draftId,
+          seatoolStatus: SEATOOL_STATUS.DRAFT,
+          draft: {
+            savedAt: "2026-03-26T00:00:00.000Z",
+            data: { id: draftId },
+          },
+        },
+      },
+      isLoading: false,
+      error: null,
+    } as any);
+
+    await renderFormWithPackageSectionAsync(
+      <ChipDetailsForm />,
+      undefined,
+      "CHIP SPA",
+      `draftId=${draftId}`,
+    );
+
+    expect(screen.getByRole("combobox")).not.toBeDisabled();
+  });
+
+  it("disables CHIP Submission Type when the draft is locked by a conflict", async () => {
+    const draftId = "MD-25-0003-IJJJ";
+    vi.spyOn(api, "useGetItem").mockReturnValue({
+      data: {
+        _id: draftId,
+        found: true,
+        _source: {
+          id: draftId,
+          seatoolStatus: SEATOOL_STATUS.DRAFT,
+          draft: {
+            savedAt: "2026-03-26T00:00:00.000Z",
+            data: { id: draftId },
+          },
+        },
+      },
+      isLoading: false,
+      error: null,
+    } as any);
+    vi.mocked(api.itemExists).mockResolvedValue(true);
+
+    await renderFormWithPackageSectionAsync(
+      <ChipDetailsForm />,
+      undefined,
+      "CHIP SPA",
+      `draftId=${draftId}`,
+    );
+
+    expect(screen.getByText("This draft is locked")).toBeInTheDocument();
+    expect(screen.getByRole("combobox")).toBeDisabled();
   });
 });

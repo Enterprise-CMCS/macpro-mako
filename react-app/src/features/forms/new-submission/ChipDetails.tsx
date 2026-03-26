@@ -78,7 +78,7 @@ export const ChipDetailsForm = () => {
               return (
                 <FormItem className="w-full sm:max-w-[460px] relative">
                   <FormLabel className="font-bold">CHIP Submission Type</FormLabel>
-                  <Select value={selectedValues.join(", ")} disabled={isDraftMode}>
+                  <Select value={selectedValues.join(", ")}>
                     <FormControl>
                       <SelectTrigger
                         showIcon={false}
