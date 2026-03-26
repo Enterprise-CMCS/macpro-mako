@@ -66,7 +66,41 @@ describe("saveDraft handler", () => {
     );
   });
 
-  it("defaults temporary-extension draft authority to 1915(b) when type is not selected yet", async () => {
+  it("uses the selected temporary-extension draft authority when provided", async () => {
+    const tempExtensionId = "MD-1198.R06.TE00";
+    const temporaryExtensionEvent = {
+      ...baseEvent,
+      body: JSON.stringify({
+        id: tempExtensionId,
+        event: "temporary-extension",
+        draftData: {
+          ids: {
+            id: tempExtensionId,
+            validAuthority: {
+              authority: "1915(c)",
+            },
+          },
+        },
+      }),
+    } as APIGatewayEvent;
+
+    const res = await handler(temporaryExtensionEvent, {} as Context);
+
+    expect(res.statusCode).toBe(200);
+    expect(os.updateData).toHaveBeenCalledWith(
+      expect.any(String),
+      expect.objectContaining({
+        id: tempExtensionId,
+        body: expect.objectContaining({
+          doc: expect.objectContaining({
+            authority: "1915(c)",
+          }),
+        }),
+      }),
+    );
+  });
+
+  it("returns 400 when temporary-extension draft authority is missing", async () => {
     const tempExtensionId = "MD-1198.R06.TE00";
     const temporaryExtensionEvent = {
       ...baseEvent,
@@ -86,18 +120,13 @@ describe("saveDraft handler", () => {
 
     const res = await handler(temporaryExtensionEvent, {} as Context);
 
-    expect(res.statusCode).toBe(200);
-    expect(os.updateData).toHaveBeenCalledWith(
-      expect.any(String),
-      expect.objectContaining({
-        id: tempExtensionId,
-        body: expect.objectContaining({
-          doc: expect.objectContaining({
-            authority: "1915(b)",
-          }),
-        }),
+    expect(res.statusCode).toBe(400);
+    expect(res.body).toEqual(
+      JSON.stringify({
+        message: "Please select a Temporary Extension Type before saving.",
       }),
     );
+    expect(os.updateData).not.toHaveBeenCalled();
   });
 
   it("reactivates a previously deleted draft id by forcing deleted=false and resetting draft owner", async () => {
@@ -261,8 +290,8 @@ describe("saveDraft handler", () => {
             submitterEmail: "another.user@example.com",
             submitterName: "Another User",
             draft: expect.objectContaining({
-              draftOwnerEmail: "state.user@example.com",
-              draftOwnerName: "State User",
+              draftOwnerEmail: "another.user@example.com",
+              draftOwnerName: "Another User",
             }),
           }),
         }),

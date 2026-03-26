@@ -79,6 +79,10 @@ type DraftOptions = {
   event: string;
   idPath?: string;
   authorityPath?: string;
+  requiredSaveFields?: Array<{
+    path: string;
+    message: string;
+  }>;
 };
 
 type DraftSaveStatus = {
@@ -493,22 +497,25 @@ export const ActionForm = <Schema extends SchemaWithEnforcableProps>({
     });
     saveDraftInFlightRef.current = true;
     try {
+      const failDraftSave = (message: string) => {
+        banner({
+          header: "Unable to save Draft",
+          body: message,
+          variant: "destructive",
+          pathnameToDisplayOn: window.location.pathname,
+        });
+        setDraftSaveStatus({
+          variant: "error",
+          message,
+        });
+      };
       const idPath = draftOptions.idPath ?? "id";
       const shouldValidateIdField = !isDraftMode;
       if (shouldValidateIdField) {
         const isIdValid = await form.trigger(idPath as FieldPath<z.TypeOf<Schema>>);
 
         if (!isIdValid) {
-          banner({
-            header: "Unable to save Draft",
-            body: "Please enter a valid ID before saving.",
-            variant: "destructive",
-            pathnameToDisplayOn: window.location.pathname,
-          });
-          setDraftSaveStatus({
-            variant: "error",
-            message: "Please enter a valid ID before saving.",
-          });
+          failDraftSave("Please enter a valid ID before saving.");
           return;
         }
       }
@@ -520,16 +527,24 @@ export const ActionForm = <Schema extends SchemaWithEnforcableProps>({
       const resolvedId = idFromForm || fallbackDraftId;
 
       if (!resolvedId) {
-        banner({
-          header: "Unable to save Draft",
-          body: "Please enter a valid ID before saving.",
-          variant: "destructive",
-          pathnameToDisplayOn: window.location.pathname,
-        });
-        setDraftSaveStatus({
-          variant: "error",
-          message: "Please enter a valid ID before saving.",
-        });
+        failDraftSave("Please enter a valid ID before saving.");
+        return;
+      }
+
+      for (const requiredSaveField of draftOptions.requiredSaveFields ?? []) {
+        const requiredValue = getValueByPath(
+          formValues as Record<string, unknown>,
+          requiredSaveField.path,
+        );
+        const hasRequiredValue =
+          typeof requiredValue === "string" ? requiredValue.trim().length > 0 : !!requiredValue;
+
+        if (hasRequiredValue) {
+          continue;
+        }
+
+        await form.trigger(requiredSaveField.path as FieldPath<z.TypeOf<Schema>>);
+        failDraftSave(requiredSaveField.message);
         return;
       }
 

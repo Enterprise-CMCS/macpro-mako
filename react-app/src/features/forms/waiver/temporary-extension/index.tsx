@@ -32,12 +32,13 @@ export const TemporaryExtensionForm = () => {
   const { id: waiverId } = useParams<{ id: string }>();
   const { data: submission } = useGetItem(waiverId, { enabled: waiverId !== undefined });
 
-  const [temporaryExtensionType, setTemporaryExtensionType] = useState<string>("1915(b)");
+  const [temporaryExtensionType, setTemporaryExtensionType] = useState<string>("");
 
   const type =
     submission && submission._source
       ? `${submission._source.authority} ${actionTypeMap[submission._source.actionType]}`
       : null;
+  const attachmentAuthority = submission?._source?.authority ?? temporaryExtensionType;
 
   return (
     <ActionForm
@@ -184,7 +185,7 @@ export const TemporaryExtensionForm = () => {
         },
       }}
       attachments={{
-        faqLink: getFAQLinkForAttachments(`temporary-extension-${temporaryExtensionType}`),
+        faqLink: getFAQLinkForAttachments(`temporary-extension-${attachmentAuthority}`),
       }}
       documentPollerArgs={{
         property: (data) => data.id,
@@ -200,6 +201,12 @@ export const TemporaryExtensionForm = () => {
         event: "temporary-extension",
         idPath: "ids.id",
         authorityPath: "ids.validAuthority.authority",
+        requiredSaveFields: [
+          {
+            path: "ids.validAuthority.authority",
+            message: "Please select a Temporary Extension Type before saving.",
+          },
+        ],
       }}
     />
   );

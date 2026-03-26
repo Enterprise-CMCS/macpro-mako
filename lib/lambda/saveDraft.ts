@@ -37,9 +37,6 @@ const eventToAuthority: Partial<Record<DraftableEvent, string>> = {
   "contracting-initial": "1915(b)",
   "contracting-renewal": "1915(b)",
   "contracting-amendment": "1915(b)",
-  // Temporary extension type can be selected later, but drafts still need an authority
-  // to show up on the waivers dashboard tab immediately after first save.
-  "temporary-extension": "1915(b)",
   "app-k": "1915(c)",
 };
 
@@ -174,6 +171,18 @@ export const handler = authenticatedMiddy({
   const { stateStatus, cmsStatus } = getStatus(SEATOOL_STATUS.DRAFT);
   const draftEventName = eventName as DraftableEvent;
   const resolvedAuthority = resolveAuthority(draftEventName, authority, draftData);
+
+  if (!resolvedAuthority) {
+    return response({
+      statusCode: 400,
+      body: {
+        message:
+          draftEventName === "temporary-extension"
+            ? "Please select a Temporary Extension Type before saving."
+            : "Authority is required before saving.",
+      },
+    });
+  }
 
   const hasActiveDraftInDraftIndex = isActiveDraft(existingDraftPackage);
   const activeExistingDraft = hasActiveDraftInDraftIndex ? existingDraftPackage : undefined;
