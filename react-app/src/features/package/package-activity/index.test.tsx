@@ -54,6 +54,7 @@ describe("Package Activity", () => {
         data: {
           attachments: {
             cmsForm179: {
+              label: "CMS-179 Form",
               files: [
                 {
                   filename: "cms-179.pdf",
@@ -65,6 +66,7 @@ describe("Package Activity", () => {
               ],
             },
             spaPages: {
+              label: "SPA Pages",
               files: [
                 {
                   filename: "spa-pages.pdf",
@@ -94,6 +96,71 @@ describe("Package Activity", () => {
     expect(screen.getByText("spa-pages.pdf")).toBeInTheDocument();
     expect(screen.getByText("Download all attachments")).toBeInTheDocument();
     expect(screen.queryByText("Download section attachments")).not.toBeInTheDocument();
+  });
+
+  it("uses the saved draft attachment labels instead of internal attachment keys", async () => {
+    const draftSubmission = {
+      id: "MD-26-0004-P",
+      seatoolStatus: "Draft",
+      submitterName: "George Harrison",
+      draft: {
+        savedAt: "2026-03-03T19:09:56.000Z",
+        data: {
+          attachments: {
+            appk: {
+              label: "1915(c) Appendix K Amendment Waiver Template",
+              files: [
+                {
+                  filename: "appendix-k.pdf",
+                  key: "app-k-key",
+                  bucket: ATTACHMENT_BUCKET_NAME,
+                  uploadDate: 1772564996000,
+                },
+              ],
+            },
+            b4WaiverApplication: {
+              label:
+                "1915(b)(4) FFS Selective Contracting (Streamlined) Waiver Application Pre-print",
+              files: [
+                {
+                  filename: "b4-application.pdf",
+                  key: "b4-waiver-key",
+                  bucket: ATTACHMENT_BUCKET_NAME,
+                  uploadDate: 1772564997000,
+                },
+              ],
+            },
+            tribalConsultation: {
+              label: "Tribal Consultation",
+              files: [
+                {
+                  filename: "tribal-consultation.pdf",
+                  key: "tribal-consultation-key",
+                  bucket: ATTACHMENT_BUCKET_NAME,
+                  uploadDate: 1772564998000,
+                },
+              ],
+            },
+          },
+        },
+      },
+      changelog: [],
+    } as unknown as opensearch.main.Document;
+
+    await renderFormWithPackageSectionAsync(
+      <PackageActivities id={draftSubmission.id} changelog={[]} submission={draftSubmission} />,
+      draftSubmission.id,
+    );
+
+    expect(screen.getByText("1915(c) Appendix K Amendment Waiver Template")).toBeInTheDocument();
+    expect(
+      screen.getByText(
+        "1915(b)(4) FFS Selective Contracting (Streamlined) Waiver Application Pre-print",
+      ),
+    ).toBeInTheDocument();
+    expect(screen.getByText("Tribal Consultation")).toBeInTheDocument();
+    expect(screen.queryByText("Appk")).not.toBeInTheDocument();
+    expect(screen.queryByText("B4 Waiver Application")).not.toBeInTheDocument();
   });
 
   it("shows a single draft package activity for a text-only draft without download buttons", async () => {
@@ -132,6 +199,7 @@ describe("Package Activity", () => {
           additionalInformation: "Please review the saved draft context.",
           attachments: {
             cmsForm179: {
+              label: "CMS-179 Form",
               files: [
                 {
                   filename: "cms-179.pdf",

@@ -72,6 +72,12 @@ const getDraftAttachments = (
       return [];
     }
 
+    const sectionLabel =
+      typeof (attachmentSection as { label?: unknown }).label === "string" &&
+      (attachmentSection as { label?: string }).label?.trim()
+        ? (attachmentSection as { label: string }).label.trim()
+        : humanizeDraftAttachmentKey(attachmentKey);
+
     const files = (attachmentSection as { files?: unknown }).files;
     if (!Array.isArray(files) || files.length === 0) {
       return [];
@@ -101,7 +107,7 @@ const getDraftAttachments = (
           bucket,
           key,
           uploadDate,
-          title: humanizeDraftAttachmentKey(attachmentKey),
+          title: sectionLabel,
         },
       ];
     });
