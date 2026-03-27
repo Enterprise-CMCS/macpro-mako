@@ -1,12 +1,14 @@
 import { fireEvent, screen, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import {
+  EXISTING_ITEM_PENDING_ID,
   GET_ERROR_ITEM_ID,
+  helpDeskUser,
   setDefaultReviewer,
   setDefaultStateSubmitter,
+  setMockUsername,
   SUBMISSION_ERROR_ITEM_ID,
 } from "mocks";
-import { EXISTING_ITEM_PENDING_ID } from "mocks";
 import { attachmentArraySchemaOptional, SEATOOL_STATUS } from "shared-types";
 import { isCmsReadonlyUser } from "shared-utils";
 import { beforeEach, describe, expect, test, vi } from "vitest";
@@ -1101,6 +1103,53 @@ describe("ActionForm", () => {
     expect(screen.getByTestId("save-draft-form")).toBeDisabled();
     expect(screen.getByTestId("submit-action-form")).toBeDisabled();
     expect(bannerSpy).not.toHaveBeenCalled();
+
+    useGetItemSpy.mockRestore();
+  });
+
+  test("shows the lock banner to helpdesk users when a conflicting draft is opened", async () => {
+    const draftId = "MD-26-7685-P";
+    await setMockUsername(helpDeskUser);
+    const useGetItemSpy = vi.spyOn(api, "useGetItem").mockReturnValue({
+      data: {
+        _id: draftId,
+        found: true,
+        _source: {
+          id: draftId,
+          seatoolStatus: SEATOOL_STATUS.DRAFT,
+          draft: {
+            savedAt: "2026-03-12T00:00:00.000Z",
+            data: { id: draftId },
+          },
+        },
+      },
+      isLoading: false,
+      error: null,
+    } as any);
+    vi.mocked(api.itemExists).mockResolvedValue(true);
+
+    await renderFormWithPackageSectionAsync(
+      <ActionForm
+        title="Draft lock test"
+        schema={z.object({
+          id: z.string().min(1),
+        })}
+        fields={(form) => <input aria-label="Package ID" {...form.register("id")} />}
+        defaultValues={{ id: draftId }}
+        documentPollerArgs={{
+          property: () => "id",
+          documentChecker: () => true,
+        }}
+        draftOptions={{ enabled: true, event: "new-medicaid-submission" }}
+        conditionsDeterminingUserAccess={[() => true]}
+        breadcrumbText="Example Breadcrumb"
+      />,
+      undefined,
+      "Medicaid SPA",
+      `draftId=${draftId}`,
+    );
+
+    expect(screen.getByText("This draft is locked")).toBeInTheDocument();
 
     useGetItemSpy.mockRestore();
   });

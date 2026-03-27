@@ -5,7 +5,7 @@ import { ReactNode, useCallback, useEffect, useMemo, useRef, useState } from "re
 import { DefaultValues, FieldPath, useForm, UseFormReturn } from "react-hook-form";
 import { Navigate, useLocation, useNavigate, useParams } from "react-router";
 import { Authority, SEATOOL_STATUS, UserDetails } from "shared-types";
-import { isHelpDeskUser, isStateUser } from "shared-utils";
+import { isStateUser } from "shared-utils";
 import { z } from "zod";
 
 import { itemExists, saveDraft, useGetItem, useGetUserDetails } from "@/api";
@@ -733,7 +733,7 @@ export const ActionForm = <Schema extends SchemaWithEnforcableProps>({
       {form.formState.isSubmitting && <LoadingSpinner />}
       <Form {...form}>
         <form onSubmit={onSubmit} className="my-6 space-y-8 mx-auto justify-center flex flex-col">
-          {isDraftLockedByExistingPackage && !isHelpDeskUser(userObj) && (
+          {isDraftLockedByExistingPackage && (
             <Alert variant="destructive">
               <AlertTitle>{DRAFT_LOCKED_ALERT_TITLE}</AlertTitle>
               <AlertDescription>{draftConflictMessage}</AlertDescription>

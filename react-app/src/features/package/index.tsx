@@ -3,9 +3,8 @@ import { PropsWithChildren, useMemo } from "react";
 import { LoaderFunctionArgs, redirect, useLoaderData } from "react-router";
 import { Authority, opensearch, SEATOOL_STATUS } from "shared-types";
 import { ItemResult } from "shared-types/opensearch/changelog";
-import { isHelpDeskUser } from "shared-utils";
 
-import { getItem, itemExists, useGetItem, useGetUserDetails } from "@/api";
+import { getItem, itemExists, useGetItem } from "@/api";
 import {
   Alert,
   AlertDescription,
@@ -105,14 +104,12 @@ export const DetailsContent = ({ id, preferDraft = false }: DetailsContentProps)
     enabled: isDraft,
   });
   const isLockedDraft = isDraft && hasConflictingMainPackage;
-  const { data: userObj } = useGetUserDetails();
-
   if (isLoading || (isDraft && isDraftConflictLoading)) return <LoadingSpinner />;
   if (error || !record || !updatedSubmission) return <ErrorAlert error={error} />;
 
   return (
     <div className="w-full py-1 px-4 lg:px-8 grid grid-cols-1 gap-y-6 sm:gap-y-6">
-      {isLockedDraft && !isHelpDeskUser(userObj) && (
+      {isLockedDraft && (
         <Alert variant="destructive">
           <AlertTitle>{DRAFT_LOCKED_ALERT_TITLE}</AlertTitle>
           <AlertDescription>{getDraftLockedMessage(id)}</AlertDescription>
