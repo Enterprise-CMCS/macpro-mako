@@ -11,7 +11,9 @@ import {
 } from "mocks";
 import { mockedApiServer as mockedServer } from "mocks/server";
 import * as React from "react";
-import { afterAll, afterEach, beforeAll, expect, vi } from "vitest";
+import { afterAll, afterEach, beforeAll, beforeEach, expect, vi } from "vitest";
+
+import { Storage as MockStorage } from "./src/utils/test-helpers/mockStorage";
 
 // TODO to mock
 // [MSW] Warning: intercepted a request without a matching request handler:
@@ -45,6 +47,142 @@ window.HTMLElement.prototype.scrollIntoView = vi.fn();
 window.HTMLElement.prototype.releasePointerCapture = vi.fn();
 window.HTMLElement.prototype.hasPointerCapture = vi.fn();
 
+const installStorageMocks = () => {
+  const localStorage = new MockStorage();
+  const sessionStorage = new MockStorage();
+
+  Object.defineProperty(window, "localStorage", {
+    configurable: true,
+    writable: true,
+    value: localStorage,
+  });
+  Object.defineProperty(globalThis, "localStorage", {
+    configurable: true,
+    writable: true,
+    value: localStorage,
+  });
+  Object.defineProperty(window, "sessionStorage", {
+    configurable: true,
+    writable: true,
+    value: sessionStorage,
+  });
+  Object.defineProperty(globalThis, "sessionStorage", {
+    configurable: true,
+    writable: true,
+    value: sessionStorage,
+  });
+};
+
+const syncWebApiConstructors = () => {
+  if (typeof window === "undefined") {
+    return;
+  }
+
+  const NativeAbortController = globalThis.AbortController;
+  const NativeAbortSignal = globalThis.AbortSignal;
+  const NativeRequest = globalThis.Request;
+  const NativeHeaders = globalThis.Headers;
+  const NativeResponse = globalThis.Response;
+  const NativeFormData = globalThis.FormData;
+  const nativeFetch = globalThis.fetch;
+
+  class SafeRequest extends NativeRequest {
+    constructor(input: RequestInfo | URL, init?: RequestInit) {
+      const safeInit = init ? { ...init } : undefined;
+      const inputRequest = input instanceof NativeRequest ? input : null;
+
+      if (safeInit?.signal) {
+        delete safeInit.signal;
+      }
+
+      if (inputRequest) {
+        const method = safeInit?.method ?? inputRequest.method;
+        const normalizedInit: RequestInit & { duplex?: "half" } = {
+          ...safeInit,
+          method,
+          headers: safeInit?.headers ?? inputRequest.headers,
+          cache: safeInit?.cache ?? inputRequest.cache,
+          credentials: safeInit?.credentials ?? inputRequest.credentials,
+          integrity: safeInit?.integrity ?? inputRequest.integrity,
+          keepalive: safeInit?.keepalive ?? inputRequest.keepalive,
+          mode: safeInit?.mode ?? inputRequest.mode,
+          redirect: safeInit?.redirect ?? inputRequest.redirect,
+          referrer: safeInit?.referrer ?? inputRequest.referrer,
+          referrerPolicy: safeInit?.referrerPolicy ?? inputRequest.referrerPolicy,
+        };
+        const inputWithDuplex = inputRequest as Request & { duplex?: "half" };
+
+        if (!safeInit?.body && !["GET", "HEAD"].includes(method)) {
+          normalizedInit.body = inputRequest.clone().body;
+          normalizedInit.duplex = safeInit?.duplex ?? inputWithDuplex.duplex;
+        }
+
+        super(inputRequest.url, normalizedInit);
+        return;
+      }
+
+      super(input, safeInit);
+    }
+  }
+
+  Object.defineProperty(window, "AbortController", {
+    configurable: true,
+    value: NativeAbortController,
+  });
+  Object.defineProperty(globalThis, "AbortController", {
+    configurable: true,
+    value: NativeAbortController,
+  });
+  Object.defineProperty(window, "AbortSignal", {
+    configurable: true,
+    value: NativeAbortSignal,
+  });
+  Object.defineProperty(globalThis, "AbortSignal", {
+    configurable: true,
+    value: NativeAbortSignal,
+  });
+  Object.defineProperty(window, "Request", {
+    configurable: true,
+    value: SafeRequest,
+  });
+  Object.defineProperty(globalThis, "Request", {
+    configurable: true,
+    value: SafeRequest,
+  });
+  Object.defineProperty(window, "Headers", {
+    configurable: true,
+    value: NativeHeaders,
+  });
+  Object.defineProperty(globalThis, "Headers", {
+    configurable: true,
+    value: NativeHeaders,
+  });
+  Object.defineProperty(window, "Response", {
+    configurable: true,
+    value: NativeResponse,
+  });
+  Object.defineProperty(globalThis, "Response", {
+    configurable: true,
+    value: NativeResponse,
+  });
+  Object.defineProperty(window, "FormData", {
+    configurable: true,
+    value: NativeFormData,
+  });
+  Object.defineProperty(globalThis, "FormData", {
+    configurable: true,
+    value: NativeFormData,
+  });
+  Object.defineProperty(window, "fetch", {
+    configurable: true,
+    value: nativeFetch,
+  });
+  Object.defineProperty(globalThis, "fetch", {
+    configurable: true,
+    value: nativeFetch,
+  });
+};
+
 process.env.TZ = "UTC";
 
 // Add this to remove all the expected errors in console when running unit tests.
@@ -63,6 +201,8 @@ global.ResizeObserver = vi.fn().mockImplementation(() => ({
 }));
 
 beforeAll(() => {
+  installStorageMocks();
+  syncWebApiConstructors();
   setDefaultStateSubmitter();
 
   console.log("starting MSW listener for react-app");
@@ -82,6 +222,11 @@ beforeAll(() => {
       })),
     }));
   }
+});
+
+beforeEach(() => {
+  installStorageMocks();
+  syncWebApiConstructors();
 });
 
 afterEach(() => {

@@ -1,14 +1,15 @@
 import { APIGatewayEvent } from "aws-lambda";
-import { getAuthDetails, isAuthorized, lookupUserAttributes } from "libs/api/auth/user";
+import { getAuthDetails, lookupUserAttributes } from "libs/api/auth/user";
 import { getDraftPackage, getPackage } from "libs/api/package";
 import { response } from "libs/handler-lib";
 import * as os from "libs/opensearch-lib";
 import { getDomainAndNamespace } from "libs/utils";
 import { getStatus, SEATOOL_STATUS } from "shared-types";
 import { main } from "shared-types/opensearch";
+import { isStateUser } from "shared-utils";
 import { z } from "zod";
 
-import { authenticatedMiddy } from "./middleware";
+import { authenticatedMiddy, ContextWithAuthenticatedUser } from "./middleware";
 import { getUserByEmail } from "./user-management/userManagementService";
 
 const draftableEvents = [
@@ -118,7 +119,7 @@ export const handler = authenticatedMiddy({
   opensearch: true,
   setToContext: true,
   eventSchema: saveDraftEventSchema,
-}).handler(async (event: SaveDraftEvent) => {
+}).handler(async (event: SaveDraftEvent, context: ContextWithAuthenticatedUser) => {
   if (!event.body) {
     return response({
       statusCode: 400,
@@ -137,12 +138,18 @@ export const handler = authenticatedMiddy({
   const normalizedId = id.toUpperCase();
   const stateCode = normalizedId.slice(0, 2);
 
-  // Auth check
-  const isUserAuthorized = await isAuthorized(event, stateCode);
-  if (!isUserAuthorized) {
+  if (!context.authenticatedUser || !isStateUser(context.authenticatedUser)) {
     return response({
       statusCode: 403,
-      body: { message: "Unauthorized" },
+      body: { message: "Only state users can save drafts." },
+    });
+  }
+
+  const userStates = context.authenticatedUser.states?.map((state) => state.toUpperCase()) || [];
+  if (!userStates.includes(stateCode)) {
+    return response({
+      statusCode: 403,
+      body: { message: "Not authorized to view this resource" },
     });
   }
 
@@ -275,6 +282,7 @@ export const handler = authenticatedMiddy({
     updateResponse = await os.updateData(domain, {
       index,
       id: normalizedId,
+      refresh: true,
       ...((shouldUseCompareAndWrite && requestVersion) || deletedDraftVersion || {}),
       body: {
         ...(shouldReplaceDeletedDraft

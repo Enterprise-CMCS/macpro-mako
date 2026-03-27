@@ -2,7 +2,14 @@ import { Context } from "aws-lambda";
 import * as authApi from "libs/api/auth/user";
 import * as packageApi from "libs/api/package";
 import * as os from "libs/opensearch-lib";
-import { getRequestContext } from "mocks";
+import {
+  coStateSubmitter,
+  getRequestContext,
+  helpDeskUser,
+  setDefaultStateSubmitter,
+  setMockUsername,
+  testReviewer,
+} from "mocks";
 import { APIGatewayEvent, SEATOOL_STATUS } from "shared-types";
 import { beforeEach, describe, expect, it, vi } from "vitest";
 
@@ -24,9 +31,9 @@ const baseEvent = {
 } as APIGatewayEvent;
 
 describe("saveDraft handler", () => {
-  beforeEach(() => {
+  beforeEach(async () => {
     vi.clearAllMocks();
-    vi.spyOn(authApi, "isAuthorized").mockResolvedValue(true);
+    await setDefaultStateSubmitter();
     vi.spyOn(authApi, "getAuthDetails").mockReturnValue({
       userId: "mock-user-id",
       poolId: "mock-pool-id",
@@ -34,6 +41,10 @@ describe("saveDraft handler", () => {
     vi.spyOn(authApi, "lookupUserAttributes").mockResolvedValue({
       email: "state.user@example.com",
     } as any);
+    vi.spyOn(userService, "getLatestActiveRoleByEmail").mockResolvedValue({
+      role: "statesubmitter",
+    } as any);
+    vi.spyOn(userService, "getActiveStatesForUserByEmail").mockResolvedValue(["MD"]);
     vi.spyOn(userService, "getUserByEmail").mockResolvedValue({
       email: "state.user@example.com",
       fullName: "State User",
@@ -51,6 +62,7 @@ describe("saveDraft handler", () => {
       expect.any(String),
       expect.objectContaining({
         id: DRAFT_ID,
+        refresh: true,
         body: expect.objectContaining({
           doc_as_upsert: true,
           doc: expect.objectContaining({
@@ -64,6 +76,43 @@ describe("saveDraft handler", () => {
         }),
       }),
     );
+  });
+
+  it("returns 403 when a CMS user tries to save a draft", async () => {
+    await setMockUsername(testReviewer);
+    vi.spyOn(userService, "getLatestActiveRoleByEmail").mockResolvedValue({
+      role: "reviewer",
+    } as any);
+
+    const res = await handler(baseEvent, {} as Context);
+
+    expect(res.statusCode).toBe(403);
+    expect(res.body).toEqual(JSON.stringify({ message: "Only state users can save drafts." }));
+    expect(os.updateData).not.toHaveBeenCalled();
+  });
+
+  it("returns 403 when a helpdesk user tries to save a draft", async () => {
+    await setMockUsername(helpDeskUser);
+    vi.spyOn(userService, "getLatestActiveRoleByEmail").mockResolvedValue({
+      role: "helpdesk",
+    } as any);
+
+    const res = await handler(baseEvent, {} as Context);
+
+    expect(res.statusCode).toBe(403);
+    expect(res.body).toEqual(JSON.stringify({ message: "Only state users can save drafts." }));
+    expect(os.updateData).not.toHaveBeenCalled();
+  });
+
+  it("returns 403 when a state user tries to save a draft for a state they do not have access to", async () => {
+    await setMockUsername(coStateSubmitter);
+    vi.spyOn(userService, "getActiveStatesForUserByEmail").mockResolvedValue(["CO"]);
+
+    const res = await handler(baseEvent, {} as Context);
+
+    expect(res.statusCode).toBe(403);
+    expect(res.body).toEqual(JSON.stringify({ message: "Not authorized to view this resource" }));
+    expect(os.updateData).not.toHaveBeenCalled();
   });
 
   it("uses the selected temporary-extension draft authority when provided", async () => {
@@ -172,6 +221,7 @@ describe("saveDraft handler", () => {
       expect.any(String),
       expect.objectContaining({
         id: DRAFT_ID,
+        refresh: true,
         if_seq_no: 7,
         if_primary_term: 3,
         body: expect.objectContaining({
