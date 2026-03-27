@@ -1,5 +1,5 @@
 import { toBeEmptyDOMElement } from "@testing-library/jest-dom/matchers";
-import { screen, waitFor } from "@testing-library/react";
+import { screen, waitFor, within } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import {
   ATTACHMENT_BUCKET_NAME,
@@ -95,7 +95,76 @@ describe("Package Activity", () => {
     expect(screen.getByText("cms-179.pdf")).toBeInTheDocument();
     expect(screen.getByText("spa-pages.pdf")).toBeInTheDocument();
     expect(screen.getByText("Download all attachments")).toBeInTheDocument();
-    expect(screen.queryByText("Download section attachments")).not.toBeInTheDocument();
+    expect(screen.getByText("Download section attachments")).toBeInTheDocument();
+  });
+
+  it("orders draft attachment sections to match the form schema order", async () => {
+    const draftSubmission = {
+      id: "MD-25-0003-JJJ",
+      event: "new-chip-details-submission",
+      seatoolStatus: "Draft",
+      submitterName: "George Harrison",
+      draft: {
+        savedAt: "2026-03-27T18:06:29.000Z",
+        data: {
+          attachments: {
+            amendedLanguage: {
+              label: "Amended Language",
+              files: [
+                {
+                  filename: "amended-language.pdf",
+                  key: "amended-language-key",
+                  bucket: ATTACHMENT_BUCKET_NAME,
+                  uploadDate: 1772564997000,
+                },
+              ],
+            },
+            chipEligibility: {
+              label: "CHIP Eligibility Template",
+              files: [
+                {
+                  filename: "chip-eligibility.pdf",
+                  key: "chip-eligibility-key",
+                  bucket: ATTACHMENT_BUCKET_NAME,
+                  uploadDate: 1772564996000,
+                },
+              ],
+            },
+            coverLetter: {
+              label: "Cover Letter",
+              files: [
+                {
+                  filename: "cover-letter.pdf",
+                  key: "cover-letter-key",
+                  bucket: ATTACHMENT_BUCKET_NAME,
+                  uploadDate: 1772564998000,
+                },
+              ],
+            },
+          },
+        },
+      },
+      changelog: [],
+    } as unknown as opensearch.main.Document;
+
+    await renderFormWithPackageSectionAsync(
+      <PackageActivities id={draftSubmission.id} changelog={[]} submission={draftSubmission} />,
+      draftSubmission.id,
+    );
+
+    const attachmentRows = screen
+      .getAllByRole("row")
+      .slice(1)
+      .filter((row) => within(row).queryAllByRole("cell").length === 2);
+    const documentTypes = attachmentRows.map(
+      (row) => within(row).getAllByRole("cell")[0].textContent,
+    );
+
+    expect(documentTypes).toEqual([
+      "CHIP Eligibility Template",
+      "Cover Letter",
+      "Amended Language",
+    ]);
   });
 
   it("uses the saved draft attachment labels instead of internal attachment keys", async () => {
@@ -402,7 +471,73 @@ describe("Package Activity", () => {
     await waitFor(() => {
       expect(openSpy).toHaveBeenCalledWith("http://example.com/draft-all.zip");
     });
-    expect(screen.queryByText("Download section attachments")).not.toBeInTheDocument();
+    expect(screen.getByText("Download section attachments")).toBeInTheDocument();
+  });
+
+  it("downloads section attachments for a synthetic draft package activity", async () => {
+    const onArchive = vi.fn(() => Promise.resolve("http://example.com/draft-section.zip"));
+    const openSpy = vi.spyOn(window, "open").mockImplementation(vi.fn());
+
+    vi.spyOn(packageActivityHooks, "useAttachmentService").mockImplementation(() => ({
+      attachmentErrorMessage: undefined,
+      archiveErrorMessage: undefined,
+      loading: false,
+      onArchive,
+      onUrl: vi.fn(),
+      error: null,
+    }));
+
+    const draftSubmission = {
+      id: "MD-26-0001-P",
+      seatoolStatus: "Draft",
+      submitterName: "George Harrison",
+      draft: {
+        savedAt: "2026-03-03T19:09:56.000Z",
+        data: {
+          attachments: {
+            cmsForm179: {
+              files: [
+                {
+                  filename: "cms-179.pdf",
+                  key: "cms-179-key",
+                  bucket: ATTACHMENT_BUCKET_NAME,
+                  uploadDate: 1772564996000,
+                  title: "cms-179",
+                },
+              ],
+            },
+            spaPages: {
+              files: [
+                {
+                  filename: "spa-pages.pdf",
+                  key: "spa-pages-key",
+                  bucket: ATTACHMENT_BUCKET_NAME,
+                  uploadDate: 1772564997000,
+                  title: "spa-pages",
+                },
+              ],
+            },
+          },
+        },
+      },
+      changelog: [],
+    } as unknown as opensearch.main.Document;
+
+    await renderFormWithPackageSectionAsync(
+      <PackageActivities id={draftSubmission.id} changelog={[]} submission={draftSubmission} />,
+      draftSubmission.id,
+    );
+
+    const user = userEvent.setup();
+    await user.click(screen.getByText("Download section attachments"));
+
+    expect(onArchive).toHaveBeenCalledWith({
+      scope: "section",
+      sectionId: `${draftSubmission.id}-draft-activity`,
+    });
+    await waitFor(() => {
+      expect(openSpy).toHaveBeenCalledWith("http://example.com/draft-section.zip");
+    });
   });
 
   it("does not open a new tab when an attachment download resolves without a url", async () => {
