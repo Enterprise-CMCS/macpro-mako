@@ -35,7 +35,7 @@ const getDraftAttachmentShape = (eventName?: opensearch.main.Document["event"]) 
     return undefined;
   }
 
-  const attachmentsSchema = eventModule.baseSchema.shape.attachments;
+  const attachmentsSchema = (eventModule.baseSchema.shape as Record<string, unknown>).attachments;
   if (!hasShape(attachmentsSchema)) {
     return undefined;
   }
