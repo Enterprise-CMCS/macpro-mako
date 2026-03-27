@@ -59,18 +59,26 @@ const humanizeDraftAttachmentKey = (key: string) =>
   DRAFT_ATTACHMENT_LABELS[key] ??
   key.replace(/([a-z0-9])([A-Z])/g, "$1 $2").replace(/\b\w/g, (char) => char.toUpperCase());
 
+const hasBaseSchema = (eventModule: unknown): eventModule is { baseSchema: z.ZodTypeAny } =>
+  typeof eventModule === "object" && eventModule !== null && "baseSchema" in eventModule;
+
 const getDraftAttachmentKeyOrder = (submission?: opensearch.main.Document) => {
   const eventName = submission?.event;
   if (!eventName || !(eventName in events)) {
     return [] as string[];
   }
 
-  const baseSchema = events[eventName as keyof typeof events].baseSchema;
+  const eventModule = events[eventName as keyof typeof events];
+  if (!hasBaseSchema(eventModule)) {
+    return [] as string[];
+  }
+
+  const baseSchema = eventModule.baseSchema;
   if (!(baseSchema instanceof z.ZodObject)) {
     return [] as string[];
   }
 
-  const attachmentsSchema = baseSchema.shape.attachments;
+  const attachmentsSchema = (baseSchema.shape as Record<string, unknown>).attachments;
   if (!(attachmentsSchema instanceof z.ZodObject)) {
     return [] as string[];
   }
