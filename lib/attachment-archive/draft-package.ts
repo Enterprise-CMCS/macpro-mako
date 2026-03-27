@@ -1,4 +1,5 @@
 import { opensearch } from "shared-types";
+import { getDraftAttachmentDefaultLabel, getDraftAttachmentKeyOrder } from "shared-utils";
 
 const DRAFT_ACTIVITY_ID_SUFFIX = "draft-activity";
 
@@ -55,10 +56,35 @@ export const getDraftAttachments = (
     return [];
   }
 
-  return Object.entries(attachmentSections).flatMap(([attachmentKey, attachmentSection]) => {
+  const attachmentKeyOrder = getDraftAttachmentKeyOrder(submission?.event);
+  const attachmentKeyOrderIndex = new Map(
+    attachmentKeyOrder.map((attachmentKey, index) => [attachmentKey, index]),
+  );
+  const orderedAttachmentEntries = Object.entries(attachmentSections)
+    .map(([attachmentKey, attachmentSection], originalIndex) => ({
+      attachmentKey,
+      attachmentSection,
+      originalIndex,
+      sortIndex: attachmentKeyOrderIndex.get(attachmentKey) ?? Number.MAX_SAFE_INTEGER,
+    }))
+    .sort((left, right) => {
+      if (left.sortIndex !== right.sortIndex) {
+        return left.sortIndex - right.sortIndex;
+      }
+
+      return left.originalIndex - right.originalIndex;
+    });
+
+  return orderedAttachmentEntries.flatMap(({ attachmentKey, attachmentSection }) => {
     if (!attachmentSection || typeof attachmentSection !== "object") {
       return [];
     }
+
+    const sectionLabel =
+      typeof (attachmentSection as { label?: unknown }).label === "string" &&
+      (attachmentSection as { label?: string }).label?.trim()
+        ? (attachmentSection as { label: string }).label.trim()
+        : (getDraftAttachmentDefaultLabel(submission?.event, attachmentKey) ?? attachmentKey);
 
     const files = (attachmentSection as { files?: unknown }).files;
     if (!Array.isArray(files) || files.length === 0) {
@@ -81,7 +107,7 @@ export const getDraftAttachments = (
       const title =
         typeof maybeAttachment.title === "string" && maybeAttachment.title.trim()
           ? maybeAttachment.title
-          : attachmentKey;
+          : sectionLabel;
 
       if (!filename || !bucket || !key || typeof uploadDate !== "number") {
         return [];

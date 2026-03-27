@@ -232,6 +232,41 @@ describe("Package Activity", () => {
     expect(screen.queryByText("B4 Waiver Application")).not.toBeInTheDocument();
   });
 
+  it("falls back to the event schema attachment label when a draft label is missing", async () => {
+    const draftSubmission = {
+      id: "MD-3422.R00.01",
+      event: "app-k",
+      seatoolStatus: "Draft",
+      submitterName: "George Harrison",
+      draft: {
+        savedAt: "2026-03-03T19:09:56.000Z",
+        data: {
+          attachments: {
+            appk: {
+              files: [
+                {
+                  filename: "appendix-k.pdf",
+                  key: "app-k-key",
+                  bucket: ATTACHMENT_BUCKET_NAME,
+                  uploadDate: 1772564996000,
+                },
+              ],
+            },
+          },
+        },
+      },
+      changelog: [],
+    } as unknown as opensearch.main.Document;
+
+    await renderFormWithPackageSectionAsync(
+      <PackageActivities id={draftSubmission.id} changelog={[]} submission={draftSubmission} />,
+      draftSubmission.id,
+    );
+
+    expect(screen.getByText("1915(c) Appendix K Amendment Waiver Template")).toBeInTheDocument();
+    expect(screen.queryByText("Appk")).not.toBeInTheDocument();
+  });
+
   it("shows a single draft package activity for a text-only draft without download buttons", async () => {
     const draftSubmission = {
       id: "MD-26-0002-P",

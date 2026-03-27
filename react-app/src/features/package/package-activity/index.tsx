@@ -1,9 +1,12 @@
 import { useMemo } from "react";
 import { opensearch } from "shared-types";
-import { events } from "shared-types/events";
 import { ItemResult } from "shared-types/opensearch/changelog";
-import { formatDateToET, getPackageActivityLabel } from "shared-utils";
-import { z } from "zod";
+import {
+  formatDateToET,
+  getDraftAttachmentDefaultLabel,
+  getDraftAttachmentKeyOrder,
+  getPackageActivityLabel,
+} from "shared-utils";
 
 import {
   Accordion,
@@ -59,33 +62,6 @@ const humanizeDraftAttachmentKey = (key: string) =>
   DRAFT_ATTACHMENT_LABELS[key] ??
   key.replace(/([a-z0-9])([A-Z])/g, "$1 $2").replace(/\b\w/g, (char) => char.toUpperCase());
 
-const hasBaseSchema = (eventModule: unknown): eventModule is { baseSchema: z.ZodTypeAny } =>
-  typeof eventModule === "object" && eventModule !== null && "baseSchema" in eventModule;
-
-const getDraftAttachmentKeyOrder = (submission?: opensearch.main.Document) => {
-  const eventName = submission?.event;
-  if (!eventName || !(eventName in events)) {
-    return [] as string[];
-  }
-
-  const eventModule = events[eventName as keyof typeof events];
-  if (!hasBaseSchema(eventModule)) {
-    return [] as string[];
-  }
-
-  const baseSchema = eventModule.baseSchema;
-  if (!(baseSchema instanceof z.ZodObject)) {
-    return [] as string[];
-  }
-
-  const attachmentsSchema = (baseSchema.shape as Record<string, unknown>).attachments;
-  if (!(attachmentsSchema instanceof z.ZodObject)) {
-    return [] as string[];
-  }
-
-  return Object.keys(attachmentsSchema.shape);
-};
-
 const getDraftAttachments = (
   submission?: opensearch.main.Document,
 ): NonNullable<opensearch.changelog.Document["attachments"]> => {
@@ -96,7 +72,7 @@ const getDraftAttachments = (
     return [];
   }
 
-  const attachmentKeyOrder = getDraftAttachmentKeyOrder(submission);
+  const attachmentKeyOrder = getDraftAttachmentKeyOrder(submission?.event);
   const attachmentKeyOrderIndex = new Map(
     attachmentKeyOrder.map((attachmentKey, index) => [attachmentKey, index]),
   );
@@ -124,7 +100,8 @@ const getDraftAttachments = (
       typeof (attachmentSection as { label?: unknown }).label === "string" &&
       (attachmentSection as { label?: string }).label?.trim()
         ? (attachmentSection as { label: string }).label.trim()
-        : humanizeDraftAttachmentKey(attachmentKey);
+        : (getDraftAttachmentDefaultLabel(submission?.event, attachmentKey) ??
+          humanizeDraftAttachmentKey(attachmentKey));
 
     const files = (attachmentSection as { files?: unknown }).files;
     if (!Array.isArray(files) || files.length === 0) {

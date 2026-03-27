@@ -33,6 +33,7 @@ describe("getAttachmentArchive handler", () => {
   });
 
   afterEach(async () => {
+    vi.restoreAllMocks();
     getRequestedAttachmentArchiveStatus.mockReset();
     sendAttachmentArchiveRebuildRequest.mockReset();
     await setDefaultStateSubmitter();
@@ -211,6 +212,72 @@ describe("getAttachmentArchive handler", () => {
       }),
     );
     expect(getPackageChangelogSpy).not.toHaveBeenCalled();
+  });
+
+  it("uses the event schema label for synthetic draft attachments when the saved label is missing", async () => {
+    getRequestedAttachmentArchiveStatus.mockResolvedValue({
+      needsRebuild: false,
+      response: {
+        status: "READY",
+        filename: "archive.zip",
+        url: "http://example.com/archive.zip",
+      },
+    });
+    vi.spyOn(packageApi, "getPackage").mockResolvedValue(undefined as any);
+    vi.spyOn(packageApi, "getDraftPackage").mockResolvedValue({
+      found: true,
+      _id: "MD-3422.R00.01",
+      _index: "draftmain",
+      _score: 1,
+      _source: {
+        id: "MD-3422.R00.01",
+        state: "MD",
+        seatoolStatus: "Draft",
+        event: "app-k",
+        draft: {
+          savedAt: "2026-03-20T00:00:00.000Z",
+          data: {
+            attachments: {
+              appk: {
+                files: [
+                  {
+                    bucket: "bucket-1",
+                    key: "draft-doc-001",
+                    filename: "appendix-k.pdf",
+                    uploadDate: 1772564996000,
+                  },
+                ],
+              },
+            },
+          },
+        },
+      },
+    } as any);
+
+    const event = {
+      body: JSON.stringify({ id: "MD-3422.R00.01", scope: "all", preferDraft: true }),
+      requestContext: getRequestContext(),
+    } as APIGatewayEvent;
+
+    const response = await handler(event, {} as Context);
+
+    expect(response.statusCode).toBe(200);
+    expect(getRequestedAttachmentArchiveStatus).toHaveBeenCalledWith(
+      expect.objectContaining({
+        packageId: "MD-3422.R00.01",
+        changelog: [
+          expect.objectContaining({
+            _source: expect.objectContaining({
+              attachments: [
+                expect.objectContaining({
+                  title: "1915(c) Appendix K Amendment Waiver Template",
+                }),
+              ],
+            }),
+          }),
+        ],
+      }),
+    );
   });
 
   it("queues a rebuild when the requested archive is pending and stale", async () => {

@@ -13,3 +13,4 @@ export * from "./package-actions/getAvailableActions";
 export * from "./action-type";
 export * from "./legacy-event-type";
 export * from "./package-activity";
+export * from "./draft-attachments";
