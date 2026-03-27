@@ -16,6 +16,7 @@ import { z } from "zod";
 
 import * as api from "@/api";
 import * as components from "@/components";
+import { queryClient } from "@/utils";
 import { DataPoller } from "@/utils/Poller/DataPoller";
 import * as documentPoller from "@/utils/Poller/documentPoller";
 import { renderFormWithPackageSectionAsync } from "@/utils/test-helpers/renderForm";
@@ -731,6 +732,7 @@ describe("ActionForm", () => {
     const user = userEvent.setup();
     const userPromptSpy = vi.spyOn(components, "userPrompt").mockImplementation(() => undefined);
     const bannerSpy = vi.spyOn(components, "banner");
+    const removeQueriesSpy = vi.spyOn(queryClient, "removeQueries");
 
     await renderFormWithPackageSectionAsync(
       <ActionForm
@@ -764,6 +766,9 @@ describe("ActionForm", () => {
     await waitFor(() =>
       expect(screen.getByTestId("draft-save-status")).toHaveTextContent(/^Progress saved at /),
     );
+    expect(removeQueriesSpy).toHaveBeenCalledWith({
+      queryKey: ["record", "MD-00-0001"],
+    });
 
     expect(userPromptSpy).not.toHaveBeenCalled();
   });

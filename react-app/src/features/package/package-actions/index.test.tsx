@@ -15,7 +15,7 @@ import { mockedApiServer as mockedServer } from "mocks/server";
 import { Action, opensearch, SEATOOL_STATUS } from "shared-types";
 import { beforeEach, describe, expect, it, vi } from "vitest";
 
-import { mapActionLabel } from "@/utils";
+import { mapActionLabel, queryClient } from "@/utils";
 import {
   DRAFT_CONTINUE_ACTION_LABEL,
   DRAFT_DELETE_ACTION_LABEL,
@@ -179,6 +179,7 @@ describe("", () => {
 
     it("should delete and route users to dashboard from package details", async () => {
       vi.mocked(deleteDraft).mockResolvedValueOnce(undefined);
+      const removeQueriesSpy = vi.spyOn(queryClient, "removeQueries");
       await setup(draftSubmission, TEST_MED_SPA_ITEM._id);
 
       screen.getByRole("button", { name: DRAFT_DELETE_ACTION_LABEL }).click();
@@ -190,6 +191,9 @@ describe("", () => {
 
       await waitFor(() => {
         expect(deleteDraft).toHaveBeenCalledWith(TEST_MED_SPA_ITEM._id);
+        expect(removeQueriesSpy).toHaveBeenCalledWith({
+          queryKey: ["record", TEST_MED_SPA_ITEM._id],
+        });
         expect(mockNavigate).toHaveBeenCalledWith("/dashboard?tab=spas", { replace: true });
         expect(banner).toHaveBeenCalledWith(
           expect.objectContaining({

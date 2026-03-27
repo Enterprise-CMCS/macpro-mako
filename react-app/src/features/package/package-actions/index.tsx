@@ -65,6 +65,7 @@ export const PackageActionsCard = ({ submission, id }: PackageActionsCardProps) 
       onAccept: async () => {
         try {
           await deleteDraft(id);
+          queryClient.removeQueries({ queryKey: ["record", id] });
           banner({
             header: "Draft deleted",
             body: `Draft for ${id} has been deleted.`,

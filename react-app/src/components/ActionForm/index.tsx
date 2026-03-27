@@ -580,6 +580,8 @@ export const ActionForm = <Schema extends SchemaWithEnforcableProps>({
         };
       }
 
+      queryClient.removeQueries({ queryKey: ["record", normalizedId] });
+
       banner({
         header: "Progress saved",
         body: `Changes made to ${normalizedId} have been saved.`,

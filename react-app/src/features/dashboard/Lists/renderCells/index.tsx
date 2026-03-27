@@ -99,6 +99,7 @@ const ActionMenuCell = ({
       onAccept: async () => {
         try {
           await deleteDraft(data.id);
+          queryClient.removeQueries({ queryKey: ["record", data.id] });
           banner({
             header: "Draft deleted",
             body: `Draft for ${data.id} has been deleted.`,

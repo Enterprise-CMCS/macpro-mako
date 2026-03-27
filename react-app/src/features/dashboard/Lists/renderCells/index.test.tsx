@@ -12,6 +12,7 @@ import { Action, CognitoUserAttributes, opensearch, SEATOOL_STATUS } from "share
 import { UserRole } from "shared-types/events/legacy-user";
 import { beforeEach, describe, expect, it, vi } from "vitest";
 
+import { queryClient } from "@/utils";
 import {
   DRAFT_CONTINUE_ACTION_LABEL,
   DRAFT_DELETE_ACTION_LABEL,
@@ -295,6 +296,7 @@ describe("renderCells", () => {
       it("should delete the draft when confirmed", async () => {
         const { user } = setup(TEST_STATE_SUBMITTER_USER, "statesubmitter", draftItem);
         vi.mocked(deleteDraft).mockResolvedValueOnce(undefined);
+        const removeQueriesSpy = vi.spyOn(queryClient, "removeQueries");
 
         await user.click(screen.getByLabelText("Available package actions"));
         await user.click(
@@ -310,6 +312,9 @@ describe("renderCells", () => {
 
         await waitFor(() => {
           expect(deleteDraft).toHaveBeenCalledWith(draftItem.id);
+          expect(removeQueriesSpy).toHaveBeenCalledWith({
+            queryKey: ["record", draftItem.id],
+          });
           expect(banner).toHaveBeenCalled();
         });
       });
