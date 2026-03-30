@@ -28,7 +28,7 @@ exports[`Respond To RAI CMS Email Snapshot Test > renders a ChipSPA Preview Temp
           </div>
         </div>
         <body
-          style="background-color: rgb(255, 255, 255); margin: 0px;"
+          style="background-color: rgb(255, 255, 255); margin: 0px; padding: 0px;"
         >
           <table
             align="center"
@@ -791,7 +791,7 @@ exports[`Respond To RAI CMS Email Snapshot Test > renders a ChipSPA Preview Temp
         </div>
       </div>
       <body
-        style="background-color: rgb(255, 255, 255); margin: 0px;"
+        style="background-color: rgb(255, 255, 255); margin: 0px; padding: 0px;"
       >
         <table
           align="center"
@@ -1611,7 +1611,7 @@ exports[`Respond To RAI CMS Email Snapshot Test > renders a Medicaid_SPA Preview
           </div>
         </div>
         <body
-          style="background-color: rgb(255, 255, 255); margin: 0px;"
+          style="background-color: rgb(255, 255, 255); margin: 0px; padding: 0px;"
         >
           <table
             align="center"
@@ -2373,7 +2373,7 @@ exports[`Respond To RAI CMS Email Snapshot Test > renders a Medicaid_SPA Preview
           </div>
         </div>
         <body
-          style="background-color: rgb(255, 255, 255); margin: 0px;"
+          style="background-color: rgb(255, 255, 255); margin: 0px; padding: 0px;"
         >
           <table
             align="center"
@@ -3136,7 +3136,7 @@ exports[`Respond To RAI CMS Email Snapshot Test > renders a Medicaid_SPA Preview
         </div>
       </div>
       <body
-        style="background-color: rgb(255, 255, 255); margin: 0px;"
+        style="background-color: rgb(255, 255, 255); margin: 0px; padding: 0px;"
       >
         <table
           align="center"
@@ -3956,7 +3956,7 @@ exports[`Respond To RAI CMS Email Snapshot Test > renders a Waiver Preview Templ
           </div>
         </div>
         <body
-          style="background-color: rgb(255, 255, 255); margin: 0px;"
+          style="background-color: rgb(255, 255, 255); margin: 0px; padding: 0px;"
         >
           <table
             align="center"
@@ -4718,7 +4718,7 @@ exports[`Respond To RAI CMS Email Snapshot Test > renders a Waiver Preview Templ
           </div>
         </div>
         <body
-          style="background-color: rgb(255, 255, 255); margin: 0px;"
+          style="background-color: rgb(255, 255, 255); margin: 0px; padding: 0px;"
         >
           <table
             align="center"
@@ -5480,7 +5480,7 @@ exports[`Respond To RAI CMS Email Snapshot Test > renders a Waiver Preview Templ
           </div>
         </div>
         <body
-          style="background-color: rgb(255, 255, 255); margin: 0px;"
+          style="background-color: rgb(255, 255, 255); margin: 0px; padding: 0px;"
         >
           <table
             align="center"
@@ -6243,7 +6243,7 @@ exports[`Respond To RAI CMS Email Snapshot Test > renders a Waiver Preview Templ
         </div>
       </div>
       <body
-        style="background-color: rgb(255, 255, 255); margin: 0px;"
+        style="background-color: rgb(255, 255, 255); margin: 0px; padding: 0px;"
       >
         <table
           align="center"

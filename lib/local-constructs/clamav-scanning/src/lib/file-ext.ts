@@ -1,4 +1,4 @@
-import { fileTypeFromFile, MimeType } from "file-type";
+import { fileTypeFromBuffer } from "file-type";
 import fs from "fs";
 import { lookup } from "mime-types";
 import path from "path";
@@ -59,25 +59,25 @@ function isAllowedMime(mime: string): boolean {
   return FILE_TYPES.some((fileType) => fileType.mime === mime);
 }
 
-async function getFileTypeFromContents(filePath: string): Promise<MimeType | false> {
+async function getFileTypeFromContents(filePath: string): Promise<string | false> {
   try {
     const fileBuffer = await fs.promises.readFile(filePath);
 
     // Get the file type from its contents
-    const type = await fileTypeFromFile(filePath);
+    const type = await fileTypeFromBuffer(fileBuffer);
 
     if (!type) {
       switch (path.extname(filePath)) {
         case ".csv":
           logger.info("Checking csv another way...");
           if (await looksLikeCsv(filePath, ",", 100)) {
-            return lookup(".csv") as MimeType;
+            return lookup(".csv") as string;
           }
           break;
         case ".txt":
           logger.info("Checking txt another way...");
           if (await looksLikeTxt(fileBuffer)) {
-            return lookup(".txt") as MimeType;
+            return lookup(".txt") as string;
           }
           break;
         default:

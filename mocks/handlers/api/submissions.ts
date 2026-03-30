@@ -2,7 +2,11 @@ import { http, HttpResponse, PathParams } from "msw";
 
 import { REGION } from "../../consts";
 import { SUBMISSION_ERROR_ITEM_ID } from "../../data/items";
-import { AttachmentUrlRequestBody, SubmitRequestBody } from "../../index.d";
+import {
+  AttachmentArchiveRequestBody,
+  AttachmentUrlRequestBody,
+  SubmitRequestBody,
+} from "../../index.d";
 
 const defaultApiUploadHandler = http.put(
   "https://test-domain.execute-api.us-east-1.amazonaws.com/mocked-tests/upload",
@@ -32,8 +36,27 @@ const defaultApiAttachmentUrlHandler = http.post<PathParams, AttachmentUrlReques
   },
 );
 
+const defaultApiAttachmentArchiveHandler = http.post<PathParams, AttachmentArchiveRequestBody>(
+  "https://test-domain.execute-api.us-east-1.amazonaws.com/mocked-tests/getAttachmentArchive",
+  async ({ request }) => {
+    const { id, scope, sectionId } = await request.json();
+    const scopeSuffix = scope === "section" && sectionId ? `-${sectionId}` : "";
+
+    return HttpResponse.json({
+      status: "READY",
+      filename: `${id}${scopeSuffix}-attachments.zip`,
+      url: `https://s3.${REGION}.amazonaws.com/archive-bucket/${id}${scopeSuffix}.zip`,
+    });
+  },
+);
+
 export const errorApiAttachmentUrlHandler = http.post<PathParams, AttachmentUrlRequestBody>(
   "https://test-domain.execute-api.us-east-1.amazonaws.com/mocked-tests/getAttachmentUrl",
+  async () => new HttpResponse(null, { status: 500 }),
+);
+
+export const errorApiAttachmentArchiveHandler = http.post<PathParams, AttachmentArchiveRequestBody>(
+  "https://test-domain.execute-api.us-east-1.amazonaws.com/mocked-tests/getAttachmentArchive",
   async () => new HttpResponse(null, { status: 500 }),
 );
 
@@ -54,5 +77,6 @@ export const submissionHandlers = [
   defaultApiUploadHandler,
   defaultApiUploadUrlHandler,
   defaultApiAttachmentUrlHandler,
+  defaultApiAttachmentArchiveHandler,
   defaultApiSubmitHandler,
 ];

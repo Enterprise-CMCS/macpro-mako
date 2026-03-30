@@ -21,17 +21,26 @@ import { join } from "path";
 
 import { commonBundlingOptions } from "../../config/bundling-config";
 
+interface BucketPrefixTarget {
+  bucket: IBucket;
+  prefix: string;
+}
+
 interface EmptyBucketsProps extends StackProps {
   buckets: IBucket[];
+  bucketPrefixes?: BucketPrefixTarget[];
 }
 
 export class EmptyBuckets extends Construct {
   constructor(scope: Construct, id: string, props: EmptyBucketsProps) {
     super(scope, id);
 
-    const { buckets } = props;
+    const { buckets, bucketPrefixes = [] } = props;
 
-    const bucketArns = buckets.map((bucket) => bucket.bucketArn);
+    const allBuckets = [...buckets, ...bucketPrefixes.map((target) => target.bucket)].filter(
+      (bucket, index, collection) => collection.indexOf(bucket) === index,
+    );
+    const bucketArns = allBuckets.map((bucket) => bucket.bucketArn);
     const bucketNames = buckets.map((bucket) => bucket.bucketName);
 
     // Define the statements array and conditionally add the S3 policy statement
@@ -90,7 +99,7 @@ export class EmptyBuckets extends Construct {
       bundling: commonBundlingOptions,
     });
 
-    buckets.forEach((bucket) => {
+    allBuckets.forEach((bucket) => {
       bucket.grantReadWrite(lambda);
     });
 
@@ -108,6 +117,10 @@ export class EmptyBuckets extends Construct {
             RequestType: "Delete",
             ResourceProperties: {
               Buckets: bucketNames,
+              BucketPrefixes: bucketPrefixes.map((target) => ({
+                Bucket: target.bucket.bucketName,
+                Prefix: target.prefix,
+              })),
             },
           }),
         },

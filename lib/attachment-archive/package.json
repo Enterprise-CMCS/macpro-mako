@@ -1,0 +1,20 @@
+{
+  "name": "attachment-archive-worker",
+  "private": true,
+  "type": "module",
+  "packageManager": "bun@1.1.20",
+  "scripts": {
+    "typecheck": "tsc -p tsconfig.json"
+  },
+  "dependencies": {
+    "@aws-sdk/client-s3": "^3.600.0",
+    "@aws-sdk/client-sts": "^3.600.0",
+    "@aws-sdk/lib-storage": "^3.600.0",
+    "archiver": "^7.0.1"
+  },
+  "devDependencies": {
+    "@types/archiver": "^7.0.0",
+    "@types/node": "^22.7.4",
+    "typescript": "^5.6.2"
+  }
+}
