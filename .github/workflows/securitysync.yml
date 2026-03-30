@@ -1,14 +1,9 @@
 name: Security Sync
 
-#on:
-#  workflow_dispatch: # for testing and manual runs
-#  schedule:
-#    - cron: "0 6 * * *" # daily at 0600 UTC
-
 on:
-  push:
-    branches:
-      - securitysync
+  workflow_dispatch: # for testing and manual runs
+  schedule:
+    - cron: "0 6 * * *" # daily at 0600 UTC
 
 permissions:
   id-token: write
