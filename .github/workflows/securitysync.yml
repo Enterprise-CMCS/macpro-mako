@@ -50,4 +50,4 @@ jobs:
           include-all-products: 'true'
           jira-consolidate-tickets: true
           skip-products: Default
-          jira-assignee: DFB0
+          jira-assignee: DSFV
