@@ -12,24 +12,24 @@
     "maxFailures": 0,
     "metadata": {
       "ci": {
-        "commitHref": "https://github.com/Enterprise-CMCS/macpro-mako/commit/42e3a319b129a38ee5062b63d9bfe1ea75997df5",
-        "commitHash": "42e3a319b129a38ee5062b63d9bfe1ea75997df5",
-        "buildHref": "https://github.com/Enterprise-CMCS/macpro-mako/actions/runs/23310517471"
+        "commitHref": "https://github.com/Enterprise-CMCS/macpro-mako/commit/7d062188de8fe5c48b2f1730d07c479c0d132e47",
+        "commitHash": "7d062188de8fe5c48b2f1730d07c479c0d132e47",
+        "buildHref": "https://github.com/Enterprise-CMCS/macpro-mako/actions/runs/23761895408"
       },
       "gitCommit": {
-        "shortHash": "42e3a31",
-        "hash": "42e3a319b129a38ee5062b63d9bfe1ea75997df5",
-        "subject": "feat(Cs31): backport updated implementation guide and template to main (#1845)",
-        "body": "feat(Cs31): backport updated implementation guide and template to main (#1845)\n\n* feat(Cs31): updated implementation guide and template to the latest versions (#1843)\n\n* cleanup\n\n* Update chip-spa-templates.tsx\n\n* update forms\n\n* update banner\n\n* rename mmdl alerts banner\n\n* Update default.tsx\n\n* update package\n\n* Update IG_CS31_IncarceratedCHIPBeneficiaries.pdf\n\n* Update default.tsx\n\n* Update default.tsx\n\n* Update default.tsx\n\n* adjust\n\n* updated\n\n* Delete IG_CS31_IncarceratedCHIPBeneficiaries.pdf\n\n* Create IG_CS31_IncarceratedCHIPBeneficiaries.pdf\n\n* Update chip-spa-templates.tsx\n\n(cherry picked from commit a42d03751518db2ea0b84e9cc49de64bee61e4a0)\n\n* fix(ui): guard system notification local storage state\n\n* refactor(useGetSystemNotifs): improve formatting of JSON parsing logic for clarity\n\n* update failing tests\n\n---------\n\nCo-authored-by: James Dinh <james.d@globalalliantinc.com>\nCo-authored-by: James Dinh <jdinh8124@gmail.com>",
+        "shortHash": "7d06218",
+        "hash": "7d062188de8fe5c48b2f1730d07c479c0d132e47",
+        "subject": "Security Sync (#1848)",
+        "body": "Security Sync (#1848)\n\n* Add security sync workflow for Jira and AWS integration\n\n* Test actions\n\n* Update GitHub token in securitysync workflow\n\n* Update Jira token in securitysync.yml\n\n* Modify Jira username and custom fields for sync\n\nUpdated Jira username and custom fields in securitysync.yml.\n\n* Update securitysync workflow triggers and permissions\n\n* Disable manual trigger and schedule in securitysync.yml\n\nComment out manual trigger and schedule for security sync workflow.\n\n* Fix typo in jira-assignee value\n\n* Change JIRA assignee from DFB0 to DSFV\n\n* Update securitysync.yml to enable manual and scheduled runs\n\n---------\n\nCo-authored-by: Nathan O'Donnell <nodonnell@collabralink.com>",
         "author": {
-          "name": "Benjamin Paige",
-          "email": "benjamin.paige@gmail.com",
-          "time": 1773944802000
+          "name": "AlecRafs",
+          "email": "116303515+AlecRafs@users.noreply.github.com",
+          "time": 1774896588000
         },
         "committer": {
           "name": "GitHub",
           "email": "noreply@github.com",
-          "time": 1773944802000
+          "time": 1774896588000
         },
         "branch": "main"
       },
@@ -43,24 +43,24 @@
         "retries": 0,
         "metadata": {
           "ci": {
-            "commitHref": "https://github.com/Enterprise-CMCS/macpro-mako/commit/42e3a319b129a38ee5062b63d9bfe1ea75997df5",
-            "commitHash": "42e3a319b129a38ee5062b63d9bfe1ea75997df5",
-            "buildHref": "https://github.com/Enterprise-CMCS/macpro-mako/actions/runs/23310517471"
+            "commitHref": "https://github.com/Enterprise-CMCS/macpro-mako/commit/7d062188de8fe5c48b2f1730d07c479c0d132e47",
+            "commitHash": "7d062188de8fe5c48b2f1730d07c479c0d132e47",
+            "buildHref": "https://github.com/Enterprise-CMCS/macpro-mako/actions/runs/23761895408"
           },
           "gitCommit": {
-            "shortHash": "42e3a31",
-            "hash": "42e3a319b129a38ee5062b63d9bfe1ea75997df5",
-            "subject": "feat(Cs31): backport updated implementation guide and template to main (#1845)",
-            "body": "feat(Cs31): backport updated implementation guide and template to main (#1845)\n\n* feat(Cs31): updated implementation guide and template to the latest versions (#1843)\n\n* cleanup\n\n* Update chip-spa-templates.tsx\n\n* update forms\n\n* update banner\n\n* rename mmdl alerts banner\n\n* Update default.tsx\n\n* update package\n\n* Update IG_CS31_IncarceratedCHIPBeneficiaries.pdf\n\n* Update default.tsx\n\n* Update default.tsx\n\n* Update default.tsx\n\n* adjust\n\n* updated\n\n* Delete IG_CS31_IncarceratedCHIPBeneficiaries.pdf\n\n* Create IG_CS31_IncarceratedCHIPBeneficiaries.pdf\n\n* Update chip-spa-templates.tsx\n\n(cherry picked from commit a42d03751518db2ea0b84e9cc49de64bee61e4a0)\n\n* fix(ui): guard system notification local storage state\n\n* refactor(useGetSystemNotifs): improve formatting of JSON parsing logic for clarity\n\n* update failing tests\n\n---------\n\nCo-authored-by: James Dinh <james.d@globalalliantinc.com>\nCo-authored-by: James Dinh <jdinh8124@gmail.com>",
+            "shortHash": "7d06218",
+            "hash": "7d062188de8fe5c48b2f1730d07c479c0d132e47",
+            "subject": "Security Sync (#1848)",
+            "body": "Security Sync (#1848)\n\n* Add security sync workflow for Jira and AWS integration\n\n* Test actions\n\n* Update GitHub token in securitysync workflow\n\n* Update Jira token in securitysync.yml\n\n* Modify Jira username and custom fields for sync\n\nUpdated Jira username and custom fields in securitysync.yml.\n\n* Update securitysync workflow triggers and permissions\n\n* Disable manual trigger and schedule in securitysync.yml\n\nComment out manual trigger and schedule for security sync workflow.\n\n* Fix typo in jira-assignee value\n\n* Change JIRA assignee from DFB0 to DSFV\n\n* Update securitysync.yml to enable manual and scheduled runs\n\n---------\n\nCo-authored-by: Nathan O'Donnell <nodonnell@collabralink.com>",
             "author": {
-              "name": "Benjamin Paige",
-              "email": "benjamin.paige@gmail.com",
-              "time": 1773944802000
+              "name": "AlecRafs",
+              "email": "116303515+AlecRafs@users.noreply.github.com",
+              "time": 1774896588000
             },
             "committer": {
               "name": "GitHub",
               "email": "noreply@github.com",
-              "time": 1773944802000
+              "time": 1774896588000
             },
             "branch": "main"
           },
@@ -84,24 +84,24 @@
         "retries": 0,
         "metadata": {
           "ci": {
-            "commitHref": "https://github.com/Enterprise-CMCS/macpro-mako/commit/42e3a319b129a38ee5062b63d9bfe1ea75997df5",
-            "commitHash": "42e3a319b129a38ee5062b63d9bfe1ea75997df5",
-            "buildHref": "https://github.com/Enterprise-CMCS/macpro-mako/actions/runs/23310517471"
+            "commitHref": "https://github.com/Enterprise-CMCS/macpro-mako/commit/7d062188de8fe5c48b2f1730d07c479c0d132e47",
+            "commitHash": "7d062188de8fe5c48b2f1730d07c479c0d132e47",
+            "buildHref": "https://github.com/Enterprise-CMCS/macpro-mako/actions/runs/23761895408"
           },
           "gitCommit": {
-            "shortHash": "42e3a31",
-            "hash": "42e3a319b129a38ee5062b63d9bfe1ea75997df5",
-            "subject": "feat(Cs31): backport updated implementation guide and template to main (#1845)",
-            "body": "feat(Cs31): backport updated implementation guide and template to main (#1845)\n\n* feat(Cs31): updated implementation guide and template to the latest versions (#1843)\n\n* cleanup\n\n* Update chip-spa-templates.tsx\n\n* update forms\n\n* update banner\n\n* rename mmdl alerts banner\n\n* Update default.tsx\n\n* update package\n\n* Update IG_CS31_IncarceratedCHIPBeneficiaries.pdf\n\n* Update default.tsx\n\n* Update default.tsx\n\n* Update default.tsx\n\n* adjust\n\n* updated\n\n* Delete IG_CS31_IncarceratedCHIPBeneficiaries.pdf\n\n* Create IG_CS31_IncarceratedCHIPBeneficiaries.pdf\n\n* Update chip-spa-templates.tsx\n\n(cherry picked from commit a42d03751518db2ea0b84e9cc49de64bee61e4a0)\n\n* fix(ui): guard system notification local storage state\n\n* refactor(useGetSystemNotifs): improve formatting of JSON parsing logic for clarity\n\n* update failing tests\n\n---------\n\nCo-authored-by: James Dinh <james.d@globalalliantinc.com>\nCo-authored-by: James Dinh <jdinh8124@gmail.com>",
+            "shortHash": "7d06218",
+            "hash": "7d062188de8fe5c48b2f1730d07c479c0d132e47",
+            "subject": "Security Sync (#1848)",
+            "body": "Security Sync (#1848)\n\n* Add security sync workflow for Jira and AWS integration\n\n* Test actions\n\n* Update GitHub token in securitysync workflow\n\n* Update Jira token in securitysync.yml\n\n* Modify Jira username and custom fields for sync\n\nUpdated Jira username and custom fields in securitysync.yml.\n\n* Update securitysync workflow triggers and permissions\n\n* Disable manual trigger and schedule in securitysync.yml\n\nComment out manual trigger and schedule for security sync workflow.\n\n* Fix typo in jira-assignee value\n\n* Change JIRA assignee from DFB0 to DSFV\n\n* Update securitysync.yml to enable manual and scheduled runs\n\n---------\n\nCo-authored-by: Nathan O'Donnell <nodonnell@collabralink.com>",
             "author": {
-              "name": "Benjamin Paige",
-              "email": "benjamin.paige@gmail.com",
-              "time": 1773944802000
+              "name": "AlecRafs",
+              "email": "116303515+AlecRafs@users.noreply.github.com",
+              "time": 1774896588000
             },
             "committer": {
               "name": "GitHub",
               "email": "noreply@github.com",
-              "time": 1773944802000
+              "time": 1774896588000
             },
             "branch": "main"
           },
@@ -125,24 +125,24 @@
         "retries": 0,
         "metadata": {
           "ci": {
-            "commitHref": "https://github.com/Enterprise-CMCS/macpro-mako/commit/42e3a319b129a38ee5062b63d9bfe1ea75997df5",
-            "commitHash": "42e3a319b129a38ee5062b63d9bfe1ea75997df5",
-            "buildHref": "https://github.com/Enterprise-CMCS/macpro-mako/actions/runs/23310517471"
+            "commitHref": "https://github.com/Enterprise-CMCS/macpro-mako/commit/7d062188de8fe5c48b2f1730d07c479c0d132e47",
+            "commitHash": "7d062188de8fe5c48b2f1730d07c479c0d132e47",
+            "buildHref": "https://github.com/Enterprise-CMCS/macpro-mako/actions/runs/23761895408"
           },
           "gitCommit": {
-            "shortHash": "42e3a31",
-            "hash": "42e3a319b129a38ee5062b63d9bfe1ea75997df5",
-            "subject": "feat(Cs31): backport updated implementation guide and template to main (#1845)",
-            "body": "feat(Cs31): backport updated implementation guide and template to main (#1845)\n\n* feat(Cs31): updated implementation guide and template to the latest versions (#1843)\n\n* cleanup\n\n* Update chip-spa-templates.tsx\n\n* update forms\n\n* update banner\n\n* rename mmdl alerts banner\n\n* Update default.tsx\n\n* update package\n\n* Update IG_CS31_IncarceratedCHIPBeneficiaries.pdf\n\n* Update default.tsx\n\n* Update default.tsx\n\n* Update default.tsx\n\n* adjust\n\n* updated\n\n* Delete IG_CS31_IncarceratedCHIPBeneficiaries.pdf\n\n* Create IG_CS31_IncarceratedCHIPBeneficiaries.pdf\n\n* Update chip-spa-templates.tsx\n\n(cherry picked from commit a42d03751518db2ea0b84e9cc49de64bee61e4a0)\n\n* fix(ui): guard system notification local storage state\n\n* refactor(useGetSystemNotifs): improve formatting of JSON parsing logic for clarity\n\n* update failing tests\n\n---------\n\nCo-authored-by: James Dinh <james.d@globalalliantinc.com>\nCo-authored-by: James Dinh <jdinh8124@gmail.com>",
+            "shortHash": "7d06218",
+            "hash": "7d062188de8fe5c48b2f1730d07c479c0d132e47",
+            "subject": "Security Sync (#1848)",
+            "body": "Security Sync (#1848)\n\n* Add security sync workflow for Jira and AWS integration\n\n* Test actions\n\n* Update GitHub token in securitysync workflow\n\n* Update Jira token in securitysync.yml\n\n* Modify Jira username and custom fields for sync\n\nUpdated Jira username and custom fields in securitysync.yml.\n\n* Update securitysync workflow triggers and permissions\n\n* Disable manual trigger and schedule in securitysync.yml\n\nComment out manual trigger and schedule for security sync workflow.\n\n* Fix typo in jira-assignee value\n\n* Change JIRA assignee from DFB0 to DSFV\n\n* Update securitysync.yml to enable manual and scheduled runs\n\n---------\n\nCo-authored-by: Nathan O'Donnell <nodonnell@collabralink.com>",
             "author": {
-              "name": "Benjamin Paige",
-              "email": "benjamin.paige@gmail.com",
-              "time": 1773944802000
+              "name": "AlecRafs",
+              "email": "116303515+AlecRafs@users.noreply.github.com",
+              "time": 1774896588000
             },
             "committer": {
               "name": "GitHub",
               "email": "noreply@github.com",
-              "time": 1773944802000
+              "time": 1774896588000
             },
             "branch": "main"
           },
@@ -166,24 +166,24 @@
         "retries": 0,
         "metadata": {
           "ci": {
-            "commitHref": "https://github.com/Enterprise-CMCS/macpro-mako/commit/42e3a319b129a38ee5062b63d9bfe1ea75997df5",
-            "commitHash": "42e3a319b129a38ee5062b63d9bfe1ea75997df5",
-            "buildHref": "https://github.com/Enterprise-CMCS/macpro-mako/actions/runs/23310517471"
+            "commitHref": "https://github.com/Enterprise-CMCS/macpro-mako/commit/7d062188de8fe5c48b2f1730d07c479c0d132e47",
+            "commitHash": "7d062188de8fe5c48b2f1730d07c479c0d132e47",
+            "buildHref": "https://github.com/Enterprise-CMCS/macpro-mako/actions/runs/23761895408"
           },
           "gitCommit": {
-            "shortHash": "42e3a31",
-            "hash": "42e3a319b129a38ee5062b63d9bfe1ea75997df5",
-            "subject": "feat(Cs31): backport updated implementation guide and template to main (#1845)",
-            "body": "feat(Cs31): backport updated implementation guide and template to main (#1845)\n\n* feat(Cs31): updated implementation guide and template to the latest versions (#1843)\n\n* cleanup\n\n* Update chip-spa-templates.tsx\n\n* update forms\n\n* update banner\n\n* rename mmdl alerts banner\n\n* Update default.tsx\n\n* update package\n\n* Update IG_CS31_IncarceratedCHIPBeneficiaries.pdf\n\n* Update default.tsx\n\n* Update default.tsx\n\n* Update default.tsx\n\n* adjust\n\n* updated\n\n* Delete IG_CS31_IncarceratedCHIPBeneficiaries.pdf\n\n* Create IG_CS31_IncarceratedCHIPBeneficiaries.pdf\n\n* Update chip-spa-templates.tsx\n\n(cherry picked from commit a42d03751518db2ea0b84e9cc49de64bee61e4a0)\n\n* fix(ui): guard system notification local storage state\n\n* refactor(useGetSystemNotifs): improve formatting of JSON parsing logic for clarity\n\n* update failing tests\n\n---------\n\nCo-authored-by: James Dinh <james.d@globalalliantinc.com>\nCo-authored-by: James Dinh <jdinh8124@gmail.com>",
+            "shortHash": "7d06218",
+            "hash": "7d062188de8fe5c48b2f1730d07c479c0d132e47",
+            "subject": "Security Sync (#1848)",
+            "body": "Security Sync (#1848)\n\n* Add security sync workflow for Jira and AWS integration\n\n* Test actions\n\n* Update GitHub token in securitysync workflow\n\n* Update Jira token in securitysync.yml\n\n* Modify Jira username and custom fields for sync\n\nUpdated Jira username and custom fields in securitysync.yml.\n\n* Update securitysync workflow triggers and permissions\n\n* Disable manual trigger and schedule in securitysync.yml\n\nComment out manual trigger and schedule for security sync workflow.\n\n* Fix typo in jira-assignee value\n\n* Change JIRA assignee from DFB0 to DSFV\n\n* Update securitysync.yml to enable manual and scheduled runs\n\n---------\n\nCo-authored-by: Nathan O'Donnell <nodonnell@collabralink.com>",
             "author": {
-              "name": "Benjamin Paige",
-              "email": "benjamin.paige@gmail.com",
-              "time": 1773944802000
+              "name": "AlecRafs",
+              "email": "116303515+AlecRafs@users.noreply.github.com",
+              "time": 1774896588000
             },
             "committer": {
               "name": "GitHub",
               "email": "noreply@github.com",
-              "time": 1773944802000
+              "time": 1774896588000
             },
             "branch": "main"
           },
@@ -207,24 +207,24 @@
         "retries": 0,
         "metadata": {
           "ci": {
-            "commitHref": "https://github.com/Enterprise-CMCS/macpro-mako/commit/42e3a319b129a38ee5062b63d9bfe1ea75997df5",
-            "commitHash": "42e3a319b129a38ee5062b63d9bfe1ea75997df5",
-            "buildHref": "https://github.com/Enterprise-CMCS/macpro-mako/actions/runs/23310517471"
+            "commitHref": "https://github.com/Enterprise-CMCS/macpro-mako/commit/7d062188de8fe5c48b2f1730d07c479c0d132e47",
+            "commitHash": "7d062188de8fe5c48b2f1730d07c479c0d132e47",
+            "buildHref": "https://github.com/Enterprise-CMCS/macpro-mako/actions/runs/23761895408"
           },
           "gitCommit": {
-            "shortHash": "42e3a31",
-            "hash": "42e3a319b129a38ee5062b63d9bfe1ea75997df5",
-            "subject": "feat(Cs31): backport updated implementation guide and template to main (#1845)",
-            "body": "feat(Cs31): backport updated implementation guide and template to main (#1845)\n\n* feat(Cs31): updated implementation guide and template to the latest versions (#1843)\n\n* cleanup\n\n* Update chip-spa-templates.tsx\n\n* update forms\n\n* update banner\n\n* rename mmdl alerts banner\n\n* Update default.tsx\n\n* update package\n\n* Update IG_CS31_IncarceratedCHIPBeneficiaries.pdf\n\n* Update default.tsx\n\n* Update default.tsx\n\n* Update default.tsx\n\n* adjust\n\n* updated\n\n* Delete IG_CS31_IncarceratedCHIPBeneficiaries.pdf\n\n* Create IG_CS31_IncarceratedCHIPBeneficiaries.pdf\n\n* Update chip-spa-templates.tsx\n\n(cherry picked from commit a42d03751518db2ea0b84e9cc49de64bee61e4a0)\n\n* fix(ui): guard system notification local storage state\n\n* refactor(useGetSystemNotifs): improve formatting of JSON parsing logic for clarity\n\n* update failing tests\n\n---------\n\nCo-authored-by: James Dinh <james.d@globalalliantinc.com>\nCo-authored-by: James Dinh <jdinh8124@gmail.com>",
+            "shortHash": "7d06218",
+            "hash": "7d062188de8fe5c48b2f1730d07c479c0d132e47",
+            "subject": "Security Sync (#1848)",
+            "body": "Security Sync (#1848)\n\n* Add security sync workflow for Jira and AWS integration\n\n* Test actions\n\n* Update GitHub token in securitysync workflow\n\n* Update Jira token in securitysync.yml\n\n* Modify Jira username and custom fields for sync\n\nUpdated Jira username and custom fields in securitysync.yml.\n\n* Update securitysync workflow triggers and permissions\n\n* Disable manual trigger and schedule in securitysync.yml\n\nComment out manual trigger and schedule for security sync workflow.\n\n* Fix typo in jira-assignee value\n\n* Change JIRA assignee from DFB0 to DSFV\n\n* Update securitysync.yml to enable manual and scheduled runs\n\n---------\n\nCo-authored-by: Nathan O'Donnell <nodonnell@collabralink.com>",
             "author": {
-              "name": "Benjamin Paige",
-              "email": "benjamin.paige@gmail.com",
-              "time": 1773944802000
+              "name": "AlecRafs",
+              "email": "116303515+AlecRafs@users.noreply.github.com",
+              "time": 1774896588000
             },
             "committer": {
               "name": "GitHub",
               "email": "noreply@github.com",
-              "time": 1773944802000
+              "time": 1774896588000
             },
             "branch": "main"
           },
@@ -248,24 +248,24 @@
         "retries": 0,
         "metadata": {
           "ci": {
-            "commitHref": "https://github.com/Enterprise-CMCS/macpro-mako/commit/42e3a319b129a38ee5062b63d9bfe1ea75997df5",
-            "commitHash": "42e3a319b129a38ee5062b63d9bfe1ea75997df5",
-            "buildHref": "https://github.com/Enterprise-CMCS/macpro-mako/actions/runs/23310517471"
+            "commitHref": "https://github.com/Enterprise-CMCS/macpro-mako/commit/7d062188de8fe5c48b2f1730d07c479c0d132e47",
+            "commitHash": "7d062188de8fe5c48b2f1730d07c479c0d132e47",
+            "buildHref": "https://github.com/Enterprise-CMCS/macpro-mako/actions/runs/23761895408"
           },
           "gitCommit": {
-            "shortHash": "42e3a31",
-            "hash": "42e3a319b129a38ee5062b63d9bfe1ea75997df5",
-            "subject": "feat(Cs31): backport updated implementation guide and template to main (#1845)",
-            "body": "feat(Cs31): backport updated implementation guide and template to main (#1845)\n\n* feat(Cs31): updated implementation guide and template to the latest versions (#1843)\n\n* cleanup\n\n* Update chip-spa-templates.tsx\n\n* update forms\n\n* update banner\n\n* rename mmdl alerts banner\n\n* Update default.tsx\n\n* update package\n\n* Update IG_CS31_IncarceratedCHIPBeneficiaries.pdf\n\n* Update default.tsx\n\n* Update default.tsx\n\n* Update default.tsx\n\n* adjust\n\n* updated\n\n* Delete IG_CS31_IncarceratedCHIPBeneficiaries.pdf\n\n* Create IG_CS31_IncarceratedCHIPBeneficiaries.pdf\n\n* Update chip-spa-templates.tsx\n\n(cherry picked from commit a42d03751518db2ea0b84e9cc49de64bee61e4a0)\n\n* fix(ui): guard system notification local storage state\n\n* refactor(useGetSystemNotifs): improve formatting of JSON parsing logic for clarity\n\n* update failing tests\n\n---------\n\nCo-authored-by: James Dinh <james.d@globalalliantinc.com>\nCo-authored-by: James Dinh <jdinh8124@gmail.com>",
+            "shortHash": "7d06218",
+            "hash": "7d062188de8fe5c48b2f1730d07c479c0d132e47",
+            "subject": "Security Sync (#1848)",
+            "body": "Security Sync (#1848)\n\n* Add security sync workflow for Jira and AWS integration\n\n* Test actions\n\n* Update GitHub token in securitysync workflow\n\n* Update Jira token in securitysync.yml\n\n* Modify Jira username and custom fields for sync\n\nUpdated Jira username and custom fields in securitysync.yml.\n\n* Update securitysync workflow triggers and permissions\n\n* Disable manual trigger and schedule in securitysync.yml\n\nComment out manual trigger and schedule for security sync workflow.\n\n* Fix typo in jira-assignee value\n\n* Change JIRA assignee from DFB0 to DSFV\n\n* Update securitysync.yml to enable manual and scheduled runs\n\n---------\n\nCo-authored-by: Nathan O'Donnell <nodonnell@collabralink.com>",
             "author": {
-              "name": "Benjamin Paige",
-              "email": "benjamin.paige@gmail.com",
-              "time": 1773944802000
+              "name": "AlecRafs",
+              "email": "116303515+AlecRafs@users.noreply.github.com",
+              "time": 1774896588000
             },
             "committer": {
               "name": "GitHub",
               "email": "noreply@github.com",
-              "time": 1773944802000
+              "time": 1774896588000
             },
             "branch": "main"
           },
@@ -289,24 +289,24 @@
         "retries": 0,
         "metadata": {
           "ci": {
-            "commitHref": "https://github.com/Enterprise-CMCS/macpro-mako/commit/42e3a319b129a38ee5062b63d9bfe1ea75997df5",
-            "commitHash": "42e3a319b129a38ee5062b63d9bfe1ea75997df5",
-            "buildHref": "https://github.com/Enterprise-CMCS/macpro-mako/actions/runs/23310517471"
+            "commitHref": "https://github.com/Enterprise-CMCS/macpro-mako/commit/7d062188de8fe5c48b2f1730d07c479c0d132e47",
+            "commitHash": "7d062188de8fe5c48b2f1730d07c479c0d132e47",
+            "buildHref": "https://github.com/Enterprise-CMCS/macpro-mako/actions/runs/23761895408"
           },
           "gitCommit": {
-            "shortHash": "42e3a31",
-            "hash": "42e3a319b129a38ee5062b63d9bfe1ea75997df5",
-            "subject": "feat(Cs31): backport updated implementation guide and template to main (#1845)",
-            "body": "feat(Cs31): backport updated implementation guide and template to main (#1845)\n\n* feat(Cs31): updated implementation guide and template to the latest versions (#1843)\n\n* cleanup\n\n* Update chip-spa-templates.tsx\n\n* update forms\n\n* update banner\n\n* rename mmdl alerts banner\n\n* Update default.tsx\n\n* update package\n\n* Update IG_CS31_IncarceratedCHIPBeneficiaries.pdf\n\n* Update default.tsx\n\n* Update default.tsx\n\n* Update default.tsx\n\n* adjust\n\n* updated\n\n* Delete IG_CS31_IncarceratedCHIPBeneficiaries.pdf\n\n* Create IG_CS31_IncarceratedCHIPBeneficiaries.pdf\n\n* Update chip-spa-templates.tsx\n\n(cherry picked from commit a42d03751518db2ea0b84e9cc49de64bee61e4a0)\n\n* fix(ui): guard system notification local storage state\n\n* refactor(useGetSystemNotifs): improve formatting of JSON parsing logic for clarity\n\n* update failing tests\n\n---------\n\nCo-authored-by: James Dinh <james.d@globalalliantinc.com>\nCo-authored-by: James Dinh <jdinh8124@gmail.com>",
+            "shortHash": "7d06218",
+            "hash": "7d062188de8fe5c48b2f1730d07c479c0d132e47",
+            "subject": "Security Sync (#1848)",
+            "body": "Security Sync (#1848)\n\n* Add security sync workflow for Jira and AWS integration\n\n* Test actions\n\n* Update GitHub token in securitysync workflow\n\n* Update Jira token in securitysync.yml\n\n* Modify Jira username and custom fields for sync\n\nUpdated Jira username and custom fields in securitysync.yml.\n\n* Update securitysync workflow triggers and permissions\n\n* Disable manual trigger and schedule in securitysync.yml\n\nComment out manual trigger and schedule for security sync workflow.\n\n* Fix typo in jira-assignee value\n\n* Change JIRA assignee from DFB0 to DSFV\n\n* Update securitysync.yml to enable manual and scheduled runs\n\n---------\n\nCo-authored-by: Nathan O'Donnell <nodonnell@collabralink.com>",
             "author": {
-              "name": "Benjamin Paige",
-              "email": "benjamin.paige@gmail.com",
-              "time": 1773944802000
+              "name": "AlecRafs",
+              "email": "116303515+AlecRafs@users.noreply.github.com",
+              "time": 1774896588000
             },
             "committer": {
               "name": "GitHub",
               "email": "noreply@github.com",
-              "time": 1773944802000
+              "time": 1774896588000
             },
             "branch": "main"
           },
@@ -330,24 +330,24 @@
         "retries": 0,
         "metadata": {
           "ci": {
-            "commitHref": "https://github.com/Enterprise-CMCS/macpro-mako/commit/42e3a319b129a38ee5062b63d9bfe1ea75997df5",
-            "commitHash": "42e3a319b129a38ee5062b63d9bfe1ea75997df5",
-            "buildHref": "https://github.com/Enterprise-CMCS/macpro-mako/actions/runs/23310517471"
+            "commitHref": "https://github.com/Enterprise-CMCS/macpro-mako/commit/7d062188de8fe5c48b2f1730d07c479c0d132e47",
+            "commitHash": "7d062188de8fe5c48b2f1730d07c479c0d132e47",
+            "buildHref": "https://github.com/Enterprise-CMCS/macpro-mako/actions/runs/23761895408"
           },
           "gitCommit": {
-            "shortHash": "42e3a31",
-            "hash": "42e3a319b129a38ee5062b63d9bfe1ea75997df5",
-            "subject": "feat(Cs31): backport updated implementation guide and template to main (#1845)",
-            "body": "feat(Cs31): backport updated implementation guide and template to main (#1845)\n\n* feat(Cs31): updated implementation guide and template to the latest versions (#1843)\n\n* cleanup\n\n* Update chip-spa-templates.tsx\n\n* update forms\n\n* update banner\n\n* rename mmdl alerts banner\n\n* Update default.tsx\n\n* update package\n\n* Update IG_CS31_IncarceratedCHIPBeneficiaries.pdf\n\n* Update default.tsx\n\n* Update default.tsx\n\n* Update default.tsx\n\n* adjust\n\n* updated\n\n* Delete IG_CS31_IncarceratedCHIPBeneficiaries.pdf\n\n* Create IG_CS31_IncarceratedCHIPBeneficiaries.pdf\n\n* Update chip-spa-templates.tsx\n\n(cherry picked from commit a42d03751518db2ea0b84e9cc49de64bee61e4a0)\n\n* fix(ui): guard system notification local storage state\n\n* refactor(useGetSystemNotifs): improve formatting of JSON parsing logic for clarity\n\n* update failing tests\n\n---------\n\nCo-authored-by: James Dinh <james.d@globalalliantinc.com>\nCo-authored-by: James Dinh <jdinh8124@gmail.com>",
+            "shortHash": "7d06218",
+            "hash": "7d062188de8fe5c48b2f1730d07c479c0d132e47",
+            "subject": "Security Sync (#1848)",
+            "body": "Security Sync (#1848)\n\n* Add security sync workflow for Jira and AWS integration\n\n* Test actions\n\n* Update GitHub token in securitysync workflow\n\n* Update Jira token in securitysync.yml\n\n* Modify Jira username and custom fields for sync\n\nUpdated Jira username and custom fields in securitysync.yml.\n\n* Update securitysync workflow triggers and permissions\n\n* Disable manual trigger and schedule in securitysync.yml\n\nComment out manual trigger and schedule for security sync workflow.\n\n* Fix typo in jira-assignee value\n\n* Change JIRA assignee from DFB0 to DSFV\n\n* Update securitysync.yml to enable manual and scheduled runs\n\n---------\n\nCo-authored-by: Nathan O'Donnell <nodonnell@collabralink.com>",
             "author": {
-              "name": "Benjamin Paige",
-              "email": "benjamin.paige@gmail.com",
-              "time": 1773944802000
+              "name": "AlecRafs",
+              "email": "116303515+AlecRafs@users.noreply.github.com",
+              "time": 1774896588000
             },
             "committer": {
               "name": "GitHub",
               "email": "noreply@github.com",
-              "time": 1773944802000
+              "time": 1774896588000
             },
             "branch": "main"
           },
@@ -371,24 +371,24 @@
         "retries": 0,
         "metadata": {
           "ci": {
-            "commitHref": "https://github.com/Enterprise-CMCS/macpro-mako/commit/42e3a319b129a38ee5062b63d9bfe1ea75997df5",
-            "commitHash": "42e3a319b129a38ee5062b63d9bfe1ea75997df5",
-            "buildHref": "https://github.com/Enterprise-CMCS/macpro-mako/actions/runs/23310517471"
+            "commitHref": "https://github.com/Enterprise-CMCS/macpro-mako/commit/7d062188de8fe5c48b2f1730d07c479c0d132e47",
+            "commitHash": "7d062188de8fe5c48b2f1730d07c479c0d132e47",
+            "buildHref": "https://github.com/Enterprise-CMCS/macpro-mako/actions/runs/23761895408"
           },
           "gitCommit": {
-            "shortHash": "42e3a31",
-            "hash": "42e3a319b129a38ee5062b63d9bfe1ea75997df5",
-            "subject": "feat(Cs31): backport updated implementation guide and template to main (#1845)",
-            "body": "feat(Cs31): backport updated implementation guide and template to main (#1845)\n\n* feat(Cs31): updated implementation guide and template to the latest versions (#1843)\n\n* cleanup\n\n* Update chip-spa-templates.tsx\n\n* update forms\n\n* update banner\n\n* rename mmdl alerts banner\n\n* Update default.tsx\n\n* update package\n\n* Update IG_CS31_IncarceratedCHIPBeneficiaries.pdf\n\n* Update default.tsx\n\n* Update default.tsx\n\n* Update default.tsx\n\n* adjust\n\n* updated\n\n* Delete IG_CS31_IncarceratedCHIPBeneficiaries.pdf\n\n* Create IG_CS31_IncarceratedCHIPBeneficiaries.pdf\n\n* Update chip-spa-templates.tsx\n\n(cherry picked from commit a42d03751518db2ea0b84e9cc49de64bee61e4a0)\n\n* fix(ui): guard system notification local storage state\n\n* refactor(useGetSystemNotifs): improve formatting of JSON parsing logic for clarity\n\n* update failing tests\n\n---------\n\nCo-authored-by: James Dinh <james.d@globalalliantinc.com>\nCo-authored-by: James Dinh <jdinh8124@gmail.com>",
+            "shortHash": "7d06218",
+            "hash": "7d062188de8fe5c48b2f1730d07c479c0d132e47",
+            "subject": "Security Sync (#1848)",
+            "body": "Security Sync (#1848)\n\n* Add security sync workflow for Jira and AWS integration\n\n* Test actions\n\n* Update GitHub token in securitysync workflow\n\n* Update Jira token in securitysync.yml\n\n* Modify Jira username and custom fields for sync\n\nUpdated Jira username and custom fields in securitysync.yml.\n\n* Update securitysync workflow triggers and permissions\n\n* Disable manual trigger and schedule in securitysync.yml\n\nComment out manual trigger and schedule for security sync workflow.\n\n* Fix typo in jira-assignee value\n\n* Change JIRA assignee from DFB0 to DSFV\n\n* Update securitysync.yml to enable manual and scheduled runs\n\n---------\n\nCo-authored-by: Nathan O'Donnell <nodonnell@collabralink.com>",
             "author": {
-              "name": "Benjamin Paige",
-              "email": "benjamin.paige@gmail.com",
-              "time": 1773944802000
+              "name": "AlecRafs",
+              "email": "116303515+AlecRafs@users.noreply.github.com",
+              "time": 1774896588000
             },
             "committer": {
               "name": "GitHub",
               "email": "noreply@github.com",
-              "time": 1773944802000
+              "time": 1774896588000
             },
             "branch": "main"
           },
@@ -412,24 +412,24 @@
         "retries": 0,
         "metadata": {
           "ci": {
-            "commitHref": "https://github.com/Enterprise-CMCS/macpro-mako/commit/42e3a319b129a38ee5062b63d9bfe1ea75997df5",
-            "commitHash": "42e3a319b129a38ee5062b63d9bfe1ea75997df5",
-            "buildHref": "https://github.com/Enterprise-CMCS/macpro-mako/actions/runs/23310517471"
+            "commitHref": "https://github.com/Enterprise-CMCS/macpro-mako/commit/7d062188de8fe5c48b2f1730d07c479c0d132e47",
+            "commitHash": "7d062188de8fe5c48b2f1730d07c479c0d132e47",
+            "buildHref": "https://github.com/Enterprise-CMCS/macpro-mako/actions/runs/23761895408"
           },
           "gitCommit": {
-            "shortHash": "42e3a31",
-            "hash": "42e3a319b129a38ee5062b63d9bfe1ea75997df5",
-            "subject": "feat(Cs31): backport updated implementation guide and template to main (#1845)",
-            "body": "feat(Cs31): backport updated implementation guide and template to main (#1845)\n\n* feat(Cs31): updated implementation guide and template to the latest versions (#1843)\n\n* cleanup\n\n* Update chip-spa-templates.tsx\n\n* update forms\n\n* update banner\n\n* rename mmdl alerts banner\n\n* Update default.tsx\n\n* update package\n\n* Update IG_CS31_IncarceratedCHIPBeneficiaries.pdf\n\n* Update default.tsx\n\n* Update default.tsx\n\n* Update default.tsx\n\n* adjust\n\n* updated\n\n* Delete IG_CS31_IncarceratedCHIPBeneficiaries.pdf\n\n* Create IG_CS31_IncarceratedCHIPBeneficiaries.pdf\n\n* Update chip-spa-templates.tsx\n\n(cherry picked from commit a42d03751518db2ea0b84e9cc49de64bee61e4a0)\n\n* fix(ui): guard system notification local storage state\n\n* refactor(useGetSystemNotifs): improve formatting of JSON parsing logic for clarity\n\n* update failing tests\n\n---------\n\nCo-authored-by: James Dinh <james.d@globalalliantinc.com>\nCo-authored-by: James Dinh <jdinh8124@gmail.com>",
+            "shortHash": "7d06218",
+            "hash": "7d062188de8fe5c48b2f1730d07c479c0d132e47",
+            "subject": "Security Sync (#1848)",
+            "body": "Security Sync (#1848)\n\n* Add security sync workflow for Jira and AWS integration\n\n* Test actions\n\n* Update GitHub token in securitysync workflow\n\n* Update Jira token in securitysync.yml\n\n* Modify Jira username and custom fields for sync\n\nUpdated Jira username and custom fields in securitysync.yml.\n\n* Update securitysync workflow triggers and permissions\n\n* Disable manual trigger and schedule in securitysync.yml\n\nComment out manual trigger and schedule for security sync workflow.\n\n* Fix typo in jira-assignee value\n\n* Change JIRA assignee from DFB0 to DSFV\n\n* Update securitysync.yml to enable manual and scheduled runs\n\n---------\n\nCo-authored-by: Nathan O'Donnell <nodonnell@collabralink.com>",
             "author": {
-              "name": "Benjamin Paige",
-              "email": "benjamin.paige@gmail.com",
-              "time": 1773944802000
+              "name": "AlecRafs",
+              "email": "116303515+AlecRafs@users.noreply.github.com",
+              "time": 1774896588000
             },
             "committer": {
               "name": "GitHub",
               "email": "noreply@github.com",
-              "time": 1773944802000
+              "time": 1774896588000
             },
             "branch": "main"
           },
@@ -453,24 +453,24 @@
         "retries": 0,
         "metadata": {
           "ci": {
-            "commitHref": "https://github.com/Enterprise-CMCS/macpro-mako/commit/42e3a319b129a38ee5062b63d9bfe1ea75997df5",
-            "commitHash": "42e3a319b129a38ee5062b63d9bfe1ea75997df5",
-            "buildHref": "https://github.com/Enterprise-CMCS/macpro-mako/actions/runs/23310517471"
+            "commitHref": "https://github.com/Enterprise-CMCS/macpro-mako/commit/7d062188de8fe5c48b2f1730d07c479c0d132e47",
+            "commitHash": "7d062188de8fe5c48b2f1730d07c479c0d132e47",
+            "buildHref": "https://github.com/Enterprise-CMCS/macpro-mako/actions/runs/23761895408"
           },
           "gitCommit": {
-            "shortHash": "42e3a31",
-            "hash": "42e3a319b129a38ee5062b63d9bfe1ea75997df5",
-            "subject": "feat(Cs31): backport updated implementation guide and template to main (#1845)",
-            "body": "feat(Cs31): backport updated implementation guide and template to main (#1845)\n\n* feat(Cs31): updated implementation guide and template to the latest versions (#1843)\n\n* cleanup\n\n* Update chip-spa-templates.tsx\n\n* update forms\n\n* update banner\n\n* rename mmdl alerts banner\n\n* Update default.tsx\n\n* update package\n\n* Update IG_CS31_IncarceratedCHIPBeneficiaries.pdf\n\n* Update default.tsx\n\n* Update default.tsx\n\n* Update default.tsx\n\n* adjust\n\n* updated\n\n* Delete IG_CS31_IncarceratedCHIPBeneficiaries.pdf\n\n* Create IG_CS31_IncarceratedCHIPBeneficiaries.pdf\n\n* Update chip-spa-templates.tsx\n\n(cherry picked from commit a42d03751518db2ea0b84e9cc49de64bee61e4a0)\n\n* fix(ui): guard system notification local storage state\n\n* refactor(useGetSystemNotifs): improve formatting of JSON parsing logic for clarity\n\n* update failing tests\n\n---------\n\nCo-authored-by: James Dinh <james.d@globalalliantinc.com>\nCo-authored-by: James Dinh <jdinh8124@gmail.com>",
+            "shortHash": "7d06218",
+            "hash": "7d062188de8fe5c48b2f1730d07c479c0d132e47",
+            "subject": "Security Sync (#1848)",
+            "body": "Security Sync (#1848)\n\n* Add security sync workflow for Jira and AWS integration\n\n* Test actions\n\n* Update GitHub token in securitysync workflow\n\n* Update Jira token in securitysync.yml\n\n* Modify Jira username and custom fields for sync\n\nUpdated Jira username and custom fields in securitysync.yml.\n\n* Update securitysync workflow triggers and permissions\n\n* Disable manual trigger and schedule in securitysync.yml\n\nComment out manual trigger and schedule for security sync workflow.\n\n* Fix typo in jira-assignee value\n\n* Change JIRA assignee from DFB0 to DSFV\n\n* Update securitysync.yml to enable manual and scheduled runs\n\n---------\n\nCo-authored-by: Nathan O'Donnell <nodonnell@collabralink.com>",
             "author": {
-              "name": "Benjamin Paige",
-              "email": "benjamin.paige@gmail.com",
-              "time": 1773944802000
+              "name": "AlecRafs",
+              "email": "116303515+AlecRafs@users.noreply.github.com",
+              "time": 1774896588000
             },
             "committer": {
               "name": "GitHub",
               "email": "noreply@github.com",
-              "time": 1773944802000
+              "time": 1774896588000
             },
             "branch": "main"
           },
@@ -494,24 +494,24 @@
         "retries": 0,
         "metadata": {
           "ci": {
-            "commitHref": "https://github.com/Enterprise-CMCS/macpro-mako/commit/42e3a319b129a38ee5062b63d9bfe1ea75997df5",
-            "commitHash": "42e3a319b129a38ee5062b63d9bfe1ea75997df5",
-            "buildHref": "https://github.com/Enterprise-CMCS/macpro-mako/actions/runs/23310517471"
+            "commitHref": "https://github.com/Enterprise-CMCS/macpro-mako/commit/7d062188de8fe5c48b2f1730d07c479c0d132e47",
+            "commitHash": "7d062188de8fe5c48b2f1730d07c479c0d132e47",
+            "buildHref": "https://github.com/Enterprise-CMCS/macpro-mako/actions/runs/23761895408"
           },
           "gitCommit": {
-            "shortHash": "42e3a31",
-            "hash": "42e3a319b129a38ee5062b63d9bfe1ea75997df5",
-            "subject": "feat(Cs31): backport updated implementation guide and template to main (#1845)",
-            "body": "feat(Cs31): backport updated implementation guide and template to main (#1845)\n\n* feat(Cs31): updated implementation guide and template to the latest versions (#1843)\n\n* cleanup\n\n* Update chip-spa-templates.tsx\n\n* update forms\n\n* update banner\n\n* rename mmdl alerts banner\n\n* Update default.tsx\n\n* update package\n\n* Update IG_CS31_IncarceratedCHIPBeneficiaries.pdf\n\n* Update default.tsx\n\n* Update default.tsx\n\n* Update default.tsx\n\n* adjust\n\n* updated\n\n* Delete IG_CS31_IncarceratedCHIPBeneficiaries.pdf\n\n* Create IG_CS31_IncarceratedCHIPBeneficiaries.pdf\n\n* Update chip-spa-templates.tsx\n\n(cherry picked from commit a42d03751518db2ea0b84e9cc49de64bee61e4a0)\n\n* fix(ui): guard system notification local storage state\n\n* refactor(useGetSystemNotifs): improve formatting of JSON parsing logic for clarity\n\n* update failing tests\n\n---------\n\nCo-authored-by: James Dinh <james.d@globalalliantinc.com>\nCo-authored-by: James Dinh <jdinh8124@gmail.com>",
+            "shortHash": "7d06218",
+            "hash": "7d062188de8fe5c48b2f1730d07c479c0d132e47",
+            "subject": "Security Sync (#1848)",
+            "body": "Security Sync (#1848)\n\n* Add security sync workflow for Jira and AWS integration\n\n* Test actions\n\n* Update GitHub token in securitysync workflow\n\n* Update Jira token in securitysync.yml\n\n* Modify Jira username and custom fields for sync\n\nUpdated Jira username and custom fields in securitysync.yml.\n\n* Update securitysync workflow triggers and permissions\n\n* Disable manual trigger and schedule in securitysync.yml\n\nComment out manual trigger and schedule for security sync workflow.\n\n* Fix typo in jira-assignee value\n\n* Change JIRA assignee from DFB0 to DSFV\n\n* Update securitysync.yml to enable manual and scheduled runs\n\n---------\n\nCo-authored-by: Nathan O'Donnell <nodonnell@collabralink.com>",
             "author": {
-              "name": "Benjamin Paige",
-              "email": "benjamin.paige@gmail.com",
-              "time": 1773944802000
+              "name": "AlecRafs",
+              "email": "116303515+AlecRafs@users.noreply.github.com",
+              "time": 1774896588000
             },
             "committer": {
               "name": "GitHub",
               "email": "noreply@github.com",
-              "time": 1773944802000
+              "time": 1774896588000
             },
             "branch": "main"
           },
@@ -535,24 +535,24 @@
         "retries": 0,
         "metadata": {
           "ci": {
-            "commitHref": "https://github.com/Enterprise-CMCS/macpro-mako/commit/42e3a319b129a38ee5062b63d9bfe1ea75997df5",
-            "commitHash": "42e3a319b129a38ee5062b63d9bfe1ea75997df5",
-            "buildHref": "https://github.com/Enterprise-CMCS/macpro-mako/actions/runs/23310517471"
+            "commitHref": "https://github.com/Enterprise-CMCS/macpro-mako/commit/7d062188de8fe5c48b2f1730d07c479c0d132e47",
+            "commitHash": "7d062188de8fe5c48b2f1730d07c479c0d132e47",
+            "buildHref": "https://github.com/Enterprise-CMCS/macpro-mako/actions/runs/23761895408"
           },
           "gitCommit": {
-            "shortHash": "42e3a31",
-            "hash": "42e3a319b129a38ee5062b63d9bfe1ea75997df5",
-            "subject": "feat(Cs31): backport updated implementation guide and template to main (#1845)",
-            "body": "feat(Cs31): backport updated implementation guide and template to main (#1845)\n\n* feat(Cs31): updated implementation guide and template to the latest versions (#1843)\n\n* cleanup\n\n* Update chip-spa-templates.tsx\n\n* update forms\n\n* update banner\n\n* rename mmdl alerts banner\n\n* Update default.tsx\n\n* update package\n\n* Update IG_CS31_IncarceratedCHIPBeneficiaries.pdf\n\n* Update default.tsx\n\n* Update default.tsx\n\n* Update default.tsx\n\n* adjust\n\n* updated\n\n* Delete IG_CS31_IncarceratedCHIPBeneficiaries.pdf\n\n* Create IG_CS31_IncarceratedCHIPBeneficiaries.pdf\n\n* Update chip-spa-templates.tsx\n\n(cherry picked from commit a42d03751518db2ea0b84e9cc49de64bee61e4a0)\n\n* fix(ui): guard system notification local storage state\n\n* refactor(useGetSystemNotifs): improve formatting of JSON parsing logic for clarity\n\n* update failing tests\n\n---------\n\nCo-authored-by: James Dinh <james.d@globalalliantinc.com>\nCo-authored-by: James Dinh <jdinh8124@gmail.com>",
+            "shortHash": "7d06218",
+            "hash": "7d062188de8fe5c48b2f1730d07c479c0d132e47",
+            "subject": "Security Sync (#1848)",
+            "body": "Security Sync (#1848)\n\n* Add security sync workflow for Jira and AWS integration\n\n* Test actions\n\n* Update GitHub token in securitysync workflow\n\n* Update Jira token in securitysync.yml\n\n* Modify Jira username and custom fields for sync\n\nUpdated Jira username and custom fields in securitysync.yml.\n\n* Update securitysync workflow triggers and permissions\n\n* Disable manual trigger and schedule in securitysync.yml\n\nComment out manual trigger and schedule for security sync workflow.\n\n* Fix typo in jira-assignee value\n\n* Change JIRA assignee from DFB0 to DSFV\n\n* Update securitysync.yml to enable manual and scheduled runs\n\n---------\n\nCo-authored-by: Nathan O'Donnell <nodonnell@collabralink.com>",
             "author": {
-              "name": "Benjamin Paige",
-              "email": "benjamin.paige@gmail.com",
-              "time": 1773944802000
+              "name": "AlecRafs",
+              "email": "116303515+AlecRafs@users.noreply.github.com",
+              "time": 1774896588000
             },
             "committer": {
               "name": "GitHub",
               "email": "noreply@github.com",
-              "time": 1773944802000
+              "time": 1774896588000
             },
             "branch": "main"
           },
@@ -650,12 +650,12 @@
                               "workerIndex": 0,
                               "parallelIndex": 0,
                               "status": "passed",
-                              "duration": 3961,
+                              "duration": 4906,
                               "errors": [],
                               "stdout": [],
                               "stderr": [],
                               "retry": 0,
-                              "startTime": "2026-03-19T18:29:56.774Z",
+                              "startTime": "2026-03-30T18:53:23.561Z",
                               "annotations": [],
                               "attachments": []
                             }
@@ -686,12 +686,12 @@
                               "workerIndex": 0,
                               "parallelIndex": 0,
                               "status": "passed",
-                              "duration": 3841,
+                              "duration": 3987,
                               "errors": [],
                               "stdout": [],
                               "stderr": [],
                               "retry": 0,
-                              "startTime": "2026-03-19T18:30:00.833Z",
+                              "startTime": "2026-03-30T18:53:28.549Z",
                               "annotations": [],
                               "attachments": []
                             }
@@ -722,12 +722,12 @@
                               "workerIndex": 0,
                               "parallelIndex": 0,
                               "status": "passed",
-                              "duration": 3883,
+                              "duration": 3843,
                               "errors": [],
                               "stdout": [],
                               "stderr": [],
                               "retry": 0,
-                              "startTime": "2026-03-19T18:30:04.686Z",
+                              "startTime": "2026-03-30T18:53:32.551Z",
                               "annotations": [],
                               "attachments": []
                             }
@@ -758,12 +758,12 @@
                               "workerIndex": 0,
                               "parallelIndex": 0,
                               "status": "passed",
-                              "duration": 2967,
+                              "duration": 2900,
                               "errors": [],
                               "stdout": [],
                               "stderr": [],
                               "retry": 0,
-                              "startTime": "2026-03-19T18:30:08.582Z",
+                              "startTime": "2026-03-30T18:53:36.407Z",
                               "annotations": [],
                               "attachments": []
                             }
@@ -794,12 +794,12 @@
                               "workerIndex": 0,
                               "parallelIndex": 0,
                               "status": "passed",
-                              "duration": 2966,
+                              "duration": 2824,
                               "errors": [],
                               "stdout": [],
                               "stderr": [],
                               "retry": 0,
-                              "startTime": "2026-03-19T18:30:11.561Z",
+                              "startTime": "2026-03-30T18:53:39.320Z",
                               "annotations": [],
                               "attachments": []
                             }
@@ -830,12 +830,12 @@
                               "workerIndex": 0,
                               "parallelIndex": 0,
                               "status": "passed",
-                              "duration": 3010,
+                              "duration": 3872,
                               "errors": [],
                               "stdout": [],
                               "stderr": [],
                               "retry": 0,
-                              "startTime": "2026-03-19T18:30:14.539Z",
+                              "startTime": "2026-03-30T18:53:42.156Z",
                               "annotations": [],
                               "attachments": []
                             }
@@ -866,12 +866,12 @@
                               "workerIndex": 0,
                               "parallelIndex": 0,
                               "status": "passed",
-                              "duration": 4278,
+                              "duration": 2807,
                               "errors": [],
                               "stdout": [],
                               "stderr": [],
                               "retry": 0,
-                              "startTime": "2026-03-19T18:30:17.560Z",
+                              "startTime": "2026-03-30T18:53:46.041Z",
                               "annotations": [],
                               "attachments": []
                             }
@@ -917,12 +917,12 @@
                                       "workerIndex": 0,
                                       "parallelIndex": 0,
                                       "status": "passed",
-                                      "duration": 3037,
+                                      "duration": 3052,
                                       "errors": [],
                                       "stdout": [],
                                       "stderr": [],
                                       "retry": 0,
-                                      "startTime": "2026-03-19T18:30:21.853Z",
+                                      "startTime": "2026-03-30T18:53:48.859Z",
                                       "annotations": [],
                                       "attachments": []
                                     }
@@ -953,12 +953,12 @@
                                       "workerIndex": 0,
                                       "parallelIndex": 0,
                                       "status": "passed",
-                                      "duration": 2942,
+                                      "duration": 2746,
                                       "errors": [],
                                       "stdout": [],
                                       "stderr": [],
                                       "retry": 0,
-                                      "startTime": "2026-03-19T18:30:24.902Z",
+                                      "startTime": "2026-03-30T18:53:51.922Z",
                                       "annotations": [],
                                       "attachments": []
                                     }
@@ -989,12 +989,12 @@
                                       "workerIndex": 0,
                                       "parallelIndex": 0,
                                       "status": "passed",
-                                      "duration": 2723,
+                                      "duration": 2710,
                                       "errors": [],
                                       "stdout": [],
                                       "stderr": [],
                                       "retry": 0,
-                                      "startTime": "2026-03-19T18:30:27.858Z",
+                                      "startTime": "2026-03-30T18:53:54.679Z",
                                       "annotations": [],
                                       "attachments": []
                                     }
@@ -1033,12 +1033,12 @@
                                       "workerIndex": 0,
                                       "parallelIndex": 0,
                                       "status": "passed",
-                                      "duration": 3422,
+                                      "duration": 3217,
                                       "errors": [],
                                       "stdout": [],
                                       "stderr": [],
                                       "retry": 0,
-                                      "startTime": "2026-03-19T18:30:30.593Z",
+                                      "startTime": "2026-03-30T18:53:57.400Z",
                                       "annotations": [],
                                       "attachments": []
                                     }
@@ -1069,12 +1069,12 @@
                                       "workerIndex": 0,
                                       "parallelIndex": 0,
                                       "status": "passed",
-                                      "duration": 3127,
+                                      "duration": 2900,
                                       "errors": [],
                                       "stdout": [],
                                       "stderr": [],
                                       "retry": 0,
-                                      "startTime": "2026-03-19T18:30:34.027Z",
+                                      "startTime": "2026-03-30T18:54:00.629Z",
                                       "annotations": [],
                                       "attachments": []
                                     }
@@ -1105,12 +1105,12 @@
                                       "workerIndex": 0,
                                       "parallelIndex": 0,
                                       "status": "passed",
-                                      "duration": 3010,
+                                      "duration": 2959,
                                       "errors": [],
                                       "stdout": [],
                                       "stderr": [],
                                       "retry": 0,
-                                      "startTime": "2026-03-19T18:30:37.167Z",
+                                      "startTime": "2026-03-30T18:54:03.541Z",
                                       "annotations": [],
                                       "attachments": []
                                     }
@@ -1153,16 +1153,16 @@
                               "workerIndex": 0,
                               "parallelIndex": 0,
                               "status": "passed",
-                              "duration": 5728,
+                              "duration": 5928,
                               "errors": [],
                               "stdout": [
                                 {
-                                  "text": "[Download] for stateSubmitter Filename suggested by browser: spas-export-03_19_2026.csv\"\n"
+                                  "text": "[Download] for stateSubmitter Filename suggested by browser: spas-export-03_30_2026.csv\"\n"
                                 }
                               ],
                               "stderr": [],
                               "retry": 0,
-                              "startTime": "2026-03-19T18:30:40.190Z",
+                              "startTime": "2026-03-30T18:54:06.511Z",
                               "annotations": [],
                               "attachments": [
                                 {
@@ -1216,12 +1216,12 @@
                               "workerIndex": 0,
                               "parallelIndex": 0,
                               "status": "passed",
-                              "duration": 2977,
+                              "duration": 2999,
                               "errors": [],
                               "stdout": [],
                               "stderr": [],
                               "retry": 0,
-                              "startTime": "2026-03-19T18:30:45.929Z",
+                              "startTime": "2026-03-30T18:54:12.451Z",
                               "annotations": [],
                               "attachments": []
                             }
@@ -1252,12 +1252,12 @@
                               "workerIndex": 0,
                               "parallelIndex": 0,
                               "status": "passed",
-                              "duration": 2882,
+                              "duration": 2742,
                               "errors": [],
                               "stdout": [],
                               "stderr": [],
                               "retry": 0,
-                              "startTime": "2026-03-19T18:30:48.919Z",
+                              "startTime": "2026-03-30T18:54:15.460Z",
                               "annotations": [],
                               "attachments": []
                             }
@@ -1288,12 +1288,12 @@
                               "workerIndex": 0,
                               "parallelIndex": 0,
                               "status": "passed",
-                              "duration": 2933,
+                              "duration": 2878,
                               "errors": [],
                               "stdout": [],
                               "stderr": [],
                               "retry": 0,
-                              "startTime": "2026-03-19T18:30:51.815Z",
+                              "startTime": "2026-03-30T18:54:18.215Z",
                               "annotations": [],
                               "attachments": []
                             }
@@ -1324,12 +1324,12 @@
                               "workerIndex": 0,
                               "parallelIndex": 0,
                               "status": "passed",
-                              "duration": 2944,
+                              "duration": 2840,
                               "errors": [],
                               "stdout": [],
                               "stderr": [],
                               "retry": 0,
-                              "startTime": "2026-03-19T18:30:54.762Z",
+                              "startTime": "2026-03-30T18:54:21.106Z",
                               "annotations": [],
                               "attachments": []
                             }
@@ -1360,12 +1360,12 @@
                               "workerIndex": 0,
                               "parallelIndex": 0,
                               "status": "passed",
-                              "duration": 2825,
+                              "duration": 2757,
                               "errors": [],
                               "stdout": [],
                               "stderr": [],
                               "retry": 0,
-                              "startTime": "2026-03-19T18:30:57.718Z",
+                              "startTime": "2026-03-30T18:54:23.958Z",
                               "annotations": [],
                               "attachments": []
                             }
@@ -1396,12 +1396,12 @@
                               "workerIndex": 0,
                               "parallelIndex": 0,
                               "status": "passed",
-                              "duration": 2891,
+                              "duration": 2797,
                               "errors": [],
                               "stdout": [],
                               "stderr": [],
                               "retry": 0,
-                              "startTime": "2026-03-19T18:31:00.554Z",
+                              "startTime": "2026-03-30T18:54:26.725Z",
                               "annotations": [],
                               "attachments": []
                             }
@@ -1432,12 +1432,12 @@
                               "workerIndex": 0,
                               "parallelIndex": 0,
                               "status": "passed",
-                              "duration": 2935,
+                              "duration": 2709,
                               "errors": [],
                               "stdout": [],
                               "stderr": [],
                               "retry": 0,
-                              "startTime": "2026-03-19T18:31:03.456Z",
+                              "startTime": "2026-03-30T18:54:29.532Z",
                               "annotations": [],
                               "attachments": []
                             }
@@ -1483,12 +1483,12 @@
                                       "workerIndex": 0,
                                       "parallelIndex": 0,
                                       "status": "passed",
-                                      "duration": 3187,
+                                      "duration": 3047,
                                       "errors": [],
                                       "stdout": [],
                                       "stderr": [],
                                       "retry": 0,
-                                      "startTime": "2026-03-19T18:31:06.402Z",
+                                      "startTime": "2026-03-30T18:54:32.251Z",
                                       "annotations": [],
                                       "attachments": []
                                     }
@@ -1519,12 +1519,12 @@
                                       "workerIndex": 0,
                                       "parallelIndex": 0,
                                       "status": "passed",
-                                      "duration": 5119,
+                                      "duration": 2721,
                                       "errors": [],
                                       "stdout": [],
                                       "stderr": [],
                                       "retry": 0,
-                                      "startTime": "2026-03-19T18:31:09.603Z",
+                                      "startTime": "2026-03-30T18:54:35.315Z",
                                       "annotations": [],
                                       "attachments": []
                                     }
@@ -1555,12 +1555,12 @@
                                       "workerIndex": 0,
                                       "parallelIndex": 0,
                                       "status": "passed",
-                                      "duration": 2909,
+                                      "duration": 2777,
                                       "errors": [],
                                       "stdout": [],
                                       "stderr": [],
                                       "retry": 0,
-                                      "startTime": "2026-03-19T18:31:14.733Z",
+                                      "startTime": "2026-03-30T18:54:38.049Z",
                                       "annotations": [],
                                       "attachments": []
                                     }
@@ -1599,12 +1599,12 @@
                                       "workerIndex": 0,
                                       "parallelIndex": 0,
                                       "status": "passed",
-                                      "duration": 3420,
+                                      "duration": 3014,
                                       "errors": [],
                                       "stdout": [],
                                       "stderr": [],
                                       "retry": 0,
-                                      "startTime": "2026-03-19T18:31:17.653Z",
+                                      "startTime": "2026-03-30T18:54:40.836Z",
                                       "annotations": [],
                                       "attachments": []
                                     }
@@ -1635,12 +1635,12 @@
                                       "workerIndex": 0,
                                       "parallelIndex": 0,
                                       "status": "passed",
-                                      "duration": 3098,
+                                      "duration": 2953,
                                       "errors": [],
                                       "stdout": [],
                                       "stderr": [],
                                       "retry": 0,
-                                      "startTime": "2026-03-19T18:31:21.084Z",
+                                      "startTime": "2026-03-30T18:54:43.862Z",
                                       "annotations": [],
                                       "attachments": []
                                     }
@@ -1671,12 +1671,12 @@
                                       "workerIndex": 0,
                                       "parallelIndex": 0,
                                       "status": "passed",
-                                      "duration": 3141,
+                                      "duration": 2920,
                                       "errors": [],
                                       "stdout": [],
                                       "stderr": [],
                                       "retry": 0,
-                                      "startTime": "2026-03-19T18:31:24.196Z",
+                                      "startTime": "2026-03-30T18:54:46.830Z",
                                       "annotations": [],
                                       "attachments": []
                                     }
@@ -1719,16 +1719,16 @@
                               "workerIndex": 0,
                               "parallelIndex": 0,
                               "status": "passed",
-                              "duration": 6184,
+                              "duration": 5312,
                               "errors": [],
                               "stdout": [
                                 {
-                                  "text": "[Download] for cmsReviewer Filename suggested by browser: spas-export-03_19_2026.csv\"\n"
+                                  "text": "[Download] for cmsReviewer Filename suggested by browser: spas-export-03_30_2026.csv\"\n"
                                 }
                               ],
                               "stderr": [],
                               "retry": 0,
-                              "startTime": "2026-03-19T18:31:27.349Z",
+                              "startTime": "2026-03-30T18:54:49.760Z",
                               "annotations": [],
                               "attachments": [
                                 {
@@ -1758,8 +1758,8 @@
   ],
   "errors": [],
   "stats": {
-    "startTime": "2026-03-19T18:29:44.824Z",
-    "duration": 108818.85200000001,
+    "startTime": "2026-03-30T18:53:11.452Z",
+    "duration": 103735.12999999999,
     "expected": 28,
     "skipped": 0,
     "unexpected": 0,
