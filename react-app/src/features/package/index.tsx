@@ -176,19 +176,15 @@ export const Details = () => {
     <div className="max-w-screen-xl mx-auto flex flex-col lg:flex-row">
       <div className="px-4 lg:px-8">
         <BreadCrumbs options={detailsAndActionsCrumbs({ id, authority })} />
-        <DetailsSidebar id={id} />
+        <DetailsSidebar />
       </div>
       <DetailsContent id={id} preferDraft={preferDraft} />
     </div>
   );
 };
 
-type DetailsSidebarProps = {
-  id: string;
-};
-
-const DetailsSidebar = ({ id }: DetailsSidebarProps) => {
-  const links = useDetailsSidebarLinks(id);
+const DetailsSidebar = () => {
+  const links = useDetailsSidebarLinks();
   const handleSidebarClick = (linkId: string) => {
     if (linkId === "package_activity" || linkId === "package_details") {
       sendGAEvent("package_detail_sidebar_link_click", {
