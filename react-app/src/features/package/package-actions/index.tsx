@@ -65,7 +65,6 @@ export const PackageActionsCard = ({ submission, id }: PackageActionsCardProps) 
       onAccept: async () => {
         try {
           await deleteDraft(id);
-          queryClient.removeQueries({ queryKey: ["record", id] });
           banner({
             header: "Draft deleted",
             body: `Draft for ${id} has been deleted.`,
@@ -79,6 +78,11 @@ export const PackageActionsCard = ({ submission, id }: PackageActionsCardProps) 
           ]);
 
           navigate(draftDashboardLink, { replace: true });
+          window.setTimeout(() => {
+            // Clear the deleted draft cache after leaving details so the mounted page
+            // does not briefly render its generic error state before navigation completes.
+            queryClient.removeQueries({ queryKey: ["record", id] });
+          }, 0);
         } catch (error) {
           banner({
             header: "Unable to delete draft",

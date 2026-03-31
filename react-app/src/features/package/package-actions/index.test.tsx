@@ -177,7 +177,7 @@ describe("", () => {
       expect(screen.queryByText("dashboard test")).not.toBeInTheDocument();
     });
 
-    it("should delete and route users to dashboard from package details", async () => {
+    it("should route users to dashboard before clearing the deleted draft cache", async () => {
       vi.mocked(deleteDraft).mockResolvedValueOnce(undefined);
       const removeQueriesSpy = vi.spyOn(queryClient, "removeQueries");
       await setup(draftSubmission, TEST_MED_SPA_ITEM._id);
@@ -191,9 +191,6 @@ describe("", () => {
 
       await waitFor(() => {
         expect(deleteDraft).toHaveBeenCalledWith(TEST_MED_SPA_ITEM._id);
-        expect(removeQueriesSpy).toHaveBeenCalledWith({
-          queryKey: ["record", TEST_MED_SPA_ITEM._id],
-        });
         expect(mockNavigate).toHaveBeenCalledWith("/dashboard?tab=spas", { replace: true });
         expect(banner).toHaveBeenCalledWith(
           expect.objectContaining({
@@ -202,6 +199,16 @@ describe("", () => {
           }),
         );
       });
+
+      await waitFor(() => {
+        expect(removeQueriesSpy).toHaveBeenCalledWith({
+          queryKey: ["record", TEST_MED_SPA_ITEM._id],
+        });
+      });
+
+      expect(mockNavigate.mock.invocationCallOrder.at(-1)).toBeLessThan(
+        removeQueriesSpy.mock.invocationCallOrder.at(-1) ?? Infinity,
+      );
     });
 
     it(`should return actions: [${Action.RESPOND_TO_RAI},${Action.WITHDRAW_PACKAGE}]`, async () => {
