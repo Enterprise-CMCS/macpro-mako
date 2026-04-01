@@ -166,6 +166,30 @@ describe("package details", () => {
     expect(screen.queryByText("Pending")).not.toBeInTheDocument();
   });
 
+  it("shows Amendment Title from saved draft data for App K draft packages", async () => {
+    setMockUsername(TEST_STATE_SUBMITTER_USERNAME);
+
+    const appKDraftSubmission = {
+      ...TEST_1915C_APPK_ITEM._source,
+      seatoolStatus: SEATOOL_STATUS.DRAFT,
+      stateStatus: "Draft",
+      cmsStatus: "Draft",
+      title: undefined,
+      draft: {
+        savedAt: "2026-04-01T20:30:00.000Z",
+        data: {
+          id: TEST_1915C_APPK_ITEM._source.id,
+          title: "this is a app k package",
+        },
+      },
+    } as opensearch.main.Document;
+
+    await setup(appKDraftSubmission);
+
+    expect(screen.getByText("Amendment Title")).toBeInTheDocument();
+    expect(screen.getByText("this is a app k package")).toBeInTheDocument();
+  });
+
   it("shows -- -- for a missing draft proposed effective date", async () => {
     setMockUsername(TEST_STATE_SUBMITTER_USERNAME);
 

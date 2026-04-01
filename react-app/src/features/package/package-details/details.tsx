@@ -69,6 +69,12 @@ const getDraftWaiverNumber = (submission: opensearch.main.Document) => {
     : undefined;
 };
 
+const getDraftTitle = (submission: opensearch.main.Document) => {
+  const draftTitle = submission.draft?.data?.title;
+
+  return typeof draftTitle === "string" && draftTitle.trim() ? draftTitle : undefined;
+};
+
 export const getSubmissionDetails: GetLabelAndValueFromSubmission = (
   submission,
   { user },
@@ -130,8 +136,8 @@ export const getSubmissionDetails: GetLabelAndValueFromSubmission = (
     },
     {
       label: "Amendment Title",
-      value: submission.title || BLANK_VALUE,
-      canView: submission.title !== undefined,
+      value: submission.title ?? getDraftTitle(submission) ?? BLANK_VALUE,
+      canView: submission.title !== undefined || getDraftTitle(submission) !== undefined,
     },
     {
       label: "Subject",
