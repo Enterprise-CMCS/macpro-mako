@@ -11,14 +11,14 @@ import {
   isLegacyAttachmentUnavailableError,
 } from "../attachment-archive/attachment-errors";
 import {
-  isNonCleanVirusScanStatus,
-  VIRUS_SCAN_STATUS_TAG_KEY,
-} from "../attachment-archive/file-scan-status";
-import {
   createAttachmentBucketClientFactory,
   getAttachmentBucketMap,
   resolveTargetBucket as resolveMappedBucket,
 } from "../attachment-archive/bucket-routing";
+import {
+  isNonCleanVirusScanStatus,
+  VIRUS_SCAN_STATUS_TAG_KEY,
+} from "../attachment-archive/file-scan-status";
 import { getStateFilter } from "../libs/api/auth/user";
 import { getPackage, getPackageChangelog } from "../libs/api/package";
 import { handleOpensearchError } from "./utils";

@@ -1,6 +1,6 @@
 import { isAttachmentAccessDeniedError } from "../attachment-errors";
-import { isNonCleanVirusScanStatus, VIRUS_SCAN_STATUS_TAG_KEY } from "../file-scan-status";
 import { buildAttachmentNotCleanArchiveFailure } from "../failure-state";
+import { isNonCleanVirusScanStatus, VIRUS_SCAN_STATUS_TAG_KEY } from "../file-scan-status";
 import { AttachmentArchiveCurrent, AttachmentArchiveSourceAttachment } from "../types";
 
 type AttachmentArchiveFailureState = Pick<

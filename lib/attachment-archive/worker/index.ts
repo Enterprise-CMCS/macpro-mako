@@ -23,12 +23,12 @@ import {
   AttachmentArchivePackageManifest,
   AttachmentArchiveSectionManifest,
 } from "../types";
+import { isAllAttachmentsUnavailableArchive } from "./archive-outcome";
 import { loadArchiveAttachment } from "./attachment-source";
 import {
   classifyAttachmentArchiveAccessFailure,
   getAttachmentArchiveFailureState,
 } from "./failure-classification";
-import { isAllAttachmentsUnavailableArchive } from "./archive-outcome";
 
 function requireEnv(name: string): string {
   const value = process.env[name];
