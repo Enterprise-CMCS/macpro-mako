@@ -252,6 +252,21 @@ describe("renderCells", () => {
         ).toBeInTheDocument();
       });
 
+      it("shows a loading state while checking whether a draft is locked", async () => {
+        vi.mocked(itemExists).mockImplementationOnce(() => new Promise(() => {}));
+        const { user } = setup(TEST_STATE_SUBMITTER_USER, "statesubmitter", draftItem);
+
+        await user.click(screen.getByLabelText("Available package actions"));
+
+        expect(await screen.findByText("Loading actions...")).toBeInTheDocument();
+        expect(screen.queryByText(DRAFT_CONTINUE_ACTION_LABEL)).not.toBeInTheDocument();
+        expect(
+          screen.queryByRole("menuitem", {
+            name: `${DRAFT_DELETE_ACTION_LABEL} for ${draftItem.id}`,
+          }),
+        ).not.toBeInTheDocument();
+      });
+
       it("should open a delete confirmation modal for draft actions", async () => {
         const { user } = setup(TEST_STATE_SUBMITTER_USER, "statesubmitter", draftItem);
 

@@ -74,13 +74,14 @@ const ActionMenuCell = ({
 }) => {
   const [isOpen, setIsOpen] = useState(false);
   const canDeleteDraft = data.seatoolStatus === SEATOOL_STATUS.DRAFT && isStateUser(user);
-  const { data: hasConflictingMainPackage = false, isLoading: isDraftConflictLoading } = useQuery({
+  const shouldCheckDraftConflict = canDeleteDraft && !!draftLink;
+  const { data: hasConflictingMainPackage, isLoading: isDraftConflictLoading } = useQuery({
     queryKey: ["draft-main-conflict", data.id],
     queryFn: () => itemExists(data.id),
-    enabled: canDeleteDraft && isOpen && !!draftLink,
+    enabled: shouldCheckDraftConflict && isOpen,
   });
-  const isLockedDraft = canDeleteDraft && !!draftLink && hasConflictingMainPackage;
-  const canContinueDraft = canDeleteDraft && !!draftLink && !isLockedDraft;
+  const isResolvingDraftActions = shouldCheckDraftConflict && isOpen && isDraftConflictLoading;
+  const canContinueDraft = shouldCheckDraftConflict && hasConflictingMainPackage === false;
   const actions = canDeleteDraft ? [] : getAvailableActions(user, data);
   const draftOwnerEmail = data.draft?.draftOwnerEmail ?? data.submitterEmail;
   const isNonOwnerDraftUser = Boolean(
@@ -155,6 +156,14 @@ const ActionMenuCell = ({
       >
         {canDeleteDraft ? (
           <>
+            {isResolvingDraftActions && (
+              <DropdownMenu.Item
+                disabled
+                className="text-gray-500 flex select-none items-center rounded-sm px-2 py-2 text-sm"
+              >
+                Loading actions...
+              </DropdownMenu.Item>
+            )}
             {canContinueDraft && !isDraftConflictLoading && (
               <DropdownMenu.Item
                 asChild
@@ -176,15 +185,17 @@ const ActionMenuCell = ({
                 </Link>
               </DropdownMenu.Item>
             )}
-            <DropdownMenu.Item asChild aria-label={`${DRAFT_DELETE_ACTION_LABEL} for ${data.id}`}>
-              <button
-                onClick={handleDraftDelete}
-                className="text-blue-500 text-left flex select-none items-center rounded-sm px-2 py-2 text-sm hover:bg-accent"
-                type="button"
-              >
-                {DRAFT_DELETE_ACTION_LABEL}
-              </button>
-            </DropdownMenu.Item>
+            {!isResolvingDraftActions && (
+              <DropdownMenu.Item asChild aria-label={`${DRAFT_DELETE_ACTION_LABEL} for ${data.id}`}>
+                <button
+                  onClick={handleDraftDelete}
+                  className="text-blue-500 text-left flex select-none items-center rounded-sm px-2 py-2 text-sm hover:bg-accent"
+                  type="button"
+                >
+                  {DRAFT_DELETE_ACTION_LABEL}
+                </button>
+              </DropdownMenu.Item>
+            )}
           </>
         ) : (
           actions.map((action, idx) => {
