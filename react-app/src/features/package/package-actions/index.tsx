@@ -23,10 +23,15 @@ import {
 
 type PackageActionsCardProps = {
   id: string;
+  isLockedDraft?: boolean;
   submission: opensearch.main.Document;
 };
 
-export const PackageActionsCard = ({ submission, id }: PackageActionsCardProps) => {
+export const PackageActionsCard = ({
+  submission,
+  id,
+  isLockedDraft = false,
+}: PackageActionsCardProps) => {
   const location = useLocation();
   const navigate = useNavigate();
   const { data: oneMacUser, isLoading: isUserLoading } = useGetUser();
@@ -40,7 +45,7 @@ export const PackageActionsCard = ({ submission, id }: PackageActionsCardProps) 
       draftOwnerEmail.toLowerCase() !== oneMacUser.user.email.toLowerCase(),
   );
   const canManageDraft =
-    isDraft && !!draftLink && !!oneMacUser?.user && isStateUser(oneMacUser.user);
+    isDraft && !!oneMacUser?.user && isStateUser(oneMacUser.user) && (!!draftLink || isLockedDraft);
   const draftDashboardLink = getDraftDashboardLink(submission);
 
   const { data, isLoading } = useGetPackageActions(id, {
@@ -99,17 +104,19 @@ export const PackageActionsCard = ({ submission, id }: PackageActionsCardProps) 
     return (
       <nav className="my-3 sm:text-nowrap sm:min-w-min" aria-labelledby="package-actions-heading">
         <ul className="my-3">
-          <li className="py-2">
-            <Link
-              state={{
-                from: `${location.pathname}${location.search}`,
-              }}
-              to={draftLink!}
-              className="text-sky-700 font-semibold text-lg hover:underline hover:decoration-inherit"
-            >
-              {DRAFT_CONTINUE_ACTION_LABEL}
-            </Link>
-          </li>
+          {!isLockedDraft && draftLink && (
+            <li className="py-2">
+              <Link
+                state={{
+                  from: `${location.pathname}${location.search}`,
+                }}
+                to={draftLink}
+                className="text-sky-700 font-semibold text-lg hover:underline hover:decoration-inherit"
+              >
+                {DRAFT_CONTINUE_ACTION_LABEL}
+              </Link>
+            </li>
+          )}
           <li className="py-2">
             <button
               className="text-sky-700 font-semibold text-lg hover:underline hover:decoration-inherit"

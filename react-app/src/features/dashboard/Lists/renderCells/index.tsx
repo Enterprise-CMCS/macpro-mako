@@ -1,9 +1,12 @@
 import { EllipsisVerticalIcon } from "@heroicons/react/24/outline";
 import * as DropdownMenu from "@radix-ui/react-dropdown-menu";
+import { useQuery } from "@tanstack/react-query";
+import { useState } from "react";
 import { Link } from "react-router";
 import { FullUser, opensearch, SEATOOL_STATUS } from "shared-types";
 import { formatDateToET, getAvailableActions, isStateUser } from "shared-utils";
 
+import { itemExists } from "@/api";
 import { deleteDraft } from "@/api/deleteDraft";
 import { banner, userPrompt } from "@/components";
 import { DASHBOARD_ORIGIN, mapActionLabel, ORIGIN, queryClient } from "@/utils";
@@ -69,12 +72,19 @@ const ActionMenuCell = ({
   draftLink: ReturnType<typeof getDraftEditLink>;
   user: FullUser;
 }) => {
-  const hasDraftActions =
-    data.seatoolStatus === SEATOOL_STATUS.DRAFT && isStateUser(user) && !!draftLink;
-  const actions = hasDraftActions ? [] : getAvailableActions(user, data);
+  const [isOpen, setIsOpen] = useState(false);
+  const canDeleteDraft = data.seatoolStatus === SEATOOL_STATUS.DRAFT && isStateUser(user);
+  const { data: hasConflictingMainPackage = false, isLoading: isDraftConflictLoading } = useQuery({
+    queryKey: ["draft-main-conflict", data.id],
+    queryFn: () => itemExists(data.id),
+    enabled: canDeleteDraft && isOpen && !!draftLink,
+  });
+  const isLockedDraft = canDeleteDraft && !!draftLink && hasConflictingMainPackage;
+  const canContinueDraft = canDeleteDraft && !!draftLink && !isLockedDraft;
+  const actions = canDeleteDraft ? [] : getAvailableActions(user, data);
   const draftOwnerEmail = data.draft?.draftOwnerEmail ?? data.submitterEmail;
   const isNonOwnerDraftUser = Boolean(
-    hasDraftActions &&
+    canDeleteDraft &&
       draftOwnerEmail &&
       user.email &&
       draftOwnerEmail.toLowerCase() !== user.email.toLowerCase(),
@@ -125,9 +135,9 @@ const ActionMenuCell = ({
   };
 
   return (
-    <DropdownMenu.Root>
+    <DropdownMenu.Root open={isOpen} onOpenChange={setIsOpen}>
       <DropdownMenu.DropdownMenuTrigger
-        disabled={!actions.length && !hasDraftActions}
+        disabled={!actions.length && !canDeleteDraft}
         aria-label="Available package actions"
         data-testid="available-actions"
         asChild
@@ -143,24 +153,29 @@ const ActionMenuCell = ({
         className="flex flex-col bg-white rounded-md shadow-lg p-4 border"
         align="start"
       >
-        {hasDraftActions ? (
+        {canDeleteDraft ? (
           <>
-            <DropdownMenu.Item asChild aria-label={`${DRAFT_CONTINUE_ACTION_LABEL} for ${data.id}`}>
-              <Link
-                onClick={() =>
-                  sendGAEvent("dash_ellipsis_click", {
-                    action: "continue-package",
-                  })
-                }
-                state={{
-                  from: `${window.location.pathname}${window.location.search}`,
-                }}
-                to={draftLink!}
-                className="text-blue-500 flex select-none items-center rounded-sm px-2 py-2 text-sm hover:bg-accent"
+            {canContinueDraft && !isDraftConflictLoading && (
+              <DropdownMenu.Item
+                asChild
+                aria-label={`${DRAFT_CONTINUE_ACTION_LABEL} for ${data.id}`}
               >
-                {DRAFT_CONTINUE_ACTION_LABEL}
-              </Link>
-            </DropdownMenu.Item>
+                <Link
+                  onClick={() =>
+                    sendGAEvent("dash_ellipsis_click", {
+                      action: "continue-package",
+                    })
+                  }
+                  state={{
+                    from: `${window.location.pathname}${window.location.search}`,
+                  }}
+                  to={draftLink}
+                  className="text-blue-500 flex select-none items-center rounded-sm px-2 py-2 text-sm hover:bg-accent"
+                >
+                  {DRAFT_CONTINUE_ACTION_LABEL}
+                </Link>
+              </DropdownMenu.Item>
+            )}
             <DropdownMenu.Item asChild aria-label={`${DRAFT_DELETE_ACTION_LABEL} for ${data.id}`}>
               <button
                 onClick={handleDraftDelete}

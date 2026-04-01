@@ -120,7 +120,11 @@ export const DetailsContent = ({ id, preferDraft = false }: DetailsContentProps)
           <PackageStatusCard submission={updatedSubmission} />
         </DetailCardWrapper>
         <DetailCardWrapper title="Package Actions" ariaLabel="package-actions-heading">
-          <PackageActionsCard id={id} submission={updatedSubmission} />
+          <PackageActionsCard
+            id={id}
+            submission={updatedSubmission}
+            isLockedDraft={isLockedDraft}
+          />
         </DetailCardWrapper>
       </section>
       <div className="grid grid-cols-1 gap-y-3">

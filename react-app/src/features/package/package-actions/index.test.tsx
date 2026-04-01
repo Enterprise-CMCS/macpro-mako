@@ -45,6 +45,7 @@ vi.mock("@/api", async () => {
   return {
     ...actual,
     deleteDraft: vi.fn(),
+    itemExists: vi.fn().mockResolvedValue(false),
   };
 });
 
@@ -61,10 +62,10 @@ const apiModule = await import("@/api");
 const { deleteDraft } = apiModule;
 const { banner, userPrompt } = await import("@/components");
 
-const setup = async (submission: opensearch.main.Document, id: string) => {
+const setup = async (submission: opensearch.main.Document, id: string, isLockedDraft = false) => {
   await renderFormWithPackageSectionAsync(
     <DetailCardWrapper title="Package Actions">
-      <PackageActionsCard submission={submission} id={id} />
+      <PackageActionsCard submission={submission} id={id} isLockedDraft={isLockedDraft} />
     </DetailCardWrapper>,
     id,
   );
@@ -108,15 +109,12 @@ describe("", () => {
       expect(screen.getByRole("button", { name: DRAFT_DELETE_ACTION_LABEL })).toBeInTheDocument();
     });
 
-    it("should show continue-package and delete draft actions for locked drafts", async () => {
-      await setup(draftSubmission, TEST_MED_SPA_ITEM._id);
+    it("should only show delete draft actions for locked drafts", async () => {
+      await setup(draftSubmission, TEST_MED_SPA_ITEM._id, true);
 
       expect(
-        await screen.findByRole("link", { name: DRAFT_CONTINUE_ACTION_LABEL }),
-      ).toHaveAttribute(
-        "href",
-        `/new-submission/spa/medicaid/create?draftId=${TEST_MED_SPA_ITEM._id}&origin=spas`,
-      );
+        screen.queryByRole("link", { name: DRAFT_CONTINUE_ACTION_LABEL }),
+      ).not.toBeInTheDocument();
       expect(screen.getByRole("button", { name: DRAFT_DELETE_ACTION_LABEL })).toBeInTheDocument();
     });
 
