@@ -380,7 +380,7 @@ async function assertObjectAccessible(bucket: string, key: string) {
     new HeadObjectCommand({
       Bucket: bucket,
       Key: key,
-    }),
+    }) as any,
   );
 }
 
@@ -425,7 +425,7 @@ async function generatePresignedUrl(
   });
 
   // Generate a presigned URL
-  const presignedUrl = await getSignedUrl(client, getObjectCommand, {
+  const presignedUrl = await getSignedUrl(client as any, getObjectCommand as any, {
     expiresIn: expirationInSeconds,
   });
 

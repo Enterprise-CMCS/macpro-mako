@@ -118,7 +118,8 @@ export const handler = authenticatedMiddy({
         packageId,
         submission: resolvedPackage._source,
       })
-    : (await getPackageChangelog(packageId, getPackageChangelogFilter(resolvedPackage))).hits.hits;
+    : ((await getPackageChangelog(packageId, getPackageChangelogFilter(resolvedPackage))).hits
+        .hits as opensearch.changelog.ItemResult[]);
 
   const result = await getRequestedAttachmentArchiveStatus({
     packageId,

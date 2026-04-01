@@ -144,6 +144,7 @@ export const buildDraftAttachmentChangelog = ({
       _id: `${packageId}-${DRAFT_ACTIVITY_ID_SUFFIX}`,
       _index: "draft-changelog",
       _score: 1,
+      sort: [],
       found: true,
       _source: {
         id: `${packageId}-${DRAFT_ACTIVITY_ID_SUFFIX}`,

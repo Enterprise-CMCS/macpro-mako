@@ -1,5 +1,5 @@
-import { APIGatewayEvent } from "aws-lambda";
 import { produceMessage } from "libs/api/kafka";
+import { APIGatewayEvent } from "shared-types";
 import { baseUserRoleRequestSchema } from "shared-types/events/legacy-user";
 import { z } from "zod";
 
@@ -8,7 +8,7 @@ import { nonAuthenticatedMiddy } from "../middleware";
 export const updateUserRolesEventSchema = z
   .object({
     body: z.object({
-      updatedRoles: z.array(baseUserRoleRequestSchema),
+      updatedRoles: z.array(baseUserRoleRequestSchema as unknown as z.ZodTypeAny),
     }),
   })
   .passthrough();

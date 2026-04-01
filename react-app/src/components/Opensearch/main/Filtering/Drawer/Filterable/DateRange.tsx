@@ -105,7 +105,7 @@ export function FilterableDateRange({ value, onChange, ...props }: Props) {
   }, [fromValue, toValue]);
 
   return (
-    <div className="flex items-center">
+    <div {...props} className={cn("flex items-center", props.className)}>
       <Popover open={open} onOpenChange={handleClose}>
         <PopoverTrigger>
           <div
@@ -135,7 +135,6 @@ export function FilterableDateRange({ value, onChange, ...props }: Props) {
               numberOfMonths={2}
               className="bg-white"
               onSelect={onSelect}
-              {...props}
             />
           </div>
           <div className="lg:hidden flex align-center">
@@ -148,7 +147,6 @@ export function FilterableDateRange({ value, onChange, ...props }: Props) {
               numberOfMonths={1}
               className="bg-white"
               onSelect={onSelect}
-              {...props}
             />
           </div>
           <div className="flex flex-row gap-2 lg:gap-4 w-min-[300px] lg:w-[320px] p-2 m-auto">

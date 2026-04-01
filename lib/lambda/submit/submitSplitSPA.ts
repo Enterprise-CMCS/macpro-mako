@@ -2,7 +2,6 @@ import { APIGatewayEvent } from "aws-lambda";
 import { produceMessage } from "libs/api/kafka";
 import { getPackage } from "libs/api/package";
 import { response } from "libs/handler-lib";
-import { events } from "shared-types/events";
 import { ItemResult } from "shared-types/opensearch/main";
 import { z } from "zod";
 
@@ -70,7 +69,7 @@ const sendSubmitSplitSPAMessage = async ({
 };
 
 const splitSPAEventBodySchema = z.object({
-  packageId: events["new-medicaid-submission"].baseSchema.shape.id,
+  packageId: z.string().trim().min(1),
   changeMade: z.string().trim().min(1),
   changeReason: z.string().trim().min(1),
 });

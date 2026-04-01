@@ -1043,7 +1043,7 @@ describe("ActionForm", () => {
       expect(userPromptSpy).toHaveBeenCalledWith(
         expect.objectContaining({
           header: "Confirm action",
-          body: `Since you are not the draft owner, are you sure you want to take this action on ${draftId}?`,
+          body: `Since you are not the Draft Owner, are you sure you want to take this action on ${draftId}?`,
           acceptButtonText: "Yes, continue",
           cancelButtonText: "Cancel",
         }),
@@ -1103,7 +1103,7 @@ describe("ActionForm", () => {
       `draftId=${draftId}`,
     );
 
-    expect(screen.getByText("This draft is locked")).toBeInTheDocument();
+    expect(screen.getByText("This package is locked")).toBeInTheDocument();
     expect(screen.getByLabelText("Package ID")).toBeDisabled();
     expect(screen.getByTestId("save-draft-form")).toBeDisabled();
     expect(screen.getByTestId("submit-action-form")).toBeDisabled();
@@ -1154,7 +1154,7 @@ describe("ActionForm", () => {
       `draftId=${draftId}`,
     );
 
-    expect(screen.getByText("This draft is locked")).toBeInTheDocument();
+    expect(screen.getByText("This package is locked")).toBeInTheDocument();
 
     useGetItemSpy.mockRestore();
   });
@@ -1207,7 +1207,7 @@ describe("ActionForm", () => {
 
     await user.click(screen.getByTestId("save-draft-form"));
 
-    await waitFor(() => expect(screen.getByText("This draft is locked")).toBeInTheDocument());
+    await waitFor(() => expect(screen.getByText("This package is locked")).toBeInTheDocument());
     expect(screen.getByLabelText("Package ID")).toBeDisabled();
     expect(screen.getByTestId("save-draft-form")).toBeDisabled();
     expect(screen.getByTestId("submit-action-form")).toBeDisabled();

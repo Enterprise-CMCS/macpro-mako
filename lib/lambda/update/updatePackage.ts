@@ -15,7 +15,7 @@ function getBaseSchema(
     return undefined;
   }
 
-  return eventModule.baseSchema as z.AnyZodObject;
+  return eventModule.baseSchema as unknown as z.AnyZodObject;
 }
 
 /** @typedef {object} json

@@ -7,11 +7,11 @@ export const DRAFT_DELETE_ACTION_LABEL = "Delete Package";
 export const DRAFT_DELETE_MODAL_HEADER = "Confirm delete";
 export const DRAFT_DELETE_MODAL_BODY =
   "This action cannot be undone. Are you sure you want to delete this draft package?";
-export const DRAFT_LOCKED_ALERT_TITLE = "This draft is locked";
+export const DRAFT_LOCKED_ALERT_TITLE = "This package is locked";
 export const getNonOwnerDraftWarningModalBody = (packageId: string) =>
-  `Since you are not the draft owner, are you sure you want to take this action on ${packageId}?`;
+  `Since you are not the Draft Owner, are you sure you want to take this action on ${packageId}?`;
 export const getNonOwnerDraftDeleteModalBody = (packageId: string) =>
-  `Since you are not the draft owner, are you sure you want to delete draft package ${packageId}? This action cannot be undone.`;
+  `Since you are not the Draft Owner, are you sure you want to delete draft package ${packageId}? This action cannot be undone.`;
 export const getDraftLockedMessage = (packageId: string) =>
   `A package with ID ${packageId} has already been submitted to CMS. This draft can no longer be saved or submitted in OneMAC. Delete this draft if you no longer need it.`;
 

@@ -336,7 +336,7 @@ test.describe("Draft Package Details", { tag: ["@drafts", "@e2e"] }, () => {
       `/new-submission/spa/chip/create/chip-details?origin=spas&draftId=${LOCKED_CHIP_DRAFT_ID}`,
     );
 
-    await expect(page.getByText("This draft is locked")).toBeVisible();
+    await expect(page.getByText("This package is locked")).toBeVisible();
     await expect(
       page.getByText(
         `A package with ID ${LOCKED_CHIP_DRAFT_ID} has already been submitted to CMS. This draft can no longer be saved or submitted in OneMAC. Delete this draft if you no longer need it.`,

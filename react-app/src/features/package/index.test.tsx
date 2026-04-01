@@ -138,7 +138,7 @@ describe("package details", () => {
 
     renderWithQueryClient(<DetailsContent id={ADMIN_ITEM_ID} preferDraft />);
 
-    expect(await screen.findByText("This draft is locked")).toBeInTheDocument();
+    expect(await screen.findByText("This package is locked")).toBeInTheDocument();
     expect(
       screen.getByText(
         `A package with ID ${ADMIN_ITEM_ID} has already been submitted to CMS. This draft can no longer be saved or submitted in OneMAC. Delete this draft if you no longer need it.`,
@@ -182,7 +182,7 @@ describe("package details", () => {
 
     renderWithQueryClient(<DetailsContent id={ADMIN_ITEM_ID} preferDraft />);
 
-    expect(await screen.findByText("This draft is locked")).toBeInTheDocument();
+    expect(await screen.findByText("This package is locked")).toBeInTheDocument();
     expect(
       screen.getByText(
         `A package with ID ${ADMIN_ITEM_ID} has already been submitted to CMS. This draft can no longer be saved or submitted in OneMAC. Delete this draft if you no longer need it.`,

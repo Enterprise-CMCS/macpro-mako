@@ -10,8 +10,8 @@ interface FieldProps<T extends FieldValues> extends FieldArrayProps<T> {
 }
 
 // Define a type for the rules if not already defined
-type CustomRegisterOptions = Omit<
-  RegisterOptions<FieldValues, never>,
+type CustomRegisterOptions<T extends FieldValues> = Omit<
+  RegisterOptions<T, never>,
   "disabled" | "valueAsNumber" | "valueAsDate" | "setValueAs"
 >;
 
@@ -53,7 +53,7 @@ export const Field = <TFields extends FieldValues>({
       key={adjustedSlotName}
       // @ts-expect-error
       control={control}
-      rules={ruleGenerator(SLOT.rules, SLOT.addtnlRules) as CustomRegisterOptions}
+      rules={ruleGenerator(SLOT.rules, SLOT.addtnlRules) as CustomRegisterOptions<TFields>}
       name={adjustedSlotName as never}
       render={RHFSlot({
         ...SLOT,

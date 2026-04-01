@@ -102,7 +102,7 @@ describe("ChipDetailsForm", () => {
       `draftId=${draftId}`,
     );
 
-    expect(screen.getByText("This draft is locked")).toBeInTheDocument();
+    expect(screen.getByText("This package is locked")).toBeInTheDocument();
     expect(screen.getByRole("combobox")).toBeDisabled();
     await user.click(screen.getByRole("combobox"));
     expect(screen.queryByText("MAGI Eligibility and Methods")).not.toBeInTheDocument();
