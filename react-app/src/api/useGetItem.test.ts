@@ -8,6 +8,7 @@ import {
   TEST_ITEM_ID,
 } from "mocks";
 import { mockedApiServer as mockedServer } from "mocks/server";
+import { http, HttpResponse } from "msw";
 import { describe, expect, it, vi } from "vitest";
 
 import * as gaModule from "@/utils/ReactGA/SendGAEvent";
@@ -74,6 +75,26 @@ describe("zod schema helpers", () => {
   });
 
   describe("getItem tests", () => {
+    it("returns undefined when the API responds with a not-found payload", async () => {
+      mockedServer.use(
+        http.post("https://test-domain.execute-api.us-east-1.amazonaws.com/mocked-tests/item", () =>
+          HttpResponse.json({ message: "No record found for the given id" }),
+        ),
+      );
+
+      await expect(unit.getItem("TEST_ID")).resolves.toBeUndefined();
+    });
+
+    it("returns undefined when the API responds with a 404 not found error", async () => {
+      mockedServer.use(
+        http.post("https://test-domain.execute-api.us-east-1.amazonaws.com/mocked-tests/item", () =>
+          HttpResponse.json({ message: "No record found for the given id" }, { status: 404 }),
+        ),
+      );
+
+      await expect(unit.getItem("TEST_ID")).resolves.toBeUndefined();
+    });
+
     it("should call sendGAEvent when the API throws an error", async () => {
       mockedServer.use(errorApiItemHandler);
 

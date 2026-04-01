@@ -9,6 +9,44 @@ type GetItemOptions = {
   preferDraft?: boolean;
 };
 
+const ITEM_NOT_FOUND_MESSAGE = "No record found for the given id";
+
+const includesNotFoundMessage = (value: unknown) =>
+  String(value ?? "").includes(ITEM_NOT_FOUND_MESSAGE);
+
+const isNotFoundItemPayload = (value: unknown): boolean => {
+  const candidate = value as {
+    found?: boolean;
+    message?: unknown;
+    _source?: unknown;
+    response?: {
+      status?: number;
+      statusCode?: number;
+      data?: unknown;
+    };
+    status?: number;
+    statusCode?: number;
+  };
+
+  const responseData = candidate?.response?.data;
+  const responseMessage =
+    typeof responseData === "string"
+      ? responseData
+      : typeof responseData === "object" && responseData && "message" in responseData
+        ? (responseData as { message?: unknown }).message
+        : undefined;
+  const responseStatus = candidate?.response?.status ?? candidate?.response?.statusCode;
+  const directStatus = candidate?.status ?? candidate?.statusCode;
+
+  return (
+    candidate?.found === false ||
+    includesNotFoundMessage(candidate?.message) ||
+    includesNotFoundMessage(responseMessage) ||
+    responseStatus === 404 ||
+    directStatus === 404
+  );
+};
+
 export const getItem = async (
   id: string,
   options?: GetItemOptions,
@@ -18,13 +56,28 @@ export const getItem = async (
     return undefined as never;
   }
 
-  return await API.post("os", "/item", {
-    body: {
-      id: normalizedId,
-      includeDraft: options?.includeDraft,
-      preferDraft: options?.preferDraft,
-    },
-  }).catch(() => sendGAEvent("api_error", { message: `failure /item ${normalizedId}` }));
+  try {
+    const response = await API.post("os", "/item", {
+      body: {
+        id: normalizedId,
+        includeDraft: options?.includeDraft,
+        preferDraft: options?.preferDraft,
+      },
+    });
+
+    if (isNotFoundItemPayload(response) || !(response as opensearch.main.ItemResult)?._source) {
+      return undefined as never;
+    }
+
+    return response;
+  } catch (error) {
+    if (isNotFoundItemPayload(error)) {
+      return undefined as never;
+    }
+
+    sendGAEvent("api_error", { message: `failure /item ${normalizedId}` });
+    return undefined as never;
+  }
 };
 
 export const idIsApproved = async (id: string) => {

@@ -45,38 +45,6 @@ type DetailsContentProps = {
   preferDraft?: boolean;
 };
 
-const isMissingRecordError = (error: unknown) => {
-  const candidate = error as {
-    message?: string;
-    status?: number;
-    statusCode?: number;
-    response?: {
-      status?: number;
-      statusCode?: number;
-      data?: unknown;
-    };
-  };
-
-  const responseData = candidate?.response?.data;
-  const responseMessage =
-    typeof responseData === "string"
-      ? responseData
-      : typeof responseData === "object" && responseData && "message" in responseData
-        ? String((responseData as { message?: unknown }).message ?? "")
-        : "";
-  const directMessage = String(candidate?.message ?? "");
-  const responseStatus = candidate?.response?.status ?? candidate?.response?.statusCode;
-  const directStatus = candidate?.status ?? candidate?.statusCode;
-
-  return (
-    responseStatus === 404 ||
-    directStatus === 404 ||
-    responseMessage.includes("No record found for the given id") ||
-    directMessage.includes("No record found for the given id") ||
-    directMessage.includes("status code 404")
-  );
-};
-
 const injectChipEligibilityAttachment = (
   submission: opensearch.main.Document,
   changelog: ItemResult[],
@@ -136,10 +104,8 @@ export const DetailsContent = ({ id, preferDraft = false }: DetailsContentProps)
     enabled: isDraft,
   });
   const isLockedDraft = isDraft && hasConflictingMainPackage;
-  const isMissingPreferredDraft =
-    preferDraft && (!record || submission?.deleted === true || isMissingRecordError(error));
   if (isLoading || (isDraft && isDraftConflictLoading)) return <LoadingSpinner />;
-  if (isMissingPreferredDraft) {
+  if (preferDraft && (!record || submission?.deleted === true)) {
     return <Navigate to="/dashboard" replace />;
   }
   if (error || !record || !updatedSubmission) return <ErrorAlert error={error} />;
