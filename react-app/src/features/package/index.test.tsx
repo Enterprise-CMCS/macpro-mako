@@ -13,7 +13,7 @@ import { beforeEach, describe, expect, it, vi } from "vitest";
 import * as rootApi from "@/api";
 import * as api from "@/api/useGetUser";
 import { OneMacUser } from "@/api/useGetUser";
-import { renderWithQueryClient } from "@/utils/test-helpers";
+import { renderWithQueryClient, renderWithQueryClientAndMemoryRouter } from "@/utils/test-helpers";
 
 import { DetailsContent, packageDetailsLoader } from ".";
 
@@ -101,6 +101,39 @@ describe("package details", () => {
       includeDraft: true,
       preferDraft: true,
     });
+  });
+
+  it("redirects to dashboard when a preferred draft record no longer exists", async () => {
+    vi.spyOn(api, "useGetUser").mockImplementation(() => makeMockUserResult());
+    useGetItemSpy.mockReturnValue({
+      data: undefined,
+      isLoading: false,
+      error: null,
+    } as any);
+
+    const { router } = renderWithQueryClientAndMemoryRouter(
+      <DetailsContent id={ADMIN_ITEM_ID} preferDraft />,
+      [
+        {
+          path: "/details/:authority/:id",
+          element: <DetailsContent id={ADMIN_ITEM_ID} preferDraft />,
+        },
+        {
+          path: "/dashboard",
+          element: <div>dashboard test</div>,
+        },
+      ],
+      {
+        initialEntries: [
+          `/details/${encodeURIComponent("Medicaid SPA")}/${encodeURIComponent(ADMIN_ITEM_ID)}?preferDraft=true`,
+        ],
+      },
+    );
+
+    await waitFor(() => {
+      expect(router.state.location.pathname).toBe("/dashboard");
+    });
+    expect(screen.getByText("dashboard test")).toBeInTheDocument();
   });
 
   it("shows the locked-draft alert on package details when a matching SEA package exists", async () => {

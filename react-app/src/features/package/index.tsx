@@ -1,6 +1,6 @@
 import { useQuery } from "@tanstack/react-query";
 import { PropsWithChildren, useMemo } from "react";
-import { LoaderFunctionArgs, redirect, useLoaderData } from "react-router";
+import { LoaderFunctionArgs, Navigate, redirect, useLoaderData } from "react-router";
 import { Authority, opensearch, SEATOOL_STATUS } from "shared-types";
 import { ItemResult } from "shared-types/opensearch/changelog";
 
@@ -105,6 +105,9 @@ export const DetailsContent = ({ id, preferDraft = false }: DetailsContentProps)
   });
   const isLockedDraft = isDraft && hasConflictingMainPackage;
   if (isLoading || (isDraft && isDraftConflictLoading)) return <LoadingSpinner />;
+  if (preferDraft && (!record || submission?.deleted === true)) {
+    return <Navigate to="/dashboard" replace />;
+  }
   if (error || !record || !updatedSubmission) return <ErrorAlert error={error} />;
 
   return (
