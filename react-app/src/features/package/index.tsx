@@ -104,8 +104,13 @@ export const DetailsContent = ({ id, preferDraft = false }: DetailsContentProps)
     enabled: isDraft,
   });
   const isLockedDraft = isDraft && hasConflictingMainPackage;
+  const isMissingPreferredDraft =
+    preferDraft &&
+    (!record ||
+      submission?.deleted === true ||
+      error?.response?.data?.message === "No record found for the given id");
   if (isLoading || (isDraft && isDraftConflictLoading)) return <LoadingSpinner />;
-  if (preferDraft && (!record || submission?.deleted === true)) {
+  if (isMissingPreferredDraft) {
     return <Navigate to="/dashboard" replace />;
   }
   if (error || !record || !updatedSubmission) return <ErrorAlert error={error} />;
