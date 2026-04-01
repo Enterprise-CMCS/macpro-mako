@@ -136,6 +136,41 @@ describe("package details", () => {
     expect(screen.getByText("dashboard test")).toBeInTheDocument();
   });
 
+  it("redirects to dashboard when a preferred draft has a query error", async () => {
+    vi.spyOn(api, "useGetUser").mockImplementation(() => makeMockUserResult());
+    useGetItemSpy.mockReturnValue({
+      data: ADMIN_CHANGE_ITEM,
+      isLoading: false,
+      error: {
+        message: "Request failed with status code 404",
+      },
+    } as any);
+
+    const { router } = renderWithQueryClientAndMemoryRouter(
+      <DetailsContent id={ADMIN_ITEM_ID} preferDraft />,
+      [
+        {
+          path: "/details/:authority/:id",
+          element: <DetailsContent id={ADMIN_ITEM_ID} preferDraft />,
+        },
+        {
+          path: "/dashboard",
+          element: <div>dashboard test</div>,
+        },
+      ],
+      {
+        initialEntries: [
+          `/details/${encodeURIComponent("Medicaid SPA")}/${encodeURIComponent(ADMIN_ITEM_ID)}?preferDraft=true`,
+        ],
+      },
+    );
+
+    await waitFor(() => {
+      expect(router.state.location.pathname).toBe("/dashboard");
+    });
+    expect(screen.getByText("dashboard test")).toBeInTheDocument();
+  });
+
   it("shows the locked-draft alert on package details when a matching SEA package exists", async () => {
     vi.spyOn(api, "useGetUser").mockImplementation(() => makeMockUserResult());
     itemExistsSpy.mockResolvedValue(true);

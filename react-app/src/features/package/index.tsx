@@ -105,7 +105,7 @@ export const DetailsContent = ({ id, preferDraft = false }: DetailsContentProps)
   });
   const isLockedDraft = isDraft && hasConflictingMainPackage;
   if (isLoading || (isDraft && isDraftConflictLoading)) return <LoadingSpinner />;
-  if (preferDraft && (!record || submission?.deleted === true)) {
+  if (preferDraft && (error || !record || !updatedSubmission || submission?.deleted === true)) {
     return <Navigate to="/dashboard" replace />;
   }
   if (error || !record || !updatedSubmission) return <ErrorAlert error={error} />;
