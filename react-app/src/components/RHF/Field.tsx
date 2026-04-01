@@ -51,8 +51,9 @@ export const Field = <TFields extends FieldValues>({
   const formField = (
     <FormField
       key={adjustedSlotName}
-      // @ts-expect-error
-      control={control}
+      // `shared-types` and the app currently resolve RHF through different type instances in build,
+      // so keep the runtime behavior but collapse the type boundary here.
+      control={control as any}
       rules={ruleGenerator(SLOT.rules, SLOT.addtnlRules) as CustomRegisterOptions<TFields>}
       name={adjustedSlotName as never}
       render={RHFSlot({
