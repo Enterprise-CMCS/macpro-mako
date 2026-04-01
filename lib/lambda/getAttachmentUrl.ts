@@ -11,6 +11,10 @@ import {
   isLegacyAttachmentUnavailableError,
 } from "../attachment-archive/attachment-errors";
 import {
+  isNonCleanVirusScanStatus,
+  VIRUS_SCAN_STATUS_TAG_KEY,
+} from "../attachment-archive/file-scan-status";
+import {
   createAttachmentBucketClientFactory,
   getAttachmentBucketMap,
   resolveTargetBucket as resolveMappedBucket,
@@ -44,8 +48,6 @@ class AttachmentBlockedByScanError extends Error {
   }
 }
 
-const VIRUS_SCAN_STATUS_TAG_KEY = "virusScanStatus";
-const CLEAN_VIRUS_SCAN_STATUS = "CLEAN";
 const BLOCKED_BY_SCAN_MESSAGE =
   "Unable to download this attachment because file scanning did not complete successfully.";
 
@@ -175,10 +177,6 @@ function logAttachmentBlockedByScan({
       virusScanStatus,
     }),
   );
-}
-
-function isNonCleanVirusScanStatus(virusScanStatus?: string) {
-  return !!virusScanStatus && virusScanStatus.toUpperCase() !== CLEAN_VIRUS_SCAN_STATUS;
 }
 
 async function getAttachmentObjectTags(

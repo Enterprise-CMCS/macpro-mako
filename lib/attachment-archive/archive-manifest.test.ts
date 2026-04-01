@@ -11,7 +11,11 @@ import {
   getPackageArchiveRootFolderName,
   parseAttachmentArchiveCurrent,
 } from "./archive-manifest";
-import { ATTACHMENT_ARCHIVE_BUILD_VERSION } from "./types";
+import {
+  ATTACHMENT_ARCHIVE_BUILD_VERSION,
+  ATTACHMENT_ARCHIVE_FAILURE_CODES,
+  ATTACHMENT_ARCHIVE_STATUSES,
+} from "./types";
 
 describe("attachment archive manifest helpers", () => {
   it("builds a stable section hash regardless of source attachment order", () => {
@@ -200,9 +204,41 @@ describe("attachment archive manifest helpers", () => {
         "The attachments in this section are no longer available, so this download could not be created.",
     });
 
+    for (const status of ATTACHMENT_ARCHIVE_STATUSES) {
+      const candidate = {
+        ...current,
+        status,
+      };
+      expect(parseAttachmentArchiveCurrent(JSON.stringify(candidate))).toEqual(candidate);
+    }
+
+    for (const failureCode of ATTACHMENT_ARCHIVE_FAILURE_CODES) {
+      const candidate = {
+        ...current,
+        failureCode,
+      };
+      expect(parseAttachmentArchiveCurrent(JSON.stringify(candidate))).toEqual(candidate);
+    }
+
     expect(parseAttachmentArchiveCurrent(JSON.stringify(current))).toEqual(current);
     expect(parseAttachmentArchiveCurrent("not-json")).toBeUndefined();
     expect(parseAttachmentArchiveCurrent(JSON.stringify({ status: "READY" }))).toBeUndefined();
+    expect(
+      parseAttachmentArchiveCurrent(
+        JSON.stringify({
+          ...current,
+          status: "NOT_A_REAL_STATUS",
+        }),
+      ),
+    ).toBeUndefined();
+    expect(
+      parseAttachmentArchiveCurrent(
+        JSON.stringify({
+          ...current,
+          failureCode: "NOT_A_REAL_FAILURE_CODE",
+        }),
+      ),
+    ).toBeUndefined();
     expect(
       parseAttachmentArchiveCurrent(
         JSON.stringify({

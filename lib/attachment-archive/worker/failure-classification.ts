@@ -1,9 +1,7 @@
 import { isAttachmentAccessDeniedError } from "../attachment-errors";
+import { isNonCleanVirusScanStatus, VIRUS_SCAN_STATUS_TAG_KEY } from "../file-scan-status";
 import { buildAttachmentNotCleanArchiveFailure } from "../failure-state";
 import { AttachmentArchiveCurrent, AttachmentArchiveSourceAttachment } from "../types";
-
-export const VIRUS_SCAN_STATUS_TAG_KEY = "virusScanStatus";
-export const CLEAN_VIRUS_SCAN_STATUS = "CLEAN";
 
 type AttachmentArchiveFailureState = Pick<
   AttachmentArchiveCurrent,
@@ -34,10 +32,6 @@ export function getAttachmentArchiveFailureState(error: unknown): AttachmentArch
   }
 
   return { errorMessage };
-}
-
-function isNonCleanVirusScanStatus(virusScanStatus?: string) {
-  return !!virusScanStatus && virusScanStatus.toUpperCase() !== CLEAN_VIRUS_SCAN_STATUS;
 }
 
 export async function classifyAttachmentArchiveAccessFailure({

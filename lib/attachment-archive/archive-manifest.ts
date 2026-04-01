@@ -1,6 +1,10 @@
 import { createHash } from "crypto";
+import { z } from "zod";
 
 import {
+  ATTACHMENT_ARCHIVE_FAILURE_CODES,
+  ATTACHMENT_ARCHIVE_SCOPES,
+  ATTACHMENT_ARCHIVE_STATUSES,
   ATTACHMENT_ARCHIVE_BUILD_VERSION,
   AttachmentArchiveBlockedAttachment,
   AttachmentArchiveCurrent,
@@ -349,18 +353,39 @@ export function buildAttachmentArchiveCurrent({
   };
 }
 
-function isValidBlockedAttachment(
-  value: Partial<AttachmentArchiveBlockedAttachment> | undefined,
-): value is AttachmentArchiveBlockedAttachment {
-  return !!(
-    value &&
-    typeof value.bucket === "string" &&
-    typeof value.key === "string" &&
-    typeof value.filename === "string" &&
-    typeof value.title === "string" &&
-    (value.virusScanStatus === undefined || typeof value.virusScanStatus === "string")
-  );
-}
+export const AttachmentArchiveBlockedAttachmentSchema = z
+  .object({
+    bucket: z.string(),
+    key: z.string(),
+    filename: z.string(),
+    title: z.string(),
+    virusScanStatus: z.string().optional(),
+  })
+  .passthrough();
+
+export const AttachmentArchiveCurrentSchema = z
+  .object({
+    version: z.literal(2),
+    scope: z.enum(ATTACHMENT_ARCHIVE_SCOPES),
+    hash: z.string(),
+    status: z.enum(ATTACHMENT_ARCHIVE_STATUSES),
+    artifactKey: z.string(),
+    manifestKey: z.string(),
+    attachmentCount: z.number(),
+    appendedAttachmentCount: z.number().optional(),
+    skippedAttachmentCount: z.number().optional(),
+    updatedAt: z.string(),
+    executionArn: z.string().optional(),
+    sectionId: z.string().optional(),
+    sectionNumber: z.number().optional(),
+    sectionLabel: z.string().optional(),
+    sectionFolderName: z.string().optional(),
+    failureCode: z.enum(ATTACHMENT_ARCHIVE_FAILURE_CODES).optional(),
+    failureMessage: z.string().optional(),
+    blockedAttachment: AttachmentArchiveBlockedAttachmentSchema.optional(),
+    errorMessage: z.string().optional(),
+  })
+  .passthrough();
 
 export function parseAttachmentArchiveCurrent(
   value: string | undefined,
@@ -369,37 +394,13 @@ export function parseAttachmentArchiveCurrent(
     return undefined;
   }
 
+  let parsed: unknown;
   try {
-    const parsed = JSON.parse(value) as Partial<AttachmentArchiveCurrent>;
-
-    if (
-      parsed &&
-      parsed.version === 2 &&
-      (parsed.scope === "all" || parsed.scope === "section") &&
-      typeof parsed.hash === "string" &&
-      typeof parsed.status === "string" &&
-      typeof parsed.artifactKey === "string" &&
-      typeof parsed.manifestKey === "string" &&
-      typeof parsed.attachmentCount === "number" &&
-      (parsed.appendedAttachmentCount === undefined ||
-        typeof parsed.appendedAttachmentCount === "number") &&
-      (parsed.skippedAttachmentCount === undefined ||
-        typeof parsed.skippedAttachmentCount === "number") &&
-      typeof parsed.updatedAt === "string" &&
-      (parsed.executionArn === undefined || typeof parsed.executionArn === "string") &&
-      (parsed.failureCode === undefined ||
-        parsed.failureCode === "ATTACHMENT_NOT_CLEAN" ||
-        parsed.failureCode === "ALL_ATTACHMENTS_UNAVAILABLE") &&
-      (parsed.failureMessage === undefined || typeof parsed.failureMessage === "string") &&
-      (parsed.blockedAttachment === undefined ||
-        isValidBlockedAttachment(parsed.blockedAttachment)) &&
-      (parsed.errorMessage === undefined || typeof parsed.errorMessage === "string")
-    ) {
-      return parsed as AttachmentArchiveCurrent;
-    }
+    parsed = JSON.parse(value);
   } catch {
     return undefined;
   }
 
-  return undefined;
+  const result = AttachmentArchiveCurrentSchema.safeParse(parsed);
+  return result.success ? (result.data as AttachmentArchiveCurrent) : undefined;
 }

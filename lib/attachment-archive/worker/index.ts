@@ -28,6 +28,7 @@ import {
   classifyAttachmentArchiveAccessFailure,
   getAttachmentArchiveFailureState,
 } from "./failure-classification";
+import { isAllAttachmentsUnavailableArchive } from "./archive-outcome";
 
 function requireEnv(name: string): string {
   const value = process.env[name];
@@ -459,7 +460,12 @@ async function run(): Promise<void> {
         tempArchivePath,
       }),
     );
-    if (builtArchive.appendedAttachmentCount === 0 && builtArchive.skippedAttachmentCount > 0) {
+    if (
+      isAllAttachmentsUnavailableArchive({
+        appendedAttachmentCount: builtArchive.appendedAttachmentCount,
+        skippedAttachmentCount: builtArchive.skippedAttachmentCount,
+      })
+    ) {
       allAttachmentsUnavailable = true;
       archive.abort();
       archiveFileStream.destroy();

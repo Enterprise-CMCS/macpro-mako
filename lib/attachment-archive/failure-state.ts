@@ -1,4 +1,5 @@
 import {
+  ATTACHMENT_ARCHIVE_FAILURE_CODES,
   AttachmentArchiveBlockedAttachment,
   AttachmentArchiveCurrent,
   AttachmentArchiveFailureCode,
@@ -10,10 +11,9 @@ const DEFAULT_FAILURE_MESSAGE = "Unable to prepare the attachment archive.";
 const PARTIAL_ARCHIVE_WARNING_MESSAGE =
   "Some attachments in this download are no longer available and were not included.";
 
-export const ATTACHMENT_ARCHIVE_TERMINAL_FAILURE_CODES = new Set<AttachmentArchiveFailureCode>([
-  "ALL_ATTACHMENTS_UNAVAILABLE",
-  "ATTACHMENT_NOT_CLEAN",
-]);
+export const ATTACHMENT_ARCHIVE_TERMINAL_FAILURE_CODES = new Set<AttachmentArchiveFailureCode>(
+  ATTACHMENT_ARCHIVE_FAILURE_CODES,
+);
 
 export function buildAttachmentArchiveBlockedAttachment(
   attachment: AttachmentArchiveSourceAttachment,
