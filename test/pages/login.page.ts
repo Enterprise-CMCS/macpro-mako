@@ -6,6 +6,16 @@ export class LoginPage {
     this.page = page;
   }
 
+  private async waitForAuthenticatedAppReady() {
+    await Promise.race([
+      this.page.waitForURL(/\/dashboard(?:[/?#]|$)/, { timeout: 15_000 }),
+      this.page.getByRole("heading", { name: "Dashboard" }).waitFor({
+        state: "visible",
+        timeout: 15_000,
+      }),
+    ]);
+  }
+
   async goto() {
     await this.page.goto("/");
 
@@ -22,7 +32,7 @@ export class LoginPage {
     await this.page.getByRole("textbox", { name: "name@host.com" }).fill(email);
     await this.page.getByRole("textbox", { name: "Password" }).fill(password);
     await this.page.getByRole("button", { name: "submit" }).click();
-    await this.page.waitForTimeout(2000);
+    await this.waitForAuthenticatedAppReady();
   }
 
   async euaLogin(euaId, password) {
