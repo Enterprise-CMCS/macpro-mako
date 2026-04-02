@@ -86,6 +86,12 @@ Prefer the root `./run` wrapper for day-to-day tasks. It validates `direnv`, Nod
 - Before pushing, run `bun run lint` and `./run test`; include `cdk diff` summaries when infrastructure changes.
 - Pull requests should describe context, solution, linked Jira/GitHub work, and testing evidence (logs or screenshots).
 
+## Jira Formatting
+
+- When creating or updating Jira work items, use real paragraphs and bullet lists so the description reads cleanly in Jira.
+- Do not write literal `\n` sequences into issue text; send actual newline characters or ADF-formatted content instead.
+- Keep issue descriptions concise, structured, and professional, with clear sections for context, findings, next steps, and acceptance criteria when needed.
+
 ## Security & Configuration Tips
 
 - Store secrets outside the repo; export `AGENT_MODE`, `STAGE_NAME`, and AWS credentials through your shell profile.
