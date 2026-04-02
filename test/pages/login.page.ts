@@ -7,13 +7,11 @@ export class LoginPage {
   }
 
   private async waitForAuthenticatedAppReady() {
-    await Promise.race([
-      this.page.waitForURL(/\/dashboard(?:[/?#]|$)/, { timeout: 15_000 }),
-      this.page.getByRole("heading", { name: "Dashboard" }).waitFor({
-        state: "visible",
-        timeout: 15_000,
-      }),
-    ]);
+    await this.page.waitForURL(/\/dashboard(?:[/?#]|$)/, { timeout: 30_000 });
+    await this.page.getByRole("heading", { name: "Dashboard" }).waitFor({
+      state: "visible",
+      timeout: 30_000,
+    });
   }
 
   async goto() {
