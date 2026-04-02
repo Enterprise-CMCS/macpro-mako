@@ -201,7 +201,9 @@ describe("attachment-source worker helpers", () => {
       "mako-main-legacy-attachments-635052997545",
       "protected/key/file.pdf",
     );
-    expect(logWarn).not.toHaveBeenCalledWith(expect.stringContaining("legacy_attachment_remap_fallback"));
+    expect(logWarn).not.toHaveBeenCalledWith(
+      expect.stringContaining("legacy_attachment_remap_fallback"),
+    );
   });
 
   it("still falls back when remapped access denial has a clean scan tag", async () => {
