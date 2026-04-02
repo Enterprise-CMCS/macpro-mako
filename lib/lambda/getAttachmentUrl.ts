@@ -1,4 +1,4 @@
-import { GetObjectCommand, HeadObjectCommand } from "@aws-sdk/client-s3";
+import { GetObjectCommand, GetObjectTaggingCommand, HeadObjectCommand } from "@aws-sdk/client-s3";
 import { getSignedUrl } from "@aws-sdk/s3-request-presigner";
 import { APIGatewayEvent } from "aws-lambda";
 import { response } from "libs/handler-lib";
@@ -6,6 +6,7 @@ import { getDomain } from "libs/utils";
 
 import {
   getAttachmentErrorMessage,
+  isAttachmentAccessDeniedError,
   isAttachmentNotFoundError,
   isLegacyAttachmentUnavailableError,
 } from "../attachment-archive/attachment-errors";
@@ -14,6 +15,10 @@ import {
   getAttachmentBucketMap,
   resolveTargetBucket as resolveMappedBucket,
 } from "../attachment-archive/bucket-routing";
+import {
+  isNonCleanVirusScanStatus,
+  VIRUS_SCAN_STATUS_TAG_KEY,
+} from "../attachment-archive/file-scan-status";
 import { getStateFilter } from "../libs/api/auth/user";
 import { getPackage, getPackageChangelog } from "../libs/api/package";
 import { handleOpensearchError } from "./utils";
@@ -33,6 +38,18 @@ class AttachmentUnavailableError extends Error {
     this.name = "AttachmentUnavailableError";
   }
 }
+
+class AttachmentBlockedByScanError extends Error {
+  statusCode = 409;
+
+  constructor(message: string) {
+    super(message);
+    this.name = "AttachmentBlockedByScanError";
+  }
+}
+
+const BLOCKED_BY_SCAN_MESSAGE =
+  "Unable to download this attachment because file scanning did not complete successfully.";
 
 function logRemapApplied({
   packageId,
@@ -135,6 +152,99 @@ function logAttachmentUnavailable({
       reason,
     }),
   );
+}
+
+function logAttachmentBlockedByScan({
+  packageId,
+  bucket,
+  key,
+  filename,
+  virusScanStatus,
+}: {
+  packageId: string;
+  bucket: string;
+  key: string;
+  filename: string;
+  virusScanStatus?: string;
+}) {
+  console.warn(
+    JSON.stringify({
+      event: "attachment_blocked_by_scan",
+      packageId,
+      bucket,
+      key,
+      filename,
+      virusScanStatus,
+    }),
+  );
+}
+
+async function getAttachmentObjectTags(
+  bucket: string,
+  key: string,
+): Promise<Record<string, string>> {
+  const client = await getClient(bucket);
+  const response = await client.send(
+    new GetObjectTaggingCommand({
+      Bucket: bucket,
+      Key: key,
+    }),
+  );
+
+  return (response.TagSet || []).reduce<Record<string, string>>((acc, tag) => {
+    if (tag.Key && tag.Value) {
+      acc[tag.Key] = tag.Value;
+    }
+
+    return acc;
+  }, {});
+}
+
+async function isBlockedByFileScan({
+  packageId,
+  bucket,
+  key,
+  filename,
+  error,
+}: {
+  packageId: string;
+  bucket: string;
+  key: string;
+  filename: string;
+  error: unknown;
+}): Promise<boolean> {
+  if (!isAttachmentAccessDeniedError(error)) {
+    return false;
+  }
+
+  try {
+    const tags = await getAttachmentObjectTags(bucket, key);
+    const virusScanStatus = tags[VIRUS_SCAN_STATUS_TAG_KEY];
+    if (!isNonCleanVirusScanStatus(virusScanStatus)) {
+      return false;
+    }
+
+    logAttachmentBlockedByScan({
+      packageId,
+      bucket,
+      key,
+      filename,
+      virusScanStatus,
+    });
+    return true;
+  } catch (tagError) {
+    console.warn(
+      JSON.stringify({
+        event: "attachment_scan_tag_lookup_failed",
+        packageId,
+        bucket,
+        key,
+        filename,
+        message: tagError instanceof Error ? tagError.message : String(tagError),
+      }),
+    );
+    return false;
+  }
 }
 
 function resolveTargetBucket(
@@ -266,6 +376,12 @@ export const handler = async (event: APIGatewayEvent) => {
         body: { message: error.message },
       });
     }
+    if (error instanceof AttachmentBlockedByScanError) {
+      return response({
+        statusCode: error.statusCode,
+        body: { message: error.message },
+      });
+    }
 
     return response(handleOpensearchError(error));
   }
@@ -291,6 +407,18 @@ async function resolveDownloadBucket({
       await assertObjectAccessible(destinationBucket, key);
       return destinationBucket;
     } catch (error) {
+      if (
+        await isBlockedByFileScan({
+          packageId,
+          bucket: destinationBucket,
+          key,
+          filename,
+          error,
+        })
+      ) {
+        throw new AttachmentBlockedByScanError(BLOCKED_BY_SCAN_MESSAGE);
+      }
+
       if (!isAttachmentNotFoundError(error)) {
         throw error;
       }
@@ -310,6 +438,18 @@ async function resolveDownloadBucket({
     await assertObjectAccessible(sourceBucket, key);
     return sourceBucket;
   } catch (error) {
+    if (
+      await isBlockedByFileScan({
+        packageId,
+        bucket: sourceBucket,
+        key,
+        filename,
+        error,
+      })
+    ) {
+      throw new AttachmentBlockedByScanError(BLOCKED_BY_SCAN_MESSAGE);
+    }
+
     const attachmentUnavailable =
       isAttachmentNotFoundError(error) || isLegacyAttachmentUnavailableError(sourceBucket, error);
 

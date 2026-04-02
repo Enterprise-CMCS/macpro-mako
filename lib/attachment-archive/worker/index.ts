@@ -1,4 +1,9 @@
-import { GetObjectCommand, GetObjectCommandOutput, S3Client } from "@aws-sdk/client-s3";
+import {
+  GetObjectCommand,
+  GetObjectCommandOutput,
+  GetObjectTaggingCommand,
+  S3Client,
+} from "@aws-sdk/client-s3";
 import { Upload } from "@aws-sdk/lib-storage";
 import archiver, { Archiver } from "archiver";
 import { randomUUID } from "crypto";
@@ -9,6 +14,7 @@ import { finished } from "stream/promises";
 
 import { buildAttachmentArchiveCurrent } from "../archive-manifest";
 import { createAttachmentBucketClientFactory, getAttachmentBucketMap } from "../bucket-routing";
+import { buildAllAttachmentsUnavailableArchiveFailure } from "../failure-state";
 import { getJsonObject, putJsonObject } from "../storage";
 import {
   AttachmentArchiveCurrent,
@@ -17,7 +23,12 @@ import {
   AttachmentArchivePackageManifest,
   AttachmentArchiveSectionManifest,
 } from "../types";
+import { isAllAttachmentsUnavailableArchive } from "./archive-outcome";
 import { loadArchiveAttachment } from "./attachment-source";
+import {
+  classifyAttachmentArchiveAccessFailure,
+  getAttachmentArchiveFailureState,
+} from "./failure-classification";
 
 function requireEnv(name: string): string {
   const value = process.env[name];
@@ -85,7 +96,17 @@ async function putCurrentArchiveStatus(status: AttachmentArchiveCurrent): Promis
   });
 }
 
-async function markFailed(errorMessage: string): Promise<void> {
+async function markFailed(
+  failure: Pick<
+    AttachmentArchiveCurrent,
+    | "blockedAttachment"
+    | "errorMessage"
+    | "failureCode"
+    | "failureMessage"
+    | "appendedAttachmentCount"
+    | "skippedAttachmentCount"
+  >,
+): Promise<void> {
   const current = await getCurrentArchiveStatus();
 
   if (current?.hash && current.hash !== hash) {
@@ -107,12 +128,17 @@ async function markFailed(errorMessage: string): Promise<void> {
       artifactKey,
       manifestKey,
       attachmentCount: current?.attachmentCount || 0,
+      appendedAttachmentCount: current?.appendedAttachmentCount,
+      skippedAttachmentCount: current?.skippedAttachmentCount,
       executionArn: current?.executionArn,
       sectionId: current?.sectionId,
       sectionNumber: current?.sectionNumber,
       sectionLabel: current?.sectionLabel,
       sectionFolderName: current?.sectionFolderName,
-      errorMessage,
+      failureCode: failure.failureCode,
+      failureMessage: failure.failureMessage,
+      blockedAttachment: failure.blockedAttachment,
+      errorMessage: failure.errorMessage,
     }),
   );
 }
@@ -131,6 +157,27 @@ async function getAttachmentBody(bucket: string, key: string): Promise<Attachmen
   }
 
   return response.Body;
+}
+
+async function getAttachmentObjectTags(
+  bucket: string,
+  key: string,
+): Promise<Record<string, string>> {
+  const client = await getAttachmentBucketClient(bucket);
+  const response = await client.send(
+    new GetObjectTaggingCommand({
+      Bucket: bucket,
+      Key: key,
+    }),
+  );
+
+  return (response.TagSet || []).reduce<Record<string, string>>((acc, tag) => {
+    if (tag.Key && tag.Value) {
+      acc[tag.Key] = tag.Value;
+    }
+
+    return acc;
+  }, {});
 }
 
 async function loadManifest(key = manifestKey): Promise<AttachmentArchiveManifest> {
@@ -159,12 +206,31 @@ async function appendSectionManifest(
   let skippedAttachmentCount = 0;
 
   for (const attachment of manifest.attachments) {
-    const result = await loadArchiveAttachment({
-      attachment,
-      attachmentBucketMap,
-      consumer: "attachment_archive_worker",
-      getAttachmentBody,
-    });
+    let result: Awaited<ReturnType<typeof loadArchiveAttachment<AttachmentBody>>>;
+
+    try {
+      result = await loadArchiveAttachment({
+        attachment,
+        attachmentBucketMap,
+        consumer: "attachment_archive_worker",
+        getAttachmentBody,
+        getObjectTags: getAttachmentObjectTags,
+      });
+    } catch (error) {
+      const failure = await classifyAttachmentArchiveAccessFailure({
+        attachment,
+        error,
+        getObjectTags: getAttachmentObjectTags,
+      });
+
+      if (failure) {
+        throw Object.assign(new Error(failure.failureMessage), failure, {
+          cause: error,
+        });
+      }
+
+      throw error;
+    }
 
     if (result.skipped) {
       skippedAttachmentCount += 1;
@@ -255,8 +321,13 @@ function buildCurrentFromManifest(
   manifest: AttachmentArchiveManifest,
   status: AttachmentArchiveCurrent["status"],
   options?: {
+    appendedAttachmentCount?: number;
+    blockedAttachment?: AttachmentArchiveCurrent["blockedAttachment"];
     errorMessage?: string;
+    failureCode?: AttachmentArchiveCurrent["failureCode"];
+    failureMessage?: AttachmentArchiveCurrent["failureMessage"];
     executionArn?: string;
+    skippedAttachmentCount?: number;
   },
 ): AttachmentArchiveCurrent {
   return buildAttachmentArchiveCurrent({
@@ -269,11 +340,16 @@ function buildCurrentFromManifest(
       manifest.scope === "section"
         ? manifest.attachments.length
         : manifest.sections.reduce((total, section) => total + section.attachmentCount, 0),
+    appendedAttachmentCount: options?.appendedAttachmentCount,
     executionArn: options?.executionArn,
     sectionId: manifest.scope === "section" ? manifest.sectionId : undefined,
     sectionNumber: manifest.scope === "section" ? manifest.sectionNumber : undefined,
     sectionLabel: manifest.scope === "section" ? manifest.sectionLabel : undefined,
     sectionFolderName: manifest.scope === "section" ? manifest.sectionFolderName : undefined,
+    skippedAttachmentCount: options?.skippedAttachmentCount,
+    failureCode: options?.failureCode,
+    failureMessage: options?.failureMessage,
+    blockedAttachment: options?.blockedAttachment,
     errorMessage: options?.errorMessage,
   });
 }
@@ -370,6 +446,7 @@ async function run(): Promise<void> {
         skippedAttachmentCount: number;
       }
     | undefined;
+  let allAttachmentsUnavailable = false;
 
   try {
     builtArchive = await buildArchiveFromManifest(archive, manifest);
@@ -384,36 +461,53 @@ async function run(): Promise<void> {
         tempArchivePath,
       }),
     );
-    await archive.finalize();
-    await finished(archiveFileStream);
-    console.info(
-      JSON.stringify({
-        event: "attachment_archive_upload_starting",
-        artifactKey,
-        hash,
-        tempArchivePath,
-      }),
-    );
+    if (
+      isAllAttachmentsUnavailableArchive({
+        appendedAttachmentCount: builtArchive.appendedAttachmentCount,
+        skippedAttachmentCount: builtArchive.skippedAttachmentCount,
+      })
+    ) {
+      allAttachmentsUnavailable = true;
+      archive.abort();
+      archiveFileStream.destroy();
+    }
 
-    const upload = new Upload({
-      client: archiveBucketClient,
-      params: {
-        Bucket: archiveBucketName,
-        Key: artifactKey,
-        Body: createReadStream(tempArchivePath),
-        ContentType: "application/zip",
-      },
-    });
-    await upload.done();
-    console.info(
-      JSON.stringify({
-        event: "attachment_archive_upload_completed",
-        artifactKey,
-        hash,
-      }),
-    );
+    if (!allAttachmentsUnavailable) {
+      await archive.finalize();
+      await finished(archiveFileStream);
+      console.info(
+        JSON.stringify({
+          event: "attachment_archive_upload_starting",
+          artifactKey,
+          hash,
+          tempArchivePath,
+        }),
+      );
+
+      const upload = new Upload({
+        client: archiveBucketClient,
+        params: {
+          Bucket: archiveBucketName,
+          Key: artifactKey,
+          Body: createReadStream(tempArchivePath),
+          ContentType: "application/zip",
+        },
+      });
+      await upload.done();
+      console.info(
+        JSON.stringify({
+          event: "attachment_archive_upload_completed",
+          artifactKey,
+          hash,
+        }),
+      );
+    }
   } finally {
     await fs.rm(tempArchivePath, { force: true }).catch(() => undefined);
+  }
+
+  if (!builtArchive) {
+    throw new Error(`Attachment archive ${manifestKey} was not built`);
   }
 
   const latestCurrent = await getCurrentArchiveStatus();
@@ -429,20 +523,39 @@ async function run(): Promise<void> {
   }
 
   await putCurrentArchiveStatus(
-    buildCurrentFromManifest(builtArchive.manifest, "READY", {
-      executionArn: latestCurrent.executionArn,
-    }),
+    allAttachmentsUnavailable
+      ? buildCurrentFromManifest(builtArchive.manifest, "FAILED", {
+          appendedAttachmentCount: 0,
+          executionArn: latestCurrent.executionArn,
+          ...buildAllAttachmentsUnavailableArchiveFailure(builtArchive.manifest.scope),
+          skippedAttachmentCount: builtArchive.skippedAttachmentCount,
+        })
+      : buildCurrentFromManifest(builtArchive.manifest, "READY", {
+          appendedAttachmentCount: builtArchive.appendedAttachmentCount,
+          executionArn: latestCurrent.executionArn,
+          skippedAttachmentCount: builtArchive.skippedAttachmentCount,
+        }),
   );
 
   console.info(
-    JSON.stringify({
-      event: "attachment_archive_ready",
-      artifactKey,
-      hash,
-      manifestType: builtArchive.manifest.type,
-      attachmentCount: builtArchive.appendedAttachmentCount,
-      skippedAttachmentCount: builtArchive.skippedAttachmentCount,
-    }),
+    JSON.stringify(
+      allAttachmentsUnavailable
+        ? {
+            event: "attachment_archive_all_attachments_unavailable",
+            artifactKey,
+            hash,
+            manifestType: builtArchive.manifest.type,
+            skippedAttachmentCount: builtArchive.skippedAttachmentCount,
+          }
+        : {
+            event: "attachment_archive_ready",
+            artifactKey,
+            hash,
+            manifestType: builtArchive.manifest.type,
+            attachmentCount: builtArchive.appendedAttachmentCount,
+            skippedAttachmentCount: builtArchive.skippedAttachmentCount,
+          },
+    ),
   );
 }
 
@@ -461,7 +574,7 @@ try {
   );
 
   try {
-    await markFailed(message);
+    await markFailed(getAttachmentArchiveFailureState(error));
   } catch (statusError) {
     console.error(
       JSON.stringify({
