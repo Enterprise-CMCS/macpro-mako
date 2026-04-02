@@ -13,7 +13,7 @@ export const getNonOwnerDraftWarningModalBody = (packageId: string) =>
 export const getNonOwnerDraftDeleteModalBody = (packageId: string) =>
   `Since you are not the Draft Owner, are you sure you want to delete draft package ${packageId}? This action cannot be undone.`;
 export const getDraftLockedMessage = (packageId: string) =>
-  `A package with ID ${packageId} has already been submitted to CMS. This draft can no longer be saved or submitted in OneMAC. Delete this package if you no longer need it.`;
+  `A package with ID ${packageId} has already been submitted to CMS. This package can no longer be saved or submitted in OneMAC. Delete this package if you no longer need it.`;
 
 const EVENT_TO_DRAFT_PATH: Record<string, string> = {
   "new-medicaid-submission": "/new-submission/spa/medicaid/create",
