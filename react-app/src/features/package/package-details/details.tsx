@@ -86,6 +86,8 @@ export const getSubmissionDetails: GetLabelAndValueFromSubmission = (
   const hasChipSubmissionType =
     (Array.isArray(submission.chipSubmissionType) && submission.chipSubmissionType.length > 0) ||
     (Array.isArray(chipSubmissionTypeFromDraftData) && chipSubmissionTypeFromDraftData.length > 0);
+  const amendmentTitle = submission.title ?? getDraftTitle(submission);
+  const shouldShowAmendmentTitle = submission.event === "app-k" || amendmentTitle !== undefined;
 
   let chipSubmissionValue = (
     <span className="break-words">{submission.chipSubmissionType?.join(", ")}</span>
@@ -136,8 +138,8 @@ export const getSubmissionDetails: GetLabelAndValueFromSubmission = (
     },
     {
       label: "Amendment Title",
-      value: submission.title ?? getDraftTitle(submission) ?? BLANK_VALUE,
-      canView: submission.title !== undefined || getDraftTitle(submission) !== undefined,
+      value: amendmentTitle ?? BLANK_VALUE,
+      canView: shouldShowAmendmentTitle,
     },
     {
       label: "Subject",

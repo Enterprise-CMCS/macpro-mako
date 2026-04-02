@@ -171,6 +171,7 @@ describe("package details", () => {
 
     const appKDraftSubmission = {
       ...TEST_1915C_APPK_ITEM._source,
+      event: "app-k",
       seatoolStatus: SEATOOL_STATUS.DRAFT,
       stateStatus: "Draft",
       cmsStatus: "Draft",
@@ -188,6 +189,33 @@ describe("package details", () => {
 
     expect(screen.getByText("Amendment Title")).toBeInTheDocument();
     expect(screen.getByText("this is a app k package")).toBeInTheDocument();
+  });
+
+  it("shows -- -- for a blank Amendment Title on App K draft packages", async () => {
+    setMockUsername(TEST_STATE_SUBMITTER_USERNAME);
+
+    const appKDraftSubmission = {
+      ...TEST_1915C_APPK_ITEM._source,
+      event: "app-k",
+      seatoolStatus: SEATOOL_STATUS.DRAFT,
+      stateStatus: "Draft",
+      cmsStatus: "Draft",
+      title: undefined,
+      draft: {
+        savedAt: "2026-04-02T20:30:00.000Z",
+        data: {
+          id: TEST_1915C_APPK_ITEM._source.id,
+          title: "   ",
+        },
+      },
+    } as opensearch.main.Document;
+
+    await setup(appKDraftSubmission);
+
+    const amendmentTitleField = screen.getByText("Amendment Title").closest("dl");
+
+    expect(amendmentTitleField).not.toBeNull();
+    expect(within(amendmentTitleField!).getByText("-- --")).toBeInTheDocument();
   });
 
   it("shows -- -- for a missing draft proposed effective date", async () => {
