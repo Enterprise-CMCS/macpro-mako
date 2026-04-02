@@ -650,7 +650,7 @@
                               "workerIndex": 0,
                               "parallelIndex": 0,
                               "status": "failed",
-                              "duration": 6282,
+                              "duration": 6316,
                               "error": {
                                 "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m(\u001b[22m\u001b[2m)\u001b[22m failed\n\nLocator: getByRole('heading', { name: 'Dashboard' })\nExpected: visible\nTimeout: 5000ms\nError: element(s) not found\n\nCall log:\n\u001b[2m  - Expect \"toBeVisible\" with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for getByRole('heading', { name: 'Dashboard' })\u001b[22m\n",
                                 "stack": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m(\u001b[22m\u001b[2m)\u001b[22m failed\n\nLocator: getByRole('heading', { name: 'Dashboard' })\nExpected: visible\nTimeout: 5000ms\nError: element(s) not found\n\nCall log:\n\u001b[2m  - Expect \"toBeVisible\" with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for getByRole('heading', { name: 'Dashboard' })\u001b[22m\n\n    at /home/runner/work/macpro-mako/macpro-mako/test/e2e/specs/dashboard.spec.ts:25:72",
@@ -674,7 +674,7 @@
                               "stdout": [],
                               "stderr": [],
                               "retry": 0,
-                              "startTime": "2026-04-02T19:33:03.379Z",
+                              "startTime": "2026-04-02T21:08:54.447Z",
                               "annotations": [],
                               "attachments": [
                                 {
@@ -726,7 +726,7 @@
                               "workerIndex": 1,
                               "parallelIndex": 0,
                               "status": "failed",
-                              "duration": 6271,
+                              "duration": 6327,
                               "error": {
                                 "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m(\u001b[22m\u001b[2m)\u001b[22m failed\n\nLocator: getByRole('heading', { name: 'Dashboard' })\nExpected: visible\nTimeout: 5000ms\nError: element(s) not found\n\nCall log:\n\u001b[2m  - Expect \"toBeVisible\" with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for getByRole('heading', { name: 'Dashboard' })\u001b[22m\n",
                                 "stack": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m(\u001b[22m\u001b[2m)\u001b[22m failed\n\nLocator: getByRole('heading', { name: 'Dashboard' })\nExpected: visible\nTimeout: 5000ms\nError: element(s) not found\n\nCall log:\n\u001b[2m  - Expect \"toBeVisible\" with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for getByRole('heading', { name: 'Dashboard' })\u001b[22m\n\n    at /home/runner/work/macpro-mako/macpro-mako/test/e2e/specs/dashboard.spec.ts:25:72",
@@ -750,7 +750,7 @@
                               "stdout": [],
                               "stderr": [],
                               "retry": 0,
-                              "startTime": "2026-04-02T19:33:11.185Z",
+                              "startTime": "2026-04-02T21:09:02.336Z",
                               "annotations": [],
                               "attachments": [
                                 {
@@ -802,7 +802,7 @@
                               "workerIndex": 2,
                               "parallelIndex": 0,
                               "status": "failed",
-                              "duration": 6264,
+                              "duration": 6361,
                               "error": {
                                 "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m(\u001b[22m\u001b[2m)\u001b[22m failed\n\nLocator: getByRole('heading', { name: 'Dashboard' })\nExpected: visible\nTimeout: 5000ms\nError: element(s) not found\n\nCall log:\n\u001b[2m  - Expect \"toBeVisible\" with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for getByRole('heading', { name: 'Dashboard' })\u001b[22m\n",
                                 "stack": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m(\u001b[22m\u001b[2m)\u001b[22m failed\n\nLocator: getByRole('heading', { name: 'Dashboard' })\nExpected: visible\nTimeout: 5000ms\nError: element(s) not found\n\nCall log:\n\u001b[2m  - Expect \"toBeVisible\" with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for getByRole('heading', { name: 'Dashboard' })\u001b[22m\n\n    at /home/runner/work/macpro-mako/macpro-mako/test/e2e/specs/dashboard.spec.ts:25:72",
@@ -826,7 +826,7 @@
                               "stdout": [],
                               "stderr": [],
                               "retry": 0,
-                              "startTime": "2026-04-02T19:33:18.941Z",
+                              "startTime": "2026-04-02T21:09:10.188Z",
                               "annotations": [],
                               "attachments": [
                                 {
@@ -878,7 +878,7 @@
                               "workerIndex": 3,
                               "parallelIndex": 0,
                               "status": "failed",
-                              "duration": 6282,
+                              "duration": 6304,
                               "error": {
                                 "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m(\u001b[22m\u001b[2m)\u001b[22m failed\n\nLocator: getByRole('heading', { name: 'Dashboard' })\nExpected: visible\nTimeout: 5000ms\nError: element(s) not found\n\nCall log:\n\u001b[2m  - Expect \"toBeVisible\" with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for getByRole('heading', { name: 'Dashboard' })\u001b[22m\n",
                                 "stack": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m(\u001b[22m\u001b[2m)\u001b[22m failed\n\nLocator: getByRole('heading', { name: 'Dashboard' })\nExpected: visible\nTimeout: 5000ms\nError: element(s) not found\n\nCall log:\n\u001b[2m  - Expect \"toBeVisible\" with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for getByRole('heading', { name: 'Dashboard' })\u001b[22m\n\n    at /home/runner/work/macpro-mako/macpro-mako/test/e2e/specs/dashboard.spec.ts:25:72",
@@ -902,7 +902,7 @@
                               "stdout": [],
                               "stderr": [],
                               "retry": 0,
-                              "startTime": "2026-04-02T19:33:26.695Z",
+                              "startTime": "2026-04-02T21:09:18.117Z",
                               "annotations": [],
                               "attachments": [
                                 {
@@ -954,7 +954,7 @@
                               "workerIndex": 4,
                               "parallelIndex": 0,
                               "status": "failed",
-                              "duration": 6327,
+                              "duration": 6318,
                               "error": {
                                 "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m(\u001b[22m\u001b[2m)\u001b[22m failed\n\nLocator: getByRole('heading', { name: 'Dashboard' })\nExpected: visible\nTimeout: 5000ms\nError: element(s) not found\n\nCall log:\n\u001b[2m  - Expect \"toBeVisible\" with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for getByRole('heading', { name: 'Dashboard' })\u001b[22m\n",
                                 "stack": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m(\u001b[22m\u001b[2m)\u001b[22m failed\n\nLocator: getByRole('heading', { name: 'Dashboard' })\nExpected: visible\nTimeout: 5000ms\nError: element(s) not found\n\nCall log:\n\u001b[2m  - Expect \"toBeVisible\" with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for getByRole('heading', { name: 'Dashboard' })\u001b[22m\n\n    at /home/runner/work/macpro-mako/macpro-mako/test/e2e/specs/dashboard.spec.ts:25:72",
@@ -978,7 +978,7 @@
                               "stdout": [],
                               "stderr": [],
                               "retry": 0,
-                              "startTime": "2026-04-02T19:33:34.510Z",
+                              "startTime": "2026-04-02T21:09:25.961Z",
                               "annotations": [],
                               "attachments": [
                                 {
@@ -1030,7 +1030,7 @@
                               "workerIndex": 5,
                               "parallelIndex": 0,
                               "status": "failed",
-                              "duration": 6280,
+                              "duration": 6316,
                               "error": {
                                 "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m(\u001b[22m\u001b[2m)\u001b[22m failed\n\nLocator: getByRole('heading', { name: 'Dashboard' })\nExpected: visible\nTimeout: 5000ms\nError: element(s) not found\n\nCall log:\n\u001b[2m  - Expect \"toBeVisible\" with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for getByRole('heading', { name: 'Dashboard' })\u001b[22m\n",
                                 "stack": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m(\u001b[22m\u001b[2m)\u001b[22m failed\n\nLocator: getByRole('heading', { name: 'Dashboard' })\nExpected: visible\nTimeout: 5000ms\nError: element(s) not found\n\nCall log:\n\u001b[2m  - Expect \"toBeVisible\" with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for getByRole('heading', { name: 'Dashboard' })\u001b[22m\n\n    at /home/runner/work/macpro-mako/macpro-mako/test/e2e/specs/dashboard.spec.ts:25:72",
@@ -1054,7 +1054,7 @@
                               "stdout": [],
                               "stderr": [],
                               "retry": 0,
-                              "startTime": "2026-04-02T19:33:42.341Z",
+                              "startTime": "2026-04-02T21:09:33.812Z",
                               "annotations": [],
                               "attachments": [
                                 {
@@ -1106,7 +1106,7 @@
                               "workerIndex": 6,
                               "parallelIndex": 0,
                               "status": "failed",
-                              "duration": 6307,
+                              "duration": 6402,
                               "error": {
                                 "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m(\u001b[22m\u001b[2m)\u001b[22m failed\n\nLocator: getByRole('heading', { name: 'Dashboard' })\nExpected: visible\nTimeout: 5000ms\nError: element(s) not found\n\nCall log:\n\u001b[2m  - Expect \"toBeVisible\" with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for getByRole('heading', { name: 'Dashboard' })\u001b[22m\n",
                                 "stack": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m(\u001b[22m\u001b[2m)\u001b[22m failed\n\nLocator: getByRole('heading', { name: 'Dashboard' })\nExpected: visible\nTimeout: 5000ms\nError: element(s) not found\n\nCall log:\n\u001b[2m  - Expect \"toBeVisible\" with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for getByRole('heading', { name: 'Dashboard' })\u001b[22m\n\n    at /home/runner/work/macpro-mako/macpro-mako/test/e2e/specs/dashboard.spec.ts:25:72",
@@ -1130,7 +1130,7 @@
                               "stdout": [],
                               "stderr": [],
                               "retry": 0,
-                              "startTime": "2026-04-02T19:33:50.124Z",
+                              "startTime": "2026-04-02T21:09:41.682Z",
                               "annotations": [],
                               "attachments": [
                                 {
@@ -1197,7 +1197,7 @@
                                       "workerIndex": 7,
                                       "parallelIndex": 0,
                                       "status": "failed",
-                                      "duration": 6355,
+                                      "duration": 6311,
                                       "error": {
                                         "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m(\u001b[22m\u001b[2m)\u001b[22m failed\n\nLocator: getByRole('heading', { name: 'Dashboard' })\nExpected: visible\nTimeout: 5000ms\nError: element(s) not found\n\nCall log:\n\u001b[2m  - Expect \"toBeVisible\" with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for getByRole('heading', { name: 'Dashboard' })\u001b[22m\n",
                                         "stack": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m(\u001b[22m\u001b[2m)\u001b[22m failed\n\nLocator: getByRole('heading', { name: 'Dashboard' })\nExpected: visible\nTimeout: 5000ms\nError: element(s) not found\n\nCall log:\n\u001b[2m  - Expect \"toBeVisible\" with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for getByRole('heading', { name: 'Dashboard' })\u001b[22m\n\n    at /home/runner/work/macpro-mako/macpro-mako/test/e2e/specs/dashboard.spec.ts:25:72",
@@ -1221,7 +1221,7 @@
                                       "stdout": [],
                                       "stderr": [],
                                       "retry": 0,
-                                      "startTime": "2026-04-02T19:33:57.914Z",
+                                      "startTime": "2026-04-02T21:09:49.597Z",
                                       "annotations": [],
                                       "attachments": [
                                         {
@@ -1273,7 +1273,7 @@
                                       "workerIndex": 8,
                                       "parallelIndex": 0,
                                       "status": "failed",
-                                      "duration": 6261,
+                                      "duration": 6275,
                                       "error": {
                                         "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m(\u001b[22m\u001b[2m)\u001b[22m failed\n\nLocator: getByRole('heading', { name: 'Dashboard' })\nExpected: visible\nTimeout: 5000ms\nError: element(s) not found\n\nCall log:\n\u001b[2m  - Expect \"toBeVisible\" with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for getByRole('heading', { name: 'Dashboard' })\u001b[22m\n",
                                         "stack": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m(\u001b[22m\u001b[2m)\u001b[22m failed\n\nLocator: getByRole('heading', { name: 'Dashboard' })\nExpected: visible\nTimeout: 5000ms\nError: element(s) not found\n\nCall log:\n\u001b[2m  - Expect \"toBeVisible\" with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for getByRole('heading', { name: 'Dashboard' })\u001b[22m\n\n    at /home/runner/work/macpro-mako/macpro-mako/test/e2e/specs/dashboard.spec.ts:25:72",
@@ -1297,7 +1297,7 @@
                                       "stdout": [],
                                       "stderr": [],
                                       "retry": 0,
-                                      "startTime": "2026-04-02T19:34:05.788Z",
+                                      "startTime": "2026-04-02T21:09:57.415Z",
                                       "annotations": [],
                                       "attachments": [
                                         {
@@ -1349,7 +1349,7 @@
                                       "workerIndex": 9,
                                       "parallelIndex": 0,
                                       "status": "failed",
-                                      "duration": 6145,
+                                      "duration": 6312,
                                       "error": {
                                         "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m(\u001b[22m\u001b[2m)\u001b[22m failed\n\nLocator: getByRole('heading', { name: 'Dashboard' })\nExpected: visible\nTimeout: 5000ms\nError: element(s) not found\n\nCall log:\n\u001b[2m  - Expect \"toBeVisible\" with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for getByRole('heading', { name: 'Dashboard' })\u001b[22m\n",
                                         "stack": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m(\u001b[22m\u001b[2m)\u001b[22m failed\n\nLocator: getByRole('heading', { name: 'Dashboard' })\nExpected: visible\nTimeout: 5000ms\nError: element(s) not found\n\nCall log:\n\u001b[2m  - Expect \"toBeVisible\" with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for getByRole('heading', { name: 'Dashboard' })\u001b[22m\n\n    at /home/runner/work/macpro-mako/macpro-mako/test/e2e/specs/dashboard.spec.ts:25:72",
@@ -1373,7 +1373,7 @@
                                       "stdout": [],
                                       "stderr": [],
                                       "retry": 0,
-                                      "startTime": "2026-04-02T19:34:13.557Z",
+                                      "startTime": "2026-04-02T21:10:05.233Z",
                                       "annotations": [],
                                       "attachments": [
                                         {
@@ -1433,7 +1433,7 @@
                                       "workerIndex": 10,
                                       "parallelIndex": 0,
                                       "status": "failed",
-                                      "duration": 31343,
+                                      "duration": 31532,
                                       "error": {
                                         "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m(\u001b[22m\u001b[2m)\u001b[22m failed\n\nLocator: getByRole('heading', { name: 'Dashboard' })\nExpected: visible\nTimeout: 5000ms\nError: element(s) not found\n\nCall log:\n\u001b[2m  - Expect \"toBeVisible\" with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for getByRole('heading', { name: 'Dashboard' })\u001b[22m\n",
                                         "stack": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m(\u001b[22m\u001b[2m)\u001b[22m failed\n\nLocator: getByRole('heading', { name: 'Dashboard' })\nExpected: visible\nTimeout: 5000ms\nError: element(s) not found\n\nCall log:\n\u001b[2m  - Expect \"toBeVisible\" with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for getByRole('heading', { name: 'Dashboard' })\u001b[22m\n\n    at /home/runner/work/macpro-mako/macpro-mako/test/e2e/specs/dashboard.spec.ts:25:72",
@@ -1473,7 +1473,7 @@
                                       "stdout": [],
                                       "stderr": [],
                                       "retry": 0,
-                                      "startTime": "2026-04-02T19:34:21.220Z",
+                                      "startTime": "2026-04-02T21:10:13.106Z",
                                       "annotations": [],
                                       "attachments": [
                                         {
@@ -1525,7 +1525,7 @@
                                       "workerIndex": 11,
                                       "parallelIndex": 0,
                                       "status": "failed",
-                                      "duration": 31384,
+                                      "duration": 31544,
                                       "error": {
                                         "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m(\u001b[22m\u001b[2m)\u001b[22m failed\n\nLocator: getByRole('heading', { name: 'Dashboard' })\nExpected: visible\nTimeout: 5000ms\nError: element(s) not found\n\nCall log:\n\u001b[2m  - Expect \"toBeVisible\" with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for getByRole('heading', { name: 'Dashboard' })\u001b[22m\n",
                                         "stack": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m(\u001b[22m\u001b[2m)\u001b[22m failed\n\nLocator: getByRole('heading', { name: 'Dashboard' })\nExpected: visible\nTimeout: 5000ms\nError: element(s) not found\n\nCall log:\n\u001b[2m  - Expect \"toBeVisible\" with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for getByRole('heading', { name: 'Dashboard' })\u001b[22m\n\n    at /home/runner/work/macpro-mako/macpro-mako/test/e2e/specs/dashboard.spec.ts:25:72",
@@ -1565,7 +1565,7 @@
                                       "stdout": [],
                                       "stderr": [],
                                       "retry": 0,
-                                      "startTime": "2026-04-02T19:34:54.113Z",
+                                      "startTime": "2026-04-02T21:10:46.200Z",
                                       "annotations": [],
                                       "attachments": [
                                         {
@@ -1617,7 +1617,7 @@
                                       "workerIndex": 12,
                                       "parallelIndex": 0,
                                       "status": "failed",
-                                      "duration": 31399,
+                                      "duration": 31369,
                                       "error": {
                                         "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m(\u001b[22m\u001b[2m)\u001b[22m failed\n\nLocator: getByRole('heading', { name: 'Dashboard' })\nExpected: visible\nTimeout: 5000ms\nError: element(s) not found\n\nCall log:\n\u001b[2m  - Expect \"toBeVisible\" with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for getByRole('heading', { name: 'Dashboard' })\u001b[22m\n",
                                         "stack": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m(\u001b[22m\u001b[2m)\u001b[22m failed\n\nLocator: getByRole('heading', { name: 'Dashboard' })\nExpected: visible\nTimeout: 5000ms\nError: element(s) not found\n\nCall log:\n\u001b[2m  - Expect \"toBeVisible\" with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for getByRole('heading', { name: 'Dashboard' })\u001b[22m\n\n    at /home/runner/work/macpro-mako/macpro-mako/test/e2e/specs/dashboard.spec.ts:25:72",
@@ -1657,7 +1657,7 @@
                                       "stdout": [],
                                       "stderr": [],
                                       "retry": 0,
-                                      "startTime": "2026-04-02T19:35:27.060Z",
+                                      "startTime": "2026-04-02T21:11:19.345Z",
                                       "annotations": [],
                                       "attachments": [
                                         {
@@ -1721,7 +1721,7 @@
                               "workerIndex": 13,
                               "parallelIndex": 0,
                               "status": "failed",
-                              "duration": 6210,
+                              "duration": 6388,
                               "error": {
                                 "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m(\u001b[22m\u001b[2m)\u001b[22m failed\n\nLocator: getByRole('heading', { name: 'Dashboard' })\nExpected: visible\nTimeout: 5000ms\nError: element(s) not found\n\nCall log:\n\u001b[2m  - Expect \"toBeVisible\" with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for getByRole('heading', { name: 'Dashboard' })\u001b[22m\n",
                                 "stack": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m(\u001b[22m\u001b[2m)\u001b[22m failed\n\nLocator: getByRole('heading', { name: 'Dashboard' })\nExpected: visible\nTimeout: 5000ms\nError: element(s) not found\n\nCall log:\n\u001b[2m  - Expect \"toBeVisible\" with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for getByRole('heading', { name: 'Dashboard' })\u001b[22m\n\n    at /home/runner/work/macpro-mako/macpro-mako/test/e2e/specs/dashboard.spec.ts:25:72",
@@ -1745,7 +1745,7 @@
                               "stdout": [],
                               "stderr": [],
                               "retry": 0,
-                              "startTime": "2026-04-02T19:36:00.001Z",
+                              "startTime": "2026-04-02T21:11:52.305Z",
                               "annotations": [],
                               "attachments": [
                                 {
@@ -1798,7 +1798,7 @@
                   "specs": [
                     {
                       "title": "navigation banner updates",
-                      "ok": false,
+                      "ok": true,
                       "tags": [
                         "CI"
                       ],
@@ -1813,58 +1813,18 @@
                             {
                               "workerIndex": 14,
                               "parallelIndex": 0,
-                              "status": "failed",
-                              "duration": 6036,
-                              "error": {
-                                "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m(\u001b[22m\u001b[2m)\u001b[22m failed\n\nLocator: getByRole('heading', { name: 'Dashboard' })\nExpected: visible\nTimeout: 5000ms\nError: element(s) not found\n\nCall log:\n\u001b[2m  - Expect \"toBeVisible\" with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for getByRole('heading', { name: 'Dashboard' })\u001b[22m\n",
-                                "stack": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m(\u001b[22m\u001b[2m)\u001b[22m failed\n\nLocator: getByRole('heading', { name: 'Dashboard' })\nExpected: visible\nTimeout: 5000ms\nError: element(s) not found\n\nCall log:\n\u001b[2m  - Expect \"toBeVisible\" with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for getByRole('heading', { name: 'Dashboard' })\u001b[22m\n\n    at /home/runner/work/macpro-mako/macpro-mako/test/e2e/specs/dashboard.spec.ts:25:72",
-                                "location": {
-                                  "file": "/home/runner/work/macpro-mako/macpro-mako/test/e2e/specs/dashboard.spec.ts",
-                                  "column": 72,
-                                  "line": 25
-                                },
-                                "snippet": "\u001b[0m \u001b[90m 23 |\u001b[39m         dashboardPage \u001b[33m=\u001b[39m \u001b[36mnew\u001b[39m \u001b[33mDashboardPage\u001b[39m(page)\u001b[33m;\u001b[39m\n \u001b[90m 24 |\u001b[39m         \u001b[36mawait\u001b[39m page\u001b[33m.\u001b[39mgoto(\u001b[32m\"/dashboard\"\u001b[39m)\u001b[33m;\u001b[39m\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 25 |\u001b[39m         \u001b[36mawait\u001b[39m expect(page\u001b[33m.\u001b[39mgetByRole(\u001b[32m\"heading\"\u001b[39m\u001b[33m,\u001b[39m { name\u001b[33m:\u001b[39m \u001b[32m\"Dashboard\"\u001b[39m }))\u001b[33m.\u001b[39mtoBeVisible()\u001b[33m;\u001b[39m\n \u001b[90m    |\u001b[39m                                                                        \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 26 |\u001b[39m         \u001b[36mawait\u001b[39m expect(page\u001b[33m.\u001b[39mgetByRole(\u001b[32m\"tab\"\u001b[39m\u001b[33m,\u001b[39m { name\u001b[33m:\u001b[39m \u001b[32m\"SPAs\"\u001b[39m }))\u001b[33m.\u001b[39mtoBeVisible()\u001b[33m;\u001b[39m\n \u001b[90m 27 |\u001b[39m         \u001b[36mawait\u001b[39m expect(page\u001b[33m.\u001b[39mgetByTestId(\u001b[32m\"os-table\"\u001b[39m))\u001b[33m.\u001b[39mtoBeVisible()\u001b[33m;\u001b[39m\n \u001b[90m 28 |\u001b[39m       })\u001b[33m;\u001b[39m\u001b[0m"
-                              },
-                              "errors": [
-                                {
-                                  "location": {
-                                    "file": "/home/runner/work/macpro-mako/macpro-mako/test/e2e/specs/dashboard.spec.ts",
-                                    "column": 72,
-                                    "line": 25
-                                  },
-                                  "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m(\u001b[22m\u001b[2m)\u001b[22m failed\n\nLocator: getByRole('heading', { name: 'Dashboard' })\nExpected: visible\nTimeout: 5000ms\nError: element(s) not found\n\nCall log:\n\u001b[2m  - Expect \"toBeVisible\" with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for getByRole('heading', { name: 'Dashboard' })\u001b[22m\n\n\n  23 |         dashboardPage = new DashboardPage(page);\n  24 |         await page.goto(\"/dashboard\");\n> 25 |         await expect(page.getByRole(\"heading\", { name: \"Dashboard\" })).toBeVisible();\n     |                                                                        ^\n  26 |         await expect(page.getByRole(\"tab\", { name: \"SPAs\" })).toBeVisible();\n  27 |         await expect(page.getByTestId(\"os-table\")).toBeVisible();\n  28 |       });\n    at /home/runner/work/macpro-mako/macpro-mako/test/e2e/specs/dashboard.spec.ts:25:72"
-                                }
-                              ],
+                              "status": "passed",
+                              "duration": 6122,
+                              "errors": [],
                               "stdout": [],
                               "stderr": [],
                               "retry": 0,
-                              "startTime": "2026-04-02T19:36:07.710Z",
+                              "startTime": "2026-04-02T21:12:00.245Z",
                               "annotations": [],
-                              "attachments": [
-                                {
-                                  "name": "video",
-                                  "contentType": "video/webm",
-                                  "path": "/home/runner/work/macpro-mako/macpro-mako/test/test-results/e2e-specs-dashboard-Dashbo-6dc6d-s-navigation-banner-updates-shared/video.webm"
-                                },
-                                {
-                                  "name": "error-context",
-                                  "contentType": "text/markdown",
-                                  "path": "/home/runner/work/macpro-mako/macpro-mako/test/test-results/e2e-specs-dashboard-Dashbo-6dc6d-s-navigation-banner-updates-shared/error-context.md"
-                                },
-                                {
-                                  "name": "trace",
-                                  "contentType": "application/zip",
-                                  "path": "/home/runner/work/macpro-mako/macpro-mako/test/test-results/e2e-specs-dashboard-Dashbo-6dc6d-s-navigation-banner-updates-shared/trace.zip"
-                                }
-                              ],
-                              "errorLocation": {
-                                "file": "/home/runner/work/macpro-mako/macpro-mako/test/e2e/specs/dashboard.spec.ts",
-                                "column": 72,
-                                "line": 25
-                              }
+                              "attachments": []
                             }
                           ],
-                          "status": "unexpected"
+                          "status": "expected"
                         }
                       ],
                       "id": "e31090cf21ac3d2f1505-49435fe861e54d37de40",
@@ -1887,15 +1847,15 @@
                           "projectName": "shared",
                           "results": [
                             {
-                              "workerIndex": 15,
+                              "workerIndex": 14,
                               "parallelIndex": 0,
                               "status": "passed",
-                              "duration": 4060,
+                              "duration": 4016,
                               "errors": [],
                               "stdout": [],
                               "stderr": [],
                               "retry": 0,
-                              "startTime": "2026-04-02T19:36:15.293Z",
+                              "startTime": "2026-04-02T21:12:06.456Z",
                               "annotations": [],
                               "attachments": []
                             }
@@ -1923,15 +1883,15 @@
                           "projectName": "shared",
                           "results": [
                             {
-                              "workerIndex": 15,
+                              "workerIndex": 14,
                               "parallelIndex": 0,
                               "status": "passed",
-                              "duration": 3929,
+                              "duration": 3969,
                               "errors": [],
                               "stdout": [],
                               "stderr": [],
                               "retry": 0,
-                              "startTime": "2026-04-02T19:36:19.441Z",
+                              "startTime": "2026-04-02T21:12:10.484Z",
                               "annotations": [],
                               "attachments": []
                             }
@@ -1959,15 +1919,15 @@
                           "projectName": "shared",
                           "results": [
                             {
-                              "workerIndex": 15,
+                              "workerIndex": 14,
                               "parallelIndex": 0,
                               "status": "passed",
-                              "duration": 4062,
+                              "duration": 4050,
                               "errors": [],
                               "stdout": [],
                               "stderr": [],
                               "retry": 0,
-                              "startTime": "2026-04-02T19:36:23.387Z",
+                              "startTime": "2026-04-02T21:12:14.466Z",
                               "annotations": [],
                               "attachments": []
                             }
@@ -1995,15 +1955,15 @@
                           "projectName": "shared",
                           "results": [
                             {
-                              "workerIndex": 15,
+                              "workerIndex": 14,
                               "parallelIndex": 0,
                               "status": "passed",
-                              "duration": 3818,
+                              "duration": 2902,
                               "errors": [],
                               "stdout": [],
                               "stderr": [],
                               "retry": 0,
-                              "startTime": "2026-04-02T19:36:27.479Z",
+                              "startTime": "2026-04-02T21:12:18.528Z",
                               "annotations": [],
                               "attachments": []
                             }
@@ -2031,15 +1991,15 @@
                           "projectName": "shared",
                           "results": [
                             {
-                              "workerIndex": 15,
+                              "workerIndex": 14,
                               "parallelIndex": 0,
                               "status": "passed",
-                              "duration": 3927,
+                              "duration": 3115,
                               "errors": [],
                               "stdout": [],
                               "stderr": [],
                               "retry": 0,
-                              "startTime": "2026-04-02T19:36:31.316Z",
+                              "startTime": "2026-04-02T21:12:21.442Z",
                               "annotations": [],
                               "attachments": []
                             }
@@ -2067,15 +2027,15 @@
                           "projectName": "shared",
                           "results": [
                             {
-                              "workerIndex": 15,
+                              "workerIndex": 14,
                               "parallelIndex": 0,
                               "status": "passed",
-                              "duration": 2827,
+                              "duration": 2894,
                               "errors": [],
                               "stdout": [],
                               "stderr": [],
                               "retry": 0,
-                              "startTime": "2026-04-02T19:36:35.255Z",
+                              "startTime": "2026-04-02T21:12:24.568Z",
                               "annotations": [],
                               "attachments": []
                             }
@@ -2118,15 +2078,15 @@
                                   "projectName": "shared",
                                   "results": [
                                     {
-                                      "workerIndex": 15,
+                                      "workerIndex": 14,
                                       "parallelIndex": 0,
                                       "status": "passed",
-                                      "duration": 4309,
+                                      "duration": 3250,
                                       "errors": [],
                                       "stdout": [],
                                       "stderr": [],
                                       "retry": 0,
-                                      "startTime": "2026-04-02T19:36:38.094Z",
+                                      "startTime": "2026-04-02T21:12:27.474Z",
                                       "annotations": [],
                                       "attachments": []
                                     }
@@ -2154,15 +2114,15 @@
                                   "projectName": "shared",
                                   "results": [
                                     {
-                                      "workerIndex": 15,
+                                      "workerIndex": 14,
                                       "parallelIndex": 0,
                                       "status": "passed",
-                                      "duration": 3835,
+                                      "duration": 3053,
                                       "errors": [],
                                       "stdout": [],
                                       "stderr": [],
                                       "retry": 0,
-                                      "startTime": "2026-04-02T19:36:42.414Z",
+                                      "startTime": "2026-04-02T21:12:30.735Z",
                                       "annotations": [],
                                       "attachments": []
                                     }
@@ -2190,15 +2150,15 @@
                                   "projectName": "shared",
                                   "results": [
                                     {
-                                      "workerIndex": 15,
+                                      "workerIndex": 14,
                                       "parallelIndex": 0,
                                       "status": "passed",
-                                      "duration": 3977,
+                                      "duration": 2948,
                                       "errors": [],
                                       "stdout": [],
                                       "stderr": [],
                                       "retry": 0,
-                                      "startTime": "2026-04-02T19:36:46.260Z",
+                                      "startTime": "2026-04-02T21:12:33.800Z",
                                       "annotations": [],
                                       "attachments": []
                                     }
@@ -2234,15 +2194,15 @@
                                   "projectName": "shared",
                                   "results": [
                                     {
-                                      "workerIndex": 15,
+                                      "workerIndex": 14,
                                       "parallelIndex": 0,
                                       "status": "passed",
-                                      "duration": 4300,
+                                      "duration": 3616,
                                       "errors": [],
                                       "stdout": [],
                                       "stderr": [],
                                       "retry": 0,
-                                      "startTime": "2026-04-02T19:36:50.251Z",
+                                      "startTime": "2026-04-02T21:12:36.759Z",
                                       "annotations": [],
                                       "attachments": []
                                     }
@@ -2270,15 +2230,15 @@
                                   "projectName": "shared",
                                   "results": [
                                     {
-                                      "workerIndex": 15,
+                                      "workerIndex": 14,
                                       "parallelIndex": 0,
                                       "status": "passed",
-                                      "duration": 5061,
+                                      "duration": 3217,
                                       "errors": [],
                                       "stdout": [],
                                       "stderr": [],
                                       "retry": 0,
-                                      "startTime": "2026-04-02T19:36:54.564Z",
+                                      "startTime": "2026-04-02T21:12:40.390Z",
                                       "annotations": [],
                                       "attachments": []
                                     }
@@ -2306,15 +2266,15 @@
                                   "projectName": "shared",
                                   "results": [
                                     {
-                                      "workerIndex": 15,
+                                      "workerIndex": 14,
                                       "parallelIndex": 0,
                                       "status": "passed",
-                                      "duration": 4068,
+                                      "duration": 3235,
                                       "errors": [],
                                       "stdout": [],
                                       "stderr": [],
                                       "retry": 0,
-                                      "startTime": "2026-04-02T19:36:59.637Z",
+                                      "startTime": "2026-04-02T21:12:43.619Z",
                                       "annotations": [],
                                       "attachments": []
                                     }
@@ -2354,10 +2314,10 @@
                           "projectName": "shared",
                           "results": [
                             {
-                              "workerIndex": 15,
+                              "workerIndex": 14,
                               "parallelIndex": 0,
                               "status": "passed",
-                              "duration": 9267,
+                              "duration": 7402,
                               "errors": [],
                               "stdout": [
                                 {
@@ -2366,7 +2326,7 @@
                               ],
                               "stderr": [],
                               "retry": 0,
-                              "startTime": "2026-04-02T19:37:03.716Z",
+                              "startTime": "2026-04-02T21:12:46.865Z",
                               "annotations": [],
                               "attachments": [
                                 {
@@ -2396,11 +2356,11 @@
   ],
   "errors": [],
   "stats": {
-    "startTime": "2026-04-02T19:32:49.224Z",
-    "duration": 263834.187,
-    "expected": 13,
+    "startTime": "2026-04-02T21:08:40.632Z",
+    "duration": 253715.944,
+    "expected": 14,
     "skipped": 0,
-    "unexpected": 15,
+    "unexpected": 14,
     "flaky": 0
   }
 }
