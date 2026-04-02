@@ -7,6 +7,6 @@
     "esbuild": "^0.25.4"
   },
   "dependencies": {
-    "file-type": "^19.6.0"
+    "file-type": "^22.0.0"
   }
 }
