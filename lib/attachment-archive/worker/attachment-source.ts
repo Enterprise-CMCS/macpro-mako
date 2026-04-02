@@ -5,13 +5,28 @@ import {
   isLegacyAttachmentUnavailableError,
 } from "../attachment-errors";
 import { AttachmentBucketMap, resolveTargetBucket } from "../bucket-routing";
-import { AttachmentArchiveSourceAttachment } from "../types";
+import {
+  AttachmentArchiveBlockedAttachment,
+  AttachmentArchiveFailureCode,
+  AttachmentArchiveSourceAttachment,
+} from "../types";
 
 interface LoadArchiveAttachmentParams<TBody> {
   attachment: AttachmentArchiveSourceAttachment;
   attachmentBucketMap: AttachmentBucketMap;
   consumer: string;
   getAttachmentBody: (bucket: string, key: string) => Promise<TBody>;
+  classifyAccessFailure?: (params: {
+    attachment: AttachmentArchiveSourceAttachment;
+    error: unknown;
+  }) => Promise<
+    | {
+        blockedAttachment?: AttachmentArchiveBlockedAttachment;
+        failureCode: AttachmentArchiveFailureCode;
+        failureMessage: string;
+      }
+    | undefined
+  >;
   logInfo?: (message: string) => void;
   logWarn?: (message: string) => void;
 }
@@ -51,11 +66,39 @@ function logSkippedAttachment({
   );
 }
 
+async function maybeThrowStructuredFailure({
+  attachment,
+  classifyAccessFailure,
+  error,
+}: {
+  attachment: AttachmentArchiveSourceAttachment;
+  classifyAccessFailure?: LoadArchiveAttachmentParams<unknown>["classifyAccessFailure"];
+  error: unknown;
+}) {
+  if (!classifyAccessFailure) {
+    return;
+  }
+
+  const failure = await classifyAccessFailure({
+    attachment,
+    error,
+  });
+
+  if (!failure) {
+    return;
+  }
+
+  throw Object.assign(new Error(failure.failureMessage), failure, {
+    cause: error,
+  });
+}
+
 export async function loadArchiveAttachment<TBody>({
   attachment,
   attachmentBucketMap,
   consumer,
   getAttachmentBody,
+  classifyAccessFailure,
   logInfo = console.info,
   logWarn = console.warn,
 }: LoadArchiveAttachmentParams<TBody>): Promise<LoadArchiveAttachmentResult<TBody>> {
@@ -79,10 +122,22 @@ export async function loadArchiveAttachment<TBody>({
         skipped: false,
       };
     } catch (error) {
+      const accessDenied = isAttachmentAccessDeniedError(error);
+      if (accessDenied) {
+        await maybeThrowStructuredFailure({
+          attachment: {
+            ...attachment,
+            bucket: resolution.destinationBucket,
+          },
+          classifyAccessFailure,
+          error,
+        });
+      }
+
       // If the mirrored legacy bucket is missing the object, S3 may surface either
       // a not-found or access-denied style error depending on bucket permissions.
       // In both cases we want to fall back to the original legacy upload bucket.
-      if (!isAttachmentNotFoundError(error) && !isAttachmentAccessDeniedError(error)) {
+      if (!isAttachmentNotFoundError(error) && !accessDenied) {
         throw error;
       }
 
@@ -106,17 +161,26 @@ export async function loadArchiveAttachment<TBody>({
       skipped: false,
     };
   } catch (error) {
-    if (
-      isAttachmentAccessDeniedError(error) &&
-      !isLegacyAttachmentUnavailableError(resolution.sourceBucket, error)
-    ) {
+    const accessDenied = isAttachmentAccessDeniedError(error);
+
+    if (accessDenied) {
+      await maybeThrowStructuredFailure({
+        attachment: {
+          ...attachment,
+          bucket: resolution.sourceBucket,
+        },
+        classifyAccessFailure,
+        error,
+      });
+    }
+
+    const legacyUnavailable = isLegacyAttachmentUnavailableError(resolution.sourceBucket, error);
+
+    if (accessDenied && !legacyUnavailable) {
       throw error;
     }
 
-    if (
-      !isAttachmentNotFoundError(error) &&
-      !isLegacyAttachmentUnavailableError(resolution.sourceBucket, error)
-    ) {
+    if (!isAttachmentNotFoundError(error) && !legacyUnavailable) {
       throw error;
     }
 

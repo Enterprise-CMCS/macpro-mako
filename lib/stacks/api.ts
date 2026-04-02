@@ -836,7 +836,7 @@ export class Api extends cdk.NestedStack {
             }),
             new cdk.aws_iam.PolicyStatement({
               effect: cdk.aws_iam.Effect.ALLOW,
-              actions: ["s3:GetObject"],
+              actions: ["s3:GetObject", "s3:GetObjectTagging"],
               resources: legacyMirrorBucketArns.map((bucketArn) => `${bucketArn}/*`),
             }),
             new cdk.aws_iam.PolicyStatement({

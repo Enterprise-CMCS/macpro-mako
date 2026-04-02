@@ -206,30 +206,18 @@ async function appendSectionManifest(
   let skippedAttachmentCount = 0;
 
   for (const attachment of manifest.attachments) {
-    let result: Awaited<ReturnType<typeof loadArchiveAttachment<AttachmentBody>>>;
-
-    try {
-      result = await loadArchiveAttachment({
-        attachment,
-        attachmentBucketMap,
-        consumer: "attachment_archive_worker",
-        getAttachmentBody,
-      });
-    } catch (error) {
-      const failure = await classifyAttachmentArchiveAccessFailure({
-        attachment,
-        error,
-        getObjectTags: getAttachmentObjectTags,
-      });
-
-      if (failure) {
-        throw Object.assign(new Error(failure.failureMessage), failure, {
-          cause: error,
-        });
-      }
-
-      throw error;
-    }
+    const result = await loadArchiveAttachment({
+      attachment,
+      attachmentBucketMap,
+      consumer: "attachment_archive_worker",
+      getAttachmentBody,
+      classifyAccessFailure: ({ attachment, error }) =>
+        classifyAttachmentArchiveAccessFailure({
+          attachment,
+          error,
+          getObjectTags: getAttachmentObjectTags,
+        }),
+    });
 
     if (result.skipped) {
       skippedAttachmentCount += 1;

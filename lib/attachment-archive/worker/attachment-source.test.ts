@@ -152,6 +152,141 @@ describe("attachment-source worker helpers", () => {
     });
   });
 
+  it("fails a remapped blocked attachment before falling back to the legacy source", async () => {
+    const remappedBucket = "mako-main-legacy-attachments-635052997545";
+    const getAttachmentBody = vi.fn().mockRejectedValueOnce({
+      name: "AccessDenied",
+      message: "Access Denied",
+      $metadata: { httpStatusCode: 403 },
+    });
+    const classifyAccessFailure = vi.fn().mockResolvedValue({
+      failureCode: "ATTACHMENT_NOT_CLEAN",
+      failureMessage:
+        "Unable to prepare the attachment archive because file.pdf is not available for download. File scanning did not complete successfully.",
+      blockedAttachment: {
+        bucket: remappedBucket,
+        key: "protected/key/file.pdf",
+        filename: "file.pdf",
+        title: "File",
+        virusScanStatus: "INFECTED",
+      },
+    });
+
+    await expect(
+      loadArchiveAttachment({
+        attachment: {
+          bucket: "uploads-develop-attachments-116229642442",
+          key: "protected/key/file.pdf",
+          filename: "file.pdf",
+          title: "File",
+        },
+        attachmentBucketMap: {
+          "uploads-develop-attachments-116229642442": remappedBucket,
+        },
+        consumer: "test",
+        getAttachmentBody,
+        classifyAccessFailure,
+      }),
+    ).rejects.toMatchObject({
+      failureCode: "ATTACHMENT_NOT_CLEAN",
+      failureMessage:
+        "Unable to prepare the attachment archive because file.pdf is not available for download. File scanning did not complete successfully.",
+      blockedAttachment: {
+        bucket: remappedBucket,
+        key: "protected/key/file.pdf",
+        filename: "file.pdf",
+        title: "File",
+        virusScanStatus: "INFECTED",
+      },
+    });
+
+    expect(getAttachmentBody).toHaveBeenCalledTimes(1);
+    expect(getAttachmentBody).toHaveBeenCalledWith(remappedBucket, "protected/key/file.pdf");
+    expect(classifyAccessFailure).toHaveBeenCalledTimes(1);
+    expect(classifyAccessFailure).toHaveBeenCalledWith({
+      attachment: {
+        bucket: remappedBucket,
+        key: "protected/key/file.pdf",
+        filename: "file.pdf",
+        title: "File",
+      },
+      error: expect.objectContaining({
+        name: "AccessDenied",
+      }),
+    });
+  });
+
+  it("fails when the fallback legacy source bucket is blocked by file scanning", async () => {
+    const sourceBucket = "uploads-develop-attachments-116229642442";
+    const remappedBucket = "mako-main-legacy-attachments-635052997545";
+    const getAttachmentBody = vi
+      .fn()
+      .mockRejectedValueOnce({
+        name: "NoSuchKey",
+        message: "The specified key does not exist",
+      })
+      .mockRejectedValueOnce({
+        name: "AccessDenied",
+        message: "Access Denied",
+        $metadata: { httpStatusCode: 403 },
+      });
+    const classifyAccessFailure = vi.fn().mockResolvedValue({
+      failureCode: "ATTACHMENT_NOT_CLEAN",
+      failureMessage:
+        "Unable to prepare the attachment archive because file.pdf is not available for download. File scanning did not complete successfully.",
+      blockedAttachment: {
+        bucket: sourceBucket,
+        key: "protected/key/file.pdf",
+        filename: "file.pdf",
+        title: "File",
+        virusScanStatus: "INFECTED",
+      },
+    });
+
+    await expect(
+      loadArchiveAttachment({
+        attachment: {
+          bucket: sourceBucket,
+          key: "protected/key/file.pdf",
+          filename: "file.pdf",
+          title: "File",
+        },
+        attachmentBucketMap: {
+          [sourceBucket]: remappedBucket,
+        },
+        consumer: "test",
+        getAttachmentBody,
+        classifyAccessFailure,
+      }),
+    ).rejects.toMatchObject({
+      failureCode: "ATTACHMENT_NOT_CLEAN",
+      failureMessage:
+        "Unable to prepare the attachment archive because file.pdf is not available for download. File scanning did not complete successfully.",
+      blockedAttachment: {
+        bucket: sourceBucket,
+        key: "protected/key/file.pdf",
+        filename: "file.pdf",
+        title: "File",
+        virusScanStatus: "INFECTED",
+      },
+    });
+
+    expect(getAttachmentBody).toHaveBeenNthCalledWith(1, remappedBucket, "protected/key/file.pdf");
+    expect(getAttachmentBody).toHaveBeenNthCalledWith(2, sourceBucket, "protected/key/file.pdf");
+    expect(classifyAccessFailure).toHaveBeenCalledTimes(1);
+    expect(classifyAccessFailure).toHaveBeenNthCalledWith(1, {
+      attachment: {
+        bucket: sourceBucket,
+        key: "protected/key/file.pdf",
+        filename: "file.pdf",
+        title: "File",
+      },
+      error: expect.objectContaining({
+        name: "AccessDenied",
+      }),
+    });
+  });
+
   it("skips unreadable attachments instead of failing the archive", async () => {
     const getAttachmentBody = vi.fn().mockRejectedValue({
       name: "NoSuchBucket",
