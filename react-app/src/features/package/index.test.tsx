@@ -209,7 +209,7 @@ describe("package details", () => {
     expect(await screen.findByText("This package is locked")).toBeInTheDocument();
     expect(
       screen.getByText(
-        `A package with ID ${ADMIN_ITEM_ID} has already been submitted to CMS. This draft can no longer be saved or submitted in OneMAC. Delete this draft if you no longer need it.`,
+        `A package with ID ${ADMIN_ITEM_ID} has already been submitted to CMS. This package can no longer be saved or submitted in OneMAC. Delete this package if you no longer need it.`,
       ),
     ).toBeInTheDocument();
   });
@@ -253,7 +253,7 @@ describe("package details", () => {
     expect(await screen.findByText("This package is locked")).toBeInTheDocument();
     expect(
       screen.getByText(
-        `A package with ID ${ADMIN_ITEM_ID} has already been submitted to CMS. This draft can no longer be saved or submitted in OneMAC. Delete this draft if you no longer need it.`,
+        `A package with ID ${ADMIN_ITEM_ID} has already been submitted to CMS. This package can no longer be saved or submitted in OneMAC. Delete this package if you no longer need it.`,
       ),
     ).toBeInTheDocument();
   });
