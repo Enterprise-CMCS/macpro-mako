@@ -1,8 +1,13 @@
 import { SendMessageCommand, SQSClient } from "@aws-sdk/client-sqs";
+import { createHash } from "crypto";
 
 import { AttachmentArchiveRebuildMessage } from "./types";
 
 const sqsClient = new SQSClient({ region: process.env.region || process.env.AWS_REGION });
+
+export function buildAttachmentArchiveMessageGroupId(packageId: string): string {
+  return `package-${createHash("sha256").update(packageId).digest("hex")}`;
+}
 
 export function hasAttachmentArchiveRebuildQueueConfigured(): boolean {
   return Boolean(process.env.ATTACHMENT_ARCHIVE_REBUILD_QUEUE_URL);
@@ -24,7 +29,7 @@ export async function sendAttachmentArchiveRebuildRequest(
     new SendMessageCommand({
       QueueUrl: getAttachmentArchiveRebuildQueueUrl(),
       MessageBody: JSON.stringify(message),
-      MessageGroupId: message.packageId,
+      MessageGroupId: buildAttachmentArchiveMessageGroupId(message.packageId),
     }),
   );
 }

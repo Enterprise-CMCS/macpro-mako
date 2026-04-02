@@ -214,6 +214,7 @@ async function appendSectionManifest(
         attachmentBucketMap,
         consumer: "attachment_archive_worker",
         getAttachmentBody,
+        getObjectTags: getAttachmentObjectTags,
       });
     } catch (error) {
       const failure = await classifyAttachmentArchiveAccessFailure({
