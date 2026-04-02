@@ -261,6 +261,113 @@ describe("attachment-source worker helpers", () => {
     });
   });
 
+  it("fails when fallback to source bucket is access denied and source scan tag is non-clean", async () => {
+    const sourceBucket = "uploads-develop-attachments-116229642442";
+    const getAttachmentBody = vi
+      .fn()
+      .mockRejectedValueOnce({
+        name: "NoSuchKey",
+        message: "The specified key does not exist",
+      })
+      .mockRejectedValueOnce({
+        name: "AccessDenied",
+        message: "Access Denied",
+        $metadata: { httpStatusCode: 403 },
+      });
+    const getObjectTags = vi.fn().mockResolvedValue({
+      virusScanStatus: "INFECTED",
+    });
+    const logWarn = vi.fn();
+
+    await expect(
+      loadArchiveAttachment({
+        attachment: {
+          bucket: sourceBucket,
+          key: "protected/key/file.pdf",
+          filename: "file.pdf",
+          title: "File",
+        },
+        attachmentBucketMap: {
+          [sourceBucket]: "mako-main-legacy-attachments-635052997545",
+        },
+        consumer: "test",
+        getAttachmentBody,
+        getObjectTags,
+        logWarn,
+      }),
+    ).rejects.toMatchObject({
+      failureCode: "ATTACHMENT_NOT_CLEAN",
+      blockedAttachment: {
+        bucket: sourceBucket,
+        key: "protected/key/file.pdf",
+        filename: "file.pdf",
+        title: "File",
+        virusScanStatus: "INFECTED",
+      },
+    });
+
+    expect(getAttachmentBody).toHaveBeenNthCalledWith(
+      1,
+      "mako-main-legacy-attachments-635052997545",
+      "protected/key/file.pdf",
+    );
+    expect(getAttachmentBody).toHaveBeenNthCalledWith(2, sourceBucket, "protected/key/file.pdf");
+    expect(getObjectTags).toHaveBeenCalledWith(sourceBucket, "protected/key/file.pdf");
+  });
+
+  it("skips attachment when fallback source access denied has a clean scan tag", async () => {
+    const sourceBucket = "uploads-develop-attachments-116229642442";
+    const getAttachmentBody = vi
+      .fn()
+      .mockRejectedValueOnce({
+        name: "NoSuchKey",
+        message: "The specified key does not exist",
+      })
+      .mockRejectedValueOnce({
+        name: "AccessDenied",
+        message: "Access Denied",
+        $metadata: { httpStatusCode: 403 },
+      });
+    const getObjectTags = vi.fn().mockResolvedValue({
+      virusScanStatus: "CLEAN",
+    });
+    const logWarn = vi.fn();
+
+    const result = await loadArchiveAttachment({
+      attachment: {
+        bucket: sourceBucket,
+        key: "protected/key/file.pdf",
+        filename: "file.pdf",
+        title: "File",
+      },
+      attachmentBucketMap: {
+        [sourceBucket]: "mako-main-legacy-attachments-635052997545",
+      },
+      consumer: "test",
+      getAttachmentBody,
+      getObjectTags,
+      logWarn,
+    });
+
+    expect(result).toEqual({
+      skipped: true,
+    });
+    expect(getAttachmentBody).toHaveBeenNthCalledWith(
+      1,
+      "mako-main-legacy-attachments-635052997545",
+      "protected/key/file.pdf",
+    );
+    expect(getAttachmentBody).toHaveBeenNthCalledWith(2, sourceBucket, "protected/key/file.pdf");
+    expect(getObjectTags).toHaveBeenCalledWith(sourceBucket, "protected/key/file.pdf");
+    expect(JSON.parse(logWarn.mock.calls[1][0])).toMatchObject({
+      event: "attachment_archive_attachment_skipped",
+      bucket: sourceBucket,
+      destinationBucket: "mako-main-legacy-attachments-635052997545",
+      key: "protected/key/file.pdf",
+      filename: "file.pdf",
+    });
+  });
+
   it("skips unreadable attachments instead of failing the archive", async () => {
     const getAttachmentBody = vi.fn().mockRejectedValue({
       name: "NoSuchBucket",

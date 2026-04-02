@@ -126,6 +126,23 @@ export async function loadArchiveAttachment<TBody>({
       skipped: false,
     };
   } catch (error) {
+    if (resolution.remapped && isAttachmentAccessDeniedError(error) && getObjectTags) {
+      const sourceFailure = await classifyAttachmentArchiveAccessFailure({
+        attachment: {
+          ...attachment,
+          bucket: resolution.sourceBucket,
+        },
+        error,
+        getObjectTags,
+      });
+
+      if (sourceFailure) {
+        throw Object.assign(new Error(sourceFailure.failureMessage), sourceFailure, {
+          cause: error,
+        });
+      }
+    }
+
     if (
       isAttachmentAccessDeniedError(error) &&
       !isLegacyAttachmentUnavailableError(resolution.sourceBucket, error)
